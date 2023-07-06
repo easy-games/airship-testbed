@@ -11,11 +11,11 @@ local InitNet = require("Shared/TS/Network/NetworkAPI").InitNet
 local TimeUtil = require("Shared/TS/Util/TimeUtil").TimeUtil
 local SetupWorld = require("Shared/TS/VoxelWorld/SetupWorld").SetupWorld
 local function LoadFlamework()
-	Flamework.addPath("assets/game/bedwars/bundles/client/resources/ts/controllers/global", "^.*controller.lua$")
+	Flamework.addPath("assets/bundles/client/resources/ts/controllers/global", "^.*controller.lua$")
 	if BedWars:IsMatchServer() then
-		Flamework.addPath("assets/game/bedwars/bundles/client/resources/ts/controllers/match", "^.*controller.lua$")
+		Flamework.addPath("assets/bundles/client/resources/ts/controllers/match", "^.*controller.lua$")
 	elseif BedWars:IsLobbyServer() then
-		Flamework.addPath("assets/game/bedwars/bundles/client/resources/ts/controllers/lobby", "^.*controller.lua$")
+		Flamework.addPath("assets/bundles/client/resources/ts/controllers/lobby", "^.*controller.lua$")
 	end
 	Flamework.ignite()
 	print("sending ready packet!")

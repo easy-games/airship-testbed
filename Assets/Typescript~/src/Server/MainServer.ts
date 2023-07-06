@@ -5,12 +5,14 @@ import { InitNet } from "./Network/NetworkAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { SetupWorld } from "./VoxelWorld/SetupWorld";
 
+print("MainServer!");
+
 function LoadFlamework() {
-	Flamework.addPath("assets/game/bedwars/bundles/server/resources/ts/services/global", "^.*service.lua$");
+	Flamework.addPath("assets/bundles/server/resources/ts/services/global", "^.*service.lua$");
 	if (BedWars.IsMatchServer()) {
-		Flamework.addPath("assets/game/bedwars/bundles/server/resources/ts/services/match", "^.*service.lua$");
+		Flamework.addPath("assets/bundles/server/resources/ts/services/match", "^.*service.lua$");
 	} else if (BedWars.IsLobbyServer()) {
-		Flamework.addPath("assets/game/bedwars/bundles/server/resources/ts/services/lobby", "^.*service.lua$");
+		Flamework.addPath("assets/bundles/server/resources/ts/services/lobby", "^.*service.lua$");
 	}
 
 	Flamework.ignite();

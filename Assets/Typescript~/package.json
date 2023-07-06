@@ -31,7 +31,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@easy-games/flamework-core": "^1.1.0-54",
+    "@easy-games/flamework-core": "^1.1.0-55",
     "@easy-games/unity-inspect": "^1.0.1-2",
     "@easy-games/unity-object-utils": "^1.0.4-3",
     "@easy-games/unity-sync-event": "^1.0.0-14"

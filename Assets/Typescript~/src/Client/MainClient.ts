@@ -7,11 +7,11 @@ import { TimeUtil } from "./Util/TimeUtil";
 import { SetupWorld } from "./VoxelWorld/SetupWorld";
 
 function LoadFlamework() {
-	Flamework.addPath("assets/game/bedwars/bundles/client/resources/ts/controllers/global", "^.*controller.lua$");
+	Flamework.addPath("assets/bundles/client/resources/ts/controllers/global", "^.*controller.lua$");
 	if (BedWars.IsMatchServer()) {
-		Flamework.addPath("assets/game/bedwars/bundles/client/resources/ts/controllers/match", "^.*controller.lua$");
+		Flamework.addPath("assets/bundles/client/resources/ts/controllers/match", "^.*controller.lua$");
 	} else if (BedWars.IsLobbyServer()) {
-		Flamework.addPath("assets/game/bedwars/bundles/client/resources/ts/controllers/lobby", "^.*controller.lua$");
+		Flamework.addPath("assets/bundles/client/resources/ts/controllers/lobby", "^.*controller.lua$");
 	}
 
 	Flamework.ignite();

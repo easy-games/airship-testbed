@@ -31,6 +31,7 @@ export class MapService implements OnStart {
 
 	public BuildMap(map: GameMap): void {
 		/* Fetch world, load map voxel file and block defines. */
+		print("Loading world " + map);
 		const world = WorldAPI.GetMainWorld();
 		this.voxelBinaryFile = AssetBridge.LoadAsset<VoxelBinaryFile>(`Server/Resources/Worlds/${map}.asset`);
 		const blockDefines = AssetBridge.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");

@@ -32,6 +32,7 @@ do
 	end
 	function MapService:BuildMap(map)
 		-- Fetch world, load map voxel file and block defines.
+		print("Loading world " .. map)
 		local world = WorldAPI:GetMainWorld()
 		self.voxelBinaryFile = AssetBridge:LoadAsset("Server/Resources/Worlds/" .. (map .. ".asset"))
 		local blockDefines = AssetBridge:LoadAsset("Shared/Resources/VoxelWorld/BlockDefines.xml")

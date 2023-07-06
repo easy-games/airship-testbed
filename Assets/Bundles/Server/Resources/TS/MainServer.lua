@@ -9,12 +9,13 @@ local BedWars = require("Shared/TS/BedWars/BedWars").BedWars
 local InitNet = require("Shared/TS/Network/NetworkAPI").InitNet
 local TimeUtil = require("Shared/TS/Util/TimeUtil").TimeUtil
 local SetupWorld = require("Shared/TS/VoxelWorld/SetupWorld").SetupWorld
+print("MainServer!")
 local function LoadFlamework()
-	Flamework.addPath("assets/game/bedwars/bundles/server/resources/ts/services/global", "^.*service.lua$")
+	Flamework.addPath("assets/bundles/server/resources/ts/services/global", "^.*service.lua$")
 	if BedWars:IsMatchServer() then
-		Flamework.addPath("assets/game/bedwars/bundles/server/resources/ts/services/match", "^.*service.lua$")
+		Flamework.addPath("assets/bundles/server/resources/ts/services/match", "^.*service.lua$")
 	elseif BedWars:IsLobbyServer() then
-		Flamework.addPath("assets/game/bedwars/bundles/server/resources/ts/services/lobby", "^.*service.lua$")
+		Flamework.addPath("assets/bundles/server/resources/ts/services/lobby", "^.*service.lua$")
 	end
 	Flamework.ignite()
 end
