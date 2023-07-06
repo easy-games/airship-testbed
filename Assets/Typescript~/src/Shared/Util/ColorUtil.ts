@@ -1,0 +1,18 @@
+export class ColorUtil {
+	/**
+	 * Example return: "#121212"
+	 * Note: return WILL include the "#"
+	 */
+	public static ColorToHex(color: Color): string {
+		return string.format(
+			"#%X%X%X",
+			math.floor(color.r * 255),
+			math.floor(color.g * 255),
+			math.floor(color.b * 255),
+		);
+	}
+
+	public static ColoredText(text: string, color: Color): string {
+		return `<color=${this.ColorToHex(color)}>${text}</color>`;
+	}
+}

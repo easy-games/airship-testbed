@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84e63232b5882040a4130ec6f661454, type: 3}
+  m_Name: ReferenceBuilder_Entity
+  m_EditorClassIdentifier: 
+  referenceId: Entity
+  bundles:
+  - key: OnHit
+    value:
+    - key: GeneralAnim
+      value: {fileID: 7400000, guid: 55c9e38c86f89e34cbb919946b66b4a4, type: 2}
+    - key: GenericVFX
+      value: {fileID: 2145243952792991196, guid: f8021bdae8b5cf4479a1d569f04562b1,
+        type: 3}
+  - key: Movement
+    value:
+    - key: SprintTrail
+      value: {fileID: 532096394122571217, guid: c1ae06ea821350a448e70e1d24013b6c,
+        type: 3}

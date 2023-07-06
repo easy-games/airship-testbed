@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84e63232b5882040a4130ec6f661454, type: 3}
+  m_Name: ReferenceBuilder__Item_Unarmed
+  m_EditorClassIdentifier: 
+  referenceId: ItemUnarmed
+  bundles:
+  - key: FirstPerson
+    value:
+    - key: Idle
+      value: {fileID: 7400000, guid: 2dfb6c62518a91d43a5bf100db635894, type: 2}
+    - key: Equip
+      value: {fileID: 7400000, guid: 53a740ddc8852b240b5c4daec84df962, type: 2}
+    - key: UnEquip
+      value: {fileID: 7400000, guid: 9dd98d00e990fea40926c7e598373baa, type: 2}
+    - key: Use01
+      value: {fileID: 7400000, guid: 8b276c210bd0dfe47931915d2333cc3e, type: 2}
+  - key: ThirdPerson
+    value:
+    - key: Idle
+      value: {fileID: 0}
+    - key: Equip
+      value: {fileID: 7400000, guid: ff4925b0e04661f409ed87993f82d447, type: 2}
+    - key: UnEquip
+      value: {fileID: 0}
+    - key: Use
+      value: {fileID: 7400000, guid: 3dd7bc19e81e82e40a971f43dc4a1562, type: 2}

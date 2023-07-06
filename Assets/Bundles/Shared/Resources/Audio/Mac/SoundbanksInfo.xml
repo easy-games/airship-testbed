@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Mac" BasePlatform="Mac" SchemaVersion="16" SoundBankVersion="145">
+	<RootPaths>
+		<ProjectRoot>../../../../../LuauUnityProject_WwiseProject/</ProjectRoot>
+		<SourceFilesRoot>../../../../../LuauUnityProject_WwiseProject/.cache/Mac/</SourceFilesRoot>
+		<SoundBanksRoot>.</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>../../../../../LuauUnityProject_WwiseProject/GeneratedSoundBanks/Mac</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{F56A610C-C7C4-F874-B68B-7ADDF94EBB7A}">
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+			<Plugins>
+				<AudioDevices>
+					<Plugin Id="2317455096" Name="No_Output" LibName="No Output" LibId="11862023"/>
+					<Plugin Id="3859886410" Name="System" LibName="System" LibId="11403271"/>
+				</AudioDevices>
+			</Plugins>
+			<Busses>
+				<Bus Id="3803692087" Name="Master Audio Bus"/>
+			</Busses>
+		</SoundBank>
+		<SoundBank Id="1831431028" Type="User" Language="SFX" Hash="{3F978886-3172-F43D-50F6-6593D1C988B4}">
+			<ShortName>TestSoundBank</ShortName>
+			<Path>TestSoundBank.bnk</Path>
+			<Media>
+				<File Id="20130914" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>GolemBoss_HammerFistSlam_BlockDislodge_03.wav</ShortName>
+					<CachePath>SFX/GolemBoss_HammerFistSlam_BlockDislodge_03_10C4C929.wem</CachePath>
+				</File>
+				<File Id="189105656" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Death.wav</ShortName>
+					<CachePath>SFX/Death_10C4C929.wem</CachePath>
+				</File>
+				<File Id="217430827" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>UI_Error.wav</ShortName>
+					<CachePath>SFX/UI_Error_10C4C929.wem</CachePath>
+				</File>
+				<File Id="652054210" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>UI_Open.wav</ShortName>
+					<CachePath>SFX/UI_Open_10C4C929.wem</CachePath>
+				</File>
+				<File Id="666199039" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Sword_Swing_03.wav</ShortName>
+					<CachePath>SFX/Sword_Swing_03_10C4C929.wem</CachePath>
+				</File>
+				<File Id="739404055" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Block_Dirt_Hit_01.wav</ShortName>
+					<CachePath>SFX/Block_Dirt_Hit_01_10C4C929.wem</CachePath>
+				</File>
+				<File Id="779052996" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>UI_Select.wav</ShortName>
+					<CachePath>SFX/UI_Select_10C4C929.wem</CachePath>
+				</File>
+				<File Id="822954183" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Block_Dirt_Hit_02.wav</ShortName>
+					<CachePath>SFX/Block_Dirt_Hit_02_10C4C929.wem</CachePath>
+				</File>
+				<File Id="958236083" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>UI_Hover_01.wav</ShortName>
+					<CachePath>SFX/UI_Hover_01_10C4C929.wem</CachePath>
+				</File>
+				<File Id="998667112" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>UI_Close.wav</ShortName>
+					<CachePath>SFX/UI_Close_10C4C929.wem</CachePath>
+				</File>
+				<File Id="1007450840" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Block_Dirt_Place_01.wav</ShortName>
+					<CachePath>SFX/Block_Dirt_Place_01_10C4C929.wem</CachePath>
+				</File>
+				<File Id="1044586495" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>KillPlayer_05.wav</ShortName>
+					<CachePath>SFX/KillPlayer_05_10C4C929.wem</CachePath>
+				</File>
+				<File Id="1055302099" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>Block_Dirt_Break.wav</ShortName>
+					<CachePath>SFX/Block_Dirt_Break_10C4C929.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="2369440737" Name="GrassBlockBreak" DurationType="OneShot" DurationMin="0.88558334" DurationMax="0.88558334">
+					<MediaRefs>
+						<MediaRef Id="1055302099"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2951135571" Name="GrassBlockHit" DurationType="OneShot" DurationMin="0.314125" DurationMax="0.33333334">
+					<MediaRefs>
+						<MediaRef Id="739404055"/>
+						<MediaRef Id="822954183"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="855205717" Name="GrassBlockPlace" MaxAttenuation="100" DurationType="OneShot" DurationMin="0.20666666" DurationMax="0.20666666">
+					<MediaRefs>
+						<MediaRef Id="1007450840"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1569152799" Name="KillEnemy" DurationType="OneShot" DurationMin="1.9487916" DurationMax="1.9487916">
+					<MediaRefs>
+						<MediaRef Id="1044586495"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2690247172" Name="LocalDeath" DurationType="OneShot" DurationMin="4.5" DurationMax="4.5">
+					<MediaRefs>
+						<MediaRef Id="189105656"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="449400146" Name="SwordHitEntity" DurationType="OneShot" DurationMin="0.71666664" DurationMax="0.71666664">
+					<MediaRefs>
+						<MediaRef Id="20130914"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1328934038" Name="SwordSwing" DurationType="OneShot" DurationMin="0.1592517" DurationMax="0.1592517">
+					<MediaRefs>
+						<MediaRef Id="666199039"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3164408517" Name="UIClick" DurationType="OneShot" DurationMin="0.0630625" DurationMax="0.0630625">
+					<MediaRefs>
+						<MediaRef Id="779052996"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3030481697" Name="UIClose" DurationType="OneShot" DurationMin="0.18814583" DurationMax="0.18814583">
+					<MediaRefs>
+						<MediaRef Id="998667112"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1312131451" Name="UIError" DurationType="OneShot" DurationMin="0.16366667" DurationMax="0.16366667">
+					<MediaRefs>
+						<MediaRef Id="217430827"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="199363535" Name="UIHover" DurationType="OneShot" DurationMin="0.014" DurationMax="0.014">
+					<MediaRefs>
+						<MediaRef Id="958236083"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1389761091" Name="UIOpen" DurationType="OneShot" DurationMin="0.2885" DurationMax="0.2885">
+					<MediaRefs>
+						<MediaRef Id="652054210"/>
+					</MediaRefs>
+				</Event>
+			</Events>
+		</SoundBank>
+	</SoundBanks>
+	<FileHash>{91D0BC43-F32D-262B-B6EF-29BAA0C6FECB}</FileHash>
+</SoundBanksInfo>
