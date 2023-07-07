@@ -41,7 +41,7 @@ Shader "Chronos/ToonLighting"
 			#pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
 			
 			#include "UnityCG.cginc"
-            #include "Assets\Chronos3D\Resources\BaseShaders\ChronosShaderIncludes.cginc"
+            #include "Packages/gg.easy.airship/Runtime/Code/Chronos3D/Resources/BaseShaders/ChronosShaderIncludes.cginc"
 
 			struct appdata
 			{
