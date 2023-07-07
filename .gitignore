@@ -90,3 +90,5 @@ Assets/Bundles/Shared/Resources/include.meta
 Assets/Bundles/Shared/Resources/Entity/HumanEntity/HumanAnimations/Temp/
 *.prof
 *.prof.meta
+Assets/Editor/AuthConfigData.confg
+Assets/Editor/AuthConfigData.confg.meta
