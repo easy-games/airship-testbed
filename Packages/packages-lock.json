@@ -244,7 +244,7 @@
       "url": "https://packages.unity.com"
     },
     "gg.easy.airship": {
-      "version": "file:/Users/luke/easy-unity/airship",
+      "version": "file:../../airship",
       "depth": 0,
       "source": "local",
       "dependencies": {
