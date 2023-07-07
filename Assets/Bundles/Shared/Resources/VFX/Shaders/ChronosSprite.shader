@@ -30,7 +30,7 @@ Shader "Chronos/ChronosSprite"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "Assets\Chronos3D\Resources\BaseShaders\ChronosShaderIncludes.cginc"
+            #include "Packages/gg.easy.airship/Runtime/Code/Chronos3D/Resources/BaseShaders/ChronosShaderIncludes.cginc"
 
             struct appdata
             {
