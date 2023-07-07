@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e14b93ad-eac0-4286-9639-92262915eccd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../airship/Runtime/Code/Chronos3D/Resources/VoxelRenderer/VoxelWorld.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../airship/Runtime/Code/Chronos3D/Resources/VoxelRenderer/VoxelWorld.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../airship/Runtime/Code/Core/RunCore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../airship/Runtime/Code/Core/RunCore.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +76,7 @@
     </configuration>
     <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
-      <option name="listenPortForConnections" value="true" />
+      <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
@@ -108,6 +108,7 @@
       <updated>1688664624476</updated>
       <workItem from="1688664625486" duration="1408000" />
       <workItem from="1688667343795" duration="12314000" />
+      <workItem from="1688744234095" duration="605000" />
     </task>
     <servers />
   </component>
