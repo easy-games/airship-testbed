@@ -3,9 +3,9 @@ import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Signal } from "Shared/Util/Signal";
+import { BlockMeta } from "../Item/ItemMeta";
 import { Block } from "./Block";
 import { VoxelDataAPI } from "./VoxelData/VoxelDataAPI";
-import { BlockMeta } from "../Item/ItemMeta";
 
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
@@ -13,7 +13,7 @@ export interface PlaceBlockConfig {
 }
 
 export class World {
-	public static SKYBOX = "Shared/Resources/Skybox/BrightSky/bright_sky_2.jpg";
+	public static SKYBOX = "Shared/Resources/Skybox/BrightSky/bright_sky_2.png";
 
 	public OnVoxelPlaced = new Signal<[pos: Vector3, voxel: number]>();
 

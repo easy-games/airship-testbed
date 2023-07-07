@@ -118,7 +118,7 @@ do
 		end
 		return _result
 	end
-	World.SKYBOX = "Shared/Resources/Skybox/BrightSky/bright_sky_2.jpg"
+	World.SKYBOX = "Shared/Resources/Skybox/BrightSky/bright_sky_2.png"
 end
 return {
 	World = World,
