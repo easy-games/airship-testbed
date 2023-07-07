@@ -803,6 +803,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
+    Android: FISHNET;FISHNET_V3;FISHNET_PRO
     Standalone: FISHNET;FISHNET_V3;FISHNET_PRO
   additionalCompilerArguments: {}
   platformArchitecture: {}

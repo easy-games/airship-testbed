@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e14b93ad-eac0-4286-9639-92262915eccd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../airship/Runtime/Code/Core/RunCore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../airship/Runtime/Code/Core/RunCore.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../airship/Editor/ProjectSetup/FishNetSetup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../airship/Editor/ProjectSetup/FishNetSetup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../airship/Runtime/Code/Bootstrap/ServerBootstrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../airship/Runtime/Code/Bootstrap/ServerBootstrap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.bedwars-standalone/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.bedwars-standalone/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/FishNet.Config.XML" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FishNet.Config.XML" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +112,7 @@
       <updated>1688664624476</updated>
       <workItem from="1688664625486" duration="1408000" />
       <workItem from="1688667343795" duration="12314000" />
-      <workItem from="1688744234095" duration="605000" />
+      <workItem from="1688744234095" duration="2278000" />
     </task>
     <servers />
   </component>
