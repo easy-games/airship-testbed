@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5911845, g: 0.7332742, b: 0.9362713, a: 1}
+  m_IndirectSpecularColor: {r: 0.21228011, g: 0.21228011, b: 0.21228011, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,8 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 2e0ff07aad1f250478008de10862e498,
-    type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 2e0ff07aad1f250478008de10862e498, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -223,8 +222,8 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 2054159603
-  <SceneId>k__BackingField: 8822548317729556292
+  _scenePathHash: 4063379619
+  <SceneId>k__BackingField: 17452082577154755892
   <AssetPathHash>k__BackingField: 0
   _sceneNetworkObjects:
   - {fileID: 376130467}
@@ -391,7 +390,7 @@ MonoBehaviour:
   radiosityEnabled: 0
   globalSunBrightness: 1
   globalSkyBrightness: 1
-  globalSkyColor: {r: 1, g: 1, b: 1, a: 1}
+  globalSkySaturation: 1
   globalSunColor: {r: 1, g: 1, b: 1, a: 1}
   globalAmbientLight: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   globalAmbientBrightness: 1
@@ -404,6 +403,34 @@ MonoBehaviour:
   worldNetworker: {fileID: 376130468}
   cubeMap: {fileID: 0}
   cubeMapPath: skybox/blueskybox/blueclouds.jpg
+  cubeMapSHData:
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
+  - x: 0
+    y: 0
+    z: 0
   selectedBlockIndex: 10
   renderingDisabled: 0
 --- !u!4 &1176302152
