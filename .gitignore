@@ -74,6 +74,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .idea/.idea.bedwars-standalone/.idea/workspace.xml
 
+*.DS_Store
+
 Assets/Bundles/**/*.lua
 Assets/Bundles/Client/Resources/TS/*
 Assets/Bundles/CoreClient/Resources/TS/*
