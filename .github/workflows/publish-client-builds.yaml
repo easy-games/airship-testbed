@@ -93,10 +93,21 @@ jobs:
           - targetPlatform: StandaloneWindows64
             buildMethod: Editor.BuildMenu.BuildWindowsClient
     steps:
-      - name: "Check out repository"
+      # Checkout
+      - name: Checkout bedwars-airship
         uses: actions/checkout@v2
         with:
           lfs: true
+          path: bedwars-airship
+          persist-credentials: true
+
+      - name: Checkout airship
+        uses: actions/checkout@v3
+        with:
+          repository: easy-games/airship
+          token: ${{ secrets.PULL_PACKAGE_PAT }}
+          lfs: true
+          path: airship
           persist-credentials: true
 
       - name: "Refresh ${{ matrix.buildOptions.targetPlatform }} Library Cache"
