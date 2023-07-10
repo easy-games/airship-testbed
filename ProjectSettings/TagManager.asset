@@ -3,23 +3,24 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Character
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Character
   - Water
   - UI
-  - 
-  - 
   - Block
   - BridgeAssist
+  - IgnoreCollide
   - GroundItem
   - FirstPerson
   - Projectile
-  - Character
-  - IgnoreCollide
+  - 
+  - 
+  - 
   - 
   - 
   - 
