@@ -9868,7 +9868,7 @@ PrefabInstance:
     - target: {fileID: -1562401216167637939, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -1540374966412017893, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -10089,10 +10089,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 0.1994482, g: 0.2801275, b: 0.509434, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: Clay
 --- !u!1 &2634602765697549032 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1287022153474578962, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
