@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CanvasAPI, PointerDirection } from "Shared/Util/CanvasAPI";
-import { SoundUtil } from "Shared/Util/SoundUtil";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { ClientSettingsController } from "../../ClientSettings/ClientSettingsController";
 import { EscapeMenuController } from "./EscapeMenuController";
 
@@ -49,7 +49,7 @@ export class ClientSettingsUIController implements OnStart {
 
 		CanvasAPI.OnPointerEvent(slider.gameObject, (direction) => {
 			if (direction === PointerDirection.DOWN) {
-				SoundUtil.PlayGlobal("UI_Click.wav");
+				AudioManager.PlayGlobal("UI_Click.wav");
 			}
 		});
 	}

@@ -3,7 +3,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { RandomUtil } from "Shared/Util/RandomUtil";
-import { SoundUtil } from "Shared/Util/SoundUtil";
+import { AudioManager } from "Shared/Audio/AudioManager";
 
 const PICKUP_ITEM_DEFAULT_SOUND = ["Pickup_Item"];
 
@@ -15,15 +15,15 @@ export class GroundItemPickupSoundsController implements OnStart {
 
 			const itemMeta = GetItemMeta(event.itemType);
 			const pickupSound = RandomUtil.FromArray(itemMeta.PickupSound ?? PICKUP_ITEM_DEFAULT_SOUND);
-			SoundUtil.PlayGlobal(pickupSound, {
+			AudioManager.PlayGlobal(pickupSound, {
 				volumeScale: 0.6,
 			});
 
 			// Extra sound layers
 			if (event.itemType === ItemType.EMERALD) {
-				SoundUtil.PlayGlobal("PickupItemLayer_Emerald");
+				AudioManager.PlayGlobal("PickupItemLayer_Emerald");
 			} else if (event.itemType === ItemType.DIAMOND) {
-				SoundUtil.PlayGlobal("PickupItemLayer_Diamond");
+				AudioManager.PlayGlobal("PickupItemLayer_Diamond");
 			}
 		});
 	}

@@ -2189,6 +2189,229 @@ declare const enum AccessoryAddMode {
     Additive = 2,
     AddIfNone = 3,
 }
+declare const enum ParticleSystemSimulationSpace {
+    Local = 0,
+    World = 1,
+    Custom = 2,
+}
+declare const enum ParticleSystemScalingMode {
+    Hierarchy = 0,
+    Local = 1,
+    Shape = 2,
+}
+declare const enum ParticleSystemCurveMode {
+    Constant = 0,
+    Curve = 1,
+    TwoCurves = 2,
+    TwoConstants = 3,
+}
+declare const enum ParticleSystemGradientMode {
+    Color = 0,
+    Gradient = 1,
+    TwoColors = 2,
+    TwoGradients = 3,
+    RandomColor = 4,
+}
+declare const enum GradientMode {
+    Blend = 0,
+    Fixed = 1,
+}
+declare const enum ParticleSystemEmitterVelocityMode {
+    Transform = 0,
+    Rigidbody = 1,
+    Custom = 2,
+}
+declare const enum ParticleSystemStopAction {
+    None = 0,
+    Disable = 1,
+    Destroy = 2,
+    Callback = 3,
+}
+declare const enum ParticleSystemRingBufferMode {
+    Disabled = 0,
+    PauseUntilReplaced = 1,
+    LoopUntilReplaced = 2,
+}
+declare const enum ParticleSystemCullingMode {
+    Automatic = 0,
+    PauseAndCatchup = 1,
+    Pause = 2,
+    AlwaysSimulate = 3,
+}
+declare const enum ParticleSystemEmissionType {
+    Time = 0,
+    Distance = 1,
+}
+declare const enum ParticleSystemShapeType {
+    Sphere = 0,
+    SphereShell = 1,
+    Hemisphere = 2,
+    HemisphereShell = 3,
+    Cone = 4,
+    Box = 5,
+    Mesh = 6,
+    ConeShell = 7,
+    ConeVolume = 8,
+    ConeVolumeShell = 9,
+    Circle = 10,
+    CircleEdge = 11,
+    SingleSidedEdge = 12,
+    MeshRenderer = 13,
+    SkinnedMeshRenderer = 14,
+    BoxShell = 15,
+    BoxEdge = 16,
+    Donut = 17,
+    Rectangle = 18,
+    Sprite = 19,
+    SpriteRenderer = 20,
+}
+declare const enum ParticleSystemShapeMultiModeValue {
+    Random = 0,
+    Loop = 1,
+    PingPong = 2,
+    BurstSpread = 3,
+}
+declare const enum ParticleSystemMeshShapeType {
+    Vertex = 0,
+    Edge = 1,
+    Triangle = 2,
+}
+declare const enum SkinQuality {
+    Auto = 0,
+    Bone1 = 1,
+    Bone2 = 2,
+    Bone4 = 4,
+}
+declare const enum SpriteDrawMode {
+    Simple = 0,
+    Sliced = 1,
+    Tiled = 2,
+}
+declare const enum SpriteTileMode {
+    Continuous = 0,
+    Adaptive = 1,
+}
+declare const enum SpriteMaskInteraction {
+    None = 0,
+    VisibleInsideMask = 1,
+    VisibleOutsideMask = 2,
+}
+declare const enum SpriteSortPoint {
+    Center = 0,
+    Pivot = 1,
+}
+declare const enum ParticleSystemShapeTextureChannel {
+    Red = 0,
+    Green = 1,
+    Blue = 2,
+    Alpha = 3,
+}
+declare const enum ParticleSystemInheritVelocityMode {
+    Initial = 0,
+    Current = 1,
+}
+declare const enum ParticleSystemGameObjectFilter {
+    LayerMask = 0,
+    List = 1,
+    LayerMaskAndList = 2,
+}
+declare const enum ParticleSystemForceFieldShape {
+    Sphere = 0,
+    Hemisphere = 1,
+    Cylinder = 2,
+    Box = 3,
+}
+declare const enum ParticleSystemNoiseQuality {
+    Low = 0,
+    Medium = 1,
+    High = 2,
+}
+declare const enum ParticleSystemCollisionType {
+    Planes = 0,
+    World = 1,
+}
+declare const enum ParticleSystemCollisionMode {
+    Collision3D = 0,
+    Collision2D = 1,
+}
+declare const enum ParticleSystemCollisionQuality {
+    High = 0,
+    Medium = 1,
+    Low = 2,
+}
+declare const enum ParticleSystemOverlapAction {
+    Ignore = 0,
+    Kill = 1,
+    Callback = 2,
+}
+declare const enum ParticleSystemColliderQueryMode {
+    Disabled = 0,
+    One = 1,
+    All = 2,
+}
+declare const enum ParticleSystemSubEmitterType {
+    Birth = 0,
+    Collision = 1,
+    Death = 2,
+    Trigger = 3,
+    Manual = 4,
+}
+declare const enum ParticleSystemSubEmitterProperties {
+    InheritNothing = 0,
+    InheritColor = 1,
+    InheritSize = 2,
+    InheritRotation = 4,
+    InheritLifetime = 8,
+    InheritDuration = 16,
+    InheritEverything = 31,
+}
+declare const enum ParticleSystemAnimationMode {
+    Grid = 0,
+    Sprites = 1,
+}
+declare const enum ParticleSystemAnimationTimeMode {
+    Lifetime = 0,
+    Speed = 1,
+    FPS = 2,
+}
+declare const enum ParticleSystemAnimationType {
+    WholeSheet = 0,
+    SingleRow = 1,
+}
+declare const enum ParticleSystemAnimationRowMode {
+    Custom = 0,
+    Random = 1,
+    MeshIndex = 2,
+}
+declare const enum UVChannelFlags {
+    UV0 = 1,
+    UV1 = 2,
+    UV2 = 4,
+    UV3 = 8,
+}
+declare const enum ParticleSystemTrailMode {
+    PerParticle = 0,
+    Ribbon = 1,
+}
+declare const enum ParticleSystemTrailTextureMode {
+    Stretch = 0,
+    Tile = 1,
+    DistributePerSegment = 2,
+    RepeatPerSegment = 3,
+}
+declare const enum ParticleSystemCustomData {
+    Custom1 = 0,
+    Custom2 = 1,
+}
+declare const enum ParticleSystemCustomDataMode {
+    Disabled = 0,
+    Vector = 1,
+    Color = 2,
+}
+declare const enum ParticleSystemStopBehavior {
+    StopEmittingAndClear = 0,
+    StopEmitting = 1,
+}
 declare const enum FadeMode {
     FixedSpeed = 0,
     FixedDuration = 1,
@@ -2212,21 +2435,6 @@ declare const enum AvatarMaskBodyPart {
     LeftHandIK = 11,
     RightHandIK = 12,
     LastBodyPart = 13,
-}
-declare const enum SkinQuality {
-    Auto = 0,
-    Bone1 = 1,
-    Bone2 = 2,
-    Bone4 = 4,
-}
-declare const enum WritePermission {
-    ServerOnly = 0,
-    ClientUnsynchronized = 1,
-}
-declare const enum ReadPermission {
-    Observers = 0,
-    OwnerOnly = 1,
-    ExcludeOwner = 2,
 }
 declare const enum KnownVectorType {
     LocalForward = 0,
@@ -2377,223 +2585,6 @@ declare const enum NetworkReachability {
 declare const enum UserAuthorization {
     WebCam = 1,
     Microphone = 2,
-}
-declare const enum ParticleSystemSimulationSpace {
-    Local = 0,
-    World = 1,
-    Custom = 2,
-}
-declare const enum ParticleSystemScalingMode {
-    Hierarchy = 0,
-    Local = 1,
-    Shape = 2,
-}
-declare const enum ParticleSystemCurveMode {
-    Constant = 0,
-    Curve = 1,
-    TwoCurves = 2,
-    TwoConstants = 3,
-}
-declare const enum ParticleSystemGradientMode {
-    Color = 0,
-    Gradient = 1,
-    TwoColors = 2,
-    TwoGradients = 3,
-    RandomColor = 4,
-}
-declare const enum GradientMode {
-    Blend = 0,
-    Fixed = 1,
-}
-declare const enum ParticleSystemEmitterVelocityMode {
-    Transform = 0,
-    Rigidbody = 1,
-    Custom = 2,
-}
-declare const enum ParticleSystemStopAction {
-    None = 0,
-    Disable = 1,
-    Destroy = 2,
-    Callback = 3,
-}
-declare const enum ParticleSystemRingBufferMode {
-    Disabled = 0,
-    PauseUntilReplaced = 1,
-    LoopUntilReplaced = 2,
-}
-declare const enum ParticleSystemCullingMode {
-    Automatic = 0,
-    PauseAndCatchup = 1,
-    Pause = 2,
-    AlwaysSimulate = 3,
-}
-declare const enum ParticleSystemEmissionType {
-    Time = 0,
-    Distance = 1,
-}
-declare const enum ParticleSystemShapeType {
-    Sphere = 0,
-    SphereShell = 1,
-    Hemisphere = 2,
-    HemisphereShell = 3,
-    Cone = 4,
-    Box = 5,
-    Mesh = 6,
-    ConeShell = 7,
-    ConeVolume = 8,
-    ConeVolumeShell = 9,
-    Circle = 10,
-    CircleEdge = 11,
-    SingleSidedEdge = 12,
-    MeshRenderer = 13,
-    SkinnedMeshRenderer = 14,
-    BoxShell = 15,
-    BoxEdge = 16,
-    Donut = 17,
-    Rectangle = 18,
-    Sprite = 19,
-    SpriteRenderer = 20,
-}
-declare const enum ParticleSystemShapeMultiModeValue {
-    Random = 0,
-    Loop = 1,
-    PingPong = 2,
-    BurstSpread = 3,
-}
-declare const enum ParticleSystemMeshShapeType {
-    Vertex = 0,
-    Edge = 1,
-    Triangle = 2,
-}
-declare const enum SpriteDrawMode {
-    Simple = 0,
-    Sliced = 1,
-    Tiled = 2,
-}
-declare const enum SpriteTileMode {
-    Continuous = 0,
-    Adaptive = 1,
-}
-declare const enum SpriteMaskInteraction {
-    None = 0,
-    VisibleInsideMask = 1,
-    VisibleOutsideMask = 2,
-}
-declare const enum SpriteSortPoint {
-    Center = 0,
-    Pivot = 1,
-}
-declare const enum ParticleSystemShapeTextureChannel {
-    Red = 0,
-    Green = 1,
-    Blue = 2,
-    Alpha = 3,
-}
-declare const enum ParticleSystemInheritVelocityMode {
-    Initial = 0,
-    Current = 1,
-}
-declare const enum ParticleSystemGameObjectFilter {
-    LayerMask = 0,
-    List = 1,
-    LayerMaskAndList = 2,
-}
-declare const enum ParticleSystemForceFieldShape {
-    Sphere = 0,
-    Hemisphere = 1,
-    Cylinder = 2,
-    Box = 3,
-}
-declare const enum ParticleSystemNoiseQuality {
-    Low = 0,
-    Medium = 1,
-    High = 2,
-}
-declare const enum ParticleSystemCollisionType {
-    Planes = 0,
-    World = 1,
-}
-declare const enum ParticleSystemCollisionMode {
-    Collision3D = 0,
-    Collision2D = 1,
-}
-declare const enum ParticleSystemCollisionQuality {
-    High = 0,
-    Medium = 1,
-    Low = 2,
-}
-declare const enum ParticleSystemOverlapAction {
-    Ignore = 0,
-    Kill = 1,
-    Callback = 2,
-}
-declare const enum ParticleSystemColliderQueryMode {
-    Disabled = 0,
-    One = 1,
-    All = 2,
-}
-declare const enum ParticleSystemSubEmitterType {
-    Birth = 0,
-    Collision = 1,
-    Death = 2,
-    Trigger = 3,
-    Manual = 4,
-}
-declare const enum ParticleSystemSubEmitterProperties {
-    InheritNothing = 0,
-    InheritColor = 1,
-    InheritSize = 2,
-    InheritRotation = 4,
-    InheritLifetime = 8,
-    InheritDuration = 16,
-    InheritEverything = 31,
-}
-declare const enum ParticleSystemAnimationMode {
-    Grid = 0,
-    Sprites = 1,
-}
-declare const enum ParticleSystemAnimationTimeMode {
-    Lifetime = 0,
-    Speed = 1,
-    FPS = 2,
-}
-declare const enum ParticleSystemAnimationType {
-    WholeSheet = 0,
-    SingleRow = 1,
-}
-declare const enum ParticleSystemAnimationRowMode {
-    Custom = 0,
-    Random = 1,
-    MeshIndex = 2,
-}
-declare const enum UVChannelFlags {
-    UV0 = 1,
-    UV1 = 2,
-    UV2 = 4,
-    UV3 = 8,
-}
-declare const enum ParticleSystemTrailMode {
-    PerParticle = 0,
-    Ribbon = 1,
-}
-declare const enum ParticleSystemTrailTextureMode {
-    Stretch = 0,
-    Tile = 1,
-    DistributePerSegment = 2,
-    RepeatPerSegment = 3,
-}
-declare const enum ParticleSystemCustomData {
-    Custom1 = 0,
-    Custom2 = 1,
-}
-declare const enum ParticleSystemCustomDataMode {
-    Disabled = 0,
-    Vector = 1,
-    Color = 2,
-}
-declare const enum ParticleSystemStopBehavior {
-    StopEmittingAndClear = 0,
-    StopEmitting = 1,
 }
 declare const enum ProfilerArea {
     CPU = 0,
@@ -7573,6 +7564,7 @@ declare const PrimitiveValue: PrimitiveValueConstructor;
 interface InputStateBlockConstructor {
     InvalidOffset: number;
     AutomaticOffset: number;
+    FormatInvalid: FourCC;
     FormatBit: FourCC;
     FormatSBit: FourCC;
     FormatInt: FourCC;
@@ -7592,6 +7584,7 @@ interface InputStateBlockConstructor {
     FormatVector3Short: FourCC;
     FormatVector2Byte: FourCC;
     FormatVector3Byte: FourCC;
+    FormatPose: FourCC;
 
 
     GetPrimitiveFormatFromType(type: unknown): FourCC;
@@ -7639,6 +7632,7 @@ interface Pointer extends InputDevice, IInputStateCallbackReceiver {
     radius: Vector2Control;
     pressure: AxisControl;
     press: ButtonControl;
+    displayIndex: IntegerControl;
 
     constructor(): Pointer;
 
@@ -7670,6 +7664,14 @@ interface ButtonControl extends AxisControl {
     IsValueConsideredPressed(value: number): boolean;
 }
     
+interface IntegerControl extends InputControl<number> {
+
+    constructor(): IntegerControl;
+
+    ReadUnprocessedValueFromState(statePtr: unknown): number;
+    WriteValueIntoState(value: number, statePtr: unknown): void;
+}
+    
 interface PointerConstructor {
     current: Pointer;
 
@@ -7690,14 +7692,6 @@ interface Mouse extends Pointer {
 
     MakeCurrent(): void;
     WarpCursorPosition(position: Vector2): void;
-}
-    
-interface IntegerControl extends InputControl<number> {
-
-    constructor(): IntegerControl;
-
-    ReadUnprocessedValueFromState(statePtr: unknown): number;
-    WriteValueIntoState(value: number, statePtr: unknown): void;
 }
     
 interface MouseConstructor {
@@ -11365,6 +11359,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode): void;
     GetAccessories(target: AccessorySlot): CSArray<GameObject>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
+    GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot): void;
@@ -11385,6 +11380,879 @@ interface Accessory extends ScriptableObject {
     constructor(): Accessory;
 
 }
+    
+interface ParticleSystem extends Component {
+    safeCollisionEventSize: number;
+    startDelay: number;
+    loop: boolean;
+    playOnAwake: boolean;
+    duration: number;
+    playbackSpeed: number;
+    enableEmission: boolean;
+    emissionRate: number;
+    startSpeed: number;
+    startSize: number;
+    startColor: Color;
+    startRotation: number;
+    startRotation3D: Vector3;
+    startLifetime: number;
+    gravityModifier: number;
+    maxParticles: number;
+    simulationSpace: ParticleSystemSimulationSpace;
+    scalingMode: ParticleSystemScalingMode;
+    automaticCullingEnabled: boolean;
+    isPlaying: boolean;
+    isEmitting: boolean;
+    isStopped: boolean;
+    isPaused: boolean;
+    particleCount: number;
+    time: number;
+    randomSeed: number;
+    useAutoRandomSeed: boolean;
+    proceduralSimulationSupported: boolean;
+    main: MainModule;
+    emission: EmissionModule;
+    shape: ShapeModule;
+    velocityOverLifetime: VelocityOverLifetimeModule;
+    limitVelocityOverLifetime: LimitVelocityOverLifetimeModule;
+    inheritVelocity: InheritVelocityModule;
+    lifetimeByEmitterSpeed: LifetimeByEmitterSpeedModule;
+    forceOverLifetime: ForceOverLifetimeModule;
+    colorOverLifetime: ColorOverLifetimeModule;
+    colorBySpeed: ColorBySpeedModule;
+    sizeOverLifetime: SizeOverLifetimeModule;
+    sizeBySpeed: SizeBySpeedModule;
+    rotationOverLifetime: RotationOverLifetimeModule;
+    rotationBySpeed: RotationBySpeedModule;
+    externalForces: ExternalForcesModule;
+    noise: NoiseModule;
+    collision: CollisionModule;
+    trigger: TriggerModule;
+    subEmitters: SubEmittersModule;
+    textureSheetAnimation: TextureSheetAnimationModule;
+    lights: LightsModule;
+    trails: TrailModule;
+    customData: CustomDataModule;
+
+    constructor(): ParticleSystem;
+
+    AllocateAxisOfRotationAttribute(): void;
+    AllocateCustomDataAttribute(stream: ParticleSystemCustomData): void;
+    AllocateMeshIndexAttribute(): void;
+    Clear(withChildren: boolean): void;
+    Clear(): void;
+    Emit(position: Vector3, velocity: Vector3, size: number, lifetime: number, color: Color32): void;
+    Emit(particle: Particle): void;
+    Emit(count: number): void;
+    Emit(emitParams: EmitParams, count: number): void;
+    GetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): number;
+    GetParticles(particles: CSArray<Particle>, size: number, offset: number): number;
+    GetParticles(particles: CSArray<Particle>, size: number): number;
+    GetParticles(particles: CSArray<Particle>): number;
+    GetParticles(particles: CSArray<Particle>, size: number, offset: number): number;
+    GetParticles(particles: CSArray<Particle>, size: number): number;
+    GetParticles(particles: CSArray<Particle>): number;
+    GetPlaybackState(): PlaybackState;
+    GetTrails(): Trails;
+    GetTrails(trailData: unknown): number;
+    IsAlive(withChildren: boolean): boolean;
+    IsAlive(): boolean;
+    Pause(withChildren: boolean): void;
+    Pause(): void;
+    Play(withChildren: boolean): void;
+    Play(): void;
+    SetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): void;
+    SetParticles(particles: CSArray<Particle>, size: number, offset: number): void;
+    SetParticles(particles: CSArray<Particle>, size: number): void;
+    SetParticles(particles: CSArray<Particle>): void;
+    SetParticles(particles: CSArray<Particle>, size: number, offset: number): void;
+    SetParticles(particles: CSArray<Particle>, size: number): void;
+    SetParticles(particles: CSArray<Particle>): void;
+    SetPlaybackState(playbackState: PlaybackState): void;
+    SetTrails(trailData: Trails): void;
+    Simulate(t: number, withChildren: boolean, restart: boolean, fixedTimeStep: boolean): void;
+    Simulate(t: number, withChildren: boolean, restart: boolean): void;
+    Simulate(t: number, withChildren: boolean): void;
+    Simulate(t: number): void;
+    Stop(withChildren: boolean, stopBehavior: ParticleSystemStopBehavior): void;
+    Stop(withChildren: boolean): void;
+    Stop(): void;
+    TriggerSubEmitter(subEmitterIndex: number): void;
+    TriggerSubEmitter(subEmitterIndex: number, particle: unknown): void;
+    TriggerSubEmitter(subEmitterIndex: number, particles: CSArray<Particle>): void;
+}
+    
+interface MainModule {
+    randomizeRotationDirection: number;
+    emitterVelocity: Vector3;
+    duration: number;
+    loop: boolean;
+    prewarm: boolean;
+    startDelay: MinMaxCurve;
+    startDelayMultiplier: number;
+    startLifetime: MinMaxCurve;
+    startLifetimeMultiplier: number;
+    startSpeed: MinMaxCurve;
+    startSpeedMultiplier: number;
+    startSize3D: boolean;
+    startSize: MinMaxCurve;
+    startSizeMultiplier: number;
+    startSizeX: MinMaxCurve;
+    startSizeXMultiplier: number;
+    startSizeY: MinMaxCurve;
+    startSizeYMultiplier: number;
+    startSizeZ: MinMaxCurve;
+    startSizeZMultiplier: number;
+    startRotation3D: boolean;
+    startRotation: MinMaxCurve;
+    startRotationMultiplier: number;
+    startRotationX: MinMaxCurve;
+    startRotationXMultiplier: number;
+    startRotationY: MinMaxCurve;
+    startRotationYMultiplier: number;
+    startRotationZ: MinMaxCurve;
+    startRotationZMultiplier: number;
+    flipRotation: number;
+    startColor: MinMaxGradient;
+    gravityModifier: MinMaxCurve;
+    gravityModifierMultiplier: number;
+    simulationSpace: ParticleSystemSimulationSpace;
+    customSimulationSpace: Transform;
+    simulationSpeed: number;
+    useUnscaledTime: boolean;
+    scalingMode: ParticleSystemScalingMode;
+    playOnAwake: boolean;
+    maxParticles: number;
+    emitterVelocityMode: ParticleSystemEmitterVelocityMode;
+    stopAction: ParticleSystemStopAction;
+    ringBufferMode: ParticleSystemRingBufferMode;
+    ringBufferLoopRange: Vector2;
+    cullingMode: ParticleSystemCullingMode;
+
+
+}
+    
+interface MinMaxCurve {
+    curveScalar: number;
+    mode: ParticleSystemCurveMode;
+    curveMultiplier: number;
+    curveMax: AnimationCurve;
+    curveMin: AnimationCurve;
+    constantMax: number;
+    constantMin: number;
+    constant: number;
+    curve: AnimationCurve;
+
+    constructor(constant: number): MinMaxCurve;
+    constructor(multiplier: number, curve: AnimationCurve): MinMaxCurve;
+    constructor(multiplier: number, min: AnimationCurve, max: AnimationCurve): MinMaxCurve;
+    constructor(min: number, max: number): MinMaxCurve;
+
+    Evaluate(time: number): number;
+    Evaluate(time: number, lerpFactor: number): number;
+}
+    
+interface MinMaxGradient {
+    mode: ParticleSystemGradientMode;
+    gradientMax: Gradient;
+    gradientMin: Gradient;
+    colorMax: Color;
+    colorMin: Color;
+    color: Color;
+    gradient: Gradient;
+
+    constructor(color: Color): MinMaxGradient;
+    constructor(gradient: Gradient): MinMaxGradient;
+    constructor(min: Color, max: Color): MinMaxGradient;
+    constructor(min: Gradient, max: Gradient): MinMaxGradient;
+
+    Evaluate(time: number): Color;
+    Evaluate(time: number, lerpFactor: number): Color;
+}
+    
+interface Gradient {
+    colorKeys: CSArray<GradientColorKey>;
+    alphaKeys: CSArray<GradientAlphaKey>;
+    mode: GradientMode;
+
+    constructor(): Gradient;
+
+    Equals(o: unknown): boolean;
+    Equals(other: Gradient): boolean;
+    Evaluate(time: number): Color;
+    GetHashCode(): number;
+    SetKeys(colorKeys: CSArray<GradientColorKey>, alphaKeys: CSArray<GradientAlphaKey>): void;
+}
+    
+interface GradientColorKey {
+    color: Color;
+    time: number;
+
+    constructor(col: Color, time: number): GradientColorKey;
+
+}
+    
+interface GradientAlphaKey {
+    alpha: number;
+    time: number;
+
+    constructor(alpha: number, time: number): GradientAlphaKey;
+
+}
+    
+interface EmissionModule {
+    type: ParticleSystemEmissionType;
+    rate: MinMaxCurve;
+    rateMultiplier: number;
+    enabled: boolean;
+    rateOverTime: MinMaxCurve;
+    rateOverTimeMultiplier: number;
+    rateOverDistance: MinMaxCurve;
+    rateOverDistanceMultiplier: number;
+    burstCount: number;
+
+
+    GetBurst(index: number): Burst;
+    GetBursts(bursts: CSArray<Burst>): number;
+    SetBurst(index: number, burst: Burst): void;
+    SetBursts(bursts: CSArray<Burst>): void;
+    SetBursts(bursts: CSArray<Burst>, size: number): void;
+}
+    
+interface Burst {
+    time: number;
+    count: MinMaxCurve;
+    minCount: number;
+    maxCount: number;
+    cycleCount: number;
+    repeatInterval: number;
+    probability: number;
+
+    constructor(_time: number, _count: number): Burst;
+    constructor(_time: number, _minCount: number, _maxCount: number): Burst;
+    constructor(_time: number, _minCount: number, _maxCount: number, _cycleCount: number, _repeatInterval: number): Burst;
+    constructor(_time: number, _count: MinMaxCurve): Burst;
+    constructor(_time: number, _count: MinMaxCurve, _cycleCount: number, _repeatInterval: number): Burst;
+
+}
+    
+interface ShapeModule {
+    box: Vector3;
+    meshScale: number;
+    randomDirection: boolean;
+    enabled: boolean;
+    shapeType: ParticleSystemShapeType;
+    randomDirectionAmount: number;
+    sphericalDirectionAmount: number;
+    randomPositionAmount: number;
+    alignToDirection: boolean;
+    radius: number;
+    radiusMode: ParticleSystemShapeMultiModeValue;
+    radiusSpread: number;
+    radiusSpeed: MinMaxCurve;
+    radiusSpeedMultiplier: number;
+    radiusThickness: number;
+    angle: number;
+    length: number;
+    boxThickness: Vector3;
+    meshShapeType: ParticleSystemMeshShapeType;
+    mesh: Mesh;
+    meshRenderer: MeshRenderer;
+    skinnedMeshRenderer: SkinnedMeshRenderer;
+    sprite: Sprite;
+    spriteRenderer: SpriteRenderer;
+    useMeshMaterialIndex: boolean;
+    meshMaterialIndex: number;
+    useMeshColors: boolean;
+    normalOffset: number;
+    meshSpawnMode: ParticleSystemShapeMultiModeValue;
+    meshSpawnSpread: number;
+    meshSpawnSpeed: MinMaxCurve;
+    meshSpawnSpeedMultiplier: number;
+    arc: number;
+    arcMode: ParticleSystemShapeMultiModeValue;
+    arcSpread: number;
+    arcSpeed: MinMaxCurve;
+    arcSpeedMultiplier: number;
+    donutRadius: number;
+    position: Vector3;
+    rotation: Vector3;
+    scale: Vector3;
+    texture: Texture2D;
+    textureClipChannel: ParticleSystemShapeTextureChannel;
+    textureClipThreshold: number;
+    textureColorAffectsParticles: boolean;
+    textureAlphaAffectsParticles: boolean;
+    textureBilinearFiltering: boolean;
+    textureUVChannel: number;
+
+
+}
+    
+interface SkinnedMeshRenderer extends Renderer {
+    quality: SkinQuality;
+    updateWhenOffscreen: boolean;
+    forceMatrixRecalculationPerRender: boolean;
+    rootBone: Transform;
+    bones: CSArray<Transform>;
+    sharedMesh: Mesh;
+    skinnedMotionVectors: boolean;
+    vertexBufferTarget: Target;
+
+    constructor(): SkinnedMeshRenderer;
+
+    BakeMesh(mesh: Mesh): void;
+    BakeMesh(mesh: Mesh, useScale: boolean): void;
+    GetBlendShapeWeight(index: number): number;
+    GetPreviousVertexBuffer(): GraphicsBuffer;
+    GetVertexBuffer(): GraphicsBuffer;
+    SetBlendShapeWeight(index: number, value: number): void;
+}
+    
+interface SpriteRenderer extends Renderer {
+    sprite: Sprite;
+    drawMode: SpriteDrawMode;
+    size: Vector2;
+    adaptiveModeThreshold: number;
+    tileMode: SpriteTileMode;
+    color: Color;
+    maskInteraction: SpriteMaskInteraction;
+    flipX: boolean;
+    flipY: boolean;
+    spriteSortPoint: SpriteSortPoint;
+
+    constructor(): SpriteRenderer;
+
+    RegisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
+    UnregisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
+}
+    
+interface VelocityOverLifetimeModule {
+    enabled: boolean;
+    x: MinMaxCurve;
+    y: MinMaxCurve;
+    z: MinMaxCurve;
+    xMultiplier: number;
+    yMultiplier: number;
+    zMultiplier: number;
+    orbitalX: MinMaxCurve;
+    orbitalY: MinMaxCurve;
+    orbitalZ: MinMaxCurve;
+    orbitalXMultiplier: number;
+    orbitalYMultiplier: number;
+    orbitalZMultiplier: number;
+    orbitalOffsetX: MinMaxCurve;
+    orbitalOffsetY: MinMaxCurve;
+    orbitalOffsetZ: MinMaxCurve;
+    orbitalOffsetXMultiplier: number;
+    orbitalOffsetYMultiplier: number;
+    orbitalOffsetZMultiplier: number;
+    radial: MinMaxCurve;
+    radialMultiplier: number;
+    speedModifier: MinMaxCurve;
+    speedModifierMultiplier: number;
+    space: ParticleSystemSimulationSpace;
+
+
+}
+    
+interface LimitVelocityOverLifetimeModule {
+    enabled: boolean;
+    limitX: MinMaxCurve;
+    limitXMultiplier: number;
+    limitY: MinMaxCurve;
+    limitYMultiplier: number;
+    limitZ: MinMaxCurve;
+    limitZMultiplier: number;
+    limit: MinMaxCurve;
+    limitMultiplier: number;
+    dampen: number;
+    separateAxes: boolean;
+    space: ParticleSystemSimulationSpace;
+    drag: MinMaxCurve;
+    dragMultiplier: number;
+    multiplyDragByParticleSize: boolean;
+    multiplyDragByParticleVelocity: boolean;
+
+
+}
+    
+interface InheritVelocityModule {
+    enabled: boolean;
+    mode: ParticleSystemInheritVelocityMode;
+    curve: MinMaxCurve;
+    curveMultiplier: number;
+
+
+}
+    
+interface LifetimeByEmitterSpeedModule {
+    enabled: boolean;
+    curve: MinMaxCurve;
+    curveMultiplier: number;
+    range: Vector2;
+
+
+}
+    
+interface ForceOverLifetimeModule {
+    enabled: boolean;
+    x: MinMaxCurve;
+    y: MinMaxCurve;
+    z: MinMaxCurve;
+    xMultiplier: number;
+    yMultiplier: number;
+    zMultiplier: number;
+    space: ParticleSystemSimulationSpace;
+    randomized: boolean;
+
+
+}
+    
+interface ColorOverLifetimeModule {
+    enabled: boolean;
+    color: MinMaxGradient;
+
+
+}
+    
+interface ColorBySpeedModule {
+    enabled: boolean;
+    color: MinMaxGradient;
+    range: Vector2;
+
+
+}
+    
+interface SizeOverLifetimeModule {
+    enabled: boolean;
+    size: MinMaxCurve;
+    sizeMultiplier: number;
+    x: MinMaxCurve;
+    xMultiplier: number;
+    y: MinMaxCurve;
+    yMultiplier: number;
+    z: MinMaxCurve;
+    zMultiplier: number;
+    separateAxes: boolean;
+
+
+}
+    
+interface SizeBySpeedModule {
+    enabled: boolean;
+    size: MinMaxCurve;
+    sizeMultiplier: number;
+    x: MinMaxCurve;
+    xMultiplier: number;
+    y: MinMaxCurve;
+    yMultiplier: number;
+    z: MinMaxCurve;
+    zMultiplier: number;
+    separateAxes: boolean;
+    range: Vector2;
+
+
+}
+    
+interface RotationOverLifetimeModule {
+    enabled: boolean;
+    x: MinMaxCurve;
+    xMultiplier: number;
+    y: MinMaxCurve;
+    yMultiplier: number;
+    z: MinMaxCurve;
+    zMultiplier: number;
+    separateAxes: boolean;
+
+
+}
+    
+interface RotationBySpeedModule {
+    enabled: boolean;
+    x: MinMaxCurve;
+    xMultiplier: number;
+    y: MinMaxCurve;
+    yMultiplier: number;
+    z: MinMaxCurve;
+    zMultiplier: number;
+    separateAxes: boolean;
+    range: Vector2;
+
+
+}
+    
+interface ExternalForcesModule {
+    enabled: boolean;
+    multiplier: number;
+    multiplierCurve: MinMaxCurve;
+    influenceFilter: ParticleSystemGameObjectFilter;
+    influenceMask: LayerMask;
+    influenceCount: number;
+
+
+    AddInfluence(field: ParticleSystemForceField): void;
+    GetInfluence(index: number): ParticleSystemForceField;
+    IsAffectedBy(field: ParticleSystemForceField): boolean;
+    RemoveAllInfluences(): void;
+    RemoveInfluence(index: number): void;
+    RemoveInfluence(field: ParticleSystemForceField): void;
+    SetInfluence(index: number, field: ParticleSystemForceField): void;
+}
+    
+    
+    
+interface ParticleSystemForceField extends Behaviour {
+    shape: ParticleSystemForceFieldShape;
+    startRange: number;
+    endRange: number;
+    length: number;
+    gravityFocus: number;
+    rotationRandomness: Vector2;
+    multiplyDragByParticleSize: boolean;
+    multiplyDragByParticleVelocity: boolean;
+    vectorField: Texture3D;
+    directionX: MinMaxCurve;
+    directionY: MinMaxCurve;
+    directionZ: MinMaxCurve;
+    gravity: MinMaxCurve;
+    rotationSpeed: MinMaxCurve;
+    rotationAttraction: MinMaxCurve;
+    drag: MinMaxCurve;
+    vectorFieldSpeed: MinMaxCurve;
+    vectorFieldAttraction: MinMaxCurve;
+
+    constructor(): ParticleSystemForceField;
+
+}
+    
+interface Texture3D extends Texture {
+    depth: number;
+    format: TextureFormat;
+    isReadable: boolean;
+
+    constructor(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags): Texture3D;
+    constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture3D;
+    constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
+    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number): Texture3D;
+    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown): Texture3D;
+    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture3D;
+    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
+
+    Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
+    Apply(updateMipmaps: boolean): void;
+    Apply(): void;
+    GetPixel(x: number, y: number, z: number): Color;
+    GetPixel(x: number, y: number, z: number, mipLevel: number): Color;
+    GetPixelBilinear(u: number, v: number, w: number): Color;
+    GetPixelBilinear(u: number, v: number, w: number, mipLevel: number): Color;
+    GetPixelData<T>(mipLevel: number): CSArray<T>;
+    GetPixels(miplevel: number): CSArray<Color>;
+    GetPixels(): CSArray<Color>;
+    GetPixels32(miplevel: number): CSArray<Color32>;
+    GetPixels32(): CSArray<Color32>;
+    SetPixel(x: number, y: number, z: number, color: Color): void;
+    SetPixel(x: number, y: number, z: number, color: Color, mipLevel: number): void;
+    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
+    SetPixels(colors: CSArray<Color>, miplevel: number): void;
+    SetPixels(colors: CSArray<Color>): void;
+    SetPixels32(colors: CSArray<Color32>, miplevel: number): void;
+    SetPixels32(colors: CSArray<Color32>): void;
+    UpdateExternalTexture(nativeTex: unknown): void;
+}
+    
+interface Texture3DConstructor {
+
+
+    CreateExternalTexture(width: number, height: number, depth: number, format: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
+}
+declare const Texture3D: Texture3DConstructor;
+    
+interface ParticleSystemForceFieldConstructor {
+
+
+    FindAll(): CSArray<ParticleSystemForceField>;
+}
+declare const ParticleSystemForceField: ParticleSystemForceFieldConstructor;
+    
+interface NoiseModule {
+    enabled: boolean;
+    separateAxes: boolean;
+    strength: MinMaxCurve;
+    strengthMultiplier: number;
+    strengthX: MinMaxCurve;
+    strengthXMultiplier: number;
+    strengthY: MinMaxCurve;
+    strengthYMultiplier: number;
+    strengthZ: MinMaxCurve;
+    strengthZMultiplier: number;
+    frequency: number;
+    damping: boolean;
+    octaveCount: number;
+    octaveMultiplier: number;
+    octaveScale: number;
+    quality: ParticleSystemNoiseQuality;
+    scrollSpeed: MinMaxCurve;
+    scrollSpeedMultiplier: number;
+    remapEnabled: boolean;
+    remap: MinMaxCurve;
+    remapMultiplier: number;
+    remapX: MinMaxCurve;
+    remapXMultiplier: number;
+    remapY: MinMaxCurve;
+    remapYMultiplier: number;
+    remapZ: MinMaxCurve;
+    remapZMultiplier: number;
+    positionAmount: MinMaxCurve;
+    rotationAmount: MinMaxCurve;
+    sizeAmount: MinMaxCurve;
+
+
+}
+    
+interface CollisionModule {
+    maxPlaneCount: number;
+    enabled: boolean;
+    type: ParticleSystemCollisionType;
+    mode: ParticleSystemCollisionMode;
+    dampen: MinMaxCurve;
+    dampenMultiplier: number;
+    bounce: MinMaxCurve;
+    bounceMultiplier: number;
+    lifetimeLoss: MinMaxCurve;
+    lifetimeLossMultiplier: number;
+    minKillSpeed: number;
+    maxKillSpeed: number;
+    collidesWith: LayerMask;
+    enableDynamicColliders: boolean;
+    maxCollisionShapes: number;
+    quality: ParticleSystemCollisionQuality;
+    voxelSize: number;
+    radiusScale: number;
+    sendCollisionMessages: boolean;
+    colliderForce: number;
+    multiplyColliderForceByCollisionAngle: boolean;
+    multiplyColliderForceByParticleSpeed: boolean;
+    multiplyColliderForceByParticleSize: boolean;
+    planeCount: number;
+    enableInteriorCollisions: boolean;
+
+
+    AddPlane(transform: Transform): void;
+    GetPlane(index: number): Transform;
+    RemovePlane(index: number): void;
+    RemovePlane(transform: Transform): void;
+    SetPlane(index: number, transform: Transform): void;
+}
+    
+interface TriggerModule {
+    maxColliderCount: number;
+    enabled: boolean;
+    inside: ParticleSystemOverlapAction;
+    outside: ParticleSystemOverlapAction;
+    enter: ParticleSystemOverlapAction;
+    exit: ParticleSystemOverlapAction;
+    colliderQueryMode: ParticleSystemColliderQueryMode;
+    radiusScale: number;
+    colliderCount: number;
+
+
+    AddCollider(collider: Component): void;
+    GetCollider(index: number): Component;
+    RemoveCollider(index: number): void;
+    RemoveCollider(collider: Component): void;
+    SetCollider(index: number, collider: Component): void;
+}
+    
+interface SubEmittersModule {
+    birth0: ParticleSystem;
+    birth1: ParticleSystem;
+    collision0: ParticleSystem;
+    collision1: ParticleSystem;
+    death0: ParticleSystem;
+    death1: ParticleSystem;
+    enabled: boolean;
+    subEmittersCount: number;
+
+
+    AddSubEmitter(subEmitter: ParticleSystem, type: ParticleSystemSubEmitterType, properties: ParticleSystemSubEmitterProperties, emitProbability: number): void;
+    AddSubEmitter(subEmitter: ParticleSystem, type: ParticleSystemSubEmitterType, properties: ParticleSystemSubEmitterProperties): void;
+    GetSubEmitterEmitProbability(index: number): number;
+    GetSubEmitterProperties(index: number): ParticleSystemSubEmitterProperties;
+    GetSubEmitterSystem(index: number): ParticleSystem;
+    GetSubEmitterType(index: number): ParticleSystemSubEmitterType;
+    RemoveSubEmitter(index: number): void;
+    RemoveSubEmitter(subEmitter: ParticleSystem): void;
+    SetSubEmitterEmitProbability(index: number, emitProbability: number): void;
+    SetSubEmitterProperties(index: number, properties: ParticleSystemSubEmitterProperties): void;
+    SetSubEmitterSystem(index: number, subEmitter: ParticleSystem): void;
+    SetSubEmitterType(index: number, type: ParticleSystemSubEmitterType): void;
+}
+    
+interface TextureSheetAnimationModule {
+    flipU: number;
+    flipV: number;
+    useRandomRow: boolean;
+    enabled: boolean;
+    mode: ParticleSystemAnimationMode;
+    timeMode: ParticleSystemAnimationTimeMode;
+    fps: number;
+    numTilesX: number;
+    numTilesY: number;
+    animation: ParticleSystemAnimationType;
+    rowMode: ParticleSystemAnimationRowMode;
+    frameOverTime: MinMaxCurve;
+    frameOverTimeMultiplier: number;
+    startFrame: MinMaxCurve;
+    startFrameMultiplier: number;
+    cycleCount: number;
+    rowIndex: number;
+    uvChannelMask: UVChannelFlags;
+    spriteCount: number;
+    speedRange: Vector2;
+
+
+    AddSprite(sprite: Sprite): void;
+    GetSprite(index: number): Sprite;
+    RemoveSprite(index: number): void;
+    SetSprite(index: number, sprite: Sprite): void;
+}
+    
+interface LightsModule {
+    enabled: boolean;
+    ratio: number;
+    useRandomDistribution: boolean;
+    light: Light;
+    useParticleColor: boolean;
+    sizeAffectsRange: boolean;
+    alphaAffectsIntensity: boolean;
+    range: MinMaxCurve;
+    rangeMultiplier: number;
+    intensity: MinMaxCurve;
+    intensityMultiplier: number;
+    maxLights: number;
+
+
+}
+    
+interface TrailModule {
+    enabled: boolean;
+    mode: ParticleSystemTrailMode;
+    ratio: number;
+    lifetime: MinMaxCurve;
+    lifetimeMultiplier: number;
+    minVertexDistance: number;
+    textureMode: ParticleSystemTrailTextureMode;
+    worldSpace: boolean;
+    dieWithParticles: boolean;
+    sizeAffectsWidth: boolean;
+    sizeAffectsLifetime: boolean;
+    inheritParticleColor: boolean;
+    colorOverLifetime: MinMaxGradient;
+    widthOverTrail: MinMaxCurve;
+    widthOverTrailMultiplier: number;
+    colorOverTrail: MinMaxGradient;
+    generateLightingData: boolean;
+    ribbonCount: number;
+    shadowBias: number;
+    splitSubEmitterRibbons: boolean;
+    attachRibbonsToTransform: boolean;
+
+
+}
+    
+interface CustomDataModule {
+    enabled: boolean;
+
+
+    GetColor(stream: ParticleSystemCustomData): MinMaxGradient;
+    GetMode(stream: ParticleSystemCustomData): ParticleSystemCustomDataMode;
+    GetVector(stream: ParticleSystemCustomData, component: number): MinMaxCurve;
+    GetVectorComponentCount(stream: ParticleSystemCustomData): number;
+    SetColor(stream: ParticleSystemCustomData, gradient: MinMaxGradient): void;
+    SetMode(stream: ParticleSystemCustomData, mode: ParticleSystemCustomDataMode): void;
+    SetVector(stream: ParticleSystemCustomData, component: number, curve: MinMaxCurve): void;
+    SetVectorComponentCount(stream: ParticleSystemCustomData, count: number): void;
+}
+    
+interface Particle {
+    lifetime: number;
+    randomValue: number;
+    size: number;
+    color: Color32;
+    position: Vector3;
+    velocity: Vector3;
+    animatedVelocity: Vector3;
+    totalVelocity: Vector3;
+    remainingLifetime: number;
+    startLifetime: number;
+    startColor: Color32;
+    randomSeed: number;
+    axisOfRotation: Vector3;
+    startSize: number;
+    startSize3D: Vector3;
+    rotation: number;
+    rotation3D: Vector3;
+    angularVelocity: number;
+    angularVelocity3D: Vector3;
+
+
+    GetCurrentColor(system: ParticleSystem): Color32;
+    GetCurrentSize(system: ParticleSystem): number;
+    GetCurrentSize3D(system: ParticleSystem): Vector3;
+    GetMeshIndex(system: ParticleSystem): number;
+    SetMeshIndex(index: number): void;
+}
+    
+interface EmitParams {
+    particle: Particle;
+    position: Vector3;
+    applyShapeToPosition: boolean;
+    velocity: Vector3;
+    startLifetime: number;
+    startSize: number;
+    startSize3D: Vector3;
+    axisOfRotation: Vector3;
+    rotation: number;
+    rotation3D: Vector3;
+    angularVelocity: number;
+    angularVelocity3D: Vector3;
+    startColor: Color32;
+    randomSeed: number;
+    meshIndex: number;
+
+
+    ResetAngularVelocity(): void;
+    ResetAxisOfRotation(): void;
+    ResetMeshIndex(): void;
+    ResetPosition(): void;
+    ResetRandomSeed(): void;
+    ResetRotation(): void;
+    ResetStartColor(): void;
+    ResetStartLifetime(): void;
+    ResetStartSize(): void;
+    ResetVelocity(): void;
+}
+    
+interface PlaybackState {
+
+
+}
+    
+interface Trails {
+    capacity: number;
+
+
+}
+    
+interface ParticleSystemConstructor {
+
+
+    ResetPreMappedBufferMemory(): void;
+    SetMaximumPreMappedBufferCounts(vertexBuffersCount: number, indexBuffersCount: number): void;
+}
+declare const ParticleSystem: ParticleSystemConstructor;
     
 interface AccessoryKit extends ScriptableObject {
     accessories: CSArray<Accessory>;
@@ -11418,138 +12286,6 @@ interface AvatarMask extends Object {
     SetTransformActive(index: number, value: boolean): void;
     SetTransformPath(index: number, path: string): void;
 }
-    
-interface SkinnedMeshRenderer extends Renderer {
-    quality: SkinQuality;
-    updateWhenOffscreen: boolean;
-    forceMatrixRecalculationPerRender: boolean;
-    rootBone: Transform;
-    bones: CSArray<Transform>;
-    sharedMesh: Mesh;
-    skinnedMotionVectors: boolean;
-    vertexBufferTarget: Target;
-
-    constructor(): SkinnedMeshRenderer;
-
-    BakeMesh(mesh: Mesh): void;
-    BakeMesh(mesh: Mesh, useScale: boolean): void;
-    GetBlendShapeWeight(index: number): number;
-    GetPreviousVertexBuffer(): GraphicsBuffer;
-    GetVertexBuffer(): GraphicsBuffer;
-    SetBlendShapeWeight(index: number, value: number): void;
-}
-    
-interface ProjectileNetworkBehaviour extends NetworkBehaviour {
-    gravity: number;
-    startingVelocity: Vector3;
-    useTrailLineRenderer: boolean;
-    CustomAlignmentOptions: CustomAlignmentOptions;
-    syncVar___gravity: SyncVar<number>;
-    syncVar___startingVelocity: SyncVar<Vector3>;
-    spawnTimeSec: number;
-    PreviousVisualPosition?: Vector3;
-    CurrentVisualPosition: Vector3;
-    SyncAccessor_gravity: number;
-    SyncAccessor_startingVelocity: Vector3;
-
-    constructor(): ProjectileNetworkBehaviour;
-
-    Awake(): void;
-    Awake___UserLogic(): void;
-    Despawn(): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    ReadSyncVar(PooledReader0: PooledReader, UInt321: number, Boolean2: boolean): boolean;
-    SetInitialShootingValues(velocity: Vector3, gravity: number): void;
-}
-    
-interface CustomAlignmentOptions {
-    ForwardVectorInt: number;
-    UpVectorInt: number;
-
-    constructor(): CustomAlignmentOptions;
-
-}
-    
-interface ISyncType {
-    IsDirty: boolean;
-
-
-    PreInitialize(networkManager: NetworkManager): void;
-    Read(reader: PooledReader): void;
-    Reset(): void;
-    SetRegistered(): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(writer: PooledWriter): void;
-}
-    
-interface SyncBase extends ISyncType {
-    Settings: Settings;
-    NetworkManager: NetworkManager;
-    NetworkBehaviour: NetworkBehaviour;
-    NextSyncTick: number;
-    IsRegistered: boolean;
-    IsNetworkInitialized: boolean;
-    IsSyncObject: boolean;
-    SendRate: number;
-    IsDirty: boolean;
-    SyncIndex: number;
-
-    constructor(): SyncBase;
-
-    Dirty(): boolean;
-    InitializeInstance(nb: NetworkBehaviour, syncIndex: number, writePermissions: WritePermission, readPermissions: ReadPermission, tickRate: number, channel: Channel, isSyncObject: boolean): void;
-    OnStartCallback(asServer: boolean): void;
-    OnStopCallback(asServer: boolean): void;
-    PreInitialize(networkManager: NetworkManager): void;
-    Read(reader: PooledReader): void;
-    Read(reader: PooledReader, asServer: boolean): void;
-    Reset(): void;
-    SetRegistered(): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(writer: PooledWriter): void;
-}
-    
-interface Settings {
-    WritePermission: WritePermission;
-    ReadPermission: ReadPermission;
-    SendRate: number;
-    Channel: Channel;
-
-    constructor(): Settings;
-    constructor(writePermission: WritePermission, readPermission: ReadPermission, sendRate: number, channel: Channel): Settings;
-    constructor(sendTickrate: number): Settings;
-    constructor(readPermission: ReadPermission, sendRate: number, channel: Channel): Settings;
-
-}
-    
-interface SyncVar<T> extends SyncBase {
-
-    constructor(nb: NetworkBehaviour, syncIndex: number, writePermission: WritePermission, readPermission: ReadPermission, sendRate: number, channel: Channel, value: T): SyncVar<T>;
-
-    GetValue(calledByUser: boolean): T;
-    OnStartCallback(asServer: boolean): void;
-    Reset(): void;
-    SetValue(nextValue: T, calledByUser: boolean): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(obj0: PooledWriter): void;
-}
-    
-interface DrawTrajectory extends MonoBehaviour {
-
-    constructor(): DrawTrajectory;
-
-    DisableTrajectory(): void;
-    UpdateTrajectory(startingPoint: Vector3, velocity: Vector3, gravity: number): void;
-}
-    
-interface DrawTrajectoryConstructor {
-    Instance: DrawTrajectory;
-
-
-}
-declare const DrawTrajectory: DrawTrajectoryConstructor;
     
 interface IAlignmentManager {
 
@@ -12778,859 +13514,6 @@ interface ClientNetworkConnector extends MonoBehaviour {
 
     Disconnect(): void;
 }
-    
-interface ParticleSystem extends Component {
-    safeCollisionEventSize: number;
-    startDelay: number;
-    loop: boolean;
-    playOnAwake: boolean;
-    duration: number;
-    playbackSpeed: number;
-    enableEmission: boolean;
-    emissionRate: number;
-    startSpeed: number;
-    startSize: number;
-    startColor: Color;
-    startRotation: number;
-    startRotation3D: Vector3;
-    startLifetime: number;
-    gravityModifier: number;
-    maxParticles: number;
-    simulationSpace: ParticleSystemSimulationSpace;
-    scalingMode: ParticleSystemScalingMode;
-    automaticCullingEnabled: boolean;
-    isPlaying: boolean;
-    isEmitting: boolean;
-    isStopped: boolean;
-    isPaused: boolean;
-    particleCount: number;
-    time: number;
-    randomSeed: number;
-    useAutoRandomSeed: boolean;
-    proceduralSimulationSupported: boolean;
-    main: MainModule;
-    emission: EmissionModule;
-    shape: ShapeModule;
-    velocityOverLifetime: VelocityOverLifetimeModule;
-    limitVelocityOverLifetime: LimitVelocityOverLifetimeModule;
-    inheritVelocity: InheritVelocityModule;
-    lifetimeByEmitterSpeed: LifetimeByEmitterSpeedModule;
-    forceOverLifetime: ForceOverLifetimeModule;
-    colorOverLifetime: ColorOverLifetimeModule;
-    colorBySpeed: ColorBySpeedModule;
-    sizeOverLifetime: SizeOverLifetimeModule;
-    sizeBySpeed: SizeBySpeedModule;
-    rotationOverLifetime: RotationOverLifetimeModule;
-    rotationBySpeed: RotationBySpeedModule;
-    externalForces: ExternalForcesModule;
-    noise: NoiseModule;
-    collision: CollisionModule;
-    trigger: TriggerModule;
-    subEmitters: SubEmittersModule;
-    textureSheetAnimation: TextureSheetAnimationModule;
-    lights: LightsModule;
-    trails: TrailModule;
-    customData: CustomDataModule;
-
-    constructor(): ParticleSystem;
-
-    AllocateAxisOfRotationAttribute(): void;
-    AllocateCustomDataAttribute(stream: ParticleSystemCustomData): void;
-    AllocateMeshIndexAttribute(): void;
-    Clear(withChildren: boolean): void;
-    Clear(): void;
-    Emit(position: Vector3, velocity: Vector3, size: number, lifetime: number, color: Color32): void;
-    Emit(particle: Particle): void;
-    Emit(count: number): void;
-    Emit(emitParams: EmitParams, count: number): void;
-    GetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): number;
-    GetParticles(particles: CSArray<Particle>, size: number, offset: number): number;
-    GetParticles(particles: CSArray<Particle>, size: number): number;
-    GetParticles(particles: CSArray<Particle>): number;
-    GetParticles(particles: CSArray<Particle>, size: number, offset: number): number;
-    GetParticles(particles: CSArray<Particle>, size: number): number;
-    GetParticles(particles: CSArray<Particle>): number;
-    GetPlaybackState(): PlaybackState;
-    GetTrails(): Trails;
-    GetTrails(trailData: unknown): number;
-    IsAlive(withChildren: boolean): boolean;
-    IsAlive(): boolean;
-    Pause(withChildren: boolean): void;
-    Pause(): void;
-    Play(withChildren: boolean): void;
-    Play(): void;
-    SetCustomParticleData(customData: CSArray<Vector4>, streamIndex: ParticleSystemCustomData): void;
-    SetParticles(particles: CSArray<Particle>, size: number, offset: number): void;
-    SetParticles(particles: CSArray<Particle>, size: number): void;
-    SetParticles(particles: CSArray<Particle>): void;
-    SetParticles(particles: CSArray<Particle>, size: number, offset: number): void;
-    SetParticles(particles: CSArray<Particle>, size: number): void;
-    SetParticles(particles: CSArray<Particle>): void;
-    SetPlaybackState(playbackState: PlaybackState): void;
-    SetTrails(trailData: Trails): void;
-    Simulate(t: number, withChildren: boolean, restart: boolean, fixedTimeStep: boolean): void;
-    Simulate(t: number, withChildren: boolean, restart: boolean): void;
-    Simulate(t: number, withChildren: boolean): void;
-    Simulate(t: number): void;
-    Stop(withChildren: boolean, stopBehavior: ParticleSystemStopBehavior): void;
-    Stop(withChildren: boolean): void;
-    Stop(): void;
-    TriggerSubEmitter(subEmitterIndex: number): void;
-    TriggerSubEmitter(subEmitterIndex: number, particle: unknown): void;
-    TriggerSubEmitter(subEmitterIndex: number, particles: CSArray<Particle>): void;
-}
-    
-interface MainModule {
-    randomizeRotationDirection: number;
-    emitterVelocity: Vector3;
-    duration: number;
-    loop: boolean;
-    prewarm: boolean;
-    startDelay: MinMaxCurve;
-    startDelayMultiplier: number;
-    startLifetime: MinMaxCurve;
-    startLifetimeMultiplier: number;
-    startSpeed: MinMaxCurve;
-    startSpeedMultiplier: number;
-    startSize3D: boolean;
-    startSize: MinMaxCurve;
-    startSizeMultiplier: number;
-    startSizeX: MinMaxCurve;
-    startSizeXMultiplier: number;
-    startSizeY: MinMaxCurve;
-    startSizeYMultiplier: number;
-    startSizeZ: MinMaxCurve;
-    startSizeZMultiplier: number;
-    startRotation3D: boolean;
-    startRotation: MinMaxCurve;
-    startRotationMultiplier: number;
-    startRotationX: MinMaxCurve;
-    startRotationXMultiplier: number;
-    startRotationY: MinMaxCurve;
-    startRotationYMultiplier: number;
-    startRotationZ: MinMaxCurve;
-    startRotationZMultiplier: number;
-    flipRotation: number;
-    startColor: MinMaxGradient;
-    gravityModifier: MinMaxCurve;
-    gravityModifierMultiplier: number;
-    simulationSpace: ParticleSystemSimulationSpace;
-    customSimulationSpace: Transform;
-    simulationSpeed: number;
-    useUnscaledTime: boolean;
-    scalingMode: ParticleSystemScalingMode;
-    playOnAwake: boolean;
-    maxParticles: number;
-    emitterVelocityMode: ParticleSystemEmitterVelocityMode;
-    stopAction: ParticleSystemStopAction;
-    ringBufferMode: ParticleSystemRingBufferMode;
-    ringBufferLoopRange: Vector2;
-    cullingMode: ParticleSystemCullingMode;
-
-
-}
-    
-interface MinMaxCurve {
-    curveScalar: number;
-    mode: ParticleSystemCurveMode;
-    curveMultiplier: number;
-    curveMax: AnimationCurve;
-    curveMin: AnimationCurve;
-    constantMax: number;
-    constantMin: number;
-    constant: number;
-    curve: AnimationCurve;
-
-    constructor(constant: number): MinMaxCurve;
-    constructor(multiplier: number, curve: AnimationCurve): MinMaxCurve;
-    constructor(multiplier: number, min: AnimationCurve, max: AnimationCurve): MinMaxCurve;
-    constructor(min: number, max: number): MinMaxCurve;
-
-    Evaluate(time: number): number;
-    Evaluate(time: number, lerpFactor: number): number;
-}
-    
-interface MinMaxGradient {
-    mode: ParticleSystemGradientMode;
-    gradientMax: Gradient;
-    gradientMin: Gradient;
-    colorMax: Color;
-    colorMin: Color;
-    color: Color;
-    gradient: Gradient;
-
-    constructor(color: Color): MinMaxGradient;
-    constructor(gradient: Gradient): MinMaxGradient;
-    constructor(min: Color, max: Color): MinMaxGradient;
-    constructor(min: Gradient, max: Gradient): MinMaxGradient;
-
-    Evaluate(time: number): Color;
-    Evaluate(time: number, lerpFactor: number): Color;
-}
-    
-interface Gradient {
-    colorKeys: CSArray<GradientColorKey>;
-    alphaKeys: CSArray<GradientAlphaKey>;
-    mode: GradientMode;
-
-    constructor(): Gradient;
-
-    Equals(o: unknown): boolean;
-    Equals(other: Gradient): boolean;
-    Evaluate(time: number): Color;
-    GetHashCode(): number;
-    SetKeys(colorKeys: CSArray<GradientColorKey>, alphaKeys: CSArray<GradientAlphaKey>): void;
-}
-    
-interface GradientColorKey {
-    color: Color;
-    time: number;
-
-    constructor(col: Color, time: number): GradientColorKey;
-
-}
-    
-interface GradientAlphaKey {
-    alpha: number;
-    time: number;
-
-    constructor(alpha: number, time: number): GradientAlphaKey;
-
-}
-    
-interface EmissionModule {
-    type: ParticleSystemEmissionType;
-    rate: MinMaxCurve;
-    rateMultiplier: number;
-    enabled: boolean;
-    rateOverTime: MinMaxCurve;
-    rateOverTimeMultiplier: number;
-    rateOverDistance: MinMaxCurve;
-    rateOverDistanceMultiplier: number;
-    burstCount: number;
-
-
-    GetBurst(index: number): Burst;
-    GetBursts(bursts: CSArray<Burst>): number;
-    SetBurst(index: number, burst: Burst): void;
-    SetBursts(bursts: CSArray<Burst>): void;
-    SetBursts(bursts: CSArray<Burst>, size: number): void;
-}
-    
-interface Burst {
-    time: number;
-    count: MinMaxCurve;
-    minCount: number;
-    maxCount: number;
-    cycleCount: number;
-    repeatInterval: number;
-    probability: number;
-
-    constructor(_time: number, _count: number): Burst;
-    constructor(_time: number, _minCount: number, _maxCount: number): Burst;
-    constructor(_time: number, _minCount: number, _maxCount: number, _cycleCount: number, _repeatInterval: number): Burst;
-    constructor(_time: number, _count: MinMaxCurve): Burst;
-    constructor(_time: number, _count: MinMaxCurve, _cycleCount: number, _repeatInterval: number): Burst;
-
-}
-    
-interface ShapeModule {
-    box: Vector3;
-    meshScale: number;
-    randomDirection: boolean;
-    enabled: boolean;
-    shapeType: ParticleSystemShapeType;
-    randomDirectionAmount: number;
-    sphericalDirectionAmount: number;
-    randomPositionAmount: number;
-    alignToDirection: boolean;
-    radius: number;
-    radiusMode: ParticleSystemShapeMultiModeValue;
-    radiusSpread: number;
-    radiusSpeed: MinMaxCurve;
-    radiusSpeedMultiplier: number;
-    radiusThickness: number;
-    angle: number;
-    length: number;
-    boxThickness: Vector3;
-    meshShapeType: ParticleSystemMeshShapeType;
-    mesh: Mesh;
-    meshRenderer: MeshRenderer;
-    skinnedMeshRenderer: SkinnedMeshRenderer;
-    sprite: Sprite;
-    spriteRenderer: SpriteRenderer;
-    useMeshMaterialIndex: boolean;
-    meshMaterialIndex: number;
-    useMeshColors: boolean;
-    normalOffset: number;
-    meshSpawnMode: ParticleSystemShapeMultiModeValue;
-    meshSpawnSpread: number;
-    meshSpawnSpeed: MinMaxCurve;
-    meshSpawnSpeedMultiplier: number;
-    arc: number;
-    arcMode: ParticleSystemShapeMultiModeValue;
-    arcSpread: number;
-    arcSpeed: MinMaxCurve;
-    arcSpeedMultiplier: number;
-    donutRadius: number;
-    position: Vector3;
-    rotation: Vector3;
-    scale: Vector3;
-    texture: Texture2D;
-    textureClipChannel: ParticleSystemShapeTextureChannel;
-    textureClipThreshold: number;
-    textureColorAffectsParticles: boolean;
-    textureAlphaAffectsParticles: boolean;
-    textureBilinearFiltering: boolean;
-    textureUVChannel: number;
-
-
-}
-    
-interface SpriteRenderer extends Renderer {
-    sprite: Sprite;
-    drawMode: SpriteDrawMode;
-    size: Vector2;
-    adaptiveModeThreshold: number;
-    tileMode: SpriteTileMode;
-    color: Color;
-    maskInteraction: SpriteMaskInteraction;
-    flipX: boolean;
-    flipY: boolean;
-    spriteSortPoint: SpriteSortPoint;
-
-    constructor(): SpriteRenderer;
-
-    RegisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
-    UnregisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
-}
-    
-interface VelocityOverLifetimeModule {
-    enabled: boolean;
-    x: MinMaxCurve;
-    y: MinMaxCurve;
-    z: MinMaxCurve;
-    xMultiplier: number;
-    yMultiplier: number;
-    zMultiplier: number;
-    orbitalX: MinMaxCurve;
-    orbitalY: MinMaxCurve;
-    orbitalZ: MinMaxCurve;
-    orbitalXMultiplier: number;
-    orbitalYMultiplier: number;
-    orbitalZMultiplier: number;
-    orbitalOffsetX: MinMaxCurve;
-    orbitalOffsetY: MinMaxCurve;
-    orbitalOffsetZ: MinMaxCurve;
-    orbitalOffsetXMultiplier: number;
-    orbitalOffsetYMultiplier: number;
-    orbitalOffsetZMultiplier: number;
-    radial: MinMaxCurve;
-    radialMultiplier: number;
-    speedModifier: MinMaxCurve;
-    speedModifierMultiplier: number;
-    space: ParticleSystemSimulationSpace;
-
-
-}
-    
-interface LimitVelocityOverLifetimeModule {
-    enabled: boolean;
-    limitX: MinMaxCurve;
-    limitXMultiplier: number;
-    limitY: MinMaxCurve;
-    limitYMultiplier: number;
-    limitZ: MinMaxCurve;
-    limitZMultiplier: number;
-    limit: MinMaxCurve;
-    limitMultiplier: number;
-    dampen: number;
-    separateAxes: boolean;
-    space: ParticleSystemSimulationSpace;
-    drag: MinMaxCurve;
-    dragMultiplier: number;
-    multiplyDragByParticleSize: boolean;
-    multiplyDragByParticleVelocity: boolean;
-
-
-}
-    
-interface InheritVelocityModule {
-    enabled: boolean;
-    mode: ParticleSystemInheritVelocityMode;
-    curve: MinMaxCurve;
-    curveMultiplier: number;
-
-
-}
-    
-interface LifetimeByEmitterSpeedModule {
-    enabled: boolean;
-    curve: MinMaxCurve;
-    curveMultiplier: number;
-    range: Vector2;
-
-
-}
-    
-interface ForceOverLifetimeModule {
-    enabled: boolean;
-    x: MinMaxCurve;
-    y: MinMaxCurve;
-    z: MinMaxCurve;
-    xMultiplier: number;
-    yMultiplier: number;
-    zMultiplier: number;
-    space: ParticleSystemSimulationSpace;
-    randomized: boolean;
-
-
-}
-    
-interface ColorOverLifetimeModule {
-    enabled: boolean;
-    color: MinMaxGradient;
-
-
-}
-    
-interface ColorBySpeedModule {
-    enabled: boolean;
-    color: MinMaxGradient;
-    range: Vector2;
-
-
-}
-    
-interface SizeOverLifetimeModule {
-    enabled: boolean;
-    size: MinMaxCurve;
-    sizeMultiplier: number;
-    x: MinMaxCurve;
-    xMultiplier: number;
-    y: MinMaxCurve;
-    yMultiplier: number;
-    z: MinMaxCurve;
-    zMultiplier: number;
-    separateAxes: boolean;
-
-
-}
-    
-interface SizeBySpeedModule {
-    enabled: boolean;
-    size: MinMaxCurve;
-    sizeMultiplier: number;
-    x: MinMaxCurve;
-    xMultiplier: number;
-    y: MinMaxCurve;
-    yMultiplier: number;
-    z: MinMaxCurve;
-    zMultiplier: number;
-    separateAxes: boolean;
-    range: Vector2;
-
-
-}
-    
-interface RotationOverLifetimeModule {
-    enabled: boolean;
-    x: MinMaxCurve;
-    xMultiplier: number;
-    y: MinMaxCurve;
-    yMultiplier: number;
-    z: MinMaxCurve;
-    zMultiplier: number;
-    separateAxes: boolean;
-
-
-}
-    
-interface RotationBySpeedModule {
-    enabled: boolean;
-    x: MinMaxCurve;
-    xMultiplier: number;
-    y: MinMaxCurve;
-    yMultiplier: number;
-    z: MinMaxCurve;
-    zMultiplier: number;
-    separateAxes: boolean;
-    range: Vector2;
-
-
-}
-    
-interface ExternalForcesModule {
-    enabled: boolean;
-    multiplier: number;
-    multiplierCurve: MinMaxCurve;
-    influenceFilter: ParticleSystemGameObjectFilter;
-    influenceMask: LayerMask;
-    influenceCount: number;
-
-
-    AddInfluence(field: ParticleSystemForceField): void;
-    GetInfluence(index: number): ParticleSystemForceField;
-    IsAffectedBy(field: ParticleSystemForceField): boolean;
-    RemoveAllInfluences(): void;
-    RemoveInfluence(index: number): void;
-    RemoveInfluence(field: ParticleSystemForceField): void;
-    SetInfluence(index: number, field: ParticleSystemForceField): void;
-}
-    
-    
-    
-interface ParticleSystemForceField extends Behaviour {
-    shape: ParticleSystemForceFieldShape;
-    startRange: number;
-    endRange: number;
-    length: number;
-    gravityFocus: number;
-    rotationRandomness: Vector2;
-    multiplyDragByParticleSize: boolean;
-    multiplyDragByParticleVelocity: boolean;
-    vectorField: Texture3D;
-    directionX: MinMaxCurve;
-    directionY: MinMaxCurve;
-    directionZ: MinMaxCurve;
-    gravity: MinMaxCurve;
-    rotationSpeed: MinMaxCurve;
-    rotationAttraction: MinMaxCurve;
-    drag: MinMaxCurve;
-    vectorFieldSpeed: MinMaxCurve;
-    vectorFieldAttraction: MinMaxCurve;
-
-    constructor(): ParticleSystemForceField;
-
-}
-    
-interface Texture3D extends Texture {
-    depth: number;
-    format: TextureFormat;
-    isReadable: boolean;
-
-    constructor(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags): Texture3D;
-    constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture3D;
-    constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
-
-    Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
-    Apply(updateMipmaps: boolean): void;
-    Apply(): void;
-    GetPixel(x: number, y: number, z: number): Color;
-    GetPixel(x: number, y: number, z: number, mipLevel: number): Color;
-    GetPixelBilinear(u: number, v: number, w: number): Color;
-    GetPixelBilinear(u: number, v: number, w: number, mipLevel: number): Color;
-    GetPixelData<T>(mipLevel: number): CSArray<T>;
-    GetPixels(miplevel: number): CSArray<Color>;
-    GetPixels(): CSArray<Color>;
-    GetPixels32(miplevel: number): CSArray<Color32>;
-    GetPixels32(): CSArray<Color32>;
-    SetPixel(x: number, y: number, z: number, color: Color): void;
-    SetPixel(x: number, y: number, z: number, color: Color, mipLevel: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
-    SetPixelData<T>(data: CSArray<T>, mipLevel: number, sourceDataStartIndex: number): void;
-    SetPixels(colors: CSArray<Color>, miplevel: number): void;
-    SetPixels(colors: CSArray<Color>): void;
-    SetPixels32(colors: CSArray<Color32>, miplevel: number): void;
-    SetPixels32(colors: CSArray<Color32>): void;
-    UpdateExternalTexture(nativeTex: unknown): void;
-}
-    
-interface Texture3DConstructor {
-
-
-    CreateExternalTexture(width: number, height: number, depth: number, format: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
-}
-declare const Texture3D: Texture3DConstructor;
-    
-interface ParticleSystemForceFieldConstructor {
-
-
-    FindAll(): CSArray<ParticleSystemForceField>;
-}
-declare const ParticleSystemForceField: ParticleSystemForceFieldConstructor;
-    
-interface NoiseModule {
-    enabled: boolean;
-    separateAxes: boolean;
-    strength: MinMaxCurve;
-    strengthMultiplier: number;
-    strengthX: MinMaxCurve;
-    strengthXMultiplier: number;
-    strengthY: MinMaxCurve;
-    strengthYMultiplier: number;
-    strengthZ: MinMaxCurve;
-    strengthZMultiplier: number;
-    frequency: number;
-    damping: boolean;
-    octaveCount: number;
-    octaveMultiplier: number;
-    octaveScale: number;
-    quality: ParticleSystemNoiseQuality;
-    scrollSpeed: MinMaxCurve;
-    scrollSpeedMultiplier: number;
-    remapEnabled: boolean;
-    remap: MinMaxCurve;
-    remapMultiplier: number;
-    remapX: MinMaxCurve;
-    remapXMultiplier: number;
-    remapY: MinMaxCurve;
-    remapYMultiplier: number;
-    remapZ: MinMaxCurve;
-    remapZMultiplier: number;
-    positionAmount: MinMaxCurve;
-    rotationAmount: MinMaxCurve;
-    sizeAmount: MinMaxCurve;
-
-
-}
-    
-interface CollisionModule {
-    maxPlaneCount: number;
-    enabled: boolean;
-    type: ParticleSystemCollisionType;
-    mode: ParticleSystemCollisionMode;
-    dampen: MinMaxCurve;
-    dampenMultiplier: number;
-    bounce: MinMaxCurve;
-    bounceMultiplier: number;
-    lifetimeLoss: MinMaxCurve;
-    lifetimeLossMultiplier: number;
-    minKillSpeed: number;
-    maxKillSpeed: number;
-    collidesWith: LayerMask;
-    enableDynamicColliders: boolean;
-    maxCollisionShapes: number;
-    quality: ParticleSystemCollisionQuality;
-    voxelSize: number;
-    radiusScale: number;
-    sendCollisionMessages: boolean;
-    colliderForce: number;
-    multiplyColliderForceByCollisionAngle: boolean;
-    multiplyColliderForceByParticleSpeed: boolean;
-    multiplyColliderForceByParticleSize: boolean;
-    planeCount: number;
-    enableInteriorCollisions: boolean;
-
-
-    AddPlane(transform: Transform): void;
-    GetPlane(index: number): Transform;
-    RemovePlane(index: number): void;
-    RemovePlane(transform: Transform): void;
-    SetPlane(index: number, transform: Transform): void;
-}
-    
-interface TriggerModule {
-    maxColliderCount: number;
-    enabled: boolean;
-    inside: ParticleSystemOverlapAction;
-    outside: ParticleSystemOverlapAction;
-    enter: ParticleSystemOverlapAction;
-    exit: ParticleSystemOverlapAction;
-    colliderQueryMode: ParticleSystemColliderQueryMode;
-    radiusScale: number;
-    colliderCount: number;
-
-
-    AddCollider(collider: Component): void;
-    GetCollider(index: number): Component;
-    RemoveCollider(index: number): void;
-    RemoveCollider(collider: Component): void;
-    SetCollider(index: number, collider: Component): void;
-}
-    
-interface SubEmittersModule {
-    birth0: ParticleSystem;
-    birth1: ParticleSystem;
-    collision0: ParticleSystem;
-    collision1: ParticleSystem;
-    death0: ParticleSystem;
-    death1: ParticleSystem;
-    enabled: boolean;
-    subEmittersCount: number;
-
-
-    AddSubEmitter(subEmitter: ParticleSystem, type: ParticleSystemSubEmitterType, properties: ParticleSystemSubEmitterProperties, emitProbability: number): void;
-    AddSubEmitter(subEmitter: ParticleSystem, type: ParticleSystemSubEmitterType, properties: ParticleSystemSubEmitterProperties): void;
-    GetSubEmitterEmitProbability(index: number): number;
-    GetSubEmitterProperties(index: number): ParticleSystemSubEmitterProperties;
-    GetSubEmitterSystem(index: number): ParticleSystem;
-    GetSubEmitterType(index: number): ParticleSystemSubEmitterType;
-    RemoveSubEmitter(index: number): void;
-    RemoveSubEmitter(subEmitter: ParticleSystem): void;
-    SetSubEmitterEmitProbability(index: number, emitProbability: number): void;
-    SetSubEmitterProperties(index: number, properties: ParticleSystemSubEmitterProperties): void;
-    SetSubEmitterSystem(index: number, subEmitter: ParticleSystem): void;
-    SetSubEmitterType(index: number, type: ParticleSystemSubEmitterType): void;
-}
-    
-interface TextureSheetAnimationModule {
-    flipU: number;
-    flipV: number;
-    useRandomRow: boolean;
-    enabled: boolean;
-    mode: ParticleSystemAnimationMode;
-    timeMode: ParticleSystemAnimationTimeMode;
-    fps: number;
-    numTilesX: number;
-    numTilesY: number;
-    animation: ParticleSystemAnimationType;
-    rowMode: ParticleSystemAnimationRowMode;
-    frameOverTime: MinMaxCurve;
-    frameOverTimeMultiplier: number;
-    startFrame: MinMaxCurve;
-    startFrameMultiplier: number;
-    cycleCount: number;
-    rowIndex: number;
-    uvChannelMask: UVChannelFlags;
-    spriteCount: number;
-    speedRange: Vector2;
-
-
-    AddSprite(sprite: Sprite): void;
-    GetSprite(index: number): Sprite;
-    RemoveSprite(index: number): void;
-    SetSprite(index: number, sprite: Sprite): void;
-}
-    
-interface LightsModule {
-    enabled: boolean;
-    ratio: number;
-    useRandomDistribution: boolean;
-    light: Light;
-    useParticleColor: boolean;
-    sizeAffectsRange: boolean;
-    alphaAffectsIntensity: boolean;
-    range: MinMaxCurve;
-    rangeMultiplier: number;
-    intensity: MinMaxCurve;
-    intensityMultiplier: number;
-    maxLights: number;
-
-
-}
-    
-interface TrailModule {
-    enabled: boolean;
-    mode: ParticleSystemTrailMode;
-    ratio: number;
-    lifetime: MinMaxCurve;
-    lifetimeMultiplier: number;
-    minVertexDistance: number;
-    textureMode: ParticleSystemTrailTextureMode;
-    worldSpace: boolean;
-    dieWithParticles: boolean;
-    sizeAffectsWidth: boolean;
-    sizeAffectsLifetime: boolean;
-    inheritParticleColor: boolean;
-    colorOverLifetime: MinMaxGradient;
-    widthOverTrail: MinMaxCurve;
-    widthOverTrailMultiplier: number;
-    colorOverTrail: MinMaxGradient;
-    generateLightingData: boolean;
-    ribbonCount: number;
-    shadowBias: number;
-    splitSubEmitterRibbons: boolean;
-    attachRibbonsToTransform: boolean;
-
-
-}
-    
-interface CustomDataModule {
-    enabled: boolean;
-
-
-    GetColor(stream: ParticleSystemCustomData): MinMaxGradient;
-    GetMode(stream: ParticleSystemCustomData): ParticleSystemCustomDataMode;
-    GetVector(stream: ParticleSystemCustomData, component: number): MinMaxCurve;
-    GetVectorComponentCount(stream: ParticleSystemCustomData): number;
-    SetColor(stream: ParticleSystemCustomData, gradient: MinMaxGradient): void;
-    SetMode(stream: ParticleSystemCustomData, mode: ParticleSystemCustomDataMode): void;
-    SetVector(stream: ParticleSystemCustomData, component: number, curve: MinMaxCurve): void;
-    SetVectorComponentCount(stream: ParticleSystemCustomData, count: number): void;
-}
-    
-interface Particle {
-    lifetime: number;
-    randomValue: number;
-    size: number;
-    color: Color32;
-    position: Vector3;
-    velocity: Vector3;
-    animatedVelocity: Vector3;
-    totalVelocity: Vector3;
-    remainingLifetime: number;
-    startLifetime: number;
-    startColor: Color32;
-    randomSeed: number;
-    axisOfRotation: Vector3;
-    startSize: number;
-    startSize3D: Vector3;
-    rotation: number;
-    rotation3D: Vector3;
-    angularVelocity: number;
-    angularVelocity3D: Vector3;
-
-
-    GetCurrentColor(system: ParticleSystem): Color32;
-    GetCurrentSize(system: ParticleSystem): number;
-    GetCurrentSize3D(system: ParticleSystem): Vector3;
-    GetMeshIndex(system: ParticleSystem): number;
-    SetMeshIndex(index: number): void;
-}
-    
-interface EmitParams {
-    particle: Particle;
-    position: Vector3;
-    applyShapeToPosition: boolean;
-    velocity: Vector3;
-    startLifetime: number;
-    startSize: number;
-    startSize3D: Vector3;
-    axisOfRotation: Vector3;
-    rotation: number;
-    rotation3D: Vector3;
-    angularVelocity: number;
-    angularVelocity3D: Vector3;
-    startColor: Color32;
-    randomSeed: number;
-    meshIndex: number;
-
-
-    ResetAngularVelocity(): void;
-    ResetAxisOfRotation(): void;
-    ResetMeshIndex(): void;
-    ResetPosition(): void;
-    ResetRandomSeed(): void;
-    ResetRotation(): void;
-    ResetStartColor(): void;
-    ResetStartLifetime(): void;
-    ResetStartSize(): void;
-    ResetVelocity(): void;
-}
-    
-interface PlaybackState {
-
-
-}
-    
-interface Trails {
-    capacity: number;
-
-
-}
-    
-interface ParticleSystemConstructor {
-
-
-    ResetPreMappedBufferMemory(): void;
-    SetMaximumPreMappedBufferCounts(vertexBuffersCount: number, indexBuffersCount: number): void;
-}
-declare const ParticleSystem: ParticleSystemConstructor;
     
 interface Profiler {
 

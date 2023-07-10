@@ -1,7 +1,7 @@
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { RunUtil } from "./Util/RunUtil";
-import { SoundUtil } from "./Util/SoundUtil";
+import { AudioManager } from "./Audio/AudioManager";
 import { TimeUtil } from "./Util/TimeUtil";
 
 print(`Shared.Main.ts()`);
@@ -10,7 +10,7 @@ print(`Shared.Main.ts()`);
 TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
-SoundUtil.Init();
+AudioManager.Init();
 
 const coreCamera = GameObject.Find("CoreCamera");
 Object.Destroy(coreCamera);
