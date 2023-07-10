@@ -165,9 +165,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SnickTrix
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 910fb5aaf3f6b49128aa301755d6f0a3, type: 2}
-  m_sharedMaterial: {fileID: -6931534916630806760, guid: 910fb5aaf3f6b49128aa301755d6f0a3,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ef6afd1e3a2de41388814b93d5b74cb1, type: 2}
+  m_sharedMaterial: {fileID: -4852089703786606503, guid: ef6afd1e3a2de41388814b93d5b74cb1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -191,8 +190,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
