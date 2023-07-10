@@ -1,17 +1,19 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { decode } from "Server/Lib/json";
 import { ServerSignals } from "Server/ServerSignals";
+import { BWEditorConfig } from "Shared/Editor/BWEditorConfig";
 import { QueueMeta } from "Shared/Queue/QueueMeta";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { MatchService } from "../MatchService";
 import { LoadedMap, SaveObjectTS } from "./LoadedMap";
-import { GameMap } from "./Maps";
 
 @Service({})
 export class MapService implements OnStart {
 	/** Map for current match. */
-	private gameMap: GameMap | undefined;
+	private gameMapId: string | undefined;
 	/** Voxel binary file for current map. */
 	private voxelBinaryFile: VoxelBinaryFile | undefined;
 	/** Queue meta for current match. */
@@ -24,16 +26,24 @@ export class MapService implements OnStart {
 	OnStart(): void {
 		Task.Spawn(() => {
 			this.queueMeta = Dependency<MatchService>().WaitForQueueReady();
-			this.gameMap = RandomUtil.FromArray(this.queueMeta.maps);
-			this.BuildMap(this.gameMap);
+
+			let mapId = RandomUtil.FromArray(this.queueMeta.maps);
+			if (RunUtil.IsEditor()) {
+				const gameConfigFile = AssetBridge.LoadAsset<TextAsset>("Shared/Resources/BWEditorConfig.json");
+				const gameConfig = decode<BWEditorConfig>(gameConfigFile.text);
+				mapId = gameConfig.gameMap;
+			}
+
+			this.gameMapId = mapId;
+			this.BuildMap(this.gameMapId);
 		});
 	}
 
-	public BuildMap(map: GameMap): void {
+	public BuildMap(mapId: string): void {
 		/* Fetch world, load map voxel file and block defines. */
-		print("Loading world " + map);
+		print("Loading world " + mapId);
 		const world = WorldAPI.GetMainWorld();
-		this.voxelBinaryFile = AssetBridge.LoadAsset<VoxelBinaryFile>(`Server/Resources/Worlds/${map}.asset`);
+		this.voxelBinaryFile = AssetBridge.LoadAsset<VoxelBinaryFile>(`Server/Resources/Worlds/${mapId}.asset`);
 		const blockDefines = AssetBridge.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");
 
 		/* Load world. */
@@ -53,7 +63,7 @@ export class MapService implements OnStart {
 				rotation: data.rotation,
 			});
 		}
-		this.loadedMap = new LoadedMap(map, mapObjects);
+		this.loadedMap = new LoadedMap(mapId, mapObjects);
 		ServerSignals.MapLoad.fire(this.loadedMap);
 		this.mapLoaded = true;
 	}
@@ -80,7 +90,7 @@ export class MapService implements OnStart {
 	/**
 	 * @returns The game map.
 	 */
-	public GetGameMap(): GameMap | undefined {
-		return this.gameMap;
+	public GetGameMapId(): string | undefined {
+		return this.gameMapId;
 	}
 }

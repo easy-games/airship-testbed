@@ -12,7 +12,6 @@ import { RemoteEvent } from "./Network/RemoteEvent";
 import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { ProjectileDto } from "./Projectile/Projectile";
-import { GameMap } from "./Services/Match/Map/Maps";
 import { ShopItem } from "./Shop/ShopMeta";
 import { TeamDto } from "./Team/Team";
 import { TeamUpgradeStateDto } from "./TeamUpgrades/TeamUpgradeMeta";
@@ -128,7 +127,7 @@ export const Network = {
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
 		/** Fired when a map is loaded. */
-		MapLoaded: new RemoteEvent<[gameMap: GameMap]>(),
+		MapLoaded: new RemoteEvent<[gameMapId: string]>(),
 		/** Fired when a deny region is created. */
 		DenyRegionCreated: new RemoteEvent<[denyRegion: DenyRegionDto]>(),
 		/** Fired when a player joins. Sends entire deny region state. */
