@@ -133,9 +133,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialColor: {r: 0.9685106, g: 0.6367924, b: 1, a: 1}
-  emissiveColor: {r: 0.96862745, g: 0.63529414, b: 1, a: 1}
-  emissiveMix: 0.821
+  colorSettings:
+  - materialColor: {r: 0.77254903, g: 0.34117648, b: 0.75686276, a: 1}
+    emissiveColor: {r: 0.77254903, g: 0.34117648, b: 0.75686276, a: 1}
+    emissiveMix: 1
+    reference: Neon
 --- !u!1 &3226839821623048818
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,9 +234,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialColor: {r: 0, g: 0, b: 0, a: 1}
-  emissiveColor: {r: 0, g: 0, b: 0, a: 1}
-  emissiveMix: 1
+  colorSettings:
+  - materialColor: {r: 0, g: 0, b: 0, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    emissiveMix: 1
+    reference: Neon
 --- !u!1 &5577956326943568753
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,9 +335,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialColor: {r: 0.43529412, g: 0.7529412, b: 0.9529412, a: 1}
-  emissiveColor: {r: 0.43596476, g: 0.75453275, b: 0.9528302, a: 1}
-  emissiveMix: 1
+  colorSettings:
+  - materialColor: {r: 0.42745098, g: 0.6862745, b: 0.9137255, a: 1}
+    emissiveColor: {r: 0.42745098, g: 0.6862745, b: 0.9137255, a: 1}
+    emissiveMix: 1
+    reference: Neon
 --- !u!1 &6658264042273443804
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,9 +436,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialColor: {r: 0.43529412, g: 0.7529412, b: 0.9529412, a: 1}
-  emissiveColor: {r: 0.43596476, g: 0.75453275, b: 0.9528302, a: 1}
-  emissiveMix: 1
+  colorSettings:
+  - materialColor: {r: 0.42745098, g: 0.6862745, b: 0.9137255, a: 1}
+    emissiveColor: {r: 0.42733178, g: 0.6871687, b: 0.9150943, a: 1}
+    emissiveMix: 1
+    reference: Neon
 --- !u!1 &6882659762743186101
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,6 +568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialColor: {r: 0.9685106, g: 0.6367924, b: 1, a: 1}
-  emissiveColor: {r: 0.96862745, g: 0.63529414, b: 1, a: 1}
-  emissiveMix: 0.821
+  colorSettings:
+  - materialColor: {r: 0.77254903, g: 0.34117648, b: 0.75686276, a: 1}
+    emissiveColor: {r: 0.7735849, g: 0.33935562, b: 0.75730133, a: 1}
+    emissiveMix: 1
+    reference: Neon
