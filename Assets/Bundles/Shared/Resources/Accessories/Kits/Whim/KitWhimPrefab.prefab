@@ -9736,7 +9736,7 @@ PrefabInstance:
     - target: {fileID: -9212073259966858476, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -8797169510589936950, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -9800,7 +9800,7 @@ PrefabInstance:
     - target: {fileID: -6568206459000003782, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 72b6dbdb976a63c4684f6833c8a22c46, type: 2}
     - target: {fileID: -5453616882813371275, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9808,7 +9808,7 @@ PrefabInstance:
     - target: {fileID: -5289417664811703957, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a595d8ae12dbec942a734eebdbe1e2a0, type: 2}
+      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
     - target: {fileID: -5224476633544951841, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9816,11 +9816,11 @@ PrefabInstance:
     - target: {fileID: -5074518712592197575, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8f2c803516a4d284591302257deef19f, type: 2}
+      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
     - target: {fileID: -4975413119997974635, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -4835183649975389468, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9828,7 +9828,7 @@ PrefabInstance:
     - target: {fileID: -4587665747173760753, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -4250380851185267246, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9873,10 +9873,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+    - target: {fileID: -1540374966412017893, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 72b6dbdb976a63c4684f6833c8a22c46, type: 2}
     - target: {fileID: -1539044258581718945, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 72b6dbdb976a63c4684f6833c8a22c46, type: 2}
     - target: {fileID: -1147417259257408757, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9932,7 +9936,7 @@ PrefabInstance:
     - target: {fileID: 4664238583080333801, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8f2c803516a4d284591302257deef19f, type: 2}
+      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
     - target: {fileID: 5309907912287226200, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9940,11 +9944,11 @@ PrefabInstance:
     - target: {fileID: 5494818197641843862, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: 5757488304238963083, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 72b6dbdb976a63c4684f6833c8a22c46, type: 2}
     - target: {fileID: 6296826093472662951, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9968,7 +9972,7 @@ PrefabInstance:
     - target: {fileID: 7960841625418541609, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8f2c803516a4d284591302257deef19f, type: 2}
+      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
     - target: {fileID: 8411846210533902054, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -9997,10 +10001,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 0.1994482, g: 0.2801275, b: 0.509434, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: Clay
 --- !u!1 &627605460894742945 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4460293449542459739, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10041,10 +10045,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: ChronosDefault
 --- !u!1 &2048442512875733127 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2971831534807898237, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10063,10 +10067,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 0.1994482, g: 0.2801275, b: 0.509434, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: Clay
 --- !u!1 &2417051903543493157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7721279227451450657, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10107,10 +10111,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+  - materialColor: {r: 1, g: 0.8767149, b: 0.3160377, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: ChronosDefault_Toon
+    reference: Metal_Clean
 --- !u!1 &2690663869013165950 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1154256439175356292, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10151,10 +10155,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: ChronosDefault
 --- !u!1 &3462866627451696280 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8836902168971498398, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10173,10 +10177,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+  - materialColor: {r: 0.8739515, g: 0.3176471, b: 1, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean_Toon
+    reference: Metal_Clean
 --- !u!1 &3506732462214515753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 430652374753973459, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10195,10 +10199,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+  - materialColor: {r: 1, g: 0.8767149, b: 0.3160377, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: ChronosDefault_Toon
+    reference: Metal_Clean
 --- !u!1 &3511042328844358192 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8797169510589936950, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10217,7 +10221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 0.8767149, b: 0.3160377, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Metal_Clean
@@ -10244,10 +10248,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: ChronosDefault
 --- !u!1 &5391178680376649670 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -35247147821465796, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10266,10 +10270,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+  - materialColor: {r: 0.1994482, g: 0.2801275, b: 0.509434, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: ChronosDefault_Toon
+    reference: Metal_Clean
 --- !u!1 &5727558974834184324 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8804526411606165630, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10288,14 +10292,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 0.8767149, b: 0.3160377, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Metal_Clean
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Material.012
+    reference: ChronosDefault
 --- !u!1 &5930145640455552202 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1792561708012919760, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10314,10 +10318,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 0.1994482, g: 0.2801275, b: 0.509434, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: Clay
 --- !u!1 &6643564497187008647 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7593412173447653501, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10336,10 +10340,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 0.1994482, g: 0.2801275, b: 0.509434, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
+    reference: Clay
 --- !u!1 &6859179696393029790 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7666011683119632484, guid: 7169bb2970116ea4cb0bf89227fccae0, type: 3}
@@ -10358,7 +10362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 0.8767149, b: 0.3160377, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Metal_Clean
@@ -10380,7 +10384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 0.8767149, b: 0.3160377, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Metal_Clean
@@ -10407,7 +10411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0, b: 0, a: 1}
+  - materialColor: {r: 1, g: 0.8767149, b: 0.3160377, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Metal_Clean
