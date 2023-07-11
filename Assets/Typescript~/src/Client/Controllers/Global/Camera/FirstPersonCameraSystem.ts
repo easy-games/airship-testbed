@@ -72,7 +72,7 @@ export class FirstPersonCameraSystem {
 			headLookRotation,
 			Time.deltaTime * lerpMod,
 		);
-		//this.trackedHeadRotation = headLookRotation;
+		this.trackedHeadRotation = headLookRotation;
 
 		//Calculate new position based on head rotation
 		let newPosition = headLookPosition.sub(this.trackedHeadRotation.mul(neckOffset));

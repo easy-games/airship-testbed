@@ -2,7 +2,7 @@ import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
 import { SignalPriority } from "./Signal";
-import { SoundUtil } from "./SoundUtil";
+import { AudioManager } from "../Audio/AudioManager";
 
 /** Global close key for hiding interfaces. */
 const CLOSE_KEY = Key.Escape;
@@ -65,7 +65,7 @@ export class AppManager {
 		});
 
 		if (!config?.noOpenSound) {
-			SoundUtil.PlayGlobal("UI_Open.wav");
+			AudioManager.PlayGlobal("UI_Open.wav");
 		}
 
 		/*
@@ -97,7 +97,7 @@ export class AppManager {
 		this.opened = false;
 
 		if (!config?.noCloseSound) {
-			SoundUtil.PlayGlobal("UI_Close.wav");
+			AudioManager.PlayGlobal("UI_Close.wav");
 		}
 
 		if (this.openCanvas) {

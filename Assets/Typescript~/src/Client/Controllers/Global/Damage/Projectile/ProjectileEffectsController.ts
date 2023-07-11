@@ -9,7 +9,7 @@ import {
 	Bundle_Projectiles,
 	Bundle_Projectiles_OnHitVFX,
 } from "Shared/Util/ReferenceManagerResources";
-import { SoundUtil } from "Shared/Util/SoundUtil";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { SetTimeout } from "Shared/Util/Timer";
 import { ProjectileController } from "./ProjectileController";
 
@@ -42,7 +42,7 @@ export class ProjectileEffectsController implements OnStart {
 
 			const itemMeta = GetItemMeta(event.projectile.itemType);
 			if (!event.hitEntity && itemMeta.Ammo?.onHitGroundSoundId) {
-				SoundUtil.PlayAtPosition(itemMeta.Ammo.onHitGroundSoundId, event.hitPosition, {
+				AudioManager.PlayAtPosition(itemMeta.Ammo.onHitGroundSoundId, event.hitPosition, {
 					volumeScale: itemMeta.Ammo.onHitGroundSoundVolume ?? 1,
 				});
 			}

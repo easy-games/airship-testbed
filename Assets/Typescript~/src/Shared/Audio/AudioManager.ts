@@ -1,13 +1,13 @@
-import StringUtils from "./StringUtil";
-import { Task } from "./Task";
+import { Task } from "../Util/Task";
+import StringUtils from "../Util/StringUtil";
 
 const MAX_DISTANCE = 18;
 
-interface PlaySoundConfig {
+export interface PlaySoundConfig {
 	volumeScale: number;
 }
 
-export class SoundUtil {
+export class AudioManager {
 	public static globalSource: AudioSource;
 
 	public static Init(): void {

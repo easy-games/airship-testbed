@@ -1,4 +1,4 @@
-﻿import { SoundUtil } from "Shared/Util/SoundUtil";
+﻿import { AudioManager } from "Shared/Audio/AudioManager";
 import { Entity } from "../../Entity/Entity";
 import { BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../../Util/ReferenceManagerResources";
 import { RunUtil } from "../../Util/RunUtil";
@@ -105,11 +105,11 @@ export class HeldItem {
 		this.entity.anim?.PlayItemUse(useIndex);
 		if (this.meta.itemAssets?.onUseSoundId) {
 			if (this.entity.IsLocalCharacter()) {
-				SoundUtil.PlayGlobal(this.meta.itemAssets.onUseSoundId, {
+				AudioManager.PlayGlobal(this.meta.itemAssets.onUseSoundId, {
 					volumeScale: this.meta.itemAssets.onUseSoundVolume ?? 1,
 				});
 			} else {
-				SoundUtil.PlayAtPosition(this.meta.itemAssets.onUseSoundId, this.entity.model.transform.position, {
+				AudioManager.PlayAtPosition(this.meta.itemAssets.onUseSoundId, this.entity.model.transform.position, {
 					volumeScale: this.meta.itemAssets.onUseSoundVolume ?? 1,
 				});
 			}

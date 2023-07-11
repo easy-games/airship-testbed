@@ -10,7 +10,7 @@ import { BedWarsUI } from "Shared/UI/BedWarsUI";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { SoundUtil } from "Shared/Util/SoundUtil";
+import { AudioManager } from "Shared/Audio/AudioManager";
 
 @Controller({})
 export class TeamUpgradeController implements OnStart {
@@ -180,7 +180,7 @@ export class TeamUpgradeController implements OnStart {
 						nextTier,
 					);
 					if (result) {
-						SoundUtil.PlayGlobal("ItemShopPurchase.wav");
+						AudioManager.PlayGlobal("ItemShopPurchase.wav");
 					}
 				}
 			});
