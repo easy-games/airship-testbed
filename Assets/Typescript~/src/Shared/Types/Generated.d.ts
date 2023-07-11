@@ -2219,15 +2219,6 @@ declare const enum SkinQuality {
     Bone2 = 2,
     Bone4 = 4,
 }
-declare const enum WritePermission {
-    ServerOnly = 0,
-    ClientUnsynchronized = 1,
-}
-declare const enum ReadPermission {
-    Observers = 0,
-    OwnerOnly = 1,
-    ExcludeOwner = 2,
-}
 declare const enum KnownVectorType {
     LocalForward = 0,
     LocalBack = 1,
@@ -7573,6 +7564,7 @@ declare const PrimitiveValue: PrimitiveValueConstructor;
 interface InputStateBlockConstructor {
     InvalidOffset: number;
     AutomaticOffset: number;
+    FormatInvalid: FourCC;
     FormatBit: FourCC;
     FormatSBit: FourCC;
     FormatInt: FourCC;
@@ -7592,6 +7584,7 @@ interface InputStateBlockConstructor {
     FormatVector3Short: FourCC;
     FormatVector2Byte: FourCC;
     FormatVector3Byte: FourCC;
+    FormatPose: FourCC;
 
 
     GetPrimitiveFormatFromType(type: unknown): FourCC;
@@ -7639,6 +7632,7 @@ interface Pointer extends InputDevice, IInputStateCallbackReceiver {
     radius: Vector2Control;
     pressure: AxisControl;
     press: ButtonControl;
+    displayIndex: IntegerControl;
 
     constructor(): Pointer;
 
@@ -7670,6 +7664,14 @@ interface ButtonControl extends AxisControl {
     IsValueConsideredPressed(value: number): boolean;
 }
     
+interface IntegerControl extends InputControl<number> {
+
+    constructor(): IntegerControl;
+
+    ReadUnprocessedValueFromState(statePtr: unknown): number;
+    WriteValueIntoState(value: number, statePtr: unknown): void;
+}
+    
 interface PointerConstructor {
     current: Pointer;
 
@@ -7690,14 +7692,6 @@ interface Mouse extends Pointer {
 
     MakeCurrent(): void;
     WarpCursorPosition(position: Vector2): void;
-}
-    
-interface IntegerControl extends InputControl<number> {
-
-    constructor(): IntegerControl;
-
-    ReadUnprocessedValueFromState(statePtr: unknown): number;
-    WriteValueIntoState(value: number, statePtr: unknown): void;
 }
     
 interface MouseConstructor {
@@ -11439,118 +11433,6 @@ interface SkinnedMeshRenderer extends Renderer {
     SetBlendShapeWeight(index: number, value: number): void;
 }
     
-interface ProjectileNetworkBehaviour extends NetworkBehaviour {
-    gravity: number;
-    startingVelocity: Vector3;
-    useTrailLineRenderer: boolean;
-    CustomAlignmentOptions: CustomAlignmentOptions;
-    syncVar___gravity: SyncVar<number>;
-    syncVar___startingVelocity: SyncVar<Vector3>;
-    spawnTimeSec: number;
-    PreviousVisualPosition?: Vector3;
-    CurrentVisualPosition: Vector3;
-    SyncAccessor_gravity: number;
-    SyncAccessor_startingVelocity: Vector3;
-
-    constructor(): ProjectileNetworkBehaviour;
-
-    Awake(): void;
-    Awake___UserLogic(): void;
-    Despawn(): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    ReadSyncVar(PooledReader0: PooledReader, UInt321: number, Boolean2: boolean): boolean;
-    SetInitialShootingValues(velocity: Vector3, gravity: number): void;
-}
-    
-interface CustomAlignmentOptions {
-    ForwardVectorInt: number;
-    UpVectorInt: number;
-
-    constructor(): CustomAlignmentOptions;
-
-}
-    
-interface ISyncType {
-    IsDirty: boolean;
-
-
-    PreInitialize(networkManager: NetworkManager): void;
-    Read(reader: PooledReader): void;
-    Reset(): void;
-    SetRegistered(): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(writer: PooledWriter): void;
-}
-    
-interface SyncBase extends ISyncType {
-    Settings: Settings;
-    NetworkManager: NetworkManager;
-    NetworkBehaviour: NetworkBehaviour;
-    NextSyncTick: number;
-    IsRegistered: boolean;
-    IsNetworkInitialized: boolean;
-    IsSyncObject: boolean;
-    SendRate: number;
-    IsDirty: boolean;
-    SyncIndex: number;
-
-    constructor(): SyncBase;
-
-    Dirty(): boolean;
-    InitializeInstance(nb: NetworkBehaviour, syncIndex: number, writePermissions: WritePermission, readPermissions: ReadPermission, tickRate: number, channel: Channel, isSyncObject: boolean): void;
-    OnStartCallback(asServer: boolean): void;
-    OnStopCallback(asServer: boolean): void;
-    PreInitialize(networkManager: NetworkManager): void;
-    Read(reader: PooledReader): void;
-    Read(reader: PooledReader, asServer: boolean): void;
-    Reset(): void;
-    SetRegistered(): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(writer: PooledWriter): void;
-}
-    
-interface Settings {
-    WritePermission: WritePermission;
-    ReadPermission: ReadPermission;
-    SendRate: number;
-    Channel: Channel;
-
-    constructor(): Settings;
-    constructor(writePermission: WritePermission, readPermission: ReadPermission, sendRate: number, channel: Channel): Settings;
-    constructor(sendTickrate: number): Settings;
-    constructor(readPermission: ReadPermission, sendRate: number, channel: Channel): Settings;
-
-}
-    
-interface SyncVar<T> extends SyncBase {
-
-    constructor(nb: NetworkBehaviour, syncIndex: number, writePermission: WritePermission, readPermission: ReadPermission, sendRate: number, channel: Channel, value: T): SyncVar<T>;
-
-    GetValue(calledByUser: boolean): T;
-    OnStartCallback(asServer: boolean): void;
-    Reset(): void;
-    SetValue(nextValue: T, calledByUser: boolean): void;
-    WriteDelta(writer: PooledWriter, resetSyncTick: boolean): void;
-    WriteFull(obj0: PooledWriter): void;
-}
-    
-interface DrawTrajectory extends MonoBehaviour {
-
-    constructor(): DrawTrajectory;
-
-    DisableTrajectory(): void;
-    UpdateTrajectory(startingPoint: Vector3, velocity: Vector3, gravity: number): void;
-}
-    
-interface DrawTrajectoryConstructor {
-    Instance: DrawTrajectory;
-
-
-}
-declare const DrawTrajectory: DrawTrajectoryConstructor;
-    
 interface IAlignmentManager {
 
 
@@ -14695,4 +14577,63 @@ interface KeyValueReference<T> {
     constructor(): KeyValueReference<T>;
 
 }
+    
+interface CoreApi extends MonoBehaviour {
+    IsInitialized: boolean;
+
+    constructor(): CoreApi;
+
+    GetCoreUserData(): CoreUserData;
+    GetUserTokenAsync(forceRefresh: boolean): OnCompleteHook;
+    Init(): void;
+    InitializeGameCoordinatorAsync(): OnCompleteHook;
+    SendAsync(url: string, method: string, utf8Body: string, jsonParams: string, jsonHeaders: string): OnCompleteHook;
+    SubscribeToEvent(eventName: string): SocketIOMessageHook;
+    SubscribeToEvents(eventNamesJsonObj: string): SocketIOMessageHook;
+    UnsubscribeToEvent(eventName: string): void;
+}
+    
+interface CoreUserData {
+    UserId: string;
+    DisplayName: string;
+    Email: string;
+    IsAnonymous: boolean;
+    IsEmailVerified: boolean;
+    PhoneNumber: string;
+    ProviderId: string;
+    LastSignInTimestamp: number;
+    CreationTimestamp: number;
+
+    constructor(): CoreUserData;
+
+}
+    
+interface OnCompleteHook {
+
+    constructor(): OnCompleteHook;
+
+    Run(operationResult: OperationResult): void;
+}
+    
+interface OperationResult {
+    IsSuccess: boolean;
+    ReturnString: string;
+
+    constructor(isSuccess: boolean, returnString: string): OperationResult;
+
+}
+    
+interface SocketIOMessageHook {
+
+    constructor(): SocketIOMessageHook;
+
+    Run(messageName: string, message: string): void;
+}
+    
+interface CoreApiConstructor {
+    Instance: CoreApi;
+
+
+}
+declare const CoreApi: CoreApiConstructor;
 
