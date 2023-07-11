@@ -11,6 +11,6 @@ export const Queues: Record<QueueType, QueueMeta> = {
 			{ id: "3", name: "Green", maxPlayers: 4, color: Theme.Green },
 			{ id: "4", name: "Yellow", maxPlayers: 4, color: Theme.Yellow },
 		],
-		maps: ["Sanctum"],
+		maps: ["Aztec"],
 	},
 };
