@@ -29,6 +29,7 @@ export class EntityAnimator {
 		this.anim = anim;
 		this.entityRef = entityRef;
 		this.footstepAudioBundle = new AudioClipBundle([], "Footsteps");
+		this.footstepAudioBundle.soundOptions = { volumeScale: 0.2 };
 		this.damageEffectClip = BundleReferenceManager.LoadResource<AnimationClip>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
