@@ -99,11 +99,11 @@ export class LoadedMap {
 	 * @returns Map center position and rotation if sign `center` exists.
 	 */
 	public GetMapCenter(): MapPosition | undefined {
-		return this.mapObjects.miscMapObjects["Center"] as MapPosition | undefined;
+		return this.mapObjects.miscMapObjects["center"] as MapPosition | undefined;
 	}
 
 	public GetMapSpawnPlatform(): MapPosition | undefined {
-		return this.mapObjects.miscMapObjects["SpawnPlatform"] as MapPosition | undefined;
+		return this.mapObjects.miscMapObjects["spectator_spawn"] as MapPosition | undefined;
 	}
 
 	/**
@@ -185,6 +185,6 @@ export class LoadedMap {
 	 * @returns A team spawn position if it exists.
 	 */
 	public GetSpawnPositionForTeam(team: Team): MapPosition | undefined {
-		return this.mapObjects.teamMapObjects[team.id]["Spawn"];
+		return this.mapObjects.miscMapObjects[team.id + "_spawn"] as MapPosition | undefined;
 	}
 }
