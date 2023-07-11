@@ -12333,9 +12333,10 @@ interface VoxelWorld extends MonoBehaviour {
     voxelWorldFile: VoxelBinaryFile;
     blockDefines: TextAsset;
     worldNetworker: VoxelWorldNetworker;
+    chunksFolder: GameObject;
     sceneLights: CSDictionary<number, LightReference>;
     chunks: CSDictionary<unknown, Chunk>;
-    mapObjects: CSDictionary<string, Transform>;
+    worldPositionEditorIndicators: CSDictionary<string, Transform>;
     cubeMap: Cubemap;
     cubeMapPath: string;
     cubeMapSHData: CSArray<float3>;
@@ -12380,7 +12381,6 @@ interface VoxelWorld extends MonoBehaviour {
     GetWorldLightingFromRayImpact(pos: Vector3, direction: Vector3, maxDistance: number, debugSamples: CSArray<RadiosityProbeSample>): unknown;
     InitializeLightingForChunk(chunk: Chunk): void;
     LoadEmptyWorld(blockDefines: TextAsset, cubeMapPath: string): void;
-    LoadWorldFromResources(fileName: string): void;
     LoadWorldFromVoxelBinaryFile(file: VoxelBinaryFile, blockDefines: TextAsset): void;
     OnRenderObject(): void;
     PlaceGrassOnTopOfGrass(): void;
@@ -12393,6 +12393,7 @@ interface VoxelWorld extends MonoBehaviour {
     RegenerateAllMeshes(): void;
     ReloadTextureAtlas(): void;
     SampleSphericalHarmonics(shMap: CSArray<float3>, unitVector: Vector3): Color;
+    SaveToFile(): void;
     SpawnDebugSphere(pos: Vector3, col: Color, radius: number): GameObject;
     Update(): void;
     UpdateLights(): void;
@@ -12404,7 +12405,7 @@ interface VoxelWorld extends MonoBehaviour {
     
 interface VoxelBinaryFile extends ScriptableObject {
     chunks: CSArray<SaveChunk>;
-    mapObjects: CSArray<SaveObject>;
+    worldPositions: CSArray<WorldPosition>;
     pointLights: CSArray<SavePointlight>;
     cubeMapPath: string;
     globalSkySaturation: number;
@@ -12421,10 +12422,8 @@ interface VoxelBinaryFile extends ScriptableObject {
     CreateFromVoxelWorld(world: VoxelWorld): void;
     CreateVoxelWorld(world: VoxelWorld): void;
     GetChunks(): CSArray<SaveChunk>;
-    GetMapObjects(): CSArray<SaveObject>;
+    GetMapObjects(): CSArray<WorldPosition>;
     GetPointlights(): CSArray<SavePointlight>;
-    PlacePointlight(world: VoxelWorld): void;
-    PlaceWorldObjects(world: VoxelWorld): void;
 }
     
 interface SaveChunk {
@@ -12435,12 +12434,12 @@ interface SaveChunk {
 
 }
     
-interface SaveObject {
+interface WorldPosition {
     name: string;
     position: Vector3;
     rotation: Quaternion;
 
-    constructor(name: string, position: Vector3, rotation: Quaternion): SaveObject;
+    constructor(name: string, position: Vector3, rotation: Quaternion): WorldPosition;
 
 }
     
@@ -14578,4 +14577,63 @@ interface KeyValueReference<T> {
     constructor(): KeyValueReference<T>;
 
 }
+    
+interface CoreApi extends MonoBehaviour {
+    IsInitialized: boolean;
+
+    constructor(): CoreApi;
+
+    GetCoreUserData(): CoreUserData;
+    GetUserTokenAsync(forceRefresh: boolean): OnCompleteHook;
+    Init(): void;
+    InitializeGameCoordinatorAsync(): OnCompleteHook;
+    SendAsync(url: string, method: string, utf8Body: string, jsonParams: string, jsonHeaders: string): OnCompleteHook;
+    SubscribeToEvent(eventName: string): SocketIOMessageHook;
+    SubscribeToEvents(eventNamesJsonObj: string): SocketIOMessageHook;
+    UnsubscribeToEvent(eventName: string): void;
+}
+    
+interface CoreUserData {
+    UserId: string;
+    DisplayName: string;
+    Email: string;
+    IsAnonymous: boolean;
+    IsEmailVerified: boolean;
+    PhoneNumber: string;
+    ProviderId: string;
+    LastSignInTimestamp: number;
+    CreationTimestamp: number;
+
+    constructor(): CoreUserData;
+
+}
+    
+interface OnCompleteHook {
+
+    constructor(): OnCompleteHook;
+
+    Run(operationResult: OperationResult): void;
+}
+    
+interface OperationResult {
+    IsSuccess: boolean;
+    ReturnString: string;
+
+    constructor(isSuccess: boolean, returnString: string): OperationResult;
+
+}
+    
+interface SocketIOMessageHook {
+
+    constructor(): SocketIOMessageHook;
+
+    Run(messageName: string, message: string): void;
+}
+    
+interface CoreApiConstructor {
+    Instance: CoreApi;
+
+
+}
+declare const CoreApi: CoreApiConstructor;
 
