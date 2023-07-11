@@ -2,7 +2,6 @@ import Object from "@easy-games/unity-object-utils";
 import { Team } from "Shared/Team/Team";
 import StringUtils from "Shared/Util/StringUtil";
 import { MapPosition } from "./MapPosition";
-import { GameMap } from "./Maps";
 
 /** Map alias type. */
 export type TeamMapObjects = { [teamId: string]: { [objectId: string]: MapPosition } };
@@ -27,10 +26,10 @@ export class LoadedMap {
 	private mapObjects: MapObjects = { teamMapObjects: {}, miscMapObjects: {} };
 
 	/** The loaded map. */
-	private loadedMap: GameMap;
+	private loadedMapId: string;
 
-	constructor(gameMap: GameMap, mapObjects: SaveObjectTS[]) {
-		this.loadedMap = gameMap;
+	constructor(gameMapId: string, mapObjects: SaveObjectTS[]) {
+		this.loadedMapId = gameMapId;
 		this.ParseMapObjects(mapObjects);
 	}
 
@@ -92,19 +91,19 @@ export class LoadedMap {
 	 * Fetch currently loaded game map.
 	 * @returns Currently loaded game map.
 	 */
-	public GetLoadedGameMap(): GameMap {
-		return this.loadedMap;
+	public GetLoadedGameMapId(): string {
+		return this.loadedMapId;
 	}
 
 	/**
 	 * @returns Map center position and rotation if sign `center` exists.
 	 */
 	public GetMapCenter(): MapPosition | undefined {
-		return this.mapObjects.miscMapObjects["Center"] as MapPosition | undefined;
+		return this.mapObjects.miscMapObjects["center"] as MapPosition | undefined;
 	}
 
 	public GetMapSpawnPlatform(): MapPosition | undefined {
-		return this.mapObjects.miscMapObjects["SpawnPlatform"] as MapPosition | undefined;
+		return this.mapObjects.miscMapObjects["spectator_spawn"] as MapPosition | undefined;
 	}
 
 	/**
@@ -186,6 +185,6 @@ export class LoadedMap {
 	 * @returns A team spawn position if it exists.
 	 */
 	public GetSpawnPositionForTeam(team: Team): MapPosition | undefined {
-		return this.mapObjects.teamMapObjects[team.id]["Spawn"];
+		return this.mapObjects.miscMapObjects[team.id + "_spawn"] as MapPosition | undefined;
 	}
 }

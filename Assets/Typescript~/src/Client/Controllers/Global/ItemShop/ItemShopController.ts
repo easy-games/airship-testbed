@@ -9,7 +9,7 @@ import { BedWarsUI } from "Shared/UI/BedWarsUI";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { SoundUtil } from "Shared/Util/SoundUtil";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { InventoryController } from "../Inventory/InventoryController";
 
 @Controller({})
@@ -95,7 +95,7 @@ export class ItemShopController implements OnStart {
 		if (!this.selectedItem) return;
 		const result = Network.ClientToServer.Shop.PurchaseRequest.Client.FireServer(this.selectedItem);
 		if (result) {
-			SoundUtil.PlayGlobal("ItemShopPurchase.wav");
+			AudioManager.PlayGlobal("ItemShopPurchase.wav");
 		}
 	}
 

@@ -52,7 +52,7 @@
     <TopTexture>stone_brick.s</TopTexture>
     <SideTexture>stone_brick.s</SideTexture>
     <Solid>true</Solid>
-    <Minecraft>98</Minecraft>
+    <Minecraft>98,97:2</Minecraft>
     <Brightness>2</Brightness>
   </Block>
 
@@ -191,7 +191,7 @@
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
-    <Minecraft>1:6</Minecraft>
+    <Minecraft>1:6,1:1,1:2</Minecraft>
     <Brightness>2</Brightness>
   </Block>
 
@@ -412,6 +412,28 @@
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Brightness>2</Brightness>
+  </Block>
+  <Block>
+    <Index>59</Index>
+    <Name>Oak Leaf</Name>
+    <TopTexture>leaf_oak.s</TopTexture>
+    <SideTexture>leaf_oak.s</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Brightness>2</Brightness>
+    <Minecraft>48</Minecraft>
+  </Block>
+  <Block>
+    <Index>60</Index>
+    <Name>Brown Clay</Name>
+    <TopTexture>clay_brown.s</TopTexture>
+    <SideTexture>clay_brown.s</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Brightness>2</Brightness>
+    <Minecraft>159:12</Minecraft>
   </Block>
 </Blocks>
 

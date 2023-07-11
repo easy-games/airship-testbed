@@ -321,6 +321,24 @@ export const items: {
 			blockId: 57,
 		},
 	},
+	[ItemType.BROWN_CLAY]: {
+		displayName: "Brown Clay",
+		itemMechanics: blockItemMechanics,
+		itemAssets: blockItemAssets,
+		block: {
+			...defaultBlock,
+			blockId: 60,
+		},
+	},
+	[ItemType.LEAF_OAK]: {
+		displayName: "Oak Leaf",
+		itemMechanics: blockItemMechanics,
+		itemAssets: blockItemAssets,
+		block: {
+			...defaultBlock,
+			blockId: 59,
+		},
+	},
 	[ItemType.DIAMOND_BLOCK]: {
 		displayName: "Diamond Block",
 		itemMechanics: blockItemMechanics,

@@ -3,7 +3,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { SignalPriority } from "Shared/Util/Signal";
-import { SoundUtil } from "Shared/Util/SoundUtil";
+import { AudioManager } from "Shared/Audio/AudioManager";
 
 @Controller({})
 export class BlockEffectsController implements OnStart {
@@ -15,7 +15,7 @@ export class BlockEffectsController implements OnStart {
 		ClientSignals.BlockPlace.Connect((event) => {
 			if (!event.placer) return;
 
-			SoundUtil.PlayAtPosition(
+			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(event.block.itemMeta?.block?.placeSound ?? this.placeSoundDefault),
 				event.pos,
 			);
@@ -28,7 +28,7 @@ export class BlockEffectsController implements OnStart {
 			if (!itemType) return;
 
 			const itemMeta = GetItemMeta(itemType);
-			SoundUtil.PlayAtPosition(
+			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(itemMeta?.block?.hitSound ?? this.hitSoundDefault),
 				event.pos,
 			);
@@ -37,7 +37,7 @@ export class BlockEffectsController implements OnStart {
 		ClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 			if (!event.block.itemMeta) return;
 
-			SoundUtil.PlayAtPosition(
+			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(event.block.itemMeta.block?.hitSound ?? this.hitSoundDefault),
 				event.blockPos,
 			);

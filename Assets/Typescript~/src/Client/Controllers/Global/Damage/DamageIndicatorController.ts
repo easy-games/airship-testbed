@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
-import { SoundUtil } from "Shared/Util/SoundUtil";
+import { AudioManager } from "Shared/Audio/AudioManager";
 
 @Controller({})
 export class DamageIndicatorController implements OnStart {
@@ -16,7 +16,7 @@ export class DamageIndicatorController implements OnStart {
 			event.entity.anim?.PlayTakeDamage(event.amount, event.damageType, entityGO.transform.position, entityGO);
 
 			// Damage taken sound
-			SoundUtil.PlayAtPosition("Damage_Taken.wav", entityGO.transform.position);
+			AudioManager.PlayAtPosition("Damage_Taken.wav", entityGO.transform.position);
 
 			// Indicator
 			// const indicatorGO = GameObjectBridge.InstantiateAt(
@@ -41,12 +41,12 @@ export class DamageIndicatorController implements OnStart {
 		ClientSignals.EntityDeath.Connect((event) => {
 			// PvP Kill
 			if (event.fromEntity?.IsLocalCharacter() && event.fromEntity !== event.entity) {
-				SoundUtil.PlayGlobal("Player_Kill", { volumeScale: 0.12 });
+				AudioManager.PlayGlobal("Player_Kill", { volumeScale: 0.12 });
 			}
 
 			// Local death
 			if (event.entity.IsLocalCharacter()) {
-				SoundUtil.PlayGlobal("Death", {
+				AudioManager.PlayGlobal("Death", {
 					volumeScale: 0.3,
 				});
 			}
