@@ -43,8 +43,8 @@ export class EntityAnimator {
 
 		//Listen to animation events
 		this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
-			print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
-			this.OnAnimationEvent(data);
+			//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
+			this.OnAnimationEvent(data.key, data);
 		});
 	}
 
@@ -109,22 +109,22 @@ export class EntityAnimator {
 		});
 	}
 
-	private OnAnimationEvent(data: EntityAnimationEventData) {
+	private OnAnimationEvent(key: EntityAnimationEventKey, data: EntityAnimationEventData) {
 		let blockBelowMeta = this.entity.GetBlockBelowMeta();
 
-		//switch (data.key) {
-		//	case EntityAnimationEventKey.FOOTSTEP:
-		//Play footstep sound
-		if (blockBelowMeta && blockBelowMeta.stepSound && blockBelowMeta.stepSound.size() > 0) {
-			if (blockBelowMeta.blockId !== this.steppedOnBlockType) {
-				//Refresh our audio bundle with the new sound list
-				this.steppedOnBlockType = blockBelowMeta.blockId;
-				this.footstepAudioBundle.UpdatePaths(blockBelowMeta.stepSound);
-			}
-			this.footstepAudioBundle.spacialPosition = this.entity.model.transform.position;
-			this.footstepAudioBundle.PlayNext();
+		switch (key) {
+			case EntityAnimationEventKey.FOOTSTEP:
+				//Play footstep sound
+				if (blockBelowMeta && blockBelowMeta.stepSound && blockBelowMeta.stepSound.size() > 0) {
+					if (blockBelowMeta.blockId !== this.steppedOnBlockType) {
+						//Refresh our audio bundle with the new sound list
+						this.steppedOnBlockType = blockBelowMeta.blockId;
+						this.footstepAudioBundle.UpdatePaths(blockBelowMeta.stepSound);
+					}
+					this.footstepAudioBundle.spacialPosition = this.entity.model.transform.position;
+					this.footstepAudioBundle.PlayNext();
+				}
+				break;
 		}
-		//		break;
-		//}
 	}
 }

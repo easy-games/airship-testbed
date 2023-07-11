@@ -14550,7 +14550,7 @@ interface MeshProcessorConstructor {
 declare const MeshProcessor: MeshProcessorConstructor;
     
 interface EntityAnimationEventData {
-    key: EntityAnimationEventKey;
+    key: number;
 
     constructor(): EntityAnimationEventData;
 
