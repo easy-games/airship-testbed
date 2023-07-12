@@ -26,7 +26,7 @@ export class EntityService implements OnStart {
 		this.chatService.RegisterCommand(new EntityCommand());
 
 		ServerSignals.MapLoad.connect((event) => {
-			const pos = event.LoadedMap.GetMapSpawnPlatform();
+			const pos = event.LoadedMap.GetSpawnPlatform();
 			if (pos) {
 				Task.Delay(1, () => {
 					this.SpawnEntityForPlayer(

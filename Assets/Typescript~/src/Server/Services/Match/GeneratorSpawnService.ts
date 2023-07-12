@@ -1,5 +1,4 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import ObjectUtil from "@easy-games/unity-object-utils";
 import { ServerSignals } from "Server/ServerSignals";
 import { GeneratorService } from "Server/Services/Global/Generator/GeneratorService";
 import { ItemType } from "Shared/Item/ItemType";
@@ -40,33 +39,33 @@ export class GeneratorSpawnService implements OnStart {
 	/** Create map generators. */
 	private CreateMapGenerators(): void {
 		/* Team generators. */
-		const ironGenerators = this.loadedMap!.GetTeamGenerators();
-		ObjectUtil.keys(ironGenerators).forEach((teamId) => {
-			const generator = ironGenerators[teamId];
-			if (!generator) return;
-			const generatorId = this.generatorService.CreateGenerator(generator.Position, {
-				item: ItemType.IRON,
-				spawnRate: 1,
-				stackLimit: 100,
-				label: false,
-				split: {
-					splitRange: 30,
-				},
-			});
-			/* Create deny region on generator. */
-			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(generator.Position), DENY_REGION_SIZE);
-			/* Add to team map. */
-			const team = this.teamService.GetTeamById(teamId as string);
-			if (!team) return;
-			const teamGenerators = this.teamMap.get(team);
-			if (teamGenerators) {
-				teamGenerators.push(generatorId);
-			} else {
-				this.teamMap.set(team, [generatorId]);
+		for (let team of this.teamService.GetTeams()) {
+			const ironGenerators = this.mapService.GetLoadedMap()?.GetWorldPositions(team.id + "_generator");
+			if (ironGenerators && ironGenerators.size() > 0) {
+				for (let worldPos of ironGenerators) {
+					const generatorId = this.generatorService.CreateGenerator(worldPos.Position, {
+						item: ItemType.IRON,
+						spawnRate: 1,
+						stackLimit: 100,
+						label: false,
+						split: {
+							splitRange: 30,
+						},
+					});
+
+					this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(worldPos.Position), DENY_REGION_SIZE);
+
+					const teamGenerators = this.teamMap.get(team);
+					if (teamGenerators) {
+						teamGenerators.push(generatorId);
+					} else {
+						this.teamMap.set(team, [generatorId]);
+					}
+				}
 			}
-		});
+		}
 		/* Map generators. */
-		const diamondGenerators = this.loadedMap!.GetMapDiamondGenerators();
+		const diamondGenerators = this.mapService.GetLoadedMap()?.GetWorldPositions("diamond");
 		if (diamondGenerators) {
 			diamondGenerators.forEach((mapPosition) => {
 				this.generatorService.CreateGenerator(mapPosition.Position, {

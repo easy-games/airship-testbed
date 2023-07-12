@@ -9,9 +9,6 @@ import { MapPosition } from "./Map/MapPosition";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
 
-/** How high above center of map spawn platform should spawn. */
-const SPAWN_PLATFORM_HEIGHT_OFFSET = new Vector3(0, 80, 0);
-
 @Service({})
 export class PreGameService implements OnStart {
 	/** Loaded map. */
@@ -25,8 +22,8 @@ export class PreGameService implements OnStart {
 	OnStart(): void {
 		Task.Spawn(() => {
 			this.loadedMap = Dependency<MapService>().WaitForMapLoaded();
-			this.spawnPosition = this.loadedMap.GetMapSpawnPlatform();
-			this.mapCenter = this.loadedMap.GetMapCenter()?.Position ?? new Vector3(0, 0, 0);
+			this.spawnPosition = this.loadedMap.GetSpawnPlatform()[0];
+			this.mapCenter = this.loadedMap.GetCenter()[0].Position ?? new Vector3(0, 0, 0);
 			this.CreateSpawnPlatform(this.spawnPosition);
 		});
 
@@ -40,9 +37,10 @@ export class PreGameService implements OnStart {
 
 		ServerSignals.BeforeEntitySpawn.connect((event) => {
 			if (this.matchService.GetState() === MatchState.PRE && event.player) {
-				event.spawnPosition =
-					this.loadedMap?.GetMapSpawnPlatform()?.Position.add(new Vector3(0, 0.2, 0)) ??
-					new Vector3(0, 20, 0);
+				const pos = this.loadedMap?.GetSpawnPlatform()[0];
+				if (pos) {
+					event.spawnPosition = pos.Position.add(new Vector3(0, 0.2, 0)) ?? new Vector3(0, 20, 0);
+				}
 			}
 		});
 	}

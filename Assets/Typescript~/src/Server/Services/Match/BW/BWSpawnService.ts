@@ -7,6 +7,7 @@ import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Task } from "Shared/Util/Task";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
@@ -74,10 +75,11 @@ export class BWSpawnService implements OnStart {
 			if (this.matchService.IsRunning() && event.player) {
 				const team = event.player.GetTeam();
 				if (!team) return;
-				const teamSpawnPos = this.loadedMap!.GetSpawnPositionForTeam(team);
-				if (!teamSpawnPos) return;
-
-				event.spawnPosition = teamSpawnPos.Position.add(new Vector3(0, 0.2, 0));
+				const teamSpawnPositions = this.mapService.GetLoadedMap()?.GetWorldPositions(team.id + "_spawn");
+				if (teamSpawnPositions && teamSpawnPositions.size() > 0) {
+					const pos = RandomUtil.FromArray(teamSpawnPositions).Position.add(new Vector3(0, 0.2, 0));
+					event.spawnPosition = pos;
+				}
 			}
 		});
 	}
@@ -87,10 +89,14 @@ export class BWSpawnService implements OnStart {
 		/* Teleport to team spawn location. */
 		const team = player.GetTeam();
 		if (!team) return;
-		const teamSpawnPos = this.loadedMap!.GetSpawnPositionForTeam(team);
-		if (!teamSpawnPos) return;
-		const humanoid = player.Character?.gameObject.GetComponent<EntityDriver>();
-		if (humanoid) humanoid.Teleport(teamSpawnPos.Position.add(new Vector3(0, 0.2, 0)));
+		const teamSpawnPositions = this.mapService.GetLoadedMap()?.GetWorldPositions(team.id + "_spawn");
+		if (teamSpawnPositions && teamSpawnPositions.size() > 0) {
+			const pos = RandomUtil.FromArray(teamSpawnPositions).Position.add(new Vector3(0, 0.2, 0));
+			const humanoid = player.Character?.gameObject.GetComponent<EntityDriver>();
+			if (humanoid) {
+				humanoid.Teleport(pos);
+			}
+		}
 	}
 
 	/** Gives an `InventoryEntity` starter inventory on spawn. */
