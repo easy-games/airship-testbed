@@ -46,24 +46,22 @@ export class BedService implements OnStart {
 
 		// Spawn beds.
 		for (let team of this.teamService.GetTeams()) {
-			const bedPositions = loadedMap.GetWorldPositions(team.id + "_bed");
-			for (const bedPosition of bedPositions) {
-				const bedPos = MathUtil.FloorVec(
-					new Vector3(bedPosition.Position.x, bedPosition.Position.y, bedPosition.Position.z),
-				);
-				const bedState: BedState = {
-					teamId: team.id,
-					position: bedPos,
-					/* _Always_ starts as not destroyed. */
-					destroyed: false,
-				};
-				this.teamToBed.set(team.id, bedState);
-				WorldAPI.GetMainWorld().PlaceBlock(bedPos, ItemType.BED);
-				/* TEMPORARY. Fix `VoxelDataAPI` race condition. */
-				Task.Delay(1, () => {
-					VoxelDataAPI.SetVoxelData(bedPos, "teamId", team.id);
-				});
-			}
+			const bedPosition = loadedMap.GetWorldPosition(team.id + "_bed");
+			const bedPos = MathUtil.FloorVec(
+				new Vector3(bedPosition.Position.x, bedPosition.Position.y, bedPosition.Position.z),
+			);
+			const bedState: BedState = {
+				teamId: team.id,
+				position: bedPos,
+				/* _Always_ starts as not destroyed. */
+				destroyed: false,
+			};
+			this.teamToBed.set(team.id, bedState);
+			WorldAPI.GetMainWorld().PlaceBlock(bedPos, ItemType.BED);
+			/* TEMPORARY. Fix `VoxelDataAPI` race condition. */
+			Task.Delay(1, () => {
+				VoxelDataAPI.SetVoxelData(bedPos, "teamId", team.id);
+			});
 		}
 	}
 

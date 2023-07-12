@@ -39,21 +39,17 @@ export class ShopkeeperService implements OnStart {
 		}
 
 		for (let team of this.teamService.GetTeams()) {
-			const itemShopPositions = loadedMap.GetWorldPositions(team.id + "_item_shop");
-			for (let pos of itemShopPositions) {
-				const keeper = GameObjectBridge.InstantiateAt(this.shopKeeperPrefab, pos.Position, pos.Rotation);
-				NetworkBridge.Spawn(keeper, CollectionTag.ITEM_SHOP_SHOPKEEPER);
-				/* Create deny region around shopkeeper. */
-				this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(pos.Position), DENY_REGION_SIZE);
-			}
+			const itemShopPosition = loadedMap.GetWorldPosition(team.id + "_item_shop");
+            const itemShopKeeper = GameObjectBridge.InstantiateAt(this.shopKeeperPrefab, itemShopPosition.Position, itemShopPosition.Rotation);
+            NetworkBridge.Spawn(itemShopKeeper, CollectionTag.ITEM_SHOP_SHOPKEEPER);
+            /* Create deny region around shopkeeper. */
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(itemShopPosition.Position), DENY_REGION_SIZE);
 
-			const teamUpgradePositions = loadedMap.GetWorldPositions(team.id + "_upgrade_shop");
-			for (let pos of teamUpgradePositions) {
-				const keeper = GameObjectBridge.InstantiateAt(this.shopKeeperPrefab, pos.Position, pos.Rotation);
-				NetworkBridge.Spawn(keeper, CollectionTag.TEAM_UPGRADES_SHOPKEEPER);
-				/* Create deny region around shopkeeper. */
-				this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(pos.Position), DENY_REGION_SIZE);
-			}
+			const teamUpgradePosition = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
+            const upgradeShopKeeper = GameObjectBridge.InstantiateAt(this.shopKeeperPrefab, teamUpgradePosition.Position, teamUpgradePosition.Rotation);
+            NetworkBridge.Spawn(upgradeShopKeeper, CollectionTag.TEAM_UPGRADES_SHOPKEEPER);
+            /* Create deny region around shopkeeper. */
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(teamUpgradePosition.Position), DENY_REGION_SIZE);
 		}
 	}
 }

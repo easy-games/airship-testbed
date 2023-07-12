@@ -43,32 +43,29 @@ export class GeneratorSpawnService implements OnStart {
 
 		// Team generators.
 		for (let team of this.teamService.GetTeams()) {
-			const ironGenerators = loadedMap.GetWorldPositions(team.id + "_generator");
-			if (ironGenerators && ironGenerators.size() > 0) {
-				for (let worldPos of ironGenerators) {
-					const generatorId = this.generatorService.CreateGenerator(worldPos.Position, {
-						item: ItemType.IRON,
-						spawnRate: 1,
-						stackLimit: 100,
-						label: false,
-						split: {
-							splitRange: 30,
-						},
-					});
+			const ironGeneratorPos = loadedMap.GetWorldPosition(team.id + "_generator");
+			const generatorId = this.generatorService.CreateGenerator(ironGeneratorPos.Position, {
+                item: ItemType.IRON,
+                spawnRate: 1,
+                stackLimit: 100,
+                label: false,
+                split: {
+                    splitRange: 30,
+                },
+            });
 
-					this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(worldPos.Position), DENY_REGION_SIZE);
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(ironGeneratorPos.Position), DENY_REGION_SIZE);
 
-					const teamGenerators = this.teamMap.get(team);
-					if (teamGenerators) {
-						teamGenerators.push(generatorId);
-					} else {
-						this.teamMap.set(team, [generatorId]);
-					}
-				}
-			}
+            const teamGenerators = this.teamMap.get(team);
+            if (teamGenerators) {
+                teamGenerators.push(generatorId);
+            } else {
+                this.teamMap.set(team, [generatorId]);
+            }
 		}
+
 		// Map generators.
-		const diamondGenerators = loadedMap.GetWorldPositions("diamond");
+		const diamondGenerators = loadedMap.GetWorldPositionsForTag("diamond");
 		diamondGenerators.forEach((mapPosition) => {
             this.generatorService.CreateGenerator(mapPosition.Position, {
                 item: ItemType.DIAMOND,
@@ -80,7 +77,7 @@ export class GeneratorSpawnService implements OnStart {
             this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
         });
 
-		const emeraldGenerators = loadedMap.GetWorldPositions("emerald");
+		const emeraldGenerators = loadedMap.GetWorldPositionsForTag("emerald");
 		emeraldGenerators.forEach((mapPosition) => {
             this.generatorService.CreateGenerator(mapPosition.Position, {
                 item: ItemType.EMERALD,

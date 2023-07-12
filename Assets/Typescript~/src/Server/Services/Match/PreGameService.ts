@@ -5,7 +5,7 @@ import { MatchState } from "Shared/Match/MatchState";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Global/Entity/EntityService";
 import { LoadedMap } from "./Map/LoadedMap";
-import { MapPosition } from "./Map/MapPosition";
+import { WorldPosition } from "./Map/MapPosition";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
 
@@ -15,15 +15,15 @@ export class PreGameService implements OnStart {
 	private loadedMap: LoadedMap | undefined;
 
 	private mapCenter = new Vector3(0, 0, 0);
-	private spawnPosition: MapPosition | undefined;
+	private spawnPosition: WorldPosition | undefined;
 
 	constructor(private readonly matchService: MatchService) {}
 
 	OnStart(): void {
 		Task.Spawn(() => {
 			this.loadedMap = Dependency<MapService>().WaitForMapLoaded();
-			this.spawnPosition = this.loadedMap.GetSpawnPlatform()[0];
-			this.mapCenter = this.loadedMap.GetCenter()[0].Position ?? new Vector3(0, 0, 0);
+			this.spawnPosition = this.loadedMap.GetSpawnPlatform();
+			this.mapCenter = this.loadedMap.GetCenter().Position;
 			this.CreateSpawnPlatform(this.spawnPosition);
 		});
 
@@ -37,16 +37,16 @@ export class PreGameService implements OnStart {
 
 		ServerSignals.BeforeEntitySpawn.connect((event) => {
 			if (this.matchService.GetState() === MatchState.PRE && event.player) {
-				const pos = this.loadedMap?.GetSpawnPlatform()[0];
-				if (pos) {
-					event.spawnPosition = pos.Position.add(new Vector3(0, 0.2, 0)) ?? new Vector3(0, 20, 0);
-				}
+				const pos = this.loadedMap?.GetSpawnPlatform();
+                if (pos) {
+                    event.spawnPosition = pos.Position.add(new Vector3(0, 0.2, 0));
+                }
 			}
 		});
 	}
 
 	/** Creates spawn platform above map. */
-	private CreateSpawnPlatform(spawnPlatformPosition: MapPosition | undefined): void {
+	private CreateSpawnPlatform(spawnPlatformPosition: WorldPosition | undefined): void {
 		const camera = Camera.main;
 		if (!camera) return;
 

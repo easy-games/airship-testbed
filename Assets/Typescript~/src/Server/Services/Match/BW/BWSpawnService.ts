@@ -7,7 +7,6 @@ import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
-import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Task } from "Shared/Util/Task";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
@@ -32,16 +31,14 @@ export class BWSpawnService implements OnStart {
         private readonly entityService: EntityService
 	) {
         ServerSignals.MapLoad.connect((event) => {
-			const positions = event.LoadedMap.GetSpawnPlatform();
-            if (positions.size() > 0) {
-                Task.Delay(1, () => {
-                    this.entityService.SpawnEntityForPlayer(
-                        undefined,
-                        EntityPrefabType.HUMAN,
-                        positions[0].Position.add(new Vector3(-3, 2, 3)),
-                    );
-                });
-            }
+			const position = event.LoadedMap.GetSpawnPlatform();
+            Task.Delay(1, () => {
+                this.entityService.SpawnEntityForPlayer(
+                    undefined,
+                    EntityPrefabType.HUMAN,
+                    position.Position.add(new Vector3(-3, 2, 3)),
+                );
+            });
 		});
     }
 
@@ -89,9 +86,9 @@ export class BWSpawnService implements OnStart {
 			if (this.matchService.IsRunning() && event.player) {
 				const team = event.player.GetTeam();
 				if (!team) return;
-				const teamSpawnPositions = this.mapService.GetLoadedMap()?.GetWorldPositions(team.id + "_spawn");
-				if (teamSpawnPositions && teamSpawnPositions.size() > 0) {
-					const pos = RandomUtil.FromArray(teamSpawnPositions).Position.add(new Vector3(0, 0.2, 0));
+				const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
+				if (teamSpawnPosition) {
+					const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
 					event.spawnPosition = pos;
 				}
 			}
@@ -103,9 +100,9 @@ export class BWSpawnService implements OnStart {
 		/* Teleport to team spawn location. */
 		const team = player.GetTeam();
 		if (!team) return;
-		const teamSpawnPositions = this.mapService.GetLoadedMap()?.GetWorldPositions(team.id + "_spawn");
-		if (teamSpawnPositions && teamSpawnPositions.size() > 0) {
-			const pos = RandomUtil.FromArray(teamSpawnPositions).Position.add(new Vector3(0, 0.2, 0));
+		const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
+		if (teamSpawnPosition) {
+			const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
 			const humanoid = player.Character?.gameObject.GetComponent<EntityDriver>();
 			if (humanoid) {
 				humanoid.Teleport(pos);
