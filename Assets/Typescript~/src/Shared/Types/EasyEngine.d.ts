@@ -396,12 +396,10 @@ interface EasyProjectile {
 
 interface CoreApi {
 	OnInitializedEvent(callback: () => void): void;
+	OnGameCoordinatorMessage(callback: (messageName: string, jsonMessage: string) => void): void;
+	OnTokenIdChangedEvent(callback: (newTokenId: string) => void): void;
 }
 
 interface OnCompleteHook {
 	OnCompleteEvent(callback: (operationResult: OperationResult) => void): void;
-}
-
-interface SocketIOMessageHook {
-	OnEventReceived(callback: (messageName: string, message: string) => void): void;
 }
