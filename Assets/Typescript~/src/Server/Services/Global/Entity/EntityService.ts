@@ -9,7 +9,6 @@ import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { Network } from "Shared/Network";
 import { NetworkBridge } from "Shared/NetworkBridge";
 import { Player } from "Shared/Player/Player";
-import { Task } from "Shared/Util/Task";
 import { EntityPrefabType } from "../../../Entity/EntityPrefabType";
 import { ChatService } from "../Chat/ChatService";
 import { InventoryService } from "../Inventory/InventoryService";
@@ -24,19 +23,6 @@ export class EntityService implements OnStart {
 
 	constructor(private readonly invService: InventoryService, private readonly chatService: ChatService) {
 		this.chatService.RegisterCommand(new EntityCommand());
-
-		ServerSignals.MapLoad.connect((event) => {
-			const pos = event.LoadedMap.GetMapSpawnPlatform();
-			if (pos) {
-				Task.Delay(1, () => {
-					this.SpawnEntityForPlayer(
-						undefined,
-						EntityPrefabType.HUMAN,
-						pos.Position.add(new Vector3(-3, 2, 3)),
-					);
-				});
-			}
-		});
 	}
 
 	OnStart(): void {
