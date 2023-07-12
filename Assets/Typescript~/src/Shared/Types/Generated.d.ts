@@ -2823,6 +2823,10 @@ declare const enum LineAlignment {
 }
 declare const enum EntityAnimationEventKey {
     FOOTSTEP = 0,
+    JUMP = 1,
+    LAND = 2,
+    SLIDE_START = 3,
+    SLIDE_END = 4,
     DEFAULT = -1,
 }
 

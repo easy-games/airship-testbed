@@ -34,6 +34,9 @@ export enum Bundle_Entity_OnHit{
 export enum Bundle_Entity_Movement{
 	NONE = -1,
 	SprintTrail,
+	SlideSFX,
+	JumpSFX,
+	LandSFX,
 }
 
 export enum Bundle_Entity{
@@ -240,6 +243,9 @@ export class ReferenceManagerAssets{
 			id: Bundle_Entity.Movement,
 			filePaths: new Map([
 				[Bundle_Entity_Movement.SprintTrail, "Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab"],
+				[Bundle_Entity_Movement.SlideSFX, "Shared/Resources/Sound/Movement/SlideStart.ogg"],
+				[Bundle_Entity_Movement.JumpSFX, "Shared/Resources/Sound/Movement/JumpStart.ogg"],
+				[Bundle_Entity_Movement.LandSFX, "Shared/Resources/Sound/Movement/JumpLand.ogg"],
 			])}],
 		])
 	}

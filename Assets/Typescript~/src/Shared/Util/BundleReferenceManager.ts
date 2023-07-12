@@ -9,6 +9,14 @@ export class BundleReferenceManager {
 		return this.LoadResourcesFromBundle<T>(bundleGroup.bundles.get(bundleIndex));
 	}
 
+	public static GetPathForResource(groupId: BundleGroupNames, bundleIndex: number, itemKey: number): string {
+		let bundleGroup = ReferenceManagerAssets.bundleGroups.get(groupId);
+		if (bundleGroup === undefined) {
+			return "";
+		}
+		return bundleGroup.bundles.get(bundleIndex)?.filePaths.get(itemKey) ?? "";
+	}
+
 	public static LoadResource<T>(groupId: BundleGroupNames, bundleIndex: number, itemKey: number): T | undefined {
 		let bundleGroup = ReferenceManagerAssets.bundleGroups.get(groupId);
 		if (bundleGroup === undefined) {
@@ -42,7 +50,7 @@ export class BundleReferenceManager {
 	}
 
 	public static LoadResourceFromMap<T>(filePaths: Map<number, string> | undefined, itemKey: number) {
-		if(!filePaths){
+		if (!filePaths) {
 			return undefined;
 		}
 		let path = filePaths.get(itemKey);

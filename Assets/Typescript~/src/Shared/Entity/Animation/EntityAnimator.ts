@@ -43,7 +43,9 @@ export class EntityAnimator {
 
 		//Listen to animation events
 		this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
-			//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
+			if (data.key !== 0) {
+				//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
+			}
 			this.OnAnimationEvent(data.key, data);
 		});
 	}
@@ -123,6 +125,27 @@ export class EntityAnimator {
 					}
 					this.footstepAudioBundle.spacialPosition = this.entity.model.transform.position;
 					this.footstepAudioBundle.PlayNext();
+				}
+				break;
+			case EntityAnimationEventKey.SLIDE_START:
+				if (this.entityRef.slideSound) {
+					AudioManager.PlayAtPosition(this.entityRef.slideSound, this.entity.model.transform.position, {
+						volumeScale: 0.3,
+					});
+				}
+				break;
+			case EntityAnimationEventKey.JUMP:
+				if (this.entityRef.jumpSound) {
+					AudioManager.PlayAtPosition(this.entityRef.jumpSound, this.entity.model.transform.position, {
+						volumeScale: 0.2,
+					});
+				}
+				break;
+			case EntityAnimationEventKey.LAND:
+				if (this.entityRef.landSound) {
+					AudioManager.PlayAtPosition(this.entityRef.landSound, this.entity.model.transform.position, {
+						volumeScale: 0.15,
+					});
 				}
 				break;
 		}

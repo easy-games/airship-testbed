@@ -298,6 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 8549730725910327854}
+  events: {fileID: 7404180742649030523}
   rootMask: {fileID: 31900000, guid: 9d711888274077741aa30b904ddb2124, type: 2}
   handsMask: {fileID: 31900000, guid: 543ef00edd7c80245bec5778259b2180, type: 2}
   JumpAnimation: {fileID: 7400000, guid: 067cc188e25b78b4a940a9fa67cd6ee7, type: 3}
@@ -327,20 +328,20 @@ MonoBehaviour:
     - {fileID: 7400012, guid: 154a724602422044c91070a5f3c67c11, type: 3}
     - {fileID: 7400014, guid: 154a724602422044c91070a5f3c67c11, type: 3}
     _Speeds:
+    - 1.25
+    - 1.25
+    - 1.25
+    - 1.25
+    - 1.25
+    - 1
+    - 0.85
+    - 0.85
     - 1
     - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1.2
-    - 1.2
-    - 1
-    - 1
-    - 1
-    - 1
+    - 0.85
+    - 0.85
+    - 0.85
+    - 0.85
     _SynchronizeChildren: 010101010100
     _Thresholds:
     - {x: 0, y: 2}
