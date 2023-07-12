@@ -36,11 +36,14 @@ export class GeneratorSpawnService implements OnStart {
 		});
 	}
 
-	/** Create map generators. */
+	// Create map generators.
 	private CreateMapGenerators(): void {
-		/* Team generators. */
+        const loadedMap = this.mapService.GetLoadedMap();
+        if (!loadedMap) return;
+
+		// Team generators.
 		for (let team of this.teamService.GetTeams()) {
-			const ironGenerators = this.mapService.GetLoadedMap()?.GetWorldPositions(team.id + "_generator");
+			const ironGenerators = loadedMap.GetWorldPositions(team.id + "_generator");
 			if (ironGenerators && ironGenerators.size() > 0) {
 				for (let worldPos of ironGenerators) {
 					const generatorId = this.generatorService.CreateGenerator(worldPos.Position, {
@@ -64,33 +67,30 @@ export class GeneratorSpawnService implements OnStart {
 				}
 			}
 		}
-		/* Map generators. */
-		const diamondGenerators = this.mapService.GetLoadedMap()?.GetWorldPositions("diamond");
-		if (diamondGenerators) {
-			diamondGenerators.forEach((mapPosition) => {
-				this.generatorService.CreateGenerator(mapPosition.Position, {
-					item: ItemType.DIAMOND,
-					spawnRate: 25,
-					stackLimit: 6,
-					label: true,
-				});
-				/* Create deny region on generator. */
-				this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
-			});
-		}
-		const emeraldGenerators = this.loadedMap!.GetMapEmeraldGenerators();
-		if (emeraldGenerators) {
-			emeraldGenerators.forEach((mapPosition) => {
-				this.generatorService.CreateGenerator(mapPosition.Position, {
-					item: ItemType.EMERALD,
-					spawnRate: 45,
-					stackLimit: 3,
-					label: true,
-				});
-				/* Create deny region on generator. */
-				this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
-			});
-		}
+		// Map generators.
+		const diamondGenerators = loadedMap.GetWorldPositions("diamond");
+		diamondGenerators.forEach((mapPosition) => {
+            this.generatorService.CreateGenerator(mapPosition.Position, {
+                item: ItemType.DIAMOND,
+                spawnRate: 25,
+                stackLimit: 6,
+                label: true,
+            });
+            // Create deny region on generator.
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+        });
+
+		const emeraldGenerators = loadedMap.GetWorldPositions("emerald");
+		emeraldGenerators.forEach((mapPosition) => {
+            this.generatorService.CreateGenerator(mapPosition.Position, {
+                item: ItemType.EMERALD,
+                spawnRate: 45,
+                stackLimit: 3,
+                label: true,
+            });
+            // Create deny region on generator.
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+        });
 	}
 
 	/**

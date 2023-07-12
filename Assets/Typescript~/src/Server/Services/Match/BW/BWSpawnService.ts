@@ -29,7 +29,21 @@ export class BWSpawnService implements OnStart {
 		private readonly playerService: PlayerService,
 		private readonly mapService: MapService,
 		private readonly matchService: MatchService,
-	) {}
+        private readonly entityService: EntityService
+	) {
+        ServerSignals.MapLoad.connect((event) => {
+			const positions = event.LoadedMap.GetSpawnPlatform();
+            if (positions.size() > 0) {
+                Task.Delay(1, () => {
+                    this.entityService.SpawnEntityForPlayer(
+                        undefined,
+                        EntityPrefabType.HUMAN,
+                        positions[0].Position.add(new Vector3(-3, 2, 3)),
+                    );
+                });
+            }
+		});
+    }
 
 	OnStart(): void {
 		Task.Spawn(() => {
