@@ -13,8 +13,6 @@ export class EntityAnimator {
 	private readonly flashOnTime = 0.07;
 	public readonly anim: AnimancerComponent;
 	public readonly defaultTransitionTime: number = 0.15;
-	public damageFlashOnColor: Color = Color.red;
-	public damageFlashOffColor: Color = new Color(1, 0, 0, 0);
 
 	protected readonly entityRef: EntityReferences;
 
@@ -97,12 +95,7 @@ export class EntityAnimator {
 		allMeshes.forEach((renderer) => {
 			if (renderer && renderer.enabled) {
 				renderer
-					.TweenMaterialsProperty(
-						"_OverlayColor",
-						this.damageFlashOffColor,
-						this.damageFlashOnColor,
-						this.flashTransitionDuration,
-					)
+					.TweenMaterialsFloatProperty("_OverrideStrength", 0, 1, this.flashTransitionDuration)
 					.SetPingPong();
 			}
 		});

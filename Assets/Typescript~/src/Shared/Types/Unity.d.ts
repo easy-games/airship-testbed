@@ -1429,7 +1429,8 @@ interface Component extends Object {
     TweenMaterialColor(to: Color, duration: number): Tween<Color>;
 
 	TweenRendererColor(from: Color, to: Color, duration: number): Tween<number>;
-	TweenMaterialsProperty(propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
+	TweenMaterialsColorProperty(propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
+	TweenMaterialsFloatProperty(propertyName: string, from: number, to: number, duration: number): Tween<number>;
 
     TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
     TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
