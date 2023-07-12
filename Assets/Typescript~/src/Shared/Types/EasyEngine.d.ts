@@ -279,6 +279,10 @@ interface AgonesProxy {
 	Shutdown(): void;
 }
 
+interface WindowProxy {
+	OnWindowFocus(callback: (hasFocus: boolean) => void): void;
+}
+
 interface PointLight extends Component {
 	color: Color;
 	intensity: number;

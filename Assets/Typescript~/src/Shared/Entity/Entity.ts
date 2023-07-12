@@ -20,6 +20,9 @@ import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEnti
 import { EntitySerializer } from "./EntitySerializer";
 import { BlockMeta } from "../Item/ItemMeta";
 import { WorldAPI } from "../VoxelWorld/WorldAPI";
+import { BundleReferenceManager } from "../Util/BundleReferenceManager";
+import { Bundle_Entity, Bundle_Entity_Movement, BundleGroupNames } from "../Util/ReferenceManagerResources";
+import { AudioManager } from "../Audio/AudioManager";
 
 export interface EntityDto {
 	serializer: EntitySerializer;
@@ -42,6 +45,9 @@ export class EntityReferences {
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
+	jumpSound: string | undefined;
+	slideSound: string | undefined;
+	landSound: string | undefined;
 
 	constructor(ref: GameObjectReferences) {
 		let boneKey = "Bones";
@@ -67,6 +73,36 @@ export class EntityReferences {
 		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
+
+		this.jumpSound = BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.JumpSFX,
+		);
+		if (this.jumpSound) {
+			this.jumpSound = AudioManager.GetLocalPathFromFullPath(this.jumpSound);
+			print("JUMP SOUND: " + this.jumpSound);
+		}
+
+		this.slideSound = BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.SlideSFX,
+		);
+		if (this.slideSound) {
+			this.slideSound = AudioManager.GetLocalPathFromFullPath(this.slideSound);
+			print("SLIDE SOUND: " + this.slideSound);
+		}
+
+		this.landSound = BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.LandSFX,
+		);
+		if (this.landSound) {
+			this.landSound = AudioManager.GetLocalPathFromFullPath(this.landSound);
+			print("LAND SOUND: " + this.landSound);
+		}
 	}
 }
 

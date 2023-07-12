@@ -2823,6 +2823,10 @@ declare const enum LineAlignment {
 }
 declare const enum EntityAnimationEventKey {
     FOOTSTEP = 0,
+    JUMP = 1,
+    LAND = 2,
+    SLIDE_START = 3,
+    SLIDE_END = 4,
     DEFAULT = -1,
 }
 
@@ -14550,7 +14554,7 @@ interface MeshProcessorConstructor {
 declare const MeshProcessor: MeshProcessorConstructor;
     
 interface EntityAnimationEventData {
-    key: EntityAnimationEventKey;
+    key: number;
 
     constructor(): EntityAnimationEventData;
 
@@ -14577,6 +14581,26 @@ interface KeyValueReference<T> {
     constructor(): KeyValueReference<T>;
 
 }
+    
+interface WindowCore {
+
+
+}
+    
+interface WindowProxy extends MonoBehaviour {
+
+    constructor(): WindowProxy;
+
+    HasFocus(): boolean;
+}
+    
+interface WindowCoreConstructor {
+    Window: WindowProxy;
+
+
+    SetWindowProxy(window: WindowProxy): void;
+}
+declare const WindowCore: WindowCoreConstructor;
     
 interface CoreApi extends MonoBehaviour {
     IsInitialized: boolean;
