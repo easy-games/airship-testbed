@@ -393,3 +393,15 @@ declare const ProjectileManager: ProjectileManagerConstructor;
 interface EasyProjectile {
 	onCollide(callback: (collision: Collision, velocity: Vector3) => void): void;
 }
+
+interface CoreApi {
+	OnInitializedEvent(callback: () => void): void;
+}
+
+interface OnCompleteHook {
+	OnCompleteEvent(callback: (operationResult: OperationResult) => void): void;
+}
+
+interface SocketIOMessageHook {
+	OnEventReceived(callback: (messageName: string, message: string) => void): void;
+}
