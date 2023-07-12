@@ -28,7 +28,19 @@ export class BWSpawnService implements OnStart {
 		private readonly playerService: PlayerService,
 		private readonly mapService: MapService,
 		private readonly matchService: MatchService,
-	) {}
+        private readonly entityService: EntityService
+	) {
+        ServerSignals.MapLoad.connect((event) => {
+			const position = event.LoadedMap.GetSpawnPlatform();
+            Task.Delay(1, () => {
+                this.entityService.SpawnEntityForPlayer(
+                    undefined,
+                    EntityPrefabType.HUMAN,
+                    position.Position.add(new Vector3(-3, 2, 3)),
+                );
+            });
+		});
+    }
 
 	OnStart(): void {
 		Task.Spawn(() => {
@@ -74,10 +86,11 @@ export class BWSpawnService implements OnStart {
 			if (this.matchService.IsRunning() && event.player) {
 				const team = event.player.GetTeam();
 				if (!team) return;
-				const teamSpawnPos = this.loadedMap!.GetSpawnPositionForTeam(team);
-				if (!teamSpawnPos) return;
-
-				event.spawnPosition = teamSpawnPos.Position.add(new Vector3(0, 0.2, 0));
+				const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
+				if (teamSpawnPosition) {
+					const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
+					event.spawnPosition = pos;
+				}
 			}
 		});
 	}
@@ -87,10 +100,14 @@ export class BWSpawnService implements OnStart {
 		/* Teleport to team spawn location. */
 		const team = player.GetTeam();
 		if (!team) return;
-		const teamSpawnPos = this.loadedMap!.GetSpawnPositionForTeam(team);
-		if (!teamSpawnPos) return;
-		const humanoid = player.Character?.gameObject.GetComponent<EntityDriver>();
-		if (humanoid) humanoid.Teleport(teamSpawnPos.Position.add(new Vector3(0, 0.2, 0)));
+		const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
+		if (teamSpawnPosition) {
+			const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
+			const humanoid = player.Character?.gameObject.GetComponent<EntityDriver>();
+			if (humanoid) {
+				humanoid.Teleport(pos);
+			}
+		}
 	}
 
 	/** Gives an `InventoryEntity` starter inventory on spawn. */
