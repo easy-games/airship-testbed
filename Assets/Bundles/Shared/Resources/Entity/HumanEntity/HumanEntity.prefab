@@ -239,10 +239,11 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 0
+  _scenePathHash: 4244522174
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 2954066760618576130
-  _sceneNetworkObjects: []
+  _sceneNetworkObjects:
+  - {fileID: -98370938496583557}
 --- !u!114 &5043041770756594627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,18 +655,18 @@ PrefabInstance:
     - target: {fileID: -8410874523415082752, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9306609987636724d88fa722a334ddc2, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -8410874523415082752, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: be42474492bf5734abd833b3c9ac761d, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -8363597194818114268, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8363597194818114268, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5913172463669914825, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -910,7 +911,7 @@ PrefabInstance:
     - target: {fileID: 8152985083882053025, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9306609987636724d88fa722a334ddc2, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
 --- !u!4 &547259303229100086 stripped
@@ -1048,6 +1049,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Animator: {fileID: 9120673791156374752}
   _ActionOnDisable: 0
+--- !u!1 &2600610521006627925 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8363597194818114268, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
+  m_PrefabInstance: {fileID: 3456989715790033265}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8634859397029981288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600610521006627925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.46226418, g: 0.2880544, b: 0.21150768, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Clay
 --- !u!137 &2647874669622982769 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -8410874523415082752, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
@@ -1068,6 +1091,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7222102517962791255, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
   m_PrefabInstance: {fileID: 3456989715790033265}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4699763081142651756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5459416275588982822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.46226418, g: 0.2880544, b: 0.21150768, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    emissiveMix: 1
+    reference: Clay
+  - materialColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    emissiveMix: 1
+    reference: Clay
 --- !u!114 &7302943966516852319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,7 +1124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
+  warningMessage: 
 --- !u!4 &5880897125066653761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -115803784690454224, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
