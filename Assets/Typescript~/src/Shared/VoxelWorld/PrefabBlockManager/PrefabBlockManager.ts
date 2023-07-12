@@ -1,13 +1,13 @@
+import { Dependency } from "@easy-games/flamework-core";
 import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
-import { WorldAPI } from "../WorldAPI";
+import { TeamController } from "../../../Client/Controllers/Global/Team/TeamController";
 import { Network } from "../../Network";
 import { Theme } from "../../Util/Theme";
-import { Dependency } from "@easy-games/flamework-core";
-import { TeamController } from "../../../Client/Controllers/Global/Team/TeamController";
+import { WorldAPI } from "../WorldAPI";
 
 export class PrefabBlockManager {
 	private static instance: PrefabBlockManager | undefined;
@@ -39,7 +39,7 @@ export class PrefabBlockManager {
 			if (go) {
 				if (key === "teamId") {
 					const teamColor = Dependency<TeamController>().GetTeam(data as string)?.color ?? Theme.White;
-					const rens = go.GetComponentsInChildren<MeshRenderer>();
+					const rens = go.GetComponentsInChildren<MeshRenderer>("MeshRenderer");
 					for (let i = 0; i < rens.Length; i++) {
 						const ren = rens.GetValue(i);
 						if (ren.gameObject.tag === "TeamColor") {

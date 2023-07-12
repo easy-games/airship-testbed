@@ -1483,7 +1483,7 @@ interface GameObject extends Object {
      * Throws error if no component found.
      */
 	GetComponent<T>(): T;
-	GetComponentsInChildren<T>(): CSArray<T>;
+	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
     /** 
      * Throws error if no component found.
      */
