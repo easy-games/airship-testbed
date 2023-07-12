@@ -14603,18 +14603,24 @@ interface WindowCoreConstructor {
 declare const WindowCore: WindowCoreConstructor;
     
 interface CoreApi extends MonoBehaviour {
+    GameCoordinatorMessage: MessageReceivedDelegate;
     IsInitialized: boolean;
+    IdToken: string;
 
     constructor(): CoreApi;
 
     GetCoreUserData(): CoreUserData;
-    GetUserTokenAsync(forceRefresh: boolean): OnCompleteHook;
-    Init(): void;
-    InitializeGameCoordinatorAsync(): OnCompleteHook;
+    InitializeSocketIOAsync(): OnCompleteHook;
     SendAsync(url: string, method: string, utf8Body: string, jsonParams: string, jsonHeaders: string): OnCompleteHook;
-    SubscribeToEvent(eventName: string): SocketIOMessageHook;
-    SubscribeToEvents(eventNamesJsonObj: string): SocketIOMessageHook;
-    UnsubscribeToEvent(eventName: string): void;
+}
+    
+interface MessageReceivedDelegate {
+
+    constructor(object: unknown, method: unknown): MessageReceivedDelegate;
+
+    BeginInvoke(messageName: string, message: string, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(messageName: string, message: string): void;
 }
     
 interface CoreUserData {
@@ -14647,17 +14653,17 @@ interface OperationResult {
 
 }
     
-interface SocketIOMessageHook {
-
-    constructor(): SocketIOMessageHook;
-
-    Run(messageName: string, message: string): void;
-}
-    
 interface CoreApiConstructor {
     Instance: CoreApi;
 
 
 }
 declare const CoreApi: CoreApiConstructor;
+    
+interface GameCoordinatorMessageHook {
+
+    constructor(): GameCoordinatorMessageHook;
+
+    Run(messageName: string, message: string): void;
+}
 
