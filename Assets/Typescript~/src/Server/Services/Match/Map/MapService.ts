@@ -8,7 +8,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { MatchService } from "../MatchService";
-import { LoadedMap, SaveObjectTS } from "./LoadedMap";
+import { LoadedMap, WorldPositionCS } from "./LoadedMap";
 
 @Service({})
 export class MapService implements OnStart {
@@ -53,7 +53,7 @@ export class MapService implements OnStart {
 		world.LoadWorldFromVoxelBinaryFile(this.voxelBinaryFile, blockDefines);
 		/* Parse map objects and finish loading map. */
 		/* TEMP: This is to get around memory pinning issue. */
-		let mapObjects = new Array<SaveObjectTS>();
+		let mapObjects = new Array<WorldPositionCS>();
 		const rawMaps = this.voxelBinaryFile.GetMapObjects();
 		for (let i = 0; i < rawMaps.Length; i++) {
 			const data = rawMaps.GetValue(i);
