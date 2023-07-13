@@ -39,7 +39,7 @@ export class PrefabBlockManager {
 			if (go) {
 				if (key === "teamId") {
 					const teamColor = Dependency<TeamController>().GetTeam(data as string)?.color ?? Theme.White;
-					const rens = go.GetComponentsInChildren<MeshRenderer>("MeshRenderer");
+					const rens = go.GetComponentsInChildren<MeshRenderer>();
 					for (let i = 0; i < rens.Length; i++) {
 						const ren = rens.GetValue(i);
 						if (ren.gameObject.tag === "TeamColor") {

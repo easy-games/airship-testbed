@@ -1,7 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CameraMode, CameraModeTransition } from ".";
 import { CameraSystem } from "./CameraSystem";
-import { BundleReferenceManager } from "../../../../Shared/Util/BundleReferenceManager";
 
 @Controller({})
 export class CameraController implements OnStart {
