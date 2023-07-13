@@ -79,10 +79,10 @@ export class EntityReferences {
 		// 	Bundle_Entity.Movement,
 		// 	Bundle_Entity_Movement.JumpSFX,
 		// );
-		if (this.jumpSound) {
-			this.jumpSound = AudioManager.GetLocalPathFromFullPath(this.jumpSound);
-			print("JUMP SOUND: " + this.jumpSound);
-		}
+		// if (this.jumpSound) {
+		// 	this.jumpSound = AudioManager.GetLocalPathFromFullPath(this.jumpSound);
+		// 	print("JUMP SOUND: " + this.jumpSound);
+		// }
 
 		// this.slideSound = BundleReferenceManager.GetPathForResource(
 		// 	BundleGroupNames.Entity,
