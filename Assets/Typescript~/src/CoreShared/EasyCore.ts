@@ -1,8 +1,5 @@
-import Object from "@easy-games/unity-object-utils";
 import { ApiHelper } from "./ApiHelper";
 import { decode, encode } from "./Lib/json";
-import { SIOEventNames } from "./SocketIOMessages/SOIEventNames";
-import { Party } from "./SocketIOMessages/Party";
 import { CoreSignals } from "./CoreSignals";
 
 export class EasyCore {
@@ -39,41 +36,6 @@ export class EasyCore {
 			});
 		}
 	}
-
-	// async getEncodedHeadersAsync(): Promise<string> {
-	// 	const promise = new Promise<string>((resolve, reject) => {
-	// 		const onComplete_GetUserToken = CoreApi.Instance.IdToken;
-	// 		onComplete_GetUserToken.OnCompleteEvent((operationResult) => {
-	// 			if (operationResult.IsSuccess) {
-	// 				resolve(operationResult.ReturnString);
-	// 			} else {
-	// 				reject(operationResult.ReturnString);
-	// 			}
-	// 		});
-	// 	});
-
-	// 	return promise;
-	// }
-
-	// async getHeadersMapAsync(): Promise<Map<string, string>> {
-	// 	const promise = new Promise<Map<string, string>>((resolve, reject) => {
-	// 		const onComplete_GetUserToken = CoreApi.Instance.GetUserTokenAsync(true);
-	// 		onComplete_GetUserToken.OnCompleteEvent((operationResult) => {
-	// 			if (operationResult.IsSuccess) {
-	// 				const map = new Map<string, string>();
-	// 				map.set(
-	// 					ApiHelper.AUTH_HEADER_NAME,
-	// 					`${ApiHelper.AUTH_HEADER_VALUE_PREFIX}${operationResult.ReturnString}`,
-	// 				);
-	// 				resolve(map);
-	// 			} else {
-	// 				reject(operationResult.ReturnString);
-	// 			}
-	// 		});
-	// 	});
-
-	// 	return promise;
-	// }
 
 	static getHeadersMap(): Map<string, string> {
 		return this.headersMap;
@@ -130,35 +92,12 @@ export class EasyCore {
 			this.setIdToken(this.CoreApi.IdToken);
 
 			if (RunCore.IsClient()) {
-				this.CoreApi.OnGameCoordinatorEvent((messageName, message) => {
-					//print(`postInit.OnGameCoordinatorMessage() messageName: ${messageName}, message: ${message}`);
+				this.CoreApi.OnGameCoordinatorEvent((messageName, jsonMessage) => {
+					// print(
+					// 	`postInit.OnGameCoordinatorMessage() messageName: ${messageName}, jsonMessage: ${jsonMessage}`,
+					// );
 
-					const deserialized = decode(message);
-
-					switch (messageName) {
-						case SIOEventNames.connect:
-							break;
-						case SIOEventNames.connect_error:
-							break;
-						case SIOEventNames.exception:
-							break;
-						case SIOEventNames.statusUpdateRequest:
-							break;
-						case SIOEventNames.friendRequest:
-							break;
-						case SIOEventNames.friendAccepted:
-							break;
-						case SIOEventNames.friendStatusUpdateMulti:
-							break;
-						case SIOEventNames.partyInvite:
-							break;
-						case SIOEventNames.partyUpdate:
-							//print(`partyUpdate - eventReceived. data: ${encode((deserialized as object[])[0] as Party)}`);
-							break;
-						default:
-							print(`Unsupported messageName encountered: ${messageName}`);
-							break;
-					}
+					CoreSignals.GameCoordinatorMessage.Fire({ messageName: messageName, jsonMessage: jsonMessage });
 				});
 
 				const onCompleteHook = this.CoreApi.InitializeGameCoordinatorAsync();

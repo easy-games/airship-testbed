@@ -1,9 +1,6 @@
-import { ApiHelper } from "./ApiHelper";
 import { CoreSignals } from "./CoreSignals";
 import { EasyCore } from "./EasyCore";
-import { encode } from "./Lib/json";
 import { UserService } from "./Services/UserService";
-import { PublicUser } from "./SocketIOMessages/PublicUser";
 
 print(`CoreShared.Main.ts()`);
 
@@ -19,4 +16,12 @@ CoreSignals.UserServiceInitialized.Connect(() => {
 	print(`Main.ts CoreSignals.UserServiceInitialized! curUser?.username: ${curUser?.username}`);
 });
 
-EasyCore.initAsync();
+CoreSignals.GameCoordinatorMessage.Connect((signal) => {
+	print(
+		`Main.ts CoreSignals.GameCoordinatorMessage! signal.messageName: ${signal.messageName}, signal.jsonMessage: ${signal.jsonMessage}`,
+	);
+});
+
+if (RunCore.IsClient()) {
+	EasyCore.initAsync();
+}
