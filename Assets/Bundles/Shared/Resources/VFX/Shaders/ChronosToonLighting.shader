@@ -138,6 +138,10 @@ Shader "Chronos/ToonLighting"
 				float brightness = NdotL;// min(_SunScale, i.ambientColor.g) * NdotL;
 				//brightness += (1-brightness) * _AmbientStrength;
 				
+				//Do the fog
+				half3 viewVector = _WorldSpaceCameraPos.xyz - i.worldPos;
+				float viewDistance = length(viewVector);
+				
 
 				//MRT0 = half4 (globalDynamicLightRadius[0],globalDynamicLightRadius[0],globalDynamicLightRadius[0],1);
 				//MRT1 = half4(0,0,0,0);
@@ -179,8 +183,12 @@ Shader "Chronos/ToonLighting"
 				float4 shadow = (1-lightIntensity) * shadowColor;
 				float4 light = lightIntensity + (1-lightIntensity) * _AmbientStrength;
 				
+				half4 finalColor = (shadow + light + specular + rim) * color * diffuse;
+				//fog
+				finalColor.xyz = CalculateAtmosphericFog(finalColor.xyz, viewDistance);
+
 				//regular code
-				MRT0 = (shadow + light + specular + rim) * color * diffuse;
+				MRT0 = finalColor;
 				MRT1 = emissiveColor * rim;
 				return MRT0;
 			}
