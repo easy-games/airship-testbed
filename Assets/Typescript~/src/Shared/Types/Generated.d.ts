@@ -12326,6 +12326,9 @@ interface VoxelWorld extends MonoBehaviour {
     radiosityEnabled: boolean;
     globalSunBrightness: number;
     globalSkyBrightness: number;
+    globalFogStart: number;
+    globalFogEnd: number;
+    globalFogColor: Color;
     globalSkySaturation: number;
     globalSunColor: Color;
     globalAmbientLight: Color;
@@ -12420,6 +12423,9 @@ interface VoxelBinaryFile extends ScriptableObject {
     globalAmbientOcclusion: number;
     globalRadiosityScale: number;
     globalRadiosityDirectLightAmp: number;
+    globalFogStart: number;
+    globalFogEnd: number;
+    globalFogColor: Color;
 
     constructor(): VoxelBinaryFile;
 
@@ -12475,13 +12481,13 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     RpcLogic___TargetCreatePointlight_3789428640(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
     RpcLogic___TargetDirtyLights_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetFinishedSendingWorldRpc_328543758(conn: NetworkConnection): void;
-    RpcLogic___TargetSetLightingProperties_3591481563(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number): void;
+    RpcLogic___TargetSetLightingProperties_2623000413(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     RpcLogic___TargetWriteChunkRpc_4077799975(conn: NetworkConnection, pos: unknown, chunk: Chunk): void;
     RpcLogic___TargetWriteVoxelRpc_1359590914(conn: NetworkConnection, pos: unknown, voxel: number): void;
     TargetCreatePointlight(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
     TargetDirtyLights(conn: NetworkConnection): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
-    TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number): void;
+    TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     TargetWriteChunkRpc(conn: NetworkConnection, pos: unknown, chunk: Chunk): void;
     TargetWriteVoxelRpc(conn: NetworkConnection, pos: unknown, voxel: number): void;
 }
@@ -14603,24 +14609,14 @@ interface WindowCoreConstructor {
 declare const WindowCore: WindowCoreConstructor;
     
 interface CoreApi extends MonoBehaviour {
-    GameCoordinatorMessage: MessageReceivedDelegate;
     IsInitialized: boolean;
     IdToken: string;
 
     constructor(): CoreApi;
 
     GetCoreUserData(): CoreUserData;
-    InitializeSocketIOAsync(): OnCompleteHook;
+    InitializeGameCoordinatorAsync(): OnCompleteHook;
     SendAsync(url: string, method: string, utf8Body: string, jsonParams: string, jsonHeaders: string): OnCompleteHook;
-}
-    
-interface MessageReceivedDelegate {
-
-    constructor(object: unknown, method: unknown): MessageReceivedDelegate;
-
-    BeginInvoke(messageName: string, message: string, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(messageName: string, message: string): void;
 }
     
 interface CoreUserData {

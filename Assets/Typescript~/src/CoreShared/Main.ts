@@ -7,18 +7,16 @@ import { PublicUser } from "./SocketIOMessages/PublicUser";
 
 print(`CoreShared.Main.ts()`);
 
-CoreSignals.Initialized.Connect((idToken) => {
-	print(`Main.ts CoreSignals.Initialized!`);
+CoreSignals.CoreInitialized.Connect((signal) => {
+	print(`Main.ts CoreSignals.CoreInitialized! signal.idToken: ${signal.idToken}`);
 
-	// EasyCore.getAsync<PublicUser>(`${ApiHelper.USER_SERVICE_URL}/users/self`, undefined, EasyCore.getHeadersMap()).then(
-	// 	(publicUser) => {
-	// 		print(`Main.ts publicUser: ${encode(publicUser)}`);
-
-	// 		// const publicUser2 = UserService.getPublicUserAsync(publicUser.discriminatedUsername);
-
-	// 		// print(`Main.ts publicUser2: ${encode(publicUser2)}`);
-	// 	},
-	// );
+	UserService.initAsync();
 });
 
-EasyCore.init();
+CoreSignals.UserServiceInitialized.Connect(() => {
+	const curUser = UserService.getCurrentPublicUser();
+
+	print(`Main.ts CoreSignals.UserServiceInitialized! curUser?.username: ${curUser?.username}`);
+});
+
+EasyCore.initAsync();
