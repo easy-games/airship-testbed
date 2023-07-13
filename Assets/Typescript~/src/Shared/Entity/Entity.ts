@@ -14,15 +14,15 @@ import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import { AudioManager } from "../Audio/AudioManager";
+import { BlockMeta } from "../Item/ItemMeta";
 import { Bin } from "../Util/Bin";
+import { BundleReferenceManager } from "../Util/BundleReferenceManager";
+import { BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "../Util/ReferenceManagerResources";
 import { OnLateUpdate } from "../Util/Timer";
+import { WorldAPI } from "../VoxelWorld/WorldAPI";
 import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
-import { BlockMeta } from "../Item/ItemMeta";
-import { WorldAPI } from "../VoxelWorld/WorldAPI";
-import { BundleReferenceManager } from "../Util/BundleReferenceManager";
-import { Bundle_Entity, Bundle_Entity_Movement, BundleGroupNames } from "../Util/ReferenceManagerResources";
-import { AudioManager } from "../Audio/AudioManager";
 
 export interface EntityDto {
 	serializer: EntitySerializer;
@@ -74,21 +74,21 @@ export class EntityReferences {
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
 
-		this.jumpSound = BundleReferenceManager.GetPathForResource(
-			BundleGroupNames.Entity,
-			Bundle_Entity.Movement,
-			Bundle_Entity_Movement.JumpSFX,
-		);
+		// this.jumpSound = BundleReferenceManager.GetPathForResource(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.Movement,
+		// 	Bundle_Entity_Movement.JumpSFX,
+		// );
 		if (this.jumpSound) {
 			this.jumpSound = AudioManager.GetLocalPathFromFullPath(this.jumpSound);
 			print("JUMP SOUND: " + this.jumpSound);
 		}
 
-		this.slideSound = BundleReferenceManager.GetPathForResource(
-			BundleGroupNames.Entity,
-			Bundle_Entity.Movement,
-			Bundle_Entity_Movement.SlideSFX,
-		);
+		// this.slideSound = BundleReferenceManager.GetPathForResource(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.Movement,
+		// 	Bundle_Entity_Movement.SlideSFX,
+		// );
 		if (this.slideSound) {
 			this.slideSound = AudioManager.GetLocalPathFromFullPath(this.slideSound);
 			print("SLIDE SOUND: " + this.slideSound);
