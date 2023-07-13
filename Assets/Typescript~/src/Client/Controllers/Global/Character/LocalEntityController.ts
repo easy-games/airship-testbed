@@ -158,9 +158,6 @@ export class LocalEntityController implements OnStart {
 			this.cameraController.SetMode(createHumanoidCameraMode());
 			this.cameraController.cameraSystem.SetOnClearCallback(createHumanoidCameraMode);
 
-			// this.entityDriver.OnSecondaryStateChanged((state) => {
-			// 	humanoidCameraMode.SetYOffset(getCamYOffset(state, this.firstPerson));
-			// });
 			this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
 					this.prevState = this.currentState;
