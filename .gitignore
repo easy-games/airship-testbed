@@ -1,5 +1,9 @@
 # This .gitignore file should be placed at the root of your Unity project 
 directory
+
+
+mono_crash.*
+
 #
 # Get latest from 
 https://github.com/github/gitignore/blob/main/Unity.gitignore
@@ -97,3 +101,4 @@ Assets/TestSpace.meta
 .idea/.idea.Airship-Bedwars/.idea/.gitignore
 Assets/Typescript~/.idea/
 .idea/
+ProjectSettings/GvhProjectSettings.xml

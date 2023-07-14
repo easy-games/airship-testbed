@@ -14,12 +14,15 @@ import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import { AudioManager } from "../Audio/AudioManager";
+import { BlockMeta } from "../Item/ItemMeta";
 import { Bin } from "../Util/Bin";
+import { BundleReferenceManager } from "../Util/BundleReferenceManager";
+import { BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "../Util/ReferenceManagerResources";
 import { OnLateUpdate } from "../Util/Timer";
+import { WorldAPI } from "../VoxelWorld/WorldAPI";
 import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
-import { BlockMeta } from "../Item/ItemMeta";
-import { WorldAPI } from "../VoxelWorld/WorldAPI";
 
 export interface EntityDto {
 	serializer: EntitySerializer;
@@ -42,6 +45,9 @@ export class EntityReferences {
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
+	jumpSound: string | undefined;
+	slideSound: string | undefined;
+	landSound: string | undefined;
 
 	constructor(ref: GameObjectReferences) {
 		let boneKey = "Bones";
@@ -67,6 +73,36 @@ export class EntityReferences {
 		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
+
+		// this.jumpSound = BundleReferenceManager.GetPathForResource(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.Movement,
+		// 	Bundle_Entity_Movement.JumpSFX,
+		// );
+		// if (this.jumpSound) {
+		// 	this.jumpSound = AudioManager.GetLocalPathFromFullPath(this.jumpSound);
+		// 	print("JUMP SOUND: " + this.jumpSound);
+		// }
+
+		// this.slideSound = BundleReferenceManager.GetPathForResource(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.Movement,
+		// 	Bundle_Entity_Movement.SlideSFX,
+		// );
+		if (this.slideSound) {
+			this.slideSound = AudioManager.GetLocalPathFromFullPath(this.slideSound);
+			print("SLIDE SOUND: " + this.slideSound);
+		}
+
+		this.landSound = BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.LandSFX,
+		);
+		if (this.landSound) {
+			this.landSound = AudioManager.GetLocalPathFromFullPath(this.landSound);
+			print("LAND SOUND: " + this.landSound);
+		}
 	}
 }
 
@@ -75,6 +111,7 @@ export class Entity {
 	public readonly id: number;
 	public readonly gameObject: GameObject;
 	public readonly networkObject: NetworkObject;
+	public readonly entityDriver: EntityDriver;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
 	public anim?: InventoryEntityAnimator;
@@ -106,6 +143,7 @@ export class Entity {
 		this.gameObject = networkObject.gameObject;
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		this.model = this.references.root.gameObject;
+		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.networkObject = networkObject;
 		this.anim = new InventoryEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
@@ -129,6 +167,14 @@ export class Entity {
 
 		this.bin = new Bin();
 		this.bin.Connect(OnLateUpdate, () => this.LateUpdate());
+
+		this.entityDriver.onImpactWithGround((velocity) => {
+			print("impact", velocity);
+			// regular jump on flat ground: -14
+			// if (velocity.y < -2) {
+			this.anim?.PlayFootstepSound();
+			// }
+		});
 	}
 
 	private LateUpdate() {
@@ -150,7 +196,7 @@ export class Entity {
 	}
 
 	public GetEntityDriver(): EntityDriver {
-		return this.gameObject.GetComponent<EntityDriver>();
+		return this.entityDriver;
 	}
 
 	public SetHealth(health: number): void {

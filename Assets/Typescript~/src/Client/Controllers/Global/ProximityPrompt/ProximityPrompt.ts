@@ -1,12 +1,14 @@
 import { ClientSignals } from "Client/ClientSignals";
 import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { Keyboard } from "Shared/UserInput";
+import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
 
 export interface ProximityPromptData {
 	/** Proximity prompt position. */
 	promptPosition: Vector3;
 	/** Key that activates proximity prompt. */
-	activationKey: Key;
+	activationKey: KeyCode;
 	/** Activation key string that displays on prompt. */
 	activationKeyString: string;
 	/** How close local player must be to activate proximity prompt. */
@@ -31,6 +33,11 @@ export class ProximityPrompt {
 	public promptGameObject: GameObject | undefined;
 	/** On activated signal. */
 	public OnActivated = new Signal<void>();
+	/** On activated signal. */
+	public OnRequestActivated = new Signal<void>();
+
+	private canActivate = false;
+	private readonly canActivateBin = new Bin();
 
 	constructor(promptData: ProximityPromptData) {
 		this.promptPrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/ProximityPrompt.prefab");
@@ -60,6 +67,19 @@ export class ProximityPrompt {
 		topText.text = this.data.topText;
 		/* Notify `ProximityPromptController` that prompt was created. */
 		ClientSignals.ProximityPromptCreated.Fire({ prompt: this });
+	}
+
+	public SetCanActivate(canActivate: boolean) {
+		if (this.canActivate === canActivate) return;
+		this.canActivate = true;
+		if (canActivate) {
+			const keyboard = this.canActivateBin.Add(new Keyboard());
+			keyboard.OnKeyDown(this.data.activationKey, (event) => {
+				this.OnRequestActivated.Fire();
+			});
+		} else {
+			this.canActivateBin.Clean();
+		}
 	}
 
 	/** Called when prompt activates. */

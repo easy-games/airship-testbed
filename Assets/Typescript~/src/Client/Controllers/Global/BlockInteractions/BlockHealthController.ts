@@ -20,6 +20,7 @@ import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
+import { GameObjectBridge } from "../../../../Shared/GameObjectBridge";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
@@ -110,9 +111,7 @@ export class BlockHealthController implements OnStart {
 			);
 			if (effect) {
 				const block = WorldAPI.GetMainWorld().GetBlockAt(blockPos);
-				const blockColor = block.GetAverageColor();
-				print("block color: " + tostring(blockColor));
-				effect.transform.GetChild(0).GetComponent<ParticleSystem>().startColor = blockColor;
+				this.ApplyBlockMaterial(block.blockId, effect);
 			}
 		}
 	}
@@ -133,14 +132,23 @@ export class BlockHealthController implements OnStart {
 			Vector3.zero,
 		);
 		if (effect) {
-			const blockColor = WorldAPI.GetMainWorld().GetBlockAverageColor(blockId);
-			if (!blockColor) return;
-
-			effect.transform.GetChild(0).GetComponent<ParticleSystem>().startColor = blockColor;
+			//const blockColor = WorldAPI.GetMainWorld().GetBlockAverageColor(blockId);
+			//if (!blockColor) return;
+			this.ApplyBlockMaterial(blockId, effect);
 		}
 
 		//Make sure the progress bar is at 0
 		entry?.progressBar?.SetValue(0);
+	}
+
+	private ApplyBlockMaterial(blockId: number, effect: GameObject) {
+		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
+		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, WorldAPI.GetMainWorld().voxelWorld);
+		const blockRen = blockGO.GetComponent<Renderer>();
+		const blockFilter = blockGO.GetComponent<MeshFilter>();
+		particles.mesh = blockFilter.mesh;
+		particles.sharedMaterial = blockRen.sharedMaterial;
+		GameObjectBridge.Destroy(blockGO);
 	}
 
 	private GetBlockHealth(blockPos: Vector3) {

@@ -1,20 +1,20 @@
 ﻿import { DamageType } from "Shared/Damage/DamageType";
+import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
+import { ItemType } from "Shared/Item/ItemType";
+import { AudioClipBundle } from "../../Audio/AudioClipBundle";
+import { AudioManager } from "../../Audio/AudioManager";
 import { EffectsManager } from "../../Effects/EffectsManager";
+import { ArrayUtil } from "../../Util/ArrayUtil";
 import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
-import { Bundle_Entity, Bundle_Entity_OnHit, BundleGroupNames } from "../../Util/ReferenceManagerResources";
+import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
-import { AudioManager } from "../../Audio/AudioManager";
-import { ArrayUtil } from "../../Util/ArrayUtil";
-import { AudioClipBundle } from "../../Audio/AudioClipBundle";
 
 export class EntityAnimator {
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
 	public readonly anim: AnimancerComponent;
 	public readonly defaultTransitionTime: number = 0.15;
-	public damageFlashOnColor: Color = Color.red;
-	public damageFlashOffColor: Color = new Color(1, 0, 0, 0);
 
 	protected readonly entityRef: EntityReferences;
 
@@ -24,12 +24,13 @@ export class EntityAnimator {
 
 	private footstepAudioBundle: AudioClipBundle;
 	private steppedOnBlockType = 0;
+	private lastFootstepSoundTime = 0;
 
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
 		this.entityRef = entityRef;
 		this.footstepAudioBundle = new AudioClipBundle([], "Footsteps");
-		this.footstepAudioBundle.soundOptions = { volumeScale: 0.2 };
+		this.footstepAudioBundle.soundOptions = { volumeScale: 0.15 };
 		this.damageEffectClip = BundleReferenceManager.LoadResource<AnimationClip>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
@@ -43,8 +44,10 @@ export class EntityAnimator {
 
 		//Listen to animation events
 		this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
-			print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
-			this.OnAnimationEvent(data);
+			if (data.key !== 0) {
+				//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
+			}
+			this.OnAnimationEvent(data.key, data);
 		});
 	}
 
@@ -95,12 +98,7 @@ export class EntityAnimator {
 		allMeshes.forEach((renderer) => {
 			if (renderer && renderer.enabled) {
 				renderer
-					.TweenMaterialsProperty(
-						"_OverlayColor",
-						this.damageFlashOffColor,
-						this.damageFlashOnColor,
-						this.flashTransitionDuration,
-					)
+					.TweenMaterialsFloatProperty("_OverrideStrength", 0, 1, this.flashTransitionDuration)
 					.SetPingPong();
 			}
 		});
@@ -109,22 +107,57 @@ export class EntityAnimator {
 		});
 	}
 
-	private OnAnimationEvent(data: EntityAnimationEventData) {
-		let blockBelowMeta = this.entity.GetBlockBelowMeta();
+	public PlayFootstepSound(): void {
+		const blockId = this.entity.entityDriver.groundedBlockId;
+		if (blockId === 0) return;
 
-		//switch (data.key) {
-		//	case EntityAnimationEventKey.FOOTSTEP:
-		//Play footstep sound
-		if (blockBelowMeta && blockBelowMeta.stepSound && blockBelowMeta.stepSound.size() > 0) {
-			if (blockBelowMeta.blockId !== this.steppedOnBlockType) {
+		if (os.clock() - this.lastFootstepSoundTime < 0.14) {
+			return;
+		}
+		this.lastFootstepSoundTime = os.clock();
+
+		let itemType = GetItemTypeFromBlockId(blockId);
+		if (!itemType) {
+			itemType = ItemType.STONE;
+		}
+
+		const itemMeta = GetItemMeta(itemType);
+
+		let stepSounds = itemMeta.block?.stepSound ?? GetItemMeta(ItemType.STONE).block?.stepSound;
+		if (stepSounds === undefined) {
+			stepSounds = [];
+		}
+
+		if (stepSounds.size() > 0) {
+			if (blockId !== this.steppedOnBlockType) {
 				//Refresh our audio bundle with the new sound list
-				this.steppedOnBlockType = blockBelowMeta.blockId;
-				this.footstepAudioBundle.UpdatePaths(blockBelowMeta.stepSound);
+				this.steppedOnBlockType = blockId;
+				this.footstepAudioBundle.UpdatePaths(stepSounds);
 			}
 			this.footstepAudioBundle.spacialPosition = this.entity.model.transform.position;
 			this.footstepAudioBundle.PlayNext();
 		}
-		//		break;
-		//}
+	}
+
+	private OnAnimationEvent(key: EntityAnimationEventKey, data: EntityAnimationEventData) {
+		switch (key) {
+			case EntityAnimationEventKey.FOOTSTEP:
+				this.PlayFootstepSound();
+				break;
+			case EntityAnimationEventKey.SLIDE_START:
+				if (this.entityRef.slideSound) {
+					AudioManager.PlayAtPosition(this.entityRef.slideSound, this.entity.model.transform.position, {
+						volumeScale: 0.3,
+					});
+				}
+				break;
+			case EntityAnimationEventKey.JUMP:
+				if (this.entityRef.jumpSound) {
+					AudioManager.PlayAtPosition(this.entityRef.jumpSound, this.entity.model.transform.position, {
+						volumeScale: 0.2,
+					});
+				}
+				break;
+		}
 	}
 }

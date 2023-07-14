@@ -1,97 +1,51 @@
-import Object from "@easy-games/unity-object-utils";
 import { ApiHelper } from "./ApiHelper";
 import { decode, encode } from "./Lib/json";
-import { SIOEventNames } from "./SocketIOMessages/SOIEventNames";
-import { Party } from "./SocketIOMessages/Party";
+import { CoreSignals } from "./CoreSignals";
 
 export class EasyCore {
-	private isInitialized: boolean;
+	public static CoreApi: CoreApi;
+	private static isInitialized: boolean;
+	private static idToken: string | undefined;
+	private static headersMap: Map<string, string>;
+	private static coreUserData: CoreUserData | undefined;
 
-	constructor() {
-		this.isInitialized = false;
+	static async initAsync() {
+		this.CoreApi = CoreApi.Instance;
+		EasyCore.isInitialized = false;
+		EasyCore.idToken = undefined;
+		EasyCore.headersMap = new Map<string, string>();
 
-		const coreApi = CoreApi.Instance;
-		const userData = coreApi.GetCoreUserData();
+		this.coreUserData = this.CoreApi.GetCoreUserData();
 
-		const onComplete_GetUserToken = coreApi.GetUserTokenAsync(true);
-
-		const getUserProfile = (encodedHeaders: string) => {
-			const onComplete = coreApi.SendAsync(
-				`${ApiHelper.USER_SERVICE_URL}/users/self`,
-				"get",
-				"",
-				"",
-				encodedHeaders,
-			);
-
-			onComplete.OnCompleteEvent((operationResult) => {
-				// print(
-				// 	`getUserProfile.OnCompleteEvent() operationResult.IsSuccess: ${operationResult.IsSuccess}, operationResult.ReturnString: ${operationResult.ReturnString}`,
-				// );
-			});
-		};
-
-		onComplete_GetUserToken.OnCompleteEvent((operationResult) => {
-			// print(
-			// 	`onComplete_GetUserToken.OnCompleteEvent() operationResult.IsSuccess: ${operationResult.IsSuccess}, operationResult.ReturnString: ${operationResult.ReturnString}`,
-			// );
-
-			if (operationResult.IsSuccess) {
-				if (coreApi.IsInitialized) {
-					if (!this.isInitialized) {
-						//print(`postInit coreApi.IsInitialized`);
-						this.postInit();
-					}
-				} else {
-					coreApi.OnInitializedEvent(() => {
-						if (!this.isInitialized) {
-							//print(`postInit coreApi.OnInitializedEvent()`);
-							this.postInit();
-						}
-					});
-				}
-			} else {
-				Debug.LogError(`Unable to get user auth token.`);
+		if (this.CoreApi.IsInitialized) {
+			if (!EasyCore.isInitialized) {
+				//print(`postInit coreApi.IsInitialized`);
+				EasyCore.postInit();
 			}
-		});
-	}
+		} else {
+			await new Promise((resolve, reject) => {
+				this.CoreApi.OnInitializedEvent(() => {
+					//print(`EasyCore.OnInitializedEvent`);
+					if (!EasyCore.isInitialized) {
+						//print(`postInit coreApi.OnInitializedEvent()`);
+						EasyCore.postInit();
+					}
 
-	async getEncodedHeadersAsync(): Promise<string> {
-		const promise = new Promise<string>((resolve, reject) => {
-			const onComplete_GetUserToken = CoreApi.Instance.GetUserTokenAsync(true);
-			onComplete_GetUserToken.OnCompleteEvent((operationResult) => {
-				if (operationResult.IsSuccess) {
-					resolve(operationResult.ReturnString);
-				} else {
-					reject(operationResult.ReturnString);
-				}
+					resolve("");
+				});
 			});
-		});
-
-		return promise;
+		}
 	}
 
-	async getHeadersMapAsync(): Promise<Map<string, string>> {
-		const promise = new Promise<Map<string, string>>((resolve, reject) => {
-			const onComplete_GetUserToken = CoreApi.Instance.GetUserTokenAsync(true);
-			onComplete_GetUserToken.OnCompleteEvent((operationResult) => {
-				if (operationResult.IsSuccess) {
-					const map = new Map<string, string>();
-					map.set(
-						ApiHelper.AUTH_HEADER_NAME,
-						`${ApiHelper.AUTH_HEADER_VALUE_PREFIX}${operationResult.ReturnString}`,
-					);
-					resolve(map);
-				} else {
-					reject(operationResult.ReturnString);
-				}
-			});
-		});
-
-		return promise;
+	static getHeadersMap(): Map<string, string> {
+		return this.headersMap;
 	}
 
-	async getAsync<T>(
+	static getCoreUserData(): CoreUserData | undefined {
+		return this.coreUserData;
+	}
+
+	static async getAsync<T>(
 		url: string,
 		params: Map<string, string> | undefined = undefined,
 		headers: Map<string, string> | undefined = undefined,
@@ -99,8 +53,10 @@ export class EasyCore {
 		const encodedParams = this.getEncodedMap(params);
 		const encodedHeaders = this.getEncodedMap(headers);
 
+		print(`getAsync() url: ${url}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`);
+
 		const result = new Promise<T>((resolve, reject) => {
-			const onCompleteHook = CoreApi.Instance.SendAsync(url, "get", "", encodedParams, encodedHeaders);
+			const onCompleteHook = this.CoreApi.SendAsync(url, "get", "", encodedParams, encodedHeaders);
 			onCompleteHook.OnCompleteEvent((operationResult) => {
 				if (operationResult.IsSuccess) {
 					resolve(decode<T>(operationResult.ReturnString));
@@ -110,10 +66,10 @@ export class EasyCore {
 			});
 		});
 
-		return (await result) as T;
+		return result;
 	}
 
-	getEncodedMap(map: Map<string, string> | undefined): string {
+	static getEncodedMap(map: Map<string, string> | undefined): string {
 		const result = map ? encode(map) : "";
 
 		//print(`getEncodedMap() result: ${result}`);
@@ -121,7 +77,7 @@ export class EasyCore {
 		return result;
 	}
 
-	postInit() {
+	static postInit() {
 		if (!this.isInitialized) {
 			// print(
 			// 	`postInit() this.isInitialized: ${this.isInitialized}, isClient: ${RunCore.IsClient()}, ${Time.time}}`,
@@ -129,45 +85,38 @@ export class EasyCore {
 
 			this.isInitialized = true;
 
-			const coreApi = CoreApi.Instance;
-			const eventNameObj = encode(Object.values(SIOEventNames));
-			const onMessageHook = coreApi.SubscribeToEvents(eventNameObj);
-			onMessageHook.OnEventReceived((messageName, message) => {
-				//print(`postInit.eventReceived() messageName: ${messageName}, message: ${message}`);
-				const deserialized = decode(message);
-
-				switch (messageName) {
-					case SIOEventNames.connect:
-						break;
-					case SIOEventNames.connect_error:
-						break;
-					case SIOEventNames.exception:
-						break;
-					case SIOEventNames.statusUpdateRequest:
-						break;
-					case SIOEventNames.friendRequest:
-						break;
-					case SIOEventNames.friendAccepted:
-						break;
-					case SIOEventNames.friendStatusUpdateMulti:
-						break;
-					case SIOEventNames.partyInvite:
-						break;
-					case SIOEventNames.partyUpdate:
-						//print(`partyUpdate - eventReceived. data: ${encode((deserialized as object[])[0] as Party)}`);
-						break;
-					default:
-						print(`Unsupported messageName encountered: ${messageName}`);
-						break;
-				}
+			this.CoreApi.OnIdTokenChangedEvent((idToken) => {
+				this.idToken = idToken;
 			});
 
-			const initGCHook = coreApi.InitializeGameCoordinatorAsync();
-			initGCHook.OnCompleteEvent((operationResult) => {
-				// print(
-				// 	`postInit.initGCHook.OnCompleteEvent() operationResult.IsSuccess: ${operationResult.IsSuccess}, operationResult.ReturnString: ${operationResult.ReturnString}`,
-				// );
-			});
+			this.setIdToken(this.CoreApi.IdToken);
+
+			if (RunCore.IsClient()) {
+				this.CoreApi.OnGameCoordinatorEvent((messageName, jsonMessage) => {
+					// print(
+					// 	`postInit.OnGameCoordinatorMessage() messageName: ${messageName}, jsonMessage: ${jsonMessage}`,
+					// );
+
+					CoreSignals.GameCoordinatorMessage.Fire({ messageName: messageName, jsonMessage: jsonMessage });
+				});
+
+				const onCompleteHook = this.CoreApi.InitializeGameCoordinatorAsync();
+
+				onCompleteHook.OnCompleteEvent((operationResult) => {
+					if (operationResult.IsSuccess) {
+						CoreSignals.CoreInitialized.Fire({ idToken: this.idToken! });
+					} else {
+						print(`Unable to initialize Game Coordinator! error: ${operationResult.ReturnString}`);
+					}
+				});
+			} else {
+				CoreSignals.CoreInitialized.Fire({ idToken: this.idToken! });
+			}
 		}
+	}
+
+	private static setIdToken(newIdToken: string) {
+		this.idToken = newIdToken;
+		this.headersMap.set(ApiHelper.AUTH_HEADER_NAME, `${ApiHelper.AUTH_HEADER_VALUE_PREFIX}${this.idToken}`);
 	}
 }

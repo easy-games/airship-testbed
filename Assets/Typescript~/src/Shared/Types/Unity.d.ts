@@ -1429,7 +1429,8 @@ interface Component extends Object {
     TweenMaterialColor(to: Color, duration: number): Tween<Color>;
 
 	TweenRendererColor(from: Color, to: Color, duration: number): Tween<number>;
-	TweenMaterialsProperty(propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
+	TweenMaterialsColorProperty(propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
+	TweenMaterialsFloatProperty(propertyName: string, from: number, to: number, duration: number): Tween<number>;
 
     TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
     TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
@@ -1483,12 +1484,14 @@ interface GameObject extends Object {
      * Throws error if no component found.
      */
 	GetComponent<T>(): T;
-	GetComponentsInChildren<T>(): CSArray<T>;
+    GetComponentsInChildren<T>(): CSArray<T>;
+	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
     /** 
      * Throws error if no component found.
      */
 	GetComponent<T extends Component = Component>(type: string): T;
     GetComponentIfExists<T extends Component = Component>(type: string): T | undefined;
+    AddComponent<T>(): T;
 	AddComponent<T extends Component = Component>(componentName: string): T;
 	SendMessage(methodName: string, value: unknown): void;
 	SendMessage(methodName: string): void;
@@ -1554,6 +1557,7 @@ declare const gameObject: GameObject;
 interface GameObjectConstructor {
 	CreatePrimitive(type: PrimitiveType): GameObject;
 	Find(name: string): GameObject;
+    FindObjectOfType<T extends Component>(): T;
 	FindGameObjectsWithTag(tag: string): CSArray<GameObject>;
 	FindGameObjectWithTag(tag: string): GameObject;
 	FindWithTag(tag: string): GameObject;

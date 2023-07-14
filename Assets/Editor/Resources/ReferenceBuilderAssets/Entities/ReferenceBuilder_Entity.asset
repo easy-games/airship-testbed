@@ -19,10 +19,14 @@ MonoBehaviour:
     - key: GeneralAnim
       value: {fileID: 7400000, guid: 55c9e38c86f89e34cbb919946b66b4a4, type: 2}
     - key: GenericVFX
-      value: {fileID: 2145243952792991196, guid: f8021bdae8b5cf4479a1d569f04562b1,
-        type: 3}
+      value: {fileID: 2145243952792991196, guid: f8021bdae8b5cf4479a1d569f04562b1, type: 3}
   - key: Movement
     value:
     - key: SprintTrail
-      value: {fileID: 532096394122571217, guid: c1ae06ea821350a448e70e1d24013b6c,
-        type: 3}
+      value: {fileID: 532096394122571217, guid: c1ae06ea821350a448e70e1d24013b6c, type: 3}
+    - key: SlideSFX
+      value: {fileID: 8300000, guid: 8cff946ea4e31e74aacc4c04c9f19b60, type: 3}
+    - key: JumpSFX
+      value: {fileID: 8300000, guid: 7537b4533f0e7234ca3a0be798df4f1c, type: 3}
+    - key: LandSFX
+      value: {fileID: 8300000, guid: d70de861cfb65eb4a969fefe02dcd157, type: 3}

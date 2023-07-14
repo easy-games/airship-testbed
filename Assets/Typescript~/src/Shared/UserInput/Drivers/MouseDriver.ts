@@ -8,7 +8,7 @@ export class MouseDriver {
 	public readonly MiddleButtonChanged = new Signal<[isDown: boolean]>();
 	public readonly Scrolled = new Signal<[delta: number]>();
 	public readonly Moved = new Signal<[location: Vector3]>();
-	public readonly Delta = new Signal<[delta: Vector3]>();
+	// public readonly Delta = new Signal<[delta: Vector3]>();
 
 	private readonly inputProxy = UserInputService.InputProxy;
 
@@ -28,9 +28,9 @@ export class MouseDriver {
 		this.inputProxy.OnMouseMoveEvent((location) => {
 			this.Moved.Fire(location);
 		});
-		this.inputProxy.OnMouseDeltaEvent((delta) => {
-			this.Delta.Fire(delta);
-		});
+		// this.inputProxy.OnMouseDeltaEvent((delta) => {
+		// 	this.Delta.Fire(delta);
+		// });
 	}
 
 	public IsLeftDown() {

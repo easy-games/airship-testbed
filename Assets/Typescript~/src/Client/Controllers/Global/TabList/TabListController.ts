@@ -4,6 +4,8 @@ import { Player } from "Shared/Player/Player";
 import { Keyboard } from "Shared/UserInput";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { PlayerController } from "../Player/PlayerController";
+import { Window } from "Shared/Util/Window";
+import { Task } from "Shared/Util/Task";
 
 @Controller({})
 export class TabListController implements OnStart {
@@ -35,14 +37,20 @@ export class TabListController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
-		keyboard.KeyDown.Connect((e) => {
-			if (e.Key === Key.Tab && !keyboard.IsEitherKeyDown(Key.LeftAlt, Key.LeftCommand)) {
+		keyboard.OnKeyDown(KeyCode.Tab, (e) => {
+			if (!keyboard.IsEitherKeyDown(KeyCode.LeftAlt, KeyCode.LeftCommand)) {
 				this.Show();
 			}
 		});
-		keyboard.KeyUp.Connect((e) => {
-			if (e.Key === Key.Tab) {
-				this.Hide();
+		keyboard.OnKeyUp(KeyCode.Tab, (e) => {
+			this.Hide();
+		});
+
+		Window.FocusChanged.Connect((hasFocus) => {
+			if (hasFocus) {
+				Task.Delay(0, () => {
+					this.Hide();
+				});
 			}
 		});
 

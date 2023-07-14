@@ -1,5 +1,5 @@
-import { Task } from "../Util/Task";
 import StringUtils from "../Util/StringUtil";
+import { Task } from "../Util/Task";
 
 const MAX_DISTANCE = 18;
 
@@ -8,9 +8,13 @@ export interface PlaySoundConfig {
 }
 
 export class AudioManager {
+	public static SoundFolderPath = "Shared/Resources/Sound/";
 	public static globalSource: AudioSource;
+	private static soundFolderIndex: number;
 
 	public static Init(): void {
+		this.soundFolderIndex = this.SoundFolderPath.size();
+		print("setting size: " + this.soundFolderIndex);
 		this.globalSource = GameObject.Find("SoundUtil").GetComponent<AudioSource>();
 	}
 
@@ -29,7 +33,7 @@ export class AudioManager {
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		const clip = this.LoadAudioClip(sound);
 		if (!clip) {
-			error("Failed to find sound: " + sound);
+			warn("Failed to find sound: " + sound);
 			return;
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
@@ -53,6 +57,11 @@ export class AudioManager {
 	}
 
 	public static LoadAudioClip(sound: string): AudioClip | undefined {
-		return AssetBridge.LoadAssetIfExists<AudioClip>("Shared/Resources/Sound/" + this.FriendlyPath(sound));
+		return AssetBridge.LoadAssetIfExists<AudioClip>(this.SoundFolderPath + this.FriendlyPath(sound));
+	}
+
+	public static GetLocalPathFromFullPath(fullPath: string) {
+		print("Getting path from: " + fullPath);
+		return fullPath.sub(this.soundFolderIndex);
 	}
 }

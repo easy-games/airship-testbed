@@ -2586,6 +2586,98 @@ declare const enum UserAuthorization {
     WebCam = 1,
     Microphone = 2,
 }
+declare const enum ParticleSystemRenderSpace {
+    View = 0,
+    World = 1,
+    Local = 2,
+    Facing = 3,
+    Velocity = 4,
+}
+declare const enum ParticleSystemRenderMode {
+    Billboard = 0,
+    Stretch = 1,
+    HorizontalBillboard = 2,
+    VerticalBillboard = 3,
+    Mesh = 4,
+    None = 5,
+}
+declare const enum ParticleSystemMeshDistribution {
+    UniformRandom = 0,
+    NonUniformRandom = 1,
+}
+declare const enum ParticleSystemSortMode {
+    None = 0,
+    Distance = 1,
+    OldestInFront = 2,
+    YoungestInFront = 3,
+    Depth = 4,
+}
+declare const enum ParticleSystemVertexStreams {
+    None = 0,
+    Position = 1,
+    Normal = 2,
+    Tangent = 4,
+    Color = 8,
+    UV = 16,
+    UV2BlendAndFrame = 32,
+    CenterAndVertexID = 64,
+    Size = 128,
+    Rotation = 256,
+    Velocity = 512,
+    Lifetime = 1024,
+    Custom1 = 2048,
+    Custom2 = 4096,
+    Random = 8192,
+    All = 2147483647,
+}
+declare const enum ParticleSystemVertexStream {
+    Position = 0,
+    Normal = 1,
+    Tangent = 2,
+    Color = 3,
+    UV = 4,
+    UV2 = 5,
+    UV3 = 6,
+    UV4 = 7,
+    AnimBlend = 8,
+    AnimFrame = 9,
+    Center = 10,
+    VertexID = 11,
+    SizeX = 12,
+    SizeXY = 13,
+    SizeXYZ = 14,
+    Rotation = 15,
+    Rotation3D = 16,
+    RotationSpeed = 17,
+    RotationSpeed3D = 18,
+    Velocity = 19,
+    Speed = 20,
+    AgePercent = 21,
+    InvStartLifetime = 22,
+    StableRandomX = 23,
+    StableRandomXY = 24,
+    StableRandomXYZ = 25,
+    StableRandomXYZW = 26,
+    VaryingRandomX = 27,
+    VaryingRandomXY = 28,
+    VaryingRandomXYZ = 29,
+    VaryingRandomXYZW = 30,
+    Custom1X = 31,
+    Custom1XY = 32,
+    Custom1XYZ = 33,
+    Custom1XYZW = 34,
+    Custom2X = 35,
+    Custom2XY = 36,
+    Custom2XYZ = 37,
+    Custom2XYZW = 38,
+    NoiseSumX = 39,
+    NoiseSumXY = 40,
+    NoiseSumXYZ = 41,
+    NoiseImpulseX = 42,
+    NoiseImpulseXY = 43,
+    NoiseImpulseXYZ = 44,
+    MeshIndex = 45,
+}
 declare const enum ProfilerArea {
     CPU = 0,
     GPU = 1,
@@ -2823,6 +2915,10 @@ declare const enum LineAlignment {
 }
 declare const enum EntityAnimationEventKey {
     FOOTSTEP = 0,
+    JUMP = 1,
+    LAND = 2,
+    SLIDE_START = 3,
+    SLIDE_END = 4,
     DEFAULT = -1,
 }
 
@@ -9029,6 +9125,14 @@ interface MeshRenderer extends Renderer {
 
 }
     
+interface MeshFilter extends Component {
+    sharedMesh: Mesh;
+    mesh: Mesh;
+
+    constructor(): MeshFilter;
+
+}
+    
 interface TMP_Text extends MaskableGraphic {
     text: string;
     textPreprocessor: ITextPreprocessor;
@@ -12322,6 +12426,9 @@ interface VoxelWorld extends MonoBehaviour {
     radiosityEnabled: boolean;
     globalSunBrightness: number;
     globalSkyBrightness: number;
+    globalFogStart: number;
+    globalFogEnd: number;
+    globalFogColor: Color;
     globalSkySaturation: number;
     globalSunColor: Color;
     globalAmbientLight: Color;
@@ -12416,6 +12523,9 @@ interface VoxelBinaryFile extends ScriptableObject {
     globalAmbientOcclusion: number;
     globalRadiosityScale: number;
     globalRadiosityDirectLightAmp: number;
+    globalFogStart: number;
+    globalFogEnd: number;
+    globalFogColor: Color;
 
     constructor(): VoxelBinaryFile;
 
@@ -12471,13 +12581,13 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     RpcLogic___TargetCreatePointlight_3789428640(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
     RpcLogic___TargetDirtyLights_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetFinishedSendingWorldRpc_328543758(conn: NetworkConnection): void;
-    RpcLogic___TargetSetLightingProperties_3591481563(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number): void;
+    RpcLogic___TargetSetLightingProperties_2623000413(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     RpcLogic___TargetWriteChunkRpc_4077799975(conn: NetworkConnection, pos: unknown, chunk: Chunk): void;
     RpcLogic___TargetWriteVoxelRpc_1359590914(conn: NetworkConnection, pos: unknown, voxel: number): void;
     TargetCreatePointlight(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
     TargetDirtyLights(conn: NetworkConnection): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
-    TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number): void;
+    TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     TargetWriteChunkRpc(conn: NetworkConnection, pos: unknown, chunk: Chunk): void;
     TargetWriteVoxelRpc(conn: NetworkConnection, pos: unknown, voxel: number): void;
 }
@@ -13512,6 +13622,52 @@ interface ClientNetworkConnector extends MonoBehaviour {
     constructor(): ClientNetworkConnector;
 
     Disconnect(): void;
+}
+    
+interface ParticleSystemRenderer extends Renderer {
+    alignment: ParticleSystemRenderSpace;
+    renderMode: ParticleSystemRenderMode;
+    meshDistribution: ParticleSystemMeshDistribution;
+    sortMode: ParticleSystemSortMode;
+    lengthScale: number;
+    velocityScale: number;
+    cameraVelocityScale: number;
+    normalDirection: number;
+    shadowBias: number;
+    sortingFudge: number;
+    minParticleSize: number;
+    maxParticleSize: number;
+    pivot: Vector3;
+    flip: Vector3;
+    maskInteraction: SpriteMaskInteraction;
+    trailMaterial: Material;
+    enableGPUInstancing: boolean;
+    allowRoll: boolean;
+    freeformStretching: boolean;
+    rotateWithStretchDirection: boolean;
+    mesh: Mesh;
+    meshCount: number;
+    activeVertexStreamsCount: number;
+    supportsMeshInstancing: boolean;
+
+    constructor(): ParticleSystemRenderer;
+
+    AreVertexStreamsEnabled(streams: ParticleSystemVertexStreams): boolean;
+    BakeMesh(mesh: Mesh, useTransform: boolean): void;
+    BakeMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    BakeTrailsMesh(mesh: Mesh, useTransform: boolean): void;
+    BakeTrailsMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    DisableVertexStreams(streams: ParticleSystemVertexStreams): void;
+    EnableVertexStreams(streams: ParticleSystemVertexStreams): void;
+    GetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
+    GetEnabledVertexStreams(streams: ParticleSystemVertexStreams): ParticleSystemVertexStreams;
+    GetMeshes(meshes: CSArray<Mesh>): number;
+    GetMeshWeightings(weightings: CSArray<number>): number;
+    SetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
+    SetMeshes(meshes: CSArray<Mesh>, size: number): void;
+    SetMeshes(meshes: CSArray<Mesh>): void;
+    SetMeshWeightings(weightings: CSArray<number>, size: number): void;
+    SetMeshWeightings(weightings: CSArray<number>): void;
 }
     
 interface Profiler {
@@ -14550,7 +14706,7 @@ interface MeshProcessorConstructor {
 declare const MeshProcessor: MeshProcessorConstructor;
     
 interface EntityAnimationEventData {
-    key: EntityAnimationEventKey;
+    key: number;
 
     constructor(): EntityAnimationEventData;
 
@@ -14578,19 +14734,35 @@ interface KeyValueReference<T> {
 
 }
     
+interface WindowCore {
+
+
+}
+    
+interface WindowProxy extends MonoBehaviour {
+
+    constructor(): WindowProxy;
+
+    HasFocus(): boolean;
+}
+    
+interface WindowCoreConstructor {
+    Window: WindowProxy;
+
+
+    SetWindowProxy(window: WindowProxy): void;
+}
+declare const WindowCore: WindowCoreConstructor;
+    
 interface CoreApi extends MonoBehaviour {
     IsInitialized: boolean;
+    IdToken: string;
 
     constructor(): CoreApi;
 
     GetCoreUserData(): CoreUserData;
-    GetUserTokenAsync(forceRefresh: boolean): OnCompleteHook;
-    Init(): void;
     InitializeGameCoordinatorAsync(): OnCompleteHook;
     SendAsync(url: string, method: string, utf8Body: string, jsonParams: string, jsonHeaders: string): OnCompleteHook;
-    SubscribeToEvent(eventName: string): SocketIOMessageHook;
-    SubscribeToEvents(eventNamesJsonObj: string): SocketIOMessageHook;
-    UnsubscribeToEvent(eventName: string): void;
 }
     
 interface CoreUserData {
@@ -14623,17 +14795,17 @@ interface OperationResult {
 
 }
     
-interface SocketIOMessageHook {
-
-    constructor(): SocketIOMessageHook;
-
-    Run(messageName: string, message: string): void;
-}
-    
 interface CoreApiConstructor {
     Instance: CoreApi;
 
 
 }
 declare const CoreApi: CoreApiConstructor;
+    
+interface GameCoordinatorMessageHook {
+
+    constructor(): GameCoordinatorMessageHook;
+
+    Run(messageName: string, message: string): void;
+}
 

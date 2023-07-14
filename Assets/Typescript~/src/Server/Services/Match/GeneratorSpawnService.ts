@@ -1,5 +1,4 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import ObjectUtil from "@easy-games/unity-object-utils";
 import { ServerSignals } from "Server/ServerSignals";
 import { GeneratorService } from "Server/Services/Global/Generator/GeneratorService";
 import { ItemType } from "Shared/Item/ItemType";
@@ -37,61 +36,58 @@ export class GeneratorSpawnService implements OnStart {
 		});
 	}
 
-	/** Create map generators. */
+	// Create map generators.
 	private CreateMapGenerators(): void {
-		/* Team generators. */
-		const ironGenerators = this.loadedMap!.GetTeamGenerators();
-		ObjectUtil.keys(ironGenerators).forEach((teamId) => {
-			const generator = ironGenerators[teamId];
-			if (!generator) return;
-			const generatorId = this.generatorService.CreateGenerator(generator.Position, {
-				item: ItemType.IRON,
-				spawnRate: 1,
-				stackLimit: 100,
-				label: false,
-				split: {
-					splitRange: 30,
-				},
-			});
-			/* Create deny region on generator. */
-			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(generator.Position), DENY_REGION_SIZE);
-			/* Add to team map. */
-			const team = this.teamService.GetTeamById(teamId as string);
-			if (!team) return;
-			const teamGenerators = this.teamMap.get(team);
-			if (teamGenerators) {
-				teamGenerators.push(generatorId);
-			} else {
-				this.teamMap.set(team, [generatorId]);
-			}
-		});
-		/* Map generators. */
-		const diamondGenerators = this.loadedMap!.GetMapDiamondGenerators();
-		if (diamondGenerators) {
-			diamondGenerators.forEach((mapPosition) => {
-				this.generatorService.CreateGenerator(mapPosition.Position, {
-					item: ItemType.DIAMOND,
-					spawnRate: 25,
-					stackLimit: 6,
-					label: true,
-				});
-				/* Create deny region on generator. */
-				this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
-			});
+        const loadedMap = this.mapService.GetLoadedMap();
+        if (!loadedMap) return;
+
+		// Team generators.
+		for (let team of this.teamService.GetTeams()) {
+			const ironGeneratorPos = loadedMap.GetWorldPosition(team.id + "_generator");
+			const generatorId = this.generatorService.CreateGenerator(ironGeneratorPos.Position, {
+                item: ItemType.IRON,
+                spawnRate: 1,
+                stackLimit: 100,
+                label: false,
+                split: {
+                    splitRange: 30,
+                },
+            });
+
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(ironGeneratorPos.Position), DENY_REGION_SIZE);
+
+            const teamGenerators = this.teamMap.get(team);
+            if (teamGenerators) {
+                teamGenerators.push(generatorId);
+            } else {
+                this.teamMap.set(team, [generatorId]);
+            }
 		}
-		const emeraldGenerators = this.loadedMap!.GetMapEmeraldGenerators();
-		if (emeraldGenerators) {
-			emeraldGenerators.forEach((mapPosition) => {
-				this.generatorService.CreateGenerator(mapPosition.Position, {
-					item: ItemType.EMERALD,
-					spawnRate: 45,
-					stackLimit: 3,
-					label: true,
-				});
-				/* Create deny region on generator. */
-				this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
-			});
-		}
+
+		// Map generators.
+		const diamondGenerators = loadedMap.GetWorldPositionsForTag("diamond");
+		diamondGenerators.forEach((mapPosition) => {
+            this.generatorService.CreateGenerator(mapPosition.Position, {
+                item: ItemType.DIAMOND,
+                spawnRate: 25,
+                stackLimit: 6,
+                label: true,
+            });
+            // Create deny region on generator.
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+        });
+
+		const emeraldGenerators = loadedMap.GetWorldPositionsForTag("emerald");
+		emeraldGenerators.forEach((mapPosition) => {
+            this.generatorService.CreateGenerator(mapPosition.Position, {
+                item: ItemType.EMERALD,
+                spawnRate: 45,
+                stackLimit: 3,
+                label: true,
+            });
+            // Create deny region on generator.
+            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+        });
 	}
 
 	/**

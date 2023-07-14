@@ -158,9 +158,6 @@ export class LocalEntityController implements OnStart {
 			this.cameraController.SetMode(createHumanoidCameraMode());
 			this.cameraController.cameraSystem.SetOnClearCallback(createHumanoidCameraMode);
 
-			// this.entityDriver.OnSecondaryStateChanged((state) => {
-			// 	humanoidCameraMode.SetYOffset(getCamYOffset(state, this.firstPerson));
-			// });
 			this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
 					this.prevState = this.currentState;
@@ -174,61 +171,110 @@ export class LocalEntityController implements OnStart {
 
 			const flyingBin = new Bin();
 
-			bin.Connect(keyboard.KeyDown, (event) => {
-				// Toggle first-person view:
-				if (event.Key === Key.T) {
-					if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-						this.ToggleFirstPerson(humanoidCameraMode);
-					}
-				} else if (event.Key === Key.LeftAlt) {
-					if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-						this.SetLookBackwards(humanoidCameraMode, true);
-					}
-				} else if (event.Key === Key.P && keyboard.IsKeyDown(Key.LeftShift)) {
-					if (RunCore.IsEditor()) {
-						flyCam = !flyCam;
-						if (flyCam) {
-							if (this.entityInput) {
-								flyingBin.Add(this.entityInput.AddDisabler());
-							}
-							this.cameraController.SetMode(new FlyCameraMode());
-						} else {
-							flyingBin.Clean();
-							this.cameraController.ClearMode();
-						}
-					}
-				} else if (event.Key === Key.M && keyboard.IsKeyDown(Key.LeftShift)) {
-					this.TakeScreenshot();
-				} else if (event.Key === Key.L) {
-					print("-----");
-					for (const entity of Dependency<EntityController>().GetEntities()) {
-						print(entity.GetDisplayName() + ": " + entity.id);
-					}
-					print("-----");
-					// TEST: Knock-back:
-					Task.Spawn(() => {
-						const sentTick = InstanceFinder.TimeManager.Tick;
-						const halfWay = Network.ClientToServer.TEST_LATENCY.Client.FireServer();
-						const endTick = InstanceFinder.TimeManager.Tick;
-						print(
-							"Round trip: " +
-								(endTick - sentTick) +
-								" | trip 1: " +
-								(halfWay - sentTick) +
-								" | trip 2: " +
-								(endTick - halfWay),
-						);
-					});
+			// Toggle first person:
+			keyboard.OnKeyDown(KeyCode.T, (event) => {
+				if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
+					this.ToggleFirstPerson(humanoidCameraMode);
 				}
 			});
 
-			bin.Connect(keyboard.KeyUp, (event) => {
-				if (event.Key === Key.LeftAlt) {
-					if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-						this.SetLookBackwards(humanoidCameraMode, false);
-					}
+			// Toggle look backwards:
+			keyboard.OnKeyDown(KeyCode.LeftAlt, (event) => {
+				if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
+					this.SetLookBackwards(humanoidCameraMode, true);
 				}
 			});
+			keyboard.OnKeyUp(KeyCode.LeftAlt, (event) => {
+				if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
+					this.SetLookBackwards(humanoidCameraMode, false);
+				}
+			});
+
+			// Screenshot:
+			keyboard.OnKeyDown(KeyCode.M, (event) => {
+				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+					this.TakeScreenshot();
+				}
+			});
+
+			// Debug knockback:
+			keyboard.OnKeyDown(KeyCode.L, (event) => {
+				print("-----");
+				for (const entity of Dependency<EntityController>().GetEntities()) {
+					print(entity.GetDisplayName() + ": " + entity.id);
+				}
+				print("-----");
+				// TEST: Knock-back:
+				Task.Spawn(() => {
+					const sentTick = InstanceFinder.TimeManager.Tick;
+					const halfWay = Network.ClientToServer.TEST_LATENCY.Client.FireServer();
+					const endTick = InstanceFinder.TimeManager.Tick;
+					print(
+						"Round trip: " +
+							(endTick - sentTick) +
+							" | trip 1: " +
+							(halfWay - sentTick) +
+							" | trip 2: " +
+							(endTick - halfWay),
+					);
+				});
+			});
+
+			// bin.Connect(keyboard.KeyDown, (event) => {
+			// 	// Toggle first-person view:
+			// 	if (event.Key === Key.T) {
+			// 		if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
+			// 			this.ToggleFirstPerson(humanoidCameraMode);
+			// 		}
+			// 	} else if (event.Key === Key.LeftAlt) {
+			// 		if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
+			// 			this.SetLookBackwards(humanoidCameraMode, true);
+			// 		}
+			// 	} else if (event.Key === Key.P && keyboard.IsKeyDown(Key.LeftShift)) {
+			// 		if (RunCore.IsEditor()) {
+			// 			flyCam = !flyCam;
+			// 			if (flyCam) {
+			// 				if (this.entityInput) {
+			// 					flyingBin.Add(this.entityInput.AddDisabler());
+			// 				}
+			// 				this.cameraController.SetMode(new FlyCameraMode());
+			// 			} else {
+			// 				flyingBin.Clean();
+			// 				this.cameraController.ClearMode();
+			// 			}
+			// 		}
+			// 	} else if (event.Key === Key.M && keyboard.IsKeyDown(Key.LeftShift)) {
+			// 		this.TakeScreenshot();
+			// 	} else if (event.Key === Key.L) {
+			// 		print("-----");
+			// 		for (const entity of Dependency<EntityController>().GetEntities()) {
+			// 			print(entity.GetDisplayName() + ": " + entity.id);
+			// 		}
+			// 		print("-----");
+			// 		// TEST: Knock-back:
+			// 		Task.Spawn(() => {
+			// 			const sentTick = InstanceFinder.TimeManager.Tick;
+			// 			const halfWay = Network.ClientToServer.TEST_LATENCY.Client.FireServer();
+			// 			const endTick = InstanceFinder.TimeManager.Tick;
+			// 			print(
+			// 				"Round trip: " +
+			// 					(endTick - sentTick) +
+			// 					" | trip 1: " +
+			// 					(halfWay - sentTick) +
+			// 					" | trip 2: " +
+			// 					(endTick - halfWay),
+			// 			);
+			// 		});
+			// 	}
+			// });
+
+			// bin.Connect(keyboard.KeyUp, (event) => {
+			// 	if (event.Key === Key.LeftAlt) {
+			// 		if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
+			// 			this.SetLookBackwards(humanoidCameraMode, false);
+			// 		}
+			// 	}
+			// });
 
 			// Cleanup:
 			bin.Add(() => {

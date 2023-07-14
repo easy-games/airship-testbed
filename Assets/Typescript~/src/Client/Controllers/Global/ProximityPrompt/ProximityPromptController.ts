@@ -25,20 +25,20 @@ export class ProximityPromptController implements OnStart {
 			this.proximityPrompts.push(event.prompt);
 		});
 		/* Listen for keypresses for prompt activation. */
-		this.keyboard.KeyDown.Connect((event) => {
-			this.HandleKeypress(event.Key);
-		});
+		// this.keyboard.KeyDown.Connect((event) => {
+		// 	this.HandleKeypress(event.Key);
+		// });
 		/* Start conditionally displaying prompts. */
 		this.FindActivatablePrompts();
 	}
 
 	/** Handle keypresses and activate prompts if applicable. */
-	private HandleKeypress(key: Key): void {
-		const eligiblePrompt = this.activatableProximityPrompts.find((prompt) => prompt.data.activationKey === key);
-		if (eligiblePrompt) {
-			eligiblePrompt.ActivatePrompt();
-		}
-	}
+	// private HandleKeypress(key: Key): void {
+	// 	const eligiblePrompt = this.activatableProximityPrompts.find((prompt) => prompt.data.activationKey === key);
+	// 	if (eligiblePrompt) {
+	// 		eligiblePrompt.ActivatePrompt();
+	// 	}
+	// }
 
 	/** Returns distance between local player and a proximity prompt. */
 	private GetDistanceToPrompt(prompt: ProximityPrompt): number {
@@ -57,24 +57,26 @@ export class ProximityPromptController implements OnStart {
 					const distToPrompt = this.GetDistanceToPrompt(prompt);
 					if (distToPrompt <= prompt.data.activationRange) {
 						const alreadyActive = this.GetActivePromptIndexById(prompt.id) > -1;
-						const keycodeActive = this.activatableKeycodes.has(prompt.data.activationKey);
+						// const keycodeActive = this.activatableKeycodes.has(prompt.data.activationKey);
 						/*
 						 * If prompt is already active or prompt with same keycode is active,
 						 * do nothing. Otherwise, display prompt.
 						 */
-						if (!alreadyActive && !keycodeActive) {
-							this.activatableKeycodes.add(prompt.data.activationKey);
+						if (!alreadyActive) {
+							// this.activatableKeycodes.add(prompt.data.activationKey);
 							this.activatableProximityPrompts.push(prompt);
 							this.ShowPrompt(prompt);
+							prompt.SetCanActivate(true);
 						}
 					} else {
 						const promptIndex = this.GetActivePromptIndexById(prompt.id);
 						const wasActive = promptIndex > -1;
 						/* If prompt was active, but is now out of range, hide prompt. */
 						if (wasActive) {
-							this.activatableKeycodes.delete(prompt.data.activationKey);
+							// this.activatableKeycodes.delete(prompt.data.activationKey);
 							this.activatableProximityPrompts.remove(promptIndex);
 							this.HidePrompt(prompt);
+							prompt.SetCanActivate(false);
 						}
 					}
 				});

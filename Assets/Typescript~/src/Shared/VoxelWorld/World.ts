@@ -51,7 +51,7 @@ export class World {
 	 * @returns BlockMeta under the position.
 	 */
 	public GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined {
-		return this.GetBlockAt(pos.add(new Vector3(0, -0.1, 0)))?.itemMeta?.block;
+		return this.GetBlockAt(pos.add(new Vector3(0, -0.5, 0)))?.itemMeta?.block;
 	}
 
 	public PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {

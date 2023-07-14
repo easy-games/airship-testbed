@@ -71,12 +71,12 @@ export class AudioClipBundle {
 		if (this.playMode === AudioBundlePlayMode.RANDOM) {
 			//Randomly select an index and play that sound
 			randomIndex = this.GetRandomIndex(arraySize);
-			print("Playing random number: " + randomIndex);
+			//print("Playing random number: " + randomIndex);
 			this.PlayManual(randomIndex);
 		} else if (this.playMode === AudioBundlePlayMode.RANDOM_NO_REPEAT) {
 			//Randomly select an index ignoring the last played index
 			randomIndex = this.GetRandomIndex(arraySize - 1);
-			print("Playing random no repeat number: " + this.possibleRandomIndex[randomIndex]);
+			//print("Playing random no repeat number: " + this.possibleRandomIndex[randomIndex]);
 			//Possible arrays will always be one less than the total size because we are ignoring the last number used
 			this.PlayManual(this.possibleRandomIndex[randomIndex]);
 
