@@ -111,6 +111,7 @@ export class Entity {
 	public readonly id: number;
 	public readonly gameObject: GameObject;
 	public readonly networkObject: NetworkObject;
+	public readonly entityDriver: EntityDriver;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
 	public anim?: InventoryEntityAnimator;
@@ -142,6 +143,7 @@ export class Entity {
 		this.gameObject = networkObject.gameObject;
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		this.model = this.references.root.gameObject;
+		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.networkObject = networkObject;
 		this.anim = new InventoryEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
@@ -165,6 +167,14 @@ export class Entity {
 
 		this.bin = new Bin();
 		this.bin.Connect(OnLateUpdate, () => this.LateUpdate());
+
+		this.entityDriver.onImpactWithGround((velocity) => {
+			print("impact", velocity);
+			// regular jump on flat ground: -14
+			// if (velocity.y < -2) {
+			this.anim?.PlayFootstepSound();
+			// }
+		});
 	}
 
 	private LateUpdate() {
@@ -186,7 +196,7 @@ export class Entity {
 	}
 
 	public GetEntityDriver(): EntityDriver {
-		return this.gameObject.GetComponent<EntityDriver>();
+		return this.entityDriver;
 	}
 
 	public SetHealth(health: number): void {
