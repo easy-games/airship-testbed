@@ -94,7 +94,7 @@ declare const enum MobileJoystickPhase {
 }
 
 interface InputProxy {
-	OnKeyPressEvent(callback: (key: Key, isDown: boolean) => void): void;
+	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): void;
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
 	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
@@ -108,7 +108,7 @@ interface InputProxy {
 
 	IsMobileJoystickVisible(): boolean;
 	SetMobileJoystickVisible(visible: boolean): void;
-	IsKeyDown(key: Key): boolean;
+	IsKeyDown(key: KeyCode): boolean;
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
@@ -119,6 +119,8 @@ interface InputProxy {
 	IsMouseLocked(): boolean;
 	GetScheme(): string;
 	IsPointerOverUI(): boolean;
+	RegisterKeyCode(keyCode: KeyCode): void;
+	UnregisterKeyCode(keyCode: KeyCode): void;
 }
 
 interface UserInputService {

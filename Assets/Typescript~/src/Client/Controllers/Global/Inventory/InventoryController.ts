@@ -72,27 +72,25 @@ export class InventoryController implements OnStart {
 		const mouse = new Mouse();
 
 		const hotbarKeys = [
-			Key.Digit1,
-			Key.Digit2,
-			Key.Digit3,
-			Key.Digit4,
-			Key.Digit5,
-			Key.Digit6,
-			Key.Digit7,
-			Key.Digit8,
-			Key.Digit9,
+			KeyCode.Alpha1,
+			KeyCode.Alpha2,
+			KeyCode.Alpha3,
+			KeyCode.Alpha4,
+			KeyCode.Alpha5,
+			KeyCode.Alpha6,
+			KeyCode.Alpha7,
+			KeyCode.Alpha8,
+			KeyCode.Alpha9,
 		];
-		keyboard.KeyDown.Connect((event) => {
-			const hotbarIndex = hotbarKeys.indexOf(event.Key);
-			if (hotbarIndex > -1) {
-				this.SetHeldSlot(hotbarIndex);
-				return;
-			}
 
-			if (event.Key === Key.Q) {
-				this.DropItemInHand();
-				return;
-			}
+		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
+			keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+				this.SetHeldSlot(hotbarIndex);
+			});
+		}
+
+		keyboard.OnKeyDown(KeyCode.Q, (event) => {
+			this.DropItemInHand();
 		});
 
 		// Scroll to select held item:

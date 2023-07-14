@@ -20,7 +20,7 @@ export class ShopkeeperController implements OnStart {
 		CollectionManager.WatchCollectionTag(CollectionTag.ITEM_SHOP_SHOPKEEPER, (gameObject) => {
 			const prompt = new ProximityPrompt({
 				promptPosition: gameObject.transform.position.add(PROXIMITY_PROMPT_OFFSET),
-				activationKey: Key.F,
+				activationKey: KeyCode.F,
 				activationKeyString: "F",
 				activationRange: 3.5,
 				bottomText: "Item Shop",
@@ -34,7 +34,7 @@ export class ShopkeeperController implements OnStart {
 		CollectionManager.WatchCollectionTag(CollectionTag.TEAM_UPGRADES_SHOPKEEPER, (gameObject) => {
 			const prompt = new ProximityPrompt({
 				promptPosition: gameObject.transform.position.add(PROXIMITY_PROMPT_OFFSET),
-				activationKey: Key.F,
+				activationKey: KeyCode.F,
 				activationKeyString: "F",
 				activationRange: 3.5,
 				bottomText: "Upgrades",
