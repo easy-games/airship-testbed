@@ -22,9 +22,9 @@ const Y_LOCKED_ROTATION = math.rad(15);
 
 const ANGLE_EPSILON = 0.0001;
 
-let MOUSE_SENS_SCALAR = 0.01;
+let MOUSE_SENS_SCALAR = 0.2;
 if (RunUtil.IsMac()) {
-	MOUSE_SENS_SCALAR = 0.04;
+	MOUSE_SENS_SCALAR *= 4;
 }
 
 export class HumanoidCameraMode implements CameraMode {
