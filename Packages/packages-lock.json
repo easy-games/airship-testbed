@@ -71,15 +71,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.inputsystem": {
-      "version": "1.6.1",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.uielements": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 2,
@@ -258,7 +249,6 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.unity.inputsystem": "1.6.1",
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.render-pipelines.universal": "12.1.7",
         "com.unity.render-pipelines.core": "12.1.7"

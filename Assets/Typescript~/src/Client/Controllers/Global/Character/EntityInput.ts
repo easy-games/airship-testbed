@@ -57,15 +57,15 @@ export class EntityInput {
 			if (!this.enabled) return;
 
 			const [success, err] = pcall(() => {
-				const jump = keyboard.IsKeyDown(Key.Space);
-				const w = keyboard.IsEitherKeyDown(Key.W, Key.UpArrow);
-				const s = keyboard.IsEitherKeyDown(Key.S, Key.DownArrow);
-				const a = keyboard.IsKeyDown(Key.A);
-				const d = keyboard.IsKeyDown(Key.D);
+				const jump = keyboard.IsKeyDown(KeyCode.Space);
+				const w = keyboard.IsEitherKeyDown(KeyCode.W, KeyCode.UpArrow);
+				const s = keyboard.IsEitherKeyDown(KeyCode.S, KeyCode.DownArrow);
+				const a = keyboard.IsKeyDown(KeyCode.A);
+				const d = keyboard.IsKeyDown(KeyCode.D);
 
-				const leftShift = keyboard.IsKeyDown(Key.LeftShift);
-				const leftCtrl = keyboard.IsKeyDown(Key.LeftCtrl);
-				const c = keyboard.IsKeyDown(Key.C);
+				const leftShift = keyboard.IsKeyDown(KeyCode.LeftShift);
+				const leftCtrl = keyboard.IsKeyDown(KeyCode.LeftControl);
+				const c = keyboard.IsKeyDown(KeyCode.C);
 
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;

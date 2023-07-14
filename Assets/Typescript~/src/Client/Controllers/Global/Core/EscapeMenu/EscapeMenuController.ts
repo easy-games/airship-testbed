@@ -33,11 +33,13 @@ export class EscapeMenuController implements OnStart {
 
 	OnStart(): void {
 		const keyboard = new Keyboard();
-		keyboard.KeyDown.ConnectWithPriority(SignalPriority.LOW, (event) => {
-			if (event.Key === Key.Escape) {
+		keyboard.OnKeyDown(
+			KeyCode.Escape,
+			(event) => {
 				this.Open();
-			}
-		});
+			},
+			SignalPriority.LOW,
+		);
 
 		const leaveButton = this.refs.GetValue("UI", "LeaveButton");
 		BedWarsUI.SetupButton(leaveButton);

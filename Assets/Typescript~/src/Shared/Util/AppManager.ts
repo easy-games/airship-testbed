@@ -1,11 +1,11 @@
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
-import { SignalPriority } from "./Signal";
+import { Signal, SignalPriority } from "./Signal";
 import { AudioManager } from "../Audio/AudioManager";
 
 /** Global close key for hiding interfaces. */
-const CLOSE_KEY = Key.Escape;
+const CLOSE_KEY = KeyCode.Escape;
 
 export class AppManager {
 	/** Global mouse instance. */
@@ -120,10 +120,13 @@ export class AppManager {
 }
 
 /* Listen for close key globally. */
-AppManager.keyboard.KeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-	/* TEMP: Compat with legacy app manager. */
-	if (event.Key === CLOSE_KEY && AppManager.IsOpen()) {
-		event.SetCancelled(true);
-		AppManager.Close();
-	}
-});
+AppManager.keyboard.OnKeyDown(
+	CLOSE_KEY,
+	(event) => {
+		if (AppManager.IsOpen()) {
+			event.SetCancelled(true);
+			AppManager.Close();
+		}
+	},
+	SignalPriority.HIGH,
+);

@@ -4,7 +4,7 @@ import { Network } from "Shared/Network";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { SignalPriority } from "Shared/Util/Signal";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { LocalEntityController } from "../Character/LocalEntityController";
 
 @Controller({})
@@ -30,31 +30,82 @@ export class ChatController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
-		keyboard.KeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			if (this.selected) {
-				if (event.Key === Key.Enter) {
+		keyboard.OnKeyDown(
+			KeyCode.Return,
+			(event) => {
+				if (this.selected) {
 					if (this.inputField.text === "") {
 						EventSystem.current.ClearSelected();
 						return;
 					}
 					this.SubmitInputField();
-					return;
-				} else if (event.Key === Key.Escape) {
-					EventSystem.current.ClearSelected();
-					this.inputField.SetTextWithoutNotify("");
 					event.SetCancelled(true);
-					return;
+				} else {
+					this.inputField.Select();
 				}
-				// cancel input when using input field
-				event.SetCancelled(true);
-			} else if (event.Key === Key.Enter) {
-				this.inputField.Select();
-			} else if (event.Key === Key.Slash) {
-				this.inputField.SetTextWithoutNotify("/");
-				this.inputField.caretPosition = 1;
-				this.inputField.Select();
+			},
+			SignalPriority.HIGH,
+		);
+		keyboard.OnKeyDown(
+			KeyCode.Escape,
+			(event) => {
+				if (this.selected) {
+					if (this.inputField.text === "") {
+						EventSystem.current.ClearSelected();
+						return;
+					}
+					this.SubmitInputField();
+					event.SetCancelled(true);
+				}
+			},
+			SignalPriority.HIGH,
+		);
+		keyboard.OnKeyDown(
+			KeyCode.Slash,
+			(event) => {
+				if (!this.selected) {
+					this.inputField.SetTextWithoutNotify("/");
+					this.inputField.caretPosition = 1;
+					this.inputField.Select();
+				}
+			},
+			SignalPriority.HIGH,
+		);
+
+		// Sink key events when selected:
+		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+			if (this.selected) {
+				if (event.KeyCode !== KeyCode.Return && event.KeyCode !== KeyCode.Escape) {
+					event.SetCancelled(true);
+				}
 			}
 		});
+
+		// keyboard.KeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		// 	if (this.selected) {
+		// 		if (event.Key === Key.Enter) {
+		// 			if (this.inputField.text === "") {
+		// 				EventSystem.current.ClearSelected();
+		// 				return;
+		// 			}
+		// 			this.SubmitInputField();
+		// 			return;
+		// 		} else if (event.Key === Key.Escape) {
+		// 			EventSystem.current.ClearSelected();
+		// 			this.inputField.SetTextWithoutNotify("");
+		// 			event.SetCancelled(true);
+		// 			return;
+		// 		}
+		// 		// cancel input when using input field
+		// 		event.SetCancelled(true);
+		// 	} else if (event.Key === Key.Enter) {
+		// 		this.inputField.Select();
+		// 	} else if (event.Key === Key.Slash) {
+		// 		this.inputField.SetTextWithoutNotify("/");
+		// 		this.inputField.caretPosition = 1;
+		// 		this.inputField.Select();
+		// 	}
+		// });
 
 		const mouse = new Mouse();
 		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {

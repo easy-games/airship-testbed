@@ -33,21 +33,19 @@ export class InventoryUIController implements OnStart {
 		// this.SetupBackpack();
 
 		const keyboard = new Keyboard();
-		keyboard.KeyDown.Connect((event) => {
-			if (event.Key === Key.E) {
-				// if (this.IsBackpackShown()) {
-				//     AppManager.Close();
-				// } else {
-				// 	LegacyAppManager.OpenWithCustomLogic(
-				// 		() => {
-				// 			this.ShowBackpack();
-				// 		},
-				// 		() => {
-				// 			this.HideBackpack();
-				// 		},
-				// 	);
-				// }
-			}
+		keyboard.OnKeyDown(KeyCode.E, (event) => {
+			// if (this.IsBackpackShown()) {
+			//     AppManager.Close();
+			// } else {
+			// 	LegacyAppManager.OpenWithCustomLogic(
+			// 		() => {
+			// 			this.ShowBackpack();
+			// 		},
+			// 		() => {
+			// 			this.HideBackpack();
+			// 		},
+			// 	);
+			// }
 		});
 	}
 
