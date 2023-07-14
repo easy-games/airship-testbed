@@ -8,10 +8,10 @@ export class PreferredDriver {
 	public readonly SchemeChanged = new Signal<[scheme: string]>();
 
 	private constructor() {
-		UserInputService.InputProxy.OnSchemeChangedEvent((scheme) => {
-			this.scheme = scheme;
-			this.SchemeChanged.Fire(scheme);
-		});
+		// UserInputService.InputProxy.OnSchemeChangedEvent((scheme) => {
+		// 	this.scheme = scheme;
+		// 	this.SchemeChanged.Fire(scheme);
+		// });
 	}
 
 	public GetScheme() {
