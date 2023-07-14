@@ -111,7 +111,7 @@ export class EntityAnimator {
 		const blockId = this.entity.entityDriver.groundedBlockId;
 		if (blockId === 0) return;
 
-		if (os.clock() - this.lastFootstepSoundTime < 0.14) {
+		if (os.clock() - this.lastFootstepSoundTime < 0.25) {
 			return;
 		}
 		this.lastFootstepSoundTime = os.clock();
