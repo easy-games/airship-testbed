@@ -53,7 +53,7 @@
     <SideTexture>stone_brick.s</SideTexture>
     <Solid>true</Solid>
     <Minecraft>98,97:2</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1.7</Brightness>
   </Block>
 
   <Block>
