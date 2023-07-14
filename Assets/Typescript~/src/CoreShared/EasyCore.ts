@@ -69,6 +69,78 @@ export class EasyCore {
 		return result;
 	}
 
+	static async postAsync<T>(
+		url: string,
+		body: string,
+		params: Map<string, string> | undefined = undefined,
+		headers: Map<string, string> | undefined = undefined,
+	): Promise<T> {
+		const encodedParams = this.getEncodedMap(params);
+		const encodedHeaders = this.getEncodedMap(headers);
+
+		print(
+			`postAsync() url: ${url}, body: ${body}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`,
+		);
+
+		return new Promise<T>((resolve, reject) => {
+			const onCompleteHook = this.CoreApi.SendAsync(url, "post", body, encodedParams, encodedHeaders);
+			onCompleteHook.OnCompleteEvent((operationResult) => {
+				if (operationResult.IsSuccess) {
+					resolve(decode<T>(operationResult.ReturnString));
+				} else {
+					reject(operationResult.ReturnString);
+				}
+			});
+		});
+	}
+
+	static async patchAsync(
+		url: string,
+		body: string,
+		params: Map<string, string> | undefined = undefined,
+		headers: Map<string, string> | undefined = undefined,
+	): Promise<void> {
+		const encodedParams = this.getEncodedMap(params);
+		const encodedHeaders = this.getEncodedMap(headers);
+
+		print(
+			`patchAsync() url: ${url}, body: ${body}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`,
+		);
+
+		return new Promise<void>((resolve, reject) => {
+			const onCompleteHook = this.CoreApi.SendAsync(url, "patch", body, encodedParams, encodedHeaders);
+			onCompleteHook.OnCompleteEvent((operationResult) => {
+				if (operationResult.IsSuccess) {
+					resolve();
+				} else {
+					reject(operationResult.ReturnString);
+				}
+			});
+		});
+	}
+
+	static async deleteAsync<T>(
+		url: string,
+		params: Map<string, string> | undefined = undefined,
+		headers: Map<string, string> | undefined = undefined,
+	): Promise<void> {
+		const encodedParams = this.getEncodedMap(params);
+		const encodedHeaders = this.getEncodedMap(headers);
+
+		print(`deleteAsync() url: ${url}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`);
+
+		return new Promise<void>((resolve, reject) => {
+			const onCompleteHook = this.CoreApi.SendAsync(url, "delete", "", encodedParams, encodedHeaders);
+			onCompleteHook.OnCompleteEvent((operationResult) => {
+				if (operationResult.IsSuccess) {
+					resolve();
+				} else {
+					reject(operationResult.ReturnString);
+				}
+			});
+		});
+	}
+
 	static getEncodedMap(map: Map<string, string> | undefined): string {
 		const result = map ? encode(map) : "";
 
