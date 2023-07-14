@@ -4,4 +4,4 @@
 *.tsbuildinfo
 flamework.build
 
-mono_crash.**
+*mono_crash*
