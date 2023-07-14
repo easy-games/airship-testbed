@@ -128,9 +128,7 @@ export class EntityAnimator {
 			stepSounds = [];
 		}
 
-		print("block below: " + blockId);
 		if (stepSounds.size() > 0) {
-			print("footstep.4");
 			if (blockId !== this.steppedOnBlockType) {
 				//Refresh our audio bundle with the new sound list
 				this.steppedOnBlockType = blockId;
