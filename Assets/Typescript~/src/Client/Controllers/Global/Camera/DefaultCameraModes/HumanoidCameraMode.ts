@@ -159,11 +159,7 @@ export class HumanoidCameraMode implements CameraMode {
 					mouseDelta.x * this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR) %
 				(math.pi * 2);
 			this.rotationX = math.clamp(
-				this.rotationX +
-					mouseDelta.y *
-						this.clientSettingsController.GetMouseSensitivity() *
-						MOUSE_SENS_SCALAR *
-						(this.firstPerson ? Screen.height / Screen.width : 1),
+				this.rotationX + mouseDelta.y * this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR,
 				MIN_ROT_X,
 				MAX_ROT_X,
 			);
