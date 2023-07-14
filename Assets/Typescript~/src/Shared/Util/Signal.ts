@@ -60,14 +60,23 @@ export class Signal<T extends unknown[] | unknown> {
 			this.connections.set(priority, [item]);
 		}
 		return () => {
-			this.connections.forEach((items) => {
-				items.forEach((item, i) => {
+			for (const [priority, items] of this.connections) {
+				let removed = false;
+				for (const i of $range(0, items.size() - 1)) {
+					const item = items[i];
 					if (item.id === id) {
 						items.remove(i);
-						return;
+						removed = true;
+						break;
 					}
-				});
-			});
+				}
+				if (removed) {
+					if (items.size() === 0) {
+						this.connections.delete(priority);
+					}
+					break;
+				}
+			}
 		};
 	}
 
@@ -173,6 +182,13 @@ export class Signal<T extends unknown[] | unknown> {
 	 */
 	public DisconnectAll() {
 		this.connections.clear();
+	}
+
+	/**
+	 * Returns `true` if there are any connections.
+	 */
+	public HasConnections() {
+		return !this.connections.isEmpty();
 	}
 
 	/**

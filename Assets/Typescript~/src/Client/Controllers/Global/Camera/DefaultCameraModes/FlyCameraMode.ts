@@ -1,6 +1,6 @@
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
-import { SignalPriority } from "Shared/Util/Signal";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
@@ -23,7 +23,7 @@ export class FlyCameraMode implements CameraMode {
 
 	private keyboard!: Keyboard;
 	private mouse!: Mouse;
-	private readonly keysDown = new Set<Key>();
+	private readonly keysDown = new Set<KeyCode>();
 
 	private rightClicking = false;
 
@@ -37,32 +37,39 @@ export class FlyCameraMode implements CameraMode {
 		this.mouse = this.bin.Add(new Mouse());
 
 		// Sink keys:
-		const sinkKeys = new Set<Key>();
-		sinkKeys.add(Key.W);
-		sinkKeys.add(Key.A);
-		sinkKeys.add(Key.S);
-		sinkKeys.add(Key.D);
-		sinkKeys.add(Key.UpArrow);
-		sinkKeys.add(Key.DownArrow);
-		sinkKeys.add(Key.LeftArrow);
-		sinkKeys.add(Key.RightArrow);
-		sinkKeys.add(Key.Q);
-		sinkKeys.add(Key.E);
-		this.bin.Add(
-			this.keyboard.KeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
-				if (sinkKeys.has(event.Key)) {
-					this.keysDown.add(event.Key);
-					event.SetCancelled(true);
-				}
-			}),
-		);
-		this.bin.Add(
-			this.keyboard.KeyUp.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
-				if (sinkKeys.has(event.Key)) {
-					this.keysDown.delete(event.Key);
-				}
-			}),
-		);
+		const sinkKeys = new Set<KeyCode>();
+		sinkKeys.add(KeyCode.W);
+		sinkKeys.add(KeyCode.A);
+		sinkKeys.add(KeyCode.S);
+		sinkKeys.add(KeyCode.D);
+		sinkKeys.add(KeyCode.UpArrow);
+		sinkKeys.add(KeyCode.DownArrow);
+		sinkKeys.add(KeyCode.LeftArrow);
+		sinkKeys.add(KeyCode.RightArrow);
+		sinkKeys.add(KeyCode.Q);
+		sinkKeys.add(KeyCode.E);
+
+		for (const key of sinkKeys) {
+			this.bin.Add(
+				this.keyboard.OnKeyDown(
+					key,
+					(event) => {
+						this.keysDown.add(event.KeyCode);
+						event.SetCancelled(true);
+					},
+					SignalPriority.HIGHEST,
+				),
+			);
+			this.bin.Add(
+				this.keyboard.OnKeyUp(
+					key,
+					(event) => {
+						this.keysDown.delete(event.KeyCode);
+					},
+					SignalPriority.HIGHEST,
+				),
+			);
+		}
 	}
 
 	OnStop() {
@@ -71,12 +78,12 @@ export class FlyCameraMode implements CameraMode {
 
 	OnUpdate(dt: number) {
 		// Input:
-		const up = this.keysDown.has(Key.W) || this.keysDown.has(Key.UpArrow);
-		const dn = this.keysDown.has(Key.S) || this.keysDown.has(Key.DownArrow);
-		const lf = this.keysDown.has(Key.A) || this.keysDown.has(Key.LeftArrow);
-		const rt = this.keysDown.has(Key.D) || this.keysDown.has(Key.RightArrow);
-		const q = this.keysDown.has(Key.Q);
-		const e = this.keysDown.has(Key.E);
+		const up = this.keysDown.has(KeyCode.W) || this.keysDown.has(KeyCode.UpArrow);
+		const dn = this.keysDown.has(KeyCode.S) || this.keysDown.has(KeyCode.DownArrow);
+		const lf = this.keysDown.has(KeyCode.A) || this.keysDown.has(KeyCode.LeftArrow);
+		const rt = this.keysDown.has(KeyCode.D) || this.keysDown.has(KeyCode.RightArrow);
+		const q = this.keysDown.has(KeyCode.Q);
+		const e = this.keysDown.has(KeyCode.E);
 
 		const direction = this.CalculateDirection();
 

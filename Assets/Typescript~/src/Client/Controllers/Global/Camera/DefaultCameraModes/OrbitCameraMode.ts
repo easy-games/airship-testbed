@@ -103,8 +103,8 @@ export class OrbitCameraMode implements CameraMode {
 	}
 
 	OnUpdate(dt: number) {
-		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
-		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
+		const lf = this.keyboard.IsKeyDown(KeyCode.LeftArrow);
+		const rt = this.keyboard.IsKeyDown(KeyCode.RightArrow);
 		const rightClick = this.mouse.IsRightButtonDown();
 		if (rightClick && !this.rightClicking) {
 			this.rightClickPos = this.mouse.GetLocation();

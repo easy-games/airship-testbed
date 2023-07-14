@@ -1,5 +1,5 @@
-import { Task } from "../Util/Task";
 import StringUtils from "../Util/StringUtil";
+import { Task } from "../Util/Task";
 
 const MAX_DISTANCE = 18;
 
@@ -33,7 +33,7 @@ export class AudioManager {
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		const clip = this.LoadAudioClip(sound);
 		if (!clip) {
-			error("Failed to find sound: " + sound);
+			warn("Failed to find sound: " + sound);
 			return;
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);

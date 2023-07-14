@@ -6,9 +6,9 @@ export class MobileJoystickDriver {
 	public readonly Changed = new Signal<[position: Vector3, phase: MobileJoystickPhase]>();
 
 	private constructor() {
-		UserInputService.InputProxy.OnMobileJoystickEvent((position, phase) => {
-			this.Changed.Fire(position, phase);
-		});
+		// UserInputService.InputProxy.OnMobileJoystickEvent((position, phase) => {
+		// 	this.Changed.Fire(position, phase);
+		// });
 	}
 
 	public SetVisible(visible: boolean) {

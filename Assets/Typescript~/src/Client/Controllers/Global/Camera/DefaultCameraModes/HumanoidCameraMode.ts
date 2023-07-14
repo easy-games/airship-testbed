@@ -22,9 +22,9 @@ const Y_LOCKED_ROTATION = math.rad(15);
 
 const ANGLE_EPSILON = 0.0001;
 
-let MOUSE_SENS_SCALAR = 0.01;
+let MOUSE_SENS_SCALAR = 0.2;
 if (RunUtil.IsMac()) {
-	MOUSE_SENS_SCALAR = 0.04;
+	MOUSE_SENS_SCALAR *= 4;
 }
 
 export class HumanoidCameraMode implements CameraMode {
@@ -139,8 +139,8 @@ export class HumanoidCameraMode implements CameraMode {
 	}
 
 	OnUpdate(dt: number) {
-		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
-		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
+		const lf = this.keyboard.IsKeyDown(KeyCode.LeftArrow);
+		const rt = this.keyboard.IsKeyDown(KeyCode.RightArrow);
 		const rightClick = this.mouse.IsRightButtonDown();
 		if (rightClick && !this.rightClicking) {
 			this.rightClickPos = this.mouse.GetLocation();
@@ -159,11 +159,7 @@ export class HumanoidCameraMode implements CameraMode {
 					mouseDelta.x * this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR) %
 				(math.pi * 2);
 			this.rotationX = math.clamp(
-				this.rotationX +
-					mouseDelta.y *
-						this.clientSettingsController.GetMouseSensitivity() *
-						MOUSE_SENS_SCALAR *
-						(this.firstPerson ? Screen.height / Screen.width : 1),
+				this.rotationX + mouseDelta.y * this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR,
 				MIN_ROT_X,
 				MAX_ROT_X,
 			);

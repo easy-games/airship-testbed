@@ -55,6 +55,7 @@ interface EntityDriver extends Component {
 	OnStateChanged(callback: (state: EntityState) => void): void;
 	OnCustomDataFlushed(callback: () => void): void;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): void;
+	onImpactWithGround(callback: (velocity: Vector3) => void): void;
 
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
 	SetLookAngle(lookAngle: number): void;
@@ -63,6 +64,9 @@ interface EntityDriver extends Component {
 	Impulse(impulse: Vector3): void;
 	GetState(): EntityState;
 	UpdateSyncTick(): void;
+
+	groundedBlockId: number;
+	groundedBlockPos: Vector3;
 }
 
 interface PhysicsConstructor {
@@ -90,7 +94,7 @@ declare const enum MobileJoystickPhase {
 }
 
 interface InputProxy {
-	OnKeyPressEvent(callback: (key: Key, isDown: boolean) => void): void;
+	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): void;
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
 	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
@@ -104,7 +108,7 @@ interface InputProxy {
 
 	IsMobileJoystickVisible(): boolean;
 	SetMobileJoystickVisible(visible: boolean): void;
-	IsKeyDown(key: Key): boolean;
+	IsKeyDown(key: KeyCode): boolean;
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
@@ -115,6 +119,8 @@ interface InputProxy {
 	IsMouseLocked(): boolean;
 	GetScheme(): string;
 	IsPointerOverUI(): boolean;
+	RegisterKeyCode(keyCode: KeyCode): void;
+	UnregisterKeyCode(keyCode: KeyCode): void;
 }
 
 interface UserInputService {

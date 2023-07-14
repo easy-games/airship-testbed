@@ -17,7 +17,7 @@ export class Mouse {
 	public readonly MiddleUp = new Signal<void>();
 	public readonly Scrolled = new Signal<[delta: number]>();
 	public readonly Moved = new Signal<[location: Vector3]>();
-	public readonly Delta = new Signal<[delta: Vector3]>();
+	// public readonly Delta = new Signal<[delta: Vector3]>();
 
 	private isLeftDown = false;
 	private isRightDown = false;
@@ -34,7 +34,7 @@ export class Mouse {
 		this.bin.Add(this.LeftUp);
 		this.bin.Add(this.Scrolled);
 		this.bin.Add(this.Moved);
-		this.bin.Add(this.Delta);
+		// this.bin.Add(this.Delta);
 
 		// Initial states:
 		this.isLeftDown = this.mouseDriver.IsLeftDown();
@@ -80,9 +80,9 @@ export class Mouse {
 			this.Moved.Fire(location);
 		});
 
-		this.bin.Connect(this.mouseDriver.Delta, (delta) => {
-			this.Delta.Fire(delta);
-		});
+		// this.bin.Connect(this.mouseDriver.Delta, (delta) => {
+		// 	this.Delta.Fire(delta);
+		// });
 
 		this.bin.Connect(this.mouseDriver.Scrolled, (delta) => {
 			this.Scrolled.Fire(delta);
