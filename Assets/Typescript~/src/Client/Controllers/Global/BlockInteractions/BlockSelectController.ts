@@ -34,6 +34,7 @@ export class BlockSelectController implements OnStart {
 		}
 		this.highlightGO = GameObjectBridge.Instantiate(highlightPrefab);
 		this.highlightGO.layer = Layer.IGNORE_RAYCAST;
+		this.highlightGO.SetActive(false);
 
 		const voidPlanePrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/VoidPlane.prefab") as Object;
 		this.voidPlane = GameObjectBridge.Instantiate(voidPlanePrefab);
