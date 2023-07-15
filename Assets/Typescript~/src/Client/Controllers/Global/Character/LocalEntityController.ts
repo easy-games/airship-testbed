@@ -7,14 +7,13 @@ import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { CameraController } from "../Camera/CameraController";
-import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
 import { ClientSettingsController } from "../ClientSettings/ClientSettingsController";
 import { EntityController } from "../Entity/EntityController";
 import { EntityInput } from "./EntityInput";
 
-const CAM_Y_OFFSET = 1.85;
+const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
 const CAM_Y_OFFSET_CROUCH_3RD_PERSON = CAM_Y_OFFSET;
 

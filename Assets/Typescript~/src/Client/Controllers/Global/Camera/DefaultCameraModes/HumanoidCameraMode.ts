@@ -19,7 +19,7 @@ const CHARACTER_MASK = -143;
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
 
-const XZ_LOCKED_OFFSET = new Vector3(0.3, 0, 3.5);
+const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
 const Y_LOCKED_ROTATION = math.rad(15);
 
 const ANGLE_EPSILON = 0.0001;
