@@ -9,10 +9,12 @@ import { CameraMode, CameraTransform } from "../../Camera";
 import { ClientSettingsController } from "../../ClientSettings/ClientSettingsController";
 
 // Lua's bitwise operations is unsigned, but C#'s is signed, so we need to hardcode the mask:
+// TransparentEffect Layer: 1
+// IgnoreRaycast Layer: 2
 // Character layer: 3
 // BridgeAssist layer: 7
-// Bitwise operation to ignore layers above: ~(1 << 3 | 1 << 7)
-const CHARACTER_MASK = -137;
+// Bitwise operation to ignore layers above: ~(1 << 1 | 1 << 2 | 1 << 3 | 1 << 7)
+const CHARACTER_MASK = -143;
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
