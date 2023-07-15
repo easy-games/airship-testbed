@@ -28,6 +28,9 @@ let MOUSE_SENS_SCALAR = 0.2;
 if (RunUtil.IsMac()) {
 	MOUSE_SENS_SCALAR *= 4;
 }
+if (!RunUtil.IsEditor()) {
+	MOUSE_SENS_SCALAR *= 0.4;
+}
 
 export class HumanoidCameraMode implements CameraMode {
 	private readonly bin = new Bin();
