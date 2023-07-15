@@ -114,15 +114,16 @@ export class DamageService implements OnStart {
 			// const rigidBody = entity.NetworkObject.gameObject.GetComponent<Rigidbody>();
 			// assert(rigidBody, "Missing rigid body.");
 
-			const horizontalScalar = 7.5;
+			const horizontalScalar = 9;
+			const verticalScalar = 11;
 			let impulse: Vector3;
 			if (config?.knockbackDirection) {
 				const delta = config.knockbackDirection.normalized;
-				impulse = new Vector3(delta.x * horizontalScalar, 9, delta.z * horizontalScalar);
+				impulse = new Vector3(delta.x * horizontalScalar, verticalScalar, delta.z * horizontalScalar);
 			} else if (fromPos) {
 				const currentPos = entity.networkObject.transform.position;
 				const delta = currentPos.sub(fromPos).normalized;
-				impulse = new Vector3(delta.x * horizontalScalar, 9, delta.z * horizontalScalar);
+				impulse = new Vector3(delta.x * horizontalScalar, verticalScalar, delta.z * horizontalScalar);
 			} else {
 				impulse = new Vector3(0, 9, 0).mul(1);
 			}
