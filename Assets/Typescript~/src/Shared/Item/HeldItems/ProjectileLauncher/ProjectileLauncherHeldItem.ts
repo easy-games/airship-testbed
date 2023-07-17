@@ -1,5 +1,6 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Global/Character/LocalEntityController";
+import { Crosshair } from "CoreClient/Crosshair/Crosshair";
 import { ItemPlayMode } from "Shared/Entity/Animation/InventoryEntityAnimator";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
@@ -24,21 +25,17 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	protected override OnChargeStart(): void {
 		super.OnChargeStart();
 		if (!this.entity.IsLocalCharacter()) return;
-
 		if (RunUtil.IsServer()) return;
-
 		if (!this.meta.ProjectileLauncher) return;
 
 		const ammoItemMeta = GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
 		const ammoMeta = ammoItemMeta.Ammo!;
 
-		if (CanvasAPI.IsPointerOverUI()) {
-			return;
-		}
+		if (CanvasAPI.IsPointerOverUI()) return;
 
-		if (!this.HasRequiredAmmo()) {
-			return;
-		}
+		if (!this.HasRequiredAmmo()) return;
+
+		this.chargeBin.Add(Crosshair.AddDisabler());
 
 		this.currentlyCharging = true;
 
