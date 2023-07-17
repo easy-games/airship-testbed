@@ -23,6 +23,7 @@ export class Crosshair {
 	private static CheckDisabled(): void {
 		if (this.crosshairImage === undefined) {
 			this.crosshairImage = GameObject.Find("EngineUI/Canvas/Crosshair")?.GetComponent<Image>();
+			print("crosshair:", this.crosshairImage);
 			if (this.crosshairImage === undefined) return;
 		}
 		const disabled = this.disablers.size() > 0;
