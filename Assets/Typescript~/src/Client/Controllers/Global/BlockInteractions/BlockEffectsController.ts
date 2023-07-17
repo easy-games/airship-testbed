@@ -1,9 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { SignalPriority } from "Shared/Util/Signal";
-import { AudioManager } from "Shared/Audio/AudioManager";
 
 @Controller({})
 export class BlockEffectsController implements OnStart {
@@ -13,7 +13,7 @@ export class BlockEffectsController implements OnStart {
 
 	OnStart(): void {
 		ClientSignals.BlockPlace.Connect((event) => {
-			if (!event.placer) return;
+			print("block place event. placer:", event.placer?.GetDisplayName());
 
 			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(event.block.itemMeta?.block?.placeSound ?? this.placeSoundDefault),

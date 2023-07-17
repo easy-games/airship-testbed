@@ -33,15 +33,15 @@ export class BWService implements OnStart {
 	private bedHasBeenDestroyed = false;
 
 	OnStart(): void {
-		/* Listen for bed destroy for BW win condition. */
+		// Listen for bed destroy for BW win condition.
 		ServerSignals.BedDestroyed.Connect(() => {
 			this.bedHasBeenDestroyed = true;
 			this.CheckForWin();
 		});
-		/* Listen for entity death for BW win condition, give loot. */
+		// Listen for entity death for BW win condition, give loot.
 		ServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (!this.matchService.IsRunning()) return;
-			/* Eliminate player, if applicable. */
+			// Eliminate player, if applicable.
 			if (event.entity instanceof CharacterEntity) {
 				if (
 					event.entity.player &&
@@ -54,7 +54,7 @@ export class BWService implements OnStart {
 				}
 				this.CheckForWin();
 			}
-			/* Give resources to killer. */
+			// Give resources to killer.
 			if (
 				event.entity?.player &&
 				event.entity instanceof CharacterEntity &&
@@ -74,7 +74,7 @@ export class BWService implements OnStart {
 				}
 			}
 		});
-		/* Teammates _cannot_ damage each other. */
+		// Teammates _cannot_ damage each other.
 		ServerSignals.EntityDamage.Connect((event) => {
 			if (
 				event.fromEntity?.player &&
@@ -89,13 +89,27 @@ export class BWService implements OnStart {
 				}
 			}
 		});
-		/* Teams _cannot_ damage their own beds. */
+		// Prevent teams from damaging their own beds.
 		ServerSignals.BeforeBlockHit.Connect((event) => {
 			const teamId = VoxelDataAPI.GetVoxelData(event.BlockPos, "teamId");
 			if (teamId !== undefined && teamId === event.Player.GetTeam()?.id) {
 				event.SetCancelled(true);
 			}
 		});
+
+		// Testing: place block near player ever second
+		// SetInterval(1, () => {
+		// 	const players = Dependency<PlayerService>().GetPlayers();
+		// 	if (players.size() === 0) return;
+
+		// 	const p = players[0];
+		// 	if (p.Character) {
+		// 		WorldAPI.GetMainWorld().PlaceBlock(
+		// 			p.Character.model.transform.position.add(new Vector3(5, 0, 0)),
+		// 			ItemType.STONE,
+		// 		);
+		// 	}
+		// });
 	}
 
 	/**

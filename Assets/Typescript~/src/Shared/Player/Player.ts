@@ -115,7 +115,6 @@ export class Player {
 	}
 
 	public SetCharacter(entity: CharacterEntity | undefined): void {
-		print("setCharacter " + (entity?.GetDisplayName() ?? "undefined"));
 		this.Character = entity;
 		this.CharacterChanged.Fire(entity);
 	}

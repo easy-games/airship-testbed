@@ -6,7 +6,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { SpringTween } from "Shared/Util/SpringTween";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "../../Camera";
-import { ClientSettingsController } from "../../ClientSettings/ClientSettingsController";
+import { ClientSettingsController } from "../../CollectionManager/ClientSettingsController";
 
 // Lua's bitwise operations is unsigned, but C#'s is signed, so we need to hardcode the mask:
 // TransparentEffect Layer: 1

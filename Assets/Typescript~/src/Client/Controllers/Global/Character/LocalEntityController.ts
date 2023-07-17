@@ -9,7 +9,7 @@ import { Task } from "Shared/Util/Task";
 import { CameraController } from "../Camera/CameraController";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
-import { ClientSettingsController } from "../ClientSettings/ClientSettingsController";
+import { ClientSettingsController } from "../CollectionManager/ClientSettingsController";
 import { EntityController } from "../Entity/EntityController";
 import { EntityInput } from "./EntityInput";
 

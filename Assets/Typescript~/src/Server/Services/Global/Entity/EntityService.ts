@@ -26,7 +26,8 @@ export class EntityService implements OnStart {
 	}
 
 	OnStart(): void {
-		Dependency<PlayerService>().ObservePlayers((player) => {
+		const playerService = Dependency<PlayerService>();
+		playerService.ObservePlayers((player) => {
 			for (let entity of ObjectUtil.values(this.entities)) {
 				if (entity instanceof CharacterEntity) {
 					const invDto = entity.GetInventory().Encode();
@@ -41,6 +42,11 @@ export class EntityService implements OnStart {
 					this.DespawnEntity(player.Character);
 				}
 			};
+		});
+		ServerSignals.PlayerLeave.connect((event) => {
+			if (event.player.Character) {
+				this.DespawnEntity(event.player.Character);
+			}
 		});
 	}
 
@@ -92,7 +98,7 @@ export class EntityService implements OnStart {
 		const entity = new CharacterEntity(id, nob, player?.clientId, inv);
 		this.entities.set(id, entity);
 		if (player) {
-			player.Character = entity;
+			player.SetCharacter(entity);
 		}
 
 		// Spawn character model

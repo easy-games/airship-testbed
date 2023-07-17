@@ -225,6 +225,10 @@ export class Entity {
 
 		delete this.anim;
 
+		if (this.player) {
+			this.player.SetCharacter(undefined);
+		}
+
 		if (RunUtil.IsServer()) {
 			Network.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
 			NetworkBridge.Despawn(this.networkObject.gameObject);

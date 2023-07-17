@@ -1,5 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { ClientSettingsController } from "../ClientSettings/ClientSettingsController";
+import { ClientSettingsController } from "../CollectionManager/ClientSettingsController";
 
 @Controller({})
 export class AmbientSoundController implements OnStart {
