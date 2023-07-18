@@ -6,14 +6,9 @@ import { ItemType } from "Shared/Item/ItemType";
 
 @Service({})
 export class LobbyService implements OnStart {
-	constructor() {
-		print("LobbyService.constructor()");
-	}
+	constructor() {}
 	OnStart(): void {
-		print("LobbyService.OnStart()");
-
-		const luauRoot = GameObject.Find("LuauRoot");
-		const serverConsole = luauRoot.GetComponent<ServerConsole>();
+		const serverConsole = GameObject.Find("ServerConsole").GetComponent<ServerConsole>();
 		serverConsole.RemoteLogging = true;
 
 		ServerSignals.EntitySpawn.Connect((event) => {
