@@ -23,6 +23,9 @@ function LoadServer() {
 	SetupWorld();
 	LoadFlamework();
 
+	const autoShutdownBridgeGO = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>();
+	autoShutdownBridgeGO.SetBundlesLoaded(true);
+
 	const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>();
 	serverBootstrap.FinishedSetup();
 }
