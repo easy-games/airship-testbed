@@ -1,41 +1,62 @@
 import { ApiHelper } from "CoreShared/ApiHelper";
+import { CoreSignals } from "CoreShared/CoreSignals";
 import { EasyCore } from "CoreShared/EasyCore";
-import { FriendRequests, FriendsStatus, FriendshipRequestResult } from "CoreShared/SocketIOMessages/FriendsDtos";
+import {
+	FriendRequests,
+	FriendsStatus,
+	FriendshipRequestResult,
+	FriendshipRequestResultObj,
+} from "CoreShared/SocketIOMessages/FriendsDtos";
 import { PublicUser } from "CoreShared/SocketIOMessages/PublicUser";
+import { SIOEventNames } from "CoreShared/SocketIOMessages/SOIEventNames";
 import { encode } from "Server/Lib/json";
 
 export class FriendAPI {
-	static async getFriendsAsync(): Promise<PublicUser[]> {
-		const headers = EasyCore.getHeadersMap();
+	static async InitAsync(): Promise<void> {
+		CoreSignals.GameCoordinatorMessage.Connect((signal) => {
+			if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
+				print(`CoreSignals.GameCoordinatorMessage.Connect() signal: ${encode(signal)}`);
+			}
+		});
+
+		EasyCore.EmitAsync("refresh-friends-status");
+	}
+
+	static async GetOnlineFriendsAsync(): Promise<PublicUser[]> {
+		return new Array<PublicUser>();
+	}
+
+	static async GetFriendsAsync(): Promise<PublicUser[]> {
+		const headers = EasyCore.GetHeadersMap();
 
 		try {
-			return EasyCore.getAsync(`${ApiHelper.USER_SERVICE_URL}/friends/self`, undefined, headers);
+			return EasyCore.GetAsync(`${ApiHelper.USER_SERVICE_URL}/friends/self`, undefined, headers);
 		} catch (e) {
 			print(`Unable to get friends for current user. error: ${e}`);
 			return new Array<PublicUser>();
 		}
 	}
 
-	static async getStatusWithOtherUserAsync(otherUserUid: string): Promise<FriendsStatus> {
-		const headers = EasyCore.getHeadersMap();
+	static async GetStatusWithOtherUserAsync(otherUserUid: string): Promise<FriendsStatus> {
+		const headers = EasyCore.GetHeadersMap();
 
-		return EasyCore.getAsync(
+		return EasyCore.GetAsync(
 			`${ApiHelper.USER_SERVICE_URL}/friends/uid/${otherUserUid}/status`,
 			undefined,
 			headers,
 		);
 	}
 
-	static async getFriendRequestsAsync(): Promise<FriendRequests> {
-		const headers = EasyCore.getHeadersMap();
+	static async GetFriendRequestsAsync(): Promise<FriendRequests> {
+		const headers = EasyCore.GetHeadersMap();
 
-		return EasyCore.getAsync(`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`, undefined, headers);
+		return EasyCore.GetAsync(`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`, undefined, headers);
 	}
 
-	static async requestFriendshipAsync(discriminatedUserName: string): Promise<FriendshipRequestResult> {
-		const headers = EasyCore.getHeadersMap();
+	static async RequestFriendshipAsync(discriminatedUserName: string): Promise<FriendshipRequestResultObj> {
+		const headers = EasyCore.GetHeadersMap();
 
-		return EasyCore.postAsync<FriendshipRequestResult>(
+		return EasyCore.PostAsync<FriendshipRequestResultObj>(
 			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
 			encode({ discriminatedUsername: discriminatedUserName }),
 			undefined,
@@ -43,12 +64,12 @@ export class FriendAPI {
 		);
 	}
 
-	static async terminateFriendshipAsync(otherUserUid: string): Promise<void> {
+	static async TerminateFriendshipAsync(otherUserUid: string): Promise<void> {
 		const parameters = new Map<string, string>();
 		parameters.set("uid", otherUserUid);
 
-		const headers = EasyCore.getHeadersMap();
+		const headers = EasyCore.GetHeadersMap();
 
-		return EasyCore.deleteAsync(`${ApiHelper.USER_SERVICE_URL}/friends/uid/${otherUserUid}`, parameters, headers);
+		return EasyCore.DeleteAsync(`${ApiHelper.USER_SERVICE_URL}/friends/uid/${otherUserUid}`, parameters, headers);
 	}
 }
