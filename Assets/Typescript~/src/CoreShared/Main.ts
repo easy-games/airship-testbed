@@ -57,9 +57,9 @@ CoreSignals.UserServiceInitialized.Connect(() => {
 
 			friendRequests.incomingRequests.forEach(async (otherUser) => {
 				print(`SetInterval() friendRequest accepting from: ${otherUser.discriminatedUsername}`);
-				const result = await FriendAPI.RequestFriendshipAsync(otherUser.discriminatedUsername);
+				const requestResult = await FriendAPI.RequestFriendshipAsync(otherUser.discriminatedUsername);
 				print(
-					`SetInterval() friendRequest result from: ${otherUser.discriminatedUsername}, result: ${result.result}`,
+					`SetInterval() friendRequest result from: ${otherUser.discriminatedUsername}, result: ${requestResult.result}`,
 				);
 			});
 		},
@@ -68,5 +68,5 @@ CoreSignals.UserServiceInitialized.Connect(() => {
 });
 
 if (RunCore.IsClient()) {
-	EasyCore.InitAsync();
+	//EasyCore.InitAsync();
 }
