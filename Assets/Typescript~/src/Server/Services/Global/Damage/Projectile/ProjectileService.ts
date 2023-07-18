@@ -3,6 +3,7 @@ import { ServerSignals } from "Server/ServerSignals";
 import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
 import { GetItemMeta, GetItemTypeFromItemId } from "Shared/Item/ItemDefinitions";
+import { Network } from "Shared/Network";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { DamageService } from "../DamageService";
@@ -29,9 +30,15 @@ export class ProjectileService implements OnStart {
 				knockbackDirection: knockbackDirection,
 			});
 		});
-		// ServerSignals.ProjectileHit.Connect((event) => {
-		// 	Network.ServerToClient.DebugProjectileHit.Server.FireAllClients(event.hitPosition);
-		// });
+		ServerSignals.ProjectileHit.Connect((event) => {
+			if (event.projectile.shooter?.player) {
+				Network.ServerToClient.ProjectileHit.Server.FireClient(
+					event.projectile.shooter.player.clientId,
+					event.hitPosition,
+					event.hitEntity?.id,
+				);
+			}
+		});
 
 		ProjectileManager.Instance.onProjectileValidate((event) => {
 			event.validated = true;

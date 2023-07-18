@@ -68,16 +68,7 @@ export const Network = {
 		EntityDamage: new RemoteEvent<
 			[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]
 		>(),
-		ProjectileHit: new RemoteEvent<
-			[
-				projectileId: number,
-				sourceEntityId: number | undefined,
-				targetEntityId: number | undefined,
-				damageType: DamageType,
-				damage: number,
-				hitPoint: Vector3,
-			]
-		>(),
+		ProjectileHit: new RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>(),
 		Entity: {
 			SetHealth: new RemoteEvent<[entityId: number, health: number]>(),
 		},
@@ -140,8 +131,6 @@ export const Network = {
 
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
-
-		DebugProjectileHit: new RemoteEvent<[pos: Vector3]>(),
 	},
 };
 
