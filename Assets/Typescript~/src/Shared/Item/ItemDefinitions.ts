@@ -37,7 +37,7 @@ const blockItemAssets: ItemAssetsMeta = {
 };
 const swordItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.2,
+	cooldownSeconds: 0.15,
 };
 const swordItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemSword,
@@ -66,7 +66,7 @@ const defaultSwordMelee: MeleeItemMeta = {
 	colliderData: {
 		boxHalfWidth: 1.5,
 		boxHalfHeight: 1.8,
-		boxHalfDepth: 1.9,
+		boxHalfDepth: 2.3,
 	},
 	onHitPrefabId: Bundle_ItemSword_Prefabs.OnHit,
 	canHitMultipleTargets: false,
