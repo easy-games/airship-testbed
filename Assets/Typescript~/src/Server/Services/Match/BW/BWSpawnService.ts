@@ -115,9 +115,9 @@ export class BWSpawnService implements OnStart {
 		const inv = entity.GetInventory();
 		inv.SetItem(0, new ItemStack(ItemType.STONE_SWORD, 1));
 		inv.AddItem(new ItemStack(ItemType.WOOD_BOW, 1));
-		inv.SetItem(1, new ItemStack(ItemType.STONE_PICKAXE, 1));
+		inv.AddItem(new ItemStack(ItemType.STONE_PICKAXE, 1));
 		// inv.SetItem(2, new ItemStack(ItemType.WHITE_WOOL, 100));
-		inv.SetItem(2, new ItemStack(ItemType.STONE, 100));
+		inv.AddItem(new ItemStack(ItemType.STONE, 100));
 		inv.AddItem(new ItemStack(ItemType.GRASS, 100));
 		inv.AddItem(new ItemStack(ItemType.TELEPEARL, 100));
 		inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
