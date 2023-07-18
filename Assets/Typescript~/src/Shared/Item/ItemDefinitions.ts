@@ -550,7 +550,7 @@ export const items: {
 		itemMechanics: {
 			...rangedItemMechanics,
 			minChargeSeconds: 0.05,
-			maxChargeSeconds: 0.75,
+			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 		},
 		itemAssets: {
