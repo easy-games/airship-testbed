@@ -28,19 +28,19 @@ export class BWSpawnService implements OnStart {
 		private readonly playerService: PlayerService,
 		private readonly mapService: MapService,
 		private readonly matchService: MatchService,
-        private readonly entityService: EntityService
+		private readonly entityService: EntityService,
 	) {
-        ServerSignals.MapLoad.connect((event) => {
+		ServerSignals.MapLoad.connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();
-            Task.Delay(1, () => {
-                this.entityService.SpawnEntityForPlayer(
-                    undefined,
-                    EntityPrefabType.HUMAN,
-                    position.Position.add(new Vector3(-3, 2, 3)),
-                );
-            });
+			Task.Delay(1, () => {
+				this.entityService.SpawnEntityForPlayer(
+					undefined,
+					EntityPrefabType.HUMAN,
+					position.Position.add(new Vector3(-3, 2, 3)),
+				);
+			});
 		});
-    }
+	}
 
 	OnStart(): void {
 		Task.Spawn(() => {
@@ -114,14 +114,13 @@ export class BWSpawnService implements OnStart {
 	private giveStarterInventory(entity: CharacterEntity): void {
 		const inv = entity.GetInventory();
 		inv.SetItem(0, new ItemStack(ItemType.STONE_SWORD, 1));
+		inv.AddItem(new ItemStack(ItemType.WOOD_BOW, 1));
 		inv.SetItem(1, new ItemStack(ItemType.STONE_PICKAXE, 1));
 		// inv.SetItem(2, new ItemStack(ItemType.WHITE_WOOL, 100));
 		inv.SetItem(2, new ItemStack(ItemType.STONE, 100));
-
-		inv.AddItem(new ItemStack(ItemType.WOOD_BOW, 1));
-		inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
 		inv.AddItem(new ItemStack(ItemType.GRASS, 100));
 		inv.AddItem(new ItemStack(ItemType.TELEPEARL, 100));
+		inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
 
 		// inv.SetItem(4, new ItemStack(ItemType.WOOD_BOW, 1));
 		// inv.SetItem(5, new ItemStack(ItemType.TELEPEARL, 100));
