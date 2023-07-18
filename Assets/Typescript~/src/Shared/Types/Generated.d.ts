@@ -528,18 +528,6 @@ declare const enum GateFitMode {
     Fill = 3,
     Overscan = 4,
 }
-declare const enum VRTextureUsage {
-    None = 0,
-    OneEye = 1,
-    TwoEyes = 2,
-    DeviceSpecific = 3,
-}
-declare const enum RenderTextureMemoryless {
-    None = 0,
-    Color = 1,
-    Depth = 2,
-    MSAA = 4,
-}
 declare const enum RenderTextureFormat {
     ARGB32 = 0,
     Depth = 1,
@@ -575,6 +563,12 @@ declare const enum ShadowSamplingMode {
     RawDepth = 1,
     None = 2,
 }
+declare const enum VRTextureUsage {
+    None = 0,
+    OneEye = 1,
+    TwoEyes = 2,
+    DeviceSpecific = 3,
+}
 declare const enum RenderTextureCreationFlags {
     MipMap = 1,
     AutoGenerateMips = 2,
@@ -586,6 +580,12 @@ declare const enum RenderTextureCreationFlags {
     NoResolvedColorSurface = 256,
     DynamicallyScalable = 1024,
     BindMS = 2048,
+}
+declare const enum RenderTextureMemoryless {
+    None = 0,
+    Color = 1,
+    Depth = 2,
+    MSAA = 4,
 }
 declare const enum MonoOrStereoscopicEye {
     Left = 0,
@@ -923,6 +923,13 @@ declare const enum LocationServiceStatus {
     Running = 2,
     Failed = 3,
 }
+declare const enum TouchPhase {
+    Began = 0,
+    Moved = 1,
+    Stationary = 2,
+    Ended = 3,
+    Canceled = 4,
+}
 declare const enum TouchType {
     Direct = 0,
     Indirect = 1,
@@ -1257,147 +1264,6 @@ declare const enum KeyCode {
     Joystick8Button17 = 507,
     Joystick8Button18 = 508,
     Joystick8Button19 = 509,
-}
-declare const enum TypeCode {
-    Empty = 0,
-    Object = 1,
-    DBNull = 2,
-    Boolean = 3,
-    Char = 4,
-    SByte = 5,
-    Byte = 6,
-    Int16 = 7,
-    UInt16 = 8,
-    Int32 = 9,
-    UInt32 = 10,
-    Int64 = 11,
-    UInt64 = 12,
-    Single = 13,
-    Double = 14,
-    Decimal = 15,
-    DateTime = 16,
-    String = 18,
-}
-declare const enum Key {
-    None = 0,
-    Space = 1,
-    Enter = 2,
-    Tab = 3,
-    Backquote = 4,
-    Quote = 5,
-    Semicolon = 6,
-    Comma = 7,
-    Period = 8,
-    Slash = 9,
-    Backslash = 10,
-    LeftBracket = 11,
-    RightBracket = 12,
-    Minus = 13,
-    Equals = 14,
-    A = 15,
-    B = 16,
-    C = 17,
-    D = 18,
-    E = 19,
-    F = 20,
-    G = 21,
-    H = 22,
-    I = 23,
-    J = 24,
-    K = 25,
-    L = 26,
-    M = 27,
-    N = 28,
-    O = 29,
-    P = 30,
-    Q = 31,
-    R = 32,
-    S = 33,
-    T = 34,
-    U = 35,
-    V = 36,
-    W = 37,
-    X = 38,
-    Y = 39,
-    Z = 40,
-    Digit1 = 41,
-    Digit2 = 42,
-    Digit3 = 43,
-    Digit4 = 44,
-    Digit5 = 45,
-    Digit6 = 46,
-    Digit7 = 47,
-    Digit8 = 48,
-    Digit9 = 49,
-    Digit0 = 50,
-    LeftShift = 51,
-    RightShift = 52,
-    LeftAlt = 53,
-    RightAlt = 54,
-    AltGr = 54,
-    LeftCtrl = 55,
-    RightCtrl = 56,
-    LeftMeta = 57,
-    LeftWindows = 57,
-    LeftCommand = 57,
-    LeftApple = 57,
-    RightCommand = 58,
-    RightMeta = 58,
-    RightWindows = 58,
-    RightApple = 58,
-    ContextMenu = 59,
-    Escape = 60,
-    LeftArrow = 61,
-    RightArrow = 62,
-    UpArrow = 63,
-    DownArrow = 64,
-    Backspace = 65,
-    PageDown = 66,
-    PageUp = 67,
-    Home = 68,
-    End = 69,
-    Insert = 70,
-    Delete = 71,
-    CapsLock = 72,
-    NumLock = 73,
-    PrintScreen = 74,
-    ScrollLock = 75,
-    Pause = 76,
-    NumpadEnter = 77,
-    NumpadDivide = 78,
-    NumpadMultiply = 79,
-    NumpadPlus = 80,
-    NumpadMinus = 81,
-    NumpadPeriod = 82,
-    NumpadEquals = 83,
-    Numpad0 = 84,
-    Numpad1 = 85,
-    Numpad2 = 86,
-    Numpad3 = 87,
-    Numpad4 = 88,
-    Numpad5 = 89,
-    Numpad6 = 90,
-    Numpad7 = 91,
-    Numpad8 = 92,
-    Numpad9 = 93,
-    F1 = 94,
-    F2 = 95,
-    F3 = 96,
-    F4 = 97,
-    F5 = 98,
-    F6 = 99,
-    F7 = 100,
-    F8 = 101,
-    F9 = 102,
-    F10 = 103,
-    F11 = 104,
-    F12 = 105,
-    OEM1 = 106,
-    OEM2 = 107,
-    OEM3 = 108,
-    OEM4 = 109,
-    OEM5 = 110,
-    IMESelected = 111,
 }
 declare const enum InputButton {
     Left = 0,
@@ -1776,6 +1642,123 @@ declare const enum AnimationPlayMode {
     Queue = 1,
     Mix = 2,
 }
+declare const enum Align {
+    Auto = 0,
+    FlexStart = 1,
+    Center = 2,
+    FlexEnd = 3,
+    Stretch = 4,
+}
+declare const enum DisplayStyle {
+    Flex = 0,
+    None = 1,
+}
+declare const enum StyleKeyword {
+    Undefined = 0,
+    Null = 1,
+    Auto = 2,
+    None = 3,
+    Initial = 4,
+}
+declare const enum FlexDirection {
+    Column = 0,
+    ColumnReverse = 1,
+    Row = 2,
+    RowReverse = 3,
+}
+declare const enum Wrap {
+    NoWrap = 0,
+    Wrap = 1,
+    WrapReverse = 2,
+}
+declare const enum Justify {
+    FlexStart = 0,
+    Center = 1,
+    FlexEnd = 2,
+    SpaceBetween = 3,
+    SpaceAround = 4,
+}
+declare const enum Position {
+    Relative = 0,
+    Absolute = 1,
+}
+declare const enum AngleUnit {
+    Degree = 0,
+    Gradian = 1,
+    Radian = 2,
+    Turn = 3,
+}
+declare const enum TextOverflow {
+    Clip = 0,
+    Ellipsis = 1,
+}
+declare const enum TimeUnit {
+    Second = 0,
+    Millisecond = 1,
+}
+declare const enum EasingMode {
+    Ease = 0,
+    EaseIn = 1,
+    EaseOut = 2,
+    EaseInOut = 3,
+    Linear = 4,
+    EaseInSine = 5,
+    EaseOutSine = 6,
+    EaseInOutSine = 7,
+    EaseInCubic = 8,
+    EaseOutCubic = 9,
+    EaseInOutCubic = 10,
+    EaseInCirc = 11,
+    EaseOutCirc = 12,
+    EaseInOutCirc = 13,
+    EaseInElastic = 14,
+    EaseOutElastic = 15,
+    EaseInOutElastic = 16,
+    EaseInBack = 17,
+    EaseOutBack = 18,
+    EaseInOutBack = 19,
+    EaseInBounce = 20,
+    EaseOutBounce = 21,
+    EaseInOutBounce = 22,
+}
+declare const enum ScaleMode {
+    StretchToFill = 0,
+    ScaleAndCrop = 1,
+    ScaleToFit = 2,
+}
+declare const enum AtlasPopulationMode {
+    Static = 0,
+    Dynamic = 1,
+    DynamicOS = 2,
+}
+declare const enum TextElementType {
+    Character = 1,
+    Sprite = 2,
+}
+declare const enum TextAnchor {
+    UpperLeft = 0,
+    UpperCenter = 1,
+    UpperRight = 2,
+    MiddleLeft = 3,
+    MiddleCenter = 4,
+    MiddleRight = 5,
+    LowerLeft = 6,
+    LowerCenter = 7,
+    LowerRight = 8,
+}
+declare const enum TextOverflowPosition {
+    End = 0,
+    Start = 1,
+    Middle = 2,
+}
+declare const enum Visibility {
+    Visible = 0,
+    Hidden = 1,
+}
+declare const enum WhiteSpace {
+    Normal = 0,
+    NoWrap = 1,
+}
 declare const enum StylePropertyId {
     Unknown = 0,
     Color = 65536,
@@ -1870,123 +1853,6 @@ declare const enum LengthUnit {
     Pixel = 0,
     Percent = 1,
 }
-declare const enum AtlasPopulationMode {
-    Static = 0,
-    Dynamic = 1,
-    DynamicOS = 2,
-}
-declare const enum TextElementType {
-    Character = 1,
-    Sprite = 2,
-}
-declare const enum AngleUnit {
-    Degree = 0,
-    Gradian = 1,
-    Radian = 2,
-    Turn = 3,
-}
-declare const enum Align {
-    Auto = 0,
-    FlexStart = 1,
-    Center = 2,
-    FlexEnd = 3,
-    Stretch = 4,
-}
-declare const enum DisplayStyle {
-    Flex = 0,
-    None = 1,
-}
-declare const enum StyleKeyword {
-    Undefined = 0,
-    Null = 1,
-    Auto = 2,
-    None = 3,
-    Initial = 4,
-}
-declare const enum FlexDirection {
-    Column = 0,
-    ColumnReverse = 1,
-    Row = 2,
-    RowReverse = 3,
-}
-declare const enum Wrap {
-    NoWrap = 0,
-    Wrap = 1,
-    WrapReverse = 2,
-}
-declare const enum Justify {
-    FlexStart = 0,
-    Center = 1,
-    FlexEnd = 2,
-    SpaceBetween = 3,
-    SpaceAround = 4,
-}
-declare const enum Position {
-    Relative = 0,
-    Absolute = 1,
-}
-declare const enum TextOverflow {
-    Clip = 0,
-    Ellipsis = 1,
-}
-declare const enum TimeUnit {
-    Second = 0,
-    Millisecond = 1,
-}
-declare const enum EasingMode {
-    Ease = 0,
-    EaseIn = 1,
-    EaseOut = 2,
-    EaseInOut = 3,
-    Linear = 4,
-    EaseInSine = 5,
-    EaseOutSine = 6,
-    EaseInOutSine = 7,
-    EaseInCubic = 8,
-    EaseOutCubic = 9,
-    EaseInOutCubic = 10,
-    EaseInCirc = 11,
-    EaseOutCirc = 12,
-    EaseInOutCirc = 13,
-    EaseInElastic = 14,
-    EaseOutElastic = 15,
-    EaseInOutElastic = 16,
-    EaseInBack = 17,
-    EaseOutBack = 18,
-    EaseInOutBack = 19,
-    EaseInBounce = 20,
-    EaseOutBounce = 21,
-    EaseInOutBounce = 22,
-}
-declare const enum ScaleMode {
-    StretchToFill = 0,
-    ScaleAndCrop = 1,
-    ScaleToFit = 2,
-}
-declare const enum TextAnchor {
-    UpperLeft = 0,
-    UpperCenter = 1,
-    UpperRight = 2,
-    MiddleLeft = 3,
-    MiddleCenter = 4,
-    MiddleRight = 5,
-    LowerLeft = 6,
-    LowerCenter = 7,
-    LowerRight = 8,
-}
-declare const enum TextOverflowPosition {
-    End = 0,
-    Start = 1,
-    Middle = 2,
-}
-declare const enum Visibility {
-    Visible = 0,
-    Hidden = 1,
-}
-declare const enum WhiteSpace {
-    Normal = 0,
-    NoWrap = 1,
-}
 declare const enum PropagationPhase {
     None = 0,
     TrickleDown = 1,
@@ -2054,6 +1920,14 @@ declare const enum TrickleDown {
     NoTrickleDown = 0,
     TrickleDown = 1,
 }
+declare const enum Overflow {
+    Visible = 0,
+    Hidden = 1,
+}
+declare const enum OverflowClipBox {
+    PaddingBox = 0,
+    ContentBox = 1,
+}
 declare const enum UsageHints {
     None = 0,
     DynamicTransform = 1,
@@ -2068,14 +1942,6 @@ declare const enum PickingMode {
 declare const enum ContextType {
     Player = 0,
     Editor = 1,
-}
-declare const enum Overflow {
-    Visible = 0,
-    Hidden = 1,
-}
-declare const enum OverflowClipBox {
-    PaddingBox = 0,
-    ContentBox = 1,
 }
 declare const enum MeasureMode {
     Undefined = 0,
@@ -2924,6 +2790,7 @@ declare const enum EntityAnimationEventKey {
 
     
 interface RaycastHit {
+    textureCoord1: Vector2;
     collider: Collider;
     colliderInstanceID: number;
     point: Vector3;
@@ -2937,10 +2804,64 @@ interface RaycastHit {
     rigidbody: Rigidbody;
     articulationBody: ArticulationBody;
     lightmapCoord: Vector2;
-    textureCoord1: Vector2;
 
 
 }
+    
+interface Vector2 {
+    x: number;
+    y: number;
+    Item: number;
+    normalized: Vector2;
+    magnitude: number;
+    sqrMagnitude: number;
+
+    constructor(x: number, y: number): Vector2;
+
+    Equals(other: unknown): boolean;
+    Equals(other: Vector2): boolean;
+    GetHashCode(): number;
+    Normalize(): void;
+    Scale(scale: Vector2): void;
+    Set(newX: number, newY: number): void;
+    SqrMagnitude(): number;
+    ToString(): string;
+    ToString(format: string): string;
+    ToString(format: string, formatProvider: unknown): string;
+}
+    
+interface Vector2Constructor {
+    kEpsilon: number;
+    kEpsilonNormalSqrt: number;
+    zero: Vector2;
+    one: Vector2;
+    up: Vector2;
+    down: Vector2;
+    left: Vector2;
+    right: Vector2;
+    positiveInfinity: Vector2;
+    negativeInfinity: Vector2;
+
+
+    Angle(from: Vector2, to: Vector2): number;
+    ClampMagnitude(vector: Vector2, maxLength: number): Vector2;
+    Distance(a: Vector2, b: Vector2): number;
+    Dot(lhs: Vector2, rhs: Vector2): number;
+    Lerp(a: Vector2, b: Vector2, t: number): Vector2;
+    LerpUnclamped(a: Vector2, b: Vector2, t: number): Vector2;
+    Max(lhs: Vector2, rhs: Vector2): Vector2;
+    Min(lhs: Vector2, rhs: Vector2): Vector2;
+    MoveTowards(current: Vector2, target: Vector2, maxDistanceDelta: number): Vector2;
+    Perpendicular(inDirection: Vector2): Vector2;
+    Reflect(inDirection: Vector2, inNormal: Vector2): Vector2;
+    Scale(a: Vector2, b: Vector2): Vector2;
+    SignedAngle(from: Vector2, to: Vector2): number;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number): Vector2;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number): Vector2;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): Vector2;
+    SqrMagnitude(a: Vector2): number;
+}
+declare const Vector2: Vector2Constructor;
     
     
     
@@ -3150,6 +3071,11 @@ interface Collider extends Component {
 }
     
 interface Rigidbody extends Component {
+    sleepVelocity: number;
+    sleepAngularVelocity: number;
+    useConeFriction: boolean;
+    solverIterationCount: number;
+    solverVelocityIterationCount: number;
     velocity: Vector3;
     angularVelocity: Vector3;
     drag: number;
@@ -3173,11 +3099,6 @@ interface Rigidbody extends Component {
     sleepThreshold: number;
     maxAngularVelocity: number;
     solverVelocityIterations: number;
-    sleepVelocity: number;
-    sleepAngularVelocity: number;
-    useConeFriction: boolean;
-    solverIterationCount: number;
-    solverVelocityIterationCount: number;
 
     constructor(): Rigidbody;
 
@@ -3364,76 +3285,21 @@ interface Bounds {
 }
     
 interface PhysicMaterial extends Object {
-    bounciness: number;
-    dynamicFriction: number;
-    staticFriction: number;
-    frictionCombine: PhysicMaterialCombine;
-    bounceCombine: PhysicMaterialCombine;
     bouncyness: number;
     frictionDirection2: Vector3;
     dynamicFriction2: number;
     staticFriction2: number;
     frictionDirection: Vector3;
+    bounciness: number;
+    dynamicFriction: number;
+    staticFriction: number;
+    frictionCombine: PhysicMaterialCombine;
+    bounceCombine: PhysicMaterialCombine;
 
     constructor(): PhysicMaterial;
     constructor(name: string): PhysicMaterial;
 
 }
-    
-interface Vector2 {
-    x: number;
-    y: number;
-    Item: number;
-    normalized: Vector2;
-    magnitude: number;
-    sqrMagnitude: number;
-
-    constructor(x: number, y: number): Vector2;
-
-    Equals(other: unknown): boolean;
-    Equals(other: Vector2): boolean;
-    GetHashCode(): number;
-    Normalize(): void;
-    Scale(scale: Vector2): void;
-    Set(newX: number, newY: number): void;
-    SqrMagnitude(): number;
-    ToString(): string;
-    ToString(format: string): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
-    
-interface Vector2Constructor {
-    kEpsilon: number;
-    kEpsilonNormalSqrt: number;
-    zero: Vector2;
-    one: Vector2;
-    up: Vector2;
-    down: Vector2;
-    left: Vector2;
-    right: Vector2;
-    positiveInfinity: Vector2;
-    negativeInfinity: Vector2;
-
-
-    Angle(from: Vector2, to: Vector2): number;
-    ClampMagnitude(vector: Vector2, maxLength: number): Vector2;
-    Distance(a: Vector2, b: Vector2): number;
-    Dot(lhs: Vector2, rhs: Vector2): number;
-    Lerp(a: Vector2, b: Vector2, t: number): Vector2;
-    LerpUnclamped(a: Vector2, b: Vector2, t: number): Vector2;
-    Max(lhs: Vector2, rhs: Vector2): Vector2;
-    Min(lhs: Vector2, rhs: Vector2): Vector2;
-    MoveTowards(current: Vector2, target: Vector2, maxDistanceDelta: number): Vector2;
-    Perpendicular(inDirection: Vector2): Vector2;
-    Reflect(inDirection: Vector2, inNormal: Vector2): Vector2;
-    Scale(a: Vector2, b: Vector2): Vector2;
-    SignedAngle(from: Vector2, to: Vector2): number;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number): Vector2;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number): Vector2;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): Vector2;
-    SqrMagnitude(a: Vector2): number;
-}
-declare const Vector2: Vector2Constructor;
     
 interface Physics {
 
@@ -3469,12 +3335,20 @@ interface PhysicsScene {
 }
     
 interface PhysicsConstructor {
-    IgnoreRaycastLayer: number;
-    DefaultRaycastLayers: number;
-    AllLayers: number;
     kIgnoreRaycastLayer: number;
     kDefaultRaycastLayers: number;
     kAllLayers: number;
+    IgnoreRaycastLayer: number;
+    DefaultRaycastLayers: number;
+    AllLayers: number;
+    minPenetrationForPenalty: number;
+    bounceTreshold: number;
+    sleepVelocity: number;
+    sleepAngularVelocity: number;
+    maxAngularVelocity: number;
+    solverIterationCount: number;
+    solverVelocityIterationCount: number;
+    penetrationPenaltyForce: number;
     gravity: Vector3;
     defaultContactOffset: number;
     sleepThreshold: number;
@@ -3494,14 +3368,6 @@ interface PhysicsConstructor {
     interCollisionStiffness: number;
     interCollisionSettingsToggle: boolean;
     clothGravity: Vector3;
-    minPenetrationForPenalty: number;
-    bounceTreshold: number;
-    sleepVelocity: number;
-    sleepAngularVelocity: number;
-    maxAngularVelocity: number;
-    solverIterationCount: number;
-    solverVelocityIterationCount: number;
-    penetrationPenaltyForce: number;
 
 
     BakeMesh(meshID: number, convex: boolean): void;
@@ -3700,19 +3566,19 @@ interface Debug {
     
     
 interface DebugConstructor {
+    logger: unknown;
     unityLogger: unknown;
     developerConsoleVisible: boolean;
     isDebugBuild: boolean;
-    logger: unknown;
 
 
+    Assert(condition: boolean, format: string, args: CSArray<unknown>): void;
     Assert(condition: boolean): void;
     Assert(condition: boolean, context: Object): void;
     Assert(condition: boolean, message: unknown): void;
     Assert(condition: boolean, message: string): void;
     Assert(condition: boolean, message: unknown, context: Object): void;
     Assert(condition: boolean, message: string, context: Object): void;
-    Assert(condition: boolean, format: string, args: CSArray<unknown>): void;
     AssertFormat(condition: boolean, format: string, args: CSArray<unknown>): void;
     AssertFormat(condition: boolean, context: Object, format: string, args: CSArray<unknown>): void;
     Break(): void;
@@ -3948,14 +3814,14 @@ interface Texture2D extends Texture {
     GetPixelBilinear(u: number, v: number): Color;
     GetPixelBilinear(u: number, v: number, mipLevel: number): Color;
     GetPixelData<T>(mipLevel: number): CSArray<T>;
-    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): CSArray<Color>;
-    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): CSArray<Color>;
     GetPixels(miplevel: number): CSArray<Color>;
     GetPixels(): CSArray<Color>;
+    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): CSArray<Color>;
+    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): CSArray<Color>;
     GetPixels32(miplevel: number): CSArray<Color32>;
     GetPixels32(): CSArray<Color32>;
-    GetRawTextureData(): CSArray<number>;
     GetRawTextureData<T>(): CSArray<T>;
+    GetRawTextureData(): CSArray<number>;
     IsRequestedMipmapLevelLoaded(): boolean;
     LoadRawTextureData(data: unknown, size: number): void;
     LoadRawTextureData(data: CSArray<number>): void;
@@ -5553,6 +5419,10 @@ interface Camera extends Behaviour {
 }
     
 interface RenderTexture extends Texture {
+    generateMips: boolean;
+    isCubemap: boolean;
+    isVolume: boolean;
+    descriptor: RenderTextureDescriptor;
     width: number;
     height: number;
     dimension: TextureDimension;
@@ -5574,10 +5444,6 @@ interface RenderTexture extends Texture {
     colorBuffer: RenderBuffer;
     depthBuffer: RenderBuffer;
     depth: number;
-    descriptor: RenderTextureDescriptor;
-    generateMips: boolean;
-    isCubemap: boolean;
-    isVolume: boolean;
 
     constructor(desc: RenderTextureDescriptor): RenderTexture;
     constructor(textureToCopy: RenderTexture): RenderTexture;
@@ -5605,12 +5471,6 @@ interface RenderTexture extends Texture {
     ResolveAntiAliasedSurface(target: RenderTexture): void;
     SetBorderColor(color: Color): void;
     SetGlobalShaderProperty(propertyName: string): void;
-}
-    
-interface RenderBuffer {
-
-
-    GetNativeRenderBufferPtr(): unknown;
 }
     
 interface RenderTextureDescriptor {
@@ -5647,9 +5507,15 @@ interface RenderTextureDescriptor {
 
 }
     
+interface RenderBuffer {
+
+
+    GetNativeRenderBufferPtr(): unknown;
+}
+    
 interface RenderTextureConstructor {
-    active: RenderTexture;
     enabled: boolean;
+    active: RenderTexture;
 
 
     GetTemporary(desc: RenderTextureDescriptor): RenderTexture;
@@ -6371,12 +6237,12 @@ interface GraphicsBufferConstructor {
 declare const GraphicsBuffer: GraphicsBufferConstructor;
     
 interface ShaderConstructor {
-    globalShaderHardwareTier: ShaderHardwareTier;
     maximumChunksOverride: number;
     globalMaximumLOD: number;
     globalRenderPipeline: string;
     enabledGlobalKeywords: CSArray<GlobalKeyword>;
     globalKeywords: CSArray<GlobalKeyword>;
+    globalShaderHardwareTier: ShaderHardwareTier;
 
 
     DisableKeyword(keyword: string): void;
@@ -6487,11 +6353,6 @@ interface RayTracingAccelerationStructure {
 }
     
 interface Renderer extends Component {
-    lightmapTilingOffset: Vector4;
-    lightProbeAnchor: Transform;
-    castShadows: boolean;
-    motionVectors: boolean;
-    useLightProbes: boolean;
     bounds: Bounds;
     localBounds: Bounds;
     enabled: boolean;
@@ -6523,6 +6384,11 @@ interface Renderer extends Component {
     material: Material;
     sharedMaterial: Material;
     sharedMaterials: CSArray<Material>;
+    lightmapTilingOffset: Vector4;
+    lightProbeAnchor: Transform;
+    castShadows: boolean;
+    motionVectors: boolean;
+    useLightProbes: boolean;
 
     constructor(): Renderer;
 
@@ -6824,17 +6690,6 @@ interface RayTracingShader extends Object {
 }
     
 interface Mesh extends Object {
-    uv1: CSArray<Vector2>;
-    indexFormat: IndexFormat;
-    vertexBufferCount: number;
-    vertexBufferTarget: Target;
-    indexBufferTarget: Target;
-    blendShapeCount: number;
-    bindposes: CSArray<Matrix4x4>;
-    isReadable: boolean;
-    vertexCount: number;
-    subMeshCount: number;
-    bounds: Bounds;
     vertices: CSArray<Vector3>;
     normals: CSArray<Vector3>;
     tangents: CSArray<Vector4>;
@@ -6851,6 +6706,17 @@ interface Mesh extends Object {
     vertexAttributeCount: number;
     triangles: CSArray<number>;
     boneWeights: CSArray<BoneWeight>;
+    indexFormat: IndexFormat;
+    vertexBufferCount: number;
+    vertexBufferTarget: Target;
+    indexBufferTarget: Target;
+    blendShapeCount: number;
+    bindposes: CSArray<Matrix4x4>;
+    isReadable: boolean;
+    vertexCount: number;
+    subMeshCount: number;
+    bounds: Bounds;
+    uv1: CSArray<Vector2>;
 
     constructor(): Mesh;
 
@@ -7470,332 +7336,41 @@ interface InstanceFinderConstructor {
 }
 declare const InstanceFinder: InstanceFinderConstructor;
     
-interface IInputStateCallbackReceiver {
-
-
-    GetStateOffsetForEvent(control: InputControl, eventPtr: InputEventPtr, offset: unknown): boolean;
-    OnNextUpdate(): void;
-    OnStateEvent(eventPtr: InputEventPtr): void;
-}
-    
-    
-interface InputDevice extends InputControl {
-    description: InputDeviceDescription;
-    enabled: boolean;
-    canRunInBackground: boolean;
-    added: boolean;
-    remote: boolean;
-    native: boolean;
-    updateBeforeRender: boolean;
-    deviceId: number;
-    lastUpdateTime: number;
-    wasUpdatedThisFrame: boolean;
-    allControls: CSArray<InputControl>;
-    valueType: unknown;
-    valueSizeInBytes: number;
-
-    constructor(): InputDevice;
-
-    CompareValue(firstStatePtr: unknown, secondStatePtr: unknown): boolean;
-    ExecuteCommand<TCommand>(command: unknown): number;
-    MakeCurrent(): void;
-    ReadValueFromBufferAsObject(buffer: unknown, bufferSize: number): unknown;
-    ReadValueFromStateAsObject(statePtr: unknown): unknown;
-    ReadValueFromStateIntoBuffer(statePtr: unknown, bufferPtr: unknown, bufferSize: number): void;
-}
-    
-interface InputDeviceDescription {
-    interfaceName: string;
-    deviceClass: string;
-    manufacturer: string;
-    product: string;
-    serial: string;
-    version: string;
-    capabilities: string;
-    empty: boolean;
-
-
-    Equals(other: InputDeviceDescription): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToJson(): string;
-    ToString(): string;
-}
-    
-interface InputDeviceDescriptionConstructor {
-
-
-    FromJson(json: string): InputDeviceDescription;
-}
-declare const InputDeviceDescription: InputDeviceDescriptionConstructor;
-    
-interface IInputDeviceCommandInfo {
-    typeStatic: FourCC;
+interface IListItem {
+    Key: Key;
 
 
 }
     
-interface FourCC {
+interface Key extends IListItem {
 
-    constructor(code: number): FourCC;
-    constructor(a: string, b: string, c: string, d: string): FourCC;
-    constructor(str: string): FourCC;
-
-    Equals(other: FourCC): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface FourCCConstructor {
-
-
-    FromInt32(i: number): FourCC;
-    ToInt32(fourCC: FourCC): number;
-}
-declare const FourCC: FourCCConstructor;
-    
-interface InputDeviceConstructor {
-    InvalidDeviceId: number;
-    all: CSArray<InputDevice>;
-
-
-}
-declare const InputDevice: InputDeviceConstructor;
-    
-interface InternedString {
-    length: number;
-
-    constructor(text: string): InternedString;
-
-    CompareTo(other: InternedString): number;
-    Equals(obj: unknown): boolean;
-    Equals(other: InternedString): boolean;
-    GetHashCode(): number;
-    IsEmpty(): boolean;
-    ToLower(): string;
-    ToString(): string;
-}
-    
-interface InputStateBlock {
-    format: FourCC;
-    byteOffset: number;
-    bitOffset: number;
-    sizeInBits: number;
-
-
-    CopyToFrom(toStatePtr: unknown, fromStatePtr: unknown): void;
-    ReadDouble(statePtr: unknown): number;
-    ReadFloat(statePtr: unknown): number;
-    ReadInt(statePtr: unknown): number;
-    Write(statePtr: unknown, value: PrimitiveValue): void;
-    WriteDouble(statePtr: unknown, value: number): void;
-    WriteFloat(statePtr: unknown, value: number): void;
-    WriteInt(statePtr: unknown, value: number): void;
-}
-    
-interface PrimitiveValue {
-    type: TypeCode;
-    isEmpty: boolean;
-
-    constructor(value: boolean): PrimitiveValue;
-    constructor(value: string): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-    constructor(value: number): PrimitiveValue;
-
-    ConvertTo(type: TypeCode): PrimitiveValue;
-    Equals(other: PrimitiveValue): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    GetTypeCode(): TypeCode;
-    ToBoolean(provider: unknown): boolean;
-    ToByte(provider: unknown): number;
-    ToChar(provider: unknown): string;
-    ToDateTime(provider: unknown): string;
-    ToDecimal(provider: unknown): number;
-    ToDouble(provider: unknown): number;
-    ToInt16(provider: unknown): number;
-    ToInt32(provider: unknown): number;
-    ToInt64(provider: unknown): number;
-    ToObject(): unknown;
-    ToSByte(provider: unknown): number;
-    ToSingle(provider: unknown): number;
-    ToString(): string;
-    ToString(provider: unknown): string;
-    ToType(conversionType: unknown, provider: unknown): unknown;
-    ToUInt16(provider: unknown): number;
-    ToUInt32(provider: unknown): number;
-    ToUInt64(provider: unknown): number;
-}
-    
-interface PrimitiveValueConstructor {
-
-
-    From<TValue>(value: TValue): PrimitiveValue;
-    FromBoolean(value: boolean): PrimitiveValue;
-    FromByte(value: number): PrimitiveValue;
-    FromChar(value: string): PrimitiveValue;
-    FromDouble(value: number): PrimitiveValue;
-    FromInt16(value: number): PrimitiveValue;
-    FromInt32(value: number): PrimitiveValue;
-    FromInt64(value: number): PrimitiveValue;
-    FromObject(value: unknown): PrimitiveValue;
-    FromSByte(value: number): PrimitiveValue;
-    FromSingle(value: number): PrimitiveValue;
-    FromString(value: string): PrimitiveValue;
-    FromUInt16(value: number): PrimitiveValue;
-    FromUInt32(value: number): PrimitiveValue;
-    FromUInt64(value: number): PrimitiveValue;
-}
-declare const PrimitiveValue: PrimitiveValueConstructor;
-    
-interface InputStateBlockConstructor {
-    InvalidOffset: number;
-    AutomaticOffset: number;
-    FormatInvalid: FourCC;
-    FormatBit: FourCC;
-    FormatSBit: FourCC;
-    FormatInt: FourCC;
-    FormatUInt: FourCC;
-    FormatShort: FourCC;
-    FormatUShort: FourCC;
-    FormatByte: FourCC;
-    FormatSByte: FourCC;
-    FormatLong: FourCC;
-    FormatULong: FourCC;
-    FormatFloat: FourCC;
-    FormatDouble: FourCC;
-    FormatVector2: FourCC;
-    FormatVector3: FourCC;
-    FormatQuaternion: FourCC;
-    FormatVector2Short: FourCC;
-    FormatVector3Short: FourCC;
-    FormatVector2Byte: FourCC;
-    FormatVector3Byte: FourCC;
-    FormatPose: FourCC;
-
-
-    GetPrimitiveFormatFromType(type: unknown): FourCC;
-    GetSizeOfPrimitiveFormatInBits(type: FourCC): number;
-}
-declare const InputStateBlock: InputStateBlockConstructor;
-    
-interface InputEventPtr {
-    valid: boolean;
-    handled: boolean;
-    id: number;
-    type: FourCC;
-    sizeInBytes: number;
-    deviceId: number;
-    time: number;
-    data: InputEvent;
-
-    constructor(eventPtr: InputEvent): InputEventPtr;
-
-    Equals(other: InputEventPtr): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    IsA<TOtherEvent>(): boolean;
-    Next(): InputEventPtr;
-    ToPointer(): InputEvent;
-    ToString(): string;
-}
-    
-interface InputEvent {
-
+    constructor(): Key;
 
 }
     
-interface InputEventPtrConstructor {
+interface KeyConstructor {
+    NotInList: number;
 
 
-    From(eventPtr: InputEvent): InputEventPtr;
-    FromInputEventPtr(eventPtr: InputEventPtr): InputEvent;
+    IndexOf(key: Key): number;
+    IsInList(key: Key): boolean;
 }
-declare const InputEventPtr: InputEventPtrConstructor;
+declare const Key: KeyConstructor;
     
-interface Pointer extends InputDevice, IInputStateCallbackReceiver {
-    position: Vector2Control;
-    delta: DeltaControl;
-    radius: Vector2Control;
-    pressure: AxisControl;
-    press: ButtonControl;
-    displayIndex: IntegerControl;
+interface Key extends IListItem {
 
-    constructor(): Pointer;
-
-    MakeCurrent(): void;
-}
-    
-    
-    
-    
-interface DeltaControl extends Vector2Control {
-    up: AxisControl;
-    down: AxisControl;
-    left: AxisControl;
-    right: AxisControl;
-
-    constructor(): DeltaControl;
+    constructor(): Key;
 
 }
     
-interface ButtonControl extends AxisControl {
-    pressPoint: number;
-    pressPointOrDefault: number;
-    isPressed: boolean;
-    wasPressedThisFrame: boolean;
-    wasReleasedThisFrame: boolean;
+interface KeyConstructor {
+    NotInList: number;
 
-    constructor(): ButtonControl;
 
-    IsValueConsideredPressed(value: number): boolean;
+    IndexOf(key: Key): number;
+    IsInList(key: Key): boolean;
 }
-    
-interface IntegerControl extends InputControl<number> {
-
-    constructor(): IntegerControl;
-
-    ReadUnprocessedValueFromState(statePtr: unknown): number;
-    WriteValueIntoState(value: number, statePtr: unknown): void;
-}
-    
-interface PointerConstructor {
-    current: Pointer;
-
-
-}
-declare const Pointer: PointerConstructor;
-    
-interface Mouse extends Pointer {
-    scroll: DeltaControl;
-    leftButton: ButtonControl;
-    middleButton: ButtonControl;
-    rightButton: ButtonControl;
-    backButton: ButtonControl;
-    forwardButton: ButtonControl;
-    clickCount: IntegerControl;
-
-    constructor(): Mouse;
-
-    MakeCurrent(): void;
-    WarpCursorPosition(position: Vector2): void;
-}
-    
-interface MouseConstructor {
-    current: Mouse;
-
-
-}
-declare const Mouse: MouseConstructor;
+declare const Key: KeyConstructor;
     
 interface IEventSystemHandler {
 
@@ -8275,12 +7850,6 @@ interface GraphicConstructor {
 }
 declare const Graphic: GraphicConstructor;
     
-interface ICanvasRaycastFilter {
-
-
-    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
-}
-    
 interface ISerializationCallbackReceiver {
 
 
@@ -8300,6 +7869,12 @@ interface ILayoutElement {
 
     CalculateLayoutInputHorizontal(): void;
     CalculateLayoutInputVertical(): void;
+}
+    
+interface ICanvasRaycastFilter {
+
+
+    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 }
     
 interface IMaterialModifier {
@@ -8384,7 +7959,7 @@ interface CullStateChangedEvent extends UnityEvent<boolean> {
 
 }
     
-interface Image extends MaskableGraphic, ICanvasRaycastFilter, ISerializationCallbackReceiver, ILayoutElement {
+interface Image extends MaskableGraphic, ISerializationCallbackReceiver, ILayoutElement, ICanvasRaycastFilter {
     sprite: Sprite;
     overrideSprite: Sprite;
     type: Type;
@@ -10078,50 +9653,83 @@ interface IBinding {
     Update(): void;
 }
     
-interface IStylePropertyAnimations {
-    runningAnimationCount: number;
-    completedAnimationCount: number;
+interface IResolvedStyle {
+    alignContent: Align;
+    alignItems: Align;
+    alignSelf: Align;
+    backgroundColor: Color;
+    backgroundImage: Background;
+    borderBottomColor: Color;
+    borderBottomLeftRadius: number;
+    borderBottomRightRadius: number;
+    borderBottomWidth: number;
+    borderLeftColor: Color;
+    borderLeftWidth: number;
+    borderRightColor: Color;
+    borderRightWidth: number;
+    borderTopColor: Color;
+    borderTopLeftRadius: number;
+    borderTopRightRadius: number;
+    borderTopWidth: number;
+    bottom: number;
+    color: Color;
+    display: DisplayStyle;
+    flexBasis: StyleFloat;
+    flexDirection: FlexDirection;
+    flexGrow: number;
+    flexShrink: number;
+    flexWrap: Wrap;
+    fontSize: number;
+    height: number;
+    justifyContent: Justify;
+    left: number;
+    letterSpacing: number;
+    marginBottom: number;
+    marginLeft: number;
+    marginRight: number;
+    marginTop: number;
+    maxHeight: StyleFloat;
+    maxWidth: StyleFloat;
+    minHeight: StyleFloat;
+    minWidth: StyleFloat;
+    opacity: number;
+    paddingBottom: number;
+    paddingLeft: number;
+    paddingRight: number;
+    paddingTop: number;
+    position: Position;
+    right: number;
+    rotate: Rotate;
+    scale: Scale;
+    textOverflow: TextOverflow;
+    top: number;
+    transformOrigin: Vector3;
+    transitionDelay: CSArray<TimeValue>;
+    transitionDuration: CSArray<TimeValue>;
+    transitionProperty: CSArray<StylePropertyName>;
+    transitionTimingFunction: CSArray<EasingFunction>;
+    translate: Vector3;
+    unityBackgroundImageTintColor: Color;
+    unityBackgroundScaleMode: ScaleMode;
+    unityFont: Font;
+    unityFontDefinition: FontDefinition;
+    unityFontStyleAndWeight: FontStyle;
+    unityParagraphSpacing: number;
+    unitySliceBottom: number;
+    unitySliceLeft: number;
+    unitySliceRight: number;
+    unitySliceTop: number;
+    unityTextAlign: TextAnchor;
+    unityTextOutlineColor: Color;
+    unityTextOutlineWidth: number;
+    unityTextOverflowPosition: TextOverflowPosition;
+    visibility: Visibility;
+    whiteSpace: WhiteSpace;
+    width: number;
+    wordSpacing: number;
 
 
-    CancelAllAnimations(): void;
-    CancelAnimation(id: StylePropertyId): void;
-    GetAllAnimations(outPropertyIds: CSArray<StylePropertyId>): void;
-    HasRunningAnimation(id: StylePropertyId): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    UpdateAnimation(id: StylePropertyId): void;
 }
-    
-interface Length {
-    value: number;
-    unit: LengthUnit;
-
-    constructor(value: number): Length;
-    constructor(value: number, unit: LengthUnit): Length;
-
-    Equals(other: Length): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface LengthConstructor {
-
-
-    Percent(value: number): Length;
-}
-declare const Length: LengthConstructor;
     
 interface Background {
     texture: Texture2D;
@@ -10152,6 +9760,124 @@ interface BackgroundConstructor {
     FromVectorImage(vi: VectorImage): Background;
 }
 declare const Background: BackgroundConstructor;
+    
+interface IStyleValue<T> {
+    value: T;
+    keyword: StyleKeyword;
+
+
+}
+    
+interface StyleFloat extends IStyleValue<number> {
+    value: number;
+    keyword: StyleKeyword;
+
+    constructor(v: number): StyleFloat;
+    constructor(keyword: StyleKeyword): StyleFloat;
+
+    Equals(other: StyleFloat): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface Rotate {
+    angle: Angle;
+
+    constructor(angle: Angle): Rotate;
+
+    Equals(other: Rotate): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface Angle {
+    value: number;
+    unit: AngleUnit;
+
+    constructor(value: number): Angle;
+    constructor(value: number, unit: AngleUnit): Angle;
+
+    Equals(other: Angle): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToDegrees(): number;
+    ToString(): string;
+}
+    
+interface AngleConstructor {
+
+
+    Degrees(value: number): Angle;
+}
+declare const Angle: AngleConstructor;
+    
+interface RotateConstructor {
+
+
+    None(): Rotate;
+}
+declare const Rotate: RotateConstructor;
+    
+interface Scale {
+    value: Vector3;
+
+    constructor(scale: Vector3): Scale;
+
+    Equals(other: Scale): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface ScaleConstructor {
+
+
+    None(): Scale;
+}
+declare const Scale: ScaleConstructor;
+    
+interface TimeValue {
+    value: number;
+    unit: TimeUnit;
+
+    constructor(value: number): TimeValue;
+    constructor(value: number, unit: TimeUnit): TimeValue;
+
+    Equals(other: TimeValue): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface StylePropertyName {
+
+    constructor(name: string): StylePropertyName;
+
+    Equals(other: unknown): boolean;
+    Equals(other: StylePropertyName): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface StylePropertyNameConstructor {
+
+
+    IsNullOrEmpty(propertyName: StylePropertyName): boolean;
+}
+declare const StylePropertyName: StylePropertyNameConstructor;
+    
+interface EasingFunction {
+    mode: EasingMode;
+
+    constructor(mode: EasingMode): EasingFunction;
+
+    Equals(other: EasingFunction): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
     
 interface FontDefinition {
     font: Font;
@@ -10289,134 +10015,10 @@ interface FontDefinitionConstructor {
 }
 declare const FontDefinition: FontDefinitionConstructor;
     
-interface TextShadow {
-    offset: Vector2;
-    blurRadius: number;
-    color: Color;
+interface IExperimentalFeatures {
+    animation: ITransitionAnimations;
 
 
-    Equals(obj: unknown): boolean;
-    Equals(other: TextShadow): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface Scale {
-    value: Vector3;
-
-    constructor(scale: Vector3): Scale;
-
-    Equals(other: Scale): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface ScaleConstructor {
-
-
-    None(): Scale;
-}
-declare const Scale: ScaleConstructor;
-    
-interface Translate {
-    x: Length;
-    y: Length;
-    z: number;
-
-    constructor(x: Length, y: Length, z: number): Translate;
-
-    Equals(other: Translate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface TranslateConstructor {
-
-
-    None(): Translate;
-}
-declare const Translate: TranslateConstructor;
-    
-interface Rotate {
-    angle: Angle;
-
-    constructor(angle: Angle): Rotate;
-
-    Equals(other: Rotate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface Angle {
-    value: number;
-    unit: AngleUnit;
-
-    constructor(value: number): Angle;
-    constructor(value: number, unit: AngleUnit): Angle;
-
-    Equals(other: Angle): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToDegrees(): number;
-    ToString(): string;
-}
-    
-interface AngleConstructor {
-
-
-    Degrees(value: number): Angle;
-}
-declare const Angle: AngleConstructor;
-    
-interface RotateConstructor {
-
-
-    None(): Rotate;
-}
-declare const Rotate: RotateConstructor;
-    
-interface TransformOrigin {
-    x: Length;
-    y: Length;
-    z: number;
-
-    constructor(x: Length, y: Length, z: number): TransformOrigin;
-
-    Equals(other: TransformOrigin): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface TransformOriginConstructor {
-
-
-    Initial(): TransformOrigin;
-}
-declare const TransformOrigin: TransformOriginConstructor;
-    
-interface IVisualElementScheduler {
-
-
-    Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
-    Execute(updateEvent: unknown): IVisualElementScheduledItem;
-}
-    
-interface IVisualElementScheduledItem {
-    element: VisualElement;
-    isActive: boolean;
-
-
-    Every(intervalMs: number): IVisualElementScheduledItem;
-    ExecuteLater(delayMs: number): void;
-    ForDuration(durationMs: number): IVisualElementScheduledItem;
-    Pause(): void;
-    Resume(): void;
-    StartingIn(delayMs: number): IVisualElementScheduledItem;
-    Until(stopCondition: unknown): IVisualElementScheduledItem;
 }
     
 interface ITransitionAnimations {
@@ -10470,149 +10072,122 @@ interface ITransform {
 
 }
     
-interface IExperimentalFeatures {
-    animation: ITransitionAnimations;
+interface IStylePropertyAnimations {
+    runningAnimationCount: number;
+    completedAnimationCount: number;
 
 
+    CancelAllAnimations(): void;
+    CancelAnimation(id: StylePropertyId): void;
+    GetAllAnimations(outPropertyIds: CSArray<StylePropertyId>): void;
+    HasRunningAnimation(id: StylePropertyId): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
+    UpdateAnimation(id: StylePropertyId): void;
 }
     
-interface IResolvedStyle {
-    alignContent: Align;
-    alignItems: Align;
-    alignSelf: Align;
-    backgroundColor: Color;
-    backgroundImage: Background;
-    borderBottomColor: Color;
-    borderBottomLeftRadius: number;
-    borderBottomRightRadius: number;
-    borderBottomWidth: number;
-    borderLeftColor: Color;
-    borderLeftWidth: number;
-    borderRightColor: Color;
-    borderRightWidth: number;
-    borderTopColor: Color;
-    borderTopLeftRadius: number;
-    borderTopRightRadius: number;
-    borderTopWidth: number;
-    bottom: number;
+interface Length {
+    value: number;
+    unit: LengthUnit;
+
+    constructor(value: number): Length;
+    constructor(value: number, unit: LengthUnit): Length;
+
+    Equals(other: Length): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface LengthConstructor {
+
+
+    Percent(value: number): Length;
+}
+declare const Length: LengthConstructor;
+    
+interface TextShadow {
+    offset: Vector2;
+    blurRadius: number;
     color: Color;
-    display: DisplayStyle;
-    flexBasis: StyleFloat;
-    flexDirection: FlexDirection;
-    flexGrow: number;
-    flexShrink: number;
-    flexWrap: Wrap;
-    fontSize: number;
-    height: number;
-    justifyContent: Justify;
-    left: number;
-    letterSpacing: number;
-    marginBottom: number;
-    marginLeft: number;
-    marginRight: number;
-    marginTop: number;
-    maxHeight: StyleFloat;
-    maxWidth: StyleFloat;
-    minHeight: StyleFloat;
-    minWidth: StyleFloat;
-    opacity: number;
-    paddingBottom: number;
-    paddingLeft: number;
-    paddingRight: number;
-    paddingTop: number;
-    position: Position;
-    right: number;
-    rotate: Rotate;
-    scale: Scale;
-    textOverflow: TextOverflow;
-    top: number;
-    transformOrigin: Vector3;
-    transitionDelay: CSArray<TimeValue>;
-    transitionDuration: CSArray<TimeValue>;
-    transitionProperty: CSArray<StylePropertyName>;
-    transitionTimingFunction: CSArray<EasingFunction>;
-    translate: Vector3;
-    unityBackgroundImageTintColor: Color;
-    unityBackgroundScaleMode: ScaleMode;
-    unityFont: Font;
-    unityFontDefinition: FontDefinition;
-    unityFontStyleAndWeight: FontStyle;
-    unityParagraphSpacing: number;
-    unitySliceBottom: number;
-    unitySliceLeft: number;
-    unitySliceRight: number;
-    unitySliceTop: number;
-    unityTextAlign: TextAnchor;
-    unityTextOutlineColor: Color;
-    unityTextOutlineWidth: number;
-    unityTextOverflowPosition: TextOverflowPosition;
-    visibility: Visibility;
-    whiteSpace: WhiteSpace;
-    width: number;
-    wordSpacing: number;
 
 
+    Equals(obj: unknown): boolean;
+    Equals(other: TextShadow): boolean;
+    GetHashCode(): number;
+    ToString(): string;
 }
     
-interface IStyleValue<T> {
-    value: T;
-    keyword: StyleKeyword;
+interface Translate {
+    x: Length;
+    y: Length;
+    z: number;
 
+    constructor(x: Length, y: Length, z: number): Translate;
 
-}
-    
-interface StyleFloat extends IStyleValue<number> {
-    value: number;
-    keyword: StyleKeyword;
-
-    constructor(v: number): StyleFloat;
-    constructor(keyword: StyleKeyword): StyleFloat;
-
-    Equals(other: StyleFloat): boolean;
+    Equals(other: Translate): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
     ToString(): string;
 }
     
-interface TimeValue {
-    value: number;
-    unit: TimeUnit;
+interface TranslateConstructor {
 
-    constructor(value: number): TimeValue;
-    constructor(value: number, unit: TimeUnit): TimeValue;
 
-    Equals(other: TimeValue): boolean;
+    None(): Translate;
+}
+declare const Translate: TranslateConstructor;
+    
+interface TransformOrigin {
+    x: Length;
+    y: Length;
+    z: number;
+
+    constructor(x: Length, y: Length, z: number): TransformOrigin;
+
+    Equals(other: TransformOrigin): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
     ToString(): string;
 }
     
-interface StylePropertyName {
+interface TransformOriginConstructor {
 
-    constructor(name: string): StylePropertyName;
 
-    Equals(other: unknown): boolean;
-    Equals(other: StylePropertyName): boolean;
-    GetHashCode(): number;
-    ToString(): string;
+    Initial(): TransformOrigin;
+}
+declare const TransformOrigin: TransformOriginConstructor;
+    
+interface IVisualElementScheduler {
+
+
+    Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
+    Execute(updateEvent: unknown): IVisualElementScheduledItem;
 }
     
-interface StylePropertyNameConstructor {
+interface IVisualElementScheduledItem {
+    element: VisualElement;
+    isActive: boolean;
 
 
-    IsNullOrEmpty(propertyName: StylePropertyName): boolean;
-}
-declare const StylePropertyName: StylePropertyNameConstructor;
-    
-interface EasingFunction {
-    mode: EasingMode;
-
-    constructor(mode: EasingMode): EasingFunction;
-
-    Equals(other: EasingFunction): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
+    Every(intervalMs: number): IVisualElementScheduledItem;
+    ExecuteLater(delayMs: number): void;
+    ForDuration(durationMs: number): IVisualElementScheduledItem;
+    Pause(): void;
+    Resume(): void;
+    StartingIn(delayMs: number): IVisualElementScheduledItem;
+    Until(stopCondition: unknown): IVisualElementScheduledItem;
 }
     
 interface IEventHandler {
@@ -10647,6 +10222,17 @@ interface EventBase {
 }
     
 interface Event {
+    mouseRay: Ray;
+    shift: boolean;
+    control: boolean;
+    alt: boolean;
+    command: boolean;
+    capsLock: boolean;
+    numeric: boolean;
+    functionKey: boolean;
+    isKey: boolean;
+    isMouse: boolean;
+    isScrollWheel: boolean;
     rawType: EventType;
     mousePosition: Vector2;
     delta: Vector2;
@@ -10660,17 +10246,6 @@ interface Event {
     displayIndex: number;
     type: EventType;
     commandName: string;
-    mouseRay: Ray;
-    shift: boolean;
-    control: boolean;
-    alt: boolean;
-    command: boolean;
-    capsLock: boolean;
-    numeric: boolean;
-    functionKey: boolean;
-    isKey: boolean;
-    isMouse: boolean;
-    isScrollWheel: boolean;
 
     constructor(): Event;
     constructor(displayIndex: number): Event;
@@ -10743,94 +10318,6 @@ interface FocusController {
 
 }
     
-    
-interface Hierarchy {
-    parent: VisualElement;
-    childCount: number;
-    Item: VisualElement;
-
-
-    Add(child: VisualElement): void;
-    Children(): CSArray<VisualElement>;
-    Clear(): void;
-    ElementAt(index: number): VisualElement;
-    Equals(other: Hierarchy): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    IndexOf(element: VisualElement): number;
-    Insert(index: number, child: VisualElement): void;
-    Remove(child: VisualElement): void;
-    RemoveAt(index: number): void;
-    Sort(comp: unknown): void;
-}
-    
-interface IPanel {
-    visualTree: VisualElement;
-    dispatcher: EventDispatcher;
-    contextType: ContextType;
-    focusController: FocusController;
-    contextualMenuManager: ContextualMenuManager;
-
-
-    Pick(point: Vector2): VisualElement;
-    PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
-}
-    
-interface EventDispatcher {
-
-
-}
-    
-interface ContextualMenuManager {
-
-
-    DisplayMenu(triggerEvent: EventBase, target: IEventHandler): void;
-    DisplayMenuIfEventMatches(evt: EventBase, eventHandler: IEventHandler): void;
-}
-    
-interface VisualTreeAsset extends ScriptableObject {
-    importedWithErrors: boolean;
-    importedWithWarnings: boolean;
-    templateDependencies: CSArray<VisualTreeAsset>;
-    stylesheets: CSArray<StyleSheet>;
-    contentHash: number;
-
-    constructor(): VisualTreeAsset;
-
-    CloneTree(): TemplateContainer;
-    CloneTree(bindingPath: string): TemplateContainer;
-    CloneTree(target: VisualElement): void;
-    CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
-    Instantiate(): TemplateContainer;
-    Instantiate(bindingPath: string): TemplateContainer;
-}
-    
-interface StyleSheet extends ScriptableObject {
-    importedWithErrors: boolean;
-    importedWithWarnings: boolean;
-    contentHash: number;
-
-    constructor(): StyleSheet;
-
-}
-    
-interface BindableElement extends VisualElement, IBindable {
-    binding: IBinding;
-    bindingPath: string;
-
-    constructor(): BindableElement;
-
-}
-    
-interface TemplateContainer extends BindableElement {
-    templateId: string;
-    templateSource: VisualTreeAsset;
-    contentContainer: VisualElement;
-
-    constructor(): TemplateContainer;
-    constructor(templateId: string): TemplateContainer;
-
-}
     
     
 interface StyleEnum<T> extends IStyleValue<T> {
@@ -11069,6 +10556,96 @@ interface VisualElementStyleSheetSet {
     Remove(styleSheet: StyleSheet): boolean;
 }
     
+interface StyleSheet extends ScriptableObject {
+    importedWithErrors: boolean;
+    importedWithWarnings: boolean;
+    contentHash: number;
+
+    constructor(): StyleSheet;
+
+}
+    
+interface Hierarchy {
+    parent: VisualElement;
+    childCount: number;
+    Item: VisualElement;
+
+
+    Add(child: VisualElement): void;
+    Children(): CSArray<VisualElement>;
+    Clear(): void;
+    ElementAt(index: number): VisualElement;
+    Equals(other: Hierarchy): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    IndexOf(element: VisualElement): number;
+    Insert(index: number, child: VisualElement): void;
+    Remove(child: VisualElement): void;
+    RemoveAt(index: number): void;
+    Sort(comp: unknown): void;
+}
+    
+interface IPanel {
+    visualTree: VisualElement;
+    dispatcher: EventDispatcher;
+    contextType: ContextType;
+    focusController: FocusController;
+    contextualMenuManager: ContextualMenuManager;
+
+
+    Pick(point: Vector2): VisualElement;
+    PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
+}
+    
+interface EventDispatcher {
+
+
+}
+    
+interface ContextualMenuManager {
+
+
+    DisplayMenu(triggerEvent: EventBase, target: IEventHandler): void;
+    DisplayMenuIfEventMatches(evt: EventBase, eventHandler: IEventHandler): void;
+}
+    
+interface VisualTreeAsset extends ScriptableObject {
+    importedWithErrors: boolean;
+    importedWithWarnings: boolean;
+    templateDependencies: CSArray<VisualTreeAsset>;
+    stylesheets: CSArray<StyleSheet>;
+    contentHash: number;
+
+    constructor(): VisualTreeAsset;
+
+    CloneTree(): TemplateContainer;
+    CloneTree(bindingPath: string): TemplateContainer;
+    CloneTree(target: VisualElement): void;
+    CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
+    Instantiate(): TemplateContainer;
+    Instantiate(bindingPath: string): TemplateContainer;
+}
+    
+interface BindableElement extends VisualElement, IBindable {
+    binding: IBinding;
+    bindingPath: string;
+
+    constructor(): BindableElement;
+
+}
+    
+interface TemplateContainer extends BindableElement {
+    templateId: string;
+    templateSource: VisualTreeAsset;
+    contentContainer: VisualElement;
+
+    constructor(): TemplateContainer;
+    constructor(templateId: string): TemplateContainer;
+
+}
+    
+    
+    
     
     
 interface StyleValues {
@@ -11107,8 +10684,6 @@ interface StyleValues {
     
     
     
-    
-    
 interface BindableElement extends VisualElement, IBindable {
     binding: IBinding;
     bindingPath: string;
@@ -11133,7 +10708,7 @@ interface ITextElement {
 
 }
     
-interface TextElement extends BindableElement, ITextElement, INotifyValueChanged<string> {
+interface TextElement extends BindableElement, INotifyValueChanged<string>, ITextElement {
     text: string;
     enableRichText: boolean;
     displayTooltipWhenElided: boolean;
@@ -11332,7 +10907,6 @@ interface LightConstructor {
 declare const Light: LightConstructor;
     
 interface RenderSettingsConstructor {
-    ambientSkyboxAmount: number;
     fog: boolean;
     fogStartDistance: number;
     fogEndDistance: number;
@@ -11357,6 +10931,7 @@ interface RenderSettingsConstructor {
     haloStrength: number;
     flareStrength: number;
     flareFadeSpeed: number;
+    ambientSkyboxAmount: number;
 
 
 }
@@ -11372,6 +10947,7 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideStartingScene: string;
     overrideQueueType: string;
     downloadBundles: boolean;
+    editorConfig: EasyEditorConfig;
     serverReady: boolean;
 
     constructor(): ServerBootstrap;
@@ -11400,6 +10976,13 @@ interface PlayerConfig extends ScriptableObject {
     playerVersion: number;
 
     constructor(): PlayerConfig;
+
+}
+    
+interface EasyEditorConfig extends ScriptableObject {
+    useBundlesInEditor: boolean;
+
+    constructor(): EasyEditorConfig;
 
 }
     
@@ -11457,6 +11040,7 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
+    clothColliders: CSArray<CapsuleCollider>;
 
     constructor(): AccessoryBuilder;
 
@@ -11469,6 +11053,16 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAccessorySlot(slot: AccessorySlot): void;
     SetAccessory(accessory: Accessory): void;
     SetAccessoryKit(kit: AccessoryKit): void;
+}
+    
+interface CapsuleCollider extends Collider {
+    center: Vector3;
+    radius: number;
+    height: number;
+    direction: number;
+
+    constructor(): CapsuleCollider;
+
 }
     
 interface Accessory extends ScriptableObject {
@@ -11637,7 +11231,6 @@ interface MainModule {
 }
     
 interface MinMaxCurve {
-    curveScalar: number;
     mode: ParticleSystemCurveMode;
     curveMultiplier: number;
     curveMax: AnimationCurve;
@@ -11646,6 +11239,7 @@ interface MinMaxCurve {
     constantMin: number;
     constant: number;
     curve: AnimationCurve;
+    curveScalar: number;
 
     constructor(constant: number): MinMaxCurve;
     constructor(multiplier: number, curve: AnimationCurve): MinMaxCurve;
@@ -12281,10 +11875,6 @@ interface CustomDataModule {
 }
     
 interface Particle {
-    lifetime: number;
-    randomValue: number;
-    size: number;
-    color: Color32;
     position: Vector3;
     velocity: Vector3;
     animatedVelocity: Vector3;
@@ -12300,6 +11890,10 @@ interface Particle {
     rotation3D: Vector3;
     angularVelocity: number;
     angularVelocity3D: Vector3;
+    lifetime: number;
+    randomValue: number;
+    size: number;
+    color: Color32;
 
 
     GetCurrentColor(system: ParticleSystem): Color32;
@@ -12441,6 +12035,7 @@ interface VoxelWorld extends MonoBehaviour {
     blockDefines: TextAsset;
     worldNetworker: VoxelWorldNetworker;
     chunksFolder: GameObject;
+    lightsFolder: GameObject;
     sceneLights: CSDictionary<number, LightReference>;
     chunks: CSDictionary<unknown, Chunk>;
     worldPositionEditorIndicators: CSDictionary<string, Transform>;
@@ -12450,7 +12045,7 @@ interface VoxelWorld extends MonoBehaviour {
     lodNearDistance: number;
     lodFarDistance: number;
     lodTransitionSpeed: number;
-    pointlights: CSArray<GameObject>;
+    pointLights: CSArray<GameObject>;
     radiosityRaySamples: CSArray<CSArray<Vector3>>;
     blocks: VoxelBlocks;
     selectedBlockIndex: number;
@@ -12513,7 +12108,7 @@ interface VoxelWorld extends MonoBehaviour {
 interface VoxelBinaryFile extends ScriptableObject {
     chunks: CSArray<SaveChunk>;
     worldPositions: CSArray<WorldPosition>;
-    pointLights: CSArray<SavePointlight>;
+    pointLights: CSArray<SavePointLight>;
     cubeMapPath: string;
     globalSkySaturation: number;
     globalSunColor: Color;
@@ -12533,7 +12128,7 @@ interface VoxelBinaryFile extends ScriptableObject {
     CreateVoxelWorld(world: VoxelWorld): void;
     GetChunks(): CSArray<SaveChunk>;
     GetMapObjects(): CSArray<WorldPosition>;
-    GetPointlights(): CSArray<SavePointlight>;
+    GetPointlights(): CSArray<SavePointLight>;
 }
     
 interface SaveChunk {
@@ -12553,7 +12148,8 @@ interface WorldPosition {
 
 }
     
-interface SavePointlight {
+interface SavePointLight {
+    name: string;
     color: Color;
     position: Vector3;
     rotation: Quaternion;
@@ -12562,7 +12158,6 @@ interface SavePointlight {
     castShadows: boolean;
     highQualityLight: boolean;
 
-    constructor(color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): SavePointlight;
 
 }
     
@@ -12578,13 +12173,13 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     NetworkInitializeIfDisabled(): void;
     OnSpawnServer(connection: NetworkConnection): void;
     OnStartClient(): void;
-    RpcLogic___TargetCreatePointlight_3789428640(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
+    RpcLogic___TargetAddPointLight_3789428640(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
     RpcLogic___TargetDirtyLights_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetFinishedSendingWorldRpc_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetSetLightingProperties_2623000413(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     RpcLogic___TargetWriteChunkRpc_4077799975(conn: NetworkConnection, pos: unknown, chunk: Chunk): void;
     RpcLogic___TargetWriteVoxelRpc_1359590914(conn: NetworkConnection, pos: unknown, voxel: number): void;
-    TargetCreatePointlight(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
+    TargetAddPointLight(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
     TargetDirtyLights(conn: NetworkConnection): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
     TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
@@ -12651,9 +12246,9 @@ interface RadiosityProbe {
 }
     
 interface BoxCollider extends Collider {
+    extents: Vector3;
     center: Vector3;
     size: Vector3;
-    extents: Vector3;
 
     constructor(): BoxCollider;
 
@@ -13348,9 +12943,12 @@ interface BlockDefinition {
     normalScale: number;
     emissive: number;
     brightness: number;
+    usesTiles: boolean;
     solid: boolean;
     mesh: MeshCopy;
     meshLod: MeshCopy;
+    meshTiles: CSDictionary<number, MeshCopy>;
+    meshTileProcessingOrder: CSArray<number>;
     detail: boolean;
     meshTexturePath: string;
     topTexturePath: string;
@@ -13405,6 +13003,15 @@ interface PrecalculatedRotation {
     constructor(vertices: CSArray<Vector3>, normals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
 
 }
+    
+interface VoxelBlocksConstructor {
+    meshTileOffsets: CSDictionary<number, Vector3>;
+    meshTileSizes: CSDictionary<number, unknown>;
+    TileSizeNames: CSArray<string>;
+
+
+}
+declare const VoxelBlocks: VoxelBlocksConstructor;
     
 interface RadiosityProbeSample {
     position: Vector3;
@@ -14645,7 +14252,6 @@ interface ProjectileValidateEvent {
 }
     
 interface TrailRenderer extends Renderer {
-    numPositions: number;
     time: number;
     startWidth: number;
     endWidth: number;
@@ -14664,6 +14270,7 @@ interface TrailRenderer extends Renderer {
     alignment: LineAlignment;
     widthCurve: AnimationCurve;
     colorGradient: Gradient;
+    numPositions: number;
 
     constructor(): TrailRenderer;
 
@@ -14754,30 +14361,16 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
-interface CoreApi extends MonoBehaviour {
+interface CoreAPI extends MonoBehaviour {
     IsInitialized: boolean;
     IdToken: string;
 
-    constructor(): CoreApi;
+    constructor(): CoreAPI;
 
+    EmitAsync(eventName: string, jsonEvent: string): OnCompleteHook;
     GetCoreUserData(): CoreUserData;
     InitializeGameCoordinatorAsync(): OnCompleteHook;
     SendAsync(url: string, method: string, utf8Body: string, jsonParams: string, jsonHeaders: string): OnCompleteHook;
-}
-    
-interface CoreUserData {
-    UserId: string;
-    DisplayName: string;
-    Email: string;
-    IsAnonymous: boolean;
-    IsEmailVerified: boolean;
-    PhoneNumber: string;
-    ProviderId: string;
-    LastSignInTimestamp: number;
-    CreationTimestamp: number;
-
-    constructor(): CoreUserData;
-
 }
     
 interface OnCompleteHook {
@@ -14795,12 +14388,27 @@ interface OperationResult {
 
 }
     
-interface CoreApiConstructor {
-    Instance: CoreApi;
+interface CoreUserData {
+    UserId: string;
+    DisplayName: string;
+    Email: string;
+    IsAnonymous: boolean;
+    IsEmailVerified: boolean;
+    PhoneNumber: string;
+    ProviderId: string;
+    LastSignInTimestamp: number;
+    CreationTimestamp: number;
+
+    constructor(): CoreUserData;
+
+}
+    
+interface CoreAPIConstructor {
+    Instance: CoreAPI;
 
 
 }
-declare const CoreApi: CoreApiConstructor;
+declare const CoreAPI: CoreAPIConstructor;
     
 interface GameCoordinatorMessageHook {
 

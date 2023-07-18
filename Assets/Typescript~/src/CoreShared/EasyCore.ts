@@ -3,32 +3,32 @@ import { decode, encode } from "./Lib/json";
 import { CoreSignals } from "./CoreSignals";
 
 export class EasyCore {
-	public static CoreApi: CoreApi;
+	public static CoreAPI: CoreAPI;
 	private static isInitialized: boolean;
 	private static idToken: string | undefined;
 	private static headersMap: Map<string, string>;
 	private static coreUserData: CoreUserData | undefined;
 
-	static async initAsync() {
-		this.CoreApi = CoreApi.Instance;
+	static async InitAsync() {
+		this.CoreAPI = CoreAPI.Instance;
 		EasyCore.isInitialized = false;
 		EasyCore.idToken = undefined;
 		EasyCore.headersMap = new Map<string, string>();
 
-		this.coreUserData = this.CoreApi.GetCoreUserData();
+		this.coreUserData = this.CoreAPI.GetCoreUserData();
 
-		if (this.CoreApi.IsInitialized) {
+		if (this.CoreAPI.IsInitialized) {
 			if (!EasyCore.isInitialized) {
 				//print(`postInit coreApi.IsInitialized`);
-				EasyCore.postInit();
+				EasyCore.PostInit();
 			}
 		} else {
 			await new Promise((resolve, reject) => {
-				this.CoreApi.OnInitializedEvent(() => {
+				this.CoreAPI.OnInitializedEvent(() => {
 					//print(`EasyCore.OnInitializedEvent`);
 					if (!EasyCore.isInitialized) {
 						//print(`postInit coreApi.OnInitializedEvent()`);
-						EasyCore.postInit();
+						EasyCore.PostInit();
 					}
 
 					resolve("");
@@ -37,26 +37,26 @@ export class EasyCore {
 		}
 	}
 
-	static getHeadersMap(): Map<string, string> {
+	static GetHeadersMap(): Map<string, string> {
 		return this.headersMap;
 	}
 
-	static getCoreUserData(): CoreUserData | undefined {
+	static GetCoreUserData(): CoreUserData | undefined {
 		return this.coreUserData;
 	}
 
-	static async getAsync<T>(
+	static async GetAsync<T>(
 		url: string,
 		params: Map<string, string> | undefined = undefined,
 		headers: Map<string, string> | undefined = undefined,
 	): Promise<T> {
-		const encodedParams = this.getEncodedMap(params);
-		const encodedHeaders = this.getEncodedMap(headers);
+		const encodedParams = this.GetEncodedMap(params);
+		const encodedHeaders = this.GetEncodedMap(headers);
 
-		print(`getAsync() url: ${url}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`);
+		print(`GetAsync() url: ${url}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`);
 
 		const result = new Promise<T>((resolve, reject) => {
-			const onCompleteHook = this.CoreApi.SendAsync(url, "get", "", encodedParams, encodedHeaders);
+			const onCompleteHook = this.CoreAPI.SendAsync(url, "get", "", encodedParams, encodedHeaders);
 			onCompleteHook.OnCompleteEvent((operationResult) => {
 				if (operationResult.IsSuccess) {
 					resolve(decode<T>(operationResult.ReturnString));
@@ -69,21 +69,21 @@ export class EasyCore {
 		return result;
 	}
 
-	static async postAsync<T>(
+	static async PostAsync<T>(
 		url: string,
 		body: string,
 		params: Map<string, string> | undefined = undefined,
 		headers: Map<string, string> | undefined = undefined,
 	): Promise<T> {
-		const encodedParams = this.getEncodedMap(params);
-		const encodedHeaders = this.getEncodedMap(headers);
+		const encodedParams = this.GetEncodedMap(params);
+		const encodedHeaders = this.GetEncodedMap(headers);
 
 		print(
-			`postAsync() url: ${url}, body: ${body}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`,
+			`PostAsync() url: ${url}, body: ${body}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`,
 		);
 
 		return new Promise<T>((resolve, reject) => {
-			const onCompleteHook = this.CoreApi.SendAsync(url, "post", body, encodedParams, encodedHeaders);
+			const onCompleteHook = this.CoreAPI.SendAsync(url, "post", body, encodedParams, encodedHeaders);
 			onCompleteHook.OnCompleteEvent((operationResult) => {
 				if (operationResult.IsSuccess) {
 					resolve(decode<T>(operationResult.ReturnString));
@@ -94,21 +94,21 @@ export class EasyCore {
 		});
 	}
 
-	static async patchAsync(
+	static async PatchAsync(
 		url: string,
 		body: string,
 		params: Map<string, string> | undefined = undefined,
 		headers: Map<string, string> | undefined = undefined,
 	): Promise<void> {
-		const encodedParams = this.getEncodedMap(params);
-		const encodedHeaders = this.getEncodedMap(headers);
+		const encodedParams = this.GetEncodedMap(params);
+		const encodedHeaders = this.GetEncodedMap(headers);
 
 		print(
-			`patchAsync() url: ${url}, body: ${body}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`,
+			`PatchAsync() url: ${url}, body: ${body}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`,
 		);
 
 		return new Promise<void>((resolve, reject) => {
-			const onCompleteHook = this.CoreApi.SendAsync(url, "patch", body, encodedParams, encodedHeaders);
+			const onCompleteHook = this.CoreAPI.SendAsync(url, "patch", body, encodedParams, encodedHeaders);
 			onCompleteHook.OnCompleteEvent((operationResult) => {
 				if (operationResult.IsSuccess) {
 					resolve();
@@ -119,18 +119,18 @@ export class EasyCore {
 		});
 	}
 
-	static async deleteAsync<T>(
+	static async DeleteAsync<T>(
 		url: string,
 		params: Map<string, string> | undefined = undefined,
 		headers: Map<string, string> | undefined = undefined,
 	): Promise<void> {
-		const encodedParams = this.getEncodedMap(params);
-		const encodedHeaders = this.getEncodedMap(headers);
+		const encodedParams = this.GetEncodedMap(params);
+		const encodedHeaders = this.GetEncodedMap(headers);
 
-		print(`deleteAsync() url: ${url}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`);
+		print(`DeleteAsync() url: ${url}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`);
 
 		return new Promise<void>((resolve, reject) => {
-			const onCompleteHook = this.CoreApi.SendAsync(url, "delete", "", encodedParams, encodedHeaders);
+			const onCompleteHook = this.CoreAPI.SendAsync(url, "delete", "", encodedParams, encodedHeaders);
 			onCompleteHook.OnCompleteEvent((operationResult) => {
 				if (operationResult.IsSuccess) {
 					resolve();
@@ -141,30 +141,45 @@ export class EasyCore {
 		});
 	}
 
-	static getEncodedMap(map: Map<string, string> | undefined): string {
+	static async EmitAsync(eventName: string, jsonEvent: string | undefined = undefined) {
+		print(`EmitAsync() eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
+
+		return new Promise<void>((resolve, reject) => {
+			const onCompleteHook = this.CoreAPI.EmitAsync(eventName, jsonEvent ?? "");
+			onCompleteHook.OnCompleteEvent((operationResult) => {
+				if (operationResult.IsSuccess) {
+					resolve();
+				} else {
+					reject(operationResult.ReturnString);
+				}
+			});
+		});
+	}
+
+	private static GetEncodedMap(map: Map<string, string> | undefined): string {
 		const result = map ? encode(map) : "";
 
-		//print(`getEncodedMap() result: ${result}`);
+		//print(`GetEncodedMap() result: ${result}`);
 
 		return result;
 	}
 
-	static postInit() {
+	private static PostInit() {
 		if (!this.isInitialized) {
 			// print(
-			// 	`postInit() this.isInitialized: ${this.isInitialized}, isClient: ${RunCore.IsClient()}, ${Time.time}}`,
+			// 	`PostInit() this.isInitialized: ${this.isInitialized}, isClient: ${RunCore.IsClient()}, ${Time.time}}`,
 			// );
 
 			this.isInitialized = true;
 
-			this.CoreApi.OnIdTokenChangedEvent((idToken) => {
+			this.CoreAPI.OnIdTokenChangedEvent((idToken) => {
 				this.idToken = idToken;
 			});
 
-			this.setIdToken(this.CoreApi.IdToken);
+			this.SetIdToken(this.CoreAPI.IdToken);
 
 			if (RunCore.IsClient()) {
-				this.CoreApi.OnGameCoordinatorEvent((messageName, jsonMessage) => {
+				this.CoreAPI.OnGameCoordinatorEvent((messageName, jsonMessage) => {
 					// print(
 					// 	`postInit.OnGameCoordinatorMessage() messageName: ${messageName}, jsonMessage: ${jsonMessage}`,
 					// );
@@ -172,7 +187,7 @@ export class EasyCore {
 					CoreSignals.GameCoordinatorMessage.Fire({ messageName: messageName, jsonMessage: jsonMessage });
 				});
 
-				const onCompleteHook = this.CoreApi.InitializeGameCoordinatorAsync();
+				const onCompleteHook = this.CoreAPI.InitializeGameCoordinatorAsync();
 
 				onCompleteHook.OnCompleteEvent((operationResult) => {
 					if (operationResult.IsSuccess) {
@@ -187,7 +202,7 @@ export class EasyCore {
 		}
 	}
 
-	private static setIdToken(newIdToken: string) {
+	private static SetIdToken(newIdToken: string) {
 		this.idToken = newIdToken;
 		this.headersMap.set(ApiHelper.AUTH_HEADER_NAME, `${ApiHelper.AUTH_HEADER_VALUE_PREFIX}${this.idToken}`);
 	}

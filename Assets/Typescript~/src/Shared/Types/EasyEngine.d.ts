@@ -400,7 +400,7 @@ interface EasyProjectile {
 	onCollide(callback: (collision: Collision, velocity: Vector3) => void): void;
 }
 
-interface CoreApi {
+interface CoreAPI {
 	OnInitializedEvent(callback: () => void): void;
 	OnIdTokenChangedEvent(callback: (idToken: string) => void): void;
 	OnGameCoordinatorEvent(callback: (messageName: string, jsonMessage: string) => void): void;

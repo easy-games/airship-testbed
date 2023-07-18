@@ -8,39 +8,39 @@ import { encode } from "Server/Lib/json";
 export class UserAPI {
 	private static currentUser: PublicUser | undefined;
 
-	static async initAsync() {
-		this.currentUser = await EasyCore.getAsync<PublicUser>(
+	static async InitAsync() {
+		this.currentUser = await EasyCore.GetAsync<PublicUser>(
 			`${ApiHelper.USER_SERVICE_URL}/users/self`,
 			undefined,
-			EasyCore.getHeadersMap(),
+			EasyCore.GetHeadersMap(),
 		);
 
 		CoreSignals.UserServiceInitialized.Fire({});
 	}
 
-	static getCurrentUser(): PublicUser | undefined {
+	static GetCurrentUser(): PublicUser | undefined {
 		return this.currentUser;
 	}
 
-	static async getUserAsync(discriminatedUserName: string): Promise<PublicUser | undefined> {
+	static async GetUserAsync(discriminatedUserName: string): Promise<PublicUser | undefined> {
 		const params = new Map<string, string>();
 		params.set("discriminatedUsername", discriminatedUserName);
 
-		const headers = EasyCore.getHeadersMap();
+		const headers = EasyCore.GetHeadersMap();
 
 		try {
-			return EasyCore.getAsync(`${ApiHelper.USER_SERVICE_URL}/users/user`, params, headers);
+			return EasyCore.GetAsync(`${ApiHelper.USER_SERVICE_URL}/users/user`, params, headers);
 		} catch (e) {
 			print(`Unable to get PublicUser from discriminatedUsername: ${discriminatedUserName}. error: ${e}`);
 			return undefined;
 		}
 	}
 
-	static async updateCurrentUserAsync(updateUserDto: UpdateUserDto) {
-		const headers = EasyCore.getHeadersMap();
+	static async UpdateCurrentUserAsync(updateUserDto: UpdateUserDto) {
+		const headers = EasyCore.GetHeadersMap();
 
 		try {
-			return EasyCore.patchAsync(
+			return EasyCore.PatchAsync(
 				`${ApiHelper.USER_SERVICE_URL}/users`,
 				encode(updateUserDto),
 				undefined,
