@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1100863215749792333}
   - component: {fileID: 4764185075500296687}
   - component: {fileID: 2118419135900449716}
+  - component: {fileID: 2981803211482576060}
   m_Layer: 0
   m_Name: ChatMessage
   m_TagString: Untagged
@@ -139,6 +140,18 @@ MonoBehaviour:
     keyValuePairs:
     - key: Text
       value: {fileID: 5499738799318691147}
+--- !u!225 &2981803211482576060
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166989688023756031}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2772124969810707654
 GameObject:
   m_ObjectHideFlags: 0
