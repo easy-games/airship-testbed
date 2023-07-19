@@ -526,7 +526,7 @@ export const items: {
 		ProjectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,
-			maxVelocityScaler: 50,
+			maxVelocityScaler: 100,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 			chargingWalkSpeedMultiplier: 0.25,
 		},
@@ -537,7 +537,7 @@ export const items: {
 		Ammo: {
 			yAxisAimAdjust: 0.1,
 			damage: 15,
-			gravity: defaultGravity * 0.2,
+			gravity: defaultGravity * 0.4,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
 			onHitGroundSoundId: "BowArrowHit",
 			onHitGroundSoundVolume: 0.5,

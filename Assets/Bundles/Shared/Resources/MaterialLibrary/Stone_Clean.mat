@@ -12,6 +12,7 @@ Material:
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
+  - RIM_LIGHT_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
@@ -59,6 +60,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmissiveMaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 3e88b74f4d3759642b26480f94f51ced, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -94,11 +99,13 @@ Material:
     m_Ints: []
     m_Floats:
     - AO_ON: 0
+    - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
     - POINT_FILTER: 0
+    - RIM_LIGHT: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
     - VERTEX_LIGHT: 0
@@ -109,6 +116,7 @@ Material:
     - _DstBlend: 0
     - _EXPLICIT_MAPS: 1
     - _Emissive: 0
+    - _EmissiveMix: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -117,8 +125,11 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
+    - _RimIntensity: 0.5
+    - _RimPower: 5
     - _RoughOverride: 0.9
     - _SLIDER_OVERRIDE: 1
     - _SmoothnessTextureChannel: 0
@@ -133,4 +144,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

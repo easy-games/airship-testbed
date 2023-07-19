@@ -17,7 +17,7 @@ export interface PointlightDto {
 }
 
 /** Converts a `SavePointlight` to a `PointlightDTO`. */
-export function SavePointlightToDto(pointlight: SavePointlight): PointlightDto {
+export function SavePointlightToDto(pointlight: SavePointLight): PointlightDto {
 	return {
 		color: [pointlight.color.r, pointlight.color.g, pointlight.color.b, pointlight.color.a],
 		position: pointlight.position,
