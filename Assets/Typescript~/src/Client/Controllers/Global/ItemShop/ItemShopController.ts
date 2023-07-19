@@ -1,7 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { GameObjectBridge } from "Shared/GameObjectBridge";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Network } from "Shared/Network";
 import { DEFAULT_BEDWARS_SHOP, ShopCategory, ShopItem } from "Shared/Shop/ShopMeta";
@@ -114,7 +113,7 @@ export class ItemShopController implements OnStart {
 		const selectedItemCost = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemCost");
 
 		CanvasUIBridge.SetSprite(selectedItemIcon, ItemUtil.GetItemRenderPath(shopItem.item));
-		const itemMeta = GetItemMeta(shopItem.item);
+		const itemMeta = ItemUtil.GetItemMeta(shopItem.item);
 		selectedItemQuantity.text = `x${shopItem.quantity}`;
 		selectedItemName.text = itemMeta.displayName;
 		selectedItemCost.text = `${shopItem.price} ${shopItem.currency}`;

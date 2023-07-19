@@ -2,12 +2,12 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { ClientSignals } from "Client/ClientSignals";
 import { Entity } from "Shared/Entity/Entity";
-import { GetItemMeta, GetItemTypeFromItemId } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { ProjectileCollideClientSignal } from "./ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./ProjectileLaunchedClientSignal";
+import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class ProjectileController implements OnStart {
@@ -16,7 +16,7 @@ export class ProjectileController implements OnStart {
 	constructor() {
 		for (const itemTypeStr of Object.keys(ItemType)) {
 			const itemType = itemTypeStr as ItemType;
-			const itemMeta = GetItemMeta(itemType);
+			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			if (itemMeta.Ammo) {
 				const projPrefab = AssetBridge.LoadAssetIfExists(
@@ -38,7 +38,7 @@ export class ProjectileController implements OnStart {
 	public OnStart(): void {
 		ProjectileManager.Instance.onProjectileLaunched((easyProjectile, shooterGO) => {
 			const shooterEntity = Entity.FindByGameObject(shooterGO);
-			const itemType = GetItemTypeFromItemId(easyProjectile.itemTypeId);
+			const itemType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
 			if (!itemType) {
 				Debug.LogError("Failed to find itemType with id " + easyProjectile.itemTypeId);
 				return;
@@ -55,7 +55,7 @@ export class ProjectileController implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = GetItemMeta(projectile.itemType).Ammo!;
+		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).Ammo!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		// Check if it should be colliding with us.

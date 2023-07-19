@@ -86,12 +86,10 @@ export class HeldItemManager {
 	//LOCAL CLIENT ONLY
 	public TriggerNewState(itemState: HeldItemState) {
 		//Notify server of new State
-		// Dependency<LocalEntityController>().AddToMoveData("HeldItemState", itemState);
 		Dependency<LocalEntityController>().AddToMoveData("HeldItemState", {
 			entityId: this.entity.id,
 			state: itemState,
 		});
-		// Network.ClientToServer.SetHeldItemState.Client.FireServer(this.entity.id, itemState);
 
 		//Handle the state locally
 		this.OnNewState(itemState);

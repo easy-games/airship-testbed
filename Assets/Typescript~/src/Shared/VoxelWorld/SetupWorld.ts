@@ -3,6 +3,7 @@ import { EntityItemManager } from "../Item/HeldItems/EntityItemManager";
 import { PrefabBlockManager } from "./PrefabBlockManager/PrefabBlockManager";
 import { World } from "./World";
 import { WorldAPI } from "./WorldAPI";
+import { ItemUtil } from "../Item/ItemUtil";
 
 export function SetupWorld() {
 	if (RunCore.IsClient()) {
@@ -14,6 +15,7 @@ export function SetupWorld() {
 	VoxelDataAPI.Init();
 	PrefabBlockManager.Get();
 	EntityItemManager.Get();
+	ItemUtil.Initialize();
 
 	// const world = WorldService.GetWorld();
 	// const registry = world.BlockRegistry;

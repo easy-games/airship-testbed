@@ -1,73 +1,19 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import Object from "@easy-games/unity-object-utils";
 import { ClientSignals } from "Client/ClientSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ArmorType } from "Shared/Item/ArmorType";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
-import { ItemType } from "Shared/Item/ItemType";
 import { Bin } from "Shared/Util/Bin";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { Layer } from "../../../../Shared/Util/Layer";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class EntityAccessoryController implements OnStart {
-	private DefaultKitPath = "Shared/Resources/Accessories/Kits/Whim/WhimKit.asset";
-	private itemAccessories = new Map<ItemType, Accessory[]>();
-	private missingItemAccessory: Accessory;
 	private isFirstPerson = false;
 	private defaultKitAccessory: AccessoryKit | undefined;
 
-	constructor(private readonly localController: LocalEntityController) {
-		this.missingItemAccessory = AssetBridge.LoadAsset<Accessory>("Shared/Resources/Accessories/missing_item.asset");
-		for (const itemTypeStr of Object.keys(ItemType)) {
-			const itemType = itemTypeStr as ItemType;
-			const itemMeta = GetItemMeta(itemType);
-
-			let accessoryNames: string[] = [itemTypeStr];
-			if (itemMeta.AccessoryNames) {
-				accessoryNames = itemMeta.AccessoryNames;
-			} else if (itemMeta.block?.blockId) {
-				accessoryNames = ["block"];
-			}
-
-			if (accessoryNames.size() > 0) {
-				const accessories: Accessory[] = [];
-				this.itemAccessories.set(itemType, accessories);
-
-				for (const accessoryName of accessoryNames) {
-					let accNameLower = accessoryName.lower();
-					let accessory = AssetBridge.LoadAssetIfExists<Accessory>(
-						`Shared/Resources/Accessories/${accNameLower}.asset`,
-					);
-					if (!accessory) {
-						warn("Couldn't find: " + accNameLower);
-						continue;
-					}
-
-					// this.itemAccessories.set(itemType, accessory);
-					accessories.push(accessory);
-				}
-			}
-
-			this.defaultKitAccessory = AssetBridge.LoadAssetIfExists<AccessoryKit>(this.DefaultKitPath);
-		}
-	}
-
-	public GetFirstAccessoryForItemType(itemType: ItemType): Accessory {
-		let accessories = this.itemAccessories.get(itemType);
-		if (accessories) return accessories[0];
-
-		return this.missingItemAccessory;
-	}
-
-	public GetAccessoriesForItemType(itemType: ItemType): Readonly<Accessory[]> {
-		let accessories = this.itemAccessories.get(itemType);
-		if (accessories) return accessories;
-
-		return [this.missingItemAccessory];
-	}
+	constructor(private readonly localController: LocalEntityController) {}
 
 	private AutoEquipArmor() {
 		ClientSignals.EntitySpawn.Connect((event) => {
@@ -81,7 +27,7 @@ export class EntityAccessoryController implements OnStart {
 				const onArmorSlotChanged = (itemStack?: ItemStack) => {
 					if (itemStack) {
 						const itemType = itemStack.GetItemType();
-						const armorAccessories = this.GetAccessoriesForItemType(itemType);
+						const armorAccessories = ItemUtil.GetAccessoriesForItemType(itemType);
 						if (currentArmor) {
 							// Remove accessory slots from previous armor that aren't on the new armor:
 							const currentSlots = currentArmor.map((acc) => acc.AccessorySlot);
@@ -137,30 +83,9 @@ export class EntityAccessoryController implements OnStart {
 				bin.Add(
 					event.Entity.GetInventory().ObserveHeldItem((itemStack) => {
 						if (itemStack === undefined) {
+							accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
 							accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
 							return;
-						}
-
-						const accessories = this.GetAccessoriesForItemType(itemStack.GetItemType());
-
-						for (const accessory of accessories) {
-							accessoryBuilder.SetAccessory(accessory);
-						}
-
-						const itemMeta = itemStack.GetItemMeta();
-						if (itemMeta.block && itemMeta.AccessoryNames === undefined) {
-							const blockDefinition = WorldAPI.GetMainWorld().GetBlockDefinition(itemMeta.block.blockId);
-							const blockGO = MeshProcessor.ProduceSingleBlock(
-								itemMeta.block.blockId,
-								WorldAPI.GetMainWorld().voxelWorld,
-							);
-							const gameObjects = accessoryBuilder.GetAccessories(AccessorySlot.RightHand);
-							blockGO.transform.SetParent(gameObjects.GetValue(0).transform);
-							blockGO.transform.localPosition = new Vector3(0, 0, 0);
-							const scale = 1;
-							blockGO.transform.localScale = new Vector3(scale, scale, scale);
-							blockGO.transform.localRotation = Quaternion.identity;
-							blockGO.transform.Rotate(new Vector3(90, 90, 0));
 						}
 
 						if (event.Entity.IsLocalCharacter()) {

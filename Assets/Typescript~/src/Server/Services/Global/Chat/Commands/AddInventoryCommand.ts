@@ -1,8 +1,8 @@
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { IsItemType } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
 import { ChatCommand } from "./ChatCommand";
+import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 export class AddInventoryCommand extends ChatCommand {
 	constructor() {
@@ -15,7 +15,7 @@ export class AddInventoryCommand extends ChatCommand {
 			return;
 		}
 
-		if (!IsItemType(args[0].upper())) {
+		if (!ItemUtil.IsItemType(args[0].upper())) {
 			player.SendMessage("Invalid item type: " + args[0]);
 			return;
 		}

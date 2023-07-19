@@ -1,7 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
 import { Game } from "Shared/Game";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { Network } from "Shared/Network";
 import { TeamUpgradeStateDto } from "Shared/TeamUpgrades/TeamUpgradeMeta";
 import { TeamUpgradeType } from "Shared/TeamUpgrades/TeamUpgradeType";
@@ -11,6 +10,7 @@ import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class TeamUpgradeController implements OnStart {
@@ -133,13 +133,13 @@ export class TeamUpgradeController implements OnStart {
 		// Price
 		switch (tier) {
 			case 0:
-				priceText.text = `${tier1Meta.cost} ${GetItemMeta(tier1Meta.currency).displayName}`;
+				priceText.text = `${tier1Meta.cost} ${ItemUtil.GetItemMeta(tier1Meta.currency).displayName}`;
 				break;
 			case 1:
-				priceText.text = `${tier2Meta.cost} ${GetItemMeta(tier2Meta.currency).displayName}`;
+				priceText.text = `${tier2Meta.cost} ${ItemUtil.GetItemMeta(tier2Meta.currency).displayName}`;
 				break;
 			case 2:
-				priceText.text = `${tier3Meta.cost} ${GetItemMeta(tier3Meta.currency).displayName}`;
+				priceText.text = `${tier3Meta.cost} ${ItemUtil.GetItemMeta(tier3Meta.currency).displayName}`;
 				break;
 			default:
 				priceText.enabled = false;

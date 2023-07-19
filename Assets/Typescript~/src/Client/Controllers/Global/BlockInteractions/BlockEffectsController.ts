@@ -1,9 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
-import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { SignalPriority } from "Shared/Util/Signal";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class BlockEffectsController implements OnStart {
@@ -24,10 +24,10 @@ export class BlockEffectsController implements OnStart {
 		ClientSignals.AfterBlockHit.Connect((event) => {
 			if (event.entity?.IsLocalCharacter()) return;
 
-			const itemType = GetItemTypeFromBlockId(event.blockId);
+			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockId);
 			if (!itemType) return;
 
-			const itemMeta = GetItemMeta(itemType);
+			const itemMeta = ItemUtil.GetItemMeta(itemType);
 			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(itemMeta?.block?.hitSound ?? this.hitSoundDefault),
 				event.pos,

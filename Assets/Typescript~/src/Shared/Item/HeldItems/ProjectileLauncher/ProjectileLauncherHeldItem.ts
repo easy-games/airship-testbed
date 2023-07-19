@@ -4,7 +4,6 @@ import { Crosshair } from "CoreShared/Crosshair/Crosshair";
 import { ItemPlayMode } from "Shared/Entity/Animation/InventoryEntityAnimator";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { AmmoMeta, ItemMeta } from "Shared/Item/ItemMeta";
 import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
 import { Mouse } from "Shared/UserInput";
@@ -14,6 +13,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { HeldItem } from "../HeldItem";
+import { ItemUtil } from "../../ItemUtil";
 
 export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeBin = new Bin();
@@ -28,7 +28,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		if (RunUtil.IsServer()) return;
 		if (!this.meta.ProjectileLauncher) return;
 
-		const ammoItemMeta = GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
+		const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
 		const ammoMeta = ammoItemMeta.Ammo!;
 
 		if (CanvasAPI.IsPointerOverUI()) return;
@@ -138,7 +138,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		velocity: Vector3;
 	} {
 		const launcherMeta = launcherItemMeta.ProjectileLauncher!;
-		const ammoItemMeta = GetItemMeta(launcherMeta.ammoItemType);
+		const ammoItemMeta = ItemUtil.GetItemMeta(launcherMeta.ammoItemType);
 		const ammoMeta = ammoItemMeta.Ammo!;
 
 		const aimVector = this.GetAimVector(mouse, launchPos, ammoMeta);

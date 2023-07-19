@@ -2,12 +2,12 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
-import { GetItemMeta, GetItemTypeFromItemId } from "Shared/Item/ItemDefinitions";
 import { Network } from "Shared/Network";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { DamageService } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
+import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -46,7 +46,7 @@ export class ProjectileService implements OnStart {
 
 		ProjectileManager.Instance.onProjectileLaunched((easyProjectile, shooterGO) => {
 			const shooterEntity = Entity.FindByGameObject(shooterGO);
-			const itemType = GetItemTypeFromItemId(easyProjectile.itemTypeId);
+			const itemType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
 			if (!itemType) {
 				Debug.LogError("Failed to find itemType with id " + easyProjectile.itemTypeId);
 				return;
@@ -62,7 +62,7 @@ export class ProjectileService implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = GetItemMeta(projectile.itemType).Ammo!;
+		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).Ammo!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		// Check if it should be colliding with us.

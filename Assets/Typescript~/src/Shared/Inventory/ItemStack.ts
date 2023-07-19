@@ -1,7 +1,7 @@
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { Signal } from "Shared/Util/Signal";
+import { ItemUtil } from "../Item/ItemUtil";
 
 export interface ItemStackDto {
 	/** ItemType */
@@ -43,7 +43,7 @@ export class ItemStack {
 	}
 
 	public GetItemMeta(): ItemMeta {
-		return GetItemMeta(this.itemType);
+		return ItemUtil.GetItemMeta(this.itemType);
 	}
 
 	public SetItemType(itemType: ItemType): void {
@@ -91,7 +91,7 @@ export class ItemStack {
 	}
 
 	public GetMeta(): ItemMeta {
-		return GetItemMeta(this.itemType);
+		return ItemUtil.GetItemMeta(this.itemType);
 	}
 
 	public Decrement(

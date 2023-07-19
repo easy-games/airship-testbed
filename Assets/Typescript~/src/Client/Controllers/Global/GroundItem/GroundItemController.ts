@@ -13,6 +13,7 @@ import { Bin } from "Shared/Util/Bin";
 import { WaitForNobId } from "Shared/Util/NetworkUtil";
 import { OnUpdate, SetInterval } from "Shared/Util/Timer";
 import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 interface GroundItemEntry {
 	nob: NetworkObject;
@@ -44,7 +45,7 @@ export class GroundItemController implements OnStart {
 	private CreateDisplayGO(itemStack: ItemStack, parent: Transform): GameObject {
 		let obj = this.itemTypeToDisplayObjMap.get(itemStack.GetItemType());
 		if (!obj) {
-			const accessory = this.entityAccessoryController.GetFirstAccessoryForItemType(itemStack.GetItemType());
+			const accessory = ItemUtil.GetFirstAccessoryForItemType(itemStack.GetItemType());
 			obj = accessory.Prefab;
 		}
 		const displayGO = GameObjectBridge.InstantiateIn(obj, parent);

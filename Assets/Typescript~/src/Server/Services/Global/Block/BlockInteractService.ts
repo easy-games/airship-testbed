@@ -2,7 +2,6 @@ import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { BlockHitDamageCalc } from "Shared/Block/BlockHitDamageCalc";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { Network } from "Shared/Network";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
@@ -12,6 +11,7 @@ import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -30,7 +30,7 @@ export class BlockInteractService implements OnStart {
 			const clientId = event.clientId;
 
 			const world = WorldAPI.GetMainWorld();
-			const itemMeta = GetItemMeta(itemType);
+			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			const rollback = () => {
 				Network.ServerToClient.RevertBlockPlace.Server.FireClient(clientId, pos);

@@ -1,6 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { GameObjectBridge } from "Shared/GameObjectBridge";
-import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
@@ -8,6 +7,7 @@ import { TeamController } from "../../../Client/Controllers/Global/Team/TeamCont
 import { Network } from "../../Network";
 import { Theme } from "../../Util/Theme";
 import { WorldAPI } from "../WorldAPI";
+import { ItemUtil } from "../../Item/ItemUtil";
 
 export class PrefabBlockManager {
 	private static instance: PrefabBlockManager | undefined;
@@ -24,7 +24,7 @@ export class PrefabBlockManager {
 		const world = WorldAPI.GetMainWorld();
 		world.OnVoxelPlaced.Connect((pos, voxel) => {
 			const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-			const itemType = GetItemTypeFromBlockId(blockId);
+			const itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
 
 			this.OnBlockDestroy(pos);
 
@@ -61,7 +61,7 @@ export class PrefabBlockManager {
 	}
 
 	private OnBlockPlace(pos: Vector3, itemType: ItemType): void {
-		const itemMeta = GetItemMeta(itemType);
+		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (itemMeta.block?.prefab) {
 			const prefab = AssetBridge.LoadAsset<Object>(
 				`Shared/Resources/VoxelWorld/BlockPrefabs/${itemMeta.block.prefab.path}`,
