@@ -1,8 +1,14 @@
 fileFormatVersion: 2
-guid: ac3c8b7b7c3a54be69ae929a019e7191
+guid: eae8542204b437f40867f62be7ae7e01
 ModelImporter:
   serializedVersion: 21300
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 1034007611323614871
+    second: Bow_Armature|BowDraw
+  - first:
+      74: 4012346491946590080
+    second: Bow_Armature|BowShoot
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -12,7 +18,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 1
+    resampleCurves: 0
     optimizeGameObjects: 0
     removeConstantScaleCurves: 1
     motionNodeName: 
@@ -24,7 +30,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 0
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
