@@ -1,4 +1,5 @@
 import { PublicUser } from "./PublicUser";
+import { UserStatus } from "./Status";
 
 export type FriendshipRequestResult = "initiated" | "accepted";
 
@@ -19,3 +20,12 @@ export type FriendsStatus = { isFriends: boolean };
 export interface RequestFriendDto {
 	discriminatedUsername: string;
 }
+
+export type FriendStatusData = {
+	discriminatedUsername: string;
+	discriminator: string;
+	userId: string;
+	username: string;
+	status: UserStatus;
+	game: string;
+};
