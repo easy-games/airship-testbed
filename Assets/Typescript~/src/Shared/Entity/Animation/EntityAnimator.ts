@@ -65,15 +65,7 @@ export class EntityAnimator {
 		position: Vector3,
 		entityModel: GameObject | undefined,
 	) {
-		//Flash Red 3 times
-		let totalTime = this.flashTransitionDuration + this.flashOnTime + this.flashTransitionDuration + 0.01;
-		this.PlayFlash();
-		Task.Delay(totalTime, () => {
-			this.PlayFlash();
-			Task.Delay(totalTime, () => {
-				this.PlayFlash();
-			});
-		});
+		this.PlayDamageFlash();
 
 		//Play specific effects for different damage types like fire attacks or magic damage
 		let vfxTemplate;
@@ -90,7 +82,7 @@ export class EntityAnimator {
 		}
 	}
 
-	private PlayFlash() {
+	private PlayDamageFlash() {
 		if (this.entity.IsDestroyed() || this.isFlashing) return;
 		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.meshes);
 		const duration = this.flashTransitionDuration + this.flashOnTime;
