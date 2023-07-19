@@ -14416,4 +14416,12 @@ interface GameCoordinatorMessageHook {
 
     Run(messageName: string, message: string): void;
 }
+    
+interface MoveModifier {
+    speedMultiplier: number;
+    blockSprint: boolean;
+    blockJump: boolean;
+
+
+}
 

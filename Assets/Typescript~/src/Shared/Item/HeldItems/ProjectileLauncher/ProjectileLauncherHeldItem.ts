@@ -24,45 +24,60 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnChargeStart(): void {
 		super.OnChargeStart();
-		if (!this.entity.IsLocalCharacter()) return;
-		if (RunUtil.IsServer()) return;
 		if (!this.meta.ProjectileLauncher) return;
 
-		const ammoItemMeta = GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
-		const ammoMeta = ammoItemMeta.Ammo!;
+		if (RunUtil.IsClient()) {
+			if (!this.entity.IsLocalCharacter()) return;
 
-		if (CanvasAPI.IsPointerOverUI()) return;
+			const ammoItemMeta = GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
+			const ammoMeta = ammoItemMeta.Ammo!;
 
-		if (!this.HasRequiredAmmo()) return;
+			if (CanvasAPI.IsPointerOverUI()) return;
 
-		this.chargeBin.Add(Crosshair.AddDisabler());
+			if (!this.HasRequiredAmmo()) return;
 
-		this.currentlyCharging = true;
+			this.chargeBin.Add(Crosshair.AddDisabler());
 
-		this.entity.anim?.PlayItemUse(0, ItemPlayMode.HOLD);
+			this.currentlyCharging = true;
 
-		this.startHoldTimeSec = os.clock();
+			this.entity.anim?.PlayItemUse(0, ItemPlayMode.HOLD);
 
-		const mouse = new Mouse();
-		const localEntityController = Dependency<LocalEntityController>();
+			this.startHoldTimeSec = os.clock();
+
+			const mouse = new Mouse();
+			const localEntityController = Dependency<LocalEntityController>();
+			this.chargeBin.Add(
+				OnLateUpdate.ConnectWithPriority(SignalPriority.NORMAL, (deltaTime) => {
+					if (this.currentlyCharging) {
+						const chargeSec = os.clock() - this.startHoldTimeSec;
+
+						const launchPos = ProjectileUtil.GetLaunchPosition(
+							this.entity,
+							localEntityController.IsFirstPerson(),
+						);
+						const launchData = this.GetLaunchData(this.entity, mouse, this.meta, chargeSec, launchPos);
+
+						this.projectileTrajectoryRenderer.UpdateInfo(
+							launchPos,
+							launchData.velocity,
+							0,
+							ammoMeta.gravity,
+						);
+					}
+				}),
+			);
+			this.chargeBin.Add(() => {
+				mouse.Destroy();
+			});
+		}
+
 		this.chargeBin.Add(
-			OnLateUpdate.ConnectWithPriority(SignalPriority.NORMAL, (deltaTime) => {
-				if (this.currentlyCharging) {
-					const chargeSec = os.clock() - this.startHoldTimeSec;
-
-					const launchPos = ProjectileUtil.GetLaunchPosition(
-						this.entity,
-						localEntityController.IsFirstPerson(),
-					);
-					const launchData = this.GetLaunchData(this.entity, mouse, this.meta, chargeSec, launchPos);
-
-					this.projectileTrajectoryRenderer.UpdateInfo(launchPos, launchData.velocity, 0, ammoMeta.gravity);
-				}
+			this.entity.OnAdjustMove.Connect((moveModifier) => {
+				moveModifier.blockSprint = true;
+				moveModifier.blockJump = true;
+				moveModifier.speedMultiplier *= 0.4;
 			}),
 		);
-		this.chargeBin.Add(() => {
-			mouse.Destroy();
-		});
 	}
 
 	private HasRequiredAmmo(): boolean {
@@ -90,8 +105,6 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		if (!this.entity.IsLocalCharacter()) return;
 
 		this.currentlyCharging = false;
-
-		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
 
 		if (CanvasAPI.IsPointerOverUI()) {
 			return;
@@ -121,10 +134,16 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	public override OnCallToActionEnd(): void {
 		super.OnCallToActionEnd();
-		if (!this.entity.IsLocalCharacter()) return;
-
 		this.currentlyCharging = false;
 		this.chargeBin.Clean();
+		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
+	}
+
+	public override OnUnEquip(): void {
+		super.OnUnEquip();
+		this.currentlyCharging = false;
+		this.chargeBin.Clean();
+		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
 	}
 
 	private GetLaunchData(

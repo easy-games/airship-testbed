@@ -56,6 +56,7 @@ interface EntityDriver extends Component {
 	OnCustomDataFlushed(callback: () => void): void;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): void;
 	onImpactWithGround(callback: (velocity: Vector3) => void): void;
+	onAdjustMove(callback: (modifier: MoveModifier) => void): void;
 
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
 	SetLookAngle(lookAngle: number): void;
