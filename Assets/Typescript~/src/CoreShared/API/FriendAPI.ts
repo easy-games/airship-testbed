@@ -1,30 +1,49 @@
 import { ApiHelper } from "CoreShared/ApiHelper";
 import { CoreSignals } from "CoreShared/CoreSignals";
 import { EasyCore } from "CoreShared/EasyCore";
-import {
-	FriendRequests,
-	FriendsStatus,
-	FriendshipRequestResult,
-	FriendshipRequestResultObj,
-} from "CoreShared/SocketIOMessages/FriendsDtos";
 import { PublicUser } from "CoreShared/SocketIOMessages/PublicUser";
 import { SIOEventNames } from "CoreShared/SocketIOMessages/SOIEventNames";
-import { encode } from "Server/Lib/json";
+import { decode, encode } from "Server/Lib/json";
+import {
+	FriendRequests,
+	FriendStatusData,
+	FriendsStatus,
+	FriendshipRequestResultObj,
+} from "CoreShared/SocketIOMessages/FriendsDtos";
+import { SetInterval } from "Shared/Util/Timer";
+import { UserStatus } from "CoreShared/SocketIOMessages/Status";
 
 export class FriendAPI {
+	private static onlineFriendsCache = new Map<UserStatus, FriendStatusData>();
+	private static friendsCache = new Map<string, FriendStatusData>();
+
 	static async InitAsync(): Promise<void> {
 		CoreSignals.GameCoordinatorMessage.Connect((signal) => {
 			if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
-				print(`CoreSignals.GameCoordinatorMessage.Connect() signal: ${encode(signal)}`);
+				const friendStatusDatasArrays = decode<FriendStatusData[][]>(signal.jsonMessage);
+
+				friendStatusDatasArrays.forEach((fsdArray) => {
+					fsdArray.forEach((fsd) => {
+						this.friendsCache.set(fsd.userId, fsd);
+					});
+				});
 			}
 		});
 
 		EasyCore.EmitAsync("refresh-friends-status");
+
+		SetInterval(
+			3,
+			() => {
+				print(`FriendAPI.InitAsync.SetInterval() friendsCache: ${encode(this.friendsCache)}`);
+			},
+			true,
+		);
 	}
 
-	static async GetOnlineFriendsAsync(): Promise<PublicUser[]> {
-		return new Array<PublicUser>();
-	}
+	// static GetFriendsWithStatus(statuses: UserStatus[]): Promise<FriendStatusData[]> {
+	// 	return this.friendsCache.
+	// }
 
 	static async GetFriendsAsync(): Promise<PublicUser[]> {
 		const headers = EasyCore.GetHeadersMap();
