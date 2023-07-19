@@ -74,7 +74,6 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		this.chargeBin.Add(
 			this.entity.OnAdjustMove.Connect((moveModifier) => {
 				moveModifier.blockSprint = true;
-				moveModifier.blockJump = true;
 				moveModifier.speedMultiplier *= 0.4;
 			}),
 		);
