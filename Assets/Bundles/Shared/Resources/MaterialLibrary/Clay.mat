@@ -12,7 +12,6 @@ Material:
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
-  - RIM_LIGHT_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
@@ -105,7 +104,7 @@ Material:
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
     - POINT_FILTER: 0
-    - RIM_LIGHT: 1
+    - RIM_LIGHT: 0
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
     - VERTEX_LIGHT: 0
@@ -128,8 +127,8 @@ Material:
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
-    - _RimIntensity: 0.3
-    - _RimPower: 5
+    - _RimIntensity: 0.75
+    - _RimPower: 2.5
     - _RoughOverride: 0.75
     - _SLIDER_OVERRIDE: 1
     - _SmoothnessTextureChannel: 0

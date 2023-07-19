@@ -11,7 +11,7 @@ export class VoidService implements OnStart {
 	OnStart(): void {
 		SetInterval(1, () => {
 			for (const entity of this.entityService.GetEntities()) {
-				if (entity.networkObject.transform.position.y <= -20) {
+				if (entity.networkObject.transform.position.y <= -40) {
 					this.damageService.InflictDamage(entity, math.huge, {
 						damageType: DamageType.VOID,
 					});

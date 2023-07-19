@@ -2,6 +2,8 @@ import { PublicUser } from "./PublicUser";
 
 export type FriendshipRequestResult = "initiated" | "accepted";
 
+export type FriendshipRequestResultObj = { result: FriendshipRequestResult };
+
 export interface FriendRequests {
 	outgoingRequests: PublicUser[];
 	incomingRequests: PublicUser[];

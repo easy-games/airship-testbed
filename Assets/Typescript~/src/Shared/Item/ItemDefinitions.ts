@@ -37,7 +37,7 @@ const blockItemAssets: ItemAssetsMeta = {
 };
 const swordItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.2,
+	cooldownSeconds: 0.15,
 };
 const swordItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemSword,
@@ -66,7 +66,7 @@ const defaultSwordMelee: MeleeItemMeta = {
 	colliderData: {
 		boxHalfWidth: 1.5,
 		boxHalfHeight: 1.8,
-		boxHalfDepth: 1.9,
+		boxHalfDepth: 2.3,
 	},
 	onHitPrefabId: Bundle_ItemSword_Prefabs.OnHit,
 	canHitMultipleTargets: false,
@@ -526,7 +526,7 @@ export const items: {
 		ProjectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,
-			maxVelocityScaler: 50,
+			maxVelocityScaler: 100,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 			chargingWalkSpeedMultiplier: 0.25,
 		},
@@ -537,7 +537,7 @@ export const items: {
 		Ammo: {
 			yAxisAimAdjust: 0.1,
 			damage: 15,
-			gravity: defaultGravity * 0.2,
+			gravity: defaultGravity * 0.4,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
 			onHitGroundSoundId: "BowArrowHit",
 			onHitGroundSoundVolume: 0.5,
@@ -550,7 +550,7 @@ export const items: {
 		itemMechanics: {
 			...rangedItemMechanics,
 			minChargeSeconds: 0.05,
-			maxChargeSeconds: 0.75,
+			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 		},
 		itemAssets: {
