@@ -241,7 +241,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 0
+  _scenePathHash: 4244522174
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 2954066760618576130
   _sceneNetworkObjects:
@@ -1495,7 +1495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
+  warningMessage: 
 --- !u!4 &5880897125066653761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -115803784690454224, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}

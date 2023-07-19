@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: wood_bow
   m_EditorClassIdentifier: 
   DisplayName: 
-  AccessorySlot: 2
+  AccessorySlot: 3
   Prefab: {fileID: 3720202553187759731, guid: 2cca83bfd93414025ad464ebd732a5c7, type: 3}
   Position: {x: 0, y: 0.001, z: -0.001}
   Rotation: {x: -90, y: 0, z: -90}
