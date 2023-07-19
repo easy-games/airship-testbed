@@ -4,8 +4,44 @@ import { Network } from "Shared/Network";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { SignalPriority } from "Shared/Util/Signal";
+import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalEntityController } from "../Character/LocalEntityController";
+
+class ChatMessageElement {
+	public canvasGroup: CanvasGroup;
+	public shownAt = os.clock();
+	public shown = true;
+	private hideBin = new Bin();
+
+	constructor(public readonly gameObject: GameObject, public time: number) {
+		this.canvasGroup = gameObject.GetComponent<CanvasGroup>();
+	}
+
+	public Hide(): void {
+		if (!this.shown) return;
+		this.shown = false;
+		const t = this.canvasGroup.TweenCanvasGroupAlpha(0, 0.2);
+		this.hideBin.Add(() => {
+			t.Cancel();
+		});
+	}
+
+	public Show(): void {
+		this.shownAt = os.clock();
+		if (this.shown) return;
+		this.shown = true;
+		this.hideBin.Clean();
+		this.canvasGroup.alpha = 1;
+	}
+
+	public Destroy(): void {
+		this.Hide();
+		SetTimeout(1, () => {
+			Object.Destroy(this.gameObject);
+		});
+	}
+}
 
 @Controller({})
 export class ChatController implements OnStart {
@@ -15,6 +51,8 @@ export class ChatController implements OnStart {
 
 	private selected = false;
 	private selectedBin = new Bin();
+
+	private chatMessageElements: ChatMessageElement[] = [];
 
 	constructor(private localEntityController: LocalEntityController) {
 		const refs = GameObject.Find("Chat").GetComponent<GameObjectReferences>();
@@ -81,32 +119,6 @@ export class ChatController implements OnStart {
 			}
 		});
 
-		// keyboard.KeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-		// 	if (this.selected) {
-		// 		if (event.Key === Key.Enter) {
-		// 			if (this.inputField.text === "") {
-		// 				EventSystem.current.ClearSelected();
-		// 				return;
-		// 			}
-		// 			this.SubmitInputField();
-		// 			return;
-		// 		} else if (event.Key === Key.Escape) {
-		// 			EventSystem.current.ClearSelected();
-		// 			this.inputField.SetTextWithoutNotify("");
-		// 			event.SetCancelled(true);
-		// 			return;
-		// 		}
-		// 		// cancel input when using input field
-		// 		event.SetCancelled(true);
-		// 	} else if (event.Key === Key.Enter) {
-		// 		this.inputField.Select();
-		// 	} else if (event.Key === Key.Slash) {
-		// 		this.inputField.SetTextWithoutNotify("/");
-		// 		this.inputField.caretPosition = 1;
-		// 		this.inputField.Select();
-		// 	}
-		// });
-
 		const mouse = new Mouse();
 		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
 			this.selected = true;
@@ -118,12 +130,38 @@ export class ChatController implements OnStart {
 			this.selectedBin.Add(() => {
 				mouse.RemoveUnlocker(mouseLocker);
 			});
+			this.CheckIfShouldHide();
 		});
 
 		CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
 			this.selectedBin.Clean();
 			this.selected = false;
+			this.CheckIfShouldHide();
 		});
+
+		SetInterval(0.5, () => {
+			this.CheckIfShouldHide();
+		});
+	}
+
+	private CheckIfShouldHide(): void {
+		if (this.IsChatFocused()) {
+			for (const element of this.chatMessageElements) {
+				element.Show();
+			}
+		} else {
+			for (const element of this.chatMessageElements) {
+				if (os.clock() - element.time > 5) {
+					element.Hide();
+				}
+			}
+		}
+	}
+
+	public ShowAllChatMessages(): void {
+		for (const element of this.chatMessageElements) {
+			element.Show();
+		}
 	}
 
 	public SubmitInputField(): void {
@@ -144,9 +182,12 @@ export class ChatController implements OnStart {
 			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
 
 			textGui.text = message;
+
+			const element = new ChatMessageElement(chatMessage, os.clock());
+			this.chatMessageElements.push(element);
 		} catch (err) {
-			print("chat error.");
-			print(err);
+			Debug.LogError("chat error:");
+			Debug.LogError(err);
 		}
 	}
 

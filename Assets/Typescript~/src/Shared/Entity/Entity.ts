@@ -137,6 +137,7 @@ export class Entity {
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
 	public readonly OnPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
+	public readonly OnAdjustMove = new Signal<[moveModifier: MoveModifier]>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
@@ -169,11 +170,11 @@ export class Entity {
 		this.bin.Connect(OnLateUpdate, () => this.LateUpdate());
 
 		this.entityDriver.onImpactWithGround((velocity) => {
-			print("impact", velocity);
-			// regular jump on flat ground: -14
-			// if (velocity.y < -2) {
 			this.anim?.PlayFootstepSound();
-			// }
+		});
+
+		this.entityDriver.onAdjustMove((moveModifier) => {
+			this.OnAdjustMove.Fire(moveModifier);
 		});
 	}
 
