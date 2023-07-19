@@ -42,7 +42,7 @@ const swordItemMechanics: ItemMechanicsMeta = {
 const swordItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemSword,
 	onUsePrefabId: Bundle_ItemSword_Prefabs.OnUse,
-	onUseSoundId: "Sword_Swing_03.wav",
+	onUseSound: ["Sword_Swing_03.wav"],
 	onUseSoundVolume: 0.3,
 };
 const pickaxeItemAssets: ItemAssetsMeta = {
@@ -520,7 +520,7 @@ export const items: {
 			cooldownSeconds: 0.25,
 		},
 		itemAssets: {
-			onUseSoundId: "BowArrowFire",
+			onUseSound: ["BowArrowFire"],
 			onUseSoundVolume: 0.5,
 		},
 		ProjectileLauncher: {
@@ -555,7 +555,7 @@ export const items: {
 		},
 		itemAssets: {
 			...throwableItemAssets,
-			onUseSoundId: "TelepearlThrow",
+			onUseSound: ["TelepearlThrow"],
 		},
 		ProjectileLauncher: {
 			ammoItemType: ItemType.TELEPEARL,
