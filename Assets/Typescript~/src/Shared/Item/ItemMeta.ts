@@ -73,7 +73,7 @@ export interface ItemMeta {
 export interface ItemAssetsMeta {
 	assetBundleId?: BundleGroupNames;
 	onUsePrefabId?: number;
-	onUseSoundId?: string;
+	onUseSound?: string[];
 	onUseSoundVolume?: number;
 }
 

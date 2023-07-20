@@ -1,4 +1,5 @@
 ﻿import { AudioManager } from "Shared/Audio/AudioManager";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Entity } from "../../Entity/Entity";
 import { BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../../Util/ReferenceManagerResources";
 import { RunUtil } from "../../Util/RunUtil";
@@ -123,15 +124,19 @@ export class HeldItem {
 
 		//Play the use locally
 		this.entity.anim?.PlayItemUse(useIndex);
-		if (this.meta.itemAssets?.onUseSoundId) {
+		if (this.meta.itemAssets?.onUseSound) {
 			if (this.entity.IsLocalCharacter()) {
-				AudioManager.PlayGlobal(this.meta.itemAssets.onUseSoundId, {
+				AudioManager.PlayGlobal(RandomUtil.FromArray(this.meta.itemAssets.onUseSound), {
 					volumeScale: this.meta.itemAssets.onUseSoundVolume ?? 1,
 				});
 			} else {
-				AudioManager.PlayAtPosition(this.meta.itemAssets.onUseSoundId, this.entity.model.transform.position, {
-					volumeScale: this.meta.itemAssets.onUseSoundVolume ?? 1,
-				});
+				AudioManager.PlayAtPosition(
+					RandomUtil.FromArray(this.meta.itemAssets.onUseSound),
+					this.entity.model.transform.position,
+					{
+						volumeScale: this.meta.itemAssets.onUseSoundVolume ?? 1,
+					},
+				);
 			}
 		}
 

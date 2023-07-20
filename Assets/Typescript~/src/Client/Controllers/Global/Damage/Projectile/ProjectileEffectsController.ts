@@ -14,6 +14,8 @@ import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class ProjectileEffectsController implements OnStart {
+	constructor() {}
+
 	OnStart(): void {
 		ClientSignals.ProjectileCollide.Connect((event) => {
 			const effect = EffectsManager.SpawnBundleEffect(
@@ -36,8 +38,8 @@ export class ProjectileEffectsController implements OnStart {
 
 			const itemMeta = ItemUtil.GetItemMeta(event.projectile.itemType);
 			if (!event.hitEntity && itemMeta.Ammo?.onHitGroundSoundId) {
-				AudioManager.PlayAtPosition(itemMeta.Ammo.onHitGroundSoundId, event.hitPosition, {
-					volumeScale: itemMeta.Ammo.onHitGroundSoundVolume ?? 1,
+				AudioManager.PlayAtPosition("ArrowLand/BowArrowHit", event.hitPosition, {
+					volumeScale: 0.6,
 				});
 			}
 		});
@@ -49,7 +51,7 @@ export class ProjectileEffectsController implements OnStart {
 				event.damageType === DamageType.PROJECTILE
 			) {
 				AudioManager.PlayGlobal("HitSuccess", {
-					volumeScale: 0.7,
+					volumeScale: 0.5,
 				});
 			}
 		});
