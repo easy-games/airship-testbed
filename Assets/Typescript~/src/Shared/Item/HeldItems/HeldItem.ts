@@ -15,7 +15,7 @@ export class HeldItem {
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 	private isCharging = false;
-	private currentItemAnimations: Animator[];
+	private currentItemAnimations: Animator[] = [];
 
 	constructor(entity: Entity, newMeta: ItemMeta) {
 		this.entity = entity;
@@ -24,24 +24,6 @@ export class HeldItem {
 		//Load the animation references
 		if (this.meta.itemAssets?.assetBundleId) {
 			this.bundles = ReferenceManagerAssets.bundleGroups.get(this.meta.itemAssets.assetBundleId);
-		}
-
-		const accessories = ItemUtil.GetAccessoriesForItemType(newMeta.ItemType);
-
-		this.currentItemAnimations = [];
-		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
-		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
-
-		for (const accessory of accessories) {
-			let accGos: CSArray<GameObject> = this.entity.accessoryBuilder.SetAccessory(accessory);
-
-			//Load the animator for the held item if one exists
-			for (let i = 0; i < accGos.Length; i++) {
-				const anim = accGos.GetValue(i).GetComponent<Animator>();
-				if (anim) {
-					this.currentItemAnimations.push(anim);
-				}
-			}
 		}
 	}
 
@@ -59,6 +41,25 @@ export class HeldItem {
 		this.Log("OnEquip");
 		//Load that items animations and play equip animation
 		this.entity.anim?.EquipItem(this.meta.itemAssets?.assetBundleId ?? BundleGroupNames.ItemUnarmed);
+
+		//Spawn the accessories graphics
+		const accessories = ItemUtil.GetAccessoriesForItemType(this.meta.ItemType);
+
+		this.currentItemAnimations = [];
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
+
+		for (const accessory of accessories) {
+			let accGos: CSArray<GameObject> = this.entity.accessoryBuilder.SetAccessory(accessory);
+
+			//Load the animator for the held item if one exists
+			for (let i = 0; i < accGos.Length; i++) {
+				const anim = accGos.GetValue(i).GetComponent<Animator>();
+				if (anim) {
+					this.currentItemAnimations.push(anim);
+				}
+			}
+		}
 	}
 
 	public OnUnEquip() {
