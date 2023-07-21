@@ -151,7 +151,7 @@ export class LocalEntityController implements OnStart {
 			});
 
 			//Set up first person camera
-			this.fps = new FirstPersonCameraSystem(entity.references, entity.dynamicVariables);
+			this.fps = new FirstPersonCameraSystem(entity.references);
 			this.fps.OnFirstPersonChanged(this.firstPerson);
 
 			this.cameraController.SetMode(createHumanoidCameraMode());

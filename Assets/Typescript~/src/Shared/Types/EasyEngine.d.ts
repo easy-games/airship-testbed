@@ -410,3 +410,11 @@ interface CoreAPI {
 interface OnCompleteHook {
 	OnCompleteEvent(callback: (operationResult: OperationResult) => void): void;
 }
+
+interface DynamicVariablesManager {
+	GetVars(collectionId: string): DynamicVariables | undefined;
+}
+interface DynamicVariablesManagerConstructor {
+	Instance: DynamicVariablesManager;
+}
+declare const DynamicVariablesManager: DynamicVariablesManagerConstructor;
