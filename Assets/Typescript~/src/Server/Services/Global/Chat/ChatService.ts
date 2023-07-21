@@ -11,6 +11,7 @@ import { DieCommand } from "./Commands/DieCommand";
 import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
 import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorSpawnRateCommand";
+import { HealCommand } from "./Commands/HealCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
 import { StartMatchCommand } from "./Commands/Match/MatchStartCommand";
@@ -40,6 +41,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new TpsCommand());
 		this.RegisterCommand(new LagCommand());
 		this.RegisterCommand(new SetVarCommand());
+		this.RegisterCommand(new HealCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
