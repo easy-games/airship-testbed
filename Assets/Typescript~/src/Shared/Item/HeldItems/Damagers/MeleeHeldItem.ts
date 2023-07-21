@@ -1,12 +1,15 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import { Theme } from "Shared/Util/Theme";
 import { DamageService } from "../../../../Server/Services/Global/Damage/DamageService";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { Bundle_ItemSword } from "../../../Util/ReferenceManagerResources";
-import { BoxCollision } from "../../ItemMeta";
 import { HeldItem } from "../HeldItem";
 
 export class MeleeHeldItem extends HeldItem {
+	private gizmoEnabled = false;
+	private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
+
 	override OnUseClient(useIndex: number) {
 		super.OnUseClient(useIndex);
 		let meleeData = this.meta.melee;
@@ -19,8 +22,10 @@ export class MeleeHeldItem extends HeldItem {
 		if (this.entity.IsLocalCharacter()) {
 			const entityDriver = this.entity.GetEntityDriver();
 			entityDriver.UpdateSyncTick();
-			let hitTargets = this.ScanForHits(meleeData.colliderData);
-			hitTargets.forEach((data) => {
+
+			let farTargets = this.ScanForHits();
+
+			for (const data of farTargets) {
 				if (this.bundles && this.meta.melee?.onHitPrefabId) {
 					//Local damage predictions
 					const effectGO = EffectsManager.SpawnBundleGroupEffect(
@@ -34,7 +39,7 @@ export class MeleeHeldItem extends HeldItem {
 						effectGO.transform.parent = data.hitEntity.model.transform;
 					}
 				}
-			});
+			}
 		}
 	}
 
@@ -52,7 +57,7 @@ export class MeleeHeldItem extends HeldItem {
 		}
 		this.Log("Using Server");
 		Profiler.BeginSample("GetCollisions");
-		let hitTargets = this.ScanForHits(meleeData.colliderData);
+		let hitTargets = this.ScanForHits();
 		Profiler.EndSample();
 		print("Server hit tick=" + InstanceFinder.TimeManager.Tick + ", hitTargets=" + hitTargets.size());
 		Profiler.BeginSample("HitTargetsInflictDamage");
@@ -67,37 +72,48 @@ export class MeleeHeldItem extends HeldItem {
 		Profiler.EndSample();
 	}
 
-	private ScanForHits(boxData: BoxCollision | undefined): MeleeHit[] {
+	private ScanForHits(): MeleeHit[] {
+		let farBox = this.combatVars.GetVector3("swordBoxFar");
+		let closeBox = this.combatVars.GetVector3("swordBoxClose");
+
+		let farHits = this.ScanBox(farBox, [], Theme.Red);
+		let closeHits = this.ScanBox(
+			closeBox,
+			farHits.map((x) => x.hitEntity.id),
+			Theme.Green,
+		);
+		let results = [...farHits, ...closeHits];
+		return results;
+	}
+
+	private ScanBox(box: Vector3, ignoreEntityIds: number[], debugColor: Color): MeleeHit[] {
 		let collisionData: Array<MeleeHit> = [];
 		let closestCollisionData: MeleeHit | undefined;
-		if (!boxData) {
-			error(this.meta.displayName + " Melee No Box Data");
-			return collisionData;
-		}
-		const detectHalfSize = new Vector3(boxData.boxHalfWidth, boxData.boxHalfHeight, boxData.boxHalfDepth + 0.5);
+
 		const layerMask = 8; // character layer: 1 << 3
-		let boxLocalPos = new Vector3(
-			boxData.localPositionOffsetX ?? 0,
-			boxData.boxHalfHeight + (boxData.localPositionOffsetY ?? 0),
-			-0.5 + boxData.boxHalfDepth + (boxData.localPositionOffsetZ ?? 0), //Offset -.5 so the collisions start at the back of our character (want to hit targets you are standing on)
-		);
-		const headPos = this.entity.GetHeadPosition();
-		const headOffset = this.entity.GetHeadOffset();
-		const colliderWorldPos = this.entity.model.transform.TransformPoint(
-			headOffset.add(detectHalfSize.mul(new Vector3(1, 1, 1))),
-		);
-		// const colliderWorldPos = headPos.add(boxLocalPos);
-		DebugUtil.DrawBox(colliderWorldPos, Camera.main.transform.rotation, detectHalfSize, Color.blue, 1);
+
+		const lookVec = this.entity.entityDriver.GetLookVector();
+		box = box.add(new Vector3(0, 0, 0.5));
+		let halfExtents = new Vector3(box.x / 2, box.y / 2, box.z / 2);
+		let headOffset = this.entity.GetHeadOffset();
+		const t = this.entity.model.transform;
+		let colliderWorldPos = t.position.add(headOffset).add(lookVec.mul(-0.5 + box.z / 2));
+
+		let rotation = Quaternion.LookRotation(lookVec);
+
+		if (this.gizmoEnabled) {
+			DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 1);
+		}
 		const hitColliders = Physics.OverlapBox(
 			colliderWorldPos,
-			detectHalfSize,
-			Camera.main.transform.rotation,
+			halfExtents,
+			rotation,
 			layerMask,
 			QueryTriggerInteraction.UseGlobal,
 		);
 
 		let foundRaycastCollision: MeleeHit | undefined;
-		const rayDistance = (boxData.boxHalfDepth + boxData.boxHalfHeight + boxData.boxHalfWidth) * 2;
+		const rayDistance = box.magnitude;
 
 		//For each collider in the box detection
 		for (let i = 0; i < hitColliders.Length; i++) {
@@ -109,14 +125,16 @@ export class MeleeHeldItem extends HeldItem {
 				//Box check doesn't care about non entities
 				continue;
 			}
-			if (targetEntity.id === this.entity.id) {
+			if (targetEntity === this.entity) {
 				//Hit Self
+				continue;
+			}
+			if (ignoreEntityIds.includes(targetEntity.id)) {
 				continue;
 			}
 			this.Log("Hit Entity: " + targetEntity.id);
 
-			//Raycast to the target to find a more concrete collisions
-			//TODO the entities look direction should be synced here not just its plane aligned look direction
+			//Raycast to the target to find a more concrete collisions\
 			let rayStart = this.entity.GetHeadPosition();
 			let rayEnd = targetEntity.GetHeadPosition();
 			let hitDirection = rayEnd.sub(rayStart).normalized;
@@ -126,7 +144,6 @@ export class MeleeHeldItem extends HeldItem {
 			const hitInfosArray = Physics.RaycastAll(rayStart, hitDirection, rayDistance, -1);
 			const hitInfos = hitInfosArray as unknown as CSArray<RaycastHit>;
 			let blockerDistance = 9999;
-			// DebugUtil.DrawSingleLine(rayStart, rayEnd, Color.cyan, 2);
 
 			//Check each ray collision
 			for (let i = 0; i < hitInfos.Length; i++) {
@@ -176,14 +193,6 @@ export class MeleeHeldItem extends HeldItem {
 				}
 			}
 		}
-
-		// DebugUtil.DrawBox(
-		// 	colliderWorldPos,
-		// 	this.entity.model.transform.rotation,
-		// 	detectHalfSize,
-		// 	closestCollisionData ? Color.green : Color.red,
-		// 	2,
-		// );
 
 		if (this.meta.melee?.canHitMultipleTargets) {
 			return collisionData;

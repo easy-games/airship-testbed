@@ -11,6 +11,8 @@ import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideSer
 
 @Service({})
 export class DamageService implements OnStart {
+	private combatVars: DynamicVariables = DynamicVariablesManager.Instance.GetVars("Combat")!;
+
 	constructor(private readonly entityService: EntityService) {}
 
 	OnStart(): void {
@@ -114,8 +116,8 @@ export class DamageService implements OnStart {
 			// const rigidBody = entity.NetworkObject.gameObject.GetComponent<Rigidbody>();
 			// assert(rigidBody, "Missing rigid body.");
 
-			const horizontalScalar = 6;
-			const verticalScalar = 10;
+			const horizontalScalar = this.combatVars.GetNumber("kbX");
+			const verticalScalar = this.combatVars.GetNumber("kbY");
 			let impulse: Vector3;
 			if (config?.knockbackDirection) {
 				const delta = config.knockbackDirection.normalized;

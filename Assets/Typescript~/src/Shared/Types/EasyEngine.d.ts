@@ -55,11 +55,13 @@ interface EntityDriver extends Component {
 	OnStateChanged(callback: (state: EntityState) => void): void;
 	OnCustomDataFlushed(callback: () => void): void;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): void;
-	onImpactWithGround(callback: (velocity: Vector3) => void): void;
-	onAdjustMove(callback: (modifier: MoveModifier) => void): void;
+	OnImpactWithGround(callback: (velocity: Vector3) => void): void;
+	OnAdjustMove(callback: (modifier: MoveModifier) => void): void;
+
+	GetLookVector(): Vector3;
 
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
-	SetLookAngle(lookAngle: number): void;
+	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	Teleport(position: Vector3): void;
 	Impulse(impulse: Vector3): void;
@@ -68,6 +70,7 @@ interface EntityDriver extends Component {
 
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
+	replicatedLookVector: Vector3;
 }
 
 interface PhysicsConstructor {

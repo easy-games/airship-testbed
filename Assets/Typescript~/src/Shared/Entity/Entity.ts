@@ -167,11 +167,11 @@ export class Entity {
 		this.bin = new Bin();
 		this.bin.Connect(OnLateUpdate, () => this.LateUpdate());
 
-		this.entityDriver.onImpactWithGround((velocity) => {
+		this.entityDriver.OnImpactWithGround((velocity) => {
 			this.anim?.PlayFootstepSound();
 		});
 
-		this.entityDriver.onAdjustMove((moveModifier) => {
+		this.entityDriver.OnAdjustMove((moveModifier) => {
 			this.OnAdjustMove.Fire(moveModifier);
 		});
 	}
