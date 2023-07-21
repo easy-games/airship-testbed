@@ -14,7 +14,7 @@ import { SetInterval } from "Shared/Util/Timer";
 import { UserStatus } from "CoreShared/SocketIOMessages/Status";
 
 export class FriendAPI {
-	private static onlineFriendsCache = new Map<UserStatus, FriendStatusData>();
+	private static friendsCacheByStatus = new Map<UserStatus, FriendStatusData[]>();
 	private static friendsCache = new Map<string, FriendStatusData>();
 
 	static async InitAsync(): Promise<void> {
@@ -22,10 +22,26 @@ export class FriendAPI {
 			if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
 				const friendStatusDatasArrays = decode<FriendStatusData[][]>(signal.jsonMessage);
 
+				// Update friends cache with new info.
 				friendStatusDatasArrays.forEach((fsdArray) => {
 					fsdArray.forEach((fsd) => {
 						this.friendsCache.set(fsd.userId, fsd);
+
+						CoreSignals.FriendUserStatusChanged.Fire({ friendUid: fsd.userId, status: fsd.status });
 					});
+				});
+
+				// Update friends cache status map.
+				this.friendsCacheByStatus.clear();
+				this.friendsCache.forEach((fsd) => {
+					let fsds = this.friendsCacheByStatus.get(fsd.status);
+
+					if (fsds === undefined) {
+						fsds = new Array<FriendStatusData>();
+						this.friendsCacheByStatus.set(fsd.status, fsds);
+					}
+
+					fsds.push(fsd);
 				});
 			}
 		});
@@ -35,15 +51,20 @@ export class FriendAPI {
 		SetInterval(
 			3,
 			() => {
-				print(`FriendAPI.InitAsync.SetInterval() friendsCache: ${encode(this.friendsCache)}`);
+				print(
+					`FriendAPI.InitAsync.SetInterval() friendsCache: ${encode(
+						this.friendsCache,
+					)}, this.friendsCacheByStatus: ${encode(this.friendsCacheByStatus)}`,
+				);
 			},
 			true,
 		);
 	}
 
-	// static GetFriendsWithStatus(statuses: UserStatus[]): Promise<FriendStatusData[]> {
-	// 	return this.friendsCache.
-	// }
+	static GetFriendsWithStatus(status: UserStatus): FriendStatusData[] {
+		const fsds = this.friendsCacheByStatus.get(status);
+		return fsds === undefined ? new Array<FriendStatusData>(0) : fsds;
+	}
 
 	static async GetFriendsAsync(): Promise<PublicUser[]> {
 		const headers = EasyCore.GetHeadersMap();
