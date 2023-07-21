@@ -5,6 +5,7 @@ import { BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../../Uti
 import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
+import { ItemUtil } from "../ItemUtil";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -14,12 +15,14 @@ export class HeldItem {
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 	private isCharging = false;
+	protected currentItemGOs: GameObject[] = [];
+	private currentItemAnimations: Animator[] = [];
 
 	constructor(entity: Entity, newMeta: ItemMeta) {
 		this.entity = entity;
 		this.meta = newMeta;
 
-		//Load the asset references
+		//Load the animation references
 		if (this.meta.itemAssets?.assetBundleId) {
 			this.bundles = ReferenceManagerAssets.bundleGroups.get(this.meta.itemAssets.assetBundleId);
 		}
@@ -35,10 +38,36 @@ export class HeldItem {
 		this.Log("OnEquip");
 		//Load that items animations and play equip animation
 		this.entity.anim?.EquipItem(this.meta.itemAssets?.assetBundleId ?? BundleGroupNames.ItemUnarmed);
+
+		//Spawn the accessories graphics
+		const accessories = ItemUtil.GetAccessoriesForItemType(this.meta.ItemType);
+
+		this.currentItemAnimations = [];
+		this.currentItemGOs = [];
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
+
+		let j = 0;
+		for (const accessory of accessories) {
+			let accGos: CSArray<GameObject> = this.entity.accessoryBuilder.SetAccessory(accessory);
+
+			//Load the animator for the held item if one exists
+			for (let i = 0; i < accGos.Length; i++) {
+				const go = accGos.GetValue(i);
+				this.currentItemGOs[j] = go;
+				j++;
+				const anim = go.GetComponent<Animator>();
+				if (anim) {
+					this.currentItemAnimations.push(anim);
+				}
+			}
+		}
 	}
 
 	public OnUnEquip() {
 		this.Log("OnUnEquip");
+		this.currentItemAnimations = [];
+		this.currentItemGOs = [];
 	}
 
 	public OnCallToActionStart() {
@@ -114,6 +143,10 @@ export class HeldItem {
 					},
 				);
 			}
+		}
+
+		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+			this.currentItemAnimations[i].SetInteger("UseIndex", useIndex);
 		}
 	}
 

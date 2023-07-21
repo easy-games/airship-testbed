@@ -2,10 +2,10 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
 import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { GeneratorDto } from "Shared/Generator/GeneratorMeta";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { Network } from "Shared/Network";
 import { Layer } from "Shared/Util/Layer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 /** Generator item spawn offset. Items spawn _above_ generators and fall to the ground. */
 const GENERATOR_ITEM_SPAWN_OFFSET = new Vector3(0, 2.25, 0);
@@ -97,7 +97,7 @@ export class GeneratorController implements OnStart {
 		/* Set initial label text. */
 		const generatorTextTransform = generatorLabel.transform.FindChild("GeneratorText")!;
 		const generatorTextComponent = generatorTextTransform.GetComponent<TextMeshProUGUI>();
-		const itemMeta = GetItemMeta(dto.item);
+		const itemMeta = ItemUtil.GetItemMeta(dto.item);
 		generatorTextComponent.text = `${itemMeta.displayName} Generator`;
 		this.generatorTextLabelMap.set(dto.id, generatorTextComponent);
 	}
@@ -109,7 +109,7 @@ export class GeneratorController implements OnStart {
 		const generatorTextComponent = this.generatorTextLabelMap.get(generatorId);
 		if (!generatorTextComponent) return;
 
-		const itemMeta = GetItemMeta(dto.item);
+		const itemMeta = ItemUtil.GetItemMeta(dto.item);
 		generatorTextComponent.text = `${itemMeta.displayName} Generator`;
 	}
 

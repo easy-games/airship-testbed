@@ -3689,6 +3689,11 @@ interface EntityAnimationEvents {
 	OnEntityAnimationEvent(callback: (data: EntityAnimationEventData) => void): void;
 }
 
+interface Animator {
+	SetInteger(name: string, value: number): void;
+	SetInteger(id: number, value: number): void;
+}
+
 interface Collision {
     relativeVelocity: Vector3;
     rigidbody: Rigidbody | undefined;

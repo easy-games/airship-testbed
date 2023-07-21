@@ -1,13 +1,13 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedService } from "Server/Services/Match/BedService";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { TeamService } from "../../Team/TeamService";
 import { ChatCommand } from "./ChatCommand";
+import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 export class DestroyBedCommand extends ChatCommand {
 	constructor() {
@@ -33,7 +33,7 @@ export class DestroyBedCommand extends ChatCommand {
 		if (!bedState || bedState.destroyed) {
 			player.SendMessage("Bed does not exist or is already destroyed.");
 		} else {
-			const bedMeta = GetItemMeta(ItemType.BED);
+			const bedMeta = ItemUtil.GetItemMeta(ItemType.BED);
 			const world = WorldAPI.GetMainWorld();
 			world.PlaceBlockById(bedState.position, 0);
 			ServerSignals.BlockDestroyed.Fire({

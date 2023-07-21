@@ -1,7 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
@@ -10,9 +9,10 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { TeamService } from "../Global/Team/TeamService";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
+import { ItemUtil } from "../../../Shared/Item/ItemUtil";
 
 /** Bed block id. */
-const BED_BLOCK_ID = GetItemMeta(ItemType.BED).block?.blockId ?? -1;
+const BED_BLOCK_ID = ItemUtil.GetItemMeta(ItemType.BED).block?.blockId ?? -1;
 
 @Service({})
 export class BedService implements OnStart {

@@ -1,5 +1,4 @@
 ﻿import { DamageType } from "Shared/Damage/DamageType";
-import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { AudioClipBundle } from "../../Audio/AudioClipBundle";
 import { AudioManager } from "../../Audio/AudioManager";
@@ -8,6 +7,7 @@ import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
+import { ItemUtil } from "../../Item/ItemUtil";
 
 export class EntityAnimator {
 	private readonly flashTransitionDuration = 0.035;
@@ -107,14 +107,14 @@ export class EntityAnimator {
 		}
 		this.lastFootstepSoundTime = os.clock();
 
-		let itemType = GetItemTypeFromBlockId(blockId);
+		let itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
 		if (!itemType) {
 			itemType = ItemType.STONE;
 		}
 
-		const itemMeta = GetItemMeta(itemType);
+		const itemMeta = ItemUtil.GetItemMeta(itemType);
 
-		let stepSounds = itemMeta.block?.stepSound ?? GetItemMeta(ItemType.STONE).block?.stepSound;
+		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemMeta(ItemType.STONE).block?.stepSound;
 		if (stepSounds === undefined) {
 			stepSounds = [];
 		}

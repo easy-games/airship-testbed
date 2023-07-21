@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: EmeraldMat
-  m_Shader: {fileID: 4800000, guid: 82425907f3779dd4f92d5b1ef7b12a90, type: 3}
+  m_Shader: {fileID: 4800000, guid: c689e805a82ee784fa63ede6d09acdf9, type: 3}
   m_ValidKeywords:
   - NUM_LIGHTS_LIGHTS0
   m_InvalidKeywords: []
@@ -22,6 +22,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DepthMainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -42,16 +46,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 0.3, y: 0.3}
+        m_Texture: {fileID: 2800000, guid: edc67def5afcf9348866dd383622d44a, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 57b00c0cec7fca6439c88a974fac86d8, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 0e771ab3714fc43f19884324f9616ed2, type: 3}
+        m_Scale: {x: 5, y: 5}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -69,27 +73,38 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FresnelPower: 2.53
+    - _FresnelStrength: 2.12
     - _GlossMapScale: 1
     - _Glossiness: 25
     - _GlossyReflections: 1
+    - _HueShift: 1
     - _Metallic: 0
+    - _MinLight: 0.2
     - _Mode: 0
-    - _NormalIntensity: 0.684
+    - _NormalIntensity: 0.223
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimAmount: 0.56
     - _RimThreshold: 0.1
     - _ShadowCutoff: 0.122
+    - _ShineFresnelPower: 0.52
+    - _ShineFresnelStrength: 2.58
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _UVCenter: 0.5
+    - _UVRotation: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.2216981, g: 1, b: 0.3294103, a: 1}
+    - _Color: {r: 0.5518868, g: 1, b: 0.79033935, a: 1}
+    - _DepthColor: {r: 0, g: 0.16037738, b: 0.045579437, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 0, g: 1, b: 0.2131617, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 0}
+    - _OverlayColor: {r: 0.073818915, g: 1, b: 0, a: 0}
     - _RimColor: {r: 1, g: 0.59016395, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0.4339623, b: 0.08700106, a: 1}
+    - _ShineColor: {r: 0.740566, g: 1, b: 0.7568785, a: 1}
     - _SpecularColor: {r: 0.8988769, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []

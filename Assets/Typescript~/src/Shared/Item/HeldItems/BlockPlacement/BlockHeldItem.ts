@@ -17,6 +17,22 @@ export class BlockHeldItem extends HeldItem {
 		if (this.entity.IsLocalCharacter()) {
 			Dependency<BlockSelectController>().Enable();
 		}
+
+		//Load the blocks mesh
+		if (this.meta.block?.blockId) {
+			const blockDefinition = WorldAPI.GetMainWorld().GetBlockDefinition(this.meta.block.blockId);
+			const blockGO = MeshProcessor.ProduceSingleBlock(
+				this.meta.block.blockId,
+				WorldAPI.GetMainWorld().voxelWorld,
+			);
+			const gameObjects = this.entity.accessoryBuilder.GetAccessories(AccessorySlot.RightHand);
+			blockGO.transform.SetParent(gameObjects.GetValue(0).transform);
+			blockGO.transform.localPosition = new Vector3(0, 0, 0);
+			const scale = 1;
+			blockGO.transform.localScale = new Vector3(scale, scale, scale);
+			blockGO.transform.localRotation = Quaternion.identity;
+			blockGO.transform.Rotate(new Vector3(90, 90, 0));
+		}
 	}
 
 	override OnUnEquip() {

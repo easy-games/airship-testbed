@@ -1,11 +1,11 @@
 import { Game } from "Shared/Game";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Signal } from "Shared/Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
 import { Block } from "./Block";
 import { VoxelDataAPI } from "./VoxelData/VoxelDataAPI";
+import { ItemUtil } from "../Item/ItemUtil";
 
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
@@ -55,7 +55,7 @@ export class World {
 	}
 
 	public PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
-		const itemMeta = GetItemMeta(itemType);
+		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.block) return;
 
 		const blockId = itemMeta.block.blockId;

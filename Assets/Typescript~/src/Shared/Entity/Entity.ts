@@ -4,7 +4,6 @@ import { EntityController } from "Client/Controllers/Global/Entity/EntityControl
 import { PlayerController } from "Client/Controllers/Global/Player/PlayerController";
 import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { NetworkBridge } from "Shared/NetworkBridge";
@@ -23,6 +22,7 @@ import { OnLateUpdate } from "../Util/Timer";
 import { WorldAPI } from "../VoxelWorld/WorldAPI";
 import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
+import { ItemUtil } from "../Item/ItemUtil";
 
 export interface EntityDto {
 	serializer: EntitySerializer;
@@ -438,7 +438,7 @@ export class Entity {
 	}
 
 	public LaunchProjectile(itemType: ItemType, velocity: Vector3): EasyProjectile | undefined {
-		const itemMeta = GetItemMeta(itemType);
+		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.Ammo) {
 			return error("Tried to launch item that wasn't a projectile: " + itemType);
 		}

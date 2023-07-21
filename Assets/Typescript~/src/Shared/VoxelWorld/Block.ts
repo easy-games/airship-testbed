@@ -1,7 +1,7 @@
-import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions";
 import { ItemMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { World } from "./World";
+import { ItemUtil } from "../Item/ItemUtil";
 
 export class Block {
 	public readonly blockId: number;
@@ -10,9 +10,9 @@ export class Block {
 
 	constructor(public readonly voxel: number, public readonly world: World) {
 		this.blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-		this.itemType = GetItemTypeFromBlockId(this.blockId);
+		this.itemType = ItemUtil.GetItemTypeFromBlockId(this.blockId);
 		if (this.itemType) {
-			this.itemMeta = GetItemMeta(this.itemType);
+			this.itemMeta = ItemUtil.GetItemMeta(this.itemType);
 		}
 	}
 

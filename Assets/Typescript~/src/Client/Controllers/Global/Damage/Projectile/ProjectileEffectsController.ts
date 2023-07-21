@@ -4,13 +4,13 @@ import { AudioManager } from "Shared/Audio/AudioManager";
 import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Game } from "Shared/Game";
-import { GetItemMeta } from "Shared/Item/ItemDefinitions";
 import {
 	BundleGroupNames,
 	Bundle_Projectiles,
 	Bundle_Projectiles_OnHitVFX,
 } from "Shared/Util/ReferenceManagerResources";
 import { SetTimeout } from "Shared/Util/Timer";
+import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class ProjectileEffectsController implements OnStart {
@@ -36,7 +36,7 @@ export class ProjectileEffectsController implements OnStart {
 				});
 			}
 
-			const itemMeta = GetItemMeta(event.projectile.itemType);
+			const itemMeta = ItemUtil.GetItemMeta(event.projectile.itemType);
 			if (!event.hitEntity && itemMeta.Ammo?.onHitGroundSoundId) {
 				AudioManager.PlayAtPosition("ArrowLand/BowArrowHit", event.hitPosition, {
 					volumeScale: 0.6,
