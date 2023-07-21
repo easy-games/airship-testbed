@@ -117,7 +117,6 @@ export class Entity {
 	public anim?: InventoryEntityAnimator;
 	public readonly references: EntityReferences;
 	public readonly accessoryBuilder: AccessoryBuilder;
-	public readonly dynamicVariables: DynamicVariables;
 
 	public player: Player | undefined;
 
@@ -149,7 +148,6 @@ export class Entity {
 		this.anim = new InventoryEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
-		this.dynamicVariables = this.gameObject.GetComponent<DynamicVariables>();
 		this.ClientId = clientId;
 		if (this.ClientId !== undefined) {
 			if (RunUtil.IsServer()) {
