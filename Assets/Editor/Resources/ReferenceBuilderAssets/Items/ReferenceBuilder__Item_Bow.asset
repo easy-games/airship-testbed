@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84e63232b5882040a4130ec6f661454, type: 3}
+  m_Name: ReferenceBuilder__Item_Bow
+  m_EditorClassIdentifier: 
+  referenceId: ItemBow
+  bundles:
+  - key: FirstPerson
+    value:
+    - key: Idle
+      value: {fileID: 7400000, guid: 1a7f76b9225a3e046bb55a85b23d5883, type: 2}
+    - key: Equip
+      value: {fileID: 7400000, guid: 54057800c5fa0da40ac65c4cd690a98a, type: 2}
+    - key: UnEquip
+      value: {fileID: 7400000, guid: fc53a19ad02b4cf48a7da485a6642242, type: 2}
+    - key: Charge
+      value: {fileID: 7400000, guid: a874791a2f167d343b6830163e97cc3e, type: 2}
+    - key: Shoot
+      value: {fileID: 7400000, guid: 0ec6f20e9de3ab94291ed16223c7eaff, type: 2}
+  - key: ThirdPerson
+    value:
+    - key: Idle
+      value: {fileID: 0}
+    - key: Equip
+      value: {fileID: 7400000, guid: f356393870b5a30468b5e6ce6f353c84, type: 2}
+    - key: UnEquip
+      value: {fileID: 7400000, guid: 9540632d4252c554ba0b6689a38680a5, type: 2}
+    - key: Charge
+      value: {fileID: 7400000, guid: 96735afe24ed23c49a50ba0c744b9b15, type: 2}
+    - key: Shoot
+      value: {fileID: 7400000, guid: 96735afe24ed23c49a50ba0c744b9b15, type: 2}

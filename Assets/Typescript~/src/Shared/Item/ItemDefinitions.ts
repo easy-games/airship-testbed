@@ -61,6 +61,12 @@ const throwableItemAssets: ItemAssetsMeta = {
 	// onUseSoundId: "Throw",
 };
 
+const bowItemAssets: ItemAssetsMeta = {
+	assetBundleId: BundleGroupNames.ItemBow,
+	onUseSound: ["BowArrowFire"],
+	onUseSoundVolume: 0.5,
+};
+
 const defaultSwordMelee: MeleeItemMeta = {
 	damageType: DamageType.SWORD,
 	colliderData: {
@@ -519,10 +525,7 @@ export const items: {
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.25,
 		},
-		itemAssets: {
-			onUseSound: ["BowArrowFire"],
-			onUseSoundVolume: 0.5,
-		},
+		itemAssets: bowItemAssets,
 		ProjectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,

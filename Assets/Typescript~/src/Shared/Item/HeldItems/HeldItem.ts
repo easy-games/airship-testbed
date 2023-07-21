@@ -29,7 +29,7 @@ export class HeldItem {
 	}
 
 	protected Log(message: string) {
-		// return;
+		return;
 		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.meta.displayName + " " + message;
 		print(fullMessage);
 	}
@@ -144,9 +144,19 @@ export class HeldItem {
 				);
 			}
 		}
+	}
 
+	protected PlayItemAnimation(index: number, hold: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
-			this.currentItemAnimations[i].SetInteger("UseIndex", useIndex);
+			let anim = this.currentItemAnimations[i];
+			anim.SetBool("Hold", hold);
+			anim.Play("Base Layer.Use" + index);
+		}
+	}
+
+	protected SetItemAnimationHold(hold: boolean) {
+		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+			this.currentItemAnimations[i].SetBool("Hold", hold);
 		}
 	}
 

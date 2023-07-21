@@ -88,9 +88,9 @@ export class InventoryEntityAnimator extends EntityAnimator {
 		}
 		this.Log("Playing Item Anim: " + clipKey);
 		this.itemLayer.StartFade(1, this.defaultTransitionTime);
-		let state = this.PlayAnimation(clip, this.itemLayerIndex, wrapMode);
+		const animState = this.PlayAnimation(clip, this.itemLayerIndex, wrapMode);
 		if (onEnd !== undefined) {
-			state.Events.OnEndTS(onEnd);
+			animState.Events.OnEndTS(onEnd);
 		}
 	}
 

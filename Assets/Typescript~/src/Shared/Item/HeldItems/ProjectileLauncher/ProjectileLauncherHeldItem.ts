@@ -26,6 +26,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		super.OnChargeStart();
 		if (!this.meta.ProjectileLauncher) return;
 
+		this.PlayItemAnimation(0, true);
+
 		if (RunUtil.IsClient()) {
 			if (!this.entity.IsLocalCharacter()) return;
 
@@ -101,6 +103,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnUseClient(useIndex: number): void {
 		super.OnUseClient(useIndex);
+		print("On use: " + useIndex);
 		if (!this.entity.IsLocalCharacter()) return;
 
 		this.currentlyCharging = false;
@@ -128,7 +131,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		const launchData = this.GetLaunchData(this.entity, mouse, this.meta, chargeSec, launchPos);
 		this.entity.LaunchProjectile(this.meta.ProjectileLauncher!.ammoItemType, launchData.velocity);
 
-		this.entity.anim?.PlayItemUse(1);
+		//Make the bow play its animation
+		this.PlayItemAnimation(1, false);
 	}
 
 	public override OnCallToActionEnd(): void {

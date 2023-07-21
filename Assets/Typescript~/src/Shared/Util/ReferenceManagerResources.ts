@@ -67,6 +67,30 @@ export enum Bundle_ItemBlock{
 	ThirdPerson,
 }
 
+export enum Bundle_ItemBow_FirstPerson{
+	NONE = -1,
+	Idle,
+	Equip,
+	UnEquip,
+	Charge,
+	Shoot,
+}
+
+export enum Bundle_ItemBow_ThirdPerson{
+	NONE = -1,
+	Idle,
+	Equip,
+	UnEquip,
+	Charge,
+	Shoot,
+}
+
+export enum Bundle_ItemBow{
+	NONE = -1,
+	FirstPerson,
+	ThirdPerson,
+}
+
 export enum Bundle_ItemPickaxe_FirstPerson{
 	NONE = -1,
 	Idle,
@@ -202,6 +226,7 @@ export enum BundleGroupNames{
 	Blocks,
 	Entity,
 	ItemBlock,
+	ItemBow,
 	ItemPickaxe,
 	ItemSword,
 	ItemThrowable,
@@ -268,6 +293,30 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemBlock_ThirdPerson.Equip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_Equip.anim"],
 				[Bundle_ItemBlock_ThirdPerson.UnEquip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_UnEqup.anim"],
 				[Bundle_ItemBlock_ThirdPerson.Use, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_Use.anim"],
+			])}],
+		])
+	}
+
+	public static readonly ItemBow:BundleGroup = {
+		id: BundleGroupNames.ItemBow,
+		bundles: new Map([
+		[Bundle_ItemBow.FirstPerson, {
+			id: Bundle_ItemBow.FirstPerson,
+			filePaths: new Map([
+				[Bundle_ItemBow_FirstPerson.Idle, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/bow fps Idle.anim"],
+				[Bundle_ItemBow_FirstPerson.Equip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_FP_Blocks_Equip.anim"],
+				[Bundle_ItemBow_FirstPerson.UnEquip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_UnEquip.anim"],
+				[Bundle_ItemBow_FirstPerson.Charge, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowDrawFPS.anim"],
+				[Bundle_ItemBow_FirstPerson.Shoot, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowShootFPS.anim"],
+			])}],
+		[Bundle_ItemBow.ThirdPerson, {
+			id: Bundle_ItemBow.ThirdPerson,
+			filePaths: new Map([
+				[Bundle_ItemBow_ThirdPerson.Idle, ""],
+				[Bundle_ItemBow_ThirdPerson.Equip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_Equip.anim"],
+				[Bundle_ItemBow_ThirdPerson.UnEquip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_TP_Throw_UnEquip.anim"],
+				[Bundle_ItemBow_ThirdPerson.Charge, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowDraw.anim"],
+				[Bundle_ItemBow_ThirdPerson.Shoot, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowDraw.anim"],
 			])}],
 		])
 	}
@@ -408,6 +457,8 @@ export class ReferenceManagerAssets{
 		[BundleGroupNames.Entity, ReferenceManagerAssets.Entity],
 		[BundleGroupNames.ItemBlock, ReferenceManagerAssets.ItemBlock],
 		[BundleGroupNames.ItemBlock, ReferenceManagerAssets.ItemBlock],
+		[BundleGroupNames.ItemBow, ReferenceManagerAssets.ItemBow],
+		[BundleGroupNames.ItemBow, ReferenceManagerAssets.ItemBow],
 		[BundleGroupNames.ItemPickaxe, ReferenceManagerAssets.ItemPickaxe],
 		[BundleGroupNames.ItemPickaxe, ReferenceManagerAssets.ItemPickaxe],
 		[BundleGroupNames.ItemPickaxe, ReferenceManagerAssets.ItemPickaxe],
