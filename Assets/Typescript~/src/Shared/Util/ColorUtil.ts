@@ -12,7 +12,7 @@ export class ColorUtil {
 		);
 	}
 
-	public static ColoredText(text: string, color: Color): string {
+	public static ColoredText(color: Color, text: string): string {
 		return `<color=${this.ColorToHex(color)}>${text}</color>`;
 	}
 }

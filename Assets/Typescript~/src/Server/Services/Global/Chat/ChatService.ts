@@ -8,6 +8,7 @@ import { ChatCommand } from "./Commands/ChatCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
 import { DestroyBedCommand } from "./Commands/DestroyBedCommand";
 import { DieCommand } from "./Commands/DieCommand";
+import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
 import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorSpawnRateCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
@@ -38,6 +39,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new TpCommand());
 		this.RegisterCommand(new TpsCommand());
 		this.RegisterCommand(new LagCommand());
+		this.RegisterCommand(new SetVarCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {

@@ -74,19 +74,24 @@ export class MeleeHeldItem extends HeldItem {
 			error(this.meta.displayName + " Melee No Box Data");
 			return collisionData;
 		}
-		this.Log("Finding Collisions");
-		const detectHalfSize = new Vector3(boxData.boxHalfWidth, boxData.boxHalfHeight, boxData.boxHalfDepth);
+		const detectHalfSize = new Vector3(boxData.boxHalfWidth, boxData.boxHalfHeight, boxData.boxHalfDepth + 0.5);
 		const layerMask = 8; // character layer: 1 << 3
 		let boxLocalPos = new Vector3(
 			boxData.localPositionOffsetX ?? 0,
 			boxData.boxHalfHeight + (boxData.localPositionOffsetY ?? 0),
-			-0.5 + boxData.boxHalfDepth + (boxData.localPositionOffsetZ ?? 0), //Offset -.5 so the collisions tarts at the back of our character (want to hit targets you are standing on)
+			-0.5 + boxData.boxHalfDepth + (boxData.localPositionOffsetZ ?? 0), //Offset -.5 so the collisions start at the back of our character (want to hit targets you are standing on)
 		);
-		const colliderWorldPos = this.entity.model.transform.TransformPoint(boxLocalPos);
+		const headPos = this.entity.GetHeadPosition();
+		const headOffset = this.entity.GetHeadOffset();
+		const colliderWorldPos = this.entity.model.transform.TransformPoint(
+			headOffset.add(detectHalfSize.mul(new Vector3(1, 1, 1))),
+		);
+		// const colliderWorldPos = headPos.add(boxLocalPos);
+		DebugUtil.DrawBox(colliderWorldPos, Camera.main.transform.rotation, detectHalfSize, Color.blue, 1);
 		const hitColliders = Physics.OverlapBox(
 			colliderWorldPos,
 			detectHalfSize,
-			this.entity.model.transform.rotation,
+			Camera.main.transform.rotation,
 			layerMask,
 			QueryTriggerInteraction.UseGlobal,
 		);
@@ -112,7 +117,7 @@ export class MeleeHeldItem extends HeldItem {
 
 			//Raycast to the target to find a more concrete collisions
 			//TODO the entities look direction should be synced here not just its plane aligned look direction
-			let rayStart = this.entity.GetHeadPosition().add(this.entity.model.transform.position);
+			let rayStart = this.entity.GetHeadPosition();
 			let rayEnd = targetEntity.GetHeadPosition();
 			let hitDirection = rayEnd.sub(rayStart).normalized;
 
