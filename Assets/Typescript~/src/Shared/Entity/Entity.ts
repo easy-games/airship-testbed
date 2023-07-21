@@ -15,6 +15,7 @@ import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { AudioManager } from "../Audio/AudioManager";
 import { BlockMeta } from "../Item/ItemMeta";
+import { ItemUtil } from "../Item/ItemUtil";
 import { Bin } from "../Util/Bin";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "../Util/ReferenceManagerResources";
@@ -22,7 +23,6 @@ import { OnLateUpdate } from "../Util/Timer";
 import { WorldAPI } from "../VoxelWorld/WorldAPI";
 import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
-import { ItemUtil } from "../Item/ItemUtil";
 
 export interface EntityDto {
 	serializer: EntitySerializer;
@@ -381,6 +381,11 @@ export class Entity {
 	}
 
 	public GetHeadPosition(): Vector3 {
+		const offset = this.GetHeadOffset();
+		return this.model.transform.position.add(offset);
+	}
+
+	public GetHeadOffset(): Vector3 {
 		const state = this.GetState();
 		let offset = new Vector3(0, 1.5, 0);
 		if (state === EntityState.Crouching) {
@@ -388,7 +393,7 @@ export class Entity {
 		} else if (state === EntityState.Sliding) {
 			offset = new Vector3(0, 0.8, 0);
 		}
-		return this.model.transform.position.add(offset);
+		return offset;
 	}
 
 	public GetMiddlePosition(): Vector3 {
