@@ -2,6 +2,8 @@ import { ApiHelper } from "CoreShared/ApiHelper";
 import { CoreSignals } from "CoreShared/CoreSignals";
 import { EasyCore } from "CoreShared/EasyCore";
 import { PublicUser } from "CoreShared/SocketIOMessages/PublicUser";
+import { SIOEventNames } from "CoreShared/SocketIOMessages/SOIEventNames";
+import { UserStatus } from "CoreShared/SocketIOMessages/Status";
 import { UpdateUserDto } from "CoreShared/SocketIOMessages/UpdateUserDto";
 import { encode } from "Server/Lib/json";
 
@@ -36,7 +38,7 @@ export class UserAPI {
 		}
 	}
 
-	static async UpdateCurrentUserAsync(updateUserDto: UpdateUserDto) {
+	static async UpdateCurrentUserDataAsync(updateUserDto: UpdateUserDto) {
 		const headers = EasyCore.GetHeadersMap();
 
 		try {
@@ -50,5 +52,9 @@ export class UserAPI {
 			print(`Unable to updateCurrentUserAsync. updateUserDto: ${encode(updateUserDto)}. error: ${e}`);
 			return undefined;
 		}
+	}
+
+	static UpdateCurrentUserStatus(userStatus: UserStatus) {
+		EasyCore.EmitAsync(SIOEventNames.updateUserStatus, encode({ status: userStatus, game: ApiHelper.GAME_NAME }));
 	}
 }

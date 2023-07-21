@@ -22,7 +22,7 @@ CoreSignals.UserServiceInitialized.Connect(async () => {
 		const curUser2 = await UserAPI.GetUserAsync(curUser?.discriminatedUsername);
 		print(`Main.ts CoreSignals.UserServiceInitialized! curUser2?.username: ${curUser2?.username}`);
 		if (curUser2?.username) {
-			await UserAPI.UpdateCurrentUserAsync(new UpdateUserDto(curUser2?.username.sub(0, -2)));
+			await UserAPI.UpdateCurrentUserDataAsync(new UpdateUserDto(curUser2?.username.sub(0, -2)));
 		}
 	}
 
