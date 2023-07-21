@@ -64,9 +64,9 @@ const throwableItemAssets: ItemAssetsMeta = {
 const defaultSwordMelee: MeleeItemMeta = {
 	damageType: DamageType.SWORD,
 	colliderData: {
-		boxHalfWidth: 1.5,
-		boxHalfHeight: 1.8,
-		boxHalfDepth: 2.3,
+		boxHalfWidth: 0.5,
+		boxHalfHeight: 0.5,
+		boxHalfDepth: 2,
 	},
 	onHitPrefabId: Bundle_ItemSword_Prefabs.OnHit,
 	canHitMultipleTargets: false,

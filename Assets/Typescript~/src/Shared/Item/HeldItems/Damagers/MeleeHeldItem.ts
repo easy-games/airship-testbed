@@ -19,7 +19,7 @@ export class MeleeHeldItem extends HeldItem {
 		if (this.entity.IsLocalCharacter()) {
 			const entityDriver = this.entity.GetEntityDriver();
 			entityDriver.UpdateSyncTick();
-			let hitTargets = this.GetCollisions(meleeData.colliderData);
+			let hitTargets = this.ScanForHits(meleeData.colliderData);
 			hitTargets.forEach((data) => {
 				if (this.bundles && this.meta.melee?.onHitPrefabId) {
 					//Local damage predictions
@@ -52,7 +52,7 @@ export class MeleeHeldItem extends HeldItem {
 		}
 		this.Log("Using Server");
 		Profiler.BeginSample("GetCollisions");
-		let hitTargets = this.GetCollisions(meleeData.colliderData);
+		let hitTargets = this.ScanForHits(meleeData.colliderData);
 		Profiler.EndSample();
 		print("Server hit tick=" + InstanceFinder.TimeManager.Tick + ", hitTargets=" + hitTargets.size());
 		Profiler.BeginSample("HitTargetsInflictDamage");
@@ -67,9 +67,9 @@ export class MeleeHeldItem extends HeldItem {
 		Profiler.EndSample();
 	}
 
-	private GetCollisions(boxData: BoxCollision | undefined): Array<HitCollisionData> {
-		let collisionData: Array<HitCollisionData> = [];
-		let closestCollisionData: HitCollisionData | undefined;
+	private ScanForHits(boxData: BoxCollision | undefined): MeleeHit[] {
+		let collisionData: Array<MeleeHit> = [];
+		let closestCollisionData: MeleeHit | undefined;
 		if (!boxData) {
 			error(this.meta.displayName + " Melee No Box Data");
 			return collisionData;
@@ -91,7 +91,7 @@ export class MeleeHeldItem extends HeldItem {
 			QueryTriggerInteraction.UseGlobal,
 		);
 
-		let foundRaycastCollision: HitCollisionData | undefined;
+		let foundRaycastCollision: MeleeHit | undefined;
 		const rayDistance = (boxData.boxHalfDepth + boxData.boxHalfHeight + boxData.boxHalfWidth) * 2;
 
 		//For each collider in the box detection
@@ -112,8 +112,7 @@ export class MeleeHeldItem extends HeldItem {
 
 			//Raycast to the target to find a more concrete collisions
 			//TODO the entities look direction should be synced here not just its plane aligned look direction
-			const backtrackOffset = this.entity.model.transform.TransformVector(new Vector3(0, 0, -0.5)); //Here so you can hit enemies standing on top of you
-			let rayStart = this.entity.GetHeadPosition().add(backtrackOffset);
+			let rayStart = this.entity.GetHeadPosition().add(this.entity.model.transform.position);
 			let rayEnd = targetEntity.GetHeadPosition();
 			let hitDirection = rayEnd.sub(rayStart).normalized;
 
@@ -190,7 +189,7 @@ export class MeleeHeldItem extends HeldItem {
 	}
 }
 
-export interface HitCollisionData {
+export interface MeleeHit {
 	hitEntity: Entity;
 	hitDirection: Vector3;
 	hitPosition: Vector3;

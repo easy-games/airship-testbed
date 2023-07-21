@@ -25,14 +25,10 @@ export class HeldItem {
 		}
 	}
 
-	protected Log(message: string, isError = false) {
-		return;
+	protected Log(message: string) {
+		// return;
 		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.meta.displayName + " " + message;
-		if (isError) {
-			error(fullMessage);
-		} else {
-			print(fullMessage);
-		}
+		print(fullMessage);
 	}
 
 	public OnEquip() {

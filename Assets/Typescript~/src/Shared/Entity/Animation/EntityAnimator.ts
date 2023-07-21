@@ -3,7 +3,6 @@ import { GetItemMeta, GetItemTypeFromBlockId } from "Shared/Item/ItemDefinitions
 import { ItemType } from "Shared/Item/ItemType";
 import { AudioClipBundle } from "../../Audio/AudioClipBundle";
 import { AudioManager } from "../../Audio/AudioManager";
-import { EffectsManager } from "../../Effects/EffectsManager";
 import { ArrayUtil } from "../../Util/ArrayUtil";
 import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
@@ -75,10 +74,10 @@ export class EntityAnimator {
 				break;
 		}
 		if (vfxTemplate) {
-			const go = EffectsManager.SpawnEffectAtPosition(vfxTemplate, position);
-			if (entityModel) {
-				go.transform.parent = entityModel.transform;
-			}
+			// const go = EffectsManager.SpawnEffectAtPosition(vfxTemplate, position);
+			// if (entityModel) {
+			// 	go.transform.parent = entityModel.transform;
+			// }
 		}
 	}
 
