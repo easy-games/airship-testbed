@@ -59,12 +59,19 @@ interface EntityDriver extends Component {
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): void;
 
 	GetLookVector(): Vector3;
+	IsGrounded(): boolean;
 
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	Teleport(position: Vector3): void;
-	Impulse(impulse: Vector3): void;
+	/**
+	 * Can only be called from Server.
+	 * @param impulse
+	 * @param duration
+	 */
+	ApplyImpulseOverTime(impulse: Vector3, duration: number): void;
+	SetVelocity(velocity: Vector3): void;
 	GetState(): EntityState;
 	UpdateSyncTick(): void;
 

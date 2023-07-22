@@ -28,7 +28,14 @@ export class DamageService implements OnStart {
 			if (!entity) return -1;
 			const entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			const dir = entity.model.transform.forward;
-			entityDriver.Impulse(dir.mul(-9).add(new Vector3(0, 11, 0)));
+
+			const horizontalScalar = this.combatVars.GetNumber("kbX");
+			const verticalScalar = this.combatVars.GetNumber("kbY");
+			const kbDuration = this.combatVars.GetNumber("kbDuration");
+			entityDriver.ApplyImpulseOverTime(
+				dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)),
+				kbDuration,
+			);
 			return InstanceFinder.TimeManager.Tick;
 		});
 	}
@@ -118,6 +125,7 @@ export class DamageService implements OnStart {
 
 			const horizontalScalar = this.combatVars.GetNumber("kbX");
 			const verticalScalar = this.combatVars.GetNumber("kbY");
+			const kbDuration = this.combatVars.GetNumber("kbDuration");
 			let impulse: Vector3;
 			if (config?.knockbackDirection) {
 				const delta = config.knockbackDirection.normalized;
@@ -130,7 +138,7 @@ export class DamageService implements OnStart {
 				impulse = new Vector3(0, 9, 0).mul(1);
 			}
 
-			humanoid.Impulse(impulse);
+			humanoid.ApplyImpulseOverTime(impulse, kbDuration);
 		}
 
 		return true;
