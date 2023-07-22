@@ -21,6 +21,6 @@ MonoBehaviour:
     value: 10
   vectors:
   - key: swordBoxFar
-    value: {x: 1, y: 1, z: 3.5}
+    value: {x: 0.2, y: 0.2, z: 4.8}
   - key: swordBoxClose
-    value: {x: 3, y: 3, z: 2}
+    value: {x: 3, y: 3, z: 4}

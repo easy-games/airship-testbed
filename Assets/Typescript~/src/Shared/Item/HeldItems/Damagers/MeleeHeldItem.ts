@@ -7,7 +7,7 @@ import { Bundle_ItemSword } from "../../../Util/ReferenceManagerResources";
 import { HeldItem } from "../HeldItem";
 
 export class MeleeHeldItem extends HeldItem {
-	private gizmoEnabled = false;
+	private gizmoEnabled = true;
 	private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
@@ -102,7 +102,7 @@ export class MeleeHeldItem extends HeldItem {
 		let rotation = Quaternion.LookRotation(lookVec);
 
 		if (this.gizmoEnabled) {
-			DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 1);
+			DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 2);
 		}
 		const hitColliders = Physics.OverlapBox(
 			colliderWorldPos,
