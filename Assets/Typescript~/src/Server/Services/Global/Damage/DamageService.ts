@@ -32,11 +32,21 @@ export class DamageService implements OnStart {
 			const horizontalScalar = this.combatVars.GetNumber("kbX");
 			const verticalScalar = this.combatVars.GetNumber("kbY");
 			const kbDuration = this.combatVars.GetNumber("kbDuration");
-			entityDriver.ApplyImpulseOverTime(
+			entityDriver.ApplyVelocityOverTime(
 				dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)),
 				kbDuration,
 			);
 			return InstanceFinder.TimeManager.Tick;
+		});
+
+		Network.ClientToServer.TestKnockback2.Server.OnClientEvent((clientId) => {
+			const entity = Entity.FindByClientId(clientId);
+			if (entity) {
+				const dir = entity.model.transform.forward;
+				const horizontalScalar = this.combatVars.GetNumber("kbX");
+				const verticalScalar = this.combatVars.GetNumber("kbY");
+				entity.entityDriver.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
+			}
 		});
 	}
 
@@ -138,7 +148,7 @@ export class DamageService implements OnStart {
 				impulse = new Vector3(0, 9, 0).mul(1);
 			}
 
-			humanoid.ApplyImpulseOverTime(impulse, kbDuration);
+			humanoid.ApplyVelocityOverTime(impulse, kbDuration);
 		}
 
 		return true;

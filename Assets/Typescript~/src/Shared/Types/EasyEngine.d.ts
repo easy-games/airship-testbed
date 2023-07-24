@@ -70,7 +70,7 @@ interface EntityDriver extends Component {
 	 * @param impulse
 	 * @param duration
 	 */
-	ApplyImpulseOverTime(impulse: Vector3, duration: number): void;
+	ApplyVelocityOverTime(velocity: Vector3, duration: number): void;
 	SetVelocity(velocity: Vector3): void;
 	GetState(): EntityState;
 	UpdateSyncTick(): void;
