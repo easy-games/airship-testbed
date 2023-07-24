@@ -19,7 +19,7 @@ export class FirstPersonCameraSystem {
 	private manualSpineOffset: Vector3 = new Vector3(0, 0.8, 0.25);
 
 	private entityReferences: EntityReferences;
-	private entityVariables: DynamicVariables;
+	private cameraVars: DynamicVariables;
 	private trackedHeadRotation: Quaternion = Quaternion.identity;
 	//private neckOffset: Vector3;
 	private inFirstPerson = true;
@@ -28,9 +28,9 @@ export class FirstPersonCameraSystem {
 	private fovFirstPerson = 90;
 	private fovThirdPerson = 100;
 
-	public constructor(entityReferences: EntityReferences, entityVariables: DynamicVariables) {
+	public constructor(entityReferences: EntityReferences) {
 		this.entityReferences = entityReferences;
-		this.entityVariables = entityVariables;
+		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
 
 		this.cameras = CameraReferences.Instance();
 
@@ -50,7 +50,7 @@ export class FirstPersonCameraSystem {
 		}
 
 		//Calculate how high the neck bone is off the spine bone
-		this.manualSpineOffset = this.entityVariables.GetVector("FPSHeadOffset");
+		this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
 		let neckOffset = this.manualSpineOffset.add(
 			this.entityReferences.neckBone.position.sub(this.entityReferences.spineBone3.position),
 		);
@@ -61,9 +61,9 @@ export class FirstPersonCameraSystem {
 
 		let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
 		let lerpMod = MathUtil.Lerp(
-			this.entityVariables.GetNumber("FPSLerpMin"),
-			this.entityVariables.GetNumber("FPSLerpMax"),
-			diffAngle / this.entityVariables.GetNumber("FPSLerpRange"),
+			this.cameraVars.GetNumber("FPSLerpMin"),
+			this.cameraVars.GetNumber("FPSLerpMax"),
+			diffAngle / this.cameraVars.GetNumber("FPSLerpRange"),
 		);
 
 		//Move the spine to match where the camera is looking

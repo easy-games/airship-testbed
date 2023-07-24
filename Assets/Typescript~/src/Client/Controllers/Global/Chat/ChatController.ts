@@ -54,6 +54,9 @@ export class ChatController implements OnStart {
 
 	private chatMessageElements: ChatMessageElement[] = [];
 
+	private prevSentMessages: string[] = [];
+	private historyIndex = -1;
+
 	constructor(private localEntityController: LocalEntityController) {
 		const refs = GameObject.Find("Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
@@ -109,11 +112,44 @@ export class ChatController implements OnStart {
 			},
 			SignalPriority.HIGH,
 		);
+		keyboard.OnKeyDown(KeyCode.UpArrow, (event) => {
+			print("up.1");
+			if (this.IsChatFocused()) {
+				print("up.2");
+				if (this.historyIndex + 1 < this.prevSentMessages.size()) {
+					this.historyIndex++;
+					let msg = this.prevSentMessages[this.historyIndex];
+					print("up.3 " + msg);
+					this.inputField.SetTextWithoutNotify(msg);
+					this.inputField.caretPosition = msg.size();
+				}
+			}
+		});
+		keyboard.OnKeyDown(KeyCode.DownArrow, (event) => {
+			if (this.IsChatFocused()) {
+				if (this.historyIndex - 1 >= -1) {
+					this.historyIndex--;
+					let msg: string;
+					if (this.historyIndex === -1) {
+						msg = "";
+					} else {
+						msg = this.prevSentMessages[this.historyIndex];
+					}
+					this.inputField.SetTextWithoutNotify(msg);
+					this.inputField.caretPosition = msg.size();
+				}
+			}
+		});
 
 		// Sink key events when selected:
 		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (this.selected) {
-				if (event.KeyCode !== KeyCode.Return && event.KeyCode !== KeyCode.Escape) {
+				if (
+					event.KeyCode !== KeyCode.Return &&
+					event.KeyCode !== KeyCode.Escape &&
+					event.KeyCode !== KeyCode.UpArrow &&
+					event.KeyCode !== KeyCode.DownArrow
+				) {
 					event.SetCancelled(true);
 				}
 			}
@@ -122,6 +158,7 @@ export class ChatController implements OnStart {
 		const mouse = new Mouse();
 		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
 			this.selected = true;
+			this.historyIndex = -1;
 			const entityInputDisabler = this.localEntityController.GetEntityInput()?.AddDisabler();
 			if (entityInputDisabler !== undefined) {
 				this.selectedBin.Add(entityInputDisabler);
@@ -172,6 +209,10 @@ export class ChatController implements OnStart {
 	}
 
 	public SendChatMessage(message: string): void {
+		this.prevSentMessages.unshift(message);
+		if (this.prevSentMessages.size() > 50) {
+			this.prevSentMessages.pop();
+		}
 		Network.ClientToServer.SendChatMessage.Client.FireServer(message);
 	}
 

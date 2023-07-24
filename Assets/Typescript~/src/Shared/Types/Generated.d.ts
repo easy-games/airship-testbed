@@ -14319,18 +14319,24 @@ interface EntityAnimationEventData {
 
 }
     
-interface DynamicVariables extends MonoBehaviour {
+interface DynamicVariables extends ScriptableObject {
+    collectionId: string;
     strings: CSArray<KeyValueReference<string>>;
     numbers: CSArray<KeyValueReference<number>>;
     vectors: CSArray<KeyValueReference<Vector3>>;
-    key: string;
 
     constructor(): DynamicVariables;
 
     GetNumber(key: string): number;
     GetString(key: string): string;
-    GetValue<T>(key: string, values: CSArray<KeyValueReference<T>>, foundValue: unknown): boolean;
-    GetVector(key: string): Vector3;
+    GetVector3(key: string): Vector3;
+    ReplicateAll(): void;
+    ReplicateNumber(key: string): void;
+    ReplicateString(key: string): void;
+    ReplicateVector3(key: string): void;
+    SetNumber(key: string, val: number): void;
+    SetString(key: string, val: string): void;
+    SetVector3(key: string, val: Vector3): void;
 }
     
 interface KeyValueReference<T> {
@@ -14361,11 +14367,11 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
-interface CoreAPI extends MonoBehaviour {
+interface EasyCoreAPI extends MonoBehaviour {
     IsInitialized: boolean;
     IdToken: string;
 
-    constructor(): CoreAPI;
+    constructor(): EasyCoreAPI;
 
     EmitAsync(eventName: string, jsonEvent: string): OnCompleteHook;
     GetCoreUserData(): CoreUserData;
@@ -14403,12 +14409,12 @@ interface CoreUserData {
 
 }
     
-interface CoreAPIConstructor {
-    Instance: CoreAPI;
+interface EasyCoreAPIConstructor {
+    Instance: EasyCoreAPI;
 
 
 }
-declare const CoreAPI: CoreAPIConstructor;
+declare const EasyCoreAPI: EasyCoreAPIConstructor;
     
 interface GameCoordinatorMessageHook {
 

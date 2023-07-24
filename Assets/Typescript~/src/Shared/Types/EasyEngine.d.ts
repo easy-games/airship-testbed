@@ -55,19 +55,29 @@ interface EntityDriver extends Component {
 	OnStateChanged(callback: (state: EntityState) => void): void;
 	OnCustomDataFlushed(callback: () => void): void;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): void;
-	onImpactWithGround(callback: (velocity: Vector3) => void): void;
-	onAdjustMove(callback: (modifier: MoveModifier) => void): void;
+	OnImpactWithGround(callback: (velocity: Vector3) => void): void;
+	OnAdjustMove(callback: (modifier: MoveModifier) => void): void;
+
+	GetLookVector(): Vector3;
+	IsGrounded(): boolean;
 
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
-	SetLookAngle(lookAngle: number): void;
+	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	Teleport(position: Vector3): void;
-	Impulse(impulse: Vector3): void;
+	/**
+	 * Can only be called from Server.
+	 * @param impulse
+	 * @param duration
+	 */
+	ApplyImpulseOverTime(impulse: Vector3, duration: number): void;
+	SetVelocity(velocity: Vector3): void;
 	GetState(): EntityState;
 	UpdateSyncTick(): void;
 
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
+	replicatedLookVector: Vector3;
 }
 
 interface PhysicsConstructor {
@@ -401,7 +411,7 @@ interface EasyProjectile {
 	onCollide(callback: (collision: Collision, velocity: Vector3) => void): void;
 }
 
-interface CoreAPI {
+interface EasyCoreAPI {
 	OnInitializedEvent(callback: () => void): void;
 	OnIdTokenChangedEvent(callback: (idToken: string) => void): void;
 	OnGameCoordinatorEvent(callback: (messageName: string, jsonMessage: string) => void): void;
@@ -410,3 +420,11 @@ interface CoreAPI {
 interface OnCompleteHook {
 	OnCompleteEvent(callback: (operationResult: OperationResult) => void): void;
 }
+
+interface DynamicVariablesManager {
+	GetVars(collectionId: string): DynamicVariables | undefined;
+}
+interface DynamicVariablesManagerConstructor {
+	Instance: DynamicVariablesManager;
+}
+declare const DynamicVariablesManager: DynamicVariablesManagerConstructor;

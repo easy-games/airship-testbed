@@ -103,7 +103,6 @@ export enum BlockArchetype {
 
 export interface MeleeItemMeta extends DamageItemMeta {
 	damageType: DamageType;
-	colliderData: BoxCollision;
 	canHitMultipleTargets: boolean;
 }
 

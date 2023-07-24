@@ -35,8 +35,7 @@ if (!RunUtil.IsEditor()) {
 export class HumanoidCameraMode implements CameraMode {
 	private readonly bin = new Bin();
 
-	private lookAngle = 0;
-	private forwardDirection = new Vector3(0, 0, 1);
+	private lookVector = new Vector3(0, 0, 0);
 	private readonly entityDriver: EntityDriver;
 	private occlusionCam!: OcclusionCam;
 	private lookBackwards = false;
@@ -222,25 +221,12 @@ export class HumanoidCameraMode implements CameraMode {
 			this.lastCamPos = transform.position;
 		}
 		this.camRight = transform.right;
-		this.CalculateDirectionAndAngle(this.lastCamPos, transform.forward);
-	}
 
-	private CalculateDirectionAndAngle(position: Vector3, forward: Vector3) {
-		let forwardPos = position.add(forward.mul(100));
-		forwardPos = new Vector3(forwardPos.x, position.y, forwardPos.z);
-		const forwardDir = forwardPos.sub(position).normalized;
-		this.forwardDirection = new Vector3(forwardDir.x, 0, forwardDir.z);
-
-		const lastLookAngle = this.lookAngle;
-		let newLookAngle = math.atan2(-this.forwardDirection.x, this.forwardDirection.z);
-		if (this.lookBackwards && !this.firstPerson) {
-			newLookAngle += math.pi;
-		}
-
-		// Only update the Humanoid if there's a bit of a change:
-		if (math.abs(lastLookAngle - newLookAngle) > ANGLE_EPSILON) {
-			this.lookAngle = newLookAngle;
-			this.entityDriver.SetLookAngle(math.deg(this.lookAngle) % 360);
+		const newLookVector = transform.forward;
+		const diff = this.lookVector.sub(newLookVector).magnitude;
+		if (diff > 0.01) {
+			this.entityDriver.SetLookVector(newLookVector);
+			this.lookVector = newLookVector;
 		}
 	}
 

@@ -1,4 +1,3 @@
-import Object from "@easy-games/unity-object-utils";
 import { Layer } from "Shared/Util/Layer";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
@@ -69,11 +68,6 @@ const bowItemAssets: ItemAssetsMeta = {
 
 const defaultSwordMelee: MeleeItemMeta = {
 	damageType: DamageType.SWORD,
-	colliderData: {
-		boxHalfWidth: 0.5,
-		boxHalfHeight: 0.5,
-		boxHalfDepth: 2,
-	},
 	onHitPrefabId: Bundle_ItemSword_Prefabs.OnHit,
 	canHitMultipleTargets: false,
 	damage: 5,

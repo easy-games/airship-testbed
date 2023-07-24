@@ -17,7 +17,7 @@ export class StartMatchCommand extends ChatCommand {
 		Task.Spawn(() => {
 			Dependency<MatchService>().WaitForMatchReady();
 			Dependency<MatchService>().StartMatch();
-			Game.BroadcastMessage(`${ColorUtil.ColoredText(player.username, Theme.Aqua)} started the match!`);
+			Game.BroadcastMessage(`${ColorUtil.ColoredText(Theme.Aqua, player.username)} started the match!`);
 		});
 	}
 }
