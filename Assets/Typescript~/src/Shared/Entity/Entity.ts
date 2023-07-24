@@ -278,7 +278,10 @@ export class Entity {
 	}
 
 	public static FindByCollider(collider: Collider): Entity | undefined {
-		const nb = collider.gameObject.GetComponent<NetworkBehaviour>();
+		let nb = collider.gameObject.GetComponent<NetworkBehaviour>();
+		if (nb === undefined) {
+			nb = collider.transform.parent.gameObject.GetComponent<NetworkBehaviour>();
+		}
 
 		if (nb !== undefined) {
 			const split = nb.name.split("_");
@@ -349,6 +352,10 @@ export class Entity {
 			return TimeUtil.GetServerTime() < immuneUntilTime;
 		}
 		return false;
+	}
+
+	public GetImmuneUntilTime(): number {
+		return this.attributes.GetNumber("immunity") ?? 0;
 	}
 
 	public GetLastDamagedTime(): number {

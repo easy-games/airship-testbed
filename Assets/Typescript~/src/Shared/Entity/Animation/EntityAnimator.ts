@@ -1,13 +1,17 @@
-﻿import { DamageType } from "Shared/Damage/DamageType";
+﻿import { Dependency } from "@easy-games/flamework-core";
+import { LocalEntityController } from "Client/Controllers/Global/Character/LocalEntityController";
+import { DamageType } from "Shared/Damage/DamageType";
+import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemType } from "Shared/Item/ItemType";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { AudioClipBundle } from "../../Audio/AudioClipBundle";
 import { AudioManager } from "../../Audio/AudioManager";
+import { ItemUtil } from "../../Item/ItemUtil";
 import { ArrayUtil } from "../../Util/ArrayUtil";
 import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
-import { ItemUtil } from "../../Item/ItemUtil";
 
 export class EntityAnimator {
 	private readonly flashTransitionDuration = 0.035;
@@ -66,6 +70,12 @@ export class EntityAnimator {
 	) {
 		this.PlayDamageFlash();
 
+		if (RunUtil.IsClient()) {
+			if (this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson()) {
+				return;
+			}
+		}
+
 		//Play specific effects for different damage types like fire attacks or magic damage
 		let vfxTemplate;
 		switch (damageType) {
@@ -74,10 +84,10 @@ export class EntityAnimator {
 				break;
 		}
 		if (vfxTemplate) {
-			// const go = EffectsManager.SpawnEffectAtPosition(vfxTemplate, position);
-			// if (entityModel) {
-			// 	go.transform.parent = entityModel.transform;
-			// }
+			const go = EffectsManager.SpawnEffectAtPosition(vfxTemplate, position);
+			if (entityModel) {
+				go.transform.parent = entityModel.transform;
+			}
 		}
 	}
 

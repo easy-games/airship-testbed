@@ -1,5 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2135272979567334444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5797592413269172210}
+  - component: {fileID: 3951258229114949583}
+  - component: {fileID: 5606203372879073412}
+  m_Layer: 12
+  m_Name: ProjectileReceiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5797592413269172210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135272979567334444}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8997996947095583982}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3951258229114949583
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135272979567334444}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.35
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.95, z: 0}
+--- !u!54 &5606203372879073412
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135272979567334444}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
 --- !u!1 &7338958489384842637
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,6 +138,7 @@ Transform:
   m_Children:
   - {fileID: 2914682909529642650}
   - {fileID: 2528350621025029902}
+  - {fileID: 5797592413269172210}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -205,6 +269,7 @@ MonoBehaviour:
   groundedBlockId: 0
   groundedBlockPos: {x: 0, y: 0, z: 0}
   _exposedState: 0
+  replicatedLookVector: {x: 0, y: 0, z: 0}
   sprintForwardThreshold: 0.25
 --- !u!114 &-98370938496583557
 MonoBehaviour:
@@ -240,7 +305,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 4244522174
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 2954066760618576130
   _sceneNetworkObjects:
@@ -1469,7 +1534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: 
+  warningMessage: No available voxel world
 --- !u!4 &5880897125066653761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -115803784690454224, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}

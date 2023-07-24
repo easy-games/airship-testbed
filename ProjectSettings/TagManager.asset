@@ -18,7 +18,7 @@ TagManager:
   - GroundItem
   - FirstPerson
   - Projectile
-  - 
+  - ProjectileReceiver
   - 
   - 
   - 

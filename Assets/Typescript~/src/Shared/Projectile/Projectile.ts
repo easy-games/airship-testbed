@@ -37,7 +37,7 @@ export class Projectile {
 		});
 
 		this.OnCollide.Connect((hitPoint, collider) => {
-			print("[Debug]: projectile hit " + tostring(hitPoint));
+			print("[Debug]: projectile hit pos=" + tostring(hitPoint) + ", collider=" + collider.gameObject.name);
 		});
 
 		easyProjectile.onCollide((collision, velocity) => {
@@ -63,7 +63,7 @@ export class Projectile {
 			this.OnDestroy.Fire();
 		});
 
-		SetTimeout(12, () => {
+		SetTimeout(5, () => {
 			if (!this.destroyed) {
 				this.Destroy();
 			}

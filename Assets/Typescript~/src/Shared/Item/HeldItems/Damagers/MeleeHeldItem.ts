@@ -1,5 +1,6 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { Theme } from "Shared/Util/Theme";
+import { TimeUtil } from "Shared/Util/TimeUtil";
 import { DamageService } from "../../../../Server/Services/Global/Damage/DamageService";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
@@ -115,6 +116,8 @@ export class MeleeHeldItem extends HeldItem {
 		let foundRaycastCollision: MeleeHit | undefined;
 		const rayDistance = box.magnitude;
 
+		const serverTime = TimeUtil.GetServerTime();
+
 		//For each collider in the box detection
 		for (let i = 0; i < hitColliders.Length; i++) {
 			this.Log("Collider: " + i);
@@ -130,6 +133,10 @@ export class MeleeHeldItem extends HeldItem {
 				continue;
 			}
 			if (ignoreEntityIds.includes(targetEntity.id)) {
+				continue;
+			}
+			const immuneUntilTime = this.entity.GetImmuneUntilTime();
+			if (TimeUtil.GetServerTime() + 0.1 < immuneUntilTime) {
 				continue;
 			}
 			this.Log("Hit Entity: " + targetEntity.id);

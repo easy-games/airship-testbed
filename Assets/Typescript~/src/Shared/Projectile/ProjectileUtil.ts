@@ -7,7 +7,7 @@ export class ProjectileUtil {
 	public static GetLaunchPosition(entity: Entity, isInFirstPerson: boolean) {
 		let launchPos: Vector3 | undefined;
 
-		const handObjects = entity.GetAccessoryGameObjects(AccessorySlot.RightHand);
+		const handObjects = entity.GetAccessoryGameObjects(AccessorySlot.LeftHand);
 		for (const handObject of handObjects) {
 			const shootPosition = handObject.transform.FindChild("ShootPosition");
 			if (shootPosition) {
