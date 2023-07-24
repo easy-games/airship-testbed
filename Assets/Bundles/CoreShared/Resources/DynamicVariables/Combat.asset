@@ -18,9 +18,9 @@ MonoBehaviour:
   - key: kbX
     value: 6
   - key: kbY
-    value: 10
+    value: 15
   - key: kbDuration
-    value: 0.2
+    value: 0.1
   vectors:
   - key: swordBoxFar
     value: {x: 0.2, y: 0.2, z: 4.8}
