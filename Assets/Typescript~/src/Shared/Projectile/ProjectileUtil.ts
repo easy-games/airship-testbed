@@ -4,11 +4,10 @@ import { MathUtil } from "Shared/Util/MathUtil";
 import { NormalizeV3 } from "Shared/Util/Vector3Util";
 
 export class ProjectileUtil {
-	public static GetLaunchPosition(entity: Entity, isInFirstPerson: boolean) {
+	public static GetLaunchPosition(gos: GameObject[], entity: Entity, isInFirstPerson: boolean) {
 		let launchPos: Vector3 | undefined;
 
-		const handObjects = entity.GetAccessoryGameObjects(AccessorySlot.RightHand);
-		for (const handObject of handObjects) {
+		for (const handObject of gos) {
 			const shootPosition = handObject.transform.FindChild("ShootPosition");
 			if (shootPosition) {
 				launchPos = shootPosition.transform.position;

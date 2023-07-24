@@ -17,15 +17,15 @@ MonoBehaviour:
   - key: FirstPerson
     value:
     - key: Idle
-      value: {fileID: 7400000, guid: 1a7f76b9225a3e046bb55a85b23d5883, type: 2}
+      value: {fileID: 7400000, guid: 83ddcd28a03b90449bbd4d9ba92c8218, type: 2}
     - key: Equip
-      value: {fileID: 7400000, guid: 54057800c5fa0da40ac65c4cd690a98a, type: 2}
+      value: {fileID: 7400000, guid: ea64fc20a4033d14d9e3240dd917e821, type: 2}
     - key: UnEquip
       value: {fileID: 7400000, guid: fc53a19ad02b4cf48a7da485a6642242, type: 2}
     - key: Charge
-      value: {fileID: 7400000, guid: a874791a2f167d343b6830163e97cc3e, type: 2}
+      value: {fileID: 7400000, guid: 19a19c5b5d2809c449d507b3ee94935f, type: 2}
     - key: Shoot
-      value: {fileID: 7400000, guid: 0ec6f20e9de3ab94291ed16223c7eaff, type: 2}
+      value: {fileID: 7400000, guid: 19a19c5b5d2809c449d507b3ee94935f, type: 2}
   - key: ThirdPerson
     value:
     - key: Idle

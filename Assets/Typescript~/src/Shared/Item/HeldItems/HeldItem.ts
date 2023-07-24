@@ -16,7 +16,7 @@ export class HeldItem {
 	private chargeStartTime = 0;
 	private isCharging = false;
 	protected currentItemGOs: GameObject[] = [];
-	private currentItemAnimations: Animator[] = [];
+	protected currentItemAnimations: Animator[] = [];
 
 	constructor(entity: Entity, newMeta: ItemMeta) {
 		this.entity = entity;

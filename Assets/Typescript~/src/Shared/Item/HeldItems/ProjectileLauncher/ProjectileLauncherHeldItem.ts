@@ -54,6 +54,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 						const chargeSec = os.clock() - this.startHoldTimeSec;
 
 						const launchPos = ProjectileUtil.GetLaunchPosition(
+							this.currentItemGOs,
 							this.entity,
 							localEntityController.IsFirstPerson(),
 						);
@@ -125,11 +126,16 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		const mouse = new Mouse();
 		const launchPos = ProjectileUtil.GetLaunchPosition(
+			this.currentItemGOs,
 			this.entity,
 			Dependency<LocalEntityController>().IsFirstPerson(),
 		);
 		const launchData = this.GetLaunchData(this.entity, mouse, this.meta, chargeSec, launchPos);
-		this.entity.LaunchProjectile(this.meta.ProjectileLauncher!.ammoItemType, launchData.velocity);
+		this.entity.LaunchProjectile(
+			this.meta.ProjectileLauncher!.ammoItemType,
+			launchData.launchPos,
+			launchData.velocity,
+		);
 
 		//Make the bow play its animation
 		this.PlayItemAnimation(1, false);
@@ -157,6 +163,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		launchPos: Vector3,
 	): {
 		direction: Vector3;
+		launchPos: Vector3;
 		velocity: Vector3;
 	} {
 		const launcherMeta = launcherItemMeta.ProjectileLauncher!;
@@ -169,6 +176,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		return {
 			direction: launchForceData.direction,
+			launchPos: launchPos,
 			velocity: launchForceData.initialVelocity,
 		};
 	}

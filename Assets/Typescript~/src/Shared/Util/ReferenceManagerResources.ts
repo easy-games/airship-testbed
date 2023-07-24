@@ -303,11 +303,11 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemBow.FirstPerson, {
 			id: Bundle_ItemBow.FirstPerson,
 			filePaths: new Map([
-				[Bundle_ItemBow_FirstPerson.Idle, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/bow fps Idle.anim"],
-				[Bundle_ItemBow_FirstPerson.Equip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_FP_Blocks_Equip.anim"],
+				[Bundle_ItemBow_FirstPerson.Idle, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Idle.anim"],
+				[Bundle_ItemBow_FirstPerson.Equip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Equip.anim"],
 				[Bundle_ItemBow_FirstPerson.UnEquip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_UnEquip.anim"],
-				[Bundle_ItemBow_FirstPerson.Charge, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowDrawFPS.anim"],
-				[Bundle_ItemBow_FirstPerson.Shoot, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowShootFPS.anim"],
+				[Bundle_ItemBow_FirstPerson.Charge, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Draw.anim"],
+				[Bundle_ItemBow_FirstPerson.Shoot, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Draw.anim"],
 			])}],
 		[Bundle_ItemBow.ThirdPerson, {
 			id: Bundle_ItemBow.ThirdPerson,
