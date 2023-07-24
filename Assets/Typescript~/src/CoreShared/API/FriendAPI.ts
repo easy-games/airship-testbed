@@ -19,7 +19,15 @@ export class FriendAPI {
 
 	static async InitAsync(): Promise<void> {
 		CoreSignals.GameCoordinatorMessage.Connect((signal) => {
-			if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
+			if (signal.messageName === SIOEventNames.friendRequest) {
+				const friendRequest = decode<{ initiatorId: string }[]>(signal.jsonMessage)[0];
+
+				CoreSignals.FriendRequested.Fire({ initiatorId: friendRequest.initiatorId });
+			} else if (signal.messageName === SIOEventNames.friendAccepted) {
+				const friendAccepted = decode<{ targetId: string }[]>(signal.jsonMessage)[0];
+
+				CoreSignals.FriendAccepted.Fire({ targetId: friendAccepted.targetId });
+			} else if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
 				const friendStatusDatasArrays = decode<FriendStatusData[][]>(signal.jsonMessage);
 
 				// Update friends cache with new info.
@@ -93,15 +101,33 @@ export class FriendAPI {
 		return EasyCore.GetAsync(`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`, undefined, headers);
 	}
 
-	static async RequestFriendshipAsync(discriminatedUserName: string): Promise<FriendshipRequestResultObj> {
+	static RequestFriendship(discriminatedUserName: string) {
+		print(`RequestFriendship 0`);
 		const headers = EasyCore.GetHeadersMap();
 
-		return EasyCore.PostAsync<FriendshipRequestResultObj>(
+		print(`RequestFriendship 1`);
+		EasyCore.Post(
 			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
 			encode({ discriminatedUsername: discriminatedUserName }),
 			undefined,
 			headers,
 		);
+		print(`RequestFriendship 2`);
+	}
+
+	static async RequestFriendshipAsync(discriminatedUserName: string): Promise<FriendshipRequestResultObj> {
+		print(`RequestFriendshipAsync 0`);
+		const headers = EasyCore.GetHeadersMap();
+
+		print(`RequestFriendshipAsync 1`);
+		const result = EasyCore.PostAsync<FriendshipRequestResultObj>(
+			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
+			encode({ discriminatedUsername: discriminatedUserName }),
+			undefined,
+			headers,
+		);
+		print(`RequestFriendshipAsync 2`);
+		return result;
 	}
 
 	static async TerminateFriendshipAsync(otherUserUid: string): Promise<void> {

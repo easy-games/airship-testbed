@@ -69,6 +69,20 @@ export class EasyCore {
 		return result;
 	}
 
+	static Post(
+		url: string,
+		body: string,
+		params: Map<string, string> | undefined = undefined,
+		headers: Map<string, string> | undefined = undefined,
+	) {
+		const encodedParams = this.GetEncodedMap(params);
+		const encodedHeaders = this.GetEncodedMap(headers);
+
+		print(`Post() url: ${url}, body: ${body}, encodedParams: ${encodedParams}, encodedHeaders: ${encodedHeaders}`);
+
+		this.EasyCoreAPI.SendAsync(url, "post", body, encodedParams, encodedHeaders);
+	}
+
 	static async PostAsync<T>(
 		url: string,
 		body: string,
@@ -157,7 +171,7 @@ export class EasyCore {
 	}
 
 	private static GetEncodedMap(map: Map<string, string> | undefined): string {
-		const result = map ? encode(map) : "";
+		const result = map && !map.isEmpty() ? encode(map) : "";
 
 		//print(`GetEncodedMap() result: ${result}`);
 

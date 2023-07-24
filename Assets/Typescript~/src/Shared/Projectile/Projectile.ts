@@ -36,6 +36,10 @@ export class Projectile {
 			this.destroyed = true;
 		});
 
+		this.OnCollide.Connect((hitPoint, collider) => {
+			print("[Debug]: projectile hit " + tostring(hitPoint));
+		});
+
 		easyProjectile.onCollide((collision, velocity) => {
 			const contact = collision.contacts.GetValue(0);
 

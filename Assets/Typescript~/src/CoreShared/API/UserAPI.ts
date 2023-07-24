@@ -17,6 +17,14 @@ export class UserAPI {
 			EasyCore.GetHeadersMap(),
 		);
 
+		// When the game coordinator wants a status update,
+		// send a signal so the game code can respond.
+		CoreSignals.GameCoordinatorMessage.Connect((signal) => {
+			if (signal.messageName === SIOEventNames.statusUpdateRequest) {
+				CoreSignals.StatusUpdateRequested.Fire({});
+			}
+		});
+
 		CoreSignals.UserServiceInitialized.Fire({});
 	}
 

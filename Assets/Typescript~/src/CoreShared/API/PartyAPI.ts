@@ -45,8 +45,8 @@ export class PartyAPI {
 			true,
 		);
 
-		// Playfab requires the party leader to refresh their status because
-		// there's no event hook to attach to when the party state changes.
+		// Playfab requires the party leader to refresh their status while queuing
+		// because there's no event hook to attach to when the party state changes.
 		SetInterval(
 			3,
 			() => {

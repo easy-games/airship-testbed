@@ -27,5 +27,6 @@ MonoBehaviour:
   drag: 15
   friction: 0.3
   elasticity: 0.2
-  impulseMoveDisableTime: 0.25
+  impulseMoveDisableTime: 0.32
+  impulseMoveDisabledScalar: 0.2
   mass: 1
