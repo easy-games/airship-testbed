@@ -385,7 +385,7 @@ export class Entity {
 
 	public GetHeadOffset(): Vector3 {
 		const state = this.GetState();
-		let offset = new Vector3(0, 1.5, 0);
+		let offset = new Vector3(0, 1.7, 0);
 		if (state === EntityState.Crouching) {
 			offset = new Vector3(0, 1, 0);
 		} else if (state === EntityState.Sliding) {
