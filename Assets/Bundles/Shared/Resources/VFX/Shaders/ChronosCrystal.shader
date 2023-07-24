@@ -66,6 +66,7 @@ Shader "Chronos/ChronosCrystal"
 				float4 vertColor: COLOR;
 				float3 worldNormal : NORMAL;
 				float2 uv : TEXCOORD0;
+				float2 screenUV: TEXCOOR6;
 				float3 viewDir : TEXCOORD1;	
 				float3 worldTangent : TEXCOORD2;	
 				float3 worldBiTangent : TEXCOORD3;	
@@ -99,7 +100,10 @@ Shader "Chronos/ChronosCrystal"
 			float _MinDepthHeight;
 			float _MaxDepthHeight;
 			float _AmbientStrength;
-			float _Glossiness;		
+			float _Glossiness;
+
+			//Refraction
+			sampler2D _BlurColorTexture;
 			
 			float4 _MainTex_ST;
 			
@@ -130,6 +134,7 @@ Shader "Chronos/ChronosCrystal"
 				o.worldBiTangent = cross(o.worldNormal, o.worldTangent) * (v.tangent.w * unity_WorldTransformParams.w);
 				o.viewDir = WorldSpaceViewDir(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+				o.screenUV = GetScreenUV(o.pos, 1);
 				o.ambientColor = SampleAmbientSphericalHarmonics(o.worldNormal);
 				o.vertColor = v.vertColor;
 				return o;
@@ -202,10 +207,12 @@ Shader "Chronos/ChronosCrystal"
 				float fresnelNegative = (fresnel * 2 - 1);
 				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative)  + i.uv;
 				float depthTex = tex2D(_DepthMainTex, depthUV);
-				half4 finalDepthColor = depthTex * depthColor;
+				half4 screenColor = tex2D(_BlurColorTexture, i.screenUV);
+				half4 finalDepthColor =screenColor; // depthTex * depthColor;
 
 				
 				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask);
+				finalColor = finalDepthColor;
 
 				//fog
 				finalColor.xyz = CalculateAtmosphericFog(finalColor.xyz, viewDistance);
