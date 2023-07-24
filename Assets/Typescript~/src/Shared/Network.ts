@@ -49,6 +49,7 @@ export const Network = {
 		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
 
 		TEST_LATENCY: new RemoteFunction<void, number>(),
+		TestKnockback2: new RemoteEvent<[]>(),
 	},
 	ServerToClient: {
 		UpdateInventory: new RemoteEvent<InventoryDto>(),

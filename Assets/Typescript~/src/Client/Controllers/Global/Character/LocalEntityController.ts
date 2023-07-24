@@ -3,9 +3,11 @@ import { Game } from "Shared/Game";
 import { Network } from "Shared/Network";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
+import { Theme } from "Shared/Util/Theme";
 import { CameraController } from "../Camera/CameraController";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
@@ -95,6 +97,7 @@ export class LocalEntityController implements OnStart {
 		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S.png");
 		print(`Capturing screenshot ${screenshotFilename}`);
 		ScreenCapture.CaptureScreenshot(screenshotFilename);
+		Game.LocalPlayer.SendMessage(ColorUtil.ColoredText(Theme.Yellow, `Captured screenshot ${screenshotFilename}`));
 	}
 
 	OnStart() {
@@ -217,6 +220,10 @@ export class LocalEntityController implements OnStart {
 							(endTick - halfWay),
 					);
 				});
+			});
+
+			keyboard.OnKeyDown(KeyCode.Semicolon, (event) => {
+				Network.ClientToServer.TestKnockback2.Client.FireServer();
 			});
 
 			// bin.Connect(keyboard.KeyDown, (event) => {

@@ -38,6 +38,16 @@ export class DamageService implements OnStart {
 			);
 			return InstanceFinder.TimeManager.Tick;
 		});
+
+		Network.ClientToServer.TestKnockback2.Server.OnClientEvent((clientId) => {
+			const entity = Entity.FindByClientId(clientId);
+			if (entity) {
+				const dir = entity.model.transform.forward;
+				const horizontalScalar = this.combatVars.GetNumber("kbX");
+				const verticalScalar = this.combatVars.GetNumber("kbY");
+				entity.entityDriver.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
+			}
+		});
 	}
 
 	/**
