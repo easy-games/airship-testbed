@@ -1,5 +1,5 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
-import { decode } from "Server/Lib/json";
+import { decode } from "CoreShared/json";
 import { ServerSignals } from "Server/ServerSignals";
 import { BWEditorConfig } from "Shared/Editor/BWEditorConfig";
 import { QueueMeta } from "Shared/Queue/QueueMeta";

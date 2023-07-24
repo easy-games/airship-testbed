@@ -1,7 +1,7 @@
 import { CoreSignals } from "CoreShared/CoreSignals";
 import { EasyCore } from "CoreShared/EasyCore";
 import { UserAPI } from "./UserAPI";
-import { decode, encode } from "Server/Lib/json";
+import { decode, encode } from "CoreShared/json";
 import { SetInterval } from "Shared/Util/Timer";
 import { SIOEventNames } from "CoreShared/SocketIOMessages/SOIEventNames";
 import { Party, PartyStateData, PartyStatus } from "CoreShared/SocketIOMessages/Party";
