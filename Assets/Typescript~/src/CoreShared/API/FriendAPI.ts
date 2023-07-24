@@ -3,7 +3,7 @@ import { CoreSignals } from "CoreShared/CoreSignals";
 import { EasyCore } from "CoreShared/EasyCore";
 import { PublicUser } from "CoreShared/SocketIOMessages/PublicUser";
 import { SIOEventNames } from "CoreShared/SocketIOMessages/SOIEventNames";
-import { decode, encode } from "Server/Lib/json";
+import { decode, encode } from "CoreShared/json";
 import {
 	FriendRequests,
 	FriendStatusData,

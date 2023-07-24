@@ -1,5 +1,5 @@
 import { ApiHelper } from "./ApiHelper";
-import { decode, encode } from "./Lib/json";
+import { decode, encode } from "./json";
 import { CoreSignals } from "./CoreSignals";
 
 export class EasyCore {

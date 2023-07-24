@@ -3,7 +3,7 @@ import { EasyCore } from "./EasyCore";
 import { UserAPI } from "./API/UserAPI";
 import { UpdateUserDto } from "./SocketIOMessages/UpdateUserDto";
 import { FriendAPI } from "./API/FriendAPI";
-import { encode } from "./Lib/json";
+import { encode } from "./json";
 import { SetInterval } from "./Util/Timer";
 
 print(`CoreShared.Main.ts()`);

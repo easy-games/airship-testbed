@@ -16,7 +16,7 @@ export class HeldItem {
 	private chargeStartTime = 0;
 	private isCharging = false;
 	protected currentItemGOs: GameObject[] = [];
-	private currentItemAnimations: Animator[] = [];
+	protected currentItemAnimations: Animator[] = [];
 
 	constructor(entity: Entity, newMeta: ItemMeta) {
 		this.entity = entity;
@@ -144,9 +144,19 @@ export class HeldItem {
 				);
 			}
 		}
+	}
 
+	protected PlayItemAnimation(index: number, hold: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
-			this.currentItemAnimations[i].SetInteger("UseIndex", useIndex);
+			let anim = this.currentItemAnimations[i];
+			anim.SetBool("Hold", hold);
+			anim.Play("Base Layer.Use" + index);
+		}
+	}
+
+	protected SetItemAnimationHold(hold: boolean) {
+		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+			this.currentItemAnimations[i].SetBool("Hold", hold);
 		}
 	}
 

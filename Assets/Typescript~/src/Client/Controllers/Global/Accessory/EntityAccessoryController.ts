@@ -11,7 +11,6 @@ import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 @Controller({})
 export class EntityAccessoryController implements OnStart {
 	private isFirstPerson = false;
-	private defaultKitAccessory: AccessoryKit | undefined;
 
 	constructor(private readonly localController: LocalEntityController) {}
 
@@ -75,8 +74,8 @@ export class EntityAccessoryController implements OnStart {
 				const accessoryBuilder = event.Entity.accessoryBuilder;
 
 				//Add Kit Accessory
-				if (this.defaultKitAccessory) {
-					accessoryBuilder.SetAccessoryKit(this.defaultKitAccessory);
+				if (ItemUtil.defaultKitAccessory) {
+					accessoryBuilder.SetAccessoryKit(ItemUtil.defaultKitAccessory);
 				}
 
 				const bin = new Bin();

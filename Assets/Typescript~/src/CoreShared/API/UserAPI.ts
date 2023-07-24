@@ -5,7 +5,7 @@ import { PublicUser } from "CoreShared/SocketIOMessages/PublicUser";
 import { SIOEventNames } from "CoreShared/SocketIOMessages/SOIEventNames";
 import { UserStatus } from "CoreShared/SocketIOMessages/Status";
 import { UpdateUserDto } from "CoreShared/SocketIOMessages/UpdateUserDto";
-import { encode } from "Server/Lib/json";
+import { encode } from "CoreShared/json";
 
 export class UserAPI {
 	private static currentUser: PublicUser | undefined;
@@ -19,6 +19,7 @@ export class UserAPI {
 
 		// When the game coordinator wants a status update,
 		// send a signal so the game code can respond.
+		// To respond, call UserAPI.UpdateCurrentUserStatus();
 		CoreSignals.GameCoordinatorMessage.Connect((signal) => {
 			if (signal.messageName === SIOEventNames.statusUpdateRequest) {
 				CoreSignals.StatusUpdateRequested.Fire({});

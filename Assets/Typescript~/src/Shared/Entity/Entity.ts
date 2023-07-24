@@ -447,7 +447,7 @@ export class Entity {
 		return results;
 	}
 
-	public LaunchProjectile(itemType: ItemType, velocity: Vector3): EasyProjectile | undefined {
+	public LaunchProjectile(itemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.Ammo) {
 			return error("Tried to launch item that wasn't a projectile: " + itemType);
@@ -456,7 +456,6 @@ export class Entity {
 		if (this.IsLocalCharacter()) {
 			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 		}
-		const launchPos = ProjectileUtil.GetLaunchPosition(this, firstPerson);
 		const projectilePath = `Shared/Resources/Prefabs/Projectiles/Ammo/${itemType}.prefab`;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
