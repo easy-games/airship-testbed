@@ -20,6 +20,7 @@ import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
+import { FriendRequestCommand } from "CoreShared/Commands/FriendRequestCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -42,6 +43,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new LagCommand());
 		this.RegisterCommand(new SetVarCommand());
 		this.RegisterCommand(new HealCommand());
+		this.RegisterCommand(new FriendRequestCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {

@@ -41,9 +41,7 @@ CoreSignals.UserServiceInitialized.Connect(async () => {
 });
 
 CoreSignals.GameCoordinatorMessage.Connect((signal) => {
-	print(
-		`Main.ts CoreSignals.GameCoordinatorMessage! signal.messageName: ${signal.messageName}, signal.jsonMessage: ${signal.jsonMessage}`,
-	);
+	print(`Main.ts CoreSignals.GameCoordinatorMessage! signal: ${encode(signal)}`);
 });
 
 CoreSignals.UserServiceInitialized.Connect(() => {
@@ -65,6 +63,30 @@ CoreSignals.UserServiceInitialized.Connect(() => {
 		},
 		true,
 	);
+});
+
+CoreSignals.FriendRequested.Connect((signal) => {
+	print(`Main.FriendRequested() signal: ${encode(signal)}`);
+});
+
+CoreSignals.FriendAccepted.Connect((signal) => {
+	print(`Main.FriendAccepted() signal: ${encode(signal)}`);
+});
+
+CoreSignals.FriendUserStatusChanged.Connect((signal) => {
+	print(`Main.FriendUserStatusChanged() signal: ${encode(signal)}`);
+});
+
+CoreSignals.StatusUpdateRequested.Connect((signal) => {
+	print(`Main.StatusUpdateRequested() signal: ${encode(signal)}`);
+});
+
+CoreSignals.PartyInviteReceived.Connect((signal) => {
+	print(`Main.PartyInviteReceived() signal: ${encode(signal)}`);
+});
+
+CoreSignals.PartyUpdated.Connect((signal) => {
+	print(`Main.PartyUpdated() signal: ${encode(signal)}`);
 });
 
 if (RunCore.IsClient()) {
