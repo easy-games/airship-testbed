@@ -22,6 +22,8 @@ Shader "Chronos/ChronosCrystal"
 		_ShineFresnelStrength("Shine Fresnel Strength", Float) = 1
 		
 		[Header(Lighting)]
+		_SurfaceOpacity("Surface Opacity", Range(0,1)) = .5
+		_DepthOpacity("Depth Opacity", Range(0,1)) = .5
 		_MinDepthHeight("Depth Height Min", Range(0,1)) = .01
 		_MaxDepthHeight("Depth Height Max", Range(0,1)) = .1
 		_MinLight("Minimum Light", Range(0, 1)) = .2
@@ -67,6 +69,7 @@ Shader "Chronos/ChronosCrystal"
 				float3 worldNormal : NORMAL;
 				float2 uv : TEXCOORD0;
 				float2 screenUV: TEXCOOR6;
+				float2 viewUV: TEXCOOR7;
 				float3 viewDir : TEXCOORD1;	
 				float3 worldTangent : TEXCOORD2;	
 				float3 worldBiTangent : TEXCOORD3;	
@@ -96,7 +99,9 @@ Shader "Chronos/ChronosCrystal"
 			float _ShineFresnelPower;
 			float _ShineFresnelStrength;
 
-			//float4 _AmbientColor;
+			//Lighting
+			float _SurfaceOpacity;
+			float _DepthOpacity;
 			float _MinDepthHeight;
 			float _MaxDepthHeight;
 			float _AmbientStrength;
@@ -106,23 +111,6 @@ Shader "Chronos/ChronosCrystal"
 			sampler2D _BlurColorTexture;
 			
 			float4 _MainTex_ST;
-			
-			float2 GetScreenUV(float2 clipPos, float UVscaleFactor)
-		    {
-		        float4 SSobjectPosition = UnityObjectToClipPos (float4(0,0,0,1.0)) ;
-		        float2 screenUV = float2(clipPos.x,clipPos.y);
-		        float screenRatio = _ScreenParams.y/_ScreenParams.x;
-		 
-		        screenUV.x -= SSobjectPosition.x/(SSobjectPosition.w);
-		        screenUV.y -= SSobjectPosition.y/(SSobjectPosition.w);
-		 
-		        screenUV.y *= screenRatio;
-		 
-		        screenUV *= 1/UVscaleFactor;
-		        screenUV *= SSobjectPosition.z;
-		 
-		        return screenUV;
-		    };
 			
 			Interp vert (appdata v)
 			{
@@ -134,7 +122,9 @@ Shader "Chronos/ChronosCrystal"
 				o.worldBiTangent = cross(o.worldNormal, o.worldTangent) * (v.tangent.w * unity_WorldTransformParams.w);
 				o.viewDir = WorldSpaceViewDir(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				o.screenUV = GetScreenUV(o.pos, 1);
+				float3 viewSpace = UnityObjectToViewPos(v.vertex);
+				o.viewUV = ComputeScreenPos(float4(viewSpace, clamp(.01, 1, -viewSpace.z)));
+				o.screenUV = ComputeScreenPos(o.pos);
 				o.ambientColor = SampleAmbientSphericalHarmonics(o.worldNormal);
 				o.vertColor = v.vertColor;
 				return o;
@@ -194,31 +184,34 @@ Shader "Chronos/ChronosCrystal"
 				float4 mainTex = tex2D(_MainTex, i.uv);
 				float diffuse = mainTex.r;
 				float shine = mainTex.g;
-				float fresnel = saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength);
+				float fresnel = saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength + _SurfaceOpacity);
 				half4 finalDiffuseColor = fresnel * diffuse * color;
 				
-				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength);
+				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength + _SurfaceOpacity);
 				half4 finalShineColor = shineFresnel * shine * shineColor;
 
 				half4 finalSurfaceColor = saturate(finalDiffuseColor + finalShineColor + specular);
-				float surfaceMask = saturate(finalSurfaceColor.r + finalSurfaceColor.g + finalSurfaceColor.b);
+
+				float surfaceAlpha = saturate(finalSurfaceColor.r + finalSurfaceColor.g + finalSurfaceColor.b);
+				float surfaceMask = max(_SurfaceOpacity, surfaceAlpha);
+				//finalSurfaceColor = lerp(color, finalSurfaceColor, surfaceAlpha);
 
 				//Depth Colors
 				float fresnelNegative = (fresnel * 2 - 1);
-				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative)  + i.uv;
+				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative)  + i.viewUV;
 				float depthTex = tex2D(_DepthMainTex, depthUV);
-				half4 screenColor = tex2D(_BlurColorTexture, i.screenUV);
-				half4 finalDepthColor =screenColor; // depthTex * depthColor;
+				half4 screenColor = tex2D(_BlurColorTexture, i.viewUV);
+				half4 finalDepthColor = lerp(screenColor + depthColor, depthTex * depthColor, _DepthOpacity);
 
-				
+				half4 depthBlend = _SurfaceOpacity * color + finalDepthColor;
 				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask);
-				finalColor = finalDepthColor;
-
+				//finalColor = screenColor;
+				
 				//fog
 				finalColor.xyz = CalculateAtmosphericFog(finalColor.xyz, viewDistance);
 				
 				MRT0 = finalColor;
-				MRT1 = emissiveColor;
+				MRT1 = emissiveColor * specular;
 				return MRT0;
 			}
 			ENDCG
