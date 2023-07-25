@@ -515,7 +515,7 @@ export const items: {
 		displayName: "Wood Bow",
 		itemMechanics: {
 			...rangedItemMechanics,
-			minChargeSeconds: 0.05,
+			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.25,
 		},

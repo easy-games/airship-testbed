@@ -14434,4 +14434,11 @@ interface KeyValueReference<T> {
     constructor(): KeyValueReference<T>;
 
 }
+    
+interface ProjectileHitEvent {
+    raycastHit: RaycastHit;
+    velocity: Vector3;
+
+
+}
 

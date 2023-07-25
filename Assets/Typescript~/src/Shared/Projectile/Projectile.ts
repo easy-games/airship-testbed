@@ -26,7 +26,7 @@ export class Projectile {
 	 *
 	 * For additional collide information, you should instead listen to either `ClientSignals.ProjectileHit` or `ServerSignals.ProjectileHit`
 	 */
-	public readonly OnCollide = new Signal<[hitPoint: Vector3, collider: Collider]>();
+	public readonly OnHit = new Signal<[hitPoint: Vector3, collider: Collider]>();
 
 	constructor(private easyProjectile: EasyProjectile, itemType: ItemType, shooter: Entity | undefined) {
 		this.gameObject = easyProjectile.gameObject;
@@ -36,20 +36,20 @@ export class Projectile {
 			this.destroyed = true;
 		});
 
-		this.OnCollide.Connect((hitPoint, collider) => {
+		this.OnHit.Connect((hitPoint, collider) => {
 			print("[Debug]: projectile hit pos=" + tostring(hitPoint) + ", collider=" + collider.gameObject.name);
 		});
 
-		easyProjectile.onCollide((collision, velocity) => {
-			const contact = collision.contacts.GetValue(0);
-
-			let hitPoint = contact.point;
-			let normal = contact.normal;
-			let collider = contact.otherCollider;
+		easyProjectile.OnHit((event) => {
+			const raycastHit = event.raycastHit;
+			let hitPoint = raycastHit.point;
+			let normal = raycastHit.normal;
+			let collider = raycastHit.collider;
+			const velocity = event.velocity;
 
 			const ignored = ProjectileSharedImpl.ShouldIgnoreCollision(this, hitPoint, normal, collider);
 			if (ignored) return;
-			this.OnCollide.Fire(hitPoint, collider);
+			this.OnHit.Fire(hitPoint, collider);
 
 			if (RunUtil.IsServer()) {
 				Dependency<ProjectileService>().HandleCollision(this, collider, hitPoint, normal, velocity);

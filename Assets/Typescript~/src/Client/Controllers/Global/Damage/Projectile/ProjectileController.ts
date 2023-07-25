@@ -35,7 +35,7 @@ export class ProjectileController implements OnStart {
 	}
 
 	public OnStart(): void {
-		ProjectileManager.Instance.onProjectileLaunched((easyProjectile, shooterGO) => {
+		ProjectileManager.Instance.OnProjectileLaunched((easyProjectile, shooterGO) => {
 			const shooterEntity = Entity.FindByGameObject(shooterGO);
 			const itemType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
 			if (!itemType) {

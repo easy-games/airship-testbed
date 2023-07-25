@@ -405,9 +405,9 @@ interface LayerMask {
 declare const LayerMask: LayerMask;
 
 interface ProjectileManager {
-	onProjectileCollide(callback: (projectile: EasyProjectile, collision: Collision) => void): void;
-	onProjectileValidate(callback: (validateEvent: ProjectileValidateEvent) => void): void;
-	onProjectileLaunched(callback: (projectile: EasyProjectile, shooter: GameObject) => void): void;
+	OnProjectileCollide(callback: (projectile: EasyProjectile, collision: Collision) => void): void;
+	OnProjectileValidate(callback: (validateEvent: ProjectileValidateEvent) => void): void;
+	OnProjectileLaunched(callback: (projectile: EasyProjectile, shooter: GameObject) => void): void;
 }
 interface ProjectileManagerConstructor {
 	Instance: ProjectileManager;
@@ -415,7 +415,7 @@ interface ProjectileManagerConstructor {
 declare const ProjectileManager: ProjectileManagerConstructor;
 
 interface EasyProjectile {
-	onCollide(callback: (collision: Collision, velocity: Vector3) => void): void;
+	OnHit(callback: (event: ProjectileHitEvent) => void): void;
 }
 
 interface EasyCoreAPI {
