@@ -386,6 +386,15 @@ export const items: {
 			blockArchetype: BlockArchetype.STONE,
 		},
 	},
+	[ItemType.CERAMIC]: {
+		displayName: "Ceramic",
+		itemMechanics: blockItemMechanics,
+		itemAssets: blockItemAssets,
+		block: {
+			...defaultBlock,
+			blockId: 61,
+		},
+	},
 
 	////RESOURCES
 	[ItemType.IRON]: {
