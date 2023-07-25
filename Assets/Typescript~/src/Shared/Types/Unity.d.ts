@@ -1578,11 +1578,6 @@ interface VoxelRaycastResult {
 	HitNormal: Vector3;
 }
 
-interface VoxelWorld {
-	OnVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): void;
-	OnPreVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): void;
-}
-
 interface Color {
 	r: number;
 	g: number;

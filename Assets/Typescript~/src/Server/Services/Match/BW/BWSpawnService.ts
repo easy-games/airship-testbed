@@ -46,7 +46,7 @@ export class BWSpawnService implements OnStart {
 		Task.Spawn(() => {
 			this.loadedMap = this.mapService.WaitForMapLoaded();
 			/* Spawn entity on join. */
-			ServerSignals.PlayerJoin.connect((event) => {
+			ServerSignals.PlayerJoin.Connect((event) => {
 				Task.Delay(SPAWN_DELAY_ON_JOIN, () =>
 					Dependency<EntityService>().SpawnEntityForPlayer(event.player, EntityPrefabType.HUMAN),
 				);

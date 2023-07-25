@@ -3,9 +3,9 @@ import { ClientSignals } from "Client/ClientSignals";
 import { Player } from "Shared/Player/Player";
 import { Keyboard } from "Shared/UserInput";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { PlayerController } from "../Player/PlayerController";
-import { Window } from "Shared/Util/Window";
 import { Task } from "Shared/Util/Task";
+import { Window } from "Shared/Util/Window";
+import { PlayerController } from "../Player/PlayerController";
 
 @Controller({})
 export class TabListController implements OnStart {

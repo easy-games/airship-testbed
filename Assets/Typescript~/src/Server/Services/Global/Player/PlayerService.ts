@@ -1,5 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
+import { PlayerJoinServerEvent } from "Server/Signals/PlayerJoinServerEvent";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { Signal } from "Shared/Util/Signal";
@@ -71,7 +72,7 @@ export class PlayerService implements OnStart {
 				this.players.map((p) => p.Encode()),
 			);
 			this.PlayerAdded.Fire(player);
-			ServerSignals.PlayerJoin.fire(player);
+			ServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
 		});
 	}
 

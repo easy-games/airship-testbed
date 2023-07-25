@@ -1,6 +1,6 @@
-import { Service, OnStart } from "@easy-games/flamework-core";
+import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
-import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 @Service({})
@@ -13,12 +13,12 @@ export class MapBlockService implements OnStart {
 			 * TODO: We _probably_ want exceptions here. IE: Lucky Blocks?
 			 */
 			WorldAPI.GetMainWorld().OnVoxelPlaced.Connect((pos, _voxel) => {
-				VoxelDataAPI.SetVoxelData(pos, "placedByUser", true);
+				BlockDataAPI.SetBlockData(pos, "placedByUser", true);
 			});
 		});
 		/* Don't allow users to damage map blocks. */
 		ServerSignals.BeforeBlockHit.Connect((event) => {
-			const wasPlacedByUser = VoxelDataAPI.GetVoxelData<boolean>(event.BlockPos, "placedByUser");
+			const wasPlacedByUser = BlockDataAPI.GetBlockData<boolean>(event.BlockPos, "placedByUser");
 			if (!wasPlacedByUser) event.SetCancelled(true);
 		});
 	}

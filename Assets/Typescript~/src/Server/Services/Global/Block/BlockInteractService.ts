@@ -5,13 +5,13 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Network } from "Shared/Network";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
-import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
-import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -87,7 +87,7 @@ export class BlockInteractService implements OnStart {
 				}
 				const world = WorldAPI.GetMainWorld();
 
-				pos = VoxelDataAPI.GetParentVoxelPos(pos) ?? pos;
+				pos = BlockDataAPI.GetParentBlockPos(pos) ?? pos;
 
 				const voxel = world.GetRawVoxelDataAt(pos);
 				if (!voxel) {
@@ -110,9 +110,9 @@ export class BlockInteractService implements OnStart {
 					return rollback();
 				}
 
-				const health = VoxelDataAPI.GetVoxelData<number>(pos, "health") ?? WorldAPI.DefaultVoxelHealth;
+				const health = BlockDataAPI.GetBlockData<number>(pos, "health") ?? WorldAPI.DefaultVoxelHealth;
 				const newHealth = math.max(health - beforeSignal.Damage, 0);
-				VoxelDataAPI.SetVoxelData(pos, "health", newHealth);
+				BlockDataAPI.SetBlockData(pos, "health", newHealth);
 
 				// After signal
 				ServerSignals.BlockHit.Fire({ blockId, player, blockPos: pos });

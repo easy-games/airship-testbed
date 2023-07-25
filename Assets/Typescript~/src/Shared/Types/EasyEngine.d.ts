@@ -80,6 +80,13 @@ interface EntityDriver extends Component {
 	replicatedLookVector: Vector3;
 }
 
+interface VoxelWorld {
+	OnVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): void;
+	OnPreVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): void;
+	OnFinishedLoading(callback: () => void): void;
+	OnFinishedReplicatingChunksFromServer(callback: () => void): void;
+}
+
 interface PhysicsConstructor {
 	EasyRaycast(
 		start: Vector3,

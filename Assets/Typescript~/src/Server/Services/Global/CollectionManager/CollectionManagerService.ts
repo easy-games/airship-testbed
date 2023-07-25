@@ -1,4 +1,4 @@
-import { Service, OnStart } from "@easy-games/flamework-core";
+import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
 import { CollectionTag } from "Shared/Util/CollectionTag";
@@ -12,7 +12,7 @@ export class CollectionManagerService implements OnStart {
 
 	OnStart(): void {
 		/* On player join, send snapshot of replication table. */
-		ServerSignals.PlayerJoin.connect((event) => {
+		ServerSignals.PlayerJoin.Connect((event) => {
 			Network.ServerToClient.CollectionManagerState.Server.FireClient(
 				event.player.clientId,
 				this.toReplicateCollectionTable,

@@ -115,7 +115,8 @@ export const Network = {
 				[purchaserClientId: number, upgradeType: TeamUpgradeType, tier: number]
 			>(),
 		},
-		SetVoxelData: new RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>(),
+		SetBlockData: new RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>(),
+		SyncPrefabBlocks: new RemoteEvent<[blockPositions: Vector3[]]>(),
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
 		/** Fired when a map is loaded. */
