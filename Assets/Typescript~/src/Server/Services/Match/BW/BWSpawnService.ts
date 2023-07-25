@@ -32,13 +32,11 @@ export class BWSpawnService implements OnStart {
 	) {
 		ServerSignals.MapLoad.connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();
-			Task.Delay(1, () => {
-				this.entityService.SpawnEntityForPlayer(
-					undefined,
-					EntityPrefabType.HUMAN,
-					position.Position.add(new Vector3(-3, 2, 3)),
-				);
-			});
+			this.entityService.SpawnEntityForPlayer(
+				undefined,
+				EntityPrefabType.HUMAN,
+				position.Position.add(new Vector3(-3, 2, 3)),
+			);
 		});
 	}
 

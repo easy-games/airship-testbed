@@ -4,7 +4,6 @@ import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { NetworkBridge } from "Shared/NetworkBridge";
 import { CollectionTag } from "Shared/Util/CollectionTag";
 import { MathUtil } from "Shared/Util/MathUtil";
-import { SetTimeout } from "Shared/Util/Timer";
 import { DenyRegionService } from "../Global/Block/DenyRegionService";
 import { TeamService } from "../Global/Team/TeamService";
 import { MapService } from "./Map/MapService";
@@ -25,9 +24,7 @@ export class ShopkeeperService implements OnStart {
 		this.shopKeeperPrefab = AssetBridge.LoadAsset("Shared/Resources/Entity/HumanEntity/HumanEntity.prefab");
 
 		ServerSignals.MapLoad.connect(() => {
-			SetTimeout(0.5, () => {
-				this.CreateShopKeepers();
-			});
+			this.CreateShopKeepers();
 		});
 	}
 
