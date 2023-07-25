@@ -79,12 +79,10 @@ export class TabListController implements OnStart {
 			}
 
 			let entry: GameObject | undefined;
-			if (player) {
-				if (i < contentChildCount) {
-					entry = this.tablistContentGO.transform.GetChild(i).gameObject;
-				} else {
-					entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
-				}
+			if (i < contentChildCount) {
+				entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+			} else {
+				entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
 			}
 
 			if (player && entry) {
