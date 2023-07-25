@@ -2,7 +2,6 @@ import { Signal } from "Shared/Util/Signal";
 import { BeforeBlockHitSignal } from "./Controllers/Global/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileLaunchedClientSignal";
-import { ProximityPrompt } from "./Controllers/Global/ProximityPrompt/ProximityPrompt";
 import { Entity } from "./Entity/Entity";
 import { ItemType } from "./Item/ItemType";
 import { MatchState } from "./Match/MatchState";
@@ -47,8 +46,6 @@ export const ClientSignals = {
 	/** Fired when local player fires a projectile. */
 	ProjectileLaunched: new Signal<ProjectileLaunchedClientSignal>(),
 	ProjectileCollide: new Signal<ProjectileCollideClientSignal>(),
-	/** Fired when a proximity prompt is created. */
-	ProximityPromptCreated: new Signal<{ prompt: ProximityPrompt }>(),
 	/** Fired when a player is eliminated. */
 	PlayerEliminated: new Signal<{ player: Player }>(),
 	SpectatorTargetChanged: new Signal<{ entity: Entity }>(),

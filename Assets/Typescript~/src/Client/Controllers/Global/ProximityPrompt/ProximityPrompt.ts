@@ -1,8 +1,9 @@
-import { ClientSignals } from "Client/ClientSignals";
+import { Dependency } from "@easy-games/flamework-core";
 import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
+import { ProximityPromptController } from "./ProximityPromptController";
 
 export interface ProximityPromptData {
 	/** Proximity prompt position. */
@@ -65,8 +66,7 @@ export class ProximityPrompt {
 		keyCode.text = this.data.activationKeyString;
 		bottomText.text = this.data.bottomText;
 		topText.text = this.data.topText;
-		/* Notify `ProximityPromptController` that prompt was created. */
-		ClientSignals.ProximityPromptCreated.Fire({ prompt: this });
+		Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
 	}
 
 	public SetCanActivate(canActivate: boolean) {

@@ -1,8 +1,8 @@
 import { Keyboard, Mouse } from "Shared/UserInput";
+import { AudioManager } from "../Audio/AudioManager";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
-import { Signal, SignalPriority } from "./Signal";
-import { AudioManager } from "../Audio/AudioManager";
+import { SignalPriority } from "./Signal";
 
 /** Global close key for hiding interfaces. */
 const CLOSE_KEY = KeyCode.Escape;
@@ -65,7 +65,9 @@ export class AppManager {
 		});
 
 		if (!config?.noOpenSound) {
-			AudioManager.PlayGlobal("UI_Open.wav");
+			AudioManager.PlayGlobal("UI_Open.wav", {
+				volumeScale: 0.4,
+			});
 		}
 
 		/*

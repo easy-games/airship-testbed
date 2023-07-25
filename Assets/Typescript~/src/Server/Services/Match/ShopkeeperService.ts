@@ -4,6 +4,7 @@ import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { NetworkBridge } from "Shared/NetworkBridge";
 import { CollectionTag } from "Shared/Util/CollectionTag";
 import { MathUtil } from "Shared/Util/MathUtil";
+import { SetTimeout } from "Shared/Util/Timer";
 import { DenyRegionService } from "../Global/Block/DenyRegionService";
 import { TeamService } from "../Global/Team/TeamService";
 import { MapService } from "./Map/MapService";
@@ -24,7 +25,9 @@ export class ShopkeeperService implements OnStart {
 		this.shopKeeperPrefab = AssetBridge.LoadAsset("Shared/Resources/Entity/HumanEntity/HumanEntity.prefab");
 
 		ServerSignals.MapLoad.connect(() => {
-			this.CreateShopKeepers();
+			SetTimeout(0.5, () => {
+				this.CreateShopKeepers();
+			});
 		});
 	}
 
@@ -40,16 +43,24 @@ export class ShopkeeperService implements OnStart {
 
 		for (let team of this.teamService.GetTeams()) {
 			const itemShopPosition = loadedMap.GetWorldPosition(team.id + "_item_shop");
-            const itemShopKeeper = GameObjectBridge.InstantiateAt(this.shopKeeperPrefab, itemShopPosition.Position, itemShopPosition.Rotation);
-            NetworkBridge.Spawn(itemShopKeeper, CollectionTag.ITEM_SHOP_SHOPKEEPER);
-            /* Create deny region around shopkeeper. */
-            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(itemShopPosition.Position), DENY_REGION_SIZE);
+			const itemShopKeeper = GameObjectBridge.InstantiateAt(
+				this.shopKeeperPrefab,
+				itemShopPosition.Position,
+				itemShopPosition.Rotation,
+			);
+			NetworkBridge.Spawn(itemShopKeeper, CollectionTag.ITEM_SHOP_SHOPKEEPER);
+			/* Create deny region around shopkeeper. */
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(itemShopPosition.Position), DENY_REGION_SIZE);
 
 			const teamUpgradePosition = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
-            const upgradeShopKeeper = GameObjectBridge.InstantiateAt(this.shopKeeperPrefab, teamUpgradePosition.Position, teamUpgradePosition.Rotation);
-            NetworkBridge.Spawn(upgradeShopKeeper, CollectionTag.TEAM_UPGRADES_SHOPKEEPER);
-            /* Create deny region around shopkeeper. */
-            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(teamUpgradePosition.Position), DENY_REGION_SIZE);
+			const upgradeShopKeeper = GameObjectBridge.InstantiateAt(
+				this.shopKeeperPrefab,
+				teamUpgradePosition.Position,
+				teamUpgradePosition.Rotation,
+			);
+			NetworkBridge.Spawn(upgradeShopKeeper, CollectionTag.TEAM_UPGRADES_SHOPKEEPER);
+			/* Create deny region around shopkeeper. */
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(teamUpgradePosition.Position), DENY_REGION_SIZE);
 		}
 	}
 }

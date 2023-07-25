@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Task } from "Shared/Util/Task";
@@ -16,29 +15,22 @@ export class ProximityPromptController implements OnStart {
 	private proximityPrompts: ProximityPrompt[] = [];
 	/** Proximity prompts in activation range. */
 	private activatableProximityPrompts: ProximityPrompt[] = [];
-	/** Key codes in activation range. */
-	private activatableKeycodes = new Set<Key>();
 
 	OnStart(): void {
-		/* Listen for prompt creation. */
-		ClientSignals.ProximityPromptCreated.Connect((event) => {
-			this.proximityPrompts.push(event.prompt);
-		});
-		/* Listen for keypresses for prompt activation. */
-		// this.keyboard.KeyDown.Connect((event) => {
-		// 	this.HandleKeypress(event.Key);
-		// });
-		/* Start conditionally displaying prompts. */
 		this.FindActivatablePrompts();
+
+		// Hacked in to only support [F] keycode for now :)
+		this.keyboard.OnKeyDown(KeyCode.F, (event) => {
+			if (this.activatableProximityPrompts.size() === 0) return;
+
+			const eligiblePrompt = this.activatableProximityPrompts[0];
+			eligiblePrompt.ActivatePrompt();
+		});
 	}
 
-	/** Handle keypresses and activate prompts if applicable. */
-	// private HandleKeypress(key: Key): void {
-	// 	const eligiblePrompt = this.activatableProximityPrompts.find((prompt) => prompt.data.activationKey === key);
-	// 	if (eligiblePrompt) {
-	// 		eligiblePrompt.ActivatePrompt();
-	// 	}
-	// }
+	public RegisterProximityPrompt(prompt: ProximityPrompt): void {
+		this.proximityPrompts.push(prompt);
+	}
 
 	/** Returns distance between local player and a proximity prompt. */
 	private GetDistanceToPrompt(prompt: ProximityPrompt): number {

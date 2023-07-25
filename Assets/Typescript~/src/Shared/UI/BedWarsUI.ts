@@ -1,5 +1,5 @@
-import { CanvasAPI, HoverState } from "Shared/Util/CanvasAPI";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { CanvasAPI, HoverState } from "Shared/Util/CanvasAPI";
 
 export class BedWarsUI {
 	/**
@@ -8,7 +8,7 @@ export class BedWarsUI {
 	 */
 	public static SetupButton(gameObject: GameObject): void {
 		CanvasAPI.OnClickEvent(gameObject, () => {
-			AudioManager.PlayGlobal("UI_Click.wav");
+			AudioManager.PlayGlobal("UI_Select.wav");
 		});
 		CanvasAPI.OnHoverEvent(gameObject, (hoverState) => {
 			if (hoverState === HoverState.ENTER) {
