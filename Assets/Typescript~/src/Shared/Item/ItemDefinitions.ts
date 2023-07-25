@@ -386,6 +386,15 @@ export const items: {
 			blockArchetype: BlockArchetype.STONE,
 		},
 	},
+	[ItemType.CERAMIC]: {
+		displayName: "Ceramic",
+		itemMechanics: blockItemMechanics,
+		itemAssets: blockItemAssets,
+		block: {
+			...defaultBlock,
+			blockId: 61,
+		},
+	},
 
 	////RESOURCES
 	[ItemType.IRON]: {
@@ -453,6 +462,32 @@ export const items: {
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
 	},
+	[ItemType.IRON_PICKAXE]: {
+		displayName: "Iron Pickaxe",
+		itemAssets: pickaxeItemAssets,
+		itemMechanics: {
+			...defaultItemMechanics,
+			cooldownSeconds: 0.15,
+		},
+		breakBlock: {
+			...defaultBreakBlock,
+			damage: 5,
+			extraDamageBlockArchetype: BlockArchetype.STONE,
+		},
+	},
+	[ItemType.DIAMOND_PICKAXE]: {
+		displayName: "Diamond Pickaxe",
+		itemAssets: pickaxeItemAssets,
+		itemMechanics: {
+			...defaultItemMechanics,
+			cooldownSeconds: 0.1,
+		},
+		breakBlock: {
+			...defaultBreakBlock,
+			damage: 8,
+			extraDamageBlockArchetype: BlockArchetype.STONE,
+		},
+	},
 
 	////SWORDS
 	[ItemType.WOOD_SWORD]: {
@@ -515,7 +550,7 @@ export const items: {
 		displayName: "Wood Bow",
 		itemMechanics: {
 			...rangedItemMechanics,
-			minChargeSeconds: 0.05,
+			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.25,
 		},

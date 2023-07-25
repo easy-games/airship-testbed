@@ -30,7 +30,7 @@ import { Signal } from "./Util/Signal";
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
 
 export const ServerSignals = {
-	PlayerJoin: new SyncEvent(PlayerJoinServerEvent),
+	PlayerJoin: new Signal<PlayerJoinServerEvent>(),
 	PlayerLeave: new SyncEvent(PlayerLeaveServerEvent),
 	/** Fired when match enters `MatchState.RUNNING`. */
 	MatchStart: new SyncEvent(MatchStartServerEvent),

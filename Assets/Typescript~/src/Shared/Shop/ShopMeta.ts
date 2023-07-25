@@ -31,17 +31,38 @@ export interface Shop {
 export const DEFAULT_BEDWARS_SHOP: Shop = {
 	shopItems: [
 		{
-			item: ItemType.GRASS,
+			item: ItemType.WHITE_WOOL,
 			currency: ItemType.IRON,
 			price: 8,
 			quantity: 16,
 			category: ShopCategory.BLOCKS,
 		},
 		{
-			item: ItemType.COBBLESTONE,
+			item: ItemType.STONE_BRICK,
 			currency: ItemType.IRON,
 			price: 40,
 			quantity: 16,
+			category: ShopCategory.BLOCKS,
+		},
+		{
+			item: ItemType.OAK_WOOD_PLANK,
+			currency: ItemType.IRON,
+			price: 26,
+			quantity: 16,
+			category: ShopCategory.BLOCKS,
+		},
+		{
+			item: ItemType.CERAMIC,
+			currency: ItemType.IRON,
+			price: 4,
+			quantity: 14,
+			category: ShopCategory.BLOCKS,
+		},
+		{
+			item: ItemType.OBSIDIAN,
+			currency: ItemType.EMERALD,
+			price: 2,
+			quantity: 4,
 			category: ShopCategory.BLOCKS,
 		},
 		{
@@ -90,6 +111,20 @@ export const DEFAULT_BEDWARS_SHOP: Shop = {
 			item: ItemType.STONE_PICKAXE,
 			currency: ItemType.IRON,
 			price: 20,
+			quantity: 1,
+			category: ShopCategory.TOOLS,
+		},
+		{
+			item: ItemType.IRON_PICKAXE,
+			currency: ItemType.IRON,
+			price: 40,
+			quantity: 1,
+			category: ShopCategory.TOOLS,
+		},
+		{
+			item: ItemType.DIAMOND_PICKAXE,
+			currency: ItemType.IRON,
+			price: 100,
 			quantity: 1,
 			category: ShopCategory.TOOLS,
 		},

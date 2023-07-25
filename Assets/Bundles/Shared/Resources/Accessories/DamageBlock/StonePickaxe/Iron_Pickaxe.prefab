@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7425600105175474101}
   m_Layer: 0
-  m_Name: Stone_Pickaxe
+  m_Name: Iron_Pickaxe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
@@ -120,10 +120,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  - materialColor: {r: 0.8726415, g: 0.9875139, b: 1, a: 1}
     emissiveColor: {r: 0.4481132, g: 0.9839541, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
+    reference: Metal_Clean
   - materialColor: {r: 0.8867924, g: 0.7766737, b: 0.6148985, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1

@@ -3,13 +3,12 @@ import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { MathUtil } from "Shared/Util/MathUtil";
-import { Task } from "Shared/Util/Task";
-import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { ItemUtil } from "../../../Shared/Item/ItemUtil";
 import { TeamService } from "../Global/Team/TeamService";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
-import { ItemUtil } from "../../../Shared/Item/ItemUtil";
 
 /** Bed block id. */
 const BED_BLOCK_ID = ItemUtil.GetItemMeta(ItemType.BED).block?.blockId ?? -1;
@@ -29,7 +28,7 @@ export class BedService implements OnStart {
 		/* Listen for bed destroyed. */
 		ServerSignals.BeforeBlockDestroyed.Connect((event) => {
 			if (event.blockId === BED_BLOCK_ID) {
-				const teamId = VoxelDataAPI.GetVoxelData<string>(event.blockPos, "teamId");
+				const teamId = BlockDataAPI.GetBlockData<string>(event.blockPos, "teamId");
 				if (!teamId) return;
 				ServerSignals.BedDestroyed.Fire({ bedTeamId: teamId });
 			}
@@ -57,10 +56,10 @@ export class BedService implements OnStart {
 				destroyed: false,
 			};
 			this.teamToBed.set(team.id, bedState);
-			WorldAPI.GetMainWorld().PlaceBlock(bedPos, ItemType.BED);
-			/* TEMPORARY. Fix `VoxelDataAPI` race condition. */
-			Task.Delay(1, () => {
-				VoxelDataAPI.SetVoxelData(bedPos, "teamId", team.id);
+			WorldAPI.GetMainWorld().PlaceBlock(bedPos, ItemType.BED, {
+				blockData: {
+					teamId: team.id,
+				},
 			});
 		}
 	}

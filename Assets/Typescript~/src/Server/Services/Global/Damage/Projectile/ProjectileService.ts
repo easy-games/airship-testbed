@@ -39,11 +39,11 @@ export class ProjectileService implements OnStart {
 			}
 		});
 
-		ProjectileManager.Instance.onProjectileValidate((event) => {
+		ProjectileManager.Instance.OnProjectileValidate((event) => {
 			event.validated = true;
 		});
 
-		ProjectileManager.Instance.onProjectileLaunched((easyProjectile, shooterGO) => {
+		ProjectileManager.Instance.OnProjectileLaunched((easyProjectile, shooterGO) => {
 			const shooterEntity = Entity.FindByGameObject(shooterGO);
 			const itemType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
 			if (!itemType) {

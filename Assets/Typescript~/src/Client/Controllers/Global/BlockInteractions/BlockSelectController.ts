@@ -5,7 +5,7 @@ import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { Layer } from "Shared/Util/Layer";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { OnUpdate } from "Shared/Util/Timer";
-import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CameraReferences } from "../Camera/CameraReferences";
 import { EntityController } from "../Entity/EntityController";
@@ -103,7 +103,7 @@ export class BlockSelectController implements OnStart {
 			if (result.HitPosition.sub(characterPos).magnitude <= 8) {
 				this.SelectedBlockPosition = MathUtil.FloorVec(result.HitPosition.sub(result.HitNormal.mul(0.1)));
 				this.HighlightBlockPosition = MathUtil.FloorVec(result.HitPosition.sub(result.HitNormal.mul(0.1)));
-				const parentBlockPos = VoxelDataAPI.GetParentVoxelPos(this.HighlightBlockPosition);
+				const parentBlockPos = BlockDataAPI.GetParentBlockPos(this.HighlightBlockPosition);
 				if (parentBlockPos) {
 					this.SelectedBlockPosition = parentBlockPos;
 				}
