@@ -144,7 +144,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Glass
-  - materialColor: {r: 0.33490568, g: 0.722482, b: 1, a: 1}
+  - materialColor: {r: 0.5235849, g: 0.8820666, b: 1, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 0
     reference: Clay

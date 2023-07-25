@@ -1,4 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { Game } from "Shared/Game";
 import { GameObjectBridge } from "Shared/GameObjectBridge";
 import { ItemUtil } from "Shared/Item/ItemUtil";
@@ -8,7 +9,6 @@ import { BedWarsUI } from "Shared/UI/BedWarsUI";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { AudioManager } from "Shared/Audio/AudioManager";
 import { InventoryController } from "../Inventory/InventoryController";
 
 @Controller({})
@@ -116,7 +116,9 @@ export class ItemShopController implements OnStart {
 		const itemMeta = ItemUtil.GetItemMeta(shopItem.item);
 		selectedItemQuantity.text = `x${shopItem.quantity}`;
 		selectedItemName.text = itemMeta.displayName;
-		selectedItemCost.text = `${shopItem.price} ${shopItem.currency}`;
+
+		const currencyMeta = ItemUtil.GetItemMeta(shopItem.currency);
+		selectedItemCost.text = `${shopItem.price} ${currencyMeta.displayName}`;
 
 		const purchaseButtonImage = this.purchaseButton.GetComponent<Image>();
 

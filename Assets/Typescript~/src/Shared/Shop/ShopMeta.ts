@@ -114,5 +114,19 @@ export const DEFAULT_BEDWARS_SHOP: Shop = {
 			quantity: 1,
 			category: ShopCategory.TOOLS,
 		},
+		{
+			item: ItemType.IRON_PICKAXE,
+			currency: ItemType.IRON,
+			price: 40,
+			quantity: 1,
+			category: ShopCategory.TOOLS,
+		},
+		{
+			item: ItemType.DIAMOND_PICKAXE,
+			currency: ItemType.IRON,
+			price: 100,
+			quantity: 1,
+			category: ShopCategory.TOOLS,
+		},
 	],
 };
