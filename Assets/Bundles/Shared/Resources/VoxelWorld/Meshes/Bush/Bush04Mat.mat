@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bush01Mat
+  m_Name: Bush04Mat
   m_Shader: {fileID: 4800000, guid: 4f5b3a974792e59449d345f4e37ec96b, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
@@ -57,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: f5a7a2969a8206c42ac77fc463423b37, type: 3}
+        m_Texture: {fileID: 2800000, guid: 51e7703c30fc8bf4cb8c86bae66b8295, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -107,7 +107,7 @@ Material:
     - _FlutterSpeed: 10
     - _FlutterStrength: 3.42
     - _FresnelPower: 1
-    - _FresnelStrength: 0.327
+    - _FresnelStrength: 0.346
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -133,11 +133,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.34158066, g: 0.7169812, b: 0.34515592, a: 1}
-    - _ColorA: {r: 0.10666607, g: 0.4811321, b: 0.25139278, a: 1}
-    - _ColorB: {r: 0.20386183, g: 0.6226415, b: 0.10279457, a: 1}
+    - _ColorA: {r: 0.026032407, g: 0.4245283, b: 0.1796194, a: 1}
+    - _ColorB: {r: 0.3924804, g: 0.6698113, b: 0.16113384, a: 1}
     - _DarkColor: {r: 0.0023584962, g: 0.5, b: 0.0023584962, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FresnelColor: {r: 1, g: 0.40000004, b: 0, a: 1}
+    - _FresnelColor: {r: 1, g: 0.66886795, b: 0.4481132, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
