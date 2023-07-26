@@ -80,12 +80,12 @@ Material:
     - _Glossiness: 25
     - _GlossyReflections: 1
     - _HueShift: 1
-    - _MaxDepthHeight: 0.443
+    - _MaxDepthHeight: 0.368
     - _Metallic: 0
-    - _MinDepthHeight: 0.02
+    - _MinDepthHeight: 0.087
     - _MinLight: 1
     - _Mode: 0
-    - _NormalIntensity: 0.631
+    - _NormalIntensity: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimAmount: 0.56
@@ -102,13 +102,13 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.36320752, g: 1, b: 0.5656054, a: 1}
-    - _DepthColor: {r: 0, g: 0.764151, b: 0.22825287, a: 1}
+    - _Color: {r: 0.3066038, g: 1, b: 0.5248952, a: 0.019607844}
+    - _DepthColor: {r: 0, g: 0.764151, b: 0.2282528, a: 0.007843138}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0.58962256, g: 1, b: 0.73819613, a: 1}
     - _OverlayColor: {r: 0.073818915, g: 1, b: 0, a: 0}
     - _RimColor: {r: 1, g: 0.59016395, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0.4339623, b: 0.08700106, a: 1}
-    - _ShineColor: {r: 0, g: 0.6037736, b: 0.43773594, a: 1}
+    - _ShineColor: {r: 0, g: 0.9339623, b: 0.6792453, a: 1}
     - _SpecularColor: {r: 0.8988769, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []

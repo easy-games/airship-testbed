@@ -3,8 +3,8 @@ Shader "Chronos/ChronosCrystal"
 	Properties
 	{
 		[Header(Colors)]
-		_Color("Main Color", Color) = (1,1,1,1)
-		_ShineColor("Shine Color", Color) = (1,1,1,1)
+		_Color("Main Color", Color) = (1,1,1,.5)
+		_ShineColor("Shine Color", Color) = (1,1,1,.5)
 		_DepthColor("Depth Color", Color) = (1,1,1,1)
 		_EmissiveColor("Emissive Color", Color) = (0,0,0,1)
 		_OverlayColor("Overlay Color", Color) = (1,0,0,0)
@@ -22,8 +22,6 @@ Shader "Chronos/ChronosCrystal"
 		_ShineFresnelStrength("Shine Fresnel Strength", Float) = 1
 		
 		[Header(Lighting)]
-		_SurfaceOpacity("Surface Opacity", Range(0,1)) = .5
-		_DepthOpacity("Depth Opacity", Range(0,1)) = .5
 		_MinDepthHeight("Depth Height Min", Range(0,1)) = .01
 		_MaxDepthHeight("Depth Height Max", Range(0,1)) = .1
 		_MinLight("Minimum Light", Range(0, 1)) = .2
@@ -100,8 +98,6 @@ Shader "Chronos/ChronosCrystal"
 			float _ShineFresnelStrength;
 
 			//Lighting
-			float _SurfaceOpacity;
-			float _DepthOpacity;
 			float _MinDepthHeight;
 			float _MaxDepthHeight;
 			float _AmbientStrength;
@@ -184,26 +180,27 @@ Shader "Chronos/ChronosCrystal"
 				float4 mainTex = tex2D(_MainTex, i.uv);
 				float diffuse = mainTex.r;
 				float shine = mainTex.g;
-				float fresnel = saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength + _SurfaceOpacity);
+				float surfaceOpacity = color.a;
+				float fresnel = saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength + surfaceOpacity);
 				half4 finalDiffuseColor = fresnel * diffuse * color;
 				
-				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength + _SurfaceOpacity);
+				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength + surfaceOpacity);
 				half4 finalShineColor = shineFresnel * shine * shineColor;
 
 				half4 finalSurfaceColor = saturate(finalDiffuseColor + finalShineColor + specular);
 
 				float surfaceAlpha = saturate(finalSurfaceColor.r + finalSurfaceColor.g + finalSurfaceColor.b);
-				float surfaceMask = max(_SurfaceOpacity, surfaceAlpha);
+				float surfaceMask = max(surfaceOpacity, surfaceAlpha);
 				//finalSurfaceColor = lerp(color, finalSurfaceColor, surfaceAlpha);
 
 				//Depth Colors
 				float fresnelNegative = (fresnel * 2 - 1);
 				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative)  + i.viewUV;
 				float depthTex = tex2D(_DepthMainTex, depthUV);
-				half4 screenColor = tex2D(_BlurColorTexture, i.viewUV);
-				half4 finalDepthColor = lerp(screenColor + depthColor, depthTex * depthColor, _DepthOpacity);
+				half4 screenColor = tex2D(_BlurColorTexture, depthUV);
+				half4 finalDepthColor = lerp(screenColor + depthColor, depthTex * depthColor, depthColor.a);
 
-				half4 depthBlend = _SurfaceOpacity * color + finalDepthColor;
+				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
 				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask);
 				//finalColor = screenColor;
 				
