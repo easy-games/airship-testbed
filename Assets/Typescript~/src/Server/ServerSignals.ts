@@ -24,7 +24,6 @@ import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
 import { Team } from "./Team/Team";
 import { ChangeTeamSignal } from "./Team/TeamJoinSignal";
 import { TeamUpgradeType } from "./TeamUpgrades/TeamUpgradeType";
-import { CollectionTag } from "./Util/CollectionTag";
 import { Signal } from "./Util/Signal";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
@@ -56,13 +55,13 @@ export const ServerSignals = {
 	BeforeEntityDropItem: new Signal<BeforeEntityDropItemSignal>(),
 	EntityDropItem: new Signal<EntityDropItemSignal>(),
 	/** Fired when a `GameObject` is added to a collection on the _server_. */
-	GameObjectAddedToCollection: new Signal<{ go: GameObject; tag: CollectionTag }>(),
+	GameObjectAddedToCollection: new Signal<{ go: GameObject; tag: string }>(),
 	/** Fired when a tag is added to a `GameObject` on the _client_. */
-	CollectionManagerTagAdded: new Signal<{ go: GameObject; tag: CollectionTag }>(),
+	CollectionManagerTagAdded: new Signal<{ go: GameObject; tag: string }>(),
 	/** Fired when a **tagged** `GameObject` is being replicated. */
-	NetGameObjectReplicating: new Signal<{ nob: number; tag: CollectionTag }>(),
+	NetGameObjectReplicating: new Signal<{ nob: number; tag: string }>(),
 	/** Fired when a **tagged** `GameObject` is despawning. */
-	NetGameObjectDespawning: new Signal<{ nob: number; tag: CollectionTag }>(),
+	NetGameObjectDespawning: new Signal<{ nob: number; tag: string }>(),
 	PlayerChangeTeam: new Signal<ChangeTeamSignal>(),
 	/** Fired when a bed is destroyed. */
 	BedDestroyed: new Signal<{ bedTeamId: string }>(),

@@ -16,7 +16,6 @@ import { ShopItem } from "./Shop/ShopMeta";
 import { TeamDto } from "./Team/Team";
 import { TeamUpgradeStateDto } from "./TeamUpgrades/TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgrades/TeamUpgradeType";
-import { CollectionTag } from "./Util/CollectionTag";
 
 export const Network = {
 	ClientToServer: {
@@ -93,9 +92,9 @@ export const Network = {
 		/** Fired when a user joins late. Sends full generator state snapshot. */
 		GeneratorSnapshot: new RemoteEvent<[generatorStateDtos: GeneratorDto[]]>(),
 		/** Fired when a **tagged** GameObject is spawned on the server. */
-		NetGameObjectReplicating: new RemoteEvent<[networkObjectId: number, tag: CollectionTag]>(),
+		NetGameObjectReplicating: new RemoteEvent<[networkObjectId: number, tag: string]>(),
 		/** Fired when a player joins. Sends `CollectionManager` replicated set state. */
-		CollectionManagerState: new RemoteEvent<[state: Map<CollectionTag, Set<number>>]>(),
+		CollectionManagerState: new RemoteEvent<[state: Map<string, Set<number>>]>(),
 		/** Fired when client first joins to send existing teams and when new teams are created. */
 		AddTeams: new RemoteEvent<[teams: TeamDto[]]>(),
 		AddPlayerToTeam: new RemoteEvent<[teamId: string, userId: string]>(),

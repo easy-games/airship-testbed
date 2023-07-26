@@ -24,7 +24,7 @@ export class ShopService implements OnStart {
 		/* Valide that entity has an inventory. */
 		if (!(requestEntity instanceof CharacterEntity)) return false;
 		/* Validate that shop item. */
-		const shopItem = DEFAULT_BEDWARS_SHOP.shopItems.find((shopItem) => shopItem.item === item.item);
+		const shopItem = DEFAULT_BEDWARS_SHOP.shopItems.find((shopItem) => shopItem.itemType === item.itemType);
 		if (!shopItem) return false;
 		/* Validate user can afford item. */
 		const entityInv = requestEntity.GetInventory();
@@ -32,7 +32,7 @@ export class ShopService implements OnStart {
 		if (!canAfford) return false;
 		/* Fulfill purchase. */
 		entityInv.Decrement(shopItem.currency, shopItem.price);
-		entityInv.AddItem(new ItemStack(shopItem.item, shopItem.quantity));
+		entityInv.AddItem(new ItemStack(shopItem.itemType, shopItem.quantity));
 		return true;
 	}
 }

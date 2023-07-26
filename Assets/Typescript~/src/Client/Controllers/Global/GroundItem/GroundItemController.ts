@@ -4,7 +4,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { PlayerController } from "Client/Controllers/Global/Player/PlayerController";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
@@ -12,8 +12,8 @@ import { Network } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { WaitForNobId } from "Shared/Util/NetworkUtil";
 import { OnUpdate, SetInterval } from "Shared/Util/Timer";
-import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
 import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
+import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
 
 interface GroundItemEntry {
 	nob: NetworkObject;
@@ -48,7 +48,7 @@ export class GroundItemController implements OnStart {
 			const accessory = ItemUtil.GetFirstAccessoryForItemType(itemStack.GetItemType());
 			obj = accessory.Prefab;
 		}
-		const displayGO = GameObjectBridge.InstantiateIn(obj, parent);
+		const displayGO = GameObjectUtil.InstantiateIn(obj, parent);
 		// displayGO.transform.localScale = new Vector3(0.5, 0.5, 0.5);
 		displayGO.transform.localPosition = new Vector3(0, 0.5, 0);
 		return displayGO;

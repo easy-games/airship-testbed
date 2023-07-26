@@ -1,7 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
-import { NetworkBridge } from "Shared/NetworkBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { NetworkUtil } from "Shared/NetworkBridge";
 import { CollectionTag } from "Shared/Util/CollectionTag";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { DenyRegionService } from "../Global/Block/DenyRegionService";
@@ -40,22 +40,22 @@ export class ShopkeeperService implements OnStart {
 
 		for (let team of this.teamService.GetTeams()) {
 			const itemShopPosition = loadedMap.GetWorldPosition(team.id + "_item_shop");
-			const itemShopKeeper = GameObjectBridge.InstantiateAt(
+			const itemShopKeeper = GameObjectUtil.InstantiateAt(
 				this.shopKeeperPrefab,
 				itemShopPosition.Position,
 				itemShopPosition.Rotation,
 			);
-			NetworkBridge.Spawn(itemShopKeeper, CollectionTag.ITEM_SHOP_SHOPKEEPER);
+			NetworkUtil.Spawn(itemShopKeeper, CollectionTag.ITEM_SHOP_SHOPKEEPER);
 			/* Create deny region around shopkeeper. */
 			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(itemShopPosition.Position), DENY_REGION_SIZE);
 
 			const teamUpgradePosition = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
-			const upgradeShopKeeper = GameObjectBridge.InstantiateAt(
+			const upgradeShopKeeper = GameObjectUtil.InstantiateAt(
 				this.shopKeeperPrefab,
 				teamUpgradePosition.Position,
 				teamUpgradePosition.Rotation,
 			);
-			NetworkBridge.Spawn(upgradeShopKeeper, CollectionTag.TEAM_UPGRADES_SHOPKEEPER);
+			NetworkUtil.Spawn(upgradeShopKeeper, CollectionTag.TEAM_UPGRADES_SHOPKEEPER);
 			/* Create deny region around shopkeeper. */
 			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(teamUpgradePosition.Position), DENY_REGION_SIZE);
 		}

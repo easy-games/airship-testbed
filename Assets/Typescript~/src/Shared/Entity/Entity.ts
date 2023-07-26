@@ -6,10 +6,9 @@ import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
-import { NetworkBridge } from "Shared/NetworkBridge";
+import { NetworkUtil } from "Shared/NetworkBridge";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -230,7 +229,7 @@ export class Entity {
 
 		if (RunUtil.IsServer()) {
 			Network.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
-			NetworkBridge.Despawn(this.networkObject.gameObject);
+			NetworkUtil.Despawn(this.networkObject.gameObject);
 		}
 	}
 

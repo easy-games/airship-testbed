@@ -9,9 +9,9 @@ import { WaitForNobId } from "Shared/Util/NetworkUtil";
 @Controller({ loadOrder: 0 })
 export class CollectionManagerController implements OnStart {
 	/** Client collection table. Associates collection tags with GameObjects. */
-	private clientCollectionTable = new Map<CollectionTag, Set<GameObject>>();
+	private clientCollectionTable = new Map<string, Set<GameObject>>();
 
-	OnStart(): void {
+	constructor() {
 		/* Sync up server replication table with client. */
 		Network.ServerToClient.CollectionManagerState.Client.OnServerEvent((state) => {
 			this.constructClientCollection(state);
@@ -19,6 +19,9 @@ export class CollectionManagerController implements OnStart {
 
 		/* Listen for tagged, replicated `GameObject` instatiation. */
 		Network.ServerToClient.NetGameObjectReplicating.Client.OnServerEvent((networkObjectId, tag) => {
+			print("wait.1");
+			print(`[${tag}]: waiting for ${networkObjectId}`);
+			print("wait.2");
 			const replicatedGameObject = WaitForNobId(networkObjectId).gameObject;
 			this.addGameObjectToTagSet(replicatedGameObject, tag);
 		});
@@ -29,9 +32,11 @@ export class CollectionManagerController implements OnStart {
 		});
 	}
 
+	OnStart(): void {}
+
 	/** Constructs client collection table from server replication sync table. */
-	private constructClientCollection(syncTable: Map<CollectionTag, Set<number>>): void {
-		const clientCollectionTable = new Map<CollectionTag, Set<GameObject>>();
+	private constructClientCollection(syncTable: Map<string, Set<number>>): void {
+		const clientCollectionTable = new Map<string, Set<GameObject>>();
 		/** Unpack server replication sync table and convert nobs to client-owned `GameObject`s. */
 		ObjectUtils.keys(syncTable).forEach((collectionTag) => {
 			const nobSet = syncTable.get(collectionTag);
@@ -53,7 +58,7 @@ export class CollectionManagerController implements OnStart {
 	}
 
 	/** Listen for `GameObject` `gameObject` destruction. */
-	private listenForGameObjectDestruction(gameObject: GameObject, tag: CollectionTag): void {
+	private listenForGameObjectDestruction(gameObject: GameObject, tag: string): void {
 		/* Add `DestroyWatcher` component to _all_ tagged `GameObject`s. */
 		if (gameObject.GetComponent<DestroyWatcher>() === undefined) {
 			const componentRef = gameObject.AddComponent("DestroyWatcher") as DestroyWatcher;
@@ -68,7 +73,7 @@ export class CollectionManagerController implements OnStart {
 	 * @param gameObject a `GameObject`.
 	 * @param tag Tag to be added to `GameObject`.
 	 */
-	public addGameObjectToTagSet(gameObject: GameObject, tag: CollectionTag): void {
+	public addGameObjectToTagSet(gameObject: GameObject, tag: string): void {
 		const tagSet = this.clientCollectionTable.get(tag);
 		if (tagSet) {
 			tagSet.add(gameObject);
@@ -82,7 +87,7 @@ export class CollectionManagerController implements OnStart {
 	}
 
 	/** Removes `GameObject` `gameObject` from relevant `tag` tag set. */
-	public removeGameObjectFromTagSet(gameObject: GameObject, tag: CollectionTag): void {
+	public removeGameObjectFromTagSet(gameObject: GameObject, tag: string): void {
 		const tagSet = this.clientCollectionTable.get(tag);
 		if (!tagSet) return;
 		if (tagSet.has(gameObject)) tagSet.delete(gameObject);

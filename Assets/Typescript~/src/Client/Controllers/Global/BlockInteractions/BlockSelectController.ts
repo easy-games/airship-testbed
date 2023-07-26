@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Game } from "Shared/Game";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Layer } from "Shared/Util/Layer";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { OnUpdate } from "Shared/Util/Timer";
@@ -32,12 +32,12 @@ export class BlockSelectController implements OnStart {
 			print("Failed to find highlight prefab.");
 			return;
 		}
-		this.highlightGO = GameObjectBridge.Instantiate(highlightPrefab);
+		this.highlightGO = GameObjectUtil.Instantiate(highlightPrefab);
 		this.highlightGO.layer = Layer.IGNORE_RAYCAST;
 		this.highlightGO.SetActive(false);
 
 		const voidPlanePrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/VoidPlane.prefab") as Object;
-		this.voidPlane = GameObjectBridge.Instantiate(voidPlanePrefab);
+		this.voidPlane = GameObjectUtil.Instantiate(voidPlanePrefab);
 		this.voidPlane.name = "VoidPlane";
 		this.voidPlane.transform.localScale = new Vector3(50, 0.99, 50);
 		this.voidPlane.layer = Layer.BRIDGE_ASSIST;
