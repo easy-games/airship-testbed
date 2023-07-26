@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessories:
   - {fileID: 11400000, guid: d3ab1964f84ff2548b7f209dcdc96721, type: 2}
+  - {fileID: 11400000, guid: db5b2008cab7c7e4d90ce4b844a8ee2c, type: 2}
