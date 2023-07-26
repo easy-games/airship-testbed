@@ -88,6 +88,11 @@ export class InventoryEntityAnimator extends EntityAnimator {
 		}
 		this.Log("Playing Item Anim: " + clipKey);
 		this.itemLayer.StartFade(1, this.defaultTransitionTime);
+		const lastState = this.itemLayer.CurrentState;
+		if (lastState) {
+			//Clear the last states end event since we are now starting a new animation
+			lastState.Events.ClearEndTSEvent();
+		}
 		const animState = this.PlayAnimation(clip, this.itemLayerIndex, wrapMode);
 		if (onEnd !== undefined) {
 			animState.Events.OnEndTS(onEnd);
@@ -141,12 +146,13 @@ export class InventoryEntityAnimator extends EntityAnimator {
 		});
 	}
 
-	private StartItemIdle() {
+	public StartItemIdle() {
 		this.TriggerEvent(ItemEventKeys.IDLE);
 		this.Play(ItemEventKeys.IDLE);
 	}
 
 	public PlayItemUse(useIndex = 0, itemPlayMode: ItemPlayMode = 0) {
+		this.Log("Item Use Started: " + useIndex);
 		//In the animation array use animations are the 3rd index and beyond;
 		let i = useIndex + 3;
 		if (i >= 0 && i < this.currentItemClips.size()) {

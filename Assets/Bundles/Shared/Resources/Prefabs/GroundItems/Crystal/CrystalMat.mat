@@ -15,7 +15,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -70,34 +70,36 @@ Material:
     - NUM_LIGHTS: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _DepthOpacity: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelPower: 3
-    - _FresnelStrength: 1
+    - _FresnelPower: 2.45
+    - _FresnelStrength: 0.83
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.23
     - _GlossyReflections: 1
     - _HueShift: 0.2
-    - _MaxDepthHeight: 0.05
+    - _MaxDepthHeight: 0.196
     - _Metallic: 0
-    - _MinDepthHeight: 0.01
+    - _MinDepthHeight: 0.067
     - _MinLight: 0.2
     - _Mode: 0
-    - _NormalIntensity: 0.5
+    - _NormalIntensity: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ShineFresnelPower: 3
+    - _ShineFresnelPower: 2
     - _ShineFresnelStrength: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SurfaceOpacity: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0, b: 0, a: 1}
-    - _DepthColor: {r: 0, g: 0.5794997, b: 1, a: 1}
+    - _Color: {r: 0.3203987, g: 0.8331072, b: 0.9056604, a: 0.078431375}
+    - _DepthColor: {r: 0.11057826, g: 0.41509423, b: 0.06461368, a: 0.05490196}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _OverlayColor: {r: 1, g: 0, b: 0, a: 0}
-    - _ShineColor: {r: 0.09451604, g: 1, b: 0, a: 1}
+    - _ShineColor: {r: 0, g: 0.7169812, b: 0.30727768, a: 1}
   m_BuildTextureStacks: []
