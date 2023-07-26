@@ -54,8 +54,8 @@ export const DEFAULT_BEDWARS_SHOP: Shop = {
 		{
 			item: ItemType.CERAMIC,
 			currency: ItemType.IRON,
-			price: 4,
-			quantity: 14,
+			price: 14,
+			quantity: 4,
 			category: ShopCategory.BLOCKS,
 		},
 		{
@@ -127,6 +127,15 @@ export const DEFAULT_BEDWARS_SHOP: Shop = {
 			price: 100,
 			quantity: 1,
 			category: ShopCategory.TOOLS,
+		},
+
+		// Armor
+		{
+			item: ItemType.LEATHER_ARMOR,
+			currency: ItemType.IRON,
+			price: 50,
+			quantity: 1,
+			category: ShopCategory.COMBAT,
 		},
 	],
 };
