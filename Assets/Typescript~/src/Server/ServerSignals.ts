@@ -3,11 +3,11 @@ import { Entity } from "./Entity/Entity";
 import { ItemStack } from "./Inventory/ItemStack";
 import { ItemMeta } from "./Item/ItemMeta";
 import { ItemType } from "./Item/ItemType";
+import { ShopElement } from "./ItemShop/ItemShopMeta";
 import { MatchState } from "./Match/MatchState";
 import { Player } from "./Player/Player";
 import { BeforeBlockHitSignal } from "./Services/Global/Block/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideServerSignal } from "./Services/Global/Damage/Projectile/ProjectileCollideServerSignal";
-import { ShopItem } from "./Shop/ShopMeta";
 import { BeforeBlockPlacedSignal } from "./Signals/BeforeBlockPlacedSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";
@@ -76,7 +76,7 @@ export const ServerSignals = {
 	/** Fired when projectile hits an object. */
 	ProjectileHit: new Signal<ProjectileCollideServerSignal>(),
 	/** Fired when a player successfully purchases a shop item. */
-	ShopPurchase: new Signal<{ player: Player; shopItem: ShopItem }>(),
+	ShopPurchase: new Signal<{ player: Player; shopItem: ShopElement }>(),
 	/** Fired when a player is eliminated. */
 	PlayerEliminated: new Signal<{ player: Player }>(),
 	CustomMoveCommand: new Signal<MoveCommandDataEvent>(),

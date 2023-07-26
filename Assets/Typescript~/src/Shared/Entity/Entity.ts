@@ -430,10 +430,6 @@ export class Entity {
 		return WorldAPI.GetMainWorld().GetBlockBelowMeta(this.model.transform.position);
 	}
 
-	public GetAccessoryGameObjects(slot: AccessorySlot): GameObject[] {
-		return this.PushToArray(this.accessoryBuilder.GetAccessories(slot));
-	}
-
 	public GetAccessoryMeshes(slot: AccessorySlot): Renderer[] {
 		return this.PushToArray(this.accessoryBuilder.GetAccessoryMeshes(slot));
 	}

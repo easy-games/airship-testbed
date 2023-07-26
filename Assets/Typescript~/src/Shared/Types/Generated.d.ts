@@ -11045,9 +11045,10 @@ interface AccessoryBuilder extends MonoBehaviour {
     constructor(): AccessoryBuilder;
 
     AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode): CSArray<GameObject>;
-    GetAccessories(target: AccessorySlot): CSArray<GameObject>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
+    GetActiveAccessories(): CSArray<ActiveAccessory>;
+    GetActiveAccessoriesBySlot(target: AccessorySlot): CSArray<ActiveAccessory>;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot): void;
@@ -11073,6 +11074,7 @@ interface Accessory extends ScriptableObject {
     Rotation: Vector3;
     Scale: Vector3;
     MeshDeformed: boolean;
+    VisibleInFirstPerson: boolean;
     HasSkinnedMeshes: boolean;
 
     constructor(): Accessory;
@@ -11951,6 +11953,14 @@ interface ParticleSystemConstructor {
     SetMaximumPreMappedBufferCounts(vertexBuffersCount: number, indexBuffersCount: number): void;
 }
 declare const ParticleSystem: ParticleSystemConstructor;
+    
+interface ActiveAccessory {
+    accessory: Accessory;
+    gameObjects: CSArray<GameObject>;
+    renderers: CSArray<Renderer>;
+
+
+}
     
 interface AccessoryKit extends ScriptableObject {
     accessories: CSArray<Accessory>;

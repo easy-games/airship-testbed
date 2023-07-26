@@ -22,7 +22,7 @@ export class LobbyService implements OnStart {
 				inv.SetItem(6, new ItemStack(ItemType.FIREBALL, 100));
 				inv.SetItem(7, new ItemStack(ItemType.BED, 15));
 				inv.SetItem(8, new ItemStack(ItemType.WOOD_ARROW, 100));
-				inv.SetItem(10, new ItemStack(ItemType.DIAMOND_ARMOR, 1));
+				inv.SetItem(10, new ItemStack(ItemType.LEATHER_HELMET, 1));
 
 				inv.SetItem(20, new ItemStack(ItemType.WHITE_WOOL, 100));
 				inv.SetItem(21, new ItemStack(ItemType.STONE_BRICK, 100));

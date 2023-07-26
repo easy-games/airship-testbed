@@ -4,8 +4,8 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
+import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
-import { DEFAULT_BEDWARS_SHOP, ShopCategory, ShopItem } from "Shared/Shop/ShopMeta";
 import { BedWarsUI } from "Shared/UI/BedWarsUI";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
@@ -21,7 +21,7 @@ export class ItemShopController implements OnStart {
 	/** Individual shop item prefab. */
 	private shopItemPrefab: Object;
 	/** Currently selected item. */
-	private selectedItem: ShopItem | undefined;
+	private selectedItem: ShopElement | undefined;
 	private selectedItemBin = new Bin();
 
 	private purchaseButton: GameObject;
@@ -42,12 +42,18 @@ export class ItemShopController implements OnStart {
 
 	OnStart(): void {
 		this.Init();
+
+		Network.ServerToClient.ItemShop.RemoveTierPurchases.Client.OnServerEvent((itemTypes) => {
+			for (const itemType of itemTypes) {
+				this.purchasedTierItems.delete(itemType);
+			}
+		});
 	}
 
 	public Open(): void {
 		const bin = new Bin();
 
-		this.UpdateItems();
+		this.UpdateItems(false);
 		if (this.selectedItem) {
 			this.SetSidebarItem(this.selectedItem);
 		}
@@ -61,12 +67,12 @@ export class ItemShopController implements OnStart {
 	}
 
 	private Init(): void {
-		const shopItems = DEFAULT_BEDWARS_SHOP.shopItems;
+		const shopItems = ItemShopMeta.defaultItems.shopItems;
 		// Default sidebar to _first_ item in default shop array..
 		const defaultItem = shopItems[0];
 		this.SetSidebarItem(defaultItem);
 		// Instantiate individual item prefabs underneath relevant category container.
-		this.UpdateItems();
+		this.UpdateItems(true);
 		// Handle purchase requests.
 		const purchaseButton = this.refs.GetValue<GameObject>("SidebarContainer", "PurchaseButton");
 		BedWarsUI.SetupButton(purchaseButton);
@@ -81,12 +87,12 @@ export class ItemShopController implements OnStart {
 		 */
 	}
 
-	private UpdateItems(): void {
-		DEFAULT_BEDWARS_SHOP.shopItems.forEach((shopItem) => {
+	private UpdateItems(init: boolean): void {
+		ItemShopMeta.defaultItems.shopItems.forEach((shopItem) => {
 			let shown = true;
 			if (shopItem.prevTier && !this.purchasedTierItems.has(shopItem.prevTier)) {
 				shown = false;
-			} else if (shopItem.nextTier && this.purchasedTierItems.has(shopItem.nextTier)) {
+			} else if (shopItem.nextTier && this.purchasedTierItems.has(shopItem.itemType)) {
 				shown = false;
 			}
 
@@ -112,10 +118,12 @@ export class ItemShopController implements OnStart {
 				itemGO.SetActive(false);
 			}
 
-			BedWarsUI.SetupButton(itemGO);
-			CanvasAPI.OnClickEvent(itemGO, () => {
-				this.SetSidebarItem(shopItem);
-			});
+			if (init) {
+				BedWarsUI.SetupButton(itemGO);
+				CanvasAPI.OnClickEvent(itemGO, () => {
+					this.SetSidebarItem(shopItem);
+				});
+			}
 		});
 	}
 
@@ -124,12 +132,16 @@ export class ItemShopController implements OnStart {
 	 */
 	private HandlePurchaseRequest(): void {
 		if (!this.selectedItem) return;
-		const item = this.selectedItem;
-		const result = Network.ClientToServer.Shop.PurchaseRequest.Client.FireServer(item);
+		const shopItem = this.selectedItem;
+		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopItem.itemType);
 		if (result) {
-			this.purchasedTierItems.add(item.itemType);
+			this.purchasedTierItems.add(shopItem.itemType);
 			AudioManager.PlayGlobal("ItemShopPurchase.wav");
-			this.UpdateItems();
+			this.UpdateItems(false);
+
+			if (shopItem.nextTier) {
+				this.SetSidebarItem(ItemShopMeta.GetShopElementFromItemType(shopItem.nextTier)!);
+			}
 		}
 	}
 
@@ -137,7 +149,7 @@ export class ItemShopController implements OnStart {
 	 * Updates sidebar to reflect selected shop item.
 	 * @param shopItem A shop item.
 	 */
-	private SetSidebarItem(shopItem: ShopItem): void {
+	private SetSidebarItem(shopItem: ShopElement): void {
 		this.selectedItemBin.Clean();
 
 		/* TODO: We should probably fetch and cache these references inside of `OnStart` or the constructor. */

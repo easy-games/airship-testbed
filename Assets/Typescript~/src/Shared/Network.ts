@@ -12,7 +12,6 @@ import { RemoteEvent } from "./Network/RemoteEvent";
 import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { ProjectileDto } from "./Projectile/Projectile";
-import { ShopItem } from "./Shop/ShopMeta";
 import { TeamDto } from "./Team/Team";
 import { TeamUpgradeStateDto } from "./TeamUpgrades/TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgrades/TeamUpgradeType";
@@ -41,9 +40,9 @@ export const Network = {
 			/** Fired when client attempts to puchase a team upgrade. */
 			UpgradeRequest: new RemoteFunction<[upgradeType: TeamUpgradeType, tier: number], boolean>(),
 		},
-		Shop: {
+		ItemShop: {
 			/** Fired when client attempts to purchase shop item. */
-			PurchaseRequest: new RemoteFunction<[shopItem: ShopItem], boolean>(),
+			PurchaseRequest: new RemoteFunction<[itemType: ItemType], boolean>(),
 		},
 		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
 
@@ -71,6 +70,9 @@ export const Network = {
 		ProjectileHit: new RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>(),
 		Entity: {
 			SetHealth: new RemoteEvent<[entityId: number, health: number]>(),
+		},
+		ItemShop: {
+			RemoveTierPurchases: new RemoteEvent<[itemTypes: ItemType[]]>(),
 		},
 		EntityDeath: new RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined]>(),
 		AddGroundItem: new RemoteEvent<[groundItemGOID: number, itemStack: ItemStackDto]>(),
