@@ -19,9 +19,7 @@ export class CollectionManagerController implements OnStart {
 
 		/* Listen for tagged, replicated `GameObject` instatiation. */
 		Network.ServerToClient.NetGameObjectReplicating.Client.OnServerEvent((networkObjectId, tag) => {
-			print("wait.1");
 			print(`[${tag}]: waiting for ${networkObjectId}`);
-			print("wait.2");
 			const replicatedGameObject = WaitForNobId(networkObjectId).gameObject;
 			this.addGameObjectToTagSet(replicatedGameObject, tag);
 		});
