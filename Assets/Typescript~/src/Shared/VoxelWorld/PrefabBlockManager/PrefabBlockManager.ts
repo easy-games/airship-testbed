@@ -1,6 +1,6 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { BlockPlaceClientSignal } from "Client/Signals/BlockPlaceClientSignal";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SignalPriority } from "Shared/Util/Signal";
@@ -69,7 +69,7 @@ export class PrefabBlockManager {
 			const prefab = AssetBridge.LoadAsset<Object>(
 				`Shared/Resources/VoxelWorld/BlockPrefabs/${itemMeta.block.prefab.path}`,
 			);
-			const prefabGO = GameObjectBridge.InstantiateAt(prefab, pos, Quaternion.identity);
+			const prefabGO = GameObjectUtil.InstantiateAt(prefab, pos, Quaternion.identity);
 			this.objectMap.set(pos, prefabGO);
 
 			if (itemMeta.block.prefab.childBlocks) {
@@ -96,11 +96,11 @@ export class PrefabBlockManager {
 				if (anim) {
 					animatingOut = true;
 					anim.Play();
-					GameObjectBridge.Destroy(obj, 5);
+					GameObjectUtil.Destroy(obj, 5);
 				}
 			}
 			if (!animatingOut) {
-				GameObjectBridge.Destroy(obj);
+				GameObjectUtil.Destroy(obj);
 			}
 		}
 		const world = WorldAPI.GetMainWorld();

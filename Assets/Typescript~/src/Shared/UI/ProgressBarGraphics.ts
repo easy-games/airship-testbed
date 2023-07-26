@@ -1,5 +1,5 @@
-﻿import { Task } from "../Util/Task";
-import { GameObjectBridge } from "../GameObjectBridge";
+﻿import { GameObjectUtil } from "../GameObjectBridge";
+import { Task } from "../Util/Task";
 
 export interface ProgressBarOptions {
 	initialPercentDelta?: number;
@@ -55,7 +55,7 @@ export class ProgressBarGraphics {
 		this.fillTransform.TweenCancelAll(false, true);
 		this.changeFillTransform.TweenCancelAll(false, true);
 		this.enabled = false;
-		GameObjectBridge.Destroy(this.transform.gameObject);
+		GameObjectUtil.Destroy(this.transform.gameObject);
 	}
 
 	public SetColor(newColor: Color) {

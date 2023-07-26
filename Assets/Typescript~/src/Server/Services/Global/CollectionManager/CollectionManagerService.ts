@@ -6,9 +6,9 @@ import { CollectionTag } from "Shared/Util/CollectionTag";
 @Service({ loadOrder: 0 })
 export class CollectionManagerService implements OnStart {
 	/** Server collection table. Associates collection tags with GameObjects. */
-	private serverCollectionTable = new Map<CollectionTag, Set<GameObject>>();
+	private serverCollectionTable = new Map<string, Set<GameObject>>();
 	/** To replicate collection sync table. This is sent to players on _join_ to synchronize `CollectionManager` state. */
-	private toReplicateCollectionTable = new Map<CollectionTag, Set<number>>();
+	private toReplicateCollectionTable = new Map<string, Set<number>>();
 
 	OnStart(): void {
 		/* On player join, send snapshot of replication table. */
@@ -34,7 +34,7 @@ export class CollectionManagerService implements OnStart {
 	}
 
 	/** Listen for `GameObject` `gameObject` destruction. */
-	private listenForGameObjectDestruction(gameObject: GameObject, tag: CollectionTag): void {
+	private listenForGameObjectDestruction(gameObject: GameObject, tag: string): void {
 		/* Add `DestroyWatcher` component to _all_ tagged `GameObject`s. */
 		if (gameObject.GetComponent<DestroyWatcher>() === undefined) {
 			const componentRef = gameObject.AddComponent("DestroyWatcher") as DestroyWatcher;
@@ -45,7 +45,7 @@ export class CollectionManagerService implements OnStart {
 	}
 
 	/** Adds networkObjectId `nob` to relevant `tag` tag set, OR creates tag set and adds `nob`. */
-	private addNobToReplicationTagSet(nob: number, tag: CollectionTag): void {
+	private addNobToReplicationTagSet(nob: number, tag: string): void {
 		const tagSet = this.toReplicateCollectionTable.get(tag);
 		if (tagSet) {
 			tagSet.add(nob);
@@ -55,7 +55,7 @@ export class CollectionManagerService implements OnStart {
 	}
 
 	/** Removes networkObjectId `nob` from relevant `tag` tag set. */
-	private removeNobFromReplicationTagSet(nob: number, tag: CollectionTag): void {
+	private removeNobFromReplicationTagSet(nob: number, tag: string): void {
 		const tagSet = this.toReplicateCollectionTable.get(tag);
 		if (!tagSet) return;
 		if (tagSet.has(nob)) tagSet.delete(nob);
@@ -66,7 +66,7 @@ export class CollectionManagerService implements OnStart {
 	 * @param gameObject a `GameObject`.
 	 * @param tag Tag to be added to `GameObject`.
 	 */
-	public addGameObjectToTagSet(gameObject: GameObject, tag: CollectionTag): void {
+	public addGameObjectToTagSet(gameObject: GameObject, tag: string): void {
 		const tagSet = this.serverCollectionTable.get(tag);
 		if (tagSet) {
 			tagSet.add(gameObject);
@@ -84,7 +84,7 @@ export class CollectionManagerService implements OnStart {
 	 * @param gameObject a `GameObject`.
 	 * @param tag Tag to be removed to `GameObject`.
 	 */
-	public removeGameObjectFromTagSet(gameObject: GameObject, tag: CollectionTag): void {
+	public removeGameObjectFromTagSet(gameObject: GameObject, tag: string): void {
 		const tagSet = this.serverCollectionTable.get(tag);
 		if (!tagSet) return;
 		if (tagSet.has(gameObject)) tagSet.delete(gameObject);

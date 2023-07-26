@@ -5,9 +5,9 @@ import { EntitySpawnEvent } from "Server/Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "Server/Signals/MoveCommandDataEvent";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Network } from "Shared/Network";
-import { NetworkBridge } from "Shared/NetworkBridge";
+import { NetworkUtil } from "Shared/NetworkBridge";
 import { Player } from "Shared/Player/Player";
 import { EntityPrefabType } from "../../../Entity/EntityPrefabType";
 import { ChatService } from "../Chat/ChatService";
@@ -72,7 +72,7 @@ export class EntityService implements OnStart {
 			}
 			this.loadedEntityPrefabs.set(entityPrefabType, entityPrefab);
 		}
-		const entityGO = GameObjectBridge.InstantiateAt(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
+		const entityGO = GameObjectUtil.InstantiateAt(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
 		entityGO.name = `entity_${id}`;
 
 		const entityModelGO = entityGO.transform.Find("EntityModel");
@@ -84,9 +84,9 @@ export class EntityService implements OnStart {
 			}
 		});
 		if (player) {
-			NetworkBridge.SpawnWithClientOwnership(entityGO, player.clientId);
+			NetworkUtil.SpawnWithClientOwnership(entityGO, player.clientId);
 		} else {
-			NetworkBridge.Spawn(entityGO);
+			NetworkUtil.Spawn(entityGO);
 		}
 
 		const nob = entityGO.GetComponent("NetworkObject") as NetworkObject;

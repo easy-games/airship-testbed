@@ -2,7 +2,7 @@ import { CollectionTag } from "./Util/CollectionTag";
 import { RunUtil } from "./Util/RunUtil";
 
 /** Wrapper around `Object` functionality. */
-export class GameObjectBridge {
+export class GameObjectUtil {
 	/**
 	 * Instantiate an Object.
 	 * @param original The object being instantiated.
@@ -13,7 +13,7 @@ export class GameObjectBridge {
 		/** Fire `GameObjectInstantiated` event if tagged. */
 		const go = Object.Instantiate(original) as GameObject;
 		if (tag) {
-			GameObjectBridge.FireTaggedGameObjectInstantiatedSignal(go, tag);
+			GameObjectUtil.FireTaggedGameObjectInstantiatedSignal(go, tag);
 		}
 		return go;
 	}
@@ -35,7 +35,7 @@ export class GameObjectBridge {
 		/** Fire `GameObjectInstantiated` event if tagged. */
 		const go = Object.Instantiate(original, position, rotation) as GameObject;
 		if (tag) {
-			GameObjectBridge.FireTaggedGameObjectInstantiatedSignal(go, tag);
+			GameObjectUtil.FireTaggedGameObjectInstantiatedSignal(go, tag);
 		}
 		return go;
 	}
@@ -51,7 +51,7 @@ export class GameObjectBridge {
 		/** Fire `GameObjectInstantiated` event if tagged. */
 		const go = Object.Instantiate(original, parent) as GameObject;
 		if (tag) {
-			GameObjectBridge.FireTaggedGameObjectInstantiatedSignal(go, tag);
+			GameObjectUtil.FireTaggedGameObjectInstantiatedSignal(go, tag);
 		}
 		return go;
 	}
