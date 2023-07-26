@@ -68,6 +68,8 @@ export class HeldItem {
 		this.Log("OnUnEquip");
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
+		this.chargeStartTime = 0;
+		this.isCharging = false;
 	}
 
 	public OnCallToActionStart() {
@@ -183,7 +185,7 @@ export class HeldItem {
 	public IsChargedUp(): boolean {
 		let chargeUpMin = this.meta.itemMechanics.minChargeSeconds;
 		this.Log("chargeUpMin: " + chargeUpMin);
-		//no charge up
+		//no charge up time
 		if (chargeUpMin <= 0) return true;
 
 		//If we've charged up enough
