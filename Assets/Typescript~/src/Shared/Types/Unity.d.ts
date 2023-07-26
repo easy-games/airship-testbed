@@ -1297,6 +1297,7 @@ interface AnimancerState {
 
 interface Sequence {
 	OnEndTS(callback: () => void): void;
+	ClearEndTSEvent(): void;
 }
 
 interface AnimancerComponent extends Component {
@@ -1331,6 +1332,7 @@ interface AnimancerLayer {
 	SetMask(mask: AvatarMask): void;
 	Play(clip: AnimationClip, fadeDuration: number, fadeMode: FadeMode): AnimationState;
 	DestroyStates(): void;
+	CurrentState: AnimancerState;
 }
 
 interface Ray {
