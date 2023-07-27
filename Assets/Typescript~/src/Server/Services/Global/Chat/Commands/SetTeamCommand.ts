@@ -1,5 +1,5 @@
 import { Player } from "Shared/Player/Player";
-import { ChatCommand } from "./ChatCommand";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
 import { Dependency } from "@easy-games/flamework-core";
 import { PlayerService } from "../../Player/PlayerService";
 import { TeamService } from "../../Team/TeamService";

@@ -4,7 +4,7 @@ import { Network } from "Shared/Network";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import StringUtils from "Shared/Util/StringUtil";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
-import { ChatCommand } from "./Commands/ChatCommand";
+import { ChatCommand } from "../../../Commands/ChatCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
 import { DestroyBedCommand } from "./Commands/DestroyBedCommand";
 import { DieCommand } from "./Commands/DieCommand";
@@ -21,6 +21,7 @@ import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { FriendRequestCommand } from "CoreShared/Commands/FriendRequestCommand";
+import { ChatUtil } from "CoreShared/Util/ChatUtil";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -61,14 +62,14 @@ export class ChatService implements OnStart {
 			}
 
 			if (StringUtils.startsWith(text, "/")) {
-				text = StringUtils.slice(text, 1, text.size());
-				let split = text.split(" ");
-				const commandLabel = split.remove(0)!.lower();
+				const commandData = ChatUtil.ParseCommandData(text);
 
-				const command = this.commands.get(commandLabel);
-				if (command) {
-					command.Execute(player, split);
-					return;
+				if (commandData) {
+					const command = this.commands.get(commandData.label);
+					if (command) {
+						command.Execute(player, commandData.args);
+						return;
+					}
 				}
 
 				player.SendMessage("Invalid command: /" + text);

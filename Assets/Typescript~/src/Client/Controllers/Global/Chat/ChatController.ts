@@ -7,6 +7,10 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { ChatCommand } from "CoreShared/Commands/ChatCommand";
+import { ChatUtil } from "CoreShared/Util/ChatUtil";
+import { PlayerController } from "../Player/PlayerController";
+import { Game } from "Shared/Game";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -57,12 +61,21 @@ export class ChatController implements OnStart {
 	private prevSentMessages: string[] = [];
 	private historyIndex = -1;
 
+	private commands = new Map<string, ChatCommand>();
+
 	constructor(private localEntityController: LocalEntityController) {
 		const refs = GameObject.Find("Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
 		this.content.gameObject.ClearChildren();
+	}
+
+	public RegisterCommand(command: ChatCommand) {
+		this.commands.set(command.commandLabel.lower(), command);
+		for (let alias of command.aliases) {
+			this.commands.set(alias.lower(), command);
+		}
 	}
 
 	OnStart(): void {
@@ -213,7 +226,17 @@ export class ChatController implements OnStart {
 		if (this.prevSentMessages.size() > 50) {
 			this.prevSentMessages.pop();
 		}
+
 		Network.ClientToServer.SendChatMessage.Client.FireServer(message);
+
+		const commandData = ChatUtil.ParseCommandData(message);
+
+		if (commandData) {
+			const command = this.commands.get(commandData.label);
+			if (command) {
+				command.Execute(Game.LocalPlayer, commandData.args);
+			}
+		}
 	}
 
 	public AddChatMessage(message: string): void {

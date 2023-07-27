@@ -1,6 +1,6 @@
 import { FriendAPI } from "CoreShared/API/FriendAPI";
-import { ChatCommand } from "Server/Services/Global/Chat/Commands/ChatCommand";
 import { Player } from "Shared/Player/Player";
+import { ChatCommand } from "./ChatCommand";
 
 export class FriendRequestCommand extends ChatCommand {
 	constructor() {
