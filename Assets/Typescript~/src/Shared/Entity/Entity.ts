@@ -44,9 +44,9 @@ export class EntityReferences {
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
-	jumpSound: string | undefined;
-	slideSound: string | undefined;
-	landSound: string | undefined;
+	jumpSound: AudioClip | undefined;
+	slideSound: AudioClip | undefined;
+	landSound: AudioClip | undefined;
 
 	constructor(ref: GameObjectReferences) {
 		let boneKey = "Bones";
@@ -73,35 +73,27 @@ export class EntityReferences {
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
 
-		// this.jumpSound = BundleReferenceManager.GetPathForResource(
+		// this.jumpSound = AudioManager.LoadFullPathAudioClip(BundleReferenceManager.GetPathForResource(
 		// 	BundleGroupNames.Entity,
 		// 	Bundle_Entity.Movement,
 		// 	Bundle_Entity_Movement.JumpSFX,
-		// );
-		// if (this.jumpSound) {
-		// 	this.jumpSound = AudioManager.GetLocalPathFromFullPath(this.jumpSound);
-		// 	print("JUMP SOUND: " + this.jumpSound);
-		// }
+		// ));
 
-		// this.slideSound = BundleReferenceManager.GetPathForResource(
-		// 	BundleGroupNames.Entity,
-		// 	Bundle_Entity.Movement,
-		// 	Bundle_Entity_Movement.SlideSFX,
-		// );
-		if (this.slideSound) {
-			this.slideSound = AudioManager.GetLocalPathFromFullPath(this.slideSound);
-			print("SLIDE SOUND: " + this.slideSound);
-		}
-
-		this.landSound = BundleReferenceManager.GetPathForResource(
-			BundleGroupNames.Entity,
-			Bundle_Entity.Movement,
-			Bundle_Entity_Movement.LandSFX,
+		this.slideSound = AudioManager.LoadFullPathAudioClip(
+			BundleReferenceManager.GetPathForResource(
+				BundleGroupNames.Entity,
+				Bundle_Entity.Movement,
+				Bundle_Entity_Movement.SlideSFX,
+			),
 		);
-		if (this.landSound) {
-			this.landSound = AudioManager.GetLocalPathFromFullPath(this.landSound);
-			print("LAND SOUND: " + this.landSound);
-		}
+
+		this.landSound = AudioManager.LoadFullPathAudioClip(
+			BundleReferenceManager.GetPathForResource(
+				BundleGroupNames.Entity,
+				Bundle_Entity.Movement,
+				Bundle_Entity_Movement.LandSFX,
+			),
+		);
 	}
 }
 

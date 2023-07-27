@@ -21,19 +21,45 @@ export class AudioManager {
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig): void {
 		const clip = this.LoadAudioClip(sound);
 		if (!clip) {
-			error("Failed to find sound: " + sound);
+			error("PlayGlobal Failed to find sound: " + sound);
+			return;
+		}
+		this.globalSource.PlayOneShot(clip, config?.volumeScale ?? 1);
+	}
+
+	public static PlayFullPathGlobal(fullPath: string, config?: PlaySoundConfig): void {
+		const clip = this.LoadFullPathAudioClip(fullPath);
+		if (!clip) {
+			error("PlayFullPathGlobal Failed to find full path: " + fullPath);
 			return;
 		}
 		this.globalSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 	}
 
 	public static PlayAtPosition(sound: string, position: Vector3, config?: PlaySoundConfig): void {
+		const clip = this.LoadAudioClip(sound);
+		if (!clip) {
+			warn("PlayAtPosition Failed to find sound: " + sound);
+			return;
+		}
+		return this.PlayClipAtPosition(clip, position, config);
+	}
+
+	public static PlayFullPathAtPosition(fullPath: string, position: Vector3, config?: PlaySoundConfig): void {
+		const clip = this.LoadFullPathAudioClip(fullPath);
+		if (!clip) {
+			warn("PlayFullPathAtPosition Failed to find full path: " + fullPath);
+			return;
+		}
+		return this.PlayClipAtPosition(clip, position, config);
+	}
+
+	public static PlayClipAtPosition(clip: AudioClip, position: Vector3, config?: PlaySoundConfig): void {
 		const audioSource = this.GetAudioSource(position);
 		audioSource.maxDistance = MAX_DISTANCE;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
-		const clip = this.LoadAudioClip(sound);
 		if (!clip) {
-			warn("Failed to find sound: " + sound);
+			warn("Trying to play unidentified clip");
 			return;
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
@@ -57,11 +83,18 @@ export class AudioManager {
 	}
 
 	public static LoadAudioClip(sound: string): AudioClip | undefined {
-		return AssetBridge.LoadAssetIfExists<AudioClip>(this.SoundFolderPath + this.FriendlyPath(sound));
+		return this.LoadFullPathAudioClip(this.SoundFolderPath + this.FriendlyPath(sound));
+	}
+
+	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {
+		const clip = AssetBridge.LoadAssetIfExists<AudioClip>(fullPath);
+		if (!clip) {
+			warn("Unable to load clip: " + fullPath);
+		}
+		return clip;
 	}
 
 	public static GetLocalPathFromFullPath(fullPath: string) {
-		print("Getting path from: " + fullPath);
 		return fullPath.sub(this.soundFolderIndex);
 	}
 }
