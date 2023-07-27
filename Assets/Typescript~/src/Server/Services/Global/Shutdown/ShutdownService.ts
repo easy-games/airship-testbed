@@ -15,7 +15,7 @@ export class ShutdownService implements OnStart {
 	constructor(private readonly playerService: PlayerService) {}
 
 	OnStart(): void {
-		ServerSignals.PlayerJoin.connect((event) => {
+		ServerSignals.PlayerJoin.Connect((event) => {
 			this.playerConnected = true;
 			this.timeWithNoPlayers = 0;
 		});

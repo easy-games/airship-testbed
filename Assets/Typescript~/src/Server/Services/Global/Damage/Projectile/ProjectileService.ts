@@ -4,10 +4,9 @@ import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
 import { Network } from "Shared/Network";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { LayerUtil } from "Shared/Util/LayerUtil";
+import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 import { DamageService } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
-import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -40,11 +39,11 @@ export class ProjectileService implements OnStart {
 			}
 		});
 
-		ProjectileManager.Instance.onProjectileValidate((event) => {
+		ProjectileManager.Instance.OnProjectileValidate((event) => {
 			event.validated = true;
 		});
 
-		ProjectileManager.Instance.onProjectileLaunched((easyProjectile, shooterGO) => {
+		ProjectileManager.Instance.OnProjectileLaunched((easyProjectile, shooterGO) => {
 			const shooterEntity = Entity.FindByGameObject(shooterGO);
 			const itemType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
 			if (!itemType) {
@@ -64,11 +63,6 @@ export class ProjectileService implements OnStart {
 	): boolean {
 		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).Ammo!;
 		const hitEntity = Entity.FindByCollider(collider);
-
-		// Check if it should be colliding with us.
-		if (!LayerUtil.LayerIsInMask(collider.gameObject.layer, ammoMeta.projectileHitLayerMask)) {
-			return false;
-		}
 
 		const projectileHitSignal = new ProjectileCollideServerSignal(
 			projectile,

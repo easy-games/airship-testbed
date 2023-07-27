@@ -19,7 +19,7 @@ export class BWTeamService implements OnStart {
 		}
 
 		// Temporary: even team distribution
-		ServerSignals.PlayerJoin.connect((event) => {
+		ServerSignals.PlayerJoin.Connect((event) => {
 			const teams = this.teamService.GetTeams();
 			let smallestTeam = teams[0];
 

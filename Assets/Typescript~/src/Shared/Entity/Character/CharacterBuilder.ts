@@ -1,6 +1,6 @@
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Network } from "Shared/Network";
-import { NetworkBridge } from "Shared/NetworkBridge";
+import { NetworkUtil } from "Shared/NetworkBridge";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BodyAttachment } from "./Accessory/BodyAttachment";
 import { baseCharacters } from "./BaseCharacters";
@@ -36,7 +36,7 @@ export class CharacterBuilder {
 		}
 
 		// Instantiate character model into root character game object:
-		const characterModel = GameObjectBridge.InstantiateIn(characterModelPrefab, this.characterGameObject.transform);
+		const characterModel = GameObjectUtil.InstantiateIn(characterModelPrefab, this.characterGameObject.transform);
 		characterModel.transform.name = "Character";
 		characterModel.transform.position = characterModel.transform.position.add(new Vector3(0, -1.08, 0));
 
@@ -46,11 +46,11 @@ export class CharacterBuilder {
 		// });
 
 		if (this.clientId !== undefined) {
-			NetworkBridge.SpawnWithClientOwnership(characterModel, this.clientId);
+			NetworkUtil.SpawnWithClientOwnership(characterModel, this.clientId);
 			const nob = characterModel.GetComponent<NetworkObject>();
 			Network.ServerToClient.CharacterModelChanged.Server.FireClient(this.clientId, nob.ObjectId);
 		} else {
-			NetworkBridge.Spawn(characterModel);
+			NetworkUtil.Spawn(characterModel);
 		}
 	}
 

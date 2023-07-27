@@ -60,6 +60,12 @@ const throwableItemAssets: ItemAssetsMeta = {
 	// onUseSoundId: "Throw",
 };
 
+const bowItemAssets: ItemAssetsMeta = {
+	assetBundleId: BundleGroupNames.ItemBow,
+	onUseSound: ["BowArrowFire"],
+	onUseSoundVolume: 0.5,
+};
+
 const defaultSwordMelee: MeleeItemMeta = {
 	damageType: DamageType.SWORD,
 	onHitPrefabId: Bundle_ItemSword_Prefabs.OnHit,
@@ -380,6 +386,15 @@ export const items: {
 			blockArchetype: BlockArchetype.STONE,
 		},
 	},
+	[ItemType.CERAMIC]: {
+		displayName: "Ceramic",
+		itemMechanics: blockItemMechanics,
+		itemAssets: blockItemAssets,
+		block: {
+			...defaultBlock,
+			blockId: 61,
+		},
+	},
 
 	////RESOURCES
 	[ItemType.IRON]: {
@@ -396,37 +411,37 @@ export const items: {
 	},
 
 	////ARMOR
-	[ItemType.LEATHER_ARMOR]: {
-		displayName: "Leather Armor",
+	[ItemType.LEATHER_HELMET]: {
+		displayName: "Leather Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Leather/LeatherArmor", "Armor/Leather/LeatherHelmet"],
+		AccessoryNames: ["Armor/Leather/LeatherHelmet"],
 		Armor: {
 			ArmorType: ArmorType.CHESTPLATE,
 			ProtectionAmount: 2,
 		},
 	},
-	[ItemType.IRON_ARMOR]: {
-		displayName: "Iron Armor",
+	[ItemType.IRON_HELMET]: {
+		displayName: "Iron Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Iron/IronArmor", "Armor/Iron/IronHelmet"],
+		AccessoryNames: ["Armor/Iron/IronHelmet"],
 		Armor: {
 			ArmorType: ArmorType.CHESTPLATE,
 			ProtectionAmount: 4,
 		},
 	},
-	[ItemType.DIAMOND_ARMOR]: {
-		displayName: "Diamond Armor",
+	[ItemType.DIAMOND_HELMET]: {
+		displayName: "Diamond Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Diamond/DiamondArmor", "Armor/Diamond/DiamondHelmet"],
+		AccessoryNames: ["Armor/Diamond/DiamondHelmet"],
 		Armor: {
 			ArmorType: ArmorType.CHESTPLATE,
 			ProtectionAmount: 6,
 		},
 	},
-	[ItemType.EMERALD_ARMOR]: {
-		displayName: "Emerald Armor",
+	[ItemType.EMERALD_HELMET]: {
+		displayName: "Emerald Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Emerald/EmeraldArmor", "Armor/Emerald/EmeraldHelmet"],
+		AccessoryNames: ["Armor/Emerald/EmeraldHelmet"],
 		Armor: {
 			ArmorType: ArmorType.CHESTPLATE,
 			ProtectionAmount: 8,
@@ -444,6 +459,32 @@ export const items: {
 		breakBlock: {
 			...defaultBreakBlock,
 			damage: 3,
+			extraDamageBlockArchetype: BlockArchetype.STONE,
+		},
+	},
+	[ItemType.IRON_PICKAXE]: {
+		displayName: "Iron Pickaxe",
+		itemAssets: pickaxeItemAssets,
+		itemMechanics: {
+			...defaultItemMechanics,
+			cooldownSeconds: 0.15,
+		},
+		breakBlock: {
+			...defaultBreakBlock,
+			damage: 5,
+			extraDamageBlockArchetype: BlockArchetype.STONE,
+		},
+	},
+	[ItemType.DIAMOND_PICKAXE]: {
+		displayName: "Diamond Pickaxe",
+		itemAssets: pickaxeItemAssets,
+		itemMechanics: {
+			...defaultItemMechanics,
+			cooldownSeconds: 0.1,
+		},
+		breakBlock: {
+			...defaultBreakBlock,
+			damage: 8,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
 	},
@@ -509,14 +550,11 @@ export const items: {
 		displayName: "Wood Bow",
 		itemMechanics: {
 			...rangedItemMechanics,
-			minChargeSeconds: 0.05,
+			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.25,
 		},
-		itemAssets: {
-			onUseSound: ["BowArrowFire"],
-			onUseSoundVolume: 0.5,
-		},
+		itemAssets: bowItemAssets,
 		ProjectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,

@@ -2,7 +2,6 @@ import { Signal } from "Shared/Util/Signal";
 import { BeforeBlockHitSignal } from "./Controllers/Global/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileLaunchedClientSignal";
-import { ProximityPrompt } from "./Controllers/Global/ProximityPrompt/ProximityPrompt";
 import { Entity } from "./Entity/Entity";
 import { ItemType } from "./Item/ItemType";
 import { MatchState } from "./Match/MatchState";
@@ -13,7 +12,6 @@ import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientEvent as EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
 import { ChangeTeamSignal } from "./Team/TeamJoinSignal";
-import { CollectionTag } from "./Util/CollectionTag";
 
 export const ClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),
@@ -32,9 +30,9 @@ export const ClientSignals = {
 	/** Fired when a client-predicted block is placed. */
 	BlockPlace: new Signal<BlockPlaceClientSignal>(),
 	/** Fired when a tag is added to a `GameObject` on the _client_. */
-	CollectionManagerTagAdded: new Signal<{ go: GameObject; tag: CollectionTag }>(),
+	CollectionManagerTagAdded: new Signal<{ go: GameObject; tag: string }>(),
 	/** Fired when a `GameObject` is added to a collection on the _client_. */
-	GameObjectAddedToCollection: new Signal<{ go: GameObject; tag: CollectionTag }>(),
+	GameObjectAddedToCollection: new Signal<{ go: GameObject; tag: string }>(),
 	PlayerChangeTeam: new Signal<ChangeTeamSignal>(),
 	/** Fired when match enters `MatchState.RUNNING`. */
 	MatchStart: new Signal<void>(),
@@ -47,8 +45,6 @@ export const ClientSignals = {
 	/** Fired when local player fires a projectile. */
 	ProjectileLaunched: new Signal<ProjectileLaunchedClientSignal>(),
 	ProjectileCollide: new Signal<ProjectileCollideClientSignal>(),
-	/** Fired when a proximity prompt is created. */
-	ProximityPromptCreated: new Signal<{ prompt: ProximityPrompt }>(),
 	/** Fired when a player is eliminated. */
 	PlayerEliminated: new Signal<{ player: Player }>(),
 	SpectatorTargetChanged: new Signal<{ entity: Entity }>(),

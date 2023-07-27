@@ -10,7 +10,7 @@ import { Player } from "Shared/Player/Player";
 import { Team } from "Shared/Team/Team";
 import { SetUtil } from "Shared/Util/SetUtil";
 import { SignalPriority } from "Shared/Util/Signal";
-import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { BedService } from "../BedService";
 import { MatchService } from "../MatchService";
 
@@ -91,7 +91,7 @@ export class BWService implements OnStart {
 		});
 		// Prevent teams from damaging their own beds.
 		ServerSignals.BeforeBlockHit.Connect((event) => {
-			const teamId = VoxelDataAPI.GetVoxelData(event.BlockPos, "teamId");
+			const teamId = BlockDataAPI.GetBlockData(event.BlockPos, "teamId");
 			if (teamId !== undefined && teamId === event.Player.GetTeam()?.id) {
 				event.SetCancelled(true);
 			}

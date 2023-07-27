@@ -1,4 +1,4 @@
-import { Service, OnStart } from "@easy-games/flamework-core";
+import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { DenyRegionDto } from "Shared/DenyRegion/DenyRegionMeta";
 import { Network } from "Shared/Network";
@@ -23,7 +23,7 @@ export class DenyRegionService implements OnStart {
 			if (this.InDenyRegion(event.pos)) event.setCancelled(true);
 		});
 		/* Send deny region snapshot to late joiners. */
-		ServerSignals.PlayerJoin.connect((event) => {
+		ServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_DELAY, () => {
 				Network.ServerToClient.DenyRegionSnapshot.Server.FireClient(
 					event.player.clientId,

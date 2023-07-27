@@ -1,17 +1,18 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { Game } from "Shared/Game";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ArmorType } from "Shared/Item/ArmorType";
 import { Bin } from "Shared/Util/Bin";
+import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
+import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 import { Layer } from "../../../../Shared/Util/Layer";
 import { LocalEntityController } from "../Character/LocalEntityController";
-import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class EntityAccessoryController implements OnStart {
 	private isFirstPerson = false;
-	private defaultKitAccessory: AccessoryKit | undefined;
 
 	constructor(private readonly localController: LocalEntityController) {}
 
@@ -65,6 +66,28 @@ export class EntityAccessoryController implements OnStart {
 				});
 			}
 		});
+
+		this.localController.ObserveFirstPerson((firstPerson) => {
+			const accessories = Game.LocalPlayer.Character?.accessoryBuilder.GetActiveAccessories();
+			if (!accessories) return;
+
+			for (let i = 0; i < accessories.Length; i++) {
+				const accessory = accessories.GetValue(i);
+				if (firstPerson) {
+					if (!accessory.accessory.VisibleInFirstPerson) {
+						for (let renderer of CSArrayUtil.Convert(accessory.renderers)) {
+							renderer.enabled = false;
+						}
+					}
+				} else {
+					if (!accessory.accessory.VisibleInFirstPerson) {
+						for (let renderer of CSArrayUtil.Convert(accessory.renderers)) {
+							renderer.enabled = true;
+						}
+					}
+				}
+			}
+		});
 	}
 
 	OnStart(): void {
@@ -75,9 +98,9 @@ export class EntityAccessoryController implements OnStart {
 				const accessoryBuilder = event.Entity.accessoryBuilder;
 
 				//Add Kit Accessory
-				if (this.defaultKitAccessory) {
-					accessoryBuilder.SetAccessoryKit(this.defaultKitAccessory);
-				}
+				// if (ItemUtil.defaultKitAccessory) {
+				// 	accessoryBuilder.SetAccessoryKit(ItemUtil.defaultKitAccessory);
+				// }
 
 				const bin = new Bin();
 				bin.Add(

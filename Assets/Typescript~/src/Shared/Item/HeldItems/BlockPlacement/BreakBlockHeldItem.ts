@@ -2,7 +2,7 @@
 import { BlockHitDamageCalc } from "../../../Block/BlockHitDamageCalc";
 import { Game } from "../../../Game";
 import { ProgressBarGraphics } from "../../../UI/ProgressBarGraphics";
-import { VoxelDataAPI } from "../../../VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "../../../VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { HeldItem } from "../HeldItem";
 
@@ -57,10 +57,10 @@ export class BreakBlockHeldItem extends HeldItem {
 			if (BlockHitDamageCalc(this.entity.player, voxelPos, this.meta.breakBlock) > 0) {
 				//Do the actual damage
 				const damage = BlockHitDamageCalc(Game.LocalPlayer, voxelPos, this.meta.breakBlock);
-				const health = VoxelDataAPI.GetVoxelData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+				const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
 				const blockType = WorldAPI.GetMainWorld().GetBlockAt(voxelPos).itemType;
 				const newHealth = math.max(health - damage, 0);
-				VoxelDataAPI.SetVoxelData(voxelPos, "health", newHealth);
+				BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
 
 				if (newHealth === 0) {
 					//Destroy block

@@ -3,9 +3,9 @@ import { ClientSignals } from "Client/ClientSignals";
 import { Player } from "Shared/Player/Player";
 import { Keyboard } from "Shared/UserInput";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { PlayerController } from "../Player/PlayerController";
-import { Window } from "Shared/Util/Window";
 import { Task } from "Shared/Util/Task";
+import { Window } from "Shared/Util/Window";
+import { PlayerController } from "../Player/PlayerController";
 
 @Controller({})
 export class TabListController implements OnStart {
@@ -79,12 +79,10 @@ export class TabListController implements OnStart {
 			}
 
 			let entry: GameObject | undefined;
-			if (player) {
-				if (i < contentChildCount) {
-					entry = this.tablistContentGO.transform.GetChild(i).gameObject;
-				} else {
-					entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
-				}
+			if (i < contentChildCount) {
+				entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+			} else {
+				entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
 			}
 
 			if (player && entry) {

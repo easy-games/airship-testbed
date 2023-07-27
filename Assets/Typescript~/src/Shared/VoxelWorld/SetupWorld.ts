@@ -1,9 +1,9 @@
-import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { EntityItemManager } from "../Item/HeldItems/EntityItemManager";
+import { ItemUtil } from "../Item/ItemUtil";
 import { PrefabBlockManager } from "./PrefabBlockManager/PrefabBlockManager";
 import { World } from "./World";
 import { WorldAPI } from "./WorldAPI";
-import { ItemUtil } from "../Item/ItemUtil";
 
 export function SetupWorld() {
 	if (RunCore.IsClient()) {
@@ -12,7 +12,7 @@ export function SetupWorld() {
 	}
 
 	// Setup Managers
-	VoxelDataAPI.Init();
+	BlockDataAPI.Init();
 	PrefabBlockManager.Get();
 	EntityItemManager.Get();
 	ItemUtil.Initialize();

@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Team } from "Shared/Team/Team";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
@@ -44,7 +44,7 @@ export class NametagController implements OnStart {
 
 	public CreateNametag(entity: Entity): GameObject {
 		const nametagPrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/Nametag.prefab") as GameObject;
-		const nametag = GameObjectBridge.Instantiate(nametagPrefab);
+		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
 		nametag.name = this.nameTageId;
 		nametag.transform.parent = entity.model.transform;
 		nametag.transform.localPosition = new Vector3(0, 2.3, 0);

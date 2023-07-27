@@ -60,7 +60,7 @@ export class GeneratorService implements OnStart {
 		});
 
 		/* Handle late joiners. */
-		ServerSignals.PlayerJoin.connect((event) => {
+		ServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
 				Network.ServerToClient.GeneratorSnapshot.Server.FireClient(
 					event.player.clientId,

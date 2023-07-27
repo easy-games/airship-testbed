@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Network } from "Shared/Network";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -241,7 +241,7 @@ export class ChatController implements OnStart {
 
 	public AddChatMessage(message: string): void {
 		try {
-			const chatMessage = GameObjectBridge.InstantiateIn(this.chatMessagePrefab, this.content.transform);
+			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>();
 			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
 

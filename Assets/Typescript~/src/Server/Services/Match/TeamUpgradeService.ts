@@ -51,7 +51,7 @@ export class TeamUpgradeService implements OnStart {
 			return this.HandleUpgradePurchaseRequest(player, upgradeType, tier);
 		});
 		/* Handle late joiners. */
-		ServerSignals.PlayerJoin.connect((event) => {
+		ServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
 				const team = event.player.GetTeam();
 				if (!team) return;

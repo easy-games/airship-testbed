@@ -18,6 +18,8 @@ export class ShopkeeperController implements OnStart {
 	OnStart(): void {
 		/* Listen for shopkeeper creation and create proximity prompts accordingly. */
 		CollectionManager.WatchCollectionTag(CollectionTag.ITEM_SHOP_SHOPKEEPER, (gameObject) => {
+			print("shop keeper: ", gameObject);
+			print("name: " + gameObject.name);
 			const prompt = new ProximityPrompt({
 				promptPosition: gameObject.transform.position.add(PROXIMITY_PROMPT_OFFSET),
 				activationKey: KeyCode.F,

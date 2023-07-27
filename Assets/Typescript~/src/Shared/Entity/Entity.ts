@@ -6,10 +6,9 @@ import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
-import { NetworkBridge } from "Shared/NetworkBridge";
+import { NetworkUtil } from "Shared/NetworkBridge";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -230,7 +229,7 @@ export class Entity {
 
 		if (RunUtil.IsServer()) {
 			Network.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
-			NetworkBridge.Despawn(this.networkObject.gameObject);
+			NetworkUtil.Despawn(this.networkObject.gameObject);
 		}
 	}
 
@@ -278,7 +277,10 @@ export class Entity {
 	}
 
 	public static FindByCollider(collider: Collider): Entity | undefined {
-		const nb = collider.gameObject.GetComponent<NetworkBehaviour>();
+		let nb = collider.gameObject.GetComponent<NetworkBehaviour>();
+		if (nb === undefined) {
+			nb = collider.transform.parent.gameObject.GetComponent<NetworkBehaviour>();
+		}
 
 		if (nb !== undefined) {
 			const split = nb.name.split("_");
@@ -349,6 +351,10 @@ export class Entity {
 			return TimeUtil.GetServerTime() < immuneUntilTime;
 		}
 		return false;
+	}
+
+	public GetImmuneUntilTime(): number {
+		return this.attributes.GetNumber("immunity") ?? 0;
 	}
 
 	public GetLastDamagedTime(): number {
@@ -424,10 +430,6 @@ export class Entity {
 		return WorldAPI.GetMainWorld().GetBlockBelowMeta(this.model.transform.position);
 	}
 
-	public GetAccessoryGameObjects(slot: AccessorySlot): GameObject[] {
-		return this.PushToArray(this.accessoryBuilder.GetAccessories(slot));
-	}
-
 	public GetAccessoryMeshes(slot: AccessorySlot): Renderer[] {
 		return this.PushToArray(this.accessoryBuilder.GetAccessoryMeshes(slot));
 	}
@@ -440,7 +442,7 @@ export class Entity {
 		return results;
 	}
 
-	public LaunchProjectile(itemType: ItemType, velocity: Vector3): EasyProjectile | undefined {
+	public LaunchProjectile(itemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.Ammo) {
 			return error("Tried to launch item that wasn't a projectile: " + itemType);
@@ -449,7 +451,6 @@ export class Entity {
 		if (this.IsLocalCharacter()) {
 			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 		}
-		const launchPos = ProjectileUtil.GetLaunchPosition(this, firstPerson);
 		const projectilePath = `Shared/Resources/Prefabs/Projectiles/Ammo/${itemType}.prefab`;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 

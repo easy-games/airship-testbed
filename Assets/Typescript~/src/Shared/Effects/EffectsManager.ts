@@ -1,4 +1,4 @@
-import { GameObjectBridge } from "../GameObjectBridge";
+import { GameObjectUtil } from "../GameObjectBridge";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import { BundleData, BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../Util/ReferenceManagerResources";
 
@@ -81,15 +81,15 @@ export class EffectsManager {
 	public static SpawnEffect(template: GameObject, parent?: Transform, destroyInSeconds = 5) {
 		let vfx: GameObject;
 		if (parent) {
-			vfx = GameObjectBridge.InstantiateIn(template, parent);
+			vfx = GameObjectUtil.InstantiateIn(template, parent);
 		} else {
-			vfx = GameObjectBridge.Instantiate(template);
+			vfx = GameObjectUtil.Instantiate(template);
 		}
 		vfx.transform.localPosition = Vector3.zero;
 		vfx.transform.localEulerAngles = Vector3.zero;
 		//vfx.transform.localScale = Vector3.one;
 		if (destroyInSeconds > 0) {
-			GameObjectBridge.Destroy(vfx, destroyInSeconds);
+			GameObjectUtil.Destroy(vfx, destroyInSeconds);
 		}
 		return vfx;
 	}

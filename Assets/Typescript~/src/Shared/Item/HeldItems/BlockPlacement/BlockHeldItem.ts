@@ -5,9 +5,6 @@ import { HeldItem } from "../HeldItem";
 import { BlockSelectController } from "../../../../Client/Controllers/Global/BlockInteractions/BlockSelectController";
 import { DenyRegionController } from "../../../../Client/Controllers/Global/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "../../../../Client/Controllers/Global/Character/LocalEntityController";
-import { Network } from "../../../Network";
-import { Block } from "../../../VoxelWorld/Block";
-import { Entity } from "../../../Entity/Entity";
 
 export class BlockHeldItem extends HeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
@@ -25,8 +22,8 @@ export class BlockHeldItem extends HeldItem {
 				this.meta.block.blockId,
 				WorldAPI.GetMainWorld().voxelWorld,
 			);
-			const gameObjects = this.entity.accessoryBuilder.GetAccessories(AccessorySlot.RightHand);
-			blockGO.transform.SetParent(gameObjects.GetValue(0).transform);
+			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
+			blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
 			blockGO.transform.localPosition = new Vector3(0, 0, 0);
 			const scale = 1;
 			blockGO.transform.localScale = new Vector3(scale, scale, scale);

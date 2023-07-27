@@ -12,11 +12,9 @@ import { RemoteEvent } from "./Network/RemoteEvent";
 import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { ProjectileDto } from "./Projectile/Projectile";
-import { ShopItem } from "./Shop/ShopMeta";
 import { TeamDto } from "./Team/Team";
 import { TeamUpgradeStateDto } from "./TeamUpgrades/TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgrades/TeamUpgradeType";
-import { CollectionTag } from "./Util/CollectionTag";
 
 export const Network = {
 	ClientToServer: {
@@ -42,9 +40,9 @@ export const Network = {
 			/** Fired when client attempts to puchase a team upgrade. */
 			UpgradeRequest: new RemoteFunction<[upgradeType: TeamUpgradeType, tier: number], boolean>(),
 		},
-		Shop: {
+		ItemShop: {
 			/** Fired when client attempts to purchase shop item. */
-			PurchaseRequest: new RemoteFunction<[shopItem: ShopItem], boolean>(),
+			PurchaseRequest: new RemoteFunction<[itemType: ItemType], boolean>(),
 		},
 		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
 
@@ -73,6 +71,9 @@ export const Network = {
 		Entity: {
 			SetHealth: new RemoteEvent<[entityId: number, health: number]>(),
 		},
+		ItemShop: {
+			RemoveTierPurchases: new RemoteEvent<[itemTypes: ItemType[]]>(),
+		},
 		EntityDeath: new RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined]>(),
 		AddGroundItem: new RemoteEvent<[groundItemGOID: number, itemStack: ItemStackDto]>(),
 		CharacterModelChanged: new RemoteEvent<[characterModelId: number]>(),
@@ -93,9 +94,9 @@ export const Network = {
 		/** Fired when a user joins late. Sends full generator state snapshot. */
 		GeneratorSnapshot: new RemoteEvent<[generatorStateDtos: GeneratorDto[]]>(),
 		/** Fired when a **tagged** GameObject is spawned on the server. */
-		NetGameObjectReplicating: new RemoteEvent<[networkObjectId: number, tag: CollectionTag]>(),
+		NetGameObjectReplicating: new RemoteEvent<[networkObjectId: number, tag: string]>(),
 		/** Fired when a player joins. Sends `CollectionManager` replicated set state. */
-		CollectionManagerState: new RemoteEvent<[state: Map<CollectionTag, Set<number>>]>(),
+		CollectionManagerState: new RemoteEvent<[state: Map<string, Set<number>>]>(),
 		/** Fired when client first joins to send existing teams and when new teams are created. */
 		AddTeams: new RemoteEvent<[teams: TeamDto[]]>(),
 		AddPlayerToTeam: new RemoteEvent<[teamId: string, userId: string]>(),
@@ -115,7 +116,8 @@ export const Network = {
 				[purchaserClientId: number, upgradeType: TeamUpgradeType, tier: number]
 			>(),
 		},
-		SetVoxelData: new RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>(),
+		SetBlockData: new RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>(),
+		SyncPrefabBlocks: new RemoteEvent<[blockPositions: Vector3[]]>(),
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
 		/** Fired when a map is loaded. */

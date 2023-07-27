@@ -4,10 +4,9 @@ import { ClientSignals } from "Client/ClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemType } from "Shared/Item/ItemType";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { LayerUtil } from "Shared/Util/LayerUtil";
+import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 import { ProjectileCollideClientSignal } from "./ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./ProjectileLaunchedClientSignal";
-import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 @Controller({})
 export class ProjectileController implements OnStart {
@@ -36,7 +35,7 @@ export class ProjectileController implements OnStart {
 	}
 
 	public OnStart(): void {
-		ProjectileManager.Instance.onProjectileLaunched((easyProjectile, shooterGO) => {
+		ProjectileManager.Instance.OnProjectileLaunched((easyProjectile, shooterGO) => {
 			const shooterEntity = Entity.FindByGameObject(shooterGO);
 			const itemType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
 			if (!itemType) {
@@ -57,11 +56,6 @@ export class ProjectileController implements OnStart {
 	): boolean {
 		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).Ammo!;
 		const hitEntity = Entity.FindByCollider(collider);
-
-		// Check if it should be colliding with us.
-		if (!LayerUtil.LayerIsInMask(collider.gameObject.layer, ammoMeta.projectileHitLayerMask)) {
-			return false;
-		}
 
 		const projectileHitSignal = new ProjectileCollideClientSignal(
 			projectile,

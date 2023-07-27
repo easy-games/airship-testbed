@@ -49,7 +49,7 @@ export class ClientSettingsUIController implements OnStart {
 
 		CanvasAPI.OnPointerEvent(slider.gameObject, (direction) => {
 			if (direction === PointerDirection.DOWN) {
-				AudioManager.PlayGlobal("UI_Click.wav");
+				AudioManager.PlayGlobal("UI_Select.wav");
 			}
 		});
 	}

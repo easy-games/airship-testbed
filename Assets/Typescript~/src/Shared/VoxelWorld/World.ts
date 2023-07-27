@@ -1,28 +1,82 @@
+import Object from "@easy-games/unity-object-utils";
 import { Game } from "Shared/Game";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Signal } from "Shared/Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
-import { Block } from "./Block";
-import { VoxelDataAPI } from "./VoxelData/VoxelDataAPI";
 import { ItemUtil } from "../Item/ItemUtil";
+import { Block } from "./Block";
+import { BlockDataAPI } from "./BlockData/BlockDataAPI";
 
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
 	priority?: boolean;
+	blockData?: {
+		[key: string]: unknown;
+	};
 }
 
 export class World {
 	public static SKYBOX = "Shared/Resources/Skybox/BrightSky/bright_sky_2.png";
 
 	public OnVoxelPlaced = new Signal<[pos: Vector3, voxel: number]>();
+	public OnFinishedLoading = new Signal<void>();
+	public OnFinishedReplicatingChunksFromServer = new Signal<void>();
+	private finishedLoading = false;
+	private finishedReplicatingChunksFromServer = false;
 
 	constructor(public readonly voxelWorld: VoxelWorld) {
 		voxelWorld.OnVoxelPlaced((voxel, x, y, z) => {
 			const vec = new Vector3(x, y, z);
-			VoxelDataAPI.ClearVoxelData(vec);
+			BlockDataAPI.ClearBlockData(vec);
 			voxel = VoxelWorld.VoxelDataToBlockId(voxel);
 			this.OnVoxelPlaced.Fire(vec, voxel);
+		});
+
+		if (!voxelWorld.finishedLoading) {
+			voxelWorld.OnFinishedLoading(() => {
+				this.finishedLoading = true;
+				this.OnFinishedLoading.Fire();
+			});
+		} else {
+			this.finishedLoading = true;
+			this.OnFinishedLoading.Fire();
+		}
+
+		if (!voxelWorld.finishedReplicatingChunksFromServer) {
+			voxelWorld.OnFinishedReplicatingChunksFromServer(() => {
+				this.finishedReplicatingChunksFromServer = true;
+				this.OnFinishedReplicatingChunksFromServer.Fire();
+			});
+		} else {
+			this.finishedReplicatingChunksFromServer = true;
+			this.OnFinishedReplicatingChunksFromServer.Fire();
+		}
+	}
+
+	public IsFinishedLoading(): boolean {
+		return this.finishedLoading;
+	}
+
+	public async WaitForFinishedLoading(): Promise<void> {
+		if (this.finishedLoading) return;
+
+		return new Promise<void>((resolve) => {
+			this.OnFinishedLoading.Wait();
+			resolve();
+		});
+	}
+
+	public IsFinishedReplicatingChunksFromServer(): boolean {
+		return this.finishedReplicatingChunksFromServer;
+	}
+
+	public async WaitForFinishedReplicatingChunksFromServer(): Promise<void> {
+		if (this.finishedReplicatingChunksFromServer) return;
+
+		return new Promise<void>((resolve) => {
+			this.OnFinishedReplicatingChunksFromServer.Wait();
+			resolve();
 		});
 	}
 
@@ -64,6 +118,12 @@ export class World {
 
 	public PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void {
 		this.voxelWorld.WriteVoxelAt(pos, blockId, config?.priority ?? true);
+		if (config?.blockData) {
+			for (const key of Object.keys(config.blockData)) {
+				BlockDataAPI.SetBlockData(pos, key as string, config.blockData[key]);
+			}
+		}
+
 		if (RunCore.IsServer()) {
 			Network.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockId, config?.placedByEntityId);
 		} else {

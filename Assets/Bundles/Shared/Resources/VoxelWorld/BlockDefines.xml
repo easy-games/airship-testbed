@@ -248,12 +248,12 @@
   <Block>
     <Index>31</Index>
     <Name>Bed</Name>
-    <Fake>true</Fake>
+    <Prefab>true</Prefab>
   </Block>
   <Block>
     <Index>32</Index>
     <Name>ChildOfBlock</Name>
-    <Fake>true</Fake>
+    <Prefab>true</Prefab>
   </Block>
   <Block>
     <Index>33</Index>
@@ -435,6 +435,16 @@
     <Roughness>1</Roughness>
     <Brightness>2</Brightness>
     <Minecraft>159:12</Minecraft>
+  </Block>
+  <Block>
+    <Index>61</Index>
+    <Name>Ceramic</Name>
+    <TopTexture>blastproof_ceramic.s</TopTexture>
+    <SideTexture>blastproof_ceramic.s</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Brightness>2</Brightness>
   </Block>
 </Blocks>
 

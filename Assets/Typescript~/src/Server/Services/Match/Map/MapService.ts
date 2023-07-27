@@ -54,12 +54,15 @@ export class MapService implements OnStart {
 		world.LoadWorldFromVoxelBinaryFile(this.voxelBinaryFile, blockDefines);
 		/* Parse map objects and finish loading map. */
 		/* TEMP: This is to get around memory pinning issue. */
-        this.loadedMap = new LoadedMap(mapId);
+		this.loadedMap = new LoadedMap(mapId);
 		const rawMaps = this.voxelBinaryFile.GetMapObjects();
 		for (let i = 0; i < rawMaps.Length; i++) {
 			const data = rawMaps.GetValue(i);
-            this.loadedMap.AddWorldPositions(data.name, new WorldPosition(data.position, data.rotation));
+			this.loadedMap.AddWorldPositions(data.name, new WorldPosition(data.position, data.rotation));
 		}
+
+		world.WaitForFinishedLoading().expect();
+
 		ServerSignals.MapLoad.fire(this.loadedMap);
 		this.mapLoaded = true;
 	}

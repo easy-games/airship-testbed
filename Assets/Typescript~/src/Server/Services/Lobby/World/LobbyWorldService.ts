@@ -12,7 +12,7 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 @Service({})
 export class LobbyWorldService implements OnStart {
 	constructor(private readonly entityService: EntityService) {
-		ServerSignals.PlayerJoin.connect((event) => {
+		ServerSignals.PlayerJoin.Connect((event) => {
 			Task.Spawn(() => {
 				this.SpawnPlayer(event.player);
 			});

@@ -3,7 +3,7 @@ import { CollectionTag } from "./Util/CollectionTag";
 import { RunUtil } from "./Util/RunUtil";
 
 /** Wrapper around `NetworkCore` to allow for easy capturing of replicated GameObjects. */
-export class NetworkBridge {
+export class NetworkUtil {
 	/** Tag lookup table for tag based despawns. Mapping of `networkObjectId` to `CollectionTag`. */
 	private static tagLookup = new Map<number, CollectionTag>();
 
@@ -21,7 +21,7 @@ export class NetworkBridge {
 			/* Map GameObject to tag for lookup on despawn. */
 			const networkObjectId = gameObject.GetComponent<NetworkObject>().ObjectId;
 			/* Insert into tag lookup table to find tag on despawn. */
-			NetworkBridge.tagLookup.set(networkObjectId, tag);
+			NetworkUtil.tagLookup.set(networkObjectId, tag);
 			if (RunUtil.IsServer()) {
 				import("Server/ServerSignals").then((serverSignalsRef) => {
 					const netGameObjectReplicatingSignal = serverSignalsRef.ServerSignals.NetGameObjectReplicating;
@@ -54,10 +54,10 @@ export class NetworkBridge {
 	/* Despawn a replicated `GameObject` on the client **and** server. */
 	public static Despawn(gameObject: GameObject): void {
 		const networkObjectId = gameObject.GetComponent<NetworkObject>().ObjectId;
-		const tag = NetworkBridge.tagLookup.get(networkObjectId);
+		const tag = NetworkUtil.tagLookup.get(networkObjectId);
 		/* If tagged, remove from lookup table and fire despawn notifier signal. */
 		if (tag) {
-			NetworkBridge.tagLookup.delete(networkObjectId);
+			NetworkUtil.tagLookup.delete(networkObjectId);
 			if (RunUtil.IsServer()) {
 				import("Server/ServerSignals").then((serverSignalsRef) => {
 					const netGameObjectDespawning = serverSignalsRef.ServerSignals.NetGameObjectDespawning;

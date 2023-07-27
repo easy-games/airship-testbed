@@ -3,9 +3,10 @@ import { ClientSignals } from "Client/ClientSignals";
 import { Game } from "Shared/Game";
 import { Network } from "Shared/Network";
 import { OnLateUpdate, SetInterval } from "Shared/Util/Timer";
-import { VoxelDataAPI } from "Shared/VoxelWorld/VoxelData/VoxelDataAPI";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EffectsManager } from "../../../../Shared/Effects/EffectsManager";
+import { GameObjectUtil } from "../../../../Shared/GameObjectBridge";
 import { ProgressBarGraphics } from "../../../../Shared/UI/ProgressBarGraphics";
 import {
 	BundleGroupNames,
@@ -20,7 +21,6 @@ import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
-import { GameObjectBridge } from "../../../../Shared/GameObjectBridge";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
@@ -148,11 +148,11 @@ export class BlockHealthController implements OnStart {
 		const blockFilter = blockGO.GetComponent<MeshFilter>();
 		particles.mesh = blockFilter.mesh;
 		particles.sharedMaterial = blockRen.sharedMaterial;
-		GameObjectBridge.Destroy(blockGO);
+		GameObjectUtil.Destroy(blockGO);
 	}
 
 	private GetBlockHealth(blockPos: Vector3) {
-		return VoxelDataAPI.GetVoxelData<number>(blockPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+		return BlockDataAPI.GetBlockData<number>(blockPos, "health") ?? WorldAPI.DefaultVoxelHealth;
 	}
 
 	private AddHealthBar(blockPos: Vector3): HealthBarEntry | undefined {

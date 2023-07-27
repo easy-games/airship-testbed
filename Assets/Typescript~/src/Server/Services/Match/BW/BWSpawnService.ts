@@ -5,6 +5,7 @@ import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { ItemStack } from "Shared/Inventory/ItemStack";
+import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
 import { Task } from "Shared/Util/Task";
@@ -32,13 +33,11 @@ export class BWSpawnService implements OnStart {
 	) {
 		ServerSignals.MapLoad.connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();
-			Task.Delay(1, () => {
-				this.entityService.SpawnEntityForPlayer(
-					undefined,
-					EntityPrefabType.HUMAN,
-					position.Position.add(new Vector3(-3, 2, 3)),
-				);
-			});
+			this.entityService.SpawnEntityForPlayer(
+				undefined,
+				EntityPrefabType.HUMAN,
+				position.Position.add(new Vector3(-3, 2, 3)),
+			);
 		});
 	}
 
@@ -46,7 +45,7 @@ export class BWSpawnService implements OnStart {
 		Task.Spawn(() => {
 			this.loadedMap = this.mapService.WaitForMapLoaded();
 			/* Spawn entity on join. */
-			ServerSignals.PlayerJoin.connect((event) => {
+			ServerSignals.PlayerJoin.Connect((event) => {
 				Task.Delay(SPAWN_DELAY_ON_JOIN, () =>
 					Dependency<EntityService>().SpawnEntityForPlayer(event.player, EntityPrefabType.HUMAN),
 				);
@@ -121,6 +120,8 @@ export class BWSpawnService implements OnStart {
 		inv.AddItem(new ItemStack(ItemType.TELEPEARL, 100));
 		inv.AddItem(new ItemStack(ItemType.GRASS, 100));
 		inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
+
+		inv.SetItem(inv.armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET, 1));
 
 		// inv.SetItem(4, new ItemStack(ItemType.WOOD_BOW, 1));
 		// inv.SetItem(5, new ItemStack(ItemType.TELEPEARL, 100));
