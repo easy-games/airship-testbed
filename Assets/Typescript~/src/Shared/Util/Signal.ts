@@ -30,6 +30,7 @@ export class Signal<T extends unknown[] | unknown> {
 	private debugLogging = false;
 	private trackYielding = true;
 	private readonly connections: Map<number, Array<CallbackItem<T>>> = new Map();
+	public debugGameObject = false;
 	// private readonly connections: Array<CallbackItem<T>> = [];
 
 	/**
@@ -125,6 +126,10 @@ export class Signal<T extends unknown[] | unknown> {
 				fireCount++;
 
 				const thread = coroutine.create(entry.callback);
+				if (this.debugGameObject) {
+					const go = args[0] as GameObject;
+					print("fire go.name=" + go.name);
+				}
 				const [success, err] = coroutine.resume(thread, ...args);
 				if (!success) {
 					error(err);

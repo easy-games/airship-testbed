@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
-  m_Name: WhimKit_Armor
+  m_Name: wood_pickaxe
   m_EditorClassIdentifier: 
-  DisplayName: Whim Armor
-  AccessorySlot: 5
-  Prefab: {fileID: 1673917398923855558, guid: 7e2b7f4a6a26d0345ae5045a3d1230e4, type: 3}
-  Position: {x: 0, y: 0, z: 0}
-  Rotation: {x: 0, y: 0, z: 0}
+  DisplayName: Stone Pickaxe
+  AccessorySlot: 2
+  Prefab: {fileID: 5201375224750791660, guid: 8ad713e1331f24d9fb8d75b3d0293ef0, type: 3}
+  Position: {x: 0.15, y: 0.05, z: -0.05}
+  Rotation: {x: 0, y: 90, z: 90}
   Scale: {x: 1, y: 1, z: 1}
-  MeshDeformed: 1
-  VisibleInFirstPerson: 0
+  MeshDeformed: 0
+  VisibleInFirstPerson: 1

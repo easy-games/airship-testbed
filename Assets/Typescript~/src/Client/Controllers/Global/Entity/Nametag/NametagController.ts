@@ -22,10 +22,10 @@ export class NametagController implements OnStart {
 
 	OnStart(): void {
 		ClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			if (event.Entity.IsLocalCharacter() && !this.showSelfNametag) {
+			if (event.entity.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
-			this.CreateNametag(event.Entity);
+			this.CreateNametag(event.entity);
 		});
 
 		ClientSignals.PlayerChangeTeam.Connect((event) => {

@@ -10,6 +10,7 @@ import { BedWarsUI } from "Shared/UI/BedWarsUI";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { Signal } from "Shared/Util/Signal";
 import { InventoryController } from "../Inventory/InventoryController";
 
 @Controller({})
@@ -28,6 +29,8 @@ export class ItemShopController implements OnStart {
 	private purchaseButtonText: TMP_Text;
 
 	private purchasedTierItems = new Set<ItemType>();
+
+	public OnPurchase = new Signal<ShopElement>();
 
 	constructor() {
 		/* Fetch refs. */
@@ -127,11 +130,24 @@ export class ItemShopController implements OnStart {
 		});
 	}
 
+	private CanPurchase(shopElement: ShopElement): boolean {
+		if (!Game.LocalPlayer.Character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
+			return false;
+		}
+		if (shopElement.lockAfterPurchase && this.purchasedTierItems.has(shopElement.itemType)) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Sends purchase request to server for currently selected item.
 	 */
 	private HandlePurchaseRequest(): void {
-		if (!this.selectedItem) return;
+		if (!this.selectedItem || !this.CanPurchase(this.selectedItem)) {
+			AudioManager.PlayGlobal("UI_Error.wav");
+			return;
+		}
 		const shopItem = this.selectedItem;
 		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopItem.itemType);
 		if (result) {
@@ -142,6 +158,7 @@ export class ItemShopController implements OnStart {
 			if (shopItem.nextTier) {
 				this.SetSidebarItem(ItemShopMeta.GetShopElementFromItemType(shopItem.nextTier)!);
 			}
+			this.OnPurchase.Fire(shopItem);
 		}
 	}
 
@@ -169,7 +186,13 @@ export class ItemShopController implements OnStart {
 
 		const purchaseButtonImage = this.purchaseButton.GetComponent<Image>();
 
-		const updateHasEnough = () => {
+		const updateButton = () => {
+			if (shopItem.lockAfterPurchase && this.purchasedTierItems.has(shopItem.itemType)) {
+				this.purchaseButtonText.text = "Owned";
+				purchaseButtonImage.color = new Color(0.29, 0.31, 0.29);
+				return;
+			}
+
 			const inv = Game.LocalPlayer.Character?.GetInventory();
 			if (inv?.HasEnough(shopItem.currency, shopItem.price)) {
 				this.purchaseButtonText.text = "Purchase";
@@ -179,7 +202,7 @@ export class ItemShopController implements OnStart {
 				purchaseButtonImage.color = new Color(0.62, 0.2, 0.24);
 			}
 		};
-		updateHasEnough();
+		updateButton();
 
 		this.selectedItemBin.Add(
 			Dependency<InventoryController>().ObserveLocalInventory((inv) => {
@@ -188,12 +211,20 @@ export class ItemShopController implements OnStart {
 						if (itemStack) {
 							this.selectedItemBin.Add(
 								itemStack?.Changed.Connect(() => {
-									updateHasEnough();
+									updateButton();
 								}),
 							);
 						}
 					}),
 				);
+			}),
+		);
+
+		this.selectedItemBin.Add(
+			this.OnPurchase.Connect((shopItem) => {
+				if (shopItem.lockAfterPurchase) {
+					updateButton();
+				}
 			}),
 		);
 	}

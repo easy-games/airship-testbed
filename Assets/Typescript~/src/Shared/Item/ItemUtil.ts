@@ -1,13 +1,14 @@
 import Object from "@easy-games/unity-object-utils";
-import { ItemType } from "./ItemType";
-import { ItemMeta } from "./ItemMeta";
 import { items } from "./ItemDefinitions";
+import { ItemMeta } from "./ItemMeta";
+import { ItemType } from "./ItemType";
 
 /**
  * Set of utilities for working with items.
  */
 export class ItemUtil {
-	public static readonly DefaultKitPath = "Shared/Resources/Accessories/Kits/Whim/WhimKit.asset";
+	public static readonly DefaultAccessoryCollectionPath =
+		"Shared/Resources/Accessories/Kits/Whim/WhimAccessoryCollection.asset";
 	public static readonly DefaultItemPath = "Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
@@ -15,12 +16,14 @@ export class ItemUtil {
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 
 	public static missingItemAccessory: Accessory;
-	public static defaultKitAccessory: AccessoryKit | undefined;
+	public static defaultKitAccessory: AccessoryCollection | undefined;
 
 	public static Initialize() {
 		//Load default items
 		ItemUtil.missingItemAccessory = AssetBridge.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
-		ItemUtil.defaultKitAccessory = AssetBridge.LoadAssetIfExists<AccessoryKit>(ItemUtil.DefaultKitPath);
+		ItemUtil.defaultKitAccessory = AssetBridge.LoadAssetIfExists<AccessoryCollection>(
+			ItemUtil.DefaultAccessoryCollectionPath,
+		);
 
 		let i = 0;
 		for (const itemType of Object.values(ItemType)) {
