@@ -11,14 +11,43 @@ import { EntityService } from "../Entity/EntityService";
 
 @Service({})
 export class ShopService implements OnStart {
-	private tierPurchases = new Map<string, Set<ItemType>>();
+	private purchasedItems = new Map<string, Set<ItemType>>();
 
 	constructor(private readonly entityService: EntityService) {}
 
 	OnStart(): void {
 		ServerSignals.PlayerJoin.Connect((event) => {
-			if (!this.tierPurchases.has(event.player.userId)) {
-				this.tierPurchases.set(event.player.userId, new Set<ItemType>());
+			if (!this.purchasedItems.has(event.player.userId)) {
+				this.purchasedItems.set(event.player.userId, new Set<ItemType>());
+			}
+		});
+
+		ServerSignals.EntitySpawn.Connect((event) => {
+			if (!event.Entity.player) return;
+			const purchases = this.purchasedItems.get(event.Entity.player.userId);
+			if (!purchases) return;
+
+			if (!(event.Entity instanceof CharacterEntity)) return;
+			const inv = event.Entity.GetInventory();
+
+			for (const purchasedItem of purchases) {
+				const shopItem = ItemShopMeta.GetShopElementFromItemType(purchasedItem);
+				if (!shopItem) continue;
+
+				if (shopItem.spawnWithItems) {
+					if (shopItem.nextTier && purchases.has(shopItem.nextTier)) {
+						continue;
+					}
+					let itemsToAdd = shopItem.spawnWithItems || [shopItem.itemType];
+					for (const itemType of itemsToAdd) {
+						const itemMeta = ItemUtil.GetItemMeta(itemType);
+						if (itemMeta.Armor) {
+							inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
+						} else {
+							inv.AddItem(new ItemStack(itemType, 1));
+						}
+					}
+				}
 			}
 		});
 
@@ -48,7 +77,7 @@ export class ShopService implements OnStart {
 
 			const player = Player.FindByClientId(clientId);
 			if (player) {
-				const purchases = this.tierPurchases.get(player.userId);
+				const purchases = this.purchasedItems.get(player.userId);
 				purchases?.add(shopItem.itemType);
 			}
 
@@ -57,7 +86,7 @@ export class ShopService implements OnStart {
 
 		ServerSignals.EntityDeath.Connect((event) => {
 			if (event.entity.player) {
-				const purchases = this.tierPurchases.get(event.entity.player.userId);
+				const purchases = this.purchasedItems.get(event.entity.player.userId);
 				if (purchases) {
 					const toRemove: ItemType[] = [];
 					for (const itemType of purchases) {

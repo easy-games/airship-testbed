@@ -1,4 +1,5 @@
 import { ItemType } from "Shared/Item/ItemType";
+import { ArmorCollection } from "./ArmorCollection";
 
 /** Describes a shop category. */
 export enum ShopCategory {
@@ -135,6 +136,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.TOOLS,
 				nextTier: ItemType.IRON_PICKAXE,
+				spawnWithItems: [ItemType.STONE_PICKAXE],
 			},
 			{
 				itemType: ItemType.IRON_PICKAXE,
@@ -144,6 +146,7 @@ export class ItemShopMeta {
 				category: ShopCategory.TOOLS,
 				prevTier: ItemType.STONE_PICKAXE,
 				nextTier: ItemType.DIAMOND_PICKAXE,
+				spawnWithItems: [ItemType.IRON_PICKAXE],
 			},
 			{
 				itemType: ItemType.DIAMOND_PICKAXE,
@@ -153,6 +156,7 @@ export class ItemShopMeta {
 				category: ShopCategory.TOOLS,
 				prevTier: ItemType.IRON_PICKAXE,
 				lockAfterPurchase: true,
+				spawnWithItems: [ItemType.DIAMOND_PICKAXE],
 			},
 
 			// Armor
@@ -164,6 +168,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				nextTier: ItemType.IRON_HELMET,
+				spawnWithItems: ArmorCollection.LEATHER,
 			},
 			{
 				displayName: "Iron Armor",
@@ -174,6 +179,7 @@ export class ItemShopMeta {
 				category: ShopCategory.COMBAT,
 				prevTier: ItemType.LEATHER_HELMET,
 				nextTier: ItemType.DIAMOND_HELMET,
+				spawnWithItems: ArmorCollection.IRON,
 			},
 			{
 				displayName: "Diamond Armor",
@@ -184,6 +190,7 @@ export class ItemShopMeta {
 				category: ShopCategory.COMBAT,
 				prevTier: ItemType.IRON_HELMET,
 				nextTier: ItemType.EMERALD_HELMET,
+				spawnWithItems: ArmorCollection.DIAMOND,
 			},
 			{
 				displayName: "Emerald Armor",
@@ -193,6 +200,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				prevTier: ItemType.DIAMOND_HELMET,
+				spawnWithItems: ArmorCollection.EMERALD,
 				lockAfterPurchase: true,
 			},
 		],
