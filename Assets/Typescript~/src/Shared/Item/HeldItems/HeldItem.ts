@@ -48,9 +48,8 @@ export class HeldItem {
 
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
-		let equipPath = this.bundles?.bundles?.get(2)?.filePaths.get(0);
+		let equipPath = this.bundles?.bundles?.get(3)?.filePaths.get(0);
 		if (!equipPath) {
-			error("No custom item sound: " + equipPath);
 			//Load a default equip sound
 			equipPath = ReferenceManagerAssets.ItemUnarmed.bundles
 				.get(Bundle_ItemUnarmed.SFX)
