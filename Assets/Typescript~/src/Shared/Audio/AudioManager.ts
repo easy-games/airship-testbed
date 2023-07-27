@@ -55,14 +55,19 @@ export class AudioManager {
 	}
 
 	public static PlayClipAtPosition(clip: AudioClip, position: Vector3, config?: PlaySoundConfig): void {
+		print("CLIP AT POSITION: " + clip);
+		print("POSITION A");
 		const audioSource = this.GetAudioSource(position);
 		audioSource.maxDistance = MAX_DISTANCE;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
+		print("POSITION B");
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return;
 		}
+		print("POSITION C");
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
+		print("POSITION D");
 		Task.Delay(clip.length + 1, () => {
 			Object.Destroy(audioSource);
 		});

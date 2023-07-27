@@ -159,6 +159,14 @@ export class EntityAnimator {
 					});
 				}
 				break;
+			case EntityAnimationEventKey.LAND:
+				this.PlayFootstepSound();
+				if (this.entityRef.landSound) {
+					AudioManager.PlayClipAtPosition(this.entityRef.landSound, this.entity.model.transform.position, {
+						volumeScale: 0.2,
+					});
+				}
+				break;
 		}
 	}
 }
