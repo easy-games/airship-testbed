@@ -84,11 +84,6 @@ export class EntityAccessoryController implements OnStart {
 		this.localController.ObserveFirstPerson((firstPerson) => {
 			this.HandleAllAccessoryVisibility();
 		});
-		// Game.LocalPlayer.CharacterChanged.Connect((entity) => {
-		// 	if (entity) {
-		// 		this.HandleAllAccessoryVisibility();
-		// 	}
-		// });
 	}
 
 	private HandleAllAccessoryVisibility(): void {
