@@ -25,6 +25,7 @@ export interface ShopElement {
 	spawnWithItems?: ItemType[];
 
 	removeTierOnDeath?: boolean;
+	lockAfterPurchase?: boolean;
 
 	/** Define a custom display name. If not set, will use ItemType's display name. */
 	displayName?: string;
@@ -151,6 +152,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.TOOLS,
 				prevTier: ItemType.IRON_PICKAXE,
+				lockAfterPurchase: true,
 			},
 
 			// Armor
@@ -191,6 +193,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				prevTier: ItemType.DIAMOND_HELMET,
+				lockAfterPurchase: true,
 			},
 		],
 	};

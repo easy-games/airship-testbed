@@ -41,8 +41,9 @@ export class CollectionManagerController implements OnStart {
 			if (!nobSet) return;
 			/* Create tag set. */
 			const tagSet = new Set<GameObject>();
-			nobSet.forEach((nob) => {
-				const gameObject = WaitForNobId(nob).gameObject;
+			nobSet.forEach((nobId) => {
+				const gameObject = WaitForNobId(nobId).gameObject;
+				// print("constructClient gameObject=", gameObject);
 				tagSet.add(gameObject);
 				/* Listen for destruction on construction. */
 				this.listenForGameObjectDestruction(gameObject, collectionTag);

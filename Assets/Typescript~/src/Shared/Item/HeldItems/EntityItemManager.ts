@@ -71,14 +71,14 @@ export class EntityItemManager {
 			this.Log("ClientSignals");
 			//Listen to new entities
 			clientSignalRef.ClientSignals.EntitySpawn.Connect((event) => {
-				this.Log("EntitySpawn: " + event.Entity.id);
-				if (event.Entity instanceof CharacterEntity && event.Entity.id !== undefined) {
+				this.Log("EntitySpawn: " + event.entity.id);
+				if (event.entity instanceof CharacterEntity && event.entity.id !== undefined) {
 					//Create the Item Manager on the Client
-					this.GetOrCreateItemManager(event.Entity as CharacterEntity);
+					this.GetOrCreateItemManager(event.entity as CharacterEntity);
 
 					//Local Events
-					if (event.Entity.IsLocalCharacter()) {
-						this.localEntity = event.Entity;
+					if (event.entity.IsLocalCharacter()) {
+						this.localEntity = event.entity;
 					}
 				}
 			});

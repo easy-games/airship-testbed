@@ -1,4 +1,5 @@
 ﻿import { AudioManager } from "Shared/Audio/AudioManager";
+import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Entity } from "../../Entity/Entity";
 import { BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../../Util/ReferenceManagerResources";
@@ -49,11 +50,9 @@ export class HeldItem {
 
 		let j = 0;
 		for (const accessory of accessories) {
-			let accGos: CSArray<GameObject> = this.entity.accessoryBuilder.SetAccessory(accessory);
-
+			let added = this.entity.accessoryBuilder.SetAccessory(accessory);
 			//Load the animator for the held item if one exists
-			for (let i = 0; i < accGos.Length; i++) {
-				const go = accGos.GetValue(i);
+			for (let go of CSArrayUtil.Convert(added.gameObjects)) {
 				this.currentItemGOs[j] = go;
 				j++;
 				const anim = go.GetComponent<Animator>();

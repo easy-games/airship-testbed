@@ -11,8 +11,11 @@ if (RunUtil.IsServer()) {
 }
 export const NetworkObjectAdded = new Signal<NetworkObject>();
 managed.OnAddedToSpawnedEvent((nob) => {
+	NetworkObjectAdded.debugGameObject = true;
 	NetworkObjectAdded.Fire(nob);
 	waitingByName.set(nob.gameObject.name, nob);
+	// print("end of onAdded", nob.gameObject);
+	// cleanup here
 });
 
 export class NetworkUtil {
@@ -116,10 +119,12 @@ export function WaitForNob(name: string): NetworkObject {
 export function WaitForNobId(objectId: number): NetworkObject {
 	let nob = NetworkUtil.GetNetworkObject(objectId);
 	if (nob) {
+		// print("found existing", nob.gameObject + ", nobId=" + objectId);
 		return nob;
 	}
 
 	const bin = new Bin();
+	// print("listening to event for nobId=" + objectId);
 	bin.Add(
 		NetworkObjectAdded.Connect((addedNob) => {
 			if (addedNob.ObjectId === objectId) {
@@ -129,8 +134,12 @@ export function WaitForNobId(objectId: number): NetworkObject {
 		}),
 	);
 	while (true) {
+		// if (nob !== undefined) {
+		// 	print("wait.before", (nob as NetworkObject).gameObject + ", nobId=" + objectId);
+		// }
 		wait();
 		if (nob) {
+			// print("wait.after", (nob as NetworkObject).gameObject + ", nobId=" + objectId);
 			return nob;
 		}
 	}

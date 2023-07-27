@@ -6,6 +6,7 @@ import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { ItemShopMeta } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
+import { Player } from "Shared/Player/Player";
 import { EntityService } from "../Entity/EntityService";
 
 @Service({})
@@ -44,6 +45,13 @@ export class ShopService implements OnStart {
 			} else {
 				inv.AddItem(new ItemStack(shopItem.itemType, shopItem.quantity));
 			}
+
+			const player = Player.FindByClientId(clientId);
+			if (player) {
+				const purchases = this.tierPurchases.get(player.userId);
+				purchases?.add(shopItem.itemType);
+			}
+
 			return true;
 		});
 

@@ -11044,7 +11044,8 @@ interface AccessoryBuilder extends MonoBehaviour {
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode): CSArray<GameObject>;
+    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode): CSArray<ActiveAccessory>;
+    EquipAccessoryCollection(collection: AccessoryCollection): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
@@ -11052,8 +11053,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetAllAccessoryMeshes(): CSArray<Renderer>;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot): void;
-    SetAccessory(accessory: Accessory): CSArray<GameObject>;
-    SetAccessoryKit(kit: AccessoryKit): CSArray<GameObject>;
+    SetAccessory(accessory: Accessory): ActiveAccessory;
 }
     
 interface CapsuleCollider extends Collider {
@@ -11063,6 +11063,14 @@ interface CapsuleCollider extends Collider {
     direction: number;
 
     constructor(): CapsuleCollider;
+
+}
+    
+interface ActiveAccessory {
+    accessory: Accessory;
+    gameObjects: CSArray<GameObject>;
+    renderers: CSArray<Renderer>;
+
 
 }
     
@@ -11078,6 +11086,13 @@ interface Accessory extends ScriptableObject {
     HasSkinnedMeshes: boolean;
 
     constructor(): Accessory;
+
+}
+    
+interface AccessoryCollection extends ScriptableObject {
+    accessories: CSArray<Accessory>;
+
+    constructor(): AccessoryCollection;
 
 }
     
@@ -11953,21 +11968,6 @@ interface ParticleSystemConstructor {
     SetMaximumPreMappedBufferCounts(vertexBuffersCount: number, indexBuffersCount: number): void;
 }
 declare const ParticleSystem: ParticleSystemConstructor;
-    
-interface ActiveAccessory {
-    accessory: Accessory;
-    gameObjects: CSArray<GameObject>;
-    renderers: CSArray<Renderer>;
-
-
-}
-    
-interface AccessoryKit extends ScriptableObject {
-    accessories: CSArray<Accessory>;
-
-    constructor(): AccessoryKit;
-
-}
     
 interface AccessoryBuilderConstructor {
     boneKey: string;

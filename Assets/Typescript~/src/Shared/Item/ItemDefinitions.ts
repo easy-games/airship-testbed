@@ -416,7 +416,7 @@ export const items: {
 		itemMechanics: defaultItemMechanics,
 		AccessoryNames: ["Armor/Leather/LeatherHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 2,
 		},
 	},
@@ -425,7 +425,7 @@ export const items: {
 		itemMechanics: defaultItemMechanics,
 		AccessoryNames: ["Armor/Iron/IronHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 4,
 		},
 	},
@@ -434,7 +434,7 @@ export const items: {
 		itemMechanics: defaultItemMechanics,
 		AccessoryNames: ["Armor/Diamond/DiamondHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 6,
 		},
 	},
@@ -443,7 +443,7 @@ export const items: {
 		itemMechanics: defaultItemMechanics,
 		AccessoryNames: ["Armor/Emerald/EmeraldHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 8,
 		},
 	},
