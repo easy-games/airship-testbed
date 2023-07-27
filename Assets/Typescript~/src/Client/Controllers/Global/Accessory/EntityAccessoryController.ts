@@ -21,7 +21,14 @@ export class EntityAccessoryController implements OnStart {
 			if (event.entity instanceof CharacterEntity) {
 				//Add Kit Accessory
 				if (ItemUtil.defaultKitAccessory) {
-					event.entity.accessoryBuilder.EquipAccessoryCollection(ItemUtil.defaultKitAccessory);
+					const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
+						ItemUtil.defaultKitAccessory,
+					);
+					if (event.entity.IsLocalCharacter()) {
+						for (const accessory of CSArrayUtil.Convert(accessories)) {
+							this.HandleAccessoryVisibility(accessory);
+						}
+					}
 				}
 
 				const inventory = event.entity.GetInventory();
@@ -75,14 +82,23 @@ export class EntityAccessoryController implements OnStart {
 		});
 
 		this.localController.ObserveFirstPerson((firstPerson) => {
-			const accessories = Game.LocalPlayer.Character?.accessoryBuilder.GetActiveAccessories();
-			if (!accessories) return;
-
-			for (let i = 0; i < accessories.Length; i++) {
-				const accessory = accessories.GetValue(i);
-				this.HandleAccessoryVisibility(accessory);
-			}
+			this.HandleAllAccessoryVisibility();
 		});
+		// Game.LocalPlayer.CharacterChanged.Connect((entity) => {
+		// 	if (entity) {
+		// 		this.HandleAllAccessoryVisibility();
+		// 	}
+		// });
+	}
+
+	private HandleAllAccessoryVisibility(): void {
+		const accessories = Game.LocalPlayer.Character?.accessoryBuilder.GetActiveAccessories();
+		if (!accessories) return;
+
+		for (let i = 0; i < accessories.Length; i++) {
+			const accessory = accessories.GetValue(i);
+			this.HandleAccessoryVisibility(accessory);
+		}
 	}
 
 	public HandleAccessoryVisibility(activeAccessory: ActiveAccessory): void {

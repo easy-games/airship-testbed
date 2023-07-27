@@ -27,6 +27,8 @@ export interface ShopElement {
 
 	removeTierOnDeath?: boolean;
 	lockAfterPurchase?: boolean;
+	replaceMelee?: boolean;
+	replaceBow?: boolean;
 
 	/** Define a custom display name. If not set, will use ItemType's display name. */
 	displayName?: string;
@@ -67,6 +69,7 @@ export class ItemShopMeta {
 				category: ShopCategory.BLOCKS,
 			},
 			{
+				displayName: "Blastproof Ceramic",
 				itemType: ItemType.CERAMIC,
 				currency: ItemType.IRON,
 				price: 14,
@@ -86,8 +89,7 @@ export class ItemShopMeta {
 				price: 20,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
-				nextTier: ItemType.IRON_SWORD,
-				removeTierOnDeath: true,
+				replaceMelee: true,
 			},
 			{
 				itemType: ItemType.IRON_SWORD,
@@ -95,9 +97,7 @@ export class ItemShopMeta {
 				price: 70,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
-				prevTier: ItemType.STONE_SWORD,
-				nextTier: ItemType.DIAMOND_SWORD,
-				removeTierOnDeath: true,
+				replaceMelee: true,
 			},
 			{
 				itemType: ItemType.DIAMOND_SWORD,
@@ -105,8 +105,7 @@ export class ItemShopMeta {
 				price: 3,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
-				prevTier: ItemType.IRON_SWORD,
-				removeTierOnDeath: true,
+				replaceMelee: true,
 			},
 			{
 				itemType: ItemType.WOOD_BOW,
@@ -114,6 +113,7 @@ export class ItemShopMeta {
 				price: 24,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
+				replaceBow: true,
 			},
 			{
 				itemType: ItemType.WOOD_ARROW,

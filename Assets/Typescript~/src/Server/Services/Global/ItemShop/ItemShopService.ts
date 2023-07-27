@@ -11,6 +11,7 @@ import { EntityService } from "../Entity/EntityService";
 
 @Service({})
 export class ShopService implements OnStart {
+	private bows: ItemType[] = [ItemType.WOOD_BOW];
 	private purchasedItems = new Map<string, Set<ItemType>>();
 
 	constructor(private readonly entityService: EntityService) {}
@@ -52,9 +53,9 @@ export class ShopService implements OnStart {
 		});
 
 		/* Handle incoming purchase requests. */
-		Network.ClientToServer.ItemShop.PurchaseRequest.Server.SetCallback((clientId, itemType) => {
-			const shopItem = ItemShopMeta.GetShopElementFromItemType(itemType);
-			if (!shopItem) return false;
+		Network.ClientToServer.ItemShop.PurchaseRequest.Server.SetCallback((clientId, purchaseItemType) => {
+			const shopElement = ItemShopMeta.GetShopElementFromItemType(purchaseItemType);
+			if (!shopElement) return false;
 
 			/* Validate that entity exists. */
 			const requestEntity = this.entityService.GetEntityByClientId(clientId);
@@ -63,22 +64,60 @@ export class ShopService implements OnStart {
 			if (!(requestEntity instanceof CharacterEntity)) return false;
 
 			const inv = requestEntity.GetInventory();
-			const canAfford = inv.HasEnough(shopItem.currency, shopItem.price);
+			const canAfford = inv.HasEnough(shopElement.currency, shopElement.price);
 			if (!canAfford) return false;
 
-			inv.Decrement(shopItem.currency, shopItem.price);
+			inv.Decrement(shopElement.currency, shopElement.price);
 
-			const itemMeta = ItemUtil.GetItemMeta(itemType);
-			if (itemMeta.Armor) {
-				inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(shopItem.itemType, 1));
-			} else {
-				inv.AddItem(new ItemStack(shopItem.itemType, shopItem.quantity));
+			// Give item
+			let itemsToAdd = shopElement.spawnWithItems ?? [shopElement.itemType];
+			for (const itemType of itemsToAdd) {
+				const itemMeta = ItemUtil.GetItemMeta(itemType);
+				if (itemMeta.Armor) {
+					inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
+				} else {
+					let given = false;
+					if (shopElement.prevTier) {
+						// Place item in same slot as previous tier item
+						for (let i = 0; i < inv.GetMaxSlots(); i++) {
+							const item = inv.GetItem(i);
+							if (item?.GetItemType() === shopElement.prevTier) {
+								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
+								given = true;
+								break;
+							}
+						}
+					}
+					if (!given && shopElement.replaceMelee) {
+						for (let i = 0; i < inv.GetMaxSlots(); i++) {
+							const item = inv.GetItem(i);
+							if (item?.GetMeta().melee) {
+								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
+								given = true;
+								break;
+							}
+						}
+					}
+					if (!given && shopElement.replaceBow) {
+						for (let i = 0; i < inv.GetMaxSlots(); i++) {
+							const item = inv.GetItem(i);
+							if (item && this.bows.includes(item.GetItemType())) {
+								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
+								given = true;
+								break;
+							}
+						}
+					}
+					if (!given) {
+						inv.AddItem(new ItemStack(itemType, shopElement.quantity));
+					}
+				}
 			}
 
 			const player = Player.FindByClientId(clientId);
 			if (player) {
 				const purchases = this.purchasedItems.get(player.userId);
-				purchases?.add(shopItem.itemType);
+				purchases?.add(shopElement.itemType);
 			}
 
 			return true;

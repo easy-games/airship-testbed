@@ -449,6 +449,19 @@ export const items: {
 	},
 
 	////TOOLS
+	[ItemType.WOOD_PICKAXE]: {
+		displayName: "Wood Pickaxe",
+		itemAssets: pickaxeItemAssets,
+		itemMechanics: {
+			...defaultItemMechanics,
+			cooldownSeconds: 0.2,
+		},
+		breakBlock: {
+			...defaultBreakBlock,
+			damage: 2,
+			extraDamageBlockArchetype: BlockArchetype.STONE,
+		},
+	},
 	[ItemType.STONE_PICKAXE]: {
 		displayName: "Stone Pickaxe",
 		itemAssets: pickaxeItemAssets,
