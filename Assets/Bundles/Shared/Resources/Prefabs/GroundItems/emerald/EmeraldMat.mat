@@ -102,8 +102,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.3066038, g: 1, b: 0.5248952, a: 0.019607844}
-    - _DepthColor: {r: 0, g: 0.764151, b: 0.2282528, a: 0.007843138}
+    - _Color: {r: 0.3066037, g: 1, b: 0.5248951, a: 0.019607844}
+    - _DepthColor: {r: 0, g: 0.2735849, b: 0.03408951, a: 0.2784314}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0.58962256, g: 1, b: 0.73819613, a: 1}
     - _OverlayColor: {r: 0.073818915, g: 1, b: 0, a: 0}

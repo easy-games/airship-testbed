@@ -147,14 +147,14 @@ export class EntityAnimator {
 				break;
 			case EntityAnimationEventKey.SLIDE_START:
 				if (this.entityRef.slideSound) {
-					AudioManager.PlayAtPosition(this.entityRef.slideSound, this.entity.model.transform.position, {
+					AudioManager.PlayClipAtPosition(this.entityRef.slideSound, this.entity.model.transform.position, {
 						volumeScale: 0.3,
 					});
 				}
 				break;
 			case EntityAnimationEventKey.JUMP:
 				if (this.entityRef.jumpSound) {
-					AudioManager.PlayAtPosition(this.entityRef.jumpSound, this.entity.model.transform.position, {
+					AudioManager.PlayClipAtPosition(this.entityRef.jumpSound, this.entity.model.transform.position, {
 						volumeScale: 0.2,
 					});
 				}
