@@ -11,6 +11,8 @@ import { ChatCommand } from "CoreShared/Commands/ChatCommand";
 import { ChatUtil } from "CoreShared/Util/ChatUtil";
 import { PlayerController } from "../Player/PlayerController";
 import { Game } from "Shared/Game";
+import { FriendsCommand } from "CoreShared/Commands/FriendsCommand";
+import { encode } from "CoreShared/json";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -69,6 +71,8 @@ export class ChatController implements OnStart {
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
 		this.content.gameObject.ClearChildren();
+
+		this.RegisterCommand(new FriendsCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
@@ -227,15 +231,22 @@ export class ChatController implements OnStart {
 			this.prevSentMessages.pop();
 		}
 
-		Network.ClientToServer.SendChatMessage.Client.FireServer(message);
-
 		const commandData = ChatUtil.ParseCommandData(message);
+
+		print(`SendChatMessage() commandData: ${encode(commandData)}`);
+
+		let sendChatToServer = true;
 
 		if (commandData) {
 			const command = this.commands.get(commandData.label);
 			if (command) {
 				command.Execute(Game.LocalPlayer, commandData.args);
+				sendChatToServer = false;
 			}
+		}
+
+		if (sendChatToServer) {
+			Network.ClientToServer.SendChatMessage.Client.FireServer(message);
 		}
 	}
 

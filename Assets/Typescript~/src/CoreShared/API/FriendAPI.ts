@@ -30,6 +30,8 @@ export class FriendAPI {
 			} else if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
 				const friendStatusDatasArrays = decode<FriendStatusData[][]>(signal.jsonMessage);
 
+				this.friendsCache.clear();
+
 				// Update friends cache with new info.
 				friendStatusDatasArrays.forEach((fsdArray) => {
 					fsdArray.forEach((fsd) => {
@@ -54,24 +56,43 @@ export class FriendAPI {
 			}
 		});
 
-		EasyCore.EmitAsync("refresh-friends-status");
+		EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
 
-		SetInterval(
-			3,
-			() => {
-				print(
-					`FriendAPI.InitAsync.SetInterval() friendsCache: ${encode(
-						this.friendsCache,
-					)}, this.friendsCacheByStatus: ${encode(this.friendsCacheByStatus)}`,
-				);
-			},
-			true,
-		);
+		// SetInterval(
+		// 	3,
+		// 	() => {
+		// 		print(
+		// 			`FriendAPI.InitAsync.SetInterval() friendsCache: ${encode(
+		// 				this.friendsCache,
+		// 			)}, this.friendsCacheByStatus: ${encode(this.friendsCacheByStatus)}`,
+		// 		);
+		// 	},
+		// 	true,
+		// );
 	}
 
-	static GetFriendsWithStatus(status: UserStatus): FriendStatusData[] {
-		const fsds = this.friendsCacheByStatus.get(status);
-		return fsds === undefined ? new Array<FriendStatusData>(0) : fsds;
+	static GetFriendStatusData(discriminatedUsername: string): FriendStatusData | undefined {
+		const fsd = this.GetFriendsWithStatus().find((fsd) => fsd.discriminatedUsername === discriminatedUsername);
+
+		return fsd;
+	}
+
+	static GetFriendsWithStatus(status: UserStatus | undefined = undefined): FriendStatusData[] {
+		let fsds: FriendStatusData[];
+
+		if (status) {
+			let fsds1 = this.friendsCacheByStatus.get(status);
+
+			fsds = fsds1 ? fsds1 : new Array<FriendStatusData>(0);
+		} else {
+			fsds = new Array<FriendStatusData>();
+
+			this.friendsCache.forEach((fsd) => {
+				fsds.push(fsd);
+			});
+		}
+
+		return fsds;
 	}
 
 	static async GetFriendsAsync(): Promise<PublicUser[]> {
@@ -101,32 +122,16 @@ export class FriendAPI {
 		return EasyCore.GetAsync(`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`, undefined, headers);
 	}
 
-	static RequestFriendship(discriminatedUserName: string) {
-		print(`RequestFriendship 0`);
-		const headers = EasyCore.GetHeadersMap();
-
-		print(`RequestFriendship 1`);
-		EasyCore.Post(
-			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
-			encode({ discriminatedUsername: discriminatedUserName }),
-			undefined,
-			headers,
-		);
-		print(`RequestFriendship 2`);
-	}
-
 	static async RequestFriendshipAsync(discriminatedUserName: string): Promise<FriendshipRequestResultObj> {
-		print(`RequestFriendshipAsync 0`);
 		const headers = EasyCore.GetHeadersMap();
 
-		print(`RequestFriendshipAsync 1`);
 		const result = EasyCore.PostAsync<FriendshipRequestResultObj>(
 			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
 			encode({ discriminatedUsername: discriminatedUserName }),
 			undefined,
 			headers,
 		);
-		print(`RequestFriendshipAsync 2`);
+
 		return result;
 	}
 
@@ -136,6 +141,12 @@ export class FriendAPI {
 
 		const headers = EasyCore.GetHeadersMap();
 
-		return EasyCore.DeleteAsync(`${ApiHelper.USER_SERVICE_URL}/friends/uid/${otherUserUid}`, parameters, headers);
+		return EasyCore.DeleteAsync(
+			`${ApiHelper.USER_SERVICE_URL}/friends/uid/${otherUserUid}`,
+			parameters,
+			headers,
+		).then(() => {
+			EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
+		});
 	}
 }

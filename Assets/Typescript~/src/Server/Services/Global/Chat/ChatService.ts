@@ -20,7 +20,6 @@ import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
-import { FriendRequestCommand } from "CoreShared/Commands/FriendRequestCommand";
 import { ChatUtil } from "CoreShared/Util/ChatUtil";
 
 @Service({})
@@ -44,7 +43,6 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new LagCommand());
 		this.RegisterCommand(new SetVarCommand());
 		this.RegisterCommand(new HealCommand());
-		this.RegisterCommand(new FriendRequestCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
@@ -72,7 +70,7 @@ export class ChatService implements OnStart {
 					}
 				}
 
-				player.SendMessage("Invalid command: /" + text);
+				player.SendMessage(`Invalid command: ${text}`);
 				return;
 			}
 
