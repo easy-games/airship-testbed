@@ -419,11 +419,13 @@
     <Name>Oak Leaf</Name>
     <TopTexture>leaf_oak.s</TopTexture>
     <SideTexture>leaf_oak.s</SideTexture>
-    <Solid>true</Solid>
+    <Solid>false</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Brightness>2</Brightness>
     <Minecraft>48</Minecraft>
+    <RandomRotation>true</RandomRotation>
+    <TileSet>TileSets/Leafs/Leaf</TileSet>
   </Block>
   <Block>
     <Index>60</Index>
