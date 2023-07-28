@@ -127,23 +127,23 @@ export class SpectateController implements OnStart {
 
 	/** Get a list of valid entities that can be spectated, sorted by ID. */
 	private GetSortedEntities(): Entity[] {
-		// const team = Game.LocalPlayer.GetTeam();
-		// if (team) {
-		// 	const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.Character);
-		// 	if (alivePlayers.size() > 0) {
-		// 		return alivePlayers;
-		// 	}
-		// }
-		// // Allow spectating everyone when no more teammates are alive.
-		// return Dependency<PlayerController>()
-		// 	.GetPlayers()
-		// 	.filter((p) => !this.bwController.IsPlayerEliminated(p))
-		// 	.mapFiltered((p) => p.Character);
+		const team = Game.LocalPlayer.GetTeam();
+		if (team) {
+			const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.Character);
+			if (alivePlayers.size() > 0) {
+				return alivePlayers;
+			}
+		}
+		// Allow spectating everyone when no more teammates are alive.
+		return Dependency<PlayerController>()
+			.GetPlayers()
+			.filter((p) => !this.bwController.IsPlayerEliminated(p))
+			.mapFiltered((p) => p.Character);
 
 		// All entities
-		return this.entityController
-			.GetEntities()
-			.filter((e) => !e.IsLocalCharacter())
-			.sort((a, b) => a.id < b.id);
+		// return this.entityController
+		// 	.GetEntities()
+		// 	.filter((e) => !e.IsLocalCharacter())
+		// 	.sort((a, b) => a.id < b.id);
 	}
 }
