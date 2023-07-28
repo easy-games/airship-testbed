@@ -73,5 +73,5 @@ CoreSignals.PartyUpdated.Connect((signal) => {
 });
 
 if (RunCore.IsClient()) {
-	EasyCore.InitAsync();
+	//EasyCore.InitAsync();
 }
