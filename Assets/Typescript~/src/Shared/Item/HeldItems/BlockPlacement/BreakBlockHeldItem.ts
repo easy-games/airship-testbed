@@ -54,9 +54,9 @@ export class BreakBlockHeldItem extends HeldItem {
 
 		if (this.entity.player && this.meta.breakBlock) {
 			//Check to see if we can actually do damage here
-			if (BlockHitDamageCalc(this.entity.player, voxelPos, this.meta.breakBlock) > 0) {
+			const damage = BlockHitDamageCalc(Game.LocalPlayer, block, voxelPos, this.meta.breakBlock);
+			if (damage > 0) {
 				//Do the actual damage
-				const damage = BlockHitDamageCalc(Game.LocalPlayer, voxelPos, this.meta.breakBlock);
 				const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
 				const blockType = WorldAPI.GetMainWorld().GetBlockAt(voxelPos).itemType;
 				const newHealth = math.max(health - damage, 0);

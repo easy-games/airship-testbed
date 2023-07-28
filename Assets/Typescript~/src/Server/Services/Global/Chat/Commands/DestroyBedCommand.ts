@@ -1,13 +1,14 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedService } from "Server/Services/Match/BedService";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { TeamService } from "../../Team/TeamService";
-import { ChatCommand } from "../../../../Commands/ChatCommand";
 import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
+import { TeamService } from "../../Team/TeamService";
 
 export class DestroyBedCommand extends ChatCommand {
 	constructor() {
@@ -42,7 +43,7 @@ export class DestroyBedCommand extends ChatCommand {
 				blockPos: bedState.position,
 			});
 			Network.ServerToClient.BlockDestroyed.Server.FireAllClients(bedState.position, bedMeta.block!.blockId);
-			ServerSignals.BedDestroyed.Fire({ bedTeamId: targetTeam.id });
+			BWServerSignals.BedDestroyed.Fire({ team: targetTeam });
 		}
 	}
 }

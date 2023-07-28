@@ -1,8 +1,12 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
+import { Game } from "Shared/Game";
 import { ItemType } from "Shared/Item/ItemType";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
+import { Theme } from "Shared/Util/Theme";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { ItemUtil } from "../../../Shared/Item/ItemUtil";
@@ -30,7 +34,19 @@ export class BedService implements OnStart {
 			if (event.blockId === BED_BLOCK_ID) {
 				const teamId = BlockDataAPI.GetBlockData<string>(event.blockPos, "teamId");
 				if (!teamId) return;
-				ServerSignals.BedDestroyed.Fire({ bedTeamId: teamId });
+				const team = this.teamService.GetTeamById(teamId);
+				if (team) {
+					const breakerTeam = event.entity?.player?.GetTeam();
+					if (event.entity && breakerTeam) {
+						Game.BroadcastMessage(
+							ColorUtil.ColoredText(breakerTeam.color, event.entity.GetDisplayName()) +
+								ColorUtil.ColoredText(Theme.Aqua, " broke ") +
+								ColorUtil.ColoredText(team.color, `${team.name} team's bed`) +
+								ColorUtil.ColoredText(Theme.Aqua, "!"),
+						);
+					}
+					BWServerSignals.BedDestroyed.Fire({ team });
+				}
 			}
 		});
 		ServerSignals.MatchStart.connect(() => {
@@ -56,9 +72,11 @@ export class BedService implements OnStart {
 				destroyed: false,
 			};
 			this.teamToBed.set(team.id, bedState);
+			const itemMeta = ItemUtil.GetItemMeta(ItemType.BED);
 			WorldAPI.GetMainWorld().PlaceBlock(bedPos, ItemType.BED, {
 				blockData: {
 					teamId: team.id,
+					health: itemMeta.block!.health!, // this is a hack.
 				},
 			});
 		}

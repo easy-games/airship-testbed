@@ -47,7 +47,7 @@ export const ServerSignals = {
 	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
 	BlockHit: new Signal<BlockHitSignal>(),
 	/** Fired before a block is destroyed. */
-	BeforeBlockDestroyed: new Signal<{ blockMeta: ItemMeta; blockPos: Vector3; blockId: number }>(),
+	BeforeBlockDestroyed: new Signal<{ blockMeta: ItemMeta; blockPos: Vector3; blockId: number; entity?: Entity }>(),
 	/** Fired when a block is destroyed. */
 	BlockDestroyed: new Signal<{ blockMeta: ItemMeta; blockPos: Vector3; blockId: number }>(),
 	BeforeEntitySpawn: new SyncEvent(BeforeEntitySpawnServerEvent),
@@ -63,8 +63,6 @@ export const ServerSignals = {
 	/** Fired when a **tagged** `GameObject` is despawning. */
 	NetGameObjectDespawning: new Signal<{ nob: number; tag: string }>(),
 	PlayerChangeTeam: new Signal<ChangeTeamSignal>(),
-	/** Fired when a bed is destroyed. */
-	BedDestroyed: new Signal<{ bedTeamId: string }>(),
 	/** Fired when a team upgrade is successfully purchased. */
 	TeamUpgradePurchase: new Signal<{ team: Team; upgradeType: TeamUpgradeType; tier: number }>(),
 	/** Fired when a melee weapon is swung. */

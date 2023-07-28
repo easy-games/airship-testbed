@@ -23,12 +23,14 @@ export class BlockHeldItem extends HeldItem {
 				WorldAPI.GetMainWorld().voxelWorld,
 			);
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
-			blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
-			blockGO.transform.localPosition = new Vector3(0, 0, 0);
-			const scale = 1;
-			blockGO.transform.localScale = new Vector3(scale, scale, scale);
-			blockGO.transform.localRotation = Quaternion.identity;
-			blockGO.transform.Rotate(new Vector3(90, 90, 0));
+			if (blockGO) {
+				blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
+				blockGO.transform.localPosition = new Vector3(0, 0, 0);
+				const scale = 1;
+				blockGO.transform.localScale = new Vector3(scale, scale, scale);
+				blockGO.transform.localRotation = Quaternion.identity;
+				blockGO.transform.Rotate(new Vector3(90, 90, 0));
+			}
 		}
 	}
 

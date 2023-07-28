@@ -144,11 +144,13 @@ export class BlockHealthController implements OnStart {
 	private ApplyBlockMaterial(blockId: number, effect: GameObject) {
 		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
 		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, WorldAPI.GetMainWorld().voxelWorld);
-		const blockRen = blockGO.GetComponent<Renderer>();
-		const blockFilter = blockGO.GetComponent<MeshFilter>();
-		particles.mesh = blockFilter.mesh;
-		particles.sharedMaterial = blockRen.sharedMaterial;
-		GameObjectUtil.Destroy(blockGO);
+		if (blockGO) {
+			const blockRen = blockGO.GetComponent<Renderer>();
+			const blockFilter = blockGO.GetComponent<MeshFilter>();
+			particles.mesh = blockFilter.mesh;
+			particles.sharedMaterial = blockRen.sharedMaterial;
+			GameObjectUtil.Destroy(blockGO);
+		}
 	}
 
 	private GetBlockHealth(blockPos: Vector3) {

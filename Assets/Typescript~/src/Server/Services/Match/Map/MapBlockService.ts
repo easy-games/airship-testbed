@@ -16,10 +16,5 @@ export class MapBlockService implements OnStart {
 				BlockDataAPI.SetBlockData(pos, "placedByUser", true);
 			});
 		});
-		/* Don't allow users to damage map blocks. */
-		ServerSignals.BeforeBlockHit.Connect((event) => {
-			const wasPlacedByUser = BlockDataAPI.GetBlockData<boolean>(event.BlockPos, "placedByUser");
-			if (!wasPlacedByUser) event.SetCancelled(true);
-		});
 	}
 }
