@@ -133,7 +133,7 @@ export class BWSpawnService implements OnStart {
 		inv.AddItem(new ItemStack(ItemType.STONE, 100));
 		inv.AddItem(new ItemStack(ItemType.TELEPEARL, 100));
 		inv.AddItem(new ItemStack(ItemType.GRASS, 100));
-		inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
+		inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 3));
 
 		// inv.SetItem(inv.armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET, 1));
 
