@@ -10,7 +10,7 @@ import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
-import { WaitForNobId } from "Shared/Util/NetworkUtil";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { OnUpdate, SetInterval } from "Shared/Util/Timer";
 import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
@@ -58,7 +58,7 @@ export class GroundItemController implements OnStart {
 		Network.ServerToClient.AddGroundItem.Client.OnServerEvent((groundItemGOID, itemStackDto) => {
 			const itemStack = ItemStack.Decode(itemStackDto);
 
-			const groundItemNob = WaitForNobId(groundItemGOID);
+			const groundItemNob = NetworkUtil.WaitForNobId(groundItemGOID);
 
 			this.groundItems.set(groundItemGOID, {
 				nob: groundItemNob,

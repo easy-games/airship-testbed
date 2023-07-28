@@ -4,7 +4,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { Network } from "Shared/Network";
 import { CollectionManager } from "Shared/Util/CollectionManager";
 import { CollectionTag } from "Shared/Util/CollectionTag";
-import { WaitForNobId } from "Shared/Util/NetworkUtil";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 
 @Controller({ loadOrder: 0 })
 export class CollectionManagerController implements OnStart {
@@ -20,7 +20,7 @@ export class CollectionManagerController implements OnStart {
 		/* Listen for tagged, replicated `GameObject` instatiation. */
 		Network.ServerToClient.NetGameObjectReplicating.Client.OnServerEvent((networkObjectId, tag) => {
 			print(`[${tag}]: waiting for ${networkObjectId}`);
-			const replicatedGameObject = WaitForNobId(networkObjectId).gameObject;
+			const replicatedGameObject = NetworkUtil.WaitForNobId(networkObjectId).gameObject;
 			this.addGameObjectToTagSet(replicatedGameObject, tag);
 		});
 
@@ -42,7 +42,7 @@ export class CollectionManagerController implements OnStart {
 			/* Create tag set. */
 			const tagSet = new Set<GameObject>();
 			nobSet.forEach((nobId) => {
-				const gameObject = WaitForNobId(nobId).gameObject;
+				const gameObject = NetworkUtil.WaitForNobId(nobId).gameObject;
 				// print("constructClient gameObject=", gameObject);
 				tagSet.add(gameObject);
 				/* Listen for destruction on construction. */

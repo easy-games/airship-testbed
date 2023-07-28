@@ -248,6 +248,8 @@ MonoBehaviour:
       value: {fileID: 6624741054402371218}
     - key: Text
       value: {fileID: 6624741055486560264}
+    - key: Canvas
+      value: {fileID: 6624741053933692589}
 --- !u!1 &6624741054402371216
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,9 +395,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: SnickTrix
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ef6afd1e3a2de41388814b93d5b74cb1, type: 2}
-  m_sharedMaterial: {fileID: -4852089703786606503, guid: ef6afd1e3a2de41388814b93d5b74cb1,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

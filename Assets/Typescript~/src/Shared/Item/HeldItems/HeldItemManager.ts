@@ -55,7 +55,7 @@ export class HeldItemManager {
 				itemType = "PROJECTILE LAUNCHER";
 				item = new ProjectileLauncherHeldItem(this.entity, meta);
 			} else {
-				warn("Entity " + this.entity.id + " " + meta.displayName + " resorting to default held item logic");
+				// warn("Entity " + this.entity.id + " " + meta.displayName + " resorting to default held item logic");
 				item = new HeldItem(this.entity, meta);
 			}
 			this.Log("creating Held Item: " + meta.displayName + " of type: " + itemType);

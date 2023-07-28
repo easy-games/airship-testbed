@@ -1,6 +1,6 @@
 import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Network } from "Shared/Network";
-import { NetworkUtil } from "Shared/NetworkBridge";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BodyAttachment } from "./Accessory/BodyAttachment";
 import { baseCharacters } from "./BaseCharacters";
