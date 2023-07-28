@@ -33,7 +33,6 @@ export class ShopkeeperService implements OnStart {
 
 	OnStart(): void {
 		ServerSignals.PlayerJoin.Connect((event) => {
-			print("PlayerJoin: sending AddNPC's");
 			Network.ServerToClient.ItemShop.AddNPCs.Server.FireClient(event.player.clientId, this.itemShopEntityIds);
 			Network.ServerToClient.TeamUpgradeShop.AddNPCs.Server.FireClient(
 				event.player.clientId,
