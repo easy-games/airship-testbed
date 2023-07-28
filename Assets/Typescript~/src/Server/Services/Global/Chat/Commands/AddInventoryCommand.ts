@@ -1,7 +1,7 @@
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
-import { ChatCommand } from "./ChatCommand";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
 import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 export class AddInventoryCommand extends ChatCommand {

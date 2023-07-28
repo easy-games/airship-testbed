@@ -3,7 +3,7 @@ import { DamageService } from "Server/Services/Global/Damage/DamageService";
 import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { Entity } from "Shared/Entity/Entity";
 import { Player } from "Shared/Player/Player";
-import { ChatCommand } from "./ChatCommand";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
 
 export class DamageCommand extends ChatCommand {
 	constructor() {

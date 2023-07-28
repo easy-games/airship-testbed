@@ -5,7 +5,7 @@ import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { Theme } from "Shared/Util/Theme";
-import { ChatCommand } from "../ChatCommand";
+import { ChatCommand } from "../../../../../Commands/ChatCommand";
 
 export class StartMatchCommand extends ChatCommand {
 	constructor() {
