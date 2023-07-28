@@ -16,28 +16,13 @@ CoreSignals.CoreInitialized.Connect((signal) => {
 CoreSignals.UserServiceInitialized.Connect(async () => {
 	await FriendAPI.InitAsync();
 
-	// const curUser = UserAPI.GetCurrentUser();
-	// print(`Main.ts CoreSignals.UserServiceInitialized! curUser?.username: ${curUser?.username}`);
-	// if (curUser) {
-	// 	const curUser2 = await UserAPI.GetUserAsync(curUser?.discriminatedUsername);
-	// 	print(`Main.ts CoreSignals.UserServiceInitialized! curUser2?.username: ${curUser2?.username}`);
-	// 	if (curUser2?.username) {
-	// 		await UserAPI.UpdateCurrentUserDataAsync(new UpdateUserDto(curUser2?.username.sub(0, -2)));
-	// 	}
-	// }
+	const curUser = UserAPI.GetCurrentUser();
+	print(
+		`Main.ts CoreSignals.UserServiceInitialized! curUser?.discriminatedUsername: ${curUser?.discriminatedUsername}`,
+	);
 
 	const friends = await FriendAPI.GetFriendsAsync();
 	print(`Main.ts CoreSignals.UserServiceInitialized! friends: ${encode(friends)}`);
-	// if (curUser?.uid) {
-	// 	const friendsOfUser = await FriendAPI.GetStatusWithOtherUserAsync("daqTObdnLVe7TEkkxiKfosDecz12");
-	// 	print(`Main.ts CoreSignals.UserServiceInitialized! friendsOfUser: ${encode(friendsOfUser)}`);
-
-	// 	if (!friendsOfUser.isFriends) {
-	// 		const requestResult = await FriendAPI.RequestFriendshipAsync("BEDBOUNCER89336#0002");
-
-	// 		print(`Main.ts CoreSignals.UserServiceInitialized! requestResult: ${requestResult}`);
-	// 	}
-	// }
 });
 
 CoreSignals.GameCoordinatorMessage.Connect((signal) => {

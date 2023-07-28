@@ -73,7 +73,7 @@ export class FriendsCommand extends ChatCommand {
 			if (fsds.isEmpty()) {
 				player.SendMessage(`No friends found.`);
 			} else {
-				player.SendMessage("friends:\n");
+				player.SendMessage(`friends (count: ${fsds.size()}):\n`);
 				fsds.forEach((fsd) => {
 					player.SendMessage(encode(fsd));
 				});

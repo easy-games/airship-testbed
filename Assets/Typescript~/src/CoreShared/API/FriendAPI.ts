@@ -12,6 +12,7 @@ import {
 } from "CoreShared/SocketIOMessages/FriendsDtos";
 import { SetInterval } from "Shared/Util/Timer";
 import { UserStatus } from "CoreShared/SocketIOMessages/Status";
+import { UserAPI } from "./UserAPI";
 
 export class FriendAPI {
 	private static friendsCacheByStatus = new Map<UserStatus, FriendStatusData[]>();
@@ -30,8 +31,6 @@ export class FriendAPI {
 			} else if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
 				const friendStatusDatasArrays = decode<FriendStatusData[][]>(signal.jsonMessage);
 
-				this.friendsCache.clear();
-
 				// Update friends cache with new info.
 				friendStatusDatasArrays.forEach((fsdArray) => {
 					fsdArray.forEach((fsd) => {
@@ -41,22 +40,25 @@ export class FriendAPI {
 					});
 				});
 
-				// Update friends cache status map.
-				this.friendsCacheByStatus.clear();
-				this.friendsCache.forEach((fsd) => {
-					let fsds = this.friendsCacheByStatus.get(fsd.status);
-
-					if (fsds === undefined) {
-						fsds = new Array<FriendStatusData>();
-						this.friendsCacheByStatus.set(fsd.status, fsds);
-					}
-
-					fsds.push(fsd);
-				});
+				this.RefreshFriendsCache();
 			}
 		});
 
-		EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
+		FriendAPI.GetFriendsAsync().then((friends) => {
+			friends.forEach((friend) => {
+				this.friendsCache.set(friend.uid, {
+					discriminatedUsername: friend.discriminatedUsername,
+					discriminator: friend.discriminator,
+					userId: friend.uid,
+					username: friend.username,
+					status: UserStatus.OFFLINE, // Assume they are offline until a real status comes back.
+					game: "",
+				});
+			});
+
+			// Ask for a friends status update.
+			EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
+		});
 
 		// SetInterval(
 		// 	3,
@@ -71,8 +73,25 @@ export class FriendAPI {
 		// );
 	}
 
+	private static RefreshFriendsCache() {
+		// Update friends cache status map.
+		this.friendsCacheByStatus.clear();
+		this.friendsCache.forEach((fsd) => {
+			let fsds = this.friendsCacheByStatus.get(fsd.status);
+
+			if (fsds === undefined) {
+				fsds = new Array<FriendStatusData>();
+				this.friendsCacheByStatus.set(fsd.status, fsds);
+			}
+
+			fsds.push(fsd);
+		});
+	}
+
 	static GetFriendStatusData(discriminatedUsername: string): FriendStatusData | undefined {
-		const fsd = this.GetFriendsWithStatus().find((fsd) => fsd.discriminatedUsername === discriminatedUsername);
+		const fsd = this.GetFriendsWithStatus().find(
+			(fsd) => fsd.discriminatedUsername.lower() === discriminatedUsername.lower(),
+		);
 
 		return fsd;
 	}
@@ -122,17 +141,35 @@ export class FriendAPI {
 		return EasyCore.GetAsync(`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`, undefined, headers);
 	}
 
-	static async RequestFriendshipAsync(discriminatedUserName: string): Promise<FriendshipRequestResultObj> {
+	static async RequestFriendshipAsync(discriminatedUsername: string): Promise<FriendshipRequestResultObj> {
 		const headers = EasyCore.GetHeadersMap();
 
-		const result = EasyCore.PostAsync<FriendshipRequestResultObj>(
+		return EasyCore.PostAsync<FriendshipRequestResultObj>(
 			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
-			encode({ discriminatedUsername: discriminatedUserName }),
+			encode({ discriminatedUsername: discriminatedUsername }),
 			undefined,
 			headers,
-		);
+		).then((resultObj) => {
+			// If we're the last user to accept the two-way request, update our cache.
+			if (resultObj.result === "accepted") {
+				UserAPI.GetUserAsync(discriminatedUsername).then((publicUser) => {
+					if (publicUser) {
+						this.friendsCache.set(publicUser.uid, {
+							discriminatedUsername: publicUser.discriminatedUsername,
+							discriminator: publicUser.discriminator,
+							userId: publicUser.uid,
+							username: publicUser.username,
+							status: UserStatus.OFFLINE, // Assume they are offline until a real status comes back.
+							game: "",
+						});
 
-		return result;
+						this.RefreshFriendsCache();
+					}
+				});
+			}
+
+			return resultObj;
+		});
 	}
 
 	static async TerminateFriendshipAsync(otherUserUid: string): Promise<void> {
@@ -146,6 +183,9 @@ export class FriendAPI {
 			parameters,
 			headers,
 		).then(() => {
+			this.friendsCache.delete(otherUserUid);
+			this.RefreshFriendsCache();
+
 			EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
 		});
 	}
