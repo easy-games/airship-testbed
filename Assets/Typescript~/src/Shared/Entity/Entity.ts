@@ -74,11 +74,11 @@ export class EntityReferences {
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
 
-		// this.jumpSound = AudioManager.LoadFullPathAudioClip(BundleReferenceManager.GetPathForResource(
-		// 	BundleGroupNames.Entity,
-		// 	Bundle_Entity.Movement,
-		// 	Bundle_Entity_Movement.JumpSFX,
-		// ));
+		/*this.jumpSound = AudioManager.LoadFullPathAudioClip(BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.JumpSFX,
+		));*/
 
 		this.slideSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
@@ -88,13 +88,13 @@ export class EntityReferences {
 			),
 		);
 
-		this.landSound = AudioManager.LoadFullPathAudioClip(
+		/*this.landSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
 				BundleGroupNames.Entity,
 				Bundle_Entity.Movement,
 				Bundle_Entity_Movement.LandSFX,
 			),
-		);
+		);*/
 	}
 }
 
