@@ -12,6 +12,7 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords:
   - EXPLICIT_MAPS_ON
+  - EXPLICIT_MAPS_ON_ON
   - METAL_ON_ON
   - OVERRIDE_ON
   - _LIGHTS_LIGHTS0
@@ -79,18 +80,26 @@ Material:
     m_Ints: []
     m_Floats:
     - EXPLICIT_MAPS: 1
+    - EXPLICIT_MAPS_ON: 1
     - METAL_ON: 1
     - OVERRIDE: 0
     - _Alpha: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DeformScale: 0.8
+    - _DeformSpeed: 1
+    - _DeformStrength: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FlutterSpeed: 1
+    - _FlutterStrength: 1
+    - _FresnelPower: 10
+    - _FresnelStrength: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LightMix: 0
+    - _LightShimmerStrength: 0
     - _Lights: 0
     - _MetalOverride: 0
     - _Metallic: 0
@@ -101,10 +110,16 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TexColorStrength: 0
     - _UVSec: 0
+    - _WindSpeed: 3
+    - _WindStrength: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0, g: 0.42352942, b: 0, a: 1}
+    - _ColorA: {r: 0.1, g: 0.25, b: 0.1, a: 1}
+    - _ColorB: {r: 0.2, g: 0.6, b: 0.1, a: 1}
     - _DarkColor: {r: 0, g: 0.19461787, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FresnelColor: {r: 0.1, g: 1, b: 0.1, a: 1}
   m_BuildTextureStacks: []
