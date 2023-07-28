@@ -24,36 +24,33 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
 
 	protected override OnChargeStart(): void {
-		super.OnChargeStart();
 		if (!this.meta.ProjectileLauncher) return;
-
+		if (!this.HasRequiredAmmo()) return;
 		if (RunUtil.IsClient()) {
-			// Validations
-			if (!this.entity.IsLocalCharacter()) return;
+			if (CanvasAPI.IsPointerOverUI()) return;
+		}
 
+		super.OnChargeStart();
+
+		//Play the draw sound
+		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
+		let soundPath = this.bundles?.bundles?.get(3)?.filePaths.get(1);
+		if (soundPath) {
+			if (this.entity.IsLocalCharacter()) {
+				AudioManager.PlayFullPathGlobal(soundPath, { volumeScale: 0.2 });
+			} else {
+				AudioManager.PlayFullPathAtPosition(soundPath, this.entity.model.transform.position, {
+					volumeScale: 0.2,
+				});
+			}
+		}
+
+		//Play the items animation  (bow draw)
+		this.PlayItemAnimation(0, true);
+
+		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
 			const ammoMeta = ammoItemMeta.Ammo!;
-
-			if (CanvasAPI.IsPointerOverUI()) return;
-			if (!this.HasRequiredAmmo()) return;
-
-			// End validations. Bow will now start charging!
-
-			//Play the items animation  (bow draw)
-			this.PlayItemAnimation(0, true);
-
-			//Play the draw sound
-			//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
-			let soundPath = this.bundles?.bundles?.get(3)?.filePaths.get(1);
-			if (soundPath) {
-				if (this.entity.IsLocalCharacter()) {
-					AudioManager.PlayFullPathGlobal(soundPath, { volumeScale: 0.2 });
-				} else {
-					AudioManager.PlayFullPathAtPosition(soundPath, this.entity.model.transform.position, {
-						volumeScale: 0.2,
-					});
-				}
-			}
 
 			this.chargeBin.Add(Crosshair.AddDisabler());
 
@@ -91,12 +88,14 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			});
 		}
 
-		this.chargeBin.Add(
-			this.entity.OnAdjustMove.Connect((moveModifier) => {
-				moveModifier.blockSprint = true;
-				moveModifier.speedMultiplier *= 0.4;
-			}),
-		);
+		if (RunUtil.IsServer() || this.entity.IsLocalCharacter()) {
+			this.chargeBin.Add(
+				this.entity.OnAdjustMove.Connect((moveModifier) => {
+					moveModifier.blockSprint = true;
+					moveModifier.speedMultiplier *= 0.4;
+				}),
+			);
+		}
 	}
 
 	private HasRequiredAmmo(): boolean {
