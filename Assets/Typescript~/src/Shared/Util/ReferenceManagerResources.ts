@@ -61,10 +61,21 @@ export enum Bundle_ItemBlock_ThirdPerson{
 	Use,
 }
 
+export enum Bundle_ItemBlock_Prefabs{
+	NONE = -1,
+}
+
+export enum Bundle_ItemBlock_SFX{
+	NONE = -1,
+	Equip,
+}
+
 export enum Bundle_ItemBlock{
 	NONE = -1,
 	FirstPerson,
 	ThirdPerson,
+	Prefabs,
+	SFX,
 }
 
 export enum Bundle_ItemBow_FirstPerson{
@@ -85,10 +96,22 @@ export enum Bundle_ItemBow_ThirdPerson{
 	Shoot,
 }
 
+export enum Bundle_ItemBow_Prefabs{
+	NONE = -1,
+}
+
+export enum Bundle_ItemBow_SFX{
+	NONE = -1,
+	Equip,
+	Charge,
+}
+
 export enum Bundle_ItemBow{
 	NONE = -1,
 	FirstPerson,
 	ThirdPerson,
+	Prefabs,
+	SFX,
 }
 
 export enum Bundle_ItemPickaxe_FirstPerson{
@@ -142,11 +165,17 @@ export enum Bundle_ItemSword_Prefabs{
 	OnHit,
 }
 
+export enum Bundle_ItemSword_SFX{
+	NONE = -1,
+	Equip,
+}
+
 export enum Bundle_ItemSword{
 	NONE = -1,
 	FirstPerson,
 	ThirdPerson,
 	Prefabs,
+	SFX,
 }
 
 export enum Bundle_ItemThrowable_FirstPerson{
@@ -189,10 +218,21 @@ export enum Bundle_ItemUnarmed_ThirdPerson{
 	Use,
 }
 
+export enum Bundle_ItemUnarmed_Prefabs{
+	NONE = -1,
+}
+
+export enum Bundle_ItemUnarmed_SFX{
+	NONE = -1,
+	Equip,
+}
+
 export enum Bundle_ItemUnarmed{
 	NONE = -1,
 	FirstPerson,
 	ThirdPerson,
+	Prefabs,
+	SFX,
 }
 
 export enum Bundle_HeldItem_OnUse{
@@ -268,7 +308,7 @@ export class ReferenceManagerAssets{
 			id: Bundle_Entity.Movement,
 			filePaths: new Map([
 				[Bundle_Entity_Movement.SprintTrail, "Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab"],
-				[Bundle_Entity_Movement.SlideSFX, "Shared/Resources/Sound/Movement/SlideStart.ogg"],
+				[Bundle_Entity_Movement.SlideSFX, "Shared/Resources/Sound/Movement/SlideStart.wav"],
 				[Bundle_Entity_Movement.JumpSFX, "Shared/Resources/Sound/Movement/JumpStart.ogg"],
 				[Bundle_Entity_Movement.LandSFX, "Shared/Resources/Sound/Movement/JumpLand.ogg"],
 			])}],
@@ -294,6 +334,15 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemBlock_ThirdPerson.UnEquip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_UnEqup.anim"],
 				[Bundle_ItemBlock_ThirdPerson.Use, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_Use.anim"],
 			])}],
+		[Bundle_ItemBlock.Prefabs, {
+			id: Bundle_ItemBlock.Prefabs,
+			filePaths: new Map([
+			])}],
+		[Bundle_ItemBlock.SFX, {
+			id: Bundle_ItemBlock.SFX,
+			filePaths: new Map([
+				[Bundle_ItemBlock_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Block.ogg"],
+			])}],
 		])
 	}
 
@@ -317,6 +366,16 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemBow_ThirdPerson.UnEquip, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_TP_Throw_UnEquip.anim"],
 				[Bundle_ItemBow_ThirdPerson.Charge, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowDraw.anim"],
 				[Bundle_ItemBow_ThirdPerson.Shoot, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/BowDraw.anim"],
+			])}],
+		[Bundle_ItemBow.Prefabs, {
+			id: Bundle_ItemBow.Prefabs,
+			filePaths: new Map([
+			])}],
+		[Bundle_ItemBow.SFX, {
+			id: Bundle_ItemBow.SFX,
+			filePaths: new Map([
+				[Bundle_ItemBow_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Bow.ogg"],
+				[Bundle_ItemBow_SFX.Charge, "Shared/Resources/Sound/Items/Bow/Bow_Charge.ogg"],
 			])}],
 		])
 	}
@@ -374,6 +433,11 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemSword_Prefabs.OnUse, "Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab"],
 				[Bundle_ItemSword_Prefabs.OnHit, "Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab"],
 			])}],
+		[Bundle_ItemSword.SFX, {
+			id: Bundle_ItemSword.SFX,
+			filePaths: new Map([
+				[Bundle_ItemSword_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg"],
+			])}],
 		])
 	}
 
@@ -420,6 +484,15 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemUnarmed_ThirdPerson.UnEquip, ""],
 				[Bundle_ItemUnarmed_ThirdPerson.Use, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Generic/Neon_TP_Generic_Use.anim"],
 			])}],
+		[Bundle_ItemUnarmed.Prefabs, {
+			id: Bundle_ItemUnarmed.Prefabs,
+			filePaths: new Map([
+			])}],
+		[Bundle_ItemUnarmed.SFX, {
+			id: Bundle_ItemUnarmed.SFX,
+			filePaths: new Map([
+				[Bundle_ItemUnarmed_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg"],
+			])}],
 		])
 	}
 
@@ -457,6 +530,10 @@ export class ReferenceManagerAssets{
 		[BundleGroupNames.Entity, ReferenceManagerAssets.Entity],
 		[BundleGroupNames.ItemBlock, ReferenceManagerAssets.ItemBlock],
 		[BundleGroupNames.ItemBlock, ReferenceManagerAssets.ItemBlock],
+		[BundleGroupNames.ItemBlock, ReferenceManagerAssets.ItemBlock],
+		[BundleGroupNames.ItemBlock, ReferenceManagerAssets.ItemBlock],
+		[BundleGroupNames.ItemBow, ReferenceManagerAssets.ItemBow],
+		[BundleGroupNames.ItemBow, ReferenceManagerAssets.ItemBow],
 		[BundleGroupNames.ItemBow, ReferenceManagerAssets.ItemBow],
 		[BundleGroupNames.ItemBow, ReferenceManagerAssets.ItemBow],
 		[BundleGroupNames.ItemPickaxe, ReferenceManagerAssets.ItemPickaxe],
@@ -465,8 +542,11 @@ export class ReferenceManagerAssets{
 		[BundleGroupNames.ItemSword, ReferenceManagerAssets.ItemSword],
 		[BundleGroupNames.ItemSword, ReferenceManagerAssets.ItemSword],
 		[BundleGroupNames.ItemSword, ReferenceManagerAssets.ItemSword],
+		[BundleGroupNames.ItemSword, ReferenceManagerAssets.ItemSword],
 		[BundleGroupNames.ItemThrowable, ReferenceManagerAssets.ItemThrowable],
 		[BundleGroupNames.ItemThrowable, ReferenceManagerAssets.ItemThrowable],
+		[BundleGroupNames.ItemUnarmed, ReferenceManagerAssets.ItemUnarmed],
+		[BundleGroupNames.ItemUnarmed, ReferenceManagerAssets.ItemUnarmed],
 		[BundleGroupNames.ItemUnarmed, ReferenceManagerAssets.ItemUnarmed],
 		[BundleGroupNames.ItemUnarmed, ReferenceManagerAssets.ItemUnarmed],
 		[BundleGroupNames.HeldItem, ReferenceManagerAssets.HeldItem],

@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { GeneratorDto } from "Shared/Generator/GeneratorMeta";
 import { Network } from "Shared/Network";
 import { Layer } from "Shared/Util/Layer";
@@ -81,7 +81,7 @@ export class GeneratorController implements OnStart {
 			const rootGO = this.stackedGenerators.get(dto.id);
 			if (rootGO) {
 				this.stackedGenerators.delete(dto.id);
-				GameObjectBridge.Destroy(rootGO);
+				GameObjectUtil.Destroy(rootGO);
 			}
 		});
 	}
@@ -89,7 +89,7 @@ export class GeneratorController implements OnStart {
 	/** Creates a generator label in world space. */
 	private CreateGeneratorLabel(dto: GeneratorDto): void {
 		const labelPosition = dto.pos.add(GENERATOR_LABEL_OFFSET);
-		const generatorLabel = GameObjectBridge.InstantiateAt(
+		const generatorLabel = GameObjectUtil.InstantiateAt(
 			this.generatorLabelPrefab,
 			labelPosition,
 			Quaternion.identity,

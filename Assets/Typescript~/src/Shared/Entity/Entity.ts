@@ -6,10 +6,9 @@ import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
-import { NetworkBridge } from "Shared/NetworkBridge";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -28,10 +27,11 @@ export interface EntityDto {
 	serializer: EntitySerializer;
 	id: number;
 	/** Fish-net ObjectId */
-	gameObjectId: number;
+	nobId: number;
 	clientId?: number;
 	health: number;
 	maxHealth: number;
+	displayName: string;
 }
 
 export class EntityReferences {
@@ -45,9 +45,9 @@ export class EntityReferences {
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
-	jumpSound: string | undefined;
-	slideSound: string | undefined;
-	landSound: string | undefined;
+	jumpSound: AudioClip | undefined;
+	slideSound: AudioClip | undefined;
+	landSound: AudioClip | undefined;
 
 	constructor(ref: GameObjectReferences) {
 		let boneKey = "Bones";
@@ -74,35 +74,27 @@ export class EntityReferences {
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
 
-		// this.jumpSound = BundleReferenceManager.GetPathForResource(
-		// 	BundleGroupNames.Entity,
-		// 	Bundle_Entity.Movement,
-		// 	Bundle_Entity_Movement.JumpSFX,
-		// );
-		// if (this.jumpSound) {
-		// 	this.jumpSound = AudioManager.GetLocalPathFromFullPath(this.jumpSound);
-		// 	print("JUMP SOUND: " + this.jumpSound);
-		// }
-
-		// this.slideSound = BundleReferenceManager.GetPathForResource(
-		// 	BundleGroupNames.Entity,
-		// 	Bundle_Entity.Movement,
-		// 	Bundle_Entity_Movement.SlideSFX,
-		// );
-		if (this.slideSound) {
-			this.slideSound = AudioManager.GetLocalPathFromFullPath(this.slideSound);
-			print("SLIDE SOUND: " + this.slideSound);
-		}
-
-		this.landSound = BundleReferenceManager.GetPathForResource(
+		/*this.jumpSound = AudioManager.LoadFullPathAudioClip(BundleReferenceManager.GetPathForResource(
 			BundleGroupNames.Entity,
 			Bundle_Entity.Movement,
-			Bundle_Entity_Movement.LandSFX,
+			Bundle_Entity_Movement.JumpSFX,
+		));*/
+
+		this.slideSound = AudioManager.LoadFullPathAudioClip(
+			BundleReferenceManager.GetPathForResource(
+				BundleGroupNames.Entity,
+				Bundle_Entity.Movement,
+				Bundle_Entity_Movement.SlideSFX,
+			),
 		);
-		if (this.landSound) {
-			this.landSound = AudioManager.GetLocalPathFromFullPath(this.landSound);
-			print("LAND SOUND: " + this.landSound);
-		}
+
+		/*this.landSound = AudioManager.LoadFullPathAudioClip(
+			BundleReferenceManager.GetPathForResource(
+				BundleGroupNames.Entity,
+				Bundle_Entity.Movement,
+				Bundle_Entity_Movement.LandSFX,
+			),
+		);*/
 	}
 }
 
@@ -132,11 +124,13 @@ export class Entity {
 	private bin: Bin;
 	private dead = false;
 	private destroyed = false;
+	private displayName: string;
 
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
 	public readonly OnPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
 	public readonly OnAdjustMove = new Signal<[moveModifier: MoveModifier]>();
+	public readonly OnDisplayNameChanged = new Signal<[displayName: string]>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
@@ -163,6 +157,11 @@ export class Entity {
 				this.SetPlayer(player);
 			}
 		}
+		if (this.player) {
+			this.displayName = this.player.username;
+		} else {
+			this.displayName = `entity_${this.id}`;
+		}
 
 		this.bin = new Bin();
 		this.bin.Connect(OnLateUpdate, () => this.LateUpdate());
@@ -184,6 +183,14 @@ export class Entity {
 		const oldPlayer = this.player;
 		this.player = player;
 		this.OnPlayerChanged.Fire(player, oldPlayer);
+	}
+
+	public SetDisplayName(displayName: string) {
+		this.displayName = displayName;
+		this.OnDisplayNameChanged.Fire(displayName);
+		if (RunUtil.IsServer()) {
+			Network.ServerToClient.Entity.SetDisplayName.Server.FireAllClients(this.id, displayName);
+		}
 	}
 
 	public GetHealth(): number {
@@ -230,7 +237,7 @@ export class Entity {
 
 		if (RunUtil.IsServer()) {
 			Network.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
-			NetworkBridge.Despawn(this.networkObject.gameObject);
+			NetworkUtil.Despawn(this.networkObject.gameObject);
 		}
 	}
 
@@ -243,9 +250,10 @@ export class Entity {
 			serializer: EntitySerializer.DEFAULT,
 			id: this.id,
 			clientId: this.ClientId,
-			gameObjectId: this.networkObject.ObjectId,
+			nobId: this.networkObject.ObjectId,
 			health: this.health,
 			maxHealth: this.maxHealth,
+			displayName: this.displayName,
 		};
 	}
 
@@ -266,6 +274,14 @@ export class Entity {
 			return Dependency<EntityService>().GetEntityById(id);
 		} else {
 			return Dependency<EntityController>().GetEntityById(id);
+		}
+	}
+
+	public static async WaitForId(id: number): Promise<Entity | undefined> {
+		if (RunUtil.IsServer()) {
+			return this.FindById(id);
+		} else {
+			return await Dependency<EntityController>().WaitForId(id);
 		}
 	}
 
@@ -412,10 +428,7 @@ export class Entity {
 	}
 
 	public GetDisplayName(): string {
-		if (this.player) {
-			return this.player.username;
-		}
-		return `entity_${this.id}`;
+		return this.displayName;
 	}
 
 	public Kill(): void {
@@ -429,10 +442,6 @@ export class Entity {
 
 	public GetBlockBelowMeta(): BlockMeta | undefined {
 		return WorldAPI.GetMainWorld().GetBlockBelowMeta(this.model.transform.position);
-	}
-
-	public GetAccessoryGameObjects(slot: AccessorySlot): GameObject[] {
-		return this.PushToArray(this.accessoryBuilder.GetAccessories(slot));
 	}
 
 	public GetAccessoryMeshes(slot: AccessorySlot): Renderer[] {

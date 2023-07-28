@@ -13,8 +13,9 @@ import { ClientSettingsController } from "../../CollectionManager/ClientSettings
 // IgnoreRaycast Layer: 2
 // Character layer: 3
 // BridgeAssist layer: 7
-// Bitwise operation to ignore layers above: ~(1 << 1 | 1 << 2 | 1 << 3 | 1 << 7)
-const CHARACTER_MASK = -143;
+// ProjectilReciever layer: 12
+// Bitwise operation to ignore layers above: ~(1 << 1 | 1 << 2 | 1 << 3 | 1 << 7 | 1 << 12)
+const CHARACTER_MASK = -4239;
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);

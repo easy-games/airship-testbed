@@ -3,7 +3,7 @@ import { ServerSignals } from "Server/ServerSignals";
 import { PlayerJoinServerEvent } from "Server/Signals/PlayerJoinServerEvent";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
-import { Signal } from "Shared/Util/Signal";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
 
 @Service({})
 export class PlayerService implements OnStart {
@@ -111,7 +111,10 @@ export class PlayerService implements OnStart {
 	 * });
 	 * ```
 	 */
-	public ObservePlayers(observer: (player: Player) => (() => void) | void): () => void {
+	public ObservePlayers(
+		observer: (player: Player) => (() => void) | void,
+		signalPriority?: SignalPriority,
+	): () => void {
 		const cleanupPerPlayer = new Map<Player, () => void>();
 		const observe = (player: Player) => {
 			const cleanup = observer(player);
@@ -122,16 +125,22 @@ export class PlayerService implements OnStart {
 		for (const player of this.players) {
 			observe(player);
 		}
-		const stopPlayerAdded = this.PlayerAdded.Connect((player) => {
-			observe(player);
-		});
-		const stopPlayerRemoved = this.PlayerRemoved.Connect((player) => {
-			const cleanup = cleanupPerPlayer.get(player);
-			if (cleanup !== undefined) {
-				cleanup();
-				cleanupPerPlayer.delete(player);
-			}
-		});
+		const stopPlayerAdded = this.PlayerAdded.ConnectWithPriority(
+			signalPriority ?? SignalPriority.NORMAL,
+			(player) => {
+				observe(player);
+			},
+		);
+		const stopPlayerRemoved = this.PlayerRemoved.ConnectWithPriority(
+			signalPriority ?? SignalPriority.NORMAL,
+			(player) => {
+				const cleanup = cleanupPerPlayer.get(player);
+				if (cleanup !== undefined) {
+					cleanup();
+					cleanupPerPlayer.delete(player);
+				}
+			},
+		);
 		return () => {
 			stopPlayerAdded();
 			stopPlayerRemoved();

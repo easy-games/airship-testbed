@@ -7,7 +7,7 @@ export class CSArrayUtil {
 	 * @param array A C# array.
 	 * @returns A native Typescript array.
 	 */
-	public static CSArrayToTSArray<T extends defined>(array: CSArray<T>): Array<T> {
+	public static Convert<T extends defined>(array: CSArray<T>): Array<T> {
 		const newArray: Array<T> = [];
 		for (let i = 0; i < array.Length; i++) {
 			const value = array.GetValue(i);

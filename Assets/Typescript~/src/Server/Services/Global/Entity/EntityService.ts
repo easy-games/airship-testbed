@@ -5,10 +5,11 @@ import { EntitySpawnEvent } from "Server/Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "Server/Signals/MoveCommandDataEvent";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Network } from "Shared/Network";
-import { NetworkBridge } from "Shared/NetworkBridge";
 import { Player } from "Shared/Player/Player";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
+import { SignalPriority } from "Shared/Util/Signal";
 import { EntityPrefabType } from "../../../Entity/EntityPrefabType";
 import { ChatService } from "../Chat/ChatService";
 import { InventoryService } from "../Inventory/InventoryService";
@@ -34,6 +35,7 @@ export class EntityService implements OnStart {
 					Network.ServerToClient.UpdateInventory.Server.FireClient(player.clientId, invDto);
 				}
 			}
+			print("EntityService: sending SpawnEntities");
 			const dto = ObjectUtil.values(this.entities).map((e) => e.Encode());
 			Network.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
 
@@ -42,7 +44,7 @@ export class EntityService implements OnStart {
 					this.DespawnEntity(player.Character);
 				}
 			};
-		});
+		}, SignalPriority.HIGHEST);
 		ServerSignals.PlayerLeave.connect((event) => {
 			if (event.player.Character) {
 				this.DespawnEntity(event.player.Character);
@@ -72,7 +74,7 @@ export class EntityService implements OnStart {
 			}
 			this.loadedEntityPrefabs.set(entityPrefabType, entityPrefab);
 		}
-		const entityGO = GameObjectBridge.InstantiateAt(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
+		const entityGO = GameObjectUtil.InstantiateAt(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
 		entityGO.name = `entity_${id}`;
 
 		const entityModelGO = entityGO.transform.Find("EntityModel");
@@ -84,9 +86,9 @@ export class EntityService implements OnStart {
 			}
 		});
 		if (player) {
-			NetworkBridge.SpawnWithClientOwnership(entityGO, player.clientId);
+			NetworkUtil.SpawnWithClientOwnership(entityGO, player.clientId);
 		} else {
-			NetworkBridge.Spawn(entityGO);
+			NetworkUtil.Spawn(entityGO);
 		}
 
 		const nob = entityGO.GetComponent("NetworkObject") as NetworkObject;
@@ -115,7 +117,10 @@ export class EntityService implements OnStart {
 			}
 		});
 
+		// fire SpawnEntities after so the initial entity packet has all the latest info.
 		ServerSignals.EntitySpawn.Fire(new EntitySpawnEvent(entity));
+
+		print(`firing spawn entity id=${entity.id} displayName=${entity.GetDisplayName()}`);
 		Network.ServerToClient.SpawnEntities.Server.FireAllClients([entity.Encode()]);
 		Network.ServerToClient.UpdateInventory.Server.FireAllClients(entity.GetInventory().Encode());
 		entity.GetInventory().StartNetworkingDiffs();

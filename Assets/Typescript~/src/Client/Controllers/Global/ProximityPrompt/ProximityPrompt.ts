@@ -1,5 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
@@ -49,7 +49,7 @@ export class ProximityPrompt {
 
 	/** Creates prompt from prompt data. */
 	private CreatePrompt(): void {
-		this.promptGameObject = GameObjectBridge.InstantiateAt(
+		this.promptGameObject = GameObjectUtil.InstantiateAt(
 			this.promptPrefab,
 			this.data.promptPosition,
 			Quaternion.identity,

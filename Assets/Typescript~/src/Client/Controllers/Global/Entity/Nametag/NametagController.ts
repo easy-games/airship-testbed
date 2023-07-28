@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Team } from "Shared/Team/Team";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
@@ -22,10 +22,13 @@ export class NametagController implements OnStart {
 
 	OnStart(): void {
 		ClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			if (event.Entity.IsLocalCharacter() && !this.showSelfNametag) {
+			if (event.entity.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
-			this.CreateNametag(event.Entity);
+			this.CreateNametag(event.entity);
+			event.entity.OnDisplayNameChanged.Connect(() => {
+				this.UpdateNametag(event.entity);
+			});
 		});
 
 		ClientSignals.PlayerChangeTeam.Connect((event) => {
@@ -44,7 +47,7 @@ export class NametagController implements OnStart {
 
 	public CreateNametag(entity: Entity): GameObject {
 		const nametagPrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/Nametag.prefab") as GameObject;
-		const nametag = GameObjectBridge.Instantiate(nametagPrefab);
+		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
 		nametag.name = this.nameTageId;
 		nametag.transform.parent = entity.model.transform;
 		nametag.transform.localPosition = new Vector3(0, 2.3, 0);
@@ -67,13 +70,14 @@ export class NametagController implements OnStart {
 		const references = nameTag.gameObject.GetComponent<GameObjectReferences>();
 		const textLabel = references.GetValue<TextMeshProUGUI>(this.graphicsBundleName, "Text");
 		const teamImage = references.GetValue<UGUIImage>(this.graphicsBundleName, "Team");
+		const canvas = references.GetValue<Canvas>(this.graphicsBundleName, "Canvas");
 
 		// Username text
-		let displayName = `Entity${entity.id}`;
-		if (entity.player) {
-			displayName = entity.player.username;
-		}
+		let displayName = entity.GetDisplayName();
 		textLabel.text = displayName;
+
+		const rect = canvas.gameObject.GetComponent<RectTransform>();
+		rect.sizeDelta = Bridge.MakeVector2(230 * displayName.size(), 480);
 
 		// Username color
 		let color: Color | undefined;

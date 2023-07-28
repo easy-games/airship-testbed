@@ -411,44 +411,57 @@ export const items: {
 	},
 
 	////ARMOR
-	[ItemType.LEATHER_ARMOR]: {
-		displayName: "Leather Armor",
+	[ItemType.LEATHER_HELMET]: {
+		displayName: "Leather Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Leather/LeatherArmor", "Armor/Leather/LeatherHelmet"],
+		AccessoryNames: ["Armor/Leather/LeatherHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 2,
 		},
 	},
-	[ItemType.IRON_ARMOR]: {
-		displayName: "Iron Armor",
+	[ItemType.IRON_HELMET]: {
+		displayName: "Iron Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Iron/IronArmor", "Armor/Iron/IronHelmet"],
+		AccessoryNames: ["Armor/Iron/IronHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 4,
 		},
 	},
-	[ItemType.DIAMOND_ARMOR]: {
-		displayName: "Diamond Armor",
+	[ItemType.DIAMOND_HELMET]: {
+		displayName: "Diamond Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Diamond/DiamondArmor", "Armor/Diamond/DiamondHelmet"],
+		AccessoryNames: ["Armor/Diamond/DiamondHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 6,
 		},
 	},
-	[ItemType.EMERALD_ARMOR]: {
-		displayName: "Emerald Armor",
+	[ItemType.EMERALD_HELMET]: {
+		displayName: "Emerald Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Emerald/EmeraldArmor", "Armor/Emerald/EmeraldHelmet"],
+		AccessoryNames: ["Armor/Emerald/EmeraldHelmet"],
 		Armor: {
-			ArmorType: ArmorType.CHESTPLATE,
+			ArmorType: ArmorType.HELMET,
 			ProtectionAmount: 8,
 		},
 	},
 
 	////TOOLS
+	[ItemType.WOOD_PICKAXE]: {
+		displayName: "Wood Pickaxe",
+		itemAssets: pickaxeItemAssets,
+		itemMechanics: {
+			...defaultItemMechanics,
+			cooldownSeconds: 0.2,
+		},
+		breakBlock: {
+			...defaultBreakBlock,
+			damage: 2,
+			extraDamageBlockArchetype: BlockArchetype.STONE,
+		},
+	},
 	[ItemType.STONE_PICKAXE]: {
 		displayName: "Stone Pickaxe",
 		itemAssets: pickaxeItemAssets,

@@ -4,12 +4,12 @@ import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { AudioClipBundle } from "../../Audio/AudioClipBundle";
+import { AudioBundleSpacialMode, AudioClipBundle } from "../../Audio/AudioClipBundle";
 import { AudioManager } from "../../Audio/AudioManager";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { ArrayUtil } from "../../Util/ArrayUtil";
 import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
-import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
+import { Bundle_Entity, Bundle_Entity_OnHit, BundleGroupNames } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
 
@@ -34,6 +34,9 @@ export class EntityAnimator {
 		this.entityRef = entityRef;
 		this.footstepAudioBundle = new AudioClipBundle([], "Footsteps");
 		this.footstepAudioBundle.soundOptions = { volumeScale: 0.15 };
+		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
+			? AudioBundleSpacialMode.GLOBAL
+			: AudioBundleSpacialMode.SPACIAL;
 		this.damageEffectClip = BundleReferenceManager.LoadResource<AnimationClip>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
@@ -147,16 +150,54 @@ export class EntityAnimator {
 				break;
 			case EntityAnimationEventKey.SLIDE_START:
 				if (this.entityRef.slideSound) {
-					AudioManager.PlayAtPosition(this.entityRef.slideSound, this.entity.model.transform.position, {
-						volumeScale: 0.3,
-					});
+					if (this.entity.IsLocalCharacter()) {
+						AudioManager.PlayClipGlobal(this.entityRef.slideSound, {
+							volumeScale: 0.2,
+						});
+					} else {
+						AudioManager.PlayClipAtPosition(
+							this.entityRef.slideSound,
+							this.entity.model.transform.position,
+							{
+								volumeScale: 0.2,
+							},
+						);
+					}
 				}
 				break;
 			case EntityAnimationEventKey.JUMP:
 				if (this.entityRef.jumpSound) {
-					AudioManager.PlayAtPosition(this.entityRef.jumpSound, this.entity.model.transform.position, {
-						volumeScale: 0.2,
-					});
+					if (this.entity.IsLocalCharacter()) {
+						AudioManager.PlayClipGlobal(this.entityRef.jumpSound, {
+							volumeScale: 0.2,
+						});
+					} else {
+						AudioManager.PlayClipAtPosition(
+							this.entityRef.jumpSound,
+							this.entity.model.transform.position,
+							{
+								volumeScale: 0.2,
+							},
+						);
+					}
+				}
+				break;
+			case EntityAnimationEventKey.LAND:
+				this.PlayFootstepSound();
+				if (this.entityRef.landSound) {
+					if (this.entity.IsLocalCharacter()) {
+						AudioManager.PlayClipGlobal(this.entityRef.landSound, {
+							volumeScale: 0.2,
+						});
+					} else {
+						AudioManager.PlayClipAtPosition(
+							this.entityRef.landSound,
+							this.entity.model.transform.position,
+							{
+								volumeScale: 0.2,
+							},
+						);
+					}
 				}
 				break;
 		}

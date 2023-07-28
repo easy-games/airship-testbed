@@ -1,11 +1,19 @@
 ﻿import { AudioManager } from "Shared/Audio/AudioManager";
+import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Entity } from "../../Entity/Entity";
-import { BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../../Util/ReferenceManagerResources";
+import {
+	Bundle_ItemUnarmed,
+	Bundle_ItemUnarmed_SFX,
+	BundleGroup,
+	BundleGroupNames,
+	ReferenceManagerAssets,
+} from "../../Util/ReferenceManagerResources";
 import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
 import { ItemUtil } from "../ItemUtil";
+import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -39,6 +47,21 @@ export class HeldItem {
 		//Load that items animations and play equip animation
 		this.entity.anim?.EquipItem(this.meta.itemAssets?.assetBundleId ?? BundleGroupNames.ItemUnarmed);
 
+		//Play the equip sound
+		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
+		let equipPath = this.bundles?.bundles?.get(3)?.filePaths.get(0);
+		if (!equipPath) {
+			//Load a default equip sound
+			equipPath = ReferenceManagerAssets.ItemUnarmed.bundles
+				.get(Bundle_ItemUnarmed.SFX)
+				?.filePaths.get(Bundle_ItemUnarmed_SFX.Equip);
+		}
+		if (equipPath) {
+			AudioManager.PlayFullPathAtPosition(equipPath, this.entity.model.transform.position);
+		} else {
+			error("No default equip sound found");
+		}
+
 		//Spawn the accessories graphics
 		const accessories = ItemUtil.GetAccessoriesForItemType(this.meta.ItemType);
 
@@ -49,11 +72,9 @@ export class HeldItem {
 
 		let j = 0;
 		for (const accessory of accessories) {
-			let accGos: CSArray<GameObject> = this.entity.accessoryBuilder.SetAccessory(accessory);
-
+			let added = this.entity.accessoryBuilder.SetAccessory(accessory);
 			//Load the animator for the held item if one exists
-			for (let i = 0; i < accGos.Length; i++) {
-				const go = accGos.GetValue(i);
+			for (let go of CSArrayUtil.Convert(added.gameObjects)) {
 				this.currentItemGOs[j] = go;
 				j++;
 				const anim = go.GetComponent<Animator>();
@@ -68,6 +89,8 @@ export class HeldItem {
 		this.Log("OnUnEquip");
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
+		this.chargeStartTime = 0;
+		this.isCharging = false;
 	}
 
 	public OnCallToActionStart() {
@@ -183,7 +206,7 @@ export class HeldItem {
 	public IsChargedUp(): boolean {
 		let chargeUpMin = this.meta.itemMechanics.minChargeSeconds;
 		this.Log("chargeUpMin: " + chargeUpMin);
-		//no charge up
+		//no charge up time
 		if (chargeUpMin <= 0) return true;
 
 		//If we've charged up enough

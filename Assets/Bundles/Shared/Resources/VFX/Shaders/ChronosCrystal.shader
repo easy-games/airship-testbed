@@ -3,8 +3,8 @@ Shader "Chronos/ChronosCrystal"
 	Properties
 	{
 		[Header(Colors)]
-		_Color("Main Color", Color) = (1,1,1,1)
-		_ShineColor("Shine Color", Color) = (1,1,1,1)
+		_Color("Main Color", Color) = (1,1,1,.5)
+		_ShineColor("Shine Color", Color) = (1,1,1,.5)
 		_DepthColor("Depth Color", Color) = (1,1,1,1)
 		_EmissiveColor("Emissive Color", Color) = (0,0,0,1)
 		_OverlayColor("Overlay Color", Color) = (1,0,0,0)
@@ -22,13 +22,14 @@ Shader "Chronos/ChronosCrystal"
 		_ShineFresnelStrength("Shine Fresnel Strength", Float) = 1
 		
 		[Header(Lighting)]
+		_DepthScale("Depth Scale", Float) = 1
 		_MinDepthHeight("Depth Height Min", Range(0,1)) = .01
 		_MaxDepthHeight("Depth Height Max", Range(0,1)) = .1
 		_MinLight("Minimum Light", Range(0, 1)) = .2
 		_HueShift("Hue Shift", Range(0, 1)) = .2
 		
 		// Controls the size of the specular reflection.
-		_Glossiness("Glossiness", Float) = 32
+		_Glossiness("Glossiness", Range(0,3)) = 1
 		
 	
         [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
@@ -67,6 +68,7 @@ Shader "Chronos/ChronosCrystal"
 				float3 worldNormal : NORMAL;
 				float2 uv : TEXCOORD0;
 				float2 screenUV: TEXCOOR6;
+				float2 viewUV: TEXCOOR7;
 				float3 viewDir : TEXCOORD1;	
 				float3 worldTangent : TEXCOORD2;	
 				float3 worldBiTangent : TEXCOORD3;	
@@ -96,7 +98,9 @@ Shader "Chronos/ChronosCrystal"
 			float _ShineFresnelPower;
 			float _ShineFresnelStrength;
 
-			//float4 _AmbientColor;
+			//Lighting
+			float _DepthScale;
+			float _MinLight;
 			float _MinDepthHeight;
 			float _MaxDepthHeight;
 			float _AmbientStrength;
@@ -106,23 +110,6 @@ Shader "Chronos/ChronosCrystal"
 			sampler2D _BlurColorTexture;
 			
 			float4 _MainTex_ST;
-			
-			float2 GetScreenUV(float2 clipPos, float UVscaleFactor)
-		    {
-		        float4 SSobjectPosition = UnityObjectToClipPos (float4(0,0,0,1.0)) ;
-		        float2 screenUV = float2(clipPos.x,clipPos.y);
-		        float screenRatio = _ScreenParams.y/_ScreenParams.x;
-		 
-		        screenUV.x -= SSobjectPosition.x/(SSobjectPosition.w);
-		        screenUV.y -= SSobjectPosition.y/(SSobjectPosition.w);
-		 
-		        screenUV.y *= screenRatio;
-		 
-		        screenUV *= 1/UVscaleFactor;
-		        screenUV *= SSobjectPosition.z;
-		 
-		        return screenUV;
-		    };
 			
 			Interp vert (appdata v)
 			{
@@ -134,7 +121,9 @@ Shader "Chronos/ChronosCrystal"
 				o.worldBiTangent = cross(o.worldNormal, o.worldTangent) * (v.tangent.w * unity_WorldTransformParams.w);
 				o.viewDir = WorldSpaceViewDir(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				o.screenUV = GetScreenUV(o.pos, 1);
+				float3 viewSpace = UnityObjectToViewPos(v.vertex);
+				o.viewUV =  ComputeScreenPos(float4(viewSpace, clamp(.01, 1, -viewSpace.z))) * _DepthScale;
+				o.screenUV = ComputeScreenPos(o.pos);
 				o.ambientColor = SampleAmbientSphericalHarmonics(o.worldNormal);
 				o.vertColor = v.vertColor;
 				return o;
@@ -180,13 +169,13 @@ Shader "Chronos/ChronosCrystal"
 			    brightness += CalculatePointLight(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
 			    brightness += CalculatePointLight(i.worldPos, worldNormal, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
 #endif
-				//return brightness;
+				brightness = max(_MinLight, brightness * _Glossiness);
 
 
 				// Calculate specular reflection.
 				float3 halfVector = normalize(-globalSunDirection + viewDir);
 				float NdotH = dot(worldNormal, halfVector);
-				float specularIntensity = pow(NdotH, 100+_Glossiness);
+				float specularIntensity = pow(NdotH, 100+ _Glossiness * 32);
 				float specularIntensitySmooth = smoothstep(0.005, 0.01, specularIntensity);
 				float4 specular = specularIntensitySmooth * shineColor;	
 
@@ -194,31 +183,35 @@ Shader "Chronos/ChronosCrystal"
 				float4 mainTex = tex2D(_MainTex, i.uv);
 				float diffuse = mainTex.r;
 				float shine = mainTex.g;
-				float fresnel = saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength);
-				half4 finalDiffuseColor = fresnel * diffuse * color;
+				float surfaceOpacity = color.a;
+				float fresnel =saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength) * surfaceOpacity;
+				half4 finalDiffuseColor = fresnel + diffuse * color;
 				
-				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength);
+				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength) * surfaceOpacity;
 				half4 finalShineColor = shineFresnel * shine * shineColor;
 
 				half4 finalSurfaceColor = saturate(finalDiffuseColor + finalShineColor + specular);
-				float surfaceMask = saturate(finalSurfaceColor.r + finalSurfaceColor.g + finalSurfaceColor.b);
+
+				float surfaceMask =saturate(fresnel + shineFresnel + surfaceOpacity);
+				//finalSurfaceColor = lerp(color, finalSurfaceColor, surfaceAlpha);
 
 				//Depth Colors
 				float fresnelNegative = (fresnel * 2 - 1);
-				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative)  + i.uv;
+				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative) + i.viewUV;
 				float depthTex = tex2D(_DepthMainTex, depthUV);
-				half4 screenColor = tex2D(_BlurColorTexture, i.screenUV);
-				half4 finalDepthColor =screenColor; // depthTex * depthColor;
+				half4 screenColor = tex2D(_BlurColorTexture, depthUV);
+				half4 finalDepthColor = lerp(screenColor * depthColor, depthTex * depthColor, depthColor.a);
 
+				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
+				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask) * brightness;
+				//finalColor = screenColor;
 				
-				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask);
-				finalColor = finalDepthColor;
-
 				//fog
 				finalColor.xyz = CalculateAtmosphericFog(finalColor.xyz, viewDistance);
 				
+				//finalColor = finalDepthColor;
 				MRT0 = finalColor;
-				MRT1 = emissiveColor;
+				MRT1 = emissiveColor * specular;
 				return MRT0;
 			}
 			ENDCG

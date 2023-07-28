@@ -17,20 +17,11 @@ export class BedController implements OnStart {
 					if (teamId) {
 						const team = Dependency<TeamController>().GetTeam(teamId);
 						const teamColor = team?.color ?? Theme.White;
-						const rens = go.GetComponentsInChildren<MeshRenderer>();
-						for (let i = 0; i < rens.Length; i++) {
-							const ren = rens.GetValue(i);
-							if (ren.gameObject.tag === "TeamColor") {
-								const ren = rens.GetValue(i);
-								const mats = ren.materials;
-								for (let j = 0; j < mats.Length; j++) {
-									const mat = mats.GetValue(j);
-									mat.color = new Color(
-										mat.color.r * teamColor.r,
-										mat.color.g * teamColor.g,
-										mat.color.b * teamColor.b,
-									);
-								}
+						const colorSetters = go.GetComponentsInChildren<MaterialColor>();
+						for (let i = 0; i < colorSetters.Length; i++) {
+							const colorSetter = colorSetters.GetValue(i);
+							if (colorSetter.gameObject.tag === "TeamColor") {
+								colorSetter.SetAllColors(teamColor, true);
 							}
 						}
 					}

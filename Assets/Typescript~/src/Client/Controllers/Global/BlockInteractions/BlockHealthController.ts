@@ -6,7 +6,7 @@ import { OnLateUpdate, SetInterval } from "Shared/Util/Timer";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EffectsManager } from "../../../../Shared/Effects/EffectsManager";
-import { GameObjectBridge } from "../../../../Shared/GameObjectBridge";
+import { GameObjectUtil } from "../../../../Shared/GameObjectBridge";
 import { ProgressBarGraphics } from "../../../../Shared/UI/ProgressBarGraphics";
 import {
 	BundleGroupNames,
@@ -148,7 +148,7 @@ export class BlockHealthController implements OnStart {
 		const blockFilter = blockGO.GetComponent<MeshFilter>();
 		particles.mesh = blockFilter.mesh;
 		particles.sharedMaterial = blockRen.sharedMaterial;
-		GameObjectBridge.Destroy(blockGO);
+		GameObjectUtil.Destroy(blockGO);
 	}
 
 	private GetBlockHealth(blockPos: Vector3) {

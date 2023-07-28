@@ -1,14 +1,16 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { Game } from "Shared/Game";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
+import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
-import { DEFAULT_BEDWARS_SHOP, ShopCategory, ShopItem } from "Shared/Shop/ShopMeta";
 import { BedWarsUI } from "Shared/UI/BedWarsUI";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { Signal } from "Shared/Util/Signal";
 import { InventoryController } from "../Inventory/InventoryController";
 
 @Controller({})
@@ -20,11 +22,15 @@ export class ItemShopController implements OnStart {
 	/** Individual shop item prefab. */
 	private shopItemPrefab: Object;
 	/** Currently selected item. */
-	private selectedItem: ShopItem | undefined;
+	private selectedItem: ShopElement | undefined;
 	private selectedItemBin = new Bin();
 
 	private purchaseButton: GameObject;
 	private purchaseButtonText: TMP_Text;
+
+	private purchasedTierItems = new Set<ItemType>();
+
+	public OnPurchase = new Signal<ShopElement>();
 
 	constructor() {
 		/* Fetch refs. */
@@ -39,11 +45,18 @@ export class ItemShopController implements OnStart {
 
 	OnStart(): void {
 		this.Init();
+
+		Network.ServerToClient.ItemShop.RemoveTierPurchases.Client.OnServerEvent((itemTypes) => {
+			for (const itemType of itemTypes) {
+				this.purchasedTierItems.delete(itemType);
+			}
+		});
 	}
 
 	public Open(): void {
 		const bin = new Bin();
 
+		this.UpdateItems(false);
 		if (this.selectedItem) {
 			this.SetSidebarItem(this.selectedItem);
 		}
@@ -57,25 +70,13 @@ export class ItemShopController implements OnStart {
 	}
 
 	private Init(): void {
-		const shopItems = DEFAULT_BEDWARS_SHOP.shopItems;
-		/* Default sidebar to _first_ item in default shop array.. */
+		const shopItems = ItemShopMeta.defaultItems.shopItems;
+		// Default sidebar to _first_ item in default shop array..
 		const defaultItem = shopItems[0];
 		this.SetSidebarItem(defaultItem);
-		/* Instantiate individual item prefabs underneath relevant category container. */
-		DEFAULT_BEDWARS_SHOP.shopItems.forEach((shopItem) => {
-			const container = this.GetCategoryContainer(shopItem.category);
-			if (container) {
-				const itemElement = GameObjectBridge.InstantiateIn(this.shopItemPrefab, container.transform);
-				const imageElement = itemElement.transform.GetChild(0).gameObject;
-				CanvasUIBridge.SetSprite(imageElement, ItemUtil.GetItemRenderPath(shopItem.item));
-
-				BedWarsUI.SetupButton(itemElement);
-				CanvasAPI.OnClickEvent(itemElement, () => {
-					this.SetSidebarItem(shopItem);
-				});
-			}
-		});
-		/* Handle purchase requests. */
+		// Instantiate individual item prefabs underneath relevant category container.
+		this.UpdateItems(true);
+		// Handle purchase requests.
 		const purchaseButton = this.refs.GetValue<GameObject>("SidebarContainer", "PurchaseButton");
 		BedWarsUI.SetupButton(purchaseButton);
 		CanvasAPI.OnClickEvent(purchaseButton, () => {
@@ -89,12 +90,75 @@ export class ItemShopController implements OnStart {
 		 */
 	}
 
-	/** Sends purchase request to server for currently selected item. */
+	private UpdateItems(init: boolean): void {
+		ItemShopMeta.defaultItems.shopItems.forEach((shopItem) => {
+			let shown = true;
+			if (shopItem.prevTier && !this.purchasedTierItems.has(shopItem.prevTier)) {
+				shown = false;
+			} else if (shopItem.nextTier && this.purchasedTierItems.has(shopItem.itemType)) {
+				shown = false;
+			}
+
+			const container = this.GetCategoryContainer(shopItem.category);
+			if (!container) {
+				warn(`Failed to find container "${shopItem.category}" for shop item "${shopItem.itemType}"`);
+				return;
+			}
+
+			let itemGO = container.transform.FindChild(shopItem.itemType)?.gameObject;
+			if (itemGO === undefined) {
+				itemGO = GameObjectUtil.InstantiateIn(this.shopItemPrefab, container.transform);
+				itemGO.name = shopItem.itemType;
+			}
+			CanvasUIBridge.SetSprite(
+				itemGO.transform.GetChild(0).gameObject,
+				ItemUtil.GetItemRenderPath(shopItem.itemType),
+			);
+
+			if (shown) {
+				itemGO.SetActive(true);
+			} else {
+				itemGO.SetActive(false);
+			}
+
+			if (init) {
+				BedWarsUI.SetupButton(itemGO);
+				CanvasAPI.OnClickEvent(itemGO, () => {
+					this.SetSidebarItem(shopItem);
+				});
+			}
+		});
+	}
+
+	private CanPurchase(shopElement: ShopElement): boolean {
+		if (!Game.LocalPlayer.Character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
+			return false;
+		}
+		if (shopElement.lockAfterPurchase && this.purchasedTierItems.has(shopElement.itemType)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Sends purchase request to server for currently selected item.
+	 */
 	private HandlePurchaseRequest(): void {
-		if (!this.selectedItem) return;
-		const result = Network.ClientToServer.Shop.PurchaseRequest.Client.FireServer(this.selectedItem);
+		if (!this.selectedItem || !this.CanPurchase(this.selectedItem)) {
+			AudioManager.PlayGlobal("UI_Error.wav");
+			return;
+		}
+		const shopItem = this.selectedItem;
+		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopItem.itemType);
 		if (result) {
+			this.purchasedTierItems.add(shopItem.itemType);
 			AudioManager.PlayGlobal("ItemShopPurchase.wav");
+			this.UpdateItems(false);
+
+			if (shopItem.nextTier) {
+				this.SetSidebarItem(ItemShopMeta.GetShopElementFromItemType(shopItem.nextTier)!);
+			}
+			this.OnPurchase.Fire(shopItem);
 		}
 	}
 
@@ -102,7 +166,7 @@ export class ItemShopController implements OnStart {
 	 * Updates sidebar to reflect selected shop item.
 	 * @param shopItem A shop item.
 	 */
-	private SetSidebarItem(shopItem: ShopItem): void {
+	private SetSidebarItem(shopItem: ShopElement): void {
 		this.selectedItemBin.Clean();
 
 		/* TODO: We should probably fetch and cache these references inside of `OnStart` or the constructor. */
@@ -112,8 +176,8 @@ export class ItemShopController implements OnStart {
 		const selectedItemName = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemName");
 		const selectedItemCost = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemCost");
 
-		CanvasUIBridge.SetSprite(selectedItemIcon, ItemUtil.GetItemRenderPath(shopItem.item));
-		const itemMeta = ItemUtil.GetItemMeta(shopItem.item);
+		CanvasUIBridge.SetSprite(selectedItemIcon, ItemUtil.GetItemRenderPath(shopItem.itemType));
+		const itemMeta = ItemUtil.GetItemMeta(shopItem.itemType);
 		selectedItemQuantity.text = `x${shopItem.quantity}`;
 		selectedItemName.text = itemMeta.displayName;
 
@@ -122,7 +186,13 @@ export class ItemShopController implements OnStart {
 
 		const purchaseButtonImage = this.purchaseButton.GetComponent<Image>();
 
-		const updateHasEnough = () => {
+		const updateButton = () => {
+			if (shopItem.lockAfterPurchase && this.purchasedTierItems.has(shopItem.itemType)) {
+				this.purchaseButtonText.text = "Owned";
+				purchaseButtonImage.color = new Color(0.29, 0.31, 0.29);
+				return;
+			}
+
 			const inv = Game.LocalPlayer.Character?.GetInventory();
 			if (inv?.HasEnough(shopItem.currency, shopItem.price)) {
 				this.purchaseButtonText.text = "Purchase";
@@ -132,7 +202,7 @@ export class ItemShopController implements OnStart {
 				purchaseButtonImage.color = new Color(0.62, 0.2, 0.24);
 			}
 		};
-		updateHasEnough();
+		updateButton();
 
 		this.selectedItemBin.Add(
 			Dependency<InventoryController>().ObserveLocalInventory((inv) => {
@@ -141,12 +211,20 @@ export class ItemShopController implements OnStart {
 						if (itemStack) {
 							this.selectedItemBin.Add(
 								itemStack?.Changed.Connect(() => {
-									updateHasEnough();
+									updateButton();
 								}),
 							);
 						}
 					}),
 				);
+			}),
+		);
+
+		this.selectedItemBin.Add(
+			this.OnPurchase.Connect((shopItem) => {
+				if (shopItem.lockAfterPurchase) {
+					updateButton();
+				}
 			}),
 		);
 	}

@@ -1,5 +1,7 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Global/Chat/ChatController";
+import { PlayerController } from "Client/Controllers/Global/Player/PlayerController";
+import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { Network } from "Shared/Network";
@@ -146,5 +148,13 @@ export class Player {
 		this.bin.Clean();
 		this.OnLeave.Fire();
 		this.OnLeave.DisconnectAll();
+	}
+
+	public static FindByClientId(clientId: number): Player | undefined {
+		if (RunUtil.IsServer()) {
+			return Dependency<PlayerService>().GetPlayerFromClientId(clientId);
+		} else {
+			return Dependency<PlayerController>().GetPlayerFromClientId(clientId);
+		}
 	}
 }

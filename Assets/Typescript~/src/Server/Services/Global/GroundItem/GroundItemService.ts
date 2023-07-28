@@ -3,11 +3,11 @@ import { ServerSignals } from "Server/ServerSignals";
 import { BeforeEntityDropItemSignal } from "Server/Signals/BeforeEntityDropItemSignal";
 import { EntityDropItemSignal } from "Server/Signals/EntityDropItemSignal";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { GameObjectBridge } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Network } from "Shared/Network";
-import { NetworkBridge } from "Shared/NetworkBridge";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { EntityService } from "../Entity/EntityService";
 import { PlayerService } from "../Player/PlayerService";
@@ -82,7 +82,7 @@ export class GroundItemService implements OnStart {
 			});
 
 			this.groundItems.delete(groundItemEntry.nob.ObjectId);
-			NetworkBridge.Despawn(groundItemEntry.nob.gameObject);
+			NetworkUtil.Despawn(groundItemEntry.nob.gameObject);
 
 			if (entity instanceof CharacterEntity) {
 				entity.GetInventory().AddItem(groundItemEntry.itemStack);
@@ -110,7 +110,7 @@ export class GroundItemService implements OnStart {
 			impulse = new Vector3(0, 1, 0);
 		}
 
-		const groundItemGO = GameObjectBridge.InstantiateAt(this.groundItemPrefab, pos, Quaternion.identity);
+		const groundItemGO = GameObjectUtil.InstantiateAt(this.groundItemPrefab, pos, Quaternion.identity);
 		const nob = groundItemGO.GetComponent<NetworkObject>();
 
 		const attributes = groundItemGO.GetComponent<EasyAttributes>();
@@ -121,7 +121,7 @@ export class GroundItemService implements OnStart {
 			attributes.SetAttribute("generatorId", generatorId);
 		}
 
-		NetworkBridge.Spawn(groundItemGO);
+		NetworkUtil.Spawn(groundItemGO);
 
 		this.groundItems.set(nob.ObjectId, {
 			nob,
