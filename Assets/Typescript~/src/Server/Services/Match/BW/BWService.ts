@@ -48,11 +48,8 @@ export class BWService implements OnStart {
 					event.entity.player.GetTeam() &&
 					this.bedService.IsBedDestroyed(event.entity.player.GetTeam()!.id)
 				) {
-					this.eliminatedPlayers.add(event.entity.player);
-					ServerSignals.PlayerEliminated.Fire({ player: event.entity.player });
-					Network.ServerToClient.PlayerEliminated.Server.FireAllClients(event.entity.player.clientId);
+					this.EliminatePlayer(event.entity.player);
 				}
-				this.CheckForWin();
 			}
 			// Give resources to killer.
 			if (
@@ -110,6 +107,13 @@ export class BWService implements OnStart {
 		// 		);
 		// 	}
 		// });
+	}
+
+	public EliminatePlayer(player: Player): void {
+		this.eliminatedPlayers.add(player);
+		ServerSignals.PlayerEliminated.Fire({ player: player });
+		Network.ServerToClient.PlayerEliminated.Server.FireAllClients(player.clientId);
+		// this.CheckForWin();
 	}
 
 	/**
