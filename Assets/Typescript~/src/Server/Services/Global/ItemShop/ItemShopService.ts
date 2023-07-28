@@ -62,29 +62,23 @@ export class ShopService implements OnStart {
 
 		/* Handle incoming purchase requests. */
 		Network.ClientToServer.ItemShop.PurchaseRequest.Server.SetCallback((clientId, purchaseItemType) => {
-			print("purchase.1");
 			const shopElement = ItemShopMeta.GetShopElementFromItemType(purchaseItemType);
 			if (!shopElement) return false;
 
-			print("purchase.2");
 			/* Validate that entity exists. */
 			const requestEntity = this.entityService.GetEntityByClientId(clientId);
 			if (!requestEntity) return false;
 
-			print("purchase.3");
 			if (!(requestEntity instanceof CharacterEntity)) return false;
 
-			print("purchase.4");
 			const inv = requestEntity.GetInventory();
 			const canAfford = inv.HasEnough(shopElement.currency, shopElement.price);
 			if (!canAfford) return false;
 
-			print("purchase.5");
 			const player = Player.FindByClientId(clientId);
 			if (!player) return false;
 			inv.Decrement(shopElement.currency, shopElement.price);
 
-			print("purchase.6");
 			// Give item
 			let itemsToAdd = shopElement.spawnWithItems ?? [shopElement.itemType];
 			for (let itemTypeToAdd of itemsToAdd) {
