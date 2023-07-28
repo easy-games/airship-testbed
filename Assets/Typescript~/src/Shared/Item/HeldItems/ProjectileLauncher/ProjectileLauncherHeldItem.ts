@@ -14,6 +14,8 @@ import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { HeldItem } from "../HeldItem";
 import { ItemUtil } from "../../ItemUtil";
+import { ReferenceManagerAssets } from "../../../Util/ReferenceManagerResources";
+import { AudioManager } from "../../../Audio/AudioManager";
 
 export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeBin = new Bin();
@@ -28,6 +30,19 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		//Play the items animation  (bow draw)
 		this.PlayItemAnimation(0, true);
+
+		//Play the draw sound
+		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
+		let soundPath = this.bundles?.bundles?.get(3)?.filePaths.get(1);
+		if (soundPath) {
+			if (this.entity.IsLocalCharacter()) {
+				AudioManager.PlayFullPathGlobal(soundPath, { volumeScale: 0.2 });
+			} else {
+				AudioManager.PlayFullPathAtPosition(soundPath, this.entity.model.transform.position, {
+					volumeScale: 0.2,
+				});
+			}
+		}
 
 		if (RunUtil.IsClient()) {
 			if (!this.entity.IsLocalCharacter()) return;

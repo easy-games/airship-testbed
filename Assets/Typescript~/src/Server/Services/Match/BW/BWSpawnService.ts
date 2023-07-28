@@ -1,13 +1,15 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
+import { DenyRegionService } from "Server/Services/Global/Block/DenyRegionService";
 import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
+import { TeamService } from "Server/Services/Global/Team/TeamService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
@@ -38,6 +40,18 @@ export class BWSpawnService implements OnStart {
 				EntityPrefabType.HUMAN,
 				position.Position.add(new Vector3(-3, 2, 3)),
 			);
+		});
+
+		ServerSignals.MapLoad.connect((event) => {
+			for (const team of Dependency<TeamService>().GetTeams()) {
+				const spawnPos = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
+				if (spawnPos) {
+					Dependency<DenyRegionService>().CreateDenyRegion(
+						MathUtil.FloorVec(spawnPos.Position),
+						new Vector3(3, 3, 3),
+					);
+				}
+			}
 		});
 	}
 
@@ -112,16 +126,16 @@ export class BWSpawnService implements OnStart {
 	/** Gives an `InventoryEntity` starter inventory on spawn. */
 	private giveStarterInventory(entity: CharacterEntity): void {
 		const inv = entity.GetInventory();
-		inv.SetItem(0, new ItemStack(ItemType.STONE_SWORD, 1));
+		inv.SetItem(0, new ItemStack(ItemType.WOOD_SWORD, 1));
 		inv.AddItem(new ItemStack(ItemType.WOOD_BOW, 1));
-		inv.AddItem(new ItemStack(ItemType.STONE_PICKAXE, 1));
+		inv.AddItem(new ItemStack(ItemType.WOOD_PICKAXE, 1));
 		// inv.SetItem(2, new ItemStack(ItemType.WHITE_WOOL, 100));
 		inv.AddItem(new ItemStack(ItemType.STONE, 100));
 		inv.AddItem(new ItemStack(ItemType.TELEPEARL, 100));
 		inv.AddItem(new ItemStack(ItemType.GRASS, 100));
 		inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
 
-		inv.SetItem(inv.armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET, 1));
+		// inv.SetItem(inv.armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET, 1));
 
 		// inv.SetItem(4, new ItemStack(ItemType.WOOD_BOW, 1));
 		// inv.SetItem(5, new ItemStack(ItemType.TELEPEARL, 100));

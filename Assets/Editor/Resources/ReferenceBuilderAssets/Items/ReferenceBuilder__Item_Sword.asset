@@ -37,8 +37,10 @@ MonoBehaviour:
   - key: Prefabs
     value:
     - key: OnUse
-      value: {fileID: 4958697443944929311, guid: 4c402e8d17c7a5341be1f261a5e0226a,
-        type: 3}
+      value: {fileID: 4958697443944929311, guid: 4c402e8d17c7a5341be1f261a5e0226a, type: 3}
     - key: OnHit
-      value: {fileID: 3846717720964566100, guid: 53a8707f14c131c4cb163a3a501cd8d2,
-        type: 3}
+      value: {fileID: 3846717720964566100, guid: 53a8707f14c131c4cb163a3a501cd8d2, type: 3}
+  - key: SFX
+    value:
+    - key: Equip
+      value: {fileID: 8300000, guid: 9ef914e924f782a48b47ccaf7b81d069, type: 3}

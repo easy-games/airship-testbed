@@ -86,11 +86,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: ecc674beca1ea034d85f85e3d53b814f, type: 2}
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: e6d5f12f6aaf48c4a8745c732b73ee5e, type: 2}
+      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
     - target: {fileID: 919132149155446097, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Name
       value: SM_Pickaxe
@@ -120,11 +120,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.16509432, g: 0.60118926, b: 1, a: 1}
+  - materialColor: {r: 0, g: 0.67830324, b: 1, a: 0.2627451}
     emissiveColor: {r: 0, g: 0.17416215, b: 1, a: 1}
-    emissiveMix: 0.664
-    reference: Metal_Clean
-  - materialColor: {r: 0.8867924, g: 0.7766737, b: 0.6148985, a: 1}
+    emissiveMix: 1
+    reference: DiamondMat
+  - materialColor: {r: 0.114275545, g: 0.2264151, b: 0.17401363, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Wood_Cherry_Natural
+    reference: Metal_Clean

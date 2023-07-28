@@ -70,9 +70,14 @@ export const Network = {
 		ProjectileHit: new RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>(),
 		Entity: {
 			SetHealth: new RemoteEvent<[entityId: number, health: number]>(),
+			SetDisplayName: new RemoteEvent<[entityId: number, displayName: string]>(),
 		},
 		ItemShop: {
 			RemoveTierPurchases: new RemoteEvent<[itemTypes: ItemType[]]>(),
+			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
+		},
+		TeamUpgradeShop: {
+			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
 		},
 		EntityDeath: new RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined]>(),
 		AddGroundItem: new RemoteEvent<[groundItemGOID: number, itemStack: ItemStackDto]>(),

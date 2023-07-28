@@ -18,7 +18,7 @@ export class LoadingScreenController implements OnStart {
 			const bin = new Bin();
 			bin.Add(
 				ClientSignals.EntitySpawn.Connect((event) => {
-					if (event.Entity.IsLocalCharacter()) {
+					if (event.entity.IsLocalCharacter()) {
 						bin.Clean();
 						this.FinishLoading();
 					}

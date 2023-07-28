@@ -22,13 +22,14 @@ Shader "Chronos/ChronosCrystal"
 		_ShineFresnelStrength("Shine Fresnel Strength", Float) = 1
 		
 		[Header(Lighting)]
+		_DepthScale("Depth Scale", Float) = 1
 		_MinDepthHeight("Depth Height Min", Range(0,1)) = .01
 		_MaxDepthHeight("Depth Height Max", Range(0,1)) = .1
 		_MinLight("Minimum Light", Range(0, 1)) = .2
 		_HueShift("Hue Shift", Range(0, 1)) = .2
 		
 		// Controls the size of the specular reflection.
-		_Glossiness("Glossiness", Float) = 32
+		_Glossiness("Glossiness", Range(0,3)) = 1
 		
 	
         [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
@@ -98,6 +99,8 @@ Shader "Chronos/ChronosCrystal"
 			float _ShineFresnelStrength;
 
 			//Lighting
+			float _DepthScale;
+			float _MinLight;
 			float _MinDepthHeight;
 			float _MaxDepthHeight;
 			float _AmbientStrength;
@@ -119,7 +122,7 @@ Shader "Chronos/ChronosCrystal"
 				o.viewDir = WorldSpaceViewDir(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				float3 viewSpace = UnityObjectToViewPos(v.vertex);
-				o.viewUV = ComputeScreenPos(float4(viewSpace, clamp(.01, 1, -viewSpace.z)));
+				o.viewUV =  ComputeScreenPos(float4(viewSpace, clamp(.01, 1, -viewSpace.z))) * _DepthScale;
 				o.screenUV = ComputeScreenPos(o.pos);
 				o.ambientColor = SampleAmbientSphericalHarmonics(o.worldNormal);
 				o.vertColor = v.vertColor;
@@ -166,13 +169,13 @@ Shader "Chronos/ChronosCrystal"
 			    brightness += CalculatePointLight(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
 			    brightness += CalculatePointLight(i.worldPos, worldNormal, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
 #endif
-				//return brightness;
+				brightness = max(_MinLight, brightness * _Glossiness);
 
 
 				// Calculate specular reflection.
 				float3 halfVector = normalize(-globalSunDirection + viewDir);
 				float NdotH = dot(worldNormal, halfVector);
-				float specularIntensity = pow(NdotH, 100+_Glossiness);
+				float specularIntensity = pow(NdotH, 100+ _Glossiness * 32);
 				float specularIntensitySmooth = smoothstep(0.005, 0.01, specularIntensity);
 				float4 specular = specularIntensitySmooth * shineColor;	
 
@@ -181,32 +184,32 @@ Shader "Chronos/ChronosCrystal"
 				float diffuse = mainTex.r;
 				float shine = mainTex.g;
 				float surfaceOpacity = color.a;
-				float fresnel = saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength + surfaceOpacity);
-				half4 finalDiffuseColor = fresnel * diffuse * color;
+				float fresnel =saturate(Fresnel(worldNormal, i.viewDir, _FresnelPower) * _FresnelStrength) * surfaceOpacity;
+				half4 finalDiffuseColor = fresnel + diffuse * color;
 				
-				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength + surfaceOpacity);
+				float shineFresnel = saturate(Fresnel(worldNormal, i.viewDir, _ShineFresnelPower) * _ShineFresnelStrength) * surfaceOpacity;
 				half4 finalShineColor = shineFresnel * shine * shineColor;
 
 				half4 finalSurfaceColor = saturate(finalDiffuseColor + finalShineColor + specular);
 
-				float surfaceAlpha = saturate(finalSurfaceColor.r + finalSurfaceColor.g + finalSurfaceColor.b);
-				float surfaceMask = max(surfaceOpacity, surfaceAlpha);
+				float surfaceMask =saturate(fresnel + shineFresnel + surfaceOpacity);
 				//finalSurfaceColor = lerp(color, finalSurfaceColor, surfaceAlpha);
 
 				//Depth Colors
 				float fresnelNegative = (fresnel * 2 - 1);
-				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative)  + i.viewUV;
+				half2 depthUV =  lerp(_MinDepthHeight, _MaxDepthHeight, fresnelNegative) + i.viewUV;
 				float depthTex = tex2D(_DepthMainTex, depthUV);
 				half4 screenColor = tex2D(_BlurColorTexture, depthUV);
-				half4 finalDepthColor = lerp(screenColor + depthColor, depthTex * depthColor, depthColor.a);
+				half4 finalDepthColor = lerp(screenColor * depthColor, depthTex * depthColor, depthColor.a);
 
 				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
-				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask);
+				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask) * brightness;
 				//finalColor = screenColor;
 				
 				//fog
 				finalColor.xyz = CalculateAtmosphericFog(finalColor.xyz, viewDistance);
 				
+				//finalColor = finalDepthColor;
 				MRT0 = finalColor;
 				MRT1 = emissiveColor * specular;
 				return MRT0;

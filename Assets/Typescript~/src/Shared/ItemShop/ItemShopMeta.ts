@@ -1,4 +1,5 @@
 import { ItemType } from "Shared/Item/ItemType";
+import { ArmorCollection } from "./ArmorCollection";
 
 /** Describes a shop category. */
 export enum ShopCategory {
@@ -25,6 +26,9 @@ export interface ShopElement {
 	spawnWithItems?: ItemType[];
 
 	removeTierOnDeath?: boolean;
+	lockAfterPurchase?: boolean;
+	replaceMelee?: boolean;
+	replaceBow?: boolean;
 
 	/** Define a custom display name. If not set, will use ItemType's display name. */
 	displayName?: string;
@@ -65,6 +69,7 @@ export class ItemShopMeta {
 				category: ShopCategory.BLOCKS,
 			},
 			{
+				displayName: "Blastproof Ceramic",
 				itemType: ItemType.CERAMIC,
 				currency: ItemType.IRON,
 				price: 14,
@@ -84,8 +89,7 @@ export class ItemShopMeta {
 				price: 20,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
-				nextTier: ItemType.IRON_SWORD,
-				removeTierOnDeath: true,
+				replaceMelee: true,
 			},
 			{
 				itemType: ItemType.IRON_SWORD,
@@ -93,9 +97,7 @@ export class ItemShopMeta {
 				price: 70,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
-				prevTier: ItemType.STONE_SWORD,
-				nextTier: ItemType.DIAMOND_SWORD,
-				removeTierOnDeath: true,
+				replaceMelee: true,
 			},
 			{
 				itemType: ItemType.DIAMOND_SWORD,
@@ -103,8 +105,7 @@ export class ItemShopMeta {
 				price: 3,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
-				prevTier: ItemType.IRON_SWORD,
-				removeTierOnDeath: true,
+				replaceMelee: true,
 			},
 			{
 				itemType: ItemType.WOOD_BOW,
@@ -112,6 +113,7 @@ export class ItemShopMeta {
 				price: 24,
 				quantity: 1,
 				category: ShopCategory.COMBAT,
+				replaceBow: true,
 			},
 			{
 				itemType: ItemType.WOOD_ARROW,
@@ -134,6 +136,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.TOOLS,
 				nextTier: ItemType.IRON_PICKAXE,
+				spawnWithItems: [ItemType.STONE_PICKAXE],
 			},
 			{
 				itemType: ItemType.IRON_PICKAXE,
@@ -143,6 +146,7 @@ export class ItemShopMeta {
 				category: ShopCategory.TOOLS,
 				prevTier: ItemType.STONE_PICKAXE,
 				nextTier: ItemType.DIAMOND_PICKAXE,
+				spawnWithItems: [ItemType.IRON_PICKAXE],
 			},
 			{
 				itemType: ItemType.DIAMOND_PICKAXE,
@@ -151,6 +155,8 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.TOOLS,
 				prevTier: ItemType.IRON_PICKAXE,
+				lockAfterPurchase: true,
+				spawnWithItems: [ItemType.DIAMOND_PICKAXE],
 			},
 
 			// Armor
@@ -162,6 +168,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				nextTier: ItemType.IRON_HELMET,
+				spawnWithItems: ArmorCollection.LEATHER,
 			},
 			{
 				displayName: "Iron Armor",
@@ -172,6 +179,7 @@ export class ItemShopMeta {
 				category: ShopCategory.COMBAT,
 				prevTier: ItemType.LEATHER_HELMET,
 				nextTier: ItemType.DIAMOND_HELMET,
+				spawnWithItems: ArmorCollection.IRON,
 			},
 			{
 				displayName: "Diamond Armor",
@@ -182,6 +190,7 @@ export class ItemShopMeta {
 				category: ShopCategory.COMBAT,
 				prevTier: ItemType.IRON_HELMET,
 				nextTier: ItemType.EMERALD_HELMET,
+				spawnWithItems: ArmorCollection.DIAMOND,
 			},
 			{
 				displayName: "Emerald Armor",
@@ -191,6 +200,8 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				prevTier: ItemType.DIAMOND_HELMET,
+				spawnWithItems: ArmorCollection.EMERALD,
+				lockAfterPurchase: true,
 			},
 		],
 	};

@@ -18,9 +18,21 @@ export class EntityAccessoryController implements OnStart {
 
 	private AutoEquipArmor() {
 		ClientSignals.EntitySpawn.Connect((event) => {
-			if (event.Entity instanceof CharacterEntity) {
-				const inventory = event.Entity.GetInventory();
-				const accessoryBuilder = event.Entity.gameObject.GetComponent<AccessoryBuilder>();
+			if (event.entity instanceof CharacterEntity) {
+				//Add Kit Accessory
+				if (ItemUtil.defaultKitAccessory) {
+					const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
+						ItemUtil.defaultKitAccessory,
+					);
+					if (event.entity.IsLocalCharacter()) {
+						for (const accessory of CSArrayUtil.Convert(accessories)) {
+							this.HandleAccessoryVisibility(accessory);
+						}
+					}
+				}
+
+				const inventory = event.entity.GetInventory();
+				const accessoryBuilder = event.entity.gameObject.GetComponent<AccessoryBuilder>();
 				const bin = new Bin();
 
 				let currentArmor: Readonly<Accessory[]> | undefined;
@@ -53,83 +65,90 @@ export class EntityAccessoryController implements OnStart {
 					}
 				};
 
+				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.HELMET]));
 				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.CHESTPLATE]));
+				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.BOOTS]));
 
 				bin.Connect(inventory.SlotChanged, (slotIndex, itemStack) => {
-					if (slotIndex === inventory.armorSlots[ArmorType.CHESTPLATE]) {
+					if (slotIndex === inventory.armorSlots[ArmorType.HELMET]) {
 						onArmorSlotChanged(itemStack);
 					}
 				});
 
-				event.Entity.OnDespawn.Once(() => {
+				event.entity.OnDespawn.Once(() => {
 					bin.Clean();
 				});
 			}
 		});
 
 		this.localController.ObserveFirstPerson((firstPerson) => {
-			const accessories = Game.LocalPlayer.Character?.accessoryBuilder.GetActiveAccessories();
-			if (!accessories) return;
+			this.HandleAllAccessoryVisibility();
+		});
+	}
 
-			for (let i = 0; i < accessories.Length; i++) {
-				const accessory = accessories.GetValue(i);
-				if (firstPerson) {
-					if (!accessory.accessory.VisibleInFirstPerson) {
-						for (let renderer of CSArrayUtil.Convert(accessory.renderers)) {
-							renderer.enabled = false;
-						}
-					}
-				} else {
-					if (!accessory.accessory.VisibleInFirstPerson) {
-						for (let renderer of CSArrayUtil.Convert(accessory.renderers)) {
-							renderer.enabled = true;
-						}
-					}
+	private HandleAllAccessoryVisibility(): void {
+		const accessories = Game.LocalPlayer.Character?.accessoryBuilder.GetActiveAccessories();
+		if (!accessories) return;
+
+		for (let i = 0; i < accessories.Length; i++) {
+			const accessory = accessories.GetValue(i);
+			this.HandleAccessoryVisibility(accessory);
+		}
+	}
+
+	public HandleAccessoryVisibility(activeAccessory: ActiveAccessory): void {
+		const firstPerson = this.localController.IsFirstPerson();
+
+		if (firstPerson) {
+			if (!activeAccessory.accessory.VisibleInFirstPerson) {
+				for (let renderer of CSArrayUtil.Convert(activeAccessory.renderers)) {
+					renderer.enabled = false;
 				}
 			}
-		});
+		} else {
+			if (!activeAccessory.accessory.VisibleInFirstPerson) {
+				for (let renderer of CSArrayUtil.Convert(activeAccessory.renderers)) {
+					renderer.enabled = true;
+				}
+			}
+		}
 	}
 
 	OnStart(): void {
 		this.AutoEquipArmor();
 
 		ClientSignals.EntitySpawn.Connect((event) => {
-			if (event.Entity instanceof CharacterEntity) {
-				const accessoryBuilder = event.Entity.accessoryBuilder;
+			if (!(event.entity instanceof CharacterEntity)) return;
 
-				//Add Kit Accessory
-				// if (ItemUtil.defaultKitAccessory) {
-				// 	accessoryBuilder.SetAccessoryKit(ItemUtil.defaultKitAccessory);
-				// }
+			const accessoryBuilder = event.entity.accessoryBuilder;
 
-				const bin = new Bin();
+			const bin = new Bin();
+			bin.Add(
+				event.entity.GetInventory().ObserveHeldItem((itemStack) => {
+					if (itemStack === undefined) {
+						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
+						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
+						return;
+					}
+
+					if (event.entity.IsLocalCharacter()) {
+						this.SetFirstPersonLayer(accessoryBuilder);
+					}
+				}),
+			);
+
+			if (event.entity.IsLocalCharacter()) {
 				bin.Add(
-					event.Entity.GetInventory().ObserveHeldItem((itemStack) => {
-						if (itemStack === undefined) {
-							accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
-							accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
-							return;
-						}
-
-						if (event.Entity.IsLocalCharacter()) {
-							this.SetFirstPersonLayer(accessoryBuilder);
-						}
+					this.localController.ObserveFirstPerson((isFirstPerson: boolean) => {
+						this.isFirstPerson = isFirstPerson;
+						this.SetFirstPersonLayer(accessoryBuilder);
 					}),
 				);
-
-				if (event.Entity.IsLocalCharacter()) {
-					bin.Add(
-						this.localController.ObserveFirstPerson((isFirstPerson: boolean) => {
-							this.isFirstPerson = isFirstPerson;
-							this.SetFirstPersonLayer(accessoryBuilder);
-						}),
-					);
-				}
-
-				event.Entity.OnDespawn.Once(() => {
-					bin.Clean();
-				});
 			}
+
+			event.entity.OnDespawn.Once(() => {
+				bin.Clean();
+			});
 		});
 	}
 

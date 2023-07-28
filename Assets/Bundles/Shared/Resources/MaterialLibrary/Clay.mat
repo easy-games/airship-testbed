@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS2
+  - NUM_LIGHTS_LIGHTS0
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
@@ -146,4 +146,5 @@ Material:
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 2, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

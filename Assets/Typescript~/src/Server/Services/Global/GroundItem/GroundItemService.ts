@@ -7,7 +7,7 @@ import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Network } from "Shared/Network";
-import { NetworkUtil } from "Shared/NetworkBridge";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { EntityService } from "../Entity/EntityService";
 import { PlayerService } from "../Player/PlayerService";

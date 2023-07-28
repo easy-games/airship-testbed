@@ -60,10 +60,10 @@ export class InventoryController implements OnStart {
 			inv.SetHeldSlot(slot);
 		});
 		ClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
-			if (event.Entity instanceof CharacterEntity) {
-				this.inventories.set(event.Entity.GetInventory().Id, event.Entity.GetInventory());
-				if (event.Entity.IsLocalCharacter()) {
-					this.SetLocalInventory((event.Entity as CharacterEntity).GetInventory());
+			if (event.entity instanceof CharacterEntity) {
+				this.inventories.set(event.entity.GetInventory().Id, event.entity.GetInventory());
+				if (event.entity.IsLocalCharacter()) {
+					this.SetLocalInventory((event.entity as CharacterEntity).GetInventory());
 				}
 			}
 		});
