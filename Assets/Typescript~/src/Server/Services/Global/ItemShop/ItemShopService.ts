@@ -7,11 +7,19 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { ItemShopMeta } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
+import { Theme } from "Shared/Util/Theme";
 import { EntityService } from "../Entity/EntityService";
 
 @Service({})
 export class ShopService implements OnStart {
 	private bows: ItemType[] = [ItemType.WOOD_BOW];
+	private pickaxes: ItemType[] = [
+		ItemType.WOOD_PICKAXE,
+		ItemType.STONE_PICKAXE,
+		ItemType.IRON_PICKAXE,
+		ItemType.DIAMOND_PICKAXE,
+	];
+	private axes: ItemType[] = [];
 	private purchasedItems = new Map<string, Set<ItemType>>();
 
 	constructor(private readonly entityService: EntityService) {}
@@ -40,7 +48,7 @@ export class ShopService implements OnStart {
 						continue;
 					}
 					let itemsToAdd = shopItem.spawnWithItems || [shopItem.itemType];
-					for (const itemType of itemsToAdd) {
+					for (let itemType of itemsToAdd) {
 						const itemMeta = ItemUtil.GetItemMeta(itemType);
 						if (itemMeta.Armor) {
 							inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
@@ -54,45 +62,58 @@ export class ShopService implements OnStart {
 
 		/* Handle incoming purchase requests. */
 		Network.ClientToServer.ItemShop.PurchaseRequest.Server.SetCallback((clientId, purchaseItemType) => {
+			print("purchase.1");
 			const shopElement = ItemShopMeta.GetShopElementFromItemType(purchaseItemType);
 			if (!shopElement) return false;
 
+			print("purchase.2");
 			/* Validate that entity exists. */
 			const requestEntity = this.entityService.GetEntityByClientId(clientId);
 			if (!requestEntity) return false;
 
+			print("purchase.3");
 			if (!(requestEntity instanceof CharacterEntity)) return false;
 
+			print("purchase.4");
 			const inv = requestEntity.GetInventory();
 			const canAfford = inv.HasEnough(shopElement.currency, shopElement.price);
 			if (!canAfford) return false;
 
+			print("purchase.5");
+			const player = Player.FindByClientId(clientId);
+			if (!player) return false;
 			inv.Decrement(shopElement.currency, shopElement.price);
 
+			print("purchase.6");
 			// Give item
 			let itemsToAdd = shopElement.spawnWithItems ?? [shopElement.itemType];
-			for (const itemType of itemsToAdd) {
-				const itemMeta = ItemUtil.GetItemMeta(itemType);
+			for (let itemTypeToAdd of itemsToAdd) {
+				const itemMeta = ItemUtil.GetItemMeta(itemTypeToAdd);
 				if (itemMeta.Armor) {
-					inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
+					inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemTypeToAdd, 1));
 				} else {
 					let given = false;
-					if (shopElement.prevTier) {
-						// Place item in same slot as previous tier item
-						for (let i = 0; i < inv.GetMaxSlots(); i++) {
-							const item = inv.GetItem(i);
-							if (item?.GetItemType() === shopElement.prevTier) {
-								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
-								given = true;
-								break;
-							}
+					for (let i = 0; i < inv.GetMaxSlots(); i++) {
+						const existingItemStack = inv.GetItem(i);
+						if (!existingItemStack) continue;
+						const existingShopElement = ItemShopMeta.GetShopElementFromItemType(
+							existingItemStack.GetItemType(),
+						);
+						if (
+							existingShopElement?.nextTier === itemTypeToAdd ||
+							(shopElement?.itemType === ItemType.STONE_PICKAXE &&
+								existingItemStack.GetItemType() === ItemType.WOOD_PICKAXE)
+						) {
+							inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
+							given = true;
+							break;
 						}
 					}
 					if (!given && shopElement.replaceMelee) {
 						for (let i = 0; i < inv.GetMaxSlots(); i++) {
 							const item = inv.GetItem(i);
 							if (item?.GetMeta().melee) {
-								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
+								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
 								given = true;
 								break;
 							}
@@ -102,23 +123,59 @@ export class ShopService implements OnStart {
 						for (let i = 0; i < inv.GetMaxSlots(); i++) {
 							const item = inv.GetItem(i);
 							if (item && this.bows.includes(item.GetItemType())) {
-								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
+								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
+								given = true;
+								break;
+							}
+						}
+					}
+					if (!given && shopElement.replacePickaxe) {
+						for (let i = 0; i < inv.GetMaxSlots(); i++) {
+							const item = inv.GetItem(i);
+							if (item && this.pickaxes.includes(item.GetItemType())) {
+								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
+								given = true;
+								break;
+							}
+						}
+					}
+					if (!given && shopElement.replaceAxe) {
+						for (let i = 0; i < inv.GetMaxSlots(); i++) {
+							const item = inv.GetItem(i);
+							if (item && this.axes.includes(item.GetItemType())) {
+								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
 								given = true;
 								break;
 							}
 						}
 					}
 					if (!given) {
-						inv.AddItem(new ItemStack(itemType, shopElement.quantity));
+						if (itemTypeToAdd === ItemType.WHITE_WOOL) {
+							const team = player.GetTeam();
+							if (team) {
+								switch (team.color) {
+									case Theme.TeamColor.Blue:
+										itemTypeToAdd = ItemType.BLUE_WOOL;
+										break;
+									case Theme.TeamColor.Red:
+										itemTypeToAdd = ItemType.RED_WOOL;
+										break;
+									case Theme.TeamColor.Yellow:
+										itemTypeToAdd = ItemType.YELLOW_WOOL;
+										break;
+									case Theme.TeamColor.Green:
+										itemTypeToAdd = ItemType.GREEN_WOOL;
+										break;
+								}
+							}
+						}
+						inv.AddItem(new ItemStack(itemTypeToAdd, shopElement.quantity));
 					}
 				}
 			}
 
-			const player = Player.FindByClientId(clientId);
-			if (player) {
-				const purchases = this.purchasedItems.get(player.userId);
-				purchases?.add(shopElement.itemType);
-			}
+			const purchases = this.purchasedItems.get(player.userId);
+			purchases?.add(shopElement.itemType);
 
 			return true;
 		});

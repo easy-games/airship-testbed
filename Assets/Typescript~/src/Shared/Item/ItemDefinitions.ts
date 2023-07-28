@@ -145,6 +145,33 @@ export const items: {
 			blockId: 35,
 		},
 	},
+	[ItemType.RED_WOOL]: {
+		displayName: "Red Wool",
+		itemAssets: blockItemAssets,
+		itemMechanics: blockItemMechanics,
+		block: {
+			...woolBlock,
+			blockId: 34,
+		},
+	},
+	[ItemType.GREEN_WOOL]: {
+		displayName: "Green Wool",
+		itemAssets: blockItemAssets,
+		itemMechanics: blockItemMechanics,
+		block: {
+			...woolBlock,
+			blockId: 36,
+		},
+	},
+	[ItemType.YELLOW_WOOL]: {
+		displayName: "Yellow Wool",
+		itemAssets: blockItemAssets,
+		itemMechanics: blockItemMechanics,
+		block: {
+			...woolBlock,
+			blockId: 37,
+		},
+	},
 	[ItemType.GRASS]: {
 		displayName: "Grass",
 		itemMechanics: blockItemMechanics,
