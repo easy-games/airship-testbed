@@ -9,10 +9,10 @@ import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { ChatCommand } from "CoreShared/Commands/ChatCommand";
 import { ChatUtil } from "CoreShared/Util/ChatUtil";
-import { PlayerController } from "../Player/PlayerController";
 import { Game } from "Shared/Game";
 import { FriendsCommand } from "CoreShared/Commands/FriendsCommand";
 import { encode } from "CoreShared/json";
+import { ClearCommand } from "CoreShared/Commands/ClearCommand";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -72,6 +72,7 @@ export class ChatController implements OnStart {
 		this.inputField = refs.GetValue("UI", "InputField");
 		this.content.gameObject.ClearChildren();
 
+		this.RegisterCommand(new ClearCommand());
 		this.RegisterCommand(new FriendsCommand());
 	}
 
@@ -260,6 +261,19 @@ export class ChatController implements OnStart {
 
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
+		} catch (err) {
+			Debug.LogError("chat error:");
+			Debug.LogError(err);
+		}
+	}
+
+	public ClearChatMessages(): void {
+		try {
+			this.chatMessageElements.forEach((element) => {
+				element.Destroy();
+			});
+
+			this.chatMessageElements.clear();
 		} catch (err) {
 			Debug.LogError("chat error:");
 			Debug.LogError(err);
