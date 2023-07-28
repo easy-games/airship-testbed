@@ -1,7 +1,7 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { Player } from "Shared/Player/Player";
 import { PlayerService } from "../../Player/PlayerService";
-import { ChatCommand } from "./ChatCommand";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
 
 export class TpAllCommand extends ChatCommand {
 	constructor() {

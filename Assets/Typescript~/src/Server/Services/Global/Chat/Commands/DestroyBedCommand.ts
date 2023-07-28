@@ -6,7 +6,7 @@ import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { TeamService } from "../../Team/TeamService";
-import { ChatCommand } from "./ChatCommand";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
 import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 
 export class DestroyBedCommand extends ChatCommand {

@@ -4,7 +4,7 @@ import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { GeneratorService } from "Server/Services/Global/Generator/GeneratorService";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
-import { ChatCommand } from "../ChatCommand";
+import { ChatCommand } from "../../../../../Commands/ChatCommand";
 
 /** Default generator spawn rate. */
 const DEFAULT_SPAWN_RATE = 2;

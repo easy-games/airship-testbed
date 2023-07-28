@@ -1,5 +1,5 @@
 import { Player } from "Shared/Player/Player";
-import { ChatCommand } from "./ChatCommand";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
 
 export class TeamCommand extends ChatCommand {
 	constructor() {

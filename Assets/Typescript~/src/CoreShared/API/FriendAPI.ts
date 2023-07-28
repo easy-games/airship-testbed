@@ -12,6 +12,7 @@ import {
 } from "CoreShared/SocketIOMessages/FriendsDtos";
 import { SetInterval } from "Shared/Util/Timer";
 import { UserStatus } from "CoreShared/SocketIOMessages/Status";
+import { UserAPI } from "./UserAPI";
 
 export class FriendAPI {
 	private static friendsCacheByStatus = new Map<UserStatus, FriendStatusData[]>();
@@ -39,39 +40,78 @@ export class FriendAPI {
 					});
 				});
 
-				// Update friends cache status map.
-				this.friendsCacheByStatus.clear();
-				this.friendsCache.forEach((fsd) => {
-					let fsds = this.friendsCacheByStatus.get(fsd.status);
-
-					if (fsds === undefined) {
-						fsds = new Array<FriendStatusData>();
-						this.friendsCacheByStatus.set(fsd.status, fsds);
-					}
-
-					fsds.push(fsd);
-				});
+				this.RefreshFriendsCache();
 			}
 		});
 
-		EasyCore.EmitAsync("refresh-friends-status");
+		FriendAPI.GetFriendsAsync().then((friends) => {
+			friends.forEach((friend) => {
+				this.friendsCache.set(friend.uid, {
+					discriminatedUsername: friend.discriminatedUsername,
+					discriminator: friend.discriminator,
+					userId: friend.uid,
+					username: friend.username,
+					status: UserStatus.OFFLINE, // Assume they are offline until a real status comes back.
+					game: "",
+				});
+			});
 
-		SetInterval(
-			3,
-			() => {
-				print(
-					`FriendAPI.InitAsync.SetInterval() friendsCache: ${encode(
-						this.friendsCache,
-					)}, this.friendsCacheByStatus: ${encode(this.friendsCacheByStatus)}`,
-				);
-			},
-			true,
-		);
+			// Ask for a friends status update.
+			EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
+		});
+
+		// SetInterval(
+		// 	3,
+		// 	() => {
+		// 		print(
+		// 			`FriendAPI.InitAsync.SetInterval() friendsCache: ${encode(
+		// 				this.friendsCache,
+		// 			)}, this.friendsCacheByStatus: ${encode(this.friendsCacheByStatus)}`,
+		// 		);
+		// 	},
+		// 	true,
+		// );
 	}
 
-	static GetFriendsWithStatus(status: UserStatus): FriendStatusData[] {
-		const fsds = this.friendsCacheByStatus.get(status);
-		return fsds === undefined ? new Array<FriendStatusData>(0) : fsds;
+	private static RefreshFriendsCache() {
+		// Update friends cache status map.
+		this.friendsCacheByStatus.clear();
+		this.friendsCache.forEach((fsd) => {
+			let fsds = this.friendsCacheByStatus.get(fsd.status);
+
+			if (fsds === undefined) {
+				fsds = new Array<FriendStatusData>();
+				this.friendsCacheByStatus.set(fsd.status, fsds);
+			}
+
+			fsds.push(fsd);
+		});
+	}
+
+	static GetFriendStatusData(discriminatedUsername: string): FriendStatusData | undefined {
+		const fsd = this.GetFriendsWithStatus().find(
+			(fsd) => fsd.discriminatedUsername.lower() === discriminatedUsername.lower(),
+		);
+
+		return fsd;
+	}
+
+	static GetFriendsWithStatus(status: UserStatus | undefined = undefined): FriendStatusData[] {
+		let fsds: FriendStatusData[];
+
+		if (status) {
+			let fsds1 = this.friendsCacheByStatus.get(status);
+
+			fsds = fsds1 ? fsds1 : new Array<FriendStatusData>(0);
+		} else {
+			fsds = new Array<FriendStatusData>();
+
+			this.friendsCache.forEach((fsd) => {
+				fsds.push(fsd);
+			});
+		}
+
+		return fsds;
 	}
 
 	static async GetFriendsAsync(): Promise<PublicUser[]> {
@@ -101,33 +141,35 @@ export class FriendAPI {
 		return EasyCore.GetAsync(`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`, undefined, headers);
 	}
 
-	static RequestFriendship(discriminatedUserName: string) {
-		print(`RequestFriendship 0`);
+	static async RequestFriendshipAsync(discriminatedUsername: string): Promise<FriendshipRequestResultObj> {
 		const headers = EasyCore.GetHeadersMap();
 
-		print(`RequestFriendship 1`);
-		EasyCore.Post(
+		return EasyCore.PostAsync<FriendshipRequestResultObj>(
 			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
-			encode({ discriminatedUsername: discriminatedUserName }),
+			encode({ discriminatedUsername: discriminatedUsername }),
 			undefined,
 			headers,
-		);
-		print(`RequestFriendship 2`);
-	}
+		).then((resultObj) => {
+			// If we're the last user to accept the two-way request, update our cache.
+			if (resultObj.result === "accepted") {
+				UserAPI.GetUserAsync(discriminatedUsername).then((publicUser) => {
+					if (publicUser) {
+						this.friendsCache.set(publicUser.uid, {
+							discriminatedUsername: publicUser.discriminatedUsername,
+							discriminator: publicUser.discriminator,
+							userId: publicUser.uid,
+							username: publicUser.username,
+							status: UserStatus.OFFLINE, // Assume they are offline until a real status comes back.
+							game: "",
+						});
 
-	static async RequestFriendshipAsync(discriminatedUserName: string): Promise<FriendshipRequestResultObj> {
-		print(`RequestFriendshipAsync 0`);
-		const headers = EasyCore.GetHeadersMap();
+						this.RefreshFriendsCache();
+					}
+				});
+			}
 
-		print(`RequestFriendshipAsync 1`);
-		const result = EasyCore.PostAsync<FriendshipRequestResultObj>(
-			`${ApiHelper.USER_SERVICE_URL}/friends/requests/self`,
-			encode({ discriminatedUsername: discriminatedUserName }),
-			undefined,
-			headers,
-		);
-		print(`RequestFriendshipAsync 2`);
-		return result;
+			return resultObj;
+		});
 	}
 
 	static async TerminateFriendshipAsync(otherUserUid: string): Promise<void> {
@@ -136,6 +178,15 @@ export class FriendAPI {
 
 		const headers = EasyCore.GetHeadersMap();
 
-		return EasyCore.DeleteAsync(`${ApiHelper.USER_SERVICE_URL}/friends/uid/${otherUserUid}`, parameters, headers);
+		return EasyCore.DeleteAsync(
+			`${ApiHelper.USER_SERVICE_URL}/friends/uid/${otherUserUid}`,
+			parameters,
+			headers,
+		).then(() => {
+			this.friendsCache.delete(otherUserUid);
+			this.RefreshFriendsCache();
+
+			EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
+		});
 	}
 }

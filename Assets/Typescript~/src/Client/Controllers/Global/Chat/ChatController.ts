@@ -7,6 +7,12 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { ChatCommand } from "CoreShared/Commands/ChatCommand";
+import { ChatUtil } from "CoreShared/Util/ChatUtil";
+import { Game } from "Shared/Game";
+import { FriendsCommand } from "CoreShared/Commands/FriendsCommand";
+import { encode } from "CoreShared/json";
+import { ClearCommand } from "CoreShared/Commands/ClearCommand";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -57,12 +63,24 @@ export class ChatController implements OnStart {
 	private prevSentMessages: string[] = [];
 	private historyIndex = -1;
 
+	private commands = new Map<string, ChatCommand>();
+
 	constructor(private localEntityController: LocalEntityController) {
 		const refs = GameObject.Find("Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
 		this.content.gameObject.ClearChildren();
+
+		this.RegisterCommand(new ClearCommand());
+		this.RegisterCommand(new FriendsCommand());
+	}
+
+	public RegisterCommand(command: ChatCommand) {
+		this.commands.set(command.commandLabel.lower(), command);
+		for (let alias of command.aliases) {
+			this.commands.set(alias.lower(), command);
+		}
 	}
 
 	OnStart(): void {
@@ -213,7 +231,24 @@ export class ChatController implements OnStart {
 		if (this.prevSentMessages.size() > 50) {
 			this.prevSentMessages.pop();
 		}
-		Network.ClientToServer.SendChatMessage.Client.FireServer(message);
+
+		const commandData = ChatUtil.ParseCommandData(message);
+
+		print(`SendChatMessage() commandData: ${encode(commandData)}`);
+
+		let sendChatToServer = true;
+
+		if (commandData) {
+			const command = this.commands.get(commandData.label);
+			if (command) {
+				command.Execute(Game.LocalPlayer, commandData.args);
+				sendChatToServer = false;
+			}
+		}
+
+		if (sendChatToServer) {
+			Network.ClientToServer.SendChatMessage.Client.FireServer(message);
+		}
 	}
 
 	public AddChatMessage(message: string): void {
@@ -226,6 +261,19 @@ export class ChatController implements OnStart {
 
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
+		} catch (err) {
+			Debug.LogError("chat error:");
+			Debug.LogError(err);
+		}
+	}
+
+	public ClearChatMessages(): void {
+		try {
+			this.chatMessageElements.forEach((element) => {
+				element.Destroy();
+			});
+
+			this.chatMessageElements.clear();
 		} catch (err) {
 			Debug.LogError("chat error:");
 			Debug.LogError(err);
