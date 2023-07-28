@@ -90,7 +90,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: e6d5f12f6aaf48c4a8745c732b73ee5e, type: 2}
+      objectReference: {fileID: 2100000, guid: 16c9aa28b6820e4458962092cb733832, type: 2}
     - target: {fileID: 919132149155446097, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Name
       value: SM_Pickaxe
@@ -120,11 +120,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.8726415, g: 0.9875139, b: 1, a: 1}
+  - materialColor: {r: 0.740566, g: 1, b: 0.95137566, a: 1}
     emissiveColor: {r: 0.4481132, g: 0.9839541, b: 1, a: 1}
     emissiveMix: 1
     reference: Metal_Clean
-  - materialColor: {r: 0.8867924, g: 0.7766737, b: 0.6148985, a: 1}
+  - materialColor: {r: 0.5283019, g: 0.40998653, b: 0.23673905, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Wood_Cherry_Natural
+    reference: Stone_Clean

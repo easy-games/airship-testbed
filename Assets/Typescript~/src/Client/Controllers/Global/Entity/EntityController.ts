@@ -7,7 +7,8 @@ import { Entity, EntityDto } from "Shared/Entity/Entity";
 import { EntitySerializer } from "Shared/Entity/EntitySerializer";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { Network } from "Shared/Network";
-import { WaitForNobId } from "Shared/Util/NetworkUtil";
+import { Bin } from "Shared/Util/Bin";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { Task } from "Shared/Util/Task";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
@@ -30,7 +31,6 @@ export class EntityController implements OnStart {
 					error("[FATAL]: Failed to add entity:" + err);
 				}
 			});
-			print("finished adding entities.");
 		});
 		Network.ServerToClient.DespawnEntity.Client.OnServerEvent((entityId) => {
 			const entity = this.GetEntityById(entityId);
@@ -51,6 +51,12 @@ export class EntityController implements OnStart {
 				entity.SetHealth(health);
 			}
 		});
+		Network.ServerToClient.Entity.SetDisplayName.Client.OnServerEvent((entityId, value) => {
+			const entity = this.GetEntityById(entityId);
+			if (entity) {
+				entity.SetDisplayName(value);
+			}
+		});
 	}
 
 	private DespawnEntity(entity: Entity): void {
@@ -68,7 +74,7 @@ export class EntityController implements OnStart {
 	}
 
 	private AddEntity(entityDto: EntityDto): Entity | undefined {
-		const nob = WaitForNobId(entityDto.gameObjectId);
+		const nob = NetworkUtil.WaitForNobId(entityDto.nobId);
 
 		nob.gameObject.name = `entity_${entityDto.id}`;
 		let entity: Entity;
@@ -79,7 +85,7 @@ export class EntityController implements OnStart {
 
 			let inv = this.invController.GetInventory(characterEntityDto.invId);
 			if (!inv) {
-				/**
+				/*
 				 * Inventory hasn't been received by server yet, so we create one on client that will
 				 * be used in further updates.
 				 */
@@ -93,6 +99,7 @@ export class EntityController implements OnStart {
 		}
 		entity.SetHealth(entityDto.health);
 		entity.SetMaxHealth(entityDto.maxHealth);
+		entity.SetDisplayName(entityDto.displayName);
 
 		this.entities.set(entity.id, entity);
 
@@ -111,6 +118,25 @@ export class EntityController implements OnStart {
 
 	public GetEntityById(entityId: number): Entity | undefined {
 		return this.entities.get(entityId);
+	}
+
+	public async WaitForId(entityId: number): Promise<Entity | undefined> {
+		let existing = this.GetEntityById(entityId);
+		if (existing) {
+			return existing;
+		}
+		return new Promise<Entity | undefined>((resolve) => {
+			const bin = new Bin();
+			bin.Add(
+				ClientSignals.EntitySpawn.Connect((event) => {
+					if (event.entity.id === entityId) {
+						bin.Clean();
+						resolve(event.entity);
+						return;
+					}
+				}),
+			);
+		});
 	}
 
 	public GetEntityByClientId(clientId: number) {

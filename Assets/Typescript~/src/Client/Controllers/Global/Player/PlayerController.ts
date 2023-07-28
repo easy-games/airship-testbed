@@ -1,12 +1,11 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { ClientSignals } from "Client/ClientSignals";
 import { Game } from "Shared/Game";
 import { Network } from "Shared/Network";
 import { Player, PlayerDto } from "Shared/Player/Player";
 import { Team } from "Shared/Team/Team";
-import { WaitForNobId } from "Shared/Util/NetworkUtil";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { TeamController } from "../Team/TeamController";
 
 @Controller({})
@@ -71,7 +70,7 @@ export class PlayerController implements OnStart {
 		if (existing) {
 			return;
 		}
-		const nob = WaitForNobId(dto.nobId);
+		const nob = NetworkUtil.WaitForNobId(dto.nobId);
 		nob.gameObject.name = `Player_${dto.username}`;
 
 		let team: Team | undefined;

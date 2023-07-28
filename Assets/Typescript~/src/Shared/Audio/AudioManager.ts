@@ -24,7 +24,7 @@ export class AudioManager {
 			error("PlayGlobal Failed to find sound: " + sound);
 			return;
 		}
-		this.globalSource.PlayOneShot(clip, config?.volumeScale ?? 1);
+		this.PlayClipGlobal(clip, config);
 	}
 
 	public static PlayFullPathGlobal(fullPath: string, config?: PlaySoundConfig): void {
@@ -33,6 +33,10 @@ export class AudioManager {
 			error("PlayFullPathGlobal Failed to find full path: " + fullPath);
 			return;
 		}
+		this.PlayClipGlobal(clip, config);
+	}
+
+	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig) {
 		this.globalSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 	}
 

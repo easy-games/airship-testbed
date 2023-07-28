@@ -38,56 +38,56 @@ export class GeneratorSpawnService implements OnStart {
 
 	// Create map generators.
 	private CreateMapGenerators(): void {
-        const loadedMap = this.mapService.GetLoadedMap();
-        if (!loadedMap) return;
+		const loadedMap = this.mapService.GetLoadedMap();
+		if (!loadedMap) return;
 
 		// Team generators.
 		for (let team of this.teamService.GetTeams()) {
 			const ironGeneratorPos = loadedMap.GetWorldPosition(team.id + "_generator");
 			const generatorId = this.generatorService.CreateGenerator(ironGeneratorPos.Position, {
-                item: ItemType.IRON,
-                spawnRate: 1,
-                stackLimit: 100,
-                label: false,
-                split: {
-                    splitRange: 30,
-                },
-            });
+				item: ItemType.IRON,
+				spawnRate: 1,
+				stackLimit: 100,
+				label: false,
+				split: {
+					splitRange: 30,
+				},
+			});
 
-            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(ironGeneratorPos.Position), DENY_REGION_SIZE);
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(ironGeneratorPos.Position), DENY_REGION_SIZE);
 
-            const teamGenerators = this.teamMap.get(team);
-            if (teamGenerators) {
-                teamGenerators.push(generatorId);
-            } else {
-                this.teamMap.set(team, [generatorId]);
-            }
+			const teamGenerators = this.teamMap.get(team);
+			if (teamGenerators) {
+				teamGenerators.push(generatorId);
+			} else {
+				this.teamMap.set(team, [generatorId]);
+			}
 		}
 
 		// Map generators.
 		const diamondGenerators = loadedMap.GetWorldPositionsForTag("diamond");
 		diamondGenerators.forEach((mapPosition) => {
-            this.generatorService.CreateGenerator(mapPosition.Position, {
-                item: ItemType.DIAMOND,
-                spawnRate: 25,
-                stackLimit: 6,
-                label: true,
-            });
-            // Create deny region on generator.
-            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
-        });
+			this.generatorService.CreateGenerator(mapPosition.Position, {
+				item: ItemType.DIAMOND,
+				spawnRate: 25,
+				stackLimit: 6,
+				label: true,
+			});
+			// Create deny region on generator.
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+		});
 
 		const emeraldGenerators = loadedMap.GetWorldPositionsForTag("emerald");
 		emeraldGenerators.forEach((mapPosition) => {
-            this.generatorService.CreateGenerator(mapPosition.Position, {
-                item: ItemType.EMERALD,
-                spawnRate: 45,
-                stackLimit: 3,
-                label: true,
-            });
-            // Create deny region on generator.
-            this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
-        });
+			this.generatorService.CreateGenerator(mapPosition.Position, {
+				item: ItemType.EMERALD,
+				spawnRate: 45,
+				stackLimit: 3,
+				label: true,
+			});
+			// Create deny region on generator.
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+		});
 	}
 
 	/**

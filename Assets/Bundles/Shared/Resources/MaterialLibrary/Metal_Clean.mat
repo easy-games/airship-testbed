@@ -121,7 +121,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
-    - _MetalOverride: 0.4
+    - _MetalOverride: 0.345
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -130,7 +130,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 1
     - _RimPower: 5
-    - _RoughOverride: 0.659
+    - _RoughOverride: 0.834
     - _SLIDER_OVERRIDE: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -144,7 +144,8 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+    - _SpecularColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
   m_BuildTextureStacks: []

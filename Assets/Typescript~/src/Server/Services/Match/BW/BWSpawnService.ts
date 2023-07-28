@@ -1,12 +1,15 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
+import { DenyRegionService } from "Server/Services/Global/Block/DenyRegionService";
 import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
+import { TeamService } from "Server/Services/Global/Team/TeamService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
@@ -37,6 +40,18 @@ export class BWSpawnService implements OnStart {
 				EntityPrefabType.HUMAN,
 				position.Position.add(new Vector3(-3, 2, 3)),
 			);
+		});
+
+		ServerSignals.MapLoad.connect((event) => {
+			for (const team of Dependency<TeamService>().GetTeams()) {
+				const spawnPos = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
+				if (spawnPos) {
+					Dependency<DenyRegionService>().CreateDenyRegion(
+						MathUtil.FloorVec(spawnPos.Position),
+						new Vector3(3, 3, 3),
+					);
+				}
+			}
 		});
 	}
 

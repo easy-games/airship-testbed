@@ -34,3 +34,9 @@ MonoBehaviour:
       value: {fileID: 7400000, guid: 933af7ab36524594b867da56e548be65, type: 2}
     - key: Use
       value: {fileID: 7400000, guid: a4d9d34eb3815564db556d41a9a24e5e, type: 2}
+  - key: Prefabs
+    value: []
+  - key: SFX
+    value:
+    - key: Equip
+      value: {fileID: 8300000, guid: 31273bdd168c38e4a80643e2b5536212, type: 3}

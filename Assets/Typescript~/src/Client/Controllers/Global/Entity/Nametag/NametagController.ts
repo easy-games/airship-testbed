@@ -26,6 +26,9 @@ export class NametagController implements OnStart {
 				return;
 			}
 			this.CreateNametag(event.entity);
+			event.entity.OnDisplayNameChanged.Connect(() => {
+				this.UpdateNametag(event.entity);
+			});
 		});
 
 		ClientSignals.PlayerChangeTeam.Connect((event) => {
@@ -67,13 +70,14 @@ export class NametagController implements OnStart {
 		const references = nameTag.gameObject.GetComponent<GameObjectReferences>();
 		const textLabel = references.GetValue<TextMeshProUGUI>(this.graphicsBundleName, "Text");
 		const teamImage = references.GetValue<UGUIImage>(this.graphicsBundleName, "Team");
+		const canvas = references.GetValue<Canvas>(this.graphicsBundleName, "Canvas");
 
 		// Username text
-		let displayName = `Entity${entity.id}`;
-		if (entity.player) {
-			displayName = entity.player.username;
-		}
+		let displayName = entity.GetDisplayName();
 		textLabel.text = displayName;
+
+		const rect = canvas.gameObject.GetComponent<RectTransform>();
+		rect.sizeDelta = Bridge.MakeVector2(230 * displayName.size(), 480);
 
 		// Username color
 		let color: Color | undefined;
