@@ -13,7 +13,6 @@ import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
 import { ItemUtil } from "../ItemUtil";
-import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -57,7 +56,13 @@ export class HeldItem {
 				?.filePaths.get(Bundle_ItemUnarmed_SFX.Equip);
 		}
 		if (equipPath) {
-			AudioManager.PlayFullPathAtPosition(equipPath, this.entity.model.transform.position);
+			if (this.entity.IsLocalCharacter()) {
+				AudioManager.PlayFullPathGlobal(equipPath);
+			} else {
+				AudioManager.PlayFullPathAtPosition(equipPath, this.entity.model.transform.position, {
+					volumeScale: 0.2,
+				});
+			}
 		} else {
 			error("No default equip sound found");
 		}

@@ -8,6 +8,7 @@ import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { LocalEntityController } from "../Global/Character/LocalEntityController";
+import { PlayerController } from "../Global/Player/PlayerController";
 import { BWController } from "./BWController";
 
 @Controller({})
