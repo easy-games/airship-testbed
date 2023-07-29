@@ -6,8 +6,6 @@ import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { TeamService } from "Server/Services/Global/Team/TeamService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
@@ -80,13 +78,6 @@ export class BWSpawnService implements OnStart {
 				}
 			});
 
-			/* Listen for entity spawn and give starter inventory. */
-			ServerSignals.EntitySpawn.Connect((event) => {
-				if (event.Entity instanceof CharacterEntity) {
-					this.giveStarterInventory(event.Entity);
-				}
-			});
-
 			/* Listen for match start and teleport players. */
 			ServerSignals.MatchStart.connect(() => {
 				this.playerService.GetPlayers().forEach((player) => {
@@ -121,26 +112,5 @@ export class BWSpawnService implements OnStart {
 				humanoid.Teleport(pos);
 			}
 		}
-	}
-
-	/** Gives an `InventoryEntity` starter inventory on spawn. */
-	private giveStarterInventory(entity: CharacterEntity): void {
-		const inv = entity.GetInventory();
-		inv.SetItem(0, new ItemStack(ItemType.WOOD_SWORD, 1));
-		// inv.AddItem(new ItemStack(ItemType.WOOD_BOW, 1));
-		inv.AddItem(new ItemStack(ItemType.WOOD_PICKAXE, 1));
-		// inv.SetItem(2, new ItemStack(ItemType.WHITE_WOOL, 100));
-		// inv.AddItem(new ItemStack(ItemType.STONE, 100));
-		// inv.AddItem(new ItemStack(ItemType.TELEPEARL, 100));
-		// inv.AddItem(new ItemStack(ItemType.GRASS, 100));
-		// inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 3));
-
-		// inv.SetItem(inv.armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET, 1));
-
-		// inv.SetItem(4, new ItemStack(ItemType.WOOD_BOW, 1));
-		// inv.SetItem(5, new ItemStack(ItemType.TELEPEARL, 100));
-		// inv.SetItem(6, new ItemStack(ItemType.FIREBALL, 100));
-		// inv.SetItem(7, new ItemStack(ItemType.WOOD_ARROW, 100));
-		// inv.AddItem(new ItemStack(ItemType.TALL_GRASS, 100));
 	}
 }

@@ -12,6 +12,12 @@ import { EntityService } from "../Entity/EntityService";
 
 @Service({})
 export class ShopService implements OnStart {
+	private swords: ItemType[] = [
+		ItemType.WOOD_SWORD,
+		ItemType.STONE_SWORD,
+		ItemType.IRON_SWORD,
+		ItemType.DIAMOND_SWORD,
+	];
 	private bows: ItemType[] = [ItemType.WOOD_BOW];
 	private pickaxes: ItemType[] = [
 		ItemType.WOOD_PICKAXE,
@@ -39,6 +45,9 @@ export class ShopService implements OnStart {
 			if (!(event.Entity instanceof CharacterEntity)) return;
 			const inv = event.Entity.GetInventory();
 
+			let receivedPickaxe = false;
+			let receivedSword = false;
+			let finalAddedItems: ItemStack[] = [];
 			for (const purchasedItem of purchases) {
 				const shopItem = ItemShopMeta.GetShopElementFromItemType(purchasedItem);
 				if (!shopItem) continue;
@@ -53,10 +62,25 @@ export class ShopService implements OnStart {
 						if (itemMeta.Armor) {
 							inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
 						} else {
-							inv.AddItem(new ItemStack(itemType, 1));
+							finalAddedItems.push(new ItemStack(itemType, 1));
+							if (this.pickaxes.includes(itemType)) {
+								receivedPickaxe = true;
+							} else if (this.swords.includes(itemType)) {
+								receivedSword = true;
+							}
 						}
 					}
 				}
+			}
+
+			if (!receivedSword) {
+				inv.AddItem(new ItemStack(ItemType.WOOD_SWORD, 1));
+			}
+			if (!receivedPickaxe) {
+				inv.AddItem(new ItemStack(ItemType.WOOD_PICKAXE, 1));
+			}
+			for (const itemStack of finalAddedItems) {
+				inv.AddItem(itemStack);
 			}
 		});
 
@@ -90,15 +114,16 @@ export class ShopService implements OnStart {
 
 					let itemStack = new ItemStack(itemTypeToAdd, shopElement.quantity);
 
-					const TryReplaceSlot = (filter: (itemStack: ItemStack) => boolean): void => {
+					const TryReplaceSlot = (filter: (itemStack: ItemStack) => boolean): boolean => {
 						for (let i = 0; i < inv.GetMaxSlots(); i++) {
 							const item = inv.GetItem(i);
-							if (item && filter(itemStack)) {
+							if (item && filter(item)) {
 								inv.SetItem(i, itemStack);
 								given = true;
-								return;
+								return true;
 							}
 						}
+						return false;
 					};
 
 					for (let i = 0; i < inv.GetMaxSlots(); i++) {
@@ -121,7 +146,7 @@ export class ShopService implements OnStart {
 						TryReplaceSlot((itemStack) => itemStack.GetMeta().melee !== undefined);
 					}
 					if (!given && shopElement.replaceBow) {
-						TryReplaceSlot((itemStack) => this.bows.includes(itemStack.GetItemType()));
+						TryReplaceSlot((i) => this.bows.includes(i.GetItemType()));
 					}
 					if (!given && shopElement.replacePickaxe) {
 						TryReplaceSlot((itemStack) => this.pickaxes.includes(itemStack.GetItemType()));
