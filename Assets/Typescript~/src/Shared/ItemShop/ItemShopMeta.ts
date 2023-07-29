@@ -116,6 +116,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				replaceBow: true,
+				spawnWithItems: [ItemType.WOOD_BOW],
 			},
 			{
 				itemType: ItemType.WOOD_ARROW,

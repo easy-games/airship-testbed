@@ -47,7 +47,7 @@ export class ShopService implements OnStart {
 					if (shopItem.nextTier && purchases.has(shopItem.nextTier)) {
 						continue;
 					}
-					let itemsToAdd = shopItem.spawnWithItems || [shopItem.itemType];
+					let itemsToAdd = shopItem.spawnWithItems;
 					for (let itemType of itemsToAdd) {
 						const itemMeta = ItemUtil.GetItemMeta(itemType);
 						if (itemMeta.Armor) {
@@ -87,6 +87,20 @@ export class ShopService implements OnStart {
 					inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemTypeToAdd, 1));
 				} else {
 					let given = false;
+
+					let itemStack = new ItemStack(itemTypeToAdd, shopElement.quantity);
+
+					const TryReplaceSlot = (filter: (itemStack: ItemStack) => boolean): void => {
+						for (let i = 0; i < inv.GetMaxSlots(); i++) {
+							const item = inv.GetItem(i);
+							if (item && filter(itemStack)) {
+								inv.SetItem(i, itemStack);
+								given = true;
+								return;
+							}
+						}
+					};
+
 					for (let i = 0; i < inv.GetMaxSlots(); i++) {
 						const existingItemStack = inv.GetItem(i);
 						if (!existingItemStack) continue;
@@ -104,44 +118,16 @@ export class ShopService implements OnStart {
 						}
 					}
 					if (!given && shopElement.replaceMelee) {
-						for (let i = 0; i < inv.GetMaxSlots(); i++) {
-							const item = inv.GetItem(i);
-							if (item?.GetMeta().melee) {
-								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
-								given = true;
-								break;
-							}
-						}
+						TryReplaceSlot((itemStack) => itemStack.GetMeta().melee !== undefined);
 					}
 					if (!given && shopElement.replaceBow) {
-						for (let i = 0; i < inv.GetMaxSlots(); i++) {
-							const item = inv.GetItem(i);
-							if (item && this.bows.includes(item.GetItemType())) {
-								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
-								given = true;
-								break;
-							}
-						}
+						TryReplaceSlot((itemStack) => this.bows.includes(itemStack.GetItemType()));
 					}
 					if (!given && shopElement.replacePickaxe) {
-						for (let i = 0; i < inv.GetMaxSlots(); i++) {
-							const item = inv.GetItem(i);
-							if (item && this.pickaxes.includes(item.GetItemType())) {
-								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
-								given = true;
-								break;
-							}
-						}
+						TryReplaceSlot((itemStack) => this.pickaxes.includes(itemStack.GetItemType()));
 					}
 					if (!given && shopElement.replaceAxe) {
-						for (let i = 0; i < inv.GetMaxSlots(); i++) {
-							const item = inv.GetItem(i);
-							if (item && this.axes.includes(item.GetItemType())) {
-								inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
-								given = true;
-								break;
-							}
-						}
+						TryReplaceSlot((itemStack) => this.axes.includes(itemStack.GetItemType()));
 					}
 					if (!given) {
 						if (itemTypeToAdd === ItemType.WHITE_WOOL) {
@@ -164,6 +150,11 @@ export class ShopService implements OnStart {
 							}
 						}
 						inv.AddItem(new ItemStack(itemTypeToAdd, shopElement.quantity));
+					}
+
+					// Extra items
+					if (itemTypeToAdd === ItemType.WOOD_BOW) {
+						inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 8));
 					}
 				}
 			}
