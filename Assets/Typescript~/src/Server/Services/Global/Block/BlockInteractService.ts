@@ -100,6 +100,9 @@ export class BlockInteractService implements OnStart {
 
 				// Cancellable signal
 				const damage = BlockHitDamageCalc(player, block, pos, itemMeta.breakBlock);
+				if (damage === 0) {
+					return;
+				}
 				const beforeSignal = ServerSignals.BeforeBlockHit.Fire(
 					new BeforeBlockHitSignal(block, pos, player, damage, itemInHand),
 				);
