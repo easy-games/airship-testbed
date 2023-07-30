@@ -1,6 +1,6 @@
 import { SyncEvent } from "@easy-games/unity-sync-event";
 import { Entity } from "./Entity/Entity";
-import { ItemStack } from "./Inventory/ItemStack";
+import { GroundItem } from "./GroundItem/GroundItem";
 import { ItemMeta } from "./Item/ItemMeta";
 import { ItemType } from "./Item/ItemType";
 import { ShopElement } from "./ItemShop/ItemShopMeta";
@@ -78,7 +78,5 @@ export const ServerSignals = {
 	/** Fired when a player is eliminated. */
 	PlayerEliminated: new Signal<{ player: Player }>(),
 	CustomMoveCommand: new Signal<MoveCommandDataEvent>(),
-	EntityPickupItem: new Signal<{ entity: Entity; itemStack: ItemStack; groundItemGO: GameObject }>(),
-	/** Fired when a generator item is picked up. */
-	GeneratorItemPickedUp: new Signal<{ pickupEntity: Entity; generatorId: string }>(),
+	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
 };

@@ -3,6 +3,7 @@ import { BeforeBlockHitSignal } from "./Controllers/Global/BlockInteractions/Sig
 import { ProjectileCollideClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileLaunchedClientSignal";
 import { Entity } from "./Entity/Entity";
+import { GroundItem } from "./GroundItem/GroundItem";
 import { ItemType } from "./Item/ItemType";
 import { MatchState } from "./Match/MatchState";
 import { Player } from "./Player/Player";
@@ -48,5 +49,5 @@ export const ClientSignals = {
 	/** Fired when a player is eliminated. */
 	PlayerEliminated: new Signal<{ player: Player }>(),
 	SpectatorTargetChanged: new Signal<{ entity: Entity }>(),
-	EntityPickupItem: new Signal<{ entity: Entity; itemType: ItemType }>(),
+	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
 };

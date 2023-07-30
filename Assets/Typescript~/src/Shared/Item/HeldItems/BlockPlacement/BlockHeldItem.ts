@@ -94,7 +94,7 @@ export class BlockHeldItem extends HeldItem {
 
 		Dependency<LocalEntityController>().AddToMoveData("PlaceBlock", {
 			pos: placePosition,
-			itemType: this.meta.ItemType,
+			itemType: this.meta.itemType,
 		});
 		if (isVoidPlacement) {
 			blockSelectController.PlacedVoidBridgeBlock();

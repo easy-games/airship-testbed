@@ -32,8 +32,7 @@ export class GeneratorService implements OnStart {
 	OnStart(): void {
 		// Split resources
 		ServerSignals.EntityPickupItem.Connect((event) => {
-			const groundObjectAttributes = event.groundItemGO.GetComponent<EasyAttributes>();
-			const generatorId = groundObjectAttributes.GetString("generatorId");
+			const generatorId = event.groundItem.data["generatorId"] as string | undefined;
 			if (!generatorId) return;
 
 			const genState = this.GetGeneratorById(generatorId);
@@ -50,7 +49,12 @@ export class GeneratorService implements OnStart {
 					const distanceFromGen = playerEntity.gameObject.transform.position.sub(genState.dto.pos).magnitude;
 					if (player !== pickupPlayer && distanceFromGen <= splitRange) {
 						const inv = playerEntity.GetInventory();
-						inv.AddItem(new ItemStack(event.itemStack.GetItemType(), event.itemStack.GetAmount()));
+						inv.AddItem(
+							new ItemStack(
+								event.groundItem.itemStack.GetItemType(),
+								event.groundItem.itemStack.GetAmount(),
+							),
+						);
 					}
 				});
 			}
@@ -136,7 +140,9 @@ export class GeneratorService implements OnStart {
 						newGeneratorStack,
 						generatorState.dto.pos.add(GENERATOR_ITEM_SPAWN_OFFSET),
 						undefined,
-						generatorState.dto.id,
+						{
+							generatorId: generatorState.dto.id,
+						},
 					);
 				}
 			}

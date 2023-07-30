@@ -48,7 +48,7 @@ export interface ItemMeta {
 	//Identification
 	displayName: string;
 	ID: number;
-	ItemType: ItemType;
+	itemType: ItemType;
 
 	//Game Design Mechanics
 	itemMechanics: ItemMechanicsMeta;
