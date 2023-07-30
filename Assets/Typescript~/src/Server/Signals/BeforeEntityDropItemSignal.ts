@@ -3,7 +3,7 @@ import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Cancellable } from "Shared/Util/Cancellable";
 
 export class BeforeEntityDropItemSignal extends Cancellable {
-	constructor(public readonly entity: Entity, public readonly itemStack: ItemStack, public force: Vector3) {
+	constructor(public readonly entity: Entity, public readonly itemStack: ItemStack, public velocity: Vector3) {
 		super();
 	}
 }

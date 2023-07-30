@@ -12,7 +12,7 @@ import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
-import { OnUpdate, SetInterval } from "Shared/Util/Timer";
+import { SetInterval } from "Shared/Util/Timer";
 import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
 
@@ -47,12 +47,21 @@ export class GroundItemController implements OnStart {
 
 	private CreateDisplayGO(itemStack: ItemStack, parent: Transform): GameObject {
 		let obj = this.itemTypeToDisplayObjMap.get(itemStack.GetItemType());
+		let accessory: Accessory | undefined;
 		if (!obj) {
-			const accessory = ItemUtil.GetFirstAccessoryForItemType(itemStack.GetItemType());
-			obj = accessory.Prefab;
+			const acc = ItemUtil.GetFirstAccessoryForItemType(itemStack.GetItemType());
+			obj = acc.Prefab;
+			accessory = acc;
 		}
 		const displayGO = GameObjectUtil.InstantiateIn(obj, parent);
-		// displayGO.transform.localScale = new Vector3(0.5, 0.5, 0.5);
+		if (accessory) {
+			displayGO.transform.localScale = accessory.Scale.mul(2);
+			displayGO.transform.localRotation = Quaternion.Euler(
+				accessory.Rotation.x,
+				accessory.Rotation.y,
+				accessory.Rotation.z,
+			);
+		}
 		displayGO.transform.localPosition = new Vector3(0, 0.5, 0);
 		return displayGO;
 	}
@@ -70,11 +79,6 @@ export class GroundItemController implements OnStart {
 				const displayGO = this.CreateDisplayGO(itemStack, go.transform.GetChild(0));
 
 				const bin = new Bin();
-				bin.Add(
-					OnUpdate.Connect((dt) => {
-						displayGO.transform.Rotate(new Vector3(0, 360, 0).mul(dt * 0.3));
-					}),
-				);
 				go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
 					this.groundItems.delete(groundItem.id);
 					bin.Clean();
@@ -107,12 +111,14 @@ export class GroundItemController implements OnStart {
 			if (!groundItem) {
 				return;
 			}
-			this.groundItems.delete(groundItemId);
 
 			const entity = Entity.FindById(entityId);
 			if (entity) {
 				ClientSignals.EntityPickupItem.Fire({ entity, groundItem });
 			}
+
+			GameObjectUtil.Destroy(groundItem.rb.gameObject);
+			this.groundItems.delete(groundItemId);
 		});
 	}
 }

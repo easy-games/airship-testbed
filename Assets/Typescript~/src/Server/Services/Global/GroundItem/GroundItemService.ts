@@ -32,13 +32,13 @@ export class GroundItemService implements OnStart {
 				if (!item) return;
 
 				const transform = entity.model.transform;
-				const position = transform.position.add(new Vector3(0, 1.8, 0)).add(transform.forward.mul(0.6));
-				let impulse = transform.forward.add(new Vector3(0, 0.4, 0));
-				impulse = impulse.mul(10);
-				print("impulse: " + tostring(impulse));
+				const position = transform.position.add(new Vector3(0, 1.5, 0)).add(transform.forward.mul(0.6));
+				let velocity = transform.forward.add(new Vector3(0, 0.7, 0));
+				velocity = velocity.mul(4);
+				print("velocity: " + tostring(velocity));
 
 				const beforeEvent = ServerSignals.BeforeEntityDropItem.Fire(
-					new BeforeEntityDropItemSignal(entity, item, impulse),
+					new BeforeEntityDropItemSignal(entity, item, velocity),
 				);
 				if (beforeEvent.IsCancelled()) return;
 
@@ -46,7 +46,7 @@ export class GroundItemService implements OnStart {
 				const newItem = item.Clone();
 				newItem.SetAmount(1);
 
-				const groundItem = this.SpawnGroundItem(newItem, position, beforeEvent.force);
+				const groundItem = this.SpawnGroundItem(newItem, position, beforeEvent.velocity);
 
 				ServerSignals.EntityDropItem.Fire(new EntityDropItemSignal(entity, item, groundItem));
 
