@@ -30,7 +30,7 @@ export class ItemUtil {
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			// Assign ID to each ItemType
-			itemMeta.ItemType = itemType;
+			itemMeta.itemType = itemType;
 			itemMeta.ID = i;
 			ItemUtil.itemIdToItemType.set(i, itemType);
 

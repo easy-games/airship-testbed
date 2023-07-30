@@ -1,20 +1,18 @@
-import { ItemStack } from "Shared/Inventory/ItemStack";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import { GroundItem } from "./GroundItem";
 
 export class GroundItemUtil {
 	public static CanPickupGroundItem(
-		itemStack: ItemStack,
-		groundItemNob: NetworkObject,
+		groundItem: GroundItem,
+		groundItemPosition: Vector3,
 		characterPosition: Vector3,
 	): boolean {
-		const dist = characterPosition.sub(groundItemNob.gameObject.transform.position).magnitude;
+		const dist = characterPosition.sub(groundItemPosition).magnitude;
 		if (dist > 1.5) {
 			return false;
 		}
 
-		const attributes = groundItemNob.gameObject.GetComponent<EasyAttributes>();
-		const pickupTime = attributes.GetNumber("pickupTime") ?? 0;
-		if (TimeUtil.GetServerTime() < pickupTime) {
+		if (TimeUtil.GetServerTime() < groundItem.pickupTime) {
 			return false;
 		}
 

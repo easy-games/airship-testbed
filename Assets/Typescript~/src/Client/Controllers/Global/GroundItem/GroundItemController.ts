@@ -5,12 +5,13 @@ import { PlayerController } from "Client/Controllers/Global/Player/PlayerControl
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
-import { NetworkUtil } from "Shared/Util/NetworkUtil";
+import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnUpdate, SetInterval } from "Shared/Util/Timer";
 import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
@@ -22,14 +23,16 @@ interface GroundItemEntry {
 
 @Controller({})
 export class GroundItemController implements OnStart {
+	private groundItemPrefab: Object;
 	private fallbackDisplayObj: Object;
-	private groundItems = new Map<number, GroundItemEntry>();
+	private groundItems = new Map<number, GroundItem>();
 	private itemTypeToDisplayObjMap = new Map<ItemType, Object>();
 
 	constructor(
 		private readonly playerController: PlayerController,
 		private readonly entityAccessoryController: EntityAccessoryController,
 	) {
+		this.groundItemPrefab = AssetBridge.LoadAsset("Shared/Resources/Prefabs/GroundItem.prefab");
 		this.fallbackDisplayObj = AssetBridge.LoadAsset("Shared/Resources/Prefabs/GroundItems/_fallback.prefab");
 
 		for (const itemType of Object.values(ItemType)) {
@@ -55,57 +58,60 @@ export class GroundItemController implements OnStart {
 	}
 
 	OnStart(): void {
-		Network.ServerToClient.AddGroundItem.Client.OnServerEvent((groundItemGOID, itemStackDto) => {
-			const itemStack = ItemStack.Decode(itemStackDto);
+		Network.ServerToClient.GroundItem.Add.Client.OnServerEvent((dtos) => {
+			for (const dto of dtos) {
+				const itemStack = ItemStack.Decode(dto.itemStack);
+				const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);
+				const rb = go.GetComponent<Rigidbody>();
+				rb.velocity = dto.velocity;
+				const groundItem = new GroundItem(dto.id, itemStack, rb, TimeUtil.GetServerTime() + 1.2, dto.data);
+				this.groundItems.set(dto.id, groundItem);
 
-			const groundItemNob = NetworkUtil.WaitForNobId(groundItemGOID);
+				const displayGO = this.CreateDisplayGO(itemStack, go.transform.GetChild(0));
 
-			this.groundItems.set(groundItemGOID, {
-				nob: groundItemNob,
-				itemStack,
-			});
-
-			const displayGO = this.CreateDisplayGO(itemStack, groundItemNob.transform.GetChild(0));
-
-			const bin = new Bin();
-			bin.Add(
-				OnUpdate.Connect((dt) => {
-					displayGO.transform.Rotate(new Vector3(0, 360, 0).mul(dt * 0.3));
-				}),
-			);
-			groundItemNob.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
-				this.groundItems.delete(groundItemGOID);
-				bin.Clean();
-			});
+				const bin = new Bin();
+				bin.Add(
+					OnUpdate.Connect((dt) => {
+						displayGO.transform.Rotate(new Vector3(0, 360, 0).mul(dt * 0.3));
+					}),
+				);
+				go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+					this.groundItems.delete(groundItem.id);
+					bin.Clean();
+				});
+			}
 		});
 
 		// Pickup when nearbys
 		SetInterval(0.1, () => {
-			const pawnPos = Game.LocalPlayer.Character?.gameObject.transform.position;
-			if (!pawnPos) return;
+			const characterPos = Game.LocalPlayer.Character?.gameObject.transform.position;
+			if (!characterPos) return;
 
-			let toPickup: GroundItemEntry[] = [];
+			let toPickup: GroundItem[] = [];
 			for (let pair of this.groundItems) {
-				if (!GroundItemUtil.CanPickupGroundItem(pair[1].itemStack, pair[1].nob, pawnPos)) continue;
+				if (!GroundItemUtil.CanPickupGroundItem(pair[1], pair[1].rb.position, characterPos)) continue;
 				toPickup.push(pair[1]);
 			}
 
 			toPickup = toPickup.sort((a, b) => {
-				return (
-					a.nob.gameObject.transform.position.Distance(pawnPos) <
-					b.nob.gameObject.transform.position.Distance(pawnPos)
-				);
+				return a.rb.position.Distance(characterPos) < b.rb.transform.position.Distance(characterPos);
 			});
 
-			for (let entry of toPickup) {
-				Network.ClientToServer.PickupGroundItem.Client.FireServer(entry.nob.ObjectId);
+			for (let groundItem of toPickup) {
+				Network.ClientToServer.PickupGroundItem.Client.FireServer(groundItem.id);
 			}
 		});
 
-		Network.ServerToClient.EntityPickedUpGroundItem.Client.OnServerEvent((entityId, itemType) => {
+		Network.ServerToClient.EntityPickedUpGroundItem.Client.OnServerEvent((entityId, groundItemId) => {
+			const groundItem = this.groundItems.get(groundItemId);
+			if (!groundItem) {
+				return;
+			}
+			this.groundItems.delete(groundItemId);
+
 			const entity = Entity.FindById(entityId);
 			if (entity) {
-				ClientSignals.EntityPickupItem.Fire({ entity, itemType });
+				ClientSignals.EntityPickupItem.Fire({ entity, groundItem });
 			}
 		});
 	}

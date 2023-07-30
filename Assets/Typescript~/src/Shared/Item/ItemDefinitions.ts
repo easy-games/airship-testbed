@@ -103,7 +103,7 @@ const stoneBlock: BlockMeta = {
 };
 
 export const items: {
-	[key in ItemType]: Omit<ItemMeta, "ID" | "ItemType">;
+	[key in ItemType]: Omit<ItemMeta, "ID" | "itemType">;
 } = {
 	[ItemType.DEFAULT]: {
 		//Identification

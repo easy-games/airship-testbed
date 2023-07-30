@@ -37,7 +37,7 @@ export class HeldItemManager {
 		if (meta === undefined) {
 			meta = items[ItemType.DEFAULT] as ItemMeta;
 		}
-		let item = this.heldItemMap.get(meta.ItemType);
+		let item = this.heldItemMap.get(meta.itemType);
 		if (item === undefined) {
 			//Create the held item instance
 			let itemType = "NONE";
@@ -59,7 +59,7 @@ export class HeldItemManager {
 				item = new HeldItem(this.entity, meta);
 			}
 			this.Log("creating Held Item: " + meta.displayName + " of type: " + itemType);
-			this.heldItemMap.set(meta.ItemType, item);
+			this.heldItemMap.set(meta.itemType, item);
 		}
 		return item;
 	}
