@@ -3,24 +3,38 @@ import { ClientSettingsController } from "../CollectionManager/ClientSettingsCon
 
 @Controller({})
 export class AmbientSoundController implements OnStart {
-	private audioSource: AudioSource;
+	private ambientSource: AudioSource;
+	private musicSource: AudioSource;
 
 	constructor() {
-		const go = GameObject.Create("AmbientSound");
-		this.audioSource = go.AddComponent("AudioSource") as AudioSource;
+		const ambientSoundGo = GameObject.Create("AmbientSound");
+		this.ambientSource = ambientSoundGo.AddComponent("AudioSource") as AudioSource;
+
+		const musicGo = GameObject.Create("Music");
+		this.musicSource = musicGo.AddComponent("AudioSource") as AudioSource;
 	}
 
 	OnStart(): void {
-		const clip = AssetBridge.LoadAsset<AudioClip>("Shared/Resources/Sound/Ambience_Forest.ogg");
+		const ambientClip = AssetBridge.LoadAsset<AudioClip>("Shared/Resources/Sound/Ambience_Forest.ogg");
+		this.ambientSource.spatialBlend = 0;
+		this.ambientSource.loop = true;
+		this.ambientSource.clip = ambientClip;
+		this.ambientSource.volume = Dependency<ClientSettingsController>().GetAmbientVolume();
+		this.ambientSource.Play();
 
-		this.audioSource.spatialBlend = 0;
-		this.audioSource.loop = true;
-		this.audioSource.clip = clip;
-		this.audioSource.volume = Dependency<ClientSettingsController>().GetAmbientSound();
-		this.audioSource.Play();
+		const musicClip = AssetBridge.LoadAsset<AudioClip>("Shared/Resources/Sound/Music/MatchMidIntensity.ogg");
+		this.musicSource.spatialBlend = 0;
+		this.musicSource.loop = true;
+		this.musicSource.clip = musicClip;
+		this.musicSource.volume = Dependency<ClientSettingsController>().GetMusicVolume();
+		this.musicSource.Play();
 	}
 
-	public SetVolume(val: number): void {
-		this.audioSource.volume = val;
+	public SetAmbientVolume(val: number): void {
+		this.ambientSource.volume = val;
+	}
+
+	public SetMusicVolume(val: number): void {
+		this.musicSource.volume = val;
 	}
 }

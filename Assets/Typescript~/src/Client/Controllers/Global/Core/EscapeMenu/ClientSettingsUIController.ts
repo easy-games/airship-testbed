@@ -27,10 +27,17 @@ export class ClientSettingsUIController implements OnStart {
 			this.clientSettingsController.SetGlobalVolume(val);
 		});
 		this.SetupSlider(
-			this.refs.GetValue("UI", "AmbientSound"),
-			this.clientSettingsController.GetAmbientSound(),
+			this.refs.GetValue("UI", "AmbientVolume"),
+			this.clientSettingsController.GetAmbientVolume(),
 			(val) => {
-				this.clientSettingsController.SetAmbientSound(val);
+				this.clientSettingsController.SetAmbientVolume(val);
+			},
+		);
+		this.SetupSlider(
+			this.refs.GetValue("UI", "MusicVolume"),
+			this.clientSettingsController.GetAmbientVolume(),
+			(val) => {
+				this.clientSettingsController.SetMusicVolume(val);
 			},
 		);
 	}

@@ -57,7 +57,9 @@ export class HeldItem {
 		}
 		if (equipPath) {
 			if (this.entity.IsLocalCharacter()) {
-				AudioManager.PlayFullPathGlobal(equipPath);
+				AudioManager.PlayFullPathGlobal(equipPath, {
+					volumeScale: 0.5,
+				});
 			} else {
 				AudioManager.PlayFullPathAtPosition(equipPath, this.entity.model.transform.position, {
 					volumeScale: 0.2,

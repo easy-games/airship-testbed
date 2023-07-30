@@ -6,7 +6,8 @@ export class ClientSettingsController implements OnStart {
 	private mouseSensitivity = 0.5;
 	private touchSensitivity = 0.5;
 	private globalVolume = 1;
-	private ambientSound = 0.14;
+	private ambientVolume = 0.14;
+	private musicVolume = 0.11;
 	private firstPersonFov = 85;
 	private thirdPersonFov = 100;
 
@@ -17,7 +18,7 @@ export class ClientSettingsController implements OnStart {
 	OnStart(): void {}
 
 	private LoadSettings(): void {
-		this.SetAmbientSound(0.1);
+		this.SetAmbientVolume(0.1);
 	}
 
 	public SaveSettings(): void {}
@@ -38,13 +39,22 @@ export class ClientSettingsController implements OnStart {
 		this.touchSensitivity = value;
 	}
 
-	public GetAmbientSound(): number {
-		return this.ambientSound;
+	public GetAmbientVolume(): number {
+		return this.ambientVolume;
 	}
 
-	public SetAmbientSound(val: number): void {
-		this.ambientSound = val;
-		Dependency<AmbientSoundController>().SetVolume(val * 0.5);
+	public SetAmbientVolume(val: number): void {
+		this.ambientVolume = val;
+		Dependency<AmbientSoundController>().SetAmbientVolume(val * 0.5);
+	}
+
+	public GetMusicVolume(): number {
+		return this.musicVolume;
+	}
+
+	public SetMusicVolume(val: number): void {
+		this.musicVolume = val;
+		Dependency<AmbientSoundController>().SetMusicVolume(val * 0.5);
 	}
 
 	public SetGlobalVolume(volume: number) {
