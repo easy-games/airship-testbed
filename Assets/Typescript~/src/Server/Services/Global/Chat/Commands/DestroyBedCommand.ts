@@ -30,7 +30,7 @@ export class DestroyBedCommand extends ChatCommand {
 		}
 
 		/* Destroy bed. */
-		const bedState = Dependency<BedService>().GetBedStateForTeamId(targetTeam.id);
+		const bedState = Dependency<BedService>().GetBedStateForTeam(targetTeam);
 		if (!bedState || bedState.destroyed) {
 			player.SendMessage("Bed does not exist or is already destroyed.");
 		} else {

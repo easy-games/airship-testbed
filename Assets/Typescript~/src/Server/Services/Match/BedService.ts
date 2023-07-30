@@ -4,6 +4,7 @@ import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
 import { Game } from "Shared/Game";
 import { ItemType } from "Shared/Item/ItemType";
+import { Team } from "Shared/Team/Team";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Theme } from "Shared/Util/Theme";
@@ -44,6 +45,10 @@ export class BedService implements OnStart {
 								ColorUtil.ColoredText(team.color, `${team.name} team's bed`) +
 								ColorUtil.ColoredText(Theme.Aqua, "!"),
 						);
+					}
+					const bedState = this.GetBedStateForTeam(team);
+					if (bedState) {
+						bedState.destroyed = true;
 					}
 					BWServerSignals.BedDestroyed.Fire({ team });
 				}
@@ -87,8 +92,8 @@ export class BedService implements OnStart {
 	 * @param teamId A team id.
 	 * @returns Whether or not a specific team's bed is destroyed.
 	 */
-	public IsBedDestroyed(teamId: string): boolean {
-		const bedState = this.GetBedStateForTeamId(teamId);
+	public IsBedDestroyed(team: Team): boolean {
+		const bedState = this.GetBedStateForTeam(team);
 		if (!bedState) return true;
 		return bedState.destroyed;
 	}
@@ -98,7 +103,7 @@ export class BedService implements OnStart {
 	 * @param teamId A team id.
 	 * @returns Bed state.
 	 */
-	public GetBedStateForTeamId(teamId: string): BedState | undefined {
-		return this.teamToBed.get(teamId);
+	public GetBedStateForTeam(team: Team): BedState | undefined {
+		return this.teamToBed.get(team.id);
 	}
 }

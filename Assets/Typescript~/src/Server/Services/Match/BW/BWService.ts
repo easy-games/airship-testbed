@@ -43,11 +43,8 @@ export class BWService implements OnStart {
 			if (!this.matchService.IsRunning()) return;
 			// Eliminate player, if applicable.
 			if (event.entity instanceof CharacterEntity) {
-				if (
-					event.entity.player &&
-					event.entity.player.GetTeam() &&
-					this.bedService.IsBedDestroyed(event.entity.player.GetTeam()!.id)
-				) {
+				const team = event.entity.player?.GetTeam();
+				if (event.entity.player && team && this.bedService.IsBedDestroyed(team)) {
 					this.EliminatePlayer(event.entity.player);
 				}
 			}
@@ -172,7 +169,7 @@ export class BWService implements OnStart {
 				if (this.eliminatedPlayers.has(player)) return true;
 				return false;
 			});
-			const bedDestroyed = this.bedService.IsBedDestroyed(team.id);
+			const bedDestroyed = this.bedService.IsBedDestroyed(team);
 			const isEliminated = noPlayersOnTeam || (allPlayersEliminated && bedDestroyed);
 			if (!isEliminated) {
 				nonEliminatedTeams.push(team);
