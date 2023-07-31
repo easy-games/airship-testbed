@@ -57,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 964cc7fc1c1f040458218fae82e69712, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8a1d35eca76f06a4db66e1ba65002205, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -107,7 +107,7 @@ Material:
     - _FlutterSpeed: 10
     - _FlutterStrength: 3.42
     - _FresnelPower: 1
-    - _FresnelStrength: 1
+    - _FresnelStrength: 0.616
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -126,7 +126,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TexColorStrength: 0.505
+    - _TexColorStrength: 0.784
     - _TriplanarScale: 0
     - _UVSec: 0
     - _WindSpeed: 30
@@ -134,12 +134,12 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.34158066, g: 0.7169812, b: 0.34515592, a: 1}
-    - _ColorA: {r: 0.2546725, g: 0.5566038, b: 0.30088645, a: 1}
-    - _ColorB: {r: 0.94315356, g: 0.9716981, b: 0, a: 1}
+    - _ColorA: {r: 0.102127105, g: 0.4811321, b: 0.25902912, a: 1}
+    - _ColorB: {r: 0.5411765, g: 1, b: 0.6210863, a: 1}
     - _DarkColor: {r: 0.0023584962, g: 0.5, b: 0.0023584962, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FresnelColor: {r: 1, g: 0.66886795, b: 0.4481132, a: 1}
+    - _FresnelColor: {r: 0.9526169, g: 1, b: 0.4470588, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0, g: 0.09433961, b: 0, a: 1}
+    - _ShadowColor: {r: 0, g: 0.09411765, b: 0.026491255, a: 1}
   m_BuildTextureStacks: []
