@@ -1230,6 +1230,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8152985083882053025, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8152985083882053025, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
       propertyPath: m_AABB.m_Extent.x
       value: 1
       objectReference: {fileID: 0}

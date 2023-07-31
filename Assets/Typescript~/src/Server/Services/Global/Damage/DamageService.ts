@@ -8,6 +8,7 @@ import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
 import { DamageType } from "../../../Damage/DamageType";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
+import { Task } from "../../../../Shared/Util/Task";
 
 @Service({})
 export class DamageService implements OnStart {
@@ -119,8 +120,12 @@ export class DamageService implements OnStart {
 				entityDeathEvent.killer?.id,
 			);
 
-			this.entityService.DespawnEntity(entity);
-			despawned = true;
+			//Let the death animation play before despawning
+			entity.GrantImmunity(3);
+			Task.Delay(2, () => {
+				this.entityService.DespawnEntity(entity);
+				despawned = true;
+			});
 		} else {
 			entity.GrantImmunity(0.3);
 		}
