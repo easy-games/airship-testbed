@@ -75,7 +75,6 @@ export class ShopkeeperService implements OnStart {
 				EntityPrefabType.HUMAN,
 				teamUpgradeWorldPos.Position,
 			);
-			print("look vec: " + team.id + " " + tostring(teamUpgradeWorldPos.Rotation.eulerAngles));
 			upgradeShopEntity.entityDriver.SetLookVector(
 				teamUpgradeWorldPos.Rotation.mul(upgradeShopEntity.entityDriver.transform.forward),
 			);
