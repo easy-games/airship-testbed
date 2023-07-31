@@ -71,6 +71,7 @@ export const Network = {
 		Entity: {
 			SetHealth: new RemoteEvent<[entityId: number, health: number]>(),
 			SetDisplayName: new RemoteEvent<[entityId: number, displayName: string]>(),
+			AddHealthbar: new RemoteEvent<[entityId: number]>(),
 		},
 		ItemShop: {
 			RemoveTierPurchases: new RemoteEvent<[itemTypes: ItemType[]]>(),

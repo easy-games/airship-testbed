@@ -57,6 +57,10 @@ export class EntityController implements OnStart {
 				entity.SetDisplayName(value);
 			}
 		});
+		Network.ServerToClient.Entity.AddHealthbar.Client.OnServerEvent((entityId) => {
+			const entity = this.GetEntityById(entityId);
+			entity?.AddHealthbar();
+		});
 	}
 
 	private DespawnEntity(entity: Entity): void {
@@ -100,6 +104,9 @@ export class EntityController implements OnStart {
 		entity.SetHealth(entityDto.health);
 		entity.SetMaxHealth(entityDto.maxHealth);
 		entity.SetDisplayName(entityDto.displayName);
+		if (entityDto.healthbar) {
+			entity.AddHealthbar();
+		}
 
 		this.entities.set(entity.id, entity);
 

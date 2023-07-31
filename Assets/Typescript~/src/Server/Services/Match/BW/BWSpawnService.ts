@@ -33,11 +33,12 @@ export class BWSpawnService implements OnStart {
 	) {
 		ServerSignals.MapLoad.connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();
-			this.entityService.SpawnEntityForPlayer(
+			const entity = this.entityService.SpawnEntityForPlayer(
 				undefined,
 				EntityPrefabType.HUMAN,
 				position.Position.add(new Vector3(-3, 2, 3)),
 			);
+			entity.AddHealthbar();
 		});
 
 		ServerSignals.MapLoad.connect((event) => {
@@ -58,9 +59,9 @@ export class BWSpawnService implements OnStart {
 			this.loadedMap = this.mapService.WaitForMapLoaded();
 			/* Spawn entity on join. */
 			ServerSignals.PlayerJoin.Connect((event) => {
-				Task.Delay(SPAWN_DELAY_ON_JOIN, () =>
-					Dependency<EntityService>().SpawnEntityForPlayer(event.player, EntityPrefabType.HUMAN),
-				);
+				Task.Delay(SPAWN_DELAY_ON_JOIN, () => {
+					this.SpawnPlayer(event.player);
+				});
 			});
 
 			/* Listen for entity death, respawn if applicable. */
@@ -69,10 +70,7 @@ export class BWSpawnService implements OnStart {
 				if (event.entity instanceof CharacterEntity && !this.bwService.winnerDeclared) {
 					Task.Delay(event.respawnTime, () => {
 						if (event.entity.player && !this.bwService.IsPlayerEliminated(event.entity.player)) {
-							Dependency<EntityService>().SpawnEntityForPlayer(
-								event.entity.player,
-								EntityPrefabType.HUMAN,
-							);
+							this.SpawnPlayer(event.entity.player);
 						}
 					});
 				}
@@ -97,6 +95,11 @@ export class BWSpawnService implements OnStart {
 				}
 			}
 		});
+	}
+
+	public SpawnPlayer(player: Player): void {
+		const entity = Dependency<EntityService>().SpawnEntityForPlayer(player, EntityPrefabType.HUMAN);
+		entity.AddHealthbar();
 	}
 
 	/** Teleports player to match spawn location on match start. */
