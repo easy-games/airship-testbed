@@ -106,7 +106,7 @@ Material:
     - _EmissiveMix: 1
     - _FlutterSpeed: 3
     - _FlutterStrength: 1.5
-    - _FresnelPower: 10
+    - _FresnelPower: 0.42
     - _FresnelStrength: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -115,6 +115,7 @@ Material:
     - _LightShimmerStrength: 0
     - _MetalOverride: 0
     - _Metallic: 0
+    - _MinLight: 0.2
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -140,4 +141,5 @@ Material:
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _FresnelColor: {r: 0.2538715, g: 0.3301887, b: 0.2538715, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 0.1, g: 0.2, b: 0.1, a: 1}
   m_BuildTextureStacks: []

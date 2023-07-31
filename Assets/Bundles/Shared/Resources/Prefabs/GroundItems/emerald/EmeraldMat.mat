@@ -54,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: c9d4c3cbf58bbfa4e9d1887598f5c4dc, type: 3}
+        m_Texture: {fileID: 2800000, guid: c62161c03fc8f9f47bbc5df0e3412541, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -72,6 +72,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DepthOpacity: 0.168
+    - _DepthScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FresnelPower: 5
