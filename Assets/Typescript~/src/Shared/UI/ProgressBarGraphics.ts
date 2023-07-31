@@ -26,7 +26,7 @@ export class ProgressBarGraphics {
 	public changeDurationInSeconds = 0.125;
 	private enabled = true;
 	private deathOnZero = true;
-	private currentDelta = 0;
+	private currentDelta = -999;
 
 	constructor(transform: Transform, options?: ProgressBarOptions) {
 		this.transform = transform.gameObject.GetComponent<RectTransform>();
@@ -70,6 +70,10 @@ export class ProgressBarGraphics {
 	}
 
 	public SetValue(percentDelta: number) {
+		if (this.currentDelta === percentDelta) {
+			return;
+		}
+
 		if (this.deathOnZero && percentDelta <= 0) {
 			//Wait for the change animation
 			Task.Delay(this.fillDurationInSeconds, () => {

@@ -262,7 +262,11 @@ export class Entity {
 	}
 
 	public IsLocalCharacter(): boolean {
-		return RunUtil.IsClient() && this.ClientId === Dependency<PlayerController>().LocalConnection.ClientId;
+		if (!RunUtil.IsClient()) {
+			return false;
+		} else {
+			return this.ClientId === Dependency<PlayerController>().LocalConnection.ClientId;
+		}
 	}
 
 	public IsAlive(): boolean {

@@ -39,6 +39,7 @@ export class LocalEntityController implements OnStart {
 	private entityInput: EntityInput | undefined;
 	private prevState: EntityState = EntityState.Idle;
 	private currentState: EntityState = EntityState.Idle;
+	private humanoidCameraMode: HumanoidCameraMode | undefined;
 
 	constructor(
 		private readonly cameraController: CameraController,
@@ -111,8 +112,6 @@ export class LocalEntityController implements OnStart {
 			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			this.entityInput = new EntityInput(entity.gameObject);
 
-			let humanoidCameraMode: HumanoidCameraMode;
-
 			// Custom move data control:
 			// bin.Add(
 			// 	OnUpdate.ConnectWithPriority(SignalPriority.MONITOR, () => {
@@ -141,13 +140,18 @@ export class LocalEntityController implements OnStart {
 			const createHumanoidCameraMode = () => {
 				const state = this.entityDriver?.GetState() ?? EntityState.Idle;
 				const yOffset = getCamYOffset(state, this.firstPerson);
-				humanoidCameraMode = new HumanoidCameraMode(entity.gameObject, entity.model, this.firstPerson, yOffset);
-				humanoidCameraMode.SetLookBackwards(this.lookBackwards);
-				return humanoidCameraMode;
+				this.humanoidCameraMode = new HumanoidCameraMode(
+					entity.gameObject,
+					entity.model,
+					this.firstPerson,
+					yOffset,
+				);
+				this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
+				return this.humanoidCameraMode;
 			};
 
 			this.FirstPersonChanged.Connect((isFirstPerson) => {
-				humanoidCameraMode.SetYOffset(
+				this.humanoidCameraMode?.SetYOffset(
 					getCamYOffset(this.entityDriver?.GetState() ?? EntityState.Idle, isFirstPerson),
 					true,
 				);
@@ -165,7 +169,7 @@ export class LocalEntityController implements OnStart {
 					this.prevState = this.currentState;
 					this.currentState = state;
 				}
-				humanoidCameraMode.SetYOffset(getCamYOffset(state, this.firstPerson));
+				this.humanoidCameraMode?.SetYOffset(getCamYOffset(state, this.firstPerson));
 				this.UpdateFov();
 			});
 
@@ -175,20 +179,20 @@ export class LocalEntityController implements OnStart {
 
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
-				if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-					this.ToggleFirstPerson(humanoidCameraMode);
+				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+					this.ToggleFirstPerson();
 				}
 			});
 
 			// Toggle look backwards:
 			keyboard.OnKeyDown(KeyCode.LeftAlt, (event) => {
-				if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-					this.SetLookBackwards(humanoidCameraMode, true);
+				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+					this.SetLookBackwards(true);
 				}
 			});
 			keyboard.OnKeyUp(KeyCode.LeftAlt, (event) => {
-				if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-					this.SetLookBackwards(humanoidCameraMode, false);
+				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+					this.SetLookBackwards(false);
 				}
 			});
 
@@ -311,22 +315,30 @@ export class LocalEntityController implements OnStart {
 		}
 	}
 
-	private SetLookBackwards(humanoidCameraMode: HumanoidCameraMode, lookBackwards: boolean) {
+	private SetLookBackwards(lookBackwards: boolean) {
 		if (this.lookBackwards === lookBackwards) return;
 		this.lookBackwards = lookBackwards;
 		this.LookBackwardsChanged.Fire(this.lookBackwards);
 
-		if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-			humanoidCameraMode.SetLookBackwards(this.lookBackwards);
+		if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+			this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
 		}
 	}
 
-	private ToggleFirstPerson(humanoidCameraMode: HumanoidCameraMode) {
-		this.firstPerson = !this.firstPerson;
+	public ToggleFirstPerson() {
+		this.ForceFirstPersonMode(!this.firstPerson);
+	}
+
+	public ForceFirstPersonMode(setFirstPersonOn: boolean) {
+		if (this.firstPerson === setFirstPersonOn) {
+			return;
+		}
+
+		this.firstPerson = setFirstPersonOn;
 		this.FirstPersonChanged.Fire(this.firstPerson);
 
-		if (this.cameraController.cameraSystem.GetMode() === humanoidCameraMode) {
-			humanoidCameraMode.SetFirstPerson(this.firstPerson);
+		if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+			this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
 		}
 		this.fps?.OnFirstPersonChanged(this.firstPerson);
 	}

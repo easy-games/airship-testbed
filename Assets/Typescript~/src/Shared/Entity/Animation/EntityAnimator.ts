@@ -27,6 +27,7 @@ export class EntityAnimator {
 	private flinchClipTP?: AnimationClip;
 	private deathClipTP?: AnimationClip;
 	private damageEffectTemplate?: GameObject;
+	private deathEffectTemplate?: GameObject;
 	private isFlashing = false;
 
 	private footstepAudioBundle: AudioClipBundle;
@@ -65,6 +66,11 @@ export class EntityAnimator {
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
 			Bundle_Entity_OnHit.GenericVFX,
+		);
+		this.deathEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
+			BundleGroupNames.Entity,
+			Bundle_Entity.OnHit,
+			Bundle_Entity_OnHit.DeathVFX,
 		);
 
 		//Listen to animation events
@@ -125,12 +131,29 @@ export class EntityAnimator {
 	}
 
 	public PlayDeath() {
-		const isFirstPerson =
-			RunUtil.IsClient() && this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
-		const deathClip = isFirstPerson ? this.deathClipFPS : this.deathClipTP;
+		//Play death animation
+		let isFirstPerson = false;
+		if (this.entity.IsLocalCharacter()) {
+			const localController = Dependency<LocalEntityController>();
+			isFirstPerson = localController.IsFirstPerson();
+			//Always play death animation in third person
+			localController.ForceFirstPersonMode(false);
+			//Lock Inputs
+			this.entity.entityDriver.enabled = false;
+		}
+		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
 			this.PlayAnimation(deathClip, this.TopMostLayerIndex);
 		}
+		//Spawn death particle
+		if (this.deathEffectTemplate) {
+			const go = EffectsManager.SpawnEffectAtPosition(this.deathEffectTemplate, this.entity.GetHeadPosition());
+			go.transform.SetParent(this.entity.gameObject.transform);
+		}
+
+		Task.Delay(0.5, () => {
+			this.entityRef.root.gameObject.SetActive(false);
+		});
 	}
 
 	private PlayDamageFlash() {

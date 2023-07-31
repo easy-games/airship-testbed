@@ -18,6 +18,8 @@ MonoBehaviour:
     value:
     - key: GenericVFX
       value: {fileID: 2145243952792991196, guid: f8021bdae8b5cf4479a1d569f04562b1, type: 3}
+    - key: DeathVFX
+      value: {fileID: 3857869263075033770, guid: c2b64d4a767e67341b3729792a746036, type: 3}
     - key: FlinchAnimFPS
       value: {fileID: 7400000, guid: 513d8b8282d5c454da924b8face667e7, type: 2}
     - key: DeathAnimFPS
