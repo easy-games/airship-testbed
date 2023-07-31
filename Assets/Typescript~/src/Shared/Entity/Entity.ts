@@ -443,7 +443,7 @@ export class Entity {
 	}
 
 	public GetMiddlePosition(): Vector3 {
-		return this.model.transform.position.add(new Vector3(0, 1.5, 0));
+		return this.model.transform.position.add(new Vector3(0, 0.9, 0));
 	}
 
 	public LocalOffsetToWorldPoint(localOffset: Vector3) {

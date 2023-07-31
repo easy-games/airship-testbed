@@ -1,4 +1,5 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { DamageService } from "../../../../Server/Services/Global/Damage/DamageService";
@@ -136,14 +137,14 @@ export class MeleeHeldItem extends HeldItem {
 				continue;
 			}
 			const immuneUntilTime = this.entity.GetImmuneUntilTime();
-			if (TimeUtil.GetServerTime() + 0.1 < immuneUntilTime) {
+			if (TimeUtil.GetServerTime() + (RunUtil.IsClient() ? 0.1 : 0) < immuneUntilTime) {
 				continue;
 			}
 			this.Log("Hit Entity: " + targetEntity.id);
 
 			//Raycast to the target to find a more concrete collisions\
 			let rayStart = this.entity.GetHeadPosition();
-			let rayEnd = targetEntity.GetHeadPosition();
+			let rayEnd = targetEntity.GetMiddlePosition();
 			let hitDirection = rayEnd.sub(rayStart).normalized;
 
 			//RAYCAST ALL
