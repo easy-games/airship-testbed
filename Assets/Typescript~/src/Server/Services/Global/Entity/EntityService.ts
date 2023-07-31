@@ -35,7 +35,6 @@ export class EntityService implements OnStart {
 					Network.ServerToClient.UpdateInventory.Server.FireClient(player.clientId, invDto);
 				}
 			}
-			print("EntityService: sending SpawnEntities");
 			const dto = ObjectUtil.values(this.entities).map((e) => e.Encode());
 			Network.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
 
@@ -120,7 +119,6 @@ export class EntityService implements OnStart {
 		// fire SpawnEntities after so the initial entity packet has all the latest info.
 		ServerSignals.EntitySpawn.Fire(new EntitySpawnEvent(entity));
 
-		print(`firing spawn entity id=${entity.id} displayName=${entity.GetDisplayName()}`);
 		Network.ServerToClient.SpawnEntities.Server.FireAllClients([entity.Encode()]);
 		Network.ServerToClient.UpdateInventory.Server.FireAllClients(entity.GetInventory().Encode());
 		entity.GetInventory().StartNetworkingDiffs();
