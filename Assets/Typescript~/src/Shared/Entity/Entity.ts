@@ -295,7 +295,7 @@ export class Entity {
 	}
 
 	public IsAlive(): boolean {
-		return true;
+		return !this.IsDead();
 	}
 
 	public static FindById(id: number): Entity | undefined {

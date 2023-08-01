@@ -5,10 +5,10 @@ import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal"
 import { Entity } from "Shared/Entity/Entity";
 import { Network } from "Shared/Network";
 import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
+import { Task } from "../../../../Shared/Util/Task";
 import { DamageType } from "../../../Damage/DamageType";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
-import { Task } from "../../../../Shared/Util/Task";
 
 @Service({})
 export class DamageService implements OnStart {
@@ -93,7 +93,6 @@ export class DamageService implements OnStart {
 			fromPos = config.fromEntity.networkObject.gameObject.transform.position;
 		}
 
-		print("Sending damage event: " + InstanceFinder.TimeManager.Tick);
 		Network.ServerToClient.EntityDamage.Server.FireAllClients(
 			entity.id,
 			damageEvent.amount,
