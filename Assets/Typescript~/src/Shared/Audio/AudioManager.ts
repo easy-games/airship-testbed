@@ -40,36 +40,49 @@ export class AudioManager {
 		this.globalSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 	}
 
-	public static PlayAtPosition(sound: string, position: Vector3, config?: PlaySoundConfig): void {
+	public static StopGlobalAudio() {
+		this.globalSource.Stop();
+	}
+
+	public static PlayAtPosition(sound: string, position: Vector3, config?: PlaySoundConfig): AudioSource | undefined {
 		const clip = this.LoadAudioClip(sound);
 		if (!clip) {
 			warn("PlayAtPosition Failed to find sound: " + sound);
-			return;
+			return undefined;
 		}
 		return this.PlayClipAtPosition(clip, position, config);
 	}
 
-	public static PlayFullPathAtPosition(fullPath: string, position: Vector3, config?: PlaySoundConfig): void {
+	public static PlayFullPathAtPosition(
+		fullPath: string,
+		position: Vector3,
+		config?: PlaySoundConfig,
+	): AudioSource | undefined {
 		const clip = this.LoadFullPathAudioClip(fullPath);
 		if (!clip) {
 			warn("PlayFullPathAtPosition Failed to find full path: " + fullPath);
-			return;
+			return undefined;
 		}
 		return this.PlayClipAtPosition(clip, position, config);
 	}
 
-	public static PlayClipAtPosition(clip: AudioClip, position: Vector3, config?: PlaySoundConfig): void {
+	public static PlayClipAtPosition(
+		clip: AudioClip,
+		position: Vector3,
+		config?: PlaySoundConfig,
+	): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(position);
 		audioSource.maxDistance = MAX_DISTANCE;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
-			return;
+			return undefined;
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 		Task.Delay(clip.length + 1, () => {
 			Object.Destroy(audioSource);
 		});
+		return audioSource;
 	}
 
 	private static GetAudioSource(position: Vector3): AudioSource {

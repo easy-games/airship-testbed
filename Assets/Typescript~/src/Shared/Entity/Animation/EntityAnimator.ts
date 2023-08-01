@@ -14,15 +14,20 @@ import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
 
 export class EntityAnimator {
+	private readonly RootOverrideLayer = 1;
+	private readonly TopMostLayerIndex = 3;
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
 	public readonly anim: AnimancerComponent;
 	public readonly defaultTransitionTime: number = 0.15;
 
 	protected readonly entityRef: EntityReferences;
-
-	private damageEffectClip?: AnimationClip;
+	private flinchClipFPS?: AnimationClip;
+	private deathClipFPS?: AnimationClip;
+	private flinchClipTP?: AnimationClip;
+	private deathClipTP?: AnimationClip;
 	private damageEffectTemplate?: GameObject;
+	private deathEffectTemplate?: GameObject;
 	private isFlashing = false;
 
 	private footstepAudioBundle: AudioClipBundle;
@@ -37,15 +42,35 @@ export class EntityAnimator {
 		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 			? AudioBundleSpacialMode.GLOBAL
 			: AudioBundleSpacialMode.SPACIAL;
-		this.damageEffectClip = BundleReferenceManager.LoadResource<AnimationClip>(
+		this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.GeneralAnim,
+			Bundle_Entity_OnHit.FlinchAnimFPS,
+		);
+		this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
+			BundleGroupNames.Entity,
+			Bundle_Entity.OnHit,
+			Bundle_Entity_OnHit.DeathAnimFPS,
+		);
+		this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+			BundleGroupNames.Entity,
+			Bundle_Entity.OnHit,
+			Bundle_Entity_OnHit.FlinchAnimTP,
+		);
+		this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+			BundleGroupNames.Entity,
+			Bundle_Entity.OnHit,
+			Bundle_Entity_OnHit.DeathAnimTP,
 		);
 		this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
 			Bundle_Entity_OnHit.GenericVFX,
+		);
+		this.deathEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
+			BundleGroupNames.Entity,
+			Bundle_Entity.OnHit,
+			Bundle_Entity_OnHit.DeathVFX,
 		);
 
 		//Listen to animation events
@@ -71,12 +96,23 @@ export class EntityAnimator {
 		position: Vector3,
 		entityModel: GameObject | undefined,
 	) {
+		const isFirstPerson =
+			RunUtil.IsClient() && this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
+
 		this.PlayDamageFlash();
 
-		if (RunUtil.IsClient()) {
-			if (this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson()) {
-				return;
-			}
+		//Animate flinch
+		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
+		if (flinchClip) {
+			this.PlayAnimation(flinchClip, this.RootOverrideLayer);
+			Task.Delay(0.1, () => {
+				AnimancerBridge.GetLayer(this.anim, this.RootOverrideLayer).StartFade(0, 0.05);
+			});
+		}
+
+		//Don't render some effects if we are in first person
+		if (isFirstPerson) {
+			return;
 		}
 
 		//Play specific effects for different damage types like fire attacks or magic damage
@@ -92,6 +128,32 @@ export class EntityAnimator {
 				go.transform.parent = entityModel.transform;
 			}
 		}
+	}
+
+	public PlayDeath() {
+		//Play death animation
+		let isFirstPerson = false;
+		if (this.entity.IsLocalCharacter()) {
+			const localController = Dependency<LocalEntityController>();
+			isFirstPerson = localController.IsFirstPerson();
+			//Always play death animation in third person
+			localController.ForceFirstPersonMode(false);
+			//Lock Inputs
+			this.entity.entityDriver.enabled = false;
+		}
+		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
+		if (deathClip) {
+			this.PlayAnimation(deathClip, this.TopMostLayerIndex);
+		}
+		//Spawn death particle
+		if (this.deathEffectTemplate) {
+			const go = EffectsManager.SpawnEffectAtPosition(this.deathEffectTemplate, this.entity.GetHeadPosition());
+			go.transform.SetParent(this.entity.gameObject.transform);
+		}
+
+		Task.Delay(0.5, () => {
+			this.entityRef.root.gameObject.SetActive(false);
+		});
 	}
 
 	private PlayDamageFlash() {

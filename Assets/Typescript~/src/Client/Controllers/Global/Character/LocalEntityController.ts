@@ -170,7 +170,7 @@ export class LocalEntityController implements OnStart {
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
-					this.SetFirstPerson(!this.firstPerson);
+					this.ToggleFirstPerson();
 				}
 			});
 
@@ -259,13 +259,21 @@ export class LocalEntityController implements OnStart {
 		}
 	}
 
-	public SetFirstPerson(firstPerson: boolean): void {
-		if (this.firstPerson === firstPerson) return;
+	public ToggleFirstPerson() {
+		this.ForceFirstPersonMode(!this.firstPerson);
+	}
 
-		this.firstPerson = firstPerson;
+	public ForceFirstPersonMode(setFirstPersonOn: boolean) {
+		if (this.firstPerson === setFirstPersonOn) {
+			return;
+		}
+
+		this.firstPerson = setFirstPersonOn;
 		this.FirstPersonChanged.Fire(this.firstPerson);
 
-		this.humanoidCameraMode?.SetFirstPerson(this.firstPerson);
+		if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+			this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
+		}
 		this.fps?.OnFirstPersonChanged(this.firstPerson);
 	}
 

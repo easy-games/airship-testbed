@@ -61,6 +61,7 @@ interface EntityDriver extends Component {
 
 	GetLookVector(): Vector3;
 	IsGrounded(): boolean;
+	enabled: boolean;
 
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
 	SetLookVector(lookVector: Vector3): void;

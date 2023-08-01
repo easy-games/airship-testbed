@@ -16,10 +16,18 @@ MonoBehaviour:
   bundles:
   - key: OnHit
     value:
-    - key: GeneralAnim
-      value: {fileID: 7400000, guid: 55c9e38c86f89e34cbb919946b66b4a4, type: 2}
     - key: GenericVFX
       value: {fileID: 2145243952792991196, guid: f8021bdae8b5cf4479a1d569f04562b1, type: 3}
+    - key: DeathVFX
+      value: {fileID: 3857869263075033770, guid: c2b64d4a767e67341b3729792a746036, type: 3}
+    - key: FlinchAnimFPS
+      value: {fileID: 7400000, guid: 513d8b8282d5c454da924b8face667e7, type: 2}
+    - key: DeathAnimFPS
+      value: {fileID: 7400000, guid: bcf5bf4bef421834d9ad4697d8fc8526, type: 2}
+    - key: FlinchAnimTP
+      value: {fileID: 7400000, guid: 1ebd3e2cf3352b948afc3e1e22d7d70a, type: 2}
+    - key: DeathAnimTP
+      value: {fileID: 7400000, guid: 3456c4a191f9942409c93a9f5b26c9b1, type: 2}
   - key: Movement
     value:
     - key: SprintTrail

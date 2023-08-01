@@ -20,6 +20,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeBin = new Bin();
 	private currentlyCharging = false;
 	private startHoldTimeSec = 0;
+	private chargeAudioSource: AudioSource | undefined;
 	private projectileTrajectoryRenderer =
 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
 
@@ -39,9 +40,13 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			if (this.entity.IsLocalCharacter()) {
 				AudioManager.PlayFullPathGlobal(soundPath, { volumeScale: 0.2 });
 			} else {
-				AudioManager.PlayFullPathAtPosition(soundPath, this.entity.model.transform.position, {
-					volumeScale: 0.2,
-				});
+				this.chargeAudioSource = AudioManager.PlayFullPathAtPosition(
+					soundPath,
+					this.entity.model.transform.position,
+					{
+						volumeScale: 0.2,
+					},
+				);
 			}
 		}
 
@@ -124,11 +129,22 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		} else {
 			//Not charged up all the way
 			this.entity.anim?.StartItemIdle();
+			this.CancelChargeSound();
+
 			return false;
 		}
 	}
 
+	private CancelChargeSound() {
+		if (this.entity.IsLocalCharacter()) {
+			AudioManager.StopGlobalAudio();
+		} else if (this.chargeAudioSource) {
+			this.chargeAudioSource.Stop();
+		}
+	}
+
 	protected override OnUseClient(useIndex: number): void {
+		this.CancelChargeSound();
 		super.OnUseClient(useIndex);
 		print("On use: " + useIndex);
 		if (!this.entity.IsLocalCharacter()) return;
