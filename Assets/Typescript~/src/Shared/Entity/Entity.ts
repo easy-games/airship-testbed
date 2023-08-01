@@ -46,6 +46,7 @@ export class EntityReferences {
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
+	humanEntityAnimator: CoreEntityAnimator;
 	jumpSound: AudioClip | undefined;
 	slideSound: AudioClip | undefined;
 	landSound: AudioClip | undefined;
@@ -55,6 +56,8 @@ export class EntityReferences {
 		let meshKey = "Meshes";
 		let colliderKey = "Colliders";
 		let vfxKey = "VFX";
+
+		this.humanEntityAnimator = ref.gameObject.GetComponent<CoreEntityAnimator>();
 
 		//Get the meshes
 		let meshesCS: CSArray<Renderer> = ref.GetAllValues<Renderer>(meshKey);

@@ -93,5 +93,6 @@ export class FirstPersonCameraSystem {
 			this.entityReferences.meshes[i].gameObject.SetActive(!isFirstPerson);
 		}
 		this.entityReferences.fpsMesh.gameObject.SetActive(isFirstPerson);
+		this.entityReferences.humanEntityAnimator.SetForceLookForward(!isFirstPerson);
 	}
 }
