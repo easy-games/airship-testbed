@@ -12,8 +12,8 @@ export class LobbyService implements OnStart {
 		serverConsole.RemoteLogging = true;
 
 		ServerSignals.EntitySpawn.Connect((event) => {
-			if (event.Entity instanceof CharacterEntity) {
-				const inv = event.Entity.GetInventory();
+			if (event.entity instanceof CharacterEntity) {
+				const inv = event.entity.GetInventory();
 				inv.SetItem(0, new ItemStack(ItemType.STONE_SWORD, 1));
 				inv.SetItem(1, new ItemStack(ItemType.COBBLESTONE, 100));
 				inv.SetItem(2, new ItemStack(ItemType.STONE_PICKAXE, 1));

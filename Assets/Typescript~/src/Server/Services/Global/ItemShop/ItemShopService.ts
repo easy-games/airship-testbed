@@ -38,12 +38,12 @@ export class ShopService implements OnStart {
 		});
 
 		ServerSignals.EntitySpawn.Connect((event) => {
-			if (!event.Entity.player) return;
-			const purchases = this.purchasedItems.get(event.Entity.player.userId);
+			if (!event.entity.player) return;
+			const purchases = this.purchasedItems.get(event.entity.player.userId);
 			if (!purchases) return;
 
-			if (!(event.Entity instanceof CharacterEntity)) return;
-			const inv = event.Entity.GetInventory();
+			if (!(event.entity instanceof CharacterEntity)) return;
+			const inv = event.entity.GetInventory();
 
 			let receivedPickaxe = false;
 			let receivedSword = false;

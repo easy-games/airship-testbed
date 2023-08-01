@@ -108,10 +108,10 @@ export class EntityItemManager {
 
 			//Listen to new entity spawns
 			serverSignalsRef.ServerSignals.EntitySpawn.Connect((event) => {
-				this.Log("EntitySpawn: " + event.Entity.id);
-				if ((event.Entity as CharacterEntity) && event.Entity.id !== undefined) {
+				this.Log("EntitySpawn: " + event.entity.id);
+				if ((event.entity as CharacterEntity) && event.entity.id !== undefined) {
 					//Create the Item Manager on the Server
-					this.GetOrCreateItemManager(event.Entity as CharacterEntity);
+					this.GetOrCreateItemManager(event.entity as CharacterEntity);
 				}
 			});
 

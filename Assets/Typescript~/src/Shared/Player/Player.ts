@@ -102,7 +102,7 @@ export class Player {
 	}
 
 	public IsBot(): boolean {
-		return false;
+		return this.clientId < 0;
 	}
 
 	public Encode(): PlayerDto {
