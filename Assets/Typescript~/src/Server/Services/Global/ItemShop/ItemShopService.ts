@@ -39,6 +39,7 @@ export class ShopService implements OnStart {
 
 		ServerSignals.EntitySpawn.Connect((event) => {
 			if (!event.entity.player) return;
+			if (event.entity.player.IsBot()) return;
 			const purchases = this.purchasedItems.get(event.entity.player.userId);
 			if (!purchases) return;
 

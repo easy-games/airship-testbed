@@ -1,4 +1,5 @@
-﻿import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
+﻿import { RunUtil } from "Shared/Util/RunUtil";
+import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { MathUtil } from "../../Util/MathUtil";
 import { BundleGroupNames } from "../../Util/ReferenceManagerResources";
 import { Entity, EntityReferences } from "../Entity";
@@ -41,7 +42,7 @@ export class InventoryEntityAnimator extends EntityAnimator {
 	}
 
 	public LateUpdate() {
-		if (!this.isFirstPerson) {
+		if (!this.isFirstPerson && RunUtil.IsClient()) {
 			this.ForceLookForward();
 		}
 	}

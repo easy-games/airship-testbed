@@ -168,6 +168,11 @@ export class Entity {
 			this.displayName = `entity_${this.id}`;
 		}
 
+		if (!this.IsLocalCharacter() && RunUtil.IsClient()) {
+			print("disabling character collider.");
+			this.references.characterCollider.enabled = false;
+		}
+
 		this.bin = new Bin();
 		this.bin.Connect(OnLateUpdate, () => this.LateUpdate());
 
