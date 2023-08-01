@@ -68,6 +68,7 @@ export class PlayerController implements OnStart {
 	private AddPlayer(dto: PlayerDto): void {
 		const existing = this.GetPlayerFromClientId(dto.clientId);
 		if (existing) {
+			warn("Tried to add existing player " + dto.username);
 			return;
 		}
 		const nob = NetworkUtil.WaitForNobId(dto.nobId);

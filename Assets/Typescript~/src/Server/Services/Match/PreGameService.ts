@@ -30,7 +30,11 @@ export class PreGameService implements OnStart {
 		ServerSignals.EntityDeath.Connect((event) => {
 			Task.Delay(0, () => {
 				if (this.matchService.GetState() === MatchState.PRE && event.entity.player) {
-					Dependency<EntityService>().SpawnEntityForPlayer(event.entity.player, EntityPrefabType.HUMAN);
+					const entity = Dependency<EntityService>().SpawnEntityForPlayer(
+						event.entity.player,
+						EntityPrefabType.HUMAN,
+					);
+					entity.AddHealthbar();
 				}
 			});
 		});
@@ -38,9 +42,11 @@ export class PreGameService implements OnStart {
 		ServerSignals.BeforeEntitySpawn.connect((event) => {
 			if (this.matchService.GetState() === MatchState.PRE && event.player) {
 				const pos = this.loadedMap?.GetSpawnPlatform();
-                if (pos) {
-                    event.spawnPosition = pos.Position.add(new Vector3(0, 0.2, 0));
-                }
+				if (pos) {
+					event.spawnPosition = pos.Position.add(
+						new Vector3(math.random() * 2 - 1, 0.2, math.random() * 2 - 1),
+					);
+				}
 			}
 		});
 	}

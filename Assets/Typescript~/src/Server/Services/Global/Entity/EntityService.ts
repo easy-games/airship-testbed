@@ -12,9 +12,9 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { EntityPrefabType } from "../../../Entity/EntityPrefabType";
 import { ChatService } from "../Chat/ChatService";
+import { EntityCommand } from "../Chat/Commands/EntityCommand";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
-import { EntityCommand } from "./EntityCommand";
 
 @Service({})
 export class EntityService implements OnStart {
@@ -51,12 +51,7 @@ export class EntityService implements OnStart {
 		});
 	}
 
-	public SpawnEntityForPlayer(
-		player: Player | undefined,
-		entityPrefabType: EntityPrefabType,
-		pos?: Vector3,
-		onDestroyed?: () => void,
-	): Entity {
+	public SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3): Entity {
 		const id = this.idCounter;
 		this.idCounter++;
 
@@ -79,11 +74,6 @@ export class EntityService implements OnStart {
 		const entityModelGO = entityGO.transform.Find("EntityModel");
 
 		const destroyWatcher = entityGO.AddComponent("DestroyWatcher") as DestroyWatcher;
-		destroyWatcher.OnDestroyedEvent(() => {
-			if (onDestroyed !== undefined) {
-				onDestroyed();
-			}
-		});
 		if (player) {
 			NetworkUtil.SpawnWithClientOwnership(entityGO, player.clientId);
 		} else {

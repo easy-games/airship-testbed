@@ -1,10 +1,12 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { ChatUtil } from "CoreShared/Util/ChatUtil";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { Network } from "Shared/Network";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import StringUtils from "Shared/Util/StringUtil";
-import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { ChatCommand } from "../../../Commands/ChatCommand";
+import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
+import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
 import { DestroyBedCommand } from "./Commands/DestroyBedCommand";
 import { DieCommand } from "./Commands/DieCommand";
@@ -20,7 +22,6 @@ import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
-import { ChatUtil } from "CoreShared/Util/ChatUtil";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -43,6 +44,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new LagCommand());
 		this.RegisterCommand(new SetVarCommand());
 		this.RegisterCommand(new HealCommand());
+		this.RegisterCommand(new BotCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {

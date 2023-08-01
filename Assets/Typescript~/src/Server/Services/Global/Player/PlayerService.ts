@@ -15,25 +15,33 @@ export class PlayerService implements OnStart {
 	/** Fires when a player is removed from the game. */
 	public readonly PlayerRemoved = new Signal<[player: Player]>();
 
+	private playerCore: PlayerCore = GameObject.Find("Players").GetComponent<PlayerCore>();
 	private readonly players: Player[] = [];
 	private playersPendingReady = new Map<number, Player>();
+	private botCounter = 0;
 
 	constructor() {
-		const playerCore = GameObject.Find("Players").GetComponent<PlayerCore>();
-		const onPlayerPreJoin = (clientInfo: ClientInfoDto) => {
+		const onPlayerPreJoin = (playerInfo: PlayerInfoDto) => {
 			const player = new Player(
-				clientInfo.GameObject.GetComponent<NetworkObject>(),
-				clientInfo.ClientId,
-				clientInfo.UserId,
-				clientInfo.Username,
-				clientInfo.UsernameTag,
+				playerInfo.gameObject.GetComponent<NetworkObject>(),
+				playerInfo.clientId,
+				playerInfo.userId,
+				playerInfo.username,
+				playerInfo.usernameTag,
 			);
-			clientInfo.GameObject.name = `Player_${clientInfo.Username}`;
-			this.playersPendingReady.set(clientInfo.ClientId, player);
+			playerInfo.gameObject.name = `Player_${playerInfo.username}`;
+			this.playersPendingReady.set(playerInfo.clientId, player);
 			this.PlayerPreReady.Fire(player);
+
+			// Ready bots immediately
+			if (playerInfo.clientId < 0) {
+				this.playersPendingReady.delete(playerInfo.clientId);
+				this.players.push(player);
+				this.HandlePlayerReady(player);
+			}
 		};
-		const onPlayerRemoved = (clientInfo: ClientInfoDto) => {
-			const clientId = clientInfo.ClientId;
+		const onPlayerRemoved = (clientInfo: PlayerInfoDto) => {
+			const clientId = clientInfo.clientId;
 			const index = this.players.findIndex((player) => player.clientId === clientId);
 			if (index === -1) return;
 			const player = this.players[index];
@@ -43,15 +51,15 @@ export class PlayerService implements OnStart {
 			Network.ServerToClient.RemovePlayer.Server.FireAllClients(player.clientId);
 			player.Destroy();
 		};
-		const players = playerCore.GetPlayers();
+		const players = this.playerCore.GetPlayers();
 		for (let i = 0; i < players.Length; i++) {
 			const clientInfo = players.GetValue(i);
 			onPlayerPreJoin(clientInfo);
 		}
-		playerCore.OnPlayerAdded((clientInfo) => {
+		this.playerCore.OnPlayerAdded((clientInfo) => {
 			onPlayerPreJoin(clientInfo);
 		});
-		playerCore.OnPlayerRemoved((clientInfo) => {
+		this.playerCore.OnPlayerRemoved((clientInfo) => {
 			onPlayerRemoved(clientInfo);
 		});
 
@@ -59,21 +67,39 @@ export class PlayerService implements OnStart {
 		Network.ClientToServer.Ready.Server.OnClientEvent((clientId) => {
 			if (!this.playersPendingReady.has(clientId)) {
 				//print("player not found in pending: " + clientId);
-				error("Player not found in pending: " + clientId);
+				warn("Player not found in pending: " + clientId);
+				return;
 			}
 
 			const player = this.playersPendingReady.get(clientId)!;
 			this.playersPendingReady.delete(clientId);
 			this.players.push(player);
 
-			Network.ServerToClient.AddPlayer.Server.FireAllClients(player.Encode());
-			Network.ServerToClient.AllPlayers.Server.FireClient(
-				player.clientId,
-				this.players.map((p) => p.Encode()),
-			);
-			this.PlayerAdded.Fire(player);
-			ServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
+			this.HandlePlayerReady(player);
 		});
+	}
+
+	public HandlePlayerReady(player: Player): void {
+		// notify all clients of the joining player
+		Network.ServerToClient.AddPlayer.Server.FireAllClients(player.Encode());
+
+		// send list of all connected players to the joining player
+		Network.ServerToClient.AllPlayers.Server.FireClient(
+			player.clientId,
+			this.players.map((p) => p.Encode()),
+		);
+
+		this.PlayerAdded.Fire(player);
+		ServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
+	}
+
+	public AddBotPlayer(): void {
+		this.botCounter++;
+		let userId = `bot${this.botCounter}`;
+		let username = `Bot${this.botCounter}`;
+		let tag = "bot";
+		print("Adding bot " + username);
+		this.playerCore.AddBotPlayer(username, tag, userId);
 	}
 
 	/** Get all players. */

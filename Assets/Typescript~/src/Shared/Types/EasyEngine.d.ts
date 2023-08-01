@@ -38,17 +38,18 @@ interface Time {
 declare const Time: Time;
 
 interface PlayerCore extends Component {
-	OnPlayerAdded(callback: (clientInfo: ClientInfoDto) => void): void;
-	OnPlayerRemoved(callback: (clientInfo: ClientInfoDto) => void): void;
-	GetPlayers(): CSArray<ClientInfoDto>;
+	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): void;
+	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): void;
+	GetPlayers(): CSArray<PlayerInfoDto>;
+	AddBotPlayer(username: string, tag: string, userId: string): void;
 }
 
-interface ClientInfoDto extends Component {
-	ClientId: number;
-	UserId: string;
-	Username: string;
-	UsernameTag: string;
-	GameObject: GameObject;
+interface PlayerInfoDto extends Component {
+	clientId: number;
+	userId: string;
+	username: string;
+	usernameTag: string;
+	gameObject: GameObject;
 }
 
 interface EntityDriver extends Component {

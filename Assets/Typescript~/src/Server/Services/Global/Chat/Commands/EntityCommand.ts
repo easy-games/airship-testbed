@@ -1,8 +1,8 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { Player } from "Shared/Player/Player";
-import { ChatCommand } from "../../../Commands/ChatCommand";
-import { EntityService } from "./EntityService";
+import { ChatCommand } from "../../../../Commands/ChatCommand";
+import { EntityService } from "../../Entity/EntityService";
 
 export class EntityCommand extends ChatCommand {
 	constructor() {
