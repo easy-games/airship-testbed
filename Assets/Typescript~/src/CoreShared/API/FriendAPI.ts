@@ -29,14 +29,22 @@ export class FriendAPI {
 
 				CoreSignals.FriendAccepted.Fire({ targetId: friendAccepted.targetId });
 			} else if (signal.messageName === SIOEventNames.friendStatusUpdateMulti) {
+				//print(`FriendAPI.friendStatusUpdateMulti() 0 signal: ${encode(signal)}`);
+
 				const friendStatusDatasArrays = decode<FriendStatusData[][]>(signal.jsonMessage);
+
+				//print(`FriendAPI.friendStatusUpdateMulti() 1`);
 
 				// Update friends cache with new info.
 				friendStatusDatasArrays.forEach((fsdArray) => {
 					fsdArray.forEach((fsd) => {
 						this.friendsCache.set(fsd.userId, fsd);
 
-						CoreSignals.FriendUserStatusChanged.Fire({ friendUid: fsd.userId, status: fsd.status });
+						CoreSignals.FriendUserStatusChanged.Fire({
+							friendUid: fsd.userId,
+							status: fsd.status,
+							gameName: fsd.game,
+						});
 					});
 				});
 

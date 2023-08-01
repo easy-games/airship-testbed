@@ -17,8 +17,11 @@ export class LoadingScreenController implements OnStart {
 
 	private CheckWorld(): void {
 		const world = WorldAPI.GetMainWorld();
-		if (!world.IsFinishedLoading()) {
-			world.OnFinishedLoading.Connect(() => {
+		if (!world.IsFinishedReplicatingChunksFromServer()) {
+			const startTime = os.clock();
+			world.OnFinishedReplicatingChunksFromServer.Connect(() => {
+				const timeSpent = os.clock() - startTime;
+				print("Time spent building world: " + math.floor(timeSpent * 1000) + "ms");
 				this.CheckCharacter();
 			});
 		} else {

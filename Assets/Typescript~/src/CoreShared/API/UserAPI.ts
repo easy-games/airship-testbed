@@ -63,7 +63,7 @@ export class UserAPI {
 		}
 	}
 
-	static UpdateCurrentUserStatus(userStatus: UserStatus) {
-		EasyCore.EmitAsync(SIOEventNames.updateUserStatus, encode({ status: userStatus, game: ApiHelper.GAME_NAME }));
+	static UpdateCurrentUserStatus(userStatus: UserStatus, gameName: string) {
+		EasyCore.EmitAsync(SIOEventNames.updateUserStatus, encode([{ status: userStatus, game: gameName }]));
 	}
 }
