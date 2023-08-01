@@ -61,7 +61,7 @@ export class MapService implements OnStart {
 			this.loadedMap.AddWorldPositions(data.name, new WorldPosition(data.position, data.rotation));
 		}
 
-		world.WaitForFinishedLoading().expect();
+		world.WaitForFinishedReplicatingChunksFromServer().expect();
 
 		ServerSignals.MapLoad.fire(this.loadedMap);
 		this.mapLoaded = true;
