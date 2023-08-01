@@ -10,7 +10,7 @@ export const CoreSignals = {
 
 	FriendRequested: new Signal<{ initiatorId: string }>(),
 	FriendAccepted: new Signal<{ targetId: string }>(),
-	FriendUserStatusChanged: new Signal<{ friendUid: string; status: UserStatus }>(),
+	FriendUserStatusChanged: new Signal<{ friendUid: string; status: UserStatus; gameName: string | undefined }>(),
 
 	PartyInviteReceived: new Signal<{}>(),
 	PartyUpdated: new Signal<{}>(),
