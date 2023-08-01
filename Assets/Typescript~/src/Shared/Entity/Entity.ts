@@ -14,11 +14,9 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
-import { OnLateUpdate } from "Shared/Util/Timer";
 import { AudioManager } from "../Audio/AudioManager";
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
-import { Bin } from "../Util/Bin";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "../Util/ReferenceManagerResources";
 import { WorldAPI } from "../VoxelWorld/WorldAPI";
@@ -48,6 +46,7 @@ export class EntityReferences {
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
+	humanEntityAnimator: CoreEntityAnimator;
 	jumpSound: AudioClip | undefined;
 	slideSound: AudioClip | undefined;
 	landSound: AudioClip | undefined;
@@ -57,6 +56,8 @@ export class EntityReferences {
 		let meshKey = "Meshes";
 		let colliderKey = "Colliders";
 		let vfxKey = "VFX";
+
+		this.humanEntityAnimator = ref.gameObject.GetComponent<CoreEntityAnimator>();
 
 		//Get the meshes
 		let meshesCS: CSArray<Renderer> = ref.GetAllValues<Renderer>(meshKey);
@@ -124,7 +125,6 @@ export class Entity {
 	public readonly ClientId?: number;
 	private health = 100;
 	private maxHealth = 100;
-	private bin: Bin;
 	private dead = false;
 	private destroyed = false;
 	private displayName: string;
@@ -168,14 +168,6 @@ export class Entity {
 			this.displayName = `entity_${this.id}`;
 		}
 
-		if (!this.IsLocalCharacter() && RunUtil.IsClient()) {
-			print("disabling character collider.");
-			this.references.characterCollider.enabled = false;
-		}
-
-		this.bin = new Bin();
-		this.bin.Connect(OnLateUpdate, () => this.LateUpdate());
-
 		this.entityDriver.OnImpactWithGround((velocity) => {
 			this.anim?.PlayFootstepSound();
 		});
@@ -201,10 +193,6 @@ export class Entity {
 
 		this.healthbar.SetValue(this.health / this.maxHealth);
 		this.healthbarEnabled = true;
-	}
-
-	private LateUpdate() {
-		this.anim?.LateUpdate();
 	}
 
 	public SetPlayer(player: Player | undefined): void {
@@ -254,7 +242,6 @@ export class Entity {
 	 * It is recommended to use EntityService.DespawnEntity() instead of this.
 	 */
 	public Destroy(): void {
-		this.bin.Clean();
 		this.OnDespawn.Fire();
 		this.destroyed = true;
 

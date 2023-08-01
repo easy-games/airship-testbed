@@ -3782,4 +3782,6 @@ interface Transform extends Component {
     Translate(x: number, y: number, z: number): void;
     Translate(translation: Vector3, relativeTo: Transform): void;
     Translate(x: number, y: number, z: number, relativeTo: Transform): void;
+	
+	ClampRotationY(targetValue: number, maxAngle: number): void;
 }

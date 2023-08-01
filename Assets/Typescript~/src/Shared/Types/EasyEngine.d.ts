@@ -442,3 +442,7 @@ interface MeshProcessorConstructor {
 	ProduceSingleBlock(blockIndex: number, world: VoxelWorld): GameObject | undefined;
 }
 declare const MeshProcessor: MeshProcessorConstructor;
+
+interface CoreEntityAnimator extends Component {
+	SetForceLookForward(forceLookForward: boolean): void;
+}

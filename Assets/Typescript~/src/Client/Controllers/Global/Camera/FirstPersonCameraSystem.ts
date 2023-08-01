@@ -6,8 +6,6 @@ import { Game } from "../../../../Shared/Game";
 import { Bin } from "../../../../Shared/Util/Bin";
 import { MathUtil } from "../../../../Shared/Util/MathUtil";
 import { OnLateUpdate } from "../../../../Shared/Util/Timer";
-import { LocalEntityController } from "../Character/LocalEntityController";
-import { CameraController } from "./CameraController";
 import { CameraReferences } from "./CameraReferences";
 
 export class FirstPersonCameraSystem {
@@ -95,5 +93,6 @@ export class FirstPersonCameraSystem {
 			this.entityReferences.meshes[i].gameObject.SetActive(!isFirstPerson);
 		}
 		this.entityReferences.fpsMesh.gameObject.SetActive(isFirstPerson);
+		this.entityReferences.humanEntityAnimator.SetForceLookForward(!isFirstPerson);
 	}
 }

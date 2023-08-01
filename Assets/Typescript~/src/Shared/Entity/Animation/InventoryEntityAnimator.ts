@@ -1,6 +1,4 @@
-﻿import { RunUtil } from "Shared/Util/RunUtil";
-import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
-import { MathUtil } from "../../Util/MathUtil";
+﻿﻿import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { BundleGroupNames } from "../../Util/ReferenceManagerResources";
 import { Entity, EntityReferences } from "../Entity";
 import { EntityAnimator } from "./EntityAnimator";
@@ -22,8 +20,6 @@ export enum ItemPlayMode {
 export class InventoryEntityAnimator extends EntityAnimator {
 	private readonly itemLayerIndex: number = 2;
 	private itemLayer: AnimancerLayer;
-	private spineClampAngle = 15;
-	private neckClampAngle = 35;
 
 	private currentItemClips: Array<AnimationClip> = [];
 	private bundleIndex = 0;
@@ -41,32 +37,9 @@ export class InventoryEntityAnimator extends EntityAnimator {
 		this.SetFirstPerson(false);
 	}
 
-	public LateUpdate() {
-		if (!this.isFirstPerson && RunUtil.IsClient()) {
-			this.ForceLookForward();
-		}
-	}
-
 	private Log(message: string) {
 		return;
 		print("Animator " + this.entity.id + ": " + message);
-	}
-
-	//Always keep the character looking where the player is looking
-	private ForceLookForward() {
-		this.ClampRotation(this.entityRef.spineBone1, this.spineClampAngle);
-		this.ClampRotation(this.entityRef.spineBone2, this.spineClampAngle);
-		//this.ClampRotation(this.entityRef.spineBone3, this.spineClampAngle);
-		this.ClampRotation(this.entityRef.neckBone, this.neckClampAngle);
-	}
-
-	private ClampRotation(spine: Transform, maxAngle: number) {
-		//Take the world look and convert to this spines local space
-		let targetLocalRot = Quaternion.Inverse(spine.parent.rotation).mul(this.entityRef.root.rotation);
-
-		//Clamp the rotation so the spine doesn't appear broken
-		let rotY = MathUtil.ClampAngle(targetLocalRot.eulerAngles.y, -maxAngle, maxAngle);
-		spine.localEulerAngles = new Vector3(spine.localEulerAngles.x, rotY, spine.localEulerAngles.z);
 	}
 
 	public SetFirstPerson(isFirstPerson: boolean) {
