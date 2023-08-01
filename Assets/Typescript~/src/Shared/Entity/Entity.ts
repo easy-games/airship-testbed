@@ -4,21 +4,23 @@ import { EntityController } from "Client/Controllers/Global/Entity/EntityControl
 import { PlayerController } from "Client/Controllers/Global/Player/PlayerController";
 import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
+import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
+import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import { OnLateUpdate } from "Shared/Util/Timer";
 import { AudioManager } from "../Audio/AudioManager";
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
 import { Bin } from "../Util/Bin";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "../Util/ReferenceManagerResources";
-import { OnLateUpdate } from "../Util/Timer";
 import { WorldAPI } from "../VoxelWorld/WorldAPI";
 import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
@@ -32,6 +34,7 @@ export interface EntityDto {
 	health: number;
 	maxHealth: number;
 	displayName: string;
+	healthbar?: boolean;
 }
 
 export class EntityReferences {
@@ -125,6 +128,8 @@ export class Entity {
 	private dead = false;
 	private destroyed = false;
 	private displayName: string;
+	private healthbarEnabled = false;
+	private healthbar?: ProgressBarGraphics;
 
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
@@ -175,6 +180,24 @@ export class Entity {
 		});
 	}
 
+	public AddHealthbar(): void {
+		if (RunUtil.IsServer()) {
+			this.healthbarEnabled = true;
+			Network.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.id);
+			return;
+		}
+		if (this.IsLocalCharacter()) return;
+
+		const prefab = AssetBridge.LoadAsset<Object>("Client/Resources/Prefabs/EntityHealthbar.prefab");
+		const healthbarGO = GameObjectUtil.InstantiateIn(prefab, this.model.transform);
+		const transform = healthbarGO.transform;
+		transform.localPosition = new Vector3(0, 2.2, 0);
+		this.healthbar = new ProgressBarGraphics(transform.GetChild(0));
+
+		this.healthbar.SetValue(this.health / this.maxHealth);
+		this.healthbarEnabled = true;
+	}
+
 	private LateUpdate() {
 		this.anim?.LateUpdate();
 	}
@@ -211,6 +234,7 @@ export class Entity {
 		const oldHealth = this.health;
 		this.health = health;
 		this.OnHealthChanged.Fire(health, oldHealth);
+		this.healthbar?.SetValue(this.health / this.maxHealth);
 
 		if (RunUtil.IsServer()) {
 			Network.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health);
@@ -254,6 +278,7 @@ export class Entity {
 			health: this.health,
 			maxHealth: this.maxHealth,
 			displayName: this.displayName,
+			healthbar: this.healthbarEnabled || undefined,
 		};
 	}
 
@@ -422,7 +447,7 @@ export class Entity {
 	}
 
 	public GetMiddlePosition(): Vector3 {
-		return this.model.transform.position.add(new Vector3(0, 1.5, 0));
+		return this.model.transform.position.add(new Vector3(0, 0.9, 0));
 	}
 
 	public LocalOffsetToWorldPoint(localOffset: Vector3) {
@@ -490,5 +515,9 @@ export class Entity {
 
 			clientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));
 		}
+	}
+
+	public HasHealthbar(): boolean {
+		return this.healthbarEnabled;
 	}
 }

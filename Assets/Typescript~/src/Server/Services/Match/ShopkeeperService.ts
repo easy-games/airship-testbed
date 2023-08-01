@@ -59,7 +59,9 @@ export class ShopkeeperService implements OnStart {
 				EntityPrefabType.HUMAN,
 				itemShopWorldPos.Position,
 			);
-			itemShopEntity.entityDriver.SetLookVector(itemShopWorldPos.Rotation.eulerAngles);
+			itemShopEntity.entityDriver.SetLookVector(
+				itemShopWorldPos.Rotation.mul(itemShopEntity.entityDriver.transform.forward),
+			);
 			itemShopEntity.SetDisplayName("Item Shop");
 			itemShopEntity.GrantImmunity(math.huge);
 			this.itemShopEntityIds.push(itemShopEntity.id);
@@ -73,7 +75,9 @@ export class ShopkeeperService implements OnStart {
 				EntityPrefabType.HUMAN,
 				teamUpgradeWorldPos.Position,
 			);
-			upgradeShopEntity.entityDriver.SetLookVector(teamUpgradeWorldPos.Rotation.eulerAngles);
+			upgradeShopEntity.entityDriver.SetLookVector(
+				teamUpgradeWorldPos.Rotation.mul(upgradeShopEntity.entityDriver.transform.forward),
+			);
 			upgradeShopEntity.SetDisplayName("Team Upgrades");
 			upgradeShopEntity.GrantImmunity(math.huge);
 			this.upgradeShopEntityIds.push(upgradeShopEntity.id);

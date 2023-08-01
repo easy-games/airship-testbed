@@ -29,6 +29,8 @@ export interface ShopElement {
 	lockAfterPurchase?: boolean;
 	replaceMelee?: boolean;
 	replaceBow?: boolean;
+	replacePickaxe?: boolean;
+	replaceAxe?: boolean;
 
 	/** Define a custom display name. If not set, will use ItemType's display name. */
 	displayName?: string;
@@ -114,6 +116,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				replaceBow: true,
+				spawnWithItems: [ItemType.WOOD_BOW],
 			},
 			{
 				itemType: ItemType.WOOD_ARROW,
@@ -155,8 +158,8 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.TOOLS,
 				prevTier: ItemType.IRON_PICKAXE,
-				lockAfterPurchase: true,
 				spawnWithItems: [ItemType.DIAMOND_PICKAXE],
+				lockAfterPurchase: true,
 			},
 
 			// Armor

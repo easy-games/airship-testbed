@@ -71,6 +71,7 @@ export const Network = {
 		Entity: {
 			SetHealth: new RemoteEvent<[entityId: number, health: number]>(),
 			SetDisplayName: new RemoteEvent<[entityId: number, displayName: string]>(),
+			AddHealthbar: new RemoteEvent<[entityId: number]>(),
 		},
 		ItemShop: {
 			RemoveTierPurchases: new RemoteEvent<[itemTypes: ItemType[]]>(),
@@ -80,7 +81,29 @@ export const Network = {
 			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
 		},
 		EntityDeath: new RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined]>(),
-		AddGroundItem: new RemoteEvent<[groundItemGOID: number, itemStack: ItemStackDto]>(),
+		GroundItem: {
+			Add: new RemoteEvent<
+				[
+					dtos: {
+						id: number;
+						itemStack: ItemStackDto;
+						pos: Vector3;
+						velocity: Vector3;
+						pickupTime: number;
+						data: Record<string, unknown>;
+					}[],
+				]
+			>(),
+			UpdatePosition: new RemoteEvent<
+				[
+					{
+						id: number;
+						pos: Vector3;
+						vel: Vector3;
+					}[],
+				]
+			>(),
+		},
 		CharacterModelChanged: new RemoteEvent<[characterModelId: number]>(),
 		ChatMessage: new RemoteEvent<[text: string]>(),
 		SetAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot, accessoryPath: string]>(),
@@ -135,7 +158,7 @@ export const Network = {
 		HeldItemStateChanged: new RemoteEvent<[entityId: number, state: HeldItemState]>(),
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>(),
 
-		EntityPickedUpGroundItem: new RemoteEvent<[entityId: number, itemType: ItemType]>(),
+		EntityPickedUpGroundItem: new RemoteEvent<[entityId: number, groundItemId: number]>(),
 
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),

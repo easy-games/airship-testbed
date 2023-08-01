@@ -28,7 +28,7 @@ export class ShopkeeperController implements OnStart {
 						return;
 					}
 					const prompt = new ProximityPrompt({
-						promptPosition: entity.GetMiddlePosition().add(PROXIMITY_PROMPT_OFFSET),
+						promptPosition: entity.GetHeadPosition().add(PROXIMITY_PROMPT_OFFSET),
 						activationKey: KeyCode.F,
 						activationKeyString: "F",
 						activationRange: 3.5,
@@ -51,7 +51,7 @@ export class ShopkeeperController implements OnStart {
 						return;
 					}
 					const prompt = new ProximityPrompt({
-						promptPosition: entity.GetMiddlePosition().add(PROXIMITY_PROMPT_OFFSET),
+						promptPosition: entity.GetHeadPosition().add(PROXIMITY_PROMPT_OFFSET),
 						activationKey: KeyCode.F,
 						activationKeyString: "F",
 						activationRange: 3.5,

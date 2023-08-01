@@ -12,10 +12,9 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
-import { HeldItem } from "../HeldItem";
-import { ItemUtil } from "../../ItemUtil";
-import { ReferenceManagerAssets } from "../../../Util/ReferenceManagerResources";
 import { AudioManager } from "../../../Audio/AudioManager";
+import { ItemUtil } from "../../ItemUtil";
+import { HeldItem } from "../HeldItem";
 
 export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeBin = new Bin();
@@ -26,11 +25,13 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
 
 	protected override OnChargeStart(): void {
-		super.OnChargeStart();
 		if (!this.meta.ProjectileLauncher) return;
+		if (!this.HasRequiredAmmo()) return;
+		if (RunUtil.IsClient()) {
+			if (CanvasAPI.IsPointerOverUI()) return;
+		}
 
-		//Play the items animation  (bow draw)
-		this.PlayItemAnimation(0, true);
+		super.OnChargeStart();
 
 		//Play the draw sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
@@ -49,15 +50,12 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			}
 		}
 
-		if (RunUtil.IsClient()) {
-			if (!this.entity.IsLocalCharacter()) return;
+		//Play the items animation  (bow draw)
+		this.PlayItemAnimation(0, true);
 
+		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
 			const ammoMeta = ammoItemMeta.Ammo!;
-
-			if (CanvasAPI.IsPointerOverUI()) return;
-
-			if (!this.HasRequiredAmmo()) return;
 
 			this.chargeBin.Add(Crosshair.AddDisabler());
 
@@ -95,12 +93,14 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			});
 		}
 
-		this.chargeBin.Add(
-			this.entity.OnAdjustMove.Connect((moveModifier) => {
-				moveModifier.blockSprint = true;
-				moveModifier.speedMultiplier *= 0.4;
-			}),
-		);
+		if (RunUtil.IsServer() || this.entity.IsLocalCharacter()) {
+			this.chargeBin.Add(
+				this.entity.OnAdjustMove.Connect((moveModifier) => {
+					moveModifier.blockSprint = true;
+					moveModifier.speedMultiplier *= 0.4;
+				}),
+			);
+		}
 	}
 
 	private HasRequiredAmmo(): boolean {

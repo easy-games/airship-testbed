@@ -12,8 +12,8 @@ import {
 import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
+import { ItemType } from "../ItemType";
 import { ItemUtil } from "../ItemUtil";
-import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -49,21 +49,31 @@ export class HeldItem {
 
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
-		let equipPath = this.bundles?.bundles?.get(3)?.filePaths.get(0);
-		if (!equipPath) {
-			//Load a default equip sound
-			equipPath = ReferenceManagerAssets.ItemUnarmed.bundles
-				.get(Bundle_ItemUnarmed.SFX)
-				?.filePaths.get(Bundle_ItemUnarmed_SFX.Equip);
-		}
-		if (equipPath) {
-			AudioManager.PlayFullPathAtPosition(equipPath, this.entity.model.transform.position);
-		} else {
-			error("No default equip sound found");
+		if (this.meta.itemType !== ItemType.DEFAULT) {
+			let equipPath = this.bundles?.bundles?.get(3)?.filePaths.get(0);
+			if (!equipPath) {
+				//Load a default equip sound
+				equipPath = ReferenceManagerAssets.ItemUnarmed.bundles
+					.get(Bundle_ItemUnarmed.SFX)
+					?.filePaths.get(Bundle_ItemUnarmed_SFX.Equip);
+			}
+			if (equipPath) {
+				if (this.entity.IsLocalCharacter()) {
+					AudioManager.PlayFullPathGlobal(equipPath, {
+						volumeScale: 0.5,
+					});
+				} else {
+					AudioManager.PlayFullPathAtPosition(equipPath, this.entity.model.transform.position, {
+						volumeScale: 0.2,
+					});
+				}
+			} else {
+				error("No default equip sound found");
+			}
 		}
 
 		//Spawn the accessories graphics
-		const accessories = ItemUtil.GetAccessoriesForItemType(this.meta.ItemType);
+		const accessories = ItemUtil.GetAccessoriesForItemType(this.meta.itemType);
 
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];

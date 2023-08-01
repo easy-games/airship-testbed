@@ -436,3 +436,8 @@ interface DynamicVariablesManagerConstructor {
 	Instance: DynamicVariablesManager;
 }
 declare const DynamicVariablesManager: DynamicVariablesManagerConstructor;
+
+interface MeshProcessorConstructor {
+	ProduceSingleBlock(blockIndex: number, world: VoxelWorld): GameObject | undefined;
+}
+declare const MeshProcessor: MeshProcessorConstructor;

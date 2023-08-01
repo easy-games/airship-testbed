@@ -54,24 +54,26 @@ export class BreakBlockHeldItem extends HeldItem {
 
 		if (this.entity.player && this.meta.breakBlock) {
 			//Check to see if we can actually do damage here
-			if (BlockHitDamageCalc(this.entity.player, voxelPos, this.meta.breakBlock) > 0) {
-				//Do the actual damage
-				const damage = BlockHitDamageCalc(Game.LocalPlayer, voxelPos, this.meta.breakBlock);
-				const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
-				const blockType = WorldAPI.GetMainWorld().GetBlockAt(voxelPos).itemType;
-				const newHealth = math.max(health - damage, 0);
-				BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
+			const damage = BlockHitDamageCalc(Game.LocalPlayer, block, voxelPos, this.meta.breakBlock);
+			if (damage === 0) {
+				return;
+			}
 
-				if (newHealth === 0) {
-					//Destroy block
-					world.PlaceBlockById(voxelPos, 0);
+			//Do the actual damage
+			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+			const blockType = WorldAPI.GetMainWorld().GetBlockAt(voxelPos).itemType;
+			const newHealth = math.max(health - damage, 0);
+			BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
 
-					//Local Client visualization
-					Dependency<BlockHealthController>().VisualizeBlockBreak(voxelPos, block.blockId);
-				} else {
-					//Local Client visualization
-					Dependency<BlockHealthController>().VisualizeBlockHealth(voxelPos);
-				}
+			if (newHealth === 0) {
+				//Destroy block
+				world.PlaceBlockById(voxelPos, 0);
+
+				//Local Client visualization
+				Dependency<BlockHealthController>().VisualizeBlockBreak(voxelPos, block.blockId);
+			} else {
+				//Local Client visualization
+				Dependency<BlockHealthController>().VisualizeBlockHealth(voxelPos);
 			}
 		}
 

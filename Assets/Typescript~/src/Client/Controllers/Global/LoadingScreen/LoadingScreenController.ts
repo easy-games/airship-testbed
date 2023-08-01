@@ -2,6 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 @Controller({})
 export class LoadingScreenController implements OnStart {
@@ -9,17 +10,35 @@ export class LoadingScreenController implements OnStart {
 
 	constructor() {
 		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen").GetComponent<CoreLoadingScreen>();
-		this.coreLoadingScreen.SetProgress("Loading World", 60);
+		this.coreLoadingScreen.SetProgress("Building the World", 60);
 
+		this.CheckWorld();
+	}
+
+	private CheckWorld(): void {
+		const world = WorldAPI.GetMainWorld();
+		if (!world.IsFinishedLoading()) {
+			world.OnFinishedLoading.Connect(() => {
+				this.CheckCharacter();
+			});
+		} else {
+			this.CheckCharacter();
+		}
+	}
+
+	private CheckCharacter(): void {
 		if (Game.LocalPlayer.Character) {
 			this.FinishLoading();
 		} else {
+			const startTime = os.clock();
 			this.SetProgress("Waiting for Character", 85);
 			const bin = new Bin();
 			bin.Add(
 				ClientSignals.EntitySpawn.Connect((event) => {
 					if (event.entity.IsLocalCharacter()) {
 						bin.Clean();
+						const timeSpent = os.clock() - startTime;
+						print("Time spent waiting for character: " + math.floor(timeSpent * 1000) + "ms");
 						this.FinishLoading();
 					}
 				}),

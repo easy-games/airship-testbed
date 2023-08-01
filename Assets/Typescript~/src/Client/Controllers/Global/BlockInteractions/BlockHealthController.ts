@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Game } from "Shared/Game";
 import { Network } from "Shared/Network";
-import { OnLateUpdate, SetInterval } from "Shared/Util/Timer";
+import { SetInterval } from "Shared/Util/Timer";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EffectsManager } from "../../../../Shared/Effects/EffectsManager";
@@ -16,7 +16,6 @@ import {
 } from "../../../../Shared/Util/ReferenceManagerResources";
 import { Theme } from "../../../../Shared/Util/Theme";
 import { Block } from "../../../VoxelWorld/Block";
-import { CameraReferences } from "../Camera/CameraReferences";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";
@@ -61,12 +60,12 @@ export class BlockHealthController implements OnStart {
 			this.VisualizeBlockBreak(blockPos, blockId);
 		});
 
-		OnLateUpdate.Connect((dt) => {
-			this.blockHealthBars.forEach((healthbarEntry, block) => {
-				healthbarEntry.gameObject.transform.rotation =
-					CameraReferences.Instance().mainCamera.transform.rotation;
-			});
-		});
+		// OnLateUpdate.Connect((dt) => {
+		// 	this.blockHealthBars.forEach((healthbarEntry, block) => {
+		// 		healthbarEntry.gameObject.transform.rotation =
+		// 			CameraReferences.Instance().mainCamera.transform.rotation;
+		// 	});
+		// });
 
 		//Cleanup health bars after no changes are made
 		SetInterval(0.1, () => {
@@ -144,11 +143,13 @@ export class BlockHealthController implements OnStart {
 	private ApplyBlockMaterial(blockId: number, effect: GameObject) {
 		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
 		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, WorldAPI.GetMainWorld().voxelWorld);
-		const blockRen = blockGO.GetComponent<Renderer>();
-		const blockFilter = blockGO.GetComponent<MeshFilter>();
-		particles.mesh = blockFilter.mesh;
-		particles.sharedMaterial = blockRen.sharedMaterial;
-		GameObjectUtil.Destroy(blockGO);
+		if (blockGO) {
+			const blockRen = blockGO.GetComponent<Renderer>();
+			const blockFilter = blockGO.GetComponent<MeshFilter>();
+			particles.mesh = blockFilter.mesh;
+			particles.sharedMaterial = blockRen.sharedMaterial;
+			GameObjectUtil.Destroy(blockGO);
+		}
 	}
 
 	private GetBlockHealth(blockPos: Vector3) {

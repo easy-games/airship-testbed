@@ -349,7 +349,7 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemBlock.SFX, {
 			id: Bundle_ItemBlock.SFX,
 			filePaths: new Map([
-				[Bundle_ItemBlock_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Block.ogg"],
+				[Bundle_ItemBlock_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg"],
 			])}],
 		])
 	}

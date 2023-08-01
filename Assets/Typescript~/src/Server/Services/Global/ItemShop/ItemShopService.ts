@@ -7,11 +7,25 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { ItemShopMeta } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
+import { Theme } from "Shared/Util/Theme";
 import { EntityService } from "../Entity/EntityService";
 
 @Service({})
 export class ShopService implements OnStart {
+	private swords: ItemType[] = [
+		ItemType.WOOD_SWORD,
+		ItemType.STONE_SWORD,
+		ItemType.IRON_SWORD,
+		ItemType.DIAMOND_SWORD,
+	];
 	private bows: ItemType[] = [ItemType.WOOD_BOW];
+	private pickaxes: ItemType[] = [
+		ItemType.WOOD_PICKAXE,
+		ItemType.STONE_PICKAXE,
+		ItemType.IRON_PICKAXE,
+		ItemType.DIAMOND_PICKAXE,
+	];
+	private axes: ItemType[] = [];
 	private purchasedItems = new Map<string, Set<ItemType>>();
 
 	constructor(private readonly entityService: EntityService) {}
@@ -31,6 +45,9 @@ export class ShopService implements OnStart {
 			if (!(event.Entity instanceof CharacterEntity)) return;
 			const inv = event.Entity.GetInventory();
 
+			let receivedPickaxe = false;
+			let receivedSword = false;
+			let finalAddedItems: ItemStack[] = [];
 			for (const purchasedItem of purchases) {
 				const shopItem = ItemShopMeta.GetShopElementFromItemType(purchasedItem);
 				if (!shopItem) continue;
@@ -39,16 +56,31 @@ export class ShopService implements OnStart {
 					if (shopItem.nextTier && purchases.has(shopItem.nextTier)) {
 						continue;
 					}
-					let itemsToAdd = shopItem.spawnWithItems || [shopItem.itemType];
-					for (const itemType of itemsToAdd) {
+					let itemsToAdd = shopItem.spawnWithItems;
+					for (let itemType of itemsToAdd) {
 						const itemMeta = ItemUtil.GetItemMeta(itemType);
 						if (itemMeta.Armor) {
 							inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
 						} else {
-							inv.AddItem(new ItemStack(itemType, 1));
+							finalAddedItems.push(new ItemStack(itemType, 1));
+							if (this.pickaxes.includes(itemType)) {
+								receivedPickaxe = true;
+							} else if (this.swords.includes(itemType)) {
+								receivedSword = true;
+							}
 						}
 					}
 				}
+			}
+
+			if (!receivedSword) {
+				inv.AddItem(new ItemStack(ItemType.WOOD_SWORD, 1));
+			}
+			if (!receivedPickaxe) {
+				inv.AddItem(new ItemStack(ItemType.WOOD_PICKAXE, 1));
+			}
+			for (const itemStack of finalAddedItems) {
+				inv.AddItem(itemStack);
 			}
 		});
 
@@ -67,58 +99,93 @@ export class ShopService implements OnStart {
 			const canAfford = inv.HasEnough(shopElement.currency, shopElement.price);
 			if (!canAfford) return false;
 
+			const player = Player.FindByClientId(clientId);
+			if (!player) return false;
 			inv.Decrement(shopElement.currency, shopElement.price);
 
 			// Give item
 			let itemsToAdd = shopElement.spawnWithItems ?? [shopElement.itemType];
-			for (const itemType of itemsToAdd) {
-				const itemMeta = ItemUtil.GetItemMeta(itemType);
+			for (let itemTypeToAdd of itemsToAdd) {
+				const itemMeta = ItemUtil.GetItemMeta(itemTypeToAdd);
 				if (itemMeta.Armor) {
-					inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
+					inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemTypeToAdd, 1));
 				} else {
 					let given = false;
-					if (shopElement.prevTier) {
-						// Place item in same slot as previous tier item
+
+					let itemStack = new ItemStack(itemTypeToAdd, shopElement.quantity);
+
+					const TryReplaceSlot = (filter: (itemStack: ItemStack) => boolean): boolean => {
 						for (let i = 0; i < inv.GetMaxSlots(); i++) {
 							const item = inv.GetItem(i);
-							if (item?.GetItemType() === shopElement.prevTier) {
-								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
+							if (item && filter(item)) {
+								inv.SetItem(i, itemStack);
 								given = true;
-								break;
+								return true;
 							}
+						}
+						return false;
+					};
+
+					for (let i = 0; i < inv.GetMaxSlots(); i++) {
+						const existingItemStack = inv.GetItem(i);
+						if (!existingItemStack) continue;
+						const existingShopElement = ItemShopMeta.GetShopElementFromItemType(
+							existingItemStack.GetItemType(),
+						);
+						if (
+							existingShopElement?.nextTier === itemTypeToAdd ||
+							(shopElement?.itemType === ItemType.STONE_PICKAXE &&
+								existingItemStack.GetItemType() === ItemType.WOOD_PICKAXE)
+						) {
+							inv.SetItem(i, new ItemStack(itemTypeToAdd, shopElement.quantity));
+							given = true;
+							break;
 						}
 					}
 					if (!given && shopElement.replaceMelee) {
-						for (let i = 0; i < inv.GetMaxSlots(); i++) {
-							const item = inv.GetItem(i);
-							if (item?.GetMeta().melee) {
-								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
-								given = true;
-								break;
-							}
-						}
+						TryReplaceSlot((itemStack) => itemStack.GetMeta().melee !== undefined);
 					}
 					if (!given && shopElement.replaceBow) {
-						for (let i = 0; i < inv.GetMaxSlots(); i++) {
-							const item = inv.GetItem(i);
-							if (item && this.bows.includes(item.GetItemType())) {
-								inv.SetItem(i, new ItemStack(itemType, shopElement.quantity));
-								given = true;
-								break;
-							}
-						}
+						TryReplaceSlot((i) => this.bows.includes(i.GetItemType()));
+					}
+					if (!given && shopElement.replacePickaxe) {
+						TryReplaceSlot((itemStack) => this.pickaxes.includes(itemStack.GetItemType()));
+					}
+					if (!given && shopElement.replaceAxe) {
+						TryReplaceSlot((itemStack) => this.axes.includes(itemStack.GetItemType()));
 					}
 					if (!given) {
-						inv.AddItem(new ItemStack(itemType, shopElement.quantity));
+						if (itemTypeToAdd === ItemType.WHITE_WOOL) {
+							const team = player.GetTeam();
+							if (team) {
+								switch (team.color) {
+									case Theme.TeamColor.Blue:
+										itemTypeToAdd = ItemType.BLUE_WOOL;
+										break;
+									case Theme.TeamColor.Red:
+										itemTypeToAdd = ItemType.RED_WOOL;
+										break;
+									case Theme.TeamColor.Yellow:
+										itemTypeToAdd = ItemType.YELLOW_WOOL;
+										break;
+									case Theme.TeamColor.Green:
+										itemTypeToAdd = ItemType.GREEN_WOOL;
+										break;
+								}
+							}
+						}
+						inv.AddItem(new ItemStack(itemTypeToAdd, shopElement.quantity));
+					}
+
+					// Extra items
+					if (itemTypeToAdd === ItemType.WOOD_BOW) {
+						inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 8));
 					}
 				}
 			}
 
-			const player = Player.FindByClientId(clientId);
-			if (player) {
-				const purchases = this.purchasedItems.get(player.userId);
-				purchases?.add(shopElement.itemType);
-			}
+			const purchases = this.purchasedItems.get(player.userId);
+			purchases?.add(shopElement.itemType);
 
 			return true;
 		});

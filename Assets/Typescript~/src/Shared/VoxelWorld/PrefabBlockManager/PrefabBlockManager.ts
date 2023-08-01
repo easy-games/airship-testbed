@@ -1,5 +1,4 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { BlockPlaceClientSignal } from "Client/Signals/BlockPlaceClientSignal";
 import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -51,6 +50,8 @@ export class PrefabBlockManager {
 						if (block.itemType) {
 							this.OnBlockPlace(pos, block.itemType);
 							const clientSignals = import("Client/ClientSignals").expect().ClientSignals;
+							const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
+								.BlockPlaceClientSignal;
 							clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, undefined));
 						}
 					}

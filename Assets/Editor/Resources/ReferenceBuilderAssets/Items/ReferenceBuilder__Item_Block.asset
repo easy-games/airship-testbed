@@ -39,4 +39,4 @@ MonoBehaviour:
   - key: SFX
     value:
     - key: Equip
-      value: {fileID: 8300000, guid: 31273bdd168c38e4a80643e2b5536212, type: 3}
+      value: {fileID: 8300000, guid: 925efc89002fc3c45bfb9db3f1dfbd44, type: 3}

@@ -1,12 +1,14 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { CameraController } from "Client/Controllers/Global/Camera/CameraController";
 import { OrbitCameraMode } from "Client/Controllers/Global/Camera/DefaultCameraModes/OrbitCameraMode";
 import { EntityController } from "Client/Controllers/Global/Entity/EntityController";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
-import { Mouse } from "Shared/UserInput";
+import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
+import { LocalEntityController } from "../Global/Character/LocalEntityController";
+import { PlayerController } from "../Global/Player/PlayerController";
 import { BWController } from "./BWController";
 
 @Controller({})
@@ -26,6 +28,11 @@ export class SpectateController implements OnStart {
 		// Start spectating once player is eliminated:
 		ClientSignals.PlayerEliminated.Connect((event) => {
 			if (event.player !== Game.LocalPlayer) return;
+			this.StartSpectating();
+		});
+
+		const keyboard = new Keyboard();
+		keyboard.OnKeyDown(KeyCode.M, (event) => {
 			this.StartSpectating();
 		});
 	}
@@ -58,7 +65,7 @@ export class SpectateController implements OnStart {
 		};
 	}
 
-	private StartSpectating() {
+	public StartSpectating() {
 		const entities = this.GetSortedEntities();
 		if (entities.size() === 0) return;
 
@@ -66,6 +73,7 @@ export class SpectateController implements OnStart {
 
 		const orbitCamMode = new OrbitCameraMode(entities[0].model.transform, this.spectateCamDistance);
 		this.cameraController.SetMode(orbitCamMode);
+		Dependency<LocalEntityController>().SetFirstPerson(false);
 
 		this.GoToIncrement(orbitCamMode, 0);
 
@@ -119,15 +127,24 @@ export class SpectateController implements OnStart {
 	}
 
 	/** Get a list of valid entities that can be spectated, sorted by ID. */
-	private GetSortedEntities() {
+	private GetSortedEntities(): Entity[] {
 		const team = Game.LocalPlayer.GetTeam();
-		const entities = team
-			? this.bwController
-					// Get alive entities on the local player's team:
-					.GetAlivePlayersOnTeam(team)
-					.filter((player) => player.Character !== undefined)
-					.map((player) => player.Character!)
-			: this.entityController.GetEntities();
-		return entities.sort((a, b) => a.id < b.id);
+		if (team) {
+			const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.Character);
+			if (alivePlayers.size() > 0) {
+				return alivePlayers;
+			}
+		}
+		// Allow spectating everyone when no more teammates are alive.
+		return Dependency<PlayerController>()
+			.GetPlayers()
+			.filter((p) => !this.bwController.IsPlayerEliminated(p))
+			.mapFiltered((p) => p.Character);
+
+		// All entities
+		// return this.entityController
+		// 	.GetEntities()
+		// 	.filter((e) => !e.IsLocalCharacter())
+		// 	.sort((a, b) => a.id < b.id);
 	}
 }

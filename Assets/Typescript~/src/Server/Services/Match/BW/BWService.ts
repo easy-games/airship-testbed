@@ -1,4 +1,5 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { TeamService } from "Server/Services/Global/Team/TeamService";
@@ -10,7 +11,6 @@ import { Player } from "Shared/Player/Player";
 import { Team } from "Shared/Team/Team";
 import { SetUtil } from "Shared/Util/SetUtil";
 import { SignalPriority } from "Shared/Util/Signal";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { BedService } from "../BedService";
 import { MatchService } from "../MatchService";
 
@@ -34,7 +34,7 @@ export class BWService implements OnStart {
 
 	OnStart(): void {
 		// Listen for bed destroy for BW win condition.
-		ServerSignals.BedDestroyed.Connect(() => {
+		BWServerSignals.BedDestroyed.Connect(() => {
 			this.bedHasBeenDestroyed = true;
 			this.CheckForWin();
 		});
@@ -43,16 +43,10 @@ export class BWService implements OnStart {
 			if (!this.matchService.IsRunning()) return;
 			// Eliminate player, if applicable.
 			if (event.entity instanceof CharacterEntity) {
-				if (
-					event.entity.player &&
-					event.entity.player.GetTeam() &&
-					this.bedService.IsBedDestroyed(event.entity.player.GetTeam()!.id)
-				) {
-					this.eliminatedPlayers.add(event.entity.player);
-					ServerSignals.PlayerEliminated.Fire({ player: event.entity.player });
-					Network.ServerToClient.PlayerEliminated.Server.FireAllClients(event.entity.player.clientId);
+				const team = event.entity.player?.GetTeam();
+				if (event.entity.player && team && this.bedService.IsBedDestroyed(team)) {
+					this.EliminatePlayer(event.entity.player);
 				}
-				this.CheckForWin();
 			}
 			// Give resources to killer.
 			if (
@@ -89,13 +83,6 @@ export class BWService implements OnStart {
 				}
 			}
 		});
-		// Prevent teams from damaging their own beds.
-		ServerSignals.BeforeBlockHit.Connect((event) => {
-			const teamId = BlockDataAPI.GetBlockData(event.BlockPos, "teamId");
-			if (teamId !== undefined && teamId === event.Player.GetTeam()?.id) {
-				event.SetCancelled(true);
-			}
-		});
 
 		// Testing: place block near player ever second
 		// SetInterval(1, () => {
@@ -110,6 +97,13 @@ export class BWService implements OnStart {
 		// 		);
 		// 	}
 		// });
+	}
+
+	public EliminatePlayer(player: Player): void {
+		this.eliminatedPlayers.add(player);
+		ServerSignals.PlayerEliminated.Fire({ player: player });
+		Network.ServerToClient.PlayerEliminated.Server.FireAllClients(player.clientId);
+		// this.CheckForWin();
 	}
 
 	/**
@@ -175,7 +169,7 @@ export class BWService implements OnStart {
 				if (this.eliminatedPlayers.has(player)) return true;
 				return false;
 			});
-			const bedDestroyed = this.bedService.IsBedDestroyed(team.id);
+			const bedDestroyed = this.bedService.IsBedDestroyed(team);
 			const isEliminated = noPlayersOnTeam || (allPlayersEliminated && bedDestroyed);
 			if (!isEliminated) {
 				nonEliminatedTeams.push(team);

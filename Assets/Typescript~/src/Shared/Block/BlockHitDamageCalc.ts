@@ -1,7 +1,9 @@
 import { BedWars } from "Shared/BedWars/BedWars";
+import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
 import { TeamUpgradeType } from "Shared/TeamUpgrades/TeamUpgradeType";
 import { TeamUpgradeUtil } from "Shared/TeamUpgrades/TeamUpgradeUtil";
+import { Block } from "Shared/VoxelWorld/Block";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { BlockArchetype, BreakBlockMeta } from "../Item/ItemMeta";
 import { WorldAPI } from "../VoxelWorld/WorldAPI";
@@ -9,16 +11,23 @@ import { WorldAPI } from "../VoxelWorld/WorldAPI";
 /**
  * Will return 0 if can't damage.
  */
-export function BlockHitDamageCalc(player: Player, blockPos: Vector3, breakBlockMeta: BreakBlockMeta): number {
+export function BlockHitDamageCalc(
+	player: Player,
+	block: Block,
+	blockPos: Vector3,
+	breakBlockMeta: BreakBlockMeta,
+): number {
 	let damage = breakBlockMeta.damage;
 	if (BedWars.IsMatchServer()) {
-		// BedWars: disable breaking map blocks
-		const wasPlacedByUser = BlockDataAPI.GetBlockData<boolean>(blockPos, "placedByUser");
-		if (!wasPlacedByUser) {
-			return 0;
+		// BW: disable breaking map blocks
+		if (block.itemType !== ItemType.BED) {
+			const wasPlacedByUser = BlockDataAPI.GetBlockData<boolean>(blockPos, "placedByUser");
+			if (!wasPlacedByUser) {
+				return 0;
+			}
 		}
 
-		// BedWars: dont allow breaking your own team's bed
+		// BW: dont allow breaking your own team's bed
 		const teamBlockId = BlockDataAPI.GetBlockData<string>(blockPos, "teamId");
 		if (teamBlockId !== undefined && teamBlockId === player.GetTeam()?.id) {
 			return 0;

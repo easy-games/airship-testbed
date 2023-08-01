@@ -271,4 +271,14 @@ export class Inventory {
 	public GetHotbarSlotCount(): number {
 		return this.hotbarSlots;
 	}
+
+	public FindSlotWithItemType(itemType: ItemType): number | undefined {
+		for (let i = 0; i < this.maxSlots; i++) {
+			const itemStack = this.GetItem(i);
+			if (itemStack?.GetItemType() === itemType) {
+				return i;
+			}
+		}
+		return undefined;
+	}
 }

@@ -89,8 +89,8 @@ export class BlockInteractService implements OnStart {
 
 				pos = BlockDataAPI.GetParentBlockPos(pos) ?? pos;
 
-				const voxel = world.GetRawVoxelDataAt(pos);
-				if (!voxel) {
+				const block = world.GetBlockAt(pos);
+				if (block.IsAir()) {
 					return rollback();
 				}
 				const player = this.playerService.GetPlayerFromClientId(clientId);
@@ -98,38 +98,36 @@ export class BlockInteractService implements OnStart {
 					return rollback();
 				}
 
-				const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-
 				// Cancellable signal
-				const damage = BlockHitDamageCalc(player, pos, itemMeta.breakBlock);
+				const damage = BlockHitDamageCalc(player, block, pos, itemMeta.breakBlock);
+				if (damage === 0) {
+					return;
+				}
 				const beforeSignal = ServerSignals.BeforeBlockHit.Fire(
-					new BeforeBlockHitSignal(pos, player, damage, itemInHand),
+					new BeforeBlockHitSignal(block, pos, player, damage, itemInHand),
 				);
 
-				if (beforeSignal.IsCancelled()) {
-					return rollback();
-				}
-
 				const health = BlockDataAPI.GetBlockData<number>(pos, "health") ?? WorldAPI.DefaultVoxelHealth;
-				const newHealth = math.max(health - beforeSignal.Damage, 0);
+				const newHealth = math.max(health - beforeSignal.damage, 0);
 				BlockDataAPI.SetBlockData(pos, "health", newHealth);
 
 				// After signal
-				ServerSignals.BlockHit.Fire({ blockId, player, blockPos: pos });
-				print("Firing BlockHit");
+				ServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: pos });
+				print(`Firing BlockHit. damage=${beforeSignal.damage}`);
 				Network.ServerToClient.BlockHit.Server.FireAllClients(pos, entity.id);
 
 				if (newHealth === 0) {
 					ServerSignals.BeforeBlockDestroyed.Fire({
-						blockId: blockId,
+						blockId: block.blockId,
 						blockMeta: itemMeta,
 						blockPos: pos,
+						entity: entity,
 					});
 					world.PlaceBlockById(pos, 0, {
 						placedByEntityId: entity.id,
 					});
-					ServerSignals.BlockDestroyed.Fire({ blockId: blockId, blockMeta: itemMeta, blockPos: pos });
-					Network.ServerToClient.BlockDestroyed.Server.FireAllClients(pos, blockId);
+					ServerSignals.BlockDestroyed.Fire({ blockId: block.blockId, blockMeta: itemMeta, blockPos: pos });
+					Network.ServerToClient.BlockDestroyed.Server.FireAllClients(pos, block.blockId);
 				}
 
 				return;

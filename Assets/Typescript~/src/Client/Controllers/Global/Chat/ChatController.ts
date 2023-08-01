@@ -13,6 +13,7 @@ import { Game } from "Shared/Game";
 import { FriendsCommand } from "CoreShared/Commands/FriendsCommand";
 import { encode } from "CoreShared/json";
 import { ClearCommand } from "CoreShared/Commands/ClearCommand";
+import { UserCommand } from "CoreShared/Commands/UserCommand";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -73,6 +74,7 @@ export class ChatController implements OnStart {
 		this.content.gameObject.ClearChildren();
 
 		this.RegisterCommand(new ClearCommand());
+		this.RegisterCommand(new UserCommand());
 		this.RegisterCommand(new FriendsCommand());
 	}
 

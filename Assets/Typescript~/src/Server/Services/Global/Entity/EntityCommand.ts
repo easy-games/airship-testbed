@@ -15,6 +15,7 @@ export class EntityCommand extends ChatCommand {
 		if (!player.Character) return;
 
 		const pos = player.Character.gameObject.transform.position;
-		entityService.SpawnEntityForPlayer(undefined, EntityPrefabType.HUMAN, pos);
+		const entity = entityService.SpawnEntityForPlayer(undefined, EntityPrefabType.HUMAN, pos);
+		entity.AddHealthbar();
 	}
 }
