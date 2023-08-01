@@ -25,9 +25,6 @@ export class FirstPersonCameraSystem {
 	private inFirstPerson = true;
 	private bin: Bin;
 
-	private fovFirstPerson = 90;
-	private fovThirdPerson = 100;
-
 	public constructor(entityReferences: EntityReferences) {
 		this.entityReferences = entityReferences;
 		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
@@ -92,10 +89,6 @@ export class FirstPersonCameraSystem {
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
 		Game.LocalPlayer.Character?.anim?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
-
-		let fov = isFirstPerson ? this.fovFirstPerson : this.fovThirdPerson;
-		Dependency<CameraController>().SetFOV(fov, true);
-		Dependency<LocalEntityController>().UpdateFov();
 
 		//In First person hide all meshes except the arm
 		for (let i = 0; i < this.entityReferences.meshes.size(); i++) {

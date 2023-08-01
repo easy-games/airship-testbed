@@ -8,11 +8,9 @@ export class CameraController implements OnStart {
 
 	/** The underlying camera system for the game. */
 	public readonly cameraSystem: CameraSystem;
-	public readonly mainCamera: Camera;
 
 	constructor() {
-		this.mainCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
-		this.cameraSystem = new CameraSystem(this.mainCamera);
+		this.cameraSystem = new CameraSystem();
 	}
 
 	/**

@@ -15,6 +15,7 @@ export class CameraReferences {
 	private mouse = new Mouse();
 	public readonly mainCamera: Camera;
 	public readonly fpsCamera: Camera;
+	public readonly uiCamera: Camera;
 
 	public constructor() {
 		if (CameraReferences._instance) {
@@ -27,6 +28,7 @@ export class CameraReferences {
 		let references = GameObjectReferences.GetReferences(this.CameraBundleKey);
 		this.mainCamera = references.GetValue<Camera>("Cameras", "MainCamera");
 		this.fpsCamera = references.GetValue<Camera>("Cameras", "FPSCamera");
+		this.uiCamera = references.GetValue<Camera>("Cameras", "UICamera");
 	}
 
 	public RaycastVoxelFromCamera(distance: number) {

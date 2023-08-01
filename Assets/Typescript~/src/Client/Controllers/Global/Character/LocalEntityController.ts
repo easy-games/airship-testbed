@@ -58,6 +58,7 @@ export class LocalEntityController implements OnStart {
 		const onChanged = (isFirstPerson: boolean) => {
 			currentCleanup?.();
 			currentCleanup = observer(isFirstPerson);
+			this.UpdateFov();
 		};
 
 		const disconnect = this.FirstPersonChanged.Connect(onChanged);
@@ -149,7 +150,6 @@ export class LocalEntityController implements OnStart {
 
 			//Set up first person camera
 			this.fps = new FirstPersonCameraSystem(entity.references);
-			this.fps.OnFirstPersonChanged(this.firstPerson);
 
 			this.cameraController.SetMode(createHumanoidCameraMode());
 			this.cameraController.cameraSystem.SetOnClearCallback(createHumanoidCameraMode);
