@@ -111,7 +111,7 @@ export class LocalEntityController implements OnStart {
 			const keyboard = bin.Add(new Keyboard());
 
 			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
-			this.entityInput = new EntityInput(entity.gameObject);
+			this.entityInput = new EntityInput(entity);
 
 			this.entityDriver.OnCustomDataFlushed(() => {
 				this.customDataQueue.clear();

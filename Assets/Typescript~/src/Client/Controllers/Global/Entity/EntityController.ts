@@ -74,14 +74,6 @@ export class EntityController implements OnStart {
 		entity.Destroy();
 		ClientSignals.EntityDespawn.Fire(entity);
 		this.entities.delete(entity.id);
-
-		if (entity) {
-			for (const player of this.playerController.GetPlayers()) {
-				if (player.Character === entity) {
-					player.SetCharacter(undefined);
-				}
-			}
-		}
 	}
 
 	private AddEntity(entityDto: EntityDto): Entity | undefined {

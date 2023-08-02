@@ -105,6 +105,7 @@ export class DamageService implements OnStart {
 		entity.SetLastDamagedTime(Time.time);
 		if (entity.GetHealth() === 0) {
 			entity.Kill();
+			entity.entityDriver.disableInput = true;
 			const entityDeathEvent = new EntityDeathServerSignal(
 				entity,
 				damageEvent.fromEntity,

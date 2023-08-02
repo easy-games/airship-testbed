@@ -1,3 +1,4 @@
+import { Entity } from "Shared/Entity/Entity";
 import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
@@ -11,8 +12,8 @@ export class EntityInput {
 	private jumping = false;
 	private enabled = true;
 
-	constructor(private readonly characterGO: GameObject) {
-		this.entityDriver = characterGO.GetComponent<EntityDriver>();
+	constructor(private readonly entity: Entity) {
+		this.entityDriver = entity.entityDriver;
 		this.InitControls();
 	}
 

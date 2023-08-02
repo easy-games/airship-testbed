@@ -117,6 +117,7 @@ export class Player {
 	}
 
 	public SetCharacter(entity: CharacterEntity | undefined): void {
+		print("setCharacter " + tostring(entity?.id));
 		this.Character = entity;
 		this.CharacterChanged.Fire(entity);
 	}
@@ -126,9 +127,9 @@ export class Player {
 		let cleanup = observer(this.Character);
 
 		bin.Add(
-			this.CharacterChanged.Connect((newPawn) => {
+			this.CharacterChanged.Connect((newCharacter) => {
 				cleanup?.();
-				cleanup = observer(newPawn);
+				cleanup = observer(newCharacter);
 			}),
 		);
 

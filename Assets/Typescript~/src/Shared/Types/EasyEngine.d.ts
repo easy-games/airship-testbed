@@ -80,6 +80,7 @@ interface EntityDriver extends Component {
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
 	replicatedLookVector: Vector3;
+	disableInput: boolean;
 }
 
 interface VoxelWorld {

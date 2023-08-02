@@ -1744,6 +1744,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlideVFX
       objectReference: {fileID: 0}
+    - target: {fileID: 6912367275794342687, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912367275794342687, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.2784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912367275794342687, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.2735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912367275794342687, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.2735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 6912367275794342687, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.2735849
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
 --- !u!198 &4591070209699312083 stripped

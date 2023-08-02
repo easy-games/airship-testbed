@@ -138,9 +138,9 @@ export class EntityAnimator {
 			const localController = Dependency<LocalEntityController>();
 			isFirstPerson = localController.IsFirstPerson();
 			//Always play death animation in third person
-			localController.ForceFirstPersonMode(false);
+			// localController.ForceFirstPersonMode(false);
 			//Lock Inputs
-			this.entity.entityDriver.enabled = false;
+			this.entity.entityDriver.disableInput = true;
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
