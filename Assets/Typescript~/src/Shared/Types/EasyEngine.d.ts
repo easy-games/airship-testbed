@@ -446,3 +446,11 @@ declare const MeshProcessor: MeshProcessorConstructor;
 interface CoreEntityAnimator extends Component {
 	SetForceLookForward(forceLookForward: boolean): void;
 }
+
+interface PoolManager {
+	PreLoadPool(prefab: Object, size: number): void;
+	SpawnObject(prefab: Object): GameObject;
+	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion): GameObject;
+	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion, parent: Transform): GameObject;
+}
+declare const PoolManager: PoolManager;

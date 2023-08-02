@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 3518502800460232220}
   - component: {fileID: 7516339568983518855}
   - component: {fileID: 5838268274975822121}
+  - component: {fileID: -5350833092752408669}
   m_Layer: 3
   m_Name: HumanEntity
   m_TagString: Character
@@ -473,6 +474,8 @@ MonoBehaviour:
   runAnimSpeedMod: 0.8
   maxRunAnimSpeed: 2
   directionalLerpMod: 12
+  spineClampAngle: 15
+  neckClampAngle: 35
 --- !u!114 &3518502800460232220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,6 +561,18 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: -98370938496583557}
   _networkObjectCache: {fileID: -98370938496583557}
   verboseLogging: 0
+--- !u!114 &-5350833092752408669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f040aaa0ede2946a769bea3d71a08f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3212846051738532583
 PrefabInstance:
   m_ObjectHideFlags: 0

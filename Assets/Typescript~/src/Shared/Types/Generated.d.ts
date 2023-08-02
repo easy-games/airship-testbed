@@ -1321,11 +1321,6 @@ declare const enum AdditionalCanvasShaderChannels {
     Normal = 8,
     Tangent = 16,
 }
-declare const enum UnityEventCallState {
-    Off = 0,
-    EditorAndRuntime = 1,
-    RuntimeOnly = 2,
-}
 declare const enum Type {
     Simple = 0,
     Sliced = 1,
@@ -1466,6 +1461,11 @@ declare const enum AvatarTarget {
     RightFoot = 3,
     LeftHand = 4,
     RightHand = 5,
+}
+declare const enum UnityEventCallState {
+    Off = 0,
+    EditorAndRuntime = 1,
+    RuntimeOnly = 2,
 }
 declare const enum ReceiveGI {
     Lightmaps = 1,
@@ -1641,312 +1641,6 @@ declare const enum AnimationPlayMode {
     Stop = 0,
     Queue = 1,
     Mix = 2,
-}
-declare const enum Align {
-    Auto = 0,
-    FlexStart = 1,
-    Center = 2,
-    FlexEnd = 3,
-    Stretch = 4,
-}
-declare const enum DisplayStyle {
-    Flex = 0,
-    None = 1,
-}
-declare const enum StyleKeyword {
-    Undefined = 0,
-    Null = 1,
-    Auto = 2,
-    None = 3,
-    Initial = 4,
-}
-declare const enum FlexDirection {
-    Column = 0,
-    ColumnReverse = 1,
-    Row = 2,
-    RowReverse = 3,
-}
-declare const enum Wrap {
-    NoWrap = 0,
-    Wrap = 1,
-    WrapReverse = 2,
-}
-declare const enum Justify {
-    FlexStart = 0,
-    Center = 1,
-    FlexEnd = 2,
-    SpaceBetween = 3,
-    SpaceAround = 4,
-}
-declare const enum Position {
-    Relative = 0,
-    Absolute = 1,
-}
-declare const enum AngleUnit {
-    Degree = 0,
-    Gradian = 1,
-    Radian = 2,
-    Turn = 3,
-}
-declare const enum TextOverflow {
-    Clip = 0,
-    Ellipsis = 1,
-}
-declare const enum TimeUnit {
-    Second = 0,
-    Millisecond = 1,
-}
-declare const enum EasingMode {
-    Ease = 0,
-    EaseIn = 1,
-    EaseOut = 2,
-    EaseInOut = 3,
-    Linear = 4,
-    EaseInSine = 5,
-    EaseOutSine = 6,
-    EaseInOutSine = 7,
-    EaseInCubic = 8,
-    EaseOutCubic = 9,
-    EaseInOutCubic = 10,
-    EaseInCirc = 11,
-    EaseOutCirc = 12,
-    EaseInOutCirc = 13,
-    EaseInElastic = 14,
-    EaseOutElastic = 15,
-    EaseInOutElastic = 16,
-    EaseInBack = 17,
-    EaseOutBack = 18,
-    EaseInOutBack = 19,
-    EaseInBounce = 20,
-    EaseOutBounce = 21,
-    EaseInOutBounce = 22,
-}
-declare const enum ScaleMode {
-    StretchToFill = 0,
-    ScaleAndCrop = 1,
-    ScaleToFit = 2,
-}
-declare const enum AtlasPopulationMode {
-    Static = 0,
-    Dynamic = 1,
-    DynamicOS = 2,
-}
-declare const enum TextElementType {
-    Character = 1,
-    Sprite = 2,
-}
-declare const enum TextAnchor {
-    UpperLeft = 0,
-    UpperCenter = 1,
-    UpperRight = 2,
-    MiddleLeft = 3,
-    MiddleCenter = 4,
-    MiddleRight = 5,
-    LowerLeft = 6,
-    LowerCenter = 7,
-    LowerRight = 8,
-}
-declare const enum TextOverflowPosition {
-    End = 0,
-    Start = 1,
-    Middle = 2,
-}
-declare const enum Visibility {
-    Visible = 0,
-    Hidden = 1,
-}
-declare const enum WhiteSpace {
-    Normal = 0,
-    NoWrap = 1,
-}
-declare const enum StylePropertyId {
-    Unknown = 0,
-    Color = 65536,
-    FontSize = 65537,
-    LetterSpacing = 65538,
-    TextShadow = 65539,
-    UnityFont = 65540,
-    UnityFontDefinition = 65541,
-    UnityFontStyleAndWeight = 65542,
-    UnityParagraphSpacing = 65543,
-    UnityTextAlign = 65544,
-    UnityTextOutlineColor = 65545,
-    UnityTextOutlineWidth = 65546,
-    Visibility = 65547,
-    WhiteSpace = 65548,
-    WordSpacing = 65549,
-    AlignContent = 131072,
-    AlignItems = 131073,
-    AlignSelf = 131074,
-    BorderBottomWidth = 131075,
-    BorderLeftWidth = 131076,
-    BorderRightWidth = 131077,
-    BorderTopWidth = 131078,
-    Bottom = 131079,
-    Display = 131080,
-    FlexBasis = 131081,
-    FlexDirection = 131082,
-    FlexGrow = 131083,
-    FlexShrink = 131084,
-    FlexWrap = 131085,
-    Height = 131086,
-    JustifyContent = 131087,
-    Left = 131088,
-    MarginBottom = 131089,
-    MarginLeft = 131090,
-    MarginRight = 131091,
-    MarginTop = 131092,
-    MaxHeight = 131093,
-    MaxWidth = 131094,
-    MinHeight = 131095,
-    MinWidth = 131096,
-    PaddingBottom = 131097,
-    PaddingLeft = 131098,
-    PaddingRight = 131099,
-    PaddingTop = 131100,
-    Position = 131101,
-    Right = 131102,
-    Top = 131103,
-    Width = 131104,
-    Cursor = 196608,
-    TextOverflow = 196609,
-    UnityBackgroundImageTintColor = 196610,
-    UnityBackgroundScaleMode = 196611,
-    UnityOverflowClipBox = 196612,
-    UnitySliceBottom = 196613,
-    UnitySliceLeft = 196614,
-    UnitySliceRight = 196615,
-    UnitySliceTop = 196616,
-    UnityTextOverflowPosition = 196617,
-    All = 262144,
-    BorderColor = 262145,
-    BorderRadius = 262146,
-    BorderWidth = 262147,
-    Flex = 262148,
-    Margin = 262149,
-    Padding = 262150,
-    Transition = 262151,
-    UnityTextOutline = 262152,
-    Rotate = 327680,
-    Scale = 327681,
-    TransformOrigin = 327682,
-    Translate = 327683,
-    TransitionDelay = 393216,
-    TransitionDuration = 393217,
-    TransitionProperty = 393218,
-    TransitionTimingFunction = 393219,
-    BackgroundColor = 458752,
-    BackgroundImage = 458753,
-    BorderBottomColor = 458754,
-    BorderBottomLeftRadius = 458755,
-    BorderBottomRightRadius = 458756,
-    BorderLeftColor = 458757,
-    BorderRightColor = 458758,
-    BorderTopColor = 458759,
-    BorderTopLeftRadius = 458760,
-    BorderTopRightRadius = 458761,
-    Opacity = 458762,
-    Overflow = 458763,
-    Custom = -1,
-}
-declare const enum LengthUnit {
-    Pixel = 0,
-    Percent = 1,
-}
-declare const enum PropagationPhase {
-    None = 0,
-    TrickleDown = 1,
-    AtTarget = 2,
-    BubbleUp = 3,
-    DefaultAction = 4,
-    DefaultActionAtTarget = 5,
-}
-declare const enum EventType {
-    MouseDown = 0,
-    mouseDown = 0,
-    MouseUp = 1,
-    mouseUp = 1,
-    MouseMove = 2,
-    mouseMove = 2,
-    mouseDrag = 3,
-    MouseDrag = 3,
-    KeyDown = 4,
-    keyDown = 4,
-    keyUp = 5,
-    KeyUp = 5,
-    ScrollWheel = 6,
-    scrollWheel = 6,
-    Repaint = 7,
-    repaint = 7,
-    Layout = 8,
-    layout = 8,
-    DragUpdated = 9,
-    dragUpdated = 9,
-    dragPerform = 10,
-    DragPerform = 10,
-    ignore = 11,
-    Ignore = 11,
-    used = 12,
-    Used = 12,
-    ValidateCommand = 13,
-    ExecuteCommand = 14,
-    DragExited = 15,
-    ContextClick = 16,
-    MouseEnterWindow = 20,
-    MouseLeaveWindow = 21,
-    TouchDown = 30,
-    TouchUp = 31,
-    TouchMove = 32,
-    TouchEnter = 33,
-    TouchLeave = 34,
-    TouchStationary = 35,
-}
-declare const enum PointerType {
-    Mouse = 0,
-    Touch = 1,
-    Pen = 2,
-}
-declare const enum EventModifiers {
-    None = 0,
-    Shift = 1,
-    Control = 2,
-    Alt = 4,
-    Command = 8,
-    Numeric = 16,
-    CapsLock = 32,
-    FunctionKey = 64,
-}
-declare const enum TrickleDown {
-    NoTrickleDown = 0,
-    TrickleDown = 1,
-}
-declare const enum Overflow {
-    Visible = 0,
-    Hidden = 1,
-}
-declare const enum OverflowClipBox {
-    PaddingBox = 0,
-    ContentBox = 1,
-}
-declare const enum UsageHints {
-    None = 0,
-    DynamicTransform = 1,
-    GroupTransform = 2,
-    MaskContainer = 4,
-    DynamicColor = 8,
-}
-declare const enum PickingMode {
-    Position = 0,
-    Ignore = 1,
-}
-declare const enum ContextType {
-    Player = 0,
-    Editor = 1,
-}
-declare const enum MeasureMode {
-    Undefined = 0,
-    Exactly = 1,
-    AtMost = 2,
 }
 declare const enum FogMode {
     Linear = 1,
@@ -2566,12 +2260,6 @@ declare const enum Direction {
     BottomToTop = 2,
     TopToBottom = 3,
 }
-declare const enum Status {
-    Visible = 0,
-    Done = 1,
-    Canceled = 2,
-    LostFocus = 3,
-}
 declare const enum ContentType {
     Standard = 0,
     Autocorrected = 1,
@@ -2619,6 +2307,61 @@ declare const enum CharacterValidation {
     Regex = 6,
     EmailAddress = 7,
     CustomValidator = 8,
+}
+declare const enum EventType {
+    MouseDown = 0,
+    mouseDown = 0,
+    MouseUp = 1,
+    mouseUp = 1,
+    MouseMove = 2,
+    mouseMove = 2,
+    mouseDrag = 3,
+    MouseDrag = 3,
+    KeyDown = 4,
+    keyDown = 4,
+    keyUp = 5,
+    KeyUp = 5,
+    ScrollWheel = 6,
+    scrollWheel = 6,
+    Repaint = 7,
+    repaint = 7,
+    Layout = 8,
+    layout = 8,
+    DragUpdated = 9,
+    dragUpdated = 9,
+    dragPerform = 10,
+    DragPerform = 10,
+    ignore = 11,
+    Ignore = 11,
+    used = 12,
+    Used = 12,
+    ValidateCommand = 13,
+    ExecuteCommand = 14,
+    DragExited = 15,
+    ContextClick = 16,
+    MouseEnterWindow = 20,
+    MouseLeaveWindow = 21,
+    TouchDown = 30,
+    TouchUp = 31,
+    TouchMove = 32,
+    TouchEnter = 33,
+    TouchLeave = 34,
+    TouchStationary = 35,
+}
+declare const enum PointerType {
+    Mouse = 0,
+    Touch = 1,
+    Pen = 2,
+}
+declare const enum EventModifiers {
+    None = 0,
+    Shift = 1,
+    Control = 2,
+    Alt = 4,
+    Command = 8,
+    Numeric = 16,
+    CapsLock = 32,
+    FunctionKey = 64,
 }
 declare const enum RigidbodyType2D {
     Dynamic = 0,
@@ -3971,8 +3714,10 @@ interface AgonesProxy extends MonoBehaviour {
     constructor(): AgonesProxy;
 
     Connect(): void;
+    DoNothingTest(): unknown;
     Ready(): void;
     Shutdown(): void;
+    SleepTest(seconds: number): unknown;
 }
     
 interface AgonesCoreConstructor {
@@ -4321,7 +4066,7 @@ interface NetworkBehaviour extends MonoBehaviour {
     OnStopNetwork(): void;
     OnStopServer(): void;
     OwnerMatches(connection: NetworkConnection): boolean;
-    Reconcile_Client_Internal<T, T2>(reconcileDel: ReconcileUserLogicDelegate<T>, replicateULDel: ReplicateUserLogicDelegate<T2>, replicates: CSArray<T2>, data: T, channel: Channel): void;
+    Reconcile_Client_Internal<T, T2>(reconcileDel: unknown, replicateULDel: unknown, replicates: CSArray<T2>, data: T, channel: Channel): void;
     Reconcile_ExitEarly_A_Internal(asServer: boolean, channel: unknown): boolean;
     Reconcile_Reader_Internal<T>(reader: PooledReader, data: unknown, channel: Channel): void;
     Reconcile_Server_Internal<T>(methodHash: number, data: T, channel: Channel): void;
@@ -4334,9 +4079,9 @@ interface NetworkBehaviour extends MonoBehaviour {
     RegisterTargetRpc_Internal(hash: number, del: ClientRpcDelegate): void;
     RemoveOwnership(): void;
     Replicate_ExitEarly_A_Internal(asServer: boolean, replaying: boolean, allowServerControl: boolean): boolean;
-    Replicate_NonOwner_Internal<T>(del: ReplicateUserLogicDelegate<T>, q: BasicQueue<T>, serverControlData: T, allowServerControl: boolean, channel: Channel): void;
-    Replicate_Owner_Internal<T>(del: ReplicateUserLogicDelegate<T>, methodHash: number, replicates: CSArray<T>, data: T, channel: Channel): void;
-    Replicate_Reader_Internal<T>(reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicates: BasicQueue<T>, channel: Channel): void;
+    Replicate_NonOwner_Internal<T>(del: unknown, q: unknown, serverControlData: T, allowServerControl: boolean, channel: Channel): void;
+    Replicate_Owner_Internal<T>(del: unknown, methodHash: number, replicates: CSArray<T>, data: T, channel: Channel): void;
+    Replicate_Reader_Internal<T>(reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicates: unknown, channel: Channel): void;
     SendObserversRpc_Internal(hash: number, methodWriter: PooledWriter, channel: Channel, buffered: boolean, excludeServer: boolean, excludeOwner: boolean): void;
     SendServerRpc_Internal(hash: number, methodWriter: PooledWriter, channel: Channel): void;
     SendTargetRpc_Internal(hash: number, methodWriter: PooledWriter, channel: Channel, target: NetworkConnection, excludeServer: boolean, validateTarget: boolean): void;
@@ -4430,7 +4175,7 @@ interface Writer {
     WriteList<T>(value: CSArray<T>): void;
     WriteList<T>(value: CSArray<T>, offset: number, count: number): void;
     WriteList<T>(value: CSArray<T>, offset: number): void;
-    WriteListCache<T>(lc: ListCache<T>): void;
+    WriteListCache<T>(lc: unknown): void;
     WriteMatrix4x4(value: Matrix4x4): void;
     WriteNetworkBehaviour(nb: NetworkBehaviour): void;
     WriteNetworkBehaviourId(nb: NetworkBehaviour): void;
@@ -4460,7 +4205,6 @@ interface Writer {
     WriteVector4(value: Vector4): void;
     ZigZagEncode(value: number): number;
 }
-    
     
 interface Ray2D {
     origin: Vector2;
@@ -4935,24 +4679,6 @@ interface RollbackManagerConstructor {
 }
 declare const RollbackManager: RollbackManagerConstructor;
     
-interface ReconcileUserLogicDelegate<T> {
-
-    constructor(object: unknown, method: unknown): ReconcileUserLogicDelegate<T>;
-
-    BeginInvoke(data: T, asServer: boolean, channel: Channel, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(data: T, asServer: boolean, channel: Channel): void;
-}
-    
-interface ReplicateUserLogicDelegate<T> {
-
-    constructor(object: unknown, method: unknown): ReplicateUserLogicDelegate<T>;
-
-    BeginInvoke(data: T, asServer: boolean, channel: Channel, replaying: boolean, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(data: T, asServer: boolean, channel: Channel, replaying: boolean): void;
-}
-    
 interface Reader {
     Source: DataSource;
     NetworkManager: NetworkManager;
@@ -5000,7 +4726,7 @@ interface Reader {
     ReadList<T>(collection: CSArray<T>, allowNullification: boolean): number;
     ReadListAllocated<T>(): CSArray<T>;
     ReadListCache<T>(listCache: unknown): number;
-    ReadListCacheAllocated<T>(): ListCache<T>;
+    ReadListCacheAllocated<T>(): unknown;
     ReadMatrix4x4(): Matrix4x4;
     ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown): NetworkBehaviour;
     ReadNetworkBehaviour(): NetworkBehaviour;
@@ -5091,19 +4817,6 @@ interface ServerRpcDelegate {
     BeginInvoke(reader: PooledReader, channel: Channel, sender: NetworkConnection, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
     Invoke(reader: PooledReader, channel: Channel, sender: NetworkConnection): void;
-}
-    
-interface BasicQueue<T> {
-    Count: number;
-
-    constructor(): BasicQueue<T>;
-
-    Clear(): void;
-    Dequeue(): T;
-    Enqueue(data: T): void;
-    Peek(): T;
-    TryDequeue(result: unknown): boolean;
-    TryPeek(result: unknown): boolean;
 }
     
 interface PooledWriter extends Writer {
@@ -7915,45 +7628,7 @@ interface MaskableGraphic extends Graphic, IMaterialModifier, IMaskable, IClippa
     SetClipSoftness(clipSoftness: Vector2): void;
 }
     
-interface UnityEventBase extends ISerializationCallbackReceiver {
-
-
-    GetPersistentEventCount(): number;
-    GetPersistentListenerState(index: number): UnityEventCallState;
-    GetPersistentMethodName(index: number): string;
-    GetPersistentTarget(index: number): Object;
-    RemoveAllListeners(): void;
-    SetPersistentListenerState(index: number, state: UnityEventCallState): void;
-    ToString(): string;
-}
-    
-interface UnityEventBaseConstructor {
-
-
-    GetValidMethodInfo(obj: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
-    GetValidMethodInfo(objectType: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
-}
-declare const UnityEventBase: UnityEventBaseConstructor;
-    
-interface UnityEvent<T0> extends UnityEventBase {
-
-    constructor(): UnityEvent<T0>;
-
-    AddListener(call: UnityAction<T0>): void;
-    Invoke(arg0: T0): void;
-    RemoveListener(call: UnityAction<T0>): void;
-}
-    
-interface UnityAction<T0> {
-
-    constructor(object: unknown, method: unknown): UnityAction<T0>;
-
-    BeginInvoke(arg0: T0, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(arg0: T0): void;
-}
-    
-interface CullStateChangedEvent extends UnityEvent<boolean> {
+interface CullStateChangedEvent {
 
     constructor(): CullStateChangedEvent;
 
@@ -8672,6 +8347,26 @@ interface SelectableConstructor {
 }
 declare const Selectable: SelectableConstructor;
     
+    
+interface UnityEventBase extends ISerializationCallbackReceiver {
+
+
+    GetPersistentEventCount(): number;
+    GetPersistentListenerState(index: number): UnityEventCallState;
+    GetPersistentMethodName(index: number): string;
+    GetPersistentTarget(index: number): Object;
+    RemoveAllListeners(): void;
+    SetPersistentListenerState(index: number, state: UnityEventCallState): void;
+    ToString(): string;
+}
+    
+interface UnityEventBaseConstructor {
+
+
+    GetValidMethodInfo(obj: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
+    GetValidMethodInfo(objectType: unknown, functionName: string, argumentTypes: CSArray<unknown>): unknown;
+}
+declare const UnityEventBase: UnityEventBaseConstructor;
     
 interface UnityEvent extends UnityEventBase {
 
@@ -9625,1167 +9320,7 @@ interface CoreLoadingScreen extends MonoBehaviour {
     SetProgress(text: string, percent: number): void;
 }
     
-interface IMixedValueSupport {
-    showMixedValue: boolean;
-
-
-}
-    
-interface INotifyValueChanged<T> {
-    value: T;
-
-
-    SetValueWithoutNotify(newValue: T): void;
-}
-    
-interface IBindable {
-    binding: IBinding;
-    bindingPath: string;
-
-
-}
-    
-interface IBinding {
-
-
-    PreUpdate(): void;
-    Release(): void;
-    Update(): void;
-}
-    
-interface IResolvedStyle {
-    alignContent: Align;
-    alignItems: Align;
-    alignSelf: Align;
-    backgroundColor: Color;
-    backgroundImage: Background;
-    borderBottomColor: Color;
-    borderBottomLeftRadius: number;
-    borderBottomRightRadius: number;
-    borderBottomWidth: number;
-    borderLeftColor: Color;
-    borderLeftWidth: number;
-    borderRightColor: Color;
-    borderRightWidth: number;
-    borderTopColor: Color;
-    borderTopLeftRadius: number;
-    borderTopRightRadius: number;
-    borderTopWidth: number;
-    bottom: number;
-    color: Color;
-    display: DisplayStyle;
-    flexBasis: StyleFloat;
-    flexDirection: FlexDirection;
-    flexGrow: number;
-    flexShrink: number;
-    flexWrap: Wrap;
-    fontSize: number;
-    height: number;
-    justifyContent: Justify;
-    left: number;
-    letterSpacing: number;
-    marginBottom: number;
-    marginLeft: number;
-    marginRight: number;
-    marginTop: number;
-    maxHeight: StyleFloat;
-    maxWidth: StyleFloat;
-    minHeight: StyleFloat;
-    minWidth: StyleFloat;
-    opacity: number;
-    paddingBottom: number;
-    paddingLeft: number;
-    paddingRight: number;
-    paddingTop: number;
-    position: Position;
-    right: number;
-    rotate: Rotate;
-    scale: Scale;
-    textOverflow: TextOverflow;
-    top: number;
-    transformOrigin: Vector3;
-    transitionDelay: CSArray<TimeValue>;
-    transitionDuration: CSArray<TimeValue>;
-    transitionProperty: CSArray<StylePropertyName>;
-    transitionTimingFunction: CSArray<EasingFunction>;
-    translate: Vector3;
-    unityBackgroundImageTintColor: Color;
-    unityBackgroundScaleMode: ScaleMode;
-    unityFont: Font;
-    unityFontDefinition: FontDefinition;
-    unityFontStyleAndWeight: FontStyle;
-    unityParagraphSpacing: number;
-    unitySliceBottom: number;
-    unitySliceLeft: number;
-    unitySliceRight: number;
-    unitySliceTop: number;
-    unityTextAlign: TextAnchor;
-    unityTextOutlineColor: Color;
-    unityTextOutlineWidth: number;
-    unityTextOverflowPosition: TextOverflowPosition;
-    visibility: Visibility;
-    whiteSpace: WhiteSpace;
-    width: number;
-    wordSpacing: number;
-
-
-}
-    
-interface Background {
-    texture: Texture2D;
-    sprite: Sprite;
-    renderTexture: RenderTexture;
-    vectorImage: VectorImage;
-
-    constructor(t: Texture2D): Background;
-
-    Equals(other: Background): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface VectorImage extends ScriptableObject {
-
-    constructor(): VectorImage;
-
-}
-    
-interface BackgroundConstructor {
-
-
-    FromRenderTexture(rt: RenderTexture): Background;
-    FromSprite(s: Sprite): Background;
-    FromTexture2D(t: Texture2D): Background;
-    FromVectorImage(vi: VectorImage): Background;
-}
-declare const Background: BackgroundConstructor;
-    
-interface IStyleValue<T> {
-    value: T;
-    keyword: StyleKeyword;
-
-
-}
-    
-interface StyleFloat extends IStyleValue<number> {
-    value: number;
-    keyword: StyleKeyword;
-
-    constructor(v: number): StyleFloat;
-    constructor(keyword: StyleKeyword): StyleFloat;
-
-    Equals(other: StyleFloat): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface Rotate {
-    angle: Angle;
-
-    constructor(angle: Angle): Rotate;
-
-    Equals(other: Rotate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface Angle {
-    value: number;
-    unit: AngleUnit;
-
-    constructor(value: number): Angle;
-    constructor(value: number, unit: AngleUnit): Angle;
-
-    Equals(other: Angle): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToDegrees(): number;
-    ToString(): string;
-}
-    
-interface AngleConstructor {
-
-
-    Degrees(value: number): Angle;
-}
-declare const Angle: AngleConstructor;
-    
-interface RotateConstructor {
-
-
-    None(): Rotate;
-}
-declare const Rotate: RotateConstructor;
-    
-interface Scale {
-    value: Vector3;
-
-    constructor(scale: Vector3): Scale;
-
-    Equals(other: Scale): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface ScaleConstructor {
-
-
-    None(): Scale;
-}
-declare const Scale: ScaleConstructor;
-    
-interface TimeValue {
-    value: number;
-    unit: TimeUnit;
-
-    constructor(value: number): TimeValue;
-    constructor(value: number, unit: TimeUnit): TimeValue;
-
-    Equals(other: TimeValue): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StylePropertyName {
-
-    constructor(name: string): StylePropertyName;
-
-    Equals(other: unknown): boolean;
-    Equals(other: StylePropertyName): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StylePropertyNameConstructor {
-
-
-    IsNullOrEmpty(propertyName: StylePropertyName): boolean;
-}
-declare const StylePropertyName: StylePropertyNameConstructor;
-    
-interface EasingFunction {
-    mode: EasingMode;
-
-    constructor(mode: EasingMode): EasingFunction;
-
-    Equals(other: EasingFunction): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface FontDefinition {
-    font: Font;
-    fontAsset: FontAsset;
-
-
-    Equals(other: FontDefinition): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface TextAsset extends ScriptableObject {
-    version: string;
-    instanceID: number;
-    hashCode: number;
-    material: Material;
-    materialHashCode: number;
-
-
-}
-    
-interface FontAsset extends TextAsset {
-    sourceFontFile: Font;
-    atlasPopulationMode: AtlasPopulationMode;
-    faceInfo: FaceInfo;
-    fontWeightTable: CSArray<FontWeightPair>;
-    glyphTable: CSArray<Glyph>;
-    glyphLookupTable: CSDictionary<number, Glyph>;
-    characterTable: CSArray<Character>;
-    characterLookupTable: CSDictionary<number, Character>;
-    atlasTexture: Texture2D;
-    atlasTextures: CSArray<Texture2D>;
-    atlasTextureCount: number;
-    isMultiAtlasTexturesEnabled: boolean;
-    atlasWidth: number;
-    atlasHeight: number;
-    atlasPadding: number;
-    atlasRenderMode: GlyphRenderMode;
-    fontFeatureTable: FontFeatureTable;
-    fallbackFontAssetTable: CSArray<FontAsset>;
-    fontAssetCreationEditorSettings: FontAssetCreationEditorSettings;
-    regularStyleWeight: number;
-    regularStyleSpacing: number;
-    boldStyleWeight: number;
-    boldStyleSpacing: number;
-    italicStyleSlant: number;
-    tabMultiple: number;
-
-    constructor(): FontAsset;
-
-    ClearFontAssetData(setAtlasSizeToZero: boolean): void;
-    HasCharacter(character: number): boolean;
-    HasCharacter(character: string, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<string>): boolean;
-    HasCharacters(text: string, missingCharacters: CSArray<number>, searchFallbacks: boolean, tryAddCharacter: boolean): boolean;
-    HasCharacters(text: string): boolean;
-    ReadFontAssetDefinition(): void;
-    TryAddCharacters(unicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(unicodes: CSArray<number>, missingUnicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
-    TryAddCharacters(characters: string, missingCharacters: CSArray<string>, includeFontFeatures: boolean): boolean;
-}
-    
-interface FontWeightPair {
-    regularTypeface: FontAsset;
-    italicTypeface: FontAsset;
-
-
-}
-    
-interface TextElement {
-    elementType: TextElementType;
-    unicode: number;
-    textAsset: TextAsset;
-    glyph: Glyph;
-    glyphIndex: number;
-    scale: number;
-
-
-}
-    
-interface Character extends TextElement {
-
-    constructor(): Character;
-    constructor(unicode: number, glyph: Glyph): Character;
-    constructor(unicode: number, fontAsset: FontAsset, glyph: Glyph): Character;
-
-}
-    
-interface FontFeatureTable {
-
-    constructor(): FontFeatureTable;
-
-    SortGlyphPairAdjustmentRecords(): void;
-}
-    
-interface FontAssetCreationEditorSettings {
-    sourceFontFileGUID: string;
-    faceIndex: number;
-    pointSizeSamplingMode: number;
-    pointSize: number;
-    padding: number;
-    packingMode: number;
-    atlasWidth: number;
-    atlasHeight: number;
-    characterSetSelectionMode: number;
-    characterSequence: string;
-    referencedFontAssetGUID: string;
-    referencedTextAssetGUID: string;
-    fontStyle: number;
-    fontStyleModifier: number;
-    renderMode: number;
-    includeFontFeatures: boolean;
-
-
-}
-    
-interface FontAssetConstructor {
-
-
-    CreateFontAsset(familyName: string, styleName: string, pointSize: number): FontAsset;
-    CreateFontAsset(font: Font): FontAsset;
-    CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): FontAsset;
-    GetCharacters(fontAsset: FontAsset): string;
-    GetCharactersArray(fontAsset: FontAsset): CSArray<number>;
-}
-declare const FontAsset: FontAssetConstructor;
-    
-interface FontDefinitionConstructor {
-
-
-    FromFont(f: Font): FontDefinition;
-    FromSDFFont(f: FontAsset): FontDefinition;
-}
-declare const FontDefinition: FontDefinitionConstructor;
-    
-interface IExperimentalFeatures {
-    animation: ITransitionAnimations;
-
-
-}
-    
-interface ITransitionAnimations {
-
-
-    Layout(to: Rect, durationMs: number): ValueAnimation<Rect>;
-    Position(to: Vector3, duration: number): ValueAnimation<Vector3>;
-    Rotation(to: Quaternion, duration: number): ValueAnimation<Quaternion>;
-    Scale(to: number, duration: number): ValueAnimation<number>;
-    Size(to: Vector2, durationMs: number): ValueAnimation<Vector2>;
-    Start(from: number, to: number, durationMs: number, onValueChanged: unknown): ValueAnimation<number>;
-    Start(from: Rect, to: Rect, durationMs: number, onValueChanged: unknown): ValueAnimation<Rect>;
-    Start(from: Color, to: Color, durationMs: number, onValueChanged: unknown): ValueAnimation<Color>;
-    Start(from: Vector3, to: Vector3, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector3>;
-    Start(from: Vector2, to: Vector2, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector2>;
-    Start(from: Quaternion, to: Quaternion, durationMs: number, onValueChanged: unknown): ValueAnimation<Quaternion>;
-    Start(from: StyleValues, to: StyleValues, durationMs: number): ValueAnimation<StyleValues>;
-    Start(to: StyleValues, durationMs: number): ValueAnimation<StyleValues>;
-    Start(fromValueGetter: unknown, to: number, durationMs: number, onValueChanged: unknown): ValueAnimation<number>;
-    Start(fromValueGetter: unknown, to: Rect, durationMs: number, onValueChanged: unknown): ValueAnimation<Rect>;
-    Start(fromValueGetter: unknown, to: Color, durationMs: number, onValueChanged: unknown): ValueAnimation<Color>;
-    Start(fromValueGetter: unknown, to: Vector3, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector3>;
-    Start(fromValueGetter: unknown, to: Vector2, durationMs: number, onValueChanged: unknown): ValueAnimation<Vector2>;
-    Start(fromValueGetter: unknown, to: Quaternion, durationMs: number, onValueChanged: unknown): ValueAnimation<Quaternion>;
-    TopLeft(to: Vector2, durationMs: number): ValueAnimation<Vector2>;
-}
-    
-interface IValueAnimationUpdate {
-
-
-    Tick(currentTimeMs: number): void;
-}
-    
-interface IValueAnimation {
-    isRunning: boolean;
-    durationMs: number;
-
-
-    Recycle(): void;
-    Start(): void;
-    Stop(): void;
-}
-    
-    
-interface ITransform {
-    position: Vector3;
-    rotation: Quaternion;
-    scale: Vector3;
-    matrix: Matrix4x4;
-
-
-}
-    
-interface IStylePropertyAnimations {
-    runningAnimationCount: number;
-    completedAnimationCount: number;
-
-
-    CancelAllAnimations(): void;
-    CancelAnimation(id: StylePropertyId): void;
-    GetAllAnimations(outPropertyIds: CSArray<StylePropertyId>): void;
-    HasRunningAnimation(id: StylePropertyId): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Length, to: Length, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Color, to: Color, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Background, to: Background, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: FontDefinition, to: FontDefinition, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Font, to: Font, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TextShadow, to: TextShadow, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Scale, to: Scale, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Translate, to: Translate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: Rotate, to: Rotate, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    Start(id: StylePropertyId, from: TransformOrigin, to: TransformOrigin, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    StartEnum(id: StylePropertyId, from: number, to: number, durationMs: number, delayMs: number, easingCurve: unknown): boolean;
-    UpdateAnimation(id: StylePropertyId): void;
-}
-    
-interface Length {
-    value: number;
-    unit: LengthUnit;
-
-    constructor(value: number): Length;
-    constructor(value: number, unit: LengthUnit): Length;
-
-    Equals(other: Length): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface LengthConstructor {
-
-
-    Percent(value: number): Length;
-}
-declare const Length: LengthConstructor;
-    
-interface TextShadow {
-    offset: Vector2;
-    blurRadius: number;
-    color: Color;
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: TextShadow): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface Translate {
-    x: Length;
-    y: Length;
-    z: number;
-
-    constructor(x: Length, y: Length, z: number): Translate;
-
-    Equals(other: Translate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface TranslateConstructor {
-
-
-    None(): Translate;
-}
-declare const Translate: TranslateConstructor;
-    
-interface TransformOrigin {
-    x: Length;
-    y: Length;
-    z: number;
-
-    constructor(x: Length, y: Length, z: number): TransformOrigin;
-
-    Equals(other: TransformOrigin): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface TransformOriginConstructor {
-
-
-    Initial(): TransformOrigin;
-}
-declare const TransformOrigin: TransformOriginConstructor;
-    
-interface IVisualElementScheduler {
-
-
-    Execute(timerUpdateEvent: unknown): IVisualElementScheduledItem;
-    Execute(updateEvent: unknown): IVisualElementScheduledItem;
-}
-    
-interface IVisualElementScheduledItem {
-    element: VisualElement;
-    isActive: boolean;
-
-
-    Every(intervalMs: number): IVisualElementScheduledItem;
-    ExecuteLater(delayMs: number): void;
-    ForDuration(durationMs: number): IVisualElementScheduledItem;
-    Pause(): void;
-    Resume(): void;
-    StartingIn(delayMs: number): IVisualElementScheduledItem;
-    Until(stopCondition: unknown): IVisualElementScheduledItem;
-}
-    
-interface IEventHandler {
-
-
-    HandleEvent(evt: EventBase): void;
-    HasBubbleUpHandlers(): boolean;
-    HasTrickleDownHandlers(): boolean;
-    SendEvent(e: EventBase): void;
-}
-    
-interface EventBase {
-    eventTypeId: number;
-    timestamp: number;
-    bubbles: boolean;
-    tricklesDown: boolean;
-    target: IEventHandler;
-    isPropagationStopped: boolean;
-    isImmediatePropagationStopped: boolean;
-    isDefaultPrevented: boolean;
-    propagationPhase: PropagationPhase;
-    currentTarget: IEventHandler;
-    dispatch: boolean;
-    imguiEvent: Event;
-    originalMousePosition: Vector2;
-
-
-    Dispose(): void;
-    PreventDefault(): void;
-    StopImmediatePropagation(): void;
-    StopPropagation(): void;
-}
-    
-interface Event {
-    mouseRay: Ray;
-    shift: boolean;
-    control: boolean;
-    alt: boolean;
-    command: boolean;
-    capsLock: boolean;
-    numeric: boolean;
-    functionKey: boolean;
-    isKey: boolean;
-    isMouse: boolean;
-    isScrollWheel: boolean;
-    rawType: EventType;
-    mousePosition: Vector2;
-    delta: Vector2;
-    pointerType: PointerType;
-    button: number;
-    modifiers: EventModifiers;
-    pressure: number;
-    clickCount: number;
-    character: string;
-    keyCode: KeyCode;
-    displayIndex: number;
-    type: EventType;
-    commandName: string;
-
-    constructor(): Event;
-    constructor(displayIndex: number): Event;
-    constructor(other: Event): Event;
-
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    GetTypeForControl(controlID: number): EventType;
-    ToString(): string;
-    Use(): void;
-}
-    
-interface EventConstructor {
-    current: Event;
-
-
-    GetEventCount(): number;
-    KeyboardEvent(key: string): Event;
-    PopEvent(outEvent: Event): boolean;
-}
-declare const Event: EventConstructor;
-    
-interface CallbackEventHandler extends IEventHandler {
-
-
-    HandleEvent(evt: EventBase): void;
-    HasBubbleUpHandlers(): boolean;
-    HasTrickleDownHandlers(): boolean;
-    RegisterCallback<TEventType>(callback: EventCallback<TEventType>, useTrickleDown: TrickleDown): void;
-    RegisterCallback<TEventType, TUserArgsType>(callback: EventCallback<TEventType, TUserArgsType>, userArgs: TUserArgsType, useTrickleDown: TrickleDown): void;
-    SendEvent(e: EventBase): void;
-    UnregisterCallback<TEventType>(callback: EventCallback<TEventType>, useTrickleDown: TrickleDown): void;
-    UnregisterCallback<TEventType, TUserArgsType>(callback: EventCallback<TEventType, TUserArgsType>, useTrickleDown: TrickleDown): void;
-}
-    
-interface EventCallback<TEventType> {
-
-    constructor(object: unknown, method: unknown): EventCallback<TEventType>;
-
-    BeginInvoke(evt: TEventType, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(evt: TEventType): void;
-}
-    
-interface EventCallback<TEventType, TCallbackArgs> {
-
-    constructor(object: unknown, method: unknown): EventCallback<TEventType, TCallbackArgs>;
-
-    BeginInvoke(evt: TEventType, userArgs: TCallbackArgs, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(evt: TEventType, userArgs: TCallbackArgs): void;
-}
-    
-interface Focusable extends CallbackEventHandler {
-    focusController: FocusController;
-    focusable: boolean;
-    tabIndex: number;
-    delegatesFocus: boolean;
-    canGrabFocus: boolean;
-
-
-    Blur(): void;
-    Focus(): void;
-}
-    
-interface FocusController {
-    focusedElement: Focusable;
-
-    constructor(focusRing: IFocusRing): FocusController;
-
-}
-    
-    
-    
-interface StyleEnum<T> extends IStyleValue<T> {
-    value: T;
-    keyword: StyleKeyword;
-
-    constructor(v: T): StyleEnum<T>;
-    constructor(keyword: StyleKeyword): StyleEnum<T>;
-
-    Equals(other: StyleEnum<T>): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleColor extends IStyleValue<Color> {
-    value: Color;
-    keyword: StyleKeyword;
-
-    constructor(v: Color): StyleColor;
-    constructor(keyword: StyleKeyword): StyleColor;
-
-    Equals(other: StyleColor): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleBackground extends IStyleValue<Background> {
-    value: Background;
-    keyword: StyleKeyword;
-
-    constructor(v: Background): StyleBackground;
-    constructor(v: Texture2D): StyleBackground;
-    constructor(v: Sprite): StyleBackground;
-    constructor(v: VectorImage): StyleBackground;
-    constructor(keyword: StyleKeyword): StyleBackground;
-
-    Equals(other: StyleBackground): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleLength extends IStyleValue<Length> {
-    value: Length;
-    keyword: StyleKeyword;
-
-    constructor(v: number): StyleLength;
-    constructor(v: Length): StyleLength;
-    constructor(keyword: StyleKeyword): StyleLength;
-
-    Equals(other: StyleLength): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface Cursor {
-    texture: Texture2D;
-    hotspot: Vector2;
-
-
-    Equals(obj: unknown): boolean;
-    Equals(other: Cursor): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleCursor extends IStyleValue<Cursor> {
-    value: Cursor;
-    keyword: StyleKeyword;
-
-    constructor(v: Cursor): StyleCursor;
-    constructor(keyword: StyleKeyword): StyleCursor;
-
-    Equals(other: StyleCursor): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleRotate extends IStyleValue<Rotate> {
-    value: Rotate;
-    keyword: StyleKeyword;
-
-    constructor(v: Rotate): StyleRotate;
-    constructor(keyword: StyleKeyword): StyleRotate;
-
-    Equals(other: StyleRotate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleScale extends IStyleValue<Scale> {
-    value: Scale;
-    keyword: StyleKeyword;
-
-    constructor(v: Scale): StyleScale;
-    constructor(keyword: StyleKeyword): StyleScale;
-
-    Equals(other: StyleScale): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleTextShadow extends IStyleValue<TextShadow> {
-    value: TextShadow;
-    keyword: StyleKeyword;
-
-    constructor(v: TextShadow): StyleTextShadow;
-    constructor(keyword: StyleKeyword): StyleTextShadow;
-
-    Equals(other: StyleTextShadow): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleTransformOrigin extends IStyleValue<TransformOrigin> {
-    value: TransformOrigin;
-    keyword: StyleKeyword;
-
-    constructor(v: TransformOrigin): StyleTransformOrigin;
-    constructor(keyword: StyleKeyword): StyleTransformOrigin;
-
-    Equals(other: StyleTransformOrigin): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleList<T> extends IStyleValue<CSArray<T>> {
-    value: CSArray<T>;
-    keyword: StyleKeyword;
-
-    constructor(v: CSArray<T>): StyleList<T>;
-    constructor(keyword: StyleKeyword): StyleList<T>;
-
-    Equals(other: StyleList<T>): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleTranslate extends IStyleValue<Translate> {
-    value: Translate;
-    keyword: StyleKeyword;
-
-    constructor(v: Translate): StyleTranslate;
-    constructor(keyword: StyleKeyword): StyleTranslate;
-
-    Equals(other: StyleTranslate): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleFont extends IStyleValue<Font> {
-    value: Font;
-    keyword: StyleKeyword;
-
-    constructor(v: Font): StyleFont;
-    constructor(keyword: StyleKeyword): StyleFont;
-
-    Equals(other: StyleFont): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface StyleFontDefinition extends IStyleValue<FontDefinition> {
-    value: FontDefinition;
-    keyword: StyleKeyword;
-
-    constructor(f: FontDefinition): StyleFontDefinition;
-    constructor(f: FontAsset): StyleFontDefinition;
-    constructor(f: Font): StyleFontDefinition;
-    constructor(keyword: StyleKeyword): StyleFontDefinition;
-
-    Equals(other: StyleFontDefinition): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-}
-    
-interface StyleInt extends IStyleValue<number> {
-    value: number;
-    keyword: StyleKeyword;
-
-    constructor(v: number): StyleInt;
-    constructor(keyword: StyleKeyword): StyleInt;
-
-    Equals(other: StyleInt): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface ICustomStyle {
-
-
-    TryGetValue(property: CustomStyleProperty<number>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<number>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<boolean>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<Color>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<Texture2D>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<Sprite>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<VectorImage>, value: unknown): boolean;
-    TryGetValue<T>(property: CustomStyleProperty<T>, value: unknown): boolean;
-    TryGetValue(property: CustomStyleProperty<string>, value: CSArray<string>): boolean;
-}
-    
-interface CustomStyleProperty<T> {
-    name: string;
-
-    constructor(propertyName: string): CustomStyleProperty<T>;
-
-    Equals(obj: unknown): boolean;
-    Equals(other: CustomStyleProperty<T>): boolean;
-    GetHashCode(): number;
-}
-    
-interface VisualElementStyleSheetSet {
-    count: number;
-    Item: StyleSheet;
-
-
-    Add(styleSheet: StyleSheet): void;
-    Clear(): void;
-    Contains(styleSheet: StyleSheet): boolean;
-    Equals(other: VisualElementStyleSheetSet): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    Remove(styleSheet: StyleSheet): boolean;
-}
-    
-interface StyleSheet extends ScriptableObject {
-    importedWithErrors: boolean;
-    importedWithWarnings: boolean;
-    contentHash: number;
-
-    constructor(): StyleSheet;
-
-}
-    
-interface Hierarchy {
-    parent: VisualElement;
-    childCount: number;
-    Item: VisualElement;
-
-
-    Add(child: VisualElement): void;
-    Children(): CSArray<VisualElement>;
-    Clear(): void;
-    ElementAt(index: number): VisualElement;
-    Equals(other: Hierarchy): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    IndexOf(element: VisualElement): number;
-    Insert(index: number, child: VisualElement): void;
-    Remove(child: VisualElement): void;
-    RemoveAt(index: number): void;
-    Sort(comp: unknown): void;
-}
-    
-interface IPanel {
-    visualTree: VisualElement;
-    dispatcher: EventDispatcher;
-    contextType: ContextType;
-    focusController: FocusController;
-    contextualMenuManager: ContextualMenuManager;
-
-
-    Pick(point: Vector2): VisualElement;
-    PickAll(point: Vector2, picked: CSArray<VisualElement>): VisualElement;
-}
-    
-interface EventDispatcher {
-
-
-}
-    
-interface ContextualMenuManager {
-
-
-    DisplayMenu(triggerEvent: EventBase, target: IEventHandler): void;
-    DisplayMenuIfEventMatches(evt: EventBase, eventHandler: IEventHandler): void;
-}
-    
-interface VisualTreeAsset extends ScriptableObject {
-    importedWithErrors: boolean;
-    importedWithWarnings: boolean;
-    templateDependencies: CSArray<VisualTreeAsset>;
-    stylesheets: CSArray<StyleSheet>;
-    contentHash: number;
-
-    constructor(): VisualTreeAsset;
-
-    CloneTree(): TemplateContainer;
-    CloneTree(bindingPath: string): TemplateContainer;
-    CloneTree(target: VisualElement): void;
-    CloneTree(target: VisualElement, firstElementIndex: unknown, elementAddedCount: unknown): void;
-    Instantiate(): TemplateContainer;
-    Instantiate(bindingPath: string): TemplateContainer;
-}
-    
-interface BindableElement extends VisualElement, IBindable {
-    binding: IBinding;
-    bindingPath: string;
-
-    constructor(): BindableElement;
-
-}
-    
-interface TemplateContainer extends BindableElement {
-    templateId: string;
-    templateSource: VisualTreeAsset;
-    contentContainer: VisualElement;
-
-    constructor(): TemplateContainer;
-    constructor(templateId: string): TemplateContainer;
-
-}
-    
-    
-    
-    
-    
-interface StyleValues {
-    top: number;
-    left: number;
-    width: number;
-    height: number;
-    right: number;
-    bottom: number;
-    color: Color;
-    backgroundColor: Color;
-    unityBackgroundImageTintColor: Color;
-    borderColor: Color;
-    marginLeft: number;
-    marginTop: number;
-    marginRight: number;
-    marginBottom: number;
-    paddingLeft: number;
-    paddingTop: number;
-    paddingRight: number;
-    paddingBottom: number;
-    borderLeftWidth: number;
-    borderRightWidth: number;
-    borderTopWidth: number;
-    borderBottomWidth: number;
-    borderTopLeftRadius: number;
-    borderTopRightRadius: number;
-    borderBottomLeftRadius: number;
-    borderBottomRightRadius: number;
-    opacity: number;
-    flexGrow: number;
-    flexShrink: number;
-
-
-}
-    
-    
-    
-interface BindableElement extends VisualElement, IBindable {
-    binding: IBinding;
-    bindingPath: string;
-
-    constructor(): BindableElement;
-
-}
-    
-interface BaseField<TValueType> extends BindableElement, IMixedValueSupport, INotifyValueChanged<TValueType> {
-    value: TValueType;
-    labelElement: Label;
-    label: string;
-    showMixedValue: boolean;
-
-
-    SetValueWithoutNotify(newValue: TValueType): void;
-}
-    
-interface ITextElement {
-    text: string;
-
-
-}
-    
-interface TextElement extends BindableElement, INotifyValueChanged<string>, ITextElement {
-    text: string;
-    enableRichText: boolean;
-    displayTooltipWhenElided: boolean;
-    isElided: boolean;
-
-    constructor(): TextElement;
-
-    HandleEvent(evt: EventBase): void;
-    MeasureTextSize(textToMeasure: string, width: number, widthMode: MeasureMode, height: number, heightMode: MeasureMode): Vector2;
-}
-    
-interface TextElementConstructor {
-    ussClassName: string;
-
-
-}
-declare const TextElement: TextElementConstructor;
-    
-interface Label extends TextElement {
-
-    constructor(): Label;
-    constructor(text: string): Label;
-
-}
-    
-interface LabelConstructor {
-    ussClassName: string;
-
-
-}
-declare const Label: LabelConstructor;
-    
-interface BaseFieldConstructor {
-    ussClassName: string;
-    labelUssClassName: string;
-    inputUssClassName: string;
-    noLabelVariantUssClassName: string;
-    labelDraggerVariantUssClassName: string;
-    mixedValueLabelUssClassName: string;
-    alignedFieldUssClassName: string;
-
-
-}
-declare const BaseField: BaseFieldConstructor;
-    
-interface TextInputBaseField<TValueType> extends BaseField<TValueType> {
-    text: string;
-    isReadOnly: boolean;
-    isPasswordField: boolean;
-    selectionColor: Color;
-    cursorColor: Color;
-    cursorIndex: number;
-    selectIndex: number;
-    maxLength: number;
-    doubleClickSelectsWord: boolean;
-    tripleClickSelectsLine: boolean;
-    isDelayed: boolean;
-    maskChar: string;
-
-
-    MeasureTextSize(textToMeasure: string, width: number, widthMode: MeasureMode, height: number, heightMode: MeasureMode): Vector2;
-    SelectAll(): void;
-}
-    
-interface TextInputBaseFieldConstructor {
-    ussClassName: string;
-    labelUssClassName: string;
-    inputUssClassName: string;
-    singleLineInputUssClassName: string;
-    multilineInputUssClassName: string;
-    textInputUssName: string;
-
-
-}
-declare const TextInputBaseField: TextInputBaseFieldConstructor;
-    
-interface TextField extends TextInputBaseField<string> {
+interface TextField {
     multiline: boolean;
     value: string;
 
@@ -11438,8 +9973,8 @@ interface SpriteRenderer extends Renderer {
 
     constructor(): SpriteRenderer;
 
-    RegisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
-    UnregisterSpriteChangeCallback(callback: UnityAction<SpriteRenderer>): void;
+    RegisterSpriteChangeCallback(callback: unknown): void;
+    UnregisterSpriteChangeCallback(callback: unknown): void;
 }
     
 interface VelocityOverLifetimeModule {
@@ -12041,6 +10576,7 @@ interface VoxelWorld extends MonoBehaviour {
     globalRadiosityScale: number;
     globalRadiosityDirectLightAmp: number;
     showRadioistyProbes: boolean;
+    focusPosition: Vector3;
     voxelWorldFile: VoxelBinaryFile;
     blockDefines: TextAsset;
     worldNetworker: VoxelWorldNetworker;
@@ -12186,18 +10722,30 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     NetworkInitializeIfDisabled(): void;
     OnSpawnServer(connection: NetworkConnection): void;
     OnStartClient(): void;
-    RpcLogic___TargetAddPointLight_3789428640(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
+    RpcLogic___TargetAddPointLights_178810215(conn: NetworkConnection, dtos: CSArray<PointLightDto>): void;
     RpcLogic___TargetDirtyLights_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetFinishedSendingWorldRpc_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetSetLightingProperties_2623000413(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
-    RpcLogic___TargetWriteChunkRpc_4077799975(conn: NetworkConnection, pos: unknown, chunk: Chunk): void;
+    RpcLogic___TargetWriteChunksRpc_517074003(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
     RpcLogic___TargetWriteVoxelRpc_1359590914(conn: NetworkConnection, pos: unknown, voxel: number): void;
-    TargetAddPointLight(conn: NetworkConnection, color: Color, position: Vector3, rotation: Quaternion, intensity: number, range: number, castShadows: boolean, highQualityLight: boolean): void;
+    TargetAddPointLights(conn: NetworkConnection, dtos: CSArray<PointLightDto>): void;
     TargetDirtyLights(conn: NetworkConnection): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
     TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
-    TargetWriteChunkRpc(conn: NetworkConnection, pos: unknown, chunk: Chunk): void;
+    TargetWriteChunksRpc(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
     TargetWriteVoxelRpc(conn: NetworkConnection, pos: unknown, voxel: number): void;
+}
+    
+interface PointLightDto {
+    color: Color;
+    position: Vector3;
+    rotation: Quaternion;
+    intensity: number;
+    range: number;
+    castShadows: boolean;
+    highQualityLight: boolean;
+
+
 }
     
 interface Chunk {
@@ -12243,6 +10791,7 @@ interface Chunk {
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
     UpdateMaterialPropertiesForChunk(): void;
+    WillUpdateVisuals(): boolean;
     WriteVoxel(worldPos: unknown, num: number): void;
 }
     
@@ -13534,55 +12083,37 @@ interface Scrollbar extends Selectable, IBeginDragHandler, IInitializePotentialD
     SetValueWithoutNotify(input: number): void;
 }
     
-interface ScrollEvent extends UnityEvent<number> {
+interface ScrollEvent {
 
     constructor(): ScrollEvent;
 
 }
     
-interface SubmitEvent extends UnityEvent<string> {
+interface SubmitEvent {
 
     constructor(): SubmitEvent;
 
 }
     
-interface SelectionEvent extends UnityEvent<string> {
+interface SelectionEvent {
 
     constructor(): SelectionEvent;
 
 }
     
-interface UnityEvent<T0, T1, T2> extends UnityEventBase {
-
-    constructor(): UnityEvent<T0, T1, T2>;
-
-    AddListener(call: UnityAction<T0, T1, T2>): void;
-    Invoke(arg0: T0, arg1: T1, arg2: T2): void;
-    RemoveListener(call: UnityAction<T0, T1, T2>): void;
-}
-    
-interface UnityAction<T0, T1, T2> {
-
-    constructor(object: unknown, method: unknown): UnityAction<T0, T1, T2>;
-
-    BeginInvoke(arg0: T0, arg1: T1, arg2: T2, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): void;
-    Invoke(arg0: T0, arg1: T1, arg2: T2): void;
-}
-    
-interface TextSelectionEvent extends UnityEvent<string, number, number> {
+interface TextSelectionEvent {
 
     constructor(): TextSelectionEvent;
 
 }
     
-interface OnChangeEvent extends UnityEvent<string> {
+interface OnChangeEvent {
 
     constructor(): OnChangeEvent;
 
 }
     
-interface TouchScreenKeyboardEvent extends UnityEvent<Status> {
+interface TouchScreenKeyboardEvent {
 
     constructor(): TouchScreenKeyboardEvent;
 
@@ -13602,6 +12133,53 @@ interface TMP_InputValidator extends ScriptableObject {
 
     Validate(text: CSArray<string>, pos: unknown, ch: string): string;
 }
+    
+interface Event {
+    mouseRay: Ray;
+    shift: boolean;
+    control: boolean;
+    alt: boolean;
+    command: boolean;
+    capsLock: boolean;
+    numeric: boolean;
+    functionKey: boolean;
+    isKey: boolean;
+    isMouse: boolean;
+    isScrollWheel: boolean;
+    rawType: EventType;
+    mousePosition: Vector2;
+    delta: Vector2;
+    pointerType: PointerType;
+    button: number;
+    modifiers: EventModifiers;
+    pressure: number;
+    clickCount: number;
+    character: string;
+    keyCode: KeyCode;
+    displayIndex: number;
+    type: EventType;
+    commandName: string;
+
+    constructor(): Event;
+    constructor(displayIndex: number): Event;
+    constructor(other: Event): Event;
+
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    GetTypeForControl(controlID: number): EventType;
+    ToString(): string;
+    Use(): void;
+}
+    
+interface EventConstructor {
+    current: Event;
+
+
+    GetEventCount(): number;
+    KeyboardEvent(key: string): Event;
+    PopEvent(outEvent: Event): boolean;
+}
+declare const Event: EventConstructor;
     
 interface Rigidbody2D extends Component {
     position: Vector2;
@@ -13908,7 +12486,7 @@ interface Slider extends Selectable, IInitializePotentialDragHandler, IDragHandl
     SetValueWithoutNotify(input: number): void;
 }
     
-interface SliderEvent extends UnityEvent<number> {
+interface SliderEvent {
 
     constructor(): SliderEvent;
 
@@ -14402,9 +12980,9 @@ interface MoveModifier {
     
 interface DynamicVariables extends ScriptableObject {
     collectionId: string;
-    strings: CSArray<KeyValueReference<string>>;
-    numbers: CSArray<KeyValueReference<number>>;
-    vectors: CSArray<KeyValueReference<Vector3>>;
+    strings: CSArray<unknown>;
+    numbers: CSArray<unknown>;
+    vectors: CSArray<unknown>;
 
     constructor(): DynamicVariables;
 
@@ -14418,14 +12996,6 @@ interface DynamicVariables extends ScriptableObject {
     SetNumber(key: string, val: number): void;
     SetString(key: string, val: string): void;
     SetVector3(key: string, val: Vector3): void;
-}
-    
-interface KeyValueReference<T> {
-    key: string;
-    value: T;
-
-    constructor(): KeyValueReference<T>;
-
 }
     
 interface ProjectileHitEvent {

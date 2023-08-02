@@ -5,7 +5,6 @@ import { EntitySpawnEvent } from "Server/Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "Server/Signals/MoveCommandDataEvent";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
@@ -24,6 +23,12 @@ export class EntityService implements OnStart {
 
 	constructor(private readonly invService: InventoryService, private readonly chatService: ChatService) {
 		this.chatService.RegisterCommand(new EntityCommand());
+
+		const humanEntityPrefab = this.GetEntityPrefab(EntityPrefabType.HUMAN);
+		const startTime = os.clock();
+		PoolManager.PreLoadPool(humanEntityPrefab, 60);
+		const timeDiff = os.clock() - startTime;
+		print(`Preloaded entity prefabs in ${math.floor(timeDiff * 1000)}ms`);
 	}
 
 	OnStart(): void {
@@ -51,13 +56,7 @@ export class EntityService implements OnStart {
 		});
 	}
 
-	public SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3): Entity {
-		const id = this.idCounter;
-		this.idCounter++;
-
-		const beforeEvent = ServerSignals.BeforeEntitySpawn.fire(id, player, pos ?? new Vector3(0, 0, 0));
-
-		// Spawn character game object
+	public GetEntityPrefab(entityPrefabType: EntityPrefabType): Object {
 		let entityPrefab: Object;
 		if (this.loadedEntityPrefabs.has(entityPrefabType)) {
 			entityPrefab = this.loadedEntityPrefabs.get(entityPrefabType)!;
@@ -68,12 +67,19 @@ export class EntityService implements OnStart {
 			}
 			this.loadedEntityPrefabs.set(entityPrefabType, entityPrefab);
 		}
-		const entityGO = GameObjectUtil.InstantiateAt(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
+		return entityPrefab;
+	}
+
+	public SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3): Entity {
+		const id = this.idCounter;
+		this.idCounter++;
+
+		const beforeEvent = ServerSignals.BeforeEntitySpawn.fire(id, player, pos ?? new Vector3(0, 0, 0));
+
+		// Spawn character game object
+		let entityPrefab = this.GetEntityPrefab(entityPrefabType);
+		const entityGO = PoolManager.SpawnObject(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
 		entityGO.name = `entity_${id}`;
-
-		const entityModelGO = entityGO.transform.Find("EntityModel");
-
-		const destroyWatcher = entityGO.AddComponent("DestroyWatcher") as DestroyWatcher;
 		if (player) {
 			NetworkUtil.SpawnWithClientOwnership(entityGO, player.clientId);
 		} else {
@@ -92,13 +98,8 @@ export class EntityService implements OnStart {
 			player.SetCharacter(entity);
 		}
 
-		// Spawn character model
-		// entity.SpawnCharacterModel(characterDef);
-
-		const entityDriver = entityGO.GetComponent<EntityDriver>();
-
 		// Custom move command data handling:
-		entityDriver.OnDispatchCustomData((tick, customData) => {
+		entity.entityDriver.OnDispatchCustomData((tick, customData) => {
 			const allData = customData.Decode() as { key: unknown; value: unknown }[];
 			for (const data of allData) {
 				const moveEvent = new MoveCommandDataEvent(player?.clientId ?? -1, tick, data.key, data.value);
