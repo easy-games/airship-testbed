@@ -19,16 +19,17 @@ import { PlayerService } from "../Player/PlayerService";
 export class EntityService implements OnStart {
 	private idCounter = 1;
 	private entities = new Map<number, Entity>();
-	private loadedEntityPrefabs = new Map<EntityPrefabType, Object>();
+	private loadedEntityPrefabs = new Map<EntityPrefabType, NetworkObject>();
 
 	constructor(private readonly invService: InventoryService, private readonly chatService: ChatService) {
 		this.chatService.RegisterCommand(new EntityCommand());
 
 		const humanEntityPrefab = this.GetEntityPrefab(EntityPrefabType.HUMAN);
+		// PoolManager.PreLoadPool(humanEntityPrefab, 60);
 		const startTime = os.clock();
-		PoolManager.PreLoadPool(humanEntityPrefab, 60);
+		InstanceFinder.NetworkManager.CacheObjects(humanEntityPrefab, 60, InstanceFinder.IsServer);
 		const timeDiff = os.clock() - startTime;
-		print(`Preloaded entity prefabs in ${math.floor(timeDiff * 1000)}ms`);
+		print("Preloaded entities in " + math.floor(timeDiff * 1000) + "ms");
 	}
 
 	OnStart(): void {
@@ -56,15 +57,12 @@ export class EntityService implements OnStart {
 		});
 	}
 
-	public GetEntityPrefab(entityPrefabType: EntityPrefabType): Object {
-		let entityPrefab: Object;
+	public GetEntityPrefab(entityPrefabType: EntityPrefabType): NetworkObject {
+		let entityPrefab: NetworkObject;
 		if (this.loadedEntityPrefabs.has(entityPrefabType)) {
 			entityPrefab = this.loadedEntityPrefabs.get(entityPrefabType)!;
 		} else {
-			entityPrefab = AssetBridge.LoadAsset(entityPrefabType);
-			if (!entityPrefab) {
-				throw "failed to find entity prefab: " + entityPrefabType;
-			}
+			entityPrefab = AssetBridge.LoadAsset<GameObject>(entityPrefabType).GetComponent<NetworkObject>();
 			this.loadedEntityPrefabs.set(entityPrefabType, entityPrefab);
 		}
 		return entityPrefab;
@@ -78,7 +76,15 @@ export class EntityService implements OnStart {
 
 		// Spawn character game object
 		let entityPrefab = this.GetEntityPrefab(entityPrefabType);
-		const entityGO = PoolManager.SpawnObject(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
+		const entityNob = InstanceFinder.NetworkManager.GetPooledInstantiated(
+			entityPrefab,
+			entityPrefab.SpawnableCollectionId,
+			true,
+		);
+		const entityGO = entityNob.gameObject;
+		const entityTransform = entityGO.transform;
+		entityTransform.position = beforeEvent.spawnPosition;
+		// const entityGO = PoolManager.SpawnObject(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
 		entityGO.name = `entity_${id}`;
 		if (player) {
 			NetworkUtil.SpawnWithClientOwnership(entityGO, player.clientId);
@@ -86,13 +92,11 @@ export class EntityService implements OnStart {
 			NetworkUtil.Spawn(entityGO);
 		}
 
-		const nob = entityGO.GetComponent("NetworkObject") as NetworkObject;
-
 		const inv = this.invService.MakeInventory();
 		if (player) {
 			this.invService.Subscribe(player.clientId, inv, true);
 		}
-		const entity = new CharacterEntity(id, nob, player?.clientId, inv);
+		const entity = new CharacterEntity(id, entityNob, player?.clientId, inv);
 		this.entities.set(id, entity);
 		if (player) {
 			player.SetCharacter(entity);
