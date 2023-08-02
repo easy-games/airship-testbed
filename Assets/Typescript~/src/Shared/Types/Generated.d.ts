@@ -13027,4 +13027,25 @@ interface ColorSetting {
 
     CopyFrom(otherSettings: ColorSetting): void;
 }
+    
+interface DefaultObjectPool extends ObjectPool {
+    Cache: CSArray<CSDictionary<number, CSArray<NetworkObject>>>;
+
+    constructor(): DefaultObjectPool;
+
+    CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
+    ClearPool(): void;
+    ClearPool(collectionId: number): void;
+    RetrieveObject(prefabId: number, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
+    StoreObject(instantiated: NetworkObject, asServer: boolean): void;
+}
+    
+interface AirshipObjectPool extends DefaultObjectPool {
+    maxSpawnPerFrame: number;
+
+    constructor(): AirshipObjectPool;
+
+    SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
+}
 

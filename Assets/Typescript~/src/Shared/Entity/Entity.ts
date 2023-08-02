@@ -154,11 +154,11 @@ export class Entity {
 				this.SetPlayer(player);
 			} else {
 				const player = Dependency<PlayerController>().GetPlayerFromClientId(this.ClientId);
-				if (player) {
-					print(`Found Player that controls this entity. (Player=${player.username}, Entity=${this.id})`);
-				} else {
-					print(`Entity is not controlled by any player. (Entity=${this.id})`);
-				}
+				// if (player) {
+				// 	print(`Found Player that controls this entity. (Player=${player.username}, Entity=${this.id})`);
+				// } else {
+				// 	print(`Entity is not controlled by any player. (Entity=${this.id})`);
+				// }
 				this.SetPlayer(player);
 			}
 		}
@@ -249,6 +249,9 @@ export class Entity {
 
 		if (this.player) {
 			this.player.SetCharacter(undefined);
+		}
+		if (this.healthbar) {
+			this.healthbar.Destroy();
 		}
 
 		if (RunUtil.IsServer()) {

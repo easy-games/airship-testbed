@@ -4,6 +4,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { EntitySpawnClientEvent } from "Client/Signals/EntitySpawnClientEvent";
 import { CharacterEntity, CharacterEntityDto } from "Shared/Entity/Character/CharacterEntity";
 import { Entity, EntityDto } from "Shared/Entity/Entity";
+import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { EntitySerializer } from "Shared/Entity/EntitySerializer";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { Network } from "Shared/Network";
@@ -20,7 +21,13 @@ export class EntityController implements OnStart {
 	constructor(
 		private readonly invController: InventoryController,
 		private readonly playerController: PlayerController,
-	) {}
+	) {
+		const humanEntityPrefab = AssetBridge.LoadAsset<GameObject>(
+			EntityPrefabType.HUMAN,
+		).GetComponent<NetworkObject>();
+		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as AirshipObjectPool;
+		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
+	}
 
 	OnStart(): void {
 		Network.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {

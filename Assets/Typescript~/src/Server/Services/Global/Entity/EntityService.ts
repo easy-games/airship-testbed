@@ -20,16 +20,13 @@ export class EntityService implements OnStart {
 	private idCounter = 1;
 	private entities = new Map<number, Entity>();
 	private loadedEntityPrefabs = new Map<EntityPrefabType, NetworkObject>();
+	private airshipPool = GameObject.Find("Network").GetComponent<AirshipObjectPool>();
 
 	constructor(private readonly invService: InventoryService, private readonly chatService: ChatService) {
 		this.chatService.RegisterCommand(new EntityCommand());
 
 		const humanEntityPrefab = this.GetEntityPrefab(EntityPrefabType.HUMAN);
-		// PoolManager.PreLoadPool(humanEntityPrefab, 60);
-		const startTime = os.clock();
-		InstanceFinder.NetworkManager.CacheObjects(humanEntityPrefab, 60, InstanceFinder.IsServer);
-		const timeDiff = os.clock() - startTime;
-		print("Preloaded entities in " + math.floor(timeDiff * 1000) + "ms");
+		this.airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
 	}
 
 	OnStart(): void {
@@ -84,6 +81,7 @@ export class EntityService implements OnStart {
 		const entityGO = entityNob.gameObject;
 		const entityTransform = entityGO.transform;
 		entityTransform.position = beforeEvent.spawnPosition;
+		// entityDriver.Teleport(beforeEvent.spawnPosition);
 		// const entityGO = PoolManager.SpawnObject(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
 		entityGO.name = `entity_${id}`;
 		if (player) {

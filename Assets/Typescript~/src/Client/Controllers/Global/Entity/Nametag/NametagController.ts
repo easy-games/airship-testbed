@@ -43,6 +43,13 @@ export class NametagController implements OnStart {
 				this.UpdateNametag(event.Player.Character);
 			}
 		});
+
+		ClientSignals.EntityDespawn.Connect((entity) => {
+			const nameTag = entity.model.transform.FindChild(this.nameTageId);
+			if (nameTag) {
+				Object.Destroy(nameTag.gameObject);
+			}
+		});
 	}
 
 	public CreateNametag(entity: Entity): GameObject {

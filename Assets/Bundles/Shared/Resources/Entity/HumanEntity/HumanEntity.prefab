@@ -628,10 +628,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SprintVFX
       objectReference: {fileID: 0}
-    - target: {fileID: 7574025266275398663, guid: c1ae06ea821350a448e70e1d24013b6c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1ae06ea821350a448e70e1d24013b6c, type: 3}
 --- !u!4 &3167209969381873463 stripped
@@ -1747,10 +1743,6 @@ PrefabInstance:
     - target: {fileID: 532096394122571217, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
       propertyPath: m_Name
       value: SlideVFX
-      objectReference: {fileID: 0}
-    - target: {fileID: 7574025266275398663, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e4f3504ea329924ca0e3824e6fc9389, type: 3}

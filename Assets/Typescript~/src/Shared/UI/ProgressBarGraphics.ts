@@ -132,4 +132,8 @@ export class ProgressBarGraphics {
 
 		this.currentDelta = percentDelta;
 	}
+
+	public Destroy(): void {
+		Object.Destroy(this.refs.gameObject);
+	}
 }

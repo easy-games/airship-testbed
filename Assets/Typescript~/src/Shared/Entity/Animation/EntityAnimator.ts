@@ -9,7 +9,7 @@ import { AudioManager } from "../../Audio/AudioManager";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { ArrayUtil } from "../../Util/ArrayUtil";
 import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
-import { Bundle_Entity, Bundle_Entity_OnHit, BundleGroupNames } from "../../Util/ReferenceManagerResources";
+import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
 
@@ -80,6 +80,7 @@ export class EntityAnimator {
 			}
 			this.OnAnimationEvent(data.key, data);
 		});
+		this.entityRef.root.gameObject.SetActive(true);
 	}
 
 	public PlayAnimation(clip: AnimationClip, layer = 0, wrapMode: WrapMode = WrapMode.Default): AnimancerState {
@@ -147,7 +148,12 @@ export class EntityAnimator {
 		}
 		//Spawn death particle
 		if (this.deathEffectTemplate) {
-			const go = EffectsManager.SpawnEffectAtPosition(this.deathEffectTemplate, this.entity.GetHeadPosition());
+			const go = EffectsManager.SpawnEffectAtPosition(
+				this.deathEffectTemplate,
+				this.entity.GetHeadPosition(),
+				undefined,
+				1.9,
+			);
 			go.transform.SetParent(this.entity.gameObject.transform);
 		}
 
