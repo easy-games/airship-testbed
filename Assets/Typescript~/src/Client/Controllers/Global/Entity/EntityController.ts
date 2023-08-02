@@ -26,7 +26,7 @@ export class EntityController implements OnStart {
 			EntityPrefabType.HUMAN,
 		).GetComponent<NetworkObject>();
 		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as AirshipObjectPool;
-		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
+		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 100);
 	}
 
 	OnStart(): void {
