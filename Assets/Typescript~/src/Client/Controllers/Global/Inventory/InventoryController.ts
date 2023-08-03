@@ -17,6 +17,10 @@ export class InventoryController implements OnStart {
 	public HeldSlotChanged = new Signal<number>();
 	public LocalInventoryAdded = new Signal<Inventory>();
 
+	private enabled = true;
+	private disablers = new Set<number>();
+	private disablerCounter = 1;
+
 	constructor() {}
 
 	OnStart(): void {
@@ -85,16 +89,20 @@ export class InventoryController implements OnStart {
 
 		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
 			keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+				if (!this.enabled) return;
 				this.SetHeldSlot(hotbarIndex);
 			});
 		}
 
 		keyboard.OnKeyDown(KeyCode.Q, (event) => {
+			if (!this.enabled) return;
 			this.DropItemInHand();
 		});
 
 		// Scroll to select held item:
 		mouse.Scrolled.Connect((delta) => {
+			if (!this.enabled) return;
+
 			const selectedSlot = this.LocalInventory?.GetSelectedSlot();
 			if (selectedSlot === undefined) return;
 
@@ -120,6 +128,21 @@ export class InventoryController implements OnStart {
 				}
 			}
 		});
+	}
+
+	public AddDisabler(): () => void {
+		const id = this.disablerCounter;
+		this.disablerCounter++;
+		this.disablers.add(id);
+		this.enabled = false;
+		return () => {
+			this.disablers.delete(id);
+			if (this.disablers.size() === 0) {
+				this.enabled = true;
+			} else {
+				this.enabled = false;
+			}
+		};
 	}
 
 	public SwapSlots(

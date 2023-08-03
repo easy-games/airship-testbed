@@ -60,7 +60,7 @@ export class KeyboardDriver {
 				this.keyDownSignals.delete(key);
 			}
 
-			const newCount = this.keyDownCounter.get(key)! - 1;
+			const newCount = (this.keyDownCounter.get(key) ?? 0) - 1;
 			if (newCount <= 0) {
 				this.keyDownCounter.delete(key);
 				UserInputService.InputProxy.UnregisterKeyCode(key);
@@ -95,7 +95,7 @@ export class KeyboardDriver {
 				this.keyUpSignals.delete(key);
 			}
 
-			const newCount = this.keyUpCounter.get(key)! - 1;
+			const newCount = (this.keyUpCounter.get(key) ?? 0) - 1;
 			if (newCount <= 0) {
 				this.keyUpCounter.delete(key);
 				UserInputService.InputProxy.UnregisterKeyCode(key);

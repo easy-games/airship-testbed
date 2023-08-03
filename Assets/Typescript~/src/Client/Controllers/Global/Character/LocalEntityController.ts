@@ -14,6 +14,9 @@ import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
 import { ClientSettingsController } from "../CollectionManager/ClientSettingsController";
 import { EntityController } from "../Entity/EntityController";
 import { EntityInput } from "./EntityInput";
+import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
+import { InventoryController } from "../Inventory/InventoryController";
+import CameraModeTransition from "../Camera/CameraModeTransition";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -44,6 +47,7 @@ export class LocalEntityController implements OnStart {
 	constructor(
 		private readonly cameraController: CameraController,
 		private readonly clientSettings: ClientSettingsController,
+		private readonly inventoryController: InventoryController,
 	) {}
 
 	/** Returns `true` if the player is in first-person mode. */
@@ -171,6 +175,31 @@ export class LocalEntityController implements OnStart {
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.ToggleFirstPerson();
+				}
+			});
+
+			// Toggle fly cam:
+			keyboard.OnKeyDown(KeyCode.P, (event) => {
+				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+					if (flyCam) {
+						flyCam = false;
+						flyingBin.Clean();
+					} else {
+						flyCam = true;
+						let backToFirstPerson = this.firstPerson;
+						if (backToFirstPerson) {
+							this.SetFirstPerson(false);
+						}
+						this.cameraController.SetMode(new FlyCameraMode());
+						flyingBin.Add(() => {
+							this.cameraController.ClearMode();
+							if (backToFirstPerson) {
+								this.SetFirstPerson(true);
+							}
+						});
+						flyingBin.Add(this.entityInput!.AddDisabler());
+						flyingBin.Add(this.inventoryController.AddDisabler());
+					}
 				}
 			});
 

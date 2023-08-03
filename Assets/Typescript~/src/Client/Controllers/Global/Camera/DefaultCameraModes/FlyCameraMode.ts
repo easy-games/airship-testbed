@@ -4,12 +4,29 @@ import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
+import { RunUtil } from "Shared/Util/RunUtil";
+import { ClientSettingsController } from "../../CollectionManager/ClientSettingsController";
+import { Dependency } from "@easy-games/flamework-core";
+import { MathUtil } from "Shared/Util/MathUtil";
 
 const SPEED = 12;
-const ROTATION_SENSITIVITY = 0.005;
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
+
+const MIN_FOV = 5;
+const MAX_FOV = 120;
+const START_FOV = 70;
+
+const FOV_SCROLL_SENSITIVITY = 10;
+
+let MOUSE_SENS_SCALAR = 0.2;
+if (RunUtil.IsMac()) {
+	MOUSE_SENS_SCALAR *= 4;
+}
+if (!RunUtil.IsEditor()) {
+	MOUSE_SENS_SCALAR *= 0.15;
+}
 
 export class FlyCameraMode implements CameraMode {
 	private bin = new Bin();
@@ -20,18 +37,29 @@ export class FlyCameraMode implements CameraMode {
 	private positionSpring!: Spring;
 	private xRotSpring!: Spring;
 	private yRotVelSpring!: Spring;
+	private fovSpring!: Spring;
+
+	private camera!: Camera;
+	private originalFov = 0;
+	private currentFov = 0;
 
 	private keyboard!: Keyboard;
 	private mouse!: Mouse;
 	private readonly keysDown = new Set<KeyCode>();
 
-	private rightClicking = false;
+	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
 	OnStart(camera: Camera) {
 		const transform = camera.transform;
 		this.positionSpring = new Spring(transform.position, 5);
 		this.xRotSpring = new Spring(new Vector3(math.rad(90), 0, 0), 5);
 		this.yRotVelSpring = new Spring(new Vector3(0, 0, 0), 3);
+		this.fovSpring = new Spring(new Vector3(0, 0, camera.fieldOfView), 5);
+		this.fovSpring.goal = new Vector3(0, 0, START_FOV);
+
+		this.camera = camera;
+		this.originalFov = camera.fieldOfView;
+		this.currentFov = this.originalFov;
 
 		this.keyboard = this.bin.Add(new Keyboard());
 		this.mouse = this.bin.Add(new Mouse());
@@ -70,6 +98,15 @@ export class FlyCameraMode implements CameraMode {
 				),
 			);
 		}
+
+		this.bin.Connect(this.mouse.Scrolled, (deltaScroll) => {
+			const delta = -deltaScroll * FOV_SCROLL_SENSITIVITY;
+			this.fovSpring.goal = new Vector3(0, 0, math.clamp(this.fovSpring.goal.z + delta, MIN_FOV, MAX_FOV));
+		});
+
+		this.bin.Add(() => {
+			this.camera.fieldOfView = this.originalFov;
+		});
 	}
 
 	OnStop() {
@@ -109,27 +146,33 @@ export class FlyCameraMode implements CameraMode {
 
 		// Handle camera rotation when right-clicking:
 		const rightClick = this.mouse.IsRightButtonDown();
-		this.rightClicking = rightClick;
 		if (rightClick) {
+			const sensFovScalar = MathUtil.Map(this.currentFov, MIN_FOV, MAX_FOV, 0.2, 1);
 			const mouseDelta = this.mouse.GetDelta();
+			const sensitivity = this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR * sensFovScalar;
 			this.xRotSpring.goal = new Vector3(
-				math.clamp(this.xRotSpring.goal.x + mouseDelta.y * ROTATION_SENSITIVITY, MIN_ROT_X, MAX_ROT_X),
+				math.clamp(this.xRotSpring.goal.x + mouseDelta.y * sensitivity, MIN_ROT_X, MAX_ROT_X),
 				0,
 				0,
 			);
-			this.xRot = this.xRotSpring.update(dt).x;
-			this.yRotVelSpring.goal = new Vector3(0, -mouseDelta.x * ROTATION_SENSITIVITY, 0);
+			this.yRotVelSpring.goal = new Vector3(0, -mouseDelta.x * sensitivity, 0);
 		} else {
 			this.yRotVelSpring.goal = new Vector3(0, 0, 0);
 		}
+		this.xRot = this.xRotSpring.update(dt).x;
 		this.yRot = (this.yRot + this.yRotVelSpring.update(dt).y) % (math.pi * 2);
 	}
 
 	OnPostUpdate() {}
 
 	OnLateUpdate(dt: number) {
+		const fov = this.fovSpring.update(dt).z;
+		this.currentFov = fov;
+		this.camera.fieldOfView = fov;
+
 		const position = this.positionSpring.update(dt);
-		const rotation = Quaternion.Euler(-this.xRot + math.pi / 2, -this.yRot, 0);
+		const rotation = Quaternion.Euler(math.deg(-this.xRot + math.pi / 2), math.deg(-this.yRot), 0);
+
 		return new CameraTransform(position, rotation);
 	}
 
