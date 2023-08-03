@@ -41,6 +41,7 @@ export class ProgressBarGraphics {
 
 		this.graphicsHolder.gameObject.SetActive(true);
 		this.brokenGraphicsHolder.gameObject.SetActive(false);
+		this.growthFillTransform.gameObject.SetActive(false);
 
 		this.deathOnZero = options?.deathOnZero ?? true;
 

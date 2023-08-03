@@ -26,7 +26,7 @@ export class EntityService implements OnStart {
 		this.chatService.RegisterCommand(new EntityCommand());
 
 		const humanEntityPrefab = this.GetEntityPrefab(EntityPrefabType.HUMAN);
-		this.airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
+		this.airshipPool.SlowlyCacheObjects(humanEntityPrefab, 100);
 	}
 
 	OnStart(): void {
