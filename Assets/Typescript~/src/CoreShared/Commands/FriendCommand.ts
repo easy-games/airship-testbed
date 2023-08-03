@@ -2,8 +2,9 @@ import { FriendAPI } from "CoreShared/API/FriendAPI";
 import { Player } from "Shared/Player/Player";
 import { ChatCommand } from "./ChatCommand";
 import { encode } from "CoreShared/json";
+import { UserAPI } from "CoreShared/API/UserAPI";
 
-export class FriendsCommand extends ChatCommand {
+export class FriendCommand extends ChatCommand {
 	private usageString =
 		`Usage: /fr [action] [actionArgs].\n` +
 		`Examples:\n` +
@@ -52,17 +53,17 @@ export class FriendsCommand extends ChatCommand {
 
 			const discriminatedUsername = args[1];
 
-			const fsd = FriendAPI.GetFriendStatusData(discriminatedUsername);
-
-			if (fsd) {
-				FriendAPI.TerminateFriendshipAsync(fsd.userId).then(() => {
-					player.SendMessage(`Friendship has been terminated for ${discriminatedUsername}.`);
-				});
-			} else {
-				player.SendMessage(
-					`Unable to find friend with discriminatedUsername: ${discriminatedUsername}. ${this.usageString}`,
-				);
-			}
+			UserAPI.GetUserAsync(discriminatedUsername).then((user) => {
+				if (user) {
+					FriendAPI.TerminateFriendshipAsync(user.uid).then(() => {
+						player.SendMessage(`Friendship has been terminated for ${discriminatedUsername}.`);
+					});
+				} else {
+					player.SendMessage(
+						`Unable to find friend with discriminatedUsername: ${discriminatedUsername}. ${this.usageString}`,
+					);
+				}
+			});
 
 			return;
 		}

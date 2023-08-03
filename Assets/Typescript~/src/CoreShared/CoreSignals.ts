@@ -1,5 +1,6 @@
 import { Signal } from "Shared/Util/Signal";
 import { UserStatus } from "./SocketIOMessages/Status";
+import { Party } from "./SocketIOMessages/Party";
 
 export const CoreSignals = {
 	CoreInitialized: new Signal<{ idToken: string }>(),
@@ -12,6 +13,6 @@ export const CoreSignals = {
 	FriendAccepted: new Signal<{ targetId: string }>(),
 	FriendUserStatusChanged: new Signal<{ friendUid: string; status: UserStatus; gameName: string | undefined }>(),
 
-	PartyInviteReceived: new Signal<{}>(),
-	PartyUpdated: new Signal<{}>(),
+	PartyInviteReceived: new Signal<Party>(),
+	PartyUpdated: new Signal<Party>(),
 };

@@ -5,6 +5,9 @@ import { UpdateUserDto } from "./SocketIOMessages/UpdateUserDto";
 import { FriendAPI } from "./API/FriendAPI";
 import { encode } from "./json";
 import { SetInterval } from "./Util/Timer";
+import { PartyAPI } from "./API/PartyAPI";
+import { UserStatus } from "./SocketIOMessages/Status";
+import { ApiHelper } from "./ApiHelper";
 
 print(`CoreShared.Main.ts()`);
 
@@ -23,6 +26,10 @@ CoreSignals.UserServiceInitialized.Connect(async () => {
 
 	const friends = await FriendAPI.GetFriendsAsync();
 	print(`Main.ts CoreSignals.UserServiceInitialized! friends: ${encode(friends)}`);
+
+	await PartyAPI.InitAsync();
+
+	UserAPI.UpdateCurrentUserStatus(UserStatus.IN_GAME, ApiHelper.GAME_NAME);
 });
 
 CoreSignals.GameCoordinatorMessage.Connect((signal) => {
@@ -73,5 +80,5 @@ CoreSignals.PartyUpdated.Connect((signal) => {
 });
 
 if (RunCore.IsClient()) {
-	//EasyCore.InitAsync();
+	EasyCore.InitAsync();
 }

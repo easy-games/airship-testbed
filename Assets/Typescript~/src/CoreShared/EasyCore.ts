@@ -45,6 +45,15 @@ export class EasyCore {
 		return this.coreUserData;
 	}
 
+	static async GetAsync2(): Promise<string> {
+		const result = new Promise<string>((resolve, reject) => {
+			const resultString = this.EasyCoreAPI.SendAsync2() as string;
+			resolve(resultString);
+		});
+
+		return result;
+	}
+
 	static async GetAsync<T>(
 		url: string,
 		params: Map<string, string> | undefined = undefined,
@@ -142,28 +151,19 @@ export class EasyCore {
 	}
 
 	static async EmitAsync(eventName: string, jsonEvent: string | undefined = undefined) {
-		//print(`EmitAsync() 0 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
-
 		try {
 			return new Promise<void>((resolve, reject) => {
-				//print(`EmitAsync() 1 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
 				const onCompleteHook = this.EasyCoreAPI.EmitAsync(eventName, jsonEvent ? jsonEvent : "");
-				//print(`EmitAsync() 2 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
 				onCompleteHook.OnCompleteEvent((operationResult) => {
-					//print(`EmitAsync() 3 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
 					if (operationResult.IsSuccess) {
-						//print(`EmitAsync() 4 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
 						resolve();
-						//print(`EmitAsync() 5 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
 					} else {
-						//print(`EmitAsync() 6 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
 						reject(operationResult.ReturnString);
-						//print(`EmitAsync() 7 eventName: ${eventName}, jsonEvent: ${jsonEvent}`);
 					}
 				});
 			});
 		} catch (ex) {
-			//print(`EmitAsync() 8 eventName: ${eventName}, jsonEvent: ${jsonEvent}. ERROR: ${ex}`);
+			print(`EmitAsync() Failed. eventName: ${eventName}, jsonEvent: ${jsonEvent}. ERROR: ${ex}`);
 		}
 	}
 

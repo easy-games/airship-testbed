@@ -122,6 +122,15 @@ export class FriendAPI {
 		return fsds;
 	}
 
+	static async GetFriendsAsync2(): Promise<string> {
+		try {
+			return EasyCore.GetAsync2();
+		} catch (e) {
+			print(`Unable to get friends for current user. error: ${e}`);
+			return "";
+		}
+	}
+
 	static async GetFriendsAsync(): Promise<PublicUser[]> {
 		const headers = EasyCore.GetHeadersMap();
 

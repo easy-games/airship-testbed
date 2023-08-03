@@ -10,10 +10,11 @@ import { LocalEntityController } from "../Character/LocalEntityController";
 import { ChatCommand } from "CoreShared/Commands/ChatCommand";
 import { ChatUtil } from "CoreShared/Util/ChatUtil";
 import { Game } from "Shared/Game";
-import { FriendsCommand } from "CoreShared/Commands/FriendsCommand";
 import { encode } from "CoreShared/json";
 import { ClearCommand } from "CoreShared/Commands/ClearCommand";
 import { UserCommand } from "CoreShared/Commands/UserCommand";
+import { FriendCommand } from "CoreShared/Commands/FriendCommand";
+import { PartyCommand } from "CoreShared/Commands/PartyCommand";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -75,7 +76,8 @@ export class ChatController implements OnStart {
 
 		this.RegisterCommand(new ClearCommand());
 		this.RegisterCommand(new UserCommand());
-		this.RegisterCommand(new FriendsCommand());
+		this.RegisterCommand(new FriendCommand());
+		this.RegisterCommand(new PartyCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {

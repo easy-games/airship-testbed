@@ -17,7 +17,7 @@ export class UserCommand extends ChatCommand {
 		`/user updateStatus in_game\n`;
 
 	constructor() {
-		super("user");
+		super("user", ["u"]);
 	}
 
 	public Execute(player: Player, args: string[]): void {
@@ -31,7 +31,10 @@ export class UserCommand extends ChatCommand {
 		if (args.size() > 0) {
 			const firstArg = args[0];
 
-			if (firstArg === "updateUsername") {
+			if (firstArg === "?") {
+				player.SendMessage(`${this.usageString}`);
+				return;
+			} else if (firstArg === "updateUsername") {
 				const newUsername = args[1];
 
 				UserAPI.UpdateCurrentUserDataAsync(new UpdateUserDto(newUsername))
@@ -67,12 +70,18 @@ export class UserCommand extends ChatCommand {
 
 				try {
 					UserAPI.UpdateCurrentUserStatus(newStatus as unknown as UserStatus, gameName);
-					player.SendMessage(`Updated user status: ${newStatus}`);
+					player.SendMessage(
+						`Updated userStatus: ${newStatus}, gameName: ${gameName === "" ? "undefined" : gameName}`,
+					);
 				} catch (err) {
 					player.SendMessage(`Exception updating user status. reason: ${err}`);
 				}
 
 				return;
+			} else if (firstArg === "status") {
+				player.SendMessage(
+					`User status: ${encode({ status: UserAPI.GetUserStatus(), gameName: UserAPI.GetGameName() })}}`,
+				);
 			}
 		}
 	}

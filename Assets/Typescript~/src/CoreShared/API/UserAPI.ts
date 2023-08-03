@@ -9,6 +9,8 @@ import { encode } from "CoreShared/json";
 
 export class UserAPI {
 	private static currentUser: PublicUser | undefined;
+	private static userStatus: UserStatus = UserStatus.ONLINE;
+	private static gameName: string | undefined;
 
 	static async InitAsync() {
 		this.currentUser = await EasyCore.GetAsync<PublicUser>(
@@ -23,6 +25,8 @@ export class UserAPI {
 		CoreSignals.GameCoordinatorMessage.Connect((signal) => {
 			if (signal.messageName === SIOEventNames.statusUpdateRequest) {
 				CoreSignals.StatusUpdateRequested.Fire({});
+
+				this.UpdateCurrentUserStatus(this.userStatus, this.gameName ? this.gameName : "");
 			}
 		});
 
@@ -31,6 +35,14 @@ export class UserAPI {
 
 	static GetCurrentUser(): PublicUser | undefined {
 		return this.currentUser;
+	}
+
+	static GetUserStatus(): UserStatus | undefined {
+		return this.userStatus;
+	}
+
+	static GetGameName(): string | undefined {
+		return this.gameName;
 	}
 
 	static async GetUserAsync(discriminatedUserName: string): Promise<PublicUser | undefined> {
@@ -65,5 +77,7 @@ export class UserAPI {
 
 	static UpdateCurrentUserStatus(userStatus: UserStatus, gameName: string) {
 		EasyCore.EmitAsync(SIOEventNames.updateUserStatus, encode([{ status: userStatus, game: gameName }]));
+		this.userStatus = userStatus;
+		this.gameName = gameName;
 	}
 }
