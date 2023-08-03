@@ -65,7 +65,7 @@ export class FriendAPI {
 			});
 
 			// Ask for a friends status update.
-			EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
+			this.RequestFriendStatuses();
 		});
 
 		// SetInterval(
@@ -94,6 +94,10 @@ export class FriendAPI {
 
 			fsds.push(fsd);
 		});
+	}
+
+	private static RequestFriendStatuses() {
+		EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
 	}
 
 	static GetFriendStatusData(discriminatedUsername: string): FriendStatusData | undefined {
@@ -203,7 +207,7 @@ export class FriendAPI {
 			this.friendsCache.delete(otherUserUid);
 			this.RefreshFriendsCache();
 
-			EasyCore.EmitAsync(SIOEventNames.refreshFriendsStatus);
+			this.RequestFriendStatuses();
 		});
 	}
 }

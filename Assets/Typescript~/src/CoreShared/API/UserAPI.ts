@@ -79,5 +79,7 @@ export class UserAPI {
 		EasyCore.EmitAsync(SIOEventNames.updateUserStatus, encode([{ status: userStatus, game: gameName }]));
 		this.userStatus = userStatus;
 		this.gameName = gameName;
+
+		print(`UpdateCurrentUserStatus() userStatus: ${userStatus}, gameName: ${gameName}`);
 	}
 }
