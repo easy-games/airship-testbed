@@ -29,6 +29,7 @@ export enum Bundle_Entity_OnHit{
 	NONE = -1,
 	GenericVFX,
 	DeathVFX,
+	DeathVoidVFX,
 	FlinchAnimFPS,
 	DeathAnimFPS,
 	FlinchAnimTP,
@@ -307,6 +308,7 @@ export class ReferenceManagerAssets{
 			filePaths: new Map([
 				[Bundle_Entity_OnHit.GenericVFX, "Shared/Resources/Prefabs/VFX/Entity/OnHit/EntityOnHitVFX.prefab"],
 				[Bundle_Entity_OnHit.DeathVFX, "Shared/Resources/Prefabs/VFX/Entity/OnHit/EntityOnDeathVFX.prefab"],
+				[Bundle_Entity_OnHit.DeathVoidVFX, "Shared/Resources/Prefabs/VFX/Entity/OnHit/EntityOnDeathVoidVFX.prefab"],
 				[Bundle_Entity_OnHit.FlinchAnimFPS, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Root/OnHit/Armature_FPS_Flinch.anim"],
 				[Bundle_Entity_OnHit.DeathAnimFPS, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Root/OnHit/Armature_FPS_Death.anim"],
 				[Bundle_Entity_OnHit.FlinchAnimTP, "Shared/Resources/Entity/HumanEntity/HumanAnimations/Root/OnHit/Armature_TP_Flinch.anim"],

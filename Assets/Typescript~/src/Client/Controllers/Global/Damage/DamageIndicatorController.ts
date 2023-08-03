@@ -39,7 +39,7 @@ export class DamageIndicatorController implements OnStart {
 		});
 
 		ClientSignals.EntityDeath.Connect((event) => {
-			event.entity.anim?.PlayDeath();
+			event.entity.anim?.PlayDeath(event.damageType);
 
 			// PvP Kill
 			if (event.fromEntity?.IsLocalCharacter() && event.fromEntity !== event.entity) {

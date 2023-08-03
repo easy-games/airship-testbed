@@ -28,6 +28,7 @@ export class EntityAnimator {
 	private deathClipTP?: AnimationClip;
 	private damageEffectTemplate?: GameObject;
 	private deathEffectTemplate?: GameObject;
+	private deathEffectVoidTemplate?: GameObject;
 	private isFlashing = false;
 
 	private footstepAudioBundle: AudioClipBundle;
@@ -71,6 +72,12 @@ export class EntityAnimator {
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
 			Bundle_Entity_OnHit.DeathVFX,
+		);
+
+		this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
+			BundleGroupNames.Entity,
+			Bundle_Entity.OnHit,
+			Bundle_Entity_OnHit.DeathVoidVFX,
 		);
 
 		//Listen to animation events
@@ -131,7 +138,7 @@ export class EntityAnimator {
 		}
 	}
 
-	public PlayDeath() {
+	public PlayDeath(damageType: DamageType) {
 		//Play death animation
 		let isFirstPerson = false;
 		if (this.entity.IsLocalCharacter()) {
@@ -147,14 +154,13 @@ export class EntityAnimator {
 			this.PlayAnimation(deathClip, this.TopMostLayerIndex);
 		}
 		//Spawn death particle
-		if (this.deathEffectTemplate) {
-			const go = EffectsManager.SpawnEffectAtPosition(
-				this.deathEffectTemplate,
-				this.entity.GetHeadPosition(),
-				undefined,
-				1.9,
-			);
-			go.transform.SetParent(this.entity.gameObject.transform);
+		const inVoid = damageType === DamageType.VOID;
+		const deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
+		if (deathEffect) {
+			const go = EffectsManager.SpawnEffectAtPosition(deathEffect, this.entity.GetHeadPosition());
+			if (!inVoid) {
+				go.transform.SetParent(this.entity.gameObject.transform);
+			}
 		}
 
 		Task.Delay(0.5, () => {
