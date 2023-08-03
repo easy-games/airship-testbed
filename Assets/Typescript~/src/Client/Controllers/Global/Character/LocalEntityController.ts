@@ -107,8 +107,8 @@ export class LocalEntityController implements OnStart {
 			if (!entity) return;
 
 			const bin = new Bin();
-
 			const keyboard = bin.Add(new Keyboard());
+			this.firstPerson = true;
 
 			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			this.entityInput = new EntityInput(entity);
@@ -260,15 +260,15 @@ export class LocalEntityController implements OnStart {
 	}
 
 	public ToggleFirstPerson() {
-		this.ForceFirstPersonMode(!this.firstPerson);
+		this.SetFirstPerson(!this.firstPerson);
 	}
 
-	public ForceFirstPersonMode(setFirstPersonOn: boolean) {
-		if (this.firstPerson === setFirstPersonOn) {
+	public SetFirstPerson(value: boolean) {
+		if (this.firstPerson === value) {
 			return;
 		}
 
-		this.firstPerson = setFirstPersonOn;
+		this.firstPerson = value;
 		this.FirstPersonChanged.Fire(this.firstPerson);
 
 		if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
