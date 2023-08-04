@@ -1,5 +1,5 @@
 export class CoreTest {
 	constructor() {
-		print("hello from Imports folder!");
+		print("Hello from Shared.");
 	}
 }

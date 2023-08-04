@@ -47,6 +47,11 @@
             "TS": {
                 "$path": "../Bundles/CoreShared"
             }
+        },
+        "Imports": {
+            "TS": {
+                "$path": "../Bundles/Imports"
+            }
         }
 	}
 }
