@@ -20,6 +20,9 @@
 		// configurable
 		"rootDirs": ["src/CoreServer", "src/CoreClient", "src/CoreShared", "src/Server", "src/Client", "src/Shared"],
 		"outDir": "../Bundles",
+        "paths": {
+            "Imports": ["./Airship/*"]
+        },
 		"baseUrl": "src",
 		"incremental": true,
 		"tsBuildInfoFile": "out/tsconfig.tsbuildinfo",

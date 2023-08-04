@@ -6,6 +6,7 @@ import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ArmorType } from "Shared/Item/ArmorType";
 import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
+import { CoreTest } from "../../../../../Airship/Imports/Core/Client/CoreTest";
 import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
 import { Layer } from "../../../../Shared/Util/Layer";
 import { LocalEntityController } from "../Character/LocalEntityController";
@@ -14,7 +15,9 @@ import { LocalEntityController } from "../Character/LocalEntityController";
 export class EntityAccessoryController implements OnStart {
 	private isFirstPerson = false;
 
-	constructor(private readonly localController: LocalEntityController) {}
+	constructor(private readonly localController: LocalEntityController) {
+		const test = new CoreTest();
+	}
 
 	private AutoEquipArmor() {
 		ClientSignals.EntitySpawn.Connect((event) => {
