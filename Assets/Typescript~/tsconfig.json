@@ -18,7 +18,7 @@
 		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "src/Types"],
 
 		// configurable
-		"rootDirs": ["src/CoreServer", "src/CoreClient", "src/CoreShared", "src/Server", "src/Client", "src/Shared"],
+		"rootDirs": ["src/CoreServer", "src/CoreClient", "src/CoreShared", "src/Server", "src/Client", "src/Shared", "src/Imports"],
 		"outDir": "../Bundles",
         // "paths": {
         //     "Imports/*": ["../Airship/Imports/*"]

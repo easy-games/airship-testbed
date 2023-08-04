@@ -1607,16 +1607,14 @@ function Promise.prototype:awaitStatus()
 	self._unhandledRejection = false
 
 	if self._status == Promise.Status.Started then
-		local thread = coroutine.running()
+		local bindable = Instance.new("BindableEvent")
 
 		self:finally(function()
-			local success, err = coroutine.resume(thread)
-			if not success then
-				warn(err)
-			end
+			bindable:Fire()
 		end)
 
-		coroutine.yield()
+		bindable.Event:Wait()
+		bindable:Destroy()
 	end
 
 	if self._status == Promise.Status.Resolved then

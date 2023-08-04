@@ -49,9 +49,7 @@
             }
         },
         "Imports": {
-            "TS": {
-                "$path": "../Bundles/Imports"
-            }
+            "$path": "../Bundles/Imports"
         }
 	}
 }
