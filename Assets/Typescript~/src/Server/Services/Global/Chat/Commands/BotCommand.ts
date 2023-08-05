@@ -1,5 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ChatCommand } from "CoreShared/Commands/ChatCommand";
+import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
 import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Theme } from "Shared/Util/Theme";

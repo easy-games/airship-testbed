@@ -1,10 +1,10 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ChatUtil } from "CoreShared/Util/ChatUtil";
+import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
+import { ChatUtil } from "Imports/Core/Shared/Util/ChatUtil";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { Network } from "Shared/Network";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import StringUtils from "Shared/Util/StringUtil";
-import { ChatCommand } from "../../../Commands/ChatCommand";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";

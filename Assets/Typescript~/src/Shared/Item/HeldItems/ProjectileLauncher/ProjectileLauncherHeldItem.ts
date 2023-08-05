@@ -1,6 +1,6 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Global/Character/LocalEntityController";
-import { Crosshair } from "CoreShared/Crosshair/Crosshair";
+import { Crosshair } from "Imports/Core/Shared/Crosshair/Crosshair";
 import { ItemPlayMode } from "Shared/Entity/Animation/InventoryEntityAnimator";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";

@@ -1,9 +1,9 @@
+import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Theme } from "Shared/Util/Theme";
-import { ChatCommand } from "../../../../Commands/ChatCommand";
 
 export class HealCommand extends ChatCommand {
 	constructor() {

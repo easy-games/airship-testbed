@@ -1,8 +1,8 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
 import { DamageService } from "Server/Services/Global/Damage/DamageService";
 import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { Player } from "Shared/Player/Player";
-import { ChatCommand } from "../../../../Commands/ChatCommand";
 
 export class DieCommand extends ChatCommand {
 	constructor() {

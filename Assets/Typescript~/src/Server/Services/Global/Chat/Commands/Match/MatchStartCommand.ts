@@ -1,11 +1,11 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
 import { MatchService } from "Server/Services/Match/MatchService";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { Theme } from "Shared/Util/Theme";
-import { ChatCommand } from "../../../../../Commands/ChatCommand";
 
 export class StartMatchCommand extends ChatCommand {
 	constructor() {

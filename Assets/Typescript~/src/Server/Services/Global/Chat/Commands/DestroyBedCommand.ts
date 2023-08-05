@@ -1,4 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
 import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedService } from "Server/Services/Match/BedService";
@@ -7,7 +8,6 @@ import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
-import { ChatCommand } from "../../../../Commands/ChatCommand";
 import { TeamService } from "../../Team/TeamService";
 
 export class DestroyBedCommand extends ChatCommand {

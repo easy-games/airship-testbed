@@ -33,21 +33,6 @@
                 "$path": "../Bundles/Server"
             }
         },
-        "CoreClient": {
-            "TS": {
-                "$path": "../Bundles/CoreClient"
-            }
-        },
-        "CoreServer": {
-            "TS": {
-                "$path": "../Bundles/CoreServer"
-            }
-        },
-        "CoreShared": {
-            "TS": {
-                "$path": "../Bundles/CoreShared"
-            }
-        },
         "Imports": {
             "$path": "../Bundles/Imports"
         }
