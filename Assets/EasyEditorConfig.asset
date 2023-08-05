@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2997c9ea614e9c996d1817827633a1, type: 3}
   m_Name: EasyEditorConfig
   m_EditorClassIdentifier: 
-  useBundlesInEditor: 1
+  useBundlesInEditor: 0
   buildBundlesOnPlay: 0
