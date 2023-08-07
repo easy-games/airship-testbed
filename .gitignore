@@ -87,6 +87,9 @@ Assets/Bundles/Server/Resources/TS/*
 Assets/Bundles/CoreServer/Resources/TS/*
 Assets/Bundles/Shared/Resources/TS/*
 Assets/Bundles/CoreShared/Resources/TS/*
+
+Assets/Bundles/Imports/**/Resources/TS/*
+
 Assets/Bundles/Shared/Resources/rbxts_include
 Assets/Bundles/Shared/Resources/rbxts_include.meta
 Assets/Bundles/Shared/Resources/include
