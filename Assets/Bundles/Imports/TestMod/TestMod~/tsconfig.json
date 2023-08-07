@@ -15,15 +15,15 @@
 		"moduleDetection": "force",
 		"strict": true,
 		"target": "ESNext",
-		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "src/Types", "../Bundles/Types~/"],
+		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "src/Types", "../../Types~/"],
 
 		// configurable
-		"rootDirs": ["src/Server", "src/Client", "src/Shared", "src/Imports", "../Bundles/Types~/"],
-		"outDir": "../Bundles",
+		"rootDirs": ["src/Server", "src/Client", "src/Shared"],
+		"outDir": "../",
         "paths": {
             "*": [
                 "*",
-                "../../Bundles/Types~/*"
+                "../../../Types~/*"
             ]
         },
 		"baseUrl": "src",
@@ -35,16 +35,17 @@
 			{ "transform": "@easy-games/unity-flamework-transformer" }
 		]
 	},
-    // "include": [
-    //     "../Bundles/Types~/**/*.d.ts",
-    //     "src/**/*"
-    // ],
-    // "exclude": [
-    //     "node_modules",
-    //     "**/*.spec.ts"
-    // ],
+    "include": [
+        "../../Types~/**/*.d.ts",
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ],
 	"rbxts": {
         "rojo": "./default.project.json",
-		"includePath": "../Bundles/Shared/Resources/include"
+		"includePath": "../Bundles/Shared/Resources/include",
+        "type": "airshipbundle"
 	}
 }
