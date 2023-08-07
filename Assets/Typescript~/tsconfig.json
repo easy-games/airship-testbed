@@ -15,10 +15,10 @@
 		"moduleDetection": "force",
 		"strict": true,
 		"target": "ESNext",
-		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "src/Types", "../Bundles/Types~/"],
+		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "src/Types", "../Bundles/Types~"],
 
 		// configurable
-		"rootDirs": ["src/Server", "src/Client", "src/Shared", "src/Imports", "../Bundles/Types~/"],
+		"rootDirs": ["src/Server", "src/Client", "src/Shared", "src/Imports", "../Bundles/Types~"],
 		"outDir": "../Bundles",
         "paths": {
             "*": [
@@ -35,14 +35,14 @@
 			{ "transform": "@easy-games/unity-flamework-transformer" }
 		]
 	},
-    // "include": [
-    //     "../Bundles/Types~/**/*.d.ts",
-    //     "src/**/*"
-    // ],
-    // "exclude": [
-    //     "node_modules",
-    //     "**/*.spec.ts"
-    // ],
+    "include": [
+        "../Bundles/Types~/**/*.d.ts",
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ],
 	"rbxts": {
         "rojo": "./default.project.json",
 		"includePath": "../Bundles/Shared/Resources/include"

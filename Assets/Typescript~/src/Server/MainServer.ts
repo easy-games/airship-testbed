@@ -1,6 +1,6 @@
 import { Flamework } from "@easy-games/flamework-core";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
-import { ServerModTest } from "TestMod/Server/ServerMod";
+import { ServerModTest } from "TestMod/Server/ServerModTest";
 import { BedWars } from "./BedWars/BedWars";
 import { InitNet } from "./Network/NetworkAPI";
 import { TimeUtil } from "./Util/TimeUtil";

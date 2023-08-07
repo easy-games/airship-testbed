@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "utsc --project . --verbose --writeOnlyChanged",
-    "build:dev": "utsc-dev --project . --verbose --writeOnlyChanged",
+    "build": "utsc --project . --verbose --writeOnlyChanged && npm run types && echo \"Done!\"",
+    "build:dev": "utsc-dev --project . --verbose --writeOnlyChanged && npm run types && echo \"Done!\"",
     "watch": "rm -rf out/ && utsc --project . --verbose --watch --writeOnlyChanged",
     "watch:mac": "utsc --project . --verbose --watch --writeOnlyChanged",
     "watch:dev": "utsc-dev --project . --verbose --watch --writeOnlyChanged",
