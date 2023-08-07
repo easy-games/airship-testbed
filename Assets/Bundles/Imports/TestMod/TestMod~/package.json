@@ -10,7 +10,7 @@
     "watch:mac": "utsc --project . --verbose --watch --writeOnlyChanged",
     "watch:dev": "utsc-dev --project . --verbose --watch --writeOnlyChanged",
     "git": "npm-update-git-deps",
-    "types": "rm -rf ../../../Types~/TestMod ; tsc --declaration --declarationDir ../../../Types~/TestMod/ --outDir temp foo.ts ; rm -rf temp"
+    "types": "rm -rf ../../../Types~/TestMod ; tsc --declaration --declarationDir ../../../Types~/TestMod/ --outDir temp ; rm -rf temp"
   },
   "keywords": [],
   "author": "",

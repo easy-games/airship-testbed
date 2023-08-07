@@ -27,8 +27,7 @@
             ]
         },
 		"baseUrl": "src",
-		"incremental": true,
-		"tsBuildInfoFile": "out/tsconfig.tsbuildinfo",
+		"incremental": false,
         "skipLibCheck": true,
 		"plugins": [
             { "transform": "@easy-games/unity-component-transformer" },

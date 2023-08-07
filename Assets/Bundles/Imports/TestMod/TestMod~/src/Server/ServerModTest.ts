@@ -1,5 +1,5 @@
 export class ServerModTest {
-  constructor() {
-    "hello from server mod!";
-  }
+	constructor() {
+		"hello from server mod!";
+	}
 }
