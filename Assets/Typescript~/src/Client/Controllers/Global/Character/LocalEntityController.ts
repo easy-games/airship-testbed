@@ -203,6 +203,21 @@ export class LocalEntityController implements OnStart {
 				}
 			});
 
+			// Toggle fly mode (like mc creative):
+			let lastSpace = 0;
+			let flyMode = false;
+			keyboard.OnKeyDown(KeyCode.Space, (event) => {
+				const now = Time.time;
+				const dt = now - lastSpace;
+				if (dt < 0.2) {
+					lastSpace = 0;
+					flyMode = !flyMode;
+					this.entityDriver?.SetFlyMode(flyMode);
+				} else {
+					lastSpace = now;
+				}
+			});
+
 			// Toggle look backwards:
 			keyboard.OnKeyDown(KeyCode.LeftAlt, (event) => {
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {

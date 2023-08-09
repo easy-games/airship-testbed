@@ -75,6 +75,7 @@ interface EntityDriver extends Component {
 	ApplyVelocityOverTime(velocity: Vector3, duration: number): void;
 	SetVelocity(velocity: Vector3): void;
 	GetState(): EntityState;
+	SetFlyMode(flyModeEnabled: boolean): void;
 	UpdateSyncTick(): void;
 
 	groundedBlockId: number;
