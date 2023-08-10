@@ -1,16 +1,13 @@
 {
-  "name": "typescript",
+  "name": "ExamplePackage",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "utsc --project . --verbose --writeOnlyChanged && npm run types && echo \"Done!\"",
-    "build:dev": "utsc-dev --project . --verbose --writeOnlyChanged && npm run types && echo \"Done!\"",
-    "watch": "rm -rf out/ && utsc --project . --verbose --watch --writeOnlyChanged",
-    "watch:mac": "utsc --project . --verbose --watch --writeOnlyChanged",
-    "watch:dev": "utsc-dev --project . --verbose --watch --writeOnlyChanged",
-    "git": "npm-update-git-deps",
-    "types": "rm -rf ../../../Types~/TestMod ; tsc --declaration --declarationDir ../../../Types~/TestMod/ --outDir temp ; rm -rf temp ; touch ../../../Types~/TestMod/index.d.ts"
+    "build": "utsc --project . --verbose --writeOnlyChanged",
+    "build:dev": "utsc-dev --project . --verbose --writeOnlyChanged",
+    "watch": "utsc --project . --verbose --watch --writeOnlyChanged",
+    "watch:dev": "utsc-dev --project . --verbose --watch --writeOnlyChanged"
   },
   "keywords": [],
   "author": "",

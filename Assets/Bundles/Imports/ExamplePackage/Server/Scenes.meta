@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 0c3b16b3c83f2404cbf2a739cbf01e83
+guid: 44a738b5633b447018b67f530d86c5da
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
   userData: 
-  assetBundleName: testmod_client/resources
+  assetBundleName: examplepackage_server/scenes
   assetBundleVariant: 
