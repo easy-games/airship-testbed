@@ -1,6 +1,6 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ProjectileController } from "Client/Controllers/Global/Damage/Projectile/ProjectileController";
-import { ProjectileService } from "Server/Services/Global/Damage/Projectile/ProjectileService";
+import { ProjectileController } from "Client/Controllers/Damage/Projectile/ProjectileController";
+import { ProjectileService } from "Server/Services/Damage/Projectile/ProjectileService";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
