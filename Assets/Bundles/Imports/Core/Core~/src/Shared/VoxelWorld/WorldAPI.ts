@@ -1,3 +1,4 @@
+import { BlockHitDamageFunc } from "./BlockHitDamageFunc";
 import { World } from "./World";
 
 export class WorldAPI {
@@ -14,4 +15,8 @@ export class WorldAPI {
 		this.world = new World(voxelWorld);
 		return this.world;
 	}
+
+	public static BlockHitDamageFunc: BlockHitDamageFunc = (player, block, blockPos, breakBlockMeta) => {
+		return breakBlockMeta.damage;
+	};
 }

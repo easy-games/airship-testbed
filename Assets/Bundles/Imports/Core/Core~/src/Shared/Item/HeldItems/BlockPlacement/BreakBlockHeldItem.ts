@@ -1,15 +1,12 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { BlockHitDamageCalc } from "../../../Block/BlockHitDamageCalc";
+import { BlockHealthController } from "Client/Controllers/BlockInteractions/BlockHealthController";
+import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { Game } from "../../../Game";
 import { ProgressBarGraphics } from "../../../UI/ProgressBarGraphics";
 import { BlockDataAPI } from "../../../VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { HeldItem } from "../HeldItem";
-
-//Dependencies
-import { BlockHealthController } from "../../../../Client/Controllers/Global/BlockInteractions/BlockHealthController";
-import { BlockSelectController } from "../../../../Client/Controllers/Global/BlockInteractions/BlockSelectController";
-import { LocalEntityController } from "../../../../Client/Controllers/Global/Character/LocalEntityController";
 
 interface HealthbarEntry {
 	gameObject: GameObject;
@@ -54,7 +51,7 @@ export class BreakBlockHeldItem extends HeldItem {
 
 		if (this.entity.player && this.meta.breakBlock) {
 			//Check to see if we can actually do damage here
-			const damage = BlockHitDamageCalc(Game.LocalPlayer, block, voxelPos, this.meta.breakBlock);
+			const damage = WorldAPI.BlockHitDamageFunc(Game.LocalPlayer, block, voxelPos, this.meta.breakBlock);
 			if (damage === 0) {
 				return;
 			}

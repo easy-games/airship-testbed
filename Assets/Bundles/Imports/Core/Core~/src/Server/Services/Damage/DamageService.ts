@@ -2,11 +2,11 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { EntityDamageServerSignal } from "Server/Signals/EntityDamageServerSignal";
 import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal";
+import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
 import { Network } from "Shared/Network";
 import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
-import { Task } from "../../../../Shared/Util/Task";
-import { DamageType } from "../../../Damage/DamageType";
+import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
 

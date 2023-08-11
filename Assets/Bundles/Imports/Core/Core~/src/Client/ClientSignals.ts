@@ -1,11 +1,11 @@
 import { Signal } from "Shared/Util/Signal";
+import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
 import { Entity } from "./Entity/Entity";
 import { GroundItem } from "./GroundItem/GroundItem";
 import { ItemType } from "./Item/ItemType";
 import { Player } from "./Player/Player";
-import { BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
 import { BeforeBlockPlacedSignal } from "./Signals/BeforeBlockPlacedSignal";
 import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";

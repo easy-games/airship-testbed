@@ -3,9 +3,9 @@ import { ServerSignals } from "Server/ServerSignals";
 import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Network } from "Shared/Network";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 import { DamageService } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
 

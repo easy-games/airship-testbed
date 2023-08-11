@@ -1,7 +1,7 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ChatController } from "Client/Controllers/Global/Chat/ChatController";
-import { PlayerController } from "Client/Controllers/Global/Player/PlayerController";
-import { PlayerService } from "Server/Services/Global/Player/PlayerService";
+import { ChatController } from "Client/Controllers/Chat/ChatController";
+import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { Network } from "Shared/Network";

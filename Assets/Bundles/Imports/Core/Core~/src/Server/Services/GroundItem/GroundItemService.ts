@@ -4,7 +4,7 @@ import { ServerSignals } from "Server/ServerSignals";
 import { BeforeEntityDropItemSignal } from "Server/Signals/BeforeEntityDropItemSignal";
 import { EntityDropItemSignal } from "Server/Signals/EntityDropItemSignal";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";

@@ -18,9 +18,7 @@ import { EntitySpawnEvent } from "./Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "./Signals/MoveCommandDataEvent";
 import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
-import { Team } from "./Team/Team";
 import { ChangeTeamSignal } from "./Team/TeamJoinSignal";
-import { TeamUpgradeType } from "./TeamUpgrades/TeamUpgradeType";
 import { Signal } from "./Util/Signal";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
@@ -53,8 +51,6 @@ export const ServerSignals = {
 	/** Fired when a **tagged** `GameObject` is despawning. */
 	NetGameObjectDespawning: new Signal<{ nob: number; tag: string }>(),
 	PlayerChangeTeam: new Signal<ChangeTeamSignal>(),
-	/** Fired when a team upgrade is successfully purchased. */
-	TeamUpgradePurchase: new Signal<{ team: Team; upgradeType: TeamUpgradeType; tier: number }>(),
 	/** Fired when a melee weapon is swung. */
 	WeaponSwing: new Signal<{ weapon: ItemType; swingEntity: Entity }>(),
 	/** Fired when a melee weapon hits. */

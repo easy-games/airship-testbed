@@ -1,8 +1,8 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import { DamageService } from "Server/Services/Damage/DamageService";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
 import { TimeUtil } from "Shared/Util/TimeUtil";
-import { DamageService } from "../../../../Server/Services/Global/Damage/DamageService";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { Bundle_ItemSword } from "../../../Util/ReferenceManagerResources";

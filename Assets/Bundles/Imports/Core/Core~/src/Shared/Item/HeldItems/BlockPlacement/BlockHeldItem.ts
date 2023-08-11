@@ -1,10 +1,9 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
+import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { HeldItem } from "../HeldItem";
-//Dependencies
-import { BlockSelectController } from "../../../../Client/Controllers/Global/BlockInteractions/BlockSelectController";
-import { DenyRegionController } from "../../../../Client/Controllers/Global/BlockInteractions/DenyRegionController";
-import { LocalEntityController } from "../../../../Client/Controllers/Global/Character/LocalEntityController";
 
 export class BlockHeldItem extends HeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");

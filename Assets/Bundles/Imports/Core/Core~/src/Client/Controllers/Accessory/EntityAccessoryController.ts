@@ -1,14 +1,14 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
-import { CoreTest } from "Imports/Core/Shared/CoreTest";
+import { CoreTest } from "Shared/CoreTest";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Game } from "Shared/Game";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ArmorType } from "Shared/Item/ArmorType";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
-import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
-import { Layer } from "../../../../Shared/Util/Layer";
+import { Layer } from "Shared/Util/Layer";
 import { LocalEntityController } from "../Character/LocalEntityController";
 
 @Controller({})

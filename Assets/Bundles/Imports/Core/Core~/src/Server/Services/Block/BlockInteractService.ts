@@ -1,6 +1,5 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
-import { BlockHitDamageCalc } from "Shared/Block/BlockHitDamageCalc";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Network } from "Shared/Network";
@@ -99,7 +98,7 @@ export class BlockInteractService implements OnStart {
 				}
 
 				// Cancellable signal
-				const damage = BlockHitDamageCalc(player, block, pos, itemMeta.breakBlock);
+				const damage = WorldAPI.BlockHitDamageFunc(player, block, pos, itemMeta.breakBlock);
 				if (damage === 0) {
 					return;
 				}

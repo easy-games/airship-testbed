@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { ClientSignals } from "Client/ClientSignals";
-import { EntitySpawnClientEvent } from "Client/Signals/EntitySpawnClientEvent";
+import { EntitySpawnClientSignal } from "Client/Signals/EntitySpawnClientEvent";
 import { CharacterEntity, CharacterEntityDto } from "Shared/Entity/Character/CharacterEntity";
 import { Entity, EntityDto } from "Shared/Entity/Entity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
@@ -117,7 +117,7 @@ export class EntityController implements OnStart {
 			}
 		}
 
-		ClientSignals.EntitySpawn.Fire(new EntitySpawnClientEvent(entity));
+		ClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
 
 		return entity;
 	}

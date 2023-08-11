@@ -1,14 +1,13 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
-import { ChatUtil } from "Imports/Core/Shared/Util/ChatUtil";
-import { PlayerService } from "Server/Services/Global/Player/PlayerService";
+import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Network } from "Shared/Network";
+import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import StringUtils from "Shared/Util/StringUtil";
+import { PlayerService } from "../Player/PlayerService";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
-import { DestroyBedCommand } from "./Commands/DestroyBedCommand";
 import { DieCommand } from "./Commands/DieCommand";
 import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
@@ -16,7 +15,6 @@ import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorS
 import { HealCommand } from "./Commands/HealCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
-import { StartMatchCommand } from "./Commands/Match/MatchStartCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
 import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
@@ -32,12 +30,10 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new JoinCodeCommand());
 		this.RegisterCommand(new CreateGeneratorCommand());
 		this.RegisterCommand(new SetGeneratorSpawnRateCommand());
-		this.RegisterCommand(new StartMatchCommand());
 		this.RegisterCommand(new TeamCommand());
 		this.RegisterCommand(new AddInventoryCommand());
 		this.RegisterCommand(new DieCommand());
 		this.RegisterCommand(new SetTeamCommand());
-		this.RegisterCommand(new DestroyBedCommand());
 		this.RegisterCommand(new TpAllCommand());
 		this.RegisterCommand(new TpCommand());
 		this.RegisterCommand(new TpsCommand());

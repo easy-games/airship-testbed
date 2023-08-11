@@ -1,5 +1,5 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SignalPriority } from "Shared/Util/Signal";

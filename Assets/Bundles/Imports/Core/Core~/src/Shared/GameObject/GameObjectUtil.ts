@@ -1,20 +1,13 @@
-import { CollectionTag } from "Shared/Util/CollectionTag";
-import { RunUtil } from "Shared/Util/RunUtil";
-
 /** Wrapper around `Object` functionality. */
 export class GameObjectUtil {
 	/**
 	 * Instantiate an Object.
 	 * @param original The object being instantiated.
-	 * @param tag An optional tag to register `GameObject` with `CollectionManager`.
 	 * @returns The instantiated GameObject.
 	 */
-	public static Instantiate(original: Object, tag?: CollectionTag): GameObject {
+	public static Instantiate(original: Object): GameObject {
 		/** Fire `GameObjectInstantiated` event if tagged. */
 		const go = Object.Instantiate(original) as GameObject;
-		if (tag) {
-			GameObjectUtil.FireTaggedGameObjectInstantiatedSignal(go, tag);
-		}
 		return go;
 	}
 
@@ -23,20 +16,10 @@ export class GameObjectUtil {
 	 * @param original The object being instantiated.
 	 * @param position The position to instantiate object at.
 	 * @param rotation The rotation with instantiate object with.
-	 * @param tag An optional tag to register `GameObject` with `CollectionManager`.
 	 * @returns The instantiated GameObject.
 	 */
-	public static InstantiateAt(
-		original: Object,
-		position: Vector3,
-		rotation: Quaternion,
-		tag?: CollectionTag,
-	): GameObject {
-		/** Fire `GameObjectInstantiated` event if tagged. */
+	public static InstantiateAt(original: Object, position: Vector3, rotation: Quaternion): GameObject {
 		const go = Object.Instantiate(original, position, rotation) as GameObject;
-		if (tag) {
-			GameObjectUtil.FireTaggedGameObjectInstantiatedSignal(go, tag);
-		}
 		return go;
 	}
 
@@ -44,15 +27,10 @@ export class GameObjectUtil {
 	 * Instantiate an Object as a child of `parent`.
 	 * @param original The object being instantiated.
 	 * @param parent The object to instantiate as a child of.
-	 * @param tag An optional tag to register `GameObject` with `CollectionManager`.
 	 * @returns The instantiated GameObject.
 	 */
-	public static InstantiateIn(original: Object, parent: Transform, tag?: CollectionTag): GameObject {
-		/** Fire `GameObjectInstantiated` event if tagged. */
+	public static InstantiateIn(original: Object, parent: Transform): GameObject {
 		const go = Object.Instantiate(original, parent) as GameObject;
-		if (tag) {
-			GameObjectUtil.FireTaggedGameObjectInstantiatedSignal(go, tag);
-		}
 		return go;
 	}
 
@@ -66,21 +44,6 @@ export class GameObjectUtil {
 			Object.Destroy(gameObject, delay);
 		} else {
 			Object.Destroy(gameObject);
-		}
-	}
-
-	/** Fire relevant `GameObjectInstantiated` event based on runtime. */
-	private static FireTaggedGameObjectInstantiatedSignal(gameObject: GameObject, tag: CollectionTag): void {
-		if (RunUtil.IsServer()) {
-			import("Server/ServerSignals").then((serverSignalsRef) => {
-				const tagAddedSignal = serverSignalsRef.ServerSignals.CollectionManagerTagAdded;
-				tagAddedSignal.Fire({ go: gameObject, tag: tag });
-			});
-		} else if (RunUtil.IsClient()) {
-			import("Client/ClientSignals").then((clientSignalsRef) => {
-				const tagAddedSignal = clientSignalsRef.ClientSignals.CollectionManagerTagAdded;
-				tagAddedSignal.Fire({ go: gameObject, tag: tag });
-			});
 		}
 	}
 }

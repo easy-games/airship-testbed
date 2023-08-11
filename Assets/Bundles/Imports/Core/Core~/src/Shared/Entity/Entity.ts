@@ -1,10 +1,10 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Global/Character/LocalEntityController";
-import { EntityController } from "Client/Controllers/Global/Entity/EntityController";
-import { PlayerController } from "Client/Controllers/Global/Player/PlayerController";
-import { EntityService } from "Server/Services/Global/Entity/EntityService";
-import { PlayerService } from "Server/Services/Global/Player/PlayerService";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { EntityController } from "Client/Controllers/Entity/EntityController";
+import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { EntityService } from "Server/Services/Entity/EntityService";
+import { PlayerService } from "Server/Services/Player/PlayerService";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
@@ -505,7 +505,7 @@ export class Entity {
 		if (RunUtil.IsClient()) {
 			const clientSignals = import("Client/ClientSignals").expect().ClientSignals;
 			const ProjectileLaunchedClientSignal = import(
-				"Client/Controllers/Global/Damage/Projectile/ProjectileLaunchedClientSignal"
+				"Client/Controllers/Damage/Projectile/ProjectileLaunchedClientSignal"
 			).expect().ProjectileLaunchedClientSignal;
 
 			clientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));

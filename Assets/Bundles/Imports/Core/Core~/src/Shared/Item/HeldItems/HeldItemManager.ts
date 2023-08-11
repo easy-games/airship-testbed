@@ -1,5 +1,5 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Global/Character/LocalEntityController";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { items } from "../ItemDefinitions";
 import { ItemMeta } from "../ItemMeta";

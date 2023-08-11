@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Layer } from "Shared/Util/Layer";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { OnUpdate } from "Shared/Util/Timer";

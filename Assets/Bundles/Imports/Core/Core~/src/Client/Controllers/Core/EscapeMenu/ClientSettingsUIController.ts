@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { ClientSettingsController } from "Client/Controllers/ClientSettings/ClientSettingsController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CanvasAPI, PointerDirection } from "Shared/Util/CanvasAPI";
-import { ClientSettingsController } from "../../CollectionManager/ClientSettingsController";
 import { EscapeMenuController } from "./EscapeMenuController";
 
 @Controller({})

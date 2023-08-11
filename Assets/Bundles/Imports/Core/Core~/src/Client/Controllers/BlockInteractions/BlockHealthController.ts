@@ -1,21 +1,21 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
+import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Game } from "Shared/Game";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Network } from "Shared/Network";
-import { SetInterval } from "Shared/Util/Timer";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { EffectsManager } from "../../../../Shared/Effects/EffectsManager";
-import { GameObjectUtil } from "../../../../Shared/GameObjectBridge";
-import { ProgressBarGraphics } from "../../../../Shared/UI/ProgressBarGraphics";
+import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import {
 	BundleGroupNames,
 	Bundle_Blocks,
 	Bundle_Blocks_UI,
 	Bundle_Blocks_VFX,
-} from "../../../../Shared/Util/ReferenceManagerResources";
-import { Theme } from "../../../../Shared/Util/Theme";
-import { Block } from "../../../VoxelWorld/Block";
+} from "Shared/Util/ReferenceManagerResources";
+import { Theme } from "Shared/Util/Theme";
+import { SetInterval } from "Shared/Util/Timer";
+import { Block } from "Shared/VoxelWorld/Block";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";

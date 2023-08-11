@@ -3,8 +3,8 @@ import Object from "@easy-games/unity-object-utils";
 import { ClientSignals } from "Client/ClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemType } from "Shared/Item/ItemType";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { ItemUtil } from "../../../../../Shared/Item/ItemUtil";
 import { ProjectileCollideClientSignal } from "./ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./ProjectileLaunchedClientSignal";
 

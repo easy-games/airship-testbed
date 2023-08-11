@@ -1,13 +1,13 @@
+import { Dependency } from "@easy-games/flamework-core";
+import { ClientSettingsController } from "Client/Controllers/ClientSettings/ClientSettingsController";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { MathUtil } from "Shared/Util/MathUtil";
+import { RunUtil } from "Shared/Util/RunUtil";
+import { SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { ClientSettingsController } from "../../CollectionManager/ClientSettingsController";
-import { Dependency } from "@easy-games/flamework-core";
-import { MathUtil } from "Shared/Util/MathUtil";
 
 const SPEED = 12;
 

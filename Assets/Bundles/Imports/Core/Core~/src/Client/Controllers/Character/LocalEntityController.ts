@@ -9,14 +9,13 @@ import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { Theme } from "Shared/Util/Theme";
 import { CameraController } from "../Camera/CameraController";
+import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
-import { ClientSettingsController } from "../CollectionManager/ClientSettingsController";
+import { ClientSettingsController } from "../ClientSettings/ClientSettingsController";
 import { EntityController } from "../Entity/EntityController";
-import { EntityInput } from "./EntityInput";
-import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { InventoryController } from "../Inventory/InventoryController";
-import CameraModeTransition from "../Camera/CameraModeTransition";
+import { EntityInput } from "./EntityInput";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;

@@ -1,4 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { ClientSettingsController } from "Client/Controllers/ClientSettings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
@@ -6,7 +7,6 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { SpringTween } from "Shared/Util/SpringTween";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "..";
-import { ClientSettingsController } from "../../CollectionManager/ClientSettingsController";
 
 // Lua's bitwise operations is unsigned, but C#'s is signed, so we need to hardcode the mask:
 // TransparentEffect Layer: 1

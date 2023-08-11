@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Team } from "Shared/Team/Team";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";

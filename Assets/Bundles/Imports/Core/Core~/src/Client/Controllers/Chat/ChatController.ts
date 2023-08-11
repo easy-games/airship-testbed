@@ -1,18 +1,18 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
-import { ClearCommand } from "Imports/Core/Shared/Commands/ClearCommand";
-import { FriendsCommand } from "Imports/Core/Shared/Commands/FriendsCommand";
-import { UserCommand } from "Imports/Core/Shared/Commands/UserCommand";
-import { ChatUtil } from "Imports/Core/Shared/Util/ChatUtil";
-import { encode } from "Imports/Core/Shared/json";
+import { ChatCommand } from "Shared/Commands/ChatCommand";
+import { ClearCommand } from "Shared/Commands/ClearCommand";
+import { FriendsCommand } from "Shared/Commands/FriendsCommand";
+import { UserCommand } from "Shared/Commands/UserCommand";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Network } from "Shared/Network";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
+import { encode } from "Shared/json";
 import { LocalEntityController } from "../Character/LocalEntityController";
 
 class ChatMessageElement {

@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { DamageType } from "Shared/Damage/DamageType";
 import { SetInterval } from "Shared/Util/Timer";
-import { DamageType } from "../../../Damage/DamageType";
 import { EntityService } from "../Entity/EntityService";
 import { DamageService } from "./DamageService";
 
