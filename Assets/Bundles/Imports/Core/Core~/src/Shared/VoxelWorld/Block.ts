@@ -1,7 +1,7 @@
-import { ItemMeta } from "Shared/Item/ItemMeta";
-import { ItemType } from "Shared/Item/ItemType";
-import { World } from "./World";
+import { ItemMeta } from "../Item/ItemMeta";
+import { ItemType } from "../Item/ItemType";
 import { ItemUtil } from "../Item/ItemUtil";
+import { World } from "./World";
 
 export class Block {
 	public readonly blockId: number;

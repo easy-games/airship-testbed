@@ -1,7 +1,8 @@
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { Entity } from "Shared/Entity/Entity";
-import { Team } from "Shared/Team/Team";
-import { Bin } from "Shared/Util/Bin";
+import { CharacterEntity } from "../Entity/Character/CharacterEntity";
+import { Entity } from "../Entity/Entity";
+import { Team } from "../Team/Team";
+import { Bin } from "../Util/Bin";
+import { Signal } from "../Util/Signal";
 export interface PlayerDto {
     nobId: number;
     clientId: number;
@@ -49,14 +50,14 @@ export declare class Player {
      */
     Character: CharacterEntity | undefined;
     /** Fired when the player's character changes. */
-    readonly CharacterChanged: any;
+    readonly CharacterChanged: Signal<CharacterEntity>;
     /**
      * Fired when the player disconnects from the server.
      * Connections will automatically be disconnected when the player leaves.
      */
-    readonly OnLeave: any;
+    readonly OnLeave: Signal<void>;
     private team;
-    readonly OnChangeTeam: any;
+    readonly OnChangeTeam: Signal<[team: Team, oldTeam: Team]>;
     private bin;
     private connected;
     constructor(

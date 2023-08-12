@@ -1,14 +1,14 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ChatController } from "Client/Controllers/Chat/ChatController";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
-import { PlayerService } from "Server/Services/Player/PlayerService";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { Entity } from "Shared/Entity/Entity";
-import { Network } from "Shared/Network";
-import { Team } from "Shared/Team/Team";
-import { Bin } from "Shared/Util/Bin";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { ChatController } from "../Controllers/Chat/ChatController";
+import { PlayerController } from "../Controllers/Player/PlayerController";
+import { CharacterEntity } from "../Entity/Character/CharacterEntity";
+import { Entity } from "../Entity/Entity";
+import { Network } from "../Network";
+import { PlayerService } from "../Services/Player/PlayerService";
+import { Team } from "../Team/Team";
+import { Bin } from "../Util/Bin";
+import { RunUtil } from "../Util/RunUtil";
+import { Signal } from "../Util/Signal";
 
 export interface PlayerDto {
 	nobId: number;

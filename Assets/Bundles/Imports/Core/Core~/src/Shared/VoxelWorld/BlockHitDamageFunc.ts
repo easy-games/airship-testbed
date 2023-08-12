@@ -1,5 +1,5 @@
-import { BreakBlockMeta } from "Shared/Item/ItemMeta";
-import { Player } from "Shared/Player/Player";
+import { BreakBlockMeta } from "../Item/ItemMeta";
+import { Player } from "../Player/Player";
 import { Block } from "./Block";
 
 export type BlockHitDamageFunc = (

@@ -15,15 +15,14 @@
 		"moduleDetection": "force",
 		"strict": true,
 		"target": "ESNext",
-		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "src/Types", "../../Types~/"],
+		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "../../../Types~/"],
 
 		// configurable
 		"rootDirs": ["src/Server", "src/Client", "src/Shared"],
 		"outDir": "../",
         "paths": {
-            "*": [
-                "*",
-                "../../../Types~/*"
+            "Imports/*": [
+                "../../../../Types~/*"
             ]
         },
 		"baseUrl": "src",
@@ -35,7 +34,7 @@
 		]
 	},
     "include": [
-        "../../Types~/**/*.d.ts",
+        // "../../Types~/**/*.d.ts",
         "src/**/*"
     ],
     "exclude": [

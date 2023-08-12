@@ -1,5 +1,5 @@
-import { ItemMeta } from "Shared/Item/ItemMeta";
-import { ItemType } from "Shared/Item/ItemType";
+import { ItemMeta } from "../Item/ItemMeta";
+import { ItemType } from "../Item/ItemType";
 import { World } from "./World";
 export declare class Block {
     readonly voxel: number;

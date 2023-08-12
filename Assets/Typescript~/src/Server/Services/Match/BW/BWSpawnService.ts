@@ -4,11 +4,11 @@ import { DenyRegionService } from "Server/Services/Global/Block/DenyRegionServic
 import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { PlayerService } from "Server/Services/Global/Player/PlayerService";
 import { TeamService } from "Server/Services/Global/Team/TeamService";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
-import { Player } from "Shared/Player/Player";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
+import { CharacterEntity } from "../../../Core/Shared/Entity/Character/CharacterEntity";
+import { EntityPrefabType } from "../../../Core/Shared/Entity/EntityPrefabType";
+import { Player } from "../../../Core/Shared/Player/Player";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
 import { MatchService } from "../MatchService";

@@ -1,5 +1,6 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { ExampleService } from "Imports/ExamplePackage/Server/ExampleService";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
 import { Team } from "Shared/Team/Team";
@@ -20,6 +21,8 @@ export class TeamService implements OnStart {
 			const teamDtos = Object.values(this.teams).map((e) => e.team.Encode());
 			Network.ServerToClient.AddTeams.Server.FireClient(event.player.clientId, teamDtos);
 		});
+
+		Dependency<ExampleService>();
 	}
 
 	public RegisterTeam(team: Team): void {

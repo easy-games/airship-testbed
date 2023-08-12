@@ -1,11 +1,11 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { ItemType } from "Shared/Item/ItemType";
-import { RunUtil } from "Shared/Util/RunUtil";
-import { SignalPriority } from "Shared/Util/Signal";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { GameObjectUtil } from "../../GameObject/GameObjectUtil";
+import { ItemType } from "../../Item/ItemType";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { Network } from "../../Network";
+import { RunUtil } from "../../Util/RunUtil";
+import { SignalPriority } from "../../Util/Signal";
+import { BlockDataAPI } from "../BlockData/BlockDataAPI";
 import { WorldAPI } from "../WorldAPI";
 
 export class PrefabBlockManager {

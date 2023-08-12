@@ -15,21 +15,21 @@
 		"moduleDetection": "force",
 		"strict": true,
 		"target": "ESNext",
-		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "src/Types", "../Bundles/Types~"],
+		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "../../Bundles/Types~"],
 
 		// configurable
-		"rootDirs": ["src/Server", "src/Client", "src/Shared", "src/Imports", "../Bundles/Types~"],
+		"rootDirs": ["src/Server", "src/Client", "src/Shared", "../../Bundles/Types~"],
 		"outDir": "../Bundles",
         "paths": {
+            "Imports/*": ["../../Bundles/Types~/*"],
             "*": [
-                "*",
-                "../../Bundles/Types~/*"
+                "./*"
             ]
         },
 		"baseUrl": "src",
 		"incremental": true,
 		"tsBuildInfoFile": "out/tsconfig.tsbuildinfo",
-        "skipLibCheck": true,
+        "skipLibCheck": false,
 		"plugins": [
             { "transform": "@easy-games/unity-component-transformer" },
 			{ "transform": "@easy-games/unity-flamework-transformer" }
