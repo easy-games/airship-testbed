@@ -37,12 +37,6 @@
         "no-empty": "off",
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-var-requires": "off",
-        "@typescript-eslint/no-empty-interface": "off",
-        "no-restricted-imports": [
-            "error",
-            {
-              "patterns": ["Shared/*", "Server/*", "Client/*"]
-            }
-        ]
+        "@typescript-eslint/no-empty-interface": "off"
 	}
 }

@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { EntityService } from "Server/Services/Global/Entity/EntityService";
 import { SetInterval } from "Shared/Util/Timer";
+import { EntityService } from "../Entity/EntityService";
 
 const TIME_UNTIL_REGEN = 5;
 const REGEN_PER_SECOND = 5;

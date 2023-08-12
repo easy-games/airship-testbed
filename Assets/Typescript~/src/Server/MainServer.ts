@@ -1,14 +1,11 @@
 import { Flamework } from "@easy-games/flamework-core";
+import { InitNet } from "Imports/Core/Shared/Network/NetworkAPI";
+import { SetupWorld } from "Imports/Core/Shared/VoxelWorld/SetupWorld";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
-import { ServerModTest } from "TestMod/Server/ServerModTest";
 import { BedWars } from "./BedWars/BedWars";
-import { InitNet } from "./Network/NetworkAPI";
 import { TimeUtil } from "./Util/TimeUtil";
-import { SetupWorld } from "./VoxelWorld/SetupWorld";
 
 print("MainServer!");
-
-const test = new ServerModTest();
 
 function LoadFlamework() {
 	Flamework.addPath("assets/bundles/server/resources/ts/services/global", "^.*service.lua$");

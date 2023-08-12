@@ -1,7 +1,7 @@
+import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { RunUtil } from "./Util/RunUtil";
-import { AudioManager } from "./Audio/AudioManager";
 import { TimeUtil } from "./Util/TimeUtil";
 
 print(`Shared.Main.ts()`);

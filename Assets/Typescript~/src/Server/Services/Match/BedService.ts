@@ -1,17 +1,17 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
+import { Game } from "Imports/Core/Shared/Game";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
-import { Game } from "Shared/Game";
-import { ItemType } from "Shared/Item/ItemType";
-import { Team } from "Shared/Team/Team";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Theme } from "Shared/Util/Theme";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { ItemUtil } from "../../../Shared/Item/ItemUtil";
-import { TeamService } from "../Global/Team/TeamService";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
 

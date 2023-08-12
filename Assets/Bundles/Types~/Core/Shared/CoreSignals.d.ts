@@ -1,26 +1,11 @@
-import { UserStatus } from "./SocketIOMessages/Status";
-import { Signal } from "./Util/Signal";
 export declare const CoreSignals: {
-    CoreInitialized: Signal<{
-        idToken: string;
-    }>;
-    UserServiceInitialized: Signal<{}>;
-    GameCoordinatorMessage: Signal<{
-        messageName: string;
-        jsonMessage: string;
-    }>;
-    StatusUpdateRequested: Signal<{}>;
-    FriendRequested: Signal<{
-        initiatorId: string;
-    }>;
-    FriendAccepted: Signal<{
-        targetId: string;
-    }>;
-    FriendUserStatusChanged: Signal<{
-        friendUid: string;
-        status: UserStatus;
-        gameName: string | undefined;
-    }>;
-    PartyInviteReceived: Signal<{}>;
-    PartyUpdated: Signal<{}>;
+    CoreInitialized: any;
+    UserServiceInitialized: any;
+    GameCoordinatorMessage: any;
+    StatusUpdateRequested: any;
+    FriendRequested: any;
+    FriendAccepted: any;
+    FriendUserStatusChanged: any;
+    PartyInviteReceived: any;
+    PartyUpdated: any;
 };

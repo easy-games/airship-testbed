@@ -1,5 +1,5 @@
+import { Signal } from "Shared/Util/Signal";
 import { UserStatus } from "./SocketIOMessages/Status";
-import { Signal } from "./Util/Signal";
 
 export const CoreSignals = {
 	CoreInitialized: new Signal<{ idToken: string }>(),

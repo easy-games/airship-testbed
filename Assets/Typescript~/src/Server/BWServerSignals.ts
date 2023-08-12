@@ -1,4 +1,4 @@
-import { Team } from "./Team/Team";
+import { Team } from "Imports/Core/Shared/Team/Team";
 import { Signal } from "./Util/Signal";
 
 export const BWServerSignals = {

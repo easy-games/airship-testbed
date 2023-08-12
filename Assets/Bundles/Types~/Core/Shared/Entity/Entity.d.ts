@@ -1,8 +1,8 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
+import { BlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
-import { BlockMeta } from "../Item/ItemMeta";
 import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 export interface EntityDto {
