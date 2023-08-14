@@ -56,7 +56,7 @@ export class ShopkeeperService implements OnStart {
 			const itemShopWorldPos = loadedMap.GetWorldPosition(team.id + "_item_shop");
 			const itemShopEntity = this.entityService.SpawnEntityForPlayer(
 				undefined,
-				EntityPrefabType.HUMAN,
+				EntityPrefabType.NPC_IDLE,
 				itemShopWorldPos.Position,
 			);
 			itemShopEntity.entityDriver.SetLookVector(
