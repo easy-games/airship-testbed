@@ -1,10 +1,10 @@
-import { DamageType } from "Shared/Damage/DamageType";
-import { Entity } from "Shared/Entity/Entity";
-import { Cancellable } from "Shared/Util/Cancellable";
+import { DamageType } from "../../Shared/Damage/DamageType";
+import { Entity } from "../../Shared/Entity/Entity";
+import { Cancellable } from "../../Shared/Util/Cancellable";
 export declare class EntityDamageServerSignal extends Cancellable {
     readonly entity: Entity;
     amount: number;
     damageType: DamageType;
-    fromEntity?: Entity;
-    constructor(entity: Entity, amount: number, damageType: DamageType, fromEntity?: Entity);
+    fromEntity?: Entity | undefined;
+    constructor(entity: Entity, amount: number, damageType: DamageType, fromEntity?: Entity | undefined);
 }

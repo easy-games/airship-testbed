@@ -1,7 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { PlayerJoinServerEvent } from "Server/Signals/PlayerJoinServerEvent";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
@@ -48,7 +48,7 @@ export class PlayerService implements OnStart {
 			this.players.remove(index);
 			this.PlayerRemoved.Fire(player);
 			ServerSignals.PlayerLeave.fire(player);
-			Network.ServerToClient.RemovePlayer.Server.FireAllClients(player.clientId);
+			CoreNetwork.ServerToClient.RemovePlayer.Server.FireAllClients(player.clientId);
 			player.Destroy();
 		};
 		const players = this.playerCore.GetPlayers();
@@ -64,7 +64,7 @@ export class PlayerService implements OnStart {
 		});
 
 		// Player completes join
-		Network.ClientToServer.Ready.Server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.Ready.Server.OnClientEvent((clientId) => {
 			if (!this.playersPendingReady.has(clientId)) {
 				//print("player not found in pending: " + clientId);
 				warn("Player not found in pending: " + clientId);
@@ -81,10 +81,10 @@ export class PlayerService implements OnStart {
 
 	public HandlePlayerReady(player: Player): void {
 		// notify all clients of the joining player
-		Network.ServerToClient.AddPlayer.Server.FireAllClients(player.Encode());
+		CoreNetwork.ServerToClient.AddPlayer.Server.FireAllClients(player.Encode());
 
 		// send list of all connected players to the joining player
-		Network.ServerToClient.AllPlayers.Server.FireClient(
+		CoreNetwork.ServerToClient.AllPlayers.Server.FireClient(
 			player.clientId,
 			this.players.map((p) => p.Encode()),
 		);

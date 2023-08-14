@@ -1,1 +1,1 @@
-declare const autoShutdownBridgeGO: GameObject;
+export {};

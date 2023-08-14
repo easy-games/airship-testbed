@@ -1,17 +1,17 @@
+import { Entity } from "Shared/Entity/Entity";
+import { GroundItem } from "Shared/GroundItem/GroundItem";
+import { ItemType } from "Shared/Item/ItemType";
+import { Player } from "Shared/Player/Player";
+import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
+import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
 import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
-import { Entity } from "./Entity/Entity";
-import { GroundItem } from "./GroundItem/GroundItem";
-import { ItemType } from "./Item/ItemType";
-import { Player } from "./Player/Player";
-import { BeforeBlockPlacedSignal } from "./Signals/BeforeBlockPlacedSignal";
 import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
-import { ChangeTeamSignal } from "./Team/TeamJoinSignal";
 
 export const ClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),

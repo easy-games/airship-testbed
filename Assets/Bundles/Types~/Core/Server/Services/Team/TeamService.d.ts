@@ -1,5 +1,5 @@
 import { OnStart } from "@easy-games/flamework-core";
-import { Team } from "Shared/Team/Team";
+import { Team } from "../../../Shared/Team/Team";
 export declare class TeamService implements OnStart {
     private teams;
     OnStart(): void;

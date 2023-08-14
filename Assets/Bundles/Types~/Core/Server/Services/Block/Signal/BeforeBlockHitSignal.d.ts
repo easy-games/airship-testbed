@@ -1,8 +1,8 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { Player } from "Shared/Player/Player";
-import { Block } from "Shared/VoxelWorld/Block";
+import { ItemStack } from "../../../../Shared/Inventory/ItemStack";
+import { Player } from "../../../../Shared/Player/Player";
+import { Block } from "../../../../Shared/VoxelWorld/Block";
 export declare class BeforeBlockHitSignal {
     readonly block: Block;
     readonly blockPos: Vector3;

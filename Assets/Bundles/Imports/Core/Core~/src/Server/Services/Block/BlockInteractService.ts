@@ -2,7 +2,7 @@ import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
@@ -32,7 +32,7 @@ export class BlockInteractService implements OnStart {
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			const rollback = () => {
-				Network.ServerToClient.RevertBlockPlace.Server.FireClient(clientId, pos);
+				CoreNetwork.ServerToClient.RevertBlockPlace.Server.FireClient(clientId, pos);
 			};
 
 			if (!itemMeta.block?.blockId) {
@@ -113,7 +113,7 @@ export class BlockInteractService implements OnStart {
 				// After signal
 				ServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: pos });
 				print(`Firing BlockHit. damage=${beforeSignal.damage}`);
-				Network.ServerToClient.BlockHit.Server.FireAllClients(pos, entity.id);
+				CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(pos, entity.id);
 
 				if (newHealth === 0) {
 					ServerSignals.BeforeBlockDestroyed.Fire({
@@ -126,7 +126,7 @@ export class BlockInteractService implements OnStart {
 						placedByEntityId: entity.id,
 					});
 					ServerSignals.BlockDestroyed.Fire({ blockId: block.blockId, blockMeta: itemMeta, blockPos: pos });
-					Network.ServerToClient.BlockDestroyed.Server.FireAllClients(pos, block.blockId);
+					CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(pos, block.blockId);
 				}
 
 				return;
@@ -134,6 +134,6 @@ export class BlockInteractService implements OnStart {
 			rollback();
 		});
 
-		Network.ClientToServer.HitBlock.Server.OnClientEvent((clientId, pos) => {});
+		CoreNetwork.ClientToServer.HitBlock.Server.OnClientEvent((clientId, pos) => {});
 	}
 }

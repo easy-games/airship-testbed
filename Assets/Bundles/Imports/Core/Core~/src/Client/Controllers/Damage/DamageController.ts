@@ -3,7 +3,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { EntityDamageClientSignal } from "Client/Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "Client/Signals/EntityDeathClientSignal";
 import { Entity } from "Shared/Entity/Entity";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { EntityController } from "../Entity/EntityController";
 
 @Controller({})
@@ -11,7 +11,7 @@ export class DamageController implements OnStart {
 	constructor(private readonly entityController: EntityController) {}
 
 	OnStart(): void {
-		Network.ServerToClient.EntityDamage.Client.OnServerEvent((entityId, amount, damageType, fromEntityId) => {
+		CoreNetwork.ServerToClient.EntityDamage.Client.OnServerEvent((entityId, amount, damageType, fromEntityId) => {
 			const entity = this.entityController.GetEntityById(entityId);
 			if (!entity) {
 				error("Failed to find entity.");
@@ -25,7 +25,7 @@ export class DamageController implements OnStart {
 			ClientSignals.EntityDamage.Fire(new EntityDamageClientSignal(entity, amount, damageType, fromEntity));
 		});
 
-		Network.ServerToClient.EntityDeath.Client.OnServerEvent((entityId, damageType, fromEntityId) => {
+		CoreNetwork.ServerToClient.EntityDeath.Client.OnServerEvent((entityId, damageType, fromEntityId) => {
 			const entity = this.entityController.GetEntityById(entityId);
 			if (!entity) {
 				error("Failed to find entity.");

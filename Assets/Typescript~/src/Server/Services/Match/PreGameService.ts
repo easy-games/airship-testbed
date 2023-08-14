@@ -1,9 +1,9 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
+import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
+import { Task } from "Imports/Core/Shared/Util/Task";
 import { ServerSignals } from "Server/ServerSignals";
-import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { MatchState } from "Shared/Match/MatchState";
-import { Task } from "Shared/Util/Task";
-import { EntityService } from "../Global/Entity/EntityService";
 import { LoadedMap } from "./Map/LoadedMap";
 import { WorldPosition } from "./Map/MapPosition";
 import { MapService } from "./Map/MapService";

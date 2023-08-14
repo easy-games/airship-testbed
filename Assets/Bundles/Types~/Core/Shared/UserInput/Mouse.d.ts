@@ -1,16 +1,17 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
+import { Signal } from "../Util/Signal";
 export declare class Mouse {
     private readonly bin;
     private readonly mouseDriver;
-    readonly LeftDown: any;
-    readonly LeftUp: any;
-    readonly RightDown: any;
-    readonly RightUp: any;
-    readonly MiddleDown: any;
-    readonly MiddleUp: any;
-    readonly Scrolled: any;
-    readonly Moved: any;
+    readonly LeftDown: Signal<void>;
+    readonly LeftUp: Signal<void>;
+    readonly RightDown: Signal<void>;
+    readonly RightUp: Signal<void>;
+    readonly MiddleDown: Signal<void>;
+    readonly MiddleUp: Signal<void>;
+    readonly Scrolled: Signal<[delta: number]>;
+    readonly Moved: Signal<[location: Vector3]>;
     private isLeftDown;
     private isRightDown;
     private isMiddleDown;

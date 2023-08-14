@@ -1,5 +1,5 @@
 import { OnStart } from "@easy-games/flamework-core";
-import { Player } from "Shared/Player/Player";
+import { Player } from "../../../Shared/Player/Player";
 export declare class PlayerController implements OnStart {
     readonly LocalConnection: NetworkConnection;
     private players;

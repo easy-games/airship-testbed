@@ -2,7 +2,7 @@ import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { ExampleService } from "Imports/ExamplePackage/Server/ExampleService";
 import { ServerSignals } from "Server/ServerSignals";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Team } from "Shared/Team/Team";
 import { Bin } from "Shared/Util/Bin";
 import { SignalPriority } from "Shared/Util/Signal";
@@ -19,7 +19,7 @@ export class TeamService implements OnStart {
 	OnStart(): void {
 		ServerSignals.PlayerJoin.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
 			const teamDtos = Object.values(this.teams).map((e) => e.team.Encode());
-			Network.ServerToClient.AddTeams.Server.FireClient(event.player.clientId, teamDtos);
+			CoreNetwork.ServerToClient.AddTeams.Server.FireClient(event.player.clientId, teamDtos);
 		});
 
 		Dependency<ExampleService>();
@@ -37,16 +37,16 @@ export class TeamService implements OnStart {
 		};
 		this.teams.set(team.id, entry);
 		const dto = team.Encode();
-		Network.ServerToClient.AddTeams.Server.FireAllClients([dto]);
+		CoreNetwork.ServerToClient.AddTeams.Server.FireAllClients([dto]);
 
 		entry.bin.Add(
 			team.onPlayerAdded.Connect((player) => {
-				Network.ServerToClient.AddPlayerToTeam.Server.FireAllClients(team.id, player.userId);
+				CoreNetwork.ServerToClient.AddPlayerToTeam.Server.FireAllClients(team.id, player.userId);
 			}),
 		);
 		entry.bin.Add(
 			team.onPlayerRemoved.Connect((player) => {
-				Network.ServerToClient.RemovePlayerFromTeam.Server.FireAllClients(team.id, player.userId);
+				CoreNetwork.ServerToClient.RemovePlayerFromTeam.Server.FireAllClients(team.id, player.userId);
 			}),
 		);
 	}
@@ -60,7 +60,7 @@ export class TeamService implements OnStart {
 		if (!entry) return;
 
 		entry.bin.Clean();
-		Network.ServerToClient.RemoveTeams.Server.FireAllClients([team.id]);
+		CoreNetwork.ServerToClient.RemoveTeams.Server.FireAllClients([team.id]);
 	}
 
 	/**

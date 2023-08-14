@@ -1,5 +1,5 @@
 import { OnStart } from "@easy-games/flamework-core";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
+import { ChatCommand } from "../../../Shared/Commands/ChatCommand";
 import { LocalEntityController } from "../Character/LocalEntityController";
 export declare class ChatController implements OnStart {
     private localEntityController;

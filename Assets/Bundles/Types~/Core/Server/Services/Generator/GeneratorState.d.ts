@@ -1,4 +1,4 @@
-import { GeneratorDto } from "Shared/Generator/GeneratorMeta";
+import { GeneratorDto } from "../../../Shared/Generator/GeneratorMeta";
 export interface GeneratorState {
     dto: GeneratorDto;
     stackSize: number;

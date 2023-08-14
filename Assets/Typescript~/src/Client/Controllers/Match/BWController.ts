@@ -1,11 +1,11 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
+import { PlayerController } from "Imports/Core/Client/Controllers/Player/PlayerController";
+import { TeamController } from "Imports/Core/Client/Controllers/Team/TeamController";
+import { Player } from "Imports/Core/Shared/Player/Player";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { SetUtil } from "Imports/Core/Shared/Util/SetUtil";
 import { Network } from "Shared/Network";
-import { Player } from "Shared/Player/Player";
-import { Team } from "Shared/Team/Team";
-import { SetUtil } from "Shared/Util/SetUtil";
-import { PlayerController } from "../Global/Player/PlayerController";
-import { TeamController } from "../Global/Team/TeamController";
 
 @Controller({})
 export class BWController implements OnStart {

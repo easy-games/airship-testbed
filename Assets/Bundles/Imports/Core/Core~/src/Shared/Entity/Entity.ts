@@ -9,7 +9,7 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { BlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
@@ -180,7 +180,7 @@ export class Entity {
 	public AddHealthbar(): void {
 		if (RunUtil.IsServer()) {
 			this.healthbarEnabled = true;
-			Network.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.id);
+			CoreNetwork.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.id);
 			return;
 		}
 		if (this.IsLocalCharacter()) return;
@@ -205,7 +205,7 @@ export class Entity {
 		this.displayName = displayName;
 		this.OnDisplayNameChanged.Fire(displayName);
 		if (RunUtil.IsServer()) {
-			Network.ServerToClient.Entity.SetDisplayName.Server.FireAllClients(this.id, displayName);
+			CoreNetwork.ServerToClient.Entity.SetDisplayName.Server.FireAllClients(this.id, displayName);
 		}
 	}
 
@@ -230,7 +230,7 @@ export class Entity {
 		this.healthbar?.SetValue(this.health / this.maxHealth);
 
 		if (RunUtil.IsServer()) {
-			Network.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health);
+			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health);
 		}
 	}
 
@@ -255,7 +255,7 @@ export class Entity {
 		}
 
 		if (RunUtil.IsServer()) {
-			Network.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
+			CoreNetwork.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
 			NetworkUtil.Despawn(this.networkObject.gameObject);
 		}
 	}
@@ -372,14 +372,18 @@ export class Entity {
 	public SendItemAnimationToClients(useIndex = 0, animationMode: ItemPlayMode = 0, exceptClientId?: number) {
 		if (RunUtil.IsServer()) {
 			if (exceptClientId !== undefined) {
-				Network.ServerToClient.PlayEntityItemAnimation.Server.FireExcept(
+				CoreNetwork.ServerToClient.PlayEntityItemAnimation.Server.FireExcept(
 					exceptClientId,
 					this.id,
 					useIndex,
 					animationMode,
 				);
 			} else {
-				Network.ServerToClient.PlayEntityItemAnimation.Server.FireAllClients(this.id, useIndex, animationMode);
+				CoreNetwork.ServerToClient.PlayEntityItemAnimation.Server.FireAllClients(
+					this.id,
+					useIndex,
+					animationMode,
+				);
 			}
 		} else {
 			error("Trying to send server event (Item Animation) from client");

@@ -1,5 +1,5 @@
 import { OnStart } from "@easy-games/flamework-core";
-import { Entity } from "Shared/Entity/Entity";
+import { Entity } from "../../../../Shared/Entity/Entity";
 import { PlayerController } from "../../Player/PlayerController";
 import { EntityController } from "../EntityController";
 export declare class NametagController implements OnStart {

@@ -8,7 +8,7 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Task } from "Shared/Util/Task";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { EntityService } from "../Entity/EntityService";
@@ -25,7 +25,7 @@ export class GroundItemService implements OnStart {
 	}
 
 	OnStart(): void {
-		Network.ClientToServer.DropItemInHand.Server.OnClientEvent((clientId, amount) => {
+		CoreNetwork.ClientToServer.DropItemInHand.Server.OnClientEvent((clientId, amount) => {
 			const entity = this.entityService.GetEntityByClientId(clientId);
 			if (entity?.IsAlive() && entity instanceof CharacterEntity) {
 				const item = entity.GetInventory().GetHeldItem();
@@ -53,7 +53,7 @@ export class GroundItemService implements OnStart {
 				// Sync position when it's done moving
 				Task.Delay(1.5, () => {
 					if (this.groundItems.has(groundItem.id)) {
-						Network.ServerToClient.GroundItem.UpdatePosition.Server.FireAllClients([
+						CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Server.FireAllClients([
 							{ id: groundItem.id, pos: groundItem.rb.position, vel: groundItem.rb.velocity },
 						]);
 					}
@@ -61,7 +61,7 @@ export class GroundItemService implements OnStart {
 			}
 		});
 
-		Network.ClientToServer.PickupGroundItem.Server.OnClientEvent((clientId, groundItemId) => {
+		CoreNetwork.ClientToServer.PickupGroundItem.Server.OnClientEvent((clientId, groundItemId) => {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) return;
 
@@ -84,7 +84,7 @@ export class GroundItemService implements OnStart {
 			});
 
 			this.groundItems.delete(groundItem.id);
-			Network.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.id, groundItem.id);
+			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.id, groundItem.id);
 			if (entity instanceof CharacterEntity) {
 				entity.GetInventory().AddItem(groundItem.itemStack);
 			}
@@ -92,7 +92,7 @@ export class GroundItemService implements OnStart {
 
 		Dependency<PlayerService>().ObservePlayers((player) => {
 			print("GroundItemService");
-			Network.ServerToClient.GroundItem.Add.Server.FireClient(
+			CoreNetwork.ServerToClient.GroundItem.Add.Server.FireClient(
 				player.clientId,
 				Object.values(this.groundItems).map((i) => {
 					return {
@@ -125,7 +125,7 @@ export class GroundItemService implements OnStart {
 		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 1.2, data ?? {});
 		this.groundItems.set(id, groundItem);
 
-		Network.ServerToClient.GroundItem.Add.Server.FireAllClients([
+		CoreNetwork.ServerToClient.GroundItem.Add.Server.FireAllClients([
 			{
 				id: groundItem.id,
 				itemStack: groundItem.itemStack.Encode(),

@@ -1,6 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -231,7 +231,7 @@ export class LocalEntityController implements OnStart {
 				// TEST: Knock-back:
 				Task.Spawn(() => {
 					const sentTick = InstanceFinder.TimeManager.Tick;
-					const halfWay = Network.ClientToServer.TEST_LATENCY.Client.FireServer();
+					const halfWay = CoreNetwork.ClientToServer.TEST_LATENCY.Client.FireServer();
 					const endTick = InstanceFinder.TimeManager.Tick;
 					print(
 						"Round trip: " +
@@ -245,7 +245,7 @@ export class LocalEntityController implements OnStart {
 			});
 
 			keyboard.OnKeyDown(KeyCode.Semicolon, (event) => {
-				Network.ClientToServer.TestKnockback2.Client.FireServer();
+				CoreNetwork.ClientToServer.TestKnockback2.Client.FireServer();
 			});
 
 			// Cleanup:

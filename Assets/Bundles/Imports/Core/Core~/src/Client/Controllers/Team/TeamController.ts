@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Team } from "Shared/Team/Team";
 import { PlayerController } from "../Player/PlayerController";
 
@@ -11,7 +11,7 @@ export class TeamController implements OnStart {
 	constructor(private readonly playerController: PlayerController) {}
 
 	OnStart(): void {
-		Network.ServerToClient.AddTeams.Client.OnServerEvent((teamDtos) => {
+		CoreNetwork.ServerToClient.AddTeams.Client.OnServerEvent((teamDtos) => {
 			for (let dto of teamDtos) {
 				const team = new Team(
 					dto.name,
@@ -28,7 +28,7 @@ export class TeamController implements OnStart {
 			}
 		});
 
-		Network.ServerToClient.RemoveTeams.Client.OnServerEvent((teamIds) => {
+		CoreNetwork.ServerToClient.RemoveTeams.Client.OnServerEvent((teamIds) => {
 			for (let teamId of teamIds) {
 				const team = this.GetTeam(teamId);
 				if (!team) continue;
@@ -37,7 +37,7 @@ export class TeamController implements OnStart {
 			}
 		});
 
-		Network.ServerToClient.AddPlayerToTeam.Client.OnServerEvent((teamId, userId) => {
+		CoreNetwork.ServerToClient.AddPlayerToTeam.Client.OnServerEvent((teamId, userId) => {
 			const team = this.GetTeam(teamId);
 			if (!team) return;
 
@@ -47,7 +47,7 @@ export class TeamController implements OnStart {
 			team.AddPlayer(player);
 		});
 
-		Network.ServerToClient.RemovePlayerFromTeam.Client.OnServerEvent((teamId, playerId) => {
+		CoreNetwork.ServerToClient.RemovePlayerFromTeam.Client.OnServerEvent((teamId, playerId) => {
 			const team = this.GetTeam(teamId);
 			if (!team) return;
 

@@ -1,4 +1,4 @@
-import { Player } from "Shared/Player/Player";
+import { Player } from "../Player/Player";
 export declare abstract class ChatCommand {
     commandLabel: string;
     aliases: string[];

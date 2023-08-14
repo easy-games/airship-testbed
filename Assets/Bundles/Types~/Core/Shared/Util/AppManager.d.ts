@@ -1,8 +1,9 @@
+import { Keyboard } from "../UserInput";
 export declare class AppManager {
     /** Global mouse instance. */
     private static mouse;
     /** Global keyboard instance. */
-    static keyboard: any;
+    static keyboard: Keyboard;
     private static opened;
     /** Currently open canvas. */
     private static openCanvas;

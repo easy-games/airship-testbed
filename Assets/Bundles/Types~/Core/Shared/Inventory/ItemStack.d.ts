@@ -1,17 +1,18 @@
-import { ItemMeta } from "Shared/Item/ItemMeta";
-import { ItemType } from "Shared/Item/ItemType";
+import { ItemMeta } from "../Item/ItemMeta";
+import { ItemType } from "../Item/ItemType";
+import { Signal } from "../Util/Signal";
 export interface ItemStackDto {
     /** ItemType */
     i: ItemType;
     /** Amount */
     a: number;
 }
-export declare type ItemStackTypeChangeSignal = {
+export type ItemStackTypeChangeSignal = {
     readonly ItemStack: ItemStack;
     readonly NoNetwork: boolean;
     readonly ItemType: ItemType;
 };
-export declare type ItemStackAmountChangeSignal = {
+export type ItemStackAmountChangeSignal = {
     readonly ItemStack: ItemStack;
     readonly NoNetwork: boolean;
     readonly Amount: number;
@@ -19,10 +20,10 @@ export declare type ItemStackAmountChangeSignal = {
 export declare class ItemStack {
     private itemType;
     private amount;
-    Changed: any;
-    ItemTypeChanged: any;
-    AmountChanged: any;
-    Destroyed: any;
+    Changed: Signal<void>;
+    ItemTypeChanged: Signal<ItemStackTypeChangeSignal>;
+    AmountChanged: Signal<ItemStackAmountChangeSignal>;
+    Destroyed: Signal<ItemStack>;
     private hasBeenDestroyed;
     MaxStackSize: number;
     constructor(itemType: ItemType, amount: number);

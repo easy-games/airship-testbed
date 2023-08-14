@@ -1,3 +1,4 @@
+import { Signal } from "../../../Shared/Util/Signal";
 import { CameraMode } from "./CameraMode";
 import { CameraModeTransition } from "./CameraModeTransition";
 /**
@@ -13,8 +14,8 @@ export declare class CameraSystem {
     private readonly fovSpring;
     private fovSpringMoving;
     private fovSpringMovingStart;
-    readonly ModeChangedBegin: any;
-    readonly ModeChangedEnd: any;
+    readonly ModeChangedBegin: Signal<[newMode: CameraMode, oldMode: CameraMode]>;
+    readonly ModeChangedEnd: Signal<[newMode: CameraMode, oldMode: CameraMode]>;
     constructor();
     /**
      * Gets a reference to the current camera mode object.

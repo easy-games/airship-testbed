@@ -1,7 +1,8 @@
 /// <reference types="@easy-games/compiler-types" />
-declare type SignalParams<T> = Parameters<T extends unknown[] ? (...args: T) => never : T extends unknown ? (arg: T) => never : () => never>;
-export declare type SignalCallback<T> = (...args: SignalParams<T>) => unknown;
-declare type SignalWait<T> = T extends unknown[] ? LuaTuple<T> : T;
+/// <reference types="@easy-games/compiler-types" />
+type SignalParams<T> = Parameters<T extends unknown[] ? (...args: T) => never : T extends unknown ? (arg: T) => never : () => never>;
+export type SignalCallback<T> = (...args: SignalParams<T>) => unknown;
+type SignalWait<T> = T extends unknown[] ? LuaTuple<T> : T;
 export declare const enum SignalPriority {
     HIGHEST = 0,
     HIGH = 100,

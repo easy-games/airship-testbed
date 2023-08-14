@@ -1,4 +1,4 @@
-import { EntityReferences } from "Shared/Entity/Entity";
+import { EntityReferences } from "../../../Shared/Entity/Entity";
 import { CameraReferences } from "./CameraReferences";
 export declare class FirstPersonCameraSystem {
     cameras: CameraReferences;

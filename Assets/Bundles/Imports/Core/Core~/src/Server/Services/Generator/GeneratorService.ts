@@ -4,7 +4,7 @@ import { ServerSignals } from "Server/ServerSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { GeneratorCreationConfig } from "Shared/Generator/GeneratorMeta";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Task } from "Shared/Util/Task";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
@@ -66,7 +66,7 @@ export class GeneratorService implements OnStart {
 		/* Handle late joiners. */
 		ServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
-				Network.ServerToClient.GeneratorSnapshot.Server.FireClient(
+				CoreNetwork.ServerToClient.GeneratorSnapshot.Server.FireClient(
 					event.player.clientId,
 					this.GetAllGenerators().map((state) => state.dto),
 				);
@@ -100,7 +100,7 @@ export class GeneratorService implements OnStart {
 
 		/* Store generator in map, notify client of generator creation. */
 		this.generatorMap.set(state.dto.id, state);
-		Network.ServerToClient.GeneratorCreated.Server.FireAllClients(state.dto);
+		CoreNetwork.ServerToClient.GeneratorCreated.Server.FireAllClients(state.dto);
 		/* Return id. */
 		return generatorId;
 	}
@@ -166,7 +166,7 @@ export class GeneratorService implements OnStart {
 		state.ticker = this.TickGenerator(state);
 
 		/* Inform clients of _all_ server-sided generator spawn rate changes. */
-		Network.ServerToClient.GeneratorSpawnRateChanged.Server.FireAllClients(state.dto.id, newSpawnRate);
+		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.Server.FireAllClients(state.dto.id, newSpawnRate);
 	}
 
 	/**

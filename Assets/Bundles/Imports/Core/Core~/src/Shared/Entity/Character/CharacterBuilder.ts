@@ -1,5 +1,5 @@
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BodyAttachment } from "./Accessory/BodyAttachment";
@@ -48,7 +48,7 @@ export class CharacterBuilder {
 		if (this.clientId !== undefined) {
 			NetworkUtil.SpawnWithClientOwnership(characterModel, this.clientId);
 			const nob = characterModel.GetComponent<NetworkObject>();
-			Network.ServerToClient.CharacterModelChanged.Server.FireClient(this.clientId, nob.ObjectId);
+			CoreNetwork.ServerToClient.CharacterModelChanged.Server.FireClient(this.clientId, nob.ObjectId);
 		} else {
 			NetworkUtil.Spawn(characterModel);
 		}

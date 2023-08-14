@@ -4,14 +4,14 @@ import { Game } from "Imports/Core/Shared/Game";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
 import { Team } from "Imports/Core/Shared/Team/Team";
+import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
+import { MathUtil } from "Imports/Core/Shared/Util/MathUtil";
+import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { Theme } from "Shared/Util/Theme";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
 

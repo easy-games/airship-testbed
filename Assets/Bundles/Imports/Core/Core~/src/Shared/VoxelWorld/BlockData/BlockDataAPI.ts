@@ -1,4 +1,4 @@
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { RunUtil } from "Shared/Util/RunUtil";
 
 export class BlockDataAPI {
@@ -13,7 +13,7 @@ export class BlockDataAPI {
 
 	public static Init(): void {
 		if (RunCore.IsClient()) {
-			Network.ServerToClient.SetBlockData.Client.OnServerEvent((blockPos, key, data) => {
+			CoreNetwork.ServerToClient.SetBlockData.Client.OnServerEvent((blockPos, key, data) => {
 				this.SetBlockData(blockPos, key, data);
 			});
 		} else {
@@ -21,7 +21,7 @@ export class BlockDataAPI {
 			serverSignals.PlayerJoin.Connect((event) => {
 				for (const pair1 of this.blockDataMap) {
 					for (const pair2 of pair1[1]) {
-						Network.ServerToClient.SetBlockData.Server.FireClient(
+						CoreNetwork.ServerToClient.SetBlockData.Server.FireClient(
 							event.player.clientId,
 							pair1[0],
 							pair2[0],
@@ -43,7 +43,7 @@ export class BlockDataAPI {
 		}
 		map.set(key, data);
 		if (RunUtil.IsServer()) {
-			Network.ServerToClient.SetBlockData.Server.FireAllClients(blockPos, key, data);
+			CoreNetwork.ServerToClient.SetBlockData.Server.FireAllClients(blockPos, key, data);
 		}
 	}
 

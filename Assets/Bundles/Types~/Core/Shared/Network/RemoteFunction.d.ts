@@ -1,6 +1,7 @@
-declare type RemoteParamsToServer<T> = Parameters<T extends unknown[] ? (...args: T) => void : T extends unknown ? (arg: T) => void : () => void>;
-declare type RemoteFunctionReturn<RX> = RX extends [infer A] ? A : RX;
-declare type RemoteFunctionCallback<TX, RX> = (clientId: number, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
+/// <reference types="@easy-games/compiler-types" />
+type RemoteParamsToServer<T> = Parameters<T extends unknown[] ? (...args: T) => void : T extends unknown ? (arg: T) => void : () => void>;
+type RemoteFunctionReturn<RX> = RX extends [infer A] ? A : RX;
+type RemoteFunctionCallback<TX, RX> = (clientId: number, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
 declare class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
     private readonly id;
     private listening;

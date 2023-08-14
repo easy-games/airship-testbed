@@ -2,7 +2,7 @@ import ObjectUtils from "@easy-games/unity-object-utils";
 import { GameObjectUtil } from "../../GameObject/GameObjectUtil";
 import { ItemType } from "../../Item/ItemType";
 import { ItemUtil } from "../../Item/ItemUtil";
-import { Network } from "../../Network";
+import { CoreNetwork } from "../../Network";
 import { RunUtil } from "../../Util/RunUtil";
 import { SignalPriority } from "../../Util/Signal";
 import { BlockDataAPI } from "../BlockData/BlockDataAPI";
@@ -35,13 +35,13 @@ export class PrefabBlockManager {
 		if (RunUtil.IsServer()) {
 			const serverSignals = import("Server/ServerSignals").expect().ServerSignals;
 			serverSignals.PlayerJoin.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-				Network.ServerToClient.SyncPrefabBlocks.Server.FireClient(
+				CoreNetwork.ServerToClient.SyncPrefabBlocks.Server.FireClient(
 					event.player.clientId,
 					ObjectUtils.keys(this.objectMap),
 				);
 			});
 		} else {
-			Network.ServerToClient.SyncPrefabBlocks.Client.OnServerEvent((blockPositions) => {
+			CoreNetwork.ServerToClient.SyncPrefabBlocks.Client.OnServerEvent((blockPositions) => {
 				world.WaitForFinishedReplicatingChunksFromServer().then(() => {
 					print("received block pos count: " + blockPositions.size());
 					for (const pos of blockPositions) {

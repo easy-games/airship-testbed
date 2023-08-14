@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { Entity } from "Shared/Entity/Entity";
-import { Projectile } from "Shared/Projectile/Projectile";
+import { Entity } from "../../../../Shared/Entity/Entity";
+import { Projectile } from "../../../../Shared/Projectile/Projectile";
 export declare class ProjectileCollideClientSignal {
     readonly projectile: Projectile;
     readonly hitPosition: Vector3;

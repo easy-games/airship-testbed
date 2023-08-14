@@ -1,6 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { ItemType } from "Shared/Item/ItemType";
+import { ItemType } from "../Item/ItemType";
 /** Generator pickup range. */
 export declare const GENERATOR_PICKUP_RANGE = 1.5;
 /** Describes a generator. */

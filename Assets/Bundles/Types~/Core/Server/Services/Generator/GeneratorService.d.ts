@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { GeneratorCreationConfig } from "Shared/Generator/GeneratorMeta";
+import { GeneratorCreationConfig } from "../../../Shared/Generator/GeneratorMeta";
 import { GeneratorState } from "./GeneratorState";
 export declare class GeneratorService implements OnStart {
     /** Generator id counter. */

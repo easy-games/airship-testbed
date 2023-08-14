@@ -3,7 +3,7 @@ import ObjectUtil from "@easy-games/unity-object-utils";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GeneratorDto } from "Shared/Generator/GeneratorMeta";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Layer } from "Shared/Util/Layer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 
@@ -42,7 +42,7 @@ export class GeneratorController implements OnStart {
 
 	OnStart(): void {
 		/* Listen for generator snapshot. Should only be received on late joins. */
-		Network.ServerToClient.GeneratorSnapshot.Client.OnServerEvent((generatorStateDtos) => {
+		CoreNetwork.ServerToClient.GeneratorSnapshot.Client.OnServerEvent((generatorStateDtos) => {
 			generatorStateDtos.forEach((dto) => {
 				/* Skip generator if it already exists on client. */
 				if (this.generatorMap.has(dto.id)) return;
@@ -60,7 +60,7 @@ export class GeneratorController implements OnStart {
 			});
 		});
 		/* Listen for generator creation. */
-		Network.ServerToClient.GeneratorCreated.Client.OnServerEvent((dto) => {
+		CoreNetwork.ServerToClient.GeneratorCreated.Client.OnServerEvent((dto) => {
 			/* Adjust initial spawn time to sync with server. */
 			const timeUntilNextSpawn = dto.nextSpawnTime - TimeUtil.GetServerTime();
 			if (timeUntilNextSpawn > 0) {
@@ -72,7 +72,7 @@ export class GeneratorController implements OnStart {
 			if (dto.label) this.CreateGeneratorLabel(dto);
 		});
 		/* Listen for generator looted. */
-		Network.ServerToClient.GeneratorLooted.Client.OnServerEvent((generatorId) => {
+		CoreNetwork.ServerToClient.GeneratorLooted.Client.OnServerEvent((generatorId) => {
 			const dto = this.generatorMap.get(generatorId);
 			if (!dto) return;
 			/* Update generator label if applicable. */

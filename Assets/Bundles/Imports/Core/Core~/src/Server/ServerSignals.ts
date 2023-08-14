@@ -1,16 +1,18 @@
 import { SyncEvent } from "@easy-games/unity-sync-event";
-import { Entity } from "./Entity/Entity";
-import { GroundItem } from "./GroundItem/GroundItem";
-import { ItemMeta } from "./Item/ItemMeta";
-import { ItemType } from "./Item/ItemType";
-import { ShopElement } from "./ItemShop/ItemShopMeta";
-import { Player } from "./Player/Player";
+import { Entity } from "Shared/Entity/Entity";
+import { GroundItem } from "Shared/GroundItem/GroundItem";
+import { ItemMeta } from "Shared/Item/ItemMeta";
+import { ItemType } from "Shared/Item/ItemType";
+import { ShopElement } from "Shared/ItemShop/ItemShopMeta";
+import { Player } from "Shared/Player/Player";
+import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
+import { BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
+import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
+import { Signal } from "Shared/Util/Signal";
 import { BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
-import { BeforeBlockPlacedSignal } from "./Signals/BeforeBlockPlacedSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";
-import { BlockPlaceSignal } from "./Signals/BlockPlaceSignal";
 import { EntityDamageServerSignal } from "./Signals/EntityDamageServerSignal";
 import { EntityDeathServerSignal } from "./Signals/EntityDeathServerSignal";
 import { EntityDropItemSignal } from "./Signals/EntityDropItemSignal";
@@ -18,8 +20,6 @@ import { EntitySpawnEvent } from "./Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "./Signals/MoveCommandDataEvent";
 import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
-import { ChangeTeamSignal } from "./Team/TeamJoinSignal";
-import { Signal } from "./Util/Signal";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
 

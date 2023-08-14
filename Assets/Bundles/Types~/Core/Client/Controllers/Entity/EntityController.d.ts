@@ -1,5 +1,6 @@
+/// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { Entity } from "Shared/Entity/Entity";
+import { Entity } from "../../../Shared/Entity/Entity";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
 export declare class EntityController implements OnStart {
@@ -12,7 +13,7 @@ export declare class EntityController implements OnStart {
     private AddEntity;
     GetEntityById(entityId: number): Entity | undefined;
     WaitForId(entityId: number): Promise<Entity | undefined>;
-    GetEntityByClientId(clientId: number): any;
+    GetEntityByClientId(clientId: number): Entity | undefined;
     GetEntityByPlayerId(playerId: number): Entity | undefined;
     /** Yields until entity that corresponds to `playerId` exists. */
     WaitForEntityByPlayerId(playerId: number): Entity;

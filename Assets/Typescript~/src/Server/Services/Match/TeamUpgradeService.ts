@@ -1,21 +1,21 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import ObjectUtil from "@easy-games/unity-object-utils";
+import Object from "@easy-games/unity-object-utils";
+import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
+import { GeneratorService } from "Imports/Core/Server/Services/Generator/GeneratorService";
+import { PlayerService } from "Imports/Core/Server/Services/Player/PlayerService";
+import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
+import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { Player } from "Imports/Core/Shared/Player/Player";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { SetUtil } from "Imports/Core/Shared/Util/SetUtil";
+import { SignalPriority } from "Imports/Core/Shared/Util/Signal";
+import { Task } from "Imports/Core/Shared/Util/Task";
 import { ServerSignals } from "Server/ServerSignals";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { ItemType } from "Shared/Item/ItemType";
 import { Network } from "Shared/Network";
-import { Player } from "Shared/Player/Player";
-import { Team } from "Shared/Team/Team";
-import { TeamUpgradeStateDto } from "Shared/TeamUpgrades/TeamUpgradeMeta";
-import { TeamUpgradeType } from "Shared/TeamUpgrades/TeamUpgradeType";
-import { TeamUpgradeUtil } from "Shared/TeamUpgrades/TeamUpgradeUtil";
-import { SetUtil } from "Shared/Util/SetUtil";
-import { SignalPriority } from "Shared/Util/Signal";
-import { Task } from "Shared/Util/Task";
-import { EntityService } from "../Global/Entity/EntityService";
-import { GeneratorService } from "../Global/Generator/GeneratorService";
-import { PlayerService } from "../Global/Player/PlayerService";
-import { TeamService } from "../Global/Team/TeamService";
+import { TeamUpgradeStateDto } from "Shared/TeamUpgrade/TeamUpgradeMeta";
+import { TeamUpgradeType } from "Shared/TeamUpgrade/TeamUpgradeType";
+import { TeamUpgradeUtil } from "Shared/TeamUpgrade/TeamUpgradeUtil";
 import { GeneratorSpawnService } from "./GeneratorSpawnService";
 
 /** Snapshot send delay after user connects. */
@@ -57,7 +57,7 @@ export class TeamUpgradeService implements OnStart {
 				if (!team) return;
 				const teamUpgradeMap = this.teamUpgradeMap.get(team);
 				if (!teamUpgradeMap) return;
-				const dtos = ObjectUtil.values(teamUpgradeMap);
+				const dtos = Object.values(teamUpgradeMap);
 				Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.Server.FireClient(event.player.clientId, dtos);
 			});
 		});
@@ -197,7 +197,7 @@ export class TeamUpgradeService implements OnStart {
 		const teams = this.teamService.GetTeams();
 		teams.forEach((team) => {
 			const defaultTeamUpgradeStates = new Map<TeamUpgradeType, TeamUpgradeStateDto>();
-			ObjectUtil.values(TeamUpgradeType).forEach((upgradeType) => {
+			Object.values(TeamUpgradeType).forEach((upgradeType) => {
 				const teamUpgradeMeta = TeamUpgradeUtil.GetTeamUpgradeMeta(upgradeType);
 				const dto: TeamUpgradeStateDto = {
 					teamUpgrade: teamUpgradeMeta,

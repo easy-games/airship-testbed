@@ -4,7 +4,7 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Game } from "Shared/Game";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
@@ -24,7 +24,7 @@ export class InventoryController implements OnStart {
 	constructor() {}
 
 	OnStart(): void {
-		Network.ServerToClient.UpdateInventory.Client.OnServerEvent((dto) => {
+		CoreNetwork.ServerToClient.UpdateInventory.Client.OnServerEvent((dto) => {
 			let inv = this.GetInventory(dto.id);
 			if (!inv) {
 				inv = new Inventory(dto.id);
@@ -32,16 +32,18 @@ export class InventoryController implements OnStart {
 			}
 			inv.ProcessDto(dto);
 		});
-		Network.ServerToClient.SetInventorySlot.Client.OnServerEvent((invId, slot, itemStackDto, clientPredicted) => {
-			const inv = this.GetInventory(invId);
-			if (!inv) return;
+		CoreNetwork.ServerToClient.SetInventorySlot.Client.OnServerEvent(
+			(invId, slot, itemStackDto, clientPredicted) => {
+				const inv = this.GetInventory(invId);
+				if (!inv) return;
 
-			if (this.LocalInventory === inv && clientPredicted) return;
+				if (this.LocalInventory === inv && clientPredicted) return;
 
-			const itemStack = itemStackDto !== undefined ? ItemStack.Decode(itemStackDto) : undefined;
-			inv.SetItem(slot, itemStack);
-		});
-		Network.ServerToClient.UpdateInventorySlot.Client.OnServerEvent((invId, slot, itemType, amount) => {
+				const itemStack = itemStackDto !== undefined ? ItemStack.Decode(itemStackDto) : undefined;
+				inv.SetItem(slot, itemStack);
+			},
+		);
+		CoreNetwork.ServerToClient.UpdateInventorySlot.Client.OnServerEvent((invId, slot, itemType, amount) => {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
@@ -55,7 +57,7 @@ export class InventoryController implements OnStart {
 				itemStack.SetAmount(amount);
 			}
 		});
-		Network.ServerToClient.SetHeldInventorySlot.Client.OnServerEvent((invId, slot, clientPredicted) => {
+		CoreNetwork.ServerToClient.SetHeldInventorySlot.Client.OnServerEvent((invId, slot, clientPredicted) => {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
@@ -170,13 +172,13 @@ export class InventoryController implements OnStart {
 			error("missing local inventory.");
 		}
 
-		Network.ClientToServer.Inventory.CheckOutOfSync.Client.FireServer(this.LocalInventory.Encode());
+		CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.Client.FireServer(this.LocalInventory.Encode());
 	}
 
 	public DropItemInHand(): void {
 		const heldItem = this.LocalInventory?.GetHeldItem();
 		if (heldItem) {
-			Network.ClientToServer.DropItemInHand.Client.FireServer(1);
+			CoreNetwork.ClientToServer.DropItemInHand.Client.FireServer(1);
 		}
 	}
 
@@ -235,7 +237,7 @@ export class InventoryController implements OnStart {
 
 		this.LocalInventory.SetHeldSlot(slot);
 		this.HeldSlotChanged.Fire(slot);
-		Network.ClientToServer.SetHeldSlot.Client.FireServer(slot);
+		CoreNetwork.ClientToServer.SetHeldSlot.Client.FireServer(slot);
 	}
 
 	public GetInventory(id: number): Inventory | undefined {
@@ -358,7 +360,7 @@ export class InventoryController implements OnStart {
 			}
 		}
 
-		Network.ClientToServer.Inventory.QuickMoveSlot.Client.FireServer(inv.Id, slot, inv.Id);
+		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.Client.FireServer(inv.Id, slot, inv.Id);
 
 		// SetTimeout(0.1, () => {
 		// 	this.CheckInventoryOutOfSync();

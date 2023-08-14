@@ -1,3 +1,4 @@
+/// <reference types="@easy-games/compiler-types" />
 export declare class PartyAPI {
     private static partyData;
     private static partyInvites;

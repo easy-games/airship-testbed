@@ -1,8 +1,8 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
+import { ItemStack } from "Imports/Core/Shared/Inventory/ItemStack";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ServerSignals } from "Server/ServerSignals";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemType } from "Shared/Item/ItemType";
 
 @Service({})
 export class LobbyService implements OnStart {

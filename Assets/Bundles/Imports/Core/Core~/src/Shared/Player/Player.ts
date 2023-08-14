@@ -1,10 +1,10 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ChatController } from "../Controllers/Chat/ChatController";
-import { PlayerController } from "../Controllers/Player/PlayerController";
-import { CharacterEntity } from "../Entity/Character/CharacterEntity";
-import { Entity } from "../Entity/Entity";
-import { Network } from "../Network";
-import { PlayerService } from "../Services/Player/PlayerService";
+import { ChatController } from "Client/Controllers/Chat/ChatController";
+import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { PlayerService } from "Server/Services/Player/PlayerService";
+import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { Entity } from "Shared/Entity/Entity";
+import { CoreNetwork } from "Shared/Network";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
@@ -90,7 +90,7 @@ export class Player {
 
 	public SendMessage(message: string): void {
 		if (RunUtil.IsServer()) {
-			Network.ServerToClient.ChatMessage.Server.FireClient(this.clientId, message);
+			CoreNetwork.ServerToClient.ChatMessage.Server.FireClient(this.clientId, message);
 		} else {
 			Dependency<ChatController>().AddChatMessage(message);
 		}

@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { DenyRegionDto } from "Shared/DenyRegion/DenyRegionMeta";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { SignalPriority } from "Shared/Util/Signal";
 
 @Controller({ loadOrder: -1 })
@@ -13,11 +13,11 @@ export class DenyRegionController implements OnStart {
 
 	OnStart(): void {
 		/* Listen for incoming deny region snapshots. */
-		Network.ServerToClient.DenyRegionSnapshot.Client.OnServerEvent((denyRegions) => {
+		CoreNetwork.ServerToClient.DenyRegionSnapshot.Client.OnServerEvent((denyRegions) => {
 			denyRegions.forEach((denyRegion) => this.CreateDenyRegionFromDto(denyRegion));
 		});
 		/* Listen for created deny regions. */
-		Network.ServerToClient.DenyRegionCreated.Client.OnServerEvent((denyRegion) => {
+		CoreNetwork.ServerToClient.DenyRegionCreated.Client.OnServerEvent((denyRegion) => {
 			this.CreateDenyRegionFromDto(denyRegion);
 		});
 		/* Cancel block placed if voxel position is inside of a deny region. */

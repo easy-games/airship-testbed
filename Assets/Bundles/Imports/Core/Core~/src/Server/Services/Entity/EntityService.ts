@@ -6,7 +6,7 @@ import { MoveCommandDataEvent } from "Server/Signals/MoveCommandDataEvent";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { SignalPriority } from "Shared/Util/Signal";
@@ -35,11 +35,11 @@ export class EntityService implements OnStart {
 			for (let entity of ObjectUtil.values(this.entities)) {
 				if (entity instanceof CharacterEntity) {
 					const invDto = entity.GetInventory().Encode();
-					Network.ServerToClient.UpdateInventory.Server.FireClient(player.clientId, invDto);
+					CoreNetwork.ServerToClient.UpdateInventory.Server.FireClient(player.clientId, invDto);
 				}
 			}
 			const dto = ObjectUtil.values(this.entities).map((e) => e.Encode());
-			Network.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
+			CoreNetwork.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
 
 			return () => {
 				if (player.Character) {
@@ -112,8 +112,8 @@ export class EntityService implements OnStart {
 		// fire SpawnEntities after so the initial entity packet has all the latest info.
 		ServerSignals.EntitySpawn.Fire(new EntitySpawnEvent(entity));
 
-		Network.ServerToClient.SpawnEntities.Server.FireAllClients([entity.Encode()]);
-		Network.ServerToClient.UpdateInventory.Server.FireAllClients(entity.GetInventory().Encode());
+		CoreNetwork.ServerToClient.SpawnEntities.Server.FireAllClients([entity.Encode()]);
+		CoreNetwork.ServerToClient.UpdateInventory.Server.FireAllClients(entity.GetInventory().Encode());
 		entity.GetInventory().StartNetworkingDiffs();
 
 		return entity;

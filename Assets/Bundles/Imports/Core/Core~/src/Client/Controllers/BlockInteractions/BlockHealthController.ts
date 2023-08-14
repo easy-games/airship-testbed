@@ -3,7 +3,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import {
 	BundleGroupNames,
@@ -40,7 +40,7 @@ export class BlockHealthController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		Network.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, entityId) => {
+		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, entityId) => {
 			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
 
 			const voxel = WorldAPI.GetMainWorld().GetRawVoxelDataAt(blockPos);
@@ -56,7 +56,7 @@ export class BlockHealthController implements OnStart {
 			}
 		});
 
-		Network.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
+		CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
 			this.VisualizeBlockBreak(blockPos, blockId);
 		});
 

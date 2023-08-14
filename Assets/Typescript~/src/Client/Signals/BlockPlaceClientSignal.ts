@@ -1,5 +1,5 @@
-import { Entity } from "Shared/Entity/Entity";
-import { Block } from "Shared/VoxelWorld/Block";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
+import { Block } from "Imports/Core/Shared/VoxelWorld/Block";
 
 export class BlockPlaceClientSignal {
 	constructor(

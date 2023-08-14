@@ -1,9 +1,9 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { Entity } from "Shared/Entity/Entity";
-import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
-import { Player } from "Shared/Player/Player";
+import { Entity } from "../../../Shared/Entity/Entity";
+import { EntityPrefabType } from "../../../Shared/Entity/EntityPrefabType";
+import { Player } from "../../../Shared/Player/Player";
 import { ChatService } from "../Chat/ChatService";
 import { InventoryService } from "../Inventory/InventoryService";
 export declare class EntityService implements OnStart {
@@ -19,6 +19,6 @@ export declare class EntityService implements OnStart {
     SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3): Entity;
     DespawnEntity(entity: Entity): void;
     GetEntityById(entityId: number): Entity | undefined;
-    GetEntityByClientId(clientId: number): any;
+    GetEntityByClientId(clientId: number): Entity | undefined;
     GetEntities(): Entity[];
 }

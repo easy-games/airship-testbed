@@ -1,18 +1,18 @@
-import { Signal } from "Shared/Util/Signal";
-import { BeforeBlockHitSignal } from "./Controllers/Global/BlockInteractions/Signal/BeforeBlockHitSignal";
-import { ProjectileCollideClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileCollideClientSignal";
-import { ProjectileLaunchedClientSignal } from "./Controllers/Global/Damage/Projectile/ProjectileLaunchedClientSignal";
-import { Entity } from "./Entity/Entity";
-import { GroundItem } from "./GroundItem/GroundItem";
-import { ItemType } from "./Item/ItemType";
+import { BeforeBlockHitSignal } from "Imports/Core/Client/Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
+import { ProjectileCollideClientSignal } from "Imports/Core/Client/Controllers/Damage/Projectile/ProjectileCollideClientSignal";
+import { ProjectileLaunchedClientSignal } from "Imports/Core/Client/Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
+import { EntitySpawnClientSignal } from "Imports/Core/Client/Signals/EntitySpawnClientEvent";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
+import { GroundItem } from "Imports/Core/Shared/GroundItem/GroundItem";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { Player } from "Imports/Core/Shared/Player/Player";
+import { BeforeBlockPlacedSignal } from "Imports/Core/Shared/Signals/BeforeBlockPlacedSignal";
+import { ChangeTeamSignal } from "Imports/Core/Shared/Team/TeamJoinSignal";
+import { Signal } from "Imports/Core/Shared/Util/Signal";
 import { MatchState } from "./Match/MatchState";
-import { Player } from "./Player/Player";
-import { BeforeBlockPlacedSignal } from "./Signals/BeforeBlockPlacedSignal";
 import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
-import { EntitySpawnClientEvent as EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
-import { ChangeTeamSignal } from "./Team/TeamJoinSignal";
 
 export const ClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),

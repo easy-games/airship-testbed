@@ -1,4 +1,4 @@
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Signal, SignalPriority } from "../Util/Signal";
 import { KeySignal } from "./Drivers/Signals/KeySignal";
 export declare class Keyboard {
     private readonly bin;

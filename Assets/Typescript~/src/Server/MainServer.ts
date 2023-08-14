@@ -1,9 +1,9 @@
 import { Flamework } from "@easy-games/flamework-core";
 import { InitNet } from "Imports/Core/Shared/Network/NetworkAPI";
+import { TimeUtil } from "Imports/Core/Shared/Util/TimeUtil";
+import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Imports/Core/Shared/Util/Timer";
 import { SetupWorld } from "Imports/Core/Shared/VoxelWorld/SetupWorld";
-import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
 import { BedWars } from "./BedWars/BedWars";
-import { TimeUtil } from "./Util/TimeUtil";
 
 print("MainServer!");
 

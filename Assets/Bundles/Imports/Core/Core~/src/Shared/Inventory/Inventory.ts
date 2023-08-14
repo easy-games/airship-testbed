@@ -1,7 +1,7 @@
 import Object from "@easy-games/unity-object-utils";
 import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemType } from "Shared/Item/ItemType";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
@@ -123,7 +123,7 @@ export class Inventory {
 				bin.Add(
 					itemStack.AmountChanged.Connect((e) => {
 						if (e.NoNetwork) return;
-						Network.ServerToClient.UpdateInventorySlot.Server.FireAllClients(
+						CoreNetwork.ServerToClient.UpdateInventorySlot.Server.FireAllClients(
 							this.Id,
 							slot,
 							undefined,
@@ -134,7 +134,7 @@ export class Inventory {
 				bin.Add(
 					itemStack.ItemTypeChanged.Connect((e) => {
 						if (e.NoNetwork) return;
-						Network.ServerToClient.UpdateInventorySlot.Server.FireAllClients(
+						CoreNetwork.ServerToClient.UpdateInventorySlot.Server.FireAllClients(
 							this.Id,
 							slot,
 							e.ItemType,
@@ -149,7 +149,7 @@ export class Inventory {
 
 		if (RunUtil.IsServer() && this.finishedInitialReplication) {
 			// todo: figure out which clients to include
-			Network.ServerToClient.SetInventorySlot.Server.FireAllClients(
+			CoreNetwork.ServerToClient.SetInventorySlot.Server.FireAllClients(
 				this.Id,
 				slot,
 				itemStack?.Encode(),

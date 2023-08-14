@@ -1,8 +1,8 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { TeamUpgradeController } from "Client/Controllers/Global/TeamUpgrade/TeamUpgradeController";
 import { Player } from "Imports/Core/Shared/Player/Player";
+import { RunUtil } from "Imports/Core/Shared/Util/RunUtil";
 import { TeamUpgradeService } from "Server/Services/Match/TeamUpgradeService";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { TeamUpgrade, teamUpgrades, TeamUpgradeStateDto, TeamUpgradeTier } from "./TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgradeType";
 

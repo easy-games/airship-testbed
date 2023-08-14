@@ -10,7 +10,7 @@ export declare class CameraReferences {
     readonly fpsCamera: Camera;
     readonly uiCamera: Camera;
     constructor();
-    RaycastVoxelFromCamera(distance: number): any;
+    RaycastVoxelFromCamera(distance: number): VoxelRaycastResult;
     RaycastPhysicsFromCamera(distance: number, layerMask?: number): LuaTuple<[hit: true, point: Vector3, normal: Vector3, collider: Collider] | [hit: false, point: undefined, normal: undefined, collider: undefined]>;
     GetRayFromCamera(distance: number): Ray;
 }

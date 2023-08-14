@@ -1,4 +1,4 @@
-import { Entity } from "Shared/Entity/Entity";
+import { Entity } from "../../Shared/Entity/Entity";
 import { EntityDamageServerSignal } from "./EntityDamageServerSignal";
 export declare class EntityDeathServerSignal {
     readonly entity: Entity;

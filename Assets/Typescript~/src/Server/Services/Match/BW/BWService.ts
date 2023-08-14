@@ -1,16 +1,16 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { PlayerService } from "Imports/Core/Server/Services/Player/PlayerService";
+import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
+import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
+import { ItemStack } from "Imports/Core/Shared/Inventory/ItemStack";
+import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
+import { Player } from "Imports/Core/Shared/Player/Player";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { SetUtil } from "Imports/Core/Shared/Util/SetUtil";
+import { SignalPriority } from "Imports/Core/Shared/Util/Signal";
 import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
-import { PlayerService } from "Server/Services/Global/Player/PlayerService";
-import { TeamService } from "Server/Services/Global/Team/TeamService";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Network } from "Shared/Network";
-import { Player } from "Shared/Player/Player";
-import { Team } from "Shared/Team/Team";
-import { SetUtil } from "Shared/Util/SetUtil";
-import { SignalPriority } from "Shared/Util/Signal";
 import { BedService } from "../BedService";
 import { MatchService } from "../MatchService";
 

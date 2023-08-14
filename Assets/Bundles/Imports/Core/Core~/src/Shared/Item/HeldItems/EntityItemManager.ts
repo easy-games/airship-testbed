@@ -1,6 +1,6 @@
 ﻿import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
-import { Network } from "../../Network";
+import { CoreNetwork } from "../../Network";
 import { RunUtil } from "../../Util/RunUtil";
 import { HeldItemManager, HeldItemState } from "./HeldItemManager";
 
@@ -38,7 +38,7 @@ export class EntityItemManager {
 
 	private InitializeClient() {
 		//Listen to mouse inputs
-		import("../../../Client/UserInput").then((userInputRef) => {
+		import("Shared/UserInput").then((userInputRef) => {
 			this.Log("UserInput");
 			//Process Inputs locally
 			const mouse = new userInputRef.Mouse();
@@ -92,7 +92,7 @@ export class EntityItemManager {
 			});
 
 			//Server Events
-			Network.ServerToClient.HeldItemStateChanged.Client.OnServerEvent((entityId, newState) => {
+			CoreNetwork.ServerToClient.HeldItemStateChanged.Client.OnServerEvent((entityId, newState) => {
 				const heldItem = this.entityItems.get(entityId);
 				if (heldItem) {
 					heldItem.OnNewState(newState);
@@ -130,7 +130,7 @@ export class EntityItemManager {
 					const heldItem = this.entityItems.get(event.value.entityId);
 					if (heldItem) {
 						heldItem.OnNewState(event.value.state);
-						Network.ServerToClient.HeldItemStateChanged.Server.FireExcept(
+						CoreNetwork.ServerToClient.HeldItemStateChanged.Server.FireExcept(
 							event.clientId,
 							event.value.entityId,
 							event.value.state,

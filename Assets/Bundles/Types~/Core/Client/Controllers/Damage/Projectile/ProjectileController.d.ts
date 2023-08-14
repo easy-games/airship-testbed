@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { Projectile } from "Shared/Projectile/Projectile";
+import { Projectile } from "../../../../Shared/Projectile/Projectile";
 export declare class ProjectileController implements OnStart {
     private prefabInfoByItemType;
     constructor();

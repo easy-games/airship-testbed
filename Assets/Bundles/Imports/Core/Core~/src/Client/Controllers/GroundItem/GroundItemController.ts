@@ -9,7 +9,7 @@ import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
@@ -67,7 +67,7 @@ export class GroundItemController implements OnStart {
 	}
 
 	OnStart(): void {
-		Network.ServerToClient.GroundItem.Add.Client.OnServerEvent((dtos) => {
+		CoreNetwork.ServerToClient.GroundItem.Add.Client.OnServerEvent((dtos) => {
 			for (const dto of dtos) {
 				const itemStack = ItemStack.Decode(dto.itemStack);
 				const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);
@@ -102,11 +102,11 @@ export class GroundItemController implements OnStart {
 			});
 
 			for (let groundItem of toPickup) {
-				Network.ClientToServer.PickupGroundItem.Client.FireServer(groundItem.id);
+				CoreNetwork.ClientToServer.PickupGroundItem.Client.FireServer(groundItem.id);
 			}
 		});
 
-		Network.ServerToClient.EntityPickedUpGroundItem.Client.OnServerEvent((entityId, groundItemId) => {
+		CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Client.OnServerEvent((entityId, groundItemId) => {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) {
 				return;

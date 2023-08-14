@@ -1,5 +1,8 @@
-import { Entity } from "Shared/Entity/Entity";
-import { ItemType } from "Shared/Item/ItemType";
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
+import { Entity } from "../Entity/Entity";
+import { ItemType } from "../Item/ItemType";
+import { Signal } from "../Util/Signal";
 export interface ProjectileDto {
     nobId: number;
     itemType: ItemType;
@@ -11,13 +14,13 @@ export declare class Projectile {
     readonly itemType: ItemType;
     readonly shooter: Entity | undefined;
     private destroyed;
-    readonly OnDestroy: any;
+    readonly OnDestroy: Signal<void>;
     /**
      * Fired when the projectile hits something that will destroy it.
      *
      * For additional collide information, you should instead listen to either `ClientSignals.ProjectileHit` or `ServerSignals.ProjectileHit`
      */
-    readonly OnHit: any;
+    readonly OnHit: Signal<[hitPoint: Vector3, collider: Collider]>;
     constructor(easyProjectile: EasyProjectile, itemType: ItemType, shooter: Entity | undefined);
     Destroy(): void;
 }

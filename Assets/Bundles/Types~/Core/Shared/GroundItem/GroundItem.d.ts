@@ -1,4 +1,5 @@
-import { ItemStack } from "Shared/Inventory/ItemStack";
+/// <reference types="@easy-games/compiler-types" />
+import { ItemStack } from "../Inventory/ItemStack";
 export declare class GroundItem {
     readonly id: number;
     readonly itemStack: ItemStack;

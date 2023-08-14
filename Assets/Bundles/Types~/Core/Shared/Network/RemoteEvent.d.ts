@@ -1,9 +1,10 @@
+/// <reference types="@easy-games/compiler-types" />
 import { NetworkChannel } from "./NetworkAPI";
-declare type RemoteParamsToClient<T> = Parameters<T extends unknown[] ? (clientId: number, ...args: T) => void : T extends unknown ? (clientId: number, arg: T) => void : (clientId: number) => void>;
-declare type RemoteParamsToServer<T> = Parameters<T extends unknown[] ? (...args: T) => void : T extends unknown ? (arg: T) => void : () => void>;
-declare type RemoteParamsToAllClients<T> = RemoteParamsToServer<T>;
-declare type RemoteCallbackFromClient<T> = (...args: RemoteParamsToClient<T>) => void;
-declare type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
+type RemoteParamsToClient<T> = Parameters<T extends unknown[] ? (clientId: number, ...args: T) => void : T extends unknown ? (clientId: number, arg: T) => void : (clientId: number) => void>;
+type RemoteParamsToServer<T> = Parameters<T extends unknown[] ? (...args: T) => void : T extends unknown ? (arg: T) => void : () => void>;
+type RemoteParamsToAllClients<T> = RemoteParamsToServer<T>;
+type RemoteCallbackFromClient<T> = (...args: RemoteParamsToClient<T>) => void;
+type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
 declare class RemoteEventServer<T extends unknown[] | unknown> {
     private readonly id;
     private readonly channel;

@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { Block } from "Shared/VoxelWorld/Block";
+import { Block } from "../../../Shared/VoxelWorld/Block";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";

@@ -1,7 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { DenyRegionDto } from "Shared/DenyRegion/DenyRegionMeta";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 
@@ -25,7 +25,7 @@ export class DenyRegionService implements OnStart {
 		/* Send deny region snapshot to late joiners. */
 		ServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_DELAY, () => {
-				Network.ServerToClient.DenyRegionSnapshot.Server.FireClient(
+				CoreNetwork.ServerToClient.DenyRegionSnapshot.Server.FireClient(
 					event.player.clientId,
 					this.trackedDenyRegions,
 				);
@@ -53,7 +53,7 @@ export class DenyRegionService implements OnStart {
 				}
 			}
 		}
-		Network.ServerToClient.DenyRegionCreated.Server.FireAllClients(newTrackedDenyRegion);
+		CoreNetwork.ServerToClient.DenyRegionCreated.Server.FireAllClients(newTrackedDenyRegion);
 	}
 
 	/**

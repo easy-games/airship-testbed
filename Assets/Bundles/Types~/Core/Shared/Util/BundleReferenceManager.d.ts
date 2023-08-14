@@ -1,3 +1,5 @@
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { BundleData, BundleGroupNames } from "./ReferenceManagerResources";
 export declare class BundleReferenceManager {
     static LoadResources<T>(groupId: BundleGroupNames, bundleIndex?: number): Array<T>;
@@ -6,5 +8,5 @@ export declare class BundleReferenceManager {
     static LoadResourcesFromBundle<T>(group: BundleData | undefined): Array<T>;
     static LoadResourceFromBundle<T>(group: BundleData | undefined, itemKey: number): T | undefined;
     static LoadResourcesFromMap<T>(filePaths: Map<number, string> | undefined): Array<T>;
-    static LoadResourceFromMap<T>(filePaths: Map<number, string> | undefined, itemKey: number): T;
+    static LoadResourceFromMap<T>(filePaths: Map<number, string> | undefined, itemKey: number): T | undefined;
 }

@@ -1,14 +1,14 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
 import { ItemStack } from "Imports/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
 import { ItemShopMeta } from "Imports/Core/Shared/ItemShop/ItemShopMeta";
 import { Player } from "Imports/Core/Shared/Player/Player";
+import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
-import { Theme } from "Shared/Util/Theme";
-import { EntityService } from "../Entity/EntityService";
 
 @Service({})
 export class ShopService implements OnStart {

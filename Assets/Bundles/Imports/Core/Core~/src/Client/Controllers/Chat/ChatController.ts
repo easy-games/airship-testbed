@@ -5,7 +5,7 @@ import { FriendsCommand } from "Shared/Commands/FriendsCommand";
 import { UserCommand } from "Shared/Commands/UserCommand";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -86,7 +86,7 @@ export class ChatController implements OnStart {
 	}
 
 	OnStart(): void {
-		Network.ServerToClient.ChatMessage.Client.OnServerEvent((text) => {
+		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text) => {
 			this.AddChatMessage(text);
 		});
 
@@ -249,7 +249,7 @@ export class ChatController implements OnStart {
 		}
 
 		if (sendChatToServer) {
-			Network.ClientToServer.SendChatMessage.Client.FireServer(message);
+			CoreNetwork.ClientToServer.SendChatMessage.Client.FireServer(message);
 		}
 	}
 

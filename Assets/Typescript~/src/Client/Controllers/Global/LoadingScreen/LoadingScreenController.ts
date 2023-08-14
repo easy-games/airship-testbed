@@ -1,8 +1,8 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
-import { Game } from "Shared/Game";
-import { Bin } from "Shared/Util/Bin";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { Game } from "Imports/Core/Shared/Game";
+import { Bin } from "Imports/Core/Shared/Util/Bin";
+import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
 @Controller({})
 export class LoadingScreenController implements OnStart {

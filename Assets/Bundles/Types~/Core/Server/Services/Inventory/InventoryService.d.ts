@@ -1,5 +1,6 @@
+/// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { Inventory } from "Shared/Inventory/Inventory";
+import { Inventory } from "../../../Shared/Inventory/Inventory";
 interface InventoryEntry {
     Inv: Inventory;
     Viewers: Set<number>;

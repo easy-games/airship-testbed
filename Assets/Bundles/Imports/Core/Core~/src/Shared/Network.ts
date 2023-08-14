@@ -13,7 +13,7 @@ import { PlayerDto } from "./Player/Player";
 import { ProjectileDto } from "./Projectile/Projectile";
 import { TeamDto } from "./Team/Team";
 
-export const Network = {
+export const CoreNetwork = {
 	ClientToServer: {
 		Ready: new RemoteEvent<[]>(),
 		SetHeldSlot: new RemoteEvent<[slot: number]>(),
@@ -131,10 +131,10 @@ export const Network = {
 
 let countClientToServer = 0;
 let countServerToClient = 0;
-for (const _ of pairs(Network.ClientToServer)) {
+for (const _ of pairs(CoreNetwork.ClientToServer)) {
 	countClientToServer++;
 }
-for (const _ of pairs(Network.ServerToClient)) {
+for (const _ of pairs(CoreNetwork.ServerToClient)) {
 	countServerToClient++;
 }
 print(`NETWORK_COUNT: ClientToServer: ${countClientToServer} | ServerToClient: ${countServerToClient}`);

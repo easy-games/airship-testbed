@@ -1,6 +1,7 @@
-import { FriendRequests, FriendStatusData, FriendsStatus, FriendshipRequestResultObj } from "Shared/SocketIOMessages/FriendsDtos";
-import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
-import { UserStatus } from "Shared/SocketIOMessages/Status";
+/// <reference types="@easy-games/compiler-types" />
+import { FriendRequests, FriendStatusData, FriendsStatus, FriendshipRequestResultObj } from "../SocketIOMessages/FriendsDtos";
+import { PublicUser } from "../SocketIOMessages/PublicUser";
+import { UserStatus } from "../SocketIOMessages/Status";
 export declare class FriendAPI {
     private static friendsCacheByStatus;
     private static friendsCache;

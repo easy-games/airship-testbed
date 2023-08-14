@@ -1,12 +1,13 @@
 import { OnStart } from "@easy-games/flamework-core";
-import { Inventory } from "Shared/Inventory/Inventory";
-import { ItemStack } from "Shared/Inventory/ItemStack";
-import { Bin } from "Shared/Util/Bin";
+import { Inventory } from "../../../Shared/Inventory/Inventory";
+import { ItemStack } from "../../../Shared/Inventory/ItemStack";
+import { Bin } from "../../../Shared/Util/Bin";
+import { Signal } from "../../../Shared/Util/Signal";
 export declare class InventoryController implements OnStart {
     private inventories;
     LocalInventory?: Inventory;
-    HeldSlotChanged: any;
-    LocalInventoryAdded: any;
+    HeldSlotChanged: Signal<number>;
+    LocalInventoryAdded: Signal<Inventory>;
     private enabled;
     private disablers;
     private disablerCounter;

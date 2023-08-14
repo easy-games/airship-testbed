@@ -1,7 +1,7 @@
 import { PublicUser } from "./PublicUser";
 import { UserStatus } from "./Status";
-export declare type FriendshipRequestResult = "initiated" | "accepted";
-export declare type FriendshipRequestResultObj = {
+export type FriendshipRequestResult = "initiated" | "accepted";
+export type FriendshipRequestResultObj = {
     result: FriendshipRequestResult;
 };
 export interface FriendRequests {
@@ -12,13 +12,13 @@ export interface FriendRequests {
 export interface FriendsOfUsers {
     [uid: string]: PublicUser[];
 }
-export declare type FriendsStatus = {
+export type FriendsStatus = {
     isFriends: boolean;
 };
 export interface RequestFriendDto {
     discriminatedUsername: string;
 }
-export declare type FriendStatusData = {
+export type FriendStatusData = {
     discriminatedUsername: string;
     discriminator: string;
     userId: string;

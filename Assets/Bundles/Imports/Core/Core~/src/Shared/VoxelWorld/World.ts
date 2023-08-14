@@ -1,7 +1,7 @@
 import Object from "@easy-games/unity-object-utils";
 import { Game } from "Shared/Game";
 import { ItemType } from "Shared/Item/ItemType";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Signal } from "Shared/Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
@@ -125,7 +125,7 @@ export class World {
 		}
 
 		if (RunCore.IsServer()) {
-			Network.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockId, config?.placedByEntityId);
+			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockId, config?.placedByEntityId);
 		} else {
 			if (config?.placedByEntityId === Game.LocalPlayer.Character?.id) {
 				// Client predicted block place event

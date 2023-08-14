@@ -1,4 +1,4 @@
-import { Network } from "./Network";
+import { CoreNetwork } from "./Network";
 import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
 
@@ -13,7 +13,7 @@ export class Game {
 
 	public static BroadcastMessage(message: string): void {
 		if (RunUtil.IsServer()) {
-			Network.ServerToClient.ChatMessage.Server.FireAllClients(message);
+			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message);
 		} else {
 			Game.LocalPlayer.SendMessage(message);
 		}

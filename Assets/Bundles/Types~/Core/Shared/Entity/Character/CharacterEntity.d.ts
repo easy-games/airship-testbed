@@ -1,4 +1,4 @@
-import { Inventory } from "Shared/Inventory/Inventory";
+import { Inventory } from "../../Inventory/Inventory";
 import { Entity, EntityDto } from "../Entity";
 export interface CharacterEntityDto extends EntityDto {
     invId: number;

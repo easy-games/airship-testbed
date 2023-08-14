@@ -1,6 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { DamageType } from "Shared/Damage/DamageType";
+import { DamageType } from "../../Damage/DamageType";
 import { Entity, EntityReferences } from "../Entity";
 export declare class EntityAnimator {
     protected entity: Entity;

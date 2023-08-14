@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import StringUtils from "Shared/Util/StringUtil";
@@ -51,7 +51,7 @@ export class ChatService implements OnStart {
 	}
 
 	OnStart(): void {
-		Network.ClientToServer.SendChatMessage.Server.OnClientEvent((clientId, text) => {
+		CoreNetwork.ClientToServer.SendChatMessage.Server.OnClientEvent((clientId, text) => {
 			const player = this.playerService.GetPlayerFromClientId(clientId);
 			if (!player) {
 				error("player not found.");
@@ -86,7 +86,7 @@ export class ChatService implements OnStart {
 			}
 
 			let message = username + ": " + text;
-			Network.ServerToClient.ChatMessage.Server.FireAllClients(message);
+			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message);
 		});
 	}
 }

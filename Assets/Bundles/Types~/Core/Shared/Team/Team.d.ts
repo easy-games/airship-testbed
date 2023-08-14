@@ -1,4 +1,6 @@
-import { Player } from "Shared/Player/Player";
+/// <reference types="@easy-games/compiler-types" />
+import { Player } from "../Player/Player";
+import { Signal } from "../Util/Signal";
 export interface TeamDto {
     name: string;
     id: string;
@@ -10,8 +12,8 @@ export declare class Team {
     readonly id: string;
     readonly color: Color;
     private players;
-    readonly onPlayerAdded: any;
-    readonly onPlayerRemoved: any;
+    readonly onPlayerAdded: Signal<Player>;
+    readonly onPlayerRemoved: Signal<Player>;
     constructor(name: string, id: string, color: Color);
     GetPlayers(): Set<Player>;
     AddPlayer(player: Player): void;

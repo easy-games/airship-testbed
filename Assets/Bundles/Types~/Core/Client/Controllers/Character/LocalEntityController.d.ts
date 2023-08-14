@@ -1,5 +1,6 @@
 import { OnStart } from "@easy-games/flamework-core";
-import { DataStreamItems } from "Shared/Util/DataStreamTypes";
+import { DataStreamItems } from "../../../Shared/Util/DataStreamTypes";
+import { Signal } from "../../../Shared/Util/Signal";
 import { CameraController } from "../Camera/CameraController";
 import { ClientSettingsController } from "../ClientSettings/ClientSettingsController";
 import { InventoryController } from "../Inventory/InventoryController";
@@ -12,9 +13,9 @@ export declare class LocalEntityController implements OnStart {
     private lookBackwards;
     private fps?;
     /** Fires whenever the user changes their first-person state. */
-    readonly FirstPersonChanged: any;
+    readonly FirstPersonChanged: Signal<[isFirstPerson: boolean]>;
     /** Fires whenever the user requests to look (or stop looking) backwards. */
-    readonly LookBackwardsChanged: any;
+    readonly LookBackwardsChanged: Signal<[lookBackwards: boolean]>;
     private customDataQueue;
     private entityDriver;
     private entityInput;

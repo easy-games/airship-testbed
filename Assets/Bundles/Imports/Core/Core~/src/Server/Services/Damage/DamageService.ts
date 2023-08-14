@@ -4,7 +4,7 @@ import { EntityDamageServerSignal } from "Server/Signals/EntityDamageServerSigna
 import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal";
 import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
@@ -17,7 +17,7 @@ export class DamageService implements OnStart {
 	constructor(private readonly entityService: EntityService) {}
 
 	OnStart(): void {
-		Network.ClientToServer.TEST_LATENCY.Server.SetCallback((clientId) => {
+		CoreNetwork.ClientToServer.TEST_LATENCY.Server.SetCallback((clientId) => {
 			print("-----");
 			for (const entity of this.entityService.GetEntities()) {
 				print(entity.GetDisplayName() + ": " + entity.id);
@@ -40,7 +40,7 @@ export class DamageService implements OnStart {
 			return InstanceFinder.TimeManager.Tick;
 		});
 
-		Network.ClientToServer.TestKnockback2.Server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.TestKnockback2.Server.OnClientEvent((clientId) => {
 			const entity = Entity.FindByClientId(clientId);
 			if (entity) {
 				const dir = entity.model.transform.forward;
@@ -93,7 +93,7 @@ export class DamageService implements OnStart {
 			fromPos = config.fromEntity.networkObject.gameObject.transform.position;
 		}
 
-		Network.ServerToClient.EntityDamage.Server.FireAllClients(
+		CoreNetwork.ServerToClient.EntityDamage.Server.FireAllClients(
 			entity.id,
 			damageEvent.amount,
 			damageEvent.damageType,
@@ -114,7 +114,7 @@ export class DamageService implements OnStart {
 			);
 			ServerSignals.EntityDeath.Fire(entityDeathEvent);
 
-			Network.ServerToClient.EntityDeath.Server.FireAllClients(
+			CoreNetwork.ServerToClient.EntityDeath.Server.FireAllClients(
 				entity.id,
 				damageEvent.damageType,
 				entityDeathEvent.killer?.id,

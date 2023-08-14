@@ -2,7 +2,7 @@ import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Inventory } from "Shared/Inventory/Inventory";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { EntityService } from "../Entity/EntityService";
 
 interface InventoryEntry {
@@ -17,7 +17,7 @@ export class InventoryService implements OnStart {
 	private invIdCounter = 1;
 
 	OnStart(): void {
-		Network.ClientToServer.SetHeldSlot.Server.OnClientEvent((clientId, slot) => {
+		CoreNetwork.ClientToServer.SetHeldSlot.Server.OnClientEvent((clientId, slot) => {
 			const entity = Dependency<EntityService>().GetEntityByClientId(clientId);
 			if (!entity) return;
 			if (!(entity instanceof CharacterEntity)) {
@@ -26,14 +26,14 @@ export class InventoryService implements OnStart {
 
 			entity.GetInventory().SetHeldSlot(slot);
 
-			Network.ServerToClient.SetHeldInventorySlot.Server.FireAllClients(entity.id, slot, true);
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.Server.FireAllClients(entity.id, slot, true);
 		});
 
-		Network.ClientToServer.Inventory.SwapSlots.Server.OnClientEvent(
+		CoreNetwork.ClientToServer.Inventory.SwapSlots.Server.OnClientEvent(
 			(clientId, frommInvId, fromSlot, toInvId, toSlot) => {},
 		);
 
-		Network.ClientToServer.Inventory.QuickMoveSlot.Server.OnClientEvent(
+		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.Server.OnClientEvent(
 			(clientId, fromInvId, fromSlot, toInvId) => {
 				const fromInv = this.GetInventoryFromId(fromInvId);
 				if (!fromInv) return;
@@ -157,7 +157,7 @@ export class InventoryService implements OnStart {
 			},
 		);
 
-		Network.ClientToServer.Inventory.CheckOutOfSync.Server.OnClientEvent((clientId, invDto) => {
+		CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.Server.OnClientEvent((clientId, invDto) => {
 			const entity = Dependency<EntityService>().GetEntityByClientId(clientId) as CharacterEntity | undefined;
 			if (!entity) {
 				error("Entity not found.");

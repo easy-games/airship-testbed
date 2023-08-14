@@ -1,4 +1,4 @@
-import { Player } from "Shared/Player/Player";
+import { Player } from "../Player/Player";
 import { Team } from "./Team";
 export declare class ChangeTeamSignal {
     readonly Player: Player;

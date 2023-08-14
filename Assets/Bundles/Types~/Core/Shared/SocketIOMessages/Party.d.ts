@@ -1,5 +1,5 @@
 import { PublicUser } from "./PublicUser";
-export declare type Party = {
+export type Party = {
     leader: string;
     partyId: string;
     /** Members includes the leader */
@@ -29,7 +29,7 @@ export declare enum PartyMode {
 interface BaseStateData<T extends PartyStatus> {
     status: T;
 }
-declare type PartyIdleStateData = BaseStateData<PartyStatus.IDLE>;
+type PartyIdleStateData = BaseStateData<PartyStatus.IDLE>;
 interface PartyQueuedStateData extends BaseStateData<PartyStatus.QUEUED> {
     queue: string;
     regions: string[];
@@ -42,5 +42,5 @@ interface PartyInGameStateData extends BaseStateData<PartyStatus.IN_GAME> {
     startTime: number;
     gameServer: GameServer;
 }
-export declare type PartyStateData = PartyIdleStateData | PartyQueuedStateData | PartyInGameStateData;
+export type PartyStateData = PartyIdleStateData | PartyQueuedStateData | PartyInGameStateData;
 export {};

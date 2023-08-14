@@ -1,13 +1,13 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { Task } from "Imports/Core/Shared/Util/Task";
 import { ServerSignals } from "Server/ServerSignals";
 import { MatchState } from "Shared/Match/MatchState";
 import { Network } from "Shared/Network";
 import { Queues } from "Shared/Queue/QueueDefinitions";
 import { QueueMeta } from "Shared/Queue/QueueMeta";
 import { QueueType } from "Shared/Queue/QueueType";
-import { Team } from "Shared/Team/Team";
-import { Task } from "Shared/Util/Task";
 import { MapService } from "./Map/MapService";
 
 @Service({})

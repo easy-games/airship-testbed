@@ -4,7 +4,7 @@ import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
@@ -32,7 +32,7 @@ export class ProjectileService implements OnStart {
 		});
 		ServerSignals.ProjectileHit.Connect((event) => {
 			if (event.projectile.shooter?.player) {
-				Network.ServerToClient.ProjectileHit.Server.FireClient(
+				CoreNetwork.ServerToClient.ProjectileHit.Server.FireClient(
 					event.projectile.shooter.player.clientId,
 					event.hitPosition,
 					event.hitEntity?.id,

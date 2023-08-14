@@ -1,4 +1,4 @@
-import { Entity } from "Shared/Entity/Entity";
+import { Entity } from "../../../Shared/Entity/Entity";
 export declare class EntityInput {
     private readonly entity;
     private readonly bin;

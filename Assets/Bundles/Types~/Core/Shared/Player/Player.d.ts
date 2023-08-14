@@ -50,14 +50,14 @@ export declare class Player {
      */
     Character: CharacterEntity | undefined;
     /** Fired when the player's character changes. */
-    readonly CharacterChanged: Signal<CharacterEntity>;
+    readonly CharacterChanged: Signal<CharacterEntity | undefined>;
     /**
      * Fired when the player disconnects from the server.
      * Connections will automatically be disconnected when the player leaves.
      */
     readonly OnLeave: Signal<void>;
     private team;
-    readonly OnChangeTeam: Signal<[team: Team, oldTeam: Team]>;
+    readonly OnChangeTeam: Signal<[team: Team | undefined, oldTeam: Team | undefined]>;
     private bin;
     private connected;
     constructor(

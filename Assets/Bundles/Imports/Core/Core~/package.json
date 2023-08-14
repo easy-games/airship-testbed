@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "utsc --project . --verbose --writeOnlyChanged",
-    "build:dev": "utsc-dev --project . --verbose --writeOnlyChanged",
-    "watch": "utsc --project . --verbose --watch --writeOnlyChanged",
-    "watch:dev": "utsc-dev --project . --verbose --watch --writeOnlyChanged"
+    "build": "utsc build --project . --verbose --writeOnlyChanged ; npm run types",
+    "build:dev": "utsc-dev build --project . --verbose --writeOnlyChanged ; npm run types:dev",
+    "watch": "utsc build --project . --verbose --watch --writeOnlyChanged",
+    "watch:dev": "utsc-dev build --project . --verbose --watch --writeOnlyChanged",
+    "types": "utsc prepareTypes ; tspc --build tsconfig.types.json ; utsc postTypes",
+    "types:dev": "utsc-dev prepareTypes ; tspc --build tsconfig.types.json ; utsc-dev postTypes"
   },
   "keywords": [],
   "author": "",
@@ -16,9 +18,9 @@
     "@easy-games/compiler-types": "^3.0.0-17",
     "@easy-games/types": "^1.0.81-161",
     "@easy-games/unity-component-transformer": "^1.0.0-8",
-    "@easy-games/unity-flamework-transformer": "^1.1.0-18",
+    "@easy-games/unity-flamework-transformer": "^1.1.0-24",
     "@easy-games/unity-rojo-resolver": "^1.0.3-7",
-    "@easy-games/unity-ts": "^2.1.0-82",
+    "@easy-games/unity-ts": "^3.0.0-89",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.25.0",
@@ -26,11 +28,12 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-roblox-ts": "^0.0.34",
     "prettier": "^2.7.1",
-    "typescript": "^4.8.4",
+    "ts-patch": "^3.0.2",
+    "typescript": "=5.1.6",
     "typescript-transform-paths": "^3.4.6"
   },
   "dependencies": {
-    "@easy-games/flamework-core": "^1.1.0-55",
+    "@easy-games/flamework-core": "^2.0.0-56",
     "@easy-games/unity-inspect": "^1.0.1-2",
     "@easy-games/unity-object-utils": "^1.0.4-3",
     "@easy-games/unity-sync-event": "^1.0.0-14"

@@ -1,8 +1,8 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { DamageType } from "Shared/Damage/DamageType";
-import { Entity } from "Shared/Entity/Entity";
+import { DamageType } from "../../../Shared/Damage/DamageType";
+import { Entity } from "../../../Shared/Entity/Entity";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
 export declare class DamageService implements OnStart {

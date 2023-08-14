@@ -1,5 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
+import { Signal } from "../../../Shared/Util/Signal";
 export interface ProximityPromptData {
     /** Proximity prompt position. */
     promptPosition: Vector3;
@@ -27,9 +28,9 @@ export declare class ProximityPrompt {
     /** Proximity prompt gameobject. */
     promptGameObject: GameObject | undefined;
     /** On activated signal. */
-    OnActivated: any;
+    OnActivated: Signal<void>;
     /** On activated signal. */
-    OnRequestActivated: any;
+    OnRequestActivated: Signal<void>;
     private canActivate;
     private readonly canActivateBin;
     constructor(promptData: ProximityPromptData);

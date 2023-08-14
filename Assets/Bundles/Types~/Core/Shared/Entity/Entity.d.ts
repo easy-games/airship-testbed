@@ -1,8 +1,11 @@
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { BlockMeta } from "Shared/Item/ItemMeta";
-import { ItemType } from "Shared/Item/ItemType";
-import { Player } from "Shared/Player/Player";
+import { BlockMeta } from "../Item/ItemMeta";
+import { ItemType } from "../Item/ItemType";
+import { Player } from "../Player/Player";
+import { Signal } from "../Util/Signal";
 import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 export interface EntityDto {
@@ -59,11 +62,11 @@ export declare class Entity {
     private displayName;
     private healthbarEnabled;
     private healthbar?;
-    readonly OnHealthChanged: any;
-    readonly OnDespawn: any;
-    readonly OnPlayerChanged: any;
-    readonly OnAdjustMove: any;
-    readonly OnDisplayNameChanged: any;
+    readonly OnHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
+    readonly OnDespawn: Signal<void>;
+    readonly OnPlayerChanged: Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>;
+    readonly OnAdjustMove: Signal<[moveModifier: MoveModifier]>;
+    readonly OnDisplayNameChanged: Signal<[displayName: string]>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     AddHealthbar(): void;
     SetPlayer(player: Player | undefined): void;

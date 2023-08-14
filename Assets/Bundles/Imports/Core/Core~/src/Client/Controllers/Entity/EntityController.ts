@@ -7,7 +7,7 @@ import { Entity, EntityDto } from "Shared/Entity/Entity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { EntitySerializer } from "Shared/Entity/EntitySerializer";
 import { Inventory } from "Shared/Inventory/Inventory";
-import { Network } from "Shared/Network";
+import { CoreNetwork } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { Task } from "Shared/Util/Task";
@@ -30,7 +30,7 @@ export class EntityController implements OnStart {
 	}
 
 	OnStart(): void {
-		Network.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {
+		CoreNetwork.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {
 			entityDtos.forEach((entityDto) => {
 				try {
 					this.AddEntity(entityDto);
@@ -39,32 +39,32 @@ export class EntityController implements OnStart {
 				}
 			});
 		});
-		Network.ServerToClient.DespawnEntity.Client.OnServerEvent((entityId) => {
+		CoreNetwork.ServerToClient.DespawnEntity.Client.OnServerEvent((entityId) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity) {
 				this.DespawnEntity(entity);
 			}
 		});
-		Network.ServerToClient.PlayEntityItemAnimation.Client.OnServerEvent((entityId, animationId, playMode) => {
+		CoreNetwork.ServerToClient.PlayEntityItemAnimation.Client.OnServerEvent((entityId, animationId, playMode) => {
 			const entity = this.GetEntityById(entityId);
 			if (!entity) return;
 
 			entity.anim?.PlayItemUse(animationId, playMode);
 		});
 
-		Network.ServerToClient.Entity.SetHealth.Client.OnServerEvent((entityId, health) => {
+		CoreNetwork.ServerToClient.Entity.SetHealth.Client.OnServerEvent((entityId, health) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity) {
 				entity.SetHealth(health);
 			}
 		});
-		Network.ServerToClient.Entity.SetDisplayName.Client.OnServerEvent((entityId, value) => {
+		CoreNetwork.ServerToClient.Entity.SetDisplayName.Client.OnServerEvent((entityId, value) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity) {
 				entity.SetDisplayName(value);
 			}
 		});
-		Network.ServerToClient.Entity.AddHealthbar.Client.OnServerEvent((entityId) => {
+		CoreNetwork.ServerToClient.Entity.AddHealthbar.Client.OnServerEvent((entityId) => {
 			const entity = this.GetEntityById(entityId);
 			entity?.AddHealthbar();
 		});

@@ -1,6 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { Entity } from "Shared/Entity/Entity";
+import { Entity } from "../Entity/Entity";
 import { DamageType } from "../Damage/DamageType";
 import { BundleGroupNames } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";

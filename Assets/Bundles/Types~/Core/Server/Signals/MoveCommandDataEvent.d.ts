@@ -1,4 +1,4 @@
-import { DataStreamItems } from "Shared/Util/DataStreamTypes";
+import { DataStreamItems } from "../../Shared/Util/DataStreamTypes";
 export declare class MoveCommandDataEvent<T = unknown, K = unknown> {
     /** Client ID. */
     readonly clientId: number;

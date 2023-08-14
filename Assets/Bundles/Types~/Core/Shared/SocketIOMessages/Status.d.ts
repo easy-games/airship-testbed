@@ -13,10 +13,10 @@ interface BaseUserStatus<S extends UserStatus> extends BaseUserData {
     status: S;
     metadata?: any;
 }
-declare type UserOfflineStatus = BaseUserStatus<UserStatus.OFFLINE>;
-declare type UserOnlineStatus = BaseUserStatus<UserStatus.ONLINE>;
+type UserOfflineStatus = BaseUserStatus<UserStatus.OFFLINE>;
+type UserOnlineStatus = BaseUserStatus<UserStatus.ONLINE>;
 interface UserInGameStatus extends BaseUserStatus<UserStatus.IN_GAME> {
     game: string;
 }
-export declare type UserStatusData = UserOfflineStatus | UserOnlineStatus | UserInGameStatus;
+export type UserStatusData = UserOfflineStatus | UserOnlineStatus | UserInGameStatus;
 export {};

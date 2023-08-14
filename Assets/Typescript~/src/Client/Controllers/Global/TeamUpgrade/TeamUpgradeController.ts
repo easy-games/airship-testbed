@@ -1,16 +1,16 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { Game } from "Shared/Game";
+import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
+import { Game } from "Imports/Core/Shared/Game";
+import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
+import { BedWarsUI } from "Imports/Core/Shared/UI/BedWarsUI";
+import { AppManager } from "Imports/Core/Shared/Util/AppManager";
+import { Bin } from "Imports/Core/Shared/Util/Bin";
+import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
 import { Network } from "Shared/Network";
-import { TeamUpgradeStateDto } from "Shared/TeamUpgrades/TeamUpgradeMeta";
-import { TeamUpgradeType } from "Shared/TeamUpgrades/TeamUpgradeType";
-import { TeamUpgradeUtil } from "Shared/TeamUpgrades/TeamUpgradeUtil";
-import { BedWarsUI } from "Shared/UI/BedWarsUI";
-import { AppManager } from "Shared/Util/AppManager";
-import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { AudioManager } from "Shared/Audio/AudioManager";
-import { ItemUtil } from "../../../../Shared/Item/ItemUtil";
+import { TeamUpgradeStateDto } from "Shared/TeamUpgrade/TeamUpgradeMeta";
+import { TeamUpgradeType } from "Shared/TeamUpgrade/TeamUpgradeType";
+import { TeamUpgradeUtil } from "Shared/TeamUpgrade/TeamUpgradeUtil";
 
 @Controller({})
 export class TeamUpgradeController implements OnStart {

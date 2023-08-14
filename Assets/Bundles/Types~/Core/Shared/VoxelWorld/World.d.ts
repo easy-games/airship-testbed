@@ -1,6 +1,8 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { ItemType } from "Shared/Item/ItemType";
+/// <reference types="@easy-games/compiler-types" />
+import { ItemType } from "../Item/ItemType";
+import { Signal } from "../Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
 import { Block } from "./Block";
 export interface PlaceBlockConfig {
@@ -13,9 +15,9 @@ export interface PlaceBlockConfig {
 export declare class World {
     readonly voxelWorld: VoxelWorld;
     static SKYBOX: string;
-    OnVoxelPlaced: any;
-    OnFinishedLoading: any;
-    OnFinishedReplicatingChunksFromServer: any;
+    OnVoxelPlaced: Signal<[pos: Vector3, voxel: number]>;
+    OnFinishedLoading: Signal<void>;
+    OnFinishedReplicatingChunksFromServer: Signal<void>;
     private finishedLoading;
     private finishedReplicatingChunksFromServer;
     constructor(voxelWorld: VoxelWorld);

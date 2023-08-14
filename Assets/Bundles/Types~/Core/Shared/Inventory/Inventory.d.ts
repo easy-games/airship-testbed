@@ -1,6 +1,9 @@
-import { ArmorType } from "Shared/Item/ArmorType";
-import { ItemType } from "Shared/Item/ItemType";
-import { Bin } from "Shared/Util/Bin";
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+import { ArmorType } from "../Item/ArmorType";
+import { ItemType } from "../Item/ItemType";
+import { Bin } from "../Util/Bin";
+import { Signal } from "../Util/Signal";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 export interface InventoryDto {
     id: number;
@@ -17,13 +20,13 @@ export declare class Inventory {
         [key in ArmorType]: number;
     };
     /** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
-    readonly SlotChanged: any;
-    readonly HeldSlotChanged: any;
+    readonly SlotChanged: Signal<[slot: number, itemStack: ItemStack | undefined]>;
+    readonly HeldSlotChanged: Signal<number>;
     /**
      * Fired whenever any change happens.
      * This includes changes to ItemStacks.
      **/
-    readonly Changed: any;
+    readonly Changed: Signal<void>;
     private finishedInitialReplication;
     private slotConnections;
     constructor(id: number);

@@ -1,10 +1,10 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
-import { ItemType } from "Shared/Item/ItemType";
-import { Theme } from "Shared/Util/Theme";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { PrefabBlockManager } from "Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager";
-import { TeamController } from "../../Team/TeamController";
+import { TeamController } from "Imports/Core/Client/Controllers/Team/TeamController";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { Theme } from "Imports/Core/Shared/Util/Theme";
+import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { PrefabBlockManager } from "Imports/Core/Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager";
 
 @Controller({})
 export class BedController implements OnStart {

@@ -1,4 +1,6 @@
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/types" />
 interface ConnectionLike {
     Disconnect(this: ConnectionLike): void;
@@ -6,7 +8,7 @@ interface ConnectionLike {
 interface SignalLike<T extends Callback = Callback> {
     Connect(this: SignalLike, callback: T): () => void;
 }
-declare type Trackable = GameObject | ConnectionLike | Promise<unknown> | thread | ((...args: unknown[]) => unknown) | {
+type Trackable = GameObject | ConnectionLike | Promise<unknown> | thread | ((...args: unknown[]) => unknown) | {
     destroy: () => void;
 } | {
     disconnect: () => void;

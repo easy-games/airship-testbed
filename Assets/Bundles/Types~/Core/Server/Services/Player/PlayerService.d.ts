@@ -1,12 +1,14 @@
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { Player } from "Shared/Player/Player";
-import { SignalPriority } from "Shared/Util/Signal";
+import { Player } from "../../../Shared/Player/Player";
+import { Signal, SignalPriority } from "../../../Shared/Util/Signal";
 export declare class PlayerService implements OnStart {
     /** Fires when a player first connects to the server. */
-    readonly PlayerPreReady: any;
-    readonly PlayerAdded: any;
+    readonly PlayerPreReady: Signal<[player: Player]>;
+    readonly PlayerAdded: Signal<[player: Player]>;
     /** Fires when a player is removed from the game. */
-    readonly PlayerRemoved: any;
+    readonly PlayerRemoved: Signal<[player: Player]>;
     private playerCore;
     private readonly players;
     private playersPendingReady;

@@ -1,4 +1,4 @@
-import { ItemType } from "Shared/Item/ItemType";
+import { ItemType } from "../Item/ItemType";
 /** Describes a shop category. */
 export declare enum ShopCategory {
     BLOCKS = "Blocks",
