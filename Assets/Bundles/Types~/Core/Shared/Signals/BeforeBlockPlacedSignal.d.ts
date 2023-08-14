@@ -1,9 +1,9 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { CancellableEvent } from "@easy-games/unity-sync-event";
 import { Entity } from "../Entity/Entity";
 import { ItemType } from "../Item/ItemType";
-export declare class BeforeBlockPlacedSignal extends CancellableEvent {
+import { Cancellable } from "../Util/Cancellable";
+export declare class BeforeBlockPlacedSignal extends Cancellable {
     readonly pos: Vector3;
     readonly itemType: ItemType;
     readonly voxel: number;

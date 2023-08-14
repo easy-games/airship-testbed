@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+            "name": "BedWars",
+			"path": "."
+		},
+        {
+            "name": "Core",
+            "path": "../Bundles/Imports/Core/Core~"
+        }
+    ],
+    "settings": {}
+}

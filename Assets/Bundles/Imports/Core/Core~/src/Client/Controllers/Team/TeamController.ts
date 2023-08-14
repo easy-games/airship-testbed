@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { CoreNetwork } from "Shared/Network";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Team } from "Shared/Team/Team";
 import { PlayerController } from "../Player/PlayerController";
 

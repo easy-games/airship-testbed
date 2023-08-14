@@ -1,4 +1,4 @@
-import { CoreNetwork } from "Shared/Network";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { RunUtil } from "Shared/Util/RunUtil";
 
 export class BlockDataAPI {
@@ -17,7 +17,7 @@ export class BlockDataAPI {
 				this.SetBlockData(blockPos, key, data);
 			});
 		} else {
-			const serverSignals = import("Server/ServerSignals").expect().ServerSignals;
+			const serverSignals = import("Server/CoreServerSignals").expect().CoreServerSignals;
 			serverSignals.PlayerJoin.Connect((event) => {
 				for (const pair1 of this.blockDataMap) {
 					for (const pair2 of pair1[1]) {

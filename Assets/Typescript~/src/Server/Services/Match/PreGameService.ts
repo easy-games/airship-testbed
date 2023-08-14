@@ -1,8 +1,8 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
 import { Task } from "Imports/Core/Shared/Util/Task";
-import { ServerSignals } from "Server/ServerSignals";
 import { MatchState } from "Shared/Match/MatchState";
 import { LoadedMap } from "./Map/LoadedMap";
 import { WorldPosition } from "./Map/MapPosition";
@@ -27,7 +27,7 @@ export class PreGameService implements OnStart {
 			this.CreateSpawnPlatform(this.spawnPosition);
 		});
 
-		ServerSignals.EntityDeath.Connect((event) => {
+		CoreServerSignals.EntityDeath.Connect((event) => {
 			Task.Delay(0, () => {
 				if (this.matchService.GetState() === MatchState.PRE && event.entity.player) {
 					const entity = Dependency<EntityService>().SpawnEntityForPlayer(
@@ -39,7 +39,7 @@ export class PreGameService implements OnStart {
 			});
 		});
 
-		ServerSignals.BeforeEntitySpawn.connect((event) => {
+		CoreServerSignals.BeforeEntitySpawn.Connect((event) => {
 			if (this.matchService.GetState() === MatchState.PRE && event.player) {
 				const pos = this.loadedMap?.GetSpawnPlatform();
 				if (pos) {

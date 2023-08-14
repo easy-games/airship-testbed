@@ -1,7 +1,8 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { PlayerJoinServerEvent } from "Server/Signals/PlayerJoinServerEvent";
-import { CoreNetwork } from "Shared/Network";
+import { PlayerLeaveServerEvent } from "Server/Signals/PlayerLeaveServerEvent";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Player } from "Shared/Player/Player";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
@@ -47,7 +48,7 @@ export class PlayerService implements OnStart {
 			const player = this.players[index];
 			this.players.remove(index);
 			this.PlayerRemoved.Fire(player);
-			ServerSignals.PlayerLeave.fire(player);
+			CoreServerSignals.PlayerLeave.Fire(new PlayerLeaveServerEvent(player));
 			CoreNetwork.ServerToClient.RemovePlayer.Server.FireAllClients(player.clientId);
 			player.Destroy();
 		};
@@ -90,7 +91,7 @@ export class PlayerService implements OnStart {
 		);
 
 		this.PlayerAdded.Fire(player);
-		ServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
+		CoreServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
 	}
 
 	public AddBotPlayer(): void {

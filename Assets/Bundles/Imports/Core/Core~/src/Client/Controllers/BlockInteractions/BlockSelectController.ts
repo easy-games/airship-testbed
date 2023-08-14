@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Layer } from "Shared/Util/Layer";
@@ -43,7 +43,7 @@ export class BlockSelectController implements OnStart {
 		this.voidPlane.layer = Layer.BRIDGE_ASSIST;
 
 		//If our local player dies then this should be disabled
-		ClientSignals.EntityDeath.Connect((event) => {
+		CoreClientSignals.EntityDeath.Connect((event) => {
 			if (event.entity.IsLocalCharacter()) {
 				this.DisableAll();
 			}

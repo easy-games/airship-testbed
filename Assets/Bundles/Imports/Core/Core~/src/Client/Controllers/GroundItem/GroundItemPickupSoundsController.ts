@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
@@ -10,7 +10,7 @@ const PICKUP_ITEM_DEFAULT_SOUND = ["Pickup_Item"];
 @Controller({})
 export class GroundItemPickupSoundsController implements OnStart {
 	OnStart(): void {
-		ClientSignals.EntityPickupItem.Connect((event) => {
+		CoreClientSignals.EntityPickupItem.Connect((event) => {
 			if (!event.entity.IsLocalCharacter()) return;
 
 			const itemMeta = ItemUtil.GetItemMeta(event.groundItem.itemStack.GetItemType());

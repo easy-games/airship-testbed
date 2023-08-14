@@ -5,12 +5,12 @@ import { Game } from "Imports/Core/Shared/Game";
 import { GameObjectUtil } from "Imports/Core/Shared/GameObject/GameObjectUtil";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { ItemShopMeta, ShopCategory, ShopElement } from "Imports/Core/Shared/ItemShop/ItemShopMeta";
 import { BedWarsUI } from "Imports/Core/Shared/UI/BedWarsUI";
 import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
 import { Signal } from "Imports/Core/Shared/Util/Signal";
+import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
 @Controller({})

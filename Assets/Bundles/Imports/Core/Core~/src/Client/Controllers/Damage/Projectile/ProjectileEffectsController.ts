@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
@@ -17,7 +17,7 @@ export class ProjectileEffectsController implements OnStart {
 	constructor() {}
 
 	OnStart(): void {
-		ClientSignals.ProjectileCollide.Connect((event) => {
+		CoreClientSignals.ProjectileCollide.Connect((event) => {
 			const effect = EffectsManager.SpawnBundleEffect(
 				BundleGroupNames.Projectiles,
 				Bundle_Projectiles.OnHitVFX,
@@ -44,7 +44,7 @@ export class ProjectileEffectsController implements OnStart {
 			}
 		});
 
-		ClientSignals.EntityDamage.Connect((event) => {
+		CoreClientSignals.EntityDamage.Connect((event) => {
 			if (
 				Game.LocalPlayer.Character &&
 				event.fromEntity === Game.LocalPlayer.Character &&

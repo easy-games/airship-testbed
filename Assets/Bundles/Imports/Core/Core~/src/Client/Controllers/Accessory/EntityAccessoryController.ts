@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CoreTest } from "Shared/CoreTest";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Game } from "Shared/Game";
@@ -20,7 +20,7 @@ export class EntityAccessoryController implements OnStart {
 	}
 
 	private AutoEquipArmor() {
-		ClientSignals.EntitySpawn.Connect((event) => {
+		CoreClientSignals.EntitySpawn.Connect((event) => {
 			if (event.entity instanceof CharacterEntity) {
 				//Add Kit Accessory
 				if (ItemUtil.defaultKitAccessory) {
@@ -120,7 +120,7 @@ export class EntityAccessoryController implements OnStart {
 	OnStart(): void {
 		this.AutoEquipArmor();
 
-		ClientSignals.EntitySpawn.Connect((event) => {
+		CoreClientSignals.EntitySpawn.Connect((event) => {
 			if (!(event.entity instanceof CharacterEntity)) return;
 
 			const accessoryBuilder = event.entity.accessoryBuilder;

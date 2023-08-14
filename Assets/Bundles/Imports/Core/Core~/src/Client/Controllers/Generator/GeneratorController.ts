@@ -1,9 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GeneratorDto } from "Shared/Generator/GeneratorMeta";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { CoreNetwork } from "Shared/Network";
 import { Layer } from "Shared/Util/Layer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 

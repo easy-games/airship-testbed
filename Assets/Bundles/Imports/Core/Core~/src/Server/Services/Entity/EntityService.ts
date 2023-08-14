@@ -1,12 +1,13 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
+import { BeforeEntitySpawnServerEvent } from "Server/Signals/BeforeEntitySpawnServerEvent";
 import { EntitySpawnEvent } from "Server/Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "Server/Signals/MoveCommandDataEvent";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
-import { CoreNetwork } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { SignalPriority } from "Shared/Util/Signal";
@@ -47,7 +48,7 @@ export class EntityService implements OnStart {
 				}
 			};
 		}, SignalPriority.HIGHEST);
-		ServerSignals.PlayerLeave.connect((event) => {
+		CoreServerSignals.PlayerLeave.Connect((event) => {
 			if (event.player.Character) {
 				this.DespawnEntity(event.player.Character);
 			}
@@ -69,7 +70,9 @@ export class EntityService implements OnStart {
 		const id = this.idCounter;
 		this.idCounter++;
 
-		const beforeEvent = ServerSignals.BeforeEntitySpawn.fire(id, player, pos ?? new Vector3(0, 0, 0));
+		const beforeEvent = CoreServerSignals.BeforeEntitySpawn.Fire(
+			new BeforeEntitySpawnServerEvent(id, player, pos ?? new Vector3(0, 0, 0)),
+		);
 
 		// Spawn character game object
 		let entityPrefab = this.GetEntityPrefab(entityPrefabType);
@@ -105,12 +108,12 @@ export class EntityService implements OnStart {
 			const allData = customData.Decode() as { key: unknown; value: unknown }[];
 			for (const data of allData) {
 				const moveEvent = new MoveCommandDataEvent(player?.clientId ?? -1, tick, data.key, data.value);
-				ServerSignals.CustomMoveCommand.Fire(moveEvent);
+				CoreServerSignals.CustomMoveCommand.Fire(moveEvent);
 			}
 		});
 
 		// fire SpawnEntities after so the initial entity packet has all the latest info.
-		ServerSignals.EntitySpawn.Fire(new EntitySpawnEvent(entity));
+		CoreServerSignals.EntitySpawn.Fire(new EntitySpawnEvent(entity));
 
 		CoreNetwork.ServerToClient.SpawnEntities.Server.FireAllClients([entity.Encode()]);
 		CoreNetwork.ServerToClient.UpdateInventory.Server.FireAllClients(entity.GetInventory().Encode());
@@ -120,7 +123,7 @@ export class EntityService implements OnStart {
 	}
 
 	public DespawnEntity(entity: Entity): void {
-		ServerSignals.EntityDespawn.Fire(entity);
+		CoreServerSignals.EntityDespawn.Fire(entity);
 		entity.Destroy();
 		this.entities.delete(entity.id);
 	}

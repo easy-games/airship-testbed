@@ -1,10 +1,10 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Game } from "Shared/Game";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { CoreNetwork } from "Shared/Network";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
@@ -65,7 +65,7 @@ export class InventoryController implements OnStart {
 
 			inv.SetHeldSlot(slot);
 		});
-		ClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (event.entity instanceof CharacterEntity) {
 				this.inventories.set(event.entity.GetInventory().Id, event.entity.GetInventory());
 				if (event.entity.IsLocalCharacter()) {

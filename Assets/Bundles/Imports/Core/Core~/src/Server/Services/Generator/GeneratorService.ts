@@ -1,10 +1,10 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { GeneratorCreationConfig } from "Shared/Generator/GeneratorMeta";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { CoreNetwork } from "Shared/Network";
 import { Task } from "Shared/Util/Task";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
@@ -31,7 +31,7 @@ export class GeneratorService implements OnStart {
 
 	OnStart(): void {
 		// Split resources
-		ServerSignals.EntityPickupItem.Connect((event) => {
+		CoreServerSignals.EntityPickupItem.Connect((event) => {
 			const generatorId = event.groundItem.data["generatorId"] as string | undefined;
 			if (!generatorId) return;
 
@@ -64,7 +64,7 @@ export class GeneratorService implements OnStart {
 		});
 
 		/* Handle late joiners. */
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
 				CoreNetwork.ServerToClient.GeneratorSnapshot.Server.FireClient(
 					event.player.clientId,

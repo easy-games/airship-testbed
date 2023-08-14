@@ -1,12 +1,12 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
 import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
+import { CoreNetwork } from "Imports/Core/Shared/CoreNetwork";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { CoreNetwork } from "Imports/Core/Shared/Network";
 import { Player } from "Imports/Core/Shared/Player/Player";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
-import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedService } from "Server/Services/Match/BedService";
 
@@ -37,13 +37,13 @@ export class DestroyBedCommand extends ChatCommand {
 			const bedMeta = ItemUtil.GetItemMeta(ItemType.BED);
 			const world = WorldAPI.GetMainWorld();
 			world.PlaceBlockById(bedState.position, 0);
-			ServerSignals.BlockDestroyed.Fire({
+			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: bedMeta.block?.blockId ?? -1,
 				blockMeta: bedMeta,
 				blockPos: bedState.position,
 			});
 			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(bedState.position, bedMeta.block!.blockId);
-			BWServerSignals.BedDestroyed.Fire({ team: targetTeam });
+			ServerSignals.BedDestroyed.Fire({ team: targetTeam });
 		}
 	}
 }

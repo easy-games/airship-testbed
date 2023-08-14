@@ -1,5 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { GeneratorService } from "Imports/Core/Server/Services/Generator/GeneratorService";
 import { PlayerService } from "Imports/Core/Server/Services/Player/PlayerService";
@@ -35,12 +36,13 @@ export class TeamUpgradeService implements OnStart {
 	) {}
 
 	OnStart(): void {
+		print("TeamUpgradeService.1");
 		/* Apply persistent upgrade effects. */
 		this.ApplyPersistentUpgradeEffects();
 		/* Apply generator upgrade effects. */
 		this.ApplyGeneratorUpgradeEffects();
 		/* Initialize on match start. */
-		ServerSignals.MatchStart.connect(() => {
+		ServerSignals.MatchStart.Connect(() => {
 			this.InitializeTeamUpgrades();
 		});
 		/* Handle incoming upgrade requests. */
@@ -51,7 +53,7 @@ export class TeamUpgradeService implements OnStart {
 			return this.HandleUpgradePurchaseRequest(player, upgradeType, tier);
 		});
 		/* Handle late joiners. */
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
 				const team = event.player.GetTeam();
 				if (!team) return;
@@ -61,12 +63,13 @@ export class TeamUpgradeService implements OnStart {
 				Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.Server.FireClient(event.player.clientId, dtos);
 			});
 		});
+		print("TeamUpgradeService.2");
 	}
 
 	/** Apply active team upgrade effects. */
 	private ApplyPersistentUpgradeEffects(): void {
 		/* Damage. */
-		ServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			const fromTeam = event.fromEntity?.player?.GetTeam();
 			if (!fromTeam) return;
 			const upgradeMapForTeam = this.teamUpgradeMap.get(fromTeam);
@@ -84,7 +87,7 @@ export class TeamUpgradeService implements OnStart {
 			}
 		});
 		/* Armor protection. */
-		ServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			const entityTeam = event.entity.player?.GetTeam();
 			if (!entityTeam) return;
 			const upgradeMapForTeam = this.teamUpgradeMap.get(entityTeam);

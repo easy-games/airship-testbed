@@ -7,7 +7,7 @@ import { ServerSignals } from "Server/ServerSignals";
 export class MapBlockService implements OnStart {
 	OnStart(): void {
 		/* Start tracking placed blocks AFTER match has started. */
-		ServerSignals.MatchStart.connect(() => {
+		ServerSignals.MatchStart.Connect(() => {
 			/*
 			 * Voxels placed after match started belong to players.
 			 * TODO: We _probably_ want exceptions here. IE: Lucky Blocks?

@@ -1,8 +1,8 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
 import { ItemStack } from "Imports/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
-import { ServerSignals } from "Server/ServerSignals";
 
 @Service({})
 export class LobbyService implements OnStart {
@@ -11,7 +11,7 @@ export class LobbyService implements OnStart {
 		const serverConsole = GameObject.Find("ServerConsole").GetComponent<ServerConsole>();
 		serverConsole.RemoteLogging = true;
 
-		ServerSignals.EntitySpawn.Connect((event) => {
+		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (event.entity instanceof CharacterEntity) {
 				const inv = event.entity.GetInventory();
 				inv.SetItem(0, new ItemStack(ItemType.STONE_SWORD, 1));

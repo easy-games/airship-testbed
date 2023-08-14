@@ -45,6 +45,7 @@
     ],
 	"rbxts": {
         "rojo": "./default.project.json",
-		"includePath": "../Bundles/Shared/Resources/include"
+		"includePath": "../Bundles/Shared/Resources/include",
+        "type": "game"
 	}
 }

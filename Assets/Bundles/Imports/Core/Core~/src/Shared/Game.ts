@@ -1,4 +1,4 @@
-import { CoreNetwork } from "./Network";
+import { CoreNetwork } from "./CoreNetwork";
 import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
 

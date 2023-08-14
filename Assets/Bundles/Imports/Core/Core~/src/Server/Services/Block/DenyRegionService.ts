@@ -1,7 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { DenyRegionDto } from "Shared/DenyRegion/DenyRegionMeta";
-import { CoreNetwork } from "Shared/Network";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 
@@ -19,11 +19,11 @@ export class DenyRegionService implements OnStart {
 
 	OnStart(): void {
 		/* Cancel block placed if voxel position is inside of a deny region. */
-		ServerSignals.BeforeBlockPlaced.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
-			if (this.InDenyRegion(event.pos)) event.setCancelled(true);
+		CoreServerSignals.BeforeBlockPlaced.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+			if (this.InDenyRegion(event.pos)) event.SetCancelled(true);
 		});
 		/* Send deny region snapshot to late joiners. */
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_DELAY, () => {
 				CoreNetwork.ServerToClient.DenyRegionSnapshot.Server.FireClient(
 					event.player.clientId,

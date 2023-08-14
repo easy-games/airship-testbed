@@ -1,9 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntityDamageClientSignal } from "Client/Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "Client/Signals/EntityDeathClientSignal";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Entity } from "Shared/Entity/Entity";
-import { CoreNetwork } from "Shared/Network";
 import { EntityController } from "../Entity/EntityController";
 
 @Controller({})
@@ -22,7 +22,7 @@ export class DamageController implements OnStart {
 				fromEntity = this.entityController.GetEntityById(fromEntityId);
 			}
 
-			ClientSignals.EntityDamage.Fire(new EntityDamageClientSignal(entity, amount, damageType, fromEntity));
+			CoreClientSignals.EntityDamage.Fire(new EntityDamageClientSignal(entity, amount, damageType, fromEntity));
 		});
 
 		CoreNetwork.ServerToClient.EntityDeath.Client.OnServerEvent((entityId, damageType, fromEntityId) => {
@@ -37,7 +37,7 @@ export class DamageController implements OnStart {
 			}
 
 			entity.Kill();
-			ClientSignals.EntityDeath.Fire(new EntityDeathClientSignal(entity, damageType, fromEntity));
+			CoreClientSignals.EntityDeath.Fire(new EntityDeathClientSignal(entity, damageType, fromEntity));
 		});
 	}
 }

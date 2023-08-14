@@ -5,6 +5,7 @@ import { OrbitCameraMode } from "Imports/Core/Client/Controllers/Camera/DefaultC
 import { LocalEntityController } from "Imports/Core/Client/Controllers/Character/LocalEntityController";
 import { EntityController } from "Imports/Core/Client/Controllers/Entity/EntityController";
 import { PlayerController } from "Imports/Core/Client/Controllers/Player/PlayerController";
+import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
 import { Entity } from "Imports/Core/Shared/Entity/Entity";
 import { Game } from "Imports/Core/Shared/Game";
 import { Keyboard, Mouse } from "Imports/Core/Shared/UserInput";
@@ -86,11 +87,11 @@ export class SpectateController implements OnStart {
 			this.GoToIncrement(orbitCamMode, -1);
 		});
 
-		bin.Connect(ClientSignals.EntitySpawn, (event) => {
+		bin.Connect(CoreClientSignals.EntitySpawn, (event) => {
 			this.FitIndexToId();
 		});
 
-		bin.Connect(ClientSignals.EntityDespawn, (entity) => {
+		bin.Connect(CoreClientSignals.EntityDespawn, (entity) => {
 			// If currently-spectated entity goes away, switch to the next entity:
 			if (entity.id === this.currentlySpectatingEntityId) {
 				this.FitIndexToId();

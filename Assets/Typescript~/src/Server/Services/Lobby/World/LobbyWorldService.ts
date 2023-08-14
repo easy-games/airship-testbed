@@ -1,4 +1,5 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
@@ -7,18 +8,17 @@ import { Task } from "Imports/Core/Shared/Util/Task";
 import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
 import { World } from "Imports/Core/Shared/VoxelWorld/World";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
-import { ServerSignals } from "Server/ServerSignals";
 
 @Service({})
 export class LobbyWorldService implements OnStart {
 	constructor(private readonly entityService: EntityService) {
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Spawn(() => {
 				this.SpawnPlayer(event.player);
 			});
 		});
 
-		ServerSignals.EntityDeath.Connect((event) => {
+		CoreServerSignals.EntityDeath.Connect((event) => {
 			const player = event.entity.player;
 			if (!player) return;
 

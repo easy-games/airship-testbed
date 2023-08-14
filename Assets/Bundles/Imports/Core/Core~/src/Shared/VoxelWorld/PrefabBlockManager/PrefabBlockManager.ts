@@ -1,8 +1,8 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
+import { CoreNetwork } from "../../CoreNetwork";
 import { GameObjectUtil } from "../../GameObject/GameObjectUtil";
 import { ItemType } from "../../Item/ItemType";
 import { ItemUtil } from "../../Item/ItemUtil";
-import { CoreNetwork } from "../../Network";
 import { RunUtil } from "../../Util/RunUtil";
 import { SignalPriority } from "../../Util/Signal";
 import { BlockDataAPI } from "../BlockData/BlockDataAPI";
@@ -33,7 +33,7 @@ export class PrefabBlockManager {
 		});
 
 		if (RunUtil.IsServer()) {
-			const serverSignals = import("Server/ServerSignals").expect().ServerSignals;
+			const serverSignals = import("Server/CoreServerSignals").expect().CoreServerSignals;
 			serverSignals.PlayerJoin.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 				CoreNetwork.ServerToClient.SyncPrefabBlocks.Server.FireClient(
 					event.player.clientId,
@@ -49,7 +49,7 @@ export class PrefabBlockManager {
 						print(`block: pos=${pos} type=${block.itemType}`);
 						if (block.itemType) {
 							this.OnBlockPlace(pos, block.itemType);
-							const clientSignals = import("Client/ClientSignals").expect().ClientSignals;
+							const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 							const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 								.BlockPlaceClientSignal;
 							clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, undefined));

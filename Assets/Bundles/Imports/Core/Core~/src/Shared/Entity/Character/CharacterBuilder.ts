@@ -1,5 +1,5 @@
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { CoreNetwork } from "Shared/Network";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BodyAttachment } from "./Accessory/BodyAttachment";

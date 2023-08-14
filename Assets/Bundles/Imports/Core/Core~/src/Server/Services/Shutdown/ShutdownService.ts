@@ -1,5 +1,5 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SetInterval } from "Shared/Util/Timer";
 import { PlayerService } from "../Player/PlayerService";
@@ -15,7 +15,7 @@ export class ShutdownService implements OnStart {
 	constructor(private readonly playerService: PlayerService) {}
 
 	OnStart(): void {
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			this.playerConnected = true;
 			this.timeWithNoPlayers = 0;
 		});

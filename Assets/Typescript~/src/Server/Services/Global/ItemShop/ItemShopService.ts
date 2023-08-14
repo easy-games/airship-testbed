@@ -1,13 +1,13 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
 import { ItemStack } from "Imports/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { ItemShopMeta } from "Imports/Core/Shared/ItemShop/ItemShopMeta";
 import { Player } from "Imports/Core/Shared/Player/Player";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
-import { ServerSignals } from "Server/ServerSignals";
+import { ItemShopMeta } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
 @Service({})
@@ -31,13 +31,13 @@ export class ShopService implements OnStart {
 	constructor(private readonly entityService: EntityService) {}
 
 	OnStart(): void {
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			if (!this.purchasedItems.has(event.player.userId)) {
 				this.purchasedItems.set(event.player.userId, new Set<ItemType>());
 			}
 		});
 
-		ServerSignals.EntitySpawn.Connect((event) => {
+		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (!event.entity.player) return;
 			if (event.entity.player.IsBot()) return;
 			const purchases = this.purchasedItems.get(event.entity.player.userId);
@@ -191,7 +191,7 @@ export class ShopService implements OnStart {
 			return true;
 		});
 
-		ServerSignals.EntityDeath.Connect((event) => {
+		CoreServerSignals.EntityDeath.Connect((event) => {
 			if (event.entity.player) {
 				const purchases = this.purchasedItems.get(event.entity.player.userId);
 				if (purchases) {

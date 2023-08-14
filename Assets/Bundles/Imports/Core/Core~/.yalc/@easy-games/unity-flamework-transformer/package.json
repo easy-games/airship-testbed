@@ -1,0 +1,39 @@
+{
+	"name": "@easy-games/unity-flamework-transformer",
+	"version": "1.1.0",
+	"description": "An opinionated game framework for Unity TS.",
+	"main": "out/index.js",
+	"author": "easy-games",
+	"license": "MIT",
+	"homepage": "https://github.com/easy-games/unity-flamework-transformer",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/easy-games/unity-flamework-transformer.git"
+	},
+	"bugs": {
+		"url": "https://github.com/easy-games/unity-flamework-transformer/issues"
+	},
+	"scripts": {
+		"build": "tsc",
+		"watch": "tsc -w"
+	},
+	"types": "out/index.d.ts",
+	"dependencies": {
+		"@easy-games/unity-rojo-resolver": "^1.0.3-7",
+		"ajv": "^8.6.3",
+		"chalk": "^4.1.2",
+		"fs-extra": "^10.0.0",
+		"glob": "^7.2.0",
+		"hashids": "^2.2.8",
+		"normalize-package-data": "^3.0.3",
+		"typescript": "=5.1.6",
+		"uuid": "^8.3.2"
+	},
+	"files": [
+		"out",
+		"index.d.ts",
+		"rojo-schema.json",
+		"flamework-schema.json"
+	],
+	"yalcSig": "5610cd0bca59091a0be9b370084259ef"
+}

@@ -1,4 +1,5 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { DenyRegionService } from "Imports/Core/Server/Services/Block/DenyRegionService";
 import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
@@ -26,13 +27,13 @@ export class ShopkeeperService implements OnStart {
 	) {
 		this.shopKeeperPrefab = AssetBridge.LoadAsset("Shared/Resources/Entity/HumanEntity/HumanEntity.prefab");
 
-		ServerSignals.MapLoad.connect(() => {
+		ServerSignals.MapLoad.Connect(() => {
 			this.CreateShopKeepers();
 		});
 	}
 
 	OnStart(): void {
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Network.ServerToClient.ItemShop.AddNPCs.Server.FireClient(event.player.clientId, this.itemShopEntityIds);
 			Network.ServerToClient.TeamUpgradeShop.AddNPCs.Server.FireClient(
 				event.player.clientId,

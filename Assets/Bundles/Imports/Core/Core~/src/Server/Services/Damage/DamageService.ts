@@ -1,10 +1,10 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { EntityDamageServerSignal } from "Server/Signals/EntityDamageServerSignal";
 import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
-import { CoreNetwork } from "Shared/Network";
 import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
@@ -83,7 +83,7 @@ export class DamageService implements OnStart {
 			config?.damageType ?? DamageType.SWORD,
 			config?.fromEntity,
 		);
-		ServerSignals.EntityDamage.Fire(damageEvent);
+		CoreServerSignals.EntityDamage.Fire(damageEvent);
 		if (damageEvent.IsCancelled() && !config?.ignoreCancelled) {
 			return false;
 		}
@@ -112,7 +112,7 @@ export class DamageService implements OnStart {
 				damageEvent,
 				DEFAULT_RESPAWN_TIME,
 			);
-			ServerSignals.EntityDeath.Fire(entityDeathEvent);
+			CoreServerSignals.EntityDeath.Fire(entityDeathEvent);
 
 			CoreNetwork.ServerToClient.EntityDeath.Server.FireAllClients(
 				entity.id,

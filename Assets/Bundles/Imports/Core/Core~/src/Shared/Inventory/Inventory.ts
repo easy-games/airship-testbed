@@ -1,7 +1,7 @@
 import Object from "@easy-games/unity-object-utils";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemType } from "Shared/Item/ItemType";
-import { CoreNetwork } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";

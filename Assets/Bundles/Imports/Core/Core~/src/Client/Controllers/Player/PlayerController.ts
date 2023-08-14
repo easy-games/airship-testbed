@@ -1,8 +1,8 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
-import { CoreNetwork } from "Shared/Network";
 import { Player, PlayerDto } from "Shared/Player/Player";
 import { Team } from "Shared/Team/Team";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
@@ -31,7 +31,7 @@ export class PlayerController implements OnStart {
 			const player = this.GetPlayerFromClientId(clientId);
 			if (player) {
 				this.players.delete(player);
-				ClientSignals.PlayerLeave.Fire(player);
+				CoreClientSignals.PlayerLeave.Fire(player);
 				player.Destroy();
 			}
 		});
@@ -96,7 +96,7 @@ export class PlayerController implements OnStart {
 		team?.AddPlayer(player);
 
 		this.players.add(player);
-		ClientSignals.PlayerJoin.Fire(player);
+		CoreClientSignals.PlayerJoin.Fire(player);
 	}
 
 	public GetPlayers(): Player[] {

@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -21,7 +21,7 @@ export class NametagController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		ClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (event.entity.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
@@ -31,7 +31,7 @@ export class NametagController implements OnStart {
 			});
 		});
 
-		ClientSignals.PlayerChangeTeam.Connect((event) => {
+		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
 			if (event.Player === Game.LocalPlayer) {
 				for (const entity of this.entityController.GetEntities()) {
 					this.UpdateNametag(entity);
@@ -44,7 +44,7 @@ export class NametagController implements OnStart {
 			}
 		});
 
-		ClientSignals.EntityDespawn.Connect((entity) => {
+		CoreClientSignals.EntityDespawn.Connect((entity) => {
 			const nameTag = entity.model.transform.FindChild(this.nameTageId);
 			if (nameTag) {
 				Object.Destroy(nameTag.gameObject);

@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Player } from "Shared/Player/Player";
 import { Keyboard } from "Shared/UserInput";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -26,13 +26,13 @@ export class TabListController implements OnStart {
 	OnStart(): void {
 		this.FullUpdate();
 
-		ClientSignals.PlayerJoin.Connect((player) => {
+		CoreClientSignals.PlayerJoin.Connect((player) => {
 			this.FullUpdate();
 		});
-		ClientSignals.PlayerLeave.Connect((player) => {
+		CoreClientSignals.PlayerLeave.Connect((player) => {
 			this.FullUpdate();
 		});
-		ClientSignals.PlayerChangeTeam.Connect((event) => {
+		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
 			this.FullUpdate();
 		});
 

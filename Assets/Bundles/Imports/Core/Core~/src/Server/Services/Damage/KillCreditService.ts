@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
 import { SignalPriority } from "Shared/Util/Signal";
@@ -18,7 +18,7 @@ export class KillCreditService implements OnStart {
 	private damageTypes = new Set<DamageType>([DamageType.VOID, DamageType.FALL]);
 
 	OnStart(): void {
-		ServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
+		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 			if (event.fromEntity) {
 				this.entityIdToDamageCreditMap.set(event.entity.id, {
 					creditToEntityId: event.fromEntity.id,
@@ -27,7 +27,7 @@ export class KillCreditService implements OnStart {
 			}
 		});
 
-		ServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.damageTypes.has(event.damageEvent.damageType) && event.killer === undefined) {
 				const credit = this.entityIdToDamageCreditMap.get(event.entity.id);
 				if (credit) {

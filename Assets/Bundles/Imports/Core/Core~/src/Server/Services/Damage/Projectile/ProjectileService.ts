@@ -1,10 +1,10 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { CoreNetwork } from "Shared/Network";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
@@ -17,7 +17,7 @@ export class ProjectileService implements OnStart {
 
 	OnStart(): void {
 		/* Listen for `ProjectileHit` and apply damage. */
-		ServerSignals.ProjectileHit.Connect((event) => {
+		CoreServerSignals.ProjectileHit.Connect((event) => {
 			if (!event.hitEntity) {
 				return;
 			}
@@ -30,7 +30,7 @@ export class ProjectileService implements OnStart {
 				knockbackDirection: knockbackDirection,
 			});
 		});
-		ServerSignals.ProjectileHit.Connect((event) => {
+		CoreServerSignals.ProjectileHit.Connect((event) => {
 			if (event.projectile.shooter?.player) {
 				CoreNetwork.ServerToClient.ProjectileHit.Server.FireClient(
 					event.projectile.shooter.player.clientId,
@@ -86,7 +86,7 @@ export class ProjectileService implements OnStart {
 			hitEntity,
 		);
 
-		ServerSignals.ProjectileHit.Fire(projectileHitSignal);
+		CoreServerSignals.ProjectileHit.Fire(projectileHitSignal);
 
 		return true;
 	}

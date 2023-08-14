@@ -1,0 +1,1 @@
+{"version":3,"file":"isCleanBuildDirectory.js","sourceRoot":"","sources":["../../../src/util/functions/isCleanBuildDirectory.ts"],"names":[],"mappings":";;;;;;AAAA,0CAAoB;AAGpB,SAAgB,qBAAqB,CAAC,eAAmC;IACxE,IAAI,eAAe,CAAC,WAAW,IAAI,eAAe,CAAC,eAAe,EAAE;QACnE,OAAO,CAAC,YAAE,CAAC,UAAU,CAAC,eAAe,CAAC,eAAe,CAAC,CAAC;KACvD;IAED,OAAO,IAAI,CAAC;AACb,CAAC;AAND,sDAMC"}

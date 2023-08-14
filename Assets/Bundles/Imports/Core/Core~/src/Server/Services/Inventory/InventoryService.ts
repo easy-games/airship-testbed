@@ -1,8 +1,8 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Inventory } from "Shared/Inventory/Inventory";
-import { CoreNetwork } from "Shared/Network";
 import { EntityService } from "../Entity/EntityService";
 
 interface InventoryEntry {

@@ -1,9 +1,35 @@
 import { FriendAPI } from "./API/FriendAPI";
 import { UserAPI } from "./API/UserAPI";
+import { AudioManager } from "./Audio/AudioManager";
 import { CoreSignals } from "./CoreSignals";
+import { AppManager } from "./Util/AppManager";
+import { CanvasAPI } from "./Util/CanvasAPI";
+import { RunUtil } from "./Util/RunUtil";
+import { TimeUtil } from "./Util/TimeUtil";
 import { encode } from "./json";
 
-print(`Imports/Core/Shared.Main.ts()`);
+print("Core main");
+
+// Force import of TimeUtil
+TimeUtil.GetLifetimeSeconds();
+CanvasAPI.Init();
+AppManager.Init();
+AudioManager.Init();
+
+const coreCamera = GameObject.Find("CoreCamera");
+Object.Destroy(coreCamera);
+
+if (RunUtil.IsServer()) {
+	const server = require("Imports/Core/Server/Resources/TS/MainServer") as {
+		SetupServer: () => void;
+	};
+	server.SetupServer();
+} else {
+	const client = require("Imports/Core/Client/Resources/TS/MainClient") as {
+		SetupClient: () => void;
+	};
+	client.SetupClient();
+}
 
 CoreSignals.CoreInitialized.Connect((signal) => {
 	print(`Main.ts CoreSignals.CoreInitialized! signal.idToken: ${signal.idToken}`);

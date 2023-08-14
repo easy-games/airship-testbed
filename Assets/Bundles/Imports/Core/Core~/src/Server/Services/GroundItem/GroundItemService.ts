@@ -1,14 +1,14 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { BeforeEntityDropItemSignal } from "Server/Signals/BeforeEntityDropItemSignal";
 import { EntityDropItemSignal } from "Server/Signals/EntityDropItemSignal";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { CoreNetwork } from "Shared/Network";
 import { Task } from "Shared/Util/Task";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { EntityService } from "../Entity/EntityService";
@@ -37,7 +37,7 @@ export class GroundItemService implements OnStart {
 				velocity = velocity.mul(4);
 				print("velocity: " + tostring(velocity));
 
-				const beforeEvent = ServerSignals.BeforeEntityDropItem.Fire(
+				const beforeEvent = CoreServerSignals.BeforeEntityDropItem.Fire(
 					new BeforeEntityDropItemSignal(entity, item, velocity),
 				);
 				if (beforeEvent.IsCancelled()) return;
@@ -48,7 +48,7 @@ export class GroundItemService implements OnStart {
 
 				const groundItem = this.SpawnGroundItem(newItem, position, beforeEvent.velocity);
 
-				ServerSignals.EntityDropItem.Fire(new EntityDropItemSignal(entity, item, groundItem));
+				CoreServerSignals.EntityDropItem.Fire(new EntityDropItemSignal(entity, item, groundItem));
 
 				// Sync position when it's done moving
 				Task.Delay(1.5, () => {
@@ -78,7 +78,7 @@ export class GroundItemService implements OnStart {
 				return;
 			}
 
-			ServerSignals.EntityPickupItem.Fire({
+			CoreServerSignals.EntityPickupItem.Fire({
 				entity,
 				groundItem: groundItem,
 			});

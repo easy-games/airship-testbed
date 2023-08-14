@@ -5,11 +5,11 @@ import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { BlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { CoreNetwork } from "Shared/Network";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
@@ -507,7 +507,7 @@ export class Entity {
 		const projectile = new Projectile(easyProjectile, itemType, this);
 
 		if (RunUtil.IsClient()) {
-			const clientSignals = import("Client/ClientSignals").expect().ClientSignals;
+			const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 			const ProjectileLaunchedClientSignal = import(
 				"Client/Controllers/Damage/Projectile/ProjectileLaunchedClientSignal"
 			).expect().ProjectileLaunchedClientSignal;

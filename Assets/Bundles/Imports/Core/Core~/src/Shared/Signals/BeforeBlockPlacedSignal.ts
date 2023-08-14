@@ -1,8 +1,8 @@
-import { CancellableEvent } from "@easy-games/unity-sync-event";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemType } from "Shared/Item/ItemType";
+import { Cancellable } from "Shared/Util/Cancellable";
 
-export class BeforeBlockPlacedSignal extends CancellableEvent {
+export class BeforeBlockPlacedSignal extends Cancellable {
 	constructor(
 		public readonly pos: Vector3,
 		public readonly itemType: ItemType,

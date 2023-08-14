@@ -1,12 +1,12 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { SetTimeout } from "Shared/Util/Timer";
 
 @Service({})
 export class BotService implements OnStart {
 	OnStart(): void {
-		ServerSignals.EntitySpawn.Connect((event) => {
+		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (event.entity.player?.IsBot()) {
 				this.DoRandomMoveInput(event.entity);
 			}

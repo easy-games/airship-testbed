@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
@@ -43,7 +43,7 @@ export class ProjectileController implements OnStart {
 				return;
 			}
 			const projectile = new Projectile(easyProjectile, itemType, shooterEntity);
-			ClientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));
+			CoreClientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));
 		});
 	}
 
@@ -64,7 +64,7 @@ export class ProjectileController implements OnStart {
 			velocity,
 			hitEntity,
 		);
-		ClientSignals.ProjectileCollide.Fire(projectileHitSignal);
+		CoreClientSignals.ProjectileCollide.Fire(projectileHitSignal);
 
 		return true;
 	}

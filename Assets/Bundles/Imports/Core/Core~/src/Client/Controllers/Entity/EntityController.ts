@@ -1,13 +1,13 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntitySpawnClientSignal } from "Client/Signals/EntitySpawnClientEvent";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity, CharacterEntityDto } from "Shared/Entity/Character/CharacterEntity";
 import { Entity, EntityDto } from "Shared/Entity/Entity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { EntitySerializer } from "Shared/Entity/EntitySerializer";
 import { Inventory } from "Shared/Inventory/Inventory";
-import { CoreNetwork } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { Task } from "Shared/Util/Task";
@@ -72,7 +72,7 @@ export class EntityController implements OnStart {
 
 	private DespawnEntity(entity: Entity): void {
 		entity.Destroy();
-		ClientSignals.EntityDespawn.Fire(entity);
+		CoreClientSignals.EntityDespawn.Fire(entity);
 		this.entities.delete(entity.id);
 	}
 
@@ -117,7 +117,7 @@ export class EntityController implements OnStart {
 			}
 		}
 
-		ClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
+		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
 
 		return entity;
 	}
@@ -134,7 +134,7 @@ export class EntityController implements OnStart {
 		return new Promise<Entity | undefined>((resolve) => {
 			const bin = new Bin();
 			bin.Add(
-				ClientSignals.EntitySpawn.Connect((event) => {
+				CoreClientSignals.EntitySpawn.Connect((event) => {
 					if (event.entity.id === entityId) {
 						bin.Clean();
 						resolve(event.entity);

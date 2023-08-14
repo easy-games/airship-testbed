@@ -1,12 +1,12 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { ItemType } from "Shared/Item/ItemType";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 @Service({})
 export class TelepearlService implements OnStart {
 	OnStart(): void {
-		ServerSignals.ProjectileHit.Connect((event) => {
+		CoreServerSignals.ProjectileHit.Connect((event) => {
 			print("projectile itemType: " + event.projectile.itemType);
 			if (event.projectile.itemType !== ItemType.TELEPEARL) {
 				return;

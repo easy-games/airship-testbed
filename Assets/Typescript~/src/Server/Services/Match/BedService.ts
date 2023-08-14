@@ -1,4 +1,5 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
 import { Game } from "Imports/Core/Shared/Game";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
@@ -9,7 +10,6 @@ import { MathUtil } from "Imports/Core/Shared/Util/MathUtil";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
-import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
 import { MapService } from "./Map/MapService";
@@ -31,7 +31,7 @@ export class BedService implements OnStart {
 
 	OnStart(): void {
 		/* Listen for bed destroyed. */
-		ServerSignals.BeforeBlockDestroyed.Connect((event) => {
+		CoreServerSignals.BeforeBlockDestroyed.Connect((event) => {
 			if (event.blockId === BED_BLOCK_ID) {
 				const teamId = BlockDataAPI.GetBlockData<string>(event.blockPos, "teamId");
 				if (!teamId) return;
@@ -50,11 +50,11 @@ export class BedService implements OnStart {
 					if (bedState) {
 						bedState.destroyed = true;
 					}
-					BWServerSignals.BedDestroyed.Fire({ team });
+					ServerSignals.BedDestroyed.Fire({ team });
 				}
 			}
 		});
-		ServerSignals.MatchStart.connect(() => {
+		ServerSignals.MatchStart.Connect(() => {
 			this.SpawnBeds();
 		});
 	}

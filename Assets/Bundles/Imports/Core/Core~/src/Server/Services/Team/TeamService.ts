@@ -1,8 +1,7 @@
-import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { ExampleService } from "Imports/ExamplePackage/Server/ExampleService";
-import { ServerSignals } from "Server/ServerSignals";
-import { CoreNetwork } from "Shared/Network";
+import { CoreServerSignals } from "Server/CoreServerSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Team } from "Shared/Team/Team";
 import { Bin } from "Shared/Util/Bin";
 import { SignalPriority } from "Shared/Util/Signal";
@@ -17,12 +16,10 @@ export class TeamService implements OnStart {
 	private teams = new Map<string, TeamEntry>();
 
 	OnStart(): void {
-		ServerSignals.PlayerJoin.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
+		CoreServerSignals.PlayerJoin.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
 			const teamDtos = Object.values(this.teams).map((e) => e.team.Encode());
 			CoreNetwork.ServerToClient.AddTeams.Server.FireClient(event.player.clientId, teamDtos);
 		});
-
-		Dependency<ExampleService>();
 	}
 
 	public RegisterTeam(team: Team): void {

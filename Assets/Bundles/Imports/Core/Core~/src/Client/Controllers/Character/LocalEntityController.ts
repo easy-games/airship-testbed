@@ -1,6 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
-import { CoreNetwork } from "Shared/Network";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";

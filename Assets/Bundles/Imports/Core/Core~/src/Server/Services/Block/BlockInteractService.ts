@@ -1,8 +1,8 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
+import { CoreServerSignals } from "Server/CoreServerSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { CoreNetwork } from "Shared/Network";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
@@ -21,7 +21,7 @@ export class BlockInteractService implements OnStart {
 	) {}
 
 	OnStart(): void {
-		ServerSignals.CustomMoveCommand.Connect((event) => {
+		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.is("PlaceBlock")) return;
 
 			const itemType = event.value.itemType;
@@ -51,11 +51,11 @@ export class BlockInteractService implements OnStart {
 				return rollback();
 			}
 
-			const beforeBlockPlaced = ServerSignals.BeforeBlockPlaced.Fire(
+			const beforeBlockPlaced = CoreServerSignals.BeforeBlockPlaced.Fire(
 				new BeforeBlockPlacedSignal(pos, itemType, itemMeta.block.blockId, entity),
 			);
 
-			if (beforeBlockPlaced.isCancelled()) {
+			if (beforeBlockPlaced.IsCancelled()) {
 				return rollback();
 			}
 
@@ -63,11 +63,11 @@ export class BlockInteractService implements OnStart {
 			world.PlaceBlockById(pos, itemMeta.block.blockId, {
 				placedByEntityId: entity.id,
 			});
-			ServerSignals.BlockPlace.Fire(new BlockPlaceSignal(pos, itemType, itemMeta.block.blockId, entity));
+			CoreServerSignals.BlockPlace.Fire(new BlockPlaceSignal(pos, itemType, itemMeta.block.blockId, entity));
 			entity.SendItemAnimationToClients(0, 0, clientId);
 		});
 
-		ServerSignals.CustomMoveCommand.Connect((event) => {
+		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.is("HitBlock")) return;
 
 			const clientId = event.clientId;
@@ -102,7 +102,7 @@ export class BlockInteractService implements OnStart {
 				if (damage === 0) {
 					return;
 				}
-				const beforeSignal = ServerSignals.BeforeBlockHit.Fire(
+				const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
 					new BeforeBlockHitSignal(block, pos, player, damage, itemInHand),
 				);
 
@@ -111,12 +111,12 @@ export class BlockInteractService implements OnStart {
 				BlockDataAPI.SetBlockData(pos, "health", newHealth);
 
 				// After signal
-				ServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: pos });
+				CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: pos });
 				print(`Firing BlockHit. damage=${beforeSignal.damage}`);
 				CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(pos, entity.id);
 
 				if (newHealth === 0) {
-					ServerSignals.BeforeBlockDestroyed.Fire({
+					CoreServerSignals.BeforeBlockDestroyed.Fire({
 						blockId: block.blockId,
 						blockMeta: itemMeta,
 						blockPos: pos,
@@ -125,7 +125,11 @@ export class BlockInteractService implements OnStart {
 					world.PlaceBlockById(pos, 0, {
 						placedByEntityId: entity.id,
 					});
-					ServerSignals.BlockDestroyed.Fire({ blockId: block.blockId, blockMeta: itemMeta, blockPos: pos });
+					CoreServerSignals.BlockDestroyed.Fire({
+						blockId: block.blockId,
+						blockMeta: itemMeta,
+						blockPos: pos,
+					});
 					CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(pos, block.blockId);
 				}
 

@@ -1,6 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { CoreNetwork } from "Shared/Network";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import StringUtils from "Shared/Util/StringUtil";

@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { DenyRegionDto } from "Shared/DenyRegion/DenyRegionMeta";
-import { CoreNetwork } from "Shared/Network";
 import { SignalPriority } from "Shared/Util/Signal";
 
 @Controller({ loadOrder: -1 })
@@ -21,8 +21,8 @@ export class DenyRegionController implements OnStart {
 			this.CreateDenyRegionFromDto(denyRegion);
 		});
 		/* Cancel block placed if voxel position is inside of a deny region. */
-		ClientSignals.BeforeBlockPlaced.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
-			if (this.InDenyRegion(event.pos)) event.setCancelled(true);
+		CoreClientSignals.BeforeBlockPlaced.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+			if (this.InDenyRegion(event.pos)) event.SetCancelled(true);
 		});
 	}
 

@@ -1,4 +1,5 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { DenyRegionService } from "Imports/Core/Server/Services/Block/DenyRegionService";
 import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { PlayerService } from "Imports/Core/Server/Services/Player/PlayerService";
@@ -31,7 +32,7 @@ export class BWSpawnService implements OnStart {
 		private readonly matchService: MatchService,
 		private readonly entityService: EntityService,
 	) {
-		ServerSignals.MapLoad.connect((event) => {
+		ServerSignals.MapLoad.Connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();
 			const entity = this.entityService.SpawnEntityForPlayer(
 				undefined,
@@ -41,7 +42,7 @@ export class BWSpawnService implements OnStart {
 			entity.AddHealthbar();
 		});
 
-		ServerSignals.MapLoad.connect((event) => {
+		ServerSignals.MapLoad.Connect((event) => {
 			for (const team of Dependency<TeamService>().GetTeams()) {
 				const spawnPos = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 				if (spawnPos) {
@@ -58,14 +59,14 @@ export class BWSpawnService implements OnStart {
 		Task.Spawn(() => {
 			this.loadedMap = this.mapService.WaitForMapLoaded();
 			/* Spawn entity on join. */
-			ServerSignals.PlayerJoin.Connect((event) => {
+			CoreServerSignals.PlayerJoin.Connect((event) => {
 				Task.Delay(SPAWN_DELAY_ON_JOIN, () => {
 					this.SpawnPlayer(event.player);
 				});
 			});
 
 			/* Listen for entity death, respawn if applicable. */
-			ServerSignals.EntityDeath.Connect((event) => {
+			CoreServerSignals.EntityDeath.Connect((event) => {
 				if (!this.matchService.IsRunning()) return;
 				if (event.entity instanceof CharacterEntity && !this.bwService.winnerDeclared) {
 					Task.Delay(event.respawnTime, () => {
@@ -77,14 +78,14 @@ export class BWSpawnService implements OnStart {
 			});
 
 			/* Listen for match start and teleport players. */
-			ServerSignals.MatchStart.connect(() => {
+			ServerSignals.MatchStart.Connect(() => {
 				this.playerService.GetPlayers().forEach((player) => {
 					this.TeleportPlayerOnMatchStart(player);
 				});
 			});
 		});
 
-		ServerSignals.BeforeEntitySpawn.connect((event) => {
+		CoreServerSignals.BeforeEntitySpawn.Connect((event) => {
 			if (this.matchService.IsRunning() && event.player) {
 				const team = event.player.GetTeam();
 				if (!team) return;

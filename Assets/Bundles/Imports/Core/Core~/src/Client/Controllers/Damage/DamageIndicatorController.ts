@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
 
 @Controller({})
@@ -9,7 +9,7 @@ export class DamageIndicatorController implements OnStart {
 	OnStart(): void {
 		// this.damageIndicatorObject = AssetBridge.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
 
-		ClientSignals.EntityDamage.Connect((event) => {
+		CoreClientSignals.EntityDamage.Connect((event) => {
 			const entityGO = event.entity.networkObject.gameObject;
 
 			//Entity Damage Animation
@@ -38,7 +38,7 @@ export class DamageIndicatorController implements OnStart {
 			// });
 		});
 
-		ClientSignals.EntityDeath.Connect((event) => {
+		CoreClientSignals.EntityDeath.Connect((event) => {
 			event.entity.anim?.PlayDeath(event.damageType);
 
 			// PvP Kill

@@ -1,6 +1,6 @@
 ﻿import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { CoreNetwork } from "../../CoreNetwork";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
-import { CoreNetwork } from "../../Network";
 import { RunUtil } from "../../Util/RunUtil";
 import { HeldItemManager, HeldItemState } from "./HeldItemManager";
 
@@ -67,10 +67,10 @@ export class EntityItemManager {
 			});
 		});
 
-		import("../../../Client/ClientSignals").then((clientSignalRef) => {
+		import("../../../Client/CoreClientSignals").then((clientSignalRef) => {
 			this.Log("ClientSignals");
 			//Listen to new entities
-			clientSignalRef.ClientSignals.EntitySpawn.Connect((event) => {
+			clientSignalRef.CoreClientSignals.EntitySpawn.Connect((event) => {
 				this.Log("EntitySpawn: " + event.entity.id);
 				if (event.entity instanceof CharacterEntity && event.entity.id !== undefined) {
 					//Create the Item Manager on the Client
@@ -84,7 +84,7 @@ export class EntityItemManager {
 			});
 
 			//Clean up destroyed entities
-			clientSignalRef.ClientSignals.EntityDespawn.Connect((entity) => {
+			clientSignalRef.CoreClientSignals.EntityDespawn.Connect((entity) => {
 				this.Log("EntityDespawn: " + entity.id);
 				if (entity instanceof CharacterEntity) {
 					this.DestroyItemManager(entity);
@@ -103,11 +103,11 @@ export class EntityItemManager {
 
 	private InitializeServer() {
 		this.Log("InitializeServer");
-		import("../../../Server/ServerSignals").then((serverSignalsRef) => {
+		import("../../../Server/CoreServerSignals").then((serverSignalsRef) => {
 			this.Log("serverSignalsRef");
 
 			//Listen to new entity spawns
-			serverSignalsRef.ServerSignals.EntitySpawn.Connect((event) => {
+			serverSignalsRef.CoreServerSignals.EntitySpawn.Connect((event) => {
 				this.Log("EntitySpawn: " + event.entity.id);
 				if ((event.entity as CharacterEntity) && event.entity.id !== undefined) {
 					//Create the Item Manager on the Server
@@ -116,7 +116,7 @@ export class EntityItemManager {
 			});
 
 			//Clean up destroyed entities
-			serverSignalsRef.ServerSignals.EntityDespawn.Connect((entity) => {
+			serverSignalsRef.CoreServerSignals.EntityDespawn.Connect((entity) => {
 				this.Log("EntityDespawn: " + entity.id);
 				if (entity instanceof CharacterEntity) {
 					this.DestroyItemManager(entity);
@@ -124,7 +124,7 @@ export class EntityItemManager {
 			});
 
 			//Listen to state changes triggered by client
-			serverSignalsRef.ServerSignals.CustomMoveCommand.Connect((event) => {
+			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
 				if (event.is("HeldItemState")) {
 					this.Log("NewState: " + event.value.state);
 					const heldItem = this.entityItems.get(event.value.entityId);

@@ -30,12 +30,12 @@ export class Team {
 		this.onPlayerAdded.Fire(player);
 
 		if (RunUtil.IsClient()) {
-			import("Client/ClientSignals").then((i) => {
-				i.ClientSignals.PlayerChangeTeam.Fire(new ChangeTeamSignal(player, this, oldTeam));
+			import("Client/CoreClientSignals").then((i) => {
+				i.CoreClientSignals.PlayerChangeTeam.Fire(new ChangeTeamSignal(player, this, oldTeam));
 			});
 		} else {
-			import("Server/ServerSignals").then((i) => {
-				i.ServerSignals.PlayerChangeTeam.Fire(new ChangeTeamSignal(player, this, oldTeam));
+			import("Server/CoreServerSignals").then((i) => {
+				i.CoreServerSignals.PlayerChangeTeam.Fire(new ChangeTeamSignal(player, this, oldTeam));
 			});
 		}
 	}

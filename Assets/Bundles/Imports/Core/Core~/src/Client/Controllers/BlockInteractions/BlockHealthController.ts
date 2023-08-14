@@ -1,9 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { CoreNetwork } from "Shared/Network";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import {
 	BundleGroupNames,
@@ -47,7 +47,7 @@ export class BlockHealthController implements OnStart {
 			if (voxel) {
 				const entity = this.entityController.GetEntityById(entityId);
 				const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-				ClientSignals.AfterBlockHit.Fire({
+				CoreClientSignals.AfterBlockHit.Fire({
 					pos: blockPos,
 					blockId,
 					entity,
@@ -82,7 +82,7 @@ export class BlockHealthController implements OnStart {
 	}
 
 	public OnBeforeBlockHit(voxelPos: Vector3, block: Block) {
-		ClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block));
+		CoreClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block));
 	}
 
 	public VisualizeBlockHealth(blockPos: Vector3) {

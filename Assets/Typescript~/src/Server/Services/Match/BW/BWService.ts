@@ -1,4 +1,5 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { PlayerService } from "Imports/Core/Server/Services/Player/PlayerService";
 import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
 import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
@@ -8,7 +9,6 @@ import { Player } from "Imports/Core/Shared/Player/Player";
 import { Team } from "Imports/Core/Shared/Team/Team";
 import { SetUtil } from "Imports/Core/Shared/Util/SetUtil";
 import { SignalPriority } from "Imports/Core/Shared/Util/Signal";
-import { BWServerSignals } from "Server/BWServerSignals";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
 import { BedService } from "../BedService";
@@ -34,12 +34,12 @@ export class BWService implements OnStart {
 
 	OnStart(): void {
 		// Listen for bed destroy for BW win condition.
-		BWServerSignals.BedDestroyed.Connect(() => {
+		ServerSignals.BedDestroyed.Connect(() => {
 			this.bedHasBeenDestroyed = true;
 			this.CheckForWin();
 		});
 		// Listen for entity death for BW win condition, give loot.
-		ServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (!this.matchService.IsRunning()) return;
 			// Eliminate player, if applicable.
 			if (event.entity instanceof CharacterEntity) {
@@ -69,7 +69,7 @@ export class BWService implements OnStart {
 			}
 		});
 		// Teammates _cannot_ damage each other.
-		ServerSignals.EntityDamage.Connect((event) => {
+		CoreServerSignals.EntityDamage.Connect((event) => {
 			if (
 				event.fromEntity?.player &&
 				event.fromEntity instanceof CharacterEntity &&

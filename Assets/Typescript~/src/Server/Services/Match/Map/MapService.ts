@@ -6,6 +6,7 @@ import { Task } from "Imports/Core/Shared/Util/Task";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 import { decode } from "Imports/Core/Shared/json";
 import { ServerSignals } from "Server/ServerSignals";
+import { MapLoadEvent } from "Server/Signals/MapLoadEvent";
 import { QueueMeta } from "Shared/Queue/QueueMeta";
 import { MatchService } from "../MatchService";
 import { LoadedMap } from "./LoadedMap";
@@ -63,7 +64,7 @@ export class MapService implements OnStart {
 
 		world.WaitForFinishedLoading().expect();
 
-		ServerSignals.MapLoad.fire(this.loadedMap);
+		ServerSignals.MapLoad.Fire(new MapLoadEvent(this.loadedMap));
 		this.mapLoaded = true;
 	}
 

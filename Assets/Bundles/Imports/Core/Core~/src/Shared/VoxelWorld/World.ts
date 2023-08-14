@@ -1,7 +1,7 @@
 import Object from "@easy-games/unity-object-utils";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { ItemType } from "Shared/Item/ItemType";
-import { CoreNetwork } from "Shared/Network";
 import { Signal } from "Shared/Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
@@ -129,7 +129,7 @@ export class World {
 		} else {
 			if (config?.placedByEntityId === Game.LocalPlayer.Character?.id) {
 				// Client predicted block place event
-				const clientSignals = import("Client/ClientSignals").expect().ClientSignals;
+				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 					.BlockPlaceClientSignal;
 

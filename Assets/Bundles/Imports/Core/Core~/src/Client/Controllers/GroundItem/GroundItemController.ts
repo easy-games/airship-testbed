@@ -1,6 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { ClientSignals } from "Client/ClientSignals";
+import { CoreClientSignals } from "Client/CoreClientSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -9,7 +10,6 @@ import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
-import { CoreNetwork } from "Shared/Network";
 import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
@@ -114,7 +114,7 @@ export class GroundItemController implements OnStart {
 
 			const entity = Entity.FindById(entityId);
 			if (entity) {
-				ClientSignals.EntityPickupItem.Fire({ entity, groundItem });
+				CoreClientSignals.EntityPickupItem.Fire({ entity, groundItem });
 			}
 
 			GameObjectUtil.Destroy(groundItem.rb.gameObject);
