@@ -17,10 +17,10 @@
   "devDependencies": {
     "@easy-games/compiler-types": "^3.0.0-17",
     "@easy-games/types": "^1.0.81-161",
-    "@easy-games/unity-component-transformer": "^1.0.0-8",
+    "@easy-games/unity-component-transformer": "^1.0.0-11",
     "@easy-games/unity-flamework-transformer": "^1.1.0-24",
     "@easy-games/unity-rojo-resolver": "^1.0.3-7",
-    "@easy-games/unity-ts": "^3.0.0-89",
+    "@easy-games/unity-ts": "^3.0.0-97",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "eslint": "^8.25.0",

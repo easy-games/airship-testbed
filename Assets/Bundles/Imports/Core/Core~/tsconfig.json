@@ -34,7 +34,6 @@
 		"plugins": [
             { "transform": "@easy-games/unity-component-transformer" },
 			{ "transform": "@easy-games/unity-flamework-transformer" },
-            // { "transform": "typescript-transform-paths", "afterDeclarations": true }
 		]
 	},
     "include": [
