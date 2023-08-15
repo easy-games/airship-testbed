@@ -1,11 +1,11 @@
 {
 	"folders": [
 		{
-            "name": "BedWars",
+            "name": "Typescript~",
 			"path": "."
 		},
         {
-            "name": "Core",
+            "name": "Core~",
             "path": "../Bundles/Imports/Core/Core~"
         }
     ],
