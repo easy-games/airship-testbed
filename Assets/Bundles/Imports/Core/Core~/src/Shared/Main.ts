@@ -14,8 +14,8 @@ const vars: DynamicVariables[] = [
 	AssetBridge.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Combat.asset"),
 	AssetBridge.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Camera.asset"),
 ];
-for (let varCollection of vars) {
-	varCollection.Register();
+for (const dynamicVar of vars) {
+	dynamicVar.Register();
 }
 print("loaded vars.");
 
