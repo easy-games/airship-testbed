@@ -66,6 +66,7 @@ interface EntityDriver extends Component {
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
+	SetFlyMode(enabled: boolean);
 	Teleport(position: Vector3): void;
 	/**
 	 * Can only be called from Server.
