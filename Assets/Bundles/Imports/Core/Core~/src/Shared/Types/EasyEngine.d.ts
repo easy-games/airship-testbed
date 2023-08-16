@@ -434,6 +434,7 @@ interface OnCompleteHook {
 
 interface DynamicVariablesManager {
 	GetVars(collectionId: string): DynamicVariables | undefined;
+	RegisterCollection(collection: DynamicVariables): void;
 }
 interface DynamicVariablesManagerConstructor {
 	Instance: DynamicVariablesManager;

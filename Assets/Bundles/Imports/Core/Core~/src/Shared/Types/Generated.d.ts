@@ -12996,6 +12996,7 @@ interface DynamicVariables extends ScriptableObject {
     SetNumber(key: string, val: number): void;
     SetString(key: string, val: string): void;
     SetVector3(key: string, val: Vector3): void;
+    Register(): void;
 }
     
 interface ProjectileHitEvent {

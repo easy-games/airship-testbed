@@ -10,6 +10,15 @@ import { encode } from "./json";
 
 print("Core main");
 
+const vars: DynamicVariables[] = [
+	AssetBridge.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Combat.asset"),
+	AssetBridge.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Camera.asset"),
+];
+for (let varCollection of vars) {
+	varCollection.Register();
+}
+print("loaded vars.");
+
 // Force import of TimeUtil
 TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
