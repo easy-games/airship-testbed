@@ -5,3 +5,5 @@
 flamework.build
 
 *mono_crash*
+
+!src/**/*.lua
