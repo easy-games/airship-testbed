@@ -1,13 +1,13 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 import { ServerSignals } from "Server/ServerSignals";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 @Service({})
 export class MapBlockService implements OnStart {
 	OnStart(): void {
 		/* Start tracking placed blocks AFTER match has started. */
-		ServerSignals.MatchStart.connect(() => {
+		ServerSignals.MatchStart.Connect(() => {
 			/*
 			 * Voxels placed after match started belong to players.
 			 * TODO: We _probably_ want exceptions here. IE: Lucky Blocks?

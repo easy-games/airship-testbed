@@ -1,22 +1,22 @@
 import { Flamework } from "@easy-games/flamework-core";
-import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
+import { CoreNetwork } from "Imports/Core/Shared/CoreNetwork";
+import { InitNet } from "Imports/Core/Shared/Network/NetworkAPI";
+import { TimeUtil } from "Imports/Core/Shared/Util/TimeUtil";
+import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Imports/Core/Shared/Util/Timer";
+import { SetupWorld } from "Imports/Core/Shared/VoxelWorld/SetupWorld";
 import { BedWars } from "./BedWars/BedWars";
-import { Network } from "./Network";
-import { InitNet } from "./Network/NetworkAPI";
-import { TimeUtil } from "./Util/TimeUtil";
-import { SetupWorld } from "./VoxelWorld/SetupWorld";
 
 function LoadFlamework() {
-	Flamework.addPath("assets/bundles/client/resources/ts/controllers/global", "^.*controller.lua$");
+	Flamework.AddPath("assets/bundles/client/resources/ts/controllers/global", "^.*controller.lua$");
 	if (BedWars.IsMatchServer()) {
-		Flamework.addPath("assets/bundles/client/resources/ts/controllers/match", "^.*controller.lua$");
+		Flamework.AddPath("assets/bundles/client/resources/ts/controllers/match", "^.*controller.lua$");
 	} else if (BedWars.IsLobbyServer()) {
-		Flamework.addPath("assets/bundles/client/resources/ts/controllers/lobby", "^.*controller.lua$");
+		Flamework.AddPath("assets/bundles/client/resources/ts/controllers/lobby", "^.*controller.lua$");
 	}
 
-	Flamework.ignite();
+	Flamework.Ignite();
 	print("sending ready packet!");
-	Network.ClientToServer.Ready.Client.FireServer();
+	CoreNetwork.ClientToServer.Ready.Client.FireServer();
 }
 
 function LoadClient() {

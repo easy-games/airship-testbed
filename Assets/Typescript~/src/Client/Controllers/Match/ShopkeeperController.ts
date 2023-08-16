@@ -1,11 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { Entity } from "Shared/Entity/Entity";
+import { ProximityPrompt } from "Imports/Core/Client/Controllers/ProximityPrompt/ProximityPrompt";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
+import { Task } from "Imports/Core/Shared/Util/Task";
 import { Network } from "Shared/Network";
-import { CollectionManager } from "Shared/Util/CollectionManager";
-import { CollectionTag } from "Shared/Util/CollectionTag";
-import { Task } from "Shared/Util/Task";
 import { ItemShopController } from "../Global/ItemShop/ItemShopController";
-import { ProximityPrompt } from "../Global/ProximityPrompt/ProximityPrompt";
 import { TeamUpgradeController } from "../Global/TeamUpgrade/TeamUpgradeController";
 
 /** Proximity prompt offset. */
@@ -64,25 +62,6 @@ export class ShopkeeperController implements OnStart {
 					});
 				});
 			}
-		});
-		/* Listen for shopkeeper creation and create proximity prompts accordingly. */
-		CollectionManager.WatchCollectionTag(CollectionTag.ITEM_SHOP_SHOPKEEPER, (gameObject) => {
-			print("shop keeper: ", gameObject);
-			print("name: " + gameObject.name);
-		});
-		CollectionManager.WatchCollectionTag(CollectionTag.TEAM_UPGRADES_SHOPKEEPER, (gameObject) => {
-			const prompt = new ProximityPrompt({
-				promptPosition: gameObject.transform.position.add(PROXIMITY_PROMPT_OFFSET),
-				activationKey: KeyCode.F,
-				activationKeyString: "F",
-				activationRange: 3.5,
-				bottomText: "Upgrades",
-				topText: "Open",
-			});
-			/* Open team upgrade UI on prompt activation. */
-			prompt.OnActivated.Connect(() => {
-				this.teamUpgradeController.Open();
-			});
 		});
 	}
 }

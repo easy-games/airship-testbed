@@ -1,14 +1,15 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
-import { CameraController } from "Client/Controllers/Global/Camera/CameraController";
-import { OrbitCameraMode } from "Client/Controllers/Global/Camera/DefaultCameraModes/OrbitCameraMode";
-import { EntityController } from "Client/Controllers/Global/Entity/EntityController";
-import { Entity } from "Shared/Entity/Entity";
-import { Game } from "Shared/Game";
-import { Keyboard, Mouse } from "Shared/UserInput";
-import { Bin } from "Shared/Util/Bin";
-import { LocalEntityController } from "../Global/Character/LocalEntityController";
-import { PlayerController } from "../Global/Player/PlayerController";
+import { CameraController } from "Imports/Core/Client/Controllers/Camera/CameraController";
+import { OrbitCameraMode } from "Imports/Core/Client/Controllers/Camera/DefaultCameraModes/OrbitCameraMode";
+import { LocalEntityController } from "Imports/Core/Client/Controllers/Character/LocalEntityController";
+import { EntityController } from "Imports/Core/Client/Controllers/Entity/EntityController";
+import { PlayerController } from "Imports/Core/Client/Controllers/Player/PlayerController";
+import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
+import { Game } from "Imports/Core/Shared/Game";
+import { Keyboard, Mouse } from "Imports/Core/Shared/UserInput";
+import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { BWController } from "./BWController";
 
 @Controller({})
@@ -86,11 +87,11 @@ export class SpectateController implements OnStart {
 			this.GoToIncrement(orbitCamMode, -1);
 		});
 
-		bin.Connect(ClientSignals.EntitySpawn, (event) => {
+		bin.Connect(CoreClientSignals.EntitySpawn, (event) => {
 			this.FitIndexToId();
 		});
 
-		bin.Connect(ClientSignals.EntityDespawn, (entity) => {
+		bin.Connect(CoreClientSignals.EntityDespawn, (entity) => {
 			// If currently-spectated entity goes away, switch to the next entity:
 			if (entity.id === this.currentlySpectatingEntityId) {
 				this.FitIndexToId();

@@ -1,8 +1,8 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ClientSignals } from "Client/ClientSignals";
-import { Game } from "Shared/Game";
-import { Bin } from "Shared/Util/Bin";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
+import { Game } from "Imports/Core/Shared/Game";
+import { Bin } from "Imports/Core/Shared/Util/Bin";
+import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
 @Controller({})
 export class LoadingScreenController implements OnStart {
@@ -37,7 +37,7 @@ export class LoadingScreenController implements OnStart {
 			this.SetProgress("Waiting for Character", 85);
 			const bin = new Bin();
 			bin.Add(
-				ClientSignals.EntitySpawn.Connect((event) => {
+				CoreClientSignals.EntitySpawn.Connect((event) => {
 					if (event.entity.IsLocalCharacter()) {
 						bin.Clean();
 						const timeSpent = os.clock() - startTime;

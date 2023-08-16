@@ -1,24 +1,24 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
-import { EntityService } from "Server/Services/Global/Entity/EntityService";
-import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
-import { ItemType } from "Shared/Item/ItemType";
-import { Player } from "Shared/Player/Player";
-import { Task } from "Shared/Util/Task";
-import { SetTimeout } from "Shared/Util/Timer";
-import { World } from "Shared/VoxelWorld/World";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
+import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
+import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { Player } from "Imports/Core/Shared/Player/Player";
+import { Task } from "Imports/Core/Shared/Util/Task";
+import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
+import { World } from "Imports/Core/Shared/VoxelWorld/World";
+import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
 @Service({})
 export class LobbyWorldService implements OnStart {
 	constructor(private readonly entityService: EntityService) {
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Spawn(() => {
 				this.SpawnPlayer(event.player);
 			});
 		});
 
-		ServerSignals.EntityDeath.Connect((event) => {
+		CoreServerSignals.EntityDeath.Connect((event) => {
 			const player = event.entity.player;
 			if (!player) return;
 

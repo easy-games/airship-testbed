@@ -1,4 +1,4 @@
-import { ItemType } from "Shared/Item/ItemType";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ArmorCollection } from "./ArmorCollection";
 
 /** Describes a shop category. */

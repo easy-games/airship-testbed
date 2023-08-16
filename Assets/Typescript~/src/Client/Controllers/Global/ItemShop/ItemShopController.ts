@@ -1,17 +1,17 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { AudioManager } from "Shared/Audio/AudioManager";
-import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObjectBridge";
-import { ItemType } from "Shared/Item/ItemType";
-import { ItemUtil } from "Shared/Item/ItemUtil";
+import { InventoryController } from "Imports/Core/Client/Controllers/Inventory/InventoryController";
+import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
+import { Game } from "Imports/Core/Shared/Game";
+import { GameObjectUtil } from "Imports/Core/Shared/GameObject/GameObjectUtil";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
+import { BedWarsUI } from "Imports/Core/Shared/UI/BedWarsUI";
+import { AppManager } from "Imports/Core/Shared/Util/AppManager";
+import { Bin } from "Imports/Core/Shared/Util/Bin";
+import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
+import { Signal } from "Imports/Core/Shared/Util/Signal";
 import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
-import { BedWarsUI } from "Shared/UI/BedWarsUI";
-import { AppManager } from "Shared/Util/AppManager";
-import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { Signal } from "Shared/Util/Signal";
-import { InventoryController } from "../Inventory/InventoryController";
 
 @Controller({})
 export class ItemShopController implements OnStart {

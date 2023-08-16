@@ -1,13 +1,14 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { Task } from "Imports/Core/Shared/Util/Task";
 import { ServerSignals } from "Server/ServerSignals";
+import { MatchStartServerEvent } from "Server/Signals/MatchStartServerEvent";
 import { MatchState } from "Shared/Match/MatchState";
 import { Network } from "Shared/Network";
 import { Queues } from "Shared/Queue/QueueDefinitions";
 import { QueueMeta } from "Shared/Queue/QueueMeta";
 import { QueueType } from "Shared/Queue/QueueType";
-import { Team } from "Shared/Team/Team";
-import { Task } from "Shared/Util/Task";
 import { MapService } from "./Map/MapService";
 
 @Service({})
@@ -30,9 +31,11 @@ export class MatchService implements OnStart {
 	}
 
 	OnStart(): void {
+		print("MatchService.1");
 		Dependency<MapService>().WaitForMapLoaded();
 		/* Immediately transition into `MatchState.PRE` after map load. */
 		this.SetState(MatchState.PRE);
+		print("MatchService.2");
 	}
 
 	/** Yields until match exits `MatchState.SETUP` state. */
@@ -69,7 +72,7 @@ export class MatchService implements OnStart {
 		if (this.state !== MatchState.PRE) return;
 		this.SetState(MatchState.RUNNING);
 		/* Fire signal and remote. */
-		ServerSignals.MatchStart.fire();
+		ServerSignals.MatchStart.Fire(new MatchStartServerEvent());
 		Network.ServerToClient.MatchStarted.Server.FireAllClients();
 	}
 

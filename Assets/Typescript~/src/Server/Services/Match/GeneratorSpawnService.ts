@@ -1,13 +1,13 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { DenyRegionService } from "Imports/Core/Server/Services/Block/DenyRegionService";
+import { GeneratorService } from "Imports/Core/Server/Services/Generator/GeneratorService";
+import { GeneratorState } from "Imports/Core/Server/Services/Generator/GeneratorState";
+import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
+import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { MathUtil } from "Imports/Core/Shared/Util/MathUtil";
+import { Task } from "Imports/Core/Shared/Util/Task";
 import { ServerSignals } from "Server/ServerSignals";
-import { GeneratorService } from "Server/Services/Global/Generator/GeneratorService";
-import { ItemType } from "Shared/Item/ItemType";
-import { Team } from "Shared/Team/Team";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { Task } from "Shared/Util/Task";
-import { DenyRegionService } from "../Global/Block/DenyRegionService";
-import { GeneratorState } from "../Global/Generator/GeneratorState";
-import { TeamService } from "../Global/Team/TeamService";
 import { LoadedMap } from "./Map/LoadedMap";
 import { MapService } from "./Map/MapService";
 
@@ -32,7 +32,7 @@ export class GeneratorSpawnService implements OnStart {
 		Task.Spawn(() => {
 			/* Wait map and match started before creating generators. */
 			this.loadedMap = this.mapService.WaitForMapLoaded();
-			ServerSignals.MatchStart.connect(() => this.CreateMapGenerators());
+			ServerSignals.MatchStart.Connect(() => this.CreateMapGenerators());
 		});
 	}
 

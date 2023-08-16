@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+            "name": "Typescript~",
+			"path": "."
+		},
+        {
+            "name": "Core~",
+            "path": "../Bundles/Imports/Core/Core~"
+        }
+    ],
+    "settings": {}
+}

@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Shared/TS/Main
+  m_fileFullPath: shared/resources/ts/main
   m_error: 0
   m_yielded: 0
   m_canResume: 0
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Imports/Core/Shared/TS/Main
+  m_fileFullPath: imports/core/shared/resources/ts/main
   m_error: 0
   m_yielded: 0
   m_canResume: 0
@@ -2538,6 +2538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b02ebca8259ca8b4099defaa114ca070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkCollectionIdCounter: 1
 --- !u!4 &1937564365
 Transform:
   m_ObjectHideFlags: 0

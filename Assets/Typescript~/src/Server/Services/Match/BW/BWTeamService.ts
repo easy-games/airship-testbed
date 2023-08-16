@@ -1,10 +1,10 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ServerSignals } from "Server/ServerSignals";
-import { TeamService } from "Server/Services/Global/Team/TeamService";
-import { Game } from "Shared/Game";
-import { Team } from "Shared/Team/Team";
-import { ColorUtil } from "Shared/Util/ColorUtil";
-import { Theme } from "Shared/Util/Theme";
+import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
+import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
+import { Game } from "Imports/Core/Shared/Game";
+import { Team } from "Imports/Core/Shared/Team/Team";
+import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
+import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { MatchService } from "../MatchService";
 
 @Service({})
@@ -19,7 +19,7 @@ export class BWTeamService implements OnStart {
 		}
 
 		// Temporary: even team distribution
-		ServerSignals.PlayerJoin.Connect((event) => {
+		CoreServerSignals.PlayerJoin.Connect((event) => {
 			const teams = this.teamService.GetTeams();
 			let smallestTeam = teams[0];
 
@@ -39,7 +39,7 @@ export class BWTeamService implements OnStart {
 			);
 		});
 
-		ServerSignals.PlayerLeave.connect((event) => {
+		CoreServerSignals.PlayerLeave.Connect((event) => {
 			const team = event.player.GetTeam();
 			if (team) {
 				const color = ColorUtil.ColorToHex(team.color);
