@@ -1,6 +1,6 @@
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import { BundleData, BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../Util/ReferenceManagerResources";
+import { Task } from "Imports/Core/Shared/Util/Task";
 
 export class EffectsManager {
 	public static SpawnBundleEffect(
@@ -80,16 +80,19 @@ export class EffectsManager {
 
 	public static SpawnEffect(template: GameObject, parent?: Transform, destroyInSeconds = 5) {
 		let vfx: GameObject;
+		vfx = PoolManager.SpawnObject(template);
 		if (parent) {
-			vfx = GameObjectUtil.InstantiateIn(template, parent);
-		} else {
-			vfx = GameObjectUtil.Instantiate(template);
+			vfx.transform.SetParent(parent);
 		}
 		vfx.transform.localPosition = Vector3.zero;
 		vfx.transform.localEulerAngles = Vector3.zero;
 		//vfx.transform.localScale = Vector3.one;
+
 		if (destroyInSeconds > 0) {
-			GameObjectUtil.Destroy(vfx, destroyInSeconds);
+			Task.Delay(destroyInSeconds, ()=>{
+				vfx.transform.SetParent(undefined);
+				PoolManager.ReleaseObject(vfx);
+			})
 		}
 		return vfx;
 	}
