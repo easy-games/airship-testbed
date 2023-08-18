@@ -1,4 +1,5 @@
 import { Flamework } from "@easy-games/flamework-core";
+import { CoreClientContext } from "Shared/CoreClientContext";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
 
@@ -9,7 +10,7 @@ function LoadFlamework() {
 	Flamework.Ignite();
 }
 
-export function SetupClient() {
+export function SetupClient(context: CoreClientContext) {
 	// Drive timer:
 	gameObject.OnUpdate(() => {
 		OnUpdate.Fire(TimeUtil.GetDeltaTime());
