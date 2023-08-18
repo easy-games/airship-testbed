@@ -3714,10 +3714,10 @@ interface AgonesProxy extends MonoBehaviour {
     constructor(): AgonesProxy;
 
     Connect(): void;
-    DoNothingTest(): unknown;
+    DoNothingTest(): Vector3;
     Ready(): void;
     Shutdown(): void;
-    SleepTest(seconds: number): unknown;
+    SleepTest(seconds: number): number;
 }
     
 interface AgonesCoreConstructor {
@@ -9342,14 +9342,34 @@ interface TextFieldConstructor {
 }
 declare const TextField: TextFieldConstructor;
     
-interface GameBundleConfig extends ScriptableObject {
+interface GameConfig extends ScriptableObject {
     minimumPlayerVersion: number;
     gameId: string;
     gameScenes: CSArray<Object>;
+    packages: CSArray<AirshipPackageDocument>;
 
-    constructor(): GameBundleConfig;
+    constructor(): GameConfig;
+
+    ToJson(): string;
+}
+    
+interface AirshipPackageDocument {
+    id: string;
+    version: string;
+    game: boolean;
+    localSource: boolean;
+    disabled: boolean;
+
+    constructor(): AirshipPackageDocument;
 
 }
+    
+interface GameConfigConstructor {
+
+
+    Load(): GameConfig;
+}
+declare const GameConfig: GameConfigConstructor;
     
 interface RenderSettings extends Object {
 
@@ -9473,7 +9493,7 @@ interface RenderSettingsConstructor {
 declare const RenderSettings: RenderSettingsConstructor;
     
 interface ServerBootstrap extends MonoBehaviour {
-    StartupConfig: StartupConfig;
+    startupConfig: StartupConfig;
     playerConfig: PlayerConfig;
     overrideGameBundleId: string;
     overrideGameBundleVersion: string;
@@ -9484,6 +9504,7 @@ interface ServerBootstrap extends MonoBehaviour {
     downloadBundles: boolean;
     editorConfig: EasyEditorConfig;
     serverReady: boolean;
+    isStartupConfigReady: boolean;
 
     constructor(): ServerBootstrap;
 
@@ -9501,8 +9522,7 @@ interface StartupConfig {
     GameBundleVersion: string;
     StartingSceneName: string;
     CdnUrl: string;
-    ClientBundles: CSArray<string>;
-    SharedBundles: CSArray<string>;
+    packages: CSArray<AirshipPackageDocument>;
 
 
 }
@@ -9516,6 +9536,7 @@ interface PlayerConfig extends ScriptableObject {
     
 interface EasyEditorConfig extends ScriptableObject {
     useBundlesInEditor: boolean;
+    buildBundlesOnPlay: boolean;
 
     constructor(): EasyEditorConfig;
 
@@ -10787,11 +10808,11 @@ interface Chunk {
     MainThreadAddSamplesToProbes(): void;
     MainthreadForceCollisionForVoxel(pos: Vector3): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
+    NeedsToRunUpdate(): boolean;
     RemoveLight(id: number): void;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
     UpdateMaterialPropertiesForChunk(): void;
-    WillUpdateVisuals(): boolean;
     WriteVoxel(worldPos: unknown, num: number): void;
 }
     
@@ -12670,7 +12691,7 @@ interface ITween {
 interface Tween<DriverValueType> extends MonoBehaviour, ITween {
 
 
-    Await(): unknown;
+    Await(): void;
     Cancel(): void;
     GetTotalDuration(includeDelay: boolean): number;
     OnGetFrom(): DriverValueType;
@@ -12989,6 +13010,7 @@ interface DynamicVariables extends ScriptableObject {
     GetNumber(key: string): number;
     GetString(key: string): string;
     GetVector3(key: string): Vector3;
+    Register(): void;
     ReplicateAll(): void;
     ReplicateNumber(key: string): void;
     ReplicateString(key: string): void;
@@ -12996,7 +13018,6 @@ interface DynamicVariables extends ScriptableObject {
     SetNumber(key: string, val: number): void;
     SetString(key: string, val: string): void;
     SetVector3(key: string, val: Vector3): void;
-    Register(): void;
 }
     
 interface ProjectileHitEvent {
@@ -13048,5 +13069,15 @@ interface AirshipObjectPool extends DefaultObjectPool {
     constructor(): AirshipObjectPool;
 
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
+}
+    
+interface MainMenuLoadingScreen extends MonoBehaviour {
+    canvas: Canvas;
+    progressText: TMP_Text;
+
+    constructor(): MainMenuLoadingScreen;
+
+    Close(): void;
+    SetProgress(text: string, percent: number): void;
 }
 

@@ -1,16 +1,19 @@
 import { Flamework } from "@easy-games/flamework-core";
-import { CoreClientContext } from "Shared/CoreClientContext";
+import { CoreContext } from "Shared/CoreClientContext";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
 
 print("Core.MainClient");
 
-function LoadFlamework() {
-	Flamework.AddPath("assets/bundles/imports/core/client/resources/ts/controllers", "^.*controller.lua$");
+function LoadFlamework(context: CoreContext) {
+	if (context === CoreContext.GAME) {
+		Flamework.AddPath("assets/bundles/imports/core/client/resources/ts/controllers", "^.*controller.lua$");
+	}
+	Flamework.AddPath("assets/bundles/imports/core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 	Flamework.Ignite();
 }
 
-export function SetupClient(context: CoreClientContext) {
+export function SetupClient(context: CoreContext) {
 	// Drive timer:
 	gameObject.OnUpdate(() => {
 		OnUpdate.Fire(TimeUtil.GetDeltaTime());
@@ -21,9 +24,11 @@ export function SetupClient(context: CoreClientContext) {
 	gameObject.OnFixedUpdate(() => {
 		OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 	});
-	InstanceFinder.TimeManager.OnOnTick(() => {
-		OnTick.Fire();
-	});
+	if (InstanceFinder.TimeManager !== undefined) {
+		InstanceFinder.TimeManager.OnOnTick(() => {
+			OnTick.Fire();
+		});
+	}
 
-	LoadFlamework();
+	LoadFlamework(context);
 }

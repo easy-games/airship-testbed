@@ -1,6 +1,12 @@
-import { CoreClientContext } from "./CoreClientContext";
+import { CoreContext } from "./CoreClientContext";
+import { Game } from "./Game";
 
-const client = require("Client/Resources/TS/MainClient") as {
-	SetupClient: (context: CoreClientContext) => void;
+Game.Context = CoreContext.MAIN_MENU;
+
+const client = require("Imports/Core/Client/Resources/TS/MainClient") as {
+	SetupClient: (context: CoreContext) => void;
 };
-client.SetupClient(CoreClientContext.MAIN_MENU);
+client.SetupClient(CoreContext.MAIN_MENU);
+
+const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>();
+mainMenuLoadingScreen.Close();
