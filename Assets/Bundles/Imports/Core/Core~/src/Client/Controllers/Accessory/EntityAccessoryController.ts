@@ -22,14 +22,16 @@ export class EntityAccessoryController implements OnStart {
 	private AutoEquipArmor() {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
 			if (event.entity instanceof CharacterEntity) {
-				//Add Kit Accessory
-				if (ItemUtil.defaultKitAccessory) {
-					const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
-						ItemUtil.defaultKitAccessory,
-					);
-					if (event.entity.IsLocalCharacter()) {
-						for (const accessory of CSArrayUtil.Convert(accessories)) {
-							this.HandleAccessoryVisibility(accessory);
+				if(event.entity.IsPlayerOwned()){
+					//Add Kit Accessory
+					if (ItemUtil.defaultKitAccessory) {
+						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
+							ItemUtil.defaultKitAccessory,
+						);
+						if (event.entity.IsLocalCharacter()) {
+							for (const accessory of CSArrayUtil.Convert(accessories)) {
+								this.HandleAccessoryVisibility(accessory);
+							}
 						}
 					}
 				}

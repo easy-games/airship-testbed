@@ -73,7 +73,7 @@ export class ShopkeeperService implements OnStart {
 			const teamUpgradeWorldPos = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
 			const upgradeShopEntity = this.entityService.SpawnEntityForPlayer(
 				undefined,
-				EntityPrefabType.HUMAN,
+				EntityPrefabType.NPC_IDLE,
 				teamUpgradeWorldPos.Position,
 			);
 			upgradeShopEntity.entityDriver.SetLookVector(
