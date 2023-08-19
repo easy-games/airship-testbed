@@ -25,9 +25,9 @@ const Y_LOCKED_ROTATION = math.rad(15);
 
 const ANGLE_EPSILON = 0.0001;
 
-let MOUSE_SENS_SCALAR = 0.2;
+let MOUSE_SENS_SCALAR = 0.05;
 if (RunUtil.IsMac()) {
-	MOUSE_SENS_SCALAR *= 4;
+	MOUSE_SENS_SCALAR *= 16;
 }
 if (!RunUtil.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;

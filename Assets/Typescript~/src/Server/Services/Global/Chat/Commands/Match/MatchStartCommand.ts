@@ -7,7 +7,7 @@ import { Task } from "Imports/Core/Shared/Util/Task";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { MatchService } from "Server/Services/Match/MatchService";
 
-export class StartMatchCommand extends ChatCommand {
+export class MatchStartCommand extends ChatCommand {
 	constructor() {
 		super("start");
 	}

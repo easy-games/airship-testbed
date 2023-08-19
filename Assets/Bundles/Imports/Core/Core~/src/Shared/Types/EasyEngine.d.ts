@@ -455,5 +455,6 @@ interface PoolManager {
 	SpawnObject(prefab: Object): GameObject;
 	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion): GameObject;
 	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion, parent: Transform): GameObject;
+	ReleaseObject(clone: GameObject);
 }
 declare const PoolManager: PoolManager;
