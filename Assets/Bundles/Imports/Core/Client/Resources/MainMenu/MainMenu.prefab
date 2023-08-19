@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &998798168354276252
 RectTransform:
   m_ObjectHideFlags: 0
@@ -871,8 +871,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Enter Code
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 910fb5aaf3f6b49128aa301755d6f0a3, type: 2}
-  m_sharedMaterial: {fileID: -6931534916630806760, guid: 910fb5aaf3f6b49128aa301755d6f0a3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2276,6 +2276,7 @@ GameObject:
   - component: {fileID: 6666181486266857357}
   - component: {fileID: 6666181486266857358}
   - component: {fileID: 6666181486266857345}
+  - component: {fileID: 2812207689249816582}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -2385,6 +2386,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c027ff77d0d544879e9450d3a31c0ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2812207689249816582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6666181486266857359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStaticInstance: 0
+  staticBundleId: UniqueID
+  bundledReferences:
+  - key: UI
+    keyValuePairs:
+    - key: CreateServerButton
+      value: {fileID: 6666181486907087704}
+    - key: JoinCodeButton
+      value: {fileID: 6666181485906955106}
+    - key: JoinCodeWrapper
+      value: {fileID: 6666181487612093006}
+    - key: JoinCodeConnectButton
+      value: {fileID: 6666181485947567832}
 --- !u!1 &6666181486481242708
 GameObject:
   m_ObjectHideFlags: 0
@@ -4479,8 +4505,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 910fb5aaf3f6b49128aa301755d6f0a3, type: 2}
-  m_sharedMaterial: {fileID: -6931534916630806760, guid: 910fb5aaf3f6b49128aa301755d6f0a3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -1,7 +1,7 @@
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CanvasAPI, HoverState } from "Shared/Util/CanvasAPI";
 
-export class BedWarsUI {
+export class CoreUI {
 	/**
 	 * Adds UI sounds.
 	 * @param gameObject

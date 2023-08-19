@@ -13080,4 +13080,53 @@ interface MainMenuLoadingScreen extends MonoBehaviour {
     Close(): void;
     SetProgress(text: string, percent: number): void;
 }
+    
+interface HttpManager {
+
+    constructor(): HttpManager;
+
+}
+    
+interface HttpGetResponse {
+    statusCode: number;
+    data: string;
+    error: string;
+
+
+}
+    
+interface HttpManagerConstructor {
+
+
+    GetAsync(url: string): HttpGetResponse;
+    PostAsync(url: string, data: string): HttpGetResponse;
+}
+declare const HttpManager: HttpManagerConstructor;
+    
+interface InternalHttpManager {
+
+    constructor(): InternalHttpManager;
+
+}
+    
+interface InternalHttpManagerConstructor {
+
+
+    GetAsync(url: string): HttpGetResponse;
+    PostAsync(url: string, data: string): HttpGetResponse;
+}
+declare const InternalHttpManager: InternalHttpManagerConstructor;
+    
+interface TransferManager {
+
+    constructor(): TransferManager;
+
+}
+    
+interface TransferManagerConstructor {
+
+
+    ConnectToServer(address: string, port: number): boolean;
+}
+declare const TransferManager: TransferManagerConstructor;
 
