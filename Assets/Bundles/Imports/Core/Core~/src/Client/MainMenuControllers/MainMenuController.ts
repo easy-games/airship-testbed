@@ -9,35 +9,63 @@ import { decode } from "Shared/json";
 @Controller({})
 export class MainMenuController implements OnStart {
 	public gameCoordinatorUrl = "https://game-coordinator-fxy2zritya-uc.a.run.app/";
+	private errorMessageText: TMP_Text;
+	private errorMessageWrapper: GameObject;
+	private errorCloseButton: GameObject;
+	private createServerButton: GameObject;
 
-	OnStart(): void {
+	constructor() {
 		const mainMenuPrefab = AssetBridge.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		const mainMenu = Object.Instantiate(mainMenuPrefab) as GameObject;
-
-		if (Game.Context === CoreContext.GAME) {
-			mainMenu.GetComponent<Canvas>().enabled = false;
-		}
 
 		const mouse = new Mouse();
 		mouse.AddUnlocker();
 
 		const refs = mainMenu.GetComponent<GameObjectReferences>();
-		const createServerButton = refs.GetValue("UI", "CreateServerButton");
-		CoreUI.SetupButton(createServerButton);
+		this.errorMessageText = refs.GetValue("UI", "ErrorMessageText");
+		this.errorMessageWrapper = refs.GetValue("UI", "ErrorMessageWrapper");
 
-		CanvasAPI.OnClickEvent(createServerButton, () => {
+		this.createServerButton = refs.GetValue("UI", "CreateServerButton");
+		CoreUI.SetupButton(this.createServerButton);
+
+		this.errorCloseButton = refs.GetValue("UI", "ErrorCloseButton");
+		CoreUI.SetupButton(this.errorCloseButton);
+
+		if (Game.Context === CoreContext.GAME) {
+			mainMenu.GetComponent<Canvas>().enabled = false;
+		}
+	}
+
+	OnStart(): void {
+		CanvasAPI.OnClickEvent(this.createServerButton, () => {
 			print("pressed create server!");
 			try {
 				const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/allocate`, "{}");
+				print("data: " + res.data);
 				const data = decode(res.data) as {
-					address: string;
+					ip: string;
 					port: number;
 				};
-				TransferManager.ConnectToServer(data.address, data.port);
+				print(`got server ${data.ip}:${data.port}`);
+				TransferManager.ConnectToServer(data.ip, data.port);
 			} catch (err) {
 				warn("failed to create server: " + err);
-				return;
+				this.SetError(tostring(err));
 			}
 		});
+
+		CanvasAPI.OnClickEvent(this.errorCloseButton, () => {
+			this.CloseError();
+		});
+	}
+
+	public SetError(errorMessage: string): void {
+		this.errorMessageText.text = errorMessage;
+		this.errorMessageWrapper.SetActive(true);
+	}
+
+	public CloseError(): void {
+		this.errorMessageText.text = "";
+		this.errorMessageWrapper.SetActive(false);
 	}
 }
