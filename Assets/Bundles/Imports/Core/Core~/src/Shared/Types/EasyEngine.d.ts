@@ -457,3 +457,12 @@ interface PoolManager {
 	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion, parent: Transform): GameObject;
 }
 declare const PoolManager: PoolManager;
+
+interface TransferManager {
+	ConnectToServer(ip: string, port: number): boolean;
+}
+
+interface TransferManagerConstructor {
+	Instance: TransferManager;
+}
+declare const TransferManager: TransferManagerConstructor;

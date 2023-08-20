@@ -13116,17 +13116,4 @@ interface InternalHttpManagerConstructor {
     PostAsync(url: string, data: string): HttpGetResponse;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
-    
-interface TransferManager {
-
-    constructor(): TransferManager;
-
-}
-    
-interface TransferManagerConstructor {
-
-
-    ConnectToServer(address: string, port: number): boolean;
-}
-declare const TransferManager: TransferManagerConstructor;
 

@@ -47,7 +47,7 @@ export class MainMenuController implements OnStart {
 					port: number;
 				};
 				print(`got server ${data.ip}:${data.port}`);
-				TransferManager.ConnectToServer(data.ip, data.port);
+				TransferManager.Instance.ConnectToServer(data.ip, data.port);
 			} catch (err) {
 				warn("failed to create server: " + err);
 				this.SetError(tostring(err));
