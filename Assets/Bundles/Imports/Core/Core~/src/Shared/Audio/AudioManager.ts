@@ -1,3 +1,4 @@
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import StringUtils from "../Util/StringUtil";
 import { Task } from "../Util/Task";
 
@@ -15,7 +16,12 @@ export class AudioManager {
 	public static Init(): void {
 		this.soundFolderIndex = this.SoundFolderPath.size();
 		print("setting size: " + this.soundFolderIndex);
-		this.globalSource = GameObject.Find("SoundUtil").GetComponent<AudioSource>();
+
+		const soundUtilPrefab = AssetBridge.LoadAsset<GameObject>(
+			"Imports/Core/Shared/Resources/Prefabs/SoundUtil.prefab",
+		);
+		const soundUtilGO = GameObjectUtil.Instantiate(soundUtilPrefab);
+		this.globalSource = soundUtilGO.GetComponent<AudioSource>();
 	}
 
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig): void {

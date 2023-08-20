@@ -3,7 +3,7 @@ import ObjectUtil from "@easy-games/unity-object-utils";
 import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
 import { Game } from "Imports/Core/Shared/Game";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { BedWarsUI } from "Imports/Core/Shared/UI/BedWarsUI";
+import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
 import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
@@ -170,7 +170,7 @@ export class TeamUpgradeController implements OnStart {
 		}
 
 		if (init) {
-			BedWarsUI.SetupButton(buttonGO);
+			CoreUI.SetupButton(buttonGO);
 			CanvasAPI.OnClickEvent(buttonGO, () => {
 				const currentTier = this.localUpgradeMap.get(upgradeType)?.currentUpgradeTier;
 				if (currentTier !== undefined) {

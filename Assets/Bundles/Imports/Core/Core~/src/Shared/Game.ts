@@ -1,3 +1,4 @@
+import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
 import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
@@ -18,4 +19,6 @@ export class Game {
 			Game.LocalPlayer.SendMessage(message);
 		}
 	}
+
+	public static Context: CoreContext;
 }

@@ -1,1 +1,2 @@
-export declare function SetupClient(): void;
+import { CoreContext } from "../Shared/CoreClientContext";
+export declare function SetupClient(context: CoreContext): void;

@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { BedWarsUI } from "Shared/UI/BedWarsUI";
+import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -23,7 +23,7 @@ export class EscapeMenuController implements OnStart {
 		this.refs = go.GetComponent<GameObjectReferences>();
 		this.wrapperRect = this.refs.GetValue("UI", "Wrapper").GetComponent<RectTransform>();
 		const closeButton = this.refs.GetValue("UI", "CloseButton");
-		BedWarsUI.SetupButton(closeButton);
+		CoreUI.SetupButton(closeButton);
 		CanvasAPI.OnClickEvent(closeButton, () => {
 			AppManager.Close({
 				noCloseSound: true,
@@ -42,7 +42,7 @@ export class EscapeMenuController implements OnStart {
 		);
 
 		const leaveButton = this.refs.GetValue("UI", "LeaveButton");
-		BedWarsUI.SetupButton(leaveButton);
+		CoreUI.SetupButton(leaveButton);
 		CanvasAPI.OnClickEvent(leaveButton, () => {
 			this.Disconnect();
 		});

@@ -1,7 +1,9 @@
 import { FriendAPI } from "./API/FriendAPI";
 import { UserAPI } from "./API/UserAPI";
 import { AudioManager } from "./Audio/AudioManager";
+import { CoreContext } from "./CoreClientContext";
 import { CoreSignals } from "./CoreSignals";
+import { Game } from "./Game";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { RunUtil } from "./Util/RunUtil";
@@ -9,6 +11,7 @@ import { TimeUtil } from "./Util/TimeUtil";
 import { encode } from "./json";
 
 print("Core main");
+Game.Context = CoreContext.GAME;
 
 const vars: DynamicVariables[] = [
 	AssetBridge.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Combat.asset"),
@@ -35,9 +38,9 @@ if (RunUtil.IsServer()) {
 	server.SetupServer();
 } else {
 	const client = require("Imports/Core/Client/Resources/TS/MainClient") as {
-		SetupClient: () => void;
+		SetupClient: (context: CoreContext) => void;
 	};
-	client.SetupClient();
+	client.SetupClient(CoreContext.GAME);
 }
 
 CoreSignals.CoreInitialized.Connect((signal) => {
