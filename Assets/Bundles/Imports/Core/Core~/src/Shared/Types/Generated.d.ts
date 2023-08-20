@@ -2530,6 +2530,10 @@ declare const enum EntityAnimationEventKey {
     SLIDE_END = 4,
     DEFAULT = -1,
 }
+declare const enum ToggleTransition {
+    None = 0,
+    Fade = 1,
+}
 
     
 interface RaycastHit {
@@ -13116,4 +13120,63 @@ interface InternalHttpManagerConstructor {
     PostAsync(url: string, data: string): HttpGetResponse;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
+    
+interface CrossSceneState {
+
+
+}
+    
+interface ServerTransferData {
+    address: string;
+    port: number;
+
+    constructor(): ServerTransferData;
+
+}
+    
+interface CrossSceneStateConstructor {
+    Username: string;
+    ServerTransferData: ServerTransferData;
+    UseLocalBundles: boolean;
+
+
+    IsLocalServer(): boolean;
+}
+declare const CrossSceneState: CrossSceneStateConstructor;
+    
+interface Toggle extends Selectable, ICanvasElement, ISubmitHandler, IPointerClickHandler {
+    toggleTransition: ToggleTransition;
+    graphic: Graphic;
+    onValueChanged: ToggleEvent;
+    group: ToggleGroup;
+    isOn: boolean;
+
+
+    GraphicUpdateComplete(): void;
+    LayoutComplete(): void;
+    OnPointerClick(eventData: PointerEventData): void;
+    OnSubmit(eventData: BaseEventData): void;
+    Rebuild(executing: CanvasUpdate): void;
+    SetIsOnWithoutNotify(value: boolean): void;
+}
+    
+interface ToggleEvent {
+
+    constructor(): ToggleEvent;
+
+}
+    
+interface ToggleGroup extends UIBehaviour {
+    allowSwitchOff: boolean;
+
+
+    ActiveToggles(): CSArray<Toggle>;
+    AnyTogglesOn(): boolean;
+    EnsureValidState(): void;
+    GetFirstActiveToggle(): Toggle;
+    NotifyToggleOn(toggle: Toggle, sendCallback: boolean): void;
+    RegisterToggle(toggle: Toggle): void;
+    SetAllTogglesOff(sendCallback: boolean): void;
+    UnregisterToggle(toggle: Toggle): void;
+}
 
