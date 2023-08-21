@@ -459,9 +459,18 @@
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Brightness>2</Brightness>
-    <Minecraft>48</Minecraft>
+    <Minecraft>48:1</Minecraft>
     <RandomRotation>true</RandomRotation>
     <TileSet>TileSets/SpruceLeaf/Leaf</TileSet>
+  </Block>
+  <Block>
+    <Index>63</Index>
+    <Name>Brick</Name>
+    <TopTexture>brick.s</TopTexture>
+    <SideTexture>brick.s</SideTexture>
+    <Solid>true</Solid>
+    <Minecraft>45</Minecraft>
+    <Brightness>1.7</Brightness>
   </Block>
 </Blocks>
 
