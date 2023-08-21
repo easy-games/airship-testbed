@@ -12,10 +12,22 @@ export class AudioManager {
 	public static globalSource: AudioSource;
 	private static soundFolderIndex: number;
 
+	private static positionalAudioTemplate: GameObject;
+
 	public static Init(): void {
 		this.soundFolderIndex = this.SoundFolderPath.size();
 		print("setting size: " + this.soundFolderIndex);
 		this.globalSource = GameObject.Find("SoundUtil").GetComponent<AudioSource>();
+		this.CachePositionalAudioSources();
+	}
+
+	private static CachePositionalAudioSources(){
+		//Create a reference for all future audio sources
+		this.positionalAudioTemplate = GameObject.Create("AudioSource_Positional");
+		this.positionalAudioTemplate.AddComponent<AudioSource>();
+		this.positionalAudioTemplate.SetActive(false);
+
+		PoolManager.PreLoadPool(this.positionalAudioTemplate, 5);
 	}
 
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig): void {
@@ -80,14 +92,14 @@ export class AudioManager {
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 		Task.Delay(clip.length + 1, () => {
-			Object.Destroy(audioSource);
+			PoolManager.ReleaseObject(audioSource.gameObject);
 		});
 		return audioSource;
 	}
 
 	private static GetAudioSource(position: Vector3): AudioSource {
-		const go = GameObject.CreateAtPos(position);
-		const audioSource = go.AddComponent("AudioSource") as AudioSource;
+		const go = PoolManager.SpawnObject(this.positionalAudioTemplate, position, Quaternion.identity);
+		const audioSource = go.GetComponent<AudioSource>(); 
 		audioSource.spatialBlend = 1;
 		return audioSource;
 	}
