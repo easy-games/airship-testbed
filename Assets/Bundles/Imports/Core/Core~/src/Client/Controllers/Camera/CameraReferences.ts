@@ -2,8 +2,6 @@
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 export class CameraReferences {
-	private readonly CameraBundleKey = "CameraRig";
-
 	private static _instance: CameraReferences;
 	public static Instance(): CameraReferences {
 		if (!CameraReferences._instance) {
@@ -25,10 +23,14 @@ export class CameraReferences {
 		CameraReferences._instance = this;
 
 		//Get Camera references
-		let references = GameObjectReferences.GetReferences(this.CameraBundleKey);
-		this.mainCamera = references.GetValue<Camera>("Cameras", "MainCamera");
-		this.fpsCamera = references.GetValue<Camera>("Cameras", "FPSCamera");
-		this.uiCamera = references.GetValue<Camera>("Cameras", "UICamera");
+		let refs = GameObject.Find("CameraRig")?.GetComponent<GameObjectReferences>();
+		if (!refs) {
+			error("Camera rig not found. Please make sure to add a CameraRig to scene.");
+			return;
+		}
+		this.mainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
+		this.fpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
+		this.uiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
 	}
 
 	public RaycastVoxelFromCamera(distance: number) {
