@@ -90,7 +90,6 @@ export class EffectsManager {
 
 		if (destroyInSeconds > 0) {
 			Task.Delay(destroyInSeconds, ()=>{
-				vfx.transform.SetParent(undefined);
 				PoolManager.ReleaseObject(vfx);
 			})
 		}
