@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { BedWarsUI } from "Shared/UI/BedWarsUI";
+import { CoreUI } from "Shared/UI/CoreUI";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -150,7 +150,7 @@ export class InventoryUIController implements OnStart {
 
 		if (init) {
 			const contentGO = go.transform.FindChild("Content")!.gameObject;
-			BedWarsUI.SetupButton(contentGO);
+			CoreUI.SetupButton(contentGO);
 			CanvasAPI.OnClickEvent(contentGO, () => {
 				if (this.IsBackpackShown() && this.invController.LocalInventory) {
 					this.invController.QuickMoveSlot(this.invController.LocalInventory, slot);

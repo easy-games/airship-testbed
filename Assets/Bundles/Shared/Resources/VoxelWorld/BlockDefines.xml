@@ -425,8 +425,10 @@
     <Brightness>2</Brightness>
     <Minecraft>48</Minecraft>
     <RandomRotation>true</RandomRotation>
-    <TileSet>TileSets/Leafs/Leaf</TileSet>
+    <TileSet>TileSets/OakLeaf/Leaf</TileSet>
   </Block>
+
+
   <Block>
     <Index>60</Index>
     <Name>Brown Clay</Name>
@@ -447,6 +449,19 @@
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Brightness>2</Brightness>
+  </Block>
+  <Block>
+    <Index>62</Index>
+    <Name>Spruce Leaf</Name>
+    <TopTexture>leaf_oak.s</TopTexture>
+    <SideTexture>leaf_oak.s</SideTexture>
+    <Solid>false</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Brightness>2</Brightness>
+    <Minecraft>48</Minecraft>
+    <RandomRotation>true</RandomRotation>
+    <TileSet>TileSets/SpruceLeaf/Leaf</TileSet>
   </Block>
 </Blocks>
 

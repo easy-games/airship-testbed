@@ -458,3 +458,12 @@ interface PoolManager {
 	ReleaseObject(clone: GameObject);
 }
 declare const PoolManager: PoolManager;
+
+interface TransferManager {
+	ConnectToServer(ip: string, port: number): boolean;
+}
+
+interface TransferManagerConstructor {
+	Instance: TransferManager;
+}
+declare const TransferManager: TransferManagerConstructor;
