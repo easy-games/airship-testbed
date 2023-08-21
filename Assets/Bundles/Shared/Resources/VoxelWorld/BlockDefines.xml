@@ -470,7 +470,51 @@
     <SideTexture>brick.s</SideTexture>
     <Solid>true</Solid>
     <Minecraft>45</Minecraft>
+    <Brightness>1.5</Brightness>
+  </Block>
+  <Block>
+    <Index>64</Index>
+    <Name>Cyan Wool</Name>
+    <TopTexture>wool_cyan.s</TopTexture>
+    <SideTexture>wool_cyan.s</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Minecraft>35:9</Minecraft>
     <Brightness>1.7</Brightness>
+  </Block>
+  <Block>
+    <Index>65</Index>
+    <Name>Grey Wool</Name>
+    <TopTexture>wool_grey.s</TopTexture>
+    <SideTexture>wool_grey.s</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Minecraft>35:7</Minecraft>
+    <Brightness>1.7</Brightness>
+  </Block>
+  <Block>
+    <Index>66</Index>
+    <Name>Stone Tiles</Name>
+    <TopTexture>stone_tiles.s</TopTexture>
+    <SideTexture>stone_tiles.s</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Minecraft>201</Minecraft>
+    <Brightness>1.7</Brightness>
+  </Block>
+  <Block>
+    <Index>67</Index>
+    <Name>Slate Tiles</Name>
+    <TopTexture>slate_tiles.s</TopTexture>
+    <SideTexture>slate_tiles.s</SideTexture>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>1</Roughness>
+    <Minecraft>168:2</Minecraft>
+    <Brightness>2</Brightness>
   </Block>
 </Blocks>
 
