@@ -34,9 +34,17 @@ MonoBehaviour:
     value:
     - key: SprintTrail
       value: {fileID: 532096394122571217, guid: c1ae06ea821350a448e70e1d24013b6c, type: 3}
-    - key: SlideSFX
-      value: {fileID: 8300000, guid: f78a3a6e164cf8945988c41281ed150c, type: 3}
     - key: JumpSFX
       value: {fileID: 8300000, guid: 7537b4533f0e7234ca3a0be798df4f1c, type: 3}
     - key: LandSFX
       value: {fileID: 8300000, guid: d70de861cfb65eb4a969fefe02dcd157, type: 3}
+    - key: SlideSFX0
+      value: {fileID: 8300000, guid: ba3a25289e6474a45b61b076ae087574, type: 3}
+    - key: SlideSFX1
+      value: {fileID: 8300000, guid: 2ac4dd3f866f1df439a33043c03de93f, type: 3}
+    - key: SlideSFX2
+      value: {fileID: 8300000, guid: 6b8d352f8a9c4dd4f86455d92a2281ca, type: 3}
+    - key: SlideSFX3
+      value: {fileID: 8300000, guid: be404f059ca351b40b4b7562add607e4, type: 3}
+    - key: SlideSFXLoop
+      value: {fileID: 8300000, guid: ba724aa37c0b36843b6ddc8b9d5fd8ae, type: 3}

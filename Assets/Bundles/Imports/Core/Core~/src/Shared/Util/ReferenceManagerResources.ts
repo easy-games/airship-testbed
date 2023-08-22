@@ -39,9 +39,13 @@ export enum Bundle_Entity_OnHit{
 export enum Bundle_Entity_Movement{
 	NONE = -1,
 	SprintTrail,
-	SlideSFX,
 	JumpSFX,
 	LandSFX,
+	SlideSFX0,
+	SlideSFX1,
+	SlideSFX2,
+	SlideSFX3,
+	SlideSFXLoop,
 }
 
 export enum Bundle_Entity{
@@ -318,9 +322,13 @@ export class ReferenceManagerAssets{
 			id: Bundle_Entity.Movement,
 			filePaths: new Map([
 				[Bundle_Entity_Movement.SprintTrail, "Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab"],
-				[Bundle_Entity_Movement.SlideSFX, "Shared/Resources/Sound/Movement/SlideStart.wav"],
 				[Bundle_Entity_Movement.JumpSFX, "Shared/Resources/Sound/Movement/JumpStart.ogg"],
 				[Bundle_Entity_Movement.LandSFX, "Shared/Resources/Sound/Movement/JumpLand.ogg"],
+				[Bundle_Entity_Movement.SlideSFX0, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav"],
+				[Bundle_Entity_Movement.SlideSFX1, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_02.wav"],
+				[Bundle_Entity_Movement.SlideSFX2, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_03.wav"],
+				[Bundle_Entity_Movement.SlideSFX3, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_04.wav"],
+				[Bundle_Entity_Movement.SlideSFXLoop, "Shared/Resources/Sound/Movement/s_Movement_Slide_Loop.wav"],
 			])}],
 		])
 	}

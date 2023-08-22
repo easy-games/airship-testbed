@@ -48,7 +48,7 @@ export class EntityReferences {
 	animationEvents: EntityAnimationEvents;
 	humanEntityAnimator: CoreEntityAnimator;
 	jumpSound: AudioClip | undefined;
-	slideSound: AudioClip | undefined;
+	slideSoundPaths: Array<string> = [];
 	landSound: AudioClip | undefined;
 
 	constructor(ref: GameObjectReferences) {
@@ -83,14 +83,28 @@ export class EntityReferences {
 			Bundle_Entity.Movement,
 			Bundle_Entity_Movement.JumpSFX,
 		));*/
-
-		this.slideSound = AudioManager.LoadFullPathAudioClip(
-			BundleReferenceManager.GetPathForResource(
-				BundleGroupNames.Entity,
-				Bundle_Entity.Movement,
-				Bundle_Entity_Movement.SlideSFX,
-			),
-		);
+		
+		//Slide sound path: Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav
+		this.slideSoundPaths[0] = AudioManager.GetLocalPathFromFullPath(BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.SlideSFX1,
+		));
+		this.slideSoundPaths[1] = AudioManager.GetLocalPathFromFullPath(BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.SlideSFX2,
+		));
+		this.slideSoundPaths[2] = AudioManager.GetLocalPathFromFullPath(BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.SlideSFX3,
+		));
+		this.slideSoundPaths[3] = AudioManager.GetLocalPathFromFullPath(BundleReferenceManager.GetPathForResource(
+			BundleGroupNames.Entity,
+			Bundle_Entity.Movement,
+			Bundle_Entity_Movement.SlideSFXLoop,
+		));
 
 		/*this.landSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
