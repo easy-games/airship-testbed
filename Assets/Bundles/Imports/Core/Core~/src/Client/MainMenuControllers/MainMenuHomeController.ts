@@ -33,6 +33,10 @@ export class MainMenuHomeController implements OnStart {
 	}
 
 	OnStart(): void {
+		this.Setup();
+	}
+
+	public Setup(): void {
 		CanvasAPI.OnClickEvent(this.createServerButton, () => {
 			this.UpdateCrossSceneState();
 
