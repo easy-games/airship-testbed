@@ -1,9 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreUI } from "Shared/UI/CoreUI";
-import { Keyboard } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { SignalPriority } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 
 @Controller({})
@@ -32,20 +30,19 @@ export class EscapeMenuController implements OnStart {
 	}
 
 	OnStart(): void {
-		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(
-			KeyCode.Escape,
-			(event) => {
-				this.Open();
-			},
-			SignalPriority.LOW,
-		);
-
-		const leaveButton = this.refs.GetValue("UI", "LeaveButton");
-		CoreUI.SetupButton(leaveButton);
-		CanvasAPI.OnClickEvent(leaveButton, () => {
-			this.Disconnect();
-		});
+		// const keyboard = new Keyboard();
+		// keyboard.OnKeyDown(
+		// 	KeyCode.Escape,
+		// 	(event) => {
+		// 		this.Open();
+		// 	},
+		// 	SignalPriority.LOW,
+		// );
+		// const leaveButton = this.refs.GetValue("UI", "LeaveButton");
+		// CoreUI.SetupButton(leaveButton);
+		// CanvasAPI.OnClickEvent(leaveButton, () => {
+		// 	this.Disconnect();
+		// });
 	}
 
 	public Open(): void {
