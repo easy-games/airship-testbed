@@ -1,8 +1,11 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { Mouse } from "Shared/UserInput";
-import { Signal } from "Shared/Util/Signal";
+import { CoreContext } from "Shared/CoreClientContext";
+import { Game } from "Shared/Game";
+import { Keyboard, Mouse } from "Shared/UserInput";
+import { AppManager } from "Shared/Util/AppManager";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import { MainMenuPage } from "./MainMenuPageName";
 
@@ -14,12 +17,19 @@ export class MainMenuController implements OnStart {
 	public currentPage = MainMenuPage.HOME;
 	public OnCurrentPageChanged = new Signal<[page: MainMenuPage, oldPage: MainMenuPage | undefined]>();
 	private pageMap: Record<MainMenuPage, GameObject>;
+	private wrapperRect: RectTransform;
+	private rootCanvas: Canvas;
+	private rootCanvasGroup: CanvasGroup;
+	private open = false;
 
 	constructor() {
 		const mainMenuPrefab = AssetBridge.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
-
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
+		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
+		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
+		this.rootCanvas = this.mainMenuGo.GetComponent<Canvas>();
+		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>();
 
 		this.pageMap = {
 			[MainMenuPage.HOME]: this.refs.GetValue("Pages", "Home"),
@@ -34,13 +44,71 @@ export class MainMenuController implements OnStart {
 			}
 		}
 
-		const mouse = new Mouse();
-		mouse.AddUnlocker();
+		const closeButton = this.refs.GetValue("UI", "CloseButton");
+
+		if (Game.Context === CoreContext.MAIN_MENU) {
+			const mouse = new Mouse();
+			mouse.AddUnlocker();
+
+			closeButton.SetActive(false);
+		} else {
+			const bg = this.refs.GetValue("UI", "Background");
+			bg.GetComponent<Image>().color = new Color(1, 1, 1, 0.98);
+		}
+	}
+
+	public OpenFromGame(): void {
+		if (this.open) return;
+
+		AppManager.OpenCustom(() => {
+			this.CloseFromGame();
+		});
+		this.open = true;
+		const duration = 0.06;
+		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
+		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
+		this.rootCanvas.enabled = true;
+		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
+	}
+
+	public CloseFromGame(): void {
+		if (!this.open) return;
+		this.open = false;
+
+		const duration = 0.06;
+		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);
+		this.rootCanvasGroup.TweenCanvasGroupAlpha(0, duration);
+		SetTimeout(duration, () => {
+			if (!this.open) {
+				this.rootCanvas.enabled = false;
+			}
+		});
+	}
+
+	public IsOpen(): boolean {
+		return this.open;
 	}
 
 	OnStart(): void {
 		if (this.currentPageGo === undefined) {
 			this.RouteToPage(MainMenuPage.HOME, true, true);
+		}
+
+		if (Game.Context === CoreContext.GAME) {
+			const keyboard = new Keyboard();
+			keyboard.OnKeyDown(
+				KeyCode.Escape,
+				(event) => {
+					this.OpenFromGame();
+				},
+				SignalPriority.LOW,
+			);
+
+			// const leaveButton = this.refs.GetValue("UI", "LeaveButton");
+			// CoreUI.SetupButton(leaveButton);
+			// CanvasAPI.OnClickEvent(leaveButton, () => {
+			// 	this.Disconnect();
+			// });
 		}
 	}
 
