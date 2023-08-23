@@ -37,12 +37,16 @@ interface Time {
 
 declare const Time: Time;
 
-interface PlayerCore extends Component {
+interface PlayerManager extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): void;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): void;
 	GetPlayers(): CSArray<PlayerInfoDto>;
 	AddBotPlayer(username: string, tag: string, userId: string): void;
 }
+interface PlayerManagerConstructor {
+	Instance: PlayerManager;
+}
+declare const PlayerManager: PlayerManagerConstructor;
 
 interface PlayerInfoDto extends Component {
 	clientId: number;
