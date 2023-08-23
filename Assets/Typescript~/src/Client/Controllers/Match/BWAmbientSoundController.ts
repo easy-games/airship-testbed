@@ -4,6 +4,8 @@ import { ClientSettingsController } from "Imports/Core/Client/MainMenuController
 
 @Controller({})
 export class BWAmbientSoundController implements OnStart {
+	private clips: AudioClip[] = [];
+
 	constructor(private readonly ambientSoundController: AmbientSoundController) {}
 
 	OnStart(): void {
@@ -20,5 +22,9 @@ export class BWAmbientSoundController implements OnStart {
 		this.ambientSoundController.musicSource.clip = musicClip;
 		this.ambientSoundController.musicSource.volume = Dependency<ClientSettingsController>().GetMusicVolume();
 		this.ambientSoundController.musicSource.Play();
+
+		// Hack to fix GC.
+		// TODO: remove once GC fix is in.
+		this.clips = [ambientClip, musicClip];
 	}
 }
