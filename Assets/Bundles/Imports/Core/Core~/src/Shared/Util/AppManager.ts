@@ -103,7 +103,7 @@ export class AppManager {
 		this.opened = false;
 
 		if (!config?.noCloseSound) {
-			AudioManager.PlayGlobal("UI_Close.wav");
+			// AudioManager.PlayGlobal("UI_Close.wav");
 		}
 
 		if (this.openCanvas) {
