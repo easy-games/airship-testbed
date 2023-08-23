@@ -10,7 +10,6 @@ export class DisableServerUIService implements OnStart {
 		print("DisableServerUIService.OnStart");
 		// Disables all UI
 		this.DisableChildren(GameObject.Find("UI").transform);
-		this.DisableChildren(GameObject.Find("CoreUI").transform);
 	}
 
 	private DisableChildren(transform: Transform): void {
