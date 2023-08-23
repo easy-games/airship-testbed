@@ -20,6 +20,7 @@ export declare class EntityAnimator {
     private deathEffectVoidTemplate?;
     private isFlashing;
     private footstepAudioBundle;
+    private slideAudioBundle;
     private steppedOnBlockType;
     private lastFootstepSoundTime;
     constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);

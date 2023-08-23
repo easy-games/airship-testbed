@@ -32,7 +32,7 @@ export declare class EntityReferences {
     animationEvents: EntityAnimationEvents;
     humanEntityAnimator: CoreEntityAnimator;
     jumpSound: AudioClip | undefined;
-    slideSound: AudioClip | undefined;
+    slideSoundPaths: Array<string>;
     landSound: AudioClip | undefined;
     constructor(ref: GameObjectReferences);
 }

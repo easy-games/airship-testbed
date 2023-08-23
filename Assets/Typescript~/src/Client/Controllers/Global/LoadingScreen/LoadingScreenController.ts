@@ -1,17 +1,13 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { LoadingScreenController } from "Imports/Core/Client/Controllers/Loading/LoadingScreenController";
 import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
 import { Game } from "Imports/Core/Shared/Game";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
 @Controller({})
-export class LoadingScreenController implements OnStart {
-	private coreLoadingScreen: CoreLoadingScreen;
-
-	constructor() {
-		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen").GetComponent<CoreLoadingScreen>();
-		this.coreLoadingScreen.SetProgress("Building the World", 60);
-
+export class BWLoadingScreenController implements OnStart {
+	constructor(private readonly loadingScreenController: LoadingScreenController) {
 		this.CheckWorld();
 	}
 
@@ -31,10 +27,10 @@ export class LoadingScreenController implements OnStart {
 
 	private CheckCharacter(): void {
 		if (Game.LocalPlayer.Character) {
-			this.FinishLoading();
+			this.loadingScreenController.FinishLoading();
 		} else {
 			const startTime = os.clock();
-			this.SetProgress("Waiting for Character", 85);
+			this.loadingScreenController.SetProgress("Waiting for Character", 85);
 			const bin = new Bin();
 			bin.Add(
 				CoreClientSignals.EntitySpawn.Connect((event) => {
@@ -42,7 +38,7 @@ export class LoadingScreenController implements OnStart {
 						bin.Clean();
 						const timeSpent = os.clock() - startTime;
 						print("Time spent waiting for character: " + math.floor(timeSpent * 1000) + "ms");
-						this.FinishLoading();
+						this.loadingScreenController.FinishLoading();
 					}
 				}),
 			);
@@ -50,17 +46,4 @@ export class LoadingScreenController implements OnStart {
 	}
 
 	OnStart(): void {}
-
-	/**
-	 * Sets the current fill of the progress bar.
-	 * @param step
-	 * @param progress Value from 0-100.
-	 */
-	public SetProgress(step: string, progress: number): void {
-		this.coreLoadingScreen.SetProgress(step, progress);
-	}
-
-	public FinishLoading(): void {
-		this.coreLoadingScreen.Close();
-	}
 }

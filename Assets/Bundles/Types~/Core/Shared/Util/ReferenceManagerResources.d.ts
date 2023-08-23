@@ -35,9 +35,13 @@ export declare enum Bundle_Entity_OnHit {
 export declare enum Bundle_Entity_Movement {
     NONE = -1,
     SprintTrail = 0,
-    SlideSFX = 1,
-    JumpSFX = 2,
-    LandSFX = 3
+    JumpSFX = 1,
+    LandSFX = 2,
+    SlideSFX0 = 3,
+    SlideSFX1 = 4,
+    SlideSFX2 = 5,
+    SlideSFX3 = 6,
+    SlideSFXLoop = 7
 }
 export declare enum Bundle_Entity {
     NONE = -1,

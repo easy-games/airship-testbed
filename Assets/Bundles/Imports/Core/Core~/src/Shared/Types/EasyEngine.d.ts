@@ -465,6 +465,10 @@ declare const PoolManager: PoolManager;
 
 interface TransferManager {
 	ConnectToServer(ip: string, port: number): boolean;
+	/**
+	 * Disconnects from server and returns to Main Menu.
+	 */
+	Disconnect(): void;
 }
 
 interface TransferManagerConstructor {

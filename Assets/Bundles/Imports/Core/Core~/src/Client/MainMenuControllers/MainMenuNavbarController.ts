@@ -71,8 +71,6 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	private Disconnect(): void {
-		const clientNetworkConnector = GameObject.Find("Network").GetComponent<ClientNetworkConnector>();
-		clientNetworkConnector.Disconnect();
-		SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+		TransferManager.Instance.Disconnect();
 	}
 }
