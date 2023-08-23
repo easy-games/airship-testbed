@@ -22,6 +22,7 @@ export class MainMenuNavbarController implements OnStart {
 		const myServersButton = refs.GetValue("UI", "NavbarMyServersButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
+		const runningGameCloseButton = refs.GetValue("UI", "NavbarRunningGameCloseButton");
 
 		if (Game.Context !== CoreContext.GAME) {
 			runningGameButton.SetActive(false);
@@ -39,6 +40,9 @@ export class MainMenuNavbarController implements OnStart {
 		});
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
 			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
+		});
+		CanvasAPI.OnClickEvent(runningGameCloseButton, () => {
+			this.Disconnect();
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
@@ -64,5 +68,11 @@ export class MainMenuNavbarController implements OnStart {
 		} else {
 			text.color = new Color(0.68, 0.77, 1, 1);
 		}
+	}
+
+	private Disconnect(): void {
+		const clientNetworkConnector = GameObject.Find("Network").GetComponent<ClientNetworkConnector>();
+		clientNetworkConnector.Disconnect();
+		SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
 	}
 }

@@ -8241,7 +8241,7 @@ MonoBehaviour:
       value: {fileID: 2186049055453885463}
     - key: NavbarRunningGameButton
       value: {fileID: 4272729565408173661}
-    - key: NavbarCloseRunningGameButton
+    - key: NavbarRunningGameCloseButton
       value: {fileID: 1974237749616655159}
     - key: Background
       value: {fileID: 6666181487066244861}
