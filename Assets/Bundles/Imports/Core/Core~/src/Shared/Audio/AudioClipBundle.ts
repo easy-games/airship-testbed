@@ -1,6 +1,6 @@
+import {} from "@easy-games/flamework-core";
 import { Task } from "Shared/Util/Task";
 import { AudioManager, PlaySoundConfig } from "./AudioManager";
-import {} from "@easy-games/flamework-core";
 
 export enum AudioBundlePlayMode {
 	MANUAL,
@@ -8,7 +8,7 @@ export enum AudioBundlePlayMode {
 	RANDOM,
 	RANDOM_NO_REPEAT,
 	LOOP,
-	RANDOM_TO_LOOP
+	RANDOM_TO_LOOP,
 }
 
 export enum AudioBundleSpacialMode {
@@ -20,9 +20,9 @@ export class AudioClipBundle {
 	public playMode: AudioBundlePlayMode = AudioBundlePlayMode.RANDOM_NO_REPEAT;
 	public spacialMode: AudioBundleSpacialMode = AudioBundleSpacialMode.SPACIAL;
 	public spacialPosition = Vector3.zero;
-	public volumeScale: number = 1;
+	public volumeScale = 1;
 
-	private soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false};
+	private soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
 	private manualFolderPath = "";
 	private clipPaths: string[];
 	private possibleRandomIndex: number[] = [];
@@ -41,7 +41,7 @@ export class AudioClipBundle {
 		this.RefreshPossibleRandomIndex();
 	}
 
-	public Stop(){
+	public Stop() {
 		this.lastAudioSource?.Stop();
 		this.lastIndexPlayed = -1;
 	}
@@ -56,7 +56,10 @@ export class AudioClipBundle {
 				this.soundOptions,
 			);
 		} else {
-			this.lastAudioSource = AudioManager.PlayGlobal(this.manualFolderPath + this.clipPaths[index], this.soundOptions);
+			this.lastAudioSource = AudioManager.PlayGlobal(
+				this.manualFolderPath + this.clipPaths[index],
+				this.soundOptions,
+			);
 		}
 	}
 
@@ -76,10 +79,12 @@ export class AudioClipBundle {
 		}
 
 		//LOOP & RANDOM TO LOOP
-		const lastIndex = this.clipPaths.size()-1;
-		if(this.playMode === AudioBundlePlayMode.LOOP || 
-			(this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed === lastIndex)){
-				//print("Playing Loop: " + lastIndex + ": " +this.clipPaths[lastIndex]);
+		const lastIndex = this.clipPaths.size() - 1;
+		if (
+			this.playMode === AudioBundlePlayMode.LOOP ||
+			(this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed === lastIndex)
+		) {
+			//print("Playing Loop: " + lastIndex + ": " +this.clipPaths[lastIndex]);
 			this.soundOptions.loop = true;
 			this.PlayManual(lastIndex);
 			return;
@@ -101,23 +106,22 @@ export class AudioClipBundle {
 			this.PlayManual(this.possibleRandomIndex[randomIndex]);
 
 			this.RefreshPossibleRandomIndex();
-		}else if (this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed !== lastIndex){
+		} else if (this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed !== lastIndex) {
 			//RANDOM TO LOOP - sending to the loop after a delay
-			randomIndex = this.GetRandomIndex(arraySize - 1);
+			randomIndex = this.GetRandomIndex(arraySize);
 			this.PlayManual(randomIndex);
 
-			const delayLength = this.lastAudioSource? this.lastAudioSource.clip.length-.15 : 1;
-			Task.Delay(delayLength, ()=>{
-				if(this.lastAudioSource && this.lastAudioSource.isPlaying){
+			const delayLength = this.lastAudioSource ? this.lastAudioSource.clip.length - 0.15 : 1;
+			Task.Delay(delayLength, () => {
+				if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
 					this.lastIndexPlayed = lastIndex;
 					this.PlayNext();
 				}
-			})
+			});
 		}
-
 	}
 
-	private StepIndex(){
+	private StepIndex() {
 		this.lastIndexPlayed++;
 		if (this.lastIndexPlayed >= this.clipPaths.size()) {
 			this.lastIndexPlayed = 0;
@@ -136,6 +140,6 @@ export class AudioClipBundle {
 	}
 
 	private GetRandomIndex(length: number) {
-		return math.round(math.random(0, length));
+		return math.round(math.random(0, length - 1));
 	}
 }

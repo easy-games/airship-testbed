@@ -17,7 +17,7 @@ export enum ItemPlayMode {
 	HOLD,
 }
 
-export class InventoryEntityAnimator extends EntityAnimator {
+export class CharacterEntityAnimator extends EntityAnimator {
 	private readonly itemLayerIndex: number = 2;
 	private itemLayer: AnimancerLayer;
 
@@ -42,7 +42,7 @@ export class InventoryEntityAnimator extends EntityAnimator {
 		print("Animator " + this.entity.id + ": " + message);
 	}
 
-	public SetFirstPerson(isFirstPerson: boolean) {
+	public override SetFirstPerson(isFirstPerson: boolean) {
 		this.isFirstPerson = isFirstPerson;
 		this.bundleIndex = isFirstPerson ? 0 : 1;
 		if (this.currentBundleName !== BundleGroupNames.NONE) {
@@ -92,7 +92,7 @@ export class InventoryEntityAnimator extends EntityAnimator {
         currentItem.OnAnimEvent(eventData);*/
 	}
 
-	public EquipItem(itemId: BundleGroupNames) {
+	public override EquipItem(itemId: BundleGroupNames) {
 		//Have to animate out the current item before the new item can be added
 		this.StartUnEquipAnim(itemId);
 	}
@@ -120,12 +120,12 @@ export class InventoryEntityAnimator extends EntityAnimator {
 		});
 	}
 
-	public StartItemIdle() {
+	public override StartItemIdle() {
 		this.TriggerEvent(ItemEventKeys.IDLE);
 		this.Play(ItemEventKeys.IDLE);
 	}
 
-	public PlayItemUse(useIndex = 0, itemPlayMode: ItemPlayMode = 0) {
+	public override PlayItemUse(useIndex = 0, itemPlayMode: ItemPlayMode = 0) {
 		this.Log("Item Use Started: " + useIndex);
 		//In the animation array use animations are the 3rd index and beyond;
 		let i = useIndex + 3;

@@ -282,9 +282,9 @@ export class LocalEntityController implements OnStart {
 			? this.clientSettings.GetFirstPersonFov()
 			: this.clientSettings.GetThirdPersonFov();
 		if (
-			this.currentState === EntityState.Sprinting ||
-			this.currentState === EntityState.Sliding ||
-			(this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
+			// this.currentState === EntityState.Sprinting ||
+			this.currentState === EntityState.Sliding
+			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
 		) {
 			this.cameraController.SetFOV(baseFov * 1.08, false);
 		} else {
