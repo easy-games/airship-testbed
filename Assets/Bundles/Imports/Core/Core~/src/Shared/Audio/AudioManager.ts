@@ -5,43 +5,72 @@ const MAX_DISTANCE = 18;
 
 export interface PlaySoundConfig {
 	volumeScale: number;
+	loop?: boolean;
 }
 
 export class AudioManager {
 	public static SoundFolderPath = "Shared/Resources/Sound/";
-	public static globalSource: AudioSource;
 	private static soundFolderIndex: number;
+
+	private static audioSourceTemplate: GameObject;
+	private static globalAudioSources: Map<number, AudioSource> = new Map; 
 
 	public static Init(): void {
 		this.soundFolderIndex = this.SoundFolderPath.size();
 		print("setting size: " + this.soundFolderIndex);
-		this.globalSource = GameObject.Find("SoundUtil").GetComponent<AudioSource>();
+		this.CacheAudioSources();
 	}
 
-	public static PlayGlobal(sound: string, config?: PlaySoundConfig): void {
+	private static CacheAudioSources(){
+		//Create a reference for all future audio sources
+		this.audioSourceTemplate = GameObject.Create("PooledAudioSource");
+		this.audioSourceTemplate.AddComponent<AudioSource>();
+		this.audioSourceTemplate.SetActive(false);
+
+		PoolManager.PreLoadPool(this.audioSourceTemplate, 5);
+	}
+
+	public static PlayGlobal(sound: string, config?: PlaySoundConfig) {
 		const clip = this.LoadAudioClip(sound);
 		if (!clip) {
-			error("PlayGlobal Failed to find sound: " + sound);
-			return;
+			warn("PlayGlobal Failed to find sound: " + sound);
+			return undefined;
 		}
-		this.PlayClipGlobal(clip, config);
+		return this.PlayClipGlobal(clip, config);
 	}
 
-	public static PlayFullPathGlobal(fullPath: string, config?: PlaySoundConfig): void {
+	public static PlayFullPathGlobal(fullPath: string, config?: PlaySoundConfig) {
 		const clip = this.LoadFullPathAudioClip(fullPath);
 		if (!clip) {
-			error("PlayFullPathGlobal Failed to find full path: " + fullPath);
-			return;
+			warn("PlayFullPathGlobal Failed to find full path: " + fullPath);
+			return undefined;
 		}
-		this.PlayClipGlobal(clip, config);
+		return this.PlayClipGlobal(clip, config);
 	}
 
 	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig) {
-		this.globalSource.PlayOneShot(clip, config?.volumeScale ?? 1);
+		const audioSource = this.GetAudioSource(Vector3.zero);
+		audioSource.spatialBlend = 0;
+		audioSource.loop = (config !== undefined && config.loop !== undefined) ? config.loop : false;
+		if (!clip) {
+			warn("Trying to play unidentified clip");
+			return undefined;
+		}
+		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
+		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
+		if(!audioSource.loop){
+			Task.Delay(clip.length + 1, () => {
+				this.globalAudioSources.delete(audioSource.GetInstanceID());
+				PoolManager.ReleaseObject(audioSource.gameObject);
+			});
+		}
+		return audioSource;
 	}
 
 	public static StopGlobalAudio() {
-		this.globalSource.Stop();
+		this.globalAudioSources.forEach(element => {
+			element?.Stop();
+		});
 	}
 
 	public static PlayAtPosition(sound: string, position: Vector3, config?: PlaySoundConfig): AudioSource | undefined {
@@ -74,21 +103,24 @@ export class AudioManager {
 		const audioSource = this.GetAudioSource(position);
 		audioSource.maxDistance = MAX_DISTANCE;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
+		audioSource.spatialBlend = 1;
+		audioSource.loop = (config !== undefined && config.loop !== undefined) ? config.loop : false;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
-		Task.Delay(clip.length + 1, () => {
-			Object.Destroy(audioSource);
-		});
+		if(!audioSource.loop){
+			Task.Delay(clip.length + 1, () => {
+				PoolManager.ReleaseObject(audioSource.gameObject);
+			});
+		}
 		return audioSource;
 	}
 
 	private static GetAudioSource(position: Vector3): AudioSource {
-		const go = GameObject.CreateAtPos(position);
-		const audioSource = go.AddComponent("AudioSource") as AudioSource;
-		audioSource.spatialBlend = 1;
+		const go = PoolManager.SpawnObject(this.audioSourceTemplate, position, Quaternion.identity);
+		const audioSource = go.GetComponent<AudioSource>(); 
 		return audioSource;
 	}
 
@@ -100,6 +132,7 @@ export class AudioManager {
 	}
 
 	public static LoadAudioClip(sound: string): AudioClip | undefined {
+		//print("Loading clip: " + this.SoundFolderPath +":::"+this.FriendlyPath(sound));
 		return this.LoadFullPathAudioClip(this.SoundFolderPath + this.FriendlyPath(sound));
 	}
 

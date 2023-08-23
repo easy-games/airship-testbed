@@ -4,7 +4,7 @@ import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { AudioBundleSpacialMode, AudioClipBundle } from "../../Audio/AudioClipBundle";
+import { AudioBundlePlayMode, AudioBundleSpacialMode, AudioClipBundle } from "../../Audio/AudioClipBundle";
 import { AudioManager } from "../../Audio/AudioManager";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { ArrayUtil } from "../../Util/ArrayUtil";
@@ -32,17 +32,30 @@ export class EntityAnimator {
 	private isFlashing = false;
 
 	private footstepAudioBundle: AudioClipBundle;
+	private slideAudioBundle: AudioClipBundle;
 	private steppedOnBlockType = 0;
 	private lastFootstepSoundTime = 0;
 
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
 		this.entityRef = entityRef;
+
+		//AUDIO
 		this.footstepAudioBundle = new AudioClipBundle([], "Footsteps");
-		this.footstepAudioBundle.soundOptions = { volumeScale: 0.15 };
+		this.footstepAudioBundle.volumeScale = 0.15;
 		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 			? AudioBundleSpacialMode.GLOBAL
 			: AudioBundleSpacialMode.SPACIAL;
+		
+		this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
+		this.slideAudioBundle.volumeScale = .25;
+		this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+		this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
+			? AudioBundleSpacialMode.GLOBAL
+			: AudioBundleSpacialMode.SPACIAL;
+
+
+		//ANIMATIONS
 		this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
@@ -63,6 +76,8 @@ export class EntityAnimator {
 			Bundle_Entity.OnHit,
 			Bundle_Entity_OnHit.DeathAnimTP,
 		);
+
+		//VFX
 		this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
@@ -222,23 +237,13 @@ export class EntityAnimator {
 			case EntityAnimationEventKey.FOOTSTEP:
 				this.PlayFootstepSound();
 				break;
-			case EntityAnimationEventKey.SLIDE_START:
-				if (this.entityRef.slideSound) {
-					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.entityRef.slideSound, {
-							volumeScale: 0.2,
-						});
-					} else {
-						AudioManager.PlayClipAtPosition(
-							this.entityRef.slideSound,
-							this.entity.model.transform.position,
-							{
-								volumeScale: 0.2,
-							},
-						);
-					}
-				}
-				break;
+				case EntityAnimationEventKey.SLIDE_START:
+					this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
+					//this.slideAudioBundle.PlayNext();
+					break;
+				case EntityAnimationEventKey.SLIDE_END:
+					//this.slideAudioBundle.Stop();
+					break;
 			case EntityAnimationEventKey.JUMP:
 				if (this.entityRef.jumpSound) {
 					if (this.entity.IsLocalCharacter()) {

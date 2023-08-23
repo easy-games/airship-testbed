@@ -7,7 +7,9 @@ export declare class AudioManager {
     static SoundFolderPath: string;
     static globalSource: AudioSource;
     private static soundFolderIndex;
+    private static positionalAudioTemplate;
     static Init(): void;
+    private static CachePositionalAudioSources;
     static PlayGlobal(sound: string, config?: PlaySoundConfig): void;
     static PlayFullPathGlobal(fullPath: string, config?: PlaySoundConfig): void;
     static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): void;

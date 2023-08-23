@@ -1,6 +1,6 @@
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import { BundleData, BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../Util/ReferenceManagerResources";
-import { Task } from "Imports/Core/Shared/Util/Task";
+import { Task } from "Shared/Util/Task";
 
 export class EffectsManager {
 	public static SpawnBundleEffect(
@@ -90,7 +90,6 @@ export class EffectsManager {
 
 		if (destroyInSeconds > 0) {
 			Task.Delay(destroyInSeconds, ()=>{
-				vfx.transform.SetParent(undefined);
 				PoolManager.ReleaseObject(vfx);
 			})
 		}

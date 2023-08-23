@@ -47,6 +47,7 @@
 	"rbxts": {
         "rojo": "./default.project.json",
 		"includePath": "../Bundles/Shared/Resources/include",
-        "type": "airshipbundle"
+        "type": "airshipbundle",
+        "copyNodeModules": true
 	}
 }

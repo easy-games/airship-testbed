@@ -5,7 +5,7 @@ import { Game } from "Imports/Core/Shared/Game";
 import { GameObjectUtil } from "Imports/Core/Shared/GameObject/GameObjectUtil";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { BedWarsUI } from "Imports/Core/Shared/UI/BedWarsUI";
+import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
 import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
@@ -78,7 +78,7 @@ export class ItemShopController implements OnStart {
 		this.UpdateItems(true);
 		// Handle purchase requests.
 		const purchaseButton = this.refs.GetValue<GameObject>("SidebarContainer", "PurchaseButton");
-		BedWarsUI.SetupButton(purchaseButton);
+		CoreUI.SetupButton(purchaseButton);
 		CanvasAPI.OnClickEvent(purchaseButton, () => {
 			this.HandlePurchaseRequest();
 		});
@@ -122,7 +122,7 @@ export class ItemShopController implements OnStart {
 			}
 
 			if (init) {
-				BedWarsUI.SetupButton(itemGO);
+				CoreUI.SetupButton(itemGO);
 				CanvasAPI.OnClickEvent(itemGO, () => {
 					this.SetSidebarItem(shopItem);
 				});

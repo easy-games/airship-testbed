@@ -1,3 +1,4 @@
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AudioManager } from "../Audio/AudioManager";
 import { Bin } from "./Bin";
@@ -24,8 +25,11 @@ export class AppManager {
 	private static backgroundObject: GameObject;
 
 	public static Init() {
-		const backgroundGO = GameObject.Find("AppManagerBackground");
+		const backgroundGO = GameObjectUtil.Instantiate(
+			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+		);
 		this.backgroundCanvas = backgroundGO.GetComponent<Canvas>();
+		this.backgroundCanvas.enabled = false;
 		const refs = backgroundGO.GetComponent<GameObjectReferences>();
 		this.backgroundObject = refs.GetValue("UI", "Background");
 
@@ -99,7 +103,7 @@ export class AppManager {
 		this.opened = false;
 
 		if (!config?.noCloseSound) {
-			AudioManager.PlayGlobal("UI_Close.wav");
+			// AudioManager.PlayGlobal("UI_Close.wav");
 		}
 
 		if (this.openCanvas) {
