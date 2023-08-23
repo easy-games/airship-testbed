@@ -126,6 +126,7 @@ export class Mouse {
 	public AddUnlocker(): number {
 		const id = mouseUnlockerIdCounter;
 		mouseUnlockerIdCounter++;
+		mouseUnlockerKeys.add(id);
 
 		this.mouseDriver.SetLocked(false);
 
