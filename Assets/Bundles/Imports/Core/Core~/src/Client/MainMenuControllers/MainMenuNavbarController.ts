@@ -15,7 +15,6 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	public Setup(): void {
-		print("MainMenuNavbar.Setup() before");
 		const refs = this.mainMenuController.refs;
 
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
@@ -29,20 +28,16 @@ export class MainMenuNavbarController implements OnStart {
 		}
 
 		CanvasAPI.OnClickEvent(homeButton, () => {
-			print("Home.onClick");
 			this.mainMenuController.RouteToPage(MainMenuPage.HOME);
 		});
 		CanvasAPI.OnClickEvent(avatarShopButton, () => {
-			print("AvatarShop.onClick");
 			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
 		});
 		CoreUI.SetupButton(settingsButton);
 		CanvasAPI.OnClickEvent(settingsButton, () => {
-			print("Settings.onClick");
 			this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
 		});
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
-			print("RunningGame.onClick");
 			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
 		});
 
@@ -60,8 +55,6 @@ export class MainMenuNavbarController implements OnStart {
 				this.UpdateNavButton(currentSelectedNavbarButton, true);
 			}
 		});
-
-		print("MainMenuNavbar.Setup() after");
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
