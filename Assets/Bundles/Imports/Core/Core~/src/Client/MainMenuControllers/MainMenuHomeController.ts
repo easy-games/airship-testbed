@@ -38,6 +38,7 @@ export class MainMenuHomeController implements OnStart {
 
 	public Setup(): void {
 		CanvasAPI.OnClickEvent(this.createServerButton, () => {
+			this.SetButtonLoadingState(this.createServerButton, true);
 			this.UpdateCrossSceneState();
 
 			print("pressed create server!");
@@ -54,6 +55,7 @@ export class MainMenuHomeController implements OnStart {
 				warn("failed to create server: " + err);
 				this.SetError(tostring(err));
 			}
+			this.SetButtonLoadingState(this.createServerButton, false);
 		});
 
 		CanvasAPI.OnClickEvent(this.errorCloseButton, () => {
@@ -107,6 +109,14 @@ export class MainMenuHomeController implements OnStart {
 			warn("failed to create server: " + err);
 			this.SetError(tostring(err));
 		}
+	}
+
+	private SetButtonLoadingState(button: GameObject, loading: boolean): void {
+		const text = button.transform.GetChild(0);
+		const spinner = button.transform.GetChild(1);
+
+		text.gameObject.SetActive(!loading);
+		spinner.gameObject.SetActive(loading);
 	}
 
 	private UpdateCrossSceneState(): void {
