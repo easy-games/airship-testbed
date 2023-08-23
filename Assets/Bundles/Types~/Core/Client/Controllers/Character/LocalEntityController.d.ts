@@ -1,8 +1,8 @@
 import { OnStart } from "@easy-games/flamework-core";
 import { DataStreamItems } from "../../../Shared/Util/DataStreamTypes";
 import { Signal } from "../../../Shared/Util/Signal";
+import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
 import { CameraController } from "../Camera/CameraController";
-import { ClientSettingsController } from "../ClientSettings/ClientSettingsController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { EntityInput } from "./EntityInput";
 export declare class LocalEntityController implements OnStart {

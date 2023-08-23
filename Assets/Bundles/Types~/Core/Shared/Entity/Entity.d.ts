@@ -6,7 +6,8 @@ import { BlockMeta } from "../Item/ItemMeta";
 import { ItemType } from "../Item/ItemType";
 import { Player } from "../Player/Player";
 import { Signal } from "../Util/Signal";
-import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
+import { ItemPlayMode } from "./Animation/CharacterEntityAnimator";
+import { EntityAnimator } from "./Animation/EntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 export interface EntityDto {
     serializer: EntitySerializer;
@@ -44,7 +45,7 @@ export declare class Entity {
     readonly entityDriver: EntityDriver;
     readonly model: GameObject;
     readonly attributes: EasyAttributes;
-    anim?: InventoryEntityAnimator;
+    anim: EntityAnimator;
     readonly references: EntityReferences;
     readonly accessoryBuilder: AccessoryBuilder;
     player: Player | undefined;
@@ -62,11 +63,13 @@ export declare class Entity {
     private displayName;
     private healthbarEnabled;
     private healthbar?;
+    private state;
     readonly OnHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
     readonly OnDespawn: Signal<void>;
     readonly OnPlayerChanged: Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>;
     readonly OnAdjustMove: Signal<[moveModifier: MoveModifier]>;
     readonly OnDisplayNameChanged: Signal<[displayName: string]>;
+    readonly OnStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     AddHealthbar(): void;
     SetPlayer(player: Player | undefined): void;

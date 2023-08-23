@@ -874,7 +874,6 @@ GameObject:
   - component: {fileID: 8766998928016284528}
   - component: {fileID: 4512825167305000937}
   - component: {fileID: 5383703798822420393}
-  - component: {fileID: 6713947178947240}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -970,31 +969,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6713947178947240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762890628575502932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStaticInstance: 0
-  staticBundleId: UniqueID
-  bundledReferences:
-  - key: UI
-    keyValuePairs:
-    - key: MouseSensitivity
-      value: {fileID: 6376677379852052635}
-    - key: AmbientVolume
-      value: {fileID: 863648433225465176}
-    - key: Volume
-      value: {fileID: 1940200708706389663}
-    - key: MusicVolume
-      value: {fileID: 8999423050588578491}
 --- !u!1 &863648433225465176
 GameObject:
   m_ObjectHideFlags: 0
@@ -8503,6 +8477,16 @@ MonoBehaviour:
       value: {fileID: 6460974610367130150}
     - key: Settings
       value: {fileID: 8536792242517382782}
+  - key: Settings
+    keyValuePairs:
+    - key: MouseSensitivity
+      value: {fileID: 6376677379852052635}
+    - key: AmbientVolume
+      value: {fileID: 863648433225465176}
+    - key: Volume
+      value: {fileID: 1940200708706389663}
+    - key: MusicVolume
+      value: {fileID: 8999423050588578491}
 --- !u!225 &358166506839232305
 CanvasGroup:
   m_ObjectHideFlags: 0
