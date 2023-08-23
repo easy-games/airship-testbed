@@ -1,4 +1,4 @@
-local Promise = require("Shared/Resources/include/Promise")
+local Promise = require("Imports/Core/Shared/Resources/TS/Runtime/Promise")
 
 local OUTPUT_PREFIX = "roblox-ts: "
 local NODE_MODULES = "node_modules"
