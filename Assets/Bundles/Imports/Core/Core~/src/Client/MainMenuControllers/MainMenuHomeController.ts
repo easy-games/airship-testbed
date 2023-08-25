@@ -13,6 +13,7 @@ export class MainMenuHomeController implements OnStart {
 	private errorMessageWrapper: GameObject;
 	private errorCloseButton: GameObject;
 	private createServerButton: GameObject;
+	private createLobbyButton: GameObject;
 	private localBundlesToggle: Toggle;
 
 	constructor(private readonly mainMenuController: MainMenuController) {
@@ -21,6 +22,9 @@ export class MainMenuHomeController implements OnStart {
 
 		this.createServerButton = this.mainMenuController.refs.GetValue("UI", "CreateServerButton");
 		CoreUI.SetupButton(this.createServerButton);
+
+		this.createLobbyButton = this.mainMenuController.refs.GetValue("UI", "CreateLobbyButton");
+		CoreUI.SetupButton(this.createLobbyButton);
 
 		this.errorCloseButton = this.mainMenuController.refs.GetValue("UI", "ErrorCloseButton");
 		CoreUI.SetupButton(this.errorCloseButton);
@@ -56,6 +60,30 @@ export class MainMenuHomeController implements OnStart {
 				this.SetError(tostring(err));
 			}
 			this.SetButtonLoadingState(this.createServerButton, false);
+		});
+
+		CanvasAPI.OnClickEvent(this.createLobbyButton, () => {
+			this.SetButtonLoadingState(this.createLobbyButton, true);
+			this.UpdateCrossSceneState();
+
+			print("pressed create server!");
+			try {
+				const res = InternalHttpManager.PostAsync(
+					`${this.gameCoordinatorUrl}/custom-servers/lobby/allocate`,
+					"{}",
+				);
+				print("data: " + res.data);
+				const data = decode(res.data) as {
+					ip: string;
+					port: number;
+				};
+				print(`got server ${data.ip}:${data.port}`);
+				TransferManager.Instance.ConnectToServer(data.ip, data.port);
+			} catch (err) {
+				warn("failed to create server: " + err);
+				this.SetError(tostring(err));
+			}
+			this.SetButtonLoadingState(this.createLobbyButton, false);
 		});
 
 		CanvasAPI.OnClickEvent(this.errorCloseButton, () => {
