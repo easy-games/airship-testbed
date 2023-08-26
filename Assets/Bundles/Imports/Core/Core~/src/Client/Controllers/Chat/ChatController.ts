@@ -1,8 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ClearCommand } from "Shared/Commands/ClearCommand";
-import { FriendsCommand } from "Shared/Commands/FriendsCommand";
-import { UserCommand } from "Shared/Commands/UserCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -78,8 +76,6 @@ export class ChatController implements OnStart {
 		this.content.gameObject.ClearChildren();
 
 		this.RegisterCommand(new ClearCommand());
-		this.RegisterCommand(new UserCommand());
-		this.RegisterCommand(new FriendsCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
