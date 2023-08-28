@@ -1,5 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
+import { Signal } from "Shared/Util/Signal";
 import { decode, encode } from "Shared/json";
 import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI";
 
@@ -7,6 +8,9 @@ import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI
 export class AuthController implements OnStart {
 	private apiKey = "AIzaSyB04k_2lvM2VxcJqLKD6bfwdqelh6Juj2o";
 	private appId = "1:987279961241:web:944327bc9353f4f1f15c08";
+	private idToken = "";
+	public readonly onAuthenticated = new Signal<void>();
+	public readonly onSignOut = new Signal<void>();
 
 	OnStart(): void {
 		this.TryAutoLogin();
@@ -39,9 +43,11 @@ export class AuthController implements OnStart {
 			}),
 		);
 		const data = decode(res.data) as FirebaseTokenResponse;
+		this.idToken = data.id_token;
 		StateManager.SetString("firebase_idToken", data.id_token);
 		StateManager.SetString("firebase_refreshToken", data.refresh_token);
 		StateManager.SetString("firebase_localId", data.user_id);
+		this.onAuthenticated.Fire();
 		print("response: " + inspect(data));
 		return true;
 	}
@@ -57,12 +63,18 @@ export class AuthController implements OnStart {
 		const data = decode(res.data) as FirebaseSignUpResponse;
 		print("response: " + inspect(data));
 
+		this.idToken = data.idToken;
 		StateManager.SetString("firebase_idToken", data.idToken);
 		StateManager.SetString("firebase_refreshToken", data.refreshToken);
 		StateManager.SetString("firebase_localId", data.localId);
+		this.onAuthenticated.Fire();
 
 		AuthManager.SaveAuthAccount(data.refreshToken);
 
 		return true;
+	}
+
+	public GetAuthHeaders(): string {
+		return "Authorization=Bearer " + this.idToken;
 	}
 }

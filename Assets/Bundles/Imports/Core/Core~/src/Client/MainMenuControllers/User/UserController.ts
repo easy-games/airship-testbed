@@ -1,0 +1,33 @@
+import { Controller, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
+import { Signal } from "Shared/Util/Signal";
+import { Task } from "Shared/Util/Task";
+import { Url } from "Shared/Util/Url";
+import { decode } from "Shared/json";
+import { AuthController } from "../Auth/AuthController";
+import { User } from "./User";
+
+@Controller({})
+export class UserController implements OnStart {
+	public localUser: User | undefined;
+
+	public onLocalUserUpdated = new Signal<User>();
+
+	constructor(private readonly authController: AuthController) {}
+
+	OnStart(): void {
+		this.authController.onAuthenticated.Connect(() => {
+			Task.Spawn(() => {
+				const res = HttpManager.GetAsync(`${Url.UserService}/users/self`, this.authController.GetAuthHeaders());
+				const data = decode(res.data) as User;
+				print("got local user: " + inspect(data));
+				this.localUser = data;
+				this.onLocalUserUpdated.Fire(this.localUser);
+			});
+		});
+
+		this.authController.onSignOut.Connect(() => {
+			this.localUser = undefined;
+		});
+	}
+}

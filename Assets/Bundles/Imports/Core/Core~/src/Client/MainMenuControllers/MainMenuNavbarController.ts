@@ -3,12 +3,18 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPage } from "./MainMenuPageName";
+import { UserController } from "./User/UserController";
 
 @Controller({})
 export class MainMenuNavbarController implements OnStart {
-	constructor(private readonly mainMenuController: MainMenuController) {}
+	constructor(
+		private readonly mainMenuController: MainMenuController,
+		private readonly userController: UserController,
+		private readonly authController: AuthController,
+	) {}
 
 	OnStart(): void {
 		this.Setup();
@@ -59,6 +65,45 @@ export class MainMenuNavbarController implements OnStart {
 				this.UpdateNavButton(currentSelectedNavbarButton, true);
 			}
 		});
+
+		const profileButton = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton");
+		CanvasAPI.OnClickEvent(profileButton, () => {
+			const user = this.userController.localUser;
+			if (user) {
+				Bridge.CopyToClipboard(user.username + "#" + user.discriminator);
+			}
+		});
+
+		this.UpdateProfileSection();
+		this.userController.onLocalUserUpdated.Connect((user) => {
+			this.UpdateProfileSection();
+		});
+	}
+
+	public UpdateProfileSection(): void {
+		const profileWrapper = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton") as GameObject;
+		const usernameText = this.mainMenuController.refs.GetValue("Navbar", "AccountUsername") as TMP_Text;
+		const picture = this.mainMenuController.refs.GetValue("Navbar", "AccountPicture") as Image;
+		const disc = this.mainMenuController.refs.GetValue("Navbar", "AccountDiscriminator") as TMP_Text;
+
+		let user = this.userController.localUser;
+		if (!user) {
+			profileWrapper.SetActive(false);
+			return;
+		}
+
+		usernameText.text = user.username;
+		disc.text = "#" + user.discriminator;
+		profileWrapper.SetActive(true);
+
+		const profileLayoutGroup = this.mainMenuController.refs.GetValue("Navbar", "ProfileLayoutGroup");
+		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>());
+
+		const rightLayoutGroup = this.mainMenuController.refs.GetValue(
+			"Navbar",
+			"RightLayoutGroup",
+		) as HorizontalLayoutGroup;
+		LayoutRebuilder.ForceRebuildLayoutImmediate(rightLayoutGroup.GetComponent<RectTransform>());
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
