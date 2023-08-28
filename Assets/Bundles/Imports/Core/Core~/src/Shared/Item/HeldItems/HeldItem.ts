@@ -161,7 +161,7 @@ export class HeldItem {
 		this.isCharging = false;
 
 		//Play the use locally
-		this.entity.anim?.PlayItemUse(useIndex);
+		this.entity.anim.PlayItemUse(useIndex);
 		if (this.meta.itemAssets?.onUseSound) {
 			if (this.entity.IsLocalCharacter()) {
 				AudioManager.PlayGlobal(RandomUtil.FromArray(this.meta.itemAssets.onUseSound), {

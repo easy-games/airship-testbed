@@ -7,8 +7,10 @@ print("MainServer!");
 function LoadFlamework() {
 	Flamework.AddPath("assets/bundles/server/resources/ts/services/global", "^.*service.lua$");
 	if (BedWars.IsMatchServer()) {
+		print("[BW]: Starting Match Server...");
 		Flamework.AddPath("assets/bundles/server/resources/ts/services/match", "^.*service.lua$");
 	} else if (BedWars.IsLobbyServer()) {
+		print("[BW]: Starting Lobby Server...");
 		Flamework.AddPath("assets/bundles/server/resources/ts/services/lobby", "^.*service.lua$");
 	}
 

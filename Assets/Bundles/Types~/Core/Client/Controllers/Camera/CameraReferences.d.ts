@@ -2,7 +2,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 export declare class CameraReferences {
-    private readonly CameraBundleKey;
     private static _instance;
     static Instance(): CameraReferences;
     private mouse;

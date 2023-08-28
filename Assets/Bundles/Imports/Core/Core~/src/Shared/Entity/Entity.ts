@@ -20,7 +20,8 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { InventoryEntityAnimator, ItemPlayMode } from "./Animation/InventoryEntityAnimator";
+import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
+import { EntityAnimator } from "./Animation/EntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 
 export interface EntityDto {
@@ -48,7 +49,7 @@ export class EntityReferences {
 	animationEvents: EntityAnimationEvents;
 	humanEntityAnimator: CoreEntityAnimator;
 	jumpSound: AudioClip | undefined;
-	slideSound: AudioClip | undefined;
+	slideSoundPaths: Array<string> = [];
 	landSound: AudioClip | undefined;
 
 	constructor(ref: GameObjectReferences) {
@@ -84,11 +85,33 @@ export class EntityReferences {
 			Bundle_Entity_Movement.JumpSFX,
 		));*/
 
-		this.slideSound = AudioManager.LoadFullPathAudioClip(
+		//Slide sound path: Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav
+		this.slideSoundPaths[0] = AudioManager.GetLocalPathFromFullPath(
 			BundleReferenceManager.GetPathForResource(
 				BundleGroupNames.Entity,
 				Bundle_Entity.Movement,
-				Bundle_Entity_Movement.SlideSFX,
+				Bundle_Entity_Movement.SlideSFX1,
+			),
+		);
+		this.slideSoundPaths[1] = AudioManager.GetLocalPathFromFullPath(
+			BundleReferenceManager.GetPathForResource(
+				BundleGroupNames.Entity,
+				Bundle_Entity.Movement,
+				Bundle_Entity_Movement.SlideSFX2,
+			),
+		);
+		this.slideSoundPaths[2] = AudioManager.GetLocalPathFromFullPath(
+			BundleReferenceManager.GetPathForResource(
+				BundleGroupNames.Entity,
+				Bundle_Entity.Movement,
+				Bundle_Entity_Movement.SlideSFX3,
+			),
+		);
+		this.slideSoundPaths[3] = AudioManager.GetLocalPathFromFullPath(
+			BundleReferenceManager.GetPathForResource(
+				BundleGroupNames.Entity,
+				Bundle_Entity.Movement,
+				Bundle_Entity_Movement.SlideSFXLoop,
 			),
 		);
 
@@ -110,7 +133,7 @@ export class Entity {
 	public readonly entityDriver: EntityDriver;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
-	public anim?: InventoryEntityAnimator;
+	public anim: EntityAnimator;
 	public readonly references: EntityReferences;
 	public readonly accessoryBuilder: AccessoryBuilder;
 
@@ -130,12 +153,14 @@ export class Entity {
 	private displayName: string;
 	private healthbarEnabled = false;
 	private healthbar?: ProgressBarGraphics;
+	private state: EntityState;
 
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
 	public readonly OnPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
 	public readonly OnAdjustMove = new Signal<[moveModifier: MoveModifier]>();
 	public readonly OnDisplayNameChanged = new Signal<[displayName: string]>();
+	public readonly OnStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
@@ -144,10 +169,11 @@ export class Entity {
 		this.model = this.references.root.gameObject;
 		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.networkObject = networkObject;
-		this.anim = new InventoryEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
+		this.anim = new CharacterEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
 		this.ClientId = clientId;
+		this.state = this.entityDriver.GetState();
 		if (this.ClientId !== undefined) {
 			if (RunUtil.IsServer()) {
 				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.ClientId);
@@ -174,6 +200,12 @@ export class Entity {
 
 		this.entityDriver.OnAdjustMove((moveModifier) => {
 			this.OnAdjustMove.Fire(moveModifier);
+		});
+
+		this.entityDriver.OnStateChanged((newState) => {
+			const oldState = this.state;
+			this.state = newState;
+			this.OnStateChanged.Fire(newState, oldState);
 		});
 	}
 
@@ -243,9 +275,8 @@ export class Entity {
 	 */
 	public Destroy(): void {
 		this.OnDespawn.Fire();
+		this.anim.Destroy();
 		this.destroyed = true;
-
-		delete this.anim;
 
 		if (this.player && this.id === this.player.Character?.id) {
 			this.player.SetCharacter(undefined);
@@ -426,7 +457,7 @@ export class Entity {
 	}
 
 	public GetState(): EntityState {
-		return this.GetEntityDriver().GetState();
+		return this.state;
 	}
 
 	public GetHeadPosition(): Vector3 {

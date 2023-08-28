@@ -2,15 +2,18 @@
 /// <reference types="@easy-games/types" />
 export interface PlaySoundConfig {
     volumeScale: number;
+    loop?: boolean;
 }
 export declare class AudioManager {
     static SoundFolderPath: string;
-    static globalSource: AudioSource;
     private static soundFolderIndex;
+    private static audioSourceTemplate;
+    private static globalAudioSources;
     static Init(): void;
-    static PlayGlobal(sound: string, config?: PlaySoundConfig): void;
-    static PlayFullPathGlobal(fullPath: string, config?: PlaySoundConfig): void;
-    static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): void;
+    private static CacheAudioSources;
+    static PlayGlobal(sound: string, config?: PlaySoundConfig): AudioSource | undefined;
+    static PlayFullPathGlobal(fullPath: string, config?: PlaySoundConfig): AudioSource | undefined;
+    static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): AudioSource | undefined;
     static StopGlobalAudio(): void;
     static PlayAtPosition(sound: string, position: Vector3, config?: PlaySoundConfig): AudioSource | undefined;
     static PlayFullPathAtPosition(fullPath: string, position: Vector3, config?: PlaySoundConfig): AudioSource | undefined;

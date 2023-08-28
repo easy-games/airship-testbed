@@ -6,20 +6,30 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { Window } from "Shared/Util/Window";
 import { PlayerController } from "../Player/PlayerController";
+import { CoreUIController } from "../UI/CoreUIController";
 
 @Controller({})
 export class TabListController implements OnStart {
-	private tablistGO = GameObject.Find("TabList");
-	private tablistCanvas = this.tablistGO.GetComponent<Canvas>();
-	private tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>();
-	private tablistContentGO = this.tablistRefs.GetValue("UI", "Content");
-	private tablistEntryPrefab = this.tablistRefs.GetValue<Object>("UI", "TabListEntry");
+	private tablistGO: GameObject;
+	private tablistCanvas;
+	private tablistRefs;
+	private tablistContentGO;
+	private tablistEntryPrefab;
 	private cellsPerRow = 4;
 	private rowCount = 13;
 	private maxSlots = this.cellsPerRow * this.rowCount;
 	private shown = false;
 
-	constructor(private readonly playerController: PlayerController) {
+	constructor(
+		private readonly playerController: PlayerController,
+		private readonly coreUIController: CoreUIController,
+	) {
+		this.tablistGO = this.coreUIController.refs.GetValue("Apps", "TabList");
+		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>();
+		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>();
+		this.tablistContentGO = this.tablistRefs.GetValue("UI", "Content");
+		this.tablistEntryPrefab = this.tablistRefs.GetValue<Object>("UI", "TabListEntry");
+
 		this.Hide(true);
 	}
 

@@ -9,7 +9,7 @@ export declare class PlayerService implements OnStart {
     readonly PlayerAdded: Signal<[player: Player]>;
     /** Fires when a player is removed from the game. */
     readonly PlayerRemoved: Signal<[player: Player]>;
-    private playerCore;
+    private playerManager;
     private readonly players;
     private playersPendingReady;
     private botCounter;

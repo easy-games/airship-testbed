@@ -1,129 +1,153 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
+import ObjectUtil from "@easy-games/unity-object-utils";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
-import { CoreUI } from "Shared/UI/CoreUI";
-import { Mouse } from "Shared/UserInput";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { decode } from "Shared/json";
+import { Keyboard, Mouse } from "Shared/UserInput";
+import { AppManager } from "Shared/Util/AppManager";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { SetTimeout } from "Shared/Util/Timer";
+import { MainMenuPage } from "./MainMenuPageName";
 
 @Controller({})
 export class MainMenuController implements OnStart {
-	public gameCoordinatorUrl = "https://game-coordinator-fxy2zritya-uc.a.run.app/";
-	private refs: GameObjectReferences;
-	private errorMessageText: TMP_Text;
-	private errorMessageWrapper: GameObject;
-	private errorCloseButton: GameObject;
-	private createServerButton: GameObject;
-	private localBundlesToggle: Toggle;
+	public mainMenuGo: GameObject;
+	public refs: GameObjectReferences;
+	public currentPageGo: GameObject | undefined;
+	public currentPage = MainMenuPage.HOME;
+	public OnCurrentPageChanged = new Signal<[page: MainMenuPage, oldPage: MainMenuPage | undefined]>();
+	private pageMap: Record<MainMenuPage, GameObject>;
+	private wrapperRect: RectTransform;
+	private rootCanvas: Canvas;
+	private rootCanvasGroup: CanvasGroup;
+	private open = false;
 
 	constructor() {
 		const mainMenuPrefab = AssetBridge.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
-		const mainMenu = Object.Instantiate(mainMenuPrefab) as GameObject;
+		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
+		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
+		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
+		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
+		this.rootCanvas = this.mainMenuGo.GetComponent<Canvas>();
+		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>();
 
-		const mouse = new Mouse();
-		mouse.AddUnlocker();
+		this.pageMap = {
+			[MainMenuPage.HOME]: this.refs.GetValue("Pages", "Home"),
+			[MainMenuPage.SETTINGS]: this.refs.GetValue("Pages", "Settings"),
+		};
 
-		this.refs = mainMenu.GetComponent<GameObjectReferences>();
-		this.errorMessageText = this.refs.GetValue("UI", "ErrorMessageText");
-		this.errorMessageWrapper = this.refs.GetValue("UI", "ErrorMessageWrapper");
-
-		this.createServerButton = this.refs.GetValue("UI", "CreateServerButton");
-		CoreUI.SetupButton(this.createServerButton);
-
-		this.errorCloseButton = this.refs.GetValue("UI", "ErrorCloseButton");
-		CoreUI.SetupButton(this.errorCloseButton);
-
-		this.localBundlesToggle = this.refs.GetValue("UI", "LocalBundlesToggle");
-
-		if (Game.Context === CoreContext.GAME) {
-			mainMenu.GetComponent<Canvas>().enabled = false;
+		for (const page of ObjectUtil.keys(this.pageMap)) {
+			if (page === this.currentPage) {
+				this.pageMap[page].SetActive(true);
+			} else {
+				this.pageMap[page].SetActive(false);
+			}
 		}
+
+		const closeButton = this.refs.GetValue("UI", "CloseButton");
+
+		if (Game.Context === CoreContext.MAIN_MENU) {
+			const mouse = new Mouse();
+			mouse.AddUnlocker();
+
+			closeButton.SetActive(false);
+		} else {
+			const bg = this.refs.GetValue("UI", "Background");
+			bg.GetComponent<Image>().color = new Color(1, 1, 1, 0.98);
+		}
+	}
+
+	public OpenFromGame(): void {
+		if (this.open) return;
+
+		AppManager.OpenCustom(() => {
+			this.CloseFromGame();
+		});
+		this.open = true;
+		const duration = 0.06;
+		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
+		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
+		this.rootCanvas.enabled = true;
+		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
+	}
+
+	public CloseFromGame(): void {
+		if (!this.open) return;
+		this.open = false;
+
+		const duration = 0.06;
+		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);
+		this.rootCanvasGroup.TweenCanvasGroupAlpha(0, duration);
+		SetTimeout(duration, () => {
+			if (!this.open) {
+				this.rootCanvas.enabled = false;
+			}
+		});
+	}
+
+	public IsOpen(): boolean {
+		return this.open;
 	}
 
 	OnStart(): void {
-		CanvasAPI.OnClickEvent(this.createServerButton, () => {
-			this.UpdateCrossSceneState();
+		if (this.currentPageGo === undefined) {
+			this.RouteToPage(MainMenuPage.HOME, true, true);
+		}
 
-			print("pressed create server!");
-			try {
-				const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/allocate`, "{}");
-				print("data: " + res.data);
-				const data = decode(res.data) as {
-					ip: string;
-					port: number;
-				};
-				print(`got server ${data.ip}:${data.port}`);
-				TransferManager.Instance.ConnectToServer(data.ip, data.port);
-			} catch (err) {
-				warn("failed to create server: " + err);
-				this.SetError(tostring(err));
-			}
-		});
-
-		CanvasAPI.OnClickEvent(this.errorCloseButton, () => {
-			this.CloseError();
-		});
-
-		const joinCodeButton = this.refs.GetValue("UI", "JoinCodeButton");
-		const joinCodeWrapper = this.refs.GetValue("UI", "JoinCodeWrapper");
-		const joinCodeConnectButton = this.refs.GetValue("UI", "JoinCodeConnectButton");
-		const joinCodeTextInput = this.refs.GetValue<TMP_InputField>("UI", "JoinCodeField");
-
-		CoreUI.SetupButton(joinCodeButton);
-		CanvasAPI.OnClickEvent(joinCodeButton, () => {
-			joinCodeWrapper.SetActive(!joinCodeWrapper.active);
-
-			if (!joinCodeButton.active) {
-				joinCodeTextInput.text = "";
-			}
-		});
-
-		CoreUI.SetupButton(joinCodeConnectButton);
-		CanvasAPI.OnClickEvent(joinCodeConnectButton, () => {
-			print("join code connect button");
-			const code = joinCodeTextInput.text;
-			this.ConnectToWithCode(code);
-		});
-
-		const localServerButton = this.refs.GetValue("UI", "LocalServerButton");
-		CoreUI.SetupButton(localServerButton);
-		CanvasAPI.OnClickEvent(localServerButton, () => {
-			this.UpdateCrossSceneState();
-			TransferManager.Instance.ConnectToServer("127.0.0.1", 7770);
-		});
-	}
-
-	public ConnectToWithCode(code: string): void {
-		this.UpdateCrossSceneState();
-
-		try {
-			const res = InternalHttpManager.GetAsync(
-				`${this.gameCoordinatorUrl}/custom-servers/gameId/bedwars/code/${code}`,
+		if (Game.Context === CoreContext.GAME) {
+			const keyboard = new Keyboard();
+			keyboard.OnKeyDown(
+				KeyCode.Escape,
+				(event) => {
+					this.OpenFromGame();
+				},
+				SignalPriority.LOW,
 			);
-			print("data: " + res.data);
-			const data = decode(res.data) as {
-				ip: string;
-				port: number;
-			};
-			print(`found server ${data.ip}:${data.port}`);
-			TransferManager.Instance.ConnectToServer(data.ip, data.port);
-		} catch (err) {
-			warn("failed to create server: " + err);
-			this.SetError(tostring(err));
+
+			// const leaveButton = this.refs.GetValue("UI", "LeaveButton");
+			// CoreUI.SetupButton(leaveButton);
+			// CanvasAPI.OnClickEvent(leaveButton, () => {
+			// 	this.Disconnect();
+			// });
 		}
 	}
 
-	private UpdateCrossSceneState(): void {
-		CrossSceneState.UseLocalBundles = this.localBundlesToggle.isOn;
-	}
+	public RouteToPage(page: MainMenuPage, force = false, noTween = false) {
+		if (this.currentPage === page && !force) {
+			return;
+		}
 
-	public SetError(errorMessage: string): void {
-		this.errorMessageText.text = errorMessage;
-		this.errorMessageWrapper.SetActive(true);
-	}
+		// Tween out old page
+		const oldPage = this.currentPage;
+		const oldPageGo = this.currentPageGo;
+		if (oldPageGo) {
+			// oldPageGo.GetComponent<RectTransform>().TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
+			oldPageGo.GetComponent<CanvasGroup>().TweenCanvasGroupAlpha(0, 0);
+			SetTimeout(0.1, () => {
+				if (this.currentPageGo !== oldPageGo) {
+					oldPageGo.SetActive(false);
+				}
+			});
+		}
 
-	public CloseError(): void {
-		this.errorMessageText.text = "";
-		this.errorMessageWrapper.SetActive(false);
+		this.currentPageGo = this.pageMap[page];
+		print("routing to page: " + page);
+		print("currentPage: " + inspect(this.currentPageGo));
+		this.currentPageGo.SetActive(true);
+		this.currentPage = page;
+
+		// Update to new page
+		const canvasGroup = this.currentPageGo.GetComponent<CanvasGroup>();
+		if (noTween) {
+			this.currentPageGo.transform.localPosition = new Vector3(0, 0, 0);
+			canvasGroup.alpha = 1;
+		} else {
+			this.currentPageGo.transform.localPosition = new Vector3(0, -20, 0);
+			this.currentPageGo.GetComponent<RectTransform>().TweenLocalPosition(new Vector3(0, 0, 0), 0.1);
+			canvasGroup.alpha = 0;
+			canvasGroup.TweenCanvasGroupAlpha(1, 0.1);
+		}
+
+		this.OnCurrentPageChanged.Fire(this.currentPage, oldPage);
 	}
 }

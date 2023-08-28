@@ -16,7 +16,7 @@ export class PlayerService implements OnStart {
 	/** Fires when a player is removed from the game. */
 	public readonly PlayerRemoved = new Signal<[player: Player]>();
 
-	private playerCore: PlayerCore = GameObject.Find("Players").GetComponent<PlayerCore>();
+	private playerManager = PlayerManager.Instance;
 	private readonly players: Player[] = [];
 	private playersPendingReady = new Map<number, Player>();
 	private botCounter = 0;
@@ -52,15 +52,15 @@ export class PlayerService implements OnStart {
 			CoreNetwork.ServerToClient.RemovePlayer.Server.FireAllClients(player.clientId);
 			player.Destroy();
 		};
-		const players = this.playerCore.GetPlayers();
+		const players = this.playerManager.GetPlayers();
 		for (let i = 0; i < players.Length; i++) {
 			const clientInfo = players.GetValue(i);
 			onPlayerPreJoin(clientInfo);
 		}
-		this.playerCore.OnPlayerAdded((clientInfo) => {
+		this.playerManager.OnPlayerAdded((clientInfo) => {
 			onPlayerPreJoin(clientInfo);
 		});
-		this.playerCore.OnPlayerRemoved((clientInfo) => {
+		this.playerManager.OnPlayerRemoved((clientInfo) => {
 			onPlayerRemoved(clientInfo);
 		});
 
@@ -100,7 +100,7 @@ export class PlayerService implements OnStart {
 		let username = `Bot${this.botCounter}`;
 		let tag = "bot";
 		print("Adding bot " + username);
-		this.playerCore.AddBotPlayer(username, tag, userId);
+		this.playerManager.AddBotPlayer(username, tag, userId);
 	}
 
 	/** Get all players. */

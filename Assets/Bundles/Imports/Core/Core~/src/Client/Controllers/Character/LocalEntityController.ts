@@ -8,11 +8,11 @@ import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { Theme } from "Shared/Util/Theme";
+import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
 import { CameraController } from "../Camera/CameraController";
 import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
-import { ClientSettingsController } from "../ClientSettings/ClientSettingsController";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { EntityInput } from "./EntityInput";
@@ -282,9 +282,9 @@ export class LocalEntityController implements OnStart {
 			? this.clientSettings.GetFirstPersonFov()
 			: this.clientSettings.GetThirdPersonFov();
 		if (
-			this.currentState === EntityState.Sprinting ||
-			this.currentState === EntityState.Sliding ||
-			(this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
+			// this.currentState === EntityState.Sprinting ||
+			this.currentState === EntityState.Sliding
+			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
 		) {
 			this.cameraController.SetFOV(baseFov * 1.08, false);
 		} else {

@@ -1,3 +1,5 @@
+import {} from "@easy-games/flamework-core";
+import { Task } from "Shared/Util/Task";
 import { AudioManager, PlaySoundConfig } from "./AudioManager";
 
 export enum AudioBundlePlayMode {
@@ -5,6 +7,8 @@ export enum AudioBundlePlayMode {
 	SEQUENCE,
 	RANDOM,
 	RANDOM_NO_REPEAT,
+	LOOP,
+	RANDOM_TO_LOOP,
 }
 
 export enum AudioBundleSpacialMode {
@@ -16,12 +20,14 @@ export class AudioClipBundle {
 	public playMode: AudioBundlePlayMode = AudioBundlePlayMode.RANDOM_NO_REPEAT;
 	public spacialMode: AudioBundleSpacialMode = AudioBundleSpacialMode.SPACIAL;
 	public spacialPosition = Vector3.zero;
-	public soundOptions: PlaySoundConfig = { volumeScale: 1 };
+	public volumeScale = 1;
 
+	private soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
 	private manualFolderPath = "";
 	private clipPaths: string[];
 	private possibleRandomIndex: number[] = [];
 	private lastIndexPlayed = -1;
+	private lastAudioSource: AudioSource | undefined;
 
 	public constructor(clipPaths: string[], manualFolderPath = "") {
 		this.manualFolderPath = manualFolderPath + "/";
@@ -30,21 +36,30 @@ export class AudioClipBundle {
 	}
 
 	public UpdatePaths(newPaths: string[]) {
-		this.lastIndexPlayed = -1;
+		this.Stop();
 		this.clipPaths = newPaths;
 		this.RefreshPossibleRandomIndex();
 	}
 
+	public Stop() {
+		this.lastAudioSource?.Stop();
+		this.lastIndexPlayed = -1;
+	}
+
 	public PlayManual(index: number) {
 		this.lastIndexPlayed = index;
+		this.soundOptions.volumeScale = this.volumeScale;
 		if (this.spacialMode === AudioBundleSpacialMode.SPACIAL) {
-			AudioManager.PlayAtPosition(
+			this.lastAudioSource = AudioManager.PlayAtPosition(
 				this.manualFolderPath + this.clipPaths[index],
 				this.spacialPosition,
 				this.soundOptions,
 			);
 		} else {
-			AudioManager.PlayGlobal(this.manualFolderPath + this.clipPaths[index], this.soundOptions);
+			this.lastAudioSource = AudioManager.PlayGlobal(
+				this.manualFolderPath + this.clipPaths[index],
+				this.soundOptions,
+			);
 		}
 	}
 
@@ -53,19 +68,29 @@ export class AudioClipBundle {
 			warn("Trying to play an audio bundle sequence without a mode selected");
 			return;
 		}
+		this.soundOptions.loop = false;
 
-		//Play sounds in a sequence
+		//SEQUENCE
 		if (this.playMode === AudioBundlePlayMode.SEQUENCE) {
 			//Step to the next index and play it
-			this.lastIndexPlayed++;
-			if (this.lastIndexPlayed >= this.clipPaths.size()) {
-				this.lastIndexPlayed = 0;
-			}
+			this.StepIndex();
 			this.PlayManual(this.lastIndexPlayed);
 			return;
 		}
 
-		//Randomly play sounds
+		//LOOP & RANDOM TO LOOP
+		const lastIndex = this.clipPaths.size() - 1;
+		if (
+			this.playMode === AudioBundlePlayMode.LOOP ||
+			(this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed === lastIndex)
+		) {
+			//print("Playing Loop: " + lastIndex + ": " +this.clipPaths[lastIndex]);
+			this.soundOptions.loop = true;
+			this.PlayManual(lastIndex);
+			return;
+		}
+
+		//RANDOM play sounds
 		let randomIndex = 0;
 		let arraySize = this.clipPaths.size();
 		if (this.playMode === AudioBundlePlayMode.RANDOM) {
@@ -81,6 +106,25 @@ export class AudioClipBundle {
 			this.PlayManual(this.possibleRandomIndex[randomIndex]);
 
 			this.RefreshPossibleRandomIndex();
+		} else if (this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed !== lastIndex) {
+			//RANDOM TO LOOP - sending to the loop after a delay
+			randomIndex = this.GetRandomIndex(arraySize);
+			this.PlayManual(randomIndex);
+
+			const delayLength = this.lastAudioSource ? this.lastAudioSource.clip.length - 0.15 : 1;
+			Task.Delay(delayLength, () => {
+				if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
+					this.lastIndexPlayed = lastIndex;
+					this.PlayNext();
+				}
+			});
+		}
+	}
+
+	private StepIndex() {
+		this.lastIndexPlayed++;
+		if (this.lastIndexPlayed >= this.clipPaths.size()) {
+			this.lastIndexPlayed = 0;
 		}
 	}
 

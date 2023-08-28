@@ -3,8 +3,9 @@ import { LocalEntityController } from "Client/Controllers/Character/LocalEntityC
 import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemType } from "Shared/Item/ItemType";
+import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { AudioBundleSpacialMode, AudioClipBundle } from "../../Audio/AudioClipBundle";
+import { AudioBundlePlayMode, AudioBundleSpacialMode, AudioClipBundle } from "../../Audio/AudioClipBundle";
 import { AudioManager } from "../../Audio/AudioManager";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { ArrayUtil } from "../../Util/ArrayUtil";
@@ -12,6 +13,7 @@ import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
+import { ItemPlayMode } from "./CharacterEntityAnimator";
 
 export class EntityAnimator {
 	private readonly RootOverrideLayer = 1;
@@ -22,6 +24,7 @@ export class EntityAnimator {
 	public readonly defaultTransitionTime: number = 0.15;
 
 	protected readonly entityRef: EntityReferences;
+	protected bin = new Bin();
 	private flinchClipFPS?: AnimationClip;
 	private deathClipFPS?: AnimationClip;
 	private flinchClipTP?: AnimationClip;
@@ -32,17 +35,29 @@ export class EntityAnimator {
 	private isFlashing = false;
 
 	private footstepAudioBundle: AudioClipBundle;
+	private slideAudioBundle: AudioClipBundle;
 	private steppedOnBlockType = 0;
 	private lastFootstepSoundTime = 0;
 
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
 		this.entityRef = entityRef;
+
+		//AUDIO
 		this.footstepAudioBundle = new AudioClipBundle([], "Footsteps");
-		this.footstepAudioBundle.soundOptions = { volumeScale: 0.15 };
+		this.footstepAudioBundle.volumeScale = 0.15;
 		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 			? AudioBundleSpacialMode.GLOBAL
 			: AudioBundleSpacialMode.SPACIAL;
+
+		this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
+		this.slideAudioBundle.volumeScale = 0.25;
+		this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+		this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
+			? AudioBundleSpacialMode.GLOBAL
+			: AudioBundleSpacialMode.SPACIAL;
+
+		//ANIMATIONS
 		this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
@@ -63,6 +78,8 @@ export class EntityAnimator {
 			Bundle_Entity.OnHit,
 			Bundle_Entity_OnHit.DeathAnimTP,
 		);
+
+		//VFX
 		this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
@@ -90,6 +107,10 @@ export class EntityAnimator {
 		this.entityRef.root.gameObject.SetActive(true);
 	}
 
+	public Destroy(): void {
+		this.bin.Clean();
+	}
+
 	public PlayAnimation(clip: AnimationClip, layer = 0, wrapMode: WrapMode = WrapMode.Default): AnimancerState {
 		return AnimancerBridge.Play(this.anim, clip, layer, this.defaultTransitionTime, FadeMode.FromStart, wrapMode);
 	}
@@ -97,6 +118,14 @@ export class EntityAnimator {
 	public PlayAnimationOnce(clip: AnimationClip, layer = 0, wrapMode: WrapMode = WrapMode.Default): AnimancerState {
 		return AnimancerBridge.PlayOnce(this.anim, clip, layer, this.defaultTransitionTime, FadeMode.FromStart);
 	}
+
+	public StartItemIdle(): void {}
+
+	public PlayItemUse(useIndex = 0, itemPlayMode: ItemPlayMode = 0): void {}
+
+	public EquipItem(itemId: BundleGroupNames): void {}
+
+	public SetFirstPerson(isFirstPerson: boolean): void {}
 
 	public PlayTakeDamage(
 		damageAmount: number,
@@ -223,21 +252,11 @@ export class EntityAnimator {
 				this.PlayFootstepSound();
 				break;
 			case EntityAnimationEventKey.SLIDE_START:
-				if (this.entityRef.slideSound) {
-					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.entityRef.slideSound, {
-							volumeScale: 0.2,
-						});
-					} else {
-						AudioManager.PlayClipAtPosition(
-							this.entityRef.slideSound,
-							this.entity.model.transform.position,
-							{
-								volumeScale: 0.2,
-							},
-						);
-					}
-				}
+				this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
+				//this.slideAudioBundle.PlayNext();
+				break;
+			case EntityAnimationEventKey.SLIDE_END:
+				//this.slideAudioBundle.Stop();
 				break;
 			case EntityAnimationEventKey.JUMP:
 				if (this.entityRef.jumpSound) {

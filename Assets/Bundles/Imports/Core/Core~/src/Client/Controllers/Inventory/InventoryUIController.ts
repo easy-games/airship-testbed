@@ -6,6 +6,7 @@ import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { CoreUIController } from "../UI/CoreUIController";
 import { InventoryController } from "./InventoryController";
 
 @Controller({})
@@ -18,8 +19,11 @@ export class InventoryUIController implements OnStart {
 	private hotbarContent: Transform;
 	private healthBar: ProgressBarGraphics;
 
-	constructor(private readonly invController: InventoryController) {
-		const go = GameObject.Find("Inventory");
+	constructor(
+		private readonly invController: InventoryController,
+		private readonly coreUIController: CoreUIController,
+	) {
+		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = true;
 

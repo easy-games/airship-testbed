@@ -1,5 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ClientSettingsController } from "Client/Controllers/ClientSettings/ClientSettingsController";
+import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";

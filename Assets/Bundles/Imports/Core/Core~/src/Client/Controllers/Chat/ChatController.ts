@@ -14,6 +14,7 @@ import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { encode } from "Shared/json";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { CoreUIController } from "../UI/CoreUIController";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -66,8 +67,11 @@ export class ChatController implements OnStart {
 
 	private commands = new Map<string, ChatCommand>();
 
-	constructor(private localEntityController: LocalEntityController) {
-		const refs = GameObject.Find("Chat").GetComponent<GameObjectReferences>();
+	constructor(
+		private readonly localEntityController: LocalEntityController,
+		private readonly coreUIController: CoreUIController,
+	) {
+		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");

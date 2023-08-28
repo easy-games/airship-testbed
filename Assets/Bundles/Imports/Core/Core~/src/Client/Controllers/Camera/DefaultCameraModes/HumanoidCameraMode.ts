@@ -1,5 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ClientSettingsController } from "Client/Controllers/ClientSettings/ClientSettingsController";
+import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
@@ -25,9 +25,9 @@ const Y_LOCKED_ROTATION = math.rad(15);
 
 const ANGLE_EPSILON = 0.0001;
 
-let MOUSE_SENS_SCALAR = 0.05;
+let MOUSE_SENS_SCALAR = 0.1;
 if (RunUtil.IsMac()) {
-	MOUSE_SENS_SCALAR *= 16;
+	MOUSE_SENS_SCALAR *= 6;
 }
 if (!RunUtil.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;
