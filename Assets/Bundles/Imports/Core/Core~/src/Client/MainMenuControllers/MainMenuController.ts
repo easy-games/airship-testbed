@@ -7,9 +7,10 @@ import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
+import { AuthController } from "./Auth/AuthController";
 import { MainMenuPage } from "./MainMenuPageName";
 
-@Controller({})
+@Controller()
 export class MainMenuController implements OnStart {
 	public mainMenuGo: GameObject;
 	public refs: GameObjectReferences;
@@ -22,7 +23,10 @@ export class MainMenuController implements OnStart {
 	private rootCanvasGroup: CanvasGroup;
 	private open = false;
 
-	constructor() {
+	constructor(private readonly authController: AuthController) {
+		// this.loadingScreenController.SetProgress("Logging in...", 90);
+		const loggedIn = this.authController.TryAutoLogin();
+		// this.loadingScreenController.SetProgress("Finishing up", 99);
 		const mainMenuPrefab = AssetBridge.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();

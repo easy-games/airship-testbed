@@ -475,3 +475,21 @@ interface TransferManagerConstructor {
 	Instance: TransferManager;
 }
 declare const TransferManager: TransferManagerConstructor;
+
+interface StateManagerStatic {
+	GetString(key: string): string | undefined;
+	SetString(key: string, value: string): void;
+	RemoveString(key: string): void;
+}
+declare const StateManager: StateManagerStatic;
+
+interface AuthSave {
+	refreshToken: string;
+	time: number;
+}
+
+interface AuthManagerStatic {
+	GetSavedAccount(): AuthSave | undefined;
+	SaveAuthAccount(refreshToken: string): void;
+}
+declare const AuthManager: AuthManagerStatic;

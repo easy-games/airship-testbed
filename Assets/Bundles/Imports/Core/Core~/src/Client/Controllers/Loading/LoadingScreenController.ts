@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 
-@Controller({})
+@Controller({ loadOrder: -10 })
 export class LoadingScreenController implements OnStart {
 	private coreLoadingScreen: CoreLoadingScreen;
 	private loadingBin = new Bin();
