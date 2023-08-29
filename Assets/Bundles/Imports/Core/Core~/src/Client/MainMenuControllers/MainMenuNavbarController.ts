@@ -99,11 +99,11 @@ export class MainMenuNavbarController implements OnStart {
 		const profileLayoutGroup = this.mainMenuController.refs.GetValue("Navbar", "ProfileLayoutGroup");
 		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>());
 
-		const rightLayoutGroup = this.mainMenuController.refs.GetValue(
+		const profilerWrapperWrapper = this.mainMenuController.refs.GetValue(
 			"Navbar",
-			"RightLayoutGroup",
+			"ProfileWrapperWrapper",
 		) as HorizontalLayoutGroup;
-		LayoutRebuilder.ForceRebuildLayoutImmediate(rightLayoutGroup.GetComponent<RectTransform>());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(profilerWrapperWrapper.GetComponent<RectTransform>());
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {

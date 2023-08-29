@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import ObjectUtil from "@easy-games/unity-object-utils";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
@@ -132,8 +131,6 @@ export class MainMenuController implements OnStart {
 		}
 
 		this.currentPageGo = this.pageMap[page];
-		print("routing to page: " + page);
-		print("currentPage: " + inspect(this.currentPageGo));
 		this.currentPageGo.SetActive(true);
 		this.currentPage = page;
 
