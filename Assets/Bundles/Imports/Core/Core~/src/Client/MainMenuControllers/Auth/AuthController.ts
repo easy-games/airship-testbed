@@ -9,6 +9,7 @@ export class AuthController implements OnStart {
 	private apiKey = "AIzaSyB04k_2lvM2VxcJqLKD6bfwdqelh6Juj2o";
 	private appId = "1:987279961241:web:944327bc9353f4f1f15c08";
 	private idToken = "";
+	private authenticated = false;
 	public readonly onAuthenticated = new Signal<void>();
 	public readonly onSignOut = new Signal<void>();
 
@@ -47,6 +48,7 @@ export class AuthController implements OnStart {
 		StateManager.SetString("firebase_idToken", data.id_token);
 		StateManager.SetString("firebase_refreshToken", data.refresh_token);
 		StateManager.SetString("firebase_localId", data.user_id);
+		this.authenticated = true;
 		this.onAuthenticated.Fire();
 		print("response: " + inspect(data));
 		return true;
@@ -67,6 +69,7 @@ export class AuthController implements OnStart {
 		StateManager.SetString("firebase_idToken", data.idToken);
 		StateManager.SetString("firebase_refreshToken", data.refreshToken);
 		StateManager.SetString("firebase_localId", data.localId);
+		this.authenticated = true;
 		this.onAuthenticated.Fire();
 
 		AuthManager.SaveAuthAccount(data.refreshToken);
@@ -76,5 +79,13 @@ export class AuthController implements OnStart {
 
 	public GetAuthHeaders(): string {
 		return "Authorization=Bearer " + this.idToken;
+	}
+
+	public GetAuthToken(): string {
+		return this.idToken;
+	}
+
+	public IsAuthenticated(): boolean {
+		return this.authenticated;
 	}
 }

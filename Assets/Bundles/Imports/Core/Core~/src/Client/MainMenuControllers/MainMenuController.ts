@@ -24,9 +24,6 @@ export class MainMenuController implements OnStart {
 	private open = false;
 
 	constructor(private readonly authController: AuthController) {
-		// this.loadingScreenController.SetProgress("Logging in...", 90);
-		const loggedIn = this.authController.TryAutoLogin();
-		// this.loadingScreenController.SetProgress("Finishing up", 99);
 		const mainMenuPrefab = AssetBridge.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();

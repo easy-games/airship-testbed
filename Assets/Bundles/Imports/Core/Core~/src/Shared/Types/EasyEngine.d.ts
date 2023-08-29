@@ -493,3 +493,14 @@ interface AuthManagerStatic {
 	SaveAuthAccount(refreshToken: string): void;
 }
 declare const AuthManager: AuthManagerStatic;
+
+interface SocketManager {
+	ConnectAsync(url: string, authToken: string): boolean;
+	IsConnected(): boolean;
+	SetScriptListening(val: boolean): void;
+	EmitAsync(eventName: string, data: string): void;
+	Instance: {
+		OnEvent(callback: (eventName: string, data: string) => void): void;
+	};
+}
+declare const SocketManager: SocketManager;
