@@ -154,7 +154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 62.524803, y: 0}
+  m_AnchoredPosition: {x: 46.1398, y: 0}
   m_SizeDelta: {x: 0, y: 28.5981}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7473194567372973714
@@ -708,7 +708,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 2.5, y: 0}
-  m_SizeDelta: {x: 92.0103, y: 28.5981}
+  m_SizeDelta: {x: 256.896, y: 28.5981}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &3567690128478799204
 MonoBehaviour:
@@ -729,7 +729,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 3
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
@@ -834,6 +834,12 @@ MonoBehaviour:
     keyValuePairs:
     - key: KickButton
       value: {fileID: 3470961635694212593}
+    - key: Username
+      value: {fileID: 903894350372818301}
+    - key: UsernameLayout
+      value: {fileID: 7473194567372973714}
+    - key: LeftLayout
+      value: {fileID: 3567690128478799204}
 --- !u!1 &9038309959205495743
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,7 +877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 33.33, y: 0}
+  m_AnchoredPosition: {x: 16.945, y: 0}
   m_SizeDelta: {x: 0, y: -29.6969}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6141005432998258637
@@ -902,7 +908,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SnickTrix
+  m_text: Test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
   m_sharedMaterial: {fileID: 813049023685960433, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
@@ -936,7 +942,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

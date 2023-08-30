@@ -1,5 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
+import { Game } from "Shared/Game";
+import { Player } from "Shared/Player/Player";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { AirshipUrl } from "Shared/Util/Url";
@@ -25,6 +27,7 @@ export class UserController implements OnStart {
 				const data = decode(res.data) as User;
 				print("got local user: " + inspect(data));
 				this.localUser = data;
+				(Game.LocalPlayer as Writable<Player>).userId = data.uid;
 				this.onLocalUserUpdated.Fire(this.localUser);
 			});
 		});
