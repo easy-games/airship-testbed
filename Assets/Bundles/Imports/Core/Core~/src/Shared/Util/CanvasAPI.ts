@@ -84,6 +84,16 @@ export class CanvasAPI {
 		});
 	}
 
+	public static OnInputFieldSubmit(targetGameObject: GameObject, callback: (data: string) => void): void {
+		this.Setup(targetGameObject);
+		this.eventInterceptor!.OnInputFieldSubmitEvent((instanceId, data) => {
+			/* Only run callback if instance ids match. */
+			if (instanceId === targetGameObject.GetInstanceID()) {
+				callback(data);
+			}
+		});
+	}
+
 	public static OnSelectEvent(targetGameObject: GameObject, callback: () => void): void {
 		this.Setup(targetGameObject);
 		this.eventInterceptor!.OnSelectEvent((instanceId) => {

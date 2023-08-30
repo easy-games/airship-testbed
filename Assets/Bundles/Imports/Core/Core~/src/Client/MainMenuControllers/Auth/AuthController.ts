@@ -43,15 +43,19 @@ export class AuthController implements OnStart {
 				refresh_token: refreshToken,
 			}),
 		);
-		const data = decode(res.data) as FirebaseTokenResponse;
-		this.idToken = data.id_token;
-		StateManager.SetString("firebase_idToken", data.id_token);
-		StateManager.SetString("firebase_refreshToken", data.refresh_token);
-		StateManager.SetString("firebase_localId", data.user_id);
-		this.authenticated = true;
-		this.onAuthenticated.Fire();
-		print("response: " + inspect(data));
-		return true;
+		if (res.statusCode === 200) {
+			const data = decode(res.data) as FirebaseTokenResponse;
+			this.idToken = data.id_token;
+			StateManager.SetString("firebase_idToken", data.id_token);
+			StateManager.SetString("firebase_refreshToken", data.refresh_token);
+			StateManager.SetString("firebase_localId", data.user_id);
+			this.authenticated = true;
+			this.onAuthenticated.Fire();
+			print("response: " + inspect(data));
+			return true;
+		}
+		print("failed login with refresh token: " + res.error + " statusCode=" + res.statusCode);
+		return false;
 	}
 
 	public SignUpAnon(): boolean {
@@ -62,19 +66,22 @@ export class AuthController implements OnStart {
 				returnSecureToken: true,
 			}),
 		);
-		const data = decode(res.data) as FirebaseSignUpResponse;
-		print("response: " + inspect(data));
+		if (res.statusCode === 200) {
+			const data = decode(res.data) as FirebaseSignUpResponse;
+			print("response: " + inspect(data));
 
-		this.idToken = data.idToken;
-		StateManager.SetString("firebase_idToken", data.idToken);
-		StateManager.SetString("firebase_refreshToken", data.refreshToken);
-		StateManager.SetString("firebase_localId", data.localId);
-		this.authenticated = true;
-		this.onAuthenticated.Fire();
+			this.idToken = data.idToken;
+			StateManager.SetString("firebase_idToken", data.idToken);
+			StateManager.SetString("firebase_refreshToken", data.refreshToken);
+			StateManager.SetString("firebase_localId", data.localId);
+			this.authenticated = true;
+			this.onAuthenticated.Fire();
 
-		AuthManager.SaveAuthAccount(data.refreshToken);
-
-		return true;
+			AuthManager.SaveAuthAccount(data.refreshToken);
+			return true;
+		}
+		print("failed signup up anon: " + res.error);
+		return false;
 	}
 
 	public GetAuthHeaders(): string {

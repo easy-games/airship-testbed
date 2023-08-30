@@ -1,10 +1,11 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { decode } from "Shared/json";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { Party } from "./SocketAPI";
 
 @Controller({})
@@ -30,6 +31,11 @@ export class MainMenuSocialController implements OnStart {
 			if (eventName !== "game-coordinator/party-update") return;
 			this.party = decode<Party>(data);
 			this.UpdateParty();
+		});
+
+		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");
+		CanvasAPI.OnClickEvent(addFriendsButton, () => {
+			Dependency<MainMenuAddFriendsController>().Open();
 		});
 	}
 

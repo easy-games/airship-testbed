@@ -46,8 +46,9 @@ export class MainMenuHomeController implements OnStart {
 			this.UpdateCrossSceneState();
 
 			print("pressed create server!");
-			try {
-				const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/allocate`, "{}");
+
+			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/allocate`, "{}");
+			if (res.statusCode === 200) {
 				print("data: " + res.data);
 				const data = decode(res.data) as {
 					ip: string;
@@ -55,9 +56,9 @@ export class MainMenuHomeController implements OnStart {
 				};
 				print(`got server ${data.ip}:${data.port}`);
 				TransferManager.Instance.ConnectToServer(data.ip, data.port);
-			} catch (err) {
-				warn("failed to create server: " + err);
-				this.SetError(tostring(err));
+			} else {
+				warn("failed to create server: " + res.error);
+				this.SetError(tostring(res.error));
 			}
 			this.SetButtonLoadingState(this.createServerButton, false);
 		});
@@ -67,11 +68,8 @@ export class MainMenuHomeController implements OnStart {
 			this.UpdateCrossSceneState();
 
 			print("pressed create server!");
-			try {
-				const res = InternalHttpManager.PostAsync(
-					`${this.gameCoordinatorUrl}/custom-servers/lobby/allocate`,
-					"{}",
-				);
+			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/lobby/allocate`, "{}");
+			if (res.statusCode === 200) {
 				print("data: " + res.data);
 				const data = decode(res.data) as {
 					ip: string;
@@ -79,9 +77,9 @@ export class MainMenuHomeController implements OnStart {
 				};
 				print(`got server ${data.ip}:${data.port}`);
 				TransferManager.Instance.ConnectToServer(data.ip, data.port);
-			} catch (err) {
-				warn("failed to create server: " + err);
-				this.SetError(tostring(err));
+			} else {
+				warn("failed to create server: " + res.error);
+				this.SetError(tostring(res.error));
 			}
 			this.SetButtonLoadingState(this.createLobbyButton, false);
 		});
@@ -122,10 +120,10 @@ export class MainMenuHomeController implements OnStart {
 	public ConnectToWithCode(code: string): void {
 		this.UpdateCrossSceneState();
 
-		try {
-			const res = InternalHttpManager.GetAsync(
-				`${this.gameCoordinatorUrl}/custom-servers/gameId/bedwars/code/${code}`,
-			);
+		const res = InternalHttpManager.GetAsync(
+			`${this.gameCoordinatorUrl}/custom-servers/gameId/bedwars/code/${code}`,
+		);
+		if (res.statusCode === 200) {
 			print("data: " + res.data);
 			const data = decode(res.data) as {
 				ip: string;
@@ -133,9 +131,9 @@ export class MainMenuHomeController implements OnStart {
 			};
 			print(`found server ${data.ip}:${data.port}`);
 			TransferManager.Instance.ConnectToServer(data.ip, data.port);
-		} catch (err) {
-			warn("failed to create server: " + err);
-			this.SetError(tostring(err));
+		} else {
+			warn("failed to create server: " + res.error);
+			this.SetError(tostring(res.error));
 		}
 	}
 

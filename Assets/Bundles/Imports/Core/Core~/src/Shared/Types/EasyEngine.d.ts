@@ -376,6 +376,7 @@ interface CanvasUIEventInterceptor extends Component {
 	OnPointerEvent(callback: (instanceId: number, direction: number, button: number) => void): void;
 	OnHoverEvent(callback: (instanceId: number, hoverState: number) => void): void;
 	OnSubmitEvent(callback: (instanceId: number) => void): void;
+	OnInputFieldSubmitEvent(callback: (instanceId: number, data: string) => void): void;
 	OnSelectEvent(callback: (instanceId: number) => void): void;
 	OnDeselectEvent(callback: (instanceId: number) => void): void;
 	OnClickEvent(callback: (instanceId: number) => void): void;
@@ -504,3 +505,9 @@ interface SocketManager {
 	};
 }
 declare const SocketManager: SocketManager;
+
+type HttpGetResponse = {
+	statusCode: number;
+	data: string;
+	error: undefined;
+};

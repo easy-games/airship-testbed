@@ -13050,13 +13050,6 @@ interface HttpManager {
 
 }
     
-interface HttpGetResponse {
-    statusCode: number;
-    data: string;
-    error: string;
-
-
-}
     
 interface HttpManagerConstructor {
 
@@ -13064,6 +13057,7 @@ interface HttpManagerConstructor {
     GetAsync(url: string, headers: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
+    PostAsync(url: string, data: string, headers: string): HttpGetResponse;
 }
 declare const HttpManager: HttpManagerConstructor;
     
