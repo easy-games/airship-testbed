@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import ObjectUtil from "@easy-games/unity-object-utils";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
@@ -7,9 +6,10 @@ import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
+import { AuthController } from "./Auth/AuthController";
 import { MainMenuPage } from "./MainMenuPageName";
 
-@Controller({})
+@Controller()
 export class MainMenuController implements OnStart {
 	public mainMenuGo: GameObject;
 	public refs: GameObjectReferences;
@@ -22,7 +22,7 @@ export class MainMenuController implements OnStart {
 	private rootCanvasGroup: CanvasGroup;
 	private open = false;
 
-	constructor() {
+	constructor(private readonly authController: AuthController) {
 		const mainMenuPrefab = AssetBridge.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
@@ -131,8 +131,6 @@ export class MainMenuController implements OnStart {
 		}
 
 		this.currentPageGo = this.pageMap[page];
-		print("routing to page: " + page);
-		print("currentPage: " + inspect(this.currentPageGo));
 		this.currentPageGo.SetActive(true);
 		this.currentPage = page;
 

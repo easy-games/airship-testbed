@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "987279961241",
+    "project_id": "easygg-platform-staging",
+    "storage_bucket": "easygg-platform-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987279961241:android:a26faa7a3ad1aaaaf15c08",
+        "android_client_info": {
+          "package_name": "gg.easy.airship"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987279961241-0mjidme48us0fis0vtqk4jqrsmk7ar0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_CR5bWholpZo-5mP6cdRWLti1JzT89wM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987279961241-0mjidme48us0fis0vtqk4jqrsmk7ar0n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "987279961241-e2klb9k8ikdkh12ja6m93uulm8mkmme7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "gg.easy.airship"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

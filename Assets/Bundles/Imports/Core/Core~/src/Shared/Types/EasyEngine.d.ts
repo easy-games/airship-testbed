@@ -376,6 +376,7 @@ interface CanvasUIEventInterceptor extends Component {
 	OnPointerEvent(callback: (instanceId: number, direction: number, button: number) => void): void;
 	OnHoverEvent(callback: (instanceId: number, hoverState: number) => void): void;
 	OnSubmitEvent(callback: (instanceId: number) => void): void;
+	OnInputFieldSubmitEvent(callback: (instanceId: number, data: string) => void): void;
 	OnSelectEvent(callback: (instanceId: number) => void): void;
 	OnDeselectEvent(callback: (instanceId: number) => void): void;
 	OnClickEvent(callback: (instanceId: number) => void): void;
@@ -475,3 +476,38 @@ interface TransferManagerConstructor {
 	Instance: TransferManager;
 }
 declare const TransferManager: TransferManagerConstructor;
+
+interface StateManagerStatic {
+	GetString(key: string): string | undefined;
+	SetString(key: string, value: string): void;
+	RemoveString(key: string): void;
+}
+declare const StateManager: StateManagerStatic;
+
+interface AuthSave {
+	refreshToken: string;
+	time: number;
+}
+
+interface AuthManagerStatic {
+	GetSavedAccount(): AuthSave | undefined;
+	SaveAuthAccount(refreshToken: string): void;
+}
+declare const AuthManager: AuthManagerStatic;
+
+interface SocketManager {
+	ConnectAsync(url: string, authToken: string): boolean;
+	IsConnected(): boolean;
+	SetScriptListening(val: boolean): void;
+	EmitAsync(eventName: string, data: string): void;
+	Instance: {
+		OnEvent(callback: (eventName: string, data: string) => void): void;
+	};
+}
+declare const SocketManager: SocketManager;
+
+type HttpGetResponse = {
+	statusCode: number;
+	data: string;
+	error: undefined;
+};

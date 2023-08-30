@@ -5,7 +5,7 @@ import { Game } from "Imports/Core/Shared/Game";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
-@Controller({})
+@Controller()
 export class BWLoadingScreenController implements OnStart {
 	constructor(private readonly loadingScreenController: LoadingScreenController) {
 		this.CheckWorld();
