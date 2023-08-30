@@ -1,6 +1,7 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { decode } from "Shared/json";
 import { MainMenuController } from "../MainMenuController";
@@ -34,6 +35,7 @@ export class MainMenuSocialController implements OnStart {
 		});
 
 		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");
+		CoreUI.SetupButton(addFriendsButton);
 		CanvasAPI.OnClickEvent(addFriendsButton, () => {
 			Dependency<MainMenuAddFriendsController>().Open();
 		});

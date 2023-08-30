@@ -1,5 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -66,6 +67,7 @@ export class MainMenuAddFriendsController implements OnStart {
 					usernameText.text = username;
 
 					const cancelButton = sentRefs.GetValue("UI", "CancelButton");
+					CoreUI.SetupButton(cancelButton);
 					CanvasAPI.OnClickEvent(cancelButton, () => {
 						GameObjectUtil.Destroy(sentRequestGo);
 					});
@@ -88,10 +90,13 @@ export class MainMenuAddFriendsController implements OnStart {
 				}
 			});
 
+			CoreUI.SetupButton(closeButton);
 			CanvasAPI.OnClickEvent(closeButton, () => {
 				AppManager.Close();
 			});
 		}
-		AppManager.Open(this.canvas);
+		AppManager.Open(this.canvas, {
+			noOpenSound: true,
+		});
 	}
 }

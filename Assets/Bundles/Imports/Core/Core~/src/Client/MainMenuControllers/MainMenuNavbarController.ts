@@ -34,19 +34,31 @@ export class MainMenuNavbarController implements OnStart {
 			runningGameButton.SetActive(false);
 		}
 
+		CoreUI.SetupButton(homeButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(homeButton, () => {
 			this.mainMenuController.RouteToPage(MainMenuPage.HOME);
 		});
+
+		CoreUI.SetupButton(avatarShopButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(avatarShopButton, () => {
 			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
 		});
-		CoreUI.SetupButton(settingsButton);
+
+		CoreUI.SetupButton(settingsButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(settingsButton, () => {
 			this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
 		});
+
+		CoreUI.SetupButton(myServersButton, { noHoverSound: true });
+		CanvasAPI.OnClickEvent(myServersButton, () => {
+			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
+		});
+
+		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
 			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
 		});
+		CoreUI.SetupButton(runningGameCloseButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameCloseButton, () => {
 			this.Disconnect();
 		});
