@@ -31,7 +31,7 @@ export class UserController implements OnStart {
 
 	private FetchLocalUser(): void {
 		const res = HttpManager.GetAsync(`${AirshipUrl.UserService}/users/self`, this.authController.GetAuthHeaders());
-		if (res.statusCode === 200) {
+		if (res.success) {
 			const data = decode(res.data) as User;
 			print("got local user: " + inspect(data));
 			this.localUser = data;

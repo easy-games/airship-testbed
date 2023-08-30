@@ -8,14 +8,15 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AirshipUrl } from "Shared/Util/Url";
 import { encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
+import { SocketController } from "../Socket/SocketController";
 
 @Controller({})
 export class MainMenuAddFriendsController implements OnStart {
-	private sendRequests = new Set<string>();
+	private sentRequests = new Set<string>();
 
 	private canvas: Canvas | undefined;
 
-	constructor(private readonly authController: AuthController) {}
+	constructor(private readonly authController: AuthController, private readonly socketController: SocketController) {}
 
 	OnStart(): void {}
 
@@ -50,12 +51,14 @@ export class MainMenuAddFriendsController implements OnStart {
 					}),
 					this.authController.GetAuthHeaders(),
 				);
-				if (res.statusCode === 200) {
+				print("status code=" + res.statusCode);
+				if (res.success) {
 					SetResponseText("success", `Sent friend request to ${username}`);
 
-					if (this.sendRequests.has(username)) {
+					if (this.sentRequests.has(username)) {
 						return;
 					}
+					this.sentRequests.add(username);
 					const sentRequestGo = GameObjectUtil.InstantiateIn(
 						AssetBridge.LoadAsset(
 							"Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/SentFriendRequest.prefab",

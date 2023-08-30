@@ -1,5 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { decode, encode } from "Shared/json";
 import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI";
@@ -17,7 +18,21 @@ export class AuthController implements OnStart {
 		this.TryAutoLogin();
 	}
 
+	public async WaitForAuthed(): Promise<void> {
+		if (this.authenticated) {
+			return;
+		}
+		return new Promise<void>((resolve) => {
+			this.onAuthenticated.Wait();
+			resolve();
+		});
+	}
+
 	public TryAutoLogin(): boolean {
+		if (RunUtil.IsClone()) {
+			return this.SignUpAnon();
+		}
+
 		const existingRefreshToken = StateManager.GetString("firebase_refreshToken");
 		if (existingRefreshToken) {
 			print("Found refresh token in state. Attempting login...");
@@ -43,7 +58,7 @@ export class AuthController implements OnStart {
 				refresh_token: refreshToken,
 			}),
 		);
-		if (res.statusCode === 200) {
+		if (res.success) {
 			const data = decode(res.data) as FirebaseTokenResponse;
 			this.idToken = data.id_token;
 			StateManager.SetString("firebase_idToken", data.id_token);
@@ -66,7 +81,7 @@ export class AuthController implements OnStart {
 				returnSecureToken: true,
 			}),
 		);
-		if (res.statusCode === 200) {
+		if (res.success) {
 			const data = decode(res.data) as FirebaseSignUpResponse;
 			print("response: " + inspect(data));
 
@@ -77,7 +92,9 @@ export class AuthController implements OnStart {
 			this.authenticated = true;
 			this.onAuthenticated.Fire();
 
-			AuthManager.SaveAuthAccount(data.refreshToken);
+			if (!RunUtil.IsClone()) {
+				AuthManager.SaveAuthAccount(data.refreshToken);
+			}
 			return true;
 		}
 		print("failed signup up anon: " + res.error);

@@ -2,12 +2,12 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { AirshipUrl } from "Shared/Util/Url";
-import { encode } from "Shared/json";
+import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 
 @Controller({})
 export class SocketController implements OnStart {
-	public onEvent = new Signal<[eventName: string, data: string]>();
+	private onEvent = new Signal<[eventName: string, data: string]>();
 	constructor(private readonly authController: AuthController) {}
 	OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
@@ -25,6 +25,14 @@ export class SocketController implements OnStart {
 			Task.Spawn(() => {
 				this.Connect();
 			});
+		});
+	}
+
+	public On<T = unknown>(eventName: string, callback: (data: T) => void): void {
+		this.onEvent.Connect((e, d) => {
+			if (e === eventName) {
+				callback(decode(d));
+			}
 		});
 	}
 

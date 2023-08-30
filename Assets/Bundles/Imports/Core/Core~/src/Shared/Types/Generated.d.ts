@@ -3758,6 +3758,7 @@ interface RunCoreConstructor {
 
 
     IsClient(): boolean;
+    IsClone(): boolean;
     IsEditor(): boolean;
     IsServer(): boolean;
 }

@@ -48,7 +48,7 @@ export class MainMenuHomeController implements OnStart {
 			print("pressed create server!");
 
 			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/allocate`, "{}");
-			if (res.statusCode === 200) {
+			if (res.success) {
 				print("data: " + res.data);
 				const data = decode(res.data) as {
 					ip: string;
@@ -69,7 +69,7 @@ export class MainMenuHomeController implements OnStart {
 
 			print("pressed create server!");
 			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/lobby/allocate`, "{}");
-			if (res.statusCode === 200) {
+			if (res.success) {
 				print("data: " + res.data);
 				const data = decode(res.data) as {
 					ip: string;
@@ -123,7 +123,7 @@ export class MainMenuHomeController implements OnStart {
 		const res = InternalHttpManager.GetAsync(
 			`${this.gameCoordinatorUrl}/custom-servers/gameId/bedwars/code/${code}`,
 		);
-		if (res.statusCode === 200) {
+		if (res.success) {
 			print("data: " + res.data);
 			const data = decode(res.data) as {
 				ip: string;

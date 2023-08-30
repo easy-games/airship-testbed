@@ -1,6 +1,7 @@
 const isClient = RunCore.IsClient();
 const isServer = RunCore.IsServer();
 const isEditor = RunCore.IsEditor();
+const isClone = RunCore.IsClone();
 
 const platform = Application.platform;
 
@@ -15,6 +16,10 @@ export class RunUtil {
 
 	public static IsEditor(): boolean {
 		return isEditor;
+	}
+
+	public static IsClone(): boolean {
+		return isClone;
 	}
 
 	public static IsWindows(): boolean {

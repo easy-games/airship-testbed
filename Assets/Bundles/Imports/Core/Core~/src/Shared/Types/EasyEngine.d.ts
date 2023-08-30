@@ -507,7 +507,8 @@ interface SocketManager {
 declare const SocketManager: SocketManager;
 
 type HttpGetResponse = {
+	success: boolean;
 	statusCode: number;
 	data: string;
-	error: undefined;
+	error: string;
 };

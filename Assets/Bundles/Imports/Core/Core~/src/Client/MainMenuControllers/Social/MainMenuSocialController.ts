@@ -3,7 +3,6 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { decode } from "Shared/json";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
@@ -28,9 +27,8 @@ export class MainMenuSocialController implements OnStart {
 
 	private Setup(): void {
 		this.UpdateParty();
-		this.socketController.onEvent.Connect((eventName, data) => {
-			if (eventName !== "game-coordinator/party-update") return;
-			this.party = decode<Party>(data);
+		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			this.party = data;
 			this.UpdateParty();
 		});
 
