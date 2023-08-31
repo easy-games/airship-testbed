@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { Game } from "Shared/Game";
@@ -69,15 +70,19 @@ export class FriendsController implements OnStart {
 	}
 
 	public Setup(): void {
-		const statusTextInput = this.mainMenuController.refs.GetValue(
-			"Social",
-			"StatusTextInputField",
-		) as TMP_InputField;
+		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
 		const savedStatus = StateManager.GetString("social:status-text");
 		if (savedStatus) {
 			this.statusText = savedStatus;
 			statusTextInput.text = savedStatus;
 		}
+		CanvasAPI.OnInputFieldSubmit(statusTextInput.gameObject, (data) => {
+			print("update status: " + data);
+			this.statusText = data;
+			StateManager.SetString("social:status-text", data);
+			this.SendStatusUpdate();
+			EventSystem.current.ClearSelected();
+		});
 	}
 
 	public SetStatusText(text: string): void {
@@ -132,14 +137,17 @@ export class FriendsController implements OnStart {
 
 	public UpdateFriendsList(): void {
 		let sorted = this.friendStatuses.sort((a, b) => {
-			if (a.status === "online" && b.status === "offline") {
+			let aOnline = a.status === "online" || a.status === "in_game";
+			let bOnline = b.status === "online" || b.status === "in_game";
+			if (aOnline && !bOnline) {
 				return true;
 			}
-			if (a.status === "offline" && b.status === "online") {
+			if (!aOnline && bOnline) {
 				return false;
 			}
 			return a.username < b.username;
 		});
+		print("sorted: " + inspect(sorted.map((f) => f.username)));
 
 		const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
 		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
@@ -208,12 +216,24 @@ export class FriendsController implements OnStart {
 				}
 			}
 			username.text = friend.username;
+			if (friend.metadata) {
+				status.text = friend.metadata.statusText;
+			} else {
+				status.text = "";
+			}
 			if (friend.status === "online") {
 				canvasGroup.alpha = 1;
 				statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
+				status.color = new Color(1, 1, 1, 1);
+			} else if (friend.status === "in_game") {
+				canvasGroup.alpha = 1;
+				statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
+				status.color = ColorUtil.HexToColor("70D4FF");
+				status.text = `Playing ${friend.game ?? "???"}`;
 			} else {
 				canvasGroup.alpha = 0.5;
 				statusIndicator.color = ColorUtil.HexToColor("#9C9C9C");
+				status.color = new Color(1, 1, 1, 1);
 			}
 			i++;
 		}

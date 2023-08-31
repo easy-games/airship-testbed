@@ -56,10 +56,13 @@ export type Party = {
 };
 
 export type FriendStatus = {
-	status: "offline" | "online";
+	status: "offline" | "online" | "in_game";
 	userId: string;
 	username: string;
 	discriminator: string;
 	discriminatedUsername: string;
-	metadata?: unknown;
+	metadata?: {
+		statusText: string;
+	};
+	game?: string;
 };
