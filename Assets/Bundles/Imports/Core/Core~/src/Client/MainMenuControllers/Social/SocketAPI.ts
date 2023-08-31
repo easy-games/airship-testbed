@@ -54,3 +54,12 @@ export type Party = {
 	mode: PartyMode;
 	lastUpdated: number;
 };
+
+export type FriendStatus = {
+	status: "offline" | "online";
+	userId: string;
+	username: string;
+	discriminator: string;
+	discriminatedUsername: string;
+	metadata?: unknown;
+};

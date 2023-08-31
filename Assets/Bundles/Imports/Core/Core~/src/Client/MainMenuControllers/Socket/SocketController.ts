@@ -36,7 +36,10 @@ export class SocketController implements OnStart {
 		});
 	}
 
-	public Emit(eventName: string, data: unknown): void {
+	public Emit(eventName: string, data: unknown = undefined): void {
+		if (data === undefined) {
+			data = { _hold: "yes" };
+		}
 		Task.Spawn(() => {
 			SocketManager.EmitAsync(eventName, encode(data));
 		});

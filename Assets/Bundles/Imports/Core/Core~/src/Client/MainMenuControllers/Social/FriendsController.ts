@@ -1,35 +1,87 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
+import Object from "@easy-games/unity-object-utils";
+import { Game } from "Shared/Game";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { AirshipUrl } from "Shared/Util/Url";
 import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
+import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { User } from "../User/User";
+import { FriendStatus } from "./SocketAPI";
 
 @Controller({})
 export class FriendsController implements OnStart {
 	public friends: User[] = [];
 	public incomingFriendRequests: User[] = [];
 	public outgoingFriendRequests: User[] = [];
+	public friendStatuses: FriendStatus[] = [];
+	private renderedFriendUids = new Set<string>();
+	private statusText = "";
 
-	constructor(private readonly authController: AuthController, private readonly socketController: SocketController) {}
+	constructor(
+		private readonly authController: AuthController,
+		private readonly socketController: SocketController,
+		private readonly mainMenuController: MainMenuController,
+	) {}
 
 	OnStart(): void {
+		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
+		friendsContent.ClearChildren();
+
 		this.authController.WaitForAuthed().then(() => {
-			this.Update();
+			this.SendStatusUpdate();
+			this.FetchFriends();
 		});
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-requested", (data) => {
-			this.Update();
+			this.FetchFriends();
 		});
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-accepted", (data) => {
-			this.Update();
+			this.FetchFriends();
+			this.socketController.Emit("refresh-friends-status");
+		});
+
+		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
+			for (const newFriend of data) {
+				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
+				if (existing) {
+					Object.assign(existing, newFriend);
+				} else {
+					this.friendStatuses.push(newFriend);
+				}
+			}
+			this.UpdateFriendsList();
+		});
+
+		this.socketController.On("game-coordinator/status-update-request", (data) => {
+			this.SendStatusUpdate();
 		});
 	}
 
-	public Update(): void {
+	public SetStatusText(text: string): void {
+		this.statusText = text;
+	}
+
+	public GetStatusText(): string {
+		return this.statusText;
+	}
+
+	public SendStatusUpdate(): void {
+		const status: Partial<FriendStatus> = {
+			userId: Game.LocalPlayer.userId,
+			status: "online",
+			metadata: {
+				statusText: this.statusText,
+			},
+		};
+		this.socketController.Emit("update-status", status);
+	}
+
+	public FetchFriends(): void {
 		const res = HttpManager.GetAsync(
 			AirshipUrl.UserService + "/friends/requests/self",
 			this.authController.GetAuthHeaders(),
@@ -42,7 +94,6 @@ export class FriendsController implements OnStart {
 			outgoingRequests: User[];
 			incomingRequests: User[];
 		};
-		print("friends packet: " + inspect(data));
 		this.friends = data.friends;
 		this.incomingFriendRequests = data.incomingRequests;
 		this.outgoingFriendRequests = data.outgoingRequests;
@@ -58,6 +109,80 @@ export class FriendsController implements OnStart {
 					this.authController.GetAuthHeaders(),
 				);
 			});
+		}
+	}
+
+	public UpdateFriendsList(): void {
+		let sorted = this.friendStatuses.sort((a, b) => {
+			if (a.status === "online" && b.status === "offline") {
+				return true;
+			}
+			if (a.status === "offline" && b.status === "online") {
+				return false;
+			}
+			return a.username < b.username;
+		});
+
+		const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
+		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
+		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
+
+		// Add & update
+		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
+		let i = 0;
+		for (const friend of sorted) {
+			let go: GameObject | undefined = friendsContent.transform.FindChild(friend.userId)?.gameObject;
+			let init = false;
+			if (go === undefined) {
+				go = GameObjectUtil.InstantiateIn(
+					AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
+					friendsContent.transform,
+				);
+				go.name = friend.userId;
+				this.renderedFriendUids.add(friend.userId);
+				init = true;
+			}
+			go.transform.SetSiblingIndex(i);
+
+			const refs = go.GetComponent<GameObjectReferences>();
+			const username = refs.GetValue("UI", "Username") as TMP_Text;
+			const status = refs.GetValue("UI", "Status") as TMP_Text;
+			const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
+			const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
+			const canvasGroup = go.GetComponent<CanvasGroup>();
+
+			if (init) {
+				const texture = AssetBridge.LoadAssetIfExists<Texture2D>(
+					"Assets/Bundles/Imports/Core/Shared/Resources/Images/ProfilePictures/Cat.png",
+				);
+				if (texture !== undefined) {
+					profileImage.sprite = Bridge.MakeSprite(texture);
+				}
+			}
+			username.text = friend.username;
+			if (friend.status === "online") {
+				canvasGroup.alpha = 1;
+				statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
+			} else {
+				canvasGroup.alpha = 0.5;
+				statusIndicator.color = ColorUtil.HexToColor("#9C9C9C");
+			}
+			i++;
+		}
+
+		// Remove
+		let removed = new Array<string>();
+		for (const renderedUid of this.renderedFriendUids) {
+			if (this.friendStatuses.find((f) => f.userId === renderedUid) === undefined) {
+				const go = friendsContent.transform.FindChild(renderedUid);
+				if (go) {
+					GameObjectUtil.Destroy(go.gameObject);
+					removed.push(renderedUid);
+				}
+			}
+		}
+		for (let uid of removed) {
+			this.renderedFriendUids.delete(uid);
 		}
 	}
 }
