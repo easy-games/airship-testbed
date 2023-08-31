@@ -18,7 +18,7 @@ export class MainMenuController implements OnStart {
 	public OnCurrentPageChanged = new Signal<[page: MainMenuPage, oldPage: MainMenuPage | undefined]>();
 	private pageMap: Record<MainMenuPage, GameObject>;
 	private wrapperRect: RectTransform;
-	private rootCanvas: Canvas;
+	public rootCanvas: Canvas;
 	private rootCanvasGroup: CanvasGroup;
 	private open = false;
 

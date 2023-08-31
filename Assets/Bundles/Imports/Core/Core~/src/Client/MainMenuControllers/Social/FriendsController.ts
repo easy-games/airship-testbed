@@ -1,7 +1,10 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { Mouse } from "Shared/UserInput";
+import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { AirshipUrl } from "Shared/Util/Url";
@@ -25,6 +28,7 @@ export class FriendsController implements OnStart {
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
 		private readonly mainMenuController: MainMenuController,
+		private readonly rightClickMenuController: RightClickMenuController,
 	) {}
 
 	OnStart(): void {
@@ -60,6 +64,20 @@ export class FriendsController implements OnStart {
 		this.socketController.On("game-coordinator/status-update-request", (data) => {
 			this.SendStatusUpdate();
 		});
+
+		this.Setup();
+	}
+
+	public Setup(): void {
+		const statusTextInput = this.mainMenuController.refs.GetValue(
+			"Social",
+			"StatusTextInputField",
+		) as TMP_InputField;
+		const savedStatus = StateManager.GetString("social:status-text");
+		if (savedStatus) {
+			this.statusText = savedStatus;
+			statusTextInput.text = savedStatus;
+		}
 	}
 
 	public SetStatusText(text: string): void {
@@ -127,6 +145,8 @@ export class FriendsController implements OnStart {
 		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
 		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
+		const mouse = new Mouse();
+
 		// Add & update
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		let i = 0;
@@ -141,6 +161,30 @@ export class FriendsController implements OnStart {
 				go.name = friend.userId;
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
+
+				CanvasAPI.OnPointerEvent(go, (direction, button) => {
+					if (button === PointerButton.RIGHT) {
+						print("right clicked " + friend.username);
+						this.rightClickMenuController.OpenRightClickMenu(
+							this.mainMenuController.rootCanvas,
+							mouse.GetLocation(),
+							[
+								{
+									text: "Invite to Party",
+									onClick: () => {},
+								},
+								{
+									text: "Send Message",
+									onClick: () => {},
+								},
+								{
+									text: "Unfriend",
+									onClick: () => {},
+								},
+							],
+						);
+					}
+				});
 			}
 			go.transform.SetSiblingIndex(i);
 

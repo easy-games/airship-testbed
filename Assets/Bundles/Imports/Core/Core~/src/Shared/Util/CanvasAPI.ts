@@ -33,8 +33,12 @@ export class CanvasAPI {
 		this.canvasUIEvents.RegisterEvents(gameObject);
 	}
 
-	public static IsPointerOverUI() {
+	public static IsPointerOverUI(): boolean {
 		return this.canvasHitDetector.IsPointerOverUI();
+	}
+
+	public static IsPointerOverTarget(target: GameObject): boolean {
+		return this.canvasHitDetector.IsPointerOverTarget(target);
 	}
 
 	/**

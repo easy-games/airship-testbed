@@ -102,7 +102,7 @@ export class MainMenuAddFriendsController implements OnStart {
 			noOpenSound: true,
 		});
 		const wrapper = this.canvas.transform.GetChild(0);
-		wrapper.localPosition = new Vector3(0, -20, 0);
+		wrapper.localPosition = new Vector3(0, 15, 0);
 		wrapper.TweenLocalPosition(new Vector3(0, 0, 0), 0.1);
 	}
 }

@@ -3,6 +3,7 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
@@ -31,6 +32,12 @@ export class MainMenuSocialController implements OnStart {
 			this.party = data;
 			this.UpdateParty();
 		});
+
+		Dependency<AuthController>()
+			.WaitForAuthed()
+			.then(() => {
+				this.UpdateParty();
+			});
 
 		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");
 		CoreUI.SetupButton(addFriendsButton);

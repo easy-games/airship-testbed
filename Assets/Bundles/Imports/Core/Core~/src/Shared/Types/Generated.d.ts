@@ -12536,6 +12536,7 @@ interface CanvasHitDetector extends MonoBehaviour {
 
     constructor(): CanvasHitDetector;
 
+    IsPointerOverTarget(target: GameObject): boolean;
     IsPointerOverUI(): boolean;
 }
     
@@ -12779,6 +12780,7 @@ interface BridgeConstructor {
     IsFullScreen(): boolean;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
+    ScreenPointToLocalPointInRectangle(rectTransform: RectTransform, screenPoint: Vector2): Vector2;
     SetFullScreen(value: boolean): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetVolume(volume: number): void;
@@ -13249,4 +13251,28 @@ interface LayoutRebuilderConstructor {
     MarkLayoutForRebuild(rect: RectTransform): void;
 }
 declare const LayoutRebuilder: LayoutRebuilderConstructor;
+    
+interface RectTransformUtility {
+
+
+}
+    
+interface RectTransformUtilityConstructor {
+
+
+    CalculateRelativeRectTransformBounds(root: Transform, child: Transform): Bounds;
+    CalculateRelativeRectTransformBounds(trans: Transform): Bounds;
+    FlipLayoutAxes(rect: RectTransform, keepPositioning: boolean, recursive: boolean): void;
+    FlipLayoutOnAxis(rect: RectTransform, axis: number, keepPositioning: boolean, recursive: boolean): void;
+    PixelAdjustPoint(point: Vector2, elementTransform: Transform, canvas: Canvas): Vector2;
+    PixelAdjustRect(rectTransform: RectTransform, canvas: Canvas): Rect;
+    RectangleContainsScreenPoint(rect: RectTransform, screenPoint: Vector2): boolean;
+    RectangleContainsScreenPoint(rect: RectTransform, screenPoint: Vector2, cam: Camera): boolean;
+    RectangleContainsScreenPoint(rect: RectTransform, screenPoint: Vector2, cam: Camera, offset: Vector4): boolean;
+    ScreenPointToLocalPointInRectangle(rect: RectTransform, screenPoint: Vector2, cam: Camera, localPoint: unknown): boolean;
+    ScreenPointToRay(cam: Camera, screenPos: Vector2): Ray;
+    ScreenPointToWorldPointInRectangle(rect: RectTransform, screenPoint: Vector2, cam: Camera, worldPoint: unknown): boolean;
+    WorldToScreenPoint(cam: Camera, worldPoint: Vector3): Vector2;
+}
+declare const RectTransformUtility: RectTransformUtilityConstructor;
 
