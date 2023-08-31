@@ -171,7 +171,11 @@ export class FriendsController implements OnStart {
 							[
 								{
 									text: "Invite to Party",
-									onClick: () => {},
+									onClick: () => {
+										this.socketController.Emit("invite-to-party", {
+											userToAdd: friend.userId,
+										});
+									},
 								},
 								{
 									text: "Send Message",

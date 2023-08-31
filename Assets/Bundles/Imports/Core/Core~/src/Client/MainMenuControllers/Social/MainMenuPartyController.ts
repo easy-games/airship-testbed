@@ -10,7 +10,7 @@ import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { Party } from "./SocketAPI";
 
 @Controller({})
-export class MainMenuSocialController implements OnStart {
+export class MainMenuPartyController implements OnStart {
 	private party: Party | undefined;
 
 	private partyMemberPrefab = AssetBridge.LoadAsset<GameObject>(
@@ -23,15 +23,22 @@ export class MainMenuSocialController implements OnStart {
 	) {}
 
 	OnStart(): void {
+		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			this.party = data;
+			this.UpdateParty();
+		});
+
+		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
+			this.socketController.Emit("join-party", {
+				partyId: data.partyId,
+			});
+		});
+
 		this.Setup();
 	}
 
 	private Setup(): void {
 		this.UpdateParty();
-		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
-			this.party = data;
-			this.UpdateParty();
-		});
 
 		Dependency<AuthController>()
 			.WaitForAuthed()
@@ -86,6 +93,8 @@ export class MainMenuSocialController implements OnStart {
 			Object.Destroy(go);
 		}
 
+		let isLocalPartyLeader = Game.LocalPlayer.userId === this.party.leader;
+
 		// Add new & update existing
 		for (const member of this.party.members) {
 			let go: GameObject;
@@ -104,10 +113,9 @@ export class MainMenuSocialController implements OnStart {
 
 			const kickButton = refs.GetValue("UI", "KickButton");
 
-			let showModTools = false;
-
-			if (member.uid === this.party.leader && member.uid !== Game.LocalPlayer.userId) {
-				showModTools = true;
+			let showModTools = isLocalPartyLeader;
+			if (member.uid === Game.LocalPlayer.userId) {
+				showModTools = false;
 			}
 
 			if (showModTools) {
