@@ -131,6 +131,8 @@ export class FriendsController implements OnStart {
 					}),
 					this.authController.GetAuthHeaders(),
 				);
+
+				this.socketController.Emit("refresh-friends-status");
 			});
 		}
 	}
