@@ -194,7 +194,9 @@ export class FriendsController implements OnStart {
 								},
 								{
 									text: "Send Message",
-									onClick: () => {},
+									onClick: () => {
+										Dependency<DirectMessageController>().OpenFriend(friend.userId);
+									},
 								},
 								{
 									text: "Unfriend",
