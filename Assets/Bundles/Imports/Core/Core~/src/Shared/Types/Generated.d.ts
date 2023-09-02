@@ -2550,6 +2550,16 @@ declare const enum FitMode {
     MinSize = 1,
     PreferredSize = 2,
 }
+declare const enum MovementType {
+    Unrestricted = 0,
+    Elastic = 1,
+    Clamped = 2,
+}
+declare const enum ScrollbarVisibility {
+    Permanent = 0,
+    AutoHide = 1,
+    AutoHideAndExpandViewport = 2,
+}
 
     
 interface RaycastHit {
@@ -12784,6 +12794,7 @@ interface BridgeConstructor {
     SetFullScreen(value: boolean): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetVolume(volume: number): void;
+    UpdateLayout(xform: Transform, recursive: boolean): void;
 }
 declare const Bridge: BridgeConstructor;
     
@@ -13275,4 +13286,56 @@ interface RectTransformUtilityConstructor {
     WorldToScreenPoint(cam: Camera, worldPoint: Vector3): Vector2;
 }
 declare const RectTransformUtility: RectTransformUtilityConstructor;
+    
+interface ScrollRect extends UIBehaviour, ILayoutGroup, IBeginDragHandler, IInitializePotentialDragHandler, IDragHandler, IEndDragHandler, ICanvasElement, IScrollHandler, ILayoutElement {
+    content: RectTransform;
+    horizontal: boolean;
+    vertical: boolean;
+    movementType: MovementType;
+    elasticity: number;
+    inertia: boolean;
+    decelerationRate: number;
+    scrollSensitivity: number;
+    viewport: RectTransform;
+    horizontalScrollbar: Scrollbar;
+    verticalScrollbar: Scrollbar;
+    horizontalScrollbarVisibility: ScrollbarVisibility;
+    verticalScrollbarVisibility: ScrollbarVisibility;
+    horizontalScrollbarSpacing: number;
+    verticalScrollbarSpacing: number;
+    onValueChanged: ScrollRectEvent;
+    velocity: Vector2;
+    normalizedPosition: Vector2;
+    horizontalNormalizedPosition: number;
+    verticalNormalizedPosition: number;
+    minWidth: number;
+    preferredWidth: number;
+    flexibleWidth: number;
+    minHeight: number;
+    preferredHeight: number;
+    flexibleHeight: number;
+    layoutPriority: number;
+
+
+    CalculateLayoutInputHorizontal(): void;
+    CalculateLayoutInputVertical(): void;
+    GraphicUpdateComplete(): void;
+    IsActive(): boolean;
+    LayoutComplete(): void;
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnEndDrag(eventData: PointerEventData): void;
+    OnInitializePotentialDrag(eventData: PointerEventData): void;
+    OnScroll(data: PointerEventData): void;
+    Rebuild(executing: CanvasUpdate): void;
+    SetLayoutHorizontal(): void;
+    SetLayoutVertical(): void;
+    StopMovement(): void;
+}
+    
+interface ScrollRectEvent {
+
+    constructor(): ScrollRectEvent;
+
+}
 

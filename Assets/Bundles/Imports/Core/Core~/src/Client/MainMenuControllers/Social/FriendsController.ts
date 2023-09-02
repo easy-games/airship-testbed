@@ -1,9 +1,10 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CoreUI } from "Shared/UI/CoreUI";
 import { Mouse } from "Shared/UserInput";
 import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -14,6 +15,7 @@ import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { User } from "../User/User";
+import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 import { FriendStatus } from "./SocketAPI";
 
 @Controller({})
@@ -172,6 +174,9 @@ export class FriendsController implements OnStart {
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
 
+				CoreUI.SetupButton(go, {
+					noHoverSound: true,
+				});
 				CanvasAPI.OnPointerEvent(go, (direction, button) => {
 					if (button === PointerButton.RIGHT) {
 						print("right clicked " + friend.username);
@@ -197,46 +202,17 @@ export class FriendsController implements OnStart {
 								},
 							],
 						);
+					} else if (button === PointerButton.LEFT) {
+						Dependency<DirectMessageController>().OpenFriend(friend.userId);
 					}
 				});
 			}
 			go.transform.SetSiblingIndex(i);
 
 			const refs = go.GetComponent<GameObjectReferences>();
-			const username = refs.GetValue("UI", "Username") as TMP_Text;
-			const status = refs.GetValue("UI", "Status") as TMP_Text;
-			const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
-			const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
-			const canvasGroup = go.GetComponent<CanvasGroup>();
-
-			if (init) {
-				const texture = AssetBridge.LoadAssetIfExists<Texture2D>(
-					"Assets/Bundles/Imports/Core/Shared/Resources/Images/ProfilePictures/Cat.png",
-				);
-				if (texture !== undefined) {
-					profileImage.sprite = Bridge.MakeSprite(texture);
-				}
-			}
-			username.text = friend.username;
-			if (friend.metadata) {
-				status.text = friend.metadata.statusText;
-			} else {
-				status.text = "";
-			}
-			if (friend.status === "online") {
-				canvasGroup.alpha = 1;
-				statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
-				status.color = new Color(1, 1, 1, 1);
-			} else if (friend.status === "in_game") {
-				canvasGroup.alpha = 1;
-				statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
-				status.color = ColorUtil.HexToColor("70D4FF");
-				status.text = `Playing ${friend.game ?? "???"}`;
-			} else {
-				canvasGroup.alpha = 0.5;
-				statusIndicator.color = ColorUtil.HexToColor("#9C9C9C");
-				status.color = new Color(1, 1, 1, 1);
-			}
+			this.UpdateFriendStatusUI(friend, refs, {
+				loadImage: init,
+			});
 			i++;
 		}
 
@@ -253,6 +229,53 @@ export class FriendsController implements OnStart {
 		}
 		for (let uid of removed) {
 			this.renderedFriendUids.delete(uid);
+		}
+	}
+
+	public GetFriendStatus(uid: string): FriendStatus | undefined {
+		return this.friendStatuses.find((f) => f.userId === uid);
+	}
+
+	public UpdateFriendStatusUI(
+		friend: FriendStatus,
+		refs: GameObjectReferences,
+		config: {
+			loadImage: boolean;
+		},
+	): void {
+		const username = refs.GetValue("UI", "Username") as TMP_Text;
+		const status = refs.GetValue("UI", "Status") as TMP_Text;
+		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
+		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
+		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>();
+
+		if (config.loadImage) {
+			const texture = AssetBridge.LoadAssetIfExists<Texture2D>(
+				"Assets/Bundles/Imports/Core/Shared/Resources/Images/ProfilePictures/Cat.png",
+			);
+			if (texture !== undefined) {
+				profileImage.sprite = Bridge.MakeSprite(texture);
+			}
+		}
+		username.text = friend.username;
+		if (friend.metadata) {
+			status.text = friend.metadata.statusText;
+		} else {
+			status.text = "";
+		}
+		if (friend.status === "online") {
+			canvasGroup.alpha = 1;
+			statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
+			status.color = new Color(1, 1, 1, 1);
+		} else if (friend.status === "in_game") {
+			canvasGroup.alpha = 1;
+			statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
+			status.color = ColorUtil.HexToColor("70D4FF");
+			status.text = `Playing ${friend.game ?? "???"}`;
+		} else {
+			canvasGroup.alpha = 0.5;
+			statusIndicator.color = ColorUtil.HexToColor("#9C9C9C");
+			status.color = new Color(1, 1, 1, 1);
 		}
 	}
 }
