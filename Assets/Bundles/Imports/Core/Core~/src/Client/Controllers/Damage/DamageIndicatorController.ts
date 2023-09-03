@@ -16,7 +16,10 @@ export class DamageIndicatorController implements OnStart {
 			event.entity.anim?.PlayTakeDamage(event.amount, event.damageType, entityGO.transform.position, entityGO);
 
 			// Damage taken sound
-			AudioManager.PlayAtPosition("Damage_Taken.wav", entityGO.transform.position);
+			AudioManager.PlayAtPosition(
+				"Imports/Core/Shared/Resources/Sound/Damage_Taken.wav",
+				entityGO.transform.position,
+			);
 
 			// Indicator
 			// const indicatorGO = GameObjectBridge.InstantiateAt(

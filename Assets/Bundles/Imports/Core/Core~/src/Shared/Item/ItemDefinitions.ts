@@ -19,6 +19,8 @@ import {
 } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 
+const coreSoundPath = "Imports/Core/Shared/Resources/Sound/";
+
 const defaultGravity = PhysicsUtil.Gravity;
 const defaultItemMechanics: ItemMechanicsMeta = {
 	startUpInSeconds: 0,
@@ -41,7 +43,7 @@ const swordItemMechanics: ItemMechanicsMeta = {
 const swordItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemSword,
 	onUsePrefabId: Bundle_ItemSword_Prefabs.OnUse,
-	onUseSound: ["Sword_Swing_03.wav"],
+	onUseSound: [coreSoundPath + "Sword_Swing_03.wav"],
 	onUseSoundVolume: 0.3,
 };
 const pickaxeItemAssets: ItemAssetsMeta = {
@@ -62,7 +64,7 @@ const throwableItemAssets: ItemAssetsMeta = {
 
 const bowItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemBow,
-	onUseSound: ["BowArrowFire"],
+	onUseSound: [coreSoundPath + "BowArrowFire"],
 	onUseSoundVolume: 0.5,
 };
 
@@ -83,23 +85,38 @@ const defaultBreakBlock: BreakBlockMeta = {
 const defaultBlock: BlockMeta = {
 	blockId: 0,
 	blockArchetype: BlockArchetype.NONE,
-	stepSound: ["Footstep_Grass_01", "Footstep_Grass_02", "Footstep_Grass_03", "Footstep_Grass_04"],
+	stepSound: [
+		coreSoundPath + "Footstep_Grass_01",
+		coreSoundPath + "Footstep_Grass_02",
+		coreSoundPath + "Footstep_Grass_03",
+		coreSoundPath + "Footstep_Grass_04",
+	],
 };
 
 const woolBlock: BlockMeta = {
 	...defaultBlock,
 	health: 10,
 	blockId: 33,
-	stepSound: ["Footstep_Wool_01", "Footstep_Wool_02", "Footstep_Wool_03", "Footstep_Wool_04"],
-	placeSound: ["Wool_Place.ogg"],
-	hitSound: ["Wool_Hit.ogg"],
-	breakSound: ["Wool_Break.ogg"],
+	stepSound: [
+		coreSoundPath + "Footstep_Wool_01",
+		coreSoundPath + "Footstep_Wool_02",
+		coreSoundPath + "Footstep_Wool_03",
+		coreSoundPath + "Footstep_Wool_04",
+	],
+	placeSound: [coreSoundPath + "Wool_Place.ogg"],
+	hitSound: [coreSoundPath + "Wool_Hit.ogg"],
+	breakSound: [coreSoundPath + "Wool_Break.ogg"],
 	blockArchetype: BlockArchetype.WOOL,
 };
 
 const stoneBlock: BlockMeta = {
 	...defaultBlock,
-	stepSound: ["Footstep_Stone_01", "Footstep_Stone_02", "Footstep_Stone_03", "Footstep_Stone_04"],
+	stepSound: [
+		coreSoundPath + "Footstep_Stone_01",
+		coreSoundPath + "Footstep_Stone_02",
+		coreSoundPath + "Footstep_Stone_03",
+		coreSoundPath + "Footstep_Stone_04",
+	],
 };
 
 export const items: {

@@ -135,7 +135,7 @@ export class AudioManager {
 		//print("Loading clip: " + this.SoundFolderPath +":::"+this.FriendlyPath(sound));
 
 		if (StringUtils.includes(sound, "Imports/")) {
-			return this.LoadFullPathAudioClip(sound);
+			return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
 		}
 		return this.LoadFullPathAudioClip(this.SoundFolderPath + this.FriendlyPath(sound));
 	}

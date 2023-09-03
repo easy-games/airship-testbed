@@ -322,13 +322,13 @@ export class ReferenceManagerAssets{
 			id: Bundle_Entity.Movement,
 			filePaths: new Map([
 				[Bundle_Entity_Movement.SprintTrail, "Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab"],
-				[Bundle_Entity_Movement.JumpSFX, "Shared/Resources/Sound/Movement/JumpStart.ogg"],
-				[Bundle_Entity_Movement.LandSFX, "Shared/Resources/Sound/Movement/JumpLand.ogg"],
-				[Bundle_Entity_Movement.SlideSFX0, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav"],
-				[Bundle_Entity_Movement.SlideSFX1, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_02.wav"],
-				[Bundle_Entity_Movement.SlideSFX2, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_03.wav"],
-				[Bundle_Entity_Movement.SlideSFX3, "Shared/Resources/Sound/Movement/s_Movement_Slide_Start_04.wav"],
-				[Bundle_Entity_Movement.SlideSFXLoop, "Shared/Resources/Sound/Movement/s_Movement_Slide_Loop.wav"],
+				[Bundle_Entity_Movement.JumpSFX, "Imports/Core/Shared/Resources/Sound/Movement/JumpStart.ogg"],
+				[Bundle_Entity_Movement.LandSFX, "Imports/Core/Shared/Resources/Sound/Movement/JumpLand.ogg"],
+				[Bundle_Entity_Movement.SlideSFX0, "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav"],
+				[Bundle_Entity_Movement.SlideSFX1, "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_02.wav"],
+				[Bundle_Entity_Movement.SlideSFX2, "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_03.wav"],
+				[Bundle_Entity_Movement.SlideSFX3, "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_04.wav"],
+				[Bundle_Entity_Movement.SlideSFXLoop, "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Loop.wav"],
 			])}],
 		])
 	}
@@ -359,7 +359,7 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemBlock.SFX, {
 			id: Bundle_ItemBlock.SFX,
 			filePaths: new Map([
-				[Bundle_ItemBlock_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg"],
+				[Bundle_ItemBlock_SFX.Equip, "Imports/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg"],
 			])}],
 		])
 	}
@@ -392,8 +392,8 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemBow.SFX, {
 			id: Bundle_ItemBow.SFX,
 			filePaths: new Map([
-				[Bundle_ItemBow_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Bow.ogg"],
-				[Bundle_ItemBow_SFX.Charge, "Shared/Resources/Sound/Items/Bow/Bow_Charge.ogg"],
+				[Bundle_ItemBow_SFX.Equip, "Imports/Core/Shared/Resources/Sound/Items/Equip/Equip_Bow.ogg"],
+				[Bundle_ItemBow_SFX.Charge, "Imports/Core/Shared/Resources/Sound/Items/Bow/Bow_Charge.ogg"],
 			])}],
 		])
 	}
@@ -454,7 +454,7 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemSword.SFX, {
 			id: Bundle_ItemSword.SFX,
 			filePaths: new Map([
-				[Bundle_ItemSword_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg"],
+				[Bundle_ItemSword_SFX.Equip, "Imports/Core/Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg"],
 			])}],
 		])
 	}
@@ -509,7 +509,7 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemUnarmed.SFX, {
 			id: Bundle_ItemUnarmed.SFX,
 			filePaths: new Map([
-				[Bundle_ItemUnarmed_SFX.Equip, "Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg"],
+				[Bundle_ItemUnarmed_SFX.Equip, "Imports/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg"],
 			])}],
 		])
 	}

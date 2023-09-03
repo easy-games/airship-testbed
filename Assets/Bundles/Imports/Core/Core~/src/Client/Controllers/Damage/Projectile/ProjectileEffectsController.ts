@@ -38,9 +38,13 @@ export class ProjectileEffectsController implements OnStart {
 
 			const itemMeta = ItemUtil.GetItemMeta(event.projectile.itemType);
 			if (!event.hitEntity && itemMeta.Ammo?.onHitGroundSoundId) {
-				AudioManager.PlayAtPosition("ArrowLand/BowArrowHit", event.hitPosition, {
-					volumeScale: 0.6,
-				});
+				AudioManager.PlayAtPosition(
+					"Imports/Core/Shared/Resources/Sound/ArrowLand/BowArrowHit",
+					event.hitPosition,
+					{
+						volumeScale: 0.6,
+					},
+				);
 			}
 		});
 
