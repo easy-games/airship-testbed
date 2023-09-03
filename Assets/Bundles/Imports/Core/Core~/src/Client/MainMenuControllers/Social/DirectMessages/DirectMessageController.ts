@@ -1,11 +1,13 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { MapUtil } from "Shared/Util/MapUtil";
 import { Signal } from "Shared/Util/Signal";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
@@ -20,6 +22,7 @@ export class DirectMessageController implements OnStart {
 		"Imports/Core/Shared/Resources/Prefabs/UI/Messages/OutgoingMessage.prefab",
 	) as GameObject;
 	private messagesMap = new Map<string, Array<DirectMessage>>();
+	private unreadMessageCounterMap = new Map<string, number>();
 
 	private windowGo?: GameObject;
 	private windowGoRefs?: GameObjectReferences;
@@ -50,7 +53,36 @@ export class DirectMessageController implements OnStart {
 
 			messages.push(data);
 			this.directMessageReceived.Fire(data);
+
+			// sound
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/MessageReceived.wav", {
+				volumeScale: 0.3,
+			});
+
+			if (
+				this.openedWindowUserId === undefined ||
+				this.openedWindowUserId !== data.sender
+				// !Application.isFocused
+			) {
+				this.IncrementUnreadCounter(data.sender, 1);
+			}
 		});
+	}
+
+	private IncrementUnreadCounter(uid: string, amount: number): void {
+		let unread = MapUtil.GetOrCreate(this.unreadMessageCounterMap, uid, 0);
+		unread += amount;
+		this.unreadMessageCounterMap.set(uid, unread);
+
+		const friendGo = this.friendsController.GetFriendGo(uid);
+		if (friendGo) {
+			const refs = friendGo.GetComponent<GameObjectReferences>();
+			const badge = refs.GetValue("UI", "UnreadBadge") as GameObject;
+			const badgeText = refs.GetValue("UI", "UnreadBadgeText") as TMP_Text;
+
+			badgeText.text = unread + "";
+			badge.SetActive(true);
+		}
 	}
 
 	public Setup(): void {
@@ -77,6 +109,13 @@ export class DirectMessageController implements OnStart {
 			}
 			inputField.text = "";
 			inputField.ActivateInputField();
+		});
+		// clear notifs on select
+		CanvasAPI.OnSelectEvent(inputField.gameObject, () => {
+			if (this.openedWindowUserId) {
+				this.unreadMessageCounterMap.set(this.openedWindowUserId, 0);
+				this.ClearUnreadBadge(this.openedWindowUserId);
+			}
 		});
 
 		const sendButton = this.windowGoRefs!.GetValue("UI", "SendButton");
@@ -167,15 +206,21 @@ export class DirectMessageController implements OnStart {
 
 		const inputField = this.windowGoRefs!.GetValue("UI", "InputField") as TMP_InputField;
 		inputField.ActivateInputField();
+
+		// clear notifs
+		this.unreadMessageCounterMap.set(uid, 0);
+		this.ClearUnreadBadge(uid);
+	}
+
+	private ClearUnreadBadge(uid: string): void {
+		const friendGo = this.friendsController.GetFriendGo(uid);
+		if (friendGo) {
+			friendGo.GetComponent<GameObjectReferences>().GetValue("UI", "UnreadBadge").SetActive(false);
+		}
 	}
 
 	private GetMessages(uid: string): Array<DirectMessage> {
-		let messages = this.messagesMap.get(uid);
-		if (messages === undefined) {
-			messages = [];
-			this.messagesMap.set(uid, messages);
-		}
-		return messages;
+		return MapUtil.GetOrCreate(this.messagesMap, uid, []);
 	}
 
 	public Close(): void {

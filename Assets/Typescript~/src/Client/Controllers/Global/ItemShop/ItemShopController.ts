@@ -145,14 +145,14 @@ export class ItemShopController implements OnStart {
 	 */
 	private HandlePurchaseRequest(): void {
 		if (!this.selectedItem || !this.CanPurchase(this.selectedItem)) {
-			AudioManager.PlayGlobal("UI_Error.wav");
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav");
 			return;
 		}
 		const shopItem = this.selectedItem;
 		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopItem.itemType);
 		if (result) {
 			this.purchasedTierItems.add(shopItem.itemType);
-			AudioManager.PlayGlobal("ItemShopPurchase.wav");
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav");
 			this.UpdateItems(false);
 
 			if (shopItem.nextTier) {

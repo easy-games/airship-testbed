@@ -13,12 +13,12 @@ export class CoreUI {
 		},
 	): void {
 		CanvasAPI.OnClickEvent(gameObject, () => {
-			AudioManager.PlayGlobal("UI_Select.wav");
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Select.wav");
 		});
 		if (!config?.noHoverSound) {
 			CanvasAPI.OnHoverEvent(gameObject, (hoverState) => {
 				if (hoverState === HoverState.ENTER) {
-					AudioManager.PlayGlobal("UI_Hover_01.wav");
+					AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Hover_01.wav");
 				}
 			});
 		}

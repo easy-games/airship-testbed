@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { Game } from "Shared/Game";
@@ -139,6 +138,10 @@ export class FriendsController implements OnStart {
 		}
 	}
 
+	public GetFriendGo(uid: string): GameObject | undefined {
+		return this.mainMenuController.refs.GetValue("Social", "FriendsContent").transform.FindChild(uid)?.gameObject;
+	}
+
 	public UpdateFriendsList(): void {
 		let sorted = this.friendStatuses.sort((a, b) => {
 			let aOnline = a.status === "online" || a.status === "in_game";
@@ -151,7 +154,6 @@ export class FriendsController implements OnStart {
 			}
 			return a.username < b.username;
 		});
-		print("sorted: " + inspect(sorted.map((f) => f.username)));
 
 		const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
 		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;

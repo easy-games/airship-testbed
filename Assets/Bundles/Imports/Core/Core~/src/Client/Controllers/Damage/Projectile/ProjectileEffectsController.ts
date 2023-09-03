@@ -50,7 +50,7 @@ export class ProjectileEffectsController implements OnStart {
 				event.fromEntity === Game.LocalPlayer.Character &&
 				event.damageType === DamageType.PROJECTILE
 			) {
-				AudioManager.PlayGlobal("HitSuccess", {
+				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/HitSuccess", {
 					volumeScale: 0.5,
 				});
 			}

@@ -61,7 +61,7 @@ export class MainMenuSettingsUIController implements OnStart {
 
 		CanvasAPI.OnPointerEvent(slider.gameObject, (direction) => {
 			if (direction === PointerDirection.DOWN) {
-				AudioManager.PlayGlobal("UI_Select.wav");
+				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Select.wav");
 			}
 		});
 	}

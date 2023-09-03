@@ -69,7 +69,7 @@ export class AppManager {
 		});
 
 		if (!config?.noOpenSound) {
-			AudioManager.PlayGlobal("UI_Open.wav", {
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Open.wav", {
 				volumeScale: 0.4,
 			});
 		}
@@ -103,7 +103,7 @@ export class AppManager {
 		this.opened = false;
 
 		if (!config?.noCloseSound) {
-			// AudioManager.PlayGlobal("UI_Close.wav");
+			// AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Close.wav");
 		}
 
 		if (this.openCanvas) {

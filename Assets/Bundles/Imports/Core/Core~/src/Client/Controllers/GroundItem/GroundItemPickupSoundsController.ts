@@ -21,9 +21,9 @@ export class GroundItemPickupSoundsController implements OnStart {
 
 			// Extra sound layers
 			if (itemMeta.itemType === ItemType.EMERALD) {
-				AudioManager.PlayGlobal("PickupItemLayer_Emerald");
+				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/PickupItemLayer_Emerald");
 			} else if (itemMeta.itemType === ItemType.DIAMOND) {
-				AudioManager.PlayGlobal("PickupItemLayer_Diamond");
+				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/PickupItemLayer_Diamond");
 			}
 		});
 	}
