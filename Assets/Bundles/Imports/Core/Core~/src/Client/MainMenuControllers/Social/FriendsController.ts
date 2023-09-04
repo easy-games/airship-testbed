@@ -5,8 +5,10 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Mouse } from "Shared/UserInput";
+import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { AirshipUrl } from "Shared/Util/Url";
 import { decode, encode } from "Shared/json";
@@ -25,6 +27,8 @@ export class FriendsController implements OnStart {
 	public friendStatuses: FriendStatus[] = [];
 	private renderedFriendUids = new Set<string>();
 	private statusText = "";
+	private friendBinMap = new Map<string, Bin>();
+	public friendStatusChanged = new Signal<FriendStatus>();
 
 	constructor(
 		private readonly authController: AuthController,
@@ -56,8 +60,10 @@ export class FriendsController implements OnStart {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
 					Object.assign(existing, newFriend);
+					this.friendStatusChanged.Fire(existing);
 				} else {
 					this.friendStatuses.push(newFriend);
+					this.friendStatusChanged.Fire(newFriend);
 				}
 			}
 			this.UpdateFriendsList();
@@ -165,6 +171,8 @@ export class FriendsController implements OnStart {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		let i = 0;
 		for (const friend of sorted) {
+			const friendBin = new Bin();
+			this.friendBinMap.set(friend.userId, friendBin);
 			let go: GameObject | undefined = friendsContent.transform.FindChild(friend.userId)?.gameObject;
 			let init = false;
 			if (go === undefined) {
@@ -226,6 +234,8 @@ export class FriendsController implements OnStart {
 			if (this.friendStatuses.find((f) => f.userId === renderedUid) === undefined) {
 				const go = friendsContent.transform.FindChild(renderedUid);
 				if (go) {
+					this.friendBinMap.get(renderedUid)?.Clean();
+					this.friendBinMap.delete(renderedUid);
 					GameObjectUtil.Destroy(go.gameObject);
 					removed.push(renderedUid);
 				}

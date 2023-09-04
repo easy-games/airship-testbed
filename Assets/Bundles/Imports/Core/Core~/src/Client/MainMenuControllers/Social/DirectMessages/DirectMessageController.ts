@@ -11,6 +11,7 @@ import { MapUtil } from "Shared/Util/MapUtil";
 import { Signal } from "Shared/Util/Signal";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
+import { FriendStatus } from "../SocketAPI";
 import { DirectMessage } from "./DirectMessage";
 
 @Controller({})
@@ -28,6 +29,8 @@ export class DirectMessageController implements OnStart {
 	private windowGoRefs?: GameObjectReferences;
 	private messagesContentGo?: GameObject;
 	private scrollRect?: ScrollRect;
+	private offlineNoticeWrapper?: GameObject;
+	private offlineNoticeText?: TMP_Text;
 	private openWindowBin = new Bin();
 	private openedWindowUserId: string | undefined;
 	private doScrollToBottom = 0;
@@ -95,6 +98,8 @@ export class DirectMessageController implements OnStart {
 		this.windowGoRefs = this.windowGo.GetComponent<GameObjectReferences>();
 		this.messagesContentGo = this.windowGoRefs.GetValue("UI", "MessagesContent");
 		this.scrollRect = this.windowGoRefs.GetValue("UI", "ScrollRect") as ScrollRect;
+		this.offlineNoticeWrapper = this.windowGoRefs.GetValue("UI", "NoticeWrapper");
+		this.offlineNoticeText = this.windowGoRefs.GetValue("UI", "NoticeText") as TMP_Text;
 
 		const closeButton = this.windowGoRefs.GetValue("UI", "CloseButton");
 		CoreUI.SetupButton(closeButton);
@@ -172,6 +177,15 @@ export class DirectMessageController implements OnStart {
 		}
 	}
 
+	public UpdateOfflineNotice(friendStatus: FriendStatus): void {
+		if (friendStatus.status !== "offline") {
+			this.offlineNoticeWrapper?.SetActive(false);
+		} else {
+			this.offlineNoticeText!.text = `${friendStatus.username} is offline and cannot be messaged.`;
+			this.offlineNoticeWrapper?.SetActive(true);
+		}
+	}
+
 	public OpenFriend(uid: string): void {
 		this.openWindowBin.Clean();
 		this.openedWindowUserId = uid;
@@ -187,6 +201,17 @@ export class DirectMessageController implements OnStart {
 			this.directMessageReceived.Connect((dm) => {
 				if (dm.sender === uid) {
 					this.RenderChatMessage(dm, true);
+				}
+			}),
+		);
+		this.openWindowBin.Add(
+			this.friendsController.friendStatusChanged.Connect((status) => {
+				if (status.userId === uid) {
+					this.UpdateOfflineNotice(status);
+					this.friendsController.UpdateFriendStatusUI(status, headerUserRefs, {
+						loadImage: true,
+						includeTag: true,
+					});
 				}
 			}),
 		);
@@ -215,6 +240,8 @@ export class DirectMessageController implements OnStart {
 		// clear notifs
 		this.unreadMessageCounterMap.set(uid, 0);
 		this.ClearUnreadBadge(uid);
+
+		this.UpdateOfflineNotice(friendStatus);
 	}
 
 	private ClearUnreadBadge(uid: string): void {
