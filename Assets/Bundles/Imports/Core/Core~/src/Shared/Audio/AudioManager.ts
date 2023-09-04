@@ -6,6 +6,7 @@ const MAX_DISTANCE = 18;
 export interface PlaySoundConfig {
 	volumeScale: number;
 	loop?: boolean;
+	pitch?: number;
 }
 
 export class AudioManager {
@@ -52,6 +53,7 @@ export class AudioManager {
 		const audioSource = this.GetAudioSource(Vector3.zero);
 		audioSource.spatialBlend = 0;
 		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
+		audioSource.pitch = config?.pitch ?? 1;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;

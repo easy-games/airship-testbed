@@ -245,6 +245,7 @@ export class FriendsController implements OnStart {
 		refs: GameObjectReferences,
 		config: {
 			loadImage: boolean;
+			includeTag?: boolean;
 		},
 	): void {
 		const username = refs.GetValue("UI", "Username") as TMP_Text;
@@ -261,11 +262,23 @@ export class FriendsController implements OnStart {
 				profileImage.sprite = Bridge.MakeSprite(texture);
 			}
 		}
-		username.text = friend.username;
-		if (friend.metadata) {
+
+		let displayName = friend.username;
+		if (config.includeTag) {
+			displayName += "#" + friend.discriminator;
+		}
+		username.text = displayName;
+
+		if (friend.metadata?.statusText && friend.metadata.statusText !== "") {
 			status.text = friend.metadata.statusText;
 		} else {
-			status.text = "";
+			if (friend.status === "online") {
+				status.text = "Online";
+			} else if (friend.status === "in_game") {
+				status.text = "In Game";
+			} else {
+				status.text = "Offline";
+			}
 		}
 		if (friend.status === "online") {
 			canvasGroup.alpha = 1;

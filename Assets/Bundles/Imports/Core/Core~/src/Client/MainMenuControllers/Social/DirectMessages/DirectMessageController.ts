@@ -142,6 +142,10 @@ export class DirectMessageController implements OnStart {
 		};
 		this.GetMessages(uid).push(sentMessage);
 		this.RenderChatMessage(sentMessage, true);
+		AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/SendMessage.ogg", {
+			volumeScale: 0.8,
+			pitch: 1.5,
+		});
 	}
 
 	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean): void {
@@ -196,6 +200,7 @@ export class DirectMessageController implements OnStart {
 
 		this.friendsController.UpdateFriendStatusUI(friendStatus, headerUserRefs, {
 			loadImage: true,
+			includeTag: true,
 		});
 
 		this.windowGo!.transform.TweenAnchoredPositionY(0, 0.1);
