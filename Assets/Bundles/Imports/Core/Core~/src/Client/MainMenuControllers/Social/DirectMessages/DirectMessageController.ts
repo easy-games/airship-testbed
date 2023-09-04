@@ -31,6 +31,7 @@ export class DirectMessageController implements OnStart {
 	private scrollRect?: ScrollRect;
 	private offlineNoticeWrapper?: GameObject;
 	private offlineNoticeText?: TMP_Text;
+	private inputField?: TMP_InputField;
 	private openWindowBin = new Bin();
 	private openedWindowUserId: string | undefined;
 	private doScrollToBottom = 0;
@@ -107,16 +108,15 @@ export class DirectMessageController implements OnStart {
 			this.Close();
 		});
 
-		const inputField = this.windowGoRefs!.GetValue("UI", "InputField") as TMP_InputField;
-		CanvasAPI.OnInputFieldSubmit(inputField.gameObject, (data) => {
+		this.inputField = this.windowGoRefs!.GetValue("UI", "InputField") as TMP_InputField;
+		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
 			if (this.openedWindowUserId) {
-				this.SendChatMessage(this.openedWindowUserId, inputField.text);
+				this.SendChatMessage(this.openedWindowUserId, this.inputField!.text);
 			}
-			inputField.text = "";
-			inputField.ActivateInputField();
+			this.inputField!.ActivateInputField();
 		});
 		// clear notifs on select
-		CanvasAPI.OnSelectEvent(inputField.gameObject, () => {
+		CanvasAPI.OnSelectEvent(this.inputField!.gameObject, () => {
 			if (this.openedWindowUserId) {
 				this.unreadMessageCounterMap.set(this.openedWindowUserId, 0);
 				this.ClearUnreadBadge(this.openedWindowUserId);
@@ -127,19 +127,26 @@ export class DirectMessageController implements OnStart {
 		CoreUI.SetupButton(sendButton);
 		CanvasAPI.OnClickEvent(sendButton, () => {
 			if (this.openedWindowUserId) {
-				this.SendChatMessage(this.openedWindowUserId, inputField.text);
+				this.SendChatMessage(this.openedWindowUserId, this.inputField!.text);
 			}
-			inputField.text = "";
-			inputField.ActivateInputField();
+			this.inputField!.ActivateInputField();
 		});
 	}
 
 	private SendChatMessage(uid: string, message: string): void {
+		const status = this.friendsController.GetFriendStatus(uid);
+		if (status === undefined) return;
+		if (status.status === "offline") {
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav");
+			return;
+		}
+
 		if (message === "") return;
 		this.socketController.Emit("send-direct-message", {
 			target: uid,
 			text: message,
 		});
+		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
 			sender: Game.LocalPlayer.userId,
 			sentAt: os.time(),
@@ -234,8 +241,7 @@ export class DirectMessageController implements OnStart {
 		this.scrollRect!.velocity = Bridge.MakeVector2(0, 0);
 		this.scrollRect!.verticalNormalizedPosition = 0;
 
-		const inputField = this.windowGoRefs!.GetValue("UI", "InputField") as TMP_InputField;
-		inputField.ActivateInputField();
+		this.inputField!.ActivateInputField();
 
 		// clear notifs
 		this.unreadMessageCounterMap.set(uid, 0);
