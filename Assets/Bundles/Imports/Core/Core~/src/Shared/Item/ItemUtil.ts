@@ -57,7 +57,7 @@ export class ItemUtil {
 						`Shared/Resources/Accessories/${accNameLower}.asset`,
 					);
 					if (!accessory) {
-						warn("Couldn't find: " + accNameLower);
+						// warn("Couldn't find: " + accNameLower);
 						continue;
 					}
 

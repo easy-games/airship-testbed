@@ -16,7 +16,7 @@ export class BWAmbientSoundController implements OnStart {
 		this.ambientSoundController.ambientSource.volume = Dependency<ClientSettingsController>().GetAmbientVolume();
 		this.ambientSoundController.ambientSource.Play();
 
-		const musicClip = AssetBridge.LoadAsset<AudioClip>("Shared/Resources/Sound/Music/MatchMidIntensity.ogg");
+		const musicClip = AssetBridge.LoadAsset<AudioClip>("Shared/Resources/Sound/MatchMidIntensity.ogg");
 		this.ambientSoundController.musicSource.spatialBlend = 0;
 		this.ambientSoundController.musicSource.loop = true;
 		this.ambientSoundController.musicSource.clip = musicClip;

@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55587e6da00a44bf9f7d5798297ebf2b, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  minimumPlayerVersion: 0
   gameId: bedwars
-  startingSceneName: BWLobbyScene
+  startingSceneName: BWMatchScene
   gameScenes:
   - {fileID: 102900000, guid: 151df1f7c6b0343e79e7af3b65595f86, type: 3}
   - {fileID: 102900000, guid: ddc161ab142d24f90b8a5708208f5982, type: 3}
