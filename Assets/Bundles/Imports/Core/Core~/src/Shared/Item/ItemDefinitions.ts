@@ -86,10 +86,10 @@ const defaultBlock: BlockMeta = {
 	blockId: 0,
 	blockArchetype: BlockArchetype.NONE,
 	stepSound: [
-		coreSoundPath + "Footstep_Grass_01",
-		coreSoundPath + "Footstep_Grass_02",
-		coreSoundPath + "Footstep_Grass_03",
-		coreSoundPath + "Footstep_Grass_04",
+		coreSoundPath + "Footsteps/Footstep_Grass_01",
+		coreSoundPath + "Footsteps/Footstep_Grass_02",
+		coreSoundPath + "Footsteps/Footstep_Grass_03",
+		coreSoundPath + "Footsteps/Footstep_Grass_04",
 	],
 };
 
@@ -98,10 +98,10 @@ const woolBlock: BlockMeta = {
 	health: 10,
 	blockId: 33,
 	stepSound: [
-		coreSoundPath + "Footstep_Wool_01",
-		coreSoundPath + "Footstep_Wool_02",
-		coreSoundPath + "Footstep_Wool_03",
-		coreSoundPath + "Footstep_Wool_04",
+		coreSoundPath + "Footsteps/Footstep_Wool_01",
+		coreSoundPath + "Footsteps/Footstep_Wool_02",
+		coreSoundPath + "Footsteps/Footstep_Wool_03",
+		coreSoundPath + "Footsteps/Footstep_Wool_04",
 	],
 	placeSound: [coreSoundPath + "Wool_Place.ogg"],
 	hitSound: [coreSoundPath + "Wool_Hit.ogg"],
@@ -112,10 +112,10 @@ const woolBlock: BlockMeta = {
 const stoneBlock: BlockMeta = {
 	...defaultBlock,
 	stepSound: [
-		coreSoundPath + "Footstep_Stone_01",
-		coreSoundPath + "Footstep_Stone_02",
-		coreSoundPath + "Footstep_Stone_03",
-		coreSoundPath + "Footstep_Stone_04",
+		coreSoundPath + "Footsteps/Footstep_Stone_01",
+		coreSoundPath + "Footsteps/Footstep_Stone_02",
+		coreSoundPath + "Footsteps/Footstep_Stone_03",
+		coreSoundPath + "Footsteps/Footstep_Stone_04",
 	],
 };
 

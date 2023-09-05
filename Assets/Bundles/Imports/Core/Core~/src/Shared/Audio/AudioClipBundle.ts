@@ -23,14 +23,12 @@ export class AudioClipBundle {
 	public volumeScale = 1;
 
 	private soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
-	private manualFolderPath = "";
 	private clipPaths: string[];
 	private possibleRandomIndex: number[] = [];
 	private lastIndexPlayed = -1;
 	private lastAudioSource: AudioSource | undefined;
 
-	public constructor(clipPaths: string[], manualFolderPath = "") {
-		this.manualFolderPath = manualFolderPath + "/";
+	public constructor(clipPaths: string[]) {
 		this.clipPaths = clipPaths;
 		this.RefreshPossibleRandomIndex();
 	}
@@ -51,15 +49,12 @@ export class AudioClipBundle {
 		this.soundOptions.volumeScale = this.volumeScale;
 		if (this.spacialMode === AudioBundleSpacialMode.SPACIAL) {
 			this.lastAudioSource = AudioManager.PlayAtPosition(
-				this.manualFolderPath + this.clipPaths[index],
+				this.clipPaths[index],
 				this.spacialPosition,
 				this.soundOptions,
 			);
 		} else {
-			this.lastAudioSource = AudioManager.PlayGlobal(
-				this.manualFolderPath + this.clipPaths[index],
-				this.soundOptions,
-			);
+			this.lastAudioSource = AudioManager.PlayGlobal(this.clipPaths[index], this.soundOptions);
 		}
 	}
 

@@ -44,7 +44,7 @@ export class EntityAnimator {
 		this.entityRef = entityRef;
 
 		//AUDIO
-		this.footstepAudioBundle = new AudioClipBundle([], "Footsteps");
+		this.footstepAudioBundle = new AudioClipBundle([]);
 		this.footstepAudioBundle.volumeScale = 0.15;
 		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 			? AudioBundleSpacialMode.GLOBAL
