@@ -92,9 +92,9 @@ export class DirectMessageController implements OnStart {
 	public Setup(): void {
 		this.windowGo = GameObjectUtil.InstantiateIn(
 			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/Messages/DirectMessageWindow.prefab"),
-			this.mainMenuController.rootCanvas.transform,
+			this.mainMenuController.rootCanvas.transform.GetChild(0),
 		);
-		this.windowGo.GetComponent<RectTransform>().anchoredPosition = Bridge.MakeVector2(-420, -620);
+		this.windowGo.GetComponent<RectTransform>().anchoredPosition = Bridge.MakeVector2(-335, -510);
 
 		this.windowGoRefs = this.windowGo.GetComponent<GameObjectReferences>();
 		this.messagesContentGo = this.windowGoRefs.GetValue("UI", "MessagesContent");
@@ -262,7 +262,7 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public Close(): void {
-		this.windowGo?.transform.TweenAnchoredPositionY(-620, 0.1);
+		this.windowGo?.transform.TweenAnchoredPositionY(-510, 0.1);
 		this.openedWindowUserId = undefined;
 	}
 }
