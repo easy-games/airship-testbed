@@ -5,7 +5,7 @@ import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 
-const PICKUP_ITEM_DEFAULT_SOUND = ["Pickup_Item"];
+const PICKUP_ITEM_DEFAULT_SOUND = ["Imports/Core/Shared/Resources/Sound/Pickup_Item.ogg"];
 
 @Controller({})
 export class GroundItemPickupSoundsController implements OnStart {
