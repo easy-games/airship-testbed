@@ -187,6 +187,9 @@ export class FriendsController implements OnStart {
 				CoreUI.SetupButton(go, {
 					noHoverSound: true,
 				});
+				CanvasAPI.OnClickEvent(go, () => {
+					Dependency<DirectMessageController>().OpenFriend(friend.userId);
+				});
 				CanvasAPI.OnPointerEvent(go, (direction, button) => {
 					if (button === PointerButton.RIGHT) {
 						print("right clicked " + friend.username);
@@ -214,8 +217,6 @@ export class FriendsController implements OnStart {
 								},
 							],
 						);
-					} else if (button === PointerButton.LEFT) {
-						Dependency<DirectMessageController>().OpenFriend(friend.userId);
 					}
 				});
 			}
@@ -274,6 +275,9 @@ export class FriendsController implements OnStart {
 		}
 
 		let displayName = friend.username;
+		if (displayName.size() > 16) {
+			displayName = displayName.sub(0, 15);
+		}
 		if (config.includeTag) {
 			displayName += "#" + friend.discriminator;
 		}
@@ -293,7 +297,7 @@ export class FriendsController implements OnStart {
 		if (friend.status === "online") {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
-			status.color = new Color(1, 1, 1, 1);
+			status.color = ColorUtil.HexToColor("#0CDF61");
 		} else if (friend.status === "in_game") {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#70D4FF");

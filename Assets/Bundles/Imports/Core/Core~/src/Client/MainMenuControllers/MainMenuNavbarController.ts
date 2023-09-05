@@ -104,7 +104,11 @@ export class MainMenuNavbarController implements OnStart {
 			return;
 		}
 
-		usernameText.text = user.username;
+		let displayName = user.username;
+		if (displayName.size() > 16) {
+			displayName = displayName.sub(0, 15);
+		}
+		usernameText.text = displayName;
 		disc.text = "#" + user.discriminator;
 		profileWrapper.SetActive(true);
 
