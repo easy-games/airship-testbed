@@ -7,6 +7,7 @@ import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
 @Controller({})
@@ -20,6 +21,9 @@ export class InventoryController implements OnStart {
 	private enabled = true;
 	private disablers = new Set<number>();
 	private disablerCounter = 1;
+
+	private lastScrollTime = 0;
+	private scrollCooldown = 0.1;
 
 	constructor() {}
 
@@ -104,6 +108,15 @@ export class InventoryController implements OnStart {
 		// Scroll to select held item:
 		mouse.Scrolled.Connect((delta) => {
 			if (!this.enabled) return;
+			if (math.abs(delta) > 0.1) return;
+
+			const now = Time.time;
+			if (now - this.lastScrollTime < this.scrollCooldown) {
+				return;
+			}
+			if (CanvasAPI.IsPointerOverUI()) return;
+
+			this.lastScrollTime = now;
 
 			const selectedSlot = this.LocalInventory?.GetSelectedSlot();
 			if (selectedSlot === undefined) return;
