@@ -1556,8 +1556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3441396c7db445ebfbf089faeb46cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  r: {x: 5, y: 6, z: 0, w: 0}
-  rect2props: {x: -0.24998856, y: -2.7500114, z: 82.221855, w: 81.8683}
+  r: {x: 4, y: 4, z: 0, w: 0}
+  rect2props: {x: 0.0000076293945, y: -2.0000153, z: 82.57541, w: 82.57541}
   image: {fileID: 1888312233816036036}
 --- !u!1 &8960811026501780476
 GameObject:
