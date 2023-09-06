@@ -18,8 +18,12 @@ export class MainMenuController implements OnStart {
 	public OnCurrentPageChanged = new Signal<[page: MainMenuPage, oldPage: MainMenuPage | undefined]>();
 	private pageMap: Record<MainMenuPage, GameObject>;
 	private wrapperRect: RectTransform;
-	public rootCanvas: Canvas;
+
+	public mainContentCanvas: Canvas;
 	private rootCanvasGroup: CanvasGroup;
+
+	public socialMenuCanvas: Canvas;
+
 	private open = false;
 
 	constructor(private readonly authController: AuthController) {
@@ -28,8 +32,9 @@ export class MainMenuController implements OnStart {
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
-		this.rootCanvas = this.mainMenuGo.GetComponent<Canvas>();
 		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>();
+		this.mainContentCanvas = this.mainMenuGo.transform.GetChild(0).GetComponent<Canvas>();
+		this.socialMenuCanvas = this.mainMenuGo.transform.GetChild(1).GetComponent<Canvas>();
 
 		this.pageMap = {
 			[MainMenuPage.HOME]: this.refs.GetValue("Pages", "Home"),
@@ -67,7 +72,8 @@ export class MainMenuController implements OnStart {
 		const duration = 0.06;
 		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
 		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
-		this.rootCanvas.enabled = true;
+		this.mainContentCanvas.enabled = true;
+		this.socialMenuCanvas.enabled = true;
 		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
 	}
 
@@ -80,7 +86,8 @@ export class MainMenuController implements OnStart {
 		this.rootCanvasGroup.TweenCanvasGroupAlpha(0, duration);
 		SetTimeout(duration, () => {
 			if (!this.open) {
-				this.rootCanvas.enabled = false;
+				this.mainContentCanvas.enabled = false;
+				this.socialMenuCanvas.enabled = false;
 			}
 		});
 	}

@@ -32,7 +32,8 @@ export class MainMenuHomeController implements OnStart {
 		this.localBundlesToggle = this.mainMenuController.refs.GetValue("UI", "LocalBundlesToggle");
 
 		if (Game.Context === CoreContext.GAME) {
-			this.mainMenuController.mainMenuGo.GetComponent<Canvas>().enabled = false;
+			this.mainMenuController.mainContentCanvas.enabled = false;
+			this.mainMenuController.socialMenuCanvas.enabled = false;
 		}
 	}
 

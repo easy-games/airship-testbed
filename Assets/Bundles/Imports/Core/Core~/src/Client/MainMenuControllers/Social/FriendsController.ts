@@ -194,7 +194,7 @@ export class FriendsController implements OnStart {
 					if (button === PointerButton.RIGHT) {
 						print("right clicked " + friend.username);
 						this.rightClickMenuController.OpenRightClickMenu(
-							this.mainMenuController.rootCanvas,
+							this.mainMenuController.socialMenuCanvas,
 							mouse.GetLocation(),
 							[
 								{
@@ -267,7 +267,7 @@ export class FriendsController implements OnStart {
 
 		if (config.loadImage) {
 			const texture = AssetBridge.LoadAssetIfExists<Texture2D>(
-				"Assets/Bundles/Imports/Core/Shared/Resources/Images/ProfilePictures/Cat.png",
+				"Imports/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
 			);
 			if (texture !== undefined) {
 				profileImage.sprite = Bridge.MakeSprite(texture);
