@@ -1,4 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
+import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
+import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ClearCommand } from "Shared/Commands/ClearCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -13,6 +16,8 @@ import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { encode } from "Shared/json";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { CoreUIController } from "../UI/CoreUIController";
+import { MessageCommand } from "./ClientCommands/MessageCommand";
+import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 
 class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
@@ -68,6 +73,9 @@ export class ChatController implements OnStart {
 	constructor(
 		private readonly localEntityController: LocalEntityController,
 		private readonly coreUIController: CoreUIController,
+		private readonly socketController: SocketController,
+		private readonly directMessageController: DirectMessageController,
+		private readonly friendsController: FriendsController,
 	) {
 		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
@@ -76,6 +84,8 @@ export class ChatController implements OnStart {
 		this.content.gameObject.ClearChildren();
 
 		this.RegisterCommand(new ClearCommand());
+		this.RegisterCommand(new MessageCommand());
+		this.RegisterCommand(new ReplyCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
@@ -133,13 +143,10 @@ export class ChatController implements OnStart {
 			SignalPriority.HIGH,
 		);
 		keyboard.OnKeyDown(KeyCode.UpArrow, (event) => {
-			print("up.1");
 			if (this.IsChatFocused()) {
-				print("up.2");
 				if (this.historyIndex + 1 < this.prevSentMessages.size()) {
 					this.historyIndex++;
 					let msg = this.prevSentMessages[this.historyIndex];
-					print("up.3 " + msg);
 					this.inputField.SetTextWithoutNotify(msg);
 					this.inputField.caretPosition = msg.size();
 				}

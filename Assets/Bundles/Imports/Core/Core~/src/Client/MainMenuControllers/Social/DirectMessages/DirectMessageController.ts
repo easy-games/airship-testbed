@@ -1,14 +1,18 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { Signal } from "Shared/Util/Signal";
+import { Theme } from "Shared/Util/Theme";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
 import { FriendStatus } from "../SocketAPI";
@@ -36,7 +40,9 @@ export class DirectMessageController implements OnStart {
 	private openedWindowUserId: string | undefined;
 	private doScrollToBottom = 0;
 
-	private directMessageReceived = new Signal<DirectMessage>();
+	public lastMessagedFriend: FriendStatus | undefined;
+
+	public onDirectMessageReceived = new Signal<DirectMessage>();
 
 	private xPos = -170;
 	private yPos = -280;
@@ -59,7 +65,7 @@ export class DirectMessageController implements OnStart {
 			}
 
 			messages.push(data);
-			this.directMessageReceived.Fire(data);
+			this.onDirectMessageReceived.Fire(data);
 
 			// sound
 			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/MessageReceived.wav", {
@@ -72,6 +78,23 @@ export class DirectMessageController implements OnStart {
 				// !Application.isFocused
 			) {
 				this.IncrementUnreadCounter(data.sender, 1);
+			}
+
+			// in-game chat
+			if (Game.Context === CoreContext.GAME) {
+				const friend = this.friendsController.GetFriendStatus(data.sender);
+				if (!friend) return;
+
+				let text =
+					ColorUtil.ColoredText(Theme.Pink, "[DM] From ") +
+					ColorUtil.ColoredText(Theme.White, friend.username) +
+					ColorUtil.ColoredText(Theme.Gray, ": " + data.text);
+				Dependency<ChatController>().AddChatMessage(text);
+			}
+
+			if (data.sender !== "") {
+				const friend = this.friendsController.GetFriendStatus(data.sender);
+				this.lastMessagedFriend = friend;
 			}
 		});
 	}
@@ -114,7 +137,7 @@ export class DirectMessageController implements OnStart {
 		this.inputField = this.windowGoRefs!.GetValue("UI", "InputField") as TMP_InputField;
 		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
 			if (this.openedWindowUserId) {
-				this.SendChatMessage(this.openedWindowUserId, this.inputField!.text);
+				this.SendDirectMessage(this.openedWindowUserId, this.inputField!.text);
 			}
 			this.inputField!.ActivateInputField();
 		});
@@ -130,13 +153,17 @@ export class DirectMessageController implements OnStart {
 		CoreUI.SetupButton(sendButton);
 		CanvasAPI.OnClickEvent(sendButton, () => {
 			if (this.openedWindowUserId) {
-				this.SendChatMessage(this.openedWindowUserId, this.inputField!.text);
+				this.SendDirectMessage(this.openedWindowUserId, this.inputField!.text);
 			}
 			this.inputField!.ActivateInputField();
 		});
 	}
 
-	private SendChatMessage(uid: string, message: string): void {
+	public GetFriendLastMessaged(): FriendStatus | undefined {
+		return this.lastMessagedFriend;
+	}
+
+	public SendDirectMessage(uid: string, message: string): void {
 		const status = this.friendsController.GetFriendStatus(uid);
 		if (status === undefined) return;
 		if (status.status === "offline") {
@@ -161,6 +188,14 @@ export class DirectMessageController implements OnStart {
 			volumeScale: 0.8,
 			pitch: 1.5,
 		});
+
+		if (Game.Context === CoreContext.GAME) {
+			let text =
+				ColorUtil.ColoredText(Theme.Pink, "[DM] To ") +
+				ColorUtil.ColoredText(Theme.White, status.username) +
+				ColorUtil.ColoredText(Theme.Gray, ": " + message);
+			Dependency<ChatController>().AddChatMessage(text);
+		}
 	}
 
 	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean): void {
@@ -208,7 +243,7 @@ export class DirectMessageController implements OnStart {
 			this.RenderChatMessage(dm, false);
 		}
 		this.openWindowBin.Add(
-			this.directMessageReceived.Connect((dm) => {
+			this.onDirectMessageReceived.Connect((dm) => {
 				if (dm.sender === uid) {
 					this.RenderChatMessage(dm, true);
 				}

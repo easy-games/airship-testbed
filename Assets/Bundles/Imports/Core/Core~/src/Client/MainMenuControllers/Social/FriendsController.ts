@@ -92,6 +92,14 @@ export class FriendsController implements OnStart {
 		});
 	}
 
+	public FuzzySearchFriend(name: string): User | undefined {
+		return undefined;
+	}
+
+	public GetFriendByUsername(username: string): User | undefined {
+		return this.friends.find((f) => f.username.lower() === username.lower());
+	}
+
 	public SetStatusText(text: string): void {
 		this.statusText = text;
 	}
