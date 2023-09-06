@@ -5,6 +5,7 @@ import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { decode } from "Shared/json";
 import { MainMenuController } from "./MainMenuController";
+import { GameServer } from "./Social/SocketAPI";
 
 @Controller({})
 export class MainMenuHomeController implements OnStart {
@@ -52,11 +53,10 @@ export class MainMenuHomeController implements OnStart {
 			if (res.success) {
 				print("data: " + res.data);
 				const data = decode(res.data) as {
-					ip: string;
-					port: number;
+					gameServer: GameServer;
 				};
-				print(`got server ${data.ip}:${data.port}`);
-				TransferManager.Instance.ConnectToServer(data.ip, data.port);
+				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
+				TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
 			} else {
 				warn("failed to create server: " + res.error);
 				this.SetError(tostring(res.error));
@@ -73,11 +73,10 @@ export class MainMenuHomeController implements OnStart {
 			if (res.success) {
 				print("data: " + res.data);
 				const data = decode(res.data) as {
-					ip: string;
-					port: number;
+					gameServer: GameServer;
 				};
-				print(`got server ${data.ip}:${data.port}`);
-				TransferManager.Instance.ConnectToServer(data.ip, data.port);
+				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
+				TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
 			} else {
 				warn("failed to create server: " + res.error);
 				this.SetError(tostring(res.error));

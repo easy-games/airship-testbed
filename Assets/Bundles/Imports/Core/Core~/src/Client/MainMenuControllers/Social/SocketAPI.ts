@@ -1,6 +1,7 @@
 import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
 
 export interface GameServer {
+	serverId: string;
 	ip: string;
 	port: number;
 }
