@@ -86,7 +86,7 @@ export class DirectMessageController implements OnStart {
 				if (!friend) return;
 
 				let text =
-					ColorUtil.ColoredText(Theme.Pink, "[DM] From ") +
+					ColorUtil.ColoredText(Theme.Pink, "From ") +
 					ColorUtil.ColoredText(Theme.White, friend.username) +
 					ColorUtil.ColoredText(Theme.Gray, ": " + data.text);
 				Dependency<ChatController>().AddChatMessage(text);
@@ -191,7 +191,7 @@ export class DirectMessageController implements OnStart {
 
 		if (Game.Context === CoreContext.GAME) {
 			let text =
-				ColorUtil.ColoredText(Theme.Pink, "[DM] To ") +
+				ColorUtil.ColoredText(Theme.Pink, "To ") +
 				ColorUtil.ColoredText(Theme.White, status.username) +
 				ColorUtil.ColoredText(Theme.Gray, ": " + message);
 			Dependency<ChatController>().AddChatMessage(text);
