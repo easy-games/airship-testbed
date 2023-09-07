@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 14, y: 14}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7063974166813454369
 CanvasRenderer:
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 10
+  radius: 7
   image: {fileID: 7616356128306195836}
 --- !u!1 &829881505469862811
 GameObject:
@@ -132,7 +132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 35.33, y: 0}
+  m_AnchoredPosition: {x: 27.365, y: 0}
   m_SizeDelta: {x: 0, y: 17.2401}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7473194567372973714
@@ -465,7 +465,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10.5681, y: 10.5681}
+  m_SizeDelta: {x: 7.3974, y: 7.3974}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &3262179777437245044
 CanvasRenderer:
@@ -621,7 +621,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -9.1, y: 0}
-  m_SizeDelta: {x: 65.26282, y: 28.5981}
+  m_SizeDelta: {x: 19.6148, y: 28.5981}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &3290398739341827657
 MonoBehaviour:
@@ -753,7 +753,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 179.22244, y: -19.8622}
-  m_SizeDelta: {x: 306.4449, y: 29.7244}
+  m_SizeDelta: {x: 306.4449, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5931342372185074891
 CanvasRenderer:
@@ -855,8 +855,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 14.83, y: 0}
-  m_SizeDelta: {x: 0, y: -29.6969}
+  m_AnchoredPosition: {x: 12.865, y: 0}
+  m_SizeDelta: {x: 0, y: -17.24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6141005432998258637
 CanvasRenderer:
@@ -913,8 +913,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11
-  m_fontSizeBase: 11
+  m_fontSize: 9
+  m_fontSizeBase: 9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
