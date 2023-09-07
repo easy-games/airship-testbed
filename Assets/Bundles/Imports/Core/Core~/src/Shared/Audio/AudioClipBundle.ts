@@ -21,6 +21,7 @@ export class AudioClipBundle {
 	public spacialMode: AudioBundleSpacialMode = AudioBundleSpacialMode.SPACIAL;
 	public spacialPosition = Vector3.zero;
 	public volumeScale = 1;
+	public useFullPath = false;
 
 	private soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
 	private clipPaths: string[];
@@ -48,13 +49,25 @@ export class AudioClipBundle {
 		this.lastIndexPlayed = index;
 		this.soundOptions.volumeScale = this.volumeScale;
 		if (this.spacialMode === AudioBundleSpacialMode.SPACIAL) {
-			this.lastAudioSource = AudioManager.PlayAtPosition(
-				this.clipPaths[index],
-				this.spacialPosition,
-				this.soundOptions,
-			);
+			if(this.useFullPath){
+				this.lastAudioSource = AudioManager.PlayFullPathAtPosition(
+					this.clipPaths[index],
+					this.spacialPosition,
+					this.soundOptions,
+				);
+			}else{
+				this.lastAudioSource = AudioManager.PlayAtPosition(
+					this.clipPaths[index],
+					this.spacialPosition,
+					this.soundOptions,
+				);
+			}
 		} else {
-			this.lastAudioSource = AudioManager.PlayGlobal(this.clipPaths[index], this.soundOptions);
+			if(this.useFullPath){
+				this.lastAudioSource = AudioManager.PlayFullPathGlobal(this.clipPaths[index], this.soundOptions);
+			}else{
+				this.lastAudioSource = AudioManager.PlayGlobal(this.clipPaths[index], this.soundOptions);
+			}
 		}
 	}
 
@@ -74,7 +87,8 @@ export class AudioClipBundle {
 		}
 
 		//LOOP & RANDOM TO LOOP
-		const lastIndex = this.clipPaths.size() - 1;
+		const arraySize = this.clipPaths.size();
+		const lastIndex = arraySize - 1;
 		if (
 			this.playMode === AudioBundlePlayMode.LOOP ||
 			(this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed === lastIndex)
@@ -87,7 +101,6 @@ export class AudioClipBundle {
 
 		//RANDOM play sounds
 		let randomIndex = 0;
-		let arraySize = this.clipPaths.size();
 		if (this.playMode === AudioBundlePlayMode.RANDOM) {
 			//Randomly select an index and play that sound
 			randomIndex = this.GetRandomIndex(arraySize);
@@ -95,7 +108,7 @@ export class AudioClipBundle {
 			this.PlayManual(randomIndex);
 		} else if (this.playMode === AudioBundlePlayMode.RANDOM_NO_REPEAT) {
 			//Randomly select an index ignoring the last played index
-			randomIndex = this.GetRandomIndex(arraySize - 1);
+			randomIndex = this.GetRandomIndex(lastIndex);
 			//print("Playing random no repeat number: " + this.possibleRandomIndex[randomIndex]);
 			//Possible arrays will always be one less than the total size because we are ignoring the last number used
 			this.PlayManual(this.possibleRandomIndex[randomIndex]);
@@ -103,16 +116,20 @@ export class AudioClipBundle {
 			this.RefreshPossibleRandomIndex();
 		} else if (this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed !== lastIndex) {
 			//RANDOM TO LOOP - sending to the loop after a delay
-			randomIndex = this.GetRandomIndex(arraySize);
+			randomIndex = this.GetRandomIndex(lastIndex);
 			this.PlayManual(randomIndex);
 
-			const delayLength = this.lastAudioSource ? this.lastAudioSource.clip.length - 0.15 : 1;
-			Task.Delay(delayLength, () => {
-				if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
-					this.lastIndexPlayed = lastIndex;
-					this.PlayNext();
-				}
-			});
+			//print("Playing random before loop: " + randomIndex);
+			if(this.lastAudioSource){
+				const delayLength = math.max(.1, this.lastAudioSource.clip.length - 0.15);
+				Task.Delay(delayLength, () => {
+					if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
+						this.lastIndexPlayed = lastIndex;
+						this.PlayNext();
+					}
+				});
+			}
+
 		}
 	}
 

@@ -51,7 +51,8 @@ export class EntityAnimator {
 			: AudioBundleSpacialMode.SPACIAL;
 
 		this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
-		this.slideAudioBundle.volumeScale = 0.25;
+		this.slideAudioBundle.volumeScale = 0.15;
+		this.slideAudioBundle.useFullPath = true;
 		this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
 		this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
 			? AudioBundleSpacialMode.GLOBAL
@@ -253,10 +254,11 @@ export class EntityAnimator {
 				break;
 			case EntityAnimationEventKey.SLIDE_START:
 				this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
-				//this.slideAudioBundle.PlayNext();
+				this.slideAudioBundle.Stop();
+				this.slideAudioBundle.PlayNext();
 				break;
 			case EntityAnimationEventKey.SLIDE_END:
-				//this.slideAudioBundle.Stop();
+				this.slideAudioBundle.Stop();
 				break;
 			case EntityAnimationEventKey.JUMP:
 				if (this.entityRef.jumpSound) {

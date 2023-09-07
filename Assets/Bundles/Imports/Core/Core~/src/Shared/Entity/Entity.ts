@@ -86,34 +86,29 @@ export class EntityReferences {
 		));*/
 
 		//Slide sound path: Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav
-		this.slideSoundPaths[0] = AudioManager.GetLocalPathFromFullPath(
-			BundleReferenceManager.GetPathForResource(
+		this.slideSoundPaths[0] = BundleReferenceManager.GetPathForResource(
 				BundleGroupNames.Entity,
 				Bundle_Entity.Movement,
 				Bundle_Entity_Movement.SlideSFX1,
-			),
-		);
-		this.slideSoundPaths[1] = AudioManager.GetLocalPathFromFullPath(
+			);
+		this.slideSoundPaths[1] = 
 			BundleReferenceManager.GetPathForResource(
 				BundleGroupNames.Entity,
 				Bundle_Entity.Movement,
 				Bundle_Entity_Movement.SlideSFX2,
-			),
-		);
-		this.slideSoundPaths[2] = AudioManager.GetLocalPathFromFullPath(
+			);
+		this.slideSoundPaths[2] = 
 			BundleReferenceManager.GetPathForResource(
 				BundleGroupNames.Entity,
 				Bundle_Entity.Movement,
 				Bundle_Entity_Movement.SlideSFX3,
-			),
-		);
-		this.slideSoundPaths[3] = AudioManager.GetLocalPathFromFullPath(
+			);
+		this.slideSoundPaths[3] = 
 			BundleReferenceManager.GetPathForResource(
 				BundleGroupNames.Entity,
 				Bundle_Entity.Movement,
 				Bundle_Entity_Movement.SlideSFXLoop,
-			),
-		);
+			);
 
 		/*this.landSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
