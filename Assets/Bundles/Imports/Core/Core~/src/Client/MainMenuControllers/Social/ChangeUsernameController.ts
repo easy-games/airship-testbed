@@ -69,7 +69,7 @@ export class ChangeUsernameController implements OnStart {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
 			Game.LocalPlayer.UpdateUsername(split[0], split[1]);
 			Dependency<UserController>().FetchLocalUser();
-		} else if (res.statusCode === 400) {
+		} else if (res.statusCode === 409) {
 			this.SetResponseText("error", `The username "${text}" is taken.`);
 		} else {
 			this.SetResponseText("error", "Failed to change username.");

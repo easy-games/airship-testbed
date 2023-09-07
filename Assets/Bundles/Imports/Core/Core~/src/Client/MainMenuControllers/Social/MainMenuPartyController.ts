@@ -47,6 +47,10 @@ export class MainMenuPartyController implements OnStart {
 				this.UpdateParty();
 			});
 
+		Game.LocalPlayer.OnUsernameChanged.Connect(() => {
+			this.UpdateParty();
+		});
+
 		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");
 		CoreUI.SetupButton(addFriendsButton);
 		CanvasAPI.OnClickEvent(addFriendsButton, () => {
@@ -116,7 +120,11 @@ export class MainMenuPartyController implements OnStart {
 			const refs = go.GetComponent<GameObjectReferences>();
 
 			const usernameText = refs.GetValue("UI", "Username") as TMP_Text;
-			usernameText.text = member.username;
+			if (member.uid === Game.LocalPlayer.userId) {
+				usernameText.text = Game.LocalPlayer.username;
+			} else {
+				usernameText.text = member.username;
+			}
 
 			const kickButton = refs.GetValue("UI", "KickButton");
 
