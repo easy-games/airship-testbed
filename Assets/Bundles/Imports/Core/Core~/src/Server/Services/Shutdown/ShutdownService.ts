@@ -22,7 +22,11 @@ export class ShutdownService implements OnStart {
 
 		const intervalTime = 10;
 		SetInterval(intervalTime, () => {
-			if (this.playerService.GetPlayers().size() === 0) {
+			let realPlayerCount = this.playerService
+				.GetPlayers()
+				.filter((p) => !p.IsBot())
+				.size();
+			if (realPlayerCount === 0) {
 				this.timeWithNoPlayers += intervalTime;
 
 				if (RunUtil.IsEditor()) {

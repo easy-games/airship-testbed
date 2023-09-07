@@ -9530,6 +9530,7 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideCoreBundleId: string;
     overrideCoreBundleVersion: string;
     overrideQueueType: string;
+    airshipJWT: string;
     editorConfig: AirshipEditorConfig;
     serverReady: boolean;
     isStartupConfigReady: boolean;
@@ -11560,7 +11561,7 @@ interface BlockDefinition {
     mesh: MeshCopy;
     meshLod: MeshCopy;
     usesTiles: boolean;
-    meshTiles: CSDictionary<number, MeshCopy>;
+    meshTiles: CSDictionary<number, LodSet>;
     meshTileProcessingOrder: CSArray<number>;
     usesContexts: boolean;
     meshContexts: CSDictionary<number, MeshCopy>;
@@ -11616,6 +11617,15 @@ interface PrecalculatedRotation {
     normals: CSArray<Vector3>;
 
     constructor(vertices: CSArray<Vector3>, normals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+
+}
+    
+interface LodSet {
+    lod0: MeshCopy;
+    lod1: MeshCopy;
+    lod2: MeshCopy;
+
+    constructor(): LodSet;
 
 }
     
@@ -13009,6 +13019,7 @@ interface MaterialColor extends MonoBehaviour {
 
     constructor(): MaterialColor;
 
+    ConvertColor(color: Color): Color;
     DoUpdate(): void;
     GetColor(materialIndex: number): ColorSetting;
     SetAllColors(diffuseColor: Color, combine: boolean): void;
@@ -13103,7 +13114,6 @@ interface ServerTransferData {
 }
     
 interface CrossSceneStateConstructor {
-    Username: string;
     ServerTransferData: ServerTransferData;
     UseLocalBundles: boolean;
 
