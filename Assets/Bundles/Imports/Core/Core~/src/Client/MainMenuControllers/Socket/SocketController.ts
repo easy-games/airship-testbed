@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
-import { AirshipUrl } from "Shared/Util/Url";
 import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 

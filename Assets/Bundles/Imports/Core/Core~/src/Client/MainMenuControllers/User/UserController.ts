@@ -2,9 +2,9 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
-import { AirshipUrl } from "Shared/Util/Url";
 import { decode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { User } from "./User";
@@ -29,7 +29,7 @@ export class UserController implements OnStart {
 		});
 	}
 
-	private FetchLocalUser(): void {
+	public FetchLocalUser(): void {
 		const res = HttpManager.GetAsync(`${AirshipUrl.UserService}/users/self`, this.authController.GetAuthHeaders());
 		if (res.success) {
 			const data = decode(res.data) as User;

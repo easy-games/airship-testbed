@@ -35,6 +35,8 @@ export class Player {
 	private team: Team | undefined;
 	public readonly OnChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
 
+	public OnUsernameChanged = new Signal<[username: string, tag: string]>();
+
 	private bin = new Bin();
 	private connected = true;
 
@@ -61,12 +63,12 @@ export class Player {
 		 * This should _not_ be used in network requests to identify the
 		 * player. Use `clientId` for network requests.
 		 */
-		public readonly userId: string,
+		public userId: string,
 
 		/**
 		 * The player's username. Non-unique, unless combined with `usernameTag`.
 		 */
-		public readonly username: string,
+		public username: string,
 
 		/**
 		 * The player's username tag. Append this value onto `username` for a
@@ -75,7 +77,7 @@ export class Player {
 		 * const uniqueName = `${player.username}#${player.usernameTag}`;
 		 * ```
 		 */
-		public readonly usernameTag: string,
+		public usernameTag: string,
 	) {}
 
 	public SetTeam(team: Team): void {
@@ -86,6 +88,12 @@ export class Player {
 
 	public GetTeam(): Team | undefined {
 		return this.team;
+	}
+
+	public UpdateUsername(username: string, tag: string): void {
+		this.username = username;
+		this.usernameTag = tag;
+		this.OnUsernameChanged.Fire(username, tag);
 	}
 
 	public SendMessage(message: string): void {

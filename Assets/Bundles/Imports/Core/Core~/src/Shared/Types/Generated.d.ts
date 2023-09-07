@@ -13081,6 +13081,8 @@ interface HttpManagerConstructor {
 
     GetAsync(url: string, headers: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
+    PatchAsync(url: string, data: string): HttpGetResponse;
+    PatchAsync(url: string, data: string, headers: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
     PostAsync(url: string, data: string, headers: string): HttpGetResponse;
 }

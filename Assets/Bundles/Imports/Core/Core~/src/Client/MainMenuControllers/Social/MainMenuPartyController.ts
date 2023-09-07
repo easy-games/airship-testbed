@@ -6,6 +6,7 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { ChangeUsernameController } from "./ChangeUsernameController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { Party } from "./SocketAPI";
 
@@ -50,6 +51,12 @@ export class MainMenuPartyController implements OnStart {
 		CoreUI.SetupButton(addFriendsButton);
 		CanvasAPI.OnClickEvent(addFriendsButton, () => {
 			Dependency<MainMenuAddFriendsController>().Open();
+		});
+
+		const profilePictureButton = this.mainMenuController.refs.GetValue("UI", "ProfilePictureButton");
+		CoreUI.SetupButton(profilePictureButton);
+		CanvasAPI.OnClickEvent(profilePictureButton, () => {
+			Dependency<ChangeUsernameController>().Open();
 		});
 	}
 
