@@ -8,6 +8,12 @@ import { SignalPriority } from "./Signal";
 /** Global close key for hiding interfaces. */
 const CLOSE_KEY = KeyCode.Escape;
 
+interface OpenedApp {
+	canvas?: Canvas;
+	bin: Bin;
+	darkBackground: boolean;
+}
+
 export class AppManager {
 	/** Global mouse instance. */
 	private static mouse = new Mouse();
@@ -16,10 +22,7 @@ export class AppManager {
 
 	private static opened: boolean;
 
-	/** Currently open canvas. */
-	private static openCanvas: Canvas | undefined;
-	/** Mouse lock manager bin. */
-	private static openCanvasBin = new Bin();
+	private static stack = new Array<OpenedApp>();
 
 	private static backgroundCanvas: Canvas;
 	private static backgroundObject: GameObject;
@@ -47,8 +50,13 @@ export class AppManager {
 
 		/* Handle mouse locking. */
 		const lockId = this.mouse.AddUnlocker();
-		this.openCanvasBin.Add(() => this.mouse.RemoveUnlocker(lockId));
-		this.openCanvasBin.Add(onClose);
+		const bin = new Bin();
+		this.stack.push({
+			bin: bin,
+			darkBackground: false,
+		});
+		bin.Add(() => this.mouse.RemoveUnlocker(lockId));
+		bin.Add(onClose);
 	}
 
 	/**
@@ -61,12 +69,15 @@ export class AppManager {
 			noOpenSound?: boolean;
 			onClose?: () => void;
 			noDarkBackground?: boolean;
+			addToStack?: boolean;
 		},
 	): void {
 		/* Close open `Canvas` if applicable. */
-		this.Close({
-			noCloseSound: config?.noOpenSound ?? false,
-		});
+		if (!config?.addToStack) {
+			this.Close({
+				noCloseSound: config?.noOpenSound ?? false,
+			});
+		}
 
 		if (!config?.noOpenSound) {
 			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Open.wav", {
@@ -83,37 +94,57 @@ export class AppManager {
 		/* Enable and cache. */
 		if (!config?.noDarkBackground) {
 			this.backgroundCanvas.enabled = true;
+			this.backgroundCanvas.sortingOrder = this.stack.size() + 10;
 		}
-		this.openCanvas = canvas;
-		this.openCanvas.sortingOrder = 11;
-		this.openCanvas.enabled = true;
+		canvas.sortingOrder = this.stack.size() + 11;
+		canvas.enabled = true;
 		this.opened = true;
 
+		const bin = new Bin();
+
+		this.stack.push({
+			canvas,
+			bin,
+			darkBackground: !config?.noDarkBackground,
+		});
+
 		if (config?.onClose !== undefined) {
-			this.openCanvasBin.Add(config.onClose);
+			bin.Add(config.onClose);
 		}
 
 		/* Handle mouse locking. */
 		const lockId = this.mouse.AddUnlocker();
-		this.openCanvasBin.Add(() => this.mouse.RemoveUnlocker(lockId));
+		bin.Add(() => this.mouse.RemoveUnlocker(lockId));
 	}
 
 	public static Close(config?: { noCloseSound?: boolean }): void {
 		if (!this.opened) return;
-		this.opened = false;
 
 		if (!config?.noCloseSound) {
 			// AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Close.wav");
 		}
 
-		if (this.openCanvas) {
-			CanvasUIBridge.HideCanvas(this.openCanvas);
-			this.backgroundCanvas.enabled = false;
-			this.openCanvas = undefined;
+		if (this.stack.size() > 0) {
+			const openedApp = this.stack.pop();
+
+			if (openedApp?.canvas) {
+				CanvasUIBridge.HideCanvas(openedApp.canvas);
+			}
+			openedApp?.bin.Clean();
 		}
 
-		/* Handle mouse unlocking. */
-		this.openCanvasBin.Clean();
+		if (this.stack.size() === 0) {
+			this.backgroundCanvas.enabled = false;
+			this.opened = false;
+		} else {
+			const top = this.stack[this.stack.size() - 1];
+			if (top.darkBackground) {
+				this.backgroundCanvas.enabled = true;
+				this.backgroundCanvas.sortingOrder = this.stack.size() + 10;
+			} else {
+				this.backgroundCanvas.enabled = false;
+			}
+		}
 	}
 
 	/**

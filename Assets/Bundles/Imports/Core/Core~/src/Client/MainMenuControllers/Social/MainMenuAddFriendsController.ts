@@ -100,6 +100,7 @@ export class MainMenuAddFriendsController implements OnStart {
 		}
 		AppManager.Open(this.canvas, {
 			noOpenSound: true,
+			addToStack: true,
 		});
 		const wrapper = this.canvas.transform.GetChild(0);
 		wrapper.localPosition = new Vector3(0, 15, 0);
