@@ -58,6 +58,7 @@ export class AudioManager {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
+		audioSource.clip = clip;
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
@@ -111,6 +112,7 @@ export class AudioManager {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
+		audioSource.clip = clip;
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
