@@ -115,6 +115,12 @@ export class MainMenuHomeController implements OnStart {
 			this.UpdateCrossSceneState();
 			TransferManager.Instance.ConnectToServer("127.0.0.1", 7770);
 		});
+
+		const quitButton = this.mainMenuController.refs.GetValue("UI", "QuitButton");
+		CoreUI.SetupButton(quitButton);
+		CanvasAPI.OnClickEvent(quitButton, () => {
+			Application.Quit();
+		});
 	}
 
 	public ConnectToWithCode(code: string): void {
