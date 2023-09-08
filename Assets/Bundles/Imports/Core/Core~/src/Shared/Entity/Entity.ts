@@ -15,7 +15,7 @@ import { Projectile } from "Shared/Projectile/Projectile";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import { BundleReferenceManager } from "Shared/Util/BundleReferenceManager";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
-import { BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "Shared/Util/ReferenceManagerResources";
+import { AllBundleItems, BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -86,29 +86,11 @@ export class EntityReferences {
 		));*/
 
 		//Slide sound path: Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav
-		this.slideSoundPaths[0] = BundleReferenceManager.GetPathForResource(
-				BundleGroupNames.Entity,
-				Bundle_Entity.Movement,
-				Bundle_Entity_Movement.SlideSFX1,
-			);
-		this.slideSoundPaths[1] = 
-			BundleReferenceManager.GetPathForResource(
-				BundleGroupNames.Entity,
-				Bundle_Entity.Movement,
-				Bundle_Entity_Movement.SlideSFX2,
-			);
-		this.slideSoundPaths[2] = 
-			BundleReferenceManager.GetPathForResource(
-				BundleGroupNames.Entity,
-				Bundle_Entity.Movement,
-				Bundle_Entity_Movement.SlideSFX3,
-			);
-		this.slideSoundPaths[3] = 
-			BundleReferenceManager.GetPathForResource(
-				BundleGroupNames.Entity,
-				Bundle_Entity.Movement,
-				Bundle_Entity_Movement.SlideSFXLoop,
-			);
+		this.slideSoundPaths[0] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX0);
+		this.slideSoundPaths[1] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX1);
+		this.slideSoundPaths[2] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX2);
+		this.slideSoundPaths[3] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX3);
+		this.slideSoundPaths[4] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFXLoop);
 
 		/*this.landSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
@@ -159,16 +141,18 @@ export class Entity {
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
+		this.ClientId = clientId;
+		this.networkObject = networkObject;
 		this.gameObject = networkObject.gameObject;
+
+		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		this.model = this.references.root.gameObject;
-		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
-		this.networkObject = networkObject;
 		this.anim = new CharacterEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
-		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
-		this.ClientId = clientId;
+		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.state = this.entityDriver.GetState();
+		
 		if (this.ClientId !== undefined) {
 			if (RunUtil.IsServer()) {
 				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.ClientId);

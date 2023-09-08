@@ -41,7 +41,11 @@ export class AudioClipBundle {
 	}
 
 	public Stop() {
-		this.lastAudioSource?.Stop();
+		if(this.lastAudioSource){
+			this.lastAudioSource.Stop();
+			PoolManager.ReleaseObject(this.lastAudioSource.gameObject);
+			this.lastAudioSource = undefined;
+		}
 		this.lastIndexPlayed = -1;
 	}
 

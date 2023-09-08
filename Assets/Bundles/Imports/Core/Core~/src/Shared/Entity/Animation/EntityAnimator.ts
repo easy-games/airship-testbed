@@ -105,6 +105,7 @@ export class EntityAnimator {
 			}
 			this.OnAnimationEvent(data.key, data);
 		});
+
 		this.entityRef.root.gameObject.SetActive(true);
 	}
 

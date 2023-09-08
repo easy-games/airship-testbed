@@ -59,7 +59,9 @@ export class AudioManager {
 			return undefined;
 		}
 		audioSource.clip = clip;
-		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
+		audioSource.volume = config?.volumeScale ?? 1;
+		audioSource.Play();
+		//audioSource.PlayOneShot(clip, );
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
@@ -113,7 +115,9 @@ export class AudioManager {
 			return undefined;
 		}
 		audioSource.clip = clip;
-		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
+		audioSource.volume = config?.volumeScale ?? 1;
+		audioSource.Play();
+		//audioSource.PlayOneShot(clip, );
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
 				PoolManager.ReleaseObject(audioSource.gameObject);
