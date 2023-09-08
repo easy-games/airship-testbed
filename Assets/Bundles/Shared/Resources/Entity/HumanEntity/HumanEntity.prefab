@@ -186,7 +186,7 @@ MonoBehaviour:
   _interpolation: 4
   _extrapolation: 2
   _enableTeleport: 1
-  _teleportThreshold: 3
+  _teleportThreshold: 2
   _clientAuthoritative: 0
   _sendToOwner: 0
   _useNetworkLod: 1
@@ -269,6 +269,7 @@ MonoBehaviour:
   anim: {fileID: 903796914586745664}
   groundedBlockId: 0
   groundedBlockPos: {x: 0, y: 0, z: 0}
+  disableInput: 0
   _exposedState: 0
   replicatedLookVector: {x: 0, y: 0, z: 0}
   sprintForwardThreshold: 0.25
@@ -323,7 +324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99dfe5a335b4400d888199768fd1e932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hip: {fileID: 2647874669622982769}
   combiner: {fileID: 4894943142515552649}
   clothColliders:
   - {fileID: 4469975944989540630}

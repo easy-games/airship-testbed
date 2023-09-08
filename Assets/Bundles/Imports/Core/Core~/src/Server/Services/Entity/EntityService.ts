@@ -84,7 +84,6 @@ export class EntityService implements OnStart {
 		const entityGO = entityNob.gameObject;
 		const entityTransform = entityGO.transform;
 		entityTransform.position = beforeEvent.spawnPosition;
-		// entityDriver.Teleport(beforeEvent.spawnPosition);
 		// const entityGO = PoolManager.SpawnObject(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
 		entityGO.name = `entity_${id}`;
 		if (player) {
@@ -93,6 +92,7 @@ export class EntityService implements OnStart {
 			NetworkUtil.Spawn(entityGO);
 		}
 
+		// const entityDriver = entityGO.GetComponent<EntityDriver>();
 		const inv = this.invService.MakeInventory();
 		if (player) {
 			this.invService.Subscribe(player.clientId, inv, true);
