@@ -57,7 +57,7 @@ export class ShopkeeperService implements OnStart {
 			const itemShopWorldPos = loadedMap.GetWorldPosition(team.id + "_item_shop");
 			const itemShopEntity = this.entityService.SpawnEntityForPlayer(
 				undefined,
-				EntityPrefabType.NPC_IDLE,
+				EntityPrefabType.HUMAN,
 				itemShopWorldPos.Position,
 			);
 			itemShopEntity.entityDriver.SetLookVector(
@@ -73,7 +73,7 @@ export class ShopkeeperService implements OnStart {
 			const teamUpgradeWorldPos = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
 			const upgradeShopEntity = this.entityService.SpawnEntityForPlayer(
 				undefined,
-				EntityPrefabType.NPC_IDLE,
+				EntityPrefabType.HUMAN,
 				teamUpgradeWorldPos.Position,
 			);
 			upgradeShopEntity.entityDriver.SetLookVector(
