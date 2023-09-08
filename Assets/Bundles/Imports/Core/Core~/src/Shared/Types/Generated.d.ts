@@ -2560,6 +2560,13 @@ declare const enum ScrollbarVisibility {
     AutoHide = 1,
     AutoHideAndExpandViewport = 2,
 }
+declare const enum SynchronizedProperty {
+    None = 0,
+    Parent = 1,
+    Position = 2,
+    Rotation = 4,
+    Scale = 8,
+}
 
     
 interface RaycastHit {
@@ -13350,4 +13357,51 @@ interface ScrollRectEvent {
     constructor(): ScrollRectEvent;
 
 }
+    
+interface NetworkTransform extends NetworkBehaviour {
+    TakenOwnership: boolean;
+
+    constructor(): NetworkTransform;
+
+    Awake(): void;
+    Awake___UserLogic(): void;
+    ForceSend(): void;
+    GetSendToOwner(): boolean;
+    NetworkInitialize___Early(): void;
+    NetworkInitialize__Late(): void;
+    NetworkInitializeIfDisabled(): void;
+    OnOwnershipClient(prevOwner: NetworkConnection): void;
+    OnOwnershipServer(prevOwner: NetworkConnection): void;
+    OnSpawnServer(connection: NetworkConnection): void;
+    OnStartClient(): void;
+    OnStartServer(): void;
+    OnStopClient(): void;
+    OnStopServer(): void;
+    SetEnableTeleport(enabled: boolean): void;
+    SetInterval(value: number): void;
+    SetPositionSnapping(axes: SnappedAxes): void;
+    SetRotationSnapping(axes: SnappedAxes): void;
+    SetScaleSnapping(axes: SnappedAxes): void;
+    SetSendToOwner(value: boolean): void;
+    SetSynchronizedProperties(value: SynchronizedProperty): void;
+    SetSynchronizePosition(value: boolean): void;
+    SetSynchronizeRotation(value: boolean): void;
+    SetSynchronizeScale(value: boolean): void;
+    SetTeleportThreshold(val: number): void;
+}
+    
+interface SnappedAxes {
+    X: boolean;
+    Y: boolean;
+    Z: boolean;
+
+
+}
+    
+interface NetworkTransformConstructor {
+    MAX_INTERPOLATION: number;
+
+
+}
+declare const NetworkTransform: NetworkTransformConstructor;
 

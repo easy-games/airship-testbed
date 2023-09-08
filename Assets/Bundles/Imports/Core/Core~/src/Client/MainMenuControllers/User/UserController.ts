@@ -35,7 +35,12 @@ export class UserController implements OnStart {
 			const data = decode(res.data) as User;
 			print("got local user: " + inspect(data));
 			this.localUser = data;
-			(Game.LocalPlayer as Writable<Player>).userId = data.uid;
+
+			const writeUser = Game.LocalPlayer as Writable<Player>;
+			writeUser.userId = data.uid;
+			writeUser.username = data.username;
+			writeUser.usernameTag = data.discriminator;
+
 			this.onLocalUserUpdated.Fire(this.localUser);
 			return;
 		}

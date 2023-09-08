@@ -10,6 +10,7 @@ import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
 import { Signal } from "Imports/Core/Shared/Util/Signal";
+import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
@@ -183,6 +184,14 @@ export class ItemShopController implements OnStart {
 
 		const currencyMeta = ItemUtil.GetItemMeta(shopItem.currency);
 		selectedItemCost.text = `${shopItem.price} ${currencyMeta.displayName}`;
+
+		if (shopItem.currency === ItemType.EMERALD) {
+			selectedItemCost.color = Theme.Green;
+		} else if (shopItem.currency === ItemType.DIAMOND) {
+			selectedItemCost.color = Theme.Aqua;
+		} else {
+			selectedItemCost.color = Theme.White;
+		}
 
 		const purchaseButtonImage = this.purchaseButton.GetComponent<Image>();
 
