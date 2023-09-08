@@ -1,9 +1,11 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
-import { Keyboard, Mouse } from "Shared/UserInput";
+import { Keyboard } from "Shared/UserInput";
+import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreUIController } from "../UI/CoreUIController";
@@ -13,11 +15,15 @@ import { InventoryController } from "./InventoryController";
 export class InventoryUIController implements OnStart {
 	private hotbarSlots = 9;
 	private backpackShown = false;
-	private showBackpackBin = new Bin();
-	private mouse = new Mouse();
 	private canvas: Canvas;
 	private hotbarContent: Transform;
 	private healthBar: ProgressBarGraphics;
+	private hotbarRefs: GameObjectReferences;
+
+	private backpackRefs: GameObjectReferences;
+	private backpackCanvas: Canvas;
+
+	private slotToBackpackTileMap = new Map<number, GameObject>();
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -27,29 +33,39 @@ export class InventoryUIController implements OnStart {
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = true;
 
-		const refs = go.GetComponent<GameObjectReferences>();
-		this.hotbarContent = refs.GetValue("UI", "HotbarContentGO").transform;
-		this.healthBar = new ProgressBarGraphics(refs.GetValue("UI", "HealthBarTransform"));
+		this.hotbarRefs = go.GetComponent<GameObjectReferences>();
+		this.hotbarContent = this.hotbarRefs.GetValue("UI", "HotbarContentGO").transform;
+		this.healthBar = new ProgressBarGraphics(this.hotbarRefs.GetValue("UI", "HealthBarTransform"));
+
+		const backpackGo = GameObjectUtil.Instantiate(
+			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),
+		);
+		this.backpackRefs = backpackGo.GetComponent<GameObjectReferences>();
+		this.backpackCanvas = backpackGo.GetComponent<Canvas>();
+		this.backpackCanvas.enabled = false;
 	}
 
 	OnStart(): void {
 		this.SetupHotbar();
-		// this.SetupBackpack();
+		this.SetupBackpack();
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.E, (event) => {
-			// if (this.IsBackpackShown()) {
-			//     AppManager.Close();
-			// } else {
-			// 	LegacyAppManager.OpenWithCustomLogic(
-			// 		() => {
-			// 			this.ShowBackpack();
-			// 		},
-			// 		() => {
-			// 			this.HideBackpack();
-			// 		},
-			// 	);
-			// }
+			if (this.IsBackpackShown()) {
+				AppManager.Close();
+			} else {
+				this.OpenBackpack();
+			}
+		});
+	}
+
+	public OpenBackpack(): void {
+		this.backpackShown = true;
+
+		AppManager.Open(this.backpackCanvas, {
+			onClose: () => {
+				this.backpackShown = false;
+			},
 		});
 	}
 
@@ -165,87 +181,43 @@ export class InventoryUIController implements OnStart {
 		}
 	}
 
-	// private SetupBackpack(): void {
-	// 	const doc = GameObject.Find("InventoryBackpackUI").GetComponent<UIDocument>();
-	// 	doc.enabled = true;
+	private SetupBackpack(): void {
+		const hotbarContent = this.backpackRefs.GetValue("Backpack", "HotbarContent");
+		for (let i = 0; i < 9; i++) {
+			const t = hotbarContent.transform.GetChild(i);
+			this.slotToBackpackTileMap.set(i, t.gameObject);
+		}
 
-	// 	this.HideBackpack();
-	// 	this.UpdateEntireBackpack();
+		const backpackContent = this.backpackRefs.GetValue("Backpack", "BackpackContent");
+		for (let i = 9; i < 45; i++) {
+			const t = backpackContent.transform.GetChild(i - 9);
+			this.slotToBackpackTileMap.set(i, t.gameObject);
+		}
 
-	// 	const root = doc.rootVisualElement;
-	// 	if (root === undefined) {
-	// 		print("Backpack root was undefined.");
-	// 		return;
-	// 	}
-	// 	const background = root.Q("Background");
-	// 	UIToolkitRaycastCheckerAPI.RegisterBlockingElement(background);
-	// 	for (let i = 9; i < 46; i++) {
-	// 		const tile = root.Q(`Tile${i - 9}`);
-	// 		const tileWrapper = tile.Q<Button>("Wrapper");
-	// 		tileWrapper.clickable.OnClicked(() => {
-	// 			if (!this.invController.LocalInventory) {
-	// 				return;
-	// 			}
-	// 			this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
-	// 		});
-	// 		UIToolkitRaycastCheckerAPI.RegisterBlockingElement(tile);
-	// 	}
+		const armorContent = this.backpackRefs.GetValue("Backpack", "ArmorContent");
+		for (let i = 45; i <= 47; i++) {
+			const t = armorContent.transform.GetChild(i - 45);
+			this.slotToBackpackTileMap.set(i, t.gameObject);
+		}
 
-	// 	this.invController.ObserveLocalInventory((inv) => {
-	// 		inv.SlotChanged.Connect((slot, itemStack) => {
-	// 			if (slot >= this.hotbarSlots) {
-	// 				const tile = root.Q(`Tile${slot - 9}`);
-	// 				this.UpdateTile(tile, itemStack);
-	// 			}
-	// 		});
+		this.invController.ObserveLocalInventory((inv) => {
+			inv.SlotChanged.Connect((slot, itemStack) => {
+				const tile = this.slotToBackpackTileMap.get(slot)!;
+				this.UpdateTile(tile, itemStack);
+			});
+			for (let i = 0; i < inv.GetMaxSlots(); i++) {
+				const tile = this.slotToBackpackTileMap.get(i)!;
+				this.UpdateTile(tile, inv.GetItem(i));
 
-	// 		for (let i = 9; i < 46; i++) {
-	// 			const itemStack = inv.GetItem(i);
-	// 			const tile = root.Q(`Tile${i - 9}`);
-	// 			this.UpdateTile(tile, itemStack);
-	// 		}
-	// 	});
-	// }
-
-	public ShowBackpack(): void {
-		this.backpackShown = true;
-		// const root = this.GetBackpackRoot();
-		// UICore.SetDisplayStyle(root, DisplayStyle.Flex);
-
-		const lockerId = this.mouse.AddUnlocker();
-		this.showBackpackBin.Add(() => {
-			this.mouse.RemoveUnlocker(lockerId);
+				CoreUI.SetupButton(tile);
+				CanvasAPI.OnClickEvent(tile.transform.GetChild(0).gameObject, () => {
+					print("click.1");
+					if (!this.invController.LocalInventory) return;
+					print("click.2");
+					this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+				});
+			}
 		});
-	}
-
-	// public UpdateEntireBackpack(): void {
-	// 	const root = this.GetBackpackRoot();
-	// 	if (root === undefined) {
-	// 		return;
-	// 	}
-	// 	const inv = this.invController.LocalInventory;
-	// 	if (inv) {
-	// 		for (let i = inv.GetHotbarSlotCount(); i < inv.GetMaxSlots(); i++) {
-	// 			const tile = root.Q(`Tile${i - 9}`);
-	// 			if (tile) {
-	// 				this.UpdateTile(tile, inv.GetItem(i));
-	// 			}
-	// 		}
-	// 	} else {
-	// 		for (let i = 9; i < 45; i++) {
-	// 			const tile = root.Q(`Tile${i - 9}`);
-	// 			if (tile) {
-	// 				this.UpdateTile(tile, undefined);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	public HideBackpack(): void {
-		this.showBackpackBin.Clean();
-		this.backpackShown = false;
-		// const root = this.GetBackpackRoot();
-		// UICore.SetDisplayStyle(root, DisplayStyle.None);
 	}
 
 	public IsBackpackShown(): boolean {

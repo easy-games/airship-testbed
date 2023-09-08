@@ -208,7 +208,7 @@ export class LocalEntityController implements OnStart {
 			keyboard.OnKeyDown(KeyCode.Space, (event) => {
 				const now = Time.time;
 				const dt = now - lastSpace;
-				if (dt < 0.2) {
+				if (dt < 0.3) {
 					lastSpace = 0;
 					flyMode = !flyMode;
 					this.entityDriver?.SetFlyMode(flyMode);

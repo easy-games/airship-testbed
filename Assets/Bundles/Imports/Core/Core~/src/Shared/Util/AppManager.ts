@@ -43,10 +43,20 @@ export class AppManager {
 		});
 	}
 
-	public static OpenCustom(onClose: () => void): void {
+	public static OpenCustom(
+		onClose: () => void,
+		config?: {
+			darkBackground?: boolean;
+			darkBackgroundSortingOrder?: number;
+		},
+	): void {
 		this.Close({ noCloseSound: true });
 
 		this.opened = true;
+
+		if (config?.darkBackground) {
+			this.OpenDarkBackground(config.darkBackgroundSortingOrder ?? this.stack.size() + 10);
+		}
 
 		/* Handle mouse locking. */
 		const lockId = this.mouse.AddUnlocker();
@@ -93,8 +103,7 @@ export class AppManager {
 
 		/* Enable and cache. */
 		if (!config?.noDarkBackground) {
-			this.backgroundCanvas.enabled = true;
-			this.backgroundCanvas.sortingOrder = this.stack.size() + 10;
+			this.OpenDarkBackground(this.stack.size() + 10);
 		}
 		canvas.sortingOrder = this.stack.size() + 11;
 		canvas.enabled = true;
@@ -115,6 +124,11 @@ export class AppManager {
 		/* Handle mouse locking. */
 		const lockId = this.mouse.AddUnlocker();
 		bin.Add(() => this.mouse.RemoveUnlocker(lockId));
+	}
+
+	public static OpenDarkBackground(sortOrder: number) {
+		this.backgroundCanvas.enabled = true;
+		this.backgroundCanvas.sortingOrder = sortOrder;
 	}
 
 	public static Close(config?: { noCloseSound?: boolean }): void {

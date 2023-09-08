@@ -8,6 +8,7 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Keyboard, Mouse } from "Shared/UserInput";
+import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ChatUtil } from "Shared/Util/ChatUtil";
@@ -112,6 +113,7 @@ export class ChatController implements OnStart {
 					this.SubmitInputField();
 					event.SetCancelled(true);
 				} else {
+					if (AppManager.IsOpen()) return;
 					this.inputField.Select();
 				}
 			},

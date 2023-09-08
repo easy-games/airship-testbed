@@ -17,7 +17,7 @@ export class Inventory {
 	public readonly Id: number;
 	private items = new Map<number, ItemStack>();
 	private heldSlot = 0;
-	private maxSlots = 46;
+	private maxSlots = 48;
 	private hotbarSlots = 9;
 	public armorSlots: {
 		[key in ArmorType]: number;
