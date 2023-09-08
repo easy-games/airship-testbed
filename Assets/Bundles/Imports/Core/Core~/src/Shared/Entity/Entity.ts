@@ -159,16 +159,18 @@ export class Entity {
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
+		this.ClientId = clientId;
+		this.networkObject = networkObject;
 		this.gameObject = networkObject.gameObject;
+
+		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		this.model = this.references.root.gameObject;
-		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
-		this.networkObject = networkObject;
 		this.anim = new CharacterEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
-		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
-		this.ClientId = clientId;
+		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.state = this.entityDriver.GetState();
+		
 		if (this.ClientId !== undefined) {
 			if (RunUtil.IsServer()) {
 				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.ClientId);
