@@ -1,4 +1,4 @@
-﻿import { BundleData, BundleGroupNames, ReferenceManagerAssets } from "./ReferenceManagerResources";
+﻿import { AllBundleItems, BundleData, BundleGroupNames, ReferenceManagerAssets } from "./ReferenceManagerResources";
 
 export class BundleReferenceManager {
 	public static LoadResources<T>(groupId: BundleGroupNames, bundleIndex = 0): Array<T> {
@@ -55,5 +55,17 @@ export class BundleReferenceManager {
 		}
 		let path = filePaths.get(itemKey);
 		return AssetBridge.LoadAsset<T>(path ? path : "");
+	}
+
+	public static GetDirectPath(bundleId: AllBundleItems){
+		return bundleId as string;
+	}
+
+	public static LoadDirectResource<T>(bundleId: AllBundleItems){
+		const path:string = bundleId as string;
+		if(path && path !== ""){
+			return AssetBridge.LoadAsset<T>(path);
+		}
+		return undefined;
 	}
 }
