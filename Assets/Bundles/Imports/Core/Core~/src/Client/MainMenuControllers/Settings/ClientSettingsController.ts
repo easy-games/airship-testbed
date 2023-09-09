@@ -1,76 +1,101 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { SetInterval } from "Shared/Util/Timer";
+import { decode, encode } from "Shared/json";
 import { AmbientSoundController } from "../AmbientSound/AmbientSoundController";
+import { ClientSettingsFile } from "./ClientSettingsFile";
+
+const defaultData: ClientSettingsFile = {
+	mouseSensitivity: 0.5,
+	touchSensitivity: 0.5,
+	globalVolume: 1,
+	ambientVolume: 0.1,
+	musicVolume: 0.11,
+	firstPersonFov: 85,
+	thirdPersonFov: 100,
+};
 
 @Controller({})
 export class ClientSettingsController implements OnStart {
-	private mouseSensitivity = 0.5;
-	private touchSensitivity = 0.5;
-	private globalVolume = 1;
-	private ambientVolume = 0.14;
-	private musicVolume = 0.11;
-	private firstPersonFov = 85;
-	private thirdPersonFov = 100;
+	private data: ClientSettingsFile;
+	private unsavedChanges = false;
 
 	constructor() {
-		this.LoadSettings();
+		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
+		if (savedContents && savedContents !== "") {
+			this.data = decode(savedContents);
+		} else {
+			this.data = defaultData;
+		}
+
+		this.SetAmbientVolume(this.data.ambientVolume);
+
+		SetInterval(3, () => {
+			if (this.unsavedChanges) {
+				this.unsavedChanges = false;
+				this.SaveSettings();
+			}
+		});
 	}
 
 	OnStart(): void {}
 
-	private LoadSettings(): void {
-		this.SetAmbientVolume(0.1);
+	public SaveSettings(): void {
+		DiskManager.WriteFileAsync("ClientSettings.json", encode(this.data));
 	}
 
-	public SaveSettings(): void {}
-
 	public GetMouseSensitivity(): number {
-		return this.mouseSensitivity;
+		return this.data.mouseSensitivity;
 	}
 
 	public SetMouseSensitivity(value: number): void {
-		this.mouseSensitivity = value;
+		this.data.mouseSensitivity = value;
+		this.unsavedChanges = true;
 	}
 
 	public GetTouchSensitivity(): number {
-		return this.touchSensitivity;
+		return this.data.touchSensitivity;
 	}
 
 	public SetTouchSensitivity(value: number): void {
-		this.touchSensitivity = value;
+		this.data.touchSensitivity = value;
+		this.unsavedChanges = true;
 	}
 
 	public GetAmbientVolume(): number {
-		return this.ambientVolume;
+		return this.data.ambientVolume;
 	}
 
 	public SetAmbientVolume(val: number): void {
-		this.ambientVolume = val;
+		this.data.ambientVolume = val;
 		Dependency<AmbientSoundController>().SetAmbientVolume(val * 0.5);
+		this.unsavedChanges = true;
 	}
 
 	public GetMusicVolume(): number {
-		return this.musicVolume;
+		return this.data.musicVolume;
 	}
 
 	public SetMusicVolume(val: number): void {
-		this.musicVolume = val;
+		this.data.musicVolume = val;
 		Dependency<AmbientSoundController>().SetMusicVolume(val * 0.5);
+		this.unsavedChanges = true;
 	}
 
 	public SetGlobalVolume(volume: number) {
-		this.globalVolume = volume;
+		this.data.globalVolume = volume;
 		Bridge.SetVolume(volume);
+		this.unsavedChanges = true;
 	}
 
 	public GetGlobalVolume(): number {
-		return this.globalVolume;
+		return this.data.globalVolume;
 	}
 
 	public GetFirstPersonFov(): number {
-		return this.firstPersonFov;
+		return this.data.firstPersonFov;
 	}
 
 	public GetThirdPersonFov(): number {
-		return this.thirdPersonFov;
+		return this.data.thirdPersonFov;
 	}
 }

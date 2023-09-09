@@ -169,7 +169,7 @@ export class InventoryUIController implements OnStart {
 		animator.SetBool("Selected", selectedSlot === slot);
 
 		if (init) {
-			const contentGO = go.transform.FindChild("Content")!.gameObject;
+			const contentGO = go.transform.GetChild(0).gameObject;
 			CoreUI.SetupButton(contentGO);
 			CanvasAPI.OnClickEvent(contentGO, () => {
 				if (this.IsBackpackShown() && this.invController.LocalInventory) {
