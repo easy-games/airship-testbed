@@ -64,7 +64,7 @@ export class ItemShopController implements OnStart {
 			if (!entity) return;
 			if (entity.IsLocalCharacter()) return;
 
-			const pos = entity.GetHeadPosition().add(new Vector3(0, 0.5, 0));
+			const pos = entity.GetHeadPosition().add(new Vector3(0, 0.7, 0));
 			const go = PoolManager.SpawnObject(this.itemPurchasePopupPrefab, pos, Quaternion.identity);
 			const image = go.transform.GetChild(0).GetChild(0).GetComponent<Image>();
 			CanvasUIBridge.SetSprite(image.gameObject, ItemUtil.GetItemRenderPath(itemType));
