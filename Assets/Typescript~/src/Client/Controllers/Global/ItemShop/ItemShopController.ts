@@ -8,7 +8,7 @@ import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
 import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
 import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
-import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerButton } from "Imports/Core/Shared/Util/CanvasAPI";
 import { Signal } from "Imports/Core/Shared/Util/Signal";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
@@ -81,7 +81,7 @@ export class ItemShopController implements OnStart {
 		const purchaseButton = this.refs.GetValue<GameObject>("SidebarContainer", "PurchaseButton");
 		CoreUI.SetupButton(purchaseButton);
 		CanvasAPI.OnClickEvent(purchaseButton, () => {
-			this.HandlePurchaseRequest();
+			this.SendPurchaseRequest();
 		});
 		/**
 		 *	CanvasEventAPI.OnHoverEvent(purchaseButton, (hoverState) => {
@@ -124,8 +124,20 @@ export class ItemShopController implements OnStart {
 
 			if (init) {
 				CoreUI.SetupButton(itemGO);
+				let lastClick = 0;
 				CanvasAPI.OnClickEvent(itemGO, () => {
+					if (this.selectedItem === shopItem && Time.time - lastClick < 0.3) {
+						lastClick = Time.time;
+						this.SendPurchaseRequest();
+						return;
+					}
+					lastClick = Time.time;
 					this.SetSidebarItem(shopItem);
+				});
+				CanvasAPI.OnPointerEvent(itemGO, (direction, button) => {
+					if (button === PointerButton.RIGHT) {
+						this.SendPurchaseRequest();
+					}
 				});
 			}
 		});
@@ -144,7 +156,7 @@ export class ItemShopController implements OnStart {
 	/**
 	 * Sends purchase request to server for currently selected item.
 	 */
-	private HandlePurchaseRequest(): void {
+	private SendPurchaseRequest(): void {
 		if (!this.selectedItem || !this.CanPurchase(this.selectedItem)) {
 			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav");
 			return;
