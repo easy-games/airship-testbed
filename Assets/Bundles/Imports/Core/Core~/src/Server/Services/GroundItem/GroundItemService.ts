@@ -91,7 +91,6 @@ export class GroundItemService implements OnStart {
 		});
 
 		Dependency<PlayerService>().ObservePlayers((player) => {
-			print("GroundItemService");
 			CoreNetwork.ServerToClient.GroundItem.Add.Server.FireClient(
 				player.clientId,
 				Object.values(this.groundItems).map((i) => {

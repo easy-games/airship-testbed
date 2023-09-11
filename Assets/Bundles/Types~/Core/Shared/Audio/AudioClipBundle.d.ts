@@ -17,13 +17,13 @@ export declare class AudioClipBundle {
     spacialMode: AudioBundleSpacialMode;
     spacialPosition: Vector3;
     volumeScale: number;
+    useFullPath: boolean;
     private soundOptions;
-    private manualFolderPath;
     private clipPaths;
     private possibleRandomIndex;
     private lastIndexPlayed;
     private lastAudioSource;
-    constructor(clipPaths: string[], manualFolderPath?: string);
+    constructor(clipPaths: string[]);
     UpdatePaths(newPaths: string[]): void;
     Stop(): void;
     PlayManual(index: number): void;

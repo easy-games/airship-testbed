@@ -3,6 +3,7 @@
 export interface PlaySoundConfig {
     volumeScale: number;
     loop?: boolean;
+    pitch?: number;
 }
 export declare class AudioManager {
     static SoundFolderPath: string;

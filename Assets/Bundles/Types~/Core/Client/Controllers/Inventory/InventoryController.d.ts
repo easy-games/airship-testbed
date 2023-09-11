@@ -11,6 +11,8 @@ export declare class InventoryController implements OnStart {
     private enabled;
     private disablers;
     private disablerCounter;
+    private lastScrollTime;
+    private scrollCooldown;
     constructor();
     OnStart(): void;
     AddDisabler(): () => void;

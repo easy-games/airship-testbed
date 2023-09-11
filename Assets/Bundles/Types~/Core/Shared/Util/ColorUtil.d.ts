@@ -4,5 +4,6 @@ export declare class ColorUtil {
      * Note: return WILL include the "#"
      */
     static ColorToHex(color: Color): string;
+    static HexToColor(hex: string): Color;
     static ColoredText(color: Color, text: string): string;
 }
