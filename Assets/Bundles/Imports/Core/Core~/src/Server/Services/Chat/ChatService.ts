@@ -10,6 +10,7 @@ import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
 import { DieCommand } from "./Commands/DieCommand";
 import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
+import { FlyCommand } from "./Commands/FlyCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
 import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorSpawnRateCommand";
 import { HealCommand } from "./Commands/HealCommand";
@@ -41,6 +42,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new SetVarCommand());
 		this.RegisterCommand(new HealCommand());
 		this.RegisterCommand(new BotCommand());
+		this.RegisterCommand(new FlyCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
