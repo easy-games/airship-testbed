@@ -648,6 +648,7 @@ GameObject:
   - component: {fileID: 1890427126409836349}
   - component: {fileID: 1890427126409836351}
   - component: {fileID: 1890427126409836348}
+  - component: {fileID: 775565656264200150}
   m_Layer: 5
   m_Name: SelectedItemQuantityContainer
   m_TagString: Untagged
@@ -704,7 +705,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -714,6 +715,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &775565656264200150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890427126409836346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+  image: {fileID: 1890427126409836348}
 --- !u!1 &1890427126890997449
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,6 +742,7 @@ GameObject:
   - component: {fileID: 1890427126890997450}
   - component: {fileID: 1890427126890997451}
   - component: {fileID: 1632816318904792777}
+  - component: {fileID: 3078790280727317227}
   m_Layer: 5
   m_Name: PurchaseButton
   m_TagString: Untagged
@@ -783,7 +799,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -914,6 +930,20 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &3078790280727317227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890427126890997449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+  image: {fileID: 1890427126890997450}
 --- !u!1 &1890427127206809059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,7 +1624,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 135, y: 150}
-  m_Spacing: {x: 15, y: 15}
+  m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &4648205750919374137
@@ -1772,7 +1802,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 135, y: 150}
-  m_Spacing: {x: 15, y: 15}
+  m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &7008810315526311748
@@ -1873,7 +1903,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 135, y: 150}
-  m_Spacing: {x: 15, y: 15}
+  m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &7591346574373696262

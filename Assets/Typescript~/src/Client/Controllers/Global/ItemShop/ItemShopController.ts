@@ -59,7 +59,7 @@ export class ItemShopController implements OnStart {
 
 		this.UpdateItems(false);
 		if (this.selectedItem) {
-			this.SetSidebarItem(this.selectedItem);
+			this.SetSidebarItem(this.selectedItem, true);
 		}
 
 		AppManager.Open(this.shopCanvas, {
@@ -74,7 +74,7 @@ export class ItemShopController implements OnStart {
 		const shopItems = ItemShopMeta.defaultItems.shopItems;
 		// Default sidebar to _first_ item in default shop array..
 		const defaultItem = shopItems[0];
-		this.SetSidebarItem(defaultItem);
+		this.SetSidebarItem(defaultItem, true);
 		// Instantiate individual item prefabs underneath relevant category container.
 		this.UpdateItems(true);
 		// Handle purchase requests.
@@ -132,7 +132,9 @@ export class ItemShopController implements OnStart {
 						return;
 					}
 					lastClick = Time.time;
-					this.SetSidebarItem(shopItem);
+					if (this.selectedItem !== shopItem) {
+						this.SetSidebarItem(shopItem);
+					}
 				});
 				CanvasAPI.OnPointerEvent(itemGO, (direction, button) => {
 					if (button === PointerButton.RIGHT) {
@@ -179,7 +181,7 @@ export class ItemShopController implements OnStart {
 	 * Updates sidebar to reflect selected shop item.
 	 * @param shopItem A shop item.
 	 */
-	private SetSidebarItem(shopItem: ShopElement): void {
+	private SetSidebarItem(shopItem: ShopElement, noEffect = false): void {
 		this.selectedItemBin.Clean();
 
 		/* TODO: We should probably fetch and cache these references inside of `OnStart` or the constructor. */
@@ -193,6 +195,11 @@ export class ItemShopController implements OnStart {
 		const itemMeta = ItemUtil.GetItemMeta(shopItem.itemType);
 		selectedItemQuantity.text = `x${shopItem.quantity}`;
 		selectedItemName.text = itemMeta.displayName;
+
+		if (!noEffect) {
+			const itemRect = selectedItemIcon.GetComponent<RectTransform>();
+			itemRect.TweenLocalScale(new Vector3(0.9, 1.23, 1), 0.05).SetPingPong();
+		}
 
 		const currencyMeta = ItemUtil.GetItemMeta(shopItem.currency);
 		selectedItemCost.text = `${shopItem.price} ${currencyMeta.displayName}`;
