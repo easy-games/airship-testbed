@@ -1,6 +1,7 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { InventoryController } from "Imports/Core/Client/Controllers/Inventory/InventoryController";
 import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
 import { Game } from "Imports/Core/Shared/Game";
 import { GameObjectUtil } from "Imports/Core/Shared/GameObject/GameObjectUtil";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
@@ -11,6 +12,7 @@ import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerButton } from "Imports/Core/Shared/Util/CanvasAPI";
 import { Signal } from "Imports/Core/Shared/Util/Signal";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
+import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
 import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
@@ -33,6 +35,8 @@ export class ItemShopController implements OnStart {
 
 	public OnPurchase = new Signal<ShopElement>();
 
+	private itemPurchasePopupPrefab: GameObject;
+
 	constructor() {
 		/* Fetch refs. */
 		const shopGO = GameObject.Find("Shop");
@@ -42,6 +46,8 @@ export class ItemShopController implements OnStart {
 		this.refs = shopGO.GetComponent<GameObjectReferences>();
 		this.purchaseButton = this.refs.GetValue("SidebarContainer", "PurchaseButton");
 		this.purchaseButtonText = this.refs.GetValue("SidebarContainer", "PurchaseButtonText");
+
+		this.itemPurchasePopupPrefab = AssetBridge.LoadAsset("Shared/Resources/Prefabs/ItemPurchasePopup.prefab");
 	}
 
 	OnStart(): void {
@@ -51,6 +57,23 @@ export class ItemShopController implements OnStart {
 			for (const itemType of itemTypes) {
 				this.purchasedTierItems.delete(itemType);
 			}
+		});
+
+		Network.ServerToClient.ItemShop.ItemPurchased.Client.OnServerEvent((entityId, itemType) => {
+			const entity = Entity.FindById(entityId);
+			if (!entity) return;
+			if (entity.IsLocalCharacter()) return;
+
+			const pos = entity.GetHeadPosition().add(new Vector3(0, 0.5, 0));
+			const go = PoolManager.SpawnObject(this.itemPurchasePopupPrefab, pos, Quaternion.identity);
+			const image = go.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+			CanvasUIBridge.SetSprite(image.gameObject, ItemUtil.GetItemRenderPath(itemType));
+			const canvasGroup = go.transform.GetChild(0).GetComponent<CanvasGroup>();
+			canvasGroup.alpha = 1;
+			SetTimeout(0.4, () => {
+				canvasGroup.TweenCanvasGroupAlpha(0, 0.1);
+			});
+			go.transform.TweenLocalPosition(pos.add(new Vector3(0, 0.5, 0)), 0.5).SetEase(EaseType.QuadOut);
 		});
 	}
 

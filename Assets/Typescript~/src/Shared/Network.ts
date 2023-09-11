@@ -20,6 +20,7 @@ export const Network = {
 		ItemShop: {
 			RemoveTierPurchases: new RemoteEvent<[itemTypes: ItemType[]]>(),
 			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
+			ItemPurchased: new RemoteEvent<[entityId: number, itemType: ItemType]>(),
 		},
 		TeamUpgradeShop: {
 			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
