@@ -137,4 +137,4 @@ for (const _ of pairs(CoreNetwork.ClientToServer)) {
 for (const _ of pairs(CoreNetwork.ServerToClient)) {
 	countServerToClient++;
 }
-print(`NETWORK_COUNT: ClientToServer: ${countClientToServer} | ServerToClient: ${countServerToClient}`);
+// print(`NETWORK_COUNT: ClientToServer: ${countClientToServer} | ServerToClient: ${countServerToClient}`);
