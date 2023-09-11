@@ -7,7 +7,7 @@ import { ItemShopController } from "../Global/ItemShop/ItemShopController";
 import { TeamUpgradeController } from "../Global/TeamUpgrade/TeamUpgradeController";
 
 /** Proximity prompt offset. */
-const PROXIMITY_PROMPT_OFFSET = new Vector3(0, 0.2, 0);
+const PROXIMITY_PROMPT_OFFSET = new Vector3(0, -0.2, 0);
 
 @Controller({})
 export class ShopkeeperController implements OnStart {
