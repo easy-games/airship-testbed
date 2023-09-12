@@ -230,10 +230,8 @@ export class LocalEntityController implements OnStart {
 			});
 
 			// Screenshot:
-			keyboard.OnKeyDown(KeyCode.M, (event) => {
-				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
-					this.TakeScreenshot();
-				}
+			keyboard.OnKeyDown(KeyCode.F2, (event) => {
+				this.TakeScreenshot();
 			});
 
 			// Debug knockback:
@@ -269,6 +267,10 @@ export class LocalEntityController implements OnStart {
 				this.cameraController.ClearMode();
 				this.fps?.Destroy();
 				this.entityInput?.Destroy();
+			});
+
+			entity.OnDeath.Connect(() => {
+				bin.Clean();
 			});
 
 			return () => {

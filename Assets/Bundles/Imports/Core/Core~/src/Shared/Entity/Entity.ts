@@ -4,7 +4,6 @@ import { EntityController } from "Client/Controllers/Entity/EntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
-import { AudioManager } from "Shared/Audio/AudioManager";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { BlockMeta } from "Shared/Item/ItemMeta";
@@ -15,7 +14,7 @@ import { Projectile } from "Shared/Projectile/Projectile";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import { BundleReferenceManager } from "Shared/Util/BundleReferenceManager";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
-import { AllBundleItems, BundleGroupNames, Bundle_Entity, Bundle_Entity_Movement } from "Shared/Util/ReferenceManagerResources";
+import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -90,7 +89,9 @@ export class EntityReferences {
 		this.slideSoundPaths[1] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX1);
 		this.slideSoundPaths[2] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX2);
 		this.slideSoundPaths[3] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX3);
-		this.slideSoundPaths[4] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFXLoop);
+		this.slideSoundPaths[4] = BundleReferenceManager.GetDirectPath(
+			AllBundleItems.Bundle_Entity_Movement_SlideSFXLoop,
+		);
 
 		/*this.landSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
@@ -138,6 +139,7 @@ export class Entity {
 	public readonly OnAdjustMove = new Signal<[moveModifier: MoveModifier]>();
 	public readonly OnDisplayNameChanged = new Signal<[displayName: string]>();
 	public readonly OnStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
+	public readonly OnDeath = new Signal<void>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
@@ -152,7 +154,7 @@ export class Entity {
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
 		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.state = this.entityDriver.GetState();
-		
+
 		if (this.ClientId !== undefined) {
 			if (RunUtil.IsServer()) {
 				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.ClientId);
@@ -472,6 +474,7 @@ export class Entity {
 	public Kill(): void {
 		if (this.dead) return;
 		this.dead = true;
+		this.OnDeath.Fire();
 	}
 
 	public IsDead(): boolean {
