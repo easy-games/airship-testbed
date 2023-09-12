@@ -155,7 +155,7 @@ export class FriendsController implements OnStart {
 			let init = false;
 			if (go === undefined) {
 				go = GameObjectUtil.InstantiateIn(
-					AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
+					AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
 				);
 				go.name = friend.userId;
@@ -200,7 +200,7 @@ export class FriendsController implements OnStart {
 			const canvasGroup = go.GetComponent<CanvasGroup>();
 
 			if (init) {
-				const texture = AssetBridge.LoadAssetIfExists<Texture2D>(
+				const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
 					"Assets/Bundles/Imports/Core/Shared/Resources/Images/ProfilePictures/Cat.png",
 				);
 				if (texture !== undefined) {

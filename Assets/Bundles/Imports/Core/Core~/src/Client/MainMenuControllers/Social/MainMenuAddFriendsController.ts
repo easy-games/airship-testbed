@@ -23,7 +23,7 @@ export class MainMenuAddFriendsController implements OnStart {
 	public Open(): void {
 		if (this.canvas === undefined) {
 			const go = GameObjectUtil.Instantiate(
-				AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/AddFriends.prefab"),
+				AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/AddFriends.prefab"),
 			);
 			this.canvas = go.GetComponent<Canvas>();
 			this.canvas.enabled = false;
@@ -60,7 +60,7 @@ export class MainMenuAddFriendsController implements OnStart {
 					}
 					this.sentRequests.add(username);
 					const sentRequestGo = GameObjectUtil.InstantiateIn(
-						AssetBridge.LoadAsset(
+						AssetBridge.Instance.LoadAsset(
 							"Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/SentFriendRequest.prefab",
 						),
 						sentRequestsContent.transform,

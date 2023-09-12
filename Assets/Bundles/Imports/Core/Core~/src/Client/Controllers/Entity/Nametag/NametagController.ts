@@ -53,7 +53,7 @@ export class NametagController implements OnStart {
 	}
 
 	public CreateNametag(entity: Entity): GameObject {
-		const nametagPrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/Nametag.prefab") as GameObject;
+		const nametagPrefab = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/Nametag.prefab") as GameObject;
 		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
 		nametag.name = this.nameTageId;
 		nametag.transform.parent = entity.model.transform;

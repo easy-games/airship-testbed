@@ -37,7 +37,7 @@ export class ItemShopController implements OnStart {
 		const shopGO = GameObject.Find("Shop");
 		this.shopCanvas = shopGO.GetComponent<Canvas>();
 		this.shopCanvas.enabled = false;
-		this.shopItemPrefab = AssetBridge.LoadAsset("Shared/Resources/Prefabs/GameUI/ShopItem.prefab");
+		this.shopItemPrefab = AssetBridge.Instance.LoadAsset("Shared/Resources/Prefabs/GameUI/ShopItem.prefab");
 		this.refs = shopGO.GetComponent<GameObjectReferences>();
 		this.purchaseButton = this.refs.GetValue("SidebarContainer", "PurchaseButton");
 		this.purchaseButtonText = this.refs.GetValue("SidebarContainer", "PurchaseButtonText");

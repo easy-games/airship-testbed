@@ -13,7 +13,7 @@ export class AudioManager {
 	private static soundFolderIndex: number;
 
 	private static audioSourceTemplate: GameObject;
-	private static globalAudioSources: Map<number, AudioSource> = new Map; 
+	private static globalAudioSources: Map<number, AudioSource> = new Map();
 
 	public static Init(): void {
 		this.soundFolderIndex = this.SoundFolderPath.size();
@@ -21,7 +21,7 @@ export class AudioManager {
 		this.CacheAudioSources();
 	}
 
-	private static CacheAudioSources(){
+	private static CacheAudioSources() {
 		//Create a reference for all future audio sources
 		this.audioSourceTemplate = GameObject.Create("PooledAudioSource");
 		this.audioSourceTemplate.AddComponent<AudioSource>();
@@ -51,14 +51,14 @@ export class AudioManager {
 	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig) {
 		const audioSource = this.GetAudioSource(Vector3.zero);
 		audioSource.spatialBlend = 0;
-		audioSource.loop = (config !== undefined && config.loop !== undefined) ? config.loop : false;
+		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
-		if(!audioSource.loop){
+		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
 				this.globalAudioSources.delete(audioSource.GetInstanceID());
 				PoolManager.ReleaseObject(audioSource.gameObject);
@@ -68,7 +68,7 @@ export class AudioManager {
 	}
 
 	public static StopGlobalAudio() {
-		this.globalAudioSources.forEach(element => {
+		this.globalAudioSources.forEach((element) => {
 			element?.Stop();
 		});
 	}
@@ -104,13 +104,13 @@ export class AudioManager {
 		audioSource.maxDistance = MAX_DISTANCE;
 		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.spatialBlend = 1;
-		audioSource.loop = (config !== undefined && config.loop !== undefined) ? config.loop : false;
+		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
 		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
-		if(!audioSource.loop){
+		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
@@ -120,7 +120,7 @@ export class AudioManager {
 
 	private static GetAudioSource(position: Vector3): AudioSource {
 		const go = PoolManager.SpawnObject(this.audioSourceTemplate, position, Quaternion.identity);
-		const audioSource = go.GetComponent<AudioSource>(); 
+		const audioSource = go.GetComponent<AudioSource>();
 		return audioSource;
 	}
 
@@ -137,7 +137,7 @@ export class AudioManager {
 	}
 
 	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {
-		const clip = AssetBridge.LoadAssetIfExists<AudioClip>(fullPath);
+		const clip = AssetBridge.Instance.LoadAssetIfExists<AudioClip>(fullPath);
 		if (!clip) {
 			warn("Unable to load clip: " + fullPath);
 		}

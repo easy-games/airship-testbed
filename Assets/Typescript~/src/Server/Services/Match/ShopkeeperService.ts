@@ -25,7 +25,9 @@ export class ShopkeeperService implements OnStart {
 		private readonly teamService: TeamService,
 		private readonly entityService: EntityService,
 	) {
-		this.shopKeeperPrefab = AssetBridge.LoadAsset("Shared/Resources/Entity/HumanEntity/HumanEntity.prefab");
+		this.shopKeeperPrefab = AssetBridge.Instance.LoadAsset(
+			"Shared/Resources/Entity/HumanEntity/HumanEntity.prefab",
+		);
 
 		ServerSignals.MapLoad.Connect(() => {
 			this.CreateShopKeepers();

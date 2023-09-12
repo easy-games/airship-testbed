@@ -20,8 +20,8 @@ export class ItemUtil {
 
 	public static Initialize() {
 		//Load default items
-		ItemUtil.missingItemAccessory = AssetBridge.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
-		ItemUtil.defaultKitAccessory = AssetBridge.LoadAssetIfExists<AccessoryCollection>(
+		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
+		ItemUtil.defaultKitAccessory = AssetBridge.Instance.LoadAssetIfExists<AccessoryCollection>(
 			ItemUtil.DefaultAccessoryCollectionPath,
 		);
 
@@ -53,7 +53,7 @@ export class ItemUtil {
 
 				for (const accessoryName of accessoryNames) {
 					let accNameLower = accessoryName.lower();
-					let accessory = AssetBridge.LoadAssetIfExists<Accessory>(
+					let accessory = AssetBridge.Instance.LoadAssetIfExists<Accessory>(
 						`Shared/Resources/Accessories/${accNameLower}.asset`,
 					);
 					if (!accessory) {
@@ -112,7 +112,7 @@ export class ItemUtil {
 	public static GetItemRenderTexture(itemType: ItemType): Texture2D {
 		const imageSrc = `${itemType.lower()}.png`;
 		const path = `Client/Resources/Assets/ItemRenders/${imageSrc}`;
-		return AssetBridge.LoadAsset<Texture2D>(path);
+		return AssetBridge.Instance.LoadAsset<Texture2D>(path);
 	}
 	/**
 	 * Fetch an asset bundle item render path for a provided item.

@@ -20,7 +20,9 @@ export class RightClickMenuController implements OnStart {
 		this.openedTime = Time.time;
 
 		const menuGo = GameObjectUtil.InstantiateIn(
-			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/RightClickMenu/RightClickMenu.prefab"),
+			AssetBridge.Instance.LoadAsset(
+				"Imports/Core/Shared/Resources/Prefabs/UI/RightClickMenu/RightClickMenu.prefab",
+			),
 			canvas.transform,
 		);
 		menuGo.gameObject.ClearChildren();
@@ -45,7 +47,7 @@ export class RightClickMenuController implements OnStart {
 		}
 		menuRect.transform.position = position;
 
-		const buttonPrefab = AssetBridge.LoadAsset(
+		const buttonPrefab = AssetBridge.Instance.LoadAsset(
 			"Imports/Core/Shared/Resources/Prefabs/UI/RightClickMenu/RightClickButton.prefab",
 		) as GameObject;
 

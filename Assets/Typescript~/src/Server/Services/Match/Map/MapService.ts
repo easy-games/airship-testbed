@@ -31,7 +31,9 @@ export class MapService implements OnStart {
 
 			let mapId = RandomUtil.FromArray(this.queueMeta.maps);
 			if (RunUtil.IsEditor()) {
-				const gameConfigFile = AssetBridge.LoadAsset<TextAsset>("Shared/Resources/BWEditorConfig.json");
+				const gameConfigFile = AssetBridge.Instance.LoadAsset<TextAsset>(
+					"Shared/Resources/BWEditorConfig.json",
+				);
 				const gameConfig = decode<BWEditorConfig>(gameConfigFile.text);
 				mapId = gameConfig.gameMap;
 			}
@@ -45,8 +47,10 @@ export class MapService implements OnStart {
 		/* Fetch world, load map voxel file and block defines. */
 		print("Loading world " + mapId);
 		const world = WorldAPI.GetMainWorld();
-		this.voxelBinaryFile = AssetBridge.LoadAsset<VoxelBinaryFile>(`Server/Resources/Worlds/${mapId}.asset`);
-		const blockDefines = AssetBridge.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");
+		this.voxelBinaryFile = AssetBridge.Instance.LoadAsset<VoxelBinaryFile>(
+			`Server/Resources/Worlds/${mapId}.asset`,
+		);
+		const blockDefines = AssetBridge.Instance.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");
 
 		/* Load world. */
 		// world.LoadEmptyWorld(blockDefines, "");

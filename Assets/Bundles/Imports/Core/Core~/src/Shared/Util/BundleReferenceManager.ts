@@ -43,7 +43,7 @@ export class BundleReferenceManager {
 			if (filePath === "") {
 				delete loadedResources[index];
 			} else {
-				loadedResources[index] = AssetBridge.LoadAsset<T>(filePath);
+				loadedResources[index] = AssetBridge.Instance.LoadAsset<T>(filePath);
 			}
 		});
 		return loadedResources;
@@ -54,6 +54,6 @@ export class BundleReferenceManager {
 			return undefined;
 		}
 		let path = filePaths.get(itemKey);
-		return AssetBridge.LoadAsset<T>(path ? path : "");
+		return AssetBridge.Instance.LoadAsset<T>(path ? path : "");
 	}
 }

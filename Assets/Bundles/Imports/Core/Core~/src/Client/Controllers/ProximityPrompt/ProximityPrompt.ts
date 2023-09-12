@@ -41,7 +41,7 @@ export class ProximityPrompt {
 	private readonly canActivateBin = new Bin();
 
 	constructor(promptData: ProximityPromptData) {
-		this.promptPrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/ProximityPrompt.prefab");
+		this.promptPrefab = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/ProximityPrompt.prefab");
 		this.id = tostring(ProximityPrompt.idCounter++);
 		this.data = promptData;
 		this.CreatePrompt();

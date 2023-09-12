@@ -1281,13 +1281,15 @@ interface KeyDownEvent {
 	bubbles: boolean;
 }
 
-interface AssetBridge {}
-interface AssetBridgeConstructor {
+interface AssetBridge {
 	GetAllAssets(): CSArray<string>;
 	// GetAssetBundle(name: string): AssetBundle;
 	IsLoaded(): boolean;
 	LoadAsset<T>(path: string): T;
 	LoadAssetIfExists<T>(path: string): T | undefined;
+}
+interface AssetBridgeConstructor {
+	Instance: AssetBridge;
 }
 declare const AssetBridge: AssetBridgeConstructor;
 

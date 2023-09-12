@@ -217,7 +217,7 @@ export class Entity {
 		}
 		if (this.IsLocalCharacter()) return;
 
-		const prefab = AssetBridge.LoadAsset<Object>("Client/Resources/Prefabs/EntityHealthbar.prefab");
+		const prefab = AssetBridge.Instance.LoadAsset<Object>("Client/Resources/Prefabs/EntityHealthbar.prefab");
 		const healthbarGO = GameObjectUtil.InstantiateIn(prefab, this.model.transform);
 		const transform = healthbarGO.transform;
 		transform.localPosition = new Vector3(0, 2.2, 0);

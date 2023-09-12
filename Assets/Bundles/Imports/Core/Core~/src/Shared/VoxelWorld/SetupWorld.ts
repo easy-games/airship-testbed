@@ -7,7 +7,7 @@ import { WorldAPI } from "./WorldAPI";
 
 export function SetupWorld() {
 	if (RunCore.IsClient()) {
-		const blockDefines = AssetBridge.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");
+		const blockDefines = AssetBridge.Instance.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");
 		WorldAPI.GetMainWorld().LoadEmptyWorld(blockDefines, World.SKYBOX);
 	}
 

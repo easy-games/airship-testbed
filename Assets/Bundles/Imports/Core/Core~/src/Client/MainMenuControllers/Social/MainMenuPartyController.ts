@@ -13,7 +13,7 @@ import { Party } from "./SocketAPI";
 export class MainMenuPartyController implements OnStart {
 	private party: Party | undefined;
 
-	private partyMemberPrefab = AssetBridge.LoadAsset<GameObject>(
+	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 		"Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/PartyMember.prefab",
 	);
 

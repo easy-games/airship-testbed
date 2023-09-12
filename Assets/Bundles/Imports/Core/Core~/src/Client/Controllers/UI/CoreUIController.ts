@@ -8,7 +8,7 @@ export class CoreUIController implements OnStart {
 
 	constructor() {
 		this.coreUIGO = GameObjectUtil.Instantiate(
-			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/CoreUI.prefab"),
+			AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/CoreUI.prefab"),
 		);
 		this.coreUIGO.name = "CoreUI";
 		this.refs = this.coreUIGO.GetComponent<GameObjectReferences>();

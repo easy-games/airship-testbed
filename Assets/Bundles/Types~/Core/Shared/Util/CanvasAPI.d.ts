@@ -22,6 +22,7 @@ export declare class CanvasAPI {
     static Init(): void;
     static RegisterEvents(gameObject: GameObject): void;
     static IsPointerOverUI(): boolean;
+    static IsPointerOverTarget(target: GameObject): boolean;
     /**
      * Subscribe to pointer events for a given target. `targetGameObject` MUST have an `EventTrigger` component
      * to be eligible to receive input events. See the `ShopItem` prefab for an example.
@@ -39,6 +40,7 @@ export declare class CanvasAPI {
      */
     static OnHoverEvent(targetGameObject: GameObject, callback: (hoverState: HoverState) => void): void;
     static OnSubmitEvent(targetGameObject: GameObject, callback: () => void): void;
+    static OnInputFieldSubmit(targetGameObject: GameObject, callback: (data: string) => void): void;
     static OnSelectEvent(targetGameObject: GameObject, callback: () => void): void;
     static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): void;
     static OnClickEvent(targetGameObject: GameObject, callback: () => void): void;
