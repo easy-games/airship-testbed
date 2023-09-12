@@ -191,6 +191,9 @@ export class EntityAnimator {
 			const go = EffectsManager.SpawnEffectAtPosition(deathEffect, this.entity.GetHeadPosition());
 			if (!inVoid) {
 				go.transform.SetParent(this.entity.gameObject.transform);
+				Task.Delay(0.5, () => {
+					PoolManager.ReleaseObject(go);
+				});
 			}
 		}
 

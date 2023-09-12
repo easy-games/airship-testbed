@@ -9794,6 +9794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6116897525383882027}
+  - component: {fileID: 4719446273884898546}
   m_Layer: 0
   m_Name: EntityOnDeathVFX
   m_TagString: Untagged
@@ -9824,6 +9825,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4719446273884898546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3857869263075033770}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e45c3aae00534c27a96c3fb6365fd6b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4529691493354187939
 GameObject:
   m_ObjectHideFlags: 0
