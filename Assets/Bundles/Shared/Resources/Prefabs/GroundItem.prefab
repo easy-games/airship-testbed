@@ -61,7 +61,8 @@ GameObject:
   - component: {fileID: 8542979086540251234}
   - component: {fileID: 8542979086540251247}
   - component: {fileID: 4829785679785739981}
-  - component: {fileID: 7796496622795271290}
+  - component: {fileID: 2199360242130438311}
+  - component: {fileID: 6134888890506699139}
   m_Layer: 9
   m_Name: GroundItem
   m_TagString: Untagged
@@ -176,7 +177,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f040aaa0ede2946a769bea3d71a08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!75 &7796496622795271290
+--- !u!114 &2199360242130438311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8542979086540251246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b749f90d4c9961c4991179db1130fa4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbodyType: 0
+  _getInChildren: 0
+--- !u!75 &6134888890506699139
 ConstantForce:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,7 +199,7 @@ ConstantForce:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8542979086540251246}
   m_Enabled: 1
-  m_Force: {x: 0, y: -20, z: 0}
+  m_Force: {x: 0, y: -38, z: 0}
   m_RelativeForce: {x: 0, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
