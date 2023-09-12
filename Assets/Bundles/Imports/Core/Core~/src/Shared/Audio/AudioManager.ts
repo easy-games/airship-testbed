@@ -49,7 +49,7 @@ export class AudioManager {
 		return this.PlayClipGlobal(clip, config);
 	}
 
-	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig) {
+	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(Vector3.zero);
 		audioSource.spatialBlend = 0;
 		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
@@ -65,7 +65,7 @@ export class AudioManager {
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
-				this.globalAudioSources.delete(audioSource.GetInstanceID());
+				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
 		}

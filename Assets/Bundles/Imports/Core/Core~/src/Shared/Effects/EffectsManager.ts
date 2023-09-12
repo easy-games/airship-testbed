@@ -108,9 +108,9 @@ export class EffectsManager {
 		//vfx.transform.localScale = Vector3.one;
 
 		if (destroyInSeconds > 0) {
-			Task.Delay(destroyInSeconds, ()=>{
+			Task.Delay(destroyInSeconds, () => {
 				PoolManager.ReleaseObject(vfx);
-			})
+			});
 		}
 		return vfx;
 	}

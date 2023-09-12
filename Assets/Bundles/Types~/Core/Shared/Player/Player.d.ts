@@ -32,11 +32,11 @@ export declare class Player {
      * This should _not_ be used in network requests to identify the
      * player. Use `clientId` for network requests.
      */
-    readonly userId: string;
+    userId: string;
     /**
      * The player's username. Non-unique, unless combined with `usernameTag`.
      */
-    readonly username: string;
+    username: string;
     /**
      * The player's username tag. Append this value onto `username` for a
      * unique username.
@@ -44,7 +44,7 @@ export declare class Player {
      * const uniqueName = `${player.username}#${player.usernameTag}`;
      * ```
      */
-    readonly usernameTag: string;
+    usernameTag: string;
     /**
      * The player controls this entity.
      */
@@ -58,6 +58,7 @@ export declare class Player {
     readonly OnLeave: Signal<void>;
     private team;
     readonly OnChangeTeam: Signal<[team: Team | undefined, oldTeam: Team | undefined]>;
+    OnUsernameChanged: Signal<[username: string, tag: string]>;
     private bin;
     private connected;
     constructor(
@@ -96,6 +97,7 @@ export declare class Player {
     usernameTag: string);
     SetTeam(team: Team): void;
     GetTeam(): Team | undefined;
+    UpdateUsername(username: string, tag: string): void;
     SendMessage(message: string): void;
     /** Is player friends with the local player? */
     IsFriend(): boolean;

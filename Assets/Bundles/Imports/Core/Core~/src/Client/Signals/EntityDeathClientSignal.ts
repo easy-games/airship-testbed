@@ -5,6 +5,7 @@ export class EntityDeathClientSignal {
 	constructor(
 		public readonly entity: Entity,
 		public readonly damageType: DamageType,
-		public readonly fromEntity?: Entity,
+		public readonly fromEntity: Entity | undefined,
+		public readonly respawnTime: number,
 	) {}
 }

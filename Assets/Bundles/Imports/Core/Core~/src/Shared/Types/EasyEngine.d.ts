@@ -70,7 +70,10 @@ interface EntityDriver extends Component {
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
-	SetFlyMode(enabled: boolean);
+	SetFlying(enabled: boolean): void;
+	IsFlying(): boolean;
+	SetAllowFlight(allowed: boolean): void;
+	IsAllowFlight(): boolean;
 	Teleport(position: Vector3): void;
 	/**
 	 * Can only be called from Server.
@@ -512,3 +515,10 @@ type HttpGetResponse = {
 	data: string;
 	error: string;
 };
+
+interface DiskManager {
+	/** Will return empty string if file not found. */
+	ReadFileAsync(path: string): string | undefined;
+	WriteFileAsync(path: string, content: string): boolean;
+}
+declare const DiskManager: DiskManager;

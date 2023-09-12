@@ -60,7 +60,6 @@ export enum ItemType {
 	DIAMOND_HELMET = "DIAMOND_HELMET",
 	EMERALD_HELMET = "EMERALD_HELMET",
 }
-
 export enum ItemArchetype {
 	DEFAULT = 0,
 	BLOCK,

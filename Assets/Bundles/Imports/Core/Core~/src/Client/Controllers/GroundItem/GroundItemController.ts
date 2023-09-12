@@ -13,6 +13,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
 import { PlayerController } from "../Player/PlayerController";
 
@@ -67,7 +68,9 @@ export class GroundItemController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.GroundItem.Add.Client.OnServerEvent((dtos) => {
+		CoreNetwork.ServerToClient.GroundItem.Add.Client.OnServerEvent(async (dtos) => {
+			print("Received " + dtos.size() + " ground items.");
+			await WorldAPI.GetMainWorld().WaitForFinishedLoading();
 			for (const dto of dtos) {
 				const itemStack = ItemStack.Decode(dto.itemStack);
 				const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);
@@ -83,6 +86,15 @@ export class GroundItemController implements OnStart {
 					this.groundItems.delete(groundItem.id);
 					bin.Clean();
 				});
+			}
+		});
+
+		CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Client.OnServerEvent((dtos) => {
+			for (const dto of dtos) {
+				const groundItem = this.groundItems.get(dto.id);
+				if (groundItem) {
+					groundItem.rb.position = dto.pos;
+				}
 			}
 		});
 

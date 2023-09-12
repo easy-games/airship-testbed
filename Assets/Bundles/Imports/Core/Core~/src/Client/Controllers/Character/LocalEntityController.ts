@@ -204,14 +204,14 @@ export class LocalEntityController implements OnStart {
 
 			// Toggle fly mode (like mc creative):
 			let lastSpace = 0;
-			let flyMode = false;
 			keyboard.OnKeyDown(KeyCode.Space, (event) => {
 				const now = Time.time;
 				const dt = now - lastSpace;
 				if (dt < 0.3) {
 					lastSpace = 0;
-					flyMode = !flyMode;
-					this.entityDriver?.SetFlyMode(flyMode);
+					if (this.entityDriver?.IsAllowFlight()) {
+						this.entityDriver?.SetFlying(!this.entityDriver.IsFlying());
+					}
 				} else {
 					lastSpace = now;
 				}
@@ -230,10 +230,8 @@ export class LocalEntityController implements OnStart {
 			});
 
 			// Screenshot:
-			keyboard.OnKeyDown(KeyCode.M, (event) => {
-				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
-					this.TakeScreenshot();
-				}
+			keyboard.OnKeyDown(KeyCode.F2, (event) => {
+				this.TakeScreenshot();
 			});
 
 			// Debug knockback:
@@ -269,6 +267,10 @@ export class LocalEntityController implements OnStart {
 				this.cameraController.ClearMode();
 				this.fps?.Destroy();
 				this.entityInput?.Destroy();
+			});
+
+			entity.OnDeath.Connect(() => {
+				bin.Clean();
 			});
 
 			return () => {

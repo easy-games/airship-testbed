@@ -74,22 +74,35 @@ export class InventoryUIController implements OnStart {
 		this.invController.ObserveLocalInventory((inv) => {
 			const invBin = new Bin();
 
+			const slotBinMap = new Map<number, Bin>();
 			inv.SlotChanged.Connect((slot, itemStack) => {
+				slotBinMap.get(slot)?.Clean();
 				if (slot < this.hotbarSlots) {
+					const slotBin = new Bin();
+					slotBinMap.set(slot, slotBin);
+
 					this.UpdateHotbarSlot(slot, itemStack);
+
+					if (itemStack) {
+						slotBin.Add(
+							itemStack.AmountChanged.Connect((e) => {
+								this.UpdateHotbarSlot(slot, itemStack);
+							}),
+						);
+						slotBin.Add(
+							itemStack.ItemTypeChanged.Connect((e) => {
+								this.UpdateHotbarSlot(slot, itemStack);
+							}),
+						);
+					}
 				}
-				if (itemStack) {
-					invBin.Add(
-						itemStack.AmountChanged.Connect((e) => {
-							this.UpdateHotbarSlot(slot, itemStack);
-						}),
-					);
-					invBin.Add(
-						itemStack.ItemTypeChanged.Connect((e) => {
-							this.UpdateHotbarSlot(slot, itemStack);
-						}),
-					);
+			});
+
+			invBin.Add(() => {
+				for (const pair of slotBinMap) {
+					pair[1].Clean();
 				}
+				slotBinMap.clear();
 			});
 
 			inv.HeldSlotChanged.Connect((slot) => {
@@ -169,7 +182,7 @@ export class InventoryUIController implements OnStart {
 		animator.SetBool("Selected", selectedSlot === slot);
 
 		if (init) {
-			const contentGO = go.transform.FindChild("Content")!.gameObject;
+			const contentGO = go.transform.GetChild(0).gameObject;
 			CoreUI.SetupButton(contentGO);
 			CanvasAPI.OnClickEvent(contentGO, () => {
 				if (this.IsBackpackShown() && this.invController.LocalInventory) {
@@ -200,20 +213,46 @@ export class InventoryUIController implements OnStart {
 			this.slotToBackpackTileMap.set(i, t.gameObject);
 		}
 
+		const invBin = new Bin();
 		this.invController.ObserveLocalInventory((inv) => {
+			invBin.Clean();
+			const slotBinMap = new Map<number, Bin>();
+
 			inv.SlotChanged.Connect((slot, itemStack) => {
+				slotBinMap.get(slot)?.Clean();
+				const slotBin = new Bin();
+				slotBinMap.set(slot, slotBin);
+
 				const tile = this.slotToBackpackTileMap.get(slot)!;
 				this.UpdateTile(tile, itemStack);
+
+				if (itemStack) {
+					slotBin.Add(
+						itemStack.AmountChanged.Connect((e) => {
+							this.UpdateTile(tile, itemStack);
+						}),
+					);
+					slotBin.Add(
+						itemStack.ItemTypeChanged.Connect((e) => {
+							this.UpdateTile(tile, itemStack);
+						}),
+					);
+				}
 			});
+			invBin.Add(() => {
+				for (const pair of slotBinMap) {
+					pair[1].Clean();
+				}
+				slotBinMap.clear();
+			});
+
 			for (let i = 0; i < inv.GetMaxSlots(); i++) {
 				const tile = this.slotToBackpackTileMap.get(i)!;
 				this.UpdateTile(tile, inv.GetItem(i));
 
 				CoreUI.SetupButton(tile);
 				CanvasAPI.OnClickEvent(tile.transform.GetChild(0).gameObject, () => {
-					print("click.1");
 					if (!this.invController.LocalInventory) return;
-					print("click.2");
 					this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
 				});
 			}

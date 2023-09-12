@@ -2,6 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Task } from "Shared/Util/Task";
+import { SetTimeout } from "Shared/Util/Timer";
 import { ProximityPrompt } from "./ProximityPrompt";
 
 /** Prompt poll rate, how frequently we update `activatableProximityPrompts`. */
@@ -80,13 +81,34 @@ export class ProximityPromptController implements OnStart {
 	private ShowPrompt(prompt: ProximityPrompt): void {
 		if (prompt.promptGameObject) {
 			prompt.promptGameObject.SetActive(true);
+
+			const duration = 0.12;
+
+			const t = prompt.promptGameObject.transform;
+			const pos = t.localPosition;
+			t.localPosition = pos.add(new Vector3(0, -0.12, 0));
+			t.TweenLocalPosition(pos, duration);
+
+			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>();
+			canvasGroup.alpha = 0;
+			canvasGroup.TweenCanvasGroupAlpha(1, duration);
 		}
 	}
 
 	/** Hides a proximity prompt. */
 	private HidePrompt(prompt: ProximityPrompt): void {
 		if (prompt.promptGameObject) {
-			prompt.promptGameObject.SetActive(false);
+			const duration = 0.12;
+
+			const t = prompt.promptGameObject.transform;
+			t.TweenLocalPosition(t.localPosition.add(new Vector3(0, -0.12, 0)), duration);
+
+			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>();
+			canvasGroup.TweenCanvasGroupAlpha(0, duration);
+
+			SetTimeout(duration, () => {
+				prompt.promptGameObject?.SetActive(false);
+			});
 		}
 	}
 

@@ -118,6 +118,7 @@ export class DamageService implements OnStart {
 				entity.id,
 				damageEvent.damageType,
 				entityDeathEvent.killer?.id,
+				entityDeathEvent.respawnTime,
 			);
 
 			//Let the death animation play before despawning

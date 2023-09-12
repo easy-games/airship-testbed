@@ -12,7 +12,11 @@ export class MainMenuSettingsUIController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		this.Setup();
+		print("MainMenuSettings.OnStart");
+
+		this.clientSettingsController.onSettingsLoaded.Connect(() => {
+			this.Setup();
+		});
 	}
 
 	public Setup(): void {

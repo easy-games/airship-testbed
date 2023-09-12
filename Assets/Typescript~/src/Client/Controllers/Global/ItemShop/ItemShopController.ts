@@ -1,6 +1,7 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { InventoryController } from "Imports/Core/Client/Controllers/Inventory/InventoryController";
 import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
 import { Game } from "Imports/Core/Shared/Game";
 import { GameObjectUtil } from "Imports/Core/Shared/GameObject/GameObjectUtil";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
@@ -8,9 +9,10 @@ import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
 import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
 import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
-import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerButton } from "Imports/Core/Shared/Util/CanvasAPI";
 import { Signal } from "Imports/Core/Shared/Util/Signal";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
+import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
 import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
@@ -33,6 +35,8 @@ export class ItemShopController implements OnStart {
 
 	public OnPurchase = new Signal<ShopElement>();
 
+	private itemPurchasePopupPrefab: GameObject;
+
 	constructor() {
 		/* Fetch refs. */
 		const shopGO = GameObject.Find("Shop");
@@ -42,6 +46,8 @@ export class ItemShopController implements OnStart {
 		this.refs = shopGO.GetComponent<GameObjectReferences>();
 		this.purchaseButton = this.refs.GetValue("SidebarContainer", "PurchaseButton");
 		this.purchaseButtonText = this.refs.GetValue("SidebarContainer", "PurchaseButtonText");
+
+		this.itemPurchasePopupPrefab = AssetBridge.LoadAsset("Shared/Resources/Prefabs/ItemPurchasePopup.prefab");
 	}
 
 	OnStart(): void {
@@ -52,6 +58,23 @@ export class ItemShopController implements OnStart {
 				this.purchasedTierItems.delete(itemType);
 			}
 		});
+
+		Network.ServerToClient.ItemShop.ItemPurchased.Client.OnServerEvent((entityId, itemType) => {
+			const entity = Entity.FindById(entityId);
+			if (!entity) return;
+			if (entity.IsLocalCharacter()) return;
+
+			const pos = entity.GetHeadPosition().add(new Vector3(0, 0.7, 0));
+			const go = PoolManager.SpawnObject(this.itemPurchasePopupPrefab, pos, Quaternion.identity);
+			const image = go.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+			CanvasUIBridge.SetSprite(image.gameObject, ItemUtil.GetItemRenderPath(itemType));
+			const canvasGroup = go.transform.GetChild(0).GetComponent<CanvasGroup>();
+			canvasGroup.alpha = 1;
+			SetTimeout(0.4, () => {
+				canvasGroup.TweenCanvasGroupAlpha(0, 0.1);
+			});
+			go.transform.TweenLocalPosition(pos.add(new Vector3(0, 0.5, 0)), 0.5).SetEase(EaseType.QuadOut);
+		});
 	}
 
 	public Open(): void {
@@ -59,7 +82,7 @@ export class ItemShopController implements OnStart {
 
 		this.UpdateItems(false);
 		if (this.selectedItem) {
-			this.SetSidebarItem(this.selectedItem);
+			this.SetSidebarItem(this.selectedItem, true);
 		}
 
 		AppManager.Open(this.shopCanvas, {
@@ -74,14 +97,14 @@ export class ItemShopController implements OnStart {
 		const shopItems = ItemShopMeta.defaultItems.shopItems;
 		// Default sidebar to _first_ item in default shop array..
 		const defaultItem = shopItems[0];
-		this.SetSidebarItem(defaultItem);
+		this.SetSidebarItem(defaultItem, true);
 		// Instantiate individual item prefabs underneath relevant category container.
 		this.UpdateItems(true);
 		// Handle purchase requests.
 		const purchaseButton = this.refs.GetValue<GameObject>("SidebarContainer", "PurchaseButton");
 		CoreUI.SetupButton(purchaseButton);
 		CanvasAPI.OnClickEvent(purchaseButton, () => {
-			this.HandlePurchaseRequest();
+			this.SendPurchaseRequest();
 		});
 		/**
 		 *	CanvasEventAPI.OnHoverEvent(purchaseButton, (hoverState) => {
@@ -124,8 +147,22 @@ export class ItemShopController implements OnStart {
 
 			if (init) {
 				CoreUI.SetupButton(itemGO);
+				let lastClick = 0;
 				CanvasAPI.OnClickEvent(itemGO, () => {
-					this.SetSidebarItem(shopItem);
+					if (this.selectedItem === shopItem && Time.time - lastClick < 0.3) {
+						lastClick = Time.time;
+						this.SendPurchaseRequest();
+						return;
+					}
+					lastClick = Time.time;
+					if (this.selectedItem !== shopItem) {
+						this.SetSidebarItem(shopItem);
+					}
+				});
+				CanvasAPI.OnPointerEvent(itemGO, (direction, button) => {
+					if (button === PointerButton.RIGHT) {
+						this.SendPurchaseRequest();
+					}
 				});
 			}
 		});
@@ -144,7 +181,7 @@ export class ItemShopController implements OnStart {
 	/**
 	 * Sends purchase request to server for currently selected item.
 	 */
-	private HandlePurchaseRequest(): void {
+	private SendPurchaseRequest(): void {
 		if (!this.selectedItem || !this.CanPurchase(this.selectedItem)) {
 			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav");
 			return;
@@ -167,7 +204,7 @@ export class ItemShopController implements OnStart {
 	 * Updates sidebar to reflect selected shop item.
 	 * @param shopItem A shop item.
 	 */
-	private SetSidebarItem(shopItem: ShopElement): void {
+	private SetSidebarItem(shopItem: ShopElement, noEffect = false): void {
 		this.selectedItemBin.Clean();
 
 		/* TODO: We should probably fetch and cache these references inside of `OnStart` or the constructor. */
@@ -181,6 +218,11 @@ export class ItemShopController implements OnStart {
 		const itemMeta = ItemUtil.GetItemMeta(shopItem.itemType);
 		selectedItemQuantity.text = `x${shopItem.quantity}`;
 		selectedItemName.text = itemMeta.displayName;
+
+		if (!noEffect) {
+			const itemRect = selectedItemIcon.GetComponent<RectTransform>();
+			itemRect.TweenLocalScale(new Vector3(0.9, 1.23, 1), 0.05).SetPingPong();
+		}
 
 		const currencyMeta = ItemUtil.GetItemMeta(shopItem.currency);
 		selectedItemCost.text = `${shopItem.price} ${currencyMeta.displayName}`;

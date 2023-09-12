@@ -20,6 +20,7 @@ export const Network = {
 		ItemShop: {
 			RemoveTierPurchases: new RemoteEvent<[itemTypes: ItemType[]]>(),
 			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
+			ItemPurchased: new RemoteEvent<[entityId: number, itemType: ItemType]>(),
 		},
 		TeamUpgradeShop: {
 			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
@@ -53,4 +54,4 @@ for (const _ of pairs(Network.ClientToServer)) {
 for (const _ of pairs(Network.ServerToClient)) {
 	countServerToClient++;
 }
-print(`NETWORK_COUNT: ClientToServer: ${countClientToServer} | ServerToClient: ${countServerToClient}`);
+// print(`NETWORK_COUNT: ClientToServer: ${countClientToServer} | ServerToClient: ${countServerToClient}`);

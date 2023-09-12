@@ -63,7 +63,9 @@ The delay will have a minimum duration of 29 milliseconds, but this minimum may 
 This function returns:
 Actual time yielded (in seconds)
 Total time since the software was initialized (in seconds) */
-declare function wait(seconds?: number): void;
+
+/** Waits for a single frame. */
+declare function wait(duration?: number): void;
 /** Behaves identically to Lua’s print function, except the output is styled as a warning, with yellow text and a timestamp.
 This function accepts any number of arguments, and will attempt to convert them into strings which will then be joined together with spaces between them. */
 declare function warn(...params: Array<unknown>): void;
@@ -1391,56 +1393,56 @@ interface Component extends Object {
 	SendMessageUpwards(methodName: string): void;
 	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
 
-    TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
-    TweenPositionX(to: number, duration: number): Tween<number>;
-    TweenPositionY(to: number, duration: number): Tween<number>;
-    TweenPositionZ(to: number, duration: number): Tween<number>;
+	TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
+	TweenPositionX(to: number, duration: number): Tween<number>;
+	TweenPositionY(to: number, duration: number): Tween<number>;
+	TweenPositionZ(to: number, duration: number): Tween<number>;
 
-    TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
-    TweenLocalPositionX(to: number, duration: number): Tween<number>;
-    TweenLocalPositionY(to: number, duration: number): Tween<number>;
-    TweenLocalPositionZ(to: number, duration: number): Tween<number>;
+	TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
+	TweenLocalPositionX(to: number, duration: number): Tween<number>;
+	TweenLocalPositionY(to: number, duration: number): Tween<number>;
+	TweenLocalPositionZ(to: number, duration: number): Tween<number>;
 
-    TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
-    TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
-    TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
+	TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
+	TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
+	TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
 
-    TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
-    TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
-   
-    TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
-    TweenRotationX(to: number, duration: number): Tween<number>;
-    TweenRotationY(to: number, duration: number): Tween<number>;
-    TweenRotationZ(to: number, duration: number): Tween<number>;
+	TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
+	TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
 
-    TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
-    TweenLocalRotationX(to: number, duration: number): Tween<number>;
-    TweenLocalRotationY(to: number, duration: number): Tween<number>;
-    TweenLocalRotationZ(to: number, duration: number): Tween<number>;
+	TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
+	TweenRotationX(to: number, duration: number): Tween<number>;
+	TweenRotationY(to: number, duration: number): Tween<number>;
+	TweenRotationZ(to: number, duration: number): Tween<number>;
 
-    TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
-    TweenLocalScaleX(to: number, duration: number): Tween<number>;
-    TweenLocalScaleY(to: number, duration: number): Tween<number>;
-    TweenLocalScaleZ(to: number, duration: number): Tween<number>;
+	TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
+	TweenLocalRotationX(to: number, duration: number): Tween<number>;
+	TweenLocalRotationY(to: number, duration: number): Tween<number>;
+	TweenLocalRotationZ(to: number, duration: number): Tween<number>;
 
-    TweenImageFillAmount(to: number, duration: number): Tween<number>;
-    TweenGraphicAlpha(to: number, duration: number): Tween<number>;
-    TweenGraphicColor(to: Color, duration: number): Tween<Color>;
-    TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
-    TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
-    TweenMaterialColor(to: Color, duration: number): Tween<Color>;
+	TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
+	TweenLocalScaleX(to: number, duration: number): Tween<number>;
+	TweenLocalScaleY(to: number, duration: number): Tween<number>;
+	TweenLocalScaleZ(to: number, duration: number): Tween<number>;
+
+	TweenImageFillAmount(to: number, duration: number): Tween<number>;
+	TweenGraphicAlpha(to: number, duration: number): Tween<number>;
+	TweenGraphicColor(to: Color, duration: number): Tween<Color>;
+	TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
+	TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
+	TweenMaterialColor(to: Color, duration: number): Tween<Color>;
 
 	TweenRendererColor(from: Color, to: Color, duration: number): Tween<number>;
 	TweenMaterialsColorProperty(propertyName: string, from: Color, to: Color, duration: number): Tween<number>;
 	TweenMaterialsFloatProperty(propertyName: string, from: number, to: number, duration: number): Tween<number>;
 
-    TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
-    TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
-    TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
-    TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
-    TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
+	TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
+	TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
+	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
+	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
+	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
 
-    TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
+	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 }
 
 interface GameObject extends Object {
@@ -1482,18 +1484,18 @@ interface GameObject extends Object {
 	StopAnimation(): void;
 	BroadcastMessage(methodName: string): void;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
-    /** 
-     * Throws error if no component found.
-     */
+	/**
+	 * Throws error if no component found.
+	 */
 	GetComponent<T>(): T;
-    GetComponentsInChildren<T>(): CSArray<T>;
+	GetComponentsInChildren<T>(): CSArray<T>;
 	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
-    /** 
-     * Throws error if no component found.
-     */
+	/**
+	 * Throws error if no component found.
+	 */
 	GetComponent<T extends Component = Component>(type: string): T;
-    GetComponentIfExists<T extends Component = Component>(type: string): T | undefined;
-    AddComponent<T>(): T;
+	GetComponentIfExists<T extends Component = Component>(type: string): T | undefined;
+	AddComponent<T>(): T;
 	AddComponent<T extends Component = Component>(componentName: string): T;
 	SendMessage(methodName: string, value: unknown): void;
 	SendMessage(methodName: string): void;
@@ -1504,52 +1506,52 @@ interface GameObject extends Object {
 	SendMessageUpwards(methodName: string): void;
 	SendMessageUpwards(methodName: string, options: SendMessageOptions): void;
 
-    TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
-    TweenPositionX(to: number, duration: number): Tween<number>;
-    TweenPositionY(to: number, duration: number): Tween<number>;
-    TweenPositionZ(to: number, duration: number): Tween<number>;
+	TweenPosition(to: Vector3, duration: number): Tween<Vector3>;
+	TweenPositionX(to: number, duration: number): Tween<number>;
+	TweenPositionY(to: number, duration: number): Tween<number>;
+	TweenPositionZ(to: number, duration: number): Tween<number>;
 
-    TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
-    TweenLocalPositionX(to: number, duration: number): Tween<number>;
-    TweenLocalPositionY(to: number, duration: number): Tween<number>;
-    TweenLocalPositionZ(to: number, duration: number): Tween<number>;
+	TweenLocalPosition(to: Vector3, duration: number): Tween<Vector3>;
+	TweenLocalPositionX(to: number, duration: number): Tween<number>;
+	TweenLocalPositionY(to: number, duration: number): Tween<number>;
+	TweenLocalPositionZ(to: number, duration: number): Tween<number>;
 
-    TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
-    TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
-    TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
+	TweenAnchoredPosition(to: Vector2, duration: number): Tween<Vector2>;
+	TweenAnchoredPositionX(to: number, duration: number): Tween<number>;
+	TweenAnchoredPositionY(to: number, duration: number): Tween<number>;
 
-    TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
-    TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
-   
-    TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
-    TweenRotationX(to: number, duration: number): Tween<number>;
-    TweenRotationY(to: number, duration: number): Tween<number>;
-    TweenRotationZ(to: number, duration: number): Tween<number>;
+	TweenAnchorMin(to: Vector2, duration: number): Tween<Vector2>;
+	TweenAnchorMax(to: Vector2, duration: number): Tween<Vector2>;
 
-    TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
-    TweenLocalRotationX(to: number, duration: number): Tween<number>;
-    TweenLocalRotationY(to: number, duration: number): Tween<number>;
-    TweenLocalRotationZ(to: number, duration: number): Tween<number>;
+	TweenRotation(to: Vector3, duration: number): Tween<Vector3>;
+	TweenRotationX(to: number, duration: number): Tween<number>;
+	TweenRotationY(to: number, duration: number): Tween<number>;
+	TweenRotationZ(to: number, duration: number): Tween<number>;
 
-    TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
-    TweenLocalScaleX(to: number, duration: number): Tween<number>;
-    TweenLocalScaleY(to: number, duration: number): Tween<number>;
-    TweenLocalScaleZ(to: number, duration: number): Tween<number>;
+	TweenLocalRotation(to: Vector3, duration: number): Tween<Vector3>;
+	TweenLocalRotationX(to: number, duration: number): Tween<number>;
+	TweenLocalRotationY(to: number, duration: number): Tween<number>;
+	TweenLocalRotationZ(to: number, duration: number): Tween<number>;
 
-    TweenImageFillAmount(to: number, duration: number): Tween<number>;
-    TweenGraphicAlpha(to: number, duration: number): Tween<number>;
-    TweenGraphicColor(to: Color, duration: number): Tween<Color>;
-    TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
-    TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
-    TweenMaterialColor(to: Color, duration: number): Tween<Color>;
+	TweenLocalScale(to: Vector3, duration: number): Tween<Vector3>;
+	TweenLocalScaleX(to: number, duration: number): Tween<number>;
+	TweenLocalScaleY(to: number, duration: number): Tween<number>;
+	TweenLocalScaleZ(to: number, duration: number): Tween<number>;
 
-    TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
-    TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
-    TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
-    TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
-    TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
+	TweenImageFillAmount(to: number, duration: number): Tween<number>;
+	TweenGraphicAlpha(to: number, duration: number): Tween<number>;
+	TweenGraphicColor(to: Color, duration: number): Tween<Color>;
+	TweenSpriteRendererAlpha(to: number, duration: number): Tween<number>;
+	TweenSpriteRendererColor(to: Color, duration: number): Tween<Color>;
+	TweenMaterialColor(to: Color, duration: number): Tween<Color>;
 
-    TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
+	TweenTextMeshAlpha(to: number, duration: number): Tween<number>;
+	TweenTextMeshColor(to: Color, duration: number): Tween<Color>;
+	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
+	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
+	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
+
+	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 
 	/** Destroys all child gameobjects. */
 	ClearChildren(): void;
@@ -1559,7 +1561,7 @@ declare const gameObject: GameObject;
 interface GameObjectConstructor {
 	CreatePrimitive(type: PrimitiveType): GameObject;
 	Find(name: string): GameObject;
-    FindObjectOfType<T extends Component>(): T;
+	FindObjectOfType<T extends Component>(): T;
 	FindGameObjectsWithTag(tag: string): CSArray<GameObject>;
 	FindGameObjectWithTag(tag: string): GameObject;
 	FindWithTag(tag: string): GameObject;
@@ -3692,96 +3694,95 @@ interface Animator {
 }
 
 interface Collision {
-    relativeVelocity: Vector3;
-    rigidbody: Rigidbody | undefined;
-    articulationBody: ArticulationBody;
-    body: Component;
-    collider: Collider;
-    transform: Transform;
-    gameObject: GameObject;
-    contactCount: number;
-    contacts: CSArray<ContactPoint>;
-    impulse: Vector3;
-    impactForceSum: Vector3;
-    frictionForceSum: Vector3;
-    other: Component;
+	relativeVelocity: Vector3;
+	rigidbody: Rigidbody | undefined;
+	articulationBody: ArticulationBody;
+	body: Component;
+	collider: Collider;
+	transform: Transform;
+	gameObject: GameObject;
+	contactCount: number;
+	contacts: CSArray<ContactPoint>;
+	impulse: Vector3;
+	impactForceSum: Vector3;
+	frictionForceSum: Vector3;
+	other: Component;
 
-    constructor(): Collision;
+	constructor(): Collision;
 
-    GetContact(index: number): ContactPoint;
-    GetContacts(contacts: CSArray<ContactPoint>): number;
-    GetContacts(contacts: CSArray<ContactPoint>): number;
-    GetEnumerator(): unknown;
+	GetContact(index: number): ContactPoint;
+	GetContacts(contacts: CSArray<ContactPoint>): number;
+	GetContacts(contacts: CSArray<ContactPoint>): number;
+	GetEnumerator(): unknown;
 }
 
 interface Transform extends Component {
-    position: Vector3;
-    localPosition: Vector3;
-    eulerAngles: Vector3;
-    localEulerAngles: Vector3;
-    right: Vector3;
-    up: Vector3;
-    forward: Vector3;
-    rotation: Quaternion;
-    localRotation: Quaternion;
-    localScale: Vector3;
-    parent: Transform;
-    worldToLocalMatrix: Matrix4x4;
-    localToWorldMatrix: Matrix4x4;
-    root: Transform;
-    childCount: number;
-    lossyScale: Vector3;
-    hasChanged: boolean;
-    hierarchyCapacity: number;
-    hierarchyCount: number;
+	position: Vector3;
+	localPosition: Vector3;
+	eulerAngles: Vector3;
+	localEulerAngles: Vector3;
+	right: Vector3;
+	up: Vector3;
+	forward: Vector3;
+	rotation: Quaternion;
+	localRotation: Quaternion;
+	localScale: Vector3;
+	parent: Transform;
+	worldToLocalMatrix: Matrix4x4;
+	localToWorldMatrix: Matrix4x4;
+	root: Transform;
+	childCount: number;
+	lossyScale: Vector3;
+	hasChanged: boolean;
+	hierarchyCapacity: number;
+	hierarchyCount: number;
 
+	DetachChildren(): void;
+	Find(n: string): Transform | undefined;
+	FindChild(n: string): Transform | undefined;
+	GetChild(index: number): Transform;
+	GetChildCount(): number;
+	GetEnumerator(): unknown;
+	GetSiblingIndex(): number;
+	InverseTransformDirection(direction: Vector3): Vector3;
+	InverseTransformDirection(x: number, y: number, z: number): Vector3;
+	InverseTransformPoint(position: Vector3): Vector3;
+	InverseTransformPoint(x: number, y: number, z: number): Vector3;
+	InverseTransformVector(vector: Vector3): Vector3;
+	InverseTransformVector(x: number, y: number, z: number): Vector3;
+	IsChildOf(parent: Transform): boolean;
+	LookAt(target: Transform, worldUp: Vector3): void;
+	LookAt(target: Transform): void;
+	LookAt(worldPosition: Vector3, worldUp: Vector3): void;
+	LookAt(worldPosition: Vector3): void;
+	Rotate(eulers: Vector3, relativeTo: Space): void;
+	Rotate(eulers: Vector3): void;
+	Rotate(xAngle: number, yAngle: number, zAngle: number, relativeTo: Space): void;
+	Rotate(xAngle: number, yAngle: number, zAngle: number): void;
+	Rotate(axis: Vector3, angle: number, relativeTo: Space): void;
+	Rotate(axis: Vector3, angle: number): void;
+	RotateAround(point: Vector3, axis: Vector3, angle: number): void;
+	RotateAround(axis: Vector3, angle: number): void;
+	RotateAroundLocal(axis: Vector3, angle: number): void;
+	SetAsFirstSibling(): void;
+	SetAsLastSibling(): void;
+	SetLocalPositionAndRotation(localPosition: Vector3, localRotation: Quaternion): void;
+	SetParent(p: Transform | undefined): void;
+	SetParent(parent: Transform, worldPositionStays: boolean): void;
+	SetPositionAndRotation(position: Vector3, rotation: Quaternion): void;
+	SetSiblingIndex(index: number): void;
+	TransformDirection(direction: Vector3): Vector3;
+	TransformDirection(x: number, y: number, z: number): Vector3;
+	TransformPoint(position: Vector3): Vector3;
+	TransformPoint(x: number, y: number, z: number): Vector3;
+	TransformVector(vector: Vector3): Vector3;
+	TransformVector(x: number, y: number, z: number): Vector3;
+	Translate(translation: Vector3, relativeTo: Space): void;
+	Translate(translation: Vector3): void;
+	Translate(x: number, y: number, z: number, relativeTo: Space): void;
+	Translate(x: number, y: number, z: number): void;
+	Translate(translation: Vector3, relativeTo: Transform): void;
+	Translate(x: number, y: number, z: number, relativeTo: Transform): void;
 
-    DetachChildren(): void;
-    Find(n: string): Transform | undefined;
-    FindChild(n: string): Transform | undefined;
-    GetChild(index: number): Transform;
-    GetChildCount(): number;
-    GetEnumerator(): unknown;
-    GetSiblingIndex(): number;
-    InverseTransformDirection(direction: Vector3): Vector3;
-    InverseTransformDirection(x: number, y: number, z: number): Vector3;
-    InverseTransformPoint(position: Vector3): Vector3;
-    InverseTransformPoint(x: number, y: number, z: number): Vector3;
-    InverseTransformVector(vector: Vector3): Vector3;
-    InverseTransformVector(x: number, y: number, z: number): Vector3;
-    IsChildOf(parent: Transform): boolean;
-    LookAt(target: Transform, worldUp: Vector3): void;
-    LookAt(target: Transform): void;
-    LookAt(worldPosition: Vector3, worldUp: Vector3): void;
-    LookAt(worldPosition: Vector3): void;
-    Rotate(eulers: Vector3, relativeTo: Space): void;
-    Rotate(eulers: Vector3): void;
-    Rotate(xAngle: number, yAngle: number, zAngle: number, relativeTo: Space): void;
-    Rotate(xAngle: number, yAngle: number, zAngle: number): void;
-    Rotate(axis: Vector3, angle: number, relativeTo: Space): void;
-    Rotate(axis: Vector3, angle: number): void;
-    RotateAround(point: Vector3, axis: Vector3, angle: number): void;
-    RotateAround(axis: Vector3, angle: number): void;
-    RotateAroundLocal(axis: Vector3, angle: number): void;
-    SetAsFirstSibling(): void;
-    SetAsLastSibling(): void;
-    SetLocalPositionAndRotation(localPosition: Vector3, localRotation: Quaternion): void;
-    SetParent(p: Transform | undefined): void;
-    SetParent(parent: Transform, worldPositionStays: boolean): void;
-    SetPositionAndRotation(position: Vector3, rotation: Quaternion): void;
-    SetSiblingIndex(index: number): void;
-    TransformDirection(direction: Vector3): Vector3;
-    TransformDirection(x: number, y: number, z: number): Vector3;
-    TransformPoint(position: Vector3): Vector3;
-    TransformPoint(x: number, y: number, z: number): Vector3;
-    TransformVector(vector: Vector3): Vector3;
-    TransformVector(x: number, y: number, z: number): Vector3;
-    Translate(translation: Vector3, relativeTo: Space): void;
-    Translate(translation: Vector3): void;
-    Translate(x: number, y: number, z: number, relativeTo: Space): void;
-    Translate(x: number, y: number, z: number): void;
-    Translate(translation: Vector3, relativeTo: Transform): void;
-    Translate(x: number, y: number, z: number, relativeTo: Transform): void;
-	
 	ClampRotationY(targetValue: number, maxAngle: number): void;
 }

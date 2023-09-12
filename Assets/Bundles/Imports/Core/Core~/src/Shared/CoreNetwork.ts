@@ -60,7 +60,9 @@ export const CoreNetwork = {
 			SetDisplayName: new RemoteEvent<[entityId: number, displayName: string]>(),
 			AddHealthbar: new RemoteEvent<[entityId: number]>(),
 		},
-		EntityDeath: new RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined]>(),
+		EntityDeath: new RemoteEvent<
+			[entityId: number, damageType: DamageType, killerEntityId: number | undefined, respawnTime: number]
+		>(),
 		GroundItem: {
 			Add: new RemoteEvent<
 				[
@@ -137,4 +139,4 @@ for (const _ of pairs(CoreNetwork.ClientToServer)) {
 for (const _ of pairs(CoreNetwork.ServerToClient)) {
 	countServerToClient++;
 }
-print(`NETWORK_COUNT: ClientToServer: ${countClientToServer} | ServerToClient: ${countServerToClient}`);
+// print(`NETWORK_COUNT: ClientToServer: ${countClientToServer} | ServerToClient: ${countServerToClient}`);

@@ -188,6 +188,12 @@ export class ShopService implements OnStart {
 			const purchases = this.purchasedItems.get(player.userId);
 			purchases?.add(shopElement.itemType);
 
+			Network.ServerToClient.ItemShop.ItemPurchased.Server.FireAllClients(
+				// clientId,
+				player.Character!.id,
+				shopElement.itemType,
+			);
+
 			return true;
 		});
 
