@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: 
   AccessorySlot: 2
-  Prefab: {fileID: 3624261834906416581, guid: 09d184ef200425f499ef97572cc2b18a, type: 3}
+  Prefab: {fileID: 3624261834906416581, guid: bd077333b5f85e648bca87ad51f9af36, type: 3}
   Position: {x: 0.02, y: 0.09, z: -0.15}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 0.3, y: 0.3, z: 0.3}
   MeshDeformed: 0
+  VisibleInFirstPerson: 1

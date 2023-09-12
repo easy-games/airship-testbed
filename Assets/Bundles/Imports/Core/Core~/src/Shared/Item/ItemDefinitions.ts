@@ -3,6 +3,7 @@ import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
 import { DamageType } from "../Damage/DamageType";
 import {
+	AllBundleItems,
 	Bundle_ItemPickaxe_Prefabs,
 	Bundle_ItemSword_Prefabs,
 	BundleGroupNames,
@@ -628,8 +629,10 @@ export const items: {
 			damage: 15,
 			gravity: defaultGravity * 0.4,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
-			onHitGroundSoundId: "BowArrowHit",
-			onHitGroundSoundVolume: 0.5,
+			onHitGroundSoundId: "BowArrowHitFail",
+			onHitEntitySoundId: "BowArrowHitSuccess",
+			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_ArrowHit,
+			onHitSoundVolume: 0.5,
 		},
 	},
 
@@ -657,24 +660,37 @@ export const items: {
 			damage: 15,
 			gravity: defaultGravity * 0.2,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
+			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_ArrowHit,
 		},
 	},
 	[ItemType.FIREBALL]: {
 		displayName: "Fireball",
-		itemMechanics: rangedItemMechanics,
-		itemAssets: throwableItemAssets,
+		itemMechanics: {
+			...rangedItemMechanics,
+			minChargeSeconds: 0.05,
+			maxChargeSeconds: 0.6,
+			cooldownSeconds: 0.25,
+		},
+		itemAssets: {
+			...throwableItemAssets,
+			onUseSound: ["Fireball_Throw"],
+		},
 		ProjectileLauncher: {
 			ammoItemType: ItemType.FIREBALL,
 			minVelocityScaler: 15,
-			maxVelocityScaler: 15,
+			maxVelocityScaler: 50,
 			firstPersonLaunchOffset: new Vector3(1.5, 0, 0),
 		},
 		Ammo: {
 			yAxisAimAdjust: 0,
 			damage: 30,
-			lifetimeSec: 6,
-			gravity: 0,
+			lifetimeSec: 10,
+			gravity: defaultGravity * 0.05,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
+			onHitGroundSoundId: "Fireball_Explosion",
+			onHitEntitySoundId: "Fireball_Explosion",
+			onHitSoundVolume: 0.5,
+			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_FireballExplosion,
 		},
 	},
 };
