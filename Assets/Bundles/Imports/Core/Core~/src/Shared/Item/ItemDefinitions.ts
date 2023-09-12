@@ -685,7 +685,7 @@ export const items: {
 			yAxisAimAdjust: 0,
 			damage: 30,
 			lifetimeSec: 10,
-			gravity: defaultGravity * 0.05,
+			gravity: defaultGravity * 0.08,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
 			onHitGroundSoundId: "Fireball_Explosion",
 			onHitEntitySoundId: "Fireball_Explosion",
