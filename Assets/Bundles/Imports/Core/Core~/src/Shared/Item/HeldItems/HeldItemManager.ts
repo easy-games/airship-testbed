@@ -1,5 +1,6 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { Entity } from "Shared/Entity/Entity";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { items } from "../ItemDefinitions";
 import { ItemMeta } from "../ItemMeta";
@@ -9,6 +10,13 @@ import { BreakBlockHeldItem } from "./BlockPlacement/BreakBlockHeldItem";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
 import { ProjectileLauncherHeldItem } from "./ProjectileLauncher/ProjectileLauncherHeldItem";
+
+export type HeldItemCondition = (itemMeta: ItemMeta) => boolean;
+export type HeldItemFactory = (entity: Entity, itemMeta: ItemMeta) => HeldItem;
+export type HeldItemEntry = {
+	condition: HeldItemCondition;
+	factory: HeldItemFactory;
+};
 
 export enum HeldItemState {
 	NONE = -1,
@@ -23,6 +31,12 @@ export class HeldItemManager {
 	private heldItemMap = new Map<ItemType, HeldItem>();
 	private currentHeldItem: HeldItem;
 	private currentItemState: HeldItemState = HeldItemState.NONE;
+
+	private static heldItemClasses = new Array<HeldItemEntry>();
+
+	public static RegisterHeldItem(condition: HeldItemCondition, factory: HeldItemFactory): void {
+		this.heldItemClasses.push({ condition, factory });
+	}
 
 	public GetLabel() {
 		return this.entity.id;
@@ -40,25 +54,16 @@ export class HeldItemManager {
 		let item = this.heldItemMap.get(meta.itemType);
 		if (item === undefined) {
 			//Create the held item instance
-			let itemType = "NONE";
-			this.Log("Creating Held Item...");
-			if (meta.melee) {
-				itemType = "MELEE";
-				item = new MeleeHeldItem(this.entity, meta);
-			} else if (meta.block) {
-				itemType = "BLOCK";
-				item = new BlockHeldItem(this.entity, meta);
-			} else if (meta.breakBlock) {
-				itemType = "BREAK BLOCK";
-				item = new BreakBlockHeldItem(this.entity, meta);
-			} else if (meta.projectileLauncher) {
-				itemType = "PROJECTILE LAUNCHER";
-				item = new ProjectileLauncherHeldItem(this.entity, meta);
-			} else {
-				// warn("Entity " + this.entity.id + " " + meta.displayName + " resorting to default held item logic");
+			for (let i = HeldItemManager.heldItemClasses.size() - 1; i >= 0; i--) {
+				const entry = HeldItemManager.heldItemClasses[i];
+				if (entry.condition(meta)) {
+					item = entry.factory(this.entity, meta);
+				}
+			}
+			if (item === undefined) {
+				print("Using default held item handler for " + meta.itemType);
 				item = new HeldItem(this.entity, meta);
 			}
-			this.Log("creating Held Item: " + meta.displayName + " of type: " + itemType);
 			this.heldItemMap.set(meta.itemType, item);
 		}
 		return item;
@@ -120,3 +125,20 @@ export class HeldItemManager {
 		}
 	}
 }
+
+HeldItemManager.RegisterHeldItem(
+	(itemMeta) => itemMeta.melee !== undefined,
+	(entity, itemMeta) => new MeleeHeldItem(entity, itemMeta),
+);
+HeldItemManager.RegisterHeldItem(
+	(itemMeta) => itemMeta.block !== undefined,
+	(entity, itemMeta) => new BlockHeldItem(entity, itemMeta),
+);
+HeldItemManager.RegisterHeldItem(
+	(itemMeta) => itemMeta.breakBlock !== undefined,
+	(entity, itemMeta) => new BreakBlockHeldItem(entity, itemMeta),
+);
+HeldItemManager.RegisterHeldItem(
+	(itemMeta) => itemMeta.projectileLauncher !== undefined,
+	(entity, itemMeta) => new ProjectileLauncherHeldItem(entity, itemMeta),
+);

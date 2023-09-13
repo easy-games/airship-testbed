@@ -147,6 +147,7 @@ export class InventoryUIController implements OnStart {
 		if (!itemStack) {
 			image.enabled = false;
 			amount.enabled = false;
+			name.enabled = false;
 			return;
 		}
 
