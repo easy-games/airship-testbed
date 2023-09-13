@@ -9,7 +9,7 @@ export class BWAmbientSoundController implements OnStart {
 	constructor(private readonly ambientSoundController: AmbientSoundController) {}
 
 	OnStart(): void {
-		const ambientClip = AssetBridge.LoadAsset<AudioClip>("Shared/Resources/Sound/Ambience_Forest.ogg");
+		const ambientClip = AssetBridge.Instance.LoadAsset<AudioClip>("Shared/Resources/Sound/Ambience_Forest.ogg");
 		this.ambientSoundController.ambientSource.spatialBlend = 0;
 		this.ambientSoundController.ambientSource.loop = true;
 		this.ambientSoundController.ambientSource.clip = ambientClip;

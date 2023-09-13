@@ -153,7 +153,9 @@ export class InventoryUIController implements OnStart {
 		const itemMeta = itemStack.GetItemMeta();
 
 		let imageSrc = itemStack.GetItemType().lower() + ".png";
-		let texture2d = AssetBridge.LoadAssetIfExists<Texture2D>(`Client/Resources/Assets/ItemRenders/${imageSrc}`);
+		let texture2d = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
+			`Client/Resources/Assets/ItemRenders/${imageSrc}`,
+		);
 		if (texture2d) {
 			image.sprite = Bridge.MakeSprite(texture2d);
 			image.enabled = true;

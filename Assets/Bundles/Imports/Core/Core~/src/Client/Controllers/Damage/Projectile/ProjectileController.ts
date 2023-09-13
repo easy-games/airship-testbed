@@ -18,7 +18,7 @@ export class ProjectileController implements OnStart {
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			if (itemMeta.Ammo) {
-				const projPrefab = AssetBridge.LoadAssetIfExists(
+				const projPrefab = AssetBridge.Instance.LoadAssetIfExists(
 					`Shared/Resources/Prefabs/Projectiles/Ammo/${itemType}.prefab`,
 				) as GameObject;
 

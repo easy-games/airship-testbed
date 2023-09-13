@@ -60,7 +60,7 @@ export class EntityService implements OnStart {
 		if (this.loadedEntityPrefabs.has(entityPrefabType)) {
 			entityPrefab = this.loadedEntityPrefabs.get(entityPrefabType)!;
 		} else {
-			entityPrefab = AssetBridge.LoadAsset<GameObject>(entityPrefabType).GetComponent<NetworkObject>();
+			entityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(entityPrefabType).GetComponent<NetworkObject>();
 			this.loadedEntityPrefabs.set(entityPrefabType, entityPrefab);
 		}
 		return entityPrefab;

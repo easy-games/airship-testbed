@@ -7,7 +7,7 @@ export class DamageIndicatorController implements OnStart {
 	private damageIndicatorObject: Object | undefined;
 
 	OnStart(): void {
-		// this.damageIndicatorObject = AssetBridge.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
+		// this.damageIndicatorObject = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
 
 		CoreClientSignals.EntityDamage.Connect((event) => {
 			const entityGO = event.entity.networkObject.gameObject;

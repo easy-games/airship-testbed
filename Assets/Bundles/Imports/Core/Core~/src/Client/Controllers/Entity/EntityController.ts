@@ -22,7 +22,7 @@ export class EntityController implements OnStart {
 		private readonly invController: InventoryController,
 		private readonly playerController: PlayerController,
 	) {
-		const humanEntityPrefab = AssetBridge.LoadAsset<GameObject>(
+		const humanEntityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 			EntityPrefabType.HUMAN,
 		).GetComponent<NetworkObject>();
 		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as AirshipObjectPool;

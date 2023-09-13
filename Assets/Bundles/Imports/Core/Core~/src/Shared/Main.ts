@@ -10,8 +10,8 @@ print("Core main");
 Game.Context = CoreContext.GAME;
 
 const vars: DynamicVariables[] = [
-	AssetBridge.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Combat.asset"),
-	AssetBridge.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Camera.asset"),
+	AssetBridge.Instance.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Combat.asset"),
+	AssetBridge.Instance.LoadAsset<DynamicVariables>("Imports/Core/Shared/Resources/DynamicVariables/Camera.asset"),
 ];
 for (const dynamicVar of vars) {
 	dynamicVar.Register();

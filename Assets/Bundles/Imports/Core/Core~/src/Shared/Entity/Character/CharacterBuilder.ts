@@ -26,7 +26,7 @@ export class CharacterBuilder {
 		if (CharacterBuilder.prefabCache.has(assetPath)) {
 			characterModelPrefab = CharacterBuilder.prefabCache.get(assetPath)!;
 		} else {
-			characterModelPrefab = AssetBridge.LoadAsset<GameObject>(assetPath);
+			characterModelPrefab = AssetBridge.Instance.LoadAsset<GameObject>(assetPath);
 			CharacterBuilder.prefabCache.set(assetPath, characterModelPrefab);
 		}
 
@@ -55,7 +55,7 @@ export class CharacterBuilder {
 	}
 
 	public AddAttachment(bodyAttachment: BodyAttachment): void {
-		const prefab = AssetBridge.LoadAsset(bodyAttachment.asset);
+		const prefab = AssetBridge.Instance.LoadAsset(bodyAttachment.asset);
 
 		const boneTransform = this.characterGameObject.transform.Find(
 			"CharacterModel/Character/character_rig/master_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R",

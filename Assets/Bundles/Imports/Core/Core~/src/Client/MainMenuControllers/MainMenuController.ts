@@ -27,7 +27,7 @@ export class MainMenuController implements OnStart {
 	private open = false;
 
 	constructor(private readonly authController: AuthController) {
-		const mainMenuPrefab = AssetBridge.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
+		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");

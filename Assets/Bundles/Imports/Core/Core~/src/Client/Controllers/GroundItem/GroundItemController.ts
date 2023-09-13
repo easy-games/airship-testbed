@@ -33,11 +33,13 @@ export class GroundItemController implements OnStart {
 		private readonly playerController: PlayerController,
 		private readonly entityAccessoryController: EntityAccessoryController,
 	) {
-		this.groundItemPrefab = AssetBridge.LoadAsset("Shared/Resources/Prefabs/GroundItem.prefab");
-		this.fallbackDisplayObj = AssetBridge.LoadAsset("Shared/Resources/Prefabs/GroundItems/_fallback.prefab");
+		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("Shared/Resources/Prefabs/GroundItem.prefab");
+		this.fallbackDisplayObj = AssetBridge.Instance.LoadAsset(
+			"Shared/Resources/Prefabs/GroundItems/_fallback.prefab",
+		);
 
 		for (const itemType of Object.values(ItemType)) {
-			const obj = AssetBridge.LoadAssetIfExists<Object>(
+			const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
 				`Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
 			);
 			if (obj) {

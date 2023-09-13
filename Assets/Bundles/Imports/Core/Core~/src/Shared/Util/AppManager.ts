@@ -29,7 +29,7 @@ export class AppManager {
 
 	public static Init() {
 		const backgroundGO = GameObjectUtil.Instantiate(
-			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+			AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
 		);
 		this.backgroundCanvas = backgroundGO.GetComponent<Canvas>();
 		this.backgroundCanvas.enabled = false;

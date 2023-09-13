@@ -25,7 +25,7 @@ export class BlockSelectController implements OnStart {
 	constructor(private readonly entityController: EntityController) {}
 
 	OnStart(): void {
-		const highlightPrefab = AssetBridge.LoadAsset(
+		const highlightPrefab = AssetBridge.Instance.LoadAsset(
 			"Client/Resources/Assets/BlockSelect/BlockSelectHighlight.prefab",
 		);
 		if (!highlightPrefab) {
@@ -36,7 +36,7 @@ export class BlockSelectController implements OnStart {
 		this.highlightGO.layer = Layer.IGNORE_RAYCAST;
 		this.highlightGO.SetActive(false);
 
-		const voidPlanePrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/VoidPlane.prefab") as Object;
+		const voidPlanePrefab = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/VoidPlane.prefab") as Object;
 		this.voidPlane = GameObjectUtil.Instantiate(voidPlanePrefab);
 		this.voidPlane.name = "VoidPlane";
 		this.voidPlane.transform.localScale = new Vector3(50, 0.99, 50);

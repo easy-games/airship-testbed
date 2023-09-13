@@ -35,9 +35,11 @@ export class GeneratorController implements OnStart {
 		Physics.IgnoreLayerCollision(Layer.CHARACTER, Layer.GENERATOR_ITEM);
 		Physics.IgnoreLayerCollision(Layer.GENERATOR_ITEM, Layer.GENERATOR_ITEM);
 		/* NOTE: This is temp. Prefab will be dynamically loaded per generator. */
-		this.generatorItemPrefab = AssetBridge.LoadAsset("Shared/Resources/Prefabs/GeneratorItemPlaceholder.prefab");
+		this.generatorItemPrefab = AssetBridge.Instance.LoadAsset(
+			"Shared/Resources/Prefabs/GeneratorItemPlaceholder.prefab",
+		);
 		/* NOTE: Placeholder label. */
-		this.generatorLabelPrefab = AssetBridge.LoadAsset("Client/Resources/Prefabs/GeneratorLabel.prefab");
+		this.generatorLabelPrefab = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/GeneratorLabel.prefab");
 	}
 
 	OnStart(): void {

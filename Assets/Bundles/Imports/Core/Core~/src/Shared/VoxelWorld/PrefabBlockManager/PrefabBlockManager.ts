@@ -67,7 +67,7 @@ export class PrefabBlockManager {
 	private OnBlockPlace(pos: Vector3, itemType: ItemType): void {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (itemMeta.block?.prefab) {
-			const prefab = AssetBridge.LoadAsset<Object>(
+			const prefab = AssetBridge.Instance.LoadAsset<Object>(
 				`Shared/Resources/VoxelWorld/BlockPrefabs/${itemMeta.block.prefab.path}`,
 			);
 			const prefabGO = GameObjectUtil.InstantiateAt(prefab, pos, Quaternion.identity);

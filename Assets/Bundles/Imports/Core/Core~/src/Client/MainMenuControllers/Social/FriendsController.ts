@@ -185,7 +185,7 @@ export class FriendsController implements OnStart {
 			let init = false;
 			if (go === undefined) {
 				go = GameObjectUtil.InstantiateIn(
-					AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
+					AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
 				);
 				go.name = friend.userId;

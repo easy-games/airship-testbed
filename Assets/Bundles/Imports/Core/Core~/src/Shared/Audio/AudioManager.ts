@@ -149,7 +149,7 @@ export class AudioManager {
 	}
 
 	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {
-		const clip = AssetBridge.LoadAssetIfExists<AudioClip>(fullPath);
+		const clip = AssetBridge.Instance.LoadAssetIfExists<AudioClip>(fullPath);
 		if (!clip) {
 			warn("Unable to load clip: " + fullPath);
 		}
