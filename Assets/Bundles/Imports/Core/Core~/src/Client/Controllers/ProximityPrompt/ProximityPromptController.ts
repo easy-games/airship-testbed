@@ -85,7 +85,7 @@ export class ProximityPromptController implements OnStart {
 			const duration = 0.12;
 
 			const t = prompt.promptGameObject.transform;
-			const pos = t.localPosition;
+			const pos = prompt.data.promptPosition;
 			t.localPosition = pos.add(new Vector3(0, -0.12, 0));
 			t.TweenLocalPosition(pos, duration);
 
