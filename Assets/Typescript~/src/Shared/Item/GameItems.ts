@@ -1,5 +1,6 @@
 import { ItemType } from "Core/Shared/Item/ItemType";
 import { ItemRegistrationConfig, ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
+import { BundleGroupNames } from "Imports/Core/Shared/Util/ReferenceManagerResources";
 
 declare module "Core/Shared/Item/ItemType" {
 	export const enum ItemType {
@@ -17,6 +18,9 @@ export function RegisterItems() {
 			displayName: "Example Item",
 			image: "Imports/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
 			accessoryPaths: ["example_item.asset"],
+			itemAssets: {
+				assetBundleId: BundleGroupNames.ItemSword,
+			},
 		},
 		config,
 	);
