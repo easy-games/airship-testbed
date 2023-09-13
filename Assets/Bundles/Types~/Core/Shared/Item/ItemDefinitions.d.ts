@@ -2,5 +2,5 @@
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 export declare const items: {
-    [key in ItemType]: Omit<ItemMeta, "ID" | "itemType">;
+    [key in ItemType]: Omit<ItemMeta, "id" | "itemType">;
 };

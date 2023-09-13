@@ -1,4 +1,4 @@
-export enum ItemType {
+export const enum ItemType {
 	DEFAULT = "DEFAULT",
 	GRASS = "GRASS",
 	DIRT = "DIRT",

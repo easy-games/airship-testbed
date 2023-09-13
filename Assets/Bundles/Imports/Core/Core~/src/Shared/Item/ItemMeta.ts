@@ -49,11 +49,14 @@ export interface ProjectileLauncherMeta {
 export interface ItemMeta {
 	//Identification
 	displayName: string;
-	ID: number;
+	id: number;
 	itemType: ItemType;
 
+	/** Path to image. */
+	image?: string;
+
 	//Game Design Mechanics
-	itemMechanics: ItemMechanicsMeta;
+	itemMechanics?: ItemMechanicsMeta;
 
 	//Assets
 	itemAssets?: ItemAssetsMeta;
@@ -62,14 +65,14 @@ export interface ItemMeta {
 	melee?: MeleeItemMeta;
 	block?: BlockMeta;
 	breakBlock?: BreakBlockMeta;
-	AccessoryNames?: string[];
-	ProjectileLauncher?: ProjectileLauncherMeta;
-	Ammo?: AmmoMeta;
-	Armor?: {
-		ArmorType: ArmorType;
-		ProtectionAmount: number;
+	accessoryPaths?: string[];
+	projectileLauncher?: ProjectileLauncherMeta;
+	ammo?: AmmoMeta;
+	armor?: {
+		armorType: ArmorType;
+		protectionAmount: number;
 	};
-	PickupSound?: string[];
+	pickupSound?: string[];
 }
 
 export interface ItemAssetsMeta {

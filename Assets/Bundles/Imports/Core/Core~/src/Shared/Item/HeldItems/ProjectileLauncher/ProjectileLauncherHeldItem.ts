@@ -25,7 +25,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
 
 	protected override OnChargeStart(): void {
-		if (!this.meta.ProjectileLauncher) return;
+		if (!this.meta.projectileLauncher) return;
 		if (!this.HasRequiredAmmo()) return;
 		if (RunUtil.IsClient()) {
 			if (CanvasAPI.IsPointerOverUI()) return;
@@ -54,8 +54,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		this.PlayItemAnimation(0, true);
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
-			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.ProjectileLauncher.ammoItemType);
-			const ammoMeta = ammoItemMeta.Ammo!;
+			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.projectileLauncher.ammoItemType);
+			const ammoMeta = ammoItemMeta.ammo!;
 
 			this.chargeBin.Add(Crosshair.AddDisabler());
 
@@ -110,7 +110,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		const inventory = this.entity.GetInventory();
 		const launcherItemMeta = inventory.GetHeldItem()?.GetMeta();
-		const nullableProjectileLauncherMeta = launcherItemMeta?.ProjectileLauncher;
+		const nullableProjectileLauncherMeta = launcherItemMeta?.projectileLauncher;
 
 		if (nullableProjectileLauncherMeta) {
 			const launcherMeta = nullableProjectileLauncherMeta!;
@@ -174,7 +174,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		);
 		const launchData = this.GetLaunchData(this.entity, mouse, this.meta, chargeSec, launchPos);
 		this.entity.LaunchProjectile(
-			this.meta.ProjectileLauncher!.ammoItemType,
+			this.meta.projectileLauncher!.ammoItemType,
 			launchData.launchPos,
 			launchData.velocity,
 		);
@@ -208,9 +208,9 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		launchPos: Vector3;
 		velocity: Vector3;
 	} {
-		const launcherMeta = launcherItemMeta.ProjectileLauncher!;
+		const launcherMeta = launcherItemMeta.projectileLauncher!;
 		const ammoItemMeta = ItemUtil.GetItemMeta(launcherMeta.ammoItemType);
-		const ammoMeta = ammoItemMeta.Ammo!;
+		const ammoMeta = ammoItemMeta.ammo!;
 
 		const aimVector = this.GetAimVector(mouse, launchPos, ammoMeta);
 

@@ -3,13 +3,17 @@ import { items } from "./ItemDefinitions";
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 
+export interface ItemRegistrationConfig {
+	accessoryFolder?: string;
+}
+
 /**
  * Set of utilities for working with items.
  */
 export class ItemUtil {
 	public static readonly DefaultAccessoryCollectionPath =
 		"Shared/Resources/Accessories/Kits/Whim/WhimAccessoryCollection.asset";
-	public static readonly DefaultItemPath = "Shared/Resources/Accessories/missing_item.asset";
+	public static readonly DefaultItemPath = "Imports/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
 	private static readonly blockIdToItemType = new Map<number, ItemType>();
@@ -18,6 +22,11 @@ export class ItemUtil {
 	public static missingItemAccessory: Accessory;
 	public static defaultKitAccessory: AccessoryCollection | undefined;
 
+	private static itemTypes: ItemType[] = [];
+
+	/**
+	 * Called by Core.
+	 */
 	public static Initialize() {
 		//Load default items
 		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
@@ -26,12 +35,13 @@ export class ItemUtil {
 		);
 
 		let i = 0;
-		for (const itemType of Object.values(ItemType)) {
+		for (const itemType of Object.keys(items)) {
+			this.itemTypes.push(itemType);
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			// Assign ID to each ItemType
 			itemMeta.itemType = itemType;
-			itemMeta.ID = i;
+			itemMeta.id = i;
 			ItemUtil.itemIdToItemType.set(i, itemType);
 
 			// Map Block types to items
@@ -40,22 +50,19 @@ export class ItemUtil {
 			}
 
 			// Map items to accessories
-			let accessoryNames: string[] = [itemType];
-			if (itemMeta.AccessoryNames) {
-				accessoryNames = itemMeta.AccessoryNames;
+			let accessoryPaths: string[] = [];
+			if (itemMeta.accessoryPaths) {
+				accessoryPaths = itemMeta.accessoryPaths;
 			} else if (itemMeta.block?.blockId) {
-				accessoryNames = ["BLOCK"];
+				accessoryPaths = ["Imports/Core/Shared/Accessories/block.asset"];
 			}
 
-			if (accessoryNames.size() > 0) {
+			if (accessoryPaths.size() > 0) {
 				const accessories: Accessory[] = [];
 				ItemUtil.itemAccessories.set(itemType, accessories);
 
-				for (const accessoryName of accessoryNames) {
-					let accNameLower = accessoryName.lower();
-					let accessory = AssetBridge.Instance.LoadAssetIfExists<Accessory>(
-						`Shared/Resources/Accessories/${accNameLower}.asset`,
-					);
+				for (const accessoryName of accessoryPaths) {
+					let accessory = AssetBridge.Instance.LoadAssetIfExists<Accessory>(accessoryName);
 					if (!accessory) {
 						// warn("Couldn't find: " + accNameLower);
 						continue;
@@ -68,6 +75,19 @@ export class ItemUtil {
 
 			i++;
 		}
+	}
+
+	public static RegisterItem(
+		itemType: ItemType,
+		itemDefinition: Omit<ItemMeta, "id" | "itemType">,
+		config?: ItemRegistrationConfig,
+	) {
+		if (config?.accessoryFolder && itemDefinition.accessoryPaths) {
+			itemDefinition.accessoryPaths = itemDefinition.accessoryPaths.map(
+				(name) => config.accessoryFolder + "/" + name,
+			);
+		}
+		items[itemType] = itemDefinition;
 	}
 
 	public static GetItemTypeFromBlockId(blockId: number): ItemType | undefined {
@@ -101,7 +121,7 @@ export class ItemUtil {
 	}
 
 	public static IsItemType(s: string): boolean {
-		return Object.values(ItemType).includes(s as ItemType);
+		return items[s as ItemType] !== undefined;
 	}
 
 	/**
@@ -131,5 +151,9 @@ export class ItemUtil {
 	 */
 	public static IsResource(itemType: ItemType): boolean {
 		return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
+	}
+
+	public static GetItemTypes(): ItemType[] {
+		return this.itemTypes;
 	}
 }

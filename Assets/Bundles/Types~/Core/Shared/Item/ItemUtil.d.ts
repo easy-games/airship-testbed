@@ -1,6 +1,9 @@
 /// <reference types="@easy-games/compiler-types" />
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
+export interface ItemRegistrationConfig {
+    accessoryFolder?: string;
+}
 /**
  * Set of utilities for working with items.
  */
@@ -12,7 +15,12 @@ export declare class ItemUtil {
     private static readonly itemIdToItemType;
     static missingItemAccessory: Accessory;
     static defaultKitAccessory: AccessoryCollection | undefined;
+    private static itemTypes;
+    /**
+     * Called by Core.
+     */
     static Initialize(): void;
+    static RegisterItem(itemType: ItemType, itemDefinition: Omit<ItemMeta, "id" | "itemType">, config?: ItemRegistrationConfig): void;
     static GetItemTypeFromBlockId(blockId: number): ItemType | undefined;
     static GetItemTypeFromItemId(itemId: number): ItemType | undefined;
     static GetItemMeta(itemType: ItemType): ItemMeta;
@@ -37,4 +45,5 @@ export declare class ItemUtil {
      * @returns Whether or not item is a resource.
      */
     static IsResource(itemType: ItemType): boolean;
+    static GetItemTypes(): ItemType[];
 }

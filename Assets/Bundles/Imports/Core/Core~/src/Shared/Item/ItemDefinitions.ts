@@ -120,8 +120,12 @@ const stoneBlock: BlockMeta = {
 	],
 };
 
+function AccPath(itemType: ItemType): string {
+	return "Imports/Core/Shared/Resources/Accessories/" + itemType.lower() + ".asset";
+}
+
 export const items: {
-	[key in ItemType]: Omit<ItemMeta, "ID" | "itemType">;
+	[key in ItemType]: Omit<ItemMeta, "id" | "itemType">;
 } = {
 	[ItemType.DEFAULT]: {
 		//Identification
@@ -459,37 +463,37 @@ export const items: {
 	[ItemType.LEATHER_HELMET]: {
 		displayName: "Leather Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Leather/LeatherHelmet"],
-		Armor: {
-			ArmorType: ArmorType.HELMET,
-			ProtectionAmount: 2,
+		accessoryPaths: ["Armor/Leather/LeatherHelmet"],
+		armor: {
+			armorType: ArmorType.HELMET,
+			protectionAmount: 2,
 		},
 	},
 	[ItemType.IRON_HELMET]: {
 		displayName: "Iron Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Iron/IronHelmet"],
-		Armor: {
-			ArmorType: ArmorType.HELMET,
-			ProtectionAmount: 4,
+		accessoryPaths: ["Armor/Iron/IronHelmet"],
+		armor: {
+			armorType: ArmorType.HELMET,
+			protectionAmount: 4,
 		},
 	},
 	[ItemType.DIAMOND_HELMET]: {
 		displayName: "Diamond Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Diamond/DiamondHelmet"],
-		Armor: {
-			ArmorType: ArmorType.HELMET,
-			ProtectionAmount: 6,
+		accessoryPaths: ["Armor/Diamond/DiamondHelmet"],
+		armor: {
+			armorType: ArmorType.HELMET,
+			protectionAmount: 6,
 		},
 	},
 	[ItemType.EMERALD_HELMET]: {
 		displayName: "Emerald Helmet",
 		itemMechanics: defaultItemMechanics,
-		AccessoryNames: ["Armor/Emerald/EmeraldHelmet"],
-		Armor: {
-			ArmorType: ArmorType.HELMET,
-			ProtectionAmount: 8,
+		accessoryPaths: ["Armor/Emerald/EmeraldHelmet"],
+		armor: {
+			armorType: ArmorType.HELMET,
+			protectionAmount: 8,
 		},
 	},
 
@@ -501,6 +505,7 @@ export const items: {
 			...defaultItemMechanics,
 			cooldownSeconds: 0.2,
 		},
+		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
 		breakBlock: {
 			...defaultBreakBlock,
 			damage: 2,
@@ -514,6 +519,7 @@ export const items: {
 			...defaultItemMechanics,
 			cooldownSeconds: 0.2,
 		},
+		accessoryPaths: [AccPath(ItemType.STONE_PICKAXE)],
 		breakBlock: {
 			...defaultBreakBlock,
 			damage: 3,
@@ -527,6 +533,7 @@ export const items: {
 			...defaultItemMechanics,
 			cooldownSeconds: 0.15,
 		},
+		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE)],
 		breakBlock: {
 			...defaultBreakBlock,
 			damage: 5,
@@ -540,6 +547,7 @@ export const items: {
 			...defaultItemMechanics,
 			cooldownSeconds: 0.1,
 		},
+		accessoryPaths: [AccPath(ItemType.DIAMOND_PICKAXE)],
 		breakBlock: {
 			...defaultBreakBlock,
 			damage: 8,
@@ -552,6 +560,7 @@ export const items: {
 		displayName: "Wood Sword",
 		itemAssets: swordItemAssets,
 		itemMechanics: swordItemMechanics,
+		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
 		melee: {
 			...defaultSwordMelee,
 			damage: 5,
@@ -561,6 +570,7 @@ export const items: {
 		displayName: "Stone Sword",
 		itemAssets: swordItemAssets,
 		itemMechanics: swordItemMechanics,
+		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
 		melee: {
 			...defaultSwordMelee,
 			damage: 8,
@@ -570,6 +580,7 @@ export const items: {
 		displayName: "Iron Sword",
 		itemAssets: swordItemAssets,
 		itemMechanics: swordItemMechanics,
+		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
 		melee: {
 			...defaultSwordMelee,
 			damage: 10,
@@ -579,6 +590,7 @@ export const items: {
 		displayName: "Diamond Sword",
 		itemAssets: swordItemAssets,
 		itemMechanics: swordItemMechanics,
+		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
 		melee: {
 			...defaultSwordMelee,
 			damage: 13,
@@ -588,6 +600,7 @@ export const items: {
 		displayName: "Double Hit Sword",
 		itemAssets: swordItemAssets,
 		itemMechanics: { ...swordItemMechanics, cooldownSeconds: 1 },
+		accessoryPaths: [AccPath(ItemType.DOUBLE_HIT_SWORD)],
 		melee: {
 			...defaultSwordMelee,
 			damage: 10,
@@ -597,6 +610,7 @@ export const items: {
 		displayName: "Rageblade",
 		itemAssets: swordItemAssets,
 		itemMechanics: swordItemMechanics,
+		accessoryPaths: [AccPath(ItemType.RAGEBLADE)],
 		melee: {
 			...defaultSwordMelee,
 			damage: 15,
@@ -613,7 +627,8 @@ export const items: {
 			cooldownSeconds: 0.25,
 		},
 		itemAssets: bowItemAssets,
-		ProjectileLauncher: {
+		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
+		projectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,
 			maxVelocityScaler: 100,
@@ -624,7 +639,8 @@ export const items: {
 	[ItemType.WOOD_ARROW]: {
 		displayName: "Wood Arrow",
 		itemMechanics: defaultItemMechanics,
-		Ammo: {
+		accessoryPaths: [AccPath(ItemType.WOOD_ARROW)],
+		ammo: {
 			yAxisAimAdjust: 0.1,
 			damage: 15,
 			gravity: defaultGravity * 0.4,
@@ -649,13 +665,14 @@ export const items: {
 			...throwableItemAssets,
 			onUseSound: ["TelepearlThrow"],
 		},
-		ProjectileLauncher: {
+		accessoryPaths: [AccPath(ItemType.TELEPEARL)],
+		projectileLauncher: {
 			ammoItemType: ItemType.TELEPEARL,
 			minVelocityScaler: 4,
 			maxVelocityScaler: 40,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 		},
-		Ammo: {
+		ammo: {
 			yAxisAimAdjust: 0.1,
 			damage: 15,
 			gravity: defaultGravity * 0.2,
@@ -671,17 +688,18 @@ export const items: {
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 		},
+		accessoryPaths: [AccPath(ItemType.FIREBALL)],
 		itemAssets: {
 			...throwableItemAssets,
 			onUseSound: ["Fireball_Throw"],
 		},
-		ProjectileLauncher: {
+		projectileLauncher: {
 			ammoItemType: ItemType.FIREBALL,
 			minVelocityScaler: 15,
 			maxVelocityScaler: 50,
 			firstPersonLaunchOffset: new Vector3(1.5, 0, 0),
 		},
-		Ammo: {
+		ammo: {
 			yAxisAimAdjust: 0,
 			damage: 30,
 			lifetimeSec: 10,

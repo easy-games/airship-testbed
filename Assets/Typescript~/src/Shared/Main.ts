@@ -1,6 +1,7 @@
 import { RunUtil } from "Imports/Core/Shared/Util/RunUtil";
+import { RegisterItems } from "./Item/GameItems";
 
-print("Game main");
+RegisterItems();
 
 if (RunUtil.IsServer()) {
 	const server = require("Server/Resources/TS/MainServer") as {

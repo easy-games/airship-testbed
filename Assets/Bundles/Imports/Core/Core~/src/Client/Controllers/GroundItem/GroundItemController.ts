@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import Object from "@easy-games/unity-object-utils";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Entity } from "Shared/Entity/Entity";
@@ -38,7 +37,7 @@ export class GroundItemController implements OnStart {
 			"Shared/Resources/Prefabs/GroundItems/_fallback.prefab",
 		);
 
-		for (const itemType of Object.values(ItemType)) {
+		for (const itemType of ItemUtil.GetItemTypes()) {
 			const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
 				`Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
 			);

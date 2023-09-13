@@ -31,11 +31,9 @@ export class MatchService implements OnStart {
 	}
 
 	OnStart(): void {
-		print("MatchService.1");
 		Dependency<MapService>().WaitForMapLoaded();
 		/* Immediately transition into `MatchState.PRE` after map load. */
 		this.SetState(MatchState.PRE);
-		print("MatchService.2");
 	}
 
 	/** Yields until match exits `MatchState.SETUP` state. */

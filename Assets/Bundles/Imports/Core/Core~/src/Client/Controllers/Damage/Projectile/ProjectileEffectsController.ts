@@ -14,9 +14,9 @@ export class ProjectileEffectsController implements OnStart {
 		CoreClientSignals.ProjectileCollide.Connect((event) => {
 			const itemMeta = ItemUtil.GetItemMeta(event.projectile.itemType);
 
-			if(itemMeta.Ammo?.onHitVFXTemplate){
+			if (itemMeta.ammo?.onHitVFXTemplate) {
 				const effect = EffectsManager.SpawnEffect(
-					itemMeta.Ammo?.onHitVFXTemplate,
+					itemMeta.ammo?.onHitVFXTemplate,
 					event.hitPosition,
 					Vector3.zero,
 				);
@@ -33,33 +33,26 @@ export class ProjectileEffectsController implements OnStart {
 			}
 
 			let hitSoundName = "";
-			if (!event.hitEntity && itemMeta.Ammo?.onHitGroundSoundId) {
-				hitSoundName = itemMeta.Ammo?.onHitGroundSoundId;
-			}else if (event.hitEntity && itemMeta.Ammo?.onHitEntitySoundId) {
-				hitSoundName = itemMeta.Ammo?.onHitEntitySoundId;
+			if (!event.hitEntity && itemMeta.ammo?.onHitGroundSoundId) {
+				hitSoundName = itemMeta.ammo?.onHitGroundSoundId;
+			} else if (event.hitEntity && itemMeta.ammo?.onHitEntitySoundId) {
+				hitSoundName = itemMeta.ammo?.onHitEntitySoundId;
 			}
 
-			if(hitSoundName !== ""){
-				let volume = .6;
+			if (hitSoundName !== "") {
+				let volume = 0.6;
 				const hitSoundPath = `Imports/Core/Shared/Resources/Sound/Items/Projectiles/${hitSoundName}`;
-				if(itemMeta.Ammo?.onHitSoundVolume){
-					volume = itemMeta.Ammo?.onHitSoundVolume;
+				if (itemMeta.ammo?.onHitSoundVolume) {
+					volume = itemMeta.ammo?.onHitSoundVolume;
 				}
-				if(Game.LocalPlayer.Character && event.projectile.shooter === Game.LocalPlayer.Character){
-					AudioManager.PlayGlobal(
-						hitSoundPath,
-						{
-							volumeScale: volume
-						},
-					);
-				}else{
-					AudioManager.PlayAtPosition(
-						hitSoundPath,
-						event.hitPosition,
-						{
-							volumeScale: volume
-						},
-					);
+				if (Game.LocalPlayer.Character && event.projectile.shooter === Game.LocalPlayer.Character) {
+					AudioManager.PlayGlobal(hitSoundPath, {
+						volumeScale: volume,
+					});
+				} else {
+					AudioManager.PlayAtPosition(hitSoundPath, event.hitPosition, {
+						volumeScale: volume,
+					});
 				}
 			}
 		});

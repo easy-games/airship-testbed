@@ -51,7 +51,7 @@ export class HeldItemManager {
 			} else if (meta.breakBlock) {
 				itemType = "BREAK BLOCK";
 				item = new BreakBlockHeldItem(this.entity, meta);
-			} else if (meta.ProjectileLauncher) {
+			} else if (meta.projectileLauncher) {
 				itemType = "PROJECTILE LAUNCHER";
 				item = new ProjectileLauncherHeldItem(this.entity, meta);
 			} else {
