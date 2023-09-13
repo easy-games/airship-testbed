@@ -61,7 +61,6 @@ export class HeldItemManager {
 				}
 			}
 			if (item === undefined) {
-				print("Using default held item handler for " + meta.itemType);
 				item = new HeldItem(this.entity, meta);
 			}
 			this.heldItemMap.set(meta.itemType, item);
