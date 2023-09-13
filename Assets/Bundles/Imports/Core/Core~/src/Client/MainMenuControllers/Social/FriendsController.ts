@@ -274,7 +274,7 @@ export class FriendsController implements OnStart {
 		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>();
 
 		if (config.loadImage) {
-			const texture = AssetBridge.LoadAssetIfExists<Texture2D>(
+			const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
 				"Imports/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
 			);
 			if (texture !== undefined) {
