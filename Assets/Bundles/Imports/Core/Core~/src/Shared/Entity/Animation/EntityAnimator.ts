@@ -162,7 +162,7 @@ export class EntityAnimator {
 				break;
 		}
 		if (vfxTemplate) {
-			const go = EffectsManager.SpawnEffectAtPosition(vfxTemplate, position);
+			const go = EffectsManager.SpawnEffectAtPosition(vfxTemplate, position, undefined, 2);
 			if (entityModel) {
 				go.transform.parent = entityModel.transform;
 			}
@@ -188,7 +188,7 @@ export class EntityAnimator {
 		const inVoid = damageType === DamageType.VOID;
 		const deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
 		if (deathEffect) {
-			const go = EffectsManager.SpawnEffectAtPosition(deathEffect, this.entity.GetHeadPosition());
+			const go = EffectsManager.SpawnEffectAtPosition(deathEffect, this.entity.GetHeadPosition(), undefined, 2);
 			if (!inVoid) {
 				go.transform.SetParent(this.entity.gameObject.transform);
 			}
