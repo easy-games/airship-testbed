@@ -126,6 +126,13 @@ export class ItemShopMeta {
 				category: ShopCategory.COMBAT,
 			},
 			{
+				itemType: ItemType.FIREBALL,
+				currency: ItemType.IRON,
+				price: 75,
+				quantity: 1,
+				category: ShopCategory.COMBAT,
+			},
+			{
 				itemType: ItemType.TELEPEARL,
 				currency: ItemType.EMERALD,
 				price: 2,

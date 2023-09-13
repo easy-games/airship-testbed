@@ -211,7 +211,7 @@ Shader "Chronos/ChronosCrystal"
 				
 				//finalColor = finalDepthColor;
 				MRT0 = finalColor;
-				MRT1 = emissiveColor * specular;
+				MRT1 = emissiveColor * brightness;
 				return MRT0;
 			}
 			ENDCG

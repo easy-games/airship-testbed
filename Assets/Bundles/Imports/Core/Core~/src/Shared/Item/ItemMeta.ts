@@ -1,6 +1,6 @@
 import { Entity } from "Shared/Entity/Entity";
 import { DamageType } from "../Damage/DamageType";
-import { BundleGroupNames } from "../Util/ReferenceManagerResources";
+import { AllBundleItems, BundleGroupNames } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
 
@@ -24,8 +24,10 @@ export interface AmmoMeta {
 	damage: number;
 	lifetimeSec?: number;
 	gravity: number;
+	onHitEntitySoundId?: string;
 	onHitGroundSoundId?: string;
-	onHitGroundSoundVolume?: number;
+	onHitSoundVolume?: number;
+	onHitVFXTemplate: AllBundleItems;
 }
 
 export interface HitSignal {

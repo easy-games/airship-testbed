@@ -85,13 +85,11 @@ export class EntityReferences {
 		));*/
 
 		//Slide sound path: Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav
-		this.slideSoundPaths[0] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX0);
-		this.slideSoundPaths[1] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX1);
-		this.slideSoundPaths[2] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX2);
-		this.slideSoundPaths[3] = BundleReferenceManager.GetDirectPath(AllBundleItems.Bundle_Entity_Movement_SlideSFX3);
-		this.slideSoundPaths[4] = BundleReferenceManager.GetDirectPath(
-			AllBundleItems.Bundle_Entity_Movement_SlideSFXLoop,
-		);
+		this.slideSoundPaths[0] = AllBundleItems.Entity_Movement_SlideSFX0;
+		this.slideSoundPaths[1] = AllBundleItems.Entity_Movement_SlideSFX1;
+		this.slideSoundPaths[2] = AllBundleItems.Entity_Movement_SlideSFX2;
+		this.slideSoundPaths[3] = AllBundleItems.Entity_Movement_SlideSFX3;
+		this.slideSoundPaths[4] = AllBundleItems.Entity_Movement_SlideSFXLoop;
 
 		/*this.landSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
@@ -506,7 +504,7 @@ export class Entity {
 		if (this.IsLocalCharacter()) {
 			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 		}
-		const projectilePath = `Shared/Resources/Prefabs/Projectiles/Ammo/${itemType}.prefab`;
+		const projectilePath = `Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(itemType)}.prefab`;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
 		const easyProjectile = projectileLauncher.ClientFire(
@@ -518,7 +516,6 @@ export class Entity {
 			0,
 		);
 		const projectile = new Projectile(easyProjectile, itemType, this);
-
 		if (RunUtil.IsClient()) {
 			const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 			const ProjectileLaunchedClientSignal = import(

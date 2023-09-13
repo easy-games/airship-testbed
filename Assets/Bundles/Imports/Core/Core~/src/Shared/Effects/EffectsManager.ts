@@ -1,8 +1,27 @@
-import { Task } from "Shared/Util/Task";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
-import { BundleData, BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../Util/ReferenceManagerResources";
+import { AllBundleItems, BundleData, BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../Util/ReferenceManagerResources";
+import { Task } from "Shared/Util/Task";
 
 export class EffectsManager {
+	public static SpawnEffect(
+		bundleId: AllBundleItems,
+		worldPosition: Vector3,
+		worldRotation: Vector3,
+		destroyInSeconds = 5,
+		){
+			let template = BundleReferenceManager.LoadDirectResource<GameObject>(bundleId);
+			if (template) {
+				return this.SpawnGameObjectAtPosition(
+					template,
+					worldPosition,
+					worldRotation,
+					destroyInSeconds,
+				);
+			}
+			return undefined;
+		}
+
+
 	public static SpawnBundleEffect(
 		bundleGroupId: BundleGroupNames,
 		bundleId: number,
@@ -61,16 +80,16 @@ export class EffectsManager {
 			error("Trying to spawn effect but prefab template wasn't found: " + bundle.id + ", " + effectId);
 			return undefined;
 		}
-		return this.SpawnEffect(template, hitTransform, destroyInSeconds);
+		return this.SpawnGameObject(template, hitTransform, destroyInSeconds);
 	}
 
-	public static SpawnEffectAtPosition(
+	public static SpawnGameObjectAtPosition(
 		template: GameObject,
 		worldPosition: Vector3,
 		worldEuler?: Vector3,
 		destroyInSeconds = 5,
 	) {
-		let effect = this.SpawnEffect(template, undefined, destroyInSeconds);
+		let effect = this.SpawnGameObject(template, undefined, destroyInSeconds);
 		effect.transform.position = worldPosition;
 		if (worldEuler) {
 			effect.transform.eulerAngles = worldEuler;
@@ -78,7 +97,7 @@ export class EffectsManager {
 		return effect;
 	}
 
-	public static SpawnEffect(template: GameObject, parent?: Transform, destroyInSeconds = 5) {
+	public static SpawnGameObject(template: GameObject, parent?: Transform, destroyInSeconds = 5) {
 		let vfx: GameObject;
 		vfx = PoolManager.SpawnObject(template);
 		if (parent) {

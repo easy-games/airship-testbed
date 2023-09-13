@@ -21,6 +21,7 @@ import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
+import { LibonatiCommand } from "./Commands/LibonatiCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -43,6 +44,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new HealCommand());
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
+		this.RegisterCommand(new LibonatiCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
