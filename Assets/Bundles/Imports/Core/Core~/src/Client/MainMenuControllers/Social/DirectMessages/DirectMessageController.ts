@@ -20,10 +20,10 @@ import { DirectMessage } from "./DirectMessage";
 
 @Controller({})
 export class DirectMessageController implements OnStart {
-	private incomingMessagePrefab = AssetBridge.LoadAsset(
+	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"Imports/Core/Shared/Resources/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;
-	private outgoingMessagePrefab = AssetBridge.LoadAsset(
+	private outgoingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"Imports/Core/Shared/Resources/Prefabs/UI/Messages/OutgoingMessage.prefab",
 	) as GameObject;
 	private messagesMap = new Map<string, Array<DirectMessage>>();
@@ -117,7 +117,9 @@ export class DirectMessageController implements OnStart {
 
 	public Setup(): void {
 		this.windowGo = GameObjectUtil.InstantiateIn(
-			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/Messages/DirectMessageWindow.prefab"),
+			AssetBridge.Instance.LoadAsset(
+				"Imports/Core/Shared/Resources/Prefabs/UI/Messages/DirectMessageWindow.prefab",
+			),
 			this.mainMenuController.socialMenuCanvas.transform.GetChild(0),
 		);
 		this.windowGo.GetComponent<RectTransform>().anchoredPosition = Bridge.MakeVector2(this.xPos, this.yPos);

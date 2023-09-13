@@ -2,7 +2,7 @@
 /// <reference types="@easy-games/types" />
 import { Entity } from "../Entity/Entity";
 import { DamageType } from "../Damage/DamageType";
-import { BundleGroupNames } from "../Util/ReferenceManagerResources";
+import { AllBundleItems, BundleGroupNames } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
 export interface BlockMeta {
@@ -24,8 +24,10 @@ export interface AmmoMeta {
     damage: number;
     lifetimeSec?: number;
     gravity: number;
+    onHitEntitySoundId?: string;
     onHitGroundSoundId?: string;
-    onHitGroundSoundVolume?: number;
+    onHitSoundVolume?: number;
+    onHitVFXTemplate: AllBundleItems;
 }
 export interface HitSignal {
     Position: Vector3;

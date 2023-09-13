@@ -47,7 +47,9 @@ export class ItemShopController implements OnStart {
 		this.purchaseButton = this.refs.GetValue("SidebarContainer", "PurchaseButton");
 		this.purchaseButtonText = this.refs.GetValue("SidebarContainer", "PurchaseButtonText");
 
-		this.itemPurchasePopupPrefab = AssetBridge.LoadAsset("Shared/Resources/Prefabs/ItemPurchasePopup.prefab");
+		this.itemPurchasePopupPrefab = AssetBridge.Instance.LoadAsset(
+			"Shared/Resources/Prefabs/ItemPurchasePopup.prefab",
+		);
 	}
 
 	OnStart(): void {

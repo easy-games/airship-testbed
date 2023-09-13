@@ -38,7 +38,7 @@ export class InventoryUIController implements OnStart {
 		this.healthBar = new ProgressBarGraphics(this.hotbarRefs.GetValue("UI", "HealthBarTransform"));
 
 		const backpackGo = GameObjectUtil.Instantiate(
-			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),
+			AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),
 		);
 		this.backpackRefs = backpackGo.GetComponent<GameObjectReferences>();
 		this.backpackCanvas = backpackGo.GetComponent<Canvas>();

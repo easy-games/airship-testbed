@@ -19,7 +19,7 @@ export class ChangeUsernameController implements OnStart {
 
 	constructor(private readonly authController: AuthController) {
 		const go = GameObjectUtil.Instantiate(
-			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
+			AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
 		);
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = false;

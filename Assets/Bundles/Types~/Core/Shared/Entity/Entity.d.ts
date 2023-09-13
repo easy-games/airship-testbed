@@ -70,6 +70,7 @@ export declare class Entity {
     readonly OnAdjustMove: Signal<[moveModifier: MoveModifier]>;
     readonly OnDisplayNameChanged: Signal<[displayName: string]>;
     readonly OnStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
+    readonly OnDeath: Signal<void>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     AddHealthbar(): void;
     SetPlayer(player: Player | undefined): void;

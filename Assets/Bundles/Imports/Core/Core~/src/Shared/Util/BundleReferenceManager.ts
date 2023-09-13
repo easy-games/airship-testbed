@@ -57,14 +57,14 @@ export class BundleReferenceManager {
 		return AssetBridge.Instance.LoadAsset<T>(path ? path : "");
 	}
 
-	public static GetDirectPath(bundleId: AllBundleItems){
+	public static GetDirectPath(bundleId: AllBundleItems) {
 		return bundleId as string;
 	}
 
-	public static LoadDirectResource<T>(bundleId: AllBundleItems){
-		const path:string = bundleId as string;
-		if(path && path !== ""){
-			return AssetBridge.LoadAsset<T>(path);
+	public static LoadDirectResource<T>(bundleId: AllBundleItems) {
+		const path: string = bundleId as string;
+		if (path && path !== "") {
+			return AssetBridge.Instance.LoadAsset<T>(path);
 		}
 		return undefined;
 	}

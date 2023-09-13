@@ -29,7 +29,7 @@ export class RespawnScreenController implements OnStart {
 		this.respawnBin.Clean();
 
 		const go = GameObjectUtil.Instantiate(
-			AssetBridge.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/DeathScreen.prefab"),
+			AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/DeathScreen.prefab"),
 		);
 		const refs = go.GetComponent<GameObjectReferences>();
 		const topText = refs.GetValue("UI", "TopText") as TMP_Text;

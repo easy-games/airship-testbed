@@ -57,7 +57,7 @@ export declare const CoreNetwork: {
             SetDisplayName: RemoteEvent<[entityId: number, displayName: string]>;
             AddHealthbar: RemoteEvent<[entityId: number]>;
         };
-        EntityDeath: RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined]>;
+        EntityDeath: RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined, respawnTime: number]>;
         GroundItem: {
             Add: RemoteEvent<[dtos: {
                 id: number;
