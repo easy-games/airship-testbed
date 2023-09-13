@@ -17,7 +17,6 @@ export function RegisterItems() {
 		{
 			displayName: "Example Item",
 			image: "Imports/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
-			accessoryPaths: ["example_item.asset"],
 			itemAssets: {
 				assetBundleId: BundleGroupNames.ItemSword,
 			},

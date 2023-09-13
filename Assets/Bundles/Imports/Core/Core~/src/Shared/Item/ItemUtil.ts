@@ -82,10 +82,14 @@ export class ItemUtil {
 		itemDefinition: Omit<ItemMeta, "id" | "itemType">,
 		config?: ItemRegistrationConfig,
 	) {
-		if (config?.accessoryFolder && itemDefinition.accessoryPaths) {
-			itemDefinition.accessoryPaths = itemDefinition.accessoryPaths.map(
-				(name) => config.accessoryFolder + "/" + name,
-			);
+		if (config?.accessoryFolder) {
+			if (itemDefinition.accessoryPaths) {
+				itemDefinition.accessoryPaths = itemDefinition.accessoryPaths.map(
+					(name) => config.accessoryFolder + "/" + name,
+				);
+			} else {
+				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".asset"];
+			}
 		}
 		items[itemType] = itemDefinition;
 	}
