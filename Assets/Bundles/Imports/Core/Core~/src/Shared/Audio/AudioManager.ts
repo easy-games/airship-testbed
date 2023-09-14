@@ -120,6 +120,9 @@ export class AudioManager {
 		//audioSource.PlayOneShot(clip, );
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
+				if (audioSource.isPlaying) {
+					warn("DELETING AUDIO SOURCE BEFORE ITS FINISHED PLAYING: " + audioSource.name);
+				}
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
 		}

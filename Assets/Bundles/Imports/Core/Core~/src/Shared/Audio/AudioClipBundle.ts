@@ -40,26 +40,40 @@ export class AudioClipBundle {
 		this.RefreshPossibleRandomIndex();
 	}
 
-	public Stop() {
-		if(this.lastAudioSource){
-			this.lastAudioSource.Stop();
-			PoolManager.ReleaseObject(this.lastAudioSource.gameObject);
-			this.lastAudioSource = undefined;
+	private tweeningStop = false;
+	public Stop(fadeOutDuration = 0) {
+		if (this.lastAudioSource) {
+			if (fadeOutDuration > 0) {
+				//FADE OUT
+				this.tweeningStop = true;
+				this.lastAudioSource.TweenAudioSourceVolume(0, fadeOutDuration);
+				Task.Delay(fadeOutDuration + 0.15, () => {
+					if (this.tweeningStop) {
+						this.Stop();
+					}
+				});
+			} else {
+				//HARD STOP
+				this.tweeningStop = false;
+				this.lastAudioSource.Stop();
+				PoolManager.ReleaseObject(this.lastAudioSource.gameObject);
+				this.lastAudioSource = undefined;
+			}
 		}
 		this.lastIndexPlayed = -1;
 	}
 
-	public PlayManual(index: number) {
+	public PlayManual(index: number, fadeInDuration = 0) {
 		this.lastIndexPlayed = index;
 		this.soundOptions.volumeScale = this.volumeScale;
 		if (this.spacialMode === AudioBundleSpacialMode.SPACIAL) {
-			if(this.useFullPath){
+			if (this.useFullPath) {
 				this.lastAudioSource = AudioManager.PlayFullPathAtPosition(
 					this.clipPaths[index],
 					this.spacialPosition,
 					this.soundOptions,
 				);
-			}else{
+			} else {
 				this.lastAudioSource = AudioManager.PlayAtPosition(
 					this.clipPaths[index],
 					this.spacialPosition,
@@ -67,11 +81,17 @@ export class AudioClipBundle {
 				);
 			}
 		} else {
-			if(this.useFullPath){
+			if (this.useFullPath) {
 				this.lastAudioSource = AudioManager.PlayFullPathGlobal(this.clipPaths[index], this.soundOptions);
-			}else{
+			} else {
 				this.lastAudioSource = AudioManager.PlayGlobal(this.clipPaths[index], this.soundOptions);
 			}
+		}
+
+		if (fadeInDuration > 0 && this.lastAudioSource) {
+			const volume = this.lastAudioSource.volume;
+			this.lastAudioSource.volume = 0;
+			this.lastAudioSource.TweenAudioSourceVolume(volume, fadeInDuration);
 		}
 	}
 
@@ -99,7 +119,7 @@ export class AudioClipBundle {
 		) {
 			//print("Playing Loop: " + lastIndex + ": " +this.clipPaths[lastIndex]);
 			this.soundOptions.loop = true;
-			this.PlayManual(lastIndex);
+			this.PlayManual(lastIndex, 0.15);
 			return;
 		}
 
@@ -124,16 +144,17 @@ export class AudioClipBundle {
 			this.PlayManual(randomIndex);
 
 			//print("Playing random before loop: " + randomIndex);
-			if(this.lastAudioSource){
-				const delayLength = math.max(.1, this.lastAudioSource.clip.length - 0.15);
+			if (this.lastAudioSource) {
+				const delayLength = math.max(0.1, this.lastAudioSource.clip.length - 0.15);
 				Task.Delay(delayLength, () => {
 					if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
 						this.lastIndexPlayed = lastIndex;
+						//Fade out current sound
+						this.Stop(0.15);
 						this.PlayNext();
 					}
 				});
 			}
-
 		}
 	}
 

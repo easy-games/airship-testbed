@@ -1443,6 +1443,9 @@ interface Component extends Object {
 	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
 	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
 	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
+	
+	TweenAudioSourceVolume (to: number, duration: number): Tween<number>;
+	TweenAudioSourcePitch (to: number, duration: number): Tween<number>;
 
 	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 }
