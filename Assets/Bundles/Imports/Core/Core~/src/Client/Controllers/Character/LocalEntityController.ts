@@ -38,6 +38,7 @@ export class LocalEntityController implements OnStart {
 	private customDataQueue: { key: keyof DataStreamItems; value: unknown }[] = [];
 
 	private entityDriver: EntityDriver | undefined;
+	private screenshot: CameraScreenshotRecorder | undefined;
 	private entityInput: EntityInput | undefined;
 	private prevState: EntityState = EntityState.Idle;
 	private currentState: EntityState = EntityState.Idle;
@@ -98,10 +99,22 @@ export class LocalEntityController implements OnStart {
 		this.entityDriver?.SetCustomData(blob);
 	}
 
-	private TakeScreenshot() {
-		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S.png");
+	private TakeScreenshot(showUI: boolean, superSample: boolean) {
+		if (!this.screenshot) {
+			return;
+		}
+		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
+		const superSampleSize = superSample ? 4 : 1;
 		print(`Capturing screenshot ${screenshotFilename}`);
-		ScreenCapture.CaptureScreenshot(screenshotFilename);
+		if (showUI) {
+			this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize);
+		} else {
+			this.screenshot.TakeCameraScreenshot(
+				this.cameraController.cameraSystem.GetActiveCamera(),
+				screenshotFilename,
+				superSampleSize,
+			);
+		}
 		Game.LocalPlayer.SendMessage(ColorUtil.ColoredText(Theme.Yellow, `Captured screenshot ${screenshotFilename}`));
 	}
 
@@ -115,6 +128,8 @@ export class LocalEntityController implements OnStart {
 
 			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			this.entityInput = new EntityInput(entity);
+
+			this.screenshot = entity.gameObject.AddComponent<CameraScreenshotRecorder>();
 
 			this.entityDriver.OnCustomDataFlushed(() => {
 				this.customDataQueue.clear();
@@ -231,7 +246,7 @@ export class LocalEntityController implements OnStart {
 
 			// Screenshot:
 			keyboard.OnKeyDown(KeyCode.F2, (event) => {
-				this.TakeScreenshot();
+				this.TakeScreenshot(keyboard.IsKeyDown(KeyCode.LeftShift), keyboard.IsKeyDown(KeyCode.LeftControl));
 			});
 
 			// Debug knockback:

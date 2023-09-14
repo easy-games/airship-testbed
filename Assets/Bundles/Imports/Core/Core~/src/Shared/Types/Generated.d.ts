@@ -2580,6 +2580,11 @@ declare const enum SynchronizedProperty {
     Rotation = 4,
     Scale = 8,
 }
+declare const enum SaveFolder {
+    ApplicationData = 0,
+    PicturesFolder = 1,
+    Documents = 2,
+}
 
     
 interface RaycastHit {
@@ -13492,4 +13497,37 @@ interface NetworkTransformConstructor {
 
 }
 declare const NetworkTransform: NetworkTransformConstructor;
+    
+interface CameraScreenshotRecorder extends MonoBehaviour {
+    saveFolder: SaveFolder;
+    shouldSaveCaptures: boolean;
+    resWidth: number;
+    resHeight: number;
+    FolderName: string;
+
+    constructor(): CameraScreenshotRecorder;
+
+    ScreenShotName(width: number, height: number): string;
+    ScreenShotName(filename: string): string;
+    TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
+    TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): unknown;
+    TakeScreenshot(fileName: string, superSampleSize: number): void;
+}
+    
+interface OnPictureTaken {
+
+    constructor(object: unknown, method: unknown): OnPictureTaken;
+
+    BeginInvoke(screenshot: Texture2D, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(screenshot: Texture2D): void;
+}
+    
+interface CameraScreenshotRecorderConstructor {
+    onPictureTaken: OnPictureTaken;
+    GetScreenshotTexture: Texture2D;
+
+
+}
+declare const CameraScreenshotRecorder: CameraScreenshotRecorderConstructor;
 
