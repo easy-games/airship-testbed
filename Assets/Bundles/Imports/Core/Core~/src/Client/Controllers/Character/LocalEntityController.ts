@@ -189,6 +189,9 @@ export class LocalEntityController implements OnStart {
 			keyboard.OnKeyDown(KeyCode.Tilde, (event) => {
 				DebugUtil.TogglePauseEngine();
 			});
+			keyboard.OnKeyDown(KeyCode.BackQuote, (event) => {
+				DebugUtil.TogglePauseEngine();
+			});
 
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
