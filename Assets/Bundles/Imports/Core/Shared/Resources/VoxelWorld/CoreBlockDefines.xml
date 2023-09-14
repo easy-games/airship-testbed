@@ -7,6 +7,7 @@
 <!-- if you do not supply the maps, you can specify a constant value directly using <Metallic>0</<Metallic> or <Roughness>1</Roughness> or <Emissive>1</Emissive> etc -->
 
 <Blocks>
+  <RootAssetPath>Imports/Core/Shared/Resources/VoxelWorld</RootAssetPath>
 
   <Block>
     <Index>1</Index>
