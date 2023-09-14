@@ -701,7 +701,9 @@ export const items: {
 		},
 		ammo: {
 			yAxisAimAdjust: 0,
-			damage: 30,
+			damage: 40,
+			falloffDamage: 10,
+			damageRadius: 3.5,
 			lifetimeSec: 10,
 			gravity: defaultGravity * 0.08,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),

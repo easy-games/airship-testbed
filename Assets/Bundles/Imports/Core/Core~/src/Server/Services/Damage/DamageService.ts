@@ -9,6 +9,7 @@ import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
+import { MathUtil } from "Shared/Util/MathUtil";
 
 @Service({})
 export class DamageService implements OnStart {
@@ -51,6 +52,32 @@ export class DamageService implements OnStart {
 		});
 	}
 
+	public InflictAOEDamage(
+		centerPosition: Vector3,
+		innerDamage: number,
+		outerDamage: number,
+		radius: number,
+		config: DamageMeta,
+	) {
+		if (!config.knockbackDirection) {
+			config.knockbackDirection = Vector3.zero;
+		}
+
+		const initialDir = config?.knockbackDirection;
+		this.entityService.GetEntities().forEach((value) => {
+			const distance = value.model.transform.position.Distance(centerPosition);
+			if (distance < radius) {
+				const delta = distance / radius;
+				const damage = MathUtil.Lerp(innerDamage, outerDamage, delta);
+				const knockbackStrength = MathUtil.Lerp(1, 2, delta);
+				config.knockbackDirection = value.model.transform.position
+					.sub(centerPosition)
+					.normalized.mul(knockbackStrength);
+				this.InflictDamage(value, damage, config);
+			}
+		});
+	}
+
 	/**
 	 *
 	 * @param entity
@@ -58,18 +85,7 @@ export class DamageService implements OnStart {
 	 * @param config
 	 * @returns Returns true if the damage is inflicted. Returns false if event is cancelled.
 	 */
-	public InflictDamage(
-		entity: Entity,
-		amount: number,
-		config?: {
-			damageType?: DamageType;
-			fromEntity?: Entity;
-			ignoreCancelled?: boolean;
-			ignoreImmunity?: boolean;
-			projectileHitSignal?: ProjectileCollideServerSignal;
-			knockbackDirection?: Vector3;
-		},
-	): boolean {
+	public InflictDamage(entity: Entity, amount: number, config?: DamageMeta): boolean {
 		if (entity.HasImmunity() && !config?.ignoreImmunity) {
 			return false;
 		}
@@ -144,7 +160,7 @@ export class DamageService implements OnStart {
 			const kbDuration = this.combatVars.GetNumber("kbDuration");
 			let impulse: Vector3;
 			if (config?.knockbackDirection) {
-				const delta = config.knockbackDirection.normalized;
+				const delta = config.knockbackDirection;
 				impulse = new Vector3(delta.x * horizontalScalar, verticalScalar, delta.z * horizontalScalar);
 			} else if (fromPos) {
 				const currentPos = entity.networkObject.transform.position;
@@ -159,4 +175,13 @@ export class DamageService implements OnStart {
 
 		return true;
 	}
+}
+
+export interface DamageMeta {
+	damageType?: DamageType;
+	fromEntity?: Entity;
+	ignoreCancelled?: boolean;
+	ignoreImmunity?: boolean;
+	projectileHitSignal?: ProjectileCollideServerSignal;
+	knockbackDirection?: Vector3;
 }

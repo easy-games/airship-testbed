@@ -355,7 +355,7 @@ export enum AllBundleItems{
 	HeldItem_OnUse_SwordSwing = "Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
 	HeldItem_OnHit_SwordHit = "Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
 	Projectiles_OnHitVFX_ArrowHit = "Shared/Resources/Prefabs/VFX/Projectiles/OnArrowHitVfx.prefab",
-	Projectiles_OnHitVFX_FireballExplosion = "Shared/Resources/Accessories/Weapons/Fireball/FireballOnHitVFX.prefab",
+	Projectiles_OnHitVFX_FireballExplosion = "Imports/Core/Shared/Resources/Accessories/Weapons/Fireball/FireballOnHitVFX.prefab",
 }
 
 export enum BundleGroupNames{
@@ -625,7 +625,7 @@ export class ReferenceManagerAssets{
 			id: Bundle_Projectiles.OnHitVFX,
 			filePaths: new Map([
 				[Bundle_Projectiles_OnHitVFX.ArrowHit, "Shared/Resources/Prefabs/VFX/Projectiles/OnArrowHitVfx.prefab"],
-				[Bundle_Projectiles_OnHitVFX.FireballExplosion, "Shared/Resources/Accessories/Weapons/Fireball/FireballOnHitVFX.prefab"],
+				[Bundle_Projectiles_OnHitVFX.FireballExplosion, "Imports/Core/Shared/Resources/Accessories/Weapons/Fireball/FireballOnHitVFX.prefab"],
 			])}],
 		])
 	}

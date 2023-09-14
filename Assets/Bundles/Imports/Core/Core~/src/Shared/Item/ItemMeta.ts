@@ -22,6 +22,8 @@ export interface AmmoMeta {
 	projectileHitLayerMask: number;
 	yAxisAimAdjust: number;
 	damage: number;
+	falloffDamage?: number;
+	damageRadius?: number;
 	lifetimeSec?: number;
 	gravity: number;
 	onHitEntitySoundId?: string;

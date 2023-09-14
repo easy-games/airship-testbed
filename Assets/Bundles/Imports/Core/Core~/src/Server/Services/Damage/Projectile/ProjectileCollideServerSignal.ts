@@ -7,6 +7,8 @@ export class ProjectileCollideServerSignal {
 	constructor(
 		public readonly projectile: Projectile,
 		public readonly baseDamage: number,
+		public readonly falloffDamage: number,
+		public readonly damageRadius: number,
 		public readonly hitPosition: Vector3,
 		public readonly normal: Vector3,
 		public readonly velocity: Vector3,
