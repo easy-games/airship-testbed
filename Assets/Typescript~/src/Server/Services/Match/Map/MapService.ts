@@ -50,13 +50,12 @@ export class MapService implements OnStart {
 		this.voxelBinaryFile = AssetBridge.Instance.LoadAsset<VoxelBinaryFile>(
 			`Server/Resources/Worlds/${mapId}.asset`,
 		);
-		const blockDefines = AssetBridge.Instance.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");
 
 		/* Load world. */
 		// world.LoadEmptyWorld(blockDefines, "");
 		// const grass = GetItemMeta(ItemType.GRASS).BlockId;
 		// world.WriteVoxelAt(new Vector3(1, 1, 1), grass!);
-		world.LoadWorldFromVoxelBinaryFile(this.voxelBinaryFile, blockDefines);
+		world.LoadWorldFromVoxelBinaryFile(this.voxelBinaryFile);
 		/* Parse map objects and finish loading map. */
 		/* TEMP: This is to get around memory pinning issue. */
 		this.loadedMap = new LoadedMap(mapId);

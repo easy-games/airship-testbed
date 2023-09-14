@@ -273,8 +273,8 @@ export class InventoryController implements OnStart {
 			// armor
 			const itemMeta = itemStack.GetMeta();
 			if (!completed) {
-				if (itemMeta.Armor) {
-					const armorSlot = inv.armorSlots[itemMeta.Armor.ArmorType];
+				if (itemMeta.armor) {
+					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
 					const existingArmor = inv.GetItem(armorSlot);
 					if (existingArmor === undefined) {
 						this.SwapSlots(inv, slot, inv, armorSlot, {
@@ -326,8 +326,8 @@ export class InventoryController implements OnStart {
 
 			// armor
 			if (!completed) {
-				if (itemMeta.Armor) {
-					const armorSlot = inv.armorSlots[itemMeta.Armor.ArmorType];
+				if (itemMeta.armor) {
+					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
 					const existingArmor = inv.GetItem(armorSlot);
 					if (existingArmor === undefined) {
 						this.SwapSlots(inv, slot, inv, armorSlot, {

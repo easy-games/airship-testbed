@@ -13,7 +13,7 @@ export class FirstPersonCameraSystem {
 	//public spineLerpModMax = 75;
 	//public spineLerpMaxAngle = 75;
 
-	private manualSpineOffset: Vector3 = new Vector3(0, 0.8, 0.25);
+	private manualSpineOffset: Vector3 = new Vector3(0, 0.78, 0);
 
 	private entityReferences: EntityReferences;
 	private cameraVars: DynamicVariables;
@@ -44,7 +44,7 @@ export class FirstPersonCameraSystem {
 		}
 
 		//Calculate how high the neck bone is off the spine bone
-		this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
+		// this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
 		let neckOffset = this.manualSpineOffset.add(
 			this.entityReferences.neckBone.position.sub(this.entityReferences.spineBone3.position),
 		);
@@ -54,11 +54,12 @@ export class FirstPersonCameraSystem {
 		let headLookRotation = this.cameras.fpsCamera.transform.rotation;
 
 		let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
-		let lerpMod = MathUtil.Lerp(
-			this.cameraVars.GetNumber("FPSLerpMin"),
-			this.cameraVars.GetNumber("FPSLerpMax"),
-			diffAngle / this.cameraVars.GetNumber("FPSLerpRange"),
-		);
+		// let lerpMod = MathUtil.Lerp(
+		// 	this.cameraVars.GetNumber("FPSLerpMin"),
+		// 	this.cameraVars.GetNumber("FPSLerpMax"),
+		// 	diffAngle / this.cameraVars.GetNumber("FPSLerpRange"),
+		// );
+		let lerpMod = MathUtil.Lerp(10, 40, diffAngle / 90);
 
 		//Move the spine to match where the camera is looking
 		this.trackedHeadRotation = Quaternion.Slerp(

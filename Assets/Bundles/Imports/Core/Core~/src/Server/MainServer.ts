@@ -3,8 +3,6 @@ import { InitNet } from "Shared/Network/NetworkAPI";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
 
-print("Core.MainServer");
-
 const autoShutdownBridge = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>();
 if (autoShutdownBridge) {
 	autoShutdownBridge.SetBundlesLoaded(true);
@@ -32,5 +30,4 @@ export function SetupServer() {
 
 	InitNet();
 	LoadFlamework();
-	print("[Core]: Finished setting up server.");
 }

@@ -33,7 +33,7 @@ export class ItemStack {
 	private hasBeenDestroyed = false;
 	public MaxStackSize = 100;
 
-	constructor(itemType: ItemType, amount: number) {
+	constructor(itemType: ItemType, amount = 1) {
 		this.itemType = itemType;
 		this.amount = amount;
 	}

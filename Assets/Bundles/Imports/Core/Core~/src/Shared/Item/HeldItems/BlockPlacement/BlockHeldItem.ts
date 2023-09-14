@@ -22,7 +22,7 @@ export class BlockHeldItem extends HeldItem {
 				WorldAPI.GetMainWorld().voxelWorld,
 			);
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
-			if (blockGO) {
+			if (blockGO && activeAccessories.Length > 0) {
 				blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
 				blockGO.transform.localPosition = new Vector3(0, 0, 0);
 				const scale = 1;

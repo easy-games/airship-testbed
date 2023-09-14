@@ -60,8 +60,8 @@ export class ShopService implements OnStart {
 					let itemsToAdd = shopItem.spawnWithItems;
 					for (let itemType of itemsToAdd) {
 						const itemMeta = ItemUtil.GetItemMeta(itemType);
-						if (itemMeta.Armor) {
-							inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemType, 1));
+						if (itemMeta.armor) {
+							inv.SetItem(inv.armorSlots[itemMeta.armor?.armorType], new ItemStack(itemType, 1));
 						} else {
 							finalAddedItems.push(new ItemStack(itemType, 1));
 							if (this.pickaxes.includes(itemType)) {
@@ -80,6 +80,7 @@ export class ShopService implements OnStart {
 			if (!receivedPickaxe) {
 				inv.AddItem(new ItemStack(ItemType.WOOD_PICKAXE, 1));
 			}
+			inv.AddItem(new ItemStack(ItemType.EXAMPLE_ITEM, 1));
 			for (const itemStack of finalAddedItems) {
 				inv.AddItem(itemStack);
 			}
@@ -108,8 +109,8 @@ export class ShopService implements OnStart {
 			let itemsToAdd = shopElement.spawnWithItems ?? [shopElement.itemType];
 			for (let itemTypeToAdd of itemsToAdd) {
 				const itemMeta = ItemUtil.GetItemMeta(itemTypeToAdd);
-				if (itemMeta.Armor) {
-					inv.SetItem(inv.armorSlots[itemMeta.Armor.ArmorType], new ItemStack(itemTypeToAdd, 1));
+				if (itemMeta.armor) {
+					inv.SetItem(inv.armorSlots[itemMeta.armor?.armorType], new ItemStack(itemTypeToAdd, 1));
 				} else {
 					let given = false;
 

@@ -12,7 +12,6 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
-import { BundleReferenceManager } from "Shared/Util/BundleReferenceManager";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -497,7 +496,7 @@ export class Entity {
 
 	public LaunchProjectile(itemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
-		if (!itemMeta.Ammo) {
+		if (!itemMeta.ammo) {
 			return error("Tried to launch item that wasn't a projectile: " + itemType);
 		}
 		let firstPerson = false;
@@ -509,10 +508,10 @@ export class Entity {
 
 		const easyProjectile = projectileLauncher.ClientFire(
 			projectilePath,
-			itemMeta.ID,
+			itemMeta.id,
 			launchPos,
 			velocity,
-			itemMeta.Ammo.gravity,
+			itemMeta.ammo.gravity,
 			0,
 		);
 		const projectile = new Projectile(easyProjectile, itemType, this);

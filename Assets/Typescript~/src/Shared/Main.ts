@@ -1,15 +1,14 @@
+import { Bootstrap } from "Imports/Core/Shared/Bootstrap/Bootstrap";
 import { RunUtil } from "Imports/Core/Shared/Util/RunUtil";
+import { RegisterItems } from "./Item/GameItems";
 
-print("Game main");
+RegisterItems();
+
+Bootstrap.PrepareVoxelWorld();
+Bootstrap.Prepare();
 
 if (RunUtil.IsServer()) {
-	const server = require("Server/Resources/TS/MainServer") as {
-		SetupServer: () => void;
-	};
-	server.SetupServer();
+	require("Server/Resources/TS/MainServer")
 } else {
-	const client = require("Client/Resources/TS/MainClient") as {
-		SetupClient: () => void;
-	};
-	client.SetupClient();
+	require("Client/Resources/TS/MainClient")
 }

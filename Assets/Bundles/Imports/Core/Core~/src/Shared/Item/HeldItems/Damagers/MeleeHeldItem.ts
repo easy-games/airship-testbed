@@ -46,7 +46,6 @@ export class MeleeHeldItem extends HeldItem {
 	}
 
 	override OnUseServer(useIndex: number) {
-		print("melee.onUseServer");
 		Profiler.BeginSample("Melee.OnUseServer");
 
 		Profiler.BeginSample("super.OnUseServer");

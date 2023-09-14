@@ -202,6 +202,8 @@ export class HeldItem {
 	}
 
 	public IsCooledDown(): boolean {
+		if (!this.meta.itemMechanics) return true;
+
 		let cooldown = this.meta.itemMechanics.cooldownSeconds;
 		this.Log(
 			"Cooldown: " + cooldown + " Time: " + TimeUtil.GetServerTime() + " LastUsedTime: " + this.lastUsedTime,
@@ -214,6 +216,8 @@ export class HeldItem {
 	}
 
 	public IsChargedUp(): boolean {
+		if (!this.meta.itemMechanics) return false;
+
 		let chargeUpMin = this.meta.itemMechanics.minChargeSeconds;
 		this.Log("chargeUpMin: " + chargeUpMin);
 		//no charge up time
@@ -224,6 +228,8 @@ export class HeldItem {
 	}
 
 	public HasChargeTime(): boolean {
+		if (!this.meta.itemMechanics) return false;
+
 		return this.meta.itemMechanics.minChargeSeconds > 0;
 	}
 }

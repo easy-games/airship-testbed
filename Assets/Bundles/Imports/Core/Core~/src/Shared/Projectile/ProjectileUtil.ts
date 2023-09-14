@@ -25,15 +25,18 @@ export class ProjectileUtil {
 	}
 
 	public static GetLaunchForceData(itemMeta: ItemMeta, aimVector: Vector3, chargeSec: number) {
-		const chargePercent = MathUtil.InvLerp(
-			0,
-			itemMeta.itemMechanics.maxChargeSeconds,
-			math.min(chargeSec, itemMeta.itemMechanics.maxChargeSeconds),
-		);
+		let chargePercent = 1;
+		if (itemMeta.itemMechanics) {
+			chargePercent = MathUtil.InvLerp(
+				0,
+				itemMeta.itemMechanics.maxChargeSeconds,
+				math.min(chargeSec, itemMeta.itemMechanics.maxChargeSeconds),
+			);
+		}
 
 		const adjustedPower = MathUtil.Lerp(
-			itemMeta.ProjectileLauncher!.minVelocityScaler,
-			itemMeta.ProjectileLauncher!.maxVelocityScaler,
+			itemMeta.projectileLauncher!.minVelocityScaler,
+			itemMeta.projectileLauncher!.maxVelocityScaler,
 			chargePercent,
 		);
 

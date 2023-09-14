@@ -46,8 +46,8 @@ export declare class World {
     GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined;
     PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
     PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void;
-    LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile, blockDefines: TextAsset): void;
-    LoadEmptyWorld(blockDefines: TextAsset, cubeMapPath: string): void;
+    LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void;
+    LoadEmptyWorld(cubeMapPath: string): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
     GetBlockDefinition(blockId: number): BlockDefinition | undefined;
     GetBlockAverageColor(blockId: number): Color | undefined;

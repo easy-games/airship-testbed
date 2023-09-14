@@ -32,8 +32,7 @@ export class LobbyWorldService implements OnStart {
 
 		const world = WorldAPI.GetMainWorld();
 		const worldBinaryFile = AssetBridge.Instance.LoadAsset<VoxelBinaryFile>("Server/Resources/Worlds/Lobby.asset");
-		const blockDefines = AssetBridge.Instance.LoadAsset<TextAsset>("Shared/Resources/VoxelWorld/BlockDefines.xml");
-		world.LoadWorldFromVoxelBinaryFile(worldBinaryFile, blockDefines);
+		world.LoadWorldFromVoxelBinaryFile(worldBinaryFile);
 
 		const mapObjects = worldBinaryFile.GetMapObjects();
 		for (let i = 0; i < mapObjects.Length; i++) {

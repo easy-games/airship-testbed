@@ -63,7 +63,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		this.Log("Playing Item Anim: " + clipKey);
 		this.itemLayer.StartFade(1, this.defaultTransitionTime);
 		const lastState = this.itemLayer.CurrentState;
-		if (lastState) {
+		if (lastState?.Events !== undefined) {
 			//Clear the last states end event since we are now starting a new animation
 			lastState.Events.ClearEndTSEvent();
 		}

@@ -1,5 +1,6 @@
 import { Flamework } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
+import { InitNet } from "Shared/Network/NetworkAPI";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "Shared/Util/Timer";
 
@@ -30,5 +31,6 @@ export function SetupClient(context: CoreContext) {
 		});
 	}
 
+    InitNet();
 	LoadFlamework(context);
 }

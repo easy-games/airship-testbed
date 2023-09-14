@@ -52,8 +52,8 @@ export class InventoryService implements OnStart {
 					// armor
 					const itemMeta = itemStack.GetMeta();
 					if (!completed) {
-						if (itemMeta.Armor) {
-							const armorSlot = fromInv.armorSlots[itemMeta.Armor.ArmorType];
+						if (itemMeta.armor) {
+							const armorSlot = fromInv.armorSlots[itemMeta.armor.armorType];
 							const existingArmor = fromInv.GetItem(armorSlot);
 							if (existingArmor === undefined) {
 								this.SwapSlots(fromInv, fromSlot, toInv, armorSlot, {
@@ -106,8 +106,8 @@ export class InventoryService implements OnStart {
 					const itemMeta = itemStack.GetMeta();
 
 					if (!completed) {
-						if (itemMeta.Armor) {
-							const armorSlot = fromInv.armorSlots[itemMeta.Armor.ArmorType];
+						if (itemMeta.armor) {
+							const armorSlot = fromInv.armorSlots[itemMeta.armor.armorType];
 							const existingArmor = fromInv.GetItem(armorSlot);
 							if (existingArmor === undefined) {
 								this.SwapSlots(fromInv, fromSlot, toInv, armorSlot, {
