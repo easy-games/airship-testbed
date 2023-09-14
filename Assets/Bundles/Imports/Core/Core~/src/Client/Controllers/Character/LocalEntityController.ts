@@ -185,6 +185,11 @@ export class LocalEntityController implements OnStart {
 
 			const flyingBin = new Bin();
 
+			// Pause Editor
+			keyboard.OnKeyDown(KeyCode.Tilde, (event) => {
+				DebugUtil.TogglePauseEngine();
+			});
+
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
