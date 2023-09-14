@@ -54,7 +54,7 @@ export class ItemUtil {
 			if (itemMeta.accessoryPaths) {
 				accessoryPaths = itemMeta.accessoryPaths;
 			} else if (itemMeta.block?.blockId) {
-				accessoryPaths = ["Imports/Core/Shared/Accessories/block.asset"];
+				accessoryPaths = ["Imports/Core/Shared/Resources/Accessories/block.asset"];
 			}
 
 			if (accessoryPaths.size() > 0) {

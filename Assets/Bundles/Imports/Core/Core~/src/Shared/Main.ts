@@ -5,8 +5,8 @@ import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { RunUtil } from "./Util/RunUtil";
 import { TimeUtil } from "./Util/TimeUtil";
+import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
 
-print("Core main");
 Game.Context = CoreContext.GAME;
 
 const vars: DynamicVariables[] = [
@@ -16,7 +16,6 @@ const vars: DynamicVariables[] = [
 for (const dynamicVar of vars) {
 	dynamicVar.Register();
 }
-print("loaded vars.");
 
 // Force import of TimeUtil
 TimeUtil.GetLifetimeSeconds();
@@ -38,3 +37,17 @@ if (RunUtil.IsServer()) {
 	};
 	client.SetupClient(CoreContext.GAME);
 }
+
+// Drive timer:
+gameObject.OnUpdate(() => {
+    OnUpdate.Fire(TimeUtil.GetDeltaTime());
+});
+gameObject.OnLateUpdate(() => {
+    OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
+});
+gameObject.OnFixedUpdate(() => {
+    OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
+});
+InstanceFinder.TimeManager.OnOnTick(() => {
+    OnTick.Fire();
+});

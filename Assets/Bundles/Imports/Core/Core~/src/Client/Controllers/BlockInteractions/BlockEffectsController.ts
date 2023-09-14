@@ -13,8 +13,6 @@ export class BlockEffectsController implements OnStart {
 
 	OnStart(): void {
 		CoreClientSignals.BlockPlace.Connect((event) => {
-			print("block place event. placer:", event.placer?.GetDisplayName());
-
 			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(event.block.itemMeta?.block?.placeSound ?? this.placeSoundDefault),
 				event.pos,

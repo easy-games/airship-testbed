@@ -75,7 +75,7 @@ export class HeldItemManager {
 
 		//Listen for item switches
 		this.entity.GetInventory().ObserveHeldItem((itemStack) => {
-			this.Log("is equipping anew item: " + itemStack?.GetMeta().displayName);
+			this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
 			//UnEquip last item
 			if (this.currentHeldItem !== undefined) {
 				this.currentHeldItem.OnUnEquip();

@@ -140,12 +140,12 @@ export class World {
 		}
 	}
 
-	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile, blockDefines: TextAsset): void {
-		this.voxelWorld.LoadWorldFromVoxelBinaryFile(binaryFile, blockDefines);
+	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void {
+		this.voxelWorld.LoadWorldFromVoxelBinaryFile(binaryFile);
 	}
 
-	public LoadEmptyWorld(blockDefines: TextAsset, cubeMapPath: string): void {
-		this.voxelWorld.LoadEmptyWorld(blockDefines, cubeMapPath);
+	public LoadEmptyWorld(cubeMapPath: string): void {
+		this.voxelWorld.LoadEmptyWorld(cubeMapPath);
 	}
 
 	public RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult {

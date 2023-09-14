@@ -9,7 +9,7 @@ export interface ItemRegistrationConfig {
  */
 export declare class ItemUtil {
     static readonly DefaultAccessoryCollectionPath = "Shared/Resources/Accessories/Kits/Whim/WhimAccessoryCollection.asset";
-    static readonly DefaultItemPath = "Shared/Resources/Accessories/missing_item.asset";
+    static readonly DefaultItemPath = "Imports/Core/Shared/Resources/Accessories/missing_item.asset";
     private static readonly itemAccessories;
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;

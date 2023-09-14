@@ -394,6 +394,11 @@ declare const enum AutoPackType {
     Packed = 1,
     PackedLess = 2,
 }
+declare const enum RemoteTimeoutType {
+    Disabled = 0,
+    Release = 1,
+    Development = 2,
+}
 declare const enum HostVisibilityUpdateTypes {
     Manager = 1,
     Spawned = 2,
@@ -454,6 +459,10 @@ declare const enum PhysicsType {
     ThreeDimensional = 2,
     Both = 4,
 }
+declare const enum RollbackPhysicsType {
+    Physics = 1,
+    Physics2D = 2,
+}
 declare const enum LoggingType {
     Off = 0,
     Error = 1,
@@ -464,6 +473,10 @@ declare const enum DataSource {
     Unset = 0,
     Server = 1,
     Client = 2,
+}
+declare const enum DataOrderType {
+    Default = 0,
+    Last = 1,
 }
 declare const enum DespawnType {
     Destroy = 0,
@@ -528,18 +541,6 @@ declare const enum GateFitMode {
     Fill = 3,
     Overscan = 4,
 }
-declare const enum VRTextureUsage {
-    None = 0,
-    OneEye = 1,
-    TwoEyes = 2,
-    DeviceSpecific = 3,
-}
-declare const enum RenderTextureMemoryless {
-    None = 0,
-    Color = 1,
-    Depth = 2,
-    MSAA = 4,
-}
 declare const enum RenderTextureFormat {
     ARGB32 = 0,
     Depth = 1,
@@ -575,6 +576,12 @@ declare const enum ShadowSamplingMode {
     RawDepth = 1,
     None = 2,
 }
+declare const enum VRTextureUsage {
+    None = 0,
+    OneEye = 1,
+    TwoEyes = 2,
+    DeviceSpecific = 3,
+}
 declare const enum RenderTextureCreationFlags {
     MipMap = 1,
     AutoGenerateMips = 2,
@@ -586,6 +593,12 @@ declare const enum RenderTextureCreationFlags {
     NoResolvedColorSurface = 256,
     DynamicallyScalable = 1024,
     BindMS = 2048,
+}
+declare const enum RenderTextureMemoryless {
+    None = 0,
+    Color = 1,
+    Depth = 2,
+    MSAA = 4,
 }
 declare const enum MonoOrStereoscopicEye {
     Left = 0,
@@ -2570,6 +2583,7 @@ declare const enum SynchronizedProperty {
 
     
 interface RaycastHit {
+    textureCoord1: Vector2;
     collider: Collider;
     colliderInstanceID: number;
     point: Vector3;
@@ -2583,10 +2597,64 @@ interface RaycastHit {
     rigidbody: Rigidbody;
     articulationBody: ArticulationBody;
     lightmapCoord: Vector2;
-    textureCoord1: Vector2;
 
 
 }
+    
+interface Vector2 {
+    x: number;
+    y: number;
+    Item: number;
+    normalized: Vector2;
+    magnitude: number;
+    sqrMagnitude: number;
+
+    constructor(x: number, y: number): Vector2;
+
+    Equals(other: unknown): boolean;
+    Equals(other: Vector2): boolean;
+    GetHashCode(): number;
+    Normalize(): void;
+    Scale(scale: Vector2): void;
+    Set(newX: number, newY: number): void;
+    SqrMagnitude(): number;
+    ToString(): string;
+    ToString(format: string): string;
+    ToString(format: string, formatProvider: unknown): string;
+}
+    
+interface Vector2Constructor {
+    kEpsilon: number;
+    kEpsilonNormalSqrt: number;
+    zero: Vector2;
+    one: Vector2;
+    up: Vector2;
+    down: Vector2;
+    left: Vector2;
+    right: Vector2;
+    positiveInfinity: Vector2;
+    negativeInfinity: Vector2;
+
+
+    Angle(from: Vector2, to: Vector2): number;
+    ClampMagnitude(vector: Vector2, maxLength: number): Vector2;
+    Distance(a: Vector2, b: Vector2): number;
+    Dot(lhs: Vector2, rhs: Vector2): number;
+    Lerp(a: Vector2, b: Vector2, t: number): Vector2;
+    LerpUnclamped(a: Vector2, b: Vector2, t: number): Vector2;
+    Max(lhs: Vector2, rhs: Vector2): Vector2;
+    Min(lhs: Vector2, rhs: Vector2): Vector2;
+    MoveTowards(current: Vector2, target: Vector2, maxDistanceDelta: number): Vector2;
+    Perpendicular(inDirection: Vector2): Vector2;
+    Reflect(inDirection: Vector2, inNormal: Vector2): Vector2;
+    Scale(a: Vector2, b: Vector2): Vector2;
+    SignedAngle(from: Vector2, to: Vector2): number;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number): Vector2;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number): Vector2;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): Vector2;
+    SqrMagnitude(a: Vector2): number;
+}
+declare const Vector2: Vector2Constructor;
     
     
     
@@ -2796,6 +2864,11 @@ interface Collider extends Component {
 }
     
 interface Rigidbody extends Component {
+    sleepVelocity: number;
+    sleepAngularVelocity: number;
+    useConeFriction: boolean;
+    solverIterationCount: number;
+    solverVelocityIterationCount: number;
     velocity: Vector3;
     angularVelocity: Vector3;
     drag: number;
@@ -2819,11 +2892,6 @@ interface Rigidbody extends Component {
     sleepThreshold: number;
     maxAngularVelocity: number;
     solverVelocityIterations: number;
-    sleepVelocity: number;
-    sleepAngularVelocity: number;
-    useConeFriction: boolean;
-    solverIterationCount: number;
-    solverVelocityIterationCount: number;
 
     constructor(): Rigidbody;
 
@@ -3010,76 +3078,21 @@ interface Bounds {
 }
     
 interface PhysicMaterial extends Object {
-    bounciness: number;
-    dynamicFriction: number;
-    staticFriction: number;
-    frictionCombine: PhysicMaterialCombine;
-    bounceCombine: PhysicMaterialCombine;
     bouncyness: number;
     frictionDirection2: Vector3;
     dynamicFriction2: number;
     staticFriction2: number;
     frictionDirection: Vector3;
+    bounciness: number;
+    dynamicFriction: number;
+    staticFriction: number;
+    frictionCombine: PhysicMaterialCombine;
+    bounceCombine: PhysicMaterialCombine;
 
     constructor(): PhysicMaterial;
     constructor(name: string): PhysicMaterial;
 
 }
-    
-interface Vector2 {
-    x: number;
-    y: number;
-    Item: number;
-    normalized: Vector2;
-    magnitude: number;
-    sqrMagnitude: number;
-
-    constructor(x: number, y: number): Vector2;
-
-    Equals(other: unknown): boolean;
-    Equals(other: Vector2): boolean;
-    GetHashCode(): number;
-    Normalize(): void;
-    Scale(scale: Vector2): void;
-    Set(newX: number, newY: number): void;
-    SqrMagnitude(): number;
-    ToString(): string;
-    ToString(format: string): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
-    
-interface Vector2Constructor {
-    kEpsilon: number;
-    kEpsilonNormalSqrt: number;
-    zero: Vector2;
-    one: Vector2;
-    up: Vector2;
-    down: Vector2;
-    left: Vector2;
-    right: Vector2;
-    positiveInfinity: Vector2;
-    negativeInfinity: Vector2;
-
-
-    Angle(from: Vector2, to: Vector2): number;
-    ClampMagnitude(vector: Vector2, maxLength: number): Vector2;
-    Distance(a: Vector2, b: Vector2): number;
-    Dot(lhs: Vector2, rhs: Vector2): number;
-    Lerp(a: Vector2, b: Vector2, t: number): Vector2;
-    LerpUnclamped(a: Vector2, b: Vector2, t: number): Vector2;
-    Max(lhs: Vector2, rhs: Vector2): Vector2;
-    Min(lhs: Vector2, rhs: Vector2): Vector2;
-    MoveTowards(current: Vector2, target: Vector2, maxDistanceDelta: number): Vector2;
-    Perpendicular(inDirection: Vector2): Vector2;
-    Reflect(inDirection: Vector2, inNormal: Vector2): Vector2;
-    Scale(a: Vector2, b: Vector2): Vector2;
-    SignedAngle(from: Vector2, to: Vector2): number;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number): Vector2;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number): Vector2;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): Vector2;
-    SqrMagnitude(a: Vector2): number;
-}
-declare const Vector2: Vector2Constructor;
     
 interface Physics {
 
@@ -3115,12 +3128,20 @@ interface PhysicsScene {
 }
     
 interface PhysicsConstructor {
-    IgnoreRaycastLayer: number;
-    DefaultRaycastLayers: number;
-    AllLayers: number;
     kIgnoreRaycastLayer: number;
     kDefaultRaycastLayers: number;
     kAllLayers: number;
+    IgnoreRaycastLayer: number;
+    DefaultRaycastLayers: number;
+    AllLayers: number;
+    minPenetrationForPenalty: number;
+    bounceTreshold: number;
+    sleepVelocity: number;
+    sleepAngularVelocity: number;
+    maxAngularVelocity: number;
+    solverIterationCount: number;
+    solverVelocityIterationCount: number;
+    penetrationPenaltyForce: number;
     gravity: Vector3;
     defaultContactOffset: number;
     sleepThreshold: number;
@@ -3140,14 +3161,6 @@ interface PhysicsConstructor {
     interCollisionStiffness: number;
     interCollisionSettingsToggle: boolean;
     clothGravity: Vector3;
-    minPenetrationForPenalty: number;
-    bounceTreshold: number;
-    sleepVelocity: number;
-    sleepAngularVelocity: number;
-    maxAngularVelocity: number;
-    solverIterationCount: number;
-    solverVelocityIterationCount: number;
-    penetrationPenaltyForce: number;
 
 
     BakeMesh(meshID: number, convex: boolean): void;
@@ -3346,19 +3359,19 @@ interface Debug {
     
     
 interface DebugConstructor {
+    logger: unknown;
     unityLogger: unknown;
     developerConsoleVisible: boolean;
     isDebugBuild: boolean;
-    logger: unknown;
 
 
+    Assert(condition: boolean, format: string, args: CSArray<unknown>): void;
     Assert(condition: boolean): void;
     Assert(condition: boolean, context: Object): void;
     Assert(condition: boolean, message: unknown): void;
     Assert(condition: boolean, message: string): void;
     Assert(condition: boolean, message: unknown, context: Object): void;
     Assert(condition: boolean, message: string, context: Object): void;
-    Assert(condition: boolean, format: string, args: CSArray<unknown>): void;
     AssertFormat(condition: boolean, format: string, args: CSArray<unknown>): void;
     AssertFormat(condition: boolean, context: Object, format: string, args: CSArray<unknown>): void;
     Break(): void;
@@ -3594,14 +3607,14 @@ interface Texture2D extends Texture {
     GetPixelBilinear(u: number, v: number): Color;
     GetPixelBilinear(u: number, v: number, mipLevel: number): Color;
     GetPixelData<T>(mipLevel: number): CSArray<T>;
-    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): CSArray<Color>;
-    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): CSArray<Color>;
     GetPixels(miplevel: number): CSArray<Color>;
     GetPixels(): CSArray<Color>;
+    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): CSArray<Color>;
+    GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): CSArray<Color>;
     GetPixels32(miplevel: number): CSArray<Color32>;
     GetPixels32(): CSArray<Color32>;
-    GetRawTextureData(): CSArray<number>;
     GetRawTextureData<T>(): CSArray<T>;
+    GetRawTextureData(): CSArray<number>;
     IsRequestedMipmapLevelLoaded(): boolean;
     LoadRawTextureData(data: unknown, size: number): void;
     LoadRawTextureData(data: CSArray<number>): void;
@@ -3834,13 +3847,17 @@ interface NetworkManager extends MonoBehaviour {
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
     CanLog(loggingType: LoggingType): boolean;
+    GetInstance<T>(): T;
     GetInstance<T>(warn: boolean): T;
     GetPooledInstantiated(prefab: NetworkObject, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefab: NetworkObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: NetworkObject, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, collectionId: number, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefab: GameObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     GetPrefab(prefabId: number, asServer: boolean): NetworkObject;
     GetPrefabIndex(prefab: GameObject, asServer: boolean): number;
     GetPrefabObjects<T>(spawnableCollectionId: number, createIfMissing: boolean): PrefabObjects;
@@ -3854,6 +3871,8 @@ interface NetworkManager extends MonoBehaviour {
     RemoveSpawnableCollection(spawnableCollectionId: number): boolean;
     StorePooledInstantiated(instantiated: NetworkObject, prefabId: number, asServer: boolean): void;
     StorePooledInstantiated(instantiated: NetworkObject, asServer: boolean): void;
+    TryGetInstance<T>(result: unknown): boolean;
+    TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
 }
@@ -3886,9 +3905,10 @@ interface ServerManager extends MonoBehaviour {
     OneServerStarted(): boolean;
     RegisterBroadcast<T>(handler: unknown, requireAuthentication: boolean): void;
     SetAuthenticator(value: Authenticator): void;
+    SetRemoteClientTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
     SetStartOnHeadless(value: boolean): void;
-    Spawn(go: GameObject, ownerConnection: NetworkConnection): void;
-    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection): void;
+    Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
+    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
     StartConnection(): boolean;
     StartConnection(port: number): boolean;
     StopConnection(sendDisconnectMessage: boolean): boolean;
@@ -3901,7 +3921,7 @@ interface NetworkConnection {
     CustomData: unknown;
     PacketTick: EstimatedTick;
     LocalTick: EstimatedTick;
-    LevelOfDetails: CSDictionary<NetworkObject, number>;
+    LevelOfDetails: CSDictionary<NetworkObject, LevelOfDetailData>;
     NetworkManager: NetworkManager;
     TransportIndex: number;
     Authenticated: boolean;
@@ -3949,9 +3969,11 @@ interface NetworkObject extends MonoBehaviour {
     RuntimeChildNetworkObjects: CSArray<NetworkObject>;
     IsNetworked: boolean;
     IsGlobal: boolean;
+    IsClientInitialized: boolean;
     ClientInitialized: boolean;
     IsClient: boolean;
     IsClientOnly: boolean;
+    IsServerInitialized: boolean;
     IsServer: boolean;
     IsServerOnly: boolean;
     IsHost: boolean;
@@ -3990,6 +4012,7 @@ interface NetworkObject extends MonoBehaviour {
     RegisterInvokeOnInstance<T>(handler: unknown): void;
     RemoveOwnership(): void;
     ResetForObjectPool(): void;
+    ResetState(): void;
     SetAssetPathHash(value: number): void;
     SetDefaultDespawnType(despawnType: DespawnType): void;
     SetIsGlobal(value: boolean): void;
@@ -3998,8 +4021,10 @@ interface NetworkObject extends MonoBehaviour {
     SetParent(nb: NetworkBehaviour): void;
     SetParent(nob: NetworkObject): void;
     SetRenderersVisible(visible: boolean, force: boolean): void;
-    Spawn(go: GameObject, ownerConnection: NetworkConnection): void;
-    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection): void;
+    Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
+    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
+    TryGetInstance<T>(component: unknown): boolean;
+    TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
     UnsetParent(): void;
@@ -4048,7 +4073,6 @@ interface ObserverCondition extends ScriptableObject {
 }
     
 interface NetworkBehaviour extends MonoBehaviour {
-    verboseLogging: boolean;
     OnStartServerCalled: boolean;
     OnStartClientCalled: boolean;
     IsSpawned: boolean;
@@ -4066,12 +4090,15 @@ interface NetworkBehaviour extends MonoBehaviour {
     PredictionManager: PredictionManager;
     RollbackManager: RollbackManager;
     NetworkObserver: NetworkObserver;
+    IsClientInitialized: boolean;
     IsClient: boolean;
     IsClientOnly: boolean;
+    IsServerInitialized: boolean;
     IsServer: boolean;
     IsServerOnly: boolean;
     IsHost: boolean;
     IsOffline: boolean;
+    IsNetworked: boolean;
     Observers: CSArray<NetworkConnection>;
     IsOwner: boolean;
     Owner: NetworkConnection;
@@ -4084,7 +4111,7 @@ interface NetworkBehaviour extends MonoBehaviour {
     ClearBuffedRpcs(): void;
     ClearReplicateCache(asServer: boolean): void;
     ClearReplicateCache(): void;
-    ClearReplicateCache_Internal(asServer: boolean): void;
+    ClearReplicateCache_Virtual(asServer: boolean): void;
     Despawn(go: GameObject, despawnType: unknown): void;
     Despawn(nob: NetworkObject, despawnType: unknown): void;
     Despawn(despawnType: unknown): void;
@@ -4104,28 +4131,30 @@ interface NetworkBehaviour extends MonoBehaviour {
     OnStopNetwork(): void;
     OnStopServer(): void;
     OwnerMatches(connection: NetworkConnection): boolean;
-    Reconcile_Client_Internal<T, T2>(reconcileDel: unknown, replicateULDel: unknown, replicates: CSArray<T2>, data: T, channel: Channel): void;
-    Reconcile_ExitEarly_A_Internal(asServer: boolean, channel: unknown): boolean;
-    Reconcile_Reader_Internal<T>(reader: PooledReader, data: unknown, channel: Channel): void;
-    Reconcile_Server_Internal<T>(methodHash: number, data: T, channel: Channel): void;
+    Reconcile_Client<T, T2>(reconcileDel: unknown, replicateULDel: unknown, replicates: CSArray<T2>, data: T, channel: Channel): void;
+    Reconcile_ExitEarly_A(asServer: boolean, channel: unknown): boolean;
+    Reconcile_Reader<T>(reader: PooledReader, data: unknown, channel: Channel): void;
+    Reconcile_Server<T>(methodHash: number, data: T, channel: Channel): void;
     RegisterInstance<T>(component: T, replace: boolean): void;
     RegisterInvokeOnInstance<T>(handler: unknown): void;
-    RegisterObserversRpc_Internal(hash: number, del: ClientRpcDelegate): void;
-    RegisterReconcileRpc_Internal(hash: number, del: ReconcileRpcDelegate): void;
-    RegisterReplicateRpc_Internal(hash: number, del: ReplicateRpcDelegate): void;
-    RegisterServerRpc_Internal(hash: number, del: ServerRpcDelegate): void;
-    RegisterTargetRpc_Internal(hash: number, del: ClientRpcDelegate): void;
+    RegisterObserversRpc(hash: number, del: ClientRpcDelegate): void;
+    RegisterReconcileRpc(hash: number, del: ReconcileRpcDelegate): void;
+    RegisterReplicateRpc(hash: number, del: ReplicateRpcDelegate): void;
+    RegisterServerRpc(hash: number, del: ServerRpcDelegate): void;
+    RegisterSyncVarRead(del: SyncVarReadDelegate): void;
+    RegisterTargetRpc(hash: number, del: ClientRpcDelegate): void;
     RemoveOwnership(): void;
-    Replicate_ExitEarly_A_Internal(asServer: boolean, replaying: boolean, allowServerControl: boolean): boolean;
-    Replicate_NonOwner_Internal<T>(del: unknown, q: unknown, serverControlData: T, allowServerControl: boolean, channel: Channel): void;
-    Replicate_Owner_Internal<T>(del: unknown, methodHash: number, replicates: CSArray<T>, data: T, channel: Channel): void;
-    Replicate_Reader_Internal<T>(reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicates: unknown, channel: Channel): void;
-    SendObserversRpc_Internal(hash: number, methodWriter: PooledWriter, channel: Channel, buffered: boolean, excludeServer: boolean, excludeOwner: boolean): void;
-    SendServerRpc_Internal(hash: number, methodWriter: PooledWriter, channel: Channel): void;
-    SendTargetRpc_Internal(hash: number, methodWriter: PooledWriter, channel: Channel, target: NetworkConnection, excludeServer: boolean, validateTarget: boolean): void;
-    Server_SendReconcileRpc<T>(hash: number, reconcileData: T, channel: Channel): void;
-    Spawn(go: GameObject, ownerConnection: NetworkConnection): void;
-    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection): void;
+    Replicate_ExitEarly_A(asServer: boolean, replaying: boolean, allowServerControl: boolean): boolean;
+    Replicate_NonOwner<T>(del: unknown, q: unknown, serverControlData: T, allowServerControl: boolean, channel: Channel): void;
+    Replicate_Owner<T>(del: unknown, methodHash: number, replicates: CSArray<T>, data: T, channel: Channel): void;
+    Replicate_Reader<T>(reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicates: unknown, channel: Channel): void;
+    ResetSyncVarFields(): void;
+    SendObserversRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, bufferLast: boolean, excludeServer: boolean, excludeOwner: boolean): void;
+    SendServerRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType): void;
+    SendTargetRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, target: NetworkConnection, excludeServer: boolean, validateTarget: boolean): void;
+    Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
+    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
+    TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
 }
@@ -4143,6 +4172,7 @@ interface ClientManager extends MonoBehaviour {
     Broadcast<T>(message: T, channel: Channel): void;
     GetTransportIndex(): number;
     RegisterBroadcast<T>(handler: unknown): void;
+    SetRemoteServerTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
     StartConnection(): boolean;
     StartConnection(address: string): boolean;
     StartConnection(address: string, port: number): boolean;
@@ -4152,6 +4182,7 @@ interface ClientManager extends MonoBehaviour {
     
 interface ManagedObjects {
     Spawned: CSDictionary<number, NetworkObject>;
+    SceneObjects: CSDictionary<number, NetworkObject>;
 
 
 }
@@ -4307,9 +4338,15 @@ interface ObserverManager extends MonoBehaviour {
 
     constructor(): ObserverManager;
 
-    GetLevelOfDetailInterval(lodLevel: number): number;
     SetUpdateHostVisibility(value: boolean, updateType: HostVisibilityUpdateTypes): void;
 }
+    
+interface ObserverManagerConstructor {
+
+
+    GetLevelOfDetailInterval(lodIndex: number): number;
+}
+declare const ObserverManager: ObserverManagerConstructor;
     
 interface TransportManager extends MonoBehaviour {
     Transport: Transport;
@@ -4516,7 +4553,11 @@ interface SceneProcessorBase extends MonoBehaviour {
     AsyncsIsDone(): unknown;
     BeginLoadAsync(sceneName: string, parameters: LoadSceneParameters): void;
     BeginUnloadAsync(scene: Scene): void;
+    FindOrCreateScene(name: string): Scene;
+    GetDelayedDestroyScene(): Scene;
+    GetFallbackActiveScene(): Scene;
     GetLoadedScenes(): CSArray<Scene>;
+    GetMovedObjectsScene(): Scene;
     GetPercentComplete(): number;
     Initialize(manager: SceneManager): void;
     IsPercentComplete(): boolean;
@@ -4652,6 +4693,7 @@ interface SceneUnloadData {
     constructor(scene: Scene): SceneUnloadData;
     constructor(sceneName: string): SceneUnloadData;
     constructor(sceneHandle: number): SceneUnloadData;
+    constructor(sceneLookupData: SceneLookupData): SceneUnloadData;
     constructor(scenes: CSArray<Scene>): SceneUnloadData;
     constructor(sceneNames: CSArray<string>): SceneUnloadData;
     constructor(sceneHandles: CSArray<number>): SceneUnloadData;
@@ -4695,7 +4737,7 @@ interface PredictionManager extends MonoBehaviour {
 
     AddRigidbodyCount(c: Component): void;
     GetMaximumServerReplicates(): number;
-    InvokeOnReconcile_Internal(nb: NetworkBehaviour, before: boolean): void;
+    InvokeOnReconcile(nb: NetworkBehaviour, before: boolean): void;
     IsReplaying(): boolean;
     IsReplaying(scene: Scene): boolean;
     RemoveRigidbodyCount(c: Component): void;
@@ -4708,14 +4750,14 @@ interface RollbackManager extends MonoBehaviour {
 
     Return(): void;
     Rollback(pt: PreciseTick, physicsType: PhysicsType, asOwner: boolean): void;
+    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
+    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
+    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
+    Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
+    Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
+    Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
+    Rollback(origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwner: boolean): void;
 }
-    
-interface RollbackManagerConstructor {
-    MAX_ROLLBACK_TIME: number;
-
-
-}
-declare const RollbackManager: RollbackManagerConstructor;
     
 interface Reader {
     Source: DataSource;
@@ -4857,6 +4899,15 @@ interface ServerRpcDelegate {
     Invoke(reader: PooledReader, channel: Channel, sender: NetworkConnection): void;
 }
     
+interface SyncVarReadDelegate {
+
+    constructor(object: unknown, method: unknown): SyncVarReadDelegate;
+
+    BeginInvoke(reader: PooledReader, index: number, asServer: boolean, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): boolean;
+    Invoke(reader: PooledReader, index: number, asServer: boolean): boolean;
+}
+    
 interface PooledWriter extends Writer {
 
     constructor(): PooledWriter;
@@ -4911,6 +4962,23 @@ interface EstimatedTick {
     Value(tm: TimeManager, isCurrent: unknown): number;
 }
     
+interface IResettable {
+
+
+    InitializeState(): void;
+    ResetState(): void;
+}
+    
+interface LevelOfDetailData extends IResettable {
+    CurrentLevelOfDetail: number;
+    PreviousLevelOfDetail: number;
+
+    constructor(): LevelOfDetailData;
+
+    InitializeState(): void;
+    ResetState(): void;
+}
+    
 interface NetworkConnectionConstructor {
     UNSET_CLIENTID_VALUE: number;
 
@@ -4930,6 +4998,12 @@ interface ServerObjects extends ManagedObjects {
     RebuildObservers(nobs: CSArray<NetworkObject>, conn: NetworkConnection, timedOnly: boolean): void;
     RebuildObservers(networkObject: NetworkObject, connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
     RebuildObservers(nobs: CSArray<NetworkObject>, conns: CSArray<NetworkConnection>, timedOnly: boolean): void;
+    RebuildObservers(nobs: CSArray<NetworkObject>, timedOnly: boolean): void;
+    RebuildObservers(connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
+    RebuildObservers(nobs: CSArray<NetworkObject>, conn: NetworkConnection, timedOnly: boolean): void;
+    RebuildObservers(networkObject: NetworkObject, connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
+    RebuildObservers(nobs: CSArray<NetworkObject>, conns: CSArray<NetworkConnection>, timedOnly: boolean): void;
+    RebuildObservers(nob: NetworkObject, conn: NetworkConnection, timedOnly: boolean): void;
     RecentlyDespawned(objectId: number, ticks: number): boolean;
     RemoveTimedNetworkObserver(networkObject: NetworkObject): void;
 }
@@ -4942,7 +5016,15 @@ interface Authenticator extends MonoBehaviour {
     OnRemoteConnection(connection: NetworkConnection): void;
 }
     
+interface ServerManagerConstructor {
+    MAXIMUM_REMOTE_CLIENT_TIMEOUT_DURATION: number;
+
+
+}
+declare const ServerManager: ServerManagerConstructor;
+    
 interface DebugManager extends MonoBehaviour {
+    WriteSceneObjectDetails: boolean;
     ObserverRpcLinks: boolean;
     TargetRpcLinks: boolean;
     ReplicateRpcLinks: boolean;
@@ -4986,6 +5068,7 @@ interface ObjectPool extends MonoBehaviour {
     InitializeOnce(nm: NetworkManager): void;
     RetrieveObject(prefabId: number, asServer: boolean): NetworkObject;
     RetrieveObject(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 }
     
@@ -5170,6 +5253,10 @@ interface Camera extends Behaviour {
 }
     
 interface RenderTexture extends Texture {
+    generateMips: boolean;
+    isCubemap: boolean;
+    isVolume: boolean;
+    descriptor: RenderTextureDescriptor;
     width: number;
     height: number;
     dimension: TextureDimension;
@@ -5191,10 +5278,6 @@ interface RenderTexture extends Texture {
     colorBuffer: RenderBuffer;
     depthBuffer: RenderBuffer;
     depth: number;
-    descriptor: RenderTextureDescriptor;
-    generateMips: boolean;
-    isCubemap: boolean;
-    isVolume: boolean;
 
     constructor(desc: RenderTextureDescriptor): RenderTexture;
     constructor(textureToCopy: RenderTexture): RenderTexture;
@@ -5222,12 +5305,6 @@ interface RenderTexture extends Texture {
     ResolveAntiAliasedSurface(target: RenderTexture): void;
     SetBorderColor(color: Color): void;
     SetGlobalShaderProperty(propertyName: string): void;
-}
-    
-interface RenderBuffer {
-
-
-    GetNativeRenderBufferPtr(): unknown;
 }
     
 interface RenderTextureDescriptor {
@@ -5264,9 +5341,15 @@ interface RenderTextureDescriptor {
 
 }
     
+interface RenderBuffer {
+
+
+    GetNativeRenderBufferPtr(): unknown;
+}
+    
 interface RenderTextureConstructor {
-    active: RenderTexture;
     enabled: boolean;
+    active: RenderTexture;
 
 
     GetTemporary(desc: RenderTextureDescriptor): RenderTexture;
@@ -5988,12 +6071,12 @@ interface GraphicsBufferConstructor {
 declare const GraphicsBuffer: GraphicsBufferConstructor;
     
 interface ShaderConstructor {
-    globalShaderHardwareTier: ShaderHardwareTier;
     maximumChunksOverride: number;
     globalMaximumLOD: number;
     globalRenderPipeline: string;
     enabledGlobalKeywords: CSArray<GlobalKeyword>;
     globalKeywords: CSArray<GlobalKeyword>;
+    globalShaderHardwareTier: ShaderHardwareTier;
 
 
     DisableKeyword(keyword: string): void;
@@ -6104,11 +6187,6 @@ interface RayTracingAccelerationStructure {
 }
     
 interface Renderer extends Component {
-    lightmapTilingOffset: Vector4;
-    lightProbeAnchor: Transform;
-    castShadows: boolean;
-    motionVectors: boolean;
-    useLightProbes: boolean;
     bounds: Bounds;
     localBounds: Bounds;
     enabled: boolean;
@@ -6140,6 +6218,11 @@ interface Renderer extends Component {
     material: Material;
     sharedMaterial: Material;
     sharedMaterials: CSArray<Material>;
+    lightmapTilingOffset: Vector4;
+    lightProbeAnchor: Transform;
+    castShadows: boolean;
+    motionVectors: boolean;
+    useLightProbes: boolean;
 
     constructor(): Renderer;
 
@@ -6441,17 +6524,6 @@ interface RayTracingShader extends Object {
 }
     
 interface Mesh extends Object {
-    uv1: CSArray<Vector2>;
-    indexFormat: IndexFormat;
-    vertexBufferCount: number;
-    vertexBufferTarget: Target;
-    indexBufferTarget: Target;
-    blendShapeCount: number;
-    bindposes: CSArray<Matrix4x4>;
-    isReadable: boolean;
-    vertexCount: number;
-    subMeshCount: number;
-    bounds: Bounds;
     vertices: CSArray<Vector3>;
     normals: CSArray<Vector3>;
     tangents: CSArray<Vector4>;
@@ -6468,6 +6540,17 @@ interface Mesh extends Object {
     vertexAttributeCount: number;
     triangles: CSArray<number>;
     boneWeights: CSArray<BoneWeight>;
+    indexFormat: IndexFormat;
+    vertexBufferCount: number;
+    vertexBufferTarget: Target;
+    indexBufferTarget: Target;
+    blendShapeCount: number;
+    bindposes: CSArray<Matrix4x4>;
+    isReadable: boolean;
+    vertexCount: number;
+    subMeshCount: number;
+    bounds: Bounds;
+    uv1: CSArray<Vector2>;
 
     constructor(): Mesh;
 
@@ -7080,8 +7163,11 @@ interface InstanceFinderConstructor {
 
 
     GetInstance<T>(): T;
+    HasInstance<T>(): boolean;
     RegisterInstance<T>(component: T, replace: boolean): void;
     RegisterInvokeOnInstance<T>(handler: unknown): void;
+    TryGetInstance<T>(component: unknown): boolean;
+    TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
 }
@@ -7601,12 +7687,6 @@ interface GraphicConstructor {
 }
 declare const Graphic: GraphicConstructor;
     
-interface ICanvasRaycastFilter {
-
-
-    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
-}
-    
 interface ISerializationCallbackReceiver {
 
 
@@ -7626,6 +7706,12 @@ interface ILayoutElement {
 
     CalculateLayoutInputHorizontal(): void;
     CalculateLayoutInputVertical(): void;
+}
+    
+interface ICanvasRaycastFilter {
+
+
+    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 }
     
 interface IMaterialModifier {
@@ -7672,7 +7758,7 @@ interface CullStateChangedEvent {
 
 }
     
-interface Image extends MaskableGraphic, ICanvasRaycastFilter, ISerializationCallbackReceiver, ILayoutElement {
+interface Image extends MaskableGraphic, ISerializationCallbackReceiver, ILayoutElement, ICanvasRaycastFilter {
     sprite: Sprite;
     overrideSprite: Sprite;
     type: Type;
@@ -9500,7 +9586,6 @@ interface LightConstructor {
 declare const Light: LightConstructor;
     
 interface RenderSettingsConstructor {
-    ambientSkyboxAmount: number;
     fog: boolean;
     fogStartDistance: number;
     fogEndDistance: number;
@@ -9525,6 +9610,7 @@ interface RenderSettingsConstructor {
     haloStrength: number;
     flareStrength: number;
     flareFadeSpeed: number;
+    ambientSkyboxAmount: number;
 
 
 }
@@ -9841,7 +9927,6 @@ interface MainModule {
 }
     
 interface MinMaxCurve {
-    curveScalar: number;
     mode: ParticleSystemCurveMode;
     curveMultiplier: number;
     curveMax: AnimationCurve;
@@ -9850,6 +9935,7 @@ interface MinMaxCurve {
     constantMin: number;
     constant: number;
     curve: AnimationCurve;
+    curveScalar: number;
 
     constructor(constant: number): MinMaxCurve;
     constructor(multiplier: number, curve: AnimationCurve): MinMaxCurve;
@@ -10485,10 +10571,6 @@ interface CustomDataModule {
 }
     
 interface Particle {
-    lifetime: number;
-    randomValue: number;
-    size: number;
-    color: Color32;
     position: Vector3;
     velocity: Vector3;
     animatedVelocity: Vector3;
@@ -10504,6 +10586,10 @@ interface Particle {
     rotation3D: Vector3;
     angularVelocity: number;
     angularVelocity3D: Vector3;
+    lifetime: number;
+    randomValue: number;
+    size: number;
+    color: Color32;
 
 
     GetCurrentColor(system: ParticleSystem): Color32;
@@ -10636,7 +10722,7 @@ interface VoxelWorld extends MonoBehaviour {
     showRadioistyProbes: boolean;
     focusPosition: Vector3;
     voxelWorldFile: VoxelBinaryFile;
-    blockDefines: TextAsset;
+    blockDefines: CSArray<TextAsset>;
     worldNetworker: VoxelWorldNetworker;
     chunksFolder: GameObject;
     lightsFolder: GameObject;
@@ -10677,6 +10763,7 @@ interface VoxelWorld extends MonoBehaviour {
     DirtyNeighborMeshes(voxel: unknown, priority: boolean): void;
     FullWorldUpdate(): void;
     GenerateWorld(populateTerrain: boolean): void;
+    GetBlockDefinesContents(): CSArray<string>;
     GetChunkByChunkPos(pos: unknown): Chunk;
     GetDirectWorldLightingFromRayImpact(pos: Vector3, direction: Vector3, maxDistance: number): Color;
     GetNumBusyChunks(): number;
@@ -10689,8 +10776,8 @@ interface VoxelWorld extends MonoBehaviour {
     GetWorldLightingFromRayImpact(pos: Vector3, direction: Vector3, maxDistance: number, debugSamples: CSArray<RadiosityProbeSample>): unknown;
     InitializeLightingForChunk(chunk: Chunk): void;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
-    LoadEmptyWorld(blockDefines: TextAsset, cubeMapPath: string): void;
-    LoadWorldFromVoxelBinaryFile(file: VoxelBinaryFile, blockDefines: TextAsset): void;
+    LoadEmptyWorld(cubeMapPath: string): void;
+    LoadWorldFromVoxelBinaryFile(file: VoxelBinaryFile): void;
     OnRenderObject(): void;
     PlaceGrassOnTopOfGrass(): void;
     RaycastIndirectLightingAtPoint(pos: Vector3, normal: Vector3): Color;
@@ -10866,9 +10953,9 @@ interface RadiosityProbe {
 }
     
 interface BoxCollider extends Collider {
+    extents: Vector3;
     center: Vector3;
     size: Vector3;
-    extents: Vector3;
 
     constructor(): BoxCollider;
 
@@ -11517,7 +11604,7 @@ interface VoxelBlocks {
     GetBlockDefinitionFromIndex(index: number): BlockDefinition;
     GetBlockDefinitionFromName(name: string): BlockDefinition;
     GetBlockId(name: string): number;
-    Load(contentsOfBlockDefines: string, loadTexturesDirectlyFromDisk: boolean): void;
+    Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
 }
     
 interface TexturePacker {
@@ -12202,6 +12289,17 @@ interface TMP_InputValidator extends ScriptableObject {
 }
     
 interface Event {
+    mouseRay: Ray;
+    shift: boolean;
+    control: boolean;
+    alt: boolean;
+    command: boolean;
+    capsLock: boolean;
+    numeric: boolean;
+    functionKey: boolean;
+    isKey: boolean;
+    isMouse: boolean;
+    isScrollWheel: boolean;
     rawType: EventType;
     mousePosition: Vector2;
     delta: Vector2;
@@ -12215,17 +12313,6 @@ interface Event {
     displayIndex: number;
     type: EventType;
     commandName: string;
-    mouseRay: Ray;
-    shift: boolean;
-    control: boolean;
-    alt: boolean;
-    command: boolean;
-    capsLock: boolean;
-    numeric: boolean;
-    functionKey: boolean;
-    isKey: boolean;
-    isMouse: boolean;
-    isScrollWheel: boolean;
 
     constructor(): Event;
     constructor(displayIndex: number): Event;
@@ -12918,7 +13005,6 @@ interface ProjectileValidateEvent {
 }
     
 interface TrailRenderer extends Renderer {
-    numPositions: number;
     time: number;
     startWidth: number;
     endWidth: number;
@@ -12937,6 +13023,7 @@ interface TrailRenderer extends Renderer {
     alignment: LineAlignment;
     widthCurve: AnimationCurve;
     colorGradient: Gradient;
+    numPositions: number;
 
     constructor(): TrailRenderer;
 
@@ -13054,6 +13141,7 @@ interface DefaultObjectPool extends ObjectPool {
     ClearPool(): void;
     ClearPool(collectionId: number): void;
     RetrieveObject(prefabId: number, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     RetrieveObject(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 }
@@ -13374,10 +13462,11 @@ interface NetworkTransform extends NetworkBehaviour {
     OnOwnershipServer(prevOwner: NetworkConnection): void;
     OnSpawnServer(connection: NetworkConnection): void;
     OnStartClient(): void;
+    OnStartNetwork(): void;
     OnStartServer(): void;
     OnStopClient(): void;
+    OnStopNetwork(): void;
     OnStopServer(): void;
-    SetEnableTeleport(enabled: boolean): void;
     SetInterval(value: number): void;
     SetPositionSnapping(axes: SnappedAxes): void;
     SetRotationSnapping(axes: SnappedAxes): void;
@@ -13387,7 +13476,6 @@ interface NetworkTransform extends NetworkBehaviour {
     SetSynchronizePosition(value: boolean): void;
     SetSynchronizeRotation(value: boolean): void;
     SetSynchronizeScale(value: boolean): void;
-    SetTeleportThreshold(val: number): void;
 }
     
 interface SnappedAxes {
