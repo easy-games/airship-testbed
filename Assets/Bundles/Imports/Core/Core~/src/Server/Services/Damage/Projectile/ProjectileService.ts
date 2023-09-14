@@ -18,25 +18,41 @@ export class ProjectileService implements OnStart {
 	OnStart(): void {
 		/* Listen for `ProjectileHit` and apply damage. */
 		CoreServerSignals.ProjectileHit.Connect((event) => {
-			if (!event.hitEntity) {
-				return;
-			}
-
-			let knockbackDirection = event.velocity.normalized;
-			this.damageService.InflictDamage(event.hitEntity, event.damage, {
-				fromEntity: event.projectile.shooter,
-				damageType: DamageType.PROJECTILE,
-				projectileHitSignal: event,
-				knockbackDirection: knockbackDirection,
-			});
-		});
-		CoreServerSignals.ProjectileHit.Connect((event) => {
+			//Send event to client
 			if (event.projectile.shooter?.player) {
 				CoreNetwork.ServerToClient.ProjectileHit.Server.FireClient(
 					event.projectile.shooter.player.clientId,
 					event.hitPosition,
 					event.hitEntity?.id,
 				);
+			}
+
+			let knockbackDirection = event.velocity.normalized;
+
+			//Deal AOE damage
+			if (event.damageRadius > 0) {
+				this.damageService.InflictAOEDamage(
+					event.hitPosition,
+					event.damage,
+					event.falloffDamage,
+					event.damageRadius,
+					{
+						fromEntity: event.projectile.shooter,
+						damageType: DamageType.PROJECTILE,
+						projectileHitSignal: event,
+						knockbackDirection: knockbackDirection,
+					},
+				);
+			}
+
+			//Deal direct damage to hit entity
+			if (event.hitEntity) {
+				this.damageService.InflictDamage(event.hitEntity, event.damage, {
+					fromEntity: event.projectile.shooter,
+					damageType: DamageType.PROJECTILE,
+					projectileHitSignal: event,
+					knockbackDirection: knockbackDirection,
+				});
 			}
 		});
 
@@ -80,6 +96,8 @@ export class ProjectileService implements OnStart {
 		const projectileHitSignal = new ProjectileCollideServerSignal(
 			projectile,
 			ammoMeta.damage,
+			ammoMeta.falloffDamage ?? 0,
+			ammoMeta.damageRadius ?? 0,
 			hitPoint,
 			normal,
 			velocity,
