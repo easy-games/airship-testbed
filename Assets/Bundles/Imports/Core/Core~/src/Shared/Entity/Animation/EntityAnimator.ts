@@ -188,12 +188,7 @@ export class EntityAnimator {
 		const inVoid = damageType === DamageType.VOID;
 		const deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
 		if (deathEffect) {
-			const go = EffectsManager.SpawnGameObjectAtPosition(
-				deathEffect,
-				this.entity.GetHeadPosition(),
-				undefined,
-				2,
-			);
+			const go = EffectsManager.SpawnGameObjectAtPosition(deathEffect, this.entity.GetHeadPosition(), undefined);
 			if (!inVoid) {
 				go.transform.SetParent(this.entity.gameObject.transform);
 			}
