@@ -132,11 +132,10 @@ export class MainMenuHomeController implements OnStart {
 		if (res.success) {
 			print("data: " + res.data);
 			const data = decode(res.data) as {
-				ip: string;
-				port: number;
+                gameServer: GameServer;
 			};
-			print(`found server ${data.ip}:${data.port}`);
-			TransferManager.Instance.ConnectToServer(data.ip, data.port);
+			print(`found server ${data.gameServer.ip}:${data.gameServer.port}`);
+			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
 		} else {
 			warn("failed to create server: " + res.error);
 			this.SetError(tostring(res.error));
@@ -152,7 +151,7 @@ export class MainMenuHomeController implements OnStart {
 	}
 
 	private UpdateCrossSceneState(): void {
-		CrossSceneState.UseLocalBundles = this.localBundlesToggle.isOn;
+		// CrossSceneState.UseLocalBundles = this.localBundlesToggle.isOn;
 	}
 
 	public SetError(errorMessage: string): void {

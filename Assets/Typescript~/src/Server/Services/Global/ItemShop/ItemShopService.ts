@@ -80,7 +80,6 @@ export class ShopService implements OnStart {
 			if (!receivedPickaxe) {
 				inv.AddItem(new ItemStack(ItemType.WOOD_PICKAXE, 1));
 			}
-			inv.AddItem(new ItemStack(ItemType.EXAMPLE_ITEM, 1));
 			for (const itemStack of finalAddedItems) {
 				inv.AddItem(itemStack);
 			}
