@@ -1,6 +1,7 @@
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
+import { InitNet } from "./Network/NetworkAPI";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { RunUtil } from "./Util/RunUtil";
@@ -22,9 +23,26 @@ TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
+InitNet();
 
 const coreCamera = GameObject.Find("CoreCamera");
 Object.Destroy(coreCamera);
+
+// Drive timer:
+gameObject.OnUpdate(() => {
+    OnUpdate.Fire(TimeUtil.GetDeltaTime());
+});
+gameObject.OnLateUpdate(() => {
+    OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
+});
+gameObject.OnFixedUpdate(() => {
+    OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
+});
+if (InstanceFinder.TimeManager !== undefined) {
+    InstanceFinder.TimeManager.OnOnTick(() => {
+        OnTick.Fire();
+    });
+}   
 
 if (RunUtil.IsServer()) {
 	const server = require("Imports/Core/Server/Resources/TS/MainServer") as {
@@ -37,17 +55,3 @@ if (RunUtil.IsServer()) {
 	};
 	client.SetupClient(CoreContext.GAME);
 }
-
-// Drive timer:
-gameObject.OnUpdate(() => {
-    OnUpdate.Fire(TimeUtil.GetDeltaTime());
-});
-gameObject.OnLateUpdate(() => {
-    OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
-});
-gameObject.OnFixedUpdate(() => {
-    OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
-});
-InstanceFinder.TimeManager.OnOnTick(() => {
-    OnTick.Fire();
-});
