@@ -17,7 +17,8 @@ export class EntityItemManager {
 	//Private
 	private entityItems = new Map<number, HeldItemManager>();
 	private localEntity?: CharacterEntity;
-	private mouseIsDown = false;
+	private mouseIsDownLeft = false;
+	private mouseIsDownRight = false;
 
 	private Log(message: string) {
 		return;
@@ -48,7 +49,7 @@ export class EntityItemManager {
 					return;
 				}
 				if (this.localEntity) {
-					this.mouseIsDown = true;
+					this.mouseIsDownLeft = true;
 					let items = this.GetOrCreateItemManager(this.localEntity);
 					items.TriggerNewState(HeldItemState.CALL_TO_ACTION_START);
 				}
@@ -56,13 +57,37 @@ export class EntityItemManager {
 
 			mouse.LeftUp.Connect(() => {
 				this.Log("LeftUp");
-				if (!this.mouseIsDown) {
+				if (!this.mouseIsDownLeft) {
 					return;
 				}
-				this.mouseIsDown = false;
+				this.mouseIsDownLeft = false;
 				if (this.localEntity) {
 					let items = this.GetOrCreateItemManager(this.localEntity);
 					items.TriggerNewState(HeldItemState.CALL_TO_ACTION_END);
+				}
+			});
+
+			mouse.RightDown.Connect(() => {
+				this.Log("RightDown");
+				if (CanvasAPI.IsPointerOverUI()) {
+					return;
+				}
+				if (this.localEntity) {
+					this.mouseIsDownRight = true;
+					let items = this.GetOrCreateItemManager(this.localEntity);
+					items.TriggerNewState(HeldItemState.SECONDARY_ACTION_START);
+				}
+			});
+
+			mouse.RightUp.Connect(() => {
+				this.Log("RightUp");
+				if (!this.mouseIsDownRight) {
+					return;
+				}
+				this.mouseIsDownRight = false;
+				if (this.localEntity) {
+					let items = this.GetOrCreateItemManager(this.localEntity);
+					items.TriggerNewState(HeldItemState.SECONDARY_ACTION_END);
 				}
 			});
 		});

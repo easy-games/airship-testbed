@@ -99,8 +99,7 @@ export class HeldItem {
 		this.Log("OnUnEquip");
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
-		this.chargeStartTime = 0;
-		this.isCharging = false;
+		this.OnChargeEnd();
 	}
 
 	public OnCallToActionStart() {
@@ -119,10 +118,22 @@ export class HeldItem {
 		}
 	}
 
+	public OnSecondaryActionStart() {
+		this.OnChargeEnd();
+	}
+
+	public OnSecondaryActionEnd() {}
+
 	protected OnChargeStart() {
 		this.Log("OnChargeStart");
 		this.isCharging = true;
 		this.chargeStartTime = TimeUtil.GetServerTime();
+	}
+
+	protected OnChargeEnd() {
+		this.Log("OnChargeEnd");
+		this.isCharging = false;
+		this.chargeStartTime = 0;
 	}
 
 	protected TryUse() {
@@ -139,8 +150,10 @@ export class HeldItem {
 		if (this.IsChargedUp()) {
 			this.TriggerUse(1);
 			return true;
+		} else {
+			this.OnChargeEnd();
+			return false;
 		}
-		return false;
 	}
 
 	protected TriggerUse(useIndex: number) {
@@ -224,7 +237,10 @@ export class HeldItem {
 		if (chargeUpMin <= 0) return true;
 
 		//If we've charged up enough
-		return TimeUtil.GetServerTime() - this.chargeStartTime - this.serverOffsetMargin > chargeUpMin;
+		return (
+			this.chargeStartTime > 0 &&
+			TimeUtil.GetServerTime() - this.chargeStartTime - this.serverOffsetMargin > chargeUpMin
+		);
 	}
 
 	public HasChargeTime(): boolean {

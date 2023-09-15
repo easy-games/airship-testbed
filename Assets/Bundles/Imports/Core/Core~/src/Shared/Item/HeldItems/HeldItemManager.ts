@@ -21,7 +21,9 @@ export type HeldItemEntry = {
 export enum HeldItemState {
 	NONE = -1,
 	CALL_TO_ACTION_START = 0,
-	CALL_TO_ACTION_END = 1,
+	CALL_TO_ACTION_END,
+	SECONDARY_ACTION_START,
+	SECONDARY_ACTION_END,
 	ON_DESTROY,
 }
 
@@ -115,6 +117,12 @@ export class HeldItemManager {
 				break;
 			case HeldItemState.CALL_TO_ACTION_END:
 				this.currentHeldItem.OnCallToActionEnd();
+				break;
+			case HeldItemState.SECONDARY_ACTION_START:
+				this.currentHeldItem.OnSecondaryActionStart();
+				break;
+			case HeldItemState.SECONDARY_ACTION_END:
+				this.currentHeldItem.OnSecondaryActionEnd();
 				break;
 			case HeldItemState.ON_DESTROY:
 				//When destroyed un equip so any logic can clean itself up

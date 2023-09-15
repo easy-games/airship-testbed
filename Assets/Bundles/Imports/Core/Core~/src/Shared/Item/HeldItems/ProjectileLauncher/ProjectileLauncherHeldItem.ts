@@ -123,16 +123,13 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		return false;
 	}
 
-	protected override TryChargeUse() {
-		if (super.TryChargeUse()) {
-			return true;
-		} else {
-			//Not charged up all the way
-			this.entity.anim?.StartItemIdle();
-			this.CancelChargeSound();
-
-			return false;
-		}
+	protected override OnChargeEnd(): void {
+		super.OnChargeEnd();
+		this.entity.anim?.StartItemIdle();
+		this.CancelChargeSound();
+		this.chargeBin.Clean();
+		this.currentlyCharging = false;
+		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
 	}
 
 	private CancelChargeSound() {
@@ -185,13 +182,6 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	public override OnCallToActionEnd(): void {
 		super.OnCallToActionEnd();
-		this.currentlyCharging = false;
-		this.chargeBin.Clean();
-		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
-	}
-
-	public override OnUnEquip(): void {
-		super.OnUnEquip();
 		this.currentlyCharging = false;
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
