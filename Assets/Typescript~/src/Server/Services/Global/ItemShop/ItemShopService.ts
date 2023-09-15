@@ -6,6 +6,7 @@ import { ItemStack } from "Imports/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
 import { Player } from "Imports/Core/Shared/Player/Player";
+import { RunUtil } from "Imports/Core/Shared/Util/RunUtil";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { ItemShopMeta } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
@@ -83,6 +84,12 @@ export class ShopService implements OnStart {
 			for (const itemStack of finalAddedItems) {
 				inv.AddItem(itemStack);
 			}
+
+            // debug
+            if (RunUtil.IsEditor()) {
+                inv.AddItem(new ItemStack(ItemType.WOOD_BOW));
+                inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
+            }
 		});
 
 		/* Handle incoming purchase requests. */
