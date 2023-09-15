@@ -17,7 +17,7 @@ export interface PlaceBlockConfig {
 }
 
 export class World {
-	public static SKYBOX = "Shared/Resources/Skybox/BrightSky/bright_sky_2.png";
+	public static SKYBOX = "Imports/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png";
 
 	public OnVoxelPlaced = new Signal<[pos: Vector3, voxel: number]>();
 	public OnFinishedLoading = new Signal<void>();
