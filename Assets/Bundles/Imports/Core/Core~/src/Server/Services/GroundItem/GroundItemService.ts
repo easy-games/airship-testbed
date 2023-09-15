@@ -21,7 +21,7 @@ export class GroundItemService implements OnStart {
 	private idCounter = 0;
 
 	constructor(private readonly entityService: EntityService) {
-		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("Shared/Resources/Prefabs/GroundItem.prefab");
+		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/GroundItem.prefab");
 	}
 
 	OnStart(): void {

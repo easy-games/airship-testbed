@@ -43,6 +43,7 @@ export class BreakBlockHeldItem extends HeldItem {
 		}
 
 		const world = WorldAPI.GetMainWorld();
+        if (!world) return;
 		const block = world.GetBlockAt(voxelPos);
 
 		//Pass along event data =
@@ -58,7 +59,7 @@ export class BreakBlockHeldItem extends HeldItem {
 
 			//Do the actual damage
 			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
-			const blockType = WorldAPI.GetMainWorld().GetBlockAt(voxelPos).itemType;
+			const blockType = world.GetBlockAt(voxelPos).itemType;
 			const newHealth = math.max(health - damage, 0);
 			BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
 

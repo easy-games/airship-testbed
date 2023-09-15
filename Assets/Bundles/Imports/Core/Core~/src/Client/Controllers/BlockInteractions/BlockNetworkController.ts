@@ -10,7 +10,9 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 export class BlockNetworkController implements OnStart {
 	OnStart(): void {
 		CoreNetwork.ServerToClient.BlockPlace.Client.OnServerEvent((pos, voxelData, entityId) => {
-			const voxel = new Block(voxelData, WorldAPI.GetMainWorld());
+            const world = WorldAPI.GetMainWorld();
+            if (!world) return;
+			const voxel = new Block(voxelData, world);
 			let placer: Entity | undefined;
 			if (entityId !== undefined) {
 				placer = Entity.FindById(entityId);

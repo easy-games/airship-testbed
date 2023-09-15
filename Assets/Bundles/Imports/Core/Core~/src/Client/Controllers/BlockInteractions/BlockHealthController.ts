@@ -6,10 +6,10 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import {
-	BundleGroupNames,
-	Bundle_Blocks,
-	Bundle_Blocks_UI,
-	Bundle_Blocks_VFX,
+    BundleGroupNames,
+    Bundle_Blocks,
+    Bundle_Blocks_UI,
+    Bundle_Blocks_VFX,
 } from "Shared/Util/ReferenceManagerResources";
 import { Theme } from "Shared/Util/Theme";
 import { SetInterval } from "Shared/Util/Timer";
@@ -43,7 +43,7 @@ export class BlockHealthController implements OnStart {
 		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, entityId) => {
 			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
 
-			const voxel = WorldAPI.GetMainWorld().GetRawVoxelDataAt(blockPos);
+			const voxel = WorldAPI.GetMainWorld()?.GetRawVoxelDataAt(blockPos);
 			if (voxel) {
 				const entity = this.entityController.GetEntityById(entityId);
 				const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
@@ -109,8 +109,10 @@ export class BlockHealthController implements OnStart {
 				Vector3.zero,
 			);
 			if (effect) {
-				const block = WorldAPI.GetMainWorld().GetBlockAt(blockPos);
-				this.ApplyBlockMaterial(block.blockId, effect);
+				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
+                if (block) {
+                    this.ApplyBlockMaterial(block.blockId, effect);
+                }
 			}
 		}
 	}
@@ -142,7 +144,9 @@ export class BlockHealthController implements OnStart {
 
 	private ApplyBlockMaterial(blockId: number, effect: GameObject) {
 		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
-		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, WorldAPI.GetMainWorld().voxelWorld);
+        const world = WorldAPI.GetMainWorld();
+        if (!world) return;
+		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, world.voxelWorld);
 		if (blockGO) {
 			const blockRen = blockGO.GetComponent<Renderer>();
 			const blockFilter = blockGO.GetComponent<MeshFilter>();
@@ -172,7 +176,7 @@ export class BlockHealthController implements OnStart {
 		}
 
 		//Get the meta for the hit block
-		const itemMeta = WorldAPI.GetMainWorld().GetBlockAt(blockPos)?.itemMeta;
+		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.itemMeta;
 
 		//Create health bar entry
 		let maxHealth = itemMeta?.block?.health ?? WorldAPI.DefaultVoxelHealth;

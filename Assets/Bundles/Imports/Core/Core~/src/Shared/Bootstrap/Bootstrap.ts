@@ -10,7 +10,7 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 export class Bootstrap {
     public static PrepareVoxelWorld(skybox = World.SKYBOX): void {
         if (RunCore.IsClient()) {
-            WorldAPI.GetMainWorld().LoadEmptyWorld(World.SKYBOX);
+            WorldAPI.GetMainWorld()?.LoadEmptyWorld(World.SKYBOX);
         }
     
         // Setup Managers

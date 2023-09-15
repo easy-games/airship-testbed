@@ -60,7 +60,7 @@ export class BlockInteractService implements OnStart {
 			}
 
 			entity.GetInventory().Decrement(itemType, 1);
-			world.PlaceBlockById(pos, itemMeta.block.blockId, {
+			world?.PlaceBlockById(pos, itemMeta.block.blockId, {
 				placedByEntityId: entity.id,
 			});
 			CoreServerSignals.BlockPlace.Fire(new BlockPlaceSignal(pos, itemType, itemMeta.block.blockId, entity));
@@ -69,6 +69,9 @@ export class BlockInteractService implements OnStart {
 
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.is("HitBlock")) return;
+            
+            const world = WorldAPI.GetMainWorld();
+            if (world === undefined) return;
 
 			const clientId = event.clientId;
 			let pos = event.value;
@@ -84,7 +87,6 @@ export class BlockInteractService implements OnStart {
 				if (!itemMeta?.breakBlock) {
 					return rollback();
 				}
-				const world = WorldAPI.GetMainWorld();
 
 				pos = BlockDataAPI.GetParentBlockPos(pos) ?? pos;
 

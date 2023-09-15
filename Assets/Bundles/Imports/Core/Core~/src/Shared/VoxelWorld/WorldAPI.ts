@@ -6,13 +6,15 @@ export class WorldAPI {
 	public static DefaultVoxelHealth = 10;
 	public static ChildVoxelId = 32;
 
-	public static GetMainWorld(): World {
+	public static GetMainWorld(): World | undefined {
 		if (this.world) {
 			return this.world;
 		}
 
-		const voxelWorld = GameObject.Find("VoxelWorld").GetComponent<VoxelWorld>();
-		this.world = new World(voxelWorld);
+		const voxelWorld = GameObject.Find("VoxelWorld")?.GetComponent<VoxelWorld>() as VoxelWorld | undefined;
+        if (voxelWorld) {
+            this.world = new World(voxelWorld);
+        }   
 		return this.world;
 	}
 

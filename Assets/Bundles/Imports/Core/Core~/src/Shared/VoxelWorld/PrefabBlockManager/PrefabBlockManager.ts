@@ -21,6 +21,7 @@ export class PrefabBlockManager {
 
 	constructor() {
 		const world = WorldAPI.GetMainWorld();
+        if (!world) return;
 		world.OnVoxelPlaced.Connect((pos, voxel) => {
 			const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
 			const itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
@@ -78,7 +79,7 @@ export class PrefabBlockManager {
 				for (const vec of itemMeta.block.prefab.childBlocks) {
 					const worldSpace = pos.add(vec);
 					BlockDataAPI.SetChildOfParent(worldSpace, pos);
-					world.PlaceBlockById(worldSpace, WorldAPI.ChildVoxelId);
+					world?.PlaceBlockById(worldSpace, WorldAPI.ChildVoxelId);
 				}
 			}
 		}
@@ -107,7 +108,7 @@ export class PrefabBlockManager {
 		const world = WorldAPI.GetMainWorld();
 		const childPositions = BlockDataAPI.GetChildrenBlockPos(pos);
 		for (const childPos of childPositions) {
-			world.PlaceBlockById(childPos, 0);
+			world?.PlaceBlockById(childPos, 0);
 		}
 	}
 }

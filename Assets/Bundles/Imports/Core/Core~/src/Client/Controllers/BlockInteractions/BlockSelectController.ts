@@ -26,7 +26,7 @@ export class BlockSelectController implements OnStart {
 
 	OnStart(): void {
 		const highlightPrefab = AssetBridge.Instance.LoadAsset(
-			"Client/Resources/Assets/BlockSelect/BlockSelectHighlight.prefab",
+			"Imports/Core/Client/Resources/Prefabs/BlockSelect/BlockSelectHighlight.prefab",
 		);
 		if (!highlightPrefab) {
 			print("Failed to find highlight prefab.");
@@ -36,7 +36,7 @@ export class BlockSelectController implements OnStart {
 		this.highlightGO.layer = Layer.IGNORE_RAYCAST;
 		this.highlightGO.SetActive(false);
 
-		const voidPlanePrefab = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/VoidPlane.prefab") as Object;
+		const voidPlanePrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Client/Resources/Prefabs/VoidPlane.prefab") as Object;
 		this.voidPlane = GameObjectUtil.Instantiate(voidPlanePrefab);
 		this.voidPlane.name = "VoidPlane";
 		this.voidPlane.transform.localScale = new Vector3(50, 0.99, 50);
@@ -99,7 +99,7 @@ export class BlockSelectController implements OnStart {
 
 	private TryMouseSelect(characterPos: Vector3): boolean {
 		const result = CameraReferences.Instance().RaycastVoxelFromCamera(20);
-		if (result.Hit) {
+		if (result?.Hit) {
 			if (result.HitPosition.sub(characterPos).magnitude <= 8) {
 				this.SelectedBlockPosition = MathUtil.FloorVec(result.HitPosition.sub(result.HitNormal.mul(0.1)));
 				this.HighlightBlockPosition = MathUtil.FloorVec(result.HitPosition.sub(result.HitNormal.mul(0.1)));
@@ -116,11 +116,14 @@ export class BlockSelectController implements OnStart {
 	}
 
 	private TryVoidSelect(characterPos: Vector3): boolean {
+        const world = WorldAPI.GetMainWorld();
+        if (!world) return false;
+
 		let blockBeneathPos: Vector3 | undefined;
 		let characterPosSnapped: Vector3 = characterPos.add(new Vector3(0, 0.2, 0));
 		for (let i = 1; i <= 3; i++) {
 			let pos = characterPosSnapped.sub(new Vector3(0, i, 0));
-			let voxel = WorldAPI.GetMainWorld().GetRawVoxelDataAt(pos);
+			let voxel = WorldAPI.GetMainWorld()?.GetRawVoxelDataAt(pos);
 			if (voxel) {
 				blockBeneathPos = pos;
 				break;
@@ -143,7 +146,7 @@ export class BlockSelectController implements OnStart {
 					let direction = destPos.sub(blockPos).normalized.mul(0.8);
 					blockPos = blockPos.add(direction);
 					const rounded = new Vector3(math.floor(blockPos.x), blockBeneathPos.y, math.floor(blockPos.z));
-					let checkVoxel = WorldAPI.GetMainWorld().GetRawVoxelDataAt(rounded);
+					let checkVoxel = world.GetRawVoxelDataAt(rounded);
 					if (checkVoxel === 0) {
 						emptyBlockPos = rounded;
 						break;

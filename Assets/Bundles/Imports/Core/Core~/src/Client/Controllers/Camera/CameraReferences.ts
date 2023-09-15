@@ -33,9 +33,14 @@ export class CameraReferences {
 		this.uiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
 	}
 
-	public RaycastVoxelFromCamera(distance: number) {
+    /**
+     * 
+     * @param distance
+     * @returns Will return undefined if a Voxel World doesn't exist.
+     */
+	public RaycastVoxelFromCamera(distance: number): VoxelRaycastResult | undefined {
 		const ray = this.GetRayFromCamera(distance);
-		return WorldAPI.GetMainWorld().RaycastVoxel(ray.origin, ray.direction, distance);
+		return WorldAPI.GetMainWorld()?.RaycastVoxel(ray.origin, ray.direction, distance);
 	}
 
 	public RaycastPhysicsFromCamera(distance: number, layerMask?: number) {

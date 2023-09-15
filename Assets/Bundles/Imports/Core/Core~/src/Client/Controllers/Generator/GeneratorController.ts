@@ -14,8 +14,6 @@ const GENERATOR_LABEL_OFFSET = new Vector3(0, 3, 0);
 
 @Controller({})
 export class GeneratorController implements OnStart {
-	/** Generator item prefab. */
-	private generatorItemPrefab: Object;
 	/** Generator label prefab. */
 	private generatorLabelPrefab: Object;
 	/** Mapping of generator id to `GeneratorStateDto`. */
@@ -34,12 +32,8 @@ export class GeneratorController implements OnStart {
 		/* Set up generator item collision rules. */
 		Physics.IgnoreLayerCollision(Layer.CHARACTER, Layer.GENERATOR_ITEM);
 		Physics.IgnoreLayerCollision(Layer.GENERATOR_ITEM, Layer.GENERATOR_ITEM);
-		/* NOTE: This is temp. Prefab will be dynamically loaded per generator. */
-		this.generatorItemPrefab = AssetBridge.Instance.LoadAsset(
-			"Shared/Resources/Prefabs/GeneratorItemPlaceholder.prefab",
-		);
 		/* NOTE: Placeholder label. */
-		this.generatorLabelPrefab = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/GeneratorLabel.prefab");
+		this.generatorLabelPrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Client/Resources/Prefabs/GeneratorLabel.prefab");
 	}
 
 	OnStart(): void {

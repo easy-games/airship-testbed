@@ -195,7 +195,7 @@ export class Entity {
 		}
 		if (this.IsLocalCharacter()) return;
 
-		const prefab = AssetBridge.Instance.LoadAsset<Object>("Client/Resources/Prefabs/EntityHealthbar.prefab");
+		const prefab = AssetBridge.Instance.LoadAsset<Object>("Imports/Core/Client/Resources/Prefabs/EntityHealthbar.prefab");
 		const healthbarGO = GameObjectUtil.InstantiateIn(prefab, this.model.transform);
 		const transform = healthbarGO.transform;
 		transform.localPosition = new Vector3(0, 2.2, 0);
@@ -479,7 +479,7 @@ export class Entity {
 	}
 
 	public GetBlockBelowMeta(): BlockMeta | undefined {
-		return WorldAPI.GetMainWorld().GetBlockBelowMeta(this.model.transform.position);
+		return WorldAPI.GetMainWorld()?.GetBlockBelowMeta(this.model.transform.position);
 	}
 
 	public GetAccessoryMeshes(slot: AccessorySlot): Renderer[] {
