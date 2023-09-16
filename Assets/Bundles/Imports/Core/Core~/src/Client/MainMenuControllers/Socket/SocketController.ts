@@ -11,7 +11,6 @@ export class SocketController implements OnStart {
 	constructor(private readonly authController: AuthController) {}
 	OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
-			print(`[${eventName}]: ${data}`);
 			this.onEvent.Fire(eventName, data);
 		});
 		SocketManager.SetScriptListening(true);
@@ -46,8 +45,6 @@ export class SocketController implements OnStart {
 	}
 
 	private Connect(): void {
-		print("Connecting to socket...");
 		SocketManager.ConnectAsync(AirshipUrl.GameCoordinatorSocket, this.authController.GetAuthToken());
-		print("Connected to socket!");
 	}
 }
