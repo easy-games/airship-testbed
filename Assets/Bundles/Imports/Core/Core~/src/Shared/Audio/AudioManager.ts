@@ -18,7 +18,6 @@ export class AudioManager {
 
 	public static Init(): void {
 		this.soundFolderIndex = this.SoundFolderPath.size();
-		print("setting size: " + this.soundFolderIndex);
 		this.CacheAudioSources();
 	}
 

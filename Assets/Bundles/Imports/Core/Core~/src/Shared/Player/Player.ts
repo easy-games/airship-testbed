@@ -125,7 +125,6 @@ export class Player {
 	}
 
 	public SetCharacter(entity: CharacterEntity | undefined): void {
-		print("setCharacter " + tostring(entity?.id));
 		this.Character = entity;
 		this.CharacterChanged.Fire(entity);
 	}
