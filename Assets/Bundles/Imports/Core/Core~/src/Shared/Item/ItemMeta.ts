@@ -22,8 +22,8 @@ export interface AmmoMeta {
 	projectileHitLayerMask: number;
 	yAxisAimAdjust: number;
 	damage: number;
-	falloffDamage?: number;
-	damageRadius?: number;
+	aoeDamage?: AOEDamageMeta;
+	blockDamage?: BreakBlockMeta;
 	lifetimeSec?: number;
 	gravity: number;
 	onHitEntitySoundId?: string;
@@ -93,12 +93,18 @@ export interface ItemMechanicsMeta {
 
 export interface DamageItemMeta {
 	damage: number;
-	onHitPrefabId: number;
+	onHitPrefabPath: AllBundleItems;
 }
 
 export interface BreakBlockMeta extends DamageItemMeta {
 	extraDamageBlockArchetype: BlockArchetype;
 	extraDamage: number;
+}
+
+export interface AOEDamageMeta {
+	innerDamage: number;
+	outerDamage: number;
+	damageRadius: number;
 }
 
 export enum BlockArchetype {

@@ -5,7 +5,6 @@ import { Theme } from "Shared/Util/Theme";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
-import { Bundle_ItemSword } from "../../../Util/ReferenceManagerResources";
 import { HeldItem } from "../HeldItem";
 
 export class MeleeHeldItem extends HeldItem {
@@ -28,12 +27,10 @@ export class MeleeHeldItem extends HeldItem {
 			let farTargets = this.ScanForHits();
 
 			for (const data of farTargets) {
-				if (this.bundles && this.meta.melee?.onHitPrefabId) {
+				if (this.bundles && this.meta.melee?.onHitPrefabPath) {
 					//Local damage predictions
-					const effectGO = EffectsManager.SpawnBundleGroupEffect(
-						this.bundles,
-						Bundle_ItemSword.Prefabs,
-						this.meta.melee.onHitPrefabId,
+					const effectGO = EffectsManager.SpawnEffect(
+						this.meta.melee.onHitPrefabPath,
 						data.hitPosition,
 						Quaternion.LookRotation(data.hitDirection).eulerAngles,
 					);

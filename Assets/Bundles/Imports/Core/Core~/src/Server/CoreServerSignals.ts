@@ -1,6 +1,6 @@
 import { Entity } from "Shared/Entity/Entity";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
-import { ItemMeta } from "Shared/Item/ItemMeta";
+import { BreakBlockMeta, ItemMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
@@ -33,9 +33,14 @@ export const CoreServerSignals = {
 	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
 	BlockHit: new Signal<BlockHitSignal>(),
 	/** Fired before a block is destroyed. */
-	BeforeBlockDestroyed: new Signal<{ blockMeta: ItemMeta; blockPos: Vector3; blockId: number; entity?: Entity }>(),
+	BeforeBlockDestroyed: new Signal<{
+		breakBlockMeta: BreakBlockMeta;
+		blockPos: Vector3;
+		blockId: number;
+		entity?: Entity;
+	}>(),
 	/** Fired when a block is destroyed. */
-	BlockDestroyed: new Signal<{ blockMeta: ItemMeta; blockPos: Vector3; blockId: number }>(),
+	BlockDestroyed: new Signal<{ breakBlockMeta: BreakBlockMeta; blockPos: Vector3; blockId: number }>(),
 	BeforeEntitySpawn: new Signal<BeforeEntitySpawnServerEvent>(),
 	EntitySpawn: new Signal<EntitySpawnEvent>(),
 	BeforeEntityDropItem: new Signal<BeforeEntityDropItemSignal>(),

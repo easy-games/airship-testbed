@@ -17,6 +17,7 @@ export enum Bundle_Blocks_VFX{
 	NONE = -1,
 	OnHit,
 	OnDeath,
+	OnHitFire,
 }
 
 export enum Bundle_Blocks{
@@ -276,6 +277,7 @@ export enum AllBundleItems{
 	Blocks_UI_HealthBar = "Client/Resources/Prefabs/BlockHealthbarCanvas.prefab",
 	Blocks_VFX_OnHit = "Shared/Resources/Prefabs/VFX/Blocks/OnBlockHitVFX.prefab",
 	Blocks_VFX_OnDeath = "Shared/Resources/Prefabs/VFX/Blocks/OnBlockDeathVFX.prefab",
+	Blocks_VFX_OnHitFire = "Shared/Resources/Prefabs/VFX/Blocks/OnBlockHitFireVFX.prefab",
 	Entity_OnHit_GenericVFX = "Shared/Resources/Prefabs/VFX/Entity/OnHit/EntityOnHitVFX.prefab",
 	Entity_OnHit_DeathVFX = "Shared/Resources/Prefabs/VFX/Entity/OnHit/EntityOnDeathVFX.prefab",
 	Entity_OnHit_DeathVoidVFX = "Shared/Resources/Prefabs/VFX/Entity/OnHit/EntityOnDeathVoidVFX.prefab",
@@ -388,6 +390,7 @@ export class ReferenceManagerAssets{
 			filePaths: new Map([
 				[Bundle_Blocks_VFX.OnHit, "Shared/Resources/Prefabs/VFX/Blocks/OnBlockHitVFX.prefab"],
 				[Bundle_Blocks_VFX.OnDeath, "Shared/Resources/Prefabs/VFX/Blocks/OnBlockDeathVFX.prefab"],
+				[Bundle_Blocks_VFX.OnHitFire, "Shared/Resources/Prefabs/VFX/Blocks/OnBlockHitFireVFX.prefab"],
 			])}],
 		])
 	}
