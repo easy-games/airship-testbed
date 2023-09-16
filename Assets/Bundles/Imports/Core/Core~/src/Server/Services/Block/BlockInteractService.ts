@@ -11,6 +11,10 @@ import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
+import { ItemStack } from "Shared/Inventory/ItemStack";
+import { AOEDamageMeta, BreakBlockMeta, ItemMeta } from "Shared/Item/ItemMeta";
+import { Entity } from "Shared/Entity/Entity";
+import { DamageMeta } from "../Damage/DamageService";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -21,6 +25,7 @@ export class BlockInteractService implements OnStart {
 	) {}
 
 	OnStart(): void {
+		//Placed a block
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.is("PlaceBlock")) return;
 
@@ -67,6 +72,7 @@ export class BlockInteractService implements OnStart {
 			entity.SendItemAnimationToClients(0, 0, clientId);
 		});
 
+		//Hit Block with an Item
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.is("HitBlock")) return;
             
@@ -74,13 +80,14 @@ export class BlockInteractService implements OnStart {
             if (world === undefined) return;
 
 			const clientId = event.clientId;
-			let pos = event.value;
-
 			const entity = this.entityService.GetEntityByClientId(clientId);
+
 			const rollback = () => {};
+
 			if (entity && entity instanceof CharacterEntity) {
 				const itemInHand = entity.GetInventory().GetHeldItem();
 				const itemMeta = itemInHand?.GetMeta();
+
 				if (!itemInHand) {
 					return rollback();
 				}
@@ -88,58 +95,85 @@ export class BlockInteractService implements OnStart {
 					return rollback();
 				}
 
-				pos = BlockDataAPI.GetParentBlockPos(pos) ?? pos;
-
-				const block = world.GetBlockAt(pos);
-				if (block.IsAir()) {
+				if (!this.DamageBlock(entity, itemMeta.breakBlock, event.value)) {
 					return rollback();
 				}
-				const player = this.playerService.GetPlayerFromClientId(clientId);
-				if (!player) {
-					return rollback();
-				}
-
-				// Cancellable signal
-				const damage = WorldAPI.BlockHitDamageFunc(player, block, pos, itemMeta.breakBlock);
-				if (damage === 0) {
-					return;
-				}
-				const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-					new BeforeBlockHitSignal(block, pos, player, damage, itemInHand),
-				);
-
-				const health = BlockDataAPI.GetBlockData<number>(pos, "health") ?? WorldAPI.DefaultVoxelHealth;
-				const newHealth = math.max(health - beforeSignal.damage, 0);
-				BlockDataAPI.SetBlockData(pos, "health", newHealth);
-
-				// After signal
-				CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: pos });
-				print(`Firing BlockHit. damage=${beforeSignal.damage}`);
-				CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(pos, entity.id);
-
-				if (newHealth === 0) {
-					CoreServerSignals.BeforeBlockDestroyed.Fire({
-						blockId: block.blockId,
-						blockMeta: itemMeta,
-						blockPos: pos,
-						entity: entity,
-					});
-					world.PlaceBlockById(pos, 0, {
-						placedByEntityId: entity.id,
-					});
-					CoreServerSignals.BlockDestroyed.Fire({
-						blockId: block.blockId,
-						blockMeta: itemMeta,
-						blockPos: pos,
-					});
-					CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(pos, block.blockId);
-				}
-
 				return;
 			}
+
 			rollback();
 		});
 
+		//Deprecated? Now using "HitBlock" move command
 		CoreNetwork.ClientToServer.HitBlock.Server.OnClientEvent((clientId, pos) => {});
+	}
+
+	public DamageBlock(entity: Entity, breakBlockMeta: BreakBlockMeta, voxelPos: Vector3): boolean {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) {
+			return false;
+		}
+
+		voxelPos = BlockDataAPI.GetParentBlockPos(voxelPos) ?? voxelPos;
+
+		const block = world.GetBlockAt(voxelPos);
+		if (block.IsAir()) {
+			return false;
+		}
+
+		const player = entity.player;
+		if (!player) {
+			return false;
+		}
+
+		// Cancellable signal
+		const damage = WorldAPI.BlockHitDamageFunc(player, block, voxelPos, breakBlockMeta);
+		if (damage === 0) {
+			return false;
+		}
+		const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
+			new BeforeBlockHitSignal(block, voxelPos, player, damage, breakBlockMeta),
+		);
+
+		//BLOCK DAMAGE
+		const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+		const newHealth = math.max(health - beforeSignal.damage, 0);
+		BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
+
+		// After signal
+		CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: voxelPos });
+		print(`Firing BlockHit. damage=${beforeSignal.damage}`);
+		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, entity.id);
+
+		//BLOCK DEATH
+		if (newHealth === 0) {
+			CoreServerSignals.BeforeBlockDestroyed.Fire({
+				blockId: block.blockId,
+				breakBlockMeta: breakBlockMeta,
+				blockPos: voxelPos,
+				entity: entity,
+			});
+			world.PlaceBlockById(voxelPos, 0, {
+				placedByEntityId: entity.id,
+			});
+			CoreServerSignals.BlockDestroyed.Fire({
+				blockId: block.blockId,
+				breakBlockMeta: breakBlockMeta,
+				blockPos: voxelPos,
+			});
+			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.blockId);
+		}
+		return true;
+	}
+
+	public DamageBlockAOE(
+		entity: Entity,
+		centerPosition: Vector3,
+		breakblockMeta: BreakBlockMeta,
+		aoeMeta: AOEDamageMeta,
+		config: DamageMeta,
+	) {
+		const voxelPos = WorldAPI.GetVoxelPosition(centerPosition);
+		this.DamageBlock(entity, breakblockMeta, voxelPos);
 	}
 }

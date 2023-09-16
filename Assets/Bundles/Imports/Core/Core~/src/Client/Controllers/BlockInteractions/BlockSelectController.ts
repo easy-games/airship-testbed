@@ -101,13 +101,17 @@ export class BlockSelectController implements OnStart {
 		const result = CameraReferences.Instance().RaycastVoxelFromCamera(20);
 		if (result?.Hit) {
 			if (result.HitPosition.sub(characterPos).magnitude <= 8) {
-				this.SelectedBlockPosition = MathUtil.FloorVec(result.HitPosition.sub(result.HitNormal.mul(0.1)));
-				this.HighlightBlockPosition = MathUtil.FloorVec(result.HitPosition.sub(result.HitNormal.mul(0.1)));
+				this.SelectedBlockPosition = WorldAPI.GetVoxelPosition(
+					result.HitPosition.sub(result.HitNormal.mul(0.1)),
+				);
+				this.HighlightBlockPosition = WorldAPI.GetVoxelPosition(
+					result.HitPosition.sub(result.HitNormal.mul(0.1)),
+				);
 				const parentBlockPos = BlockDataAPI.GetParentBlockPos(this.HighlightBlockPosition);
 				if (parentBlockPos) {
 					this.SelectedBlockPosition = parentBlockPos;
 				}
-				this.PlaceBlockPosition = MathUtil.FloorVec(result.HitPosition.add(result.HitNormal.mul(0.1)));
+				this.PlaceBlockPosition = WorldAPI.GetVoxelPosition(result.HitPosition.add(result.HitNormal.mul(0.1)));
 				this.IsVoidPlacement = false;
 				return true;
 			}

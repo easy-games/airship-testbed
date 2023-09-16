@@ -6,12 +6,13 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { DamageService } from "../DamageService";
+import { DamageMeta, DamageService } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
+import { BlockInteractService } from "Server/Services/Block/BlockInteractService";
 
 @Service({})
 export class ProjectileService implements OnStart {
-	constructor(private readonly damageService: DamageService) {}
+	constructor(private readonly damageService: DamageService, private readonly blockService: BlockInteractService) {}
 
 	private projectilesById = new Map<number, Projectile>();
 
@@ -30,24 +31,37 @@ export class ProjectileService implements OnStart {
 			let knockbackDirection = event.velocity.normalized;
 
 			//Deal AOE damage
-			if (event.damageRadius > 0) {
+			if (event.ammoMeta.aoeDamage && event.ammoMeta.aoeDamage.damageRadius > 0) {
+				const config: DamageMeta = {
+					fromEntity: event.projectile.shooter,
+					damageType: DamageType.PROJECTILE,
+					projectileHitSignal: event,
+					knockbackDirection: knockbackDirection,
+				};
+
+				//AOE Entity Damage
 				this.damageService.InflictAOEDamage(
 					event.hitPosition,
-					event.damage,
-					event.falloffDamage,
-					event.damageRadius,
-					{
-						fromEntity: event.projectile.shooter,
-						damageType: DamageType.PROJECTILE,
-						projectileHitSignal: event,
-						knockbackDirection: knockbackDirection,
-					},
+					event.ammoMeta.damage,
+					event.ammoMeta.aoeDamage,
+					config,
 				);
+
+				//AOE Block Damage
+				if (event.projectile.shooter && event.ammoMeta.blockDamage) {
+					this.blockService.DamageBlockAOE(
+						event.projectile.shooter,
+						event.hitPosition,
+						event.ammoMeta.blockDamage,
+						event.ammoMeta.aoeDamage,
+						config,
+					);
+				}
 			}
 
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
-				this.damageService.InflictDamage(event.hitEntity, event.damage, {
+				this.damageService.InflictDamage(event.hitEntity, event.ammoMeta.damage, {
 					fromEntity: event.projectile.shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
@@ -95,9 +109,7 @@ export class ProjectileService implements OnStart {
 
 		const projectileHitSignal = new ProjectileCollideServerSignal(
 			projectile,
-			ammoMeta.damage,
-			ammoMeta.falloffDamage ?? 0,
-			ammoMeta.damageRadius ?? 0,
+			ammoMeta,
 			hitPoint,
 			normal,
 			velocity,

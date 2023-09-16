@@ -10,6 +10,7 @@ import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
 import { MathUtil } from "Shared/Util/MathUtil";
+import { AOEDamageMeta } from "Shared/Item/ItemMeta";
 
 @Service({})
 export class DamageService implements OnStart {
@@ -52,13 +53,7 @@ export class DamageService implements OnStart {
 		});
 	}
 
-	public InflictAOEDamage(
-		centerPosition: Vector3,
-		innerDamage: number,
-		outerDamage: number,
-		radius: number,
-		config: DamageMeta,
-	) {
+	public InflictAOEDamage(centerPosition: Vector3, innerDamage: number, aoeMeta: AOEDamageMeta, config: DamageMeta) {
 		if (!config.knockbackDirection) {
 			config.knockbackDirection = Vector3.zero;
 		}
@@ -66,9 +61,9 @@ export class DamageService implements OnStart {
 		const initialDir = config?.knockbackDirection;
 		this.entityService.GetEntities().forEach((value) => {
 			const distance = value.model.transform.position.Distance(centerPosition);
-			if (distance < radius) {
-				const delta = distance / radius;
-				const damage = MathUtil.Lerp(innerDamage, outerDamage, delta);
+			if (distance < aoeMeta.damageRadius) {
+				const delta = distance / aoeMeta.damageRadius;
+				const damage = MathUtil.Lerp(innerDamage, aoeMeta.outerDamage, delta);
 				const knockbackStrength = MathUtil.Lerp(1, 2, delta);
 				config.knockbackDirection = value.model.transform.position
 					.sub(centerPosition)

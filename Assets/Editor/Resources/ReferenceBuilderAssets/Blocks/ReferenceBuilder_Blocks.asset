@@ -17,13 +17,12 @@ MonoBehaviour:
   - key: UI
     value:
     - key: HealthBar
-      value: {fileID: 7887143001107070292, guid: 1986dbd14090242f3b5fb0f0798196c2,
-        type: 3}
+      value: {fileID: 7887143001107070292, guid: 1986dbd14090242f3b5fb0f0798196c2, type: 3}
   - key: VFX
     value:
     - key: OnHit
-      value: {fileID: 2145243952792991196, guid: fca117dd45d066241b3a93b6290c52cd,
-        type: 3}
+      value: {fileID: 2145243952792991196, guid: fca117dd45d066241b3a93b6290c52cd, type: 3}
     - key: OnDeath
-      value: {fileID: 2145243952792991196, guid: 59e6cfdcfb914b9499c56315ca80e994,
-        type: 3}
+      value: {fileID: 2145243952792991196, guid: 59e6cfdcfb914b9499c56315ca80e994, type: 3}
+    - key: OnHitFire
+      value: {fileID: 3624261834906416581, guid: 7d07d529176d7954890f1f8261372ab8, type: 3}

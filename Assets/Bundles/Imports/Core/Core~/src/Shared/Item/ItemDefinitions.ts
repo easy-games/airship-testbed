@@ -71,14 +71,14 @@ const bowItemAssets: ItemAssetsMeta = {
 
 const defaultSwordMelee: MeleeItemMeta = {
 	damageType: DamageType.SWORD,
-	onHitPrefabId: Bundle_ItemSword_Prefabs.OnHit,
+	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit,
 	canHitMultipleTargets: false,
 	damage: 5,
 };
 
 const defaultBreakBlock: BreakBlockMeta = {
 	damage: 1,
-	onHitPrefabId: Bundle_ItemPickaxe_Prefabs.OnHit,
+	onHitPrefabPath: AllBundleItems.ItemPickaxe_Prefabs_OnHit,
 	extraDamageBlockArchetype: BlockArchetype.NONE,
 	extraDamage: 2,
 };
@@ -701,9 +701,18 @@ export const items: {
 		},
 		ammo: {
 			yAxisAimAdjust: 0,
-			damage: 40,
-			falloffDamage: 10,
-			damageRadius: 3.5,
+			damage: 0,
+			aoeDamage: {
+				innerDamage: 40,
+				outerDamage: 10,
+				damageRadius: 3.5,
+			},
+			blockDamage: {
+				damage: 20,
+				extraDamage: 20,
+				extraDamageBlockArchetype: BlockArchetype.WOOD,
+				onHitPrefabPath: AllBundleItems.Blocks_VFX_OnHitFire,
+			},
 			lifetimeSec: 10,
 			gravity: defaultGravity * 0.08,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),

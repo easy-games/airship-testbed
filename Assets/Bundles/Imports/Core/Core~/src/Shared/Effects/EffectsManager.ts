@@ -1,5 +1,11 @@
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
-import { AllBundleItems, BundleData, BundleGroup, BundleGroupNames, ReferenceManagerAssets } from "../Util/ReferenceManagerResources";
+import {
+	AllBundleItems,
+	BundleData,
+	BundleGroup,
+	BundleGroupNames,
+	ReferenceManagerAssets,
+} from "../Util/ReferenceManagerResources";
 import { Task } from "Shared/Util/Task";
 
 export class EffectsManager {
@@ -8,19 +14,13 @@ export class EffectsManager {
 		worldPosition: Vector3,
 		worldRotation: Vector3,
 		destroyInSeconds = 5,
-		){
-			let template = BundleReferenceManager.LoadDirectResource<GameObject>(bundleId);
-			if (template) {
-				return this.SpawnGameObjectAtPosition(
-					template,
-					worldPosition,
-					worldRotation,
-					destroyInSeconds,
-				);
-			}
-			return undefined;
+	) {
+		let template = BundleReferenceManager.LoadDirectResource<GameObject>(bundleId);
+		if (template) {
+			return this.SpawnGameObjectAtPosition(template, worldPosition, worldRotation, destroyInSeconds);
 		}
-
+		return undefined;
+	}
 
 	public static SpawnBundleEffect(
 		bundleGroupId: BundleGroupNames,
