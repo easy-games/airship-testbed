@@ -1,10 +1,10 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller } from "@easy-games/flamework-core";
 import { Entity } from "Shared/Entity/Entity";
+import { BreakBlockMeta } from "Shared/Item/ItemMeta";
+import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
 import { LocalEntityController } from "../Character/LocalEntityController";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { BreakBlockMeta } from "Shared/Item/ItemMeta";
 
 @Controller({})
 export class BlockInteractController {
@@ -20,6 +20,8 @@ export class BlockInteractController {
 		showHealthbars: boolean,
 	) {
 		const world = WorldAPI.GetMainWorld();
+		if (!world) return;
+
 		const block = world.GetBlockAt(voxelPos);
 
 		if (showHealthbars) {
