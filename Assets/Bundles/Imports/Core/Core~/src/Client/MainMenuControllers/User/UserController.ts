@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -33,7 +32,6 @@ export class UserController implements OnStart {
 		const res = HttpManager.GetAsync(`${AirshipUrl.UserService}/users/self`, this.authController.GetAuthHeaders());
 		if (res.success) {
 			const data = decode(res.data) as User;
-			print("got local user: " + inspect(data));
 			this.localUser = data;
 
 			const writeUser = Game.LocalPlayer as Writable<Player>;

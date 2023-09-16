@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { decode, encode } from "Shared/json";
@@ -35,13 +34,11 @@ export class AuthController implements OnStart {
 
 		const existingRefreshToken = StateManager.GetString("firebase_refreshToken");
 		if (existingRefreshToken) {
-			print("Found refresh token in state. Attempting login...");
 			return this.LoginWithRefreshToken(existingRefreshToken);
 		}
 
 		const savedAuthAccount = AuthManager.GetSavedAccount();
 		if (savedAuthAccount) {
-			print("Found saved auth account on disk. Attempting login...");
 			return this.LoginWithRefreshToken(savedAuthAccount.refreshToken);
 		}
 
@@ -66,7 +63,6 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_localId", data.user_id);
 			this.authenticated = true;
 			this.onAuthenticated.Fire();
-			print("response: " + inspect(data));
 			return true;
 		}
 		print("failed login with refresh token: " + res.error + " statusCode=" + res.statusCode);
@@ -83,7 +79,6 @@ export class AuthController implements OnStart {
 		);
 		if (res.success) {
 			const data = decode(res.data) as FirebaseSignUpResponse;
-			print("response: " + inspect(data));
 
 			this.idToken = data.idToken;
 			StateManager.SetString("firebase_idToken", data.idToken);

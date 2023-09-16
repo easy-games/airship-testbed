@@ -158,11 +158,6 @@ export class Entity {
 				this.SetPlayer(player);
 			} else {
 				const player = Dependency<PlayerController>().GetPlayerFromClientId(this.ClientId);
-				if (player) {
-					print(`Found Player that controls this entity. (Player=${player.username}, Entity=${this.id})`);
-				} else {
-					print(`Entity is not controlled by any player. (Entity=${this.id})`);
-				}
 				this.SetPlayer(player);
 			}
 		}
@@ -195,7 +190,9 @@ export class Entity {
 		}
 		if (this.IsLocalCharacter()) return;
 
-		const prefab = AssetBridge.Instance.LoadAsset<Object>("Imports/Core/Client/Resources/Prefabs/EntityHealthbar.prefab");
+		const prefab = AssetBridge.Instance.LoadAsset<Object>(
+			"Imports/Core/Client/Resources/Prefabs/EntityHealthbar.prefab",
+		);
 		const healthbarGO = GameObjectUtil.InstantiateIn(prefab, this.model.transform);
 		const transform = healthbarGO.transform;
 		transform.localPosition = new Vector3(0, 2.2, 0);
@@ -503,7 +500,9 @@ export class Entity {
 		if (this.IsLocalCharacter()) {
 			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 		}
-		const projectilePath = `Imports/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(itemType)}.prefab`;
+		const projectilePath = `Imports/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(
+			itemType,
+		)}.prefab`;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
 		const easyProjectile = projectileLauncher.ClientFire(

@@ -12,8 +12,6 @@ export class MainMenuSettingsUIController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		print("MainMenuSettings.OnStart");
-
 		this.clientSettingsController.onSettingsLoaded.Connect(() => {
 			this.Setup();
 		});
