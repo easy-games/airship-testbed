@@ -805,6 +805,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     Android: FISHNET;FISHNET_V3;FISHNET_PRO
+    Server: AIRSHIP_INTERNAL
     Standalone: FISHNET;FISHNET_V3;FISHNET_PRO
   additionalCompilerArguments: {}
   platformArchitecture: {}
