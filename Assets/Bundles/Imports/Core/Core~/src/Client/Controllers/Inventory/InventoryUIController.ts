@@ -70,7 +70,11 @@ export class InventoryUIController implements OnStart {
 	}
 
 	private SetupHotbar(): void {
-		let init = true;
+		for (let i = 0; i < this.hotbarSlots; i++) {
+			this.UpdateHotbarSlot(i, undefined, true);
+		}
+
+		let init = false;
 		this.invController.ObserveLocalInventory((inv) => {
 			const invBin = new Bin();
 
@@ -127,14 +131,22 @@ export class InventoryUIController implements OnStart {
 		Game.LocalPlayer.ObserveCharacter((entity) => {
 			if (entity === undefined) {
 				this.healthBar.SetValue(0);
+				this.healthBar.transform.gameObject.SetActive(false);
 				return;
 			}
-			const setFill = (newHealth: number) => {
+			this.healthBar.transform.gameObject.SetActive(true);
+			const setFill = (newHealth: number, instant: boolean) => {
 				let fill = newHealth / entity.GetMaxHealth();
-				this.healthBar.SetValue(fill);
+				if (instant) {
+					this.healthBar.InstantlySetValue(fill);
+				} else {
+					this.healthBar.SetValue(fill);
+				}
 			};
-			setFill(entity.GetHealth());
-			entity.OnHealthChanged.Connect(setFill);
+			setFill(entity.GetHealth(), false);
+			entity.OnHealthChanged.Connect((h) => {
+				setFill(h, false);
+			});
 		});
 	}
 

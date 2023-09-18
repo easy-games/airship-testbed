@@ -11,7 +11,7 @@ export class ProgressBarGraphics {
 	private readonly TransformKey = "Transforms";
 	private readonly GraphicsKey = "Graphics";
 	private readonly AnimKey = "Animations";
-	private transform: RectTransform;
+	public transform: RectTransform;
 	private refs: GameObjectReferences;
 	private fillImage: Image;
 	private fillTransform: RectTransform;
@@ -25,7 +25,7 @@ export class ProgressBarGraphics {
 	public changeDelayInSeconds = 0.3;
 	public changeDurationInSeconds = 0.125;
 	private enabled = true;
-	private deathOnZero = true;
+	public deathOnZero = true;
 	private currentDelta = -999;
 
 	constructor(transform: Transform, options?: ProgressBarOptions) {
