@@ -36,6 +36,7 @@ export declare const CoreNetwork: {
         SetHeldItemState: RemoteEvent<[entityId: number, heldItemState: HeldItemState]>;
         TEST_LATENCY: RemoteFunction<void, number>;
         TestKnockback2: RemoteEvent<[]>;
+        LibonatiTest: RemoteEvent<[]>;
     };
     ServerToClient: {
         UpdateInventory: RemoteEvent<InventoryDto>;

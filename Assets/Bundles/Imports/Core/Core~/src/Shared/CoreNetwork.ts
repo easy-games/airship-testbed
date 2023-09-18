@@ -35,6 +35,7 @@ export const CoreNetwork = {
 
 		TEST_LATENCY: new RemoteFunction<void, number>(),
 		TestKnockback2: new RemoteEvent<[]>(),
+		LibonatiTest: new RemoteEvent<[]>(),
 	},
 	ServerToClient: {
 		UpdateInventory: new RemoteEvent<InventoryDto>(),
@@ -123,6 +124,7 @@ export const CoreNetwork = {
 		/** Fired when the current selected items state changes on an entity*/
 		HeldItemStateChanged: new RemoteEvent<[entityId: number, state: HeldItemState]>(),
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>(),
+		BlockGroupPlace: new RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number]>(),
 
 		EntityPickedUpGroundItem: new RemoteEvent<[entityId: number, groundItemId: number]>(),
 

@@ -1,6 +1,6 @@
 import { Controller } from "@easy-games/flamework-core";
 import { Entity } from "Shared/Entity/Entity";
-import { BreakBlockMeta } from "Shared/Item/ItemMeta";
+import { AOEDamageMeta, BreakBlockMeta } from "Shared/Item/ItemMeta";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";

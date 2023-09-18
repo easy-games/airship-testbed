@@ -8,7 +8,7 @@ import { Signal } from "Shared/Util/Signal";
 import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
-import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
+import { BlockGroupPlaceClientSignal, BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
@@ -29,6 +29,7 @@ export const CoreClientSignals = {
 	BeforeBlockPlaced: new Signal<BeforeBlockPlacedSignal>(),
 	/** Fired when a client-predicted block is placed. */
 	BlockPlace: new Signal<BlockPlaceClientSignal>(),
+	BlockGroupPlace: new Signal<BlockGroupPlaceClientSignal>(),
 	PlayerChangeTeam: new Signal<ChangeTeamSignal>(),
 	/** Fired when local player swings melee weapon. */
 	WeaponSwing: new Signal<{ weapon: ItemType }>(),

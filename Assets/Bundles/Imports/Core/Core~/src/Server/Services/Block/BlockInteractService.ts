@@ -4,7 +4,7 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
-import { BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
+import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityService } from "../Entity/EntityService";
@@ -15,6 +15,8 @@ import { ItemStack } from "Shared/Inventory/ItemStack";
 import { AOEDamageMeta, BreakBlockMeta, ItemMeta } from "Shared/Item/ItemMeta";
 import { Entity } from "Shared/Entity/Entity";
 import { DamageMeta } from "../Damage/DamageService";
+import { MathUtil } from "Shared/Util/MathUtil";
+import { ItemType } from "Shared/Item/ItemType";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -64,20 +66,15 @@ export class BlockInteractService implements OnStart {
 				return rollback();
 			}
 
-			entity.GetInventory().Decrement(itemType, 1);
-			world?.PlaceBlockById(pos, itemMeta.block.blockId, {
-				placedByEntityId: entity.id,
-			});
-			CoreServerSignals.BlockPlace.Fire(new BlockPlaceSignal(pos, itemType, itemMeta.block.blockId, entity));
-			entity.SendItemAnimationToClients(0, 0, clientId);
+			this.PlaceBlock(entity, pos, itemMeta);
 		});
 
 		//Hit Block with an Item
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.is("HitBlock")) return;
-            
-            const world = WorldAPI.GetMainWorld();
-            if (world === undefined) return;
+
+			const world = WorldAPI.GetMainWorld();
+			if (world === undefined) return;
 
 			const clientId = event.clientId;
 			const entity = this.entityService.GetEntityByClientId(clientId);
@@ -106,6 +103,35 @@ export class BlockInteractService implements OnStart {
 
 		//Deprecated? Now using "HitBlock" move command
 		CoreNetwork.ClientToServer.HitBlock.Server.OnClientEvent((clientId, pos) => {});
+	}
+
+	public PlaceBlock(entity: CharacterEntity, pos: Vector3, item: ItemMeta) {
+		if (item.block) {
+			entity.GetInventory().Decrement(item.itemType, 1);
+			WorldAPI.GetMainWorld()?.PlaceBlockById(pos, item.block.blockId, {
+				placedByEntityId: entity.id,
+			});
+			CoreServerSignals.BlockPlace.Fire(new BlockPlaceSignal(pos, item.itemType, item.block.blockId, entity));
+			entity.SendItemAnimationToClients(0, 0, entity.ClientId);
+		}
+	}
+
+	public PlaceBlockGroup(entity: CharacterEntity, positions: Vector3[], items: ItemMeta[]) {
+		let itemTypes: ItemType[] = [];
+		let blockTypes: number[] = [];
+		items.forEach((itemMeta, index) => {
+			if (itemMeta.block) {
+				const position = positions[index];
+				entity.GetInventory().Decrement(itemMeta.itemType, 1);
+				itemTypes[index] = itemMeta.itemType;
+				blockTypes[index] = itemMeta.block.blockId;
+			}
+		});
+		WorldAPI.GetMainWorld()?.PlaceBlockGroupById(positions, blockTypes, {
+			placedByEntityId: entity.id,
+		});
+		CoreServerSignals.BlockGroupPlace.Fire(new BlockGroupPlaceSignal(positions, itemTypes, blockTypes, entity));
+		entity.SendItemAnimationToClients(0, 0, entity.ClientId);
 	}
 
 	public DamageBlock(entity: Entity, breakBlockMeta: BreakBlockMeta, voxelPos: Vector3): boolean {
@@ -174,6 +200,33 @@ export class BlockInteractService implements OnStart {
 		config: DamageMeta,
 	) {
 		const voxelPos = WorldAPI.GetVoxelPosition(centerPosition);
-		this.DamageBlock(entity, breakblockMeta, voxelPos);
+		for (let i = 0; i < aoeMeta.damageRadius; i++) {
+			this.DamageRing(entity, voxelPos, i, aoeMeta, breakblockMeta);
+		}
+	}
+
+	private DamageRing(
+		entity: Entity,
+		center: Vector3,
+		radius: number,
+		aoeMeta: AOEDamageMeta,
+		breakBlock: BreakBlockMeta,
+	) {
+		for (let x = center.x - radius; x < center.x + radius; x++) {
+			for (let y = center.y - radius; y < center.y + radius; y++) {
+				for (let z = center.z - radius; z < center.z + radius; z++) {
+					const pos = new Vector3(x, y, z);
+					const distanceDelta = pos.Distance(center) / aoeMeta.damageRadius;
+					const maxDamage = MathUtil.Lerp(
+						aoeMeta.innerDamage,
+						aoeMeta.outerDamage,
+						distanceDelta * distanceDelta,
+					);
+					if (maxDamage > 0) {
+						this.DamageBlock(entity, breakBlock, pos);
+					}
+				}
+			}
+		}
 	}
 }

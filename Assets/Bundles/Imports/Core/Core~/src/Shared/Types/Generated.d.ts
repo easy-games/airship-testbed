@@ -2009,26 +2009,6 @@ declare const enum AvatarMaskBodyPart {
     RightHandIK = 12,
     LastBodyPart = 13,
 }
-declare const enum KnownVectorType {
-    LocalForward = 0,
-    LocalBack = 1,
-    LocalRight = 2,
-    LocalLeft = 3,
-    LocalUp = 4,
-    LocalDown = 5,
-    WorldForward = 6,
-    WorldBack = 7,
-    WorldRight = 8,
-    WorldLeft = 9,
-    WorldUp = 10,
-    WorldDown = 11,
-    CameraForward = 12,
-    CameraBack = 13,
-    CameraRight = 14,
-    CameraLeft = 15,
-    CameraUp = 16,
-    CameraDown = 17,
-}
 declare const enum ApplicationInstallMode {
     Unknown = 0,
     Store = 1,
@@ -9439,7 +9419,13 @@ interface ClientSceneListener extends MonoBehaviour {
 
 }
     
-interface CoreLoadingScreen extends MonoBehaviour {
+interface BundleLoadingScreen extends MonoBehaviour {
+
+
+    SetProgress(text: string, percent: number): void;
+}
+    
+interface CoreLoadingScreen extends BundleLoadingScreen {
     progressText: TMP_Text;
     disconnectButton: Button;
 
@@ -9488,6 +9474,8 @@ interface AirshipPackageDocument {
     game: boolean;
     localSource: boolean;
     disabled: boolean;
+    defaultPackage: boolean;
+    forceLatestVersion: boolean;
 
     constructor(): AirshipPackageDocument;
 
@@ -10679,36 +10667,6 @@ interface AvatarMask extends Object {
     SetTransformPath(index: number, path: string): void;
 }
     
-interface IAlignmentManager {
-
-
-    GetRotationInfo(sourceTransform: Transform, forward: KnownVectorType, up: KnownVectorType): IRotationInfo;
-    GetWorldVectorFromVectorType(sourceTransform: Transform, knownVectorType: KnownVectorType): Vector3;
-    InverseQuat(rotation: Quaternion): Quaternion;
-}
-    
-interface IRotationInfo {
-
-
-    GetWorldRotationForLookingAt(worldForward: Vector3, worldUp: Vector3): Quaternion;
-}
-    
-interface AlignmentManager extends MonoBehaviour, IAlignmentManager {
-
-    constructor(): AlignmentManager;
-
-    GetRotationInfo(sourceTransform: Transform, forward: KnownVectorType, up: KnownVectorType): IRotationInfo;
-    GetWorldVectorFromVectorType(sourceTransform: Transform, knownVectorType: KnownVectorType): Vector3;
-    InverseQuat(rotation: Quaternion): Quaternion;
-}
-    
-interface AlignmentManagerConstructor {
-    Instance: IAlignmentManager;
-
-
-}
-declare const AlignmentManager: AlignmentManagerConstructor;
-    
 interface VoxelWorld extends MonoBehaviour {
     debugReloadOnScriptReloadMode: boolean;
     radiosityEnabled: boolean;
@@ -10802,6 +10760,7 @@ interface VoxelWorld extends MonoBehaviour {
     UpdateSceneLights(): void;
     Vector3ToNearestIndex(normal: Vector3): number;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
+    WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
 }
     
 interface VoxelBinaryFile extends ScriptableObject {
@@ -13160,7 +13119,7 @@ interface AirshipObjectPool extends DefaultObjectPool {
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
 }
     
-interface MainMenuLoadingScreen extends MonoBehaviour {
+interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
     progressText: TMP_Text;
 

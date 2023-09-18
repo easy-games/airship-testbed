@@ -4,7 +4,7 @@ import { BreakBlockMeta, ItemMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
-import { BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
+import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
 import { BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
@@ -20,6 +20,7 @@ import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
+export type BlockGroupHitSignal = { blockId: number[]; blockPos: Vector3[]; readonly player: Player };
 
 export const CoreServerSignals = {
 	PlayerJoin: new Signal<PlayerJoinServerEvent>(),
@@ -29,9 +30,11 @@ export const CoreServerSignals = {
 	EntityDespawn: new Signal<Entity>(),
 	BeforeBlockPlaced: new Signal<BeforeBlockPlacedSignal>(),
 	BlockPlace: new Signal<BlockPlaceSignal>(),
+	BlockGroupPlace: new Signal<BlockGroupPlaceSignal>(),
 	/** Fired **before** a block is hit. This signal is cancellable. */
 	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
 	BlockHit: new Signal<BlockHitSignal>(),
+	BlockGroupHit: new Signal<BlockGroupHitSignal>(),
 	/** Fired before a block is destroyed. */
 	BeforeBlockDestroyed: new Signal<{
 		breakBlockMeta: BreakBlockMeta;
@@ -41,6 +44,7 @@ export const CoreServerSignals = {
 	}>(),
 	/** Fired when a block is destroyed. */
 	BlockDestroyed: new Signal<{ breakBlockMeta: BreakBlockMeta; blockPos: Vector3; blockId: number }>(),
+	BlockGroupDestroyed: new Signal<{ breakBlockMeta: BreakBlockMeta; blockPos: Vector3[]; blockId: number[] }>(),
 	BeforeEntitySpawn: new Signal<BeforeEntitySpawnServerEvent>(),
 	EntitySpawn: new Signal<EntitySpawnEvent>(),
 	BeforeEntityDropItem: new Signal<BeforeEntityDropItemSignal>(),

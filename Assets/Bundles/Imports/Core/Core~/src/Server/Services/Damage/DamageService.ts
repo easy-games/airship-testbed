@@ -63,7 +63,7 @@ export class DamageService implements OnStart {
 			const distance = value.model.transform.position.Distance(centerPosition);
 			if (distance < aoeMeta.damageRadius) {
 				const delta = distance / aoeMeta.damageRadius;
-				const damage = MathUtil.Lerp(innerDamage, aoeMeta.outerDamage, delta);
+				const damage = MathUtil.Lerp(innerDamage, aoeMeta.outerDamage, delta * delta);
 				const knockbackStrength = MathUtil.Lerp(1, 2, delta);
 				config.knockbackDirection = value.model.transform.position
 					.sub(centerPosition)

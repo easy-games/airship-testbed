@@ -140,6 +140,40 @@ export class World {
 		}
 	}
 
+	public PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
+		this.voxelWorld.WriteVoxelGroupAt(positions, blockIds, config?.priority ?? true);
+
+		let blocks: Block[] = [];
+		positions.forEach((position, i) => {
+			//TODO: Add SetBlockGroupData() to avoid batch network calls and this for loop
+			if (config?.blockData) {
+				for (const key of Object.keys(config.blockData)) {
+					BlockDataAPI.SetBlockData(position, key as string, config.blockData[key]);
+				}
+			}
+			blocks[i] = new Block(blockIds[i], this);
+		});
+
+		if (RunCore.IsServer()) {
+			CoreNetwork.ServerToClient.BlockGroupPlace.Server.FireAllClients(
+				positions,
+				blockIds,
+				config?.placedByEntityId,
+			);
+		} else {
+			if (config?.placedByEntityId === Game.LocalPlayer.Character?.id) {
+				// Client predicted block place event
+				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
+				const BlockGroupPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
+					.BlockGroupPlaceClientSignal;
+
+				clientSignals.BlockGroupPlace.Fire(
+					new BlockGroupPlaceClientSignal(positions, blocks, Game.LocalPlayer.Character),
+				);
+			}
+		}
+	}
+
 	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void {
 		this.voxelWorld.LoadWorldFromVoxelBinaryFile(binaryFile);
 	}

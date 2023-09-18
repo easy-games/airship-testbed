@@ -6,4 +6,5 @@ export declare class WorldAPI {
     static ChildVoxelId: number;
     static GetMainWorld(): World;
     static BlockHitDamageFunc: BlockHitDamageFunc;
+    static GetVoxelPosition(worldPosition: Vector3): Vector3;
 }

@@ -284,6 +284,11 @@ export class LocalEntityController implements OnStart {
 				CoreNetwork.ClientToServer.TestKnockback2.Client.FireServer();
 			});
 
+			//Libonati Test Space - DONT COMMIT
+			keyboard.OnKeyDown(KeyCode.G, (event) => {
+				CoreNetwork.ClientToServer.LibonatiTest.Client.FireServer();
+			});
+
 			// Cleanup:
 			bin.Add(() => {
 				this.cameraController.cameraSystem.SetOnClearCallback(undefined);
