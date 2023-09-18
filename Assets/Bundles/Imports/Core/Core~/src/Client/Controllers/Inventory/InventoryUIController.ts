@@ -114,6 +114,7 @@ export class InventoryUIController implements OnStart {
 					const itemStack = inv.GetItem(i);
 					this.UpdateHotbarSlot(i, itemStack);
 				}
+				this.prevSelectedSlot = slot;
 			});
 
 			for (let i = 0; i < this.hotbarSlots; i++) {
@@ -187,17 +188,22 @@ export class InventoryUIController implements OnStart {
 		}
 	}
 
+	private prevSelectedSlot = -2;
 	private UpdateHotbarSlot(slot: number, itemStack: ItemStack | undefined, init = false): void {
 		const selectedSlot = this.invController.LocalInventory?.GetSelectedSlot() ?? -1;
 
 		const go = this.hotbarContent.GetChild(slot).gameObject;
 		this.UpdateTile(go, itemStack);
 
-		const animator = go.GetComponent<Animator>();
-		animator.SetBool("Selected", selectedSlot === slot);
+		const contentGO = go.transform.GetChild(0).gameObject;
+		const contentRect = contentGO.GetComponent<RectTransform>();
+		if (selectedSlot === slot && this.prevSelectedSlot !== slot) {
+			contentRect.TweenAnchoredPositionY(10, 0.1);
+		} else if (this.prevSelectedSlot === slot) {
+			contentRect.TweenAnchoredPositionY(0, 0.1);
+		}
 
 		if (init) {
-			const contentGO = go.transform.GetChild(0).gameObject;
 			CoreUI.SetupButton(contentGO);
 			CanvasAPI.OnClickEvent(contentGO, () => {
 				if (this.IsBackpackShown() && this.invController.LocalInventory) {

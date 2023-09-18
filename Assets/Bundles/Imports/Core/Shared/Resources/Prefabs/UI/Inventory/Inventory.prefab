@@ -314,7 +314,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -417,6 +417,14 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_fontAsset
@@ -1466,7 +1474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8928174294532739824, guid: ac74ba20768b80245ac030c7e2eb99b7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 25.858498
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 8928174294532739824, guid: ac74ba20768b80245ac030c7e2eb99b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -207,7 +207,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2282263535395057007}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 287e80ebb92df425690fef1639e4bd9e, type: 2}
   m_CullingMode: 0
@@ -287,9 +287,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 19
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 910fb5aaf3f6b49128aa301755d6f0a3, type: 2}
-  m_sharedMaterial: {fileID: -6931534916630806760, guid: 910fb5aaf3f6b49128aa301755d6f0a3,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -547,9 +546,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Grass
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ef6afd1e3a2de41388814b93d5b74cb1, type: 2}
-  m_sharedMaterial: {fileID: -4852089703786606503, guid: ef6afd1e3a2de41388814b93d5b74cb1,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
