@@ -102,6 +102,16 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.multiplayer.playmode": {
+      "version": "0.4.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "nuget.moq": "2.0.0-pre.2",
+        "com.unity.nuget.newtonsoft-json": "2.0.2"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.4",
       "depth": 4,
@@ -286,6 +296,22 @@
         "com.unity.scriptablebuildpipeline": "1.21.0",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
       }
+    },
+    "nuget.castle-core": {
+      "version": "2.0.0-pre.4",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "nuget.moq": {
+      "version": "2.0.0-pre.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "nuget.castle-core": "2.0.0-pre.4"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
