@@ -19,15 +19,16 @@ export class FirstPersonCameraSystem {
 	private cameraVars: DynamicVariables;
 	private trackedHeadRotation: Quaternion = Quaternion.identity;
 	//private neckOffset: Vector3;
-	private inFirstPerson = true;
+	private inFirstPerson;
 	private bin: Bin;
 
-	public constructor(entityReferences: EntityReferences) {
+	public constructor(entityReferences: EntityReferences, startInFirstPerson: boolean) {
 		this.entityReferences = entityReferences;
 		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
 
 		this.cameras = CameraReferences.Instance();
 
+		this.inFirstPerson = startInFirstPerson;
 		this.OnFirstPersonChanged(this.inFirstPerson);
 
 		this.bin = new Bin();

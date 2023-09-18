@@ -10,7 +10,9 @@ if (BedWars.IsMatchServer()) {
 }
 Flamework.Ignite();
 
-// Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.ORBIT);
+// const localEntityController = Dependency<LocalEntityController>();
+// localEntityController.SetCharacterCameraMode(CharacterCameraMode.ORBIT);
+// localEntityController.SetDefaultFirstPerson(false);
 
 Bootstrap.FinishedSetup();
 
