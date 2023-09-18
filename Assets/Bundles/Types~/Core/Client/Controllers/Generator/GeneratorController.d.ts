@@ -1,8 +1,6 @@
 import { OnStart } from "@easy-games/flamework-core";
 import { GeneratorDto } from "../../../Shared/Generator/GeneratorMeta";
 export declare class GeneratorController implements OnStart {
-    /** Generator item prefab. */
-    private generatorItemPrefab;
     /** Generator label prefab. */
     private generatorLabelPrefab;
     /** Mapping of generator id to `GeneratorStateDto`. */

@@ -18,6 +18,7 @@ export declare class InventoryUIController implements OnStart {
     OpenBackpack(): void;
     private SetupHotbar;
     private UpdateTile;
+    private prevSelectedSlot;
     private UpdateHotbarSlot;
     private SetupBackpack;
     IsBackpackShown(): boolean;

@@ -17,7 +17,10 @@ export declare class HeldItem {
     OnUnEquip(): void;
     OnCallToActionStart(): void;
     OnCallToActionEnd(): void;
+    OnSecondaryActionStart(): void;
+    OnSecondaryActionEnd(): void;
     protected OnChargeStart(): void;
+    protected OnChargeEnd(): void;
     protected TryUse(): boolean;
     protected TryChargeUse(): boolean;
     protected TriggerUse(useIndex: number): void;

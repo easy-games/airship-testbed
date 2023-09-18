@@ -47,6 +47,10 @@ export class MapService implements OnStart {
 		/* Fetch world, load map voxel file and block defines. */
 		print("Loading world " + mapId);
 		const world = WorldAPI.GetMainWorld();
+		if (!world) {
+			Debug.LogError("VoxelWorld did not exist. Can't build map.");
+			return;
+		}
 		this.voxelBinaryFile = AssetBridge.Instance.LoadAsset<VoxelBinaryFile>(
 			`Server/Resources/Worlds/${mapId}.asset`,
 		);

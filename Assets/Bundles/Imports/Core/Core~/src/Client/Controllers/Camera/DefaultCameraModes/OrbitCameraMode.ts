@@ -90,6 +90,9 @@ export class OrbitCameraMode implements CameraMode {
 		this.bin.Add(this.touchscreen);
 		this.bin.Add(this.mouse);
 
+		const mouseUnlocker = this.mouse.AddUnlocker();
+		this.bin.Add(() => this.mouse.RemoveUnlocker(mouseUnlocker));
+
 		if (!this.lockView) {
 			const unlockerId = this.mouse.AddUnlocker();
 			this.bin.Add(() => {

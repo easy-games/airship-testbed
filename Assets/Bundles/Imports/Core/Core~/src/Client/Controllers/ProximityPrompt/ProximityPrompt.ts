@@ -42,7 +42,7 @@ export class ProximityPrompt {
 
 	constructor(promptData: ProximityPromptData) {
 		this.promptPrefab = AssetBridge.Instance.LoadAsset(
-			"Imports/Core/Client/Client/Resources/Prefabs/ProximityPrompt.prefab",
+			"Imports/Core/Client/Resources/Prefabs/ProximityPrompt.prefab",
 		);
 		this.id = tostring(ProximityPrompt.idCounter++);
 		this.data = promptData;

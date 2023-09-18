@@ -25,8 +25,9 @@ export declare class AudioClipBundle {
     private lastAudioSource;
     constructor(clipPaths: string[]);
     UpdatePaths(newPaths: string[]): void;
-    Stop(): void;
-    PlayManual(index: number): void;
+    private tweeningStop;
+    Stop(fadeOutDuration?: number): void;
+    PlayManual(index: number, fadeInDuration?: number): void;
     PlayNext(): void;
     private StepIndex;
     private RefreshPossibleRandomIndex;

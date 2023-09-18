@@ -132,7 +132,7 @@ export class MainMenuHomeController implements OnStart {
 		if (res.success) {
 			print("data: " + res.data);
 			const data = decode(res.data) as {
-                gameServer: GameServer;
+				gameServer: GameServer;
 			};
 			print(`found server ${data.gameServer.ip}:${data.gameServer.port}`);
 			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);

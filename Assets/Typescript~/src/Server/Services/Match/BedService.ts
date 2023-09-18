@@ -78,7 +78,7 @@ export class BedService implements OnStart {
 			};
 			this.teamToBed.set(team.id, bedState);
 			const itemMeta = ItemUtil.GetItemMeta(ItemType.BED);
-			WorldAPI.GetMainWorld().PlaceBlock(bedPos, ItemType.BED, {
+			WorldAPI.GetMainWorld()!.PlaceBlock(bedPos, ItemType.BED, {
 				blockData: {
 					teamId: team.id,
 					health: itemMeta.block!.health!, // this is a hack.

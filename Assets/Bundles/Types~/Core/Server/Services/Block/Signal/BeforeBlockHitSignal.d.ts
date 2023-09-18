@@ -1,6 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { ItemStack } from "../../../../Shared/Inventory/ItemStack";
+import { BreakBlockMeta } from "../../../../Shared/Item/ItemMeta";
 import { Player } from "../../../../Shared/Player/Player";
 import { Block } from "../../../../Shared/VoxelWorld/Block";
 export declare class BeforeBlockHitSignal {
@@ -11,10 +11,10 @@ export declare class BeforeBlockHitSignal {
      * To modify the damage you must edit BlockHitDamageCalc()
      */
     readonly damage: number;
-    readonly itemInHand: ItemStack;
+    readonly breakBlockMeta: BreakBlockMeta;
     constructor(block: Block, blockPos: Vector3, player: Player, 
     /**
      * To modify the damage you must edit BlockHitDamageCalc()
      */
-    damage: number, itemInHand: ItemStack);
+    damage: number, breakBlockMeta: BreakBlockMeta);
 }
