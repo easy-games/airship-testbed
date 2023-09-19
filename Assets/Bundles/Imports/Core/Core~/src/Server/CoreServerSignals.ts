@@ -41,8 +41,8 @@ export const CoreServerSignals = {
 		entity?: Entity;
 	}>(),
 	/** Fired when a block is destroyed. */
-	BlockDestroyed: new Signal<{ breakBlockMeta: BreakBlockMeta; blockPos: Vector3; blockId: number }>(),
-	BlockGroupDestroyed: new Signal<{ breakBlockMeta: BreakBlockMeta; blockPos: Vector3[]; blockId: number[] }>(),
+	BlockDestroyed: new Signal<{ blockPos: Vector3; blockId: number }>(),
+	BlockGroupDestroyed: new Signal<{ blockPos: Vector3[]; blockId: number[] }>(),
 	BeforeEntitySpawn: new Signal<BeforeEntitySpawnServerEvent>(),
 	EntitySpawn: new Signal<EntitySpawnEvent>(),
 	BeforeEntityDropItem: new Signal<BeforeEntityDropItemSignal>(),
