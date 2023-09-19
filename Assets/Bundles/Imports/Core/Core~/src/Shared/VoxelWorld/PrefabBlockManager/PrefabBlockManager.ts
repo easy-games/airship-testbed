@@ -21,7 +21,7 @@ export class PrefabBlockManager {
 
 	constructor() {
 		const world = WorldAPI.GetMainWorld();
-        if (!world) return;
+		if (!world) return;
 		world.OnVoxelPlaced.Connect((pos, voxel) => {
 			const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
 			const itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
@@ -68,9 +68,7 @@ export class PrefabBlockManager {
 	private OnBlockPlace(pos: Vector3, itemType: ItemType): void {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (itemMeta.block?.prefab) {
-			const prefab = AssetBridge.Instance.LoadAsset<Object>(
-				`Shared/Resources/VoxelWorld/BlockPrefabs/${itemMeta.block.prefab.path}`,
-			);
+			const prefab = AssetBridge.Instance.LoadAsset<Object>(itemMeta.block.prefab.path);
 			const prefabGO = GameObjectUtil.InstantiateAt(prefab, pos, Quaternion.identity);
 			this.objectMap.set(pos, prefabGO);
 
