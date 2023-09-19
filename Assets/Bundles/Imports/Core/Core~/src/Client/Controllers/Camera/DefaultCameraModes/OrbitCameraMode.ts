@@ -4,7 +4,7 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 
-const CHARACTER_MASK = -137;
+const CHARACTER_MASK = -4239;
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -24,10 +24,11 @@ export class OrbitCameraMode implements CameraMode {
 	private lockView = true;
 	private rightClicking = false;
 	private rightClickPos = Vector3.zero;
-	private camRight = new Vector3(0, 0, 1);
 
+	private lookVector = Vector3.zero;
 	private lastAttachToPos = new Vector3(0, 0, 0);
-	private lastCamPos = new Vector3(0, 0, 0);
+
+	private readonly entityDriver?: EntityDriver;
 
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly keyboard = this.bin.Add(new Keyboard());
@@ -35,6 +36,7 @@ export class OrbitCameraMode implements CameraMode {
 	private readonly mouse = this.bin.Add(new Mouse());
 
 	constructor(private transform: Transform, private readonly distance: number) {
+		this.entityDriver = transform.GetComponent<EntityDriver>();
 		this.SetupMobileControls();
 	}
 
@@ -146,8 +148,6 @@ export class OrbitCameraMode implements CameraMode {
 		const lv = posOffset.mul(-1).normalized;
 		rotation = Quaternion.LookRotation(lv, new Vector3(0, 1, 0));
 
-		this.lastCamPos = newPosition;
-
 		return new CameraTransform(newPosition, rotation);
 	}
 
@@ -155,7 +155,15 @@ export class OrbitCameraMode implements CameraMode {
 		const transform = camera.transform;
 		transform.LookAt(this.lastAttachToPos);
 		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CHARACTER_MASK);
-		this.lastCamPos = transform.position;
-		this.camRight = transform.right;
+
+		// Update character direction:
+		if (this.entityDriver !== undefined) {
+			const newLookVector = transform.forward;
+			const diff = this.lookVector.Dot(newLookVector);
+			if (diff > 0.01) {
+				this.entityDriver.SetLookVector(newLookVector);
+				this.lookVector = newLookVector;
+			}
+		}
 	}
 }

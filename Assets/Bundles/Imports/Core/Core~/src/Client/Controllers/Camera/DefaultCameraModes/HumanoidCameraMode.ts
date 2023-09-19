@@ -36,7 +36,7 @@ if (!RunUtil.IsEditor()) {
 export class HumanoidCameraMode implements CameraMode {
 	private readonly bin = new Bin();
 
-	private lookVector = new Vector3(0, 0, 0);
+	private lookVector = Vector3.zero;
 	private readonly entityDriver: EntityDriver;
 	private occlusionCam!: OcclusionCam;
 	private lookBackwards = false;
@@ -53,7 +53,6 @@ export class HumanoidCameraMode implements CameraMode {
 	private camRight = new Vector3(0, 0, 1);
 
 	private lastAttachToPos = new Vector3(0, 0, 0);
-	private lastCamPos = new Vector3(0, 0, 0);
 
 	private yOffset = 0;
 	private yOffsetSpring: SpringTween | undefined;
@@ -209,8 +208,6 @@ export class HumanoidCameraMode implements CameraMode {
 		const lv = posOffset.mul(-1).normalized;
 		rotation = Quaternion.LookRotation(lv, new Vector3(0, 1, 0));
 
-		this.lastCamPos = newPosition;
-
 		return new CameraTransform(newPosition, rotation);
 	}
 
@@ -219,7 +216,6 @@ export class HumanoidCameraMode implements CameraMode {
 		if (!this.firstPerson) {
 			transform.LookAt(this.lastAttachToPos);
 			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CHARACTER_MASK);
-			this.lastCamPos = transform.position;
 		}
 		this.camRight = transform.right;
 
