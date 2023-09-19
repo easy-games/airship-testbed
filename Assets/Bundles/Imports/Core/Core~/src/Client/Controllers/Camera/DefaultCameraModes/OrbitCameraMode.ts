@@ -35,8 +35,11 @@ export class OrbitCameraMode implements CameraMode {
 	private readonly touchscreen = this.bin.Add(new Touchscreen());
 	private readonly mouse = this.bin.Add(new Mouse());
 
-	constructor(private transform: Transform, private readonly distance: number) {
-		this.entityDriver = transform.GetComponent<EntityDriver>();
+	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
+		if (graphicalCharacter !== undefined) {
+			this.entityDriver = transform.GetComponent<EntityDriver>();
+			transform = graphicalCharacter;
+		}
 		this.SetupMobileControls();
 	}
 
