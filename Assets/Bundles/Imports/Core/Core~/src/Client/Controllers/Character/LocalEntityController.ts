@@ -49,6 +49,7 @@ export class LocalEntityController implements OnStart {
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.LOCKED;
+	private defaultFirstPerson = true;
 
 	constructor(
 		private readonly cameraController: CameraController,
@@ -152,7 +153,7 @@ export class LocalEntityController implements OnStart {
 
 			const bin = new Bin();
 			const keyboard = bin.Add(new Keyboard());
-			this.firstPerson = true;
+			this.firstPerson = this.defaultFirstPerson;
 
 			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			this.entityInput = new EntityInput(entity);
@@ -162,8 +163,6 @@ export class LocalEntityController implements OnStart {
 			this.entityDriver.OnCustomDataFlushed(() => {
 				this.customDataQueue.clear();
 			});
-
-			const getCamYOffset = (state: EntityState, isFirstPerson: boolean) => {};
 
 			// Set up camera
 			if (this.characterCameraMode === CharacterCameraMode.LOCKED) {
@@ -182,7 +181,7 @@ export class LocalEntityController implements OnStart {
 			});
 
 			//Set up first person camera
-			this.fps = new FirstPersonCameraSystem(entity.references);
+			this.fps = new FirstPersonCameraSystem(entity.references, this.firstPerson);
 
 			this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
@@ -377,5 +376,13 @@ export class LocalEntityController implements OnStart {
 
 	public GetEntityInput(): EntityInput | undefined {
 		return this.entityInput;
+	}
+
+	public SetDefaultFirstPerson(val: boolean): void {
+		this.defaultFirstPerson = val;
+	}
+
+	public IsDefaultFirstPerson(): boolean {
+		return this.defaultFirstPerson;
 	}
 }

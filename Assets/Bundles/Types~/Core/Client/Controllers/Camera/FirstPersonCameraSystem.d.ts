@@ -8,7 +8,7 @@ export declare class FirstPersonCameraSystem {
     private trackedHeadRotation;
     private inFirstPerson;
     private bin;
-    constructor(entityReferences: EntityReferences);
+    constructor(entityReferences: EntityReferences, startInFirstPerson: boolean);
     Destroy(): void;
     private LateUpdate;
     OnFirstPersonChanged(isFirstPerson: boolean): void;

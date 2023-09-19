@@ -143,7 +143,7 @@ export const items: {
 			health: 50,
 			blockId: 31,
 			prefab: {
-				path: "Bed/Bed.prefab",
+				path: "Imports/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
 				childBlocks: [new Vector3(0, 0, 1)],
 			},
 			blockArchetype: BlockArchetype.WOOD,
