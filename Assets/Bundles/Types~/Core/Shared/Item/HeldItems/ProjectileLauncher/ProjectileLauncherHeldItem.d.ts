@@ -7,11 +7,10 @@ export declare class ProjectileLauncherHeldItem extends HeldItem {
     private projectileTrajectoryRenderer;
     protected OnChargeStart(): void;
     private HasRequiredAmmo;
-    protected TryChargeUse(): boolean;
+    protected OnChargeEnd(): void;
     private CancelChargeSound;
     protected OnUseClient(useIndex: number): void;
     OnCallToActionEnd(): void;
-    OnUnEquip(): void;
     private GetLaunchData;
     private GetAimVector;
 }

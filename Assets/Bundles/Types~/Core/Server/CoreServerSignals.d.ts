@@ -2,7 +2,6 @@
 /// <reference types="@easy-games/types" />
 import { Entity } from "../Shared/Entity/Entity";
 import { GroundItem } from "../Shared/GroundItem/GroundItem";
-import { ItemMeta } from "../Shared/Item/ItemMeta";
 import { ItemType } from "../Shared/Item/ItemType";
 import { Player } from "../Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "../Shared/Signals/BeforeBlockPlacedSignal";
@@ -38,14 +37,12 @@ export declare const CoreServerSignals: {
     BlockHit: Signal<BlockHitSignal>;
     /** Fired before a block is destroyed. */
     BeforeBlockDestroyed: Signal<{
-        blockMeta: ItemMeta;
         blockPos: Vector3;
         blockId: number;
         entity?: Entity | undefined;
     }>;
     /** Fired when a block is destroyed. */
     BlockDestroyed: Signal<{
-        blockMeta: ItemMeta;
         blockPos: Vector3;
         blockId: number;
     }>;

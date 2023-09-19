@@ -7,7 +7,7 @@ export declare class ProgressBarGraphics {
     private readonly TransformKey;
     private readonly GraphicsKey;
     private readonly AnimKey;
-    private transform;
+    transform: RectTransform;
     private refs;
     private fillImage;
     private fillTransform;
@@ -20,7 +20,7 @@ export declare class ProgressBarGraphics {
     changeDelayInSeconds: number;
     changeDurationInSeconds: number;
     private enabled;
-    private deathOnZero;
+    deathOnZero: boolean;
     private currentDelta;
     constructor(transform: Transform, options?: ProgressBarOptions);
     OnDelete(): void;

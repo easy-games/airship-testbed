@@ -4,6 +4,7 @@ import { Signal } from "../../../Shared/Util/Signal";
 import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
 import { CameraController } from "../Camera/CameraController";
 import { InventoryController } from "../Inventory/InventoryController";
+import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
 export declare class LocalEntityController implements OnStart {
     private readonly cameraController;
@@ -18,10 +19,13 @@ export declare class LocalEntityController implements OnStart {
     readonly LookBackwardsChanged: Signal<[lookBackwards: boolean]>;
     private customDataQueue;
     private entityDriver;
+    private screenshot;
     private entityInput;
     private prevState;
     private currentState;
     private humanoidCameraMode;
+    private orbitCameraMode;
+    private characterCameraMode;
     constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: InventoryController);
     /** Returns `true` if the player is in first-person mode. */
     IsFirstPerson(): boolean;
@@ -32,7 +36,11 @@ export declare class LocalEntityController implements OnStart {
     /** Add custom data to the move data command stream. */
     AddToMoveData<K extends keyof DataStreamItems, T extends DataStreamItems[K]>(key: K, value: T): void;
     private TakeScreenshot;
+    private GetCamYOffset;
+    private CreateHumanoidCameraMode;
+    private CreateOrbitCameraMode;
     OnStart(): void;
+    SetCharacterCameraMode(mode: CharacterCameraMode): void;
     UpdateFov(): void;
     private SetLookBackwards;
     ToggleFirstPerson(): void;

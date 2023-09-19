@@ -12,7 +12,9 @@ export declare enum HeldItemState {
     NONE = -1,
     CALL_TO_ACTION_START = 0,
     CALL_TO_ACTION_END = 1,
-    ON_DESTROY = 2
+    SECONDARY_ACTION_START = 2,
+    SECONDARY_ACTION_END = 3,
+    ON_DESTROY = 4
 }
 export declare class HeldItemManager {
     private entity;

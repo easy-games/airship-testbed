@@ -13,6 +13,11 @@ export class BWLoadingScreenController implements OnStart {
 
 	private CheckWorld(): void {
 		const world = WorldAPI.GetMainWorld();
+		if (!world) {
+			this.CheckCharacter();
+			return;
+		}
+
 		if (!world.IsFinishedReplicatingChunksFromServer()) {
 			const startTime = os.clock();
 			world.OnFinishedReplicatingChunksFromServer.Connect(() => {

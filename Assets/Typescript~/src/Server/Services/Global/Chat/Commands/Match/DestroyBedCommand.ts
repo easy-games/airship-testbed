@@ -36,10 +36,10 @@ export class DestroyBedCommand extends ChatCommand {
 		} else {
 			const bedMeta = ItemUtil.GetItemMeta(ItemType.BED);
 			const world = WorldAPI.GetMainWorld();
+			if (!world) return;
 			world.PlaceBlockById(bedState.position, 0);
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: bedMeta.block?.blockId ?? -1,
-				blockMeta: bedMeta,
 				blockPos: bedState.position,
 			});
 			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(bedState.position, bedMeta.block!.blockId);

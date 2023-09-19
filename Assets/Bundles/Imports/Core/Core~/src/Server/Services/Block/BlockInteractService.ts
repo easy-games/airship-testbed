@@ -2,11 +2,14 @@ import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { Entity } from "Shared/Entity/Entity";
+import { AOEDamageMeta, BreakBlockMeta } from "Shared/Item/ItemMeta";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { DamageMeta } from "../Damage/DamageService";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
@@ -175,7 +178,6 @@ export class BlockInteractService implements OnStart {
 		if (newHealth === 0) {
 			CoreServerSignals.BeforeBlockDestroyed.Fire({
 				blockId: block.blockId,
-				breakBlockMeta: breakBlockMeta,
 				blockPos: voxelPos,
 				entity: entity,
 			});
@@ -184,7 +186,6 @@ export class BlockInteractService implements OnStart {
 			});
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: block.blockId,
-				breakBlockMeta: breakBlockMeta,
 				blockPos: voxelPos,
 			});
 			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.blockId);

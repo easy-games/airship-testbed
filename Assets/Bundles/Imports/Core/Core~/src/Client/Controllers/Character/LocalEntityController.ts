@@ -1,5 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -12,9 +13,11 @@ import { ClientSettingsController } from "../../MainMenuControllers/Settings/Cli
 import { CameraController } from "../Camera/CameraController";
 import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
+import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
+import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
 
 const CAM_Y_OFFSET = 1.7;
@@ -43,6 +46,9 @@ export class LocalEntityController implements OnStart {
 	private prevState: EntityState = EntityState.Idle;
 	private currentState: EntityState = EntityState.Idle;
 	private humanoidCameraMode: HumanoidCameraMode | undefined;
+	private orbitCameraMode: OrbitCameraMode | undefined;
+
+	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.LOCKED;
 
 	constructor(
 		private readonly cameraController: CameraController,
@@ -118,6 +124,28 @@ export class LocalEntityController implements OnStart {
 		Game.LocalPlayer.SendMessage(ColorUtil.ColoredText(Theme.Yellow, `Captured screenshot ${screenshotFilename}`));
 	}
 
+	private GetCamYOffset(state: EntityState, isFirstPerson: boolean) {
+		const yOffset =
+			state === EntityState.Crouching || state === EntityState.Sliding
+				? isFirstPerson
+					? CAM_Y_OFFSET_CROUCH_1ST_PERSON
+					: CAM_Y_OFFSET_CROUCH_3RD_PERSON
+				: CAM_Y_OFFSET;
+		return yOffset;
+	}
+
+	private CreateHumanoidCameraMode(entity: Entity): HumanoidCameraMode {
+		const state = this.entityDriver?.GetState() ?? EntityState.Idle;
+		const yOffset = this.GetCamYOffset(state, this.firstPerson);
+		this.humanoidCameraMode = new HumanoidCameraMode(entity.gameObject, entity.model, this.firstPerson, yOffset);
+		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
+		return this.humanoidCameraMode;
+	}
+
+	private CreateOrbitCameraMode(entity: Entity): OrbitCameraMode {
+		return new OrbitCameraMode(entity.model.transform, 6);
+	}
+
 	OnStart() {
 		Game.LocalPlayer.ObserveCharacter((entity) => {
 			if (!entity) return;
@@ -135,33 +163,20 @@ export class LocalEntityController implements OnStart {
 				this.customDataQueue.clear();
 			});
 
-			const getCamYOffset = (state: EntityState, isFirstPerson: boolean) => {
-				const yOffset =
-					state === EntityState.Crouching || state === EntityState.Sliding
-						? isFirstPerson
-							? CAM_Y_OFFSET_CROUCH_1ST_PERSON
-							: CAM_Y_OFFSET_CROUCH_3RD_PERSON
-						: CAM_Y_OFFSET;
-				return yOffset;
-			};
+			const getCamYOffset = (state: EntityState, isFirstPerson: boolean) => {};
 
 			// Set up camera
-			const createHumanoidCameraMode = () => {
-				const state = this.entityDriver?.GetState() ?? EntityState.Idle;
-				const yOffset = getCamYOffset(state, this.firstPerson);
-				this.humanoidCameraMode = new HumanoidCameraMode(
-					entity.gameObject,
-					entity.model,
-					this.firstPerson,
-					yOffset,
-				);
-				this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
-				return this.humanoidCameraMode;
-			};
+			if (this.characterCameraMode === CharacterCameraMode.LOCKED) {
+				this.cameraController.SetMode(this.CreateHumanoidCameraMode(entity));
+				this.cameraController.cameraSystem.SetOnClearCallback(() => this.CreateHumanoidCameraMode(entity));
+			} else if (this.characterCameraMode === CharacterCameraMode.ORBIT) {
+				this.cameraController.SetMode(this.CreateOrbitCameraMode(entity));
+				this.cameraController.cameraSystem.SetOnClearCallback(() => this.CreateOrbitCameraMode(entity));
+			}
 
 			this.FirstPersonChanged.Connect((isFirstPerson) => {
 				this.humanoidCameraMode?.SetYOffset(
-					getCamYOffset(this.entityDriver?.GetState() ?? EntityState.Idle, isFirstPerson),
+					this.GetCamYOffset(this.entityDriver?.GetState() ?? EntityState.Idle, isFirstPerson),
 					true,
 				);
 			});
@@ -169,15 +184,12 @@ export class LocalEntityController implements OnStart {
 			//Set up first person camera
 			this.fps = new FirstPersonCameraSystem(entity.references);
 
-			this.cameraController.SetMode(createHumanoidCameraMode());
-			this.cameraController.cameraSystem.SetOnClearCallback(createHumanoidCameraMode);
-
 			this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
 					this.prevState = this.currentState;
 					this.currentState = state;
 				}
-				this.humanoidCameraMode?.SetYOffset(getCamYOffset(state, this.firstPerson));
+				this.humanoidCameraMode?.SetYOffset(this.GetCamYOffset(state, this.firstPerson));
 				this.UpdateFov();
 			});
 
@@ -305,6 +317,19 @@ export class LocalEntityController implements OnStart {
 				bin.Clean();
 			};
 		});
+	}
+
+	public SetCharacterCameraMode(mode: CharacterCameraMode): void {
+		this.characterCameraMode = mode;
+
+		if (Game.LocalPlayer.Character) {
+			const entity = Game.LocalPlayer.Character;
+			if (mode === CharacterCameraMode.LOCKED) {
+				this.cameraController.SetMode(this.CreateHumanoidCameraMode(entity));
+			} else if (mode === CharacterCameraMode.ORBIT) {
+				this.cameraController.SetMode(this.CreateOrbitCameraMode(entity));
+			}
+		}
 	}
 
 	public UpdateFov(): void {

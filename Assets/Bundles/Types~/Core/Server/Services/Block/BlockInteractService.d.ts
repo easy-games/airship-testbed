@@ -1,4 +1,9 @@
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
+import { Entity } from "../../../Shared/Entity/Entity";
+import { AOEDamageMeta, BreakBlockMeta } from "../../../Shared/Item/ItemMeta";
+import { DamageMeta } from "../Damage/DamageService";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";

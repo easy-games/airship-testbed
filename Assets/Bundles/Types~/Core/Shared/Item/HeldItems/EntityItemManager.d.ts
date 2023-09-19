@@ -3,7 +3,8 @@ export declare class EntityItemManager {
     static Get(): EntityItemManager;
     private entityItems;
     private localEntity?;
-    private mouseIsDown;
+    private mouseIsDownLeft;
+    private mouseIsDownRight;
     private Log;
     constructor();
     private InitializeClient;

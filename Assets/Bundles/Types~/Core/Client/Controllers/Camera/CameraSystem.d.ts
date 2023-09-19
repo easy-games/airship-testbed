@@ -16,6 +16,7 @@ export declare class CameraSystem {
     private fovSpringMovingStart;
     readonly ModeChangedBegin: Signal<[newMode: CameraMode, oldMode: CameraMode]>;
     readonly ModeChangedEnd: Signal<[newMode: CameraMode, oldMode: CameraMode]>;
+    GetActiveCamera(): Camera;
     constructor();
     /**
      * Gets a reference to the current camera mode object.

@@ -21,7 +21,7 @@ export class MapBlockService implements OnStart {
 			 * Voxels placed after match started belong to players.
 			 * TODO: We _probably_ want exceptions here. IE: Lucky Blocks?
 			 */
-			WorldAPI.GetMainWorld().OnVoxelPlaced.Connect((pos, _voxel) => {
+			WorldAPI.GetMainWorld()?.OnVoxelPlaced.Connect((pos, _voxel) => {
 				BlockDataAPI.SetBlockData(pos, "placedByUser", true);
 			});
 		});
