@@ -66,14 +66,16 @@ export class MeleeHeldItem extends HeldItem {
 		let farBox = this.combatVars.GetVector3("swordBoxFar");
 		let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
-		let farHits = this.ScanBox(farBox, [], Theme.Red);
-		let closeHits = this.ScanBox(
-			closeBox,
-			farHits.map((x) => x.hitEntity.id),
-			Theme.Green,
-		);
-		let results = [...farHits, ...closeHits];
-		return results;
+		let hits = this.ScanBox(closeBox, [], Theme.Green);
+		if (this.meta.melee?.canHitMultipleTargets) {
+			let farHits = this.ScanBox(
+				farBox,
+				hits.map((x) => x.hitEntity.id),
+				Theme.Red,
+			);
+			hits = [...hits, ...farHits];
+		}
+		return hits;
 	}
 
 	private ScanBox(box: Vector3, ignoreEntityIds: number[], debugColor: Color): MeleeHit[] {
@@ -123,7 +125,6 @@ export class MeleeHeldItem extends HeldItem {
 			}
 			const immuneUntilTime = this.entity.GetImmuneUntilTime();
 			if (TimeUtil.GetServerTime() + (RunUtil.IsClient() ? 0.1 : 0) < immuneUntilTime) {
-				print("immune");
 				continue;
 			}
 
@@ -133,8 +134,15 @@ export class MeleeHeldItem extends HeldItem {
 			let rayEnd = targetEntity.GetMiddlePosition();
 			let hitDirection = rayEnd.sub(rayStart).normalized;
 
-			//RAYCAST ALL
-			const hitInfosArray = Physics.RaycastAll(rayStart, hitDirection, rayDistance, layerMask);
+			// Raycast against the map
+			// mask: 1 << 6 = 64
+			// const mapLayerMask = 64;
+			const hitInfosArray = Physics.RaycastAll(
+				rayStart,
+				hitDirection,
+				rayDistance,
+				LayerMask.GetMask("Block", "Character"),
+			);
 			const hitInfos = hitInfosArray as CSArray<RaycastHit>;
 			let blockerDistance = 9999;
 
@@ -177,19 +185,15 @@ export class MeleeHeldItem extends HeldItem {
 							closestCollisionData = foundRaycastCollision;
 							continue;
 						}
-					} else {
-						//Hit a non entity object
-						blockerDistance = math.min(blockerDistance, hitInfo.distance);
 					}
 				} else {
-					print("hit blocked by " + hitInfo.collider.gameObject.name);
-					break;
+					//Hit a non entity object
+					blockerDistance = math.min(blockerDistance, hitInfo.distance);
 				}
-
-				if (foundRaycastCollision) {
-					if (foundRaycastCollision.distance < blockerDistance) {
-						// Additional raycast to find where exactly the hit landed on character
-					}
+			}
+			if (foundRaycastCollision) {
+				if (foundRaycastCollision.distance > blockerDistance) {
+					return [];
 				}
 			}
 		}

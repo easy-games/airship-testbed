@@ -32,6 +32,11 @@ export class FirstPersonCameraSystem {
 		this.OnFirstPersonChanged(this.inFirstPerson);
 
 		this.bin = new Bin();
+		this.bin.Add(() => {
+			// Pooling: reset back to third person.
+			this.OnFirstPersonChanged(false);
+		});
+
 		this.bin.Add(OnLateUpdate.ConnectWithPriority(SignalPriority.HIGH, () => this.LateUpdate()));
 	}
 
