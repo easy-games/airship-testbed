@@ -41,7 +41,7 @@ export class OrbitCameraMode implements CameraMode {
 	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
 		if (graphicalCharacter !== undefined) {
 			this.entityDriver = transform.GetComponent<EntityDriver>();
-			transform = graphicalCharacter;
+			this.transform = graphicalCharacter;
 		}
 		this.SetupMobileControls();
 	}
