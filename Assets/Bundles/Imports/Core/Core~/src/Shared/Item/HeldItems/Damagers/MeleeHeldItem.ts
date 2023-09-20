@@ -169,7 +169,6 @@ export class MeleeHeldItem extends HeldItem {
 						// DebugUtil.DrawSphere(ray.origin, Quaternion.identity, 0.1, Theme.Green, 10, 5);
 						const hit = hitInfo.collider.Raycast(ray, rayDistance);
 						if (hit) {
-							print("visual hit! collider=" + hit.collider.gameObject.name);
 							foundRaycastCollision.hitPosition = hit.point;
 							foundRaycastCollision.hitNormal = hit.normal;
 						}
