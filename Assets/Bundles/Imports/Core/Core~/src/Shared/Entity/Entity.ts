@@ -74,6 +74,7 @@ export class EntityReferences {
 		this.root = ref.GetValue<Transform>(boneKey, "Root");
 
 		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
+		this.characterCollider.enabled = true;
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
 
