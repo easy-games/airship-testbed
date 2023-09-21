@@ -12,6 +12,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
+import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -130,6 +131,7 @@ export class Entity {
 	private healthbarEnabled = false;
 	private healthbar?: ProgressBarGraphics;
 	private state: EntityState;
+	private bin: Bin = new Bin();
 
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
@@ -169,18 +171,27 @@ export class Entity {
 			this.displayName = `entity_${this.id}`;
 		}
 
-		this.entityDriver.OnImpactWithGround((velocity) => {
+		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
 			this.anim?.PlayFootstepSound();
 		});
-
-		this.entityDriver.OnAdjustMove((moveModifier) => {
-			this.OnAdjustMove.Fire(moveModifier);
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(impactConn);
 		});
 
-		this.entityDriver.OnStateChanged((newState) => {
+		const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
+			this.OnAdjustMove.Fire(moveModifier);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(adjustMoveConn);
+		});
+
+		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
 			const oldState = this.state;
 			this.state = newState;
 			this.OnStateChanged.Fire(newState, oldState);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(stateChangeConn);
 		});
 	}
 
@@ -251,6 +262,7 @@ export class Entity {
 	 * It is recommended to use EntityService.DespawnEntity() instead of this.
 	 */
 	public Destroy(): void {
+		this.bin.Clean();
 		this.OnDespawn.Fire();
 		this.anim.Destroy();
 		this.destroyed = true;
@@ -479,6 +491,10 @@ export class Entity {
 
 	public GetBlockBelowMeta(): BlockMeta | undefined {
 		return WorldAPI.GetMainWorld()?.GetBlockBelowMeta(this.model.transform.position);
+	}
+
+	public GetBin(): Bin {
+		return this.bin;
 	}
 
 	public GetAccessoryMeshes(slot: AccessorySlot): Renderer[] {

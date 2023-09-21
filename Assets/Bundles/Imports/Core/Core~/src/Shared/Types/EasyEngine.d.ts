@@ -38,8 +38,8 @@ interface Time {
 declare const Time: Time;
 
 interface PlayerManager extends Component {
-	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): void;
-	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): void;
+	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
+	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	GetPlayers(): CSArray<PlayerInfoDto>;
 	AddBotPlayer(username: string, tag: string, userId: string): void;
 }
@@ -57,11 +57,11 @@ interface PlayerInfoDto extends Component {
 }
 
 interface EntityDriver extends Component {
-	OnStateChanged(callback: (state: EntityState) => void): void;
-	OnCustomDataFlushed(callback: () => void): void;
-	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): void;
-	OnImpactWithGround(callback: (velocity: Vector3) => void): void;
-	OnAdjustMove(callback: (modifier: MoveModifier) => void): void;
+	OnStateChanged(callback: (state: EntityState) => void): EngineEventConnection;
+	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
+	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
+	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
+	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
 	IsGrounded(): boolean;
@@ -92,10 +92,10 @@ interface EntityDriver extends Component {
 }
 
 interface VoxelWorld {
-	OnVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): void;
-	OnPreVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): void;
-	OnFinishedLoading(callback: () => void): void;
-	OnFinishedReplicatingChunksFromServer(callback: () => void): void;
+	OnVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): EngineEventConnection;
+	OnPreVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): EngineEventConnection;
+	OnFinishedLoading(callback: () => void): EngineEventConnection;
+	OnFinishedReplicatingChunksFromServer(callback: () => void): EngineEventConnection;
 }
 
 interface PhysicsConstructor {
@@ -123,17 +123,19 @@ declare const enum MobileJoystickPhase {
 }
 
 interface InputProxy {
-	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): void;
-	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
-	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
-	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): void;
-	OnMouseScrollEvent(callback: (scrollAmount: number) => void): void;
-	OnMouseMoveEvent(callback: (location: Vector3) => void): void;
-	OnMouseDeltaEvent(callback: (delta: Vector3) => void): void;
-	OnTouchEvent(callback: (touchIndex: number, position: Vector3, phase: TouchPhase) => void): void;
-	OnTouchTapEvent(callback: (touchIndex: number, position: Vector3, phase: InputActionPhase) => void): void;
-	OnMobileJoystickEvent(callback: (position: Vector3, phase: MobileJoystickPhase) => void): void;
-	OnSchemeChangedEvent(callback: (scheme: string) => void): void;
+	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): EngineEventConnection;
+	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
+	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
+	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
+	OnMouseScrollEvent(callback: (scrollAmount: number) => void): EngineEventConnection;
+	OnMouseMoveEvent(callback: (location: Vector3) => void): EngineEventConnection;
+	OnMouseDeltaEvent(callback: (delta: Vector3) => void): EngineEventConnection;
+	OnTouchEvent(callback: (touchIndex: number, position: Vector3, phase: TouchPhase) => void): EngineEventConnection;
+	OnTouchTapEvent(
+		callback: (touchIndex: number, position: Vector3, phase: InputActionPhase) => void,
+	): EngineEventConnection;
+	OnMobileJoystickEvent(callback: (position: Vector3, phase: MobileJoystickPhase) => void): EngineEventConnection;
+	OnSchemeChangedEvent(callback: (scheme: string) => void): EngineEventConnection;
 
 	IsMobileJoystickVisible(): boolean;
 	SetMobileJoystickVisible(visible: boolean): void;
@@ -526,3 +528,12 @@ interface DiskManager {
 	WriteFileAsync(path: string, content: string): boolean;
 }
 declare const DiskManager: DiskManager;
+
+/**
+ * To disconnect, call `Bridge.DisconnectEvent(eventConnection)`
+ */
+type EngineEventConnection = number;
+
+interface BridgeConstructor {
+	DisconnectEvent(eventConnection: EngineEventConnection): void;
+}
