@@ -22,8 +22,8 @@ export const CoreClientSignals = {
 	PlayerLeave: new Signal<Player>(),
 	/** Fired before a block is hit. */
 	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
-
 	AfterBlockHit: new Signal<{ pos: Vector3; blockId: number; entity?: Entity }>(),
+	AfterBlockGroupHit: new Signal<{ positions: Vector3[]; entity?: Entity }>(),
 
 	/** Fired before a client-predicted block is placed. */
 	BeforeBlockPlaced: new Signal<BeforeBlockPlacedSignal>(),

@@ -19,7 +19,7 @@ import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
-export type BlockGroupHitSignal = { blockId: number[]; blockPos: Vector3[]; readonly player: Player };
+export type BlockGroupHitSignal = { blockIds: number[]; blockPositions: Vector3[]; readonly player: Player };
 
 export const CoreServerSignals = {
 	PlayerJoin: new Signal<PlayerJoinServerEvent>(),

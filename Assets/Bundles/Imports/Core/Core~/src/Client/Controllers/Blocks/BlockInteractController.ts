@@ -5,6 +5,8 @@ import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { CoreClientSignals } from "Client/CoreClientSignals";
+import { BeforeBlockHitSignal } from "../BlockInteractions/Signal/BeforeBlockHitSignal";
 
 @Controller({})
 export class BlockInteractController {
@@ -25,7 +27,7 @@ export class BlockInteractController {
 		const block = world.GetBlockAt(voxelPos);
 
 		if (showHealthbars) {
-			this.blockHealth.OnBeforeBlockHit(voxelPos, block);
+			CoreClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block));
 		}
 
 		this.localEntity.AddToMoveData("HitBlock", voxelPos);

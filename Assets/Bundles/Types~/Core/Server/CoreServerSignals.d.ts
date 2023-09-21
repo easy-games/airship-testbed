@@ -41,6 +41,11 @@ export declare const CoreServerSignals: {
         blockId: number;
         entity?: Entity | undefined;
     }>;
+    BeforeBlockGroupDestroyed: Signal<{
+        blockPositions: Vector3[];
+        blockIds: number[];
+        entity?: Entity | undefined;
+    }>;
     /** Fired when a block is destroyed. */
     BlockDestroyed: Signal<{
         blockPos: Vector3;

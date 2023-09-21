@@ -56,6 +56,20 @@ export class BlockHealthController implements OnStart {
 			}
 		});
 
+		CoreNetwork.ServerToClient.BlockGroupHit.Client.OnServerEvent((blockPositions, entityId) => {
+			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
+
+			const entity = this.entityController.GetEntityById(entityId);
+			CoreClientSignals.AfterBlockGroupHit.Fire({
+				positions: blockPositions,
+				entity,
+			});
+
+			blockPositions.forEach((position, index) => {
+				this.VisualizeBlockHealth(position, false);
+			});
+		});
+
 		CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
 			this.VisualizeBlockBreak(blockPos, blockId);
 		});
@@ -87,25 +101,23 @@ export class BlockHealthController implements OnStart {
 		});
 	}
 
-	public OnBeforeBlockHit(voxelPos: Vector3, block: Block) {
-		CoreClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block));
-	}
+	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {
+		let currentHealth = this.GetBlockHealth(blockPos);
 
-	public VisualizeBlockHealth(blockPos: Vector3) {
 		//Get or create health bar
-		let healthBarEntry = this.blockHealthBars.get(blockPos);
-		if (!healthBarEntry) {
-			healthBarEntry = this.AddHealthBar(blockPos);
+		if (showHealthbar) {
+			let healthBarEntry = this.blockHealthBars.get(blockPos);
 			if (!healthBarEntry) {
-				return;
+				healthBarEntry = this.AddHealthBar(blockPos);
+				if (!healthBarEntry) {
+					return;
+				}
+				healthBarEntry.lastHitTime = Time.time;
+				healthBarEntry.progressBar.SetValue(currentHealth / healthBarEntry.maxHealth);
 			}
 		}
 
 		//Update the health bars value
-		let currentHealth = this.GetBlockHealth(blockPos);
-		healthBarEntry.lastHitTime = Time.time;
-		healthBarEntry.progressBar.SetValue(currentHealth / healthBarEntry.maxHealth);
-
 		if (currentHealth > 0) {
 			const effect = EffectsManager.SpawnBundleEffect(
 				BundleGroupNames.Blocks,

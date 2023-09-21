@@ -703,8 +703,8 @@ export const items: {
 			yAxisAimAdjust: 0,
 			damage: 0,
 			aoeDamage: {
-				innerDamage: 40,
-				outerDamage: 10,
+				innerDamage: 20,
+				outerDamage: 1,
 				damageRadius: 3.5,
 			},
 			blockDamage: {
