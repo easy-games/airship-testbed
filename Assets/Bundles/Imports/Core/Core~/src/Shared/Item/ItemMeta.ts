@@ -27,8 +27,9 @@ export interface AmmoMeta {
 	lifetimeSec?: number;
 	gravity: number;
 	onHitEntitySoundId?: string;
+	onHitEntitySoundVolume?: number;
 	onHitGroundSoundId?: string;
-	onHitSoundVolume?: number;
+	onHitGroundSoundVolume?: number;
 	onHitVFXTemplate: AllBundleItems;
 }
 
