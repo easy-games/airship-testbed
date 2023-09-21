@@ -93,7 +93,11 @@ export interface ItemMechanicsMeta {
 
 export interface DamageItemMeta {
 	damage: number;
-	onHitPrefabPath: AllBundleItems;
+
+	/**
+	 * If undefined, default effects will be used.
+	 */
+	onHitPrefabPath?: AllBundleItems | "none";
 }
 
 export interface BreakBlockMeta extends DamageItemMeta {
@@ -115,8 +119,8 @@ export enum BlockArchetype {
 }
 
 export interface MeleeItemMeta extends DamageItemMeta {
-	damageType: DamageType;
-	canHitMultipleTargets: boolean;
+	damageType?: DamageType;
+	canHitMultipleTargets?: boolean;
 }
 
 export interface BoxCollision {

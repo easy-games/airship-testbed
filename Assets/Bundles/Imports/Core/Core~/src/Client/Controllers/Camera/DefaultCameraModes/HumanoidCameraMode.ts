@@ -155,15 +155,13 @@ export class HumanoidCameraMode implements CameraMode {
 		}
 		if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
 			const mouseDelta = this.mouse.GetDelta();
+			const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
 			if (!this.firstPerson && !this.lockView) {
 				this.mouse.SetLocation(this.rightClickPos);
 			}
-			this.rotationY =
-				(this.rotationY -
-					mouseDelta.x * this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR) %
-				(math.pi * 2);
+			this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % (math.pi * 2);
 			this.rotationX = math.clamp(
-				this.rotationX + mouseDelta.y * this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR,
+				this.rotationX + mouseDelta.y * mouseSensitivity * MOUSE_SENS_SCALAR,
 				MIN_ROT_X,
 				MAX_ROT_X,
 			);
@@ -206,7 +204,7 @@ export class HumanoidCameraMode implements CameraMode {
 		let rotation: Quaternion;
 
 		const lv = posOffset.mul(-1).normalized;
-		rotation = Quaternion.LookRotation(lv, new Vector3(0, 1, 0));
+		rotation = Quaternion.LookRotation(lv, Vector3.up);
 
 		return new CameraTransform(newPosition, rotation);
 	}

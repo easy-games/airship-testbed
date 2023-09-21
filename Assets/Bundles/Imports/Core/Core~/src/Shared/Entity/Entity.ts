@@ -74,6 +74,7 @@ export class EntityReferences {
 		this.root = ref.GetValue<Transform>(boneKey, "Root");
 
 		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
+		this.characterCollider.enabled = true;
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
 
@@ -147,6 +148,7 @@ export class Entity {
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		this.model = this.references.root.gameObject;
+		this.model.transform.localPosition = new Vector3(0, 0, 0);
 		this.anim = new CharacterEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
 		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();

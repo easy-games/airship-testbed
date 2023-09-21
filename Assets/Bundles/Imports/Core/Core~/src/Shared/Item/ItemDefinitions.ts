@@ -1,7 +1,6 @@
 import { Layer } from "Shared/Util/Layer";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
-import { DamageType } from "../Damage/DamageType";
 import {
 	AllBundleItems,
 	Bundle_ItemPickaxe_Prefabs,
@@ -9,15 +8,7 @@ import {
 	BundleGroupNames,
 } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
-import {
-	BlockArchetype,
-	BlockMeta,
-	BreakBlockMeta,
-	ItemAssetsMeta,
-	ItemMechanicsMeta,
-	ItemMeta,
-	MeleeItemMeta,
-} from "./ItemMeta";
+import { BlockArchetype, BlockMeta, BreakBlockMeta, ItemAssetsMeta, ItemMechanicsMeta, ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 
 const coreSoundPath = "Imports/Core/Shared/Resources/Sound/";
@@ -67,13 +58,6 @@ const bowItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemBow,
 	onUseSound: [coreSoundPath + "BowArrowFire"],
 	onUseSoundVolume: 0.5,
-};
-
-const defaultSwordMelee: MeleeItemMeta = {
-	damageType: DamageType.SWORD,
-	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit,
-	canHitMultipleTargets: false,
-	damage: 5,
 };
 
 const defaultBreakBlock: BreakBlockMeta = {
@@ -562,7 +546,6 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
 		melee: {
-			...defaultSwordMelee,
 			damage: 5,
 		},
 	},
@@ -572,7 +555,6 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
 		melee: {
-			...defaultSwordMelee,
 			damage: 8,
 		},
 	},
@@ -582,7 +564,6 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
 		melee: {
-			...defaultSwordMelee,
 			damage: 10,
 		},
 	},
@@ -592,7 +573,6 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
 		melee: {
-			...defaultSwordMelee,
 			damage: 13,
 		},
 	},
@@ -602,7 +582,6 @@ export const items: {
 		itemMechanics: { ...swordItemMechanics, cooldownSeconds: 1 },
 		accessoryPaths: [AccPath(ItemType.DOUBLE_HIT_SWORD)],
 		melee: {
-			...defaultSwordMelee,
 			damage: 10,
 		},
 	},
@@ -612,7 +591,6 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.RAGEBLADE)],
 		melee: {
-			...defaultSwordMelee,
 			damage: 15,
 		},
 	},

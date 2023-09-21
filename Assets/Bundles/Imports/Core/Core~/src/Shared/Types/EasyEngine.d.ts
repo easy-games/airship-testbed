@@ -410,7 +410,11 @@ interface TimeManager {
 }
 
 interface LayerMask {
-	GetMask(layerName: string): number;
+	GetMask(layer1: string): number;
+	GetMask(layer1: string, layer2: string): number;
+	GetMask(layer1: string, layer2: string, layer3: string): number;
+	GetMask(layer1: string, layer2: string, layer3: string, layer4: string): number;
+	GetMask(layer1: string, layer2: string, layer3: string, layer4: string, layer5: string): number;
 	NameToLayer(layerName: string): number;
 	LayerToName(layer: number): string;
 }

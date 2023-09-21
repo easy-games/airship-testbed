@@ -30,8 +30,8 @@ export class Mouse {
 		this.bin.Add(this.LeftUp);
 		this.bin.Add(this.RightDown);
 		this.bin.Add(this.RightUp);
-		this.bin.Add(this.LeftDown);
-		this.bin.Add(this.LeftUp);
+		this.bin.Add(this.MiddleDown);
+		this.bin.Add(this.MiddleUp);
 		this.bin.Add(this.Scrolled);
 		this.bin.Add(this.Moved);
 		// this.bin.Add(this.Delta);

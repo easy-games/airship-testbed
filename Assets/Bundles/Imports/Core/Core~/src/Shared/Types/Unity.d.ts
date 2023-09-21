@@ -997,45 +997,18 @@ interface PhysicsConstructor {
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
 	): Array<RaycastHit>;
-	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number): Array<RaycastHit>;
-	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number): Array<RaycastHit>;
-	RaycastAll(origin: Vector3, direction: Vector3): Array<RaycastHit>;
+	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number): CSArray<RaycastHit>;
+	RaycastAll(origin: Vector3, direction: Vector3, maxDistance: number): CSArray<RaycastHit>;
+	RaycastAll(origin: Vector3, direction: Vector3): CSArray<RaycastHit>;
 	RaycastAll(
 		ray: Ray,
 		maxDistance: number,
 		layerMask: number,
 		queryTriggerInteraction: QueryTriggerInteraction,
 	): Array<RaycastHit>;
-	RaycastAll(ray: Ray, maxDistance: number, layerMask: number): Array<RaycastHit>;
-	RaycastAll(ray: Ray, maxDistance: number): Array<RaycastHit>;
-	RaycastAll(ray: Ray): Array<RaycastHit>;
-	RaycastNonAlloc(
-		ray: Ray,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	RaycastNonAlloc(ray: Ray, results: Array<RaycastHit>, maxDistance: number, layerMask: number): number;
-	RaycastNonAlloc(ray: Ray, results: Array<RaycastHit>, maxDistance: number): number;
-	RaycastNonAlloc(ray: Ray, results: Array<RaycastHit>): number;
-	RaycastNonAlloc(
-		origin: Vector3,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): number;
-	RaycastNonAlloc(
-		origin: Vector3,
-		direction: Vector3,
-		results: Array<RaycastHit>,
-		maxDistance: number,
-		layerMask: number,
-	): number;
-	RaycastNonAlloc(origin: Vector3, direction: Vector3, results: Array<RaycastHit>, maxDistance: number): number;
-	RaycastNonAlloc(origin: Vector3, direction: Vector3, results: Array<RaycastHit>): number;
+	RaycastAll(ray: Ray, maxDistance: number, layerMask: number): CSArray<RaycastHit>;
+	RaycastAll(ray: Ray, maxDistance: number): CSArray<RaycastHit>;
+	RaycastAll(ray: Ray): CSArray<RaycastHit>;
 	RebuildBroadphaseRegions(worldBounds: Bounds, subdivisions: number): void;
 	Simulate(step: number): void;
 	SphereCast(
@@ -1342,19 +1315,11 @@ interface AnimancerLayer {
 interface Ray {
 	origin: Vector3;
 	direction: Vector3;
-
-	constructor(origin: Vector3, direction: Vector3): Ray;
-
-	// /**
-	//  * Returns a Vector3 projected onto the ray so that it is within the Ray's line of sight.
-	//  */
-	// ClosestPoint(point: Vector3): Vector3;
-
-	// /**
-	//  * Returns the distance between the given point and the closest point on the Ray.
-	//  */
-	// Distance(point: Vector3): number;
 }
+interface RayConstructor {
+    new(origin: Vector3, direction: Vector3): Ray;
+}
+declare const Ray: RayConstructor;
 
 interface Rigidbody {
 	AddForce_ForceMode(force: Vector3, forceMode: ForceMode): void;
@@ -3790,4 +3755,22 @@ interface Transform extends Component {
 	Translate(x: number, y: number, z: number, relativeTo: Transform): void;
 
 	ClampRotationY(targetValue: number, maxAngle: number): void;
+}
+
+interface Collider extends Component {
+    enabled: boolean;
+    attachedRigidbody: Rigidbody;
+    attachedArticulationBody: ArticulationBody;
+    isTrigger: boolean;
+    contactOffset: number;
+    bounds: Bounds;
+    hasModifiableContacts: boolean;
+    sharedMaterial: PhysicMaterial;
+    material: PhysicMaterial;
+
+    constructor(): Collider;
+
+    ClosestPoint(position: Vector3): Vector3;
+    ClosestPointOnBounds(position: Vector3): Vector3;
+    Raycast(ray: Ray, maxDistance: number): RaycastHit | undefined;
 }
