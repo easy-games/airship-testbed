@@ -7,6 +7,7 @@ import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
 import { Block } from "./Block";
 import { BlockDataAPI } from "./BlockData/BlockDataAPI";
+import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
@@ -141,9 +142,10 @@ export class World {
 	}
 
 	public PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
-		this.voxelWorld.WriteVoxelGroupAt(positions, blockIds, config?.priority ?? true);
+		//this.voxelWorld.WriteVoxelGroupAt(CSArrayUtil.Create(positions), blockIds, config?.priority ?? true);
 
 		let blocks: Block[] = [];
+		let binaryData: { pos: Vector3; blockId: number }[] = [];
 		positions.forEach((position, i) => {
 			//TODO: Add SetBlockGroupData() to avoid batch network calls and this for loop
 			if (config?.blockData) {
@@ -152,7 +154,9 @@ export class World {
 				}
 			}
 			blocks[i] = new Block(blockIds[i], this);
+			binaryData.push({ pos: position, blockId: blockIds[i] });
 		});
+		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData));
 
 		if (RunCore.IsServer()) {
 			CoreNetwork.ServerToClient.BlockGroupPlace.Server.FireAllClients(

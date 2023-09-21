@@ -33,7 +33,7 @@ export class BlockDataAPI {
 		}
 	}
 
-	public static SetBlockData(blockPos: Vector3, key: string, data: unknown): void {
+	public static SetBlockData(blockPos: Vector3, key: string, data: unknown, notifyClient = true): void {
 		let map: Map<string, unknown>;
 		if (this.blockDataMap.has(blockPos)) {
 			map = this.blockDataMap.get(blockPos)!;
@@ -42,8 +42,17 @@ export class BlockDataAPI {
 			this.blockDataMap.set(blockPos, map);
 		}
 		map.set(key, data);
-		if (RunUtil.IsServer()) {
+		if (notifyClient && RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.SetBlockData.Server.FireAllClients(blockPos, key, data);
+		}
+	}
+
+	public static SetBlockGroupData(blockPositions: Vector3[], key: string, data: unknown[]): void {
+		blockPositions.forEach((blockPos, index) => {
+			this.SetBlockData(blockPos, key, data[index], false);
+		});
+		if (RunUtil.IsServer()) {
+			CoreNetwork.ServerToClient.SetBlockGroupData.Server.FireAllClients(blockPositions, key, data);
 		}
 	}
 

@@ -13,9 +13,9 @@ export class WorldAPI {
 		}
 
 		const voxelWorld = GameObject.Find("VoxelWorld")?.GetComponent<VoxelWorld>() as VoxelWorld | undefined;
-        if (voxelWorld) {
-            this.world = new World(voxelWorld);
-        }   
+		if (voxelWorld) {
+			this.world = new World(voxelWorld);
+		}
 		return this.world;
 	}
 

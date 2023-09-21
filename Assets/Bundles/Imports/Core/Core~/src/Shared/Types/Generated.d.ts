@@ -10760,7 +10760,8 @@ interface VoxelWorld extends MonoBehaviour {
     UpdateSceneLights(): void;
     Vector3ToNearestIndex(normal: Vector3): number;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
-    WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
+    WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>): void;
+    WriteVoxelGroupAtTS(blob: unknown): void;
 }
     
 interface VoxelBinaryFile extends ScriptableObject {

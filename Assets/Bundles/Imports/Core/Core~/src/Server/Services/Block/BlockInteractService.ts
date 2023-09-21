@@ -118,14 +118,27 @@ export class BlockInteractService implements OnStart {
 	public PlaceBlockGroup(entity: CharacterEntity, positions: Vector3[], items: ItemMeta[]) {
 		let itemTypes: ItemType[] = [];
 		let blockTypes: number[] = [];
+		let itemMap: Map<ItemType, number> = new Map<ItemType, number>();
 		items.forEach((itemMeta, index) => {
 			if (itemMeta.block) {
 				const position = positions[index];
-				entity.GetInventory().Decrement(itemMeta.itemType, 1);
+
+				//Add to inventory map
+				let amount = 0;
+				amount += itemMap.get(itemMeta.itemType) ?? 0;
+				amount++;
+				itemMap.set(itemMeta.itemType, amount);
+
 				itemTypes[index] = itemMeta.itemType;
 				blockTypes[index] = itemMeta.block.blockId;
 			}
 		});
+
+		//Batching to avoid many network calls in Decrement
+		itemMap.forEach((amount, key) => {
+			entity.GetInventory().Decrement(key, amount);
+		});
+
 		WorldAPI.GetMainWorld()?.PlaceBlockGroupById(positions, blockTypes, {
 			placedByEntityId: entity.id,
 		});
@@ -189,6 +202,98 @@ export class BlockInteractService implements OnStart {
 		return true;
 	}
 
+	public DamageBlocks(entity: Entity, voxelPositions: Vector3[], damages: number[]): boolean {
+		print("Damaging blocks");
+		const world = WorldAPI.GetMainWorld();
+		if (!world) {
+			return false;
+		}
+
+		const player = entity.player;
+		if (!player) {
+			return false;
+		}
+
+		let damageI = 0;
+		let damagePositions: Vector3[] = [];
+		let newGroupHealth: number[] = [];
+
+		let destroyedI = 0;
+		let destroyedPositions: Vector3[] = [];
+		let destroyedIds: number[] = [];
+		let destroyedAirId: number[] = [];
+		for (let i = 0; i < voxelPositions.size(); i++) {
+			let voxelPos = BlockDataAPI.GetParentBlockPos(voxelPositions[i]) ?? voxelPositions[i];
+			let damage = damages[i];
+			print("Attempting damage: " + voxelPos);
+			const block = world.GetBlockAt(voxelPos);
+			if (block.IsAir()) {
+				continue;
+			}
+
+			/*const damage = WorldAPI.BlockHitDamageFunc(player, block, voxelPos, breakBlockMeta);
+			if (damage === 0) {
+				return false;
+			}*/
+
+			// Cancellable signal
+			/*const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
+				new BeforeBlockHitSignal(block, voxelPos, player, damage, breakBlockMeta),
+			);
+			damage = beforeSignal.damage*/
+
+			//BLOCK DAMAGE
+			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+			const newHealth = math.max(health - damage, 0);
+
+			print(`Adding BlockHit. damage=${damage}`);
+			damagePositions[damageI] = voxelPos;
+			newGroupHealth[damageI] = newHealth;
+			damageI++;
+
+			//BLOCK DEATH
+			if (newHealth === 0) {
+				print("Killed Block: " + block.blockId);
+				destroyedPositions[destroyedI] = voxelPos;
+				destroyedIds[destroyedI] = block.blockId;
+				destroyedAirId[destroyedI] = 0;
+				destroyedI++;
+			}
+		}
+
+		if (damageI === 0 || destroyedI === 0) {
+			return false;
+		}
+
+		if (damageI > 0) {
+			print(`Fireing Damage Group Event`);
+			//Apply damage to whole group of blocks
+			BlockDataAPI.SetBlockGroupData(damagePositions, "health", newGroupHealth);
+			//CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: voxelPos });
+			CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, entity.id);
+		}
+
+		if (destroyedI > 0) {
+			print(`Fireing Destroyed Group Event`);
+			//Destroy group of blocks
+			/*CoreServerSignals.BeforeBlockDestroyed.Fire({
+				blockId: block.blockId,
+				blockPos: voxelPos,
+				entity: entity,
+			});*/
+			world.PlaceBlockGroupById(destroyedPositions, destroyedAirId, {
+				placedByEntityId: entity.id,
+			});
+			/*CoreServerSignals.BlockDestroyed.Fire({
+				blockId: block.blockId,
+				blockPos: voxelPos,
+			});*/
+			CoreNetwork.ServerToClient.BlockGroupDestroyed.Server.FireAllClients(destroyedPositions, destroyedIds);
+		}
+
+		return true;
+	}
+
 	public DamageBlockAOE(
 		entity: Entity,
 		centerPosition: Vector3,
@@ -196,34 +301,50 @@ export class BlockInteractService implements OnStart {
 		aoeMeta: AOEDamageMeta,
 		config: DamageMeta,
 	) {
-		const voxelPos = WorldAPI.GetVoxelPosition(centerPosition);
+		print("damage AOE at: " + centerPosition);
+		//TODO add array to store all blocks that need to be destroyed and handle in this function not DamageBlock()
+		let positions: Vector3[] = [];
+		let damages: number[] = [];
+		let damageI = 0;
+
+		/* TODO: Eventually damage from explosion outword so the damage can decay as blocks stop the eruption
 		for (let i = 0; i < aoeMeta.damageRadius; i++) {
 			this.DamageRing(entity, voxelPos, i, aoeMeta, breakblockMeta);
-		}
-	}
+		}*/
 
-	private DamageRing(
-		entity: Entity,
-		center: Vector3,
-		radius: number,
-		aoeMeta: AOEDamageMeta,
-		breakBlock: BreakBlockMeta,
-	) {
-		for (let x = center.x - radius; x < center.x + radius; x++) {
-			for (let y = center.y - radius; y < center.y + radius; y++) {
-				for (let z = center.z - radius; z < center.z + radius; z++) {
-					const pos = new Vector3(x, y, z);
-					const distanceDelta = pos.Distance(center) / aoeMeta.damageRadius;
+		for (let x = centerPosition.x - aoeMeta.damageRadius; x < centerPosition.x + aoeMeta.damageRadius; x++) {
+			for (let y = centerPosition.y - aoeMeta.damageRadius; y < centerPosition.y + aoeMeta.damageRadius; y++) {
+				for (
+					let z = centerPosition.z - aoeMeta.damageRadius;
+					z < centerPosition.z + aoeMeta.damageRadius;
+					z++
+				) {
+					const targetPos = new Vector3(x, y, z);
+					const targetVoxelPos = WorldAPI.GetVoxelPosition(targetPos);
+					const distanceDelta = targetPos.Distance(centerPosition) / aoeMeta.damageRadius;
 					const maxDamage = MathUtil.Lerp(
 						aoeMeta.innerDamage,
 						aoeMeta.outerDamage,
 						distanceDelta * distanceDelta,
 					);
 					if (maxDamage > 0) {
-						this.DamageBlock(entity, breakBlock, pos);
+						print("Adding " + maxDamage + " damage to: " + targetVoxelPos);
+						damages[damageI] = maxDamage;
+						positions[damageI] = targetVoxelPos;
+						damageI++;
 					}
 				}
 			}
 		}
+
+		this.DamageBlocks(entity, positions, damages);
 	}
+
+	private GetDamageRing(
+		entity: Entity,
+		center: Vector3,
+		radius: number,
+		aoeMeta: AOEDamageMeta,
+		breakBlock: BreakBlockMeta,
+	) {}
 }

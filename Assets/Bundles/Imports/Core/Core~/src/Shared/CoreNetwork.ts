@@ -50,7 +50,9 @@ export const CoreNetwork = {
 		SpawnEntities: new RemoteEvent<[entities: EntityDto[]]>(),
 		DespawnEntity: new RemoteEvent<[entityId: number]>(),
 		BlockHit: new RemoteEvent<[blockPos: Vector3, entityId: number]>(),
+		BlockGroupHit: new RemoteEvent<[blockPositions: Vector3[], entityId: number]>(),
 		BlockDestroyed: new RemoteEvent<[blockPos: Vector3, blockId: number]>(),
+		BlockGroupDestroyed: new RemoteEvent<[blockPositions: Vector3[], blockId: number[]]>(),
 		ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
 		EntityDamage: new RemoteEvent<
 			[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]
@@ -114,6 +116,7 @@ export const CoreNetwork = {
 		RemovePlayerFromTeam: new RemoteEvent<[teamId: string, userId: string]>(),
 		RemoveTeams: new RemoteEvent<[teamIds: string[]]>(),
 		SetBlockData: new RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>(),
+		SetBlockGroupData: new RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>(),
 		SyncPrefabBlocks: new RemoteEvent<[blockPositions: Vector3[]]>(),
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),

@@ -297,6 +297,7 @@ export class LocalEntityController implements OnStart {
 
 			//Libonati Test Space - DONT COMMIT
 			keyboard.OnKeyDown(KeyCode.G, (event) => {
+				print("Sending Libonati Debug Command");
 				CoreNetwork.ClientToServer.LibonatiTest.Client.FireServer();
 			});
 

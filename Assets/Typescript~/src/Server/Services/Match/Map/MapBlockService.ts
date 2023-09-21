@@ -32,19 +32,34 @@ export class MapBlockService implements OnStart {
 				return;
 			}
 
-			const sphereRadius = 5;
+			const sphereRadius = 4.5;
 			let voxelPositions: Vector3[] = [];
 			let itemMeta: ItemMeta[] = [];
 			let i = 0;
+			let world = WorldAPI.GetMainWorld();
 			for (let x = -sphereRadius; x < sphereRadius; x++) {
 				for (let y = -sphereRadius; y < sphereRadius; y++) {
 					for (let z = -sphereRadius; z < sphereRadius; z++) {
-						const entityVoxelPos = WorldAPI.GetVoxelPosition(entity?.model.transform.position);
-						const blockPos = new Vector3(x, y, z);
-						if (blockPos.magnitude <= sphereRadius) {
-							voxelPositions[i] = entityVoxelPos;
-							itemMeta[i] = ItemUtil.GetItemMeta(ItemType.STONE);
-							i++;
+						const localBlockPos = new Vector3(x, y, z);
+						let voxelPos = new Vector3(0, 0, 0);
+						if (entity) {
+							voxelPos = WorldAPI.GetVoxelPosition(
+								entity.model.transform.position
+									.add(localBlockPos)
+									.add(entity.model.transform.forward.mul(sphereRadius + 1)),
+							);
+						}
+						if (world) {
+							const block = world.GetBlockAt(voxelPos);
+							if (block && block.IsAir()) {
+								if (localBlockPos.magnitude <= sphereRadius) {
+									voxelPositions[i] = voxelPos;
+									itemMeta[i] = ItemUtil.GetItemMeta(
+										localBlockPos.magnitude < sphereRadius / 2 ? ItemType.DIRT : ItemType.STONE,
+									);
+									i++;
+								}
+							}
 						}
 					}
 				}
