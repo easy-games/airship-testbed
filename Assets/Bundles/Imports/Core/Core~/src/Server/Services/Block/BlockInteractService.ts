@@ -170,7 +170,7 @@ export class BlockInteractService implements OnStart {
 			return false;
 		}
 		const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-			new BeforeBlockHitSignal(block, voxelPos, player, damage, breakBlockMeta),
+			new BeforeBlockHitSignal(block, voxelPos, player, damage),
 		);
 
 		//BLOCK DAMAGE
@@ -231,16 +231,16 @@ export class BlockInteractService implements OnStart {
 				continue;
 			}
 
-			/*const damage = WorldAPI.BlockHitDamageFunc(player, block, voxelPos, breakBlockMeta);
+			//const damage = WorldAPI.BlockHitDamageFunc(player, block, voxelPos, breakBlockMeta);
 			if (damage === 0) {
 				return false;
-			}*/
+			}
 
 			// Cancellable signal
-			/*const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-				new BeforeBlockHitSignal(block, voxelPos, player, damage, breakBlockMeta),
+			const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
+				new BeforeBlockHitSignal(block, voxelPos, player, damage),
 			);
-			damage = beforeSignal.damage*/
+			damage = beforeSignal.damage;
 
 			//BLOCK DAMAGE
 			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
@@ -276,18 +276,18 @@ export class BlockInteractService implements OnStart {
 		if (destroyedI > 0) {
 			print(`Fireing Destroyed Group Event`);
 			//Destroy group of blocks
-			/*CoreServerSignals.BeforeBlockDestroyed.Fire({
-				blockId: block.blockId,
-				blockPos: voxelPos,
+			CoreServerSignals.BeforeBlockGroupDestroyed.Fire({
+				blockIds: destroyedIds,
+				blockPositions: destroyedPositions,
 				entity: entity,
-			});*/
+			});
 			world.PlaceBlockGroupById(destroyedPositions, destroyedAirId, {
 				placedByEntityId: entity.id,
 			});
-			/*CoreServerSignals.BlockDestroyed.Fire({
-				blockId: block.blockId,
-				blockPos: voxelPos,
-			});*/
+			CoreServerSignals.BlockGroupDestroyed.Fire({
+				blockIds: destroyedIds,
+				blockPositions: destroyedPositions,
+			});
 			CoreNetwork.ServerToClient.BlockGroupDestroyed.Server.FireAllClients(destroyedPositions, destroyedIds);
 		}
 

@@ -146,16 +146,31 @@ export class World {
 
 		let blocks: Block[] = [];
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
+
+		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
 		positions.forEach((position, i) => {
-			//TODO: Add SetBlockGroupData() to avoid batch network calls and this for loop
 			if (config?.blockData) {
 				for (const key of Object.keys(config.blockData)) {
-					BlockDataAPI.SetBlockData(position, key as string, config.blockData[key]);
+					let newMapData = keyMap.get(key as string);
+					if (!newMapData) {
+						newMapData = { position: [], data: [] };
+					}
+					newMapData.position.push(position);
+					newMapData.data.push(config.blockData[key]);
+					keyMap.set(key as string, newMapData);
+					//BlockDataAPI.SetBlockData(position, key as string, config.blockData[key]);
 				}
 			}
 			blocks[i] = new Block(blockIds[i], this);
 			binaryData.push({ pos: position, blockId: blockIds[i] });
 		});
+
+		//Call block keys in batches based on keytype to avoid calling it per block (it sends a network event)
+		keyMap.forEach((value, key) => {
+			//print("Sending batch key data: " + key + ", " + value.data.size());
+			BlockDataAPI.SetBlockGroupData(value.position, key, value.data);
+		});
+
 		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData));
 
 		if (RunCore.IsServer()) {

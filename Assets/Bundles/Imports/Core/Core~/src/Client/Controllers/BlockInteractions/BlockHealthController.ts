@@ -60,6 +60,12 @@ export class BlockHealthController implements OnStart {
 			this.VisualizeBlockBreak(blockPos, blockId);
 		});
 
+		CoreNetwork.ServerToClient.BlockGroupDestroyed.Client.OnServerEvent((blockPositions, blockIds) => {
+			blockPositions.forEach((position, index) => {
+				this.VisualizeBlockBreak(position, blockIds[index], false);
+			});
+		});
+
 		// OnLateUpdate.Connect((dt) => {
 		// 	this.blockHealthBars.forEach((healthbarEntry, block) => {
 		// 		healthbarEntry.gameObject.transform.rotation =
@@ -117,12 +123,13 @@ export class BlockHealthController implements OnStart {
 		}
 	}
 
-	public VisualizeBlockBreak(blockPos: Vector3, blockId: number): void {
+	public VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars = true): void {
 		//Get or create health bar
 		let entry = this.blockHealthBars.get(blockPos);
 		if (!entry) {
-			return; //Don't show healthbars unless we were already showing the health of this block
-			entry = this.AddHealthBar(blockPos);
+			if (showHealthbars) {
+				entry = this.AddHealthBar(blockPos);
+			}
 		}
 
 		//Play destruction vfx
