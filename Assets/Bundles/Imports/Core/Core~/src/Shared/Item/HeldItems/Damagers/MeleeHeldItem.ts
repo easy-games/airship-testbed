@@ -19,7 +19,7 @@ export class MeleeHeldItem extends HeldItem {
 		if (!meleeData) {
 			return;
 		}
-		this.Log("Using Server");
+		print("OnUseClient");
 		//Only local player should do collisions checks
 		//TODO make sure other players show the attacks effects just without having to do collision checks
 		if (this.entity.IsLocalCharacter()) {

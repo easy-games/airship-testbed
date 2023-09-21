@@ -12,13 +12,20 @@ const coreSoundPath = "Imports/Core/Shared/Resources/Sound/";
 export class BlockEffectsController implements OnStart {
 	private hitSoundDefault = [coreSoundPath + "Block_Stone_Hit_01", coreSoundPath + "Block_Stone_Hit_02"];
 	private breakSoundDefault = [coreSoundPath + "Block_Stone_Break"];
-	private placeSoundDefault = [coreSoundPath + "Block_Stone_Place_01", coreSoundPath + "Block_Stone_Place_02", coreSoundPath + "Block_Stone_Place_03"];
+	private placeSoundDefault = [
+		coreSoundPath + "Block_Stone_Place_01",
+		coreSoundPath + "Block_Stone_Place_02",
+		coreSoundPath + "Block_Stone_Place_03",
+	];
 
 	OnStart(): void {
 		CoreClientSignals.BlockPlace.Connect((event) => {
 			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(event.block.itemMeta?.block?.placeSound ?? this.placeSoundDefault),
 				event.pos,
+				{
+					volumeScale: event.placer?.IsLocalCharacter() ? 1 : 0.5,
+				},
 			);
 		});
 
@@ -26,13 +33,16 @@ export class BlockEffectsController implements OnStart {
 			if (event.entity?.IsLocalCharacter()) return;
 
 			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockId);
-            let itemMeta: ItemMeta | undefined;
-            if (itemType) {
-                itemMeta = ItemUtil.GetItemMeta(itemType);
-            }
+			let itemMeta: ItemMeta | undefined;
+			if (itemType) {
+				itemMeta = ItemUtil.GetItemMeta(itemType);
+			}
 			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(itemMeta?.block?.hitSound ?? this.hitSoundDefault),
 				event.pos,
+				{
+					volumeScale: 0.5,
+				},
 			);
 		});
 
