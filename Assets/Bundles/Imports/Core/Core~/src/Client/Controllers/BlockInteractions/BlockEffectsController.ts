@@ -20,14 +20,27 @@ export class BlockEffectsController implements OnStart {
 
 	OnStart(): void {
 		CoreClientSignals.BlockPlace.Connect((event) => {
+			if (event.isGroupEvent) {
+				return;
+			}
 			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(event.block.itemMeta?.block?.placeSound ?? this.placeSoundDefault),
 				event.pos,
 			);
 		});
 
+		CoreClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
+			if (event.isGroupEvent) {
+				return;
+			}
+			AudioManager.PlayAtPosition(
+				RandomUtil.FromArray(event.block.itemMeta?.block?.hitSound ?? this.hitSoundDefault),
+				event.blockPos,
+			);
+		});
+
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
-			if (event.entity?.IsLocalCharacter()) return;
+			if (event.isGroupEvent || event.entity?.IsLocalCharacter()) return;
 
 			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockId);
 			let itemMeta: ItemMeta | undefined;
@@ -36,13 +49,6 @@ export class BlockEffectsController implements OnStart {
 			}
 			AudioManager.PlayAtPosition(
 				RandomUtil.FromArray(itemMeta?.block?.hitSound ?? this.hitSoundDefault),
-				event.pos,
-			);
-		});
-
-		CoreClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
-			AudioManager.PlayAtPosition(
-				RandomUtil.FromArray(event.block.itemMeta?.block?.hitSound ?? this.hitSoundDefault),
 				event.blockPos,
 			);
 		});

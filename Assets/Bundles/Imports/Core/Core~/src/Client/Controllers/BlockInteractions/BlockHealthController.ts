@@ -13,13 +13,12 @@ import {
 } from "Shared/Util/ReferenceManagerResources";
 import { Theme } from "Shared/Util/Theme";
 import { SetInterval } from "Shared/Util/Timer";
-import { Block } from "Shared/VoxelWorld/Block";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";
-import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
+import { Entity } from "Shared/Entity/Entity";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
@@ -40,34 +39,24 @@ export class BlockHealthController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, entityId) => {
-			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
-
-			const voxel = WorldAPI.GetMainWorld()?.GetRawVoxelDataAt(blockPos);
-			if (voxel) {
-				const entity = this.entityController.GetEntityById(entityId);
-				const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-				CoreClientSignals.AfterBlockHit.Fire({
-					pos: blockPos,
-					blockId,
-					entity,
-				});
-				this.VisualizeBlockHealth(blockPos);
-			}
-		});
-
-		CoreNetwork.ServerToClient.BlockGroupHit.Client.OnServerEvent((blockPositions, entityId) => {
+		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId) => {
 			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
 
 			const entity = this.entityController.GetEntityById(entityId);
-			CoreClientSignals.AfterBlockGroupHit.Fire({
-				positions: blockPositions,
-				entity,
-			});
+			if (entity) {
+				this.OnBlockHit(entity, blockPos, blockId, true);
+			}
+		});
 
-			blockPositions.forEach((position, index) => {
-				this.VisualizeBlockHealth(position, false);
-			});
+		CoreNetwork.ServerToClient.BlockGroupHit.Client.OnServerEvent((blockPositions, blockIds, entityId) => {
+			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
+
+			const entity = this.entityController.GetEntityById(entityId);
+			if (entity) {
+				blockPositions.forEach((position, index) => {
+					this.OnBlockHit(entity, position, blockIds[index], true);
+				});
+			}
 		});
 
 		CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
@@ -99,6 +88,16 @@ export class BlockHealthController implements OnStart {
 				this.DeleteHealthBar(entry, pos);
 			});
 		});
+	}
+
+	private OnBlockHit(entity: Entity, blockPos: Vector3, blockId: number, isGroupEvent: boolean) {
+		CoreClientSignals.AfterBlockHit.Fire({
+			blockPos: blockPos,
+			blockId,
+			entity,
+			isGroupEvent,
+		});
+		this.VisualizeBlockHealth(blockPos, !isGroupEvent);
 	}
 
 	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {

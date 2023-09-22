@@ -10,6 +10,7 @@ export class BeforeBlockHitSignal {
 		 * To modify the damage you must edit BlockHitDamageCalc()
 		 */
 		public readonly damage: number,
+		public readonly isGroupEvent: boolean,
 	) {}
 }
 

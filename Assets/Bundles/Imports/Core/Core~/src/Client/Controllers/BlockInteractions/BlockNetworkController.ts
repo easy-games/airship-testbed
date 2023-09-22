@@ -10,8 +10,8 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 export class BlockNetworkController implements OnStart {
 	OnStart(): void {
 		CoreNetwork.ServerToClient.BlockPlace.Client.OnServerEvent((pos, voxelData, entityId) => {
-            const world = WorldAPI.GetMainWorld();
-            if (!world) return;
+			const world = WorldAPI.GetMainWorld();
+			if (!world) return;
 			const voxel = new Block(voxelData, world);
 			let placer: Entity | undefined;
 			if (entityId !== undefined) {
@@ -22,7 +22,7 @@ export class BlockNetworkController implements OnStart {
 				return;
 			}
 
-			CoreClientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, voxel, placer));
+			CoreClientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, voxel, placer, false));
 		});
 	}
 }

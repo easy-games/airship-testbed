@@ -136,7 +136,9 @@ export class World {
 					.BlockPlaceClientSignal;
 
 				const block = new Block(blockId, this);
-				clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character));
+				clientSignals.BlockPlace.Fire(
+					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character, false),
+				);
 			}
 		}
 	}
@@ -148,6 +150,8 @@ export class World {
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 
 		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
+		let isLocalPrediction = config?.placedByEntityId === Game.LocalPlayer.Character?.id;
+
 		positions.forEach((position, i) => {
 			if (config?.blockData) {
 				for (const key of Object.keys(config.blockData)) {
@@ -163,6 +167,15 @@ export class World {
 			}
 			blocks[i] = new Block(blockIds[i], this);
 			binaryData.push({ pos: position, blockId: blockIds[i] });
+			if (isLocalPrediction) {
+				// Client predicted block place event
+				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
+				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
+					.BlockPlaceClientSignal;
+				clientSignals.BlockPlace.Fire(
+					new BlockPlaceClientSignal(position, blocks[i], Game.LocalPlayer.Character, true),
+				);
+			}
 		});
 
 		//Call block keys in batches based on keytype to avoid calling it per block (it sends a network event)
@@ -171,7 +184,7 @@ export class World {
 			BlockDataAPI.SetBlockGroupData(value.position, key, value.data);
 		});
 
-		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData));
+		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData), config?.priority ?? true);
 
 		if (RunCore.IsServer()) {
 			CoreNetwork.ServerToClient.BlockGroupPlace.Server.FireAllClients(
@@ -179,17 +192,6 @@ export class World {
 				blockIds,
 				config?.placedByEntityId,
 			);
-		} else {
-			if (config?.placedByEntityId === Game.LocalPlayer.Character?.id) {
-				// Client predicted block place event
-				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
-				const BlockGroupPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
-					.BlockGroupPlaceClientSignal;
-
-				clientSignals.BlockGroupPlace.Fire(
-					new BlockGroupPlaceClientSignal(positions, blocks, Game.LocalPlayer.Character),
-				);
-			}
 		}
 	}
 

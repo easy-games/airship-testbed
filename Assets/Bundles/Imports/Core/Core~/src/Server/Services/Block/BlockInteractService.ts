@@ -170,7 +170,7 @@ export class BlockInteractService implements OnStart {
 			return false;
 		}
 		const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-			new BeforeBlockHitSignal(block, voxelPos, player, damage),
+			new BeforeBlockHitSignal(block, voxelPos, player, damage, false),
 		);
 
 		//BLOCK DAMAGE
@@ -181,7 +181,7 @@ export class BlockInteractService implements OnStart {
 		// After signal
 		CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: voxelPos });
 		print(`Firing BlockHit. damage=${beforeSignal.damage}`);
-		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, entity.id);
+		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.blockId, entity.id);
 
 		//BLOCK DEATH
 		if (newHealth === 0) {
@@ -216,6 +216,7 @@ export class BlockInteractService implements OnStart {
 
 		let damageI = 0;
 		let damagePositions: Vector3[] = [];
+		let damagedIds: number[] = [];
 		let newGroupHealth: number[] = [];
 
 		let destroyedI = 0;
@@ -238,7 +239,7 @@ export class BlockInteractService implements OnStart {
 
 			// Cancellable signal
 			const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-				new BeforeBlockHitSignal(block, voxelPos, player, damage),
+				new BeforeBlockHitSignal(block, voxelPos, player, damage, true),
 			);
 			damage = beforeSignal.damage;
 
@@ -248,6 +249,7 @@ export class BlockInteractService implements OnStart {
 
 			print(`Adding BlockHit. damage=${damage}`);
 			damagePositions[damageI] = voxelPos;
+			damagedIds[damageI] = block.blockId;
 			newGroupHealth[damageI] = newHealth;
 			damageI++;
 
@@ -269,8 +271,7 @@ export class BlockInteractService implements OnStart {
 			print(`Fireing Damage Group Event`);
 			//Apply damage to whole group of blocks
 			BlockDataAPI.SetBlockGroupData(damagePositions, "health", newGroupHealth);
-			//CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: voxelPos });
-			CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, entity.id);
+			CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, damagedIds, entity.id);
 		}
 
 		if (destroyedI > 0) {

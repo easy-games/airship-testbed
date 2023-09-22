@@ -27,7 +27,7 @@ export class BlockInteractController {
 		const block = world.GetBlockAt(voxelPos);
 
 		if (showHealthbars) {
-			CoreClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block));
+			CoreClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block, false));
 		}
 
 		this.localEntity.AddToMoveData("HitBlock", voxelPos);

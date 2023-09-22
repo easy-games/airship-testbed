@@ -5,13 +5,13 @@ import { Player } from "Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
-import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
-import { BlockGroupPlaceClientSignal, BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
+import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
+import { Block } from "Shared/VoxelWorld/Block";
 
 export const CoreClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),
@@ -21,15 +21,13 @@ export const CoreClientSignals = {
 	PlayerJoin: new Signal<Player>(),
 	PlayerLeave: new Signal<Player>(),
 	/** Fired before a block is hit. */
-	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
-	AfterBlockHit: new Signal<{ pos: Vector3; blockId: number; entity?: Entity }>(),
-	AfterBlockGroupHit: new Signal<{ positions: Vector3[]; entity?: Entity }>(),
+	BeforeBlockHit: new Signal<{ blockPos: Vector3; block: Block; entity?: Entity; isGroupEvent: boolean }>(),
+	AfterBlockHit: new Signal<{ blockPos: Vector3; blockId: number; entity?: Entity; isGroupEvent: boolean }>(),
 
 	/** Fired before a client-predicted block is placed. */
 	BeforeBlockPlaced: new Signal<BeforeBlockPlacedSignal>(),
 	/** Fired when a client-predicted block is placed. */
 	BlockPlace: new Signal<BlockPlaceClientSignal>(),
-	BlockGroupPlace: new Signal<BlockGroupPlaceClientSignal>(),
 	PlayerChangeTeam: new Signal<ChangeTeamSignal>(),
 	/** Fired when local player swings melee weapon. */
 	WeaponSwing: new Signal<{ weapon: ItemType }>(),

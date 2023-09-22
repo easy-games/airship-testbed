@@ -10761,7 +10761,7 @@ interface VoxelWorld extends MonoBehaviour {
     Vector3ToNearestIndex(normal: Vector3): number;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
     WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>): void;
-    WriteVoxelGroupAtTS(blob: unknown): void;
+    WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
 }
     
 interface VoxelBinaryFile extends ScriptableObject {
@@ -10837,12 +10837,14 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     RpcLogic___TargetFinishedSendingWorldRpc_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetSetLightingProperties_2623000413(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     RpcLogic___TargetWriteChunksRpc_517074003(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
+    RpcLogic___TargetWriteVoxelGroupRpc_1556679607(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>): void;
     RpcLogic___TargetWriteVoxelRpc_1359590914(conn: NetworkConnection, pos: unknown, voxel: number): void;
     TargetAddPointLights(conn: NetworkConnection, dtos: CSArray<PointLightDto>): void;
     TargetDirtyLights(conn: NetworkConnection): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
     TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     TargetWriteChunksRpc(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
+    TargetWriteVoxelGroupRpc(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>): void;
     TargetWriteVoxelRpc(conn: NetworkConnection, pos: unknown, voxel: number): void;
 }
     
@@ -10895,7 +10897,7 @@ interface Chunk {
     HasVoxels(): boolean;
     IsGeometryDirty(): boolean;
     MainThreadAddSamplesToProbes(): void;
-    MainthreadForceCollisionForVoxel(pos: Vector3): void;
+    MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
     NeedsToRunUpdate(): boolean;
     RemoveLight(id: number): void;
