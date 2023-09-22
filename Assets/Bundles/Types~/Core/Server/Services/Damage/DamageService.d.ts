@@ -3,9 +3,9 @@
 import { OnStart } from "@easy-games/flamework-core";
 import { DamageType } from "../../../Shared/Damage/DamageType";
 import { Entity } from "../../../Shared/Entity/Entity";
+import { AOEDamageMeta } from "../../../Shared/Item/ItemMeta";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
-import { AOEDamageMeta } from "../../../Shared/Item/ItemMeta";
 export declare class DamageService implements OnStart {
     private readonly entityService;
     private combatVars;

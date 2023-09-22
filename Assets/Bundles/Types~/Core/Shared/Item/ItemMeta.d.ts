@@ -8,7 +8,7 @@ import { ItemType } from "./ItemType";
 export interface BlockMeta {
     health?: number;
     blockId: number;
-    blockArchetype: BlockArchetype;
+    blockArchetype?: BlockArchetype;
     prefab?: {
         path: string;
         childBlocks?: Vector3[];
