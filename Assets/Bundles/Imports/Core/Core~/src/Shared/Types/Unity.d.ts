@@ -3655,7 +3655,7 @@ interface ApplicationConstructor {
 
 interface EntityAnimationEvents {
 	EntityEventKey: number;
-	OnEntityAnimationEvent(callback: (data: EntityAnimationEventData) => void): void;
+	OnEntityAnimationEvent(callback: (data: EntityAnimationEventData) => void): EngineEventConnection;
 }
 
 interface Animator {

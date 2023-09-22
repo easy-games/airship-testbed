@@ -122,7 +122,7 @@ export class MeleeHeldItem extends HeldItem {
 			if (ignoreEntityIds.includes(targetEntity.id)) {
 				continue;
 			}
-			const immuneUntilTime = this.entity.GetImmuneUntilTime();
+			const immuneUntilTime = targetEntity.GetImmuneUntilTime();
 			if (TimeUtil.GetServerTime() + (RunUtil.IsClient() ? 0.1 : 0) < immuneUntilTime) {
 				continue;
 			}

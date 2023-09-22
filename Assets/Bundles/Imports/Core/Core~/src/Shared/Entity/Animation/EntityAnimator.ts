@@ -99,11 +99,14 @@ export class EntityAnimator {
 		);
 
 		//Listen to animation events
-		this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
+		const animConn = this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
 			if (data.key !== 0) {
 				//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
 			}
 			this.OnAnimationEvent(data.key, data);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(animConn);
 		});
 
 		this.entityRef.root.gameObject.SetActive(true);
