@@ -12842,6 +12842,7 @@ interface BridgeConstructor {
     IsFullScreen(): boolean;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
+    RemoveRichText(input: string): string;
     ScreenPointToLocalPointInRectangle(rectTransform: RectTransform, screenPoint: Vector2): Vector2;
     SetFullScreen(value: boolean): void;
     SetParentToSceneRoot(transform: Transform): void;
