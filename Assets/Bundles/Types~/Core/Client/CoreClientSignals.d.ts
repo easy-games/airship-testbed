@@ -7,13 +7,13 @@ import { Player } from "../Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "../Shared/Signals/BeforeBlockPlacedSignal";
 import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
 import { Signal } from "../Shared/Util/Signal";
-import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
 import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
+import { Block } from "../Shared/VoxelWorld/Block";
 export declare const CoreClientSignals: {
     EntitySpawn: Signal<EntitySpawnClientSignal>;
     EntityDamage: Signal<EntityDamageClientSignal>;
@@ -22,11 +22,17 @@ export declare const CoreClientSignals: {
     PlayerJoin: Signal<Player>;
     PlayerLeave: Signal<Player>;
     /** Fired before a block is hit. */
-    BeforeBlockHit: Signal<BeforeBlockHitSignal>;
+    BeforeBlockHit: Signal<{
+        blockPos: Vector3;
+        block: Block;
+        entity?: Entity | undefined;
+        isGroupEvent: boolean;
+    }>;
     AfterBlockHit: Signal<{
-        pos: Vector3;
+        blockPos: Vector3;
         blockId: number;
         entity?: Entity | undefined;
+        isGroupEvent: boolean;
     }>;
     /** Fired before a client-predicted block is placed. */
     BeforeBlockPlaced: Signal<BeforeBlockPlacedSignal>;
