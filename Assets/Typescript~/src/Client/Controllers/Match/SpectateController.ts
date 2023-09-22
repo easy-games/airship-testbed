@@ -72,7 +72,7 @@ export class SpectateController implements OnStart {
 
 		const bin = new Bin();
 
-		const orbitCamMode = new OrbitCameraMode(entities[0].model.transform, this.spectateCamDistance);
+		const orbitCamMode = new OrbitCameraMode(this.spectateCamDistance, entities[0].model.transform);
 		this.cameraController.SetMode(orbitCamMode);
 		Dependency<LocalEntityController>().SetFirstPerson(false);
 

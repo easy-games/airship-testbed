@@ -1,5 +1,7 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { DamageService } from "Server/Services/Damage/DamageService";
+import { DamageType } from "Shared/Damage/DamageType";
+import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -17,7 +19,6 @@ export class MeleeHeldItem extends HeldItem {
 		if (!meleeData) {
 			return;
 		}
-		this.Log("Using Server");
 		//Only local player should do collisions checks
 		//TODO make sure other players show the attacks effects just without having to do collision checks
 		if (this.entity.IsLocalCharacter()) {
@@ -27,10 +28,11 @@ export class MeleeHeldItem extends HeldItem {
 			let farTargets = this.ScanForHits();
 
 			for (const data of farTargets) {
-				if (this.bundles && this.meta.melee?.onHitPrefabPath) {
+				if (this.bundles && this.meta.melee?.onHitPrefabPath !== "none") {
+					let prefabPath = this.meta.melee?.onHitPrefabPath ?? AllBundleItems.ItemSword_Prefabs_OnHit;
 					//Local damage predictions
 					const effectGO = EffectsManager.SpawnEffect(
-						this.meta.melee.onHitPrefabPath,
+						prefabPath,
 						data.hitPosition,
 						Quaternion.LookRotation(data.hitDirection).eulerAngles,
 					);
@@ -43,45 +45,36 @@ export class MeleeHeldItem extends HeldItem {
 	}
 
 	override OnUseServer(useIndex: number) {
-		Profiler.BeginSample("Melee.OnUseServer");
-
-		Profiler.BeginSample("super.OnUseServer");
 		super.OnUseServer(useIndex);
-		Profiler.EndSample();
 		let meleeData = this.meta.melee;
 		if (!meleeData) {
-			Profiler.EndSample();
 			return;
 		}
-		this.Log("Using Server");
-		Profiler.BeginSample("GetCollisions");
+
 		let hitTargets = this.ScanForHits();
-		Profiler.EndSample();
-		print("Server hit tick=" + InstanceFinder.TimeManager.Tick + ", hitTargets=" + hitTargets.size());
-		Profiler.BeginSample("HitTargetsInflictDamage");
 		hitTargets.forEach((data) => {
 			Dependency<DamageService>().InflictDamage(data.hitEntity, meleeData?.damage ?? 0, {
-				damageType: meleeData?.damageType,
+				damageType: meleeData?.damageType ?? DamageType.SWORD,
 				fromEntity: this.entity,
 				knockbackDirection: data.knockbackDirection,
 			});
 		});
-		Profiler.EndSample();
-		Profiler.EndSample();
 	}
 
 	private ScanForHits(): MeleeHit[] {
 		let farBox = this.combatVars.GetVector3("swordBoxFar");
 		let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
-		let farHits = this.ScanBox(farBox, [], Theme.Red);
-		let closeHits = this.ScanBox(
-			closeBox,
-			farHits.map((x) => x.hitEntity.id),
-			Theme.Green,
-		);
-		let results = [...farHits, ...closeHits];
-		return results;
+		let hits = this.ScanBox(closeBox, [], Theme.Green);
+		if (this.meta.melee?.canHitMultipleTargets) {
+			let farHits = this.ScanBox(
+				farBox,
+				hits.map((x) => x.hitEntity.id),
+				Theme.Red,
+			);
+			hits = [...hits, ...farHits];
+		}
+		return hits;
 	}
 
 	private ScanBox(box: Vector3, ignoreEntityIds: number[], debugColor: Color): MeleeHit[] {
@@ -100,7 +93,7 @@ export class MeleeHeldItem extends HeldItem {
 		let rotation = Quaternion.LookRotation(lookVec);
 
 		if (this.gizmoEnabled) {
-			DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 2);
+			// DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 2);
 		}
 		const hitColliders = Physics.OverlapBox(
 			colliderWorldPos,
@@ -113,11 +106,8 @@ export class MeleeHeldItem extends HeldItem {
 		let foundRaycastCollision: MeleeHit | undefined;
 		const rayDistance = box.magnitude;
 
-		const serverTime = TimeUtil.GetServerTime();
-
 		//For each collider in the box detection
 		for (let i = 0; i < hitColliders.Length; i++) {
-			this.Log("Collider: " + i);
 			const collider = hitColliders.GetValue(i);
 			const targetEntity = Entity.FindByCollider(collider);
 			//If we hit an entity that is not the owner of this item
@@ -136,31 +126,35 @@ export class MeleeHeldItem extends HeldItem {
 			if (TimeUtil.GetServerTime() + (RunUtil.IsClient() ? 0.1 : 0) < immuneUntilTime) {
 				continue;
 			}
-			this.Log("Hit Entity: " + targetEntity.id);
 
-			//Raycast to the target to find a more concrete collisions\
-			let rayStart = this.entity.GetHeadPosition();
+			//Raycast to the target to find a more concrete collisions
+			const headPosition = this.entity.GetHeadPosition();
+			let rayStart = headPosition;
 			let rayEnd = targetEntity.GetMiddlePosition();
 			let hitDirection = rayEnd.sub(rayStart).normalized;
 
-			//RAYCAST ALL
-			this.Log("Raycast All");
-			const hitInfosArray = Physics.RaycastAll(rayStart, hitDirection, rayDistance, -1);
-			const hitInfos = hitInfosArray as unknown as CSArray<RaycastHit>;
+			// Raycast against the map
+			// mask: 1 << 6 = 64
+			// const mapLayerMask = 64;
+			const hitInfosArray = Physics.RaycastAll(
+				rayStart,
+				hitDirection,
+				rayDistance,
+				LayerMask.GetMask("Block", "Character"),
+			);
+			const hitInfos = hitInfosArray as CSArray<RaycastHit>;
 			let blockerDistance = 9999;
 
-			//Check each ray collision
+			// Validate hitting through walls
 			for (let i = 0; i < hitInfos.Length; i++) {
-				this.Log("Raycasting to target");
 				let hitInfo = hitInfos.GetValue(i);
 				//Look for entities and blocking colliders
-				const rayTarget = Entity.FindByCollider(hitInfo.collider);
-				if (rayTarget) {
-					if (rayTarget.id === this.entity.id) {
+				const hitEntity = Entity.FindByCollider(hitInfo.collider);
+				if (hitEntity) {
+					if (hitEntity.id === this.entity.id) {
 						//Hit self, skip
 						continue;
-					} else if (rayTarget.id === targetEntity.id) {
-						this.Log("Raycast hit: " + rayTarget.id);
+					} else if (hitEntity.id === targetEntity.id) {
 						//Raycast hit the target entity
 						foundRaycastCollision = {
 							hitEntity: targetEntity,
@@ -170,30 +164,35 @@ export class MeleeHeldItem extends HeldItem {
 							distance: hitInfo.distance,
 							knockbackDirection: this.entity.gameObject.transform.forward,
 						};
-						// DebugUtil.DrawSingleLine(rayStart, hitInfo.point, Color.green, 2);
+
+						// Extra raycast to find impact point
+						const ray = new Ray(headPosition, this.entity.entityDriver.GetLookVector());
+						// DebugUtil.DrawSingleLine(
+						// 	ray.origin,
+						// 	ray.origin.add(ray.direction.mul(rayDistance)),
+						// 	Theme.Red,
+						// 	5,
+						// );
+						// DebugUtil.DrawSphere(ray.origin, Quaternion.identity, 0.1, Theme.Green, 10, 5);
+						const hit = hitInfo.collider.Raycast(ray, rayDistance);
+						if (hit) {
+							foundRaycastCollision.hitPosition = hit.point;
+							foundRaycastCollision.hitNormal = hit.normal;
+						}
+
 						if (!closestCollisionData || hitInfo.distance < closestCollisionData.distance) {
-							this.Log("New closest target: " + hitInfo.distance);
 							closestCollisionData = foundRaycastCollision;
 							continue;
 						}
-					} else {
-						//Hit a non entity object
-						this.Log("Blocked by object: " + hitInfo.collider.gameObject.name);
-						blockerDistance = math.min(blockerDistance, hitInfo.distance);
-						// DebugUtil.DrawSingleLine(rayStart, hitInfo.point, Color.red, 2);
 					}
+				} else {
+					//Hit a non entity object
+					blockerDistance = math.min(blockerDistance, hitInfo.distance);
 				}
-
-				if (foundRaycastCollision) {
-					this.Log("Found target");
-					if (foundRaycastCollision.distance < blockerDistance) {
-						this.Log("Using target");
-						//Not blocked by something
-						collisionData.push(foundRaycastCollision);
-						// DebugUtil.DrawSingleLine(rayStart, foundRaycastCollision.hitPosition, Color.green, 2);
-					} else {
-						this.Log("Can't use target because of blocker");
-					}
+			}
+			if (foundRaycastCollision) {
+				if (foundRaycastCollision.distance > blockerDistance) {
+					return [];
 				}
 			}
 		}

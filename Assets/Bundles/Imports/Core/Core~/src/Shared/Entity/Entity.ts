@@ -12,6 +12,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
+import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -74,6 +75,7 @@ export class EntityReferences {
 		this.root = ref.GetValue<Transform>(boneKey, "Root");
 
 		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
+		this.characterCollider.enabled = true;
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
 
@@ -121,14 +123,15 @@ export class Entity {
 	 * **This should NOT be used to uniquely identify an entity.**
 	 */
 	public readonly ClientId?: number;
-	private health = 100;
-	private maxHealth = 100;
-	private dead = false;
-	private destroyed = false;
-	private displayName: string;
-	private healthbarEnabled = false;
-	private healthbar?: ProgressBarGraphics;
-	private state: EntityState;
+	protected health = 100;
+	protected maxHealth = 100;
+	protected dead = false;
+	protected destroyed = false;
+	protected displayName: string;
+	protected healthbarEnabled = false;
+	protected healthbar?: ProgressBarGraphics;
+	protected state: EntityState;
+	protected bin: Bin = new Bin();
 
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
@@ -137,6 +140,7 @@ export class Entity {
 	public readonly OnDisplayNameChanged = new Signal<[displayName: string]>();
 	public readonly OnStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
 	public readonly OnDeath = new Signal<void>();
+	public readonly OnArmorChanged = new Signal<number>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
@@ -147,6 +151,7 @@ export class Entity {
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		this.model = this.references.root.gameObject;
+		this.model.transform.localPosition = new Vector3(0, 0, 0);
 		this.anim = new CharacterEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
 		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
@@ -167,18 +172,27 @@ export class Entity {
 			this.displayName = `entity_${this.id}`;
 		}
 
-		this.entityDriver.OnImpactWithGround((velocity) => {
+		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
 			this.anim?.PlayFootstepSound();
 		});
-
-		this.entityDriver.OnAdjustMove((moveModifier) => {
-			this.OnAdjustMove.Fire(moveModifier);
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(impactConn);
 		});
 
-		this.entityDriver.OnStateChanged((newState) => {
+		const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
+			this.OnAdjustMove.Fire(moveModifier);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(adjustMoveConn);
+		});
+
+		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
 			const oldState = this.state;
 			this.state = newState;
 			this.OnStateChanged.Fire(newState, oldState);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(stateChangeConn);
 		});
 	}
 
@@ -249,6 +263,7 @@ export class Entity {
 	 * It is recommended to use EntityService.DespawnEntity() instead of this.
 	 */
 	public Destroy(): void {
+		this.bin.Clean();
 		this.OnDespawn.Fire();
 		this.anim.Destroy();
 		this.destroyed = true;
@@ -479,6 +494,10 @@ export class Entity {
 		return WorldAPI.GetMainWorld()?.GetBlockBelowMeta(this.model.transform.position);
 	}
 
+	public GetBin(): Bin {
+		return this.bin;
+	}
+
 	public GetAccessoryMeshes(slot: AccessorySlot): Renderer[] {
 		return this.PushToArray(this.accessoryBuilder.GetAccessoryMeshes(slot));
 	}
@@ -522,6 +541,10 @@ export class Entity {
 
 			clientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));
 		}
+	}
+
+	public GetArmor(): number {
+		return 0;
 	}
 
 	public HasHealthbar(): boolean {

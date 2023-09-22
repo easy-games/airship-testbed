@@ -18,7 +18,7 @@ export class InventoryUIController implements OnStart {
 	private canvas: Canvas;
 	private hotbarContent: Transform;
 	private healthBar: ProgressBarGraphics;
-	private hotbarRefs: GameObjectReferences;
+	private inventoryRefs: GameObjectReferences;
 
 	private backpackRefs: GameObjectReferences;
 	private backpackCanvas: Canvas;
@@ -33,9 +33,9 @@ export class InventoryUIController implements OnStart {
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = true;
 
-		this.hotbarRefs = go.GetComponent<GameObjectReferences>();
-		this.hotbarContent = this.hotbarRefs.GetValue("UI", "HotbarContentGO").transform;
-		this.healthBar = new ProgressBarGraphics(this.hotbarRefs.GetValue("UI", "HealthBarTransform"));
+		this.inventoryRefs = go.GetComponent<GameObjectReferences>();
+		this.hotbarContent = this.inventoryRefs.GetValue("UI", "HotbarContentGO").transform;
+		this.healthBar = new ProgressBarGraphics(this.inventoryRefs.GetValue("UI", "HealthBarTransform"));
 
 		const backpackGo = GameObjectUtil.Instantiate(
 			AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),
@@ -79,28 +79,30 @@ export class InventoryUIController implements OnStart {
 			const invBin = new Bin();
 
 			const slotBinMap = new Map<number, Bin>();
-			inv.SlotChanged.Connect((slot, itemStack) => {
-				slotBinMap.get(slot)?.Clean();
-				if (slot < this.hotbarSlots) {
-					const slotBin = new Bin();
-					slotBinMap.set(slot, slotBin);
+			invBin.Add(
+				inv.SlotChanged.Connect((slot, itemStack) => {
+					slotBinMap.get(slot)?.Clean();
+					if (slot < this.hotbarSlots) {
+						const slotBin = new Bin();
+						slotBinMap.set(slot, slotBin);
 
-					this.UpdateHotbarSlot(slot, itemStack);
+						this.UpdateHotbarSlot(slot, itemStack);
 
-					if (itemStack) {
-						slotBin.Add(
-							itemStack.AmountChanged.Connect((e) => {
-								this.UpdateHotbarSlot(slot, itemStack);
-							}),
-						);
-						slotBin.Add(
-							itemStack.ItemTypeChanged.Connect((e) => {
-								this.UpdateHotbarSlot(slot, itemStack);
-							}),
-						);
+						if (itemStack) {
+							slotBin.Add(
+								itemStack.AmountChanged.Connect((e) => {
+									this.UpdateHotbarSlot(slot, itemStack);
+								}),
+							);
+							slotBin.Add(
+								itemStack.ItemTypeChanged.Connect((e) => {
+									this.UpdateHotbarSlot(slot, itemStack);
+								}),
+							);
+						}
 					}
-				}
-			});
+				}),
+			);
 
 			invBin.Add(() => {
 				for (const pair of slotBinMap) {
@@ -109,13 +111,15 @@ export class InventoryUIController implements OnStart {
 				slotBinMap.clear();
 			});
 
-			inv.HeldSlotChanged.Connect((slot) => {
-				for (let i = 0; i < this.hotbarSlots; i++) {
-					const itemStack = inv.GetItem(i);
-					this.UpdateHotbarSlot(i, itemStack);
-				}
-				this.prevSelectedSlot = slot;
-			});
+			invBin.Add(
+				inv.HeldSlotChanged.Connect((slot) => {
+					for (let i = 0; i < this.hotbarSlots; i++) {
+						const itemStack = inv.GetItem(i);
+						this.UpdateHotbarSlot(i, itemStack);
+					}
+					this.prevSelectedSlot = slot;
+				}),
+			);
 
 			for (let i = 0; i < this.hotbarSlots; i++) {
 				const itemStack = inv.GetItem(i);
@@ -130,13 +134,15 @@ export class InventoryUIController implements OnStart {
 
 		// Healthbar
 		Game.LocalPlayer.ObserveCharacter((entity) => {
+			const bin = new Bin();
+
 			if (entity === undefined) {
 				this.healthBar.SetValue(0);
 				this.healthBar.transform.gameObject.SetActive(false);
 				return;
 			}
 			this.healthBar.transform.gameObject.SetActive(true);
-			const setFill = (newHealth: number, instant: boolean) => {
+			const SetFill = (newHealth: number, instant: boolean) => {
 				let fill = newHealth / entity.GetMaxHealth();
 				if (instant) {
 					this.healthBar.InstantlySetValue(fill);
@@ -144,10 +150,39 @@ export class InventoryUIController implements OnStart {
 					this.healthBar.SetValue(fill);
 				}
 			};
-			setFill(entity.GetHealth(), false);
-			entity.OnHealthChanged.Connect((h) => {
-				setFill(h, false);
-			});
+			SetFill(entity.GetHealth(), false);
+			bin.Add(
+				entity.OnHealthChanged.Connect((h) => {
+					SetFill(h, false);
+				}),
+			);
+
+			// Armor label
+			const armorLabelImage = this.inventoryRefs.GetValue("Healthbar", "ArmorLabelImage") as Image;
+			const armorLabelText = this.inventoryRefs.GetValue("Healthbar", "ArmorLabelText") as TMP_Text;
+			const SetArmor = (armor: number) => {
+				if (armor === 0) {
+					armorLabelImage.gameObject.SetActive(false);
+					armorLabelText.gameObject.SetActive(false);
+					return;
+				}
+				armorLabelImage.gameObject.SetActive(true);
+				armorLabelText.gameObject.SetActive(true);
+				armorLabelText.text = armor + "";
+			};
+			if (entity === undefined) {
+				SetArmor(0);
+			} else {
+				SetArmor(entity.GetArmor());
+				bin.Add(
+					entity.OnArmorChanged.Connect((armor) => {
+						SetArmor(armor);
+					}),
+				);
+			}
+			return () => {
+				bin.Clean();
+			};
 		});
 	}
 

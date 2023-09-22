@@ -27,7 +27,7 @@ export declare class ChatController implements OnStart {
     ShowAllChatMessages(): void;
     SubmitInputField(): void;
     SendChatMessage(message: string): void;
-    AddChatMessage(message: string): void;
+    RenderChatMessage(message: string): void;
     ClearChatMessages(): void;
     IsChatFocused(): boolean;
 }

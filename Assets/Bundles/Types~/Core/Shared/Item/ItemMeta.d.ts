@@ -8,7 +8,7 @@ import { ItemType } from "./ItemType";
 export interface BlockMeta {
     health?: number;
     blockId: number;
-    blockArchetype: BlockArchetype;
+    blockArchetype?: BlockArchetype;
     prefab?: {
         path: string;
         childBlocks?: Vector3[];
@@ -27,8 +27,9 @@ export interface AmmoMeta {
     lifetimeSec?: number;
     gravity: number;
     onHitEntitySoundId?: string;
+    onHitEntitySoundVolume?: number;
     onHitGroundSoundId?: string;
-    onHitSoundVolume?: number;
+    onHitGroundSoundVolume?: number;
     onHitVFXTemplate: AllBundleItems;
 }
 export interface HitSignal {
@@ -78,7 +79,10 @@ export interface ItemMechanicsMeta {
 }
 export interface DamageItemMeta {
     damage: number;
-    onHitPrefabPath: AllBundleItems;
+    /**
+     * If undefined, default effects will be used.
+     */
+    onHitPrefabPath?: AllBundleItems | "none";
 }
 export interface BreakBlockMeta extends DamageItemMeta {
     extraDamageBlockArchetype: BlockArchetype;
@@ -96,8 +100,8 @@ export declare enum BlockArchetype {
     WOOL = 3
 }
 export interface MeleeItemMeta extends DamageItemMeta {
-    damageType: DamageType;
-    canHitMultipleTargets: boolean;
+    damageType?: DamageType;
+    canHitMultipleTargets?: boolean;
 }
 export interface BoxCollision {
     boxHalfWidth: number;

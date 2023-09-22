@@ -2,7 +2,6 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
-import { Game } from "Shared/Game";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { SetTimeout } from "Shared/Util/Timer";
 
@@ -32,28 +31,24 @@ export class ProjectileEffectsController implements OnStart {
 				});
 			}
 
-			let hitSoundName = "";
 			if (!event.hitEntity && itemMeta.ammo?.onHitGroundSoundId) {
-				hitSoundName = itemMeta.ammo?.onHitGroundSoundId;
-			} else if (event.hitEntity && itemMeta.ammo?.onHitEntitySoundId) {
-				hitSoundName = itemMeta.ammo?.onHitEntitySoundId;
-			}
-
-			if (hitSoundName !== "") {
+				// Hit ground
 				let volume = 0.6;
-				const hitSoundPath = `Imports/Core/Shared/Resources/Sound/Items/Projectiles/${hitSoundName}`;
-				if (itemMeta.ammo?.onHitSoundVolume) {
-					volume = itemMeta.ammo?.onHitSoundVolume;
+				if (itemMeta.ammo?.onHitGroundSoundVolume) {
+					volume = itemMeta.ammo?.onHitGroundSoundVolume;
 				}
-				if (Game.LocalPlayer.Character && event.projectile.shooter === Game.LocalPlayer.Character) {
-					AudioManager.PlayGlobal(hitSoundPath, {
-						volumeScale: volume,
-					});
-				} else {
-					AudioManager.PlayAtPosition(hitSoundPath, event.hitPosition, {
-						volumeScale: volume,
-					});
+				AudioManager.PlayAtPosition(itemMeta.ammo.onHitGroundSoundId, event.hitPosition, {
+					volumeScale: volume,
+				});
+			} else if (event.hitEntity && itemMeta.ammo?.onHitEntitySoundId) {
+				// Hit entity
+				let volume = 0.6;
+				if (itemMeta.ammo?.onHitEntitySoundVolume) {
+					volume = itemMeta.ammo?.onHitEntitySoundVolume;
 				}
+				AudioManager.PlayGlobal(itemMeta.ammo.onHitEntitySoundId, {
+					volumeScale: volume,
+				});
 			}
 		});
 	}

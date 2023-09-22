@@ -144,7 +144,7 @@ export class LocalEntityController implements OnStart {
 	}
 
 	private CreateOrbitCameraMode(entity: Entity): OrbitCameraMode {
-		return new OrbitCameraMode(entity.model.transform, 6);
+		return new OrbitCameraMode(6, entity.gameObject.transform, entity.model.transform);
 	}
 
 	OnStart() {
@@ -160,8 +160,11 @@ export class LocalEntityController implements OnStart {
 
 			this.screenshot = entity.gameObject.AddComponent<CameraScreenshotRecorder>();
 
-			this.entityDriver.OnCustomDataFlushed(() => {
+			const customDataFlushedConn = this.entityDriver.OnCustomDataFlushed(() => {
 				this.customDataQueue.clear();
+			});
+			bin.Add(() => {
+				Bridge.DisconnectEvent(customDataFlushedConn);
 			});
 
 			// Set up camera
@@ -183,13 +186,16 @@ export class LocalEntityController implements OnStart {
 			//Set up first person camera
 			this.fps = new FirstPersonCameraSystem(entity.references, this.firstPerson);
 
-			this.entityDriver.OnStateChanged((state) => {
+			const stateChangedConn = this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
 					this.prevState = this.currentState;
 					this.currentState = state;
 				}
 				this.humanoidCameraMode?.SetYOffset(this.GetCamYOffset(state, this.firstPerson));
 				this.UpdateFov();
+			});
+			bin.Add(() => {
+				Bridge.DisconnectEvent(stateChangedConn);
 			});
 
 			let flyCam = false;

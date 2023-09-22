@@ -16,7 +16,6 @@ export declare class HumanoidCameraMode implements CameraMode {
     private rightClickPos;
     private camRight;
     private lastAttachToPos;
-    private lastCamPos;
     private yOffset;
     private yOffsetSpring;
     private readonly preferred;

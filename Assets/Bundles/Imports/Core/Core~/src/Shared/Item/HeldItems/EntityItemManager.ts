@@ -2,7 +2,8 @@
 import { CoreNetwork } from "../../CoreNetwork";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { RunUtil } from "../../Util/RunUtil";
-import { HeldItemManager, HeldItemState } from "./HeldItemManager";
+import { HeldItemManager } from "./HeldItemManager";
+import { HeldItemState } from "./HeldItemState";
 
 export class EntityItemManager {
 	//SINGLETON
@@ -168,7 +169,7 @@ export class EntityItemManager {
 		});
 	}
 
-	private GetOrCreateItemManager(entity: CharacterEntity): HeldItemManager {
+	public GetOrCreateItemManager(entity: CharacterEntity): HeldItemManager {
 		this.Log("GetOrCreateItemManager: " + entity.id);
 		let items = this.entityItems.get(entity.id ?? 0);
 		if (items === undefined) {

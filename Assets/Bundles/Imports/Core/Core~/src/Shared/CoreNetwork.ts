@@ -5,7 +5,7 @@ import { EntityDto } from "./Entity/Entity";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
-import { HeldItemState } from "./Item/HeldItems/HeldItemManager";
+import { HeldItemState } from "./Item/HeldItems/HeldItemState";
 import { ItemType } from "./Item/ItemType";
 import { RemoteEvent } from "./Network/RemoteEvent";
 import { RemoteFunction } from "./Network/RemoteFunction";

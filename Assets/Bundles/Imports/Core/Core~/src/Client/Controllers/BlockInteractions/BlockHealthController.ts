@@ -19,6 +19,7 @@ import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";
 import { Entity } from "Shared/Entity/Entity";
+import { AfterBlockHitClientSignal } from "Client/Signals/AfterBlockHitClientSignal";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
@@ -91,13 +92,11 @@ export class BlockHealthController implements OnStart {
 	}
 
 	private OnBlockHit(entity: Entity, blockPos: Vector3, blockId: number, isGroupEvent: boolean) {
-		CoreClientSignals.AfterBlockHit.Fire({
-			blockPos: blockPos,
-			blockId,
-			entity,
-			isGroupEvent,
-		});
-		this.VisualizeBlockHealth(blockPos, !isGroupEvent);
+		const blockHealth = this.VisualizeBlockHealth(blockPos, !isGroupEvent);
+		const isBroken = blockHealth !== undefined && blockHealth > 0;
+		CoreClientSignals.AfterBlockHit.Fire(
+			new AfterBlockHitClientSignal(blockPos, blockId, entity, isBroken, isGroupEvent),
+		);
 	}
 
 	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {
@@ -132,6 +131,7 @@ export class BlockHealthController implements OnStart {
 				}
 			}
 		}
+		return currentHealth;
 	}
 
 	public VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars = true): void {

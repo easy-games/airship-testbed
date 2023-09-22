@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { Entity } from "../Shared/Entity/Entity";
 import { GroundItem } from "../Shared/GroundItem/GroundItem";
 import { ItemType } from "../Shared/Item/ItemType";
@@ -9,11 +7,12 @@ import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
 import { Signal } from "../Shared/Util/Signal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
+import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
+import { AfterBlockHitClientSignal } from "./Signals/AfterBlockHitClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
-import { Block } from "../Shared/VoxelWorld/Block";
 export declare const CoreClientSignals: {
     EntitySpawn: Signal<EntitySpawnClientSignal>;
     EntityDamage: Signal<EntityDamageClientSignal>;
@@ -22,18 +21,8 @@ export declare const CoreClientSignals: {
     PlayerJoin: Signal<Player>;
     PlayerLeave: Signal<Player>;
     /** Fired before a block is hit. */
-    BeforeBlockHit: Signal<{
-        blockPos: Vector3;
-        block: Block;
-        entity?: Entity | undefined;
-        isGroupEvent: boolean;
-    }>;
-    AfterBlockHit: Signal<{
-        blockPos: Vector3;
-        blockId: number;
-        entity?: Entity | undefined;
-        isGroupEvent: boolean;
-    }>;
+    BeforeBlockHit: Signal<BeforeBlockHitSignal>;
+    AfterBlockHit: Signal<AfterBlockHitClientSignal>;
     /** Fired before a client-predicted block is placed. */
     BeforeBlockPlaced: Signal<BeforeBlockPlacedSignal>;
     /** Fired when a client-predicted block is placed. */

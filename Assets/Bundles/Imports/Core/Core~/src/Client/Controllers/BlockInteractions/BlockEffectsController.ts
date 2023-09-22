@@ -1,8 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
-import { ItemMeta } from "Shared/Item/ItemMeta";
+import { BlockArchetype, ItemMeta } from "Shared/Item/ItemMeta";
 import { ItemUtil } from "Shared/Item/ItemUtil";
+import { CoreSound } from "Shared/Sound/CoreSound";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 
@@ -10,33 +11,31 @@ const coreSoundPath = "Imports/Core/Shared/Resources/Sound/";
 
 @Controller()
 export class BlockEffectsController implements OnStart {
-	private hitSoundDefault = [coreSoundPath + "Block_Stone_Hit_01", coreSoundPath + "Block_Stone_Hit_02"];
-	private breakSoundDefault = [coreSoundPath + "Block_Stone_Break"];
-	private placeSoundDefault = [
-		coreSoundPath + "Block_Stone_Place_01",
-		coreSoundPath + "Block_Stone_Place_02",
-		coreSoundPath + "Block_Stone_Place_03",
-	];
-
 	OnStart(): void {
 		CoreClientSignals.BlockPlace.Connect((event) => {
 			if (event.isGroupEvent) {
 				return;
 			}
-			AudioManager.PlayAtPosition(
-				RandomUtil.FromArray(event.block.itemMeta?.block?.placeSound ?? this.placeSoundDefault),
-				event.pos,
-			);
-		});
-
-		CoreClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
-			if (event.isGroupEvent) {
-				return;
+			let sound = event.block.itemMeta?.block?.placeSound;
+			if (sound === undefined) {
+				switch (event.block.itemMeta?.block?.blockArchetype) {
+					case BlockArchetype.STONE:
+						sound = CoreSound.blockPlaceStone;
+						break;
+					case BlockArchetype.WOOD:
+						sound = CoreSound.blockPlaceWood;
+						break;
+					case BlockArchetype.WOOL:
+						sound = CoreSound.blockPlaceWool;
+						break;
+					default:
+						sound = CoreSound.blockPlaceGeneric;
+						break;
+				}
 			}
-			AudioManager.PlayAtPosition(
-				RandomUtil.FromArray(event.block.itemMeta?.block?.hitSound ?? this.hitSoundDefault),
-				event.blockPos,
-			);
+			AudioManager.PlayAtPosition(RandomUtil.FromArray(sound), event.pos, {
+				volumeScale: event.placer?.IsLocalCharacter() ? 1 : 0.5,
+			});
 		});
 
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
@@ -47,10 +46,49 @@ export class BlockEffectsController implements OnStart {
 			if (itemType) {
 				itemMeta = ItemUtil.GetItemMeta(itemType);
 			}
-			AudioManager.PlayAtPosition(
-				RandomUtil.FromArray(itemMeta?.block?.hitSound ?? this.hitSoundDefault),
-				event.blockPos,
-			);
+
+			let sound = itemMeta?.block?.placeSound;
+			if (sound === undefined) {
+				switch (itemMeta?.block?.blockArchetype) {
+					case BlockArchetype.STONE:
+						sound = CoreSound.blockHitStone;
+						break;
+					case BlockArchetype.WOOD:
+						sound = CoreSound.blockHitWood;
+						break;
+					case BlockArchetype.WOOL:
+						sound = CoreSound.blockHitWool;
+						break;
+					default:
+						sound = CoreSound.blockHitGeneric;
+						break;
+				}
+			}
+
+			AudioManager.PlayAtPosition(RandomUtil.FromArray(sound), event.pos, {
+				volumeScale: 0.5,
+			});
+		});
+
+		CoreClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
+			let sound = event.block.itemMeta?.block?.placeSound;
+			if (sound === undefined) {
+				switch (event.block.itemMeta?.block?.blockArchetype) {
+					case BlockArchetype.STONE:
+						sound = CoreSound.blockHitStone;
+						break;
+					case BlockArchetype.WOOD:
+						sound = CoreSound.blockHitWood;
+						break;
+					case BlockArchetype.WOOL:
+						sound = CoreSound.blockHitWool;
+						break;
+					default:
+						sound = CoreSound.blockHitGeneric;
+						break;
+				}
+			}
+			AudioManager.PlayAtPosition(RandomUtil.FromArray(sound), event.blockPos);
 		});
 	}
 }

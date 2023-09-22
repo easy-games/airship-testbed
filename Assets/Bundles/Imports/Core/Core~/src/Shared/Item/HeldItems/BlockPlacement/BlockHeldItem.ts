@@ -2,6 +2,7 @@
 import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
 import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { HeldItem } from "../HeldItem";
 
@@ -52,6 +53,7 @@ export class BlockHeldItem extends HeldItem {
 	}
 
 	private TryPlaceBlock(): boolean {
+		print("TryPlaceBlock server=" + RunUtil.IsServer());
 		if (!this.meta.block) {
 			return false;
 		}

@@ -2775,23 +2775,6 @@ interface Scene {
     
     
     
-interface Collider extends Component {
-    enabled: boolean;
-    attachedRigidbody: Rigidbody;
-    attachedArticulationBody: ArticulationBody;
-    isTrigger: boolean;
-    contactOffset: number;
-    bounds: Bounds;
-    hasModifiableContacts: boolean;
-    sharedMaterial: PhysicMaterial;
-    material: PhysicMaterial;
-
-    constructor(): Collider;
-
-    ClosestPoint(position: Vector3): Vector3;
-    ClosestPointOnBounds(position: Vector3): Vector3;
-    Raycast(ray: Ray, hitInfo: unknown, maxDistance: number): boolean;
-}
     
 interface Rigidbody extends Component {
     velocity: Vector3;
@@ -12862,6 +12845,7 @@ interface BridgeConstructor {
     IsFullScreen(): boolean;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
+    RemoveRichText(input: string): string;
     ScreenPointToLocalPointInRectangle(rectTransform: RectTransform, screenPoint: Vector2): Vector2;
     SetFullScreen(value: boolean): void;
     SetParentToSceneRoot(transform: Transform): void;

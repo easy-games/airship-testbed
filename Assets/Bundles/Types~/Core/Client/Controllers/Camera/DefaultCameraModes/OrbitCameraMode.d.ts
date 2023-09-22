@@ -1,8 +1,8 @@
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 export declare class OrbitCameraMode implements CameraMode {
-    private transform;
     private readonly distance;
+    private transform;
     private readonly bin;
     private occlusionCam;
     private rotationX;
@@ -10,14 +10,15 @@ export declare class OrbitCameraMode implements CameraMode {
     private lockView;
     private rightClicking;
     private rightClickPos;
-    private camRight;
+    private lookVector;
     private lastAttachToPos;
-    private lastCamPos;
+    private readonly entityDriver?;
     private readonly preferred;
     private readonly keyboard;
     private readonly touchscreen;
     private readonly mouse;
-    constructor(transform: Transform, distance: number);
+    private readonly clientSettingsController;
+    constructor(distance: number, transform: Transform, graphicalCharacter?: Transform);
     private SetupMobileControls;
     SetTransform(transform: Transform): void;
     OnStart(camera: Camera): void;
