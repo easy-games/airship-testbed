@@ -232,6 +232,7 @@ export class EntityAnimator {
 
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 
+		// fallback to stone sounds.
 		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemMeta(ItemType.STONE).block?.stepSound;
 		if (stepSounds === undefined) {
 			stepSounds = [];

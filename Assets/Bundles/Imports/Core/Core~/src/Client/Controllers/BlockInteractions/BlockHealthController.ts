@@ -6,10 +6,10 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import {
-    BundleGroupNames,
-    Bundle_Blocks,
-    Bundle_Blocks_UI,
-    Bundle_Blocks_VFX,
+	BundleGroupNames,
+	Bundle_Blocks,
+	Bundle_Blocks_UI,
+	Bundle_Blocks_VFX,
 } from "Shared/Util/ReferenceManagerResources";
 import { Theme } from "Shared/Util/Theme";
 import { SetInterval } from "Shared/Util/Timer";
@@ -51,6 +51,7 @@ export class BlockHealthController implements OnStart {
 					pos: blockPos,
 					blockId,
 					entity,
+					broken: false,
 				});
 				this.VisualizeBlockHealth(blockPos);
 			}
@@ -110,9 +111,9 @@ export class BlockHealthController implements OnStart {
 			);
 			if (effect) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
-                if (block) {
-                    this.ApplyBlockMaterial(block.blockId, effect);
-                }
+				if (block) {
+					this.ApplyBlockMaterial(block.blockId, effect);
+				}
 			}
 		}
 	}
@@ -144,8 +145,8 @@ export class BlockHealthController implements OnStart {
 
 	private ApplyBlockMaterial(blockId: number, effect: GameObject) {
 		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
-        const world = WorldAPI.GetMainWorld();
-        if (!world) return;
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return;
 		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, world.voxelWorld);
 		if (blockGO) {
 			const blockRen = blockGO.GetComponent<Renderer>();

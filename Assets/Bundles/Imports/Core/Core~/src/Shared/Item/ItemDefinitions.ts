@@ -1,3 +1,4 @@
+import { CoreSound } from "Shared/Sound/CoreSound";
 import { Layer } from "Shared/Util/Layer";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
@@ -66,42 +67,14 @@ const defaultBreakBlock: BreakBlockMeta = {
 	extraDamageBlockArchetype: BlockArchetype.NONE,
 	extraDamage: 2,
 };
-
-const defaultBlock: BlockMeta = {
-	blockId: 0,
-	blockArchetype: BlockArchetype.NONE,
-	stepSound: [
-		coreSoundPath + "Footsteps/Footstep_Grass_01",
-		coreSoundPath + "Footsteps/Footstep_Grass_02",
-		coreSoundPath + "Footsteps/Footstep_Grass_03",
-		coreSoundPath + "Footsteps/Footstep_Grass_04",
-	],
-};
-
 const woolBlock: BlockMeta = {
-	...defaultBlock,
 	health: 10,
 	blockId: 33,
-	stepSound: [
-		coreSoundPath + "Footsteps/Footstep_Wool_01",
-		coreSoundPath + "Footsteps/Footstep_Wool_02",
-		coreSoundPath + "Footsteps/Footstep_Wool_03",
-		coreSoundPath + "Footsteps/Footstep_Wool_04",
-	],
-	placeSound: [coreSoundPath + "Wool_Place.ogg"],
-	hitSound: [coreSoundPath + "Wool_Hit.ogg"],
-	breakSound: [coreSoundPath + "Wool_Break.ogg"],
+	stepSound: CoreSound.footstepWool,
+	placeSound: CoreSound.blockPlaceWool,
+	hitSound: CoreSound.blockHitWool,
+	breakSound: CoreSound.blockBreakWool,
 	blockArchetype: BlockArchetype.WOOL,
-};
-
-const stoneBlock: BlockMeta = {
-	...defaultBlock,
-	stepSound: [
-		coreSoundPath + "Footsteps/Footstep_Stone_01",
-		coreSoundPath + "Footsteps/Footstep_Stone_02",
-		coreSoundPath + "Footsteps/Footstep_Stone_03",
-		coreSoundPath + "Footsteps/Footstep_Stone_04",
-	],
 };
 
 function AccPath(itemType: ItemType): string {
@@ -123,7 +96,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			health: 50,
 			blockId: 31,
 			prefab: {
@@ -183,7 +155,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 1,
 		},
 	},
@@ -192,7 +163,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 52,
 		},
 		// Block: {
@@ -206,7 +176,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 2,
 		},
 	},
@@ -215,7 +184,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...stoneBlock,
 			blockId: 4,
 			blockArchetype: BlockArchetype.STONE,
 		},
@@ -225,7 +193,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 14,
 			blockArchetype: BlockArchetype.STONE,
 		},
@@ -235,7 +202,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...stoneBlock,
 			blockId: 12,
 			blockArchetype: BlockArchetype.STONE,
 		},
@@ -245,7 +211,6 @@ export const items: {
 		itemAssets: blockItemAssets,
 		itemMechanics: blockItemMechanics,
 		block: {
-			...stoneBlock,
 			blockId: 5,
 			health: 20,
 			blockArchetype: BlockArchetype.STONE,
@@ -256,7 +221,6 @@ export const items: {
 		itemAssets: blockItemAssets,
 		itemMechanics: blockItemMechanics,
 		block: {
-			...stoneBlock,
 			blockId: 38,
 			health: 50,
 		},
@@ -266,7 +230,6 @@ export const items: {
 		itemAssets: blockItemAssets,
 		itemMechanics: blockItemMechanics,
 		block: {
-			...stoneBlock,
 			blockId: 20,
 			health: 20,
 		},
@@ -276,7 +239,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 6,
 			blockArchetype: BlockArchetype.WOOD,
 		},
@@ -286,7 +248,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 7,
 			blockArchetype: BlockArchetype.WOOD,
 		},
@@ -296,7 +257,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 54,
 		},
 	},
@@ -305,7 +265,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 55,
 		},
 	},
@@ -314,7 +273,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 56,
 		},
 	},
@@ -323,7 +281,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 58,
 		},
 	},
@@ -332,7 +289,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 21,
 		},
 	},
@@ -341,7 +297,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 22,
 		},
 	},
@@ -350,7 +305,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 57,
 		},
 	},
@@ -359,7 +313,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 60,
 		},
 	},
@@ -368,7 +321,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 59,
 		},
 	},
@@ -377,7 +329,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 28,
 		},
 	},
@@ -386,7 +337,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 16,
 		},
 	},
@@ -395,7 +345,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 29,
 		},
 	},
@@ -404,7 +353,6 @@ export const items: {
 		itemAssets: blockItemAssets,
 		itemMechanics: blockItemMechanics,
 		block: {
-			...defaultBlock,
 			blockId: 50,
 		},
 	},
@@ -413,7 +361,6 @@ export const items: {
 		itemAssets: blockItemAssets,
 		itemMechanics: blockItemMechanics,
 		block: {
-			...defaultBlock,
 			blockId: 23,
 			health: 20,
 			blockArchetype: BlockArchetype.STONE,
@@ -424,7 +371,6 @@ export const items: {
 		itemMechanics: blockItemMechanics,
 		itemAssets: blockItemAssets,
 		block: {
-			...defaultBlock,
 			blockId: 61,
 		},
 	},
