@@ -1,3 +1,5 @@
+import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
+import { HeldItemManager } from "./HeldItemManager";
 export declare class EntityItemManager {
     private static instance;
     static Get(): EntityItemManager;
@@ -9,6 +11,6 @@ export declare class EntityItemManager {
     constructor();
     private InitializeClient;
     private InitializeServer;
-    private GetOrCreateItemManager;
+    GetOrCreateItemManager(entity: CharacterEntity): HeldItemManager;
     private DestroyItemManager;
 }

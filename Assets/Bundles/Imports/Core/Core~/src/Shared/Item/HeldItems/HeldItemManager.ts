@@ -9,6 +9,7 @@ import { BlockHeldItem } from "./BlockPlacement/BlockHeldItem";
 import { BreakBlockHeldItem } from "./BlockPlacement/BreakBlockHeldItem";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
+import { HeldItemState } from "./HeldItemState";
 import { ProjectileLauncherHeldItem } from "./ProjectileLauncher/ProjectileLauncherHeldItem";
 
 export type HeldItemCondition = (itemMeta: ItemMeta) => boolean;
@@ -17,15 +18,6 @@ export type HeldItemEntry = {
 	condition: HeldItemCondition;
 	factory: HeldItemFactory;
 };
-
-export enum HeldItemState {
-	NONE = -1,
-	CALL_TO_ACTION_START = 0,
-	CALL_TO_ACTION_END,
-	SECONDARY_ACTION_START,
-	SECONDARY_ACTION_END,
-	ON_DESTROY,
-}
 
 //One item manager per entity, calls functionality on currently equipped item for that entity
 export class HeldItemManager {

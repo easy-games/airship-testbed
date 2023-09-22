@@ -433,7 +433,7 @@ export const items: {
 		itemAssets: pickaxeItemAssets,
 		itemMechanics: {
 			...defaultItemMechanics,
-			cooldownSeconds: 0.2,
+			cooldownSeconds: 0.16,
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
 		breakBlock: {
@@ -447,7 +447,7 @@ export const items: {
 		itemAssets: pickaxeItemAssets,
 		itemMechanics: {
 			...defaultItemMechanics,
-			cooldownSeconds: 0.2,
+			cooldownSeconds: 0.12,
 		},
 		accessoryPaths: [AccPath(ItemType.STONE_PICKAXE)],
 		breakBlock: {
@@ -461,7 +461,7 @@ export const items: {
 		itemAssets: pickaxeItemAssets,
 		itemMechanics: {
 			...defaultItemMechanics,
-			cooldownSeconds: 0.15,
+			cooldownSeconds: 0.12,
 		},
 		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE)],
 		breakBlock: {
