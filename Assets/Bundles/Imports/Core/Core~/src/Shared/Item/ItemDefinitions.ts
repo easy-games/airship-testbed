@@ -587,7 +587,7 @@ export const items: {
 		},
 		itemAssets: {
 			...throwableItemAssets,
-			onUseSound: ["TelepearlThrow"],
+			onUseSound: ["Imports/Core/Shared/Resources/Sound/Items/Projectiles/TelepearlThrow"],
 		},
 		accessoryPaths: [AccPath(ItemType.TELEPEARL)],
 		projectileLauncher: {
