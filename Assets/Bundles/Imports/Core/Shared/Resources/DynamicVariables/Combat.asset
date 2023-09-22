@@ -18,7 +18,7 @@ MonoBehaviour:
   - key: kbX
     value: 8
   - key: kbY
-    value: 0
+    value: 6
   - key: kbDuration
     value: 0.2
   vectors:
