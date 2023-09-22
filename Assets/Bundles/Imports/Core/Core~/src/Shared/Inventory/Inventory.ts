@@ -22,8 +22,8 @@ export class Inventory {
 	public armorSlots: {
 		[key in ArmorType]: number;
 	} = {
-		[ArmorType.CHESTPLATE]: 45,
-		[ArmorType.HELMET]: 46,
+		[ArmorType.HELMET]: 45,
+		[ArmorType.CHESTPLATE]: 46,
 		[ArmorType.BOOTS]: 47,
 	};
 	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */

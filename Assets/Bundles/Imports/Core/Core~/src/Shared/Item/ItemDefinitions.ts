@@ -393,7 +393,7 @@ export const items: {
 	[ItemType.LEATHER_HELMET]: {
 		displayName: "Leather Helmet",
 		itemMechanics: defaultItemMechanics,
-		accessoryPaths: ["Armor/Leather/LeatherHelmet"],
+		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Leather/LeatherHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 2,
@@ -402,7 +402,7 @@ export const items: {
 	[ItemType.IRON_HELMET]: {
 		displayName: "Iron Helmet",
 		itemMechanics: defaultItemMechanics,
-		accessoryPaths: ["Armor/Iron/IronHelmet"],
+		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Iron/IronHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 4,
@@ -411,7 +411,7 @@ export const items: {
 	[ItemType.DIAMOND_HELMET]: {
 		displayName: "Diamond Helmet",
 		itemMechanics: defaultItemMechanics,
-		accessoryPaths: ["Armor/Diamond/DiamondHelmet"],
+		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Diamond/DiamondHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 6,
@@ -420,7 +420,7 @@ export const items: {
 	[ItemType.EMERALD_HELMET]: {
 		displayName: "Emerald Helmet",
 		itemMechanics: defaultItemMechanics,
-		accessoryPaths: ["Armor/Emerald/EmeraldHelmet"],
+		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Emerald/EmeraldHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 8,
