@@ -76,6 +76,14 @@ export class ItemShopController implements OnStart {
 				canvasGroup.TweenCanvasGroupAlpha(0, 0.1);
 			});
 			go.transform.TweenLocalPosition(pos.add(new Vector3(0, 0.5, 0)), 0.5).SetEase(EaseType.QuadOut);
+
+			AudioManager.PlayAtPosition(
+				"Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav",
+				entity.GetMiddlePosition(),
+				{
+					volumeScale: 0.2,
+				},
+			);
 		});
 	}
 
