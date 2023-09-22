@@ -379,14 +379,17 @@ export const items: {
 	[ItemType.IRON]: {
 		displayName: "Iron",
 		itemMechanics: defaultItemMechanics,
+		accessoryPaths: [AccPath(ItemType.IRON)],
 	},
 	[ItemType.DIAMOND]: {
 		displayName: "Diamond",
 		itemMechanics: defaultItemMechanics,
+		accessoryPaths: [AccPath(ItemType.DIAMOND)],
 	},
 	[ItemType.EMERALD]: {
 		displayName: "Emerald",
 		itemMechanics: defaultItemMechanics,
+		accessoryPaths: [AccPath(ItemType.EMERALD)],
 	},
 
 	////ARMOR

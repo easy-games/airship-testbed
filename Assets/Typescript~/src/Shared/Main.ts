@@ -8,7 +8,7 @@ Bootstrap.PrepareVoxelWorld();
 Bootstrap.Prepare();
 
 if (RunUtil.IsServer()) {
-	require("Server/Resources/TS/MainServer")
+	require("Server/Resources/TS/MainServer");
 } else {
-	require("Client/Resources/TS/MainClient")
+	require("Client/Resources/TS/MainClient");
 }
