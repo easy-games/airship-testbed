@@ -101,6 +101,7 @@ export class BlockHealthController implements OnStart {
 
 	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {
 		let currentHealth = this.GetBlockHealth(blockPos);
+		print("Viz block: " + blockPos + ", " + currentHealth + " show health: " + showHealthbar);
 
 		//Get or create health bar
 		if (showHealthbar) {
@@ -108,11 +109,12 @@ export class BlockHealthController implements OnStart {
 			if (!healthBarEntry) {
 				healthBarEntry = this.AddHealthBar(blockPos);
 				if (!healthBarEntry) {
+					warn("Unable to create healthbar!");
 					return;
 				}
-				healthBarEntry.lastHitTime = Time.time;
-				healthBarEntry.progressBar.SetValue(currentHealth / healthBarEntry.maxHealth);
 			}
+			healthBarEntry.lastHitTime = Time.time;
+			healthBarEntry.progressBar.SetValue(currentHealth / healthBarEntry.maxHealth);
 		}
 
 		//Update the health bars value
