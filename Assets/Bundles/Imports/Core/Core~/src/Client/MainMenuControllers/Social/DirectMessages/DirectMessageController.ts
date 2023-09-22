@@ -89,7 +89,7 @@ export class DirectMessageController implements OnStart {
 					ColorUtil.ColoredText(Theme.Pink, "From ") +
 					ColorUtil.ColoredText(Theme.White, friend.username) +
 					ColorUtil.ColoredText(Theme.Gray, ": " + data.text);
-				Dependency<ChatController>().AddChatMessage(text);
+				Dependency<ChatController>().RenderChatMessage(text);
 			}
 
 			if (data.sender !== "") {
@@ -196,7 +196,7 @@ export class DirectMessageController implements OnStart {
 				ColorUtil.ColoredText(Theme.Pink, "To ") +
 				ColorUtil.ColoredText(Theme.White, status.username) +
 				ColorUtil.ColoredText(Theme.Gray, ": " + message);
-			Dependency<ChatController>().AddChatMessage(text);
+			Dependency<ChatController>().RenderChatMessage(text);
 		}
 	}
 

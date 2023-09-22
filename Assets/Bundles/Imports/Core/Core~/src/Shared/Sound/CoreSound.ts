@@ -46,4 +46,6 @@ export const CoreSound = {
 	blockHitWood: [S("WoodHit")],
 	blockBreakWood: [S("WoodHit")],
 	blockPlaceWood: [S("GenericBlockPlace")],
+
+	chatMessageReceived: S("ChatMessageReceived.wav"),
 };
