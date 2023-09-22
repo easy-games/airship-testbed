@@ -47,9 +47,11 @@ export class BreakBlockHeldItem extends HeldItem {
 					SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {
 						import("Shared/Item/HeldItems/EntityItemManager").then((imp) => {
 							if (!Game.LocalPlayer.Character) return;
-							imp.EntityItemManager.Get()
-								.GetOrCreateItemManager(Game.LocalPlayer.Character)
-								.TriggerNewState(HeldItemState.CALL_TO_ACTION_START);
+							const manager = imp.EntityItemManager.Get().GetOrCreateItemManager(
+								Game.LocalPlayer.Character,
+							);
+							manager.TriggerNewState(HeldItemState.CALL_TO_ACTION_END);
+							manager.TriggerNewState(HeldItemState.CALL_TO_ACTION_START);
 						});
 					}),
 				);
