@@ -123,15 +123,15 @@ export class Entity {
 	 * **This should NOT be used to uniquely identify an entity.**
 	 */
 	public readonly ClientId?: number;
-	private health = 100;
-	private maxHealth = 100;
-	private dead = false;
-	private destroyed = false;
-	private displayName: string;
-	private healthbarEnabled = false;
-	private healthbar?: ProgressBarGraphics;
-	private state: EntityState;
-	private bin: Bin = new Bin();
+	protected health = 100;
+	protected maxHealth = 100;
+	protected dead = false;
+	protected destroyed = false;
+	protected displayName: string;
+	protected healthbarEnabled = false;
+	protected healthbar?: ProgressBarGraphics;
+	protected state: EntityState;
+	protected bin: Bin = new Bin();
 
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
@@ -140,6 +140,7 @@ export class Entity {
 	public readonly OnDisplayNameChanged = new Signal<[displayName: string]>();
 	public readonly OnStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
 	public readonly OnDeath = new Signal<void>();
+	public readonly OnArmorChanged = new Signal<number>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
@@ -540,6 +541,10 @@ export class Entity {
 
 			clientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));
 		}
+	}
+
+	public GetArmor(): number {
+		return 0;
 	}
 
 	public HasHealthbar(): boolean {

@@ -66,7 +66,11 @@ export class EntityService implements OnStart {
 		return entityPrefab;
 	}
 
-	public SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3): Entity {
+	public SpawnEntityForPlayer(
+		player: Player | undefined,
+		entityPrefabType: EntityPrefabType,
+		pos?: Vector3,
+	): CharacterEntity {
 		const id = this.idCounter;
 		this.idCounter++;
 

@@ -5,12 +5,12 @@ import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal"
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
+import { AOEDamageMeta } from "Shared/Item/ItemMeta";
 import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { AOEDamageMeta } from "Shared/Item/ItemMeta";
 
 @Service({})
 export class DamageService implements OnStart {
@@ -110,6 +110,13 @@ export class DamageService implements OnStart {
 			damageEvent.damageType,
 			damageEvent.fromEntity?.id,
 		);
+
+		const damageBefore = amount;
+		const armor = entity.GetArmor();
+		if (armor > 0) {
+			amount = amount * (100 / (100 + armor));
+			print("mitigated damage: " + (damageBefore - amount));
+		}
 
 		let despawned = false;
 		entity.SetHealth(entity.GetHealth() - amount);

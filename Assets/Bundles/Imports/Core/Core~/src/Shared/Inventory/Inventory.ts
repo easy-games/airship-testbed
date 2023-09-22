@@ -281,4 +281,8 @@ export class Inventory {
 		}
 		return undefined;
 	}
+
+	public GetAllItems(): ItemStack[] {
+		return Object.values(this.items);
+	}
 }

@@ -396,7 +396,7 @@ export const items: {
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Leather/LeatherHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
-			protectionAmount: 2,
+			protectionAmount: 40,
 		},
 	},
 	[ItemType.IRON_HELMET]: {
@@ -405,7 +405,7 @@ export const items: {
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Iron/IronHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
-			protectionAmount: 4,
+			protectionAmount: 65,
 		},
 	},
 	[ItemType.DIAMOND_HELMET]: {
@@ -414,7 +414,7 @@ export const items: {
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Diamond/DiamondHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
-			protectionAmount: 6,
+			protectionAmount: 90,
 		},
 	},
 	[ItemType.EMERALD_HELMET]: {
@@ -423,7 +423,7 @@ export const items: {
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Emerald/EmeraldHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
-			protectionAmount: 8,
+			protectionAmount: 150,
 		},
 	},
 
