@@ -40,7 +40,11 @@ export class ProjectileEffectsController implements OnStart {
 				AudioManager.PlayAtPosition(itemMeta.ammo.onHitGroundSoundId, event.hitPosition, {
 					volumeScale: volume,
 				});
-			} else if (event.hitEntity && itemMeta.ammo?.onHitEntitySoundId) {
+			} else if (
+				event.hitEntity &&
+				itemMeta.ammo?.onHitEntitySoundId &&
+				event.projectile.shooter?.IsLocalCharacter()
+			) {
 				// Hit entity
 				let volume = 0.6;
 				if (itemMeta.ammo?.onHitEntitySoundVolume) {
