@@ -1,7 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { AfterBlockHitClientSignal } from "Client/Signals/AfterBlockHitClientSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
+import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
@@ -18,8 +20,6 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";
-import { Entity } from "Shared/Entity/Entity";
-import { AfterBlockHitClientSignal } from "Client/Signals/AfterBlockHitClientSignal";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
@@ -129,7 +129,7 @@ export class BlockHealthController implements OnStart {
 			if (effect) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
 				if (block) {
-					this.ApplyBlockMaterial(block.blockId, effect);
+					this.SpawnBlockHitParticles(block.blockId, effect);
 				}
 			}
 		}
@@ -156,14 +156,14 @@ export class BlockHealthController implements OnStart {
 		if (effect) {
 			//const blockColor = WorldAPI.GetMainWorld().GetBlockAverageColor(blockId);
 			//if (!blockColor) return;
-			this.ApplyBlockMaterial(blockId, effect);
+			this.SpawnBlockHitParticles(blockId, effect);
 		}
 
 		//Make sure the progress bar is at 0
 		entry?.progressBar?.SetValue(0);
 	}
 
-	private ApplyBlockMaterial(blockId: number, effect: GameObject) {
+	private SpawnBlockHitParticles(blockId: number, effect: GameObject) {
 		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return;

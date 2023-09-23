@@ -2,6 +2,7 @@ import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { ItemType } from "Shared/Item/ItemType";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
@@ -169,7 +170,7 @@ export class World {
 			}
 			blocks[i] = new Block(blockIds[i], this);
 			binaryData.push({ pos: position, blockId: blockIds[i] });
-			if (isLocalPrediction) {
+			if (isLocalPrediction && RunUtil.IsClient()) {
 				// Client predicted block place event
 				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
@@ -187,14 +188,6 @@ export class World {
 		});
 
 		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData), config?.priority ?? true);
-
-		if (RunCore.IsServer()) {
-			CoreNetwork.ServerToClient.BlockGroupPlace.Server.FireAllClients(
-				positions,
-				blockIds,
-				config?.placedByEntityId,
-			);
-		}
 	}
 
 	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void {

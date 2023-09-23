@@ -4,18 +4,18 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { AOEDamageMeta, BreakBlockMeta, ItemMeta } from "Shared/Item/ItemMeta";
+import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { DamageMeta } from "../Damage/DamageService";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
-import { DamageMeta } from "../Damage/DamageService";
-import { MathUtil } from "Shared/Util/MathUtil";
-import { ItemType } from "Shared/Item/ItemType";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -271,7 +271,7 @@ export class BlockInteractService implements OnStart {
 			print(`Fireing Damage Group Event`);
 			//Apply damage to whole group of blocks
 			BlockDataAPI.SetBlockGroupData(damagePositions, "health", newGroupHealth);
-			CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, damagedIds, entity.id);
+			// CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, damagedIds, entity.id);
 		}
 
 		if (destroyedI > 0) {
