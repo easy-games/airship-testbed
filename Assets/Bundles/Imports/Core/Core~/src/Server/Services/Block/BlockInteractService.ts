@@ -289,7 +289,7 @@ export class BlockInteractService implements OnStart {
 				blockIds: destroyedIds,
 				blockPositions: destroyedPositions,
 			});
-			CoreNetwork.ServerToClient.BlockGroupDestroyed.Server.FireAllClients(destroyedPositions, destroyedIds);
+			// CoreNetwork.ServerToClient.BlockGroupDestroyed.Server.FireAllClients(destroyedPositions, destroyedIds);
 		}
 
 		return true;
