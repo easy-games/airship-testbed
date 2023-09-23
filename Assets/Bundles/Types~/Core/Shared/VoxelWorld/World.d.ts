@@ -46,6 +46,7 @@ export declare class World {
     GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined;
     PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
     PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void;
+    PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void;
     LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void;
     LoadEmptyWorld(cubeMapPath: string): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;

@@ -9,5 +9,4 @@ export declare class WorldAPI {
     static GetMainWorld(): World | undefined;
     static GetVoxelPosition(worldPosition: Vector3): Vector3;
     static BlockHitDamageFunc: BlockHitDamageFunc;
-    static GetVoxelPosition(worldPosition: Vector3): Vector3;
 }

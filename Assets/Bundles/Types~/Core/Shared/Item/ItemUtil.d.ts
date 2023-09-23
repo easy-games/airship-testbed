@@ -1,4 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 export interface ItemRegistrationConfig {
@@ -16,10 +17,13 @@ export declare class ItemUtil {
     static missingItemAccessory: Accessory;
     static defaultKitAccessory: AccessoryCollection | undefined;
     private static itemTypes;
+    private static initialized;
+    private static onInitialized;
     /**
      * Called by Core.
      */
     static Initialize(): void;
+    static WaitForInitialized(): Promise<void>;
     static RegisterItem(itemType: ItemType, itemDefinition: Omit<ItemMeta, "id" | "itemType">, config?: ItemRegistrationConfig): void;
     static GetItemTypeFromBlockId(blockId: number): ItemType | undefined;
     static GetItemTypeFromItemId(itemId: number): ItemType | undefined;

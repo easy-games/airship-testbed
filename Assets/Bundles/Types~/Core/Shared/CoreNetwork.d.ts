@@ -48,8 +48,10 @@ export declare const CoreNetwork: {
         SetHeldInventorySlot: RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>;
         SpawnEntities: RemoteEvent<[entities: EntityDto[]]>;
         DespawnEntity: RemoteEvent<[entityId: number]>;
-        BlockHit: RemoteEvent<[blockPos: Vector3, entityId: number]>;
+        BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number]>;
+        BlockGroupHit: RemoteEvent<[blockPositions: Vector3[], blockIds: number[], entityId: number]>;
         BlockDestroyed: RemoteEvent<[blockPos: Vector3, blockId: number]>;
+        BlockGroupDestroyed: RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>;
         ProjectileSpawn: RemoteEvent<[projectileDto: ProjectileDto]>;
         EntityDamage: RemoteEvent<[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]>;
         ProjectileHit: RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>;
@@ -100,6 +102,7 @@ export declare const CoreNetwork: {
         RemovePlayerFromTeam: RemoteEvent<[teamId: string, userId: string]>;
         RemoveTeams: RemoteEvent<[teamIds: string[]]>;
         SetBlockData: RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>;
+        SetBlockGroupData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>;
         SyncPrefabBlocks: RemoteEvent<[blockPositions: Vector3[]]>;
         /** Fired when a player is eliminated. */
         PlayerEliminated: RemoteEvent<[clientId: number]>;
@@ -110,6 +113,7 @@ export declare const CoreNetwork: {
         /** Fired when the current selected items state changes on an entity*/
         HeldItemStateChanged: RemoteEvent<[entityId: number, state: HeldItemState]>;
         BlockPlace: RemoteEvent<[pos: Vector3, voxel: number, entityId?: number | undefined]>;
+        BlockGroupPlace: RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number | undefined]>;
         EntityPickedUpGroundItem: RemoteEvent<[entityId: number, groundItemId: number]>;
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;

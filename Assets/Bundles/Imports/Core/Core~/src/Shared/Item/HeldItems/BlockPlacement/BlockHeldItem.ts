@@ -2,7 +2,6 @@
 import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
 import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { HeldItem } from "../HeldItem";
 
@@ -53,7 +52,6 @@ export class BlockHeldItem extends HeldItem {
 	}
 
 	private TryPlaceBlock(): boolean {
-		print("TryPlaceBlock server=" + RunUtil.IsServer());
 		if (!this.meta.block) {
 			return false;
 		}
@@ -91,6 +89,7 @@ export class BlockHeldItem extends HeldItem {
 		// Write the voxel at the predicted position
 		WorldAPI.GetMainWorld()?.PlaceBlockById(placePosition, this.meta.block.blockId!, {
 			placedByEntityId: this.entity.id,
+			priority: true,
 		});
 
 		Dependency<LocalEntityController>().AddToMoveData("PlaceBlock", {

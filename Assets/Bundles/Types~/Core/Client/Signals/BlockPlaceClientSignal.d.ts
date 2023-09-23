@@ -6,5 +6,6 @@ export declare class BlockPlaceClientSignal {
     readonly pos: Vector3;
     readonly block: Block;
     readonly placer: Entity | undefined;
-    constructor(pos: Vector3, block: Block, placer: Entity | undefined);
+    readonly isGroupEvent: boolean;
+    constructor(pos: Vector3, block: Block, placer: Entity | undefined, isGroupEvent: boolean);
 }

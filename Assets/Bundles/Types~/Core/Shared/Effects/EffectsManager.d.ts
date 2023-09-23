@@ -8,4 +8,5 @@ export declare class EffectsManager {
     static SpawnBundleDataEffect(bundle: BundleData, effectId: number, hitTransform: Transform | undefined, destroyInSeconds?: number): GameObject | undefined;
     static SpawnGameObjectAtPosition(template: GameObject, worldPosition: Vector3, worldEuler?: Vector3, destroyInSeconds?: number): GameObject;
     static SpawnGameObject(template: GameObject, parent?: Transform, destroyInSeconds?: number): GameObject;
+    static ReleaseGameObject(go: GameObject): void;
 }

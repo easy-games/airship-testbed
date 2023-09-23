@@ -5,10 +5,10 @@ import { GroundItem } from "../Shared/GroundItem/GroundItem";
 import { ItemType } from "../Shared/Item/ItemType";
 import { Player } from "../Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "../Shared/Signals/BeforeBlockPlacedSignal";
-import { BlockPlaceSignal } from "../Shared/Signals/BlockPlaceSignal";
+import { BlockGroupPlaceSignal, BlockPlaceSignal } from "../Shared/Signals/BlockPlaceSignal";
 import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
 import { Signal } from "../Shared/Util/Signal";
-import { BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
+import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";
@@ -24,6 +24,11 @@ export type BlockHitSignal = {
     blockPos: Vector3;
     readonly player: Player;
 };
+export type BlockGroupHitSignal = {
+    blockIds: number[];
+    blockPositions: Vector3[];
+    readonly player: Player;
+};
 export declare const CoreServerSignals: {
     PlayerJoin: Signal<PlayerJoinServerEvent>;
     PlayerLeave: Signal<PlayerLeaveServerEvent>;
@@ -32,9 +37,12 @@ export declare const CoreServerSignals: {
     EntityDespawn: Signal<Entity>;
     BeforeBlockPlaced: Signal<BeforeBlockPlacedSignal>;
     BlockPlace: Signal<BlockPlaceSignal>;
+    BlockGroupPlace: Signal<BlockGroupPlaceSignal>;
     /** Fired **before** a block is hit. This signal is cancellable. */
     BeforeBlockHit: Signal<BeforeBlockHitSignal>;
+    BeforeBlockGroupHit: Signal<BeforeBlockGroupHitSignal>;
     BlockHit: Signal<BlockHitSignal>;
+    BlockGroupHit: Signal<BlockGroupHitSignal>;
     /** Fired before a block is destroyed. */
     BeforeBlockDestroyed: Signal<{
         blockPos: Vector3;
@@ -50,6 +58,10 @@ export declare const CoreServerSignals: {
     BlockDestroyed: Signal<{
         blockPos: Vector3;
         blockId: number;
+    }>;
+    BlockGroupDestroyed: Signal<{
+        blockPositions: Vector3[];
+        blockIds: number[];
     }>;
     BeforeEntitySpawn: Signal<BeforeEntitySpawnServerEvent>;
     EntitySpawn: Signal<EntitySpawnEvent>;

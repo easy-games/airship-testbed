@@ -27,6 +27,7 @@ export declare class EntityAnimator {
     private slideAudioBundle;
     private steppedOnBlockType;
     private lastFootstepSoundTime;
+    private deathVfx?;
     constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);
     Destroy(): void;
     PlayAnimation(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;

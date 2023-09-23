@@ -7,10 +7,12 @@ import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
 import { Block } from "./Block";
 import { BlockDataAPI } from "./BlockData/BlockDataAPI";
-import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
+	/** True if should update collisions instantly.
+	 *
+	 * Defaults to true. */
 	priority?: boolean;
 	blockData?: {
 		[key: string]: unknown;
