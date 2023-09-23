@@ -38,10 +38,6 @@ export class BreakBlockHeldItem extends HeldItem {
 		if (this.entity.IsLocalCharacter()) {
 			this.HitBlockLocal();
 
-			let alive = true;
-			this.holdingDownBin.Add(() => {
-				alive = false;
-			});
 			if (this.meta.itemMechanics?.cooldownSeconds) {
 				this.holdingDownBin.Add(
 					SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {

@@ -27,6 +27,8 @@ export class ProximityPromptController implements OnStart {
 			const eligiblePrompt = this.activatableProximityPrompts[0];
 			eligiblePrompt.ActivatePrompt();
 		});
+
+		this.keyboard.OnKeyDown(KeyCode.E, (event) => {});
 	}
 
 	public RegisterProximityPrompt(prompt: ProximityPrompt): void {

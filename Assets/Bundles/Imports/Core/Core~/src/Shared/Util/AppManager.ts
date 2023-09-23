@@ -181,3 +181,13 @@ AppManager.keyboard.OnKeyDown(
 	},
 	SignalPriority.HIGH,
 );
+AppManager.keyboard.OnKeyDown(
+	KeyCode.F,
+	(event) => {
+		if (AppManager.IsOpen()) {
+			event.SetCancelled(true);
+			AppManager.Close();
+		}
+	},
+	SignalPriority.HIGH,
+);

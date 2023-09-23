@@ -39,14 +39,17 @@ export class GroundItemController implements OnStart {
 			"Imports/Core/Shared/Resources/Prefabs/GroundItems/_fallback.prefab",
 		);
 
-		for (const itemType of ItemUtil.GetItemTypes()) {
-			const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
-				`Imports/Core/Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
-			);
-			if (obj) {
-				this.itemTypeToDisplayObjMap.set(itemType, obj);
+		ItemUtil.WaitForInitialized().then(() => {
+			for (const itemType of ItemUtil.GetItemTypes()) {
+				print("setting up: " + itemType);
+				const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
+					`Imports/Core/Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
+				);
+				if (obj) {
+					this.itemTypeToDisplayObjMap.set(itemType, obj);
+				}
 			}
-		}
+		});
 	}
 
 	private CreateDisplayGO(itemStack: ItemStack, parent: Transform): GameObject {
