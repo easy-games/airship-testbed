@@ -186,6 +186,7 @@ export const items: {
 		block: {
 			blockId: 4,
 			blockArchetype: BlockArchetype.STONE,
+			stepSound: CoreSound.footstepStone,
 		},
 	},
 	[ItemType.GRIM_STONE]: {

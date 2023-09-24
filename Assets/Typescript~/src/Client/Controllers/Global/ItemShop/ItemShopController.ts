@@ -201,7 +201,9 @@ export class ItemShopController implements OnStart {
 		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopElement.itemType);
 		if (result) {
 			this.purchasedTierItems.add(shopElement.itemType);
-			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav");
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav", {
+				volumeScale: 0.4,
+			});
 			this.UpdateItems(false);
 
 			if (shopElement.nextTier) {
