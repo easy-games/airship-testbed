@@ -211,7 +211,7 @@ export const items: {
 		itemAssets: blockItemAssets,
 		itemMechanics: blockItemMechanics,
 		block: {
-			blockId: 5,
+			blockId: 26,
 			health: 20,
 			blockArchetype: BlockArchetype.STONE,
 		},
