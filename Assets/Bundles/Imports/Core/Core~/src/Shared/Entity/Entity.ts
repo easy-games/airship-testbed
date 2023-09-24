@@ -512,7 +512,7 @@ export class Entity {
 
 	public LaunchProjectile(itemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
-		if (!itemMeta.ammo) {
+		if (!itemMeta.projectile) {
 			return error("Tried to launch item that wasn't a projectile: " + itemType);
 		}
 		let firstPerson = false;
@@ -529,7 +529,7 @@ export class Entity {
 			itemMeta.id,
 			launchPos,
 			velocity,
-			itemMeta.ammo.gravity,
+			itemMeta.projectile.gravity,
 			0,
 		);
 		const projectile = new Projectile(easyProjectile, itemType, this);

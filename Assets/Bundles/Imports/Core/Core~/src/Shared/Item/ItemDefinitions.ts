@@ -567,15 +567,24 @@ export const items: {
 		displayName: "Wood Arrow",
 		itemMechanics: defaultItemMechanics,
 		accessoryPaths: [AccPath(ItemType.WOOD_ARROW)],
-		ammo: {
+		projectile: {
 			yAxisAimAdjust: 0.1,
 			damage: 15,
 			gravity: defaultGravity * 0.4,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
-			onHitGroundSoundId: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitFail",
-			onHitEntitySoundId: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitSuccess",
+			onHitEntitySound: [
+				{
+					path: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitSuccess",
+				},
+			],
+			onHitGroundSound: [
+				{
+					path: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitFail",
+					volumeScale: 0.7,
+					maxDistance: 50,
+				},
+			],
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_ArrowHit,
-			onHitGroundSoundVolume: 0.5,
 		},
 	},
 
@@ -599,7 +608,7 @@ export const items: {
 			maxVelocityScaler: 40,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 		},
-		ammo: {
+		projectile: {
 			yAxisAimAdjust: 0.1,
 			damage: 15,
 			gravity: defaultGravity * 0.2,
@@ -626,7 +635,7 @@ export const items: {
 			maxVelocityScaler: 50,
 			firstPersonLaunchOffset: new Vector3(1.5, 0, 0),
 		},
-		ammo: {
+		projectile: {
 			yAxisAimAdjust: 0,
 			damage: 0,
 			aoeDamage: {
@@ -643,9 +652,14 @@ export const items: {
 			lifetimeSec: 10,
 			gravity: defaultGravity * 0.08,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
-			onHitGroundSoundId: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/Fireball_Explosion",
-			onHitEntitySoundId: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/Fireball_Explosion",
-			onHitGroundSoundVolume: 0.5,
+			// onHitGroundSound: [
+			// 	{
+			// 		path: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/Fireball_Explosion",
+			// 		volumeScale: 0.8,
+			// 		rollOffMode: AudioRolloffMode.Logarithmic,
+			// 		maxDistance: 700,
+			// 	},
+			// ],
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_FireballExplosion,
 		},
 	},

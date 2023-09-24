@@ -9,6 +9,8 @@ import { SignalPriority } from "Shared/Util/Signal";
 
 const coreSoundPath = "Imports/Core/Shared/Resources/Sound/";
 
+const maxDistance = 50;
+
 @Controller()
 export class BlockEffectsController implements OnStart {
 	OnStart(): void {
@@ -35,6 +37,7 @@ export class BlockEffectsController implements OnStart {
 			}
 			AudioManager.PlayAtPosition(RandomUtil.FromArray(sound), event.pos, {
 				volumeScale: event.placer?.IsLocalCharacter() ? 1 : 0.5,
+				maxDistance,
 			});
 		});
 
@@ -67,6 +70,7 @@ export class BlockEffectsController implements OnStart {
 
 			AudioManager.PlayAtPosition(RandomUtil.FromArray(sound), event.pos, {
 				volumeScale: 0.5,
+				maxDistance,
 			});
 		});
 
@@ -88,7 +92,9 @@ export class BlockEffectsController implements OnStart {
 						break;
 				}
 			}
-			AudioManager.PlayAtPosition(RandomUtil.FromArray(sound), event.blockPos);
+			AudioManager.PlayAtPosition(RandomUtil.FromArray(sound), event.blockPos, {
+				maxDistance,
+			});
 		});
 	}
 }

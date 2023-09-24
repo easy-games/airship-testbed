@@ -55,7 +55,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.projectileLauncher.ammoItemType);
-			const ammoMeta = ammoItemMeta.ammo!;
+			const ammoMeta = ammoItemMeta.projectile!;
 
 			this.chargeBin.Add(Crosshair.AddDisabler());
 
@@ -200,7 +200,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	} {
 		const launcherMeta = launcherItemMeta.projectileLauncher!;
 		const ammoItemMeta = ItemUtil.GetItemMeta(launcherMeta.ammoItemType);
-		const ammoMeta = ammoItemMeta.ammo!;
+		const ammoMeta = ammoItemMeta.projectile!;
 
 		const aimVector = this.GetAimVector(mouse, launchPos, ammoMeta);
 

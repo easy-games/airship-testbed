@@ -101,7 +101,6 @@ export class BlockHealthController implements OnStart {
 
 	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {
 		let currentHealth = this.GetBlockHealth(blockPos);
-		print("Viz block: " + blockPos + ", " + currentHealth + " show health: " + showHealthbar);
 
 		//Get or create health bar
 		if (showHealthbar) {

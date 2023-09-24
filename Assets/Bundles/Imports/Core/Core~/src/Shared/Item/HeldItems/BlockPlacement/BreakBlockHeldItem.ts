@@ -15,8 +15,8 @@ interface HealthbarEntry {
 }
 
 export class BreakBlockHeldItem extends HeldItem {
-	private holdingDownId = 0;
 	private holdingDownBin = new Bin();
+	private holdingDown = false;
 
 	override OnEquip() {
 		super.OnEquip();
@@ -38,7 +38,8 @@ export class BreakBlockHeldItem extends HeldItem {
 		if (this.entity.IsLocalCharacter()) {
 			this.HitBlockLocal();
 
-			if (this.meta.itemMechanics?.cooldownSeconds) {
+			if (this.meta.itemMechanics?.cooldownSeconds && !this.holdingDown) {
+				this.holdingDown = true;
 				this.holdingDownBin.Add(
 					SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {
 						import("Shared/Item/HeldItems/EntityItemManager").then((imp) => {
@@ -51,6 +52,9 @@ export class BreakBlockHeldItem extends HeldItem {
 						});
 					}),
 				);
+				this.holdingDownBin.Add(() => {
+					this.holdingDown = false;
+				});
 			}
 		}
 	}
