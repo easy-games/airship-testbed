@@ -1,17 +1,24 @@
+import { Dependency } from "@easy-games/flamework-core";
+import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
-import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
-import { Dependency } from "@easy-games/flamework-core";
 
 const CHARACTER_MASK = -4239;
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
 
-const MOUSE_SENS_SCALAR = 0.1;
+let MOUSE_SENS_SCALAR = 0.1;
+if (RunUtil.IsMac()) {
+	MOUSE_SENS_SCALAR *= 6;
+}
+if (!RunUtil.IsEditor()) {
+	MOUSE_SENS_SCALAR *= 0.15;
+}
 const Y_LOCKED_ROTATION = math.rad(15);
 const Y_OFFSET = 1.85;
 
