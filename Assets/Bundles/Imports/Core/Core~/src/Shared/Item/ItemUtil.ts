@@ -41,7 +41,6 @@ export class ItemUtil {
 		let i = 0;
 		for (const itemType of Object.keys(items)) {
 			this.itemTypes.push(itemType);
-			print("pushing to itemTypes: " + itemType);
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			// Assign ID to each ItemType

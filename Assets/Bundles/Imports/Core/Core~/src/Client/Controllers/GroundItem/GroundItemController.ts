@@ -41,7 +41,6 @@ export class GroundItemController implements OnStart {
 
 		ItemUtil.WaitForInitialized().then(() => {
 			for (const itemType of ItemUtil.GetItemTypes()) {
-				print("setting up: " + itemType);
 				const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
 					`Imports/Core/Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
 				);

@@ -7,11 +7,12 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
+import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MapUtil } from "Shared/Util/MapUtil";
-import { Signal } from "Shared/Util/Signal";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
@@ -39,6 +40,7 @@ export class DirectMessageController implements OnStart {
 	private openWindowBin = new Bin();
 	private openedWindowUserId: string | undefined;
 	private doScrollToBottom = 0;
+	private inputFieldSelected = false;
 
 	public lastMessagedFriend: FriendStatus | undefined;
 
@@ -145,9 +147,27 @@ export class DirectMessageController implements OnStart {
 		});
 		// clear notifs on select
 		CanvasAPI.OnSelectEvent(this.inputField!.gameObject, () => {
+			this.inputFieldSelected = true;
+			print("input field selected.");
 			if (this.openedWindowUserId) {
 				this.unreadMessageCounterMap.set(this.openedWindowUserId, 0);
 				this.ClearUnreadBadge(this.openedWindowUserId);
+			}
+		});
+		CanvasAPI.OnDeselectEvent(this.inputField!.gameObject, () => {
+			this.inputFieldSelected = false;
+		});
+		const keyboard = new Keyboard();
+		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+			if (this.inputFieldSelected) {
+				if (
+					event.KeyCode !== KeyCode.Return &&
+					event.KeyCode !== KeyCode.Escape &&
+					event.KeyCode !== KeyCode.UpArrow &&
+					event.KeyCode !== KeyCode.DownArrow
+				) {
+					event.SetCancelled(true);
+				}
 			}
 		});
 
