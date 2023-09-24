@@ -244,10 +244,12 @@ export class InventoryUIController implements OnStart {
 
 		const contentGO = go.transform.GetChild(0).gameObject;
 		const contentRect = contentGO.GetComponent<RectTransform>();
-		if (selectedSlot === slot && this.prevSelectedSlot !== slot) {
-			contentRect.TweenAnchoredPositionY(10, 0.1);
-		} else if (this.prevSelectedSlot === slot) {
-			contentRect.TweenAnchoredPositionY(0, 0.1);
+		if (this.prevSelectedSlot !== slot) {
+			if (selectedSlot === slot) {
+				contentRect.TweenAnchoredPositionY(10, 0.1);
+			} else {
+				contentRect.TweenAnchoredPositionY(0, 0.1);
+			}
 		}
 
 		if (init) {
