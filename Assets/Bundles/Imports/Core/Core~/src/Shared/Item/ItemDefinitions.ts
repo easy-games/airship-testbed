@@ -495,7 +495,7 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
 		melee: {
-			damage: 5,
+			damage: 18,
 		},
 	},
 	[ItemType.STONE_SWORD]: {
@@ -504,7 +504,7 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
 		melee: {
-			damage: 8,
+			damage: 25,
 		},
 	},
 	[ItemType.IRON_SWORD]: {
@@ -513,7 +513,7 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
 		melee: {
-			damage: 10,
+			damage: 35,
 		},
 	},
 	[ItemType.DIAMOND_SWORD]: {
@@ -522,7 +522,7 @@ export const items: {
 		itemMechanics: swordItemMechanics,
 		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
 		melee: {
-			damage: 13,
+			damage: 45,
 		},
 	},
 	[ItemType.DOUBLE_HIT_SWORD]: {
