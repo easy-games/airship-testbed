@@ -1,6 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
 import { Game } from "Imports/Core/Shared/Game";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
@@ -14,7 +15,6 @@ import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
 
 /** Bed block id. */
 const BED_BLOCK_ID = ItemUtil.GetItemMeta(ItemType.BED).block?.blockId ?? -1;
@@ -38,14 +38,6 @@ export class BedService implements OnStart {
 			}
 		});
 
-		CoreServerSignals.BeforeBlockGroupDestroyed.Connect((event) => {
-			event.blockPositions.forEach((position: Vector3, index: number) => {
-				if (event.blockIds[index] === BED_BLOCK_ID) {
-					this.TryDestroyBed(position, event.entity);
-				}
-			});
-		});
-
 		ServerSignals.MatchStart.Connect(() => {
 			this.SpawnBeds();
 		});
@@ -60,9 +52,14 @@ export class BedService implements OnStart {
 			if (entity && breakerTeam) {
 				Game.BroadcastMessage(
 					ColorUtil.ColoredText(breakerTeam.color, entity.GetDisplayName()) +
-						ColorUtil.ColoredText(Theme.Aqua, " broke ") +
+						ColorUtil.ColoredText(Theme.Aqua, " destroyed ") +
 						ColorUtil.ColoredText(team.color, `${team.name} team's bed`) +
 						ColorUtil.ColoredText(Theme.Aqua, "!"),
+				);
+			} else {
+				Game.BroadcastMessage(
+					ColorUtil.ColoredText(team.color, `${team.name}'s bed`) +
+						ColorUtil.ColoredText(Theme.Aqua, " has been destroyed!"),
 				);
 			}
 			const bedState = this.GetBedStateForTeam(team);

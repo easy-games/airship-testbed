@@ -6,6 +6,5 @@ export class AfterBlockHitClientSignal {
 		public readonly blockId: number,
 		public readonly entity: Entity | undefined,
 		public readonly broken: boolean,
-		public readonly isGroupEvent: boolean,
 	) {}
 }

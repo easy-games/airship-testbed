@@ -13,8 +13,10 @@ export declare class InventoryUIController implements OnStart {
     private backpackRefs;
     private backpackCanvas;
     private slotToBackpackTileMap;
+    private enabled;
     constructor(invController: InventoryController, coreUIController: CoreUIController);
     OnStart(): void;
+    SetEnabled(enabled: boolean): void;
     OpenBackpack(): void;
     private SetupHotbar;
     private UpdateTile;

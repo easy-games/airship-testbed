@@ -4,12 +4,14 @@ import { CameraController } from "Imports/Core/Client/Controllers/Camera/CameraC
 import { OrbitCameraMode } from "Imports/Core/Client/Controllers/Camera/DefaultCameraModes/OrbitCameraMode";
 import { LocalEntityController } from "Imports/Core/Client/Controllers/Character/LocalEntityController";
 import { EntityController } from "Imports/Core/Client/Controllers/Entity/EntityController";
+import { InventoryUIController } from "Imports/Core/Client/Controllers/Inventory/InventoryUIController";
 import { PlayerController } from "Imports/Core/Client/Controllers/Player/PlayerController";
 import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
 import { Entity } from "Imports/Core/Shared/Entity/Entity";
 import { Game } from "Imports/Core/Shared/Game";
 import { Keyboard, Mouse } from "Imports/Core/Shared/UserInput";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
+import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
 import { BWController } from "./BWController";
 
 @Controller({})
@@ -29,7 +31,9 @@ export class SpectateController implements OnStart {
 		// Start spectating once player is eliminated:
 		ClientSignals.PlayerEliminated.Connect((event) => {
 			if (event.player !== Game.LocalPlayer) return;
-			this.StartSpectating();
+			SetTimeout(0.1, () => {
+				this.StartSpectating();
+			});
 		});
 
 		const keyboard = new Keyboard();
@@ -62,11 +66,14 @@ export class SpectateController implements OnStart {
 		);
 
 		return () => {
+			print("cleaning.");
 			bin.Clean();
 		};
 	}
 
 	public StartSpectating() {
+		Dependency<InventoryUIController>().SetEnabled(false);
+
 		const entities = this.GetSortedEntities();
 		if (entities.size() === 0) return;
 
@@ -80,11 +87,9 @@ export class SpectateController implements OnStart {
 
 		// Handle changing who is spectated:
 		const mouse = bin.Add(new Mouse());
+		const keyboard = bin.Add(new Keyboard());
 		mouse.LeftDown.Connect(() => {
-			this.GoToIncrement(orbitCamMode, 1);
-		});
-		mouse.RightDown.Connect(() => {
-			this.GoToIncrement(orbitCamMode, -1);
+			this.GoToIncrement(orbitCamMode, keyboard.IsKeyDown(KeyCode.LeftShift) ? -1 : 1);
 		});
 
 		bin.Connect(CoreClientSignals.EntitySpawn, (event) => {

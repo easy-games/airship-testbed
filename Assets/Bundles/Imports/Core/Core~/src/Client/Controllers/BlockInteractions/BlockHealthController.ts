@@ -43,21 +43,14 @@ export class BlockHealthController implements OnStart {
 		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId) => {
 			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
 
-			const entity = this.entityController.GetEntityById(entityId);
-			if (entity) {
-				this.OnBlockHit(entity, blockPos, blockId, true);
+			let entity: Entity | undefined;
+			if (entityId !== undefined) {
+				this.entityController.GetEntityById(entityId);
 			}
-		});
 
-		CoreNetwork.ServerToClient.BlockGroupHit.Client.OnServerEvent((blockPositions, blockIds, entityId) => {
-			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
-
-			const entity = this.entityController.GetEntityById(entityId);
-			if (entity) {
-				blockPositions.forEach((position, index) => {
-					this.OnBlockHit(entity, position, blockIds[index], true);
-				});
-			}
+			const blockHealth = this.VisualizeBlockHealth(blockPos);
+			const isBroken = blockHealth !== undefined && blockHealth > 0;
+			CoreClientSignals.AfterBlockHit.Fire(new AfterBlockHitClientSignal(blockPos, blockId, entity, isBroken));
 		});
 
 		CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
@@ -89,14 +82,6 @@ export class BlockHealthController implements OnStart {
 				this.DeleteHealthBar(entry, pos);
 			});
 		});
-	}
-
-	private OnBlockHit(entity: Entity, blockPos: Vector3, blockId: number, isGroupEvent: boolean) {
-		const blockHealth = this.VisualizeBlockHealth(blockPos, !isGroupEvent);
-		const isBroken = blockHealth !== undefined && blockHealth > 0;
-		CoreClientSignals.AfterBlockHit.Fire(
-			new AfterBlockHitClientSignal(blockPos, blockId, entity, isBroken, isGroupEvent),
-		);
 	}
 
 	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {

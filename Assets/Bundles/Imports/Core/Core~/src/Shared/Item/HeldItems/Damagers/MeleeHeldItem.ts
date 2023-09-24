@@ -14,6 +14,8 @@ export class MeleeHeldItem extends HeldItem {
 	private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
+		if (this.entity.IsDead()) return;
+
 		super.OnUseClient(useIndex);
 		let meleeData = this.meta.melee;
 		if (!meleeData) {
@@ -46,6 +48,9 @@ export class MeleeHeldItem extends HeldItem {
 
 	override OnUseServer(useIndex: number) {
 		super.OnUseServer(useIndex);
+
+		if (this.entity.IsDead()) return;
+
 		let meleeData = this.meta.melee;
 		if (!meleeData) {
 			return;

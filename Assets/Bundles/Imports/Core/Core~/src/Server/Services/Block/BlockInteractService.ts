@@ -146,7 +146,7 @@ export class BlockInteractService implements OnStart {
 		entity.SendItemAnimationToClients(0, 0, entity.ClientId);
 	}
 
-	public DamageBlock(entity: Entity, breakBlockMeta: BreakBlockMeta, voxelPos: Vector3): boolean {
+	public DamageBlock(entity: Entity | undefined, breakBlockMeta: BreakBlockMeta, voxelPos: Vector3): boolean {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return false;
@@ -159,18 +159,13 @@ export class BlockInteractService implements OnStart {
 			return false;
 		}
 
-		const player = entity.player;
-		if (!player) {
-			return false;
-		}
-
 		// Cancellable signal
-		const damage = WorldAPI.BlockHitDamageFunc(player, block, voxelPos, breakBlockMeta);
+		const damage = WorldAPI.BlockHitDamageFunc(entity, block, voxelPos, breakBlockMeta);
 		if (damage === 0) {
 			return false;
 		}
 		const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-			new BeforeBlockHitSignal(block, voxelPos, player, damage, false),
+			new BeforeBlockHitSignal(block, voxelPos, entity, damage, false),
 		);
 
 		//BLOCK DAMAGE
@@ -179,9 +174,9 @@ export class BlockInteractService implements OnStart {
 		BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
 
 		// After signal
-		CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, player, blockPos: voxelPos });
+		CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, entity, blockPos: voxelPos });
 		print(`Firing BlockHit. damage=${beforeSignal.damage}`);
-		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.blockId, entity.id);
+		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.blockId, entity?.id);
 
 		//BLOCK DEATH
 		if (newHealth === 0) {
@@ -191,7 +186,7 @@ export class BlockInteractService implements OnStart {
 				entity: entity,
 			});
 			world.PlaceBlockById(voxelPos, 0, {
-				placedByEntityId: entity.id,
+				placedByEntityId: entity?.id,
 			});
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: block.blockId,
@@ -202,15 +197,10 @@ export class BlockInteractService implements OnStart {
 		return true;
 	}
 
-	public DamageBlocks(entity: Entity, voxelPositions: Vector3[], damages: number[]): boolean {
+	public DamageBlocks(entity: Entity | undefined, voxelPositions: Vector3[], damages: number[]): boolean {
 		print("Damaging blocks");
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
-			return false;
-		}
-
-		const player = entity.player;
-		if (!player) {
 			return false;
 		}
 
@@ -239,9 +229,10 @@ export class BlockInteractService implements OnStart {
 
 			// Cancellable signal
 			const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-				new BeforeBlockHitSignal(block, voxelPos, player, damage, true),
+				new BeforeBlockHitSignal(block, voxelPos, entity, damage, true),
 			);
 			damage = beforeSignal.damage;
+			if (damage === 0) continue;
 
 			//BLOCK DAMAGE
 			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
@@ -255,7 +246,6 @@ export class BlockInteractService implements OnStart {
 
 			//BLOCK DEATH
 			if (newHealth === 0) {
-				print("Killed Block: " + block.blockId);
 				destroyedPositions[destroyedI] = voxelPos;
 				destroyedIds[destroyedI] = block.blockId;
 				destroyedAirId[destroyedI] = 0;
@@ -268,27 +258,24 @@ export class BlockInteractService implements OnStart {
 		}
 
 		if (damageI > 0) {
-			print(`Fireing Damage Group Event`);
+			print(`Firing Damage Group Event`);
 			//Apply damage to whole group of blocks
 			BlockDataAPI.SetBlockGroupData(damagePositions, "health", newGroupHealth);
 			// CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, damagedIds, entity.id);
 		}
 
 		if (destroyedI > 0) {
-			print(`Fireing Destroyed Group Event`);
+			print(`Firing Destroyed Group Event`);
 			//Destroy group of blocks
-			CoreServerSignals.BeforeBlockGroupDestroyed.Fire({
-				blockIds: destroyedIds,
-				blockPositions: destroyedPositions,
-				entity: entity,
-			});
-			world.PlaceBlockGroupById(destroyedPositions, destroyedAirId, {
-				placedByEntityId: entity.id,
-			});
-			CoreServerSignals.BlockGroupDestroyed.Fire({
-				blockIds: destroyedIds,
-				blockPositions: destroyedPositions,
-			});
+			world.PlaceBlockGroupById(destroyedPositions, destroyedAirId);
+
+			for (let i = 0; i < destroyedI; i++) {
+				CoreServerSignals.BlockDestroyed.Fire({
+					blockId: destroyedIds[i],
+					blockPos: destroyedPositions[i],
+					entity: entity,
+				});
+			}
 			// CoreNetwork.ServerToClient.BlockGroupDestroyed.Server.FireAllClients(destroyedPositions, destroyedIds);
 		}
 

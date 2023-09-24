@@ -1,3 +1,4 @@
+import { Entity } from "Shared/Entity/Entity";
 import { Player } from "Shared/Player/Player";
 import { Block } from "Shared/VoxelWorld/Block";
 
@@ -5,7 +6,7 @@ export class BeforeBlockHitSignal {
 	constructor(
 		public readonly block: Block,
 		public readonly blockPos: Vector3,
-		public readonly player: Player,
+		public readonly entity: Entity | undefined,
 		/**
 		 * To modify the damage you must edit BlockHitDamageCalc()
 		 */

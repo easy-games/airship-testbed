@@ -7,6 +7,9 @@ import { BlockMeta } from "../Item/ItemMeta";
 import { Block } from "./Block";
 export interface PlaceBlockConfig {
     placedByEntityId?: number;
+    /** True if should update collisions instantly.
+     *
+     * Defaults to true. */
     priority?: boolean;
     blockData?: {
         [key: string]: unknown;

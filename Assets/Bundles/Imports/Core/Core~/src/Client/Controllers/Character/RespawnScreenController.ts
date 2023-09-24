@@ -13,7 +13,7 @@ export class RespawnScreenController implements OnStart {
 
 	OnStart(): void {
 		CoreClientSignals.EntityDeath.Connect((event) => {
-			if (event.entity.IsLocalCharacter() && event.respawnTime >= 0) {
+			if (event.entity.IsLocalCharacter() && event.respawnTime > 0) {
 				this.ShowRespawnScreen(event);
 			}
 		});

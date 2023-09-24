@@ -42,7 +42,7 @@ export class BlockEffectsController implements OnStart {
 		});
 
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
-			if (event.isGroupEvent || event.entity?.IsLocalCharacter()) return;
+			if (event.entity?.IsLocalCharacter()) return;
 
 			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockId);
 			let itemMeta: ItemMeta | undefined;

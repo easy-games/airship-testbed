@@ -12,10 +12,9 @@ export declare class BlockHealthController implements OnStart {
     HEALTHBAR_EXPIRE_TIME: number;
     constructor(invController: InventoryController, blockSelectController: BlockSelectController, entityController: EntityController);
     OnStart(): void;
-    private OnBlockHit;
     VisualizeBlockHealth(blockPos: Vector3, showHealthbar?: boolean): number | undefined;
     VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars?: boolean): void;
-    private ApplyBlockMaterial;
+    private SpawnBlockHitParticles;
     private GetBlockHealth;
     private AddHealthBar;
     private RemoveHealthBar;

@@ -11,6 +11,7 @@ export declare class BlockDataAPI {
     private static parentToChildrenMap;
     static Init(): void;
     static SetBlockData(blockPos: Vector3, key: string, data: unknown, notifyClient?: boolean): void;
+    static PrintAllBlockData(): void;
     static SetBlockGroupData(blockPositions: Vector3[], key: string, data: unknown[]): void;
     static ClearBlockData(blockPos: Vector3): void;
     static GetBlockData<T>(blockPos: Vector3, key: string): T | undefined;

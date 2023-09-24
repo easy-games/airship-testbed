@@ -25,6 +25,8 @@ export class InventoryUIController implements OnStart {
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
 
+	private enabled = true;
+
 	constructor(
 		private readonly invController: InventoryController,
 		private readonly coreUIController: CoreUIController,
@@ -59,7 +61,17 @@ export class InventoryUIController implements OnStart {
 		});
 	}
 
+	public SetEnabled(enabled: boolean): void {
+		if (this.enabled === enabled) return;
+
+		if (!enabled) {
+			this.canvas.enabled = false;
+		}
+	}
+
 	public OpenBackpack(): void {
+		if (!this.enabled) return;
+
 		this.backpackShown = true;
 
 		AppManager.Open(this.backpackCanvas, {

@@ -1,7 +1,6 @@
 import { Entity } from "Shared/Entity/Entity";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { ItemType } from "Shared/Item/ItemType";
-import { Player } from "Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
@@ -18,8 +17,7 @@ import { MoveCommandDataEvent } from "./Signals/MoveCommandDataEvent";
 import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
 
-export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
-export type BlockGroupHitSignal = { blockIds: number[]; blockPositions: Vector3[]; readonly player: Player };
+export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly entity: Entity | undefined };
 
 export const CoreServerSignals = {
 	PlayerJoin: new Signal<PlayerJoinServerEvent>(),
@@ -34,21 +32,14 @@ export const CoreServerSignals = {
 	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
 	BeforeBlockGroupHit: new Signal<BeforeBlockGroupHitSignal>(),
 	BlockHit: new Signal<BlockHitSignal>(),
-	BlockGroupHit: new Signal<BlockGroupHitSignal>(),
 	/** Fired before a block is destroyed. */
 	BeforeBlockDestroyed: new Signal<{
 		blockPos: Vector3;
 		blockId: number;
 		entity?: Entity;
 	}>(),
-	BeforeBlockGroupDestroyed: new Signal<{
-		blockPositions: Vector3[];
-		blockIds: number[];
-		entity?: Entity;
-	}>(),
 	/** Fired when a block is destroyed. */
-	BlockDestroyed: new Signal<{ blockPos: Vector3; blockId: number }>(),
-	BlockGroupDestroyed: new Signal<{ blockPositions: Vector3[]; blockIds: number[] }>(),
+	BlockDestroyed: new Signal<{ blockPos: Vector3; blockId: number; entity?: Entity }>(),
 	BeforeEntitySpawn: new Signal<BeforeEntitySpawnServerEvent>(),
 	EntitySpawn: new Signal<EntitySpawnEvent>(),
 	BeforeEntityDropItem: new Signal<BeforeEntityDropItemSignal>(),

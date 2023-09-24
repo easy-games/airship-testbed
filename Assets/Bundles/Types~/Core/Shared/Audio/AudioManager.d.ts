@@ -1,9 +1,11 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 export interface PlaySoundConfig {
-    volumeScale: number;
+    volumeScale?: number;
     loop?: boolean;
     pitch?: number;
+    maxDistance?: number;
+    rollOffMode?: AudioRolloffMode;
 }
 export declare class AudioManager {
     static SoundFolderPath: string;

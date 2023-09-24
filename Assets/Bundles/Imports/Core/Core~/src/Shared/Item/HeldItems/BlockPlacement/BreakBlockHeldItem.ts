@@ -69,6 +69,6 @@ export class BreakBlockHeldItem extends HeldItem {
 		if (!voxelPos) {
 			return;
 		}
-		Dependency<BlockInteractController>().DamageBlock(this.entity, this.meta.breakBlock, voxelPos, true);
+		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.meta.breakBlock, voxelPos, true);
 	}
 }

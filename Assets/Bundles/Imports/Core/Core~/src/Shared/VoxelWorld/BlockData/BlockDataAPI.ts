@@ -1,3 +1,4 @@
+import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { RunUtil } from "Shared/Util/RunUtil";
 
@@ -14,6 +15,7 @@ export class BlockDataAPI {
 	public static Init(): void {
 		if (RunCore.IsClient()) {
 			CoreNetwork.ServerToClient.SetBlockData.Client.OnServerEvent((blockPos, key, data) => {
+				print(`setBlockData key=${key} data=${data}`);
 				this.SetBlockData(blockPos, key, data);
 			});
 		} else {
@@ -44,6 +46,16 @@ export class BlockDataAPI {
 		map.set(key, data);
 		if (notifyClient && RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.SetBlockData.Server.FireAllClients(blockPos, key, data);
+		}
+	}
+
+	public static PrintAllBlockData() {
+		for (const pos of Object.keys(this.blockDataMap)) {
+			print("(" + pos.x + "," + pos.y + "," + pos.z + "):");
+			const data = this.blockDataMap.get(pos)!;
+			for (const key of Object.keys(data)) {
+				print("    " + key + ": " + data.get(key));
+			}
 		}
 	}
 

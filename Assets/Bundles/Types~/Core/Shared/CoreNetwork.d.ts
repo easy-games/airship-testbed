@@ -48,8 +48,7 @@ export declare const CoreNetwork: {
         SetHeldInventorySlot: RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>;
         SpawnEntities: RemoteEvent<[entities: EntityDto[]]>;
         DespawnEntity: RemoteEvent<[entityId: number]>;
-        BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number]>;
-        BlockGroupHit: RemoteEvent<[blockPositions: Vector3[], blockIds: number[], entityId: number]>;
+        BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined]>;
         BlockDestroyed: RemoteEvent<[blockPos: Vector3, blockId: number]>;
         BlockGroupDestroyed: RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>;
         ProjectileSpawn: RemoteEvent<[projectileDto: ProjectileDto]>;

@@ -32,6 +32,7 @@ export class World {
 	constructor(public readonly voxelWorld: VoxelWorld) {
 		voxelWorld.OnVoxelPlaced((voxel, x, y, z) => {
 			const vec = new Vector3(x, y, z);
+			// print("VoxelPlaced (" + x + "," + y + "," + z + ")");
 			BlockDataAPI.ClearBlockData(vec);
 			voxel = VoxelWorld.VoxelDataToBlockId(voxel);
 			this.OnVoxelPlaced.Fire(vec, voxel);
@@ -124,6 +125,7 @@ export class World {
 	public PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void {
 		this.voxelWorld.WriteVoxelAt(pos, blockId, config?.priority ?? true);
 		if (config?.blockData) {
+			print("SetBlockData (" + pos.x + "," + pos.y + "," + pos.z + ")");
 			for (const key of Object.keys(config.blockData)) {
 				BlockDataAPI.SetBlockData(pos, key as string, config.blockData[key]);
 			}
@@ -181,13 +183,12 @@ export class World {
 			}
 		});
 
+		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData), config?.priority ?? true);
 		//Call block keys in batches based on keytype to avoid calling it per block (it sends a network event)
 		keyMap.forEach((value, key) => {
 			//print("Sending batch key data: " + key + ", " + value.data.size());
 			BlockDataAPI.SetBlockGroupData(value.position, key, value.data);
 		});
-
-		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData), config?.priority ?? true);
 	}
 
 	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void {

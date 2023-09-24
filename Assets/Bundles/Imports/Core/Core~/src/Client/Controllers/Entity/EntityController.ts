@@ -89,7 +89,6 @@ export class EntityController implements OnStart {
 				randomId = math.random(0, 10000000);
 			}
 			let index = randomId % skinColors.size();
-			print("index: " + index);
 			let skinColor = skinColors[index];
 			const thirdPersonMat = event.entity.model.transform.GetChild(1).GetComponent<MaterialColor>();
 			const firstPersonMat = event.entity.model.transform.GetChild(2).GetComponent<MaterialColor>();

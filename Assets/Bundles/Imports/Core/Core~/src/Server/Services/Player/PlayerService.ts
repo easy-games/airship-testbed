@@ -116,7 +116,7 @@ export class PlayerService implements OnStart {
 
 	/** Attempt to retrieve a player by username. */
 	public GetPlayerFromUsername(name: string): Player | undefined {
-		const player = this.players.find((player) => player.username === name);
+		const player = this.players.find((player) => player.username.lower() === name.lower());
 		return player;
 	}
 

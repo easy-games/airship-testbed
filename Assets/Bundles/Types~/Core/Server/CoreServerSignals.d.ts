@@ -3,7 +3,6 @@
 import { Entity } from "../Shared/Entity/Entity";
 import { GroundItem } from "../Shared/GroundItem/GroundItem";
 import { ItemType } from "../Shared/Item/ItemType";
-import { Player } from "../Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "../Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "../Shared/Signals/BlockPlaceSignal";
 import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
@@ -22,12 +21,7 @@ import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
 export type BlockHitSignal = {
     blockId: number;
     blockPos: Vector3;
-    readonly player: Player;
-};
-export type BlockGroupHitSignal = {
-    blockIds: number[];
-    blockPositions: Vector3[];
-    readonly player: Player;
+    readonly entity: Entity | undefined;
 };
 export declare const CoreServerSignals: {
     PlayerJoin: Signal<PlayerJoinServerEvent>;
@@ -42,26 +36,17 @@ export declare const CoreServerSignals: {
     BeforeBlockHit: Signal<BeforeBlockHitSignal>;
     BeforeBlockGroupHit: Signal<BeforeBlockGroupHitSignal>;
     BlockHit: Signal<BlockHitSignal>;
-    BlockGroupHit: Signal<BlockGroupHitSignal>;
     /** Fired before a block is destroyed. */
     BeforeBlockDestroyed: Signal<{
         blockPos: Vector3;
         blockId: number;
         entity?: Entity | undefined;
     }>;
-    BeforeBlockGroupDestroyed: Signal<{
-        blockPositions: Vector3[];
-        blockIds: number[];
-        entity?: Entity | undefined;
-    }>;
     /** Fired when a block is destroyed. */
     BlockDestroyed: Signal<{
         blockPos: Vector3;
         blockId: number;
-    }>;
-    BlockGroupDestroyed: Signal<{
-        blockPositions: Vector3[];
-        blockIds: number[];
+        entity?: Entity | undefined;
     }>;
     BeforeEntitySpawn: Signal<BeforeEntitySpawnServerEvent>;
     EntitySpawn: Signal<EntitySpawnEvent>;
