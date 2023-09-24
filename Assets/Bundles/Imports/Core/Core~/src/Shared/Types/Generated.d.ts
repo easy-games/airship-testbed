@@ -10744,6 +10744,7 @@ interface VoxelWorld extends MonoBehaviour {
     Vector3ToNearestIndex(normal: Vector3): number;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
     WriteVoxelGroupAt(positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
+    WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
 }
     
 interface VoxelBinaryFile extends ScriptableObject {
@@ -10819,12 +10820,14 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     RpcLogic___TargetFinishedSendingWorldRpc_328543758(conn: NetworkConnection): void;
     RpcLogic___TargetSetLightingProperties_2623000413(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     RpcLogic___TargetWriteChunksRpc_517074003(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
+    RpcLogic___TargetWriteVoxelGroupRpc_39176218(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
     RpcLogic___TargetWriteVoxelRpc_1359590914(conn: NetworkConnection, pos: unknown, voxel: number): void;
     TargetAddPointLights(conn: NetworkConnection, dtos: CSArray<PointLightDto>): void;
     TargetDirtyLights(conn: NetworkConnection): void;
     TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
     TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
     TargetWriteChunksRpc(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
+    TargetWriteVoxelGroupRpc(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
     TargetWriteVoxelRpc(conn: NetworkConnection, pos: unknown, voxel: number): void;
 }
     
@@ -10877,7 +10880,7 @@ interface Chunk {
     HasVoxels(): boolean;
     IsGeometryDirty(): boolean;
     MainThreadAddSamplesToProbes(): void;
-    MainthreadForceCollisionForVoxel(pos: Vector3): void;
+    MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
     NeedsToRunUpdate(): boolean;
     RemoveLight(id: number): void;
@@ -12842,6 +12845,7 @@ interface BridgeConstructor {
     IsFullScreen(): boolean;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
+    RemoveRichText(input: string): string;
     ScreenPointToLocalPointInRectangle(rectTransform: RectTransform, screenPoint: Vector2): Vector2;
     SetFullScreen(value: boolean): void;
     SetParentToSceneRoot(transform: Transform): void;
@@ -13066,6 +13070,7 @@ interface MaterialColor extends MonoBehaviour {
     GetColor(materialIndex: number): ColorSetting;
     SetAllColors(diffuseColor: Color, combine: boolean): void;
     SetColor(settings: ColorSetting, materialIndex: number): boolean;
+    SetMaterialColor(index: number, color: Color): void;
 }
     
 interface ColorSetting {

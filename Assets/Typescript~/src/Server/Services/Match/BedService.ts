@@ -1,6 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
 import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
 import { Game } from "Imports/Core/Shared/Game";
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
@@ -33,30 +34,42 @@ export class BedService implements OnStart {
 		/* Listen for bed destroyed. */
 		CoreServerSignals.BeforeBlockDestroyed.Connect((event) => {
 			if (event.blockId === BED_BLOCK_ID) {
-				const teamId = BlockDataAPI.GetBlockData<string>(event.blockPos, "teamId");
-				if (!teamId) return;
-				const team = this.teamService.GetTeamById(teamId);
-				if (team) {
-					const breakerTeam = event.entity?.player?.GetTeam();
-					if (event.entity && breakerTeam) {
-						Game.BroadcastMessage(
-							ColorUtil.ColoredText(breakerTeam.color, event.entity.GetDisplayName()) +
-								ColorUtil.ColoredText(Theme.Aqua, " broke ") +
-								ColorUtil.ColoredText(team.color, `${team.name} team's bed`) +
-								ColorUtil.ColoredText(Theme.Aqua, "!"),
-						);
-					}
-					const bedState = this.GetBedStateForTeam(team);
-					if (bedState) {
-						bedState.destroyed = true;
-					}
-					ServerSignals.BedDestroyed.Fire({ team });
-				}
+				this.TryDestroyBed(event.blockPos, event.entity);
 			}
 		});
+
 		ServerSignals.MatchStart.Connect(() => {
 			this.SpawnBeds();
 		});
+	}
+
+	private TryDestroyBed(blockPos: Vector3, entity?: Entity): boolean {
+		const teamId = BlockDataAPI.GetBlockData<string>(blockPos, "teamId");
+		if (!teamId) return false;
+		const team = this.teamService.GetTeamById(teamId);
+		if (team) {
+			const breakerTeam = entity?.player?.GetTeam();
+			if (entity && breakerTeam) {
+				Game.BroadcastMessage(
+					ColorUtil.ColoredText(breakerTeam.color, entity.GetDisplayName()) +
+						ColorUtil.ColoredText(Theme.Aqua, " destroyed ") +
+						ColorUtil.ColoredText(team.color, `${team.name} team's bed`) +
+						ColorUtil.ColoredText(Theme.Aqua, "!"),
+				);
+			} else {
+				Game.BroadcastMessage(
+					ColorUtil.ColoredText(team.color, `${team.name}'s bed`) +
+						ColorUtil.ColoredText(Theme.Aqua, " has been destroyed!"),
+				);
+			}
+			const bedState = this.GetBedStateForTeam(team);
+			if (bedState) {
+				bedState.destroyed = true;
+			}
+			ServerSignals.BedDestroyed.Fire({ team });
+			return true;
+		}
+		return false;
 	}
 
 	/** Spawn beds for each team. */

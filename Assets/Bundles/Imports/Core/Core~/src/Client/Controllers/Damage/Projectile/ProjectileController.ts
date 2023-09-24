@@ -16,7 +16,7 @@ export class ProjectileController implements OnStart {
 			const itemType = itemTypeStr as ItemType;
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
-			if (itemMeta.ammo) {
+			if (itemMeta.projectile) {
 				const projPrefab = AssetBridge.Instance.LoadAssetIfExists(
 					`Shared/Resources/Prefabs/Projectiles/Ammo/${itemType}.prefab`,
 				) as GameObject;
@@ -53,7 +53,7 @@ export class ProjectileController implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).ammo!;
+		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).projectile!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		const projectileHitSignal = new ProjectileCollideClientSignal(

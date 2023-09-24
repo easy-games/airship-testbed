@@ -12,7 +12,7 @@ export class MainMenuSettingsUIController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		this.clientSettingsController.onSettingsLoaded.Connect(() => {
+		this.clientSettingsController.WaitForSettingsLoaded().then(() => {
 			this.Setup();
 		});
 	}
@@ -41,7 +41,7 @@ export class MainMenuSettingsUIController implements OnStart {
 		);
 		this.SetupSlider(
 			this.mainMenuController.refs.GetValue("Settings", "MusicVolume"),
-			this.clientSettingsController.GetAmbientVolume(),
+			this.clientSettingsController.GetMusicVolume(),
 			(val) => {
 				this.clientSettingsController.SetMusicVolume(val);
 			},
@@ -53,8 +53,9 @@ export class MainMenuSettingsUIController implements OnStart {
 		const inputField = transform.FindChild("InputField")!.GetComponent<TMP_InputField>();
 		const slider = transform.FindChild("Slider")!.GetComponent<Slider>();
 
-		slider.value = startingValue;
-		inputField.text = startingValue + "";
+		let valRounded = math.floor(startingValue * 10) / 10;
+		slider.value = valRounded;
+		inputField.text = valRounded + "";
 
 		CanvasAPI.OnValueChangeEvent(slider.gameObject, (value) => {
 			onChange(value);

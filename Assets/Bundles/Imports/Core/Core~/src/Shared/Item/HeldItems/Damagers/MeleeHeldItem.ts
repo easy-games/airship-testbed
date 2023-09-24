@@ -14,12 +14,13 @@ export class MeleeHeldItem extends HeldItem {
 	private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
+		if (this.entity.IsDead()) return;
+
 		super.OnUseClient(useIndex);
 		let meleeData = this.meta.melee;
 		if (!meleeData) {
 			return;
 		}
-		this.Log("Using Server");
 		//Only local player should do collisions checks
 		//TODO make sure other players show the attacks effects just without having to do collision checks
 		if (this.entity.IsLocalCharacter()) {
@@ -47,6 +48,9 @@ export class MeleeHeldItem extends HeldItem {
 
 	override OnUseServer(useIndex: number) {
 		super.OnUseServer(useIndex);
+
+		if (this.entity.IsDead()) return;
+
 		let meleeData = this.meta.melee;
 		if (!meleeData) {
 			return;
@@ -123,7 +127,7 @@ export class MeleeHeldItem extends HeldItem {
 			if (ignoreEntityIds.includes(targetEntity.id)) {
 				continue;
 			}
-			const immuneUntilTime = this.entity.GetImmuneUntilTime();
+			const immuneUntilTime = targetEntity.GetImmuneUntilTime();
 			if (TimeUtil.GetServerTime() + (RunUtil.IsClient() ? 0.1 : 0) < immuneUntilTime) {
 				continue;
 			}

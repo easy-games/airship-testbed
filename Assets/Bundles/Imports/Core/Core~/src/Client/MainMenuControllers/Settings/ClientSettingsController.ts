@@ -20,7 +20,8 @@ const defaultData: ClientSettingsFile = {
 export class ClientSettingsController implements OnStart {
 	private data: ClientSettingsFile;
 	private unsavedChanges = false;
-	public onSettingsLoaded = new Signal<void>();
+	private settingsLoaded = false;
+	private onSettingsLoaded = new Signal<void>();
 
 	constructor() {
 		this.data = defaultData;
@@ -34,18 +35,27 @@ export class ClientSettingsController implements OnStart {
 			this.data = defaultData;
 		}
 
-		this.SetAmbientVolume(this.data.ambientVolume);
-		this.unsavedChanges = false;
-
 		Task.Spawn(() => {
+			this.settingsLoaded = true;
 			this.onSettingsLoaded.Fire();
 		});
 
-		SetInterval(3, () => {
+		SetInterval(0.5, () => {
 			if (this.unsavedChanges) {
 				this.unsavedChanges = false;
 				this.SaveSettings();
 			}
+		});
+	}
+
+	public async WaitForSettingsLoaded(): Promise<void> {
+		if (this.settingsLoaded) {
+			return;
+		}
+		return new Promise<void>((resolve) => {
+			this.onSettingsLoaded.Once(() => {
+				resolve();
+			});
 		});
 	}
 

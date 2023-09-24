@@ -1,3 +1,4 @@
+import { PlaySoundConfig } from "Shared/Audio/AudioManager";
 import { Entity } from "Shared/Entity/Entity";
 import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems, BundleGroupNames } from "../Util/ReferenceManagerResources";
@@ -7,7 +8,7 @@ import { ItemType } from "./ItemType";
 export interface BlockMeta {
 	health?: number;
 	blockId: number;
-	blockArchetype: BlockArchetype;
+	blockArchetype?: BlockArchetype;
 	prefab?: {
 		path: string;
 		childBlocks?: Vector3[];
@@ -18,6 +19,8 @@ export interface BlockMeta {
 	breakSound?: string[];
 }
 
+export type SoundMeta = { path: string } & PlaySoundConfig;
+
 export interface AmmoMeta {
 	projectileHitLayerMask: number;
 	yAxisAimAdjust: number;
@@ -26,9 +29,8 @@ export interface AmmoMeta {
 	blockDamage?: BreakBlockMeta;
 	lifetimeSec?: number;
 	gravity: number;
-	onHitEntitySoundId?: string;
-	onHitGroundSoundId?: string;
-	onHitSoundVolume?: number;
+	onHitEntitySound?: SoundMeta[];
+	onHitGroundSound?: SoundMeta[];
 	onHitVFXTemplate: AllBundleItems;
 }
 
@@ -69,7 +71,7 @@ export interface ItemMeta {
 	breakBlock?: BreakBlockMeta;
 	accessoryPaths?: string[];
 	projectileLauncher?: ProjectileLauncherMeta;
-	ammo?: AmmoMeta;
+	projectile?: AmmoMeta;
 	armor?: {
 		armorType: ArmorType;
 		protectionAmount: number;

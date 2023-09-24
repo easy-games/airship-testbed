@@ -15,4 +15,18 @@ export class CSArrayUtil {
 		}
 		return newArray;
 	}
+
+	/*public static Create<T>(keys: keyof T[], data: T[]): BinaryBlob {
+		let blob = new BinaryBlob(array);
+		const msg = blob.Decode() as BlobData;
+
+		const blobData: { key: keyof T; value: T }[] = [];
+		for(let i=0; i<data.size(); i++){
+			blobData[i].key = keys[i];
+			blobData[i].value = data[i];
+		}
+		data.forEach((key, index) => {
+		});
+		return new BinaryBlob(blobData);
+	}*/
 }

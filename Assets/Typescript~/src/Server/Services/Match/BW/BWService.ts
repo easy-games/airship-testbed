@@ -46,6 +46,7 @@ export class BWService implements OnStart {
 				const team = event.entity.player?.GetTeam();
 				if (event.entity.player && team && this.bedService.IsBedDestroyed(team)) {
 					this.EliminatePlayer(event.entity.player);
+					event.respawnTime = 0;
 				}
 			}
 			// Give resources to killer.

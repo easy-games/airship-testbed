@@ -4,5 +4,6 @@ import { Block } from "../../../../Shared/VoxelWorld/Block";
 export declare class BeforeBlockHitSignal {
     readonly blockPos: Vector3;
     readonly block: Block;
-    constructor(blockPos: Vector3, block: Block);
+    readonly isGroupEvent: boolean;
+    constructor(blockPos: Vector3, block: Block, isGroupEvent: boolean);
 }

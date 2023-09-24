@@ -4,9 +4,11 @@ import { Task } from "../Util/Task";
 const MAX_DISTANCE = 18;
 
 export interface PlaySoundConfig {
-	volumeScale: number;
+	volumeScale?: number;
 	loop?: boolean;
 	pitch?: number;
+	maxDistance?: number;
+	rollOffMode?: AudioRolloffMode;
 }
 
 export class AudioManager {
@@ -105,8 +107,6 @@ export class AudioManager {
 		config?: PlaySoundConfig,
 	): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(position);
-		audioSource.maxDistance = MAX_DISTANCE;
-		audioSource.rolloffMode = AudioRolloffMode.Linear;
 		audioSource.spatialBlend = 1;
 		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
 		if (!clip) {
@@ -115,6 +115,8 @@ export class AudioManager {
 		}
 		audioSource.clip = clip;
 		audioSource.volume = config?.volumeScale ?? 1;
+		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
+		audioSource.maxDistance = config?.maxDistance ?? 500;
 		audioSource.Play();
 		//audioSource.PlayOneShot(clip, );
 		if (!audioSource.loop) {

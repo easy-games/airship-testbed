@@ -66,7 +66,11 @@ export class EntityService implements OnStart {
 		return entityPrefab;
 	}
 
-	public SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3): Entity {
+	public SpawnEntityForPlayer(
+		player: Player | undefined,
+		entityPrefabType: EntityPrefabType,
+		pos?: Vector3,
+	): CharacterEntity {
 		const id = this.idCounter;
 		this.idCounter++;
 
@@ -104,12 +108,15 @@ export class EntityService implements OnStart {
 		}
 
 		// Custom move command data handling:
-		entity.entityDriver.OnDispatchCustomData((tick, customData) => {
+		const customDataConn = entity.entityDriver.OnDispatchCustomData((tick, customData) => {
 			const allData = customData.Decode() as { key: unknown; value: unknown }[];
 			for (const data of allData) {
 				const moveEvent = new MoveCommandDataEvent(player?.clientId ?? -1, tick, data.key, data.value);
 				CoreServerSignals.CustomMoveCommand.Fire(moveEvent);
 			}
+		});
+		entity.GetBin().Add(() => {
+			Bridge.DisconnectEvent(customDataConn);
 		});
 
 		// fire SpawnEntities after so the initial entity packet has all the latest info.

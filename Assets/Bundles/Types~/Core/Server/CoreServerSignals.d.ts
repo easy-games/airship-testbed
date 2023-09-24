@@ -3,12 +3,11 @@
 import { Entity } from "../Shared/Entity/Entity";
 import { GroundItem } from "../Shared/GroundItem/GroundItem";
 import { ItemType } from "../Shared/Item/ItemType";
-import { Player } from "../Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "../Shared/Signals/BeforeBlockPlacedSignal";
-import { BlockPlaceSignal } from "../Shared/Signals/BlockPlaceSignal";
+import { BlockGroupPlaceSignal, BlockPlaceSignal } from "../Shared/Signals/BlockPlaceSignal";
 import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
 import { Signal } from "../Shared/Util/Signal";
-import { BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
+import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";
@@ -22,7 +21,7 @@ import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
 export type BlockHitSignal = {
     blockId: number;
     blockPos: Vector3;
-    readonly player: Player;
+    readonly entity: Entity | undefined;
 };
 export declare const CoreServerSignals: {
     PlayerJoin: Signal<PlayerJoinServerEvent>;
@@ -32,8 +31,10 @@ export declare const CoreServerSignals: {
     EntityDespawn: Signal<Entity>;
     BeforeBlockPlaced: Signal<BeforeBlockPlacedSignal>;
     BlockPlace: Signal<BlockPlaceSignal>;
+    BlockGroupPlace: Signal<BlockGroupPlaceSignal>;
     /** Fired **before** a block is hit. This signal is cancellable. */
     BeforeBlockHit: Signal<BeforeBlockHitSignal>;
+    BeforeBlockGroupHit: Signal<BeforeBlockGroupHitSignal>;
     BlockHit: Signal<BlockHitSignal>;
     /** Fired before a block is destroyed. */
     BeforeBlockDestroyed: Signal<{
@@ -45,6 +46,7 @@ export declare const CoreServerSignals: {
     BlockDestroyed: Signal<{
         blockPos: Vector3;
         blockId: number;
+        entity?: Entity | undefined;
     }>;
     BeforeEntitySpawn: Signal<BeforeEntitySpawnServerEvent>;
     EntitySpawn: Signal<EntitySpawnEvent>;

@@ -1,9 +1,11 @@
 import { Controller } from "@easy-games/flamework-core";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { BreakBlockMeta } from "Shared/Item/ItemMeta";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
+import { BeforeBlockHitSignal } from "../BlockInteractions/Signal/BeforeBlockHitSignal";
 import { LocalEntityController } from "../Character/LocalEntityController";
 
 @Controller({})
@@ -13,7 +15,7 @@ export class BlockInteractController {
 		private readonly localEntity: LocalEntityController,
 	) {}
 
-	public DamageBlock(
+	public PerformBlockHit(
 		entity: Entity,
 		breakBlock: BreakBlockMeta | undefined,
 		voxelPos: Vector3,
@@ -25,14 +27,14 @@ export class BlockInteractController {
 		const block = world.GetBlockAt(voxelPos);
 
 		if (showHealthbars) {
-			this.blockHealth.OnBeforeBlockHit(voxelPos, block);
+			CoreClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block, false));
 		}
 
 		this.localEntity.AddToMoveData("HitBlock", voxelPos);
 
 		if (entity.player && breakBlock) {
 			//Check to see if we can actually do damage here
-			const damage = WorldAPI.BlockHitDamageFunc(entity.player, block, voxelPos, breakBlock);
+			const damage = WorldAPI.BlockHitDamageFunc(entity, block, voxelPos, breakBlock);
 			if (damage === 0) {
 				return;
 			}

@@ -5,6 +5,8 @@
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemType } from "../Item/ItemType";
 import { Player } from "../Player/Player";
+import { ProgressBarGraphics } from "../UI/ProgressBarGraphics";
+import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import { ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntityAnimator } from "./Animation/EntityAnimator";
@@ -56,14 +58,15 @@ export declare class Entity {
      * **This should NOT be used to uniquely identify an entity.**
      */
     readonly ClientId?: number;
-    private health;
-    private maxHealth;
-    private dead;
-    private destroyed;
-    private displayName;
-    private healthbarEnabled;
-    private healthbar?;
-    private state;
+    protected health: number;
+    protected maxHealth: number;
+    protected dead: boolean;
+    protected destroyed: boolean;
+    protected displayName: string;
+    protected healthbarEnabled: boolean;
+    protected healthbar?: ProgressBarGraphics;
+    protected state: EntityState;
+    protected bin: Bin;
     readonly OnHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
     readonly OnDespawn: Signal<void>;
     readonly OnPlayerChanged: Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>;
@@ -71,6 +74,7 @@ export declare class Entity {
     readonly OnDisplayNameChanged: Signal<[displayName: string]>;
     readonly OnStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
     readonly OnDeath: Signal<void>;
+    readonly OnArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     AddHealthbar(): void;
     SetPlayer(player: Player | undefined): void;
@@ -110,8 +114,10 @@ export declare class Entity {
     Kill(): void;
     IsDead(): boolean;
     GetBlockBelowMeta(): BlockMeta | undefined;
+    GetBin(): Bin;
     GetAccessoryMeshes(slot: AccessorySlot): Renderer[];
     private PushToArray;
     LaunchProjectile(itemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined;
+    GetArmor(): number;
     HasHealthbar(): boolean;
 }

@@ -13,9 +13,9 @@ export class WorldAPI {
 		}
 
 		const voxelWorld = GameObject.Find("VoxelWorld")?.GetComponent<VoxelWorld>() as VoxelWorld | undefined;
-        if (voxelWorld) {
-            this.world = new World(voxelWorld);
-        }   
+		if (voxelWorld) {
+			this.world = new World(voxelWorld);
+		}
 		return this.world;
 	}
 
@@ -23,7 +23,7 @@ export class WorldAPI {
 		return MathUtil.FloorVec(worldPosition);
 	}
 
-	public static BlockHitDamageFunc: BlockHitDamageFunc = (player, block, blockPos, breakBlockMeta) => {
+	public static BlockHitDamageFunc: BlockHitDamageFunc = (entity, block, blockPos, breakBlockMeta) => {
 		// if (BedWars.IsMatchServer()) {
 		// 	// BW: disable breaking map blocks
 		// 	if (block.itemType !== ItemType.BED) {

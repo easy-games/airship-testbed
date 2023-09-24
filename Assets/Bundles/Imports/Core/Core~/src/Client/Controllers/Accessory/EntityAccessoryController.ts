@@ -22,7 +22,7 @@ export class EntityAccessoryController implements OnStart {
 	private AutoEquipArmor() {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
 			if (event.entity instanceof CharacterEntity) {
-				if(event.entity.IsPlayerOwned()){
+				if (event.entity.IsPlayerOwned()) {
 					//Add Kit Accessory
 					if (ItemUtil.defaultKitAccessory) {
 						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(

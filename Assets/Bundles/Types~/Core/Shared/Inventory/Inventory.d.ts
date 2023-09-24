@@ -55,4 +55,5 @@ export declare class Inventory {
     GetBackpackTileCount(): number;
     GetHotbarSlotCount(): number;
     FindSlotWithItemType(itemType: ItemType): number | undefined;
+    GetAllItems(): ItemStack[];
 }

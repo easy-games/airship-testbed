@@ -53,7 +53,9 @@ export class NametagController implements OnStart {
 	}
 
 	public CreateNametag(entity: Entity): GameObject {
-		const nametagPrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Client/Resources/Prefabs/Nametag.prefab") as GameObject;
+		const nametagPrefab = AssetBridge.Instance.LoadAsset(
+			"Imports/Core/Client/Resources/Prefabs/Nametag.prefab",
+		) as GameObject;
 		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
 		nametag.name = this.nameTageId;
 		nametag.transform.parent = entity.model.transform;
@@ -83,8 +85,9 @@ export class NametagController implements OnStart {
 		let displayName = entity.GetDisplayName();
 		textLabel.text = displayName;
 
+		const rawDisplayName = Bridge.RemoveRichText(displayName);
 		const rect = canvas.gameObject.GetComponent<RectTransform>();
-		rect.sizeDelta = Bridge.MakeVector2(230 * displayName.size(), 480);
+		rect.sizeDelta = Bridge.MakeVector2(230 * rawDisplayName.size(), 480);
 
 		// Username color
 		let color: Color | undefined;

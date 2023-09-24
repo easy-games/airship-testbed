@@ -2,8 +2,8 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
-import { Game } from "Shared/Game";
 import { ItemUtil } from "Shared/Item/ItemUtil";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 import { SetTimeout } from "Shared/Util/Timer";
 
 @Controller({})
@@ -14,9 +14,9 @@ export class ProjectileEffectsController implements OnStart {
 		CoreClientSignals.ProjectileCollide.Connect((event) => {
 			const itemMeta = ItemUtil.GetItemMeta(event.projectile.itemType);
 
-			if (itemMeta.ammo?.onHitVFXTemplate) {
+			if (itemMeta.projectile?.onHitVFXTemplate) {
 				const effect = EffectsManager.SpawnEffect(
-					itemMeta.ammo?.onHitVFXTemplate,
+					itemMeta.projectile?.onHitVFXTemplate,
 					event.hitPosition,
 					Vector3.zero,
 				);
@@ -32,28 +32,18 @@ export class ProjectileEffectsController implements OnStart {
 				});
 			}
 
-			let hitSoundName = "";
-			if (!event.hitEntity && itemMeta.ammo?.onHitGroundSoundId) {
-				hitSoundName = itemMeta.ammo?.onHitGroundSoundId;
-			} else if (event.hitEntity && itemMeta.ammo?.onHitEntitySoundId) {
-				hitSoundName = itemMeta.ammo?.onHitEntitySoundId;
-			}
-
-			if (hitSoundName !== "") {
-				let volume = 0.6;
-				const hitSoundPath = `Imports/Core/Shared/Resources/Sound/Items/Projectiles/${hitSoundName}`;
-				if (itemMeta.ammo?.onHitSoundVolume) {
-					volume = itemMeta.ammo?.onHitSoundVolume;
-				}
-				if (Game.LocalPlayer.Character && event.projectile.shooter === Game.LocalPlayer.Character) {
-					AudioManager.PlayGlobal(hitSoundPath, {
-						volumeScale: volume,
-					});
-				} else {
-					AudioManager.PlayAtPosition(hitSoundPath, event.hitPosition, {
-						volumeScale: volume,
-					});
-				}
+			if ((!event.hitEntity || !itemMeta.projectile?.onHitEntitySound) && itemMeta.projectile?.onHitGroundSound) {
+				// Hit ground
+				let sound = RandomUtil.FromArray(itemMeta.projectile.onHitGroundSound);
+				AudioManager.PlayAtPosition(sound.path, event.hitPosition, sound);
+			} else if (
+				event.hitEntity &&
+				itemMeta.projectile?.onHitEntitySound &&
+				event.projectile.shooter?.IsLocalCharacter()
+			) {
+				// Hit entity
+				let sound = RandomUtil.FromArray(itemMeta.projectile.onHitEntitySound);
+				AudioManager.PlayGlobal(sound.path, sound);
 			}
 		});
 	}

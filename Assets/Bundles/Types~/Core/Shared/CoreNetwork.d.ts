@@ -10,7 +10,7 @@ import { EntityDto } from "./Entity/Entity";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
-import { HeldItemState } from "./Item/HeldItems/HeldItemManager";
+import { HeldItemState } from "./Item/HeldItems/HeldItemState";
 import { ItemType } from "./Item/ItemType";
 import { RemoteEvent } from "./Network/RemoteEvent";
 import { RemoteFunction } from "./Network/RemoteFunction";
@@ -36,6 +36,7 @@ export declare const CoreNetwork: {
         SetHeldItemState: RemoteEvent<[entityId: number, heldItemState: HeldItemState]>;
         TEST_LATENCY: RemoteFunction<void, number>;
         TestKnockback2: RemoteEvent<[]>;
+        LibonatiTest: RemoteEvent<[]>;
     };
     ServerToClient: {
         UpdateInventory: RemoteEvent<InventoryDto>;
@@ -47,8 +48,9 @@ export declare const CoreNetwork: {
         SetHeldInventorySlot: RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>;
         SpawnEntities: RemoteEvent<[entities: EntityDto[]]>;
         DespawnEntity: RemoteEvent<[entityId: number]>;
-        BlockHit: RemoteEvent<[blockPos: Vector3, entityId: number]>;
+        BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined]>;
         BlockDestroyed: RemoteEvent<[blockPos: Vector3, blockId: number]>;
+        BlockGroupDestroyed: RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>;
         ProjectileSpawn: RemoteEvent<[projectileDto: ProjectileDto]>;
         EntityDamage: RemoteEvent<[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]>;
         ProjectileHit: RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>;
@@ -99,6 +101,7 @@ export declare const CoreNetwork: {
         RemovePlayerFromTeam: RemoteEvent<[teamId: string, userId: string]>;
         RemoveTeams: RemoteEvent<[teamIds: string[]]>;
         SetBlockData: RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>;
+        SetBlockGroupData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>;
         SyncPrefabBlocks: RemoteEvent<[blockPositions: Vector3[]]>;
         /** Fired when a player is eliminated. */
         PlayerEliminated: RemoteEvent<[clientId: number]>;
@@ -109,6 +112,7 @@ export declare const CoreNetwork: {
         /** Fired when the current selected items state changes on an entity*/
         HeldItemStateChanged: RemoteEvent<[entityId: number, state: HeldItemState]>;
         BlockPlace: RemoteEvent<[pos: Vector3, voxel: number, entityId?: number | undefined]>;
+        BlockGroupPlace: RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number | undefined]>;
         EntityPickedUpGroundItem: RemoteEvent<[entityId: number, groundItemId: number]>;
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;

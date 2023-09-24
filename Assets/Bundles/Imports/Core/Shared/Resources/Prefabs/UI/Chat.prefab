@@ -120,8 +120,7 @@ MonoBehaviour:
   - key: UI
     keyValuePairs:
     - key: ChatMessagePrefab
-      value: {fileID: 1166989688023756031, guid: a61ef3c94718149a7ab81c69809f29ef,
-        type: 3}
+      value: {fileID: 1166989688023756031, guid: a61ef3c94718149a7ab81c69809f29ef, type: 3}
     - key: InputField
       value: {fileID: 4470850131294389245}
     - key: Content
@@ -255,7 +254,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 8, y: 154}
+  m_AnchoredPosition: {x: 8, y: 200}
   m_SizeDelta: {x: 575.9926, y: 539.4423}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &4470850130733272437
@@ -668,7 +667,6 @@ GameObject:
   - component: {fileID: 4470850131294389243}
   - component: {fileID: 4470850131294389244}
   - component: {fileID: 4470850131294389245}
-  - component: {fileID: 3559131558088908260}
   m_Layer: 0
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -833,70 +831,6 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
---- !u!114 &3559131558088908260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4470850131294389247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 15
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6105541023822383727, guid: daf3031b6add34a4881cd88595188cf6,
-            type: 3}
-          m_TargetAssemblyTypeName: CanvasUIEvents, Assembly-CSharp
-          m_MethodName: SubmitHook
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 9
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6105541023822383727, guid: daf3031b6add34a4881cd88595188cf6,
-            type: 3}
-          m_TargetAssemblyTypeName: CanvasUIEvents, Assembly-CSharp
-          m_MethodName: SelectHook
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 10
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6105541023822383727, guid: daf3031b6add34a4881cd88595188cf6,
-            type: 3}
-          m_TargetAssemblyTypeName: CanvasUIEvents, Assembly-CSharp
-          m_MethodName: DeselectHook
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &4470850131590940503
 GameObject:
   m_ObjectHideFlags: 0

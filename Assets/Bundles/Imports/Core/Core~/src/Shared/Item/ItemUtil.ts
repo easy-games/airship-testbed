@@ -1,4 +1,5 @@
 import Object from "@easy-games/unity-object-utils";
+import { Signal } from "Shared/Util/Signal";
 import { items } from "./ItemDefinitions";
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
@@ -23,6 +24,9 @@ export class ItemUtil {
 	public static defaultKitAccessory: AccessoryCollection | undefined;
 
 	private static itemTypes: ItemType[] = [];
+
+	private static initialized = false;
+	private static onInitialized = new Signal<void>();
 
 	/**
 	 * Called by Core.
@@ -75,6 +79,17 @@ export class ItemUtil {
 
 			i++;
 		}
+		this.initialized = true;
+		this.onInitialized.Fire();
+	}
+
+	public static async WaitForInitialized(): Promise<void> {
+		if (this.initialized) return;
+		return new Promise<void>((resolve) => {
+			this.onInitialized.Once(() => {
+				resolve();
+			});
+		});
 	}
 
 	public static RegisterItem(

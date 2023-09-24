@@ -12,7 +12,7 @@ import { BedService } from "Server/Services/Match/BedService";
 
 export class DestroyBedCommand extends ChatCommand {
 	constructor() {
-		super("destroyBed");
+		super("destroyBed", ["db"]);
 	}
 
 	public Execute(player: Player, args: string[]): void {
@@ -37,6 +37,10 @@ export class DestroyBedCommand extends ChatCommand {
 			const bedMeta = ItemUtil.GetItemMeta(ItemType.BED);
 			const world = WorldAPI.GetMainWorld();
 			if (!world) return;
+			CoreServerSignals.BeforeBlockDestroyed.Fire({
+				blockId: bedMeta.block?.blockId ?? -1,
+				blockPos: bedState.position,
+			});
 			world.PlaceBlockById(bedState.position, 0);
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: bedMeta.block?.blockId ?? -1,

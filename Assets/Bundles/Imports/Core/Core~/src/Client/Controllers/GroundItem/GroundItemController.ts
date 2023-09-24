@@ -32,19 +32,23 @@ export class GroundItemController implements OnStart {
 		private readonly playerController: PlayerController,
 		private readonly entityAccessoryController: EntityAccessoryController,
 	) {
-		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/GroundItem.prefab");
+		this.groundItemPrefab = AssetBridge.Instance.LoadAsset(
+			"Imports/Core/Shared/Resources/Prefabs/GroundItem.prefab",
+		);
 		this.fallbackDisplayObj = AssetBridge.Instance.LoadAsset(
 			"Imports/Core/Shared/Resources/Prefabs/GroundItems/_fallback.prefab",
 		);
 
-		for (const itemType of ItemUtil.GetItemTypes()) {
-			const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
-            `Imports/Core/Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
-			);
-			if (obj) {
-				this.itemTypeToDisplayObjMap.set(itemType, obj);
+		ItemUtil.WaitForInitialized().then(() => {
+			for (const itemType of ItemUtil.GetItemTypes()) {
+				const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
+					`Imports/Core/Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
+				);
+				if (obj) {
+					this.itemTypeToDisplayObjMap.set(itemType, obj);
+				}
 			}
-		}
+		});
 	}
 
 	private CreateDisplayGO(itemStack: ItemStack, parent: Transform): GameObject {
@@ -70,10 +74,10 @@ export class GroundItemController implements OnStart {
 
 	OnStart(): void {
 		CoreNetwork.ServerToClient.GroundItem.Add.Client.OnServerEvent(async (dtos) => {
-			print("Received " + dtos.size() + " ground items.");
-            if (WorldAPI.GetMainWorld()) {
-                await WorldAPI.GetMainWorld()!.WaitForFinishedLoading();
-            }
+			// print("Received " + dtos.size() + " ground items.");
+			if (WorldAPI.GetMainWorld()) {
+				await WorldAPI.GetMainWorld()!.WaitForFinishedLoading();
+			}
 			for (const dto of dtos) {
 				const itemStack = ItemStack.Decode(dto.itemStack);
 				const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);

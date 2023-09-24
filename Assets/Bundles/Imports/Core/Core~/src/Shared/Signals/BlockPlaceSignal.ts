@@ -17,3 +17,14 @@ export class BlockPlaceSignal {
 		this.itemMeta = ItemUtil.GetItemMeta(itemType);
 	}
 }
+
+export class BlockGroupPlaceSignal {
+	constructor(
+		public readonly positions: Vector3[],
+		public readonly itemTypes: ItemType[],
+		public readonly voxel: number[],
+
+		/** Will always be undefined on client. */
+		public readonly entity?: Entity,
+	) {}
+}

@@ -9,9 +9,18 @@ export interface CharacterEntityDto extends EntityDto {
 export class CharacterEntity extends Entity {
 	private inventory: Inventory;
 
+	private armor = 0;
+
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined, inventory: Inventory) {
 		super(id, networkObject, clientId);
 		this.inventory = inventory;
+
+		this.bin.Add(
+			this.inventory.SlotChanged.Connect((slot, itemStack) => {
+				this.CalcArmor();
+			}),
+		);
+		this.CalcArmor();
 	}
 
 	public GetInventory(): Inventory {
@@ -24,5 +33,26 @@ export class CharacterEntity extends Entity {
 			serializer: EntitySerializer.CHARACTER,
 			invId: this.inventory.Id,
 		};
+	}
+
+	private CalcArmor(): void {
+		let armor = 0;
+		for (let i = 0; i < this.inventory.GetMaxSlots(); i++) {
+			const itemStack = this.inventory.GetItem(i);
+			if (i >= 45) {
+				const itemMeta = itemStack?.GetMeta();
+				if (itemMeta?.armor) {
+					armor += itemMeta.armor.protectionAmount;
+				}
+			}
+		}
+		if (armor !== this.armor) {
+			this.armor = armor;
+			this.OnArmorChanged.Fire(this.armor);
+		}
+	}
+
+	public GetArmor(): number {
+		return this.armor;
 	}
 }

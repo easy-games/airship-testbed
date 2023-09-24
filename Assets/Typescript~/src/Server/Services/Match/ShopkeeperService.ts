@@ -4,7 +4,9 @@ import { DenyRegionService } from "Imports/Core/Server/Services/Block/DenyRegion
 import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
 import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
 import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
+import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
 import { MathUtil } from "Imports/Core/Shared/Util/MathUtil";
+import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
 import { MapService } from "./Map/MapService";
@@ -65,7 +67,7 @@ export class ShopkeeperService implements OnStart {
 			itemShopEntity.entityDriver.SetLookVector(
 				itemShopWorldPos.Rotation.mul(itemShopEntity.entityDriver.transform.forward),
 			);
-			itemShopEntity.SetDisplayName("Item Shop");
+			itemShopEntity.SetDisplayName(ColorUtil.ColoredText(Theme.Yellow, "Item Shop"));
 			itemShopEntity.GrantImmunity(math.huge);
 			this.itemShopEntityIds.push(itemShopEntity.id);
 
@@ -81,7 +83,7 @@ export class ShopkeeperService implements OnStart {
 			upgradeShopEntity.entityDriver.SetLookVector(
 				teamUpgradeWorldPos.Rotation.mul(upgradeShopEntity.entityDriver.transform.forward),
 			);
-			upgradeShopEntity.SetDisplayName("Team Upgrades");
+			upgradeShopEntity.SetDisplayName(ColorUtil.ColoredText(Theme.Yellow, "Team Upgrades"));
 			upgradeShopEntity.GrantImmunity(math.huge);
 			this.upgradeShopEntityIds.push(upgradeShopEntity.id);
 

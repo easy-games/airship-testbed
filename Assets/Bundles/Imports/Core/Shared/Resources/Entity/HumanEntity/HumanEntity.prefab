@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5797592413269172210
 Transform:
   m_ObjectHideFlags: 0
@@ -43,8 +43,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.35
-  m_Height: 1.9
+  m_Radius: 0.5
+  m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!54 &5606203372879073412
@@ -1486,7 +1486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.46226418, g: 0.2880544, b: 0.21150768, a: 1}
+  - materialColor: {r: 0.6431373, g: 0.5176471, b: 0.39215687, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
@@ -1523,7 +1523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.46226418, g: 0.2880544, b: 0.21150768, a: 1}
+  - materialColor: {r: 0.6415094, g: 0.51840633, b: 0.39035243, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Clay

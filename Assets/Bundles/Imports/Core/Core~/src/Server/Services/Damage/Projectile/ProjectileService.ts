@@ -1,5 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
+import { BlockInteractService } from "Server/Services/Block/BlockInteractService";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
@@ -8,7 +9,6 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageMeta, DamageService } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
-import { BlockInteractService } from "Server/Services/Block/BlockInteractService";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -104,7 +104,7 @@ export class ProjectileService implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).ammo!;
+		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).projectile!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		const projectileHitSignal = new ProjectileCollideServerSignal(

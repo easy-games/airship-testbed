@@ -100,7 +100,7 @@ export class Player {
 		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.ChatMessage.Server.FireClient(this.clientId, message);
 		} else {
-			Dependency<ChatController>().AddChatMessage(message);
+			Dependency<ChatController>().RenderChatMessage(message);
 		}
 	}
 

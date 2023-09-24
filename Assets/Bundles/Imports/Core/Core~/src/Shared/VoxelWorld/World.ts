@@ -2,6 +2,7 @@ import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { ItemType } from "Shared/Item/ItemType";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
@@ -10,6 +11,9 @@ import { BlockDataAPI } from "./BlockData/BlockDataAPI";
 
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
+	/** True if should update collisions instantly.
+	 *
+	 * Defaults to true. */
 	priority?: boolean;
 	blockData?: {
 		[key: string]: unknown;
@@ -28,6 +32,7 @@ export class World {
 	constructor(public readonly voxelWorld: VoxelWorld) {
 		voxelWorld.OnVoxelPlaced((voxel, x, y, z) => {
 			const vec = new Vector3(x, y, z);
+			// print("VoxelPlaced (" + x + "," + y + "," + z + ")");
 			BlockDataAPI.ClearBlockData(vec);
 			voxel = VoxelWorld.VoxelDataToBlockId(voxel);
 			this.OnVoxelPlaced.Fire(vec, voxel);
@@ -120,6 +125,7 @@ export class World {
 	public PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void {
 		this.voxelWorld.WriteVoxelAt(pos, blockId, config?.priority ?? true);
 		if (config?.blockData) {
+			print("SetBlockData (" + pos.x + "," + pos.y + "," + pos.z + ")");
 			for (const key of Object.keys(config.blockData)) {
 				BlockDataAPI.SetBlockData(pos, key as string, config.blockData[key]);
 			}
@@ -135,9 +141,54 @@ export class World {
 					.BlockPlaceClientSignal;
 
 				const block = new Block(blockId, this);
-				clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character));
+				clientSignals.BlockPlace.Fire(
+					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character, false),
+				);
 			}
 		}
+	}
+
+	public PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
+		//this.voxelWorld.WriteVoxelGroupAt(CSArrayUtil.Create(positions), blockIds, config?.priority ?? true);
+
+		let blocks: Block[] = [];
+		let binaryData: { pos: Vector3; blockId: number }[] = [];
+
+		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
+		let isLocalPrediction = config?.placedByEntityId === Game.LocalPlayer.Character?.id;
+
+		positions.forEach((position, i) => {
+			if (config?.blockData) {
+				for (const key of Object.keys(config.blockData)) {
+					let newMapData = keyMap.get(key as string);
+					if (!newMapData) {
+						newMapData = { position: [], data: [] };
+					}
+					newMapData.position.push(position);
+					newMapData.data.push(config.blockData[key]);
+					keyMap.set(key as string, newMapData);
+					//BlockDataAPI.SetBlockData(position, key as string, config.blockData[key]);
+				}
+			}
+			blocks[i] = new Block(blockIds[i], this);
+			binaryData.push({ pos: position, blockId: blockIds[i] });
+			if (isLocalPrediction && RunUtil.IsClient()) {
+				// Client predicted block place event
+				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
+				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
+					.BlockPlaceClientSignal;
+				clientSignals.BlockPlace.Fire(
+					new BlockPlaceClientSignal(position, blocks[i], Game.LocalPlayer.Character, true),
+				);
+			}
+		});
+
+		this.voxelWorld.WriteVoxelGroupAtTS(new BinaryBlob(binaryData), config?.priority ?? true);
+		//Call block keys in batches based on keytype to avoid calling it per block (it sends a network event)
+		keyMap.forEach((value, key) => {
+			//print("Sending batch key data: " + key + ", " + value.data.size());
+			BlockDataAPI.SetBlockGroupData(value.position, key, value.data);
+		});
 	}
 
 	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void {

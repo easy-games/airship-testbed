@@ -89,6 +89,7 @@ export class BlockHeldItem extends HeldItem {
 		// Write the voxel at the predicted position
 		WorldAPI.GetMainWorld()?.PlaceBlockById(placePosition, this.meta.block.blockId!, {
 			placedByEntityId: this.entity.id,
+			priority: true,
 		});
 
 		Dependency<LocalEntityController>().AddToMoveData("PlaceBlock", {

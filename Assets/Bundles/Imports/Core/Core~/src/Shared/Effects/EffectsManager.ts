@@ -114,4 +114,8 @@ export class EffectsManager {
 		}
 		return vfx;
 	}
+
+	public static ReleaseGameObject(go: GameObject) {
+		PoolManager.ReleaseObject(go);
+	}
 }

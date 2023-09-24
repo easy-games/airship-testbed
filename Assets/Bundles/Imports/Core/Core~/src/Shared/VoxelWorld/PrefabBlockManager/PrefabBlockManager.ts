@@ -53,7 +53,7 @@ export class PrefabBlockManager {
 							const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 							const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 								.BlockPlaceClientSignal;
-							clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, undefined));
+							clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, undefined, true));
 						}
 					}
 				});

@@ -14,3 +14,13 @@ export declare class BlockPlaceSignal {
     /** Will always be undefined on client. */
     entity?: Entity | undefined);
 }
+export declare class BlockGroupPlaceSignal {
+    readonly positions: Vector3[];
+    readonly itemTypes: ItemType[];
+    readonly voxel: number[];
+    /** Will always be undefined on client. */
+    readonly entity?: Entity | undefined;
+    constructor(positions: Vector3[], itemTypes: ItemType[], voxel: number[], 
+    /** Will always be undefined on client. */
+    entity?: Entity | undefined);
+}

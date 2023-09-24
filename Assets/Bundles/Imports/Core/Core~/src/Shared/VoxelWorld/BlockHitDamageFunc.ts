@@ -1,9 +1,9 @@
+import { Entity } from "Shared/Entity/Entity";
 import { BreakBlockMeta } from "../Item/ItemMeta";
-import { Player } from "../Player/Player";
 import { Block } from "./Block";
 
 export type BlockHitDamageFunc = (
-	player: Player,
+	entity: Entity | undefined,
 	block: Block,
 	blockPos: Vector3,
 	breakBlockMeta: BreakBlockMeta,

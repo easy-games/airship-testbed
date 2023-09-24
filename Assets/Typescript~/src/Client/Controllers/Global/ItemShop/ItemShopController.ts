@@ -25,7 +25,7 @@ export class ItemShopController implements OnStart {
 	/** Individual shop item prefab. */
 	private shopItemPrefab: Object;
 	/** Currently selected item. */
-	private selectedItem: ShopElement | undefined;
+	private selectedShopElement: ShopElement | undefined;
 	private selectedItemBin = new Bin();
 
 	private purchaseButton: GameObject;
@@ -76,6 +76,14 @@ export class ItemShopController implements OnStart {
 				canvasGroup.TweenCanvasGroupAlpha(0, 0.1);
 			});
 			go.transform.TweenLocalPosition(pos.add(new Vector3(0, 0.5, 0)), 0.5).SetEase(EaseType.QuadOut);
+
+			AudioManager.PlayAtPosition(
+				"Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav",
+				entity.GetMiddlePosition(),
+				{
+					volumeScale: 0.2,
+				},
+			);
 		});
 	}
 
@@ -83,8 +91,8 @@ export class ItemShopController implements OnStart {
 		const bin = new Bin();
 
 		this.UpdateItems(false);
-		if (this.selectedItem) {
-			this.SetSidebarItem(this.selectedItem, true);
+		if (this.selectedShopElement) {
+			this.SetSidebarItem(this.selectedShopElement, true);
 		}
 
 		AppManager.Open(this.shopCanvas, {
@@ -106,7 +114,9 @@ export class ItemShopController implements OnStart {
 		const purchaseButton = this.refs.GetValue<GameObject>("SidebarContainer", "PurchaseButton");
 		CoreUI.SetupButton(purchaseButton);
 		CanvasAPI.OnClickEvent(purchaseButton, () => {
-			this.SendPurchaseRequest();
+			if (this.selectedShopElement) {
+				this.SendPurchaseRequest(this.selectedShopElement);
+			}
 		});
 		/**
 		 *	CanvasEventAPI.OnHoverEvent(purchaseButton, (hoverState) => {
@@ -151,19 +161,19 @@ export class ItemShopController implements OnStart {
 				CoreUI.SetupButton(itemGO);
 				let lastClick = 0;
 				CanvasAPI.OnClickEvent(itemGO, () => {
-					if (this.selectedItem === shopItem && Time.time - lastClick < 0.3) {
+					if (this.selectedShopElement === shopItem && Time.time - lastClick < 0.3) {
 						lastClick = Time.time;
-						this.SendPurchaseRequest();
+						this.SendPurchaseRequest(shopItem);
 						return;
 					}
 					lastClick = Time.time;
-					if (this.selectedItem !== shopItem) {
+					if (this.selectedShopElement !== shopItem) {
 						this.SetSidebarItem(shopItem);
 					}
 				});
 				CanvasAPI.OnPointerEvent(itemGO, (direction, button) => {
 					if (button === PointerButton.RIGHT) {
-						this.SendPurchaseRequest();
+						this.SendPurchaseRequest(shopItem);
 					}
 				});
 			}
@@ -183,22 +193,23 @@ export class ItemShopController implements OnStart {
 	/**
 	 * Sends purchase request to server for currently selected item.
 	 */
-	private SendPurchaseRequest(): void {
-		if (!this.selectedItem || !this.CanPurchase(this.selectedItem)) {
+	private SendPurchaseRequest(shopElement: ShopElement): void {
+		if (!this.selectedShopElement || !this.CanPurchase(this.selectedShopElement)) {
 			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav");
 			return;
 		}
-		const shopItem = this.selectedItem;
-		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopItem.itemType);
+		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopElement.itemType);
 		if (result) {
-			this.purchasedTierItems.add(shopItem.itemType);
-			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav");
+			this.purchasedTierItems.add(shopElement.itemType);
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav", {
+				volumeScale: 0.4,
+			});
 			this.UpdateItems(false);
 
-			if (shopItem.nextTier) {
-				this.SetSidebarItem(ItemShopMeta.GetShopElementFromItemType(shopItem.nextTier)!);
+			if (shopElement.nextTier) {
+				this.SetSidebarItem(ItemShopMeta.GetShopElementFromItemType(shopElement.nextTier)!);
 			}
-			this.OnPurchase.Fire(shopItem);
+			this.OnPurchase.Fire(shopElement);
 		}
 	}
 
@@ -210,7 +221,7 @@ export class ItemShopController implements OnStart {
 		this.selectedItemBin.Clean();
 
 		/* TODO: We should probably fetch and cache these references inside of `OnStart` or the constructor. */
-		this.selectedItem = shopItem;
+		this.selectedShopElement = shopItem;
 		const selectedItemIcon = this.refs.GetValue<GameObject>("SidebarContainer", "SelectedItemIcon");
 		const selectedItemQuantity = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemQuantity");
 		const selectedItemName = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemName");

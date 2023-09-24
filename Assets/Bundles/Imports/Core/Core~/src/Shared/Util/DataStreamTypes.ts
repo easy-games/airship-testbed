@@ -1,4 +1,4 @@
-import { HeldItemState } from "Shared/Item/HeldItems/HeldItemManager";
+import { HeldItemState } from "Shared/Item/HeldItems/HeldItemState";
 import { ItemType } from "Shared/Item/ItemType";
 
 /** Key/value type list. The key is the name of the custom data, followed by the value type. */

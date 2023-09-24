@@ -38,6 +38,7 @@ export class EntityAnimator {
 	private slideAudioBundle: AudioClipBundle;
 	private steppedOnBlockType = 0;
 	private lastFootstepSoundTime = 0;
+	private deathVfx?: GameObject;
 
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
@@ -91,7 +92,6 @@ export class EntityAnimator {
 			Bundle_Entity.OnHit,
 			Bundle_Entity_OnHit.DeathVFX,
 		);
-
 		this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
 			BundleGroupNames.Entity,
 			Bundle_Entity.OnHit,
@@ -99,17 +99,24 @@ export class EntityAnimator {
 		);
 
 		//Listen to animation events
-		this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
+		const animConn = this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
 			if (data.key !== 0) {
 				//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
 			}
 			this.OnAnimationEvent(data.key, data);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(animConn);
 		});
 
 		this.entityRef.root.gameObject.SetActive(true);
 	}
 
 	public Destroy(): void {
+		if (this.deathVfx) {
+			//TODO Move the transform off this entity so the effect can keep playing even after the body is gone
+			EffectsManager.ReleaseGameObject(this.deathVfx);
+		}
 		this.bin.Clean();
 	}
 
@@ -188,9 +195,13 @@ export class EntityAnimator {
 		const inVoid = damageType === DamageType.VOID;
 		const deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
 		if (deathEffect) {
-			const go = EffectsManager.SpawnGameObjectAtPosition(deathEffect, this.entity.GetHeadPosition(), undefined);
+			this.deathVfx = EffectsManager.SpawnGameObjectAtPosition(
+				deathEffect,
+				this.entity.GetHeadPosition(),
+				undefined,
+			);
 			if (!inVoid) {
-				go.transform.SetParent(this.entity.gameObject.transform);
+				this.deathVfx.transform.SetParent(this.entity.gameObject.transform);
 			}
 		}
 
@@ -232,6 +243,7 @@ export class EntityAnimator {
 
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 
+		// fallback to stone sounds.
 		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemMeta(ItemType.STONE).block?.stepSound;
 		if (stepSounds === undefined) {
 			stepSounds = [];

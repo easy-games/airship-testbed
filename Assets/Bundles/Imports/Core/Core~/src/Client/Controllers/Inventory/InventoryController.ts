@@ -246,6 +246,7 @@ export class InventoryController implements OnStart {
 	}
 
 	public SetHeldSlot(slot: number): void {
+		if (Game.LocalPlayer.Character === undefined) return;
 		if (this.LocalInventory === undefined) return;
 
 		this.LocalInventory.SetHeldSlot(slot);

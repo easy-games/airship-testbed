@@ -1,25 +1,25 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { AfterBlockHitClientSignal } from "Client/Signals/AfterBlockHitClientSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
+import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
 import {
-    BundleGroupNames,
-    Bundle_Blocks,
-    Bundle_Blocks_UI,
-    Bundle_Blocks_VFX,
+	BundleGroupNames,
+	Bundle_Blocks,
+	Bundle_Blocks_UI,
+	Bundle_Blocks_VFX,
 } from "Shared/Util/ReferenceManagerResources";
 import { Theme } from "Shared/Util/Theme";
 import { SetInterval } from "Shared/Util/Timer";
-import { Block } from "Shared/VoxelWorld/Block";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { BlockSelectController } from "./BlockSelectController";
-import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
@@ -40,24 +40,27 @@ export class BlockHealthController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, entityId) => {
+		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId) => {
 			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
 
-			const voxel = WorldAPI.GetMainWorld()?.GetRawVoxelDataAt(blockPos);
-			if (voxel) {
-				const entity = this.entityController.GetEntityById(entityId);
-				const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-				CoreClientSignals.AfterBlockHit.Fire({
-					pos: blockPos,
-					blockId,
-					entity,
-				});
-				this.VisualizeBlockHealth(blockPos);
+			let entity: Entity | undefined;
+			if (entityId !== undefined) {
+				this.entityController.GetEntityById(entityId);
 			}
+
+			const blockHealth = this.VisualizeBlockHealth(blockPos);
+			const isBroken = blockHealth !== undefined && blockHealth > 0;
+			CoreClientSignals.AfterBlockHit.Fire(new AfterBlockHitClientSignal(blockPos, blockId, entity, isBroken));
 		});
 
 		CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
 			this.VisualizeBlockBreak(blockPos, blockId);
+		});
+
+		CoreNetwork.ServerToClient.BlockGroupDestroyed.Client.OnServerEvent((blockPositions, blockIds) => {
+			blockPositions.forEach((position, index) => {
+				this.VisualizeBlockBreak(position, blockIds[index], false);
+			});
 		});
 
 		// OnLateUpdate.Connect((dt) => {
@@ -81,25 +84,24 @@ export class BlockHealthController implements OnStart {
 		});
 	}
 
-	public OnBeforeBlockHit(voxelPos: Vector3, block: Block) {
-		CoreClientSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(voxelPos, block));
-	}
+	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {
+		let currentHealth = this.GetBlockHealth(blockPos);
 
-	public VisualizeBlockHealth(blockPos: Vector3) {
 		//Get or create health bar
-		let healthBarEntry = this.blockHealthBars.get(blockPos);
-		if (!healthBarEntry) {
-			healthBarEntry = this.AddHealthBar(blockPos);
+		if (showHealthbar) {
+			let healthBarEntry = this.blockHealthBars.get(blockPos);
 			if (!healthBarEntry) {
-				return;
+				healthBarEntry = this.AddHealthBar(blockPos);
+				if (!healthBarEntry) {
+					warn("Unable to create healthbar!");
+					return;
+				}
 			}
+			healthBarEntry.lastHitTime = Time.time;
+			healthBarEntry.progressBar.SetValue(currentHealth / healthBarEntry.maxHealth);
 		}
 
 		//Update the health bars value
-		let currentHealth = this.GetBlockHealth(blockPos);
-		healthBarEntry.lastHitTime = Time.time;
-		healthBarEntry.progressBar.SetValue(currentHealth / healthBarEntry.maxHealth);
-
 		if (currentHealth > 0) {
 			const effect = EffectsManager.SpawnBundleEffect(
 				BundleGroupNames.Blocks,
@@ -110,18 +112,21 @@ export class BlockHealthController implements OnStart {
 			);
 			if (effect) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
-                if (block) {
-                    this.ApplyBlockMaterial(block.blockId, effect);
-                }
+				if (block) {
+					this.SpawnBlockHitParticles(block.blockId, effect);
+				}
 			}
 		}
+		return currentHealth;
 	}
 
-	public VisualizeBlockBreak(blockPos: Vector3, blockId: number): void {
+	public VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars = true): void {
 		//Get or create health bar
 		let entry = this.blockHealthBars.get(blockPos);
 		if (!entry) {
-			entry = this.AddHealthBar(blockPos);
+			if (showHealthbars) {
+				entry = this.AddHealthBar(blockPos);
+			}
 		}
 
 		//Play destruction vfx
@@ -135,17 +140,17 @@ export class BlockHealthController implements OnStart {
 		if (effect) {
 			//const blockColor = WorldAPI.GetMainWorld().GetBlockAverageColor(blockId);
 			//if (!blockColor) return;
-			this.ApplyBlockMaterial(blockId, effect);
+			this.SpawnBlockHitParticles(blockId, effect);
 		}
 
 		//Make sure the progress bar is at 0
 		entry?.progressBar?.SetValue(0);
 	}
 
-	private ApplyBlockMaterial(blockId: number, effect: GameObject) {
+	private SpawnBlockHitParticles(blockId: number, effect: GameObject) {
 		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
-        const world = WorldAPI.GetMainWorld();
-        if (!world) return;
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return;
 		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, world.voxelWorld);
 		if (blockGO) {
 			const blockRen = blockGO.GetComponent<Renderer>();

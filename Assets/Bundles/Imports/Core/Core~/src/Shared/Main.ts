@@ -30,19 +30,19 @@ Object.Destroy(coreCamera);
 
 // Drive timer:
 gameObject.OnUpdate(() => {
-    OnUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnUpdate.Fire(TimeUtil.GetDeltaTime());
 });
 gameObject.OnLateUpdate(() => {
-    OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
+	OnLateUpdate.Fire(TimeUtil.GetDeltaTime());
 });
 gameObject.OnFixedUpdate(() => {
-    OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
+	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 if (InstanceFinder.TimeManager !== undefined) {
-    InstanceFinder.TimeManager.OnOnTick(() => {
-        OnTick.Fire();
-    });
-}   
+	InstanceFinder.TimeManager.OnOnTick(() => {
+		OnTick.Fire();
+	});
+}
 
 if (RunUtil.IsServer()) {
 	const server = require("Imports/Core/Server/Resources/TS/MainServer") as {

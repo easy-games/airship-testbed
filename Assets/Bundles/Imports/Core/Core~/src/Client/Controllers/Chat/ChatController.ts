@@ -2,11 +2,13 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ClearCommand } from "Shared/Commands/ClearCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CoreSound } from "Shared/Sound/CoreSound";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
@@ -98,7 +100,7 @@ export class ChatController implements OnStart {
 
 	OnStart(): void {
 		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text) => {
-			this.AddChatMessage(text);
+			this.RenderChatMessage(text);
 		});
 
 		const keyboard = new Keyboard();
@@ -262,7 +264,7 @@ export class ChatController implements OnStart {
 		}
 	}
 
-	public AddChatMessage(message: string): void {
+	public RenderChatMessage(message: string): void {
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>();
@@ -272,6 +274,10 @@ export class ChatController implements OnStart {
 
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
+
+			AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
+				volumeScale: 0.24,
+			});
 		} catch (err) {
 			Debug.LogError("chat error:");
 			Debug.LogError(err);
