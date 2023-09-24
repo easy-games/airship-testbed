@@ -9,6 +9,7 @@ import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { EntitySerializer } from "Shared/Entity/EntitySerializer";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { Bin } from "Shared/Util/Bin";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { Task } from "Shared/Util/Task";
 import { InventoryController } from "../Inventory/InventoryController";
@@ -67,6 +68,36 @@ export class EntityController implements OnStart {
 		CoreNetwork.ServerToClient.Entity.AddHealthbar.Client.OnServerEvent((entityId) => {
 			const entity = this.GetEntityById(entityId);
 			entity?.AddHealthbar();
+		});
+
+		// Fun
+		const skinColors = [
+			ColorUtil.HexToColor("#CAA075"),
+			ColorUtil.HexToColor("#A4784B"),
+			ColorUtil.HexToColor("#735638"),
+			ColorUtil.HexToColor("#B4905B"),
+			ColorUtil.HexToColor("#E09E53"),
+			ColorUtil.HexToColor("#875C2C"),
+			ColorUtil.HexToColor("#9AA427"), // green
+			ColorUtil.HexToColor("#90684C"),
+		];
+		CoreClientSignals.EntitySpawn.Connect((event) => {
+			let randomId: number;
+			if (event.entity.player) {
+				randomId = string.byte(event.entity.player.userId)[0];
+			} else {
+				randomId = math.random(0, 10000000);
+			}
+			let index = randomId % skinColors.size();
+			print("index: " + index);
+			let skinColor = skinColors[index];
+			const thirdPersonMat = event.entity.model.transform.GetChild(1).GetComponent<MaterialColor>();
+			const firstPersonMat = event.entity.model.transform.GetChild(2).GetComponent<MaterialColor>();
+
+			thirdPersonMat.SetMaterialColor(0, skinColor);
+			thirdPersonMat.DoUpdate();
+			firstPersonMat.SetMaterialColor(0, skinColor);
+			firstPersonMat.DoUpdate();
 		});
 	}
 

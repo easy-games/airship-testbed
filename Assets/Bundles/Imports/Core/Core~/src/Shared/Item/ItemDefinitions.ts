@@ -575,6 +575,7 @@ export const items: {
 			onHitEntitySound: [
 				{
 					path: "Imports/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitSuccess",
+					volumeScale: 0.5,
 				},
 			],
 			onHitGroundSound: [

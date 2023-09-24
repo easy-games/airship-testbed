@@ -1486,7 +1486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.46226418, g: 0.2880544, b: 0.21150768, a: 1}
+  - materialColor: {r: 0.6431373, g: 0.5176471, b: 0.39215687, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
@@ -1523,7 +1523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.46226418, g: 0.2880544, b: 0.21150768, a: 1}
+  - materialColor: {r: 0.6415094, g: 0.51840633, b: 0.39035243, a: 1}
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Clay

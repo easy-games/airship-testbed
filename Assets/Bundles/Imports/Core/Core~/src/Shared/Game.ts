@@ -7,7 +7,7 @@ export class Game {
 	public static LocalPlayer: Player = new Player(
 		undefined as unknown as NetworkObject,
 		-1,
-		"LocalPlayer",
+		"1",
 		"LocalPlayer",
 		"null",
 	);
