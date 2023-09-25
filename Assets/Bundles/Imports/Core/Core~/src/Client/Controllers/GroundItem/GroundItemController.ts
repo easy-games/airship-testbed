@@ -139,5 +139,15 @@ export class GroundItemController implements OnStart {
 			GameObjectUtil.Destroy(groundItem.rb.gameObject);
 			this.groundItems.delete(groundItemId);
 		});
+
+		CoreNetwork.ServerToClient.GroundItemDestroyed.Client.OnServerEvent((groundItemId) => {
+			const groundItem = this.groundItems.get(groundItemId);
+			if (!groundItem) {
+				return;
+			}
+
+			GameObjectUtil.Destroy(groundItem.rb.gameObject);
+			this.groundItems.delete(groundItemId);
+		});
 	}
 }

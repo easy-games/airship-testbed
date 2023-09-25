@@ -21,7 +21,9 @@ export class GroundItemService implements OnStart {
 	private idCounter = 0;
 
 	constructor(private readonly entityService: EntityService) {
-		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/GroundItem.prefab");
+		this.groundItemPrefab = AssetBridge.Instance.LoadAsset(
+			"Imports/Core/Shared/Resources/Prefabs/GroundItem.prefab",
+		);
 	}
 
 	OnStart(): void {
@@ -105,6 +107,10 @@ export class GroundItemService implements OnStart {
 				}),
 			);
 		});
+	}
+
+	public DestroyGroundItem(groundItem: GroundItem): void {
+		CoreNetwork.ServerToClient.GroundItemDestroyed.Server.FireAllClients(groundItem.id);
 	}
 
 	public SpawnGroundItem(

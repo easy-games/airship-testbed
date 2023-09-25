@@ -48,6 +48,7 @@ export class GeneratorService implements OnStart {
 					if (!(playerEntity instanceof CharacterEntity)) return;
 					const distanceFromGen = playerEntity.gameObject.transform.position.sub(genState.dto.pos).magnitude;
 					if (player !== pickupPlayer && distanceFromGen <= splitRange) {
+						print("split");
 						const inv = playerEntity.GetInventory();
 						inv.AddItem(
 							new ItemStack(
@@ -132,10 +133,12 @@ export class GeneratorService implements OnStart {
 
 				const existingStack = this.stackMap.get(generatorState.dto.id);
 				if (existingStack) {
+					print("merging existing.");
 					existingStack.SetAmount(generatorState.stackSize);
 				} else {
 					const newGeneratorStack = new ItemStack(generatorState.dto.item, 1);
 					this.stackMap.set(generatorState.dto.id, newGeneratorStack);
+					print("spawning new.");
 					Dependency<GroundItemService>().SpawnGroundItem(
 						newGeneratorStack,
 						generatorState.dto.pos.add(GENERATOR_ITEM_SPAWN_OFFSET),

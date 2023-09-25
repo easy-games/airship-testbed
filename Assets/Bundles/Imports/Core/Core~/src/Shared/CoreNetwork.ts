@@ -129,6 +129,7 @@ export const CoreNetwork = {
 		BlockGroupPlace: new RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number]>(),
 
 		EntityPickedUpGroundItem: new RemoteEvent<[entityId: number, groundItemId: number]>(),
+		GroundItemDestroyed: new RemoteEvent<[groundItemId: number]>(),
 
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),

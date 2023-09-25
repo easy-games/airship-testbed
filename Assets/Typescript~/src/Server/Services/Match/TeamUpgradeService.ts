@@ -36,7 +36,6 @@ export class TeamUpgradeService implements OnStart {
 	) {}
 
 	OnStart(): void {
-		print("TeamUpgradeService.1");
 		/* Apply persistent upgrade effects. */
 		this.ApplyPersistentUpgradeEffects();
 		/* Apply generator upgrade effects. */
