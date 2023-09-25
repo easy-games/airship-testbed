@@ -7,6 +7,7 @@ import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
 import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
+import { SetInterval } from "Imports/Core/Shared/Util/Timer";
 import { Network } from "Shared/Network";
 import { TeamUpgradeStateDto } from "Shared/TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "Shared/TeamUpgrade/TeamUpgradeType";
@@ -197,6 +198,20 @@ export class TeamUpgradeController implements OnStart {
 				this.UpdateUI();
 			});
 		}
+
+		if (Game.LocalPlayer.Character) {
+			const startingPos = Game.LocalPlayer.Character.model.transform.position;
+			bin.Add(
+				SetInterval(0.1, () => {
+					if (Game.LocalPlayer.Character) {
+						if (startingPos.sub(Game.LocalPlayer.Character.model.transform.position).magnitude >= 1) {
+							AppManager.Close();
+						}
+					}
+				}),
+			);
+		}
+
 		AppManager.Open(this.canvas, {
 			onClose: () => {
 				bin.Clean();

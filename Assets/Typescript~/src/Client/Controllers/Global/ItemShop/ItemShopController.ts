@@ -12,7 +12,7 @@ import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerButton } from "Imports/Core/Shared/Util/CanvasAPI";
 import { Signal } from "Imports/Core/Shared/Util/Signal";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
-import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
+import { SetInterval, SetTimeout } from "Imports/Core/Shared/Util/Timer";
 import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
@@ -93,6 +93,19 @@ export class ItemShopController implements OnStart {
 		this.UpdateItems(false);
 		if (this.selectedShopElement) {
 			this.SetSidebarItem(this.selectedShopElement, true);
+		}
+
+		if (Game.LocalPlayer.Character) {
+			const startingPos = Game.LocalPlayer.Character.model.transform.position;
+			bin.Add(
+				SetInterval(0.1, () => {
+					if (Game.LocalPlayer.Character) {
+						if (startingPos.sub(Game.LocalPlayer.Character.model.transform.position).magnitude >= 1) {
+							AppManager.Close();
+						}
+					}
+				}),
+			);
 		}
 
 		AppManager.Open(this.shopCanvas, {

@@ -224,7 +224,7 @@ export class BlockInteractService implements OnStart {
 
 			damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, damage);
 			if (damage === 0) {
-				return false;
+				continue;
 			}
 
 			// Cancellable signal

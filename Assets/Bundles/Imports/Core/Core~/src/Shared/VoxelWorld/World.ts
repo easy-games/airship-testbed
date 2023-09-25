@@ -125,7 +125,7 @@ export class World {
 	public PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void {
 		this.voxelWorld.WriteVoxelAt(pos, blockId, config?.priority ?? true);
 		if (config?.blockData) {
-			print("SetBlockData (" + pos.x + "," + pos.y + "," + pos.z + ")");
+			// print("SetBlockData (" + pos.x + "," + pos.y + "," + pos.z + ")");
 			for (const key of Object.keys(config.blockData)) {
 				BlockDataAPI.SetBlockData(pos, key as string, config.blockData[key]);
 			}
