@@ -37,7 +37,7 @@ MonoBehaviour:
     - key: Charge
       value: {fileID: 7400000, guid: 96735afe24ed23c49a50ba0c744b9b15, type: 2}
     - key: Shoot
-      value: {fileID: 7400000, guid: 96735afe24ed23c49a50ba0c744b9b15, type: 2}
+      value: {fileID: 0}
   - key: Prefabs
     value: []
   - key: SFX

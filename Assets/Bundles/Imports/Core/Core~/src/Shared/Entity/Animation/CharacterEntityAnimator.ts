@@ -140,6 +140,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			});
 		} else {
 			warn("Trying to play animation that doesn't exist: use " + useIndex);
+			this.StartItemIdle();
 		}
 	}
 }
