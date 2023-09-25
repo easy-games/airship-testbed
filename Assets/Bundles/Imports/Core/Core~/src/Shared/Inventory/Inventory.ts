@@ -213,7 +213,7 @@ export class Inventory {
 		return this.GetItem(this.heldSlot);
 	}
 
-	public GetSelectedSlot(): number {
+	public GetHeldSlot(): number {
 		return this.heldSlot;
 	}
 

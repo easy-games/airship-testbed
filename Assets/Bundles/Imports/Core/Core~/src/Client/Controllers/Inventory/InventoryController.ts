@@ -118,7 +118,7 @@ export class InventoryController implements OnStart {
 
 			this.lastScrollTime = now;
 
-			const selectedSlot = this.LocalInventory?.GetSelectedSlot();
+			const selectedSlot = this.LocalInventory?.GetHeldSlot();
 			if (selectedSlot === undefined) return;
 
 			const inc = delta < 0 ? 1 : -1;

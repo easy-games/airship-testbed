@@ -44,7 +44,7 @@ export declare class Inventory {
      */
     GetFirstOpenSlot(): number;
     GetHeldItem(): ItemStack | undefined;
-    GetSelectedSlot(): number;
+    GetHeldSlot(): number;
     SetHeldSlot(slot: number): void;
     Encode(): InventoryDto;
     ProcessDto(dto: InventoryDto): void;

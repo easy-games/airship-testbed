@@ -129,7 +129,7 @@ export class InventoryUIController implements OnStart {
 						const itemStack = inv.GetItem(i);
 						this.UpdateHotbarSlot(i, itemStack);
 					}
-					this.prevSelectedSlot = slot;
+					this.prevHeldSlot = slot;
 				}),
 			);
 
@@ -137,6 +137,7 @@ export class InventoryUIController implements OnStart {
 				const itemStack = inv.GetItem(i);
 				this.UpdateHotbarSlot(i, itemStack, init);
 			}
+			this.prevHeldSlot = inv.GetHeldSlot();
 			init = false;
 
 			return () => {
@@ -235,21 +236,19 @@ export class InventoryUIController implements OnStart {
 		}
 	}
 
-	private prevSelectedSlot = -2;
+	private prevHeldSlot = -2;
 	private UpdateHotbarSlot(slot: number, itemStack: ItemStack | undefined, init = false): void {
-		const selectedSlot = this.invController.LocalInventory?.GetSelectedSlot() ?? -1;
+		const selectedSlot = this.invController.LocalInventory?.GetHeldSlot() ?? -1;
 
 		const go = this.hotbarContent.GetChild(slot).gameObject;
 		this.UpdateTile(go, itemStack);
 
 		const contentGO = go.transform.GetChild(0).gameObject;
 		const contentRect = contentGO.GetComponent<RectTransform>();
-		if (this.prevSelectedSlot !== slot) {
-			if (selectedSlot === slot) {
-				contentRect.TweenAnchoredPositionY(10, 0.1);
-			} else {
-				contentRect.TweenAnchoredPositionY(0, 0.1);
-			}
+		if (selectedSlot === slot && this.prevHeldSlot !== slot) {
+			contentRect.TweenAnchoredPositionY(10, 0.1);
+		} else if (selectedSlot !== slot && this.prevHeldSlot === slot) {
+			contentRect.TweenAnchoredPositionY(0, 0.1);
 		}
 
 		if (init) {

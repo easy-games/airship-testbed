@@ -3,7 +3,6 @@ import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Layer } from "Shared/Util/Layer";
-import { MathUtil } from "Shared/Util/MathUtil";
 import { OnUpdate } from "Shared/Util/Timer";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
@@ -36,7 +35,9 @@ export class BlockSelectController implements OnStart {
 		this.highlightGO.layer = Layer.IGNORE_RAYCAST;
 		this.highlightGO.SetActive(false);
 
-		const voidPlanePrefab = AssetBridge.Instance.LoadAsset("Imports/Core/Client/Resources/Prefabs/VoidPlane.prefab") as Object;
+		const voidPlanePrefab = AssetBridge.Instance.LoadAsset(
+			"Imports/Core/Client/Resources/Prefabs/VoidPlane.prefab",
+		) as Object;
 		this.voidPlane = GameObjectUtil.Instantiate(voidPlanePrefab);
 		this.voidPlane.name = "VoidPlane";
 		this.voidPlane.transform.localScale = new Vector3(50, 0.99, 50);
@@ -120,8 +121,8 @@ export class BlockSelectController implements OnStart {
 	}
 
 	private TryVoidSelect(characterPos: Vector3): boolean {
-        const world = WorldAPI.GetMainWorld();
-        if (!world) return false;
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return false;
 
 		let blockBeneathPos: Vector3 | undefined;
 		let characterPosSnapped: Vector3 = characterPos.add(new Vector3(0, 0.2, 0));
