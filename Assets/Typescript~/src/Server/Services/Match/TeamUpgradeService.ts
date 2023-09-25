@@ -9,9 +9,11 @@ import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterE
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { Player } from "Imports/Core/Shared/Player/Player";
 import { Team } from "Imports/Core/Shared/Team/Team";
+import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
 import { SetUtil } from "Imports/Core/Shared/Util/SetUtil";
 import { SignalPriority } from "Imports/Core/Shared/Util/Signal";
 import { Task } from "Imports/Core/Shared/Util/Task";
+import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
 import { TeamUpgradeStateDto } from "Shared/TeamUpgrade/TeamUpgradeMeta";
@@ -274,6 +276,13 @@ export class TeamUpgradeService implements OnStart {
 				upgradeState.currentUpgradeTier,
 			);
 		});
+		const meta = TeamUpgradeUtil.GetTeamUpgradeMeta(upgradeType);
+		purchaseForTeam.SendMessage(
+			ColorUtil.ColoredText(Theme.Aqua, "<b>" + player.username + "</b>") +
+				ColorUtil.ColoredText(Theme.Yellow, " unlocked ") +
+				ColorUtil.ColoredText(Theme.Aqua, meta.displayName) +
+				ColorUtil.ColoredText(Theme.Yellow, " for the team."),
+		);
 		return true;
 	}
 }

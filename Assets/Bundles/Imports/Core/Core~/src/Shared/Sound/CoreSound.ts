@@ -48,4 +48,6 @@ export const CoreSound = {
 	blockPlaceWood: [S("GenericBlockPlace")],
 
 	chatMessageReceived: S("ChatMessageReceived.wav"),
+
+	purchaseSuccess: S("ItemShopPurchase.wav"),
 };

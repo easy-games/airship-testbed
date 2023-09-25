@@ -12,6 +12,7 @@ export declare class GroundItemService implements OnStart {
     private idCounter;
     constructor(entityService: EntityService);
     OnStart(): void;
+    DestroyGroundItem(groundItem: GroundItem): void;
     SpawnGroundItem(itemStack: ItemStack, pos: Vector3, velocity?: Vector3, data?: Record<string, unknown>): GroundItem;
     private MakeNewID;
 }

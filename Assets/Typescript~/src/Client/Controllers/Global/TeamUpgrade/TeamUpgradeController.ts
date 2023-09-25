@@ -3,6 +3,7 @@ import ObjectUtil from "@easy-games/unity-object-utils";
 import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
 import { Game } from "Imports/Core/Shared/Game";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
+import { CoreSound } from "Imports/Core/Shared/Sound/CoreSound";
 import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
 import { AppManager } from "Imports/Core/Shared/Util/AppManager";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
@@ -60,6 +61,12 @@ export class TeamUpgradeController implements OnStart {
 		Network.ServerToClient.TeamUpgrade.UpgradeProcessed.Client.OnServerEvent(
 			(purchaserClientId, upgradeType, tier) => {
 				this.HandleUpgradeStateChange(upgradeType, tier);
+
+				if (purchaserClientId !== Game.LocalPlayer.clientId) {
+					AudioManager.PlayGlobal(CoreSound.purchaseSuccess, {
+						volumeScale: 0.3,
+					});
+				}
 			},
 		);
 	}
