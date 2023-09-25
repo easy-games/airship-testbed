@@ -96,6 +96,7 @@ export class GroundItemService implements OnStart {
 			});
 
 			this.RemoveGroundItemFromTracking(groundItem);
+			GameObjectUtil.Destroy(groundItem.rb.gameObject);
 
 			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.id, groundItem.id);
 			if (entity instanceof CharacterEntity) {
@@ -198,6 +199,7 @@ export class GroundItemService implements OnStart {
 	public DestroyGroundItem(groundItem: GroundItem): void {
 		this.RemoveGroundItemFromTracking(groundItem);
 		CoreNetwork.ServerToClient.GroundItemDestroyed.Server.FireAllClients(groundItem.id);
+		GameObjectUtil.Destroy(groundItem.rb.gameObject);
 	}
 
 	public SpawnGroundItem(
@@ -216,7 +218,12 @@ export class GroundItemService implements OnStart {
 		const id = this.MakeNewID();
 		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 1.2, data ?? {});
 		this.groundItems.set(id, groundItem);
-		this.movingGroundItems.push(groundItem);
+
+		Task.Delay(2, () => {
+			if (this.groundItems.has(id)) {
+				this.movingGroundItems.push(groundItem);
+			}
+		});
 
 		CoreNetwork.ServerToClient.GroundItem.Add.Server.FireAllClients([
 			{
