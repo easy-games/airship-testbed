@@ -223,6 +223,16 @@ export class BlockInteractService implements OnStart {
 			}
 
 			damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, damage);
+
+			// Hacked in for the 9/24/23 playtest
+			if (block.itemType === ItemType.STONE_BRICK) {
+				damage *= 0.5;
+			} else if (block.itemType === ItemType.OBSIDIAN) {
+				damage *= 0.2;
+			} else if (block.itemType === ItemType.CERAMIC) {
+				damage *= 0;
+			}
+
 			if (damage === 0) {
 				continue;
 			}
