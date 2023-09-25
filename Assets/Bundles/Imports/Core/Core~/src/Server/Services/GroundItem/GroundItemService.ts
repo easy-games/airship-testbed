@@ -219,7 +219,7 @@ export class GroundItemService implements OnStart {
 		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 1, data ?? {});
 		this.groundItems.set(id, groundItem);
 
-		Task.Delay(1, () => {
+		Task.Delay(2, () => {
 			if (this.groundItems.has(id)) {
 				this.movingGroundItems.push(groundItem);
 			}
