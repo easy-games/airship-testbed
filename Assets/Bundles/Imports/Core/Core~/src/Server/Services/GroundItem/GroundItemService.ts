@@ -216,7 +216,7 @@ export class GroundItemService implements OnStart {
 		const rb = go.GetComponent<Rigidbody>();
 		rb.velocity = velocity;
 		const id = this.MakeNewID();
-		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 1.2, data ?? {});
+		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 0.6, data ?? {});
 		this.groundItems.set(id, groundItem);
 
 		Task.Delay(2, () => {
