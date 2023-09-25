@@ -5,6 +5,8 @@ import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockData
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 import { BedWars } from "./BedWars/BedWars";
 import { RegisterItems } from "./Item/GameItems";
+import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";
+import { TeamUpgradeUtil } from "./TeamUpgrade/TeamUpgradeUtil";
 
 RegisterItems();
 
@@ -24,6 +26,20 @@ if (BedWars.IsMatchServer()) {
 			const wasPlacedByUser = BlockDataAPI.GetBlockData<boolean>(event.blockPos, "placedByUser");
 			if (!wasPlacedByUser) {
 				event.damage = 0;
+			}
+		}
+
+		if (event.entity?.player) {
+			const upgradeState = TeamUpgradeUtil.GetUpgradeStateForPlayer(
+				TeamUpgradeType.BREAK_SPEED,
+				event.entity.player,
+			);
+			if (upgradeState?.currentUpgradeTier) {
+				const damageMultiplier = TeamUpgradeUtil.GetUpgradeTierForType(
+					TeamUpgradeType.BREAK_SPEED,
+					upgradeState.currentUpgradeTier,
+				).value;
+				event.damage *= 1 + damageMultiplier / 100;
 			}
 		}
 	});
