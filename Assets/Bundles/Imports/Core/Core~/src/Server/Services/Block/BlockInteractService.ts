@@ -160,7 +160,7 @@ export class BlockInteractService implements OnStart {
 		}
 
 		// Cancellable signal
-		const damage = WorldAPI.BlockHitDamageFunc(entity, block, voxelPos, breakBlockMeta);
+		const damage = WorldAPI.CalculateBlockHitDamageFromBreakBlockMeta(entity, block, voxelPos, breakBlockMeta);
 		if (damage === 0) {
 			return false;
 		}
@@ -222,17 +222,13 @@ export class BlockInteractService implements OnStart {
 				continue;
 			}
 
-			//const damage = WorldAPI.BlockHitDamageFunc(player, block, voxelPos, breakBlockMeta);
+			damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, damage);
 			if (damage === 0) {
 				return false;
 			}
 
 			// Cancellable signal
-			const beforeSignal = CoreServerSignals.BeforeBlockHit.Fire(
-				new BeforeBlockHitSignal(block, voxelPos, entity, damage, true),
-			);
-			damage = beforeSignal.damage;
-			if (damage === 0) continue;
+			CoreServerSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(block, voxelPos, entity, damage, true));
 
 			//BLOCK DAMAGE
 			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;

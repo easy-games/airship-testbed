@@ -34,7 +34,7 @@ export class BlockInteractController {
 
 		if (entity.player && breakBlock) {
 			//Check to see if we can actually do damage here
-			const damage = WorldAPI.BlockHitDamageFunc(entity, block, voxelPos, breakBlock);
+			const damage = WorldAPI.CalculateBlockHitDamageFromBreakBlockMeta(entity, block, voxelPos, breakBlock);
 			if (damage === 0) {
 				return;
 			}

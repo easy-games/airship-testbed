@@ -1,11 +1,16 @@
+import { Entity } from "Shared/Entity/Entity";
+import { BreakBlockMeta } from "Shared/Item/ItemMeta";
 import { MathUtil } from "Shared/Util/MathUtil";
-import { BlockHitDamageFunc } from "./BlockHitDamageFunc";
+import { Signal } from "Shared/Util/Signal";
+import { Block } from "./Block";
+import { BlockHitDamageSignal } from "./Signal/BlockHitDamageSignal";
 import { World } from "./World";
 
 export class WorldAPI {
 	private static world: World | undefined;
 	public static DefaultVoxelHealth = 10;
 	public static ChildVoxelId = 32;
+	public static OnBlockHitDamageCalc = new Signal<BlockHitDamageSignal>();
 
 	public static GetMainWorld(): World | undefined {
 		if (this.world) {
@@ -23,40 +28,25 @@ export class WorldAPI {
 		return MathUtil.FloorVec(worldPosition);
 	}
 
-	public static BlockHitDamageFunc: BlockHitDamageFunc = (entity, block, blockPos, breakBlockMeta) => {
-		// if (BedWars.IsMatchServer()) {
-		// 	// BW: disable breaking map blocks
-		// 	if (block.itemType !== ItemType.BED) {
-		// 		const wasPlacedByUser = BlockDataAPI.GetBlockData<boolean>(blockPos, "placedByUser");
-		// 		if (!wasPlacedByUser) {
-		// 			return 0;
-		// 		}
-		// 	}
+	public static CalculateBlockHitDamageFromBreakBlockMeta(
+		entity: Entity | undefined,
+		block: Block,
+		blockPos: Vector3,
+		breakBlockMeta: BreakBlockMeta,
+	): number {
+		let signal = new BlockHitDamageSignal(breakBlockMeta.damage, entity, block, blockPos, breakBlockMeta);
+		this.OnBlockHitDamageCalc.Fire(signal);
+		return signal.damage;
+	}
 
-		// 	// BW: dont allow breaking your own team's bed
-		// 	const teamBlockId = BlockDataAPI.GetBlockData<string>(blockPos, "teamId");
-		// 	if (teamBlockId !== undefined && teamBlockId === player.GetTeam()?.id) {
-		// 		return 0;
-		// 	}
-
-		// 	const blockMeta = WorldAPI.GetMainWorld().GetBlockAt(blockPos).itemMeta;
-		// 	if (
-		// 		breakBlockMeta.extraDamageBlockArchetype !== BlockArchetype.NONE &&
-		// 		blockMeta?.block?.blockArchetype === breakBlockMeta.extraDamageBlockArchetype
-		// 	) {
-		// 		damage += breakBlockMeta.extraDamage;
-		// 	}
-
-		// 	const breakSpeedState = TeamUpgradeUtil.GetUpgradeStateForPlayer(TeamUpgradeType.BREAK_SPEED, player);
-		// 	if (breakSpeedState && breakSpeedState.currentUpgradeTier > 0) {
-		// 		const breakSpeedValue = TeamUpgradeUtil.GetUpgradeTierForType(
-		// 			TeamUpgradeType.BREAK_SPEED,
-		// 			breakSpeedState.currentUpgradeTier,
-		// 		).value;
-		// 		damage *= 1 + breakSpeedValue / 100;
-		// 	}
-		// }
-
-		return breakBlockMeta.damage;
-	};
+	public static CalculateBlockHitDamage(
+		entity: Entity | undefined,
+		block: Block,
+		blockPos: Vector3,
+		damage: number,
+	): number {
+		let signal = new BlockHitDamageSignal(damage, entity, block, blockPos, undefined);
+		this.OnBlockHitDamageCalc.Fire(signal);
+		return signal.damage;
+	}
 }
