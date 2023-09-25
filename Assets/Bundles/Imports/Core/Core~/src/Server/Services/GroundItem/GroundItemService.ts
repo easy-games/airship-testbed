@@ -120,7 +120,7 @@ export class GroundItemService implements OnStart {
 			);
 		});
 
-		Task.Repeat(1, () => this.ScanForIdleItems());
+		Task.Repeat(0.2, () => this.ScanForIdleItems());
 	}
 
 	private RemoveGroundItemFromTracking(groundItem: GroundItem) {
@@ -219,7 +219,7 @@ export class GroundItemService implements OnStart {
 		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 0.6, data ?? {});
 		this.groundItems.set(id, groundItem);
 
-		Task.Delay(2, () => {
+		Task.Delay(1, () => {
 			if (this.groundItems.has(id)) {
 				this.movingGroundItems.push(groundItem);
 			}
