@@ -17,13 +17,13 @@ MonoBehaviour:
   - key: FirstPerson
     value:
     - key: Idle
-      value: {fileID: 7400000, guid: 2dfb6c62518a91d43a5bf100db635894, type: 2}
+      value: {fileID: 7400000, guid: 740615b7492b2c04ba932f9885b1306b, type: 2}
     - key: Equip
-      value: {fileID: 7400000, guid: 53a740ddc8852b240b5c4daec84df962, type: 2}
+      value: {fileID: 7400000, guid: 740615b7492b2c04ba932f9885b1306b, type: 2}
     - key: UnEquip
-      value: {fileID: 7400000, guid: 9dd98d00e990fea40926c7e598373baa, type: 2}
+      value: {fileID: 7400000, guid: 740615b7492b2c04ba932f9885b1306b, type: 2}
     - key: Use01
-      value: {fileID: 7400000, guid: 8b276c210bd0dfe47931915d2333cc3e, type: 2}
+      value: {fileID: 7400000, guid: 740615b7492b2c04ba932f9885b1306b, type: 2}
   - key: ThirdPerson
     value:
     - key: Idle
