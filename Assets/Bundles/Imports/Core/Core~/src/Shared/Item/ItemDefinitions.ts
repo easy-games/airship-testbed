@@ -156,6 +156,7 @@ export const items: {
 		itemAssets: blockItemAssets,
 		block: {
 			blockId: 1,
+			stepSound: CoreSound.footstepGrass,
 		},
 	},
 	[ItemType.TALL_GRASS]: {
@@ -177,6 +178,7 @@ export const items: {
 		itemAssets: blockItemAssets,
 		block: {
 			blockId: 2,
+			stepSound: CoreSound.footstepGrass,
 		},
 	},
 	[ItemType.STONE]: {
@@ -242,6 +244,7 @@ export const items: {
 		block: {
 			blockId: 6,
 			blockArchetype: BlockArchetype.WOOD,
+			stepSound: CoreSound.footstepWood,
 		},
 	},
 	[ItemType.OAK_LOG]: {
@@ -251,6 +254,7 @@ export const items: {
 		block: {
 			blockId: 7,
 			blockArchetype: BlockArchetype.WOOD,
+			stepSound: CoreSound.footstepWood,
 		},
 	},
 	[ItemType.CLAY]: {
