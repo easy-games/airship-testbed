@@ -58,7 +58,7 @@ export class CameraSystem {
 	public readonly ModeChangedBegin = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
 	public readonly ModeChangedEnd = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
 
-	public GetActiveCamera(): Camera{
+	public GetActiveCamera(): Camera {
 		return this.camera;
 	}
 

@@ -14,11 +14,21 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 import { EntityService } from "../Entity/EntityService";
 import { PlayerService } from "../Player/PlayerService";
 
+// Position of items are rounded to a multiple of this number,
+// and are merged if they share the same rounded position:
+const MERGE_POSITION_SIZE = 1;
+
+const VELOCITY_EPSILON = 0.001;
+
 @Service({})
 export class GroundItemService implements OnStart {
 	private groundItemPrefab: Object;
 	private groundItems = new Map<number, GroundItem>();
 	private idCounter = 0;
+
+	private movingGroundItems = new Array<GroundItem>();
+	private removeMovingGroundItems = new Array<GroundItem>();
+	private idleGroundItemsByPosition = new Map<Vector3, GroundItem[]>();
 
 	constructor(private readonly entityService: EntityService) {
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset(
@@ -85,7 +95,8 @@ export class GroundItemService implements OnStart {
 				groundItem: groundItem,
 			});
 
-			this.groundItems.delete(groundItem.id);
+			this.RemoveGroundItemFromTracking(groundItem);
+
 			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.id, groundItem.id);
 			if (entity instanceof CharacterEntity) {
 				entity.GetInventory().AddItem(groundItem.itemStack);
@@ -107,9 +118,85 @@ export class GroundItemService implements OnStart {
 				}),
 			);
 		});
+
+		Task.Repeat(1, () => this.ScanForIdleItems());
+	}
+
+	private RemoveGroundItemFromTracking(groundItem: GroundItem) {
+		this.groundItems.delete(groundItem.id);
+
+		const key = this.GetGroundItemPositionKey(groundItem);
+		const items = this.idleGroundItemsByPosition.get(key);
+		if (items) {
+			const itemsIdx = items.indexOf(groundItem);
+			if (itemsIdx !== -1) {
+				items.unorderedRemove(itemsIdx);
+			}
+		}
+
+		const movingIdx = this.movingGroundItems.indexOf(groundItem);
+		if (movingIdx !== -1) {
+			this.movingGroundItems.unorderedRemove(movingIdx);
+		}
+	}
+
+	private GetGroundItemPositionKey(groundItem: GroundItem): Vector3 {
+		const pos = groundItem.rb.position;
+		return new Vector3(
+			math.round(pos.x / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
+			math.round(pos.y / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
+			math.round(pos.z / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
+		);
+	}
+
+	private IsGroundItemMoving(groundItem: GroundItem): boolean {
+		return groundItem.rb.velocity.sqrMagnitude > VELOCITY_EPSILON;
+	}
+
+	private ScanForIdleItems() {
+		// Find ground items that are now idle:
+		for (const groundItem of this.movingGroundItems) {
+			if (this.IsGroundItemMoving(groundItem)) continue;
+
+			this.removeMovingGroundItems.push(groundItem);
+
+			const posKey = this.GetGroundItemPositionKey(groundItem);
+			let itemsAtPos = this.idleGroundItemsByPosition.get(posKey);
+			if (itemsAtPos === undefined) {
+				itemsAtPos = [groundItem];
+				this.idleGroundItemsByPosition.set(posKey, itemsAtPos);
+			} else {
+				// See if it can merge with anything:
+				let didMerge = false;
+				for (const item of itemsAtPos) {
+					if (item.itemStack.CanMerge(groundItem.itemStack)) {
+						// Merge
+						item.itemStack.SetAmount(item.itemStack.GetAmount() + groundItem.itemStack.GetAmount());
+						didMerge = true;
+						this.DestroyGroundItem(groundItem);
+						break;
+					}
+				}
+
+				if (!didMerge) {
+					itemsAtPos.push(groundItem);
+				}
+			}
+		}
+
+		// Remove idle ground items from the 'movingGroundItems' list:
+		if (this.removeMovingGroundItems.size() > 0) {
+			for (const groundItem of this.removeMovingGroundItems) {
+				const idx = this.movingGroundItems.indexOf(groundItem);
+				if (idx === -1) continue;
+				this.movingGroundItems.unorderedRemove(idx);
+			}
+			this.removeMovingGroundItems.clear();
+		}
 	}
 
 	public DestroyGroundItem(groundItem: GroundItem): void {
+		this.RemoveGroundItemFromTracking(groundItem);
 		CoreNetwork.ServerToClient.GroundItemDestroyed.Server.FireAllClients(groundItem.id);
 	}
 
@@ -120,7 +207,7 @@ export class GroundItemService implements OnStart {
 		data?: Record<string, unknown>,
 	): GroundItem {
 		if (velocity === undefined) {
-			velocity = new Vector3(0, 1, 0);
+			velocity = Vector3.up;
 		}
 
 		const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, pos, Quaternion.identity);
@@ -129,6 +216,7 @@ export class GroundItemService implements OnStart {
 		const id = this.MakeNewID();
 		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 1.2, data ?? {});
 		this.groundItems.set(id, groundItem);
+		this.movingGroundItems.push(groundItem);
 
 		CoreNetwork.ServerToClient.GroundItem.Add.Server.FireAllClients([
 			{
