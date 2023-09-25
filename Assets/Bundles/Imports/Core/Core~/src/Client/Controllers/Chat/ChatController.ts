@@ -125,15 +125,12 @@ export class ChatController implements OnStart {
 			KeyCode.Escape,
 			(event) => {
 				if (this.selected) {
-					if (this.inputField.text === "") {
-						EventSystem.current.ClearSelected();
-						return;
-					}
-					this.SubmitInputField();
+					EventSystem.current.ClearSelected();
+					this.inputField.text = "";
 					event.SetCancelled(true);
 				}
 			},
-			SignalPriority.HIGH,
+			SignalPriority.HIGHEST,
 		);
 		keyboard.OnKeyDown(
 			KeyCode.Slash,
