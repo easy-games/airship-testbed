@@ -20,4 +20,5 @@ export declare class Team {
     RemovePlayer(player: Player): void;
     Encode(): TeamDto;
     HasLocalPlayer(): boolean;
+    SendMessage(message: string): void;
 }

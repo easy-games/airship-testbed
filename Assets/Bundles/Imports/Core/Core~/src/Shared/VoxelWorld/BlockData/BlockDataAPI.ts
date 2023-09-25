@@ -15,7 +15,6 @@ export class BlockDataAPI {
 	public static Init(): void {
 		if (RunCore.IsClient()) {
 			CoreNetwork.ServerToClient.SetBlockData.Client.OnServerEvent((blockPos, key, data) => {
-				print(`setBlockData key=${key} data=${data}`);
 				this.SetBlockData(blockPos, key, data);
 			});
 		} else {

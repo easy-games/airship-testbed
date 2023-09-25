@@ -62,4 +62,10 @@ export class Team {
 	public HasLocalPlayer(): boolean {
 		return Game.LocalPlayer !== undefined && this.players.has(Game.LocalPlayer);
 	}
+
+	public SendMessage(message: string): void {
+		for (const player of this.players) {
+			player.SendMessage(message);
+		}
+	}
 }
