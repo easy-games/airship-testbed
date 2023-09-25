@@ -2,10 +2,12 @@ import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
+import { Keyboard } from "Shared/UserInput";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { SignalPriority } from "Shared/Util/Signal";
 import { encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { UserController } from "../User/UserController";
@@ -16,6 +18,7 @@ export class ChangeUsernameController implements OnStart {
 	private responseText: TMP_Text;
 	private submitButton: GameObject;
 	private inputField: TMP_InputField;
+	private inputFieldSelected = false;
 
 	constructor(private readonly authController: AuthController) {
 		const go = GameObjectUtil.Instantiate(
@@ -40,6 +43,20 @@ export class ChangeUsernameController implements OnStart {
 		});
 
 		this.inputField = refs.GetValue("UI", "SearchBar") as TMP_InputField;
+		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
+			this.inputFieldSelected = true;
+		});
+		CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
+			this.inputFieldSelected = false;
+		});
+		const keyboard = new Keyboard();
+		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+			if (this.inputFieldSelected) {
+				if (e.KeyCode !== KeyCode.Return && e.KeyCode !== KeyCode.Escape) {
+					e.SetCancelled(true);
+				}
+			}
+		});
 	}
 
 	public TestAvailability(): void {}
@@ -88,6 +105,7 @@ export class ChangeUsernameController implements OnStart {
 	public Open(): void {
 		if (!this.canvas) return;
 
+		this.inputField.text = "";
 		this.SetResponseText("success", "");
 
 		AppManager.Open(this.canvas, {

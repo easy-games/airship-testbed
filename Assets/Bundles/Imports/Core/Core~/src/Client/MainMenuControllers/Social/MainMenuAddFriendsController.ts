@@ -6,6 +6,7 @@ import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { SignalPriority } from "Shared/Util/Signal";
 import { encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { SocketController } from "../Socket/SocketController";
@@ -15,6 +16,7 @@ export class MainMenuAddFriendsController implements OnStart {
 	private sentRequests = new Set<string>();
 
 	private canvas: Canvas | undefined;
+	private inputFieldSelected = false;
 
 	constructor(private readonly authController: AuthController, private readonly socketController: SocketController) {}
 
@@ -33,6 +35,21 @@ export class MainMenuAddFriendsController implements OnStart {
 			const closeButton = refs.GetValue("UI", "CloseButton");
 			const responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
 			const sentRequestsContent = refs.GetValue("UI", "SentRequestsContent");
+
+			CanvasAPI.OnSelectEvent(searchInput.gameObject, () => {
+				this.inputFieldSelected = true;
+			});
+			CanvasAPI.OnDeselectEvent(searchInput.gameObject, () => {
+				this.inputFieldSelected = false;
+			});
+			const keyboard = new Keyboard();
+			keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+				if (this.inputFieldSelected) {
+					if (e.KeyCode !== KeyCode.Return && e.KeyCode !== KeyCode.Escape) {
+						e.SetCancelled(true);
+					}
+				}
+			});
 
 			sentRequestsContent.ClearChildren();
 
@@ -86,9 +103,8 @@ export class MainMenuAddFriendsController implements OnStart {
 				SendFriendRequest(searchInput.text);
 			});
 
-			const keyboard = new Keyboard();
 			keyboard.OnKeyDown(KeyCode.KeypadEnter, () => {
-				if (searchInput.isFocused) {
+				if (this.inputFieldSelected) {
 					SendFriendRequest(searchInput.text);
 				}
 			});
