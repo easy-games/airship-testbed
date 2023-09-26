@@ -67,9 +67,9 @@ Shader "Chronos/ChronosSpriteSimple"
             fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
             {
                 float4 texColor = tex2D(_MainTex, i.uv);
-                float4 finalColor = texColor * _Color * i.color;// SRGBtoLinear(_Color);
+                float4 finalColor = texColor * SRGBtoLinear(_Color);
                 clip(texColor.a-.1);
-                //  finalColor.a =texColor.a;
+                //finalColor.a =texColor.a;
 				MRT0 = finalColor;
 				MRT1 = _Emissive * finalColor;
                 return finalColor;
