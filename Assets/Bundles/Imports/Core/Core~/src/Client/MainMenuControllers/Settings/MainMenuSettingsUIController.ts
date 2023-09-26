@@ -52,6 +52,13 @@ export class MainMenuSettingsUIController implements OnStart {
 				this.clientSettingsController.SetMusicVolume(val);
 			},
 		);
+
+		this.SetupToggle(this.screenshotHDToggle, () => {
+			this.clientSettingsController.SetScreenshotRenderHD(!this.clientSettingsController.GetScreenshotRenderHD());
+		});
+		this.SetupToggle(this.screenshotUIToggle, () => {
+			this.clientSettingsController.SetScreenshotShowUI(!this.clientSettingsController.GetScreenshotShowUI());
+		});
 	}
 
 	private SetupSlider(go: GameObject, startingValue: number, onChange: (val: number) => void): void {
@@ -75,11 +82,9 @@ export class MainMenuSettingsUIController implements OnStart {
 		});
 	}
 
-	public ScreenshotShowUIIsOn() {
-		return this.screenshotUIToggle.isOn;
-	}
-
-	public ScreenshotHDIsOn() {
-		return this.screenshotHDToggle.isOn;
+	private SetupToggle(toggle: Toggle, onChange: () => void) {
+		CanvasAPI.OnSelectEvent(toggle.gameObject, () => {
+			onChange();
+		});
 	}
 }

@@ -8421,7 +8421,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6105541023822383727, guid: daf3031b6add34a4881cd88595188cf6, type: 3}
+        m_TargetAssemblyTypeName: CanvasUIEvents, Easy.Airship
+        m_MethodName: ClickHook
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5435297577692659722}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &5492327507545012829
 GameObject:
@@ -8836,7 +8848,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6105541023822383727, guid: daf3031b6add34a4881cd88595188cf6, type: 3}
+        m_TargetAssemblyTypeName: CanvasUIEvents, Easy.Airship
+        m_MethodName: ClickHook
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5885269856287182559}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &6081282758840650563
 GameObject:

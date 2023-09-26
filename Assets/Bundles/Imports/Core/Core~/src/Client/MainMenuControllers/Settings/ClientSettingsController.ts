@@ -14,6 +14,8 @@ const defaultData: ClientSettingsFile = {
 	musicVolume: 0.11,
 	firstPersonFov: 80,
 	thirdPersonFov: 90,
+	screenshotRenderHD: false,
+	screenshotShowUI: false,
 };
 
 @Controller({ loadOrder: -1 })
@@ -108,6 +110,16 @@ export class ClientSettingsController implements OnStart {
 		this.unsavedChanges = true;
 	}
 
+	public SetScreenshotShowUI(showUI: boolean) {
+		this.data.screenshotShowUI = showUI;
+		this.unsavedChanges = true;
+	}
+
+	public SetScreenshotRenderHD(renderHd: boolean) {
+		this.data.screenshotRenderHD = renderHd;
+		this.unsavedChanges = true;
+	}
+
 	public GetGlobalVolume(): number {
 		return this.data.globalVolume;
 	}
@@ -118,5 +130,13 @@ export class ClientSettingsController implements OnStart {
 
 	public GetThirdPersonFov(): number {
 		return this.data.thirdPersonFov;
+	}
+
+	public GetScreenshotShowUI(): boolean {
+		return this.data.screenshotShowUI;
+	}
+
+	public GetScreenshotRenderHD(): boolean {
+		return this.data.screenshotRenderHD;
 	}
 }

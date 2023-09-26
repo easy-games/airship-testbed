@@ -55,7 +55,6 @@ export class LocalEntityController implements OnStart {
 	constructor(
 		private readonly cameraController: CameraController,
 		private readonly clientSettings: ClientSettingsController,
-		private readonly menuSettings: MainMenuSettingsUIController,
 		private readonly inventoryController: InventoryController,
 	) {}
 
@@ -112,8 +111,8 @@ export class LocalEntityController implements OnStart {
 		if (!this.screenshot) {
 			return;
 		}
-		const showUI = this.menuSettings.ScreenshotShowUIIsOn();
-		const supersample = this.menuSettings.ScreenshotHDIsOn();
+		const showUI = this.clientSettings.GetScreenshotShowUI();
+		const supersample = this.clientSettings.GetScreenshotRenderHD();
 		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
 		const superSampleSize = supersample ? 4 : 1;
 		print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
