@@ -10,8 +10,15 @@ export declare class GroundItemService implements OnStart {
     private groundItemPrefab;
     private groundItems;
     private idCounter;
+    private movingGroundItems;
+    private removeMovingGroundItems;
+    private idleGroundItemsByPosition;
     constructor(entityService: EntityService);
     OnStart(): void;
+    private RemoveGroundItemFromTracking;
+    private GetGroundItemPositionKey;
+    private IsGroundItemMoving;
+    private ScanForIdleItems;
     DestroyGroundItem(groundItem: GroundItem): void;
     SpawnGroundItem(itemStack: ItemStack, pos: Vector3, velocity?: Vector3, data?: Record<string, unknown>): GroundItem;
     private MakeNewID;
