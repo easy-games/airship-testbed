@@ -42,7 +42,7 @@ export class ProjectileService implements OnStart {
 				//AOE Entity Damage
 				this.damageService.InflictAOEDamage(
 					event.hitPosition,
-					event.ammoMeta.damage,
+					event.ammoMeta.aoeDamage?.innerDamage ?? event.ammoMeta.damage,
 					event.ammoMeta.aoeDamage,
 					config,
 				);

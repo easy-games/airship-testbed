@@ -229,7 +229,7 @@ export class BlockInteractService implements OnStart {
 				damage *= 0.5;
 			} else if (block.itemType === ItemType.OBSIDIAN) {
 				damage *= 0.2;
-			} else if (block.itemType === ItemType.CERAMIC) {
+			} else if (block.itemType === ItemType.CERAMIC || block.itemType === ItemType.BED) {
 				damage *= 0;
 			}
 

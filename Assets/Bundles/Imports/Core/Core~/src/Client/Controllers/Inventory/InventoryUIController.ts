@@ -83,7 +83,7 @@ export class InventoryUIController implements OnStart {
 
 	private SetupHotbar(): void {
 		for (let i = 0; i < this.hotbarSlots; i++) {
-			this.UpdateHotbarSlot(i, undefined, true);
+			this.UpdateHotbarSlot(i, this.invController.LocalInventory?.GetHeldSlot() ?? 0, undefined, true);
 		}
 
 		let init = false;
@@ -98,17 +98,17 @@ export class InventoryUIController implements OnStart {
 						const slotBin = new Bin();
 						slotBinMap.set(slot, slotBin);
 
-						this.UpdateHotbarSlot(slot, itemStack);
+						this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
 
 						if (itemStack) {
 							slotBin.Add(
 								itemStack.AmountChanged.Connect((e) => {
-									this.UpdateHotbarSlot(slot, itemStack);
+									this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
 								}),
 							);
 							slotBin.Add(
 								itemStack.ItemTypeChanged.Connect((e) => {
-									this.UpdateHotbarSlot(slot, itemStack);
+									this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
 								}),
 							);
 						}
@@ -127,7 +127,7 @@ export class InventoryUIController implements OnStart {
 				inv.HeldSlotChanged.Connect((slot) => {
 					for (let i = 0; i < this.hotbarSlots; i++) {
 						const itemStack = inv.GetItem(i);
-						this.UpdateHotbarSlot(i, itemStack);
+						this.UpdateHotbarSlot(i, slot, itemStack);
 					}
 					this.prevHeldSlot = slot;
 				}),
@@ -135,7 +135,7 @@ export class InventoryUIController implements OnStart {
 
 			for (let i = 0; i < this.hotbarSlots; i++) {
 				const itemStack = inv.GetItem(i);
-				this.UpdateHotbarSlot(i, itemStack, init);
+				this.UpdateHotbarSlot(i, inv.GetHeldSlot(), itemStack, init, true);
 			}
 			this.prevHeldSlot = inv.GetHeldSlot();
 			init = false;
@@ -237,17 +237,21 @@ export class InventoryUIController implements OnStart {
 	}
 
 	private prevHeldSlot = -2;
-	private UpdateHotbarSlot(slot: number, itemStack: ItemStack | undefined, init = false): void {
-		const selectedSlot = this.invController.LocalInventory?.GetHeldSlot() ?? -1;
-
+	private UpdateHotbarSlot(
+		slot: number,
+		selectedSlot: number,
+		itemStack: ItemStack | undefined,
+		init = false,
+		reset = false,
+	): void {
 		const go = this.hotbarContent.GetChild(slot).gameObject;
 		this.UpdateTile(go, itemStack);
 
 		const contentGO = go.transform.GetChild(0).gameObject;
 		const contentRect = contentGO.GetComponent<RectTransform>();
-		if (selectedSlot === slot && this.prevHeldSlot !== slot) {
+		if (selectedSlot === slot && (this.prevHeldSlot !== slot || reset)) {
 			contentRect.TweenAnchoredPositionY(10, 0.1);
-		} else if (selectedSlot !== slot && this.prevHeldSlot === slot) {
+		} else if (selectedSlot !== slot && (this.prevHeldSlot === slot || reset)) {
 			contentRect.TweenAnchoredPositionY(0, 0.1);
 		}
 

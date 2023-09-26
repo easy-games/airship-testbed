@@ -26,6 +26,18 @@ export const CoreSound = {
 		Footstep("Footstep_Wool_03"),
 		Footstep("Footstep_Wool_04"),
 	],
+	footstepGrass: [
+		Footstep("Footstep_Grass_01"),
+		Footstep("Footstep_Grass_02"),
+		Footstep("Footstep_Grass_03"),
+		Footstep("Footstep_Grass_04"),
+	],
+	footstepWood: [
+		Footstep("Footstep_Wood_01"),
+		Footstep("Footstep_Wood_02"),
+		Footstep("Footstep_Wood_03"),
+		Footstep("Footstep_Wood_04"),
+	],
 
 	// Block: Generic
 	blockHitGeneric: [S("GenericBlockPlace")],

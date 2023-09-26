@@ -128,27 +128,27 @@ export class GeneratorService implements OnStart {
 			/* Always update next spawn time. */
 			generatorState.dto.nextSpawnTime = TimeUtil.GetServerTime() + generatorState.dto.spawnRate;
 			/* Only increase stack size if generator has _not_ reached capacity. */
-			if (generatorState.stackSize < generatorState.stackLimit) {
-				generatorState.stackSize++;
+			// if (generatorState.stackSize < generatorState.stackLimit) {
+			// 	generatorState.stackSize++;
 
-				const existingStack = this.stackMap.get(generatorState.dto.id);
-				if (existingStack) {
-					print("merging existing.");
-					existingStack.SetAmount(generatorState.stackSize);
-				} else {
-					const newGeneratorStack = new ItemStack(generatorState.dto.item, 1);
-					this.stackMap.set(generatorState.dto.id, newGeneratorStack);
-					print("spawning new.");
-					Dependency<GroundItemService>().SpawnGroundItem(
-						newGeneratorStack,
-						generatorState.dto.pos.add(GENERATOR_ITEM_SPAWN_OFFSET),
-						undefined,
-						{
-							generatorId: generatorState.dto.id,
-						},
-					);
-				}
-			}
+			// const existingStack = this.stackMap.get(generatorState.dto.id);
+			// if (existingStack) {
+			// 	print("merging existing.");
+			// 	existingStack.SetAmount(generatorState.stackSize);
+			// } else {
+			const newGeneratorStack = new ItemStack(generatorState.dto.item, 1);
+			this.stackMap.set(generatorState.dto.id, newGeneratorStack);
+			print("spawning new.");
+			Dependency<GroundItemService>().SpawnGroundItem(
+				newGeneratorStack,
+				generatorState.dto.pos.add(GENERATOR_ITEM_SPAWN_OFFSET),
+				undefined,
+				{
+					generatorId: generatorState.dto.id,
+				},
+			);
+			// }
+			// }
 		});
 	}
 

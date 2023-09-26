@@ -43,8 +43,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2.2
+  m_Radius: 0.8
+  m_Height: 2.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!54 &5606203372879073412
@@ -1543,7 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
+  warningMessage: 
 --- !u!4 &5880897125066653761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -115803784690454224, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
