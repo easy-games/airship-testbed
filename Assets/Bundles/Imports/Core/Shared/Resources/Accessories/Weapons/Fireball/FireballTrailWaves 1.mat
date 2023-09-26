@@ -63,8 +63,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emissive: 1
-    - _FadeA: 0.594
-    - _FadeB: 0.696
+    - _FadeA: 0.764
+    - _FadeB: 0.267
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -84,6 +84,7 @@ Material:
     - _Wavelength: 18.69
     - _ZWrite: 1
     m_Colors:
+    - _BGColor: {r: 1, g: 0.69864464, b: 0.4009434, a: 0}
     - _Color: {r: 1, g: 0.00969137, b: 0, a: 1}
     - _ColorA: {r: 0.6415094, g: 0.16037735, b: 0.16999792, a: 1}
     - _ColorB: {r: 1, g: 0.88401276, b: 0.5424528, a: 1}

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Metal_Clean
+  m_Name: Gemstone
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_ValidKeywords:
   - EMISSIVE_ON
@@ -122,7 +122,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
-    - _MetalOverride: 0.345
+    - _MetalOverride: 0.14
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -131,7 +131,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 1
     - _RimPower: 5
-    - _RoughOverride: 0.834
+    - _RoughOverride: 0.309
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
@@ -150,5 +150,5 @@ Material:
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
-    - _SpecularColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+    - _SpecularColor: {r: 0.51152545, g: 0.8962264, b: 0.8594088, a: 1}
   m_BuildTextureStacks: []

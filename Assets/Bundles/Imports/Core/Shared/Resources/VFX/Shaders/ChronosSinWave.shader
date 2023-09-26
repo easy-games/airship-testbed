@@ -2,8 +2,9 @@ Shader "Chronos/ChronosSinWave"
 {
     Properties
     {
-        _ColorA("Tint", Color) = (1,1,1,1)
-        _ColorB("Tint", Color) = (1,1,1,1)
+        _ColorA("Color A", Color) = (1,1,1,1)
+        _ColorB("Color B", Color) = (1,1,1,1)
+        _BGColor("Background Color", Color) = (1,1,1,0)
         _Emissive("Emissive", Range(0,1)) = 1
         _MainTex ("Texture", 2D) = "white" {}
         _FadeA("Wave Fade A", Range(0,1)) = 1
@@ -27,18 +28,16 @@ Shader "Chronos/ChronosSinWave"
             
         //Tags { "RenderType"="Transparent"  "LightMode" = "ChronosForwardPass"  "Queue"="Transparent"}
 
-		Cull Off
+		Cull back
         Lighting Off
         ZWrite Off
-        Blend One OneMinusSrcAlpha
+        Blend SrcAlpha OneMinusSrcAlpha
         
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
             #include "Packages/gg.easy.airship/Runtime/Code/Chronos3D/Resources/BaseShaders/ChronosShaderIncludes.cginc"
@@ -62,6 +61,7 @@ Shader "Chronos/ChronosSinWave"
             float4 _MainTex_ST;
             float4 _ColorA;
             float4 _ColorB;
+            float4 _BGColor;
             float _Emissive;
             float _Wavelength;
             float _WaveSpeedMod;
@@ -83,7 +83,6 @@ Shader "Chronos/ChronosSinWave"
             fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
             {
                 float4 texColor = tex2D(_MainTex, i.uv + _Time.x * float2(_TexScrollSpeedX, _TexScrollSpeedY));
-                float4 finalColor = float4(1,1,1,1);// texColor * _Color * i.color;// SRGBtoLinear(_Color);
                 float2 convertedUV = float2(ConvertFromNormalizedRange(i.uv.y), ConvertFromNormalizedRange(i.uv.x));
 
                 float localSum = i.vertex.x + i.vertex.y + i.vertex.z;
@@ -97,13 +96,14 @@ Shader "Chronos/ChronosSinWave"
                 float wave4 = fadeA * wave3 - fadeB;
                 
                 //finalColor.a =texColor.a;
-                finalColor = wave4 * i.color * lerp(_ColorA, _ColorB, i.uv.y);
+                float4 finalColor = wave4 * i.color * SRGBtoLinear(lerp(_ColorA, _ColorB, i.uv.y));
                 finalColor.a *= texColor.r * texColor.a;
+                finalColor = lerp(SRGBtoLinear(_BGColor), finalColor, finalColor.a);
                 
                 clip(finalColor.a-.25);
                 
-				MRT0 = SRGBtoLinear(finalColor);
-				MRT1 = _Emissive * finalColor * i.uv.y;
+				MRT0 = finalColor;
+				MRT1 = _Emissive * finalColor;// * i.uv.y;
                 return finalColor;
             }
             ENDCG
