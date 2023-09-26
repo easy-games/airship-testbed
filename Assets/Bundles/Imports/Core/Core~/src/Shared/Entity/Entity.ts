@@ -189,7 +189,7 @@ export class Entity {
 		}
 
 		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
-			print("state change (" + this.displayName + "): " + newState);
+			// print("state change (" + this.displayName + "): " + newState);
 			const oldState = this.state;
 			this.state = newState;
 			this.OnStateChanged.Fire(newState, oldState);
