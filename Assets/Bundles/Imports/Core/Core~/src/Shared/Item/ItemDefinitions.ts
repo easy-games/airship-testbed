@@ -655,7 +655,7 @@ export const items: {
 				extraDamageBlockArchetype: BlockArchetype.WOOD,
 				onHitPrefabPath: AllBundleItems.Blocks_VFX_OnHitFire,
 			},
-			lifetimeSec: 30,
+			lifetimeSec: 22,
 			gravity: defaultGravity * 0.09,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
 			// onHitGroundSound: [
