@@ -7,6 +7,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import { ProjectileSharedImpl } from "./ProjectileSharedImpl";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 
 export interface ProjectileDto {
 	nobId: number;
@@ -32,6 +33,9 @@ export class Projectile {
 		this.gameObject = easyProjectile.gameObject;
 		this.itemType = itemType;
 		this.shooter = shooter;
+
+		const itemDef = ItemUtil.GetItemMeta(itemType);
+
 		this.OnDestroy.Connect(() => {
 			this.destroyed = true;
 		});
@@ -63,7 +67,7 @@ export class Projectile {
 			this.OnDestroy.Fire();
 		});
 
-		SetTimeout(5, () => {
+		SetTimeout(itemDef.projectile?.lifetimeSec ?? 15, () => {
 			if (!this.destroyed) {
 				this.Destroy();
 			}
