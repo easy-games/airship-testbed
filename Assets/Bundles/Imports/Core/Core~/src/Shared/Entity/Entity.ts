@@ -179,14 +179,17 @@ export class Entity {
 			Bridge.DisconnectEvent(impactConn);
 		});
 
-		const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
-			this.OnAdjustMove.Fire(moveModifier);
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(adjustMoveConn);
-		});
+		if (this.IsLocalCharacter()) {
+			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
+				this.OnAdjustMove.Fire(moveModifier);
+			});
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(adjustMoveConn);
+			});
+		}
 
 		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
+			print("state change (" + this.displayName + "): " + newState);
 			const oldState = this.state;
 			this.state = newState;
 			this.OnStateChanged.Fire(newState, oldState);
@@ -275,6 +278,7 @@ export class Entity {
 	 * It is recommended to use EntityService.DespawnEntity() instead of this.
 	 */
 	public Destroy(): void {
+		print("Entity.Destroy()");
 		this.bin.Clean();
 		this.OnDespawn.Fire();
 		this.anim.Destroy();

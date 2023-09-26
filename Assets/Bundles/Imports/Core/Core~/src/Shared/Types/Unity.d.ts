@@ -1273,7 +1273,7 @@ interface AnimancerState {
 }
 
 interface Sequence {
-	OnEndTS(callback: () => void): void;
+	OnEndTS(callback: () => void): EngineEventConnection;
 	ClearEndTSEvent(): void;
 }
 
@@ -3655,7 +3655,7 @@ interface ApplicationConstructor {
 
 interface EntityAnimationEvents {
 	EntityEventKey: number;
-	OnEntityAnimationEvent(callback: (data: EntityAnimationEventData) => void): EngineEventConnection;
+	OnEntityAnimationEvent(callback: (key: EntityAnimationEventKey) => void): EngineEventConnection;
 }
 
 interface Animator {
