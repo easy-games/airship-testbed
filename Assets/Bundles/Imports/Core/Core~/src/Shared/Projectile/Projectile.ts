@@ -67,7 +67,7 @@ export class Projectile {
 			this.OnDestroy.Fire();
 		});
 
-		SetTimeout(itemDef.projectile?.lifetimeSec ?? 15, () => {
+		SetTimeout(itemDef.projectile?.lifetimeSec ?? 60, () => {
 			if (!this.destroyed) {
 				this.Destroy();
 			}
