@@ -2,9 +2,7 @@
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
-import { TimeUtil } from "Shared/Util/TimeUtil";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { HeldItem } from "../HeldItem";
@@ -127,8 +125,8 @@ export class MeleeHeldItem extends HeldItem {
 			if (ignoreEntityIds.includes(targetEntity.id)) {
 				continue;
 			}
-			const immuneUntilTime = targetEntity.GetImmuneUntilTime();
-			if (TimeUtil.GetServerTime() + (RunUtil.IsClient() ? 0.1 : 0) < immuneUntilTime) {
+
+			if (!this.entity.CanDamage(targetEntity)) {
 				continue;
 			}
 
@@ -189,6 +187,9 @@ export class MeleeHeldItem extends HeldItem {
 							closestCollisionData = foundRaycastCollision;
 							continue;
 						}
+					} else {
+						// hit other entity. ignore.
+						continue;
 					}
 				} else {
 					//Hit a non entity object

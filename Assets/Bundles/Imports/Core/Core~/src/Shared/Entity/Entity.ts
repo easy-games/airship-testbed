@@ -216,6 +216,18 @@ export class Entity {
 		this.healthbarEnabled = true;
 	}
 
+	public CanDamage(entity: Entity): boolean {
+		if (entity.HasImmunity()) return false;
+
+		const thisTeam = this.player?.GetTeam();
+		const otherTeam = entity.player?.GetTeam();
+		if (thisTeam !== undefined && otherTeam !== undefined && thisTeam === otherTeam) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public SetPlayer(player: Player | undefined): void {
 		const oldPlayer = this.player;
 		this.player = player;
