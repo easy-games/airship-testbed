@@ -278,7 +278,6 @@ export class Entity {
 	 * It is recommended to use EntityService.DespawnEntity() instead of this.
 	 */
 	public Destroy(): void {
-		print("Entity.Destroy()");
 		this.bin.Clean();
 		this.OnDespawn.Fire();
 		this.anim.Destroy();
