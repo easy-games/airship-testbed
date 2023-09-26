@@ -6,10 +6,16 @@ import { MainMenuController } from "../MainMenuController";
 
 @Controller({})
 export class MainMenuSettingsUIController implements OnStart {
+	private screenshotUIToggle: Toggle;
+	private screenshotHDToggle: Toggle;
+
 	constructor(
 		private readonly clientSettingsController: ClientSettingsController,
 		private readonly mainMenuController: MainMenuController,
-	) {}
+	) {
+		this.screenshotUIToggle = this.mainMenuController.refs.GetValue("Settings", "UIToggle");
+		this.screenshotHDToggle = this.mainMenuController.refs.GetValue("Settings", "HDToggle");
+	}
 
 	OnStart(): void {
 		this.clientSettingsController.WaitForSettingsLoaded().then(() => {
@@ -67,5 +73,13 @@ export class MainMenuSettingsUIController implements OnStart {
 				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Select.wav");
 			}
 		});
+	}
+
+	public ScreenshotShowUIIsOn() {
+		return this.screenshotUIToggle.isOn;
+	}
+
+	public ScreenshotHDIsOn() {
+		return this.screenshotHDToggle.isOn;
 	}
 }

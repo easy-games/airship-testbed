@@ -19,6 +19,7 @@ import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
+import { MainMenuSettingsUIController } from "Client/MainMenuControllers/Settings/MainMenuSettingsUIController";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -54,6 +55,7 @@ export class LocalEntityController implements OnStart {
 	constructor(
 		private readonly cameraController: CameraController,
 		private readonly clientSettings: ClientSettingsController,
+		private readonly menuSettings: MainMenuSettingsUIController,
 		private readonly inventoryController: InventoryController,
 	) {}
 
@@ -106,13 +108,15 @@ export class LocalEntityController implements OnStart {
 		this.entityDriver?.SetCustomData(blob);
 	}
 
-	private TakeScreenshot(showUI: boolean, superSample: boolean) {
+	private TakeScreenshot() {
 		if (!this.screenshot) {
 			return;
 		}
+		const showUI = this.menuSettings.ScreenshotShowUIIsOn();
+		const supersample = this.menuSettings.ScreenshotHDIsOn();
 		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
-		const superSampleSize = superSample ? 4 : 1;
-		print(`Capturing screenshot ${screenshotFilename}`);
+		const superSampleSize = supersample ? 4 : 1;
+		print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
 		if (showUI) {
 			this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize);
 		} else {
@@ -120,6 +124,11 @@ export class LocalEntityController implements OnStart {
 				this.cameraController.cameraSystem.GetActiveCamera(),
 				screenshotFilename,
 				superSampleSize,
+			);
+		}
+		if (supersample && !showUI) {
+			Game.LocalPlayer.SendMessage(
+				ColorUtil.ColoredText(Theme.Red, "HD withoutout UI is currently not supported"),
 			);
 		}
 		Game.LocalPlayer.SendMessage(ColorUtil.ColoredText(Theme.Yellow, `Captured screenshot ${screenshotFilename}`));
@@ -271,7 +280,7 @@ export class LocalEntityController implements OnStart {
 
 			// Screenshot:
 			keyboard.OnKeyDown(KeyCode.F2, (event) => {
-				this.TakeScreenshot(keyboard.IsKeyDown(KeyCode.LeftShift), keyboard.IsKeyDown(KeyCode.LeftControl));
+				this.TakeScreenshot();
 			});
 
 			// Debug knockback:
