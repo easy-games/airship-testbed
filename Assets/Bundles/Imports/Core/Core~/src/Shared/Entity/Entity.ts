@@ -179,14 +179,17 @@ export class Entity {
 			Bridge.DisconnectEvent(impactConn);
 		});
 
-		const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
-			this.OnAdjustMove.Fire(moveModifier);
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(adjustMoveConn);
-		});
+		if (this.IsLocalCharacter()) {
+			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
+				this.OnAdjustMove.Fire(moveModifier);
+			});
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(adjustMoveConn);
+			});
+		}
 
 		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
+			// print("state change (" + this.displayName + "): " + newState);
 			const oldState = this.state;
 			this.state = newState;
 			this.OnStateChanged.Fire(newState, oldState);
@@ -214,6 +217,18 @@ export class Entity {
 
 		this.healthbar.SetValue(this.health / this.maxHealth);
 		this.healthbarEnabled = true;
+	}
+
+	public CanDamage(entity: Entity): boolean {
+		if (entity.HasImmunity()) return false;
+
+		const thisTeam = this.player?.GetTeam();
+		const otherTeam = entity.player?.GetTeam();
+		if (thisTeam !== undefined && otherTeam !== undefined && thisTeam === otherTeam) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public SetPlayer(player: Player | undefined): void {

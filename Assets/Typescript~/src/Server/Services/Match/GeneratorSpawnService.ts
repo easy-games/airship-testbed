@@ -50,7 +50,7 @@ export class GeneratorSpawnService implements OnStart {
 				stackLimit: 100,
 				label: false,
 				split: {
-					splitRange: 30,
+					range: 30,
 				},
 			});
 

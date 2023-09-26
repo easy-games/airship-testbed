@@ -12996,13 +12996,6 @@ interface TrailRenderer extends Renderer {
     SetPositions(positions: CSArray<Vector3>): void;
 }
     
-interface EntityAnimationEventData {
-    key: number;
-
-    constructor(): EntityAnimationEventData;
-
-}
-    
 interface WindowCore {
 
 

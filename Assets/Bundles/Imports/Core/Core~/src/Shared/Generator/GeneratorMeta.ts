@@ -17,7 +17,7 @@ export interface GeneratorCreationConfig {
 	 */
 	split?: {
 		/** How far away a player can be from a generator to recieve loot. */
-		splitRange: number;
+		range: number;
 	};
 	/** If this field is set, generator will have a world-space label above it. */
 	label?: boolean;

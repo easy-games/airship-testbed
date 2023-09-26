@@ -216,7 +216,7 @@ export class ChatController implements OnStart {
 			}
 		} else {
 			for (const element of this.chatMessageElements) {
-				if (os.clock() - element.time > 5) {
+				if (os.clock() - element.time > 10) {
 					element.Hide();
 				}
 			}

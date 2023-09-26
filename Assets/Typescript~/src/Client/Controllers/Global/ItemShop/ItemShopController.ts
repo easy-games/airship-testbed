@@ -207,15 +207,17 @@ export class ItemShopController implements OnStart {
 	 * Sends purchase request to server for currently selected item.
 	 */
 	private SendPurchaseRequest(shopElement: ShopElement): void {
-		if (!this.selectedShopElement || !this.CanPurchase(this.selectedShopElement)) {
-			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav");
+		if (!shopElement || !this.CanPurchase(shopElement)) {
+			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav", {
+				volumeScale: 0.5,
+			});
 			return;
 		}
 		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopElement.itemType);
 		if (result) {
 			this.purchasedTierItems.add(shopElement.itemType);
 			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav", {
-				volumeScale: 0.4,
+				volumeScale: 0.2,
 			});
 			this.UpdateItems(false);
 

@@ -100,10 +100,10 @@ export class EntityAnimator {
 
 		//Listen to animation events
 		const animConn = this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
-			if (data.key !== 0) {
+			if (data !== 0) {
 				//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
 			}
-			this.OnAnimationEvent(data.key, data);
+			this.OnAnimationEvent(data);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(animConn);
@@ -260,7 +260,7 @@ export class EntityAnimator {
 		}
 	}
 
-	private OnAnimationEvent(key: EntityAnimationEventKey, data: EntityAnimationEventData) {
+	private OnAnimationEvent(key: EntityAnimationEventKey) {
 		switch (key) {
 			case EntityAnimationEventKey.FOOTSTEP:
 				this.PlayFootstepSound();
