@@ -14,6 +14,7 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
+import { decode, encode } from "Shared/json";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
 import { FriendStatus } from "../SocketAPI";
@@ -48,6 +49,8 @@ export class DirectMessageController implements OnStart {
 
 	private xPos = -170;
 	private yPos = -280;
+
+	private loadedMessagesFromUserIdFromDisk = new Set<string>();
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
@@ -98,6 +101,8 @@ export class DirectMessageController implements OnStart {
 				const friend = this.friendsController.GetFriendStatus(data.sender);
 				this.lastMessagedFriend = friend;
 			}
+
+			StateManager.SetString("direct-messages:" + data.sender, encode(messages));
 		});
 	}
 
@@ -318,6 +323,16 @@ export class DirectMessageController implements OnStart {
 	}
 
 	private GetMessages(uid: string): Array<DirectMessage> {
+		if (!this.loadedMessagesFromUserIdFromDisk.has(uid)) {
+			this.loadedMessagesFromUserIdFromDisk.add(uid);
+			const raw = StateManager.GetString("direct-messages:" + uid);
+			if (raw) {
+				const messages = decode<Array<DirectMessage>>(raw);
+				this.messagesMap.set(uid, messages);
+				return messages;
+			}
+		}
+
 		return MapUtil.GetOrCreate(this.messagesMap, uid, []);
 	}
 

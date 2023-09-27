@@ -41,6 +41,12 @@ export class FriendsController implements OnStart {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
 
+		const cachedStatusesRaw = StateManager.GetString("main-menu:friend-statuses");
+		if (cachedStatusesRaw) {
+			this.friendStatuses = decode(cachedStatusesRaw);
+			this.UpdateFriendsList();
+		}
+
 		this.authController.WaitForAuthed().then(() => {
 			this.SendStatusUpdate();
 			this.FetchFriends();
@@ -67,6 +73,9 @@ export class FriendsController implements OnStart {
 				}
 			}
 			this.UpdateFriendsList();
+
+			const saveRaw = encode(this.friendStatuses);
+			StateManager.SetString("main-menu:friend-statuses", saveRaw);
 		});
 
 		this.socketController.On("game-coordinator/status-update-request", (data) => {
