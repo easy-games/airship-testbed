@@ -629,6 +629,7 @@ export const items: {
 			minChargeSeconds: 0.05,
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
+			maxStackSize: 20,
 		},
 		accessoryPaths: [AccPath(ItemType.FIREBALL)],
 		itemAssets: {

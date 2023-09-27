@@ -23,8 +23,8 @@ if (BedWars.IsMatchServer()) {
 
 		// Disable breaking map blocks
 		if (event.block.itemType !== ItemType.BED) {
-			const wasPlacedByUser = BlockDataAPI.GetBlockData<boolean>(event.blockPos, "placedByUser");
-			if (!wasPlacedByUser) {
+			const canBreak = BlockDataAPI.GetBlockData<number>(event.blockPos, "canBreak");
+			if (!canBreak) {
 				event.damage = 0;
 			}
 		}

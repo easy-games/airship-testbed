@@ -31,7 +31,6 @@ export class ItemStack {
 	public AmountChanged = new Signal<ItemStackAmountChangeSignal>();
 	public Destroyed = new Signal<ItemStack>();
 	private hasBeenDestroyed = false;
-	public MaxStackSize = 100;
 
 	constructor(itemType: ItemType, amount = 1) {
 		this.itemType = itemType;
@@ -73,7 +72,7 @@ export class ItemStack {
 
 	public CanMerge(other: ItemStack): boolean {
 		if (other.GetItemType() !== this.GetItemType()) return false;
-		if (other.GetAmount() + this.GetAmount() > this.MaxStackSize) return false;
+		if (other.GetAmount() + this.GetAmount() > this.GetMaxStackSize()) return false;
 
 		return true;
 	}
@@ -118,7 +117,7 @@ export class ItemStack {
 	}
 
 	public GetMaxStackSize(): number {
-		return this.MaxStackSize;
+		return this.GetItemMeta()?.itemMechanics?.maxStackSize ?? 999;
 	}
 
 	public Clone(): ItemStack {

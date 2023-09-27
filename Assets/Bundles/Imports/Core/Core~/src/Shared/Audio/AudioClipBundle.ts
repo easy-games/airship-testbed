@@ -69,6 +69,9 @@ export class AudioClipBundle {
 	}
 
 	public PlayManual(index: number, fadeInDuration = 0) {
+		/* if (this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP) {
+			print("Playing Audio Bundle: " + index);
+		} */
 		this.lastIndexPlayed = index;
 		this.soundOptions.volumeScale = this.volumeScale;
 		if (this.spacialMode === AudioBundleSpacialMode.SPACIAL) {
@@ -118,14 +121,9 @@ export class AudioClipBundle {
 		//LOOP & RANDOM TO LOOP
 		const arraySize = this.clipPaths.size();
 		const lastIndex = arraySize - 1;
-		if (
-			this.playMode === AudioBundlePlayMode.LOOP ||
-			(this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed === lastIndex)
-		) {
-			//print("Playing Loop: " + lastIndex + ": " +this.clipPaths[lastIndex]);
+		if (this.playMode === AudioBundlePlayMode.LOOP) {
 			this.soundOptions.loop = true;
-			this.PlayManual(lastIndex, 0.15);
-			return;
+			this.PlayManual(lastIndex);
 		}
 
 		//RANDOM play sounds
@@ -153,10 +151,12 @@ export class AudioClipBundle {
 				const delayLength = math.max(0.1, this.lastAudioSource.clip.length - 0.15);
 				Task.Delay(delayLength, () => {
 					if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
-						this.lastIndexPlayed = lastIndex;
+						//print("Transition to Looping Audio" + lastIndex + ": " + this.clipPaths[lastIndex]);
 						//Fade out current sound
-						this.Stop(0.15);
-						this.PlayNext();
+						this.Stop(0.35);
+						//Play a Loop
+						this.soundOptions.loop = true;
+						this.PlayManual(lastIndex, 0.15);
 					}
 				});
 			}
