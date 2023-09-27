@@ -51,6 +51,7 @@ export class LocalEntityController implements OnStart {
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.LOCKED;
 	private defaultFirstPerson = true;
+	private firstSpawn = true;
 
 	constructor(
 		private readonly cameraController: CameraController,
@@ -148,6 +149,7 @@ export class LocalEntityController implements OnStart {
 		const yOffset = this.GetCamYOffset(state, this.firstPerson);
 		this.humanoidCameraMode = new HumanoidCameraMode(entity.gameObject, entity.model, this.firstPerson, yOffset);
 		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
+		this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
 		return this.humanoidCameraMode;
 	}
 
@@ -159,9 +161,14 @@ export class LocalEntityController implements OnStart {
 		Game.LocalPlayer.ObserveCharacter((entity) => {
 			if (!entity) return;
 
+			const isFirstSpawn = this.firstSpawn;
+			this.firstSpawn = false;
+
 			const bin = new Bin();
 			const keyboard = bin.Add(new Keyboard());
-			this.firstPerson = this.defaultFirstPerson;
+			if (isFirstSpawn) {
+				this.firstPerson = this.defaultFirstPerson;
+			}
 
 			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			this.entityInput = new EntityInput(entity);
