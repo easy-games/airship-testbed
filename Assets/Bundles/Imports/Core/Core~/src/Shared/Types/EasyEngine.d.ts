@@ -329,11 +329,11 @@ interface PointLight extends Component {
 }
 
 interface DestroyWatcher extends Component {
-	OnDestroyedEvent(callback: () => void): void;
+	OnDestroyedEvent(callback: () => void): EngineEventConnection;
 }
 
 interface ProjectileNetworkBehaviour extends Component {
-	OnCollide(callback: (collision: Collision) => void): void;
+	OnCollide(callback: (collision: Collision) => void): EngineEventConnection;
 }
 
 interface OcclusionCam extends Component {

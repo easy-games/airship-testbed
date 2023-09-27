@@ -89,9 +89,12 @@ export class GroundItemController implements OnStart {
 				const displayGO = this.CreateDisplayGO(itemStack, go.transform.GetChild(0));
 
 				const bin = new Bin();
-				go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+				const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
 					this.groundItems.delete(groundItem.id);
 					bin.Clean();
+				});
+				bin.Add(() => {
+					Bridge.DisconnectEvent(destroyedConn);
 				});
 			}
 		});

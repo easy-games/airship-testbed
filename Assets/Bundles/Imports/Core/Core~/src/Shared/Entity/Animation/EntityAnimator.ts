@@ -100,9 +100,9 @@ export class EntityAnimator {
 
 		//Listen to animation events
 		const animConn = this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
-			if (data !== 0) {
-				//print("Animation Event: " + data.key + " On Entity: " + this.entity.id);
-			}
+			// if (data !== 0) {
+			// 	print("Animation Event: " + data + " On Entity: " + this.entity.id);
+			// }
 			this.OnAnimationEvent(data);
 		});
 		this.bin.Add(() => {

@@ -287,7 +287,9 @@ export class Entity {
 			this.player.SetCharacter(undefined);
 		}
 		if (this.healthbar) {
+			const go = this.healthbar.transform.parent.gameObject;
 			this.healthbar.Destroy();
+			Object.Destroy(go);
 		}
 
 		if (RunUtil.IsServer()) {

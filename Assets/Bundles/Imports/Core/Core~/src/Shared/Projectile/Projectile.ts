@@ -3,6 +3,7 @@ import { ProjectileController } from "Client/Controllers/Damage/Projectile/Proje
 import { ProjectileService } from "Server/Services/Damage/Projectile/ProjectileService";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemType } from "Shared/Item/ItemType";
+import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
@@ -19,6 +20,7 @@ export class Projectile {
 	public readonly itemType: ItemType;
 	public readonly shooter: Entity | undefined;
 	private destroyed = false;
+	private bin = new Bin();
 
 	public readonly OnDestroy = new Signal<void>();
 	/**
@@ -59,8 +61,12 @@ export class Projectile {
 		});
 
 		const dw = this.gameObject.GetComponent<DestroyWatcher>();
-		dw.OnDestroyedEvent(() => {
+		const destroyedConn = dw.OnDestroyedEvent(() => {
 			this.OnDestroy.Fire();
+			this.bin.Clean();
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(destroyedConn);
 		});
 
 		SetTimeout(5, () => {
@@ -73,6 +79,7 @@ export class Projectile {
 	public Destroy(): void {
 		if (this.destroyed) return;
 		this.destroyed = true;
+		this.bin.Clean();
 
 		Object.Destroy(this.gameObject);
 	}
