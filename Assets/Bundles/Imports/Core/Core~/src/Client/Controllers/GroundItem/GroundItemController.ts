@@ -27,11 +27,13 @@ export class GroundItemController implements OnStart {
 	private fallbackDisplayObj: Object;
 	private groundItems = new Map<number, GroundItem>();
 	private itemTypeToDisplayObjMap = new Map<ItemType, Object>();
+	private groundItemsFolder: GameObject;
 
 	constructor(
 		private readonly playerController: PlayerController,
 		private readonly entityAccessoryController: EntityAccessoryController,
 	) {
+		this.groundItemsFolder = GameObject.Create("GroundItems");
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset(
 			"Imports/Core/Shared/Resources/Prefabs/GroundItem.prefab",
 		);
@@ -81,6 +83,7 @@ export class GroundItemController implements OnStart {
 			for (const dto of dtos) {
 				const itemStack = ItemStack.Decode(dto.itemStack);
 				const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);
+				go.transform.SetParent(this.groundItemsFolder.transform);
 				const rb = go.GetComponent<Rigidbody>();
 				rb.velocity = dto.velocity;
 				const groundItem = new GroundItem(dto.id, itemStack, rb, TimeUtil.GetServerTime() + 1.2, dto.data);

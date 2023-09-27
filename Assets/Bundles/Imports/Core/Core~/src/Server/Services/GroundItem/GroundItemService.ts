@@ -29,8 +29,10 @@ export class GroundItemService implements OnStart {
 	private movingGroundItems = new Array<GroundItem>();
 	private removeMovingGroundItems = new Array<GroundItem>();
 	private idleGroundItemsByPosition = new Map<Vector3, GroundItem[]>();
+	private groundItemsFolder: GameObject;
 
 	constructor(private readonly entityService: EntityService) {
+		this.groundItemsFolder = GameObject.Create("GroundItems");
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset(
 			"Imports/Core/Shared/Resources/Prefabs/GroundItem.prefab",
 		);
@@ -213,6 +215,7 @@ export class GroundItemService implements OnStart {
 		}
 
 		const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, pos, Quaternion.identity);
+		go.transform.SetParent(this.groundItemsFolder.transform);
 		const rb = go.GetComponent<Rigidbody>();
 		rb.velocity = velocity;
 		const id = this.MakeNewID();
