@@ -6,16 +6,10 @@ import { MainMenuController } from "../MainMenuController";
 
 @Controller({})
 export class MainMenuSettingsUIController implements OnStart {
-	private screenshotUIToggle: GameObject;
-	private screenshotHDToggle: GameObject;
-
 	constructor(
 		private readonly clientSettingsController: ClientSettingsController,
 		private readonly mainMenuController: MainMenuController,
-	) {
-		this.screenshotUIToggle = this.mainMenuController.refs.GetValue("Settings", "UIToggle");
-		this.screenshotHDToggle = this.mainMenuController.refs.GetValue("Settings", "HDToggle");
-	}
+	) {}
 
 	OnStart(): void {
 		this.clientSettingsController.WaitForSettingsLoaded().then(() => {
@@ -53,14 +47,17 @@ export class MainMenuSettingsUIController implements OnStart {
 			},
 		);
 
-		print("Setting hd to object: " + this.screenshotHDToggle.GetInstanceID());
 		//HD Rendering
-		CanvasAPI.OnToggleValueChangeEvent(this.screenshotHDToggle, (value) => {
-			print("On toggle changed: " + value);
+		const toggleHD: Toggle = this.mainMenuController.refs.GetValue("Settings", "HDToggle");
+		toggleHD.isOn = this.clientSettingsController.GetScreenshotRenderHD();
+		this.SetupToggle(toggleHD, (value) => {
 			this.clientSettingsController.SetScreenshotRenderHD(value);
 		});
+
 		//Screenshot UI
-		CanvasAPI.OnToggleValueChangeEvent(this.screenshotUIToggle, (value) => {
+		const toggleUI: Toggle = this.mainMenuController.refs.GetValue("Settings", "UIToggle");
+		toggleUI.isOn = this.clientSettingsController.GetScreenshotShowUI();
+		this.SetupToggle(toggleUI, (value) => {
 			this.clientSettingsController.SetScreenshotShowUI(value);
 		});
 	}
@@ -81,8 +78,25 @@ export class MainMenuSettingsUIController implements OnStart {
 
 		CanvasAPI.OnPointerEvent(slider.gameObject, (direction) => {
 			if (direction === PointerDirection.DOWN) {
-				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Select.wav");
+				this.PlaySelectSound();
 			}
 		});
+	}
+
+	private SetupToggle(toggle: Toggle, onChange: (val: boolean) => void): void {
+		CanvasAPI.OnToggleValueChangeEvent(toggle.gameObject, (value) => {
+			this.PlaySelectSound();
+			onChange(value);
+		});
+
+		CanvasAPI.OnPointerEvent(toggle.gameObject, (direction) => {
+			if (direction === PointerDirection.DOWN) {
+				this.PlaySelectSound();
+			}
+		});
+	}
+
+	private PlaySelectSound() {
+		AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Select.wav");
 	}
 }

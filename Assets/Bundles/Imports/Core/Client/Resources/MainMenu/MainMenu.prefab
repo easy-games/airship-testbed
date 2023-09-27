@@ -10742,9 +10742,9 @@ MonoBehaviour:
     - key: MusicVolume
       value: {fileID: 8999423050588578491}
     - key: HDToggle
-      value: {fileID: 5435297577692659722}
+      value: {fileID: 7688775342112579811}
     - key: UIToggle
-      value: {fileID: 5885269856287182559}
+      value: {fileID: 6507493070068471512}
   - key: Navbar
     keyValuePairs:
     - key: RightLayoutGroup

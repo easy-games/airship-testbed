@@ -111,13 +111,11 @@ export class ClientSettingsController implements OnStart {
 	}
 
 	public SetScreenshotShowUI(showUI: boolean) {
-		print("showUI: " + showUI);
 		this.data.screenshotShowUI = showUI;
 		this.unsavedChanges = true;
 	}
 
 	public SetScreenshotRenderHD(renderHd: boolean) {
-		print("renderHd: " + renderHd);
 		this.data.screenshotRenderHD = renderHd;
 		this.unsavedChanges = true;
 	}
