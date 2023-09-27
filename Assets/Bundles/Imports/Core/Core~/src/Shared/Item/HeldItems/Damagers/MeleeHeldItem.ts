@@ -22,12 +22,13 @@ export class MeleeHeldItem extends HeldItem {
 		//Only local player should do collisions checks
 		//TODO make sure other players show the attacks effects just without having to do collision checks
 		if (this.entity.IsLocalCharacter()) {
-			const entityDriver = this.entity.GetEntityDriver();
-			entityDriver.UpdateSyncTick();
+			Profiler.BeginSample("MeleeClientEffect");
+			// const entityDriver = this.entity.GetEntityDriver();
+			// entityDriver.UpdateSyncTick();
 
-			let farTargets = this.ScanForHits();
+			let hitTargets = this.ScanForHits();
 
-			for (const data of farTargets) {
+			for (const data of hitTargets) {
 				if (this.bundles && this.meta.melee?.onHitPrefabPath !== "none") {
 					let prefabPath = this.meta.melee?.onHitPrefabPath ?? AllBundleItems.ItemSword_Prefabs_OnHit;
 					//Local damage predictions
@@ -41,6 +42,7 @@ export class MeleeHeldItem extends HeldItem {
 					}
 				}
 			}
+			Profiler.EndSample();
 		}
 	}
 

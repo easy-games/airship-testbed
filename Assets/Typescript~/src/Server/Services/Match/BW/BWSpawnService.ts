@@ -16,7 +16,7 @@ import { MatchService } from "../MatchService";
 import { BWService } from "./BWService";
 
 /** Spawn delay on join in seconds. */
-const SPAWN_DELAY_ON_JOIN = 1;
+const SPAWN_DELAY_ON_JOIN = 0;
 /** Spawn platform height offset. */
 const SPAWN_PLATFORM_HEIGHT_OFFSET = new Vector3(0, 0, 0);
 
