@@ -14,6 +14,7 @@ export declare class Projectile {
     readonly itemType: ItemType;
     readonly shooter: Entity | undefined;
     private destroyed;
+    private bin;
     readonly OnDestroy: Signal<void>;
     /**
      * Fired when the projectile hits something that will destroy it.

@@ -378,14 +378,15 @@ interface CanvasUIEvents extends Component {
 }
 
 interface CanvasUIEventInterceptor extends Component {
-	OnPointerEvent(callback: (instanceId: number, direction: number, button: number) => void): void;
-	OnHoverEvent(callback: (instanceId: number, hoverState: number) => void): void;
-	OnSubmitEvent(callback: (instanceId: number) => void): void;
-	OnInputFieldSubmitEvent(callback: (instanceId: number, data: string) => void): void;
-	OnSelectEvent(callback: (instanceId: number) => void): void;
-	OnDeselectEvent(callback: (instanceId: number) => void): void;
-	OnClickEvent(callback: (instanceId: number) => void): void;
-	OnValueChangeEvent(callback: (instanceId: number, value: number) => void): void;
+	OnPointerEvent(callback: (instanceId: number, direction: number, button: number) => void): EngineEventConnection;
+	OnHoverEvent(callback: (instanceId: number, hoverState: number) => void): EngineEventConnection;
+	OnSubmitEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnInputFieldSubmitEvent(callback: (instanceId: number, data: string) => void): EngineEventConnection;
+	OnSelectEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnDeselectEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnClickEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnValueChangeEvent(callback: (instanceId: number, value: number) => void): EngineEventConnection;
+	OnToggleValueChangeEvent(callback: (instanceId: number, value: boolean) => void): EngineEventConnection;
 }
 
 interface CanvasUIBridgeConstructor {

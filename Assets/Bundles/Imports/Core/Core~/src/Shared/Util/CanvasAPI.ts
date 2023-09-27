@@ -51,9 +51,9 @@ export class CanvasAPI {
 	public static OnPointerEvent(
 		targetGameObject: GameObject,
 		callback: (direction: PointerDirection, button: PointerButton) => void,
-	): void {
+	): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnPointerEvent((instanceId, direction, button) => {
+		return this.eventInterceptor!.OnPointerEvent((instanceId, direction, button) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback(direction as PointerDirection, button as PointerButton);
@@ -68,9 +68,12 @@ export class CanvasAPI {
 	 * @param targetGameObject Target of hover event.
 	 * @param callback Callback to run when `targetGameObject` is the subject of a hover event. Includes hover state.
 	 */
-	public static OnHoverEvent(targetGameObject: GameObject, callback: (hoverState: HoverState) => void): void {
+	public static OnHoverEvent(
+		targetGameObject: GameObject,
+		callback: (hoverState: HoverState) => void,
+	): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnHoverEvent((instanceId, hoverState) => {
+		return this.eventInterceptor!.OnHoverEvent((instanceId, hoverState) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback(hoverState as HoverState);
@@ -78,9 +81,9 @@ export class CanvasAPI {
 		});
 	}
 
-	public static OnSubmitEvent(targetGameObject: GameObject, callback: () => void): void {
+	public static OnSubmitEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnSubmitEvent((instanceId) => {
+		return this.eventInterceptor!.OnSubmitEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback();
@@ -88,9 +91,12 @@ export class CanvasAPI {
 		});
 	}
 
-	public static OnInputFieldSubmit(targetGameObject: GameObject, callback: (data: string) => void): void {
+	public static OnInputFieldSubmit(
+		targetGameObject: GameObject,
+		callback: (data: string) => void,
+	): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnInputFieldSubmitEvent((instanceId, data) => {
+		return this.eventInterceptor!.OnInputFieldSubmitEvent((instanceId, data) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback(data);
@@ -98,9 +104,9 @@ export class CanvasAPI {
 		});
 	}
 
-	public static OnSelectEvent(targetGameObject: GameObject, callback: () => void): void {
+	public static OnSelectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnSelectEvent((instanceId) => {
+		return this.eventInterceptor!.OnSelectEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback();
@@ -108,9 +114,9 @@ export class CanvasAPI {
 		});
 	}
 
-	public static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): void {
+	public static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnDeselectEvent((instanceId) => {
+		return this.eventInterceptor!.OnDeselectEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback();
@@ -118,9 +124,9 @@ export class CanvasAPI {
 		});
 	}
 
-	public static OnClickEvent(targetGameObject: GameObject, callback: () => void): void {
+	public static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnClickEvent((instanceId) => {
+		return this.eventInterceptor!.OnClickEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback();
@@ -128,9 +134,24 @@ export class CanvasAPI {
 		});
 	}
 
-	public static OnValueChangeEvent(targetGameObject: GameObject, callback: (value: number) => void): void {
+	public static OnValueChangeEvent(
+		targetGameObject: GameObject,
+		callback: (value: number) => void,
+	): EngineEventConnection {
 		this.Setup(targetGameObject);
-		this.eventInterceptor!.OnValueChangeEvent((instanceId, value) => {
+		return this.eventInterceptor!.OnValueChangeEvent((instanceId, value) => {
+			if (instanceId === targetGameObject.GetInstanceID()) {
+				callback(value);
+			}
+		});
+	}
+
+	public static OnToggleValueChangeEvent(
+		targetGameObject: GameObject,
+		callback: (value: boolean) => void,
+	): EngineEventConnection {
+		this.Setup(targetGameObject);
+		return this.eventInterceptor!.OnToggleValueChangeEvent((instanceId, value) => {
 			if (instanceId === targetGameObject.GetInstanceID()) {
 				callback(value);
 			}

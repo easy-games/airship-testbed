@@ -30,7 +30,7 @@ export declare class CanvasAPI {
      * @param targetGameObject Target of pointer event.
      * @param callback Callback to run when `targetGameObject` is the subject of a pointer event. Includes direction and button.
      */
-    static OnPointerEvent(targetGameObject: GameObject, callback: (direction: PointerDirection, button: PointerButton) => void): void;
+    static OnPointerEvent(targetGameObject: GameObject, callback: (direction: PointerDirection, button: PointerButton) => void): EngineEventConnection;
     /**
      * Subscribe to hover events for a given target. `targetGameObject` MUST have an `EventTrigger` component
      * to be eligible to receive input events. See the `ShopItem` prefab for an example.
@@ -38,13 +38,14 @@ export declare class CanvasAPI {
      * @param targetGameObject Target of hover event.
      * @param callback Callback to run when `targetGameObject` is the subject of a hover event. Includes hover state.
      */
-    static OnHoverEvent(targetGameObject: GameObject, callback: (hoverState: HoverState) => void): void;
-    static OnSubmitEvent(targetGameObject: GameObject, callback: () => void): void;
-    static OnInputFieldSubmit(targetGameObject: GameObject, callback: (data: string) => void): void;
-    static OnSelectEvent(targetGameObject: GameObject, callback: () => void): void;
-    static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): void;
-    static OnClickEvent(targetGameObject: GameObject, callback: () => void): void;
-    static OnValueChangeEvent(targetGameObject: GameObject, callback: (value: number) => void): void;
+    static OnHoverEvent(targetGameObject: GameObject, callback: (hoverState: HoverState) => void): EngineEventConnection;
+    static OnSubmitEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnInputFieldSubmit(targetGameObject: GameObject, callback: (data: string) => void): EngineEventConnection;
+    static OnSelectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnValueChangeEvent(targetGameObject: GameObject, callback: (value: number) => void): EngineEventConnection;
+    static OnToggleValueChangeEvent(targetGameObject: GameObject, callback: (value: boolean) => void): EngineEventConnection;
     /** Fetches and sets the global event interceptor. */
     private static Setup;
 }
