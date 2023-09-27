@@ -45,7 +45,7 @@ export class BlockHealthController implements OnStart {
 
 			let entity: Entity | undefined;
 			if (entityId !== undefined) {
-				this.entityController.GetEntityById(entityId);
+				entity = this.entityController.GetEntityById(entityId);
 			}
 
 			const blockHealth = this.VisualizeBlockHealth(blockPos);
