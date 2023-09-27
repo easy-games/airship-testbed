@@ -6,8 +6,8 @@ import { MainMenuController } from "../MainMenuController";
 
 @Controller({})
 export class MainMenuSettingsUIController implements OnStart {
-	private screenshotUIToggle: Toggle;
-	private screenshotHDToggle: Toggle;
+	private screenshotUIToggle: GameObject;
+	private screenshotHDToggle: GameObject;
 
 	constructor(
 		private readonly clientSettingsController: ClientSettingsController,
@@ -53,11 +53,15 @@ export class MainMenuSettingsUIController implements OnStart {
 			},
 		);
 
-		this.SetupToggle(this.screenshotHDToggle, () => {
-			this.clientSettingsController.SetScreenshotRenderHD(!this.clientSettingsController.GetScreenshotRenderHD());
+		print("Setting hd to object: " + this.screenshotHDToggle.GetInstanceID());
+		//HD Rendering
+		CanvasAPI.OnToggleValueChangeEvent(this.screenshotHDToggle, (value) => {
+			print("On toggle changed: " + value);
+			this.clientSettingsController.SetScreenshotRenderHD(value);
 		});
-		this.SetupToggle(this.screenshotUIToggle, () => {
-			this.clientSettingsController.SetScreenshotShowUI(!this.clientSettingsController.GetScreenshotShowUI());
+		//Screenshot UI
+		CanvasAPI.OnToggleValueChangeEvent(this.screenshotUIToggle, (value) => {
+			this.clientSettingsController.SetScreenshotShowUI(value);
 		});
 	}
 
@@ -79,12 +83,6 @@ export class MainMenuSettingsUIController implements OnStart {
 			if (direction === PointerDirection.DOWN) {
 				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Select.wav");
 			}
-		});
-	}
-
-	private SetupToggle(toggle: Toggle, onChange: () => void) {
-		CanvasAPI.OnSelectEvent(toggle.gameObject, () => {
-			onChange();
 		});
 	}
 }
