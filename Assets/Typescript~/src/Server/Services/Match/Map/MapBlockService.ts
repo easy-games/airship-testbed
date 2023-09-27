@@ -17,11 +17,6 @@ export class MapBlockService implements OnStart {
 		CoreServerSignals.BlockPlace.Connect((event) => {
 			if (event.entity) {
 				BlockDataAPI.SetBlockData(event.pos, "canBreak", true);
-				WorldAPI.GetMainWorld()?.PlaceBlock(event.pos.add(new Vector3(0, 1, 0)), ItemType.GRASS, {
-					blockData: {
-						canBreak: true,
-					},
-				});
 			}
 		});
 
