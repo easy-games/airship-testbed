@@ -47,9 +47,14 @@ export class AudioClipBundle {
 				//FADE OUT
 				this.tweeningStop = true;
 				this.lastAudioSource.TweenAudioSourceVolume(0, fadeOutDuration);
-				Task.Delay(fadeOutDuration + 0.15, () => {
+				const tweeningAudio = this.lastAudioSource;
+				this.lastAudioSource = undefined;
+				Task.Delay(math.max(fadeOutDuration, 0.15), () => {
+					//Cleanup faded out audio clip
 					if (this.tweeningStop) {
-						this.Stop();
+						this.tweeningStop = false;
+						tweeningAudio.Stop();
+						PoolManager.ReleaseObject(tweeningAudio.gameObject);
 					}
 				});
 			} else {

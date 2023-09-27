@@ -6,10 +6,16 @@ import { MainMenuController } from "../MainMenuController";
 
 @Controller({})
 export class MainMenuSettingsUIController implements OnStart {
+	private screenshotUIToggle: Toggle;
+	private screenshotHDToggle: Toggle;
+
 	constructor(
 		private readonly clientSettingsController: ClientSettingsController,
 		private readonly mainMenuController: MainMenuController,
-	) {}
+	) {
+		this.screenshotUIToggle = this.mainMenuController.refs.GetValue("Settings", "UIToggle");
+		this.screenshotHDToggle = this.mainMenuController.refs.GetValue("Settings", "HDToggle");
+	}
 
 	OnStart(): void {
 		this.clientSettingsController.WaitForSettingsLoaded().then(() => {
@@ -46,6 +52,13 @@ export class MainMenuSettingsUIController implements OnStart {
 				this.clientSettingsController.SetMusicVolume(val);
 			},
 		);
+
+		this.SetupToggle(this.screenshotHDToggle, () => {
+			this.clientSettingsController.SetScreenshotRenderHD(!this.clientSettingsController.GetScreenshotRenderHD());
+		});
+		this.SetupToggle(this.screenshotUIToggle, () => {
+			this.clientSettingsController.SetScreenshotShowUI(!this.clientSettingsController.GetScreenshotShowUI());
+		});
 	}
 
 	private SetupSlider(go: GameObject, startingValue: number, onChange: (val: number) => void): void {
@@ -66,6 +79,12 @@ export class MainMenuSettingsUIController implements OnStart {
 			if (direction === PointerDirection.DOWN) {
 				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Select.wav");
 			}
+		});
+	}
+
+	private SetupToggle(toggle: Toggle, onChange: () => void) {
+		CanvasAPI.OnSelectEvent(toggle.gameObject, () => {
+			onChange();
 		});
 	}
 }

@@ -8,14 +8,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: EmeraldMat
-  m_Shader: {fileID: 4800000, guid: c689e805a82ee784fa63ede6d09acdf9, type: 3}
-  m_ValidKeywords:
+  m_Shader: {fileID: 4800000, guid: daec96f8d5429d0469fe80b7e7dc0b20, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - NUM_LIGHTS_LIGHTS0
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -47,7 +47,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 448e35fa940303549b95cc5575d6fa5f, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.4, y: 0.4}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -75,16 +75,19 @@ Material:
     - _DepthScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Emissive: 0.5
+    - _FadeA: 1
+    - _FadeB: 0
     - _FresnelPower: 5
     - _FresnelStrength: 2
     - _GlossMapScale: 1
-    - _Glossiness: 25
+    - _Glossiness: 1.54
     - _GlossyReflections: 1
-    - _HueShift: 1
-    - _MaxDepthHeight: 0.368
+    - _HueShift: 0
+    - _MaxDepthHeight: 0.539
     - _Metallic: 0
-    - _MinDepthHeight: 0.087
-    - _MinLight: 1
+    - _MinDepthHeight: 0.562
+    - _MinLight: 0.204
     - _Mode: 0
     - _NormalIntensity: 1
     - _OcclusionStrength: 1
@@ -98,12 +101,20 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SurfaceOpacity: 0.242
+    - _TexScrollSpeedX: 0.1
+    - _TexScrollSpeedY: 0.1
     - _UVCenter: 0.5
     - _UVRotation: 0
     - _UVSec: 0
+    - _WaveSpeedMod: 0.4
+    - _WaveStrength: 1
+    - _Wavelength: 1
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.3066037, g: 1, b: 0.5248951, a: 0.019607844}
+    - _BGColor: {r: 0, g: 0.7924528, b: 0.3521972, a: 1}
+    - _Color: {r: 0.30660367, g: 1, b: 0.5248951, a: 0.16470589}
+    - _ColorA: {r: 0.43906546, g: 1, b: 0.4292453, a: 1}
+    - _ColorB: {r: 1, g: 1, b: 1, a: 1}
     - _DepthColor: {r: 0, g: 0.2735849, b: 0.03408951, a: 0.2784314}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0.58962256, g: 1, b: 0.73819613, a: 1}

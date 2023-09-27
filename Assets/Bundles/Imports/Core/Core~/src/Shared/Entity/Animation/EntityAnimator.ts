@@ -271,7 +271,7 @@ export class EntityAnimator {
 				this.slideAudioBundle.PlayNext();
 				break;
 			case EntityAnimationEventKey.SLIDE_END:
-				this.slideAudioBundle.Stop();
+				this.slideAudioBundle.Stop(1);
 				break;
 			case EntityAnimationEventKey.JUMP:
 				if (this.entityRef.jumpSound) {

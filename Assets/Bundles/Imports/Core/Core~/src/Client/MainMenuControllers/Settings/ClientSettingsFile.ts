@@ -6,4 +6,6 @@ export interface ClientSettingsFile {
 	musicVolume: number;
 	firstPersonFov: number;
 	thirdPersonFov: number;
+	screenshotShowUI: boolean;
+	screenshotRenderHD: boolean;
 }
