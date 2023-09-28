@@ -460,8 +460,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorSettings:
   - materialColor: {r: 0.42475083, g: 0.74337375, b: 0.7830189, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
+    emissiveColor: {r: 1, g: 1, b: 1, a: 0.09803922}
+    emissiveMix: 0
     reference: Metal_Clean
 --- !u!1 &2054463045951503690
 GameObject:
