@@ -3,20 +3,19 @@ import { BlockSelectController } from "Client/Controllers/BlockInteractions/Bloc
 import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
-import { HeldItem } from "../HeldItem";
+import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
 
-export class BlockHeldItem extends HeldItem {
+export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
 
 	override OnEquip() {
 		super.OnEquip();
-		if (this.entity.IsLocalCharacter()) {
-			Dependency<BlockSelectController>().Enable();
+		if (this.blockSelect) {
+			this.blockSelect.highlightOnPlacement = true;
 		}
 
 		//Load the blocks mesh
 		if (this.meta.block?.blockId) {
-			const blockDefinition = WorldAPI.GetMainWorld()?.GetBlockDefinition(this.meta.block.blockId);
 			const blockGO = MeshProcessor.ProduceSingleBlock(
 				this.meta.block.blockId,
 				WorldAPI.GetMainWorld()!.voxelWorld,
@@ -30,13 +29,6 @@ export class BlockHeldItem extends HeldItem {
 				blockGO.transform.localRotation = Quaternion.identity;
 				blockGO.transform.Rotate(new Vector3(90, 90, 0));
 			}
-		}
-	}
-
-	override OnUnEquip() {
-		super.OnUnEquip();
-		if (this.entity.IsLocalCharacter()) {
-			Dependency<BlockSelectController>().Disable();
 		}
 	}
 
@@ -59,31 +51,13 @@ export class BlockHeldItem extends HeldItem {
 		const blockSelectController = Dependency<BlockSelectController>();
 		const placePosition = blockSelectController.PlaceBlockPosition;
 		const isVoidPlacement = blockSelectController.IsVoidPlacement;
+
 		if (!placePosition) {
 			return false;
 		}
 
-		// Make sure this position is valid within the playable area
-		if (Dependency<DenyRegionController>().InDenyRegion(placePosition)) {
+		if (!this.CanUseBlock(undefined, placePosition, undefined)) {
 			return false;
-		}
-
-		// Prevent placing in an entity's head
-		// const collider = this.entity.references.characterCollider;
-		// const bounds = collider.bounds;
-		// const size = bounds.size;
-		const colliders = Physics.OverlapBox(
-			placePosition.add(new Vector3(0.5, 0.5, 0.5)),
-			new Vector3(0.5, 0.5, 0.5),
-			Quaternion.identity,
-			this.characterLayerMask,
-		);
-		for (let i = 0; i < colliders.Length; i++) {
-			const collider = colliders.GetValue(i);
-			const center = collider.bounds.center;
-			if (placePosition.y + 0.5 > center.y) {
-				return false;
-			}
 		}
 
 		// Write the voxel at the predicted position
@@ -99,6 +73,53 @@ export class BlockHeldItem extends HeldItem {
 		if (isVoidPlacement) {
 			blockSelectController.PlacedVoidBridgeBlock();
 		}
+		return true;
+	}
+
+	override CanUseBlock(
+		selectedPos: Vector3 | undefined,
+		placedPos: Vector3 | undefined,
+		highlightedPos: Vector3 | undefined,
+	): boolean {
+		//print("CanUse PlacedPos: " + placedPos);
+		super.CanUseBlock(selectedPos, placedPos, highlightedPos);
+
+		if (!placedPos) {
+			return false;
+		}
+
+		// Make sure this position is valid within the playable area
+		if (Dependency<DenyRegionController>().InDenyRegion(placedPos)) {
+			//print("FALSE in deny region");
+			return false;
+		}
+
+		const block = WorldAPI.GetMainWorld()?.GetBlockAt(placedPos);
+		if (block && !block.IsAir()) {
+			//print("FALSE Filled block: " + block?.IsAir());
+			return false;
+		}
+
+		// Prevent placing in an entity's head
+		// const collider = this.entity.references.characterCollider;
+		// const bounds = collider.bounds;
+		// const size = bounds.size;
+		const colliders = Physics.OverlapBox(
+			placedPos.add(new Vector3(0.5, 0.5, 0.5)),
+			new Vector3(0.5, 0.5, 0.5),
+			Quaternion.identity,
+			this.characterLayerMask,
+		);
+		for (let i = 0; i < colliders.Length; i++) {
+			const collider = colliders.GetValue(i);
+			const center = collider.bounds.center;
+			if (placedPos.y + 0.5 > center.y) {
+				//print("FALSE On entity");
+				return false;
+			}
+		}
+
+		//print("TRUE");
 		return true;
 	}
 }

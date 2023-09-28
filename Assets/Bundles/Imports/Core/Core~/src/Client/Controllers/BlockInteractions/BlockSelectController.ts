@@ -8,6 +8,7 @@ import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CameraReferences } from "../Camera/CameraReferences";
 import { EntityController } from "../Entity/EntityController";
+import { Signal } from "Shared/Util/Signal";
 
 @Controller({})
 export class BlockSelectController implements OnStart {
@@ -16,10 +17,19 @@ export class BlockSelectController implements OnStart {
 	public HighlightBlockPosition?: Vector3;
 	public PlaceBlockPosition?: Vector3;
 	public IsVoidPlacement = false;
+	public highlightOnPlacement = false;
 
 	private voidPlane: GameObject | undefined;
 	private enabledCount = 0;
 	private lastVoidPlaceTime = 0;
+	private highlightEnabled = true;
+	private isHighlighting = false;
+
+	public OnNewBlockSelected: Signal<{
+		selectedPos: Vector3 | undefined;
+		placedPos: Vector3 | undefined;
+		highlightedPos: Vector3 | undefined;
+	}> = new Signal();
 
 	constructor(private readonly entityController: EntityController) {}
 
@@ -57,21 +67,31 @@ export class BlockSelectController implements OnStart {
 
 			this.CalcSelectedBlock();
 
-			if (this.IsVoidPlacement) {
+			if (this.IsVoidPlacement || this.highlightOnPlacement) {
 				if (this.PlaceBlockPosition && this.highlightGO) {
 					this.highlightGO.transform.position = this.PlaceBlockPosition.add(new Vector3(0.5, 0.5, 0.5));
-					this.highlightGO.SetActive(true);
+					this.Highlight(true);
 					return;
 				}
 			}
 			if (this.HighlightBlockPosition && this.highlightGO) {
 				this.highlightGO.transform.position = this.HighlightBlockPosition.add(new Vector3(0.5, 0.5, 0.5));
-				this.highlightGO.SetActive(true);
+				this.Highlight(true);
 				return;
 			}
 
-			this.highlightGO?.SetActive(false);
+			this.Highlight(false);
 		});
+	}
+
+	public ToggleHighlight(enable: boolean) {
+		this.highlightEnabled = enable;
+		this.Highlight(this.isHighlighting);
+	}
+
+	private Highlight(shouldHighlight: boolean) {
+		this.isHighlighting = shouldHighlight;
+		this.highlightGO?.SetActive(shouldHighlight && this.highlightEnabled);
 	}
 
 	private CalcSelectedBlock(): void {
@@ -102,17 +122,14 @@ export class BlockSelectController implements OnStart {
 		const result = CameraReferences.Instance().RaycastVoxelFromCamera(20);
 		if (result?.Hit) {
 			if (result.HitPosition.sub(characterPos).magnitude <= 8) {
-				this.SelectedBlockPosition = WorldAPI.GetVoxelPosition(
-					result.HitPosition.sub(result.HitNormal.mul(0.1)),
-				);
-				this.HighlightBlockPosition = WorldAPI.GetVoxelPosition(
-					result.HitPosition.sub(result.HitNormal.mul(0.1)),
-				);
-				const parentBlockPos = BlockDataAPI.GetParentBlockPos(this.HighlightBlockPosition);
+				let newHighlightPos = WorldAPI.GetVoxelPosition(result.HitPosition.sub(result.HitNormal.mul(0.1)));
+				let newSelectedPos = newHighlightPos;
+				let newPlacedPos = WorldAPI.GetVoxelPosition(result.HitPosition.add(result.HitNormal.mul(0.1)));
+				const parentBlockPos = BlockDataAPI.GetParentBlockPos(newHighlightPos);
 				if (parentBlockPos) {
-					this.SelectedBlockPosition = parentBlockPos;
+					newSelectedPos = parentBlockPos;
 				}
-				this.PlaceBlockPosition = WorldAPI.GetVoxelPosition(result.HitPosition.add(result.HitNormal.mul(0.1)));
+				this.UpdatePositions(newSelectedPos, newPlacedPos, newHighlightPos);
 				this.IsVoidPlacement = false;
 				return true;
 			}
@@ -158,13 +175,8 @@ export class BlockSelectController implements OnStart {
 					}
 				}
 				if (emptyBlockPos !== undefined) {
-					this.SelectedBlockPosition = undefined;
-					this.PlaceBlockPosition = new Vector3(
-						emptyBlockPos.x,
-						math.round(emptyBlockPos.y),
-						emptyBlockPos.z,
-					);
-					this.HighlightBlockPosition = this.PlaceBlockPosition;
+					const newPlacePos = new Vector3(emptyBlockPos.x, math.round(emptyBlockPos.y), emptyBlockPos.z);
+					this.UpdatePositions(newPlacePos, newPlacePos, newPlacePos);
 					this.IsVoidPlacement = true;
 					return true;
 				}
@@ -173,10 +185,32 @@ export class BlockSelectController implements OnStart {
 		return false;
 	}
 
+	private UpdatePositions(
+		newSelectedPos: Vector3 | undefined,
+		newPlacePos: Vector3 | undefined,
+		newHighlightPos: Vector3 | undefined,
+	) {
+		if (
+			newSelectedPos === this.SelectedBlockPosition &&
+			newPlacePos === this.PlaceBlockPosition &&
+			newHighlightPos === this.HighlightBlockPosition
+		) {
+			return;
+		}
+
+		this.SelectedBlockPosition = newSelectedPos;
+		this.PlaceBlockPosition = newPlacePos;
+		this.HighlightBlockPosition = newHighlightPos;
+
+		this.OnNewBlockSelected.Fire({
+			selectedPos: newSelectedPos,
+			placedPos: newPlacePos,
+			highlightedPos: newHighlightPos,
+		});
+	}
+
 	private ResetVariables() {
-		this.SelectedBlockPosition = undefined;
-		this.HighlightBlockPosition = undefined;
-		this.PlaceBlockPosition = undefined;
+		this.UpdatePositions(undefined, undefined, undefined);
 		this.IsVoidPlacement = false;
 	}
 
@@ -192,7 +226,7 @@ export class BlockSelectController implements OnStart {
 	public Disable() {
 		this.enabledCount = math.max(0, this.enabledCount - 1);
 		if (this.enabledCount <= 0 && this.highlightGO) {
-			this.highlightGO?.SetActive(false);
+			this.Highlight(false);
 		}
 	}
 

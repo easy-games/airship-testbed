@@ -2,7 +2,7 @@ import { Controller } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { BreakBlockMeta } from "Shared/Item/ItemMeta";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
 import { BeforeBlockHitSignal } from "../BlockInteractions/Signal/BeforeBlockHitSignal";
@@ -43,7 +43,7 @@ export class BlockInteractController {
 			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
 			const newHealth = math.max(health - damage, 0);
 
-			BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
+			BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
 
 			//Local Client visualization
 			if (newHealth === 0) {

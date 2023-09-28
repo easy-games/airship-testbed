@@ -5,7 +5,7 @@ import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { items } from "../ItemDefinitions";
 import { ItemMeta } from "../ItemMeta";
 import { ItemType } from "../ItemType";
-import { BlockHeldItem } from "./BlockPlacement/BlockHeldItem";
+import { PlaceBlockHeldItem } from "./BlockPlacement/PlaceBlockHeldItem";
 import { BreakBlockHeldItem } from "./BlockPlacement/BreakBlockHeldItem";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
@@ -131,7 +131,7 @@ HeldItemManager.RegisterHeldItem(
 );
 HeldItemManager.RegisterHeldItem(
 	(itemMeta) => itemMeta.block !== undefined,
-	(entity, itemMeta) => new BlockHeldItem(entity, itemMeta),
+	(entity, itemMeta) => new PlaceBlockHeldItem(entity, itemMeta),
 );
 HeldItemManager.RegisterHeldItem(
 	(itemMeta) => itemMeta.breakBlock !== undefined,

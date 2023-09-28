@@ -2,6 +2,11 @@ import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { RunUtil } from "Shared/Util/RunUtil";
 
+export enum CoreBlockMetaKeys {
+	CAN_BREAK = "canBreak",
+	CURRENT_HEALTH = "health",
+}
+
 export class BlockDataAPI {
 	private static blockDataMap = new Map<Vector3, Map<string, unknown>>();
 

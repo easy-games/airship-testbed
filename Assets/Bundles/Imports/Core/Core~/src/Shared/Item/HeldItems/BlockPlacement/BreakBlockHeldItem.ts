@@ -4,33 +4,24 @@ import { BlockInteractController } from "Client/Controllers/Blocks/BlockInteract
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
 import { SetInterval } from "Shared/Util/Timer";
-import { ProgressBarGraphics } from "../../../UI/ProgressBarGraphics";
-import { HeldItem } from "../HeldItem";
 import { HeldItemState } from "../HeldItemState";
+import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 
-interface HealthbarEntry {
-	gameObject: GameObject;
-	progressBar: ProgressBarGraphics;
-	maxHealth: number;
-}
-
-export class BreakBlockHeldItem extends HeldItem {
+export class BreakBlockHeldItem extends BlockSelectHeldItem {
 	private holdingDownBin = new Bin();
 	private holdingDown = false;
 
-	override OnEquip() {
+	override OnEquip(): void {
 		super.OnEquip();
-		if (this.entity.IsLocalCharacter()) {
-			Dependency<BlockSelectController>().Enable();
+		if (this.blockSelect) {
+			this.blockSelect.highlightOnPlacement = false;
 		}
 	}
-
 	override OnUnEquip() {
 		super.OnUnEquip();
 		this.holdingDownBin.Clean();
-		if (this.entity.IsLocalCharacter()) {
-			Dependency<BlockSelectController>().Disable();
-		}
 	}
 
 	override OnUseClient(useIndex: number) {
@@ -65,10 +56,39 @@ export class BreakBlockHeldItem extends HeldItem {
 	}
 
 	private HitBlockLocal(): void {
-		const voxelPos = Dependency<BlockSelectController>().SelectedBlockPosition;
-		if (!voxelPos) {
+		const voxelPos = this.blockSelect?.SelectedBlockPosition;
+		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
 		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.meta.breakBlock, voxelPos, true);
+	}
+
+	override CanUseBlock(
+		selectedPos: Vector3 | undefined,
+		placedPos: Vector3 | undefined,
+		highlightedPos: Vector3 | undefined,
+	): boolean {
+		super.CanUseBlock(selectedPos, placedPos, highlightedPos);
+		if (!selectedPos) {
+			return false;
+		}
+
+		//print("Break Block Can Use");
+		const block = WorldAPI.GetMainWorld()?.GetBlockAt(selectedPos);
+		if (!block) {
+			//print("FALSE no block");
+			return false;
+		}
+		if (block.IsAir()) {
+			//print("FALSE is air");
+			return false;
+		}
+		const canBreak = BlockDataAPI.GetBlockData(selectedPos, CoreBlockMetaKeys.CAN_BREAK);
+		if (!canBreak) {
+			//print("FALSE cant break");
+			return false;
+		}
+		//print("TRUE");
+		return true;
 	}
 }

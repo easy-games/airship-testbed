@@ -9,7 +9,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { MathUtil } from "Shared/Util/MathUtil";
-import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { DamageMeta } from "../Damage/DamageService";
 import { EntityService } from "../Entity/EntityService";
@@ -169,9 +169,11 @@ export class BlockInteractService implements OnStart {
 		);
 
 		//BLOCK DAMAGE
-		const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+		const health =
+			BlockDataAPI.GetBlockData<number>(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH) ??
+			WorldAPI.DefaultVoxelHealth;
 		const newHealth = math.max(health - beforeSignal.damage, 0);
-		BlockDataAPI.SetBlockData(voxelPos, "health", newHealth);
+		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
 
 		// After signal
 		CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, entity, blockPos: voxelPos });

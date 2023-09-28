@@ -5,7 +5,7 @@ import { ItemType } from "../../Item/ItemType";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { RunUtil } from "../../Util/RunUtil";
 import { SignalPriority } from "../../Util/Signal";
-import { BlockDataAPI } from "../BlockData/BlockDataAPI";
+import { BlockDataAPI, CoreBlockMetaKeys } from "../BlockData/BlockDataAPI";
 import { WorldAPI } from "../WorldAPI";
 
 export class PrefabBlockManager {
@@ -82,7 +82,7 @@ export class PrefabBlockManager {
 			}
 		}
 		if (itemMeta.block?.health !== undefined && RunUtil.IsServer()) {
-			BlockDataAPI.SetBlockData(pos, "health", itemMeta.block.health);
+			BlockDataAPI.SetBlockData(pos, CoreBlockMetaKeys.CURRENT_HEALTH, itemMeta.block.health);
 		}
 	}
 
