@@ -35,6 +35,7 @@ export class MainMenuAddFriendsController implements OnStart {
 			const closeButton = refs.GetValue("UI", "CloseButton");
 			const responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
 			const sentRequestsContent = refs.GetValue("UI", "SentRequestsContent");
+			const sendButton = refs.GetValue("UI", "SendButton");
 
 			CanvasAPI.OnSelectEvent(searchInput.gameObject, () => {
 				this.inputFieldSelected = true;
@@ -61,6 +62,7 @@ export class MainMenuAddFriendsController implements OnStart {
 			};
 
 			const SendFriendRequest = (username: string) => {
+				print('adding friend: "' + searchInput.text + '"');
 				const res = HttpManager.PostAsync(
 					AirshipUrl.UserService + "/friends/requests/self",
 					encode({
@@ -98,8 +100,12 @@ export class MainMenuAddFriendsController implements OnStart {
 				}
 			};
 
+			CoreUI.SetupButton(sendButton);
+			CanvasAPI.OnClickEvent(sendButton, () => {
+				SendFriendRequest(searchInput.text);
+			});
+
 			CanvasAPI.OnInputFieldSubmit(searchInput.gameObject, () => {
-				print('adding friend: "' + searchInput.text + '"');
 				SendFriendRequest(searchInput.text);
 			});
 
