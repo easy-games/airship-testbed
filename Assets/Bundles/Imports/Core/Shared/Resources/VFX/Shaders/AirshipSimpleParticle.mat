@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AirshipSimpleParticle
-  m_Shader: {fileID: 4800000, guid: 9e7619d175ce3bb4c8ea55276b807d55, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6330d0f14dc3c884ea990fa91a7bd441, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _DSTBLEND_ZERO
