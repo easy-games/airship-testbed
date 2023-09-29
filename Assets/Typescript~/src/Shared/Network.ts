@@ -1,6 +1,7 @@
 import { ItemType } from "Imports/Core/Shared/Item/ItemType";
 import { RemoteEvent } from "Imports/Core/Shared/Network/RemoteEvent";
 import { RemoteFunction } from "Imports/Core/Shared/Network/RemoteFunction";
+import { MatchInfoDto } from "./Match/MatchInfoDto";
 import { MatchState } from "./Match/MatchState";
 import { TeamUpgradeStateDto } from "./TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";
@@ -31,6 +32,7 @@ export const Network = {
 		MatchStateChange: new RemoteEvent<[newState: MatchState, oldState: MatchState]>(),
 		/** Fired when match ends. */
 		MatchEnded: new RemoteEvent<[winningTeamId?: string]>(),
+		MatchInfo: new RemoteEvent<MatchInfoDto>(),
 		TeamUpgrade: {
 			/** Fired when a user joins late. Sends full team upgrade snapshot for user team. */
 			UpgradeSnapshot: new RemoteEvent<[upgradeStateDtos: TeamUpgradeStateDto[]]>(),

@@ -1,7 +1,9 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { PlayerService } from "Imports/Core/Server/Services/Player/PlayerService";
 import { Team } from "Imports/Core/Shared/Team/Team";
 import { Task } from "Imports/Core/Shared/Util/Task";
+import { TimeUtil } from "Imports/Core/Shared/Util/TimeUtil";
 import { ServerSignals } from "Server/ServerSignals";
 import { MatchStartServerEvent } from "Server/Signals/MatchStartServerEvent";
 import { MatchState } from "Shared/Match/MatchState";
@@ -17,6 +19,7 @@ export class MatchService implements OnStart {
 	private state: MatchState = MatchState.SETUP;
 	/** Match queue type. */
 	private queueType: QueueType;
+	private matchStartTime = TimeUtil.GetServerTime();
 
 	constructor() {
 		/* Load queue type from server bootstrap. */
@@ -31,9 +34,21 @@ export class MatchService implements OnStart {
 	}
 
 	OnStart(): void {
-		Dependency<MapService>().WaitForMapLoaded();
+		const loadedMap = Dependency<MapService>().WaitForMapLoaded();
 		/* Immediately transition into `MatchState.PRE` after map load. */
 		this.SetState(MatchState.PRE);
+
+		Dependency<PlayerService>().ObservePlayers((p) => {
+			Network.ServerToClient.MatchInfo.Server.FireClient(p.clientId, {
+				mapName: loadedMap.displayName,
+				mapAuthors: loadedMap.authors,
+				matchStartTime:
+					this.state === MatchState.RUNNING || this.state === MatchState.POST
+						? this.matchStartTime
+						: undefined,
+				matchState: this.state,
+			});
+		});
 	}
 
 	/** Yields until match exits `MatchState.SETUP` state. */
@@ -68,6 +83,7 @@ export class MatchService implements OnStart {
 	/** Starts current match.*/
 	public StartMatch(): void {
 		if (this.state !== MatchState.PRE) return;
+		this.matchStartTime = TimeUtil.GetServerTime();
 		this.SetState(MatchState.RUNNING);
 		/* Fire signal and remote. */
 		ServerSignals.MatchStart.Fire(new MatchStartServerEvent());
