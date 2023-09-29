@@ -24,7 +24,7 @@ const defaultItemMechanics: ItemMechanicsMeta = {
 };
 const blockItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.1525,
+	cooldownSeconds: 0.12,
 };
 const blockItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemBlock,
@@ -32,7 +32,7 @@ const blockItemAssets: ItemAssetsMeta = {
 };
 const swordItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.25,
+	cooldownSeconds: 0.18,
 };
 const swordItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemSword,

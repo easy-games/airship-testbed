@@ -186,7 +186,7 @@ export class Entity {
 			Bridge.DisconnectEvent(impactConn);
 		});
 
-		if (this.IsLocalCharacter()) {
+		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
 			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
 				this.OnAdjustMove.Fire(moveModifier);
 			});

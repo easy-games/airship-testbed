@@ -3,6 +3,7 @@ import { ClientSignals } from "Client/ClientSignals";
 import { TabListController } from "Imports/Core/Client/Controllers/TabList/TabListController";
 import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
+import { TimeUtil } from "Imports/Core/Shared/Util/TimeUtil";
 import { SetInterval } from "Imports/Core/Shared/Util/Timer";
 import { MatchInfoDto } from "Shared/Match/MatchInfoDto";
 import { MatchState } from "Shared/Match/MatchState";
@@ -12,13 +13,16 @@ import { Network } from "Shared/Network";
 export class MatchController implements OnStart {
 	/** Initial state is always `MatchState.SETUP. */
 	private state: MatchState = MatchState.SETUP;
-	public matchStartTime = -1;
+	public matchStartTime: number | undefined;
 	public matchInfo: MatchInfoDto | undefined;
 
 	constructor(private readonly tablistController: TabListController) {
 		Network.ServerToClient.MatchInfo.Client.OnServerEvent((matchInfoDto) => {
 			this.matchInfo = matchInfoDto;
 			this.state = matchInfoDto.matchState;
+			if (matchInfoDto.matchStartTime !== undefined) {
+				this.matchStartTime = matchInfoDto.matchStartTime;
+			}
 		});
 	}
 
@@ -32,12 +36,15 @@ export class MatchController implements OnStart {
 		/* Listen for match start. */
 		Network.ServerToClient.MatchStarted.Client.OnServerEvent(() => {
 			this.state = MatchState.RUNNING;
-			this.matchStartTime = Time.time;
+			this.matchStartTime = TimeUtil.GetServerTime();
 			/* Fire signal */
 			ClientSignals.MatchStart.Fire();
 		});
 
 		let timer = 0;
+		if (this.matchStartTime !== undefined) {
+			timer = math.floor(this.matchStartTime - TimeUtil.GetServerTime());
+		}
 		SetInterval(
 			1,
 			() => {
