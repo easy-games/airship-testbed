@@ -7,6 +7,7 @@ export declare class EntityController implements OnStart {
     private readonly invController;
     private readonly playerController;
     private entities;
+    entityHealthbarPrefab: Object;
     constructor(invController: InventoryController, playerController: PlayerController);
     OnStart(): void;
     private DespawnEntity;

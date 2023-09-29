@@ -5,7 +5,8 @@
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemType } from "../Item/ItemType";
 import { Player } from "../Player/Player";
-import { ProgressBarGraphics } from "../UI/ProgressBarGraphics";
+import { Team } from "../Team/Team";
+import { Healthbar } from "../UI/Healthbar";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import { ItemPlayMode } from "./Animation/CharacterEntityAnimator";
@@ -64,7 +65,7 @@ export declare class Entity {
     protected destroyed: boolean;
     protected displayName: string;
     protected healthbarEnabled: boolean;
-    protected healthbar?: ProgressBarGraphics;
+    protected healthbar?: Healthbar;
     protected state: EntityState;
     protected bin: Bin;
     readonly OnHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
@@ -77,6 +78,7 @@ export declare class Entity {
     readonly OnArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     AddHealthbar(): void;
+    GetTeam(): Team | undefined;
     CanDamage(entity: Entity): boolean;
     SetPlayer(player: Player | undefined): void;
     SetDisplayName(displayName: string): void;

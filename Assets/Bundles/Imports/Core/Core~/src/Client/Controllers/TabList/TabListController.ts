@@ -93,9 +93,17 @@ export class TabListController implements OnStart {
 
 	public FullUpdate(): void {
 		let teams = this.teamController.GetTeams();
-		teams = teams.sort((a, b) => {
-			return a.HasLocalPlayer();
-		});
+		// if (teams.size() > 0) {
+		// 	teams = teams.sort((a, b) => {
+		// 		if (a.HasLocalPlayer()) {
+		// 			return true;
+		// 		}
+		// 		if (b.HasLocalPlayer()) {
+		// 			return false;
+		// 		}
+		// 		return string.byte(a.id)[0] < string.byte(b.id)[0];
+		// 	});
+		// }
 		let players = this.playerController.GetPlayers().sort((a, b) => {
 			if (a === Game.LocalPlayer) return true;
 

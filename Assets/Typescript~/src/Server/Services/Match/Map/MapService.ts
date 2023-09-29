@@ -62,7 +62,7 @@ export class MapService implements OnStart {
 		world.LoadWorldFromVoxelBinaryFile(this.voxelBinaryFile);
 		/* Parse map objects and finish loading map. */
 		/* TEMP: This is to get around memory pinning issue. */
-		this.loadedMap = new LoadedMap(mapId);
+		this.loadedMap = new LoadedMap(mapId, mapId, ["Rascal"]);
 		const rawMaps = this.voxelBinaryFile.GetMapObjects();
 		for (let i = 0; i < rawMaps.Length; i++) {
 			const data = rawMaps.GetValue(i);
