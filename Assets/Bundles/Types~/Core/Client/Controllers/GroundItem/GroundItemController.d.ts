@@ -8,6 +8,7 @@ export declare class GroundItemController implements OnStart {
     private fallbackDisplayObj;
     private groundItems;
     private itemTypeToDisplayObjMap;
+    private groundItemsFolder;
     constructor(playerController: PlayerController, entityAccessoryController: EntityAccessoryController);
     private CreateDisplayGO;
     OnStart(): void;

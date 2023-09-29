@@ -78,6 +78,7 @@ export interface ItemMechanicsMeta {
     maxChargeSeconds: number;
     startUpInSeconds: number;
     cooldownSeconds: number;
+    maxStackSize?: number;
 }
 export interface DamageItemMeta {
     damage: number;

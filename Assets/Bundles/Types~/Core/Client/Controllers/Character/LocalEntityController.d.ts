@@ -27,6 +27,7 @@ export declare class LocalEntityController implements OnStart {
     private orbitCameraMode;
     private characterCameraMode;
     private defaultFirstPerson;
+    private firstSpawn;
     constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: InventoryController);
     /** Returns `true` if the player is in first-person mode. */
     IsFirstPerson(): boolean;

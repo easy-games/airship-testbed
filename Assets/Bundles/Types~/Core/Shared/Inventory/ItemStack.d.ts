@@ -25,7 +25,6 @@ export declare class ItemStack {
     AmountChanged: Signal<ItemStackAmountChangeSignal>;
     Destroyed: Signal<ItemStack>;
     private hasBeenDestroyed;
-    MaxStackSize: number;
     constructor(itemType: ItemType, amount?: number);
     GetItemType(): ItemType;
     GetItemMeta(): ItemMeta;

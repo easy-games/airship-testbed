@@ -2,6 +2,7 @@
 /// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
 import { EntityController } from "../Entity/EntityController";
+import { Signal } from "../../../Shared/Util/Signal";
 export declare class BlockSelectController implements OnStart {
     private readonly entityController;
     private highlightGO;
@@ -9,14 +10,25 @@ export declare class BlockSelectController implements OnStart {
     HighlightBlockPosition?: Vector3;
     PlaceBlockPosition?: Vector3;
     IsVoidPlacement: boolean;
+    highlightOnPlacement: boolean;
     private voidPlane;
     private enabledCount;
     private lastVoidPlaceTime;
+    private highlightEnabled;
+    private isHighlighting;
+    OnNewBlockSelected: Signal<{
+        selectedPos: Vector3 | undefined;
+        placedPos: Vector3 | undefined;
+        highlightedPos: Vector3 | undefined;
+    }>;
     constructor(entityController: EntityController);
     OnStart(): void;
+    ToggleHighlight(enable: boolean): void;
+    private Highlight;
     private CalcSelectedBlock;
     private TryMouseSelect;
     private TryVoidSelect;
+    private UpdatePositions;
     private ResetVariables;
     Enable(): void;
     private DisableAll;

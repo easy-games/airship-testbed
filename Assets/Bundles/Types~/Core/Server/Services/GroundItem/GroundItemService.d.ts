@@ -13,6 +13,7 @@ export declare class GroundItemService implements OnStart {
     private movingGroundItems;
     private removeMovingGroundItems;
     private idleGroundItemsByPosition;
+    private groundItemsFolder;
     constructor(entityService: EntityService);
     OnStart(): void;
     private RemoveGroundItemFromTracking;

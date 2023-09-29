@@ -1,4 +1,4 @@
-Shader "Chronos/ToonLighting"
+Shader "Airship/ToonLighting"
 {
 	Properties
 	{
@@ -31,7 +31,7 @@ Shader "Chronos/ToonLighting"
 		{
 			Tags
 			{
-				"LightMode" = "ChronosForwardPass"
+				"LightMode" = "AirshipForwardPass"
 				"Queue" = "Opaque"
 			}
 
@@ -41,7 +41,7 @@ Shader "Chronos/ToonLighting"
 			#pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
 			
 			#include "UnityCG.cginc"
-            #include "Packages/gg.easy.airship/Runtime/Code/Chronos3D/Resources/BaseShaders/ChronosShaderIncludes.cginc"
+            #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
 			struct appdata
 			{
@@ -80,9 +80,8 @@ Shader "Chronos/ToonLighting"
 			float4 _EmissiveColor;
 			float4 _SpecularColor;
 			float4 _OverlayColor;
-			float _Glossiness;		
-
-			float4 _RimColor;
+			float _Glossiness;	
+			
 			float _RimAmount;
 			float _RimThreshold;
 			float _UVRotation;
