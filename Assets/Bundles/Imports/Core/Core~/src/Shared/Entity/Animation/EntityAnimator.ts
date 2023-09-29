@@ -171,7 +171,7 @@ export class EntityAnimator {
 		if (vfxTemplate) {
 			const go = EffectsManager.SpawnGameObjectAtPosition(vfxTemplate, position, undefined, 2);
 			if (entityModel) {
-				go.transform.parent = entityModel.transform;
+				go.transform.SetParent(entityModel.transform);
 			}
 		}
 	}

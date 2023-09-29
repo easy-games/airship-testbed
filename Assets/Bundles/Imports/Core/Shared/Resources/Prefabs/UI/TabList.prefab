@@ -124,6 +124,8 @@ MonoBehaviour:
       value: {fileID: 4691802605723243848, guid: bc376184b878a40f09080f49124d2f30, type: 3}
     - key: Content
       value: {fileID: 2483459323349027670}
+    - key: TitleText
+      value: {fileID: 4444187530346729289}
 --- !u!1 &2483459323349027670
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,7 +317,7 @@ GameObject:
   - component: {fileID: 3542265492005947387}
   - component: {fileID: 4444187530346729289}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -339,7 +341,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 982.635, y: 50}
+  m_SizeDelta: {x: 982.635, y: 24.8865}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3542265492005947387
 CanvasRenderer:
@@ -369,10 +371,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 00:00  |  Aztec by Rascal  |  BedWars.com
+  m_text: Player List
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
+  m_sharedMaterial: {fileID: 813049023685960433, guid: f0ce55d58d63e4deab29e7ad50308632, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -449,6 +451,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TabListEntry
       objectReference: {fileID: 0}
+    - target: {fileID: 5911311231737301790, guid: bc376184b878a40f09080f49124d2f30, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5911311231737301790, guid: bc376184b878a40f09080f49124d2f30, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 8318393369740892886, guid: bc376184b878a40f09080f49124d2f30, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -532,10 +542,6 @@ PrefabInstance:
     - target: {fileID: 8318393369740892886, guid: bc376184b878a40f09080f49124d2f30, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9048002475514000814, guid: bc376184b878a40f09080f49124d2f30, type: 3}
-      propertyPath: m_Color.a
-      value: 0.8666667
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc376184b878a40f09080f49124d2f30, type: 3}

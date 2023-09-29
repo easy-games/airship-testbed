@@ -38,7 +38,7 @@ export class MeleeHeldItem extends HeldItem {
 						Quaternion.LookRotation(data.hitDirection).eulerAngles,
 					);
 					if (effectGO) {
-						effectGO.transform.parent = data.hitEntity.model.transform;
+						effectGO.transform.SetParent(data.hitEntity.model.transform);
 					}
 				}
 			}

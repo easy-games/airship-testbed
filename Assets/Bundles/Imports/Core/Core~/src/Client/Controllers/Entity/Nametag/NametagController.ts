@@ -58,7 +58,7 @@ export class NametagController implements OnStart {
 		) as GameObject;
 		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
 		nametag.name = this.nameTageId;
-		nametag.transform.parent = entity.model.transform;
+		nametag.transform.SetParent(entity.model.transform);
 		nametag.transform.localPosition = new Vector3(0, 2.3, 0);
 
 		this.UpdateNametag(entity);

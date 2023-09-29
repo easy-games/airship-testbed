@@ -1,11 +1,14 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { Keyboard } from "Shared/UserInput";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
+import { OnLateUpdate } from "Shared/Util/Timer";
 import { Window } from "Shared/Util/Window";
 import { PlayerController } from "../Player/PlayerController";
+import { TeamController } from "../Team/TeamController";
 import { CoreUIController } from "../UI/CoreUIController";
 
 @Controller({})
@@ -20,9 +23,12 @@ export class TabListController implements OnStart {
 	private maxSlots = this.cellsPerRow * this.rowCount;
 	private shown = false;
 
+	private dirty = false;
+
 	constructor(
 		private readonly playerController: PlayerController,
 		private readonly coreUIController: CoreUIController,
+		private readonly teamController: TeamController,
 	) {
 		this.tablistGO = this.coreUIController.refs.GetValue("Apps", "TabList");
 		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>();
@@ -37,13 +43,20 @@ export class TabListController implements OnStart {
 		this.FullUpdate();
 
 		CoreClientSignals.PlayerJoin.Connect((player) => {
-			this.FullUpdate();
+			this.dirty = true;
 		});
 		CoreClientSignals.PlayerLeave.Connect((player) => {
-			this.FullUpdate();
+			this.dirty = true;
 		});
 		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
-			this.FullUpdate();
+			this.dirty = true;
+		});
+
+		OnLateUpdate.Connect(() => {
+			if (this.dirty) {
+				this.dirty = false;
+				this.FullUpdate();
+			}
 		});
 
 		const keyboard = new Keyboard();
@@ -79,26 +92,48 @@ export class TabListController implements OnStart {
 	}
 
 	public FullUpdate(): void {
-		const players = this.playerController.GetPlayers();
-		const contentChildCount = this.tablistContentGO.transform.childCount;
+		let teams = this.teamController.GetTeams();
+		teams = teams.sort((a, b) => {
+			return a.HasLocalPlayer();
+		});
+		let players = this.playerController.GetPlayers().sort((a, b) => {
+			if (a === Game.LocalPlayer) return true;
+
+			let aTeamIndex = math.huge;
+			let bTeamIndex = math.huge;
+
+			let aTeam = a.GetTeam();
+			let bTeam = b.GetTeam();
+
+			if (aTeam) {
+				aTeamIndex = teams.indexOf(aTeam);
+			}
+			if (bTeam) {
+				bTeamIndex = teams.indexOf(bTeam);
+			}
+
+			return aTeamIndex < bTeamIndex;
+		});
+		print("full update: " + players.size());
 
 		for (let i = 0; i < this.maxSlots; i++) {
 			let player: Player | undefined;
 			if (i < players.size()) {
 				player = players[i];
-			}
 
-			let entry: GameObject | undefined;
-			if (i < contentChildCount) {
-				entry = this.tablistContentGO.transform.GetChild(i).gameObject;
-			} else {
-				entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
-			}
+				let entry: GameObject | undefined;
+				if (i < this.tablistContentGO.transform.childCount) {
+					entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+				} else {
+					entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
+				}
 
-			if (player && entry) {
 				this.UpdateEntry(entry, player);
-			} else if (entry) {
-				Object.Destroy(entry);
+			} else {
+				if (i < this.tablistContentGO.transform.childCount) {
+					let entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+					Object.Destroy(entry);
+				}
 			}
 		}
 	}
@@ -108,6 +143,9 @@ export class TabListController implements OnStart {
 		const usernameText = refs.GetValue<TMP_Text>("UI", "Username");
 
 		let username = player.username;
+		if (player === Game.LocalPlayer) {
+			username = "<b>" + username + "</b>";
+		}
 		const team = player.GetTeam();
 		if (team) {
 			const hex = ColorUtil.ColorToHex(team.color);
@@ -115,6 +153,11 @@ export class TabListController implements OnStart {
 		}
 
 		usernameText.text = username;
+	}
+
+	public SetTitleText(title: string): void {
+		let textLabel = this.tablistRefs.GetValue("UI", "TitleText") as TMP_Text;
+		textLabel.text = title;
 	}
 
 	public Show(): void {
