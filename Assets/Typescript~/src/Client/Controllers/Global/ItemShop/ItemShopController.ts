@@ -288,6 +288,7 @@ export class ItemShopController implements OnStart {
 				this.selectedItemBin.Add(
 					inv.SlotChanged.Connect((slot, itemStack) => {
 						if (itemStack) {
+							updateButton();
 							this.selectedItemBin.Add(
 								itemStack?.Changed.Connect(() => {
 									updateButton();
