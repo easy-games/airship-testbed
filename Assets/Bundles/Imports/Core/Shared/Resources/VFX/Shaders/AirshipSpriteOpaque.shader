@@ -1,4 +1,4 @@
-Shader "Chronos/ChronosSpriteOpaque"
+Shader "Airship/AirshipSpriteOpaque"
 {
     Properties
     {
@@ -10,7 +10,7 @@ Shader "Chronos/ChronosSpriteOpaque"
         // The value of the LightMode Pass tag must match the ShaderTagId in ScriptableRenderContext.DrawRenderers
         Name "Forward"
         Tags { "RenderType"="Opaque"  
-            "LightMode" = "ChronosForwardPass"
+            "LightMode" = "AirshipForwardPass"
 			"Queue"="Geometry"}
 
 		ZWrite off
@@ -25,7 +25,7 @@ Shader "Chronos/ChronosSpriteOpaque"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "Packages/gg.easy.airship/Runtime/Code/Chronos3D/Resources/BaseShaders/ChronosShaderIncludes.cginc"
+            #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
             struct appdata
             {

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ChronosSprite
-  m_Shader: {fileID: 4800000, guid: 0e736640125cbf44d9c17aff54a9f965, type: 3}
+  m_Name: AirshipSprite
+  m_Shader: {fileID: 4800000, guid: 0cff55b60b69d254eb4862f11062b78f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _DSTBLEND_ONE

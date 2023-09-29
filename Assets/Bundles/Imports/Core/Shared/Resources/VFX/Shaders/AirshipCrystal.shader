@@ -1,4 +1,4 @@
-Shader "Chronos/ChronosCrystal"
+Shader "Airship/AirshipCrystal"
 {
 	Properties
 	{
@@ -40,7 +40,7 @@ Shader "Chronos/ChronosCrystal"
 		{
 			Tags
 			{
-				"LightMode" = "ChronosForwardPass"
+				"LightMode" = "AirshipForwardPass"
 				"Queue" = "Transparent"
 			}
 
@@ -50,7 +50,7 @@ Shader "Chronos/ChronosCrystal"
 			#pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
 			
 			#include "UnityCG.cginc"
-            #include "Packages/gg.easy.airship/Runtime/Code/Chronos3D/Resources/BaseShaders/ChronosShaderIncludes.cginc"
+            #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
 			struct appdata
 			{

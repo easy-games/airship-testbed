@@ -1,4 +1,4 @@
-Shader "Chronos/ChronosSinWave"
+Shader "Airship/AirshipSinWave"
 {
     Properties
     {
@@ -19,14 +19,14 @@ Shader "Chronos/ChronosSinWave"
     {
         // The value of the LightMode Pass tag must match the ShaderTagId in ScriptableRenderContext.DrawRenderers
         Name "Forward"
-        Tags { "LightMode" = "ChronosForwardPass" 
+        Tags { "LightMode" = "AirshipForwardPass" 
             "Queue" = "Transparent"
             "IgnoreProjector"="True"
             "RenderType"="Transparent"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="True"}
             
-        //Tags { "RenderType"="Transparent"  "LightMode" = "ChronosForwardPass"  "Queue"="Transparent"}
+        //Tags { "RenderType"="Transparent"  "LightMode" = "AirshipForwardPass"  "Queue"="Transparent"}
 
 		Cull back
         Lighting Off
@@ -40,7 +40,7 @@ Shader "Chronos/ChronosSinWave"
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #include "Packages/gg.easy.airship/Runtime/Code/Chronos3D/Resources/BaseShaders/ChronosShaderIncludes.cginc"
+            #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
             struct appdata
             {

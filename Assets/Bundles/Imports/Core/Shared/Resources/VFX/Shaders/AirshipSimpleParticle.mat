@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ChronosSimpleParticle
+  m_Name: AirshipSimpleParticle
   m_Shader: {fileID: 4800000, guid: 9e7619d175ce3bb4c8ea55276b807d55, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:

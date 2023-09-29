@@ -7,11 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ChronosToonVertexColor
+  m_Name: AirshipToonVertexColor
   m_Shader: {fileID: 4800000, guid: 82425907f3779dd4f92d5b1ef7b12a90, type: 3}
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - NUM_LIGHTS_LIGHTS0
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0

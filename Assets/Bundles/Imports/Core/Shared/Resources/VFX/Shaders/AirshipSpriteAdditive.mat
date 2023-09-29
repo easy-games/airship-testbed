@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ChronosSpriteAdditive
+  m_Name: AirshipSpriteAdditive
   m_Shader: {fileID: 4800000, guid: d72cc503c60801840a1ffdac3c5ef9e1, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
