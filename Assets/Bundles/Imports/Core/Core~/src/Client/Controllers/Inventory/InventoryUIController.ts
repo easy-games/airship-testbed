@@ -3,7 +3,7 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { CoreUI } from "Shared/UI/CoreUI";
-import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
+import { Healthbar } from "Shared/UI/Healthbar";
 import { Keyboard } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
@@ -17,7 +17,7 @@ export class InventoryUIController implements OnStart {
 	private backpackShown = false;
 	private canvas: Canvas;
 	private hotbarContent: Transform;
-	private healthBar: ProgressBarGraphics;
+	private healthBar: Healthbar;
 	private inventoryRefs: GameObjectReferences;
 
 	private backpackRefs: GameObjectReferences;
@@ -37,7 +37,7 @@ export class InventoryUIController implements OnStart {
 
 		this.inventoryRefs = go.GetComponent<GameObjectReferences>();
 		this.hotbarContent = this.inventoryRefs.GetValue("UI", "HotbarContentGO").transform;
-		this.healthBar = new ProgressBarGraphics(this.inventoryRefs.GetValue("UI", "HealthBarTransform"));
+		this.healthBar = new Healthbar(this.inventoryRefs.GetValue("UI", "HealthBarTransform"));
 
 		const backpackGo = GameObjectUtil.Instantiate(
 			AssetBridge.Instance.LoadAsset("Imports/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),

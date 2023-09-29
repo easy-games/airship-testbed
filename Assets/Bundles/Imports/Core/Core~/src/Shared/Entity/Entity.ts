@@ -5,17 +5,21 @@ import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Game } from "Shared/Game";
 import { BlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
+import { Team } from "Shared/Team/Team";
+import { Healthbar } from "Shared/UI/Healthbar";
 import { Bin } from "Shared/Util/Bin";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
+import { Theme } from "Shared/Util/Theme";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
@@ -33,6 +37,10 @@ export interface EntityDto {
 	displayName: string;
 	healthbar?: boolean;
 }
+
+const friendlyHealthbarFillColor = Theme.Green;
+// ColorUtil.HexToColor("#89CC7F");
+const enemyHealthbarFillColor = ColorUtil.HexToColor("#2589E4");
 
 export class EntityReferences {
 	meshes: Array<Renderer>;
@@ -128,7 +136,7 @@ export class Entity {
 	protected destroyed = false;
 	protected displayName: string;
 	protected healthbarEnabled = false;
-	protected healthbar?: ProgressBarGraphics;
+	protected healthbar?: Healthbar;
 	protected state: EntityState;
 	protected bin: Bin = new Bin();
 
@@ -206,14 +214,26 @@ export class Entity {
 		}
 		if (this.IsLocalCharacter()) return;
 
+		let sameTeam = false;
+		let team = this.GetTeam();
+		if (team && team === Game.LocalPlayer.GetTeam()) {
+			sameTeam = true;
+		}
+
 		const healthbarGO = PoolManager.SpawnObject(Dependency<EntityController>().entityHealthbarPrefab);
 		const transform = healthbarGO.transform;
 		transform.SetParent(this.model.transform);
 		transform.localPosition = new Vector3(0, 2.2, 0);
-		this.healthbar = new ProgressBarGraphics(transform.GetChild(0));
+		this.healthbar = new Healthbar(transform.GetChild(0), {
+			fillColor: sameTeam ? friendlyHealthbarFillColor : enemyHealthbarFillColor,
+		});
 
 		this.healthbar.SetValue(this.health / this.maxHealth);
 		this.healthbarEnabled = true;
+	}
+
+	public GetTeam(): Team | undefined {
+		return this.player?.GetTeam();
 	}
 
 	public CanDamage(entity: Entity): boolean {

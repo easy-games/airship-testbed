@@ -6,7 +6,7 @@ import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { ProgressBarGraphics } from "Shared/UI/ProgressBarGraphics";
+import { Healthbar } from "Shared/UI/Healthbar";
 import {
 	BundleGroupNames,
 	Bundle_Blocks,
@@ -23,7 +23,7 @@ import { BlockSelectController } from "./BlockSelectController";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
-	progressBar: ProgressBarGraphics;
+	progressBar: Healthbar;
 	lastHitTime: number;
 	maxHealth: number;
 }
@@ -188,7 +188,7 @@ export class BlockHealthController implements OnStart {
 		let healthBarEntry = {
 			gameObject: healthBarGo,
 			lastHitTime: Time.time,
-			progressBar: new ProgressBarGraphics(healthBarGo.transform.GetChild(0), {
+			progressBar: new Healthbar(healthBarGo.transform.GetChild(0), {
 				initialPercentDelta: this.GetBlockHealth(blockPos) / maxHealth,
 				fillColor: Theme.Green,
 			}),

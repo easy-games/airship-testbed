@@ -7,7 +7,7 @@ export interface ProgressBarOptions {
 	deathOnZero?: boolean;
 }
 
-export class ProgressBarGraphics {
+export class Healthbar {
 	private readonly TransformKey = "Transforms";
 	private readonly GraphicsKey = "Graphics";
 	private readonly AnimKey = "Animations";
@@ -22,8 +22,8 @@ export class ProgressBarGraphics {
 	private deathAnim: Animation;
 
 	public fillDurationInSeconds = 0.08;
-	public changeDelayInSeconds = 0.3;
-	public changeDurationInSeconds = 0.125;
+	public changeDelayInSeconds = 0.25;
+	public changeDurationInSeconds = 0.09;
 	private enabled = true;
 	public deathOnZero = true;
 	private currentDelta = -999;
