@@ -40,7 +40,7 @@ export interface EntityDto {
 
 const friendlyHealthbarFillColor = Theme.Green;
 // ColorUtil.HexToColor("#89CC7F");
-const enemyHealthbarFillColor = ColorUtil.HexToColor("#2589E4");
+const enemyHealthbarFillColor = ColorUtil.HexToColor("#FF4646");
 
 export class EntityReferences {
 	meshes: Array<Renderer>;

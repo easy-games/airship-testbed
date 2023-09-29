@@ -9,7 +9,7 @@ import { HeldItem } from "../HeldItem";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
-	private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
+	// private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
 		if (this.entity.IsDead()) return;
@@ -67,8 +67,10 @@ export class MeleeHeldItem extends HeldItem {
 	}
 
 	private ScanForHits(): MeleeHit[] {
-		let farBox = this.combatVars.GetVector3("swordBoxFar");
-		let closeBox = this.combatVars.GetVector3("swordBoxClose");
+		let farBox = new Vector3(0.2, 0.2, 4.8);
+		let closeBox = new Vector3(3, 3, 4);
+		// let farBox = this.combatVars.GetVector3("swordBoxFar");
+		// let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
 		let hits = this.ScanBox(closeBox, [], Theme.Green);
 		if (this.meta.melee?.canHitMultipleTargets) {
