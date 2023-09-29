@@ -5,7 +5,6 @@ import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { BlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
@@ -207,11 +206,9 @@ export class Entity {
 		}
 		if (this.IsLocalCharacter()) return;
 
-		const prefab = AssetBridge.Instance.LoadAsset<Object>(
-			"Imports/Core/Client/Resources/Prefabs/EntityHealthbar.prefab",
-		);
-		const healthbarGO = GameObjectUtil.InstantiateIn(prefab, this.model.transform);
+		const healthbarGO = PoolManager.SpawnObject(Dependency<EntityController>().entityHealthbarPrefab);
 		const transform = healthbarGO.transform;
+		transform.SetParent(this.model.transform);
 		transform.localPosition = new Vector3(0, 2.2, 0);
 		this.healthbar = new ProgressBarGraphics(transform.GetChild(0));
 

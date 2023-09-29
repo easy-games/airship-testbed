@@ -18,6 +18,7 @@ import { PlayerController } from "../Player/PlayerController";
 @Controller({})
 export class EntityController implements OnStart {
 	private entities = new Map<number, Entity>();
+	public entityHealthbarPrefab: Object;
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -27,7 +28,12 @@ export class EntityController implements OnStart {
 			EntityPrefabType.HUMAN,
 		).GetComponent<NetworkObject>();
 		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as AirshipObjectPool;
-		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 100);
+		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
+
+		this.entityHealthbarPrefab = AssetBridge.Instance.LoadAsset(
+			"Imports/Core/Client/Resources/Prefabs/EntityHealthbar.prefab",
+		) as Object;
+		PoolManager.PreLoadPool(this.entityHealthbarPrefab, 60);
 	}
 
 	OnStart(): void {
