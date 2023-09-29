@@ -42,14 +42,14 @@ export class BlockSelectHeldItem extends HeldItem {
 		placedPos: Vector3 | undefined,
 		highlightedPos: Vector3 | undefined,
 	): boolean {
-		print(
+		/* print(
 			"CanUseBlock. selectedPos: " +
 				selectedPos +
 				", placedPos: " +
 				placedPos +
 				", highlightedPos: " +
 				highlightedPos,
-		);
+		); */
 		return true;
 	}
 }

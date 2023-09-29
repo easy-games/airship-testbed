@@ -14,6 +14,8 @@ import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
 import { ItemType } from "../ItemType";
 import { ItemUtil } from "../ItemUtil";
+import { SetInterval } from "Shared/Util/Timer";
+import { Bin } from "Shared/Util/Bin";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -25,6 +27,8 @@ export class HeldItem {
 	private isCharging = false;
 	protected currentItemGOs: GameObject[] = [];
 	protected currentItemAnimations: Animator[] = [];
+	private holdingDownBin = new Bin();
+	private holdingDown = false;
 
 	constructor(entity: Entity, newMeta: ItemMeta) {
 		this.entity = entity;
@@ -97,6 +101,7 @@ export class HeldItem {
 
 	public OnUnEquip() {
 		this.Log("OnUnEquip");
+		this.holdingDownBin.Clean();
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
 		this.OnChargeEnd();
@@ -108,11 +113,27 @@ export class HeldItem {
 			this.OnChargeStart();
 		} else {
 			this.TryUse();
+			this.HoldDownAction();
+		}
+	}
+
+	private HoldDownAction() {
+		if (this.meta.itemMechanics?.cooldownSeconds && !this.holdingDown) {
+			this.holdingDown = true;
+			this.holdingDownBin.Add(
+				SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {
+					this.TryUse();
+				}),
+			);
+			this.holdingDownBin.Add(() => {
+				this.holdingDown = false;
+			});
 		}
 	}
 
 	public OnCallToActionEnd() {
 		this.Log("OnCallToActionEnd");
+		this.holdingDownBin.Clean();
 		if (this.isCharging) {
 			this.TryChargeUse();
 		}

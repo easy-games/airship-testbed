@@ -1,58 +1,23 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
 import { BlockInteractController } from "Client/Controllers/Blocks/BlockInteractController";
-import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
-import { SetInterval } from "Shared/Util/Timer";
-import { HeldItemState } from "../HeldItemState";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 
 export class BreakBlockHeldItem extends BlockSelectHeldItem {
-	private holdingDownBin = new Bin();
-	private holdingDown = false;
-
 	override OnEquip(): void {
 		super.OnEquip();
 		if (this.blockSelect) {
 			this.blockSelect.highlightOnPlacement = false;
 		}
 	}
-	override OnUnEquip() {
-		super.OnUnEquip();
-		this.holdingDownBin.Clean();
-	}
 
 	override OnUseClient(useIndex: number) {
 		super.OnUseClient(useIndex);
 		if (this.entity.IsLocalCharacter()) {
 			this.HitBlockLocal();
-
-			if (this.meta.itemMechanics?.cooldownSeconds && !this.holdingDown) {
-				this.holdingDown = true;
-				this.holdingDownBin.Add(
-					SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {
-						import("Shared/Item/HeldItems/EntityItemManager").then((imp) => {
-							if (!Game.LocalPlayer.Character) return;
-							const manager = imp.EntityItemManager.Get().GetOrCreateItemManager(
-								Game.LocalPlayer.Character,
-							);
-							manager.TriggerNewState(HeldItemState.CALL_TO_ACTION_END);
-							manager.TriggerNewState(HeldItemState.CALL_TO_ACTION_START);
-						});
-					}),
-				);
-				this.holdingDownBin.Add(() => {
-					this.holdingDown = false;
-				});
-			}
 		}
-	}
-
-	override OnCallToActionEnd(): void {
-		super.OnCallToActionEnd();
-		this.holdingDownBin.Clean();
 	}
 
 	private HitBlockLocal(): void {

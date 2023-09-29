@@ -20,10 +20,11 @@ const defaultItemMechanics: ItemMechanicsMeta = {
 	minChargeSeconds: 0,
 	maxChargeSeconds: 0,
 	cooldownSeconds: 0.1,
+	canHoldToUse: true,
 };
 const blockItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0,
+	cooldownSeconds: 0.1525,
 };
 const blockItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemBlock,
@@ -31,7 +32,7 @@ const blockItemAssets: ItemAssetsMeta = {
 };
 const swordItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.15,
+	cooldownSeconds: 0.25,
 };
 const swordItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemSword,
@@ -441,7 +442,7 @@ export const items: {
 		itemAssets: pickaxeItemAssets,
 		itemMechanics: {
 			...defaultItemMechanics,
-			cooldownSeconds: 0.18,
+			cooldownSeconds: 0.36,
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
 		breakBlock: {

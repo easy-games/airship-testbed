@@ -91,6 +91,7 @@ export interface ItemMechanicsMeta {
 	maxChargeSeconds: number;
 	startUpInSeconds: number;
 	cooldownSeconds: number;
+	canHoldToUse: boolean;
 	maxStackSize?: number;
 }
 
