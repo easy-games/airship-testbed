@@ -9,6 +9,9 @@ import { MatchService } from "../MatchService";
 
 @Service({})
 export class BWTeamService implements OnStart {
+	/** Used to place on the same team after re-joining the server */
+	private userIdToTeamMap = new Map<string, Team>();
+
 	constructor(private readonly teamService: TeamService, private readonly matchService: MatchService) {}
 
 	OnStart(): void {
@@ -20,18 +23,29 @@ export class BWTeamService implements OnStart {
 
 		// Temporary: even team distribution
 		CoreServerSignals.PlayerJoin.Connect((event) => {
-			const teams = this.teamService.GetTeams();
-			let smallestTeam = teams[0];
+			let assignedTeam: Team | undefined;
 
-			for (const t of teams) {
-				if (t.GetPlayers().size() < smallestTeam.GetPlayers().size()) {
-					smallestTeam = t;
-				}
+			let existing = this.userIdToTeamMap.get(event.player.userId);
+			if (existing) {
+				existing.AddPlayer(event.player);
+				assignedTeam = existing;
 			}
 
-			smallestTeam.AddPlayer(event.player);
+			if (!assignedTeam) {
+				const teams = this.teamService.GetTeams();
+				let smallestTeam = teams[0];
 
-			const color = ColorUtil.ColorToHex(smallestTeam.color);
+				for (const t of teams) {
+					if (t.GetPlayers().size() < smallestTeam.GetPlayers().size()) {
+						smallestTeam = t;
+					}
+				}
+
+				smallestTeam.AddPlayer(event.player);
+				assignedTeam = smallestTeam;
+			}
+
+			const color = ColorUtil.ColorToHex(assignedTeam.color);
 			Game.BroadcastMessage(
 				`<b><color=${color}>${event.player.username}</color></b> <color=${ColorUtil.ColorToHex(
 					Theme.Gray,
@@ -52,6 +66,12 @@ export class BWTeamService implements OnStart {
 				Game.BroadcastMessage(
 					`<b>${event.player.username}</b> <color=${ColorUtil.ColorToHex(Theme.Gray)}>left.</color>`,
 				);
+			}
+		});
+
+		CoreServerSignals.PlayerChangeTeam.Connect((event) => {
+			if (event.Team) {
+				this.userIdToTeamMap.set(event.Player.userId, event.Team);
 			}
 		});
 	}

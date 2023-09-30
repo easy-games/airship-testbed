@@ -1,7 +1,9 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { TabListController } from "Imports/Core/Client/Controllers/TabList/TabListController";
+import { Game } from "Imports/Core/Shared/Game";
 import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
+import { Signal } from "Imports/Core/Shared/Util/Signal";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { TimeUtil } from "Imports/Core/Shared/Util/TimeUtil";
 import { SetInterval } from "Imports/Core/Shared/Util/Timer";
@@ -15,6 +17,8 @@ export class MatchController implements OnStart {
 	private state: MatchState = MatchState.SETUP;
 	public matchStartTime: number | undefined;
 	public matchInfo: MatchInfoDto | undefined;
+	public eliminated = false;
+	public onEliminated = new Signal<void>();
 
 	constructor(private readonly tablistController: TabListController) {
 		Network.ServerToClient.MatchInfo.Client.OnServerEvent((matchInfoDto) => {
@@ -22,6 +26,12 @@ export class MatchController implements OnStart {
 			this.state = matchInfoDto.matchState;
 			if (matchInfoDto.matchStartTime !== undefined) {
 				this.matchStartTime = matchInfoDto.matchStartTime;
+			}
+		});
+		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId) => {
+			if (clientId === Game.LocalPlayer.clientId) {
+				this.eliminated = true;
+				this.onEliminated.Fire();
 			}
 		});
 	}

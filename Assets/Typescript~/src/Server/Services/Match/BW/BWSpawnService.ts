@@ -8,8 +8,11 @@ import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterE
 import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
 import { Player } from "Imports/Core/Shared/Player/Player";
 import { MathUtil } from "Imports/Core/Shared/Util/MathUtil";
+import { SignalPriority } from "Imports/Core/Shared/Util/Signal";
 import { Task } from "Imports/Core/Shared/Util/Task";
 import { ServerSignals } from "Server/ServerSignals";
+import { MatchState } from "Shared/Match/MatchState";
+import { BedService } from "../BedService";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
 import { MatchService } from "../MatchService";
@@ -31,6 +34,7 @@ export class BWSpawnService implements OnStart {
 		private readonly mapService: MapService,
 		private readonly matchService: MatchService,
 		private readonly entityService: EntityService,
+		private readonly bedService: BedService,
 	) {
 		ServerSignals.MapLoad.Connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();
@@ -59,8 +63,14 @@ export class BWSpawnService implements OnStart {
 		Task.Spawn(() => {
 			this.loadedMap = this.mapService.WaitForMapLoaded();
 			/* Spawn entity on join. */
-			CoreServerSignals.PlayerJoin.Connect((event) => {
+			CoreServerSignals.PlayerJoin.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 				Task.Delay(SPAWN_DELAY_ON_JOIN, () => {
+					const team = event.player.GetTeam();
+					print("join team: " + team?.id);
+					if (this.matchService.GetState() > MatchState.PRE && team && this.bedService.IsBedDestroyed(team)) {
+						this.bwService.EliminatePlayer(event.player);
+						return;
+					}
 					this.SpawnPlayer(event.player);
 				});
 			});

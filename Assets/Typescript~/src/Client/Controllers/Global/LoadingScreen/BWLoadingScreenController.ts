@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { MatchController } from "Client/Controllers/Match/MatchController";
 import { LoadingScreenController } from "Imports/Core/Client/Controllers/Loading/LoadingScreenController";
 import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
 import { Game } from "Imports/Core/Shared/Game";
@@ -7,7 +8,10 @@ import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
 @Controller()
 export class BWLoadingScreenController implements OnStart {
-	constructor(private readonly loadingScreenController: LoadingScreenController) {
+	constructor(
+		private readonly loadingScreenController: LoadingScreenController,
+		private readonly matchController: MatchController,
+	) {
 		this.CheckWorld();
 	}
 
@@ -31,6 +35,10 @@ export class BWLoadingScreenController implements OnStart {
 	}
 
 	private CheckCharacter(): void {
+		if (this.matchController.eliminated) {
+			this.loadingScreenController.FinishLoading();
+			return;
+		}
 		if (Game.LocalPlayer.Character) {
 			this.loadingScreenController.FinishLoading();
 		} else {
@@ -45,6 +53,12 @@ export class BWLoadingScreenController implements OnStart {
 						print("Time spent waiting for character: " + math.floor(timeSpent * 1000) + "ms");
 						this.loadingScreenController.FinishLoading();
 					}
+				}),
+			);
+			bin.Add(
+				this.matchController.onEliminated.Connect(() => {
+					bin.Clean();
+					this.loadingScreenController.FinishLoading();
 				}),
 			);
 		}
