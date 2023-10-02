@@ -55,7 +55,7 @@ export class EntityAnimator {
 			: AudioBundleSpacialMode.SPACIAL;
 
 		this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
-		this.slideAudioBundle.volumeScale = 0.15;
+		this.slideAudioBundle.volumeScale = 0.2;
 		this.slideAudioBundle.useFullPath = true;
 		this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
 		this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
