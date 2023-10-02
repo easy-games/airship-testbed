@@ -56,7 +56,7 @@ export class EntityController implements OnStart {
 			const entity = this.GetEntityById(entityId);
 			if (!entity) return;
 
-			entity.anim?.PlayItemUse(animationId, playMode);
+			entity.anim?.PlayUseAnim(animationId, playMode);
 		});
 
 		CoreNetwork.ServerToClient.Entity.SetHealth.Client.OnServerEvent((entityId, health) => {

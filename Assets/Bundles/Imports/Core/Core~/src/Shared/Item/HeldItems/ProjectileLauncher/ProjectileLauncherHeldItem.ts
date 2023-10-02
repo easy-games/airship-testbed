@@ -18,7 +18,6 @@ import { HeldItem } from "../HeldItem";
 
 export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeBin = new Bin();
-	private currentlyCharging = false;
 	private startHoldTimeSec = 0;
 	private chargeAudioSource: AudioSource | undefined;
 	private projectileTrajectoryRenderer =
@@ -27,6 +26,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	protected override OnChargeStart(): void {
 		if (!this.meta.projectileLauncher) return;
 		if (!this.HasRequiredAmmo()) return;
+
 		if (RunUtil.IsClient()) {
 			if (CanvasAPI.IsPointerOverUI()) return;
 		}
@@ -52,6 +52,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		//Play the items animation  (bow draw)
 		this.PlayItemAnimation(0, true);
+		this.entity.anim?.PlayUseAnim(0, ItemPlayMode.HOLD);
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.projectileLauncher.ammoItemType);
@@ -59,9 +60,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 			this.chargeBin.Add(Crosshair.AddDisabler());
 
-			this.currentlyCharging = true;
-
-			this.entity.anim?.PlayItemUse(0, ItemPlayMode.HOLD);
+			this.isCharging = true;
 
 			this.startHoldTimeSec = os.clock();
 
@@ -69,7 +68,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			const localEntityController = Dependency<LocalEntityController>();
 			this.chargeBin.Add(
 				OnLateUpdate.ConnectWithPriority(SignalPriority.NORMAL, (deltaTime) => {
-					if (this.currentlyCharging) {
+					if (this.isCharging) {
 						const chargeSec = os.clock() - this.startHoldTimeSec;
 
 						const launchPos = ProjectileUtil.GetLaunchPosition(
@@ -125,10 +124,10 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnChargeEnd(): void {
 		super.OnChargeEnd();
-		this.entity.anim?.StartItemIdle();
+		this.entity.anim?.StartIdleAnim();
+		this.StopItemAnimation();
 		this.CancelChargeSound();
 		this.chargeBin.Clean();
-		this.currentlyCharging = false;
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
 	}
 
@@ -142,17 +141,19 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnUseClient(useIndex: number): void {
 		this.CancelChargeSound();
-		super.OnUseClient(useIndex);
-		print("On use: " + useIndex);
-		if (!this.entity.IsLocalCharacter()) return;
-
-		this.currentlyCharging = false;
-
-		if (CanvasAPI.IsPointerOverUI()) {
+		if (!this.HasRequiredAmmo()) {
 			return;
 		}
 
-		if (!this.HasRequiredAmmo()) {
+		super.OnUseClient(useIndex);
+		print("On use: " + useIndex);
+
+		//Play the items animation  (bow shoot)
+		this.PlayItemAnimation(1, false);
+
+		if (!this.entity.IsLocalCharacter()) return;
+
+		if (CanvasAPI.IsPointerOverUI()) {
 			return;
 		}
 
@@ -175,14 +176,10 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			launchData.launchPos,
 			launchData.velocity,
 		);
-
-		//Play the items animation  (bow shoot)
-		this.PlayItemAnimation(1, false);
 	}
 
 	public override OnCallToActionEnd(): void {
 		super.OnCallToActionEnd();
-		this.currentlyCharging = false;
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
 	}

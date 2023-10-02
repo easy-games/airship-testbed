@@ -24,7 +24,7 @@ export class HeldItem {
 	protected readonly bundles: BundleGroup | undefined;
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
-	private isCharging = false;
+	protected isCharging = false;
 	protected currentItemGOs: GameObject[] = [];
 	protected currentItemAnimations: Animator[] = [];
 	private holdingDownBin = new Bin();
@@ -197,7 +197,7 @@ export class HeldItem {
 		this.isCharging = false;
 
 		//Play the use locally
-		this.entity.anim.PlayItemUse(useIndex);
+		this.entity.anim.PlayUseAnim(useIndex);
 		if (this.meta.itemAssets?.onUseSound) {
 			if (this.entity.IsLocalCharacter()) {
 				AudioManager.PlayGlobal(RandomUtil.FromArray(this.meta.itemAssets.onUseSound), {
@@ -218,9 +218,17 @@ export class HeldItem {
 	protected PlayItemAnimation(index: number, hold: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
 			let anim = this.currentItemAnimations[i];
+			if (index >= 0) {
+				anim.Play("Base Layer.Use" + index);
+			} else {
+				anim.Play("Idle");
+			}
 			anim.SetBool("Hold", hold);
-			anim.Play("Base Layer.Use" + index);
 		}
+	}
+
+	protected StopItemAnimation() {
+		this.PlayItemAnimation(-1, false);
 	}
 
 	protected SetItemAnimationHold(hold: boolean) {

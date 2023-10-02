@@ -132,9 +132,9 @@ export class EntityAnimator {
 		return AnimancerBridge.PlayOnce(this.anim, clip, layer, this.defaultTransitionTime, FadeMode.FromStart);
 	}
 
-	public StartItemIdle(): void {}
+	public StartIdleAnim(): void {}
 
-	public PlayItemUse(useIndex = 0, itemPlayMode: ItemPlayMode = 0): void {}
+	public PlayUseAnim(useIndex = 0, itemPlayMode: ItemPlayMode = 0): void {}
 
 	public EquipItem(itemId: BundleGroupNames): void {}
 

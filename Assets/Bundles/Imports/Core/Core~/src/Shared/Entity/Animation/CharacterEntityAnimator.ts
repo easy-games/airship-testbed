@@ -50,7 +50,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			//First person and third person use different animation bundles
 			//So we need to load the item resources again
 			this.LoadNewItemResources(this.currentBundleName);
-			this.StartItemIdle();
+			this.StartIdleAnim();
 		}
 	}
 
@@ -119,16 +119,16 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	private StartItemEquipAnim() {
 		this.TriggerEvent(ItemEventKeys.EQUIP);
 		this.Play(ItemEventKeys.EQUIP, () => {
-			this.StartItemIdle();
+			this.StartIdleAnim();
 		});
 	}
 
-	public override StartItemIdle() {
+	public override StartIdleAnim() {
 		this.TriggerEvent(ItemEventKeys.IDLE);
 		this.Play(ItemEventKeys.IDLE);
 	}
 
-	public override PlayItemUse(useIndex = 0, itemPlayMode: ItemPlayMode = 0) {
+	public override PlayUseAnim(useIndex = 0, itemPlayMode: ItemPlayMode = 0) {
 		this.Log("Item Use Started: " + useIndex);
 		//In the animation array use animations are the 3rd index and beyond;
 		let i = useIndex + 3;
@@ -136,14 +136,14 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			this.TriggerEvent(ItemEventKeys.USE, useIndex);
 			this.Play(i, () => {
 				if (itemPlayMode === ItemPlayMode.DEFAULT) {
-					this.StartItemIdle();
+					this.StartIdleAnim();
 				} else if (itemPlayMode === ItemPlayMode.LOOP) {
-					this.PlayItemUse(useIndex, ItemPlayMode.LOOP);
+					this.PlayUseAnim(useIndex, ItemPlayMode.LOOP);
 				}
 			});
 		} else {
 			warn("Trying to play animation that doesn't exist: use " + useIndex);
-			this.StartItemIdle();
+			this.StartIdleAnim();
 		}
 	}
 }
