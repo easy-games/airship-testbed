@@ -212,7 +212,7 @@ export class Entity {
 			CoreNetwork.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.id);
 			return;
 		}
-		if (this.IsLocalCharacter()) return;
+		// if (this.IsLocalCharacter()) return;
 
 		let sameTeam = false;
 		let team = this.GetTeam();
@@ -230,6 +230,10 @@ export class Entity {
 
 		this.healthbar.SetValue(this.health / this.maxHealth);
 		this.healthbarEnabled = true;
+	}
+
+	public GetHealthbar(): Healthbar | undefined {
+		return this.healthbar;
 	}
 
 	public GetTeam(): Team | undefined {
