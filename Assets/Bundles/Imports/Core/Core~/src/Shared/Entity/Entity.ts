@@ -402,28 +402,6 @@ export class Entity {
 		return undefined;
 	}
 
-	/*public PlayAnimation(
-		animationId: EntityAnimationId,
-		config?: {
-			layer?: number;
-			exceptClientId?: number;
-		},
-	) {
-		if (RunUtil.IsServer()) {
-			if (config?.exceptClientId !== undefined) {
-				Network.ServerToClient.PlayEntityAnimation.Server.FireExcept(
-					config.exceptClientId,
-					this.Id,
-					animationId,
-					config?.layer,
-				);
-			} else {
-				Network.ServerToClient.PlayEntityAnimation.Server.FireAllClients(this.Id, animationId, config?.layer);
-			}
-		}
-		this.anim.PlayAnimation(animationId, config?.layer ?? 10);
-	}*/
-
 	public SendItemAnimationToClients(useIndex = 0, animationMode: ItemPlayMode = 0, exceptClientId?: number) {
 		if (RunUtil.IsServer()) {
 			if (exceptClientId !== undefined) {

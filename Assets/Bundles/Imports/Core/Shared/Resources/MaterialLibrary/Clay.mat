@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
@@ -128,8 +128,8 @@ Material:
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
-    - _RimIntensity: 0.75
-    - _RimPower: 2.5
+    - _RimIntensity: 1.45
+    - _RimPower: 4.46
     - _RoughOverride: 0.75
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0

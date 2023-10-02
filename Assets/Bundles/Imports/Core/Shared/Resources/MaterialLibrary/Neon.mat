@@ -13,6 +13,7 @@ Material:
   - EMISSIVE_ON
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
+  - RIM_LIGHT_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
@@ -105,6 +106,7 @@ Material:
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
     - POINT_FILTER: 0
+    - RIM_LIGHT: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 0
     - VERTEX_LIGHT: 0
@@ -124,10 +126,14 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
+    - _RimIntensity: 0
+    - _RimPower: 3
     - _RoughOverride: 1
     - _SLIDER_OVERRIDE: 1
+    - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -141,4 +147,8 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

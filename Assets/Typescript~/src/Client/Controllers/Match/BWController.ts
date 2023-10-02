@@ -2,6 +2,9 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { PlayerController } from "Imports/Core/Client/Controllers/Player/PlayerController";
 import { TeamController } from "Imports/Core/Client/Controllers/Team/TeamController";
+import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
+import { Entity } from "Imports/Core/Shared/Entity/Entity";
+import { Game } from "Imports/Core/Shared/Game";
 import { Player } from "Imports/Core/Shared/Player/Player";
 import { Team } from "Imports/Core/Shared/Team/Team";
 import { SetUtil } from "Imports/Core/Shared/Util/SetUtil";
@@ -16,16 +19,47 @@ export class BWController implements OnStart {
 
 	OnStart(): void {
 		/* Listen for player eliminated. */
-		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId) => {
+		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId: number) => {
 			const player = this.playerController.GetPlayerFromClientId(clientId);
 			if (!player) return;
 			this.eliminatedPlayers.add(player);
 			ClientSignals.PlayerEliminated.Fire({ player });
 		});
 		/* Listen for match end. */
-		Network.ServerToClient.MatchEnded.Client.OnServerEvent((winningTeamId) => {
+		Network.ServerToClient.MatchEnded.Client.OnServerEvent((winningTeamId?: string) => {
 			if (winningTeamId) this.ShowWinscreen(winningTeamId);
 		});
+
+		/* Listen for team assignements*/
+		CoreClientSignals.PlayerChangeTeam.Connect((teamSignal) => {
+			if (!teamSignal.Player.Character || teamSignal.Player.Character?.IsLocalCharacter()) {
+				return;
+			}
+			const team = teamSignal.Player.Character?.GetTeam();
+			if (team) {
+				this.SetTeamColor(teamSignal.Player.Character, team);
+			}
+		});
+
+		CoreClientSignals.EntitySpawn.Connect((spawnSignal) => {
+			const team = spawnSignal.entity.GetTeam();
+			if (team) {
+				this.SetTeamColor(spawnSignal.entity, team);
+			}
+		});
+	}
+
+	private SetTeamColor(entity: Entity, team: Team) {
+		if (entity.IsLocalCharacter() || !entity.player) {
+			return;
+		}
+		//Show a glow to indicate friend or foe
+		const sameTeam = team?.id === Game.LocalPlayer.Character?.GetTeam()?.id;
+		const targetColor = sameTeam ? Color.cyan : Color.red;
+		const strength = sameTeam ? 0.2 : 1;
+		if (!sameTeam) {
+			entity.anim.SetFresnelColor(targetColor, 5, strength);
+		}
 	}
 
 	/**

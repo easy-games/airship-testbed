@@ -14,6 +14,7 @@ import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
 import { ItemPlayMode } from "./CharacterEntityAnimator";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 export class EntityAnimator {
 	private readonly RootOverrideLayer = 1;
@@ -224,6 +225,30 @@ export class EntityAnimator {
 		});
 		Task.Delay(duration, () => {
 			this.isFlashing = false;
+		});
+	}
+
+	public SetFresnelColor(color: Color, power: number, strength: number) {
+		if (this.entity.IsDestroyed()) return;
+		print("Setting fresnel color: " + color);
+		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.meshes);
+		//TODO: Material property block AddColor doesn't seem to be working???
+		/* const propertyBlock: MaterialPropertyBlock = Bridge.MakeMaterialPropertyBlock();
+		propertyBlock.AddFloat("_RimPower", power);
+		propertyBlock.AddFloat("_RimIntensity", strength);
+		propertyBlock.AddColor("_RimColor", color); */
+		allMeshes.forEach((renderer) => {
+			if (renderer && renderer.enabled) {
+				const materials = renderer.materials;
+				for (let i = 0; i < materials.Length; i++) {
+					const mat = materials.GetValue(i);
+					mat.EnableKeyword("RIM_LIGHT_ON");
+					mat.SetColor("_RimColor", color);
+					mat.SetFloat("_RimPower", power);
+					mat.SetFloat("_RimIntensity", strength);
+					//renderer.SetPropertyBlock(propertyBlock);
+				}
+			}
 		});
 	}
 

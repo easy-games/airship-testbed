@@ -129,8 +129,8 @@ Material:
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
-    - _RimIntensity: 1
-    - _RimPower: 5
+    - _RimIntensity: 0
+    - _RimPower: 3
     - _RoughOverride: 0.834
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
@@ -148,7 +148,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0.1764706}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
   m_BuildTextureStacks: []

@@ -11541,6 +11541,9 @@ interface float3Constructor {
 declare const float3: float3Constructor;
     
 interface VoxelBlocks {
+    maxResolution: number;
+    atlasSize: number;
+    pointFiltering: boolean;
     atlas: TexturePacker;
     materials: CSDictionary<string, Material>;
     loadedBlocks: CSDictionary<number, BlockDefinition>;
@@ -11624,11 +11627,13 @@ interface BlockDefinition {
     averageColor: CSArray<Color>;
     minecraftConversions: CSArray<string>;
     name: string;
-    topTexture: string;
-    topMaterial: string;
     material: string;
-    bottomTexture: string;
+    topMaterial: string;
+    sideMaterial: string;
+    bottomMaterial: string;
+    topTexture: string;
     sideTexture: string;
+    bottomTexture: string;
     meshTexture: string;
     meshPath: string;
     meshPathLod: string;
@@ -12843,6 +12848,7 @@ interface BridgeConstructor {
     GetCurrentFPS(): number;
     GetVolume(): number;
     IsFullScreen(): boolean;
+    MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
     RemoveRichText(input: string): string;
@@ -13055,6 +13061,7 @@ interface ProjectileHitEvent {
     
 interface MaterialColor extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
+    addedByEditorScript: boolean;
 
     constructor(): MaterialColor;
 
