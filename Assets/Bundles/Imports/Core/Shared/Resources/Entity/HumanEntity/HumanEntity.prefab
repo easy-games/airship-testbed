@@ -182,7 +182,7 @@ MonoBehaviour:
     Position: 1
     Rotation: 1
     Scale: 0
-  _interpolation: 4
+  _interpolation: 8
   _extrapolation: 2
   _enableTeleport: 1
   _teleportThreshold: 2
@@ -227,7 +227,7 @@ MonoBehaviour:
   _teleportThreshold: 5
   _ownerSmoothPosition: 1
   _ownerSmoothRotation: 1
-  _ownerInterpolation: 2
+  _ownerInterpolation: 8
   _predictionType: 0
   _rigidbody: {fileID: 0}
   _rigidbody2d: {fileID: 0}
@@ -1490,6 +1490,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!137 &2647874669622982769 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -8410874523415082752, guid: 1cc3827303c6dfe4bb3aeab1d8fc0fdf, type: 3}
@@ -1531,6 +1532,7 @@ MonoBehaviour:
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!114 &7302943966516852319
 MonoBehaviour:
   m_ObjectHideFlags: 0
