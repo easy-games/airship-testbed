@@ -212,7 +212,7 @@ export class Entity {
 			CoreNetwork.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.id);
 			return;
 		}
-		// if (this.IsLocalCharacter()) return;
+		if (this.IsLocalCharacter()) return;
 
 		let sameTeam = false;
 		let team = this.GetTeam();

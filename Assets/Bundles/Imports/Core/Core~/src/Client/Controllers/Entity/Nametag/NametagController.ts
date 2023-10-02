@@ -13,7 +13,7 @@ import { EntityController } from "../EntityController";
 export class NametagController implements OnStart {
 	private readonly nameTageId = "Nametag";
 	private readonly graphicsBundleName = "Graphics";
-	private showSelfNametag = true;
+	private showSelfNametag = false;
 
 	constructor(
 		private readonly playerController: PlayerController,
