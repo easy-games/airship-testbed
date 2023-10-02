@@ -32,12 +32,18 @@ const blockItemAssets: ItemAssetsMeta = {
 };
 const swordItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.18,
+	cooldownSeconds: 0.14,
+	canHoldToUse: false,
 };
 const swordItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemSword,
 	onUsePrefabId: Bundle_ItemSword_Prefabs.OnUse,
-	onUseSound: [coreSoundPath + "Sword_Swing_03.wav"],
+	onUseSound: [
+		coreSoundPath + "s_Sword_Swing_Wood_01.wav",
+		coreSoundPath + "s_Sword_Swing_Wood_02.wav",
+		coreSoundPath + "s_Sword_Swing_Wood_03.wav",
+		coreSoundPath + "s_Sword_Swing_Wood_04.wav",
+	],
 	onUseSoundVolume: 0.3,
 };
 const pickaxeItemAssets: ItemAssetsMeta = {

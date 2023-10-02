@@ -1,6 +1,8 @@
 ﻿import { AudioManager } from "Shared/Audio/AudioManager";
+import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { SetInterval } from "Shared/Util/Timer";
 import { Entity } from "../../Entity/Entity";
 import {
 	Bundle_ItemUnarmed,
@@ -14,8 +16,6 @@ import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
 import { ItemType } from "../ItemType";
 import { ItemUtil } from "../ItemUtil";
-import { SetInterval } from "Shared/Util/Timer";
-import { Bin } from "Shared/Util/Bin";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -120,11 +120,13 @@ export class HeldItem {
 	private HoldDownAction() {
 		if (this.meta.itemMechanics?.cooldownSeconds && !this.holdingDown) {
 			this.holdingDown = true;
-			this.holdingDownBin.Add(
-				SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {
-					this.TryUse();
-				}),
-			);
+			if (this.meta.itemMechanics.canHoldToUse) {
+				this.holdingDownBin.Add(
+					SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {
+						this.TryUse();
+					}),
+				);
+			}
 			this.holdingDownBin.Add(() => {
 				this.holdingDown = false;
 			});
