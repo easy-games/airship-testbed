@@ -180,7 +180,7 @@ export class Entity {
 		}
 
 		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
-			this.anim?.PlayFootstepSound();
+			this.anim?.PlayFootstepSound(1.4);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(impactConn);

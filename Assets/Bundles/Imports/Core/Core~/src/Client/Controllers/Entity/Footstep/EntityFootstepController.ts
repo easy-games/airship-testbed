@@ -32,7 +32,7 @@ export class EntityFootstepController implements OnStart {
 					}
 					this.entityLastFootstepTime.set(entity.id, currentTime);
 					try {
-						entity.anim.PlayFootstepSound();
+						entity.anim.PlayFootstepSound(entity.GetState() === EntityState.Crouching ? 0.3 : 1);
 					} catch (err) {
 						Debug.LogError(err);
 					}
