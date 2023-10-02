@@ -1,6 +1,4 @@
-import { Dependency, Flamework } from "@easy-games/flamework-core";
-import { CharacterCameraMode } from "Imports/Core/Client/Controllers/Character/CharacterCameraMode";
-import { LocalEntityController } from "Imports/Core/Client/Controllers/Character/LocalEntityController";
+import { Flamework } from "@easy-games/flamework-core";
 import { Bootstrap } from "Imports/Core/Shared/Bootstrap/Bootstrap";
 import { BedWars } from "./BedWars/BedWars";
 
@@ -16,8 +14,8 @@ Flamework.Ignite();
 // localEntityController.SetCharacterCameraMode(CharacterCameraMode.ORBIT);
 // localEntityController.SetDefaultFirstPerson(false);
 
-Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.ORBIT);
-Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
+// Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.ORBIT);
+// Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
 
 Bootstrap.FinishedSetup();
 
