@@ -78,6 +78,7 @@ export declare class Entity {
     readonly OnArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     AddHealthbar(): void;
+    GetHealthbar(): Healthbar | undefined;
     GetTeam(): Team | undefined;
     CanDamage(entity: Entity): boolean;
     SetPlayer(player: Player | undefined): void;

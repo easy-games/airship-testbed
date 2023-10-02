@@ -39,6 +39,6 @@ export declare class EntityAnimator {
     PlayTakeDamage(damageAmount: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
     PlayDeath(damageType: DamageType): void;
     private PlayDamageFlash;
-    PlayFootstepSound(): void;
+    PlayFootstepSound(volumeScale: number): void;
     private OnAnimationEvent;
 }

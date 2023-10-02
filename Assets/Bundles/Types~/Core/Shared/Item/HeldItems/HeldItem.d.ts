@@ -11,11 +11,14 @@ export declare class HeldItem {
     private isCharging;
     protected currentItemGOs: GameObject[];
     protected currentItemAnimations: Animator[];
+    private holdingDownBin;
+    private holdingDown;
     constructor(entity: Entity, newMeta: ItemMeta);
     protected Log(message: string): void;
     OnEquip(): void;
     OnUnEquip(): void;
     OnCallToActionStart(): void;
+    private HoldDownAction;
     OnCallToActionEnd(): void;
     OnSecondaryActionStart(): void;
     OnSecondaryActionEnd(): void;
