@@ -20,7 +20,8 @@ export interface GeneratorCreationConfig {
 		range: number;
 	};
 	/** If this field is set, generator will have a world-space label above it. */
-	label?: boolean;
+	nameLabel?: boolean;
+	spawnTimeLabel?: boolean;
 }
 
 /** Describes a generator's state. */
@@ -32,7 +33,8 @@ export interface GeneratorDto {
 	/** The type of item a generator produces. */
 	readonly item: ItemType;
 	/** If this field is set, generator will have a world-space label above it. */
-	readonly label?: boolean;
-	nextSpawnTime: number;
+	readonly nameLabel?: boolean;
+	readonly spawnTimeLabel?: boolean;
+	startSpawnTime: number;
 	spawnRate: number;
 }

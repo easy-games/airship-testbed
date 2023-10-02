@@ -53,7 +53,8 @@ export class CreateGeneratorCommand extends ChatCommand {
 			item: itemType,
 			spawnRate: spawnRate,
 			stackLimit: DEFAULT_GENERATOR_STACK_LIMIT,
-			label: true,
+			nameLabel: true,
+			spawnTimeLabel: spawnRate > 2,
 			/* TODO: Split data? Maybe? */
 		});
 	}

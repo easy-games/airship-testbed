@@ -48,7 +48,7 @@ export class GeneratorSpawnService implements OnStart {
 				item: ItemType.IRON,
 				spawnRate: 1,
 				stackLimit: 100,
-				label: false,
+				nameLabel: true,
 				split: {
 					range: 30,
 				},
@@ -71,7 +71,8 @@ export class GeneratorSpawnService implements OnStart {
 				item: ItemType.DIAMOND,
 				spawnRate: 25,
 				stackLimit: 6,
-				label: true,
+				nameLabel: true,
+				spawnTimeLabel: true,
 			});
 			// Create deny region on generator.
 			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
@@ -83,7 +84,8 @@ export class GeneratorSpawnService implements OnStart {
 				item: ItemType.EMERALD,
 				spawnRate: 45,
 				stackLimit: 3,
-				label: true,
+				nameLabel: true,
+				spawnTimeLabel: true,
 			});
 			// Create deny region on generator.
 			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);

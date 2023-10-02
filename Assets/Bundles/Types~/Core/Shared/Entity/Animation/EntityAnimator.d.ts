@@ -28,6 +28,7 @@ export declare class EntityAnimator {
     private steppedOnBlockType;
     private lastFootstepSoundTime;
     private deathVfx?;
+    baseFootstepVolumeScale: number;
     constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);
     Destroy(): void;
     PlayAnimation(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;
