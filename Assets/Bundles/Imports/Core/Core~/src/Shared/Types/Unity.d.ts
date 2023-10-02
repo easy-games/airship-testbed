@@ -3774,3 +3774,8 @@ interface Collider extends Component {
     ClosestPointOnBounds(position: Vector3): Vector3;
     Raycast(ray: Ray, maxDistance: number): RaycastHit | undefined;
 }
+
+interface MaterialPropertyBlockConstructor {
+    new(): MaterialPropertyBlock;
+}
+declare const MaterialPropertyBlock: MaterialPropertyBlockConstructor;

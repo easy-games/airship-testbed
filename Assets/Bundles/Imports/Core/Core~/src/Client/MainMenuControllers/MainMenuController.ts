@@ -64,6 +64,9 @@ export class MainMenuController implements OnStart {
 				AppManager.Close();
 			});
 		}
+		const block = new MaterialPropertyBlock();
+		block.SetInt("test", 1);
+		print("block: " + block.GetInt("test"));
 	}
 
 	public OpenFromGame(): void {
