@@ -40,13 +40,16 @@ export class EntityAnimator {
 	private lastFootstepSoundTime = 0;
 	private deathVfx?: GameObject;
 
+	public baseFootstepVolumeScale = 0.15;
+
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
 		this.entityRef = entityRef;
 
 		//AUDIO
 		this.footstepAudioBundle = new AudioClipBundle([]);
-		this.footstepAudioBundle.volumeScale = 0.15;
+		this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
+		this.footstepAudioBundle.soundOptions.maxDistance = 15;
 		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 			? AudioBundleSpacialMode.GLOBAL
 			: AudioBundleSpacialMode.SPACIAL;
@@ -256,7 +259,7 @@ export class EntityAnimator {
 				this.footstepAudioBundle.UpdatePaths(stepSounds);
 			}
 			this.footstepAudioBundle.spacialPosition = this.entity.model.transform.position;
-			this.footstepAudioBundle.volumeScale = volumeScale;
+			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale * volumeScale;
 			this.footstepAudioBundle.PlayNext();
 		}
 	}
