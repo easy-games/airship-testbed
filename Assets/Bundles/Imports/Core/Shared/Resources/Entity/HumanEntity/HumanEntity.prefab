@@ -182,7 +182,7 @@ MonoBehaviour:
     Position: 1
     Rotation: 1
     Scale: 0
-  _interpolation: 8
+  _interpolation: 5
   _extrapolation: 2
   _enableTeleport: 1
   _teleportThreshold: 2
@@ -227,7 +227,7 @@ MonoBehaviour:
   _teleportThreshold: 5
   _ownerSmoothPosition: 1
   _ownerSmoothRotation: 1
-  _ownerInterpolation: 8
+  _ownerInterpolation: 5
   _predictionType: 0
   _rigidbody: {fileID: 0}
   _rigidbody2d: {fileID: 0}
