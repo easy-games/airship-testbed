@@ -97,7 +97,7 @@ Shader "Airship/AirshipParallax"
 
                 float4 bgFinal = bgColor * bgTexColor;
 
-                float4 finalColor = fgFinal + bgFinal;
+                float4 finalColor = fgFinal * fgColor.a + bgFinal;
                 
 				MRT0 = finalColor;
 				MRT1 = _Emissive * finalColor;// * i.uv.y;
