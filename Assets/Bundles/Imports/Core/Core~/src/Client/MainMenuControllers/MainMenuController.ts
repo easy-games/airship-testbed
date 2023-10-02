@@ -4,6 +4,7 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import { AuthController } from "./Auth/AuthController";
@@ -50,7 +51,6 @@ export class MainMenuController implements OnStart {
 		}
 
 		const closeButton = this.refs.GetValue("UI", "CloseButton");
-
 		if (Game.Context === CoreContext.MAIN_MENU) {
 			const mouse = new Mouse();
 			mouse.AddUnlocker();
@@ -59,6 +59,10 @@ export class MainMenuController implements OnStart {
 		} else {
 			const bg = this.refs.GetValue("UI", "Background");
 			bg.GetComponent<Image>().color = new Color(1, 1, 1, 0.98);
+
+			CanvasAPI.OnClickEvent(closeButton, () => {
+				AppManager.Close();
+			});
 		}
 	}
 
