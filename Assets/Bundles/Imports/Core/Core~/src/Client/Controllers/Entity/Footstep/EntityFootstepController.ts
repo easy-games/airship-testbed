@@ -31,8 +31,13 @@ export class EntityFootstepController implements OnStart {
 						continue;
 					}
 					this.entityLastFootstepTime.set(entity.id, currentTime);
+
+					let volumeScale = entity.GetState() === EntityState.Crouching ? 0.3 : 1;
+					if (!entity.IsLocalCharacter()) {
+						volumeScale *= 2;
+					}
 					try {
-						entity.anim.PlayFootstepSound();
+						entity.anim.PlayFootstepSound(volumeScale);
 					} catch (err) {
 						Debug.LogError(err);
 					}

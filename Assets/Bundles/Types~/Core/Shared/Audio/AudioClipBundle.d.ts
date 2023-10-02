@@ -1,5 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
+import { PlaySoundConfig } from "./AudioManager";
 export declare enum AudioBundlePlayMode {
     MANUAL = 0,
     SEQUENCE = 1,
@@ -18,7 +19,7 @@ export declare class AudioClipBundle {
     spacialPosition: Vector3;
     volumeScale: number;
     useFullPath: boolean;
-    private soundOptions;
+    soundOptions: PlaySoundConfig;
     private clipPaths;
     private possibleRandomIndex;
     private lastIndexPlayed;

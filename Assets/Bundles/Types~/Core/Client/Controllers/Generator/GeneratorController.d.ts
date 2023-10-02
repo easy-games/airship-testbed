@@ -5,15 +5,14 @@ export declare class GeneratorController implements OnStart {
     private generatorLabelPrefab;
     /** Mapping of generator id to `GeneratorStateDto`. */
     private generatorMap;
-    /** Set of generators that require a spawn time reset. */
-    private spawnResetGenerators;
     /**
      * Map of generators to stack root GameObject. Indicates whether or not client should delete
      * generator dropped items.
      */
     private stackedGenerators;
     /** Map of generators to text label components. */
-    private generatorTextLabelMap;
+    private generatorGameObjectMap;
+    private generatorBins;
     constructor();
     OnStart(): void;
     /** Creates a generator label in world space. */

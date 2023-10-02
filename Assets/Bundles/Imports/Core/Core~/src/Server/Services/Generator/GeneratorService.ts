@@ -92,8 +92,9 @@ export class GeneratorService implements OnStart {
 				id: generatorId,
 				item: config.item,
 				spawnRate: config.spawnRate,
-				nextSpawnTime: TimeUtil.GetServerTime() + config.spawnRate,
-				label: config.label,
+				startSpawnTime: TimeUtil.GetServerTime(),
+				nameLabel: config.nameLabel,
+				spawnTimeLabel: config.spawnTimeLabel,
 			},
 			split: config.split,
 		};
@@ -126,7 +127,7 @@ export class GeneratorService implements OnStart {
 	private TickGenerator(generatorState: GeneratorState): () => void {
 		return SetInterval(generatorState.dto.spawnRate, () => {
 			/* Always update next spawn time. */
-			generatorState.dto.nextSpawnTime = TimeUtil.GetServerTime() + generatorState.dto.spawnRate;
+			// generatorState.dto.nextSpawnTime = TimeUtil.GetServerTime() + generatorState.dto.spawnRate;
 			/* Only increase stack size if generator has _not_ reached capacity. */
 			// if (generatorState.stackSize < generatorState.stackLimit) {
 			// 	generatorState.stackSize++;
@@ -164,7 +165,7 @@ export class GeneratorService implements OnStart {
 		state.ticker?.();
 
 		state.dto.spawnRate = newSpawnRate;
-		state.dto.nextSpawnTime = TimeUtil.GetServerTime() + newSpawnRate;
+		state.dto.startSpawnTime = TimeUtil.GetServerTime();
 		state.ticker = this.TickGenerator(state);
 
 		/* Inform clients of _all_ server-sided generator spawn rate changes. */

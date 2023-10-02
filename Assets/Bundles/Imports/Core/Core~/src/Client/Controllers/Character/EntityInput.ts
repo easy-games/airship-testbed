@@ -54,6 +54,17 @@ export class EntityInput {
 		const mobileJoystick = this.bin.Add(new MobileJoystick());
 		const preferred = this.bin.Add(new Preferred());
 
+		let autoSprinting = false;
+		this.bin.Add(
+			this.entity.OnStateChanged.Connect((newState, oldState) => {
+				if (newState === EntityState.Sprinting) {
+					autoSprinting = true;
+				} else {
+					autoSprinting = false;
+				}
+			}),
+		);
+
 		const updateMouseKeyboardControls = (dt: number) => {
 			if (!this.enabled) return;
 
@@ -71,13 +82,15 @@ export class EntityInput {
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
 
+				let sprinting = leftShift || autoSprinting;
+
 				const moveDirection = new Vector3(sideways, 0, forward);
 
 				if (this.jumping !== jump) {
 					this.jumping = jump;
 				}
 
-				this.entityDriver.SetMoveInput(moveDirection, jump, leftShift, leftCtrl || c);
+				this.entityDriver.SetMoveInput(moveDirection, jump, sprinting, leftCtrl || c);
 			});
 			if (!success) {
 				print(err);

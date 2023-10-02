@@ -180,7 +180,7 @@ export class Entity {
 		}
 
 		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
-			this.anim?.PlayFootstepSound();
+			this.anim?.PlayFootstepSound(1.4);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(impactConn);
@@ -230,6 +230,10 @@ export class Entity {
 
 		this.healthbar.SetValue(this.health / this.maxHealth);
 		this.healthbarEnabled = true;
+	}
+
+	public GetHealthbar(): Healthbar | undefined {
+		return this.healthbar;
 	}
 
 	public GetTeam(): Team | undefined {

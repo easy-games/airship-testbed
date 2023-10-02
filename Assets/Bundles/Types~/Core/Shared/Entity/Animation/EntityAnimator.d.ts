@@ -28,6 +28,7 @@ export declare class EntityAnimator {
     private steppedOnBlockType;
     private lastFootstepSoundTime;
     private deathVfx?;
+    baseFootstepVolumeScale: number;
     constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);
     Destroy(): void;
     PlayAnimation(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;
@@ -40,6 +41,6 @@ export declare class EntityAnimator {
     PlayDeath(damageType: DamageType): void;
     private PlayDamageFlash;
     SetFresnelColor(color: Color, power: number, strength: number): void;
-    PlayFootstepSound(): void;
+    PlayFootstepSound(volumeScale: number): void;
     private OnAnimationEvent;
 }

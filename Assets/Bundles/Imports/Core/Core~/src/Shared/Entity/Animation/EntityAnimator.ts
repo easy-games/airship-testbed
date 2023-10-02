@@ -41,19 +41,22 @@ export class EntityAnimator {
 	private lastFootstepSoundTime = 0;
 	private deathVfx?: GameObject;
 
+	public baseFootstepVolumeScale = 0.15;
+
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
 		this.entityRef = entityRef;
 
 		//AUDIO
 		this.footstepAudioBundle = new AudioClipBundle([]);
-		this.footstepAudioBundle.volumeScale = 0.15;
+		this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
+		this.footstepAudioBundle.soundOptions.maxDistance = 15;
 		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 			? AudioBundleSpacialMode.GLOBAL
 			: AudioBundleSpacialMode.SPACIAL;
 
 		this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
-		this.slideAudioBundle.volumeScale = 0.15;
+		this.slideAudioBundle.volumeScale = 0.2;
 		this.slideAudioBundle.useFullPath = true;
 		this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
 		this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
@@ -252,7 +255,7 @@ export class EntityAnimator {
 		});
 	}
 
-	public PlayFootstepSound(): void {
+	public PlayFootstepSound(volumeScale: number): void {
 		const blockId = this.entity.entityDriver.groundedBlockId;
 		if (blockId === 0) return;
 
@@ -281,15 +284,13 @@ export class EntityAnimator {
 				this.footstepAudioBundle.UpdatePaths(stepSounds);
 			}
 			this.footstepAudioBundle.spacialPosition = this.entity.model.transform.position;
+			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale * volumeScale;
 			this.footstepAudioBundle.PlayNext();
 		}
 	}
 
 	private OnAnimationEvent(key: EntityAnimationEventKey) {
 		switch (key) {
-			case EntityAnimationEventKey.FOOTSTEP:
-				this.PlayFootstepSound();
-				break;
 			case EntityAnimationEventKey.SLIDE_START:
 				this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
 				this.slideAudioBundle.Stop();
@@ -316,7 +317,7 @@ export class EntityAnimator {
 				}
 				break;
 			case EntityAnimationEventKey.LAND:
-				this.PlayFootstepSound();
+				this.PlayFootstepSound(1.4);
 				if (this.entityRef.landSound) {
 					if (this.entity.IsLocalCharacter()) {
 						AudioManager.PlayClipGlobal(this.entityRef.landSound, {

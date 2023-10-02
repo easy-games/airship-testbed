@@ -23,7 +23,7 @@ export class AudioClipBundle {
 	public volumeScale = 1;
 	public useFullPath = false;
 
-	private soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
+	public soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
 	private clipPaths: string[];
 	private possibleRandomIndex: number[] = [];
 	private lastIndexPlayed = -1;

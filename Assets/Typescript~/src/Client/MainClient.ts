@@ -14,6 +14,9 @@ Flamework.Ignite();
 // localEntityController.SetCharacterCameraMode(CharacterCameraMode.ORBIT);
 // localEntityController.SetDefaultFirstPerson(false);
 
+// Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.ORBIT);
+// Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
+
 Bootstrap.FinishedSetup();
 
 // Hack to allow require(). Will remove eventually.

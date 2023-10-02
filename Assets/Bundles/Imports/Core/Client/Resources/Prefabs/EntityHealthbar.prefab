@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -801024817317712677}
   - component: {fileID: 8314911448783029567}
   - component: {fileID: 7855463244541722100}
+  - component: {fileID: 866649586761200817}
   m_Layer: 5
   m_Name: EntityHealthbar
   m_TagString: Untagged
@@ -112,6 +113,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 7887143001107070281}
   maxDistance: 50
+--- !u!225 &866649586761200817
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7887143001107070292}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &5217414809892261391
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -29,6 +29,30 @@ export class NametagController implements OnStart {
 			event.entity.OnDisplayNameChanged.Connect(() => {
 				this.UpdateNametag(event.entity);
 			});
+
+			const SetNametagAlpha = (entity: Entity, alpha: number) => {
+				const nameTag = entity.model.transform.FindChild(this.nameTageId);
+				if (nameTag) {
+					const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>();
+					canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
+				}
+				const healthbar = entity.GetHealthbar();
+				if (healthbar) {
+					const canvasGroup = healthbar.transform.parent.GetComponent<CanvasGroup>();
+					if (alpha < 1) {
+						canvasGroup.TweenCanvasGroupAlpha(alpha * 0.6, 0.1);
+					} else {
+						canvasGroup.TweenCanvasGroupAlpha(1, 0.1);
+					}
+				}
+			};
+			event.entity.OnStateChanged.Connect((newState, oldState) => {
+				if (newState === EntityState.Crouching) {
+					SetNametagAlpha(event.entity, 0.1);
+				} else if (oldState === EntityState.Crouching) {
+					SetNametagAlpha(event.entity, 1);
+				}
+			});
 		});
 
 		CoreClientSignals.PlayerChangeTeam.Connect((event) => {

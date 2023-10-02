@@ -140,7 +140,7 @@ export class TeamUpgradeService implements OnStart {
 								item: ItemType.EMERALD,
 								spawnRate: 45,
 								stackLimit: 3,
-								label: false,
+								nameLabel: true,
 							});
 							this.generatorSpawnService.RegisterNewGeneratorForTeam(event.team, generatorId);
 							break;
@@ -161,7 +161,7 @@ export class TeamUpgradeService implements OnStart {
 								item: ItemType.DIAMOND,
 								spawnRate: 25,
 								stackLimit: 6,
-								label: false,
+								nameLabel: true,
 							});
 							this.generatorSpawnService.RegisterNewGeneratorForTeam(event.team, generatorId);
 						}
