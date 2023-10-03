@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 2515083996402420637}
   - component: {fileID: 2515083996402420636}
   - component: {fileID: 2515083996402420635}
+  - component: {fileID: 1991798601492088144}
   m_Layer: 5
   m_Name: AppManagerBackground
   m_TagString: Untagged
@@ -197,3 +198,15 @@ MonoBehaviour:
     keyValuePairs:
     - key: Background
       value: {fileID: 2515083995957389483}
+--- !u!225 &1991798601492088144
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515083996402420634}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
