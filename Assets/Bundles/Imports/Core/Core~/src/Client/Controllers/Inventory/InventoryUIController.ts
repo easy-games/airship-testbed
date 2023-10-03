@@ -74,6 +74,10 @@ export class InventoryUIController implements OnStart {
 
 		this.backpackShown = true;
 
+		const wrapper = this.backpackCanvas.transform.GetChild(0).GetComponent<RectTransform>();
+		wrapper.anchoredPosition = Bridge.MakeVector2(0, -20);
+		wrapper.TweenAnchoredPositionY(0, 0.12);
+
 		AppManager.Open(this.backpackCanvas, {
 			onClose: () => {
 				this.backpackShown = false;

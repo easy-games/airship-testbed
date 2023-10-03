@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2953122766502006990}
   - component: {fileID: 3146937508818368955}
   - component: {fileID: 4880513720972871430}
-  - component: {fileID: 832844441218272194}
   m_Layer: 0
   m_Name: _fallback
   m_TagString: Untagged
@@ -62,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b9fa311ba5e484744812f9411a5280c7, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &832844441218272194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7802634283327141613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437a567b0e9d87a40a8fc6cf3cbf6a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertexColor: {r: 0.3786935, g: 0.4098049, b: 0.4339623, a: 1}

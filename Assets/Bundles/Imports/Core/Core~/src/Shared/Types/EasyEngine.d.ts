@@ -420,6 +420,7 @@ interface LayerMask {
 	GetMask(layer1: string, layer2: string, layer3: string, layer4: string, layer5: string): number;
 	NameToLayer(layerName: string): number;
 	LayerToName(layer: number): string;
+	InvertMask(mask: number): number;
 }
 declare const LayerMask: LayerMask;
 
