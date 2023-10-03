@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1739812714827069617}
   - component: {fileID: 6636537564701472902}
   - component: {fileID: 7032372936245158357}
-  - component: {fileID: 8933497030855104295}
   m_Layer: 0
   m_Name: rageblade.003
   m_TagString: Untagged
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8933497030855104295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1390366656941098968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437a567b0e9d87a40a8fc6cf3cbf6a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertexColor: {r: 1, g: 0.8777841, b: 0.21226418, a: 1}
 --- !u!1 &2448523470051743193
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +130,6 @@ GameObject:
   - component: {fileID: 6478302646147988448}
   - component: {fileID: 7610114459265428701}
   - component: {fileID: 5283133391319065594}
-  - component: {fileID: 4979545860239579772}
   m_Layer: 0
   m_Name: rageblade
   m_TagString: Untagged
@@ -218,19 +203,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4979545860239579772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4631832629278479504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437a567b0e9d87a40a8fc6cf3cbf6a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertexColor: {r: 0.92941177, g: 1, b: 0.0990566, a: 1}
 --- !u!1 &4746826831380951153
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +214,6 @@ GameObject:
   - component: {fileID: 230654079785486924}
   - component: {fileID: 4960903517523116730}
   - component: {fileID: 5522754761452746242}
-  - component: {fileID: 8023434977095287502}
   m_Layer: 0
   m_Name: rageblade.001
   m_TagString: Untagged
@@ -315,19 +286,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8023434977095287502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4746826831380951153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437a567b0e9d87a40a8fc6cf3cbf6a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertexColor: {r: 1, g: 0.1377791, b: 0.07075471, a: 1}
 --- !u!1 &8074089563125215164
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +297,6 @@ GameObject:
   - component: {fileID: 1565326619738841250}
   - component: {fileID: 9139625139844504313}
   - component: {fileID: 8349045309109757104}
-  - component: {fileID: 3136318819264685499}
   m_Layer: 0
   m_Name: rageblade.002
   m_TagString: Untagged
@@ -412,19 +369,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3136318819264685499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8074089563125215164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437a567b0e9d87a40a8fc6cf3cbf6a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertexColor: {r: 1, g: 0.13725491, b: 0.07058824, a: 1}
 --- !u!1 &8956763419375103004
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +380,6 @@ GameObject:
   - component: {fileID: 1686132130466948214}
   - component: {fileID: 1534522481967235882}
   - component: {fileID: 3271078115339625193}
-  - component: {fileID: 263369876112360652}
   m_Layer: 0
   m_Name: rageblade.004
   m_TagString: Untagged
@@ -509,16 +452,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &263369876112360652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8956763419375103004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437a567b0e9d87a40a8fc6cf3cbf6a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertexColor: {r: 0.26415092, g: 0.0405544, b: 0.033641864, a: 1}
