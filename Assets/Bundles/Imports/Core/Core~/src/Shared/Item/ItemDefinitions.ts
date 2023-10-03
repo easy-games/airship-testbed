@@ -395,16 +395,19 @@ export const items: {
 	[ItemType.IRON]: {
 		displayName: "Iron",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.IRON)],
 	},
 	[ItemType.DIAMOND]: {
 		displayName: "Diamond",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.DIAMOND)],
 	},
 	[ItemType.EMERALD]: {
 		displayName: "Emerald",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.EMERALD)],
 	},
 
@@ -582,6 +585,7 @@ export const items: {
 	[ItemType.WOOD_ARROW]: {
 		displayName: "Wood Arrow",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.WOOD_ARROW)],
 		projectile: {
 			yAxisAimAdjust: 0.1,
