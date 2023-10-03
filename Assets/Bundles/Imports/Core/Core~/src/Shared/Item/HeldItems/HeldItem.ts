@@ -118,11 +118,13 @@ export class HeldItem {
 	}
 
 	private HoldDownAction() {
-		if (this.meta.itemMechanics?.cooldownSeconds && !this.holdingDown) {
+		if (this.meta.itemMechanics && !this.holdingDown) {
 			this.holdingDown = true;
 			if (this.meta.itemMechanics.canHoldToUse) {
+				const holdCooldown = this.meta.itemMechanics.holdToUseCooldownInSeconds;
+				const cooldown = this.meta.itemMechanics.cooldownSeconds;
 				this.holdingDownBin.Add(
-					SetInterval(this.meta.itemMechanics.cooldownSeconds, () => {
+					SetInterval(holdCooldown && holdCooldown > cooldown ? holdCooldown : cooldown, () => {
 						this.TryUse();
 					}),
 				);
