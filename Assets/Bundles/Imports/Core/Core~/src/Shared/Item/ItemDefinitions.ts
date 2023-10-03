@@ -21,10 +21,12 @@ const defaultItemMechanics: ItemMechanicsMeta = {
 	maxChargeSeconds: 0,
 	cooldownSeconds: 0.1,
 	canHoldToUse: true,
+	holdToUseCooldownInSeconds: -1,
 };
 const blockItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.12,
+	cooldownSeconds: 0.0,
+	holdToUseCooldownInSeconds: 0.16,
 };
 const blockItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemBlock,
@@ -32,7 +34,7 @@ const blockItemAssets: ItemAssetsMeta = {
 };
 const swordItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.14,
+	cooldownSeconds: 0.15,
 	canHoldToUse: false,
 };
 const swordItemAssets: ItemAssetsMeta = {
@@ -164,6 +166,9 @@ export const items: {
 		block: {
 			blockId: 1,
 			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
 		},
 	},
 	[ItemType.TALL_GRASS]: {
@@ -172,12 +177,10 @@ export const items: {
 		itemAssets: blockItemAssets,
 		block: {
 			blockId: 52,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
 		},
-		// Block: {
-		// 	HitSound: "GrassBlockHit",
-		// 	BreakSound: "GrassBlockBreak",
-		// 	PlaceSound: "GrassBlockPlace",
-		// },
 	},
 	[ItemType.DIRT]: {
 		displayName: "Dirt",
@@ -186,6 +189,9 @@ export const items: {
 		block: {
 			blockId: 2,
 			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
 		},
 	},
 	[ItemType.STONE]: {
@@ -391,16 +397,19 @@ export const items: {
 	[ItemType.IRON]: {
 		displayName: "Iron",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.IRON)],
 	},
 	[ItemType.DIAMOND]: {
 		displayName: "Diamond",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.DIAMOND)],
 	},
 	[ItemType.EMERALD]: {
 		displayName: "Emerald",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.EMERALD)],
 	},
 
@@ -578,6 +587,7 @@ export const items: {
 	[ItemType.WOOD_ARROW]: {
 		displayName: "Wood Arrow",
 		itemMechanics: defaultItemMechanics,
+		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.WOOD_ARROW)],
 		projectile: {
 			yAxisAimAdjust: 0.1,

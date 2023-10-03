@@ -26,6 +26,9 @@ export class AppManager {
 
 	private static backgroundCanvas: Canvas;
 	private static backgroundObject: GameObject;
+	private static backgroundCanvasGroup: CanvasGroup;
+
+	private static darkBackgroundTransitionBig = new Bin();
 
 	public static Init() {
 		const backgroundGO = GameObjectUtil.Instantiate(
@@ -35,6 +38,8 @@ export class AppManager {
 		this.backgroundCanvas.enabled = false;
 		const refs = backgroundGO.GetComponent<GameObjectReferences>();
 		this.backgroundObject = refs.GetValue("UI", "Background");
+		this.backgroundCanvasGroup = this.backgroundCanvas.gameObject.GetComponent<CanvasGroup>();
+		this.backgroundCanvasGroup.alpha = 0;
 
 		CanvasAPI.OnPointerEvent(this.backgroundObject, (direction, button) => {
 			if (direction === PointerDirection.DOWN) {
@@ -127,8 +132,21 @@ export class AppManager {
 	}
 
 	public static OpenDarkBackground(sortOrder: number) {
+		this.darkBackgroundTransitionBig.Clean();
+		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(1, 0.06);
+		this.darkBackgroundTransitionBig.Add(() => {
+			t.Cancel();
+		});
 		this.backgroundCanvas.enabled = true;
 		this.backgroundCanvas.sortingOrder = sortOrder;
+	}
+
+	public static CloseDarkBackground(): void {
+		this.darkBackgroundTransitionBig.Clean();
+		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(0, 0.06);
+		this.darkBackgroundTransitionBig.Add(() => {
+			t.Cancel();
+		});
 	}
 
 	public static Close(config?: { noCloseSound?: boolean }): void {
@@ -148,15 +166,14 @@ export class AppManager {
 		}
 
 		if (this.stack.size() === 0) {
-			this.backgroundCanvas.enabled = false;
+			this.CloseDarkBackground();
 			this.opened = false;
 		} else {
 			const top = this.stack[this.stack.size() - 1];
 			if (top.darkBackground) {
-				this.backgroundCanvas.enabled = true;
-				this.backgroundCanvas.sortingOrder = this.stack.size() + 10;
+				this.OpenDarkBackground(this.stack.size() + 10);
 			} else {
-				this.backgroundCanvas.enabled = false;
+				this.CloseDarkBackground();
 			}
 		}
 	}
