@@ -11,6 +11,7 @@ export class EntityInput {
 
 	private jumping = false;
 	private enabled = true;
+	private autoSprinting = false;
 
 	constructor(private readonly entity: Entity) {
 		this.entityDriver = entity.entityDriver;
@@ -34,6 +35,10 @@ export class EntityInput {
 		return this.enabled;
 	}
 
+	public IsSprinting(): boolean {
+		return this.autoSprinting;
+	}
+
 	public AddDisabler(): () => void {
 		const id = this.disablerCounter;
 		this.disablerCounter++;
@@ -54,13 +59,20 @@ export class EntityInput {
 		const mobileJoystick = this.bin.Add(new MobileJoystick());
 		const preferred = this.bin.Add(new Preferred());
 
-		let autoSprinting = false;
+		this.autoSprinting = false;
 		this.bin.Add(
 			this.entity.OnStateChanged.Connect((newState, oldState) => {
 				if (newState === EntityState.Sprinting) {
-					autoSprinting = true;
-				} else {
-					autoSprinting = false;
+					this.autoSprinting = true;
+				} else if (newState !== EntityState.Jumping) {
+					this.autoSprinting = false;
+				}
+			}),
+		);
+		this.bin.Add(
+			keyboard.OnKeyDown(KeyCode.LeftShift, () => {
+				if (this.autoSprinting) {
+					this.autoSprinting = false;
 				}
 			}),
 		);
@@ -82,7 +94,7 @@ export class EntityInput {
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
 
-				let sprinting = leftShift || autoSprinting;
+				let sprinting = leftShift || this.autoSprinting;
 
 				const moveDirection = new Vector3(sideways, 0, forward);
 
