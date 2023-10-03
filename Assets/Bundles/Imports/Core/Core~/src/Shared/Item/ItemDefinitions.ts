@@ -21,10 +21,12 @@ const defaultItemMechanics: ItemMechanicsMeta = {
 	maxChargeSeconds: 0,
 	cooldownSeconds: 0.1,
 	canHoldToUse: true,
+	holdToUseCooldownInSeconds: -1,
 };
 const blockItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.12,
+	cooldownSeconds: 0.0,
+	holdToUseCooldownInSeconds: 0.16,
 };
 const blockItemAssets: ItemAssetsMeta = {
 	assetBundleId: BundleGroupNames.ItemBlock,
@@ -32,7 +34,7 @@ const blockItemAssets: ItemAssetsMeta = {
 };
 const swordItemMechanics: ItemMechanicsMeta = {
 	...defaultItemMechanics,
-	cooldownSeconds: 0.14,
+	cooldownSeconds: 0.15,
 	canHoldToUse: false,
 };
 const swordItemAssets: ItemAssetsMeta = {
