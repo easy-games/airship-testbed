@@ -359,7 +359,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -614,6 +614,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -735,6 +739,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -858,6 +866,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -979,6 +991,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1220,6 +1236,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -1341,6 +1361,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1464,6 +1488,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -1585,6 +1613,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1826,6 +1858,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -1947,6 +1983,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2070,6 +2110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -2191,6 +2235,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2432,6 +2480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -2553,6 +2605,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2676,6 +2732,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -2797,6 +2857,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2920,6 +2984,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -3042,6 +3110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -3163,6 +3235,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3404,6 +3480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -3525,6 +3605,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3648,6 +3732,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -3769,6 +3857,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3892,6 +3984,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -4013,6 +4109,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (35)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4136,6 +4236,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -4257,6 +4361,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4380,6 +4488,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -4501,6 +4613,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4624,6 +4740,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -4745,6 +4865,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4868,6 +4992,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -4990,6 +5118,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -5111,6 +5243,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5352,6 +5488,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -5473,6 +5613,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (31)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5832,6 +5976,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -6190,6 +6338,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
+      objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -6311,6 +6463,10 @@ PrefabInstance:
     - target: {fileID: 2282263535395057007, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Name
       value: HotbarTile (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.6600952
       objectReference: {fileID: 0}
     - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchoredPosition.y

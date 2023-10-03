@@ -166,6 +166,9 @@ export const items: {
 		block: {
 			blockId: 1,
 			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
 		},
 	},
 	[ItemType.TALL_GRASS]: {
@@ -174,12 +177,10 @@ export const items: {
 		itemAssets: blockItemAssets,
 		block: {
 			blockId: 52,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
 		},
-		// Block: {
-		// 	HitSound: "GrassBlockHit",
-		// 	BreakSound: "GrassBlockBreak",
-		// 	PlaceSound: "GrassBlockPlace",
-		// },
 	},
 	[ItemType.DIRT]: {
 		displayName: "Dirt",
@@ -188,6 +189,9 @@ export const items: {
 		block: {
 			blockId: 2,
 			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
 		},
 	},
 	[ItemType.STONE]: {

@@ -59,6 +59,11 @@ export const CoreSound = {
 	blockBreakWood: [S("WoodHit")],
 	blockPlaceWood: [S("GenericBlockPlace")],
 
+	// Block: Dirt
+	blockHitDirt: [S("Blocks/Block_Dirt_Hit_01"), S("Blocks/Block_Dirt_Hit_02"), S("Blocks/Block_Dirt_Hit_03")],
+	blockBreakDirt: [S("Blocks/Block_Dirt_Hit_01"), S("Blocks/Block_Dirt_Hit_02"), S("Blocks/Block_Dirt_Hit_03")],
+	blockPlaceDirt: [S("Blocks/Block_Dirt_Hit_01"), S("Blocks/Block_Dirt_Hit_02"), S("Blocks/Block_Dirt_Hit_03")],
+
 	chatMessageReceived: S("ChatMessageReceived.wav"),
 
 	purchaseSuccess: S("ItemShopPurchase.wav"),
