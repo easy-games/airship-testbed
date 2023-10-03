@@ -59,16 +59,30 @@ export class DamageService implements OnStart {
 		}
 
 		const initialDir = config?.knockbackDirection;
-		this.entityService.GetEntities().forEach((value) => {
-			const distance = value.model.transform.position.Distance(centerPosition);
+		this.entityService.GetEntities().forEach((entity) => {
+			const distance = entity.model.transform.position.Distance(centerPosition);
 			if (distance < aoeMeta.damageRadius) {
 				const delta = distance / aoeMeta.damageRadius;
-				const damage = MathUtil.Lerp(innerDamage, aoeMeta.outerDamage, delta * delta);
 				const knockbackStrength = MathUtil.Lerp(1, 2, delta);
-				config.knockbackDirection = value.model.transform.position
-					.sub(centerPosition)
-					.normalized.mul(knockbackStrength);
-				this.InflictDamage(value, damage, config);
+				config.knockbackDirection = entity.model.transform.position.sub(centerPosition).normalized;
+				if (
+					aoeMeta.selfKnockbackMultiplier &&
+					aoeMeta.selfKnockbackMultiplier > 0 &&
+					entity.id === config.fromEntity?.id
+				) {
+					//Hitting self with AOE explosive
+					this.AddKnockback(
+						entity,
+						config.knockbackDirection
+							.mul(aoeMeta.selfKnockbackMultiplier)
+							.mul(this.combatVars.GetNumber("kbSelfMultiplier")),
+					);
+				} else {
+					//Entity is within range of hitting
+					config.knockbackDirection = config.knockbackDirection.mul(knockbackStrength);
+					const damage = MathUtil.Lerp(innerDamage, aoeMeta.outerDamage, delta * delta);
+					this.InflictDamage(entity, damage, config);
+				}
 			}
 		});
 	}
@@ -99,11 +113,6 @@ export class DamageService implements OnStart {
 			return false;
 		}
 
-		let fromPos: Vector3 | undefined = undefined;
-		if (config?.fromEntity) {
-			fromPos = config.fromEntity.networkObject.gameObject.transform.position;
-		}
-
 		CoreNetwork.ServerToClient.EntityDamage.Server.FireAllClients(
 			entity.id,
 			damageEvent.amount,
@@ -115,7 +124,7 @@ export class DamageService implements OnStart {
 		const armor = entity.GetArmor();
 		if (armor > 0) {
 			amount = amount * (100 / (100 + armor));
-			print("mitigated damage: " + (damageBefore - amount));
+			//print("mitigated damage: " + (damageBefore - amount));
 		}
 
 		let despawned = false;
@@ -151,31 +160,26 @@ export class DamageService implements OnStart {
 
 		// Knockback
 		if (!despawned) {
-			const humanoid = entity.networkObject.gameObject.GetComponent<EntityDriver>();
-			assert(humanoid, "Missing humanoid");
-
-			// const rigidBody = entity.NetworkObject.gameObject.GetComponent<Rigidbody>();
-			// assert(rigidBody, "Missing rigid body.");
-
-			const horizontalScalar = this.combatVars.GetNumber("kbX");
-			const verticalScalar = this.combatVars.GetNumber("kbY");
-			const kbDuration = this.combatVars.GetNumber("kbDuration");
-			let impulse: Vector3;
-			if (config?.knockbackDirection) {
-				const delta = config.knockbackDirection;
-				impulse = new Vector3(delta.x * horizontalScalar, verticalScalar, delta.z * horizontalScalar);
-			} else if (fromPos) {
-				const currentPos = entity.networkObject.transform.position;
-				const delta = currentPos.sub(fromPos).normalized;
-				impulse = new Vector3(delta.x * horizontalScalar, verticalScalar, delta.z * horizontalScalar);
-			} else {
-				impulse = new Vector3(0, 9, 0).mul(1);
-			}
-
-			humanoid.ApplyVelocityOverTime(impulse, kbDuration);
+			this.AddKnockback(entity, config?.knockbackDirection);
 		}
 
 		return true;
+	}
+
+	public AddKnockback(entity: Entity, knockbackVel: Vector3 | undefined) {
+		const humanoid = entity.networkObject.gameObject.GetComponent<EntityDriver>();
+		assert(humanoid, "Missing humanoid");
+
+		const horizontalScalar = this.combatVars.GetNumber("kbX");
+		const verticalScalar = this.combatVars.GetNumber("kbY");
+		const kbDuration = this.combatVars.GetNumber("kbDuration");
+
+		//let fromPos = humanoid.transform.position;
+		let impulse: Vector3;
+		const delta = knockbackVel ? knockbackVel : new Vector3(0, 9, 0);
+
+		impulse = new Vector3(delta.x * horizontalScalar, delta.y * verticalScalar, delta.z * horizontalScalar);
+		humanoid.ApplyVelocityOverTime(impulse, kbDuration);
 	}
 }
 
