@@ -56,10 +56,8 @@ export class BWController implements OnStart {
 		//Show a glow to indicate friend or foe
 		const sameTeam = team?.id === Game.LocalPlayer.Character?.GetTeam()?.id;
 		const targetColor = sameTeam ? Color.cyan : Color.red;
-		const strength = sameTeam ? 0.2 : 1;
-		if (!sameTeam) {
-			entity.anim.SetFresnelColor(targetColor, 5, strength);
-		}
+		const strength = sameTeam ? 0 : 1;
+		entity.anim.SetFresnelColor(targetColor, 5, strength);
 	}
 
 	/**

@@ -233,7 +233,6 @@ export class EntityAnimator {
 
 	public SetFresnelColor(color: Color, power: number, strength: number) {
 		if (this.entity.IsDestroyed()) return;
-		print("Setting fresnel color: " + color);
 		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.meshes);
 		//TODO: Material property block AddColor doesn't seem to be working???
 		/* const propertyBlock: MaterialPropertyBlock = Bridge.MakeMaterialPropertyBlock();
