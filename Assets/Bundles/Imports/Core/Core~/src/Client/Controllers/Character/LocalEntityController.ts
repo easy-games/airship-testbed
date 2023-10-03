@@ -19,7 +19,6 @@ import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
-import { MainMenuSettingsUIController } from "Client/MainMenuControllers/Settings/MainMenuSettingsUIController";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -358,8 +357,9 @@ export class LocalEntityController implements OnStart {
 			? this.clientSettings.GetFirstPersonFov()
 			: this.clientSettings.GetThirdPersonFov();
 		if (
-			// this.currentState === EntityState.Sprinting ||
-			this.currentState === EntityState.Sliding
+			this.currentState === EntityState.Sprinting ||
+			this.currentState === EntityState.Sliding ||
+			this.entityInput?.IsSprinting()
 			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
 		) {
 			this.cameraController.SetFOV(baseFov * 1.08, false);
