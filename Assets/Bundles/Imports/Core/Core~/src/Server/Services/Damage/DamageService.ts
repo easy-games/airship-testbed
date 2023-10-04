@@ -18,6 +18,10 @@ export class DamageService implements OnStart {
 
 	constructor(private readonly entityService: EntityService) {}
 
+	public GetDefaultKnockbackY(): number {
+		return this.combatVars.GetNumber("kbY");
+	}
+
 	OnStart(): void {
 		CoreNetwork.ClientToServer.TEST_LATENCY.Server.SetCallback((clientId) => {
 			print("-----");
@@ -53,7 +57,12 @@ export class DamageService implements OnStart {
 		});
 	}
 
-	public InflictAOEDamage(centerPosition: Vector3, innerDamage: number, aoeMeta: AOEDamageMeta, config: DamageMeta) {
+	public InflictAOEDamage(
+		centerPosition: Vector3,
+		innerDamage: number,
+		aoeMeta: AOEDamageMeta,
+		config: InflictDamageConfig,
+	) {
 		if (!config.knockbackDirection) {
 			config.knockbackDirection = Vector3.zero;
 		}
@@ -95,7 +104,7 @@ export class DamageService implements OnStart {
 	 * @param config
 	 * @returns Returns true if the damage is inflicted. Returns false if event is cancelled.
 	 */
-	public InflictDamage(entity: Entity, amount: number, config?: DamageMeta): boolean {
+	public InflictDamage(entity: Entity, amount: number, config?: InflictDamageConfig): boolean {
 		if (entity.HasImmunity() && !config?.ignoreImmunity) {
 			return false;
 		}
@@ -185,12 +194,17 @@ export class DamageService implements OnStart {
 	}
 }
 
-export interface DamageMeta {
+export interface InflictDamageConfig {
 	damageType?: DamageType;
 	fromEntity?: Entity;
 	ignoreCancelled?: boolean;
 	ignoreImmunity?: boolean;
 	projectileHitSignal?: ProjectileCollideServerSignal;
+	/**
+	 * Applies standardized knockback in a given direction.
+	 *
+	 * You should usually use y=1 for this.
+	 * */
 	knockbackDirection?: Vector3;
 	canDamageAllies?: boolean;
 }

@@ -1,6 +1,8 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Player } from "Shared/Player/Player";
+import { ColorUtil } from "Shared/Util/ColorUtil";
+import { Theme } from "Shared/Util/Theme";
 import { PlayerService } from "../../Player/PlayerService";
 
 export class TpCommand extends ChatCommand {
@@ -30,5 +32,9 @@ export class TpCommand extends ChatCommand {
 
 		const humanoid = player.Character.gameObject.GetComponent<EntityDriver>();
 		humanoid.Teleport(pos);
+		player.SendMessage(
+			ColorUtil.ColoredText(Theme.Gray, "Teleported to ") +
+				ColorUtil.ColoredText(Theme.Yellow, targetPlayer.username),
+		);
 	}
 }

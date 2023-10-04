@@ -11,7 +11,7 @@ import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPla
 import { MathUtil } from "Shared/Util/MathUtil";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { DamageMeta } from "../Damage/DamageService";
+import { InflictDamageConfig } from "../Damage/DamageService";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
@@ -290,7 +290,7 @@ export class BlockInteractService implements OnStart {
 		centerPosition: Vector3,
 		breakblockMeta: BreakBlockMeta,
 		aoeMeta: AOEDamageMeta,
-		config: DamageMeta,
+		config: InflictDamageConfig,
 	) {
 		//TODO add array to store all blocks that need to be destroyed and handle in this function not DamageBlock()
 		let positions: Vector3[] = [];

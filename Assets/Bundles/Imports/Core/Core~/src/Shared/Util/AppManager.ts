@@ -4,6 +4,7 @@ import { AudioManager } from "../Audio/AudioManager";
 import { Bin } from "./Bin";
 import { CanvasAPI, PointerDirection } from "./CanvasAPI";
 import { SignalPriority } from "./Signal";
+import { SetTimeout } from "./Timer";
 
 /** Global close key for hiding interfaces. */
 const CLOSE_KEY = KeyCode.Escape;
@@ -28,7 +29,7 @@ export class AppManager {
 	private static backgroundObject: GameObject;
 	private static backgroundCanvasGroup: CanvasGroup;
 
-	private static darkBackgroundTransitionBig = new Bin();
+	private static darkBackgroundTransitionBin = new Bin();
 
 	public static Init() {
 		const backgroundGO = GameObjectUtil.Instantiate(
@@ -132,9 +133,9 @@ export class AppManager {
 	}
 
 	public static OpenDarkBackground(sortOrder: number) {
-		this.darkBackgroundTransitionBig.Clean();
+		this.darkBackgroundTransitionBin.Clean();
 		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(1, 0.06);
-		this.darkBackgroundTransitionBig.Add(() => {
+		this.darkBackgroundTransitionBin.Add(() => {
 			t.Cancel();
 		});
 		this.backgroundCanvas.enabled = true;
@@ -142,11 +143,16 @@ export class AppManager {
 	}
 
 	public static CloseDarkBackground(): void {
-		this.darkBackgroundTransitionBig.Clean();
+		this.darkBackgroundTransitionBin.Clean();
 		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(0, 0.06);
-		this.darkBackgroundTransitionBig.Add(() => {
+		this.darkBackgroundTransitionBin.Add(() => {
 			t.Cancel();
 		});
+		this.darkBackgroundTransitionBin.Add(
+			SetTimeout(0.06, () => {
+				this.backgroundCanvas.enabled = false;
+			}),
+		);
 	}
 
 	public static Close(config?: { noCloseSound?: boolean }): void {
