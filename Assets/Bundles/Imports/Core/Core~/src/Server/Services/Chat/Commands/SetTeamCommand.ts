@@ -1,6 +1,9 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
+import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
+import { ColorUtil } from "Shared/Util/ColorUtil";
+import { Theme } from "Shared/Util/Theme";
 import { PlayerService } from "../../Player/PlayerService";
 import { TeamService } from "../../Team/TeamService";
 
@@ -14,8 +17,8 @@ export class SetTeamCommand extends ChatCommand {
 			player.SendMessage("Invalid arguments.");
 		}
 
-		const username = args[0];
-		const teamName = args[1];
+		let username = args[0];
+		let teamName = args[1];
 
 		/* Validate target player. */
 		const targetPlayer = Dependency<PlayerService>().GetPlayerFromUsername(username);
@@ -33,5 +36,12 @@ export class SetTeamCommand extends ChatCommand {
 
 		/* Assign to team. */
 		targetTeam.AddPlayer(targetPlayer);
+		Game.BroadcastMessage(
+			ColorUtil.ColoredText(Theme.Aqua, player.username) +
+				ColorUtil.ColoredText(Theme.Gray, " added ") +
+				ColorUtil.ColoredText(Theme.Yellow, targetPlayer.username) +
+				ColorUtil.ColoredText(Theme.Gray, " to the ") +
+				ColorUtil.ColoredText(targetTeam.color, targetTeam.id + " team"),
+		);
 	}
 }
