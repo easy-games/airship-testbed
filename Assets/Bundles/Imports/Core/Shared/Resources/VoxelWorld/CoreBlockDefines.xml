@@ -38,8 +38,10 @@
   <Block>
     <Index>4</Index>
     <Name>Stone</Name>
-    <TopTexture>stone.s</TopTexture>
-    <SideTexture>stone.s</SideTexture>
+<!--    <TopTexture>stone.s</TopTexture>-->
+<!--    <SideTexture>stone.s</SideTexture>-->
+    <TopTexture>rock_test_C</TopTexture>
+    <SideTexture>rock_test_C</SideTexture>
 <!--    <Material>stone/Stone1</Material>-->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
@@ -142,8 +144,8 @@
     <Index>20</Index>
     <Name>Andesite</Name>
 <!--    <Material>stone/Stone1</Material>-->
-    <TopTexture>andesite.s</TopTexture>
-    <SideTexture>andesite.s</SideTexture>
+    <TopTexture>rock_test_C</TopTexture>
+    <SideTexture>rock_test_C</SideTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
