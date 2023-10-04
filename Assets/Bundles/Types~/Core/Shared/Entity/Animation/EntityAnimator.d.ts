@@ -33,8 +33,8 @@ export declare class EntityAnimator {
     Destroy(): void;
     PlayAnimation(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;
     PlayAnimationOnce(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;
-    StartItemIdle(): void;
-    PlayItemUse(useIndex?: number, itemPlayMode?: ItemPlayMode): void;
+    StartIdleAnim(): void;
+    PlayUseAnim(useIndex?: number, itemPlayMode?: ItemPlayMode): void;
     EquipItem(itemId: BundleGroupNames): void;
     SetFirstPerson(isFirstPerson: boolean): void;
     PlayTakeDamage(damageAmount: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;

@@ -8,7 +8,7 @@ export declare class HeldItem {
     protected readonly bundles: BundleGroup | undefined;
     private lastUsedTime;
     private chargeStartTime;
-    private isCharging;
+    protected isCharging: boolean;
     protected currentItemGOs: GameObject[];
     protected currentItemAnimations: Animator[];
     private holdingDownBin;
@@ -30,6 +30,7 @@ export declare class HeldItem {
     /** Runs when an item is used. Runs on every client.*/
     protected OnUseClient(useIndex: number): void;
     protected PlayItemAnimation(index: number, hold: boolean): void;
+    protected StopItemAnimation(): void;
     protected SetItemAnimationHold(hold: boolean): void;
     /** Runs when an item is used, server authorized
      * return true if you can use the item */

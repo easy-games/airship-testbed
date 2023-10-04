@@ -8,6 +8,8 @@ export declare class AppManager {
     private static stack;
     private static backgroundCanvas;
     private static backgroundObject;
+    private static backgroundCanvasGroup;
+    private static darkBackgroundTransitionBig;
     static Init(): void;
     static OpenCustom(onClose: () => void, config?: {
         darkBackground?: boolean;
@@ -24,6 +26,7 @@ export declare class AppManager {
         addToStack?: boolean;
     }): void;
     static OpenDarkBackground(sortOrder: number): void;
+    static CloseDarkBackground(): void;
     static Close(config?: {
         noCloseSound?: boolean;
     }): void;

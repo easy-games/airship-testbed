@@ -79,6 +79,7 @@ export interface ItemMechanicsMeta {
     startUpInSeconds: number;
     cooldownSeconds: number;
     canHoldToUse?: boolean;
+    holdToUseCooldownInSeconds?: number;
     maxStackSize?: number;
 }
 export interface DamageItemMeta {
