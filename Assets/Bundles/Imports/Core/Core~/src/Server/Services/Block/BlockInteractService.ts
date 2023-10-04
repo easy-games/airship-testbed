@@ -200,7 +200,6 @@ export class BlockInteractService implements OnStart {
 	}
 
 	public DamageBlocks(entity: Entity | undefined, voxelPositions: Vector3[], damages: number[]): boolean {
-		print("Damaging blocks");
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return false;
@@ -218,7 +217,6 @@ export class BlockInteractService implements OnStart {
 		for (let i = 0; i < voxelPositions.size(); i++) {
 			let voxelPos = BlockDataAPI.GetParentBlockPos(voxelPositions[i]) ?? voxelPositions[i];
 			let damage = damages[i];
-			print("Attempting damage: " + voxelPos);
 			const block = world.GetBlockAt(voxelPos);
 			if (block.IsAir()) {
 				continue;
@@ -246,7 +244,6 @@ export class BlockInteractService implements OnStart {
 			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
 			const newHealth = math.max(health - damage, 0);
 
-			print(`Adding BlockHit. damage=${damage}`);
 			damagePositions[damageI] = voxelPos;
 			damagedIds[damageI] = block.blockId;
 			newGroupHealth[damageI] = newHealth;
@@ -266,14 +263,12 @@ export class BlockInteractService implements OnStart {
 		}
 
 		if (damageI > 0) {
-			print(`Firing Damage Group Event`);
 			//Apply damage to whole group of blocks
 			BlockDataAPI.SetBlockGroupData(damagePositions, "health", newGroupHealth);
 			// CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, damagedIds, entity.id);
 		}
 
 		if (destroyedI > 0) {
-			print(`Firing Destroyed Group Event`);
 			//Destroy group of blocks
 			world.PlaceBlockGroupById(destroyedPositions, destroyedAirId);
 
@@ -297,7 +292,6 @@ export class BlockInteractService implements OnStart {
 		aoeMeta: AOEDamageMeta,
 		config: DamageMeta,
 	) {
-		print("damage AOE at: " + centerPosition);
 		//TODO add array to store all blocks that need to be destroyed and handle in this function not DamageBlock()
 		let positions: Vector3[] = [];
 		let damages: number[] = [];
@@ -324,7 +318,6 @@ export class BlockInteractService implements OnStart {
 						distanceDelta * distanceDelta,
 					);
 					if (maxDamage > 0) {
-						print("Adding " + maxDamage + " damage to: " + targetVoxelPos);
 						damages[damageI] = maxDamage;
 						positions[damageI] = targetVoxelPos;
 						damageI++;

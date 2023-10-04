@@ -114,6 +114,7 @@ export interface AOEDamageMeta {
 	innerDamage: number;
 	outerDamage: number;
 	damageRadius: number;
+	selfKnockbackMultiplier?: number;
 }
 
 export enum BlockArchetype {

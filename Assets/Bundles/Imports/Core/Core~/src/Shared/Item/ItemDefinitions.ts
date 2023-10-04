@@ -666,6 +666,7 @@ export const items: {
 				innerDamage: 20,
 				outerDamage: 1,
 				damageRadius: 3.5,
+				selfKnockbackMultiplier: 1,
 			},
 			blockDamage: {
 				damage: 20,
