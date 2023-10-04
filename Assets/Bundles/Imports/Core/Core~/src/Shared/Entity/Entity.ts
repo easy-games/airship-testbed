@@ -466,6 +466,10 @@ export class Entity {
 		return this.state;
 	}
 
+	public GetCenterOfMass(): Vector3 {
+		return this.model.transform.position.add(this.GetHeadOffset().mul(0.5));
+	}
+
 	public GetHeadPosition(): Vector3 {
 		const offset = this.GetHeadOffset();
 		return this.model.transform.position.add(offset);

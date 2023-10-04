@@ -1,7 +1,6 @@
 import { HeldItem } from "../HeldItem";
 export declare class ProjectileLauncherHeldItem extends HeldItem {
     private chargeBin;
-    private currentlyCharging;
     private startHoldTimeSec;
     private chargeAudioSource;
     private projectileTrajectoryRenderer;

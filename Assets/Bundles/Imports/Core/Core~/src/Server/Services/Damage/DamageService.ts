@@ -60,29 +60,30 @@ export class DamageService implements OnStart {
 
 		const initialDir = config?.knockbackDirection;
 		this.entityService.GetEntities().forEach((entity) => {
-			const distance = entity.model.transform.position.Distance(centerPosition);
+			const centerOfMass = entity.GetCenterOfMass();
+			const distance = centerOfMass.Distance(centerPosition);
 			if (distance < aoeMeta.damageRadius) {
 				const delta = distance / aoeMeta.damageRadius;
+				let damage = MathUtil.Lerp(innerDamage, aoeMeta.outerDamage, delta * delta);
 				const knockbackStrength = MathUtil.Lerp(1, 2, delta);
-				config.knockbackDirection = entity.model.transform.position.sub(centerPosition).normalized;
+				config.knockbackDirection = centerOfMass.sub(centerPosition).normalized;
 				if (
 					aoeMeta.selfKnockbackMultiplier &&
 					aoeMeta.selfKnockbackMultiplier > 0 &&
 					entity.id === config.fromEntity?.id
 				) {
 					//Hitting self with AOE explosive
-					this.AddKnockback(
-						entity,
-						config.knockbackDirection
-							.mul(aoeMeta.selfKnockbackMultiplier)
-							.mul(this.combatVars.GetNumber("kbSelfMultiplier")),
-					);
+					damage *= 0.5;
+					config.canDamageAllies = true;
+					config.knockbackDirection = config.knockbackDirection
+						.mul(aoeMeta.selfKnockbackMultiplier)
+						.mul(this.combatVars.GetNumber("kbSelfMultiplier"));
 				} else {
 					//Entity is within range of hitting
+					config.canDamageAllies = false;
 					config.knockbackDirection = config.knockbackDirection.mul(knockbackStrength);
-					const damage = MathUtil.Lerp(innerDamage, aoeMeta.outerDamage, delta * delta);
-					this.InflictDamage(entity, damage, config);
 				}
+				this.InflictDamage(entity, damage, config);
 			}
 		});
 	}
@@ -107,6 +108,7 @@ export class DamageService implements OnStart {
 			amount,
 			config?.damageType ?? DamageType.SWORD,
 			config?.fromEntity,
+			config?.canDamageAllies,
 		);
 		CoreServerSignals.EntityDamage.Fire(damageEvent);
 		if (damageEvent.IsCancelled() && !config?.ignoreCancelled) {
@@ -190,4 +192,5 @@ export interface DamageMeta {
 	ignoreImmunity?: boolean;
 	projectileHitSignal?: ProjectileCollideServerSignal;
 	knockbackDirection?: Vector3;
+	canDamageAllies?: boolean;
 }

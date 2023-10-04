@@ -20,6 +20,7 @@ export declare class DamageService implements OnStart {
      * @returns Returns true if the damage is inflicted. Returns false if event is cancelled.
      */
     InflictDamage(entity: Entity, amount: number, config?: DamageMeta): boolean;
+    AddKnockback(entity: Entity, knockbackVel: Vector3 | undefined): void;
 }
 export interface DamageMeta {
     damageType?: DamageType;

@@ -71,6 +71,10 @@ export class BWService implements OnStart {
 		});
 		// Teammates _cannot_ damage each other.
 		CoreServerSignals.EntityDamage.Connect((event) => {
+			if (event.canDamageAllies) {
+				return;
+			}
+
 			if (
 				event.fromEntity?.player &&
 				event.fromEntity instanceof CharacterEntity &&

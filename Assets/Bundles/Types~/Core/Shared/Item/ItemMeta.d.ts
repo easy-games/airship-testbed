@@ -79,6 +79,7 @@ export interface ItemMechanicsMeta {
     startUpInSeconds: number;
     cooldownSeconds: number;
     canHoldToUse?: boolean;
+    holdToUseCooldownInSeconds?: number;
     maxStackSize?: number;
 }
 export interface DamageItemMeta {
@@ -96,6 +97,7 @@ export interface AOEDamageMeta {
     innerDamage: number;
     outerDamage: number;
     damageRadius: number;
+    selfKnockbackMultiplier?: number;
 }
 export declare enum BlockArchetype {
     NONE = 0,

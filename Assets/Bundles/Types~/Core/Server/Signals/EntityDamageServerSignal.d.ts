@@ -6,5 +6,6 @@ export declare class EntityDamageServerSignal extends Cancellable {
     amount: number;
     damageType: DamageType;
     fromEntity?: Entity | undefined;
-    constructor(entity: Entity, amount: number, damageType: DamageType, fromEntity?: Entity | undefined);
+    canDamageAllies?: boolean | undefined;
+    constructor(entity: Entity, amount: number, damageType: DamageType, fromEntity?: Entity | undefined, canDamageAllies?: boolean | undefined);
 }
