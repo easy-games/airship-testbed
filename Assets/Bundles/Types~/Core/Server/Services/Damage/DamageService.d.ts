@@ -10,8 +10,9 @@ export declare class DamageService implements OnStart {
     private readonly entityService;
     private combatVars;
     constructor(entityService: EntityService);
+    GetDefaultKnockbackY(): number;
     OnStart(): void;
-    InflictAOEDamage(centerPosition: Vector3, innerDamage: number, aoeMeta: AOEDamageMeta, config: DamageMeta): void;
+    InflictAOEDamage(centerPosition: Vector3, innerDamage: number, aoeMeta: AOEDamageMeta, config: InflictDamageConfig): void;
     /**
      *
      * @param entity
@@ -19,13 +20,15 @@ export declare class DamageService implements OnStart {
      * @param config
      * @returns Returns true if the damage is inflicted. Returns false if event is cancelled.
      */
-    InflictDamage(entity: Entity, amount: number, config?: DamageMeta): boolean;
+    InflictDamage(entity: Entity, amount: number, config?: InflictDamageConfig): boolean;
+    AddKnockback(entity: Entity, knockbackVel: Vector3 | undefined): void;
 }
-export interface DamageMeta {
+export interface InflictDamageConfig {
     damageType?: DamageType;
     fromEntity?: Entity;
     ignoreCancelled?: boolean;
     ignoreImmunity?: boolean;
     projectileHitSignal?: ProjectileCollideServerSignal;
+    /** Applies standardized knockback in a given direction. */
     knockbackDirection?: Vector3;
 }

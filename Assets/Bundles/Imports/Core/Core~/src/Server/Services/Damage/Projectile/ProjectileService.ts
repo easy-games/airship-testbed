@@ -7,7 +7,7 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
-import { DamageMeta, DamageService } from "../DamageService";
+import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
 
 @Service({})
@@ -29,10 +29,11 @@ export class ProjectileService implements OnStart {
 			}
 
 			let knockbackDirection = event.velocity.normalized;
+			knockbackDirection = new Vector3(knockbackDirection.x, 1, knockbackDirection.z);
 
 			//Deal AOE damage
 			if (event.ammoMeta.aoeDamage && event.ammoMeta.aoeDamage.damageRadius > 0) {
-				const config: DamageMeta = {
+				const config: InflictDamageConfig = {
 					fromEntity: event.projectile.shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,

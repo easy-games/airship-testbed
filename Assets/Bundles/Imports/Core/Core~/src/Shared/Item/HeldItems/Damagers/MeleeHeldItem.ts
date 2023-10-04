@@ -2,6 +2,7 @@
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
@@ -163,13 +164,17 @@ export class MeleeHeldItem extends HeldItem {
 						continue;
 					} else if (hitEntity.id === targetEntity.id) {
 						//Raycast hit the target entity
+						let knockbackDirection = this.entity.gameObject.transform.forward;
+						if (RunUtil.IsServer()) {
+							knockbackDirection = new Vector3(knockbackDirection.x, 1, knockbackDirection.z);
+						}
 						foundRaycastCollision = {
 							hitEntity: targetEntity,
 							hitDirection: hitDirection,
 							hitPosition: hitInfo.point,
 							hitNormal: hitInfo.normal,
 							distance: hitInfo.distance,
-							knockbackDirection: this.entity.gameObject.transform.forward,
+							knockbackDirection,
 						};
 
 						// Extra raycast to find impact point

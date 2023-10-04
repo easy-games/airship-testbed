@@ -9,7 +9,7 @@ export declare class AppManager {
     private static backgroundCanvas;
     private static backgroundObject;
     private static backgroundCanvasGroup;
-    private static darkBackgroundTransitionBig;
+    private static darkBackgroundTransitionBin;
     static Init(): void;
     static OpenCustom(onClose: () => void, config?: {
         darkBackground?: boolean;
