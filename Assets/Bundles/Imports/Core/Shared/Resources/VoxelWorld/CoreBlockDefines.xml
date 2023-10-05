@@ -14,25 +14,27 @@
     <Name>Grass</Name>
     <TopMaterial>grass/GrassTilingGenshin</TopMaterial>
 <!--    <TopTexture>grass.t</TopTexture>-->
-    <BottomTexture>dirt.s</BottomTexture>
-    <SideTexture>grass.s</SideTexture>
+<!--    <BottomTexture>dirt_2</BottomTexture>-->
+<!--    <SideTexture>dirt_2</SideTexture>-->
+    <Material>Dirt/DirtBlockMaterial</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>2</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1</Brightness>
   </Block>
 
   <Block>
     <Index>2</Index>
     <Name>Dirt</Name>
-    <TopTexture>dirt.s</TopTexture>
-    <SideTexture>dirt.s</SideTexture>
+<!--    <TopTexture>dirt_2</TopTexture>-->
+<!--    <SideTexture>dirt_2</SideTexture>-->
+    <Material>Dirt/DirtBlockMaterial</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>0.75</Roughness>
     <Minecraft>3</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1</Brightness>
   </Block>
 
   <Block>
@@ -47,7 +49,7 @@
     <Metallic>0</Metallic>
     <Roughness>2</Roughness>
     <Minecraft>1,43,43:8</Minecraft>
-    <Brightness>1.8</Brightness>
+    <Brightness>1.5</Brightness>
   </Block>
 
   <Block>
@@ -150,7 +152,7 @@
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>1:5,1:1</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1.5</Brightness>
   </Block>
 
   <Block>
