@@ -36,10 +36,10 @@ export class SpectateController implements OnStart {
 			});
 		});
 
-		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.M, (event) => {
-			this.StartSpectating();
-		});
+		// const keyboard = new Keyboard();
+		// keyboard.OnKeyDown(KeyCode.M, (event) => {
+		// 	this.StartSpectating();
+		// });
 	}
 
 	public ObserveSpectatorTarget(callback: (entity: Entity | undefined) => CleanupFunc): () => void {
