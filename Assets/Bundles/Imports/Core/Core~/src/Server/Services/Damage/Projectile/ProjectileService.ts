@@ -49,13 +49,11 @@ export class ProjectileService implements OnStart {
 				);
 
 				//AOE Block Damage
-				if (event.projectile.shooter && event.ammoMeta.blockDamage) {
+				if (event.projectile.shooter && event.ammoMeta.aoeDamage) {
 					this.blockService.DamageBlockAOE(
 						event.projectile.shooter,
 						event.hitPosition,
-						event.ammoMeta.blockDamage,
 						event.ammoMeta.aoeDamage,
-						config,
 					);
 				}
 			}

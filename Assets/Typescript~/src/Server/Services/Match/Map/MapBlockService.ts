@@ -5,7 +5,7 @@ import { BlockInteractService } from "Imports/Core/Server/Services/Block/BlockIn
 import { CoreNetwork } from "Imports/Core/Shared/CoreNetwork";
 import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Imports/Core/Shared/Entity/Entity";
-import { ItemMeta } from "Imports/Core/Shared/Item/ItemMeta";
+import { BlockArchetype, ItemMeta } from "Imports/Core/Shared/Item/ItemMeta";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
 import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
@@ -59,6 +59,12 @@ export class MapBlockService implements OnStart {
 				}
 			}
 			this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemMeta);
+
+			this.blockService.DamageBlockAOE(entity, entity.model.transform.position, {
+				damageRadius: 7,
+				innerDamage: 30,
+				outerDamage: 5,
+			});
 		});
 	}
 }

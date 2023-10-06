@@ -284,23 +284,72 @@ export class BlockInteractService implements OnStart {
 
 		return true;
 	}
-
-	public DamageBlockAOE(
-		entity: Entity,
-		centerPosition: Vector3,
-		breakblockMeta: BreakBlockMeta,
-		aoeMeta: AOEDamageMeta,
-		config: InflictDamageConfig,
-	) {
+	public DamageBlockAOE(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) {
+			return;
+		}
 		//TODO add array to store all blocks that need to be destroyed and handle in this function not DamageBlock()
 		let positions: Vector3[] = [];
 		let damages: number[] = [];
 		let damageI = 0;
+		let currentPos: Vector3 = new Vector3(0, 0, 0);
 
-		/* TODO: Eventually damage from explosion outword so the damage can decay as blocks stop the eruption
-		for (let i = 0; i < aoeMeta.damageRadius; i++) {
-			this.DamageRing(entity, voxelPos, i, aoeMeta, breakblockMeta);
-		}*/
+		for (let ringRadius = 1; ringRadius < aoeMeta.damageRadius; ringRadius++) {
+			let ringDelta = ringRadius / aoeMeta.damageRadius;
+
+			//Check a 3D Diamond shell for blocks
+			//...
+
+			//Check a 2D ring of blocks
+			let zPos = 0;
+			let diamondRadius = 0;
+			let ringDiameter = ringRadius * 2;
+			currentPos = new Vector3(-ringRadius, 0, 0);
+			//Check along a horizontal diameter
+			for (let horizontalI = 0; horizontalI < ringDiameter; horizontalI++) {
+				//Each point along can have 2 blocks
+				for (let verticalI = 0; verticalI < 2; verticalI++) {
+					//Only check two blocks when we aren't at the corners
+					if (diamondRadius === 0 && verticalI > 0) {
+						continue;
+					}
+					//Find the position
+					currentPos = new Vector3(horizontalI, verticalI === 0 ? diamondRadius : -diamondRadius, zPos);
+					const block = world.GetBlockAt(currentPos);
+					if (block.IsAir()) {
+						//Ignore Air
+						//continue;
+					}
+					const maxDamage = this.GetMaxAOEDamage(currentPos, centerPosition, aoeMeta);
+					if (maxDamage > 0) {
+						DebugUtil.DrawBox(
+							currentPos,
+							Quaternion.identity,
+							Vector3.one.mul(0.25),
+							Color.Lerp(Color.red, Color.green, ringDelta),
+							5,
+						);
+						positions.forEach((element) => {
+							if (currentPos === element) {
+								error("CHECKING POSITION TWICE: " + currentPos);
+							}
+						});
+						positions[damageI] = currentPos;
+						damages[damageI] = maxDamage;
+					}
+				}
+			}
+		}
+
+		this.DamageBlocks(entity, positions, damages);
+	}
+
+	public DamageBlockAOESimple(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
+		//TODO add array to store all blocks that need to be destroyed and handle in this function not DamageBlock()
+		let positions: Vector3[] = [];
+		let damages: number[] = [];
+		let damageI = 0;
 
 		for (let x = centerPosition.x - aoeMeta.damageRadius; x < centerPosition.x + aoeMeta.damageRadius; x++) {
 			for (let y = centerPosition.y - aoeMeta.damageRadius; y < centerPosition.y + aoeMeta.damageRadius; y++) {
@@ -309,14 +358,8 @@ export class BlockInteractService implements OnStart {
 					z < centerPosition.z + aoeMeta.damageRadius;
 					z++
 				) {
-					const targetPos = new Vector3(x, y, z);
-					const targetVoxelPos = WorldAPI.GetVoxelPosition(targetPos);
-					const distanceDelta = targetPos.Distance(centerPosition) / aoeMeta.damageRadius;
-					const maxDamage = MathUtil.Lerp(
-						aoeMeta.innerDamage,
-						aoeMeta.outerDamage,
-						distanceDelta * distanceDelta,
-					);
+					const targetVoxelPos = WorldAPI.GetVoxelPosition(new Vector3(x, y, z));
+					const maxDamage = this.GetMaxAOEDamage(targetVoxelPos, centerPosition, aoeMeta);
 					if (maxDamage > 0) {
 						damages[damageI] = maxDamage;
 						positions[damageI] = targetVoxelPos;
@@ -329,11 +372,8 @@ export class BlockInteractService implements OnStart {
 		this.DamageBlocks(entity, positions, damages);
 	}
 
-	private GetDamageRing(
-		entity: Entity,
-		center: Vector3,
-		radius: number,
-		aoeMeta: AOEDamageMeta,
-		breakBlock: BreakBlockMeta,
-	) {}
+	private GetMaxAOEDamage(voxelPos: Vector3, aoeCenter: Vector3, aoeMeta: AOEDamageMeta) {
+		const distanceDelta = voxelPos.Distance(aoeCenter) / aoeMeta.damageRadius;
+		return MathUtil.Lerp(aoeMeta.innerDamage, aoeMeta.outerDamage, distanceDelta * distanceDelta);
+	}
 }
