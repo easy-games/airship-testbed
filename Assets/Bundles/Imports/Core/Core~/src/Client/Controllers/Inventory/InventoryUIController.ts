@@ -291,6 +291,7 @@ export class InventoryUIController implements OnStart {
 		}
 
 		const invBin = new Bin();
+		let init = true;
 		this.invController.ObserveLocalInventory((inv) => {
 			invBin.Clean();
 			const slotBinMap = new Map<number, Bin>();
@@ -327,12 +328,15 @@ export class InventoryUIController implements OnStart {
 				const tile = this.slotToBackpackTileMap.get(i)!;
 				this.UpdateTile(tile, inv.GetItem(i));
 
-				CoreUI.SetupButton(tile);
-				CanvasAPI.OnClickEvent(tile.transform.GetChild(0).gameObject, () => {
-					if (!this.invController.LocalInventory) return;
-					this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
-				});
+				if (init) {
+					CoreUI.SetupButton(tile);
+					CanvasAPI.OnClickEvent(tile.transform.GetChild(0).gameObject, () => {
+						if (!this.invController.LocalInventory) return;
+						this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+					});
+				}
 			}
+			init = false;
 		});
 	}
 
