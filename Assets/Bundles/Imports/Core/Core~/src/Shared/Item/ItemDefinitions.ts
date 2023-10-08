@@ -490,7 +490,7 @@ export const items: {
 		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE)],
 		breakBlock: {
 			...defaultBreakBlock,
-			damage: 5,
+			damage: 4,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
 	},
@@ -504,7 +504,7 @@ export const items: {
 		accessoryPaths: [AccPath(ItemType.DIAMOND_PICKAXE)],
 		breakBlock: {
 			...defaultBreakBlock,
-			damage: 8,
+			damage: 5,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
 	},
