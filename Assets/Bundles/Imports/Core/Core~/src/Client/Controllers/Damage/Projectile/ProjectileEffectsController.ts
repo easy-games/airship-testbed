@@ -1,9 +1,11 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 
 @Controller({})
@@ -32,18 +34,28 @@ export class ProjectileEffectsController implements OnStart {
 				});
 			}
 
-			if ((!event.hitEntity || !itemMeta.projectile?.onHitEntitySound) && itemMeta.projectile?.onHitGroundSound) {
-				// Hit ground
+			// if (event.hitEntity && itemMeta.projectile?.onHitEntitySound) {
+			// 	// Hit entity
+			// 	let sound = RandomUtil.FromArray(itemMeta.projectile.onHitEntitySound);
+			// 	AudioManager.PlayGlobal(sound.path, sound);
+			// } else if (itemMeta.projectile?.onHitGroundSound) {
+			// 	// Hit ground
+			// 	let sound = RandomUtil.FromArray(itemMeta.projectile.onHitGroundSound);
+			// 	AudioManager.PlayAtPosition(sound.path, event.hitPosition, sound);
+			// }
+
+			// Hit ground
+			if (itemMeta.projectile?.onHitGroundSound) {
 				let sound = RandomUtil.FromArray(itemMeta.projectile.onHitGroundSound);
 				AudioManager.PlayAtPosition(sound.path, event.hitPosition, sound);
-			} else if (
-				event.hitEntity &&
-				itemMeta.projectile?.onHitEntitySound &&
-				event.projectile.shooter?.IsLocalCharacter()
-			) {
-				// Hit entity
-				let sound = RandomUtil.FromArray(itemMeta.projectile.onHitEntitySound);
-				AudioManager.PlayGlobal(sound.path, sound);
+			}
+		});
+
+		CoreClientSignals.EntityDamage.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
+			if (event.damageType === DamageType.PROJECTILE && event.fromEntity?.IsLocalCharacter()) {
+				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitSuccess", {
+					volumeScale: 0.5,
+				});
 			}
 		});
 	}
