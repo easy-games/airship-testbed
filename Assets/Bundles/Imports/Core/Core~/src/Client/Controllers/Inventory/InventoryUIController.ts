@@ -24,7 +24,6 @@ export class InventoryUIController implements OnStart {
 	private backpackCanvas: Canvas;
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
-
 	private enabled = true;
 
 	constructor(
@@ -93,7 +92,6 @@ export class InventoryUIController implements OnStart {
 		let init = false;
 		this.invController.ObserveLocalInventory((inv) => {
 			const invBin = new Bin();
-
 			const slotBinMap = new Map<number, Bin>();
 			invBin.Add(
 				inv.SlotChanged.Connect((slot, itemStack) => {
@@ -328,6 +326,7 @@ export class InventoryUIController implements OnStart {
 				const tile = this.slotToBackpackTileMap.get(i)!;
 				this.UpdateTile(tile, inv.GetItem(i));
 
+				// Prevent listening to connections multiple times
 				if (init) {
 					CoreUI.SetupButton(tile);
 					CanvasAPI.OnClickEvent(tile.transform.GetChild(0).gameObject, () => {

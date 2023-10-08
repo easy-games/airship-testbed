@@ -9,7 +9,7 @@ import { Team } from "Imports/Core/Shared/Team/Team";
 import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
 import { MathUtil } from "Imports/Core/Shared/Util/MathUtil";
 import { Theme } from "Imports/Core/Shared/Util/Theme";
-import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI, CoreBlockMetaKeys } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
@@ -95,6 +95,7 @@ export class BedService implements OnStart {
 				blockData: {
 					teamId: team.id,
 					health: itemMeta.block!.health!, // this is a hack.
+					[CoreBlockMetaKeys.CAN_BREAK]: true,
 				},
 			});
 		}
