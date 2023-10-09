@@ -1,4 +1,4 @@
-import StringUtils from "../Util/StringUtil";
+import StringUtils from "../Types/StringUtil";
 import { Task } from "../Util/Task";
 
 const MAX_DISTANCE = 18;

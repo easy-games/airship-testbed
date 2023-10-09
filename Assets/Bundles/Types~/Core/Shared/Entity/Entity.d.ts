@@ -110,6 +110,7 @@ export declare class Entity {
     SetLastDamagedTime(time: number): void;
     GrantImmunity(duration: number): void;
     GetState(): EntityState;
+    GetCenterOfMass(): Vector3;
     GetHeadPosition(): Vector3;
     GetHeadOffset(): Vector3;
     GetMiddlePosition(): Vector3;

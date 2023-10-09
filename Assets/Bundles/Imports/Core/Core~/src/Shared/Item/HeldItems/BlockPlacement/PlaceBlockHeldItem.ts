@@ -11,7 +11,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	override OnEquip() {
 		super.OnEquip();
 		if (this.blockSelect) {
-			this.blockSelect.highlightOnPlacement = true;
+			// this.blockSelect.highlightOnPlacement = true;
 		}
 
 		//Load the blocks mesh

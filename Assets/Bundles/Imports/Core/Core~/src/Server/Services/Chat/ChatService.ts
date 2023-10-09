@@ -1,9 +1,9 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import StringUtils from "Shared/Util/StringUtil";
 import { PlayerService } from "../Player/PlayerService";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
@@ -16,12 +16,12 @@ import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorS
 import { HealCommand } from "./Commands/HealCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
+import { LibonatiCommand } from "./Commands/LibonatiCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
 import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
-import { LibonatiCommand } from "./Commands/LibonatiCommand";
 
 @Service({})
 export class ChatService implements OnStart {

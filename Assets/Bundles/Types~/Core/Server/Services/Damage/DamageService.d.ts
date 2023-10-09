@@ -29,6 +29,11 @@ export interface InflictDamageConfig {
     ignoreCancelled?: boolean;
     ignoreImmunity?: boolean;
     projectileHitSignal?: ProjectileCollideServerSignal;
-    /** Applies standardized knockback in a given direction. */
+    /**
+     * Applies standardized knockback in a given direction.
+     *
+     * You should usually use y=1 for this.
+     * */
     knockbackDirection?: Vector3;
+    canDamageAllies?: boolean;
 }

@@ -1,4 +1,4 @@
-import StringUtils from "./StringUtil";
+import StringUtils from "../Types/StringUtil";
 
 export class ColorUtil {
 	/**
