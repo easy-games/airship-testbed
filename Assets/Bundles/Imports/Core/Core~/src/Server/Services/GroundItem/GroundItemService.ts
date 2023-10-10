@@ -39,10 +39,10 @@ export class GroundItemService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.DropItemInHand.Server.OnClientEvent((clientId, amount) => {
+		CoreNetwork.ClientToServer.DropItemInSlot.Server.OnClientEvent((clientId, slot, amount) => {
 			const entity = this.entityService.GetEntityByClientId(clientId);
 			if (entity?.IsAlive() && entity instanceof CharacterEntity) {
-				const item = entity.GetInventory().GetHeldItem();
+				const item = entity.GetInventory().GetItem(slot);
 				if (!item) return;
 
 				const transform = entity.model.transform;

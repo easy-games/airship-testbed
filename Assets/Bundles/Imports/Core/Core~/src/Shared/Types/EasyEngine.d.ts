@@ -387,6 +387,18 @@ interface CanvasUIEventInterceptor extends Component {
 	OnClickEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnValueChangeEvent(callback: (instanceId: number, value: number) => void): EngineEventConnection;
 	OnToggleValueChangeEvent(callback: (instanceId: number, value: boolean) => void): EngineEventConnection;
+	OnBeginDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+
+	/**
+	 * Sent to the dragged object.
+	 */
+	OnEndDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+
+	/**
+	 * Sent to the dropped upon target.
+	 */
+	OnDropEvent(callback: (instanceId: number) => void): EngineEventConnection;
 }
 
 interface CanvasUIBridgeConstructor {

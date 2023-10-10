@@ -43,6 +43,10 @@ export declare class CanvasAPI {
     static OnInputFieldSubmit(targetGameObject: GameObject, callback: (data: string) => void): EngineEventConnection;
     static OnSelectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnBeginDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnEndDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnDropEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnValueChangeEvent(targetGameObject: GameObject, callback: (value: number) => void): EngineEventConnection;
     static OnToggleValueChangeEvent(targetGameObject: GameObject, callback: (value: boolean) => void): EngineEventConnection;
