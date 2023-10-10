@@ -276,6 +276,7 @@ export class InventoryUIController implements OnStart {
 
 	private SetupBackpack(): void {
 		const mouse = new Mouse();
+		const keyboard = new Keyboard();
 
 		const hotbarContent = this.backpackRefs.GetValue("Backpack", "HotbarContent");
 		for (let i = 0; i < 9; i++) {
@@ -344,18 +345,23 @@ export class InventoryUIController implements OnStart {
 						if (i < this.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
-								// this.invController.QuickMoveSlot(this.invController.LocalInventory, slot);
+								if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+									this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+								}
 							} else {
 								this.invController.SetHeldSlot(i);
 							}
 						} else {
 							// backpack
-							this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+							if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+								this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+							}
 						}
 					});
 					CanvasAPI.OnBeginDragEvent(button, () => {
 						this.draggingBin.Clean();
 						if (!this.IsBackpackShown()) return;
+						if (keyboard.IsKeyDown(KeyCode.LeftShift)) return;
 
 						if (!this.invController.LocalInventory) return;
 						const itemStack = this.invController.LocalInventory.GetItem(i);
