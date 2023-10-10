@@ -52,7 +52,7 @@ export class FirstPersonCameraSystem {
 		//Calculate how high the neck bone is off the spine bone
 		// this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
 		let neckOffset = this.manualSpineOffset.add(
-			this.entityReferences.neckBone.position.sub(this.entityReferences.spineBone3.position),
+			this.entityReferences.neckBone.position.sub(this.entityReferences.spineBoneTop.position),
 		);
 
 		//Get the cameras transform information
@@ -81,11 +81,11 @@ export class FirstPersonCameraSystem {
 		//let headBob = new Vector3(0, math.sin(Time.deltaTime * ,0);
 
 		//Apply the new rotation
-		this.entityReferences.spineBone2.rotation = this.trackedHeadRotation;
+		this.entityReferences.spineBoneMiddle.rotation = this.trackedHeadRotation;
 
 		//Apply the new positions
-		this.entityReferences.spineBone2.position = newPosition;
-		this.entityReferences.spineBone3.position = newPosition;
+		this.entityReferences.spineBoneMiddle.position = newPosition;
+		this.entityReferences.spineBoneTop.position = newPosition;
 	}
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {

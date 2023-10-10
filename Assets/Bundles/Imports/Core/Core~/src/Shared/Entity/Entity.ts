@@ -47,9 +47,9 @@ export class EntityReferences {
 	fpsMesh: Renderer;
 	neckBone: Transform;
 	headBone: Transform;
-	spineBone1: Transform;
-	spineBone2: Transform;
-	spineBone3: Transform;
+	spineBoneRoot: Transform;
+	spineBoneMiddle: Transform;
+	spineBoneTop: Transform;
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
@@ -75,9 +75,9 @@ export class EntityReferences {
 		this.fpsMesh = ref.GetValue<Renderer>(meshKey, "FirstPerson");
 		//Get the bones
 		this.neckBone = ref.GetValue<Transform>(boneKey, "Neck");
-		this.spineBone3 = ref.GetValue<Transform>(boneKey, "Spine3");
-		this.spineBone2 = ref.GetValue<Transform>(boneKey, "Spine2");
-		this.spineBone1 = ref.GetValue<Transform>(boneKey, "Spine1");
+		this.spineBoneTop = ref.GetValue<Transform>(boneKey, "SpineTop");
+		this.spineBoneMiddle = ref.GetValue<Transform>(boneKey, "SpineMiddle");
+		this.spineBoneRoot = ref.GetValue<Transform>(boneKey, "SpineRoot");
 		this.headBone = ref.GetValue<Transform>(boneKey, "Head");
 		this.root = ref.GetValue<Transform>(boneKey, "Root");
 

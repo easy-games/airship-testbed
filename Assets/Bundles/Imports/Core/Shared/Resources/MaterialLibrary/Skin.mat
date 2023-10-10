@@ -12,9 +12,8 @@ Material:
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
-  - RIM_LIGHT_ON
   - SLIDER_OVERRIDE_ON
-  - TRIPLANAR_STYLE_LOCAL
+  - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
@@ -66,7 +65,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 631016985ed5ef34b8681ff253d3709f, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 10, y: 10}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 2800000, guid: c68c0c05d862ba24c874a924c7bb4a33, type: 3}
@@ -105,9 +104,9 @@ Material:
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
     - POINT_FILTER: 0
-    - RIM_LIGHT: 1
+    - RIM_LIGHT: 0
     - SLIDER_OVERRIDE: 1
-    - TRIPLANAR_STYLE: 1
+    - TRIPLANAR_STYLE: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _BumpScale: 1
@@ -116,7 +115,7 @@ Material:
     - _DstBlend: 0
     - _EXPLICIT_MAPS: 1
     - _Emissive: 0
-    - _EmissiveMix: 1
+    - _EmissiveMix: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -131,7 +130,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0.47
     - _RimPower: 4.46
-    - _RoughOverride: 0.6
+    - _RoughOverride: 0.46
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
@@ -144,12 +143,12 @@ Material:
     - _VERTEX_LIGHT: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.5471698, g: 0.27406564, b: 0.21422213, a: 1}
+    - _Color: {r: 0.7264151, g: 0.45594165, b: 0.3529281, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissiveColor: {r: 0, g: 0.15327406, b: 1, a: 1}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _OverrideColor: {r: 2, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.990566, g: 0.5197755, b: 0.36912602, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 0.6839622, b: 0.6839622, a: 1}
   m_BuildTextureStacks: []
