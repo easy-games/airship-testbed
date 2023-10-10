@@ -420,8 +420,6 @@ export class InventoryUIController implements OnStart {
 						this.draggingBin.Clean();
 
 						if (this.draggingState) {
-							Object.Destroy(this.draggingState.transform.gameObject);
-
 							if (!this.draggingState.consumed) {
 								this.invController.DropItemInSlot(
 									this.draggingState.slot,
@@ -429,6 +427,7 @@ export class InventoryUIController implements OnStart {
 								);
 							}
 
+							Object.Destroy(this.draggingState.transform.gameObject);
 							this.draggingState = undefined;
 						}
 					});

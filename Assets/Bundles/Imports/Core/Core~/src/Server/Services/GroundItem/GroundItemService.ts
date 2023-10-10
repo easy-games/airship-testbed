@@ -44,6 +44,7 @@ export class GroundItemService implements OnStart {
 			if (entity?.IsAlive() && entity instanceof CharacterEntity) {
 				const item = entity.GetInventory().GetItem(slot);
 				if (!item) return;
+				if (item.GetAmount() < amount) return;
 
 				const transform = entity.model.transform;
 				const position = transform.position.add(new Vector3(0, 1.5, 0)).add(transform.forward.mul(0.6));
@@ -56,9 +57,9 @@ export class GroundItemService implements OnStart {
 				);
 				if (beforeEvent.IsCancelled()) return;
 
-				item.Decrement(1);
+				item.Decrement(amount);
 				const newItem = item.Clone();
-				newItem.SetAmount(1);
+				newItem.SetAmount(amount);
 
 				const groundItem = this.SpawnGroundItem(newItem, position, beforeEvent.velocity);
 
