@@ -1,8 +1,8 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { OnStart } from "@easy-games/flamework-core";
-import { EntityController } from "../Entity/EntityController";
 import { Signal } from "../../../Shared/Util/Signal";
+import { EntityController } from "../Entity/EntityController";
 export declare class BlockSelectController implements OnStart {
     private readonly entityController;
     private highlightGO;
