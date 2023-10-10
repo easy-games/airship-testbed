@@ -24,6 +24,7 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntityAnimator } from "./Animation/EntityAnimator";
+import { EntityGamemode } from "./EntityGamemode";
 import { EntitySerializer } from "./EntitySerializer";
 
 export interface EntityDto {
@@ -139,6 +140,7 @@ export class Entity {
 	protected healthbar?: Healthbar;
 	protected state: EntityState;
 	protected bin: Bin = new Bin();
+	protected gamemode: EntityGamemode = EntityGamemode.SURVIVAL;
 
 	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly OnDespawn = new Signal<void>();
@@ -569,5 +571,18 @@ export class Entity {
 
 	public HasHealthbar(): boolean {
 		return this.healthbarEnabled;
+	}
+
+	public SetGamemode(gm: EntityGamemode): void {
+		this.gamemode = gm;
+		if (gm === EntityGamemode.CREATIVE) {
+			if (RunUtil.IsServer()) {
+				this.entityDriver.SetAllowFlight(true);
+			}
+		} else {
+			if (RunUtil.IsServer()) {
+				this.entityDriver.SetAllowFlight(false);
+			}
+		}
 	}
 }
