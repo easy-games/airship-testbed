@@ -23,11 +23,14 @@ export const CoreNetwork = {
 			[nobId: number, isInFirstPerson: boolean, direction: Vector3, chargeSec: number]
 		>(),
 		SwordAttack: new RemoteEvent<[targetEntityId?: number, hitDirection?: Vector3]>(),
-		DropItemInHand: new RemoteEvent<[amount: number]>(),
+		DropItemInSlot: new RemoteEvent<[slot: number, amount: number]>(),
 		PickupGroundItem: new RemoteEvent<[groundItemId: number]>(),
 		Inventory: {
 			SwapSlots: new RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(),
 			QuickMoveSlot: new RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number]>(),
+			MoveToSlot: new RemoteEvent<
+				[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]
+			>(),
 			CheckOutOfSync: new RemoteEvent<[invDto: InventoryDto]>(),
 		},
 		SendChatMessage: new RemoteEvent<[text: string]>(),

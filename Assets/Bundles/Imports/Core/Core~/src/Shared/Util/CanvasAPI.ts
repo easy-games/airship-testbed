@@ -124,6 +124,46 @@ export class CanvasAPI {
 		});
 	}
 
+	public static OnBeginDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
+		this.Setup(targetGameObject);
+		return this.eventInterceptor!.OnBeginDragEvent((instanceId) => {
+			/* Only run callback if instance ids match. */
+			if (instanceId === targetGameObject.GetInstanceID()) {
+				callback();
+			}
+		});
+	}
+
+	public static OnEndDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
+		this.Setup(targetGameObject);
+		return this.eventInterceptor!.OnEndDragEvent((instanceId) => {
+			/* Only run callback if instance ids match. */
+			if (instanceId === targetGameObject.GetInstanceID()) {
+				callback();
+			}
+		});
+	}
+
+	public static OnDropEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
+		this.Setup(targetGameObject);
+		return this.eventInterceptor!.OnDropEvent((instanceId) => {
+			/* Only run callback if instance ids match. */
+			if (instanceId === targetGameObject.GetInstanceID()) {
+				callback();
+			}
+		});
+	}
+
+	public static OnDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
+		this.Setup(targetGameObject);
+		return this.eventInterceptor!.OnDragEvent((instanceId) => {
+			/* Only run callback if instance ids match. */
+			if (instanceId === targetGameObject.GetInstanceID()) {
+				callback();
+			}
+		});
+	}
+
 	public static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
 		return this.eventInterceptor!.OnClickEvent((instanceId) => {

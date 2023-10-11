@@ -407,6 +407,8 @@ MonoBehaviour:
       value: {fileID: 4025310227619688130}
     - key: ArmorContent
       value: {fileID: 94662861254019752}
+    - key: DraggedItem
+      value: {fileID: 0}
 --- !u!1 &8430738942978774420
 GameObject:
   m_ObjectHideFlags: 0

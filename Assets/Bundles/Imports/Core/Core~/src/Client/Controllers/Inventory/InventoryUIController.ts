@@ -1,15 +1,25 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Healthbar } from "Shared/UI/Healthbar";
-import { Keyboard } from "Shared/UserInput";
+import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { OnUpdate } from "Shared/Util/Timer";
 import { CoreUIController } from "../UI/CoreUIController";
 import { InventoryController } from "./InventoryController";
+
+type DraggingState = {
+	inventory: Inventory;
+	itemStack: ItemStack;
+	slot: number;
+	transform: RectTransform;
+	consumed: boolean;
+};
 
 @Controller({})
 export class InventoryUIController implements OnStart {
@@ -25,6 +35,8 @@ export class InventoryUIController implements OnStart {
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
 	private enabled = true;
+	private draggingState: DraggingState | undefined;
+	private draggingBin = new Bin();
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -259,17 +271,13 @@ export class InventoryUIController implements OnStart {
 
 		if (init) {
 			CoreUI.SetupButton(contentGO);
-			CanvasAPI.OnClickEvent(contentGO, () => {
-				if (this.IsBackpackShown() && this.invController.LocalInventory) {
-					this.invController.QuickMoveSlot(this.invController.LocalInventory, slot);
-				} else {
-					this.invController.SetHeldSlot(slot);
-				}
-			});
 		}
 	}
 
 	private SetupBackpack(): void {
+		const mouse = new Mouse();
+		const keyboard = new Keyboard();
+
 		const hotbarContent = this.backpackRefs.GetValue("Backpack", "HotbarContent");
 		for (let i = 0; i < 9; i++) {
 			const t = hotbarContent.transform.GetChild(i);
@@ -322,6 +330,7 @@ export class InventoryUIController implements OnStart {
 				slotBinMap.clear();
 			});
 
+			// Setup connections
 			for (let i = 0; i < inv.GetMaxSlots(); i++) {
 				const tile = this.slotToBackpackTileMap.get(i)!;
 				this.UpdateTile(tile, inv.GetItem(i));
@@ -329,9 +338,98 @@ export class InventoryUIController implements OnStart {
 				// Prevent listening to connections multiple times
 				if (init) {
 					CoreUI.SetupButton(tile);
-					CanvasAPI.OnClickEvent(tile.transform.GetChild(0).gameObject, () => {
+					const button = tile.transform.GetChild(0).gameObject;
+					CanvasAPI.OnClickEvent(button, () => {
 						if (!this.invController.LocalInventory) return;
-						this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+
+						if (i < this.hotbarSlots) {
+							// hotbar
+							if (this.IsBackpackShown()) {
+								if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+									this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+								}
+							} else {
+								this.invController.SetHeldSlot(i);
+							}
+						} else {
+							// backpack
+							if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+								this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+							}
+						}
+					});
+					CanvasAPI.OnBeginDragEvent(button, () => {
+						this.draggingBin.Clean();
+						if (!this.IsBackpackShown()) return;
+						if (keyboard.IsKeyDown(KeyCode.LeftShift)) return;
+
+						if (!this.invController.LocalInventory) return;
+						const itemStack = this.invController.LocalInventory.GetItem(i);
+						if (!itemStack) return;
+
+						const visual = button.transform.GetChild(0).gameObject;
+						const clone = Object.Instantiate(visual, this.backpackCanvas.transform) as GameObject;
+						clone.transform.SetAsLastSibling();
+
+						const cloneRect = clone.GetComponent<RectTransform>();
+						cloneRect.sizeDelta = Bridge.MakeVector2(100, 100);
+						const cloneImage = clone.transform.GetChild(0).GetComponent<Image>();
+						cloneImage.raycastTarget = false;
+
+						visual.SetActive(false);
+
+						const cloneTransform = clone.GetComponent<RectTransform>();
+						cloneTransform.position = mouse.GetLocation();
+
+						this.draggingBin.Add(
+							OnUpdate.Connect((dt) => {
+								cloneTransform.position = mouse.GetLocation();
+							}),
+						);
+						this.draggingBin.Add(() => {
+							visual.SetActive(true);
+						});
+
+						this.draggingState = {
+							slot: i,
+							itemStack,
+							inventory: this.invController.LocalInventory,
+							transform: cloneTransform,
+							consumed: false,
+						};
+					});
+
+					// Called before end
+					CanvasAPI.OnDropEvent(tile.transform.GetChild(0).gameObject, () => {
+						if (!this.IsBackpackShown()) return;
+						if (!this.draggingState) return;
+						if (!this.invController.LocalInventory) return;
+
+						this.invController.MoveToSlot(
+							this.draggingState.inventory,
+							this.draggingState.slot,
+							this.invController.LocalInventory,
+							i,
+							this.draggingState.itemStack.GetAmount(),
+						);
+						this.draggingState.consumed = true;
+					});
+
+					// Called after drop
+					CanvasAPI.OnEndDragEvent(button, () => {
+						this.draggingBin.Clean();
+
+						if (this.draggingState) {
+							if (!this.draggingState.consumed) {
+								this.invController.DropItemInSlot(
+									this.draggingState.slot,
+									this.draggingState.itemStack.GetAmount(),
+								);
+							}
+
+							Object.Destroy(this.draggingState.transform.gameObject);
+							this.draggingState = undefined;
+						}
 					});
 				}
 			}
