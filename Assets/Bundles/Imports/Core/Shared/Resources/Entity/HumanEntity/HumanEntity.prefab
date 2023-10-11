@@ -243,7 +243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4780449092316775081
 Transform:
   m_ObjectHideFlags: 0
@@ -279,7 +279,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5cebab1b10ac52f48b27624f8843ed3e, type: 2}
+  - {fileID: 2100000, guid: 7884b9b66e1f62045ad7b4906496c1db, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -358,10 +358,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.8867924, g: 0.68005383, b: 0.5479708, a: 1}
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: BaseBodymat
+    reference: AirshipCharacterFace
   addedByEditorScript: 0
 --- !u!1 &1571342351252852423
 GameObject:
@@ -679,9 +679,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3203547633876383079}
-  m_LocalRotation: {x: 0.2806495, y: 0.6039083, z: 0.6576435, w: 0.35218698}
-  m_LocalPosition: {x: 0.045437347, y: 0.12617719, z: -0.05189065}
-  m_LocalScale: {x: 1, y: 0.99999994, z: 0.99999994}
+  m_LocalRotation: {x: 0.43141046, y: 0.5007687, z: 0.57021403, w: 0.48782337}
+  m_LocalPosition: {x: 0.04543736, y: 0.12617736, z: -0.05189064}
+  m_LocalScale: {x: 1.0000001, y: 1.0000002, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7868768091635398927}
@@ -882,10 +882,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.8867924, g: 0.68005383, b: 0.5479708, a: 1}
+  - materialColor: {r: 0.7169812, g: 0.5064722, b: 0.3754005, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: BaseBodymat
+    reference: AirshipCharacterBase
   addedByEditorScript: 0
 --- !u!1 &4771920100964250519
 GameObject:
@@ -1178,10 +1178,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.8867924, g: 0.68005383, b: 0.5479708, a: 1}
+  - materialColor: {r: 0.7169812, g: 0.5064722, b: 0.3754005, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: BaseBodymat
+    reference: AirshipCharacterBase
   addedByEditorScript: 0
 --- !u!1 &5960472572424247457
 GameObject:
@@ -1575,9 +1575,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7972479724201818487}
-  m_LocalRotation: {x: -0.28064921, y: 0.6039081, z: 0.6576436, w: -0.35218722}
-  m_LocalPosition: {x: -0.045437433, y: 0.12617724, z: -0.05189062}
-  m_LocalScale: {x: 0.9999999, y: 0.9999997, z: 0.9999999}
+  m_LocalRotation: {x: -0.43141037, y: 0.5007684, z: 0.5702142, w: -0.48782358}
+  m_LocalPosition: {x: -0.045437373, y: 0.12617712, z: -0.051890586}
+  m_LocalScale: {x: 1.0000001, y: 1.0000002, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4547968645473260350}
@@ -1718,7 +1718,7 @@ MonoBehaviour:
   - materialColor: {r: 0.8867924, g: 0.68005383, b: 0.5479708, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: BaseBodymat
+    reference: AirshipCharacterBase
   addedByEditorScript: 0
 --- !u!1 &8086696911539708113
 GameObject:
@@ -2051,8 +2051,8 @@ MonoBehaviour:
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: 40.029915, y: 77, z: 38.056915}
-    Rotation: {x: -0, y: -0.8660252, z: -0, w: 0.5000005}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
@@ -2260,13 +2260,13 @@ MonoBehaviour:
     - key: SpineRoot
       value: {fileID: 1306623784457441339}
     - key: Rig
-      value: {fileID: 0}
+      value: {fileID: 5511855736031289890}
     - key: Root
       value: {fileID: 7911948219130051474}
     - key: HandL
-      value: {fileID: 0}
+      value: {fileID: 3629289340962763505}
     - key: HandR
-      value: {fileID: 0}
+      value: {fileID: 4288901034534830371}
   - key: Colliders
     keyValuePairs:
     - key: CharacterController

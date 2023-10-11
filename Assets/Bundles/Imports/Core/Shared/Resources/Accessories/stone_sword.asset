@@ -15,7 +15,8 @@ MonoBehaviour:
   DisplayName: Stone Sword
   AccessorySlot: 2
   Prefab: {fileID: 3474960349314743655, guid: f84b9a97d03134fdebb3dd7993754ae5, type: 3}
-  Position: {x: 0.6, y: 0.01, z: -0.05}
-  Rotation: {x: -90, y: 0, z: -90}
+  Position: {x: 0, y: 0.65, z: 0}
+  Rotation: {x: 0, y: 42.99, z: 0}
   Scale: {x: 0.22, y: 0.22, z: 0.22}
   MeshDeformed: 0
+  VisibleInFirstPerson: 1

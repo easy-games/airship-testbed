@@ -105,7 +105,7 @@ export class EntityAccessoryController implements OnStart {
 		const firstPerson = this.localController.IsFirstPerson();
 
 		if (firstPerson) {
-			if (!activeAccessory.accessory.VisibleInFirstPerson) {
+			if (activeAccessory.accessory.VisibleInFirstPerson) {
 				for (let renderer of CSArrayUtil.Convert(activeAccessory.renderers)) {
 					renderer.enabled = false;
 				}
