@@ -12,7 +12,8 @@ import { InventoryController } from "./InventoryController";
 export class CreativeInventoryUIController implements OnStart {
 	private refs: GameObjectReferences;
 	private canvas: Canvas;
-    private slotToBackpackTileMap = new Map<number, GameObject>();
+    private playerInvTileMap = new Map<number, GameObject>();
+    private draggingBin = new Bin();
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -37,7 +38,7 @@ export class CreativeInventoryUIController implements OnStart {
 		const hotbarContent = this.refs.GetValue("Backpack", "HotbarContent");
 		for (let i = 0; i < 9; i++) {
 			const t = hotbarContent.transform.GetChild(i);
-			this.slotToBackpackTileMap.set(i, t.gameObject);
+			this.playerInvTileMap.set(i, t.gameObject);
 		}
 
 		const invBin = new Bin();
@@ -51,7 +52,7 @@ export class CreativeInventoryUIController implements OnStart {
 				const slotBin = new Bin();
 				slotBinMap.set(slot, slotBin);
 
-				const tile = this.slotToBackpackTileMap.get(slot)!;
+				const tile = this.playerInvTileMap.get(slot)!;
 				this.UpdateTile(tile, itemStack);
 
 				if (itemStack) {
@@ -76,7 +77,7 @@ export class CreativeInventoryUIController implements OnStart {
 
 			// Setup connections
 			for (let i = 0; i < inv.GetMaxSlots(); i++) {
-				const tile = this.slotToBackpackTileMap.get(i)!;
+				const tile = this.playerInvTileMap.get(i)!;
 				this.UpdateTile(tile, inv.GetItem(i));
 
 				// Prevent listening to connections multiple times
@@ -112,7 +113,7 @@ export class CreativeInventoryUIController implements OnStart {
 						if (!itemStack) return;
 
 						const visual = button.transform.GetChild(0).gameObject;
-						const clone = Object.Instantiate(visual, this.backpackCanvas.transform) as GameObject;
+						const clone = Object.Instantiate(visual, this.canvas.transform) as GameObject;
 						clone.transform.SetAsLastSibling();
 
 						const cloneRect = clone.GetComponent<RectTransform>();
@@ -144,40 +145,41 @@ export class CreativeInventoryUIController implements OnStart {
 					});
 
 					// Called before end
-					CanvasAPI.OnDropEvent(tile.transform.GetChild(0).gameObject, () => {
-						if (!this.IsBackpackShown()) return;
-						if (!this.draggingState) return;
-						if (!this.invController.LocalInventory) return;
+					// CanvasAPI.OnDropEvent(tile.transform.GetChild(0).gameObject, () => {
+					// 	if (!this.IsBackpackShown()) return;
+					// 	if (!this.draggingState) return;
+					// 	if (!this.invController.LocalInventory) return;
 
-						this.invController.MoveToSlot(
-							this.draggingState.inventory,
-							this.draggingState.slot,
-							this.invController.LocalInventory,
-							i,
-							this.draggingState.itemStack.GetAmount(),
-						);
-						this.draggingState.consumed = true;
-					});
+					// 	this.invController.MoveToSlot(
+					// 		this.draggingState.inventory,
+					// 		this.draggingState.slot,
+					// 		this.invController.LocalInventory,
+					// 		i,
+					// 		this.draggingState.itemStack.GetAmount(),
+					// 	);
+					// 	this.draggingState.consumed = true;
+					// });
 
-					// Called after drop
-					CanvasAPI.OnEndDragEvent(button, () => {
-						this.draggingBin.Clean();
+					// // Called after drop
+					// CanvasAPI.OnEndDragEvent(button, () => {
+					// 	this.draggingBin.Clean();
 
-						if (this.draggingState) {
-							if (!this.draggingState.consumed) {
-								this.invController.DropItemInSlot(
-									this.draggingState.slot,
-									this.draggingState.itemStack.GetAmount(),
-								);
-							}
+					// 	if (this.draggingState) {
+					// 		if (!this.draggingState.consumed) {
+					// 			this.invController.DropItemInSlot(
+					// 				this.draggingState.slot,
+					// 				this.draggingState.itemStack.GetAmount(),
+					// 			);
+					// 		}
 
-							Object.Destroy(this.draggingState.transform.gameObject);
-							this.draggingState = undefined;
-						}
-					});
+					// 		Object.Destroy(this.draggingState.transform.gameObject);
+					// 		this.draggingState = undefined;
+					// 	}
+					// });
 				}
 			}
 			init = false;
+        }
 	}
 
 	public Open(): void {}
