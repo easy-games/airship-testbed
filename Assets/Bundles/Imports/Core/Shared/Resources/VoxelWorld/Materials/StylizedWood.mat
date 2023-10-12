@@ -12,6 +12,7 @@ Material:
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
+  - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_WORLD
   m_InvalidKeywords:
   - EXPLICIT_MAPS
@@ -66,7 +67,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
-        m_Texture: {fileID: 2800000, guid: 3ecc40428def1784388d6cd3bc0299fa, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -99,7 +100,7 @@ Material:
     - OVERRIDE: 1
     - POINT_FILTER: 0
     - RIM_LIGHT: 0
-    - SLIDER_OVERRIDE: 0
+    - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 2
     - VERTEX_LIGHT: 0
     - _Alpha: 1

@@ -66,8 +66,9 @@
   <Block>
     <Index>6</Index>
     <Name>Oak Planks</Name>
-    <TopTexture>plank_oak.s</TopTexture>
-    <SideTexture>plank_oak.s</SideTexture>
+<!--    <TopTexture>plank_oak.s</TopTexture>-->
+<!--    <SideTexture>plank_oak.s</SideTexture>-->
+    <Material>StylizedWoodPlanks</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>0.6</Roughness>
@@ -444,8 +445,9 @@
   <Block>
     <Index>60</Index>
     <Name>Brown Clay</Name>
-    <TopTexture>clay_brown.s</TopTexture>
-    <SideTexture>clay_brown.s</SideTexture>
+<!--    <TopTexture>clay_brown.s</TopTexture>-->
+<!--    <SideTexture>clay_brown.s</SideTexture>-->
+    <Material>StylizedDirtDark</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GrassTilingGenshin
+  m_Name: StylizedDirtDark
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: cfe0d92ee151f194bb106838fe53b34b, type: 3}
+        m_Texture: {fileID: 2800000, guid: c2e975e8a074dff45aee75e580a54344, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -75,7 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 48c3f9bf0c6c95b4e8a00c6b9a8162be, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -129,11 +129,11 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 0
-    - _TriplanarScale: 0.1
+    - _TriplanarScale: 0.4
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.90588236, g: 0.90588236, b: 0.93333334, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
