@@ -61,11 +61,14 @@ export class AudioManager {
 		}
 		audioSource.clip = clip;
 		audioSource.volume = config?.volumeScale ?? 1;
-		audioSource.Play();
+		audioSource.PlayOneShot(clip);
 		//audioSource.PlayOneShot(clip, );
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
+				if (audioSource.isPlaying) {
+					print("[AudioManager]: Deleting audio source before it finished playing. name=" + clip.name);
+				}
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
@@ -117,7 +120,7 @@ export class AudioManager {
 		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		audioSource.maxDistance = config?.maxDistance ?? 500;
-		audioSource.Play();
+		audioSource.PlayOneShot(clip);
 		//audioSource.PlayOneShot(clip, );
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
