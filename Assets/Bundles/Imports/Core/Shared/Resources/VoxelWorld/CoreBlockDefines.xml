@@ -13,15 +13,15 @@
     <Index>1</Index>
     <Name>Grass</Name>
 <!--    <TopMaterial>grass/GrassTilingGenshin</TopMaterial>-->
-<!--    <TopTexture>grass.t</TopTexture>-->
-<!--    <BottomTexture>dirt.s</BottomTexture>-->
-<!--    <SideTexture>grass.s</SideTexture>-->
+<!--    <TopTexture>liamgrass.t</TopTexture>-->
+<!--    <BottomTexture>liamgrass.t</BottomTexture>-->
+<!--    <SideTexture>liamgrass.s</SideTexture>-->
     <Material>StylizedGrass</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>2</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1</Brightness>
   </Block>
 
   <Block>
