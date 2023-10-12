@@ -104,18 +104,8 @@ export class EntityAccessoryController implements OnStart {
 	public HandleAccessoryVisibility(activeAccessory: ActiveAccessory): void {
 		const firstPerson = this.localController.IsFirstPerson();
 
-		if (firstPerson) {
-			if (activeAccessory.accessory.VisibleInFirstPerson) {
-				for (let renderer of CSArrayUtil.Convert(activeAccessory.renderers)) {
-					renderer.enabled = false;
-				}
-			}
-		} else {
-			if (!activeAccessory.accessory.VisibleInFirstPerson) {
-				for (let renderer of CSArrayUtil.Convert(activeAccessory.renderers)) {
-					renderer.enabled = true;
-				}
-			}
+		for (let renderer of CSArrayUtil.Convert(activeAccessory.renderers)) {
+			renderer.enabled = !firstPerson || activeAccessory.accessory.VisibleInFirstPerson;
 		}
 	}
 
@@ -172,11 +162,11 @@ export class EntityAccessoryController implements OnStart {
 		//Set hand items to render in the first person camera
 		let rightHandItems: CSArray<Renderer> = accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
 		for (let i = 0; i < rightHandItems.Length; i++) {
-			rightHandItems.GetValue(i).gameObject.layer = this.isFirstPerson ? 10 : 3;
+			rightHandItems.GetValue(i).gameObject.layer = this.isFirstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		}
 		let leftHandItems: CSArray<Renderer> = accessoryBuilder.GetAccessoryMeshes(AccessorySlot.LeftHand);
 		for (let i = 0; i < leftHandItems.Length; i++) {
-			leftHandItems.GetValue(i).gameObject.layer = this.isFirstPerson ? 10 : 3;
+			leftHandItems.GetValue(i).gameObject.layer = this.isFirstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		}
 	}
 }
