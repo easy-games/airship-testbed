@@ -49,7 +49,7 @@ export class FirstPersonCameraSystem {
 		}
 
 		//Calculate how high the neck bone is off the spine bone
-		this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
+		//this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
 		let neckOffset = this.manualSpineOffset.add(
 			this.entityReferences.neckBone.position.sub(this.entityReferences.spineBoneTop.position),
 		);
