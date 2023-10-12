@@ -29,7 +29,7 @@ export class AudioManager {
 		this.audioSourceTemplate.AddComponent<AudioSource>();
 		this.audioSourceTemplate.SetActive(false);
 
-		PoolManager.PreLoadPool(this.audioSourceTemplate, 5);
+		PoolManager.PreLoadPool(this.audioSourceTemplate, 15);
 	}
 
 	public static PlayGlobal(sound: string, config?: PlaySoundConfig) {
@@ -67,7 +67,7 @@ export class AudioManager {
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
 				if (audioSource.isPlaying) {
-					print("[AudioManager]: Deleting audio source before it finished playing. name=" + clip.name);
+					print("[AudioManager]: Deleting global audio source before it finished playing. name=" + clip.name);
 				}
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
 				PoolManager.ReleaseObject(audioSource.gameObject);
