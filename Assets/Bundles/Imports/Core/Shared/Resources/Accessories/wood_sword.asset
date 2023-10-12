@@ -15,7 +15,8 @@ MonoBehaviour:
   DisplayName: Wood Sword
   AccessorySlot: 2
   Prefab: {fileID: 5306317776177628987, guid: 243b3413775b44b90811e841dfe7ba39, type: 3}
-  Position: {x: 0.6, y: 0.01, z: -0.05}
-  Rotation: {x: -90, y: 0, z: -90}
-  Scale: {x: 0.22, y: 0.22, z: 0.22}
+  Position: {x: 0, y: 0.03, z: 0}
+  Rotation: {x: -90, y: 0, z: 0}
+  Scale: {x: 1, y: 1, z: 1}
   MeshDeformed: 0
+  VisibleInFirstPerson: 1

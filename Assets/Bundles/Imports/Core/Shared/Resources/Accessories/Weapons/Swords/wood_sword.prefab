@@ -45,15 +45,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3.3779035
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.3779035
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3.3779035
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalPosition.x
@@ -61,7 +61,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalPosition.z
@@ -69,23 +69,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.50000006
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5000001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.49999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -93,20 +93,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+      objectReference: {fileID: 2100000, guid: 510d004ad3efb4139870f24f642824ea, type: 2}
     - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 510d004ad3efb4139870f24f642824ea, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 510d004ad3efb4139870f24f642824ea, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 510d004ad3efb4139870f24f642824ea, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
+      propertyPath: m_Materials.Array.data[5]
       value: 
       objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -5754084199372789682, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -4764920359939644353, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
+      objectReference: {fileID: 2486371437528621091, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
     - target: {fileID: 919132149155446097, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Name
       value: item_sword_wood_model
@@ -131,14 +147,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.26455143, g: 0.26455143, b: 0.2735849, a: 1}
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 0
+    reference: Wood_Cherry_Natural_UV
+  - materialColor: {r: 0.8679245, g: 0.83798724, b: 0.81470275, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 0
+    reference: Wood_Cherry_Natural_UV
+  - materialColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Wood_Cherry_Natural_UV
+  - materialColor: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Wood_Cherry_Natural_UV
+  - materialColor: {r: 0.83137256, g: 0.6947042, b: 0.6862745, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
-  - materialColor: {r: 0.5660378, g: 0.42528582, b: 0.31238878, a: 1}
+  - materialColor: {r: 0.34303957, g: 0.509434, b: 0.2763439, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!4 &4453354746437871069 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
