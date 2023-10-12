@@ -1659,7 +1659,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 1537489386831177643, guid: 0e8260dffa8bd9245ba8fee7eed419ce, type: 3}
   m_Bones:
@@ -1699,8 +1699,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5511855736031289890}
   m_AABB:
-    m_Center: {x: 0.00000008940697, y: 0.2677533, z: -0.03310322}
-    m_Extent: {x: 1, y: 1, z: 1}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 5, y: 5, z: 5}
   m_DirtyAABB: 0
 --- !u!114 &8695364219153689915
 MonoBehaviour:
