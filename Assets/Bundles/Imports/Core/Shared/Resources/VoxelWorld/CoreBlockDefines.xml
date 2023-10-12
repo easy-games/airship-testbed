@@ -12,10 +12,11 @@
   <Block>
     <Index>1</Index>
     <Name>Grass</Name>
-    <TopMaterial>grass/GrassTilingGenshin</TopMaterial>
+<!--    <TopMaterial>grass/GrassTilingGenshin</TopMaterial>-->
 <!--    <TopTexture>grass.t</TopTexture>-->
-    <BottomTexture>dirt.s</BottomTexture>
-    <SideTexture>grass.s</SideTexture>
+<!--    <BottomTexture>dirt.s</BottomTexture>-->
+<!--    <SideTexture>grass.s</SideTexture>-->
+    <Material>StylizedGrass</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
@@ -26,8 +27,9 @@
   <Block>
     <Index>2</Index>
     <Name>Dirt</Name>
-    <TopTexture>dirt.s</TopTexture>
-    <SideTexture>dirt.s</SideTexture>
+<!--    <TopTexture>dirt.s</TopTexture>-->
+<!--    <SideTexture>dirt.s</SideTexture>-->
+    <Material>StylizedDirt</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>0.75</Roughness>
@@ -38,11 +40,11 @@
   <Block>
     <Index>4</Index>
     <Name>Stone</Name>
-    <TopTexture>stone.s</TopTexture>
-    <SideTexture>stone.s</SideTexture>
+<!--    <TopTexture>stone.s</TopTexture>-->
+<!--    <SideTexture>stone.s</SideTexture>-->
 <!--    <TopTexture>rock_test_C</TopTexture>-->
 <!--    <SideTexture>rock_test_C</SideTexture>-->
-<!--    <Material>stone/Stone1</Material>-->
+    <Material>StylizedStone</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>2</Roughness>
@@ -53,11 +55,12 @@
   <Block>
     <Index>26</Index>
     <Name>Stone Brick</Name>
-    <TopTexture>stone_brick.s</TopTexture>
-    <SideTexture>stone_brick.s</SideTexture>
+    <Material>StylizedStoneDark</Material>
+<!--    <TopTexture>stone_brick.s</TopTexture>-->
+<!--    <SideTexture>stone_brick.s</SideTexture>-->
     <Solid>true</Solid>
     <Minecraft>98,97:2</Minecraft>
-    <Brightness>1.7</Brightness>
+    <Brightness>1</Brightness>
   </Block>
 
   <Block>
@@ -75,8 +78,9 @@
   <Block>
     <Index>7</Index>
     <Name>Oak Log</Name>
-    <TopTexture>log_oak.td</TopTexture>
-    <SideTexture>log_oak.s</SideTexture>
+<!--    <TopTexture>log_oak.td</TopTexture>-->
+<!--    <SideTexture>log_oak.s</SideTexture>-->
+    <Material>StylizedWood</Material>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
@@ -87,8 +91,9 @@
   <Block>
     <Index>12</Index>
     <Name>Cobblestone</Name>
-    <TopTexture>cobblestone.s</TopTexture>
-    <SideTexture>cobblestone.s</SideTexture>
+    <Material>StylizedStone</Material>
+<!--    <TopTexture>cobblestone.s</TopTexture>-->
+<!--    <SideTexture>cobblestone.s</SideTexture>-->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
@@ -143,9 +148,9 @@
   <Block>
     <Index>20</Index>
     <Name>Andesite</Name>
-<!--    <Material>stone/Stone1</Material>-->
-    <TopTexture>andesite.s</TopTexture>
-    <SideTexture>andesite.s</SideTexture>
+    <Material>StylizedStone</Material>
+<!--    <TopTexture>andesite.s</TopTexture>-->
+<!--    <SideTexture>andesite.s</SideTexture>-->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
@@ -361,8 +366,9 @@
   <Block>
     <Index>53</Index>
     <Name>Spruce Log</Name>
-    <TopTexture>log_spruce.td</TopTexture>
-    <SideTexture>log_spruce.s</SideTexture>
+    <Material>StylizedWood</Material>
+<!--    <TopTexture>log_spruce.td</TopTexture>-->
+<!--    <SideTexture>log_spruce.s</SideTexture>-->
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
