@@ -1873,7 +1873,6 @@ GameObject:
   - component: {fileID: 5838268274975822121}
   - component: {fileID: -5350833092752408669}
   - component: {fileID: 5859933856369973256}
-  - component: {fileID: 6189546577755190643}
   m_Layer: 3
   m_Name: HumanEntity
   m_TagString: Character
@@ -2337,19 +2336,6 @@ MonoBehaviour:
   targetRootBone: {fileID: 0}
   targetSkinnedMeshRenderers:
   - {fileID: 2065705979329601922}
---- !u!114 &6189546577755190643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06e1c09bfe5b42e49878a5fa349dcf7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mesh: {fileID: 2695573961177313877}
 --- !u!1 &8689356925778762488
 GameObject:
   m_ObjectHideFlags: 0

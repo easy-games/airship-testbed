@@ -217,7 +217,7 @@
     <Metallic>0.5</Metallic>
     <Roughness>0.5</Roughness>
     <Minecraft>133</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1</Brightness>
   </Block>
 
   <Block>
@@ -241,7 +241,7 @@
     <Metallic>0.5</Metallic>
     <Roughness>0.5</Roughness>
     <Minecraft>42</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1</Brightness>
   </Block>
 
   <Block>

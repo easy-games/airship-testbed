@@ -23,7 +23,7 @@ export class InventoryController implements OnStart {
 	private disablerCounter = 1;
 
 	private lastScrollTime = 0;
-	private scrollCooldown = 0.1;
+	private scrollCooldown = 0.05;
 
 	constructor() {}
 
@@ -108,7 +108,8 @@ export class InventoryController implements OnStart {
 		// Scroll to select held item:
 		mouse.Scrolled.Connect((delta) => {
 			if (!this.enabled) return;
-			if (math.abs(delta) > 0.1) return;
+			// print("scroll: " + delta);
+			if (math.abs(delta) < 0.05) return;
 
 			const now = Time.time;
 			if (now - this.lastScrollTime < this.scrollCooldown) {
