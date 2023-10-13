@@ -54,7 +54,7 @@ export class ProjectileEffectsController implements OnStart {
 		CoreClientSignals.EntityDamage.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 			if (event.damageType === DamageType.PROJECTILE && event.fromEntity?.IsLocalCharacter()) {
 				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/Items/Projectiles/BowArrowHitSuccess", {
-					volumeScale: 0.5,
+					volumeScale: 0.3,
 				});
 			}
 		});
