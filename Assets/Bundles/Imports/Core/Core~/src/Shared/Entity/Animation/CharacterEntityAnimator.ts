@@ -118,9 +118,10 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	private StartItemEquipAnim() {
 		this.TriggerEvent(ItemEventKeys.EQUIP);
-		this.Play(ItemEventKeys.EQUIP, () => {
-			this.StartIdleAnim();
-		});
+		// this.Play(ItemEventKeys.EQUIP, () => {
+		// 	this.StartIdleAnim();
+		// });
+		this.StartIdleAnim();
 	}
 
 	public override StartIdleAnim() {

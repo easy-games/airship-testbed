@@ -13,7 +13,7 @@ export class FirstPersonCameraSystem {
 	//public spineLerpModMax = 75;
 	//public spineLerpMaxAngle = 75;
 
-	private manualSpineOffset: Vector3 = new Vector3(0, 0.37, 0.0);
+	private manualSpineOffset: Vector3 = new Vector3(0, 0, 0);
 
 	private entityReferences: EntityReferences;
 	private cameraVars: DynamicVariables;

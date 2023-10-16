@@ -17,9 +17,9 @@ MonoBehaviour:
   - key: FirstPerson
     value:
     - key: Idle
-      value: {fileID: 7400000, guid: 9cbf6076d83512047b32b3c47c7cab0f, type: 2}
+      value: {fileID: 7400000, guid: af24ed396c4104d1782a30edba290dc1, type: 2}
     - key: Equip
-      value: {fileID: 7400000, guid: 096f1c78c8a9817489e4e7d60f91d835, type: 2}
+      value: {fileID: 7400000, guid: ae3e02ad0f32546ef8450d9b9e8452a4, type: 2}
     - key: UnEquip
       value: {fileID: 7400000, guid: fc53a19ad02b4cf48a7da485a6642242, type: 2}
     - key: Charge
