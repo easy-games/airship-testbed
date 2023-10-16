@@ -11,109 +11,79 @@ AvatarMask:
   m_Elements:
   - m_Path: 
     m_Weight: 1
-  - m_Path: arm.L
+  - m_Path: Airship_rig
     m_Weight: 1
-  - m_Path: arm.R
+  - m_Path: Airship_rig/spine.root
     m_Weight: 1
-  - m_Path: character_rig.004
+  - m_Path: Airship_rig/spine.root/spine.middle
     m_Weight: 1
-  - m_Path: character_rig.004/master_bone
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top
     m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/neck
     m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/neck/head
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L/hand.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L/hand.L/f_index.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L/hand.L/f_middle.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L/hand.L/f_pinky.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L/hand.L/f_ring.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L/hand.L/object.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.L/upper_arm.L/forearm.L/hand.L/thumb.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R/hand.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R/hand.R/f_index.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R/hand.R/f_middle.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R/hand.R/f_pinky.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R/hand.R/f_ring.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R/hand.R/object.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/spine.middle/spine.top/shoulder.R/upper_arm.R/forearm.R/hand.R/thumb.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.L/shin.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.L/shin.L/foot.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.L/shin.L/foot.L/toe.L
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.R/shin.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.R/shin.R/foot.R
+    m_Weight: 1
+  - m_Path: Airship_rig/spine.root/thigh.R/shin.R/foot.R/toe.R
+    m_Weight: 1
+  - m_Path: Body
     m_Weight: 0
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone
+  - m_Path: Body_FPS
     m_Weight: 0
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/neck_bone
+  - m_Path: Face
     m_Weight: 0
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/neck_bone/head_bone
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_index_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_index_bone.L/f_index_bone.L.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_index_bone.L/f_index_bone.L.001/f_index_bone.L.002
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_pinky_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_pinky_bone.L/f_pinky_bone.L.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_pinky_bone.L/f_pinky_bone.L.001/f_pinky_bone.L.002
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_ring_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_ring_bone.L/f_ring_bone.L.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_ring_bone.L/f_ring_bone.L.001/f_ring_bone.L.002
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_thumb_bone_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.L/lower_arm_bone.L/hand_bone.L/f_thumb_bone_bone.L/f_thumb_bone_bone.L.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_index_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_index_bone.R/f_index_bone.R.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_index_bone.R/f_index_bone.R.001/f_index_bone.R.002
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_pinky_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_pinky_bone.R/f_pinky_bone.R.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_pinky_bone.R/f_pinky_bone.R.001/f_pinky_bone.R.002
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_ring_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_ring_bone.R/f_ring_bone.R.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_ring_bone.R/f_ring_bone.R.001/f_ring_bone.R.002
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_thumb_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/lower_torso_bone/upper_torso_bone/upper_arm_bone.R/lower_arm_bone.R/hand_bone.R/f_thumb_bone.R/f_thumb_bone.R.001
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/upper_leg_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/upper_leg_bone.L/lower_leg_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/upper_leg_bone.L/lower_leg_bone.L/foot_bone.L
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/upper_leg_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/upper_leg_bone.R/lower_leg_bone.R
-    m_Weight: 1
-  - m_Path: character_rig.004/master_bone/hip_bone/upper_leg_bone.R/lower_leg_bone.R/foot_bone.R
-    m_Weight: 1
-  - m_Path: foot.L
-    m_Weight: 1
-  - m_Path: foot.R
-    m_Weight: 1
-  - m_Path: hand.L
-    m_Weight: 1
-  - m_Path: hand.R
-    m_Weight: 1
-  - m_Path: head
-    m_Weight: 1
-  - m_Path: hip
-    m_Weight: 1
-  - m_Path: leg.L
-    m_Weight: 1
-  - m_Path: leg.R
-    m_Weight: 1
-  - m_Path: neck
-    m_Weight: 1
-  - m_Path: torso
-    m_Weight: 1
+  - m_Path: Head
+    m_Weight: 0
