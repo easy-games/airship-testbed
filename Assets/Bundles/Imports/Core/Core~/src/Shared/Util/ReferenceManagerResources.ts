@@ -302,10 +302,10 @@ export enum AllBundleItems{
 	ItemBlock_ThirdPerson_UnEquip = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_UnEqup.anim",
 	ItemBlock_ThirdPerson_Use = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_Use.anim",
 	ItemBlock_SFX_Equip = "Imports/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg",
-	ItemBow_FirstPerson_Idle = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Idle.anim",
+	ItemBow_FirstPerson_Idle = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Armature_FPS_Bow_Idle.anim",
 	ItemBow_FirstPerson_Equip = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Equip.anim",
 	ItemBow_FirstPerson_UnEquip = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_UnEquip.anim",
-	ItemBow_FirstPerson_Charge = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Draw.anim",
+	ItemBow_FirstPerson_Charge = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Armature_FPS_Bow_Draw.anim",
 	ItemBow_FirstPerson_Shoot = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Draw.anim",
 	ItemBow_ThirdPerson_Idle = "",
 	ItemBow_ThirdPerson_Equip = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Blocks/Neon_TP_Blocks_Equip.anim",
@@ -335,8 +335,8 @@ export enum AllBundleItems{
 	ItemSword_Prefabs_OnUse = "Imports/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
 	ItemSword_Prefabs_OnHit = "Imports/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
 	ItemSword_SFX_Equip = "Imports/Core/Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg",
-	ItemThrowable_FirstPerson_Idle = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_Idle.anim",
-	ItemThrowable_FirstPerson_Equip = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_Equip.anim",
+	ItemThrowable_FirstPerson_Idle = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/FP_Sword_Idle.anim",
+	ItemThrowable_FirstPerson_Equip = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/FP_Sword_Equip.anim",
 	ItemThrowable_FirstPerson_UnEquip = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_UnEquip.anim",
 	ItemThrowable_FirstPerson_Charge = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_Charge.anim",
 	ItemThrowable_FirstPerson_Throw = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Sword/OLD_Neon_FP_Sword_Use.anim",
@@ -461,10 +461,10 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemBow.FirstPerson, {
 			id: Bundle_ItemBow.FirstPerson,
 			filePaths: new Map([
-				[Bundle_ItemBow_FirstPerson.Idle, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Idle.anim"],
+				[Bundle_ItemBow_FirstPerson.Idle, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Armature_FPS_Bow_Idle.anim"],
 				[Bundle_ItemBow_FirstPerson.Equip, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Equip.anim"],
 				[Bundle_ItemBow_FirstPerson.UnEquip, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_UnEquip.anim"],
-				[Bundle_ItemBow_FirstPerson.Charge, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Draw.anim"],
+				[Bundle_ItemBow_FirstPerson.Charge, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Armature_FPS_Bow_Draw.anim"],
 				[Bundle_ItemBow_FirstPerson.Shoot, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Bow/Armature_FPS_Bow_Draw.anim"],
 			])}],
 		[Bundle_ItemBow.ThirdPerson, {
@@ -556,8 +556,8 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemThrowable.FirstPerson, {
 			id: Bundle_ItemThrowable.FirstPerson,
 			filePaths: new Map([
-				[Bundle_ItemThrowable_FirstPerson.Idle, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_Idle.anim"],
-				[Bundle_ItemThrowable_FirstPerson.Equip, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_Equip.anim"],
+				[Bundle_ItemThrowable_FirstPerson.Idle, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/FP_Sword_Idle.anim"],
+				[Bundle_ItemThrowable_FirstPerson.Equip, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/FP_Sword_Equip.anim"],
 				[Bundle_ItemThrowable_FirstPerson.UnEquip, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_UnEquip.anim"],
 				[Bundle_ItemThrowable_FirstPerson.Charge, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Throwable/Neon_FP_Throw_Charge.anim"],
 				[Bundle_ItemThrowable_FirstPerson.Throw, "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Items/Sword/OLD_Neon_FP_Sword_Use.anim"],
