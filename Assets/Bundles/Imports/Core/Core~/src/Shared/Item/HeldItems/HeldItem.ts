@@ -217,7 +217,7 @@ export class HeldItem {
 		}
 	}
 
-	protected PlayItemAnimation(index: number, hold: boolean) {
+	protected PlayItemAnimation(index: number, pauseOnEndFrame: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
 			let anim = this.currentItemAnimations[i];
 			if (index >= 0) {
@@ -225,7 +225,7 @@ export class HeldItem {
 			} else {
 				anim.Play("Idle");
 			}
-			anim.SetBool("Hold", hold);
+			anim.SetBool("Hold", pauseOnEndFrame);
 		}
 	}
 
@@ -233,9 +233,9 @@ export class HeldItem {
 		this.PlayItemAnimation(-1, false);
 	}
 
-	protected SetItemAnimationHold(hold: boolean) {
+	protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
-			this.currentItemAnimations[i].SetBool("Hold", hold);
+			this.currentItemAnimations[i].SetBool("Hold", pauseOnEndFrame);
 		}
 	}
 
