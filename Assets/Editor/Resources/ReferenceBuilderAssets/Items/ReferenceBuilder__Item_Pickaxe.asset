@@ -17,13 +17,13 @@ MonoBehaviour:
   - key: FirstPerson
     value:
     - key: Idle
-      value: {fileID: 7400000, guid: 3ea69f01cb7d62044b278c153ca970fe, type: 2}
+      value: {fileID: 7400000, guid: af24ed396c4104d1782a30edba290dc1, type: 2}
     - key: Equip
-      value: {fileID: 7400000, guid: 8f8721f92c073f946908199d34c563a3, type: 2}
+      value: {fileID: 7400000, guid: ae3e02ad0f32546ef8450d9b9e8452a4, type: 2}
     - key: UnEquip
       value: {fileID: 7400000, guid: 3957f2b2dbbaabe4ab665d6aaca9e3e1, type: 2}
     - key: Use01
-      value: {fileID: 7400000, guid: 96b28f9fbdd2c48488e20361bf74ecae, type: 2}
+      value: {fileID: 7400000, guid: 51d2cbfd3d2e941fe9d4209f9cb133a4, type: 2}
   - key: ThirdPerson
     value:
     - key: Idle
@@ -37,8 +37,6 @@ MonoBehaviour:
   - key: Prefabs
     value:
     - key: OnUse
-      value: {fileID: 4958697443944929311, guid: 4c402e8d17c7a5341be1f261a5e0226a,
-        type: 3}
+      value: {fileID: 4958697443944929311, guid: 4c402e8d17c7a5341be1f261a5e0226a, type: 3}
     - key: OnHit
-      value: {fileID: 3846717720964566100, guid: 53a8707f14c131c4cb163a3a501cd8d2,
-        type: 3}
+      value: {fileID: 3846717720964566100, guid: 53a8707f14c131c4cb163a3a501cd8d2, type: 3}
