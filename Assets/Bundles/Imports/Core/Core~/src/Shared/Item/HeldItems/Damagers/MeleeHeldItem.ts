@@ -1,7 +1,6 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
-import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
 import { EffectsManager } from "../../../Effects/EffectsManager";
@@ -30,11 +29,10 @@ export class MeleeHeldItem extends HeldItem {
 			let hitTargets = this.ScanForHits();
 
 			for (const data of hitTargets) {
-				if (this.bundles && this.meta.melee?.onHitPrefabPath !== "none") {
-					let prefabPath = this.meta.melee?.onHitPrefabPath ?? AllBundleItems.ItemSword_Prefabs_OnHit;
+				if (this.meta.melee?.onHitPrefabPath) {
 					//Local damage predictions
-					const effectGO = EffectsManager.SpawnEffect(
-						prefabPath,
+					const effectGO = EffectsManager.SpawnPrefabEffect(
+						this.meta.melee.onHitPrefabPath,
 						data.hitPosition,
 						Quaternion.LookRotation(data.hitDirection).eulerAngles,
 					);

@@ -117,7 +117,7 @@ export class ItemStack {
 	}
 
 	public GetMaxStackSize(): number {
-		return this.GetItemMeta()?.itemMechanics?.maxStackSize ?? 999;
+		return this.GetItemMeta()?.maxStackSize ?? 999;
 	}
 
 	public Clone(): ItemStack {

@@ -26,11 +26,11 @@ export class ProjectileUtil {
 
 	public static GetLaunchForceData(itemMeta: ItemMeta, aimVector: Vector3, chargeSec: number) {
 		let chargePercent = 1;
-		if (itemMeta.itemMechanics) {
+		if (itemMeta.usable) {
 			chargePercent = MathUtil.InvLerp(
 				0,
-				itemMeta.itemMechanics.maxChargeSeconds,
-				math.min(chargeSec, itemMeta.itemMechanics.maxChargeSeconds),
+				itemMeta.usable.maxChargeSeconds ?? 0,
+				math.min(chargeSec, itemMeta.usable.maxChargeSeconds ?? 0),
 			);
 		}
 

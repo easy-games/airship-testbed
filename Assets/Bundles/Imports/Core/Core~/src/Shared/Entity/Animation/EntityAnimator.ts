@@ -2,6 +2,7 @@
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
+import { ItemMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -135,7 +136,7 @@ export class EntityAnimator {
 
 	public PlayUseAnim(useIndex = 0, itemPlayMode: ItemPlayMode = 0): void {}
 
-	public EquipItem(itemId: BundleGroupNames): void {}
+	public EquipItem(itemMeta: ItemMeta): void {}
 
 	public SetFirstPerson(isFirstPerson: boolean): void {}
 

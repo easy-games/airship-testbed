@@ -1,7 +1,7 @@
 import { PlaySoundConfig } from "Shared/Audio/AudioManager";
 import { Entity } from "Shared/Entity/Entity";
 import { DamageType } from "../Damage/DamageType";
-import { AllBundleItems, BundleGroupNames } from "../Util/ReferenceManagerResources";
+import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
 
@@ -47,7 +47,17 @@ export interface ProjectileLauncherMeta {
 	maxVelocityScaler: number;
 	chargingWalkSpeedMultiplier?: number;
 	firstPersonLaunchOffset: Vector3;
-	//ZoomMode: enum
+	chargeSound?: SoundMeta[];
+}
+
+export interface ViewModelMeta {
+	idleAnimFP?: string[];
+	idleAnimTP?: string[];
+	equipAnimFP?: string[];
+	equipAnimTP?: string[];
+	unequipAnimFP?: string[];
+	unequipAnimTP?: string[];
+	equipSound?: string[];
 }
 
 export interface ItemMeta {
@@ -59,11 +69,10 @@ export interface ItemMeta {
 	/** Path to image. */
 	image?: string;
 
-	//Game Design Mechanics
-	itemMechanics?: ItemMechanicsMeta;
+	usable?: UsableHeldItemMeta;
+	viewModel?: ViewModelMeta;
 
-	//Assets
-	itemAssets?: ItemAssetsMeta;
+	maxStackSize?: number;
 
 	//Optional Item Archetypes
 	melee?: MeleeItemMeta;
@@ -79,35 +88,30 @@ export interface ItemMeta {
 	pickupSound?: string[];
 }
 
-export interface ItemAssetsMeta {
-	assetBundleId?: BundleGroupNames;
-	onUsePrefabId?: number;
-	onUseSound?: string[];
-	onUseSoundVolume?: number;
-}
-
-export interface ItemMechanicsMeta {
-	minChargeSeconds: number;
-	maxChargeSeconds: number;
-	startUpInSeconds: number;
+export interface UsableHeldItemMeta {
+	minChargeSeconds?: number;
+	maxChargeSeconds?: number;
+	startUpInSeconds?: number;
 	cooldownSeconds: number;
 	canHoldToUse?: boolean;
 	holdToUseCooldownInSeconds?: number;
 	maxStackSize?: number;
+	onUseSound?: string[];
+	onUseSoundVolume?: number;
+	onUseAnimFP?: string[];
+	onUseAnimTP?: string[];
 }
 
-export interface DamageItemMeta {
+export interface BreakBlockMeta {
+	extraDamageBlockArchetype?: BlockArchetype;
+	extraDamage?: number;
+
 	damage: number;
 
 	/**
 	 * If undefined, default effects will be used.
 	 */
-	onHitPrefabPath?: AllBundleItems | "none";
-}
-
-export interface BreakBlockMeta extends DamageItemMeta {
-	extraDamageBlockArchetype: BlockArchetype;
-	extraDamage: number;
+	onHitPrefabPath?: string;
 }
 
 export interface AOEDamageMeta {
@@ -124,9 +128,15 @@ export enum BlockArchetype {
 	WOOL,
 }
 
-export interface MeleeItemMeta extends DamageItemMeta {
+export interface MeleeItemMeta {
 	damageType?: DamageType;
 	canHitMultipleTargets?: boolean;
+	damage: number;
+
+	/**
+	 * If undefined, default effects will be used.
+	 */
+	onHitPrefabPath?: string;
 }
 
 export interface BoxCollision {

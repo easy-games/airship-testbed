@@ -1,3 +1,4 @@
+import { Task } from "Shared/Util/Task";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import {
 	AllBundleItems,
@@ -6,10 +7,19 @@ import {
 	BundleGroupNames,
 	ReferenceManagerAssets,
 } from "../Util/ReferenceManagerResources";
-import { Task } from "Shared/Util/Task";
 
 export class EffectsManager {
-	public static SpawnEffect(
+	public static SpawnPrefabEffect(
+		path: string,
+		worldPosition: Vector3,
+		worldRotation: Vector3,
+		destroyInSeconds = 5,
+	) {
+		const prefab = AssetBridge.Instance.LoadAsset<GameObject>(path);
+		return this.SpawnGameObjectAtPosition(prefab, worldPosition, worldRotation, destroyInSeconds);
+	}
+
+	public static SpawnBundleEffectById(
 		bundleId: AllBundleItems,
 		worldPosition: Vector3,
 		worldRotation: Vector3,

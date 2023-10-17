@@ -2,44 +2,34 @@ import { CoreSound } from "Shared/Sound/CoreSound";
 import { Layer } from "Shared/Util/Layer";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
-import {
-	AllBundleItems,
-	Bundle_ItemPickaxe_Prefabs,
-	Bundle_ItemSword_Prefabs,
-	BundleGroupNames,
-} from "../Util/ReferenceManagerResources";
+import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
-import { BlockArchetype, BlockMeta, BreakBlockMeta, ItemAssetsMeta, ItemMechanicsMeta, ItemMeta } from "./ItemMeta";
+import { BlockArchetype, BlockMeta, ItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 
 const coreSoundPath = "Imports/Core/Shared/Resources/Sound/";
+const CoreAnim = (...p: string[]) => {
+	return p.map((s) => {
+		return `Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/${s}.anim`;
+	});
+};
 
 const defaultGravity = PhysicsUtil.Gravity;
-const defaultItemMechanics: ItemMechanicsMeta = {
+const blockUsable: UsableHeldItemMeta = {
 	startUpInSeconds: 0,
 	minChargeSeconds: 0,
 	maxChargeSeconds: 0,
-	cooldownSeconds: 0.1,
-	canHoldToUse: true,
-	holdToUseCooldownInSeconds: -1,
-};
-const blockItemMechanics: ItemMechanicsMeta = {
-	...defaultItemMechanics,
 	cooldownSeconds: 0.0,
 	holdToUseCooldownInSeconds: 0.16,
+	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("FP_Sword_Use"),
 };
-const blockItemAssets: ItemAssetsMeta = {
-	assetBundleId: BundleGroupNames.ItemBlock,
-	// onUseSoundId: "GrassBlockPlace",
-};
-const swordItemMechanics: ItemMechanicsMeta = {
-	...defaultItemMechanics,
+const swordUsable: UsableHeldItemMeta = {
+	startUpInSeconds: 0,
+	minChargeSeconds: 0,
+	maxChargeSeconds: 0,
 	cooldownSeconds: 0.15,
 	canHoldToUse: false,
-};
-const swordItemAssets: ItemAssetsMeta = {
-	assetBundleId: BundleGroupNames.ItemSword,
-	onUsePrefabId: Bundle_ItemSword_Prefabs.OnUse,
 	onUseSound: [
 		coreSoundPath + "s_Sword_Swing_Wood_01.wav",
 		coreSoundPath + "s_Sword_Swing_Wood_02.wav",
@@ -47,35 +37,18 @@ const swordItemAssets: ItemAssetsMeta = {
 		coreSoundPath + "s_Sword_Swing_Wood_04.wav",
 	],
 	onUseSoundVolume: 0.3,
+	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("FP_Sword_Use"),
 };
-const pickaxeItemAssets: ItemAssetsMeta = {
-	assetBundleId: BundleGroupNames.ItemPickaxe,
-	onUsePrefabId: Bundle_ItemPickaxe_Prefabs.OnUse,
+const swordViewModel: ViewModelMeta = {
+	idleAnimFP: CoreAnim("FP_Sword_Idle"),
+	idleAnimTP: CoreAnim("FP_Sword_Idle"),
 };
-const rangedItemMechanics: ItemMechanicsMeta = {
-	...defaultItemMechanics,
-	cooldownSeconds: 0.1,
-	minChargeSeconds: 0.1,
-	maxChargeSeconds: 1.5,
-};
-
-const throwableItemAssets: ItemAssetsMeta = {
-	assetBundleId: BundleGroupNames.ItemThrowable,
-	// onUseSoundId: "Throw",
+const pickaxeUsable: Partial<UsableHeldItemMeta> = {
+	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("FP_Sword_Use"),
 };
 
-const bowItemAssets: ItemAssetsMeta = {
-	assetBundleId: BundleGroupNames.ItemBow,
-	onUseSound: [coreSoundPath + "BowArrowFire"],
-	onUseSoundVolume: 0.5,
-};
-
-const defaultBreakBlock: BreakBlockMeta = {
-	damage: 1,
-	onHitPrefabPath: AllBundleItems.ItemPickaxe_Prefabs_OnHit,
-	extraDamageBlockArchetype: BlockArchetype.NONE,
-	extraDamage: 2,
-};
 const woolBlock: BlockMeta = {
 	health: 10,
 	blockId: 33,
@@ -96,14 +69,14 @@ export const items: {
 	[ItemType.DEFAULT]: {
 		//Identification
 		displayName: "Default",
-		itemMechanics: defaultItemMechanics,
 	},
 
 	////BLOCKS
 	[ItemType.BED]: {
 		displayName: "Bed",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			health: 50,
 			blockId: 31,
@@ -116,8 +89,9 @@ export const items: {
 	},
 	[ItemType.WHITE_WOOL]: {
 		displayName: "White Wool",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			...woolBlock,
 			blockId: 33,
@@ -125,8 +99,9 @@ export const items: {
 	},
 	[ItemType.BLUE_WOOL]: {
 		displayName: "Blue Wool",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			...woolBlock,
 			blockId: 35,
@@ -134,8 +109,9 @@ export const items: {
 	},
 	[ItemType.RED_WOOL]: {
 		displayName: "Red Wool",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			...woolBlock,
 			blockId: 34,
@@ -143,8 +119,9 @@ export const items: {
 	},
 	[ItemType.GREEN_WOOL]: {
 		displayName: "Green Wool",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			...woolBlock,
 			blockId: 36,
@@ -152,8 +129,9 @@ export const items: {
 	},
 	[ItemType.YELLOW_WOOL]: {
 		displayName: "Yellow Wool",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			...woolBlock,
 			blockId: 37,
@@ -161,8 +139,9 @@ export const items: {
 	},
 	[ItemType.GRASS]: {
 		displayName: "Grass",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 1,
 			stepSound: CoreSound.footstepGrass,
@@ -173,8 +152,9 @@ export const items: {
 	},
 	[ItemType.TALL_GRASS]: {
 		displayName: "Tall Grass",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 52,
 			hitSound: CoreSound.blockHitDirt,
@@ -184,8 +164,9 @@ export const items: {
 	},
 	[ItemType.DIRT]: {
 		displayName: "Dirt",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 2,
 			stepSound: CoreSound.footstepGrass,
@@ -196,8 +177,9 @@ export const items: {
 	},
 	[ItemType.STONE]: {
 		displayName: "Stone",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 4,
 			blockArchetype: BlockArchetype.STONE,
@@ -206,8 +188,9 @@ export const items: {
 	},
 	[ItemType.GRIM_STONE]: {
 		displayName: "Grimstone",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 14,
 			blockArchetype: BlockArchetype.STONE,
@@ -215,8 +198,9 @@ export const items: {
 	},
 	[ItemType.COBBLESTONE]: {
 		displayName: "Cobblestone",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 12,
 			blockArchetype: BlockArchetype.STONE,
@@ -224,8 +208,9 @@ export const items: {
 	},
 	[ItemType.STONE_BRICK]: {
 		displayName: "Stone Brick",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 26,
 			health: 20,
@@ -234,8 +219,9 @@ export const items: {
 	},
 	[ItemType.OBSIDIAN]: {
 		displayName: "Obsidian",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 38,
 			health: 50,
@@ -243,8 +229,9 @@ export const items: {
 	},
 	[ItemType.ANDESITE]: {
 		displayName: "Andesite",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 20,
 			health: 20,
@@ -252,8 +239,9 @@ export const items: {
 	},
 	[ItemType.OAK_WOOD_PLANK]: {
 		displayName: "Oak Wood Plank",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 6,
 			blockArchetype: BlockArchetype.WOOD,
@@ -262,8 +250,9 @@ export const items: {
 	},
 	[ItemType.OAK_LOG]: {
 		displayName: "Oak Log",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 7,
 			blockArchetype: BlockArchetype.WOOD,
@@ -272,112 +261,126 @@ export const items: {
 	},
 	[ItemType.CLAY]: {
 		displayName: "Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 54,
 		},
 	},
 	[ItemType.WHITE_CLAY]: {
 		displayName: "White Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 55,
 		},
 	},
 	[ItemType.YELLOW_CLAY]: {
 		displayName: "Yellow Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 56,
 		},
 	},
 	[ItemType.GRAY_CLAY]: {
 		displayName: "Gray Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 58,
 		},
 	},
 	[ItemType.LIGHT_GREEN_CLAY]: {
 		displayName: "Light Green Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 21,
 		},
 	},
 	[ItemType.DARK_GREEN_CLAY]: {
 		displayName: "Dark Green Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 22,
 		},
 	},
 	[ItemType.BLACK_CLAY]: {
 		displayName: "Black Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 57,
 		},
 	},
 	[ItemType.BROWN_CLAY]: {
 		displayName: "Brown Clay",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 60,
 		},
 	},
 	[ItemType.LEAF_OAK]: {
 		displayName: "Oak Leaf",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 59,
 		},
 	},
 	[ItemType.DIAMOND_BLOCK]: {
 		displayName: "Diamond Block",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 28,
 		},
 	},
 	[ItemType.EMERALD_BLOCK]: {
 		displayName: "Emerald Block",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 16,
 		},
 	},
 	[ItemType.IRON_BLOCK]: {
 		displayName: "Iron Block",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 29,
 		},
 	},
 	[ItemType.MUSHROOM]: {
 		displayName: "Mushroom",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 50,
 		},
 	},
 	[ItemType.SLATE_BRICK]: {
 		displayName: "Slate Brick",
-		itemAssets: blockItemAssets,
-		itemMechanics: blockItemMechanics,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 23,
 			health: 20,
@@ -386,8 +389,9 @@ export const items: {
 	},
 	[ItemType.CERAMIC]: {
 		displayName: "Ceramic",
-		itemMechanics: blockItemMechanics,
-		itemAssets: blockItemAssets,
+		usable: {
+			...blockUsable,
+		},
 		block: {
 			blockId: 61,
 		},
@@ -396,27 +400,20 @@ export const items: {
 	////RESOURCES
 	[ItemType.IRON]: {
 		displayName: "Iron",
-		itemMechanics: defaultItemMechanics,
-		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.IRON)],
 	},
 	[ItemType.DIAMOND]: {
 		displayName: "Diamond",
-		itemMechanics: defaultItemMechanics,
-		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.DIAMOND)],
 	},
 	[ItemType.EMERALD]: {
 		displayName: "Emerald",
-		itemMechanics: defaultItemMechanics,
-		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.EMERALD)],
 	},
 
 	////ARMOR
 	[ItemType.LEATHER_HELMET]: {
 		displayName: "Leather Helmet",
-		itemMechanics: defaultItemMechanics,
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Leather/LeatherHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
@@ -425,7 +422,6 @@ export const items: {
 	},
 	[ItemType.IRON_HELMET]: {
 		displayName: "Iron Helmet",
-		itemMechanics: defaultItemMechanics,
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Iron/IronHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
@@ -434,7 +430,6 @@ export const items: {
 	},
 	[ItemType.DIAMOND_HELMET]: {
 		displayName: "Diamond Helmet",
-		itemMechanics: defaultItemMechanics,
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Diamond/DiamondHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
@@ -443,7 +438,6 @@ export const items: {
 	},
 	[ItemType.EMERALD_HELMET]: {
 		displayName: "Emerald Helmet",
-		itemMechanics: defaultItemMechanics,
 		accessoryPaths: ["Imports/Core/Shared/Resources/Accessories/Armor/Emerald/EmeraldHelmet.asset"],
 		armor: {
 			armorType: ArmorType.HELMET,
@@ -454,56 +448,48 @@ export const items: {
 	////TOOLS
 	[ItemType.WOOD_PICKAXE]: {
 		displayName: "Wood Pickaxe",
-		itemAssets: pickaxeItemAssets,
-		itemMechanics: {
-			...defaultItemMechanics,
+		usable: {
+			...pickaxeUsable,
 			cooldownSeconds: 0.28,
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
 		breakBlock: {
-			...defaultBreakBlock,
 			damage: 2,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
 	},
 	[ItemType.STONE_PICKAXE]: {
 		displayName: "Stone Pickaxe",
-		itemAssets: pickaxeItemAssets,
-		itemMechanics: {
-			...defaultItemMechanics,
+		usable: {
+			...pickaxeUsable,
 			cooldownSeconds: 0.24,
 		},
 		accessoryPaths: [AccPath(ItemType.STONE_PICKAXE)],
 		breakBlock: {
-			...defaultBreakBlock,
 			damage: 3,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
 	},
 	[ItemType.IRON_PICKAXE]: {
 		displayName: "Iron Pickaxe",
-		itemAssets: pickaxeItemAssets,
-		itemMechanics: {
-			...defaultItemMechanics,
+		usable: {
+			...pickaxeUsable,
 			cooldownSeconds: 0.2,
 		},
 		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE)],
 		breakBlock: {
-			...defaultBreakBlock,
 			damage: 4,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
 	},
 	[ItemType.DIAMOND_PICKAXE]: {
 		displayName: "Diamond Pickaxe",
-		itemAssets: pickaxeItemAssets,
-		itemMechanics: {
-			...defaultItemMechanics,
+		usable: {
+			...pickaxeUsable,
 			cooldownSeconds: 0.18,
 		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_PICKAXE)],
 		breakBlock: {
-			...defaultBreakBlock,
 			damage: 5,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
 		},
@@ -512,8 +498,12 @@ export const items: {
 	////SWORDS
 	[ItemType.WOOD_SWORD]: {
 		displayName: "Wood Sword",
-		itemAssets: swordItemAssets,
-		itemMechanics: swordItemMechanics,
+		usable: {
+			...swordUsable,
+		},
+		viewModel: {
+			...swordViewModel,
+		},
 		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
 		melee: {
 			damage: 18,
@@ -521,8 +511,9 @@ export const items: {
 	},
 	[ItemType.STONE_SWORD]: {
 		displayName: "Stone Sword",
-		itemAssets: swordItemAssets,
-		itemMechanics: swordItemMechanics,
+		usable: {
+			...swordUsable,
+		},
 		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
 		melee: {
 			damage: 25,
@@ -530,8 +521,9 @@ export const items: {
 	},
 	[ItemType.IRON_SWORD]: {
 		displayName: "Iron Sword",
-		itemAssets: swordItemAssets,
-		itemMechanics: swordItemMechanics,
+		usable: {
+			...swordUsable,
+		},
 		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
 		melee: {
 			damage: 35,
@@ -539,8 +531,9 @@ export const items: {
 	},
 	[ItemType.DIAMOND_SWORD]: {
 		displayName: "Diamond Sword",
-		itemAssets: swordItemAssets,
-		itemMechanics: swordItemMechanics,
+		usable: {
+			...swordUsable,
+		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
 		melee: {
 			damage: 45,
@@ -548,8 +541,9 @@ export const items: {
 	},
 	[ItemType.DOUBLE_HIT_SWORD]: {
 		displayName: "Double Hit Sword",
-		itemAssets: swordItemAssets,
-		itemMechanics: { ...swordItemMechanics, cooldownSeconds: 1 },
+		usable: {
+			...swordUsable,
+		},
 		accessoryPaths: [AccPath(ItemType.DOUBLE_HIT_SWORD)],
 		melee: {
 			damage: 10,
@@ -557,8 +551,9 @@ export const items: {
 	},
 	[ItemType.RAGEBLADE]: {
 		displayName: "Rageblade",
-		itemAssets: swordItemAssets,
-		itemMechanics: swordItemMechanics,
+		usable: {
+			...swordUsable,
+		},
 		accessoryPaths: [AccPath(ItemType.RAGEBLADE)],
 		melee: {
 			damage: 15,
@@ -568,13 +563,11 @@ export const items: {
 	//BOW
 	[ItemType.WOOD_BOW]: {
 		displayName: "Wood Bow",
-		itemMechanics: {
-			...rangedItemMechanics,
+		usable: {
 			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.25,
 		},
-		itemAssets: bowItemAssets,
 		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
 		projectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
@@ -586,8 +579,6 @@ export const items: {
 	},
 	[ItemType.WOOD_ARROW]: {
 		displayName: "Wood Arrow",
-		itemMechanics: defaultItemMechanics,
-		itemAssets: blockItemAssets,
 		accessoryPaths: [AccPath(ItemType.WOOD_ARROW)],
 		projectile: {
 			yAxisAimAdjust: 0.1,
@@ -614,14 +605,10 @@ export const items: {
 	//PROJECTILES
 	[ItemType.TELEPEARL]: {
 		displayName: "Telepearl",
-		itemMechanics: {
-			...rangedItemMechanics,
+		usable: {
 			minChargeSeconds: 0.05,
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
-		},
-		itemAssets: {
-			...throwableItemAssets,
 			onUseSound: ["Imports/Core/Shared/Resources/Sound/TelepearlThrow"],
 		},
 		accessoryPaths: [AccPath(ItemType.TELEPEARL)],
@@ -641,18 +628,14 @@ export const items: {
 	},
 	[ItemType.FIREBALL]: {
 		displayName: "Fireball",
-		itemMechanics: {
-			...rangedItemMechanics,
+		usable: {
 			minChargeSeconds: 0.05,
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
-			maxStackSize: 20,
-		},
-		accessoryPaths: [AccPath(ItemType.FIREBALL)],
-		itemAssets: {
-			...throwableItemAssets,
 			onUseSound: ["Fireball_Throw"],
 		},
+		maxStackSize: 20,
+		accessoryPaths: [AccPath(ItemType.FIREBALL)],
 		projectileLauncher: {
 			ammoItemType: ItemType.FIREBALL,
 			minVelocityScaler: 15,
@@ -672,7 +655,7 @@ export const items: {
 				damage: 20,
 				extraDamage: 20,
 				extraDamageBlockArchetype: BlockArchetype.WOOD,
-				onHitPrefabPath: AllBundleItems.Blocks_VFX_OnHitFire,
+				onHitPrefabPath: "Imports/Core/Shared/Resources/Prefabs/VFX/Blocks/OnBlockHitFireVFX.prefab",
 			},
 			gravity: defaultGravity * 0.09,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),

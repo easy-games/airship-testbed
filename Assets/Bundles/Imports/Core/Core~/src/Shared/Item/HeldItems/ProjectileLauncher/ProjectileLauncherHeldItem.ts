@@ -4,11 +4,12 @@ import { Crosshair } from "Shared/Crosshair/Crosshair";
 import { ItemPlayMode } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { AmmoMeta, ItemMeta } from "Shared/Item/ItemMeta";
+import { AmmoMeta, ItemMeta, SoundMeta } from "Shared/Item/ItemMeta";
 import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
 import { Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
@@ -35,17 +36,20 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		//Play the draw sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
-		let soundPath = this.bundles?.bundles?.get(3)?.filePaths.get(1);
-		if (soundPath) {
+
+		let sound: SoundMeta | undefined = undefined;
+		if (this.meta.projectileLauncher.chargeSound) {
+			sound = RandomUtil.FromArray(this.meta.projectileLauncher.chargeSound);
+		}
+
+		if (sound) {
 			if (this.entity.IsLocalCharacter()) {
-				AudioManager.PlayFullPathGlobal(soundPath, { volumeScale: 0.2 });
+				AudioManager.PlayFullPathGlobal(sound.path, sound);
 			} else {
 				this.chargeAudioSource = AudioManager.PlayFullPathAtPosition(
-					soundPath,
+					sound.path,
 					this.entity.model.transform.position,
-					{
-						volumeScale: 0.2,
-					},
+					sound,
 				);
 			}
 		}
