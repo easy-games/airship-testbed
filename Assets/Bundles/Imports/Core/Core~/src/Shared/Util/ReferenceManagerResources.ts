@@ -40,6 +40,7 @@ export enum Bundle_Entity_OnHit{
 export enum Bundle_Entity_Movement{
 	NONE = -1,
 	SprintTrail,
+	LandVFX,
 	JumpSFX,
 	LandSFX,
 	SlideSFX0,
@@ -286,6 +287,7 @@ export enum AllBundleItems{
 	Entity_OnHit_FlinchAnimTP = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Root/OnHit/Armature_TP_Flinch.anim",
 	Entity_OnHit_DeathAnimTP = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Root/OnHit/Armature_TP_Death.anim",
 	Entity_Movement_SprintTrail = "Imports/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab",
+	Entity_Movement_LandVFX = "Imports/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/LandingVFX.prefab",
 	Entity_Movement_JumpSFX = "Imports/Core/Shared/Resources/Sound/Movement/JumpStart.ogg",
 	Entity_Movement_LandSFX = "Imports/Core/Shared/Resources/Sound/Movement/JumpLand.ogg",
 	Entity_Movement_SlideSFX0 = "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav",
@@ -413,6 +415,7 @@ export class ReferenceManagerAssets{
 			id: Bundle_Entity.Movement,
 			filePaths: new Map([
 				[Bundle_Entity_Movement.SprintTrail, "Imports/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab"],
+				[Bundle_Entity_Movement.LandVFX, "Imports/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/LandingVFX.prefab"],
 				[Bundle_Entity_Movement.JumpSFX, "Imports/Core/Shared/Resources/Sound/Movement/JumpStart.ogg"],
 				[Bundle_Entity_Movement.LandSFX, "Imports/Core/Shared/Resources/Sound/Movement/JumpLand.ogg"],
 				[Bundle_Entity_Movement.SlideSFX0, "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav"],

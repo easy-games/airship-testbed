@@ -1,3 +1,4 @@
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BundleReferenceManager } from "../Util/BundleReferenceManager";
 import {
 	AllBundleItems,
@@ -7,6 +8,7 @@ import {
 	ReferenceManagerAssets,
 } from "../Util/ReferenceManagerResources";
 import { Task } from "Shared/Util/Task";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 export class EffectsManager {
 	public static SpawnEffect(
@@ -117,5 +119,18 @@ export class EffectsManager {
 
 	public static ReleaseGameObject(go: GameObject) {
 		PoolManager.ReleaseObject(go);
+	}
+
+	public static SetParticleToBlockMaterial(particles: ParticleSystemRenderer, blockId: number) {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return;
+		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, world.voxelWorld);
+		if (blockGO) {
+			const blockRen = blockGO.GetComponent<Renderer>();
+			const blockFilter = blockGO.GetComponent<MeshFilter>();
+			particles.mesh = blockFilter.mesh;
+			particles.sharedMaterial = blockRen.sharedMaterial;
+			GameObjectUtil.Destroy(blockGO);
+		}
 	}
 }
