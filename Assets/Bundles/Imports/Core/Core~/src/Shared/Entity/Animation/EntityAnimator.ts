@@ -127,12 +127,22 @@ export class EntityAnimator {
 		this.bin.Clean();
 	}
 
-	public PlayAnimation(clip: AnimationClip, layer = 0, wrapMode: WrapMode = WrapMode.Default): AnimancerState {
-		return AnimancerBridge.Play(this.anim, clip, layer, this.defaultTransitionTime, FadeMode.FromStart, wrapMode);
+	public PlayAnimation(
+		clip: AnimationClip,
+		layer = 0,
+		wrapMode: WrapMode = WrapMode.Default,
+		transitionTime = this.defaultTransitionTime,
+	): AnimancerState {
+		return AnimancerBridge.Play(this.anim, clip, layer, transitionTime, FadeMode.FromStart, wrapMode);
 	}
 
-	public PlayAnimationOnce(clip: AnimationClip, layer = 0, wrapMode: WrapMode = WrapMode.Default): AnimancerState {
-		return AnimancerBridge.PlayOnce(this.anim, clip, layer, this.defaultTransitionTime, FadeMode.FromStart);
+	public PlayAnimationOnce(
+		clip: AnimationClip,
+		layer = 0,
+		wrapMode: WrapMode = WrapMode.Default,
+		transitionTime = this.defaultTransitionTime,
+	): AnimancerState {
+		return AnimancerBridge.PlayOnce(this.anim, clip, layer, transitionTime, FadeMode.FromStart);
 	}
 
 	public StartIdleAnim(): void {}

@@ -4,6 +4,8 @@ export declare class ProjectileLauncherHeldItem extends HeldItem {
     private startHoldTimeSec;
     private chargeAudioSource;
     private projectileTrajectoryRenderer;
+    private chargeAnimFP;
+    private chargeAnimTP;
     protected OnChargeStart(): void;
     private HasRequiredAmmo;
     protected OnChargeEnd(): void;
