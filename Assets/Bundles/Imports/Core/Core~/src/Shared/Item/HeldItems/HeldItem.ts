@@ -102,7 +102,7 @@ export class HeldItem {
 	}
 
 	private HoldDownAction() {
-		if (this.meta.viewModel && !this.holdingDown) {
+		if (this.meta.usable && !this.holdingDown) {
 			this.holdingDown = true;
 			if (this.meta.usable?.canHoldToUse) {
 				const holdCooldown = this.meta.usable.holdToUseCooldownInSeconds;

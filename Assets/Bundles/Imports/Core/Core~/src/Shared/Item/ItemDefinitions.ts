@@ -47,6 +47,7 @@ const swordViewModel: ViewModelMeta = {
 const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
 	onUseAnimTP: CoreAnim("FP_Sword_Use"),
+	canHoldToUse: true,
 };
 
 const woolBlock: BlockMeta = {
@@ -450,7 +451,7 @@ export const items: {
 		displayName: "Wood Pickaxe",
 		usable: {
 			...pickaxeUsable,
-			cooldownSeconds: 0.28,
+			cooldownSeconds: 0.22,
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
 		breakBlock: {
@@ -462,7 +463,7 @@ export const items: {
 		displayName: "Stone Pickaxe",
 		usable: {
 			...pickaxeUsable,
-			cooldownSeconds: 0.24,
+			cooldownSeconds: 0.2,
 		},
 		accessoryPaths: [AccPath(ItemType.STONE_PICKAXE)],
 		breakBlock: {
@@ -474,7 +475,7 @@ export const items: {
 		displayName: "Iron Pickaxe",
 		usable: {
 			...pickaxeUsable,
-			cooldownSeconds: 0.2,
+			cooldownSeconds: 0.18,
 		},
 		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE)],
 		breakBlock: {
@@ -486,7 +487,7 @@ export const items: {
 		displayName: "Diamond Pickaxe",
 		usable: {
 			...pickaxeUsable,
-			cooldownSeconds: 0.18,
+			cooldownSeconds: 0.16,
 		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_PICKAXE)],
 		breakBlock: {

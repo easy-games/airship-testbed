@@ -47,7 +47,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	}
 
 	private Log(message: string) {
-		// return;
+		return;
 		print("Animator " + this.entity.id + ": " + message);
 	}
 
