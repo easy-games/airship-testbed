@@ -7,7 +7,7 @@ import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterE
 import { Entity } from "Imports/Core/Shared/Entity/Entity";
 import { ItemMeta } from "Imports/Core/Shared/Item/ItemMeta";
 import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI, CoreBlockMetaKeys } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
 @Service({})
@@ -16,7 +16,7 @@ export class MapBlockService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.BlockPlace.Connect((event) => {
 			if (event.entity) {
-				BlockDataAPI.SetBlockData(event.pos, "canBreak", true);
+				BlockDataAPI.SetBlockData(event.pos, CoreBlockMetaKeys.CAN_BREAK, true);
 			}
 		});
 

@@ -23,7 +23,7 @@ export class InventoryController implements OnStart {
 	private disablerCounter = 1;
 
 	private lastScrollTime = 0;
-	private scrollCooldown = 0.1;
+	private scrollCooldown = 0.05;
 
 	constructor() {}
 
@@ -108,7 +108,8 @@ export class InventoryController implements OnStart {
 		// Scroll to select held item:
 		mouse.Scrolled.Connect((delta) => {
 			if (!this.enabled) return;
-			if (math.abs(delta) > 0.1) return;
+			// print("scroll: " + delta);
+			if (math.abs(delta) < 0.05) return;
 
 			const now = Time.time;
 			if (now - this.lastScrollTime < this.scrollCooldown) {
@@ -191,8 +192,12 @@ export class InventoryController implements OnStart {
 	public DropItemInHand(): void {
 		const heldItem = this.LocalInventory?.GetHeldItem();
 		if (heldItem) {
-			CoreNetwork.ClientToServer.DropItemInHand.Client.FireServer(1);
+			CoreNetwork.ClientToServer.DropItemInSlot.Client.FireServer(this.LocalInventory!.GetHeldSlot(), 1);
 		}
+	}
+
+	public DropItemInSlot(slot: number, amount: number): void {
+		CoreNetwork.ClientToServer.DropItemInSlot.Client.FireServer(slot, amount);
 	}
 
 	public SetLocalInventory(inventory: Inventory): void {
@@ -260,6 +265,42 @@ export class InventoryController implements OnStart {
 
 	public RegisterInventory(inv: Inventory): void {
 		this.inventories.set(inv.Id, inv);
+	}
+
+	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void {
+		const fromItemStack = fromInv.GetItem(fromSlot);
+		if (!fromItemStack) return;
+
+		const toItemStack = toInv.GetItem(toSlot);
+		if (toItemStack !== undefined) {
+			if (toItemStack.CanMerge(fromItemStack)) {
+				if (toItemStack.GetAmount() + amount <= toItemStack.GetMaxStackSize()) {
+					toItemStack.SetAmount(toItemStack.GetAmount() + amount);
+					fromItemStack.Decrement(amount);
+					CoreNetwork.ClientToServer.Inventory.MoveToSlot.Client.FireServer(
+						fromInv.Id,
+						fromSlot,
+						toInv.Id,
+						toSlot,
+						amount,
+					);
+					return;
+				}
+				// can't merge so do nothing
+				return;
+			}
+		}
+
+		this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
+			noNetwork: true,
+		});
+		CoreNetwork.ClientToServer.Inventory.MoveToSlot.Client.FireServer(
+			fromInv.Id,
+			fromSlot,
+			toInv.Id,
+			toSlot,
+			amount,
+		);
 	}
 
 	public QuickMoveSlot(inv: Inventory, slot: number): void {

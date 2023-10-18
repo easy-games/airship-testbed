@@ -34473,6 +34473,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7973900319460581741, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
+      propertyPath: m_Name
+      value: SM_Bed_Matress_TC
+      objectReference: {fileID: 0}
+    - target: {fileID: -7973900319460581741, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
       propertyPath: m_TagString
       value: TeamColor
       objectReference: {fileID: 0}
@@ -34485,8 +34489,16 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: -5474582099123384324, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
+      propertyPath: m_Name
+      value: SM_Bed_Pillow_TC
+      objectReference: {fileID: 0}
+    - target: {fileID: -5474582099123384324, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
       propertyPath: m_TagString
       value: TeamColor
+      objectReference: {fileID: 0}
+    - target: {fileID: -5367233936511957463, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
+      propertyPath: m_Name
+      value: SM_Bed_Blanket_TC
       objectReference: {fileID: 0}
     - target: {fileID: -5367233936511957463, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
       propertyPath: m_IsActive
@@ -34549,6 +34561,7 @@ MonoBehaviour:
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!23 &5007781968300632546 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7457610313481856061, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
@@ -34576,6 +34589,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!4 &6518028869797729738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
@@ -34617,6 +34631,7 @@ MonoBehaviour:
     emissiveColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7635968970234559965 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5474582099123384324, guid: c2070a4805ee55643891c62aa414ac7f, type: 3}
@@ -34639,6 +34654,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1001 &8106901765238465665
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40798,6 +40814,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &114378407192507761 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8149222543696957936, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -40824,6 +40841,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &259341063656410708 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -929749889457378603, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -40850,6 +40868,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &280841399467955655 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -908530891385179834, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -40876,6 +40895,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &298405129458951883 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -818065417304505782, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -40902,6 +40922,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &310243592786480791 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -806226988067476970, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -40928,6 +40949,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &386604614857613449 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8492943292703163400, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -40954,6 +40976,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &422979095080142892 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -765830692227666771, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -40980,6 +41003,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &470627204034871181 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -717901074003617012, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41006,6 +41030,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &496675249876765031 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8531237945831894502, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41032,6 +41057,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &577921642615232013 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8684260148393407116, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41058,6 +41084,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &578500876509979042 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8684839279142602019, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41084,6 +41111,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &621775871698402195 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -567033641067389166, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41110,6 +41138,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &637945509912813848 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8672789646753531289, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41136,6 +41165,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &656734733246229815 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -460298488391153226, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41162,6 +41192,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &789794950760262009 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8823794559322476024, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41188,6 +41219,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &891620105711839586 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8997677445684022755, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41214,6 +41246,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &978086234885107930 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9012648484095923291, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41240,6 +41273,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &978162304530540587 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -210928820381889366, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41266,6 +41300,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &985668899568597640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9019668336600489481, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41292,6 +41327,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1018016386348155169 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -98735360581196384, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41318,6 +41354,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1050303435256422006 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -138787655498171657, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41344,6 +41381,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1072008051626161318 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -116801598510886873, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41370,6 +41408,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1109298704092501981 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9215637519309910876, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41396,6 +41435,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1240187151286764460 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2182126439116757203, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41422,6 +41462,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1285705108270829407 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7013861432741981150, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41448,6 +41489,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1336549066350559946 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7065550228336813643, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41474,6 +41516,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1466376179225724676 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7266590338521670533, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41500,6 +41543,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1608685309509864393 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1814190955901800632, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41526,6 +41570,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1683758676502114185 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1739399166965757176, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41552,6 +41597,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1684387846268479495 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1737925572268929914, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41578,6 +41624,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1718318076688851517 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7447037454192559804, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41604,6 +41651,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1723802162491014138 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7452803015172759419, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41626,6 +41674,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1805141778802427293 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1617734727194975972, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41652,6 +41701,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1940267520308399977 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7668705697713056744, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41678,6 +41728,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1950220126018044643 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7750997235266561634, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41704,6 +41755,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &1950296752722760427 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7751073896331605610, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41730,6 +41782,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2002255506765231153 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7730693684370935984, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41756,6 +41809,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2072909454869305588 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7801910341709741173, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41782,6 +41836,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2274306800625052161 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1220908945849954688, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41804,6 +41859,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2279152008131830990 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1215782126195687345, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41830,6 +41886,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2280081256958246600 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1214289755349247415, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41856,6 +41913,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2345549992845912751 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3455226841524695506, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41882,6 +41940,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2467971574453848367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5962342758828207534, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41904,6 +41963,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2477377043578999654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3251342196418447385, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41930,6 +41990,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2556894663420541862 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6051265675794800423, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41956,6 +42017,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2566231760723816132 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3234545485897135547, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -41982,6 +42044,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2617908287857001655 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6112842113014177846, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42008,6 +42071,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2746058989430250732 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2982941862982797203, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42034,6 +42098,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2765257850174055152 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6260473424850355825, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42060,6 +42125,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &2769562536717604047 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6264214886898659406, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42086,6 +42152,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3003845018265692512 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6426158470894652897, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42112,6 +42179,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3019440992428601744 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2781336013674179311, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42138,6 +42206,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3037657892069322709 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2691342822905050284, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42164,6 +42233,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3053382410027980922 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6547753559841209595, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42190,6 +42260,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3100878504920911657 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2627559397539042392, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42216,6 +42287,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3127968722482960553 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2600469455122744280, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42242,6 +42314,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3138604043629986899 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6561480274682388690, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42268,6 +42341,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3237019807113653912 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2563194248766748135, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42294,6 +42368,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3262544067140690388 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2465893698148498091, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42320,6 +42395,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3420616499032591534 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6915832073775949871, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42346,6 +42422,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3481764997820816804 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4670293172712716581, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42372,6 +42449,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3518642536402131034 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4635675758039317723, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42398,6 +42476,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3577627556864307387 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4694942666063680570, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42424,6 +42503,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3611448711412730414 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4800821036692729519, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42446,6 +42526,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3662839019646381876 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4443781133176353867, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42472,6 +42553,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3746908394096715223 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4359993096195882666, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42498,6 +42580,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3769428839976610403 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4265414918570930462, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42524,6 +42607,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3789856788749324146 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4907171657095261171, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42550,6 +42634,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3867784204318269298 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4238836085942682637, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42576,6 +42661,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3875225774164653501 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4991696458165195068, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42602,6 +42688,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3959670918544160688 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5076141224520471345, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42628,6 +42715,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3971572513858475883 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5160100551378858986, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42654,6 +42742,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &3983045767194224913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4051235041668592240, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42680,6 +42769,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4012543689162253865 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5129295470384300712, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42706,6 +42796,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4058401682264704398 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5247774282355499279, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42732,6 +42823,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4093769016358976822 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5210239322402658743, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42758,6 +42850,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4178318993273240518 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5295633689887579975, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42784,6 +42877,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4255723048468932783 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5444532698605964334, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42810,6 +42904,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4266618908160475224 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3767380391366204199, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42836,6 +42931,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4387384264465436236 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3719236025459971379, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42858,6 +42954,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4394556644844195979 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3711782170104957942, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42884,6 +42981,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4435731262910088757 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3670607277160701260, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42910,6 +43008,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4435897762955983377 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3670722080292839792, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42936,6 +43035,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4441281184475356650 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3665057630474126997, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42962,6 +43062,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4454952538062667961 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3651667717570304968, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -42988,6 +43089,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4484165769442997527 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5673257031794626966, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43014,6 +43116,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4487293195601723227 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5676665657984850906, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43040,6 +43143,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4515228557206604052 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5631980338427817365, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43066,6 +43170,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4559539628216207903 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5748630615891275422, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43092,6 +43197,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4574495390178865814 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3460348471515326953, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43118,6 +43224,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4638272104290032319 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3521801523099680318, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43144,6 +43251,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4657223497683763740 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3467851069324633757, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43170,6 +43278,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4691448822957331868 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3574415463612772637, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43196,6 +43305,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4706538592539189867 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5633585465787316502, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43222,6 +43332,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4788686945239844356 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3671934889341805189, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43248,6 +43359,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4845091708551890638 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3728058040305033807, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43274,6 +43386,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &4877353286942407407 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3687980584041160302, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43300,6 +43413,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5050413956263537453 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5289710273928245332, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43326,6 +43440,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5297677662670228201 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5114785224152207768, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43352,6 +43467,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5304833460652892337 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5107348226406300624, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43378,6 +43494,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5328353530604569340 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5083546406264445315, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43404,6 +43521,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5402777074840039408 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5009404474780791951, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43430,6 +43548,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5590656292402328526 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4402128392388335439, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43456,6 +43575,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5603918655620022074 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4808544334348756037, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43482,6 +43602,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5678238956194595801 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4489147693641574232, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43508,6 +43629,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5688071009063794989 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4723829305762161236, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43534,6 +43656,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5742442087814672315 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4553350962901977914, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43560,6 +43683,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5760679646827497738 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4572151609106066827, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43586,6 +43710,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &5776124863767572097 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2353529660948367872, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43612,6 +43737,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6085330522180365062 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6560917917324439673, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43638,6 +43764,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6094040390352112254 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6623702933956153601, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43664,6 +43791,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6111514663896371822 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6606228694503196945, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43690,6 +43818,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6168264892383243159 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6549478466352148714, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43716,6 +43845,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6248383733428024910 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2753731074277823183, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43742,6 +43872,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6288225231018373618 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2865911915492218227, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43768,6 +43899,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6339075404079033003 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6378949429297328598, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43794,6 +43926,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6360926228107226237 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6285040977139906308, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43820,6 +43953,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6408612501709694671 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6309975006809030066, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43846,6 +43980,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6410854178178701315 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6307733433620808574, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43872,6 +44007,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6641057310612276925 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3217899192266056252, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43898,6 +44034,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6661814058820221945 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3238656181193416568, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43924,6 +44061,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6669659714629994363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6048646456619326470, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43950,6 +44088,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6748895610220153247 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5969128810839593698, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -43976,6 +44115,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6760042070042098587 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3265670782520958746, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44002,6 +44142,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6820889382726807782 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5897135003972889497, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44028,6 +44169,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6960961356094412777 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1160747059427160936, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44054,6 +44196,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6989857793499789628 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7961952283522343491, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44080,6 +44223,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6992233079046469204 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7959858610458438955, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44106,6 +44250,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7053378981938126157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7970488551682442804, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44132,6 +44277,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7135152428546533154 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7816939020104072285, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44158,6 +44304,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7415950606031826114 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1615455246704183363, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44184,6 +44331,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7433799614160026810 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7517728884537223109, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44206,6 +44354,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7561311429574879023 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1760534286235059118, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44228,6 +44377,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7578671761219790569 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1850233858760147560, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44254,6 +44404,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7605424366336364704 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7419006254677035999, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44280,6 +44431,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7640820936314678243 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7311552090392637598, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44306,6 +44458,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7646468427480232263 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1917467678079210950, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44332,6 +44485,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7661782205198898628 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7289746259474337467, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44358,6 +44512,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7687068345886036125 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1886009727367345180, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44384,6 +44539,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7687839197036090795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1887343803349578026, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44410,6 +44566,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7700397182670511520 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1899619935982205217, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44436,6 +44593,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7734584179981095273 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7217225793692781080, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44462,6 +44620,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7787848590951965223 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2058847875708831398, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44488,6 +44647,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7793306667351548747 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7158784781568014390, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44514,6 +44674,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7848675867299041367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2048461811351352534, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44540,6 +44701,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7915311882167505996 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7108555926398603059, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44566,6 +44728,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &7954088864792934885 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6997721246320698012, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44592,6 +44755,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8225900860520977682 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -9031470922537078381, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44618,6 +44782,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8255177190647065131 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 149120022406123178, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44644,6 +44809,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8320197935840706743 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 285635273977488438, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44670,6 +44836,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8406027767497808158 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8923401609598173793, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44696,6 +44863,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8457431095106139569 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 423150286243254576, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44718,6 +44886,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8476417816941554518 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 370360786139303895, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44740,6 +44909,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8576860161611678696 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8681074296252602519, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44766,6 +44936,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!4 &8578012902911099754 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44797,6 +44968,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8695950335599514942 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 589893442304192959, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44823,6 +44995,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8696650892140357996 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 590312248721444333, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44849,6 +45022,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8786573936241739674 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8542855406292851941, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44875,6 +45049,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8904411103084739429 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 798072322227331044, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44901,6 +45076,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &8953413232963066320 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44948,6 +45124,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &9003997434049540938 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8325713417821513781, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -44974,6 +45151,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &9141843236310886750 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8187586140516610593, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -45000,6 +45178,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &9177516700559687456 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8080417723213571167, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -45026,6 +45205,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &9203369112754017159 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1097030331829581574, guid: 5692754605e75a945beddff9aba1bed0, type: 3}
@@ -45052,3 +45232,4 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0

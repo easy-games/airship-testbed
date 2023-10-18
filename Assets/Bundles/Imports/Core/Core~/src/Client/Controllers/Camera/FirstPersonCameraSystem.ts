@@ -13,12 +13,11 @@ export class FirstPersonCameraSystem {
 	//public spineLerpModMax = 75;
 	//public spineLerpMaxAngle = 75;
 
-	private manualSpineOffset: Vector3 = new Vector3(0, 0.78, 0);
+	private manualSpineOffset: Vector3 = new Vector3(0, 0.0, 0.0);
 
 	private entityReferences: EntityReferences;
 	private cameraVars: DynamicVariables;
 	private trackedHeadRotation: Quaternion = Quaternion.identity;
-	//private neckOffset: Vector3;
 	private inFirstPerson;
 	private bin: Bin;
 
@@ -50,9 +49,9 @@ export class FirstPersonCameraSystem {
 		}
 
 		//Calculate how high the neck bone is off the spine bone
-		// this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
+		//this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
 		let neckOffset = this.manualSpineOffset.add(
-			this.entityReferences.neckBone.position.sub(this.entityReferences.spineBone3.position),
+			this.entityReferences.neckBone.position.sub(this.entityReferences.spineBoneTop.position),
 		);
 
 		//Get the cameras transform information
@@ -81,11 +80,11 @@ export class FirstPersonCameraSystem {
 		//let headBob = new Vector3(0, math.sin(Time.deltaTime * ,0);
 
 		//Apply the new rotation
-		this.entityReferences.spineBone2.rotation = this.trackedHeadRotation;
+		this.entityReferences.spineBoneMiddle.rotation = this.trackedHeadRotation;
 
 		//Apply the new positions
-		this.entityReferences.spineBone2.position = newPosition;
-		this.entityReferences.spineBone3.position = newPosition;
+		this.entityReferences.spineBoneMiddle.position = newPosition;
+		this.entityReferences.spineBoneTop.position = newPosition;
 	}
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {
@@ -93,10 +92,13 @@ export class FirstPersonCameraSystem {
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
 		Game.LocalPlayer.Character?.anim?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
+		const characterLayer = LayerMask.NameToLayer("Character");
+		const fpsLayer = LayerMask.NameToLayer("FirstPerson");
 
 		//In First person hide all meshes except the arm
 		for (let i = 0; i < this.entityReferences.meshes.size(); i++) {
-			this.entityReferences.meshes[i].gameObject.SetActive(!isFirstPerson);
+			const go = this.entityReferences.meshes[i].gameObject;
+			go.SetActive((!isFirstPerson && go.layer === characterLayer) || (isFirstPerson && go.layer === fpsLayer));
 		}
 		this.entityReferences.fpsMesh.gameObject.SetActive(isFirstPerson);
 		this.entityReferences.humanEntityAnimator.SetForceLookForward(!isFirstPerson);

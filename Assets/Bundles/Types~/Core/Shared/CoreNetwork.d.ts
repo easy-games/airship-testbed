@@ -25,11 +25,12 @@ export declare const CoreNetwork: {
         HitBlock: RemoteEvent<[pos: Vector3]>;
         LaunchProjectile: RemoteEvent<[nobId: number, isInFirstPerson: boolean, direction: Vector3, chargeSec: number]>;
         SwordAttack: RemoteEvent<[targetEntityId?: number | undefined, hitDirection?: Vector3 | undefined]>;
-        DropItemInHand: RemoteEvent<[amount: number]>;
+        DropItemInSlot: RemoteEvent<[slot: number, amount: number]>;
         PickupGroundItem: RemoteEvent<[groundItemId: number]>;
         Inventory: {
             SwapSlots: RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>;
             QuickMoveSlot: RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number]>;
+            MoveToSlot: RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]>;
             CheckOutOfSync: RemoteEvent<[invDto: InventoryDto]>;
         };
         SendChatMessage: RemoteEvent<[text: string]>;

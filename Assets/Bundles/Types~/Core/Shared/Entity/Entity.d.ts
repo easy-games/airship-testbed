@@ -28,9 +28,9 @@ export declare class EntityReferences {
     fpsMesh: Renderer;
     neckBone: Transform;
     headBone: Transform;
-    spineBone1: Transform;
-    spineBone2: Transform;
-    spineBone3: Transform;
+    spineBoneRoot: Transform;
+    spineBoneMiddle: Transform;
+    spineBoneTop: Transform;
     root: Transform;
     characterCollider: Collider;
     animationEvents: EntityAnimationEvents;
@@ -110,6 +110,7 @@ export declare class Entity {
     SetLastDamagedTime(time: number): void;
     GrantImmunity(duration: number): void;
     GetState(): EntityState;
+    GetCenterOfMass(): Vector3;
     GetHeadPosition(): Vector3;
     GetHeadOffset(): Vector3;
     GetMiddlePosition(): Vector3;

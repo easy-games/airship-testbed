@@ -25,6 +25,10 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntityAnimator } from "./Animation/EntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
+import { DamageService } from "Server/Services/Damage/DamageService";
+import { EffectsManager } from "Shared/Effects/EffectsManager";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
+import { MathUtil } from "Shared/Util/MathUtil";
 
 export interface EntityDto {
 	serializer: EntitySerializer;
@@ -47,9 +51,9 @@ export class EntityReferences {
 	fpsMesh: Renderer;
 	neckBone: Transform;
 	headBone: Transform;
-	spineBone1: Transform;
-	spineBone2: Transform;
-	spineBone3: Transform;
+	spineBoneRoot: Transform;
+	spineBoneMiddle: Transform;
+	spineBoneTop: Transform;
 	root: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
@@ -75,9 +79,9 @@ export class EntityReferences {
 		this.fpsMesh = ref.GetValue<Renderer>(meshKey, "FirstPerson");
 		//Get the bones
 		this.neckBone = ref.GetValue<Transform>(boneKey, "Neck");
-		this.spineBone3 = ref.GetValue<Transform>(boneKey, "Spine3");
-		this.spineBone2 = ref.GetValue<Transform>(boneKey, "Spine2");
-		this.spineBone1 = ref.GetValue<Transform>(boneKey, "Spine1");
+		this.spineBoneTop = ref.GetValue<Transform>(boneKey, "SpineTop");
+		this.spineBoneMiddle = ref.GetValue<Transform>(boneKey, "SpineMiddle");
+		this.spineBoneRoot = ref.GetValue<Transform>(boneKey, "SpineRoot");
 		this.headBone = ref.GetValue<Transform>(boneKey, "Head");
 		this.root = ref.GetValue<Transform>(boneKey, "Root");
 
@@ -181,6 +185,47 @@ export class Entity {
 
 		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
 			this.anim?.PlayFootstepSound(1.4);
+			if (RunUtil.IsServer()) {
+				Dependency<DamageService>().InflictFallDamage(this, velocity.y);
+			} else {
+				if (DamageUtils.GetFallDamage(velocity.y) > 0) {
+					let effectPos = this.model.transform.position;
+					const raycastPos = WorldAPI.GetMainWorld()?.RaycastVoxel(effectPos, Vector3.down, 4);
+					const landingEffect = EffectsManager.SpawnEffect(
+						AllBundleItems.Entity_Movement_LandVFX,
+						raycastPos ? raycastPos.HitPosition : effectPos,
+						Vector3.zero,
+						5,
+					);
+					if (landingEffect) {
+						const fallDelta = DamageUtils.GetFallDelta(velocity.y);
+						let particles = landingEffect.GetComponentsInChildren<ParticleSystem>();
+						landingEffect.transform.localScale = Vector3.one.mul(MathUtil.Lerp(0.25, 1, fallDelta));
+						const blockId = WorldAPI.GetMainWorld()?.RaycastBlockBelow(
+							this.model.transform.position.add(new Vector3(0, 0.25, 0)),
+						)?.blockId;
+
+						for (let i = 0; i < particles.Length; i++) {
+							let particle = particles.GetValue(i);
+							const isSmoke = particle.gameObject.name === "Smoke";
+							if (isSmoke) {
+								particle.startSize = MathUtil.Lerp(0.75, 4, fallDelta);
+								particle.startSpeed = MathUtil.Lerp(20, 80, fallDelta);
+							} else {
+								particle.startSize = MathUtil.Lerp(0.05, 0.4, fallDelta * fallDelta);
+								particle.startSpeed = MathUtil.Lerp(50, 120, fallDelta);
+								if (blockId) {
+									EffectsManager.SetParticleToBlockMaterial(
+										particle.GetComponent<ParticleSystemRenderer>(),
+										blockId,
+									);
+								}
+							}
+							particle.startLifetime = MathUtil.Lerp(0.8, 3, fallDelta);
+						}
+					}
+				}
+			}
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(impactConn);

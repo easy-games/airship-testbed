@@ -15,8 +15,8 @@ MonoBehaviour:
   DisplayName: Stone Pickaxe
   AccessorySlot: 2
   Prefab: {fileID: 5201375224750791660, guid: 8ad713e1331f24d9fb8d75b3d0293ef0, type: 3}
-  Position: {x: 0.15, y: 0.05, z: -0.05}
-  Rotation: {x: 0, y: 90, z: 90}
+  Position: {x: 0.06, y: 0.2, z: 0.01}
+  Rotation: {x: -77.9, y: 89, z: 93}
   Scale: {x: 1, y: 1, z: 1}
   MeshDeformed: 0
   VisibleInFirstPerson: 1

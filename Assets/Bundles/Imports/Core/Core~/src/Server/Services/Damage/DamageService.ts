@@ -11,6 +11,7 @@ import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
 
 @Service({})
 export class DamageService implements OnStart {
@@ -95,6 +96,16 @@ export class DamageService implements OnStart {
 				this.InflictDamage(entity, damage, config);
 			}
 		});
+	}
+
+	public InflictFallDamage(entity: Entity, verticalSpeed: number) {
+		const damage = DamageUtils.GetFallDamage(verticalSpeed);
+		if (damage <= 0) {
+			return;
+		}
+
+		//Scale damage based on how hard player hit the ground
+		this.InflictDamage(entity, damage, { knockbackDirection: Vector3.zero });
 	}
 
 	/**

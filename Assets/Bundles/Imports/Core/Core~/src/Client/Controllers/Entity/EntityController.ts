@@ -96,13 +96,14 @@ export class EntityController implements OnStart {
 			}
 			let index = randomId % skinColors.size();
 			let skinColor = skinColors[index];
-			const thirdPersonMat = event.entity.model.transform.GetChild(1).GetComponent<MaterialColor>();
-			const firstPersonMat = event.entity.model.transform.GetChild(2).GetComponent<MaterialColor>();
 
-			thirdPersonMat.SetMaterialColor(0, skinColor);
-			thirdPersonMat.DoUpdate();
-			firstPersonMat.SetMaterialColor(0, skinColor);
-			firstPersonMat.DoUpdate();
+			event.entity.references.meshes.forEach((mesh) => {
+				const matColor = mesh.GetComponent<MaterialColor>();
+				if (matColor) {
+					matColor.SetMaterialColor(0, skinColor);
+					matColor.DoUpdate();
+				}
+			});
 		});
 	}
 

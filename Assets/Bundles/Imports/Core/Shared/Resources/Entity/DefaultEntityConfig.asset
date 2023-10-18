@@ -22,7 +22,7 @@ MonoBehaviour:
   jumpSpeed: 15
   jumpCoyoteTime: 0.2
   jumpBufferTime: 0.1
-  jumpUpBlockCooldown: 0.2
+  jumpUpBlockCooldown: 0.4
   airDensity: 0.05
   drag: 15
   friction: 0.3

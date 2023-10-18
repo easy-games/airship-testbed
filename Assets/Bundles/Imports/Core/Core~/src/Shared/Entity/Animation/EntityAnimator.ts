@@ -14,7 +14,6 @@ import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
 import { ItemPlayMode } from "./CharacterEntityAnimator";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 export class EntityAnimator {
 	private readonly RootOverrideLayer = 1;
@@ -198,7 +197,7 @@ export class EntityAnimator {
 		//Spawn death particle
 		const inVoid = damageType === DamageType.VOID;
 		const deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
-		if (deathEffect) {
+		if (deathEffect && !(inVoid && this.entity.IsLocalCharacter())) {
 			this.deathVfx = EffectsManager.SpawnGameObjectAtPosition(
 				deathEffect,
 				this.entity.GetHeadPosition(),

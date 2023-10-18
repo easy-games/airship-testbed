@@ -3,12 +3,12 @@ import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Layer } from "Shared/Util/Layer";
+import { Signal } from "Shared/Util/Signal";
 import { OnUpdate } from "Shared/Util/Timer";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CameraReferences } from "../Camera/CameraReferences";
 import { EntityController } from "../Entity/EntityController";
-import { Signal } from "Shared/Util/Signal";
 
 @Controller({})
 export class BlockSelectController implements OnStart {

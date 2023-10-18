@@ -45,35 +45,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.0006310623
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.00028294325
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9998826
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.015324882
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 1.756
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -121,10 +121,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorSettings:
   - materialColor: {r: 0.740566, g: 1, b: 0.95137566, a: 1}
-    emissiveColor: {r: 0.4481132, g: 0.9839541, b: 1, a: 1}
-    emissiveMix: 1
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 0
     reference: Metal_Clean
   - materialColor: {r: 0.5283019, g: 0.40998653, b: 0.23673905, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Stone_Clean
+  addedByEditorScript: 0

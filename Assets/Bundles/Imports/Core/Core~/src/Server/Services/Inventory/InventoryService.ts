@@ -33,6 +33,43 @@ export class InventoryService implements OnStart {
 			(clientId, frommInvId, fromSlot, toInvId, toSlot) => {},
 		);
 
+		CoreNetwork.ClientToServer.Inventory.MoveToSlot.Server.OnClientEvent(
+			(clientId, fromInvId, fromSlot, toInvId, toSlot, amount) => {
+				const fromInv = this.GetInventoryFromId(fromInvId);
+				if (!fromInv) return;
+
+				const toInv = this.GetInventoryFromId(toInvId);
+				if (!toInv) return;
+
+				const fromItemStack = fromInv.GetItem(fromSlot);
+				if (!fromItemStack) return;
+
+				const toItemStack = toInv.GetItem(toSlot);
+				if (toItemStack !== undefined) {
+					if (toItemStack.CanMerge(fromItemStack)) {
+						if (toItemStack.GetAmount() + amount <= toItemStack.GetMaxStackSize()) {
+							toItemStack.SetAmount(toItemStack.GetAmount() + amount);
+							fromItemStack.Decrement(amount);
+							CoreNetwork.ClientToServer.Inventory.MoveToSlot.Client.FireServer(
+								fromInv.Id,
+								fromSlot,
+								toInv.Id,
+								toSlot,
+								amount,
+							);
+							return;
+						}
+						// can't merge so do nothing
+						return;
+					}
+				}
+
+				this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
+					clientPredicted: true,
+				});
+			},
+		);
+
 		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.Server.OnClientEvent(
 			(clientId, fromInvId, fromSlot, toInvId) => {
 				const fromInv = this.GetInventoryFromId(fromInvId);

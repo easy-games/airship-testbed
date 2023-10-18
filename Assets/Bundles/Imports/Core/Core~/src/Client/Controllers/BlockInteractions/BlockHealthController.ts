@@ -113,7 +113,7 @@ export class BlockHealthController implements OnStart {
 			if (effect) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
 				if (block) {
-					this.SpawnBlockHitParticles(block.blockId, effect);
+					this.SetParticlesToBlockMaterial(block.blockId, effect);
 				}
 			}
 		}
@@ -140,25 +140,16 @@ export class BlockHealthController implements OnStart {
 		if (effect) {
 			//const blockColor = WorldAPI.GetMainWorld().GetBlockAverageColor(blockId);
 			//if (!blockColor) return;
-			this.SpawnBlockHitParticles(blockId, effect);
+			this.SetParticlesToBlockMaterial(blockId, effect);
 		}
 
 		//Make sure the progress bar is at 0
 		entry?.progressBar?.SetValue(0);
 	}
 
-	private SpawnBlockHitParticles(blockId: number, effect: GameObject) {
+	public SetParticlesToBlockMaterial(blockId: number, effect: GameObject) {
 		let particles = effect.transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
-		const world = WorldAPI.GetMainWorld();
-		if (!world) return;
-		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, world.voxelWorld);
-		if (blockGO) {
-			const blockRen = blockGO.GetComponent<Renderer>();
-			const blockFilter = blockGO.GetComponent<MeshFilter>();
-			particles.mesh = blockFilter.mesh;
-			particles.sharedMaterial = blockRen.sharedMaterial;
-			GameObjectUtil.Destroy(blockGO);
-		}
+		EffectsManager.SetParticleToBlockMaterial(particles, blockId);
 	}
 
 	private GetBlockHealth(blockPos: Vector3) {

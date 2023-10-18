@@ -1,17 +1,15 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { MatchController } from "Client/Controllers/Match/MatchController";
 import { LoadingScreenController } from "Imports/Core/Client/Controllers/Loading/LoadingScreenController";
 import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
 import { Game } from "Imports/Core/Shared/Game";
 import { Bin } from "Imports/Core/Shared/Util/Bin";
 import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
+import { BedWars } from "Shared/BedWars/BedWars";
 
 @Controller()
 export class BWLoadingScreenController implements OnStart {
-	constructor(
-		private readonly loadingScreenController: LoadingScreenController,
-		private readonly matchController: MatchController,
-	) {
+	constructor(private readonly loadingScreenController: LoadingScreenController) {
 		this.CheckWorld();
 	}
 
@@ -35,7 +33,7 @@ export class BWLoadingScreenController implements OnStart {
 	}
 
 	private CheckCharacter(): void {
-		if (this.matchController.eliminated) {
+		if (BedWars.IsMatchServer() && Dependency<MatchController>().eliminated) {
 			this.loadingScreenController.FinishLoading();
 			return;
 		}
@@ -55,12 +53,13 @@ export class BWLoadingScreenController implements OnStart {
 					}
 				}),
 			);
-			bin.Add(
-				this.matchController.onEliminated.Connect(() => {
-					bin.Clean();
-					this.loadingScreenController.FinishLoading();
-				}),
-			);
+			if (BedWars.IsMatchServer())
+				bin.Add(
+					Dependency<MatchController>().onEliminated.Connect(() => {
+						bin.Clean();
+						this.loadingScreenController.FinishLoading();
+					}),
+				);
 		}
 	}
 
