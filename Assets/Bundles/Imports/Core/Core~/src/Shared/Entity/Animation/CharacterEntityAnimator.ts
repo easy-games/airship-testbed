@@ -59,7 +59,12 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		}
 	}
 
-	public override PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode: WrapMode = WrapMode.Default) {
+	public override PlayClip(
+		clip: AnimationClip,
+		onEnd?: Callback,
+		wrapMode: WrapMode = WrapMode.Default,
+		transitionTime = this.defaultTransitionTime,
+	) {
 		// this.Log("Playing Item Anim: " + animationId);
 		this.itemLayer.StartFade(1, this.defaultTransitionTime);
 		if (this.currentEndEventConnection !== -1) {
@@ -67,7 +72,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			this.currentEndEventConnection = -1;
 		}
 
-		const animState = this.PlayAnimation(clip, this.itemLayerIndex, wrapMode);
+		const animState = this.PlayAnimation(clip, this.itemLayerIndex, wrapMode, transitionTime);
 		if (onEnd !== undefined) {
 			this.currentEndEventConnection = animState.Events.OnEndTS(() => {
 				Bridge.DisconnectEvent(this.currentEndEventConnection);
@@ -186,12 +191,17 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		}
 
 		const clip = RandomUtil.FromArray(clips);
-		this.PlayClip(clip, () => {
-			if (itemPlayMode === ItemPlayMode.DEFAULT) {
-				this.StartIdleAnim();
-			} else if (itemPlayMode === ItemPlayMode.LOOP) {
-				this.PlayUseAnim(useIndex, ItemPlayMode.LOOP);
-			}
-		});
+		this.PlayClip(
+			clip,
+			() => {
+				if (itemPlayMode === ItemPlayMode.DEFAULT) {
+					this.StartIdleAnim();
+				} else if (itemPlayMode === ItemPlayMode.LOOP) {
+					this.PlayUseAnim(useIndex, ItemPlayMode.LOOP);
+				}
+			},
+			WrapMode.Default,
+			0,
+		);
 	}
 }

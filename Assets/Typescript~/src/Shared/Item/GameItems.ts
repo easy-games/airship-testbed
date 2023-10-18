@@ -17,9 +17,9 @@ export function RegisterItems() {
 		{
 			displayName: "Example Item",
 			image: "Imports/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
-			itemAssets: {
-				assetBundleId: BundleGroupNames.ItemSword,
-			},
+			// itemAssets: {
+			// 	assetBundleId: BundleGroupNames.ItemSword,
+			// },
 		},
 		config,
 	);

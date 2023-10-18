@@ -1,12 +1,14 @@
+/// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { DamageType } from "../../Damage/DamageType";
+import { ItemMeta } from "../../Item/ItemMeta";
 import { Bin } from "../../Util/Bin";
-import { BundleGroupNames } from "../../Util/ReferenceManagerResources";
 import { Entity, EntityReferences } from "../Entity";
 import { ItemPlayMode } from "./CharacterEntityAnimator";
 export declare class EntityAnimator {
     protected entity: Entity;
+    readonly itemLayerIndex: number;
     private readonly RootOverrideLayer;
     private readonly TopMostLayerIndex;
     private readonly flashTransitionDuration;
@@ -23,6 +25,7 @@ export declare class EntityAnimator {
     private deathEffectTemplate?;
     private deathEffectVoidTemplate?;
     private isFlashing;
+    protected isFirstPerson: boolean;
     private footstepAudioBundle;
     private slideAudioBundle;
     private steppedOnBlockType;
@@ -35,7 +38,8 @@ export declare class EntityAnimator {
     PlayAnimationOnce(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;
     StartIdleAnim(): void;
     PlayUseAnim(useIndex?: number, itemPlayMode?: ItemPlayMode): void;
-    EquipItem(itemId: BundleGroupNames): void;
+    EquipItem(itemMeta: ItemMeta): void;
+    PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode?: WrapMode): void;
     SetFirstPerson(isFirstPerson: boolean): void;
     PlayTakeDamage(damageAmount: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
     PlayDeath(damageType: DamageType): void;
@@ -43,4 +47,5 @@ export declare class EntityAnimator {
     SetFresnelColor(color: Color, power: number, strength: number): void;
     PlayFootstepSound(volumeScale: number): void;
     private OnAnimationEvent;
+    IsFirstPerson(): boolean;
 }

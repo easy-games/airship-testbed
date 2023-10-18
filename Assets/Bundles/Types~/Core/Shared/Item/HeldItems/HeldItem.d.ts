@@ -1,11 +1,9 @@
 import { Entity } from "../../Entity/Entity";
-import { BundleGroup } from "../../Util/ReferenceManagerResources";
 import { ItemMeta } from "../ItemMeta";
 export declare class HeldItem {
     private serverOffsetMargin;
     protected readonly meta: ItemMeta;
     protected readonly entity: Entity;
-    protected readonly bundles: BundleGroup | undefined;
     private lastUsedTime;
     private chargeStartTime;
     protected isCharging: boolean;
@@ -22,6 +20,7 @@ export declare class HeldItem {
     OnCallToActionEnd(): void;
     OnSecondaryActionStart(): void;
     OnSecondaryActionEnd(): void;
+    OnInspect(): void;
     protected OnChargeStart(): void;
     protected OnChargeEnd(): void;
     protected TryUse(): boolean;
@@ -29,9 +28,7 @@ export declare class HeldItem {
     protected TriggerUse(useIndex: number): void;
     /** Runs when an item is used. Runs on every client.*/
     protected OnUseClient(useIndex: number): void;
-    protected PlayItemAnimation(index: number, hold: boolean): void;
-    protected StopItemAnimation(): void;
-    protected SetItemAnimationHold(hold: boolean): void;
+    protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean): void;
     /** Runs when an item is used, server authorized
      * return true if you can use the item */
     protected OnUseServer(useIndex: number): void;

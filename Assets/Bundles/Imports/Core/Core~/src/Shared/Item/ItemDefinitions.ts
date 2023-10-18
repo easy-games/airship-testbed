@@ -42,7 +42,7 @@ const swordUsable: UsableHeldItemMeta = {
 };
 const swordViewModel: ViewModelMeta = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
-	idleAnimTP: CoreAnim("FP_Sword_Idle"),
+	idleAnimTP: CoreAnim("Airship_Empty"),
 };
 const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
