@@ -2120,9 +2120,9 @@ MonoBehaviour:
   events: {fileID: 8770161942407837672}
   rootMask: {fileID: 31900000, guid: 9d711888274077741aa30b904ddb2124, type: 2}
   handsMask: {fileID: 31900000, guid: 543ef00edd7c80245bec5778259b2180, type: 2}
-  JumpAnimation: {fileID: 7400000, guid: 067cc188e25b78b4a940a9fa67cd6ee7, type: 3}
-  FallAnimation: {fileID: -4225938145651474181, guid: 56b6c6749a263e843b2908fe4580acc1, type: 3}
-  SlideAnimation: {fileID: -203655887218126122, guid: 8175774ac71524ea2bc6f3999bc262d9, type: 3}
+  JumpAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
+  FallAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
+  SlideAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
   moveTransition:
     _FadeDuration: 0.1
     _Events:
@@ -2132,18 +2132,18 @@ MonoBehaviour:
       _Names: []
     _Speed: NaN
     _Animations:
-    - {fileID: 7832394241297634407, guid: 7eebd174ff53112419b27f9d903573d7, type: 3}
-    - {fileID: -526742019657851752, guid: 7eebd174ff53112419b27f9d903573d7, type: 3}
-    - {fileID: 4961537051176895841, guid: 7eebd174ff53112419b27f9d903573d7, type: 3}
-    - {fileID: -203655887218126122, guid: 2d299a600489f844ca99016bf0d20592, type: 3}
+    - {fileID: 1535099090122460923, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
+    - {fileID: -3316998533158379181, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
+    - {fileID: -380153048361855219, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
+    - {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
     - {fileID: 1535099090122460923, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
     - {fileID: -5737563613549949734, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
     - {fileID: -3316998533158379181, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
     - {fileID: -380153048361855219, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
     _Speeds:
-    - 1.25
-    - 1.25
-    - 1.25
+    - 1.35
+    - 1.35
+    - 1.35
     - 1
     - 1.15
     - 1.15

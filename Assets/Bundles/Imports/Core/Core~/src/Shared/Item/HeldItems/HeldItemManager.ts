@@ -95,9 +95,9 @@ export class HeldItemManager {
 
 	public OnNewState(itemState: HeldItemState) {
 		this.Log("New State: " + itemState);
-		if (this.currentItemState === itemState) {
-			return;
-		}
+		// if (this.currentItemState === itemState) {
+		// 	return;
+		// }
 		if (this.currentHeldItem === undefined) {
 			error("Trying to interact without any held item!");
 			return;
@@ -115,6 +115,9 @@ export class HeldItemManager {
 				break;
 			case HeldItemState.SECONDARY_ACTION_END:
 				this.currentHeldItem.OnSecondaryActionEnd();
+				break;
+			case HeldItemState.INSPECT:
+				this.currentHeldItem.OnInspect();
 				break;
 			case HeldItemState.ON_DESTROY:
 				//When destroyed un equip so any logic can clean itself up

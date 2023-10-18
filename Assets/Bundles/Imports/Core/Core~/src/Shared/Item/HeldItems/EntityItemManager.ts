@@ -44,6 +44,7 @@ export class EntityItemManager {
 			this.Log("UserInput");
 			//Process Inputs locally
 			const mouse = new userInputRef.Mouse();
+			const keyboard = new userInputRef.Keyboard();
 			mouse.LeftDown.Connect(() => {
 				this.Log("LeftDown");
 				if (CanvasAPI.IsPointerOverUI()) {
@@ -89,6 +90,13 @@ export class EntityItemManager {
 				if (this.localEntity) {
 					let items = this.GetOrCreateItemManager(this.localEntity);
 					items.TriggerNewState(HeldItemState.SECONDARY_ACTION_END);
+				}
+			});
+
+			keyboard.OnKeyDown(KeyCode.Y, (event) => {
+				if (this.localEntity) {
+					let items = this.GetOrCreateItemManager(this.localEntity);
+					items.TriggerNewState(HeldItemState.INSPECT);
 				}
 			});
 		});

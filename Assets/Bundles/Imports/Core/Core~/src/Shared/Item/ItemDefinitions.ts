@@ -22,7 +22,7 @@ const blockUsable: UsableHeldItemMeta = {
 	cooldownSeconds: 0.0,
 	holdToUseCooldownInSeconds: 0.16,
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 };
 const swordUsable: UsableHeldItemMeta = {
 	startUpInSeconds: 0,
@@ -38,7 +38,7 @@ const swordUsable: UsableHeldItemMeta = {
 	],
 	onUseSoundVolume: 0.3,
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 };
 const swordViewModel: ViewModelMeta = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),

@@ -133,6 +133,16 @@ export class HeldItem {
 
 	public OnSecondaryActionEnd() {}
 
+	public OnInspect() {
+		print("OnInspect");
+		const clip = AssetBridge.Instance.LoadAsset<AnimationClip>(
+			"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Inspect.anim",
+		);
+		this.entity.anim?.PlayClip(clip, () => {
+			this.entity.anim.StartIdleAnim();
+		});
+	}
+
 	protected OnChargeStart() {
 		this.Log("OnChargeStart");
 		this.isCharging = true;
