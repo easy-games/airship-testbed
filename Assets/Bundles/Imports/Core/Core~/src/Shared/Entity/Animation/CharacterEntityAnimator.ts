@@ -17,17 +17,15 @@ export enum ItemPlayMode {
 }
 
 export class CharacterEntityAnimator extends EntityAnimator {
-	private readonly itemLayerIndex: number = 2;
 	private itemLayer: AnimancerLayer;
 
 	private currentItemClipMap: Map<ItemAnimationId, AnimationClip[]> = new Map();
 	private currentItemMeta: ItemMeta | undefined;
 	private currentItemState: string = ItemAnimationId.IDLE;
-	private isFirstPerson = false;
 	private currentEndEventConnection = -1;
 
 	private defaultIdleAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
-		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
+		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Idle.anim",
 	);
 	private defaultIdleAnimTP = this.defaultIdleAnimFP;
 
@@ -52,7 +50,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	}
 
 	public override SetFirstPerson(isFirstPerson: boolean) {
-		this.isFirstPerson = isFirstPerson;
+		super.SetFirstPerson(isFirstPerson);
 		if (this.currentItemMeta !== undefined) {
 			//First person and third person use different animation bundles
 			//So we need to load the item resources again
@@ -61,32 +59,14 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		}
 	}
 
-	private Play(animationId: ItemAnimationId, onEnd?: Callback, wrapMode: WrapMode = WrapMode.Default) {
-		let clips = this.currentItemClipMap.get(animationId);
-
-		// Fallback anims
-		if (clips === undefined) {
-			if (animationId === ItemAnimationId.IDLE) {
-				clips = [this.isFirstPerson ? this.defaultIdleAnimFP : this.defaultIdleAnimTP];
-			} else if (animationId === ItemAnimationId.USE) {
-				clips = [this.isFirstPerson ? this.defaultUseAnimFP : this.defaultUseAnimTP];
-			}
-		}
-
-		if (clips === undefined || clips.size() === 0) {
-			//No animation for this event
-			this.itemLayer.StartFade(0, this.defaultTransitionTime);
-			onEnd?.();
-			return;
-		}
-		this.Log("Playing Item Anim: " + animationId);
+	public override PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode: WrapMode = WrapMode.Default) {
+		// this.Log("Playing Item Anim: " + animationId);
 		this.itemLayer.StartFade(1, this.defaultTransitionTime);
 		if (this.currentEndEventConnection !== -1) {
 			Bridge.DisconnectEvent(this.currentEndEventConnection);
 			this.currentEndEventConnection = -1;
 		}
 
-		let clip = RandomUtil.FromArray(clips);
 		const animState = this.PlayAnimation(clip, this.itemLayerIndex, wrapMode);
 		if (onEnd !== undefined) {
 			this.currentEndEventConnection = animState.Events.OnEndTS(() => {
@@ -183,7 +163,15 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	public override StartIdleAnim() {
 		this.TriggerEvent(ItemAnimationId.IDLE);
-		this.Play(ItemAnimationId.IDLE);
+
+		let clips: AnimationClip[] | undefined;
+		if (this.isFirstPerson) {
+			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
+		} else {
+			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
+		}
+		const clip = RandomUtil.FromArray(clips);
+		this.PlayClip(clip);
 	}
 
 	public override PlayUseAnim(useIndex = 0, itemPlayMode: ItemPlayMode = ItemPlayMode.DEFAULT) {
@@ -191,7 +179,14 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		//In the animation array use animations are the 3rd index and beyond;
 
 		this.TriggerEvent(ItemAnimationId.USE, useIndex);
-		this.Play(ItemAnimationId.USE, () => {
+
+		let clips: AnimationClip[] | undefined = this.currentItemClipMap.get(ItemAnimationId.USE);
+		if (!clips || clips.isEmpty()) {
+			return;
+		}
+
+		const clip = RandomUtil.FromArray(clips);
+		this.PlayClip(clip, () => {
 			if (itemPlayMode === ItemPlayMode.DEFAULT) {
 				this.StartIdleAnim();
 			} else if (itemPlayMode === ItemPlayMode.LOOP) {

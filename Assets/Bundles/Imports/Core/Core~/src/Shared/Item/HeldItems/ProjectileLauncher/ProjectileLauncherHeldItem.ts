@@ -1,7 +1,6 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { Crosshair } from "Shared/Crosshair/Crosshair";
-import { ItemPlayMode } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { AmmoMeta, ItemMeta, SoundMeta } from "Shared/Item/ItemMeta";
@@ -23,6 +22,10 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeAudioSource: AudioSource | undefined;
 	private projectileTrajectoryRenderer =
 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
+	private chargeAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Charge.anim",
+	);
+	private chargeAnimTP = this.chargeAnimFP;
 
 	protected override OnChargeStart(): void {
 		if (!this.meta.projectileLauncher) return;
@@ -55,8 +58,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 
 		//Play the items animation  (bow draw)
-		this.PlayItemAnimation(0, true);
-		this.entity.anim?.PlayUseAnim(0, ItemPlayMode.HOLD);
+		// this.PlayItemAnimation(0, true);
+		this.entity.anim?.PlayClip(this.entity.anim.IsFirstPerson() ? this.chargeAnimFP : this.chargeAnimTP);
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.projectileLauncher.ammoItemType);
@@ -129,7 +132,6 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	protected override OnChargeEnd(): void {
 		super.OnChargeEnd();
 		this.entity.anim?.StartIdleAnim();
-		this.StopItemAnimation();
 		this.CancelChargeSound();
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
@@ -145,6 +147,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnUseClient(useIndex: number): void {
 		this.CancelChargeSound();
+		this.OnChargeEnd();
 		if (!this.HasRequiredAmmo()) {
 			return;
 		}
@@ -153,7 +156,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		print("On use: " + useIndex);
 
 		//Play the items animation  (bow shoot)
-		this.PlayItemAnimation(1, false);
+		this.entity.anim.PlayUseAnim(0);
 
 		if (!this.entity.IsLocalCharacter()) return;
 

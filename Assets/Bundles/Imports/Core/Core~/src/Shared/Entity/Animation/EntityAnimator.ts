@@ -17,6 +17,8 @@ import { Entity, EntityReferences } from "../Entity";
 import { ItemPlayMode } from "./CharacterEntityAnimator";
 
 export class EntityAnimator {
+	public readonly itemLayerIndex: number = 2;
+
 	private readonly RootOverrideLayer = 1;
 	private readonly TopMostLayerIndex = 3;
 	private readonly flashTransitionDuration = 0.035;
@@ -34,6 +36,7 @@ export class EntityAnimator {
 	private deathEffectTemplate?: GameObject;
 	private deathEffectVoidTemplate?: GameObject;
 	private isFlashing = false;
+	protected isFirstPerson = false;
 
 	private footstepAudioBundle: AudioClipBundle;
 	private slideAudioBundle: AudioClipBundle;
@@ -138,7 +141,11 @@ export class EntityAnimator {
 
 	public EquipItem(itemMeta: ItemMeta): void {}
 
-	public SetFirstPerson(isFirstPerson: boolean): void {}
+	public PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode: WrapMode = WrapMode.Default) {}
+
+	public SetFirstPerson(isFirstPerson: boolean): void {
+		this.isFirstPerson = isFirstPerson;
+	}
 
 	public PlayTakeDamage(
 		damageAmount: number,
@@ -334,5 +341,9 @@ export class EntityAnimator {
 				}
 				break;
 		}
+	}
+
+	public IsFirstPerson(): boolean {
+		return this.isFirstPerson;
 	}
 }

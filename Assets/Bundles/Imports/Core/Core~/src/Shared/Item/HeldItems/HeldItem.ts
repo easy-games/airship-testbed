@@ -201,21 +201,21 @@ export class HeldItem {
 		}
 	}
 
-	protected PlayItemAnimation(index: number, pauseOnEndFrame: boolean) {
-		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
-			let anim = this.currentItemAnimations[i];
-			if (index >= 0) {
-				anim.Play("Base Layer.Use" + index);
-			} else {
-				anim.Play("Idle");
-			}
-			anim.SetBool("Hold", pauseOnEndFrame);
-		}
-	}
+	// protected PlayItemAnimation(index: number, pauseOnEndFrame: boolean) {
+	// 	for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+	// 		let anim = this.currentItemAnimations[i];
+	// 		if (index >= 0) {
+	// 			anim.Play("Base Layer.Use" + index);
+	// 		} else {
+	// 			anim.Play("Idle");
+	// 		}
+	// 		anim.SetBool("Hold", pauseOnEndFrame);
+	// 	}
+	// }
 
-	protected StopItemAnimation() {
-		this.PlayItemAnimation(-1, false);
-	}
+	// protected StopItemAnimation() {
+
+	// }
 
 	protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
