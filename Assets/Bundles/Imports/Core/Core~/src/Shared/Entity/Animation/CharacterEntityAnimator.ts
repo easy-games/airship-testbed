@@ -51,6 +51,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	public override SetFirstPerson(isFirstPerson: boolean) {
 		super.SetFirstPerson(isFirstPerson);
+		this.entityRef.humanEntityAnimator.SetFirstPerson(isFirstPerson);
 		if (this.currentItemMeta !== undefined) {
 			//First person and third person use different animation bundles
 			//So we need to load the item resources again
