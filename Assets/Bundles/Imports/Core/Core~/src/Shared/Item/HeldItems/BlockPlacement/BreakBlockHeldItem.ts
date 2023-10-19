@@ -1,9 +1,8 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { BlockInteractController } from "Client/Controllers/Blocks/BlockInteractController";
-import { Bin } from "Shared/Util/Bin";
-import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
 
 export class BreakBlockHeldItem extends BlockSelectHeldItem {
 	override OnEquip(): void {
@@ -25,7 +24,7 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
-		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.meta.breakBlock, voxelPos, true);
+		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.itemMeta?.breakBlock, voxelPos, true);
 	}
 
 	override CanUseBlock(

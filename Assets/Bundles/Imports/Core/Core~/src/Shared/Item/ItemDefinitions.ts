@@ -51,7 +51,7 @@ const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 };
 const pickaxeViewModel: Partial<ViewModelMeta> = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
-	idleAnimTP: CoreAnim("FP_Sword_Idle"),
+	// idleAnimTP: CoreAnim("TP_Sword_Idle"),
 };
 
 const woolBlock: BlockMeta = {
@@ -71,11 +71,6 @@ function AccPath(itemType: ItemType): string {
 export const items: {
 	[key in ItemType]: Omit<ItemMeta, "id" | "itemType">;
 } = {
-	[ItemType.DEFAULT]: {
-		//Identification
-		displayName: "Default",
-	},
-
 	////BLOCKS
 	[ItemType.BED]: {
 		displayName: "Bed",

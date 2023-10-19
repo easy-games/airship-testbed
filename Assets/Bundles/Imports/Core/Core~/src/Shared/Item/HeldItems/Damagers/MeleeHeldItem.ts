@@ -15,7 +15,7 @@ export class MeleeHeldItem extends HeldItem {
 		if (this.entity.IsDead()) return;
 
 		super.OnUseClient(useIndex);
-		let meleeData = this.meta.melee;
+		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
 			return;
 		}
@@ -29,10 +29,10 @@ export class MeleeHeldItem extends HeldItem {
 			let hitTargets = this.ScanForHits();
 
 			for (const data of hitTargets) {
-				if (this.meta.melee?.onHitPrefabPath) {
+				if (this.itemMeta?.melee?.onHitPrefabPath) {
 					//Local damage predictions
 					const effectGO = EffectsManager.SpawnPrefabEffect(
-						this.meta.melee.onHitPrefabPath,
+						this.itemMeta.melee.onHitPrefabPath,
 						data.hitPosition,
 						Quaternion.LookRotation(data.hitDirection).eulerAngles,
 					);
@@ -50,7 +50,7 @@ export class MeleeHeldItem extends HeldItem {
 
 		if (this.entity.IsDead()) return;
 
-		let meleeData = this.meta.melee;
+		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
 			return;
 		}
@@ -72,7 +72,7 @@ export class MeleeHeldItem extends HeldItem {
 		// let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
 		let hits = this.ScanBox(closeBox, [], Theme.Green);
-		if (this.meta.melee?.canHitMultipleTargets) {
+		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			let farHits = this.ScanBox(
 				farBox,
 				hits.map((x) => x.hitEntity.id),
@@ -210,7 +210,7 @@ export class MeleeHeldItem extends HeldItem {
 			}
 		}
 
-		if (this.meta.melee?.canHitMultipleTargets) {
+		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			return collisionData;
 		} else if (closestCollisionData) {
 			return [closestCollisionData];

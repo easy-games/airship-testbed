@@ -28,7 +28,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeAnimTP = this.chargeAnimFP;
 
 	protected override OnChargeStart(): void {
-		if (!this.meta.projectileLauncher) return;
+		if (!this.itemMeta?.projectileLauncher) return;
 		if (!this.HasRequiredAmmo()) return;
 
 		if (RunUtil.IsClient()) {
@@ -41,8 +41,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
 
 		let sound: SoundMeta | undefined = undefined;
-		if (this.meta.projectileLauncher.chargeSound) {
-			sound = RandomUtil.FromArray(this.meta.projectileLauncher.chargeSound);
+		if (this.itemMeta.projectileLauncher.chargeSound) {
+			sound = RandomUtil.FromArray(this.itemMeta.projectileLauncher.chargeSound);
 		}
 
 		if (sound) {
@@ -62,7 +62,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		this.entity.anim?.PlayClip(this.entity.anim.IsFirstPerson() ? this.chargeAnimFP : this.chargeAnimTP);
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
-			const ammoItemMeta = ItemUtil.GetItemMeta(this.meta.projectileLauncher.ammoItemType);
+			const ammoItemMeta = ItemUtil.GetItemMeta(this.itemMeta.projectileLauncher.ammoItemType);
 			const ammoMeta = ammoItemMeta.projectile!;
 
 			this.chargeBin.Add(Crosshair.AddDisabler());
@@ -83,7 +83,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 							this.entity,
 							localEntityController.IsFirstPerson(),
 						);
-						const launchData = this.GetLaunchData(this.entity, mouse, this.meta, chargeSec, launchPos);
+						const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
 
 						this.projectileTrajectoryRenderer.UpdateInfo(
 							launchPos,
@@ -177,9 +177,9 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			this.entity,
 			Dependency<LocalEntityController>().IsFirstPerson(),
 		);
-		const launchData = this.GetLaunchData(this.entity, mouse, this.meta, chargeSec, launchPos);
+		const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
 		this.entity.LaunchProjectile(
-			this.meta.projectileLauncher!.ammoItemType,
+			this.itemMeta!.projectileLauncher!.ammoItemType,
 			launchData.launchPos,
 			launchData.velocity,
 		);

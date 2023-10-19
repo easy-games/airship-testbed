@@ -16,6 +16,10 @@ export enum ItemPlayMode {
 	HOLD,
 }
 
+const EMPTY_ANIM = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
+);
+
 export class CharacterEntityAnimator extends EntityAnimator {
 	private itemLayer: AnimancerLayer;
 
@@ -27,7 +31,9 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	private defaultIdleAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Idle.anim",
 	);
-	private defaultIdleAnimTP = this.defaultIdleAnimFP;
+	private defaultIdleAnimTP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
+	);
 
 	private defaultUseAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
@@ -52,12 +58,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	public override SetFirstPerson(isFirstPerson: boolean) {
 		super.SetFirstPerson(isFirstPerson);
 		this.entityRef.humanEntityAnimator.SetFirstPerson(isFirstPerson);
-		if (this.currentItemMeta !== undefined) {
-			//First person and third person use different animation bundles
-			//So we need to load the item resources again
-			this.LoadNewItemResources(this.currentItemMeta);
-			this.StartIdleAnim();
-		}
+		this.LoadNewItemResources(this.currentItemMeta);
+		this.StartIdleAnim();
 	}
 
 	public override PlayClip(
@@ -67,7 +69,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		transitionTime = this.defaultTransitionTime,
 	) {
 		// this.Log("Playing Item Anim: " + animationId);
-		this.itemLayer.StartFade(1, this.defaultTransitionTime);
+		// this.itemLayer.StartFade(1, this.defaultTransitionTime);
 		if (this.currentEndEventConnection !== -1) {
 			Bridge.DisconnectEvent(this.currentEndEventConnection);
 			this.currentEndEventConnection = -1;
@@ -85,7 +87,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	private LoadNewItemResources(itemMeta: ItemMeta | undefined) {
 		this.Log("Loading Item: " + itemMeta?.itemType);
 		this.currentItemMeta = itemMeta;
-		this.itemLayer.DestroyStates();
+		// this.itemLayer.DestroyStates();
 		//Load the animation clips for the new item
 
 		this.currentItemClipMap.clear();
@@ -162,7 +164,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
         currentItem.OnAnimEvent(eventData);*/
 	}
 
-	public override EquipItem(itemMeta: ItemMeta) {
+	public override EquipItem(itemMeta: ItemMeta | undefined) {
 		this.LoadNewItemResources(itemMeta);
 		this.StartIdleAnim();
 	}
@@ -170,11 +172,16 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	public override StartIdleAnim() {
 		this.TriggerEvent(ItemAnimationId.IDLE);
 
+		if (this.currentItemMeta === undefined) {
+			this.PlayClip(EMPTY_ANIM);
+			return;
+		}
+
 		let clips: AnimationClip[] | undefined;
 		if (this.isFirstPerson) {
 			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
 		} else {
-			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
+			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
 		}
 		const clip = RandomUtil.FromArray(clips);
 		this.PlayClip(clip);

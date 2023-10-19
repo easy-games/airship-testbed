@@ -149,7 +149,7 @@ export class EntityAnimator {
 
 	public PlayUseAnim(useIndex = 0, itemPlayMode: ItemPlayMode = 0): void {}
 
-	public EquipItem(itemMeta: ItemMeta): void {}
+	public EquipItem(itemMeta: ItemMeta | undefined): void {}
 
 	public PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode: WrapMode = WrapMode.Default) {}
 

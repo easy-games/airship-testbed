@@ -15,9 +15,9 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		//Load the blocks mesh
-		if (this.meta.block?.blockId) {
+		if (this.itemMeta?.block?.blockId) {
 			const blockGO = MeshProcessor.ProduceSingleBlock(
-				this.meta.block.blockId,
+				this.itemMeta.block.blockId,
 				WorldAPI.GetMainWorld()!.voxelWorld,
 			);
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
@@ -44,7 +44,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	}
 
 	private TryPlaceBlock(): boolean {
-		if (!this.meta.block) {
+		if (!this.itemMeta?.block) {
 			return false;
 		}
 
@@ -61,14 +61,14 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		// Write the voxel at the predicted position
-		WorldAPI.GetMainWorld()?.PlaceBlockById(placePosition, this.meta.block.blockId!, {
+		WorldAPI.GetMainWorld()?.PlaceBlockById(placePosition, this.itemMeta.block.blockId!, {
 			placedByEntityId: this.entity.id,
 			priority: true,
 		});
 
 		Dependency<LocalEntityController>().AddToMoveData("PlaceBlock", {
 			pos: placePosition,
-			itemType: this.meta.itemType,
+			itemType: this.itemMeta.itemType,
 		});
 		if (isVoidPlacement) {
 			blockSelectController.PlacedVoidBridgeBlock();

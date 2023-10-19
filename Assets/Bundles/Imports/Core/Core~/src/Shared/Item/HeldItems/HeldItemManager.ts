@@ -2,7 +2,6 @@
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { Entity } from "Shared/Entity/Entity";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
-import { items } from "../ItemDefinitions";
 import { ItemMeta } from "../ItemMeta";
 import { ItemType } from "../ItemType";
 import { BreakBlockHeldItem } from "./BlockPlacement/BreakBlockHeldItem";
@@ -23,6 +22,7 @@ export type HeldItemEntry = {
 export class HeldItemManager {
 	private entity: CharacterEntity;
 	private heldItemMap = new Map<ItemType, HeldItem>();
+	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
 	private currentItemState: HeldItemState = HeldItemState.NONE;
 
@@ -41,23 +41,28 @@ export class HeldItemManager {
 		print("Entity " + this.entity.id + " " + message);
 	}
 
-	private GetOrCreateHeldItem(meta?: ItemMeta) {
-		if (meta === undefined) {
-			meta = items[ItemType.DEFAULT] as ItemMeta;
+	private GetOrCreateHeldItem(itemMeta?: ItemMeta) {
+		if (itemMeta === undefined) {
+			if (this.emptyHeldItem) {
+				return this.emptyHeldItem;
+			}
+			this.emptyHeldItem = new HeldItem(this.entity, itemMeta);
+			return this.emptyHeldItem;
 		}
-		let item = this.heldItemMap.get(meta.itemType);
+
+		let item = this.heldItemMap.get(itemMeta.itemType);
 		if (item === undefined) {
 			//Create the held item instance
 			for (let i = HeldItemManager.heldItemClasses.size() - 1; i >= 0; i--) {
 				const entry = HeldItemManager.heldItemClasses[i];
-				if (entry.condition(meta)) {
-					item = entry.factory(this.entity, meta);
+				if (entry.condition(itemMeta)) {
+					item = entry.factory(this.entity, itemMeta);
 				}
 			}
 			if (item === undefined) {
-				item = new HeldItem(this.entity, meta);
+				item = new HeldItem(this.entity, itemMeta);
 			}
-			this.heldItemMap.set(meta.itemType, item);
+			this.heldItemMap.set(itemMeta.itemType, item);
 		}
 		return item;
 	}

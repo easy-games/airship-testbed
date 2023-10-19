@@ -7,12 +7,12 @@ import { Entity } from "../../Entity/Entity";
 import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
-import { ItemType } from "../ItemType";
 import { ItemUtil } from "../ItemUtil";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
-	protected readonly meta: ItemMeta;
+	/** Undefined when holding nothing */
+	protected readonly itemMeta: ItemMeta | undefined;
 	protected readonly entity: Entity;
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
@@ -22,28 +22,28 @@ export class HeldItem {
 	private holdingDownBin = new Bin();
 	private holdingDown = false;
 
-	constructor(entity: Entity, newMeta: ItemMeta) {
+	constructor(entity: Entity, newMeta: ItemMeta | undefined) {
 		this.entity = entity;
-		this.meta = newMeta;
+		this.itemMeta = newMeta;
 	}
 
 	protected Log(message: string) {
 		return;
-		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.meta.displayName + " " + message;
+		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.itemMeta?.displayName + " " + message;
 		print(fullMessage);
 	}
 
 	public OnEquip() {
 		this.Log("OnEquip");
 		//Load that items animations and play equip animation
-		this.entity.anim?.EquipItem(this.meta);
+		this.entity.anim?.EquipItem(this.itemMeta);
 
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
-		if (this.meta.itemType !== ItemType.DEFAULT) {
+		if (this.itemMeta !== undefined) {
 			let equipPath = "Imports/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg";
-			if (this.meta.viewModel?.equipSound) {
-				equipPath = RandomUtil.FromArray(this.meta.viewModel.equipSound);
+			if (this.itemMeta.viewModel?.equipSound) {
+				equipPath = RandomUtil.FromArray(this.itemMeta.viewModel.equipSound);
 			}
 			if (equipPath !== "") {
 				if (this.entity.IsLocalCharacter()) {
@@ -61,7 +61,10 @@ export class HeldItem {
 		}
 
 		//Spawn the accessories graphics
-		const accessories = ItemUtil.GetAccessoriesForItemType(this.meta.itemType);
+		let accessories: Accessory[] = [];
+		if (this.itemMeta) {
+			accessories = [...ItemUtil.GetAccessoriesForItemType(this.itemMeta.itemType)];
+		}
 
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
@@ -102,11 +105,11 @@ export class HeldItem {
 	}
 
 	private HoldDownAction() {
-		if (this.meta.usable && !this.holdingDown) {
+		if (this.itemMeta?.usable && !this.holdingDown) {
 			this.holdingDown = true;
-			if (this.meta.usable?.canHoldToUse) {
-				const holdCooldown = this.meta.usable.holdToUseCooldownInSeconds;
-				const cooldown = this.meta.usable.cooldownSeconds;
+			if (this.itemMeta.usable?.canHoldToUse) {
+				const holdCooldown = this.itemMeta.usable.holdToUseCooldownInSeconds;
+				const cooldown = this.itemMeta.usable.cooldownSeconds;
 				this.holdingDownBin.Add(
 					SetInterval(holdCooldown && holdCooldown > cooldown ? holdCooldown : cooldown, () => {
 						this.TryUse();
@@ -192,19 +195,21 @@ export class HeldItem {
 		this.lastUsedTime = TimeUtil.GetServerTime();
 		this.isCharging = false;
 
+		if (this.itemMeta === undefined) return;
+
 		//Play the use locally
 		this.entity.anim.PlayUseAnim(useIndex);
-		if (this.meta.usable?.onUseSound) {
+		if (this.itemMeta.usable?.onUseSound) {
 			if (this.entity.IsLocalCharacter()) {
-				AudioManager.PlayGlobal(RandomUtil.FromArray(this.meta.usable.onUseSound), {
-					volumeScale: this.meta.usable.onUseSoundVolume ?? 1,
+				AudioManager.PlayGlobal(RandomUtil.FromArray(this.itemMeta.usable.onUseSound), {
+					volumeScale: this.itemMeta.usable.onUseSoundVolume ?? 1,
 				});
 			} else {
 				AudioManager.PlayAtPosition(
-					RandomUtil.FromArray(this.meta.usable.onUseSound),
+					RandomUtil.FromArray(this.itemMeta.usable.onUseSound),
 					this.entity.model.transform.position,
 					{
-						volumeScale: this.meta.usable.onUseSoundVolume ?? 1,
+						volumeScale: this.itemMeta.usable.onUseSoundVolume ?? 1,
 					},
 				);
 			}
@@ -242,9 +247,9 @@ export class HeldItem {
 	}
 
 	public IsCooledDown(): boolean {
-		if (!this.meta.usable) return true;
+		if (!this.itemMeta?.usable) return true;
 
-		let cooldown = this.meta.usable.cooldownSeconds;
+		let cooldown = this.itemMeta.usable.cooldownSeconds;
 		this.Log(
 			"Cooldown: " + cooldown + " Time: " + TimeUtil.GetServerTime() + " LastUsedTime: " + this.lastUsedTime,
 		);
@@ -256,9 +261,9 @@ export class HeldItem {
 	}
 
 	public IsChargedUp(): boolean {
-		if (!this.meta.usable) return false;
+		if (!this.itemMeta?.usable) return false;
 
-		let chargeUpMin = this.meta.usable.minChargeSeconds ?? 0;
+		let chargeUpMin = this.itemMeta.usable.minChargeSeconds ?? 0;
 		this.Log("chargeUpMin: " + chargeUpMin);
 		//no charge up time
 		if (chargeUpMin <= 0) return true;
@@ -271,8 +276,8 @@ export class HeldItem {
 	}
 
 	public HasChargeTime(): boolean {
-		if (!this.meta.usable) return false;
+		if (!this.itemMeta?.usable) return false;
 
-		return (this.meta.usable.minChargeSeconds ?? 0) > 0;
+		return (this.itemMeta.usable.minChargeSeconds ?? 0) > 0;
 	}
 }
