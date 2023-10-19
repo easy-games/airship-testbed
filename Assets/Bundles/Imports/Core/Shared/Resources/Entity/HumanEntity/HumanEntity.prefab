@@ -2122,7 +2122,7 @@ MonoBehaviour:
   handsMask: {fileID: 31900000, guid: 543ef00edd7c80245bec5778259b2180, type: 2}
   JumpAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
   FallAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
-  SlideAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
+  SlideAnimation: {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
   moveTransition:
     _FadeDuration: 0.1
     _Events:
