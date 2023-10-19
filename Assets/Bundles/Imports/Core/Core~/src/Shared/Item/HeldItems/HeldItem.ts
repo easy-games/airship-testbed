@@ -1,6 +1,7 @@
 ﻿import { AudioManager } from "Shared/Audio/AudioManager";
 import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
+import { Layer } from "Shared/Util/Layer";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { SetInterval } from "Shared/Util/Timer";
 import { Entity } from "../../Entity/Entity";
@@ -71,9 +72,12 @@ export class HeldItem {
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
 
+		const firstPerson = this.entity.anim.IsFirstPerson();
+		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let j = 0;
 		for (const accessory of accessories) {
 			let added = this.entity.accessoryBuilder.SetAccessory(accessory);
+
 			//Load the animator for the held item if one exists
 			for (let go of CSArrayUtil.Convert(added.gameObjects)) {
 				this.currentItemGOs[j] = go;
@@ -81,6 +85,11 @@ export class HeldItem {
 				const anim = go.GetComponent<Animator>();
 				if (anim) {
 					this.currentItemAnimations.push(anim);
+				}
+
+				const renderers = go.GetComponentsInChildren<Renderer>();
+				for (const renderer of CSArrayUtil.Convert(renderers)) {
+					renderer.gameObject.layer = layer;
 				}
 			}
 		}
