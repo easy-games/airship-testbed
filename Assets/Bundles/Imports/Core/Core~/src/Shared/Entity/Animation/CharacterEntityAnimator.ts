@@ -19,6 +19,9 @@ export enum ItemPlayMode {
 const EMPTY_ANIM = AssetBridge.Instance.LoadAsset<AnimationClip>(
 	"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
 );
+const DEFAULT_USE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
+);
 
 export class CharacterEntityAnimator extends EntityAnimator {
 	private itemLayer: AnimancerLayer;
@@ -34,11 +37,6 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	private defaultIdleAnimTP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
 	);
-
-	private defaultUseAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
-		"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
-	);
-	private defaultUseAnimTP = this.defaultUseAnimFP;
 
 	//private camera: Camera;
 
@@ -209,7 +207,6 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				}
 			},
 			WrapMode.Default,
-			0,
 		);
 	}
 }

@@ -46,7 +46,7 @@ const swordViewModel: ViewModelMeta = {
 };
 const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 	canHoldToUse: true,
 };
 const pickaxeViewModel: Partial<ViewModelMeta> = {
