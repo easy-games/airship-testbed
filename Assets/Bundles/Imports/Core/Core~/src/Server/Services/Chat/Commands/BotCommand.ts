@@ -7,7 +7,7 @@ import { PlayerService } from "../../Player/PlayerService";
 
 export class BotCommand extends ChatCommand {
 	constructor() {
-		super("bot");
+		super("bot", [], "[amount]");
 	}
 
 	public Execute(player: Player, args: string[]): void {

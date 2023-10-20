@@ -7,7 +7,7 @@ import { Player } from "Shared/Player/Player";
 
 export class DamageCommand extends ChatCommand {
 	constructor() {
-		super("damage");
+		super("damage", [], "[amount]");
 	}
 
 	public Execute(player: Player, args: string[]): void {

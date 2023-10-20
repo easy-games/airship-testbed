@@ -9,7 +9,7 @@ import { EntityService } from "../../Entity/EntityService";
 
 export class EntityCommand extends ChatCommand {
 	constructor() {
-		super("entity", ["e"]);
+		super("entity", ["e"], "[health]");
 	}
 
 	public Execute(player: Player, args: string[]): void {
@@ -24,5 +24,13 @@ export class EntityCommand extends ChatCommand {
 		entity
 			.GetInventory()
 			.SetItem(entity.GetInventory().armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET));
+
+		if (args.size() >= 1) {
+			const health = tonumber(args[0]);
+			if (health !== undefined) {
+				entity.SetMaxHealth(health);
+				entity.SetHealth(health);
+			}
+		}
 	}
 }
