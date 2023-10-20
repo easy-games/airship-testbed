@@ -7,4 +7,5 @@ export declare class ChatService implements OnStart {
     constructor(playerService: PlayerService);
     RegisterCommand(command: ChatCommand): void;
     OnStart(): void;
+    GetCommands(): ChatCommand[];
 }
