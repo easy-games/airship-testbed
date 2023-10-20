@@ -108,5 +108,5 @@ ProjectSettings/GvhProjectSettings.xml
 
 Assets/Bundles/Types~/Core
 **/.yalc
-UMotionData/Temp/EditorUndoStack.dat
-UMotionData/Temp/EditorUndoStack.dat
+*.bak
+UMotionData/Temp/**
