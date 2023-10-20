@@ -4,7 +4,6 @@ import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { Entity } from "Shared/Entity/Entity";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
@@ -129,7 +128,7 @@ export class Player {
 		this.CharacterChanged.Fire(entity);
 	}
 
-	public ObserveCharacter(observer: (entity: Entity | undefined) => CleanupFunc): Bin {
+	public ObserveCharacter(observer: (entity: CharacterEntity | undefined) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup = observer(this.Character);
 
