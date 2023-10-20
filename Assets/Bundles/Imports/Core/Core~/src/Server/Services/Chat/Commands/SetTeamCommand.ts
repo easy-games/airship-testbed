@@ -9,7 +9,7 @@ import { TeamService } from "../../Team/TeamService";
 
 export class SetTeamCommand extends ChatCommand {
 	constructor() {
-		super("setTeam");
+		super("setTeam", [], "<player> <team>");
 	}
 
 	public Execute(player: Player, args: string[]): void {

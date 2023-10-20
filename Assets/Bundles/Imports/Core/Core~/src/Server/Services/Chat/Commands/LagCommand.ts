@@ -3,7 +3,7 @@ import { Player } from "Shared/Player/Player";
 
 export class LagCommand extends ChatCommand {
 	constructor() {
-		super("lag");
+		super("lag", [], `["off" | ping]`);
 	}
 
 	public Execute(player: Player, args: string[]): void {

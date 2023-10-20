@@ -6,7 +6,7 @@ import { Theme } from "Shared/Util/Theme";
 
 export class SetVarCommand extends ChatCommand {
 	constructor() {
-		super("setvar");
+		super("setvar", [], "<collection ID> <value>");
 	}
 
 	public Execute(player: Player, args: string[]): void {

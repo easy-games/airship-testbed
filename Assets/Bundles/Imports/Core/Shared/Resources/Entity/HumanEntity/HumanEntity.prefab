@@ -2148,14 +2148,14 @@ MonoBehaviour:
       _Names: []
     _Speed: NaN
     _Animations:
-    - {fileID: 1535099090122460923, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
-    - {fileID: -3316998533158379181, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
-    - {fileID: -380153048361855219, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
+    - {fileID: 7400000, guid: a052a06c3960948f5a9270fb7d3fcf50, type: 2}
+    - {fileID: 7400000, guid: 558bf2d2772dd47aaafa95c9fc205517, type: 2}
+    - {fileID: 7400000, guid: a1e95b93f99c34ba6b5d129adf88b97d, type: 2}
     - {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
-    - {fileID: 1535099090122460923, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
-    - {fileID: -5737563613549949734, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
-    - {fileID: -3316998533158379181, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
-    - {fileID: -380153048361855219, guid: 2924ff8b037f70b44864fcaacca84ec7, type: 3}
+    - {fileID: 7400000, guid: a052a06c3960948f5a9270fb7d3fcf50, type: 2}
+    - {fileID: 7400000, guid: 8f26fcb94096d48cbb19510005ad6bb4, type: 2}
+    - {fileID: 7400000, guid: 558bf2d2772dd47aaafa95c9fc205517, type: 2}
+    - {fileID: 7400000, guid: a1e95b93f99c34ba6b5d129adf88b97d, type: 2}
     _Speeds:
     - 1.35
     - 1.35
@@ -2186,11 +2186,11 @@ MonoBehaviour:
       _Names: []
     _Speed: 0
     _Animations:
-    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
-    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
-    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
-    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
-    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
+    - {fileID: 7400000, guid: 40eeb7dddb64b479da2bf0cae70ba493, type: 2}
+    - {fileID: 7400000, guid: 40eeb7dddb64b479da2bf0cae70ba493, type: 2}
+    - {fileID: 7400000, guid: 40eeb7dddb64b479da2bf0cae70ba493, type: 2}
+    - {fileID: 7400000, guid: 40eeb7dddb64b479da2bf0cae70ba493, type: 2}
+    - {fileID: 7400000, guid: 40eeb7dddb64b479da2bf0cae70ba493, type: 2}
     _Speeds:
     - 1
     - 1
