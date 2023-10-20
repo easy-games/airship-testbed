@@ -27,6 +27,7 @@ export class EntityAccessoryController implements OnStart {
 					if (ItemUtil.defaultKitAccessory) {
 						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
 							ItemUtil.defaultKitAccessory,
+							true,
 						);
 						if (event.entity.IsLocalCharacter()) {
 							for (const accessory of CSArrayUtil.Convert(accessories)) {
@@ -52,18 +53,18 @@ export class EntityAccessoryController implements OnStart {
 							const newSlots = armorAccessories.map((acc) => acc.AccessorySlot);
 							const slotsToRemove = currentSlots.filter((slot) => !newSlots.includes(slot));
 							for (const slot of slotsToRemove) {
-								accessoryBuilder.RemoveAccessorySlot(slot);
+								accessoryBuilder.RemoveAccessorySlot(slot, true);
 							}
 						}
 						for (const acc of armorAccessories) {
-							accessoryBuilder.SetAccessory(acc);
+							accessoryBuilder.SetAccessory(acc, true);
 						}
 						currentArmor = armorAccessories;
 					} else {
 						if (currentArmor) {
 							// Clear armor:
 							for (const acc of currentArmor) {
-								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot);
+								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, true);
 							}
 							currentArmor = undefined;
 						}
@@ -121,8 +122,8 @@ export class EntityAccessoryController implements OnStart {
 			bin.Add(
 				event.entity.GetInventory().ObserveHeldItem((itemStack) => {
 					if (itemStack === undefined) {
-						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
-						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
+						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, true);
+						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, true);
 						return;
 					}
 

@@ -1388,6 +1388,7 @@ GameObject:
   - component: {fileID: 8770161942407837672}
   - component: {fileID: 2517771850763780310}
   - component: {fileID: 5347205419425093579}
+  - component: {fileID: 3390417626497378939}
   m_Layer: 3
   m_Name: GraphicsHolder
   m_TagString: Untagged
@@ -1552,6 +1553,21 @@ MonoBehaviour:
   logsOfMergeScrollpos: {x: 0, y: 0}
   lastQuantityOfLogs: 0
   dontShowWarnsAboutTexturesResolution: 0
+--- !u!114 &3390417626497378939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387929036933538088}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b25473de98e12c4b9fbe684210d426d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceReferences: []
+  combinedSkinnedMeshRenderer: {fileID: 0}
+  combinedStaticMeshRenderer: {fileID: 0}
 --- !u!1 &7972479724201818487
 GameObject:
   m_ObjectHideFlags: 0
@@ -2075,7 +2091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99dfe5a335b4400d888199768fd1e932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combiner: {fileID: 5347205419425093579}
+  combiner: {fileID: 3390417626497378939}
   clothColliders: []
 --- !u!114 &-1773167598321551048
 MonoBehaviour:
@@ -2170,11 +2186,11 @@ MonoBehaviour:
       _Names: []
     _Speed: 0
     _Animations:
-    - {fileID: -203655887218126122, guid: 15e3a39188bff45548c50ab08d5b5bea, type: 3}
-    - {fileID: -203655887218126122, guid: 5e3f5d443e88a43bdaef39a564bcd778, type: 3}
-    - {fileID: -203655887218126122, guid: b2c7fdd3e94034cda936cf45878cdcc0, type: 3}
-    - {fileID: -203655887218126122, guid: d22c99ec3bc2e4d4a9f3ac4a2b74cbcb, type: 3}
-    - {fileID: -203655887218126122, guid: 96137a13eadb340beabaa54895688d19, type: 3}
+    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
+    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
+    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
+    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
+    - {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
     _Speeds:
     - 1
     - 1

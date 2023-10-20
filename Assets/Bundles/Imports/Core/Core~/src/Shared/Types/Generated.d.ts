@@ -9699,16 +9699,19 @@ interface AccessoryBuilder extends MonoBehaviour {
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode): CSArray<ActiveAccessory>;
-    EquipAccessoryCollection(collection: AccessoryCollection): CSArray<ActiveAccessory>;
+    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, combineMeshes: boolean): CSArray<ActiveAccessory>;
+    EquipAccessoryCollection(collection: AccessoryCollection, combineMeshes: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
     GetActiveAccessoriesBySlot(target: AccessorySlot): CSArray<ActiveAccessory>;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
+    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
+    GetCombinedStaticMesh(): SkinnedMeshRenderer;
     RemoveAccessories(): void;
-    RemoveAccessorySlot(slot: AccessorySlot): void;
-    SetAccessory(accessory: Accessory): ActiveAccessory;
+    RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
+    SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
+    TryCombineMeshes(): void;
 }
     
 interface CapsuleCollider extends Collider {

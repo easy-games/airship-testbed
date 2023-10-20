@@ -69,14 +69,14 @@ export class HeldItem {
 
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
-		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand);
-		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, true);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, true);
 
 		const firstPerson = this.entity.anim.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let j = 0;
 		for (const accessory of accessories) {
-			let added = this.entity.accessoryBuilder.SetAccessory(accessory);
+			let added = this.entity.accessoryBuilder.SetAccessory(accessory, false);
 
 			//Load the animator for the held item if one exists
 			for (let go of CSArrayUtil.Convert(added.gameObjects)) {
