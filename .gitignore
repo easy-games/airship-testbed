@@ -109,4 +109,5 @@ ProjectSettings/GvhProjectSettings.xml
 Assets/Bundles/Types~/Core
 **/.yalc
 *.bak
+
 UMotionData/Temp/**
