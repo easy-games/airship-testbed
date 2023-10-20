@@ -114,6 +114,14 @@ export class World {
 		return this.GetBlockAt(pos.add(new Vector3(0, -0.5, 0)))?.itemMeta?.block;
 	}
 
+	public RaycastBlockBelow(startPos: Vector3, maxDistance = 10): BlockMeta | undefined {
+		const raycastPoint = this.RaycastVoxel(startPos, Vector3.down, maxDistance).HitPosition.sub(
+			new Vector3(0, 0.1, 0),
+		);
+		const block = this.GetBlockAt(raycastPoint);
+		return block?.itemMeta?.block;
+	}
+
 	public PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.block) return;

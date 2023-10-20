@@ -3,6 +3,7 @@ import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { Layer } from "Shared/Util/Layer";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";
 import { Entity } from "../../Entity/Entity";
 import { RunUtil } from "../../Util/RunUtil";
@@ -14,6 +15,7 @@ export class HeldItem {
 	private serverOffsetMargin = 0.025;
 	/** Undefined when holding nothing */
 	protected readonly itemMeta: ItemMeta | undefined;
+	protected clickBufferMargin = 0.2;
 	protected readonly entity: Entity;
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
@@ -22,6 +24,7 @@ export class HeldItem {
 	protected currentItemAnimations: Animator[] = [];
 	private holdingDownBin = new Bin();
 	private holdingDown = false;
+	private bufferingUse = false;
 
 	constructor(entity: Entity, newMeta: ItemMeta | undefined) {
 		this.entity = entity;
@@ -98,6 +101,7 @@ export class HeldItem {
 	public OnUnEquip() {
 		this.Log("OnUnEquip");
 		this.holdingDownBin.Clean();
+		this.bufferingUse = false;
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
 		this.OnChargeEnd();
@@ -168,16 +172,21 @@ export class HeldItem {
 	}
 
 	protected TryUse() {
-		this.Log("TryUse IsCooledDown: " + this.IsCooledDown());
-		if (this.IsCooledDown()) {
+		this.Log("TryUse");
+		this.bufferingUse = false;
+		const remainingTime = this.GetRemainingCooldownTime();
+		if (remainingTime === 0) {
 			this.TriggerUse(0);
 			return true;
+		} else if (remainingTime < this.clickBufferMargin) {
+			this.bufferingUse = true;
 		}
 		return false;
 	}
 
 	protected TryChargeUse() {
 		this.Log("TryChargeUse IsChargedUp: " + this.IsChargedUp());
+		this.bufferingUse = false;
 		if (this.IsChargedUp()) {
 			this.TriggerUse(1);
 			return true;
@@ -189,12 +198,27 @@ export class HeldItem {
 
 	protected TriggerUse(useIndex: number) {
 		this.Log("TriggerUse");
+		this.bufferingUse = false;
 
 		//Play the use locally
 		if (RunUtil.IsClient()) {
 			this.OnUseClient(useIndex);
 		} else if (RunUtil.IsServer()) {
 			this.OnUseServer(useIndex);
+		}
+
+		//Invoke function when cooldown should be up
+		if (this.itemMeta?.usable) {
+			Task.Delay(this.itemMeta.usable.cooldownSeconds + 0.01, () => {
+				this.OnCooldownReset();
+			});
+		}
+	}
+
+	private OnCooldownReset() {
+		this.Log("OnCooldownReset: " + this.bufferingUse);
+		if (this.bufferingUse) {
+			this.TriggerUse(0);
 		}
 	}
 
@@ -255,18 +279,18 @@ export class HeldItem {
 		this.OnUseClient(useIndex);
 	}
 
-	public IsCooledDown(): boolean {
-		if (!this.itemMeta?.usable) return true;
+	public GetRemainingCooldownTime(): number {
+		if (!this.itemMeta?.usable) return 0;
 
 		let cooldown = this.itemMeta.usable.cooldownSeconds;
 		this.Log(
 			"Cooldown: " + cooldown + " Time: " + TimeUtil.GetServerTime() + " LastUsedTime: " + this.lastUsedTime,
 		);
 		//no cooldown no startup
-		if (cooldown <= 0) return true;
+		if (cooldown <= 0) return 0;
 
 		//If the cooldown is down
-		return TimeUtil.GetServerTime() > this.lastUsedTime + cooldown - this.serverOffsetMargin;
+		return math.max(0, cooldown + this.serverOffsetMargin - (TimeUtil.GetServerTime() - this.lastUsedTime));
 	}
 
 	public IsChargedUp(): boolean {
