@@ -72,8 +72,8 @@ export class HeldItem {
 
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
-		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, true);
-		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, true);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
 
 		const firstPerson = this.entity.anim.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
