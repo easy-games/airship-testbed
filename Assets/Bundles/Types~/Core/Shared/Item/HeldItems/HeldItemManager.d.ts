@@ -12,6 +12,7 @@ export type HeldItemEntry = {
 export declare class HeldItemManager {
     private entity;
     private heldItemMap;
+    private emptyHeldItem;
     private currentHeldItem;
     private currentItemState;
     private static heldItemClasses;

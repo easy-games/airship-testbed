@@ -1,5 +1,4 @@
 import { CharacterEntity } from "../Entity/Character/CharacterEntity";
-import { Entity } from "../Entity/Entity";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -104,7 +103,7 @@ export declare class Player {
     IsBot(): boolean;
     Encode(): PlayerDto;
     SetCharacter(entity: CharacterEntity | undefined): void;
-    ObserveCharacter(observer: (entity: Entity | undefined) => CleanupFunc): Bin;
+    ObserveCharacter(observer: (entity: CharacterEntity | undefined) => CleanupFunc): Bin;
     /**
      * Is the player connected to the server?
      */
