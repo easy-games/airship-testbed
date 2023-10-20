@@ -47,6 +47,7 @@ export declare class World {
      * @returns BlockMeta under the position.
      */
     GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined;
+    RaycastBlockBelow(startPos: Vector3, maxDistance?: number): BlockMeta | undefined;
     PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
     PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void;
     PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void;

@@ -14,7 +14,7 @@ export declare class BlockHealthController implements OnStart {
     OnStart(): void;
     VisualizeBlockHealth(blockPos: Vector3, showHealthbar?: boolean): number | undefined;
     VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars?: boolean): void;
-    private SpawnBlockHitParticles;
+    SetParticlesToBlockMaterial(blockId: number, effect: GameObject): void;
     private GetBlockHealth;
     private AddHealthBar;
     private RemoveHealthBar;
