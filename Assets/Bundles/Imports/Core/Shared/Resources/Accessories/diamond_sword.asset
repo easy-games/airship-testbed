@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: diamond_sword
   m_EditorClassIdentifier: 
   DisplayName: Diamond Sword
-  AccessorySlot: 2
+  AccessorySlot: 6
   Prefab: {fileID: 5306317776177628987, guid: caf8deafab66546dfac00d66988ec8dd, type: 3}
   Position: {x: 0.6, y: 0.01, z: -0.05}
   Rotation: {x: -90, y: 0, z: -90}
   Scale: {x: 0.22, y: 0.22, z: 0.22}
   MeshDeformed: 0
+  VisibleInFirstPerson: 1

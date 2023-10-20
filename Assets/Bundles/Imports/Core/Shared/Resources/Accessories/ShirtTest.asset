@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: ShirtTest
   m_EditorClassIdentifier: 
   DisplayName: Shirt Test
-  AccessorySlot: 4
+  AccessorySlot: 5
   Prefab: {fileID: 919132149155446097, guid: 2c42d0b7c756993459097ab464fd9fe8, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}
   MeshDeformed: 0
+  VisibleInFirstPerson: 1

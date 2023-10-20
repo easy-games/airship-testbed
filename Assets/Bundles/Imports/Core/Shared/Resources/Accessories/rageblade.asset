@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: rageblade
   m_EditorClassIdentifier: 
   DisplayName: Rageblade
-  AccessorySlot: 2
+  AccessorySlot: 6
   Prefab: {fileID: 2448523470051743193, guid: 4dfad9c3615634c41b81a6f4aee2a280, type: 3}
   Position: {x: 0.52, y: 0.28, z: -0.01}
   Rotation: {x: 0, y: -90, z: 180}
   Scale: {x: 0.25, y: 0.25, z: 0.25}
   MeshDeformed: 0
+  VisibleInFirstPerson: 1

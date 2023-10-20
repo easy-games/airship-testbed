@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: iron_sword
   m_EditorClassIdentifier: 
   DisplayName: Iron Sword
-  AccessorySlot: 2
+  AccessorySlot: 6
   Prefab: {fileID: 7249071891063959814, guid: bc811aaf83d3447b9ba35700dca5d7e4, type: 3}
   Position: {x: 0.6, y: 0.01, z: -0.05}
   Rotation: {x: -90, y: 0, z: -90}
   Scale: {x: 0.22, y: 0.22, z: 0.22}
   MeshDeformed: 0
+  VisibleInFirstPerson: 1

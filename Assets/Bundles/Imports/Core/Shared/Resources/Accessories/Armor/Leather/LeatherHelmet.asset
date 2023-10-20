@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LeatherHelmet
   m_EditorClassIdentifier: 
   DisplayName: Leather Helmet
-  AccessorySlot: 0
+  AccessorySlot: 1
   Prefab: {fileID: 983100618499422991, guid: 151c198b368dd6a42bcf7a506ae0e54c, type: 3}
   Position: {x: 0, y: 0.14, z: -0.03}
   Rotation: {x: -90, y: 0, z: 0}

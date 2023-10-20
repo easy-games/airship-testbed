@@ -9,7 +9,7 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export declare class ItemUtil {
-    static readonly DefaultAccessoryCollectionPath = "Shared/Resources/Accessories/Kits/Whim/WhimAccessoryCollection.asset";
+    static readonly DefaultAccessoryCollectionPath = "Shared/Resources/Accessories/Kits/GothGirl/Kit_GothGirl_Collection.asset";
     static readonly DefaultItemPath = "Imports/Core/Shared/Resources/Accessories/missing_item.asset";
     private static readonly itemAccessories;
     private static readonly blockIdToItemType;

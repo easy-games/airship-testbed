@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: ArmorTest
   m_EditorClassIdentifier: 
   DisplayName: Armor Test
-  AccessorySlot: 0
+  AccessorySlot: 5
   Prefab: {fileID: 919132149155446097, guid: b370c595bc771264aa562549e35c0ef8, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}
   MeshDeformed: 1
+  VisibleInFirstPerson: 1

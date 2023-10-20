@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: wood_sword
   m_EditorClassIdentifier: 
   DisplayName: Wood Sword
-  AccessorySlot: 2
+  AccessorySlot: 6
   Prefab: {fileID: 5306317776177628987, guid: 243b3413775b44b90811e841dfe7ba39, type: 3}
   Position: {x: 0, y: 0.03, z: -0.01}
   Rotation: {x: -90, y: 0, z: 0}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: iron
   m_EditorClassIdentifier: 
   DisplayName: Iron
-  AccessorySlot: 2
+  AccessorySlot: 6
   Prefab: {fileID: 7802634283327141613, guid: d39e8f3385fdb4bf79c3678efb6bba99, type: 3}
   Position: {x: 0.05, y: 0.07, z: -0.06}
   Rotation: {x: 0, y: 90, z: 90}

@@ -2,7 +2,9 @@ import { Entity } from "../../Entity/Entity";
 import { ItemMeta } from "../ItemMeta";
 export declare class HeldItem {
     private serverOffsetMargin;
-    protected readonly meta: ItemMeta;
+    /** Undefined when holding nothing */
+    protected readonly itemMeta: ItemMeta | undefined;
+    protected clickBufferMargin: number;
     protected readonly entity: Entity;
     private lastUsedTime;
     private chargeStartTime;
@@ -11,7 +13,8 @@ export declare class HeldItem {
     protected currentItemAnimations: Animator[];
     private holdingDownBin;
     private holdingDown;
-    constructor(entity: Entity, newMeta: ItemMeta);
+    private bufferingUse;
+    constructor(entity: Entity, newMeta: ItemMeta | undefined);
     protected Log(message: string): void;
     OnEquip(): void;
     OnUnEquip(): void;
@@ -26,13 +29,14 @@ export declare class HeldItem {
     protected TryUse(): boolean;
     protected TryChargeUse(): boolean;
     protected TriggerUse(useIndex: number): void;
+    private OnCooldownReset;
     /** Runs when an item is used. Runs on every client.*/
     protected OnUseClient(useIndex: number): void;
     protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean): void;
     /** Runs when an item is used, server authorized
      * return true if you can use the item */
     protected OnUseServer(useIndex: number): void;
-    IsCooledDown(): boolean;
+    GetRemainingCooldownTime(): number;
     IsChargedUp(): boolean;
     HasChargeTime(): boolean;
 }

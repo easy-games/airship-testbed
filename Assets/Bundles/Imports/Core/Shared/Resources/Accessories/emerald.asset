@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: emerald
   m_EditorClassIdentifier: 
   DisplayName: Emerald
-  AccessorySlot: 2
+  AccessorySlot: 6
   Prefab: {fileID: 7802634283327141613, guid: ef4ca1c2f8bb94c5090359e2f4f4e397, type: 3}
   Position: {x: 0.05, y: 0.07, z: -0.06}
   Rotation: {x: 0, y: 90, z: 90}

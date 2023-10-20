@@ -36,13 +36,14 @@ export declare enum Bundle_Entity_OnHit {
 export declare enum Bundle_Entity_Movement {
     NONE = -1,
     SprintTrail = 0,
-    JumpSFX = 1,
-    LandSFX = 2,
-    SlideSFX0 = 3,
-    SlideSFX1 = 4,
-    SlideSFX2 = 5,
-    SlideSFX3 = 6,
-    SlideSFXLoop = 7
+    LandVFX = 1,
+    JumpSFX = 2,
+    LandSFX = 3,
+    SlideSFX0 = 4,
+    SlideSFX1 = 5,
+    SlideSFX2 = 6,
+    SlideSFX3 = 7,
+    SlideSFXLoop = 8
 }
 export declare enum Bundle_Entity {
     NONE = -1,
@@ -248,6 +249,7 @@ export declare enum AllBundleItems {
     Entity_OnHit_FlinchAnimTP = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Root/OnHit/Armature_TP_Flinch.anim",
     Entity_OnHit_DeathAnimTP = "Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Root/OnHit/Armature_TP_Death.anim",
     Entity_Movement_SprintTrail = "Imports/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab",
+    Entity_Movement_LandVFX = "Imports/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/LandingVFX.prefab",
     Entity_Movement_JumpSFX = "Imports/Core/Shared/Resources/Sound/Movement/JumpStart.ogg",
     Entity_Movement_LandSFX = "Imports/Core/Shared/Resources/Sound/Movement/JumpLand.ogg",
     Entity_Movement_SlideSFX0 = "Imports/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav",
