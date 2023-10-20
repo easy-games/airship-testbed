@@ -6,7 +6,7 @@ import { Player } from "Shared/Player/Player";
 
 export class AddInventoryCommand extends ChatCommand {
 	constructor() {
-		super("addInventory", ["add", "i"]);
+		super("i", "<ItemType> [amount]");
 	}
 
 	public Execute(player: Player, args: string[]): void {

@@ -8,7 +8,7 @@ const DEFAULT_SPAWN_RATE = 2;
 
 export class SetGeneratorSpawnRateCommand extends ChatCommand {
 	constructor() {
-		super("setGeneratorSpawnRate");
+		super("setGeneratorSpawnRate", [], "<id> [spawn rate]");
 	}
 
 	public Execute(player: Player, args: string[]): void {

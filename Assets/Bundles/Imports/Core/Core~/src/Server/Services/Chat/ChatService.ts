@@ -1,4 +1,5 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import Object from "@easy-games/unity-object-utils";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import StringUtils from "Shared/Types/StringUtil";
@@ -14,6 +15,7 @@ import { FlyCommand } from "./Commands/FlyCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
 import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorSpawnRateCommand";
 import { HealCommand } from "./Commands/HealCommand";
+import { HelpCommand } from "./Commands/HelpCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
 import { LibonatiCommand } from "./Commands/LibonatiCommand";
@@ -45,6 +47,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
 		this.RegisterCommand(new LibonatiCommand());
+		this.RegisterCommand(new HelpCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
@@ -92,5 +95,9 @@ export class ChatService implements OnStart {
 			let message = username + ": " + text;
 			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message);
 		});
+	}
+
+	public GetCommands(): ChatCommand[] {
+		return Object.values(this.commands);
 	}
 }
