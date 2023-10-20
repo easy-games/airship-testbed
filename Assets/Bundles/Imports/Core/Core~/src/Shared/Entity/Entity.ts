@@ -2,9 +2,12 @@ import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { EntityController } from "Client/Controllers/Entity/EntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { DamageService } from "Server/Services/Damage/DamageService";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
+import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Game } from "Shared/Game";
 import { BlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
@@ -15,6 +18,7 @@ import { Team } from "Shared/Team/Team";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -25,10 +29,6 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntityAnimator } from "./Animation/EntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
-import { DamageService } from "Server/Services/Damage/DamageService";
-import { EffectsManager } from "Shared/Effects/EffectsManager";
-import { DamageUtils } from "Shared/Damage/DamageUtils";
-import { MathUtil } from "Shared/Util/MathUtil";
 
 export interface EntityDto {
 	serializer: EntitySerializer;
@@ -191,7 +191,7 @@ export class Entity {
 				if (DamageUtils.GetFallDamage(velocity.y) > 0) {
 					let effectPos = this.model.transform.position;
 					const raycastPos = WorldAPI.GetMainWorld()?.RaycastVoxel(effectPos, Vector3.down, 4);
-					const landingEffect = EffectsManager.SpawnEffect(
+					const landingEffect = EffectsManager.SpawnPrefabEffect(
 						AllBundleItems.Entity_Movement_LandVFX,
 						raycastPos ? raycastPos.HitPosition : effectPos,
 						Vector3.zero,
