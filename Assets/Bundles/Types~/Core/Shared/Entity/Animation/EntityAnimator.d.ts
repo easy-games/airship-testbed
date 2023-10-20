@@ -34,11 +34,11 @@ export declare class EntityAnimator {
     baseFootstepVolumeScale: number;
     constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);
     Destroy(): void;
-    PlayAnimation(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;
-    PlayAnimationOnce(clip: AnimationClip, layer?: number, wrapMode?: WrapMode): AnimancerState;
+    PlayAnimation(clip: AnimationClip, layer?: number, wrapMode?: WrapMode, transitionTime?: number): AnimancerState;
+    PlayAnimationOnce(clip: AnimationClip, layer?: number, wrapMode?: WrapMode, transitionTime?: number): AnimancerState;
     StartIdleAnim(): void;
     PlayUseAnim(useIndex?: number, itemPlayMode?: ItemPlayMode): void;
-    EquipItem(itemMeta: ItemMeta): void;
+    EquipItem(itemMeta: ItemMeta | undefined): void;
     PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode?: WrapMode): void;
     SetFirstPerson(isFirstPerson: boolean): void;
     PlayTakeDamage(damageAmount: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
