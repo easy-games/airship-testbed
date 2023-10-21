@@ -588,6 +588,9 @@ export const items: {
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 			chargingWalkSpeedMultiplier: 0.25,
 		},
+		viewModel: {
+			idleAnimFP: CoreAnim("FP_Bow_Idle"),
+		},
 	},
 	[ItemType.WOOD_ARROW]: {
 		displayName: "Wood Arrow",

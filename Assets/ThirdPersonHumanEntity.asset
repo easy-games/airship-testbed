@@ -1503,7 +1503,7 @@ MonoBehaviour:
     TransformPropsEnabledMask:
       valueInternal: -1
     LocalPositionSelected:
-      valueInternal: 1
+      valueInternal: 0
     LocalPositionChannelList:
     - CurrentValue:
         valueInternal: 0
