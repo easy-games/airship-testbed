@@ -112,9 +112,9 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 		this.currentItemClipMap.clear();
 
-		if (itemMeta?.viewModel) {
+		if (itemMeta) {
 			if (this.isFirstPerson) {
-				if (itemMeta.viewModel.equipAnimFP) {
+				if (itemMeta.viewModel?.equipAnimFP) {
 					let clips = itemMeta.viewModel.equipAnimFP.mapFiltered((s) => {
 						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
@@ -123,7 +123,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 						this.currentItemClipMap.set(ItemAnimationId.EQUIP, clips);
 					}
 				}
-				if (itemMeta.viewModel.idleAnimFP) {
+				if (itemMeta.viewModel?.idleAnimFP) {
 					let clips = itemMeta.viewModel.idleAnimFP.mapFiltered((s) => {
 						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
@@ -142,7 +142,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 					}
 				}
 			} else {
-				if (itemMeta.viewModel.equipAnimTP) {
+				if (itemMeta.viewModel?.equipAnimTP) {
 					let clips = itemMeta.viewModel.equipAnimTP.mapFiltered((s) => {
 						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
@@ -151,7 +151,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 						this.currentItemClipMap.set(ItemAnimationId.EQUIP, clips);
 					}
 				}
-				if (itemMeta.viewModel.idleAnimTP) {
+				if (itemMeta.viewModel?.idleAnimTP) {
 					let clips = itemMeta.viewModel.idleAnimTP.mapFiltered((s) => {
 						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;

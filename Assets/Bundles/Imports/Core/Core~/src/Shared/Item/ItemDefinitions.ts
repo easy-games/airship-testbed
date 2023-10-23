@@ -22,7 +22,8 @@ const blockUsable: UsableHeldItemMeta = {
 	cooldownSeconds: 0.0,
 	holdToUseCooldownInSeconds: 0.16,
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Block_Place"),
+	canHoldToUse: true,
 };
 const swordUsable: UsableHeldItemMeta = {
 	startUpInSeconds: 0,
