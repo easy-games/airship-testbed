@@ -1,4 +1,5 @@
 ﻿import { AudioManager } from "Shared/Audio/AudioManager";
+import { EntityAnimationLayer } from "Shared/Entity/Animation/EntityAnimationLayer";
 import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { Layer } from "Shared/Util/Layer";
@@ -98,6 +99,11 @@ export class HeldItem {
 		}
 	}
 
+	/**
+	 * Called when the HeldItem's art assets (such as animations) should be loaded.
+	 */
+	public OnLoadAssets(): void {}
+
 	public OnUnEquip() {
 		this.Log("OnUnEquip");
 		this.holdingDownBin.Clean();
@@ -154,8 +160,8 @@ export class HeldItem {
 		const clip = AssetBridge.Instance.LoadAsset<AnimationClip>(
 			"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Inspect.anim",
 		);
-		this.entity.anim?.PlayClip(clip, () => {
-			this.entity.anim.StartIdleAnim();
+		this.entity.anim?.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, () => {
+			// this.entity.anim.StartIdleAnim();
 		});
 	}
 

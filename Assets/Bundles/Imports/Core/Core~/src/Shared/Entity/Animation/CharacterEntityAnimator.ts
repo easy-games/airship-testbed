@@ -1,6 +1,7 @@
 ﻿﻿import { ItemMeta } from "Shared/Item/ItemMeta";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Entity, EntityReferences } from "../Entity";
+import { EntityAnimationLayer } from "./EntityAnimationLayer";
 import { EntityAnimator } from "./EntityAnimator";
 
 export enum ItemAnimationId {
@@ -24,8 +25,6 @@ const DEFAULT_USE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 );
 
 export class CharacterEntityAnimator extends EntityAnimator {
-	private itemLayer: AnimancerLayer;
-
 	private currentItemClipMap: Map<ItemAnimationId, AnimationClip[]> = new Map();
 	private currentItemMeta: ItemMeta | undefined;
 	private currentItemState: string = ItemAnimationId.IDLE;
@@ -42,7 +41,6 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	public constructor(entity: Entity, anim: AnimancerComponent, ref: EntityReferences) {
 		super(entity, anim, ref);
-		this.itemLayer = AnimancerBridge.GetLayer(this.anim, this.itemLayerIndex);
 		//Initial animation setup
 		this.LoadNewItemResources(undefined);
 		this.SetFirstPerson(false);
@@ -60,26 +58,50 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		this.StartIdleAnim();
 	}
 
-	public override PlayClip(
+	public override PlayAnimation(
 		clip: AnimationClip,
+		layer: number,
 		onEnd?: Callback,
-		wrapMode: WrapMode = WrapMode.Default,
-		transitionTime = this.defaultTransitionTime,
-	) {
-		// this.Log("Playing Item Anim: " + animationId);
-		// this.itemLayer.StartFade(1, this.defaultTransitionTime);
-		if (this.currentEndEventConnection !== -1) {
-			Bridge.DisconnectEvent(this.currentEndEventConnection);
-			this.currentEndEventConnection = -1;
-		}
+		config?: {
+			fadeMode?: FadeMode;
+			wrapMode?: WrapMode;
+			transitionTime?: number;
+			noAutoFadeOut?: boolean;
+		},
+	): AnimancerState {
+		// if (this.currentEndEventConnection !== -1) {
+		// 	Bridge.DisconnectEvent(this.currentEndEventConnection);
+		// 	this.currentEndEventConnection = -1;
+		// }
 
-		const animState = this.PlayAnimation(clip, this.itemLayerIndex, wrapMode, transitionTime);
+		let animState: AnimancerState;
+		if (config?.noAutoFadeOut || clip.isLooping) {
+			animState = AnimancerBridge.PlayOnLayer(
+				this.anim,
+				clip,
+				layer,
+				config?.transitionTime ?? this.defaultTransitionTime,
+				config?.fadeMode ?? FadeMode.FromStart,
+				config?.wrapMode ?? WrapMode.Default,
+			);
+		} else {
+			animState = AnimancerBridge.PlayOnceOnLayer(
+				this.anim,
+				clip,
+				layer,
+				config?.transitionTime ?? this.defaultTransitionTime,
+				config?.fadeMode ?? FadeMode.FromStart,
+				config?.wrapMode ?? WrapMode.Default,
+			);
+		}
 		if (onEnd !== undefined) {
 			this.currentEndEventConnection = animState.Events.OnEndTS(() => {
+				// animState.StartFade(0, config?.transitionTime ?? this.defaultTransitionTime);
 				Bridge.DisconnectEvent(this.currentEndEventConnection);
 				onEnd();
 			});
 		}
+		return animState;
 	}
 
 	private LoadNewItemResources(itemMeta: ItemMeta | undefined) {
@@ -170,10 +192,10 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	public override StartIdleAnim() {
 		this.TriggerEvent(ItemAnimationId.IDLE);
 
-		if (this.currentItemMeta === undefined) {
-			this.PlayClip(EMPTY_ANIM);
-			return;
-		}
+		// if (this.currentItemMeta === undefined) {
+		// 	this.PlayClip(EMPTY_ANIM);
+		// 	return;
+		// }
 
 		let clips: AnimationClip[] | undefined;
 		if (this.isFirstPerson) {
@@ -182,10 +204,11 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
 		}
 		const clip = RandomUtil.FromArray(clips);
-		this.PlayClip(clip);
+		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_IDLE);
+		AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ITEM_ACTION).StartFade(0, this.defaultTransitionTime);
 	}
 
-	public override PlayUseAnim(useIndex = 0, itemPlayMode: ItemPlayMode = ItemPlayMode.DEFAULT) {
+	public override PlayUseAnim(useIndex = 0) {
 		this.Log("Item Use Started: " + useIndex);
 		//In the animation array use animations are the 3rd index and beyond;
 
@@ -197,16 +220,6 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		}
 
 		const clip = RandomUtil.FromArray(clips);
-		this.PlayClip(
-			clip,
-			() => {
-				if (itemPlayMode === ItemPlayMode.DEFAULT) {
-					this.StartIdleAnim();
-				} else if (itemPlayMode === ItemPlayMode.LOOP) {
-					this.PlayUseAnim(useIndex, ItemPlayMode.LOOP);
-				}
-			},
-			WrapMode.Default,
-		);
+		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION);
 	}
 }

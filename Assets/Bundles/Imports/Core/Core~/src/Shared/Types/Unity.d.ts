@@ -1269,6 +1269,8 @@ interface AssetBridgeConstructor {
 declare const AssetBridge: AssetBridgeConstructor;
 
 interface AnimancerState {
+    StartFade(weight: number, duration: number): void;
+    IsPlaying: boolean;
 	Events: Sequence;
 }
 
@@ -1283,7 +1285,7 @@ interface AnimancerComponent extends Component {
 
 interface AnimancerBridge {}
 interface AnimancerBridgeConstructor {
-	Play(
+	PlayOnLayer(
 		animancerComponent: AnimancerComponent,
 		clip: AnimationClip,
 		layer: number,
@@ -1291,12 +1293,13 @@ interface AnimancerBridgeConstructor {
 		fadeMode: FadeMode,
 		wrapMode: WrapMode,
 	): AnimancerState;
-	PlayOnce(
+	PlayOnceOnLayer(
 		animancerComponent: AnimancerComponent,
 		clip: AnimationClip,
 		layer: number,
 		fadeDuration: number,
 		fadeMode: FadeMode,
+        wrapMode: WrapMode,
 	): AnimancerState;
 	GetLayer(component: AnimancerComponent, layer: number): AnimancerLayer;
 }

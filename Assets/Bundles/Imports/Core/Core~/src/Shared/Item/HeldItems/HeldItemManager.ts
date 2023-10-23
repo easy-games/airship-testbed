@@ -47,6 +47,7 @@ export class HeldItemManager {
 				return this.emptyHeldItem;
 			}
 			this.emptyHeldItem = new HeldItem(this.entity, itemMeta);
+			this.emptyHeldItem.OnLoadAssets();
 			return this.emptyHeldItem;
 		}
 
@@ -62,6 +63,7 @@ export class HeldItemManager {
 			if (item === undefined) {
 				item = new HeldItem(this.entity, itemMeta);
 			}
+			item.OnLoadAssets();
 			this.heldItemMap.set(itemMeta.itemType, item);
 		}
 		return item;

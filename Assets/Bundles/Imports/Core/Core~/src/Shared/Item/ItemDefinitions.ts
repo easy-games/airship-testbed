@@ -587,6 +587,8 @@ export const items: {
 			maxVelocityScaler: 100,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 			chargingWalkSpeedMultiplier: 0.25,
+			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
+			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),

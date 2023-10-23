@@ -14,13 +14,9 @@ import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
 import { Entity, EntityReferences } from "../Entity";
-import { ItemPlayMode } from "./CharacterEntityAnimator";
+import { EntityAnimationLayer } from "./EntityAnimationLayer";
 
-export class EntityAnimator {
-	public readonly itemLayerIndex: number = 2;
-
-	private readonly RootOverrideLayer = 1;
-	private readonly TopMostLayerIndex = 3;
+export abstract class EntityAnimator {
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
 	public readonly anim: AnimancerComponent;
@@ -127,31 +123,34 @@ export class EntityAnimator {
 		this.bin.Clean();
 	}
 
-	public PlayAnimation(
+	public PlayAnimationOnLayer(
 		clip: AnimationClip,
-		layer = 0,
+		layer: number,
 		wrapMode: WrapMode = WrapMode.Default,
 		transitionTime = this.defaultTransitionTime,
+		onEnd?: Callback,
 	): AnimancerState {
-		return AnimancerBridge.Play(this.anim, clip, layer, transitionTime, FadeMode.FromStart, wrapMode);
-	}
-
-	public PlayAnimationOnce(
-		clip: AnimationClip,
-		layer = 0,
-		wrapMode: WrapMode = WrapMode.Default,
-		transitionTime = this.defaultTransitionTime,
-	): AnimancerState {
-		return AnimancerBridge.PlayOnce(this.anim, clip, layer, transitionTime, FadeMode.FromStart);
+		return AnimancerBridge.PlayOnLayer(this.anim, clip, layer, transitionTime, FadeMode.FromStart, wrapMode);
 	}
 
 	public StartIdleAnim(): void {}
 
-	public PlayUseAnim(useIndex = 0, itemPlayMode: ItemPlayMode = 0): void {}
+	public PlayUseAnim(useIndex = 0): void {}
 
 	public EquipItem(itemMeta: ItemMeta | undefined): void {}
 
-	public PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode: WrapMode = WrapMode.Default) {}
+	public abstract PlayAnimation(
+		clip: AnimationClip,
+		layer: number,
+		onEnd?: Callback,
+		config?: {
+			fadeMode?: FadeMode;
+			wrapMode?: WrapMode;
+			transitionTime?: number;
+			pauseOnEnd?: boolean;
+			autoFade?: boolean;
+		},
+	): AnimancerState;
 
 	public SetFirstPerson(isFirstPerson: boolean): void {
 		this.isFirstPerson = isFirstPerson;
@@ -171,9 +170,9 @@ export class EntityAnimator {
 		//Animate flinch
 		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
 		if (flinchClip) {
-			this.PlayAnimation(flinchClip, this.RootOverrideLayer);
+			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE);
 			Task.Delay(0.1, () => {
-				AnimancerBridge.GetLayer(this.anim, this.RootOverrideLayer).StartFade(0, 0.05);
+				AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ROOT_OVERRIDE).StartFade(0, 0.05);
 			});
 		}
 
@@ -210,7 +209,7 @@ export class EntityAnimator {
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
-			this.PlayAnimation(deathClip, this.TopMostLayerIndex);
+			this.PlayAnimation(deathClip, EntityAnimationLayer.TOP_MOST);
 		}
 		//Spawn death particle
 		const inVoid = damageType === DamageType.VOID;
