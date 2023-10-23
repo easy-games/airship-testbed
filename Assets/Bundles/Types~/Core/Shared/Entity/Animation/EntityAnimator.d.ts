@@ -5,12 +5,8 @@ import { DamageType } from "../../Damage/DamageType";
 import { ItemMeta } from "../../Item/ItemMeta";
 import { Bin } from "../../Util/Bin";
 import { Entity, EntityReferences } from "../Entity";
-import { ItemPlayMode } from "./CharacterEntityAnimator";
-export declare class EntityAnimator {
+export declare abstract class EntityAnimator {
     protected entity: Entity;
-    readonly itemLayerIndex: number;
-    private readonly RootOverrideLayer;
-    private readonly TopMostLayerIndex;
     private readonly flashTransitionDuration;
     private readonly flashOnTime;
     readonly anim: AnimancerComponent;
@@ -34,12 +30,17 @@ export declare class EntityAnimator {
     baseFootstepVolumeScale: number;
     constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);
     Destroy(): void;
-    PlayAnimation(clip: AnimationClip, layer?: number, wrapMode?: WrapMode, transitionTime?: number): AnimancerState;
-    PlayAnimationOnce(clip: AnimationClip, layer?: number, wrapMode?: WrapMode, transitionTime?: number): AnimancerState;
+    PlayAnimationOnLayer(clip: AnimationClip, layer: number, wrapMode?: WrapMode, transitionTime?: number, onEnd?: Callback): AnimancerState;
     StartIdleAnim(): void;
-    PlayUseAnim(useIndex?: number, itemPlayMode?: ItemPlayMode): void;
+    PlayUseAnim(useIndex?: number): void;
     EquipItem(itemMeta: ItemMeta | undefined): void;
-    PlayClip(clip: AnimationClip, onEnd?: Callback, wrapMode?: WrapMode): void;
+    abstract PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
+        fadeMode?: FadeMode;
+        wrapMode?: WrapMode;
+        transitionTime?: number;
+        pauseOnEnd?: boolean;
+        autoFade?: boolean;
+    }): AnimancerState;
     SetFirstPerson(isFirstPerson: boolean): void;
     PlayTakeDamage(damageAmount: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
     PlayDeath(damageType: DamageType): void;

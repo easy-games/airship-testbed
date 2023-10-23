@@ -41,7 +41,7 @@ export class HeldItem {
 	public OnEquip() {
 		this.Log("OnEquip");
 		//Load that items animations and play equip animation
-		this.entity.anim?.EquipItem(this.itemMeta);
+		this.entity.animator?.EquipItem(this.itemMeta);
 
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
@@ -76,7 +76,7 @@ export class HeldItem {
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
 
-		const firstPerson = this.entity.anim.IsFirstPerson();
+		const firstPerson = this.entity.animator.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let j = 0;
 		for (const accessory of accessories) {
@@ -160,7 +160,7 @@ export class HeldItem {
 		const clip = AssetBridge.Instance.LoadAsset<AnimationClip>(
 			"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Inspect.anim",
 		);
-		this.entity.anim?.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, () => {
+		this.entity.animator?.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, () => {
 			// this.entity.anim.StartIdleAnim();
 		});
 	}
@@ -237,7 +237,7 @@ export class HeldItem {
 		if (this.itemMeta === undefined) return;
 
 		//Play the use locally
-		this.entity.anim.PlayUseAnim(useIndex);
+		this.entity.animator.PlayUseAnim(useIndex);
 		if (this.itemMeta.usable?.onUseSound) {
 			if (this.entity.IsLocalCharacter()) {
 				AudioManager.PlayGlobal(RandomUtil.FromArray(this.itemMeta.usable.onUseSound), {

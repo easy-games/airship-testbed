@@ -37,7 +37,7 @@ export class EntityFootstepController implements OnStart {
 						volumeScale *= 2;
 					}
 					try {
-						entity.anim.PlayFootstepSound(volumeScale);
+						entity.animator.PlayFootstepSound(volumeScale);
 					} catch (err) {
 						Debug.LogError(err);
 					}

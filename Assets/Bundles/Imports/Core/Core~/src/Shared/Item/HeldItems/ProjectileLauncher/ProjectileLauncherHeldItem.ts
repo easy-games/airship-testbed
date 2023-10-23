@@ -85,8 +85,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 
 		//Play the items animation  (bow draw)
-		const chargeAnimState = this.entity.anim?.PlayAnimation(
-			this.entity.anim.IsFirstPerson()
+		const chargeAnimState = this.entity.animator?.PlayAnimation(
+			this.entity.animator.IsFirstPerson()
 				? RandomUtil.FromArray(this.chargeAnimFP)
 				: RandomUtil.FromArray(this.chargeAnimTP),
 			EntityAnimationLayer.ITEM_ACTION,
@@ -165,7 +165,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnChargeEnd(): void {
 		super.OnChargeEnd();
-		this.entity.anim?.StartIdleAnim();
+		this.entity.animator?.StartIdleAnim();
 		this.CancelChargeSound();
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
@@ -190,7 +190,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		print("On use: " + useIndex);
 
 		//Play the items animation  (bow shoot)
-		this.entity.anim.PlayUseAnim(0);
+		this.entity.animator.PlayUseAnim(0);
 
 		if (!this.entity.IsLocalCharacter()) return;
 

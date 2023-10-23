@@ -13,7 +13,12 @@ export class DamageIndicatorController implements OnStart {
 			const entityGO = event.entity.networkObject.gameObject;
 
 			//Entity Damage Animation
-			event.entity.anim?.PlayTakeDamage(event.amount, event.damageType, entityGO.transform.position, entityGO);
+			event.entity.animator?.PlayTakeDamage(
+				event.amount,
+				event.damageType,
+				entityGO.transform.position,
+				entityGO,
+			);
 
 			// Damage taken sound
 			AudioManager.PlayAtPosition(
@@ -42,7 +47,7 @@ export class DamageIndicatorController implements OnStart {
 		});
 
 		CoreClientSignals.EntityDeath.Connect((event) => {
-			event.entity.anim?.PlayDeath(event.damageType);
+			event.entity.animator?.PlayDeath(event.damageType);
 
 			// PvP Kill
 			if (event.fromEntity?.IsLocalCharacter() && event.fromEntity !== event.entity) {
