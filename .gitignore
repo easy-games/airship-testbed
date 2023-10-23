@@ -112,3 +112,4 @@ Assets/Bundles/Types~/Core
 
 UMotionData/*
 UMotionData/**
+Assets/UMotionEditor/Data/EditorUndoStackPointer.asset
