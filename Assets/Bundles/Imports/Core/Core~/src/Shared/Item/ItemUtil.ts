@@ -13,7 +13,7 @@ export interface ItemRegistrationConfig {
  */
 export class ItemUtil {
 	public static readonly DefaultAccessoryCollectionPath =
-		"Shared/Resources/Accessories/Kits/GothGirl/Kit_GothGirl_Collection.asset";
+		"Imports/Core/Shared/Resources/Accessories/Kits/GothGirl/Kit_GothGirl_Collection.asset";
 	public static readonly DefaultItemPath = "Imports/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
@@ -34,9 +34,10 @@ export class ItemUtil {
 	public static Initialize() {
 		//Load default items
 		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
-		ItemUtil.defaultKitAccessory = AssetBridge.Instance.LoadAssetIfExists<AccessoryCollection>(
+		ItemUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
 			ItemUtil.DefaultAccessoryCollectionPath,
 		);
+		print("Init kit: " + ItemUtil.defaultKitAccessory?.name);
 
 		let i = 0;
 		for (const itemType of Object.keys(items)) {
