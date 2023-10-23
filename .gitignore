@@ -111,3 +111,4 @@ Assets/Bundles/Types~/Core
 *.bak
 
 UMotionData/Temp/**
+Assets/UMotionEditor/Data/EditorUndoStackPointer.asset
