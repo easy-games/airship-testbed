@@ -165,7 +165,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnChargeEnd(): void {
 		super.OnChargeEnd();
-		this.entity.animator?.StartIdleAnim();
+		this.entity.animator?.StartIdleAnim(false);
 		this.CancelChargeSound();
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);

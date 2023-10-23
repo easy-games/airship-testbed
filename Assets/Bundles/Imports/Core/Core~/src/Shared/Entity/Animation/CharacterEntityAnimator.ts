@@ -55,7 +55,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		super.SetFirstPerson(isFirstPerson);
 		this.entityRef.humanEntityAnimator.SetFirstPerson(isFirstPerson);
 		this.LoadNewItemResources(this.currentItemMeta);
-		this.StartIdleAnim();
+		this.StartIdleAnim(true);
 	}
 
 	public override PlayAnimation(
@@ -186,10 +186,10 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	public override EquipItem(itemMeta: ItemMeta | undefined) {
 		this.LoadNewItemResources(itemMeta);
-		this.StartIdleAnim();
+		this.StartIdleAnim(false);
 	}
 
-	public override StartIdleAnim() {
+	public override StartIdleAnim(instantTransition: boolean) {
 		this.TriggerEvent(ItemAnimationId.IDLE);
 
 		// if (this.currentItemMeta === undefined) {
@@ -204,7 +204,9 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
 		}
 		const clip = RandomUtil.FromArray(clips);
-		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_IDLE);
+		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_IDLE, undefined, {
+			transitionTime: instantTransition ? 0 : this.defaultTransitionTime,
+		});
 		AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ITEM_ACTION).StartFade(0, this.defaultTransitionTime);
 	}
 
