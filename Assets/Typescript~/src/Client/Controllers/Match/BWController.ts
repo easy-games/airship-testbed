@@ -57,7 +57,7 @@ export class BWController implements OnStart {
 		const sameTeam = team?.id === Game.LocalPlayer.Character?.GetTeam()?.id;
 		const targetColor = sameTeam ? Color.cyan : Color.red;
 		const strength = sameTeam ? 0 : 1;
-		entity.anim.SetFresnelColor(targetColor, 5, strength);
+		entity.animator.SetFresnelColor(targetColor, 5, strength);
 	}
 
 	/**

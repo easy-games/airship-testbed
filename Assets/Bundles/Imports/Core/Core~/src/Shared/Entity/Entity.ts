@@ -121,7 +121,7 @@ export class Entity {
 	public readonly entityDriver: EntityDriver;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
-	public anim: EntityAnimator;
+	public animator: EntityAnimator;
 	public readonly references: EntityReferences;
 	public readonly accessoryBuilder: AccessoryBuilder;
 
@@ -163,7 +163,11 @@ export class Entity {
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		this.model = this.references.root.gameObject;
 		this.model.transform.localPosition = new Vector3(0, 0, 0);
-		this.anim = new CharacterEntityAnimator(this, this.model.GetComponent<AnimancerComponent>(), this.references);
+		this.animator = new CharacterEntityAnimator(
+			this,
+			this.model.GetComponent<AnimancerComponent>(),
+			this.references,
+		);
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
 		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.state = this.entityDriver.GetState();
@@ -184,7 +188,7 @@ export class Entity {
 		}
 
 		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
-			this.anim?.PlayFootstepSound(1.4);
+			this.animator?.PlayFootstepSound(1.4);
 			if (RunUtil.IsServer()) {
 				Dependency<DamageService>().InflictFallDamage(this, velocity.y);
 			} else {
@@ -346,7 +350,7 @@ export class Entity {
 	public Destroy(): void {
 		this.bin.Clean();
 		this.OnDespawn.Fire();
-		this.anim.Destroy();
+		this.animator.Destroy();
 		this.destroyed = true;
 
 		if (this.player && this.id === this.player.Character?.id) {

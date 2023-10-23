@@ -17,6 +17,10 @@ export declare class HeldItem {
     constructor(entity: Entity, newMeta: ItemMeta | undefined);
     protected Log(message: string): void;
     OnEquip(): void;
+    /**
+     * Called when the HeldItem's art assets (such as animations) should be loaded.
+     */
+    OnLoadAssets(): void;
     OnUnEquip(): void;
     OnCallToActionStart(): void;
     private HoldDownAction;

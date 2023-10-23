@@ -48,7 +48,7 @@ export declare class Entity {
     readonly entityDriver: EntityDriver;
     readonly model: GameObject;
     readonly attributes: EasyAttributes;
-    anim: EntityAnimator;
+    animator: EntityAnimator;
     readonly references: EntityReferences;
     readonly accessoryBuilder: AccessoryBuilder;
     player: Player | undefined;

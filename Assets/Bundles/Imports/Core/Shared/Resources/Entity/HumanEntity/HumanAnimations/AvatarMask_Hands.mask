@@ -16,7 +16,7 @@ AvatarMask:
   - m_Path: Airship_rig/spine.root
     m_Weight: 0
   - m_Path: Airship_rig/spine.root/spine.middle
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Airship_rig/spine.root/spine.middle/spine.top
     m_Weight: 1
   - m_Path: Airship_rig/spine.root/spine.middle/spine.top/neck
