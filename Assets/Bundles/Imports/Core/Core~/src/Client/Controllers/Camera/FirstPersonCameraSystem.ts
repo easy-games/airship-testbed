@@ -92,15 +92,6 @@ export class FirstPersonCameraSystem {
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
 		Game.LocalPlayer.Character?.animator?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
-		const characterLayer = LayerMask.NameToLayer("Character");
-		const fpsLayer = LayerMask.NameToLayer("FirstPerson");
-
-		//In First person hide all meshes except the arm
-		for (let i = 0; i < this.entityReferences.meshes.size(); i++) {
-			const go = this.entityReferences.meshes[i].gameObject;
-			go.SetActive((!isFirstPerson && go.layer === characterLayer) || (isFirstPerson && go.layer === fpsLayer));
-		}
-		this.entityReferences.fpsMesh.gameObject.SetActive(isFirstPerson);
 		this.entityReferences.humanEntityAnimator.SetForceLookForward(!isFirstPerson);
 	}
 }

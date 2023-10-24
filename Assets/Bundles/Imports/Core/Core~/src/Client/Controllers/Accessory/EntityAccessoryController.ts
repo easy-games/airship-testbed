@@ -29,11 +29,6 @@ export class EntityAccessoryController implements OnStart {
 							ItemUtil.defaultKitAccessory,
 							true,
 						);
-						if (event.entity.IsLocalCharacter()) {
-							for (const accessory of CSArrayUtil.Convert(accessories)) {
-								this.HandleAccessoryVisibility(accessory);
-							}
-						}
 					}
 				}
 
@@ -86,28 +81,6 @@ export class EntityAccessoryController implements OnStart {
 				});
 			}
 		});
-
-		this.localController.ObserveFirstPerson((firstPerson) => {
-			this.HandleAllAccessoryVisibility();
-		});
-	}
-
-	private HandleAllAccessoryVisibility(): void {
-		const accessories = Game.LocalPlayer.Character?.accessoryBuilder.GetActiveAccessories();
-		if (!accessories) return;
-
-		for (let i = 0; i < accessories.Length; i++) {
-			const accessory = accessories.GetValue(i);
-			this.HandleAccessoryVisibility(accessory);
-		}
-	}
-
-	public HandleAccessoryVisibility(activeAccessory: ActiveAccessory): void {
-		const firstPerson = this.localController.IsFirstPerson();
-
-		for (let renderer of CSArrayUtil.Convert(activeAccessory.renderers)) {
-			renderer.enabled = !firstPerson || activeAccessory.accessory.VisibleInFirstPerson;
-		}
 	}
 
 	OnStart(): void {
@@ -148,26 +121,9 @@ export class EntityAccessoryController implements OnStart {
 		});
 	}
 
+	//Turn off root accessories unless they are on the first person layer
 	private SetFirstPersonLayer(accessoryBuilder: AccessoryBuilder) {
 		//Accessories with first person mesh variants need to be on layer FPS
-
-		//Turn off root accessories unless they are on the first person layer
-		let rootItems: CSArray<Renderer> = accessoryBuilder.GetAccessoryMeshes(AccessorySlot.Root);
-		for (let i = 0; i < rootItems.Length; i++) {
-			let item = rootItems.GetValue(i);
-			item.enabled =
-				(!this.isFirstPerson && item.gameObject.layer !== Layer.FIRST_PERSON) ||
-				(this.isFirstPerson && item.gameObject.layer === Layer.FIRST_PERSON);
-		}
-
-		//Set hand items to render in the first person camera
-		let rightHandItems: CSArray<Renderer> = accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
-		for (let i = 0; i < rightHandItems.Length; i++) {
-			rightHandItems.GetValue(i).gameObject.layer = this.isFirstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
-		}
-		let leftHandItems: CSArray<Renderer> = accessoryBuilder.GetAccessoryMeshes(AccessorySlot.LeftHand);
-		for (let i = 0; i < leftHandItems.Length; i++) {
-			leftHandItems.GetValue(i).gameObject.layer = this.isFirstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
-		}
+		accessoryBuilder.ToggleMeshVisibility(this.isFirstPerson);
 	}
 }

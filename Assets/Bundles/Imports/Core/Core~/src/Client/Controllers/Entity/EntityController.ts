@@ -84,26 +84,49 @@ export class EntityController implements OnStart {
 			ColorUtil.HexToColor("#B4905B"),
 			ColorUtil.HexToColor("#E09E53"),
 			ColorUtil.HexToColor("#875C2C"),
+			ColorUtil.HexToColor("#CAA075"),
+			ColorUtil.HexToColor("#A4784B"),
+			ColorUtil.HexToColor("#735638"),
+			ColorUtil.HexToColor("#B4905B"),
+			ColorUtil.HexToColor("#E09E53"),
+			ColorUtil.HexToColor("#875C2C"),
 			ColorUtil.HexToColor("#9AA427"), // green
 			ColorUtil.HexToColor("#90684C"),
 		];
-		CoreClientSignals.EntitySpawn.Connect((event) => {
-			let randomId: number;
-			if (event.entity.player) {
-				randomId = string.byte(event.entity.player.userId)[0];
-			} else {
-				randomId = math.random(0, 10000000);
-			}
-			let index = randomId % skinColors.size();
-			let skinColor = skinColors[index];
 
-			event.entity.references.meshes.forEach((mesh) => {
-				const matColor = mesh.GetComponent<MaterialColor>();
-				if (matColor) {
-					matColor.SetMaterialColor(0, skinColor);
-					matColor.DoUpdate();
-				}
-			});
+		const hairColors = [
+			ColorUtil.HexToColor("#aa8866"),
+			ColorUtil.HexToColor("#debe99"),
+			ColorUtil.HexToColor("#241c11"),
+			ColorUtil.HexToColor("#4f1a00"),
+			ColorUtil.HexToColor("#9a3300"),
+			ColorUtil.HexToColor("#f0ede5"),
+			ColorUtil.HexToColor("#b07922"),
+			ColorUtil.HexToColor("#e6e6fa"),
+			ColorUtil.HexToColor("#2d170e"),
+			ColorUtil.HexToColor("#1d1513"),
+			ColorUtil.HexToColor("#2c2424"),
+			ColorUtil.HexToColor("#aa8866"),
+		];
+		CoreClientSignals.EntitySpawn.Connect((event) => {
+			if (event.entity.IsLocalCharacter()) {
+				//Keep local player the default look for now
+				return;
+			}
+			let randomId: number;
+			//if (event.entity.player) {
+			//randomId = string.byte(event.entity.player.userId)[0];
+			//} else {
+			randomId = math.random(0, 10000000);
+			//}
+			let skinColor = skinColors[randomId % skinColors.size()];
+			let hairColor = hairColors[randomId % hairColors.size()];
+			let shirtColor = hairColors[(randomId * 2) % hairColors.size()];
+
+			//Body Meshes
+			event.entity.accessoryBuilder.SetSkinColor(skinColor, false);
+			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
+			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
 		});
 	}
 

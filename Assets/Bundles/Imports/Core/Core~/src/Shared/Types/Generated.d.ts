@@ -1761,6 +1761,11 @@ declare const enum AccessorySlot {
     Pants = 9,
     Shoes = 10,
 }
+declare const enum VisibilityMode {
+    THIRD_PERSON = 0,
+    FIRST_PERSON = 1,
+    BOTH = 2,
+}
 declare const enum AccessoryAddMode {
     ReplaceAll = 0,
     Replace = 1,
@@ -9700,11 +9705,11 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
-    clothColliders: CSArray<CapsuleCollider>;
 
     constructor(): AccessoryBuilder;
 
     AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, combineMeshes: boolean): CSArray<ActiveAccessory>;
+    AddSkinAccessory(skin: AccessorySkin, combineMeshes: boolean): void;
     EquipAccessoryCollection(collection: AccessoryCollection, combineMeshes: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
@@ -9712,21 +9717,14 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetActiveAccessoriesBySlot(target: AccessorySlot): CSArray<ActiveAccessory>;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
     GetCombinedSkinnedMesh(firstPerson: boolean): SkinnedMeshRenderer;
-    GetCombinedStaticMesh(firstPerson: boolean): SkinnedMeshRenderer;
+    GetCombinedStaticMesh(firstPerson: boolean): MeshRenderer;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
     SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
+    SetAccessoryColor(slot: AccessorySlot, color: Color, combineMeshes: boolean): void;
+    SetSkinColor(color: Color, combineMeshes: boolean): void;
+    ToggleMeshVisibility(firstPersonEnabled: boolean): void;
     TryCombineMeshes(): void;
-}
-    
-interface CapsuleCollider extends Collider {
-    center: Vector3;
-    radius: number;
-    height: number;
-    direction: number;
-
-    constructor(): CapsuleCollider;
-
 }
     
 interface ActiveAccessory {
@@ -9745,15 +9743,24 @@ interface Accessory extends ScriptableObject {
     Rotation: Vector3;
     Scale: Vector3;
     MeshDeformed: boolean;
-    VisibleInFirstPerson: boolean;
+    visibilityMode: VisibilityMode;
     HasSkinnedMeshes: boolean;
 
     constructor(): Accessory;
 
 }
     
+interface AccessorySkin extends ScriptableObject {
+    DisplayName: string;
+    skinTexture: Texture2D;
+
+    constructor(): AccessorySkin;
+
+}
+    
 interface AccessoryCollection extends ScriptableObject {
     accessories: CSArray<Accessory>;
+    customSkin: AccessorySkin;
 
     constructor(): AccessoryCollection;
 

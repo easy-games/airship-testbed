@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
-  m_Name: Kit_GothGirl_Pants
+  m_Name: Kit_GothGirl_ShirtTP
   m_EditorClassIdentifier: 
-  DisplayName: Goth Girl Pants
-  AccessorySlot: 9
-  Prefab: {fileID: 7528217683396386893, guid: 580032d75be31634c9524969355ef1eb, type: 3}
+  DisplayName: Goth Girl Shirt
+  AccessorySlot: 5
+  Prefab: {fileID: 5547821550249100827, guid: 507a8f57c51cd6d4a87fa8014d5f0b4e, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

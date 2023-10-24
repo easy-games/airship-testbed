@@ -90,11 +90,6 @@ export class HeldItem {
 				if (anim) {
 					this.currentItemAnimations.push(anim);
 				}
-
-				const renderers = go.GetComponentsInChildren<Renderer>();
-				for (const renderer of CSArrayUtil.Convert(renderers)) {
-					renderer.gameObject.layer = layer;
-				}
 			}
 		}
 	}
