@@ -44,10 +44,8 @@ export class PrefabBlockManager {
 		} else {
 			CoreNetwork.ServerToClient.SyncPrefabBlocks.Client.OnServerEvent((blockPositions) => {
 				world.WaitForFinishedReplicatingChunksFromServer().then(() => {
-					print("received block pos count: " + blockPositions.size());
 					for (const pos of blockPositions) {
 						const block = world.GetBlockAt(pos);
-						print(`block: pos=${pos} type=${block.itemType}`);
 						if (block.itemType) {
 							this.OnBlockPlace(pos, block.itemType);
 							const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;

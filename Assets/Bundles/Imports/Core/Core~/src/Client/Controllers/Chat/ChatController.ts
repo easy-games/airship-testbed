@@ -16,7 +16,6 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
-import { encode } from "Shared/json";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { CoreUIController } from "../UI/CoreUIController";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
@@ -243,8 +242,6 @@ export class ChatController implements OnStart {
 		}
 
 		const commandData = ChatUtil.ParseCommandData(message);
-
-		print(`SendChatMessage() commandData: ${encode(commandData)}`);
 
 		let sendChatToServer = true;
 
