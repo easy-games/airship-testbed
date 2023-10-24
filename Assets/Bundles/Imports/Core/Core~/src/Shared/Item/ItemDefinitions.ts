@@ -573,8 +573,31 @@ export const items: {
 		},
 	},
 
-	//BOW
+	// BOW & CROSSBOW
 	[ItemType.WOOD_BOW]: {
+		displayName: "Wood Bow",
+		usable: {
+			minChargeSeconds: 0.12,
+			maxChargeSeconds: 0.75,
+			cooldownSeconds: 0.25,
+			onUseSound: [CoreSound.bowShoot],
+		},
+		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
+		projectileLauncher: {
+			ammoItemType: ItemType.WOOD_ARROW,
+			minVelocityScaler: 5,
+			maxVelocityScaler: 100,
+			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
+			chargingWalkSpeedMultiplier: 0.25,
+			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
+			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
+			chargeSound: [{ path: CoreSound.bowCharge }],
+		},
+		viewModel: {
+			idleAnimFP: CoreAnim("FP_Bow_Idle"),
+		},
+	},
+	[ItemType.WOOD_CROSSBOW]: {
 		displayName: "Wood Bow",
 		usable: {
 			minChargeSeconds: 0.12,
