@@ -19,6 +19,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			const blockGO = MeshProcessor.ProduceSingleBlock(
 				this.itemMeta.block.blockId,
 				WorldAPI.GetMainWorld()!.voxelWorld,
+				3,
 			);
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
 			if (blockGO && activeAccessories.Length > 0) {
@@ -35,10 +36,8 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	override OnUseClient(useIndex: number) {
 		//Only run for local player
 		if (this.entity.IsLocalCharacter()) {
-			print("block.OnUseClient.1");
 			//Try to place a block
 			if (this.TryPlaceBlock()) {
-				print("block.OnUseClient.2");
 				//Only play use animations if we actually think we can place a block
 				super.OnUseClient(useIndex);
 			}
