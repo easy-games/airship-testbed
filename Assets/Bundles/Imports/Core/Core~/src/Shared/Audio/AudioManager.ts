@@ -66,7 +66,7 @@ export class AudioManager {
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
-				if (audioSource.isPlaying) {
+				if (audioSource.isPlaying && !audioSource.loop) {
 					print("[AudioManager]: Deleting global audio source before it finished playing. name=" + clip.name);
 				}
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());

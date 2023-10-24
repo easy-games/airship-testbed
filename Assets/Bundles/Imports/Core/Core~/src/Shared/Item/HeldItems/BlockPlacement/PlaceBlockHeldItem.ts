@@ -19,6 +19,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			const blockGO = MeshProcessor.ProduceSingleBlock(
 				this.itemMeta.block.blockId,
 				WorldAPI.GetMainWorld()!.voxelWorld,
+				3,
 			);
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
 			if (blockGO && activeAccessories.Length > 0) {
