@@ -1466,7 +1466,7 @@ interface GameObject extends Object {
 	/**
 	 * Throws error if no component found.
 	 */
-	GetComponent<T extends Component = Component>(type: string): T;
+	GetComponent<T extends Component | AirshipBehaviour = Component>(type: string): T;
 	GetComponentIfExists<T extends Component = Component>(type: string): T | undefined;
 	AddComponent<T>(): T;
 	AddComponent<T extends Component = Component>(componentName: string): T;
