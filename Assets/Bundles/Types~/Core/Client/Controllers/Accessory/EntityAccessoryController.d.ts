@@ -5,8 +5,6 @@ export declare class EntityAccessoryController implements OnStart {
     private isFirstPerson;
     constructor(localController: LocalEntityController);
     private AutoEquipArmor;
-    private HandleAllAccessoryVisibility;
-    HandleAccessoryVisibility(activeAccessory: ActiveAccessory): void;
     OnStart(): void;
     private SetFirstPersonLayer;
 }
