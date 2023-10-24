@@ -45,6 +45,7 @@ export interface ProjectileLauncherMeta {
 	ammoItemType: ItemType;
 	minVelocityScaler: number;
 	maxVelocityScaler: number;
+	damageMultiplier?: number;
 	chargingWalkSpeedMultiplier?: number;
 	firstPersonLaunchOffset: Vector3;
 	chargeSound?: SoundMeta[];
