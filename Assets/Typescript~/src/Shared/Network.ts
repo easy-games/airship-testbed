@@ -3,6 +3,8 @@ import { RemoteEvent } from "Imports/Core/Shared/Network/RemoteEvent";
 import { RemoteFunction } from "Imports/Core/Shared/Network/RemoteFunction";
 import { MatchInfoDto } from "./Match/MatchInfoDto";
 import { MatchState } from "./Match/MatchState";
+import { MatchTeamStatsDto } from "./Match/MatchTeamStatsDto";
+import { PlayerMatchStatsDto } from "./MatchStats/PlayerMatchStats";
 import { TeamUpgradeStateDto } from "./TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";
 
@@ -16,6 +18,7 @@ export const Network = {
 			/** Fired when client attempts to purchase shop item. */
 			PurchaseRequest: new RemoteFunction<[itemType: ItemType], boolean>(),
 		},
+		GetAllMatchTeamStats: new RemoteEvent<[]>(),
 	},
 	ServerToClient: {
 		ItemShop: {
@@ -45,6 +48,8 @@ export const Network = {
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
 		/** Fired when a map is loaded. */
 		MapLoaded: new RemoteEvent<[gameMapId: string]>(),
+		PlayerMatchStats: new RemoteEvent<[playerMatchStats: PlayerMatchStatsDto[]]>(),
+		UpdateMatchTeamStats: new RemoteEvent<[matchTeamStats: MatchTeamStatsDto[]]>(),
 	},
 };
 

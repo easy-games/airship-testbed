@@ -50,7 +50,7 @@ export class DamageIndicatorController implements OnStart {
 			event.entity.animator?.PlayDeath(event.damageType);
 
 			// PvP Kill
-			if (event.fromEntity?.IsLocalCharacter() && event.fromEntity !== event.entity) {
+			if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
 				AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
 			}
 
