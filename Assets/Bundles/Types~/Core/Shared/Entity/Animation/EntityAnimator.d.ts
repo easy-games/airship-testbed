@@ -31,7 +31,7 @@ export declare abstract class EntityAnimator {
     constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);
     Destroy(): void;
     PlayAnimationOnLayer(clip: AnimationClip, layer: number, wrapMode?: WrapMode, transitionTime?: number, onEnd?: Callback): AnimancerState;
-    StartIdleAnim(): void;
+    StartIdleAnim(instantTransition: boolean): void;
     PlayUseAnim(useIndex?: number): void;
     EquipItem(itemMeta: ItemMeta | undefined): void;
     abstract PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {

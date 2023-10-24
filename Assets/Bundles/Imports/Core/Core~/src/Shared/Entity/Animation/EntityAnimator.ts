@@ -133,7 +133,7 @@ export abstract class EntityAnimator {
 		return AnimancerBridge.PlayOnLayer(this.anim, clip, layer, transitionTime, FadeMode.FromStart, wrapMode);
 	}
 
-	public StartIdleAnim(): void {}
+	public StartIdleAnim(instantTransition: boolean): void {}
 
 	public PlayUseAnim(useIndex = 0): void {}
 

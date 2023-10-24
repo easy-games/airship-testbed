@@ -580,6 +580,7 @@ export const items: {
 			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.25,
+			onUseSound: [CoreSound.bowShoot],
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
 		projectileLauncher: {
@@ -590,6 +591,7 @@ export const items: {
 			chargingWalkSpeedMultiplier: 0.25,
 			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
 			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
+			chargeSound: [{ path: CoreSound.bowCharge }],
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),

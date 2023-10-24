@@ -67,4 +67,7 @@ export const CoreSound = {
 	chatMessageReceived: S("ChatMessageReceived.wav"),
 
 	purchaseSuccess: S("ItemShopPurchase.wav"),
+
+	bowCharge: S("Items/Bow/Bow_Charge.ogg"),
+	bowShoot: S("BowArrowFire"),
 };

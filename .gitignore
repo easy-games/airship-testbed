@@ -110,6 +110,5 @@ Assets/Bundles/Types~/Core
 **/.yalc
 *.bak
 
-UMotionData/*
-UMotionData/**
+UMotionData/Temp/**
 Assets/UMotionEditor/Data/EditorUndoStackPointer.asset
