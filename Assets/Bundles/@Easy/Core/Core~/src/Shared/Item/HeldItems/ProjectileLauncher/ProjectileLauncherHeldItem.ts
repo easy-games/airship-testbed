@@ -58,6 +58,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	protected override OnCooldownReset() {
 		if (this.processChargeAfterCooldown) {
+			this.processChargeAfterCooldown = false;
 			this.OnChargeStart();
 		}
 	}
