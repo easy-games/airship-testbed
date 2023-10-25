@@ -33,7 +33,7 @@ export class HeldItem {
 	}
 
 	protected Log(message: string) {
-		// return;
+		return;
 		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.itemMeta?.displayName + " " + message;
 		print(fullMessage);
 	}
