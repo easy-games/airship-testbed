@@ -63,26 +63,26 @@ export abstract class EntityAnimator {
 			: AudioBundleSpacialMode.SPACIAL;
 
 		//ANIMATIONS
-		this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.FlinchAnimFPS,
-		);
-		this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.DeathAnimFPS,
-		);
-		this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.FlinchAnimTP,
-		);
-		this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.DeathAnimTP,
-		);
+		// this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.OnHit,
+		// 	Bundle_Entity_OnHit.FlinchAnimFPS,
+		// );
+		// this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.OnHit,
+		// 	Bundle_Entity_OnHit.DeathAnimFPS,
+		// );
+		// this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.OnHit,
+		// 	Bundle_Entity_OnHit.FlinchAnimTP,
+		// );
+		// this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+		// 	BundleGroupNames.Entity,
+		// 	Bundle_Entity.OnHit,
+		// 	Bundle_Entity_OnHit.DeathAnimTP,
+		// );
 
 		//VFX
 		this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
