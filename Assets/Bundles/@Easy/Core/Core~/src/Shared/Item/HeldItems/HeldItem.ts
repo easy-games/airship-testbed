@@ -33,7 +33,7 @@ export class HeldItem {
 	}
 
 	protected Log(message: string) {
-		return;
+		// return;
 		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.itemMeta?.displayName + " " + message;
 		print(fullMessage);
 	}
@@ -188,6 +188,13 @@ export class HeldItem {
 	protected TryChargeUse() {
 		this.Log("TryChargeUse IsChargedUp: " + this.IsChargedUp());
 		this.bufferingUse = false;
+
+		const remainingTime = this.GetRemainingCooldownTime();
+		if (remainingTime > 0) {
+			// can't charge on cooldown
+			return false;
+		}
+
 		if (this.IsChargedUp()) {
 			this.TriggerUse(1);
 			return true;
@@ -216,7 +223,7 @@ export class HeldItem {
 		}
 	}
 
-	private OnCooldownReset() {
+	protected OnCooldownReset() {
 		this.Log("OnCooldownReset: " + this.bufferingUse);
 		if (this.bufferingUse) {
 			this.TriggerUse(0);
