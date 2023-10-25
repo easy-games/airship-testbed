@@ -23,5 +23,9 @@ export declare class Projectile {
      */
     readonly OnHit: Signal<[hitPoint: Vector3, collider: Collider]>;
     constructor(easyProjectile: EasyProjectile, itemType: ItemType, shooter: Entity | undefined);
+    /**
+     * Get the item type of what launched this projectile
+     */
+    GetLauncherItemType(): ItemType | undefined;
     Destroy(): void;
 }
