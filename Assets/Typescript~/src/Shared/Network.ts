@@ -1,6 +1,6 @@
-import { ItemType } from "Imports/Core/Shared/Item/ItemType";
-import { RemoteEvent } from "Imports/Core/Shared/Network/RemoteEvent";
-import { RemoteFunction } from "Imports/Core/Shared/Network/RemoteFunction";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
+import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
 import { MatchInfoDto } from "./Match/MatchInfoDto";
 import { MatchState } from "./Match/MatchState";
 import { TeamUpgradeStateDto } from "./TeamUpgrade/TeamUpgradeMeta";

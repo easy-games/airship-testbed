@@ -1,13 +1,13 @@
+import { PlayerController } from "@Easy/Core/Client/Controllers/Player/PlayerController";
+import { TeamController } from "@Easy/Core/Client/Controllers/Team/TeamController";
+import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Team } from "@Easy/Core/Shared/Team/Team";
+import { SetUtil } from "@Easy/Core/Shared/Util/SetUtil";
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
-import { PlayerController } from "Imports/Core/Client/Controllers/Player/PlayerController";
-import { TeamController } from "Imports/Core/Client/Controllers/Team/TeamController";
-import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
-import { Game } from "Imports/Core/Shared/Game";
-import { Player } from "Imports/Core/Shared/Player/Player";
-import { Team } from "Imports/Core/Shared/Team/Team";
-import { SetUtil } from "Imports/Core/Shared/Util/SetUtil";
 import { Network } from "Shared/Network";
 
 @Controller({})

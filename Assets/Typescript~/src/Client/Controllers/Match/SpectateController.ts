@@ -1,17 +1,17 @@
+import { CameraController } from "@Easy/Core/Client/Controllers/Camera/CameraController";
+import { OrbitCameraMode } from "@Easy/Core/Client/Controllers/Camera/DefaultCameraModes/OrbitCameraMode";
+import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
+import { EntityController } from "@Easy/Core/Client/Controllers/Entity/EntityController";
+import { InventoryUIController } from "@Easy/Core/Client/Controllers/Inventory/InventoryUIController";
+import { PlayerController } from "@Easy/Core/Client/Controllers/Player/PlayerController";
+import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
-import { CameraController } from "Imports/Core/Client/Controllers/Camera/CameraController";
-import { OrbitCameraMode } from "Imports/Core/Client/Controllers/Camera/DefaultCameraModes/OrbitCameraMode";
-import { LocalEntityController } from "Imports/Core/Client/Controllers/Character/LocalEntityController";
-import { EntityController } from "Imports/Core/Client/Controllers/Entity/EntityController";
-import { InventoryUIController } from "Imports/Core/Client/Controllers/Inventory/InventoryUIController";
-import { PlayerController } from "Imports/Core/Client/Controllers/Player/PlayerController";
-import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
-import { Game } from "Imports/Core/Shared/Game";
-import { Keyboard, Mouse } from "Imports/Core/Shared/UserInput";
-import { Bin } from "Imports/Core/Shared/Util/Bin";
-import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
 import { BWController } from "./BWController";
 
 @Controller({})

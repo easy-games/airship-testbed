@@ -1,11 +1,11 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
-import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
-import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
-import { Player } from "Imports/Core/Shared/Player/Player";
-import { Task } from "Imports/Core/Shared/Util/Task";
-import { SetTimeout } from "Imports/Core/Shared/Util/Timer";
-import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
+import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 
 @Service({})
 export class LobbyWorldService implements OnStart {

@@ -1,12 +1,12 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
-import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
-import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
-import { CoreNetwork } from "Imports/Core/Shared/CoreNetwork";
-import { ItemType } from "Imports/Core/Shared/Item/ItemType";
-import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { Player } from "Imports/Core/Shared/Player/Player";
-import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedService } from "Server/Services/Match/BedService";
 

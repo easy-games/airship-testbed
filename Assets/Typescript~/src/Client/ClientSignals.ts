@@ -1,6 +1,6 @@
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
-import { Player } from "Imports/Core/Shared/Player/Player";
-import { Signal } from "Imports/Core/Shared/Util/Signal";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { MatchState } from "./Match/MatchState";
 
 export const ClientSignals = {

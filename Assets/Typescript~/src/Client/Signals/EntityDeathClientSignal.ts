@@ -1,5 +1,5 @@
-import { DamageType } from "Imports/Core/Shared/Damage/DamageType";
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
+import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 
 export class EntityDeathClientSignal {
 	constructor(

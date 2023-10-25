@@ -1,9 +1,9 @@
+import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
+import { Team } from "@Easy/Core/Shared/Team/Team";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
-import { PlayerService } from "Imports/Core/Server/Services/Player/PlayerService";
-import { Team } from "Imports/Core/Shared/Team/Team";
-import { Task } from "Imports/Core/Shared/Util/Task";
-import { TimeUtil } from "Imports/Core/Shared/Util/TimeUtil";
 import { ServerSignals } from "Server/ServerSignals";
 import { MatchStartServerEvent } from "Server/Signals/MatchStartServerEvent";
 import { MatchState } from "Shared/Match/MatchState";

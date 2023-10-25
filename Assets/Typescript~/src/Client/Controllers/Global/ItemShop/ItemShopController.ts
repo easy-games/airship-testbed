@@ -1,18 +1,18 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { InventoryController } from "Imports/Core/Client/Controllers/Inventory/InventoryController";
-import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
-import { Game } from "Imports/Core/Shared/Game";
-import { GameObjectUtil } from "Imports/Core/Shared/GameObject/GameObjectUtil";
-import { ItemType } from "Imports/Core/Shared/Item/ItemType";
-import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
-import { AppManager } from "Imports/Core/Shared/Util/AppManager";
-import { Bin } from "Imports/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton } from "Imports/Core/Shared/Util/CanvasAPI";
-import { Signal } from "Imports/Core/Shared/Util/Signal";
-import { Theme } from "Imports/Core/Shared/Util/Theme";
-import { SetInterval, SetTimeout } from "Imports/Core/Shared/Util/Timer";
+import { InventoryController } from "@Easy/Core/Client/Controllers/Inventory/InventoryController";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { Game } from "@Easy/Core/Shared/Game";
+import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI, PointerButton } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
+import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { ItemShopMeta, ShopCategory, ShopElement } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
@@ -78,7 +78,7 @@ export class ItemShopController implements OnStart {
 			go.transform.TweenLocalPosition(pos.add(new Vector3(0, 0.5, 0)), 0.5).SetEase(EaseType.QuadOut);
 
 			AudioManager.PlayAtPosition(
-				"Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav",
+				"@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav",
 				entity.GetMiddlePosition(),
 				{
 					volumeScale: 0.2,
@@ -208,7 +208,7 @@ export class ItemShopController implements OnStart {
 	 */
 	private SendPurchaseRequest(shopElement: ShopElement): void {
 		if (!shopElement || !this.CanPurchase(shopElement)) {
-			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/UI_Error.wav", {
+			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Error.wav", {
 				volumeScale: 0.5,
 			});
 			return;
@@ -216,7 +216,7 @@ export class ItemShopController implements OnStart {
 		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopElement.itemType);
 		if (result) {
 			this.purchasedTierItems.add(shopElement.itemType);
-			AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav", {
+			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav", {
 				volumeScale: 0.2,
 			});
 			this.UpdateItems(false);

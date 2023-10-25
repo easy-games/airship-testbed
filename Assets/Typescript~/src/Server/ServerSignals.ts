@@ -1,6 +1,6 @@
-import { Player } from "Imports/Core/Shared/Player/Player";
-import { Team } from "Imports/Core/Shared/Team/Team";
-import { Signal } from "Imports/Core/Shared/Util/Signal";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Team } from "@Easy/Core/Shared/Team/Team";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { ShopElement } from "./ItemShop/ItemShopMeta";
 import { MatchState } from "./Match/MatchState";
 import { MapLoadEvent } from "./Signals/MapLoadEvent";

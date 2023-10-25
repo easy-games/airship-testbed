@@ -1,8 +1,8 @@
-import { ItemType } from "Core/Shared/Item/ItemType";
-import { Bootstrap } from "Imports/Core/Shared/Bootstrap/Bootstrap";
-import { RunUtil } from "Imports/Core/Shared/Util/RunUtil";
-import { BlockDataAPI } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
+import { Bootstrap } from "@Easy/Core/Shared/Bootstrap/Bootstrap";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { BlockDataAPI } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { BedWars } from "./BedWars/BedWars";
 import { RegisterItems } from "./Item/GameItems";
 import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";

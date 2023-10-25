@@ -1,14 +1,14 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { AudioManager } from "Imports/Core/Shared/Audio/AudioManager";
-import { Game } from "Imports/Core/Shared/Game";
-import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { CoreSound } from "Imports/Core/Shared/Sound/CoreSound";
-import { CoreUI } from "Imports/Core/Shared/UI/CoreUI";
-import { AppManager } from "Imports/Core/Shared/Util/AppManager";
-import { Bin } from "Imports/Core/Shared/Util/Bin";
-import { CanvasAPI } from "Imports/Core/Shared/Util/CanvasAPI";
-import { SetInterval } from "Imports/Core/Shared/Util/Timer";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { Game } from "@Easy/Core/Shared/Game";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { CoreSound } from "@Easy/Core/Shared/Sound/CoreSound";
+import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Network } from "Shared/Network";
 import { TeamUpgradeStateDto } from "Shared/TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "Shared/TeamUpgrade/TeamUpgradeType";
@@ -188,7 +188,7 @@ export class TeamUpgradeController implements OnStart {
 						nextTier,
 					);
 					if (result) {
-						AudioManager.PlayGlobal("Imports/Core/Shared/Resources/Sound/ItemShopPurchase.wav");
+						AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav");
 					}
 				}
 			});

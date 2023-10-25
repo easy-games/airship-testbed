@@ -1,8 +1,7 @@
-import { ItemType } from "Core/Shared/Item/ItemType";
-import { ItemRegistrationConfig, ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { BundleGroupNames } from "Imports/Core/Shared/Util/ReferenceManagerResources";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { ItemRegistrationConfig, ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 
-declare module "Core/Shared/Item/ItemType" {
+declare module "@Easy/Core/Shared/Item/ItemType" {
 	export const enum ItemType {
 		EXAMPLE_ITEM = "EXAMPLE_ITEM",
 	}
@@ -16,7 +15,7 @@ export function RegisterItems() {
 		ItemType.EXAMPLE_ITEM,
 		{
 			displayName: "Example Item",
-			image: "Imports/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
+			image: "@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
 			// itemAssets: {
 			// 	assetBundleId: BundleGroupNames.ItemSword,
 			// },

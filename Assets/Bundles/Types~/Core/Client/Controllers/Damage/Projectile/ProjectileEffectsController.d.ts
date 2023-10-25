@@ -1,5 +1,0 @@
-import { OnStart } from "@easy-games/flamework-core";
-export declare class ProjectileEffectsController implements OnStart {
-    constructor();
-    OnStart(): void;
-}

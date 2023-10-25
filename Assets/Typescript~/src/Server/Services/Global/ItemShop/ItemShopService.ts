@@ -1,13 +1,13 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
-import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
-import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
-import { ItemStack } from "Imports/Core/Shared/Inventory/ItemStack";
-import { ItemType } from "Imports/Core/Shared/Item/ItemType";
-import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { Player } from "Imports/Core/Shared/Player/Player";
-import { RunUtil } from "Imports/Core/Shared/Util/RunUtil";
-import { Theme } from "Imports/Core/Shared/Util/Theme";
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
+import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { ItemShopMeta } from "Shared/ItemShop/ItemShopMeta";
 import { Network } from "Shared/Network";
 
@@ -85,11 +85,11 @@ export class ShopService implements OnStart {
 				inv.AddItem(itemStack);
 			}
 
-            // debug
-            if (RunUtil.IsEditor()) {
-                inv.AddItem(new ItemStack(ItemType.WOOD_BOW));
-                inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
-            }
+			// debug
+			if (RunUtil.IsEditor()) {
+				inv.AddItem(new ItemStack(ItemType.WOOD_BOW));
+				inv.AddItem(new ItemStack(ItemType.WOOD_ARROW, 100));
+			}
 		});
 
 		/* Handle incoming purchase requests. */

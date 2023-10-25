@@ -6,7 +6,7 @@
 		},
         {
             "name": "Core~",
-            "path": "../Bundles/Imports/Core/Core~"
+            "path": "../Bundles/@Easy/Core/Core~"
         }
     ],
     "settings": {}

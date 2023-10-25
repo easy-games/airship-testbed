@@ -1,4 +1,4 @@
-import { Theme } from "Imports/Core/Shared/Util/Theme";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { QueueMeta } from "./QueueMeta";
 import { QueueType } from "./QueueType";
 

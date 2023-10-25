@@ -1,10 +1,10 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { ChatCommand } from "Imports/Core/Shared/Commands/ChatCommand";
-import { Game } from "Imports/Core/Shared/Game";
-import { Player } from "Imports/Core/Shared/Player/Player";
-import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
-import { Task } from "Imports/Core/Shared/Util/Task";
-import { Theme } from "Imports/Core/Shared/Util/Theme";
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Task } from "@Easy/Core/Shared/Util/Task";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { MatchService } from "Server/Services/Match/MatchService";
 
 export class MatchStartCommand extends ChatCommand {

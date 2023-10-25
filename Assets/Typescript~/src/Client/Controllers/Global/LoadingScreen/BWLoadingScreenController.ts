@@ -1,10 +1,10 @@
+import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
+import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { MatchController } from "Client/Controllers/Match/MatchController";
-import { LoadingScreenController } from "Imports/Core/Client/Controllers/Loading/LoadingScreenController";
-import { CoreClientSignals } from "Imports/Core/Client/CoreClientSignals";
-import { Game } from "Imports/Core/Shared/Game";
-import { Bin } from "Imports/Core/Shared/Util/Bin";
-import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 import { BedWars } from "Shared/BedWars/BedWars";
 
 @Controller()

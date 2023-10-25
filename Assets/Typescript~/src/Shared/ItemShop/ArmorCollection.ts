@@ -1,4 +1,4 @@
-import { ItemType } from "Imports/Core/Shared/Item/ItemType";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 
 export const ArmorCollection = {
 	LEATHER: [ItemType.LEATHER_HELMET],

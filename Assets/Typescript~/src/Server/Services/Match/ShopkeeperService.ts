@@ -1,12 +1,12 @@
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { DenyRegionService } from "@Easy/Core/Server/Services/Block/DenyRegionService";
+import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
+import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
+import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
-import { DenyRegionService } from "Imports/Core/Server/Services/Block/DenyRegionService";
-import { EntityService } from "Imports/Core/Server/Services/Entity/EntityService";
-import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
-import { EntityPrefabType } from "Imports/Core/Shared/Entity/EntityPrefabType";
-import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
-import { MathUtil } from "Imports/Core/Shared/Util/MathUtil";
-import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
 import { MapService } from "./Map/MapService";
@@ -28,7 +28,7 @@ export class ShopkeeperService implements OnStart {
 		private readonly entityService: EntityService,
 	) {
 		this.shopKeeperPrefab = AssetBridge.Instance.LoadAsset(
-			"Imports/Core/Shared/Resources/Entity/HumanEntity/HumanEntity.prefab",
+			"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanEntity.prefab",
 		);
 
 		ServerSignals.MapLoad.Connect(() => {

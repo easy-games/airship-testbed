@@ -1,14 +1,14 @@
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { BlockInteractService } from "@Easy/Core/Server/Services/Block/BlockInteractService";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { ItemMeta } from "@Easy/Core/Shared/Item/ItemMeta";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { ItemType } from "Core/Shared/Item/ItemType";
-import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
-import { BlockInteractService } from "Imports/Core/Server/Services/Block/BlockInteractService";
-import { CoreNetwork } from "Imports/Core/Shared/CoreNetwork";
-import { CharacterEntity } from "Imports/Core/Shared/Entity/Character/CharacterEntity";
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
-import { ItemMeta } from "Imports/Core/Shared/Item/ItemMeta";
-import { ItemUtil } from "Imports/Core/Shared/Item/ItemUtil";
-import { BlockDataAPI, CoreBlockMetaKeys } from "Imports/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
-import { WorldAPI } from "Imports/Core/Shared/VoxelWorld/WorldAPI";
 
 @Service({})
 export class MapBlockService implements OnStart {

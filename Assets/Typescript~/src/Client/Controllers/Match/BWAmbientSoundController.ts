@@ -1,6 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { AmbientSoundController } from "Imports/Core/Client/MainMenuControllers/AmbientSound/AmbientSoundController";
-import { ClientSettingsController } from "Imports/Core/Client/MainMenuControllers/Settings/ClientSettingsController";
+import { AmbientSoundController } from "@Easy/Core/Client/MainMenuControllers/AmbientSound/AmbientSoundController";
+import { ClientSettingsController } from "@Easy/Core/Client/MainMenuControllers/Settings/ClientSettingsController";
 
 @Controller({})
 export class BWAmbientSoundController implements OnStart {

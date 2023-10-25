@@ -1,7 +1,7 @@
+import { ProximityPrompt } from "@Easy/Core/Client/Controllers/ProximityPrompt/ProximityPrompt";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { Task } from "@Easy/Core/Shared/Util/Task";
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { ProximityPrompt } from "Imports/Core/Client/Controllers/ProximityPrompt/ProximityPrompt";
-import { Entity } from "Imports/Core/Shared/Entity/Entity";
-import { Task } from "Imports/Core/Shared/Util/Task";
 import { Network } from "Shared/Network";
 import { ItemShopController } from "../Global/ItemShop/ItemShopController";
 import { TeamUpgradeController } from "../Global/TeamUpgrade/TeamUpgradeController";

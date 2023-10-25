@@ -1,4 +1,4 @@
-import { WaitFrame } from "Imports/Core/Shared/Util/TimeUtil";
+import { WaitFrame } from "@Easy/Core/Shared/Util/TimeUtil";
 
 export function TestWait() {
 	print("beginning test...");

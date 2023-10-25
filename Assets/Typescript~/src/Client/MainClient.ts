@@ -1,5 +1,5 @@
+import { Bootstrap } from "@Easy/Core/Shared/Bootstrap/Bootstrap";
 import { Flamework } from "@easy-games/flamework-core";
-import { Bootstrap } from "Imports/Core/Shared/Bootstrap/Bootstrap";
 import { BedWars } from "./BedWars/BedWars";
 
 Flamework.AddPath("assets/bundles/client/resources/ts/controllers/global", "^.*controller.lua$");

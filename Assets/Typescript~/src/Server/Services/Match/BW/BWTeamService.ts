@@ -1,10 +1,10 @@
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Team } from "@Easy/Core/Shared/Team/Team";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Imports/Core/Server/CoreServerSignals";
-import { TeamService } from "Imports/Core/Server/Services/Team/TeamService";
-import { Game } from "Imports/Core/Shared/Game";
-import { Team } from "Imports/Core/Shared/Team/Team";
-import { ColorUtil } from "Imports/Core/Shared/Util/ColorUtil";
-import { Theme } from "Imports/Core/Shared/Util/Theme";
 import { MatchService } from "../MatchService";
 
 @Service({})
