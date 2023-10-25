@@ -9,6 +9,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
+import inspect from "@easy-games/unity-inspect";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -19,10 +20,26 @@ export class ProjectileService implements OnStart {
 	OnStart(): void {
 		/* Listen for `ProjectileHit` and apply damage. */
 		CoreServerSignals.ProjectileHit.Connect((event) => {
+			const projectile = event.projectile;
+			const launcherItemType = projectile.GetLauncherItemType();
+			const launcherMeta = launcherItemType ? ItemUtil.GetItemMeta(launcherItemType) : undefined;
+
+			let damage = event.ammoMeta.damage;
+
+			const projectileLauncher = launcherMeta?.projectileLauncher;
+
+			// If a projectile launcher is attached to this projectile, add any applicable modifiers
+			if (projectileLauncher) {
+				// Apply the launcher's damage multiplier if applicable
+				if (projectileLauncher?.damageMultiplier) {
+					damage *= projectileLauncher.damageMultiplier;
+				}
+			}
+
 			//Send event to client
-			if (event.projectile.shooter?.player) {
+			if (projectile.shooter?.player) {
 				CoreNetwork.ServerToClient.ProjectileHit.Server.FireClient(
-					event.projectile.shooter.player.clientId,
+					projectile.shooter.player.clientId,
 					event.hitPosition,
 					event.hitEntity?.id,
 				);
@@ -34,7 +51,7 @@ export class ProjectileService implements OnStart {
 			//Deal AOE damage
 			if (event.ammoMeta.aoeDamage && event.ammoMeta.aoeDamage.damageRadius > 0) {
 				const config: InflictDamageConfig = {
-					fromEntity: event.projectile.shooter,
+					fromEntity: projectile.shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
 					knockbackDirection: knockbackDirection,
@@ -60,10 +77,12 @@ export class ProjectileService implements OnStart {
 				}
 			}
 
+			print("inflict damage", damage, "base:", event.ammoMeta.damage);
+
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
-				this.damageService.InflictDamage(event.hitEntity, event.ammoMeta.damage, {
-					fromEntity: event.projectile.shooter,
+				this.damageService.InflictDamage(event.hitEntity, math.floor(damage + 0.5), {
+					fromEntity: projectile.shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
 					knockbackDirection: knockbackDirection,

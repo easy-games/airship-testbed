@@ -80,6 +80,14 @@ export class Projectile {
 		});
 	}
 
+	/**
+	 * Get the item type of what launched this projectile
+	 */
+	public GetLauncherItemType() {
+		// launcherItemType being -1 here should return undefined
+		return ItemUtil.GetItemTypeFromItemId(this.easyProjectile.launcherItemTypeId);
+	}
+
 	public Destroy(): void {
 		if (this.destroyed) return;
 		this.destroyed = true;
