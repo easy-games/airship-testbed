@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import Object from "@easy-games/unity-object-utils";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntitySpawnClientSignal } from "Client/Signals/EntitySpawnClientEvent";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -206,25 +206,25 @@ export class EntityController implements OnStart {
 	}
 
 	public GetEntityByClientId(clientId: number) {
-		return Object.values(this.entities).find((e) => e.ClientId === clientId);
+		return ObjectUtils.values(this.entities).find((e) => e.ClientId === clientId);
 	}
 
 	public GetEntityByPlayerId(playerId: number): Entity | undefined {
-		return Object.values(this.entities).find((e) => e.ClientId === playerId);
+		return ObjectUtils.values(this.entities).find((e) => e.ClientId === playerId);
 	}
 
 	/** Yields until entity that corresponds to `playerId` exists. */
 	public WaitForEntityByPlayerId(playerId: number): Entity {
-		let entity = Object.values(this.entities).find((e) => e.ClientId === playerId);
+		let entity = ObjectUtils.values(this.entities).find((e) => e.ClientId === playerId);
 		if (entity) return entity;
 		while (!entity) {
 			Task.Wait(0.1);
-			entity = Object.values(this.entities).find((e) => e.ClientId === playerId);
+			entity = ObjectUtils.values(this.entities).find((e) => e.ClientId === playerId);
 		}
 		return entity;
 	}
 
 	public GetEntities(): Entity[] {
-		return Object.values(this.entities);
+		return ObjectUtils.values(this.entities);
 	}
 }
