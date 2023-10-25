@@ -579,29 +579,38 @@ export class Entity {
 		return results;
 	}
 
-	public LaunchProjectile(itemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined {
-		const itemMeta = ItemUtil.GetItemMeta(itemType);
+	public LaunchProjectile(
+		launcherItemType: ItemType | undefined,
+		projectileItemType: ItemType,
+		launchPos: Vector3,
+		velocity: Vector3,
+	): EasyProjectile | undefined {
+		const itemMeta = ItemUtil.GetItemMeta(projectileItemType);
+		const launcherItemMeta = launcherItemType ? ItemUtil.GetItemMeta(launcherItemType) : undefined; // I kind of wish there was syntactic sugar for this lol
+
 		if (!itemMeta.projectile) {
-			return error("Tried to launch item that wasn't a projectile: " + itemType);
+			return error("Tried to launch item that wasn't a projectile: " + projectileItemType);
 		}
 		let firstPerson = false;
 		if (this.IsLocalCharacter()) {
 			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 		}
 		const projectilePath = `Imports/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(
-			itemType,
+			projectileItemType,
 		)}.prefab`;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
+		const powerMulitplier = itemMeta.projectileLauncher?.powerMultiplier ?? 1;
 		const easyProjectile = projectileLauncher.ClientFire(
 			projectilePath,
+			launcherItemMeta?.id ?? -1,
 			itemMeta.id,
 			launchPos,
 			velocity,
-			itemMeta.projectile.gravity,
+			itemMeta.projectile.gravity / powerMulitplier,
 			0,
 		);
-		const projectile = new Projectile(easyProjectile, itemType, this);
+		const projectile = new Projectile(easyProjectile, projectileItemType, this);
 		if (RunUtil.IsClient()) {
 			const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 			const ProjectileLaunchedClientSignal = import(

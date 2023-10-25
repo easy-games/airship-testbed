@@ -9,6 +9,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
+import inspect from "@easy-games/unity-inspect";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -20,13 +21,19 @@ export class ProjectileService implements OnStart {
 		/* Listen for `ProjectileHit` and apply damage. */
 		CoreServerSignals.ProjectileHit.Connect((event) => {
 			const projectile = event.projectile;
-			const launcherWeaponMeta = ItemUtil.GetItemMeta(projectile.itemType);
+			const launcherItemType = projectile.GetLauncherItemType();
+			const launcherMeta = launcherItemType ? ItemUtil.GetItemMeta(launcherItemType) : undefined;
 
 			let damage = event.ammoMeta.damage;
 
-			// If a damage multiplier on the launcher is specified, we mul that damage
-			if (launcherWeaponMeta.projectileLauncher?.damageMultiplier) {
-				damage *= launcherWeaponMeta.projectileLauncher.damageMultiplier;
+			const projectileLauncher = launcherMeta?.projectileLauncher;
+
+			// If a projectile launcher is attached to this projectile, add any applicable modifiers
+			if (projectileLauncher) {
+				// Apply the launcher's damage multiplier if applicable
+				if (projectileLauncher?.damageMultiplier) {
+					damage *= projectileLauncher.damageMultiplier;
+				}
 			}
 
 			//Send event to client
@@ -70,10 +77,11 @@ export class ProjectileService implements OnStart {
 				}
 			}
 
+			print("inflict damage", damage, "base:", event.ammoMeta.damage);
+
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
-				print("inflict damage", damage, "base:", event.ammoMeta.damage);
-				this.damageService.InflictDamage(event.hitEntity, damage, {
+				this.damageService.InflictDamage(event.hitEntity, math.floor(damage + 0.5), {
 					fromEntity: projectile.shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
