@@ -119,11 +119,12 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 						);
 						const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
 
+						const powerMul = this.itemMeta?.projectileLauncher?.powerMultiplier ?? 1;
 						this.projectileTrajectoryRenderer.UpdateInfo(
 							launchPos,
 							launchData.velocity,
 							0,
-							ammoMeta.gravity,
+							ammoMeta.gravity / powerMul,
 						);
 					}
 				}),
@@ -213,6 +214,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		);
 		const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
 		this.entity.LaunchProjectile(
+			this.itemMeta!.itemType,
 			this.itemMeta!.projectileLauncher!.ammoItemType,
 			launchData.launchPos,
 			launchData.velocity,

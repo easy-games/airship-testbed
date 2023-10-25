@@ -45,6 +45,14 @@ export interface ProjectileLauncherMeta {
 	ammoItemType: ItemType;
 	minVelocityScaler: number;
 	maxVelocityScaler: number;
+	/**
+	 * Modifies the DIRECT damage of any projectile fired from this launcher
+	 */
+	damageMultiplier?: number;
+	/**
+	 * Modifies the strength (and thus affects gravity) of any projectiles from this launcher (and thus may lessen an arc)
+	 */
+	powerMultiplier?: number;
 	chargingWalkSpeedMultiplier?: number;
 	firstPersonLaunchOffset: Vector3;
 	chargeSound?: SoundMeta[];

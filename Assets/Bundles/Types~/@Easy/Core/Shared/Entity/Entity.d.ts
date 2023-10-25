@@ -122,7 +122,7 @@ export declare class Entity {
     GetBin(): Bin;
     GetAccessoryMeshes(slot: AccessorySlot): Renderer[];
     private PushToArray;
-    LaunchProjectile(itemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined;
+    LaunchProjectile(launcherItemType: ItemType | undefined, projectileItemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined;
     GetArmor(): number;
     HasHealthbar(): boolean;
 }

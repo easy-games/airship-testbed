@@ -12948,7 +12948,7 @@ interface ProjectileLauncher extends NetworkBehaviour {
 
     Awake(): void;
     Awake___UserLogic(): void;
-    ClientFire(projectilePath: string, itemTypeId: number, position: Vector3, velocity: Vector3, gravity: number, drag: number): EasyProjectile;
+    ClientFire(projectilePath: string, launcherItemTypeId: number, itemTypeId: number, position: Vector3, velocity: Vector3, gravity: number, drag: number): EasyProjectile;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
@@ -12957,11 +12957,12 @@ interface ProjectileLauncher extends NetworkBehaviour {
 interface EasyProjectile extends MonoBehaviour {
     gravity: number;
     drag: number;
+    launcherItemTypeId: number;
     itemTypeId: number;
 
     constructor(): EasyProjectile;
 
-    Initialize(startingVelocity: Vector3, gravity: number, drag: number, passedTime: number, itemTypeId: number): void;
+    Initialize(startingVelocity: Vector3, gravity: number, drag: number, passedTime: number, itemTypeId: number, launcherItemTypeId: number): void;
 }
     
 interface ProjectileValidateEvent {

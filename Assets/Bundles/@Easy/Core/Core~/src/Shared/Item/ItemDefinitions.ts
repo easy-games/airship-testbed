@@ -573,7 +573,7 @@ export const items: {
 		},
 	},
 
-	//BOW
+	// BOW & CROSSBOW
 	[ItemType.WOOD_BOW]: {
 		displayName: "Wood Bow",
 		usable: {
@@ -587,6 +587,31 @@ export const items: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,
 			maxVelocityScaler: 100,
+			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
+			chargingWalkSpeedMultiplier: 0.25,
+			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
+			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
+			chargeSound: [{ path: CoreSound.bowCharge }],
+		},
+		viewModel: {
+			idleAnimFP: CoreAnim("FP_Bow_Idle"),
+		},
+	},
+	[ItemType.WOOD_CROSSBOW]: {
+		displayName: "Wood Crossbow",
+		usable: {
+			maxChargeSeconds: 0.2,
+			minChargeSeconds: 0.12,
+			cooldownSeconds: 1.5,
+			onUseSound: [CoreSound.bowShoot],
+		},
+		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
+		projectileLauncher: {
+			ammoItemType: ItemType.WOOD_ARROW,
+			minVelocityScaler: 5,
+			maxVelocityScaler: 130,
+			damageMultiplier: 1.25, // 25% more damage for now - this can be changed ofc.
+			powerMultiplier: 1.35,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 			chargingWalkSpeedMultiplier: 0.25,
 			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
