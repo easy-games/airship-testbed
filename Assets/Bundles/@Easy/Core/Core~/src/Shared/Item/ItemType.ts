@@ -1,6 +1,7 @@
 export const enum ItemType {
 	GRASS = "GRASS",
 	DIRT = "DIRT",
+	FARMLAND = "FARMLAND",
 	STONE = "STONE",
 	BED = "BED",
 	COBBLESTONE = "COBBLESTONE",

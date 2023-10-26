@@ -715,4 +715,14 @@ export const items: {
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_FireballExplosion,
 		},
 	},
+	[ItemType.FARMLAND]: {
+		displayName: "Farmland",
+		block: {
+			blockId: 68,
+			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
+		},
+	},
 };
