@@ -18,6 +18,11 @@ export class MapBlockService implements OnStart {
 			if (event.entity) {
 				BlockDataAPI.SetBlockData(event.pos, CoreBlockMetaKeys.CAN_BREAK, true);
 			}
+
+			if (event.itemMeta.tillBlock) {
+				// tillable blocks can be modified to the tillable equiv.
+				BlockDataAPI.SetBlockData(event.pos, CoreBlockMetaKeys.CAN_TILL, true);
+			}
 		});
 
 		CoreNetwork.ClientToServer.LibonatiTest.Server.OnClientEvent((clientId) => {

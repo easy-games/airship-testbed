@@ -1,3 +1,4 @@
+/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { Entity } from "../../../Shared/Entity/Entity";
