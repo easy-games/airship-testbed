@@ -4,6 +4,7 @@ import { EntityDamageServerSignal } from "Server/Signals/EntityDamageServerSigna
 import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Entity } from "Shared/Entity/Entity";
 import { AOEDamageMeta } from "Shared/Item/ItemMeta";
 import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
@@ -11,7 +12,6 @@ import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
-import { DamageUtils } from "Shared/Damage/DamageUtils";
 
 @Service({})
 export class DamageService implements OnStart {
@@ -105,7 +105,7 @@ export class DamageService implements OnStart {
 		}
 
 		//Scale damage based on how hard player hit the ground
-		this.InflictDamage(entity, damage, { knockbackDirection: Vector3.zero });
+		this.InflictDamage(entity, damage, { knockbackDirection: Vector3.zero, damageType: DamageType.FALL });
 	}
 
 	/**

@@ -16,6 +16,7 @@ import { OnLateUpdate } from "Shared/Util/Timer";
 import { AudioManager } from "../../../Audio/AudioManager";
 import { ItemUtil } from "../../ItemUtil";
 import { HeldItem } from "../HeldItem";
+import { Task } from "Shared/Util/Task";
 
 const defaultChargeAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Charge.anim",
@@ -25,6 +26,7 @@ const defaultChargeAnimTP = defaultChargeAnimFP;
 export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeBin = new Bin();
 	private startHoldTimeSec = 0;
+	private processChargeAfterCooldown = false;
 	private chargeAudioSource: AudioSource | undefined;
 	private projectileTrajectoryRenderer =
 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
@@ -54,12 +56,31 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 	}
 
+	protected override OnCooldownReset() {
+		if (this.processChargeAfterCooldown) {
+			this.processChargeAfterCooldown = false;
+			this.OnChargeStart();
+		}
+	}
+
 	protected override OnChargeStart(): void {
 		if (!this.itemMeta?.projectileLauncher) return;
 		if (!this.HasRequiredAmmo()) return;
 
 		if (RunUtil.IsClient()) {
 			if (CanvasAPI.IsPointerOverUI()) return;
+		}
+
+		// Don't start charging if on cooldown, but we'll auto-charge after cooldown has passed period
+		if (this.GetRemainingCooldownTime() > 0) {
+			this.processChargeAfterCooldown = true;
+			if (this.itemMeta?.usable) {
+				Task.Delay(this.itemMeta.usable.cooldownSeconds + 0.01, () => {
+					this.OnCooldownReset();
+				});
+			}
+			this.Log("OnChargeStartAwaitCooldown");
+			return;
 		}
 
 		super.OnChargeStart();
@@ -165,6 +186,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	}
 
 	protected override OnChargeEnd(): void {
+		this.processChargeAfterCooldown = false;
 		super.OnChargeEnd();
 		this.entity.animator?.StartIdleAnim(false);
 		this.CancelChargeSound();
