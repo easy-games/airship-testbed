@@ -109,7 +109,7 @@ export class Healthbar {
 				this.growthFillTransform.localScale.y,
 				this.growthFillTransform.localScale.z,
 			);
-			this.growthFillTransform.anchoredPosition = Bridge.MakeVector2(
+			this.growthFillTransform.anchoredPosition = new Vector2(
 				this.transform.rect.width * this.currentDelta,
 				this.growthFillTransform.anchoredPosition.y,
 			);

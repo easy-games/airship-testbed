@@ -129,7 +129,7 @@ export class DirectMessageController implements OnStart {
 			),
 			this.mainMenuController.socialMenuCanvas.transform.GetChild(0),
 		);
-		this.windowGo.GetComponent<RectTransform>().anchoredPosition = Bridge.MakeVector2(this.xPos, this.yPos);
+		this.windowGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(this.xPos, this.yPos);
 
 		this.windowGoRefs = this.windowGo.GetComponent<GameObjectReferences>();
 		this.messagesContentGo = this.windowGoRefs.GetValue("UI", "MessagesContent");
@@ -244,7 +244,7 @@ export class DirectMessageController implements OnStart {
 		Bridge.UpdateLayout(this.messagesContentGo!.transform, false);
 
 		if (doScroll) {
-			this.scrollRect!.velocity = Bridge.MakeVector2(0, 0);
+			this.scrollRect!.velocity = new Vector2(0, 0);
 			this.scrollRect!.verticalNormalizedPosition = 0;
 		}
 	}
@@ -303,7 +303,7 @@ export class DirectMessageController implements OnStart {
 		this.windowGo!.transform.TweenAnchoredPositionY(0, 0.1);
 
 		Bridge.UpdateLayout(this.messagesContentGo!.transform, false);
-		this.scrollRect!.velocity = Bridge.MakeVector2(0, 0);
+		this.scrollRect!.velocity = new Vector2(0, 0);
 		this.scrollRect!.verticalNormalizedPosition = 0;
 
 		this.inputField!.ActivateInputField();

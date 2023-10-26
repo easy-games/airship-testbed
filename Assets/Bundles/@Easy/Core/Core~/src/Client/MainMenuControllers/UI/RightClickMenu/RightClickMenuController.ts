@@ -32,18 +32,18 @@ export class RightClickMenuController implements OnStart {
 
 		let mousePosInCanvas = Bridge.ScreenPointToLocalPointInRectangle(
 			canvasRect,
-			Bridge.MakeVector2(position.x, position.y),
+			new Vector2(position.x, position.y),
 		);
 
 		if (mousePosInCanvas.x + menuRect.sizeDelta.x > canvasRect.sizeDelta.x / 2) {
-			menuRect.anchorMin = Bridge.MakeVector2(1, 1);
-			menuRect.anchorMax = Bridge.MakeVector2(1, 1);
-			menuRect.pivot = Bridge.MakeVector2(1, 1);
+			menuRect.anchorMin = Vector2.one;
+			menuRect.anchorMax = Vector2.one;
+			menuRect.pivot = Vector2.one;
 		}
 		if (mousePosInCanvas.y - menuRect.sizeDelta.y < -canvasRect.sizeDelta.y / 2) {
-			menuRect.anchorMin = Bridge.MakeVector2(menuRect.anchorMin.x, 0);
-			menuRect.anchorMax = Bridge.MakeVector2(menuRect.anchorMax.x, 0);
-			menuRect.pivot = Bridge.MakeVector2(menuRect.pivot.x, 0);
+			menuRect.anchorMin = new Vector2(menuRect.anchorMin.x, 0);
+			menuRect.anchorMax = new Vector2(menuRect.anchorMax.x, 0);
+			menuRect.pivot = new Vector2(menuRect.pivot.x, 0);
 		}
 		menuRect.transform.position = position;
 
