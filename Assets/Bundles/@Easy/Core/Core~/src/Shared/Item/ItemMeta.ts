@@ -5,9 +5,14 @@ import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
 
+export interface TillableBlockMeta {
+	tillsToBlockId: number;
+}
+
 export interface BlockMeta {
 	health?: number;
 	blockId: number;
+	tillable?: TillableBlockMeta;
 	blockArchetype?: BlockArchetype;
 	prefab?: {
 		path: string;

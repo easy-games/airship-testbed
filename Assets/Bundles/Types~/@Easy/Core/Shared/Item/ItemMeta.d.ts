@@ -6,9 +6,13 @@ import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
+export interface TillableBlockMeta {
+    tillsToBlockId: number;
+}
 export interface BlockMeta {
     health?: number;
     blockId: number;
+    tillable?: TillableBlockMeta;
     blockArchetype?: BlockArchetype;
     prefab?: {
         path: string;
@@ -79,6 +83,7 @@ export interface ItemMeta {
     melee?: MeleeItemMeta;
     block?: BlockMeta;
     breakBlock?: BreakBlockMeta;
+    tillBlock?: TillBlockMeta;
     accessoryPaths?: string[];
     projectileLauncher?: ProjectileLauncherMeta;
     projectile?: AmmoMeta;
@@ -100,6 +105,8 @@ export interface UsableHeldItemMeta {
     onUseSoundVolume?: number;
     onUseAnimFP?: string[];
     onUseAnimTP?: string[];
+}
+export interface TillBlockMeta {
 }
 export interface BreakBlockMeta {
     extraDamageBlockArchetype?: BlockArchetype;

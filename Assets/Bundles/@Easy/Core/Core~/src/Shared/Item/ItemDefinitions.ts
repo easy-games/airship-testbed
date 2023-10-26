@@ -146,6 +146,9 @@ export const items: {
 		},
 		block: {
 			blockId: 1,
+			tillable: {
+				tillsToBlockId: 68, // Farmland
+			},
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
@@ -720,6 +723,9 @@ export const items: {
 		displayName: "Farmland",
 		block: {
 			blockId: 68,
+			tillable: {
+				tillsToBlockId: 1, // Grass
+			},
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,

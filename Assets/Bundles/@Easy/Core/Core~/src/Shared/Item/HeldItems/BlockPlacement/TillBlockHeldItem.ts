@@ -24,7 +24,7 @@ export class TillBlockHeldItem extends BlockSelectHeldItem {
 		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
-		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.itemMeta?.breakBlock, voxelPos, true);
+		Dependency<BlockInteractController>().PerformBlockTill(this.entity, this.itemMeta?.tillBlock, voxelPos);
 	}
 
 	override CanUseBlock(

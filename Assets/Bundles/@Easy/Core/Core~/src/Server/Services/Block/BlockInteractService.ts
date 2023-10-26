@@ -3,7 +3,7 @@ import { CoreServerSignals } from "Server/CoreServerSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { AOEDamageMeta, BreakBlockMeta, ItemMeta } from "Shared/Item/ItemMeta";
+import { AOEDamageMeta, BreakBlockMeta, ItemMeta, TillBlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
@@ -100,6 +100,38 @@ export class BlockInteractService implements OnStart {
 			rollback();
 		});
 
+		//Hit Block with an Item
+		CoreServerSignals.CustomMoveCommand.Connect((event) => {
+			if (!event.is("TillBlock")) return;
+
+			const world = WorldAPI.GetMainWorld();
+			if (world === undefined) return;
+
+			const clientId = event.clientId;
+			const entity = this.entityService.GetEntityByClientId(clientId);
+
+			const rollback = () => {};
+
+			if (entity && entity instanceof CharacterEntity) {
+				const itemInHand = entity.GetInventory().GetHeldItem();
+				const itemMeta = itemInHand?.GetMeta();
+
+				if (!itemInHand) {
+					return rollback();
+				}
+				if (!itemMeta?.tillBlock) {
+					return rollback();
+				}
+
+				if (!this.TillBlock(entity, itemMeta.tillBlock, event.value)) {
+					return rollback();
+				}
+				return;
+			}
+
+			rollback();
+		});
+
 		//Deprecated? Now using "HitBlock" move command
 		CoreNetwork.ClientToServer.HitBlock.Server.OnClientEvent((clientId, pos) => {});
 	}
@@ -144,6 +176,26 @@ export class BlockInteractService implements OnStart {
 		});
 		CoreServerSignals.BlockGroupPlace.Fire(new BlockGroupPlaceSignal(positions, itemTypes, blockTypes, entity));
 		entity.SendItemAnimationToClients(0, 0, entity.ClientId);
+	}
+
+	public TillBlock(entity: Entity | undefined, tillBlockMeta: TillBlockMeta, voxelPos: Vector3): boolean {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) {
+			return false;
+		}
+
+		voxelPos = BlockDataAPI.GetParentBlockPos(voxelPos) ?? voxelPos;
+
+		const block = world.GetBlockAt(voxelPos);
+		if (block.IsAir()) {
+			return false;
+		}
+
+		const tillable = block.itemMeta?.block?.tillable;
+		if (!tillable) return false;
+
+		world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, { placedByEntityId: entity?.id });
+		return true;
 	}
 
 	public DamageBlock(entity: Entity | undefined, breakBlockMeta: BreakBlockMeta, voxelPos: Vector3): boolean {
