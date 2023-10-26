@@ -602,7 +602,7 @@ export const items: {
 		usable: {
 			maxChargeSeconds: 0.2,
 			minChargeSeconds: 0.12,
-			cooldownSeconds: 1.5,
+			cooldownSeconds: 1.15,
 			onUseSound: [CoreSound.bowShoot],
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
