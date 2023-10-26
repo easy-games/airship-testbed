@@ -55,6 +55,8 @@ export const enum ItemType {
 	WOOD_ARROW = "WOOD_ARROW",
 	FIREBALL = "FIREBALL",
 
+	PLOW = "PLOW",
+
 	// Armor
 	LEATHER_HELMET = "LEATHER_HELMET",
 	IRON_HELMET = "IRON_HELMET",

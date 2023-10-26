@@ -88,6 +88,7 @@ export interface ItemMeta {
 	melee?: MeleeItemMeta;
 	block?: BlockMeta;
 	breakBlock?: BreakBlockMeta;
+	tillBlock?: TillBlockMeta;
 	accessoryPaths?: string[];
 	projectileLauncher?: ProjectileLauncherMeta;
 	projectile?: AmmoMeta;
@@ -111,6 +112,8 @@ export interface UsableHeldItemMeta {
 	onUseAnimFP?: string[];
 	onUseAnimTP?: string[];
 }
+
+export interface TillBlockMeta {}
 
 export interface BreakBlockMeta {
 	extraDamageBlockArchetype?: BlockArchetype;

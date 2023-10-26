@@ -50,6 +50,7 @@ const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 	canHoldToUse: true,
 };
+
 const pickaxeViewModel: Partial<ViewModelMeta> = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	// idleAnimTP: CoreAnim("TP_Sword_Idle"),
@@ -724,5 +725,17 @@ export const items: {
 			breakSound: CoreSound.blockBreakDirt,
 			placeSound: CoreSound.blockPlaceDirt,
 		},
+	},
+	[ItemType.PLOW]: {
+		displayName: "Plow",
+		usable: {
+			...pickaxeUsable,
+			cooldownSeconds: 0.22,
+		},
+		viewModel: {
+			...pickaxeViewModel,
+		},
+		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
+		tillBlock: {},
 	},
 };
