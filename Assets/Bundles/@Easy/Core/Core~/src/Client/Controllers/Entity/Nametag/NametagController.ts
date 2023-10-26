@@ -111,7 +111,7 @@ export class NametagController implements OnStart {
 
 		const rawDisplayName = Bridge.RemoveRichText(displayName);
 		const rect = canvas.gameObject.GetComponent<RectTransform>();
-		rect.sizeDelta = Bridge.MakeVector2(230 * rawDisplayName.size(), 480);
+		rect.sizeDelta = new Vector2(230 * rawDisplayName.size(), 480);
 
 		// Username color
 		let color: Color | undefined;

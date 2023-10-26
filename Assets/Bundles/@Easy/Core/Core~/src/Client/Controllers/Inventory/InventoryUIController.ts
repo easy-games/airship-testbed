@@ -86,7 +86,7 @@ export class InventoryUIController implements OnStart {
 		this.backpackShown = true;
 
 		const wrapper = this.backpackCanvas.transform.GetChild(0).GetComponent<RectTransform>();
-		wrapper.anchoredPosition = Bridge.MakeVector2(0, -20);
+		wrapper.anchoredPosition = new Vector2(0, -20);
 		wrapper.TweenAnchoredPositionY(0, 0.12);
 
 		AppManager.Open(this.backpackCanvas, {
@@ -372,7 +372,7 @@ export class InventoryUIController implements OnStart {
 						clone.transform.SetAsLastSibling();
 
 						const cloneRect = clone.GetComponent<RectTransform>();
-						cloneRect.sizeDelta = Bridge.MakeVector2(100, 100);
+						cloneRect.sizeDelta = new Vector2(100, 100);
 						const cloneImage = clone.transform.GetChild(0).GetComponent<Image>();
 						cloneImage.raycastTarget = false;
 
