@@ -58,7 +58,6 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 
 		const blockSelectController = Dependency<BlockSelectController>();
 		const placePosition = blockSelectController.PlaceBlockPosition;
-		const highlightBlockPosition = blockSelectController.HighlightBlockPosition;
 		const isVoidPlacement = blockSelectController.IsVoidPlacement;
 
 		if (!placePosition) {
@@ -75,7 +74,6 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		if (blockMeta.placeOnWhitelist) {
-			if (highlightBlockPosition === undefined) return false;
 			const belowItemType = world.GetBlockBelow(placePosition).itemType;
 			if (!belowItemType || !blockMeta.placeOnWhitelist.includes(belowItemType)) {
 				warn("invalid type, expecting ", inspect(blockMeta.placeOnWhitelist), "got", belowItemType ?? "<NONE>");
