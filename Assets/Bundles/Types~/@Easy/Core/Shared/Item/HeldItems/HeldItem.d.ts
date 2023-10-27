@@ -33,7 +33,7 @@ export declare class HeldItem {
     protected TryUse(): boolean;
     protected TryChargeUse(): boolean;
     protected TriggerUse(useIndex: number): void;
-    private OnCooldownReset;
+    protected OnCooldownReset(): void;
     /** Runs when an item is used. Runs on every client.*/
     protected OnUseClient(useIndex: number): void;
     protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean): void;
