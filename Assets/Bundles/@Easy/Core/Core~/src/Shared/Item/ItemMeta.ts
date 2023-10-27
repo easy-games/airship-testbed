@@ -4,6 +4,7 @@ import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
+import { Duration } from "Shared/Util/Duration";
 
 export interface TillableBlockMeta {
 	tillsToBlockId: number;
@@ -88,6 +89,7 @@ export interface PlaceBlockMeta {
 
 export interface CropBlockMeta {
 	numStages: number;
+	stageGrowthDuration: Duration;
 }
 
 export interface ItemMeta {

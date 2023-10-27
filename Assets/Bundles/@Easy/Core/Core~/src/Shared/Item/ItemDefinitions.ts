@@ -6,6 +6,7 @@ import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { BlockArchetype, BlockMeta, ItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
+import { Duration } from "Shared/Util/Duration";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
@@ -758,6 +759,7 @@ export const items: {
 		displayName: "Wheat",
 		cropBlock: {
 			numStages: 4,
+			stageGrowthDuration: Duration.fromMinutes(1), // 50 seconds
 		},
 		block: {
 			blockId: 69,
