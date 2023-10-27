@@ -18,5 +18,5 @@ MonoBehaviour:
   Position: {x: -0.03, y: 0.03, z: 0.03}
   Rotation: {x: -12.59, y: 0, z: 6.87}
   Scale: {x: 0.9, y: 0.9, z: 0.9}
-  MeshDeformed: 0
-  VisibleInFirstPerson: 1
+  visibilityMode: 2
+  SkinnedToCharacter: 0

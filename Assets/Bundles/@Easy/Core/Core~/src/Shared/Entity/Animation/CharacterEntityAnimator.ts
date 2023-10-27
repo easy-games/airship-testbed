@@ -66,7 +66,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			fadeMode?: FadeMode;
 			wrapMode?: WrapMode;
 			transitionTime?: number;
-			noAutoFadeOut?: boolean;
+			autoFadeOut?: boolean;
 		},
 	): AnimancerState {
 		// if (this.currentEndEventConnection !== -1) {
@@ -75,16 +75,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		// }
 
 		let animState: AnimancerState;
-		if (config?.noAutoFadeOut || clip.isLooping) {
-			animState = AnimancerBridge.PlayOnLayer(
-				this.anim,
-				clip,
-				layer,
-				config?.transitionTime ?? this.defaultTransitionTime,
-				config?.fadeMode ?? FadeMode.FromStart,
-				config?.wrapMode ?? WrapMode.Default,
-			);
-		} else {
+		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
+			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
 				this.anim,
 				clip,
@@ -93,10 +85,20 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				config?.fadeMode ?? FadeMode.FromStart,
 				config?.wrapMode ?? WrapMode.Default,
 			);
+		} else {
+			//Play permenantly on player
+			animState = AnimancerBridge.PlayOnLayer(
+				this.anim,
+				clip,
+				layer,
+				config?.transitionTime ?? this.defaultTransitionTime,
+				config?.fadeMode ?? FadeMode.FromStart,
+				config?.wrapMode ?? WrapMode.Default,
+			);
 		}
+
 		if (onEnd !== undefined) {
 			this.currentEndEventConnection = animState.Events.OnEndTS(() => {
-				// animState.StartFade(0, config?.transitionTime ?? this.defaultTransitionTime);
 				Bridge.DisconnectEvent(this.currentEndEventConnection);
 				onEnd();
 			});

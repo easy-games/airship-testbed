@@ -147,8 +147,7 @@ export abstract class EntityAnimator {
 			fadeMode?: FadeMode;
 			wrapMode?: WrapMode;
 			transitionTime?: number;
-			pauseOnEnd?: boolean;
-			autoFade?: boolean;
+			autoFadeOut?: boolean;
 		},
 	): AnimancerState;
 

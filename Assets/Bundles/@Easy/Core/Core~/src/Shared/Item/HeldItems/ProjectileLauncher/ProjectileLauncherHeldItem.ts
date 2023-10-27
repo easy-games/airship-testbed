@@ -111,9 +111,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 				? RandomUtil.FromArray(this.chargeAnimFP)
 				: RandomUtil.FromArray(this.chargeAnimTP),
 			EntityAnimationLayer.ITEM_ACTION,
-			() => {
-				chargeAnimState.IsPlaying = false;
-			},
+			undefined,
+			{ autoFadeOut: false },
 		);
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
