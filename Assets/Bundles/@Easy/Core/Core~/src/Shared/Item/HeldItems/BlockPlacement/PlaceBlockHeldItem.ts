@@ -45,12 +45,16 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	}
 
 	private TryPlaceBlock(): boolean {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return false;
+
 		if (!this.itemMeta?.block) {
 			return false;
 		}
 
 		const blockSelectController = Dependency<BlockSelectController>();
 		const placePosition = blockSelectController.PlaceBlockPosition;
+		const highlightBlockPosition = blockSelectController.HighlightBlockPosition;
 		const isVoidPlacement = blockSelectController.IsVoidPlacement;
 
 		if (!placePosition) {
@@ -61,8 +65,21 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			return false;
 		}
 
+		const placeBlockOverride = this.itemMeta.placeBlock;
+
+		if (placeBlockOverride?.placeOnBlockWhitelist) {
+			if (!highlightBlockPosition) return false;
+
+			const blockAtHighlight = world.GetBlockAt(highlightBlockPosition);
+			if (blockAtHighlight.itemType === undefined) return false;
+
+			if (!placeBlockOverride.placeOnBlockWhitelist.includes(blockAtHighlight.itemType)) {
+				return false;
+			}
+		}
+
 		// Write the voxel at the predicted position
-		WorldAPI.GetMainWorld()?.PlaceBlockById(placePosition, this.itemMeta.block.blockId!, {
+		world.PlaceBlockById(placePosition, this.itemMeta.block.blockId!, {
 			placedByEntityId: this.entity.id,
 			priority: true,
 		});

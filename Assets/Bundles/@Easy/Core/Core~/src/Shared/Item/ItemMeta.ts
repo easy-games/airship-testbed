@@ -75,6 +75,17 @@ export interface ViewModelMeta {
 	equipSound?: string[];
 }
 
+export interface PlaceBlockMeta {
+	/**
+	 * The type of item to place instead - must be a block!
+	 */
+	placementBlock?: ItemType;
+	/**
+	 * A filter for what this can be placed on
+	 */
+	placeOnBlockWhitelist?: ItemType[];
+}
+
 export interface ItemMeta {
 	//Identification
 	displayName: string;
@@ -94,6 +105,10 @@ export interface ItemMeta {
 	block?: BlockMeta;
 	breakBlock?: BreakBlockMeta;
 	tillBlock?: TillBlockMeta;
+	/**
+	 * override what block placing places, or requires
+	 */
+	placeBlock?: PlaceBlockMeta;
 	accessoryPaths?: string[];
 	projectileLauncher?: ProjectileLauncherMeta;
 	projectile?: AmmoMeta;

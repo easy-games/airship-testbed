@@ -542,5 +542,10 @@
     <Minecraft>60</Minecraft>
     <Brightness>2</Brightness>
   </Block>
+  <Block>
+    <Index>69</Index>
+    <Name>Wheat Crop</Name>
+    <Prefab>true</Prefab>
+  </Block>
 </Blocks>
 

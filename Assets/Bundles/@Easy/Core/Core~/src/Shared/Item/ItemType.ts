@@ -62,6 +62,10 @@ export const enum ItemType {
 	IRON_HELMET = "IRON_HELMET",
 	DIAMOND_HELMET = "DIAMOND_HELMET",
 	EMERALD_HELMET = "EMERALD_HELMET",
+
+	// Farming
+	WHEAT_SEEDS = "WHEAT_SEEDS",
+	WHEAT_CROP = "WHEAT_CROP",
 }
 export enum ItemArchetype {
 	DEFAULT = 0,

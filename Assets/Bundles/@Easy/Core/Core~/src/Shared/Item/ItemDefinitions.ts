@@ -51,6 +51,16 @@ const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	canHoldToUse: true,
 };
 
+const plowUsable: Partial<UsableHeldItemMeta> = {
+	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+};
+
+const seedsUsable: Partial<UsableHeldItemMeta> = {
+	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+};
+
 const pickaxeViewModel: Partial<ViewModelMeta> = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	// idleAnimTP: CoreAnim("TP_Sword_Idle"),
@@ -735,7 +745,7 @@ export const items: {
 	[ItemType.PLOW]: {
 		displayName: "Plow",
 		usable: {
-			...pickaxeUsable,
+			...plowUsable,
 			cooldownSeconds: 0.22,
 		},
 		viewModel: {
@@ -743,5 +753,33 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
 		tillBlock: {},
+	},
+	[ItemType.WHEAT_CROP]: {
+		displayName: "Wheat",
+		block: {
+			blockId: 69,
+			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
+			prefab: {
+				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/WheatCrop/WheatCrop.prefab",
+			},
+		},
+	},
+	[ItemType.WHEAT_SEEDS]: {
+		displayName: "Wheat Seeds",
+		usable: {
+			...seedsUsable,
+			cooldownSeconds: 0.22,
+		},
+		viewModel: {
+			...pickaxeViewModel,
+		},
+		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
+		placeBlock: {
+			placementBlock: ItemType.WHEAT_CROP,
+			placeOnBlockWhitelist: [ItemType.FARMLAND],
+		},
 	},
 };
