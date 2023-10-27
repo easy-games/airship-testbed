@@ -781,10 +781,11 @@ export const items: {
 		viewModel: {
 			...pickaxeViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
-		placeBlock: {
-			placementBlock: ItemType.WHEAT_CROP,
-			placeOnBlockWhitelist: [ItemType.FARMLAND],
+		block: {
+			blockId: 69,
+			placeOnWhitelist: [ItemType.FARMLAND],
+			requiresFoundation: true,
 		},
+		accessoryPaths: [AccPath(ItemType.WHEAT_SEEDS)],
 	},
 };

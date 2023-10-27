@@ -105,13 +105,17 @@ export class World {
 		return new Block(this.voxelWorld.ReadVoxelAt(pos), this);
 	}
 
+	public GetBlockBelow(pos: Vector3): Block {
+		return this.GetBlockAt(pos.add(new Vector3(0, -0.5, 0)));
+	}
+
 	/**
 	 * A way to find block data below a target. Used to know what a character is standing on
 	 * @param pos
 	 * @returns BlockMeta under the position.
 	 */
 	public GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined {
-		return this.GetBlockAt(pos.add(new Vector3(0, -0.5, 0)))?.itemMeta?.block;
+		return this.GetBlockBelow(pos)?.itemMeta?.block;
 	}
 
 	public RaycastBlockBelow(startPos: Vector3, maxDistance = 10): BlockMeta | undefined {

@@ -4,6 +4,7 @@ import { CoreServerSignals } from "Server/CoreServerSignals";
 import { SharedTime, TimeUtil } from "Shared/Util/TimeUtil";
 import { OnFixedUpdate, OnTick, SetInterval } from "Shared/Util/Timer";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 export const enum CoreCropBlockMetaKeys {
 	CROP_GROWTH_LEVEL = "cropGrowthLevel",
@@ -50,8 +51,13 @@ export class CropGrowthService implements OnStart {
 		});
 
 		CoreServerSignals.BlockPlace.Connect((event) => {
-			const cropBlock = event.itemMeta.cropBlock;
+			const world = WorldAPI.GetMainWorld();
+			if (!world) return;
+
+			const cropBlock = world.GetBlockAt(event.pos).itemMeta?.cropBlock;
 			if (cropBlock) {
+				print("placed ", world.GetBlockAt(event.pos).itemType, "from", event.itemType);
+
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_GROWTH_LEVEL, 0, true);
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_HARVESTABLE, false, true);
 
