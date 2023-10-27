@@ -86,6 +86,10 @@ export interface PlaceBlockMeta {
 	placeOnBlockWhitelist?: ItemType[];
 }
 
+export interface CropBlockMeta {
+	numStages: number;
+}
+
 export interface ItemMeta {
 	//Identification
 	displayName: string;
@@ -104,6 +108,7 @@ export interface ItemMeta {
 	melee?: MeleeItemMeta;
 	block?: BlockMeta;
 	breakBlock?: BreakBlockMeta;
+	cropBlock?: CropBlockMeta;
 	tillBlock?: TillBlockMeta;
 	/**
 	 * override what block placing places, or requires

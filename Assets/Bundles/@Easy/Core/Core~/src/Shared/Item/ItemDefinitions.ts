@@ -756,6 +756,9 @@ export const items: {
 	},
 	[ItemType.WHEAT_CROP]: {
 		displayName: "Wheat",
+		cropBlock: {
+			numStages: 4,
+		},
 		block: {
 			blockId: 69,
 			stepSound: CoreSound.footstepGrass,
