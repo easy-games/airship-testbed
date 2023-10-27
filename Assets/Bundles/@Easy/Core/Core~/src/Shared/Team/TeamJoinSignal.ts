@@ -3,8 +3,8 @@ import { Team } from "./Team";
 
 export class ChangeTeamSignal {
 	constructor(
-		public readonly Player: Player,
-		public readonly Team: Team | undefined,
-		public readonly OldTeam: Team | undefined,
+		public readonly player: Player,
+		public readonly team: Team | undefined,
+		public readonly oldTeam: Team | undefined,
 	) {}
 }

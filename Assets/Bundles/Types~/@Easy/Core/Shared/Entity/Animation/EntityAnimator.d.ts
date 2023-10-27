@@ -38,8 +38,7 @@ export declare abstract class EntityAnimator {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
         transitionTime?: number;
-        pauseOnEnd?: boolean;
-        autoFade?: boolean;
+        autoFadeOut?: boolean;
     }): AnimancerState;
     SetFirstPerson(isFirstPerson: boolean): void;
     PlayTakeDamage(damageAmount: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;

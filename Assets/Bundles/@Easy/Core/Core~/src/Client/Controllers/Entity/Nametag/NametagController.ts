@@ -56,15 +56,15 @@ export class NametagController implements OnStart {
 		});
 
 		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
-			if (event.Player === Game.LocalPlayer) {
+			if (event.player === Game.LocalPlayer) {
 				for (const entity of this.entityController.GetEntities()) {
 					this.UpdateNametag(entity);
 				}
 				return;
 			}
 
-			if (event.Player.Character) {
-				this.UpdateNametag(event.Player.Character);
+			if (event.player.Character) {
+				this.UpdateNametag(event.player.Character);
 			}
 		});
 

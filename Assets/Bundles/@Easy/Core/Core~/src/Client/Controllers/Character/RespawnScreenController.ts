@@ -35,8 +35,8 @@ export class RespawnScreenController implements OnStart {
 		const topText = refs.GetValue("UI", "TopText") as TMP_Text;
 		const bottomText = refs.GetValue("UI", "BottomText") as TMP_Text;
 
-		if (deathSignal.fromEntity) {
-			topText.text = ColorUtil.ColoredText(Theme.Red, `Killed by ${deathSignal.fromEntity.GetDisplayName()}`);
+		if (deathSignal.killer) {
+			topText.text = ColorUtil.ColoredText(Theme.Red, `Killed by ${deathSignal.killer.GetDisplayName()}`);
 		} else {
 			topText.text = ColorUtil.ColoredText(Theme.Red, "You Died!");
 		}

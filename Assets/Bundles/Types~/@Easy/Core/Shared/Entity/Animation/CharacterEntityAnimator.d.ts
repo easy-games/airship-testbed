@@ -27,7 +27,7 @@ export declare class CharacterEntityAnimator extends EntityAnimator {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
         transitionTime?: number;
-        noAutoFadeOut?: boolean;
+        autoFadeOut?: boolean;
     }): AnimancerState;
     private LoadNewItemResources;
     private TriggerEvent;

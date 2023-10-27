@@ -32,12 +32,12 @@ export class BWController implements OnStart {
 
 		/* Listen for team assignements*/
 		CoreClientSignals.PlayerChangeTeam.Connect((teamSignal) => {
-			if (!teamSignal.Player.Character || teamSignal.Player.Character?.IsLocalCharacter()) {
+			if (!teamSignal.player.Character || teamSignal.player.Character?.IsLocalCharacter()) {
 				return;
 			}
-			const team = teamSignal.Player.Character?.GetTeam();
+			const team = teamSignal.player.Character?.GetTeam();
 			if (team) {
-				this.SetTeamColor(teamSignal.Player.Character, team);
+				this.SetTeamColor(teamSignal.player.Character, team);
 			}
 		});
 

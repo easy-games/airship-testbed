@@ -4,13 +4,20 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
+import ObjectUtils from "@easy-games/unity-object-utils";
+import { ServerSignals } from "Server/ServerSignals";
+import { MatchTeamStatsDto } from "Shared/Match/MatchTeamStatsDto";
+import { Network } from "Shared/Network";
 import { MatchService } from "../MatchService";
+import { BWService } from "./BWService";
 
 @Service({})
 export class BWTeamService implements OnStart {
 	/** Used to place on the same team after re-joining the server */
 	private userIdToTeamMap = new Map<string, Team>();
+	private teamStatsMap = new Map<Team, MatchTeamStatsDto>();
 
 	constructor(private readonly teamService: TeamService, private readonly matchService: MatchService) {}
 
@@ -19,7 +26,44 @@ export class BWTeamService implements OnStart {
 		for (const team of queueMeta.teams) {
 			const t = new Team(team.name, team.id, team.color);
 			this.teamService.RegisterTeam(t);
+			const stats: MatchTeamStatsDto = {
+				id: t.id,
+				bed: true,
+				playersRemaining: 0,
+			};
+			this.teamStatsMap.set(t, stats);
+			this.UpdateTeamAliveCount(t);
 		}
+		Network.ClientToServer.GetAllMatchTeamStats.Server.OnClientEvent((clientId) => {
+			print("sending all stats to client: " + inspect(ObjectUtils.values(this.teamStatsMap)));
+			Network.ServerToClient.UpdateMatchTeamStats.Server.FireClient(
+				clientId,
+				ObjectUtils.values(this.teamStatsMap),
+			);
+		});
+
+		CoreServerSignals.PlayerChangeTeam.Connect((event) => {
+			if (event.team) {
+				this.UpdateTeamAliveCount(event.team);
+			}
+			if (event.oldTeam) {
+				this.UpdateTeamAliveCount(event.oldTeam);
+			}
+		});
+
+		CoreServerSignals.PlayerLeave.Connect((event) => {
+			const team = event.player.GetTeam();
+			if (team) {
+				this.UpdateTeamAliveCount(team);
+			}
+		});
+
+		ServerSignals.PlayerEliminated.Connect((event) => {
+			const team = event.player.GetTeam();
+			if (team) {
+				this.UpdateTeamAliveCount(team);
+			}
+		});
 
 		// Temporary: even team distribution
 		CoreServerSignals.PlayerJoin.Connect((event) => {
@@ -70,9 +114,23 @@ export class BWTeamService implements OnStart {
 		});
 
 		CoreServerSignals.PlayerChangeTeam.Connect((event) => {
-			if (event.Team) {
-				this.userIdToTeamMap.set(event.Player.userId, event.Team);
+			if (event.team) {
+				this.userIdToTeamMap.set(event.player.userId, event.team);
 			}
 		});
+	}
+
+	private UpdateTeamAliveCount(team: Team): void {
+		const aliveCount = Dependency<BWService>().GetAlivePlayersOnTeam(team).size();
+		this.UpdateTeamStats(team, (stats) => {
+			stats.playersRemaining = aliveCount;
+		});
+	}
+
+	public UpdateTeamStats(team: Team, callback: (stats: MatchTeamStatsDto) => void): void {
+		const stats = this.teamStatsMap.get(team)!;
+		callback(stats);
+		print("firing update team stats: " + inspect(stats));
+		Network.ServerToClient.UpdateMatchTeamStats.Server.FireAllClients([stats]);
 	}
 }
