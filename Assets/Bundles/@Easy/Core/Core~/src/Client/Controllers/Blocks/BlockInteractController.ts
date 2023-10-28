@@ -48,6 +48,11 @@ export class BlockInteractController {
 
 			//Local Client visualization
 			if (newHealth === 0) {
+				// const aboveBlock = world.GetBlockAbove(voxelPos);
+				// if (aboveBlock.itemMeta?.block?.requiresFoundation) {
+
+				// }
+
 				//Destroy block
 				world.PlaceBlockById(voxelPos, 0);
 				if (showHealthbars) {
@@ -67,6 +72,11 @@ export class BlockInteractController {
 		if (!world) return;
 
 		if (entity.player && tillBlock) {
+			const above = world.GetBlockAbove(voxelPos);
+			if (above.IsCrop()) {
+				return;
+			}
+
 			const block = world.GetBlockAt(voxelPos);
 			const tillable = block.itemMeta?.block?.tillable;
 			if (!tillable) {
@@ -78,29 +88,6 @@ export class BlockInteractController {
 			world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, {
 				placedByEntityId: entity.id,
 			});
-
-			//Check to see if we can actually do damage here
-			// const damage = WorldAPI.CalculateBlockHitDamageFromBreakBlockMeta(entity, block, voxelPos, tillBlock);
-			// if (damage === 0) {
-			// 	return;
-			// }
-			// //Do the actual damage
-			// const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
-			// const newHealth = math.max(health - damage, 0);
-			// BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
-			// //Local Client visualization
-			// if (newHealth === 0) {
-			// 	//Destroy block
-			// 	world.PlaceBlockById(voxelPos, 0);
-			// 	if (showHealthbars) {
-			// 		this.blockHealth.VisualizeBlockBreak(voxelPos, block.blockId);
-			// 	}
-			// } else {
-			// 	//Damage block
-			// 	if (showHealthbars) {
-			// 		this.blockHealth.VisualizeBlockHealth(voxelPos);
-			// 	}
-			// }
 		}
 	}
 }

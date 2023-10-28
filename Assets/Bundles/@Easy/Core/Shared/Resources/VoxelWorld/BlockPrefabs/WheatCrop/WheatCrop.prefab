@@ -31,7 +31,7 @@ Transform:
   - {fileID: 8539570647939180547}
   - {fileID: 1869771665001672017}
   - {fileID: 5724557458738223665}
-  - {fileID: 4323995186305421836}
+  - {fileID: 7545698082430320028}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -67,7 +67,7 @@ Transform:
   m_Father: {fileID: 4142975689122086572}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5205071953164607036
+--- !u!1 &6011486705940408890
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4323995186305421836}
+  - component: {fileID: 7545698082430320028}
   m_Layer: 0
   m_Name: Level3
   m_TagString: Untagged
@@ -83,15 +83,15 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &4323995186305421836
+--- !u!4 &7545698082430320028
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5205071953164607036}
+  m_GameObject: {fileID: 6011486705940408890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.039, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -123,7 +123,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6876756265443277919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -176,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.33001179
+      value: 0.331
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
       propertyPath: m_LocalPosition.y
@@ -184,7 +184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.39255613
+      value: 0.401
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
       propertyPath: m_LocalRotation.w
@@ -214,9 +214,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: 919132149155446097, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
       propertyPath: m_Name
       value: CropStage2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
@@ -225,6 +233,29 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
   m_PrefabInstance: {fileID: 327350593222645326}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &597732388344277791 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a3b1ee06c741ec48b6b56b937e267ab, type: 3}
+  m_PrefabInstance: {fileID: 327350593222645326}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3644010070246743166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597732388344277791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.63245815, g: 0.6886792, b: 0.15917587, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Clay
+  addedByEditorScript: 0
 --- !u!1001 &4280835069375637187
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -276,12 +307,39 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: cf74a4d183c5c584fb681169559cf811, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: 919132149155446097, guid: cf74a4d183c5c584fb681169559cf811, type: 3}
       propertyPath: m_Name
       value: CropStage1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf74a4d183c5c584fb681169559cf811, type: 3}
+--- !u!1 &4011015125768493970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cf74a4d183c5c584fb681169559cf811, type: 3}
+  m_PrefabInstance: {fileID: 4280835069375637187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6777527010502810363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011015125768493970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.4649575, g: 0.7169812, b: 0.31452474, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Clay
+  addedByEditorScript: 0
 --- !u!4 &4387119212000575784 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf74a4d183c5c584fb681169559cf811, type: 3}
@@ -338,6 +396,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0c0e8f109c95bda499fc08980a3062a4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: 919132149155446097, guid: 0c0e8f109c95bda499fc08980a3062a4, type: 3}
       propertyPath: m_Name
       value: CropStage0
@@ -349,12 +411,35 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0c0e8f109c95bda499fc08980a3062a4, type: 3}
   m_PrefabInstance: {fileID: 7370364766297065934}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7676845596186784927 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0c0e8f109c95bda499fc08980a3062a4, type: 3}
+  m_PrefabInstance: {fileID: 7370364766297065934}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7801317649915995528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7676845596186784927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.26415092, g: 0.18918915, b: 0, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 0
+    reference: Clay
+  addedByEditorScript: 0
 --- !u!1001 &7946953612026700548
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4323995186305421836}
+    m_TransformParent: {fileID: 7545698082430320028}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0010df4949b75eb47bf7ef8b04dc0bd3, type: 3}
       propertyPath: m_RootOrder
@@ -408,12 +493,43 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0010df4949b75eb47bf7ef8b04dc0bd3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: 919132149155446097, guid: 0010df4949b75eb47bf7ef8b04dc0bd3, type: 3}
       propertyPath: m_Name
-      value: CropStage3
+      value: CropStage4
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0010df4949b75eb47bf7ef8b04dc0bd3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0010df4949b75eb47bf7ef8b04dc0bd3, type: 3}
+--- !u!1 &7099970878076018261 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0010df4949b75eb47bf7ef8b04dc0bd3, type: 3}
+  m_PrefabInstance: {fileID: 7946953612026700548}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2907138763477134364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7099970878076018261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 0.6018832, b: 0, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Clay
+  addedByEditorScript: 0
 --- !u!4 &7621209090360247535 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0010df4949b75eb47bf7ef8b04dc0bd3, type: 3}

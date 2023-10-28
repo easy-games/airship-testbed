@@ -759,7 +759,7 @@ export const items: {
 		displayName: "Wheat",
 		cropBlock: {
 			numStages: 4,
-			stageGrowthDuration: Duration.fromMinutes(1),
+			stageGrowthDuration: Duration.fromSeconds(10),
 		},
 		block: {
 			blockId: 69,

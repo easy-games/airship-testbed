@@ -540,7 +540,7 @@
     <Metallic>0</Metallic>
     <Roughness>0.75</Roughness>
     <Minecraft>60</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>0</Brightness>
   </Block>
   <Block>
     <Index>69</Index>

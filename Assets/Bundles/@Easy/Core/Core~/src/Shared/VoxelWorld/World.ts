@@ -109,6 +109,10 @@ export class World {
 		return this.GetBlockAt(pos.add(new Vector3(0, -0.5, 0)));
 	}
 
+	public GetBlockAbove(pos: Vector3): Block {
+		return this.GetBlockAt(pos.add(new Vector3(0, 0.5, 0)));
+	}
+
 	/**
 	 * A way to find block data below a target. Used to know what a character is standing on
 	 * @param pos

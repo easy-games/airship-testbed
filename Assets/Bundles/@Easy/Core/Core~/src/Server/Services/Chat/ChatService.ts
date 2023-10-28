@@ -24,6 +24,7 @@ import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
+import { VorliasCommand } from "./Commands/VorliasCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -47,6 +48,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
 		this.RegisterCommand(new LibonatiCommand());
+		this.RegisterCommand(new VorliasCommand());
 		this.RegisterCommand(new HelpCommand());
 	}
 
