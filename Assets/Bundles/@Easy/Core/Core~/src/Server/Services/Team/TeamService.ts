@@ -33,6 +33,9 @@ export class TeamService implements OnStart {
 			bin: new Bin(),
 		};
 		this.teams.set(team.id, entry);
+
+		CoreServerSignals.TeamAdded.Fire(team);
+
 		const dto = team.Encode();
 		CoreNetwork.ServerToClient.AddTeams.Server.FireAllClients([dto]);
 

@@ -3,6 +3,7 @@ import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { ItemType } from "Shared/Item/ItemType";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
+import { Team } from "Shared/Team/Team";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
 import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
@@ -55,4 +56,5 @@ export const CoreServerSignals = {
 	ProjectileHit: new Signal<ProjectileCollideServerSignal>(),
 	CustomMoveCommand: new Signal<MoveCommandDataEvent>(),
 	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
+	TeamAdded: new Signal<Team>(),
 };

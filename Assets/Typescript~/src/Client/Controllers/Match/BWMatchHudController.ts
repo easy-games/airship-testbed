@@ -1,8 +1,6 @@
 import { TeamController } from "@Easy/Core/Client/Controllers/Team/TeamController";
-import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { MatchTeamStatsDto } from "Shared/Match/MatchTeamStatsDto";
 import { Network } from "Shared/Network";
 import { MatchStatsController } from "./MatchStatsController";
@@ -21,17 +19,6 @@ export class BWMatchHudController implements OnStart {
 	}
 
 	OnStart(): void {
-		this.matchStatsController.onStatsUpdated.Connect((userId, newStats, oldStats) => {
-			print("stats.1");
-			if (userId !== Game.LocalPlayer.userId) return;
-			print("stats.2");
-
-			if (newStats.kills !== oldStats.kills) {
-				print("stats.3");
-				this.UpdateKills(newStats.kills);
-			}
-		});
-
 		const teamsWrapperGo = this.hudGo.transform.GetChild(0);
 		const teams = this.teamController.GetTeams();
 		let i = 0;
@@ -49,15 +36,17 @@ export class BWMatchHudController implements OnStart {
 		});
 		Bridge.UpdateLayout(teamsWrapperGo.transform, false);
 
-		Network.ServerToClient.UpdateMatchTeamStats.Client.OnServerEvent((stats) => {
-			print("received udpate match team stats: " + inspect(stats));
-			for (const teamStats of stats) {
-				const team = this.teamController.GetTeam(teamStats.id);
-				this.UpdateTeam(team!, undefined, teamStats);
+		Network.ServerToClient.UpdateHud.Client.OnServerEvent((event) => {
+			if (event.teamUpdates) {
+				for (const teamStats of event.teamUpdates) {
+					const team = this.teamController.GetTeam(teamStats.id);
+					this.UpdateTeam(team!, undefined, teamStats);
+				}
+			}
+			if (event.kills !== undefined) {
+				this.UpdateKills(event.kills);
 			}
 		});
-
-		Network.ClientToServer.GetAllMatchTeamStats.Client.FireServer();
 	}
 
 	public UpdateKills(kills: number): void {

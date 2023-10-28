@@ -30,7 +30,12 @@ export class MatchStatService implements OnStart {
 
 		CoreServerSignals.EntityDeath.Connect((event) => {
 			if (event.killer?.player && event.entity.player && event.killer !== event.entity) {
-				this.GetMatchStats(event.killer.player.userId).kills++;
+				const killerStats = this.GetMatchStats(event.killer.player.userId);
+				killerStats.kills++;
+				Network.ServerToClient.UpdateHud.Server.FireClient(event.killer.player.clientId, {
+					kills: killerStats.kills,
+				});
+
 				this.GetMatchStats(event.entity.player.userId).deaths++;
 			}
 		});

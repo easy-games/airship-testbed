@@ -1,3 +1,4 @@
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -10,6 +11,7 @@ import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
 
 export const ServerSignals = {
+	...CoreServerSignals,
 	/** Fired when match enters `MatchState.RUNNING`. */
 	MatchStart: new Signal<MatchStartServerEvent>(),
 	/** Fired when match state changes. */
