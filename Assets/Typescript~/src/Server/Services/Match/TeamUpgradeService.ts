@@ -64,7 +64,6 @@ export class TeamUpgradeService implements OnStart {
 				Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.Server.FireClient(event.player.clientId, dtos);
 			});
 		});
-		print("TeamUpgradeService.2");
 	}
 
 	/** Apply active team upgrade effects. */
