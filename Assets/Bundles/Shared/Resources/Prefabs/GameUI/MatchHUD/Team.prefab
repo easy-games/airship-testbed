@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 9137695462607729534}
   - component: {fileID: 3103460841713691952}
   - component: {fileID: 7378706250589905202}
-  - component: {fileID: 8601089076436784602}
   m_Layer: 5
   m_Name: Team
   m_TagString: Untagged
@@ -228,17 +227,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 5
   image: {fileID: 3103460841713691952}
---- !u!114 &8601089076436784602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6647547127293766092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 1
