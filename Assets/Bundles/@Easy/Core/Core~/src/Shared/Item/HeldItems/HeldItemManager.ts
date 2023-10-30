@@ -10,6 +10,7 @@ import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
 import { ProjectileLauncherHeldItem } from "./ProjectileLauncher/ProjectileLauncherHeldItem";
+import { TillBlockHeldItem } from "./BlockPlacement/TillBlockHeldItem";
 
 export type HeldItemCondition = (itemMeta: ItemMeta) => boolean;
 export type HeldItemFactory = (entity: Entity, itemMeta: ItemMeta) => HeldItem;
@@ -146,6 +147,10 @@ HeldItemManager.RegisterHeldItem(
 HeldItemManager.RegisterHeldItem(
 	(itemMeta) => itemMeta.breakBlock !== undefined,
 	(entity, itemMeta) => new BreakBlockHeldItem(entity, itemMeta),
+);
+HeldItemManager.RegisterHeldItem(
+	(itemMeta) => itemMeta.tillBlock !== undefined,
+	(entity, itemMeta) => new TillBlockHeldItem(entity, itemMeta),
 );
 HeldItemManager.RegisterHeldItem(
 	(itemMeta) => itemMeta.projectileLauncher !== undefined,

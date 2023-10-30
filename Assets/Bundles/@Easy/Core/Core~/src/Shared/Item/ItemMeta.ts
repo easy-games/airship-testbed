@@ -4,10 +4,16 @@ import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
+import { Duration } from "Shared/Util/Duration";
+
+export interface TillableBlockMeta {
+	tillsToBlockId: number;
+}
 
 export interface BlockMeta {
 	health?: number;
 	blockId: number;
+	tillable?: TillableBlockMeta;
 	blockArchetype?: BlockArchetype;
 	prefab?: {
 		path: string;
@@ -17,6 +23,15 @@ export interface BlockMeta {
 	stepSound?: string[];
 	hitSound?: string[];
 	breakSound?: string[];
+
+	/**
+	 * A filter for what this block can be placed on
+	 */
+	placeOnWhitelist?: ItemType[];
+	/**
+	 * If this block requires a block underneath it
+	 */
+	requiresFoundation?: boolean;
 }
 
 export type SoundMeta = { path: string } & PlaySoundConfig;
@@ -70,6 +85,11 @@ export interface ViewModelMeta {
 	equipSound?: string[];
 }
 
+export interface CropBlockMeta {
+	numStages: number;
+	stageGrowthDuration: Duration;
+}
+
 export interface ItemMeta {
 	//Identification
 	displayName: string;
@@ -88,6 +108,8 @@ export interface ItemMeta {
 	melee?: MeleeItemMeta;
 	block?: BlockMeta;
 	breakBlock?: BreakBlockMeta;
+	cropBlock?: CropBlockMeta;
+	tillBlock?: TillBlockMeta;
 	accessoryPaths?: string[];
 	projectileLauncher?: ProjectileLauncherMeta;
 	projectile?: AmmoMeta;
@@ -111,6 +133,8 @@ export interface UsableHeldItemMeta {
 	onUseAnimFP?: string[];
 	onUseAnimTP?: string[];
 }
+
+export interface TillBlockMeta {}
 
 export interface BreakBlockMeta {
 	extraDamageBlockArchetype?: BlockArchetype;

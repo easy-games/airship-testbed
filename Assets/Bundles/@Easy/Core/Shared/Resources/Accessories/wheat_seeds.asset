@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
+  m_Name: wheat_seeds
+  m_EditorClassIdentifier: 
+  DisplayName: 
+  AccessorySlot: 6
+  Prefab: {fileID: 7724870908548882827, guid: a2446b1d7ddb4174d9bd0869228704a9, type: 3}
+  Position: {x: -0.03, y: 0.03, z: 0.03}
+  Rotation: {x: 0, y: 0, z: 0}
+  Scale: {x: 7, y: 7, z: 7}
+  visibilityMode: 2

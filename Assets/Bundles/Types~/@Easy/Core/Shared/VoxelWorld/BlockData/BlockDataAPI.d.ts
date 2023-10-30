@@ -3,7 +3,8 @@
 /// <reference types="@easy-games/compiler-types" />
 export declare enum CoreBlockMetaKeys {
     CAN_BREAK = "canBreak",
-    CURRENT_HEALTH = "health"
+    CURRENT_HEALTH = "health",
+    CAN_TILL = "canTill"
 }
 export declare class BlockDataAPI {
     private static blockDataMap;

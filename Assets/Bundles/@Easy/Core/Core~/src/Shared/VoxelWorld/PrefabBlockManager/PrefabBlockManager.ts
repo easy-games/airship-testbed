@@ -106,5 +106,7 @@ export class PrefabBlockManager {
 		for (const childPos of childPositions) {
 			world?.PlaceBlockById(childPos, 0);
 		}
+
+		this.objectMap.delete(pos);
 	}
 }

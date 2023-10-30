@@ -530,5 +530,22 @@
     <Minecraft>168:2</Minecraft>
     <Brightness>2</Brightness>
   </Block>
+  <Block>
+    <Index>68</Index>
+    <Name>Farmland</Name>
+    <!--    <TopTexture>dirt.s</TopTexture>-->
+    <!--    <SideTexture>dirt.s</SideTexture>-->
+    <Material>StylizedDirt</Material>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>0.75</Roughness>
+    <Minecraft>60</Minecraft>
+    <Brightness>0</Brightness>
+  </Block>
+  <Block>
+    <Index>69</Index>
+    <Name>Wheat Crop</Name>
+    <Prefab>true</Prefab>
+  </Block>
 </Blocks>
 
