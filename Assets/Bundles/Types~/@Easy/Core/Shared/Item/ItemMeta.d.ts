@@ -6,6 +6,7 @@ import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
+import { Duration } from "../Util/Duration";
 export interface TillableBlockMeta {
     tillsToBlockId: number;
 }
@@ -22,6 +23,14 @@ export interface BlockMeta {
     stepSound?: string[];
     hitSound?: string[];
     breakSound?: string[];
+    /**
+     * A filter for what this block can be placed on
+     */
+    placeOnWhitelist?: ItemType[];
+    /**
+     * If this block requires a block underneath it
+     */
+    requiresFoundation?: boolean;
 }
 export type SoundMeta = {
     path: string;
@@ -71,15 +80,9 @@ export interface ViewModelMeta {
     unequipAnimTP?: string[];
     equipSound?: string[];
 }
-export interface PlaceBlockMeta {
-    /**
-     * The type of item to place instead - must be a block!
-     */
-    placementBlock?: ItemType;
-    /**
-     * A filter for what this can be placed on
-     */
-    placeOnBlockWhitelist?: ItemType[];
+export interface CropBlockMeta {
+    numStages: number;
+    stageGrowthDuration: Duration;
 }
 export interface ItemMeta {
     displayName: string;
@@ -93,11 +96,8 @@ export interface ItemMeta {
     melee?: MeleeItemMeta;
     block?: BlockMeta;
     breakBlock?: BreakBlockMeta;
+    cropBlock?: CropBlockMeta;
     tillBlock?: TillBlockMeta;
-    /**
-     * override what block placing places, or requires
-     */
-    placeBlock?: PlaceBlockMeta;
     accessoryPaths?: string[];
     projectileLauncher?: ProjectileLauncherMeta;
     projectile?: AmmoMeta;

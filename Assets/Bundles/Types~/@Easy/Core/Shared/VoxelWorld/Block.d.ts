@@ -8,6 +8,7 @@ export declare class Block {
     readonly itemType: ItemType | undefined;
     readonly itemMeta: ItemMeta | undefined;
     constructor(voxel: number, world: World);
+    IsCrop(): boolean;
     IsAir(): boolean;
     GetBlockDefinition(): BlockDefinition;
     GetAverageColor(): Color;

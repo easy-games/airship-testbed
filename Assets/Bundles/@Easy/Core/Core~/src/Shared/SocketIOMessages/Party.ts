@@ -12,6 +12,7 @@ export type Party = {
 };
 
 export interface GameServer {
+	serverId: string;
 	ip: string;
 	port: number;
 }
