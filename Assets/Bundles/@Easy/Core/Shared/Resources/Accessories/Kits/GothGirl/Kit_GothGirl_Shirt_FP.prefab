@@ -53,7 +53,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b3dcc1a9cda255840a35837f2f031731, type: 2}
+  - {fileID: 2100000, guid: b9eb9a298c46cbf4db7b7c8cefed8c29, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -135,5 +135,5 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Kit_GothGirl_ClothingMat
+    reference: Kit_GothGirl_ClothingToonMat
   addedByEditorScript: 0
