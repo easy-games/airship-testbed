@@ -19,6 +19,7 @@ export const enum CoreCropBlockMetaKeys {
 
 @Service()
 export class CropGrowthService implements OnStart {
+	private cropCounter = 0;
 	private cropStates = new Array<CropStateDto>();
 
 	public OnStart(): void {
@@ -40,7 +41,7 @@ export class CropGrowthService implements OnStart {
 					cropState.lastGrowthTick = SharedTime();
 
 					CoreNetwork.ServerToClient.CropGrowthUpdated.Server.FireAllClients(
-						cropState.position,
+						cropState.cropIdx,
 						cropState.cropGrowthLevel,
 					);
 				}
@@ -70,6 +71,7 @@ export class CropGrowthService implements OnStart {
 
 				const cropState: CropStateDto = {
 					position: event.pos,
+					cropIdx: this.cropCounter++,
 					cropGrowthLevel: 0,
 					lastGrowthTick: SharedTime(),
 					growthIntervalSeconds: cropBlock.stageGrowthDuration.totalSeconds,
@@ -84,8 +86,11 @@ export class CropGrowthService implements OnStart {
 		CoreServerSignals.BlockDestroyed.Connect((event) => {
 			const matchingBlock = this.cropStates.findIndex((f) => f.position === event.blockPos);
 			if (matchingBlock !== -1) {
-				print("remove block", matchingBlock);
+				const cropState = this.cropStates[matchingBlock];
+				print("destroy block at", cropState.position);
+
 				this.cropStates.remove(matchingBlock);
+				CoreNetwork.ServerToClient.CropHarvested.Server.FireAllClients(cropState.cropIdx);
 			}
 		});
 	}

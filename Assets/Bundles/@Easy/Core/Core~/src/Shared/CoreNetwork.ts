@@ -111,8 +111,10 @@ export const CoreNetwork = {
 		GeneratorSnapshot: new RemoteEvent<[generatorStateDtos: GeneratorDto[]]>(),
 		/** Fired when a crop is planted */
 		CropPlanted: new RemoteEvent<[cropStateDto: CropStateDto]>(),
+		/** Fired when a crop is planted */
+		CropHarvested: new RemoteEvent<[cropIdx: number]>(),
 		/** Fired when a crop  */
-		CropGrowthUpdated: new RemoteEvent<[cropPos: Vector3, cropLevel: number]>(),
+		CropGrowthUpdated: new RemoteEvent<[cropIdx: number, cropLevel: number]>(),
 		/** Fired when a user joins late. Sends full crop state snapshot */
 		CropSnapshot: new RemoteEvent<[cropStateDtos: CropStateDto[]]>(),
 		/** Fired when a **tagged** GameObject is spawned on the server. */
