@@ -5,6 +5,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 export enum CoreBlockMetaKeys {
 	CAN_BREAK = "canBreak",
 	CURRENT_HEALTH = "health",
+	CAN_TILL = "canTill",
 }
 
 export class BlockDataAPI {

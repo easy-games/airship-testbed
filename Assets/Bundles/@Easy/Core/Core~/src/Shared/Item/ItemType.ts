@@ -1,6 +1,7 @@
 export const enum ItemType {
 	GRASS = "GRASS",
 	DIRT = "DIRT",
+	FARMLAND = "FARMLAND",
 	STONE = "STONE",
 	BED = "BED",
 	COBBLESTONE = "COBBLESTONE",
@@ -54,11 +55,17 @@ export const enum ItemType {
 	WOOD_ARROW = "WOOD_ARROW",
 	FIREBALL = "FIREBALL",
 
+	PLOW = "PLOW",
+
 	// Armor
 	LEATHER_HELMET = "LEATHER_HELMET",
 	IRON_HELMET = "IRON_HELMET",
 	DIAMOND_HELMET = "DIAMOND_HELMET",
 	EMERALD_HELMET = "EMERALD_HELMET",
+
+	// Farming
+	WHEAT_SEEDS = "WHEAT_SEEDS",
+	WHEAT_CROP = "WHEAT_CROP",
 }
 export enum ItemArchetype {
 	DEFAULT = 0,

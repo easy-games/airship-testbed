@@ -250,12 +250,12 @@ MonoBehaviour:
     position: {x: 66.423, y: 29.331, z: 84.546}
     rotation: {x: 0.00006568611, y: 0.999904, z: 0.005101331, w: -0.012888115}
   pointLights: []
-  cubeMapPath: shared/resources/skybox/brightsky/bright_sky_2.png
-  globalSkySaturation: 0.323
-  globalSunColor: {r: 1, g: 1, b: 1, a: 1}
-  globalSunBrightness: 0.4
+  cubeMapPath: '@Easy/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
+  globalSkySaturation: 1
+  globalSunColor: {r: 0.95686275, g: 0.9843137, b: 1, a: 1}
+  globalSunBrightness: 0.7
   globalAmbientLight: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 1}
-  globalAmbientBrightness: 0.2
+  globalAmbientBrightness: 0.5
   globalAmbientOcclusion: 0.25
   globalRadiosityScale: 0.25
   globalRadiosityDirectLightAmp: 1

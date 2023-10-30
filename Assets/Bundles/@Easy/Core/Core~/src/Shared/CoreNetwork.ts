@@ -1,3 +1,4 @@
+import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
 import { AccessorySlot } from "./Entity/Character/Accessory/AccessorySlot";
@@ -108,6 +109,14 @@ export const CoreNetwork = {
 		GeneratorSpawnRateChanged: new RemoteEvent<[generatorId: string, newSpawnRate: number]>(),
 		/** Fired when a user joins late. Sends full generator state snapshot. */
 		GeneratorSnapshot: new RemoteEvent<[generatorStateDtos: GeneratorDto[]]>(),
+		/** Fired when a crop is planted */
+		CropPlanted: new RemoteEvent<[cropStateDto: CropStateDto]>(),
+		/** Fired when a crop is planted */
+		CropHarvested: new RemoteEvent<[cropIdx: number]>(),
+		/** Fired when a crop  */
+		CropGrowthUpdated: new RemoteEvent<[cropIdx: number, cropLevel: number]>(),
+		/** Fired when a user joins late. Sends full crop state snapshot */
+		CropSnapshot: new RemoteEvent<[cropStateDtos: CropStateDto[]]>(),
 		/** Fired when a **tagged** GameObject is spawned on the server. */
 		NetGameObjectReplicating: new RemoteEvent<[networkObjectId: number, tag: string]>(),
 		/** Fired when a player joins. Sends `CollectionManager` replicated set state. */

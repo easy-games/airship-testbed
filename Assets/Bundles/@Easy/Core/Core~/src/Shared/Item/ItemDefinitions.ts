@@ -6,6 +6,7 @@ import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { BlockArchetype, BlockMeta, ItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
+import { Duration } from "Shared/Util/Duration";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
@@ -50,6 +51,17 @@ const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 	canHoldToUse: true,
 };
+
+const plowUsable: Partial<UsableHeldItemMeta> = {
+	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+};
+
+const seedsUsable: Partial<UsableHeldItemMeta> = {
+	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+};
+
 const pickaxeViewModel: Partial<ViewModelMeta> = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	// idleAnimTP: CoreAnim("TP_Sword_Idle"),
@@ -145,6 +157,9 @@ export const items: {
 		},
 		block: {
 			blockId: 1,
+			tillable: {
+				tillsToBlockId: 68, // Farmland
+			},
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
@@ -714,5 +729,63 @@ export const items: {
 			// ],
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_FireballExplosion,
 		},
+	},
+	[ItemType.FARMLAND]: {
+		displayName: "Farmland",
+		block: {
+			blockId: 68,
+			tillable: {
+				tillsToBlockId: 1, // Grass
+			},
+			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
+		},
+	},
+	[ItemType.PLOW]: {
+		displayName: "Plow",
+		usable: {
+			...plowUsable,
+			cooldownSeconds: 0.22,
+		},
+		viewModel: {
+			...pickaxeViewModel,
+		},
+		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
+		tillBlock: {},
+	},
+	[ItemType.WHEAT_CROP]: {
+		displayName: "Wheat",
+		cropBlock: {
+			numStages: 4,
+			stageGrowthDuration: Duration.fromSeconds(10),
+		},
+		block: {
+			blockId: 69,
+			stepSound: CoreSound.footstepGrass,
+			hitSound: CoreSound.blockHitDirt,
+			breakSound: CoreSound.blockBreakDirt,
+			placeSound: CoreSound.blockPlaceDirt,
+			prefab: {
+				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/WheatCrop/WheatCrop.prefab",
+			},
+		},
+	},
+	[ItemType.WHEAT_SEEDS]: {
+		displayName: "Wheat Seeds",
+		usable: {
+			...seedsUsable,
+			cooldownSeconds: 0.22,
+		},
+		viewModel: {
+			...pickaxeViewModel,
+		},
+		block: {
+			blockId: 69,
+			placeOnWhitelist: [ItemType.FARMLAND],
+			requiresFoundation: true,
+		},
+		accessoryPaths: [AccPath(ItemType.WHEAT_SEEDS)],
 	},
 };
