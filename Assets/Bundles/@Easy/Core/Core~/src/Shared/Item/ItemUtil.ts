@@ -145,6 +145,27 @@ export class ItemUtil {
 	}
 
 	/**
+	 * Find an `ItemType` from the given string, first trying direct then case-insensitive searching the items
+	 * @param expression The string expression to search for
+	 * @returns The `ItemType` (if found) - otherwise `undefined`.
+	 */
+	public static FindItemTypeFromString(expression: string): ItemType | undefined {
+		const directId = items[expression as ItemType];
+		if (directId) {
+			return expression as ItemType;
+		} else {
+			// lowercase search
+			for (const [key] of pairs(items)) {
+				if (key.lower() === expression.lower()) {
+					return key;
+				}
+			}
+		}
+
+		return undefined;
+	}
+
+	/**
 	 * Fetch a render texture for a provided item.
 	 * @param itemType An item.
 	 * @returns Render texture that corresponds to item.

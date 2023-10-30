@@ -8,6 +8,7 @@
 
 <Blocks>
   <RootAssetPath>@Easy/Core/Shared/Resources/VoxelWorld</RootAssetPath>
+  <Scope>@Easy/Core</Scope>
 
   <Block>
     <Index>1</Index>
