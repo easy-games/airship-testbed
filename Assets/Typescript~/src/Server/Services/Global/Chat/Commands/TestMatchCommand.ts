@@ -16,7 +16,7 @@ export class TestMatchCommand extends ChatCommand {
 		const res = HttpManager.PostAsync(
 			AirshipUrl.GameCoordinatorSocket + "/servers/create",
 			encode({
-				sceneId: "BWMatchServer",
+				sceneId: "BWMatchScene",
 			}),
 			`Authorization=Bearer ${serverBootstrap.airshipJWT}`,
 		);
