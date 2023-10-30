@@ -1,12 +1,13 @@
 import { Controller } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Entity } from "Shared/Entity/Entity";
-import { BreakBlockMeta } from "Shared/Item/ItemMeta";
+import { BreakBlockMeta, TillBlockMeta } from "Shared/Item/ItemMeta";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
 import { BeforeBlockHitSignal } from "../BlockInteractions/Signal/BeforeBlockHitSignal";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 
 @Controller({})
 export class BlockInteractController {
@@ -47,6 +48,11 @@ export class BlockInteractController {
 
 			//Local Client visualization
 			if (newHealth === 0) {
+				// const aboveBlock = world.GetBlockAbove(voxelPos);
+				// if (aboveBlock.itemMeta?.block?.requiresFoundation) {
+
+				// }
+
 				//Destroy block
 				world.PlaceBlockById(voxelPos, 0);
 				if (showHealthbars) {
@@ -58,6 +64,30 @@ export class BlockInteractController {
 					this.blockHealth.VisualizeBlockHealth(voxelPos);
 				}
 			}
+		}
+	}
+
+	public PerformBlockTill(entity: Entity, tillBlock: TillBlockMeta | undefined, voxelPos: Vector3) {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return;
+
+		if (entity.player && tillBlock) {
+			const above = world.GetBlockAbove(voxelPos);
+			if (above.IsCrop()) {
+				return;
+			}
+
+			const block = world.GetBlockAt(voxelPos);
+			const tillable = block.itemMeta?.block?.tillable;
+			if (!tillable) {
+				return;
+			}
+
+			this.localEntity.AddToMoveData("TillBlock", voxelPos);
+
+			world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, {
+				placedByEntityId: entity.id,
+			});
 		}
 	}
 }

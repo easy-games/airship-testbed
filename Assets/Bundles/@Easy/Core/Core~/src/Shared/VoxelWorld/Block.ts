@@ -16,6 +16,10 @@ export class Block {
 		}
 	}
 
+	public IsCrop() {
+		return this.itemMeta?.cropBlock !== undefined;
+	}
+
 	public IsAir(): boolean {
 		return this.blockId === 0;
 	}

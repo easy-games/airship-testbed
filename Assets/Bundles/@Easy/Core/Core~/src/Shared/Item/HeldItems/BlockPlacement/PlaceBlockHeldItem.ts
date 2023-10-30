@@ -4,6 +4,7 @@ import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyR
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
+import inspect from "@easy-games/unity-inspect";
 
 export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
@@ -45,7 +46,13 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	}
 
 	private TryPlaceBlock(): boolean {
-		if (!this.itemMeta?.block) {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return false;
+
+		if (!this.itemMeta) return false;
+
+		const blockMeta = this.itemMeta.block;
+		if (!blockMeta) {
 			return false;
 		}
 
@@ -61,8 +68,21 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			return false;
 		}
 
+		if (blockMeta.requiresFoundation && isVoidPlacement) {
+			warn("is void placement");
+			return false;
+		}
+
+		if (blockMeta.placeOnWhitelist) {
+			const belowItemType = world.GetBlockBelow(placePosition).itemType;
+			if (!belowItemType || !blockMeta.placeOnWhitelist.includes(belowItemType)) {
+				warn("invalid type, expecting ", inspect(blockMeta.placeOnWhitelist), "got", belowItemType ?? "<NONE>");
+				return false;
+			}
+		}
+
 		// Write the voxel at the predicted position
-		WorldAPI.GetMainWorld()?.PlaceBlockById(placePosition, this.itemMeta.block.blockId!, {
+		world.PlaceBlockById(placePosition, blockMeta.blockId!, {
 			placedByEntityId: this.entity.id,
 			priority: true,
 		});

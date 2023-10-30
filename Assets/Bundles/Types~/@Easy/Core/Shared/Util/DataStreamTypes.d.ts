@@ -9,6 +9,7 @@ export type DataStreamItems = {
         itemType: ItemType;
     };
     HitBlock: Vector3;
+    TillBlock: Vector3;
     HeldItemState: HeldItemStateInfo;
 };
 interface HeldItemStateInfo {
