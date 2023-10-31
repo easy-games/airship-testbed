@@ -52,9 +52,11 @@ export type FriendStatus = {
     username: string;
     discriminator: string;
     discriminatedUsername: string;
+    serverId: string;
+    gameId: string;
     metadata?: {
         statusText: string;
+        customGameTitle?: string;
     };
-    game?: string;
 };
 export {};

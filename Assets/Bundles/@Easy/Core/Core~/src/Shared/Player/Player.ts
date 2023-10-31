@@ -159,6 +159,9 @@ export class Player {
 		this.OnLeave.DisconnectAll();
 	}
 
+	/**
+	 * **Server Only**
+	 */
 	public TransferToServer(serverId: string, serverTransferData?: unknown, clientTransferData?: unknown) {
 		if (RunUtil.IsClient()) {
 			print("Player.TeleportToServer can only be called on the server.");

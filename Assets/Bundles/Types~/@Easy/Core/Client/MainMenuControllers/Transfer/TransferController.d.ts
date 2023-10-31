@@ -4,4 +4,5 @@ export declare class TransferController implements OnStart {
     private readonly socketController;
     constructor(socketController: SocketController);
     OnStart(): void;
+    ClientTransferToServer(gameId: string, serverId?: string): void;
 }

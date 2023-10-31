@@ -19,6 +19,7 @@ export declare class FriendsController implements OnStart {
     private statusText;
     private friendBinMap;
     friendStatusChanged: Signal<FriendStatus>;
+    private customGameTitle;
     constructor(authController: AuthController, socketController: SocketController, mainMenuController: MainMenuController, rightClickMenuController: RightClickMenuController);
     OnStart(): void;
     Setup(): void;
@@ -35,4 +36,13 @@ export declare class FriendsController implements OnStart {
         loadImage: boolean;
         includeTag?: boolean;
     }): void;
+    /**
+     * Allows you to include rich presence for your game in the friends sidebar. This replaces "Playing ___" with whatever you want.
+     * Note that the "Playing " will always be prefixed.
+     *
+     * Example: a customGameTitle of "BedWars | Ranked 5v5 - Aztec" will be shown as "Playing BedWars | Ranked 5v5 - Aztec"
+     *
+     * @param customGameTitle The text displayed as the game title.
+     */
+    SetCustomGameTitle(customGameTitle: string | undefined): void;
 }

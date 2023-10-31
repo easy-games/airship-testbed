@@ -2,6 +2,7 @@ import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -16,6 +17,7 @@ import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { TransferController } from "../Transfer/TransferController";
 import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 import { FriendStatus } from "./SocketAPI";
@@ -30,6 +32,7 @@ export class FriendsController implements OnStart {
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
 	public friendStatusChanged = new Signal<FriendStatus>();
+	private customGameTitle: string | undefined;
 
 	constructor(
 		private readonly authController: AuthController,
@@ -49,7 +52,10 @@ export class FriendsController implements OnStart {
 		}
 
 		this.authController.WaitForAuthed().then(() => {
-			this.SendStatusUpdate();
+			// Game context will send status update when client receives server info.
+			if (Game.Context === CoreContext.MAIN_MENU) {
+				this.SendStatusUpdate();
+			}
 			this.FetchFriends();
 		});
 
@@ -122,11 +128,15 @@ export class FriendsController implements OnStart {
 	public SendStatusUpdate(): void {
 		const status: Partial<FriendStatus> = {
 			userId: Game.LocalPlayer.userId,
-			status: "online",
+			status: Game.Context === CoreContext.GAME ? "in_game" : "online",
+			serverId: Game.serverId,
+			gameId: Game.gameId,
 			metadata: {
 				statusText: this.statusText,
+				customGameTitle: this.customGameTitle,
 			},
 		};
+		print("Sending status update: " + inspect(status));
 		this.socketController.Emit("update-status", status);
 	}
 
@@ -200,6 +210,10 @@ export class FriendsController implements OnStart {
 					friendsContent.transform,
 				);
 				go.name = friend.userId;
+
+				const refs = go.GetComponent<GameObjectReferences>();
+				const joinButton = refs.GetValue("UI", "JoinButton");
+
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
 
@@ -237,6 +251,10 @@ export class FriendsController implements OnStart {
 							],
 						);
 					}
+				});
+
+				CanvasAPI.OnClickEvent(joinButton, () => {
+					Dependency<TransferController>().ClientTransferToServer(friend.gameId, friend.serverId);
 				});
 			}
 			go.transform.SetSiblingIndex(i);
@@ -283,6 +301,7 @@ export class FriendsController implements OnStart {
 		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
 		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
 		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>();
+		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {
 			const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
@@ -317,15 +336,30 @@ export class FriendsController implements OnStart {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
 			status.color = ColorUtil.HexToColor("#0CDF61");
+			joinButton.SetActive(false);
 		} else if (friend.status === "in_game") {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
 			status.color = ColorUtil.HexToColor("70D4FF");
-			status.text = `Playing ${friend.game ?? "???"}`;
+			status.text = `Playing ${friend.metadata?.customGameTitle ?? "???"}`;
+			joinButton.SetActive(true);
 		} else {
 			canvasGroup.alpha = 0.5;
 			statusIndicator.color = ColorUtil.HexToColor("#9C9C9C");
 			status.color = new Color(1, 1, 1, 1);
+			joinButton.SetActive(false);
 		}
+	}
+
+	/**
+	 * Allows you to include rich presence for your game in the friends sidebar. This replaces "Playing ___" with whatever you want.
+	 * Note that the "Playing " will always be prefixed.
+	 *
+	 * Example: a customGameTitle of "BedWars | Ranked 5v5 - Aztec" will be shown as "Playing BedWars | Ranked 5v5 - Aztec"
+	 *
+	 * @param customGameTitle The text displayed as the game title.
+	 */
+	public SetCustomGameTitle(customGameTitle: string | undefined) {
+		this.customGameTitle = customGameTitle;
 	}
 }

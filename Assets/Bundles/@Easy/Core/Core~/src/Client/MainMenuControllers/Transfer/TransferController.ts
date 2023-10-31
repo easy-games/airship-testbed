@@ -19,4 +19,11 @@ export class TransferController implements OnStart {
 			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
 		});
 	}
+
+	public ClientTransferToServer(gameId: string, serverId?: string): void {
+		this.socketController.Emit("request-transfer", {
+			gameId: gameId,
+			preferredServerId: serverId,
+		});
+	}
 }

@@ -42,6 +42,7 @@ export const CoreNetwork = {
 		LibonatiTest: new RemoteEvent<[]>(),
 	},
 	ServerToClient: {
+		ServerInfo: new RemoteEvent<[gameId: string, serverId: string]>(),
 		UpdateInventory: new RemoteEvent<InventoryDto>(),
 		/** Creates a new instance of an `ItemStack`. */
 		SetInventorySlot: new RemoteEvent<
