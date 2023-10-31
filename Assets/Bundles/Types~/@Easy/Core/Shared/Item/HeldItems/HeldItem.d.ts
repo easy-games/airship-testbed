@@ -14,6 +14,8 @@ export declare class HeldItem {
     private holdingDownBin;
     private holdingDown;
     private bufferingUse;
+    protected audioPitchShift: number;
+    protected playEffectsOnUse: boolean;
     constructor(entity: Entity, newMeta: ItemMeta | undefined);
     protected Log(message: string): void;
     OnEquip(): void;
@@ -36,6 +38,7 @@ export declare class HeldItem {
     protected OnCooldownReset(): void;
     /** Runs when an item is used. Runs on every client.*/
     protected OnUseClient(useIndex: number): void;
+    protected PlayItemSound(): void;
     protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean): void;
     /** Runs when an item is used, server authorized
      * return true if you can use the item */

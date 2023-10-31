@@ -33,5 +33,16 @@ export declare class CharacterEntityAnimator extends EntityAnimator {
     private TriggerEvent;
     EquipItem(itemMeta: ItemMeta | undefined): void;
     StartIdleAnim(instantTransition: boolean): void;
-    PlayUseAnim(useIndex?: number): void;
+    PlayUseAnim(useIndex?: number, config?: {
+        fadeMode?: FadeMode;
+        wrapMode?: WrapMode;
+        transitionTime?: number;
+        autoFadeOut?: boolean;
+    }): void;
+    PlayRandomUseAnim(config?: {
+        fadeMode?: FadeMode;
+        wrapMode?: WrapMode;
+        transitionTime?: number;
+        autoFadeOut?: boolean;
+    }): void;
 }

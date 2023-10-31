@@ -5,6 +5,7 @@ import { HeldItem } from "../HeldItem";
 export declare class MeleeHeldItem extends HeldItem {
     private gizmoEnabled;
     private animationIndex;
+    private bin;
     OnUseClient(useIndex: number): void;
     OnUseServer(useIndex: number): void;
     private ScanForHits;
