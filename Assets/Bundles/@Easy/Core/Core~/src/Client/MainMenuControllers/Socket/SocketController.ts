@@ -25,6 +25,10 @@ export class SocketController implements OnStart {
 				this.Connect();
 			});
 		});
+
+		this.Emit("set-session-data", {
+			selectedRegion: "na",
+		});
 	}
 
 	public On<T = unknown>(eventName: string, callback: (data: T) => void): void {

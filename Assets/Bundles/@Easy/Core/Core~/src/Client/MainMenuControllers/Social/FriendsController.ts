@@ -16,6 +16,7 @@ import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { TransferController } from "../Transfer/TransferController";
 import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 import { FriendStatus } from "./SocketAPI";
@@ -202,6 +203,10 @@ export class FriendsController implements OnStart {
 					friendsContent.transform,
 				);
 				go.name = friend.userId;
+
+				const refs = go.GetComponent<GameObjectReferences>();
+				const joinButton = refs.GetValue("UI", "JoinButton");
+
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
 
@@ -239,6 +244,10 @@ export class FriendsController implements OnStart {
 							],
 						);
 					}
+				});
+
+				CanvasAPI.OnClickEvent(joinButton, () => {
+					Dependency<TransferController>().ClientTransferToServer(friend.gameId, friend.serverId);
 				});
 			}
 			go.transform.SetSiblingIndex(i);
@@ -285,6 +294,7 @@ export class FriendsController implements OnStart {
 		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
 		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
 		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>();
+		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {
 			const texture = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
@@ -319,15 +329,18 @@ export class FriendsController implements OnStart {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
 			status.color = ColorUtil.HexToColor("#0CDF61");
+			joinButton.SetActive(false);
 		} else if (friend.status === "in_game") {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
 			status.color = ColorUtil.HexToColor("70D4FF");
 			status.text = `Playing ${friend.game ?? "???"}`;
+			joinButton.SetActive(true);
 		} else {
 			canvasGroup.alpha = 0.5;
 			statusIndicator.color = ColorUtil.HexToColor("#9C9C9C");
 			status.color = new Color(1, 1, 1, 1);
+			joinButton.SetActive(false);
 		}
 	}
 }
