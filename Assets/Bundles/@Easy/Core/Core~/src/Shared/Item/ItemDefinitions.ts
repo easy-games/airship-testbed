@@ -1,5 +1,4 @@
 import { CoreSound } from "Shared/Sound/CoreSound";
-import { Duration } from "Shared/Util/Duration";
 import { Layer } from "Shared/Util/Layer";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";

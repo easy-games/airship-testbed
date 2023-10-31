@@ -10,6 +10,7 @@ export type Party = {
     lastUpdated: number;
 };
 export interface GameServer {
+    serverId: string;
     ip: string;
     port: number;
 }

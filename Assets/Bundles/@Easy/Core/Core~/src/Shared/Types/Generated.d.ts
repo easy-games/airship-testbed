@@ -3742,10 +3742,8 @@ interface AgonesProxy extends MonoBehaviour {
     constructor(): AgonesProxy;
 
     Connect(): void;
-    DoNothingTest(): Vector3;
     Ready(): void;
     Shutdown(): void;
-    SleepTest(seconds: number): number;
 }
     
 interface AgonesCoreConstructor {
@@ -9742,8 +9740,8 @@ interface Accessory extends ScriptableObject {
     Position: Vector3;
     Rotation: Vector3;
     Scale: Vector3;
-    MeshDeformed: boolean;
     visibilityMode: VisibilityMode;
+    SkinnedToCharacter: boolean;
     HasSkinnedMeshes: boolean;
 
     constructor(): Accessory;
@@ -9752,7 +9750,9 @@ interface Accessory extends ScriptableObject {
     
 interface AccessorySkin extends ScriptableObject {
     DisplayName: string;
-    skinTexture: Texture2D;
+    skinTextureDiffuse: Texture2D;
+    skinTextureNormal: Texture2D;
+    skinTextureORM: Texture2D;
 
     constructor(): AccessorySkin;
 
@@ -10720,6 +10720,7 @@ interface VoxelWorld extends MonoBehaviour {
     CalculateSunShadowAtPoint(point: Vector3, faceAxis: number, normal: Vector3): number;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
     CreateSamples(): void;
+    DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: unknown, priority: boolean): void;
     DirtyNeighborMeshes(voxel: unknown, priority: boolean): void;
     FullWorldUpdate(): void;
