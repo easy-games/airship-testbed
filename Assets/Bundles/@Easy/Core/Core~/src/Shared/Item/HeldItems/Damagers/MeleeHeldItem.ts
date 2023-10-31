@@ -97,7 +97,7 @@ export class MeleeHeldItem extends HeldItem {
 			}
 			if (this.itemMeta?.usable?.cooldownSeconds) {
 				this.bin.Add(
-					SetTimeout(this.itemMeta.usable.cooldownSeconds + 1, () => {
+					SetTimeout(this.itemMeta.usable.cooldownSeconds + 0.25, () => {
 						this.animationIndex = 0;
 					}),
 				);
