@@ -159,7 +159,7 @@ export class Player {
 		this.OnLeave.DisconnectAll();
 	}
 
-	public TeleportToServer(serverId: string, serverTransferData?: unknown, clientTransferData?: unknown) {
+	public TransferToServer(serverId: string, serverTransferData?: unknown, clientTransferData?: unknown) {
 		if (RunUtil.IsClient()) {
 			print("Player.TeleportToServer can only be called on the server.");
 			return;

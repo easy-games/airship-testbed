@@ -28,6 +28,7 @@ export class PreGameService implements OnStart {
 		});
 
 		CoreServerSignals.EntityDeath.Connect((event) => {
+			event.respawnTime = 0;
 			Task.Delay(0, () => {
 				if (this.matchService.GetState() === MatchState.PRE && event.entity.player) {
 					const entity = Dependency<EntityService>().SpawnEntityForPlayer(

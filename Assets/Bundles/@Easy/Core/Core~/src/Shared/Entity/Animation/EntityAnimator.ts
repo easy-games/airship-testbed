@@ -34,8 +34,8 @@ export abstract class EntityAnimator {
 	private isFlashing = false;
 	protected isFirstPerson = false;
 
-	private footstepAudioBundle: AudioClipBundle;
-	private slideAudioBundle: AudioClipBundle;
+	private footstepAudioBundle: AudioClipBundle | undefined;
+	private slideAudioBundle: AudioClipBundle | undefined;
 	private steppedOnBlockType = 0;
 	private lastFootstepSoundTime = 0;
 	private deathVfx?: GameObject;
@@ -47,59 +47,61 @@ export abstract class EntityAnimator {
 		this.entityRef = entityRef;
 
 		//AUDIO
-		this.footstepAudioBundle = new AudioClipBundle([]);
-		this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
-		this.footstepAudioBundle.soundOptions.maxDistance = 15;
-		this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
-			? AudioBundleSpacialMode.GLOBAL
-			: AudioBundleSpacialMode.SPACIAL;
+		if (RunUtil.IsClient()) {
+			this.footstepAudioBundle = new AudioClipBundle([]);
+			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
+			this.footstepAudioBundle.soundOptions.maxDistance = 15;
+			this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
+				? AudioBundleSpacialMode.GLOBAL
+				: AudioBundleSpacialMode.SPACIAL;
 
-		this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
-		this.slideAudioBundle.volumeScale = 0.2;
-		this.slideAudioBundle.useFullPath = true;
-		this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
-		this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
-			? AudioBundleSpacialMode.GLOBAL
-			: AudioBundleSpacialMode.SPACIAL;
+			this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
+			this.slideAudioBundle.volumeScale = 0.2;
+			this.slideAudioBundle.useFullPath = true;
+			this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+			this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
+				? AudioBundleSpacialMode.GLOBAL
+				: AudioBundleSpacialMode.SPACIAL;
 
-		//ANIMATIONS
-		this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.FlinchAnimFPS,
-		);
-		this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.DeathAnimFPS,
-		);
-		this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.FlinchAnimTP,
-		);
-		this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.DeathAnimTP,
-		);
+			//ANIMATIONS
+			this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
+				BundleGroupNames.Entity,
+				Bundle_Entity.OnHit,
+				Bundle_Entity_OnHit.FlinchAnimFPS,
+			);
+			this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
+				BundleGroupNames.Entity,
+				Bundle_Entity.OnHit,
+				Bundle_Entity_OnHit.DeathAnimFPS,
+			);
+			this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+				BundleGroupNames.Entity,
+				Bundle_Entity.OnHit,
+				Bundle_Entity_OnHit.FlinchAnimTP,
+			);
+			this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+				BundleGroupNames.Entity,
+				Bundle_Entity.OnHit,
+				Bundle_Entity_OnHit.DeathAnimTP,
+			);
 
-		//VFX
-		this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.GenericVFX,
-		);
-		this.deathEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.DeathVFX,
-		);
-		this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
-			BundleGroupNames.Entity,
-			Bundle_Entity.OnHit,
-			Bundle_Entity_OnHit.DeathVoidVFX,
-		);
+			//VFX
+			this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
+				BundleGroupNames.Entity,
+				Bundle_Entity.OnHit,
+				Bundle_Entity_OnHit.GenericVFX,
+			);
+			this.deathEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
+				BundleGroupNames.Entity,
+				Bundle_Entity.OnHit,
+				Bundle_Entity_OnHit.DeathVFX,
+			);
+			this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
+				BundleGroupNames.Entity,
+				Bundle_Entity.OnHit,
+				Bundle_Entity_OnHit.DeathVoidVFX,
+			);
+		}
 
 		//Listen to animation events
 		const animConn = this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
@@ -291,7 +293,7 @@ export abstract class EntityAnimator {
 			stepSounds = [];
 		}
 
-		if (stepSounds.size() > 0) {
+		if (stepSounds.size() > 0 && this.footstepAudioBundle) {
 			if (blockId !== this.steppedOnBlockType) {
 				//Refresh our audio bundle with the new sound list
 				this.steppedOnBlockType = blockId;
@@ -306,12 +308,14 @@ export abstract class EntityAnimator {
 	private OnAnimationEvent(key: EntityAnimationEventKey) {
 		switch (key) {
 			case EntityAnimationEventKey.SLIDE_START:
-				this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
-				this.slideAudioBundle.Stop();
-				this.slideAudioBundle.PlayNext();
+				if (this.slideAudioBundle) {
+					this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
+					this.slideAudioBundle.Stop();
+					this.slideAudioBundle.PlayNext();
+				}
 				break;
 			case EntityAnimationEventKey.SLIDE_END:
-				this.slideAudioBundle.Stop(1);
+				this.slideAudioBundle?.Stop(1);
 				break;
 			case EntityAnimationEventKey.JUMP:
 				if (this.entityRef.jumpSound) {

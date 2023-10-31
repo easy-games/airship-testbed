@@ -41,6 +41,8 @@ export declare class World {
      * @returns VoxelBlock at position.
      */
     GetBlockAt(pos: Vector3): Block;
+    GetBlockBelow(pos: Vector3): Block;
+    GetBlockAbove(pos: Vector3): Block;
     /**
      * A way to find block data below a target. Used to know what a character is standing on
      * @param pos
