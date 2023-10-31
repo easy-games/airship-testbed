@@ -202,7 +202,8 @@ export class ItemUtil {
 	 * @returns Render path that corresponds to item.
 	 */
 	public static GetItemRenderPath(itemType: ItemType): string {
-		const imageSrc = `${itemType.lower()}.png`;
+		const [, id] = this.GetItemTypeComponents(itemType);
+		const imageSrc = `${id.lower()}.png`;
 		return `Client/Resources/Assets/ItemRenders/${imageSrc}`;
 	}
 
