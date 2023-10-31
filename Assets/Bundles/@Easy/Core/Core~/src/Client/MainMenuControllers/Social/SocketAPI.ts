@@ -66,6 +66,6 @@ export type FriendStatus = {
 	gameId: string;
 	metadata?: {
 		statusText: string;
+		customGameTitle?: string;
 	};
-	game?: string;
 };

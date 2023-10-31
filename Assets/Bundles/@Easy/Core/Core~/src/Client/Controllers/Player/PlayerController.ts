@@ -1,6 +1,8 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
+import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { Player, PlayerDto } from "Shared/Player/Player";
@@ -13,7 +15,10 @@ export class PlayerController implements OnStart {
 	public readonly LocalConnection: NetworkConnection;
 	private players = new Set<Player>([Game.LocalPlayer]);
 
-	constructor() {
+	constructor(
+		private readonly friendsController: FriendsController,
+		private readonly authController: AuthController,
+	) {
 		this.LocalConnection = InstanceFinder.ClientManager.Connection;
 		this.players.add(Game.LocalPlayer);
 
@@ -21,6 +26,13 @@ export class PlayerController implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			print(`GameId=${gameId} ServerId=${serverId}`);
+			if (this.authController.IsAuthenticated()) {
+				this.friendsController.SendStatusUpdate();
+			} else {
+				this.authController.onAuthenticated.Once(() => {
+					this.friendsController.SendStatusUpdate();
+				});
+			}
 		});
 	}
 

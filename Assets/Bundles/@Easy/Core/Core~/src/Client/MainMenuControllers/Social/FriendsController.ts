@@ -32,6 +32,7 @@ export class FriendsController implements OnStart {
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
 	public friendStatusChanged = new Signal<FriendStatus>();
+	private customGameTitle: string | undefined;
 
 	constructor(
 		private readonly authController: AuthController,
@@ -51,7 +52,10 @@ export class FriendsController implements OnStart {
 		}
 
 		this.authController.WaitForAuthed().then(() => {
-			this.SendStatusUpdate();
+			// Game context will send status update when client receives server info.
+			if (Game.Context === CoreContext.MAIN_MENU) {
+				this.SendStatusUpdate();
+			}
 			this.FetchFriends();
 		});
 
@@ -129,8 +133,10 @@ export class FriendsController implements OnStart {
 			gameId: Game.gameId,
 			metadata: {
 				statusText: this.statusText,
+				customGameTitle: this.customGameTitle,
 			},
 		};
+		print("Sending status update: " + inspect(status));
 		this.socketController.Emit("update-status", status);
 	}
 
@@ -335,7 +341,7 @@ export class FriendsController implements OnStart {
 			canvasGroup.alpha = 1;
 			statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
 			status.color = ColorUtil.HexToColor("70D4FF");
-			status.text = `Playing ${friend.game ?? "???"}`;
+			status.text = `Playing ${friend.metadata?.customGameTitle ?? "???"}`;
 			joinButton.SetActive(true);
 		} else {
 			canvasGroup.alpha = 0.5;
@@ -343,5 +349,17 @@ export class FriendsController implements OnStart {
 			status.color = new Color(1, 1, 1, 1);
 			joinButton.SetActive(false);
 		}
+	}
+
+	/**
+	 * Allows you to include rich presence for your game in the friends sidebar. This replaces "Playing ___" with whatever you want.
+	 * Note that the "Playing " will always be prefixed.
+	 *
+	 * Example: a customGameTitle of "BedWars | Ranked 5v5 - Aztec" will be shown as "Playing BedWars | Ranked 5v5 - Aztec"
+	 *
+	 * @param customGameTitle The text displayed as the game title.
+	 */
+	public SetCustomGameTitle(customGameTitle: string | undefined) {
+		this.customGameTitle = customGameTitle;
 	}
 }
