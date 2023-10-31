@@ -115,8 +115,7 @@ SkinnedMeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -161,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
+  warningMessage: 'No available material that supports dynamic lights '
 --- !u!1 &716604332056178089
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,8 +886,7 @@ SkinnedMeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1009,7 +1007,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4258380384862571375}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1037,7 +1035,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5cebab1b10ac52f48b27624f8843ed3e, type: 2}
+  - {fileID: 2100000, guid: 3eb76a6973b8735449015ecb440d4b72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1116,10 +1114,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.8490566, g: 0.534963, b: 0.42052332, a: 1}
+  - materialColor: {r: 0.6603774, g: 0.4944524, b: 0.39560342, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: AirshipCharacterBase
+    reference: AirshipCharacterBaseToon
   addedByEditorScript: 0
 --- !u!1 &4771920100964250519
 GameObject:
@@ -1301,8 +1299,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1344,7 +1341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
+  warningMessage: 'No available material that supports dynamic lights '
 --- !u!1 &5372027267382357332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,7 +1427,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5cebab1b10ac52f48b27624f8843ed3e, type: 2}
+  - {fileID: 2100000, guid: 3eb76a6973b8735449015ecb440d4b72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1509,10 +1506,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.8490566, g: 0.534963, b: 0.42052332, a: 1}
+  - materialColor: {r: 0.6603774, g: 0.4944524, b: 0.39560342, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: AirshipCharacterBase
+    reference: AirshipCharacterBaseToon
   addedByEditorScript: 0
 --- !u!1 &5960472572424247457
 GameObject:
@@ -1630,8 +1627,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2181,7 +2177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
+  warningMessage: 'No available material that supports dynamic lights '
 --- !u!114 &8695364219153689915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2540,7 +2536,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 0
+  _scenePathHash: 4244522174
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 14380724839903794209
 --- !u!114 &5043041770756594627

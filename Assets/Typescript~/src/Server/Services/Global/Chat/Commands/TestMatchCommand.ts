@@ -16,7 +16,7 @@ export class TestMatchCommand extends ChatCommand {
 		const res = HttpManager.PostAsync(
 			AirshipUrl.GameCoordinatorSocket + "/servers/create",
 			encode({
-				sceneId: "BWMatchServer",
+				sceneId: "BWMatchScene",
 			}),
 			`Authorization=Bearer ${serverBootstrap.airshipJWT}`,
 		);
@@ -26,7 +26,7 @@ export class TestMatchCommand extends ChatCommand {
 			}>(res.data);
 			player.SendMessage(`Created server with ID "${data.serverId}". Teleporting all players...`);
 			for (const player of Dependency<PlayerService>().GetPlayers()) {
-				player.TeleportToServer(data.serverId);
+				player.TransferToServer(data.serverId);
 			}
 		}
 	}

@@ -198,7 +198,7 @@ export class DamageService implements OnStart {
 
 		//let fromPos = humanoid.transform.position;
 		let impulse: Vector3;
-		const delta = knockbackVel ? knockbackVel : new Vector3(0, 9, 0);
+		const delta = knockbackVel ? knockbackVel : new Vector3(0, 0, 0);
 
 		impulse = new Vector3(delta.x * horizontalScalar, delta.y * verticalScalar, delta.z * horizontalScalar);
 		humanoid.ApplyVelocityOverTime(impulse, kbDuration);
