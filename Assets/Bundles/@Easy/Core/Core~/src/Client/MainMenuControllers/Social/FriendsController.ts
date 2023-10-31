@@ -1,4 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { Game } from "Shared/Game";
@@ -62,6 +63,7 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
+			print("friend statuses: " + inspect(data));
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
