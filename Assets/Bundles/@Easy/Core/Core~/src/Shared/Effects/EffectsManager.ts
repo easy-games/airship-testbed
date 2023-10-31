@@ -21,15 +21,22 @@ export class EffectsManager {
 		return this.SpawnGameObjectAtPosition(prefab, worldPosition, worldRotation, destroyInSeconds);
 	}
 
+	public static SpawnRandomBundleEffectById(
+		bundleId: AllBundleItems[],
+		worldPosition = Vector3.zero,
+		worldEuler = Vector3.zero,
+		destroyInSeconds = 5,
+	) {}
+
 	public static SpawnBundleEffectById(
 		bundleId: AllBundleItems,
-		worldPosition: Vector3,
-		worldRotation: Vector3,
+		worldPosition = Vector3.zero,
+		worldEuler = Vector3.zero,
 		destroyInSeconds = 5,
 	) {
 		let template = BundleReferenceManager.LoadDirectResource<GameObject>(bundleId);
 		if (template) {
-			return this.SpawnGameObjectAtPosition(template, worldPosition, worldRotation, destroyInSeconds);
+			return this.SpawnGameObjectAtPosition(template, worldPosition, worldEuler, destroyInSeconds);
 		}
 		return undefined;
 	}

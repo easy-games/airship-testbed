@@ -4,9 +4,10 @@ import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
-import { BlockArchetype, BlockMeta, ItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
+import { BlockArchetype, BlockMeta, ItemMeta, MeleeItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 import { Duration } from "Shared/Util/Duration";
+import { DamageType } from "Shared/Damage/DamageType";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
@@ -45,6 +46,14 @@ const swordUsable: UsableHeldItemMeta = {
 const swordViewModel: ViewModelMeta = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	idleAnimTP: CoreAnim("Airship_Empty"),
+};
+
+const swordMelee: MeleeItemMeta = {
+	damage: 10,
+	onUseVFX: [AllBundleItems.ItemSword_ThirdPerson_Swing01, AllBundleItems.ItemSword_ThirdPerson_Swing02],
+	onUseVFX_FP: [AllBundleItems.ItemSword_FirstPerson_Swing01, AllBundleItems.ItemSword_FirstPerson_Swing02],
+	canHitMultipleTargets: true,
+	damageType: DamageType.SWORD,
 };
 const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
@@ -534,6 +543,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 18,
 		},
 	},
@@ -544,6 +554,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 25,
 		},
 	},
@@ -554,6 +565,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 35,
 		},
 	},
@@ -564,6 +576,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 45,
 		},
 	},
@@ -574,6 +587,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.DOUBLE_HIT_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 10,
 		},
 	},
@@ -584,6 +598,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.RAGEBLADE)],
 		melee: {
+			...swordMelee,
 			damage: 15,
 		},
 	},

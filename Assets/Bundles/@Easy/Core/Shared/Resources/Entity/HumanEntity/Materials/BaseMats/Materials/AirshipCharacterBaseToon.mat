@@ -154,7 +154,7 @@ Material:
     - _SaturationMod: 5
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
-    - _SpecMod: 1
+    - _SpecMod: 0.25
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
@@ -175,6 +175,6 @@ Material:
     - _RimDir: {r: 1, g: 0, b: -0.5, a: 0}
     - _ShadowColor: {r: 0.24528301, g: 0.07775009, b: 0.035866853, a: 1}
     - _SkyShine: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 0.9811321, g: 0.5970096, b: 0.5970096, a: 1}
   m_BuildTextureStacks: []

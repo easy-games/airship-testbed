@@ -22,7 +22,9 @@ MonoBehaviour:
       value: {fileID: 7400000, guid: 9625de74b614f419d9865b153f7de582, type: 2}
     - key: UnEquip
       value: {fileID: 7400000, guid: 9625de74b614f419d9865b153f7de582, type: 2}
-    - key: Use01
+    - key: Swing01
+      value: {fileID: 7400000, guid: 647d231004e5840b89f0505720561bae, type: 2}
+    - key: Swing02
       value: {fileID: 7400000, guid: 647d231004e5840b89f0505720561bae, type: 2}
   - key: ThirdPerson
     value:
@@ -32,12 +34,20 @@ MonoBehaviour:
       value: {fileID: 7400000, guid: aa46dd73b784d144da6e3cad893c42bf, type: 2}
     - key: UnEquip
       value: {fileID: 7400000, guid: 8a20bad386d212a4f8551c625127d853, type: 2}
-    - key: Use
-      value: {fileID: 7400000, guid: 647d231004e5840b89f0505720561bae, type: 2}
+    - key: Swing01
+      value: {fileID: 7400000, guid: c74e68672aea946f8aa1f38673afa692, type: 2}
+    - key: Swing02
+      value: {fileID: 7400000, guid: 47e0909cb49cb6d48b2f39b9ecfebdd9, type: 2}
   - key: Prefabs
     value:
-    - key: OnUse
+    - key: OnSwing01
+      value: {fileID: 4958697443944929311, guid: ec34befc00f54354292ebf2f00ced102, type: 3}
+    - key: OnSwing02
+      value: {fileID: 4958697443944929311, guid: 7ef4ead158f851c4980eb1be37c93c51, type: 3}
+    - key: OnSwingFP01
       value: {fileID: 4958697443944929311, guid: 4c402e8d17c7a5341be1f261a5e0226a, type: 3}
+    - key: OnSwingFP02
+      value: {fileID: 4958697443944929311, guid: 57f9e85dd64fc92469d276ad96cbda49, type: 3}
     - key: OnHit
       value: {fileID: 3846717720964566100, guid: 53a8707f14c131c4cb163a3a501cd8d2, type: 3}
   - key: SFX
