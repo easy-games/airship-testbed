@@ -13,7 +13,6 @@ import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
-import { SetInterval } from "Shared/Util/Timer";
 import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
@@ -83,16 +82,9 @@ export class FriendsController implements OnStart {
 			StateManager.SetString("main-menu:friend-statuses", saveRaw);
 		});
 
-		// Expires every 6 hours. So we fire every hour.
-		SetInterval(
-			60 * 60,
-			() => {
-				this.socketController.On("game-coordinator/status-update-request", (data) => {
-					this.SendStatusUpdate();
-				});
-			},
-			true,
-		);
+		this.socketController.On("game-coordinator/status-update-request", (data) => {
+			this.SendStatusUpdate();
+		});
 
 		this.Setup();
 	}
