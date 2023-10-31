@@ -123,6 +123,8 @@ export class FriendsController implements OnStart {
 		const status: Partial<FriendStatus> = {
 			userId: Game.LocalPlayer.userId,
 			status: "online",
+			serverId: Game.serverId,
+			gameId: Game.gameId,
 			metadata: {
 				statusText: this.statusText,
 			},

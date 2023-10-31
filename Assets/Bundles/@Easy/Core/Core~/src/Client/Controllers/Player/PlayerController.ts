@@ -16,6 +16,12 @@ export class PlayerController implements OnStart {
 	constructor() {
 		this.LocalConnection = InstanceFinder.ClientManager.Connection;
 		this.players.add(Game.LocalPlayer);
+
+		CoreNetwork.ServerToClient.ServerInfo.Client.OnServerEvent((gameId, serverId) => {
+			Game.gameId = gameId;
+			Game.serverId = serverId;
+			print(`GameId=${gameId} ServerId=${serverId}`);
+		});
 	}
 
 	OnStart(): void {
