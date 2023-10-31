@@ -78,7 +78,9 @@ const woolBlock: BlockMeta = {
 };
 
 function AccPath(itemType: ItemType): string {
-	return "@Easy/Core/Shared/Resources/Accessories/" + itemType.lower() + ".asset";
+	const [scope, itemId] = itemType.split(":");
+
+	return scope + "/Shared/Resources/Accessories/" + itemId.lower() + ".asset";
 }
 
 export const items: {

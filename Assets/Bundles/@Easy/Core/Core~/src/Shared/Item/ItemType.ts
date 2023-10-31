@@ -1,6 +1,3 @@
-/**
- * @scope Easy/Core
- */
 export const enum ItemType {
 	GRASS = "@Easy/Core:GRASS",
 	DIRT = "@Easy/Core:DIRT",

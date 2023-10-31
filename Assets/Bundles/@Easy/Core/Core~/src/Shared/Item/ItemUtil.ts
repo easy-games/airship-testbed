@@ -194,6 +194,15 @@ export class ItemUtil {
 		return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
 	}
 
+	public static ItemTypeComponents(itemType: ItemType): [scope: string, id: string] {
+		const components = itemType.split(":");
+		if (components.size() > 1) {
+			return components as [string, string];
+		} else {
+			return ["", components[0]];
+		}
+	}
+
 	public static GetItemTypes(): ItemType[] {
 		return this.itemTypes;
 	}

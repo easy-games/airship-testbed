@@ -595,9 +595,9 @@ export class Entity {
 		if (this.IsLocalCharacter()) {
 			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 		}
-		const projectilePath = `@Easy/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(
-			projectileItemType,
-		)}.prefab`;
+
+		const [, id] = ItemUtil.ItemTypeComponents(projectileItemType);
+		const projectilePath = `@Easy/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(id)}.prefab`;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
 		const powerMulitplier = itemMeta.projectileLauncher?.powerMultiplier ?? 1;
