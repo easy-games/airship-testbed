@@ -77,8 +77,23 @@ const woolBlock: BlockMeta = {
 	blockArchetype: BlockArchetype.WOOL,
 };
 
+/**
+ * Internal use - External use is through `ItemUtil.ItemTypeComponents`.
+ *
+ * @internal - Will not show up in types
+ */
+export function ItemTypeComponentsInternal(itemType: ItemType): [scope: string, id: string] {
+	const [scope, id] = itemType.split(":");
+	if (scope.find("^@([A-z][A-z0-9]+)")[0]) {
+		// if scope
+		return [scope, id];
+	} else {
+		return ["", scope];
+	}
+}
+
 function AccPath(itemType: ItemType): string {
-	const [scope, itemId] = itemType.split(":");
+	const [scope, itemId] = ItemTypeComponentsInternal(itemType);
 
 	return scope + "/Shared/Resources/Accessories/" + itemId.lower() + ".asset";
 }

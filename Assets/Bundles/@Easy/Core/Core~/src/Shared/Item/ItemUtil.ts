@@ -1,6 +1,6 @@
 import Object from "@easy-games/unity-object-utils";
 import { Signal } from "Shared/Util/Signal";
-import { items } from "./ItemDefinitions";
+import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 
@@ -194,13 +194,15 @@ export class ItemUtil {
 		return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
 	}
 
+	/**
+	 * Returns the component parts of an ItemType - the scope and the id
+	 *
+	 * E.g. `@Easy/Core:wood` returns [`"@Easy/Core"`, `"wood"`]
+	 * @param itemType The item type to get the components of
+	 * @returns The component prats of the item type string
+	 */
 	public static ItemTypeComponents(itemType: ItemType): [scope: string, id: string] {
-		const components = itemType.split(":");
-		if (components.size() > 1) {
-			return components as [string, string];
-		} else {
-			return ["", components[0]];
-		}
+		return ItemTypeComponentsInternal(itemType);
 	}
 
 	public static GetItemTypes(): ItemType[] {
