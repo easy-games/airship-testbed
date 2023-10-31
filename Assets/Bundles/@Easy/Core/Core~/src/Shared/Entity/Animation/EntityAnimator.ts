@@ -40,7 +40,7 @@ export abstract class EntityAnimator {
 	private lastFootstepSoundTime = 0;
 	private deathVfx?: GameObject;
 
-	public baseFootstepVolumeScale = 0.15;
+	public baseFootstepVolumeScale = 0.1;
 
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;

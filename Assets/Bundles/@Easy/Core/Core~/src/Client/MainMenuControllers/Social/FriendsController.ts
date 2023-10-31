@@ -2,6 +2,7 @@ import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -12,6 +13,7 @@ import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
+import { SetInterval } from "Shared/Util/Timer";
 import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
@@ -81,9 +83,16 @@ export class FriendsController implements OnStart {
 			StateManager.SetString("main-menu:friend-statuses", saveRaw);
 		});
 
-		this.socketController.On("game-coordinator/status-update-request", (data) => {
-			this.SendStatusUpdate();
-		});
+		// Expires every 6 hours. So we fire every hour.
+		SetInterval(
+			60 * 60,
+			() => {
+				this.socketController.On("game-coordinator/status-update-request", (data) => {
+					this.SendStatusUpdate();
+				});
+			},
+			true,
+		);
 
 		this.Setup();
 	}
@@ -123,7 +132,7 @@ export class FriendsController implements OnStart {
 	public SendStatusUpdate(): void {
 		const status: Partial<FriendStatus> = {
 			userId: Game.LocalPlayer.userId,
-			status: "online",
+			status: Game.Context === CoreContext.GAME ? "in_game" : "online",
 			serverId: Game.serverId,
 			gameId: Game.gameId,
 			metadata: {
