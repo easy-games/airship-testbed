@@ -17,7 +17,7 @@ export class ProjectileController implements OnStart {
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			if (itemMeta.projectile) {
-				const [, id] = ItemUtil.ItemTypeComponents(itemType);
+				const [, id] = ItemUtil.GetItemTypeComponents(itemType);
 
 				const projPrefab = AssetBridge.Instance.LoadAssetIfExists(
 					`Shared/Resources/Prefabs/Projectiles/Ammo/${id}.prefab`,

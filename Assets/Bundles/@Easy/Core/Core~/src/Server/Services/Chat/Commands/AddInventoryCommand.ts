@@ -15,15 +15,11 @@ export class AddInventoryCommand extends ChatCommand {
 			return;
 		}
 
-		let itemTypeString = args[0];
-		if (!itemTypeString.match("^@([A-z]+)/(.*):")[0]) {
-			print("use default easy games core stuff");
-			itemTypeString = `@Easy/Core:`;
-		}
+		let itemTypeExpression = args[0];
 
-		const itemType = ItemUtil.FindItemTypeFromString(itemTypeString);
+		const itemType = ItemUtil.FindItemTypeFromExpression(itemTypeExpression);
 		if (!itemType) {
-			player.SendMessage("Invalid item type: " + args[0]);
+			player.SendMessage("Invalid item type: " + itemTypeExpression.lower());
 			return;
 		}
 
@@ -39,6 +35,6 @@ export class AddInventoryCommand extends ChatCommand {
 		if (!player.Character) return;
 
 		player.Character.GetInventory().AddItem(itemStack);
-		player.SendMessage(`Given ${amount} ${itemStack.GetItemMeta().displayName} (${itemType})`);
+		player.SendMessage(`Given ${amount} ${itemStack.GetItemMeta().displayName} (${itemType.lower()})`);
 	}
 }

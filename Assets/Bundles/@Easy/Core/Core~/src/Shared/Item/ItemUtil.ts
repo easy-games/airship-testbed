@@ -24,6 +24,7 @@ export class ItemUtil {
 	public static defaultKitAccessory: AccessoryCollection | undefined;
 
 	private static itemTypes: ItemType[] = [];
+	private static implictItemTypeMap = new Map<string, ItemType>();
 
 	private static initialized = false;
 	private static onInitialized = new Signal<void>();
@@ -42,6 +43,12 @@ export class ItemUtil {
 		let i = 0;
 		for (const itemType of Object.keys(items)) {
 			this.itemTypes.push(itemType);
+
+			const [, item] = ItemUtil.GetItemTypeComponents(itemType);
+			if (!this.implictItemTypeMap.get(item)) {
+				this.implictItemTypeMap.set(item, itemType);
+			}
+
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			// Assign ID to each ItemType
@@ -149,16 +156,30 @@ export class ItemUtil {
 	 * @param expression The string expression to search for
 	 * @returns The `ItemType` (if found) - otherwise `undefined`.
 	 */
-	public static FindItemTypeFromString(expression: string): ItemType | undefined {
-		const directId = items[expression as ItemType];
-		if (directId) {
-			return expression as ItemType;
-		} else {
-			// lowercase search
-			for (const [key] of pairs(items)) {
-				if (key.lower() === expression.lower()) {
-					return key;
-				}
+	public static FindItemTypeFromExpression(expression: string): ItemType | undefined {
+		if (items[expression as ItemType] !== undefined) return expression as ItemType;
+
+		let [scope, id] = this.GetItemTypeComponents(expression as ItemType);
+		if (scope === "") {
+			const inferredItemType = this.implictItemTypeMap.get(id);
+			if (inferredItemType) {
+				return inferredItemType;
+			}
+
+			// Set default scope to core
+			scope = `@Easy/Core`;
+		}
+
+		for (const [str, itemType] of pairs(this.implictItemTypeMap)) {
+			if (str.lower() === expression.lower()) {
+				return itemType;
+			}
+		}
+
+		// 	// Explicit find
+		for (const [key] of pairs(items)) {
+			if (key.lower() === expression.lower()) {
+				return key;
 			}
 		}
 
@@ -201,7 +222,7 @@ export class ItemUtil {
 	 * @param itemType The item type to get the components of
 	 * @returns The component prats of the item type string
 	 */
-	public static ItemTypeComponents(itemType: ItemType): [scope: string, id: string] {
+	public static GetItemTypeComponents(itemType: ItemType): [scope: string, id: string] {
 		return ItemTypeComponentsInternal(itemType);
 	}
 
