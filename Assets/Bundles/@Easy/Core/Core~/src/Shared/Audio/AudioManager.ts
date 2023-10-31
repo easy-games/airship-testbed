@@ -120,6 +120,7 @@ export class AudioManager {
 		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		audioSource.maxDistance = config?.maxDistance ?? 500;
+		audioSource.pitch = config?.pitch ?? 1;
 		audioSource.PlayOneShot(clip);
 		//audioSource.PlayOneShot(clip, );
 		if (!audioSource.loop) {

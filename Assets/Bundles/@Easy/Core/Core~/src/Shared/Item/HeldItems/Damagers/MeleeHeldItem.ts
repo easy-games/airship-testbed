@@ -7,16 +7,32 @@ import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { HeldItem } from "../HeldItem";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { SetTimeout } from "Shared/Util/Timer";
+import { Bin } from "Shared/Util/Bin";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
 	private animationIndex = 0;
+	private bin: Bin = new Bin();
 	// private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
 		if (this.entity.IsDead()) return;
 
-		super.OnUseClient(this.animationIndex);
+		//Don't do the default use animations
+		this.playEffectsOnUse = false;
+		super.OnUseClient(useIndex);
+
+		//Animation
+		this.entity.animator.PlayUseAnim(this.animationIndex, {
+			transitionTime: 0.1,
+			autoFadeOut: true,
+		});
+
+		//Sound effect
+		this.audioPitchShift = this.animationIndex === 0 ? 1 : 2;
+		this.PlayItemSound();
+
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
 			return;
@@ -50,7 +66,7 @@ export class MeleeHeldItem extends HeldItem {
 		const isFirstPerson = this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
 		if (meleeData.onUseVFX) {
 			if (isFirstPerson) {
-				let effect = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX[this.animationIndex]);
+				let effect = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
 				if (effect) {
 					//Spawn first person effect on the spine
 					effect.transform.SetParent(this.entity.references.spineBoneMiddle);
@@ -59,16 +75,32 @@ export class MeleeHeldItem extends HeldItem {
 				}
 			} else {
 				//Spawn third person effect on the root
-				EffectsManager.SpawnBundleEffectById(
+				let effect = EffectsManager.SpawnBundleEffectById(
 					meleeData.onUseVFX[this.animationIndex],
 					this.entity.model.transform.position,
-					this.entity.references.headBone.eulerAngles,
+					this.entity.model.transform.eulerAngles,
 				);
+				if (effect) {
+					//Spawn first person effect on the spine
+					effect.transform.SetParent(this.entity.model.transform);
+				}
 			}
 
 			this.animationIndex++;
 			if (this.animationIndex >= meleeData.onUseVFX.size()) {
 				this.animationIndex = 0;
+			}
+
+			//Reset the index if you don't use the attack for a while
+			if (this.bin) {
+				this.bin.Clean();
+			}
+			if (this.itemMeta?.usable?.cooldownSeconds) {
+				this.bin.Add(
+					SetTimeout(this.itemMeta.usable.cooldownSeconds + 1, () => {
+						this.animationIndex = 0;
+					}),
+				);
 			}
 		}
 	}

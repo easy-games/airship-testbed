@@ -26,7 +26,9 @@ export class EffectsManager {
 		worldPosition = Vector3.zero,
 		worldEuler = Vector3.zero,
 		destroyInSeconds = 5,
-	) {}
+	) {
+		//TODO
+	}
 
 	public static SpawnBundleEffectById(
 		bundleId: AllBundleItems,
@@ -34,6 +36,10 @@ export class EffectsManager {
 		worldEuler = Vector3.zero,
 		destroyInSeconds = 5,
 	) {
+		if (!bundleId || (bundleId as string) === "") {
+			warn("Trying to spawn effect that has missing path");
+			return undefined;
+		}
 		let template = BundleReferenceManager.LoadDirectResource<GameObject>(bundleId);
 		if (template) {
 			return this.SpawnGameObjectAtPosition(template, worldPosition, worldEuler, destroyInSeconds);

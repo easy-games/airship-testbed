@@ -335,7 +335,7 @@ export enum AllBundleItems{
 	ItemSword_FirstPerson_Equip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
 	ItemSword_FirstPerson_UnEquip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
 	ItemSword_FirstPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
-	ItemSword_FirstPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
+	ItemSword_FirstPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use2.anim",
 	ItemSword_ThirdPerson_Idle = "",
 	ItemSword_ThirdPerson_Equip = "",
 	ItemSword_ThirdPerson_UnEquip = "",
@@ -540,7 +540,7 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemSword_FirstPerson.Equip, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim"],
 				[Bundle_ItemSword_FirstPerson.UnEquip, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim"],
 				[Bundle_ItemSword_FirstPerson.Swing01, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim"],
-				[Bundle_ItemSword_FirstPerson.Swing02, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim"],
+				[Bundle_ItemSword_FirstPerson.Swing02, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use2.anim"],
 			])}],
 		[Bundle_ItemSword.ThirdPerson, {
 			id: Bundle_ItemSword.ThirdPerson,

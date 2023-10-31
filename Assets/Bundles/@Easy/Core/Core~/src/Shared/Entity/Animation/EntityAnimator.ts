@@ -137,7 +137,15 @@ export abstract class EntityAnimator {
 
 	public StartIdleAnim(instantTransition: boolean): void {}
 
-	public PlayUseAnim(useIndex = 0): void {}
+	public PlayUseAnim(
+		useIndex = 0,
+		config?: {
+			fadeMode?: FadeMode;
+			wrapMode?: WrapMode;
+			transitionTime?: number;
+			autoFadeOut?: boolean;
+		},
+	): void {}
 
 	public EquipItem(itemMeta: ItemMeta | undefined): void {}
 

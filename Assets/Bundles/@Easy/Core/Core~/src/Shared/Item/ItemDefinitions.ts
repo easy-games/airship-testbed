@@ -31,7 +31,7 @@ const swordUsable: UsableHeldItemMeta = {
 	startUpInSeconds: 0,
 	minChargeSeconds: 0,
 	maxChargeSeconds: 0,
-	cooldownSeconds: 0.15,
+	cooldownSeconds: 0.25,
 	canHoldToUse: false,
 	onUseSound: [
 		coreSoundPath + "s_Sword_Swing_Wood_01.wav",
@@ -40,8 +40,14 @@ const swordUsable: UsableHeldItemMeta = {
 		coreSoundPath + "s_Sword_Swing_Wood_04.wav",
 	],
 	onUseSoundVolume: 0.3,
-	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+	onUseAnimFP: [
+		AllBundleItems.ItemSword_FirstPerson_Swing01 as string,
+		AllBundleItems.ItemSword_FirstPerson_Swing02 as string,
+	],
+	onUseAnimTP: [
+		AllBundleItems.ItemSword_ThirdPerson_Swing01 as string,
+		AllBundleItems.ItemSword_ThirdPerson_Swing02 as string,
+	],
 };
 const swordViewModel: ViewModelMeta = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
@@ -50,8 +56,8 @@ const swordViewModel: ViewModelMeta = {
 
 const swordMelee: MeleeItemMeta = {
 	damage: 10,
-	onUseVFX: [AllBundleItems.ItemSword_ThirdPerson_Swing01, AllBundleItems.ItemSword_ThirdPerson_Swing02],
-	onUseVFX_FP: [AllBundleItems.ItemSword_FirstPerson_Swing01, AllBundleItems.ItemSword_FirstPerson_Swing02],
+	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
+	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],
 	canHitMultipleTargets: true,
 	damageType: DamageType.SWORD,
 };

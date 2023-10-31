@@ -25,7 +25,7 @@ MonoBehaviour:
     - key: Swing01
       value: {fileID: 7400000, guid: 647d231004e5840b89f0505720561bae, type: 2}
     - key: Swing02
-      value: {fileID: 7400000, guid: 647d231004e5840b89f0505720561bae, type: 2}
+      value: {fileID: 7400000, guid: 8131924be661fef46bcc0402808e3e37, type: 2}
   - key: ThirdPerson
     value:
     - key: Idle
