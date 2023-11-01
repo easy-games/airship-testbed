@@ -54,7 +54,7 @@ export class BlockInteractController {
 				// }
 
 				//Destroy block
-				world.PlaceBlockById(voxelPos, 0);
+				world.PlaceBlockByVoxelId(voxelPos, 0);
 				if (showHealthbars) {
 					this.blockHealth.VisualizeBlockBreak(voxelPos, block.blockId);
 				}
@@ -85,7 +85,8 @@ export class BlockInteractController {
 
 			this.localEntity.AddToMoveData("TillBlock", voxelPos);
 
-			world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, {
+			const tillBlockId = world.GetBlockVoxelIdFromBlockStringId(tillable.tillsToBlockStringId);
+			world.PlaceBlockByVoxelId(voxelPos, tillBlockId, {
 				placedByEntityId: entity.id,
 			});
 		}

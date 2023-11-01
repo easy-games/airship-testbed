@@ -9,7 +9,7 @@ import { World } from "./World";
 export class WorldAPI {
 	private static world: World | undefined;
 	public static DefaultVoxelHealth = 10;
-	public static ChildVoxelId = 32;
+	public static ChildVoxelId = 22;
 	public static OnBlockHitDamageCalc = new Signal<BlockHitDamageSignal>();
 
 	public static GetMainWorld(): World | undefined {

@@ -205,7 +205,10 @@ export class Entity {
 						const fallDelta = DamageUtils.GetFallDelta(velocity.y);
 						let particles = landingEffect.GetComponentsInChildren<ParticleSystem>();
 						landingEffect.transform.localScale = Vector3.one.mul(MathUtil.Lerp(0.25, 1, fallDelta));
-						const blockId = WorldAPI.GetMainWorld()?.RaycastBlockBelow(
+
+						const world = WorldAPI.GetMainWorld();
+
+						const blockId = world?.RaycastBlockBelow(
 							this.model.transform.position.add(new Vector3(0, 0.25, 0)),
 						)?.blockId;
 

@@ -28,6 +28,7 @@ export class World {
 	public OnFinishedReplicatingChunksFromServer = new Signal<void>();
 	private finishedLoading = false;
 	private finishedReplicatingChunksFromServer = false;
+	private blocks: VoxelBlocks;
 
 	constructor(public readonly voxelWorld: VoxelWorld) {
 		voxelWorld.OnVoxelPlaced((voxel, x, y, z) => {
@@ -37,6 +38,8 @@ export class World {
 			voxel = VoxelWorld.VoxelDataToBlockId(voxel);
 			this.OnVoxelPlaced.Fire(vec, voxel);
 		});
+
+		this.blocks = voxelWorld.blocks;
 
 		if (!voxelWorld.finishedLoading) {
 			voxelWorld.OnFinishedLoading(() => {
@@ -130,16 +133,45 @@ export class World {
 		return block?.itemMeta?.block;
 	}
 
+	/**
+	 * Translates the string block id to the corresponding voxel block id
+	 * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+	 * @returns The voxel block id
+	 */
+	public GetBlockVoxelIdFromBlockStringId(blockStringId: string): number {
+		return this.blocks.GetBlockIdFromStringId(blockStringId);
+	}
+
 	public PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.block) return;
 
-		const blockId = itemMeta.block.blockId;
-		this.PlaceBlockById(pos, blockId, config);
+		this.PlaceBlockByStringId(pos, itemMeta.block.blockStringId, config);
 	}
 
-	public PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void {
-		this.voxelWorld.WriteVoxelAt(pos, blockId, config?.priority ?? true);
+	/**
+	 * Places a block at the given position, with the given `blockStringId`
+	 *
+	 * e.g. `@Easy/Core:GRASS` (aka `ItemType.GRASS`) should spawn a grass block at that position
+	 * @param pos The position of the block
+	 * @param blockStringId The block type id
+	 * @param config The configuration for this placed block
+	 */
+	public PlaceBlockByStringId(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void {
+		return this.PlaceBlockByVoxelId(pos, this.blocks.GetBlockIdFromStringId(blockStringId), config);
+	}
+
+	/**
+	 * Places a block at the given position, with the given `blockVoxelId`.
+	 *
+	 * - It's recommended you use {@link PlaceBlockByStringId} - as the voxel id isn't guaranteed to be constant
+	 *
+	 * @param pos The position of the block
+	 * @param blockVoxelId The block voxel id
+	 * @param config The configuration for this placed block
+	 */
+	public PlaceBlockByVoxelId(pos: Vector3, blockVoxelId: number, config?: PlaceBlockConfig): void {
+		this.voxelWorld.WriteVoxelAt(pos, blockVoxelId, config?.priority ?? true);
 		if (config?.blockData) {
 			// print("SetBlockData (" + pos.x + "," + pos.y + "," + pos.z + ")");
 			for (const key of Object.keys(config.blockData)) {
@@ -148,7 +180,7 @@ export class World {
 		}
 
 		if (RunCore.IsServer()) {
-			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockId, config?.placedByEntityId);
+			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
 		} else {
 			if (config?.placedByEntityId === Game.LocalPlayer.Character?.id) {
 				// Client predicted block place event
@@ -156,7 +188,7 @@ export class World {
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 					.BlockPlaceClientSignal;
 
-				const block = new Block(blockId, this);
+				const block = new Block(blockVoxelId, this);
 				clientSignals.BlockPlace.Fire(
 					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character, false),
 				);

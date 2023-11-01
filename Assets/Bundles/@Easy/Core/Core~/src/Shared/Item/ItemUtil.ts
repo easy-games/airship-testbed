@@ -3,6 +3,7 @@ import { Signal } from "Shared/Util/Signal";
 import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 export interface ItemRegistrationConfig {
 	accessoryFolder?: string;
@@ -40,6 +41,8 @@ export class ItemUtil {
 		);
 		print("Init kit: " + ItemUtil.defaultKitAccessory?.name);
 
+		const world = WorldAPI.GetMainWorld();
+
 		let i = 0;
 		for (const itemType of Object.keys(items)) {
 			this.itemTypes.push(itemType);
@@ -57,15 +60,17 @@ export class ItemUtil {
 			ItemUtil.itemIdToItemType.set(i, itemType);
 
 			// Map Block types to items
-			if (itemMeta.block?.blockId !== undefined) {
-				ItemUtil.blockIdToItemType.set(itemMeta.block.blockId, itemType);
+			if (world && itemMeta.block?.blockStringId !== undefined) {
+				const voxelWorldBlockId = world.GetBlockVoxelIdFromBlockStringId(itemMeta.block.blockStringId);
+				ItemUtil.blockIdToItemType.set(voxelWorldBlockId, itemType);
+				itemMeta.block.blockId = voxelWorldBlockId;
 			}
 
 			// Map items to accessories
 			let accessoryPaths: string[] = [];
 			if (itemMeta.accessoryPaths) {
 				accessoryPaths = itemMeta.accessoryPaths;
-			} else if (itemMeta.block?.blockId) {
+			} else if (itemMeta.block?.blockStringId) {
 				accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.asset"];
 			}
 

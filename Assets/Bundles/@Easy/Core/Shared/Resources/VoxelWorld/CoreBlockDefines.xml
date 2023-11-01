@@ -11,7 +11,6 @@
   <Scope>@Easy/Core</Scope>
 
   <Block>
-    <Index>1</Index>
     <Id>GRASS</Id>
     <Name>Grass</Name>
 <!--    <TopMaterial>grass/GrassTilingGenshin</TopMaterial>-->
@@ -27,7 +26,6 @@
   </Block>
 
   <Block>
-    <Index>2</Index>
     <Id>DIRT</Id>
     <Name>Dirt</Name>
 <!--    <TopTexture>dirt.s</TopTexture>-->
@@ -41,7 +39,6 @@
   </Block>
 
   <Block>
-    <Index>4</Index>
     <Id>STONE</Id>
     <Name>Stone</Name>
 <!--    <TopTexture>stone.s</TopTexture>-->
@@ -57,7 +54,6 @@
   </Block>
 
   <Block>
-    <Index>26</Index>
     <Id>STONE_BRICK</Id>
     <Name>Stone Brick</Name>
     <Material>StylizedStoneDark</Material>
@@ -69,7 +65,6 @@
   </Block>
 
   <Block>
-    <Index>6</Index>
     <Id>OAK_PLANKS</Id>
     <Name>Oak Planks</Name>
 <!--    <TopTexture>plank_oak.s</TopTexture>-->
@@ -83,7 +78,6 @@
   </Block>
 
   <Block>
-    <Index>7</Index>
     <Id>OAK_LOG</Id>
     <Name>Oak Log</Name>
 <!--    <TopTexture>log_oak.td</TopTexture>-->
@@ -97,7 +91,6 @@
   </Block>
 
   <Block>
-    <Index>12</Index>
     <Id>COBBLESTONE</Id>
     <Name>Cobblestone</Name>
     <Material>StylizedStone</Material>
@@ -111,7 +104,6 @@
   </Block>
 
   <Block>
-    <Index>14</Index>
     <Id>GRIMSTONE</Id>
     <Name>Grimstone</Name>
     <TopTexture>grim_stone.s</TopTexture>
@@ -123,7 +115,6 @@
   </Block>
 
   <Block>
-    <Index>16</Index>
     <Id>EMERALD_BLOCK</Id>
     <Name>Emerald Block</Name>
     <TopTexture>emerald_block.s</TopTexture>
@@ -135,7 +126,6 @@
   </Block>
 
   <Block>
-    <Index>17</Index>
     <Id>TNT</Id>
     <Name>TNT</Name>
     <TopTexture>tnt.t</TopTexture>
@@ -148,7 +138,6 @@
   </Block>
 
   <Block>
-    <Index>19</Index>
     <Id>STAIRS</Id>
     <Name>Stairs</Name>
     <Mesh>Stairs/stairs</Mesh>
@@ -159,7 +148,6 @@
   </Block>
 
   <Block>
-    <Index>20</Index>
     <Id>ANDESITE</Id>
     <Name>Andesite</Name>
     <Material>StylizedStone</Material>
@@ -173,7 +161,6 @@
   </Block>
 
   <Block>
-    <Index>21</Index>
     <Id>LIGHT_GREEN_CLAY</Id>
     <Name>Light Green Clay</Name>
     <TopTexture>clay_light_green.s</TopTexture>
@@ -186,7 +173,6 @@
   </Block>
 
   <Block>
-    <Index>22</Index>
     <Id>DARK_GREEN_CLAY</Id>
     <Name>Dark Green Clay</Name>
     <TopTexture>clay_dark_green.s</TopTexture>
@@ -199,7 +185,6 @@
   </Block>
 
   <Block>
-    <Index>23</Index>
     <Id>SLATE_BRICK</Id>
     <Name>Slate Brick</Name>
     <TopTexture>slate_brick.s</TopTexture>
@@ -212,7 +197,6 @@
   </Block>
 
   <Block>
-    <Index>24</Index>
     <Id>SMOOTH_ANDESITE</Id>
     <Name>Smooth Andesite</Name>
     <TopTexture>andesite_smooth.s</TopTexture>
@@ -226,7 +210,6 @@
   </Block>
 
   <Block>
-    <Index>27</Index>
     <Id>EMERALD_BLOCK</Id>
     <Name>Emerald Block</Name>
     <TopTexture>emerald_block.s</TopTexture>
@@ -239,7 +222,6 @@
   </Block>
 
   <Block>
-    <Index>28</Index>
     <Id>DIAMOND_BLOCK</Id>
     <Name>Diamond Block</Name>
     <TopTexture>diamond_block.s</TopTexture>
@@ -252,7 +234,6 @@
   </Block>
 
   <Block>
-    <Index>29</Index>
     <Id>IRON_BLOCK</Id>
     <Name>Iron Block</Name>
     <TopTexture>iron_block.s</TopTexture>
@@ -265,7 +246,6 @@
   </Block>
 
   <Block>
-    <Index>30</Index>
     <Id>GLASS_BLOCK</Id>
     <Name>Glass Block</Name>
     <TopTexture>glass_block.s</TopTexture>
@@ -279,19 +259,16 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>31</Index>
     <Id>BED</Id>
     <Name>Bed</Name>
     <Prefab>true</Prefab>
   </Block>
   <Block>
-    <Index>32</Index>
     <Id>CHILD_OF_BLOCK</Id>
     <Name>ChildOfBlock</Name>
     <Prefab>true</Prefab>
   </Block>
   <Block>
-    <Index>33</Index>
     <Id>WHITE_WOOL</Id>
     <Name>White Wool</Name>
     <TopTexture>wool_white.s</TopTexture>
@@ -303,7 +280,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>34</Index>
     <Id>RED_WOOL</Id>
     <Name>Red Wool</Name>
     <TopTexture>wool_red.s</TopTexture>
@@ -315,7 +291,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>35</Index>
     <Id>BLUE_WOOL</Id>
     <Name>Blue Wool</Name>
     <TopTexture>wool_blue.s</TopTexture>
@@ -327,7 +302,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>36</Index>
     <Id>GREEN_WOOL</Id>
     <Name>Green Wool</Name>
     <TopTexture>wool_green.s</TopTexture>
@@ -339,7 +313,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>37</Index>
     <Id>YELLOW_WOOL</Id>
     <Name>Yellow Wool</Name>
     <TopTexture>wool_yellow.s</TopTexture>
@@ -351,7 +324,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>38</Index>
     <Id>OBSIDIAN</Id>
     <Name>Obsidian</Name>
     <TopTexture>obsidian.s</TopTexture>
@@ -363,7 +335,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>50</Index>
     <Id>MUSHROOM</Id>
     <Name>Mushroom</Name>
     <Mesh>Flower/SM_Pixelated_Mushroom_A</Mesh>
@@ -373,7 +344,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>51</Index>
     <Id>BUSH_B</Id>
     <Name>BushB</Name>
     <Mesh>Flower/SM_Pixel_Bush_B</Mesh>
@@ -384,7 +354,6 @@
   </Block>
 
   <Block>
-    <Index>52</Index>
     <Id>FLUFFY_GRASS</Id>
     <Name>FluffyGrass</Name>
     <Mesh>Grass/GrassBushyPrefab</Mesh>
@@ -397,7 +366,6 @@
   </Block>
 
   <Block>
-    <Index>53</Index>
     <Id>SPRUCE_LOG</Id>
     <Name>Spruce Log</Name>
     <Material>StylizedWood</Material>
@@ -411,7 +379,6 @@
   </Block>
 
   <Block>
-    <Index>54</Index>
     <Id>CLAY</Id>
     <Name>Clay</Name>
     <TopTexture>clay.s</TopTexture>
@@ -422,7 +389,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>55</Index>
     <Id>WHITE_CLAY</Id>
     <Name>White Clay</Name>
     <TopTexture>clay_white.s</TopTexture>
@@ -433,7 +399,6 @@
     <Brightness>1.1</Brightness>
   </Block>
   <Block>
-    <Index>56</Index>
     <Id>YELLOW_CLAY</Id>
     <Name>Yellow Clay</Name>
     <TopTexture>clay_yellow.s</TopTexture>
@@ -444,7 +409,6 @@
     <Brightness>1.5</Brightness>
   </Block>
   <Block>
-    <Index>57</Index>
     <Id>BLACK_CLAY</Id>
     <Name>Black Clay</Name>
     <TopTexture>clay_black.s</TopTexture>
@@ -455,7 +419,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>58</Index>
     <Id>GRAY_CLAY</Id>
     <Name>Gray Clay</Name>
     <TopTexture>clay_gray.s</TopTexture>
@@ -466,7 +429,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>59</Index>
     <Id>OAK_LEAF</Id>
     <Name>Oak Leaf</Name>
     <TopTexture>leaf_oak.s</TopTexture>
@@ -482,7 +444,6 @@
 
 
   <Block>
-    <Index>60</Index>
     <Id>BROWN_CLAY</Id>
     <Name>Brown Clay</Name>
 <!--    <TopTexture>clay_brown.s</TopTexture>-->
@@ -495,7 +456,6 @@
     <Minecraft>159:12</Minecraft>
   </Block>
   <Block>
-    <Index>61</Index>
     <Id>CERAMIC</Id>
     <Name>Ceramic</Name>
     <TopTexture>blastproof_ceramic.s</TopTexture>
@@ -506,7 +466,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>62</Index>
     <Id>SPRUCE_LEAF</Id>
     <Name>Spruce Leaf</Name>
     <TopTexture>leaf_oak.s</TopTexture>
@@ -520,7 +479,6 @@
     <TileSet>TileSets/SpruceLeaf/Leaf</TileSet>
   </Block>
   <Block>
-    <Index>63</Index>
     <Id>BRICK</Id>
     <Name>Brick</Name>
     <TopTexture>brick.s</TopTexture>
@@ -530,7 +488,6 @@
     <Brightness>1.5</Brightness>
   </Block>
   <Block>
-    <Index>64</Index>
     <Id>CYAN_WOOL</Id>
     <Name>Cyan Wool</Name>
     <TopTexture>wool_cyan.s</TopTexture>
@@ -542,7 +499,6 @@
     <Brightness>1.7</Brightness>
   </Block>
   <Block>
-    <Index>65</Index>
     <Id>GREY_WOOL</Id>
     <Name>Grey Wool</Name>
     <TopTexture>wool_grey.s</TopTexture>
@@ -554,7 +510,6 @@
     <Brightness>1.7</Brightness>
   </Block>
   <Block>
-    <Index>66</Index>
     <Id>STONE_TILES</Id>
     <Name>Stone Tiles</Name>
     <TopTexture>stone_tiles.s</TopTexture>
@@ -566,7 +521,6 @@
     <Brightness>1.7</Brightness>
   </Block>
   <Block>
-    <Index>67</Index>
     <Id>SLATE_TILES</Id>
     <Name>Slate Tiles</Name>
     <TopTexture>slate_tiles.s</TopTexture>
@@ -578,7 +532,6 @@
     <Brightness>2</Brightness>
   </Block>
   <Block>
-    <Index>68</Index>
     <Id>FARMLAND</Id>
     <Name>Farmland</Name>
     <!--    <TopTexture>dirt.s</TopTexture>-->
@@ -591,7 +544,6 @@
     <Brightness>0</Brightness>
   </Block>
   <Block>
-    <Index>69</Index>
     <Id>WHEAT_CROP</Id>
     <Name>Wheat Crop</Name>
     <Prefab>true</Prefab>
