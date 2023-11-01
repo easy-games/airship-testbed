@@ -73,6 +73,8 @@ export interface ProjectileLauncherMeta {
 	chargeSound?: SoundMeta[];
 	chargeAnimFP?: string[];
 	chargeAnimTP?: string[];
+	throwAnimFP?: string[];
+	throwAnimTP?: string[];
 }
 
 export interface ViewModelMeta {

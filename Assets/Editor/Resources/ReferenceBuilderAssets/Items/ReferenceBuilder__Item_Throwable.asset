@@ -17,24 +17,24 @@ MonoBehaviour:
   - key: FirstPerson
     value:
     - key: Idle
-      value: {fileID: 7400000, guid: af24ed396c4104d1782a30edba290dc1, type: 2}
+      value: {fileID: 7400000, guid: d4bfc9072826a4442a28651732e06b9a, type: 2}
     - key: Equip
       value: {fileID: 7400000, guid: ae3e02ad0f32546ef8450d9b9e8452a4, type: 2}
     - key: UnEquip
       value: {fileID: 7400000, guid: fc53a19ad02b4cf48a7da485a6642242, type: 2}
     - key: Charge
-      value: {fileID: 7400000, guid: c06c723c443403d469ba2f73a4bd64db, type: 2}
+      value: {fileID: 7400000, guid: 463b43a10f35b47f781a5ffc60504e40, type: 2}
     - key: Throw
-      value: {fileID: 7400000, guid: 96b28f9fbdd2c48488e20361bf74ecae, type: 2}
+      value: {fileID: 7400000, guid: e4aa85446ca53de4dae4b5a62f35021b, type: 2}
   - key: ThirdPerson
     value:
     - key: Idle
-      value: {fileID: 7400000, guid: bd7dff1d7e790ef4faede2b3b340cc5e, type: 2}
+      value: {fileID: 7400000, guid: 83636f5a558281f4fb41617fcfefa922, type: 2}
     - key: Equip
       value: {fileID: 7400000, guid: 1df5e1f7d9afe434ca4da7690f924f3b, type: 2}
     - key: UnEquip
       value: {fileID: 7400000, guid: 9540632d4252c554ba0b6689a38680a5, type: 2}
     - key: Charge
-      value: {fileID: 7400000, guid: ae31b54158ca4ab468db03035d5b9d72, type: 2}
+      value: {fileID: 7400000, guid: 4e70d685309b0564ba1ece05dd2cc2d1, type: 2}
     - key: Throw
-      value: {fileID: 7400000, guid: 6678b0777625a7a4e91e48ef2b3554ca, type: 2}
+      value: {fileID: 7400000, guid: 9ced155e4f9483f41904094beecc7adc, type: 2}
