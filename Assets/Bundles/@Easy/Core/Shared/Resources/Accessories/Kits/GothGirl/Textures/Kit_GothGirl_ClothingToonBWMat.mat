@@ -150,6 +150,6 @@ Material:
     - _RimDir: {r: 1, g: 0, b: -0.5, a: 0}
     - _ShadowColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
-    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
