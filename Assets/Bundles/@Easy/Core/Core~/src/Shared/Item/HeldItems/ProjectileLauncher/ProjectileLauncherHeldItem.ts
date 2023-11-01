@@ -17,11 +17,20 @@ import { AudioManager } from "../../../Audio/AudioManager";
 import { ItemUtil } from "../../ItemUtil";
 import { HeldItem } from "../HeldItem";
 import { Task } from "Shared/Util/Task";
+import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 
 const defaultChargeAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Charge.anim",
+	AllBundleItems.ItemThrowable_FirstPerson_Charge,
 );
-const defaultChargeAnimTP = defaultChargeAnimFP;
+const defaultChargeAnimTP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	AllBundleItems.ItemThrowable_ThirdPerson_Charge,
+);
+const defaultThrowAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	AllBundleItems.ItemThrowable_FirstPerson_Throw,
+);
+const defaultThrowAnimTP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	AllBundleItems.ItemThrowable_ThirdPerson_Throw,
+);
 
 export class ProjectileLauncherHeldItem extends HeldItem {
 	private chargeBin = new Bin();
@@ -32,6 +41,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
 	private chargeAnimFP: AnimationClip[] = [];
 	private chargeAnimTP: AnimationClip[] = [];
+	private throwAnimFP: AnimationClip[] = [];
+	private throwAnimTP: AnimationClip[] = [];
 
 	override OnEquip(): void {
 		super.OnEquip();
@@ -39,6 +50,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	override OnLoadAssets(): void {
 		super.OnLoadAssets();
+
+		//Charge animations
 		if (this.itemMeta?.projectileLauncher?.chargeAnimFP) {
 			this.chargeAnimFP = this.itemMeta.projectileLauncher.chargeAnimFP.map((path) =>
 				AssetBridge.Instance.LoadAsset(path),
@@ -53,6 +66,23 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			);
 		} else {
 			this.chargeAnimTP = [defaultChargeAnimTP];
+		}
+
+		//Throw animations
+		if (this.itemMeta?.projectileLauncher?.throwAnimFP) {
+			this.throwAnimFP = this.itemMeta.projectileLauncher.throwAnimFP.map((path) =>
+				AssetBridge.Instance.LoadAsset(path),
+			);
+		} else {
+			this.throwAnimFP = [defaultThrowAnimFP];
+		}
+
+		if (this.itemMeta?.projectileLauncher?.throwAnimTP) {
+			this.throwAnimTP = this.itemMeta.projectileLauncher.throwAnimTP.map((path) =>
+				AssetBridge.Instance.LoadAsset(path),
+			);
+		} else {
+			this.throwAnimTP = [defaultThrowAnimTP];
 		}
 	}
 
@@ -105,7 +135,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			}
 		}
 
-		//Play the items animation  (bow draw)
+		//Play Charge Animation
 		const chargeAnimState = this.entity.animator?.PlayAnimation(
 			this.entity.animator.IsFirstPerson()
 				? RandomUtil.FromArray(this.chargeAnimFP)
@@ -210,6 +240,14 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		super.OnUseClient(useIndex);
 		print("On use: " + useIndex);
+
+		//Play the throw animation
+		const throwAnimState = this.entity.animator?.PlayAnimation(
+			this.entity.animator.IsFirstPerson()
+				? RandomUtil.FromArray(this.throwAnimFP)
+				: RandomUtil.FromArray(this.throwAnimTP),
+			EntityAnimationLayer.ITEM_ACTION,
+		);
 
 		//Play the items animation  (bow shoot)
 		this.entity.animator.PlayUseAnim(0);
