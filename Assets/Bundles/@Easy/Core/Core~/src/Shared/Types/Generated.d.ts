@@ -3742,10 +3742,8 @@ interface AgonesProxy extends MonoBehaviour {
     constructor(): AgonesProxy;
 
     Connect(): void;
-    DoNothingTest(): Vector3;
     Ready(): void;
     Shutdown(): void;
-    SleepTest(seconds: number): number;
 }
     
 interface AgonesCoreConstructor {
@@ -9742,8 +9740,8 @@ interface Accessory extends ScriptableObject {
     Position: Vector3;
     Rotation: Vector3;
     Scale: Vector3;
-    MeshDeformed: boolean;
     visibilityMode: VisibilityMode;
+    SkinnedToCharacter: boolean;
     HasSkinnedMeshes: boolean;
 
     constructor(): Accessory;
@@ -10682,7 +10680,7 @@ interface VoxelWorld extends MonoBehaviour {
     globalRadiosityDirectLightAmp: number;
     showRadioistyProbes: boolean;
     focusPosition: Vector3;
-    voxelWorldFile: VoxelBinaryFile;
+    voxelWorldFile: WorldSaveFile;
     blockDefines: CSArray<TextAsset>;
     worldNetworker: VoxelWorldNetworker;
     chunksFolder: GameObject;
@@ -10720,6 +10718,7 @@ interface VoxelWorld extends MonoBehaviour {
     CalculateSunShadowAtPoint(point: Vector3, faceAxis: number, normal: Vector3): number;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
     CreateSamples(): void;
+    DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: unknown, priority: boolean): void;
     DirtyNeighborMeshes(voxel: unknown, priority: boolean): void;
     FullWorldUpdate(): void;
@@ -10738,7 +10737,7 @@ interface VoxelWorld extends MonoBehaviour {
     InitializeLightingForChunk(chunk: Chunk): void;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(cubeMapPath: string): void;
-    LoadWorldFromVoxelBinaryFile(file: VoxelBinaryFile): void;
+    LoadWorldFromSaveFile(file: WorldSaveFile): void;
     OnRenderObject(): void;
     PlaceGrassOnTopOfGrass(): void;
     RaycastIndirectLightingAtPoint(pos: Vector3, normal: Vector3): Color;
@@ -10762,10 +10761,11 @@ interface VoxelWorld extends MonoBehaviour {
     WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
 }
     
-interface VoxelBinaryFile extends ScriptableObject {
+interface WorldSaveFile extends ScriptableObject {
     chunks: CSArray<SaveChunk>;
     worldPositions: CSArray<WorldPosition>;
     pointLights: CSArray<SavePointLight>;
+    blockIdToScopeName: CSArray<BlockIdToScopedName>;
     cubeMapPath: string;
     globalSkySaturation: number;
     globalSunColor: Color;
@@ -10779,13 +10779,15 @@ interface VoxelBinaryFile extends ScriptableObject {
     globalFogEnd: number;
     globalFogColor: Color;
 
-    constructor(): VoxelBinaryFile;
+    constructor(): WorldSaveFile;
 
     CreateFromVoxelWorld(world: VoxelWorld): void;
-    CreateVoxelWorld(world: VoxelWorld): void;
     GetChunks(): CSArray<SaveChunk>;
+    GetFileBlockIdFromStringId(blockTypeId: string): number;
+    GetFileScopedBlockTypeId(fileBlockId: number): string;
     GetMapObjects(): CSArray<WorldPosition>;
     GetPointlights(): CSArray<SavePointLight>;
+    LoadIntoVoxelWorld(world: VoxelWorld): void;
 }
     
 interface SaveChunk {
@@ -10814,6 +10816,13 @@ interface SavePointLight {
     range: number;
     castShadows: boolean;
     highQualityLight: boolean;
+
+
+}
+    
+interface BlockIdToScopedName {
+    id: number;
+    name: string;
 
 
 }
@@ -11569,10 +11578,13 @@ interface VoxelBlocks {
 
     AddSolidMaskToVoxelValue(voxelValue: number): number;
     GetBlock(index: number): BlockDefinition;
+    GetBlockByTypeId(blockTypeId: string): BlockDefinition;
     GetBlockDefinitionFromIndex(index: number): BlockDefinition;
     GetBlockDefinitionFromName(name: string): BlockDefinition;
-    GetBlockId(name: string): number;
+    GetBlockIdFromName(name: string): number;
+    GetBlockIdFromStringId(id: string): number;
     Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
+    UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
 }
     
 interface TexturePacker {
@@ -11641,6 +11653,8 @@ interface BlockDefinition {
     meshMaterialName: string;
     averageColor: CSArray<Color>;
     minecraftConversions: CSArray<string>;
+    blockId: number;
+    blockTypeId: string;
     name: string;
     material: string;
     topMaterial: string;
@@ -11652,7 +11666,6 @@ interface BlockDefinition {
     meshTexture: string;
     meshPath: string;
     meshPathLod: string;
-    index: number;
 
     constructor(): BlockDefinition;
 

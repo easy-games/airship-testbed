@@ -207,8 +207,8 @@ export class World {
 		});
 	}
 
-	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void {
-		this.voxelWorld.LoadWorldFromVoxelBinaryFile(binaryFile);
+	public LoadWorldFromSaveFile(binaryFile: WorldSaveFile): void {
+		this.voxelWorld.LoadWorldFromSaveFile(binaryFile);
 	}
 
 	public LoadEmptyWorld(cubeMapPath: string): void {

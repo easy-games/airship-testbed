@@ -17,7 +17,7 @@ export class MapService implements OnStart {
 	/** Map for current match. */
 	private gameMapId: string | undefined;
 	/** Voxel binary file for current map. */
-	private voxelBinaryFile: VoxelBinaryFile | undefined;
+	private voxelBinaryFile: WorldSaveFile | undefined;
 	/** Queue meta for current match. */
 	private queueMeta: QueueMeta | undefined;
 	/** Loaded map instance for current match. */
@@ -51,15 +51,13 @@ export class MapService implements OnStart {
 			Debug.LogError("VoxelWorld did not exist. Can't build map.");
 			return;
 		}
-		this.voxelBinaryFile = AssetBridge.Instance.LoadAsset<VoxelBinaryFile>(
-			`Server/Resources/Worlds/${mapId}.asset`,
-		);
+		this.voxelBinaryFile = AssetBridge.Instance.LoadAsset<WorldSaveFile>(`Server/Resources/Worlds/${mapId}.asset`);
 
 		/* Load world. */
 		// world.LoadEmptyWorld(blockDefines, "");
 		// const grass = GetItemMeta(ItemType.GRASS).BlockId;
 		// world.WriteVoxelAt(new Vector3(1, 1, 1), grass!);
-		world.LoadWorldFromVoxelBinaryFile(this.voxelBinaryFile);
+		world.LoadWorldFromSaveFile(this.voxelBinaryFile);
 		/* Parse map objects and finish loading map. */
 		/* TEMP: This is to get around memory pinning issue. */
 		this.loadedMap = new LoadedMap(mapId, mapId, ["Rascal"]);
