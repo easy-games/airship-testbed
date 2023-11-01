@@ -6,21 +6,39 @@ import { Theme } from "Shared/Util/Theme";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { HeldItem } from "../HeldItem";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { SetTimeout } from "Shared/Util/Timer";
+import { Bin } from "Shared/Util/Bin";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
+	private animationIndex = 0;
+	private bin: Bin = new Bin();
 	// private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
 		if (this.entity.IsDead()) return;
 
+		//Don't do the default use animations
+		this.playEffectsOnUse = false;
 		super.OnUseClient(useIndex);
+
+		//Animation
+		this.entity.animator.PlayUseAnim(this.animationIndex, {
+			transitionTime: 0.1,
+			autoFadeOut: true,
+		});
+
+		//Sound effect
+		this.audioPitchShift = this.animationIndex === 0 ? 1 : 2;
+		this.PlayItemSound();
+
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
 			return;
 		}
+
 		//Only local player should do collisions checks
-		//TODO make sure other players show the attacks effects just without having to do collision checks
 		if (this.entity.IsLocalCharacter()) {
 			Profiler.BeginSample("MeleeClientEffect");
 			// const entityDriver = this.entity.GetEntityDriver();
@@ -29,10 +47,10 @@ export class MeleeHeldItem extends HeldItem {
 			let hitTargets = this.ScanForHits();
 
 			for (const data of hitTargets) {
-				if (this.itemMeta?.melee?.onHitPrefabPath) {
+				if (meleeData.onHitPrefabPath) {
 					//Local damage predictions
 					const effectGO = EffectsManager.SpawnPrefabEffect(
-						this.itemMeta.melee.onHitPrefabPath,
+						meleeData.onHitPrefabPath,
 						data.hitPosition,
 						Quaternion.LookRotation(data.hitDirection).eulerAngles,
 					);
@@ -42,6 +60,48 @@ export class MeleeHeldItem extends HeldItem {
 				}
 			}
 			Profiler.EndSample();
+		}
+
+		//Play the items use effect
+		const isFirstPerson = this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
+		if (meleeData.onUseVFX) {
+			if (isFirstPerson) {
+				let effect = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
+				if (effect) {
+					//Spawn first person effect on the spine
+					effect.transform.SetParent(this.entity.references.spineBoneMiddle);
+					effect.transform.localRotation = Quaternion.identity;
+					effect.transform.localPosition = Vector3.zero;
+				}
+			} else {
+				//Spawn third person effect on the root
+				let effect = EffectsManager.SpawnBundleEffectById(
+					meleeData.onUseVFX[this.animationIndex],
+					this.entity.model.transform.position,
+					this.entity.model.transform.eulerAngles,
+				);
+				if (effect) {
+					//Spawn first person effect on the spine
+					effect.transform.SetParent(this.entity.model.transform);
+				}
+			}
+
+			this.animationIndex++;
+			if (this.animationIndex >= meleeData.onUseVFX.size()) {
+				this.animationIndex = 0;
+			}
+
+			//Reset the index if you don't use the attack for a while
+			if (this.bin) {
+				this.bin.Clean();
+			}
+			if (this.itemMeta?.usable?.cooldownSeconds) {
+				this.bin.Add(
+					SetTimeout(this.itemMeta.usable.cooldownSeconds + 0.25, () => {
+						this.animationIndex = 0;
+					}),
+				);
+			}
 		}
 	}
 

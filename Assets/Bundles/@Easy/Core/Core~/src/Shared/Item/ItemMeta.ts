@@ -166,7 +166,8 @@ export interface MeleeItemMeta {
 	damageType?: DamageType;
 	canHitMultipleTargets?: boolean;
 	damage: number;
-
+	onUseVFX: AllBundleItems[];
+	onUseVFX_FP: AllBundleItems[];
 	/**
 	 * If undefined, default effects will be used.
 	 */

@@ -139,19 +139,24 @@ export declare enum Bundle_ItemSword_FirstPerson {
     Idle = 0,
     Equip = 1,
     UnEquip = 2,
-    Use01 = 3
+    Swing01 = 3,
+    Swing02 = 4
 }
 export declare enum Bundle_ItemSword_ThirdPerson {
     NONE = -1,
     Idle = 0,
     Equip = 1,
     UnEquip = 2,
-    Use = 3
+    Swing01 = 3,
+    Swing02 = 4
 }
 export declare enum Bundle_ItemSword_Prefabs {
     NONE = -1,
-    OnUse = 0,
-    OnHit = 1
+    OnSwing01 = 0,
+    OnSwing02 = 1,
+    OnSwingFP01 = 2,
+    OnSwingFP02 = 3,
+    OnHit = 4
 }
 export declare enum Bundle_ItemSword_SFX {
     NONE = -1,
@@ -286,18 +291,23 @@ export declare enum AllBundleItems {
     ItemPickaxe_ThirdPerson_Equip = "",
     ItemPickaxe_ThirdPerson_UnEquip = "",
     ItemPickaxe_ThirdPerson_Use = "",
-    ItemPickaxe_Prefabs_OnUse = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
-    ItemPickaxe_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
+    ItemPickaxe_Prefabs_OnUse = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab",
+    ItemPickaxe_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
     ItemSword_FirstPerson_Idle = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
     ItemSword_FirstPerson_Equip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
     ItemSword_FirstPerson_UnEquip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
-    ItemSword_FirstPerson_Use01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
+    ItemSword_FirstPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
+    ItemSword_FirstPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use2.anim",
     ItemSword_ThirdPerson_Idle = "",
     ItemSword_ThirdPerson_Equip = "",
     ItemSword_ThirdPerson_UnEquip = "",
-    ItemSword_ThirdPerson_Use = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
-    ItemSword_Prefabs_OnUse = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
-    ItemSword_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
+    ItemSword_ThirdPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use.anim",
+    ItemSword_ThirdPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use2.anim",
+    ItemSword_Prefabs_OnSwing01 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX01.prefab",
+    ItemSword_Prefabs_OnSwing02 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX02.prefab",
+    ItemSword_Prefabs_OnSwingFP01 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab",
+    ItemSword_Prefabs_OnSwingFP02 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP02.prefab",
+    ItemSword_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
     ItemSword_SFX_Equip = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg",
     ItemThrowable_FirstPerson_Idle = "",
     ItemThrowable_FirstPerson_Equip = "",
@@ -318,8 +328,8 @@ export declare enum AllBundleItems {
     ItemUnarmed_ThirdPerson_UnEquip = "",
     ItemUnarmed_ThirdPerson_Use = "",
     ItemUnarmed_SFX_Equip = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg",
-    HeldItem_OnUse_SwordSwing = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
-    HeldItem_OnHit_SwordHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
+    HeldItem_OnUse_SwordSwing = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab",
+    HeldItem_OnHit_SwordHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
     Projectiles_OnHitVFX_ArrowHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Projectiles/OnArrowHitVfx.prefab",
     Projectiles_OnHitVFX_FireballExplosion = "@Easy/Core/Shared/Resources/Accessories/Weapons/Fireball/FireballOnHitVFX.prefab"
 }

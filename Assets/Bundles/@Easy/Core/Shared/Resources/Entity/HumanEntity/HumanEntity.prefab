@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 6424979701641588540}
   - component: {fileID: 4759225323069188227}
   - component: {fileID: 7469622442304703365}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: MeshCombinerSkinned
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 0}
   m_Bones: []
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: 'No available material that supports dynamic lights '
+  warningMessage: No available voxel world
 --- !u!1 &716604332056178089
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,9 +339,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sourceReferences: []
-  combinedSkinnedMeshRenderer: {fileID: 0}
-  combinedStaticMeshRenderer: {fileID: 0}
-  combinedStaticMeshFilter: {fileID: 0}
 --- !u!1 &1541710145381148720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1255,7 @@ GameObject:
   - component: {fileID: 3255160694284968654}
   - component: {fileID: 8672877658514484187}
   - component: {fileID: 2942161881436483750}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: MeshCombinerStatic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1341,7 +1338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: 'No available material that supports dynamic lights '
+  warningMessage: No available voxel world
 --- !u!1 &5372027267382357332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,9 +1764,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sourceReferences: []
-  combinedSkinnedMeshRenderer: {fileID: 0}
-  combinedStaticMeshRenderer: {fileID: 0}
-  combinedStaticMeshFilter: {fileID: 0}
 --- !u!1 &6958035153746565230
 GameObject:
   m_ObjectHideFlags: 0
@@ -2177,7 +2171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warningMessage: 'No available material that supports dynamic lights '
+  warningMessage: No available voxel world
 --- !u!114 &8695364219153689915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2536,7 +2530,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 4244522174
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 14380724839903794209
 --- !u!114 &5043041770756594627

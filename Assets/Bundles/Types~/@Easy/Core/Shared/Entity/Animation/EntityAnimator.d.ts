@@ -32,7 +32,12 @@ export declare abstract class EntityAnimator {
     Destroy(): void;
     PlayAnimationOnLayer(clip: AnimationClip, layer: number, wrapMode?: WrapMode, transitionTime?: number, onEnd?: Callback): AnimancerState;
     StartIdleAnim(instantTransition: boolean): void;
-    PlayUseAnim(useIndex?: number): void;
+    PlayUseAnim(useIndex?: number, config?: {
+        fadeMode?: FadeMode;
+        wrapMode?: WrapMode;
+        transitionTime?: number;
+        autoFadeOut?: boolean;
+    }): void;
     EquipItem(itemMeta: ItemMeta | undefined): void;
     abstract PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;

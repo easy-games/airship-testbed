@@ -3,6 +3,7 @@ import { CoreServerSignals } from "Server/CoreServerSignals";
 import { PlayerJoinServerEvent } from "Server/Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "Server/Signals/PlayerLeaveServerEvent";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
@@ -81,6 +82,8 @@ export class PlayerService implements OnStart {
 	}
 
 	public HandlePlayerReady(player: Player): void {
+		CoreNetwork.ServerToClient.ServerInfo.Server.FireClient(player.clientId, Game.gameId, Game.serverId);
+
 		// notify all clients of the joining player
 		CoreNetwork.ServerToClient.AddPlayer.Server.FireAllClients(player.Encode());
 

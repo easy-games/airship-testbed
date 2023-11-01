@@ -21,15 +21,28 @@ export class EffectsManager {
 		return this.SpawnGameObjectAtPosition(prefab, worldPosition, worldRotation, destroyInSeconds);
 	}
 
-	public static SpawnBundleEffectById(
-		bundleId: AllBundleItems,
-		worldPosition: Vector3,
-		worldRotation: Vector3,
+	public static SpawnRandomBundleEffectById(
+		bundleId: AllBundleItems[],
+		worldPosition = Vector3.zero,
+		worldEuler = Vector3.zero,
 		destroyInSeconds = 5,
 	) {
+		//TODO
+	}
+
+	public static SpawnBundleEffectById(
+		bundleId: AllBundleItems,
+		worldPosition = Vector3.zero,
+		worldEuler = Vector3.zero,
+		destroyInSeconds = 5,
+	) {
+		if (!bundleId || (bundleId as string) === "") {
+			warn("Trying to spawn effect that has missing path");
+			return undefined;
+		}
 		let template = BundleReferenceManager.LoadDirectResource<GameObject>(bundleId);
 		if (template) {
-			return this.SpawnGameObjectAtPosition(template, worldPosition, worldRotation, destroyInSeconds);
+			return this.SpawnGameObjectAtPosition(template, worldPosition, worldEuler, destroyInSeconds);
 		}
 		return undefined;
 	}

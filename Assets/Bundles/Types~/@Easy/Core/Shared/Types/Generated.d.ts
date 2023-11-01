@@ -9608,6 +9608,8 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideCoreBundleVersion: string;
     overrideQueueType: string;
     airshipJWT: string;
+    gameId: string;
+    serverId: string;
     editorConfig: AirshipEditorConfig;
     serverReady: boolean;
     isStartupConfigReady: boolean;
@@ -9750,7 +9752,9 @@ interface Accessory extends ScriptableObject {
     
 interface AccessorySkin extends ScriptableObject {
     DisplayName: string;
-    skinTexture: Texture2D;
+    skinTextureDiffuse: Texture2D;
+    skinTextureNormal: Texture2D;
+    skinTextureORM: Texture2D;
 
     constructor(): AccessorySkin;
 
@@ -11632,13 +11636,13 @@ interface BlockDefinition {
     brightness: number;
     solid: boolean;
     randomRotation: boolean;
-    mesh: MeshCopy;
-    meshLod: MeshCopy;
+    mesh: VoxelMeshCopy;
+    meshLod: VoxelMeshCopy;
     usesTiles: boolean;
     meshTiles: CSDictionary<number, LodSet>;
     meshTileProcessingOrder: CSArray<number>;
     usesContexts: boolean;
-    meshContexts: CSDictionary<number, MeshCopy>;
+    meshContexts: CSDictionary<number, VoxelMeshCopy>;
     detail: boolean;
     meshTexturePath: string;
     topTexturePath: string;
@@ -11672,7 +11676,7 @@ interface BlockDefinition {
     GetUvsForFace(i: number): Rect;
 }
     
-interface MeshCopy {
+interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
     rotation: CSDictionary<number, PrecalculatedRotation>;
     uvs: CSArray<Vector2>;
@@ -11683,8 +11687,8 @@ interface MeshCopy {
     meshMaterial: Material;
     meshMaterialName: string;
 
-    constructor(mesh: Mesh): MeshCopy;
-    constructor(assetPath: string, showError: boolean): MeshCopy;
+    constructor(mesh: Mesh): VoxelMeshCopy;
+    constructor(assetPath: string, showError: boolean): VoxelMeshCopy;
 
     AdjustUVs(uvs: Rect): void;
 }
@@ -11698,9 +11702,9 @@ interface PrecalculatedRotation {
 }
     
 interface LodSet {
-    lod0: MeshCopy;
-    lod1: MeshCopy;
-    lod2: MeshCopy;
+    lod0: VoxelMeshCopy;
+    lod1: VoxelMeshCopy;
+    lod2: VoxelMeshCopy;
 
     constructor(): LodSet;
 

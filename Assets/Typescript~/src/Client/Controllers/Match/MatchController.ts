@@ -1,11 +1,12 @@
 import { TabListController } from "@Easy/Core/Client/Controllers/TabList/TabListController";
+import { FriendsController } from "@Easy/Core/Client/MainMenuControllers/Social/FriendsController";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { MatchInfoDto } from "Shared/Match/MatchInfoDto";
 import { MatchState } from "Shared/Match/MatchState";
@@ -82,6 +83,11 @@ export class MatchController implements OnStart {
 					"    " +
 					map;
 				this.tablistController.SetTitleText(text);
+				if (this.matchInfo) {
+					Dependency<FriendsController>().SetCustomGameTitle("BedWars | " + this.matchInfo?.mapName);
+				} else {
+					Dependency<FriendsController>().SetCustomGameTitle("BedWars | In Game");
+				}
 			},
 			true,
 		);

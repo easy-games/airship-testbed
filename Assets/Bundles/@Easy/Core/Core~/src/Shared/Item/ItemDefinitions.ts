@@ -4,9 +4,10 @@ import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
-import { BlockArchetype, BlockMeta, ItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
+import { BlockArchetype, BlockMeta, ItemMeta, MeleeItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 import { Duration } from "Shared/Util/Duration";
+import { DamageType } from "Shared/Damage/DamageType";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
@@ -30,7 +31,7 @@ const swordUsable: UsableHeldItemMeta = {
 	startUpInSeconds: 0,
 	minChargeSeconds: 0,
 	maxChargeSeconds: 0,
-	cooldownSeconds: 0.15,
+	cooldownSeconds: 0.25,
 	canHoldToUse: false,
 	onUseSound: [
 		coreSoundPath + "s_Sword_Swing_Wood_01.wav",
@@ -39,12 +40,26 @@ const swordUsable: UsableHeldItemMeta = {
 		coreSoundPath + "s_Sword_Swing_Wood_04.wav",
 	],
 	onUseSoundVolume: 0.3,
-	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+	onUseAnimFP: [
+		AllBundleItems.ItemSword_FirstPerson_Swing01 as string,
+		AllBundleItems.ItemSword_FirstPerson_Swing02 as string,
+	],
+	onUseAnimTP: [
+		AllBundleItems.ItemSword_ThirdPerson_Swing01 as string,
+		AllBundleItems.ItemSword_ThirdPerson_Swing02 as string,
+	],
 };
 const swordViewModel: ViewModelMeta = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	idleAnimTP: CoreAnim("Airship_Empty"),
+};
+
+const swordMelee: MeleeItemMeta = {
+	damage: 10,
+	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
+	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],
+	canHitMultipleTargets: true,
+	damageType: DamageType.SWORD,
 };
 const pickaxeUsable: Partial<UsableHeldItemMeta> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
@@ -551,6 +566,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 18,
 		},
 	},
@@ -561,6 +577,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 25,
 		},
 	},
@@ -571,6 +588,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 35,
 		},
 	},
@@ -581,6 +599,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 45,
 		},
 	},
@@ -591,6 +610,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.DOUBLE_HIT_SWORD)],
 		melee: {
+			...swordMelee,
 			damage: 10,
 		},
 	},
@@ -601,6 +621,7 @@ export const items: {
 		},
 		accessoryPaths: [AccPath(ItemType.RAGEBLADE)],
 		melee: {
+			...swordMelee,
 			damage: 15,
 		},
 	},
@@ -611,7 +632,7 @@ export const items: {
 		usable: {
 			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
-			cooldownSeconds: 0.25,
+			cooldownSeconds: 0.1,
 			onUseSound: [CoreSound.bowShoot],
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],

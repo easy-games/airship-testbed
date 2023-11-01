@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 3560744519664400810}
   - component: {fileID: 8826424540509032950}
   m_Layer: 0
-  m_Name: SwordHitFX
+  m_Name: SwordHitVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

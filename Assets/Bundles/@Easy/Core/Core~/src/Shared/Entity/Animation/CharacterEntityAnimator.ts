@@ -212,7 +212,15 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ITEM_ACTION).StartFade(0, this.defaultTransitionTime);
 	}
 
-	public override PlayUseAnim(useIndex = 0) {
+	public override PlayUseAnim(
+		useIndex = 0,
+		config?: {
+			fadeMode?: FadeMode;
+			wrapMode?: WrapMode;
+			transitionTime?: number;
+			autoFadeOut?: boolean;
+		},
+	) {
 		this.Log("Item Use Started: " + useIndex);
 		//In the animation array use animations are the 3rd index and beyond;
 
@@ -223,7 +231,23 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			return;
 		}
 
+		this.PlayAnimation(clips[useIndex], EntityAnimationLayer.ITEM_ACTION, undefined, config);
+	}
+
+	public PlayRandomUseAnim(config?: {
+		fadeMode?: FadeMode;
+		wrapMode?: WrapMode;
+		transitionTime?: number;
+		autoFadeOut?: boolean;
+	}) {
+		this.Log("Random Item Use Started");
+		//In the animation array use animations are the 3rd index and beyond;
+		let clips: AnimationClip[] | undefined = this.currentItemClipMap.get(ItemAnimationId.USE);
+		if (!clips || clips.isEmpty()) {
+			return;
+		}
+
 		const clip = RandomUtil.FromArray(clips);
-		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION);
+		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, undefined, config);
 	}
 }

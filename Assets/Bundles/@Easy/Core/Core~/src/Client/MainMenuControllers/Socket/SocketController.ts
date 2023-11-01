@@ -2,6 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
+import { SetInterval } from "Shared/Util/Timer";
 import { decode, encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 
@@ -25,6 +26,17 @@ export class SocketController implements OnStart {
 				this.Connect();
 			});
 		});
+
+		// Expires every 6 hours. So we fire every hour.
+		SetInterval(
+			60 * 60,
+			() => {
+				this.Emit("set-session-data", {
+					selectedRegion: "na",
+				});
+			},
+			true,
+		);
 	}
 
 	public On<T = unknown>(eventName: string, callback: (data: T) => void): void {

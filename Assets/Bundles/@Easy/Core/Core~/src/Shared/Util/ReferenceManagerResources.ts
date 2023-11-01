@@ -159,7 +159,8 @@ export enum Bundle_ItemSword_FirstPerson{
 	Idle,
 	Equip,
 	UnEquip,
-	Use01,
+	Swing01,
+	Swing02,
 }
 
 export enum Bundle_ItemSword_ThirdPerson{
@@ -167,12 +168,16 @@ export enum Bundle_ItemSword_ThirdPerson{
 	Idle,
 	Equip,
 	UnEquip,
-	Use,
+	Swing01,
+	Swing02,
 }
 
 export enum Bundle_ItemSword_Prefabs{
 	NONE = -1,
-	OnUse,
+	OnSwing01,
+	OnSwing02,
+	OnSwingFP01,
+	OnSwingFP02,
 	OnHit,
 }
 
@@ -324,18 +329,23 @@ export enum AllBundleItems{
 	ItemPickaxe_ThirdPerson_Equip = "",
 	ItemPickaxe_ThirdPerson_UnEquip = "",
 	ItemPickaxe_ThirdPerson_Use = "",
-	ItemPickaxe_Prefabs_OnUse = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
-	ItemPickaxe_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
+	ItemPickaxe_Prefabs_OnUse = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab",
+	ItemPickaxe_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
 	ItemSword_FirstPerson_Idle = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
 	ItemSword_FirstPerson_Equip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
 	ItemSword_FirstPerson_UnEquip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
-	ItemSword_FirstPerson_Use01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
+	ItemSword_FirstPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
+	ItemSword_FirstPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use2.anim",
 	ItemSword_ThirdPerson_Idle = "",
 	ItemSword_ThirdPerson_Equip = "",
 	ItemSword_ThirdPerson_UnEquip = "",
-	ItemSword_ThirdPerson_Use = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
-	ItemSword_Prefabs_OnUse = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
-	ItemSword_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
+	ItemSword_ThirdPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use.anim",
+	ItemSword_ThirdPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use2.anim",
+	ItemSword_Prefabs_OnSwing01 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX01.prefab",
+	ItemSword_Prefabs_OnSwing02 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX02.prefab",
+	ItemSword_Prefabs_OnSwingFP01 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab",
+	ItemSword_Prefabs_OnSwingFP02 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP02.prefab",
+	ItemSword_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
 	ItemSword_SFX_Equip = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg",
 	ItemThrowable_FirstPerson_Idle = "",
 	ItemThrowable_FirstPerson_Equip = "",
@@ -356,8 +366,8 @@ export enum AllBundleItems{
 	ItemUnarmed_ThirdPerson_UnEquip = "",
 	ItemUnarmed_ThirdPerson_Use = "",
 	ItemUnarmed_SFX_Equip = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg",
-	HeldItem_OnUse_SwordSwing = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab",
-	HeldItem_OnHit_SwordHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab",
+	HeldItem_OnUse_SwordSwing = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab",
+	HeldItem_OnHit_SwordHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
 	Projectiles_OnHitVFX_ArrowHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Projectiles/OnArrowHitVfx.prefab",
 	Projectiles_OnHitVFX_FireballExplosion = "@Easy/Core/Shared/Resources/Accessories/Weapons/Fireball/FireballOnHitVFX.prefab",
 }
@@ -514,8 +524,8 @@ export class ReferenceManagerAssets{
 		[Bundle_ItemPickaxe.Prefabs, {
 			id: Bundle_ItemPickaxe.Prefabs,
 			filePaths: new Map([
-				[Bundle_ItemPickaxe_Prefabs.OnUse, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab"],
-				[Bundle_ItemPickaxe_Prefabs.OnHit, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab"],
+				[Bundle_ItemPickaxe_Prefabs.OnUse, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab"],
+				[Bundle_ItemPickaxe_Prefabs.OnHit, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab"],
 			])}],
 		])
 	}
@@ -529,7 +539,8 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemSword_FirstPerson.Idle, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim"],
 				[Bundle_ItemSword_FirstPerson.Equip, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim"],
 				[Bundle_ItemSword_FirstPerson.UnEquip, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim"],
-				[Bundle_ItemSword_FirstPerson.Use01, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim"],
+				[Bundle_ItemSword_FirstPerson.Swing01, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim"],
+				[Bundle_ItemSword_FirstPerson.Swing02, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use2.anim"],
 			])}],
 		[Bundle_ItemSword.ThirdPerson, {
 			id: Bundle_ItemSword.ThirdPerson,
@@ -537,13 +548,17 @@ export class ReferenceManagerAssets{
 				[Bundle_ItemSword_ThirdPerson.Idle, ""],
 				[Bundle_ItemSword_ThirdPerson.Equip, ""],
 				[Bundle_ItemSword_ThirdPerson.UnEquip, ""],
-				[Bundle_ItemSword_ThirdPerson.Use, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim"],
+				[Bundle_ItemSword_ThirdPerson.Swing01, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use.anim"],
+				[Bundle_ItemSword_ThirdPerson.Swing02, "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use2.anim"],
 			])}],
 		[Bundle_ItemSword.Prefabs, {
 			id: Bundle_ItemSword.Prefabs,
 			filePaths: new Map([
-				[Bundle_ItemSword_Prefabs.OnUse, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab"],
-				[Bundle_ItemSword_Prefabs.OnHit, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab"],
+				[Bundle_ItemSword_Prefabs.OnSwing01, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX01.prefab"],
+				[Bundle_ItemSword_Prefabs.OnSwing02, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX02.prefab"],
+				[Bundle_ItemSword_Prefabs.OnSwingFP01, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab"],
+				[Bundle_ItemSword_Prefabs.OnSwingFP02, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP02.prefab"],
+				[Bundle_ItemSword_Prefabs.OnHit, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab"],
 			])}],
 		[Bundle_ItemSword.SFX, {
 			id: Bundle_ItemSword.SFX,
@@ -614,12 +629,12 @@ export class ReferenceManagerAssets{
 		[Bundle_HeldItem.OnUse, {
 			id: Bundle_HeldItem.OnUse,
 			filePaths: new Map([
-				[Bundle_HeldItem_OnUse.SwordSwing, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingFX.prefab"],
+				[Bundle_HeldItem_OnUse.SwordSwing, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab"],
 			])}],
 		[Bundle_HeldItem.OnHit, {
 			id: Bundle_HeldItem.OnHit,
 			filePaths: new Map([
-				[Bundle_HeldItem_OnHit.SwordHit, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitFX.prefab"],
+				[Bundle_HeldItem_OnHit.SwordHit, "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab"],
 			])}],
 		])
 	}

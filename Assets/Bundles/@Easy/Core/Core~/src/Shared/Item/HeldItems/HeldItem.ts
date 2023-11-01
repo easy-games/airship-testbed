@@ -26,6 +26,8 @@ export class HeldItem {
 	private holdingDownBin = new Bin();
 	private holdingDown = false;
 	private bufferingUse = false;
+	protected audioPitchShift = 1;
+	protected playEffectsOnUse = true;
 
 	constructor(entity: Entity, newMeta: ItemMeta | undefined) {
 		this.entity = entity;
@@ -237,10 +239,15 @@ export class HeldItem {
 		this.lastUsedTime = TimeUtil.GetServerTime();
 		this.isCharging = false;
 
-		if (this.itemMeta === undefined) return;
-
 		//Play the use locally
-		this.entity.animator.PlayUseAnim(useIndex);
+		if (this.playEffectsOnUse) {
+			this.entity.animator.PlayUseAnim(useIndex);
+			this.PlayItemSound();
+		}
+	}
+
+	protected PlayItemSound() {
+		if (this.itemMeta === undefined) return;
 		if (this.itemMeta.usable?.onUseSound) {
 			if (this.entity.IsLocalCharacter()) {
 				AudioManager.PlayGlobal(RandomUtil.FromArray(this.itemMeta.usable.onUseSound), {
