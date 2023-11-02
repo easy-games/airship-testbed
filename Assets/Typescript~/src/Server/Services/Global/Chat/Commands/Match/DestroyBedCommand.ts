@@ -38,7 +38,7 @@ export class DestroyBedCommand extends ChatCommand {
 			const world = WorldAPI.GetMainWorld();
 			if (!world) return;
 
-			const bedVoxelId = world.GetWorldBlockIdFromStringId(bedMeta.block!.blockId);
+			const bedVoxelId = world.GetVoxelIdFromId(bedMeta.block!.blockId);
 
 			CoreServerSignals.BeforeBlockDestroyed.Fire({
 				blockId: bedVoxelId ?? -1,
