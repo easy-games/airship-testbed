@@ -70,9 +70,7 @@ export class ProjectileService implements OnStart {
 					this.blockService.DamageBlockAOE(
 						event.projectile.shooter,
 						event.hitPosition,
-						event.ammoMeta.blockDamage,
 						event.ammoMeta.aoeDamage,
-						config,
 					);
 				}
 			}

@@ -63,7 +63,14 @@ export class MapBlockService implements OnStart {
 					}
 				}
 			}
-			this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemMeta);
+			//this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemMeta);
+
+			print("AOE BLOCK DAMAGE");
+			this.blockService.DamageBlockAOE(entity, entity.model.transform.position, {
+				damageRadius: 7,
+				innerDamage: 30,
+				outerDamage: 5,
+			});
 		});
 	}
 }

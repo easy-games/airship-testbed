@@ -7,6 +7,8 @@ export declare class ProjectileLauncherHeldItem extends HeldItem {
     private projectileTrajectoryRenderer;
     private chargeAnimFP;
     private chargeAnimTP;
+    private throwAnimFP;
+    private throwAnimTP;
     OnEquip(): void;
     OnLoadAssets(): void;
     protected OnCooldownReset(): void;
