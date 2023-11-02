@@ -55,13 +55,13 @@ export declare class World {
      * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
      * @returns The voxel block id
      */
-    GetWorldBlockIdFromStringId(blockStringId: string): number;
+    GetVoxelIdFromId(blockStringId: string): number;
     /**
      * Translates the int block id to the corresponding string block id
      * @param voxelId The integer voxel id
      * @returns The string block id
      */
-    GetStringIdFromWorldBlockId(voxelId: number): string;
+    GetIdFromVoxelId(voxelId: number): string;
     /**
      * Places a block at the given position with the given ItemType
      * @param pos The position
@@ -104,7 +104,7 @@ export declare class World {
      * @param config The place block configuration
      */
     PlaceBlockGroupById(positions: Vector3[], blockIds: string[], config?: PlaceBlockConfig): void;
-    PlaceBlockGroupByVoxelId(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void;
+    private PlaceBlockGroupByVoxelId;
     LoadWorldFromSaveFile(binaryFile: WorldSaveFile): void;
     LoadEmptyWorld(cubeMapPath: string): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
