@@ -370,15 +370,17 @@ export class BlockInteractService implements OnStart {
 		let currentPos: Vector3 = new Vector3(0, 0, 0);
 
 		print("damage radius: " + aoeMeta.damageRadius);
+		let ringToggle = false;
 		for (let ringRadius = 1; ringRadius < aoeMeta.damageRadius; ringRadius++) {
 			print("ring: " + ringRadius);
 			let ringDelta = ringRadius / aoeMeta.damageRadius;
+			ringToggle = !ringToggle;
 			//Check a 3D Diamond shell for blocks
 			//...
 
 			//Check a 2D ring of blocks
 			let zPos = 0;
-			let diamondRadius = ringRadius;
+			let diamondRadius = 0;
 			let ringDiameter = ringRadius * 2;
 			currentPos = new Vector3(-ringRadius, 0, 0);
 			//Check along a horizontal diameter
@@ -405,7 +407,7 @@ export class BlockInteractService implements OnStart {
 							currentPos,
 							Quaternion.identity,
 							new Vector3(0.25, 0.25, 0.25),
-							Color.blue,
+							Color.white,
 							10,
 						);
 					}
@@ -413,13 +415,13 @@ export class BlockInteractService implements OnStart {
 					print("found pos: " + currentPos + " maxDamage: " + maxDamage);
 					if (maxDamage > 0) {
 						if (!block.IsAir()) {
-							// DebugUtil.DrawBox(
-							// 	currentPos,
-							// 	Quaternion.identity,
-							// 	Vector3.one.mul(0.25),
-							// 	Color.Lerp(Color.red, Color.green, ringDelta),
-							// 	5,
-							// );
+							DebugUtil.DrawBox(
+								currentPos,
+								Quaternion.identity,
+								Vector3.one.mul(0.25),
+								ringToggle ? Color.red : Color.blue,
+								10,
+							);
 						}
 						if (damageI > 0) {
 							positions.forEach((element) => {
@@ -434,6 +436,7 @@ export class BlockInteractService implements OnStart {
 						damageI++;
 					}
 				}
+				diamondRadius += horizontalI < 0 ? 1 : -1;
 			}
 		}
 		this.DamageBlocks(entity, positions, damages);
