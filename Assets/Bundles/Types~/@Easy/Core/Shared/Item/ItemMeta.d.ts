@@ -8,11 +8,11 @@ import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
 import { Duration } from "../Util/Duration";
 export interface TillableBlockMeta {
-    tillsToBlockId: number;
+    tillsToBlockId: string;
 }
 export interface BlockMeta {
     health?: number;
-    blockId: number;
+    blockId: string;
     tillable?: TillableBlockMeta;
     blockArchetype?: BlockArchetype;
     prefab?: {
@@ -70,6 +70,8 @@ export interface ProjectileLauncherMeta {
     chargeSound?: SoundMeta[];
     chargeAnimFP?: string[];
     chargeAnimTP?: string[];
+    throwAnimFP?: string[];
+    throwAnimTP?: string[];
 }
 export interface ViewModelMeta {
     idleAnimFP?: string[];

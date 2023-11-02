@@ -54,7 +54,7 @@ export class BlockInteractController {
 				// }
 
 				//Destroy block
-				world.PlaceBlockById(voxelPos, 0);
+				world.DeleteBlock(voxelPos);
 				if (showHealthbars) {
 					this.blockHealth.VisualizeBlockBreak(voxelPos, block.blockId);
 				}

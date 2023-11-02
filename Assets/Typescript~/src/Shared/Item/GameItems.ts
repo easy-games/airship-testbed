@@ -2,8 +2,11 @@ import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { ItemRegistrationConfig, ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 
 declare module "@Easy/Core/Shared/Item/ItemType" {
+	/**
+	 * @scope Easy/Bedwars
+	 */
 	export const enum ItemType {
-		EXAMPLE_ITEM = "EXAMPLE_ITEM",
+		EXAMPLE_ITEM = "Bedwars:EXAMPLE_ITEM",
 	}
 }
 

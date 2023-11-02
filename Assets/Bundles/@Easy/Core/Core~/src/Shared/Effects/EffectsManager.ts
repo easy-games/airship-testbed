@@ -147,7 +147,7 @@ export class EffectsManager {
 	public static SetParticleToBlockMaterial(particles: ParticleSystemRenderer, blockId: number) {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return;
-		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, world.voxelWorld, 2);
+		const blockGO = MeshProcessor.ProduceSingleBlock(blockId, world.voxelWorld, 1);
 		if (blockGO) {
 			const blockRen = blockGO.GetComponent<Renderer>();
 			const blockFilter = blockGO.GetComponent<MeshFilter>();

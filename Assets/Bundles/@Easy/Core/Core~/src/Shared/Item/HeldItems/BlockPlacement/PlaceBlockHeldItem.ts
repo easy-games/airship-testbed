@@ -17,11 +17,11 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 
 		//Load the blocks mesh
 		if (this.itemMeta?.block?.blockId) {
-			const blockGO = MeshProcessor.ProduceSingleBlock(
-				this.itemMeta.block.blockId,
-				WorldAPI.GetMainWorld()!.voxelWorld,
-				3,
-			);
+			const world = WorldAPI.GetMainWorld()!;
+			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
+			print("voxelId match", this.itemMeta.block.blockId, voxelId);
+			const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 1);
+
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
 			if (blockGO && activeAccessories.Length > 0) {
 				blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
@@ -30,6 +30,8 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 				blockGO.transform.localScale = new Vector3(scale, scale, scale);
 				blockGO.transform.localRotation = Quaternion.identity;
 				blockGO.transform.Rotate(new Vector3(90, 90, 0));
+			} else {
+				print("Could not produce block", inspect(this.itemMeta.block));
 			}
 		}
 	}
@@ -82,7 +84,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		// Write the voxel at the predicted position
-		world.PlaceBlockById(placePosition, blockMeta.blockId!, {
+		world.PlaceBlockById(placePosition, blockMeta.blockId, {
 			placedByEntityId: this.entity.id,
 			priority: true,
 		});

@@ -58,7 +58,7 @@ export class BlockInteractService implements OnStart {
 			}
 
 			const beforeBlockPlaced = CoreServerSignals.BeforeBlockPlaced.Fire(
-				new BeforeBlockPlacedSignal(pos, itemType, itemMeta.block.blockId, entity),
+				new BeforeBlockPlacedSignal(pos, itemType, world!.GetVoxelIdFromId(itemMeta.block!.blockId), entity),
 			);
 
 			if (beforeBlockPlaced.IsCancelled()) {
@@ -139,9 +139,14 @@ export class BlockInteractService implements OnStart {
 	public PlaceBlock(entity: CharacterEntity, pos: Vector3, item: ItemMeta) {
 		if (item.block) {
 			entity.GetInventory().Decrement(item.itemType, 1);
-			WorldAPI.GetMainWorld()?.PlaceBlockById(pos, item.block.blockId, {
-				placedByEntityId: entity.id,
-			});
+
+			const world = WorldAPI.GetMainWorld();
+			if (world) {
+				world.PlaceBlockById(pos, item.block.blockId, {
+					placedByEntityId: entity.id,
+				});
+			}
+
 			CoreServerSignals.BlockPlace.Fire(new BlockPlaceSignal(pos, item.itemType, item.block.blockId, entity));
 			entity.SendItemAnimationToClients(0, 0, entity.ClientId);
 		}
@@ -149,7 +154,7 @@ export class BlockInteractService implements OnStart {
 
 	public PlaceBlockGroup(entity: CharacterEntity, positions: Vector3[], items: ItemMeta[]) {
 		let itemTypes: ItemType[] = [];
-		let blockTypes: number[] = [];
+		let blockTypes: string[] = [];
 		let itemMap: Map<ItemType, number> = new Map<ItemType, number>();
 		items.forEach((itemMeta, index) => {
 			if (itemMeta.block) {
@@ -162,7 +167,7 @@ export class BlockInteractService implements OnStart {
 				itemMap.set(itemMeta.itemType, amount);
 
 				itemTypes[index] = itemMeta.itemType;
-				blockTypes[index] = itemMeta.block.blockId;
+				blockTypes[index] = itemMeta.block.blockId!;
 			}
 		});
 
@@ -200,7 +205,7 @@ export class BlockInteractService implements OnStart {
 		world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, { placedByEntityId: entity?.id });
 
 		// If the resulting block is also tillable, mark tillable ?
-		const tillBlockType = ItemUtil.GetItemTypeFromBlockId(tillable.tillsToBlockId);
+		const tillBlockType = ItemUtil.GetItemTypeFromStringId(tillable.tillsToBlockId);
 		if (tillBlockType !== undefined) {
 			const tillBlockMeta = ItemUtil.GetItemMeta(tillBlockType);
 			BlockDataAPI.SetBlockData(
@@ -255,9 +260,7 @@ export class BlockInteractService implements OnStart {
 				blockPos: voxelPos,
 				entity: entity,
 			});
-			world.PlaceBlockById(voxelPos, 0, {
-				placedByEntityId: entity?.id,
-			});
+			world.DeleteBlock(voxelPos);
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: block.blockId,
 				blockPos: voxelPos,
@@ -281,7 +284,6 @@ export class BlockInteractService implements OnStart {
 		let destroyedI = 0;
 		let destroyedPositions: Vector3[] = [];
 		let destroyedIds: number[] = [];
-		let destroyedAirId: number[] = [];
 		for (let i = 0; i < voxelPositions.size(); i++) {
 			let voxelPos = BlockDataAPI.GetParentBlockPos(voxelPositions[i]) ?? voxelPositions[i];
 			let damage = damages[i];
@@ -321,7 +323,6 @@ export class BlockInteractService implements OnStart {
 			if (newHealth === 0) {
 				destroyedPositions[destroyedI] = voxelPos;
 				destroyedIds[destroyedI] = block.blockId;
-				destroyedAirId[destroyedI] = 0;
 				destroyedI++;
 			}
 		}
@@ -338,7 +339,7 @@ export class BlockInteractService implements OnStart {
 
 		if (destroyedI > 0) {
 			//Destroy group of blocks
-			world.PlaceBlockGroupById(destroyedPositions, destroyedAirId);
+			world.DeleteBlockGroup(destroyedPositions);
 
 			for (let i = 0; i < destroyedI; i++) {
 				CoreServerSignals.BlockDestroyed.Fire({

@@ -11,16 +11,18 @@ export class AddInventoryCommand extends ChatCommand {
 
 	public Execute(player: Player, args: string[]): void {
 		if (args.size() < 1) {
-			player.SendMessage("Invalid arguments. Usage: /i <item_type> [amount]");
+			player.SendMessage("Invalid arguments. Usage: /i <[@Org/Package:]item_type> [amount]");
 			return;
 		}
 
-		if (!ItemUtil.IsItemType(args[0].upper())) {
-			player.SendMessage("Invalid item type: " + args[0]);
+		let itemTypeExpression = args[0];
+
+		const itemType = ItemUtil.FindItemTypeFromExpression(itemTypeExpression);
+		if (!itemType) {
+			player.SendMessage("Invalid item type: " + itemTypeExpression.lower());
 			return;
 		}
 
-		let itemType = args[0].upper() as ItemType;
 		let amount = 1;
 		if (args.size() >= 2) {
 			const num = tonumber(args[1]);
@@ -33,6 +35,6 @@ export class AddInventoryCommand extends ChatCommand {
 		if (!player.Character) return;
 
 		player.Character.GetInventory().AddItem(itemStack);
-		player.SendMessage(`Given ${amount} ${itemStack.GetItemMeta().displayName}`);
+		player.SendMessage(`Given ${amount} ${itemStack.GetItemMeta().displayName} (${itemType.lower()})`);
 	}
 }
