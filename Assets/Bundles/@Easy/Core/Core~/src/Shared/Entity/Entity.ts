@@ -224,7 +224,7 @@ export class Entity {
 								if (blockId) {
 									EffectsManager.SetParticleToBlockMaterial(
 										particle.GetComponent<ParticleSystemRenderer>(),
-										world.GetBlockVoxelIdFromBlockStringId(blockId),
+										world.GetWorldBlockIdFromStringId(blockId),
 									);
 								}
 							}

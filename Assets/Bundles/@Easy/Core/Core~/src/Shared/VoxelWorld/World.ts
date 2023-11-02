@@ -135,7 +135,7 @@ export class World {
 	 * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
 	 * @returns The voxel block id
 	 */
-	public GetBlockVoxelIdFromBlockStringId(blockStringId: string): number {
+	public GetWorldBlockIdFromStringId(blockStringId: string): number {
 		return this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId);
 	}
 
@@ -144,7 +144,7 @@ export class World {
 	 * @param voxelId The integer voxel id
 	 * @returns The string block id
 	 */
-	public GetStringIdFromBlockVoxelId(voxelId: number): string {
+	public GetStringIdFromWorldBlockId(voxelId: number): string {
 		return this.voxelWorld.blocks.GetStringIdFromBlockId(voxelId);
 	}
 

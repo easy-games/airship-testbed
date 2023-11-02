@@ -61,7 +61,7 @@ export class BlockInteractService implements OnStart {
 				new BeforeBlockPlacedSignal(
 					pos,
 					itemType,
-					world!.GetBlockVoxelIdFromBlockStringId(itemMeta.block!.blockStringId),
+					world!.GetWorldBlockIdFromStringId(itemMeta.block!.blockStringId),
 					entity,
 				),
 			);
@@ -147,7 +147,7 @@ export class BlockInteractService implements OnStart {
 
 			const world = WorldAPI.GetMainWorld();
 			if (world) {
-				const blockId = world.GetBlockVoxelIdFromBlockStringId(item.block.blockStringId);
+				const blockId = world.GetWorldBlockIdFromStringId(item.block.blockStringId);
 				world.PlaceBlockByVoxelId(pos, blockId, {
 					placedByEntityId: entity.id,
 				});
@@ -208,7 +208,7 @@ export class BlockInteractService implements OnStart {
 		const breakState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.CAN_BREAK);
 		const tillState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.CAN_TILL);
 
-		const blockId = world.GetBlockVoxelIdFromBlockStringId(tillable.tillsToBlockStringId);
+		const blockId = world.GetWorldBlockIdFromStringId(tillable.tillsToBlockStringId);
 		world.PlaceBlockByVoxelId(voxelPos, blockId, { placedByEntityId: entity?.id });
 
 		// If the resulting block is also tillable, mark tillable ?

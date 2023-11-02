@@ -85,7 +85,7 @@ export class BlockInteractController {
 
 			this.localEntity.AddToMoveData("TillBlock", voxelPos);
 
-			const tillBlockId = world.GetBlockVoxelIdFromBlockStringId(tillable.tillsToBlockStringId);
+			const tillBlockId = world.GetWorldBlockIdFromStringId(tillable.tillsToBlockStringId);
 			world.PlaceBlockByVoxelId(voxelPos, tillBlockId, {
 				placedByEntityId: entity.id,
 			});

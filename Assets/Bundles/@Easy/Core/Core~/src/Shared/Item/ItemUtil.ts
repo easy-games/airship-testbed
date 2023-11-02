@@ -125,7 +125,7 @@ export class ItemUtil {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return undefined;
 
-		const stringId = world.GetStringIdFromBlockVoxelId(blockId);
+		const stringId = world.GetStringIdFromWorldBlockId(blockId);
 		return this.GetItemTypeFromStringId(stringId);
 	}
 
