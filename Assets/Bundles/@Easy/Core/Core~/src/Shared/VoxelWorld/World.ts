@@ -135,7 +135,7 @@ export class World {
 	 * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
 	 * @returns The voxel block id
 	 */
-	public GetWorldBlockIdFromStringId(blockStringId: string): number {
+	public GetVoxelIdFromId(blockStringId: string): number {
 		return this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId);
 	}
 
@@ -144,7 +144,7 @@ export class World {
 	 * @param voxelId The integer voxel id
 	 * @returns The string block id
 	 */
-	public GetStringIdFromWorldBlockId(voxelId: number): string {
+	public GetIdFromVoxelId(voxelId: number): string {
 		return this.voxelWorld.blocks.GetStringIdFromBlockId(voxelId);
 	}
 
@@ -231,11 +231,11 @@ export class World {
 	 * @param config The place block configuration
 	 */
 	public PlaceBlockGroupById(positions: Vector3[], blockIds: string[], config?: PlaceBlockConfig): void {
-		const blockVoxelIds = blockIds.map((id) => this.GetWorldBlockIdFromStringId(id));
+		const blockVoxelIds = blockIds.map((id) => this.GetVoxelIdFromId(id));
 		return this.PlaceBlockGroupByVoxelId(positions, blockVoxelIds, config);
 	}
 
-	public PlaceBlockGroupByVoxelId(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
+	private PlaceBlockGroupByVoxelId(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
 		let blocks: Block[] = [];
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 

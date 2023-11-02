@@ -58,12 +58,7 @@ export class BlockInteractService implements OnStart {
 			}
 
 			const beforeBlockPlaced = CoreServerSignals.BeforeBlockPlaced.Fire(
-				new BeforeBlockPlacedSignal(
-					pos,
-					itemType,
-					world!.GetWorldBlockIdFromStringId(itemMeta.block!.blockId),
-					entity,
-				),
+				new BeforeBlockPlacedSignal(pos, itemType, world!.GetVoxelIdFromId(itemMeta.block!.blockId), entity),
 			);
 
 			if (beforeBlockPlaced.IsCancelled()) {

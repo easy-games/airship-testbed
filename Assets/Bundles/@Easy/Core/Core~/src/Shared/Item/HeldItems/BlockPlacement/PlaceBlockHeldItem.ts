@@ -18,7 +18,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		//Load the blocks mesh
 		if (this.itemMeta?.block?.blockId) {
 			const world = WorldAPI.GetMainWorld()!;
-			const voxelId = world.GetWorldBlockIdFromStringId(this.itemMeta.block.blockId);
+			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
 			print("voxelId match", this.itemMeta.block.blockId, voxelId);
 			const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 1);
 
