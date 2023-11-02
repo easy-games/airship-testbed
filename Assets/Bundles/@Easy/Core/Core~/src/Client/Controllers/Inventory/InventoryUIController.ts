@@ -12,6 +12,7 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { OnUpdate } from "Shared/Util/Timer";
 import { CoreUIController } from "../UI/CoreUIController";
 import { InventoryController } from "./InventoryController";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 
 type DraggingState = {
 	inventory: Inventory;
@@ -228,7 +229,9 @@ export class InventoryUIController implements OnStart {
 
 		const itemMeta = itemStack.GetItemMeta();
 
-		let imageSrc = itemStack.GetItemType().lower() + ".png";
+		const [, id] = ItemUtil.GetItemTypeComponents(itemStack.GetItemType());
+		let imageSrc = id.lower() + ".png";
+
 		let texture2d = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
 			`Client/Resources/Assets/ItemRenders/${imageSrc}`,
 		);

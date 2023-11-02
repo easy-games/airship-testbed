@@ -204,7 +204,8 @@ export class ItemUtil {
 	 * @returns Render texture that corresponds to item.
 	 */
 	public static GetItemRenderTexture(itemType: ItemType): Texture2D {
-		const imageSrc = `${itemType.lower()}.png`;
+		const [, id] = this.GetItemTypeComponents(itemType);
+		const imageSrc = `${id.lower()}.png`;
 		const path = `Client/Resources/Assets/ItemRenders/${imageSrc}`;
 		return AssetBridge.Instance.LoadAsset<Texture2D>(path);
 	}
