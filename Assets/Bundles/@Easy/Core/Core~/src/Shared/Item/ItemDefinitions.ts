@@ -85,7 +85,7 @@ const pickaxeViewModel: Partial<ViewModelMeta> = {
 
 const woolBlock: BlockMeta = {
 	health: 10,
-	blockStringId: ItemType.WHITE_WOOL,
+	blockId: ItemType.WHITE_WOOL,
 	stepSound: CoreSound.footstepWool,
 	placeSound: CoreSound.blockPlaceWool,
 	hitSound: CoreSound.blockHitWool,
@@ -125,7 +125,7 @@ export const items: {
 		},
 		block: {
 			health: 50,
-			blockStringId: ItemType.BED,
+			blockId: ItemType.BED,
 			prefab: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
 				childBlocks: [new Vector3(0, 0, 1)],
@@ -140,7 +140,7 @@ export const items: {
 		},
 		block: {
 			...woolBlock,
-			blockStringId: ItemType.WHITE_WOOL,
+			blockId: ItemType.WHITE_WOOL,
 		},
 	},
 	[ItemType.BLUE_WOOL]: {
@@ -150,7 +150,7 @@ export const items: {
 		},
 		block: {
 			...woolBlock,
-			blockStringId: ItemType.BLUE_WOOL,
+			blockId: ItemType.BLUE_WOOL,
 		},
 	},
 	[ItemType.RED_WOOL]: {
@@ -160,7 +160,7 @@ export const items: {
 		},
 		block: {
 			...woolBlock,
-			blockStringId: ItemType.RED_WOOL,
+			blockId: ItemType.RED_WOOL,
 		},
 	},
 	[ItemType.GREEN_WOOL]: {
@@ -170,7 +170,7 @@ export const items: {
 		},
 		block: {
 			...woolBlock,
-			blockStringId: ItemType.GREEN_WOOL,
+			blockId: ItemType.GREEN_WOOL,
 		},
 	},
 	[ItemType.YELLOW_WOOL]: {
@@ -180,7 +180,7 @@ export const items: {
 		},
 		block: {
 			...woolBlock,
-			blockStringId: ItemType.YELLOW_WOOL,
+			blockId: ItemType.YELLOW_WOOL,
 		},
 	},
 	[ItemType.GRASS]: {
@@ -189,9 +189,9 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.GRASS,
+			blockId: ItemType.GRASS,
 			tillable: {
-				tillsToBlockStringId: ItemType.FARMLAND, // Farmland
+				tillsToBlockId: ItemType.FARMLAND, // Farmland
 			},
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
@@ -205,7 +205,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.TALL_GRASS,
+			blockId: ItemType.TALL_GRASS,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
 			placeSound: CoreSound.blockPlaceDirt,
@@ -217,7 +217,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.DIRT,
+			blockId: ItemType.DIRT,
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
@@ -230,7 +230,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.STONE,
+			blockId: ItemType.STONE,
 			blockArchetype: BlockArchetype.STONE,
 			stepSound: CoreSound.footstepStone,
 		},
@@ -241,7 +241,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.GRIM_STONE,
+			blockId: ItemType.GRIM_STONE,
 			blockArchetype: BlockArchetype.STONE,
 		},
 	},
@@ -251,7 +251,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.COBBLESTONE,
+			blockId: ItemType.COBBLESTONE,
 			blockArchetype: BlockArchetype.STONE,
 		},
 	},
@@ -261,7 +261,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.STONE_BRICK,
+			blockId: ItemType.STONE_BRICK,
 			health: 20,
 			blockArchetype: BlockArchetype.STONE,
 		},
@@ -272,7 +272,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.OBSIDIAN,
+			blockId: ItemType.OBSIDIAN,
 			health: 50,
 		},
 	},
@@ -282,7 +282,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.ANDESITE,
+			blockId: ItemType.ANDESITE,
 			health: 20,
 		},
 	},
@@ -292,7 +292,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.OAK_WOOD_PLANK,
+			blockId: ItemType.OAK_WOOD_PLANK,
 			blockArchetype: BlockArchetype.WOOD,
 			stepSound: CoreSound.footstepWood,
 		},
@@ -303,7 +303,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.OAK_LOG,
+			blockId: ItemType.OAK_LOG,
 			blockArchetype: BlockArchetype.WOOD,
 			stepSound: CoreSound.footstepWood,
 		},
@@ -314,7 +314,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.CLAY,
+			blockId: ItemType.CLAY,
 		},
 	},
 	[ItemType.WHITE_CLAY]: {
@@ -323,7 +323,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.WHITE_CLAY,
+			blockId: ItemType.WHITE_CLAY,
 		},
 	},
 	[ItemType.YELLOW_CLAY]: {
@@ -332,7 +332,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.YELLOW_CLAY,
+			blockId: ItemType.YELLOW_CLAY,
 		},
 	},
 	[ItemType.GRAY_CLAY]: {
@@ -341,7 +341,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.GRAY_CLAY,
+			blockId: ItemType.GRAY_CLAY,
 		},
 	},
 	[ItemType.LIGHT_GREEN_CLAY]: {
@@ -350,7 +350,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.LIGHT_GREEN_CLAY,
+			blockId: ItemType.LIGHT_GREEN_CLAY,
 		},
 	},
 	[ItemType.DARK_GREEN_CLAY]: {
@@ -359,7 +359,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.DARK_GREEN_CLAY,
+			blockId: ItemType.DARK_GREEN_CLAY,
 		},
 	},
 	[ItemType.BLACK_CLAY]: {
@@ -368,7 +368,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.BLACK_CLAY,
+			blockId: ItemType.BLACK_CLAY,
 		},
 	},
 	[ItemType.BROWN_CLAY]: {
@@ -377,7 +377,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.BROWN_CLAY,
+			blockId: ItemType.BROWN_CLAY,
 		},
 	},
 	[ItemType.OAK_LEAF]: {
@@ -386,7 +386,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.OAK_LEAF,
+			blockId: ItemType.OAK_LEAF,
 		},
 	},
 	[ItemType.DIAMOND_BLOCK]: {
@@ -395,7 +395,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.DIAMOND_BLOCK,
+			blockId: ItemType.DIAMOND_BLOCK,
 		},
 	},
 	[ItemType.EMERALD_BLOCK]: {
@@ -404,7 +404,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.EMERALD_BLOCK,
+			blockId: ItemType.EMERALD_BLOCK,
 		},
 	},
 	[ItemType.IRON_BLOCK]: {
@@ -413,7 +413,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.IRON_BLOCK,
+			blockId: ItemType.IRON_BLOCK,
 		},
 	},
 	[ItemType.MUSHROOM]: {
@@ -422,7 +422,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.MUSHROOM,
+			blockId: ItemType.MUSHROOM,
 		},
 	},
 	[ItemType.SLATE_BRICK]: {
@@ -431,7 +431,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.SLATE_BRICK,
+			blockId: ItemType.SLATE_BRICK,
 			health: 20,
 			blockArchetype: BlockArchetype.STONE,
 		},
@@ -442,7 +442,7 @@ export const items: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.CERAMIC,
+			blockId: ItemType.CERAMIC,
 		},
 	},
 
@@ -772,9 +772,9 @@ export const items: {
 	[ItemType.FARMLAND]: {
 		displayName: "Farmland",
 		block: {
-			blockStringId: ItemType.FARMLAND,
+			blockId: ItemType.FARMLAND,
 			tillable: {
-				tillsToBlockStringId: ItemType.GRASS, // Grass
+				tillsToBlockId: ItemType.GRASS, // Grass
 			},
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
@@ -801,7 +801,7 @@ export const items: {
 			stageGrowthDuration: Duration.fromSeconds(10),
 		},
 		block: {
-			blockStringId: ItemType.WHEAT_CROP,
+			blockId: ItemType.WHEAT_CROP,
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
@@ -821,7 +821,7 @@ export const items: {
 			...pickaxeViewModel,
 		},
 		block: {
-			blockStringId: ItemType.WHEAT_CROP,
+			blockId: ItemType.WHEAT_CROP,
 			placeOnWhitelist: [ItemType.FARMLAND],
 			requiresFoundation: true,
 		},

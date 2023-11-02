@@ -17,10 +17,10 @@ export declare class BlockPlaceSignal {
 export declare class BlockGroupPlaceSignal {
     readonly positions: Vector3[];
     readonly itemTypes: ItemType[];
-    readonly voxel: number[];
+    readonly blockIds: string[];
     /** Will always be undefined on client. */
     readonly entity?: Entity | undefined;
-    constructor(positions: Vector3[], itemTypes: ItemType[], voxel: number[], 
+    constructor(positions: Vector3[], itemTypes: ItemType[], blockIds: string[], 
     /** Will always be undefined on client. */
     entity?: Entity | undefined);
 }

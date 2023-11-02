@@ -57,15 +57,15 @@ export class ItemUtil {
 			ItemUtil.itemIdToItemType.set(i, itemType);
 
 			// Map Block types to items
-			if (itemMeta.block?.blockStringId !== undefined) {
-				this.blockIdToItemType.set(itemMeta.block.blockStringId, itemType);
+			if (itemMeta.block?.blockId !== undefined) {
+				this.blockIdToItemType.set(itemMeta.block.blockId, itemType);
 			}
 
 			// Map items to accessories
 			let accessoryPaths: string[] = [];
 			if (itemMeta.accessoryPaths) {
 				accessoryPaths = itemMeta.accessoryPaths;
-			} else if (itemMeta.block?.blockStringId) {
+			} else if (itemMeta.block?.blockId) {
 				accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.asset"];
 			}
 

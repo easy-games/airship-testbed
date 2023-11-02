@@ -148,11 +148,17 @@ export class World {
 		return this.voxelWorld.blocks.GetStringIdFromBlockId(voxelId);
 	}
 
-	public PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
+	/**
+	 * Places a block at the given position with the given ItemType
+	 * @param pos The position
+	 * @param itemType The item type
+	 * @param config  The configuration for this placed block
+	 */
+	public PlaceBlockByItemType(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.block) return;
 
-		this.PlaceBlockByStringId(pos, itemMeta.block.blockStringId, config);
+		this.PlaceBlockById(pos, itemMeta.block.blockId, config);
 	}
 
 	/**
@@ -163,20 +169,26 @@ export class World {
 	 * @param blockStringId The block type id
 	 * @param config The configuration for this placed block
 	 */
-	public PlaceBlockByStringId(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void {
+	public PlaceBlockById(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void {
 		return this.PlaceBlockByVoxelId(pos, this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId), config);
+	}
+
+	/**
+	 * Deletes the block at the given position (setting it to air)
+	 * @param pos The position of the block to delete
+	 */
+	public DeleteBlock(pos: Vector3) {
+		this.PlaceBlockByVoxelId(pos, 0);
 	}
 
 	/**
 	 * Places a block at the given position, with the given `blockVoxelId`.
 	 *
-	 * - It's recommended you use {@link PlaceBlockByStringId} - as the voxel id isn't guaranteed to be constant
-	 *
 	 * @param pos The position of the block
 	 * @param blockVoxelId The block voxel id
 	 * @param config The configuration for this placed block
 	 */
-	public PlaceBlockByVoxelId(pos: Vector3, blockVoxelId: number, config?: PlaceBlockConfig): void {
+	private PlaceBlockByVoxelId(pos: Vector3, blockVoxelId: number, config?: PlaceBlockConfig): void {
 		this.voxelWorld.WriteVoxelAt(pos, blockVoxelId, config?.priority ?? true);
 		if (config?.blockData) {
 			// print("SetBlockData (" + pos.x + "," + pos.y + "," + pos.z + ")");
@@ -202,9 +214,28 @@ export class World {
 		}
 	}
 
-	public PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
-		//this.voxelWorld.WriteVoxelGroupAt(CSArrayUtil.Create(positions), blockIds, config?.priority ?? true);
+	/**
+	 * Deletes the given block positions
+	 * @param positions The list of positions of the blocks to delete
+	 */
+	public DeleteBlockGroup(positions: Vector3[]) {
+		// eslint-disable-next-line @typescript-eslint/no-array-constructor
+		return this.PlaceBlockGroupByVoxelId(positions, table.create(positions.size(), 0));
+	}
 
+	/**
+	 * Places the given block ids at teh given positions, for each item in the position array the corresponding index in the blockIds array will apply to that position
+	 *
+	 * @param positions The list of positions to place blocks at
+	 * @param blockIds A list of block ids to set in relation to the positions list
+	 * @param config The place block configuration
+	 */
+	public PlaceBlockGroupById(positions: Vector3[], blockIds: string[], config?: PlaceBlockConfig): void {
+		const blockVoxelIds = blockIds.map((id) => this.GetWorldBlockIdFromStringId(id));
+		return this.PlaceBlockGroupByVoxelId(positions, blockVoxelIds, config);
+	}
+
+	public PlaceBlockGroupByVoxelId(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
 		let blocks: Block[] = [];
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 

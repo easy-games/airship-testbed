@@ -210,7 +210,7 @@ export class Entity {
 
 						const blockId = world?.RaycastBlockBelow(
 							this.model.transform.position.add(new Vector3(0, 0.25, 0)),
-						)?.blockStringId;
+						)?.blockId;
 
 						for (let i = 0; i < particles.Length; i++) {
 							let particle = particles.GetValue(i);

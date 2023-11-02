@@ -41,7 +41,7 @@ export class DestroyBedCommand extends ChatCommand {
 				blockId: bedMeta.block?.blockId ?? -1,
 				blockPos: bedState.position,
 			});
-			world.PlaceBlockByVoxelId(bedState.position, 0);
+			world.DeleteBlock(bedState.position);
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: bedMeta.block?.blockId ?? -1,
 				blockPos: bedState.position,

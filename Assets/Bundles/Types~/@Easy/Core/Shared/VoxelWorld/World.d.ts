@@ -71,18 +71,23 @@ export declare class World {
      * @param blockStringId The block type id
      * @param config The configuration for this placed block
      */
-    PlaceBlockByStringId(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void;
+    PlaceBlockById(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void;
+    /**
+     * Deletes the block at the given position (setting it to air)
+     * @param pos The position of the block to delete
+     */
+    DeleteBlock(pos: Vector3): void;
     /**
      * Places a block at the given position, with the given `blockVoxelId`.
-     *
-     * - It's recommended you use {@link PlaceBlockByStringId} - as the voxel id isn't guaranteed to be constant
      *
      * @param pos The position of the block
      * @param blockVoxelId The block voxel id
      * @param config The configuration for this placed block
      */
-    PlaceBlockByVoxelId(pos: Vector3, blockVoxelId: number, config?: PlaceBlockConfig): void;
-    PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void;
+    private PlaceBlockByVoxelId;
+    DeleteBlockGroup(positions: Vector3[]): void;
+    PlaceBlockGroupById(positions: Vector3[], blockIds: string[], config?: PlaceBlockConfig): void;
+    PlaceBlockGroupByVoxelId(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void;
     LoadWorldFromSaveFile(binaryFile: WorldSaveFile): void;
     LoadEmptyWorld(cubeMapPath: string): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;

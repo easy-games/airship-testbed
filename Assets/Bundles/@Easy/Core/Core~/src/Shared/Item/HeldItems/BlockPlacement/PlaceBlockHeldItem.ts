@@ -16,10 +16,10 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		//Load the blocks mesh
-		if (this.itemMeta?.block?.blockStringId) {
+		if (this.itemMeta?.block?.blockId) {
 			const world = WorldAPI.GetMainWorld()!;
-			const voxelId = world.GetWorldBlockIdFromStringId(this.itemMeta.block.blockStringId);
-			print("voxelId match", this.itemMeta.block.blockStringId, voxelId);
+			const voxelId = world.GetWorldBlockIdFromStringId(this.itemMeta.block.blockId);
+			print("voxelId match", this.itemMeta.block.blockId, voxelId);
 			const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 1);
 
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
@@ -83,9 +83,8 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			}
 		}
 
-		const blockId = world.GetWorldBlockIdFromStringId(blockMeta.blockStringId);
 		// Write the voxel at the predicted position
-		world.PlaceBlockByVoxelId(placePosition, blockId, {
+		world.PlaceBlockById(placePosition, blockMeta.blockId, {
 			placedByEntityId: this.entity.id,
 			priority: true,
 		});

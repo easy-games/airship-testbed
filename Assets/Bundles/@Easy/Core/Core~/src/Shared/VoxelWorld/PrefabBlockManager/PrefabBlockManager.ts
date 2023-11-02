@@ -75,7 +75,7 @@ export class PrefabBlockManager {
 				for (const vec of itemMeta.block.prefab.childBlocks) {
 					const worldSpace = pos.add(vec);
 					BlockDataAPI.SetChildOfParent(worldSpace, pos);
-					world?.PlaceBlockByVoxelId(worldSpace, WorldAPI.ChildVoxelId);
+					world?.PlaceBlockById(worldSpace, "@Easy/Core:CHILD_OF_BLOCK");
 				}
 			}
 		}
@@ -104,7 +104,7 @@ export class PrefabBlockManager {
 		const world = WorldAPI.GetMainWorld();
 		const childPositions = BlockDataAPI.GetChildrenBlockPos(pos);
 		for (const childPos of childPositions) {
-			world?.PlaceBlockByVoxelId(childPos, 0);
+			world?.DeleteBlock(childPos);
 		}
 
 		this.objectMap.delete(pos);
