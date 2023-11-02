@@ -2575,6 +2575,10 @@ declare const enum SaveFolder {
     PicturesFolder = 1,
     Documents = 2,
 }
+declare const enum LogContext {
+    Client = 0,
+    Server = 1,
+}
 
     
 interface RaycastHit {
@@ -10730,7 +10734,8 @@ interface VoxelWorld extends MonoBehaviour {
     GetBlockDefinesContents(): CSArray<string>;
     GetChunkByChunkPos(pos: unknown): Chunk;
     GetDirectWorldLightingFromRayImpact(pos: Vector3, direction: Vector3, maxDistance: number): Color;
-    GetNumBusyChunks(): number;
+    GetNumProcessingMeshChunks(): number;
+    GetNumRadiosityProcessingChunks(): number;
     GetOrMakeRadiosityProbeFor(pos: unknown): RadiosityProbeSample;
     GetRadiosityProbeColorForWorldPoint(pos: Vector3, normal: Vector3): Color;
     GetRadiosityProbeColorIfVisible(key: unknown, pos: Vector3, normal: Vector3): Color;
@@ -10907,10 +10912,12 @@ interface Chunk {
     GetVoxelAt(worldPos: unknown): number;
     HasVoxels(): boolean;
     IsGeometryDirty(): boolean;
+    IsProcessingMesh(): boolean;
     MainThreadAddSamplesToProbes(): void;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
-    NeedsToRunUpdate(): boolean;
+    NeedsToCopyMeshToScene(): boolean;
+    NeedsToGenerateMesh(): boolean;
     RemoveLight(id: number): void;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
@@ -11575,7 +11582,6 @@ interface VoxelBlocks {
     atlas: TexturePacker;
     materials: CSDictionary<string, Material>;
     loadedBlocks: CSDictionary<number, BlockDefinition>;
-    blockIdLookup: CSDictionary<string, number>;
     rootAssetPath: string;
     m_bundlePaths: CSArray<string>;
 
@@ -11697,7 +11703,7 @@ interface PrecalculatedRotation {
     vertices: CSArray<Vector3>;
     normals: CSArray<Vector3>;
 
-    constructor(vertices: CSArray<Vector3>, normals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
 
 }
     
@@ -11715,6 +11721,7 @@ interface VoxelBlocksConstructor {
     meshTileSizes: CSDictionary<number, unknown>;
     TileSizeNames: CSArray<string>;
     ContextBlockNames: CSArray<string>;
+    QuarterBlockNames: CSArray<string>;
 
 
 }
@@ -11740,6 +11747,8 @@ interface VoxelRaycastResult {
 interface VoxelWorldConstructor {
     runThreaded: boolean;
     doVisuals: boolean;
+    maxActiveThreads: number;
+    maxMainThreadMeshUpdatesPerFrame: number;
     showDebugSpheres: boolean;
     showDebugBounds: boolean;
     chunkSize: number;
@@ -13511,4 +13520,94 @@ interface CameraScreenshotRecorderConstructor {
 
 }
 declare const CameraScreenshotRecorder: CameraScreenshotRecorderConstructor;
+    
+interface DevConsole {
+
+
+}
+    
+interface Command {
+    Name: string;
+    HelpText: string;
+    IsCustomCommand: boolean;
+
+
+    GetAliases(): CSArray<string>;
+    GetFormattedName(): string;
+    GetFormattedParameter(parameterIndex: number): string;
+    GetParameters(): CSArray<Parameter>;
+    ToFormattedString(): string;
+    ToString(): string;
+}
+    
+interface Parameter {
+    Type: unknown;
+    FriendlyTypeName: string;
+    Name: string;
+    HelpText: string;
+
+
+    ToFormattedString(): string;
+    ToString(): string;
+}
+    
+interface ParameterConstructor {
+
+
+    Create(name: string, helpText: string): Parameter;
+}
+declare const Parameter: ParameterConstructor;
+    
+interface CommandConstructor {
+
+
+    Create(name: string, aliases: string, helpText: string, callback: unknown): Command;
+    Create<T1>(name: string, aliases: string, helpText: string, p1: Parameter, callback: unknown, defaultCallback: unknown): Command;
+    Create<T1, T2>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, callback: unknown, defaultCallback: unknown): Command;
+    Create<T1, T2, T3>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, callback: unknown, defaultCallback: unknown): Command;
+    Create<T1, T2, T3, T4>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, p4: Parameter, callback: unknown, defaultCallback: unknown): Command;
+    Create<T1, T2, T3, T4, T5>(name: string, aliases: string, helpText: string, p1: Parameter, p2: Parameter, p3: Parameter, p4: Parameter, p5: Parameter, callback: unknown, defaultCallback: unknown): Command;
+}
+declare const Command: CommandConstructor;
+    
+interface DevConsoleConstructor {
+    IsEnabled: boolean;
+    IsOpen: boolean;
+    IsOpenAndFocused: boolean;
+    IsKeyBindingsEnabled: boolean;
+    ToggleKey?: KeyCode;
+    AverageFps: number;
+    AverageMs: number;
+
+
+    AddCommand(command: Command, onlyInDevBuild: boolean): boolean;
+    AddParameterType<T>(parseFunc: unknown): boolean;
+    ClearConsole(): void;
+    CloseConsole(): void;
+    DisableConsole(): void;
+    DisableToggleKey(): void;
+    EnableConsole(): void;
+    GetCommand(name: string): Command;
+    GetCommand(name: string, command: unknown): boolean;
+    InvokeCoroutine(enumerator: unknown): Coroutine;
+    InvokeDelayed(action: unknown, delay: number): Coroutine;
+    Log(message: unknown, context: LogContext): void;
+    Log(message: unknown, colour: Color, context: LogContext): void;
+    LogCollection<T>(collection: CSArray<T>, toString: unknown, prefix: string, suffix: string): void;
+    LogCommand(): void;
+    LogCommand(name: string): void;
+    LogError(message: unknown, context: LogContext): void;
+    LogException(exception: unknown, context: LogContext): void;
+    LogSeperator(message: unknown): void;
+    LogSuccess(message: unknown, context: LogContext): void;
+    LogVariable(variableName: string, value: unknown, suffix: string): void;
+    LogWarning(message: unknown, context: LogContext): void;
+    OpenConsole(): void;
+    RemoveCommand(name: string): boolean;
+    RemoveTrackedStat(name: string): boolean;
+    RunCommand(input: string): boolean;
+    SetToggleKey(toggleKey: unknown): void;
+    SetTrackedStat(name: string, func: unknown, startEnabled: boolean): void;
+}
+declare const DevConsole: DevConsoleConstructor;
 
