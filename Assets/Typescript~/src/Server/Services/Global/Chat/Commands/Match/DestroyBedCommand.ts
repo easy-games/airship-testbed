@@ -47,7 +47,7 @@ export class DestroyBedCommand extends ChatCommand {
 				blockPos: bedState.position,
 			});
 
-			const bedVoxelId = world.GetBlockVoxelIdFromBlockStringId(bedMeta.block!.blockStringId);
+			const bedVoxelId = world.GetWorldBlockIdFromStringId(bedMeta.block!.blockStringId);
 			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(bedState.position, bedVoxelId);
 			ServerSignals.BedDestroyed.Fire({ team: targetTeam });
 		}
