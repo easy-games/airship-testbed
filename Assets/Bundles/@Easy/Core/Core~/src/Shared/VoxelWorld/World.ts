@@ -28,7 +28,6 @@ export class World {
 	public OnFinishedReplicatingChunksFromServer = new Signal<void>();
 	private finishedLoading = false;
 	private finishedReplicatingChunksFromServer = false;
-	private blocks: VoxelBlocks;
 
 	constructor(public readonly voxelWorld: VoxelWorld) {
 		voxelWorld.OnVoxelPlaced((voxel, x, y, z) => {
@@ -38,8 +37,6 @@ export class World {
 			voxel = VoxelWorld.VoxelDataToBlockId(voxel);
 			this.OnVoxelPlaced.Fire(vec, voxel);
 		});
-
-		this.blocks = voxelWorld.blocks;
 
 		if (!voxelWorld.finishedLoading) {
 			voxelWorld.OnFinishedLoading(() => {
@@ -139,7 +136,16 @@ export class World {
 	 * @returns The voxel block id
 	 */
 	public GetBlockVoxelIdFromBlockStringId(blockStringId: string): number {
-		return this.blocks.GetBlockIdFromStringId(blockStringId);
+		return this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId);
+	}
+
+	/**
+	 * Translates the int block id to the corresponding string block id
+	 * @param voxelId The integer voxel id
+	 * @returns The string block id
+	 */
+	public GetStringIdFromBlockVoxelId(voxelId: number): string {
+		return this.voxelWorld.blocks.GetStringIdFromBlockId(voxelId);
 	}
 
 	public PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
@@ -158,7 +164,7 @@ export class World {
 	 * @param config The configuration for this placed block
 	 */
 	public PlaceBlockByStringId(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void {
-		return this.PlaceBlockByVoxelId(pos, this.blocks.GetBlockIdFromStringId(blockStringId), config);
+		return this.PlaceBlockByVoxelId(pos, this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId), config);
 	}
 
 	/**

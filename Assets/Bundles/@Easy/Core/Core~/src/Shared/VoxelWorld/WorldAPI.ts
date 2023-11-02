@@ -21,6 +21,7 @@ export class WorldAPI {
 		if (voxelWorld) {
 			this.world = new World(voxelWorld);
 		}
+
 		return this.world;
 	}
 

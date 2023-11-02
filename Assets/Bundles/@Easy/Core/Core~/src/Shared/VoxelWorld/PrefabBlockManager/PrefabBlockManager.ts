@@ -24,7 +24,7 @@ export class PrefabBlockManager {
 		if (!world) return;
 		world.OnVoxelPlaced.Connect((pos, voxel) => {
 			const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-			const itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
+			const itemType = ItemUtil.GetItemTypeFromStringId(world.GetStringIdFromBlockVoxelId(blockId));
 
 			this.OnBlockDestroy(pos);
 

@@ -3,7 +3,6 @@ import { Signal } from "Shared/Util/Signal";
 import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
-import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 export interface ItemRegistrationConfig {
 	accessoryFolder?: string;
@@ -18,7 +17,7 @@ export class ItemUtil {
 	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
-	private static readonly blockIdToItemType = new Map<number, ItemType>();
+	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 
 	public static missingItemAccessory: Accessory;
@@ -41,8 +40,6 @@ export class ItemUtil {
 		);
 		print("Init kit: " + ItemUtil.defaultKitAccessory?.name);
 
-		const world = WorldAPI.GetMainWorld();
-
 		let i = 0;
 		for (const itemType of Object.keys(items)) {
 			this.itemTypes.push(itemType);
@@ -60,10 +57,8 @@ export class ItemUtil {
 			ItemUtil.itemIdToItemType.set(i, itemType);
 
 			// Map Block types to items
-			if (world && itemMeta.block?.blockStringId !== undefined) {
-				const voxelWorldBlockId = world.GetBlockVoxelIdFromBlockStringId(itemMeta.block.blockStringId);
-				ItemUtil.blockIdToItemType.set(voxelWorldBlockId, itemType);
-				itemMeta.block.blockId = voxelWorldBlockId;
+			if (itemMeta.block?.blockStringId !== undefined) {
+				this.blockIdToItemType.set(itemMeta.block.blockStringId, itemType);
 			}
 
 			// Map items to accessories
@@ -122,8 +117,20 @@ export class ItemUtil {
 		items[itemType] = itemDefinition;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public static GetItemTypeFromBlockId(blockId: number): ItemType | undefined {
-		return ItemUtil.blockIdToItemType.get(blockId);
+		const WorldAPI = import("Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return undefined;
+
+		const stringId = world.GetStringIdFromBlockVoxelId(blockId);
+		return this.GetItemTypeFromStringId(stringId);
+	}
+
+	public static GetItemTypeFromStringId(stringId: string): ItemType | undefined {
+		return ItemUtil.blockIdToItemType.get(stringId);
 	}
 
 	public static GetItemTypeFromItemId(itemId: number): ItemType | undefined {

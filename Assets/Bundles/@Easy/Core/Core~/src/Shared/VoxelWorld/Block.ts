@@ -10,7 +10,7 @@ export class Block {
 
 	constructor(public readonly voxel: number, public readonly world: World) {
 		this.blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-		this.itemType = ItemUtil.GetItemTypeFromBlockId(this.blockId);
+		this.itemType = ItemUtil.GetItemTypeFromStringId(world.GetStringIdFromBlockVoxelId(this.blockId));
 		if (this.itemType) {
 			this.itemMeta = ItemUtil.GetItemMeta(this.itemType);
 		}

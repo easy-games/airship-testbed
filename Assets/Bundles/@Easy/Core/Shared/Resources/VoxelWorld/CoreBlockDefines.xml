@@ -114,16 +114,16 @@
     <Brightness>2</Brightness>
   </Block>
 
-  <Block>
-    <Id>EMERALD_BLOCK</Id>
-    <Name>Emerald Block</Name>
-    <TopTexture>emerald_block.s</TopTexture>
-    <SideTexture>emerald_block.s</SideTexture>
-    <Solid>true</Solid>
-    <Metallic>0.5</Metallic>
-    <Roughness>0.5</Roughness>
-    <Brightness>2</Brightness>
-  </Block>
+<!--  <Block>-->
+<!--    <Id>EMERALD_BLOCK</Id>-->
+<!--    <Name>Emerald Block</Name>-->
+<!--    <TopTexture>emerald_block.s</TopTexture>-->
+<!--    <SideTexture>emerald_block.s</SideTexture>-->
+<!--    <Solid>true</Solid>-->
+<!--    <Metallic>0.5</Metallic>-->
+<!--    <Roughness>0.5</Roughness>-->
+<!--    <Brightness>2</Brightness>-->
+<!--  </Block>-->
 
   <Block>
     <Id>TNT</Id>

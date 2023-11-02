@@ -11575,6 +11575,7 @@ interface VoxelBlocks {
     atlas: TexturePacker;
     materials: CSDictionary<string, Material>;
     loadedBlocks: CSDictionary<number, BlockDefinition>;
+    blockIdLookup: CSDictionary<string, number>;
     rootAssetPath: string;
     m_bundlePaths: CSArray<string>;
 
@@ -11582,11 +11583,10 @@ interface VoxelBlocks {
 
     AddSolidMaskToVoxelValue(voxelValue: number): number;
     GetBlock(index: number): BlockDefinition;
-    GetBlockByTypeId(blockTypeId: string): BlockDefinition;
+    GetBlockDefinitionByStringId(blockTypeId: string): BlockDefinition;
     GetBlockDefinitionFromIndex(index: number): BlockDefinition;
-    GetBlockDefinitionFromName(name: string): BlockDefinition;
-    GetBlockIdFromName(name: string): number;
-    GetBlockIdFromStringId(id: string): number;
+    GetBlockIdFromStringId(stringId: string): number;
+    GetStringIdFromBlockId(blockVoxelId: number): string;
     Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
     UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
 }

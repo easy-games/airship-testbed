@@ -23,6 +23,7 @@ export declare class World {
     OnFinishedReplicatingChunksFromServer: Signal<void>;
     private finishedLoading;
     private finishedReplicatingChunksFromServer;
+    private blocks;
     constructor(voxelWorld: VoxelWorld);
     IsFinishedLoading(): boolean;
     WaitForFinishedLoading(): Promise<void>;
@@ -50,8 +51,32 @@ export declare class World {
      */
     GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined;
     RaycastBlockBelow(startPos: Vector3, maxDistance?: number): BlockMeta | undefined;
+    /**
+     * Translates the string block id to the corresponding voxel block id
+     * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+     * @returns The voxel block id
+     */
+    GetBlockVoxelIdFromBlockStringId(blockStringId: string): number;
     PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
-    PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void;
+    /**
+     * Places a block at the given position, with the given `blockStringId`
+     *
+     * e.g. `@Easy/Core:GRASS` (aka `ItemType.GRASS`) should spawn a grass block at that position
+     * @param pos The position of the block
+     * @param blockStringId The block type id
+     * @param config The configuration for this placed block
+     */
+    PlaceBlockByStringId(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void;
+    /**
+     * Places a block at the given position, with the given `blockVoxelId`.
+     *
+     * - It's recommended you use {@link PlaceBlockByStringId} - as the voxel id isn't guaranteed to be constant
+     *
+     * @param pos The position of the block
+     * @param blockVoxelId The block voxel id
+     * @param config The configuration for this placed block
+     */
+    PlaceBlockByVoxelId(pos: Vector3, blockVoxelId: number, config?: PlaceBlockConfig): void;
     PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void;
     LoadWorldFromSaveFile(binaryFile: WorldSaveFile): void;
     LoadEmptyWorld(cubeMapPath: string): void;
