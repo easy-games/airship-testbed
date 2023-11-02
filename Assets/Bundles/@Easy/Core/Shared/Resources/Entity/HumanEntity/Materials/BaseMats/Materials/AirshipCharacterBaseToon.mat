@@ -146,15 +146,16 @@ Material:
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
-    - _RimDistanceOffset: 1
-    - _RimIntensity: 10
-    - _RimPower: 1
+    - _RimDistanceOffset: 0
+    - _RimIntensity: 1.5
+    - _RimPower: 2
     - _RoughOverride: 0.5
     - _SLIDER_OVERRIDE: 1
     - _SaturationMod: 5
+    - _ShadowIntensity: 0.5
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
-    - _SpecMod: 0.25
+    - _SpecMod: 0.75
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
@@ -172,8 +173,8 @@ Material:
     - _OverrideColor: {r: 2, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.33490568, g: 0.99478364, b: 1, a: 1}
     - _RimColorShadow: {r: 0.15481488, g: 0.25616926, b: 0.6698113, a: 1}
-    - _RimDir: {r: 1, g: 0, b: -0.5, a: 0}
-    - _ShadowColor: {r: 0.24528301, g: 0.07775009, b: 0.035866853, a: 1}
+    - _RimDir: {r: 1, g: 0, b: 1, a: 0}
+    - _ShadowColor: {r: 0.24528301, g: 0.14462441, b: 0.14462441, a: 1}
     - _SkyShine: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 0.9811321, g: 0.5970096, b: 0.5970096, a: 1}
