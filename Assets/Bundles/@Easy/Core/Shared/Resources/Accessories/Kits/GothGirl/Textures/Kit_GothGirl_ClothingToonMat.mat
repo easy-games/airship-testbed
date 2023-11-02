@@ -127,8 +127,8 @@ Material:
     - _OverrideStrength: 0
     - _Parallax: 0.02
     - _RimDistanceOffset: 1
-    - _RimIntensity: 2
-    - _RimPower: 1.5
+    - _RimIntensity: 1
+    - _RimPower: 2
     - _RoughOverride: 0.04
     - _SaturationMod: 5
     - _ShadowIntensity: 0.5
