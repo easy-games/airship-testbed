@@ -56,9 +56,10 @@ const swordViewModel: ViewModelMeta = {
 
 const swordMelee: MeleeItemMeta = {
 	damage: 10,
+	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit as string,
 	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
 	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],
-	canHitMultipleTargets: true,
+	canHitMultipleTargets: false,
 	damageType: DamageType.SWORD,
 };
 const pickaxeUsable: Partial<UsableHeldItemMeta> = {

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VFXSpriteSheet01 2
+  m_Name: M_slash_rect_2
   m_Shader: {fileID: 4800000, guid: 0cff55b60b69d254eb4862f11062b78f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
@@ -43,7 +43,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 30a8b4354137af147929e52be5f42939, type: 3}
+        m_Texture: {fileID: 2800000, guid: d41f6d3a71961934d879addcdf1ce9fa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:

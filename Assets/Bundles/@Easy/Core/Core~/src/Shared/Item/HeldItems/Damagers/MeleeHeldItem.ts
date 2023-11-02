@@ -9,6 +9,7 @@ import { HeldItem } from "../HeldItem";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { SetTimeout } from "Shared/Util/Timer";
 import { Bin } from "Shared/Util/Bin";
+import { Layer } from "Shared/Util/Layer";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
@@ -35,6 +36,7 @@ export class MeleeHeldItem extends HeldItem {
 
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
+			error("No melee data on a melee weapon?");
 			return;
 		}
 
@@ -72,6 +74,7 @@ export class MeleeHeldItem extends HeldItem {
 					effect.transform.SetParent(this.entity.references.spineBoneMiddle);
 					effect.transform.localRotation = Quaternion.identity;
 					effect.transform.localPosition = Vector3.zero;
+					effect.layer = Layer.FIRST_PERSON;
 				}
 			} else {
 				//Spawn third person effect on the root
@@ -83,6 +86,7 @@ export class MeleeHeldItem extends HeldItem {
 				if (effect) {
 					//Spawn first person effect on the spine
 					effect.transform.SetParent(this.entity.model.transform);
+					effect.layer = Layer.CHARACTER;
 				}
 			}
 
@@ -112,6 +116,7 @@ export class MeleeHeldItem extends HeldItem {
 
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
+			error("Melee item doesn't have melee data?");
 			return;
 		}
 
@@ -145,6 +150,7 @@ export class MeleeHeldItem extends HeldItem {
 
 	private ScanBox(box: Vector3, ignoreEntityIds: number[], debugColor: Color): MeleeHit[] {
 		let collisionData: Array<MeleeHit> = [];
+		let collisionIndex = 0;
 		let closestCollisionData: MeleeHit | undefined;
 
 		const layerMask = 8; // character layer: 1 << 3
@@ -250,6 +256,8 @@ export class MeleeHeldItem extends HeldItem {
 							foundRaycastCollision.hitNormal = hit.normal;
 						}
 
+						collisionData[collisionIndex] = foundRaycastCollision;
+						collisionIndex++;
 						if (!closestCollisionData || hitInfo.distance < closestCollisionData.distance) {
 							closestCollisionData = foundRaycastCollision;
 							continue;
