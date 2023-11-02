@@ -1,6 +1,6 @@
 import Object from "@easy-games/unity-object-utils";
 import { Signal } from "Shared/Util/Signal";
-import { items } from "./ItemDefinitions";
+import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 
@@ -17,13 +17,14 @@ export class ItemUtil {
 	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
-	private static readonly blockIdToItemType = new Map<number, ItemType>();
+	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 
 	public static missingItemAccessory: Accessory;
 	public static defaultKitAccessory: AccessoryCollection | undefined;
 
 	private static itemTypes: ItemType[] = [];
+	private static implictItemTypeMap = new Map<string, ItemType>();
 
 	private static initialized = false;
 	private static onInitialized = new Signal<void>();
@@ -42,6 +43,12 @@ export class ItemUtil {
 		let i = 0;
 		for (const itemType of Object.keys(items)) {
 			this.itemTypes.push(itemType);
+
+			const [, item] = ItemUtil.GetItemTypeComponents(itemType);
+			if (!this.implictItemTypeMap.get(item)) {
+				this.implictItemTypeMap.set(item, itemType);
+			}
+
 			const itemMeta = ItemUtil.GetItemMeta(itemType);
 
 			// Assign ID to each ItemType
@@ -51,7 +58,7 @@ export class ItemUtil {
 
 			// Map Block types to items
 			if (itemMeta.block?.blockId !== undefined) {
-				ItemUtil.blockIdToItemType.set(itemMeta.block.blockId, itemType);
+				this.blockIdToItemType.set(itemMeta.block.blockId, itemType);
 			}
 
 			// Map items to accessories
@@ -110,8 +117,20 @@ export class ItemUtil {
 		items[itemType] = itemDefinition;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public static GetItemTypeFromBlockId(blockId: number): ItemType | undefined {
-		return ItemUtil.blockIdToItemType.get(blockId);
+		const WorldAPI = import("Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return undefined;
+
+		const stringId = world.GetIdFromVoxelId(blockId);
+		return this.GetItemTypeFromStringId(stringId);
+	}
+
+	public static GetItemTypeFromStringId(stringId: string): ItemType | undefined {
+		return ItemUtil.blockIdToItemType.get(stringId);
 	}
 
 	public static GetItemTypeFromItemId(itemId: number): ItemType | undefined {
@@ -145,12 +164,48 @@ export class ItemUtil {
 	}
 
 	/**
+	 * Find an `ItemType` from the given string, first trying direct then case-insensitive searching the items
+	 * @param expression The string expression to search for
+	 * @returns The `ItemType` (if found) - otherwise `undefined`.
+	 */
+	public static FindItemTypeFromExpression(expression: string): ItemType | undefined {
+		if (items[expression as ItemType] !== undefined) return expression as ItemType;
+
+		let [scope, id] = this.GetItemTypeComponents(expression as ItemType);
+		if (scope === "") {
+			const inferredItemType = this.implictItemTypeMap.get(id);
+			if (inferredItemType) {
+				return inferredItemType;
+			}
+
+			// Set default scope to core
+			scope = `@Easy/Core`;
+		}
+
+		for (const [str, itemType] of pairs(this.implictItemTypeMap)) {
+			if (str.lower() === expression.lower()) {
+				return itemType;
+			}
+		}
+
+		// 	// Explicit find
+		for (const [key] of pairs(items)) {
+			if (key.lower() === expression.lower()) {
+				return key;
+			}
+		}
+
+		return undefined;
+	}
+
+	/**
 	 * Fetch a render texture for a provided item.
 	 * @param itemType An item.
 	 * @returns Render texture that corresponds to item.
 	 */
 	public static GetItemRenderTexture(itemType: ItemType): Texture2D {
-		const imageSrc = `${itemType.lower()}.png`;
+		const [, id] = this.GetItemTypeComponents(itemType);
+		const imageSrc = `${id.lower()}.png`;
 		const path = `Client/Resources/Assets/ItemRenders/${imageSrc}`;
 		return AssetBridge.Instance.LoadAsset<Texture2D>(path);
 	}
@@ -160,7 +215,8 @@ export class ItemUtil {
 	 * @returns Render path that corresponds to item.
 	 */
 	public static GetItemRenderPath(itemType: ItemType): string {
-		const imageSrc = `${itemType.lower()}.png`;
+		const [, id] = this.GetItemTypeComponents(itemType);
+		const imageSrc = `${id.lower()}.png`;
 		return `Client/Resources/Assets/ItemRenders/${imageSrc}`;
 	}
 
@@ -171,6 +227,17 @@ export class ItemUtil {
 	 */
 	public static IsResource(itemType: ItemType): boolean {
 		return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
+	}
+
+	/**
+	 * Returns the component parts of an ItemType - the scope and the id
+	 *
+	 * E.g. `@Easy/Core:wood` returns [`"@Easy/Core"`, `"wood"`]
+	 * @param itemType The item type to get the components of
+	 * @returns The component prats of the item type string
+	 */
+	public static GetItemTypeComponents(itemType: ItemType): [scope: string, id: string] {
+		return ItemTypeComponentsInternal(itemType);
 	}
 
 	public static GetItemTypes(): ItemType[] {

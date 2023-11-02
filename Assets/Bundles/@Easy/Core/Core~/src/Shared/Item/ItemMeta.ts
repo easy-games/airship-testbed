@@ -7,12 +7,12 @@ import { ItemType } from "./ItemType";
 import { Duration } from "Shared/Util/Duration";
 
 export interface TillableBlockMeta {
-	tillsToBlockId: number;
+	tillsToBlockId: string;
 }
 
 export interface BlockMeta {
 	health?: number;
-	blockId: number;
+	blockId: string;
 	tillable?: TillableBlockMeta;
 	blockArchetype?: BlockArchetype;
 	prefab?: {

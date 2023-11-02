@@ -130,16 +130,66 @@ export class World {
 		return block?.itemMeta?.block;
 	}
 
-	public PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
+	/**
+	 * Translates the string block id to the corresponding voxel block id
+	 * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+	 * @returns The voxel block id
+	 */
+	public GetVoxelIdFromId(blockStringId: string): number {
+		return this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId);
+	}
+
+	/**
+	 * Translates the int block id to the corresponding string block id
+	 * @param voxelId The integer voxel id
+	 * @returns The string block id
+	 */
+	public GetIdFromVoxelId(voxelId: number): string {
+		return this.voxelWorld.blocks.GetStringIdFromBlockId(voxelId);
+	}
+
+	/**
+	 * Places a block at the given position with the given ItemType
+	 * @param pos The position
+	 * @param itemType The item type
+	 * @param config  The configuration for this placed block
+	 */
+	public PlaceBlockByItemType(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
 		const itemMeta = ItemUtil.GetItemMeta(itemType);
 		if (!itemMeta.block) return;
 
-		const blockId = itemMeta.block.blockId;
-		this.PlaceBlockById(pos, blockId, config);
+		this.PlaceBlockById(pos, itemMeta.block.blockId, config);
 	}
 
-	public PlaceBlockById(pos: Vector3, blockId: number, config?: PlaceBlockConfig): void {
-		this.voxelWorld.WriteVoxelAt(pos, blockId, config?.priority ?? true);
+	/**
+	 * Places a block at the given position, with the given `blockStringId`
+	 *
+	 * e.g. `@Easy/Core:GRASS` (aka `ItemType.GRASS`) should spawn a grass block at that position
+	 * @param pos The position of the block
+	 * @param blockStringId The block type id
+	 * @param config The configuration for this placed block
+	 */
+	public PlaceBlockById(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void {
+		return this.PlaceBlockByVoxelId(pos, this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId), config);
+	}
+
+	/**
+	 * Deletes the block at the given position (setting it to air)
+	 * @param pos The position of the block to delete
+	 */
+	public DeleteBlock(pos: Vector3) {
+		this.PlaceBlockByVoxelId(pos, 0);
+	}
+
+	/**
+	 * Places a block at the given position, with the given `blockVoxelId`.
+	 *
+	 * @param pos The position of the block
+	 * @param blockVoxelId The block voxel id
+	 * @param config The configuration for this placed block
+	 */
+	private PlaceBlockByVoxelId(pos: Vector3, blockVoxelId: number, config?: PlaceBlockConfig): void {
+		this.voxelWorld.WriteVoxelAt(pos, blockVoxelId, config?.priority ?? true);
 		if (config?.blockData) {
 			// print("SetBlockData (" + pos.x + "," + pos.y + "," + pos.z + ")");
 			for (const key of Object.keys(config.blockData)) {
@@ -148,7 +198,7 @@ export class World {
 		}
 
 		if (RunCore.IsServer()) {
-			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockId, config?.placedByEntityId);
+			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
 		} else {
 			if (config?.placedByEntityId === Game.LocalPlayer.Character?.id) {
 				// Client predicted block place event
@@ -156,7 +206,7 @@ export class World {
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 					.BlockPlaceClientSignal;
 
-				const block = new Block(blockId, this);
+				const block = new Block(blockVoxelId, this);
 				clientSignals.BlockPlace.Fire(
 					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character, false),
 				);
@@ -164,9 +214,28 @@ export class World {
 		}
 	}
 
-	public PlaceBlockGroupById(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
-		//this.voxelWorld.WriteVoxelGroupAt(CSArrayUtil.Create(positions), blockIds, config?.priority ?? true);
+	/**
+	 * Deletes the given block positions
+	 * @param positions The list of positions of the blocks to delete
+	 */
+	public DeleteBlockGroup(positions: Vector3[]) {
+		// eslint-disable-next-line @typescript-eslint/no-array-constructor
+		return this.PlaceBlockGroupByVoxelId(positions, table.create(positions.size(), 0));
+	}
 
+	/**
+	 * Places the given block ids at teh given positions, for each item in the position array the corresponding index in the blockIds array will apply to that position
+	 *
+	 * @param positions The list of positions to place blocks at
+	 * @param blockIds A list of block ids to set in relation to the positions list
+	 * @param config The place block configuration
+	 */
+	public PlaceBlockGroupById(positions: Vector3[], blockIds: string[], config?: PlaceBlockConfig): void {
+		const blockVoxelIds = blockIds.map((id) => this.GetVoxelIdFromId(id));
+		return this.PlaceBlockGroupByVoxelId(positions, blockVoxelIds, config);
+	}
+
+	private PlaceBlockGroupByVoxelId(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void {
 		let blocks: Block[] = [];
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 
@@ -207,8 +276,8 @@ export class World {
 		});
 	}
 
-	public LoadWorldFromVoxelBinaryFile(binaryFile: VoxelBinaryFile): void {
-		this.voxelWorld.LoadWorldFromVoxelBinaryFile(binaryFile);
+	public LoadWorldFromSaveFile(binaryFile: WorldSaveFile): void {
+		this.voxelWorld.LoadWorldFromSaveFile(binaryFile);
 	}
 
 	public LoadEmptyWorld(cubeMapPath: string): void {
