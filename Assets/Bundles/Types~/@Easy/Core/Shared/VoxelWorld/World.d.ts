@@ -23,7 +23,6 @@ export declare class World {
     OnFinishedReplicatingChunksFromServer: Signal<void>;
     private finishedLoading;
     private finishedReplicatingChunksFromServer;
-    private blocks;
     constructor(voxelWorld: VoxelWorld);
     IsFinishedLoading(): boolean;
     WaitForFinishedLoading(): Promise<void>;
@@ -56,7 +55,13 @@ export declare class World {
      * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
      * @returns The voxel block id
      */
-    GetBlockVoxelIdFromBlockStringId(blockStringId: string): number;
+    GetWorldBlockIdFromStringId(blockStringId: string): number;
+    /**
+     * Translates the int block id to the corresponding string block id
+     * @param voxelId The integer voxel id
+     * @returns The string block id
+     */
+    GetStringIdFromWorldBlockId(voxelId: number): string;
     PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
     /**
      * Places a block at the given position, with the given `blockStringId`

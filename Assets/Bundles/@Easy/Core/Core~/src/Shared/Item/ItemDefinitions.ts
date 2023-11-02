@@ -380,13 +380,13 @@ export const items: {
 			blockStringId: ItemType.BROWN_CLAY,
 		},
 	},
-	[ItemType.LEAF_OAK]: {
+	[ItemType.OAK_LEAF]: {
 		displayName: "Oak Leaf",
 		usable: {
 			...blockUsable,
 		},
 		block: {
-			blockStringId: ItemType.LEAF_OAK,
+			blockStringId: ItemType.OAK_LEAF,
 		},
 	},
 	[ItemType.DIAMOND_BLOCK]: {

@@ -26,7 +26,11 @@ export declare class ItemUtil {
     static Initialize(): void;
     static WaitForInitialized(): Promise<void>;
     static RegisterItem(itemType: ItemType, itemDefinition: Omit<ItemMeta, "id" | "itemType">, config?: ItemRegistrationConfig): void;
+    /**
+     * @deprecated
+     */
     static GetItemTypeFromBlockId(blockId: number): ItemType | undefined;
+    static GetItemTypeFromStringId(stringId: string): ItemType | undefined;
     static GetItemTypeFromItemId(itemId: number): ItemType | undefined;
     static GetItemMeta(itemType: ItemType): ItemMeta;
     static GetFirstAccessoryForItemType(itemType: ItemType): Accessory;

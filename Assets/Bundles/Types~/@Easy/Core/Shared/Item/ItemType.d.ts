@@ -35,7 +35,7 @@ export declare const enum ItemType {
     GRIM_STONE = "@Easy/Core:GRIM_STONE",
     OBSIDIAN = "@Easy/Core:OBSIDIAN",
     ANDESITE = "@Easy/Core:ANDESITE",
-    LEAF_OAK = "@Easy/Core:LEAF_OAK",
+    OAK_LEAF = "@Easy/Core:OAK_LEAF",
     WOOD_SWORD = "@Easy/Core:WOOD_SWORD",
     STONE_SWORD = "@Easy/Core:STONE_SWORD",
     IRON_SWORD = "@Easy/Core:IRON_SWORD",
