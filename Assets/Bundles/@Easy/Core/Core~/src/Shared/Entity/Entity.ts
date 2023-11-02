@@ -210,7 +210,7 @@ export class Entity {
 
 						const blockId = world?.RaycastBlockBelow(
 							this.model.transform.position.add(new Vector3(0, 0.25, 0)),
-						)?.blockId;
+						)?.blockStringId;
 
 						for (let i = 0; i < particles.Length; i++) {
 							let particle = particles.GetValue(i);
@@ -224,7 +224,7 @@ export class Entity {
 								if (blockId) {
 									EffectsManager.SetParticleToBlockMaterial(
 										particle.GetComponent<ParticleSystemRenderer>(),
-										blockId,
+										world.GetBlockVoxelIdFromBlockStringId(blockId),
 									);
 								}
 							}
