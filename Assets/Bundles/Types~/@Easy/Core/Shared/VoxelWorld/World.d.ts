@@ -62,7 +62,13 @@ export declare class World {
      * @returns The string block id
      */
     GetStringIdFromWorldBlockId(voxelId: number): string;
-    PlaceBlock(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
+    /**
+     * Places a block at the given position with the given ItemType
+     * @param pos The position
+     * @param itemType The item type
+     * @param config  The configuration for this placed block
+     */
+    PlaceBlockByItemType(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
     /**
      * Places a block at the given position, with the given `blockStringId`
      *
@@ -85,7 +91,18 @@ export declare class World {
      * @param config The configuration for this placed block
      */
     private PlaceBlockByVoxelId;
+    /**
+     * Deletes the given block positions
+     * @param positions The list of positions of the blocks to delete
+     */
     DeleteBlockGroup(positions: Vector3[]): void;
+    /**
+     * Places the given block ids at teh given positions, for each item in the position array the corresponding index in the blockIds array will apply to that position
+     *
+     * @param positions The list of positions to place blocks at
+     * @param blockIds A list of block ids to set in relation to the positions list
+     * @param config The place block configuration
+     */
     PlaceBlockGroupById(positions: Vector3[], blockIds: string[], config?: PlaceBlockConfig): void;
     PlaceBlockGroupByVoxelId(positions: Vector3[], blockIds: number[], config?: PlaceBlockConfig): void;
     LoadWorldFromSaveFile(binaryFile: WorldSaveFile): void;

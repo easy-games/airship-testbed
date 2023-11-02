@@ -6,11 +6,11 @@ import { ItemType } from "../Item/ItemType";
 export declare class BlockPlaceSignal {
     readonly pos: Vector3;
     readonly itemType: ItemType;
-    readonly voxel: number;
+    readonly blockId: string;
     /** Will always be undefined on client. */
     readonly entity?: Entity | undefined;
     readonly itemMeta: ItemMeta;
-    constructor(pos: Vector3, itemType: ItemType, voxel: number, 
+    constructor(pos: Vector3, itemType: ItemType, blockId: string, 
     /** Will always be undefined on client. */
     entity?: Entity | undefined);
 }

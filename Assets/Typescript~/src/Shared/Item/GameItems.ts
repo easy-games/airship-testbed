@@ -6,7 +6,7 @@ declare module "@Easy/Core/Shared/Item/ItemType" {
 	 * @scope Easy/Bedwars
 	 */
 	export const enum ItemType {
-		EXAMPLE_ITEM = "@Easy/Bedwars:EXAMPLE_ITEM",
+		EXAMPLE_ITEM = "Bedwars:EXAMPLE_ITEM",
 	}
 }
 

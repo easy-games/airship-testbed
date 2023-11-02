@@ -7,7 +7,7 @@
 
 <Blocks>
   <RootAssetPath>@Easy/Core/Shared/Resources/VoxelWorld</RootAssetPath>
-  <Scope>@Easy/Bedwars</Scope>
+  <Scope>Bedwars</Scope>
 
   <Block>
     <Index>128</Index>
