@@ -96,12 +96,12 @@ export class BlockSelectController implements OnStart {
 
 	private CalcSelectedBlock(): void {
 		const player = Game.LocalPlayer;
-		if (!player?.Character) {
+		if (!player?.character) {
 			this.SelectedBlockPosition = undefined;
 			this.PlaceBlockPosition = undefined;
 			return;
 		}
-		const characterPos = player.Character.gameObject.transform.position;
+		const characterPos = player.character.gameObject.transform.position;
 
 		if (os.clock() - this.lastVoidPlaceTime < 0.3) {
 			const voidSuccess = this.TryVoidSelect(characterPos);

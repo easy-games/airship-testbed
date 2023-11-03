@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemType } from "../Item/ItemType";
 import { Player } from "../Player/Player";
@@ -77,6 +77,7 @@ export declare class Entity {
     readonly OnDeath: Signal<void>;
     readonly OnArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
+    Teleport(pos: Vector3, lookVector?: Vector3): void;
     AddHealthbar(): void;
     GetHealthbar(): Healthbar | undefined;
     GetTeam(): Team | undefined;

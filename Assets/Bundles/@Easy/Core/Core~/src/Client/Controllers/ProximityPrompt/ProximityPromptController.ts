@@ -38,7 +38,7 @@ export class ProximityPromptController implements OnStart {
 	/** Returns distance between local player and a proximity prompt. */
 	private GetDistanceToPrompt(prompt: ProximityPrompt): number {
 		/* If local character does _not_ have a position, fallback to `math.huge`. */
-		const localCharacterPosition = Game.LocalPlayer.Character?.gameObject.transform.position;
+		const localCharacterPosition = Game.LocalPlayer.character?.gameObject.transform.position;
 		if (!localCharacterPosition) return math.huge;
 		/* Otherwise, return distance. */
 		return localCharacterPosition.sub(prompt.data.promptPosition).magnitude;

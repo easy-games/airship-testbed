@@ -47,17 +47,17 @@ export declare class Player {
     /**
      * The player controls this entity.
      */
-    Character: CharacterEntity | undefined;
+    character: CharacterEntity | undefined;
     /** Fired when the player's character changes. */
-    readonly CharacterChanged: Signal<CharacterEntity | undefined>;
+    readonly onCharacterChanged: Signal<CharacterEntity | undefined>;
     /**
      * Fired when the player disconnects from the server.
      * Connections will automatically be disconnected when the player leaves.
      */
-    readonly OnLeave: Signal<void>;
+    readonly onLeave: Signal<void>;
     private team;
-    readonly OnChangeTeam: Signal<[team: Team | undefined, oldTeam: Team | undefined]>;
-    OnUsernameChanged: Signal<[username: string, tag: string]>;
+    readonly onChangeTeam: Signal<[team: Team | undefined, oldTeam: Team | undefined]>;
+    onUsernameChanged: Signal<[username: string, tag: string]>;
     private bin;
     private connected;
     constructor(

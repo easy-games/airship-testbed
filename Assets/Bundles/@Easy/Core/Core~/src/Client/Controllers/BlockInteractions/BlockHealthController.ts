@@ -5,7 +5,6 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Healthbar } from "Shared/UI/Healthbar";
 import {
 	BundleGroupNames,
@@ -41,7 +40,7 @@ export class BlockHealthController implements OnStart {
 
 	OnStart(): void {
 		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId) => {
-			if (Game.LocalPlayer.Character && entityId === Game.LocalPlayer.Character.id) return;
+			if (Game.LocalPlayer.character && entityId === Game.LocalPlayer.character.id) return;
 
 			let entity: Entity | undefined;
 			if (entityId !== undefined) {

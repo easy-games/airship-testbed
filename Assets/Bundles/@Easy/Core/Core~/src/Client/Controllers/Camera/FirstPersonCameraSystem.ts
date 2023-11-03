@@ -90,7 +90,7 @@ export class FirstPersonCameraSystem {
 	public OnFirstPersonChanged(isFirstPerson: boolean) {
 		this.inFirstPerson = isFirstPerson;
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
-		Game.LocalPlayer.Character?.animator?.SetFirstPerson(isFirstPerson);
+		Game.LocalPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
 		this.entityReferences.humanEntityAnimator.SetForceLookForward(!isFirstPerson);
 	}

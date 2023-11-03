@@ -22,16 +22,15 @@ export class TpCommand extends ChatCommand {
 			return;
 		}
 
-		const pos = targetPlayer.Character?.gameObject.transform.position;
+		const pos = targetPlayer.character?.gameObject.transform.position;
 		if (!pos) {
 			player.SendMessage("Error: " + targetPlayer.username + " isn't alive.");
 			return;
 		}
 
-		if (!player.Character) return;
+		if (!player.character) return;
 
-		const humanoid = player.Character.gameObject.GetComponent<EntityDriver>();
-		humanoid.Teleport(pos);
+		player.character.Teleport(pos, targetPlayer.character?.entityDriver.GetLookVector());
 		player.SendMessage(
 			ColorUtil.ColoredText(Theme.Gray, "Teleported to ") +
 				ColorUtil.ColoredText(Theme.Yellow, targetPlayer.username),

@@ -258,6 +258,20 @@ export class Entity {
 		});
 	}
 
+	public Teleport(pos: Vector3, lookVector?: Vector3) {
+		this.entityDriver.Teleport(pos);
+		if (lookVector) {
+			this.entityDriver.SetLookVector(lookVector);
+			if (RunUtil.IsServer() && this.player) {
+				CoreNetwork.ServerToClient.Entity.SetLookVector.Server.FireClient(
+					this.player.clientId,
+					this.id,
+					lookVector,
+				);
+			}
+		}
+	}
+
 	public AddHealthbar(): void {
 		if (RunUtil.IsServer()) {
 			this.healthbarEnabled = true;
@@ -356,7 +370,7 @@ export class Entity {
 		this.animator.Destroy();
 		this.destroyed = true;
 
-		if (this.player && this.id === this.player.Character?.id) {
+		if (this.player && this.id === this.player.character?.id) {
 			this.player.SetCharacter(undefined);
 		}
 		if (this.healthbar) {

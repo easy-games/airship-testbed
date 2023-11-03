@@ -24,19 +24,19 @@ export class Player {
 	/**
 	 * The player controls this entity.
 	 */
-	public Character: CharacterEntity | undefined;
+	public character: CharacterEntity | undefined;
 	/** Fired when the player's character changes. */
-	public readonly CharacterChanged = new Signal<CharacterEntity | undefined>();
+	public readonly onCharacterChanged = new Signal<CharacterEntity | undefined>();
 	/**
 	 * Fired when the player disconnects from the server.
 	 * Connections will automatically be disconnected when the player leaves.
 	 */
-	public readonly OnLeave = new Signal<void>();
+	public readonly onLeave = new Signal<void>();
 
 	private team: Team | undefined;
-	public readonly OnChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
+	public readonly onChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
 
-	public OnUsernameChanged = new Signal<[username: string, tag: string]>();
+	public onUsernameChanged = new Signal<[username: string, tag: string]>();
 
 	private bin = new Bin();
 	private connected = true;
@@ -84,7 +84,7 @@ export class Player {
 	public SetTeam(team: Team): void {
 		const oldTeam = this.team;
 		this.team = team;
-		this.OnChangeTeam.Fire(team, oldTeam);
+		this.onChangeTeam.Fire(team, oldTeam);
 	}
 
 	public GetTeam(): Team | undefined {
@@ -94,7 +94,7 @@ export class Player {
 	public UpdateUsername(username: string, tag: string): void {
 		this.username = username;
 		this.usernameTag = tag;
-		this.OnUsernameChanged.Fire(username, tag);
+		this.onUsernameChanged.Fire(username, tag);
 	}
 
 	public SendMessage(message: string): void {
@@ -126,16 +126,16 @@ export class Player {
 	}
 
 	public SetCharacter(entity: CharacterEntity | undefined): void {
-		this.Character = entity;
-		this.CharacterChanged.Fire(entity);
+		this.character = entity;
+		this.onCharacterChanged.Fire(entity);
 	}
 
 	public ObserveCharacter(observer: (entity: CharacterEntity | undefined) => CleanupFunc): Bin {
 		const bin = new Bin();
-		let cleanup = observer(this.Character);
+		let cleanup = observer(this.character);
 
 		bin.Add(
-			this.CharacterChanged.Connect((newCharacter) => {
+			this.onCharacterChanged.Connect((newCharacter) => {
 				cleanup?.();
 				cleanup = observer(newCharacter);
 			}),
@@ -155,8 +155,8 @@ export class Player {
 	public Destroy(): void {
 		this.connected = false;
 		this.bin.Clean();
-		this.OnLeave.Fire();
-		this.OnLeave.DisconnectAll();
+		this.onLeave.Fire();
+		this.onLeave.DisconnectAll();
 	}
 
 	/**
@@ -164,7 +164,7 @@ export class Player {
 	 */
 	public TransferToServer(serverId: string, serverTransferData?: unknown, clientTransferData?: unknown) {
 		if (RunUtil.IsClient()) {
-			print("Player.TeleportToServer can only be called on the server.");
+			print("Player.TransferToServer can only be called on the server.");
 			return;
 		}
 

@@ -37,7 +37,7 @@ export class BWLoadingScreenController implements OnStart {
 			this.loadingScreenController.FinishLoading();
 			return;
 		}
-		if (Game.LocalPlayer.Character) {
+		if (Game.LocalPlayer.character) {
 			this.loadingScreenController.FinishLoading();
 		} else {
 			const startTime = os.clock();
