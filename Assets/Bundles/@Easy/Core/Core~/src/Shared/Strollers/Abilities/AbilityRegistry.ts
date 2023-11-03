@@ -66,13 +66,6 @@ export class AbilityRegistry implements OnStart {
 		abilityLogicClass: AbilityFactory<T>,
 		config: AbilityConfig,
 	) {
-		const testConfig: AbilityConfig = {
-			slot: AbilitySlot.Primary1,
-			charge: {
-				chargeDurationSeconds: 100,
-			},
-		};
-
 		print("Registering ability", id);
 		this.abilityHandlers.set(id, {
 			factory: abilityLogicClass,
