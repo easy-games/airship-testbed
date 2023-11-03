@@ -1,15 +1,15 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
+import { Bin } from "Shared/Util/Bin";
+import { Layer } from "Shared/Util/Layer";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
+import { SetTimeout } from "Shared/Util/Timer";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { HeldItem } from "../HeldItem";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { SetTimeout } from "Shared/Util/Timer";
-import { Bin } from "Shared/Util/Bin";
-import { Layer } from "Shared/Util/Layer";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;

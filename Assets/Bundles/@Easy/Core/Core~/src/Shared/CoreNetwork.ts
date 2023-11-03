@@ -66,6 +66,7 @@ export const CoreNetwork = {
 			SetHealth: new RemoteEvent<[entityId: number, health: number]>(),
 			SetDisplayName: new RemoteEvent<[entityId: number, displayName: string]>(),
 			AddHealthbar: new RemoteEvent<[entityId: number]>(),
+			SetLookVector: new RemoteEvent<[entityId: number, lookVector: Vector3]>(),
 		},
 		EntityDeath: new RemoteEvent<
 			[entityId: number, damageType: DamageType, killerEntityId: number | undefined, respawnTime: number]

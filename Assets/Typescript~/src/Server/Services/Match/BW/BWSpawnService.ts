@@ -121,10 +121,7 @@ export class BWSpawnService implements OnStart {
 		const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 		if (teamSpawnPosition) {
 			const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
-			const humanoid = player.Character?.gameObject.GetComponent<EntityDriver>();
-			if (humanoid) {
-				humanoid.Teleport(pos);
-			}
+			player.character?.Teleport(pos, teamSpawnPosition.Rotation.eulerAngles);
 		}
 	}
 }

@@ -136,7 +136,7 @@ export class SpectateController implements OnStart {
 	private GetSortedEntities(): Entity[] {
 		const team = Game.LocalPlayer.GetTeam();
 		if (team) {
-			const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.Character);
+			const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.character);
 			if (alivePlayers.size() > 0) {
 				return alivePlayers;
 			}
@@ -145,7 +145,7 @@ export class SpectateController implements OnStart {
 		return Dependency<PlayerController>()
 			.GetPlayers()
 			.filter((p) => !this.bwController.IsPlayerEliminated(p))
-			.mapFiltered((p) => p.Character);
+			.mapFiltered((p) => p.character);
 
 		// All entities
 		// return this.entityController

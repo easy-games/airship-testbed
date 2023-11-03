@@ -47,7 +47,7 @@ export class MainMenuPartyController implements OnStart {
 				this.UpdateParty();
 			});
 
-		Game.LocalPlayer.OnUsernameChanged.Connect(() => {
+		Game.LocalPlayer.onUsernameChanged.Connect(() => {
 			this.UpdateParty();
 		});
 

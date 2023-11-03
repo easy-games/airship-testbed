@@ -1,7 +1,6 @@
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
 
 export class VorliasCommand extends ChatCommand {
@@ -17,9 +16,9 @@ export class VorliasCommand extends ChatCommand {
 	private AddItem(player: Player, itemType: ItemType, amount: number) {
 		const itemStack = new ItemStack(itemType, amount);
 
-		if (!player.Character) return;
+		if (!player.character) return;
 
-		player.Character.GetInventory().AddItem(itemStack);
+		player.character.GetInventory().AddItem(itemStack);
 		player.SendMessage(`Given ${amount} ${itemStack.GetItemMeta().displayName}`);
 	}
 }

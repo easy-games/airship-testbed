@@ -205,7 +205,10 @@ export class Entity {
 						const fallDelta = DamageUtils.GetFallDelta(velocity.y);
 						let particles = landingEffect.GetComponentsInChildren<ParticleSystem>();
 						landingEffect.transform.localScale = Vector3.one.mul(MathUtil.Lerp(0.25, 1, fallDelta));
-						const blockId = WorldAPI.GetMainWorld()?.RaycastBlockBelow(
+
+						const world = WorldAPI.GetMainWorld();
+
+						const blockId = world?.RaycastBlockBelow(
 							this.model.transform.position.add(new Vector3(0, 0.25, 0)),
 						)?.blockId;
 
@@ -221,7 +224,7 @@ export class Entity {
 								if (blockId) {
 									EffectsManager.SetParticleToBlockMaterial(
 										particle.GetComponent<ParticleSystemRenderer>(),
-										blockId,
+										world.GetVoxelIdFromId(blockId),
 									);
 								}
 							}
@@ -253,6 +256,20 @@ export class Entity {
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(stateChangeConn);
 		});
+	}
+
+	public Teleport(pos: Vector3, lookVector?: Vector3) {
+		this.entityDriver.Teleport(pos);
+		if (lookVector) {
+			this.entityDriver.SetLookVector(lookVector);
+			if (RunUtil.IsServer() && this.player) {
+				CoreNetwork.ServerToClient.Entity.SetLookVector.Server.FireClient(
+					this.player.clientId,
+					this.id,
+					lookVector,
+				);
+			}
+		}
 	}
 
 	public AddHealthbar(): void {
@@ -353,7 +370,7 @@ export class Entity {
 		this.animator.Destroy();
 		this.destroyed = true;
 
-		if (this.player && this.id === this.player.Character?.id) {
+		if (this.player && this.id === this.player.character?.id) {
 			this.player.SetCharacter(undefined);
 		}
 		if (this.healthbar) {
@@ -595,9 +612,9 @@ export class Entity {
 		if (this.IsLocalCharacter()) {
 			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 		}
-		const projectilePath = `@Easy/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(
-			projectileItemType,
-		)}.prefab`;
+
+		const [, id] = ItemUtil.GetItemTypeComponents(projectileItemType);
+		const projectilePath = `@Easy/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(id)}.prefab`;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
 		const powerMulitplier = itemMeta.projectileLauncher?.powerMultiplier ?? 1;

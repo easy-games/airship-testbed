@@ -32,12 +32,12 @@ export class BWController implements OnStart {
 
 		/* Listen for team assignements*/
 		CoreClientSignals.PlayerChangeTeam.Connect((teamSignal) => {
-			if (!teamSignal.player.Character || teamSignal.player.Character?.IsLocalCharacter()) {
+			if (!teamSignal.player.character || teamSignal.player.character?.IsLocalCharacter()) {
 				return;
 			}
-			const team = teamSignal.player.Character?.GetTeam();
+			const team = teamSignal.player.character?.GetTeam();
 			if (team) {
-				this.SetTeamColor(teamSignal.player.Character, team);
+				this.SetTeamColor(teamSignal.player.character, team);
 			}
 		});
 
@@ -54,7 +54,7 @@ export class BWController implements OnStart {
 			return;
 		}
 		//Show a glow to indicate friend or foe
-		const sameTeam = team?.id === Game.LocalPlayer.Character?.GetTeam()?.id;
+		const sameTeam = team?.id === Game.LocalPlayer.character?.GetTeam()?.id;
 		const targetColor = sameTeam ? Color.cyan : Color.red;
 		const strength = sameTeam ? 0 : 1;
 		entity.animator.SetFresnelColor(targetColor, 5, strength);

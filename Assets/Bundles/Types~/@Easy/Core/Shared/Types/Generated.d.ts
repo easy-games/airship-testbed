@@ -10684,7 +10684,7 @@ interface VoxelWorld extends MonoBehaviour {
     globalRadiosityDirectLightAmp: number;
     showRadioistyProbes: boolean;
     focusPosition: Vector3;
-    voxelWorldFile: VoxelBinaryFile;
+    voxelWorldFile: WorldSaveFile;
     blockDefines: CSArray<TextAsset>;
     worldNetworker: VoxelWorldNetworker;
     chunksFolder: GameObject;
@@ -10741,7 +10741,7 @@ interface VoxelWorld extends MonoBehaviour {
     InitializeLightingForChunk(chunk: Chunk): void;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(cubeMapPath: string): void;
-    LoadWorldFromVoxelBinaryFile(file: VoxelBinaryFile): void;
+    LoadWorldFromSaveFile(file: WorldSaveFile): void;
     OnRenderObject(): void;
     PlaceGrassOnTopOfGrass(): void;
     RaycastIndirectLightingAtPoint(pos: Vector3, normal: Vector3): Color;
@@ -10765,10 +10765,11 @@ interface VoxelWorld extends MonoBehaviour {
     WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
 }
     
-interface VoxelBinaryFile extends ScriptableObject {
+interface WorldSaveFile extends ScriptableObject {
     chunks: CSArray<SaveChunk>;
     worldPositions: CSArray<WorldPosition>;
     pointLights: CSArray<SavePointLight>;
+    blockIdToScopeName: CSArray<BlockIdToScopedName>;
     cubeMapPath: string;
     globalSkySaturation: number;
     globalSunColor: Color;
@@ -10782,13 +10783,15 @@ interface VoxelBinaryFile extends ScriptableObject {
     globalFogEnd: number;
     globalFogColor: Color;
 
-    constructor(): VoxelBinaryFile;
+    constructor(): WorldSaveFile;
 
     CreateFromVoxelWorld(world: VoxelWorld): void;
-    CreateVoxelWorld(world: VoxelWorld): void;
     GetChunks(): CSArray<SaveChunk>;
+    GetFileBlockIdFromStringId(blockTypeId: string): number;
+    GetFileScopedBlockTypeId(fileBlockId: number): string;
     GetMapObjects(): CSArray<WorldPosition>;
     GetPointlights(): CSArray<SavePointLight>;
+    LoadIntoVoxelWorld(world: VoxelWorld): void;
 }
     
 interface SaveChunk {
@@ -10817,6 +10820,13 @@ interface SavePointLight {
     range: number;
     castShadows: boolean;
     highQualityLight: boolean;
+
+
+}
+    
+interface BlockIdToScopedName {
+    id: number;
+    name: string;
 
 
 }
@@ -11565,6 +11575,7 @@ interface VoxelBlocks {
     atlas: TexturePacker;
     materials: CSDictionary<string, Material>;
     loadedBlocks: CSDictionary<number, BlockDefinition>;
+    blockIdLookup: CSDictionary<string, number>;
     rootAssetPath: string;
     m_bundlePaths: CSArray<string>;
 
@@ -11572,10 +11583,12 @@ interface VoxelBlocks {
 
     AddSolidMaskToVoxelValue(voxelValue: number): number;
     GetBlock(index: number): BlockDefinition;
+    GetBlockDefinitionByStringId(blockTypeId: string): BlockDefinition;
     GetBlockDefinitionFromIndex(index: number): BlockDefinition;
-    GetBlockDefinitionFromName(name: string): BlockDefinition;
-    GetBlockId(name: string): number;
+    GetBlockIdFromStringId(stringId: string): number;
+    GetStringIdFromBlockId(blockVoxelId: number): string;
     Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
+    UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
 }
     
 interface TexturePacker {
@@ -11644,6 +11657,8 @@ interface BlockDefinition {
     meshMaterialName: string;
     averageColor: CSArray<Color>;
     minecraftConversions: CSArray<string>;
+    blockId: number;
+    blockTypeId: string;
     name: string;
     material: string;
     topMaterial: string;
@@ -11655,7 +11670,6 @@ interface BlockDefinition {
     meshTexture: string;
     meshPath: string;
     meshPathLod: string;
-    index: number;
 
     constructor(): BlockDefinition;
 

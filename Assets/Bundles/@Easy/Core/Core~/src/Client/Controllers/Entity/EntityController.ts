@@ -75,6 +75,13 @@ export class EntityController implements OnStart {
 			const entity = this.GetEntityById(entityId);
 			entity?.AddHealthbar();
 		});
+		CoreNetwork.ServerToClient.Entity.SetLookVector.Client.OnServerEvent((entityId, lookVector) => {
+			const entity = this.GetEntityById(entityId);
+			if (entity?.IsLocalCharacter()) {
+				// todo: change the way the entity is looking.
+				// calling SetLookVector on EntityDriver is wrong. We need to do something with the HumanoidCameraMode.
+			}
+		});
 
 		// Fun
 		const skinColors = [
