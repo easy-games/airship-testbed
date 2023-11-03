@@ -12,6 +12,7 @@ Game.serverId = serverBootstrap.serverId;
 
 function LoadFlamework() {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/services", "^.*service.lua$");
+	Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/strollers", "^.*.lua$");
 	Flamework.Ignite();
 }
 
