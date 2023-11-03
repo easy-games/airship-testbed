@@ -93,6 +93,7 @@ export class FlyCameraMode implements CameraMode {
 					key,
 					(event) => {
 						this.keysDown.delete(event.KeyCode);
+						event.SetCancelled(true);
 					},
 					SignalPriority.HIGHEST,
 				),
