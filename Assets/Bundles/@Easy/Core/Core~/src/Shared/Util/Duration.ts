@@ -5,7 +5,7 @@ export const MINUTES_TO_DAYS = 1440;
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Duration {
-	export type Seconds = number;
+	export type Seconds = number & { readonly tag?: never };
 }
 
 /**

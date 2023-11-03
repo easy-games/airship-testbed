@@ -1,9 +1,10 @@
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
+import { Duration } from "Shared/Util/Duration";
 
 export interface AbilityChargeConfig {
-	readonly chargeDurationSeconds: number;
+	readonly chargeDurationSeconds: Duration.Seconds;
 }
 
 export interface AbilityConfig {
@@ -65,6 +66,13 @@ export class AbilityRegistry implements OnStart {
 		abilityLogicClass: AbilityFactory<T>,
 		config: AbilityConfig,
 	) {
+		const testConfig: AbilityConfig = {
+			slot: AbilitySlot.Primary1,
+			charge: {
+				chargeDurationSeconds: 100,
+			},
+		};
+
 		print("Registering ability", id);
 		this.abilityHandlers.set(id, {
 			factory: abilityLogicClass,

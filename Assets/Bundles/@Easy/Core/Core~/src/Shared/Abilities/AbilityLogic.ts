@@ -62,10 +62,6 @@ export abstract class AbilityLogic {
 	 */
 	public abstract OnTriggered(): void;
 
-	// public OnPressed(): void {}
-
-	// public OnReleased(): void {}
-
 	public OnChargeBegan(): void {}
 
 	public OnChargeCancelled(): void {}
