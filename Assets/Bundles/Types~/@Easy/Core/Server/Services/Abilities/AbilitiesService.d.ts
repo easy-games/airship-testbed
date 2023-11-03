@@ -6,5 +6,5 @@ export declare class AbilitiesService {
     /**
      * Adds an abiltiy to the given
      */
-    AddAbilityToEntityById(id: string, entity: CharacterEntity, config: AbilityConfig): void;
+    AddAbilityToEntityById(id: string, entity: CharacterEntity, overrideConfig?: AbilityConfig): void;
 }

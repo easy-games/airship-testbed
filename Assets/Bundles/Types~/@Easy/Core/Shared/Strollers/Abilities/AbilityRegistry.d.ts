@@ -1,6 +1,9 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { AbilityLogic } from "../../Abilities/AbilityLogic";
 import { AbilitySlot } from "../../Abilities/AbilitySlot";
+export interface AbilityChargeConfig {
+    readonly chargeDurationSeconds: number;
+}
 export interface AbilityConfig {
     /**
      * The slot for this ability
@@ -14,19 +17,20 @@ export interface AbilityConfig {
      *
      * @see {@link AbilitySlot} for more details
      */
-    readonly Slot: AbilitySlot;
+    readonly slot: AbilitySlot;
     /**
      * The priority of this ability, will change whether or not this ability
      */
-    readonly Priority?: number;
+    readonly priority?: number;
     /**
      * The icon for this ability
      */
-    readonly Image?: string;
+    readonly image?: string;
     /**
      * The name of this ability
      */
-    readonly Name: string;
+    readonly name: string;
+    readonly charge?: AbilityChargeConfig;
 }
 type AbstractConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => infer _ ? P : never;
 type AbilityFactory<T extends AbilityLogic = AbilityLogic> = new (...args: AbstractConstructorParameters<typeof AbilityLogic>) => T;
@@ -35,11 +39,11 @@ export interface Ability {
      * @internal
      */
     factory: AbilityFactory;
-    defaultConfig?: AbilityConfig;
+    config: AbilityConfig;
 }
 export declare class AbilityRegistry implements OnStart {
     private abilityHandlers;
-    RegisterAbilityById<T extends AbilityLogic>(id: string, abilityLogicClass: AbilityFactory<T>): void;
+    RegisterAbilityById<T extends AbilityLogic>(id: string, abilityLogicClass: AbilityFactory<T>, config: AbilityConfig): void;
     GetAbilityById(id: string): Ability | undefined;
     OnStart(): void;
 }

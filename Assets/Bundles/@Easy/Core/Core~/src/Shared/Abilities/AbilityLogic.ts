@@ -1,8 +1,6 @@
-import { Dependency, Modding } from "@easy-games/flamework-core";
-import { AbilitiesController } from "Client/Controllers/Abilities/AbilitiesController";
+import { Dependency } from "@easy-games/flamework-core";
 import { AbilitiesService } from "Server/Services/Abilities/AbilitiesService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { Entity } from "Shared/Entity/Entity";
 import { AbilityConfig } from "Shared/Strollers/Abilities/AbilityRegistry";
 /**
  * A logic class surrounding an ability
@@ -22,15 +20,6 @@ export abstract class AbilityLogic {
 	 */
 	public OnServerInit() {
 		const abilityService = Dependency<AbilitiesService>();
-	}
-
-	/**
-	 * Lifecycle for this being initialized on the client
-	 * @internal
-	 */
-	public OnClientInit() {
-		const abilityController = Dependency<AbilitiesController>();
-		// TODO: Contact the ability controller to handle the UI situation?
 	}
 
 	/**
@@ -64,4 +53,20 @@ export abstract class AbilityLogic {
 	 * Lifecycle function for when this is enabled
 	 */
 	public OnDisabled() {}
+
+	/**
+	 * Invoked when the ability is triggered
+	 *
+	 * - This may be after a charge duration
+	 * 		if the charge duration is set and the ability charge wasn't cancelled
+	 */
+	public abstract OnTriggered(): void;
+
+	// public OnPressed(): void {}
+
+	// public OnReleased(): void {}
+
+	public OnChargeBegan(): void {}
+
+	public OnChargeCancelled(): void {}
 }

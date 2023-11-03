@@ -1,8 +1,10 @@
-import { Controller, Dependency, Flamework, Modding, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { Entity } from "Shared/Entity/Entity";
+
+export interface AbilityChargeConfig {
+	readonly chargeDurationSeconds: number;
+}
 
 export interface AbilityConfig {
 	/**
@@ -17,19 +19,21 @@ export interface AbilityConfig {
 	 *
 	 * @see {@link AbilitySlot} for more details
 	 */
-	readonly Slot: AbilitySlot;
+	readonly slot: AbilitySlot;
 	/**
 	 * The priority of this ability, will change whether or not this ability
 	 */
-	readonly Priority?: number;
+	readonly priority?: number;
 	/**
 	 * The icon for this ability
 	 */
-	readonly Image?: string;
+	readonly image?: string;
 	/**
 	 * The name of this ability
 	 */
-	readonly Name: string;
+	readonly name: string;
+
+	readonly charge?: AbilityChargeConfig;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
