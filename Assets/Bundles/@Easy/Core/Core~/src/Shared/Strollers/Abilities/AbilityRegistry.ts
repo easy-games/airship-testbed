@@ -1,8 +1,8 @@
-import { Controller, Modding, OnStart, Service } from "@easy-games/flamework-core";
-import { Ability } from "Shared/Abilities/Ability";
+import { Controller, Dependency, Flamework, Modding, OnStart, Service } from "@easy-games/flamework-core";
+import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
-
-export enum AbilityId {}
+import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { Entity } from "Shared/Entity/Entity";
 
 export interface AbilityConfig {
 	/**
@@ -32,16 +32,44 @@ export interface AbilityConfig {
 	readonly Name: string;
 }
 
-type AbilityConstructor = new (id: AbilityId, configuration: AbilityConfig) => Ability;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AbstractConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (
+	...args: infer P
+) => infer _
+	? P
+	: never;
+
+type AbilityFactory<T extends AbilityLogic = AbilityLogic> = new (
+	...args: AbstractConstructorParameters<typeof AbilityLogic>
+) => T;
+
+export interface Ability {
+	/**
+	 * @internal
+	 */
+	factory: AbilityFactory;
+	config: AbilityConfig;
+}
 
 @Service()
 @Controller()
 export class AbilityRegistry implements OnStart {
-	private abilties = new Map<AbilityId, Ability>();
+	private abilityHandlers = new Map<string, Ability>();
 
-	public RegisterAbility(logicHandler: AbilityConstructor, id: AbilityId, configuration: AbilityConfig): Ability {
-		const logic = new logicHandler(id, configuration); // allows DI
-		return logic;
+	public RegisterAbilityById<T extends AbilityLogic>(
+		id: string,
+		abilityLogicClass: AbilityFactory<T>,
+		config: AbilityConfig,
+	) {
+		print("Registering ability", id);
+		this.abilityHandlers.set(id, {
+			factory: abilityLogicClass,
+			config,
+		});
+	}
+
+	public GetAbilityById(id: string): Ability | undefined {
+		return this.abilityHandlers.get(id);
 	}
 
 	public OnStart(): void {
