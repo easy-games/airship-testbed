@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   gameId: bedwars
-  startingSceneName: BWLobbyScene
+  startingSceneName: BWMatchScene
   gameScenes:
   - {fileID: 102900000, guid: 151df1f7c6b0343e79e7af3b65595f86, type: 3}
   - {fileID: 102900000, guid: ddc161ab142d24f90b8a5708208f5982, type: 3}
   packages:
   - id: '@Easy/Core'
-    version: 21
+    version: 22
     game: 0
     localSource: 1
     disabled: 0
