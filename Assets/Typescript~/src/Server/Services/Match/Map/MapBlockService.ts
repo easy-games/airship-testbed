@@ -6,6 +6,7 @@ import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 import { ItemMeta } from "@Easy/Core/Shared/Item/ItemMeta";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
+import { Task } from "@Easy/Core/Shared/Util/Task";
 import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { OnStart, Service } from "@easy-games/flamework-core";
@@ -66,6 +67,9 @@ export class MapBlockService implements OnStart {
 			//this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemMeta);
 
 			print("AOE BLOCK DAMAGE");
+			for (let i = 1; i < 7; i++) {
+				Task.Delay(i - 1, () => {});
+			}
 			this.blockService.DamageBlockAOE(entity, entity.model.transform.position, {
 				damageRadius: 7,
 				innerDamage: 30,

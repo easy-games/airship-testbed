@@ -16,6 +16,8 @@ import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
+import { Block } from "Shared/VoxelWorld/Block";
+import { Task } from "Shared/Util/Task";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -292,35 +294,23 @@ export class BlockInteractService implements OnStart {
 				continue;
 			}
 
-			damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, damage);
-
-			// Hacked in for the 9/24/23 playtest
-			if (block.itemType === ItemType.STONE_BRICK) {
-				damage *= 0.5;
-			} else if (block.itemType === ItemType.OBSIDIAN) {
-				damage *= 0.2;
-			} else if (block.itemType === ItemType.CERAMIC || block.itemType === ItemType.BED) {
-				damage *= 0;
-			}
-
-			if (damage === 0) {
+			damage = this.GetBlockDamage(entity, block, voxelPos, damage);
+			if (damage < 0) {
+				//Not valid
 				continue;
 			}
 
-			// Cancellable signal
-			CoreServerSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(block, voxelPos, entity, damage, true));
-
 			//BLOCK DAMAGE
-			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
-			const newHealth = math.max(health - damage, 0);
+			let health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+			health = math.max(health - damage, 0);
 
 			damagePositions[damageI] = voxelPos;
 			damagedIds[damageI] = block.blockId;
-			newGroupHealth[damageI] = newHealth;
+			newGroupHealth[damageI] = health;
 			damageI++;
 
 			//BLOCK DEATH
-			if (newHealth === 0) {
+			if (health === 0) {
 				destroyedPositions[destroyedI] = voxelPos;
 				destroyedIds[destroyedI] = block.blockId;
 				destroyedI++;
@@ -331,31 +321,70 @@ export class BlockInteractService implements OnStart {
 			return false;
 		}
 
-		if (damageI > 0) {
-			//Apply damage to whole group of blocks
-			BlockDataAPI.SetBlockGroupData(damagePositions, "health", newGroupHealth);
-			// CoreNetwork.ServerToClient.BlockGroupHit.Server.FireAllClients(damagePositions, damagedIds, entity.id);
+		this.SendDamageEvents(
+			entity,
+			newGroupHealth,
+			damagePositions,
+			destroyedIds,
+			destroyedPositions,
+			damageI,
+			destroyedI,
+		);
+
+		return true;
+	}
+
+	private GetBlockDamage(entity: Entity | undefined, block: Block, voxelPos: Vector3, damage: number) {
+		WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, damage);
+
+		// Hacked in for the 9/24/23 playtest
+		if (block.itemType === ItemType.STONE_BRICK) {
+			damage *= 0.5;
+		} else if (block.itemType === ItemType.OBSIDIAN) {
+			damage *= 0.2;
+		} else if (block.itemType === ItemType.CERAMIC || block.itemType === ItemType.BED) {
+			damage *= 0;
 		}
 
-		if (destroyedI > 0) {
-			//Destroy group of blocks
-			world.DeleteBlockGroup(destroyedPositions);
+		if (damage === 0) {
+			return -1;
+		}
 
-			for (let i = 0; i < destroyedI; i++) {
+		// Cancellable signal
+		CoreServerSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(block, voxelPos, entity, damage, true));
+
+		return damage;
+	}
+
+	private SendDamageEvents(
+		entity: Entity | undefined,
+		newGroupHealth: number[],
+		damagePositions: Vector3[],
+		destroyedIds: number[],
+		destroyedPositions: Vector3[],
+		numberOfDamages: number,
+		numberOfDeaths: number,
+	) {
+		if (numberOfDamages > 0) {
+			//Apply damage to whole group of blocks
+			BlockDataAPI.SetBlockGroupData(damagePositions, "health", newGroupHealth);
+		}
+
+		if (numberOfDeaths > 0) {
+			//Destroy group of blocks
+			WorldAPI.GetMainWorld()?.DeleteBlockGroup(destroyedPositions);
+
+			for (let i = 0; i < numberOfDeaths; i++) {
 				CoreServerSignals.BlockDestroyed.Fire({
 					blockId: destroyedIds[i],
 					blockPos: destroyedPositions[i],
 					entity: entity,
 				});
 			}
-			// CoreNetwork.ServerToClient.BlockGroupDestroyed.Server.FireAllClients(destroyedPositions, destroyedIds);
 		}
-
-		return true;
 	}
 
 	public DamageBlockAOE(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
-		print("DamageBlockAOE");
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return;
@@ -368,78 +397,73 @@ export class BlockInteractService implements OnStart {
 		let damageI = 0;
 
 		let currentPos: Vector3 = new Vector3(0, 0, 0);
-
-		print("damage radius: " + aoeMeta.damageRadius);
 		let ringToggle = false;
-		for (let ringRadius = 1; ringRadius < aoeMeta.damageRadius; ringRadius++) {
-			print("ring: " + ringRadius);
+		for (let ringRadius = 1; ringRadius <= math.ceil(aoeMeta.damageRadius * 1.5); ringRadius++) {
+			//print("ring: " + ringRadius);
+			let xRadius = 0;
 			let ringDelta = ringRadius / aoeMeta.damageRadius;
-			ringToggle = !ringToggle;
-			//Check a 3D Diamond shell for blocks
-			//...
 
-			//Check a 2D ring of blocks
-			let zPos = 0;
-			let diamondRadius = 0;
-			let ringDiameter = ringRadius * 2;
-			currentPos = new Vector3(-ringRadius, 0, 0);
-			//Check along a horizontal diameter
-			for (let horizontalI = -ringRadius; horizontalI < ringRadius; horizontalI++) {
-				print("horizontal: " + horizontalI);
-				//Each point along can have 2 blocks
-				for (let verticalI = 0; verticalI < 2; verticalI++) {
-					print("Vertical: " + verticalI);
-					//Only check two blocks when we aren't at the corners
-					if (diamondRadius === 0 && verticalI > 0) {
-						continue;
-					}
+			Task.Delay(ringRadius - 1, () => {
+				ringToggle = !ringToggle;
+				//Check a 3D Diamond shell for blocks
+				for (let depthI = -ringRadius; depthI <= ringRadius; depthI++) {
+					//Check a 2D Diamond of blocks at this depth
+					let yRadius = 0;
+					currentPos = new Vector3(-ringRadius, 0, 0);
+					//Check along a horizontal diameter
+					for (let horizontalI = -xRadius; horizontalI <= xRadius; horizontalI++) {
+						//Each point along can have 2 blocks
+						for (let verticalI = 0; verticalI < 2; verticalI++) {
+							//Only check two blocks when we aren't at the corners
+							if (yRadius === 0 && verticalI > 0) {
+								continue;
+							}
 
-					//Find the position
-					currentPos = centerPosition.add(
-						new Vector3(horizontalI, verticalI === 0 ? diamondRadius : -diamondRadius, zPos),
-					);
-					print("Pos: " + currentPos);
-					const block = world.GetBlockAt(currentPos);
-					if (block.IsAir()) {
-						//Ignore Air
-						//continue;
-						DebugUtil.DrawBox(
-							currentPos,
-							Quaternion.identity,
-							new Vector3(0.25, 0.25, 0.25),
-							Color.white,
-							10,
-						);
-					}
-					const maxDamage = this.GetMaxAOEDamage(currentPos, centerPosition, aoeMeta);
-					print("found pos: " + currentPos + " maxDamage: " + maxDamage);
-					if (maxDamage > 0) {
-						if (!block.IsAir()) {
-							DebugUtil.DrawBox(
-								currentPos,
-								Quaternion.identity,
-								Vector3.one.mul(0.25),
-								ringToggle ? Color.red : Color.blue,
-								10,
+							//Find the position
+							currentPos = centerPosition.add(
+								new Vector3(horizontalI, verticalI === 0 ? yRadius : -yRadius, depthI),
 							);
-						}
-						if (damageI > 0) {
-							positions.forEach((element) => {
-								if (currentPos === element) {
-									error("CHECKING POSITION TWICE: " + currentPos);
+							//print("Pos: " + currentPos);
+							const block = world.GetBlockAt(currentPos);
+							if (block.IsAir()) {
+								//Ignore Air
+								continue;
+							}
+							const maxDamage = this.GetMaxAOEDamage(currentPos, centerPosition, aoeMeta);
+							//print("found pos: " + currentPos + " maxDamage: " + maxDamage);
+							if (maxDamage > 0) {
+								const finalDamage = this.GetBlockDamage(entity, block, currentPos, maxDamage);
+								if (finalDamage <= 0) {
+									continue;
 								}
-							});
+								DebugUtil.DrawBox(
+									currentPos,
+									Quaternion.identity,
+									Vector3.one.mul(0.25),
+									ringToggle ? Color.red : Color.blue,
+									10,
+								);
+
+								if (damageI > 0) {
+									positions.forEach((element) => {
+										if (currentPos === element) {
+											error("CHECKING POSITION TWICE: " + currentPos);
+										}
+									});
+								}
+								print("Damage block " + currentPos + ": " + finalDamage);
+								positions[damageI] = currentPos;
+								damages[damageI] = finalDamage;
+								damageI++;
+							}
 						}
-						print("Damage block " + currentPos + ": " + maxDamage);
-						positions[damageI] = currentPos;
-						damages[damageI] = maxDamage;
-						damageI++;
+						yRadius += horizontalI < 0 ? 1 : -1;
 					}
+					xRadius += depthI < 0 ? 1 : -1;
 				}
-				diamondRadius += horizontalI < 0 ? 1 : -1;
-			}
+			});
 		}
-		this.DamageBlocks(entity, positions, damages);
+		//this.DamageBlocks(entity, positions, damages);
 	}
 
 	public DamageBlockAOESimple(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
@@ -470,6 +494,9 @@ export class BlockInteractService implements OnStart {
 
 	private GetMaxAOEDamage(voxelPos: Vector3, aoeCenter: Vector3, aoeMeta: AOEDamageMeta) {
 		const distanceDelta = voxelPos.Distance(aoeCenter) / aoeMeta.damageRadius;
+		if (distanceDelta > 1) {
+			return 0;
+		}
 		return MathUtil.Lerp(aoeMeta.innerDamage, aoeMeta.outerDamage, distanceDelta * distanceDelta);
 	}
 }

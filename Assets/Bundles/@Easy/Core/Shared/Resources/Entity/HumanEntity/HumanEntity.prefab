@@ -1111,7 +1111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.6603774, g: 0.4944524, b: 0.39560342, a: 1}
+  - materialColor: {r: 0.9056604, g: 0.69945747, b: 0.5767177, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: AirshipCharacterBaseToon
@@ -1503,7 +1503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.6603774, g: 0.4944524, b: 0.39560342, a: 1}
+  - materialColor: {r: 0.9056604, g: 0.69945747, b: 0.5767177, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: AirshipCharacterBaseToon
