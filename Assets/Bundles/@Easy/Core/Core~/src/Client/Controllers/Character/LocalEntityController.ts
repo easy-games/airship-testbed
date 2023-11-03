@@ -45,7 +45,7 @@ export class LocalEntityController implements OnStart {
 	private entityInput: EntityInput | undefined;
 	private prevState: EntityState = EntityState.Idle;
 	private currentState: EntityState = EntityState.Idle;
-	private humanoidCameraMode: HumanoidCameraMode | undefined;
+	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.LOCKED;
@@ -342,8 +342,8 @@ export class LocalEntityController implements OnStart {
 	public SetCharacterCameraMode(mode: CharacterCameraMode): void {
 		this.characterCameraMode = mode;
 
-		if (Game.LocalPlayer.Character) {
-			const entity = Game.LocalPlayer.Character;
+		if (Game.LocalPlayer.character) {
+			const entity = Game.LocalPlayer.character;
 			if (mode === CharacterCameraMode.LOCKED) {
 				this.cameraController.SetMode(this.CreateHumanoidCameraMode(entity));
 			} else if (mode === CharacterCameraMode.ORBIT) {

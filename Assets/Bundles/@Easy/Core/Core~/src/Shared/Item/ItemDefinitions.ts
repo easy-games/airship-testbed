@@ -1,4 +1,6 @@
+import { DamageType } from "Shared/Damage/DamageType";
 import { CoreSound } from "Shared/Sound/CoreSound";
+import { Duration } from "Shared/Util/Duration";
 import { Layer } from "Shared/Util/Layer";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
@@ -6,8 +8,6 @@ import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { BlockArchetype, BlockMeta, ItemMeta, MeleeItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
-import { Duration } from "Shared/Util/Duration";
-import { DamageType } from "Shared/Damage/DamageType";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {

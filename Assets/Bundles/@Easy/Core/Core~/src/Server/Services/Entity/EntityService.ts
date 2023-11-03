@@ -43,14 +43,14 @@ export class EntityService implements OnStart {
 			CoreNetwork.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
 
 			return () => {
-				if (player.Character) {
-					this.DespawnEntity(player.Character);
+				if (player.character) {
+					this.DespawnEntity(player.character);
 				}
 			};
 		}, SignalPriority.HIGHEST);
 		CoreServerSignals.PlayerLeave.Connect((event) => {
-			if (event.player.Character) {
-				this.DespawnEntity(event.player.Character);
+			if (event.player.character) {
+				this.DespawnEntity(event.player.character);
 			}
 		});
 	}

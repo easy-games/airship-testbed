@@ -157,10 +157,9 @@ export class TeamUpgradeController implements OnStart {
 			let canPurchase = false;
 			if (tier < upgradeMeta.tiers.size()) {
 				if (
-					Game.LocalPlayer.Character?.GetInventory().HasEnough(
-						upgradeMeta.tiers[tier].currency,
-						upgradeMeta.tiers[tier].cost,
-					)
+					Game.LocalPlayer.character
+						?.GetInventory()
+						.HasEnough(upgradeMeta.tiers[tier].currency, upgradeMeta.tiers[tier].cost)
 				) {
 					canPurchase = true;
 				}
@@ -199,19 +198,19 @@ export class TeamUpgradeController implements OnStart {
 		this.UpdateUI();
 
 		const bin = new Bin();
-		const inv = Game.LocalPlayer.Character?.GetInventory();
+		const inv = Game.LocalPlayer.character?.GetInventory();
 		if (inv) {
 			inv.Changed.Connect(() => {
 				this.UpdateUI();
 			});
 		}
 
-		if (Game.LocalPlayer.Character) {
-			const startingPos = Game.LocalPlayer.Character.model.transform.position;
+		if (Game.LocalPlayer.character) {
+			const startingPos = Game.LocalPlayer.character.model.transform.position;
 			bin.Add(
 				SetInterval(0.1, () => {
-					if (Game.LocalPlayer.Character) {
-						if (startingPos.sub(Game.LocalPlayer.Character.model.transform.position).magnitude >= 1) {
+					if (Game.LocalPlayer.character) {
+						if (startingPos.sub(Game.LocalPlayer.character.model.transform.position).magnitude >= 1) {
 							AppManager.Close();
 						}
 					}

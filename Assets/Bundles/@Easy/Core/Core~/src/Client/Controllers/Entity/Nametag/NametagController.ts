@@ -63,8 +63,8 @@ export class NametagController implements OnStart {
 				return;
 			}
 
-			if (event.player.Character) {
-				this.UpdateNametag(event.player.Character);
+			if (event.player.character) {
+				this.UpdateNametag(event.player.character);
 			}
 		});
 

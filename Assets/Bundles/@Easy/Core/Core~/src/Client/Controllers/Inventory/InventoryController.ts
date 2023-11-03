@@ -208,8 +208,8 @@ export class InventoryController implements OnStart {
 	public ObserveLocalInventory(callback: (inv: Inventory) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
-		if (Game.LocalPlayer.Character && Game.LocalPlayer.Character instanceof CharacterEntity) {
-			cleanup = callback(Game.LocalPlayer.Character.GetInventory());
+		if (Game.LocalPlayer.character && Game.LocalPlayer.character instanceof CharacterEntity) {
+			cleanup = callback(Game.LocalPlayer.character.GetInventory());
 		}
 
 		bin.Add(
@@ -251,7 +251,7 @@ export class InventoryController implements OnStart {
 	}
 
 	public SetHeldSlot(slot: number): void {
-		if (Game.LocalPlayer.Character === undefined) return;
+		if (Game.LocalPlayer.character === undefined) return;
 		if (this.LocalInventory === undefined) return;
 
 		this.LocalInventory.SetHeldSlot(slot);
