@@ -46,8 +46,11 @@ export class WorldAPI {
 		blockPos: Vector3,
 		damage: number,
 	): number {
+		print("Cal damage pre: " + damage);
 		let signal = new BlockHitDamageSignal(damage, entity, block, blockPos, undefined);
+		print("Cal damage signal: " + signal.damage);
 		this.OnBlockHitDamageCalc.Fire(signal);
+		print("Cal damage post: " + signal.damage);
 		return signal.damage;
 	}
 }

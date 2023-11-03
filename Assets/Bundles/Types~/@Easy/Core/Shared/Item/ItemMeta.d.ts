@@ -137,13 +137,19 @@ export interface AOEDamageMeta {
     innerDamage: number;
     outerDamage: number;
     damageRadius: number;
+    blockExplosiveDamage: number;
     selfKnockbackMultiplier?: number;
 }
 export declare enum BlockArchetype {
-    NONE = 0,
-    STONE = 1,
-    WOOD = 2,
-    WOOL = 3
+    NONE = -1,
+    PROP = 0,
+    GROUND = 1,
+    FABRIC = 2,
+    WOOD = 3,
+    STONE = 4,
+    HARD_STONE = 5,
+    METAL = 6,
+    BLAST_PROOF = 7
 }
 export interface MeleeItemMeta {
     damageType?: DamageType;

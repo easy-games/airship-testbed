@@ -90,7 +90,7 @@ const woolBlock: BlockMeta = {
 	placeSound: CoreSound.blockPlaceWool,
 	hitSound: CoreSound.blockHitWool,
 	breakSound: CoreSound.blockBreakWool,
-	blockArchetype: BlockArchetype.WOOL,
+	blockArchetype: BlockArchetype.FABRIC,
 };
 
 /**
@@ -130,7 +130,7 @@ export const items: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
 				childBlocks: [new Vector3(0, 0, 1)],
 			},
-			blockArchetype: BlockArchetype.WOOD,
+			blockArchetype: BlockArchetype.PROP,
 		},
 	},
 	[ItemType.WHITE_WOOL]: {
@@ -190,6 +190,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.GRASS,
+			blockArchetype: BlockArchetype.GROUND,
 			tillable: {
 				tillsToBlockId: ItemType.FARMLAND, // Farmland
 			},
@@ -206,6 +207,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.TALL_GRASS,
+			blockArchetype: BlockArchetype.GROUND,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
 			placeSound: CoreSound.blockPlaceDirt,
@@ -218,6 +220,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.DIRT,
+			blockArchetype: BlockArchetype.GROUND,
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
@@ -274,6 +277,7 @@ export const items: {
 		block: {
 			blockId: ItemType.OBSIDIAN,
 			health: 50,
+			blockArchetype: BlockArchetype.HARD_STONE,
 		},
 	},
 	[ItemType.ANDESITE]: {
@@ -284,6 +288,7 @@ export const items: {
 		block: {
 			blockId: ItemType.ANDESITE,
 			health: 20,
+			blockArchetype: BlockArchetype.STONE,
 		},
 	},
 	[ItemType.OAK_WOOD_PLANK]: {
@@ -443,6 +448,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.CERAMIC,
+			blockArchetype: BlockArchetype.BLAST_PROOF,
 		},
 	},
 
@@ -748,6 +754,7 @@ export const items: {
 				innerDamage: 20,
 				outerDamage: 1,
 				damageRadius: 3.5,
+				blockExplosiveDamage: 50,
 				selfKnockbackMultiplier: 1,
 			},
 			blockDamage: {

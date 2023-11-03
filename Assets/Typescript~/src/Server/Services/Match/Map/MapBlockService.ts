@@ -3,7 +3,7 @@ import { BlockInteractService } from "@Easy/Core/Server/Services/Block/BlockInte
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
-import { ItemMeta } from "@Easy/Core/Shared/Item/ItemMeta";
+import { BlockArchetype, ItemMeta } from "@Easy/Core/Shared/Item/ItemMeta";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
@@ -13,6 +13,8 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 
 @Service({})
 export class MapBlockService implements OnStart {
+	private static toggle = true;
+
 	constructor(private readonly blockService: BlockInteractService) {}
 	OnStart(): void {
 		CoreServerSignals.BlockPlace.Connect((event) => {
@@ -24,6 +26,46 @@ export class MapBlockService implements OnStart {
 				// tillable blocks can be modified to the tillable equiv.
 				BlockDataAPI.SetBlockData(event.pos, CoreBlockMetaKeys.CAN_TILL, true);
 			}
+		});
+
+		CoreServerSignals.BlockGroupPlace.Connect((event) => {
+			if (event.entity) {
+				BlockDataAPI.SetBlockGroupSameData(event.positions, CoreBlockMetaKeys.CAN_BREAK, true);
+			}
+
+			//TODO get item meta from itemType
+			// if (event.itemMeta.tillBlock) {
+			// 	// tillable blocks can be modified to the tillable equiv.
+			// 	BlockDataAPI.SetBlockGroupData(event.positions, CoreBlockMetaKeys.CAN_TILL, true);
+			// }
+		});
+
+		WorldAPI.OnBlockHitDamageCalc.Connect((event) => {
+			print("Block pre damage: " + event.damage);
+			const archetype = event.block.itemMeta?.block?.blockArchetype ?? BlockArchetype.NONE;
+
+			//Bonuse damage from item type
+			if (archetype !== BlockArchetype.NONE) {
+				event.damage *=
+					event.breakBlockMeta?.extraDamageBlockArchetype === archetype
+						? event.breakBlockMeta.extraDamage ?? 1
+						: 1;
+			}
+
+			//Reduced damage from block type
+			switch (archetype) {
+				case BlockArchetype.STONE:
+					event.damage *= 0.5;
+					break;
+				case BlockArchetype.HARD_STONE:
+					event.damage *= 0.2;
+					break;
+				case BlockArchetype.BLAST_PROOF:
+				case BlockArchetype.PROP:
+					event.damage = 0;
+					break;
+			}
+			print("Block post damage: " + event.damage);
 		});
 
 		CoreNetwork.ClientToServer.LibonatiTest.Server.OnClientEvent((clientId) => {
@@ -64,17 +106,8 @@ export class MapBlockService implements OnStart {
 					}
 				}
 			}
-			//this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemMeta);
-
-			print("AOE BLOCK DAMAGE");
-			for (let i = 1; i < 7; i++) {
-				Task.Delay(i - 1, () => {});
-			}
-			this.blockService.DamageBlockAOE(entity, entity.model.transform.position, {
-				damageRadius: 7,
-				innerDamage: 30,
-				outerDamage: 5,
-			});
+			this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemMeta);
+			MapBlockService.toggle = !MapBlockService.toggle;
 		});
 	}
 }

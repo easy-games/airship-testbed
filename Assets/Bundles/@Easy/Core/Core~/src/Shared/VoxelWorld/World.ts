@@ -9,15 +9,17 @@ import { ItemUtil } from "../Item/ItemUtil";
 import { Block } from "./Block";
 import { BlockDataAPI } from "./BlockData/BlockDataAPI";
 
+export type BlockData = {
+	[key: string]: unknown;
+};
+
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
 	/** True if should update collisions instantly.
 	 *
 	 * Defaults to true. */
 	priority?: boolean;
-	blockData?: {
-		[key: string]: unknown;
-	};
+	blockData?: BlockData;
 }
 
 export class World {
@@ -272,7 +274,7 @@ export class World {
 		//Call block keys in batches based on keytype to avoid calling it per block (it sends a network event)
 		keyMap.forEach((value, key) => {
 			//print("Sending batch key data: " + key + ", " + value.data.size());
-			BlockDataAPI.SetBlockGroupData(value.position, key, value.data);
+			BlockDataAPI.SetBlockGroupCustomData(value.position, key, value.data);
 		});
 	}
 
