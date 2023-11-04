@@ -9,6 +9,8 @@ export declare abstract class AbilityLogic {
     protected readonly configuration: AbilityConfig;
     private enabled;
     constructor(entity: CharacterEntity, id: string, configuration: AbilityConfig);
+    GetId(): string;
+    GetConfiguration(): AbilityConfig;
     /**
      * Lifecycle for this being initialized on the server
      * @internal
@@ -38,8 +40,6 @@ export declare abstract class AbilityLogic {
      * 		if the charge duration is set and the ability charge wasn't cancelled
      */
     abstract OnTriggered(): void;
-    OnPressed(): void;
-    OnReleased(): void;
     OnChargeBegan(): void;
     OnChargeCancelled(): void;
 }

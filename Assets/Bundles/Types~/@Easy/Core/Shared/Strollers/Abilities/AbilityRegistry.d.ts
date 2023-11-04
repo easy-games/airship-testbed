@@ -1,8 +1,9 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { AbilityLogic } from "../../Abilities/AbilityLogic";
 import { AbilitySlot } from "../../Abilities/AbilitySlot";
+import { Duration } from "../../Util/Duration";
 export interface AbilityChargeConfig {
-    readonly chargeDurationSeconds: number;
+    readonly chargeDurationSeconds: Duration.Seconds;
 }
 export interface AbilityConfig {
     /**

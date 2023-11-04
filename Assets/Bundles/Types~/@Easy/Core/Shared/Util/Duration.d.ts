@@ -3,7 +3,9 @@ export declare const SECONDS_TO_HOURS = 3600;
 export declare const SECONDS_TO_DAYS = 86400;
 export declare const MINUTES_TO_DAYS = 1440;
 export declare namespace Duration {
-    type Seconds = number;
+    type Seconds = number & {
+        readonly tag?: never;
+    };
 }
 /**
  * Represents a span of time

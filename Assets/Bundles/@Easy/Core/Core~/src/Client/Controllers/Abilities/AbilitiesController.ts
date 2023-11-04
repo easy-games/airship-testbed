@@ -7,11 +7,11 @@ export class AbilitiesController implements OnStart {
 		const keyboard = new Keyboard();
 
 		const slots = [
-			KeyCode.Q,
-			KeyCode.E,
-			KeyCode.R,
-			KeyCode.T,
-			KeyCode.F,
+			// KeyCode.Q,
+			// KeyCode.E,
+			// KeyCode.R,
+			// KeyCode.T,
+			// KeyCode.F,
 			KeyCode.Z,
 			KeyCode.X,
 			KeyCode.C,
@@ -21,5 +21,7 @@ export class AbilitiesController implements OnStart {
 		for (const slot of slots) {
 			keyboard.OnKeyDown(slot, (event) => {});
 		}
+
+		Input;
 	}
 }

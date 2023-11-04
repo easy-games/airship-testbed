@@ -2,9 +2,11 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreUIController } from "../UI/CoreUIController";
 import { AbilityConfig } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
+import { InputUtils } from "Shared/Util/InputUtils";
 
 interface ClientAbilityState {
 	name: string;
+	icon: string | undefined;
 	charges: number | undefined;
 	keybinding: KeyCode | undefined;
 }
@@ -35,13 +37,35 @@ export class AbilitiesUIController implements OnStart {
 			// Update slot metadata
 			const refs = go.GetComponent<GameObjectReferences>();
 			const image = refs.GetValue<Image>("UI", "Image");
-			const amount = refs.GetValue<TMP_Text>("UI", "Chares");
+			const amount = refs.GetValue<TMP_Text>("UI", "Charges");
 			const name = refs.GetValue<TMP_Text>("UI", "Name");
 			const keybinding = refs.GetValue<TMP_Text>("UI", "Keybinding");
 
 			if (ability.keybinding !== undefined) {
+				keybinding.enabled = true;
+				keybinding.text = InputUtils.GetStringForKeyCode(ability.keybinding) ?? "??";
 			} else {
-				keybinding.gameObject.SetActive(false);
+				keybinding.enabled = false;
+			}
+
+			if (ability.charges !== undefined && ability.charges > 0) {
+				amount.enabled = true;
+				amount.text = tostring(ability.charges);
+			} else {
+				amount.enabled = false;
+			}
+
+			const texture2d = ability.icon
+				? AssetBridge.Instance.LoadAssetIfExists<Texture2D>(ability.icon)
+				: undefined;
+			if (texture2d) {
+				image.sprite = Bridge.MakeSprite(texture2d);
+				image.enabled = true;
+				name.enabled = false;
+			} else {
+				name.text = ability.name;
+				image.enabled = false;
+				name.enabled = true;
 			}
 		}
 	}
@@ -60,8 +84,9 @@ export class AbilitiesUIController implements OnStart {
 			// 	slot: AbilitySlot.Primary1,
 			// 	name: "Testing lol",
 			// },
-			keybinding: KeyCode.Q,
+			keybinding: KeyCode.Z,
 			name: "Recall",
+			icon: undefined,
 			charges: 0,
 		});
 	}
