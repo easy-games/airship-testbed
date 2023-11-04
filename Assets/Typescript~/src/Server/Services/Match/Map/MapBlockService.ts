@@ -41,7 +41,6 @@ export class MapBlockService implements OnStart {
 		});
 
 		WorldAPI.OnBlockHitDamageCalc.Connect((event) => {
-			print("Block pre damage: " + event.damage);
 			const archetype = event.block.itemMeta?.block?.blockArchetype ?? BlockArchetype.NONE;
 
 			//Bonuse damage from item type
@@ -65,7 +64,6 @@ export class MapBlockService implements OnStart {
 					event.damage = 0;
 					break;
 			}
-			print("Block post damage: " + event.damage);
 		});
 
 		CoreNetwork.ClientToServer.LibonatiTest.Server.OnClientEvent((clientId) => {

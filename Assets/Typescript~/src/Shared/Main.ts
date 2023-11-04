@@ -15,11 +15,9 @@ Bootstrap.Prepare();
 
 if (BedWars.IsMatchServer()) {
 	WorldAPI.OnBlockHitDamageCalc.Connect((event) => {
-		print("Main damage pre: " + event.damage);
 		// BW: dont allow breaking your own team's bed
 		const teamBlockId = BlockDataAPI.GetBlockData<string>(event.blockPos, "teamId");
 		if (teamBlockId !== undefined && teamBlockId === event.entity?.player?.GetTeam()?.id) {
-			print("Main damage team block");
 			event.damage = 0;
 		}
 
@@ -27,7 +25,6 @@ if (BedWars.IsMatchServer()) {
 		if (event.block.itemType !== ItemType.BED) {
 			const canBreak = BlockDataAPI.GetBlockData<number>(event.blockPos, CoreBlockMetaKeys.CAN_BREAK);
 			if (!canBreak) {
-				print("Main damage core map block");
 				event.damage = 0;
 			}
 		}
@@ -45,8 +42,6 @@ if (BedWars.IsMatchServer()) {
 				event.damage *= 1 + damageMultiplier / 100;
 			}
 		}
-
-		print("Main damage post: " + event.damage);
 	});
 }
 

@@ -399,6 +399,20 @@ export class BlockInteractService implements OnStart {
 
 		let currentPos: Vector3 = new Vector3(0, 0, 0);
 		let ringToggle = false;
+
+		//Damage the block you hit
+		const centerBlock = world.GetBlockAt(currentPos);
+		if (centerBlock && !centerBlock.IsAir()) {
+			positions[damageI] = centerPosition;
+			damages[damageI] = WorldAPI.CalculateBlockHitDamage(
+				entity,
+				centerBlock,
+				centerPosition,
+				aoeMeta.innerDamage,
+			);
+			damageI++;
+		}
+
 		for (let ringRadius = 1; ringRadius <= math.ceil(aoeMeta.damageRadius * 1.5); ringRadius++) {
 			//print("ring: " + ringRadius);
 			let xRadius = 0;
@@ -435,7 +449,6 @@ export class BlockInteractService implements OnStart {
 							//Ignore blocks too far away
 							continue;
 						}
-						print("found pos: " + currentPos + " distanceDamage: " + distanceDamage);
 						const maxDamage = WorldAPI.CalculateBlockHitDamage(entity, block, currentPos, distanceDamage);
 						const blockDir = currentPos.sub(centerPosition).normalized;
 						let finalDamage = 0;
@@ -445,16 +458,9 @@ export class BlockInteractService implements OnStart {
 								const dotDelta = math.max(Vector3.Dot(damageVector.dir, blockDir), 0) * 2 - 1;
 								if (dotDelta > 0) {
 									let vectorDamage = math.max(0, math.min(damageVector.damage, dotDelta * maxDamage));
-									const absorbedDamage = math.max(0, vectorDamage - maxDamage);
-									if (absorbedDamage > 0) {
-										print("Absorbed damage: " + absorbedDamage);
-									}
-									let takenDamage = math.min(vectorDamage, maxDamage);
-									if (takenDamage > 0) {
-										print("Taken Damage: " + takenDamage);
-									}
-									damageVector.damage -= takenDamage + absorbedDamage;
-									finalDamage += takenDamage;
+									//const absorbedDamage = math.max(0, vectorDamage - maxDamage);
+									damageVector.damage *= math.clamp(maxDamage / distanceDamage, 0, 1); //Blocking strength
+									finalDamage += math.min(vectorDamage, maxDamage);
 								}
 							}
 						});
@@ -485,7 +491,7 @@ export class BlockInteractService implements OnStart {
 								}
 							});
 						}
-						print("Damage block " + currentPos + ": " + finalDamage);
+						//print("Damage block " + currentPos + ": " + finalDamage);
 						positions[damageI] = currentPos;
 						damages[damageI] = finalDamage;
 						damageI++;
