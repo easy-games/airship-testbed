@@ -279,13 +279,28 @@ export abstract class EntityAnimator {
 		});
 	}
 
-	public PlayFootstepSound(volumeScale: number): void {
-		const blockId = this.entity.entityDriver.groundedBlockId;
-		if (blockId === 0) return;
-
+	/**
+	 *
+	 * @param volumeScale
+	 * @param cameraPos Pass in cached camera position if playing lots of sounds to improve performance.
+	 * @returns
+	 */
+	public PlayFootstepSound(volumeScale: number, cameraPos?: Vector3): void {
+		// Check if we should play
 		if (os.clock() - this.lastFootstepSoundTime < 0.18) {
 			return;
 		}
+		const blockId = this.entity.entityDriver.groundedBlockId;
+		if (blockId === 0) return;
+
+		if (!cameraPos) {
+			cameraPos = Camera.main.transform.position;
+		}
+		if (cameraPos.sub(this.entity.model.transform.position).magnitude > 20) {
+			return;
+		}
+
+		// Finished checks. We are playing.
 		this.lastFootstepSoundTime = os.clock();
 
 		let itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
