@@ -1,6 +1,7 @@
 import { Inventory } from "Shared/Inventory/Inventory";
 import { Entity, EntityDto } from "../Entity";
 import { EntitySerializer } from "../EntitySerializer";
+import { CharacterAbilities } from "Shared/Abilities/CharacterAbilities";
 
 export interface CharacterEntityDto extends EntityDto {
 	invId: number;
@@ -8,12 +9,14 @@ export interface CharacterEntityDto extends EntityDto {
 
 export class CharacterEntity extends Entity {
 	private inventory: Inventory;
+	private abilities: CharacterAbilities;
 
 	private armor = 0;
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined, inventory: Inventory) {
 		super(id, networkObject, clientId);
 		this.inventory = inventory;
+		this.abilities = new CharacterAbilities();
 
 		this.bin.Add(
 			this.inventory.SlotChanged.Connect((slot, itemStack) => {
@@ -25,6 +28,10 @@ export class CharacterEntity extends Entity {
 
 	public GetInventory(): Inventory {
 		return this.inventory;
+	}
+
+	public GetAbilities() {
+		return this.abilities;
 	}
 
 	public Encode(): CharacterEntityDto {

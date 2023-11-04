@@ -1,6 +1,13 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreUIController } from "../UI/CoreUIController";
 import { AbilityConfig } from "Shared/Strollers/Abilities/AbilityRegistry";
+import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
+
+interface ClientAbilityState {
+	name: string;
+	charges: number | undefined;
+	keybinding: KeyCode | undefined;
+}
 
 @Controller()
 export class AbilitiesUIController implements OnStart {
@@ -19,13 +26,23 @@ export class AbilitiesUIController implements OnStart {
 		this.abilitybarContent = this.abilitiesRefs.GetValue("UI", "AbilityBarContentGO").transform;
 	}
 
-	private UpdateAbilityBarSlot(slotIdx: number, ability: AbilityConfig | undefined) {
+	private UpdateAbilityBarSlot(slotIdx: number, ability: ClientAbilityState | undefined) {
 		const go = this.abilitybarContent.GetChild(slotIdx).gameObject;
 		const contentGO = go.transform.GetChild(0).gameObject;
 
 		contentGO.gameObject.SetActive(ability !== undefined);
 		if (ability !== undefined) {
 			// Update slot metadata
+			const refs = go.GetComponent<GameObjectReferences>();
+			const image = refs.GetValue<Image>("UI", "Image");
+			const amount = refs.GetValue<TMP_Text>("UI", "Chares");
+			const name = refs.GetValue<TMP_Text>("UI", "Name");
+			const keybinding = refs.GetValue<TMP_Text>("UI", "Keybinding");
+
+			if (ability.keybinding !== undefined) {
+			} else {
+				keybinding.gameObject.SetActive(false);
+			}
 		}
 	}
 
@@ -37,5 +54,15 @@ export class AbilitiesUIController implements OnStart {
 
 	public OnStart(): void {
 		this.SetupAbilityBar();
+
+		this.UpdateAbilityBarSlot(0, {
+			// configuration: {
+			// 	slot: AbilitySlot.Primary1,
+			// 	name: "Testing lol",
+			// },
+			keybinding: KeyCode.Q,
+			name: "Recall",
+			charges: 0,
+		});
 	}
 }

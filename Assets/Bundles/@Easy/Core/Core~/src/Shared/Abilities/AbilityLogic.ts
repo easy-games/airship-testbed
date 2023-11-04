@@ -14,6 +14,14 @@ export abstract class AbilityLogic {
 		protected readonly configuration: AbilityConfig,
 	) {}
 
+	public GetId() {
+		return this.id;
+	}
+
+	public GetConfiguration() {
+		return this.configuration;
+	}
+
 	/**
 	 * Lifecycle for this being initialized on the server
 	 * @internal
