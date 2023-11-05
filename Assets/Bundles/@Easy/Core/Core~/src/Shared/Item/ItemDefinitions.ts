@@ -128,7 +128,22 @@ export const items: {
 			blockId: ItemType.BED,
 			prefab: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
-				childBlocks: [new Vector3(0, 0, 1)],
+				childBlocks: [
+					new Vector3(0, 0, 1),
+					new Vector3(1, 0, 1),
+					new Vector3(-1, 0, 1),
+
+					new Vector3(0, 0, 2),
+					new Vector3(1, 0, 2),
+					new Vector3(-1, 0, 2),
+
+					new Vector3(0, 0, -1),
+					new Vector3(1, 0, -1),
+					new Vector3(-1, 0, -1),
+
+					new Vector3(1, 0, 0),
+					new Vector3(-1, 0, 0),
+				],
 			},
 			blockArchetype: BlockArchetype.WOOD,
 		},
