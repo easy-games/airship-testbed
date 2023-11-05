@@ -4,7 +4,8 @@ import { World } from "./World";
 export declare class Block {
     readonly voxel: number;
     readonly world: World;
-    readonly blockId: number;
+    readonly blockId: string;
+    readonly runtimeBlockId: number;
     readonly itemType: ItemType | undefined;
     readonly itemMeta: ItemMeta | undefined;
     constructor(voxel: number, world: World);

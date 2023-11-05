@@ -249,23 +249,23 @@ export class BlockInteractService implements OnStart {
 		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
 
 		// After signal
-		CoreServerSignals.BlockHit.Fire({ blockId: block.blockId, entity, blockPos: voxelPos });
+		CoreServerSignals.BlockHit.Fire({ blockId: block.runtimeBlockId, entity, blockPos: voxelPos });
 		print(`Firing BlockHit. damage=${beforeSignal.damage}`);
-		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.blockId, entity?.id);
+		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.runtimeBlockId, entity?.id);
 
 		//BLOCK DEATH
 		if (newHealth === 0) {
 			CoreServerSignals.BeforeBlockDestroyed.Fire({
-				blockId: block.blockId,
+				blockId: block.runtimeBlockId,
 				blockPos: voxelPos,
 				entity: entity,
 			});
 			world.DeleteBlock(voxelPos);
 			CoreServerSignals.BlockDestroyed.Fire({
-				blockId: block.blockId,
+				blockId: block.runtimeBlockId,
 				blockPos: voxelPos,
 			});
-			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.blockId);
+			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.runtimeBlockId);
 		}
 		return true;
 	}
@@ -315,14 +315,14 @@ export class BlockInteractService implements OnStart {
 			const newHealth = math.max(health - damage, 0);
 
 			damagePositions[damageI] = voxelPos;
-			damagedIds[damageI] = block.blockId;
+			damagedIds[damageI] = block.runtimeBlockId;
 			newGroupHealth[damageI] = newHealth;
 			damageI++;
 
 			//BLOCK DEATH
 			if (newHealth === 0) {
 				destroyedPositions[destroyedI] = voxelPos;
-				destroyedIds[destroyedI] = block.blockId;
+				destroyedIds[destroyedI] = block.runtimeBlockId;
 				destroyedI++;
 			}
 		}

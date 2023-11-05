@@ -3,6 +3,7 @@ import { DataStreamItems } from "../../../Shared/Util/DataStreamTypes";
 import { Signal } from "../../../Shared/Util/Signal";
 import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
 import { CameraController } from "../Camera/CameraController";
+import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
@@ -23,7 +24,7 @@ export declare class LocalEntityController implements OnStart {
     private entityInput;
     private prevState;
     private currentState;
-    private humanoidCameraMode;
+    humanoidCameraMode: HumanoidCameraMode | undefined;
     private orbitCameraMode;
     private characterCameraMode;
     private defaultFirstPerson;

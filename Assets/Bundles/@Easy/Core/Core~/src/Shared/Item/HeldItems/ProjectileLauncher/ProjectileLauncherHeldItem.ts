@@ -250,12 +250,22 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		print("On use: " + useIndex);
 
 		//Play the throw animation
-		const throwAnimState = this.entity.animator?.PlayAnimation(
-			this.entity.animator.IsFirstPerson()
-				? RandomUtil.FromArray(this.throwAnimFP)
-				: RandomUtil.FromArray(this.throwAnimTP),
-			EntityAnimationLayer.ITEM_ACTION,
-		);
+		let throwAnimState: AnimancerState | undefined;
+		if (this.entity.animator.IsFirstPerson()) {
+			if (this.throwAnimFP.size() > 0) {
+				throwAnimState = this.entity.animator.PlayAnimation(
+					RandomUtil.FromArray(this.throwAnimFP),
+					EntityAnimationLayer.ITEM_ACTION,
+				);
+			}
+		} else {
+			if (this.throwAnimTP.size() > 0) {
+				throwAnimState = this.entity.animator.PlayAnimation(
+					RandomUtil.FromArray(this.throwAnimTP),
+					EntityAnimationLayer.ITEM_ACTION,
+				);
+			}
+		}
 
 		//Play the items animation  (bow shoot)
 		this.entity.animator.PlayUseAnim(0);

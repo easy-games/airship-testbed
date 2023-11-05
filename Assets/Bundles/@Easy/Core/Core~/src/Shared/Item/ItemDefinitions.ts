@@ -661,6 +661,8 @@ export const items: {
 			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
 			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 			chargeSound: [{ path: CoreSound.bowCharge }],
+			throwAnimFP: "none",
+			throwAnimTP: "none",
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),

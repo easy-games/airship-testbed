@@ -7,7 +7,6 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
 import { BeforeBlockHitSignal } from "../BlockInteractions/Signal/BeforeBlockHitSignal";
 import { LocalEntityController } from "../Character/LocalEntityController";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 
 @Controller({})
 export class BlockInteractController {
@@ -56,7 +55,7 @@ export class BlockInteractController {
 				//Destroy block
 				world.DeleteBlock(voxelPos);
 				if (showHealthbars) {
-					this.blockHealth.VisualizeBlockBreak(voxelPos, block.blockId);
+					this.blockHealth.VisualizeBlockBreak(voxelPos, block.runtimeBlockId);
 				}
 			} else {
 				//Damage block
