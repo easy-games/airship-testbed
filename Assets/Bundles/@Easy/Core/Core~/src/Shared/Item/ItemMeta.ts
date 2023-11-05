@@ -120,6 +120,7 @@ export interface ItemMeta {
 		protectionAmount: number;
 	};
 	pickupSound?: string[];
+	groundItemPrefab?: string;
 }
 
 export interface UsableHeldItemMeta {

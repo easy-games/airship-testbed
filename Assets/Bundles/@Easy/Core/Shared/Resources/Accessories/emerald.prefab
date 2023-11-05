@@ -98,7 +98,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9416a8fbdd1bb3a46af898e0378df716, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ab64831f59e21ff42b7c836cdcad5beb, type: 2}
+      objectReference: {fileID: 2100000, guid: 60048c69f6849224da117a616375faf3, type: 2}
     - target: {fileID: -5754084199372789682, guid: 9416a8fbdd1bb3a46af898e0378df716, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -130,7 +130,8 @@ MonoBehaviour:
   - materialColor: {r: 0, g: 1, b: 0.105882406, a: 1}
     emissiveColor: {r: 0, g: 1, b: 0.4148147, a: 0.19215687}
     emissiveMix: 0.55
-    reference: Metal_Clean
+    reference: Gemstone
+  addedByEditorScript: 0
 --- !u!4 &9215126437188224425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9416a8fbdd1bb3a46af898e0378df716, type: 3}

@@ -16,6 +16,10 @@ const CoreAnim = (...p: string[]) => {
 	});
 };
 
+const GroundItemPrefab = (s: string) => {
+	return `@Easy/Core/Shared/Resources/Prefabs/GroundItems/${s}.prefab`;
+};
+
 const defaultGravity = PhysicsUtil.Gravity;
 const blockUsable: UsableHeldItemMeta = {
 	startUpInSeconds: 0,
@@ -465,14 +469,17 @@ export const items: {
 	[ItemType.IRON]: {
 		displayName: "Iron",
 		accessoryPaths: [AccPath(ItemType.IRON)],
+		groundItemPrefab: GroundItemPrefab("iron"),
 	},
 	[ItemType.DIAMOND]: {
 		displayName: "Diamond",
 		accessoryPaths: [AccPath(ItemType.DIAMOND)],
+		groundItemPrefab: GroundItemPrefab("diamond"),
 	},
 	[ItemType.EMERALD]: {
 		displayName: "Emerald",
 		accessoryPaths: [AccPath(ItemType.EMERALD)],
+		groundItemPrefab: GroundItemPrefab("emerald"),
 	},
 
 	////ARMOR

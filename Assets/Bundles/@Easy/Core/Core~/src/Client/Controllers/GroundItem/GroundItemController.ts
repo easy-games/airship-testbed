@@ -41,9 +41,11 @@ export class GroundItemController implements OnStart {
 
 		ItemUtil.WaitForInitialized().then(() => {
 			for (const itemType of ItemUtil.GetItemTypes()) {
-				const obj = AssetBridge.Instance.LoadAssetIfExists<Object>(
-					`@Easy/Core/Shared/Resources/Prefabs/GroundItems/${itemType.lower()}.prefab`,
-				);
+				const itemMeta = ItemUtil.GetItemMeta(itemType);
+				let obj: Object | undefined;
+				if (itemMeta.groundItemPrefab) {
+					obj = AssetBridge.Instance.LoadAssetIfExists<Object>(itemMeta.groundItemPrefab);
+				}
 				if (obj) {
 					this.itemTypeToDisplayObjMap.set(itemType, obj);
 				}
@@ -61,7 +63,7 @@ export class GroundItemController implements OnStart {
 		}
 		const displayGO = GameObjectUtil.InstantiateIn(obj, parent);
 		if (accessory) {
-			displayGO.transform.localScale = accessory.Scale.mul(2);
+			displayGO.transform.localScale = accessory.Scale.add(new Vector3(1, 1, 1));
 			displayGO.transform.localRotation = Quaternion.Euler(
 				accessory.Rotation.x,
 				accessory.Rotation.y,

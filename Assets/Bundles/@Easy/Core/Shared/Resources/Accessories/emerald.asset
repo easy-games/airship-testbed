@@ -15,8 +15,8 @@ MonoBehaviour:
   DisplayName: Emerald
   AccessorySlot: 6
   Prefab: {fileID: 7802634283327141613, guid: ef4ca1c2f8bb94c5090359e2f4f4e397, type: 3}
-  Position: {x: 0.05, y: 0.07, z: -0.06}
-  Rotation: {x: 0, y: 90, z: 90}
-  Scale: {x: 0.25, y: 0.25, z: 0.25}
-  MeshDeformed: 0
-  VisibleInFirstPerson: 1
+  Position: {x: 0.06, y: 0.01, z: 0.07}
+  Rotation: {x: -14.52, y: 51.7, z: 90}
+  Scale: {x: 0.13, y: 0.13, z: 0.13}
+  visibilityMode: 2
+  SkinnedToCharacter: 1
