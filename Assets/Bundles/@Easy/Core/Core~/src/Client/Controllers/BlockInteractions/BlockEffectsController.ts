@@ -60,7 +60,7 @@ export class BlockEffectsController implements OnStart {
 						case BlockArchetype.WOOD:
 							sound = CoreSound.blockBreakWood;
 							break;
-						case BlockArchetype.WOOL:
+						case BlockArchetype.FABRIC:
 							sound = CoreSound.blockBreakWool;
 							break;
 						default:
@@ -81,7 +81,7 @@ export class BlockEffectsController implements OnStart {
 						case BlockArchetype.WOOD:
 							sound = CoreSound.blockHitWood;
 							break;
-						case BlockArchetype.WOOL:
+						case BlockArchetype.FABRIC:
 							sound = CoreSound.blockHitWool;
 							break;
 						default:

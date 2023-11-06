@@ -484,13 +484,13 @@ export class BlockInteractService implements OnStart {
 						// 	10,
 						// );
 
-						if (damageI > 0) {
+						/*if (damageI > 0) {
 							positions.forEach((element) => {
 								if (currentPos === element) {
 									error("CHECKING POSITION TWICE: " + currentPos);
 								}
 							});
-						}
+						}*/
 						//print("Damage block " + currentPos + ": " + finalDamage);
 						positions[damageI] = currentPos;
 						damages[damageI] = finalDamage;
