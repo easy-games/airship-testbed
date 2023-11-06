@@ -400,8 +400,16 @@ export class BlockInteractService implements OnStart {
 		let currentPos: Vector3 = new Vector3(0, 0, 0);
 		let ringToggle = false;
 
+		// DebugUtil.DrawBox(
+		// 	centerPosition.add(new Vector3(0, 0.5, 0)),
+		// 	Quaternion.identity,
+		// 	Vector3.one.mul(0.5),
+		// 	Color.black,
+		// 	10,
+		// );
+
 		//Damage the block you hit
-		const centerBlock = world.GetBlockAt(currentPos);
+		const centerBlock = world.GetBlockAt(centerPosition);
 		if (centerBlock && !centerBlock.IsAir()) {
 			positions[damageI] = centerPosition;
 			damages[damageI] = WorldAPI.CalculateBlockHitDamage(
