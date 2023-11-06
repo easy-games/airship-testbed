@@ -41,6 +41,7 @@ export const enum ItemType {
 	STONE_SWORD = "@Easy/Core:STONE_SWORD",
 	IRON_SWORD = "@Easy/Core:IRON_SWORD",
 	DIAMOND_SWORD = "@Easy/Core:DIAMOND_SWORD",
+	EMERALD_SWORD = "@Easy/Core:EMERALD_SWORD",
 	/* TEMP ITEM. */
 	DOUBLE_HIT_SWORD = "@Easy/Core:DOUBLE_HIT_SWORD",
 

@@ -632,6 +632,17 @@ export const items: {
 			damage: 45,
 		},
 	},
+	[ItemType.EMERALD_SWORD]: {
+		displayName: "Emerald Sword",
+		usable: {
+			...swordUsable,
+		},
+		accessoryPaths: [AccPath(ItemType.EMERALD_SWORD)],
+		melee: {
+			...swordMelee,
+			damage: 55,
+		},
+	},
 	[ItemType.DOUBLE_HIT_SWORD]: {
 		displayName: "Double Hit Sword",
 		usable: {
