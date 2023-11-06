@@ -2,11 +2,11 @@
 /// <reference types="@easy-games/types" />
 import { PlaySoundConfig } from "../Audio/AudioManager";
 import { Entity } from "../Entity/Entity";
+import { Duration } from "../Util/Duration";
 import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
-import { Duration } from "../Util/Duration";
 export interface TillableBlockMeta {
     tillsToBlockId: string;
 }
@@ -68,10 +68,10 @@ export interface ProjectileLauncherMeta {
     chargingWalkSpeedMultiplier?: number;
     firstPersonLaunchOffset: Vector3;
     chargeSound?: SoundMeta[];
-    chargeAnimFP?: string[];
-    chargeAnimTP?: string[];
-    throwAnimFP?: string[];
-    throwAnimTP?: string[];
+    chargeAnimFP?: string[] | "none";
+    chargeAnimTP?: string[] | "none";
+    throwAnimFP?: string[] | "none";
+    throwAnimTP?: string[] | "none";
 }
 export interface ViewModelMeta {
     idleAnimFP?: string[];

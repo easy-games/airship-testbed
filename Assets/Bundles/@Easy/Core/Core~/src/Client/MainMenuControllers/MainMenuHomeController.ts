@@ -127,7 +127,7 @@ export class MainMenuHomeController implements OnStart {
 		this.UpdateCrossSceneState();
 
 		const res = InternalHttpManager.GetAsync(
-			`${this.gameCoordinatorUrl}/custom-servers/gameId/bedwars/code/${code}`,
+			`${this.gameCoordinatorUrl}/custom-servers/gameId/6536ee084c9987573c3a3c03/code/${code}`,
 		);
 		if (res.success) {
 			print("data: " + res.data);

@@ -13,7 +13,7 @@ export declare class DamageService implements OnStart {
     GetDefaultKnockbackY(): number;
     OnStart(): void;
     InflictAOEDamage(centerPosition: Vector3, innerDamage: number, aoeMeta: AOEDamageMeta, config: InflictDamageConfig): void;
-    InflictFallDamage(entity: Entity, verticalSpeed: number): void;
+    InflictFallDamage(entity: Entity, verticalSpeed: number): boolean;
     /**
      *
      * @param entity

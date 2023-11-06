@@ -1,10 +1,10 @@
 import { PlaySoundConfig } from "Shared/Audio/AudioManager";
 import { Entity } from "Shared/Entity/Entity";
+import { Duration } from "Shared/Util/Duration";
 import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
-import { Duration } from "Shared/Util/Duration";
 
 export interface TillableBlockMeta {
 	tillsToBlockId: string;
@@ -71,10 +71,10 @@ export interface ProjectileLauncherMeta {
 	chargingWalkSpeedMultiplier?: number;
 	firstPersonLaunchOffset: Vector3;
 	chargeSound?: SoundMeta[];
-	chargeAnimFP?: string[];
-	chargeAnimTP?: string[];
-	throwAnimFP?: string[];
-	throwAnimTP?: string[];
+	chargeAnimFP?: string[] | "none";
+	chargeAnimTP?: string[] | "none";
+	throwAnimFP?: string[] | "none";
+	throwAnimTP?: string[] | "none";
 }
 
 export interface ViewModelMeta {
@@ -120,6 +120,7 @@ export interface ItemMeta {
 		protectionAmount: number;
 	};
 	pickupSound?: string[];
+	groundItemPrefab?: string;
 }
 
 export interface UsableHeldItemMeta {

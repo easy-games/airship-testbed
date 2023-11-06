@@ -11,8 +11,10 @@ export class EntityFootstepController implements OnStart {
 
 	OnStart(): void {
 		Task.Spawn(() => {
+			const camTransform = Camera.main.transform;
 			SetInterval(0.05, () => {
 				const currentTime = Time.time;
+				const camPos = camTransform.position;
 				Profiler.BeginSample("Footsteps");
 				for (const entity of this.entityController.GetEntities()) {
 					if (entity.IsDead()) continue;
@@ -37,7 +39,7 @@ export class EntityFootstepController implements OnStart {
 						volumeScale *= 2;
 					}
 					try {
-						entity.animator.PlayFootstepSound(volumeScale);
+						entity.animator.PlayFootstepSound(volumeScale, camPos);
 					} catch (err) {
 						Debug.LogError(err);
 					}

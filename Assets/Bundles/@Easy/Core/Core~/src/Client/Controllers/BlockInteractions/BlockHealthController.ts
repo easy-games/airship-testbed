@@ -112,7 +112,7 @@ export class BlockHealthController implements OnStart {
 			if (effect) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
 				if (block) {
-					this.SetParticlesToBlockMaterial(block.blockId, effect);
+					this.SetParticlesToBlockMaterial(block.runtimeBlockId, effect);
 				}
 			}
 		}

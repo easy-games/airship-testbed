@@ -16,6 +16,10 @@ const CoreAnim = (...p: string[]) => {
 	});
 };
 
+const GroundItemPrefab = (s: string) => {
+	return `@Easy/Core/Shared/Resources/Prefabs/GroundItems/${s}.prefab`;
+};
+
 const defaultGravity = PhysicsUtil.Gravity;
 const blockUsable: UsableHeldItemMeta = {
 	startUpInSeconds: 0,
@@ -128,7 +132,22 @@ export const items: {
 			blockId: ItemType.BED,
 			prefab: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
-				childBlocks: [new Vector3(0, 0, 1)],
+				childBlocks: [
+					new Vector3(0, 0, 1),
+					new Vector3(1, 0, 1),
+					new Vector3(-1, 0, 1),
+
+					new Vector3(0, 0, 2),
+					new Vector3(1, 0, 2),
+					new Vector3(-1, 0, 2),
+
+					new Vector3(0, 0, -1),
+					new Vector3(1, 0, -1),
+					new Vector3(-1, 0, -1),
+
+					new Vector3(1, 0, 0),
+					new Vector3(-1, 0, 0),
+				],
 			},
 			blockArchetype: BlockArchetype.PROP,
 		},
@@ -456,14 +475,17 @@ export const items: {
 	[ItemType.IRON]: {
 		displayName: "Iron",
 		accessoryPaths: [AccPath(ItemType.IRON)],
+		groundItemPrefab: GroundItemPrefab("iron"),
 	},
 	[ItemType.DIAMOND]: {
 		displayName: "Diamond",
 		accessoryPaths: [AccPath(ItemType.DIAMOND)],
+		groundItemPrefab: GroundItemPrefab("diamond"),
 	},
 	[ItemType.EMERALD]: {
 		displayName: "Emerald",
 		accessoryPaths: [AccPath(ItemType.EMERALD)],
+		groundItemPrefab: GroundItemPrefab("emerald"),
 	},
 
 	////ARMOR
@@ -652,6 +674,8 @@ export const items: {
 			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
 			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 			chargeSound: [{ path: CoreSound.bowCharge }],
+			throwAnimFP: "none",
+			throwAnimTP: "none",
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),
@@ -677,6 +701,8 @@ export const items: {
 			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
 			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 			chargeSound: [{ path: CoreSound.bowCharge }],
+			throwAnimFP: "none",
+			throwAnimTP: "none",
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),

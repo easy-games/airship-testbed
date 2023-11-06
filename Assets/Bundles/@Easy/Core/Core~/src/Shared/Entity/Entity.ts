@@ -6,8 +6,6 @@ import { DamageService } from "Server/Services/Damage/DamageService";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { DamageUtils } from "Shared/Damage/DamageUtils";
-import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Game } from "Shared/Game";
 import { BlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
@@ -18,7 +16,6 @@ import { Team } from "Shared/Team/Team";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { MathUtil } from "Shared/Util/MathUtil";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -190,47 +187,9 @@ export class Entity {
 		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
 			this.animator?.PlayFootstepSound(1.4);
 			if (RunUtil.IsServer()) {
-				Dependency<DamageService>().InflictFallDamage(this, velocity.y);
-			} else {
-				if (DamageUtils.GetFallDamage(velocity.y) > 0) {
-					let effectPos = this.model.transform.position;
-					const raycastPos = WorldAPI.GetMainWorld()?.RaycastVoxel(effectPos, Vector3.down, 4);
-					const landingEffect = EffectsManager.SpawnPrefabEffect(
-						AllBundleItems.Entity_Movement_LandVFX,
-						raycastPos ? raycastPos.HitPosition : effectPos,
-						Vector3.zero,
-						5,
-					);
-					if (landingEffect) {
-						const fallDelta = DamageUtils.GetFallDelta(velocity.y);
-						let particles = landingEffect.GetComponentsInChildren<ParticleSystem>();
-						landingEffect.transform.localScale = Vector3.one.mul(MathUtil.Lerp(0.25, 1, fallDelta));
-
-						const world = WorldAPI.GetMainWorld();
-
-						const blockId = world?.RaycastBlockBelow(
-							this.model.transform.position.add(new Vector3(0, 0.25, 0)),
-						)?.blockId;
-
-						for (let i = 0; i < particles.Length; i++) {
-							let particle = particles.GetValue(i);
-							const isSmoke = particle.gameObject.name === "Smoke";
-							if (isSmoke) {
-								particle.startSize = MathUtil.Lerp(0.75, 4, fallDelta);
-								particle.startSpeed = MathUtil.Lerp(20, 80, fallDelta);
-							} else {
-								particle.startSize = MathUtil.Lerp(0.05, 0.4, fallDelta * fallDelta);
-								particle.startSpeed = MathUtil.Lerp(50, 120, fallDelta);
-								if (blockId) {
-									EffectsManager.SetParticleToBlockMaterial(
-										particle.GetComponent<ParticleSystemRenderer>(),
-										world.GetVoxelIdFromId(blockId),
-									);
-								}
-							}
-							particle.startLifetime = MathUtil.Lerp(0.8, 3, fallDelta);
-						}
-					}
+				const result = Dependency<DamageService>().InflictFallDamage(this, velocity.y);
+				if (result) {
+					CoreNetwork.ServerToClient.Entity.FallDamageTaken.Server.FireAllClients(this.id, velocity);
 				}
 			}
 		});

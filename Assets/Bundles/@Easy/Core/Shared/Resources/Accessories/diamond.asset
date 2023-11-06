@@ -15,8 +15,8 @@ MonoBehaviour:
   DisplayName: Diamond
   AccessorySlot: 6
   Prefab: {fileID: 7802634283327141613, guid: 8c4fdaaa146ad4d4e9eabffab0735467, type: 3}
-  Position: {x: 0.05, y: 0.07, z: -0.06}
-  Rotation: {x: 0, y: 90, z: 90}
-  Scale: {x: 0.25, y: 0.25, z: 0.25}
-  MeshDeformed: 0
-  VisibleInFirstPerson: 1
+  Position: {x: 0.03, y: 0.02, z: 0.07}
+  Rotation: {x: 2.77, y: -118.9, z: 90}
+  Scale: {x: 0.14, y: 0.14, z: 0.14}
+  visibilityMode: 2
+  SkinnedToCharacter: 1

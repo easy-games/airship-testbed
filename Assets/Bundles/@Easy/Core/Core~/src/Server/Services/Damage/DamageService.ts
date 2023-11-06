@@ -98,14 +98,14 @@ export class DamageService implements OnStart {
 		});
 	}
 
-	public InflictFallDamage(entity: Entity, verticalSpeed: number) {
+	public InflictFallDamage(entity: Entity, verticalSpeed: number): boolean {
 		const damage = DamageUtils.GetFallDamage(verticalSpeed);
 		if (damage <= 0) {
-			return;
+			return false;
 		}
 
 		//Scale damage based on how hard player hit the ground
-		this.InflictDamage(entity, damage, { knockbackDirection: Vector3.zero, damageType: DamageType.FALL });
+		return this.InflictDamage(entity, damage, { knockbackDirection: Vector3.zero, damageType: DamageType.FALL });
 	}
 
 	/**

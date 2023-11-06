@@ -4,13 +4,15 @@ import { ItemUtil } from "../Item/ItemUtil";
 import { World } from "./World";
 
 export class Block {
-	public readonly blockId: number;
+	public readonly blockId: string;
+	public readonly runtimeBlockId: number;
 	public readonly itemType: ItemType | undefined;
 	public readonly itemMeta: ItemMeta | undefined;
 
 	constructor(public readonly voxel: number, public readonly world: World) {
-		this.blockId = VoxelWorld.VoxelDataToBlockId(voxel);
-		this.itemType = ItemUtil.GetItemTypeFromStringId(world.GetIdFromVoxelId(this.blockId));
+		this.runtimeBlockId = VoxelWorld.VoxelDataToBlockId(voxel);
+		this.blockId = world.voxelWorld.blocks.GetStringIdFromBlockId(this.runtimeBlockId);
+		this.itemType = ItemUtil.GetItemTypeFromStringId(world.GetIdFromVoxelId(this.runtimeBlockId));
 		if (this.itemType) {
 			this.itemMeta = ItemUtil.GetItemMeta(this.itemType);
 		}
@@ -21,11 +23,11 @@ export class Block {
 	}
 
 	public IsAir(): boolean {
-		return this.blockId === 0;
+		return this.runtimeBlockId === 0;
 	}
 
 	public GetBlockDefinition(): BlockDefinition {
-		return this.world.GetBlockDefinition(this.blockId)!;
+		return this.world.GetBlockDefinition(this.runtimeBlockId)!;
 	}
 
 	public GetAverageColor(): Color {
