@@ -1,6 +1,7 @@
 import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { RunUtil } from "Shared/Util/RunUtil";
+import { BlockData } from "../World";
 
 export enum CoreBlockMetaKeys {
 	CAN_BREAK = "canBreak",
@@ -22,6 +23,12 @@ export class BlockDataAPI {
 		if (RunCore.IsClient()) {
 			CoreNetwork.ServerToClient.SetBlockData.Client.OnServerEvent((blockPos, key, data) => {
 				this.SetBlockData(blockPos, key, data);
+			});
+			CoreNetwork.ServerToClient.SetBlockGroupCustomData.Client.OnServerEvent((blockPos, key, data) => {
+				this.SetBlockGroupCustomData(blockPos, key, data);
+			});
+			CoreNetwork.ServerToClient.SetBlockGroupSameData.Client.OnServerEvent((blockPos, key, data) => {
+				this.SetBlockGroupSameData(blockPos, key, data);
 			});
 		} else {
 			const serverSignals = import("Server/CoreServerSignals").expect().CoreServerSignals;
@@ -64,12 +71,21 @@ export class BlockDataAPI {
 		}
 	}
 
-	public static SetBlockGroupData(blockPositions: Vector3[], key: string, data: unknown[]): void {
+	public static SetBlockGroupCustomData(blockPositions: Vector3[], key: string, data: unknown[]): void {
 		blockPositions.forEach((blockPos, index) => {
 			this.SetBlockData(blockPos, key, data[index], false);
 		});
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.SetBlockGroupData.Server.FireAllClients(blockPositions, key, data);
+			CoreNetwork.ServerToClient.SetBlockGroupCustomData.Server.FireAllClients(blockPositions, key, data);
+		}
+	}
+
+	public static SetBlockGroupSameData(blockPositions: Vector3[], key: string, data: unknown): void {
+		blockPositions.forEach((blockPos, index) => {
+			this.SetBlockData(blockPos, key, data, false);
+		});
+		if (RunUtil.IsServer()) {
+			CoreNetwork.ServerToClient.SetBlockGroupSameData.Server.FireAllClients(blockPositions, key, data);
 		}
 	}
 

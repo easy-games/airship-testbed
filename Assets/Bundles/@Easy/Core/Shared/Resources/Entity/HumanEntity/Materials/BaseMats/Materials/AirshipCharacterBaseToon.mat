@@ -147,8 +147,8 @@ Material:
     - _POINT_FILTER: 1
     - _Parallax: 0.02
     - _RimDistanceOffset: 0
-    - _RimIntensity: 1.5
-    - _RimPower: 2
+    - _RimIntensity: 1
+    - _RimPower: 1.5
     - _RoughOverride: 0.5
     - _SLIDER_OVERRIDE: 1
     - _SaturationMod: 5

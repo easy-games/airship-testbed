@@ -9,15 +9,25 @@ export class LibonatiCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		this.AddItem(player, ItemType.WOOD_BOW, 1);
-		this.AddItem(player, ItemType.WOOD_ARROW, 100);
-		this.AddItem(player, ItemType.TELEPEARL, 100);
-		this.AddItem(player, ItemType.FIREBALL, 100);
-		this.AddItem(player, ItemType.IRON_BLOCK, 100);
-		this.AddItem(player, ItemType.TALL_GRASS, 100);
-		this.AddItem(player, ItemType.IRON, 500);
-		this.AddItem(player, ItemType.EMERALD, 500);
-		this.AddItem(player, ItemType.DIAMOND, 500);
+		const items = [
+			ItemType.WOOD_BOW,
+			ItemType.TELEPEARL,
+			ItemType.FIREBALL,
+			ItemType.DIRT,
+			ItemType.STONE,
+			ItemType.CERAMIC,
+			ItemType.OBSIDIAN,
+			ItemType.OAK_WOOD_PLANK,
+			ItemType.RED_WOOL,
+			ItemType.IRON,
+			ItemType.EMERALD,
+			ItemType.DIAMOND,
+			ItemType.OBSIDIAN,
+			ItemType.WOOD_ARROW,
+		];
+		items.forEach((value) => {
+			this.AddItem(player, value, 999);
+		});
 	}
 
 	private AddItem(player: Player, itemType: ItemType, amount: number) {

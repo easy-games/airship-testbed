@@ -1,7 +1,7 @@
 import { Bootstrap } from "@Easy/Core/Shared/Bootstrap/Bootstrap";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { BlockDataAPI } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { BedWars } from "./BedWars/BedWars";
 import { RegisterItems } from "./Item/GameItems";
@@ -23,7 +23,7 @@ if (BedWars.IsMatchServer()) {
 
 		// Disable breaking map blocks
 		if (event.block.itemType !== ItemType.BED) {
-			const canBreak = BlockDataAPI.GetBlockData<number>(event.blockPos, "canBreak");
+			const canBreak = BlockDataAPI.GetBlockData<number>(event.blockPos, CoreBlockMetaKeys.CAN_BREAK);
 			if (!canBreak) {
 				event.damage = 0;
 			}

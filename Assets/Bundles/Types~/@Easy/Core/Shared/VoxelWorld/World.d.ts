@@ -5,15 +5,16 @@ import { ItemType } from "../Item/ItemType";
 import { Signal } from "../Util/Signal";
 import { BlockMeta } from "../Item/ItemMeta";
 import { Block } from "./Block";
+export type BlockData = {
+    [key: string]: unknown;
+};
 export interface PlaceBlockConfig {
     placedByEntityId?: number;
     /** True if should update collisions instantly.
      *
      * Defaults to true. */
     priority?: boolean;
-    blockData?: {
-        [key: string]: unknown;
-    };
+    blockData?: BlockData;
 }
 export declare class World {
     readonly voxelWorld: VoxelWorld;

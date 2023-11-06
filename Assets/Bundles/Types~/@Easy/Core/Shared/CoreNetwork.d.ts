@@ -114,7 +114,8 @@ export declare const CoreNetwork: {
         RemovePlayerFromTeam: RemoteEvent<[teamId: string, userId: string]>;
         RemoveTeams: RemoteEvent<[teamIds: string[]]>;
         SetBlockData: RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>;
-        SetBlockGroupData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>;
+        SetBlockGroupCustomData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>;
+        SetBlockGroupSameData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown]>;
         SyncPrefabBlocks: RemoteEvent<[blockPositions: Vector3[]]>;
         /** Fired when a player is eliminated. */
         PlayerEliminated: RemoteEvent<[clientId: number]>;

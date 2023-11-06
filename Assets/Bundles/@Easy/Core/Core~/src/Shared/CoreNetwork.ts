@@ -13,6 +13,7 @@ import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { ProjectileDto } from "./Projectile/Projectile";
 import { TeamDto } from "./Team/Team";
+import { BlockData } from "./VoxelWorld/World";
 
 export const CoreNetwork = {
 	ClientToServer: {
@@ -130,7 +131,8 @@ export const CoreNetwork = {
 		RemovePlayerFromTeam: new RemoteEvent<[teamId: string, userId: string]>(),
 		RemoveTeams: new RemoteEvent<[teamIds: string[]]>(),
 		SetBlockData: new RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>(),
-		SetBlockGroupData: new RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>(),
+		SetBlockGroupCustomData: new RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>(),
+		SetBlockGroupSameData: new RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown]>(),
 		SyncPrefabBlocks: new RemoteEvent<[blockPositions: Vector3[]]>(),
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
