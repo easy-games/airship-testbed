@@ -154,10 +154,11 @@ export class ItemShopController implements OnStart {
 				return;
 			}
 
-			let itemGO = container.transform.FindChild(shopItem.itemType)?.gameObject;
+			const itemMeta = ItemUtil.GetItemMeta(shopItem.itemType);
+			let itemGO = container.transform.FindChild("id_" + itemMeta.id)?.gameObject;
 			if (itemGO === undefined) {
 				itemGO = GameObjectUtil.InstantiateIn(this.shopItemPrefab, container.transform);
-				itemGO.name = shopItem.itemType;
+				itemGO.name = "id_" + itemMeta.id;
 			}
 			CanvasUIBridge.SetSprite(
 				itemGO.transform.GetChild(0).gameObject,
