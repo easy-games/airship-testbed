@@ -337,6 +337,7 @@ export class Entity {
 			this.healthbar.Destroy();
 			Object.Destroy(go);
 		}
+		this.gameObject.name = "DespawnedEntity";
 
 		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
