@@ -777,10 +777,10 @@ export const items: {
 			yAxisAimAdjust: 0,
 			damage: 0,
 			aoeDamage: {
-				innerDamage: 20,
-				outerDamage: 1,
-				damageRadius: 3.5,
-				blockExplosiveDamage: 50,
+				innerDamage: 25,
+				outerDamage: 5,
+				damageRadius: 4.5,
+				blockExplosiveDamage: 60,
 				selfKnockbackMultiplier: 1,
 			},
 			blockDamage: {
