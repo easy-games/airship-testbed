@@ -46,7 +46,7 @@ type AbstractConstructorParameters<T extends abstract new (...args: any) => any>
 /**
  * @internal
  */
-export type AbilityFactory<T extends AbilityLogic = AbilityLogic> = new (
+export type AbilityLogicConstructor<T extends AbilityLogic = AbilityLogic> = new (
 	...args: AbstractConstructorParameters<typeof AbilityLogic>
 ) => T;
 
@@ -60,7 +60,16 @@ export interface AbilityDto {
 	 */
 	readonly enabled: boolean;
 	/**
+	 * The slot the ability is in
+	 */
+	readonly slot: AbilitySlot;
+	/**
 	 * Charging
 	 */
 	readonly charge?: AbilityChargeConfig;
 }
+
+export interface UseAbilityRequest {
+	readonly abilityId: string;
+}
+export interface UseAbilityResponse {}

@@ -1,5 +1,5 @@
 import { CharacterEntity } from "../Entity/Character/CharacterEntity";
-import { AbilityConfig } from "../Strollers/Abilities/AbilityRegistry";
+import { AbilityConfig } from "./Ability";
 /**
  * A logic class surrounding an ability
  */
@@ -11,11 +11,6 @@ export declare abstract class AbilityLogic {
     constructor(entity: CharacterEntity, id: string, configuration: AbilityConfig);
     GetId(): string;
     GetConfiguration(): AbilityConfig;
-    /**
-     * Lifecycle for this being initialized on the server
-     * @internal
-     */
-    OnServerInit(): void;
     /**
      * Set whether or not this ability is enabled
      * @param enabled Whether or not this ability is enabled

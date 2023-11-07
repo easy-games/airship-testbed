@@ -1,15 +1,18 @@
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
-import { AbilityConfig, AbilityFactory } from "Shared/Abilities/Ability";
+import { AbilityConfig, AbilityLogicConstructor } from "Shared/Abilities/Ability";
 import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Duration } from "Shared/Util/Duration";
 
 export interface Ability {
 	/**
-	 * @internal
+	 * The logic class for the ability
 	 */
-	factory: AbilityFactory;
-	config: AbilityConfig;
+	readonly logic: AbilityLogicConstructor;
+	/**
+	 * Configuration around the ability
+	 */
+	readonly config: AbilityConfig;
 }
 
 @Service()
@@ -19,12 +22,12 @@ export class AbilityRegistry implements OnStart {
 
 	public RegisterAbilityById<T extends AbilityLogic>(
 		id: string,
-		abilityLogicClass: AbilityFactory<T>,
+		abilityLogicClass: AbilityLogicConstructor<T>,
 		config: AbilityConfig,
 	) {
 		print("Registering ability", id);
 		this.abilityHandlers.set(id, {
-			factory: abilityLogicClass,
+			logic: abilityLogicClass,
 			config,
 		});
 	}

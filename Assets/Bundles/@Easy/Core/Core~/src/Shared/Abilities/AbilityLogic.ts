@@ -1,5 +1,5 @@
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { AbilityConfig } from "Shared/Strollers/Abilities/AbilityRegistry";
+import { AbilityConfig, AbilityDto } from "./Ability";
 /**
  * A logic class surrounding an ability
  */
@@ -16,7 +16,7 @@ export abstract class AbilityLogic {
 		return this.id;
 	}
 
-	public GetConfiguration() {
+	public GetConfiguration(): AbilityConfig {
 		return this.configuration;
 	}
 
@@ -63,4 +63,17 @@ export abstract class AbilityLogic {
 	public OnChargeBegan(): void {}
 
 	public OnChargeCancelled(): void {}
+
+	/**
+	 * Cast this ability logic to a data transfer object representation
+	 * @returns The data transfer object representation of this ability logic
+	 */
+	public ToDto(): AbilityDto {
+		return {
+			id: this.GetId(),
+			enabled: this.GetEnabled(),
+			slot: this.GetConfiguration().slot,
+			charge: this.GetConfiguration().charge,
+		};
+	}
 }

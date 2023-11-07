@@ -1,4 +1,4 @@
-import { AbilityDto } from "./Abilities/Ability";
+import { AbilityDto, UseAbilityRequest, UseAbilityResponse } from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -41,6 +41,9 @@ export const CoreNetwork = {
 		TEST_LATENCY: new RemoteFunction<void, number>(),
 		TestKnockback2: new RemoteEvent<[]>(),
 		LibonatiTest: new RemoteEvent<[]>(),
+
+		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
+		UseAbility: new RemoteEvent<[req: UseAbilityRequest]>(),
 	},
 	ServerToClient: {
 		ServerInfo: new RemoteEvent<[gameId: string, serverId: string]>(),
@@ -149,7 +152,8 @@ export const CoreNetwork = {
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
 		AbilityAdded: new RemoteEvent<[dto: AbilityDto]>(),
-		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
+		AbilityStateChanged: new RemoteEvent<[dto: AbilityDto]>(),
+		AbilityRemoved: new RemoteEvent<[id: string]>(),
 	},
 };
 

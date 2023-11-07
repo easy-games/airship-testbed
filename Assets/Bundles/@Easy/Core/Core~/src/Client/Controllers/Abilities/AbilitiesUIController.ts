@@ -1,6 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreUIController } from "../UI/CoreUIController";
-import { AbilityConfig } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { InputUtils } from "Shared/Util/InputUtils";
 

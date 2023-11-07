@@ -3,8 +3,6 @@ import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Keyboard } from "Shared/UserInput";
-import { AbilityBinding } from "./Class/AbilityBinding";
-import { MapUtil } from "Shared/Util/MapUtil";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { KeySignal } from "Shared/UserInput/Drivers/Signals/KeySignal";
 
@@ -32,7 +30,11 @@ export class AbilitiesController implements OnStart {
 	 * @param slot The slot kind to bind this ability to
 	 * @param ability The ability to bind
 	 */
-	public BindAbilityToSlot(slot: AbilitySlot, ability: AbilityDto) {}
+	public RegisterAbility(ability: AbilityDto) {
+		const abilityId = ability.id;
+		const abilitySlot = ability.slot;
+		const enabled = ability.enabled;
+	}
 
 	private GetBoundAbilityForKeyCode(keyCode: KeyCode) {
 		// Get the slot type bound to this keycode
@@ -65,6 +67,9 @@ export class AbilitiesController implements OnStart {
 
 		// TODO: check for cooldowns
 		// TODO: if not on cooldown - send to server that we're "casting" this
+		CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
+			abilityId: boundAbility.abilityId,
+		});
 	};
 
 	public OnStart(): void {
@@ -74,8 +79,13 @@ export class AbilitiesController implements OnStart {
 			keyboard.OnKeyUp(slot, this.OnKeyboardInputEnded);
 		}
 
-		const abilities = CoreNetwork.ServerToClient.GetAbilities.Client.FireServer();
+		const abilities = CoreNetwork.ClientToServer.GetAbilities.Client.FireServer();
 		for (const ability of abilities) {
+			this.RegisterAbility(ability);
 		}
+
+		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((dto) => {
+			this.RegisterAbility(dto);
+		});
 	}
 }
