@@ -25,7 +25,10 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 
 			const rightHandTransform = this.entity.accessoryBuilder.GetSlotTransform(AccessorySlot.RightHand);
 			if (blockGO && rightHandTransform) {
-				blockGO.layer = Layer.FIRST_PERSON;
+				blockGO.layer =
+					this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson()
+						? Layer.FIRST_PERSON
+						: Layer.CHARACTER;
 				blockGO.transform.SetParent(rightHandTransform);
 				blockGO.transform.localPosition = new Vector3(0, 0, 0);
 				const scale = 1;

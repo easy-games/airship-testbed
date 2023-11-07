@@ -9,6 +9,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Task } from "@Easy/Core/Shared/Util/Task";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { MatchState } from "Shared/Match/MatchState";
@@ -75,8 +76,22 @@ export class BWSpawnService implements OnStart {
 				});
 			});
 
+			CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.LOW, (event) => {
+				if (!this.matchService.IsRunning()) return;
+
+				const maxTime = 20 * 60;
+				const baseRespawnTime = 3;
+				const maxRespawnTime = 7;
+
+				const currentTime = TimeUtil.GetServerTime() - this.matchService.GetMatchStartTime();
+				const ratio = math.min(currentTime / maxTime, 1);
+				const respawnTime = baseRespawnTime + (maxRespawnTime - baseRespawnTime) * ratio;
+
+				event.respawnTime = respawnTime;
+			});
+
 			/* Listen for entity death, respawn if applicable. */
-			CoreServerSignals.EntityDeath.Connect((event) => {
+			CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 				if (!this.matchService.IsRunning()) return;
 				if (event.entity instanceof CharacterEntity && !this.bwService.winnerDeclared) {
 					Task.Delay(event.respawnTime, () => {
