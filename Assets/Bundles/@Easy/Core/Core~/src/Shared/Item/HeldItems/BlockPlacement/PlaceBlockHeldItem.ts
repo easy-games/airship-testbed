@@ -1,10 +1,11 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
 import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { Layer } from "Shared/Util/Layer";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
-import inspect from "@easy-games/unity-inspect";
 
 export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
@@ -24,6 +25,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
 			if (blockGO && activeAccessories.Length > 0) {
+				blockGO.layer = Layer.FIRST_PERSON;
 				blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
 				blockGO.transform.localPosition = new Vector3(0, 0, 0);
 				const scale = 1;

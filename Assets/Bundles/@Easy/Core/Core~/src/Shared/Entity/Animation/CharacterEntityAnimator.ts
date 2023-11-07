@@ -23,6 +23,12 @@ const EMPTY_ANIM = AssetBridge.Instance.LoadAsset<AnimationClip>(
 const DEFAULT_USE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
 );
+const BLOCK_IDLE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Block_Idle.anim",
+);
+const BLOCK_USE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Block_Place.anim",
+);
 
 export class CharacterEntityAnimator extends EntityAnimator {
 	private currentItemClipMap: Map<ItemAnimationId, AnimationClip[]> = new Map();
@@ -133,6 +139,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 					if (clips.size() > 0) {
 						this.currentItemClipMap.set(ItemAnimationId.IDLE, clips);
 					}
+				} else if (itemMeta.block) {
+					this.currentItemClipMap.set(ItemAnimationId.IDLE, [BLOCK_IDLE_FP]);
 				}
 				if (itemMeta.usable?.onUseAnimFP) {
 					let clips = itemMeta.usable.onUseAnimFP.mapFiltered((s) => {
@@ -142,6 +150,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 					if (clips.size() > 0) {
 						this.currentItemClipMap.set(ItemAnimationId.USE, clips);
 					}
+				} else if (itemMeta.block) {
+					this.currentItemClipMap.set(ItemAnimationId.USE, [BLOCK_USE_FP]);
 				}
 			} else {
 				if (itemMeta.viewModel?.equipAnimTP) {
