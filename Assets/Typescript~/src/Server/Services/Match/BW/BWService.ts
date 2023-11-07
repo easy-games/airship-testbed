@@ -2,12 +2,15 @@ import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
 import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
 import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
+import { Game } from "@Easy/Core/Shared/Game";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Team } from "@Easy/Core/Shared/Team/Team";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { SetUtil } from "@Easy/Core/Shared/Util/SetUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
@@ -67,6 +70,16 @@ export class BWService implements OnStart {
 						killerEntityInv.AddItem(new ItemStack(itemType, itemQuantity));
 					}
 				}
+			}
+			// Kill message in chat
+			const killerTeam = event.killer?.GetTeam();
+			const deadTeam = event.entity.GetTeam();
+			if (event.killer && killerTeam && deadTeam) {
+				Game.BroadcastMessage(
+					ColorUtil.ColoredText(killerTeam.color, event.killer.GetDisplayName()) +
+						ColorUtil.ColoredText(Theme.Gray, " killed ") +
+						ColorUtil.ColoredText(deadTeam.color, event.entity.GetDisplayName()),
+				);
 			}
 		});
 		// Teammates _cannot_ damage each other.
