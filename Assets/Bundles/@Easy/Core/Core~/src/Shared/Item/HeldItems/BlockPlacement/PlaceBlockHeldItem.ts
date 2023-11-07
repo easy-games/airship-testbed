@@ -25,7 +25,10 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 
 			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
 			if (blockGO && activeAccessories.Length > 0) {
-				blockGO.layer = Layer.FIRST_PERSON;
+				blockGO.layer =
+					this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson()
+						? Layer.FIRST_PERSON
+						: Layer.CHARACTER;
 				blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
 				blockGO.transform.localPosition = new Vector3(0, 0, 0);
 				const scale = 1;
