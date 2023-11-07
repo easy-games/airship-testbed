@@ -7,12 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Metal_Clean
+  m_Name: IronHandle
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
-  - RIM_LIGHT_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
@@ -41,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeTex:
-        m_Texture: {fileID: 8900000, guid: 105fe8e4d8525d6488e9b0b5642f39fe, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -65,11 +64,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 13fbb14d00fb93d4488749c83ebcf991, type: 3}
+        m_Texture: {fileID: 2800000, guid: 631016985ed5ef34b8681ff253d3709f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
-        m_Texture: {fileID: 2800000, guid: c0af2000fcd80e74280ecd576119944d, type: 3}
+        m_Texture: {fileID: 2800000, guid: c68c0c05d862ba24c874a924c7bb4a33, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -77,8 +76,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 333e39a643fe78141b6d5132c5192308, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 520b41f82aa6d454789d7d335e90753b, type: 3}
+        m_Scale: {x: 0, y: 0}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -89,7 +88,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughTex:
-        m_Texture: {fileID: 2800000, guid: d9cd444c83bc9644798e87f9d831b613, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2382e3c8af0a79a429cca878643f69e7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessTex:
@@ -106,7 +105,7 @@ Material:
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
     - POINT_FILTER: 0
-    - RIM_LIGHT: 1
+    - RIM_LIGHT: 0
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
     - VERTEX_LIGHT: 0
@@ -121,17 +120,18 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _IncidentStrength: 1
     - _Lights: 0
-    - _MetalOverride: 0.345
+    - _MetalOverride: 0.091
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
-    - _RimIntensity: 0
-    - _RimPower: 3
-    - _RoughOverride: 0.834
+    - _RimIntensity: 1.45
+    - _RimPower: 4.46
+    - _RoughOverride: 0.358
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
@@ -139,16 +139,17 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 1
-    - _TriplanarScale: 0.3
+    - _TriplanarScale: 1
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0.1764706}
-    - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
+    - _OverrideColor: {r: 2, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
-    - _SpecularColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
+    - _SpecularColor: {r: 1, g: 0, b: 0.53611755, a: 1}
   m_BuildTextureStacks: []

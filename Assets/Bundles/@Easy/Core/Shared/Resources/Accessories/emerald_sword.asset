@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
-  m_Name: iron_sword
+  m_Name: emerald_sword
   m_EditorClassIdentifier: 
-  DisplayName: Iron Sword
+  DisplayName: Emerald Sword
   AccessorySlot: 6
-  Prefab: {fileID: 7249071891063959814, guid: bc811aaf83d3447b9ba35700dca5d7e4, type: 3}
+  Prefab: {fileID: 7249071891063959814, guid: 1670343f3433a894f9fc60322c2b20f2, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

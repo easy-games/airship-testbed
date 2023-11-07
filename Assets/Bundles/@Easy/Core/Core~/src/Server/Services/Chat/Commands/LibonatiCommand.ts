@@ -10,6 +10,11 @@ export class LibonatiCommand extends ChatCommand {
 
 	public Execute(player: Player, args: string[]): void {
 		const items = [
+			ItemType.WOOD_SWORD,
+			ItemType.STONE_SWORD,
+			ItemType.IRON_SWORD,
+			ItemType.DIAMOND_SWORD,
+			ItemType.EMERALD_SWORD,
 			ItemType.WOOD_BOW,
 			ItemType.TELEPEARL,
 			ItemType.FIREBALL,
