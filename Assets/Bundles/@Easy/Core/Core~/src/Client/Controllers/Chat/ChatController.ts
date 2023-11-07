@@ -100,11 +100,7 @@ export class ChatController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text, senderClientId) => {
-			print("chat message remote. sender: " + senderClientId);
-			for (const player of Dependency<PlayerController>().GetPlayers()) {
-				print(" - " + player.clientId);
-			}
+		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text, senderClientId) => {=
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
