@@ -4,6 +4,9 @@ import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
+import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
+import { ProfilePictureMeta } from "Shared/ProfilePicture/ProfilePictureMeta";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { encode } from "Shared/json";
 import { Team } from "../Team/Team";
@@ -37,6 +40,8 @@ export class Player {
 	public readonly onChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
 
 	public onUsernameChanged = new Signal<[username: string, tag: string]>();
+
+	private profilePicture: ProfilePictureId = ProfilePictureId.BEAR;
 
 	private bin = new Bin();
 	private connected = true;
@@ -81,6 +86,10 @@ export class Player {
 		public usernameTag: string,
 	) {}
 
+	public GetProfilePicture(): ProfilePictureMeta {
+		return ProfilePictureDefinitions[this.profilePicture];
+	}
+
 	public SetTeam(team: Team): void {
 		const oldTeam = this.team;
 		this.team = team;
@@ -97,7 +106,7 @@ export class Player {
 		this.onUsernameChanged.Fire(username, tag);
 	}
 
-	public SendMessage(message: string): void {
+	public SendMessage(message: string, sender?: Player): void {
 		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.ChatMessage.Server.FireClient(this.clientId, message);
 		} else {

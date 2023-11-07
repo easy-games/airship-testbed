@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
@@ -8,6 +8,7 @@ import { ClearCommand } from "Shared/Commands/ClearCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { Player } from "Shared/Player/Player";
 import { CoreSound } from "Shared/Sound/CoreSound";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
@@ -17,6 +18,7 @@ import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { PlayerController } from "../Player/PlayerController";
 import { CoreUIController } from "../UI/CoreUIController";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
@@ -98,8 +100,16 @@ export class ChatController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text) => {
-			this.RenderChatMessage(text);
+		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text, senderClientId) => {
+			print("chat message remote. sender: " + senderClientId);
+			for (const player of Dependency<PlayerController>().GetPlayers()) {
+				print(" - " + player.clientId);
+			}
+			let sender: Player | undefined;
+			if (senderClientId !== undefined) {
+				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
+			}
+			this.RenderChatMessage(text, sender);
 		});
 
 		const keyboard = new Keyboard();
@@ -258,13 +268,22 @@ export class ChatController implements OnStart {
 		}
 	}
 
-	public RenderChatMessage(message: string): void {
+	public RenderChatMessage(message: string, sender?: Player): void {
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>();
-			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
 
+			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
 			textGui.text = message;
+
+			const profileImage = refs.GetValue<Image>("UI", "ProfilePicture");
+			print("sender: " + sender);
+			const playerProfilePic = sender?.GetProfilePicture();
+			if (playerProfilePic) {
+				profileImage.sprite = Bridge.MakeSprite(AssetBridge.Instance.LoadAsset(playerProfilePic.path));
+			} else {
+				profileImage.gameObject.SetActive(false);
+			}
 
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);

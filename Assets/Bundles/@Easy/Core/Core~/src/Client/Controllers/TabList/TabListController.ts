@@ -122,7 +122,6 @@ export class TabListController implements OnStart {
 
 			return aTeamIndex < bTeamIndex;
 		});
-		print("full update: " + players.size());
 
 		for (let i = 0; i < this.maxSlots; i++) {
 			let player: Player | undefined;
@@ -159,6 +158,10 @@ export class TabListController implements OnStart {
 			const hex = ColorUtil.ColorToHex(team.color);
 			username = `<color=${hex}>${username}</color>`;
 		}
+
+		const image = refs.GetValue<Image>("UI", "ProfilePicture");
+		const profilePicture = player.GetProfilePicture();
+		image.sprite = Bridge.MakeSprite(AssetBridge.Instance.LoadAsset(profilePicture.path));
 
 		usernameText.text = username;
 	}
