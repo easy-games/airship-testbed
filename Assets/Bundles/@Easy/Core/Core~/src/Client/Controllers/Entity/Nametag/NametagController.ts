@@ -25,7 +25,7 @@ export class NametagController implements OnStart {
 			if (event.entity.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
-			this.CreateNametag(event.entity);
+			this.UpdateNametag(event.entity);
 			event.entity.OnDisplayNameChanged.Connect(() => {
 				this.UpdateNametag(event.entity);
 			});
@@ -76,7 +76,7 @@ export class NametagController implements OnStart {
 		});
 	}
 
-	public CreateNametag(entity: Entity): GameObject {
+	private CreateNametag(entity: Entity): GameObject {
 		const nametagPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/Nametag.prefab",
 		) as GameObject;
@@ -90,7 +90,7 @@ export class NametagController implements OnStart {
 		return nametag;
 	}
 
-	private UpdateNametag(entity: Entity): void {
+	public UpdateNametag(entity: Entity): void {
 		const team: Team | undefined = entity.player?.GetTeam();
 		const localTeam = Game.LocalPlayer.GetTeam();
 
