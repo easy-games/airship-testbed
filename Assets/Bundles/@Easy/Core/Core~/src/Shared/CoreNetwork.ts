@@ -1,3 +1,4 @@
+import { AbilityDto } from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -146,6 +147,9 @@ export const CoreNetwork = {
 
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
+
+		AbilityAdded: new RemoteEvent<[dto: AbilityDto]>(),
+		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
 	},
 };
 

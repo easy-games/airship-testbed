@@ -16,7 +16,7 @@ export class CharacterEntity extends Entity {
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined, inventory: Inventory) {
 		super(id, networkObject, clientId);
 		this.inventory = inventory;
-		this.abilities = new CharacterAbilities();
+		this.abilities = new CharacterAbilities(this);
 
 		this.bin.Add(
 			this.inventory.SlotChanged.Connect((slot, itemStack) => {

@@ -1,5 +1,3 @@
-import { Dependency } from "@easy-games/flamework-core";
-import { AbilitiesService } from "Server/Services/Abilities/AbilitiesService";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { AbilityConfig } from "Shared/Strollers/Abilities/AbilityRegistry";
 /**
@@ -20,14 +18,6 @@ export abstract class AbilityLogic {
 
 	public GetConfiguration() {
 		return this.configuration;
-	}
-
-	/**
-	 * Lifecycle for this being initialized on the server
-	 * @internal
-	 */
-	public OnServerInit() {
-		const abilityService = Dependency<AbilitiesService>();
 	}
 
 	/**
