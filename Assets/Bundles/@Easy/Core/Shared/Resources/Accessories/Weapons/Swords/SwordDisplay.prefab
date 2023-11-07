@@ -229,10 +229,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6908755682289466760}
     m_Modifications:
-    - target: {fileID: 493804006276911841, guid: bc811aaf83d3447b9ba35700dca5d7e4, type: 3}
-      propertyPath: colorSettings.Array.data[2].reference
-      value: IronMetal2
-      objectReference: {fileID: 0}
     - target: {fileID: 7249071891063959814, guid: bc811aaf83d3447b9ba35700dca5d7e4, type: 3}
       propertyPath: m_Name
       value: iron_sword

@@ -17,6 +17,6 @@ MonoBehaviour:
   Prefab: {fileID: 7249071891063959814, guid: bc811aaf83d3447b9ba35700dca5d7e4, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
-  Scale: {x: 1, y: 1, z: 1}
+  Scale: {x: 0.85, y: 0.85, z: 0.85}
   visibilityMode: 2
   SkinnedToCharacter: 1
