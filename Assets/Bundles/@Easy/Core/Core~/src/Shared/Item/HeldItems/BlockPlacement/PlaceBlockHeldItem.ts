@@ -23,10 +23,10 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			print("voxelId match", this.itemMeta.block.blockId, voxelId);
 			const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 1);
 
-			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
-			if (blockGO && activeAccessories.Length > 0) {
+			const rightHandTransform = this.entity.accessoryBuilder.GetSlotTransform(AccessorySlot.RightHand);
+			if (blockGO && rightHandTransform) {
 				blockGO.layer = Layer.FIRST_PERSON;
-				blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
+				blockGO.transform.SetParent(rightHandTransform);
 				blockGO.transform.localPosition = new Vector3(0, 0, 0);
 				const scale = 1;
 				blockGO.transform.localScale = new Vector3(scale, scale, scale);

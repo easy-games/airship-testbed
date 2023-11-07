@@ -9722,6 +9722,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetAllAccessoryMeshes(): CSArray<Renderer>;
     GetCombinedSkinnedMesh(firstPerson: boolean): SkinnedMeshRenderer;
     GetCombinedStaticMesh(firstPerson: boolean): MeshRenderer;
+    GetSlotTransform(slot: AccessorySlot): Transform;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
     SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;

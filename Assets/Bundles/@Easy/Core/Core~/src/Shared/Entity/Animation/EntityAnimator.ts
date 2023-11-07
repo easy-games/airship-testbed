@@ -45,6 +45,7 @@ export abstract class EntityAnimator {
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
 		this.entityRef = entityRef;
+		this.isFlashing = false;
 
 		//AUDIO
 		if (RunUtil.IsClient()) {
@@ -241,16 +242,17 @@ export abstract class EntityAnimator {
 
 	private PlayDamageFlash() {
 		if (this.entity.IsDestroyed() || this.isFlashing) return;
-		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.meshes);
+		let allMeshes = this.entity.accessoryBuilder.GetAllAccessoryMeshes();
 		const duration = this.flashTransitionDuration + this.flashOnTime;
 		this.isFlashing = true;
-		allMeshes.forEach((renderer) => {
+		for (let i = 0; i < allMeshes.Length; i++) {
+			const renderer = allMeshes.GetValue(i);
 			if (renderer && renderer.enabled) {
 				renderer
 					.TweenMaterialsFloatProperty("_OverrideStrength", 0, 1, this.flashTransitionDuration)
 					.SetPingPong();
 			}
-		});
+		}
 		Task.Delay(duration, () => {
 			this.isFlashing = false;
 		});
