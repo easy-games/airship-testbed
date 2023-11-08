@@ -1,16 +1,17 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { Entity } from "Shared/Entity/Entity";
+import { Bin } from "Shared/Util/Bin";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { ItemMeta } from "../ItemMeta";
 import { ItemType } from "../ItemType";
 import { BreakBlockHeldItem } from "./BlockPlacement/BreakBlockHeldItem";
 import { PlaceBlockHeldItem } from "./BlockPlacement/PlaceBlockHeldItem";
+import { TillBlockHeldItem } from "./BlockPlacement/TillBlockHeldItem";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
 import { ProjectileLauncherHeldItem } from "./ProjectileLauncher/ProjectileLauncherHeldItem";
-import { TillBlockHeldItem } from "./BlockPlacement/TillBlockHeldItem";
 
 export type HeldItemCondition = (itemMeta: ItemMeta) => boolean;
 export type HeldItemFactory = (entity: Entity, itemMeta: ItemMeta) => HeldItem;
@@ -26,6 +27,7 @@ export class HeldItemManager {
 	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
 	private currentItemState: HeldItemState = HeldItemState.NONE;
+	private bin = new Bin();
 
 	private static heldItemClasses = new Array<HeldItemEntry>();
 
@@ -76,17 +78,23 @@ export class HeldItemManager {
 		this.currentHeldItem = this.GetOrCreateHeldItem();
 
 		//Listen for item switches
-		this.entity.GetInventory().ObserveHeldItem((itemStack) => {
-			this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
-			//UnEquip last item
-			if (this.currentHeldItem !== undefined) {
-				this.currentHeldItem.OnUnEquip();
-			}
-			//Equip the new item
-			this.currentItemState = HeldItemState.NONE;
-			this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
-			this.currentHeldItem.OnEquip();
-		});
+		this.bin.Add(
+			this.entity.GetInventory().ObserveHeldItem((itemStack) => {
+				this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
+				//UnEquip last item
+				if (this.currentHeldItem !== undefined) {
+					this.currentHeldItem.OnUnEquip();
+				}
+				//Equip the new item
+				this.currentItemState = HeldItemState.NONE;
+				this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
+				this.currentHeldItem.OnEquip();
+			}),
+		);
+	}
+
+	public Destroy(): void {
+		this.bin.Clean();
 	}
 
 	//LOCAL CLIENT ONLY

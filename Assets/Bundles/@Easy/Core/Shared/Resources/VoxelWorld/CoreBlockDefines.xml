@@ -18,7 +18,7 @@
 <!--    <BottomTexture>liamgrass.t</BottomTexture>-->
 <!--    <SideTexture>liamgrass.s</SideTexture>-->
 <!--    <Material>StylizedGrass</Material>-->
-    <SideMaterial>StylizedDirt</SideMaterial>
+    <SideMaterial>StylizedGrassSide</SideMaterial>
     <TopMaterial>StylizedGrassTop</TopMaterial>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
