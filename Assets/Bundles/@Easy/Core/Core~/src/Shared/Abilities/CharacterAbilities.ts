@@ -6,8 +6,6 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { AbilityConfig, AbilityDto } from "./Ability";
 import { Duration } from "Shared/Util/Duration";
-import { Dependency } from "@easy-games/flamework-core";
-import { Scheduler } from "Shared/Strollers/Scheduler/Scheduler";
 
 export interface AbilityCooldown {
 	readonly Length: Duration;

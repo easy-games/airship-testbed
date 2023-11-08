@@ -1,84 +1,88 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { AbilityDto } from "Shared/Abilities/Ability";
-import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Keyboard } from "Shared/UserInput";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { KeySignal } from "Shared/UserInput/Drivers/Signals/KeySignal";
+import { AbilityDto } from "Shared/Abilities/Ability";
+import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
+import { Bin } from "Shared/Util/Bin";
+import { AbilityBinding, BindingAction, BindingInputState } from "./Class/AbilityBinding";
 
-interface BoundAbilitySlot {
-	abilityId: string;
-	enabled: boolean;
-	cooldownTimeEnd: number | undefined;
-}
+const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y];
+const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J];
+const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M];
 
 @Controller()
 export class AbilitiesController implements OnStart {
-	private primaryKeyQueue = [KeyCode.E, KeyCode.R, KeyCode.T];
-	private secondaryKeyQueue = [KeyCode.F, KeyCode.G, KeyCode.H];
-	private tertiaryKeyQueue = [KeyCode.Z, KeyCode.X, KeyCode.V];
+	private readonly keyboard = new Keyboard();
 
-	private readonly abilityBoundKeys = [...this.primaryKeyQueue, ...this.secondaryKeyQueue, ...this.tertiaryKeyQueue];
+	public primaryAbilitySlots = new Array<AbilityBinding>(primaryKeys.size());
+	public secondaryAbilitySlots = new Array<AbilityBinding>(secondaryKeys.size());
+	public utilityAbiltySlots = new Array<AbilityBinding>(utilityKeys.size());
 
-	public keyCodeAbilitySlot = new Map<KeyCode, AbilitySlot>();
-	public abilitySlotBinding = new Map<AbilitySlot, BoundAbilitySlot>();
+	public constructor(private readonly abilityRegistry: AbilityRegistry) {
+		// Set up binding slots
+		for (const keyCode of primaryKeys) {
+			this.primaryAbilitySlots.push(new AbilityBinding(AbilitySlot.Primary, false, keyCode));
+		}
 
-	public constructor(private readonly abilityRegistry: AbilityRegistry) {}
+		for (const keyCode of secondaryKeys) {
+			this.secondaryAbilitySlots.push(new AbilityBinding(AbilitySlot.Secondary, false, keyCode));
+		}
 
-	/**
-	 * Attempts to bind the ability to the next available slot
-	 * @param slot The slot kind to bind this ability to
-	 * @param ability The ability to bind
-	 */
-	public RegisterAbility(ability: AbilityDto) {
-		const abilityId = ability.id;
-		const abilitySlot = ability.slot;
-		const enabled = ability.enabled;
+		for (const keyCode of utilityKeys) {
+			this.utilityAbiltySlots.push(new AbilityBinding(AbilitySlot.Utility, false, keyCode));
+		}
 	}
 
-	private GetBoundAbilityForKeyCode(keyCode: KeyCode) {
-		// Get the slot type bound to this keycode
-		const abilitySlotForKeyCode = this.keyCodeAbilitySlot.get(keyCode);
-		if (!abilitySlotForKeyCode) return;
+	private FindNextAvailableSlot(slots: Array<AbilityBinding>) {
+		for (const item of slots) {
+			if (item.GetBoundId() === undefined) {
+				return item;
+			}
+		}
 
-		// Get the registered binding object for the given slot
-		const bindingForAbilitySlot = this.abilitySlotBinding.get(abilitySlotForKeyCode);
-		if (!bindingForAbilitySlot) return;
+		return undefined;
+	}
 
-		// Get the bound ability
-		const boundAbility = bindingForAbilitySlot;
-		if (!boundAbility || !boundAbility.enabled) return;
+	private RegisterAbility(abilityDto: AbilityDto) {
+		let nextSlot: AbilityBinding | undefined;
+		if (abilityDto.slot === AbilitySlot.Primary) {
+			nextSlot = this.FindNextAvailableSlot([
+				...this.primaryAbilitySlots,
+				...this.secondaryAbilitySlots,
+				...this.utilityAbiltySlots,
+			]);
+		} else if (abilityDto.slot === AbilitySlot.Secondary) {
+			nextSlot = this.FindNextAvailableSlot([
+				...this.secondaryAbilitySlots,
+				...this.primaryAbilitySlots,
+				...this.utilityAbiltySlots,
+			]);
+		} else if (abilityDto.slot === AbilitySlot.Utility) {
+			nextSlot = this.FindNextAvailableSlot(this.utilityAbiltySlots);
+		}
 
-		return boundAbility;
+		if (!nextSlot) return false;
+
+		nextSlot.BindToId(abilityDto.id);
+		nextSlot.BindToKey(this.keyboard, this.OnKeyboardInputEnded);
+		nextSlot.SetEnabled(abilityDto.enabled);
+
+		print("registered ability at keycode ", abilityDto.id, nextSlot.GetKey());
 	}
 
 	// TODO: in future a much friendlier Input API
-	private OnKeyboardInputEnded = (event: KeySignal) => {
-		const boundAbility = this.GetBoundAbilityForKeyCode(event.KeyCode);
-		if (!boundAbility) return;
-
-		const metadata = this.abilityRegistry.GetAbilityById(boundAbility.abilityId);
-		if (!metadata) {
-			warn(
-				`Attempted to fire bound ability by id ${boundAbility.abilityId} with no matching ability on client? ensure you have registered abilities on both server and client`,
-			);
-			return;
+	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
+		const boundAbilityId = binding.GetBoundId();
+		if (state === BindingInputState.InputEnded && boundAbilityId) {
+			CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
+				abilityId: boundAbilityId,
+			});
 		}
-
-		// TODO: check for cooldowns
-		// TODO: if not on cooldown - send to server that we're "casting" this
-		CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
-			abilityId: boundAbility.abilityId,
-		});
 	};
 
 	public OnStart(): void {
-		const keyboard = new Keyboard();
-
-		for (const slot of this.abilityBoundKeys) {
-			keyboard.OnKeyUp(slot, this.OnKeyboardInputEnded);
-		}
-
 		const abilities = CoreNetwork.ClientToServer.GetAbilities.Client.FireServer();
 		for (const ability of abilities) {
 			this.RegisterAbility(ability);
