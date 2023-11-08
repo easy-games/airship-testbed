@@ -3,12 +3,12 @@ import { ProjectileController } from "Client/Controllers/Damage/Projectile/Proje
 import { ProjectileService } from "Server/Services/Damage/Projectile/ProjectileService";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemType } from "Shared/Item/ItemType";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import { ProjectileSharedImpl } from "./ProjectileSharedImpl";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 
 export interface ProjectileDto {
 	nobId: number;
@@ -38,15 +38,19 @@ export class Projectile {
 
 		const itemDef = ItemUtil.GetItemMeta(itemType);
 
-		this.OnDestroy.Connect(() => {
-			this.destroyed = true;
-		});
+		this.bin.Add(
+			this.OnDestroy.Connect(() => {
+				this.destroyed = true;
+			}),
+		);
 
-		this.OnHit.Connect((hitPoint, collider) => {
-			print("[Debug]: projectile hit pos=" + tostring(hitPoint) + ", collider=" + collider.gameObject.name);
-		});
+		this.bin.Add(
+			this.OnHit.Connect((hitPoint, collider) => {
+				print("[Debug]: projectile hit pos=" + tostring(hitPoint) + ", collider=" + collider.gameObject.name);
+			}),
+		);
 
-		easyProjectile.OnHit((event) => {
+		const onHitConn = easyProjectile.OnHit((event) => {
 			const raycastHit = event.raycastHit;
 			let hitPoint = raycastHit.point;
 			let normal = raycastHit.normal;
@@ -63,6 +67,7 @@ export class Projectile {
 				Dependency<ProjectileController>().HandleCollision(this, collider, hitPoint, normal, velocity);
 			}
 		});
+		this.bin.Add(() => Bridge.DisconnectEvent(onHitConn));
 
 		const dw = this.gameObject.GetComponent<DestroyWatcher>();
 		const destroyedConn = dw.OnDestroyedEvent(() => {
@@ -92,6 +97,8 @@ export class Projectile {
 		if (this.destroyed) return;
 		this.destroyed = true;
 		this.bin.Clean();
+		this.OnDestroy.DisconnectAll();
+		this.OnHit.DisconnectAll();
 
 		Object.Destroy(this.gameObject);
 	}

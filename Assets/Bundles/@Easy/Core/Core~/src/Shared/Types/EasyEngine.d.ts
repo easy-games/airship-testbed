@@ -449,7 +449,7 @@ interface ProjectileManagerConstructor {
 declare const ProjectileManager: ProjectileManagerConstructor;
 
 interface EasyProjectile {
-	OnHit(callback: (event: ProjectileHitEvent) => void): void;
+	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
 }
 
 interface EasyCoreAPI {
@@ -559,3 +559,5 @@ type EngineEventConnection = number;
 interface BridgeConstructor {
 	DisconnectEvent(eventConnection: EngineEventConnection): void;
 }
+
+declare const easygg_objectrefs: unknown;

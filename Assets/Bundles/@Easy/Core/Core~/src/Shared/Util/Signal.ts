@@ -1,4 +1,4 @@
-import Object from "@easy-games/unity-object-utils";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { Cancellable } from "./Cancellable";
 
 type SignalParams<T> = Parameters<
@@ -105,7 +105,7 @@ export class Signal<T extends unknown[] | unknown> {
 		if (this.debugLogging) {
 			print("key count: " + this.connections.size());
 			let callbackCount = 0;
-			for (let priority of Object.keys(this.connections)) {
+			for (let priority of ObjectUtils.keys(this.connections)) {
 				for (let connection of this.connections.get(priority)!) {
 					callbackCount++;
 				}
@@ -114,7 +114,7 @@ export class Signal<T extends unknown[] | unknown> {
 		}
 
 		let fireCount = 0;
-		let keys = Object.keys(this.connections).sort((a, b) => a < b);
+		let keys = ObjectUtils.keys(this.connections).sort((a, b) => a < b);
 		let cancelled = false;
 		let isCancellable = false;
 		if (args.size() === 1 && args[0] instanceof Cancellable) {
@@ -211,5 +211,13 @@ export class Signal<T extends unknown[] | unknown> {
 	public WithYieldTracking(value: boolean): Signal<T> {
 		this.trackYielding = value;
 		return this;
+	}
+
+	public GetConnectionCount(): number {
+		let i = 0;
+		for (const value of ObjectUtils.values(this.connections)) {
+			i += value.size();
+		}
+		return i;
 	}
 }
