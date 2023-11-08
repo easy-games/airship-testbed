@@ -13611,4 +13611,27 @@ interface DevConsoleConstructor {
     SetTrackedStat(name: string, func: unknown, startEnabled: boolean): void;
 }
 declare const DevConsole: DevConsoleConstructor;
+    
+interface EasyShake extends MonoBehaviour {
+    duration: number;
+    movementsPerSecond: number;
+    maxRadius: Vector3;
+
+    constructor(): EasyShake;
+
+}
+    
+interface EasyMotion extends MonoBehaviour {
+    runInEditor: boolean;
+    transformSpace: Space;
+    translate: boolean;
+    translationSpeed: Vector3;
+    rotate: boolean;
+    angularRotationSpeed: Vector3;
+    scale: boolean;
+    scaleSpeed: Vector3;
+
+    constructor(): EasyMotion;
+
+}
 
