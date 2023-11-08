@@ -45,6 +45,11 @@ export class CharacterAbilities {
 		return arr;
 	}
 
+	public HasAbilityWithIdAtSlot(id: string, slot: AbilitySlot): boolean {
+		const abilityMap = MapUtil.GetOrCreate(this.boundAbilities, slot, () => new Map<string, AbilityLogic>());
+		return abilityMap.has(id);
+	}
+
 	/**
 	 * Adds the given ability to the character
 	 * @param abilityId The ability's unique id
@@ -53,15 +58,19 @@ export class CharacterAbilities {
 	 *
 	 * @server Server-only API
 	 */
-	public AddAbilityWithId(
+	public AddAbilityWithIdToSlot(
 		abilityId: string,
 		slot: AbilitySlot,
 		ability: Ability,
 		overrideConfig?: AbilityConfig,
 	): AbilityLogic {
 		assert(RunCore.IsServer(), "AddAbilityWithId should be called by the server");
-
 		const abilityMap = MapUtil.GetOrCreate(this.boundAbilities, slot, () => new Map<string, AbilityLogic>());
+
+		if (abilityMap.has(abilityId)) {
+			warn(`Attempting to add duplicate ability '${abilityId}' - you can check using HasAbilityWithIdAtSlot(id)`);
+			return abilityMap.get(abilityId)!;
+		}
 
 		const logic = new ability.logic(this.entity, abilityId, overrideConfig ?? ability.config);
 		abilityMap.set(abilityId, logic);

@@ -46,5 +46,17 @@ export class AbilitiesService implements OnStart {
 				abilities.CancelChargingAbility();
 			}
 		});
+
+		// Cancel on death regardless
+		CoreServerSignals.EntityDeath.Connect((event) => {
+			const entity = event.entity;
+			if (!(entity instanceof CharacterEntity)) return;
+
+			const abilities = entity.GetAbilities();
+			const castingAbility = abilities.GetChargingAbility();
+			if (!castingAbility) return;
+
+			abilities.CancelChargingAbility();
+		});
 	}
 }
