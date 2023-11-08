@@ -9,8 +9,8 @@ import { Bin } from "Shared/Util/Bin";
 import { AbilityBinding, BindingAction, BindingInputState } from "./Class/AbilityBinding";
 import inspect from "@easy-games/unity-inspect";
 
-const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y];
-const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J];
+const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.T, KeyCode.Y];
+const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.G, KeyCode.H, KeyCode.J];
 const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M];
 
 @Controller()

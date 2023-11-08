@@ -6,6 +6,8 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { AbilityConfig, AbilityDto } from "./Ability";
 import { Duration } from "Shared/Util/Duration";
+import { Task } from "Shared/Util/Task";
+import { SetTimeout } from "Shared/Util/Timer";
 
 export interface AbilityCooldown {
 	readonly Length: Duration;
@@ -16,7 +18,7 @@ export class CharacterAbilities {
 	private cooldowns = new Map<Ability, AbilityCooldown>();
 	private boundAbilities = new Map<AbilitySlot, Map<string, AbilityLogic>>();
 
-	private currentlyCasting: Promise<void> | undefined; // using promise rn because need cancellation
+	private currentlyCasting: (() => void) | undefined; // using promise rn because need cancellation
 
 	public constructor(private entity: CharacterEntity) {}
 
@@ -72,7 +74,7 @@ export class CharacterAbilities {
 				const config = ability.GetConfiguration();
 				if (config.charge) {
 					ability.OnChargeBegan();
-					return Promise.delay(config.charge.chargeDurationSeconds).then(() => {
+					this.currentlyCasting = SetTimeout(config.charge.chargeDurationSeconds, () => {
 						ability.OnTriggered();
 					});
 				} else {

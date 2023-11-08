@@ -4,6 +4,8 @@ import { AbilityLogic } from "./AbilityLogic";
 
 export interface AbilityChargeConfig {
 	readonly chargeDurationSeconds: Duration.Seconds;
+	readonly cancelOnMovement?: boolean;
+	readonly cancelOnDamage?: boolean;
 }
 
 export interface AbilityConfig {
