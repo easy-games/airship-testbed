@@ -2,6 +2,8 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
+import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
+import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
 import { Keyboard } from "Shared/UserInput";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
@@ -25,6 +27,8 @@ export class TabListController implements OnStart {
 
 	private dirty = false;
 
+	private profilePicSprite: Sprite;
+
 	constructor(
 		private readonly playerController: PlayerController,
 		private readonly coreUIController: CoreUIController,
@@ -37,6 +41,10 @@ export class TabListController implements OnStart {
 		this.tablistEntryPrefab = this.tablistRefs.GetValue<Object>("UI", "TabListEntry");
 
 		this.Hide(true);
+
+		this.profilePicSprite = Bridge.MakeSprite(
+			AssetBridge.Instance.LoadAsset(ProfilePictureDefinitions[ProfilePictureId.BEAR].path),
+		);
 	}
 
 	OnStart(): void {
@@ -122,7 +130,6 @@ export class TabListController implements OnStart {
 
 			return aTeamIndex < bTeamIndex;
 		});
-		print("full update: " + players.size());
 
 		for (let i = 0; i < this.maxSlots; i++) {
 			let player: Player | undefined;
@@ -159,6 +166,10 @@ export class TabListController implements OnStart {
 			const hex = ColorUtil.ColorToHex(team.color);
 			username = `<color=${hex}>${username}</color>`;
 		}
+
+		const image = refs.GetValue<Image>("UI", "ProfilePicture");
+		const profilePicture = player.GetProfilePicture();
+		image.sprite = this.profilePicSprite;
 
 		usernameText.text = username;
 	}

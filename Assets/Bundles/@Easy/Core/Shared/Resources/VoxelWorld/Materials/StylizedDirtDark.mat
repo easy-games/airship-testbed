@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c2e975e8a074dff45aee75e580a54344, type: 3}
+        m_Texture: {fileID: 2800000, guid: be80ee7d90ab344e181c74b73b92a00e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -75,7 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 48c3f9bf0c6c95b4e8a00c6b9a8162be, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -95,6 +95,7 @@ Material:
     - AO_ON: 0
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
+    - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 1
@@ -129,11 +130,11 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 0
-    - _TriplanarScale: 0.4
+    - _TriplanarScale: 0.6
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.90588236, g: 0.90588236, b: 0.93333334, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}

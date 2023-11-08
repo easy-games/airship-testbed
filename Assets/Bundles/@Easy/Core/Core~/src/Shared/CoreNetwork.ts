@@ -13,7 +13,6 @@ import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { ProjectileDto } from "./Projectile/Projectile";
 import { TeamDto } from "./Team/Team";
-import { BlockData } from "./VoxelWorld/World";
 
 export const CoreNetwork = {
 	ClientToServer: {
@@ -97,7 +96,7 @@ export const CoreNetwork = {
 			>(),
 		},
 		CharacterModelChanged: new RemoteEvent<[characterModelId: number]>(),
-		ChatMessage: new RemoteEvent<[text: string]>(),
+		ChatMessage: new RemoteEvent<[text: string, senderClientId?: number]>(),
 		SetAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot, accessoryPath: string]>(),
 		RemoveAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot]>(),
 		AddPlayer: new RemoteEvent<[player: PlayerDto]>(),
