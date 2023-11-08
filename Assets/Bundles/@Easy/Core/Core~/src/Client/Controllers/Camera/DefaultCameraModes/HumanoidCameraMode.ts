@@ -217,7 +217,7 @@ export class HumanoidCameraMode implements CameraMode {
 		}
 		this.camRight = transform.right;
 
-		const newLookVector = this.lookBackwards ? transform.forward.mul(-1) : transform.forward;
+		const newLookVector = this.lookBackwards && !this.firstPerson ? transform.forward.mul(-1) : transform.forward;
 		const diff = this.lookVector.sub(newLookVector).magnitude;
 		if (diff > 0.01) {
 			this.entityDriver.SetLookVector(newLookVector);
