@@ -52,6 +52,7 @@ export class EntityReferences {
 	spineBoneMiddle: Transform;
 	spineBoneTop: Transform;
 	root: Transform;
+	rig: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
 	humanEntityAnimator: CoreEntityAnimator;
@@ -81,6 +82,7 @@ export class EntityReferences {
 		this.spineBoneRoot = ref.GetValue<Transform>(boneKey, "SpineRoot");
 		this.headBone = ref.GetValue<Transform>(boneKey, "Head");
 		this.root = ref.GetValue<Transform>(boneKey, "Root");
+		this.rig = ref.GetValue<Transform>(boneKey, "Rig");
 
 		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
 		this.characterCollider.enabled = true;

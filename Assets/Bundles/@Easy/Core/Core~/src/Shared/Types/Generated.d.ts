@@ -13616,6 +13616,9 @@ interface EasyShake extends MonoBehaviour {
     duration: number;
     movementsPerSecond: number;
     maxRadius: Vector3;
+    minRadius: Vector3;
+    resolveShakeOverTime: boolean;
+    destroyOnEnd: boolean;
 
     constructor(): EasyShake;
 

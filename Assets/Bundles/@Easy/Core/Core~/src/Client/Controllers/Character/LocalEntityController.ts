@@ -146,19 +146,14 @@ export class LocalEntityController implements OnStart {
 	private CreateHumanoidCameraMode(entity: Entity): HumanoidCameraMode {
 		const state = this.entityDriver?.GetState() ?? EntityState.Idle;
 		const yOffset = this.GetCamYOffset(state, this.firstPerson);
-		this.humanoidCameraMode = new HumanoidCameraMode(
-			entity.gameObject,
-			entity.gameObject,
-			this.firstPerson,
-			yOffset,
-		);
+		this.humanoidCameraMode = new HumanoidCameraMode(entity.gameObject, entity.model, this.firstPerson, yOffset);
 		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
 		this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
 		return this.humanoidCameraMode;
 	}
 
 	private CreateOrbitCameraMode(entity: Entity): OrbitCameraMode {
-		return new OrbitCameraMode(6, entity.gameObject.transform, entity.gameObject.transform);
+		return new OrbitCameraMode(6, entity.gameObject.transform, entity.model.transform);
 	}
 
 	OnStart() {

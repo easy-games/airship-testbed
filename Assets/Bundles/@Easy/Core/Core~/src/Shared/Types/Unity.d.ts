@@ -1677,6 +1677,7 @@ interface AnimancerBridgeConstructor {
         wrapMode: WrapMode,
 	): AnimancerState;
 	GetLayer(component: AnimancerComponent, layer: number): AnimancerLayer;
+	SetGlobalSpeed(animancerComponent: AnimancerComponent, speed: number);
 }
 declare const AnimancerBridge: AnimancerBridgeConstructor;
 

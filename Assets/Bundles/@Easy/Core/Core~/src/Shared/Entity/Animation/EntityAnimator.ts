@@ -180,7 +180,10 @@ export abstract class EntityAnimator {
 		//Animate flinch
 		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
 		if (flinchClip) {
-			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE, undefined, { transitionTime: 0.01 });
+			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE, undefined, {
+				autoFadeOut: false,
+				transitionTime: 0.01,
+			});
 			Task.Delay(flinchDuration, () => {
 				AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ROOT_OVERRIDE).StartFade(0, 0.05);
 			});
@@ -382,5 +385,9 @@ export abstract class EntityAnimator {
 
 	public IsFirstPerson(): boolean {
 		return this.isFirstPerson;
+	}
+
+	public SetPlaybackSpeed(newSpeed: number) {
+		AnimancerBridge.SetGlobalSpeed(this.anim, newSpeed);
 	}
 }

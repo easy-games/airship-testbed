@@ -132,7 +132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8339229144559236136, guid: 5d33622322943c64e8fe96ddd1ddb115, type: 3}
       propertyPath: startDelay.scalar
-      value: 0.15
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8339229144559236136, guid: 5d33622322943c64e8fe96ddd1ddb115, type: 3}
       propertyPath: InitialModule.startRotation.scalar
