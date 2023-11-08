@@ -167,7 +167,7 @@ export abstract class EntityAnimator {
 	}
 
 	public PlayTakeDamage(
-		damageAmount: number,
+		flinchDuration: number,
 		damageType: DamageType,
 		position: Vector3,
 		entityModel: GameObject | undefined,
@@ -180,8 +180,8 @@ export abstract class EntityAnimator {
 		//Animate flinch
 		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
 		if (flinchClip) {
-			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE);
-			Task.Delay(0.1, () => {
+			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE, undefined, { transitionTime: 0.01 });
+			Task.Delay(flinchDuration, () => {
 				AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ROOT_OVERRIDE).StartFade(0, 0.05);
 			});
 		}

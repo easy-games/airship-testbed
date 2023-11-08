@@ -1,6 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
 
@@ -26,9 +27,12 @@ export class DamageIndicatorController implements OnStart {
 		CoreClientSignals.EntityDamage.Connect((event) => {
 			const entityGO = event.entity.networkObject.gameObject;
 
+			//Hitstun
+			const hitstunDuration = DamageUtils.AddHitstun(event.entity, event.amount, () => {});
+
 			//Entity Damage Animation
 			event.entity.animator?.PlayTakeDamage(
-				event.amount,
+				hitstunDuration,
 				event.damageType,
 				entityGO.transform.position,
 				entityGO,
