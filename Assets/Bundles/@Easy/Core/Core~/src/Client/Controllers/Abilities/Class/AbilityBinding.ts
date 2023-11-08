@@ -41,7 +41,7 @@ export class AbilityBinding {
 		return this.enabled;
 	}
 
-	public BindToKey(keyboard: Keyboard, action: BindingAction) {
+	public BindToAction(keyboard: Keyboard, action: BindingAction) {
 		this.bin.Add(
 			keyboard.OnKeyUp(this.keyCode, (event) => {
 				action(BindingInputState.InputEnded, this);

@@ -66,7 +66,7 @@ export class AbilitiesController implements OnStart {
 		if (!nextSlot) return false;
 
 		nextSlot.BindToId(abilityDto.id);
-		nextSlot.BindToKey(this.keyboard, this.OnKeyboardInputEnded);
+		nextSlot.BindToAction(this.keyboard, this.OnKeyboardInputEnded);
 		nextSlot.SetEnabled(abilityDto.enabled);
 
 		print("registered ability at keycode ", abilityDto.id, nextSlot.GetKey());
