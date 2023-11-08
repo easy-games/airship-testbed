@@ -19,6 +19,7 @@ import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
+import { LocalEntityController } from "../Character/LocalEntityController";
 
 @Controller({})
 export class EntityController implements OnStart {
@@ -28,6 +29,7 @@ export class EntityController implements OnStart {
 	constructor(
 		private readonly invController: InventoryController,
 		private readonly playerController: PlayerController,
+		private readonly localEntityController: LocalEntityController,
 	) {
 		const humanEntityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 			EntityPrefabType.HUMAN,
@@ -83,8 +85,7 @@ export class EntityController implements OnStart {
 		CoreNetwork.ServerToClient.Entity.SetLookVector.Client.OnServerEvent((entityId, lookVector) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity?.IsLocalCharacter()) {
-				// todo: change the way the entity is looking.
-				// calling SetLookVector on EntityDriver is wrong. We need to do something with the HumanoidCameraMode.
+				this.localEntityController.humanoidCameraMode?.SetDirection(lookVector);
 			}
 		});
 		CoreNetwork.ServerToClient.Entity.FallDamageTaken.Client.OnServerEvent((entityId, velocity) => {

@@ -24,6 +24,7 @@ const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
 const Y_LOCKED_ROTATION = math.rad(15);
 
 const ANGLE_EPSILON = 0.0001;
+const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 0.1;
 if (RunUtil.IsMac()) {
@@ -101,7 +102,7 @@ export class HumanoidCameraMode implements CameraMode {
 					const deltaPosSinceStart = position.sub(touchStartPos);
 					this.rotationY =
 						(touchStartRotY - deltaPosSinceStart.x * this.clientSettingsController.GetTouchSensitivity()) %
-						(math.pi * 2);
+						TAU;
 					this.rotationX = math.clamp(
 						touchStartRotX + deltaPosSinceStart.y * this.clientSettingsController.GetTouchSensitivity(),
 						MIN_ROT_X,
@@ -159,7 +160,7 @@ export class HumanoidCameraMode implements CameraMode {
 			if (!this.firstPerson && !this.lockView) {
 				this.mouse.SetLocation(this.rightClickPos);
 			}
-			this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % (math.pi * 2);
+			this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 			this.rotationX = math.clamp(
 				this.rotationX + mouseDelta.y * mouseSensitivity * MOUSE_SENS_SCALAR,
 				MIN_ROT_X,
@@ -200,11 +201,9 @@ export class HumanoidCameraMode implements CameraMode {
 		const attachToPos = this.attachTo.position.add(new Vector3(0, this.yOffset, 0)).add(this.camRight.mul(xOffset));
 		this.lastAttachToPos = attachToPos;
 
-		let newPosition = this.firstPerson ? attachToPos : attachToPos.add(posOffset);
-		let rotation: Quaternion;
-
+		const newPosition = this.firstPerson ? attachToPos : attachToPos.add(posOffset);
 		const lv = posOffset.mul(-1).normalized;
-		rotation = Quaternion.LookRotation(lv, Vector3.up);
+		const rotation = Quaternion.LookRotation(lv, Vector3.up);
 
 		return new CameraTransform(newPosition, rotation);
 	}
@@ -245,5 +244,15 @@ export class HumanoidCameraMode implements CameraMode {
 
 	public SetLookBackwards(lookBackwards: boolean) {
 		this.lookBackwards = lookBackwards;
+	}
+
+	/**
+	 * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
+	 */
+	public SetDirection(direction: Vector3) {
+		// Determine Y-axis rotation based on direction:
+		direction = direction.normalized;
+		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
+		this.entityDriver.SetLookVector(direction);
 	}
 }
