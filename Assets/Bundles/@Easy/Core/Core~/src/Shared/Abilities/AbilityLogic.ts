@@ -73,7 +73,7 @@ export abstract class AbilityLogic {
 			id: this.GetId(),
 			enabled: this.GetEnabled(),
 			slot: this.GetConfiguration().slot,
-			charge: this.GetConfiguration().charge,
+			charging: this.GetConfiguration().charge,
 		};
 	}
 }

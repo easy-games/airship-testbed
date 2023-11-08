@@ -1,10 +1,25 @@
 import { Duration } from "../Util/Duration";
 import { AbilitySlot } from "./AbilitySlot";
 import { AbilityLogic } from "./AbilityLogic";
+export declare enum AbilityCancellationTrigger {
+    /**
+     * Damage is taken by the casting entity
+     */
+    EntityDamageTaken = 0,
+    /**
+     * The casting entity moves
+     */
+    EntityMovement = 1
+}
 export interface AbilityChargeConfig {
-    readonly chargeDurationSeconds: Duration.Seconds;
-    readonly cancelOnMovement?: boolean;
-    readonly cancelOnDamage?: boolean;
+    /**
+     * The length of time it will take to charge up this ability
+     */
+    readonly chargeTimeSeconds: Duration.Seconds;
+    /**
+     * A list of triggers that will result in cancelling this ability's charging
+     */
+    readonly cancelTriggers: readonly AbilityCancellationTrigger[];
 }
 export interface AbilityConfig {
     /**
@@ -32,7 +47,14 @@ export interface AbilityConfig {
      * The name of this ability
      */
     readonly name: string;
+    /**
+     * Charging configuration for this ability - if not set it will be instantaneous
+     */
     readonly charge?: AbilityChargeConfig;
+    /**
+     * The cooldown of this ability
+     */
+    readonly cooldownTimeSeconds?: Duration.Seconds;
 }
 type AbstractConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => infer _ ? P : never;
 /**
@@ -55,7 +77,7 @@ export interface AbilityDto {
     /**
      * Charging
      */
-    readonly charge?: AbilityChargeConfig;
+    readonly charging?: AbilityChargeConfig;
 }
 export interface UseAbilityRequest {
     readonly abilityId: string;

@@ -1,20 +1,28 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { Ability } from "../Strollers/Abilities/AbilityRegistry";
 import { AbilityLogic } from "./AbilityLogic";
 import { AbilitySlot } from "./AbilitySlot";
 import { CharacterEntity } from "../Entity/Character/CharacterEntity";
-import { AbilityConfig, AbilityDto } from "./Ability";
+import { AbilityCancellationTrigger, AbilityConfig, AbilityDto } from "./Ability";
 import { Duration } from "../Util/Duration";
 export interface AbilityCooldown {
-    readonly Length: Duration;
-    readonly StartedTimestamp: number;
+    readonly length: Duration;
+    readonly startedTimestamp: number;
+}
+export interface AbiltityChargingState {
+    readonly timeStarted: number;
+    readonly timeLength: Duration;
+    readonly cancellationTriggers: Set<AbilityCancellationTrigger>;
+    readonly abilityLogic: AbilityLogic;
+    readonly cancel: () => void;
 }
 export declare class CharacterAbilities {
     private entity;
     private cooldowns;
     private boundAbilities;
-    private currentlyCasting;
+    private currentChargingAbilityState;
     constructor(entity: CharacterEntity);
     private GetAbilities;
     /**
@@ -24,6 +32,7 @@ export declare class CharacterAbilities {
      * @param logic The logic of the ability
      */
     AddAbilityWithId(abilityId: string, slot: AbilitySlot, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic;
+    GetChargingAbility(): AbiltityChargingState | undefined;
     /**
      * Gets the ability by the given id
      * @param id The id of the ability

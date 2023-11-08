@@ -2,10 +2,26 @@ import { Duration } from "Shared/Util/Duration";
 import { AbilitySlot } from "./AbilitySlot";
 import { AbilityLogic } from "./AbilityLogic";
 
+export enum AbilityCancellationTrigger {
+	/**
+	 * Damage is taken by the casting entity
+	 */
+	EntityDamageTaken,
+	/**
+	 * The casting entity moves
+	 */
+	EntityMovement,
+}
+
 export interface AbilityChargeConfig {
-	readonly chargeDurationSeconds: Duration.Seconds;
-	readonly cancelOnMovement?: boolean;
-	readonly cancelOnDamage?: boolean;
+	/**
+	 * The length of time it will take to charge up this ability
+	 */
+	readonly chargeTimeSeconds: Duration.Seconds;
+	/**
+	 * A list of triggers that will result in cancelling this ability's charging
+	 */
+	readonly cancelTriggers: readonly AbilityCancellationTrigger[];
 }
 
 export interface AbilityConfig {
@@ -35,7 +51,15 @@ export interface AbilityConfig {
 	 */
 	readonly name: string;
 
+	/**
+	 * Charging configuration for this ability - if not set it will be instantaneous
+	 */
 	readonly charge?: AbilityChargeConfig;
+
+	/**
+	 * The cooldown of this ability
+	 */
+	readonly cooldownTimeSeconds?: Duration.Seconds;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,7 +92,7 @@ export interface AbilityDto {
 	/**
 	 * Charging
 	 */
-	readonly charge?: AbilityChargeConfig;
+	readonly charging?: AbilityChargeConfig;
 }
 
 export interface UseAbilityRequest {

@@ -4,21 +4,30 @@ import { AbilitySlot } from "./AbilitySlot";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { AbilityConfig, AbilityDto } from "./Ability";
+import { AbilityCancellationTrigger, AbilityConfig, AbilityDto } from "./Ability";
 import { Duration } from "Shared/Util/Duration";
 import { Task } from "Shared/Util/Task";
 import { SetTimeout } from "Shared/Util/Timer";
+import { TimeUtil } from "Shared/Util/TimeUtil";
 
 export interface AbilityCooldown {
-	readonly Length: Duration;
-	readonly StartedTimestamp: number;
+	readonly length: Duration;
+	readonly startedTimestamp: number;
+}
+
+export interface AbiltityChargingState {
+	readonly timeStarted: number;
+	readonly timeLength: Duration;
+	readonly cancellationTriggers: Set<AbilityCancellationTrigger>;
+	readonly abilityLogic: AbilityLogic;
+	readonly cancel: () => void;
 }
 
 export class CharacterAbilities {
 	private cooldowns = new Map<Ability, AbilityCooldown>();
 	private boundAbilities = new Map<AbilitySlot, Map<string, AbilityLogic>>();
 
-	private currentlyCasting: (() => void) | undefined; // using promise rn because need cancellation
+	private currentChargingAbilityState: AbiltityChargingState | undefined; // using promise rn because need cancellation
 
 	public constructor(private entity: CharacterEntity) {}
 
@@ -58,6 +67,10 @@ export class CharacterAbilities {
 		return logic;
 	}
 
+	public GetChargingAbility() {
+		return this.currentChargingAbilityState;
+	}
+
 	/**
 	 * Gets the ability by the given id
 	 * @param id The id of the ability
@@ -73,10 +86,20 @@ export class CharacterAbilities {
 			if (ability) {
 				const config = ability.GetConfiguration();
 				if (config.charge) {
+					const chargeTime = config.charge.chargeTimeSeconds;
+
 					ability.OnChargeBegan();
-					this.currentlyCasting = SetTimeout(config.charge.chargeDurationSeconds, () => {
-						ability.OnTriggered();
-					});
+
+					this.currentChargingAbilityState = {
+						timeStarted: TimeUtil.GetServerTime(),
+						timeLength: Duration.fromSeconds(chargeTime),
+						abilityLogic: ability,
+						cancellationTriggers: new Set(config.charge.cancelTriggers),
+						cancel: SetTimeout(chargeTime, () => {
+							ability.OnTriggered();
+							this.currentChargingAbilityState = undefined;
+						}),
+					};
 				} else {
 					ability.OnTriggered();
 					return Promise.resolve();
