@@ -47,6 +47,10 @@ export interface AbilityDto {
      */
     readonly enabled: boolean;
     /**
+     * The slot the ability is in
+     */
+    readonly slot: AbilitySlot;
+    /**
      * Charging
      */
     readonly charge?: AbilityChargeConfig;

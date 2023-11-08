@@ -1,5 +1,5 @@
 import { CharacterEntity } from "../Entity/Character/CharacterEntity";
-import { AbilityConfig } from "./Ability";
+import { AbilityConfig, AbilityDto } from "./Ability";
 /**
  * A logic class surrounding an ability
  */
@@ -37,4 +37,9 @@ export declare abstract class AbilityLogic {
     abstract OnTriggered(): void;
     OnChargeBegan(): void;
     OnChargeCancelled(): void;
+    /**
+     * Cast this ability logic to a data transfer object representation
+     * @returns The data transfer object representation of this ability logic
+     */
+    ToDto(): AbilityDto;
 }

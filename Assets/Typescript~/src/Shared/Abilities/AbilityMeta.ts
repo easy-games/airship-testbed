@@ -6,7 +6,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 	[AbilityId.RECALL]: {
 		logic: RecallAbility,
 		config: {
-			slot: AbilitySlot.Utility1,
+			slot: AbilitySlot.Utility,
 			name: "Recall",
 			charge: {
 				chargeDurationSeconds: 10,

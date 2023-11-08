@@ -1,12 +1,20 @@
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { Ability } from "../Strollers/Abilities/AbilityRegistry";
 import { AbilityLogic } from "./AbilityLogic";
 import { AbilitySlot } from "./AbilitySlot";
 import { CharacterEntity } from "../Entity/Character/CharacterEntity";
-import { AbilityConfig } from "./Ability";
+import { AbilityConfig, AbilityDto } from "./Ability";
+import { Duration } from "../Util/Duration";
+export interface AbilityCooldown {
+    readonly Length: Duration;
+    readonly StartedTimestamp: number;
+}
 export declare class CharacterAbilities {
     private entity;
+    private cooldowns;
     private boundAbilities;
+    private currentlyCasting;
     constructor(entity: CharacterEntity);
     private GetAbilities;
     /**
@@ -22,6 +30,12 @@ export declare class CharacterAbilities {
      * @returns The ability logic
      */
     GetAbilityById(id: string): AbilityLogic | undefined;
+    UseAbilityById(id: string): Promise<void>;
+    /**
+     * Gets all abilities as an array of data transfer objects
+     * @returns The array of data transfer objects
+     */
+    ToArrayDto(): AbilityDto[];
     /**
      * Gets all abilities bound to the given slot
      * @param slot The slot

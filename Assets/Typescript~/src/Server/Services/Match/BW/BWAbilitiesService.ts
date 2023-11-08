@@ -6,6 +6,8 @@ import { BedService } from "../BedService";
 import { MapService } from "../Map/MapService";
 import { MatchService } from "../MatchService";
 import { BWService } from "./BWService";
+import { AbilitySlot } from "@Easy/Core/Shared/Abilities/AbilitySlot";
+import { AbilityRegistry } from "@Easy/Core/Shared/Strollers/Abilities/AbilityRegistry";
 
 @Service()
 export class BWAbilitiesService implements OnStart {
@@ -16,17 +18,19 @@ export class BWAbilitiesService implements OnStart {
 		private readonly matchService: MatchService,
 		private readonly entityService: EntityService,
 		private readonly bedService: BedService,
+		private readonly abilityRegistry: AbilityRegistry,
 	) {}
 
 	OnStart(): void {
 		CoreServerSignals.BeforeEntitySpawn.Connect((event) => {
 			if (this.matchService.IsRunning() && event.player) {
-				const team = event.player.GetTeam();
-				if (!team) return;
-				const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
-				if (teamSpawnPosition) {
-					const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
-					event.spawnPosition = pos;
+				const ability = this.abilityRegistry.GetAbilityById(AbilityId.RECALL);
+				if (ability) {
+					event.player.Character?.GetAbilities().AddAbilityWithId(
+						AbilityId.RECALL,
+						AbilitySlot.Utility,
+						ability,
+					);
 				}
 			}
 		});

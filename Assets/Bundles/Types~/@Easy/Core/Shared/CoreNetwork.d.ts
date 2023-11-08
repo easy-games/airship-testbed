@@ -40,6 +40,7 @@ export declare const CoreNetwork: {
         TEST_LATENCY: RemoteFunction<void, number>;
         TestKnockback2: RemoteEvent<[]>;
         LibonatiTest: RemoteEvent<[]>;
+        GetAbilities: RemoteFunction<[], readonly AbilityDto[]>;
         UseAbility: RemoteEvent<[req: UseAbilityRequest]>;
     };
     ServerToClient: {
@@ -133,6 +134,5 @@ export declare const CoreNetwork: {
         AbilityAdded: RemoteEvent<[dto: AbilityDto]>;
         AbilityStateChanged: RemoteEvent<[dto: AbilityDto]>;
         AbilityRemoved: RemoteEvent<[id: string]>;
-        GetAbilities: RemoteFunction<[], readonly AbilityDto[]>;
     };
 };
