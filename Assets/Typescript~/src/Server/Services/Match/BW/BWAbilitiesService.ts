@@ -8,6 +8,7 @@ import { MatchService } from "../MatchService";
 import { BWService } from "./BWService";
 import { AbilitySlot } from "@Easy/Core/Shared/Abilities/AbilitySlot";
 import { AbilityRegistry } from "@Easy/Core/Shared/Strollers/Abilities/AbilityRegistry";
+import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 
 @Service()
 export class BWAbilitiesService implements OnStart {
@@ -19,20 +20,21 @@ export class BWAbilitiesService implements OnStart {
 		private readonly entityService: EntityService,
 		private readonly bedService: BedService,
 		private readonly abilityRegistry: AbilityRegistry,
-	) {}
-
-	OnStart(): void {
-		CoreServerSignals.BeforeEntitySpawn.Connect((event) => {
-			if (this.matchService.IsRunning() && event.player) {
+	) {
+		CoreServerSignals.EntitySpawn.Connect((event) => {
+			if (event.entity instanceof CharacterEntity && event.entity.player) {
+				print(
+					"add ability to character",
+					event.entity.player.username,
+					event.entity.player.Character !== undefined,
+				);
 				const ability = this.abilityRegistry.GetAbilityById(AbilityId.RECALL);
 				if (ability) {
-					event.player.Character?.GetAbilities().AddAbilityWithId(
-						AbilityId.RECALL,
-						AbilitySlot.Utility,
-						ability,
-					);
+					event.entity?.GetAbilities().AddAbilityWithId(AbilityId.RECALL, AbilitySlot.Utility, ability);
 				}
 			}
 		});
 	}
+
+	OnStart(): void {}
 }

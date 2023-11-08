@@ -7,6 +7,7 @@ import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Bin } from "Shared/Util/Bin";
 import { AbilityBinding, BindingAction, BindingInputState } from "./Class/AbilityBinding";
+import inspect from "@easy-games/unity-inspect";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J];
@@ -84,11 +85,13 @@ export class AbilitiesController implements OnStart {
 
 	public OnStart(): void {
 		const abilities = CoreNetwork.ClientToServer.GetAbilities.Client.FireServer();
+		print("Fetched abilities", inspect(abilities));
 		for (const ability of abilities) {
 			this.RegisterAbility(ability);
 		}
 
 		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((dto) => {
+			print("Add ability", inspect(dto));
 			this.RegisterAbility(dto);
 		});
 	}

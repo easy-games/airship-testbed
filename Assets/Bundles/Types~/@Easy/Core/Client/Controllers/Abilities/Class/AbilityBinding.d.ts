@@ -22,7 +22,7 @@ export declare class AbilityBinding {
     GetKey(): KeyCode;
     GetSlot(): AbilitySlot;
     GetEnabled(): boolean;
-    BindToKey(keyboard: Keyboard, action: BindingAction): void;
+    BindToAction(keyboard: Keyboard, action: BindingAction): void;
     Unbind(): void;
     GetBoundId(): string | undefined;
 }

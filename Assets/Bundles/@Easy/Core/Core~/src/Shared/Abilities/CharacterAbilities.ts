@@ -50,8 +50,8 @@ export class CharacterAbilities {
 		const logic = new ability.logic(this.entity, abilityId, overrideConfig ?? ability.config);
 		abilityMap.set(abilityId, logic);
 
-		if (this.entity.ClientId) {
-			CoreNetwork.ServerToClient.AbilityAdded.Server.FireClient(this.entity.ClientId, logic.ToDto());
+		if (this.entity.player) {
+			CoreNetwork.ServerToClient.AbilityAdded.Server.FireClient(this.entity.player.clientId, logic.ToDto());
 		}
 		return logic;
 	}
