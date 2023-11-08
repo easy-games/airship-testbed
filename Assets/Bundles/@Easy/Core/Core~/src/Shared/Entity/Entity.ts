@@ -284,6 +284,14 @@ export class Entity {
 		this.healthbarEnabled = true;
 	}
 
+	/**
+	 * Gets the current position of this entity
+	 * @returns
+	 */
+	public GetPosition() {
+		return this.gameObject.transform.position;
+	}
+
 	public GetHealthbar(): Healthbar | undefined {
 		return this.healthbar;
 	}

@@ -19,15 +19,18 @@ export interface AbiltityChargingState {
 	readonly timeStarted: number;
 	readonly timeLength: Duration;
 	readonly cancellationTriggers: Set<AbilityCancellationTrigger>;
+}
+
+interface CancellableAbiltityChargingState extends AbiltityChargingState {
 	readonly abilityLogic: AbilityLogic;
-	readonly cancel: () => void;
+	readonly onCancelled: () => void;
 }
 
 export class CharacterAbilities {
 	private cooldowns = new Map<Ability, AbilityCooldown>();
 	private boundAbilities = new Map<AbilitySlot, Map<string, AbilityLogic>>();
 
-	private currentChargingAbilityState: AbiltityChargingState | undefined; // using promise rn because need cancellation
+	private currentChargingAbilityState: CancellableAbiltityChargingState | undefined; // using promise rn because need cancellation
 
 	public constructor(private entity: CharacterEntity) {}
 
@@ -47,6 +50,8 @@ export class CharacterAbilities {
 	 * @param abilityId The ability's unique id
 	 * @param slot The slot the ability is bound to
 	 * @param logic The logic of the ability
+	 *
+	 * @server Server-only API
 	 */
 	public AddAbilityWithId(
 		abilityId: string,
@@ -62,12 +67,15 @@ export class CharacterAbilities {
 		abilityMap.set(abilityId, logic);
 
 		if (this.entity.player) {
-			CoreNetwork.ServerToClient.AbilityAdded.Server.FireClient(this.entity.player.clientId, logic.ToDto());
+			CoreNetwork.ServerToClient.AbilityAdded.Server.FireClient(this.entity.player.clientId, logic.Encode());
 		}
 		return logic;
 	}
 
-	public GetChargingAbility() {
+	/**
+	 * Gets the currently charging abiltiy
+	 */
+	public GetChargingAbility(): AbiltityChargingState | undefined {
 		return this.currentChargingAbilityState;
 	}
 
@@ -80,7 +88,22 @@ export class CharacterAbilities {
 		return this.GetAbilities().find((f) => f[0] === id)?.[1];
 	}
 
-	public async UseAbilityById(id: string) {
+	/**
+	 * Gets all abilities bound to the given slot
+	 * @param slot The slot
+	 * @returns All the abilities bound to this slot
+	 */
+	public GetAbilitiesBoundToSlot(slot: AbilitySlot): Map<string, AbilityLogic> {
+		return this.boundAbilities.get(slot) ?? new Map();
+	}
+
+	/**
+	 * Use the ability with the given `id`
+	 *
+	 * @param id The id of the ability to use
+	 * @server Server-only API
+	 */
+	public UseAbilityById(id: string) {
 		if (RunCore.IsServer()) {
 			const ability = this.GetAbilityById(id);
 			if (ability) {
@@ -90,27 +113,40 @@ export class CharacterAbilities {
 
 					ability.OnChargeBegan();
 
+					// The current state of what's being 'charged' ability-wise
 					this.currentChargingAbilityState = {
 						timeStarted: TimeUtil.GetServerTime(),
 						timeLength: Duration.fromSeconds(chargeTime),
 						abilityLogic: ability,
 						cancellationTriggers: new Set(config.charge.cancelTriggers),
-						cancel: SetTimeout(chargeTime, () => {
+						onCancelled: SetTimeout(chargeTime, () => {
 							ability.OnTriggered();
 							this.currentChargingAbilityState = undefined;
 						}),
 					};
 				} else {
 					ability.OnTriggered();
-					return Promise.resolve();
 				}
 			}
 		} else {
-			// CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
-			// 	abilityId: id,
-			// });
-			// return
 			throw `UseAbilityById can only be used by the server!`;
+		}
+	}
+
+	/**
+	 * Cancel any charging abilities
+	 * @returns True if a charging ability was cancelled
+	 */
+	public CancelChargingAbility(): boolean {
+		if (this.currentChargingAbilityState) {
+			// Handle the cancellation behaviour
+			this.currentChargingAbilityState.onCancelled();
+			this.currentChargingAbilityState.abilityLogic.OnChargeCancelled();
+
+			this.currentChargingAbilityState = undefined;
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -118,22 +154,13 @@ export class CharacterAbilities {
 	 * Gets all abilities as an array of data transfer objects
 	 * @returns The array of data transfer objects
 	 */
-	public ToArrayDto() {
+	public Encode() {
 		const items = new Array<AbilityDto>();
 		for (const [slot, abilityMap] of this.boundAbilities) {
 			for (const [abilityId, abilityLogic] of abilityMap) {
-				items.push(abilityLogic.ToDto());
+				items.push(abilityLogic.Encode());
 			}
 		}
 		return items;
-	}
-
-	/**
-	 * Gets all abilities bound to the given slot
-	 * @param slot The slot
-	 * @returns All the abilities bound to this slot
-	 */
-	public GetAbilitiesBoundToSlot(slot: AbilitySlot): Map<string, AbilityLogic> {
-		return this.boundAbilities.get(slot) ?? new Map();
 	}
 }

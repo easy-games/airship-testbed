@@ -68,7 +68,7 @@ export abstract class AbilityLogic {
 	 * Cast this ability logic to a data transfer object representation
 	 * @returns The data transfer object representation of this ability logic
 	 */
-	public ToDto(): AbilityDto {
+	public Encode(): AbilityDto {
 		return {
 			id: this.GetId(),
 			enabled: this.GetEnabled(),
