@@ -81,7 +81,7 @@ export declare const CoreNetwork: {
             }[]]>;
         };
         CharacterModelChanged: RemoteEvent<[characterModelId: number]>;
-        ChatMessage: RemoteEvent<[text: string]>;
+        ChatMessage: RemoteEvent<[text: string, senderClientId?: number | undefined]>;
         SetAccessory: RemoteEvent<[entityId: number, slot: AccessorySlot, accessoryPath: string]>;
         RemoveAccessory: RemoteEvent<[entityId: number, slot: AccessorySlot]>;
         AddPlayer: RemoteEvent<[player: PlayerDto]>;

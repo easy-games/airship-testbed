@@ -28,10 +28,9 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 				if (blockGO) {
 					let heldItemRen = rightHandRens.GetValue(0);
 					const meshRen = blockGO.GetComponent<MeshRenderer>();
-					const MeshRenderer = blockGO.GetComponent<MeshRenderer>();
-					const MeshFilter = blockGO.GetComponent<MeshFilter>();
+					const meshFilter = blockGO.GetComponent<MeshFilter>();
 					heldItemRen.material = meshRen.material;
-					heldItemRen.GetComponent<MeshFilter>().mesh = MeshFilter.mesh;
+					heldItemRen.GetComponent<MeshFilter>().mesh = meshFilter.mesh;
 					GameObjectUtil.Destroy(blockGO);
 				}
 			} else {
