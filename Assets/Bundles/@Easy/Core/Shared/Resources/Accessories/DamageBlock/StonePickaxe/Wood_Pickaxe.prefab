@@ -86,11 +86,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+      objectReference: {fileID: 2100000, guid: 13583fd8fc0300d4c8acb0283f68cb28, type: 2}
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+      objectReference: {fileID: 2100000, guid: 13583fd8fc0300d4c8acb0283f68cb28, type: 2}
     - target: {fileID: 919132149155446097, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
       propertyPath: m_Name
       value: SM_Pickaxe
@@ -120,11 +120,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.5660378, g: 0.40458655, b: 0.248309, a: 1}
+  - materialColor: {r: 0.3207547, g: 0.23473783, b: 0.20425418, a: 1}
     emissiveColor: {r: 0.4481132, g: 0.9839541, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
-  - materialColor: {r: 0.4433962, g: 0.4153884, b: 0.37437698, a: 1}
+    reference: Wood_Cherry_Painted
+  - materialColor: {r: 0.3018868, g: 0.17013595, b: 0.10964756, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
+    reference: Wood_Cherry_Painted
+  addedByEditorScript: 0
