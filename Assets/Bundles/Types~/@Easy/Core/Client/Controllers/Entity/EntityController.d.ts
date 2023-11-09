@@ -4,12 +4,14 @@ import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { Entity } from "../../../Shared/Entity/Entity";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
+import { LocalEntityController } from "../Character/LocalEntityController";
 export declare class EntityController implements OnStart {
     private readonly invController;
     private readonly playerController;
+    private readonly localEntityController;
     private entities;
     entityHealthbarPrefab: Object;
-    constructor(invController: InventoryController, playerController: PlayerController);
+    constructor(invController: InventoryController, playerController: PlayerController, localEntityController: LocalEntityController);
     OnStart(): void;
     private DespawnEntity;
     private AddEntity;

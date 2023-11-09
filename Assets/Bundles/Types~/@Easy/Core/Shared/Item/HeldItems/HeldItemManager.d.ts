@@ -15,12 +15,14 @@ export declare class HeldItemManager {
     private emptyHeldItem;
     private currentHeldItem;
     private currentItemState;
+    private bin;
     private static heldItemClasses;
     static RegisterHeldItem(condition: HeldItemCondition, factory: HeldItemFactory): void;
     GetLabel(): number;
     private Log;
     private GetOrCreateHeldItem;
     constructor(entity: CharacterEntity);
+    Destroy(): void;
     TriggerNewState(itemState: HeldItemState): void;
     OnNewState(itemState: HeldItemState): void;
 }

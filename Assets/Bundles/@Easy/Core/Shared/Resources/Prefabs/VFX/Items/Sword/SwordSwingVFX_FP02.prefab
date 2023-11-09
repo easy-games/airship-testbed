@@ -176,11 +176,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8833702918889075787, guid: bae19dd1bf98171408f764f545ec476e, type: 3}
       propertyPath: startDelay.scalar
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8833702918889075787, guid: bae19dd1bf98171408f764f545ec476e, type: 3}
       propertyPath: InitialModule.startRotation.scalar
-      value: 0.9599311
+      value: 0.62482786
       objectReference: {fileID: 0}
     - target: {fileID: 8833702918889075787, guid: bae19dd1bf98171408f764f545ec476e, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b

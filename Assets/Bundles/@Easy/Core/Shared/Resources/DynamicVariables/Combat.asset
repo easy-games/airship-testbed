@@ -16,11 +16,11 @@ MonoBehaviour:
   strings: []
   numbers:
   - key: kbX
-    value: 8
+    value: 12
   - key: kbY
-    value: 6
+    value: 8
   - key: kbDuration
-    value: 0.2
+    value: 0.1
   - key: kbSelfMultiplier
     value: 6.35
   vectors:

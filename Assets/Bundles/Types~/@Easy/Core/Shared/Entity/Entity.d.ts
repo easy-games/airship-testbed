@@ -32,6 +32,7 @@ export declare class EntityReferences {
     spineBoneMiddle: Transform;
     spineBoneTop: Transform;
     root: Transform;
+    rig: Transform;
     characterCollider: Collider;
     animationEvents: EntityAnimationEvents;
     humanEntityAnimator: CoreEntityAnimator;
