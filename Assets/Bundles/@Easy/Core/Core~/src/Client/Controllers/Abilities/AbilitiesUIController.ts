@@ -2,8 +2,10 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreUIController } from "../UI/CoreUIController";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { InputUtils } from "Shared/Util/InputUtils";
+import { AbilitiesController } from "./AbilitiesController";
+import { Bin } from "Shared/Util/Bin";
 
-interface ClientAbilityState {
+export interface ClientAbilityState {
 	name: string;
 	icon: string | undefined;
 	charges: number | undefined;
@@ -18,7 +20,10 @@ export class AbilitiesUIController implements OnStart {
 	private abilitiesRefs: GameObjectReferences;
 	private abilitybarContent: Transform;
 
-	public constructor(public readonly coreUIController: CoreUIController) {
+	public constructor(
+		public readonly coreUIController: CoreUIController,
+		public readonly abilitiesController: AbilitiesController,
+	) {
 		const go = this.coreUIController.refs.GetValue("Apps", "Abilities");
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = true; // Enable if using abilities
@@ -78,15 +83,19 @@ export class AbilitiesUIController implements OnStart {
 	public OnStart(): void {
 		this.SetupAbilityBar();
 
-		this.UpdateAbilityBarSlot(0, {
-			// configuration: {
-			// 	slot: AbilitySlot.Primary1,
-			// 	name: "Testing lol",
-			// },
-			keybinding: KeyCode.Z,
-			name: "Recall",
-			icon: undefined,
-			charges: 0,
+		// Update local abilities
+		this.abilitiesController.ObserveAbilityBindings((abilities) => {
+			const bin = new Bin();
+			let idx = 0;
+			for (const ability of abilities) {
+				bin.Add(
+					ability.BindingStateChanged.Connect((event) => {
+						this.UpdateAbilityBarSlot(idx, event.newState);
+					}),
+				);
+				idx++;
+			}
+			return bin;
 		});
 	}
 }

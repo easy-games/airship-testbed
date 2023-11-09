@@ -3,6 +3,10 @@ import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Keyboard } from "Shared/UserInput";
 import { KeySignal } from "Shared/UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "Shared/Util/Bin";
+import { Signal } from "Shared/Util/Signal";
+import { ClientAbilityState } from "../AbilitiesUIController";
+import { Dependency } from "@easy-games/flamework-core";
+import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 
 export enum BindingInputState {
 	InputBegan,
@@ -17,7 +21,12 @@ export type BindingAction = (inputState: BindingInputState, binding: AbilityBind
 
 export class AbilityBinding {
 	private bin = new Bin();
-	private primaryId: string | undefined;
+	private boundTo: AbilityDto | undefined;
+
+	public readonly BindingStateChanged = new Signal<{
+		oldState: ClientAbilityState | undefined;
+		newState: ClientAbilityState | undefined;
+	}>();
 
 	public constructor(private readonly slot: AbilitySlot, private enabled: boolean, private keyCode: KeyCode) {}
 
@@ -25,8 +34,34 @@ export class AbilityBinding {
 		this.enabled = enabled;
 	}
 
-	public BindToId(abilityId: string): void {
-		this.primaryId = abilityId;
+	public ToAbilityState(): ClientAbilityState | undefined {
+		if (!this.boundTo) return;
+
+		const ability = Dependency<AbilityRegistry>().GetAbilityById(this.boundTo.id);
+		if (!ability) {
+			return;
+		}
+
+		const config = ability.config;
+
+		return {
+			keybinding: this.keyCode,
+			name: config.name,
+			icon: config.image,
+			charges: 0,
+		};
+	}
+
+	public BindTo(abilityId: AbilityDto): void {
+		const oldState = this.ToAbilityState();
+
+		this.boundTo = abilityId;
+		this.enabled = abilityId.enabled;
+
+		this.BindingStateChanged.Fire({
+			oldState,
+			newState: this.ToAbilityState(),
+		});
 	}
 
 	public GetKey() {
@@ -57,11 +92,11 @@ export class AbilityBinding {
 
 	public Unbind() {
 		this.bin.Clean();
-		this.primaryId = undefined;
+		this.boundTo = undefined;
 		this.enabled = false;
 	}
 
-	public GetBoundId(): string | undefined {
-		return this.primaryId;
+	public GetBound(): AbilityDto | undefined {
+		return this.boundTo;
 	}
 }

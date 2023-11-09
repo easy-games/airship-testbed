@@ -2,7 +2,6 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Keyboard } from "Shared/UserInput";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
-import { KeySignal } from "Shared/UserInput/Drivers/Signals/KeySignal";
 import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Bin } from "Shared/Util/Bin";
@@ -11,7 +10,7 @@ import inspect from "@easy-games/unity-inspect";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.T, KeyCode.Y];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.G, KeyCode.H, KeyCode.J];
-const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M];
+const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V];
 
 @Controller()
 export class AbilitiesController implements OnStart {
@@ -38,7 +37,7 @@ export class AbilitiesController implements OnStart {
 
 	private FindNextAvailableSlot(slots: Array<AbilityBinding>) {
 		for (const item of slots) {
-			if (item.GetBoundId() === undefined) {
+			if (item.GetBound() === undefined) {
 				return item;
 			}
 		}
@@ -66,22 +65,27 @@ export class AbilitiesController implements OnStart {
 
 		if (!nextSlot) return false;
 
-		nextSlot.BindToId(abilityDto.id);
+		nextSlot.BindTo(abilityDto);
 		nextSlot.BindToAction(this.keyboard, this.OnKeyboardInputEnded);
-		nextSlot.SetEnabled(abilityDto.enabled);
 
 		print("registered ability at keycode ", abilityDto.id, nextSlot.GetKey());
 	}
 
 	// TODO: in future a much friendlier Input API
 	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
-		const boundAbilityId = binding.GetBoundId();
+		const boundAbilityId = binding.GetBound()?.id;
 		if (state === BindingInputState.InputEnded && boundAbilityId) {
 			CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
 				abilityId: boundAbilityId,
 			});
 		}
 	};
+
+	public ObserveAbilityBindings(callback: (abilities: ReadonlyArray<AbilityBinding>) => Bin) {
+		const bin = new Bin();
+		bin.Add(callback([...this.primaryAbilitySlots, ...this.secondaryAbilitySlots, ...this.utilityAbiltySlots]));
+		return bin;
+	}
 
 	public OnStart(): void {
 		const abilities = CoreNetwork.ClientToServer.GetAbilities.Client.FireServer();
