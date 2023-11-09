@@ -20,8 +20,8 @@ export declare class AbilityBinding {
     private bin;
     private boundTo;
     readonly BindingStateChanged: Signal<{
-        oldState: ClientAbilityState;
-        newState: ClientAbilityState;
+        oldState: ClientAbilityState | undefined;
+        newState: ClientAbilityState | undefined;
     }>;
     constructor(slot: AbilitySlot, enabled: boolean, keyCode: KeyCode);
     SetEnabled(enabled: boolean): void;

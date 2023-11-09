@@ -4,6 +4,7 @@ import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { InputUtils } from "Shared/Util/InputUtils";
 import { AbilitiesController } from "./AbilitiesController";
 import { Bin } from "Shared/Util/Bin";
+import inspect from "@easy-games/unity-inspect";
 
 export interface ClientAbilityState {
 	name: string;
@@ -33,8 +34,24 @@ export class AbilitiesUIController implements OnStart {
 	}
 
 	private UpdateAbilityBarSlot(slotIdx: number, ability: ClientAbilityState | undefined) {
-		const go = this.abilitybarContent.GetChild(slotIdx).gameObject;
-		const contentGO = go.transform.GetChild(0).gameObject;
+		if (slotIdx >= this.abilitySlots) {
+			warn("Attempting to set slot", slotIdx, "with", inspect(ability));
+			return;
+		}
+
+		const child = this.abilitybarContent.GetChild(slotIdx);
+		if (!child) {
+			warn("Could not update ability bar at slot index ", slotIdx);
+			return;
+		}
+
+		print("fetch bar slot", slotIdx);
+		const go = child.gameObject;
+		const contentGO = go.transform.GetChild(0)?.gameObject;
+		if (!contentGO) {
+			warn("Could not update child of slot index", slotIdx);
+			return;
+		}
 
 		contentGO.gameObject.SetActive(ability !== undefined);
 		if (ability !== undefined) {
@@ -88,11 +105,15 @@ export class AbilitiesUIController implements OnStart {
 			const bin = new Bin();
 			let idx = 0;
 			for (const ability of abilities) {
+				let currIdx = idx;
+				this.UpdateAbilityBarSlot(currIdx, ability.ToAbilityState());
 				bin.Add(
 					ability.BindingStateChanged.Connect((event) => {
-						this.UpdateAbilityBarSlot(idx, event.newState);
+						print("update binding state", inspect(event.newState));
+						this.UpdateAbilityBarSlot(currIdx, event.newState);
 					}),
 				);
+				print("bind", ability.GetKey(), "to", idx);
 				idx++;
 			}
 			return bin;
