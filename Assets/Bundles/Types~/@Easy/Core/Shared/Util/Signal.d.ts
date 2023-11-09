@@ -68,5 +68,6 @@ export declare class Signal<T extends unknown[] | unknown> {
     Destroy(): void;
     SetDebug(value: boolean): Signal<T>;
     WithYieldTracking(value: boolean): Signal<T>;
+    GetConnectionCount(): number;
 }
 export {};

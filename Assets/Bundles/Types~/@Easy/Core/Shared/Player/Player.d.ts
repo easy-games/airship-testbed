@@ -1,4 +1,5 @@
 import { CharacterEntity } from "../Entity/Character/CharacterEntity";
+import { ProfilePictureMeta } from "../ProfilePicture/ProfilePictureMeta";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -47,17 +48,18 @@ export declare class Player {
     /**
      * The player controls this entity.
      */
-    Character: CharacterEntity | undefined;
+    character: CharacterEntity | undefined;
     /** Fired when the player's character changes. */
-    readonly CharacterChanged: Signal<CharacterEntity | undefined>;
+    readonly onCharacterChanged: Signal<CharacterEntity | undefined>;
     /**
      * Fired when the player disconnects from the server.
      * Connections will automatically be disconnected when the player leaves.
      */
-    readonly OnLeave: Signal<void>;
+    readonly onLeave: Signal<void>;
     private team;
-    readonly OnChangeTeam: Signal<[team: Team | undefined, oldTeam: Team | undefined]>;
-    OnUsernameChanged: Signal<[username: string, tag: string]>;
+    readonly onChangeTeam: Signal<[team: Team | undefined, oldTeam: Team | undefined]>;
+    onUsernameChanged: Signal<[username: string, tag: string]>;
+    private profilePicture;
     private bin;
     private connected;
     constructor(
@@ -94,10 +96,11 @@ export declare class Player {
      * ```
      */
     usernameTag: string);
+    GetProfilePicture(): ProfilePictureMeta;
     SetTeam(team: Team): void;
     GetTeam(): Team | undefined;
     UpdateUsername(username: string, tag: string): void;
-    SendMessage(message: string): void;
+    SendMessage(message: string, sender?: Player): void;
     /** Is player friends with the local player? */
     IsFriend(): boolean;
     IsBot(): boolean;

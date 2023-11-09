@@ -17,7 +17,8 @@ export declare class BlockDataAPI {
     static Init(): void;
     static SetBlockData(blockPos: Vector3, key: string, data: unknown, notifyClient?: boolean): void;
     static PrintAllBlockData(): void;
-    static SetBlockGroupData(blockPositions: Vector3[], key: string, data: unknown[]): void;
+    static SetBlockGroupCustomData(blockPositions: Vector3[], key: string, data: unknown[]): void;
+    static SetBlockGroupSameData(blockPositions: Vector3[], key: string, data: unknown): void;
     static ClearBlockData(blockPos: Vector3): void;
     static GetBlockData<T>(blockPos: Vector3, key: string): T | undefined;
     static GetParentBlockPos(childPos: Vector3): Vector3 | undefined;

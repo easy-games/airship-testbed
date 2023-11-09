@@ -11,18 +11,17 @@ export class TpAllCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		const pos = player.Character?.gameObject.transform.position;
+		const pos = player.character?.gameObject.transform.position;
 		if (!pos) return;
 
 		for (const p of Dependency<PlayerService>().GetPlayers()) {
 			if (p !== player) {
-				if (p.Character) {
+				if (p.character) {
 					p.SendMessage(
 						ColorUtil.ColoredText(Theme.Aqua, player.username) +
 							ColorUtil.ColoredText(Theme.Gray, " teleported you."),
 					);
-					const humanoid = p.Character.gameObject.GetComponent<EntityDriver>();
-					humanoid.Teleport(pos);
+					p.character.Teleport(pos, player.character?.entityDriver.GetLookVector());
 				}
 			}
 		}

@@ -1,3 +1,5 @@
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
 import { CameraMode, CameraTransform } from "..";
 export declare class HumanoidCameraMode implements CameraMode {
     private characterGO;
@@ -33,4 +35,8 @@ export declare class HumanoidCameraMode implements CameraMode {
     SetFirstPerson(firstPerson: boolean): void;
     SetYOffset(yOffset: number, immediate?: boolean): void;
     SetLookBackwards(lookBackwards: boolean): void;
+    /**
+     * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
+     */
+    SetDirection(direction: Vector3): void;
 }

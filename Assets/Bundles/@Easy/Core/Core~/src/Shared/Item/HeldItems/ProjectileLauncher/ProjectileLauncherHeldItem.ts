@@ -10,14 +10,14 @@ import { Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SignalPriority } from "Shared/Util/Signal";
+import { Task } from "Shared/Util/Task";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { AudioManager } from "../../../Audio/AudioManager";
 import { ItemUtil } from "../../ItemUtil";
 import { HeldItem } from "../HeldItem";
-import { Task } from "Shared/Util/Task";
-import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 
 const defaultChargeAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 	AllBundleItems.ItemThrowable_FirstPerson_Charge,
@@ -52,37 +52,45 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		super.OnLoadAssets();
 
 		//Charge animations
-		if (this.itemMeta?.projectileLauncher?.chargeAnimFP) {
-			this.chargeAnimFP = this.itemMeta.projectileLauncher.chargeAnimFP.map((path) =>
-				AssetBridge.Instance.LoadAsset(path),
-			);
-		} else {
-			this.chargeAnimFP = [defaultChargeAnimFP];
+		if (this.itemMeta?.projectileLauncher?.chargeAnimFP !== "none") {
+			if (this.itemMeta?.projectileLauncher?.chargeAnimFP) {
+				this.chargeAnimFP = this.itemMeta.projectileLauncher.chargeAnimFP.map((path) =>
+					AssetBridge.Instance.LoadAsset(path),
+				);
+			} else {
+				this.chargeAnimFP = [defaultChargeAnimFP];
+			}
 		}
 
-		if (this.itemMeta?.projectileLauncher?.chargeAnimTP) {
-			this.chargeAnimTP = this.itemMeta.projectileLauncher.chargeAnimTP.map((path) =>
-				AssetBridge.Instance.LoadAsset(path),
-			);
-		} else {
-			this.chargeAnimTP = [defaultChargeAnimTP];
+		if (this.itemMeta?.projectileLauncher?.chargeAnimTP !== "none") {
+			if (this.itemMeta?.projectileLauncher?.chargeAnimTP) {
+				this.chargeAnimTP = this.itemMeta.projectileLauncher.chargeAnimTP.map((path) =>
+					AssetBridge.Instance.LoadAsset(path),
+				);
+			} else {
+				this.chargeAnimTP = [defaultChargeAnimTP];
+			}
 		}
 
 		//Throw animations
-		if (this.itemMeta?.projectileLauncher?.throwAnimFP) {
-			this.throwAnimFP = this.itemMeta.projectileLauncher.throwAnimFP.map((path) =>
-				AssetBridge.Instance.LoadAsset(path),
-			);
-		} else {
-			this.throwAnimFP = [defaultThrowAnimFP];
+		if (this.itemMeta?.projectileLauncher?.throwAnimFP !== "none") {
+			if (this.itemMeta?.projectileLauncher?.throwAnimFP) {
+				this.throwAnimFP = this.itemMeta.projectileLauncher.throwAnimFP.map((path) =>
+					AssetBridge.Instance.LoadAsset(path),
+				);
+			} else {
+				this.throwAnimFP = [defaultThrowAnimFP];
+			}
 		}
 
-		if (this.itemMeta?.projectileLauncher?.throwAnimTP) {
-			this.throwAnimTP = this.itemMeta.projectileLauncher.throwAnimTP.map((path) =>
-				AssetBridge.Instance.LoadAsset(path),
-			);
-		} else {
-			this.throwAnimTP = [defaultThrowAnimTP];
+		if (this.itemMeta?.projectileLauncher?.throwAnimTP !== "none") {
+			if (this.itemMeta?.projectileLauncher?.throwAnimTP) {
+				this.throwAnimTP = this.itemMeta.projectileLauncher.throwAnimTP.map((path) =>
+					AssetBridge.Instance.LoadAsset(path),
+				);
+			} else {
+				this.throwAnimTP = [defaultThrowAnimTP];
+			}
 		}
 	}
 
@@ -242,12 +250,22 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		print("On use: " + useIndex);
 
 		//Play the throw animation
-		const throwAnimState = this.entity.animator?.PlayAnimation(
-			this.entity.animator.IsFirstPerson()
-				? RandomUtil.FromArray(this.throwAnimFP)
-				: RandomUtil.FromArray(this.throwAnimTP),
-			EntityAnimationLayer.ITEM_ACTION,
-		);
+		let throwAnimState: AnimancerState | undefined;
+		if (this.entity.animator.IsFirstPerson()) {
+			if (this.throwAnimFP.size() > 0) {
+				throwAnimState = this.entity.animator.PlayAnimation(
+					RandomUtil.FromArray(this.throwAnimFP),
+					EntityAnimationLayer.ITEM_ACTION,
+				);
+			}
+		} else {
+			if (this.throwAnimTP.size() > 0) {
+				throwAnimState = this.entity.animator.PlayAnimation(
+					RandomUtil.FromArray(this.throwAnimTP),
+					EntityAnimationLayer.ITEM_ACTION,
+				);
+			}
+		}
 
 		//Play the items animation  (bow shoot)
 		this.entity.animator.PlayUseAnim(0);

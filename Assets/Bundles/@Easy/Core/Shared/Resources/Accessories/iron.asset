@@ -15,8 +15,8 @@ MonoBehaviour:
   DisplayName: Iron
   AccessorySlot: 6
   Prefab: {fileID: 7802634283327141613, guid: d39e8f3385fdb4bf79c3678efb6bba99, type: 3}
-  Position: {x: 0.05, y: 0.07, z: -0.06}
-  Rotation: {x: 0, y: 90, z: 90}
-  Scale: {x: 0.25, y: 0.25, z: 0.25}
-  MeshDeformed: 0
-  VisibleInFirstPerson: 1
+  Position: {x: 0.05, y: 0.04, z: 0.05}
+  Rotation: {x: 66.4, y: 249.3, z: -77.7}
+  Scale: {x: 0.14, y: 0.14, z: 0.14}
+  visibilityMode: 2
+  SkinnedToCharacter: 1

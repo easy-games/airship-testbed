@@ -14,7 +14,7 @@ export declare class EntityInput {
      * character will not move from user input.
      * @param enabled Enabled state.
      */
-    private SetEnabled;
+    SetEnabled(enabled: boolean): void;
     /** Returns `true` if the Humanoid Driver is enabled. */
     IsEnabled(): boolean;
     IsSprinting(): boolean;

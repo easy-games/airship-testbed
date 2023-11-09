@@ -226,9 +226,384 @@ interface ListCache<T> {
 // 	WriteValueIntoState(value: TValue, statePtr: unknown): void;
 // }
 
-interface Vector2Constructor {
-	constructor(x: number, y: number): Vector2;
+// Vector3
+interface Vector3 {
+	/**
+	 * **DO NOT USE!**
+	 *
+	 * This field exists to force TypeScript to recognize this as a nominal type
+	 * @hidden
+	 * @deprecated
+	 */
+	readonly _nominal_Vector3: unique symbol;
+	readonly x: number;
+	readonly y: number;
+	readonly z: number;
+
+	/** Returns the magnitude of the vector. */
+	readonly magnitude: number;
+
+	/** Returns the square magnitude of the vector. This is faster to calculate than `magnitude`. */
+	readonly sqrMagnitude: number;
+
+	/** Returns a normalized copy of the vector. */
+	readonly normalized: Vector3;
+
+	/** Linear interpolation between two vectors. The `alpha` parameter is automatically clamped between `[0, 1]`. */
+	Lerp(goal: Vector3, alpha: number): Vector3;
+
+	/** Linear interpolation between two vectors. */
+	LerpUnclamped(goal: Vector3, alpha: number): Vector3;
+
+	/** Angle between two vectors. */
+	Angle(to: Vector3): number;
+
+	/** Signed angle between two vectors. */
+	SignedAngle(to: Vector3, axis: Vector3 | undefined): number;
+
+	/** Calculates the dot product between two vectors. */
+	Dot(other: Vector3): number;
+
+	/** Calculates the cross product between two vectors. */
+	Cross(other: Vector3): Vector3;
+
+	/** Calculates the distance between two vectors. */
+	Distance(to: Vector3): number;
+
+	/** Constructs a new Vector3 where the magnitude is clamped at `maxDistance`. */
+	ClampMagnitude(maxDistance: number): Vector3;
+
+	/** Constructs a new Vector3 with the minimum value picked per axis. */
+	Min(other: Vector3): Vector3;
+
+	/** Constructs a new Vector3 with the maximum value picked per axis. */
+	Max(other: Vector3): Vector3;
+
+	/** Constructs a Vector3 where the vector is moved toward `target`. */
+	MoveTowards(target: Vector3, maxDistanceDelta: number): Vector3;
+
+	/** Reflects a vector (assumed to be the normalized direction) against the `inNormal` (e.g. a surface normal). */
+	Reflect(inNormal: Vector3): Vector3;
+
+	/** Projects a vector onto another vector. */
+	Project(onNormal: Vector3): Vector3;
+
+	/** Projects a vector onto a plane defined by a normal orthogonal to the plane. */
+	ProjectOnPlane(planeNormal: Vector3): Vector3;
+
+	/** Multiplies two vectors component-wise. */
+	Scale(scale: Vector3): Vector3;
+
+	/** Spherically interpolates between two vectors. */
+	Slerp(goal: Vector3, alpha: number): Vector3;
+
+	/** Smooth damp movement of Vector3. Velocity must be managed. */
+	SmoothDamp(
+		target: Vector3,
+		currentVelocity: Vector3,
+		smoothTime: number,
+		deltaTime: number,
+		maxSpeed?: number,
+	): LuaTuple<[newCurrent: Vector3, newVelocity: Vector3]>;
 }
+
+interface Vector3Constructor {
+	/** Vector3 constant `(0, 0, 0)`. */
+	readonly zero: Vector3;
+
+	/** Vector3 constant `(1, 1, 1)`. */
+	readonly one: Vector3;
+
+	/** Vector3 constant `(0, 0, -1)`. */
+	readonly back: Vector3;
+
+	/** Vector3 constant `(0, -1, 0)`. */
+	readonly down: Vector3;
+
+	/** Vector3 constant `(0, 0, 1)`. */
+	readonly forward: Vector3;
+
+	/** Vector3 constant `(-1, 0, 0)`. */
+	readonly left: Vector3;
+
+	/** Vector3 constant `(-INF, -INF, -INF)`. */
+	readonly negativeInfinity: Vector3;
+
+	/** Vector3 constant `(INF, INF, INF)`. */
+	readonly positiveInfinity: Vector3;
+
+	/** Vector3 constant `(1, 0, 0)`. */
+	readonly right: Vector3;
+
+	/** Vector3 constant `(0, 1, 0)`. */
+	readonly up: Vector3;
+
+	/** Returns this vector with a magnitude of 1. */
+	Normalize: (vector: Vector3) => Vector3;
+
+	/** Linear interpolation between two vectors. The `alpha` parameter is automatically clamped between `[0, 1]`. */
+	Lerp: (start: Vector3, goal: Vector3, alpha: number) => Vector3;
+
+	/** Linear interpolation between two vectors. */
+	LerpUnclamped: (start: Vector3, goal: Vector3, alpha: number) => Vector3;
+
+	/** Angle between two vectors. */
+	Angle: (from: Vector3, to: Vector3) => number;
+
+	/** Signed angle between two vectors. */
+	SignedAngle: (from: Vector3, to: Vector3, axis: Vector3 | undefined) => number;
+
+	/** Calculates the dot product between two vectors. */
+	Dot: (a: Vector3, b: Vector3) => number;
+
+	/** Calculates the cross product between two vectors. */
+	Cross: (a: Vector3, b: Vector3) => Vector3;
+
+	/** Calculates the distance between two vectors. */
+	Distance: (from: Vector3, to: Vector3) => number;
+
+	/** Constructs a new Vector3 where the magnitude is clamped at `maxDistance`. */
+	ClampMagnitude: (vector: Vector3, maxDistance: number) => Vector3;
+
+	/** Constructs a new Vector3 with the minimum value picked per axis. */
+	Min: (a: Vector3, b: Vector3) => Vector3;
+
+	/** Constructs a new Vector3 with the maximum value picked per axis. */
+	Max: (a: Vector3, b: Vector3) => Vector3;
+
+	/** Constructs a Vector3 where the vector is moved toward `target`. */
+	MoveTowards: (start: Vector3, target: Vector3, maxDistanceDelta: number) => Vector3;
+
+	/** Reflects the directional vector `inDirection` against the `inNormal` (e.g. a surface normal). */
+	Reflect: (inDirection: Vector3, inNormal: Vector3) => Vector3;
+
+	/** Projects a vector onto another vector. */
+	Project: (vector: Vector3, onNormal: Vector3) => Vector3;
+
+	/** Projects a vector onto a plane defined by a normal orthogonal to the plane. */
+	ProjectOnPlane: (vector: Vector3, planeNormal: Vector3) => Vector3;
+
+	/** Multiplies two vectors component-wise. */
+	Scale: (vector: Vector3, scale: Vector3) => Vector3;
+
+	/** Spherically interpolates between two vectors. */
+	Slerp: (start: Vector3, goal: Vector3, alpha: number) => Vector3;
+
+	/** Smooth damp movement of Vector3. Velocity must be managed. */
+	SmoothDamp: (
+		current: Vector3,
+		target: Vector3,
+		currentVelocity: Vector3,
+		smoothTime: number,
+		deltaTime: number,
+		maxSpeed?: number,
+	) => LuaTuple<[newCurrent: Vector3, newVelocity: Vector3]>;
+
+	/** Constructs a new Vector3 using the given x, y, and z components. */
+	new (x: number, y: number, z: number): Vector3;
+
+	/** Constructs a new Vector3 equal to `(0, 0, 0)`. */
+	new (): Vector3;
+}
+
+declare const Vector3: Vector3Constructor;
+
+interface Vector2 {
+	/**
+	 * **DO NOT USE!**
+	 *
+	 * This field exists to force TypeScript to recognize this as a nominal type
+	 * @hidden
+	 * @deprecated
+	 */
+	readonly _nominal_Vector2: unique symbol;
+	readonly x: number;
+	readonly y: number;
+
+	/** Returns the magnitude of the vector. */
+	readonly magnitude: number;
+
+	/** Returns the square magnitude of the vector. This is faster to calculate than `magnitude`. */
+	readonly sqrMagnitude: number;
+
+	/** Returns a normalized copy of the vector. */
+	readonly normalized: Vector2;
+
+	/** Calculates the dot product between two vectors. */
+	Dot(other: Vector2): number;
+
+	/** Calculates the distance between two vectors. */
+	Distance(to: Vector2): number;
+
+	/** Interpolates between two vectors (alpha is clamped to the range of `[0, 1]`). */
+	Lerp(to: Vector2, alpha: number): Vector2;
+
+	/** Interpolates between two vectors. */
+	LerpUnclamped(to: Vector2, alpha: number): Vector2;
+
+	/** Returns the perpendicular vector. */
+	Perpendicular(): Vector2;
+
+	/** Returns a vector with the minimum x and y value. */
+	Min(other: Vector2): Vector2;
+
+	/** Returns a vector with the maximum x and y value. */
+	Max(other: Vector2): Vector2;
+
+	/** Returns the reflected vector (assuming this is a normalized vector). */
+	Reflect(direction: Vector2): Vector2;
+
+	/** Returns a vector clamped to the given max magnitude. */
+	ClampMagnitude(maxMagnitude: number): Vector2;
+
+	/** Returns the angle between vectors. */
+	Angle(to: Vector2): number;
+
+	/** Returns the signed angle between the vectors. */
+	SignedAngle(to: Vector2): number;
+
+	/** Returns the vector moved towards `target` a maximum of `maxDistanceDelta`. */
+	MoveTowards(target: Vector2, maxDistanceDelta: number): Vector2;
+}
+
+interface Vector2Constructor {
+	/** Vector2 constant `(0, 0)`. */
+	readonly zero: Vector2;
+
+	/** Vector2 constant `(1, 1)`. */
+	readonly one: Vector2;
+
+	/** Vector2 constant `(0, -1)`. */
+	readonly down: Vector2;
+
+	/** Vector2 constant `(0, 1)`. */
+	readonly up: Vector2;
+
+	/** Vector2 constant `(-1, 0)`. */
+	readonly left: Vector2;
+
+	/** Vector2 constant `(1, 0)`. */
+	readonly right: Vector2;
+
+	/** Vector2 constant `(-math.huge, -math.huge)`. */
+	readonly negativeInfinity: Vector2;
+
+	/** Vector2 constant `(math.huge, math.huge)`. */
+	readonly positiveInfinity: Vector2;
+
+	/** Calculates the dot product between two vectors. */
+	Dot: (a: Vector2, b: Vector2) => number;
+
+	/** Calculates the distance between two vectors. */
+	Distance: (a: Vector2, b: Vector2) => number;
+
+	/** Interpolates between two vectors (alpha is clamped to the range of `[0, 1]`). */
+	Lerp: (from: Vector2, to: Vector2, alpha: number) => Vector2;
+
+	/** Interpolates between two vectors. */
+	LerpUnclamped: (from: Vector2, to: Vector2, alpha: number) => Vector2;
+
+	/** Returns the perpendicular vector. */
+	Perpendicular: (vec: Vector2) => Vector2;
+
+	/** Returns a vector with the minimum x and y value. */
+	Min: (a: Vector2, b: Vector2) => Vector2;
+
+	/** Returns a vector with the maximum x and y value. */
+	Max: (a: Vector2, b: Vector2) => Vector2;
+
+	/** Returns the reflected vector. */
+	Reflect: (normal: Vector2, direction: Vector2) => Vector2;
+
+	/** Returns a vector clamped to the given max magnitude. */
+	ClampMagnitude: (vec: Vector2, maxMagnitude: number) => Vector2;
+
+	/** Returns the angle between two vectors. */
+	Angle: (from: Vector2, to: Vector2) => number;
+
+	/** Returns the signed angle between two vectors. */
+	SignedAngle: (from: Vector2, to: Vector2) => number;
+
+	/** Returns a vector moved from `current` towards `target` a maximum of `maxDistanceDelta`. */
+	MoveTowards: (current: Vector2, target: Vector2, maxDistanceDelta: number) => Vector2;
+
+	new (x: number, y: number): Vector2;
+	new (): Vector2;
+}
+
+declare const Vector2: Vector2Constructor;
+
+interface Quaternion {
+	/** Returns the euler angle representation of the rotation. */
+	readonly eulerAngles: Vector3;
+
+	/** Returns this quaternion with a magnitude of 1. */
+	readonly normalized: Quaternion;
+
+	/** W component of the quaternion. */
+	w: number;
+
+	/** X component of the quaternion. */
+	x: number;
+
+	/** Y component of the quaternion. */
+	y: number;
+
+	/** Z component of the quaternion. */
+	z: number;
+}
+
+interface QuaternionConstructor {
+	/** The identity rotation. */
+	readonly identity: Quaternion;
+
+	/** Returns the angle in degrees between two rotations. */
+	Angle: (from: Quaternion, to: Quaternion) => number;
+
+	/** Creates a rotation which rotates `angle` degrees around `axis`. */
+	AngleAxis: (angle: number, axis: Vector3) => Quaternion;
+
+	/** The dot product between two rotations. */
+	Dot: (a: Quaternion, b: Quaternion) => number;
+
+	/**
+	 * Constructs a quaternion that rotates `z` degrees around the Z axis, `x` degrees around
+	 * the X axis, and `y` degrees around the Y axis; applied in that order.
+	 */
+	Euler: (x: number, y: number, z: number) => Quaternion;
+
+	/** Creates a rotation which rotates from `fromDirection` to `toDirection`. */
+	FromToRotation: (fromDirection: Vector3, toDirection: Vector3) => Quaternion;
+
+	/** Returns the conjugate of the rotation. */
+	Conjugate: (rotation: Quaternion) => Quaternion;
+
+	/** Returns the inverse of the rotation. */
+	Inverse: (rotation: Quaternion) => Quaternion;
+
+	/**
+	 * Creates a rotation with the specified forward and upwards direction. If the `upwards`
+	 * parameter is not present, it defaults to `Vector3.up`.
+	 */
+	LookRotation: (forward: Vector3, upwards?: Vector3) => Quaternion;
+
+	/** Normalizes the rotation in-place. */
+	Normalize: (rotation: Quaternion) => void;
+
+	/** Rotates the rotation `from` towards `to`. */
+	RotateTowards: (from: Quaternion, to: Quaternion, maxDegreesDelta: number) => Quaternion;
+
+	/** Spherically interpolates between the two quaternions. The `alpha` parameter is clamped between `[0, 1]`. */
+	Slerp: (from: Quaternion, to: Quaternion, alpha: number) => Quaternion;
+
+	/** Spherically interpolates between the two quaternions. */
+	SlerpUnclamped: (from: Quaternion, to: Quaternion, alpha: number) => Quaternion;
+
+	/** Constructs a new Quaternion. */
+	new (x: number, y: number, z: number, w: number): Quaternion;
+}
+
+declare const Quaternion: QuaternionConstructor;
 
 interface Vector2Control extends InputControl<Vector2> {
 	x: AxisControl;
@@ -1302,6 +1677,7 @@ interface AnimancerBridgeConstructor {
         wrapMode: WrapMode,
 	): AnimancerState;
 	GetLayer(component: AnimancerComponent, layer: number): AnimancerLayer;
+	SetGlobalSpeed(animancerComponent: AnimancerComponent, speed: number);
 }
 declare const AnimancerBridge: AnimancerBridgeConstructor;
 
@@ -1560,21 +1936,21 @@ interface Color {
 	g: number;
 	b: number;
 	a: number;
-	grayscale: number;
-	linear: Color;
-	gamma: Color;
-	maxColorComponent: number;
-	Item: number;
+	readonly grayscale: number;
+	readonly maxColorComponent: number;
+	// readonly linear: Color;
+	// readonly gamma: Color;
+	// Item: number;
 
 	// constructor(r: number, g: number, b: number, a: number): Color;
 	// constructor(r: number, g: number, b: number): Color;
 
-	Equals(other: unknown): boolean;
-	Equals(other: Color): boolean;
-	GetHashCode(): number;
-	ToString(): string;
-	ToString(format: string): string;
-	ToString(format: string, formatProvider: unknown): string;
+	// Equals(other: unknown): boolean;
+	// Equals(other: Color): boolean;
+	// GetHashCode(): number;
+	// ToString(): string;
+	// ToString(format: string): string;
+	// ToString(format: string, formatProvider: unknown): string;
 }
 
 interface ColorConstructor {
@@ -1590,11 +1966,11 @@ interface ColorConstructor {
 	grey: Color;
 	clear: Color;
 
-	HSVToRGB(H: number, S: number, V: number): Color;
-	HSVToRGB(H: number, S: number, V: number, hdr: boolean): Color;
-	Lerp(a: Color, b: Color, t: number): Color;
-	LerpUnclamped(a: Color, b: Color, t: number): Color;
-	RGBToHSV(rgbColor: Color, H: unknown, S: unknown, V: unknown): void;
+	HSVToRGB: (H: number, S: number, V: number) => Color;
+	// HSVToRGB: (H: number, S: number, V: number, hdr: boolean) => Color;
+	Lerp: (a: Color, b: Color, t: number) => Color;
+	LerpUnclamped: (a: Color, b: Color, t: number) => Color;
+	// RGBToHSV: (rgbColor: Color, R: number, G: number, B: number) => void;
 
 	new (r: number, g: number, b: number, a: number): Color;
 	new (r: number, g: number, b: number): Color;

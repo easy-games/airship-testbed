@@ -13,6 +13,7 @@ Material:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
   - RIM_LIGHT_ON
+  - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - EXPLICIT_MAPS
@@ -106,7 +107,7 @@ Material:
     - OVERRIDE: 0
     - POINT_FILTER: 0
     - RIM_LIGHT: 1
-    - SLIDER_OVERRIDE: 0
+    - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
     - VERTEX_LIGHT: 0
     - _Alpha: 1

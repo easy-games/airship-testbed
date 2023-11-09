@@ -15,9 +15,9 @@ export class EntityCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		const entityService = Dependency<EntityService>();
 
-		if (!player.Character) return;
+		if (!player.character) return;
 
-		const pos = player.Character.gameObject.transform.position;
+		const pos = player.character.gameObject.transform.position;
 		const entity = entityService.SpawnEntityForPlayer(undefined, EntityPrefabType.HUMAN, pos);
 		entity.AddHealthbar();
 

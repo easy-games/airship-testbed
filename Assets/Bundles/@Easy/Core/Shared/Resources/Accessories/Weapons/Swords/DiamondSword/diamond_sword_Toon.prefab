@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8478519861326265414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9142888095237170940}
+  m_Layer: 0
+  m_Name: diamond_sword_Toon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &9142888095237170940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8478519861326265414}
+  m_LocalRotation: {x: -0, y: -0, z: 0.4695887, w: 0.8828854}
+  m_LocalPosition: {x: 0.628, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5966964066924866727}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 56.015}
+--- !u!1001 &6144127365211409228
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9142888095237170940}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000119209275
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -360
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6475a7d20cee3e849bbbaf3346e825b6, type: 2}
+    - target: {fileID: -7511558181221131132, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 59f56bbf04474ab44b64e692accd6d5f, type: 2}
+    - target: {fileID: -7511558181221131132, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 122fb99986f9adb47af5f127148b4d77, type: 2}
+    - target: {fileID: 919132149155446097, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+      propertyPath: m_Name
+      value: Sword_Diamond
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+--- !u!4 &5966964066924866727 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+  m_PrefabInstance: {fileID: 6144127365211409228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6450626469111789085 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ea7a803dfc3bd7444b6210d673271b55, type: 3}
+  m_PrefabInstance: {fileID: 6144127365211409228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9001360865589273094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6450626469111789085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.22352941, g: 0.8156863, b: 1, a: 0.13333334}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: DiamondMatToon
+  - materialColor: {r: 1, g: 0.83112967, b: 0.3820755, a: 1}
+    emissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    emissiveMix: 1
+    reference: DiamondHiltToon
+  - materialColor: {r: 0.3469651, g: 0.25845498, b: 0.4528302, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: DiamondHandleToon
+  addedByEditorScript: 0

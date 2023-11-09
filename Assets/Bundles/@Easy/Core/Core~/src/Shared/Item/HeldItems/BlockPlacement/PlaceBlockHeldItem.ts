@@ -1,10 +1,11 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
 import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
-import inspect from "@easy-games/unity-inspect";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
@@ -20,16 +21,18 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			const world = WorldAPI.GetMainWorld()!;
 			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
 			print("voxelId match", this.itemMeta.block.blockId, voxelId);
-			const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 1);
 
-			const activeAccessories = this.entity.accessoryBuilder.GetActiveAccessoriesBySlot(AccessorySlot.RightHand);
-			if (blockGO && activeAccessories.Length > 0) {
-				blockGO.transform.SetParent(activeAccessories.GetValue(0).gameObjects.GetValue(0).transform);
-				blockGO.transform.localPosition = new Vector3(0, 0, 0);
-				const scale = 1;
-				blockGO.transform.localScale = new Vector3(scale, scale, scale);
-				blockGO.transform.localRotation = Quaternion.identity;
-				blockGO.transform.Rotate(new Vector3(90, 90, 0));
+			const rightHandRens = this.entity.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
+			if (rightHandRens && rightHandRens.Length > 0) {
+				const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 2, 5);
+				if (blockGO) {
+					let heldItemRen = rightHandRens.GetValue(0);
+					const meshRen = blockGO.GetComponent<MeshRenderer>();
+					const meshFilter = blockGO.GetComponent<MeshFilter>();
+					heldItemRen.material = meshRen.material;
+					heldItemRen.GetComponent<MeshFilter>().mesh = meshFilter.mesh;
+					GameObjectUtil.Destroy(blockGO);
+				}
 			} else {
 				print("Could not produce block", inspect(this.itemMeta.block));
 			}

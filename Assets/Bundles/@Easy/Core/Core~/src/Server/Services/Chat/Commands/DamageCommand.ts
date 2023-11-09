@@ -4,6 +4,7 @@ import { EntityService } from "Server/Services/Entity/EntityService";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Entity } from "Shared/Entity/Entity";
 import { Player } from "Shared/Player/Player";
+import { Task } from "Shared/Util/Task";
 
 export class DamageCommand extends ChatCommand {
 	constructor() {
@@ -19,19 +20,20 @@ export class DamageCommand extends ChatCommand {
 			target = Dependency<EntityService>().GetEntityByClientId(player.clientId);
 		}
 
-		if (amount === undefined) {
-			player.SendMessage("invalid amount: " + amount);
-			return;
-		}
+		Task.Delay(1, () => {
+			if (amount === undefined) {
+				player.SendMessage("invalid amount: " + amount);
+				return;
+			}
 
-		if (target === undefined) {
-			player.SendMessage("invalid target");
-			return;
-		}
-
-		Dependency<DamageService>().InflictDamage(target, amount, {
-			ignoreCancelled: true,
+			if (target === undefined) {
+				player.SendMessage("invalid target");
+				return;
+			}
+			Dependency<DamageService>().InflictDamage(target, amount, {
+				ignoreCancelled: true,
+			});
+			player.SendMessage(`Inflicted ${amount} dmg to ${target.id}`);
 		});
-		player.SendMessage(`Inflicted ${amount} dmg to ${target.id}`);
 	}
 }

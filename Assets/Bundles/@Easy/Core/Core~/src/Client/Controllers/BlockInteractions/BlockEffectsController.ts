@@ -15,9 +15,10 @@ const maxDistance = 50;
 export class BlockEffectsController implements OnStart {
 	OnStart(): void {
 		CoreClientSignals.BlockPlace.Connect((event) => {
-			if (event.isGroupEvent) {
+			if (event.isGroupEvent || event.block.IsAir()) {
 				return;
 			}
+			if (event.block.blockId === "@Easy/Core:CHILD_OF_BLOCK") return;
 			let sound = event.block.itemMeta?.block?.placeSound;
 			if (sound === undefined) {
 				switch (event.block.itemMeta?.block?.blockArchetype) {
@@ -27,7 +28,7 @@ export class BlockEffectsController implements OnStart {
 					case BlockArchetype.WOOD:
 						sound = CoreSound.blockPlaceWood;
 						break;
-					case BlockArchetype.WOOL:
+					case BlockArchetype.FABRIC:
 						sound = CoreSound.blockPlaceWool;
 						break;
 					default:
@@ -42,29 +43,51 @@ export class BlockEffectsController implements OnStart {
 		});
 
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
-			if (event.entity?.IsLocalCharacter()) return;
-
 			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockId);
 			let itemMeta: ItemMeta | undefined;
 			if (itemType) {
 				itemMeta = ItemUtil.GetItemMeta(itemType);
 			}
 
-			let sound = itemMeta?.block?.placeSound;
-			if (sound === undefined) {
-				switch (itemMeta?.block?.blockArchetype) {
-					case BlockArchetype.STONE:
-						sound = CoreSound.blockHitStone;
-						break;
-					case BlockArchetype.WOOD:
-						sound = CoreSound.blockHitWood;
-						break;
-					case BlockArchetype.WOOL:
-						sound = CoreSound.blockHitWool;
-						break;
-					default:
-						sound = CoreSound.blockHitGeneric;
-						break;
+			let sound: string[] | undefined;
+			if (event.broken) {
+				sound = itemMeta?.block?.breakSound;
+				if (sound === undefined) {
+					switch (itemMeta?.block?.blockArchetype) {
+						case BlockArchetype.STONE:
+							sound = CoreSound.blockBreakStone;
+							break;
+						case BlockArchetype.WOOD:
+							sound = CoreSound.blockBreakWood;
+							break;
+						case BlockArchetype.FABRIC:
+							sound = CoreSound.blockBreakWool;
+							break;
+						default:
+							sound = CoreSound.blockBreakGeneric;
+							break;
+					}
+				}
+			} else {
+				// sound will be played in BeforeBlockHit for local player
+				if (event.entity?.IsLocalCharacter()) return;
+
+				sound = itemMeta?.block?.hitSound;
+				if (sound === undefined) {
+					switch (itemMeta?.block?.blockArchetype) {
+						case BlockArchetype.STONE:
+							sound = CoreSound.blockHitStone;
+							break;
+						case BlockArchetype.WOOD:
+							sound = CoreSound.blockHitWood;
+							break;
+						case BlockArchetype.FABRIC:
+							sound = CoreSound.blockHitWool;
+							break;
+						default:
+							sound = CoreSound.blockHitGeneric;
+							break;
+					}
 				}
 			}
 
@@ -75,7 +98,7 @@ export class BlockEffectsController implements OnStart {
 		});
 
 		CoreClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
-			let sound = event.block.itemMeta?.block?.placeSound;
+			let sound = event.block.itemMeta?.block?.hitSound;
 			if (sound === undefined) {
 				switch (event.block.itemMeta?.block?.blockArchetype) {
 					case BlockArchetype.STONE:
@@ -84,7 +107,7 @@ export class BlockEffectsController implements OnStart {
 					case BlockArchetype.WOOD:
 						sound = CoreSound.blockHitWood;
 						break;
-					case BlockArchetype.WOOL:
+					case BlockArchetype.FABRIC:
 						sound = CoreSound.blockHitWool;
 						break;
 					default:

@@ -98,14 +98,14 @@ export class DamageService implements OnStart {
 		});
 	}
 
-	public InflictFallDamage(entity: Entity, verticalSpeed: number) {
+	public InflictFallDamage(entity: Entity, verticalSpeed: number): boolean {
 		const damage = DamageUtils.GetFallDamage(verticalSpeed);
 		if (damage <= 0) {
-			return;
+			return false;
 		}
 
 		//Scale damage based on how hard player hit the ground
-		this.InflictDamage(entity, damage, { knockbackDirection: Vector3.zero, damageType: DamageType.FALL });
+		return this.InflictDamage(entity, damage, { knockbackDirection: Vector3.zero, damageType: DamageType.FALL });
 	}
 
 	/**
@@ -152,7 +152,8 @@ export class DamageService implements OnStart {
 		let despawned = false;
 		entity.SetHealth(entity.GetHealth() - amount);
 		entity.SetLastDamagedTime(Time.time);
-		if (entity.GetHealth() === 0) {
+		const dead = entity.GetHealth() === 0;
+		if (dead) {
 			entity.Kill();
 			entity.entityDriver.disableInput = true;
 			const entityDeathEvent = new EntityDeathServerSignal(
@@ -178,30 +179,31 @@ export class DamageService implements OnStart {
 			});
 		} else {
 			entity.GrantImmunity(0.3);
-		}
 
-		// Knockback
-		if (!despawned) {
-			this.AddKnockback(entity, config?.knockbackDirection);
+			//Hit stun and Knockback
+			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
+			if (driver) {
+				DamageUtils.AddHitstun(entity, amount, () => {
+					this.AddKnockback(driver, config?.knockbackDirection);
+				});
+			}
 		}
 
 		return true;
 	}
 
-	public AddKnockback(entity: Entity, knockbackVel: Vector3 | undefined) {
-		const humanoid = entity.networkObject.gameObject.GetComponent<EntityDriver>();
-		assert(humanoid, "Missing humanoid");
+	public AddKnockback(driver: EntityDriver, knockbackVel: Vector3 | undefined) {
+		assert(driver, "Missing Entity Driver");
 
 		const horizontalScalar = this.combatVars.GetNumber("kbX");
 		const verticalScalar = this.combatVars.GetNumber("kbY");
 		const kbDuration = this.combatVars.GetNumber("kbDuration");
 
-		//let fromPos = humanoid.transform.position;
 		let impulse: Vector3;
 		const delta = knockbackVel ? knockbackVel : new Vector3(0, 0, 0);
 
 		impulse = new Vector3(delta.x * horizontalScalar, delta.y * verticalScalar, delta.z * horizontalScalar);
-		humanoid.ApplyVelocityOverTime(impulse, kbDuration);
+		driver.ApplyVelocityOverTime(impulse, kbDuration);
 	}
 }
 

@@ -23,7 +23,7 @@ export class EntityInput {
 	 * character will not move from user input.
 	 * @param enabled Enabled state.
 	 */
-	private SetEnabled(enabled: boolean) {
+	public SetEnabled(enabled: boolean) {
 		this.enabled = enabled;
 		if (!enabled) {
 			this.entityDriver.SetMoveInput(Vector3.zero, false, false, false);

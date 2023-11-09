@@ -46,11 +46,18 @@ export declare abstract class EntityAnimator {
         autoFadeOut?: boolean;
     }): AnimancerState;
     SetFirstPerson(isFirstPerson: boolean): void;
-    PlayTakeDamage(damageAmount: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
+    PlayTakeDamage(flinchDuration: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
     PlayDeath(damageType: DamageType): void;
     private PlayDamageFlash;
     SetFresnelColor(color: Color, power: number, strength: number): void;
-    PlayFootstepSound(volumeScale: number): void;
+    /**
+     *
+     * @param volumeScale
+     * @param cameraPos Pass in cached camera position if playing lots of sounds to improve performance.
+     * @returns
+     */
+    PlayFootstepSound(volumeScale: number, cameraPos?: Vector3): void;
     private OnAnimationEvent;
     IsFirstPerson(): boolean;
+    SetPlaybackSpeed(newSpeed: number): void;
 }

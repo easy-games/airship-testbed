@@ -45,6 +45,7 @@ export abstract class EntityAnimator {
 	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
 		this.anim = anim;
 		this.entityRef = entityRef;
+		this.isFlashing = false;
 
 		//AUDIO
 		if (RunUtil.IsClient()) {
@@ -166,7 +167,7 @@ export abstract class EntityAnimator {
 	}
 
 	public PlayTakeDamage(
-		damageAmount: number,
+		flinchDuration: number,
 		damageType: DamageType,
 		position: Vector3,
 		entityModel: GameObject | undefined,
@@ -179,8 +180,11 @@ export abstract class EntityAnimator {
 		//Animate flinch
 		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
 		if (flinchClip) {
-			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE);
-			Task.Delay(0.1, () => {
+			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE, undefined, {
+				autoFadeOut: false,
+				transitionTime: 0.01,
+			});
+			Task.Delay(flinchDuration, () => {
 				AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ROOT_OVERRIDE).StartFade(0, 0.05);
 			});
 		}
@@ -241,16 +245,17 @@ export abstract class EntityAnimator {
 
 	private PlayDamageFlash() {
 		if (this.entity.IsDestroyed() || this.isFlashing) return;
-		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.meshes);
+		let allMeshes = this.entity.accessoryBuilder.GetAllAccessoryMeshes();
 		const duration = this.flashTransitionDuration + this.flashOnTime;
 		this.isFlashing = true;
-		allMeshes.forEach((renderer) => {
+		for (let i = 0; i < allMeshes.Length; i++) {
+			const renderer = allMeshes.GetValue(i);
 			if (renderer && renderer.enabled) {
 				renderer
 					.TweenMaterialsFloatProperty("_OverrideStrength", 0, 1, this.flashTransitionDuration)
 					.SetPingPong();
 			}
-		});
+		}
 		Task.Delay(duration, () => {
 			this.isFlashing = false;
 		});
@@ -279,13 +284,28 @@ export abstract class EntityAnimator {
 		});
 	}
 
-	public PlayFootstepSound(volumeScale: number): void {
-		const blockId = this.entity.entityDriver.groundedBlockId;
-		if (blockId === 0) return;
-
+	/**
+	 *
+	 * @param volumeScale
+	 * @param cameraPos Pass in cached camera position if playing lots of sounds to improve performance.
+	 * @returns
+	 */
+	public PlayFootstepSound(volumeScale: number, cameraPos?: Vector3): void {
+		// Check if we should play
 		if (os.clock() - this.lastFootstepSoundTime < 0.18) {
 			return;
 		}
+		const blockId = this.entity.entityDriver.groundedBlockId;
+		if (blockId === 0) return;
+
+		if (!cameraPos) {
+			cameraPos = Camera.main.transform.position;
+		}
+		if (cameraPos.sub(this.entity.model.transform.position).magnitude > 20) {
+			return;
+		}
+
+		// Finished checks. We are playing.
 		this.lastFootstepSoundTime = os.clock();
 
 		let itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
@@ -365,5 +385,9 @@ export abstract class EntityAnimator {
 
 	public IsFirstPerson(): boolean {
 		return this.isFirstPerson;
+	}
+
+	public SetPlaybackSpeed(newSpeed: number) {
+		AnimancerBridge.SetGlobalSpeed(this.anim, newSpeed);
 	}
 }

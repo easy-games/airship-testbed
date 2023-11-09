@@ -195,6 +195,7 @@ export class EntityItemManager {
 		let items = this.entityItems.get(entityId);
 		if (items) {
 			items.OnNewState(HeldItemState.ON_DESTROY);
+			items.Destroy();
 			this.entityItems.delete(entityId);
 		}
 	}

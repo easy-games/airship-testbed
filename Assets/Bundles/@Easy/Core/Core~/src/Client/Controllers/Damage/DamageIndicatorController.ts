@@ -1,20 +1,38 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
+import { Bin } from "Shared/Util/Bin";
+import { SetTimeout } from "Shared/Util/Timer";
 
 @Controller({})
 export class DamageIndicatorController implements OnStart {
 	private damageIndicatorObject: Object | undefined;
+	public hitMarkerImage: Image;
+	private hitMarkerBin = new Bin();
+	public hitMarkerAudioClip: AudioClip | undefined;
+
+	constructor() {
+		const combatEffectsUI = Object.Instantiate<GameObject>(
+			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/CombatEffectsUI.prefab"),
+		);
+		this.hitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>();
+		this.hitMarkerImage.enabled = false;
+	}
 
 	OnStart(): void {
 		// this.damageIndicatorObject = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
+		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Hit_Health.ogg");
 
 		CoreClientSignals.EntityDamage.Connect((event) => {
 			const entityGO = event.entity.networkObject.gameObject;
 
+			//Hitstun
+			const hitstunDuration = DamageUtils.AddHitstun(event.entity, event.amount, () => {});
+
 			//Entity Damage Animation
 			event.entity.animator?.PlayTakeDamage(
-				event.amount,
+				hitstunDuration + 0.25,
 				event.damageType,
 				entityGO.transform.position,
 				entityGO,
@@ -25,6 +43,18 @@ export class DamageIndicatorController implements OnStart {
 				"@Easy/Core/Shared/Resources/Sound/Damage_Taken.wav",
 				entityGO.transform.position,
 			);
+
+			if (event.fromEntity?.IsLocalCharacter()) {
+				this.hitMarkerBin.Clean();
+				this.hitMarkerImage.enabled = true;
+				this.hitMarkerBin.Add(
+					SetTimeout(0.08, () => {
+						this.hitMarkerImage.enabled = false;
+					}),
+				);
+
+				AudioManager.PlayClipGlobal(this.hitMarkerAudioClip!);
+			}
 
 			// Indicator
 			// const indicatorGO = GameObjectBridge.InstantiateAt(

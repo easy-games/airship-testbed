@@ -1,15 +1,17 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
+import { Bin } from "Shared/Util/Bin";
+import { Layer } from "Shared/Util/Layer";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Theme } from "Shared/Util/Theme";
+import { SetTimeout } from "Shared/Util/Timer";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { HeldItem } from "../HeldItem";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { SetTimeout } from "Shared/Util/Timer";
-import { Bin } from "Shared/Util/Bin";
-import { Layer } from "Shared/Util/Layer";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
+import { Task } from "Shared/Util/Task";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
@@ -26,42 +28,14 @@ export class MeleeHeldItem extends HeldItem {
 
 		//Animation
 		this.entity.animator.PlayUseAnim(this.animationIndex, {
-			transitionTime: 0.1,
+			transitionTime: 0.05,
 			autoFadeOut: true,
 		});
-
-		//Sound effect
-		this.audioPitchShift = this.animationIndex === 0 ? 1 : 2;
-		this.PlayItemSound();
 
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
 			error("No melee data on a melee weapon?");
 			return;
-		}
-
-		//Only local player should do collisions checks
-		if (this.entity.IsLocalCharacter()) {
-			Profiler.BeginSample("MeleeClientEffect");
-			// const entityDriver = this.entity.GetEntityDriver();
-			// entityDriver.UpdateSyncTick();
-
-			let hitTargets = this.ScanForHits();
-
-			for (const data of hitTargets) {
-				if (meleeData.onHitPrefabPath) {
-					//Local damage predictions
-					const effectGO = EffectsManager.SpawnPrefabEffect(
-						meleeData.onHitPrefabPath,
-						data.hitPosition,
-						Quaternion.LookRotation(data.hitDirection).eulerAngles,
-					);
-					if (effectGO) {
-						effectGO.transform.SetParent(data.hitEntity.model.transform);
-					}
-				}
-			}
-			Profiler.EndSample();
 		}
 
 		//Play the items use effect
@@ -94,18 +68,54 @@ export class MeleeHeldItem extends HeldItem {
 			if (this.animationIndex >= meleeData.onUseVFX.size()) {
 				this.animationIndex = 0;
 			}
+		}
 
-			//Reset the index if you don't use the attack for a while
-			if (this.bin) {
-				this.bin.Clean();
+		Task.Delay(meleeData.hitDelay ?? 0, () => {
+			if (!meleeData) {
+				return;
 			}
-			if (this.itemMeta?.usable?.cooldownSeconds) {
-				this.bin.Add(
-					SetTimeout(this.itemMeta.usable.cooldownSeconds + 0.25, () => {
-						this.animationIndex = 0;
-					}),
-				);
+			//Sound effect
+			this.audioPitchShift = this.animationIndex === 0 ? 1 : 2;
+			this.PlayItemSound();
+			//Only local player should do collisions checks
+			if (this.entity.IsLocalCharacter()) {
+				Profiler.BeginSample("MeleeClientEffect");
+				// const entityDriver = this.entity.GetEntityDriver();
+				// entityDriver.UpdateSyncTick();
+
+				let hitTargets = this.ScanForHits();
+				let hitSomething = false;
+				for (const data of hitTargets) {
+					if (meleeData.onHitPrefabPath) {
+						//Local damage predictions
+						hitSomething = true;
+						const effectGO = EffectsManager.SpawnPrefabEffect(
+							meleeData.onHitPrefabPath,
+							data.hitPosition,
+							Quaternion.LookRotation(data.hitDirection).eulerAngles,
+						);
+						if (effectGO) {
+							effectGO.transform.SetParent(data.hitEntity.model.transform);
+						}
+					}
+				}
+				if (hitSomething) {
+					DamageUtils.AddAttackStun(this.entity, meleeData.damage);
+				}
+				Profiler.EndSample();
 			}
+		});
+
+		//Reset the index if you don't use the attack for a while
+		if (this.bin) {
+			this.bin.Clean();
+		}
+		if (this.itemMeta?.usable?.cooldownSeconds) {
+			this.bin.Add(
+				SetTimeout(this.itemMeta.usable.cooldownSeconds + 0.25, () => {
+					this.animationIndex = 0;
+				}),
+			);
 		}
 	}
 

@@ -82,6 +82,8 @@ interface EntityDriver extends Component {
 	 */
 	ApplyVelocityOverTime(velocity: Vector3, duration: number): void;
 	SetVelocity(velocity: Vector3): void;
+	DisableMovement();
+	EnableMovement();
 	GetState(): EntityState;
 	UpdateSyncTick(): void;
 
@@ -447,7 +449,7 @@ interface ProjectileManagerConstructor {
 declare const ProjectileManager: ProjectileManagerConstructor;
 
 interface EasyProjectile {
-	OnHit(callback: (event: ProjectileHitEvent) => void): void;
+	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
 }
 
 interface EasyCoreAPI {
@@ -470,7 +472,12 @@ interface DynamicVariablesManagerConstructor {
 declare const DynamicVariablesManager: DynamicVariablesManagerConstructor;
 
 interface MeshProcessorConstructor {
-	ProduceSingleBlock(blockIndex: number, world: VoxelWorld, triplanarScale: number): GameObject | undefined;
+	ProduceSingleBlock(
+		blockIndex: number,
+		world: VoxelWorld,
+		triplanarMode: number,
+		triplanarScale: number,
+	): GameObject | undefined;
 }
 declare const MeshProcessor: MeshProcessorConstructor;
 
@@ -552,3 +559,5 @@ type EngineEventConnection = number;
 interface BridgeConstructor {
 	DisconnectEvent(eventConnection: EngineEventConnection): void;
 }
+
+declare const easygg_objectrefs: unknown;

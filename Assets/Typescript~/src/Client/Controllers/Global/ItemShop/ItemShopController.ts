@@ -95,12 +95,12 @@ export class ItemShopController implements OnStart {
 			this.SetSidebarItem(this.selectedShopElement, true);
 		}
 
-		if (Game.LocalPlayer.Character) {
-			const startingPos = Game.LocalPlayer.Character.model.transform.position;
+		if (Game.LocalPlayer.character) {
+			const startingPos = Game.LocalPlayer.character.model.transform.position;
 			bin.Add(
 				SetInterval(0.1, () => {
-					if (Game.LocalPlayer.Character) {
-						if (startingPos.sub(Game.LocalPlayer.Character.model.transform.position).magnitude >= 1) {
+					if (Game.LocalPlayer.character) {
+						if (startingPos.sub(Game.LocalPlayer.character.model.transform.position).magnitude >= 1) {
 							AppManager.Close();
 						}
 					}
@@ -154,10 +154,11 @@ export class ItemShopController implements OnStart {
 				return;
 			}
 
-			let itemGO = container.transform.FindChild(shopItem.itemType)?.gameObject;
+			const itemMeta = ItemUtil.GetItemMeta(shopItem.itemType);
+			let itemGO = container.transform.FindChild("id_" + itemMeta.id)?.gameObject;
 			if (itemGO === undefined) {
 				itemGO = GameObjectUtil.InstantiateIn(this.shopItemPrefab, container.transform);
-				itemGO.name = shopItem.itemType;
+				itemGO.name = "id_" + itemMeta.id;
 			}
 			CanvasUIBridge.SetSprite(
 				itemGO.transform.GetChild(0).gameObject,
@@ -194,7 +195,7 @@ export class ItemShopController implements OnStart {
 	}
 
 	private CanPurchase(shopElement: ShopElement): boolean {
-		if (!Game.LocalPlayer.Character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
+		if (!Game.LocalPlayer.character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
 			return false;
 		}
 		if (shopElement.lockAfterPurchase && this.purchasedTierItems.has(shopElement.itemType)) {
@@ -272,7 +273,7 @@ export class ItemShopController implements OnStart {
 				return;
 			}
 
-			const inv = Game.LocalPlayer.Character?.GetInventory();
+			const inv = Game.LocalPlayer.character?.GetInventory();
 			if (inv?.HasEnough(shopItem.currency, shopItem.price)) {
 				this.purchaseButtonText.text = "Purchase";
 				purchaseButtonImage.color = new Color(0.5, 0.87, 0.63);

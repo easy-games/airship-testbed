@@ -2,11 +2,11 @@
 /// <reference types="@easy-games/types" />
 import { PlaySoundConfig } from "../Audio/AudioManager";
 import { Entity } from "../Entity/Entity";
+import { Duration } from "../Util/Duration";
 import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
-import { Duration } from "../Util/Duration";
 export interface TillableBlockMeta {
     tillsToBlockId: string;
 }
@@ -68,10 +68,10 @@ export interface ProjectileLauncherMeta {
     chargingWalkSpeedMultiplier?: number;
     firstPersonLaunchOffset: Vector3;
     chargeSound?: SoundMeta[];
-    chargeAnimFP?: string[];
-    chargeAnimTP?: string[];
-    throwAnimFP?: string[];
-    throwAnimTP?: string[];
+    chargeAnimFP?: string[] | "none";
+    chargeAnimTP?: string[] | "none";
+    throwAnimFP?: string[] | "none";
+    throwAnimTP?: string[] | "none";
 }
 export interface ViewModelMeta {
     idleAnimFP?: string[];
@@ -108,6 +108,7 @@ export interface ItemMeta {
         protectionAmount: number;
     };
     pickupSound?: string[];
+    groundItemPrefab?: string;
 }
 export interface UsableHeldItemMeta {
     minChargeSeconds?: number;
@@ -137,18 +138,25 @@ export interface AOEDamageMeta {
     innerDamage: number;
     outerDamage: number;
     damageRadius: number;
+    blockExplosiveDamage: number;
     selfKnockbackMultiplier?: number;
 }
 export declare enum BlockArchetype {
-    NONE = 0,
-    STONE = 1,
-    WOOD = 2,
-    WOOL = 3
+    NONE = -1,
+    PROP = 0,
+    GROUND = 1,
+    FABRIC = 2,
+    WOOD = 3,
+    STONE = 4,
+    HARD_STONE = 5,
+    METAL = 6,
+    BLAST_PROOF = 7
 }
 export interface MeleeItemMeta {
     damageType?: DamageType;
     canHitMultipleTargets?: boolean;
     damage: number;
+    hitDelay?: number;
     onUseVFX: AllBundleItems[];
     onUseVFX_FP: AllBundleItems[];
     /**

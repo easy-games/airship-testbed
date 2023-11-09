@@ -32,6 +32,7 @@ export declare class EntityReferences {
     spineBoneMiddle: Transform;
     spineBoneTop: Transform;
     root: Transform;
+    rig: Transform;
     characterCollider: Collider;
     animationEvents: EntityAnimationEvents;
     humanEntityAnimator: CoreEntityAnimator;
@@ -77,6 +78,7 @@ export declare class Entity {
     readonly OnDeath: Signal<void>;
     readonly OnArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
+    Teleport(pos: Vector3, lookVector?: Vector3): void;
     AddHealthbar(): void;
     /**
      * Gets the current position of this entity

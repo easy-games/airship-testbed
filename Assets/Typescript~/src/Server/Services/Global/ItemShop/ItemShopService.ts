@@ -197,7 +197,7 @@ export class ShopService implements OnStart {
 
 			Network.ServerToClient.ItemShop.ItemPurchased.Server.FireAllClients(
 				// clientId,
-				player.Character!.id,
+				player.character!.id,
 				shopElement.itemType,
 			);
 

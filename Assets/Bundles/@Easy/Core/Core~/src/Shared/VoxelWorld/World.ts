@@ -9,15 +9,17 @@ import { ItemUtil } from "../Item/ItemUtil";
 import { Block } from "./Block";
 import { BlockDataAPI } from "./BlockData/BlockDataAPI";
 
+export type BlockData = {
+	[key: string]: unknown;
+};
+
 export interface PlaceBlockConfig {
 	placedByEntityId?: number;
 	/** True if should update collisions instantly.
 	 *
 	 * Defaults to true. */
 	priority?: boolean;
-	blockData?: {
-		[key: string]: unknown;
-	};
+	blockData?: BlockData;
 }
 
 export class World {
@@ -200,7 +202,7 @@ export class World {
 		if (RunCore.IsServer()) {
 			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
 		} else {
-			if (config?.placedByEntityId === Game.LocalPlayer.Character?.id) {
+			if (config?.placedByEntityId === Game.LocalPlayer.character?.id) {
 				// Client predicted block place event
 				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
@@ -208,7 +210,7 @@ export class World {
 
 				const block = new Block(blockVoxelId, this);
 				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character, false),
+					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.character, false),
 				);
 			}
 		}
@@ -240,7 +242,7 @@ export class World {
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 
 		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
-		let isLocalPrediction = config?.placedByEntityId === Game.LocalPlayer.Character?.id;
+		let isLocalPrediction = config?.placedByEntityId === Game.LocalPlayer.character?.id;
 
 		positions.forEach((position, i) => {
 			if (config?.blockData) {
@@ -263,7 +265,7 @@ export class World {
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 					.BlockPlaceClientSignal;
 				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(position, blocks[i], Game.LocalPlayer.Character, true),
+					new BlockPlaceClientSignal(position, blocks[i], Game.LocalPlayer.character, true),
 				);
 			}
 		});
@@ -272,7 +274,7 @@ export class World {
 		//Call block keys in batches based on keytype to avoid calling it per block (it sends a network event)
 		keyMap.forEach((value, key) => {
 			//print("Sending batch key data: " + key + ", " + value.data.size());
-			BlockDataAPI.SetBlockGroupData(value.position, key, value.data);
+			BlockDataAPI.SetBlockGroupCustomData(value.position, key, value.data);
 		});
 	}
 

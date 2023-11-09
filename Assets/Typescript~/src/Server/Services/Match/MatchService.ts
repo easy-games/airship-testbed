@@ -51,6 +51,10 @@ export class MatchService implements OnStart {
 		});
 	}
 
+	public GetMatchStartTime(): number {
+		return this.matchStartTime;
+	}
+
 	/** Yields until match exits `MatchState.SETUP` state. */
 	public WaitForMatchReady(): void {
 		if (this.state !== MatchState.SETUP) return;

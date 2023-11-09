@@ -10,6 +10,6 @@ export declare class NametagController implements OnStart {
     private showSelfNametag;
     constructor(playerController: PlayerController, entityController: EntityController);
     OnStart(): void;
-    CreateNametag(entity: Entity): GameObject;
-    private UpdateNametag;
+    private CreateNametag;
+    UpdateNametag(entity: Entity): void;
 }

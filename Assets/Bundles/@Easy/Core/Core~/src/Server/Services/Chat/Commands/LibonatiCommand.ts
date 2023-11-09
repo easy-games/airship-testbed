@@ -1,7 +1,6 @@
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
 
 export class LibonatiCommand extends ChatCommand {
@@ -10,23 +9,38 @@ export class LibonatiCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		this.AddItem(player, ItemType.WOOD_BOW, 1);
-		this.AddItem(player, ItemType.WOOD_ARROW, 100);
-		this.AddItem(player, ItemType.TELEPEARL, 100);
-		this.AddItem(player, ItemType.FIREBALL, 100);
-		this.AddItem(player, ItemType.IRON_BLOCK, 100);
-		this.AddItem(player, ItemType.TALL_GRASS, 100);
-		this.AddItem(player, ItemType.IRON, 500);
-		this.AddItem(player, ItemType.EMERALD, 500);
-		this.AddItem(player, ItemType.DIAMOND, 500);
+		const items = [
+			ItemType.WOOD_SWORD,
+			ItemType.STONE_SWORD,
+			ItemType.IRON_SWORD,
+			ItemType.DIAMOND_SWORD,
+			ItemType.EMERALD_SWORD,
+			ItemType.WOOD_BOW,
+			ItemType.TELEPEARL,
+			ItemType.FIREBALL,
+			ItemType.DIRT,
+			ItemType.STONE,
+			ItemType.CERAMIC,
+			ItemType.OBSIDIAN,
+			ItemType.OAK_WOOD_PLANK,
+			ItemType.RED_WOOL,
+			ItemType.IRON,
+			ItemType.EMERALD,
+			ItemType.DIAMOND,
+			ItemType.OBSIDIAN,
+			ItemType.WOOD_ARROW,
+		];
+		items.forEach((value) => {
+			this.AddItem(player, value, 999);
+		});
 	}
 
-	private AddItem(player: Player, itemType: ItemType, amount: number){
+	private AddItem(player: Player, itemType: ItemType, amount: number) {
 		const itemStack = new ItemStack(itemType, amount);
 
-		if (!player.Character) return;
+		if (!player.character) return;
 
-		player.Character.GetInventory().AddItem(itemStack);
+		player.character.GetInventory().AddItem(itemStack);
 		player.SendMessage(`Given ${amount} ${itemStack.GetItemMeta().displayName}`);
 	}
 }

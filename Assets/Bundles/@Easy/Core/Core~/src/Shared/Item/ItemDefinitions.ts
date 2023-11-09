@@ -1,4 +1,6 @@
+import { DamageType } from "Shared/Damage/DamageType";
 import { CoreSound } from "Shared/Sound/CoreSound";
+import { Duration } from "Shared/Util/Duration";
 import { Layer } from "Shared/Util/Layer";
 import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
@@ -6,14 +8,16 @@ import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { BlockArchetype, BlockMeta, ItemMeta, MeleeItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
-import { Duration } from "Shared/Util/Duration";
-import { DamageType } from "Shared/Damage/DamageType";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
 	return p.map((s) => {
 		return `@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/${s}.anim`;
 	});
+};
+
+const GroundItemPrefab = (s: string) => {
+	return `@Easy/Core/Shared/Resources/Prefabs/GroundItems/${s}.prefab`;
 };
 
 const defaultGravity = PhysicsUtil.Gravity;
@@ -23,7 +27,7 @@ const blockUsable: UsableHeldItemMeta = {
 	maxChargeSeconds: 0,
 	cooldownSeconds: 0.0,
 	holdToUseCooldownInSeconds: 0.16,
-	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimFP: CoreAnim("FP_Block_Place"),
 	onUseAnimTP: CoreAnim("TP_Block_Place"),
 	canHoldToUse: true,
 };
@@ -56,6 +60,7 @@ const swordViewModel: ViewModelMeta = {
 
 const swordMelee: MeleeItemMeta = {
 	damage: 10,
+	hitDelay: 0.12,
 	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit as string,
 	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
 	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],
@@ -90,7 +95,7 @@ const woolBlock: BlockMeta = {
 	placeSound: CoreSound.blockPlaceWool,
 	hitSound: CoreSound.blockHitWool,
 	breakSound: CoreSound.blockBreakWool,
-	blockArchetype: BlockArchetype.WOOL,
+	blockArchetype: BlockArchetype.FABRIC,
 };
 
 /**
@@ -128,9 +133,24 @@ export const items: {
 			blockId: ItemType.BED,
 			prefab: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
-				childBlocks: [new Vector3(0, 0, 1)],
+				childBlocks: [
+					new Vector3(0, 0, 1),
+					new Vector3(1, 0, 1),
+					new Vector3(-1, 0, 1),
+
+					new Vector3(0, 0, 2),
+					new Vector3(1, 0, 2),
+					new Vector3(-1, 0, 2),
+
+					new Vector3(0, 0, -1),
+					new Vector3(1, 0, -1),
+					new Vector3(-1, 0, -1),
+
+					new Vector3(1, 0, 0),
+					new Vector3(-1, 0, 0),
+				],
 			},
-			blockArchetype: BlockArchetype.WOOD,
+			blockArchetype: BlockArchetype.PROP,
 		},
 	},
 	[ItemType.WHITE_WOOL]: {
@@ -190,6 +210,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.GRASS,
+			blockArchetype: BlockArchetype.GROUND,
 			tillable: {
 				tillsToBlockId: ItemType.FARMLAND, // Farmland
 			},
@@ -206,6 +227,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.TALL_GRASS,
+			blockArchetype: BlockArchetype.GROUND,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
 			placeSound: CoreSound.blockPlaceDirt,
@@ -218,6 +240,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.DIRT,
+			blockArchetype: BlockArchetype.GROUND,
 			stepSound: CoreSound.footstepGrass,
 			hitSound: CoreSound.blockHitDirt,
 			breakSound: CoreSound.blockBreakDirt,
@@ -274,6 +297,7 @@ export const items: {
 		block: {
 			blockId: ItemType.OBSIDIAN,
 			health: 50,
+			blockArchetype: BlockArchetype.HARD_STONE,
 		},
 	},
 	[ItemType.ANDESITE]: {
@@ -284,6 +308,7 @@ export const items: {
 		block: {
 			blockId: ItemType.ANDESITE,
 			health: 20,
+			blockArchetype: BlockArchetype.STONE,
 		},
 	},
 	[ItemType.OAK_WOOD_PLANK]: {
@@ -443,6 +468,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.CERAMIC,
+			blockArchetype: BlockArchetype.BLAST_PROOF,
 		},
 	},
 
@@ -450,14 +476,17 @@ export const items: {
 	[ItemType.IRON]: {
 		displayName: "Iron",
 		accessoryPaths: [AccPath(ItemType.IRON)],
+		groundItemPrefab: GroundItemPrefab("iron"),
 	},
 	[ItemType.DIAMOND]: {
 		displayName: "Diamond",
 		accessoryPaths: [AccPath(ItemType.DIAMOND)],
+		groundItemPrefab: GroundItemPrefab("diamond"),
 	},
 	[ItemType.EMERALD]: {
 		displayName: "Emerald",
 		accessoryPaths: [AccPath(ItemType.EMERALD)],
+		groundItemPrefab: GroundItemPrefab("emerald"),
 	},
 
 	////ARMOR
@@ -604,6 +633,17 @@ export const items: {
 			damage: 45,
 		},
 	},
+	[ItemType.EMERALD_SWORD]: {
+		displayName: "Emerald Sword",
+		usable: {
+			...swordUsable,
+		},
+		accessoryPaths: [AccPath(ItemType.EMERALD_SWORD)],
+		melee: {
+			...swordMelee,
+			damage: 55,
+		},
+	},
 	[ItemType.DOUBLE_HIT_SWORD]: {
 		displayName: "Double Hit Sword",
 		usable: {
@@ -646,6 +686,8 @@ export const items: {
 			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
 			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 			chargeSound: [{ path: CoreSound.bowCharge }],
+			throwAnimFP: "none",
+			throwAnimTP: "none",
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),
@@ -671,6 +713,8 @@ export const items: {
 			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
 			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 			chargeSound: [{ path: CoreSound.bowCharge }],
+			throwAnimFP: "none",
+			throwAnimTP: "none",
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),
@@ -745,9 +789,10 @@ export const items: {
 			yAxisAimAdjust: 0,
 			damage: 0,
 			aoeDamage: {
-				innerDamage: 20,
-				outerDamage: 1,
-				damageRadius: 3.5,
+				innerDamage: 25,
+				outerDamage: 5,
+				damageRadius: 4.5,
+				blockExplosiveDamage: 60,
 				selfKnockbackMultiplier: 1,
 			},
 			blockDamage: {

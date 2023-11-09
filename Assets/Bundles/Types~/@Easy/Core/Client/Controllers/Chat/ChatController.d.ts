@@ -3,6 +3,7 @@ import { DirectMessageController } from "../../MainMenuControllers/Social/Direct
 import { FriendsController } from "../../MainMenuControllers/Social/FriendsController";
 import { SocketController } from "../../MainMenuControllers/Socket/SocketController";
 import { ChatCommand } from "../../../Shared/Commands/ChatCommand";
+import { Player } from "../../../Shared/Player/Player";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { CoreUIController } from "../UI/CoreUIController";
 export declare class ChatController implements OnStart {
@@ -27,7 +28,7 @@ export declare class ChatController implements OnStart {
     ShowAllChatMessages(): void;
     SubmitInputField(): void;
     SendChatMessage(message: string): void;
-    RenderChatMessage(message: string): void;
+    RenderChatMessage(message: string, sender?: Player): void;
     ClearChatMessages(): void;
     IsChatFocused(): boolean;
 }

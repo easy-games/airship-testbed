@@ -17,12 +17,15 @@
 <!--    <TopTexture>liamgrass.t</TopTexture>-->
 <!--    <BottomTexture>liamgrass.t</BottomTexture>-->
 <!--    <SideTexture>liamgrass.s</SideTexture>-->
-    <Material>StylizedGrass</Material>
+<!--    <Material>StylizedGrass</Material>-->
+    <SideMaterial>StylizedGrassSide</SideMaterial>
+<!--    <TopMaterial>StylizedGrassTop</TopMaterial>-->
+    <TopTexture>grass_top</TopTexture>
     <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>2</Minecraft>
-    <Brightness>1</Brightness>
+    <Brightness>1</Brightness>v
   </Block>
 
   <Block>

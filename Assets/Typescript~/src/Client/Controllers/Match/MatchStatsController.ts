@@ -18,9 +18,7 @@ export class MatchStatsController implements OnStart {
 		});
 
 		CoreClientSignals.EntityDeath.Connect((e) => {
-			print("death.1");
 			if (e.killer?.player && e.entity.player && e.entity !== e.killer) {
-				print("death.2");
 				this.UpdateMatchStats(e.killer.player.userId, (stats) => stats.kills++);
 				this.UpdateMatchStats(e.entity.player.userId, (stats) => stats.deaths++);
 			}
@@ -35,7 +33,7 @@ export class MatchStatsController implements OnStart {
 	}
 
 	public UpdateMatchStats(userId: string, updateFunc: (stats: PlayerMatchStats) => void): void {
-		const stats = this.matchStats.get(userId)!;
+		const stats = this.GetMatchStats(userId);
 
 		// make a copy
 		const before = { ...stats };

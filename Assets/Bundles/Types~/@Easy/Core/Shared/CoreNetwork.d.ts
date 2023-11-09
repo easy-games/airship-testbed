@@ -64,6 +64,8 @@ export declare const CoreNetwork: {
             SetHealth: RemoteEvent<[entityId: number, health: number]>;
             SetDisplayName: RemoteEvent<[entityId: number, displayName: string]>;
             AddHealthbar: RemoteEvent<[entityId: number]>;
+            SetLookVector: RemoteEvent<[entityId: number, lookVector: Vector3]>;
+            FallDamageTaken: RemoteEvent<[entityId: number, velocity: Vector3]>;
         };
         EntityDeath: RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined, respawnTime: number]>;
         GroundItem: {
@@ -82,7 +84,7 @@ export declare const CoreNetwork: {
             }[]]>;
         };
         CharacterModelChanged: RemoteEvent<[characterModelId: number]>;
-        ChatMessage: RemoteEvent<[text: string]>;
+        ChatMessage: RemoteEvent<[text: string, senderClientId?: number | undefined]>;
         SetAccessory: RemoteEvent<[entityId: number, slot: AccessorySlot, accessoryPath: string]>;
         RemoveAccessory: RemoteEvent<[entityId: number, slot: AccessorySlot]>;
         AddPlayer: RemoteEvent<[player: PlayerDto]>;
@@ -115,7 +117,8 @@ export declare const CoreNetwork: {
         RemovePlayerFromTeam: RemoteEvent<[teamId: string, userId: string]>;
         RemoveTeams: RemoteEvent<[teamIds: string[]]>;
         SetBlockData: RemoteEvent<[voxelPos: Vector3, key: string, data: unknown]>;
-        SetBlockGroupData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>;
+        SetBlockGroupCustomData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown[]]>;
+        SetBlockGroupSameData: RemoteEvent<[voxelPositions: Vector3[], key: string, data: unknown]>;
         SyncPrefabBlocks: RemoteEvent<[blockPositions: Vector3[]]>;
         /** Fired when a player is eliminated. */
         PlayerEliminated: RemoteEvent<[clientId: number]>;
