@@ -41,5 +41,5 @@ export declare abstract class AbilityLogic {
      * Cast this ability logic to a data transfer object representation
      * @returns The data transfer object representation of this ability logic
      */
-    ToDto(): AbilityDto;
+    Encode(): AbilityDto;
 }

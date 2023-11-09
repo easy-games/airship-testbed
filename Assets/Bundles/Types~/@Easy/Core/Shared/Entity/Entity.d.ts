@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { BlockMeta } from "../Item/ItemMeta";
 import { ItemType } from "../Item/ItemType";
 import { Player } from "../Player/Player";
@@ -78,6 +78,11 @@ export declare class Entity {
     readonly OnArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     AddHealthbar(): void;
+    /**
+     * Gets the current position of this entity
+     * @returns
+     */
+    GetPosition(): Vector3;
     GetHealthbar(): Healthbar | undefined;
     GetTeam(): Team | undefined;
     CanDamage(entity: Entity): boolean;

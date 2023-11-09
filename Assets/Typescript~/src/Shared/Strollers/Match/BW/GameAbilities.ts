@@ -1,6 +1,5 @@
-import { AbilityConfig, AbilityDto } from "@Easy/Core/Shared/Abilities/Ability";
+import { AbilityConfig } from "@Easy/Core/Shared/Abilities/Ability";
 import { AbilityLogic } from "@Easy/Core/Shared/Abilities/AbilityLogic";
-import { AbilitySlot } from "@Easy/Core/Shared/Abilities/AbilitySlot";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { AbilityRegistry } from "@Easy/Core/Shared/Strollers/Abilities/AbilityRegistry";
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
@@ -19,15 +18,15 @@ export class GameAbilities implements OnStart {
 		const ability = this.abilitiesRegistry.GetAbilityById(abilityId);
 		if (ability) {
 			const abilities = character.GetAbilities();
-			return abilities.AddAbilityWithId(abilityId, ability.config.slot, ability, overrideConfig);
+			return abilities.AddAbilityWithIdToSlot(abilityId, ability.config.slot, ability, overrideConfig);
 		} else {
 			return;
 		}
 	}
 
 	public OnStart(): void {
-		for (const [k, v] of pairs(Abilities)) {
-			this.abilitiesRegistry.RegisterAbilityById(k as string, v.logic, v.config);
+		for (const [abilityId, abilityMeta] of pairs(Abilities)) {
+			this.abilitiesRegistry.RegisterAbilityById(abilityId as AbilityId, abilityMeta.logic, abilityMeta.config);
 		}
 	}
 }
