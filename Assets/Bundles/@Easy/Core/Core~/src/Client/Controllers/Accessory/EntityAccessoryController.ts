@@ -22,10 +22,12 @@ export class EntityAccessoryController implements OnStart {
 				if (event.entity.IsPlayerOwned()) {
 					//Add Kit Accessory
 					if (ItemUtil.defaultKitAccessory) {
+						Profiler.BeginSample("EquipAccessories");
 						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
 							ItemUtil.defaultKitAccessory,
 							true,
 						);
+						Profiler.EndSample();
 					}
 				}
 
@@ -121,6 +123,8 @@ export class EntityAccessoryController implements OnStart {
 	//Turn off root accessories unless they are on the first person layer
 	private SetFirstPersonLayer(accessoryBuilder: AccessoryBuilder) {
 		//Accessories with first person mesh variants need to be on layer FPS
+		Profiler.BeginSample("ToggleMeshVisibility");
 		accessoryBuilder.ToggleMeshVisibility(this.isFirstPerson);
+		Profiler.EndSample();
 	}
 }

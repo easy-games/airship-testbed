@@ -17,9 +17,9 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
-import { LocalEntityController } from "../Character/LocalEntityController";
 
 @Controller({})
 export class EntityController implements OnStart {
@@ -46,17 +46,21 @@ export class EntityController implements OnStart {
 	OnStart(): void {
 		CoreNetwork.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {
 			entityDtos.forEach((entityDto) => {
+				Profiler.BeginSample("SpawnEntity");
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
 					error("[FATAL]: Failed to add entity:" + err);
 				}
+				Profiler.EndSample();
 			});
 		});
 		CoreNetwork.ServerToClient.DespawnEntity.Client.OnServerEvent((entityId) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity) {
+				Profiler.BeginSample("DespawnEntity");
 				this.DespawnEntity(entity);
+				Profiler.EndSample();
 			}
 		});
 		CoreNetwork.ServerToClient.PlayEntityItemAnimation.Client.OnServerEvent((entityId, animationId, playMode) => {
@@ -183,9 +187,11 @@ export class EntityController implements OnStart {
 			let shirtColor = hairColors[(randomId * 2) % hairColors.size()];
 
 			//Body Meshes
+			Profiler.BeginSample("ColorRandomization");
 			event.entity.accessoryBuilder.SetSkinColor(skinColor, false);
 			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
 			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
+			Profiler.EndSample();
 		});
 	}
 
