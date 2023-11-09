@@ -32,7 +32,7 @@ export class DamageIndicatorController implements OnStart {
 
 			//Entity Damage Animation
 			event.entity.animator?.PlayTakeDamage(
-				hitstunDuration + 0.25,
+				hitstunDuration ?? 0 + 0.25,
 				event.damageType,
 				entityGO.transform.position,
 				entityGO,

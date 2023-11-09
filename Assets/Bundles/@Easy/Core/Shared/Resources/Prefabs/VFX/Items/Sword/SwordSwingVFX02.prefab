@@ -41,7 +41,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5009721352736570856, guid: 7961bc1ee5816da478716f13cb2814c1, type: 3}
       propertyPath: startDelay.scalar
-      value: 0.1
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 5009721352736570856, guid: 7961bc1ee5816da478716f13cb2814c1, type: 3}
       propertyPath: UVModule.startFrame.scalar

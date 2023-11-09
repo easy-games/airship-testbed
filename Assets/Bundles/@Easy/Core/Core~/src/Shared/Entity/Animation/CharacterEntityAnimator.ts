@@ -71,7 +71,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		config?: {
 			fadeMode?: FadeMode;
 			wrapMode?: WrapMode;
-			transitionTime?: number;
+			fadeInDuration?: number;
+			fadeOutDuration?: number;
 			autoFadeOut?: boolean;
 		},
 	): AnimancerState {
@@ -87,7 +88,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				this.anim,
 				clip,
 				layer,
-				config?.transitionTime ?? this.defaultTransitionTime,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
+				config?.fadeOutDuration ?? this.defaultTransitionTime,
 				config?.fadeMode ?? FadeMode.FromStart,
 				config?.wrapMode ?? WrapMode.Default,
 			);
@@ -97,7 +99,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				this.anim,
 				clip,
 				layer,
-				config?.transitionTime ?? this.defaultTransitionTime,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
 				config?.fadeMode ?? FadeMode.FromStart,
 				config?.wrapMode ?? WrapMode.Default,
 			);
@@ -217,7 +219,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		}
 		const clip = RandomUtil.FromArray(clips);
 		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_IDLE, undefined, {
-			transitionTime: instantTransition ? 0 : this.defaultTransitionTime,
+			fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 		});
 		AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ITEM_ACTION).StartFade(0, this.defaultTransitionTime);
 	}
