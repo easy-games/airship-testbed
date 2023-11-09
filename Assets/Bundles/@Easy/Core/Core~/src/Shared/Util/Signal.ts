@@ -135,7 +135,7 @@ export class Signal<T extends unknown[] | unknown> {
 					error(err);
 				}
 				if (coroutine.status(thread) !== "dead") {
-					print("Signal yielded unexpectedly. This might be an error.");
+					warn("Signal yielded unexpectedly. This might be an error.");
 					// print(debug.traceback(thread, "Signal yielded unexpectedly. This might be an error."));
 				}
 
