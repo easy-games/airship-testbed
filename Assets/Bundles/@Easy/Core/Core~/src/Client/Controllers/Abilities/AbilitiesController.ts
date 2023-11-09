@@ -7,10 +7,14 @@ import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Bin } from "Shared/Util/Bin";
 import { AbilityBinding, BindingAction, BindingInputState } from "./Class/AbilityBinding";
 import inspect from "@easy-games/unity-inspect";
+import { SignalPriority } from "Shared/Util/Signal";
+import { CoreClientSignals } from "Client/CoreClientSignals";
+import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { InputController, InputType } from "../Input/InputController";
 
-const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.T, KeyCode.Y];
-const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.G, KeyCode.H, KeyCode.J];
-const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V];
+const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G, KeyCode.V];
+const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Y, KeyCode.H, KeyCode.B];
+const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.C];
 
 @Controller()
 export class AbilitiesController implements OnStart {
@@ -74,6 +78,8 @@ export class AbilitiesController implements OnStart {
 	// TODO: in future a much friendlier Input API
 	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
 		const boundAbilityId = binding.GetBound()?.id;
+		print("invoke ability", boundAbilityId);
+
 		if (state === BindingInputState.InputEnded && boundAbilityId) {
 			CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
 				abilityId: boundAbilityId,
@@ -88,15 +94,23 @@ export class AbilitiesController implements OnStart {
 	}
 
 	public OnStart(): void {
-		const abilities = CoreNetwork.ClientToServer.GetAbilities.Client.FireServer();
-		print("Fetched abilities", inspect(abilities));
-		for (const ability of abilities) {
-			this.RegisterAbility(ability);
-		}
-
 		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((dto) => {
-			print("Add ability", inspect(dto));
 			this.RegisterAbility(dto);
+		});
+
+		// Unbind abilities on death (since it's character-bound)
+		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
+			if (event.entity instanceof CharacterEntity && event.entity.IsLocalCharacter()) {
+				this.primaryAbilitySlots.forEach((slot) => slot.Unbind());
+				this.secondaryAbilitySlots.forEach((slot) => slot.Unbind());
+				this.utilityAbiltySlots.forEach((slot) => slot.Unbind());
+
+				// Run character ability fetch
+				const abilities = CoreNetwork.ClientToServer.GetAbilities.Client.FireServer();
+				for (const ability of abilities) {
+					this.RegisterAbility(ability);
+				}
+			}
 		});
 	}
 }

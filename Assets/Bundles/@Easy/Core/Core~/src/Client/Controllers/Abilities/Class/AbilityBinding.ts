@@ -1,7 +1,6 @@
 import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Keyboard } from "Shared/UserInput";
-import { KeySignal } from "Shared/UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
 import { ClientAbilityState } from "../AbilitiesUIController";
@@ -91,9 +90,15 @@ export class AbilityBinding {
 	}
 
 	public Unbind() {
-		this.bin.Clean();
 		this.boundTo = undefined;
 		this.enabled = false;
+
+		this.BindingStateChanged.Fire({
+			oldState: this.ToAbilityState(),
+			newState: undefined,
+		});
+
+		this.bin.Clean();
 	}
 
 	public GetBound(): AbilityDto | undefined {

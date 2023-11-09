@@ -153,6 +153,7 @@ export const CoreNetwork = {
 
 		AbilityAdded: new RemoteEvent<[dto: AbilityDto]>(),
 		AbilityStateChanged: new RemoteEvent<[dto: AbilityDto]>(),
+		AbilitiesUpdated: new RemoteEvent<[abilities: AbilityDto[]]>(),
 		AbilityRemoved: new RemoteEvent<[id: string]>(),
 	},
 };
