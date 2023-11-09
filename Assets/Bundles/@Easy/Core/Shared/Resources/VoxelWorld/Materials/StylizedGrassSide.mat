@@ -65,7 +65,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 34c33c446f00c4bc89caaa2231c0c46a, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0.29, y: 0}
+        m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -130,7 +130,7 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 0
-    - _TriplanarScale: 0.33
+    - _TriplanarScale: 0.25
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
