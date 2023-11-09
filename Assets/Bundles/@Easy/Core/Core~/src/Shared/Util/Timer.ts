@@ -30,8 +30,3 @@ export function SetInterval(interval: number, callback: Callback, immediate?: bo
 	});
 	return disconnect;
 }
-
-// Debug
-SetInterval(1, () => {
-	print("OnLateUpdate: " + OnLateUpdate.GetConnectionCount());
-});
