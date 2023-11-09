@@ -6,6 +6,10 @@ import { AbilitiesController } from "./AbilitiesController";
 import { Bin } from "Shared/Util/Bin";
 import inspect from "@easy-games/unity-inspect";
 import { Healthbar } from "Shared/UI/Healthbar";
+import { CoreNetwork } from "Shared/CoreNetwork";
+import { ChargingAbilityEndedState } from "Shared/Abilities/Ability";
+import { OnUpdate, SetTimeout } from "Shared/Util/Timer";
+import { TimeUtil } from "Shared/Util/TimeUtil";
 
 export interface ClientAbilityState {
 	name: string;
@@ -34,7 +38,8 @@ export class AbilitiesUIController implements OnStart {
 		this.abilitiesRefs = go.GetComponent<GameObjectReferences>();
 		this.abilitybarContent = this.abilitiesRefs.GetValue("UI", "AbilityBarContentGO").transform;
 		this.castbar = new Healthbar(this.abilitiesRefs.GetValue("UI", "CastBarTransform"), {
-			fillColor: new Color(255, 255, 0),
+			fillColor: new Color(255, 100, 0),
+			deathOnZero: false,
 		});
 
 		this.castbar.SetActive(false);
@@ -106,6 +111,31 @@ export class AbilitiesUIController implements OnStart {
 
 	public OnStart(): void {
 		this.SetupAbilityBar();
+
+		let disconnectTimer: (() => void) | undefined;
+		CoreNetwork.ServerToClient.AbilityChargeBegan.Client.OnServerEvent((event) => {
+			const startTime = event.timeStart;
+			const endTime = event.timeEnd;
+			const length = event.length;
+
+			disconnectTimer = OnUpdate.Connect((dt) => {
+				const secondsRemaining = endTime - TimeUtil.GetServerTime();
+				const value = math.min(1, (length - secondsRemaining) / length);
+				this.castbar.SetValue(value);
+			});
+
+			this.castbar.InstantlySetValue(0);
+			this.castbar.SetActive(true);
+		});
+
+		CoreNetwork.ServerToClient.AbilityChargeEnded.Client.OnServerEvent((event) => {
+			if (event.endState === ChargingAbilityEndedState.Cancelled) {
+				this.castbar.SetValue(0);
+			}
+
+			disconnectTimer?.();
+			SetTimeout(0.5, () => this.castbar.SetActive(false));
+		});
 
 		// Update local abilities
 		this.abilitiesController.ObserveAbilityBindings((abilities) => {

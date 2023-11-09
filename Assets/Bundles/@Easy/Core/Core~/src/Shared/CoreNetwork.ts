@@ -1,4 +1,10 @@
-import { AbilityDto, UseAbilityRequest, UseAbilityResponse } from "./Abilities/Ability";
+import {
+	AbilityDto,
+	ChargingAbilityDto,
+	ChargingAbilityEndedDto,
+	UseAbilityRequest,
+	UseAbilityResponse,
+} from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -158,6 +164,9 @@ export const CoreNetwork = {
 		AbilityStateChanged: new RemoteEvent<[dto: AbilityDto]>(),
 		AbilitiesUpdated: new RemoteEvent<[abilities: AbilityDto[]]>(),
 		AbilityRemoved: new RemoteEvent<[id: string]>(),
+
+		AbilityChargeBegan: new RemoteEvent<[dto: ChargingAbilityDto]>(),
+		AbilityChargeEnded: new RemoteEvent<[dto: ChargingAbilityEndedDto]>(),
 	},
 };
 

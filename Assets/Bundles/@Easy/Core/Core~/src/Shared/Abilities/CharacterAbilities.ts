@@ -4,7 +4,7 @@ import { AbilitySlot } from "./AbilitySlot";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { AbilityCancellationTrigger, AbilityConfig, AbilityDto } from "./Ability";
+import { AbilityCancellationTrigger, AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
 import { Duration } from "Shared/Util/Duration";
 import { Task } from "Shared/Util/Task";
 import { SetTimeout } from "Shared/Util/Timer";
@@ -121,6 +121,12 @@ export class CharacterAbilities {
 					const chargeTime = config.charge.chargeTimeSeconds;
 
 					ability.OnChargeBegan();
+					CoreNetwork.ServerToClient.AbilityChargeBegan.Server.FireClient(this.entity.player!.clientId, {
+						id,
+						timeStart: TimeUtil.GetServerTime(),
+						timeEnd: TimeUtil.GetServerTime() + chargeTime,
+						length: chargeTime,
+					});
 
 					// The current state of what's being 'charged' ability-wise
 					this.currentChargingAbilityState = {
@@ -131,6 +137,10 @@ export class CharacterAbilities {
 						onCancelled: SetTimeout(chargeTime, () => {
 							ability.OnTriggered();
 							this.currentChargingAbilityState = undefined;
+							CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireClient(
+								this.entity.player!.clientId,
+								{ id, endState: ChargingAbilityEndedState.Finished },
+							);
 						}),
 					};
 				} else {
@@ -150,8 +160,11 @@ export class CharacterAbilities {
 		if (this.currentChargingAbilityState) {
 			// Handle the cancellation behaviour
 			this.currentChargingAbilityState.onCancelled();
+			CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireClient(this.entity.player!.clientId, {
+				id: this.currentChargingAbilityState.abilityLogic.GetId(),
+				endState: ChargingAbilityEndedState.Cancelled,
+			});
 			this.currentChargingAbilityState.abilityLogic.OnChargeCancelled();
-
 			this.currentChargingAbilityState = undefined;
 			return true;
 		} else {

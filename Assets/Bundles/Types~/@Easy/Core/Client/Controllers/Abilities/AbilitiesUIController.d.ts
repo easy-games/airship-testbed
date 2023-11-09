@@ -14,6 +14,7 @@ export declare class AbilitiesUIController implements OnStart {
     private canvas;
     private abilitiesRefs;
     private abilitybarContent;
+    private castbar;
     constructor(coreUIController: CoreUIController, abilitiesController: AbilitiesController);
     private UpdateAbilityBarSlot;
     private SetupAbilityBar;

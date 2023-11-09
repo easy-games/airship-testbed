@@ -1,30 +1,35 @@
-/// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
-import { Keyboard, Mouse } from "../../../Shared/UserInput";
-export interface InputAction {
-    BindToKey(keyCode: KeyCode): void;
+import { KeySignal } from "../../../Shared/UserInput/Drivers/Signals/KeySignal";
+export declare enum InputState {
+    Began = 0,
+    Changed = 1,
+    Ended = 2
+}
+export declare enum InputType {
+    Keyboard = 0
+}
+declare abstract class Input {
+    readonly inputType: InputType;
+    abstract readonly inputState: InputState;
+    protected constructor(inputType: InputType);
+    IsInputType(inputType: InputType.Keyboard): this is KeyboardInput;
+}
+declare class KeyboardInput extends Input {
+    readonly inputState: InputState;
+    inputType: InputType;
+    readonly keyCode: KeyCode;
+    constructor(inputState: InputState, event: KeySignal);
+    IsInputType(inputType: InputType): boolean;
+}
+export interface InputContextAction {
+    BindToKey(...keyCodes: KeyCode[]): void;
     Unbind(): void;
 }
-declare class UserInputAction implements InputAction {
-    private readonly controller;
-    readonly actionName: string;
-    private callback;
-    private bin;
-    private boundKey;
-    constructor(controller: InputController, actionName: string, callback: Callback);
-    BindToKey(keyCode: KeyCode): void;
-    GetKey(): KeyCode | undefined;
-    Unbind(): void;
-    Destroy(): void;
-}
-export declare class InputController implements OnStart {
-    readonly keyboard: Keyboard;
-    readonly mouse: Mouse;
-    static Action: typeof UserInputAction;
-    OnStart(): void;
-    CreateAction(actionName: string, callback: Callback): InputAction;
-}
-export declare namespace InputController {
-    type InputAction = typeof InputController.Action["prototype"];
+export type ContextActionHandler = (actionName: string, input: Input) => void;
+export declare class InputController {
+    private mappedActions;
+    CreateAction(actionName: string, callback: ContextActionHandler): InputContextAction;
+    GetAction(actionName: string): InputContextAction | undefined;
+    HasAction(actionName: string): boolean;
+    UnbindAction(actionName: string): void;
 }
 export {};

@@ -11,7 +11,7 @@ export class BWAbilitiesService implements OnStart {
 				print(
 					"add ability to character",
 					event.entity.player.username,
-					event.entity.player.Character !== undefined,
+					event.entity.player.character !== undefined,
 				);
 
 				this.gameAbilities.AddAbilityToCharacter(AbilityId.RECALL, event.entity);

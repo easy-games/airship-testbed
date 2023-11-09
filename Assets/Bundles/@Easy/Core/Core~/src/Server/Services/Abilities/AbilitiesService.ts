@@ -10,7 +10,7 @@ import { SignalPriority } from "Shared/Util/Signal";
 export class AbilitiesService implements OnStart {
 	public OnStart(): void {
 		CoreNetwork.ClientToServer.UseAbility.Server.OnClientEvent((clientId, req) => {
-			const character = Player.FindByClientId(clientId)?.Character;
+			const character = Player.FindByClientId(clientId)?.character;
 			if (character) {
 				const abilities = character.GetAbilities();
 				abilities.UseAbilityById(req.abilityId);
@@ -20,7 +20,7 @@ export class AbilitiesService implements OnStart {
 		});
 
 		CoreNetwork.ClientToServer.GetAbilities.Server.SetCallback((clientId) => {
-			const character = Player.FindByClientId(clientId)?.Character;
+			const character = Player.FindByClientId(clientId)?.character;
 			if (character) {
 				const abilities = character.GetAbilities();
 				return abilities.Encode();

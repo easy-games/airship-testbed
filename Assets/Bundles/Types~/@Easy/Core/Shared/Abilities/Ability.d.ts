@@ -79,6 +79,20 @@ export interface AbilityDto {
      */
     readonly charging?: AbilityChargeConfig;
 }
+export interface ChargingAbilityDto {
+    readonly id: string;
+    readonly timeStart: number;
+    readonly length: number;
+    readonly timeEnd: number;
+}
+export declare enum ChargingAbilityEndedState {
+    Finished = 0,
+    Cancelled = 1
+}
+export interface ChargingAbilityEndedDto {
+    readonly id: string;
+    readonly endState: ChargingAbilityEndedState;
+}
 export interface UseAbilityRequest {
     readonly abilityId: string;
 }
