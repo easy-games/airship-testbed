@@ -125,8 +125,8 @@ MonoBehaviour:
   - id: 47
     name: '@Easy/Core:WHEAT_CROP'
   cubeMapPath: '@Easy/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
-  globalSkySaturation: 0.9
-  globalSunColor: {r: 0.95686275, g: 0.9843137, b: 1, a: 1}
+  globalSkySaturation: 0.86
+  globalSunColor: {r: 1, g: 0.7668277, b: 0.5990566, a: 1}
   globalSunBrightness: 0.6
   globalAmbientLight: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 1}
   globalAmbientBrightness: 0.48
