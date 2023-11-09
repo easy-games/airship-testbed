@@ -5,6 +5,7 @@ import { InputUtils } from "Shared/Util/InputUtils";
 import { AbilitiesController } from "./AbilitiesController";
 import { Bin } from "Shared/Util/Bin";
 import inspect from "@easy-games/unity-inspect";
+import { Healthbar } from "Shared/UI/Healthbar";
 
 export interface ClientAbilityState {
 	name: string;
@@ -20,6 +21,7 @@ export class AbilitiesUIController implements OnStart {
 	private canvas: Canvas;
 	private abilitiesRefs: GameObjectReferences;
 	private abilitybarContent: Transform;
+	private castbar: Healthbar;
 
 	public constructor(
 		public readonly coreUIController: CoreUIController,
@@ -31,6 +33,11 @@ export class AbilitiesUIController implements OnStart {
 
 		this.abilitiesRefs = go.GetComponent<GameObjectReferences>();
 		this.abilitybarContent = this.abilitiesRefs.GetValue("UI", "AbilityBarContentGO").transform;
+		this.castbar = new Healthbar(this.abilitiesRefs.GetValue("UI", "CastBarTransform"), {
+			fillColor: new Color(255, 255, 0),
+		});
+
+		this.castbar.SetActive(false);
 	}
 
 	private UpdateAbilityBarSlot(slotIdx: number, ability: ClientAbilityState | undefined) {

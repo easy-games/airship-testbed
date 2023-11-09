@@ -13,7 +13,9 @@ export class BWAbilitiesService implements OnStart {
 					event.entity.player.username,
 					event.entity.player.Character !== undefined,
 				);
+
 				this.gameAbilities.AddAbilityToCharacter(AbilityId.RECALL, event.entity);
+				this.gameAbilities.AddAbilityToCharacter(AbilityId.VORLIAS_TEST, event.entity);
 			}
 		});
 	}
