@@ -9,6 +9,7 @@ export declare class CharacterEntity extends Entity {
     private abilities;
     private armor;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined, inventory: Inventory);
+    IsMoving(): void;
     GetInventory(): Inventory;
     GetAbilities(): CharacterAbilities;
     Encode(): CharacterEntityDto;

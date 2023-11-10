@@ -1,10 +1,12 @@
 import {
+	AbilityCooldownDto,
 	AbilityDto,
 	ChargingAbilityDto,
 	ChargingAbilityEndedDto,
 	UseAbilityRequest,
 	UseAbilityResponse,
 } from "./Abilities/Ability";
+import { AbilityCooldown } from "./Abilities/CharacterAbilities";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -162,6 +164,8 @@ export const CoreNetwork = {
 
 		AbilityAdded: new RemoteEvent<[dto: AbilityDto]>(),
 		AbilityRemoved: new RemoteEvent<[id: string]>(),
+
+		AbilityCooldownStateChange: new RemoteEvent<[dto: AbilityCooldownDto]>(),
 
 		AbilityChargeBegan: new RemoteEvent<[dto: ChargingAbilityDto]>(),
 		AbilityChargeEnded: new RemoteEvent<[dto: ChargingAbilityEndedDto]>(),

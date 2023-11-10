@@ -3,7 +3,7 @@ import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
-import { ClientAbilityState } from "../AbilitiesUIController";
+import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilitiesUIController";
 import { Dependency } from "@easy-games/flamework-core";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 
@@ -21,6 +21,7 @@ export type BindingAction = (inputState: BindingInputState, binding: AbilityBind
 export class AbilityBinding {
 	private bin = new Bin();
 	private boundTo: AbilityDto | undefined;
+	private cooldownState: ClientAbilityCooldownState | undefined;
 
 	public readonly BindingStateChanged = new Signal<{
 		oldState: ClientAbilityState | undefined;
@@ -48,7 +49,19 @@ export class AbilityBinding {
 			name: config.name,
 			icon: config.image,
 			charges: 0,
+			cooldown: this.cooldownState,
 		};
+	}
+
+	public SetCooldown(cooldown: ClientAbilityCooldownState | undefined) {
+		const oldState = this.ToAbilityState();
+
+		this.cooldownState = cooldown;
+
+		this.BindingStateChanged.Fire({
+			oldState,
+			newState: this.ToAbilityState(),
+		});
 	}
 
 	public BindTo(abilityId: AbilityDto): void {

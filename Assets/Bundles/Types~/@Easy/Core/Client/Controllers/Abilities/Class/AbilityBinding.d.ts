@@ -2,7 +2,7 @@ import { AbilityDto } from "../../../../Shared/Abilities/Ability";
 import { AbilitySlot } from "../../../../Shared/Abilities/AbilitySlot";
 import { Keyboard } from "../../../../Shared/UserInput";
 import { Signal } from "../../../../Shared/Util/Signal";
-import { ClientAbilityState } from "../AbilitiesUIController";
+import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilitiesUIController";
 export declare enum BindingInputState {
     InputBegan = 0,
     InputEnded = 1
@@ -19,6 +19,7 @@ export declare class AbilityBinding {
     private keyCode;
     private bin;
     private boundTo;
+    private cooldownState;
     readonly BindingStateChanged: Signal<{
         oldState: ClientAbilityState | undefined;
         newState: ClientAbilityState | undefined;
@@ -26,6 +27,7 @@ export declare class AbilityBinding {
     constructor(slot: AbilitySlot, enabled: boolean, keyCode: KeyCode);
     SetEnabled(enabled: boolean): void;
     ToAbilityState(): ClientAbilityState | undefined;
+    SetCooldown(cooldown: ClientAbilityCooldownState | undefined): void;
     BindTo(abilityId: AbilityDto): void;
     GetKey(): KeyCode;
     GetSlot(): AbilitySlot;

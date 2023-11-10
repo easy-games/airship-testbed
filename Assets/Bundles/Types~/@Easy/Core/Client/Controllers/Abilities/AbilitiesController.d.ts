@@ -6,9 +6,10 @@ import { AbilityBinding } from "./Class/AbilityBinding";
 export declare class AbilitiesController implements OnStart {
     private readonly abilityRegistry;
     private readonly keyboard;
-    primaryAbilitySlots: AbilityBinding[];
-    secondaryAbilitySlots: AbilityBinding[];
-    utilityAbiltySlots: AbilityBinding[];
+    private primaryAbilitySlots;
+    private secondaryAbilitySlots;
+    private utilityAbiltySlots;
+    private allSlots;
     constructor(abilityRegistry: AbilityRegistry);
     private FindNextAvailableSlot;
     private RegisterAbility;

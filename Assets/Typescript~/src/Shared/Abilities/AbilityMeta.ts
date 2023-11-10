@@ -19,7 +19,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 					AbilityCancellationTrigger.EntityMovement,
 				],
 			},
-			cooldownTimeSeconds: 2,
+			cooldownTimeSeconds: 10,
 		},
 	},
 	[AbilityId.VORLIAS_TEST]: {

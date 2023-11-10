@@ -11,11 +11,18 @@ import { ChargingAbilityEndedState } from "Shared/Abilities/Ability";
 import { OnUpdate, SetTimeout } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 
+export interface ClientAbilityCooldownState {
+	startTime: number;
+	length: number;
+	endTime: number;
+}
+
 export interface ClientAbilityState {
 	name: string;
 	icon: string | undefined;
 	charges: number | undefined;
 	keybinding: KeyCode | undefined;
+	cooldown?: ClientAbilityCooldownState;
 }
 
 @Controller()
@@ -45,6 +52,8 @@ export class AbilitiesUIController implements OnStart {
 		this.castbar.SetActive(false);
 	}
 
+	private slotCooldowns = new Map<number, () => void>();
+
 	private UpdateAbilityBarSlot(slotIdx: number, ability: ClientAbilityState | undefined) {
 		if (slotIdx >= this.abilitySlots) {
 			warn("Attempting to set slot", slotIdx, "with", inspect(ability));
@@ -73,6 +82,38 @@ export class AbilitiesUIController implements OnStart {
 			const amount = refs.GetValue<TMP_Text>("UI", "Charges");
 			const name = refs.GetValue<TMP_Text>("UI", "Name");
 			const keybinding = refs.GetValue<TMP_Text>("UI", "Keybinding");
+
+			const cooldown = refs.GetValue<GameObject>("UI", "Cooldown");
+			const cooldownText = refs.GetValue<TMP_Text>("UI", "CooldownText");
+			const cooldownTickImage = refs.GetValue<Image>("UI", "CooldownTickImage");
+
+			const clearSlotCooldown = this.slotCooldowns.get(slotIdx);
+			if (clearSlotCooldown) {
+				clearSlotCooldown();
+			}
+
+			if (ability.cooldown) {
+				cooldown.active = true;
+
+				const length = ability.cooldown.length;
+
+				const disconnect = OnUpdate.Connect(() => {
+					const secondsRemaining = ability.cooldown!.endTime - TimeUtil.GetServerTime();
+					const value = math.min(1, (length - secondsRemaining) / length);
+
+					cooldownTickImage.fillAmount = 1 - value;
+					cooldownText.text = string.format("%d", secondsRemaining);
+
+					if (value >= 1) {
+						disconnect();
+						cooldown.active = false;
+					}
+				});
+
+				this.slotCooldowns.set(slotIdx, disconnect);
+			} else {
+				cooldown.active = false;
+			}
 
 			if (ability.keybinding !== undefined) {
 				keybinding.enabled = true;

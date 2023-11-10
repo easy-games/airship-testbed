@@ -20,9 +20,10 @@ const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.C];
 export class AbilitiesController implements OnStart {
 	private readonly keyboard = new Keyboard();
 
-	public primaryAbilitySlots = new Array<AbilityBinding>(primaryKeys.size());
-	public secondaryAbilitySlots = new Array<AbilityBinding>(secondaryKeys.size());
-	public utilityAbiltySlots = new Array<AbilityBinding>(utilityKeys.size());
+	private primaryAbilitySlots = new Array<AbilityBinding>(primaryKeys.size());
+	private secondaryAbilitySlots = new Array<AbilityBinding>(secondaryKeys.size());
+	private utilityAbiltySlots = new Array<AbilityBinding>(utilityKeys.size());
+	private allSlots;
 
 	public constructor(private readonly abilityRegistry: AbilityRegistry) {
 		// Set up binding slots
@@ -37,6 +38,8 @@ export class AbilitiesController implements OnStart {
 		for (const keyCode of utilityKeys) {
 			this.utilityAbiltySlots.push(new AbilityBinding(AbilitySlot.Utility, false, keyCode));
 		}
+
+		this.allSlots = [...this.primaryAbilitySlots, ...this.secondaryAbilitySlots, ...this.utilityAbiltySlots];
 	}
 
 	private FindNextAvailableSlot(slots: Array<AbilityBinding>) {
@@ -99,6 +102,21 @@ export class AbilitiesController implements OnStart {
 		});
 
 		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((id) => {});
+
+		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((event) => {
+			print("Cooldown state changed", inspect(event));
+
+			const matchingSlot = this.allSlots.find((f) => f.GetBound()?.id === event.id);
+			if (matchingSlot) {
+				print("Found matching slot", event.id);
+
+				matchingSlot.SetCooldown({
+					startTime: event.timeStart,
+					length: event.length,
+					endTime: event.timeEnd,
+				});
+			}
+		});
 
 		// Unbind abilities on death (since it's character-bound)
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.LOWEST, (event) => {

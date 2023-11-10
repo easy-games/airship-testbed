@@ -34,7 +34,22 @@ export class CharacterAbilities {
 
 	private currentChargingAbilityState: CancellableAbiltityChargingState | undefined; // using promise rn because need cancellation
 
-	public constructor(private entity: CharacterEntity) {}
+	public constructor(private entity: CharacterEntity) {
+		entity.GetBin().Add(
+			entity.OnMoveDirectionChanged.Connect((moveDirection) => {
+				const currentlyCharging = this.GetChargingAbility();
+				if (moveDirection !== Vector3.zero) {
+					// If the entity moves, and is charging an ability that cancels on movement - cancel it!
+					if (
+						currentlyCharging !== undefined &&
+						currentlyCharging.cancellationTriggers.has(AbilityCancellationTrigger.EntityMovement)
+					) {
+						this.CancelChargingAbility();
+					}
+				}
+			}),
+		);
+	}
 
 	private GetAbilities() {
 		const arr = new Array<[string, AbilityLogic]>();
@@ -54,6 +69,13 @@ export class CharacterAbilities {
 			startTimestamp: time,
 			endTimestamp: time + length,
 			length: Duration.fromSeconds(length),
+		});
+
+		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Server.FireClient(this.entity.player!.clientId, {
+			id,
+			timeEnd: time + length,
+			length,
+			timeStart: time,
 		});
 	}
 
@@ -155,6 +177,15 @@ export class CharacterAbilities {
 				// Handle charging, if it's a charge ability otherwise default trigger
 				if (config.charge) {
 					const chargeTime = config.charge.chargeTimeSeconds;
+					const cancellation = config.charge.cancelTriggers;
+
+					// Cancel immediately if moving
+					if (
+						cancellation.includes(AbilityCancellationTrigger.EntityMovement) &&
+						this.entity.GetMoveDirection() !== Vector3.zero
+					) {
+						return false;
+					}
 
 					ability.OnChargeBegan();
 

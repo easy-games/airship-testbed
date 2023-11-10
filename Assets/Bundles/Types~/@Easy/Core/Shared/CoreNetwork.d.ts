@@ -3,7 +3,7 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
-import { AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto, UseAbilityRequest } from "./Abilities/Ability";
+import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto, UseAbilityRequest } from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -136,6 +136,7 @@ export declare const CoreNetwork: {
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
         AbilityAdded: RemoteEvent<[dto: AbilityDto]>;
         AbilityRemoved: RemoteEvent<[id: string]>;
+        AbilityCooldownStateChange: RemoteEvent<[dto: AbilityCooldownDto]>;
         AbilityChargeBegan: RemoteEvent<[dto: ChargingAbilityDto]>;
         AbilityChargeEnded: RemoteEvent<[dto: ChargingAbilityEndedDto]>;
     };

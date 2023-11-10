@@ -85,6 +85,12 @@ export interface ChargingAbilityDto {
     readonly length: number;
     readonly timeEnd: number;
 }
+export interface AbilityCooldownDto {
+    readonly id: string;
+    readonly timeStart: number;
+    readonly timeEnd: number;
+    readonly length: number;
+}
 export declare enum ChargingAbilityEndedState {
     Finished = 0,
     Cancelled = 1

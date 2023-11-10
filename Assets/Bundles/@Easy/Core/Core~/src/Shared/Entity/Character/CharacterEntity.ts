@@ -26,6 +26,14 @@ export class CharacterEntity extends Entity {
 		this.CalcArmor();
 	}
 
+	public IsMoving() {
+		switch (this.GetState()) {
+			case EntityState.Idle:
+			case EntityState.Crouching:
+				break;
+		}
+	}
+
 	public GetInventory(): Inventory {
 		return this.inventory;
 	}
