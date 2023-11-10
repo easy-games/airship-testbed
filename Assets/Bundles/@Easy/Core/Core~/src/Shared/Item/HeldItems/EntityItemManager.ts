@@ -107,6 +107,7 @@ export class EntityItemManager {
 			clientSignalRef.CoreClientSignals.EntitySpawn.Connect((event) => {
 				this.Log("EntitySpawn: " + event.entity.id);
 				if (event.entity instanceof CharacterEntity && event.entity.id !== undefined) {
+					Profiler.BeginSample("EntityItemManager.GetOrCreateItemManager");
 					//Create the Item Manager on the Client
 					this.GetOrCreateItemManager(event.entity as CharacterEntity);
 
@@ -114,6 +115,7 @@ export class EntityItemManager {
 					if (event.entity.IsLocalCharacter()) {
 						this.localEntity = event.entity;
 					}
+					Profiler.EndSample();
 				}
 			});
 

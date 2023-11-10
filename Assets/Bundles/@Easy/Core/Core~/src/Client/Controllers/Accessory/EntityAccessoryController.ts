@@ -18,6 +18,7 @@ export class EntityAccessoryController implements OnStart {
 
 	private AutoEquipArmor() {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
+			Profiler.BeginSample("AutoEqupArmor");
 			if (event.entity instanceof CharacterEntity) {
 				if (event.entity.IsPlayerOwned()) {
 					//Add Kit Accessory
@@ -47,7 +48,7 @@ export class EntityAccessoryController implements OnStart {
 							const newSlots = armorAccessories.map((acc) => acc.AccessorySlot);
 							const slotsToRemove = currentSlots.filter((slot) => !newSlots.includes(slot));
 							for (const slot of slotsToRemove) {
-								accessoryBuilder.RemoveAccessorySlot(slot, true);
+								accessoryBuilder.RemoveAccessorySlot(slot, false);
 							}
 						}
 						for (const acc of armorAccessories) {
@@ -58,7 +59,7 @@ export class EntityAccessoryController implements OnStart {
 						if (currentArmor) {
 							// Clear armor:
 							for (const acc of currentArmor) {
-								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, true);
+								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, false);
 							}
 							currentArmor = undefined;
 						}
@@ -79,6 +80,7 @@ export class EntityAccessoryController implements OnStart {
 					bin.Clean();
 				});
 			}
+			Profiler.EndSample();
 		});
 	}
 
@@ -93,12 +95,6 @@ export class EntityAccessoryController implements OnStart {
 			const bin = new Bin();
 			bin.Add(
 				event.entity.GetInventory().ObserveHeldItem((itemStack) => {
-					if (itemStack === undefined) {
-						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, true);
-						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, true);
-						return;
-					}
-
 					if (event.entity.IsLocalCharacter()) {
 						this.SetFirstPersonLayer(accessoryBuilder);
 					}

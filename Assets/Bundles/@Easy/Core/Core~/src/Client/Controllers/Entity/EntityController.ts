@@ -189,8 +189,8 @@ export class EntityController implements OnStart {
 			//Body Meshes
 			Profiler.BeginSample("ColorRandomization");
 			event.entity.accessoryBuilder.SetSkinColor(skinColor, false);
-			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
-			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
+			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
+			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
 			Profiler.EndSample();
 		});
 	}
@@ -221,7 +221,9 @@ export class EntityController implements OnStart {
 				this.invController.RegisterInventory(inv);
 			}
 
+			Profiler.BeginSample("CharacterEntity.Constructor");
 			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv);
+			Profiler.EndSample();
 		} else {
 			error("Unable to find entity serializer for dto: " + entityDto);
 		}
@@ -229,7 +231,9 @@ export class EntityController implements OnStart {
 		entity.SetMaxHealth(entityDto.maxHealth);
 		entity.SetDisplayName(entityDto.displayName);
 		if (entityDto.healthbar) {
+			Profiler.BeginSample("AddHealthbar");
 			entity.AddHealthbar();
+			Profiler.EndSample();
 		}
 
 		this.entities.set(entity.id, entity);
@@ -242,7 +246,9 @@ export class EntityController implements OnStart {
 			}
 		}
 
+		Profiler.BeginSample("EntitySpawnSignal");
 		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
+		Profiler.EndSample();
 
 		return entity;
 	}
