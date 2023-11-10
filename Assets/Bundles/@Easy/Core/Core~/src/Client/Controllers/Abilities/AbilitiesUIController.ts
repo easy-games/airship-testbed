@@ -38,7 +38,7 @@ export class AbilitiesUIController implements OnStart {
 		this.abilitiesRefs = go.GetComponent<GameObjectReferences>();
 		this.abilitybarContent = this.abilitiesRefs.GetValue("UI", "AbilityBarContentGO").transform;
 		this.castbar = new Healthbar(this.abilitiesRefs.GetValue("UI", "CastBarTransform"), {
-			fillColor: new Color(255, 100, 0),
+			fillColor: new Color(0 / 255, 150 / 255, 255 / 255),
 			deathOnZero: false,
 		});
 
@@ -134,7 +134,7 @@ export class AbilitiesUIController implements OnStart {
 			}
 
 			disconnectTimer?.();
-			SetTimeout(0.5, () => this.castbar.SetActive(false));
+			this.castbar.SetActive(false);
 		});
 
 		// Update local abilities

@@ -8,9 +8,11 @@ import { AbilityCancellationTrigger, AbilityConfig, AbilityDto } from "./Ability
 import { Duration } from "../Util/Duration";
 export interface AbilityCooldown {
     readonly length: Duration;
-    readonly startedTimestamp: number;
+    readonly startTimestamp: number;
+    readonly endTimestamp: number;
 }
 export interface AbiltityChargingState {
+    readonly id: string;
     readonly timeStarted: number;
     readonly timeLength: Duration;
     readonly cancellationTriggers: Set<AbilityCancellationTrigger>;
@@ -22,6 +24,7 @@ export declare class CharacterAbilities {
     private currentChargingAbilityState;
     constructor(entity: CharacterEntity);
     private GetAbilities;
+    private SetAbilityOnCooldown;
     HasAbilityWithIdAtSlot(id: string, slot: AbilitySlot): boolean;
     /**
      * Adds the given ability to the character
@@ -49,12 +52,18 @@ export declare class CharacterAbilities {
      */
     GetAbilitiesBoundToSlot(slot: AbilitySlot): Map<string, AbilityLogic>;
     /**
+     * Returns whether or not the given ability is on cooldown
+     * @param abilityId The ability id to check for cooldown state
+     * @returns True if the ability is on cooldown
+     */
+    IsAbilityOnCooldown(abilityId: string): boolean;
+    /**
      * Use the ability with the given `id`
      *
      * @param id The id of the ability to use
      * @server Server-only API
      */
-    UseAbilityById(id: string): void;
+    UseAbilityById(id: string): boolean | undefined;
     /**
      * Cancel any charging abilities
      * @returns True if a charging ability was cancelled

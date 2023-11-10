@@ -98,6 +98,8 @@ export class AbilitiesController implements OnStart {
 			this.RegisterAbility(dto);
 		});
 
+		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((id) => {});
+
 		// Unbind abilities on death (since it's character-bound)
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
 			if (event.entity instanceof CharacterEntity && event.entity.IsLocalCharacter()) {

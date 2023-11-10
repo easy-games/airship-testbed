@@ -161,8 +161,6 @@ export const CoreNetwork = {
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
 		AbilityAdded: new RemoteEvent<[dto: AbilityDto]>(),
-		AbilityStateChanged: new RemoteEvent<[dto: AbilityDto]>(),
-		AbilitiesUpdated: new RemoteEvent<[abilities: AbilityDto[]]>(),
 		AbilityRemoved: new RemoteEvent<[id: string]>(),
 
 		AbilityChargeBegan: new RemoteEvent<[dto: ChargingAbilityDto]>(),

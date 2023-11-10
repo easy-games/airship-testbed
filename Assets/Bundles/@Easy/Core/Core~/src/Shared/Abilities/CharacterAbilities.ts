@@ -12,10 +12,12 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 
 export interface AbilityCooldown {
 	readonly length: Duration;
-	readonly startedTimestamp: number;
+	readonly startTimestamp: number;
+	readonly endTimestamp: number;
 }
 
 export interface AbiltityChargingState {
+	readonly id: string;
 	readonly timeStarted: number;
 	readonly timeLength: Duration;
 	readonly cancellationTriggers: Set<AbilityCancellationTrigger>;
@@ -23,11 +25,11 @@ export interface AbiltityChargingState {
 
 interface CancellableAbiltityChargingState extends AbiltityChargingState {
 	readonly abilityLogic: AbilityLogic;
-	readonly onCancelled: () => void;
+	readonly cancel: () => void;
 }
 
 export class CharacterAbilities {
-	private cooldowns = new Map<Ability, AbilityCooldown>();
+	private cooldowns = new Map<string, AbilityCooldown>();
 	private boundAbilities = new Map<AbilitySlot, Map<string, AbilityLogic>>();
 
 	private currentChargingAbilityState: CancellableAbiltityChargingState | undefined; // using promise rn because need cancellation
@@ -43,6 +45,16 @@ export class CharacterAbilities {
 		}
 
 		return arr;
+	}
+
+	private SetAbilityOnCooldown(id: string, length: number) {
+		const time = TimeUtil.GetServerTime();
+
+		this.cooldowns.set(id, {
+			startTimestamp: time,
+			endTimestamp: time + length,
+			length: Duration.fromSeconds(length),
+		});
 	}
 
 	public HasAbilityWithIdAtSlot(id: string, slot: AbilitySlot): boolean {
@@ -107,44 +119,100 @@ export class CharacterAbilities {
 	}
 
 	/**
+	 * Returns whether or not the given ability is on cooldown
+	 * @param abilityId The ability id to check for cooldown state
+	 * @returns True if the ability is on cooldown
+	 */
+	public IsAbilityOnCooldown(abilityId: string) {
+		const cooldown = this.cooldowns.get(abilityId);
+		if (cooldown) {
+			return cooldown.startTimestamp + cooldown.length.getTotalSeconds() > TimeUtil.GetServerTime();
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Use the ability with the given `id`
 	 *
 	 * @param id The id of the ability to use
 	 * @server Server-only API
 	 */
 	public UseAbilityById(id: string) {
+		if (this.IsAbilityOnCooldown(id)) {
+			return false;
+		}
+
+		// can't cast while casting
+		if (this.currentChargingAbilityState !== undefined) return false;
+
 		if (RunCore.IsServer()) {
 			const ability = this.GetAbilityById(id);
 			if (ability) {
+				const currentTime = TimeUtil.GetServerTime();
 				const config = ability.GetConfiguration();
+
+				// Handle charging, if it's a charge ability otherwise default trigger
 				if (config.charge) {
 					const chargeTime = config.charge.chargeTimeSeconds;
 
 					ability.OnChargeBegan();
+
 					CoreNetwork.ServerToClient.AbilityChargeBegan.Server.FireClient(this.entity.player!.clientId, {
 						id,
-						timeStart: TimeUtil.GetServerTime(),
-						timeEnd: TimeUtil.GetServerTime() + chargeTime,
+						timeStart: currentTime,
+						timeEnd: currentTime + chargeTime,
 						length: chargeTime,
+					});
+
+					const cancelTimeout = SetTimeout(chargeTime, () => {
+						ability.OnTriggered();
+						this.currentChargingAbilityState = undefined;
+						CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireClient(this.entity.player!.clientId, {
+							id,
+							endState: ChargingAbilityEndedState.Finished,
+						});
+
+						// Handle setting the cooldown
+						if (config.cooldownTimeSeconds) {
+							this.SetAbilityOnCooldown(id, config.cooldownTimeSeconds);
+						}
 					});
 
 					// The current state of what's being 'charged' ability-wise
 					this.currentChargingAbilityState = {
+						id,
 						timeStarted: TimeUtil.GetServerTime(),
 						timeLength: Duration.fromSeconds(chargeTime),
 						abilityLogic: ability,
 						cancellationTriggers: new Set(config.charge.cancelTriggers),
-						onCancelled: SetTimeout(chargeTime, () => {
-							ability.OnTriggered();
-							this.currentChargingAbilityState = undefined;
+						cancel: () => {
+							cancelTimeout();
 							CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireClient(
 								this.entity.player!.clientId,
-								{ id, endState: ChargingAbilityEndedState.Finished },
+								{
+									id,
+									endState: ChargingAbilityEndedState.Cancelled,
+								},
 							);
-						}),
+							ability.OnChargeCancelled();
+
+							// Handle setting the cooldown
+							if (config.cooldownTimeSeconds) {
+								this.SetAbilityOnCooldown(id, config.cooldownTimeSeconds);
+							}
+						},
 					};
+
+					return true;
 				} else {
+					// Handle setting the cooldown
+					if (config.cooldownTimeSeconds) {
+						this.SetAbilityOnCooldown(id, config.cooldownTimeSeconds);
+					}
+
 					ability.OnTriggered();
+					return true;
 				}
 			}
 		} else {
@@ -159,12 +227,7 @@ export class CharacterAbilities {
 	public CancelChargingAbility(): boolean {
 		if (this.currentChargingAbilityState) {
 			// Handle the cancellation behaviour
-			this.currentChargingAbilityState.onCancelled();
-			CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireClient(this.entity.player!.clientId, {
-				id: this.currentChargingAbilityState.abilityLogic.GetId(),
-				endState: ChargingAbilityEndedState.Cancelled,
-			});
-			this.currentChargingAbilityState.abilityLogic.OnChargeCancelled();
+			this.currentChargingAbilityState.cancel();
 			this.currentChargingAbilityState = undefined;
 			return true;
 		} else {
