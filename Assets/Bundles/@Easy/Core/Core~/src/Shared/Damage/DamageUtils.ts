@@ -2,7 +2,6 @@
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { CharacterEntityAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { Entity } from "Shared/Entity/Entity";
-import { ArrayUtil } from "Shared/Util/ArrayUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
@@ -95,7 +94,6 @@ export class DamageUtils {
 
 			if (duration >= 0.05) {
 				anim.SetPlaybackSpeed(0.05);
-				driver.DisableMovement();
 				for (let i = 0; i < particles.size(); i++) {
 					let system = particles[i].main;
 					system.simulationSpeed = 0.05;
@@ -105,7 +103,6 @@ export class DamageUtils {
 				}
 				Task.Delay(duration, () => {
 					anim.SetPlaybackSpeed(1);
-					driver.EnableMovement();
 					for (let i = 0; i < particles.size(); i++) {
 						let system = particles[i].main;
 						system.simulationSpeed = 1;
