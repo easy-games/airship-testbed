@@ -108,6 +108,10 @@ export class EntityAccessoryController implements OnStart {
 						this.SetFirstPersonLayer(accessoryBuilder);
 					}),
 				);
+				// cleanup for pooling
+				bin.Add(() => {
+					accessoryBuilder.SetFirstPersonEnabled(false);
+				});
 			}
 
 			event.entity.OnDespawn.Once(() => {
@@ -120,7 +124,7 @@ export class EntityAccessoryController implements OnStart {
 	private SetFirstPersonLayer(accessoryBuilder: AccessoryBuilder) {
 		//Accessories with first person mesh variants need to be on layer FPS
 		Profiler.BeginSample("ToggleMeshVisibility");
-		accessoryBuilder.ToggleMeshVisibility(this.isFirstPerson);
+		accessoryBuilder.SetFirstPersonEnabled(this.isFirstPerson);
 		Profiler.EndSample();
 	}
 }
