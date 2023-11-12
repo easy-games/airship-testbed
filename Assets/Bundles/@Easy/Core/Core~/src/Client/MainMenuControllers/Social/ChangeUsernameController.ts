@@ -110,6 +110,7 @@ export class ChangeUsernameController implements OnStart {
 
 		AppManager.Open(this.canvas, {
 			addToStack: true,
+			sortingOrderOffset: 100,
 		});
 	}
 }
