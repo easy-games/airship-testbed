@@ -3,6 +3,7 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Keyboard, Mouse } from "Shared/UserInput";
@@ -12,7 +13,6 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { OnUpdate } from "Shared/Util/Timer";
 import { CoreUIController } from "../UI/CoreUIController";
 import { InventoryController } from "./InventoryController";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 
 type DraggingState = {
 	inventory: Inventory;
@@ -65,7 +65,7 @@ export class InventoryUIController implements OnStart {
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.E, (event) => {
-			if (this.IsBackpackShown()) {
+			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();
 			} else {
 				this.OpenBackpack();
