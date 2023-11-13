@@ -273,7 +273,6 @@ export class ChatController implements OnStart {
 			textGui.text = message;
 
 			const profileImage = refs.GetValue<Image>("UI", "ProfilePicture");
-			print("sender: " + sender);
 			const playerProfilePic = sender?.GetProfilePicture();
 			if (playerProfilePic) {
 				profileImage.sprite = Bridge.MakeSprite(AssetBridge.Instance.LoadAsset(playerProfilePic.path));
