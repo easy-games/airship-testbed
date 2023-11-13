@@ -107,9 +107,9 @@ export class InventoryController implements OnStart {
 
 		// Scroll to select held item:
 		mouse.Scrolled.Connect((event) => {
-			if (!this.enabled || event.UIProcessed) return;
+			if (!this.enabled || event.uiProcessed) return;
 			// print("scroll: " + delta);
-			if (math.abs(event.Delta) < 0.05) return;
+			if (math.abs(event.delta) < 0.05) return;
 
 			const now = Time.time;
 			if (now - this.lastScrollTime < this.scrollCooldown) {
@@ -121,7 +121,7 @@ export class InventoryController implements OnStart {
 			const selectedSlot = this.LocalInventory?.GetHeldSlot();
 			if (selectedSlot === undefined) return;
 
-			const inc = event.Delta < 0 ? 1 : -1;
+			const inc = event.delta < 0 ? 1 : -1;
 			let trySlot = selectedSlot;
 
 			// Find the next available item in the hotbar:

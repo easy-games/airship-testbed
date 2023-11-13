@@ -51,8 +51,8 @@ export class Mouse {
 		// Connect to mouse driver:
 
 		this.bin.Connect(this.mouseDriver.LeftButtonChanged, (event) => {
-			this.isLeftDown = event.IsDown;
-			if (event.IsDown) {
+			this.isLeftDown = event.isDown;
+			if (event.isDown) {
 				this.LeftDown.Fire(event);
 			} else {
 				this.LeftUp.Fire(event);
@@ -60,8 +60,8 @@ export class Mouse {
 		});
 
 		this.bin.Connect(this.mouseDriver.RightButtonChanged, (event) => {
-			this.isRightDown = event.IsDown;
-			if (event.IsDown) {
+			this.isRightDown = event.isDown;
+			if (event.isDown) {
 				this.RightDown.Fire(event);
 			} else {
 				this.RightUp.Fire(event);
@@ -69,8 +69,8 @@ export class Mouse {
 		});
 
 		this.bin.Connect(this.mouseDriver.MiddleButtonChanged, (event) => {
-			this.isMiddleDown = event.IsDown;
-			if (event.IsDown) {
+			this.isMiddleDown = event.isDown;
+			if (event.isDown) {
 				this.MiddleDown.Fire(event);
 			} else {
 				this.MiddleUp.Fire(event);

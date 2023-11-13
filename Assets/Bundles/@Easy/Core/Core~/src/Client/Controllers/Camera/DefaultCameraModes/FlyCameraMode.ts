@@ -82,7 +82,7 @@ export class FlyCameraMode implements CameraMode {
 				this.keyboard.OnKeyDown(
 					key,
 					(event) => {
-						this.keysDown.add(event.KeyCode);
+						this.keysDown.add(event.keyCode);
 						event.SetCancelled(true);
 					},
 					SignalPriority.HIGHEST,
@@ -92,7 +92,7 @@ export class FlyCameraMode implements CameraMode {
 				this.keyboard.OnKeyUp(
 					key,
 					(event) => {
-						this.keysDown.delete(event.KeyCode);
+						this.keysDown.delete(event.keyCode);
 						event.SetCancelled(true);
 					},
 					SignalPriority.HIGHEST,
@@ -101,7 +101,7 @@ export class FlyCameraMode implements CameraMode {
 		}
 
 		this.bin.Connect(this.mouse.Scrolled, (event) => {
-			const delta = -event.Delta * FOV_SCROLL_SENSITIVITY;
+			const delta = -event.delta * FOV_SCROLL_SENSITIVITY;
 			this.fovSpring.goal = new Vector3(0, 0, math.clamp(this.fovSpring.goal.z + delta, MIN_FOV, MAX_FOV));
 		});
 
