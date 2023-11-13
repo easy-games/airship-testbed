@@ -10,7 +10,12 @@ import { TeamUpgradeController } from "../Global/TeamUpgrade/TeamUpgradeControll
 const PROXIMITY_PROMPT_OFFSET = new Vector3(0, -0.2, 0);
 
 @Controller({})
-export class ShopkeeperController implements OnStart {
+export class BWShopkeeperController implements OnStart {
+	private itemShopAccessoryCollection = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
+		"@Easy/Core/Shared/Resources/Accessories/Collections/ItemShopKeeper/ItemShopKeeperCollection.asset",
+	);
+	private teamUpgradesAccessoryCollection = this.itemShopAccessoryCollection;
+
 	constructor(
 		private readonly teamUpgradeController: TeamUpgradeController,
 		private readonly itemShopController: ItemShopController,
@@ -37,6 +42,9 @@ export class ShopkeeperController implements OnStart {
 					prompt.OnActivated.Connect(() => {
 						this.itemShopController.Open();
 					});
+
+					// Clothing
+					entity.accessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
 				});
 			}
 		});
@@ -60,6 +68,9 @@ export class ShopkeeperController implements OnStart {
 					prompt.OnActivated.Connect(() => {
 						this.teamUpgradeController.Open();
 					});
+
+					// Clothing
+					entity.accessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
 				});
 			}
 		});
