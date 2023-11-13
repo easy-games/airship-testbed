@@ -5,5 +5,6 @@ export class BeforeEntitySpawnServerEvent {
 		public readonly entityId: number,
 		public readonly player: Player | undefined,
 		public spawnPosition: Vector3,
+		public spawnRotation: Quaternion,
 	) {}
 }

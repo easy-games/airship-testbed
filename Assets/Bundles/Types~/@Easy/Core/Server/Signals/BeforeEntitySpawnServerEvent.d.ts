@@ -5,5 +5,6 @@ export declare class BeforeEntitySpawnServerEvent {
     readonly entityId: number;
     readonly player: Player | undefined;
     spawnPosition: Vector3;
-    constructor(entityId: number, player: Player | undefined, spawnPosition: Vector3);
+    spawnRotation: Quaternion;
+    constructor(entityId: number, player: Player | undefined, spawnPosition: Vector3, spawnRotation: Quaternion);
 }

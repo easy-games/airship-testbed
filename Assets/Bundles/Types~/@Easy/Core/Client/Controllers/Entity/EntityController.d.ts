@@ -2,9 +2,9 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { Entity } from "../../../Shared/Entity/Entity";
+import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
-import { LocalEntityController } from "../Character/LocalEntityController";
 export declare class EntityController implements OnStart {
     private readonly invController;
     private readonly playerController;

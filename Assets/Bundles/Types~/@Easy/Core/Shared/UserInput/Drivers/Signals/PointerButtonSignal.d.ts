@@ -1,12 +1,12 @@
 import { Cancellable } from "../../../Util/Cancellable";
-export declare class KeySignal extends Cancellable {
-    /** The KeyCode. */
-    readonly keyCode: KeyCode;
+export declare class PointerButtonSignal extends Cancellable {
+    /** Whether or not the button is down. */
+    readonly isDown: boolean;
     /** `UIProcessed` is `true` if the key event occurred while a UI object was selected. */
     readonly uiProcessed: boolean;
     constructor(
-    /** The KeyCode. */
-    keyCode: KeyCode, 
+    /** Whether or not the button is down. */
+    isDown: boolean, 
     /** `UIProcessed` is `true` if the key event occurred while a UI object was selected. */
     uiProcessed: boolean);
 }

@@ -118,6 +118,7 @@ export class BWSpawnService implements OnStart {
 				if (teamSpawnPosition) {
 					const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
 					event.spawnPosition = pos;
+					event.spawnRotation = teamSpawnPosition.Rotation;
 				}
 			}
 		});
