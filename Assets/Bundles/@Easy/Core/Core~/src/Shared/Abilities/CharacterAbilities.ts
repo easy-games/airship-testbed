@@ -227,11 +227,6 @@ export class CharacterAbilities {
 								},
 							);
 							ability.OnChargeCancelled();
-
-							// Handle setting the cooldown
-							if (config.cooldownTimeSeconds) {
-								this.SetAbilityOnCooldown(id, config.cooldownTimeSeconds);
-							}
 						},
 					};
 

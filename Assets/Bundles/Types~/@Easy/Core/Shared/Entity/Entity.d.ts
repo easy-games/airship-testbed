@@ -62,6 +62,7 @@ export declare class Entity {
     readonly ClientId?: number;
     protected health: number;
     protected maxHealth: number;
+    protected moveDirection: Vector3;
     protected dead: boolean;
     protected destroyed: boolean;
     protected displayName: string;
@@ -73,6 +74,7 @@ export declare class Entity {
     readonly OnDespawn: Signal<void>;
     readonly OnPlayerChanged: Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>;
     readonly OnAdjustMove: Signal<[moveModifier: MoveModifier]>;
+    readonly OnMoveDirectionChanged: Signal<[moveDirection: Vector3]>;
     readonly OnDisplayNameChanged: Signal<[displayName: string]>;
     readonly OnStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
     readonly OnDeath: Signal<void>;
@@ -93,6 +95,7 @@ export declare class Entity {
     GetHealth(): number;
     GetMaxHealth(): number;
     GetEntityDriver(): EntityDriver;
+    GetMoveDirection(): Vector3;
     SetHealth(health: number): void;
     SetMaxHealth(maxHealth: number): void;
     /**
