@@ -38,6 +38,20 @@ export class ShopService implements OnStart {
 			}
 		});
 
+		CoreServerSignals.BeforeEntityDropItem.Connect((event) => {
+			const itemType = event.itemStack.GetItemType();
+			const itemMeta = event.itemStack.GetMeta();
+			if (
+				this.pickaxes.includes(itemType) ||
+				this.bows.includes(itemType) ||
+				this.swords.includes(itemType) ||
+				this.axes.includes(itemType) ||
+				itemMeta.armor
+			) {
+				event.SetCancelled(true);
+			}
+		});
+
 		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (!event.entity.player) return;
 			if (event.entity.player.IsBot()) return;

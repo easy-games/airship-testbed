@@ -20,7 +20,11 @@ export type HeldItemEntry = {
 	factory: HeldItemFactory;
 };
 
-//One item manager per entity, calls functionality on currently equipped item for that entity
+/**
+ * This class is attached to an {@link Entity}.
+ *
+ * One item manager per entity, calls functionality on currently equipped item for that entity
+ */
 export class HeldItemManager {
 	private entity: CharacterEntity;
 	private heldItemMap = new Map<ItemType, HeldItem>();

@@ -59,16 +59,11 @@ export class AudioManager {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
-		audioSource.clip = clip;
-		audioSource.volume = config?.volumeScale ?? 1;
-		audioSource.PlayOneShot(clip);
+		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 		//audioSource.PlayOneShot(clip, );
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
-				if (audioSource.isPlaying && !audioSource.loop) {
-					print("[AudioManager]: Deleting global audio source before it finished playing. name=" + clip.name);
-				}
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
@@ -111,28 +106,17 @@ export class AudioManager {
 	): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(position);
 		audioSource.spatialBlend = 1;
-		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
+		audioSource.loop = config?.loop ?? false;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
-		audioSource.clip = clip;
-		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		audioSource.maxDistance = config?.maxDistance ?? 500;
 		audioSource.pitch = config?.pitch ?? 1;
-		audioSource.PlayOneShot(clip);
-		//audioSource.PlayOneShot(clip, );
+		audioSource.PlayOneShot(clip, config?.volumeScale ?? 1);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
-				if (audioSource.isPlaying) {
-					warn(
-						"DELETING AUDIO SOURCE BEFORE ITS FINISHED PLAYING: " +
-							audioSource.name +
-							": " +
-							audioSource.clip?.name,
-					);
-				}
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
 		}

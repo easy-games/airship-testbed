@@ -31,12 +31,7 @@ export class DamageIndicatorController implements OnStart {
 			//const hitstunDuration = DamageUtils.AddHitstun(event.entity, event.amount, () => {});
 
 			//Entity Damage Animation
-			event.entity.animator?.PlayTakeDamage(
-				hitstunDuration ?? 0 + 0.25,
-				event.damageType,
-				entityGO.transform.position,
-				entityGO,
-			);
+			event.entity.animator?.PlayTakeDamage(0.25, event.damageType, entityGO.transform.position, entityGO);
 
 			// Damage taken sound
 			AudioManager.PlayAtPosition(

@@ -95,6 +95,7 @@ export class ChatService implements OnStart {
 			}
 
 			let message = username + ": " + text;
+			print(message);
 			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message, player.clientId);
 		});
 	}

@@ -94,7 +94,7 @@ export class HeldItem {
 				}
 			}
 		}
-		this.entity.accessoryBuilder.TryCombineMeshes();
+		// this.entity.accessoryBuilder.TryCombineMeshes();
 	}
 
 	/**

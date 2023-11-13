@@ -23,6 +23,7 @@ export class CanvasAPI {
 
 	private static canvasUIEvents: CanvasUIEvents;
 	private static canvasHitDetector: CanvasHitDetector;
+	private static selectedInstanceId?: number;
 
 	public static Init(): void {
 		this.canvasUIEvents = GameObject.Find("CanvasUIEvents").GetComponent<CanvasUIEvents>();
@@ -198,11 +199,22 @@ export class CanvasAPI {
 		});
 	}
 
+	public static GetSelectedInstanceId(): number | undefined {
+		return this.selectedInstanceId;
+	}
+
 	/** Fetches and sets the global event interceptor. */
 	private static Setup(gameObject: GameObject): void {
 		if (CanvasAPI.eventInterceptor === undefined) {
 			this.eventInterceptor =
 				GameObject.Find("CanvasUIEventsInterceptor").GetComponent<CanvasUIEventInterceptor>();
+			this.eventInterceptor.OnSelectEvent((instanceId) => {
+				this.selectedInstanceId = instanceId;
+			});
+			this.eventInterceptor.OnDeselectEvent((instanceId) => {
+				if (this.selectedInstanceId !== instanceId) return;
+				this.selectedInstanceId = undefined;
+			});
 		}
 		this.RegisterEvents(gameObject);
 	}

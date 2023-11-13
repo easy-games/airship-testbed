@@ -1,6 +1,7 @@
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
+import { ChatColor } from "Shared/Util/ChatColor";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Theme } from "Shared/Util/Theme";
 
@@ -68,6 +69,16 @@ export class SetVarCommand extends ChatCommand {
 			return;
 		}
 
+		// New
+		Game.BroadcastMessage(
+			ChatColor.Aqua(player.username) +
+				ChatColor.Gray(" set var ") +
+				ChatColor.Yellow(args[0]) +
+				ChatColor.Gray(" to ") +
+				ChatColor.White(valueString),
+		);
+
+		// Old
 		Game.BroadcastMessage(
 			ColorUtil.ColoredText(Theme.Aqua, player.username) +
 				ColorUtil.ColoredText(Theme.Gray, " set var ") +

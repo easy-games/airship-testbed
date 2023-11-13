@@ -166,10 +166,10 @@ export class DirectMessageController implements OnStart {
 		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.inputFieldSelected) {
 				if (
-					event.KeyCode !== KeyCode.Return &&
-					event.KeyCode !== KeyCode.Escape &&
-					event.KeyCode !== KeyCode.UpArrow &&
-					event.KeyCode !== KeyCode.DownArrow
+					event.keyCode !== KeyCode.Return &&
+					event.keyCode !== KeyCode.Escape &&
+					event.keyCode !== KeyCode.UpArrow &&
+					event.keyCode !== KeyCode.DownArrow
 				) {
 					event.SetCancelled(true);
 				}
