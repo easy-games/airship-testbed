@@ -10,7 +10,6 @@ import inspect from "@easy-games/unity-inspect";
 import { SignalPriority } from "Shared/Util/Signal";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { InputController, InputType } from "../Input/InputController";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G, KeyCode.V];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Y, KeyCode.H, KeyCode.B];
