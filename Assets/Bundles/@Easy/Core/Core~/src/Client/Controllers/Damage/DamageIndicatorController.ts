@@ -28,7 +28,7 @@ export class DamageIndicatorController implements OnStart {
 			const entityGO = event.entity.networkObject.gameObject;
 
 			//Hitstun
-			const hitstunDuration = DamageUtils.AddHitstun(event.entity, event.amount, () => {});
+			//const hitstunDuration = DamageUtils.AddHitstun(event.entity, event.amount, () => {});
 
 			//Entity Damage Animation
 			event.entity.animator?.PlayTakeDamage(

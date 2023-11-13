@@ -183,9 +183,9 @@ export class DamageService implements OnStart {
 			//Hit stun and Knockback
 			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
 			if (driver) {
-				DamageUtils.AddHitstun(entity, amount, () => {
-					this.AddKnockback(driver, config?.knockbackDirection);
-				});
+				//DamageUtils.AddHitstun(entity, amount, () => {
+				this.AddKnockback(driver, config?.knockbackDirection);
+				//});
 			}
 		}
 
