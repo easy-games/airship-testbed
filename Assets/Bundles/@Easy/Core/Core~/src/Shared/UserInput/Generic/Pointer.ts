@@ -2,14 +2,16 @@ import { Bin } from "Shared/Util/Bin";
 import { Touchscreen } from "../Touchscreen";
 import { Mouse } from "../Mouse";
 import { Signal } from "Shared/Util/Signal";
+import { PointerButtonSignal } from "../Drivers/Signals/PointerButtonSignal";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 
 export class Pointer {
 	private readonly bin = new Bin();
 	private readonly touchscreen = new Touchscreen();
 	private readonly mouse = new Mouse();
 
-	public readonly Down = new Signal<void>();
-	public readonly Up = new Signal<void>();
+	public readonly Down = new Signal<[event: PointerButtonSignal]>();
+	public readonly Up = new Signal<[event: PointerButtonSignal]>();
 	public readonly Moved = new Signal<[location: Vector3]>();
 
 	constructor() {
@@ -19,12 +21,13 @@ export class Pointer {
 		this.bin.Add(this.mouse.LeftUp.Proxy(this.Up));
 		this.bin.Add(this.mouse.Moved.Proxy(this.Moved));
 		this.bin.Connect(this.touchscreen.PrimaryTouch, (location, phase) => {
+			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			switch (phase) {
 				case TouchPhase.Began:
-					this.Down.Fire();
+					this.Down.Fire(new PointerButtonSignal(true, uiProcessed));
 					break;
 				case TouchPhase.Ended:
-					this.Up.Fire();
+					this.Up.Fire(new PointerButtonSignal(false, uiProcessed));
 					break;
 				case TouchPhase.Moved:
 					this.Moved.Fire(location);

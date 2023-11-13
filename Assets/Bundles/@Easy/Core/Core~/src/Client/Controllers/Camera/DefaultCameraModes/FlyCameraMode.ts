@@ -100,8 +100,8 @@ export class FlyCameraMode implements CameraMode {
 			);
 		}
 
-		this.bin.Connect(this.mouse.Scrolled, (deltaScroll) => {
-			const delta = -deltaScroll * FOV_SCROLL_SENSITIVITY;
+		this.bin.Connect(this.mouse.Scrolled, (event) => {
+			const delta = -event.Delta * FOV_SCROLL_SENSITIVITY;
 			this.fovSpring.goal = new Vector3(0, 0, math.clamp(this.fovSpring.goal.z + delta, MIN_FOV, MAX_FOV));
 		});
 

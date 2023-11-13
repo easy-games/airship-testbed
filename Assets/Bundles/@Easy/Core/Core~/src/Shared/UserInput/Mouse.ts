@@ -1,6 +1,8 @@
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
 import { MouseDriver } from "./Drivers/MouseDriver";
+import { PointerButtonSignal } from "./Drivers/Signals/PointerButtonSignal";
+import { ScrollSignal } from "./Drivers/Signals/ScrollSignal";
 
 const mouseUnlockerKeys = new Set<number>();
 let mouseUnlockerIdCounter = 1;
@@ -9,13 +11,13 @@ export class Mouse {
 	private readonly bin = new Bin();
 	private readonly mouseDriver = MouseDriver.instance();
 
-	public readonly LeftDown = new Signal<void>();
-	public readonly LeftUp = new Signal<void>();
-	public readonly RightDown = new Signal<void>();
-	public readonly RightUp = new Signal<void>();
-	public readonly MiddleDown = new Signal<void>();
-	public readonly MiddleUp = new Signal<void>();
-	public readonly Scrolled = new Signal<[delta: number]>();
+	public readonly LeftDown = new Signal<[event: PointerButtonSignal]>();
+	public readonly LeftUp = new Signal<[event: PointerButtonSignal]>();
+	public readonly RightDown = new Signal<[event: PointerButtonSignal]>();
+	public readonly RightUp = new Signal<[event: PointerButtonSignal]>();
+	public readonly MiddleDown = new Signal<[event: PointerButtonSignal]>();
+	public readonly MiddleUp = new Signal<[event: PointerButtonSignal]>();
+	public readonly Scrolled = new Signal<[event: ScrollSignal]>();
 	public readonly Moved = new Signal<[location: Vector3]>();
 	// public readonly Delta = new Signal<[delta: Vector3]>();
 
@@ -48,30 +50,30 @@ export class Mouse {
 
 		// Connect to mouse driver:
 
-		this.bin.Connect(this.mouseDriver.LeftButtonChanged, (isDown) => {
-			this.isLeftDown = isDown;
-			if (isDown) {
-				this.LeftDown.Fire();
+		this.bin.Connect(this.mouseDriver.LeftButtonChanged, (event) => {
+			this.isLeftDown = event.IsDown;
+			if (event.IsDown) {
+				this.LeftDown.Fire(event);
 			} else {
-				this.LeftUp.Fire();
+				this.LeftUp.Fire(event);
 			}
 		});
 
-		this.bin.Connect(this.mouseDriver.RightButtonChanged, (isDown) => {
-			this.isRightDown = isDown;
-			if (isDown) {
-				this.RightDown.Fire();
+		this.bin.Connect(this.mouseDriver.RightButtonChanged, (event) => {
+			this.isRightDown = event.IsDown;
+			if (event.IsDown) {
+				this.RightDown.Fire(event);
 			} else {
-				this.RightUp.Fire();
+				this.RightUp.Fire(event);
 			}
 		});
 
-		this.bin.Connect(this.mouseDriver.MiddleButtonChanged, (isDown) => {
-			this.isMiddleDown = isDown;
-			if (isDown) {
-				this.MiddleDown.Fire();
+		this.bin.Connect(this.mouseDriver.MiddleButtonChanged, (event) => {
+			this.isMiddleDown = event.IsDown;
+			if (event.IsDown) {
+				this.MiddleDown.Fire(event);
 			} else {
-				this.MiddleUp.Fire();
+				this.MiddleUp.Fire(event);
 			}
 		});
 

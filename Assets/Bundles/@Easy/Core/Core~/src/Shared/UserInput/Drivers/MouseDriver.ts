@@ -1,12 +1,15 @@
 import { Signal } from "Shared/Util/Signal";
+import { PointerButtonSignal } from "./Signals/PointerButtonSignal";
+import { ScrollSignal } from "./Signals/ScrollSignal";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 
 export class MouseDriver {
 	private static inst: MouseDriver;
 
-	public readonly LeftButtonChanged = new Signal<[isDown: boolean]>();
-	public readonly RightButtonChanged = new Signal<[isDown: boolean]>();
-	public readonly MiddleButtonChanged = new Signal<[isDown: boolean]>();
-	public readonly Scrolled = new Signal<[delta: number]>();
+	public readonly LeftButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
+	public readonly RightButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
+	public readonly MiddleButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
+	public readonly Scrolled = new Signal<[event: ScrollSignal]>();
 	public readonly Moved = new Signal<[location: Vector3]>();
 	// public readonly Delta = new Signal<[delta: Vector3]>();
 
@@ -14,16 +17,24 @@ export class MouseDriver {
 
 	private constructor() {
 		this.inputProxy.OnLeftMouseButtonPressEvent((isDown) => {
-			this.LeftButtonChanged.Fire(isDown);
+			const uiProcessed = CanvasAPI.IsPointerOverUI();
+			const event = new PointerButtonSignal(isDown, uiProcessed);
+			this.LeftButtonChanged.Fire(event);
 		});
 		this.inputProxy.OnRightMouseButtonPressEvent((isDown) => {
-			this.RightButtonChanged.Fire(isDown);
+			const uiProcessed = CanvasAPI.IsPointerOverUI();
+			const event = new PointerButtonSignal(isDown, uiProcessed);
+			this.RightButtonChanged.Fire(event);
 		});
 		this.inputProxy.OnMiddleMouseButtonPressEvent((isDown) => {
-			this.MiddleButtonChanged.Fire(isDown);
+			const uiProcessed = CanvasAPI.IsPointerOverUI();
+			const event = new PointerButtonSignal(isDown, uiProcessed);
+			this.MiddleButtonChanged.Fire(event);
 		});
 		this.inputProxy.OnMouseScrollEvent((scrollAmount) => {
-			this.Scrolled.Fire(scrollAmount);
+			const uiProcessed = CanvasAPI.IsPointerOverUI();
+			const event = new ScrollSignal(scrollAmount, uiProcessed);
+			this.Scrolled.Fire(event);
 		});
 		this.inputProxy.OnMouseMoveEvent((location) => {
 			this.Moved.Fire(location);
