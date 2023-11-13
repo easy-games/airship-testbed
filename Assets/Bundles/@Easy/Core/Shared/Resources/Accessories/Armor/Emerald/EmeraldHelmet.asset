@@ -15,7 +15,8 @@ MonoBehaviour:
   DisplayName: Leather Helmet
   AccessorySlot: 1
   Prefab: {fileID: 983100618499422991, guid: d21c2697473e5644b971002e5c75fd95, type: 3}
-  Position: {x: 0, y: 0.4, z: -0.03}
+  Position: {x: 0, y: 0.44, z: 0.04}
   Rotation: {x: -90, y: 0, z: 0}
-  Scale: {x: 30, y: 30, z: 30}
+  Scale: {x: 26, y: 26, z: 26}
   visibilityMode: 0
+  SkinnedToCharacter: 1
