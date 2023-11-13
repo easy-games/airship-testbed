@@ -218,14 +218,17 @@ export class LocalEntityController implements OnStart {
 
 			// Pause Editor
 			keyboard.OnKeyDown(KeyCode.Tilde, (event) => {
+				if (event.uiProcessed) return;
 				DebugUtil.TogglePauseEngine();
 			});
 			keyboard.OnKeyDown(KeyCode.BackQuote, (event) => {
+				if (event.uiProcessed) return;
 				DebugUtil.TogglePauseEngine();
 			});
 
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
+				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.ToggleFirstPerson();
 				}
@@ -233,6 +236,7 @@ export class LocalEntityController implements OnStart {
 
 			// Toggle fly cam:
 			keyboard.OnKeyDown(KeyCode.P, (event) => {
+				if (event.uiProcessed) return;
 				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
 					if (flyCam) {
 						flyCam = false;
@@ -259,6 +263,7 @@ export class LocalEntityController implements OnStart {
 			// Toggle fly mode (like mc creative):
 			let lastSpace = 0;
 			keyboard.OnKeyDown(KeyCode.Space, (event) => {
+				if (event.uiProcessed) return;
 				const now = Time.time;
 				const dt = now - lastSpace;
 				if (dt < 0.3) {
@@ -273,11 +278,13 @@ export class LocalEntityController implements OnStart {
 
 			// Toggle look backwards:
 			keyboard.OnKeyDown(KeyCode.LeftAlt, (event) => {
+				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.SetLookBackwards(true);
 				}
 			});
 			keyboard.OnKeyUp(KeyCode.LeftAlt, (event) => {
+				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.SetLookBackwards(false);
 				}
@@ -285,11 +292,13 @@ export class LocalEntityController implements OnStart {
 
 			// Screenshot:
 			keyboard.OnKeyDown(KeyCode.F2, (event) => {
+				if (event.uiProcessed) return;
 				this.TakeScreenshot();
 			});
 
 			// Debug knockback:
 			keyboard.OnKeyDown(KeyCode.L, (event) => {
+				if (event.uiProcessed) return;
 				print("-----");
 				for (const entity of Dependency<EntityController>().GetEntities()) {
 					print(entity.GetDisplayName() + ": " + entity.id);
