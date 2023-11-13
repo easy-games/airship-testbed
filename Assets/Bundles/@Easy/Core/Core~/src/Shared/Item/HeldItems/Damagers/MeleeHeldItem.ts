@@ -113,7 +113,7 @@ export class MeleeHeldItem extends HeldItem {
 						effects[effectI] = effectGO;
 						effectI++;
 					}
-					DamageUtils.AddAttackStun(this.entity, meleeData.damage, effects);
+					DamageUtils.AddAttackStun(this.entity, meleeData.damage, false, effects);
 				} else {
 					this.Log("No client hits found");
 				}

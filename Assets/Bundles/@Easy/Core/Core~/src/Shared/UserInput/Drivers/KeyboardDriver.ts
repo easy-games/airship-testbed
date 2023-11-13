@@ -108,7 +108,9 @@ export class KeyboardDriver {
 	}
 
 	public IsKeyDown(key: KeyCode) {
-		// return UserInputService.InputProxy.IsKeyDown(key);
+		const uiSelected = CanvasAPI.GetSelectedInstanceId() !== undefined;
+		if (uiSelected) return false;
+
 		return Input.GetKey(key) || Input.GetKeyDown(key);
 	}
 

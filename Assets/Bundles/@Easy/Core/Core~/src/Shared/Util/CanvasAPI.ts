@@ -203,6 +203,10 @@ export class CanvasAPI {
 		return this.selectedInstanceId;
 	}
 
+	public static Register(targetGameObject: GameObject) {
+		this.Setup(targetGameObject);
+	}
+
 	/** Fetches and sets the global event interceptor. */
 	private static Setup(gameObject: GameObject): void {
 		if (CanvasAPI.eventInterceptor === undefined) {

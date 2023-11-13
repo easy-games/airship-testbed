@@ -77,6 +77,7 @@ export class ProximityPrompt {
 		if (canActivate) {
 			const keyboard = this.canActivateBin.Add(new Keyboard());
 			keyboard.OnKeyDown(this.data.activationKey, (event) => {
+				if (event.uiProcessed) return;
 				this.OnRequestActivated.Fire();
 			});
 		} else {

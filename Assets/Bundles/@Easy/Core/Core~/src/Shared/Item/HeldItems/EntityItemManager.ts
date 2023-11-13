@@ -94,6 +94,7 @@ export class EntityItemManager {
 			});
 
 			keyboard.OnKeyDown(KeyCode.Y, (event) => {
+				if (event.uiProcessed) return;
 				if (this.localEntity) {
 					let items = this.GetOrCreateItemManager(this.localEntity);
 					items.TriggerNewState(HeldItemState.INSPECT);
