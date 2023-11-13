@@ -69,6 +69,7 @@ export class TabListController implements OnStart {
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.Tab, (e) => {
+			if (e.uiProcessed) return;
 			if (!keyboard.IsEitherKeyDown(KeyCode.LeftAlt, KeyCode.LeftCommand)) {
 				this.Show();
 			}

@@ -95,13 +95,13 @@ export class InventoryController implements OnStart {
 
 		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
 			keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
-				if (!this.enabled) return;
+				if (!this.enabled || event.uiProcessed) return;
 				this.SetHeldSlot(hotbarIndex);
 			});
 		}
 
 		keyboard.OnKeyDown(KeyCode.Q, (event) => {
-			if (!this.enabled) return;
+			if (!this.enabled || event.uiProcessed) return;
 			this.DropItemInHand();
 		});
 

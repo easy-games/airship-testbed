@@ -22,6 +22,7 @@ export class ProximityPromptController implements OnStart {
 
 		// Hacked in to only support [F] keycode for now :)
 		this.keyboard.OnKeyDown(KeyCode.F, (event) => {
+			if (event.uiProcessed) return;
 			if (this.activatableProximityPrompts.size() === 0) return;
 
 			const eligiblePrompt = this.activatableProximityPrompts[0];
