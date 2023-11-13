@@ -105,6 +105,7 @@ export interface ItemMeta {
 	viewModel?: ViewModelMeta;
 
 	maxStackSize?: number;
+	inspectAnimPath?: string;
 
 	//Optional Item Archetypes
 	melee?: MeleeItemMeta;

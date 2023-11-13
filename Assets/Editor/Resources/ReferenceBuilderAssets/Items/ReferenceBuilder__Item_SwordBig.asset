@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d84e63232b5882040a4130ec6f661454, type: 3}
-  m_Name: ReferenceBuilder__Item_Sword
+  m_Name: ReferenceBuilder__Item_SwordBig
   m_EditorClassIdentifier: 
-  referenceId: ItemSword
+  referenceId: ItemSwordBig
   bundles:
   - key: FirstPerson
     value:
     - key: Idle
-      value: {fileID: 7400000, guid: 9625de74b614f419d9865b153f7de582, type: 2}
+      value: {fileID: 7400000, guid: 164e6335cbb6696459c76d3a6e995e16, type: 2}
     - key: Equip
       value: {fileID: 7400000, guid: 9625de74b614f419d9865b153f7de582, type: 2}
     - key: Inspect
-      value: {fileID: 7400000, guid: 245e8b3efd3214930829e632be8ded6a, type: 2}
+      value: {fileID: 7400000, guid: 3051f3c7e04e4cb4b94f2b09c5ff96e7, type: 2}
     - key: Swing01
-      value: {fileID: 7400000, guid: 647d231004e5840b89f0505720561bae, type: 2}
+      value: {fileID: 7400000, guid: 7650efd0769182f4c82cb3089d552434, type: 2}
     - key: Swing02
-      value: {fileID: 7400000, guid: 8131924be661fef46bcc0402808e3e37, type: 2}
+      value: {fileID: 7400000, guid: 19c368bc082f7aa42a1e2901549bc2e2, type: 2}
   - key: ThirdPerson
     value:
     - key: Idle
