@@ -17,6 +17,7 @@ export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
 	private animationIndex = 0;
 	private bin: Bin = new Bin();
+	private currentUseVFX: GameObject | undefined;
 	// private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
@@ -28,8 +29,8 @@ export class MeleeHeldItem extends HeldItem {
 
 		//Animation
 		this.entity.animator.PlayUseAnim(this.animationIndex, {
-			transitionTime: 0.05,
-			autoFadeOut: true,
+			fadeInDuration: 0.05,
+			fadeOutDuration: 0.1,
 		});
 
 		let meleeData = this.itemMeta?.melee;
@@ -42,25 +43,25 @@ export class MeleeHeldItem extends HeldItem {
 		const isFirstPerson = this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
 		if (meleeData.onUseVFX) {
 			if (isFirstPerson) {
-				let effect = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
-				if (effect) {
+				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
+				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
-					effect.transform.SetParent(this.entity.references.spineBoneMiddle);
-					effect.transform.localRotation = Quaternion.identity;
-					effect.transform.localPosition = Vector3.zero;
-					effect.layer = Layer.FIRST_PERSON;
+					this.currentUseVFX.transform.SetParent(this.entity.references.spineBoneMiddle);
+					this.currentUseVFX.transform.localRotation = Quaternion.identity;
+					this.currentUseVFX.transform.localPosition = Vector3.zero;
+					this.currentUseVFX.layer = Layer.FIRST_PERSON;
 				}
 			} else {
 				//Spawn third person effect on the root
-				let effect = EffectsManager.SpawnBundleEffectById(
+				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(
 					meleeData.onUseVFX[this.animationIndex],
 					this.entity.model.transform.position,
 					this.entity.model.transform.eulerAngles,
 				);
-				if (effect) {
+				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
-					effect.transform.SetParent(this.entity.model.transform);
-					effect.layer = Layer.CHARACTER;
+					this.currentUseVFX.transform.SetParent(this.entity.model.transform);
+					this.currentUseVFX.layer = Layer.CHARACTER;
 				}
 			}
 
@@ -85,11 +86,12 @@ export class MeleeHeldItem extends HeldItem {
 
 				let hitTargets = this.ScanForHits();
 				let hitSomething = false;
+				let effectGO: GameObject | undefined;
 				for (const data of hitTargets) {
+					hitSomething = true;
 					if (meleeData.onHitPrefabPath) {
 						//Local damage predictions
-						hitSomething = true;
-						const effectGO = EffectsManager.SpawnPrefabEffect(
+						effectGO = EffectsManager.SpawnPrefabEffect(
 							meleeData.onHitPrefabPath,
 							data.hitPosition,
 							Quaternion.LookRotation(data.hitDirection).eulerAngles,
@@ -100,7 +102,20 @@ export class MeleeHeldItem extends HeldItem {
 					}
 				}
 				if (hitSomething) {
-					DamageUtils.AddAttackStun(this.entity, meleeData.damage);
+					this.Log("client found hits");
+					let effectI = 0;
+					let effects: GameObject[] = [];
+					if (this.currentUseVFX) {
+						effects[effectI] = this.currentUseVFX;
+						effectI++;
+					}
+					if (effectGO) {
+						effects[effectI] = effectGO;
+						effectI++;
+					}
+					DamageUtils.AddAttackStun(this.entity, meleeData.damage, false, effects);
+				} else {
+					this.Log("No client hits found");
 				}
 				Profiler.EndSample();
 			}
@@ -130,12 +145,14 @@ export class MeleeHeldItem extends HeldItem {
 			return;
 		}
 
-		let hitTargets = this.ScanForHits();
-		hitTargets.forEach((data) => {
-			Dependency<DamageService>().InflictDamage(data.hitEntity, meleeData?.damage ?? 0, {
-				damageType: meleeData?.damageType ?? DamageType.SWORD,
-				fromEntity: this.entity,
-				knockbackDirection: data.knockbackDirection,
+		Task.Delay(meleeData.hitDelay ?? 0, () => {
+			let hitTargets = this.ScanForHits();
+			hitTargets.forEach((data) => {
+				Dependency<DamageService>().InflictDamage(data.hitEntity, meleeData?.damage ?? 0, {
+					damageType: meleeData?.damageType ?? DamageType.SWORD,
+					fromEntity: this.entity,
+					knockbackDirection: data.knockbackDirection,
+				});
 			});
 		});
 	}
@@ -146,6 +163,7 @@ export class MeleeHeldItem extends HeldItem {
 		// let farBox = this.combatVars.GetVector3("swordBoxFar");
 		// let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
+		this.Log("scanning for hits");
 		let hits = this.ScanBox(closeBox, [], Theme.Green);
 		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			let farHits = this.ScanBox(
@@ -197,15 +215,19 @@ export class MeleeHeldItem extends HeldItem {
 				//Box check doesn't care about non entities
 				continue;
 			}
+			this.Log("hit entity: " + targetEntity.id);
 			if (targetEntity === this.entity) {
 				//Hit Self
+				this.Log("hit self");
 				continue;
 			}
 			if (ignoreEntityIds.includes(targetEntity.id)) {
+				this.Log("ignored entity: " + targetEntity.id);
 				continue;
 			}
 
 			if (!this.entity.CanDamage(targetEntity)) {
+				this.Log("cant damage");
 				continue;
 			}
 
@@ -230,11 +252,13 @@ export class MeleeHeldItem extends HeldItem {
 			// Validate hitting through walls
 			for (let i = 0; i < hitInfos.Length; i++) {
 				let hitInfo = hitInfos.GetValue(i);
+				this.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
 				//Look for entities and blocking colliders
 				const hitEntity = Entity.FindByCollider(hitInfo.collider);
 				if (hitEntity) {
 					if (hitEntity.id === this.entity.id) {
 						//Hit self, skip
+						this.Log("skipping self");
 						continue;
 					} else if (hitEntity.id === targetEntity.id) {
 						//Raycast hit the target entity
@@ -270,19 +294,26 @@ export class MeleeHeldItem extends HeldItem {
 						collisionIndex++;
 						if (!closestCollisionData || hitInfo.distance < closestCollisionData.distance) {
 							closestCollisionData = foundRaycastCollision;
+							this.Log("found close target");
 							continue;
+						} else {
+							this.Log("target is too far away");
 						}
 					} else {
 						// hit other entity. ignore.
+						this.Log("ignoring entity");
 						continue;
 					}
 				} else {
 					//Hit a non entity object
+					this.Log("Blocked by non entity: " + hitInfo.distance);
 					blockerDistance = math.min(blockerDistance, hitInfo.distance);
 				}
 			}
 			if (foundRaycastCollision) {
+				this.Log("found collision");
 				if (foundRaycastCollision.distance > blockerDistance) {
+					this.Log("target is farther than blocker");
 					return [];
 				}
 			}
@@ -291,8 +322,10 @@ export class MeleeHeldItem extends HeldItem {
 		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			return collisionData;
 		} else if (closestCollisionData) {
+			this.Log("returing single collision: " + closestCollisionData.hitEntity.id);
 			return [closestCollisionData];
 		}
+		this.Log("found nothing");
 		return [];
 	}
 }

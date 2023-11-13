@@ -1,12 +1,14 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { Signal } from "../../Util/Signal";
+import { PointerButtonSignal } from "./Signals/PointerButtonSignal";
+import { ScrollSignal } from "./Signals/ScrollSignal";
 export declare class MouseDriver {
     private static inst;
-    readonly LeftButtonChanged: Signal<[isDown: boolean]>;
-    readonly RightButtonChanged: Signal<[isDown: boolean]>;
-    readonly MiddleButtonChanged: Signal<[isDown: boolean]>;
-    readonly Scrolled: Signal<[delta: number]>;
+    readonly LeftButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
+    readonly RightButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
+    readonly MiddleButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
+    readonly Scrolled: Signal<[event: ScrollSignal]>;
     readonly Moved: Signal<[location: Vector3]>;
     private readonly inputProxy;
     private constructor();

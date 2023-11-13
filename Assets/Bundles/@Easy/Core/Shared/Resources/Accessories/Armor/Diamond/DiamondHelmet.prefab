@@ -13,15 +13,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b5a6fefdd92cdc4e93b3f7bf14b1cec, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 128.806
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b5a6fefdd92cdc4e93b3f7bf14b1cec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.449
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b5a6fefdd92cdc4e93b3f7bf14b1cec, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b5a6fefdd92cdc4e93b3f7bf14b1cec, type: 3}
       propertyPath: m_LocalRotation.w
@@ -87,3 +87,4 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Metal_Clean
+  addedByEditorScript: 0

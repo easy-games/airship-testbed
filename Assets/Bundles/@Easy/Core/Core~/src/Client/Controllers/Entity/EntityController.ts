@@ -17,9 +17,9 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
-import { LocalEntityController } from "../Character/LocalEntityController";
 
 @Controller({})
 export class EntityController implements OnStart {
@@ -46,17 +46,21 @@ export class EntityController implements OnStart {
 	OnStart(): void {
 		CoreNetwork.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {
 			entityDtos.forEach((entityDto) => {
+				Profiler.BeginSample("SpawnEntity");
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
 					error("[FATAL]: Failed to add entity:" + err);
 				}
+				Profiler.EndSample();
 			});
 		});
 		CoreNetwork.ServerToClient.DespawnEntity.Client.OnServerEvent((entityId) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity) {
+				Profiler.BeginSample("DespawnEntity");
 				this.DespawnEntity(entity);
+				Profiler.EndSample();
 			}
 		});
 		CoreNetwork.ServerToClient.PlayEntityItemAnimation.Client.OnServerEvent((entityId, animationId, playMode) => {
@@ -137,20 +141,13 @@ export class EntityController implements OnStart {
 
 		// Fun
 		const skinColors = [
-			ColorUtil.HexToColor("#CAA075"),
-			ColorUtil.HexToColor("#A4784B"),
-			ColorUtil.HexToColor("#735638"),
-			ColorUtil.HexToColor("#B4905B"),
-			ColorUtil.HexToColor("#E09E53"),
-			ColorUtil.HexToColor("#875C2C"),
-			ColorUtil.HexToColor("#CAA075"),
-			ColorUtil.HexToColor("#A4784B"),
-			ColorUtil.HexToColor("#735638"),
-			ColorUtil.HexToColor("#B4905B"),
-			ColorUtil.HexToColor("#E09E53"),
-			ColorUtil.HexToColor("#875C2C"),
-			ColorUtil.HexToColor("#9AA427"), // green
-			ColorUtil.HexToColor("#90684C"),
+			ColorUtil.HexToColor("#edcdad"),
+			ColorUtil.HexToColor("#f2c291"),
+			ColorUtil.HexToColor("#cc9d6a"),
+			ColorUtil.HexToColor("#ebbc78"),
+			ColorUtil.HexToColor("#f2c27e"),
+			ColorUtil.HexToColor("#d69e5e"),
+			ColorUtil.HexToColor("#e8bd92"),
 		];
 
 		const hairColors = [
@@ -183,9 +180,11 @@ export class EntityController implements OnStart {
 			let shirtColor = hairColors[(randomId * 2) % hairColors.size()];
 
 			//Body Meshes
+			Profiler.BeginSample("ColorRandomization");
 			event.entity.accessoryBuilder.SetSkinColor(skinColor, false);
-			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
-			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
+			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
+			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
+			Profiler.EndSample();
 		});
 	}
 
@@ -215,7 +214,9 @@ export class EntityController implements OnStart {
 				this.invController.RegisterInventory(inv);
 			}
 
+			Profiler.BeginSample("CharacterEntity.Constructor");
 			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv);
+			Profiler.EndSample();
 		} else {
 			error("Unable to find entity serializer for dto: " + entityDto);
 		}
@@ -223,7 +224,9 @@ export class EntityController implements OnStart {
 		entity.SetMaxHealth(entityDto.maxHealth);
 		entity.SetDisplayName(entityDto.displayName);
 		if (entityDto.healthbar) {
+			Profiler.BeginSample("AddHealthbar");
 			entity.AddHealthbar();
+			Profiler.EndSample();
 		}
 
 		this.entities.set(entity.id, entity);
@@ -236,7 +239,9 @@ export class EntityController implements OnStart {
 			}
 		}
 
+		Profiler.BeginSample("EntitySpawnSignal");
 		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
+		Profiler.EndSample();
 
 		return entity;
 	}

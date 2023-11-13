@@ -9,6 +9,11 @@ export type HeldItemEntry = {
     condition: HeldItemCondition;
     factory: HeldItemFactory;
 };
+/**
+ * This class is attached to an {@link Entity}.
+ *
+ * One item manager per entity, calls functionality on currently equipped item for that entity
+ */
 export declare class HeldItemManager {
     private entity;
     private heldItemMap;

@@ -46,7 +46,7 @@ export class MainMenuAddFriendsController implements OnStart {
 			const keyboard = new Keyboard();
 			keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 				if (this.inputFieldSelected) {
-					if (e.KeyCode !== KeyCode.Return && e.KeyCode !== KeyCode.Escape) {
+					if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
 						e.SetCancelled(true);
 					}
 				}
@@ -123,6 +123,7 @@ export class MainMenuAddFriendsController implements OnStart {
 		AppManager.Open(this.canvas, {
 			noOpenSound: true,
 			addToStack: true,
+			sortingOrderOffset: 100,
 		});
 		const wrapper = this.canvas.transform.GetChild(0);
 		wrapper.localPosition = new Vector3(0, 15, 0);

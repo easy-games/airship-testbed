@@ -143,7 +143,8 @@ export abstract class EntityAnimator {
 		config?: {
 			fadeMode?: FadeMode;
 			wrapMode?: WrapMode;
-			transitionTime?: number;
+			fadeInDuration?: number;
+			fadeOutDuration?: number;
 			autoFadeOut?: boolean;
 		},
 	): void {}
@@ -157,7 +158,8 @@ export abstract class EntityAnimator {
 		config?: {
 			fadeMode?: FadeMode;
 			wrapMode?: WrapMode;
-			transitionTime?: number;
+			fadeInDuration?: number;
+			fadeOutDuration?: number;
 			autoFadeOut?: boolean;
 		},
 	): AnimancerState;
@@ -182,7 +184,7 @@ export abstract class EntityAnimator {
 		if (flinchClip) {
 			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE, undefined, {
 				autoFadeOut: false,
-				transitionTime: 0.01,
+				fadeInDuration: 0.01,
 			});
 			Task.Delay(flinchDuration, () => {
 				AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ROOT_OVERRIDE).StartFade(0, 0.05);

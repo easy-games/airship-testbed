@@ -95,6 +95,7 @@ export interface ItemMeta {
     usable?: UsableHeldItemMeta;
     viewModel?: ViewModelMeta;
     maxStackSize?: number;
+    inspectAnimPath?: string;
     melee?: MeleeItemMeta;
     block?: BlockMeta;
     breakBlock?: BreakBlockMeta;

@@ -53,22 +53,21 @@ export class AudioManager {
 	public static PlayClipGlobal(clip: AudioClip, config?: PlaySoundConfig): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(Vector3.zero);
 		audioSource.spatialBlend = 0;
-		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
+		audioSource.loop = config?.loop ?? false;
 		audioSource.pitch = config?.pitch ?? 1;
+		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
+		audioSource.maxDistance = config?.maxDistance ?? 500;
+		audioSource.volume = config?.volumeScale ?? 1;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
-		audioSource.clip = clip;
-		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.PlayOneShot(clip);
 		//audioSource.PlayOneShot(clip, );
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
-				if (audioSource.isPlaying && !audioSource.loop) {
-					print("[AudioManager]: Deleting global audio source before it finished playing. name=" + clip.name);
-				}
+				audioSource.Stop();
 				this.globalAudioSources.delete(audioSource.gameObject.GetInstanceID());
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
@@ -111,28 +110,19 @@ export class AudioManager {
 	): AudioSource | undefined {
 		const audioSource = this.GetAudioSource(position);
 		audioSource.spatialBlend = 1;
-		audioSource.loop = config !== undefined && config.loop !== undefined ? config.loop : false;
+		audioSource.loop = config?.loop ?? false;
 		if (!clip) {
 			warn("Trying to play unidentified clip");
 			return undefined;
 		}
-		audioSource.clip = clip;
-		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
 		audioSource.maxDistance = config?.maxDistance ?? 500;
 		audioSource.pitch = config?.pitch ?? 1;
+		audioSource.volume = config?.volumeScale ?? 1;
 		audioSource.PlayOneShot(clip);
-		//audioSource.PlayOneShot(clip, );
 		if (!audioSource.loop) {
 			Task.Delay(clip.length + 1, () => {
-				if (audioSource.isPlaying) {
-					warn(
-						"DELETING AUDIO SOURCE BEFORE ITS FINISHED PLAYING: " +
-							audioSource.name +
-							": " +
-							audioSource.clip?.name,
-					);
-				}
+				audioSource.Stop();
 				PoolManager.ReleaseObject(audioSource.gameObject);
 			});
 		}

@@ -42,10 +42,12 @@ export class BWController implements OnStart {
 		});
 
 		CoreClientSignals.EntitySpawn.Connect((spawnSignal) => {
+			Profiler.BeginSample("SetTeamColor");
 			const team = spawnSignal.entity.GetTeam();
 			if (team) {
 				this.SetTeamColor(spawnSignal.entity, team);
 			}
+			Profiler.EndSample();
 		});
 	}
 

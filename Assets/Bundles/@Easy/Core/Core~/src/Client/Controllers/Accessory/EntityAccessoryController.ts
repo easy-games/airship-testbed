@@ -18,14 +18,17 @@ export class EntityAccessoryController implements OnStart {
 
 	private AutoEquipArmor() {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
+			Profiler.BeginSample("AutoEqupArmor");
 			if (event.entity instanceof CharacterEntity) {
 				if (event.entity.IsPlayerOwned()) {
 					//Add Kit Accessory
 					if (ItemUtil.defaultKitAccessory) {
+						Profiler.BeginSample("EquipAccessories");
 						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
 							ItemUtil.defaultKitAccessory,
 							true,
 						);
+						Profiler.EndSample();
 					}
 				}
 
@@ -45,7 +48,7 @@ export class EntityAccessoryController implements OnStart {
 							const newSlots = armorAccessories.map((acc) => acc.AccessorySlot);
 							const slotsToRemove = currentSlots.filter((slot) => !newSlots.includes(slot));
 							for (const slot of slotsToRemove) {
-								accessoryBuilder.RemoveAccessorySlot(slot, true);
+								accessoryBuilder.RemoveAccessorySlot(slot, false);
 							}
 						}
 						for (const acc of armorAccessories) {
@@ -56,7 +59,7 @@ export class EntityAccessoryController implements OnStart {
 						if (currentArmor) {
 							// Clear armor:
 							for (const acc of currentArmor) {
-								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, true);
+								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, false);
 							}
 							currentArmor = undefined;
 						}
@@ -77,6 +80,7 @@ export class EntityAccessoryController implements OnStart {
 					bin.Clean();
 				});
 			}
+			Profiler.EndSample();
 		});
 	}
 
@@ -91,12 +95,6 @@ export class EntityAccessoryController implements OnStart {
 			const bin = new Bin();
 			bin.Add(
 				event.entity.GetInventory().ObserveHeldItem((itemStack) => {
-					if (itemStack === undefined) {
-						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, true);
-						accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, true);
-						return;
-					}
-
 					if (event.entity.IsLocalCharacter()) {
 						this.SetFirstPersonLayer(accessoryBuilder);
 					}
@@ -110,6 +108,10 @@ export class EntityAccessoryController implements OnStart {
 						this.SetFirstPersonLayer(accessoryBuilder);
 					}),
 				);
+				// cleanup for pooling
+				bin.Add(() => {
+					accessoryBuilder.SetFirstPersonEnabled(false);
+				});
 			}
 
 			event.entity.OnDespawn.Once(() => {
@@ -121,6 +123,8 @@ export class EntityAccessoryController implements OnStart {
 	//Turn off root accessories unless they are on the first person layer
 	private SetFirstPersonLayer(accessoryBuilder: AccessoryBuilder) {
 		//Accessories with first person mesh variants need to be on layer FPS
-		accessoryBuilder.ToggleMeshVisibility(this.isFirstPerson);
+		Profiler.BeginSample("ToggleMeshVisibility");
+		accessoryBuilder.SetFirstPersonEnabled(this.isFirstPerson);
+		Profiler.EndSample();
 	}
 }

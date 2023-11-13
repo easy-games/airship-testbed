@@ -10,10 +10,10 @@ export class DamageUtils {
 	public static readonly minDamageFallSpeed = 35;
 	public static readonly maxDamageFallSpeed = 60;
 	public static readonly minFallDamage = 10;
-	public static readonly maxFallDamage = 50;
+	public static readonly maxFallDamage = 100;
 	public static readonly maxHitstunDamage = 50;
 	public static readonly minHitStunRadius = 0.08;
-	public static readonly maxHitStunRadius = 0.15;
+	public static readonly maxHitStunRadius = 0.1;
 
 	public static GetFallDamage(verticalSpeed: number): number {
 		//Don't damage short falls
@@ -31,11 +31,17 @@ export class DamageUtils {
 	}
 
 	public static AddHitstun(entity: Entity, damageAmount: number, OnComplete: () => void) {
+		//Don't do hit stun for small damage amounts
+		if (damageAmount < 25) {
+			OnComplete();
+			return 0;
+		}
+
 		const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
 		const damageDelta = math.clamp(damageAmount / this.maxHitstunDamage, 0, 1);
 		const hitStunDuration = this.GetStunDuration(damageDelta);
-		const hitStunFrequency = MathUtil.Lerp(20, 40, damageDelta);
-		const hitStrunRadius = MathUtil.Lerp(this.maxHitStunRadius, this.maxHitStunRadius, damageDelta);
+		const hitStunFrequency = MathUtil.Lerp(30, 60, damageDelta);
+		const hitStrunRadius = MathUtil.Lerp(this.minHitStunRadius, this.maxHitStunRadius, damageDelta);
 
 		//Stop entity from moving
 		driver.DisableMovement();
@@ -66,25 +72,54 @@ export class DamageUtils {
 	}
 
 	private static GetStunDuration(damageDelta: number) {
-		return MathUtil.Lerp(0.015, 0.2, damageDelta);
+		return MathUtil.Lerp(0.015, 0.15, damageDelta);
 	}
 
-	public static AddAttackStun(entity: Entity, damageDealt: number) {
+	public static AddAttackStun(
+		entity: Entity,
+		damageDealt: number,
+		disableMovement: boolean,
+		vfx: GameObject[] | undefined,
+	) {
 		const anim = entity.animator as CharacterEntityAnimator;
 		const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
 		if (anim) {
 			const duration = this.GetStunDuration(math.clamp(damageDealt / this.maxHitstunDamage, 0, 1));
+			let particles: ParticleSystem[] = [];
+			if (vfx) {
+				let particleI = 0;
+				vfx.forEach((go) => {
+					const newParticles = go.GetComponentsInChildren<ParticleSystem>();
+					for (let i = 0; i < newParticles.Length; i++) {
+						particles[particleI] = newParticles.GetValue(i);
+						particleI++;
+					}
+				});
+			}
+
 			if (duration >= 0.05) {
 				anim.SetPlaybackSpeed(0.05);
-				driver.DisableMovement();
-				if (entity.IsLocalCharacter()) {
-					Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
+				if (disableMovement) {
+					driver.DisableMovement();
+					if (entity.IsLocalCharacter()) {
+						Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
+					}
+				}
+				for (let i = 0; i < particles.size(); i++) {
+					let system = particles[i].main;
+					system.simulationSpeed = 0.05;
 				}
 				Task.Delay(duration, () => {
 					anim.SetPlaybackSpeed(1);
-					driver.EnableMovement();
-					if (entity.IsLocalCharacter()) {
-						Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
+					if (disableMovement) {
+						driver.EnableMovement();
+						if (entity.IsLocalCharacter()) {
+							Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
+						}
+					}
+					for (let i = 0; i < particles.size(); i++) {
+						let system = particles[i].main;
+						system.simulationSpeed = 1;
 					}
 				});
 			}
