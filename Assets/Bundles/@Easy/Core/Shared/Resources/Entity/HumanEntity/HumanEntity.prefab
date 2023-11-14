@@ -2430,7 +2430,7 @@ MonoBehaviour:
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -3.92, y: 0, z: 0}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -2628,6 +2628,10 @@ MonoBehaviour:
       value: {fileID: 3629289340962763505}
     - key: HandR
       value: {fileID: 4288901034534830371}
+    - key: ShoulderL
+      value: {fileID: 4412913557028469195}
+    - key: ShoulderR
+      value: {fileID: 892189392788074714}
   - key: Colliders
     keyValuePairs:
     - key: CharacterController

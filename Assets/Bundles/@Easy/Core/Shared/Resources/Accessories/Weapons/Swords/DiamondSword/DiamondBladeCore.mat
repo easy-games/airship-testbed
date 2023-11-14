@@ -77,7 +77,7 @@ Material:
     - _FresnelPower: 2
     - _FresnelStrength: 1.5
     - _GlossMapScale: 1
-    - _Glossiness: 1.8
+    - _Glossiness: 2.39
     - _GlossyReflections: 1
     - _HueShift: 0
     - _MaxDepthHeight: 0.173
@@ -102,10 +102,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 0, b: 0.011765003, a: 1}
-    - _DepthColor: {r: 0.86328614, g: 0.7783019, b: 1, a: 1}
+    - _DepthColor: {r: 0.86328614, g: 0.7783019, b: 1, a: 0.20392157}
     - _EColor: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0.043987818, b: 0.066037714, a: 1}
     - _EmissiveColor: {r: 1, g: 0, b: 0.08327961, a: 0}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 0.14117648}
     - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
