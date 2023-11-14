@@ -30,14 +30,21 @@ export default class RecallAbility extends AbilityLogic {
 	}
 
 	override OnClientChargeBegan(): void {
-		print("client trigger for recall charge begin");
+		{
+			const triggerPrefab = AssetBridge.Instance.LoadAsset(RECALL_TRIG_PREFAB_PATH) as Object;
+			const effectGo = GameObjectUtil.Instantiate(triggerPrefab);
+			effectGo.transform.position = this.entity.GetPosition();
+			GameObjectUtil.Destroy(effectGo, 0.3);
+		}
 
-		const loopPrefab = AssetBridge.Instance.LoadAsset(RECALL_LOOP_PREFAB_PATH) as Object;
-		const effectGo = GameObjectUtil.Instantiate(loopPrefab);
-		effectGo.transform.position = this.entity.GetPosition();
+		SetTimeout(0.25, () => {
+			const loopPrefab = AssetBridge.Instance.LoadAsset(RECALL_LOOP_PREFAB_PATH) as Object;
+			const effectGo = GameObjectUtil.Instantiate(loopPrefab);
+			effectGo.transform.position = this.entity.GetPosition();
 
-		this.chargeBin.Add(() => {
-			GameObjectUtil.Destroy(effectGo);
+			this.chargeBin.Add(() => {
+				GameObjectUtil.Destroy(effectGo);
+			});
 		});
 	}
 
@@ -45,10 +52,6 @@ export default class RecallAbility extends AbilityLogic {
 		this.chargeBin.Clean(); // cleanup effects
 
 		if (event.endState === ChargingAbilityEndedState.Finished) {
-			const triggerPrefab = AssetBridge.Instance.LoadAsset(RECALL_TRIG_PREFAB_PATH) as Object;
-			const effectGo = GameObjectUtil.Instantiate(triggerPrefab);
-			effectGo.transform.position = this.entity.GetPosition();
-			GameObjectUtil.Destroy(effectGo, 1.5);
 		}
 	}
 
