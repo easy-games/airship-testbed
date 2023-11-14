@@ -33,7 +33,7 @@ Shader "Airship/AirshipSpriteDissolve"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "../AirshipShaderIncludes.cginc"
+            #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
             struct appdata
             {
