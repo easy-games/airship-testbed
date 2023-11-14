@@ -5,13 +5,15 @@ import { Entity } from "../../../Shared/Entity/Entity";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
+import { AbilityRegistry } from "../../../Shared/Strollers/Abilities/AbilityRegistry";
 export declare class EntityController implements OnStart {
     private readonly invController;
     private readonly playerController;
     private readonly localEntityController;
+    private readonly abilityRegistry;
     private entities;
     entityHealthbarPrefab: Object;
-    constructor(invController: InventoryController, playerController: PlayerController, localEntityController: LocalEntityController);
+    constructor(invController: InventoryController, playerController: PlayerController, localEntityController: LocalEntityController, abilityRegistry: AbilityRegistry);
     OnStart(): void;
     private DespawnEntity;
     private AddEntity;

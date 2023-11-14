@@ -9,6 +9,7 @@ import { Duration } from "Shared/Util/Duration";
 import { Task } from "Shared/Util/Task";
 import { SetTimeout } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import inspect from "@easy-games/unity-inspect";
 
 export interface AbilityCooldown {
 	readonly length: Duration;
@@ -37,20 +38,27 @@ export class CharacterAbilities {
 	private currentChargingAbilityState: CancellableAbiltityChargingState | undefined; // using promise rn because need cancellation
 
 	public constructor(private entity: CharacterEntity) {
-		entity.GetBin().Add(
-			entity.OnMoveDirectionChanged.Connect((moveDirection) => {
-				const currentlyCharging = this.GetChargingAbility();
-				if (moveDirection !== Vector3.zero) {
-					// If the entity moves, and is charging an ability that cancels on movement - cancel it!
-					if (
-						currentlyCharging !== undefined &&
-						currentlyCharging.cancellationTriggers.has(AbilityCancellationTrigger.EntityMovement)
-					) {
-						this.CancelChargingAbility();
+		const bin = entity.GetBin();
+
+		if (RunCore.IsServer()) {
+			// Server event handling
+			bin.Add(
+				entity.OnMoveDirectionChanged.Connect((moveDirection) => {
+					const currentlyCharging = this.GetChargingAbility();
+					if (moveDirection !== Vector3.zero) {
+						// If the entity moves, and is charging an ability that cancels on movement - cancel it!
+						if (
+							currentlyCharging !== undefined &&
+							currentlyCharging.cancellationTriggers.has(AbilityCancellationTrigger.EntityMovement)
+						) {
+							this.CancelChargingAbility();
+						}
 					}
-				}
-			}),
-		);
+				}),
+			);
+		} else {
+			// Client replication handling
+		}
 	}
 
 	private GetAbilities() {
@@ -101,12 +109,9 @@ export class CharacterAbilities {
 	 * @param abilityId The ability's unique id
 	 * @param slot The slot the ability is bound to
 	 * @param logic The logic of the ability
-	 *
-	 * @server Server-only API
 	 */
 	public AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic {
-		assert(RunCore.IsServer(), "AddAbilityWithId should be called by the server");
-
+		print("AddAbilityWithId", abilityId, inspect(ability.config, { newline: " " }));
 		const abilityMap = MapUtil.GetOrCreate(
 			this.boundAbilities,
 			ability.config.slot,
@@ -127,9 +132,10 @@ export class CharacterAbilities {
 		abilityMap.set(abilityId, logic);
 		this.abilityIdSlotMap.set(abilityId, ability.config.slot);
 
-		if (this.entity.player) {
+		if (RunCore.IsServer() && this.entity.player) {
 			CoreNetwork.ServerToClient.AbilityAdded.Server.FireClient(this.entity.player.clientId, logic.Encode());
 		}
+
 		return logic;
 	}
 

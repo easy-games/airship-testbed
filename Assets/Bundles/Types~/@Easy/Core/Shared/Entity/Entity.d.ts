@@ -31,6 +31,8 @@ export declare class EntityReferences {
     spineBoneRoot: Transform;
     spineBoneMiddle: Transform;
     spineBoneTop: Transform;
+    shoulderR: Transform;
+    shoulderL: Transform;
     root: Transform;
     rig: Transform;
     characterCollider: Collider;

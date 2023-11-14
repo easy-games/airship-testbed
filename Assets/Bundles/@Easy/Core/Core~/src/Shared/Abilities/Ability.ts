@@ -42,10 +42,12 @@ export interface AbilityConfig {
 	 * The priority of this ability, will change whether or not this ability
 	 */
 	readonly priority?: number;
+
 	/**
 	 * The icon for this ability
 	 */
 	readonly image?: string;
+
 	/**
 	 * The name of this ability
 	 */

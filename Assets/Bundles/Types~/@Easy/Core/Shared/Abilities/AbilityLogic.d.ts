@@ -10,7 +10,11 @@ export declare abstract class AbilityLogic {
     private enabled;
     constructor(entity: CharacterEntity, id: string, configuration: AbilityConfig);
     GetId(): string;
-    GetConfiguration(): AbilityConfig;
+    /**
+     * Get the configuration of this ability
+     * @returns The configuration of the ability
+     */
+    GetConfig(): AbilityConfig;
     /**
      * Set whether or not this ability is enabled
      * @param enabled Whether or not this ability is enabled
