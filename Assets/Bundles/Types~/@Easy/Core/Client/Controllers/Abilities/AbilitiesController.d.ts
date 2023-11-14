@@ -3,7 +3,7 @@ import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { AbilityRegistry } from "../../../Shared/Strollers/Abilities/AbilityRegistry";
 import { Bin } from "../../../Shared/Util/Bin";
 import { AbilityBinding } from "./Class/AbilityBinding";
-import { EntityService } from "../../../Server/Services/Entity/EntityService";
+import { EntityController } from "../Entity/EntityController";
 export declare class AbilitiesController implements OnStart {
     private readonly abilityRegistry;
     private readonly entityService;
@@ -12,7 +12,7 @@ export declare class AbilitiesController implements OnStart {
     private secondaryAbilitySlots;
     private utilityAbiltySlots;
     private allSlots;
-    constructor(abilityRegistry: AbilityRegistry, entityService: EntityService);
+    constructor(abilityRegistry: AbilityRegistry, entityService: EntityController);
     private FindNextAvailableSlot;
     private RegisterAbility;
     private OnKeyboardInputEnded;

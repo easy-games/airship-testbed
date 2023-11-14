@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Keyboard } from "Shared/UserInput";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
@@ -10,10 +10,9 @@ import inspect from "@easy-games/unity-inspect";
 import { SignalPriority } from "Shared/Util/Signal";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { Game } from "Shared/Game";
 import { AbilityChargeClientSignal } from "./Event/AbilityChargeClientSignal";
-import { EntityService } from "Server/Services/Entity/EntityService";
 import { AbilityChargeEndClientSignal } from "./Event/AbilityChargeEndClientSignal";
+import { EntityController } from "../Entity/EntityController";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G, KeyCode.V];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Y, KeyCode.H, KeyCode.B];
@@ -30,7 +29,7 @@ export class AbilitiesController implements OnStart {
 
 	public constructor(
 		private readonly abilityRegistry: AbilityRegistry,
-		private readonly entityService: EntityService,
+		private readonly entityService: EntityController,
 	) {
 		// Set up binding slots
 		for (const keyCode of primaryKeys) {

@@ -7,6 +7,7 @@ import { AbilityId } from "./AbilityType";
 
 export const Abilities: Record<AbilityId, Ability> = {
 	[AbilityId.RECALL]: {
+		id: AbilityId.RECALL,
 		logic: RecallAbility,
 		config: {
 			slot: AbilitySlot.Utility,
@@ -23,6 +24,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 		},
 	},
 	[AbilityId.VORLIAS_TEST]: {
+		id: AbilityId.VORLIAS_TEST,
 		logic: VorliasTestAbility,
 		config: {
 			slot: AbilitySlot.Primary,

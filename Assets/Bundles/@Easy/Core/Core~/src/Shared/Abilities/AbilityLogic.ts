@@ -1,5 +1,6 @@
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
+import { Bin } from "Shared/Util/Bin";
 
 export interface AbilityChargeEndEvent {
 	readonly endState: ChargingAbilityEndedState;
