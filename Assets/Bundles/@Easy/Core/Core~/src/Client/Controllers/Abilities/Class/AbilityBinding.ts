@@ -91,12 +91,14 @@ export class AbilityBinding {
 	public BindToAction(keyboard: Keyboard, action: BindingAction) {
 		this.bin.Add(
 			keyboard.OnKeyUp(this.keyCode, (event) => {
+				if (event.uiProcessed) return;
 				action(BindingInputState.InputEnded, this);
 			}),
 		);
 
 		this.bin.Add(
 			keyboard.OnKeyDown(this.keyCode, (event) => {
+				if (event.uiProcessed) return;
 				action(BindingInputState.InputBegan, this);
 			}),
 		);
