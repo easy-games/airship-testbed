@@ -149,7 +149,7 @@ Material:
     - _RimColor: {r: 0.4481132, g: 0.5211991, b: 1, a: 1}
     - _RimColorShadow: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     - _RimDir: {r: 1, g: 0, b: 1, a: 0}
-    - _ShadowColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
+    - _ShadowColor: {r: 0.32941177, g: 0.2198304, b: 0.20784314, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}

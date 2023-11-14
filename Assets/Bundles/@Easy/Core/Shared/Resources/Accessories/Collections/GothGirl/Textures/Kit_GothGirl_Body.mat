@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c793e1a7b58d6df4e9ed0a2c0838cf27, type: 3}
+        m_Texture: {fileID: 2800000, guid: a840fea3ece86d14c8663feb4dca2cfc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -80,7 +80,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: 96186e239638d40d883845320e22e424, type: 3}
+        m_Texture: {fileID: 2800000, guid: 73700ee7a4740b8438eee84e2958ffe9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
@@ -88,7 +88,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ORMTex:
-        m_Texture: {fileID: 2800000, guid: 3fcbe8116c7eee54ea369250e979e1c1, type: 3}
+        m_Texture: {fileID: 2800000, guid: b1b678851b43db441a6913436cfc9be4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -159,7 +159,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
-    - _TestFloat: 0.5
+    - _TestFloat: 6.97
     - _Triplanar: 1
     - _TriplanarScale: 0
     - _UVSec: 0

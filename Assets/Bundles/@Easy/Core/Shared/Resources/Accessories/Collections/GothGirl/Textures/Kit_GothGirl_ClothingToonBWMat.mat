@@ -96,7 +96,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadowRamp:
-        m_Texture: {fileID: 2800000, guid: 7d05788d937be3f428a1ec5b266f1306, type: 3}
+        m_Texture: {fileID: 2800000, guid: 903a8d0b4abf746418ccd4bbded79628, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -130,7 +130,7 @@ Material:
     - _RimIntensity: 2
     - _RimPower: 3
     - _RoughOverride: 0.04
-    - _SaturationMod: 5
+    - _SaturationMod: 1
     - _ShadowIntensity: 0.5
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
@@ -149,7 +149,7 @@ Material:
     - _RimColor: {r: 0.4481132, g: 0.5211991, b: 1, a: 1}
     - _RimColorShadow: {r: 0.99420273, g: 0.24056602, b: 1, a: 1}
     - _RimDir: {r: 1, g: 0, b: 1, a: 0}
-    - _ShadowColor: {r: 0.24528301, g: 0.16162051, b: 0.15156639, a: 1}
+    - _ShadowColor: {r: 0.08877714, g: 0.1197351, b: 0.3301887, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
