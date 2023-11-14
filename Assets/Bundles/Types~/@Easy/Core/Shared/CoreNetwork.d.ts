@@ -137,7 +137,7 @@ export declare const CoreNetwork: {
         AbilityAdded: RemoteEvent<[dto: AbilityDto]>;
         AbilityRemoved: RemoteEvent<[id: string]>;
         AbilityCooldownStateChange: RemoteEvent<[dto: AbilityCooldownDto]>;
-        AbilityChargeBegan: RemoteEvent<[dto: ChargingAbilityDto]>;
-        AbilityChargeEnded: RemoteEvent<[dto: ChargingAbilityEndedDto]>;
+        AbilityChargeBegan: RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>;
+        AbilityChargeEnded: RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>;
     };
 };

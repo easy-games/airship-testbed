@@ -221,7 +221,7 @@ export class CharacterAbilities {
 
 					ability.OnServerChargeBegan();
 
-					CoreNetwork.ServerToClient.AbilityChargeBegan.Server.FireClient(this.entity.player!.clientId, {
+					CoreNetwork.ServerToClient.AbilityChargeBegan.Server.FireAllClients(this.entity.id, {
 						id,
 						timeStart: currentTime,
 						timeEnd: currentTime + chargeTime,
@@ -232,10 +232,10 @@ export class CharacterAbilities {
 						ability.OnServerChargeEnded({
 							endState: ChargingAbilityEndedState.Finished,
 						});
-						ability.OnServerTriggered();
+						ability.Trigger();
 
 						this.currentChargingAbilityState = undefined;
-						CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireClient(this.entity.player!.clientId, {
+						CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireAllClients(this.entity.id, {
 							id,
 							endState: ChargingAbilityEndedState.Finished,
 						});
@@ -260,13 +260,10 @@ export class CharacterAbilities {
 								endState: ChargingAbilityEndedState.Cancelled,
 							});
 
-							CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireClient(
-								this.entity.player!.clientId,
-								{
-									id,
-									endState: ChargingAbilityEndedState.Cancelled,
-								},
-							);
+							CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireAllClients(this.entity.id, {
+								id,
+								endState: ChargingAbilityEndedState.Cancelled,
+							});
 						},
 					};
 
@@ -277,7 +274,7 @@ export class CharacterAbilities {
 						this.SetAbilityOnCooldown(id, config.cooldownTimeSeconds);
 					}
 
-					ability.OnServerTriggered();
+					ability.Trigger();
 					return true;
 				}
 			} else {

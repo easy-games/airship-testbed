@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Keyboard } from "Shared/UserInput";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
@@ -10,6 +10,10 @@ import inspect from "@easy-games/unity-inspect";
 import { SignalPriority } from "Shared/Util/Signal";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { Game } from "Shared/Game";
+import { AbilityChargeClientSignal } from "./Event/AbilityChargeClientSignal";
+import { EntityService } from "Server/Services/Entity/EntityService";
+import { AbilityChargeEndClientSignal } from "./Event/AbilityChargeEndClientSignal";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G, KeyCode.V];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Y, KeyCode.H, KeyCode.B];
@@ -24,7 +28,10 @@ export class AbilitiesController implements OnStart {
 	private utilityAbiltySlots = new Array<AbilityBinding>(utilityKeys.size());
 	private allSlots;
 
-	public constructor(private readonly abilityRegistry: AbilityRegistry) {
+	public constructor(
+		private readonly abilityRegistry: AbilityRegistry,
+		private readonly entityService: EntityService,
+	) {
 		// Set up binding slots
 		for (const keyCode of primaryKeys) {
 			this.primaryAbilitySlots.push(new AbilityBinding(AbilitySlot.Primary, false, keyCode));
@@ -129,6 +136,22 @@ export class AbilitiesController implements OnStart {
 				for (const ability of abilities) {
 					this.RegisterAbility(ability);
 				}
+			}
+		});
+
+		CoreNetwork.ServerToClient.AbilityChargeBegan.Client.OnServerEvent((entityId, event) => {
+			const entity = this.entityService.GetEntityById(entityId);
+
+			if (entity && entity instanceof CharacterEntity) {
+				CoreClientSignals.AbilityChargeBegan.Fire(new AbilityChargeClientSignal(entity, event));
+			}
+		});
+
+		CoreNetwork.ServerToClient.AbilityChargeEnded.Client.OnServerEvent((entityId, event) => {
+			const entity = this.entityService.GetEntityById(entityId);
+
+			if (entity && entity instanceof CharacterEntity) {
+				CoreClientSignals.AbilityChargeEnded.Fire(new AbilityChargeEndClientSignal(entity, event));
 			}
 		});
 	}

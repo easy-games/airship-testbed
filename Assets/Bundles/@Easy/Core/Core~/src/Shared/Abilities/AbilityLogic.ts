@@ -1,7 +1,7 @@
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
 
-interface ClientAbilityChargeEvent {
+export interface AbilityChargeEndEvent {
 	readonly endState: ChargingAbilityEndedState;
 }
 
@@ -62,6 +62,18 @@ export abstract class AbilityLogic {
 	public OnDisabled() {}
 
 	/**
+	 * Trigger the use of this ability
+	 * @internal
+	 */
+	public Trigger() {
+		if (RunCore.IsServer()) {
+			this.OnServerTriggered();
+		} else {
+			this.OnClientTriggered();
+		}
+	}
+
+	/**
 	 * Invoked when the ability is triggered on the server
 	 *
 	 * - This may be after a charge duration
@@ -75,13 +87,13 @@ export abstract class AbilityLogic {
 	 * - This may be after a charge duration
 	 * 		if the charge duration is set and the ability charge wasn't cancelled
 	 */
-	public abstract OnClientTriggered(): void;
+	public OnClientTriggered() {}
 
 	public OnServerChargeBegan(): void {}
-	public OnServerChargeEnded(event: ClientAbilityChargeEvent): void {}
+	public OnServerChargeEnded(event: AbilityChargeEndEvent): void {}
 
 	public OnClientChargeBegan(): void {}
-	public OnClientChargeEnded(event: ClientAbilityChargeEvent): void {}
+	public OnClientChargeEnded(event: AbilityChargeEndEvent): void {}
 
 	/**
 	 * Cast this ability logic to a data transfer object representation

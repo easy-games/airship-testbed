@@ -10,6 +10,7 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { ChargingAbilityEndedState } from "Shared/Abilities/Ability";
 import { OnUpdate, SetTimeout } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 
 export interface ClientAbilityCooldownState {
 	startTime: number;
@@ -154,28 +155,45 @@ export class AbilitiesUIController implements OnStart {
 		this.SetupAbilityBar();
 
 		let disconnectTimer: (() => void) | undefined;
-		CoreNetwork.ServerToClient.AbilityChargeBegan.Client.OnServerEvent((event) => {
-			const startTime = event.timeStart;
-			const endTime = event.timeEnd;
-			const length = event.length;
 
-			disconnectTimer = OnUpdate.Connect((dt) => {
-				const secondsRemaining = endTime - TimeUtil.GetServerTime();
-				const value = math.min(1, (length - secondsRemaining) / length);
-				this.castbar.SetValue(value);
-			});
+		CoreClientSignals.AbilityChargeBegan.Connect((event) => {
+			if (event.IsLocalPlayer()) {
+				const chargingEvent = event.chargingAbility;
 
-			this.castbar.InstantlySetValue(0);
-			this.castbar.SetActive(true);
-		});
+				const startTime = chargingEvent.timeStart;
+				const endTime = chargingEvent.timeEnd;
+				const length = chargingEvent.length;
 
-		CoreNetwork.ServerToClient.AbilityChargeEnded.Client.OnServerEvent((event) => {
-			if (event.endState === ChargingAbilityEndedState.Cancelled) {
-				this.castbar.SetValue(0);
+				disconnectTimer = OnUpdate.Connect((dt) => {
+					const secondsRemaining = endTime - TimeUtil.GetServerTime();
+					const value = math.min(1, (length - secondsRemaining) / length);
+					this.castbar.SetValue(value);
+				});
+
+				this.castbar.InstantlySetValue(0);
+				this.castbar.SetActive(true);
 			}
 
-			disconnectTimer?.();
-			this.castbar.SetActive(false);
+			const abilities = event.characterEntity.GetAbilities();
+			const logic = abilities.GetAbilityLogicById(event.chargingAbility.id);
+			logic?.OnClientChargeBegan();
+		});
+
+		CoreClientSignals.AbilityChargeEnded.Connect((event) => {
+			if (event.IsLocalPlayer()) {
+				if (event.chargingAbility.endState === ChargingAbilityEndedState.Cancelled) {
+					this.castbar.SetValue(0);
+				}
+
+				disconnectTimer?.();
+				this.castbar.SetActive(false);
+			}
+
+			const abilities = event.characterEntity.GetAbilities();
+			const logic = abilities.GetAbilityLogicById(event.chargingAbility.id);
+			logic?.OnClientChargeEnded({
+				endState: event.chargingAbility.endState,
+			});
 		});
 
 		// Update local abilities
