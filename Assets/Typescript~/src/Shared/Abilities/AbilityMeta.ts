@@ -1,9 +1,9 @@
 import { Ability } from "@Easy/Core/Shared/Strollers/Abilities/AbilityRegistry";
 import RecallAbility from "./Logic/RecallAbility";
 import { AbilitySlot } from "@Easy/Core/Shared/Abilities/AbilitySlot";
-import { Duration } from "@Easy/Core/Shared/Util/Duration";
 import { AbilityCancellationTrigger } from "@Easy/Core/Shared/Abilities/Ability";
 import VorliasTestAbility from "./Logic/VorliasTestAbility";
+import { AbilityId } from "./AbilityType";
 
 export const Abilities: Record<AbilityId, Ability> = {
 	[AbilityId.RECALL]: {

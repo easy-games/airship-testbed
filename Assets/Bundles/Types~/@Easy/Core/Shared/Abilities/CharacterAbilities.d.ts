@@ -17,6 +17,12 @@ export interface AbiltityChargingState {
     readonly timeLength: Duration;
     readonly cancellationTriggers: Set<AbilityCancellationTrigger>;
 }
+export interface AbilitySet {
+    readonly abilityId: string;
+    readonly slot: AbilitySlot;
+    readonly ability: Ability;
+    readonly overrideConfig?: AbilityConfig;
+}
 export declare class CharacterAbilities {
     private entity;
     private cooldowns;
@@ -34,7 +40,7 @@ export declare class CharacterAbilities {
      *
      * @server Server-only API
      */
-    AddAbilityWithIdToSlot(abilityId: string, slot: AbilitySlot, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic;
+    AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic;
     /**
      * Gets the currently charging abiltiy
      */

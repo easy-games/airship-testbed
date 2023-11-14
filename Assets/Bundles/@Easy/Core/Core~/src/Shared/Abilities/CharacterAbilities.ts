@@ -16,19 +16,21 @@ export interface AbilityCooldown {
 	readonly endTimestamp: number;
 }
 
-export interface AbiltityChargingState {
+export interface AbilityChargingState {
 	readonly id: string;
 	readonly timeStarted: number;
 	readonly timeLength: Duration;
-	readonly cancellationTriggers: Set<AbilityCancellationTrigger>;
+	readonly cancellationTriggers: ReadonlySet<AbilityCancellationTrigger>;
 }
 
-interface CancellableAbiltityChargingState extends AbiltityChargingState {
+interface CancellableAbiltityChargingState extends AbilityChargingState {
 	readonly abilityLogic: AbilityLogic;
 	readonly cancel: () => void;
 }
 
 export class CharacterAbilities {
+	private abilityIdSlotMap = new Map<string, AbilitySlot>();
+
 	private cooldowns = new Map<string, AbilityCooldown>();
 	private boundAbilities = new Map<AbilitySlot, Map<string, AbilityLogic>>();
 
@@ -52,10 +54,10 @@ export class CharacterAbilities {
 	}
 
 	private GetAbilities() {
-		const arr = new Array<[string, AbilityLogic]>();
+		const arr = new Map<string, AbilityLogic>();
 		for (const [slot, boundItems] of this.boundAbilities) {
-			for (const pair of boundItems) {
-				arr.push(pair);
+			for (const [abilityId, ability] of boundItems) {
+				arr.set(abilityId, ability);
 			}
 		}
 
@@ -79,9 +81,19 @@ export class CharacterAbilities {
 		});
 	}
 
+	/**
+	 * @server Server-only API
+	 */
 	public HasAbilityWithIdAtSlot(id: string, slot: AbilitySlot): boolean {
 		const abilityMap = MapUtil.GetOrCreate(this.boundAbilities, slot, () => new Map<string, AbilityLogic>());
 		return abilityMap.has(id);
+	}
+
+	/**
+	 * @server Server-only API
+	 */
+	public HasAbilityWithId(id: string): boolean {
+		return this.abilityIdSlotMap.has(id);
 	}
 
 	/**
@@ -92,22 +104,28 @@ export class CharacterAbilities {
 	 *
 	 * @server Server-only API
 	 */
-	public AddAbilityWithIdToSlot(
-		abilityId: string,
-		slot: AbilitySlot,
-		ability: Ability,
-		overrideConfig?: AbilityConfig,
-	): AbilityLogic {
+	public AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic {
 		assert(RunCore.IsServer(), "AddAbilityWithId should be called by the server");
-		const abilityMap = MapUtil.GetOrCreate(this.boundAbilities, slot, () => new Map<string, AbilityLogic>());
+
+		const abilityMap = MapUtil.GetOrCreate(
+			this.boundAbilities,
+			ability.config.slot,
+			() => new Map<string, AbilityLogic>(),
+		);
 
 		if (abilityMap.has(abilityId)) {
 			warn(`Attempting to add duplicate ability '${abilityId}' - you can check using HasAbilityWithIdAtSlot(id)`);
 			return abilityMap.get(abilityId)!;
 		}
 
+		if (this.HasAbilityWithId(abilityId)) {
+			warn(`Attempting to add duplicate ability '${abilityId}' - you can check using HasAbilityWithIdAtSlot(id)`);
+			return this.GetAbilityLogicById(abilityId)!;
+		}
+
 		const logic = new ability.logic(this.entity, abilityId, overrideConfig ?? ability.config);
 		abilityMap.set(abilityId, logic);
+		this.abilityIdSlotMap.set(abilityId, ability.config.slot);
 
 		if (this.entity.player) {
 			CoreNetwork.ServerToClient.AbilityAdded.Server.FireClient(this.entity.player.clientId, logic.Encode());
@@ -117,8 +135,10 @@ export class CharacterAbilities {
 
 	/**
 	 * Gets the currently charging abiltiy
+	 *
+	 * @server Server-only API
 	 */
-	public GetChargingAbility(): AbiltityChargingState | undefined {
+	public GetChargingAbility(): AbilityChargingState | undefined {
 		return this.currentChargingAbilityState;
 	}
 
@@ -126,15 +146,19 @@ export class CharacterAbilities {
 	 * Gets the ability by the given id
 	 * @param id The id of the ability
 	 * @returns The ability logic
+	 *
+	 * @server Server-only API
 	 */
-	public GetAbilityById(id: string) {
-		return this.GetAbilities().find((f) => f[0] === id)?.[1];
+	public GetAbilityLogicById(id: string): AbilityLogic | undefined {
+		return this.GetAbilities().get(id);
 	}
 
 	/**
 	 * Gets all abilities bound to the given slot
 	 * @param slot The slot
 	 * @returns All the abilities bound to this slot
+	 *
+	 * @server Server-only API
 	 */
 	public GetAbilitiesBoundToSlot(slot: AbilitySlot): Map<string, AbilityLogic> {
 		return this.boundAbilities.get(slot) ?? new Map();
@@ -144,8 +168,10 @@ export class CharacterAbilities {
 	 * Returns whether or not the given ability is on cooldown
 	 * @param abilityId The ability id to check for cooldown state
 	 * @returns True if the ability is on cooldown
+	 *
+	 * @server Server-only API
 	 */
-	public IsAbilityOnCooldown(abilityId: string) {
+	public IsAbilityOnCooldown(abilityId: string): boolean {
 		const cooldown = this.cooldowns.get(abilityId);
 		if (cooldown) {
 			return cooldown.startTimestamp + cooldown.length.getTotalSeconds() > TimeUtil.GetServerTime();
@@ -160,7 +186,7 @@ export class CharacterAbilities {
 	 * @param id The id of the ability to use
 	 * @server Server-only API
 	 */
-	public UseAbilityById(id: string) {
+	public UseAbilityById(id: string): boolean {
 		if (this.IsAbilityOnCooldown(id)) {
 			return false;
 		}
@@ -169,10 +195,10 @@ export class CharacterAbilities {
 		if (this.currentChargingAbilityState !== undefined) return false;
 
 		if (RunCore.IsServer()) {
-			const ability = this.GetAbilityById(id);
+			const ability = this.GetAbilityLogicById(id);
 			if (ability) {
 				const currentTime = TimeUtil.GetServerTime();
-				const config = ability.GetConfiguration();
+				const config = ability.GetConfig();
 
 				// Handle charging, if it's a charge ability otherwise default trigger
 				if (config.charge) {
@@ -240,6 +266,8 @@ export class CharacterAbilities {
 					ability.OnTriggered();
 					return true;
 				}
+			} else {
+				return false;
 			}
 		} else {
 			throw `UseAbilityById can only be used by the server!`;
@@ -249,6 +277,8 @@ export class CharacterAbilities {
 	/**
 	 * Cancel any charging abilities
 	 * @returns True if a charging ability was cancelled
+	 *
+	 * @server Server-only API
 	 */
 	public CancelChargingAbility(): boolean {
 		if (this.currentChargingAbilityState) {
@@ -264,8 +294,10 @@ export class CharacterAbilities {
 	/**
 	 * Gets all abilities as an array of data transfer objects
 	 * @returns The array of data transfer objects
+	 *
+	 * @server Server-only API
 	 */
-	public Encode() {
+	public Encode(): AbilityDto[] {
 		const items = new Array<AbilityDto>();
 		for (const [slot, abilityMap] of this.boundAbilities) {
 			for (const [abilityId, abilityLogic] of abilityMap) {

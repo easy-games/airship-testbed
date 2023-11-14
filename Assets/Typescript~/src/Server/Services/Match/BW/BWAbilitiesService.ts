@@ -2,6 +2,7 @@ import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { GameAbilities } from "Shared/Strollers/Match/BW/GameAbilities";
+import { AbilityId } from "Shared/Abilities/AbilityType";
 
 @Service()
 export class BWAbilitiesService implements OnStart {

@@ -16,7 +16,11 @@ export abstract class AbilityLogic {
 		return this.id;
 	}
 
-	public GetConfiguration(): AbilityConfig {
+	/**
+	 * Get the configuration of this ability
+	 * @returns The configuration of the ability
+	 */
+	public GetConfig(): AbilityConfig {
 		return this.configuration;
 	}
 
@@ -72,8 +76,8 @@ export abstract class AbilityLogic {
 		return {
 			id: this.GetId(),
 			enabled: this.GetEnabled(),
-			slot: this.GetConfiguration().slot,
-			charging: this.GetConfiguration().charge,
+			slot: this.GetConfig().slot,
+			charging: this.GetConfig().charge,
 		};
 	}
 }

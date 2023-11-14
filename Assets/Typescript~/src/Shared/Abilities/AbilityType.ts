@@ -1,6 +1,4 @@
-declare global {
-	const enum AbilityId {
-		RECALL = "RECALL",
-		VORLIAS_TEST = "VORLIAS_TEST",
-	}
+export const enum AbilityId {
+	RECALL = "RECALL",
+	VORLIAS_TEST = "VORLIAS_TEST",
 }

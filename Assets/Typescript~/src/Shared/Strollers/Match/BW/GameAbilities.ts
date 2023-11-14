@@ -4,6 +4,7 @@ import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEnt
 import { AbilityRegistry } from "@Easy/Core/Shared/Strollers/Abilities/AbilityRegistry";
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { Abilities } from "Shared/Abilities/AbilityMeta";
+import { AbilityId } from "Shared/Abilities/AbilityType";
 
 @Service()
 @Controller()
@@ -18,7 +19,7 @@ export class GameAbilities implements OnStart {
 		const ability = this.abilitiesRegistry.GetAbilityById(abilityId);
 		if (ability) {
 			const abilities = character.GetAbilities();
-			return abilities.AddAbilityWithIdToSlot(abilityId, ability.config.slot, ability, overrideConfig);
+			return abilities.AddAbilityWithId(abilityId, ability, overrideConfig);
 		} else {
 			return;
 		}
