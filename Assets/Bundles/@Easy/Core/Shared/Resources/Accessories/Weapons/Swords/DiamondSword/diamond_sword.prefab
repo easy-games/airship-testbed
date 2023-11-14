@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.023584902, g: 0.95959646, b: 1, a: 1}
+  - materialColor: {r: 0.3726415, g: 0.9748049, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 0
     reference: DiamondBlade
@@ -135,7 +135,7 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
-  - materialColor: {r: 0.028572613, g: 0.021181898, b: 0.03773582, a: 0.80784315}
+  - materialColor: {r: 0.4000001, g: 0, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: DiamondBladeCore
