@@ -6,6 +6,7 @@ export declare class MeleeHeldItem extends HeldItem {
     private gizmoEnabled;
     private animationIndex;
     private bin;
+    private currentUseVFX;
     OnUseClient(useIndex: number): void;
     OnUseServer(useIndex: number): void;
     private ScanForHits;

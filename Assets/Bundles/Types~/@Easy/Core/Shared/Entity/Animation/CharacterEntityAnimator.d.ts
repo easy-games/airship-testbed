@@ -26,7 +26,8 @@ export declare class CharacterEntityAnimator extends EntityAnimator {
     PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
-        transitionTime?: number;
+        fadeInDuration?: number;
+        fadeOutDuration?: number;
         autoFadeOut?: boolean;
     }): AnimancerState;
     private LoadNewItemResources;

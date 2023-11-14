@@ -24,6 +24,7 @@ export declare class AppManager {
         onClose?: () => void;
         noDarkBackground?: boolean;
         addToStack?: boolean;
+        sortingOrderOffset?: number;
     }): void;
     static OpenDarkBackground(sortOrder: number): void;
     static CloseDarkBackground(): void;

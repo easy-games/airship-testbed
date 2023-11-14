@@ -141,20 +141,13 @@ export class EntityController implements OnStart {
 
 		// Fun
 		const skinColors = [
-			ColorUtil.HexToColor("#CAA075"),
-			ColorUtil.HexToColor("#A4784B"),
-			ColorUtil.HexToColor("#735638"),
-			ColorUtil.HexToColor("#B4905B"),
-			ColorUtil.HexToColor("#E09E53"),
-			ColorUtil.HexToColor("#875C2C"),
-			ColorUtil.HexToColor("#CAA075"),
-			ColorUtil.HexToColor("#A4784B"),
-			ColorUtil.HexToColor("#735638"),
-			ColorUtil.HexToColor("#B4905B"),
-			ColorUtil.HexToColor("#E09E53"),
-			ColorUtil.HexToColor("#875C2C"),
-			ColorUtil.HexToColor("#9AA427"), // green
-			ColorUtil.HexToColor("#90684C"),
+			ColorUtil.HexToColor("#edcdad"),
+			ColorUtil.HexToColor("#f2c291"),
+			ColorUtil.HexToColor("#cc9d6a"),
+			ColorUtil.HexToColor("#ebbc78"),
+			ColorUtil.HexToColor("#f2c27e"),
+			ColorUtil.HexToColor("#d69e5e"),
+			ColorUtil.HexToColor("#e8bd92"),
 		];
 
 		const hairColors = [

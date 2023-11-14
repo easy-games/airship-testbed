@@ -35,14 +35,16 @@ export declare abstract class EntityAnimator {
     PlayUseAnim(useIndex?: number, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
-        transitionTime?: number;
+        fadeInDuration?: number;
+        fadeOutDuration?: number;
         autoFadeOut?: boolean;
     }): void;
     EquipItem(itemMeta: ItemMeta | undefined): void;
     abstract PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
-        transitionTime?: number;
+        fadeInDuration?: number;
+        fadeOutDuration?: number;
         autoFadeOut?: boolean;
     }): AnimancerState;
     SetFirstPerson(isFirstPerson: boolean): void;
