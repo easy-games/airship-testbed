@@ -1,5 +1,10 @@
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { AbilityConfig, AbilityDto } from "./Ability";
+import { AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
+
+interface ClientAbilityChargeEvent {
+	readonly endState: ChargingAbilityEndedState;
+}
+
 /**
  * A logic class surrounding an ability
  */
@@ -57,16 +62,26 @@ export abstract class AbilityLogic {
 	public OnDisabled() {}
 
 	/**
-	 * Invoked when the ability is triggered
+	 * Invoked when the ability is triggered on the server
 	 *
 	 * - This may be after a charge duration
 	 * 		if the charge duration is set and the ability charge wasn't cancelled
 	 */
-	public abstract OnTriggered(): void;
+	public abstract OnServerTriggered(): void;
 
-	public OnChargeBegan(): void {}
+	/**
+	 * Invoked when the ability is triggered on the client
+	 *
+	 * - This may be after a charge duration
+	 * 		if the charge duration is set and the ability charge wasn't cancelled
+	 */
+	public abstract OnClientTriggered(): void;
 
-	public OnChargeCancelled(): void {}
+	public OnServerChargeBegan(): void {}
+	public OnServerChargeEnded(event: ClientAbilityChargeEvent): void {}
+
+	public OnClientChargeBegan(): void {}
+	public OnClientChargeEnded(event: ClientAbilityChargeEvent): void {}
 
 	/**
 	 * Cast this ability logic to a data transfer object representation
