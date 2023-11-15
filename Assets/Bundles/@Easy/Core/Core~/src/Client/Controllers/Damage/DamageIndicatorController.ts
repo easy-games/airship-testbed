@@ -1,7 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
-import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
 
@@ -37,6 +36,10 @@ export class DamageIndicatorController implements OnStart {
 			AudioManager.PlayAtPosition(
 				"@Easy/Core/Shared/Resources/Sound/Damage_Taken.wav",
 				entityGO.transform.position,
+				{
+					maxDistance: 50,
+					rollOffMode: AudioRolloffMode.Linear,
+				},
 			);
 
 			if (event.fromEntity?.IsLocalCharacter()) {
@@ -48,7 +51,9 @@ export class DamageIndicatorController implements OnStart {
 					}),
 				);
 
-				AudioManager.PlayClipGlobal(this.hitMarkerAudioClip!);
+				AudioManager.PlayClipGlobal(this.hitMarkerAudioClip!, {
+					volumeScale: 0.6,
+				});
 			}
 
 			// Indicator

@@ -10,15 +10,12 @@ import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal"
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockData } from "Shared/VoxelWorld/World";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { InflictDamageConfig } from "../Damage/DamageService";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
-import { Block } from "Shared/VoxelWorld/Block";
-import { Task } from "Shared/Util/Task";
-import { BlockData } from "Shared/VoxelWorld/World";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -256,13 +253,12 @@ export class BlockInteractService implements OnStart {
 
 		// After signal
 		CoreServerSignals.BlockHit.Fire({ blockId: block.runtimeBlockId, entity, blockPos: voxelPos });
-		print(`Firing BlockHit. damage=${beforeSignal.damage}`);
 		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.runtimeBlockId, entity?.id);
 
 		//BLOCK DEATH
 		if (newHealth === 0) {
 			CoreServerSignals.BeforeBlockDestroyed.Fire({
-				blockId: block.runtimeBlockId,
+				block,
 				blockPos: voxelPos,
 				entity: entity,
 			});

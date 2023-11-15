@@ -41,6 +41,7 @@ export declare class CharacterAbilities {
      * @param logic The logic of the ability
      */
     AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic;
+    RemoveAbilityById(abilityId: string): false | undefined;
     /**
      * Gets the currently charging abiltiy
      *

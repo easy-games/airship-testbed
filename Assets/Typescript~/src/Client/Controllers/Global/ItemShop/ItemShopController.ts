@@ -81,7 +81,9 @@ export class ItemShopController implements OnStart {
 				"@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav",
 				entity.GetMiddlePosition(),
 				{
-					volumeScale: 0.2,
+					volumeScale: 0.3,
+					rollOffMode: AudioRolloffMode.Linear,
+					maxDistance: 50,
 				},
 			);
 		});

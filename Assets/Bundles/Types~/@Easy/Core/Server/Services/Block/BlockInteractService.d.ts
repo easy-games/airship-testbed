@@ -4,10 +4,10 @@ import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { CharacterEntity } from "../../../Shared/Entity/Character/CharacterEntity";
 import { Entity } from "../../../Shared/Entity/Entity";
 import { AOEDamageMeta, BreakBlockMeta, ItemMeta, TillBlockMeta } from "../../../Shared/Item/ItemMeta";
+import { BlockData } from "../../../Shared/VoxelWorld/World";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
-import { BlockData } from "../../../Shared/VoxelWorld/World";
 export declare class BlockInteractService implements OnStart {
     private readonly invService;
     private readonly entityService;

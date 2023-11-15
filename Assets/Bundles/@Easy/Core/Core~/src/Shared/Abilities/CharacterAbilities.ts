@@ -144,6 +144,31 @@ export class CharacterAbilities {
 		return logic;
 	}
 
+	public RemoveAbilityById(abilityId: string) {
+		if (!this.HasAbilityWithId(abilityId)) {
+			return false;
+		}
+
+		const abilitySlot = this.abilityIdSlotMap.get(abilityId);
+		if (!abilitySlot) return false;
+
+		const boundSlotAbilities = this.boundAbilities.get(abilitySlot);
+		if (!boundSlotAbilities) {
+			return false;
+		}
+
+		if (this.currentChargingAbilityState?.id === abilityId) {
+			this.CancelChargingAbility();
+		}
+
+		boundSlotAbilities.delete(abilityId);
+		this.abilityIdSlotMap.delete(abilityId);
+
+		if (RunCore.IsServer() && this.entity.player) {
+			CoreNetwork.ServerToClient.AbilityRemoved.Server.FireAllClients(this.entity.id, abilityId);
+		}
+	}
+
 	/**
 	 * Gets the currently charging abiltiy
 	 *
@@ -229,6 +254,7 @@ export class CharacterAbilities {
 					CoreNetwork.ServerToClient.AbilityChargeBegan.Server.FireAllClients(this.entity.id, {
 						id,
 						timeStart: currentTime,
+						displayText: config.charge.displayText ?? `Charging '${config.name}'...`,
 						timeEnd: currentTime + chargeTime,
 						length: chargeTime,
 					});

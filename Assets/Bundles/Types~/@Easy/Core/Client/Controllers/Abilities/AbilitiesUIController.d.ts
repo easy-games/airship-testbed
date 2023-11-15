@@ -21,6 +21,7 @@ export declare class AbilitiesUIController implements OnStart {
     private abilitiesRefs;
     private abilitybarContent;
     private castbar;
+    private castbarText;
     constructor(coreUIController: CoreUIController, abilitiesController: AbilitiesController);
     private slotCooldowns;
     private UpdateAbilityBarSlot;

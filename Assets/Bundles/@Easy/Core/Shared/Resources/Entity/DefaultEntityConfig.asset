@@ -20,7 +20,7 @@ MonoBehaviour:
   slideHeightMultiplier: 0.5
   slideCooldown: 0.8
   jumpSpeed: 15
-  jumpCoyoteTime: 0.2
+  jumpCoyoteTime: 0.14
   jumpBufferTime: 0.1
   jumpUpBlockCooldown: 0.4
   airDensity: 0.05
