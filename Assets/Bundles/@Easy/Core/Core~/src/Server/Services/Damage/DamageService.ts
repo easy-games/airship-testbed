@@ -37,13 +37,7 @@ export class DamageService implements OnStart {
 			const entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			const dir = entity.model.transform.forward;
 
-			const horizontalScalar = this.combatVars.GetNumber("kbX");
-			const verticalScalar = this.combatVars.GetNumber("kbY");
-			const kbDuration = this.combatVars.GetNumber("kbDuration");
-			entityDriver.ApplyVelocityOverTime(
-				dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)),
-				kbDuration,
-			);
+			this.ApplyKnockback(entityDriver, dir.mul(new Vector3(-1, 1, -1)));
 			return InstanceFinder.TimeManager.Tick;
 		});
 
@@ -184,7 +178,7 @@ export class DamageService implements OnStart {
 			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
 			if (driver) {
 				//DamageUtils.AddHitstun(entity, amount, () => {
-				this.AddKnockback(driver, config?.knockbackDirection);
+				this.ApplyKnockback(driver, config?.knockbackDirection);
 				//});
 			}
 		}
@@ -192,7 +186,7 @@ export class DamageService implements OnStart {
 		return true;
 	}
 
-	public AddKnockback(driver: EntityDriver, knockbackVel: Vector3 | undefined) {
+	public ApplyKnockback(driver: EntityDriver, knockbackVel: Vector3 | undefined) {
 		assert(driver, "Missing Entity Driver");
 
 		const horizontalScalar = this.combatVars.GetNumber("kbX");
@@ -200,7 +194,7 @@ export class DamageService implements OnStart {
 		const kbDuration = this.combatVars.GetNumber("kbDuration");
 
 		let impulse: Vector3;
-		const delta = knockbackVel ? knockbackVel : new Vector3(0, 0, 0);
+		const delta = knockbackVel ?? new Vector3(0, 0, 0);
 
 		impulse = new Vector3(delta.x * horizontalScalar, delta.y * verticalScalar, delta.z * horizontalScalar);
 		driver.ApplyVelocityOverTime(impulse, kbDuration);
