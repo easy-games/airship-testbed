@@ -14,7 +14,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 			name: "Recall",
 			image: "Shared/Resources/Images/HomeIcon.png",
 			charge: {
-				chargeTimeSeconds: 6,
+				chargeTimeSeconds: 4,
 				cancelTriggers: [
 					AbilityCancellationTrigger.EntityDamageTaken,
 					AbilityCancellationTrigger.EntityMovement,
