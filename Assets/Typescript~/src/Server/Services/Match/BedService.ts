@@ -16,9 +16,6 @@ import { BedState } from "Shared/Bed/BedMeta";
 import { MapService } from "./Map/MapService";
 import { MatchService } from "./MatchService";
 
-/** Bed block id. */
-const BED_BLOCK_ID = ItemUtil.GetItemMeta(ItemType.BED).block?.blockId ?? -1;
-
 @Service({})
 export class BedService implements OnStart {
 	/** Team id to bed map. */
@@ -33,7 +30,7 @@ export class BedService implements OnStart {
 	OnStart(): void {
 		/* Listen for bed destroyed. */
 		CoreServerSignals.BeforeBlockDestroyed.Connect((event) => {
-			if (event.blockId === BED_BLOCK_ID) {
+			if (event.block.blockId === ItemType.BED) {
 				this.TryDestroyBed(event.blockPos, event.entity);
 			}
 		});

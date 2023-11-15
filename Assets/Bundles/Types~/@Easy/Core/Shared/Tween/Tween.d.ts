@@ -1,5 +1,5 @@
 type BasicEasingFunction = (elapsedTime: number, initialValue: number, changeInValue: number, totalDuration: number) => number;
-type PeriodicEasingFunction = (elapsedTime: number, initialValue: number, changeInValue: number, totalDuration: number, amplitude?: number, period?: number) => number;
+type PeriodicEasingFunction = (elapsedTime: number, initialValue: number, changeInValue: number, totalDuration: number, amplitude: number, period: number) => number;
 export declare const LinearEase: BasicEasingFunction;
 export declare const InElastic: PeriodicEasingFunction;
 export declare class Tween {
