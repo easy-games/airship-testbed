@@ -13,6 +13,5 @@ export declare class WorldAPI {
     static OnBlockHitDamageCalc: Signal<BlockHitDamageSignal>;
     static GetMainWorld(): World | undefined;
     static GetVoxelPosition(worldPosition: Vector3): Vector3;
-    static CalculateBlockHitDamageFromBreakBlockMeta(entity: Entity | undefined, block: Block, blockPos: Vector3, breakBlockMeta: BreakBlockMeta): number;
-    static CalculateBlockHitDamage(entity: Entity | undefined, block: Block, blockPos: Vector3, damage: number): number;
+    static CalculateBlockHitDamage(entity: Entity | undefined, block: Block, blockPos: Vector3, breakBlockMeta: BreakBlockMeta): number;
 }

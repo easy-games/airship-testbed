@@ -14,13 +14,13 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { Network } from "Shared/Network";
-import { BedService } from "../BedService";
 import { MatchService } from "../MatchService";
+import { BWBedService } from "./BWBedService";
 
 @Service({})
 export class BWService implements OnStart {
 	constructor(
-		private readonly bedService: BedService,
+		private readonly bedService: BWBedService,
 		private readonly teamService: TeamService,
 		private readonly matchService: MatchService,
 		private readonly playerService: PlayerService,

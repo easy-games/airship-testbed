@@ -43,7 +43,7 @@ export class BlockEffectsController implements OnStart {
 		});
 
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
-			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockId);
+			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockRuntimeId);
 			let itemMeta: ItemMeta | undefined;
 			if (itemType) {
 				itemMeta = ItemUtil.GetItemMeta(itemType);

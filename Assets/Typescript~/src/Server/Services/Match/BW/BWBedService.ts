@@ -1,4 +1,5 @@
 import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { BlockInteractService } from "@Easy/Core/Server/Services/Block/BlockInteractService";
 import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -10,14 +11,14 @@ import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { BedState } from "Shared/Bed/BedMeta";
-import { MapService } from "./Map/MapService";
-import { MatchService } from "./MatchService";
+import { MapService } from "../Map/MapService";
+import { MatchService } from "../MatchService";
 
 @Service({})
-export class BedService implements OnStart {
+export class BWBedService implements OnStart {
 	/** Team id to bed map. */
 	private teamToBed = new Map<string, BedState>();
 
@@ -32,6 +33,14 @@ export class BedService implements OnStart {
 		CoreServerSignals.BeforeBlockDestroyed.Connect((event) => {
 			if (event.block.blockId === ItemType.BED) {
 				this.TryDestroyBed(event.blockPos, event.entity);
+				print("damage block aoe.");
+				Dependency<BlockInteractService>().DamageBlockAOE(undefined, event.blockPos, {
+					innerDamage: 0,
+					outerDamage: 0,
+					damageRadius: 5,
+					blockExplosiveDamage: 100,
+					selfKnockbackMultiplier: 1,
+				});
 			}
 		});
 
