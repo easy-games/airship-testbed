@@ -26,7 +26,7 @@ type DraggingState = {
 export class InventoryUIController implements OnStart {
 	private hotbarSlots = 9;
 	private backpackShown = false;
-	private canvas: Canvas;
+	private hotbarCanvas: Canvas;
 	private hotbarContent: Transform;
 	private healthBar: Healthbar;
 	private inventoryRefs: GameObjectReferences;
@@ -44,8 +44,8 @@ export class InventoryUIController implements OnStart {
 		private readonly coreUIController: CoreUIController,
 	) {
 		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
-		this.canvas = go.GetComponent<Canvas>();
-		this.canvas.enabled = true;
+		this.hotbarCanvas = go.GetComponent<Canvas>();
+		this.hotbarCanvas.enabled = true;
 
 		this.inventoryRefs = go.GetComponent<GameObjectReferences>();
 		this.hotbarContent = this.inventoryRefs.GetValue("UI", "HotbarContentGO").transform;
@@ -78,7 +78,7 @@ export class InventoryUIController implements OnStart {
 		if (this.enabled === enabled) return;
 
 		if (!enabled) {
-			this.canvas.enabled = false;
+			this.hotbarCanvas.enabled = false;
 		}
 	}
 
@@ -91,9 +91,12 @@ export class InventoryUIController implements OnStart {
 		wrapper.anchoredPosition = new Vector2(0, -20);
 		wrapper.TweenAnchoredPositionY(0, 0.12);
 
+		this.hotbarCanvas.enabled = false;
+
 		AppManager.Open(this.backpackCanvas, {
 			onClose: () => {
 				this.backpackShown = false;
+				this.hotbarCanvas.enabled = true;
 			},
 		});
 	}
