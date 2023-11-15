@@ -13,8 +13,8 @@ type PeriodicEasingFunction = (
 	initialValue: number,
 	changeInValue: number,
 	totalDuration: number,
-	amplitude?: number,
-	period?: number,
+	amplitude: number,
+	period: number,
 ) => number;
 
 export const LinearEase: BasicEasingFunction = (t, b, c, d) => {
@@ -39,14 +39,11 @@ export const InElastic: PeriodicEasingFunction = (t, b, c, d, a, p) => {
 			}
 
 			if (a === undefined || a < abs_c) {
-				return -((c * 1024) ** (t * math.sin(((t * d - p * 0.25) * 6.2831853071795864) / p))) + b;
+				// eslint-disable-next-line prettier/prettier
+				return -(c * 1024 ** t * math.sin((t * d - p * 0.25) * 6.2831853071795864 / p)) + b;
 			} else {
-				return (
-					-(
-						(a * 1024) **
-						(t * math.sin(((t * d - (p / 6.2831853071795864) * math.asin(c / a)) * 6.2831853071795864) / p))
-					) + b
-				);
+				// eslint-disable-next-line prettier/prettier
+				return -(a * 1024 ** t * math.sin((t * d - p / 6.2831853071795864 * math.asin(c/a)) * 6.2831853071795864 / p)) + b;
 			}
 		}
 	}
@@ -76,11 +73,12 @@ export class Tween {
 		const lerpFn = numberLerp(initialValue, endValue);
 
 		this.interpolator = (step: number) => {
+			print("step", step);
 			const elapsedTime = this.elapsedTime + step;
 			this.elapsedTime = elapsedTime;
 
 			if (duration > elapsedTime) {
-				const v = lerpFn(easingFunction(elapsedTime, 0, 1, duration, v1, v2));
+				const v = lerpFn(easingFunction(elapsedTime, 0, 1, duration, v1!, v2!));
 				callback(v);
 			} else {
 				callback(endValue);
@@ -117,14 +115,14 @@ export class Tween {
 	private elapsedTime = 0;
 
 	// Can't get this working right. lol
-	// public static InElastic(
-	// 	totalDuration: number,
-	// 	callback: (delta: number) => void,
-	// 	initialValue?: number,
-	// 	endValue?: number,
-	// ) {
-	// 	return new Tween(totalDuration, InElastic, callback, initialValue, endValue);
-	// }
+	public static InElastic(
+		totalDuration: number,
+		callback: (delta: number) => void,
+		initialValue?: number,
+		endValue?: number,
+	) {
+		return new Tween(totalDuration, InElastic, callback, initialValue, endValue);
+	}
 
 	public static Linear(
 		totalDuration: number,

@@ -40,30 +40,26 @@ export default class RecallAbility extends AbilityLogic {
 			GameObjectUtil.Destroy(effectGo, 0.3);
 		}
 
-		let pitch = 1;
-		AudioManager.PlayAtPosition(
+		const soundGO = GameObject.Create("RecallAudioSource");
+		soundGO.transform.position = this.entity.GetPosition();
+		const sound = soundGO.AddComponent<AudioSource>();
+		sound.loop = true;
+		sound.clip = AssetBridge.Instance.LoadAsset<AudioClip>(
 			"@Easy/Core/Shared/Resources/Sound/Abilities/Kill_SpiritOrb_Pull_01.ogg",
-			this.entity.GetPosition(),
-			{
-				pitch: pitch,
-			},
 		);
+		sound.Play();
 
-		// TODO: Ask ben for an actual sound rather than this hacky thing LOL
-		const tick = 2;
+		// TODO: Ask ben for an actual sound
+		const tick = 0.1;
 		let elapsed = 0;
-		const soundTween = Tween.Linear(this.configuration.charge!.chargeTimeSeconds, (delta) => {
+		const soundTween = Tween.InElastic(this.configuration.charge!.chargeTimeSeconds, (delta) => {
 			elapsed += delta;
 			if (elapsed >= tick) {
 				elapsed = 0;
 
-				AudioManager.PlayAtPosition(
-					"@Easy/Core/Shared/Resources/Sound/Abilities/Kill_SpiritOrb_Pull_01.ogg",
-					this.entity.GetPosition(),
-					{
-						pitch: (pitch += (1 / this.configuration.charge!.chargeTimeSeconds) * 0.03),
-					},
-				);
+				if (sound) {
+					sound.pitch = sound.pitch + 0.04;
+				}
 			}
 		}).Play();
 
@@ -74,6 +70,10 @@ export default class RecallAbility extends AbilityLogic {
 		);
 
 		this.chargeBin.Add(() => soundTween.Cancel());
+		this.chargeBin.Add(() => {
+			sound.Stop();
+			GameObjectUtil.Destroy(soundGO);
+		});
 
 		this.chargeBin.Add(
 			SetTimeout(0.25, () => {
