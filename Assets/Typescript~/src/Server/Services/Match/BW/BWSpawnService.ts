@@ -105,7 +105,7 @@ export class BWSpawnService implements OnStart {
 			/* Listen for match start and teleport players. */
 			ServerSignals.MatchStart.Connect(() => {
 				this.playerService.GetPlayers().forEach((player) => {
-					this.TeleportPlayerOnMatchStart(player);
+					this.TeleportPlayerToSpawn(player);
 				});
 			});
 		});
@@ -130,7 +130,7 @@ export class BWSpawnService implements OnStart {
 	}
 
 	/** Teleports player to match spawn location on match start. */
-	private TeleportPlayerOnMatchStart(player: Player): void {
+	public TeleportPlayerToSpawn(player: Player): void {
 		/* Teleport to team spawn location. */
 		const team = player.GetTeam();
 		if (!team) return;

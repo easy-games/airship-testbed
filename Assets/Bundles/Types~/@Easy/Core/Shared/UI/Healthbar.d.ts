@@ -24,6 +24,7 @@ export declare class Healthbar {
     private currentDelta;
     constructor(transform: Transform, options?: ProgressBarOptions);
     OnDelete(): void;
+    SetActive(visible: boolean): void;
     SetColor(newColor: Color): void;
     InstantlySetValue(percentDelta: number): void;
     SetValue(percentDelta: number): void;

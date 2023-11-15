@@ -365,16 +365,17 @@ export class LocalEntityController implements OnStart {
 		let baseFov = this.IsFirstPerson()
 			? this.clientSettings.GetFirstPersonFov()
 			: this.clientSettings.GetThirdPersonFov();
-		if (
-			this.currentState === EntityState.Sprinting ||
-			this.currentState === EntityState.Sliding ||
-			this.entityInput?.IsSprinting()
-			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
-		) {
-			this.cameraController.SetFOV(baseFov * 1.08, false);
-		} else {
-			this.cameraController.SetFOV(baseFov, false);
-		}
+		// if (
+		// 	this.currentState === EntityState.Sprinting ||
+		// 	this.currentState === EntityState.Sliding ||
+		// 	this.entityInput?.IsSprinting()
+		// 	// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
+		// ) {
+		// 	this.cameraController.SetFOV(baseFov * 1.08, false);
+		// } else {
+		// 	this.cameraController.SetFOV(baseFov, false);
+		// }
+        this.cameraController.SetFOV(baseFov, false);
 	}
 
 	private SetLookBackwards(lookBackwards: boolean) {
