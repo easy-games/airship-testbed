@@ -13,6 +13,7 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { AbilityChargeClientSignal } from "./Event/AbilityChargeClientSignal";
 import { AbilityChargeEndClientSignal } from "./Event/AbilityChargeEndClientSignal";
 import { EntityController } from "../Entity/EntityController";
+import { AbilityAddedClientSignal } from "./Event/AbilityAddedClientSignal";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G, KeyCode.V];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Y, KeyCode.H, KeyCode.B];
@@ -102,10 +103,6 @@ export class AbilitiesController implements OnStart {
 	}
 
 	public OnStart(): void {
-		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((dto) => {
-			this.RegisterAbility(dto);
-		});
-
 		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((id) => {});
 
 		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((event) => {
@@ -135,6 +132,26 @@ export class AbilitiesController implements OnStart {
 				for (const ability of abilities) {
 					this.RegisterAbility(ability);
 				}
+			}
+		});
+
+		CoreClientSignals.AbilityAdded.Connect((event) => {
+			const abilities = event.characterEntity.GetAbilities();
+			const ability = this.abilityRegistry.GetAbilityById(event.ability.id);
+			if (ability) {
+				abilities.AddAbilityWithId(event.ability.id, ability);
+			}
+
+			if (event.IsLocalPlayer()) {
+				this.RegisterAbility(event.ability);
+			}
+		});
+
+		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((entityId, dto) => {
+			const entity = this.entityService.GetEntityById(entityId);
+
+			if (entity && entity instanceof CharacterEntity) {
+				CoreClientSignals.AbilityAdded.Fire(new AbilityAddedClientSignal(entity, dto));
 			}
 		});
 
