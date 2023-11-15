@@ -14,6 +14,7 @@ import { AbilityChargeClientSignal } from "./Event/AbilityChargeClientSignal";
 import { AbilityChargeEndClientSignal } from "./Event/AbilityChargeEndClientSignal";
 import { EntityController } from "../Entity/EntityController";
 import { AbilityAddedClientSignal } from "./Event/AbilityAddedClientSignal";
+import { AbilityRemovedClientSignal } from "./Event/AbilityRemovedClientSignal";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G, KeyCode.V];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Y, KeyCode.H, KeyCode.B];
@@ -80,14 +81,18 @@ export class AbilitiesController implements OnStart {
 
 		nextSlot.BindTo(abilityDto);
 		nextSlot.BindToAction(this.keyboard, this.OnKeyboardInputEnded);
+	}
 
-		print("registered ability at keycode ", abilityDto.id, nextSlot.GetKey());
+	public UnregisterAbility(abilityId: string) {
+		const matchingSlot = this.allSlots.find((f) => f.GetBound()?.id === abilityId);
+		if (matchingSlot) {
+			matchingSlot.Unbind();
+		}
 	}
 
 	// TODO: in future a much friendlier Input API
 	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
 		const boundAbilityId = binding.GetBound()?.id;
-		print("invoke ability", boundAbilityId);
 
 		if (state === BindingInputState.InputEnded && boundAbilityId) {
 			CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
@@ -103,24 +108,6 @@ export class AbilitiesController implements OnStart {
 	}
 
 	public OnStart(): void {
-		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((id) => {});
-
-		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((event) => {
-			print("Cooldown state changed", inspect(event));
-
-			const matchingSlot = this.allSlots.find((f) => f.GetBound()?.id === event.id);
-			if (matchingSlot) {
-				print("Found matching slot", event.id);
-
-				matchingSlot.SetCooldown({
-					startTime: event.timeStart,
-					length: event.length,
-					endTime: event.timeEnd,
-				});
-			}
-		});
-
-		// Unbind abilities on death (since it's character-bound)
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
 			if (event.entity instanceof CharacterEntity && event.entity.IsLocalCharacter()) {
 				this.primaryAbilitySlots.forEach((slot) => slot.Unbind());
@@ -144,6 +131,41 @@ export class AbilitiesController implements OnStart {
 
 			if (event.IsLocalPlayer()) {
 				this.RegisterAbility(event.ability);
+			}
+		});
+
+		CoreClientSignals.AbilityRemoved.Connect((event) => {
+			const abilities = event.characterEntity.GetAbilities();
+			const ability = this.abilityRegistry.GetAbilityById(event.abilityId);
+			if (ability) {
+				abilities.RemoveAbilityById(event.abilityId);
+			}
+
+			if (event.IsLocalPlayer()) {
+				this.UnregisterAbility(event.abilityId);
+			}
+		});
+
+		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((entityId, abilityId) => {
+			const entity = this.entityService.GetEntityById(entityId);
+
+			if (entity && entity instanceof CharacterEntity) {
+				CoreClientSignals.AbilityRemoved.Fire(new AbilityRemovedClientSignal(entity, abilityId));
+			}
+		});
+
+		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((event) => {
+			print("Cooldown state changed", inspect(event));
+
+			const matchingSlot = this.allSlots.find((f) => f.GetBound()?.id === event.id);
+			if (matchingSlot) {
+				print("Found matching slot", event.id);
+
+				matchingSlot.SetCooldown({
+					startTime: event.timeStart,
+					length: event.length,
+					endTime: event.timeEnd,
+				});
 			}
 		});
 

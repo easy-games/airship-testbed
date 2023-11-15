@@ -25,6 +25,7 @@ import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { VorliasCommand } from "./Commands/VorliasCommand";
+import { AddAbilityCommand, RemoveAbilityCommand } from "./Commands/AbilityCommands";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -50,6 +51,8 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new LibonatiCommand());
 		this.RegisterCommand(new VorliasCommand());
 		this.RegisterCommand(new HelpCommand());
+		this.RegisterCommand(new AddAbilityCommand());
+		this.RegisterCommand(new RemoveAbilityCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
