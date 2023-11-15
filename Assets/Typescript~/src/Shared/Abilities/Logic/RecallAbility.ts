@@ -1,7 +1,10 @@
 import { ChargingAbilityEndedState } from "@Easy/Core/Shared/Abilities/Ability";
 import { AbilityChargeEndEvent, AbilityLogic } from "@Easy/Core/Shared/Abilities/AbilityLogic";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { Tween } from "@Easy/Core/Shared/Tween/Tween";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { SpringTween } from "@Easy/Core/Shared/Util/SpringTween";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { Dependency } from "@easy-games/flamework-core";
 import { BWSpawnService } from "Server/Services/Match/BW/BWSpawnService";
@@ -36,22 +39,63 @@ export default class RecallAbility extends AbilityLogic {
 			GameObjectUtil.Destroy(effectGo, 0.6);
 		}
 
-		SetTimeout(0.25, () => {
-			const loopPrefab = AssetBridge.Instance.LoadAsset(RECALL_LOOP_PREFAB_PATH) as Object;
-			const effectGo = GameObjectUtil.Instantiate(loopPrefab);
-			effectGo.transform.position = this.entity.GetPosition();
+		const soundGO = GameObject.Create("RecallAudioSource");
+		soundGO.transform.position = this.entity.GetPosition();
+		const sound = soundGO.AddComponent<AudioSource>();
+		sound.loop = true;
+		sound.clip = AssetBridge.Instance.LoadAsset<AudioClip>(
+			"@Easy/Core/Shared/Resources/Sound/Abilities/Kill_SpiritOrb_Pull_01.ogg",
+		);
+		sound.Play();
 
-			this.chargeBin.Add(() => {
-				GameObjectUtil.Destroy(effectGo);
-			});
+		// TODO: Ask ben for an actual sound
+		const tick = 0.1;
+		let elapsed = 0;
+		const soundTween = Tween.InElastic(this.configuration.charge!.chargeTimeSeconds, (delta) => {
+			elapsed += delta;
+			if (elapsed >= tick) {
+				elapsed = 0;
+
+				if (sound) {
+					sound.pitch = sound.pitch + 0.04;
+				}
+			}
+		}).Play();
+
+		this.chargeBin.Add(
+			SetTimeout(this.configuration.charge!.chargeTimeSeconds, () => {
+				soundTween.Cancel();
+			}),
+		);
+
+		this.chargeBin.Add(() => soundTween.Cancel());
+		this.chargeBin.Add(() => {
+			sound.Stop();
+			GameObjectUtil.Destroy(soundGO);
 		});
+
+		this.chargeBin.Add(
+			SetTimeout(0.25, () => {
+				const loopPrefab = AssetBridge.Instance.LoadAsset(RECALL_LOOP_PREFAB_PATH) as Object;
+				const effectGo = GameObjectUtil.Instantiate(loopPrefab);
+				effectGo.transform.position = this.entity.GetPosition();
+
+				this.chargeBin.Add(() => {
+					GameObjectUtil.Destroy(effectGo);
+				});
+			}),
+		);
 	}
 
 	override OnClientChargeEnded(event: AbilityChargeEndEvent): void {
-		this.chargeBin.Clean(); // cleanup effects
-
 		if (event.endState === ChargingAbilityEndedState.Finished) {
+			const triggerPrefab = AssetBridge.Instance.LoadAsset(RECALL_TRIG_PREFAB_PATH) as Object;
+			const effectGo = GameObjectUtil.Instantiate(triggerPrefab);
+			effectGo.transform.position = this.entity.GetPosition();
+			GameObjectUtil.Destroy(effectGo, 0.3);
 		}
+
+		this.chargeBin.Clean(); // cleanup effects
 	}
 
 	override OnClientTriggered(): void {

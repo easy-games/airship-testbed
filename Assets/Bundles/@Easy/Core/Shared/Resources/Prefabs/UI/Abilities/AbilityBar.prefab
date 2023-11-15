@@ -259,6 +259,8 @@ MonoBehaviour:
       value: {fileID: 7787850302851918017}
     - key: CastBarTransform
       value: {fileID: 1904037043210518790}
+    - key: CastBarText
+      value: {fileID: 4671209771018216261}
 --- !u!1 &7116927350701777549
 GameObject:
   m_ObjectHideFlags: 0

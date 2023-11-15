@@ -22,6 +22,11 @@ export interface AbilityChargeConfig {
 	 * A list of triggers that will result in cancelling this ability's charging
 	 */
 	readonly cancelTriggers: readonly AbilityCancellationTrigger[];
+
+	/**
+	 * Override the display text for the charging ability - otherwise will display `Charging (ABILITY_NAME)`
+	 */
+	readonly displayText?: string;
 }
 
 export interface AbilityConfig {
@@ -102,6 +107,7 @@ export interface ChargingAbilityDto {
 	readonly timeStart: number;
 	readonly length: number;
 	readonly timeEnd: number;
+	readonly displayText: string;
 }
 
 export interface AbilityCooldownDto {
