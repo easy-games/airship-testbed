@@ -162,8 +162,8 @@ export const CoreNetwork = {
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
-		AbilityAdded: new RemoteEvent<[dto: AbilityDto]>(),
-		AbilityRemoved: new RemoteEvent<[id: string]>(),
+		AbilityAdded: new RemoteEvent<[entityId: number, dto: AbilityDto]>(),
+		AbilityRemoved: new RemoteEvent<[entityId: number, id: string]>(),
 
 		AbilityCooldownStateChange: new RemoteEvent<[dto: AbilityCooldownDto]>(),
 

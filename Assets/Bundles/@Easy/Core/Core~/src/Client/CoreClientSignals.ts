@@ -15,6 +15,7 @@ import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
 import { AbilityChargeClientSignal } from "./Controllers/Abilities/Event/AbilityChargeClientSignal";
 import { AbilityChargeEndClientSignal } from "./Controllers/Abilities/Event/AbilityChargeEndClientSignal";
+import { AbilityAddedClientSignal } from "./Controllers/Abilities/Event/AbilityAddedClientSignal";
 
 export const CoreClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),
@@ -44,6 +45,7 @@ export const CoreClientSignals = {
 	SpectatorTargetChanged: new Signal<{ entity: Entity }>(),
 	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
 
+	AbilityAdded: new Signal<AbilityAddedClientSignal>(),
 	AbilityChargeBegan: new Signal<AbilityChargeClientSignal>(),
 	AbilityChargeEnded: new Signal<AbilityChargeEndClientSignal>(),
 };

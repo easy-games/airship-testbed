@@ -138,7 +138,7 @@ export class CharacterAbilities {
 		this.abilityIdSlotMap.set(abilityId, ability.config.slot);
 
 		if (RunCore.IsServer() && this.entity.player) {
-			CoreNetwork.ServerToClient.AbilityAdded.Server.FireClient(this.entity.player.clientId, logic.Encode());
+			CoreNetwork.ServerToClient.AbilityAdded.Server.FireAllClients(this.entity.id, logic.Encode());
 		}
 
 		return logic;
