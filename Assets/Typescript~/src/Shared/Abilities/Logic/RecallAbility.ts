@@ -89,18 +89,14 @@ export default class RecallAbility extends AbilityLogic {
 	}
 
 	override OnClientChargeEnded(event: AbilityChargeEndEvent): void {
-		this.chargeBin.Clean(); // cleanup effects
-
 		if (event.endState === ChargingAbilityEndedState.Finished) {
 			const triggerPrefab = AssetBridge.Instance.LoadAsset(RECALL_TRIG_PREFAB_PATH) as Object;
 			const effectGo = GameObjectUtil.Instantiate(triggerPrefab);
 			effectGo.transform.position = this.entity.GetPosition();
 			GameObjectUtil.Destroy(effectGo, 0.3);
-
-			this.chargeBin.Add(() => {
-				GameObjectUtil.Destroy(effectGo);
-			});
 		}
+
+		this.chargeBin.Clean(); // cleanup effects
 	}
 
 	override OnClientTriggered(): void {
