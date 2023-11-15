@@ -134,8 +134,8 @@ export declare const CoreNetwork: {
         GroundItemDestroyed: RemoteEvent<[groundItemId: number]>;
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
-        AbilityAdded: RemoteEvent<[dto: AbilityDto]>;
-        AbilityRemoved: RemoteEvent<[id: string]>;
+        AbilityAdded: RemoteEvent<[entityId: number, dto: AbilityDto]>;
+        AbilityRemoved: RemoteEvent<[entityId: number, id: string]>;
         AbilityCooldownStateChange: RemoteEvent<[dto: AbilityCooldownDto]>;
         AbilityChargeBegan: RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>;
         AbilityChargeEnded: RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>;
