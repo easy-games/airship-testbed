@@ -1,4 +1,3 @@
-import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
 import { ChargingAbilityEndedState } from "@Easy/Core/Shared/Abilities/Ability";
 import { AbilityChargeEndEvent, AbilityLogic } from "@Easy/Core/Shared/Abilities/AbilityLogic";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
@@ -34,7 +33,7 @@ export default class RecallAbility extends AbilityLogic {
 			const triggerPrefab = AssetBridge.Instance.LoadAsset(RECALL_TRIG_PREFAB_PATH) as Object;
 			const effectGo = GameObjectUtil.Instantiate(triggerPrefab);
 			effectGo.transform.position = this.entity.GetPosition();
-			GameObjectUtil.Destroy(effectGo, 0.3);
+			GameObjectUtil.Destroy(effectGo, 0.6);
 		}
 
 		SetTimeout(0.25, () => {
