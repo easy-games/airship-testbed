@@ -3,23 +3,33 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { GameAbilities } from "Shared/Strollers/Match/BW/GameAbilities";
 import { AbilityId } from "Shared/Abilities/AbilityType";
+import { ServerSignals } from "Server/ServerSignals";
+import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
+import { MatchService } from "../MatchService";
 
 @Service()
-export class BWAbilitiesService implements OnStart {
-	constructor(private readonly gameAbilities: GameAbilities) {
+export class BWAbilitiesService {
+	constructor(
+		private readonly gameAbilities: GameAbilities,
+		private readonly playerService: PlayerService,
+		private readonly matchService: MatchService,
+	) {
 		CoreServerSignals.EntitySpawn.Connect((event) => {
-			if (event.entity instanceof CharacterEntity && event.entity.player) {
-				print(
-					"add ability to character",
-					event.entity.player.username,
-					event.entity.player.character !== undefined,
-				);
+			if (event.entity instanceof CharacterEntity && event.entity.player && this.matchService.IsRunning()) {
+				this.AddAbilitiesToCharacter(event.entity);
+			}
+		});
 
-				this.gameAbilities.AddAbilityToCharacter(AbilityId.RECALL, event.entity);
-				this.gameAbilities.AddAbilityToCharacter(AbilityId.VORLIAS_TEST, event.entity);
+		ServerSignals.MatchStart.Connect((event) => {
+			const players = this.playerService.GetPlayers();
+			for (const player of players) {
+				if (!player.character) continue;
+				this.AddAbilitiesToCharacter(player.character);
 			}
 		});
 	}
 
-	OnStart(): void {}
+	private AddAbilitiesToCharacter(characterEntity: CharacterEntity) {
+		this.gameAbilities.AddAbilityToCharacter(AbilityId.RECALL, characterEntity);
+	}
 }
