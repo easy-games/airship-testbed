@@ -20,6 +20,7 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
+import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 
 @Controller({})
 export class EntityController implements OnStart {
@@ -30,6 +31,7 @@ export class EntityController implements OnStart {
 		private readonly invController: InventoryController,
 		private readonly playerController: PlayerController,
 		private readonly localEntityController: LocalEntityController,
+		private readonly abilityRegistry: AbilityRegistry,
 	) {
 		const humanEntityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 			EntityPrefabType.HUMAN,
@@ -214,8 +216,14 @@ export class EntityController implements OnStart {
 				this.invController.RegisterInventory(inv);
 			}
 
+			const abilities = characterEntityDto.abilities.mapFiltered((abilityDto) => {
+				const ability = this.abilityRegistry.GetAbilityById(abilityDto.id);
+				return ability;
+			});
+
 			Profiler.BeginSample("CharacterEntity.Constructor");
-			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv);
+
+			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv, abilities);
 			Profiler.EndSample();
 		} else {
 			error("Unable to find entity serializer for dto: " + entityDto);

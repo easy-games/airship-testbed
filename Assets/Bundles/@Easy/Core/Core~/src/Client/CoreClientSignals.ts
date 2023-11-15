@@ -13,6 +13,8 @@ import { AfterBlockHitClientSignal } from "./Signals/AfterBlockHitClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
+import { AbilityChargeClientSignal } from "./Controllers/Abilities/Event/AbilityChargeClientSignal";
+import { AbilityChargeEndClientSignal } from "./Controllers/Abilities/Event/AbilityChargeEndClientSignal";
 
 export const CoreClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),
@@ -41,4 +43,7 @@ export const CoreClientSignals = {
 	PlayerEliminated: new Signal<{ player: Player }>(),
 	SpectatorTargetChanged: new Signal<{ entity: Entity }>(),
 	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
+
+	AbilityChargeBegan: new Signal<AbilityChargeClientSignal>(),
+	AbilityChargeEnded: new Signal<AbilityChargeEndClientSignal>(),
 };

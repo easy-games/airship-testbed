@@ -3,6 +3,7 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
+import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto, UseAbilityRequest } from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -39,6 +40,8 @@ export declare const CoreNetwork: {
         TEST_LATENCY: RemoteFunction<void, number>;
         TestKnockback2: RemoteEvent<[]>;
         LibonatiTest: RemoteEvent<[]>;
+        GetAbilities: RemoteFunction<[], readonly AbilityDto[]>;
+        UseAbility: RemoteEvent<[req: UseAbilityRequest]>;
     };
     ServerToClient: {
         ServerInfo: RemoteEvent<[gameId: string, serverId: string]>;
@@ -131,5 +134,10 @@ export declare const CoreNetwork: {
         GroundItemDestroyed: RemoteEvent<[groundItemId: number]>;
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
+        AbilityAdded: RemoteEvent<[dto: AbilityDto]>;
+        AbilityRemoved: RemoteEvent<[id: string]>;
+        AbilityCooldownStateChange: RemoteEvent<[dto: AbilityCooldownDto]>;
+        AbilityChargeBegan: RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>;
+        AbilityChargeEnded: RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>;
     };
 };

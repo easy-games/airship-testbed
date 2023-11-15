@@ -31,6 +31,8 @@ export declare class EntityReferences {
     spineBoneRoot: Transform;
     spineBoneMiddle: Transform;
     spineBoneTop: Transform;
+    shoulderR: Transform;
+    shoulderL: Transform;
     root: Transform;
     rig: Transform;
     characterCollider: Collider;
@@ -62,6 +64,7 @@ export declare class Entity {
     readonly ClientId?: number;
     protected health: number;
     protected maxHealth: number;
+    protected moveDirection: Vector3;
     protected dead: boolean;
     protected destroyed: boolean;
     protected displayName: string;
@@ -73,6 +76,7 @@ export declare class Entity {
     readonly OnDespawn: Signal<void>;
     readonly OnPlayerChanged: Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>;
     readonly OnAdjustMove: Signal<[moveModifier: MoveModifier]>;
+    readonly OnMoveDirectionChanged: Signal<[moveDirection: Vector3]>;
     readonly OnDisplayNameChanged: Signal<[displayName: string]>;
     readonly OnStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
     readonly OnDeath: Signal<void>;
@@ -80,6 +84,11 @@ export declare class Entity {
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     Teleport(pos: Vector3, lookVector?: Vector3): void;
     AddHealthbar(): void;
+    /**
+     * Gets the current position of this entity
+     * @returns
+     */
+    GetPosition(): Vector3;
     GetHealthbar(): Healthbar | undefined;
     GetTeam(): Team | undefined;
     CanDamage(entity: Entity): boolean;
@@ -88,6 +97,7 @@ export declare class Entity {
     GetHealth(): number;
     GetMaxHealth(): number;
     GetEntityDriver(): EntityDriver;
+    GetMoveDirection(): Vector3;
     SetHealth(health: number): void;
     SetMaxHealth(maxHealth: number): void;
     /**

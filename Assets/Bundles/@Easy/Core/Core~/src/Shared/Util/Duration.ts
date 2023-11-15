@@ -3,6 +3,11 @@ export const SECONDS_TO_HOURS = 3600;
 export const SECONDS_TO_DAYS = 86400;
 export const MINUTES_TO_DAYS = 1440;
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Duration {
+	export type Seconds = number & { readonly tag?: never };
+}
+
 /**
  * Represents a span of time
  */
