@@ -42,10 +42,13 @@ export default class RecallAbility extends AbilityLogic {
 		const soundGO = GameObject.Create("RecallAudioSource");
 		soundGO.transform.position = this.entity.GetPosition();
 		const sound = soundGO.AddComponent<AudioSource>();
-		sound.loop = true;
 		sound.clip = AssetBridge.Instance.LoadAsset<AudioClip>(
 			"@Easy/Core/Shared/Resources/Sound/Abilities/Kill_SpiritOrb_Pull_01.ogg",
 		);
+		sound.loop = true;
+		sound.spatialBlend = 1;
+		sound.rolloffMode = AudioRolloffMode.Logarithmic;
+		sound.maxDistance = 200;
 		sound.Play();
 
 		// TODO: Ask ben for an actual sound
