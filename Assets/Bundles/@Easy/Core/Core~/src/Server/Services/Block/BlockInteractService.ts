@@ -3,7 +3,7 @@ import { CoreServerSignals } from "Server/CoreServerSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { AOEDamageMeta, BreakBlockMeta, ItemMeta, TillBlockMeta } from "Shared/Item/ItemMeta";
+import { AOEDamageMeta, BlockDamageType, BreakBlockMeta, ItemMeta, TillBlockMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
@@ -236,7 +236,7 @@ export class BlockInteractService implements OnStart {
 		}
 
 		// Cancellable signal
-		const damage = WorldAPI.CalculateBlockHitDamageFromBreakBlockMeta(entity, block, voxelPos, breakBlockMeta);
+		const damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, breakBlockMeta);
 		if (damage === 0) {
 			return false;
 		}
@@ -272,7 +272,12 @@ export class BlockInteractService implements OnStart {
 		return true;
 	}
 
-	public DamageBlocks(entity: Entity | undefined, voxelPositions: Vector3[], damages: number[]): boolean {
+	public DamageBlocks(
+		entity: Entity | undefined,
+		damageType: BlockDamageType,
+		voxelPositions: Vector3[],
+		damages: number[],
+	): boolean {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return false;
@@ -294,7 +299,10 @@ export class BlockInteractService implements OnStart {
 				continue;
 			}
 
-			damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, damage);
+			damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, {
+				damage: damage,
+				damageType: damageType,
+			});
 			if (damage <= 0) {
 				//No Damage
 				continue;
@@ -408,12 +416,10 @@ export class BlockInteractService implements OnStart {
 		const centerBlock = world.GetBlockAt(centerPosition);
 		if (centerBlock && !centerBlock.IsAir()) {
 			positions[damageI] = centerPosition;
-			damages[damageI] = WorldAPI.CalculateBlockHitDamage(
-				entity,
-				centerBlock,
-				centerPosition,
-				aoeMeta.innerDamage,
-			);
+			damages[damageI] = WorldAPI.CalculateBlockHitDamage(entity, centerBlock, centerPosition, {
+				damage: aoeMeta.blockExplosiveDamage,
+				damageType: BlockDamageType.BLAST,
+			});
 			damageI++;
 		}
 
@@ -453,7 +459,10 @@ export class BlockInteractService implements OnStart {
 							//Ignore blocks too far away
 							continue;
 						}
-						const maxDamage = WorldAPI.CalculateBlockHitDamage(entity, block, currentPos, distanceDamage);
+						const maxDamage = WorldAPI.CalculateBlockHitDamage(entity, block, currentPos, {
+							damage: distanceDamage,
+							damageType: BlockDamageType.BLAST,
+						});
 						const blockDir = currentPos.sub(centerPosition).normalized;
 						let finalDamage = 0;
 						//Take damage from damage vectors
@@ -506,7 +515,7 @@ export class BlockInteractService implements OnStart {
 			}
 			//});
 		}
-		this.DamageBlocks(entity, positions, damages);
+		this.DamageBlocks(entity, BlockDamageType.BLAST, positions, damages);
 	}
 
 	public DamageBlockAOESimple(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
@@ -525,12 +534,10 @@ export class BlockInteractService implements OnStart {
 					const block = WorldAPI.GetMainWorld()?.GetBlockAt(targetVoxelPos);
 					let maxDamage = 0;
 					if (block) {
-						WorldAPI.CalculateBlockHitDamage(
-							entity,
-							block,
-							targetVoxelPos,
-							this.GetMaxAOEDamage(targetVoxelPos, centerPosition, aoeMeta),
-						);
+						WorldAPI.CalculateBlockHitDamage(entity, block, targetVoxelPos, {
+							damage: this.GetMaxAOEDamage(targetVoxelPos, centerPosition, aoeMeta),
+							damageType: BlockDamageType.BLAST,
+						});
 					} else {
 						maxDamage = this.GetMaxAOEDamage(targetVoxelPos, centerPosition, aoeMeta);
 					}
@@ -543,7 +550,7 @@ export class BlockInteractService implements OnStart {
 			}
 		}
 
-		this.DamageBlocks(entity, positions, damages);
+		this.DamageBlocks(entity, BlockDamageType.BLAST, positions, damages);
 	}
 
 	private GetMaxAOEDamage(voxelPos: Vector3, aoeCenter: Vector3, aoeMeta: AOEDamageMeta) {

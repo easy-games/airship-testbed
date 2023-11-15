@@ -39,32 +39,6 @@ export class MapBlockService implements OnStart {
 			// }
 		});
 
-		/*WorldAPI.OnBlockHitDamageCalc.Connect((event) => {
-			const archetype = event.block.itemMeta?.block?.blockArchetype ?? BlockArchetype.NONE;
-
-			//Bonuse damage from item type
-			if (archetype !== BlockArchetype.NONE) {
-				event.damage *=
-					event.breakBlockMeta?.extraDamageBlockArchetype === archetype
-						? event.breakBlockMeta.extraDamage ?? 1
-						: 1;
-			}
-
-			//Reduced damage from block type
-			switch (archetype) {
-				case BlockArchetype.STONE:
-					event.damage *= 0.5;
-					break;
-				case BlockArchetype.HARD_STONE:
-					event.damage *= 0.2;
-					break;
-				case BlockArchetype.BLAST_PROOF:
-				case BlockArchetype.PROP:
-					event.damage = 0;
-					break;
-			}
-		});*/
-
 		CoreNetwork.ClientToServer.LibonatiTest.Server.OnClientEvent((clientId) => {
 			const entity = Entity.FindByClientId(clientId);
 			if (!entity) {

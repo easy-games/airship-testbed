@@ -1,5 +1,5 @@
 import { Entity } from "Shared/Entity/Entity";
-import { BreakBlockMeta } from "Shared/Item/ItemMeta";
+import { BlockArchetype, BlockDamageType, BreakBlockMeta } from "Shared/Item/ItemMeta";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Block } from "./Block";
@@ -29,7 +29,7 @@ export class WorldAPI {
 		return MathUtil.FloorVec(worldPosition);
 	}
 
-	public static CalculateBlockHitDamageFromBreakBlockMeta(
+	public static CalculateBlockHitDamage(
 		entity: Entity | undefined,
 		block: Block,
 		blockPos: Vector3,
@@ -37,17 +37,37 @@ export class WorldAPI {
 	): number {
 		let signal = new BlockHitDamageSignal(breakBlockMeta.damage, entity, block, blockPos, breakBlockMeta);
 		this.OnBlockHitDamageCalc.Fire(signal);
-		return signal.damage;
-	}
 
-	public static CalculateBlockHitDamage(
-		entity: Entity | undefined,
-		block: Block,
-		blockPos: Vector3,
-		damage: number,
-	): number {
-		let signal = new BlockHitDamageSignal(damage, entity, block, blockPos, undefined);
-		this.OnBlockHitDamageCalc.Fire(signal);
+		//Global Hit Damage Calcs
+		//Block Types
+		const archetype = signal.block.itemMeta?.block?.blockArchetype ?? BlockArchetype.NONE;
+
+		//Bonuse damage from item type
+		if (archetype !== BlockArchetype.NONE) {
+			signal.damage *=
+				signal.breakBlockMeta?.extraDamageBlockArchetype === archetype
+					? signal.breakBlockMeta.extraDamage ?? 1
+					: 1;
+		}
+
+		const damageType = breakBlockMeta.damageType ?? BlockDamageType.NORMAL;
+		//Blast Damage
+		if (damageType === BlockDamageType.BLAST) {
+			//Reduced damage from block type
+			switch (archetype) {
+				case BlockArchetype.STONE:
+					signal.damage *= 0.5;
+					break;
+				case BlockArchetype.HARD_STONE:
+					signal.damage *= 0.2;
+					break;
+				case BlockArchetype.BLAST_PROOF:
+				case BlockArchetype.PROP:
+					signal.damage = 0;
+					break;
+			}
+		}
+
 		return signal.damage;
 	}
 }

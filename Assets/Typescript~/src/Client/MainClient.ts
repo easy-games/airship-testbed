@@ -4,10 +4,10 @@ import { BedWars } from "./BedWars/BedWars";
 
 Flamework.AddPath("assets/bundles/client/resources/ts/controllers/global", "^.*controller.lua$");
 Flamework.AddPath("assets/bundles/shared/resources/ts/strollers/global", "^.*.lua$");
-if (BedWars.IsMatchServer()) {
+if (BedWars.IsMatchMode()) {
 	Flamework.AddPath("assets/bundles/client/resources/ts/controllers/match", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/shared/resources/ts/strollers/match", "^.*.lua$");
-} else if (BedWars.IsLobbyServer()) {
+} else if (BedWars.IsLobbyMode()) {
 	Flamework.AddPath("assets/bundles/client/resources/ts/controllers/lobby", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/shared/resources/ts/strollers/lobby", "^.*.lua$");
 }
