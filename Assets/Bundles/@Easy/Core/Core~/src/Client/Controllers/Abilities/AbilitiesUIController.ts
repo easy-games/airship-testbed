@@ -1,14 +1,12 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreUIController } from "../UI/CoreUIController";
-import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { InputUtils } from "Shared/Util/InputUtils";
 import { AbilitiesController } from "./AbilitiesController";
 import { Bin } from "Shared/Util/Bin";
 import inspect from "@easy-games/unity-inspect";
 import { Healthbar } from "Shared/UI/Healthbar";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { ChargingAbilityEndedState } from "Shared/Abilities/Ability";
-import { OnUpdate, SetTimeout } from "Shared/Util/Timer";
+import { AbilityConfig, ChargingAbilityEndedState } from "Shared/Abilities/Ability";
+import { OnUpdate } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 
@@ -34,6 +32,7 @@ export class AbilitiesUIController implements OnStart {
 	private abilitiesRefs: GameObjectReferences;
 	private abilitybarContent: Transform;
 	private castbar: Healthbar;
+	private castbarText: TMP_Text;
 
 	public constructor(
 		public readonly coreUIController: CoreUIController,
@@ -49,6 +48,7 @@ export class AbilitiesUIController implements OnStart {
 			fillColor: new Color(0 / 255, 150 / 255, 255 / 255),
 			deathOnZero: false,
 		});
+		this.castbarText = this.abilitiesRefs.GetValue("UI", "CastBarText");
 
 		this.castbar.SetActive(false);
 	}
@@ -172,6 +172,7 @@ export class AbilitiesUIController implements OnStart {
 
 				this.castbar.InstantlySetValue(0);
 				this.castbar.SetActive(true);
+				this.castbarText.text = event.chargingAbility.displayText;
 			}
 
 			const abilities = event.characterEntity.GetAbilities();

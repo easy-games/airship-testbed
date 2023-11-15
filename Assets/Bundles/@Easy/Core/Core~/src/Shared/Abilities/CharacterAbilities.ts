@@ -229,6 +229,7 @@ export class CharacterAbilities {
 					CoreNetwork.ServerToClient.AbilityChargeBegan.Server.FireAllClients(this.entity.id, {
 						id,
 						timeStart: currentTime,
+						displayText: config.charge.displayText ?? `Charging '${config.name}'...`,
 						timeEnd: currentTime + chargeTime,
 						length: chargeTime,
 					});

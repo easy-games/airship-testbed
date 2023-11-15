@@ -19,6 +19,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 					AbilityCancellationTrigger.EntityDamageTaken,
 					AbilityCancellationTrigger.EntityMovement,
 				],
+				displayText: "Teleporting back to base",
 			},
 			cooldownTimeSeconds: 0.5,
 		},
