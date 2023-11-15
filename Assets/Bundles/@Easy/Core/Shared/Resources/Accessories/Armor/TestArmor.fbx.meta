@@ -25,10 +25,7 @@ ModelImporter:
     removeConstantScaleCurves: 1
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
-      copied configuration does not match position in animation file:\n\t'upper_leg_bone.L'
-      : position error = 118.828392 mm\n\t'lower_leg_bone.L' : position error = 426.002838
-      mm\n\t'foot_bone.L' : position error = 399.973328 mm\n"
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -413,5 +410,5 @@ ModelImporter:
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 
