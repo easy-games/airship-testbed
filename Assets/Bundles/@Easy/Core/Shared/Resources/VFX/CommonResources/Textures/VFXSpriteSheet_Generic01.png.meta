@@ -101,6 +101,30 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -661,7 +685,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      VFX_Bang05: 1320982373
+      VFX_LongFlare03: -247266312
       VFX_Bang04: -938214310
       VFX_RingBang03: -1063336434
       VFX_Angle03: 1752451271
@@ -685,11 +709,11 @@ TextureImporter:
       VFX_Angle01: -835726139
       VFX_Angle04: -61148171
       VFX_RingBang05: 232396495
-      VFX_LongFlare03: -247266312
+      VFX_Bang05: 1320982373
       VFX_RingBang01: 619462893
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 

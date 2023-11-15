@@ -83,6 +83,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8584484845338333250, guid: b700dc2a71b777448bbf3707b18d9a74, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8584484845338333250, guid: b700dc2a71b777448bbf3707b18d9a74, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.019
+      objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: b700dc2a71b777448bbf3707b18d9a74, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -98,7 +106,7 @@ PrefabInstance:
     - target: {fileID: 6119302945691806073, guid: b700dc2a71b777448bbf3707b18d9a74, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 5397488323c81ef43abbecd253210e3c, type: 2}
+      objectReference: {fileID: 2100000, guid: 16c9aa28b6820e4458962092cb733832, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b700dc2a71b777448bbf3707b18d9a74, type: 3}
 --- !u!4 &6143690715479384291 stripped
@@ -124,8 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.5377358, g: 0.40330186, b: 0.45323446, a: 1}
+  - materialColor: {r: 0.59033126, g: 0.58401567, b: 0.6415094, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StoneSword
+    reference: Stone_Clean
   addedByEditorScript: 0

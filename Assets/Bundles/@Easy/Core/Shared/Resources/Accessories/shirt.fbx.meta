@@ -723,5 +723,5 @@ ModelImporter:
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 
