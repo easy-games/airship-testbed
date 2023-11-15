@@ -231,14 +231,12 @@ export class BlockInteractService implements OnStart {
 		voxelPos = BlockDataAPI.GetParentBlockPos(voxelPos) ?? voxelPos;
 
 		const block = world.GetBlockAt(voxelPos);
-		print("block: " + block.blockId);
 		if (block.IsAir()) {
 			return false;
 		}
 
 		// Cancellable signal
 		const damage = WorldAPI.CalculateBlockHitDamageFromBreakBlockMeta(entity, block, voxelPos, breakBlockMeta);
-		print("damage=" + damage);
 		if (damage === 0) {
 			return false;
 		}
@@ -255,7 +253,6 @@ export class BlockInteractService implements OnStart {
 
 		// After signal
 		CoreServerSignals.BlockHit.Fire({ blockId: block.runtimeBlockId, entity, blockPos: voxelPos });
-		print(`Firing BlockHit. damage=${beforeSignal.damage}`);
 		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.runtimeBlockId, entity?.id);
 
 		//BLOCK DEATH

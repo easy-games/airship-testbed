@@ -17,9 +17,7 @@ if (BedWars.IsMatchServer()) {
 	WorldAPI.OnBlockHitDamageCalc.Connect((event) => {
 		// BW: dont allow breaking your own team's bed
 		const teamBlockId = BlockDataAPI.GetBlockData<string>(event.blockPos, "teamId");
-		print(`itemType=${event.block.itemType} teamId=${teamBlockId}`);
 		if (teamBlockId !== undefined && teamBlockId === event.entity?.player?.GetTeam()?.id) {
-			print("no breaking own team's bed.");
 			event.damage = 0;
 		}
 
@@ -27,7 +25,6 @@ if (BedWars.IsMatchServer()) {
 		if (event.block.itemType !== ItemType.BED) {
 			const canBreak = BlockDataAPI.GetBlockData<number>(event.blockPos, CoreBlockMetaKeys.CAN_BREAK);
 			if (!canBreak) {
-				print("no breaking map blocks.");
 				event.damage = 0;
 			}
 		}
