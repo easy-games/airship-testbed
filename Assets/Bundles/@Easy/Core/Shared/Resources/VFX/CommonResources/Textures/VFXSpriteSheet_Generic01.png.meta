@@ -67,7 +67,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -661,7 +661,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      VFX_LongFlare03: -247266312
+      VFX_Bang05: 1320982373
       VFX_Bang04: -938214310
       VFX_RingBang03: -1063336434
       VFX_Angle03: 1752451271
@@ -685,7 +685,7 @@ TextureImporter:
       VFX_Angle01: -835726139
       VFX_Angle04: -61148171
       VFX_RingBang05: 232396495
-      VFX_Bang05: 1320982373
+      VFX_LongFlare03: -247266312
       VFX_RingBang01: 619462893
   spritePackingTag: 
   pSDRemoveMatte: 0
