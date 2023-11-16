@@ -277,13 +277,13 @@ export class LocalEntityController implements OnStart {
 			});
 
 			// Toggle look backwards:
-			keyboard.OnKeyDown(KeyCode.LeftAlt, (event) => {
+			keyboard.OnKeyDown(KeyCode.H, (event) => {
 				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.SetLookBackwards(true);
 				}
 			});
-			keyboard.OnKeyUp(KeyCode.LeftAlt, (event) => {
+			keyboard.OnKeyUp(KeyCode.H, (event) => {
 				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.SetLookBackwards(false);

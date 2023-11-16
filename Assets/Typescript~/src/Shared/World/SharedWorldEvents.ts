@@ -1,4 +1,3 @@
-import { BlockArchetype } from "@Easy/Core/Shared/Item/ItemMeta";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";

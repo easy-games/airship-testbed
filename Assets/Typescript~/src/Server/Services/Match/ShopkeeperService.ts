@@ -58,7 +58,7 @@ export class ShopkeeperService implements OnStart {
 		this.upgradeShopEntityIds.clear();
 		for (let team of this.teamService.GetTeams()) {
 			// Item Shop
-			const itemShopWorldPos = loadedMap.GetWorldPosition(team.id + "_item_shop");
+			const itemShopWorldPos = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
 			const itemShopEntity = this.entityService.SpawnEntityForPlayer(
 				undefined,
 				EntityPrefabType.HUMAN,
@@ -74,7 +74,7 @@ export class ShopkeeperService implements OnStart {
 			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(itemShopWorldPos.Position), DENY_REGION_SIZE);
 
 			// Team Upgrades
-			const teamUpgradeWorldPos = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
+			const teamUpgradeWorldPos = loadedMap.GetWorldPosition(team.id + "_item_shop");
 			const upgradeShopEntity = this.entityService.SpawnEntityForPlayer(
 				undefined,
 				EntityPrefabType.HUMAN,

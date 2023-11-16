@@ -134,6 +134,11 @@ export interface BreakBlockMeta {
      * If undefined, default effects will be used.
      */
     onHitPrefabPath?: string;
+    damageType?: BlockDamageType;
+}
+export declare enum BlockDamageType {
+    NORMAL = 0,
+    BLAST = 1
 }
 export interface AOEDamageMeta {
     innerDamage: number;

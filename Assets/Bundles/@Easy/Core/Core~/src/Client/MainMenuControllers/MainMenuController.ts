@@ -58,7 +58,11 @@ export class MainMenuController implements OnStart {
 			closeButton.SetActive(false);
 		} else {
 			const bg = this.refs.GetValue("UI", "Background");
-			bg.GetComponent<Image>().color = new Color(1, 1, 1, 0.98);
+
+			const bgImage = bg.GetComponent<Image>();
+			const color = bgImage.color;
+			color.a = 0.92;
+			bgImage.color = color;
 
 			CanvasAPI.OnClickEvent(closeButton, () => {
 				AppManager.Close();

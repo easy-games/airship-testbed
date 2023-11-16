@@ -1,11 +1,13 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPage } from "./MainMenuPageName";
+import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { UserController } from "./User/UserController";
 
 @Controller({})
@@ -80,10 +82,11 @@ export class MainMenuNavbarController implements OnStart {
 
 		const profileButton = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton");
 		CanvasAPI.OnClickEvent(profileButton, () => {
-			const user = this.userController.localUser;
-			if (user) {
-				Bridge.CopyToClipboard(user.username + "#" + user.discriminator);
-			}
+			Dependency<ChangeUsernameController>().Open();
+			// const user = this.userController.localUser;
+			// if (user) {
+			// 	Bridge.CopyToClipboard(user.username + "#" + user.discriminator);
+			// }
 		});
 
 		this.UpdateProfileSection();
@@ -123,11 +126,13 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
-		const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+		const text = go.transform.GetChild(1).GetComponent<TMP_Text>();
 		if (selected) {
 			text.color = new Color(1, 1, 1, 1);
+			go.transform.GetChild(0).gameObject.SetActive(true);
 		} else {
-			text.color = new Color(0.68, 0.77, 1, 1);
+			text.color = ColorUtil.HexToColor("292524");
+			go.transform.GetChild(0).gameObject.SetActive(false);
 		}
 	}
 

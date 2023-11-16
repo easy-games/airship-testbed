@@ -86,7 +86,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 2323bd09ce1386c4f82d80200db3071b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 695b9d21ad1cf644ebc554aa1a9aa4a7, type: 2}
+      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: -7511558181221131132, guid: 2323bd09ce1386c4f82d80200db3071b, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
@@ -124,10 +124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0.6059262, b: 0.25943398, a: 1}
+  - materialColor: {r: 0.46226418, g: 0.38864115, b: 0.29436633, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: GoldHandle
+    reference: Clay
   - materialColor: {r: 0.4039216, g: 0.07058824, b: 0.07058824, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1

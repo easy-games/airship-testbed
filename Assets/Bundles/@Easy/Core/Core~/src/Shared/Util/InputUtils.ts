@@ -2,7 +2,7 @@ export class InputUtils {
 	private static keyCodeMap: Record<KeyCode, string | undefined> = {
 		/// Alpha names
 		[KeyCode.A]: "A",
-		[KeyCode.B]: "A",
+		[KeyCode.B]: "B",
 		[KeyCode.C]: "C",
 		[KeyCode.D]: "D",
 		[KeyCode.E]: "E",

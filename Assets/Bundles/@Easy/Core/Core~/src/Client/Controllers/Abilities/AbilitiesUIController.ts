@@ -67,7 +67,6 @@ export class AbilitiesUIController implements OnStart {
 			return;
 		}
 
-		print("fetch bar slot", slotIdx);
 		const go = child.gameObject;
 		const contentGO = go.transform.GetChild(0)?.gameObject;
 		if (!contentGO) {
@@ -206,11 +205,9 @@ export class AbilitiesUIController implements OnStart {
 				this.UpdateAbilityBarSlot(currIdx, ability.ToAbilityState());
 				bin.Add(
 					ability.BindingStateChanged.Connect((event) => {
-						print("update binding state", inspect(event.newState));
 						this.UpdateAbilityBarSlot(currIdx, event.newState);
 					}),
 				);
-				print("bind", ability.GetKey(), "to", idx);
 				idx++;
 			}
 			return bin;

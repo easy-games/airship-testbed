@@ -252,8 +252,17 @@ export class BlockInteractService implements OnStart {
 		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
 
 		// After signal
-		CoreServerSignals.BlockHit.Fire({ blockId: block.runtimeBlockId, entity, blockPos: voxelPos });
-		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(voxelPos, block.runtimeBlockId, entity?.id);
+		CoreServerSignals.BlockHit.Fire({
+			blockId: block.runtimeBlockId,
+			entity,
+			blockPos: voxelPos,
+		});
+		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(
+			voxelPos,
+			block.runtimeBlockId,
+			entity?.id,
+			newHealth === 0,
+		);
 
 		//BLOCK DEATH
 		if (newHealth === 0) {
@@ -373,7 +382,7 @@ export class BlockInteractService implements OnStart {
 		}
 	}
 
-	public DamageBlockAOE(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
+	public DamageBlockAOE(entity: Entity | undefined, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return;
@@ -390,7 +399,6 @@ export class BlockInteractService implements OnStart {
 						damage: aoeMeta.blockExplosiveDamage,
 					};
 
-					print("Making damage vector: " + new Vector3(x, y, z));
 					i++;
 				}
 			}
