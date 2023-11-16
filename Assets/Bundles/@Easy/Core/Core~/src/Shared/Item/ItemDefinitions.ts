@@ -71,7 +71,8 @@ const swordViewModel: ViewModelMeta = {
 };
 
 const bigSwordViewModel: ViewModelMeta = {
-	idleAnimFP: CoreAnim("FP_SwordBig_Idle"),
+	// idleAnimFP: CoreAnim("FP_SwordBig_Idle"),
+	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	idleAnimTP: CoreAnim("Airship_Empty"),
 };
 
