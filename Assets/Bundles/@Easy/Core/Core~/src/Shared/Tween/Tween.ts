@@ -1,4 +1,4 @@
-import { OnFixedUpdate, OnUpdate } from "Shared/Util/Timer";
+import { OnFixedUpdate } from "Shared/Util/Timer";
 
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
 type BasicEasingFunction = (
@@ -73,7 +73,6 @@ export class Tween {
 		const lerpFn = numberLerp(initialValue, endValue);
 
 		this.interpolator = (step: number) => {
-			print("step", step);
 			const elapsedTime = this.elapsedTime + step;
 			this.elapsedTime = elapsedTime;
 
