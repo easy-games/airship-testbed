@@ -3,6 +3,7 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Keyboard, Mouse } from "Shared/UserInput";
@@ -12,7 +13,6 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { OnUpdate } from "Shared/Util/Timer";
 import { CoreUIController } from "../UI/CoreUIController";
 import { InventoryController } from "./InventoryController";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 
 type DraggingState = {
 	inventory: Inventory;
@@ -26,7 +26,7 @@ type DraggingState = {
 export class InventoryUIController implements OnStart {
 	private hotbarSlots = 9;
 	private backpackShown = false;
-	private canvas: Canvas;
+	private hotbarCanvas: Canvas;
 	private hotbarContent: Transform;
 	private healthBar: Healthbar;
 	private inventoryRefs: GameObjectReferences;
@@ -44,8 +44,8 @@ export class InventoryUIController implements OnStart {
 		private readonly coreUIController: CoreUIController,
 	) {
 		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
-		this.canvas = go.GetComponent<Canvas>();
-		this.canvas.enabled = true;
+		this.hotbarCanvas = go.GetComponent<Canvas>();
+		this.hotbarCanvas.enabled = true;
 
 		this.inventoryRefs = go.GetComponent<GameObjectReferences>();
 		this.hotbarContent = this.inventoryRefs.GetValue("UI", "HotbarContentGO").transform;
@@ -65,7 +65,8 @@ export class InventoryUIController implements OnStart {
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.E, (event) => {
-			if (this.IsBackpackShown()) {
+			if (event.uiProcessed) return;
+			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();
 			} else {
 				this.OpenBackpack();
@@ -77,7 +78,7 @@ export class InventoryUIController implements OnStart {
 		if (this.enabled === enabled) return;
 
 		if (!enabled) {
-			this.canvas.enabled = false;
+			this.hotbarCanvas.enabled = false;
 		}
 	}
 
@@ -90,9 +91,12 @@ export class InventoryUIController implements OnStart {
 		wrapper.anchoredPosition = new Vector2(0, -20);
 		wrapper.TweenAnchoredPositionY(0, 0.12);
 
+		this.hotbarCanvas.enabled = false;
+
 		AppManager.Open(this.backpackCanvas, {
 			onClose: () => {
 				this.backpackShown = false;
+				this.hotbarCanvas.enabled = true;
 			},
 		});
 	}

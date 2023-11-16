@@ -51,6 +51,8 @@ export class EntityReferences {
 	spineBoneRoot: Transform;
 	spineBoneMiddle: Transform;
 	spineBoneTop: Transform;
+	shoulderR: Transform;
+	shoulderL: Transform;
 	root: Transform;
 	rig: Transform;
 	characterCollider: Collider;
@@ -83,6 +85,8 @@ export class EntityReferences {
 		this.headBone = ref.GetValue<Transform>(boneKey, "Head");
 		this.root = ref.GetValue<Transform>(boneKey, "Root");
 		this.rig = ref.GetValue<Transform>(boneKey, "Rig");
+		this.shoulderL = ref.GetValue<Transform>(boneKey, "ShoulderL");
+		this.shoulderR = ref.GetValue<Transform>(boneKey, "ShoulderR");
 
 		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
 		this.characterCollider.enabled = true;
@@ -135,6 +139,7 @@ export class Entity {
 	public readonly ClientId?: number;
 	protected health = 100;
 	protected maxHealth = 100;
+	protected moveDirection = new Vector3();
 	protected dead = false;
 	protected destroyed = false;
 	protected displayName: string;
@@ -147,6 +152,7 @@ export class Entity {
 	public readonly OnDespawn = new Signal<void>();
 	public readonly OnPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
 	public readonly OnAdjustMove = new Signal<[moveModifier: MoveModifier]>();
+	public readonly OnMoveDirectionChanged = new Signal<[moveDirection: Vector3]>();
 	public readonly OnDisplayNameChanged = new Signal<[displayName: string]>();
 	public readonly OnStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
 	public readonly OnDeath = new Signal<void>();
@@ -159,14 +165,18 @@ export class Entity {
 		this.gameObject = networkObject.gameObject;
 
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
+		Profiler.BeginSample("EntityReferences.Constructor");
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
+		Profiler.EndSample();
 		this.model = this.references.root.gameObject;
 		this.model.transform.localPosition = new Vector3(0, 0, 0);
+		Profiler.BeginSample("CharacterEntityAnimator.Constructor");
 		this.animator = new CharacterEntityAnimator(
 			this,
 			this.model.GetComponent<AnimancerComponent>(),
 			this.references,
 		);
+		Profiler.EndSample();
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
 		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.state = this.entityDriver.GetState();
@@ -208,12 +218,24 @@ export class Entity {
 			});
 		}
 
+		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
+			const movementChangeConn = this.entityDriver.OnMoveDirectionChanged((direction) => {
+				this.OnMoveDirectionChanged.Fire(direction);
+				this.moveDirection = direction;
+			});
+
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(movementChangeConn);
+			});
+		}
+
 		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
 			// print("state change (" + this.displayName + "): " + newState);
 			const oldState = this.state;
 			this.state = newState;
 			this.OnStateChanged.Fire(newState, oldState);
 		});
+
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(stateChangeConn);
 		});
@@ -257,6 +279,14 @@ export class Entity {
 
 		this.healthbar.SetValue(this.health / this.maxHealth);
 		this.healthbarEnabled = true;
+	}
+
+	/**
+	 * Gets the current position of this entity
+	 * @returns
+	 */
+	public GetPosition() {
+		return this.gameObject.transform.position;
 	}
 
 	public GetHealthbar(): Healthbar | undefined {
@@ -303,6 +333,10 @@ export class Entity {
 
 	public GetEntityDriver(): EntityDriver {
 		return this.entityDriver;
+	}
+
+	public GetMoveDirection(): Vector3 {
+		return this.moveDirection;
 	}
 
 	public SetHealth(health: number): void {

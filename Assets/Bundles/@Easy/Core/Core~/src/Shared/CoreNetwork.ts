@@ -1,3 +1,10 @@
+import {
+	AbilityCooldownDto,
+	AbilityDto,
+	ChargingAbilityDto,
+	ChargingAbilityEndedDto,
+	UseAbilityRequest,
+} from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -40,6 +47,9 @@ export const CoreNetwork = {
 		TEST_LATENCY: new RemoteFunction<void, number>(),
 		TestKnockback2: new RemoteEvent<[]>(),
 		LibonatiTest: new RemoteEvent<[]>(),
+
+		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
+		UseAbility: new RemoteEvent<[req: UseAbilityRequest]>(),
 	},
 	ServerToClient: {
 		ServerInfo: new RemoteEvent<[gameId: string, serverId: string]>(),
@@ -54,7 +64,9 @@ export const CoreNetwork = {
 		SetHeldInventorySlot: new RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>(),
 		SpawnEntities: new RemoteEvent<[entities: EntityDto[]]>(),
 		DespawnEntity: new RemoteEvent<[entityId: number]>(),
-		BlockHit: new RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined]>(),
+		BlockHit: new RemoteEvent<
+			[blockPos: Vector3, blockId: number, entityId: number | undefined, broken?: boolean]
+		>(),
 		BlockDestroyed: new RemoteEvent<[blockPos: Vector3, blockId: number]>(),
 		BlockGroupDestroyed: new RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>(),
 		ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
@@ -149,6 +161,15 @@ export const CoreNetwork = {
 
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
+
+		AbilityAdded: new RemoteEvent<[entityId: number, dto: AbilityDto]>(),
+		AbilityRemoved: new RemoteEvent<[entityId: number, id: string]>(),
+		AbilitiesCleared: new RemoteEvent<[entityId: number]>(),
+
+		AbilityCooldownStateChange: new RemoteEvent<[dto: AbilityCooldownDto]>(),
+
+		AbilityChargeBegan: new RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>(),
+		AbilityChargeEnded: new RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>(),
 	},
 };
 

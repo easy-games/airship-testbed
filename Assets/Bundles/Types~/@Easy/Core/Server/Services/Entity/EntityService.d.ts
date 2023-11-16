@@ -17,7 +17,7 @@ export declare class EntityService implements OnStart {
     constructor(invService: InventoryService, chatService: ChatService);
     OnStart(): void;
     GetEntityPrefab(entityPrefabType: EntityPrefabType): NetworkObject;
-    SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3): CharacterEntity;
+    SpawnEntityForPlayer(player: Player | undefined, entityPrefabType: EntityPrefabType, pos?: Vector3, rotation?: Quaternion): CharacterEntity;
     DespawnEntity(entity: Entity): void;
     GetEntityById(entityId: number): Entity | undefined;
     GetEntityByClientId(clientId: number): Entity | undefined;

@@ -30,6 +30,9 @@ export class EffectsManager {
 		//TODO
 	}
 
+	/**
+	 * @deprecated Use {@link SpawnPrefabEffect} instead.
+	 */
 	public static SpawnBundleEffectById(
 		bundleId: AllBundleItems,
 		worldPosition = Vector3.zero,
@@ -47,6 +50,9 @@ export class EffectsManager {
 		return undefined;
 	}
 
+	/**
+	 * @deprecated Use {@link SpawnPrefabEffect} instead.
+	 */
 	public static SpawnBundleEffect(
 		bundleGroupId: BundleGroupNames,
 		bundleId: number,
@@ -69,6 +75,9 @@ export class EffectsManager {
 		return undefined;
 	}
 
+	/**
+	 * @deprecated Use {@link SpawnPrefabEffect} instead.
+	 */
 	public static SpawnBundleGroupEffect(
 		bundleGroup: BundleGroup,
 		bundleId: number,
@@ -90,6 +99,9 @@ export class EffectsManager {
 		return effect;
 	}
 
+	/**
+	 * @deprecated Use {@link SpawnPrefabEffect} instead.
+	 */
 	public static SpawnBundleDataEffect(
 		bundle: BundleData,
 		effectId: number,

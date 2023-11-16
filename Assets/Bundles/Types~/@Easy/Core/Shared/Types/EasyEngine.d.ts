@@ -62,6 +62,7 @@ interface EntityDriver extends Component {
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
+	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
 	IsGrounded(): boolean;

@@ -1999,7 +1999,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5cebab1b10ac52f48b27624f8843ed3e, type: 2}
+  - {fileID: 2100000, guid: 3eb76a6973b8735449015ecb440d4b72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2091,10 +2091,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.7169812, g: 0.5064722, b: 0.3754005, a: 1}
+  - materialColor: {r: 0.90588236, g: 0.69803923, b: 0.5764706, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: AirshipCharacterBase
+    reference: AirshipCharacterBaseToon
   addedByEditorScript: 0
 --- !u!1 &8086696911539708113
 GameObject:
@@ -2358,7 +2358,7 @@ MonoBehaviour:
   _teleportThreshold: 3
   _ownerSmoothPosition: 1
   _ownerSmoothRotation: 1
-  _ownerInterpolation: 5
+  _ownerInterpolation: 1
   _predictionType: 0
   _rigidbody: {fileID: 0}
   _rigidbody2d: {fileID: 0}
@@ -2401,6 +2401,10 @@ MonoBehaviour:
   disableInput: 0
   _exposedState: 0
   replicatedLookVector: {x: 0, y: 0, z: 0}
+  _predictedObject: {fileID: 889479376615667292}
+  ownerInterpolation: 1
+  ownerStepUpInterpolation: 6
+  ownerStepUpInterpDuration: 0.5
   sprintForwardThreshold: 0.25
 --- !u!114 &-98370938496583557
 MonoBehaviour:
@@ -2426,8 +2430,8 @@ MonoBehaviour:
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: -3.92, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 115.995, y: 30, z: 90.531}
+    Rotation: {x: -0, y: -0.9373959, z: -0, w: -0.3482657}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
   _isGlobal: 0
@@ -2436,7 +2440,7 @@ MonoBehaviour:
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
-  _scenePathHash: 0
+  _scenePathHash: 4244522174
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 14380724839903794209
 --- !u!114 &5043041770756594627
@@ -2624,6 +2628,10 @@ MonoBehaviour:
       value: {fileID: 3629289340962763505}
     - key: HandR
       value: {fileID: 4288901034534830371}
+    - key: ShoulderL
+      value: {fileID: 4412913557028469195}
+    - key: ShoulderR
+      value: {fileID: 892189392788074714}
   - key: Colliders
     keyValuePairs:
     - key: CharacterController

@@ -11,6 +11,7 @@ import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
 import { ItemUtil } from "../ItemUtil";
+import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -94,7 +95,7 @@ export class HeldItem {
 				}
 			}
 		}
-		this.entity.accessoryBuilder.TryCombineMeshes();
+		// this.entity.accessoryBuilder.TryCombineMeshes();
 	}
 
 	/**
@@ -155,9 +156,11 @@ export class HeldItem {
 
 	public OnInspect() {
 		print("OnInspect");
-		const clip = AssetBridge.Instance.LoadAsset<AnimationClip>(
-			"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Inspect.anim",
-		);
+		let inspectPath = AllBundleItems.ItemSword_FirstPerson_Inspect as string; //Default inspect
+		if (this.itemMeta?.inspectAnimPath) {
+			inspectPath = this.itemMeta.inspectAnimPath;
+		}
+		const clip = AssetBridge.Instance.LoadAsset<AnimationClip>(inspectPath);
 		this.entity.animator?.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, () => {
 			// this.entity.anim.StartIdleAnim();
 		});

@@ -47,7 +47,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 8599a0af5c426574e93d87ff1b8479b7, type: 3}
-        m_Scale: {x: 0.25, y: 0.25}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -71,27 +71,27 @@ Material:
     - _AmbientStrength: 0.2
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthScale: 1
+    - _DepthScale: 0.23
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelPower: 2
-    - _FresnelStrength: 1.5
+    - _FresnelPower: 0.5
+    - _FresnelStrength: 1
     - _GlossMapScale: 1
-    - _Glossiness: 1.8
+    - _Glossiness: 1
     - _GlossyReflections: 1
     - _HueShift: 0
-    - _MaxDepthHeight: 0.173
+    - _MaxDepthHeight: 0
     - _Metallic: 0
-    - _MinDepthHeight: 0.066
-    - _MinLight: 0.846
+    - _MinDepthHeight: 0
+    - _MinLight: 0.3
     - _Mode: 0
-    - _NormalIntensity: 0.782
+    - _NormalIntensity: 0.446
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimAmount: 0.716
     - _RimThreshold: 0.1
     - _ShadowCutoff: 0.2
-    - _ShineFresnelPower: 3
+    - _ShineFresnelPower: 3.1
     - _ShineFresnelStrength: 2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -102,10 +102,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 0, b: 0.011765003, a: 1}
-    - _DepthColor: {r: 0.86328614, g: 0.7783019, b: 1, a: 1}
+    - _DepthColor: {r: 0.86328614, g: 0.7783019, b: 1, a: 0.7176471}
     - _EColor: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0.043987818, b: 0.066037714, a: 1}
     - _EmissiveColor: {r: 1, g: 0, b: 0.08327961, a: 0}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}

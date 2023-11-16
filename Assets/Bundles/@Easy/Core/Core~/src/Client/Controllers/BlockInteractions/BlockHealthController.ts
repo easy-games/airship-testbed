@@ -4,7 +4,6 @@ import { AfterBlockHitClientSignal } from "Client/Signals/AfterBlockHitClientSig
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Entity } from "Shared/Entity/Entity";
-import { Game } from "Shared/Game";
 import { Healthbar } from "Shared/UI/Healthbar";
 import {
 	BundleGroupNames,
@@ -39,17 +38,16 @@ export class BlockHealthController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId) => {
-			if (Game.LocalPlayer.character && entityId === Game.LocalPlayer.character.id) return;
-
+		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId, broken) => {
 			let entity: Entity | undefined;
 			if (entityId !== undefined) {
 				entity = this.entityController.GetEntityById(entityId);
 			}
 
-			const blockHealth = this.VisualizeBlockHealth(blockPos);
-			const isBroken = blockHealth !== undefined && blockHealth > 0;
-			CoreClientSignals.AfterBlockHit.Fire(new AfterBlockHitClientSignal(blockPos, blockId, entity, isBroken));
+			// const isBroken = blockHealth !== undefined && blockHealth > 0;
+			CoreClientSignals.AfterBlockHit.Fire(
+				new AfterBlockHitClientSignal(blockPos, blockId, entity, broken ?? false),
+			);
 		});
 
 		CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {

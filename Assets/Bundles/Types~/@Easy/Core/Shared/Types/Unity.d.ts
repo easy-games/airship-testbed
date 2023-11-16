@@ -1672,7 +1672,8 @@ interface AnimancerBridgeConstructor {
 		animancerComponent: AnimancerComponent,
 		clip: AnimationClip,
 		layer: number,
-		fadeDuration: number,
+		fadeInDuration: number,
+		fadeOutDuration: number,
 		fadeMode: FadeMode,
         wrapMode: WrapMode,
 	): AnimancerState;

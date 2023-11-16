@@ -178,10 +178,10 @@ export class ChatController implements OnStart {
 		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (this.selected) {
 				if (
-					event.KeyCode !== KeyCode.Return &&
-					event.KeyCode !== KeyCode.Escape &&
-					event.KeyCode !== KeyCode.UpArrow &&
-					event.KeyCode !== KeyCode.DownArrow
+					event.keyCode !== KeyCode.Return &&
+					event.keyCode !== KeyCode.Escape &&
+					event.keyCode !== KeyCode.UpArrow &&
+					event.keyCode !== KeyCode.DownArrow
 				) {
 					event.SetCancelled(true);
 				}
@@ -273,7 +273,6 @@ export class ChatController implements OnStart {
 			textGui.text = message;
 
 			const profileImage = refs.GetValue<Image>("UI", "ProfilePicture");
-			print("sender: " + sender);
 			const playerProfilePic = sender?.GetProfilePicture();
 			if (playerProfilePic) {
 				profileImage.sprite = Bridge.MakeSprite(AssetBridge.Instance.LoadAsset(playerProfilePic.path));

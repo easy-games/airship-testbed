@@ -105,6 +105,7 @@ export interface ItemMeta {
 	viewModel?: ViewModelMeta;
 
 	maxStackSize?: number;
+	inspectAnimPath?: string;
 
 	//Optional Item Archetypes
 	melee?: MeleeItemMeta;
@@ -149,6 +150,12 @@ export interface BreakBlockMeta {
 	 * If undefined, default effects will be used.
 	 */
 	onHitPrefabPath?: string;
+	damageType?: BlockDamageType;
+}
+
+export enum BlockDamageType {
+	NORMAL,
+	BLAST,
 }
 
 export interface AOEDamageMeta {

@@ -3600,7 +3600,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 101
   m_TargetDisplay: 0
 --- !u!114 &6735690457865245844
 MonoBehaviour:
@@ -6600,7 +6600,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2891266377786508133}
   m_HandleRect: {fileID: 7959561447326660219}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -12601,7 +12601,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &5383432468740290740
 MonoBehaviour:

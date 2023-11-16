@@ -6,6 +6,7 @@ import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPla
 import { Team } from "Shared/Team/Team";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
+import { Block } from "Shared/VoxelWorld/Block";
 import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
@@ -36,7 +37,7 @@ export const CoreServerSignals = {
 	/** Fired before a block is destroyed. */
 	BeforeBlockDestroyed: new Signal<{
 		blockPos: Vector3;
-		blockId: number;
+		block: Block;
 		entity?: Entity;
 	}>(),
 	/** Fired when a block is destroyed. */

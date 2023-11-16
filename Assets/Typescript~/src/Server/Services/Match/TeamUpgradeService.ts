@@ -4,14 +4,14 @@ import { GeneratorService } from "@Easy/Core/Server/Services/Generator/Generator
 import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
 import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
+import { Game } from "@Easy/Core/Shared/Game";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Team } from "@Easy/Core/Shared/Team/Team";
-import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { SetUtil } from "@Easy/Core/Shared/Util/SetUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Task } from "@Easy/Core/Shared/Util/Task";
-import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { ServerSignals } from "Server/ServerSignals";
@@ -276,11 +276,11 @@ export class TeamUpgradeService implements OnStart {
 			);
 		});
 		const meta = TeamUpgradeUtil.GetTeamUpgradeMeta(upgradeType);
-		purchaseForTeam.SendMessage(
-			ColorUtil.ColoredText(Theme.Aqua, "<b>" + player.username + "</b>") +
-				ColorUtil.ColoredText(Theme.Yellow, " unlocked ") +
-				ColorUtil.ColoredText(Theme.Aqua, meta.displayName) +
-				ColorUtil.ColoredText(Theme.Yellow, " for the team."),
+		Game.BroadcastMessage(
+			ChatColor.Color(purchaseForTeam.color, ChatColor.Bold(player.username)) +
+				ChatColor.Gray(" purchased team upgrade ") +
+				ChatColor.Aqua(meta.displayName) +
+				ChatColor.Gray("!"),
 		);
 		return true;
 	}

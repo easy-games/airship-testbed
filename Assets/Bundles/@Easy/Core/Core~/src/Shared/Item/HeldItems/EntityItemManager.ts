@@ -94,6 +94,7 @@ export class EntityItemManager {
 			});
 
 			keyboard.OnKeyDown(KeyCode.Y, (event) => {
+				if (event.uiProcessed) return;
 				if (this.localEntity) {
 					let items = this.GetOrCreateItemManager(this.localEntity);
 					items.TriggerNewState(HeldItemState.INSPECT);
@@ -107,6 +108,7 @@ export class EntityItemManager {
 			clientSignalRef.CoreClientSignals.EntitySpawn.Connect((event) => {
 				this.Log("EntitySpawn: " + event.entity.id);
 				if (event.entity instanceof CharacterEntity && event.entity.id !== undefined) {
+					Profiler.BeginSample("EntityItemManager.GetOrCreateItemManager");
 					//Create the Item Manager on the Client
 					this.GetOrCreateItemManager(event.entity as CharacterEntity);
 
@@ -114,6 +116,7 @@ export class EntityItemManager {
 					if (event.entity.IsLocalCharacter()) {
 						this.localEntity = event.entity;
 					}
+					Profiler.EndSample();
 				}
 			});
 

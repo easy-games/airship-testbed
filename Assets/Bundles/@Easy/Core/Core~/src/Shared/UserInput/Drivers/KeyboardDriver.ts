@@ -1,6 +1,7 @@
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { KeySignal } from "./Signals/KeySignal";
 import { OnUpdate } from "Shared/Util/Timer";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 
 export class KeyboardDriver {
 	// public readonly KeyDown = new Signal<[key: KeySignal]>();
@@ -19,14 +20,15 @@ export class KeyboardDriver {
 
 	private constructor() {
 		UserInputService.InputProxy.OnKeyPressEvent((key, isDown) => {
+			const uiSelected = CanvasAPI.GetSelectedInstanceId() !== undefined;
 			if (isDown) {
-				const event = new KeySignal(key);
+				const event = new KeySignal(key, uiSelected);
 				this.AnyKeyDownSignal.Fire(event);
 				if (!event.IsCancelled()) {
 					this.keyDownSignals.get(key)?.Fire(event);
 				}
 			} else {
-				const event = new KeySignal(key);
+				const event = new KeySignal(key, uiSelected);
 				this.AnyKeyUpSignal.Fire(event);
 				if (!event.IsCancelled()) {
 					this.keyUpSignals.get(key)?.Fire(event);
@@ -106,7 +108,9 @@ export class KeyboardDriver {
 	}
 
 	public IsKeyDown(key: KeyCode) {
-		// return UserInputService.InputProxy.IsKeyDown(key);
+		const uiSelected = CanvasAPI.GetSelectedInstanceId() !== undefined;
+		if (uiSelected) return false;
+
 		return Input.GetKey(key) || Input.GetKeyDown(key);
 	}
 

@@ -13,7 +13,7 @@ export interface ItemRegistrationConfig {
  */
 export class ItemUtil {
 	public static readonly DefaultAccessoryCollectionPath =
-		"@Easy/Core/Shared/Resources/Accessories/Kits/GothGirl/Kit_GothGirl_Collection.asset";
+		"@Easy/Core/Shared/Resources/Accessories/Collections/GothGirl/Kit_GothGirl_Collection.asset";
 	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();

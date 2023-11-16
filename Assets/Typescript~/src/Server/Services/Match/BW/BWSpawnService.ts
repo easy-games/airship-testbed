@@ -13,10 +13,10 @@ import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { MatchState } from "Shared/Match/MatchState";
-import { BedService } from "../BedService";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
 import { MatchService } from "../MatchService";
+import { BWBedService } from "./BWBedService";
 import { BWService } from "./BWService";
 
 /** Spawn delay on join in seconds. */
@@ -35,7 +35,7 @@ export class BWSpawnService implements OnStart {
 		private readonly mapService: MapService,
 		private readonly matchService: MatchService,
 		private readonly entityService: EntityService,
-		private readonly bedService: BedService,
+		private readonly bedService: BWBedService,
 	) {
 		ServerSignals.MapLoad.Connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();
@@ -105,7 +105,7 @@ export class BWSpawnService implements OnStart {
 			/* Listen for match start and teleport players. */
 			ServerSignals.MatchStart.Connect(() => {
 				this.playerService.GetPlayers().forEach((player) => {
-					this.TeleportPlayerOnMatchStart(player);
+					this.TeleportPlayerToSpawn(player);
 				});
 			});
 		});
@@ -118,6 +118,7 @@ export class BWSpawnService implements OnStart {
 				if (teamSpawnPosition) {
 					const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
 					event.spawnPosition = pos;
+					event.spawnRotation = teamSpawnPosition.Rotation;
 				}
 			}
 		});
@@ -129,7 +130,7 @@ export class BWSpawnService implements OnStart {
 	}
 
 	/** Teleports player to match spawn location on match start. */
-	private TeleportPlayerOnMatchStart(player: Player): void {
+	public TeleportPlayerToSpawn(player: Player): void {
 		/* Teleport to team spawn location. */
 		const team = player.GetTeam();
 		if (!team) return;

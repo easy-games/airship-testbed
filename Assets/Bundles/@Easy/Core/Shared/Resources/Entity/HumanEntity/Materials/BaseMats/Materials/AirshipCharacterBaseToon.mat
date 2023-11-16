@@ -155,11 +155,11 @@ Material:
     - _ShadowIntensity: 0.5
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
-    - _SpecMod: 0.75
+    - _SpecMod: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
-    - _TestFloat: 1
+    - _TestFloat: 0.5
     - _Triplanar: 1
     - _TriplanarScale: 0
     - _UVSec: 0
@@ -174,7 +174,7 @@ Material:
     - _RimColor: {r: 0.33490568, g: 0.99478364, b: 1, a: 1}
     - _RimColorShadow: {r: 0.15481488, g: 0.25616926, b: 0.6698113, a: 1}
     - _RimDir: {r: 1, g: 0, b: 1, a: 0}
-    - _ShadowColor: {r: 0.24528301, g: 0.14462441, b: 0.14462441, a: 1}
+    - _ShadowColor: {r: 0.24528301, g: 0.16162051, b: 0.15156639, a: 1}
     - _SkyShine: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 0.9811321, g: 0.5970096, b: 0.5970096, a: 1}

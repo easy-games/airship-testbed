@@ -95,34 +95,33 @@ export class InventoryController implements OnStart {
 
 		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
 			keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
-				if (!this.enabled) return;
+				if (!this.enabled || event.uiProcessed) return;
 				this.SetHeldSlot(hotbarIndex);
 			});
 		}
 
 		keyboard.OnKeyDown(KeyCode.Q, (event) => {
-			if (!this.enabled) return;
+			if (!this.enabled || event.uiProcessed) return;
 			this.DropItemInHand();
 		});
 
 		// Scroll to select held item:
-		mouse.Scrolled.Connect((delta) => {
-			if (!this.enabled) return;
+		mouse.Scrolled.Connect((event) => {
+			if (!this.enabled || event.uiProcessed) return;
 			// print("scroll: " + delta);
-			if (math.abs(delta) < 0.05) return;
+			if (math.abs(event.delta) < 0.05) return;
 
 			const now = Time.time;
 			if (now - this.lastScrollTime < this.scrollCooldown) {
 				return;
 			}
-			if (CanvasAPI.IsPointerOverUI()) return;
 
 			this.lastScrollTime = now;
 
 			const selectedSlot = this.LocalInventory?.GetHeldSlot();
 			if (selectedSlot === undefined) return;
 
-			const inc = delta < 0 ? 1 : -1;
+			const inc = event.delta < 0 ? 1 : -1;
 			let trySlot = selectedSlot;
 
 			// Find the next available item in the hotbar:

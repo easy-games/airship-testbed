@@ -70,12 +70,13 @@ export class EntityService implements OnStart {
 		player: Player | undefined,
 		entityPrefabType: EntityPrefabType,
 		pos?: Vector3,
+		rotation?: Quaternion,
 	): CharacterEntity {
 		const id = this.idCounter;
 		this.idCounter++;
 
 		const beforeEvent = CoreServerSignals.BeforeEntitySpawn.Fire(
-			new BeforeEntitySpawnServerEvent(id, player, pos ?? new Vector3(0, 0, 0)),
+			new BeforeEntitySpawnServerEvent(id, player, pos ?? new Vector3(0, 0, 0), rotation ?? Quaternion.identity),
 		);
 
 		// Spawn character game object
@@ -88,7 +89,7 @@ export class EntityService implements OnStart {
 		const entityGO = entityNob.gameObject;
 		const entityTransform = entityGO.transform;
 		entityTransform.position = beforeEvent.spawnPosition;
-		// const entityGO = PoolManager.SpawnObject(entityPrefab, beforeEvent.spawnPosition, Quaternion.identity);
+		entityTransform.rotation = beforeEvent.spawnRotation;
 		entityGO.name = `entity_${id}`;
 		if (player) {
 			NetworkUtil.SpawnWithClientOwnership(entityGO, player.clientId);
@@ -101,6 +102,7 @@ export class EntityService implements OnStart {
 		if (player) {
 			this.invService.Subscribe(player.clientId, inv, true);
 		}
+
 		const entity = new CharacterEntity(id, entityNob, player?.clientId, inv);
 		this.entities.set(id, entity);
 		if (player) {

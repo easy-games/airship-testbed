@@ -33,7 +33,7 @@ export class BWLoadingScreenController implements OnStart {
 	}
 
 	private CheckCharacter(): void {
-		if (BedWars.IsMatchServer() && Dependency<MatchController>().eliminated) {
+		if (BedWars.IsMatchMode() && Dependency<MatchController>().eliminated) {
 			this.loadingScreenController.FinishLoading();
 			return;
 		}
@@ -53,7 +53,7 @@ export class BWLoadingScreenController implements OnStart {
 					}
 				}),
 			);
-			if (BedWars.IsMatchServer())
+			if (BedWars.IsMatchMode())
 				bin.Add(
 					Dependency<MatchController>().onEliminated.Connect(() => {
 						bin.Clean();

@@ -2,7 +2,6 @@
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { CharacterEntityAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { Entity } from "Shared/Entity/Entity";
-import { ArrayUtil } from "Shared/Util/ArrayUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
@@ -11,7 +10,7 @@ export class DamageUtils {
 	public static readonly minDamageFallSpeed = 35;
 	public static readonly maxDamageFallSpeed = 60;
 	public static readonly minFallDamage = 10;
-	public static readonly maxFallDamage = 50;
+	public static readonly maxFallDamage = 100;
 	public static readonly maxHitstunDamage = 50;
 	public static readonly minHitStunRadius = 0.08;
 	public static readonly maxHitStunRadius = 0.1;
@@ -76,7 +75,12 @@ export class DamageUtils {
 		return MathUtil.Lerp(0.015, 0.15, damageDelta);
 	}
 
-	public static AddAttackStun(entity: Entity, damageDealt: number, vfx: GameObject[] | undefined) {
+	public static AddAttackStun(
+		entity: Entity,
+		damageDealt: number,
+		disableMovement: boolean,
+		vfx: GameObject[] | undefined,
+	) {
 		const anim = entity.animator as CharacterEntityAnimator;
 		const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
 		if (anim) {
@@ -95,23 +99,27 @@ export class DamageUtils {
 
 			if (duration >= 0.05) {
 				anim.SetPlaybackSpeed(0.05);
-				driver.DisableMovement();
+				if (disableMovement) {
+					driver.DisableMovement();
+					if (entity.IsLocalCharacter()) {
+						Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
+					}
+				}
 				for (let i = 0; i < particles.size(); i++) {
 					let system = particles[i].main;
 					system.simulationSpeed = 0.05;
 				}
-				if (entity.IsLocalCharacter()) {
-					Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
-				}
 				Task.Delay(duration, () => {
 					anim.SetPlaybackSpeed(1);
-					driver.EnableMovement();
+					if (disableMovement) {
+						driver.EnableMovement();
+						if (entity.IsLocalCharacter()) {
+							Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
+						}
+					}
 					for (let i = 0; i < particles.size(); i++) {
 						let system = particles[i].main;
 						system.simulationSpeed = 1;
-					}
-					if (entity.IsLocalCharacter()) {
-						Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
 					}
 				});
 			}

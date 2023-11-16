@@ -19,6 +19,7 @@ export declare class CanvasAPI {
     private static eventInterceptor;
     private static canvasUIEvents;
     private static canvasHitDetector;
+    private static selectedInstanceId?;
     static Init(): void;
     static RegisterEvents(gameObject: GameObject): void;
     static IsPointerOverUI(): boolean;
@@ -50,6 +51,8 @@ export declare class CanvasAPI {
     static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnValueChangeEvent(targetGameObject: GameObject, callback: (value: number) => void): EngineEventConnection;
     static OnToggleValueChangeEvent(targetGameObject: GameObject, callback: (value: boolean) => void): EngineEventConnection;
+    static GetSelectedInstanceId(): number | undefined;
+    static Register(targetGameObject: GameObject): void;
     /** Fetches and sets the global event interceptor. */
     private static Setup;
 }

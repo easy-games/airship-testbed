@@ -138,7 +138,7 @@ export declare enum Bundle_ItemSword_FirstPerson {
     NONE = -1,
     Idle = 0,
     Equip = 1,
-    UnEquip = 2,
+    Inspect = 2,
     Swing01 = 3,
     Swing02 = 4
 }
@@ -163,6 +163,41 @@ export declare enum Bundle_ItemSword_SFX {
     Equip = 0
 }
 export declare enum Bundle_ItemSword {
+    NONE = -1,
+    FirstPerson = 0,
+    ThirdPerson = 1,
+    Prefabs = 2,
+    SFX = 3
+}
+export declare enum Bundle_ItemSwordBig_FirstPerson {
+    NONE = -1,
+    Idle = 0,
+    Equip = 1,
+    Inspect = 2,
+    Swing01 = 3,
+    Swing02 = 4
+}
+export declare enum Bundle_ItemSwordBig_ThirdPerson {
+    NONE = -1,
+    Idle = 0,
+    Equip = 1,
+    UnEquip = 2,
+    Swing01 = 3,
+    Swing02 = 4
+}
+export declare enum Bundle_ItemSwordBig_Prefabs {
+    NONE = -1,
+    OnSwing01 = 0,
+    OnSwing02 = 1,
+    OnSwingFP01 = 2,
+    OnSwingFP02 = 3,
+    OnHit = 4
+}
+export declare enum Bundle_ItemSwordBig_SFX {
+    NONE = -1,
+    Equip = 0
+}
+export declare enum Bundle_ItemSwordBig {
     NONE = -1,
     FirstPerson = 0,
     ThirdPerson = 1,
@@ -295,7 +330,7 @@ export declare enum AllBundleItems {
     ItemPickaxe_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
     ItemSword_FirstPerson_Idle = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
     ItemSword_FirstPerson_Equip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
-    ItemSword_FirstPerson_UnEquip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
+    ItemSword_FirstPerson_Inspect = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Inspect.anim",
     ItemSword_FirstPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
     ItemSword_FirstPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use2.anim",
     ItemSword_ThirdPerson_Idle = "",
@@ -309,6 +344,22 @@ export declare enum AllBundleItems {
     ItemSword_Prefabs_OnSwingFP02 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP02.prefab",
     ItemSword_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
     ItemSword_SFX_Equip = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg",
+    ItemSwordBig_FirstPerson_Idle = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_SwordBig_Idle.anim",
+    ItemSwordBig_FirstPerson_Equip = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Idle.anim",
+    ItemSwordBig_FirstPerson_Inspect = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_SwordBig_Inspect.anim",
+    ItemSwordBig_FirstPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_SwordBig_Use.anim",
+    ItemSwordBig_FirstPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_SwordBig_Use2.anim",
+    ItemSwordBig_ThirdPerson_Idle = "",
+    ItemSwordBig_ThirdPerson_Equip = "",
+    ItemSwordBig_ThirdPerson_UnEquip = "",
+    ItemSwordBig_ThirdPerson_Swing01 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use.anim",
+    ItemSwordBig_ThirdPerson_Swing02 = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Sword_Use2.anim",
+    ItemSwordBig_Prefabs_OnSwing01 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX01.prefab",
+    ItemSwordBig_Prefabs_OnSwing02 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX02.prefab",
+    ItemSwordBig_Prefabs_OnSwingFP01 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP01.prefab",
+    ItemSwordBig_Prefabs_OnSwingFP02 = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordSwingVFX_FP02.prefab",
+    ItemSwordBig_Prefabs_OnHit = "@Easy/Core/Shared/Resources/Prefabs/VFX/Items/Sword/SwordHitVFX.prefab",
+    ItemSwordBig_SFX_Equip = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Sword.ogg",
     ItemThrowable_FirstPerson_Idle = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Idle.anim",
     ItemThrowable_FirstPerson_Equip = "",
     ItemThrowable_FirstPerson_UnEquip = "",
@@ -341,10 +392,11 @@ export declare enum BundleGroupNames {
     ItemBow = 3,
     ItemPickaxe = 4,
     ItemSword = 5,
-    ItemThrowable = 6,
-    ItemUnarmed = 7,
-    HeldItem = 8,
-    Projectiles = 9
+    ItemSwordBig = 6,
+    ItemThrowable = 7,
+    ItemUnarmed = 8,
+    HeldItem = 9,
+    Projectiles = 10
 }
 export declare class ReferenceManagerAssets {
     static readonly Blocks: BundleGroup;
@@ -353,6 +405,7 @@ export declare class ReferenceManagerAssets {
     static readonly ItemBow: BundleGroup;
     static readonly ItemPickaxe: BundleGroup;
     static readonly ItemSword: BundleGroup;
+    static readonly ItemSwordBig: BundleGroup;
     static readonly ItemThrowable: BundleGroup;
     static readonly ItemUnarmed: BundleGroup;
     static readonly HeldItem: BundleGroup;

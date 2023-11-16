@@ -48,8 +48,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	public constructor(entity: Entity, anim: AnimancerComponent, ref: EntityReferences) {
 		super(entity, anim, ref);
 		//Initial animation setup
-		this.LoadNewItemResources(undefined);
-		this.SetFirstPerson(false);
+		// this.LoadNewItemResources(undefined);
+		// this.SetFirstPerson(false);
 	}
 
 	private Log(message: string) {

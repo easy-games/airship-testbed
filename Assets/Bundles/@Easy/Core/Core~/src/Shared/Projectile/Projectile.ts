@@ -44,12 +44,6 @@ export class Projectile {
 			}),
 		);
 
-		this.bin.Add(
-			this.OnHit.Connect((hitPoint, collider) => {
-				print("[Debug]: projectile hit pos=" + tostring(hitPoint) + ", collider=" + collider.gameObject.name);
-			}),
-		);
-
 		const onHitConn = easyProjectile.OnHit((event) => {
 			const raycastHit = event.raycastHit;
 			let hitPoint = raycastHit.point;

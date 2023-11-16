@@ -53,8 +53,25 @@ const swordUsable: UsableHeldItemMeta = {
 		AllBundleItems.ItemSword_ThirdPerson_Swing02 as string,
 	],
 };
+const bigSwordUsable: UsableHeldItemMeta = {
+	...swordUsable,
+	onUseSoundVolume: 0.4,
+	onUseAnimFP: [
+		AllBundleItems.ItemSwordBig_FirstPerson_Swing01 as string,
+		AllBundleItems.ItemSwordBig_FirstPerson_Swing02 as string,
+	],
+	onUseAnimTP: [
+		AllBundleItems.ItemSwordBig_ThirdPerson_Swing01 as string,
+		AllBundleItems.ItemSwordBig_ThirdPerson_Swing02 as string,
+	],
+};
 const swordViewModel: ViewModelMeta = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
+	idleAnimTP: CoreAnim("Airship_Empty"),
+};
+
+const bigSwordViewModel: ViewModelMeta = {
+	idleAnimFP: CoreAnim("FP_SwordBig_Idle"),
 	idleAnimTP: CoreAnim("Airship_Empty"),
 };
 
@@ -135,19 +152,19 @@ export const items: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
 				childBlocks: [
 					new Vector3(0, 0, 1),
-					new Vector3(1, 0, 1),
-					new Vector3(-1, 0, 1),
+					// new Vector3(1, 0, 1),
+					// new Vector3(-1, 0, 1),
 
-					new Vector3(0, 0, 2),
-					new Vector3(1, 0, 2),
-					new Vector3(-1, 0, 2),
+					// new Vector3(0, 0, 2),
+					// new Vector3(1, 0, 2),
+					// new Vector3(-1, 0, 2),
 
-					new Vector3(0, 0, -1),
-					new Vector3(1, 0, -1),
-					new Vector3(-1, 0, -1),
+					// new Vector3(0, 0, -1),
+					// new Vector3(1, 0, -1),
+					// new Vector3(-1, 0, -1),
 
-					new Vector3(1, 0, 0),
-					new Vector3(-1, 0, 0),
+					// new Vector3(1, 0, 0),
+					// new Vector3(-1, 0, 0),
 				],
 			},
 			blockArchetype: BlockArchetype.PROP,
@@ -605,6 +622,9 @@ export const items: {
 		usable: {
 			...swordUsable,
 		},
+		viewModel: {
+			...swordViewModel,
+		},
 		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
 		melee: {
 			...swordMelee,
@@ -616,6 +636,9 @@ export const items: {
 		usable: {
 			...swordUsable,
 		},
+		viewModel: {
+			...swordViewModel,
+		},
 		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
 		melee: {
 			...swordMelee,
@@ -625,9 +648,13 @@ export const items: {
 	[ItemType.DIAMOND_SWORD]: {
 		displayName: "Diamond Sword",
 		usable: {
-			...swordUsable,
+			...bigSwordUsable,
+		},
+		viewModel: {
+			...bigSwordViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
+		inspectAnimPath: AllBundleItems.ItemSwordBig_FirstPerson_Inspect as string,
 		melee: {
 			...swordMelee,
 			damage: 45,
@@ -636,9 +663,13 @@ export const items: {
 	[ItemType.EMERALD_SWORD]: {
 		displayName: "Emerald Sword",
 		usable: {
-			...swordUsable,
+			...bigSwordUsable,
+		},
+		viewModel: {
+			...bigSwordViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.EMERALD_SWORD)],
+		inspectAnimPath: AllBundleItems.ItemSwordBig_FirstPerson_Inspect as string,
 		melee: {
 			...swordMelee,
 			damage: 55,
@@ -789,9 +820,9 @@ export const items: {
 			yAxisAimAdjust: 0,
 			damage: 0,
 			aoeDamage: {
-				innerDamage: 25,
+				innerDamage: 40,
 				outerDamage: 5,
-				damageRadius: 4.5,
+				damageRadius: 5,
 				blockExplosiveDamage: 60,
 				selfKnockbackMultiplier: 1,
 			},

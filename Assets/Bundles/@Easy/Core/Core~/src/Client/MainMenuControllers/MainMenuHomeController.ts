@@ -93,6 +93,8 @@ export class MainMenuHomeController implements OnStart {
 		const joinCodeConnectButton = this.mainMenuController.refs.GetValue("UI", "JoinCodeConnectButton");
 		const joinCodeTextInput = this.mainMenuController.refs.GetValue<TMP_InputField>("UI", "JoinCodeField");
 
+		CanvasAPI.Register(joinCodeTextInput.gameObject);
+
 		CoreUI.SetupButton(joinCodeButton);
 		CanvasAPI.OnClickEvent(joinCodeButton, () => {
 			joinCodeWrapper.SetActive(!joinCodeWrapper.active);

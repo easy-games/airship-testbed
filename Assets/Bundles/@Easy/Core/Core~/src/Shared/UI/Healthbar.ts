@@ -59,6 +59,10 @@ export class Healthbar {
 		GameObjectUtil.Destroy(this.transform.gameObject);
 	}
 
+	public SetActive(visible: boolean) {
+		this.transform.gameObject.active = visible;
+	}
+
 	public SetColor(newColor: Color) {
 		this.fillImage.color = newColor;
 	}

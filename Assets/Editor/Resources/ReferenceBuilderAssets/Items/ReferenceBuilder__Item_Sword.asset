@@ -20,8 +20,8 @@ MonoBehaviour:
       value: {fileID: 7400000, guid: 9625de74b614f419d9865b153f7de582, type: 2}
     - key: Equip
       value: {fileID: 7400000, guid: 9625de74b614f419d9865b153f7de582, type: 2}
-    - key: UnEquip
-      value: {fileID: 7400000, guid: 9625de74b614f419d9865b153f7de582, type: 2}
+    - key: Inspect
+      value: {fileID: 7400000, guid: 245e8b3efd3214930829e632be8ded6a, type: 2}
     - key: Swing01
       value: {fileID: 7400000, guid: 647d231004e5840b89f0505720561bae, type: 2}
     - key: Swing02
@@ -31,9 +31,9 @@ MonoBehaviour:
     - key: Idle
       value: {fileID: 0}
     - key: Equip
-      value: {fileID: 7400000, guid: aa46dd73b784d144da6e3cad893c42bf, type: 2}
+      value: {fileID: 0}
     - key: UnEquip
-      value: {fileID: 7400000, guid: 8a20bad386d212a4f8551c625127d853, type: 2}
+      value: {fileID: 0}
     - key: Swing01
       value: {fileID: 7400000, guid: c74e68672aea946f8aa1f38673afa692, type: 2}
     - key: Swing02

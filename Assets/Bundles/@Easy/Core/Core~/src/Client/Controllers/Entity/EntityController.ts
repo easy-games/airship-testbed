@@ -20,6 +20,7 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { PlayerController } from "../Player/PlayerController";
+import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 
 @Controller({})
 export class EntityController implements OnStart {
@@ -30,6 +31,7 @@ export class EntityController implements OnStart {
 		private readonly invController: InventoryController,
 		private readonly playerController: PlayerController,
 		private readonly localEntityController: LocalEntityController,
+		private readonly abilityRegistry: AbilityRegistry,
 	) {
 		const humanEntityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 			EntityPrefabType.HUMAN,
@@ -141,20 +143,13 @@ export class EntityController implements OnStart {
 
 		// Fun
 		const skinColors = [
-			ColorUtil.HexToColor("#CAA075"),
-			ColorUtil.HexToColor("#A4784B"),
-			ColorUtil.HexToColor("#735638"),
-			ColorUtil.HexToColor("#B4905B"),
-			ColorUtil.HexToColor("#E09E53"),
-			ColorUtil.HexToColor("#875C2C"),
-			ColorUtil.HexToColor("#CAA075"),
-			ColorUtil.HexToColor("#A4784B"),
-			ColorUtil.HexToColor("#735638"),
-			ColorUtil.HexToColor("#B4905B"),
-			ColorUtil.HexToColor("#E09E53"),
-			ColorUtil.HexToColor("#875C2C"),
-			ColorUtil.HexToColor("#9AA427"), // green
-			ColorUtil.HexToColor("#90684C"),
+			ColorUtil.HexToColor("#edcdad"),
+			ColorUtil.HexToColor("#f2c291"),
+			ColorUtil.HexToColor("#cc9d6a"),
+			ColorUtil.HexToColor("#ebbc78"),
+			ColorUtil.HexToColor("#f2c27e"),
+			ColorUtil.HexToColor("#d69e5e"),
+			ColorUtil.HexToColor("#e8bd92"),
 		];
 
 		const hairColors = [
@@ -189,8 +184,8 @@ export class EntityController implements OnStart {
 			//Body Meshes
 			Profiler.BeginSample("ColorRandomization");
 			event.entity.accessoryBuilder.SetSkinColor(skinColor, false);
-			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
-			event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
+			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
+			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
 			Profiler.EndSample();
 		});
 	}
@@ -221,7 +216,15 @@ export class EntityController implements OnStart {
 				this.invController.RegisterInventory(inv);
 			}
 
-			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv);
+			const abilities = characterEntityDto.abilities.mapFiltered((abilityDto) => {
+				const ability = this.abilityRegistry.GetAbilityById(abilityDto.id);
+				return ability;
+			});
+
+			Profiler.BeginSample("CharacterEntity.Constructor");
+
+			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv, abilities);
+			Profiler.EndSample();
 		} else {
 			error("Unable to find entity serializer for dto: " + entityDto);
 		}
@@ -229,7 +232,9 @@ export class EntityController implements OnStart {
 		entity.SetMaxHealth(entityDto.maxHealth);
 		entity.SetDisplayName(entityDto.displayName);
 		if (entityDto.healthbar) {
+			Profiler.BeginSample("AddHealthbar");
 			entity.AddHealthbar();
+			Profiler.EndSample();
 		}
 
 		this.entities.set(entity.id, entity);
@@ -242,7 +247,9 @@ export class EntityController implements OnStart {
 			}
 		}
 
+		Profiler.BeginSample("EntitySpawnSignal");
 		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
+		Profiler.EndSample();
 
 		return entity;
 	}

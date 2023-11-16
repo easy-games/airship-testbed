@@ -86,6 +86,7 @@ export class AppManager {
 			onClose?: () => void;
 			noDarkBackground?: boolean;
 			addToStack?: boolean;
+			sortingOrderOffset?: number;
 		},
 	): void {
 		/* Close open `Canvas` if applicable. */
@@ -109,9 +110,9 @@ export class AppManager {
 
 		/* Enable and cache. */
 		if (!config?.noDarkBackground) {
-			this.OpenDarkBackground(this.stack.size() + 10);
+			this.OpenDarkBackground(this.stack.size() + 10 + (config?.sortingOrderOffset ?? 0));
 		}
-		canvas.sortingOrder = this.stack.size() + 11;
+		canvas.sortingOrder = this.stack.size() + 11 + (config?.sortingOrderOffset ?? 0);
 		canvas.enabled = true;
 		this.opened = true;
 
@@ -207,6 +208,7 @@ AppManager.keyboard.OnKeyDown(
 AppManager.keyboard.OnKeyDown(
 	KeyCode.F,
 	(event) => {
+		if (event.uiProcessed) return;
 		if (AppManager.IsOpen()) {
 			event.SetCancelled(true);
 			AppManager.Close();
