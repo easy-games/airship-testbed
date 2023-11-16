@@ -13,10 +13,10 @@ import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { MatchState } from "Shared/Match/MatchState";
-import { BedService } from "../BedService";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
 import { MatchService } from "../MatchService";
+import { BWBedService } from "./BWBedService";
 import { BWService } from "./BWService";
 
 /** Spawn delay on join in seconds. */
@@ -35,7 +35,7 @@ export class BWSpawnService implements OnStart {
 		private readonly mapService: MapService,
 		private readonly matchService: MatchService,
 		private readonly entityService: EntityService,
-		private readonly bedService: BedService,
+		private readonly bedService: BWBedService,
 	) {
 		ServerSignals.MapLoad.Connect((event) => {
 			const position = event.LoadedMap.GetSpawnPlatform();

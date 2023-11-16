@@ -3,7 +3,7 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { CharacterEntity } from "../../../Shared/Entity/Character/CharacterEntity";
 import { Entity } from "../../../Shared/Entity/Entity";
-import { AOEDamageMeta, BreakBlockMeta, ItemMeta, TillBlockMeta } from "../../../Shared/Item/ItemMeta";
+import { AOEDamageMeta, BlockDamageType, BreakBlockMeta, ItemMeta, TillBlockMeta } from "../../../Shared/Item/ItemMeta";
 import { BlockData } from "../../../Shared/VoxelWorld/World";
 import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
@@ -18,9 +18,9 @@ export declare class BlockInteractService implements OnStart {
     PlaceBlockGroup(entity: CharacterEntity, positions: Vector3[], items: ItemMeta[]): void;
     TillBlock(entity: Entity | undefined, tillBlockMeta: TillBlockMeta, voxelPos: Vector3): boolean;
     DamageBlock(entity: Entity | undefined, breakBlockMeta: BreakBlockMeta, voxelPos: Vector3): boolean;
-    DamageBlocks(entity: Entity | undefined, voxelPositions: Vector3[], damages: number[]): boolean;
+    DamageBlocks(entity: Entity | undefined, damageType: BlockDamageType, voxelPositions: Vector3[], damages: number[]): boolean;
     private SendDamageEvents;
-    DamageBlockAOE(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta): void;
+    DamageBlockAOE(entity: Entity | undefined, centerPosition: Vector3, aoeMeta: AOEDamageMeta): void;
     DamageBlockAOESimple(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta): void;
     private GetMaxAOEDamage;
 }

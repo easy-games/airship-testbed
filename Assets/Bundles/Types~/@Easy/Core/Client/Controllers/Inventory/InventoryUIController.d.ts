@@ -6,7 +6,7 @@ export declare class InventoryUIController implements OnStart {
     private readonly coreUIController;
     private hotbarSlots;
     private backpackShown;
-    private canvas;
+    private hotbarCanvas;
     private hotbarContent;
     private healthBar;
     private inventoryRefs;

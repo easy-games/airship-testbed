@@ -6,7 +6,7 @@ import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
-import { BedService } from "Server/Services/Match/BedService";
+import { BWBedService } from "Server/Services/Match/BW/BWBedService";
 
 export class DestroyBedCommand extends ChatCommand {
 	constructor() {
@@ -28,7 +28,7 @@ export class DestroyBedCommand extends ChatCommand {
 		}
 
 		/* Destroy bed. */
-		const bedState = Dependency<BedService>().GetBedStateForTeam(targetTeam);
+		const bedState = Dependency<BWBedService>().GetBedStateForTeam(targetTeam);
 		if (!bedState || bedState.destroyed) {
 			player.SendMessage("Bed does not exist or is already destroyed.");
 		} else {
