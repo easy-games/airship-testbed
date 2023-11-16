@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { TeamController } from "@Easy/Core/Client/Controllers/Team/TeamController";
 import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
 import { EffectsManager } from "@Easy/Core/Shared/Effects/EffectsManager";
@@ -34,10 +33,8 @@ export class BedController implements OnStart {
 		});
 
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
-			print("AfterBlockHit: " + inspect(event));
 			if (event.broken) {
 				const blockId = event.GetBlockId();
-				print("blockId: " + blockId);
 				if (blockId === ItemType.BED) {
 					print("spawning prefab effect");
 					EffectsManager.SpawnPrefabEffect(
