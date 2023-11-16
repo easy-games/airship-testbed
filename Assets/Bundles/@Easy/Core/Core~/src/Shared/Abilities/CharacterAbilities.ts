@@ -56,20 +56,7 @@ export class CharacterAbilities {
 					}
 				}),
 			);
-		} else {
-			// Client replication handling
 		}
-	}
-
-	private GetAbilities() {
-		const arr = new Map<string, AbilityLogic>();
-		for (const [slot, boundItems] of this.boundAbilities) {
-			for (const [abilityId, ability] of boundItems) {
-				arr.set(abilityId, ability);
-			}
-		}
-
-		return arr;
 	}
 
 	private SetAbilityOnCooldown(id: string, length: number) {
@@ -90,7 +77,25 @@ export class CharacterAbilities {
 	}
 
 	/**
-	 * @server Server-only API
+	 * Returns all the abilities registered to this character
+	 * @returns A map of the ability id to the ability logics
+	 */
+	public GetAbilities(): ReadonlyMap<string, AbilityLogic> {
+		const arr = new Map<string, AbilityLogic>();
+		for (const [slot, boundItems] of this.boundAbilities) {
+			for (const [abilityId, ability] of boundItems) {
+				arr.set(abilityId, ability);
+			}
+		}
+
+		return arr;
+	}
+
+	/**
+	 * Returns whether or not the id matches an ability registered to this character, at the given ability slot
+	 * @param id The id to check
+	 * @param slot The slot to check against
+	 * @returns True if the character has an ability with this id, at the given slot
 	 */
 	public HasAbilityWithIdAtSlot(id: string, slot: AbilitySlot): boolean {
 		const abilityMap = MapUtil.GetOrCreate(this.boundAbilities, slot, () => new Map<string, AbilityLogic>());
@@ -98,7 +103,9 @@ export class CharacterAbilities {
 	}
 
 	/**
-	 * @server Server-only API
+	 * Returns whether or not the id matches an ability registered to this character
+	 * @param id The id to check
+	 * @returns True if the character has an ability with this id
 	 */
 	public HasAbilityWithId(id: string): boolean {
 		return this.abilityIdSlotMap.has(id);
@@ -106,6 +113,7 @@ export class CharacterAbilities {
 
 	/**
 	 * Adds the given ability to the character
+	 *
 	 * @param abilityId The ability's unique id
 	 * @param slot The slot the ability is bound to
 	 * @param logic The logic of the ability
@@ -144,7 +152,12 @@ export class CharacterAbilities {
 		return logic;
 	}
 
-	public RemoveAbilityById(abilityId: string) {
+	/**
+	 * Removes the ability with the given id from this character
+	 * @param abilityId The ability id to remove
+	 * @returns True if the ability was removed
+	 */
+	public RemoveAbilityById(abilityId: string): boolean {
 		if (!this.HasAbilityWithId(abilityId)) {
 			return false;
 		}
@@ -166,6 +179,20 @@ export class CharacterAbilities {
 
 		if (RunCore.IsServer() && this.entity.player) {
 			CoreNetwork.ServerToClient.AbilityRemoved.Server.FireAllClients(this.entity.id, abilityId);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Removes all abilities from this character
+	 */
+	public RemoveAllAbilities() {
+		this.abilityIdSlotMap.clear();
+		this.boundAbilities.clear();
+
+		if (RunCore.IsServer() && this.entity.player) {
+			CoreNetwork.ServerToClient.AbilitiesCleared.Server.FireAllClients(this.entity.id);
 		}
 	}
 
@@ -193,8 +220,6 @@ export class CharacterAbilities {
 	 * Gets all abilities bound to the given slot
 	 * @param slot The slot
 	 * @returns All the abilities bound to this slot
-	 *
-	 * @server Server-only API
 	 */
 	public GetAbilitiesBoundToSlot(slot: AbilitySlot): Map<string, AbilityLogic> {
 		return this.boundAbilities.get(slot) ?? new Map();
@@ -336,8 +361,6 @@ export class CharacterAbilities {
 	/**
 	 * Gets all abilities as an array of data transfer objects
 	 * @returns The array of data transfer objects
-	 *
-	 * @server Server-only API
 	 */
 	public Encode(): AbilityDto[] {
 		const items = new Array<AbilityDto>();

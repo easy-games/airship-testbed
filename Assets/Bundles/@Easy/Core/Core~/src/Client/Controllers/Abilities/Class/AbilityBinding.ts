@@ -30,10 +30,24 @@ export class AbilityBinding {
 
 	public constructor(private readonly slot: AbilitySlot, private enabled: boolean, private keyCode: KeyCode) {}
 
+	/**
+	 * Sets whether or not this ability binding is enabled
+	 */
 	public SetEnabled(enabled: boolean) {
+		const oldState = this.ToAbilityState();
+
 		this.enabled = enabled;
+
+		this.BindingStateChanged.Fire({
+			oldState,
+			newState: this.ToAbilityState(),
+		});
 	}
 
+	/**
+	 * Grab the ability state for the core UI
+	 * @internal Core API
+	 */
 	public ToAbilityState(): ClientAbilityState | undefined {
 		if (!this.boundTo) return;
 
@@ -53,6 +67,10 @@ export class AbilityBinding {
 		};
 	}
 
+	/**
+	 * Sets this ability slot's cooldown state
+	 * @param cooldown The cooldown state - or undefined if no cooldown active
+	 */
 	public SetCooldown(cooldown: ClientAbilityCooldownState | undefined) {
 		const oldState = this.ToAbilityState();
 
@@ -64,11 +82,16 @@ export class AbilityBinding {
 		});
 	}
 
-	public BindTo(abilityId: AbilityDto): void {
+	/**
+	 * Binds the given ability to this binding slot for this client
+	 * @param abilityDto The ability data to bind
+	 * @internal Core API
+	 */
+	public BindTo(abilityDto: AbilityDto): void {
 		const oldState = this.ToAbilityState();
 
-		this.boundTo = abilityId;
-		this.enabled = abilityId.enabled;
+		this.boundTo = abilityDto;
+		this.enabled = abilityDto.enabled;
 
 		this.BindingStateChanged.Fire({
 			oldState,
@@ -76,10 +99,18 @@ export class AbilityBinding {
 		});
 	}
 
+	/**
+	 * Gets the key code bound to this ability binding
+	 * @returns The key code bound to this binding
+	 */
 	public GetKey() {
 		return this.keyCode;
 	}
 
+	/**
+	 * Gets the slot of this binding
+	 * @returns The slot
+	 */
 	public GetSlot() {
 		return this.slot;
 	}
@@ -88,6 +119,12 @@ export class AbilityBinding {
 		return this.enabled;
 	}
 
+	/**
+	 * Bind a callback function to this slot
+	 * @param keyboard The keyboard
+	 * @param action The action
+	 * @internal Core API
+	 */
 	public BindToAction(keyboard: Keyboard, action: BindingAction) {
 		this.bin.Add(
 			keyboard.OnKeyUp(this.keyCode, (event) => {
@@ -104,6 +141,10 @@ export class AbilityBinding {
 		);
 	}
 
+	/**
+	 * Unbind this ability slot
+	 * @internal Core API
+	 */
 	public Unbind() {
 		this.boundTo = undefined;
 		this.enabled = false;
@@ -116,6 +157,10 @@ export class AbilityBinding {
 		this.bin.Clean();
 	}
 
+	/**
+	 * Gets the bound ability of this slot
+	 * @returns The bound ability data
+	 */
 	public GetBound(): AbilityDto | undefined {
 		return this.boundTo;
 	}

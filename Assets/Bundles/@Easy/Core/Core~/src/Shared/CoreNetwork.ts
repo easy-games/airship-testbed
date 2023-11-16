@@ -164,6 +164,7 @@ export const CoreNetwork = {
 
 		AbilityAdded: new RemoteEvent<[entityId: number, dto: AbilityDto]>(),
 		AbilityRemoved: new RemoteEvent<[entityId: number, id: string]>(),
+		AbilitiesCleared: new RemoteEvent<[entityId: number]>(),
 
 		AbilityCooldownStateChange: new RemoteEvent<[dto: AbilityCooldownDto]>(),
 

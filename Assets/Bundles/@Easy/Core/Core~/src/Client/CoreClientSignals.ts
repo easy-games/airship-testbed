@@ -17,6 +17,7 @@ import { AbilityChargeClientSignal } from "./Controllers/Abilities/Event/Ability
 import { AbilityChargeEndClientSignal } from "./Controllers/Abilities/Event/AbilityChargeEndClientSignal";
 import { AbilityAddedClientSignal } from "./Controllers/Abilities/Event/AbilityAddedClientSignal";
 import { AbilityRemovedClientSignal } from "./Controllers/Abilities/Event/AbilityRemovedClientSignal";
+import { AbilitiesClearedClientSignal } from "./Controllers/Abilities/Event/AbilitiesClearedClientSignal";
 
 export const CoreClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),
@@ -48,6 +49,7 @@ export const CoreClientSignals = {
 
 	AbilityAdded: new Signal<AbilityAddedClientSignal>(),
 	AbilityRemoved: new Signal<AbilityRemovedClientSignal>(),
+	AbilitiesCleared: new Signal<AbilitiesClearedClientSignal>(),
 
 	AbilityChargeBegan: new Signal<AbilityChargeClientSignal>(),
 	AbilityChargeEnded: new Signal<AbilityChargeEndClientSignal>(),

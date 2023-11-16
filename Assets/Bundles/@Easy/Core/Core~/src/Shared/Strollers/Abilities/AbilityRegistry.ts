@@ -19,7 +19,7 @@ export interface Ability {
 
 @Service()
 @Controller()
-export class AbilityRegistry implements OnStart {
+export class AbilityRegistry {
 	private abilityHandlers = new Map<string, Ability>();
 
 	/**
@@ -57,7 +57,10 @@ export class AbilityRegistry implements OnStart {
 		return this.abilityHandlers.get(id);
 	}
 
-	public OnStart(): void {
-		print("Loaded ability registry for", RunCore.IsServer() ? "SERVER" : "CLIENT");
+	/**
+	 * Returns a map of all the abilities registered in this registry
+	 */
+	public GetAllRegisteredAbilities(): ReadonlyMap<string, Ability> {
+		return this.abilityHandlers;
 	}
 }
