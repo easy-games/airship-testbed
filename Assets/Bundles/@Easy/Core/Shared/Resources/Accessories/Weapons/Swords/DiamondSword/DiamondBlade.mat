@@ -26,7 +26,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DepthMainTex:
-        m_Texture: {fileID: 2800000, guid: 8cc1a113738325b43824b069520b2a85, type: 3}
+        m_Texture: {fileID: 2800000, guid: edc67def5afcf9348866dd383622d44a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -46,15 +46,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8599a0af5c426574e93d87ff1b8479b7, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 2cf5397ab75f32d4ba3047f1fa1b9714, type: 3}
+        m_Scale: {x: 1.5, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 1230e8b59470d3f44ab4f69c009911f5, type: 3}
+        m_Texture: {fileID: 2800000, guid: c62161c03fc8f9f47bbc5df0e3412541, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -71,13 +71,13 @@ Material:
     - _AmbientStrength: 0.2
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthScale: 1
+    - _DepthScale: 0.1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelPower: 0.5
+    - _FresnelPower: 0.15
     - _FresnelStrength: 0.5
     - _GlossMapScale: 1
-    - _Glossiness: 1.16
+    - _Glossiness: 2.319
     - _GlossyReflections: 1
     - _HueShift: 0
     - _MaxDepthHeight: 0.077
@@ -85,13 +85,13 @@ Material:
     - _MinDepthHeight: 0.018
     - _MinLight: 0.45
     - _Mode: 0
-    - _NormalIntensity: 0.931
+    - _NormalIntensity: 0.549
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimAmount: 0.716
     - _RimThreshold: 0.1
     - _ShadowCutoff: 0.2
-    - _ShineFresnelPower: 2
+    - _ShineFresnelPower: 1.13
     - _ShineFresnelStrength: 2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -102,9 +102,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 0, b: 0.011765003, a: 1}
-    - _DepthColor: {r: 1, g: 0.8761792, b: 0.7688679, a: 0}
+    - _DepthColor: {r: 1, g: 0.7278612, b: 0.48584908, a: 1}
     - _EColor: {r: 1, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 0, g: 0.043987818, b: 0.066037714, a: 1}
+    - _EmissionColor: {r: 0, g: 0.43951175, b: 0.6792453, a: 1}
     - _EmissiveColor: {r: 1, g: 0, b: 0.08327961, a: 0}
     - _MainColor: {r: 0, g: 0.97001165, b: 1, a: 1}
     - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}

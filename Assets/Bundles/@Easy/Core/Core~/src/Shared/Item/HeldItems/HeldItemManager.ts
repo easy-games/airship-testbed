@@ -89,10 +89,12 @@ export class HeldItemManager {
 				if (this.currentHeldItem !== undefined) {
 					this.currentHeldItem.OnUnEquip();
 				}
+
 				//Equip the new item
 				this.currentItemState = HeldItemState.NONE;
 				this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
 				this.currentHeldItem.OnEquip();
+				this.entity.references.humanEntityAnimator.SetRootMovementLayer(true);
 			}),
 		);
 	}

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &759110036839077557
 Transform:
   m_ObjectHideFlags: 0
@@ -53,7 +53,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b9eb9a298c46cbf4db7b7c8cefed8c29, type: 2}
+  - {fileID: 2100000, guid: 2daab12bb81bb544894813337480d066, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +78,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 8837192020316191337, guid: f37688a871097424d96705ad3d7b1da0, type: 3}
+  m_Mesh: {fileID: 2548347089640283655, guid: cf5a94a9f2d56d34ea112adff760d187, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+  - materialColor: {r: 1, g: 0.7411765, b: 0.9490196, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Kit_GothGirl_ClothingToonMat
+    reference: Kit_GothGirl_ClothingToonBWMat
   addedByEditorScript: 0

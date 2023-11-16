@@ -485,6 +485,7 @@ declare const MeshProcessor: MeshProcessorConstructor;
 interface CoreEntityAnimator extends Component {
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
+	SetRootMovementLayer(itemInHand: boolean): void;
 }
 
 interface PoolManager {

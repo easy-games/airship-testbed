@@ -26,7 +26,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DepthMainTex:
-        m_Texture: {fileID: 2800000, guid: 8cc1a113738325b43824b069520b2a85, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2cf5397ab75f32d4ba3047f1fa1b9714, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -46,8 +46,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 533fe4c6aee079c4686814301cc9f758, type: 3}
-        m_Scale: {x: 1.5, y: 1}
+        m_Texture: {fileID: 2800000, guid: a20e861143484cd48aab0496825e56c4, type: 3}
+        m_Scale: {x: 1, y: 0.75}
         m_Offset: {x: 1.9, y: 0.01}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -71,19 +71,19 @@ Material:
     - _AmbientStrength: 0.2
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthScale: 0.5
+    - _DepthScale: 2.14
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FresnelPower: 1
-    - _FresnelStrength: 1
+    - _FresnelStrength: 0.88
     - _GlossMapScale: 1
-    - _Glossiness: 2.49
+    - _Glossiness: 2.499
     - _GlossyReflections: 1
     - _HueShift: 0
-    - _MaxDepthHeight: 0.419
+    - _MaxDepthHeight: 0.28
     - _Metallic: 0
-    - _MinDepthHeight: 0.08
-    - _MinLight: 0.25
+    - _MinDepthHeight: 0.056
+    - _MinLight: 0.251
     - _Mode: 0
     - _NormalIntensity: 0.836
     - _OcclusionStrength: 1
@@ -91,8 +91,8 @@ Material:
     - _RimAmount: 0.716
     - _RimThreshold: 0.1
     - _ShadowCutoff: 0.2
-    - _ShineFresnelPower: 0.5
-    - _ShineFresnelStrength: 1
+    - _ShineFresnelPower: 0.27
+    - _ShineFresnelStrength: 1.49
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -102,14 +102,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.25060722, g: 0.38679236, b: 0.20251858, a: 1}
-    - _DepthColor: {r: 0.0051174783, g: 0.21698102, b: 0.061198987, a: 1}
+    - _DepthColor: {r: 0.39821225, g: 0.6037736, b: 0.39587042, a: 1}
     - _EColor: {r: 1, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.07186722, g: 0.1792453, b: 0.1762763, a: 1}
     - _EmissiveColor: {r: 1, g: 0, b: 0.08327961, a: 0}
     - _MainColor: {r: 0, g: 1, b: 0.60000014, a: 1}
     - _OverlayColor: {r: 1, g: 0, b: 0, a: 0}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShineColor: {r: 0.3471698, g: 0.3773585, b: 0, a: 1}
+    - _ShineColor: {r: 0.9270834, g: 1, b: 0, a: 1}
     - _SpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

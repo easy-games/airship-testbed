@@ -76,6 +76,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emissive: 0.5
+    - _EmissiveMix: 0
     - _FadeA: 1
     - _FadeB: 0
     - _FresnelPower: 5
@@ -106,7 +107,7 @@ Material:
     - _UVCenter: 0.5
     - _UVRotation: 0
     - _UVSec: 0
-    - _WaveSpeedMod: 0.3
+    - _WaveSpeedMod: 0.2
     - _WaveStrength: 0.5
     - _Wavelength: 1
     - _ZWrite: 1
