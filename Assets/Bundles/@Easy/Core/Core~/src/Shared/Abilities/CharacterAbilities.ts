@@ -119,12 +119,6 @@ export class CharacterAbilities {
 	 * @param logic The logic of the ability
 	 */
 	public AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic {
-		print(
-			RunCore.IsServer() ? "SERVER" : "CLIENT",
-			"AddAbilityWithId",
-			abilityId,
-			inspect(ability.config, { newline: " " }),
-		);
 		const abilityMap = MapUtil.GetOrCreate(
 			this.boundAbilities,
 			ability.config.slot,
