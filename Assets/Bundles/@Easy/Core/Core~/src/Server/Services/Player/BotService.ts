@@ -2,7 +2,7 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { Entity } from "Shared/Entity/Entity";
 import { Bin } from "Shared/Util/Bin";
-import { SetTimeout } from "Shared/Util/Timer";
+import { SetInterval } from "Shared/Util/Timer";
 
 @Service({})
 export class BotService implements OnStart {
@@ -35,7 +35,7 @@ export class BotService implements OnStart {
 		doMove();
 
 		bin.Add(
-			SetTimeout(1.5, () => {
+			SetInterval(1.5, () => {
 				doMove();
 			}),
 		);
