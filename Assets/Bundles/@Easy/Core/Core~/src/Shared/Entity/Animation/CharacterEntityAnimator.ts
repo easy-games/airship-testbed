@@ -39,6 +39,9 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	private defaultIdleAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Idle.anim",
 	);
+	private defaultIdleAnimFPUnarmed = AssetBridge.Instance.LoadAsset<AnimationClip>(
+		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Unarmed_Idle.anim",
+	);
 	private defaultIdleAnimTP = AssetBridge.Instance.LoadAsset<AnimationClip>(
 		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
 	);
@@ -183,6 +186,11 @@ export class CharacterEntityAnimator extends EntityAnimator {
 						this.currentItemClipMap.set(ItemAnimationId.USE, clips);
 					}
 				}
+			}
+		} else {
+			//UNARMED
+			if (this.isFirstPerson) {
+				this.currentItemClipMap.set(ItemAnimationId.IDLE, [this.defaultIdleAnimFPUnarmed]);
 			}
 		}
 	}
