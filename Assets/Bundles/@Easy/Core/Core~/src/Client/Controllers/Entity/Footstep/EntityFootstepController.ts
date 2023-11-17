@@ -16,6 +16,7 @@ export class EntityFootstepController implements OnStart {
 				const currentTime = Time.time;
 				const camPos = camTransform.position;
 				Profiler.BeginSample("Footsteps");
+				let footstepCount = 0;
 				for (const entity of this.entityController.GetEntities()) {
 					if (entity.IsDead()) continue;
 					let cooldown = -1;
@@ -38,11 +39,17 @@ export class EntityFootstepController implements OnStart {
 					if (!entity.IsLocalCharacter()) {
 						volumeScale *= 2;
 					}
+					Profiler.BeginSample("PlayFootstepSound");
 					try {
 						entity.animator.PlayFootstepSound(volumeScale, camPos);
 					} catch (err) {
-						Debug.LogError(err);
+						Debug.LogError("footstep error: " + err);
 					}
+					footstepCount++;
+					if (footstepCount >= 5) {
+						break;
+					}
+					Profiler.EndSample();
 				}
 				Profiler.EndSample();
 			});

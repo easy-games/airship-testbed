@@ -1,10 +1,13 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemMeta } from "Shared/Item/ItemMeta";
 import { ItemType } from "Shared/Item/ItemType";
+import StringUtils from "Shared/Types/StringUtil";
 import { Bin } from "Shared/Util/Bin";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { AudioBundlePlayMode, AudioBundleSpacialMode, AudioClipBundle } from "../../Audio/AudioClipBundle";
 import { AudioManager } from "../../Audio/AudioManager";
@@ -97,11 +100,11 @@ export abstract class EntityAnimator {
 				Bundle_Entity.OnHit,
 				Bundle_Entity_OnHit.DeathVFX,
 			);
-			this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.DeathVoidVFX,
-			);
+			// this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.DeathVoidVFX,
+			// );
 		}
 
 		//Listen to animation events
@@ -228,8 +231,11 @@ export abstract class EntityAnimator {
 		}
 		//Spawn death particle
 		const inVoid = damageType === DamageType.VOID;
-		const deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
-		if (deathEffect && !(inVoid && this.entity.IsLocalCharacter())) {
+		let deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
+		if (inVoid && this.entity.IsLocalCharacter()) {
+			deathEffect = undefined;
+		}
+		if (deathEffect) {
 			this.deathVfx = EffectsManager.SpawnGameObjectAtPosition(
 				deathEffect,
 				this.entity.GetHeadPosition(),
@@ -324,14 +330,13 @@ export abstract class EntityAnimator {
 		}
 
 		if (stepSounds.size() > 0 && this.footstepAudioBundle) {
-			if (blockId !== this.steppedOnBlockType) {
-				//Refresh our audio bundle with the new sound list
-				this.steppedOnBlockType = blockId;
-				this.footstepAudioBundle.UpdatePaths(stepSounds);
+			let soundPath = RandomUtil.FromArray(stepSounds);
+			if (!StringUtils.includes(soundPath, ".")) {
+				soundPath += ".ogg";
 			}
-			this.footstepAudioBundle.spacialPosition = this.entity.model.transform.position;
-			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale * volumeScale;
-			this.footstepAudioBundle.PlayNext();
+			let audioClip = AssetCache.LoadAsset<AudioClip>(soundPath);
+			let volume = this.baseFootstepVolumeScale * volumeScale;
+			this.entityRef.footstepAudioSource.PlayOneShot(audioClip, volume);
 		}
 	}
 
