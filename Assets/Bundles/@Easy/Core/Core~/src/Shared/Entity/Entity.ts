@@ -61,6 +61,7 @@ export class EntityReferences {
 	jumpSound: AudioClip | undefined;
 	slideSoundPaths: Array<string> = [];
 	landSound: AudioClip | undefined;
+	footstepAudioSource: AudioSource;
 
 	constructor(ref: GameObjectReferences) {
 		let boneKey = "Bones";
@@ -92,6 +93,7 @@ export class EntityReferences {
 		this.characterCollider.enabled = true;
 
 		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
+		this.footstepAudioSource = ref.GetValue<AudioSource>(vfxKey, "FootstepAudioSource");
 
 		/*this.jumpSound = AudioManager.LoadFullPathAudioClip(BundleReferenceManager.GetPathForResource(
 			BundleGroupNames.Entity,
@@ -239,6 +241,12 @@ export class Entity {
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(stateChangeConn);
 		});
+
+		if (this.IsLocalCharacter()) {
+			this.references.footstepAudioSource.spatialBlend = 0;
+		} else {
+			this.references.footstepAudioSource.spatialBlend = 1;
+		}
 	}
 
 	public Teleport(pos: Vector3, lookVector?: Vector3) {

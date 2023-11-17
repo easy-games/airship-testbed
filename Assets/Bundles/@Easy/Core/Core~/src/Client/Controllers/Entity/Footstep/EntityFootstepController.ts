@@ -38,11 +38,13 @@ export class EntityFootstepController implements OnStart {
 					if (!entity.IsLocalCharacter()) {
 						volumeScale *= 2;
 					}
+					Profiler.BeginSample("PlayFootstepSound");
 					try {
 						entity.animator.PlayFootstepSound(volumeScale, camPos);
 					} catch (err) {
-						Debug.LogError(err);
+						Debug.LogError("footstep error: " + err);
 					}
+					Profiler.EndSample();
 				}
 				Profiler.EndSample();
 			});
