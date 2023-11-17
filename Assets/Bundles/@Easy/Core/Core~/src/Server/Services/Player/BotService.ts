@@ -1,6 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { Entity } from "Shared/Entity/Entity";
+import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
 
 @Service({})
@@ -8,12 +9,14 @@ export class BotService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (event.entity.player?.IsBot()) {
-				this.DoRandomMoveInput(event.entity);
+				this.StartRandomMovement(event.entity);
 			}
 		});
 	}
 
-	private DoRandomMoveInput(entity: Entity): void {
+	private StartRandomMovement(entity: Entity): void {
+		const bin = new Bin();
+
 		let randDirectionComponent = () => {
 			let r = math.random();
 			if (r < 1 / 3) {
@@ -24,13 +27,22 @@ export class BotService implements OnStart {
 				return 1;
 			}
 		};
-		let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
-		entity.entityDriver.SetMoveInput(direction, math.random() < 0.2, math.random() < 0.5, math.random() < 0.2);
 
-		SetTimeout(1.5, () => {
-			if (entity.IsAlive()) {
-				this.DoRandomMoveInput(entity);
-			}
-		});
+		const doMove = () => {
+			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
+			entity.entityDriver.SetMoveInput(direction, math.random() < 0.2, math.random() < 0.5, math.random() < 0.2);
+		};
+		doMove();
+
+		bin.Add(
+			SetTimeout(1.5, () => {
+				doMove();
+			}),
+		);
+		bin.Add(
+			entity.OnDespawn.Connect(() => {
+				bin.Clean();
+			}),
+		);
 	}
 }
