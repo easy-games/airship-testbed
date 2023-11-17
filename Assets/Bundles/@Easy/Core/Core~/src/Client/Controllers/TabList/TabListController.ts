@@ -63,7 +63,9 @@ export class TabListController implements OnStart {
 		OnLateUpdate.Connect(() => {
 			if (this.dirty) {
 				this.dirty = false;
+				Profiler.BeginSample("TabList.FullUpdate");
 				this.FullUpdate();
+				Profiler.EndSample();
 			}
 		});
 

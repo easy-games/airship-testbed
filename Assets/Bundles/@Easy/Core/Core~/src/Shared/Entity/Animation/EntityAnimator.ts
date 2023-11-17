@@ -97,11 +97,11 @@ export abstract class EntityAnimator {
 				Bundle_Entity.OnHit,
 				Bundle_Entity_OnHit.DeathVFX,
 			);
-			this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.DeathVoidVFX,
-			);
+			// this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.DeathVoidVFX,
+			// );
 		}
 
 		//Listen to animation events
@@ -228,8 +228,11 @@ export abstract class EntityAnimator {
 		}
 		//Spawn death particle
 		const inVoid = damageType === DamageType.VOID;
-		const deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
-		if (deathEffect && !(inVoid && this.entity.IsLocalCharacter())) {
+		let deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
+		if (inVoid && this.entity.IsLocalCharacter()) {
+			deathEffect = undefined;
+		}
+		if (deathEffect) {
 			this.deathVfx = EffectsManager.SpawnGameObjectAtPosition(
 				deathEffect,
 				this.entity.GetHeadPosition(),

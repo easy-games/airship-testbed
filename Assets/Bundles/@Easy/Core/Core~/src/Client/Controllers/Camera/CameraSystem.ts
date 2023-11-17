@@ -3,8 +3,8 @@ import { Spring } from "Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "Shared/Util/Timer";
 import { CameraMode } from "./CameraMode";
 import { CameraModeTransition } from "./CameraModeTransition";
-import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
 import { CameraReferences } from "./CameraReferences";
+import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
 
 class TransitionMode implements CameraMode {
 	private readonly start: number;

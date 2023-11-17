@@ -2,7 +2,6 @@
 import { EntityReferences } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
-import { MathUtil } from "Shared/Util/MathUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { CameraReferences } from "./CameraReferences";
@@ -68,8 +67,9 @@ export class FirstPersonCameraSystem {
 		}
 
 		//Get the cameras transform information
-		let headLookPosition = this.cameras.fpsCamera.transform.position;
-		let headLookRotation = this.cameras.fpsCamera.transform.rotation;
+		const transform = this.cameras.fpsCamera.transform;
+		let headLookPosition = transform.position;
+		let headLookRotation = transform.rotation;
 
 		//Animated to the look direction
 		/*let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
