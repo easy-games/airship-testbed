@@ -51,6 +51,12 @@ export class BWHudService implements OnStart {
 			});
 		});
 
+		ServerSignals.BedDestroyed.Connect((event) => {
+			this.UpdateTeamStats(event.team, (stats) => {
+				stats.bed = false;
+			});
+		});
+
 		CoreServerSignals.PlayerChangeTeam.Connect((event) => {
 			if (event.team) {
 				this.UpdateTeamAliveCount(event.team);
