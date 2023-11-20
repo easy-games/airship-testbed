@@ -4,15 +4,16 @@ import { MathUtil } from "Shared/Util/MathUtil";
 import { NormalizeV3 } from "Shared/Util/Vector3Util";
 
 export class ProjectileUtil {
-	public static GetLaunchPosition(gos: GameObject[], entity: Entity, isInFirstPerson: boolean) {
+	public static GetLaunchPosition(rootTransform: Transform, entity: Entity, isInFirstPerson: boolean) {
 		let launchPos: Vector3 | undefined;
-
-		for (const handObject of gos) {
-			const shootPosition = handObject.transform.FindChild("ShootPosition");
+		const references = rootTransform.gameObject.GetComponent<GameObjectReferences>();
+		if (references) {
+			const shootPosition = references.GetValue<Transform>("Transforms", "ShootPosition");
 			if (shootPosition) {
 				launchPos = shootPosition.transform.position;
 			}
 		}
+
 		if (!launchPos) {
 			if (isInFirstPerson) {
 				launchPos = entity.LocalOffsetToWorldPoint(new Vector3(1, -0.5, 0));

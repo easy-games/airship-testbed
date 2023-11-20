@@ -22,6 +22,7 @@ export class HeldItem {
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 	protected isCharging = false;
+	protected activeAccessories: ActiveAccessory[] = [];
 	protected currentItemGOs: GameObject[] = [];
 	protected currentItemAnimations: Animator[] = [];
 	private holdingDownBin = new Bin();
@@ -81,19 +82,21 @@ export class HeldItem {
 
 		const firstPerson = this.entity.animator.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
-		let j = 0;
+		let i = 0;
 		for (const accessory of accessories) {
-			let added = this.entity.accessoryBuilder.SetAccessory(accessory, false);
+			this.activeAccessories[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
 
+			let j = 0;
 			//Load the animator for the held item if one exists
-			for (let go of CSArrayUtil.Convert(added.gameObjects)) {
+			for (let go of CSArrayUtil.Convert(this.activeAccessories[i].gameObjects)) {
 				this.currentItemGOs[j] = go;
-				j++;
 				const anim = go.GetComponent<Animator>();
 				if (anim) {
 					this.currentItemAnimations.push(anim);
 				}
+				j++;
 			}
+			i++;
 		}
 		// this.entity.accessoryBuilder.TryCombineMeshes();
 	}

@@ -1415,6 +1415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7747243372346375117}
   - component: {fileID: 9054256861218082895}
+  - component: {fileID: 1574948047046929794}
   m_Layer: 0
   m_Name: BowWood
   m_TagString: Untagged
@@ -1464,6 +1465,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1574948047046929794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6973943184561021303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStaticInstance: 0
+  staticBundleId: UniqueID
+  bundledReferences:
+  - key: Transforms
+    keyValuePairs:
+    - key: ShootPosition
+      value: {fileID: 5927560962423128481}
 --- !u!1 &7038823187563624048
 GameObject:
   m_ObjectHideFlags: 0

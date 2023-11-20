@@ -171,7 +171,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 						const chargeSec = os.clock() - this.startHoldTimeSec;
 
 						const launchPos = ProjectileUtil.GetLaunchPosition(
-							this.currentItemGOs,
+							this.activeAccessories[0].rootTransform,
 							this.entity,
 							localEntityController.IsFirstPerson(),
 						);
@@ -285,7 +285,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		const mouse = new Mouse();
 		const launchPos = ProjectileUtil.GetLaunchPosition(
-			this.currentItemGOs,
+			this.activeAccessories[0].rootTransform,
 			this.entity,
 			Dependency<LocalEntityController>().IsFirstPerson(),
 		);

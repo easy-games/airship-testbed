@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3624261834906416580}
   - component: {fileID: 7214524564532379550}
+  - component: {fileID: 4095063833881203490}
   m_Layer: 0
   m_Name: FireballHeld
   m_TagString: Untagged
@@ -216,6 +217,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4095063833881203490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3624261834906416581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStaticInstance: 0
+  staticBundleId: UniqueID
+  bundledReferences:
+  - key: Transforms
+    keyValuePairs:
+    - key: ShootPosition
+      value: {fileID: 6618876092888267258}
 --- !u!1 &4069042026994617585
 GameObject:
   m_ObjectHideFlags: 0
