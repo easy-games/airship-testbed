@@ -71,10 +71,6 @@ export interface ProjectileLauncherMeta {
 	chargingWalkSpeedMultiplier?: number;
 	firstPersonLaunchOffset: Vector3;
 	chargeSound?: SoundMeta[];
-	chargeAnimFP?: string[] | "none";
-	chargeAnimTP?: string[] | "none";
-	throwAnimFP?: string[] | "none";
-	throwAnimTP?: string[] | "none";
 }
 
 export interface ViewModelMeta {

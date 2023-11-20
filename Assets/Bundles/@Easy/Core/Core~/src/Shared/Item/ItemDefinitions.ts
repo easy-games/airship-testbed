@@ -56,6 +56,7 @@ const swordUsable: UsableHeldItemMeta = {
 const bigSwordUsable: UsableHeldItemMeta = {
 	...swordUsable,
 	onUseSoundVolume: 0.4,
+	cooldownSeconds: 0.5,
 	onUseAnimFP: [
 		AllBundleItems.ItemSwordBig_FirstPerson_Swing01 as string,
 		AllBundleItems.ItemSwordBig_FirstPerson_Swing02 as string,
@@ -674,7 +675,7 @@ export const items: {
 		inspectAnimPath: AllBundleItems.ItemSwordBig_FirstPerson_Inspect as string,
 		melee: {
 			...swordMelee,
-			damage: 55,
+			damage: 60,
 		},
 	},
 	[ItemType.DOUBLE_HIT_SWORD]: {
@@ -706,8 +707,10 @@ export const items: {
 		usable: {
 			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
-			cooldownSeconds: 0.1,
+			cooldownSeconds: 0.75,
 			onUseSound: [CoreSound.bowShoot],
+			onUseAnimFP: CoreAnim("FP_Bow_Charge", "none"),
+			onUseAnimTP: CoreAnim("TP_Bow_Charge", "none"),
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
 		projectileLauncher: {
@@ -716,11 +719,7 @@ export const items: {
 			maxVelocityScaler: 100,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 			chargingWalkSpeedMultiplier: 0.25,
-			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
-			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 			chargeSound: [{ path: CoreSound.bowCharge }],
-			throwAnimFP: "none",
-			throwAnimTP: "none",
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),
@@ -729,25 +728,23 @@ export const items: {
 	[ItemType.WOOD_CROSSBOW]: {
 		displayName: "Wood Crossbow",
 		usable: {
-			maxChargeSeconds: 0.2,
 			minChargeSeconds: 0.12,
+			maxChargeSeconds: 0.2,
 			cooldownSeconds: 1.15,
 			onUseSound: [CoreSound.bowShoot],
+			onUseAnimFP: CoreAnim("FP_Bow_Charge", "none"),
+			onUseAnimTP: CoreAnim("TP_Bow_Charge", "none"),
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
+		accessoryPaths: [AccPath(ItemType.WOOD_CROSSBOW)],
 		projectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,
 			maxVelocityScaler: 130,
-			damageMultiplier: 1.25, // 25% more damage for now - this can be changed ofc.
+			damageMultiplier: 1.5,
 			powerMultiplier: 1.35,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 			chargingWalkSpeedMultiplier: 0.25,
-			chargeAnimFP: CoreAnim("FP_Bow_Charge"),
-			chargeAnimTP: CoreAnim("TP_Bow_Charge"),
 			chargeSound: [{ path: CoreSound.bowCharge }],
-			throwAnimFP: "none",
-			throwAnimTP: "none",
 		},
 		viewModel: {
 			idleAnimFP: CoreAnim("FP_Bow_Idle"),
@@ -786,6 +783,8 @@ export const items: {
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 			onUseSound: ["@Easy/Core/Shared/Resources/Sound/TelepearlThrow"],
+			onUseAnimFP: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
+			onUseAnimTP: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 		},
 		accessoryPaths: [AccPath(ItemType.TELEPEARL)],
 		projectileLauncher: {
@@ -809,6 +808,8 @@ export const items: {
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 			onUseSound: ["Fireball_Throw"],
+			onUseAnimFP: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
+			onUseAnimTP: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 		},
 		maxStackSize: 20,
 		accessoryPaths: [AccPath(ItemType.FIREBALL)],

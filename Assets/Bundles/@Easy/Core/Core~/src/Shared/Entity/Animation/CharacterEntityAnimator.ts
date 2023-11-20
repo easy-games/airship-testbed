@@ -242,12 +242,11 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		},
 	) {
 		this.Log("Item Use Started: " + useIndex);
-		//In the animation array use animations are the 3rd index and beyond;
-
 		this.TriggerEvent(ItemAnimationId.USE, useIndex);
 
 		let clips: AnimationClip[] | undefined = this.currentItemClipMap.get(ItemAnimationId.USE);
-		if (!clips || clips.isEmpty()) {
+		if (!clips || clips.isEmpty() || useIndex >= clips.size()) {
+			this.StartIdleAnim(false);
 			return;
 		}
 
