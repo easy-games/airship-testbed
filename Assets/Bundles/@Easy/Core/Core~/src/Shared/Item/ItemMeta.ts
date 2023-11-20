@@ -182,6 +182,7 @@ export interface MeleeItemMeta {
 	damageType?: DamageType;
 	canHitMultipleTargets?: boolean;
 	damage: number;
+	instantDamage?: boolean;
 	hitDelay?: number;
 	onUseVFX: AllBundleItems[];
 	onUseVFX_FP: AllBundleItems[];

@@ -217,13 +217,17 @@ export class LocalEntityController implements OnStart {
 			const flyingBin = new Bin();
 
 			// Pause Editor
-			keyboard.OnKeyDown(KeyCode.Tilde, (event) => {
+			keyboard.OnKeyDown(KeyCode.F1, (event) => {
 				if (event.uiProcessed) return;
-				DebugUtil.TogglePauseEngine();
+				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+					DebugUtil.TogglePauseEngine();
+				}
 			});
 			keyboard.OnKeyDown(KeyCode.BackQuote, (event) => {
 				if (event.uiProcessed) return;
-				DebugUtil.TogglePauseEngine();
+				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+					DebugUtil.TogglePauseEngine();
+				}
 			});
 
 			// Toggle first person:

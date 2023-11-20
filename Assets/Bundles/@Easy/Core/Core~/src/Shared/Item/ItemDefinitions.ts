@@ -78,8 +78,8 @@ const bigSwordViewModel: ViewModelMeta = {
 
 const swordMelee: MeleeItemMeta = {
 	damage: 10,
-	// hitDelay: 0.1345,
-	hitDelay: 0,
+	instantDamage: true,
+	hitDelay: 0.1345,
 	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit as string,
 	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
 	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],

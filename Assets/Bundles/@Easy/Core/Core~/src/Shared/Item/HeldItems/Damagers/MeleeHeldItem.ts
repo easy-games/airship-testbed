@@ -12,6 +12,7 @@ import { Entity } from "../../../Entity/Entity";
 import { HeldItem } from "../HeldItem";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Task } from "Shared/Util/Task";
+import { MeleeItemMeta } from "Shared/Item/ItemMeta";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
@@ -78,47 +79,8 @@ export class MeleeHeldItem extends HeldItem {
 			//Sound effect
 			this.audioPitchShift = this.animationIndex === 0 ? 1 : 2;
 			this.PlayItemSound();
-			//Only local player should do collisions checks
-			if (this.entity.IsLocalCharacter()) {
-				Profiler.BeginSample("MeleeClientEffect");
-				// const entityDriver = this.entity.GetEntityDriver();
-				// entityDriver.UpdateSyncTick();
 
-				let hitTargets = this.ScanForHits();
-				let hitSomething = false;
-				let effectGO: GameObject | undefined;
-				for (const data of hitTargets) {
-					hitSomething = true;
-					if (meleeData.onHitPrefabPath) {
-						//Local damage predictions
-						effectGO = EffectsManager.SpawnPrefabEffect(
-							meleeData.onHitPrefabPath,
-							data.hitPosition,
-							Quaternion.LookRotation(data.hitDirection).eulerAngles,
-						);
-						if (effectGO) {
-							effectGO.transform.SetParent(data.hitEntity.model.transform);
-						}
-					}
-				}
-				if (hitSomething) {
-					this.Log("client found hits");
-					let effectI = 0;
-					let effects: GameObject[] = [];
-					if (this.currentUseVFX) {
-						effects[effectI] = this.currentUseVFX;
-						effectI++;
-					}
-					if (effectGO) {
-						effects[effectI] = effectGO;
-						effectI++;
-					}
-					DamageUtils.AddAttackStun(this.entity, meleeData.damage, false, effects);
-				} else {
-					this.Log("No client hits found");
-				}
-				Profiler.EndSample();
-			}
+			this.ClientPredictDamage(meleeData);
 		});
 
 		//Reset the index if you don't use the attack for a while
@@ -134,6 +96,50 @@ export class MeleeHeldItem extends HeldItem {
 		}
 	}
 
+	private ClientPredictDamage(meleeData: MeleeItemMeta) {
+		//Only local player should do collisions checks
+		if (this.entity.IsLocalCharacter()) {
+			Profiler.BeginSample("MeleeClientEffect");
+			// const entityDriver = this.entity.GetEntityDriver();
+			// entityDriver.UpdateSyncTick();
+
+			let hitTargets = this.ScanForHits();
+			let hitSomething = false;
+			let effectGO: GameObject | undefined;
+			for (const data of hitTargets) {
+				hitSomething = true;
+				if (meleeData.onHitPrefabPath) {
+					//Local damage predictions
+					effectGO = EffectsManager.SpawnPrefabEffect(
+						meleeData.onHitPrefabPath,
+						data.hitPosition,
+						Quaternion.LookRotation(data.hitDirection).eulerAngles,
+					);
+					if (effectGO) {
+						effectGO.transform.SetParent(data.hitEntity.model.transform);
+					}
+				}
+			}
+			if (hitSomething) {
+				this.Log("client found hits");
+				let effectI = 0;
+				let effects: GameObject[] = [];
+				if (this.currentUseVFX) {
+					effects[effectI] = this.currentUseVFX;
+					effectI++;
+				}
+				if (effectGO) {
+					effects[effectI] = effectGO;
+					effectI++;
+				}
+				DamageUtils.AddAttackStun(this.entity, meleeData.damage, false, effects);
+			} else {
+				this.Log("No client hits found");
+			}
+			Profiler.EndSample();
+		}
+	}
+
 	override OnUseServer(useIndex: number) {
 		super.OnUseServer(useIndex);
 
@@ -145,14 +151,25 @@ export class MeleeHeldItem extends HeldItem {
 			return;
 		}
 
-		Task.Delay(meleeData.hitDelay ?? 0, () => {
-			let hitTargets = this.ScanForHits();
-			hitTargets.forEach((data) => {
-				Dependency<DamageService>().InflictDamage(data.hitEntity, meleeData?.damage ?? 0, {
-					damageType: meleeData?.damageType ?? DamageType.SWORD,
-					fromEntity: this.entity,
-					knockbackDirection: data.knockbackDirection,
-				});
+		const hitDelay = meleeData.hitDelay ?? 0;
+		if (meleeData.instantDamage || hitDelay <= 0) {
+			//hit the targets immediatly
+			this.ServerHit(meleeData);
+		} else {
+			//Wait for the attack to hit
+			Task.Delay(hitDelay, () => {
+				this.ServerHit(meleeData);
+			});
+		}
+	}
+
+	private ServerHit(meleeData: MeleeItemMeta | undefined) {
+		let hitTargets = this.ScanForHits();
+		hitTargets.forEach((data) => {
+			Dependency<DamageService>().InflictDamage(data.hitEntity, meleeData?.damage ?? 0, {
+				damageType: meleeData?.damageType ?? DamageType.SWORD,
+				fromEntity: this.entity,
+				knockbackDirection: data.knockbackDirection,
 			});
 		});
 	}
