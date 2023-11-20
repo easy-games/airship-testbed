@@ -63,8 +63,9 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emissive: 0.109
+    - _EmissiveMix: 0.089
     - _FadeA: 0
-    - _FadeB: 1
+    - _FadeB: 0.636
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -80,10 +81,10 @@ Material:
     - _UVSec: 0
     - _WaveSpeedMod: 1
     - _WaveStrength: 0.5
-    - _Wavelength: 10000
+    - _Wavelength: 1
     - _ZWrite: 1
     m_Colors:
-    - _BGColor: {r: 0.57547164, g: 0.23073149, b: 0.5286029, a: 0.05490196}
+    - _BGColor: {r: 0.57547164, g: 0.23073146, b: 0.5286029, a: 0.019607844}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorA: {r: 0, g: 0, b: 0, a: 1}
     - _ColorB: {r: 0.70652276, g: 0.54245275, b: 1, a: 1}
