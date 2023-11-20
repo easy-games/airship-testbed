@@ -119,6 +119,15 @@ export class ItemShopMeta {
 				spawnWithItems: [ItemType.WOOD_BOW],
 			},
 			{
+				itemType: ItemType.WOOD_CROSSBOW,
+				currency: ItemType.EMERALD,
+				price: 4,
+				quantity: 1,
+				category: ShopCategory.COMBAT,
+				replaceBow: true,
+				spawnWithItems: [ItemType.WOOD_CROSSBOW],
+			},
+			{
 				itemType: ItemType.WOOD_ARROW,
 				currency: ItemType.IRON,
 				price: 16,
