@@ -130,7 +130,17 @@ export interface UsableHeldItemMeta {
 	maxStackSize?: number;
 	onUseSound?: string[];
 	onUseSoundVolume?: number;
+
+	/**
+	 * First element charge animation.
+	 * Second element is shoot animation.
+	 */
 	onUseAnimFP?: string[];
+
+	/**
+	 * First element charge animation.
+	 * Second element is shoot animation.
+	 */
 	onUseAnimTP?: string[];
 }
 
