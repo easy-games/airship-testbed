@@ -37,7 +37,7 @@ export class DamageService implements OnStart {
 			const entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			const dir = entity.model.transform.forward;
 
-			this.ApplyKnockback(entityDriver, dir.mul(new Vector3(-1, 1, -1)));
+			this.ApplyKnockback(entityDriver, dir.mul(new Vector3(-1, 1, -1)).add(new Vector3(0, 1, 0)));
 			return InstanceFinder.TimeManager.Tick;
 		});
 
