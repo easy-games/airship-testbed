@@ -12,6 +12,9 @@ import { ItemType } from "./ItemType";
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
 	return p.map((s) => {
+		if (s === "none") {
+			return "none";
+		}
 		return `@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/${s}.anim`;
 	});
 };
