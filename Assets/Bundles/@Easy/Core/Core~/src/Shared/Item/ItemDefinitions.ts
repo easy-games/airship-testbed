@@ -707,7 +707,7 @@ export const items: {
 		usable: {
 			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
-			cooldownSeconds: 0.05,
+			cooldownSeconds: 0.4,
 			onUseSound: [CoreSound.bowShoot],
 			onUseAnimFP: CoreAnim("FP_Bow_Charge", "none"),
 			onUseAnimTP: CoreAnim("TP_Bow_Charge", "none"),
