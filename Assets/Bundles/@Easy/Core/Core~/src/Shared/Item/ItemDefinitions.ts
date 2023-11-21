@@ -59,7 +59,7 @@ const swordUsable: UsableHeldItemMeta = {
 const bigSwordUsable: UsableHeldItemMeta = {
 	...swordUsable,
 	onUseSoundVolume: 0.4,
-	cooldownSeconds: 0.5,
+	cooldownSeconds: 0.25,
 	onUseAnimFP: [
 		AllBundleItems.ItemSwordBig_FirstPerson_Swing01 as string,
 		AllBundleItems.ItemSwordBig_FirstPerson_Swing02 as string,
