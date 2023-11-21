@@ -709,8 +709,8 @@ export const items: {
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.75,
 			onUseSound: [CoreSound.bowShoot],
-			onUseAnimFP: CoreAnim("FP_Bow_Charge", "none"),
-			onUseAnimTP: CoreAnim("TP_Bow_Charge", "none"),
+			onUseAnimFP: CoreAnim("FP_Bow_Charge", "FP_Bow_Shoot"),
+			onUseAnimTP: CoreAnim("TP_Bow_Charge", "TP_Bow_Shoot"),
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
 		projectileLauncher: {
@@ -732,8 +732,8 @@ export const items: {
 			maxChargeSeconds: 0.2,
 			cooldownSeconds: 1.15,
 			onUseSound: [CoreSound.bowShoot],
-			onUseAnimFP: CoreAnim("FP_Bow_Charge", "none"),
-			onUseAnimTP: CoreAnim("TP_Bow_Charge", "none"),
+			onUseAnimFP: CoreAnim("FP_Crossbow_Charge", "FP_Crossbow_Shoot"),
+			onUseAnimTP: CoreAnim("TP_Crossbow_Charge", "TP_Crossbow_Shoot"),
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_CROSSBOW)],
 		projectileLauncher: {
@@ -747,7 +747,8 @@ export const items: {
 			chargeSound: [{ path: CoreSound.bowCharge }],
 		},
 		viewModel: {
-			idleAnimFP: CoreAnim("FP_Bow_Idle"),
+			idleAnimFP: CoreAnim("FP_Crossbow_Idle"),
+			idleAnimTP: CoreAnim("TP_Crossbow_Idle"),
 		},
 	},
 	[ItemType.WOOD_ARROW]: {
