@@ -707,7 +707,7 @@ export const items: {
 		usable: {
 			minChargeSeconds: 0.12,
 			maxChargeSeconds: 0.75,
-			cooldownSeconds: 0.75,
+			cooldownSeconds: 0.05,
 			onUseSound: [CoreSound.bowShoot],
 			onUseAnimFP: CoreAnim("FP_Bow_Charge", "none"),
 			onUseAnimTP: CoreAnim("TP_Bow_Charge", "none"),
@@ -780,7 +780,7 @@ export const items: {
 		displayName: "Telepearl",
 		usable: {
 			minChargeSeconds: 0.05,
-			maxChargeSeconds: 0.6,
+			maxChargeSeconds: 0.4,
 			cooldownSeconds: 0.25,
 			onUseSound: ["@Easy/Core/Shared/Resources/Sound/TelepearlThrow"],
 			onUseAnimFP: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
