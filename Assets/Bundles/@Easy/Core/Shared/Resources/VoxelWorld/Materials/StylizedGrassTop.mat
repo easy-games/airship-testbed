@@ -130,7 +130,7 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 0
-    - _TriplanarScale: 0.5
+    - _TriplanarScale: 0.25
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

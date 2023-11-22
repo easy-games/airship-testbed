@@ -95,6 +95,7 @@ Material:
     - AO_ON: 0
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
+    - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 1
@@ -133,7 +134,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.73385584, b: 0.504717, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}

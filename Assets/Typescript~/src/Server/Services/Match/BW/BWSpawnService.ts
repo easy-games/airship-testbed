@@ -37,15 +37,16 @@ export class BWSpawnService implements OnStart {
 		private readonly entityService: EntityService,
 		private readonly bedService: BWBedService,
 	) {
-		ServerSignals.MapLoad.Connect((event) => {
-			const position = event.LoadedMap.GetSpawnPlatform();
-			const entity = this.entityService.SpawnEntityForPlayer(
-				undefined,
-				EntityPrefabType.HUMAN,
-				position.Position.add(new Vector3(-3, 2, 3)),
-			);
-			entity.AddHealthbar();
-		});
+		// Spawn test entity
+		// ServerSignals.MapLoad.Connect((event) => {
+		// 	const position = event.LoadedMap.GetSpawnPlatform();
+		// 	const entity = this.entityService.SpawnEntityForPlayer(
+		// 		undefined,
+		// 		EntityPrefabType.HUMAN,
+		// 		position.Position.add(new Vector3(-3, 2, 3)),
+		// 	);
+		// 	entity.AddHealthbar();
+		// });
 
 		ServerSignals.MapLoad.Connect((event) => {
 			for (const team of Dependency<TeamService>().GetTeams()) {
