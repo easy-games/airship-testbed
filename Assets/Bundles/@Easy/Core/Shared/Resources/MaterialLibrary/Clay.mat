@@ -100,6 +100,7 @@ Material:
     - AO_ON: 0
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
+    - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
