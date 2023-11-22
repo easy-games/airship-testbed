@@ -308,7 +308,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.STONE_BRICK,
-			health: 20,
+			health: 25,
 			blockArchetype: BlockArchetype.STONE,
 		},
 	},
@@ -343,6 +343,7 @@ export const items: {
 			blockId: ItemType.OAK_WOOD_PLANK,
 			blockArchetype: BlockArchetype.WOOD,
 			stepSound: CoreSound.footstepWood,
+			health: 18,
 		},
 	},
 	[ItemType.OAK_LOG]: {

@@ -70,7 +70,7 @@
   </Block>
 
   <Block>
-    <Id>OAK_PLANKS</Id>
+    <Id>OAK_WOOD_PLANK</Id>
     <Name>Oak Planks</Name>
 <!--    <TopTexture>plank_oak.s</TopTexture>-->
 <!--    <SideTexture>plank_oak.s</SideTexture>-->
