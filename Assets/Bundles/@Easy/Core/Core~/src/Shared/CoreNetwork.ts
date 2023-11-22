@@ -1,7 +1,6 @@
 import {
 	AbilityCooldownDto,
 	AbilityDto,
-	AbilityUseResult,
 	ChargingAbilityDto,
 	ChargingAbilityEndedDto,
 	UseAbilityRequest,
