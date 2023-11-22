@@ -436,7 +436,7 @@
   <Block>
     <Id>OAK_LEAF</Id>
     <Name>Oak Leaf</Name>
-    <Solid>false</Solid>
+    <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Brightness>2</Brightness>

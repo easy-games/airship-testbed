@@ -708,7 +708,7 @@ export const items: {
 	[ItemType.WOOD_BOW]: {
 		displayName: "Wood Bow",
 		usable: {
-			minChargeSeconds: 0.12,
+			minChargeSeconds: 0.03,
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.4,
 			onUseSound: [CoreSound.bowShoot],
