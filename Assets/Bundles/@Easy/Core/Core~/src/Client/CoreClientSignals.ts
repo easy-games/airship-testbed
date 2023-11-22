@@ -18,7 +18,6 @@ import { BlockPlaceClientSignal } from "./Signals/BlockPlaceClientSignal";
 import { EntityDamageClientSignal } from "./Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "./Signals/EntityDeathClientSignal";
 import { EntitySpawnClientSignal } from "./Signals/EntitySpawnClientEvent";
-import { AbilityUsedClientSignal } from "./Controllers/Abilities/Event/AbilityUsedClientSignal";
 
 export const CoreClientSignals = {
 	EntitySpawn: new Signal<EntitySpawnClientSignal>(),
@@ -52,7 +51,6 @@ export const CoreClientSignals = {
 	AbilityRemoved: new Signal<AbilityRemovedClientSignal>(),
 	AbilitiesCleared: new Signal<AbilitiesClearedClientSignal>(),
 
-	AbilityBindingUse: new Signal<AbilityUsedClientSignal>(),
 	AbilityChargeBegan: new Signal<AbilityChargeClientSignal>(),
 	AbilityChargeEnded: new Signal<AbilityChargeEndClientSignal>(),
 };
