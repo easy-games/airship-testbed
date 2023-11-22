@@ -14,7 +14,8 @@ export class DamageController implements OnStart {
 		CoreNetwork.ServerToClient.EntityDamage.Client.OnServerEvent((entityId, amount, damageType, fromEntityId) => {
 			const entity = this.entityController.GetEntityById(entityId);
 			if (!entity) {
-				error("Failed to find entity.");
+				error("Failed to find entity for damage event: " + entityId);
+				return;
 			}
 
 			let fromEntity: Entity | undefined;

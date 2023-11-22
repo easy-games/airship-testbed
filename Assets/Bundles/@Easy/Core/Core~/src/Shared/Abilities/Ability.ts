@@ -1,6 +1,6 @@
 import { Duration } from "Shared/Util/Duration";
-import { AbilitySlot } from "./AbilitySlot";
 import { AbilityLogic } from "./AbilityLogic";
+import { AbilitySlot } from "./AbilitySlot";
 
 export enum AbilityCancellationTrigger {
 	/**
@@ -99,7 +99,7 @@ export interface AbilityDto {
 	/**
 	 * Charging
 	 */
-	readonly charging?: AbilityChargeConfig;
+	charging?: AbilityChargeConfig;
 }
 
 export interface ChargingAbilityDto {

@@ -10,6 +10,7 @@ import { Entity, EntityDto } from "Shared/Entity/Entity";
 import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { EntitySerializer } from "Shared/Entity/EntitySerializer";
 import { Inventory } from "Shared/Inventory/Inventory";
+import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
@@ -19,8 +20,6 @@ import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
-import { PlayerController } from "../Player/PlayerController";
-import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 
 @Controller({})
 export class EntityController implements OnStart {
@@ -29,7 +28,6 @@ export class EntityController implements OnStart {
 
 	constructor(
 		private readonly invController: InventoryController,
-		private readonly playerController: PlayerController,
 		private readonly localEntityController: LocalEntityController,
 		private readonly abilityRegistry: AbilityRegistry,
 	) {
@@ -43,10 +41,9 @@ export class EntityController implements OnStart {
 			"@Easy/Core/Client/Resources/Prefabs/EntityHealthbar.prefab",
 		) as Object;
 		PoolManager.PreLoadPool(this.entityHealthbarPrefab, 60);
-	}
 
-	OnStart(): void {
 		CoreNetwork.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {
+			print(`Spawning ${entityDtos.size()} ${entityDtos.size() > 1 ? "entities" : "entity"}.`);
 			entityDtos.forEach((entityDto) => {
 				Profiler.BeginSample("SpawnEntity");
 				try {
@@ -65,6 +62,9 @@ export class EntityController implements OnStart {
 				Profiler.EndSample();
 			}
 		});
+	}
+
+	OnStart(): void {
 		CoreNetwork.ServerToClient.PlayEntityItemAnimation.Client.OnServerEvent((entityId, animationId, playMode) => {
 			const entity = this.GetEntityById(entityId);
 			if (!entity) return;

@@ -1,6 +1,5 @@
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
-import { Bin } from "Shared/Util/Bin";
 
 export interface AbilityChargeEndEvent {
 	readonly endState: ChargingAbilityEndedState;
@@ -101,11 +100,18 @@ export abstract class AbilityLogic {
 	 * @returns The data transfer object representation of this ability logic
 	 */
 	public Encode(): AbilityDto {
-		return {
+		let dto: AbilityDto = {
 			id: this.GetId(),
 			enabled: this.GetEnabled(),
 			slot: this.GetConfig().slot,
-			charging: this.GetConfig().charge,
 		};
+		const charge = this.GetConfig().charge;
+		if (charge) {
+			dto.charging = {
+				...charge,
+				cancelTriggers: [...charge.cancelTriggers],
+			};
+		}
+		return dto;
 	}
 }
