@@ -96,6 +96,7 @@ export class AbilitiesController implements OnStart {
 	// TODO: in future a much friendlier Input API
 	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
 		const boundAbilityId = binding.GetBound()?.id;
+		if (binding.IsActive()) return;
 
 		const character = Game.LocalPlayer.character;
 		if (!character) return;
@@ -119,10 +120,6 @@ export class AbilitiesController implements OnStart {
 	}
 
 	public OnStart(): void {
-		Game.LocalPlayer.ObserveCharacter((character) => {
-			const abilities = character?.GetAbilities();
-		});
-
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
 			if (event.entity instanceof CharacterEntity && event.entity.IsLocalCharacter()) {
 				this.primaryAbilitySlots.forEach((slot) => slot.Unbind());

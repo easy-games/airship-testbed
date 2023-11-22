@@ -140,6 +140,10 @@ export class AbilityBinding {
 		return this.enabled;
 	}
 
+	public IsActive() {
+		return this.active;
+	}
+
 	/**
 	 * Bind a callback function to this slot
 	 * @param keyboard The keyboard

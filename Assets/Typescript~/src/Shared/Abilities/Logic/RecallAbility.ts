@@ -52,7 +52,7 @@ export default class RecallAbility extends AbilityLogic {
 		sound.Play();
 
 		// TODO: Ask ben for an actual sound
-		const tick = 0.1;
+		const tick = 0.022;
 		let elapsed = 0;
 		const soundTween = Tween.InElastic(this.configuration.charge!.chargeTimeSeconds, (delta) => {
 			elapsed += delta;
@@ -60,7 +60,7 @@ export default class RecallAbility extends AbilityLogic {
 				elapsed = 0;
 
 				if (sound) {
-					sound.pitch = sound.pitch + 0.04;
+					sound.pitch = sound.pitch + 0.1;
 				}
 			}
 		}).Play();
