@@ -105,8 +105,11 @@ export class AbilitiesController implements OnStart {
 
 		if (state === BindingInputState.InputBegan && boundAbilityId) {
 			binding.SetActive(true);
-			SetTimeout(0.1, () => binding.SetActive(false));
 			abilities.UseAbilityById(boundAbilityId);
+		}
+
+		if (state === BindingInputState.InputEnded) {
+			binding.SetActive(false);
 		}
 	};
 
