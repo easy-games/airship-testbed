@@ -809,7 +809,7 @@ export const items: {
 	[ItemType.FIREBALL]: {
 		displayName: "Fireball",
 		usable: {
-			minChargeSeconds: 0.05,
+			minChargeSeconds: 0,
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 			onUseSound: ["Fireball_Throw"],
