@@ -4,13 +4,7 @@ import { AbilitySlot } from "./AbilitySlot";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import {
-	AbilityCancellationTrigger,
-	AbilityConfig,
-	AbilityDto,
-	AbilityUseResult,
-	ChargingAbilityEndedState,
-} from "./Ability";
+import { AbilityCancellationTrigger, AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
 import { Duration } from "Shared/Util/Duration";
 import { SetTimeout } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
