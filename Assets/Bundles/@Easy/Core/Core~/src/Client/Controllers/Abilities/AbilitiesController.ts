@@ -103,13 +103,10 @@ export class AbilitiesController implements OnStart {
 
 		const abilities = character.GetAbilities();
 
-		if (state === BindingInputState.InputEnded && boundAbilityId) {
+		if (state === BindingInputState.InputBegan && boundAbilityId) {
 			binding.SetActive(true);
-
-			const abilityUseResponse = abilities.UseAbilityById(boundAbilityId);
-			if (abilityUseResponse?.type !== "Charging") {
-				SetTimeout(0.1, () => binding.SetActive(false));
-			}
+			SetTimeout(0.1, () => binding.SetActive(false));
+			abilities.UseAbilityById(boundAbilityId);
 		}
 	};
 

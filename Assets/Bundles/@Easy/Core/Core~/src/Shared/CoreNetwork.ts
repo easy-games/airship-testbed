@@ -50,7 +50,7 @@ export const CoreNetwork = {
 		LibonatiTest: new RemoteEvent<[]>(),
 
 		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
-		UseAbility: new RemoteFunction<[req: UseAbilityRequest], AbilityUseResult | undefined>(),
+		UseAbility: new RemoteEvent<[req: UseAbilityRequest]>(),
 	},
 	ServerToClient: {
 		ServerInfo: new RemoteEvent<[gameId: string, serverId: string]>(),
