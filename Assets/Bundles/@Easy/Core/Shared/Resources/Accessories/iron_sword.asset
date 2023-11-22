@@ -15,8 +15,8 @@ MonoBehaviour:
   DisplayName: Iron Sword
   AccessorySlot: 6
   Prefab: {fileID: 7249071891063959814, guid: bc811aaf83d3447b9ba35700dca5d7e4, type: 3}
-  Position: {x: 0, y: 0, z: 0}
-  Rotation: {x: 0, y: 0, z: 0}
+  Position: {x: -0.003, y: -0, z: 0.022}
+  Rotation: {x: 277.07718, y: 216.13052, z: 134.46315}
   Scale: {x: 0.85, y: 0.85, z: 0.85}
   visibilityMode: 2
   SkinnedToCharacter: 1
