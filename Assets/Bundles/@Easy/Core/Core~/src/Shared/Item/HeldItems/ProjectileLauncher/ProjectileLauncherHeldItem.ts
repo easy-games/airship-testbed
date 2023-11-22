@@ -1,7 +1,6 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { Crosshair } from "Shared/Crosshair/Crosshair";
-import { EntityAnimationLayer } from "Shared/Entity/Animation/EntityAnimationLayer";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { AmmoMeta, ItemMeta, SoundMeta } from "Shared/Item/ItemMeta";
@@ -56,14 +55,17 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 
 		// Don't start charging if on cooldown, but we'll auto-charge after cooldown has passed period
-		if (this.GetRemainingCooldownTime() > 0) {
-			this.processChargeAfterCooldown = true;
-			if (this.itemMeta?.usable) {
-				Task.Delay(this.itemMeta.usable.cooldownSeconds + 0.01, () => {
-					this.OnCooldownReset();
-				});
+		const cooldownTime = this.GetRemainingCooldownTime();
+		if (cooldownTime > 0) {
+			if (!this.processChargeAfterCooldown) {
+				this.processChargeAfterCooldown = true;
+				if (this.itemMeta?.usable) {
+					Task.Delay(cooldownTime + 0.01, () => {
+						this.OnCooldownReset();
+					});
+				}
+				this.Log("OnChargeStartAwaitCooldown");
 			}
-			this.Log("OnChargeStartAwaitCooldown");
 			return;
 		}
 
@@ -179,10 +181,11 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	}
 
 	protected override OnUseClient(useIndex: number): void {
-		if (!this.HasRequiredAmmo()) {
-			this.OnChargeEnd();
-			return;
-		}
+		this.OnChargeEnd();
+		// if (!this.HasRequiredAmmo()) {
+		// 	this.OnChargeEnd();
+		// 	return;
+		// }
 
 		super.OnUseClient(useIndex);
 		print("On use: " + useIndex);

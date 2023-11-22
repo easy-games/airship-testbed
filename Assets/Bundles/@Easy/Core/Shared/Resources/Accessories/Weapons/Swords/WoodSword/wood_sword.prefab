@@ -102,11 +102,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: e6d5f12f6aaf48c4a8745c732b73ee5e, type: 2}
+      objectReference: {fileID: 2100000, guid: 13583fd8fc0300d4c8acb0283f68cb28, type: 2}
     - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: e6d5f12f6aaf48c4a8745c732b73ee5e, type: 2}
+      objectReference: {fileID: 2100000, guid: 13583fd8fc0300d4c8acb0283f68cb28, type: 2}
     - target: {fileID: -7511558181221131132, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 
@@ -122,7 +122,7 @@ PrefabInstance:
     - target: {fileID: -5754084199372789682, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 2486371437528621091, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
+      objectReference: {fileID: -8866821339206533178, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
     - target: {fileID: 919132149155446097, guid: 26d71212f84bb6b428d556d3c3abd764, type: 3}
       propertyPath: m_Name
       value: item_sword_wood_model
@@ -147,27 +147,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.7169812, g: 0.50946957, b: 0.42274833, a: 1}
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 0
     reference: Wood_Cherry_Natural
-  - materialColor: {r: 0.8301887, g: 0.6871032, b: 0.58348167, a: 1}
+  - materialColor: {r: 0.8301887, g: 0.588703, b: 0.41901034, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 0
-    reference: Wood_Cherry_Natural
-  - materialColor: {r: 0.3584906, g: 0.22695327, b: 0.13697046, a: 1}
+    reference: Wood_Cherry_Painted
+  - materialColor: {r: 0.8313726, g: 0.5882353, b: 0.41960788, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Wood_Cherry_Painted
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Wood_Cherry_Natural
-  - materialColor: {r: 0.35686275, g: 0.227451, b: 0.13725491, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-    reference: Wood_Cherry_Natural
-  - materialColor: {r: 0.83137256, g: 0.6947042, b: 0.6862745, a: 1}
+  - materialColor: {r: 0.8113208, g: 0.7309541, b: 0.78057045, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
-  - materialColor: {r: 0.34303957, g: 0.509434, b: 0.2763439, a: 1}
+  - materialColor: {r: 0.34117648, g: 0.50980395, b: 0.27450982, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay

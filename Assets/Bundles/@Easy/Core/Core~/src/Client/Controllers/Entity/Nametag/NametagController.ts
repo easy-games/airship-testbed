@@ -87,6 +87,8 @@ export class NametagController implements OnStart {
 	}
 
 	public UpdateNametag(entity: Entity): void {
+		if (entity.IsLocalCharacter()) return;
+
 		const team: Team | undefined = entity.player?.GetTeam();
 		const localTeam = Game.LocalPlayer.GetTeam();
 

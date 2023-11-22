@@ -7584,8 +7584,8 @@ MonoBehaviour:
   replicatedLookVector: {x: 0, y: 0, z: 0}
   _predictedObject: {fileID: 889479376615667292}
   ownerInterpolation: 1
-  ownerStepUpInterpolation: 6
-  ownerStepUpInterpDuration: 0.5
+  ownerStepUpInterpolation: 1
+  ownerStepUpInterpDuration: 0.1
   applyVelocityOverTimeInterpDuration: 1
   sprintForwardThreshold: 0.25
 --- !u!114 &-98370938496583557
