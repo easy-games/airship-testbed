@@ -76,7 +76,7 @@ export class EntityService implements OnStart {
 		this.idCounter++;
 
 		const beforeEvent = CoreServerSignals.BeforeEntitySpawn.Fire(
-			new BeforeEntitySpawnServerEvent(id, player, pos ?? new Vector3(0, 0, 0), rotation ?? Quaternion.identity),
+			new BeforeEntitySpawnServerEvent(id, player, pos ?? Vector3.zero, rotation ?? Quaternion.identity),
 		);
 
 		// Spawn character game object

@@ -21,7 +21,7 @@ const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
 
 const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
-const Y_LOCKED_ROTATION = math.rad(15);
+const Y_LOCKED_ROTATION = 0; //math.rad(15);
 
 const ANGLE_EPSILON = 0.0001;
 const TAU = math.pi * 2;
@@ -137,6 +137,7 @@ export class HumanoidCameraMode implements CameraMode {
 		}
 
 		this.SetFirstPerson(this.firstPerson);
+		this.SetDirection(this.graphicalCharacterGO.transform.forward);
 	}
 
 	OnStop() {
