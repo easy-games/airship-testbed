@@ -83,7 +83,7 @@ export class ItemShopController implements OnStart {
 				{
 					volumeScale: 0.3,
 					rollOffMode: AudioRolloffMode.Linear,
-					maxDistance: 50,
+					maxDistance: 10,
 				},
 			);
 		});
