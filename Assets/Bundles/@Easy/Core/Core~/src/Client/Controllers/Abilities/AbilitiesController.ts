@@ -16,6 +16,8 @@ import { EntityController } from "../Entity/EntityController";
 import { AbilityAddedClientSignal } from "./Event/AbilityAddedClientSignal";
 import { AbilityRemovedClientSignal } from "./Event/AbilityRemovedClientSignal";
 import { AbilitiesClearedClientSignal } from "./Event/AbilitiesClearedClientSignal";
+import { Game } from "Shared/Game";
+import { SetTimeout } from "Shared/Util/Timer";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V];
@@ -95,10 +97,18 @@ export class AbilitiesController implements OnStart {
 	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
 		const boundAbilityId = binding.GetBound()?.id;
 
+		const character = Game.LocalPlayer.character;
+		if (!character) return;
+
+		const abilities = character.GetAbilities();
+
 		if (state === BindingInputState.InputEnded && boundAbilityId) {
-			CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
-				abilityId: boundAbilityId,
-			});
+			binding.SetActive(true);
+
+			const abilityUseResponse = abilities.UseAbilityById(boundAbilityId);
+			if (abilityUseResponse?.type !== "Charging") {
+				SetTimeout(0.1, () => binding.SetActive(false));
+			}
 		}
 	};
 
@@ -109,6 +119,10 @@ export class AbilitiesController implements OnStart {
 	}
 
 	public OnStart(): void {
+		Game.LocalPlayer.ObserveCharacter((character) => {
+			const abilities = character?.GetAbilities();
+		});
+
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
 			if (event.entity instanceof CharacterEntity && event.entity.IsLocalCharacter()) {
 				this.primaryAbilitySlots.forEach((slot) => slot.Unbind());
@@ -193,9 +207,8 @@ export class AbilitiesController implements OnStart {
 		CoreNetwork.ServerToClient.AbilityChargeBegan.Client.OnServerEvent((entityId, event) => {
 			const entity = this.entityService.GetEntityById(entityId);
 
-			if (entity && entity instanceof CharacterEntity) {
-				CoreClientSignals.AbilityChargeBegan.Fire(new AbilityChargeClientSignal(entity, event));
-			}
+			if (!entity || !(entity instanceof CharacterEntity)) return;
+			CoreClientSignals.AbilityChargeBegan.Fire(new AbilityChargeClientSignal(entity, event));
 		});
 
 		CoreNetwork.ServerToClient.AbilityChargeEnded.Client.OnServerEvent((entityId, event) => {
@@ -203,6 +216,12 @@ export class AbilitiesController implements OnStart {
 
 			if (entity && entity instanceof CharacterEntity) {
 				CoreClientSignals.AbilityChargeEnded.Fire(new AbilityChargeEndClientSignal(entity, event));
+
+				// Set inactive when no longer charging :-)
+				const binding = this.allSlots.find((f) => f.GetBound()?.id === event.id);
+				if (binding) {
+					binding.SetActive(false);
+				}
 			}
 		});
 	}

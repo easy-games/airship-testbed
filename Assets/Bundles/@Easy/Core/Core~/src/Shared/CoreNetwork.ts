@@ -1,6 +1,7 @@
 import {
 	AbilityCooldownDto,
 	AbilityDto,
+	AbilityUseResult,
 	ChargingAbilityDto,
 	ChargingAbilityEndedDto,
 	UseAbilityRequest,
@@ -49,7 +50,7 @@ export const CoreNetwork = {
 		LibonatiTest: new RemoteEvent<[]>(),
 
 		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
-		UseAbility: new RemoteEvent<[req: UseAbilityRequest]>(),
+		UseAbility: new RemoteFunction<[req: UseAbilityRequest], AbilityUseResult | undefined>(),
 	},
 	ServerToClient: {
 		ServerInfo: new RemoteEvent<[gameId: string, serverId: string]>(),

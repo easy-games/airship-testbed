@@ -9,6 +9,7 @@ import { AbilityConfig, ChargingAbilityEndedState } from "Shared/Abilities/Abili
 import { OnUpdate } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Game } from "Shared/Game";
 
 export interface ClientAbilityCooldownState {
 	startTime: number;
@@ -22,7 +23,11 @@ export interface ClientAbilityState {
 	charges: number | undefined;
 	keybinding: KeyCode | undefined;
 	cooldown?: ClientAbilityCooldownState;
+	active: boolean;
+	charging?: boolean;
 }
+
+const ACTIVE_TWEEN_TIME = 0.1;
 
 @Controller()
 export class AbilitiesUIController implements OnStart {
@@ -55,9 +60,13 @@ export class AbilitiesUIController implements OnStart {
 
 	private slotCooldowns = new Map<number, () => void>();
 
-	private UpdateAbilityBarSlot(slotIdx: number, ability: ClientAbilityState | undefined) {
+	private UpdateAbilityBarSlot(
+		slotIdx: number,
+		nextState: ClientAbilityState | undefined,
+		prevState: ClientAbilityState | undefined,
+	) {
 		if (slotIdx >= this.abilitySlots) {
-			warn("Attempting to set slot", slotIdx, "with", inspect(ability));
+			warn("Attempting to set slot", slotIdx, "with", inspect(nextState));
 			return;
 		}
 
@@ -74,10 +83,11 @@ export class AbilitiesUIController implements OnStart {
 			return;
 		}
 
-		contentGO.gameObject.SetActive(ability !== undefined);
-		if (ability !== undefined) {
+		contentGO.gameObject.SetActive(nextState !== undefined);
+		if (nextState !== undefined) {
 			// Update slot metadata
 			const refs = go.GetComponent<GameObjectReferences>();
+			const contentRect = refs.GetValue<RectTransform>("UI", "ContentRect");
 			const image = refs.GetValue<Image>("UI", "Image");
 			const amount = refs.GetValue<TMP_Text>("UI", "Charges");
 			const name = refs.GetValue<TMP_Text>("UI", "Name");
@@ -87,18 +97,28 @@ export class AbilitiesUIController implements OnStart {
 			const cooldownText = refs.GetValue<TMP_Text>("UI", "CooldownText");
 			const cooldownTickImage = refs.GetValue<Image>("UI", "CooldownTickImage");
 
+			if (!prevState?.active && nextState.active) {
+				contentRect.TweenLocalScale(new Vector3(0.9, 0.9, 0.9), ACTIVE_TWEEN_TIME);
+				contentRect
+					.GetComponent<Image>()
+					.TweenGraphicColor(new Color(40 / 255, 110 / 255, 185 / 255, 1), ACTIVE_TWEEN_TIME);
+			} else if (prevState?.active && !nextState.active) {
+				contentRect.TweenLocalScale(new Vector3(1, 1, 1), ACTIVE_TWEEN_TIME);
+				contentRect.GetComponent<Image>().TweenGraphicColor(new Color(0, 0, 0, 0.65), ACTIVE_TWEEN_TIME);
+			}
+
 			const clearSlotCooldown = this.slotCooldowns.get(slotIdx);
 			if (clearSlotCooldown) {
 				clearSlotCooldown();
 			}
 
-			if (ability.cooldown) {
+			if (nextState.cooldown) {
 				cooldown.active = true;
 
-				const length = ability.cooldown.length;
+				const length = nextState.cooldown.length;
 
 				const disconnect = OnUpdate.Connect(() => {
-					const secondsRemaining = ability.cooldown!.endTime - TimeUtil.GetServerTime();
+					const secondsRemaining = nextState.cooldown!.endTime - TimeUtil.GetServerTime();
 					const value = math.min(1, (length - secondsRemaining) / length);
 
 					cooldownTickImage.fillAmount = 1 - value;
@@ -115,29 +135,29 @@ export class AbilitiesUIController implements OnStart {
 				cooldown.active = false;
 			}
 
-			if (ability.keybinding !== undefined) {
+			if (nextState.keybinding !== undefined) {
 				keybinding.enabled = true;
-				keybinding.text = InputUtils.GetStringForKeyCode(ability.keybinding) ?? "??";
+				keybinding.text = InputUtils.GetStringForKeyCode(nextState.keybinding) ?? "??";
 			} else {
 				keybinding.enabled = false;
 			}
 
-			if (ability.charges !== undefined && ability.charges > 0) {
+			if (nextState.charges !== undefined && nextState.charges > 0) {
 				amount.enabled = true;
-				amount.text = tostring(ability.charges);
+				amount.text = tostring(nextState.charges);
 			} else {
 				amount.enabled = false;
 			}
 
-			const texture2d = ability.icon
-				? AssetBridge.Instance.LoadAssetIfExists<Texture2D>(ability.icon)
+			const texture2d = nextState.icon
+				? AssetBridge.Instance.LoadAssetIfExists<Texture2D>(nextState.icon)
 				: undefined;
 			if (texture2d) {
 				image.sprite = Bridge.MakeSprite(texture2d);
 				image.enabled = true;
 				name.enabled = false;
 			} else {
-				name.text = ability.name;
+				name.text = nextState.name;
 				image.enabled = false;
 				name.enabled = true;
 			}
@@ -146,7 +166,7 @@ export class AbilitiesUIController implements OnStart {
 
 	private SetupAbilityBar() {
 		for (let i = 0; i < this.abilitySlots; i++) {
-			this.UpdateAbilityBarSlot(i, undefined); // set undefined for now, TODO: Retrieve from AbilitiesController ?
+			this.UpdateAbilityBarSlot(i, undefined, undefined); // set undefined for now, TODO: Retrieve from AbilitiesController ?
 		}
 	}
 
@@ -202,10 +222,10 @@ export class AbilitiesUIController implements OnStart {
 			let idx = 0;
 			for (const ability of abilities) {
 				let currIdx = idx;
-				this.UpdateAbilityBarSlot(currIdx, ability.ToAbilityState());
+				this.UpdateAbilityBarSlot(currIdx, ability.ToAbilityState(), undefined);
 				bin.Add(
 					ability.BindingStateChanged.Connect((event) => {
-						this.UpdateAbilityBarSlot(currIdx, event.newState);
+						this.UpdateAbilityBarSlot(currIdx, event.newState, event.oldState);
 					}),
 				);
 				idx++;

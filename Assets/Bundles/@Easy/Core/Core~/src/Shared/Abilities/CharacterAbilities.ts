@@ -4,12 +4,16 @@ import { AbilitySlot } from "./AbilitySlot";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { AbilityCancellationTrigger, AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
+import {
+	AbilityCancellationTrigger,
+	AbilityConfig,
+	AbilityDto,
+	AbilityUseResult,
+	ChargingAbilityEndedState,
+} from "./Ability";
 import { Duration } from "Shared/Util/Duration";
-import { Task } from "Shared/Util/Task";
 import { SetTimeout } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
-import inspect from "@easy-games/unity-inspect";
 
 export interface AbilityCooldown {
 	readonly length: Duration;
@@ -241,13 +245,13 @@ export class CharacterAbilities {
 	 * @param id The id of the ability to use
 	 * @server Server-only API
 	 */
-	public UseAbilityById(id: string): boolean {
+	public UseAbilityById(id: string): AbilityUseResult | undefined {
 		if (this.IsAbilityOnCooldown(id)) {
-			return false;
+			return undefined;
 		}
 
 		// can't cast while casting
-		if (this.currentChargingAbilityState !== undefined) return false;
+		if (this.currentChargingAbilityState !== undefined) return undefined;
 
 		if (RunCore.IsServer()) {
 			const ability = this.GetAbilityLogicById(id);
@@ -265,7 +269,7 @@ export class CharacterAbilities {
 						cancellation.includes(AbilityCancellationTrigger.EntityMovement) &&
 						this.entity.GetMoveDirection() !== Vector3.zero
 					) {
-						return false;
+						return undefined;
 					}
 
 					ability.OnServerChargeBegan();
@@ -317,7 +321,10 @@ export class CharacterAbilities {
 						},
 					};
 
-					return true;
+					return {
+						type: "Charging",
+						chargeTimeSeconds: chargeTime,
+					};
 				} else {
 					// Handle setting the cooldown
 					if (config.cooldownTimeSeconds) {
@@ -325,13 +332,18 @@ export class CharacterAbilities {
 					}
 
 					ability.Trigger();
-					return true;
+
+					return {
+						type: "Instant",
+					};
 				}
 			} else {
-				return false;
+				return undefined;
 			}
 		} else {
-			throw `UseAbilityById can only be used by the server!`;
+			return CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
+				abilityId: id,
+			});
 		}
 	}
 

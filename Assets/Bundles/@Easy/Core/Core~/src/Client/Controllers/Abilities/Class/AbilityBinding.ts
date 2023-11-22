@@ -6,6 +6,9 @@ import { Signal } from "Shared/Util/Signal";
 import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilitiesUIController";
 import { Dependency } from "@easy-games/flamework-core";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
+import { Game } from "Shared/Game";
+import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
 
 export enum BindingInputState {
 	InputBegan,
@@ -20,6 +23,7 @@ export type BindingAction = (inputState: BindingInputState, binding: AbilityBind
 
 export class AbilityBinding {
 	private bin = new Bin();
+	private active = false;
 	private boundTo: AbilityDto | undefined;
 	private cooldownState: ClientAbilityCooldownState | undefined;
 
@@ -37,6 +41,22 @@ export class AbilityBinding {
 		const oldState = this.ToAbilityState();
 
 		this.enabled = enabled;
+
+		this.BindingStateChanged.Fire({
+			oldState,
+			newState: this.ToAbilityState(),
+		});
+	}
+
+	/**
+	 * Sets this binding as active (used for UI effects primarily)
+	 * @param active True if active
+	 * @internal
+	 */
+	public SetActive(active: boolean) {
+		const oldState = this.ToAbilityState();
+
+		this.active = active;
 
 		this.BindingStateChanged.Fire({
 			oldState,
@@ -63,6 +83,7 @@ export class AbilityBinding {
 			name: config.name,
 			icon: config.image,
 			charges: 0,
+			active: this.active,
 			cooldown: this.cooldownState,
 		};
 	}
