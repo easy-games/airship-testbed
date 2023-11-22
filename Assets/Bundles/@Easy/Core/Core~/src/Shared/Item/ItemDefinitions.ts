@@ -631,7 +631,7 @@ export const items: {
 		viewModel: {
 			...swordViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.STONE_SWORD)],
+		accessoryPaths: ["@Easy/Core/Shared/Resources/Accessories/stone_sword_temp.asset"],
 		melee: {
 			...swordMelee,
 			damage: 25,
