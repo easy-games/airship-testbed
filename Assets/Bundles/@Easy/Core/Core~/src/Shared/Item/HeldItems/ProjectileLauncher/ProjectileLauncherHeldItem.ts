@@ -188,7 +188,6 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		// }
 
 		super.OnUseClient(useIndex);
-		print("On use: " + useIndex);
 
 		//Play the use animation
 		this.entity.animator.PlayUseAnim(1);

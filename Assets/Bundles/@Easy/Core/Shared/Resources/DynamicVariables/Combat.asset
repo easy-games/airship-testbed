@@ -16,7 +16,7 @@ MonoBehaviour:
   strings: []
   numbers:
   - key: kbX
-    value: 10
+    value: 8
   - key: kbY
     value: 7
   - key: kbDuration
