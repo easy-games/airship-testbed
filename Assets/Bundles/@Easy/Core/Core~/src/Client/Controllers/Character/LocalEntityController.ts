@@ -284,13 +284,7 @@ export class LocalEntityController implements OnStart {
 			keyboard.OnKeyDown(KeyCode.H, (event) => {
 				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
-					this.SetLookBackwards(true);
-				}
-			});
-			keyboard.OnKeyUp(KeyCode.H, (event) => {
-				if (event.uiProcessed) return;
-				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
-					this.SetLookBackwards(false);
+					this.SetLookBackwards(!this.lookBackwards);
 				}
 			});
 
