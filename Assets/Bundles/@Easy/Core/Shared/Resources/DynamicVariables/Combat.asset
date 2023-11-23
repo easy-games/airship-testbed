@@ -16,9 +16,9 @@ MonoBehaviour:
   strings: []
   numbers:
   - key: kbX
-    value: 8
+    value: 5
   - key: kbY
-    value: 7
+    value: 8
   - key: kbDuration
     value: 0.1
   - key: kbSelfMultiplier
