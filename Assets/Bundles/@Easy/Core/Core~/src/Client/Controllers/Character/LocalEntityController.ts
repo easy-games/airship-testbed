@@ -6,7 +6,6 @@ import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DataStreamItems } from "Shared/Util/DataStreamTypes";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { Theme } from "Shared/Util/Theme";
@@ -297,7 +296,7 @@ export class LocalEntityController implements OnStart {
 
 			// Debug knockback:
 			keyboard.OnKeyDown(KeyCode.L, (event) => {
-				if (!RunUtil.IsEditor()) return;
+				// if (!RunUtil.IsEditor()) return;
 				if (event.uiProcessed) return;
 				print("-----");
 				for (const entity of Dependency<EntityController>().GetEntities()) {
