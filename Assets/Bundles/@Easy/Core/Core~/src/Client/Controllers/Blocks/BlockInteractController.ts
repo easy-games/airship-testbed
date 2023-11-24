@@ -55,12 +55,12 @@ export class BlockInteractController {
 				//Destroy block
 				world.DeleteBlock(voxelPos);
 				if (showHealthbars) {
-					this.blockHealth.VisualizeBlockBreak(voxelPos, block.runtimeBlockId);
+					this.blockHealth.VisualizeBlockBreak(voxelPos, block.runtimeBlockId, true, damage);
 				}
 			} else {
 				//Damage block
 				if (showHealthbars) {
-					this.blockHealth.VisualizeBlockHealth(voxelPos);
+					this.blockHealth.VisualizeBlockHealth(voxelPos, damage, true);
 				}
 			}
 		}
