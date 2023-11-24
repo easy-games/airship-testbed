@@ -74,6 +74,8 @@ export class ChatService implements OnStart {
 			if (StringUtils.startsWith(text, "/")) {
 				const commandData = ChatUtil.ParseCommandData(text);
 
+				print(player.username + ": " + text);
+
 				if (commandData) {
 					const command = this.commands.get(commandData.label);
 					if (command) {
