@@ -76,7 +76,7 @@ interface EntityDriver extends Component {
 	SetAllowFlight(allowed: boolean): void;
 	IsAllowFlight(): boolean;
 	Teleport(position: Vector3): void;
-	ApplyImpulse(impulse: Vector3): void;
+	ApplyImpulse(impulse: Vector3, ignoreYIfInAir = false): void;
 	SetVelocity(velocity: Vector3): void;
 	DisableMovement();
 	EnableMovement();

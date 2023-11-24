@@ -172,7 +172,7 @@ export class DamageService implements OnStart {
 				despawned = true;
 			});
 		} else {
-			entity.GrantImmunity(0.25);
+			entity.GrantImmunity(0.3);
 
 			//Hit stun and Knockback
 			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
@@ -190,9 +190,10 @@ export class DamageService implements OnStart {
 		let horizontalScalar = this.combatVars.GetNumber("kbX");
 		let verticalScalar = this.combatVars.GetNumber("kbY");
 
-		if (!driver.IsGrounded()) {
-			verticalScalar = 0;
-		}
+		// if (!driver.IsGrounded()) {
+		// 	verticalScalar *= 0.6;
+		// 	horizontalScalar *= 0.6;
+		// }
 
 		let impulse: Vector3;
 		const delta = knockbackVel ?? new Vector3(0, 0, 0);

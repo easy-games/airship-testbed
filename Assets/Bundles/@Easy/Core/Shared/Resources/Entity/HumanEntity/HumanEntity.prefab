@@ -7539,7 +7539,7 @@ MonoBehaviour:
   _teleportThreshold: 3
   _ownerSmoothPosition: 1
   _ownerSmoothRotation: 1
-  _ownerInterpolation: 1
+  _ownerInterpolation: 2
   _predictionType: 0
   _rigidbody: {fileID: 0}
   _rigidbody2d: {fileID: 0}
