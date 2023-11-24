@@ -172,7 +172,7 @@ export class DamageService implements OnStart {
 				despawned = true;
 			});
 		} else {
-			entity.GrantImmunity(0.3);
+			entity.GrantImmunity(0.24);
 
 			//Hit stun and Knockback
 			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
