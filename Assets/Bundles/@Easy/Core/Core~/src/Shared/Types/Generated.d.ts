@@ -12899,8 +12899,10 @@ interface BridgeConstructor {
 
 
     CopyToClipboard(text: string): void;
+    GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
+    GetReservedRam(): number;
     GetVolume(): number;
     IsFullScreen(): boolean;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
