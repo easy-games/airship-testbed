@@ -7536,7 +7536,7 @@ MonoBehaviour:
   _implementsPredictionMethods: 1
   _graphicalObject: {fileID: 7911948219130051474}
   _enableTeleport: 1
-  _teleportThreshold: 3
+  _teleportThreshold: 8
   _ownerSmoothPosition: 1
   _ownerSmoothRotation: 1
   _ownerInterpolation: 2
