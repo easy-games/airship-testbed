@@ -12902,6 +12902,7 @@ interface BridgeConstructor {
     GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
+    GetMonoRam(): number;
     GetReservedRam(): number;
     GetVolume(): number;
     IsFullScreen(): boolean;

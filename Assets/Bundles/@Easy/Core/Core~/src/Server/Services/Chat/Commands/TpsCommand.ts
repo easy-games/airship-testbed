@@ -13,10 +13,11 @@ export class TpsCommand extends ChatCommand {
 				const avg = Bridge.GetAverageFPS();
 				const current = Bridge.GetCurrentFPS();
 
+				const monoRam = math.round(Bridge.GetMonoRam());
 				const allocatedRam = math.round(Bridge.GetAllocatedRam());
 				const reservedRam = math.round(Bridge.GetReservedRam());
 				print(
-					`TPS current: ${current}, avg: ${avg} | Ram allocated: ${allocatedRam} mb, reserved: ${reservedRam} mb`,
+					`TPS current: ${current}, avg: ${avg} | Ram mono: ${monoRam} mb, allocated: ${allocatedRam} mb, reserved: ${reservedRam} mb`,
 				);
 			});
 		}
@@ -26,12 +27,13 @@ export class TpsCommand extends ChatCommand {
 		const avg = Bridge.GetAverageFPS();
 		const current = Bridge.GetCurrentFPS();
 
+		const monoRam = math.round(Bridge.GetMonoRam());
 		const allocatedRam = math.round(Bridge.GetAllocatedRam());
 		const reservedRam = math.round(Bridge.GetReservedRam());
 
 		player.SendMessage(ChatColor.Yellow("TPS current: " + current + ", avg: " + avg));
 		player.SendMessage(
-			ChatColor.Yellow("Ram allocated: " + allocatedRam + " mb, reserved: " + reservedRam + " mb"),
+			ChatColor.Yellow(`Ram mono: ${monoRam} mb, allocated: ${allocatedRam} mb, reserved: ${reservedRam} mb`),
 		);
 	}
 }
