@@ -69,21 +69,12 @@ export class SetVarCommand extends ChatCommand {
 			return;
 		}
 
-		// New
 		Game.BroadcastMessage(
 			ChatColor.Aqua(player.username) +
 				ChatColor.Gray(" set var ") +
 				ChatColor.Yellow(args[0]) +
 				ChatColor.Gray(" to ") +
 				ChatColor.White(valueString),
-		);
-
-		// Old
-		Game.BroadcastMessage(
-			ColorUtil.ColoredText(Theme.Aqua, player.username) +
-				ColorUtil.ColoredText(Theme.Gray, " set var ") +
-				ColorUtil.ColoredText(Theme.Yellow, args[0]) +
-				ColorUtil.ColoredText(Theme.Gray, " to " + ColorUtil.ColoredText(Theme.White, valueString)),
 		);
 	}
 }

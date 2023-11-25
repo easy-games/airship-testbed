@@ -4,13 +4,7 @@ import { AbilitySlot } from "./AbilitySlot";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import {
-	AbilityCancellationTrigger,
-	AbilityConfig,
-	AbilityDto,
-	AbilityUseResult,
-	ChargingAbilityEndedState,
-} from "./Ability";
+import { AbilityCancellationTrigger, AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
 import { Duration } from "Shared/Util/Duration";
 import { SetTimeout } from "Shared/Util/Timer";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -245,13 +239,13 @@ export class CharacterAbilities {
 	 * @param id The id of the ability to use
 	 * @server Server-only API
 	 */
-	public UseAbilityById(id: string): AbilityUseResult | undefined {
+	public UseAbilityById(id: string) {
 		if (this.IsAbilityOnCooldown(id)) {
-			return undefined;
+			return;
 		}
 
 		// can't cast while casting
-		if (this.currentChargingAbilityState !== undefined) return undefined;
+		if (this.currentChargingAbilityState !== undefined) return;
 
 		if (RunCore.IsServer()) {
 			const ability = this.GetAbilityLogicById(id);
@@ -269,7 +263,7 @@ export class CharacterAbilities {
 						cancellation.includes(AbilityCancellationTrigger.EntityMovement) &&
 						this.entity.GetMoveDirection() !== Vector3.zero
 					) {
-						return undefined;
+						return;
 					}
 
 					ability.OnServerChargeBegan();
@@ -320,11 +314,6 @@ export class CharacterAbilities {
 							});
 						},
 					};
-
-					return {
-						type: "Charging",
-						chargeTimeSeconds: chargeTime,
-					};
 				} else {
 					// Handle setting the cooldown
 					if (config.cooldownTimeSeconds) {
@@ -332,16 +321,10 @@ export class CharacterAbilities {
 					}
 
 					ability.Trigger();
-
-					return {
-						type: "Instant",
-					};
 				}
-			} else {
-				return undefined;
 			}
 		} else {
-			return CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
+			CoreNetwork.ClientToServer.UseAbility.Client.FireServer({
 				abilityId: id,
 			});
 		}

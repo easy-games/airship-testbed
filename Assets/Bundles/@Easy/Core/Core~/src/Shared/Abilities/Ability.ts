@@ -130,14 +130,3 @@ export interface UseAbilityRequest {
 	readonly abilityId: string;
 }
 export interface UseAbilityResponse {}
-
-export interface AbilityChargingUseResult {
-	readonly type: "Charging";
-	readonly chargeTimeSeconds: number;
-}
-
-export interface AbilityInstantUseResult {
-	readonly type: "Instant";
-}
-
-export type AbilityUseResult = AbilityChargingUseResult | AbilityInstantUseResult;

@@ -284,13 +284,7 @@ export class LocalEntityController implements OnStart {
 			keyboard.OnKeyDown(KeyCode.H, (event) => {
 				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
-					this.SetLookBackwards(true);
-				}
-			});
-			keyboard.OnKeyUp(KeyCode.H, (event) => {
-				if (event.uiProcessed) return;
-				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
-					this.SetLookBackwards(false);
+					this.SetLookBackwards(!this.lookBackwards);
 				}
 			});
 
@@ -302,6 +296,7 @@ export class LocalEntityController implements OnStart {
 
 			// Debug knockback:
 			keyboard.OnKeyDown(KeyCode.L, (event) => {
+				// if (!RunUtil.IsEditor()) return;
 				if (event.uiProcessed) return;
 				print("-----");
 				for (const entity of Dependency<EntityController>().GetEntities()) {

@@ -1,7 +1,6 @@
 import {
 	AbilityCooldownDto,
 	AbilityDto,
-	AbilityUseResult,
 	ChargingAbilityDto,
 	ChargingAbilityEndedDto,
 	UseAbilityRequest,
@@ -50,7 +49,7 @@ export const CoreNetwork = {
 		LibonatiTest: new RemoteEvent<[]>(),
 
 		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
-		UseAbility: new RemoteFunction<[req: UseAbilityRequest], AbilityUseResult | undefined>(),
+		UseAbility: new RemoteEvent<[req: UseAbilityRequest]>(),
 	},
 	ServerToClient: {
 		ServerInfo: new RemoteEvent<[gameId: string, serverId: string]>(),
@@ -66,9 +65,9 @@ export const CoreNetwork = {
 		SpawnEntities: new RemoteEvent<[entities: EntityDto[]]>(),
 		DespawnEntity: new RemoteEvent<[entityId: number]>(),
 		BlockHit: new RemoteEvent<
-			[blockPos: Vector3, blockId: number, entityId: number | undefined, broken?: boolean]
+			[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean]
 		>(),
-		BlockDestroyed: new RemoteEvent<[blockPos: Vector3, blockId: number]>(),
+		// BlockDestroyed: new RemoteEvent<[blockPos: Vector3, blockId: number]>(),
 		BlockGroupDestroyed: new RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>(),
 		ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
 		EntityDamage: new RemoteEvent<

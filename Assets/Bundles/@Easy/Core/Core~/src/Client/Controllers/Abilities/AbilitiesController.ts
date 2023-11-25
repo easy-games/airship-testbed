@@ -6,7 +6,6 @@ import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { Bin } from "Shared/Util/Bin";
 import { AbilityBinding, BindingAction, BindingInputState } from "./Class/AbilityBinding";
-import inspect from "@easy-games/unity-inspect";
 import { SignalPriority } from "Shared/Util/Signal";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
@@ -17,7 +16,6 @@ import { AbilityAddedClientSignal } from "./Event/AbilityAddedClientSignal";
 import { AbilityRemovedClientSignal } from "./Event/AbilityRemovedClientSignal";
 import { AbilitiesClearedClientSignal } from "./Event/AbilitiesClearedClientSignal";
 import { Game } from "Shared/Game";
-import { SetTimeout } from "Shared/Util/Timer";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V];
@@ -96,20 +94,16 @@ export class AbilitiesController implements OnStart {
 	// TODO: in future a much friendlier Input API
 	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
 		const boundAbilityId = binding.GetBound()?.id;
-		if (binding.IsActive()) return;
 
 		const character = Game.LocalPlayer.character;
 		if (!character) return;
-
 		const abilities = character.GetAbilities();
 
-		if (state === BindingInputState.InputEnded && boundAbilityId) {
+		if (state === BindingInputState.InputBegan && boundAbilityId) {
 			binding.SetActive(true);
-
-			const abilityUseResponse = abilities.UseAbilityById(boundAbilityId);
-			if (abilityUseResponse?.type !== "Charging") {
-				SetTimeout(0.1, () => binding.SetActive(false));
-			}
+			abilities.UseAbilityById(boundAbilityId);
+		} else if (state === BindingInputState.InputEnded) {
+			binding.SetActive(false);
 		}
 	};
 
@@ -213,12 +207,6 @@ export class AbilitiesController implements OnStart {
 
 			if (entity && entity instanceof CharacterEntity) {
 				CoreClientSignals.AbilityChargeEnded.Fire(new AbilityChargeEndClientSignal(entity, event));
-
-				// Set inactive when no longer charging :-)
-				const binding = this.allSlots.find((f) => f.GetBound()?.id === event.id);
-				if (binding) {
-					binding.SetActive(false);
-				}
 			}
 		});
 	}

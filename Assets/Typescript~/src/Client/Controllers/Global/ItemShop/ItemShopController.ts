@@ -36,6 +36,7 @@ export class ItemShopController implements OnStart {
 	public OnPurchase = new Signal<ShopElement>();
 
 	private itemPurchasePopupPrefab: GameObject;
+	private purchaseButtonEnabled = false;
 
 	constructor() {
 		/* Fetch refs. */
@@ -210,7 +211,7 @@ export class ItemShopController implements OnStart {
 	 * Sends purchase request to server for currently selected item.
 	 */
 	private SendPurchaseRequest(shopElement: ShopElement): void {
-		if (!shopElement || !this.CanPurchase(shopElement)) {
+		if (!shopElement || !this.CanPurchase(shopElement) || !this.purchaseButtonEnabled) {
 			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/UI_Error.wav", {
 				volumeScale: 0.5,
 			});
@@ -269,16 +270,28 @@ export class ItemShopController implements OnStart {
 		const purchaseButtonImage = this.purchaseButton.GetComponent<Image>();
 
 		const updateButton = () => {
+			this.purchaseButtonEnabled = false;
+			const inv = Game.LocalPlayer.character?.GetInventory();
+
 			if (shopItem.lockAfterPurchase && this.purchasedTierItems.has(shopItem.itemType)) {
 				this.purchaseButtonText.text = "Owned";
 				purchaseButtonImage.color = new Color(0.29, 0.31, 0.29);
 				return;
 			}
 
-			const inv = Game.LocalPlayer.character?.GetInventory();
+			if (
+				shopItem.preventPurchasingIfAlreadyOwned &&
+				inv?.FindSlotWithItemType(shopItem.itemType) !== undefined
+			) {
+				this.purchaseButtonText.text = "Owned";
+				purchaseButtonImage.color = new Color(0.29, 0.31, 0.29);
+				return;
+			}
+
 			if (inv?.HasEnough(shopItem.currency, shopItem.price)) {
 				this.purchaseButtonText.text = "Purchase";
 				purchaseButtonImage.color = new Color(0.5, 0.87, 0.63);
+				this.purchaseButtonEnabled = true;
 			} else {
 				this.purchaseButtonText.text = "Not Enough";
 				purchaseButtonImage.color = new Color(0.62, 0.2, 0.24);

@@ -257,12 +257,25 @@ export class BlockInteractService implements OnStart {
 			entity,
 			blockPos: voxelPos,
 		});
-		CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(
-			voxelPos,
-			block.runtimeBlockId,
-			entity?.id,
-			newHealth === 0,
-		);
+
+		if (entity?.player) {
+			CoreNetwork.ServerToClient.BlockHit.Server.FireExcept(
+				entity.player.clientId,
+				voxelPos,
+				block.runtimeBlockId,
+				entity?.id,
+				damage,
+				newHealth === 0,
+			);
+		} else {
+			CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(
+				voxelPos,
+				block.runtimeBlockId,
+				entity?.id,
+				damage,
+				newHealth === 0,
+			);
+		}
 
 		//BLOCK DEATH
 		if (newHealth === 0) {
@@ -276,7 +289,7 @@ export class BlockInteractService implements OnStart {
 				blockId: block.runtimeBlockId,
 				blockPos: voxelPos,
 			});
-			CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.runtimeBlockId);
+			// CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.runtimeBlockId);
 		}
 		return true;
 	}

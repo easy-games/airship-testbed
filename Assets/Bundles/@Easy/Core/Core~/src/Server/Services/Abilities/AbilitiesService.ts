@@ -9,16 +9,12 @@ import { SignalPriority } from "Shared/Util/Signal";
 @Service()
 export class AbilitiesService implements OnStart {
 	public OnStart(): void {
-		CoreNetwork.ClientToServer.UseAbility.Server.SetCallback((clientId, req) => {
+		CoreNetwork.ClientToServer.UseAbility.Server.OnClientEvent((clientId, req) => {
 			const character = Player.FindByClientId(clientId)?.character;
 			if (character) {
 				const abilities = character.GetAbilities();
-				return abilities.UseAbilityById(req.abilityId);
+				abilities.UseAbilityById(req.abilityId);
 			}
-
-			print("use ability", req.abilityId, "from client", clientId);
-
-			return;
 		});
 
 		CoreNetwork.ClientToServer.GetAbilities.Server.SetCallback((clientId) => {

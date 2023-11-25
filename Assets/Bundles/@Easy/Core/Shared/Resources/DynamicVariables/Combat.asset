@@ -16,7 +16,7 @@ MonoBehaviour:
   strings: []
   numbers:
   - key: kbX
-    value: 12
+    value: 5
   - key: kbY
     value: 8
   - key: kbDuration
@@ -27,4 +27,4 @@ MonoBehaviour:
   - key: swordBoxFar
     value: {x: 0.2, y: 0.2, z: 4.8}
   - key: swordBoxClose
-    value: {x: 3, y: 3, z: 4}
+    value: {x: 2.2, y: 2.2, z: 4}

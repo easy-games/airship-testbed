@@ -12,7 +12,7 @@ import {
 	Bundle_Blocks_VFX,
 } from "Shared/Util/ReferenceManagerResources";
 import { Theme } from "Shared/Util/Theme";
-import { SetInterval } from "Shared/Util/Timer";
+import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityController } from "../Entity/EntityController";
@@ -21,7 +21,7 @@ import { BlockSelectController } from "./BlockSelectController";
 
 interface HealthBarEntry {
 	gameObject: GameObject;
-	progressBar: Healthbar;
+	healthbar: Healthbar;
 	lastHitTime: number;
 	maxHealth: number;
 }
@@ -38,21 +38,28 @@ export class BlockHealthController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId, broken) => {
+		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId, damage, broken) => {
 			let entity: Entity | undefined;
 			if (entityId !== undefined) {
 				entity = this.entityController.GetEntityById(entityId);
 			}
+			if (entity?.IsLocalCharacter()) return;
 
 			// const isBroken = blockHealth !== undefined && blockHealth > 0;
 			CoreClientSignals.AfterBlockHit.Fire(
-				new AfterBlockHitClientSignal(blockPos, blockId, entity, broken ?? false),
+				new AfterBlockHitClientSignal(blockPos, blockId, entity, damage, broken ?? false),
 			);
+
+			if (broken) {
+				this.VisualizeBlockBreak(blockPos, blockId, false, damage);
+			} else {
+				this.VisualizeBlockHealth(blockPos, damage, false);
+			}
 		});
 
-		CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
-			this.VisualizeBlockBreak(blockPos, blockId);
-		});
+		// CoreNetwork.ServerToClient.BlockDestroyed.Client.OnServerEvent((blockPos, blockId) => {
+		// 	this.VisualizeBlockBreak(blockPos, blockId);
+		// });
 
 		CoreNetwork.ServerToClient.BlockGroupDestroyed.Client.OnServerEvent((blockPositions, blockIds) => {
 			blockPositions.forEach((position, index) => {
@@ -81,21 +88,21 @@ export class BlockHealthController implements OnStart {
 		});
 	}
 
-	public VisualizeBlockHealth(blockPos: Vector3, showHealthbar = true) {
+	public VisualizeBlockHealth(blockPos: Vector3, damage: number, showHealthbar = true) {
 		let currentHealth = this.GetBlockHealth(blockPos);
 
 		//Get or create health bar
 		if (showHealthbar) {
 			let healthBarEntry = this.blockHealthBars.get(blockPos);
 			if (!healthBarEntry) {
-				healthBarEntry = this.AddHealthBar(blockPos);
+				healthBarEntry = this.AddHealthBar(blockPos, currentHealth + damage);
 				if (!healthBarEntry) {
 					warn("Unable to create healthbar!");
 					return;
 				}
 			}
 			healthBarEntry.lastHitTime = Time.time;
-			healthBarEntry.progressBar.SetValue(currentHealth / healthBarEntry.maxHealth);
+			healthBarEntry.healthbar.SetValue(currentHealth / healthBarEntry.maxHealth);
 		}
 
 		//Update the health bars value
@@ -117,12 +124,12 @@ export class BlockHealthController implements OnStart {
 		return currentHealth;
 	}
 
-	public VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars = true): void {
+	public VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars = true, damage = 0): void {
 		//Get or create health bar
 		let entry = this.blockHealthBars.get(blockPos);
 		if (!entry) {
 			if (showHealthbars) {
-				entry = this.AddHealthBar(blockPos);
+				entry = this.AddHealthBar(blockPos, damage);
 			}
 		}
 
@@ -141,7 +148,10 @@ export class BlockHealthController implements OnStart {
 		}
 
 		//Make sure the progress bar is at 0
-		entry?.progressBar?.SetValue(0);
+		entry?.healthbar?.SetValue(0);
+		SetTimeout(0.12, () => {
+			this.DeleteHealthBar(entry!, blockPos);
+		});
 	}
 
 	public SetParticlesToBlockMaterial(blockId: number, effect: GameObject) {
@@ -153,7 +163,7 @@ export class BlockHealthController implements OnStart {
 		return BlockDataAPI.GetBlockData<number>(blockPos, "health") ?? WorldAPI.DefaultVoxelHealth;
 	}
 
-	private AddHealthBar(blockPos: Vector3): HealthBarEntry | undefined {
+	private AddHealthBar(blockPos: Vector3, initialHealth: number): HealthBarEntry | undefined {
 		//Spawn the health bar
 		const healthBarGo = EffectsManager.SpawnBundleEffect(
 			BundleGroupNames.Blocks,
@@ -173,15 +183,18 @@ export class BlockHealthController implements OnStart {
 
 		//Create health bar entry
 		let maxHealth = itemMeta?.block?.health ?? WorldAPI.DefaultVoxelHealth;
+		let initialFill = initialHealth / maxHealth;
 		let healthBarEntry = {
 			gameObject: healthBarGo,
 			lastHitTime: Time.time,
-			progressBar: new Healthbar(healthBarGo.transform.GetChild(0), {
-				initialPercentDelta: this.GetBlockHealth(blockPos) / maxHealth,
+			healthbar: new Healthbar(healthBarGo.transform.GetChild(0), {
+				initialPercentDelta: initialFill,
 				fillColor: Theme.Green,
+				deathOnZero: false,
 			}),
 			maxHealth: maxHealth,
 		};
+		healthBarEntry.healthbar.changeDelayInSeconds = 0.12;
 
 		this.blockHealthBars.set(blockPos, healthBarEntry);
 		return healthBarEntry;
@@ -196,6 +209,6 @@ export class BlockHealthController implements OnStart {
 
 	private DeleteHealthBar(entry: HealthBarEntry, blockPos: Vector3) {
 		this.blockHealthBars.delete(blockPos);
-		entry.progressBar.OnDelete();
+		entry.healthbar.OnDelete();
 	}
 }

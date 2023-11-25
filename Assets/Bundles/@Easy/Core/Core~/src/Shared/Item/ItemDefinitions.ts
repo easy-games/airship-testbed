@@ -308,7 +308,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.STONE_BRICK,
-			health: 20,
+			health: 32,
 			blockArchetype: BlockArchetype.STONE,
 		},
 	},
@@ -319,7 +319,7 @@ export const items: {
 		},
 		block: {
 			blockId: ItemType.OBSIDIAN,
-			health: 50,
+			health: 60,
 			blockArchetype: BlockArchetype.HARD_STONE,
 		},
 	},
@@ -343,6 +343,7 @@ export const items: {
 			blockId: ItemType.OAK_WOOD_PLANK,
 			blockArchetype: BlockArchetype.WOOD,
 			stepSound: CoreSound.footstepWood,
+			health: 24,
 		},
 	},
 	[ItemType.OAK_LOG]: {
@@ -708,7 +709,7 @@ export const items: {
 	[ItemType.WOOD_BOW]: {
 		displayName: "Wood Bow",
 		usable: {
-			minChargeSeconds: 0.12,
+			minChargeSeconds: 0.03,
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.4,
 			onUseSound: [CoreSound.bowShoot],
@@ -808,7 +809,7 @@ export const items: {
 	[ItemType.FIREBALL]: {
 		displayName: "Fireball",
 		usable: {
-			minChargeSeconds: 0.05,
+			minChargeSeconds: 0,
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 			onUseSound: ["Fireball_Throw"],
