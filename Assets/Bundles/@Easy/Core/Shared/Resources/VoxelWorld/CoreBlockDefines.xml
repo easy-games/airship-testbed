@@ -444,7 +444,7 @@
     <RandomRotation>true</RandomRotation>
     <!--<TileSet>TileSets/OakLeaf/Leaf</TileSet> 
     <TileSet>TileSets/SoftCube/</TileSet>-->
-    <TileSet>TileSets/BevelQuarter/</TileSet>
+    <TileSet>TileSets/BevelQuarterRound/</TileSet>
   </Block>
 
 
