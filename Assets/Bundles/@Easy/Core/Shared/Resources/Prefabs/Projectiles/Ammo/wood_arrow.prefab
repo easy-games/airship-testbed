@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3624261834906416580}
-  - component: {fileID: 3624261834906416602}
   - component: {fileID: 5826609871021465668}
   - component: {fileID: 8587363106055407850}
   m_Layer: 11
@@ -36,22 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &3624261834906416602
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3624261834906416581}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 3
 --- !u!114 &5826609871021465668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 0
   drag: 0
+  launcherItemTypeId: 0
   itemTypeId: 0
 --- !u!114 &8587363106055407850
 MonoBehaviour:
@@ -327,3 +311,4 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
+  addedByEditorScript: 0
