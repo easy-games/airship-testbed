@@ -75,10 +75,13 @@ export class EntityController implements OnStart {
 			entity.animator?.PlayUseAnim(animationId);
 		});
 
-		CoreNetwork.ServerToClient.Entity.SetHealth.Client.OnServerEvent((entityId, health) => {
+		CoreNetwork.ServerToClient.Entity.SetHealth.Client.OnServerEvent((entityId, health, maxHealth) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity) {
 				entity.SetHealth(health);
+				if (maxHealth !== undefined) {
+					entity.SetMaxHealth(maxHealth);
+				}
 			}
 		});
 		CoreNetwork.ServerToClient.Entity.SetDisplayName.Client.OnServerEvent((entityId, value) => {

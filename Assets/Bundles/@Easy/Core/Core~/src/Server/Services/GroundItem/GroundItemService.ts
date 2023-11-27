@@ -46,9 +46,9 @@ export class GroundItemService implements OnStart {
 
 				const transform = entity.model.transform;
 				const position = transform.position.add(new Vector3(0, 1.5, 0)).add(transform.forward.mul(0.6));
-				let velocity = transform.forward.add(new Vector3(0, 0.7, 0));
-				velocity = velocity.mul(4);
-				print("velocity: " + tostring(velocity));
+				let velocity = transform.forward.add(new Vector3(0, 0.7, 0)).mul(6);
+				velocity = velocity.add(entity.entityDriver.GetVelocity());
+				// print("velocity: " + tostring(velocity));
 
 				const beforeEvent = CoreServerSignals.BeforeEntityDropItem.Fire(
 					new BeforeEntityDropItemSignal(entity, item, velocity),
@@ -64,12 +64,22 @@ export class GroundItemService implements OnStart {
 				CoreServerSignals.EntityDropItem.Fire(new EntityDropItemSignal(entity, item, groundItem));
 
 				// Sync position when it's done moving
-				Task.Delay(1.5, () => {
-					if (this.groundItems.has(groundItem.id)) {
-						CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Server.FireAllClients([
-							{ id: groundItem.id, pos: groundItem.rb.position, vel: groundItem.rb.velocity },
-						]);
+				const stopRepeat = Task.Repeat(0.1, () => {
+					if (!this.groundItems.has(groundItem.id)) {
+						stopRepeat();
+						return;
 					}
+
+					if (!groundItem.drop.IsGrounded()) return;
+
+					stopRepeat();
+					CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Server.FireAllClients([
+						{
+							id: groundItem.id,
+							pos: groundItem.transform.position,
+							vel: groundItem.drop.GetVelocity(),
+						},
+					]);
 				});
 			}
 		});
@@ -84,7 +94,7 @@ export class GroundItemService implements OnStart {
 			if (
 				!GroundItemUtil.CanPickupGroundItem(
 					groundItem,
-					groundItem.rb.position,
+					groundItem.transform.position,
 					entity.networkObject.gameObject.transform.position,
 				)
 			) {
@@ -96,8 +106,9 @@ export class GroundItemService implements OnStart {
 				groundItem: groundItem,
 			});
 
-			this.RemoveGroundItemFromTracking(groundItem);
-			GameObjectUtil.Destroy(groundItem.rb.gameObject);
+			// this.RemoveGroundItemFromTracking(groundItem);
+			// GameObjectUtil.Destroy(groundItem.rb.gameObject);
+			this.DestroyGroundItem(groundItem);
 
 			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.id, groundItem.id);
 			if (entity instanceof CharacterEntity) {
@@ -112,8 +123,8 @@ export class GroundItemService implements OnStart {
 					return {
 						id: i.id,
 						itemStack: i.itemStack.Encode(),
-						pos: i.rb.position,
-						velocity: i.rb.velocity,
+						pos: i.transform.position,
+						velocity: i.drop.GetVelocity(),
 						pickupTime: i.pickupTime,
 						data: i.data,
 					};
@@ -121,7 +132,7 @@ export class GroundItemService implements OnStart {
 			);
 		});
 
-		Task.Repeat(0.2, () => this.ScanForIdleItems());
+		Task.Repeat(0, () => this.ScanForIdleItems());
 	}
 
 	private RemoveGroundItemFromTracking(groundItem: GroundItem) {
@@ -143,7 +154,7 @@ export class GroundItemService implements OnStart {
 	}
 
 	private GetGroundItemPositionKey(groundItem: GroundItem): Vector3 {
-		const pos = groundItem.rb.position;
+		const pos = groundItem.transform.position;
 		return new Vector3(
 			math.round(pos.x / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
 			math.round(pos.y / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
@@ -152,7 +163,8 @@ export class GroundItemService implements OnStart {
 	}
 
 	private IsGroundItemMoving(groundItem: GroundItem): boolean {
-		return groundItem.rb.velocity.sqrMagnitude > VELOCITY_EPSILON;
+		// return groundItem.rb.velocity.sqrMagnitude > VELOCITY_EPSILON;
+		return !groundItem.drop.IsGrounded();
 	}
 
 	private ScanForIdleItems() {
@@ -198,9 +210,7 @@ export class GroundItemService implements OnStart {
 	}
 
 	public DestroyGroundItem(groundItem: GroundItem): void {
-		this.RemoveGroundItemFromTracking(groundItem);
-		CoreNetwork.ServerToClient.GroundItemDestroyed.Server.FireAllClients(groundItem.id);
-		GameObjectUtil.Destroy(groundItem.rb.gameObject);
+		GameObjectUtil.Destroy(groundItem.drop.gameObject);
 	}
 
 	public SpawnGroundItem(
@@ -210,21 +220,26 @@ export class GroundItemService implements OnStart {
 		data?: Record<string, unknown>,
 	): GroundItem {
 		if (velocity === undefined) {
-			velocity = Vector3.up;
+			velocity = Vector3.zero;
 		}
 
 		const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, pos, Quaternion.identity);
 		go.transform.SetParent(this.groundItemsFolder.transform);
 		const rb = go.GetComponent<Rigidbody>();
-		rb.velocity = velocity;
+		// rb.velocity = velocity;
+		const drop = go.GetComponent<GroundItemDrop>();
+		drop.SetVelocity(velocity);
 		const id = this.MakeNewID();
-		const groundItem = new GroundItem(id, itemStack, rb, TimeUtil.GetServerTime() + 1, data ?? {});
+		const pickupTime = data !== undefined && "generatorId" in data ? 0.1 : 1;
+		const groundItem = new GroundItem(id, itemStack, drop, TimeUtil.GetServerTime() + pickupTime, data ?? {});
 		this.groundItems.set(id, groundItem);
 
-		Task.Delay(2, () => {
-			if (this.groundItems.has(id)) {
-				this.movingGroundItems.push(groundItem);
-			}
+		this.movingGroundItems.push(groundItem);
+
+		const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+			this.RemoveGroundItemFromTracking(groundItem);
+			this.groundItems.delete(groundItem.id);
+			CoreNetwork.ServerToClient.GroundItemDestroyed.Server.FireAllClients(groundItem.id);
 		});
 
 		CoreNetwork.ServerToClient.GroundItem.Add.Server.FireAllClients([
