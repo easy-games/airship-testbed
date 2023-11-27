@@ -78,6 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 0
   drag: 0
+  launcherItemTypeId: 0
   itemTypeId: 0
 --- !u!1 &5863273125273431309
 GameObject:
@@ -273,6 +274,42 @@ PrefabInstance:
     - target: {fileID: 698797139214647436, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
       propertyPath: m_Name
       value: telepearl
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.038687203
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.75806034
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.20971066
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.6163354
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343628751206696934, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: runInEditor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343628751206696934, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: translationSpeed.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343628751206696934, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: angularRotationSpeed.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343628751206696934, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: angularRotationSpeed.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8343628751206696934, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: angularRotationSpeed.z
+      value: 80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
