@@ -436,16 +436,16 @@ interface LayerMask {
 declare const LayerMask: LayerMask;
 
 interface ProjectileManager {
-	OnProjectileCollide(callback: (projectile: EasyProjectile, collision: Collision) => void): void;
+	OnProjectileCollide(callback: (projectile: AirshipProjectile, collision: Collision) => void): void;
 	OnProjectileValidate(callback: (validateEvent: ProjectileValidateEvent) => void): void;
-	OnProjectileLaunched(callback: (projectile: EasyProjectile, shooter: GameObject) => void): void;
+	OnProjectileLaunched(callback: (projectile: AirshipProjectile, shooter: GameObject) => void): void;
 }
 interface ProjectileManagerConstructor {
 	Instance: ProjectileManager;
 }
 declare const ProjectileManager: ProjectileManagerConstructor;
 
-interface EasyProjectile {
+interface AirshipProjectile {
 	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
 }
 
