@@ -47,3 +47,6 @@ Once complete, set the arguments to "server"
 ![](https://1260643417-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FcEFcdlZM6gv3wpelI0y4%2Fuploads%2FxXLbPbc6h43YWIy1QfSK%2FScreenshot%202023-06-27%20at%201.47.07%20PM.png?alt=media&token=7d07ab15-5562-4198-ad40-ba82895a4f54)
 
 3. Click **Open in New Editor**
+
+## Compile Scripts
+Before running the game, you should compile scripts. You can do this by clicking the **Compile Scripts** button. Alternatively, you use terminal commands in VSCode (`npm run build` or `npm run watch`)
