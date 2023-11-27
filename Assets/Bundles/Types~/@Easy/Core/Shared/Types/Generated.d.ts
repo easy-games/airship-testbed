@@ -10701,6 +10701,7 @@ interface VoxelWorld extends MonoBehaviour {
     globalRadiosityDirectLightAmp: number;
     showRadioistyProbes: boolean;
     focusPosition: Vector3;
+    autoLoad: boolean;
     voxelWorldFile: WorldSaveFile;
     blockDefines: CSArray<TextAsset>;
     worldNetworker: VoxelWorldNetworker;
@@ -13657,6 +13658,9 @@ interface GroundItemDrop extends MonoBehaviour {
 
     constructor(): GroundItemDrop;
 
+    GetVelocity(): Vector3;
     IsGrounded(): boolean;
+    SetPosition(position: Vector3): void;
+    SetVelocity(velocity: Vector3): void;
 }
 
