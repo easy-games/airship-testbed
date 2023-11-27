@@ -27,13 +27,19 @@ export class GroundItemController implements OnStart {
 	private fallbackDisplayObj: Object;
 	private groundItems = new Map<number, GroundItem>();
 	private itemTypeToDisplayObjMap = new Map<ItemType, Object>();
-	private groundItemsFolder: GameObject;
+
+	private readonly groundItemsFolder: GameObject;
+	// private readonly offlineGroundItems: OfflineGroundItems;
 
 	constructor(
 		private readonly playerController: PlayerController,
 		private readonly entityAccessoryController: EntityAccessoryController,
 	) {
-		this.groundItemsFolder = GameObject.Create("GroundItems");
+		// this.groundItemsFolder = GameObject.Create("GroundItems");
+		this.groundItemsFolder = GameObjectUtil.Instantiate(
+			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItems.prefab"),
+		);
+		// this.offlineGroundItems = this.groundItemsFolder.GetComponent<OfflineGroundItems>();
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");
 		this.fallbackDisplayObj = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Shared/Resources/Prefabs/GroundItems/_fallback.prefab",
@@ -74,6 +80,7 @@ export class GroundItemController implements OnStart {
 		return displayGO;
 	}
 
+	// private readonly groundItemPool: GameObject[] = [];
 	OnStart(): void {
 		CoreNetwork.ServerToClient.GroundItem.Add.Client.OnServerEvent(async (dtos) => {
 			// print("Received " + dtos.size() + " ground items.");
@@ -82,23 +89,32 @@ export class GroundItemController implements OnStart {
 			}
 			for (const dto of dtos) {
 				const itemStack = ItemStack.Decode(dto.itemStack);
-				const go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);
-				go.transform.SetParent(this.groundItemsFolder.transform);
-				const rb = go.GetComponent<Rigidbody>();
-				rb.velocity = dto.velocity;
-				const groundItem = new GroundItem(dto.id, itemStack, rb, TimeUtil.GetServerTime() + 1.2, dto.data);
+
+				let go = undefined; //this.groundItemPool.pop();
+				if (!go) {
+					go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);
+					const displayGO = this.CreateDisplayGO(itemStack, go.transform.GetChild(0));
+					go.transform.SetParent(this.groundItemsFolder.transform);
+					// this.offlineGroundItems.AddObject(go);
+
+					const bin = new Bin();
+					const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+						this.groundItems.delete(groundItem.id);
+						bin.Clean();
+					});
+
+					bin.Add(() => {
+						Bridge.DisconnectEvent(destroyedConn);
+					});
+				}
+
+				// go.SetActive(true);
+				// const rb = go.GetComponent<Rigidbody>();
+				// rb.velocity = dto.velocity;
+				const drop = go.GetComponent<GroundItemDrop>();
+				drop.SetVelocity(dto.velocity);
+				const groundItem = new GroundItem(dto.id, itemStack, drop, TimeUtil.GetServerTime() + 1.2, dto.data);
 				this.groundItems.set(dto.id, groundItem);
-
-				const displayGO = this.CreateDisplayGO(itemStack, go.transform.GetChild(0));
-
-				const bin = new Bin();
-				const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
-					this.groundItems.delete(groundItem.id);
-					bin.Clean();
-				});
-				bin.Add(() => {
-					Bridge.DisconnectEvent(destroyedConn);
-				});
 			}
 		});
 
@@ -106,7 +122,7 @@ export class GroundItemController implements OnStart {
 			for (const dto of dtos) {
 				const groundItem = this.groundItems.get(dto.id);
 				if (groundItem) {
-					groundItem.rb.position = dto.pos;
+					groundItem.drop.SetPosition(dto.pos);
 				}
 			}
 		});
@@ -118,12 +134,12 @@ export class GroundItemController implements OnStart {
 
 			let toPickup: GroundItem[] = [];
 			for (let pair of this.groundItems) {
-				if (!GroundItemUtil.CanPickupGroundItem(pair[1], pair[1].rb.position, characterPos)) continue;
+				if (!GroundItemUtil.CanPickupGroundItem(pair[1], pair[1].transform.position, characterPos)) continue;
 				toPickup.push(pair[1]);
 			}
 
 			toPickup = toPickup.sort((a, b) => {
-				return a.rb.position.Distance(characterPos) < b.rb.transform.position.Distance(characterPos);
+				return a.transform.position.Distance(characterPos) < b.transform.position.Distance(characterPos);
 			});
 
 			for (let groundItem of toPickup) {
@@ -142,8 +158,13 @@ export class GroundItemController implements OnStart {
 				CoreClientSignals.EntityPickupItem.Fire({ entity, groundItem });
 			}
 
-			GameObjectUtil.Destroy(groundItem.rb.gameObject);
+			const go = groundItem.drop.gameObject;
+			// this.groundItemPool.push(go);
+			// go.GetComponent<ParentSetter>().ClearParent();
+			// go.SetActive(false);
+			GameObjectUtil.Destroy(go);
 			this.groundItems.delete(groundItemId);
+			// this.offlineGroundItems.RemoveObject(go);
 		});
 
 		CoreNetwork.ServerToClient.GroundItemDestroyed.Client.OnServerEvent((groundItemId) => {
@@ -152,8 +173,13 @@ export class GroundItemController implements OnStart {
 				return;
 			}
 
-			GameObjectUtil.Destroy(groundItem.rb.gameObject);
+			const go = groundItem.drop.gameObject;
+			// this.groundItemPool.push(go);
+			// go.GetComponent<ParentSetter>().ClearParent();
+			// go.SetActive(false);
+			GameObjectUtil.Destroy(go);
 			this.groundItems.delete(groundItemId);
+			// this.offlineGroundItems.RemoveObject(go);
 		});
 	}
 }

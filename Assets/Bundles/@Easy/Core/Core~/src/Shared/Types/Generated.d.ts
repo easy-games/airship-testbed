@@ -13652,4 +13652,14 @@ interface EasyMotion extends MonoBehaviour {
     constructor(): EasyMotion;
 
 }
+    
+interface GroundItemDrop extends MonoBehaviour {
+
+    constructor(): GroundItemDrop;
+
+    GetVelocity(): Vector3;
+    IsGrounded(): boolean;
+    SetPosition(position: Vector3): void;
+    SetVelocity(velocity: Vector3): void;
+}
 
