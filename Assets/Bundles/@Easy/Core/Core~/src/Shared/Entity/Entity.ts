@@ -362,6 +362,10 @@ export class Entity {
 
 	public SetMaxHealth(maxHealth: number): void {
 		this.maxHealth = maxHealth;
+
+		if (RunUtil.IsServer()) {
+			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health, this.maxHealth);
+		}
 	}
 
 	/**
