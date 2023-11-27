@@ -135,7 +135,7 @@ export declare class Entity {
     GetBin(): Bin;
     GetAccessoryMeshes(slot: AccessorySlot): Renderer[];
     private PushToArray;
-    LaunchProjectile(launcherItemType: ItemType | undefined, projectileItemType: ItemType, launchPos: Vector3, velocity: Vector3): EasyProjectile | undefined;
+    LaunchProjectile(launcherItemType: ItemType | undefined, projectileItemType: ItemType, launchPos: Vector3, velocity: Vector3): AirshipProjectile | undefined;
     GetArmor(): number;
     HasHealthbar(): boolean;
 }
