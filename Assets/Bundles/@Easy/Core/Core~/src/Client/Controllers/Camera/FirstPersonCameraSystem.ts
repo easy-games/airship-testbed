@@ -5,7 +5,6 @@ import { Bin } from "Shared/Util/Bin";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { CameraReferences } from "./CameraReferences";
-import { MathUtil } from "Shared/Util/MathUtil";
 
 interface BobData {
 	bobMovementFrequency: number;
@@ -17,13 +16,13 @@ export class FirstPersonCameraSystem {
 	public cameras: CameraReferences;
 
 	private sprintingBob: BobData = {
-		bobMovementFrequency: 25,
+		bobMovementFrequency: 20,
 		bobMovementMagnitude: 0.025,
-		bobRotationMagnitude: 3,
+		bobRotationMagnitude: 2.5,
 	};
 
 	private slidingBob: BobData = {
-		bobMovementFrequency: 40,
+		bobMovementFrequency: 12,
 		bobMovementMagnitude: 0.0075,
 		bobRotationMagnitude: 1,
 	};
@@ -152,6 +151,9 @@ export class FirstPersonCameraSystem {
 		} else if (state === EntityState.Sliding) {
 			this.bobData = this.slidingBob;
 			this.bobStrength = 1;
+		} else if (state === EntityState.Jumping) {
+			this.bobData = this.slidingBob;
+			this.bobStrength = 0.5;
 		} else {
 			this.bobStrength = 0;
 		}
