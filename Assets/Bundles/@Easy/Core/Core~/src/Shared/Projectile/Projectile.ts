@@ -31,7 +31,7 @@ export class Projectile {
 	 */
 	public readonly OnHit = new Signal<[hitPoint: Vector3, collider: Collider]>();
 
-	constructor(private easyProjectile: EasyProjectile, itemType: ItemType, shooter: Entity | undefined) {
+	constructor(private easyProjectile: AirshipProjectile, itemType: ItemType, shooter: Entity | undefined) {
 		this.gameObject = easyProjectile.gameObject;
 		this.itemType = itemType;
 		this.shooter = shooter;

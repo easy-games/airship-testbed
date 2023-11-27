@@ -9,7 +9,7 @@ import { ProjectileLaunchedClientSignal } from "./ProjectileLaunchedClientSignal
 
 @Controller({})
 export class ProjectileController implements OnStart {
-	private prefabInfoByItemType = new Map<ItemType, { gameObject: GameObject; rigidbody: Rigidbody }>();
+	private prefabInfoByItemType = new Map<ItemType, { gameObject: GameObject }>();
 
 	constructor() {
 		for (const itemTypeStr of ItemUtil.GetItemTypes()) {
@@ -28,9 +28,9 @@ export class ProjectileController implements OnStart {
 					continue;
 				}
 
-				const rigidbody = projPrefab.GetComponent<Rigidbody>();
+				// const rigidbody = projPrefab.GetComponent<Rigidbody>();
 
-				this.prefabInfoByItemType.set(itemType, { gameObject: projPrefab, rigidbody: rigidbody });
+				this.prefabInfoByItemType.set(itemType, { gameObject: projPrefab });
 			}
 		}
 	}
