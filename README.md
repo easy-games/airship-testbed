@@ -50,4 +50,4 @@ Once complete, set the arguments to "server"
 
 ## Compile Scripts
 Before running the game, you should compile scripts. You can do this by clicking the **Compile Scripts** button. Alternatively, you use terminal commands in VSCode (`npm run build` or `npm run watch`)
-![](./Docs/Images/CompileScriptsButton.png)
+![](/Docs/Images/CompileScriptsButton.png)
