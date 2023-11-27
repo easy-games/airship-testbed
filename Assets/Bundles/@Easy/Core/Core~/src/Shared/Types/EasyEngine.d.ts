@@ -83,6 +83,7 @@ interface EntityDriver extends Component {
 	 */
 	ApplyVelocityOverTime(velocity: Vector3, duration: number): void;
 	SetVelocity(velocity: Vector3): void;
+	GetVelocity(): Vector3;
 	DisableMovement();
 	EnableMovement();
 	GetState(): EntityState;

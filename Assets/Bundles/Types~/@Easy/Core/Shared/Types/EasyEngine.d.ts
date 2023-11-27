@@ -414,8 +414,8 @@ interface CanvasUIBridgeConstructor {
 declare const CanvasUIBridge: CanvasUIBridgeConstructor;
 
 interface DebugConstructor {
-	traceback(co: thread, msg?: string, level?: number): string;
-	traceback(msg?: string, level?: number): string;
+	traceback: (co: thread, msg?: string, level?: number) => string;
+	traceback: (msg?: string, level?: number) => string;
 }
 declare const debug: DebugConstructor;
 
@@ -485,6 +485,7 @@ declare const MeshProcessor: MeshProcessorConstructor;
 interface CoreEntityAnimator extends Component {
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
+	SetRootMovementLayer(itemInHand: boolean): void;
 }
 
 interface PoolManager {
