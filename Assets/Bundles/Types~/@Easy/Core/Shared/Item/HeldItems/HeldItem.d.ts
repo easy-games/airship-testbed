@@ -9,6 +9,7 @@ export declare class HeldItem {
     private lastUsedTime;
     private chargeStartTime;
     protected isCharging: boolean;
+    protected activeAccessories: ActiveAccessory[];
     protected currentItemGOs: GameObject[];
     protected currentItemAnimations: Animator[];
     private holdingDownBin;

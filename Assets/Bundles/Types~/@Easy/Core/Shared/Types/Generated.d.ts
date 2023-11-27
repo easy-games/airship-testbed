@@ -2019,6 +2019,12 @@ declare const enum AvatarMaskBodyPart {
     RightHandIK = 12,
     LastBodyPart = 13,
 }
+declare const enum ContextStyle {
+    None = 0,
+    GreedyMeshingTiles = 1,
+    ContextBlocks = 2,
+    QuarterTiles = 3,
+}
 declare const enum ApplicationInstallMode {
     Unknown = 0,
     Store = 1,
@@ -4003,6 +4009,7 @@ interface NetworkObject extends MonoBehaviour {
     SetRenderersVisible(visible: boolean, force: boolean): void;
     Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
     Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
+    ToString(): string;
     TryGetInstance<T>(component: unknown): boolean;
     TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
@@ -4134,6 +4141,7 @@ interface NetworkBehaviour extends MonoBehaviour {
     SendTargetRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, target: NetworkConnection, excludeServer: boolean, validateTarget: boolean): void;
     Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
     Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
+    ToString(): string;
     TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
@@ -4614,7 +4622,7 @@ interface SceneLookupData {
     Equals(sld: SceneLookupData): boolean;
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
-    GetScene(foundByHandle: unknown): Scene;
+    GetScene(foundByHandle: unknown, warnIfDuplicates: boolean): Scene;
     ToString(): string;
 }
     
@@ -4630,6 +4638,8 @@ interface SceneLookupDataConstructor {
     CreateData(scenes: CSArray<Scene>): CSArray<SceneLookupData>;
     CreateData(names: CSArray<string>): CSArray<SceneLookupData>;
     CreateData(handles: CSArray<number>): CSArray<SceneLookupData>;
+    ValidateData(data: SceneLookupData): CSArray<SceneLookupData>;
+    ValidateData(datas: CSArray<SceneLookupData>): CSArray<SceneLookupData>;
 }
 declare const SceneLookupData: SceneLookupDataConstructor;
     
@@ -4703,7 +4713,7 @@ interface UnloadOptions {
 interface SceneManagerConstructor {
 
 
-    GetScene(sceneName: string): Scene;
+    GetScene(sceneName: string, nm: NetworkManager, warnIfDuplicates: boolean): Scene;
     GetScene(sceneHandle: number): Scene;
 }
 declare const SceneManager: SceneManagerConstructor;
@@ -4788,12 +4798,12 @@ interface Reader {
     ReadListCache<T>(listCache: unknown): number;
     ReadListCacheAllocated<T>(): unknown;
     ReadMatrix4x4(): Matrix4x4;
-    ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown): NetworkBehaviour;
+    ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown, readSpawningObjects: CSArray<number>): NetworkBehaviour;
     ReadNetworkBehaviour(): NetworkBehaviour;
     ReadNetworkConnection(): NetworkConnection;
     ReadNetworkConnectionId(): number;
     ReadNetworkObject(): NetworkObject;
-    ReadNetworkObject(objectOrPrefabId: unknown): NetworkObject;
+    ReadNetworkObject(objectOrPrefabId: unknown, readSpawningObjects: CSArray<number>): NetworkObject;
     ReadNetworkObjectId(): number;
     ReadPackedWhole(): number;
     ReadPlane(): Plane;
@@ -9734,6 +9744,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     
 interface ActiveAccessory {
     accessory: Accessory;
+    rootTransform: Transform;
     gameObjects: CSArray<GameObject>;
     renderers: CSArray<Renderer>;
 
@@ -9760,6 +9771,7 @@ interface AccessorySkin extends ScriptableObject {
     skinTextureDiffuse: Texture2D;
     skinTextureNormal: Texture2D;
     skinTextureORM: Texture2D;
+    faceTextureDiffuse: Texture2D;
 
     constructor(): AccessorySkin;
 
@@ -10705,6 +10717,7 @@ interface VoxelWorld extends MonoBehaviour {
     lodFarDistance: number;
     lodTransitionSpeed: number;
     pointLights: CSArray<GameObject>;
+    voxelWorldMaterialCache: CSDictionary<Material, Material>;
     radiosityRaySamples: CSArray<CSArray<Vector3>>;
     blocks: VoxelBlocks;
     selectedBlockIndex: number;
@@ -11645,10 +11658,9 @@ interface BlockDefinition {
     randomRotation: boolean;
     mesh: VoxelMeshCopy;
     meshLod: VoxelMeshCopy;
-    usesTiles: boolean;
     meshTiles: CSDictionary<number, LodSet>;
     meshTileProcessingOrder: CSArray<number>;
-    usesContexts: boolean;
+    contextStyle: ContextStyle;
     meshContexts: CSDictionary<number, VoxelMeshCopy>;
     detail: boolean;
     meshTexturePath: string;
@@ -11704,6 +11716,7 @@ interface PrecalculatedRotation {
     vertices: CSArray<Vector3>;
     normals: CSArray<Vector3>;
 
+    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
 
 }
@@ -12886,8 +12899,11 @@ interface BridgeConstructor {
 
 
     CopyToClipboard(text: string): void;
+    GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
+    GetMonoRam(): number;
+    GetReservedRam(): number;
     GetVolume(): number;
     IsFullScreen(): boolean;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
@@ -13082,6 +13098,7 @@ interface DynamicVariables extends ScriptableObject {
 
     constructor(): DynamicVariables;
 
+    GetAsString(key: string): string;
     GetNumber(key: string): number;
     GetString(key: string): string;
     GetVector3(key: string): Vector3;
@@ -13460,9 +13477,7 @@ interface NetworkTransform extends NetworkBehaviour {
     OnStartClient(): void;
     OnStartNetwork(): void;
     OnStartServer(): void;
-    OnStopClient(): void;
     OnStopNetwork(): void;
-    OnStopServer(): void;
     SetInterval(value: number): void;
     SetPositionSnapping(axes: SnappedAxes): void;
     SetRotationSnapping(axes: SnappedAxes): void;

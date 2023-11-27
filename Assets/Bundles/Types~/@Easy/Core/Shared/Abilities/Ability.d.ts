@@ -1,6 +1,6 @@
 import { Duration } from "../Util/Duration";
-import { AbilitySlot } from "./AbilitySlot";
 import { AbilityLogic } from "./AbilityLogic";
+import { AbilitySlot } from "./AbilitySlot";
 export declare enum AbilityCancellationTrigger {
     /**
      * Damage is taken by the casting entity
@@ -81,7 +81,7 @@ export interface AbilityDto {
     /**
      * Charging
      */
-    readonly charging?: AbilityChargeConfig;
+    charging?: AbilityChargeConfig;
 }
 export interface ChargingAbilityDto {
     readonly id: string;

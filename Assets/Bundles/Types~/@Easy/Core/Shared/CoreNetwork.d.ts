@@ -54,8 +54,7 @@ export declare const CoreNetwork: {
         SetHeldInventorySlot: RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>;
         SpawnEntities: RemoteEvent<[entities: EntityDto[]]>;
         DespawnEntity: RemoteEvent<[entityId: number]>;
-        BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined]>;
-        BlockDestroyed: RemoteEvent<[blockPos: Vector3, blockId: number]>;
+        BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean | undefined]>;
         BlockGroupDestroyed: RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>;
         ProjectileSpawn: RemoteEvent<[projectileDto: ProjectileDto]>;
         EntityDamage: RemoteEvent<[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]>;
@@ -136,6 +135,7 @@ export declare const CoreNetwork: {
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
         AbilityAdded: RemoteEvent<[entityId: number, dto: AbilityDto]>;
         AbilityRemoved: RemoteEvent<[entityId: number, id: string]>;
+        AbilitiesCleared: RemoteEvent<[entityId: number]>;
         AbilityCooldownStateChange: RemoteEvent<[dto: AbilityCooldownDto]>;
         AbilityChargeBegan: RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>;
         AbilityChargeEnded: RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>;

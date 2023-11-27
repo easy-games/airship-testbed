@@ -12,8 +12,8 @@ export declare class BlockHealthController implements OnStart {
     HEALTHBAR_EXPIRE_TIME: number;
     constructor(invController: InventoryController, blockSelectController: BlockSelectController, entityController: EntityController);
     OnStart(): void;
-    VisualizeBlockHealth(blockPos: Vector3, showHealthbar?: boolean): number | undefined;
-    VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars?: boolean): void;
+    VisualizeBlockHealth(blockPos: Vector3, damage: number, showHealthbar?: boolean): number | undefined;
+    VisualizeBlockBreak(blockPos: Vector3, blockId: number, showHealthbars?: boolean, damage?: number): void;
     SetParticlesToBlockMaterial(blockId: number, effect: GameObject): void;
     private GetBlockHealth;
     private AddHealthBar;

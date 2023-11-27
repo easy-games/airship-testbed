@@ -8,7 +8,9 @@ export declare class MeleeHeldItem extends HeldItem {
     private bin;
     private currentUseVFX;
     OnUseClient(useIndex: number): void;
+    private ClientPredictDamage;
     OnUseServer(useIndex: number): void;
+    private ServerHit;
     private ScanForHits;
     private ScanBox;
 }
