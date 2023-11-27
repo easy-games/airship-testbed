@@ -13,9 +13,10 @@ import { CameraMode, CameraTransform } from "..";
 // IgnoreRaycast Layer: 2
 // Character layer: 3
 // BridgeAssist layer: 7
-// ProjectilReciever layer: 12
-// Bitwise operation to ignore layers above: ~(1 << 1 | 1 << 2 | 1 << 3 | 1 << 7 | 1 << 12)
-const CHARACTER_MASK = -4239;
+// GroundItem layer: 9
+// ProjectileReceiver layer: 12
+// Bitwise operation to ignore layers above: ~(1 << 1 | 1 << 2 | 1 << 3 | 1 << 7 | 1 << 9 | 1 << 12)
+const CHARACTER_MASK = -4751;
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
