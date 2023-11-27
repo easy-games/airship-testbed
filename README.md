@@ -1,4 +1,8 @@
-# bedwars-airship
+# Airship Core Game Project
+This project contains the source to BedWars & the Core package.
+
+- The Core package is used globally across all Airship games.
+- The BedWars game is just a game. It's not shared globally.
 
 ## Folder Setup
 1. Clone [Airship](https://github.com/easy-games/airship) into the same parent folder as this repo. That is, both "airship" and "bedwars-airship" should be siblings.
