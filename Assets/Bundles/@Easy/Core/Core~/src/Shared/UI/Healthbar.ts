@@ -52,13 +52,6 @@ export class Healthbar {
 		this.enabled = true;
 	}
 
-	public OnDelete() {
-		this.fillTransform.TweenCancelAll(false, true);
-		this.changeFillTransform.TweenCancelAll(false, true);
-		this.enabled = false;
-		GameObjectUtil.Destroy(this.transform.gameObject);
-	}
-
 	public SetActive(visible: boolean) {
 		this.transform.gameObject.active = visible;
 	}
@@ -139,6 +132,9 @@ export class Healthbar {
 	}
 
 	public Destroy(): void {
-		Object.Destroy(this.refs.gameObject);
+		this.fillTransform.TweenCancelAll(false, true);
+		this.changeFillTransform.TweenCancelAll(false, true);
+		this.enabled = false;
+		GameObjectUtil.Destroy(this.refs.gameObject);
 	}
 }
