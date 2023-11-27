@@ -60,7 +60,7 @@ export declare const CoreNetwork: {
         EntityDamage: RemoteEvent<[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]>;
         ProjectileHit: RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>;
         Entity: {
-            SetHealth: RemoteEvent<[entityId: number, health: number]>;
+            SetHealth: RemoteEvent<[entityId: number, health: number, maxHealth?: number | undefined]>;
             SetDisplayName: RemoteEvent<[entityId: number, displayName: string]>;
             AddHealthbar: RemoteEvent<[entityId: number]>;
             SetLookVector: RemoteEvent<[entityId: number, lookVector: Vector3]>;
