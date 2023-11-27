@@ -1,4 +1,3 @@
-# Airship Core Game Project
 This project contains the source to BedWars & the Core package.
 
 - The Core package is used globally across all Airship games.
