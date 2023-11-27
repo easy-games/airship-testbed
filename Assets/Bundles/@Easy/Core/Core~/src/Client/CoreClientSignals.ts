@@ -26,7 +26,11 @@ export const CoreClientSignals = {
 	EntityDespawn: new Signal<Entity>(),
 	PlayerJoin: new Signal<Player>(),
 	PlayerLeave: new Signal<Player>(),
-	/** Fired before a block is hit. */
+	/**
+	 * Fired before a block is hit.
+	 *
+	 * **This is only fired when the local client hits a block.** Remote clients hitting blocks will not fire this signal.
+	 * */
 	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
 	AfterBlockHit: new Signal<AfterBlockHitClientSignal>(),
 

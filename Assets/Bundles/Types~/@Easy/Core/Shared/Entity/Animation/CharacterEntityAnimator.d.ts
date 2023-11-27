@@ -19,6 +19,7 @@ export declare class CharacterEntityAnimator extends EntityAnimator {
     private currentItemState;
     private currentEndEventConnection;
     private defaultIdleAnimFP;
+    private defaultIdleAnimFPUnarmed;
     private defaultIdleAnimTP;
     constructor(entity: Entity, anim: AnimancerComponent, ref: EntityReferences);
     private Log;

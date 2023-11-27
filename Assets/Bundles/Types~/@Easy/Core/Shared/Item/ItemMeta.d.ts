@@ -68,10 +68,6 @@ export interface ProjectileLauncherMeta {
     chargingWalkSpeedMultiplier?: number;
     firstPersonLaunchOffset: Vector3;
     chargeSound?: SoundMeta[];
-    chargeAnimFP?: string[] | "none";
-    chargeAnimTP?: string[] | "none";
-    throwAnimFP?: string[] | "none";
-    throwAnimTP?: string[] | "none";
 }
 export interface ViewModelMeta {
     idleAnimFP?: string[];
@@ -121,7 +117,15 @@ export interface UsableHeldItemMeta {
     maxStackSize?: number;
     onUseSound?: string[];
     onUseSoundVolume?: number;
+    /**
+     * First element charge animation.
+     * Second element is shoot animation.
+     */
     onUseAnimFP?: string[];
+    /**
+     * First element charge animation.
+     * Second element is shoot animation.
+     */
     onUseAnimTP?: string[];
 }
 export interface TillBlockMeta {
@@ -162,6 +166,7 @@ export interface MeleeItemMeta {
     damageType?: DamageType;
     canHitMultipleTargets?: boolean;
     damage: number;
+    instantDamage?: boolean;
     hitDelay?: number;
     onUseVFX: AllBundleItems[];
     onUseVFX_FP: AllBundleItems[];

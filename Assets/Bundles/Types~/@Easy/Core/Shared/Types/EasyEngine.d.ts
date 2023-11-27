@@ -76,12 +76,7 @@ interface EntityDriver extends Component {
 	SetAllowFlight(allowed: boolean): void;
 	IsAllowFlight(): boolean;
 	Teleport(position: Vector3): void;
-	/**
-	 * Can only be called from Server.
-	 * @param impulse
-	 * @param duration
-	 */
-	ApplyVelocityOverTime(velocity: Vector3, duration: number): void;
+	ApplyImpulse(impulse: Vector3, ignoreYIfInAir = false): void;
 	SetVelocity(velocity: Vector3): void;
 	DisableMovement();
 	EnableMovement();

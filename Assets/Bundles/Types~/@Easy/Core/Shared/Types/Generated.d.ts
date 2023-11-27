@@ -12899,8 +12899,11 @@ interface BridgeConstructor {
 
 
     CopyToClipboard(text: string): void;
+    GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
+    GetMonoRam(): number;
+    GetReservedRam(): number;
     GetVolume(): number;
     IsFullScreen(): boolean;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
@@ -13095,6 +13098,7 @@ interface DynamicVariables extends ScriptableObject {
 
     constructor(): DynamicVariables;
 
+    GetAsString(key: string): string;
     GetNumber(key: string): number;
     GetString(key: string): string;
     GetVector3(key: string): Vector3;

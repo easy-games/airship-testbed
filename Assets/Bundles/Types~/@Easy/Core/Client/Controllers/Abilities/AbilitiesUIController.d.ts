@@ -12,6 +12,8 @@ export interface ClientAbilityState {
     charges: number | undefined;
     keybinding: KeyCode | undefined;
     cooldown?: ClientAbilityCooldownState;
+    active: boolean;
+    charging?: boolean;
 }
 export declare class AbilitiesUIController implements OnStart {
     readonly coreUIController: CoreUIController;

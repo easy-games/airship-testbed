@@ -39,6 +39,7 @@ export class DamageIndicatorController implements OnStart {
 				{
 					maxDistance: 50,
 					rollOffMode: AudioRolloffMode.Linear,
+					volumeScale: 0.4,
 				},
 			);
 

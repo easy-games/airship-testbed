@@ -21,6 +21,8 @@ export interface ShopElement {
 	/** The category item belongs to. */
 	category: ShopCategory;
 
+	preventPurchasingIfAlreadyOwned?: boolean;
+
 	prevTier?: ItemType;
 	nextTier?: ItemType;
 	spawnWithItems?: ItemType[];
@@ -92,6 +94,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				replaceMelee: true,
+				preventPurchasingIfAlreadyOwned: true,
 			},
 			{
 				itemType: ItemType.IRON_SWORD,
@@ -100,6 +103,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				replaceMelee: true,
+				preventPurchasingIfAlreadyOwned: true,
 			},
 			{
 				itemType: ItemType.DIAMOND_SWORD,
@@ -108,6 +112,7 @@ export class ItemShopMeta {
 				quantity: 1,
 				category: ShopCategory.COMBAT,
 				replaceMelee: true,
+				preventPurchasingIfAlreadyOwned: true,
 			},
 			{
 				itemType: ItemType.WOOD_BOW,
@@ -117,6 +122,7 @@ export class ItemShopMeta {
 				category: ShopCategory.COMBAT,
 				replaceBow: true,
 				spawnWithItems: [ItemType.WOOD_BOW],
+				preventPurchasingIfAlreadyOwned: true,
 			},
 			{
 				itemType: ItemType.WOOD_CROSSBOW,
@@ -126,6 +132,7 @@ export class ItemShopMeta {
 				category: ShopCategory.COMBAT,
 				replaceBow: true,
 				spawnWithItems: [ItemType.WOOD_CROSSBOW],
+				preventPurchasingIfAlreadyOwned: true,
 			},
 			{
 				itemType: ItemType.WOOD_ARROW,
@@ -176,6 +183,7 @@ export class ItemShopMeta {
 				prevTier: ItemType.IRON_PICKAXE,
 				spawnWithItems: [ItemType.DIAMOND_PICKAXE],
 				lockAfterPurchase: true,
+				preventPurchasingIfAlreadyOwned: true,
 			},
 
 			// Armor

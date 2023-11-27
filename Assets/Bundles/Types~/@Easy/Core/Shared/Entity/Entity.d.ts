@@ -41,6 +41,7 @@ export declare class EntityReferences {
     jumpSound: AudioClip | undefined;
     slideSoundPaths: Array<string>;
     landSound: AudioClip | undefined;
+    footstepAudioSource: AudioSource;
     constructor(ref: GameObjectReferences);
 }
 export declare class Entity {

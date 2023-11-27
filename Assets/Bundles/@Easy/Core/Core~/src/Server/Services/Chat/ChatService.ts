@@ -6,10 +6,12 @@ import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { PlayerService } from "../Player/PlayerService";
+import { AddAbilityCommand, RemoveAbilityCommand } from "./Commands/AbilityCommands";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
 import { DieCommand } from "./Commands/DieCommand";
+import { GetVarCommand } from "./Commands/DynamicVariables/GetVarCommand";
 import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
 import { FlyCommand } from "./Commands/FlyCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
@@ -25,7 +27,6 @@ import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { VorliasCommand } from "./Commands/VorliasCommand";
-import { AddAbilityCommand, RemoveAbilityCommand } from "./Commands/AbilityCommands";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -45,6 +46,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new TpsCommand());
 		this.RegisterCommand(new LagCommand());
 		this.RegisterCommand(new SetVarCommand());
+		this.RegisterCommand(new GetVarCommand());
 		this.RegisterCommand(new HealCommand());
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
@@ -71,6 +73,8 @@ export class ChatService implements OnStart {
 
 			if (StringUtils.startsWith(text, "/")) {
 				const commandData = ChatUtil.ParseCommandData(text);
+
+				print(player.username + ": " + text);
 
 				if (commandData) {
 					const command = this.commands.get(commandData.label);

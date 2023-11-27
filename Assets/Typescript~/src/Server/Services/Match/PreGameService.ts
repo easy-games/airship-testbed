@@ -1,5 +1,6 @@
 import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
 import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
+import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
@@ -48,6 +49,14 @@ export class PreGameService implements OnStart {
 						new Vector3(math.random() * 2 - 1, 0.2, math.random() * 2 - 1),
 					);
 				}
+			}
+		});
+
+		CoreServerSignals.EntityDamage.Connect((event) => {
+			if (this.matchService.GetState() === MatchState.PRE) {
+				if (event.damageType === DamageType.VOID) return;
+
+				event.SetCancelled(true);
 			}
 		});
 	}

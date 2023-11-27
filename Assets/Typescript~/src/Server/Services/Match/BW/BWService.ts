@@ -88,11 +88,6 @@ export class BWService implements OnStart {
 				return;
 			}
 
-			if (!this.matchService.IsRunning()) {
-				event.SetCancelled(true);
-				return;
-			}
-
 			if (
 				event.fromEntity?.player &&
 				event.fromEntity instanceof CharacterEntity &&

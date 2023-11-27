@@ -172,7 +172,7 @@ export class DamageService implements OnStart {
 				despawned = true;
 			});
 		} else {
-			entity.GrantImmunity(0.3);
+			entity.GrantImmunity(0.24);
 
 			//Hit stun and Knockback
 			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
@@ -187,17 +187,20 @@ export class DamageService implements OnStart {
 	}
 
 	public ApplyKnockback(driver: EntityDriver, knockbackVel: Vector3 | undefined) {
-		assert(driver, "Missing Entity Driver");
+		let horizontalScalar = this.combatVars.GetNumber("kbX");
+		let verticalScalar = this.combatVars.GetNumber("kbY");
 
-		const horizontalScalar = this.combatVars.GetNumber("kbX");
-		const verticalScalar = this.combatVars.GetNumber("kbY");
-		const kbDuration = this.combatVars.GetNumber("kbDuration");
+		// if (!driver.IsGrounded()) {
+		// 	verticalScalar *= 0.6;
+		// 	horizontalScalar *= 0.6;
+		// }
 
 		let impulse: Vector3;
 		const delta = knockbackVel ?? new Vector3(0, 0, 0);
 
 		impulse = new Vector3(delta.x * horizontalScalar, delta.y * verticalScalar, delta.z * horizontalScalar);
-		driver.ApplyVelocityOverTime(impulse, kbDuration);
+
+		driver.ApplyImpulse(impulse);
 	}
 }
 
