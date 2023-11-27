@@ -3,6 +3,10 @@ This project contains the source to BedWars & the Core package.
 - The Core package is used globally across all Airship games.
 - The BedWars game is just a game. It's not shared globally.
 
+## Prerequisites
+- Unity Editor version `2021.3.12f1`. This can be found on [unity's download archive page](https://unity.com/releases/editor/archive).
+- [LTS version of Node.js](https://nodejs.org/en)
+
 ## Folder Setup
 1. Clone [Airship](https://github.com/easy-games/airship) into the same parent folder as this repo. That is, both "airship" and "bedwars-airship" should be siblings.
 
