@@ -2,12 +2,9 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 
 @Service({})
 export class DisableServerUIService implements OnStart {
-	constructor() {
-		print("DisableServerUIService.constructor()");
-	}
+	constructor() {}
 
 	OnStart(): void {
-		print("DisableServerUIService.OnStart");
 		// Disables all UI
 		this.DisableChildren(GameObject.Find("UI").transform);
 	}
