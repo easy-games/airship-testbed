@@ -30,6 +30,8 @@ export class BlockInteractService implements OnStart {
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.is("PlaceBlock")) return;
 
+			print("PlaceBlock tick=" + InstanceFinder.TimeManager.LocalTick);
+
 			const itemType = event.value.itemType;
 			const pos = event.value.pos;
 			const clientId = event.clientId;
@@ -288,6 +290,7 @@ export class BlockInteractService implements OnStart {
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: block.runtimeBlockId,
 				blockPos: voxelPos,
+				entity: entity,
 			});
 			// CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.runtimeBlockId);
 		}

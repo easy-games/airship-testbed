@@ -26,7 +26,7 @@ export type HeldItemEntry = {
  * One item manager per entity, calls functionality on currently equipped item for that entity
  */
 export class HeldItemManager {
-	private entity: CharacterEntity;
+	public entity: CharacterEntity;
 	private heldItemMap = new Map<ItemType, HeldItem>();
 	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
@@ -104,17 +104,20 @@ export class HeldItemManager {
 
 	//LOCAL CLIENT ONLY
 	public TriggerNewState(itemState: HeldItemState) {
+		const lookVector = this.entity.entityDriver.GetLookVector();
+
 		//Notify server of new State
 		Dependency<LocalEntityController>().AddToMoveData("HeldItemState", {
-			entityId: this.entity.id,
-			state: itemState,
+			e: this.entity.id,
+			s: itemState,
+			l: lookVector,
 		});
 
 		//Handle the state locally
-		this.OnNewState(itemState);
+		this.OnNewState(itemState, lookVector);
 	}
 
-	public OnNewState(itemState: HeldItemState) {
+	public OnNewState(itemState: HeldItemState, lookVector: Vector3) {
 		this.Log("New State: " + itemState);
 		// if (this.currentItemState === itemState) {
 		// 	return;
@@ -124,6 +127,8 @@ export class HeldItemManager {
 			return;
 		}
 		this.currentItemState = itemState;
+		print(itemState + " setting look vector: " + lookVector);
+		this.currentHeldItem.SetLookVector(lookVector);
 		switch (itemState) {
 			case HeldItemState.CALL_TO_ACTION_START:
 				this.currentHeldItem.OnCallToActionStart();

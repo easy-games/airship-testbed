@@ -13,6 +13,10 @@ export type DataStreamItems = {
 };
 
 interface HeldItemStateInfo {
-	state: HeldItemState;
-	entityId: number;
+	/** Entity state */
+	s: HeldItemState;
+	/** entity id */
+	e: number;
+	/** Look vector */
+	l: Vector3;
 }

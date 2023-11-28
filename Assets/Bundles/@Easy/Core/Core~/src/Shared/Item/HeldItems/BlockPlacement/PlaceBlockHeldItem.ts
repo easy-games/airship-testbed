@@ -85,6 +85,8 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			}
 		}
 
+		print("PlaceBlock tick=" + InstanceFinder.TimeManager.LocalTick);
+
 		// Write the voxel at the predicted position
 		world.PlaceBlockById(placePosition, blockMeta.blockId, {
 			placedByEntityId: this.entity.id,

@@ -3,6 +3,7 @@ import { CameraReferences } from "./CameraReferences";
 export declare class FirstPersonCameraSystem {
     cameras: CameraReferences;
     private sprintingBob;
+    private walkingBob;
     private slidingBob;
     private bobData;
     private manualSpineOffset;

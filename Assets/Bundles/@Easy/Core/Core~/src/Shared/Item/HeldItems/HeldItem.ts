@@ -18,7 +18,7 @@ export class HeldItem {
 	/** Undefined when holding nothing */
 	protected readonly itemMeta: ItemMeta | undefined;
 	protected clickBufferMargin = 0.2;
-	protected readonly entity: Entity;
+	public readonly entity: Entity;
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 	protected isCharging = false;
@@ -31,9 +31,24 @@ export class HeldItem {
 	protected audioPitchShift = 1;
 	protected playEffectsOnUse = true;
 
+	/**
+	 * The look vector for the latest action.
+	 *
+	 * It's recommended to use this instead of `entity.GetLookVector()` as it has higher precision.
+	 * This vector will match the exact direction the entity was facing during the frame they clicked (as opposed to the tick they clicked).
+	 */
+	protected lookVector: Vector3 = new Vector3();
+
 	constructor(entity: Entity, newMeta: ItemMeta | undefined) {
 		this.entity = entity;
 		this.itemMeta = newMeta;
+	}
+
+	/**
+	 * Internally used to update the current look vector.
+	 */
+	public SetLookVector(vec: Vector3): void {
+		this.lookVector = vec;
 	}
 
 	protected Log(message: string) {

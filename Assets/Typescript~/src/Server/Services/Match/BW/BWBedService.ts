@@ -44,6 +44,12 @@ export class BWBedService implements OnStart {
 			}
 		});
 
+		CoreServerSignals.BlockDropped.Connect((event) => {
+			if (event.itemStack.GetItemType() === ItemType.BED) {
+				event.SetCancelled(true); // prevent beds dropping
+			}
+		});
+
 		ServerSignals.MatchStart.Connect(() => {
 			this.SpawnBeds();
 		});
