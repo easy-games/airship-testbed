@@ -191,7 +191,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		super.OnUseClient(useIndex);
 
 		//Play the use animation
-		this.entity.animator.PlayUseAnim(1);
+		this.entity.animator.PlayUseAnim(1, { fadeInDuration: 0 });
 
 		//Play the items animation  (bow shoot)
 		this.PlayAnimationOnItem(1);
