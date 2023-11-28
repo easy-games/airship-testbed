@@ -39,7 +39,6 @@ export class ItemShopController implements OnStart {
 	private purchaseButtonEnabled = false;
 
 	constructor() {
-		/* Fetch refs. */
 		const shopGO = GameObject.Find("Shop");
 		this.shopCanvas = shopGO.GetComponent<Canvas>();
 		this.shopCanvas.enabled = false;

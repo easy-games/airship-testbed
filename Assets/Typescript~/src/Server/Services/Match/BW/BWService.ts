@@ -176,10 +176,8 @@ export class BWService implements OnStart {
 	private CheckForWin(): boolean {
 		const nonEliminatedTeams: Team[] = [];
 		const teams = this.teamService.GetTeams();
-		/*
-		 * A team is considered eliminated if **all** players
-		 * are dead AND their bed is destroyed.
-		 */
+		// A team is considered eliminated if **all** players
+		// are dead AND their bed is destroyed.
 		teams.forEach((team) => {
 			const players = SetUtil.ToArray(team.GetPlayers());
 			const noPlayersOnTeam = players.size() === 0;
@@ -195,7 +193,7 @@ export class BWService implements OnStart {
 				this.eliminatedTeams.add(team);
 			}
 		});
-		/* If only _one_ team is not eliminated, they win. */
+		// If only _one_ team is not eliminated, they win.
 		if (nonEliminatedTeams.size() === 1 && this.bedHasBeenDestroyed) {
 			this.DeclareWinner(nonEliminatedTeams[0]);
 			return true;

@@ -16,7 +16,6 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { LocalEntityController } from "../Character/LocalEntityController";
@@ -44,9 +43,9 @@ export class EntityController implements OnStart {
 		PoolManager.PreLoadPool(this.entityHealthbarPrefab, 60);
 
 		CoreNetwork.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {
-			if (RunUtil.IsEditor()) {
-				print(`Spawning ${entityDtos.size()} ${entityDtos.size() > 1 ? "entities" : "entity"}.`);
-			}
+			// if (RunUtil.IsEditor()) {
+			// 	print(`Spawning ${entityDtos.size()} ${entityDtos.size() > 1 ? "entities" : "entity"}.`);
+			// }
 			entityDtos.forEach((entityDto) => {
 				Profiler.BeginSample("SpawnEntity");
 				try {

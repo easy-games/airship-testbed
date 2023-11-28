@@ -17,15 +17,20 @@ export class FirstPersonCameraSystem {
 
 	private sprintingBob: BobData = {
 		bobMovementFrequency: 20,
-		bobMovementMagnitude: 0.025,
+		bobMovementMagnitude: 0.015,
 		bobRotationMagnitude: 2.5,
 	};
-
+	private walkingBob: BobData = {
+		bobMovementFrequency: 10,
+		bobMovementMagnitude: 0.01,
+		bobRotationMagnitude: 1.5,
+	};
 	private slidingBob: BobData = {
 		bobMovementFrequency: 12,
 		bobMovementMagnitude: 0.0075,
 		bobRotationMagnitude: 1,
 	};
+
 	private bobData: BobData = this.sprintingBob;
 
 	//public spineLerpModMin = 25;
@@ -147,6 +152,9 @@ export class FirstPersonCameraSystem {
 	public OnMovementStateChange(state: EntityState) {
 		if (state === EntityState.Sprinting) {
 			this.bobData = this.sprintingBob;
+			this.bobStrength = 1;
+		} else if (state === EntityState.Running) {
+			this.bobData = this.walkingBob;
 			this.bobStrength = 1;
 		} else if (state === EntityState.Sliding) {
 			this.bobData = this.slidingBob;

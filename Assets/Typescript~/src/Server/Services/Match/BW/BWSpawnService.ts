@@ -37,17 +37,6 @@ export class BWSpawnService implements OnStart {
 		private readonly entityService: EntityService,
 		private readonly bedService: BWBedService,
 	) {
-		// Spawn test entity
-		// ServerSignals.MapLoad.Connect((event) => {
-		// 	const position = event.LoadedMap.GetSpawnPlatform();
-		// 	const entity = this.entityService.SpawnEntityForPlayer(
-		// 		undefined,
-		// 		EntityPrefabType.HUMAN,
-		// 		position.Position.add(new Vector3(-3, 2, 3)),
-		// 	);
-		// 	entity.AddHealthbar();
-		// });
-
 		ServerSignals.MapLoad.Connect((event) => {
 			for (const team of Dependency<TeamService>().GetTeams()) {
 				const spawnPos = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
@@ -64,7 +53,7 @@ export class BWSpawnService implements OnStart {
 	OnStart(): void {
 		Task.Spawn(() => {
 			this.loadedMap = this.mapService.WaitForMapLoaded();
-			/* Spawn entity on join. */
+			// Spawn entity on join.
 			CoreServerSignals.PlayerJoin.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 				Task.Delay(SPAWN_DELAY_ON_JOIN, () => {
 					const team = event.player.GetTeam();
@@ -91,7 +80,7 @@ export class BWSpawnService implements OnStart {
 				event.respawnTime = respawnTime;
 			});
 
-			/* Listen for entity death, respawn if applicable. */
+			// Listen for entity death, respawn if applicable.
 			CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 				if (!this.matchService.IsRunning()) return;
 				if (event.entity instanceof CharacterEntity && !this.bwService.winnerDeclared) {
@@ -103,7 +92,7 @@ export class BWSpawnService implements OnStart {
 				}
 			});
 
-			/* Listen for match start and teleport players. */
+			// Listen for match start and teleport players.
 			ServerSignals.MatchStart.Connect(() => {
 				this.playerService.GetPlayers().forEach((player) => {
 					this.TeleportPlayerToSpawn(player);
@@ -133,7 +122,7 @@ export class BWSpawnService implements OnStart {
 
 	/** Teleports player to match spawn location on match start. */
 	public TeleportPlayerToSpawn(player: Player): void {
-		/* Teleport to team spawn location. */
+		// Teleport to team spawn location.
 		const team = player.GetTeam();
 		if (!team) return;
 		const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");

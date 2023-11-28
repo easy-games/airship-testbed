@@ -8,21 +8,22 @@ import { SpringTween } from "Shared/Util/SpringTween";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "..";
 
-// Lua's bitwise operations is unsigned, but C#'s is signed, so we need to hardcode the mask:
-// TransparentEffect Layer: 1
-// IgnoreRaycast Layer: 2
-// Character layer: 3
-// BridgeAssist layer: 7
-// GroundItem layer: 9
-// ProjectileReceiver layer: 12
-// Bitwise operation to ignore layers above: ~(1 << 1 | 1 << 2 | 1 << 3 | 1 << 7 | 1 << 9 | 1 << 12)
-const CHARACTER_MASK = -4751;
+const CAMERA_IGNORE_MASK = LayerMask.InvertMask(
+	LayerMask.GetMask(
+		"TransparentFX",
+		"Ignore Raycast",
+		"Character",
+		"BridgeAssist",
+		"GroundItem",
+		"ProjectileReceiver",
+	),
+);
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
 
 const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
-const Y_LOCKED_ROTATION = 0; //math.rad(15);
+const Y_LOCKED_ROTATION = 0;
 
 const ANGLE_EPSILON = 0.0001;
 const TAU = math.pi * 2;
@@ -214,7 +215,7 @@ export class HumanoidCameraMode implements CameraMode {
 		const transform = camera.transform;
 		if (!this.firstPerson) {
 			transform.LookAt(this.lastAttachToPos);
-			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CHARACTER_MASK);
+			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CAMERA_IGNORE_MASK);
 		}
 		this.camRight = transform.right;
 

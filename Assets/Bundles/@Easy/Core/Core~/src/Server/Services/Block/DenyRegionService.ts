@@ -18,11 +18,11 @@ export class DenyRegionService implements OnStart {
 	private denyVoxelPositions = new Set<Vector3>();
 
 	OnStart(): void {
-		/* Cancel block placed if voxel position is inside of a deny region. */
+		// Cancel block placed if voxel position is inside of a deny region.
 		CoreServerSignals.BeforeBlockPlaced.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.InDenyRegion(event.pos)) event.SetCancelled(true);
 		});
-		/* Send deny region snapshot to late joiners. */
+		// Send deny region snapshot to late joiners.
 		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_DELAY, () => {
 				CoreNetwork.ServerToClient.DenyRegionSnapshot.Server.FireClient(
