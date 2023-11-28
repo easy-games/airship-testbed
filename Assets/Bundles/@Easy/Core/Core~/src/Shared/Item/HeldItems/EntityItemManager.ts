@@ -129,10 +129,10 @@ export class EntityItemManager {
 			});
 
 			//Server Events
-			CoreNetwork.ServerToClient.HeldItemStateChanged.Client.OnServerEvent((entityId, newState) => {
+			CoreNetwork.ServerToClient.HeldItemStateChanged.Client.OnServerEvent((entityId, newState, lookVector) => {
 				const heldItem = this.entityItems.get(entityId);
 				if (heldItem) {
-					heldItem.OnNewState(newState);
+					heldItem.OnNewState(newState, lookVector);
 				}
 			});
 		});
@@ -163,14 +163,16 @@ export class EntityItemManager {
 			//Listen to state changes triggered by client
 			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
 				if (event.is("HeldItemState")) {
-					this.Log("NewState: " + event.value.state);
-					const heldItem = this.entityItems.get(event.value.entityId);
-					if (heldItem) {
-						heldItem.OnNewState(event.value.state);
+					this.Log("NewState: " + event.value.s);
+					const heldItemManager = this.entityItems.get(event.value.e);
+					if (heldItemManager) {
+						const lookVec = event.value.l;
+						heldItemManager.OnNewState(event.value.s, lookVec);
 						CoreNetwork.ServerToClient.HeldItemStateChanged.Server.FireExcept(
 							event.clientId,
-							event.value.entityId,
-							event.value.state,
+							event.value.e,
+							event.value.s,
+							lookVec,
 						);
 					} else {
 						error("Reading custom move command from entity without held items???");
@@ -197,7 +199,7 @@ export class EntityItemManager {
 		let entityId = entity.id ?? 0;
 		let items = this.entityItems.get(entityId);
 		if (items) {
-			items.OnNewState(HeldItemState.ON_DESTROY);
+			items.OnNewState(HeldItemState.ON_DESTROY, entity.entityDriver.GetLookVector());
 			items.Destroy();
 			this.entityItems.delete(entityId);
 		}

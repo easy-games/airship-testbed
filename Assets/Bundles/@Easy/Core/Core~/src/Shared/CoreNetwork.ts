@@ -152,7 +152,7 @@ export const CoreNetwork = {
 		/** Fired when a player joins. Sends entire deny region state. */
 		DenyRegionSnapshot: new RemoteEvent<[denyRegions: DenyRegionDto[]]>(),
 		/** Fired when the current selected items state changes on an entity*/
-		HeldItemStateChanged: new RemoteEvent<[entityId: number, state: HeldItemState]>(),
+		HeldItemStateChanged: new RemoteEvent<[entityId: number, state: HeldItemState, lookVector: Vector3]>(),
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>(),
 		BlockGroupPlace: new RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number]>(),
 

@@ -34,3 +34,9 @@ export function DotV3(a: Vector3, b: Vector3): number {
 export function CrossV3(a: Vector3, b: Vector3): Vector3 {
 	return new Vector3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 }
+
+export class Vector3Util {
+	public static String(vec: Vector3): string {
+		return `(${vec.x},${vec.y},${vec.z})`;
+	}
+}

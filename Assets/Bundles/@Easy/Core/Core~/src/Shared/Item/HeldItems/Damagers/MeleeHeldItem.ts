@@ -2,17 +2,17 @@
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
+import { DamageUtils } from "Shared/Damage/DamageUtils";
+import { MeleeItemMeta } from "Shared/Item/ItemMeta";
 import { Bin } from "Shared/Util/Bin";
 import { Layer } from "Shared/Util/Layer";
 import { RunUtil } from "Shared/Util/RunUtil";
+import { Task } from "Shared/Util/Task";
 import { Theme } from "Shared/Util/Theme";
 import { SetTimeout } from "Shared/Util/Timer";
 import { EffectsManager } from "../../../Effects/EffectsManager";
 import { Entity } from "../../../Entity/Entity";
 import { HeldItem } from "../HeldItem";
-import { DamageUtils } from "Shared/Damage/DamageUtils";
-import { Task } from "Shared/Util/Task";
-import { MeleeItemMeta } from "Shared/Item/ItemMeta";
 
 export class MeleeHeldItem extends HeldItem {
 	private gizmoEnabled = true;
@@ -72,7 +72,7 @@ export class MeleeHeldItem extends HeldItem {
 			}
 		}
 
-		Task.Delay(meleeData.hitDelay ?? 0, () => {
+		const DoHit = () => {
 			if (!meleeData) {
 				return;
 			}
@@ -81,7 +81,15 @@ export class MeleeHeldItem extends HeldItem {
 			this.PlayItemSound();
 
 			this.ClientPredictDamage(meleeData);
-		});
+		};
+
+		if (meleeData.hitDelay !== undefined && meleeData.hitDelay !== 0) {
+			Task.Delay(meleeData.hitDelay, () => {
+				DoHit();
+			});
+		} else {
+			DoHit();
+		}
 
 		//Reset the index if you don't use the attack for a while
 		if (this.bin) {
@@ -177,6 +185,7 @@ export class MeleeHeldItem extends HeldItem {
 	private ScanForHits(): MeleeHit[] {
 		let farBox = new Vector3(0.2, 0.2, 4.8);
 		let closeBox = new Vector3(3, 3, 4);
+
 		// let farBox = this.combatVars.GetVector3("swordBoxFar");
 		// let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
@@ -200,7 +209,7 @@ export class MeleeHeldItem extends HeldItem {
 
 		const layerMask = 8; // character layer: 1 << 3
 
-		const lookVec = this.entity.entityDriver.GetLookVector();
+		const lookVec = this.lookVector;
 		box = box.add(new Vector3(0, 0, 0.5));
 		let halfExtents = new Vector3(box.x / 2, box.y / 2, box.z / 2);
 		let headOffset = this.entity.GetHeadOffset();
@@ -293,7 +302,7 @@ export class MeleeHeldItem extends HeldItem {
 						};
 
 						// Extra raycast to find impact point
-						const ray = new Ray(headPosition, this.entity.entityDriver.GetLookVector());
+						const ray = new Ray(headPosition, this.lookVector);
 						// DebugUtil.DrawSingleLine(
 						// 	ray.origin,
 						// 	ray.origin.add(ray.direction.mul(rayDistance)),
