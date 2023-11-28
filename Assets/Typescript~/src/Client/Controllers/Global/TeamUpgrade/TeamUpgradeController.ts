@@ -187,7 +187,9 @@ export class TeamUpgradeController implements OnStart {
 						nextTier,
 					);
 					if (result) {
-						AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav");
+						AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav", {
+							volumeScale: 0.2,
+						});
 					}
 				}
 			});
