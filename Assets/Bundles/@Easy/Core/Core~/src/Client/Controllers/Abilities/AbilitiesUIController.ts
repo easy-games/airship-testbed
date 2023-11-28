@@ -1,15 +1,14 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreUIController } from "../UI/CoreUIController";
-import { InputUtils } from "Shared/Util/InputUtils";
-import { AbilitiesController } from "./AbilitiesController";
-import { Bin } from "Shared/Util/Bin";
 import inspect from "@easy-games/unity-inspect";
-import { Healthbar } from "Shared/UI/Healthbar";
-import { AbilityConfig, ChargingAbilityEndedState } from "Shared/Abilities/Ability";
-import { OnUpdate } from "Shared/Util/Timer";
-import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CoreClientSignals } from "Client/CoreClientSignals";
-import { Game } from "Shared/Game";
+import { ChargingAbilityEndedState } from "Shared/Abilities/Ability";
+import { Healthbar } from "Shared/UI/Healthbar";
+import { Bin } from "Shared/Util/Bin";
+import { InputUtils } from "Shared/Util/InputUtils";
+import { TimeUtil } from "Shared/Util/TimeUtil";
+import { OnUpdate } from "Shared/Util/Timer";
+import { CoreUIController } from "../UI/CoreUIController";
+import { AbilitiesController } from "./AbilitiesController";
 
 export interface ClientAbilityCooldownState {
 	startTime: number;
@@ -99,12 +98,14 @@ export class AbilitiesUIController implements OnStart {
 
 			if (!prevState?.active && nextState.active) {
 				contentRect.TweenLocalScale(new Vector3(0.9, 0.9, 0.9), ACTIVE_TWEEN_TIME);
-				contentRect
-					.GetComponent<Image>()
-					.TweenGraphicColor(new Color(40 / 255, 110 / 255, 185 / 255, 1), ACTIVE_TWEEN_TIME);
+				contentRect.TweenGraphicAlpha(0.8, ACTIVE_TWEEN_TIME);
+				// contentRect
+				// 	.GetComponent<Image>()
+				// 	.TweenGraphicColor(new Color(40 / 255, 110 / 255, 185 / 255, 1), ACTIVE_TWEEN_TIME);
 			} else if (prevState?.active && !nextState.active) {
 				contentRect.TweenLocalScale(new Vector3(1, 1, 1), ACTIVE_TWEEN_TIME);
-				contentRect.GetComponent<Image>().TweenGraphicColor(new Color(0, 0, 0, 0.65), ACTIVE_TWEEN_TIME);
+				contentRect.TweenGraphicAlpha(1, ACTIVE_TWEEN_TIME);
+				// contentRect.GetComponent<Image>().TweenGraphicColor(new Color(0, 0, 0, 0.65), ACTIVE_TWEEN_TIME);
 			}
 
 			const clearSlotCooldown = this.slotCooldowns.get(slotIdx);
