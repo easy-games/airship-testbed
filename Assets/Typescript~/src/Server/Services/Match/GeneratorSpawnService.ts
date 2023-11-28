@@ -30,7 +30,7 @@ export class GeneratorSpawnService implements OnStart {
 
 	OnStart(): void {
 		Task.Spawn(() => {
-			/* Wait map and match started before creating generators. */
+			// Wait map loaded and match started before creating generators.
 			this.loadedMap = this.mapService.WaitForMapLoaded();
 			ServerSignals.MatchStart.Connect(() => this.CreateMapGenerators());
 		});

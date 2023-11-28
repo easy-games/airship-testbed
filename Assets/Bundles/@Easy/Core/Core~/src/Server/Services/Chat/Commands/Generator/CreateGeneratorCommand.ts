@@ -21,31 +21,31 @@ export class CreateGeneratorCommand extends ChatCommand {
 		let itemType: ItemType | undefined;
 		let spawnRate: number | undefined;
 
-		/* If no arguments are provided fallback to defaults. */
+		// If no arguments are provided fallback to defaults.
 		if (args.size() === 0) {
 			itemType = DEFAULT_ITEM_TYPE;
 			spawnRate = DEFAULT_SPAWN_RATE;
 		}
 
-		/* ItemType argument provided, fallback to default spawn rate. */
+		// ItemType argument provided, fallback to default spawn rate.
 		if (args.size() === 1) {
 			itemType = args[0] as ItemType;
 			spawnRate = DEFAULT_SPAWN_RATE;
 		}
 
-		/* ItemType and spawn rate arguments provided. */
+		// ItemType and spawn rate arguments provided.
 		if (args.size() === 2) {
 			itemType = args[0] as ItemType;
 			spawnRate = tonumber(args[1]);
 		}
 
-		/* If no ItemType or spawn rate, return. */
+		// If no ItemType or spawn rate, return.
 		if (itemType === undefined || spawnRate === undefined) {
 			player.SendMessage("Invalid arguments");
 			return;
 		}
 
-		/* Spawn generator underneath command executor. */
+		// Spawn generator underneath command executor.
 		const executorEntity = Dependency<EntityService>().GetEntityByClientId(player.clientId);
 		if (!executorEntity) return;
 		const generatorPosition = executorEntity.gameObject.transform.position;
@@ -55,7 +55,6 @@ export class CreateGeneratorCommand extends ChatCommand {
 			stackLimit: DEFAULT_GENERATOR_STACK_LIMIT,
 			nameLabel: true,
 			spawnTimeLabel: spawnRate > 2,
-			/* TODO: Split data? Maybe? */
 		});
 	}
 }

@@ -56,9 +56,9 @@ export class ProximityPrompt {
 			this.data.promptPosition,
 			Quaternion.identity,
 		);
-		/* Prompt starts inactive. */
+		// Prompt starts inactive.
 		this.promptGameObject.SetActive(false);
-		/* Set activation key, action, and object text. */
+		// Set activation key, action, and object text.
 		const keyCode = this.promptGameObject.transform
 			.Find("Canvas/Background/KeyCodeBackground/KeyCode")!
 			.GetComponent<TextMeshProUGUI>();
