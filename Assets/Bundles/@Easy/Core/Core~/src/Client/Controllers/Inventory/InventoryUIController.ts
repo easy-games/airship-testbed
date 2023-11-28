@@ -1,8 +1,10 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
+import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Healthbar } from "Shared/UI/Healthbar";
@@ -38,6 +40,7 @@ export class InventoryUIController implements OnStart {
 	private enabled = true;
 	private draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
+	private spriteCache = new Map<ItemType, Sprite>();
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -232,15 +235,18 @@ export class InventoryUIController implements OnStart {
 		}
 
 		const itemMeta = itemStack.GetItemMeta();
-
-		const [, id] = ItemUtil.GetItemTypeComponents(itemStack.GetItemType());
+		const itemType = itemStack.GetItemType();
+		const [, id] = ItemUtil.GetItemTypeComponents(itemType);
 		let imageSrc = id.lower() + ".png";
 
-		let texture2d = AssetBridge.Instance.LoadAssetIfExists<Texture2D>(
-			`Client/Resources/Assets/ItemRenders/${imageSrc}`,
-		);
+		let texture2d = AssetCache.LoadAssetIfExists<Texture2D>(`Client/Resources/Assets/ItemRenders/${imageSrc}`);
 		if (texture2d) {
-			image.sprite = Bridge.MakeSprite(texture2d);
+			let cachedSprite = this.spriteCache.get(itemMeta.itemType);
+			if (!cachedSprite) {
+				cachedSprite = Bridge.MakeSprite(texture2d);
+				this.spriteCache.set(itemType, cachedSprite);
+			}
+			image.sprite = cachedSprite;
 			image.enabled = true;
 			name.enabled = false;
 		} else {
