@@ -90,7 +90,7 @@
 <!--    <SideTexture>log_oak.s</SideTexture>-->
 <!-- <Material>StylizedWood</Material> -->
     <Solid>false</Solid>
-    <Collision>Block</Collision>
+    <Collision>Solid</Collision>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>17</Minecraft>
@@ -440,7 +440,7 @@
     <Id>OAK_LEAF</Id>
     <Name>Oak Leaf</Name>
     <Solid>false</Solid>
-    <Collision>Block</Collision>
+    <Collision>Solid</Collision>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Brightness>2</Brightness>
