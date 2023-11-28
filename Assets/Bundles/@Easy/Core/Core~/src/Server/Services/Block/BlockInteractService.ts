@@ -288,6 +288,7 @@ export class BlockInteractService implements OnStart {
 			CoreServerSignals.BlockDestroyed.Fire({
 				blockId: block.runtimeBlockId,
 				blockPos: voxelPos,
+				entity: entity,
 			});
 			// CoreNetwork.ServerToClient.BlockDestroyed.Server.FireAllClients(voxelPos, block.runtimeBlockId);
 		}

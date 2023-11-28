@@ -18,6 +18,7 @@ import { EntitySpawnEvent } from "./Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "./Signals/MoveCommandDataEvent";
 import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
+import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly entity: Entity | undefined };
 
@@ -34,6 +35,7 @@ export const CoreServerSignals = {
 	BeforeBlockHit: new Signal<BeforeBlockHitSignal>(),
 	BeforeBlockGroupHit: new Signal<BeforeBlockGroupHitSignal>(),
 	BlockHit: new Signal<BlockHitSignal>(),
+	BlockDropped: new Signal<BlockDropItemSignal>(),
 	/** Fired before a block is destroyed. */
 	BeforeBlockDestroyed: new Signal<{
 		blockPos: Vector3;
