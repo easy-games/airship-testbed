@@ -15,7 +15,7 @@ export declare class AbilitiesController implements OnStart {
     constructor(abilityRegistry: AbilityRegistry, entityService: EntityController);
     private FindNextAvailableSlot;
     private RegisterAbility;
-    UnregisterAbility(abilityId: string): void;
+    private UnregisterAbility;
     private OnKeyboardInputEnded;
     ObserveAbilityBindings(callback: (abilities: ReadonlyArray<AbilityBinding>) => Bin): Bin;
     OnStart(): void;

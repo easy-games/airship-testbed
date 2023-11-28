@@ -78,6 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 0
   drag: 0
+  launcherItemTypeId: 0
   itemTypeId: 0
 --- !u!1 &5863273125273431309
 GameObject:
@@ -274,7 +275,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: telepearl
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7755742
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6103379
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.05531612
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495418596280148511, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.15136877
+      objectReference: {fileID: 0}
+    - target: {fileID: 7992877458141043135, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8343628751206696934, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5498f1c59874b794ea5d4ea5121df3aa, type: 3}
 --- !u!4 &6279354534222491505 stripped
 Transform:

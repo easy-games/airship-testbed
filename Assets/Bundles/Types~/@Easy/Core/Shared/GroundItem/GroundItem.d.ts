@@ -3,10 +3,11 @@ import { ItemStack } from "../Inventory/ItemStack";
 export declare class GroundItem {
     readonly id: number;
     readonly itemStack: ItemStack;
-    readonly rb: Rigidbody;
+    readonly drop: GroundItemDrop;
     readonly pickupTime: number;
     data: Record<string, unknown>;
-    constructor(id: number, itemStack: ItemStack, rb: Rigidbody, pickupTime: number, data: Record<string, unknown>);
+    readonly transform: Transform;
+    constructor(id: number, itemStack: ItemStack, drop: GroundItemDrop, pickupTime: number, data: Record<string, unknown>);
     SetData(key: string, value: unknown): void;
     GetData<T>(key: string): T | undefined;
 }

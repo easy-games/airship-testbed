@@ -3,9 +3,9 @@ import inspect from "@easy-games/unity-inspect";
 import { BlockSelectController } from "Client/Controllers/BlockInteractions/BlockSelectController";
 import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
@@ -20,7 +20,6 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		if (this.itemMeta?.block?.blockId) {
 			const world = WorldAPI.GetMainWorld()!;
 			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
-			print("voxelId match", this.itemMeta.block.blockId, voxelId);
 
 			const rightHandRens = this.entity.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
 			if (rightHandRens && rightHandRens.Length > 0) {

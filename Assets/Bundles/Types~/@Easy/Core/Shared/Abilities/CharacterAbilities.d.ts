@@ -24,24 +24,43 @@ export declare class CharacterAbilities {
     private boundAbilities;
     private currentChargingAbilityState;
     constructor(entity: CharacterEntity);
-    private GetAbilities;
     private SetAbilityOnCooldown;
     /**
-     * @server Server-only API
+     * Returns all the abilities registered to this character
+     * @returns A map of the ability id to the ability logics
+     */
+    GetAbilities(): ReadonlyMap<string, AbilityLogic>;
+    /**
+     * Returns whether or not the id matches an ability registered to this character, at the given ability slot
+     * @param id The id to check
+     * @param slot The slot to check against
+     * @returns True if the character has an ability with this id, at the given slot
      */
     HasAbilityWithIdAtSlot(id: string, slot: AbilitySlot): boolean;
     /**
-     * @server Server-only API
+     * Returns whether or not the id matches an ability registered to this character
+     * @param id The id to check
+     * @returns True if the character has an ability with this id
      */
     HasAbilityWithId(id: string): boolean;
     /**
      * Adds the given ability to the character
+     *
      * @param abilityId The ability's unique id
      * @param slot The slot the ability is bound to
      * @param logic The logic of the ability
      */
     AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic;
-    RemoveAbilityById(abilityId: string): false | undefined;
+    /**
+     * Removes the ability with the given id from this character
+     * @param abilityId The ability id to remove
+     * @returns True if the ability was removed
+     */
+    RemoveAbilityById(abilityId: string): boolean;
+    /**
+     * Removes all abilities from this character
+     */
+    RemoveAllAbilities(): void;
     /**
      * Gets the currently charging abiltiy
      *
@@ -60,8 +79,6 @@ export declare class CharacterAbilities {
      * Gets all abilities bound to the given slot
      * @param slot The slot
      * @returns All the abilities bound to this slot
-     *
-     * @server Server-only API
      */
     GetAbilitiesBoundToSlot(slot: AbilitySlot): Map<string, AbilityLogic>;
     /**
@@ -78,7 +95,7 @@ export declare class CharacterAbilities {
      * @param id The id of the ability to use
      * @server Server-only API
      */
-    UseAbilityById(id: string): boolean;
+    UseAbilityById(id: string): void;
     /**
      * Cancel any charging abilities
      * @returns True if a charging ability was cancelled
@@ -89,8 +106,6 @@ export declare class CharacterAbilities {
     /**
      * Gets all abilities as an array of data transfer objects
      * @returns The array of data transfer objects
-     *
-     * @server Server-only API
      */
     Encode(): AbilityDto[];
 }

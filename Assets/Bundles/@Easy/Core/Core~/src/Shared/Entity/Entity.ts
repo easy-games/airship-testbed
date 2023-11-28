@@ -362,6 +362,10 @@ export class Entity {
 
 	public SetMaxHealth(maxHealth: number): void {
 		this.maxHealth = maxHealth;
+
+		if (RunUtil.IsServer()) {
+			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health, this.maxHealth);
+		}
 	}
 
 	/**
@@ -605,7 +609,7 @@ export class Entity {
 		projectileItemType: ItemType,
 		launchPos: Vector3,
 		velocity: Vector3,
-	): EasyProjectile | undefined {
+	): AirshipProjectile | undefined {
 		const itemMeta = ItemUtil.GetItemMeta(projectileItemType);
 		const launcherItemMeta = launcherItemType ? ItemUtil.GetItemMeta(launcherItemType) : undefined; // I kind of wish there was syntactic sugar for this lol
 

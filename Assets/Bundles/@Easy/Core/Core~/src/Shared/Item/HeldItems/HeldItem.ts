@@ -1,9 +1,10 @@
-﻿import { AudioManager } from "Shared/Audio/AudioManager";
+﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
+import { AudioManager } from "Shared/Audio/AudioManager";
 import { EntityAnimationLayer } from "Shared/Entity/Animation/EntityAnimationLayer";
 import { Bin } from "Shared/Util/Bin";
-import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { Layer } from "Shared/Util/Layer";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";
 import { Entity } from "../../Entity/Entity";
@@ -11,7 +12,6 @@ import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemMeta } from "../ItemMeta";
 import { ItemUtil } from "../ItemUtil";
-import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
@@ -86,15 +86,12 @@ export class HeldItem {
 		for (const accessory of accessories) {
 			this.activeAccessories[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
 
-			let j = 0;
 			//Load the animator for the held item if one exists
-			for (let go of CSArrayUtil.Convert(this.activeAccessories[i].gameObjects)) {
-				this.currentItemGOs[j] = go;
-				const anim = go.GetComponent<Animator>();
-				if (anim) {
-					this.currentItemAnimations.push(anim);
-				}
-				j++;
+			const go = this.activeAccessories[i].rootTransform.gameObject;
+			this.currentItemGOs.push(go);
+			const anim = go.GetComponent<Animator>();
+			if (anim) {
+				this.currentItemAnimations.push(anim);
 			}
 			i++;
 		}
@@ -158,12 +155,12 @@ export class HeldItem {
 	public OnSecondaryActionEnd() {}
 
 	public OnInspect() {
-		print("OnInspect");
+		this.Log("OnInspect");
 		let inspectPath = AllBundleItems.ItemSword_FirstPerson_Inspect as string; //Default inspect
 		if (this.itemMeta?.inspectAnimPath) {
 			inspectPath = this.itemMeta.inspectAnimPath;
 		}
-		const clip = AssetBridge.Instance.LoadAsset<AnimationClip>(inspectPath);
+		const clip = AssetCache.LoadAsset<AnimationClip>(inspectPath);
 		this.entity.animator?.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, () => {
 			// this.entity.anim.StartIdleAnim();
 		});
@@ -271,21 +268,23 @@ export class HeldItem {
 		}
 	}
 
-	// protected PlayItemAnimation(index: number, pauseOnEndFrame: boolean) {
-	// 	for (let i = 0; i < this.currentItemAnimations.size(); i++) {
-	// 		let anim = this.currentItemAnimations[i];
-	// 		if (index >= 0) {
-	// 			anim.Play("Base Layer.Use" + index);
-	// 		} else {
-	// 			anim.Play("Idle");
-	// 		}
-	// 		anim.SetBool("Hold", pauseOnEndFrame);
-	// 	}
-	// }
+	protected PlayAnimationOnItem(index: number, pauseOnEndFrame = false) {
+		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+			let anim = this.currentItemAnimations[i];
+			if (index >= 0) {
+				anim.Play("Base Layer.Use" + index);
+			} else {
+				anim.Play("Idle");
+			}
+			anim.SetBool("Hold", pauseOnEndFrame);
+		}
+	}
 
-	// protected StopItemAnimation() {
-
-	// }
+	protected StopAnimationOnItem() {
+		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+			this.currentItemAnimations[i].Play("Idle");
+		}
+	}
 
 	protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {

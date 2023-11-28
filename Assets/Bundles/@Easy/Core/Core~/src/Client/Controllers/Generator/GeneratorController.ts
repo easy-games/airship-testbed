@@ -32,10 +32,10 @@ export class GeneratorController implements OnStart {
 	private generatorBins = new Map<string, Bin>();
 
 	constructor() {
-		/* Set up generator item collision rules. */
+		// Set up generator item collision rules.
 		Physics.IgnoreLayerCollision(Layer.CHARACTER, Layer.GENERATOR_ITEM);
 		Physics.IgnoreLayerCollision(Layer.GENERATOR_ITEM, Layer.GENERATOR_ITEM);
-		/* NOTE: Placeholder label. */
+		// NOTE: Placeholder label.
 		this.generatorLabelPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/GeneratorLabel.prefab",
 		);
@@ -45,7 +45,7 @@ export class GeneratorController implements OnStart {
 		/* Listen for generator snapshot. Should only be received on late joins. */
 		CoreNetwork.ServerToClient.GeneratorSnapshot.Client.OnServerEvent((generatorStateDtos) => {
 			generatorStateDtos.forEach((dto) => {
-				/* Skip generator if it already exists on client. */
+				// Skip generator if it already exists on client.
 				if (this.generatorMap.has(dto.id)) return;
 				this.generatorMap.set(dto.id, dto);
 
@@ -54,10 +54,10 @@ export class GeneratorController implements OnStart {
 				}
 			});
 		});
-		/* Listen for generator creation. */
+		// Listen for generator creation.
 		CoreNetwork.ServerToClient.GeneratorCreated.Client.OnServerEvent((dto) => {
 			this.generatorMap.set(dto.id, dto);
-			/* Set up generator label if applicable. */
+			// Set up generator label if applicable.
 			if (dto.nameLabel || dto.spawnTimeLabel) this.CreateGeneratorLabel(dto);
 		});
 

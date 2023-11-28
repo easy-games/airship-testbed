@@ -18,19 +18,19 @@ export class BWController implements OnStart {
 	constructor(private readonly teamController: TeamController, private readonly playerController: PlayerController) {}
 
 	OnStart(): void {
-		/* Listen for player eliminated. */
+		// Listen for player eliminated.
 		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId: number) => {
 			const player = this.playerController.GetPlayerFromClientId(clientId);
 			if (!player) return;
 			this.eliminatedPlayers.add(player);
 			ClientSignals.PlayerEliminated.Fire({ player });
 		});
-		/* Listen for match end. */
+		// Listen for match end.
 		Network.ServerToClient.MatchEnded.Client.OnServerEvent((winningTeamId?: string) => {
 			if (winningTeamId) this.ShowWinscreen(winningTeamId);
 		});
 
-		/* Listen for team assignements*/
+		// Listen for team assignements.
 		CoreClientSignals.PlayerChangeTeam.Connect((teamSignal) => {
 			if (!teamSignal.player.character || teamSignal.player.character?.IsLocalCharacter()) {
 				return;
@@ -55,7 +55,7 @@ export class BWController implements OnStart {
 		if (entity.IsLocalCharacter() || !entity.player) {
 			return;
 		}
-		//Show a glow to indicate friend or foe
+		// Show a glow to indicate friend or foe.
 		const sameTeam = team?.id === Game.LocalPlayer.character?.GetTeam()?.id;
 		const targetColor = sameTeam ? Color.cyan : Color.red;
 		const strength = sameTeam ? 0 : 1;
@@ -106,9 +106,7 @@ export class BWController implements OnStart {
 		const winningTeam = this.teamController.GetTeam(winningTeamId);
 		if (winningTeam) {
 			// const winScreenRoot = this.GetWinscreenRoot();
-			// /* Show. */
 			// this.winScreenDocument.enabled = true;
-			// /* Update team color and win text. */
 			// const teamColor = winScreenRoot.Q<VisualElement>("TeamColor");
 			// UICore.SetBackgroundColor(teamColor, winningTeam.color);
 			// const winText = winScreenRoot.Q<Label>("WinText");

@@ -207,6 +207,7 @@ export class LocalEntityController implements OnStart {
 				}
 				this.humanoidCameraMode?.SetYOffset(this.GetCamYOffset(state, this.firstPerson));
 				this.UpdateFov();
+				this.fps?.OnMovementStateChange(state);
 			});
 			bin.Add(() => {
 				Bridge.DisconnectEvent(stateChangedConn);

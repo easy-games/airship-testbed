@@ -22,7 +22,7 @@ export declare class Projectile {
      * For additional collide information, you should instead listen to either `ClientSignals.ProjectileHit` or `ServerSignals.ProjectileHit`
      */
     readonly OnHit: Signal<[hitPoint: Vector3, collider: Collider]>;
-    constructor(easyProjectile: EasyProjectile, itemType: ItemType, shooter: Entity | undefined);
+    constructor(easyProjectile: AirshipProjectile, itemType: ItemType, shooter: Entity | undefined);
     /**
      * Get the item type of what launched this projectile
      */

@@ -209,6 +209,7 @@ export class BlockHealthController implements OnStart {
 
 	private DeleteHealthBar(entry: HealthBarEntry, blockPos: Vector3) {
 		this.blockHealthBars.delete(blockPos);
-		entry.healthbar.OnDelete();
+		// entry.healthbar.Destroy();
+		PoolManager.ReleaseObject(entry.gameObject);
 	}
 }

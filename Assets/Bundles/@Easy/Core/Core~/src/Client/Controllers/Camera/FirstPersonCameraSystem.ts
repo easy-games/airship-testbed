@@ -6,8 +6,33 @@ import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { CameraReferences } from "./CameraReferences";
 
+interface BobData {
+	bobMovementFrequency: number;
+	bobMovementMagnitude: number;
+	bobRotationMagnitude: number;
+}
+
 export class FirstPersonCameraSystem {
 	public cameras: CameraReferences;
+
+	private sprintingBob: BobData = {
+		bobMovementFrequency: 20,
+		bobMovementMagnitude: 0.015,
+		bobRotationMagnitude: 2.5,
+	};
+	private walkingBob: BobData = {
+		bobMovementFrequency: 10,
+		bobMovementMagnitude: 0.01,
+		bobRotationMagnitude: 1.5,
+	};
+	private slidingBob: BobData = {
+		bobMovementFrequency: 12,
+		bobMovementMagnitude: 0.0075,
+		bobRotationMagnitude: 1,
+	};
+
+	private bobData: BobData = this.sprintingBob;
+
 	//public spineLerpModMin = 25;
 	//public spineLerpModMax = 75;
 	//public spineLerpMaxAngle = 75;
@@ -24,6 +49,7 @@ export class FirstPersonCameraSystem {
 	private originalSpineTopPosition: Vector3 = Vector3.zero;
 	private originalShoulderLPosition: Vector3 = Vector3.zero;
 	private originalShoulderRPosition: Vector3 = Vector3.zero;
+	private bobStrength = 0;
 
 	public constructor(entityReferences: EntityReferences, startInFirstPerson: boolean) {
 		this.entityReferences = entityReferences;
@@ -66,33 +92,53 @@ export class FirstPersonCameraSystem {
 			return;
 		}
 
-		//Get the cameras transform information
+		//Get the cameras transform
 		const transform = this.cameras.fpsCamera.transform;
+
+		//Head bobbing when running
+		//this.bobMovementFrequency = this.cameraVars.GetNumber("FPSBobFrequency");
+		//this.bobMovementMagnitude = this.cameraVars.GetNumber("FPSBobMagnitude");
+		//this.bobRotationMagnitude = this.cameraVars.GetNumber("FPSBobRotMagnitude");
+		const headBobOffset = new Vector3(
+			0,
+			math.sin(Time.time * this.bobData.bobMovementFrequency) *
+				this.bobData.bobMovementMagnitude *
+				this.bobStrength,
+			0,
+		);
+		const headBobRotationOffset = Quaternion.Euler(
+			math.sin((Time.time * this.bobData.bobMovementFrequency) / 2) *
+				this.bobData.bobRotationMagnitude *
+				this.bobStrength,
+			0,
+			0,
+		);
+
 		let headLookPosition = transform.position;
-		let headLookRotation = transform.rotation;
+		let headLookRotation = transform.rotation.mul(headBobRotationOffset);
 
 		//Animated to the look direction
-		/*let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
+		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
 		// let lerpMod = MathUtil.Lerp(
 		// 	this.cameraVars.GetNumber("FPSLerpMin"),
 		// 	this.cameraVars.GetNumber("FPSLerpMax"),
 		// 	diffAngle / this.cameraVars.GetNumber("FPSLerpRange"),
 		// );
-		let lerpMod = MathUtil.Lerp(10, 40, diffAngle / 90);
+		//let lerpMod = MathUtil.Lerp(25, 75, diffAngle / 90);
 
 		//Move the spine to match where the camera is looking
-		this.trackedHeadRotation = Quaternion.Slerp(
-			this.trackedHeadRotation,
-			headLookRotation,
-			Time.deltaTime * lerpMod,
-		);*/
+		// this.trackedHeadRotation = Quaternion.Slerp(
+		// 	this.trackedHeadRotation,
+		// 	headLookRotation,
+		// 	Time.deltaTime * this.cameraVars.GetNumber("FPSLerpMax"),
+		// );
 
 		this.trackedHeadRotation = headLookRotation;
 
 		//Calculate new position based on head rotation
-		let newPosition = headLookPosition.sub(this.trackedHeadRotation.mul(this.calculatedSpineOffset));
-
-		//let headBob = new Vector3(0, math.sin(Time.deltaTime * ,0);
+		let newPosition = headLookPosition.sub(
+			this.trackedHeadRotation.mul(this.calculatedSpineOffset.add(headBobOffset)),
+		);
 
 		//Apply the new rotation
 		this.entityReferences.spineBoneMiddle.rotation = this.trackedHeadRotation;
@@ -101,6 +147,24 @@ export class FirstPersonCameraSystem {
 		//Apply the new positions
 		this.entityReferences.spineBoneMiddle.position = newPosition;
 		this.entityReferences.spineBoneTop.position = newPosition;
+	}
+
+	public OnMovementStateChange(state: EntityState) {
+		if (state === EntityState.Sprinting) {
+			this.bobData = this.sprintingBob;
+			this.bobStrength = 1;
+		} else if (state === EntityState.Running) {
+			this.bobData = this.walkingBob;
+			this.bobStrength = 1;
+		} else if (state === EntityState.Sliding) {
+			this.bobData = this.slidingBob;
+			this.bobStrength = 1;
+		} else if (state === EntityState.Jumping) {
+			this.bobData = this.slidingBob;
+			this.bobStrength = 0.5;
+		} else {
+			this.bobStrength = 0;
+		}
 	}
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {

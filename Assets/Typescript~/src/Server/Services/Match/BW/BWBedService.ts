@@ -29,7 +29,7 @@ export class BWBedService implements OnStart {
 	) {}
 
 	OnStart(): void {
-		/* Listen for bed destroyed. */
+		// Listen for bed destroyed.
 		CoreServerSignals.BeforeBlockDestroyed.Connect((event) => {
 			if (event.block.blockId === ItemType.BED) {
 				this.TryDestroyBed(event.blockPos, event.entity);
@@ -92,7 +92,7 @@ export class BWBedService implements OnStart {
 			const bedState: BedState = {
 				teamId: team.id,
 				position: bedPos,
-				/* _Always_ starts as not destroyed. */
+				// _Always_ starts as not destroyed.
 				destroyed: false,
 			};
 			this.teamToBed.set(team.id, bedState);

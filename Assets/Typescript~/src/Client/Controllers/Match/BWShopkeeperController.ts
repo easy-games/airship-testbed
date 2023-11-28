@@ -38,11 +38,10 @@ export class BWShopkeeperController implements OnStart {
 						bottomText: "Item Shop",
 						topText: "Open",
 					});
-					/* Open shop UI on prompt activation. */
+					// Open shop UI on prompt activation.
 					prompt.OnActivated.Connect(() => {
 						this.itemShopController.Open();
 					});
-
 					// Clothing
 					entity.accessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
 				});

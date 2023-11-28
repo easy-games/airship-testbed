@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+/// <reference types="@easy-games/compiler-types" />
 import { AbilityConfig, AbilityLogicConstructor } from "../../Abilities/Ability";
 import { AbilityLogic } from "../../Abilities/AbilityLogic";
 export interface Ability {
@@ -15,7 +15,7 @@ export interface Ability {
      */
     readonly config: AbilityConfig;
 }
-export declare class AbilityRegistry implements OnStart {
+export declare class AbilityRegistry {
     private abilityHandlers;
     /**
      * Registers the given ability to the ability registry by id
@@ -31,5 +31,8 @@ export declare class AbilityRegistry implements OnStart {
      * @returns The ability (if it exists) - or undefined
      */
     GetAbilityById(id: string): Ability | undefined;
-    OnStart(): void;
+    /**
+     * Returns a map of all the abilities registered in this registry
+     */
+    GetAllRegisteredAbilities(): ReadonlyMap<string, Ability>;
 }

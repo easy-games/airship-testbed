@@ -93,6 +93,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		//Play Charge Animation
 		this.entity.animator.PlayUseAnim(0, { autoFadeOut: false });
+		this.PlayAnimationOnItem(0, true); //ie bow draw string
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			const ammoItemMeta = ItemUtil.GetItemMeta(this.itemMeta.projectileLauncher.ammoItemType);
@@ -193,7 +194,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		this.entity.animator.PlayUseAnim(1);
 
 		//Play the items animation  (bow shoot)
-		//TODO make the bow animate
+		this.PlayAnimationOnItem(1);
 
 		if (!this.entity.IsLocalCharacter()) return;
 

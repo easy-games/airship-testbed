@@ -76,13 +76,9 @@ interface EntityDriver extends Component {
 	SetAllowFlight(allowed: boolean): void;
 	IsAllowFlight(): boolean;
 	Teleport(position: Vector3): void;
-	/**
-	 * Can only be called from Server.
-	 * @param impulse
-	 * @param duration
-	 */
-	ApplyVelocityOverTime(velocity: Vector3, duration: number): void;
+	ApplyImpulse(impulse: Vector3, ignoreYIfInAir = false): void;
 	SetVelocity(velocity: Vector3): void;
+	GetVelocity(): Vector3;
 	DisableMovement();
 	EnableMovement();
 	GetState(): EntityState;
@@ -414,8 +410,8 @@ interface CanvasUIBridgeConstructor {
 declare const CanvasUIBridge: CanvasUIBridgeConstructor;
 
 interface DebugConstructor {
-	traceback(co: thread, msg?: string, level?: number): string;
-	traceback(msg?: string, level?: number): string;
+	traceback: (co: thread, msg?: string, level?: number) => string;
+	traceback: (msg?: string, level?: number) => string;
 }
 declare const debug: DebugConstructor;
 
@@ -440,16 +436,16 @@ interface LayerMask {
 declare const LayerMask: LayerMask;
 
 interface ProjectileManager {
-	OnProjectileCollide(callback: (projectile: EasyProjectile, collision: Collision) => void): void;
+	OnProjectileCollide(callback: (projectile: AirshipProjectile, collision: Collision) => void): void;
 	OnProjectileValidate(callback: (validateEvent: ProjectileValidateEvent) => void): void;
-	OnProjectileLaunched(callback: (projectile: EasyProjectile, shooter: GameObject) => void): void;
+	OnProjectileLaunched(callback: (projectile: AirshipProjectile, shooter: GameObject) => void): void;
 }
 interface ProjectileManagerConstructor {
 	Instance: ProjectileManager;
 }
 declare const ProjectileManager: ProjectileManagerConstructor;
 
-interface EasyProjectile {
+interface AirshipProjectile {
 	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;
 }
 
@@ -485,6 +481,7 @@ declare const MeshProcessor: MeshProcessorConstructor;
 interface CoreEntityAnimator extends Component {
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
+	SetRootMovementLayer(itemInHand: boolean): void;
 }
 
 interface PoolManager {
