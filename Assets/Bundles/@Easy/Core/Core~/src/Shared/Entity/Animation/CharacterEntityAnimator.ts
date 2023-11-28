@@ -1,4 +1,5 @@
-﻿﻿import { ItemMeta } from "Shared/Item/ItemMeta";
+﻿﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
+import { ItemMeta } from "Shared/Item/ItemMeta";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Entity, EntityReferences } from "../Entity";
 import { EntityAnimationLayer } from "./EntityAnimationLayer";
@@ -17,16 +18,16 @@ export enum ItemPlayMode {
 	HOLD,
 }
 
-const EMPTY_ANIM = AssetBridge.Instance.LoadAsset<AnimationClip>(
+const EMPTY_ANIM = AssetCache.LoadAsset<AnimationClip>(
 	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
 );
-const DEFAULT_USE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+const DEFAULT_USE_FP = AssetCache.LoadAsset<AnimationClip>(
 	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
 );
-const BLOCK_IDLE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+const BLOCK_IDLE_FP = AssetCache.LoadAsset<AnimationClip>(
 	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Block_Idle.anim",
 );
-const BLOCK_USE_FP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+const BLOCK_USE_FP = AssetCache.LoadAsset<AnimationClip>(
 	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Block_Place.anim",
 );
 
@@ -36,13 +37,13 @@ export class CharacterEntityAnimator extends EntityAnimator {
 	private currentItemState: string = ItemAnimationId.IDLE;
 	private currentEndEventConnection = -1;
 
-	private defaultIdleAnimFP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	private defaultIdleAnimFP = AssetCache.LoadAsset<AnimationClip>(
 		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Idle.anim",
 	);
-	private defaultIdleAnimFPUnarmed = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	private defaultIdleAnimFPUnarmed = AssetCache.LoadAsset<AnimationClip>(
 		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Unarmed_Idle.anim",
 	);
-	private defaultIdleAnimTP = AssetBridge.Instance.LoadAsset<AnimationClip>(
+	private defaultIdleAnimTP = AssetCache.LoadAsset<AnimationClip>(
 		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
 	);
 
@@ -129,7 +130,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			if (this.isFirstPerson) {
 				if (itemMeta.viewModel?.equipAnimFP) {
 					let clips = itemMeta.viewModel.equipAnimFP.mapFiltered((s) => {
-						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
+						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					});
 					if (clips.size() > 0) {
@@ -138,7 +139,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				}
 				if (itemMeta.viewModel?.idleAnimFP) {
 					let clips = itemMeta.viewModel.idleAnimFP.mapFiltered((s) => {
-						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
+						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					});
 					if (clips.size() > 0) {
@@ -149,7 +150,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				}
 				if (itemMeta.usable?.onUseAnimFP) {
 					let clips = itemMeta.usable.onUseAnimFP.mapFiltered((s) => {
-						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
+						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					});
 					if (clips.size() > 0) {
@@ -161,7 +162,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			} else {
 				if (itemMeta.viewModel?.equipAnimTP) {
 					let clips = itemMeta.viewModel.equipAnimTP.mapFiltered((s) => {
-						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
+						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					});
 					if (clips.size() > 0) {
@@ -170,7 +171,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				}
 				if (itemMeta.viewModel?.idleAnimTP) {
 					let clips = itemMeta.viewModel.idleAnimTP.mapFiltered((s) => {
-						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
+						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					});
 					if (clips.size() > 0) {
@@ -179,7 +180,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 				}
 				if (itemMeta.usable?.onUseAnimTP) {
 					let clips = itemMeta.usable.onUseAnimTP.mapFiltered((s) => {
-						const clip = AssetBridge.Instance.LoadAssetIfExists<AnimationClip>(s);
+						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					});
 					if (clips.size() > 0) {
