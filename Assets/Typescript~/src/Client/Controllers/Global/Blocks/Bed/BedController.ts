@@ -35,8 +35,7 @@ export class BedController implements OnStart {
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
 			if (event.broken) {
 				const blockId = event.GetBlockId();
-				if (blockId === ItemType.BED) {
-					print("spawning prefab effect");
+				if (blockId === ItemType.BED) 
 					EffectsManager.SpawnPrefabEffect(
 						"@Easy/Core/Shared/Resources/Accessories/Weapons/Fireball/FireballOnHitVFX.prefab",
 						event.pos.add(new Vector3(0, 0.5, 0)),

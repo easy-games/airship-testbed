@@ -17,7 +17,6 @@ export class ProjectileEffectsController implements OnStart {
 			const itemMeta = ItemUtil.GetItemMeta(event.projectile.itemType);
 
 			if (itemMeta.projectile?.onHitVFXTemplate) {
-				print("playing arrow hit effect.");
 				const effect = EffectsManager.SpawnBundleEffectById(
 					itemMeta.projectile?.onHitVFXTemplate,
 					event.hitPosition,
