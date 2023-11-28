@@ -40,6 +40,8 @@ export declare class HeldItem {
     /** Runs when an item is used. Runs on every client.*/
     protected OnUseClient(useIndex: number): void;
     protected PlayItemSound(): void;
+    protected PlayAnimationOnItem(index: number, pauseOnEndFrame?: boolean): void;
+    protected StopAnimationOnItem(): void;
     protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean): void;
     /** Runs when an item is used, server authorized
      * return true if you can use the item */

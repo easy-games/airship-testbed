@@ -86,15 +86,12 @@ export class HeldItem {
 		for (const accessory of accessories) {
 			this.activeAccessories[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
 
-			let j = 0;
 			//Load the animator for the held item if one exists
-			for (let go of CSArrayUtil.Convert(this.activeAccessories[i].gameObjects)) {
-				this.currentItemGOs[j] = go;
-				const anim = go.GetComponent<Animator>();
-				if (anim) {
-					this.currentItemAnimations.push(anim);
-				}
-				j++;
+			const go = this.activeAccessories[i].rootTransform.gameObject;
+			this.currentItemGOs.push(go);
+			const anim = go.GetComponent<Animator>();
+			if (anim) {
+				this.currentItemAnimations.push(anim);
 			}
 			i++;
 		}
@@ -158,7 +155,7 @@ export class HeldItem {
 	public OnSecondaryActionEnd() {}
 
 	public OnInspect() {
-		print("OnInspect");
+		this.Log("OnInspect");
 		let inspectPath = AllBundleItems.ItemSword_FirstPerson_Inspect as string; //Default inspect
 		if (this.itemMeta?.inspectAnimPath) {
 			inspectPath = this.itemMeta.inspectAnimPath;
@@ -271,21 +268,23 @@ export class HeldItem {
 		}
 	}
 
-	// protected PlayItemAnimation(index: number, pauseOnEndFrame: boolean) {
-	// 	for (let i = 0; i < this.currentItemAnimations.size(); i++) {
-	// 		let anim = this.currentItemAnimations[i];
-	// 		if (index >= 0) {
-	// 			anim.Play("Base Layer.Use" + index);
-	// 		} else {
-	// 			anim.Play("Idle");
-	// 		}
-	// 		anim.SetBool("Hold", pauseOnEndFrame);
-	// 	}
-	// }
+	protected PlayAnimationOnItem(index: number, pauseOnEndFrame = false) {
+		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+			let anim = this.currentItemAnimations[i];
+			if (index >= 0) {
+				anim.Play("Base Layer.Use" + index);
+			} else {
+				anim.Play("Idle");
+			}
+			anim.SetBool("Hold", pauseOnEndFrame);
+		}
+	}
 
-	// protected StopItemAnimation() {
-
-	// }
+	protected StopAnimationOnItem() {
+		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
+			this.currentItemAnimations[i].Play("Idle");
+		}
+	}
 
 	protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean) {
 		for (let i = 0; i < this.currentItemAnimations.size(); i++) {
