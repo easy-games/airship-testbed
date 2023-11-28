@@ -17,7 +17,7 @@ export class FirstPersonCameraSystem {
 
 	private sprintingBob: BobData = {
 		bobMovementFrequency: 20,
-		bobMovementMagnitude: 0.025,
+		bobMovementMagnitude: 0.015,
 		bobRotationMagnitude: 2.5,
 	};
 
