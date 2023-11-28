@@ -11,8 +11,7 @@ import { SetInterval } from "Shared/Util/Timer";
 import { EntityService } from "../Entity/EntityService";
 import { GroundItemService } from "../GroundItem/GroundItemService";
 import { GeneratorState } from "./GeneratorState";
-/** Default generator stack size. We _always_ start at 0.*/
-const DEFAULT_GENERATOR_STACK_SIZE = 0;
+
 /** Snapshot send delay after user connects. */
 const SNAPSHOT_SEND_DELAY = 1;
 /** Generator item spawn offset. Items spawn _above_ generators and fall to the ground. */
@@ -58,12 +57,12 @@ export class GeneratorService implements OnStart {
 					}
 				});
 			}
-			/* Generator cleanup. */
+			// Generator cleanup.
 			genState.stackSize = 0;
 			this.stackMap.delete(generatorId);
 		});
 
-		/* Handle late joiners. */
+		// Handle late joiners.
 		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
 				CoreNetwork.ServerToClient.GeneratorSnapshot.Server.FireClient(
@@ -100,10 +99,10 @@ export class GeneratorService implements OnStart {
 		};
 		state.ticker = this.TickGenerator(state);
 
-		/* Store generator in map, notify client of generator creation. */
+		// Store generator in map, notify client of generator creation.
 		this.generatorMap.set(state.dto.id, state);
 		CoreNetwork.ServerToClient.GeneratorCreated.Server.FireAllClients(state.dto);
-		/* Return id. */
+		// Return id.
 		return generatorId;
 	}
 
@@ -168,7 +167,7 @@ export class GeneratorService implements OnStart {
 		state.dto.startSpawnTime = TimeUtil.GetServerTime();
 		state.ticker = this.TickGenerator(state);
 
-		/* Inform clients of _all_ server-sided generator spawn rate changes. */
+		// Inform clients of _all_ server-sided generator spawn rate changes.
 		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.Server.FireAllClients(state.dto.id, newSpawnRate);
 	}
 
