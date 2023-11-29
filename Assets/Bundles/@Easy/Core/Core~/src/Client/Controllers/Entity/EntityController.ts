@@ -51,7 +51,7 @@ export class EntityController implements OnStart {
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
-					error("[FATAL]: Failed to add entity:" + err);
+					error("[FATAL]: Failed to add entity: " + err);
 				}
 				Profiler.EndSample();
 			});
