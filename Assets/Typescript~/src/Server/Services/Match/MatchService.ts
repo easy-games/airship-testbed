@@ -59,7 +59,7 @@ export class MatchService implements OnStart {
 	public WaitForMatchReady(): void {
 		if (this.state !== MatchState.SETUP) return;
 		while (this.state === MatchState.SETUP) {
-			Task.Wait(0.1);
+			task.wait(0.1);
 		}
 	}
 
@@ -67,7 +67,7 @@ export class MatchService implements OnStart {
 	public WaitForQueueReady(): QueueMeta {
 		if (this.queueType) return this.GetQueueMeta();
 		while (!this.queueType) {
-			Task.Wait(0.1);
+			task.wait(0.1);
 		}
 		return this.GetQueueMeta();
 	}

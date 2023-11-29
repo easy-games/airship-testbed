@@ -5,6 +5,7 @@ import { Bin } from "Shared/Util/Bin";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { CameraReferences } from "./CameraReferences";
+import { MathUtil } from "Shared/Util/MathUtil";
 
 interface BobData {
 	bobMovementFrequency: number;
@@ -13,17 +14,18 @@ interface BobData {
 }
 
 export class FirstPersonCameraSystem {
+	private bobLerpMod = 10;
 	public cameras: CameraReferences;
 
 	private sprintingBob: BobData = {
-		bobMovementFrequency: 20,
+		bobMovementFrequency: 22,
 		bobMovementMagnitude: 0.015,
 		bobRotationMagnitude: 2.5,
 	};
 	private walkingBob: BobData = {
-		bobMovementFrequency: 10,
-		bobMovementMagnitude: 0.01,
-		bobRotationMagnitude: 1.5,
+		bobMovementFrequency: 15,
+		bobMovementMagnitude: 0.0075,
+		bobRotationMagnitude: 1,
 	};
 	private slidingBob: BobData = {
 		bobMovementFrequency: 12,
@@ -31,7 +33,14 @@ export class FirstPersonCameraSystem {
 		bobRotationMagnitude: 1,
 	};
 
-	private bobData: BobData = this.sprintingBob;
+	private targetBobData: BobData = this.sprintingBob;
+	private currentBobData: BobData = {
+		bobMovementFrequency: 0,
+		bobMovementMagnitude: 0,
+		bobRotationMagnitude: 0,
+	};
+	private targetBobStrength = 0;
+	private currentBobStrength = 0;
 
 	//public spineLerpModMin = 25;
 	//public spineLerpModMax = 75;
@@ -49,7 +58,7 @@ export class FirstPersonCameraSystem {
 	private originalSpineTopPosition: Vector3 = Vector3.zero;
 	private originalShoulderLPosition: Vector3 = Vector3.zero;
 	private originalShoulderRPosition: Vector3 = Vector3.zero;
-	private bobStrength = 0;
+	private currentTime = 0.01;
 
 	public constructor(entityReferences: EntityReferences, startInFirstPerson: boolean) {
 		this.entityReferences = entityReferences;
@@ -64,11 +73,6 @@ export class FirstPersonCameraSystem {
 		this.originalShoulderRPosition = this.entityReferences.shoulderR.localPosition;
 
 		//Calculate how high the neck bone is off the spine bone
-		// const spinePos = this.entityReferences.spineBoneMiddle.position;
-		// const neckPos = new Vector3(spinePos.x, this.entityReferences.neckBone.position.y, spinePos.z);
-		// //this.manualSpineOffset = this.cameraVars.GetVector3("FPSHeadOffset");
-		// this.calculatedSpineOffset = new Vector3(0, this.manualSpineOffset, 0).add(neckPos.sub(spinePos));
-		// print("calculatedSpineOffset: " + this.calculatedSpineOffset);
 		this.calculatedSpineOffset = new Vector3(0, this.manualSpineOffset, 0);
 
 		this.inFirstPerson = startInFirstPerson;
@@ -91,29 +95,44 @@ export class FirstPersonCameraSystem {
 		if (!this.inFirstPerson) {
 			return;
 		}
-
-		//Get the cameras transform
-		const transform = this.cameras.fpsCamera.transform;
+		this.currentTime += Time.deltaTime;
 
 		//Head bobbing when running
 		//this.bobMovementFrequency = this.cameraVars.GetNumber("FPSBobFrequency");
 		//this.bobMovementMagnitude = this.cameraVars.GetNumber("FPSBobMagnitude");
 		//this.bobRotationMagnitude = this.cameraVars.GetNumber("FPSBobRotMagnitude");
+		const lerpDelta = Time.deltaTime * this.bobLerpMod;
+		this.currentBobStrength = MathUtil.Lerp(this.currentBobStrength, this.targetBobStrength, lerpDelta);
+
+		this.currentBobData.bobMovementMagnitude = MathUtil.Lerp(
+			this.currentBobData.bobMovementMagnitude,
+			this.targetBobData.bobMovementMagnitude,
+			lerpDelta,
+		);
+
+		this.currentBobData.bobRotationMagnitude = MathUtil.Lerp(
+			this.currentBobData.bobRotationMagnitude,
+			this.targetBobData.bobRotationMagnitude,
+			lerpDelta,
+		);
+
 		const headBobOffset = new Vector3(
 			0,
-			math.sin(Time.time * this.bobData.bobMovementFrequency) *
-				this.bobData.bobMovementMagnitude *
-				this.bobStrength,
+			math.sin(this.currentTime * this.currentBobData.bobMovementFrequency) *
+				this.currentBobData.bobMovementMagnitude *
+				this.currentBobStrength,
 			0,
 		);
 		const headBobRotationOffset = Quaternion.Euler(
-			math.sin((Time.time * this.bobData.bobMovementFrequency) / 2) *
-				this.bobData.bobRotationMagnitude *
-				this.bobStrength,
+			math.sin((this.currentTime * this.currentBobData.bobMovementFrequency) / 2) *
+				this.currentBobData.bobRotationMagnitude *
+				this.currentBobStrength,
 			0,
 			0,
 		);
 
+		//Get the cameras transform
+		const transform = this.cameras.fpsCamera.transform;
 		let headLookPosition = transform.position;
 		let headLookRotation = transform.rotation.mul(headBobRotationOffset);
 
@@ -144,27 +163,36 @@ export class FirstPersonCameraSystem {
 		this.entityReferences.spineBoneMiddle.rotation = this.trackedHeadRotation;
 		this.entityReferences.spineBoneTop.localRotation = Quaternion.identity;
 
-		//Apply the new positions
-		this.entityReferences.spineBoneMiddle.position = newPosition;
-		this.entityReferences.spineBoneTop.position = newPosition;
+		//Avoiding possible NaN
+		if (newPosition && newPosition.x) {
+			//Apply the new positions
+			this.entityReferences.spineBoneMiddle.position = newPosition;
+			this.entityReferences.spineBoneTop.position = newPosition;
+		}
 	}
 
 	public OnMovementStateChange(state: EntityState) {
 		if (state === EntityState.Sprinting) {
-			this.bobData = this.sprintingBob;
-			this.bobStrength = 1;
+			this.targetBobData = this.sprintingBob;
+			this.targetBobStrength = 1;
 		} else if (state === EntityState.Running) {
-			this.bobData = this.walkingBob;
-			this.bobStrength = 1;
+			this.targetBobData = this.walkingBob;
+			this.targetBobStrength = 1;
 		} else if (state === EntityState.Sliding) {
-			this.bobData = this.slidingBob;
-			this.bobStrength = 1;
+			this.targetBobData = this.slidingBob;
+			this.targetBobStrength = 1;
 		} else if (state === EntityState.Jumping) {
-			this.bobData = this.slidingBob;
-			this.bobStrength = 0.5;
+			this.targetBobData = this.slidingBob;
+			this.targetBobStrength = 0.5;
 		} else {
-			this.bobStrength = 0;
+			this.targetBobStrength = 0;
 		}
+		//Offset the phase of the bob sin to match the new frequency
+		if (this.currentBobData.bobMovementFrequency > 0 && this.targetBobData.bobMovementFrequency > 0) {
+			const currentPhase = this.currentTime % (1 / this.currentBobData.bobMovementFrequency);
+			this.currentTime = currentPhase / this.targetBobData.bobMovementFrequency;
+		}
+		this.currentBobData.bobMovementFrequency = this.targetBobData.bobMovementFrequency;
 	}
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {

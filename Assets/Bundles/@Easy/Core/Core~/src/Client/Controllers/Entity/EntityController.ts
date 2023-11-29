@@ -51,7 +51,7 @@ export class EntityController implements OnStart {
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
-					error("[FATAL]: Failed to add entity:" + err);
+					error("[FATAL]: Failed to add entity: " + err);
 				}
 				Profiler.EndSample();
 			});
@@ -295,7 +295,7 @@ export class EntityController implements OnStart {
 		let entity = ObjectUtils.values(this.entities).find((e) => e.ClientId === playerId);
 		if (entity) return entity;
 		while (!entity) {
-			Task.Wait(0.1);
+			task.wait(0.1);
 			entity = ObjectUtils.values(this.entities).find((e) => e.ClientId === playerId);
 		}
 		return entity;

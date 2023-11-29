@@ -36,6 +36,8 @@ MonoBehaviour:
       value: {fileID: 532096394122571217, guid: c1ae06ea821350a448e70e1d24013b6c, type: 3}
     - key: LandVFX
       value: {fileID: 3624261834906416581, guid: e59ef252a55be9941b7364c38eeb77ad, type: 3}
+    - key: SprintOverlayVFX
+      value: {fileID: 7733656434005237019, guid: 3ff5a4be5de2b354e9dcea3a3b52ca9a, type: 3}
     - key: JumpSFX
       value: {fileID: 8300000, guid: 7537b4533f0e7234ca3a0be798df4f1c, type: 3}
     - key: LandSFX

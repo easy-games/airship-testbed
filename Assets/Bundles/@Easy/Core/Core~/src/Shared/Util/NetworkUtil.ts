@@ -89,7 +89,7 @@ export class NetworkUtil {
 			}),
 		);
 		while (true) {
-			wait();
+			task.wait();
 			elapsed += TimeUtil.GetDeltaTime();
 			if (nob) return nob;
 			if (elapsed >= timeout) {
@@ -114,7 +114,7 @@ export class NetworkUtil {
 		/* Return when exists or timeout after `timeout`. */
 		let elapsed = 0;
 		while (true) {
-			wait();
+			task.wait();
 			elapsed += TimeUtil.GetDeltaTime();
 			if (waitingByName.has(name)) return waitingByName.get(name)!;
 			if (elapsed >= timeout) return undefined;
@@ -132,7 +132,7 @@ export class NetworkUtil {
 			return gameObject.GetComponent<NetworkObject>();
 		}
 		while (true) {
-			wait();
+			task.wait();
 			if (waitingByName.has(name)) {
 				return waitingByName.get(name)!;
 			}
@@ -165,7 +165,7 @@ export class NetworkUtil {
 			// if (nob !== undefined) {
 			// 	print("wait.before", (nob as NetworkObject).gameObject + ", nobId=" + objectId);
 			// }
-			wait();
+			task.wait();
 			if (nob) {
 				// print("wait.after", (nob as NetworkObject).gameObject + ", nobId=" + objectId);
 				return nob;

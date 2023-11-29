@@ -347,6 +347,6 @@ export class HeldItem {
 	public HasChargeTime(): boolean {
 		if (!this.itemMeta?.usable) return false;
 
-		return (this.itemMeta.usable.minChargeSeconds ?? 0) > 0;
+		return (this.itemMeta.usable.maxChargeSeconds ?? 0) > 0;
 	}
 }
