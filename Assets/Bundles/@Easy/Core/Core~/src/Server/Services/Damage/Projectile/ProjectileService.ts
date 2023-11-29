@@ -10,10 +10,16 @@ import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
 import inspect from "@easy-games/unity-inspect";
+import { GroundItemService } from "Server/Services/GroundItem/GroundItemService";
+import { ItemStack } from "Shared/Inventory/ItemStack";
 
 @Service({})
 export class ProjectileService implements OnStart {
-	constructor(private readonly damageService: DamageService, private readonly blockService: BlockInteractService) {}
+	constructor(
+		private readonly damageService: DamageService,
+		private readonly blockService: BlockInteractService,
+		private readonly groundItemService: GroundItemService,
+	) {}
 
 	private projectilesById = new Map<number, Projectile>();
 
@@ -85,6 +91,22 @@ export class ProjectileService implements OnStart {
 					projectileHitSignal: event,
 					knockbackDirection: knockbackDirection,
 				});
+			} else {
+				// anchor ammo in ground
+				if (event.ammoMeta.stickItemAtSurfaceOnMiss) {
+					const groundItem = this.groundItemService.SpawnGroundItem(
+						new ItemStack(event.projectile.itemType, 1),
+						event.hitPosition,
+						undefined,
+						{
+							Spinning: false,
+							Grounded: true,
+							LocalOffset: new Vector3(),
+							Direction: event.velocity.normalized,
+						},
+					);
+					groundItem.shouldMerge = false;
+				}
 			}
 		});
 
