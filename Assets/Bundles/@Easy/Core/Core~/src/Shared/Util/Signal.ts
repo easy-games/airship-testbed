@@ -141,7 +141,7 @@ export class Signal<T extends unknown[] | unknown> {
 				// }
 
 				const thread = task.spawn(entry.callback, ...args);
-				if (this.trackYielding && coroutine.status(thread) !== "dead") {
+				if (this.trackYielding && isCancellable && coroutine.status(thread) !== "dead") {
 					warn(debug.traceback(thread, "Signal yielded. This might be an error."));
 				}
 
