@@ -759,9 +759,7 @@ export const items: {
 		displayName: "Wood Arrow",
 		accessoryPaths: [AccPath(ItemType.WOOD_ARROW)],
 		projectile: {
-			stickIntoSurfaces: {
-				droppedItem: true,
-			},
+			stickItemAtSurfaceOnMiss: true,
 			yAxisAimAdjust: 0.1,
 			damage: 15,
 			gravity: defaultGravity * 0.4,

@@ -93,7 +93,7 @@ export class ProjectileService implements OnStart {
 				});
 			} else {
 				// anchor ammo in ground
-				if (event.ammoMeta.stickIntoSurfaces) {
+				if (event.ammoMeta.stickItemAtSurfaceOnMiss) {
 					const groundItem = this.groundItemService.SpawnGroundItem(
 						new ItemStack(event.projectile.itemType, 1),
 						event.hitPosition,
