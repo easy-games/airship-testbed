@@ -40,6 +40,7 @@ export class MainMenuController implements OnStart {
 		this.pageMap = {
 			[MainMenuPage.HOME]: this.refs.GetValue("Pages", "Home"),
 			[MainMenuPage.SETTINGS]: this.refs.GetValue("Pages", "Settings"),
+			[MainMenuPage.AVATAR]: this.refs.GetValue("Pages", "Avatar"),
 		};
 
 		for (const page of ObjectUtil.keys(this.pageMap)) {
