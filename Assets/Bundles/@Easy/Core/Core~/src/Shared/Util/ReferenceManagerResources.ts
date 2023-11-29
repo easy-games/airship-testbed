@@ -41,6 +41,7 @@ export enum Bundle_Entity_Movement{
 	NONE = -1,
 	SprintTrail,
 	LandVFX,
+	SprintOverlayVFX,
 	JumpSFX,
 	LandSFX,
 	SlideSFX0,
@@ -333,6 +334,7 @@ export enum AllBundleItems{
 	Entity_OnHit_DeathAnimTP = "@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/TP_Death.anim",
 	Entity_Movement_SprintTrail = "@Easy/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab",
 	Entity_Movement_LandVFX = "@Easy/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/LandingVFX.prefab",
+	Entity_Movement_SprintOverlayVFX = "@Easy/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/SprintOverlayVFX.prefab",
 	Entity_Movement_JumpSFX = "@Easy/Core/Shared/Resources/Sound/Movement/JumpStart.ogg",
 	Entity_Movement_LandSFX = "@Easy/Core/Shared/Resources/Sound/Movement/JumpLand.ogg",
 	Entity_Movement_SlideSFX0 = "@Easy/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav",
@@ -483,6 +485,7 @@ export class ReferenceManagerAssets{
 			filePaths: new Map([
 				[Bundle_Entity_Movement.SprintTrail, "@Easy/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/SprintVFX.prefab"],
 				[Bundle_Entity_Movement.LandVFX, "@Easy/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/LandingVFX.prefab"],
+				[Bundle_Entity_Movement.SprintOverlayVFX, "@Easy/Core/Shared/Resources/Prefabs/VFX/Entity/Movement/SprintOverlayVFX.prefab"],
 				[Bundle_Entity_Movement.JumpSFX, "@Easy/Core/Shared/Resources/Sound/Movement/JumpStart.ogg"],
 				[Bundle_Entity_Movement.LandSFX, "@Easy/Core/Shared/Resources/Sound/Movement/JumpLand.ogg"],
 				[Bundle_Entity_Movement.SlideSFX0, "@Easy/Core/Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav"],
