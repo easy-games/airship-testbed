@@ -11,6 +11,7 @@ import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
 import { AccessorySlot } from "./Entity/Character/Accessory/AccessorySlot";
 import { EntityDto } from "./Entity/Entity";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
+import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
@@ -93,7 +94,7 @@ export const CoreNetwork = {
 						pos: Vector3;
 						velocity: Vector3;
 						pickupTime: number;
-						data: Record<string, unknown>;
+						data: GroundItemData;
 					}[],
 				]
 			>(),

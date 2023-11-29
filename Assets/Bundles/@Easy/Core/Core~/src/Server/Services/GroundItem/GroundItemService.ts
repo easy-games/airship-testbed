@@ -6,7 +6,7 @@ import { EntityDropItemSignal } from "Server/Signals/EntityDropItemSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { GroundItem } from "Shared/GroundItem/GroundItem";
+import { GroundItem, GroundItemData } from "Shared/GroundItem/GroundItem";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Task } from "Shared/Util/Task";
@@ -183,7 +183,7 @@ export class GroundItemService implements OnStart {
 				// See if it can merge with anything:
 				let didMerge = false;
 				for (const item of itemsAtPos) {
-					if (item.itemStack.CanMerge(groundItem.itemStack)) {
+					if (item.shouldMerge && item.itemStack.CanMerge(groundItem.itemStack)) {
 						// Merge
 						item.itemStack.SetAmount(item.itemStack.GetAmount() + groundItem.itemStack.GetAmount());
 						didMerge = true;
@@ -213,12 +213,7 @@ export class GroundItemService implements OnStart {
 		GameObjectUtil.Destroy(groundItem.drop.gameObject);
 	}
 
-	public SpawnGroundItem(
-		itemStack: ItemStack,
-		pos: Vector3,
-		velocity?: Vector3,
-		data?: Record<string, unknown>,
-	): GroundItem {
+	public SpawnGroundItem(itemStack: ItemStack, pos: Vector3, velocity?: Vector3, data?: GroundItemData): GroundItem {
 		if (velocity === undefined) {
 			velocity = Vector3.zero;
 		}

@@ -51,10 +51,11 @@ class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] 
 			const thread = this.yieldingThreads.get(sendId);
 			this.yieldingThreads.delete(sendId);
 			if (thread !== undefined) {
-				const [success, err] = coroutine.resume(thread, ...args);
-				if (!success) {
-					print(`NETWORK HANDLER ERROR:\n${tostring(err)}`);
-				}
+				// const [success, err] = coroutine.resume(thread, ...args);
+				// if (!success) {
+				// 	print(`NETWORK HANDLER ERROR:\n${tostring(err)}`);
+				// }
+				task.spawn(thread, ...args);
 			}
 		});
 	}

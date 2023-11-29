@@ -127,7 +127,6 @@ export class HeldItemManager {
 			return;
 		}
 		this.currentItemState = itemState;
-		print(itemState + " setting look vector: " + lookVector);
 		this.currentHeldItem.SetLookVector(lookVector);
 		switch (itemState) {
 			case HeldItemState.CALL_TO_ACTION_START:

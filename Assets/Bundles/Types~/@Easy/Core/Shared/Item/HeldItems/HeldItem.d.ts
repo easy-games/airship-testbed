@@ -1,3 +1,5 @@
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
 import { Entity } from "../../Entity/Entity";
 import { ItemMeta } from "../ItemMeta";
 export declare class HeldItem {
@@ -5,7 +7,7 @@ export declare class HeldItem {
     /** Undefined when holding nothing */
     protected readonly itemMeta: ItemMeta | undefined;
     protected clickBufferMargin: number;
-    protected readonly entity: Entity;
+    readonly entity: Entity;
     private lastUsedTime;
     private chargeStartTime;
     protected isCharging: boolean;
@@ -17,7 +19,18 @@ export declare class HeldItem {
     private bufferingUse;
     protected audioPitchShift: number;
     protected playEffectsOnUse: boolean;
+    /**
+     * The look vector for the latest action.
+     *
+     * It's recommended to use this instead of `entity.GetLookVector()` as it has higher precision.
+     * This vector will match the exact direction the entity was facing during the frame they clicked (as opposed to the tick they clicked).
+     */
+    protected lookVector: Vector3;
     constructor(entity: Entity, newMeta: ItemMeta | undefined);
+    /**
+     * Internally used to update the current look vector.
+     */
+    SetLookVector(vec: Vector3): void;
     protected Log(message: string): void;
     OnEquip(): void;
     /**

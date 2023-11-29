@@ -8,3 +8,6 @@ export declare function DirectionV3(from: Vector3, to: Vector3): Vector3;
 export declare function LerpV3(from: Vector3, to: Vector3, alpha: number): Vector3;
 export declare function DotV3(a: Vector3, b: Vector3): number;
 export declare function CrossV3(a: Vector3, b: Vector3): Vector3;
+export declare class Vector3Util {
+    static String(vec: Vector3): string;
+}

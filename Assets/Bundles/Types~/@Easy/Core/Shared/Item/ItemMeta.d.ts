@@ -35,6 +35,9 @@ export interface BlockMeta {
 export type SoundMeta = {
     path: string;
 } & PlaySoundConfig;
+export interface AmmoSurfaceDrop {
+    droppedItem: boolean;
+}
 export interface AmmoMeta {
     projectileHitLayerMask: number;
     yAxisAimAdjust: number;
@@ -43,6 +46,7 @@ export interface AmmoMeta {
     blockDamage?: BreakBlockMeta;
     lifetimeSec?: number;
     gravity: number;
+    stickIntoSurfaces?: AmmoSurfaceDrop;
     onHitEntitySound?: SoundMeta[];
     onHitGroundSound?: SoundMeta[];
     onHitVFXTemplate: AllBundleItems;
