@@ -1,7 +1,16 @@
 import { ItemStack } from "Shared/Inventory/ItemStack";
 
+export interface GroundItemData {
+	[name: string]: unknown;
+	Grounded?: boolean;
+	Spinning?: boolean;
+	LocalOffset?: Vector3;
+	Direction?: Vector3;
+}
+
 export class GroundItem {
 	public readonly transform: Transform;
+	public shouldMerge = true;
 
 	constructor(
 		public readonly id: number,
@@ -9,7 +18,7 @@ export class GroundItem {
 		// public readonly rb: Rigidbody,
 		public readonly drop: GroundItemDrop,
 		public readonly pickupTime: number,
-		public data: Record<string, unknown>,
+		public data: GroundItemData,
 	) {
 		this.transform = drop.transform;
 	}

@@ -1,3 +1,5 @@
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
 import { Entity } from "../../Entity/Entity";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { ItemMeta } from "../ItemMeta";
@@ -15,7 +17,7 @@ export type HeldItemEntry = {
  * One item manager per entity, calls functionality on currently equipped item for that entity
  */
 export declare class HeldItemManager {
-    private entity;
+    entity: CharacterEntity;
     private heldItemMap;
     private emptyHeldItem;
     private currentHeldItem;
@@ -29,5 +31,5 @@ export declare class HeldItemManager {
     constructor(entity: CharacterEntity);
     Destroy(): void;
     TriggerNewState(itemState: HeldItemState): void;
-    OnNewState(itemState: HeldItemState): void;
+    OnNewState(itemState: HeldItemState, lookVector: Vector3): void;
 }
