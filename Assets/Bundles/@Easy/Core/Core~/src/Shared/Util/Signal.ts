@@ -125,17 +125,24 @@ export class Signal<T extends unknown[] | unknown> {
 			for (let entry of entries) {
 				fireCount++;
 
-				const thread = coroutine.create(entry.callback);
+				// const thread = coroutine.create(entry.callback);
+
 				// if (this.debugGameObject) {
 				// 	const go = args[0] as GameObject;
 				// 	print("fire go.name=" + go.name);
 				// }
-				const [success, err] = coroutine.resume(thread, ...args);
-				if (!success) {
-					error(err);
-				}
-				if (coroutine.status(thread) !== "dead") {
-					warn(debug.traceback(thread, "Signal yielded unexpectedly. This might be an error."));
+
+				// const [success, err] = coroutine.resume(thread, ...args);
+				// if (!success) {
+				// 	error(err);
+				// }
+				// if (coroutine.status(thread) !== "dead") {
+				// 	warn(debug.traceback(thread, "Signal yielded unexpectedly. This might be an error."));
+				// }
+
+				const thread = task.spawn(entry.callback, ...args);
+				if (this.trackYielding && coroutine.status(thread) !== "dead") {
+					warn(debug.traceback(thread, "Signal yielded. This might be an error."));
 				}
 
 				if (isCancellable) {
@@ -163,10 +170,11 @@ export class Signal<T extends unknown[] | unknown> {
 	public Wait() {
 		const thread = coroutine.running();
 		this.Once((...args) => {
-			const [success, err] = coroutine.resume(thread, ...args);
-			if (!success) {
-				error(err);
-			}
+			// const [success, err] = coroutine.resume(thread, ...args);
+			// if (!success) {
+			// 	error(err);
+			// }
+			task.spawn(thread, ...args);
 		});
 		return coroutine.yield() as SignalWait<T>;
 	}

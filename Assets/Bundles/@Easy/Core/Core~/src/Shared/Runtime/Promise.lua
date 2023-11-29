@@ -1816,8 +1816,7 @@ function Promise.prototype:_reject(...)
 			local message = string.format("Unhandled Promise rejection:\n\n%s\n\n%s", err, self._source)
 
 			for _, callback in ipairs(Promise._unhandledRejectionCallbacks) do
-				-- task.spawn(callback, self, unpack(self._values, 1, self._valuesLength))
-				coroutine.wrap(callback)(self, unpack(self._values, 1, self._valuesLength))
+				task.spawn(callback, self, unpack(self._values, 1, self._valuesLength))
 			end
 
 			if Promise.TEST then
