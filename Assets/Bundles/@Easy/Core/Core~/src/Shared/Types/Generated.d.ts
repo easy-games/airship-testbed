@@ -2019,6 +2019,11 @@ declare const enum AvatarMaskBodyPart {
     RightHandIK = 12,
     LastBodyPart = 13,
 }
+declare const enum CollisionType {
+    None = 0,
+    Solid = 1,
+    Slope = 2,
+}
 declare const enum ContextStyle {
     None = 0,
     GreedyMeshingTiles = 1,
@@ -10748,6 +10753,7 @@ interface VoxelWorld extends MonoBehaviour {
     GenerateWorld(populateTerrain: boolean): void;
     GetBlockDefinesContents(): CSArray<string>;
     GetChunkByChunkPos(pos: unknown): Chunk;
+    GetCollisionType(voxelData: number): CollisionType;
     GetDirectWorldLightingFromRayImpact(pos: Vector3, direction: Vector3, maxDistance: number): Color;
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
@@ -11656,6 +11662,7 @@ interface BlockDefinition {
     emissive: number;
     brightness: number;
     solid: boolean;
+    collisionType: CollisionType;
     randomRotation: boolean;
     mesh: VoxelMeshCopy;
     meshLod: VoxelMeshCopy;
@@ -13660,7 +13667,9 @@ interface GroundItemDrop extends MonoBehaviour {
 
     GetVelocity(): Vector3;
     IsGrounded(): boolean;
+    SetGrounded(grounded: boolean): void;
     SetPosition(position: Vector3): void;
+    SetSpinActive(active: boolean): void;
     SetVelocity(velocity: Vector3): void;
 }
 

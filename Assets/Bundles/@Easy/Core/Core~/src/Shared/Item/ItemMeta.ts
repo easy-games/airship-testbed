@@ -44,6 +44,10 @@ export interface AmmoMeta {
 	blockDamage?: BreakBlockMeta;
 	lifetimeSec?: number;
 	gravity: number;
+	/**
+	 * Will "stick" a ground item inside whatever was piereced on miss (e.g. arrows in blocks)
+	 */
+	stickItemAtSurfaceOnMiss?: boolean;
 	onHitEntitySound?: SoundMeta[];
 	onHitGroundSound?: SoundMeta[];
 	onHitVFXTemplate: AllBundleItems;
