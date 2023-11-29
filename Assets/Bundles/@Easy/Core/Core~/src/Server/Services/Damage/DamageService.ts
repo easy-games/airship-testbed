@@ -121,6 +121,7 @@ export class DamageService implements OnStart {
 			entity,
 			amount,
 			config?.damageType ?? DamageType.SWORD,
+			config?.criticalHit ?? false,
 			config?.fromEntity,
 			config?.canDamageAllies,
 		);
@@ -134,6 +135,7 @@ export class DamageService implements OnStart {
 			damageEvent.amount,
 			damageEvent.damageType,
 			damageEvent.fromEntity?.id,
+			damageEvent.criticalHit,
 		);
 
 		const damageBefore = amount;
@@ -217,4 +219,5 @@ export interface InflictDamageConfig {
 	 * */
 	knockbackDirection?: Vector3;
 	canDamageAllies?: boolean;
+	criticalHit?: boolean;
 }

@@ -7,6 +7,7 @@ export class EntityDamageServerSignal extends Cancellable {
 		public readonly entity: Entity,
 		public amount: number,
 		public damageType: DamageType,
+		public criticalHit: boolean,
 		public fromEntity?: Entity,
 		public canDamageAllies?: boolean,
 	) {
