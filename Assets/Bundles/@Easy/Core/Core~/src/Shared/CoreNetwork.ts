@@ -72,7 +72,13 @@ export const CoreNetwork = {
 		BlockGroupDestroyed: new RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>(),
 		ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
 		EntityDamage: new RemoteEvent<
-			[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]
+			[
+				entityId: number,
+				amount: number,
+				damageType: DamageType,
+				fromEntityId: number | undefined,
+				criticalHit: boolean | undefined,
+			]
 		>(),
 		ProjectileHit: new RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>(),
 		Entity: {

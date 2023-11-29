@@ -6,6 +6,7 @@ export class EntityDamageClientSignal {
 		public readonly entity: Entity,
 		public readonly amount: number,
 		public readonly damageType: DamageType,
+		public readonly criticalHit: boolean,
 		public readonly fromEntity?: Entity,
 	) {}
 }

@@ -174,10 +174,16 @@ export class MeleeHeldItem extends HeldItem {
 	private ServerHit(meleeData: MeleeItemMeta | undefined) {
 		let hitTargets = this.ScanForHits();
 		hitTargets.forEach((data) => {
-			Dependency<DamageService>().InflictDamage(data.hitEntity, meleeData?.damage ?? 0, {
+			let damage = meleeData?.damage ?? 0;
+			if (data.criticalHit) {
+				damage *= 1.3;
+				damage = math.floor(damage);
+			}
+			Dependency<DamageService>().InflictDamage(data.hitEntity, damage, {
 				damageType: meleeData?.damageType ?? DamageType.SWORD,
 				fromEntity: this.entity,
 				knockbackDirection: data.knockbackDirection,
+				criticalHit: data.criticalHit,
 			});
 		});
 	}
@@ -190,19 +196,20 @@ export class MeleeHeldItem extends HeldItem {
 		// let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
 		this.Log("scanning for hits");
-		let hits = this.ScanBox(closeBox, [], Theme.Green);
+		let hits = this.ScanBox(closeBox, [], Theme.Green, true);
 		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			let farHits = this.ScanBox(
 				farBox,
 				hits.map((x) => x.hitEntity.id),
 				Theme.Red,
+				false,
 			);
 			hits = [...hits, ...farHits];
 		}
 		return hits;
 	}
 
-	private ScanBox(box: Vector3, ignoreEntityIds: number[], debugColor: Color): MeleeHit[] {
+	private ScanBox(box: Vector3, ignoreEntityIds: number[], debugColor: Color, allowCriticalHit: boolean): MeleeHit[] {
 		let collisionData: Array<MeleeHit> = [];
 		let collisionIndex = 0;
 		let closestCollisionData: MeleeHit | undefined;
@@ -345,10 +352,25 @@ export class MeleeHeldItem extends HeldItem {
 			}
 		}
 
+		print("----");
+		for (let collision of collisionData) {
+			if (allowCriticalHit) {
+				const hitHeight = collision.hitPosition.sub(
+					collision.hitEntity.gameObject.transform.position,
+				).magnitude;
+				if (hitHeight >= 1.65 && hitHeight <= 2.1) {
+					collision.criticalHit = true;
+				}
+				print("hitHeight: " + hitHeight + ", go:" + collision.hitEntity.id);
+			}
+		}
+
 		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			return collisionData;
 		} else if (closestCollisionData) {
-			this.Log("returing single collision: " + closestCollisionData.hitEntity.id);
+			const hitHeight = closestCollisionData.hitPosition.sub(
+				closestCollisionData.hitEntity.gameObject.transform.position,
+			).magnitude;
 			return [closestCollisionData];
 		}
 		this.Log("found nothing");
@@ -363,4 +385,5 @@ export interface MeleeHit {
 	hitNormal: Vector3;
 	distance: number;
 	knockbackDirection: Vector3;
+	criticalHit?: boolean;
 }
