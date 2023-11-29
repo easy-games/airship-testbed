@@ -8,7 +8,8 @@ export class Task {
 	 * @param callback A function.
 	 */
 	public static Spawn(callback: () => void): void {
-		return coroutine.wrap(callback)();
+		// return coroutine.wrap(callback)();
+		task.spawn(callback);
 	}
 
 	/**
