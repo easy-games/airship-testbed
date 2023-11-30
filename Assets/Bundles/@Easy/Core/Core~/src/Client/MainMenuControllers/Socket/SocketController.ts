@@ -31,9 +31,12 @@ export class SocketController implements OnStart {
 		SetInterval(
 			60 * 60,
 			() => {
-				this.Emit("set-session-data", {
-					selectedRegion: "na",
-				});
+				InternalHttpManager.PutAsync(
+					AirshipUrl.GameCoordinatorSocket + "/user-session/data",
+					encode({
+						selectedRegion: "na",
+					}),
+				);
 			},
 			true,
 		);

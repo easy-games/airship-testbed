@@ -8,6 +8,7 @@ import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard } from "Shared/UserInput";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -199,10 +200,13 @@ export class DirectMessageController implements OnStart {
 		}
 
 		if (message === "") return;
-		this.socketController.Emit("send-direct-message", {
-			target: uid,
-			text: message,
-		});
+		InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinatorSocket + "/chat/message/direct",
+			encode({
+				target: uid,
+				text: message,
+			}),
+		);
 		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
 			sender: Game.LocalPlayer.userId,

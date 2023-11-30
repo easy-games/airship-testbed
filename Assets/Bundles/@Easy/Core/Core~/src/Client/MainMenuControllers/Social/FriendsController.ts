@@ -65,7 +65,7 @@ export class FriendsController implements OnStart {
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-accepted", (data) => {
 			this.FetchFriends();
-			this.socketController.Emit("refresh-friends-status");
+			InternalHttpManager.GetAsync(AirshipUrl.GameCoordinatorSocket + "/user-status/friends");
 		});
 
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
@@ -137,7 +137,7 @@ export class FriendsController implements OnStart {
 			},
 		};
 		print("Sending status update: " + inspect(status));
-		this.socketController.Emit("update-status", status);
+		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinatorSocket + "/user-status/self", encode(status));
 	}
 
 	public FetchFriends(): void {
@@ -168,7 +168,7 @@ export class FriendsController implements OnStart {
 					this.authController.GetAuthHeaders(),
 				);
 
-				this.socketController.Emit("refresh-friends-status");
+				InternalHttpManager.GetAsync(AirshipUrl.GameCoordinatorSocket + "/user-status/friends");
 			});
 		}
 	}
@@ -234,9 +234,12 @@ export class FriendsController implements OnStart {
 								{
 									text: "Invite to Party",
 									onClick: () => {
-										this.socketController.Emit("invite-to-party", {
-											userToAdd: friend.userId,
-										});
+										InternalHttpManager.PostAsync(
+											AirshipUrl.GameCoordinatorSocket + "/parties/party/invite",
+											encode({
+												userToAdd: friend.userId,
+											}),
+										);
 									},
 								},
 								{

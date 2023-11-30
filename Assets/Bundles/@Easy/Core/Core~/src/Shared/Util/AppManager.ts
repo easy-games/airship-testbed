@@ -137,11 +137,8 @@ export class AppManager {
 		this.darkBackgroundTransitionBin.Clean();
 		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(1, 0.06);
 		this.darkBackgroundTransitionBin.Add(() => {
-			try {
-				t.Cancel();
-			} catch (err) {
-				warn(err);
-			}
+			if (t.IsDestroyed()) return;
+			t.Cancel();
 		});
 		this.backgroundCanvas.enabled = true;
 		this.backgroundCanvas.sortingOrder = sortOrder;
@@ -151,11 +148,8 @@ export class AppManager {
 		this.darkBackgroundTransitionBin.Clean();
 		const t = this.backgroundCanvasGroup.TweenCanvasGroupAlpha(0, 0.06);
 		this.darkBackgroundTransitionBin.Add(() => {
-			try {
-				t.Cancel();
-			} catch (err) {
-				warn(err);
-			}
+			if (t.IsDestroyed()) return;
+			t.Cancel();
 		});
 		this.darkBackgroundTransitionBin.Add(
 			SetTimeout(0.06, () => {

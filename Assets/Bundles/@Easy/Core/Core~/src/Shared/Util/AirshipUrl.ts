@@ -1,4 +1,4 @@
 export const AirshipUrl = {
-	GameCoordinatorSocket: "https://game-coordinator-fxy2zritya-uc.a.run.app",
+	GameCoordinatorSocket: "https://gc-edge-staging.easy.gg",
 	UserService: "https://game-coordinator-fxy2zritya-uc.a.run.app",
 };

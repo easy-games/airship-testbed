@@ -40,7 +40,11 @@ export class BWMatchHudController implements OnStart {
 			if (event.teamUpdates) {
 				for (const teamStats of event.teamUpdates) {
 					const team = this.teamController.GetTeam(teamStats.id);
-					this.UpdateTeam(team!, undefined, teamStats);
+					if (team) {
+						this.UpdateTeam(team, undefined, teamStats);
+					} else {
+						warn("Failed to find team in UpdateHud remote.");
+					}
 				}
 			}
 			if (event.kills !== undefined) {
