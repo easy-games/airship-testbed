@@ -1796,6 +1796,8 @@ interface Component extends Object {
 	TweenAudioSourcePitch (to: number, duration: number): Tween<number>;
 
 	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
+
+	IsDestroyed(): boolean;
 }
 
 interface GameObject extends Object {
