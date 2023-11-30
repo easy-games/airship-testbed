@@ -34,7 +34,6 @@ export class MainMenuHomeController implements OnStart {
 
 		if (Game.Context === CoreContext.GAME) {
 			this.mainMenuController.mainContentCanvas.enabled = false;
-			this.mainMenuController.socialMenuCanvas.enabled = false;
 		}
 	}
 

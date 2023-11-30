@@ -43,7 +43,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(avatarShopButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(avatarShopButton, () => {
-			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
+			this.mainMenuController.RouteToPage(MainMenuPage.AVATAR);
 		});
 
 		CoreUI.SetupButton(settingsButton, { noHoverSound: true });

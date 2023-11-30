@@ -228,7 +228,7 @@ export class FriendsController implements OnStart {
 					if (button === PointerButton.RIGHT) {
 						print("right clicked " + friend.username);
 						this.rightClickMenuController.OpenRightClickMenu(
-							this.mainMenuController.socialMenuCanvas,
+							this.mainMenuController.mainContentCanvas,
 							mouse.GetLocation(),
 							[
 								{

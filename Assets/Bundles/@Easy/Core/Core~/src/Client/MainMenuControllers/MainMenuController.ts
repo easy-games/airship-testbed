@@ -21,9 +21,9 @@ export class MainMenuController implements OnStart {
 	private wrapperRect: RectTransform;
 
 	public mainContentCanvas: Canvas;
+	public mainContentGroup: CanvasGroup;
+	public socialMenuGroup: CanvasGroup;
 	private rootCanvasGroup: CanvasGroup;
-
-	public socialMenuCanvas: Canvas;
 
 	private open = false;
 
@@ -34,8 +34,9 @@ export class MainMenuController implements OnStart {
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
 		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>();
-		this.mainContentCanvas = this.mainMenuGo.transform.GetChild(0).GetComponent<Canvas>();
-		this.socialMenuCanvas = this.mainMenuGo.transform.GetChild(1).GetComponent<Canvas>();
+		this.mainContentCanvas = this.refs.GetValue<Canvas>("UI", "MainContentCanvas");
+		this.mainContentGroup = this.refs.GetValue<CanvasGroup>("UI", "MainContentGroup");
+		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
 
 		this.pageMap = {
 			[MainMenuPage.HOME]: this.refs.GetValue("Pages", "Home"),
@@ -82,7 +83,6 @@ export class MainMenuController implements OnStart {
 		this.wrapperRect.localScale = new Vector3(1.1, 1.1, 1.1);
 		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
 		this.mainContentCanvas.enabled = true;
-		this.socialMenuCanvas.enabled = true;
 		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
 	}
 
@@ -96,7 +96,6 @@ export class MainMenuController implements OnStart {
 		SetTimeout(duration, () => {
 			if (!this.open) {
 				this.mainContentCanvas.enabled = false;
-				this.socialMenuCanvas.enabled = false;
 			}
 		});
 	}
