@@ -1908,6 +1908,8 @@ interface GameObject extends Object {
 
 	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 
+	IsDestroyed(): boolean;
+
 	/** Destroys all child gameobjects. */
 	ClearChildren(): void;
 }
