@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_MuzleHit_1
-  m_Shader: {fileID: 4800000, guid: 0cff55b60b69d254eb4862f11062b78f, type: 3}
+  m_Name: M_Sword_Trail
+  m_Shader: {fileID: 4800000, guid: f72b2b5c94d4201408c61903141ed3ee, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _DSTBLEND_ONE
@@ -43,11 +43,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2639292e34ae7d24faf853ec5c9764e7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8c944dc95c27c514e9a33d11ca425c04, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 1c190423706e5244cb7da690080230fe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: e1e79dcc7d08c8545ada46d75689a0e3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -60,11 +68,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 3.4
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
+    - _Dist: 0
     - _DstBlend: 1
-    - _Emissive: 0.3
+    - _Emissive: 0.392
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -72,13 +82,22 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Posterize: 60
+    - _PowerNoise: 1.9
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
+    - _Step: 0.42
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.52865267, g: 1, b: 0.495283, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Emissive: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
+    - _PowerMask: {r: 0, g: 1, b: 0, a: 0}
+    - _Scale: {r: 1, g: 1, b: 0, a: 0}
+    - _Scaled: {r: 1.2, g: 0.3, b: 0, a: 0}
+    - _Scalen: {r: 0.8, g: 0.21, b: 0, a: 0}
+    - _Speed: {r: 0.25, g: 0.25, b: 0, a: 0}
+    - _Speedd: {r: 0, g: 0, b: 0, a: 0}
+    - _Speedn: {r: -0.25, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
