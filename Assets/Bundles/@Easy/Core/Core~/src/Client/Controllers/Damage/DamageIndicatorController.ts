@@ -127,11 +127,11 @@ export class DamageIndicatorController implements OnStart {
 						SetTimeout(0.8, () => {
 							completed = true;
 						});
-						this.damageIndicatorBin.Add(() => {
-							if (!completed) {
-								text.TweenGraphicAlpha(0, 0);
-							}
-						});
+						// this.damageIndicatorBin.Add(() => {
+						// 	if (!completed) {
+						// 		text.TweenGraphicAlpha(0, 0);
+						// 	}
+						// });
 
 						SetTimeout(1.5, () => {
 							PoolManager.ReleaseObject(go);

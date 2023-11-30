@@ -37,4 +37,5 @@ export interface InflictDamageConfig {
      * */
     knockbackDirection?: Vector3;
     canDamageAllies?: boolean;
+    criticalHit?: boolean;
 }

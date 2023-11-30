@@ -3,6 +3,7 @@ export declare class Task {
     /**
      * Calls/resumes a function immediately through the engine scheduler.
      * @param callback A function.
+     * @deprecated Use `task.spawn()` instead.
      */
     static Spawn(callback: () => void): void;
     /**
@@ -10,6 +11,7 @@ export declare class Task {
      * without throttling.
      * @param duration A delay duration in seconds.
      * @param callback A function.
+     * @deprecated Use `task.delay()` instead.
      */
     static Delay(duration: number, callback: () => void): void;
     /**
@@ -23,10 +25,12 @@ export declare class Task {
     /**
      * Yields the current thread until the given duration (in seconds) has passed, without throttling.
      * @param duration A wait duration in seconds.
+     * @deprecated Use `task.wait()`/`task.wait(duration)` instead.
      */
     static Wait(duration: number): void;
     /**
      * Yields execution until next frame.
+     * @deprecated Use `task.wait()` instead.
      */
     static WaitFrame(): void;
     /**

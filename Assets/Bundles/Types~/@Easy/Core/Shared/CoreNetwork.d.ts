@@ -2,7 +2,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
 import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto, UseAbilityRequest } from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
@@ -10,6 +9,7 @@ import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
 import { AccessorySlot } from "./Entity/Character/Accessory/AccessorySlot";
 import { EntityDto } from "./Entity/Entity";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
+import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
@@ -57,7 +57,7 @@ export declare const CoreNetwork: {
         BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean | undefined]>;
         BlockGroupDestroyed: RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>;
         ProjectileSpawn: RemoteEvent<[projectileDto: ProjectileDto]>;
-        EntityDamage: RemoteEvent<[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]>;
+        EntityDamage: RemoteEvent<[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined, criticalHit: boolean | undefined]>;
         ProjectileHit: RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>;
         Entity: {
             SetHealth: RemoteEvent<[entityId: number, health: number, maxHealth?: number | undefined]>;
@@ -74,7 +74,7 @@ export declare const CoreNetwork: {
                 pos: Vector3;
                 velocity: Vector3;
                 pickupTime: number;
-                data: Record<string, unknown>;
+                data: GroundItemData;
             }[]]>;
             UpdatePosition: RemoteEvent<[{
                 id: number;

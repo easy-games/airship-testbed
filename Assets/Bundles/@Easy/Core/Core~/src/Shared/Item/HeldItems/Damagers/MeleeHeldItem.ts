@@ -219,7 +219,7 @@ export class MeleeHeldItem extends HeldItem {
 		const lookVec = this.lookVector;
 		box = box.add(new Vector3(0, 0, 0.5));
 		let halfExtents = new Vector3(box.x / 2, box.y / 2, box.z / 2);
-		let headOffset = this.entity.GetHeadOffset();
+		let headOffset = this.entity.GetFirstPersonHeadOffset();
 		const t = this.entity.model.transform;
 		let colliderWorldPos = t.position.add(headOffset).add(lookVec.mul(-0.5 + box.z / 2));
 
@@ -352,25 +352,19 @@ export class MeleeHeldItem extends HeldItem {
 			}
 		}
 
-		print("----");
 		for (let collision of collisionData) {
 			if (allowCriticalHit) {
-				const hitHeight = collision.hitPosition.sub(
-					collision.hitEntity.gameObject.transform.position,
-				).magnitude;
-				if (hitHeight >= 1.65 && hitHeight <= 2.1) {
+				const hitHeight = collision.hitPosition.sub(collision.hitEntity.model.transform.position).magnitude;
+				if (collision.hitEntity.IsHeadshotHitHeight(hitHeight)) {
 					collision.criticalHit = true;
 				}
-				print("hitHeight: " + hitHeight + ", go:" + collision.hitEntity.id);
+				// print("hitHeight: " + hitHeight + ", go:" + collision.hitEntity.id);
 			}
 		}
 
 		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			return collisionData;
 		} else if (closestCollisionData) {
-			const hitHeight = closestCollisionData.hitPosition.sub(
-				closestCollisionData.hitEntity.gameObject.transform.position,
-			).magnitude;
 			return [closestCollisionData];
 		}
 		this.Log("found nothing");
