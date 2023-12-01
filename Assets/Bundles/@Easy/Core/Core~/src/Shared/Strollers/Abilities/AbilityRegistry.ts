@@ -1,4 +1,4 @@
-import { Controller, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, Service } from "@easy-games/flamework-core";
 import { AbilityConfig, AbilityLogicConstructor } from "Shared/Abilities/Ability";
 import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
 

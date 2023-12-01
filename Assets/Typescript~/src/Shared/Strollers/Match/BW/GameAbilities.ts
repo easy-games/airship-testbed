@@ -25,6 +25,11 @@ export class GameAbilities implements OnStart {
 		}
 	}
 
+	public RemoveAbilityFromCharacter(abilityId: AbilityId, character: CharacterEntity): void {
+		const abilities = character.GetAbilities();
+		abilities.RemoveAbilityById(abilityId);
+	}
+
 	public OnStart(): void {
 		for (const [abilityId, abilityMeta] of pairs(Abilities)) {
 			this.abilitiesRegistry.RegisterAbilityById(abilityId as AbilityId, abilityMeta.logic, abilityMeta.config);

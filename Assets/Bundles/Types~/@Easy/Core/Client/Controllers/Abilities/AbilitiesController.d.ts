@@ -2,8 +2,8 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { AbilityRegistry } from "../../../Shared/Strollers/Abilities/AbilityRegistry";
 import { Bin } from "../../../Shared/Util/Bin";
-import { AbilityBinding } from "./Class/AbilityBinding";
 import { EntityController } from "../Entity/EntityController";
+import { AbilityBinding } from "./Class/AbilityBinding";
 export declare class AbilitiesController implements OnStart {
     private readonly abilityRegistry;
     private readonly entityService;

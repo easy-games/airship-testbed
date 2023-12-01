@@ -1,21 +1,21 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { Keyboard } from "Shared/UserInput";
-import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
+import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
-import { Bin } from "Shared/Util/Bin";
-import { AbilityBinding, BindingAction, BindingInputState } from "./Class/AbilityBinding";
-import { SignalPriority } from "Shared/Util/Signal";
-import { CoreClientSignals } from "Client/CoreClientSignals";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { Game } from "Shared/Game";
+import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
+import { Keyboard } from "Shared/UserInput";
+import { Bin } from "Shared/Util/Bin";
+import { SignalPriority } from "Shared/Util/Signal";
+import { EntityController } from "../Entity/EntityController";
+import { AbilityBinding, BindingAction, BindingInputState } from "./Class/AbilityBinding";
+import { AbilitiesClearedClientSignal } from "./Event/AbilitiesClearedClientSignal";
+import { AbilityAddedClientSignal } from "./Event/AbilityAddedClientSignal";
 import { AbilityChargeClientSignal } from "./Event/AbilityChargeClientSignal";
 import { AbilityChargeEndClientSignal } from "./Event/AbilityChargeEndClientSignal";
-import { EntityController } from "../Entity/EntityController";
-import { AbilityAddedClientSignal } from "./Event/AbilityAddedClientSignal";
 import { AbilityRemovedClientSignal } from "./Event/AbilityRemovedClientSignal";
-import { AbilitiesClearedClientSignal } from "./Event/AbilitiesClearedClientSignal";
-import { Game } from "Shared/Game";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V];
@@ -61,6 +61,7 @@ export class AbilitiesController implements OnStart {
 	}
 
 	private RegisterAbility(abilityDto: AbilityDto) {
+		if (abilityDto.slot === undefined) return false;
 		let nextSlot: AbilityBinding | undefined;
 		if (abilityDto.slot === AbilitySlot.Primary) {
 			nextSlot = this.FindNextAvailableSlot([

@@ -13667,6 +13667,7 @@ interface GroundItemDrop extends MonoBehaviour {
 
     GetVelocity(): Vector3;
     IsGrounded(): boolean;
+    SetGrounded(grounded: boolean): void;
     SetPosition(position: Vector3): void;
     SetSpinActive(active: boolean): void;
     SetVelocity(velocity: Vector3): void;

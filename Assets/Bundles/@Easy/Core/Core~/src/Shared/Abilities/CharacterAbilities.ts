@@ -1,13 +1,19 @@
+import { CoreNetwork } from "Shared/CoreNetwork";
+import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Ability } from "Shared/Strollers/Abilities/AbilityRegistry";
+import { Duration } from "Shared/Util/Duration";
+import { MapUtil } from "Shared/Util/MapUtil";
+import { TimeUtil } from "Shared/Util/TimeUtil";
+import { SetTimeout } from "Shared/Util/Timer";
+import {
+	AbilityCancellationTrigger,
+	AbilityConfig,
+	AbilityDto,
+	AbilityKind,
+	ChargingAbilityEndedState,
+} from "./Ability";
 import { AbilityLogic } from "./AbilityLogic";
 import { AbilitySlot } from "./AbilitySlot";
-import { MapUtil } from "Shared/Util/MapUtil";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { AbilityCancellationTrigger, AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
-import { Duration } from "Shared/Util/Duration";
-import { SetTimeout } from "Shared/Util/Timer";
-import { TimeUtil } from "Shared/Util/TimeUtil";
 
 export interface AbilityCooldown {
 	readonly length: Duration;
@@ -29,6 +35,7 @@ interface CancellableAbiltityChargingState extends AbilityChargingState {
 
 export class CharacterAbilities {
 	private abilityIdSlotMap = new Map<string, AbilitySlot>();
+	private abilityIdPassiveMap = new Map<string, AbilityLogic>();
 
 	private cooldowns = new Map<string, AbilityCooldown>();
 	private boundAbilities = new Map<AbilitySlot, Map<string, AbilityLogic>>();
@@ -85,6 +92,9 @@ export class CharacterAbilities {
 				arr.set(abilityId, ability);
 			}
 		}
+		for (const [id, logic] of this.abilityIdPassiveMap) {
+			arr.set(id, logic);
+		}
 
 		return arr;
 	}
@@ -106,17 +116,37 @@ export class CharacterAbilities {
 	 * @returns True if the character has an ability with this id
 	 */
 	public HasAbilityWithId(id: string): boolean {
-		return this.abilityIdSlotMap.has(id);
+		return this.abilityIdSlotMap.has(id) || this.abilityIdPassiveMap.has(id);
 	}
 
 	/**
 	 * Adds the given ability to the character
 	 *
 	 * @param abilityId The ability's unique id
-	 * @param slot The slot the ability is bound to
-	 * @param logic The logic of the ability
+	 * @param ability The ability being given to the character
+	 * @return logic The logic of the ability
 	 */
 	public AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic {
+		switch (ability.config.kind) {
+			case AbilityKind.Active:
+				return this.AddActiveAbilityWithId(abilityId, ability, overrideConfig);
+			case AbilityKind.Passive:
+				return this.AddPassiveAbilityWithId(abilityId, ability, overrideConfig);
+		}
+	}
+
+	/**
+	 * Adds the given **active** ability to the character
+	 *
+	 * @param abilityId The ability's unique id
+	 * @param ability The ability being given to the character
+	 * @return logic The logic of the ability
+	 */
+	private AddActiveAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic {
+		if (!ability.config.slot) {
+			error(`Attempting to add active ability '${abilityId}' without specifying a slot.`);
+		}
+
 		const abilityMap = MapUtil.GetOrCreate(
 			this.boundAbilities,
 			ability.config.slot,
@@ -134,9 +164,32 @@ export class CharacterAbilities {
 		}
 
 		const logic = new ability.logic(this.entity, abilityId, overrideConfig ?? ability.config);
+		logic.SetEnabled(true);
 		abilityMap.set(abilityId, logic);
 		this.abilityIdSlotMap.set(abilityId, ability.config.slot);
 
+		if (RunCore.IsServer() && this.entity.player) {
+			CoreNetwork.ServerToClient.AbilityAdded.Server.FireAllClients(this.entity.id, logic.Encode());
+		}
+
+		return logic;
+	}
+
+	/**
+	 * Adds the given **passive** ability to the character
+	 *
+	 * @param abilityId The ability's unique id
+	 * @param ability The ability being given to the character
+	 * @return logic The logic of the ability
+	 */
+	private AddPassiveAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic {
+		if (this.HasAbilityWithId(abilityId)) {
+			warn(`Attempting to add duplicate ability '${abilityId}' - you can check using HasAbilityWithIdAtSlot(id)`);
+			return this.GetAbilityLogicById(abilityId)!;
+		}
+		const logic = new ability.logic(this.entity, abilityId, overrideConfig ?? ability.config);
+		logic.SetEnabled(true);
+		this.abilityIdPassiveMap.set(abilityId, logic);
 		if (RunCore.IsServer() && this.entity.player) {
 			CoreNetwork.ServerToClient.AbilityAdded.Server.FireAllClients(this.entity.id, logic.Encode());
 		}
@@ -153,6 +206,22 @@ export class CharacterAbilities {
 		if (!this.HasAbilityWithId(abilityId)) {
 			return false;
 		}
+		const passiveAbility = this.abilityIdPassiveMap.get(abilityId);
+		if (passiveAbility) {
+			return this.removePassiveAbilityById(abilityId);
+		} else {
+			return this.removeActiveAbilityById(abilityId);
+		}
+	}
+
+	/**
+	 * Removes the **active** ability with the given id from this character
+	 * @param abilityId The ability id to remove
+	 * @returns True if the ability was removed
+	 */
+	private removeActiveAbilityById(abilityId: string): boolean {
+		const abilityLogic = this.GetAbilityLogicById(abilityId);
+		if (abilityLogic) abilityLogic.SetEnabled(false);
 
 		const abilitySlot = this.abilityIdSlotMap.get(abilityId);
 		if (!abilitySlot) return false;
@@ -177,10 +246,30 @@ export class CharacterAbilities {
 	}
 
 	/**
+	 * Removes the **active** ability with the given id from this character
+	 * @param abilityId The ability id to remove
+	 * @returns True if the ability was removed
+	 */
+	private removePassiveAbilityById(abilityId: string): boolean {
+		const abilityLogic = this.GetAbilityLogicById(abilityId);
+		if (abilityLogic) abilityLogic.SetEnabled(false);
+
+		this.abilityIdPassiveMap.delete(abilityId);
+		if (RunCore.IsServer() && this.entity.player) {
+			CoreNetwork.ServerToClient.AbilityRemoved.Server.FireAllClients(this.entity.id, abilityId);
+		}
+		return true;
+	}
+
+	/**
 	 * Removes all abilities from this character
 	 */
 	public RemoveAllAbilities() {
+		for (const [_id, logic] of this.GetAbilities()) {
+			logic.SetEnabled(false);
+		}
 		this.abilityIdSlotMap.clear();
+		this.abilityIdPassiveMap.clear();
 		this.boundAbilities.clear();
 
 		if (RunCore.IsServer() && this.entity.player) {

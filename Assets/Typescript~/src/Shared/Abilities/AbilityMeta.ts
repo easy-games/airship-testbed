@@ -1,9 +1,10 @@
-import { Ability } from "@Easy/Core/Shared/Strollers/Abilities/AbilityRegistry";
-import RecallAbility from "./Logic/RecallAbility";
+import { AbilityCancellationTrigger, AbilityKind } from "@Easy/Core/Shared/Abilities/Ability";
 import { AbilitySlot } from "@Easy/Core/Shared/Abilities/AbilitySlot";
-import { AbilityCancellationTrigger } from "@Easy/Core/Shared/Abilities/Ability";
-import VorliasTestAbility from "./Logic/VorliasTestAbility";
+import { Ability } from "@Easy/Core/Shared/Strollers/Abilities/AbilityRegistry";
 import { AbilityId } from "./AbilityType";
+import RobbieTestAbility from "./Logic/Kit/RobbieTestAbility";
+import RecallAbility from "./Logic/RecallAbility";
+import VorliasTestAbility from "./Logic/VorliasTestAbility";
 
 export const Abilities: Record<AbilityId, Ability> = {
 	[AbilityId.RECALL]: {
@@ -11,6 +12,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 		logic: RecallAbility,
 		config: {
 			slot: AbilitySlot.Utility,
+			kind: AbilityKind.Active,
 			name: "Recall",
 			image: "Shared/Resources/Images/HomeIcon.png",
 			charge: {
@@ -28,9 +30,18 @@ export const Abilities: Record<AbilityId, Ability> = {
 		id: AbilityId.VORLIAS_TEST,
 		logic: VorliasTestAbility,
 		config: {
+			kind: AbilityKind.Active,
 			slot: AbilitySlot.Primary,
 			name: "vorlias",
 			cooldownTimeSeconds: 5,
+		},
+	},
+	[AbilityId.ROBBIE_TEST]: {
+		id: AbilityId.ROBBIE_TEST,
+		logic: RobbieTestAbility,
+		config: {
+			kind: AbilityKind.Passive,
+			name: "robbie",
 		},
 	},
 };

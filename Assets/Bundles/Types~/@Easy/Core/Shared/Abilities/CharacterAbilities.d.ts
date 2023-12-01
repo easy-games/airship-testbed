@@ -1,11 +1,11 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
+import { CharacterEntity } from "../Entity/Character/CharacterEntity";
 import { Ability } from "../Strollers/Abilities/AbilityRegistry";
+import { Duration } from "../Util/Duration";
+import { AbilityCancellationTrigger, AbilityConfig, AbilityDto } from "./Ability";
 import { AbilityLogic } from "./AbilityLogic";
 import { AbilitySlot } from "./AbilitySlot";
-import { CharacterEntity } from "../Entity/Character/CharacterEntity";
-import { AbilityCancellationTrigger, AbilityConfig, AbilityDto } from "./Ability";
-import { Duration } from "../Util/Duration";
 export interface AbilityCooldown {
     readonly length: Duration;
     readonly startTimestamp: number;
@@ -20,6 +20,7 @@ export interface AbilityChargingState {
 export declare class CharacterAbilities {
     private entity;
     private abilityIdSlotMap;
+    private abilityIdPassiveMap;
     private cooldowns;
     private boundAbilities;
     private currentChargingAbilityState;
@@ -47,16 +48,44 @@ export declare class CharacterAbilities {
      * Adds the given ability to the character
      *
      * @param abilityId The ability's unique id
-     * @param slot The slot the ability is bound to
-     * @param logic The logic of the ability
+     * @param ability The ability being given to the character
+     * @return logic The logic of the ability
      */
     AddAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic;
+    /**
+     * Adds the given **active** ability to the character
+     *
+     * @param abilityId The ability's unique id
+     * @param ability The ability being given to the character
+     * @return logic The logic of the ability
+     */
+    private AddActiveAbilityWithId;
+    /**
+     * Adds the given **passive** ability to the character
+     *
+     * @param abilityId The ability's unique id
+     * @param ability The ability being given to the character
+     * @return logic The logic of the ability
+     */
+    private AddPassiveAbilityWithId;
     /**
      * Removes the ability with the given id from this character
      * @param abilityId The ability id to remove
      * @returns True if the ability was removed
      */
     RemoveAbilityById(abilityId: string): boolean;
+    /**
+     * Removes the **active** ability with the given id from this character
+     * @param abilityId The ability id to remove
+     * @returns True if the ability was removed
+     */
+    private removeActiveAbilityById;
+    /**
+     * Removes the **active** ability with the given id from this character
+     * @param abilityId The ability id to remove
+     * @returns True if the ability was removed
+     */
+    private removePassiveAbilityById;
     /**
      * Removes all abilities from this character
      */

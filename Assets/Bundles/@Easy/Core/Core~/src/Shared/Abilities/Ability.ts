@@ -2,6 +2,16 @@ import { Duration } from "Shared/Util/Duration";
 import { AbilityLogic } from "./AbilityLogic";
 import { AbilitySlot } from "./AbilitySlot";
 
+export enum AbilityKind {
+	/**
+	 * The ability is active
+	 */
+	Active,
+	/**
+	 * The ability is passive
+	 */
+	Passive,
+}
 export enum AbilityCancellationTrigger {
 	/**
 	 * Damage is taken by the casting entity
@@ -31,6 +41,10 @@ export interface AbilityChargeConfig {
 
 export interface AbilityConfig {
 	/**
+	 * The kind of ability this is
+	 */
+	readonly kind: AbilityKind;
+	/**
 	 * The slot for this ability
 	 *
 	 * This will bind appropriate bindings on a per-platform basis depending on the slot
@@ -42,7 +56,7 @@ export interface AbilityConfig {
 	 *
 	 * @see {@link AbilitySlot} for more details
 	 */
-	readonly slot: AbilitySlot;
+	readonly slot?: AbilitySlot;
 	/**
 	 * The priority of this ability, will change whether or not this ability
 	 */
@@ -95,7 +109,7 @@ export interface AbilityDto {
 	/**
 	 * The slot the ability is in
 	 */
-	readonly slot: AbilitySlot;
+	readonly slot?: AbilitySlot;
 	/**
 	 * Charging
 	 */

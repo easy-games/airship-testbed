@@ -8,7 +8,7 @@ export interface AbilityChargeEndEvent {
 /**
  * A logic class surrounding an ability
  */
-export abstract class AbilityLogic {
+export class AbilityLogic {
 	private enabled = false;
 
 	public constructor(
@@ -79,7 +79,7 @@ export abstract class AbilityLogic {
 	 * - This may be after a charge duration
 	 * 		if the charge duration is set and the ability charge wasn't cancelled
 	 */
-	public abstract OnServerTriggered(): void;
+	public OnServerTriggered() {}
 
 	/**
 	 * Invoked when the ability is triggered on the client

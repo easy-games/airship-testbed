@@ -1,14 +1,11 @@
+import { Dependency } from "@easy-games/flamework-core";
 import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
+import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
 import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilitiesUIController";
-import { Dependency } from "@easy-games/flamework-core";
-import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
-import { Game } from "Shared/Game";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
 
 export enum BindingInputState {
 	InputBegan,
