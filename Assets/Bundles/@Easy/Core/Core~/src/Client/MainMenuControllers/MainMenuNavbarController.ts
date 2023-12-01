@@ -26,7 +26,8 @@ export class MainMenuNavbarController implements OnStart {
 		const refs = this.mainMenuController.refs;
 
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
-		const avatarShopButton = refs.GetValue("UI", "NavbarAvatarShopButton");
+		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
+		const shopButton = refs.GetValue("UI", "NavbarShopButton");
 		const myServersButton = refs.GetValue("UI", "NavbarMyServersButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
@@ -41,9 +42,14 @@ export class MainMenuNavbarController implements OnStart {
 			this.mainMenuController.RouteToPage(MainMenuPage.HOME);
 		});
 
-		CoreUI.SetupButton(avatarShopButton, { noHoverSound: true });
-		CanvasAPI.OnClickEvent(avatarShopButton, () => {
+		CoreUI.SetupButton(avatarButton, { noHoverSound: true });
+		CanvasAPI.OnClickEvent(avatarButton, () => {
 			this.mainMenuController.RouteToPage(MainMenuPage.AVATAR);
+		});
+
+		CoreUI.SetupButton(shopButton, { noHoverSound: true });
+		CanvasAPI.OnClickEvent(shopButton, () => {
+			this.mainMenuController.RouteToPage(MainMenuPage.SHOP);
 		});
 
 		CoreUI.SetupButton(settingsButton, { noHoverSound: true });
@@ -74,6 +80,10 @@ export class MainMenuNavbarController implements OnStart {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPage.SETTINGS) {
 				currentSelectedNavbarButton = settingsButton;
+			} else if (page === MainMenuPage.AVATAR) {
+				currentSelectedNavbarButton = avatarButton;
+			} else if (page === MainMenuPage.SHOP) {
+				currentSelectedNavbarButton = avatarButton;
 			}
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, true);

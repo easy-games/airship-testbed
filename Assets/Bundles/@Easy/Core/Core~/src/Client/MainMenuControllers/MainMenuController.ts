@@ -25,6 +25,8 @@ export class MainMenuController implements OnStart {
 	public socialMenuGroup: CanvasGroup;
 	private rootCanvasGroup: CanvasGroup;
 
+	private toggleSocialButton: GameObject;
+
 	private open = false;
 
 	constructor(private readonly authController: AuthController) {
@@ -70,6 +72,11 @@ export class MainMenuController implements OnStart {
 				AppManager.Close();
 			});
 		}
+
+		this.toggleSocialButton = this.refs.GetValue("UI", "ToggleSocialButton");
+		CanvasAPI.OnClickEvent(this.toggleSocialButton, () => {
+			this.ToggleSocialView();
+		});
 	}
 
 	public OpenFromGame(): void {
@@ -162,5 +169,12 @@ export class MainMenuController implements OnStart {
 		}
 
 		this.OnCurrentPageChanged.Fire(this.currentPage, oldPage);
+	}
+
+	private socialIsVisible = true;
+	private ToggleSocialView() {
+		this.socialIsVisible = !this.socialIsVisible;
+		this.toggleSocialButton.transform.localEulerAngles = new Vector3(0, 0, this.socialIsVisible ? 0 : 180);
+		this.socialMenuGroup.transform.TweenAnchoredPositionX(this.socialIsVisible ? 400 : 0, 1);
 	}
 }
