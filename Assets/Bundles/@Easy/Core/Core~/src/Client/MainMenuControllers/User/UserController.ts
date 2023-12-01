@@ -18,8 +18,11 @@ export class UserController implements OnStart {
 
 	OnStart(): void {
 		this.authController.onAuthenticated.Connect(() => {
-			Task.Spawn(() => {
+			task.spawn(() => {
 				this.FetchLocalUser();
+				if (this.localUser) {
+					print("Hello " + this.localUser.username);
+				}
 			});
 		});
 
@@ -29,7 +32,10 @@ export class UserController implements OnStart {
 	}
 
 	public FetchLocalUser(): void {
-		const res = HttpManager.GetAsync(`${AirshipUrl.UserService}/users/self`, this.authController.GetAuthHeaders());
+		const res = HttpManager.GetAsync(
+			`${AirshipUrl.GameCoordinator}/users/self`,
+			this.authController.GetAuthHeaders(),
+		);
 		if (res.success) {
 			const data = decode(res.data) as User;
 			this.localUser = data;

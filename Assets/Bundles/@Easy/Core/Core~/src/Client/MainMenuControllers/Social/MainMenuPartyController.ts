@@ -33,7 +33,7 @@ export class MainMenuPartyController implements OnStart {
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
 			InternalHttpManager.PostAsync(
-				AirshipUrl.GameCoordinatorSocket + "/parties/party/join",
+				AirshipUrl.GameCoordinator + "/parties/party/join",
 				encode({
 					partyId: data.partyId,
 				}),
@@ -156,7 +156,7 @@ export class MainMenuPartyController implements OnStart {
 			if (init) {
 				CanvasAPI.OnClickEvent(kickButton, () => {
 					InternalHttpManager.PostAsync(
-						AirshipUrl.GameCoordinatorSocket + "/parties/party/remove",
+						AirshipUrl.GameCoordinator + "/parties/party/remove",
 						encode({
 							userToRemove: member.uid,
 						}),
@@ -165,7 +165,7 @@ export class MainMenuPartyController implements OnStart {
 
 				CanvasAPI.OnClickEvent(leaveButton, () => {
 					InternalHttpManager.PostAsync(
-						AirshipUrl.GameCoordinatorSocket + "/parties/party/remove",
+						AirshipUrl.GameCoordinator + "/parties/party/remove",
 						encode({
 							userToRemove: member.uid,
 						}),

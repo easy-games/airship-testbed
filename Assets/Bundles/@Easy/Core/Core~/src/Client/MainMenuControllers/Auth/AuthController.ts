@@ -58,6 +58,7 @@ export class AuthController implements OnStart {
 		if (res.success) {
 			const data = decode(res.data) as FirebaseTokenResponse;
 			this.idToken = data.id_token;
+			InternalHttpManager.SetAuthToken(data.id_token);
 			StateManager.SetString("firebase_idToken", data.id_token);
 			StateManager.SetString("firebase_refreshToken", data.refresh_token);
 			StateManager.SetString("firebase_localId", data.user_id);
@@ -81,6 +82,7 @@ export class AuthController implements OnStart {
 			const data = decode(res.data) as FirebaseSignUpResponse;
 
 			this.idToken = data.idToken;
+			InternalHttpManager.SetAuthToken(data.idToken);
 			StateManager.SetString("firebase_idToken", data.idToken);
 			StateManager.SetString("firebase_refreshToken", data.refreshToken);
 			StateManager.SetString("firebase_localId", data.localId);

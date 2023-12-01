@@ -65,7 +65,7 @@ export class FriendsController implements OnStart {
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-accepted", (data) => {
 			this.FetchFriends();
-			InternalHttpManager.GetAsync(AirshipUrl.GameCoordinatorSocket + "/user-status/friends");
+			InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
 		});
 
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
@@ -137,14 +137,11 @@ export class FriendsController implements OnStart {
 			},
 		};
 		print("Sending status update: " + inspect(status));
-		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinatorSocket + "/user-status/self", encode(status));
+		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", encode(status));
 	}
 
 	public FetchFriends(): void {
-		const res = HttpManager.GetAsync(
-			AirshipUrl.UserService + "/friends/requests/self",
-			this.authController.GetAuthHeaders(),
-		);
+		const res = InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/friends/requests/self");
 		if (!res.success) {
 			return;
 		}
@@ -161,14 +158,14 @@ export class FriendsController implements OnStart {
 		for (const user of this.incomingFriendRequests) {
 			Task.Spawn(() => {
 				const res = HttpManager.PostAsync(
-					AirshipUrl.UserService + "/friends/requests/self",
+					AirshipUrl.GameCoordinator + "/friends/requests/self",
 					encode({
 						discriminatedUsername: user.discriminatedUsername,
 					}),
 					this.authController.GetAuthHeaders(),
 				);
 
-				InternalHttpManager.GetAsync(AirshipUrl.GameCoordinatorSocket + "/user-status/friends");
+				InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
 			});
 		}
 	}
@@ -235,7 +232,7 @@ export class FriendsController implements OnStart {
 									text: "Invite to Party",
 									onClick: () => {
 										InternalHttpManager.PostAsync(
-											AirshipUrl.GameCoordinatorSocket + "/parties/party/invite",
+											AirshipUrl.GameCoordinator + "/parties/party/invite",
 											encode({
 												userToAdd: friend.userId,
 											}),

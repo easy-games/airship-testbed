@@ -13219,6 +13219,7 @@ interface InternalHttpManagerConstructor {
     GetAsync(url: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
     PutAsync(url: string, data: string): HttpGetResponse;
+    SetAuthToken(authToken: string): void;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
     

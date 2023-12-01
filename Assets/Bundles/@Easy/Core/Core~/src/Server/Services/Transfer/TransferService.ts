@@ -9,7 +9,7 @@ export class TransferService implements OnStart {
 
 	public CreateServer(sceneId?: string): CreateServerResponse | undefined {
 		const res = InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinatorSocket + "/servers/create",
+			AirshipUrl.GameCoordinator + "/servers/create",
 			encode({
 				sceneId: sceneId,
 			}),

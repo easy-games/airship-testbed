@@ -25,21 +25,20 @@ export class SocketController implements OnStart {
 			Task.Spawn(() => {
 				this.Connect();
 			});
+			// Expires every 6 hours. So we fire every hour.
+			SetInterval(
+				60 * 60,
+				() => {
+					InternalHttpManager.PutAsync(
+						AirshipUrl.GameCoordinator + "/user-session/data",
+						encode({
+							selectedRegion: "na",
+						}),
+					);
+				},
+				true,
+			);
 		});
-
-		// Expires every 6 hours. So we fire every hour.
-		SetInterval(
-			60 * 60,
-			() => {
-				InternalHttpManager.PutAsync(
-					AirshipUrl.GameCoordinatorSocket + "/user-session/data",
-					encode({
-						selectedRegion: "na",
-					}),
-				);
-			},
-			true,
-		);
 	}
 
 	public On<T = unknown>(eventName: string, callback: (data: T) => void): void {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2f5adeaec93464957ab52de6021ce91e
+guid: 7d9ff15b5879b42ac95a7ba4fa0bfdf0
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -51,7 +51,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 0
   textureShape: 1
@@ -143,5 +143,5 @@ TextureImporter:
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: '@easy/core_shared/resources'
+  assetBundleName: 
   assetBundleVariant: 

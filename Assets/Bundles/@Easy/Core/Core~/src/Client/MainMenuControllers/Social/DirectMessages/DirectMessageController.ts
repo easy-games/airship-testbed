@@ -201,7 +201,7 @@ export class DirectMessageController implements OnStart {
 
 		if (message === "") return;
 		InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinatorSocket + "/chat/message/direct",
+			AirshipUrl.GameCoordinator + "/chat/message/direct",
 			encode({
 				target: uid,
 				text: message,
