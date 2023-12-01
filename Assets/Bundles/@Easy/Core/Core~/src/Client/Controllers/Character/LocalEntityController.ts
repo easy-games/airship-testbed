@@ -19,10 +19,6 @@ import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
-import { EffectsManager } from "Shared/Effects/EffectsManager";
-import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { CameraReferences } from "../Camera/CameraReferences";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -357,16 +353,16 @@ export class LocalEntityController implements OnStart {
 		});
 
 		//Sprinting overlay vfx
-		let sprintOverlaytemplate = AssetBridge.Instance.LoadAssetIfExists<GameObject>(
-			AllBundleItems.Entity_Movement_SprintOverlayVFX,
-		);
-		if (sprintOverlaytemplate) {
-			let sprintOverlayGameObject = GameObjectUtil.Instantiate(sprintOverlaytemplate);
-			sprintOverlayGameObject.transform.SetParent(CameraReferences.Instance().mainCamera.transform, false);
-			this.sprintOverlayEmission = sprintOverlayGameObject
-				.GetComponentsInChildren<ParticleSystem>()
-				?.GetValue(0).emission;
-		}
+		// let sprintOverlaytemplate = AssetBridge.Instance.LoadAssetIfExists<GameObject>(
+		// 	AllBundleItems.Entity_Movement_SprintOverlayVFX,
+		// );
+		// if (sprintOverlaytemplate) {
+		// 	let sprintOverlayGameObject = GameObjectUtil.Instantiate(sprintOverlaytemplate);
+		// 	sprintOverlayGameObject.transform.SetParent(CameraReferences.Instance().mainCamera.transform, false);
+		// 	this.sprintOverlayEmission = sprintOverlayGameObject
+		// 		.GetComponentsInChildren<ParticleSystem>()
+		// 		?.GetValue(0).emission;
+		// }
 	}
 
 	public SetCharacterCameraMode(mode: CharacterCameraMode): void {

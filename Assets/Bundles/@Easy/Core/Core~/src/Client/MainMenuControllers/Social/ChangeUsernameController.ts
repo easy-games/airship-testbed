@@ -75,7 +75,7 @@ export class ChangeUsernameController implements OnStart {
 		}
 
 		const res = HttpManager.PatchAsync(
-			AirshipUrl.UserService + "/users",
+			AirshipUrl.GameCoordinator + "/users",
 			encode({
 				username: split[0],
 				discriminator: split[1],

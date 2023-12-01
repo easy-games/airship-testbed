@@ -1,17 +1,16 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { BlockInteractService } from "Server/Services/Block/BlockInteractService";
+import { GroundItemService } from "Server/Services/GroundItem/GroundItemService";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
+import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
-import inspect from "@easy-games/unity-inspect";
-import { GroundItemService } from "Server/Services/GroundItem/GroundItemService";
-import { ItemStack } from "Shared/Inventory/ItemStack";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -85,11 +84,21 @@ export class ProjectileService implements OnStart {
 
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
-				this.damageService.InflictDamage(event.hitEntity, math.floor(damage + 0.5), {
+				let criticalHit = false;
+				const hitHeight = event.hitPosition.sub(event.hitEntity.model.transform.position).magnitude;
+				if (event.hitEntity.IsHeadshotHitHeight(hitHeight)) {
+					criticalHit = true;
+				}
+				damage = math.floor(damage + 0.5);
+				if (criticalHit) {
+					damage *= 1.5;
+				}
+				this.damageService.InflictDamage(event.hitEntity, damage, {
 					fromEntity: projectile.shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
 					knockbackDirection: knockbackDirection,
+					criticalHit: criticalHit,
 				});
 			} else {
 				// anchor ammo in ground

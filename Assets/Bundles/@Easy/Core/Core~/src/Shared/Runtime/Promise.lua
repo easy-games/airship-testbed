@@ -313,7 +313,7 @@ end
 	```lua
 	local myFunction()
 		return Promise.new(function(resolve, reject, onCancel)
-			wait(1)
+			task.wait(1)
 			resolve("Hello world!")
 		end)
 	end
@@ -1805,7 +1805,7 @@ function Promise.prototype:_reject(...)
 
 		coroutine.wrap(function()
 			-- Promise._timeEvent:Wait()
-			wait()
+			task.wait()
 
 			-- Someone observed the error, hooray!
 			if not self._unhandledRejection then

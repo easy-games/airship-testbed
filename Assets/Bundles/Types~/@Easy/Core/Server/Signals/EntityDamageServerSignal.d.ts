@@ -5,7 +5,8 @@ export declare class EntityDamageServerSignal extends Cancellable {
     readonly entity: Entity;
     amount: number;
     damageType: DamageType;
+    criticalHit: boolean;
     fromEntity?: Entity | undefined;
     canDamageAllies?: boolean | undefined;
-    constructor(entity: Entity, amount: number, damageType: DamageType, fromEntity?: Entity | undefined, canDamageAllies?: boolean | undefined);
+    constructor(entity: Entity, amount: number, damageType: DamageType, criticalHit: boolean, fromEntity?: Entity | undefined, canDamageAllies?: boolean | undefined);
 }

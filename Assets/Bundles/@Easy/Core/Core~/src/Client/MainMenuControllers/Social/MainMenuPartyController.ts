@@ -2,7 +2,9 @@ import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
@@ -30,9 +32,12 @@ export class MainMenuPartyController implements OnStart {
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
-			this.socketController.Emit("join-party", {
-				partyId: data.partyId,
-			});
+			InternalHttpManager.PostAsync(
+				AirshipUrl.GameCoordinator + "/parties/party/join",
+				encode({
+					partyId: data.partyId,
+				}),
+			);
 		});
 
 		this.Setup();
@@ -150,15 +155,21 @@ export class MainMenuPartyController implements OnStart {
 
 			if (init) {
 				CanvasAPI.OnClickEvent(kickButton, () => {
-					this.socketController.Emit("remove-from-party", {
-						userToRemove: member.uid,
-					});
+					InternalHttpManager.PostAsync(
+						AirshipUrl.GameCoordinator + "/parties/party/remove",
+						encode({
+							userToRemove: member.uid,
+						}),
+					);
 				});
 
 				CanvasAPI.OnClickEvent(leaveButton, () => {
-					this.socketController.Emit("remove-from-party", {
-						userToRemove: member.uid,
-					});
+					InternalHttpManager.PostAsync(
+						AirshipUrl.GameCoordinator + "/parties/party/remove",
+						encode({
+							userToRemove: member.uid,
+						}),
+					);
 				});
 			}
 		}

@@ -64,7 +64,10 @@ This function returns:
 Actual time yielded (in seconds)
 Total time since the software was initialized (in seconds) */
 
-/** Waits for a single frame. */
+/**
+ * Waits for a single frame.
+ * @deprecated Use `task.wait()` instead.
+ */
 declare function wait(duration?: number): void;
 /** Behaves identically to Lua’s print function, except the output is styled as a warning, with yellow text and a timestamp.
 This function accepts any number of arguments, and will attempt to convert them into strings which will then be joined together with spaces between them. */

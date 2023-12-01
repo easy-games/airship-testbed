@@ -263,6 +263,16 @@ export class Entity {
 		}
 	}
 
+	public IsHeadshotHitHeight(height: number): boolean {
+		const offset = this.GetHeadOffset();
+		const diff = math.abs(height - offset.y);
+		return diff <= 0.14;
+	}
+
+	public IsCrouched(): boolean {
+		return this.state === EntityState.Crouching;
+	}
+
 	public AddHealthbar(): void {
 		if (RunUtil.IsServer()) {
 			this.healthbarEnabled = true;
@@ -550,6 +560,17 @@ export class Entity {
 	}
 
 	public GetHeadOffset(): Vector3 {
+		const state = this.GetState();
+		let offset = new Vector3(0, 2, 0);
+		if (state === EntityState.Crouching) {
+			offset = new Vector3(0, 1, 0);
+		} else if (state === EntityState.Sliding) {
+			offset = new Vector3(0, 0.8, 0);
+		}
+		return offset;
+	}
+
+	public GetFirstPersonHeadOffset(): Vector3 {
 		const state = this.GetState();
 		let offset = new Vector3(0, 1.7, 0);
 		if (state === EntityState.Crouching) {

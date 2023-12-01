@@ -21,4 +21,5 @@ export interface MeleeHit {
     hitNormal: Vector3;
     distance: number;
     knockbackDirection: Vector3;
+    criticalHit?: boolean;
 }

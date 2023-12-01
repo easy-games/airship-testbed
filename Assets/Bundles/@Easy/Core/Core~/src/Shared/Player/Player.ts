@@ -179,7 +179,7 @@ export class Player {
 
 		const jwt = GameObject.Find("ServerBootstrap")?.GetComponent<ServerBootstrap>().airshipJWT;
 		const res = HttpManager.PostAsync(
-			AirshipUrl.GameCoordinatorSocket + "/transfers/transfer",
+			AirshipUrl.GameCoordinator + "/transfers/transfer",
 			encode({
 				uid: this.userId,
 				serverId,

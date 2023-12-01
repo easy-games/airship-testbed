@@ -38,7 +38,9 @@ class ChatMessageElement {
 		this.shown = false;
 		const t = this.canvasGroup.TweenCanvasGroupAlpha(0, 0.2);
 		this.hideBin.Add(() => {
-			t.Cancel();
+			if (!t.IsDestroyed()) {
+				t.Cancel();
+			}
 		});
 	}
 

@@ -147,7 +147,7 @@ export class AudioClipBundle {
 			this.PlayManual(randomIndex);
 
 			//print("Playing random before loop: " + randomIndex);
-			if (this.lastAudioSource) {
+			if (this.lastAudioSource?.clip) {
 				const delayLength = math.max(0.1, this.lastAudioSource.clip.length - 0.15);
 				Task.Delay(delayLength, () => {
 					if (this.lastAudioSource && this.lastAudioSource.isPlaying) {
