@@ -7,6 +7,10 @@ export declare class AddAbilityCommand extends AbilityChatCommand {
     constructor();
     Execute(player: Player, args: string[]): void;
 }
+export declare class AbilityEnableStateCommand extends AbilityChatCommand {
+    constructor();
+    Execute(player: Player, args: string[]): void;
+}
 export declare class RemoveAbilityCommand extends AbilityChatCommand {
     constructor();
     Execute(player: Player, args: string[]): void;

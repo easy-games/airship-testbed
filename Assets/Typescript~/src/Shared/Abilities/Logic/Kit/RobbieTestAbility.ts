@@ -23,6 +23,7 @@ export default class RobbieTestAbility extends AbilityLogic {
 	}
 
 	private ServerOnEnabled(): void {
+		print("[ServerOnEnabled] ROBBIE ABILITY");
 		this.serverDisabledBin.Add(
 			CoreServerSignals.EntityDamage.Connect((event) => {
 				print("ONCE PER HIT");

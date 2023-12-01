@@ -35,7 +35,6 @@ export class AbilityLogic {
 	 */
 	public SetEnabled(enabled: boolean) {
 		if (this.enabled === enabled) return;
-
 		this.enabled = enabled;
 		// Handle side-effects of enabling/disabling this ability
 		if (enabled) {

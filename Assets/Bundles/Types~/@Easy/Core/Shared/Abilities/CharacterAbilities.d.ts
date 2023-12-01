@@ -65,9 +65,16 @@ export declare class CharacterAbilities {
      *
      * @param abilityId The ability's unique id
      * @param ability The ability being given to the character
-     * @return logic The logic of the ability
+     * @return The logic of the ability
      */
     private AddPassiveAbilityWithId;
+    /**
+     * Sets the ability state of the given ability
+     * @param abilityId The ability's unique id
+     * @param enabledState The ability's new enabled state
+     * @returns Whether or not the state was sucessfully updated
+     */
+    SetAbilityEnabledState(abilityId: string, enabledState: boolean): boolean;
     /**
      * Removes the ability with the given id from this character
      * @param abilityId The ability id to remove

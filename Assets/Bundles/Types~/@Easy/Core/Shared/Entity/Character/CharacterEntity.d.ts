@@ -1,8 +1,8 @@
-import { Inventory } from "../../Inventory/Inventory";
-import { Entity, EntityDto } from "../Entity";
-import { CharacterAbilities } from "../../Abilities/CharacterAbilities";
 import { AbilityDto } from "../../Abilities/Ability";
+import { CharacterAbilities } from "../../Abilities/CharacterAbilities";
+import { Inventory } from "../../Inventory/Inventory";
 import { Ability } from "../../Strollers/Abilities/AbilityRegistry";
+import { Entity, EntityDto } from "../Entity";
 export interface CharacterEntityDto extends EntityDto {
     invId: number;
     abilities: AbilityDto[];

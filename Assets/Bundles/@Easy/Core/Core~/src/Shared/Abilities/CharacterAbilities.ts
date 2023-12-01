@@ -1,3 +1,4 @@
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Ability } from "Shared/Strollers/Abilities/AbilityRegistry";
@@ -58,6 +59,18 @@ export class CharacterAbilities {
 						) {
 							this.CancelChargingAbility();
 						}
+					}
+				}),
+			);
+			bin.Add(
+				CoreServerSignals.ProjectileFired.Connect((event) => {
+					const currentlyCharging = this.GetChargingAbility();
+					if (
+						currentlyCharging !== undefined &&
+						currentlyCharging.cancellationTriggers.has(AbilityCancellationTrigger.EntityFiredProjectile) &&
+						this.entity.ClientId === event.shooter.ClientId
+					) {
+						this.CancelChargingAbility();
 					}
 				}),
 			);
@@ -169,8 +182,10 @@ export class CharacterAbilities {
 		}
 
 		const logic = new ability.logic(this.entity, abilityId, overrideConfig ?? ability.config);
-		logic.SetEnabled(true);
 		abilityMap.set(abilityId, logic);
+
+		this.SetAbilityEnabledState(abilityId, true);
+
 		this.abilityIdSlotMap.set(abilityId, ability.config.slot);
 
 		if (RunCore.IsServer() && this.entity.player) {
@@ -193,8 +208,10 @@ export class CharacterAbilities {
 			return this.GetAbilityLogicById(abilityId)!;
 		}
 		const logic = new ability.logic(this.entity, abilityId, overrideConfig ?? ability.config);
-		logic.SetEnabled(true);
 		this.abilityIdPassiveMap.set(abilityId, logic);
+
+		this.SetAbilityEnabledState(abilityId, true);
+
 		if (RunCore.IsServer() && this.entity.player) {
 			CoreNetwork.ServerToClient.AbilityAdded.Server.FireAllClients(this.entity.id, logic.Encode());
 		}
@@ -211,7 +228,16 @@ export class CharacterAbilities {
 	public SetAbilityEnabledState(abilityId: string, enabledState: boolean): boolean {
 		const abilityLogic = this.GetAbilityLogicById(abilityId);
 		if (!abilityLogic) return false;
+
+		const currentState = abilityLogic.GetEnabled();
+		if (currentState === enabledState) return false;
+
 		abilityLogic.SetEnabled(enabledState);
+
+		if (!enabledState && this.currentChargingAbilityState?.id === abilityId) {
+			this.CancelChargingAbility();
+		}
+
 		if (RunCore.IsServer() && this.entity.player) {
 			CoreNetwork.ServerToClient.AbilityStateChange.Server.FireAllClients(
 				this.entity.id,
@@ -231,6 +257,9 @@ export class CharacterAbilities {
 		if (!this.HasAbilityWithId(abilityId)) {
 			return false;
 		}
+
+		this.SetAbilityEnabledState(abilityId, false);
+
 		const passiveAbility = this.abilityIdPassiveMap.get(abilityId);
 		if (passiveAbility) {
 			return this.removePassiveAbilityById(abilityId);
@@ -245,9 +274,6 @@ export class CharacterAbilities {
 	 * @returns True if the ability was removed
 	 */
 	private removeActiveAbilityById(abilityId: string): boolean {
-		const abilityLogic = this.GetAbilityLogicById(abilityId);
-		if (abilityLogic) abilityLogic.SetEnabled(false);
-
 		const abilitySlot = this.abilityIdSlotMap.get(abilityId);
 		if (!abilitySlot) return false;
 
@@ -276,9 +302,6 @@ export class CharacterAbilities {
 	 * @returns True if the ability was removed
 	 */
 	private removePassiveAbilityById(abilityId: string): boolean {
-		const abilityLogic = this.GetAbilityLogicById(abilityId);
-		if (abilityLogic) abilityLogic.SetEnabled(false);
-
 		this.abilityIdPassiveMap.delete(abilityId);
 		if (RunCore.IsServer() && this.entity.player) {
 			CoreNetwork.ServerToClient.AbilityRemoved.Server.FireAllClients(this.entity.id, abilityId);
@@ -290,8 +313,8 @@ export class CharacterAbilities {
 	 * Removes all abilities from this character
 	 */
 	public RemoveAllAbilities() {
-		for (const [_id, logic] of this.GetAbilities()) {
-			logic.SetEnabled(false);
+		for (const [id, _logic] of this.GetAbilities()) {
+			this.SetAbilityEnabledState(id, false);
 		}
 		this.abilityIdSlotMap.clear();
 		this.abilityIdPassiveMap.clear();

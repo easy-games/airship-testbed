@@ -20,6 +20,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 				cancelTriggers: [
 					AbilityCancellationTrigger.EntityDamageTaken,
 					AbilityCancellationTrigger.EntityMovement,
+					AbilityCancellationTrigger.EntityFiredProjectile,
 				],
 				displayText: "Teleporting back to base",
 			},

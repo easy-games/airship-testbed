@@ -160,10 +160,6 @@ export class AbilitiesController implements OnStart {
 					slot.Unbind();
 				}
 			}
-			const abilities = event.characterEntity.GetAbilities();
-			for (const [_id, logic] of abilities.GetAbilities()) {
-				logic.SetEnabled(false);
-			}
 		});
 
 		CoreClientSignals.AbilityStateUpdate.Connect((event) => {

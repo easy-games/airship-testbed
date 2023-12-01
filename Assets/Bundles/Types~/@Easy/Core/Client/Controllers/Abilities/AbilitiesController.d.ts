@@ -6,13 +6,13 @@ import { EntityController } from "../Entity/EntityController";
 import { AbilityBinding } from "./Class/AbilityBinding";
 export declare class AbilitiesController implements OnStart {
     private readonly abilityRegistry;
-    private readonly entityService;
+    private readonly entityController;
     private readonly keyboard;
     private primaryAbilitySlots;
     private secondaryAbilitySlots;
     private utilityAbiltySlots;
     private allSlots;
-    constructor(abilityRegistry: AbilityRegistry, entityService: EntityController);
+    constructor(abilityRegistry: AbilityRegistry, entityController: EntityController);
     private FindNextAvailableSlot;
     private RegisterAbility;
     private UnregisterAbility;

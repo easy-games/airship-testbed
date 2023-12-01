@@ -19,7 +19,11 @@ export declare enum AbilityCancellationTrigger {
     /**
      * The casting entity moves
      */
-    EntityMovement = 1
+    EntityMovement = 1,
+    /**
+     * The casting entity fires a projectile
+     */
+    EntityFiredProjectile = 2
 }
 export interface AbilityChargeConfig {
     /**
