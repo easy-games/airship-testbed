@@ -16,6 +16,7 @@ import { AbilityAddedClientSignal } from "./Event/AbilityAddedClientSignal";
 import { AbilityChargeClientSignal } from "./Event/AbilityChargeClientSignal";
 import { AbilityChargeEndClientSignal } from "./Event/AbilityChargeEndClientSignal";
 import { AbilityRemovedClientSignal } from "./Event/AbilityRemovedClientSignal";
+import { AbilityStateUpdateSignal } from "./Event/AbilityStateUpdateSignal";
 
 const primaryKeys: ReadonlyArray<KeyCode> = [KeyCode.R, KeyCode.G];
 const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V];
@@ -32,7 +33,7 @@ export class AbilitiesController implements OnStart {
 
 	public constructor(
 		private readonly abilityRegistry: AbilityRegistry,
-		private readonly entityService: EntityController,
+		private readonly entityController: EntityController,
 	) {
 		// Set up binding slots
 		for (const keyCode of primaryKeys) {
@@ -159,10 +160,28 @@ export class AbilitiesController implements OnStart {
 					slot.Unbind();
 				}
 			}
+			const abilities = event.characterEntity.GetAbilities();
+			for (const [_id, logic] of abilities.GetAbilities()) {
+				logic.SetEnabled(false);
+			}
+		});
+
+		CoreClientSignals.AbilityStateUpdate.Connect((event) => {
+			const abilities = event.characterEntity.GetAbilities();
+			abilities.SetAbilityEnabledState(event.abilityId, event.enabled);
+		});
+
+		CoreNetwork.ServerToClient.AbilityStateChange.Client.OnServerEvent((entityId, abilityId, enabledState) => {
+			const entity = this.entityController.GetEntityById(entityId);
+			if (entity && entity instanceof CharacterEntity) {
+				CoreClientSignals.AbilityStateUpdate.Fire(
+					new AbilityStateUpdateSignal(entity, abilityId, enabledState),
+				);
+			}
 		});
 
 		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((entityId, abilityId) => {
-			const entity = this.entityService.GetEntityById(entityId);
+			const entity = this.entityController.GetEntityById(entityId);
 
 			if (entity && entity instanceof CharacterEntity) {
 				CoreClientSignals.AbilityRemoved.Fire(new AbilityRemovedClientSignal(entity, abilityId));
@@ -170,7 +189,7 @@ export class AbilitiesController implements OnStart {
 		});
 
 		CoreNetwork.ServerToClient.AbilitiesCleared.Client.OnServerEvent((entityId) => {
-			const entity = this.entityService.GetEntityById(entityId);
+			const entity = this.entityController.GetEntityById(entityId);
 
 			if (entity && entity instanceof CharacterEntity) {
 				CoreClientSignals.AbilitiesCleared.Fire(new AbilitiesClearedClientSignal(entity));
@@ -189,7 +208,7 @@ export class AbilitiesController implements OnStart {
 		});
 
 		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((entityId, dto) => {
-			const entity = this.entityService.GetEntityById(entityId);
+			const entity = this.entityController.GetEntityById(entityId);
 
 			if (entity && entity instanceof CharacterEntity) {
 				CoreClientSignals.AbilityAdded.Fire(new AbilityAddedClientSignal(entity, dto));
@@ -197,14 +216,14 @@ export class AbilitiesController implements OnStart {
 		});
 
 		CoreNetwork.ServerToClient.AbilityChargeBegan.Client.OnServerEvent((entityId, event) => {
-			const entity = this.entityService.GetEntityById(entityId);
+			const entity = this.entityController.GetEntityById(entityId);
 
 			if (!entity || !(entity instanceof CharacterEntity)) return;
 			CoreClientSignals.AbilityChargeBegan.Fire(new AbilityChargeClientSignal(entity, event));
 		});
 
 		CoreNetwork.ServerToClient.AbilityChargeEnded.Client.OnServerEvent((entityId, event) => {
-			const entity = this.entityService.GetEntityById(entityId);
+			const entity = this.entityController.GetEntityById(entityId);
 
 			if (entity && entity instanceof CharacterEntity) {
 				CoreClientSignals.AbilityChargeEnded.Fire(new AbilityChargeEndClientSignal(entity, event));

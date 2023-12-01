@@ -1,17 +1,16 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { BlockInteractService } from "Server/Services/Block/BlockInteractService";
+import { GroundItemService } from "Server/Services/GroundItem/GroundItemService";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
+import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
-import inspect from "@easy-games/unity-inspect";
-import { GroundItemService } from "Server/Services/GroundItem/GroundItemService";
-import { ItemStack } from "Shared/Inventory/ItemStack";
 
 @Service({})
 export class ProjectileService implements OnStart {

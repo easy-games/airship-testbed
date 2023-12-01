@@ -10,6 +10,7 @@ import { AbilityAddedClientSignal } from "./Controllers/Abilities/Event/AbilityA
 import { AbilityChargeClientSignal } from "./Controllers/Abilities/Event/AbilityChargeClientSignal";
 import { AbilityChargeEndClientSignal } from "./Controllers/Abilities/Event/AbilityChargeEndClientSignal";
 import { AbilityRemovedClientSignal } from "./Controllers/Abilities/Event/AbilityRemovedClientSignal";
+import { AbilityStateUpdateSignal } from "./Controllers/Abilities/Event/AbilityStateUpdateSignal";
 import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
@@ -53,6 +54,7 @@ export const CoreClientSignals = {
 
 	AbilityAdded: new Signal<AbilityAddedClientSignal>(),
 	AbilityRemoved: new Signal<AbilityRemovedClientSignal>(),
+	AbilityStateUpdate: new Signal<AbilityStateUpdateSignal>(),
 	AbilitiesCleared: new Signal<AbilitiesClearedClientSignal>(),
 
 	AbilityChargeBegan: new Signal<AbilityChargeClientSignal>(),

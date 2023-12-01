@@ -1,9 +1,9 @@
+import { AbilityDto } from "Shared/Abilities/Ability";
+import { CharacterAbilities } from "Shared/Abilities/CharacterAbilities";
 import { Inventory } from "Shared/Inventory/Inventory";
+import { Ability } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Entity, EntityDto } from "../Entity";
 import { EntitySerializer } from "../EntitySerializer";
-import { CharacterAbilities } from "Shared/Abilities/CharacterAbilities";
-import { AbilityDto } from "Shared/Abilities/Ability";
-import { Ability } from "Shared/Strollers/Abilities/AbilityRegistry";
 
 export interface CharacterEntityDto extends EntityDto {
 	invId: number;

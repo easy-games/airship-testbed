@@ -61,6 +61,11 @@ export class CharacterAbilities {
 					}
 				}),
 			);
+			bin.Add(
+				entity.OnDeath.Connect(() => {
+					this.RemoveAllAbilities();
+				}),
+			);
 		}
 	}
 
@@ -180,7 +185,7 @@ export class CharacterAbilities {
 	 *
 	 * @param abilityId The ability's unique id
 	 * @param ability The ability being given to the character
-	 * @return logic The logic of the ability
+	 * @return The logic of the ability
 	 */
 	private AddPassiveAbilityWithId(abilityId: string, ability: Ability, overrideConfig?: AbilityConfig): AbilityLogic {
 		if (this.HasAbilityWithId(abilityId)) {
@@ -195,6 +200,26 @@ export class CharacterAbilities {
 		}
 
 		return logic;
+	}
+
+	/**
+	 * Sets the ability state of the given ability
+	 * @param abilityId The ability's unique id
+	 * @param enabledState The ability's new enabled state
+	 * @returns Whether or not the state was sucessfully updated
+	 */
+	public SetAbilityEnabledState(abilityId: string, enabledState: boolean): boolean {
+		const abilityLogic = this.GetAbilityLogicById(abilityId);
+		if (!abilityLogic) return false;
+		abilityLogic.SetEnabled(enabledState);
+		if (RunCore.IsServer() && this.entity.player) {
+			CoreNetwork.ServerToClient.AbilityStateChange.Server.FireAllClients(
+				this.entity.id,
+				abilityId,
+				enabledState,
+			);
+		}
+		return true;
 	}
 
 	/**
@@ -333,11 +358,13 @@ export class CharacterAbilities {
 			return;
 		}
 
+		const ability = this.GetAbilityLogicById(id);
+		if (!ability?.GetEnabled()) return;
+
 		// can't cast while casting
 		if (this.currentChargingAbilityState !== undefined) return;
 
 		if (RunCore.IsServer()) {
-			const ability = this.GetAbilityLogicById(id);
 			if (ability) {
 				const currentTime = TimeUtil.GetServerTime();
 				const config = ability.GetConfig();

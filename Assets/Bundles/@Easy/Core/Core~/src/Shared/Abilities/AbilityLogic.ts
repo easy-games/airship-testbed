@@ -34,8 +34,9 @@ export class AbilityLogic {
 	 * @param enabled Whether or not this ability is enabled
 	 */
 	public SetEnabled(enabled: boolean) {
-		this.enabled = enabled;
+		if (this.enabled === enabled) return;
 
+		this.enabled = enabled;
 		// Handle side-effects of enabling/disabling this ability
 		if (enabled) {
 			this.OnEnabled();
