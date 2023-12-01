@@ -125,24 +125,10 @@ export class Signal<T extends unknown[] | unknown> {
 			for (let entry of entries) {
 				fireCount++;
 
-				// const thread = coroutine.create(entry.callback);
-
-				// if (this.debugGameObject) {
-				// 	const go = args[0] as GameObject;
-				// 	print("fire go.name=" + go.name);
-				// }
-
-				// const [success, err] = coroutine.resume(thread, ...args);
-				// if (!success) {
-				// 	error(err);
-				// }
-				// if (coroutine.status(thread) !== "dead") {
-				// 	warn(debug.traceback(thread, "Signal yielded unexpectedly. This might be an error."));
-				// }
-
 				const thread = task.spawn(entry.callback, ...args);
+
 				if (this.trackYielding && isCancellable && coroutine.status(thread) !== "dead") {
-					warn(debug.traceback(thread, "Signal yielded. This might be an error."));
+					warn(debug.traceback(thread, "Signal callback yielded. This might be an error.") + "\n--\n");
 				}
 
 				if (isCancellable) {
