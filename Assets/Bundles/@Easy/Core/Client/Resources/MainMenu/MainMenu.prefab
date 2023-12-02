@@ -302,12 +302,13 @@ RectTransform:
   m_Children:
   - {fileID: 467459767723077631}
   - {fileID: 1132884676290698158}
+  - {fileID: 1880037535240877848}
   m_Father: {fileID: 6655073066596746605}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -12}
   m_SizeDelta: {x: 0, y: 87.7822}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2960181512228961860
@@ -556,12 +557,12 @@ RectTransform:
   - {fileID: 3942466491456920752}
   - {fileID: 6158019320011462119}
   - {fileID: 5126559834616104336}
-  m_Father: {fileID: 6655073066596746605}
-  m_RootOrder: 3
+  m_Father: {fileID: 8102959601354803628}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -65, y: 468.11}
+  m_AnchoredPosition: {x: -66, y: 0.0011291504}
   m_SizeDelta: {x: 225, y: 46}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8164758361466000976
@@ -585,7 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0.98039216}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -623,9 +624,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.42352942, g: 0.42352942, b: 0.42352942, a: 0.98039216}
+    m_HighlightedColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0.98039216}
+    m_PressedColor: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0.98039216}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -1220,7 +1221,6 @@ RectTransform:
   - {fileID: 6666181487066244860}
   - {fileID: 3781697274346866496}
   - {fileID: 8102959601354803628}
-  - {fileID: 1880037535240877848}
   m_Father: {fileID: 9106741346845258035}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3191,7 +3191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9100946035429740020, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 7.4816895
+      value: 14.105713
       objectReference: {fileID: 0}
     - target: {fileID: 9221297191061914559, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_AnchorMax.y

@@ -75,7 +75,7 @@ export class MainMenuPartyController implements OnStart {
 			partyContent.ClearChildren();
 
 			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `Party (0/8)`;
+			partyTitle.text = `(0/8)`;
 
 			const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
 			leaveButton.SetActive(false);
@@ -151,7 +151,7 @@ export class MainMenuPartyController implements OnStart {
 			LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
 
 			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `Party (${this.party.members.size()}/8)`;
+			partyTitle.text = `(${this.party.members.size()}/8)`;
 
 			if (init) {
 				CanvasAPI.OnClickEvent(kickButton, () => {
