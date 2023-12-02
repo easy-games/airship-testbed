@@ -136,7 +136,7 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
-		const text = go.transform.GetChild(1).GetComponent<TMP_Text>();
+		const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
 		if (selected) {
 			text.color = new Color(1, 1, 1, 1);
 			// go.transform.GetChild(0).gameObject.SetActive(true);
