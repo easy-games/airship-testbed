@@ -125,6 +125,8 @@ export const CoreNetwork = {
 		PlayEntityItemAnimation: new RemoteEvent<[entityId: number, useIndex?: number, modeIndex?: number]>(),
 		/** Fired when a generator is created. */
 		GeneratorCreated: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
+		/** Fired when a generator is modified */
+		GeneratorModified: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 		/** Fired when a generator is looted. */
 		GeneratorLooted: new RemoteEvent<[generatorId: string]>(),
 		/** Fired when a generator's spawn rate changes. */

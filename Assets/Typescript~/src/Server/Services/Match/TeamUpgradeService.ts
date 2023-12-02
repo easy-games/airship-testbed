@@ -20,6 +20,7 @@ import { TeamUpgradeStateDto } from "Shared/TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "Shared/TeamUpgrade/TeamUpgradeType";
 import { TeamUpgradeUtil } from "Shared/TeamUpgrade/TeamUpgradeUtil";
 import { GeneratorSpawnService } from "./GeneratorSpawnService";
+import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 
 /** Snapshot send delay after user connects. */
 const SNAPSHOT_SEND_DELAY = 2;
@@ -113,6 +114,7 @@ export class TeamUpgradeService implements OnStart {
 			/* Handle team generator upgrades. */
 			if (event.upgradeType === TeamUpgradeType.TEAM_GENERATOR) {
 				const ironGenerators = this.generatorSpawnService.GetTeamGeneratorByType(event.team, ItemType.IRON);
+
 				const tierMeta = TeamUpgradeUtil.GetUpgradeTierForType(event.upgradeType, event.tier);
 				switch (event.tier) {
 					case 1: {
@@ -139,13 +141,21 @@ export class TeamUpgradeService implements OnStart {
 								item: ItemType.EMERALD,
 								spawnRate: 45,
 								stackLimit: 3,
-								nameLabel: true,
+								nameLabel: false,
 							});
 							this.generatorSpawnService.RegisterNewGeneratorForTeam(event.team, generatorId);
 							break;
 						}
 					}
 				}
+
+				const tierLabels = ["", "", "(Tier II)", "(Tier III)"];
+				ironGenerators?.forEach((generator) => {
+					this.generatorService.UpdateGeneratorLabelById(
+						generator.dto.id,
+						StringUtils.trim(`Team Generator ${tierLabels[event.tier]}`),
+					);
+				});
 			}
 			/* Handle diamond generator upgrades. */
 			if (event.upgradeType === TeamUpgradeType.DIAMOND_GENERATOR) {
@@ -160,7 +170,7 @@ export class TeamUpgradeService implements OnStart {
 								item: ItemType.DIAMOND,
 								spawnRate: 25,
 								stackLimit: 6,
-								nameLabel: true,
+								nameLabel: false,
 							});
 							this.generatorSpawnService.RegisterNewGeneratorForTeam(event.team, generatorId);
 						}

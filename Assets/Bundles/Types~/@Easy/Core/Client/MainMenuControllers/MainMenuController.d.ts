@@ -1,24 +1,30 @@
 import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
 import { Signal } from "../../Shared/Util/Signal";
 import { AuthController } from "./Auth/AuthController";
-import { MainMenuPage } from "./MainMenuPageName";
+import { MainMenuPageType } from "./MainMenuPageName";
 export declare class MainMenuController implements OnStart {
     private readonly authController;
+    private readonly socialTweenDuration;
     mainMenuGo: GameObject;
     refs: GameObjectReferences;
-    currentPageGo: GameObject | undefined;
-    currentPage: MainMenuPage;
-    OnCurrentPageChanged: Signal<[page: MainMenuPage, oldPage: MainMenuPage | undefined]>;
+    currentPage: GameObject | undefined;
+    currentPageType: MainMenuPageType;
+    OnCurrentPageChanged: Signal<[page: MainMenuPageType, oldPage: MainMenuPageType | undefined]>;
     private pageMap;
     private wrapperRect;
     mainContentCanvas: Canvas;
+    mainContentGroup: CanvasGroup;
+    socialMenuGroup: CanvasGroup;
     private rootCanvasGroup;
-    socialMenuCanvas: Canvas;
+    private toggleSocialButton;
     private open;
+    private socialIsVisible;
+    private avatarScene?;
     constructor(authController: AuthController);
     OpenFromGame(): void;
     CloseFromGame(): void;
     IsOpen(): boolean;
     OnStart(): void;
-    RouteToPage(page: MainMenuPage, force?: boolean, noTween?: boolean): void;
+    RouteToPage(pageType: MainMenuPageType, force?: boolean, noTween?: boolean): void;
+    private ToggleSocialView;
 }

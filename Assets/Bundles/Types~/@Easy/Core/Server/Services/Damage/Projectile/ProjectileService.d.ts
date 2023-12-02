@@ -2,9 +2,9 @@
 /// <reference types="@easy-games/types" />
 import { OnStart } from "../../../../../node_modules/@easy-games/flamework-core";
 import { BlockInteractService } from "../../Block/BlockInteractService";
+import { GroundItemService } from "../../GroundItem/GroundItemService";
 import { Projectile } from "../../../../Shared/Projectile/Projectile";
 import { DamageService } from "../DamageService";
-import { GroundItemService } from "../../GroundItem/GroundItemService";
 export declare class ProjectileService implements OnStart {
     private readonly damageService;
     private readonly blockService;

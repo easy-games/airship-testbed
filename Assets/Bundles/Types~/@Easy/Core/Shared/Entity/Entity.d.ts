@@ -84,6 +84,8 @@ export declare class Entity {
     readonly OnArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     Teleport(pos: Vector3, lookVector?: Vector3): void;
+    IsHeadshotHitHeight(height: number): boolean;
+    IsCrouched(): boolean;
     AddHealthbar(): void;
     /**
      * Gets the current position of this entity
@@ -126,6 +128,7 @@ export declare class Entity {
     GetCenterOfMass(): Vector3;
     GetHeadPosition(): Vector3;
     GetHeadOffset(): Vector3;
+    GetFirstPersonHeadOffset(): Vector3;
     GetMiddlePosition(): Vector3;
     LocalOffsetToWorldPoint(localOffset: Vector3): Vector3;
     GetDisplayName(): string;

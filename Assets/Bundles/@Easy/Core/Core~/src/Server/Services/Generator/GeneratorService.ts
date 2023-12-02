@@ -90,6 +90,7 @@ export class GeneratorService implements OnStart {
 				pos: pos,
 				id: generatorId,
 				item: config.item,
+				generatorName: config.nameOverride,
 				spawnRate: config.spawnRate,
 				startSpawnTime: TimeUtil.GetServerTime(),
 				nameLabel: config.nameLabel,
@@ -169,6 +170,18 @@ export class GeneratorService implements OnStart {
 
 		// Inform clients of _all_ server-sided generator spawn rate changes.
 		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.Server.FireAllClients(state.dto.id, newSpawnRate);
+	}
+
+	/**
+	 * Update the Generator's Label based on generator id
+	 * @param generatorId The generator's id
+	 * @param generatorLabel The new label for the generator
+	 */
+	public UpdateGeneratorLabelById(generatorId: string, generatorLabel: string): void {
+		const state = this.generatorMap.get(generatorId);
+		if (!state) return;
+		state.dto.generatorName = generatorLabel;
+		CoreNetwork.ServerToClient.GeneratorModified.Server.FireAllClients(state.dto);
 	}
 
 	/**

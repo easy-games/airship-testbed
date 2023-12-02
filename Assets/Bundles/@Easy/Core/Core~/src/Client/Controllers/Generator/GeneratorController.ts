@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { $print } from "@easy-games/unity-component-transformer";
 import ObjectUtil from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -28,7 +29,9 @@ export class GeneratorController implements OnStart {
 	 */
 	private stackedGenerators = new Map<string, GameObject>();
 	/** Map of generators to text label components. */
-	private generatorGameObjectMap = new Map<string, GameObject>();
+
+	private generatorLabels = new Map<string, GameObject>();
+
 	private generatorBins = new Map<string, Bin>();
 
 	constructor() {
@@ -61,6 +64,16 @@ export class GeneratorController implements OnStart {
 			if (dto.nameLabel || dto.spawnTimeLabel) this.CreateGeneratorLabel(dto);
 		});
 
+		// Listen for modifications - e.g. generator name changing
+		CoreNetwork.ServerToClient.GeneratorModified.Client.OnServerEvent((dto) => {
+			if (!this.generatorMap.has(dto.id)) return;
+			this.generatorMap.set(dto.id, dto);
+
+			if (dto.nameLabel || dto.spawnTimeLabel) {
+				this.UpdateGeneratorTextLabel(dto);
+			}
+		});
+
 		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.Client.OnServerEvent((genId, spawnRate) => {
 			const dto = this.generatorMap.get(genId);
 			if (!dto) return;
@@ -77,13 +90,14 @@ export class GeneratorController implements OnStart {
 			labelPosition,
 			Quaternion.identity,
 		);
-		this.generatorGameObjectMap.set(dto.id, generatorLabel);
+
+		this.generatorLabels.set(dto.id, generatorLabel);
 		this.UpdateGeneratorTextLabel(dto);
 	}
 
 	/** Update a generator text label. */
 	private UpdateGeneratorTextLabel(dto: GeneratorDto): void {
-		const go = this.generatorGameObjectMap.get(dto.id);
+		const go = this.generatorLabels.get(dto.id);
 		if (!go) return;
 
 		const refs = go.GetComponent<GameObjectReferences>();
@@ -98,7 +112,7 @@ export class GeneratorController implements OnStart {
 		} else {
 			textColor = Theme.White;
 		}
-		nameText.text = `${itemMeta.displayName} Generator`;
+		nameText.text = dto.generatorName ?? `${itemMeta.displayName} Generator`;
 		nameText.color = textColor;
 
 		const bin = MapUtil.GetOrCreate(this.generatorBins, dto.id, new Bin());

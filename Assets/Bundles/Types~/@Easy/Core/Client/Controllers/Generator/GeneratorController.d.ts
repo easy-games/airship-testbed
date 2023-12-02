@@ -11,7 +11,7 @@ export declare class GeneratorController implements OnStart {
      */
     private stackedGenerators;
     /** Map of generators to text label components. */
-    private generatorGameObjectMap;
+    private generatorLabels;
     private generatorBins;
     constructor();
     OnStart(): void;

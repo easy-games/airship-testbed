@@ -1,4 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import { InventoryController } from "@Easy/Core/Client/Controllers/Inventory/InventoryController";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
@@ -300,12 +301,22 @@ export class ItemShopController implements OnStart {
 
 		this.selectedItemBin.Add(
 			Dependency<InventoryController>().ObserveLocalInventory((inv) => {
+				// Get existing currency items - since if it already exists, `SlotChanged` wont be invoked to listen for changes!
+				const slotId = inv.FindSlotWithItemType(shopItem.currency);
+				if (slotId !== undefined) {
+					this.selectedItemBin.Add(
+						inv.GetItem(slotId)!.Changed.Connect(() => {
+							updateButton();
+						}),
+					);
+				}
+
 				this.selectedItemBin.Add(
 					inv.SlotChanged.Connect((slot, itemStack) => {
 						if (itemStack) {
 							updateButton();
 							this.selectedItemBin.Add(
-								itemStack?.Changed.Connect(() => {
+								itemStack.Changed.Connect(() => {
 									updateButton();
 								}),
 							);
