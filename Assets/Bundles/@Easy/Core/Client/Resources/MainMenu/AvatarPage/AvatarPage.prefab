@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 1063477963677416328}
   - component: {fileID: 98629860430141082}
   - component: {fileID: 3428903758798075265}
-  - component: {fileID: 3083998062445674283}
+  - component: {fileID: 7815662951505243774}
   m_Layer: 0
   m_Name: AvatarPage
   m_TagString: Untagged
@@ -144,7 +144,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 723402029732460798}
   m_CullTransparentMesh: 1
---- !u!114 &3083998062445674283
+--- !u!114 &7815662951505243774
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,52 +153,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 723402029732460798}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStaticInstance: 1
-  staticBundleId: AvatarPage
-  bundledReferences:
-  - key: Buttons
-    keyValuePairs:
-    - key: AvatarManipulationBtn
-      value: {fileID: 8040268984630224223}
-  - key: Layout
-    keyValuePairs:
-    - key: MainNavBar
-      value: {fileID: 4942970221007149302}
-  - key: SubNavBars
-    keyValuePairs:
-    - key: BodyNavBar
-      value: {fileID: 2681900888766811353}
-    - key: HeadNavBar
-      value: {fileID: 8813402243345516030}
-    - key: TorsoNavBar
-      value: {fileID: 1479855932340265714}
-    - key: LegsNavBar
-      value: {fileID: 2839121141632130580}
-    - key: HandsNavBar
-      value: {fileID: 185932909280385544}
-    - key: ShoesNavBar
-      value: {fileID: 8735044039329864998}
-    - key: AnimationsNavBar
-      value: {fileID: 2102190261115409396}
-  - key: MainNavBtns
-    keyValuePairs:
-    - key: BobyBtn
-      value: {fileID: 4765458115722898440}
-    - key: HeadBtn
-      value: {fileID: 2021074429971552578}
-    - key: TorsoBtn
-      value: {fileID: 8832297101249186694}
-    - key: HandsBtn
-      value: {fileID: 4901084752969144321}
-    - key: LegsBtn
-      value: {fileID: 7633836231775440349}
-    - key: FeetBtn
-      value: {fileID: 4446181019031757189}
-    - key: AnimationsBtn
-      value: {fileID: 7466646260307858544}
+  m_fileFullPath: '@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua'
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua
+  m_binaryFile: {fileID: 896007864590834925, guid: 7a2819298ca99144b9c4ba8f29f6911a, type: 3}
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: MainMenuPageComponent
+    properties: []
 --- !u!1 &2710814123513779923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1678,11 +1648,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2424,7 +2394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2780,6 +2750,10 @@ PrefabInstance:
       propertyPath: _networkObjectCache
       value: 
       objectReference: {fileID: 6253363930612773712}
+    - target: {fileID: 8830612013026118637, guid: b31cda18c28b3b6408e07bc407d5e23b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b31cda18c28b3b6408e07bc407d5e23b, type: 3}
 --- !u!4 &3510490757423132442 stripped

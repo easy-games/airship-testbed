@@ -3912,6 +3912,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5995691565330128069}
   - component: {fileID: 4842717677232246903}
+  - component: {fileID: 6452339374708519862}
   m_Layer: 5
   m_Name: HomePage
   m_TagString: Untagged
@@ -3958,3 +3959,28 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &6452339374708519862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8977788296866168925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: '@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua'
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua
+  m_binaryFile: {fileID: 896007864590834925, guid: 7a2819298ca99144b9c4ba8f29f6911a, type: 3}
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: MainMenuPageComponent
+    properties: []

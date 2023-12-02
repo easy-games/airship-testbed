@@ -6,7 +6,7 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
-import { MainMenuPage } from "./MainMenuPageName";
+import { MainMenuPageType } from "./MainMenuPageName";
 import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { UserController } from "./User/UserController";
 
@@ -39,22 +39,22 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(homeButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(homeButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPage.HOME);
+			this.mainMenuController.RouteToPage(MainMenuPageType.HOME);
 		});
 
 		CoreUI.SetupButton(avatarButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(avatarButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPage.AVATAR);
+			this.mainMenuController.RouteToPage(MainMenuPageType.AVATAR);
 		});
 
 		CoreUI.SetupButton(shopButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(shopButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPage.SHOP);
+			this.mainMenuController.RouteToPage(MainMenuPageType.SHOP);
 		});
 
 		CoreUI.SetupButton(settingsButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(settingsButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
+			this.mainMenuController.RouteToPage(MainMenuPageType.SETTINGS);
 		});
 
 		CoreUI.SetupButton(myServersButton, { noHoverSound: true });
@@ -76,13 +76,13 @@ export class MainMenuNavbarController implements OnStart {
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, false);
 			}
-			if (page === MainMenuPage.HOME) {
+			if (page === MainMenuPageType.HOME) {
 				currentSelectedNavbarButton = homeButton;
-			} else if (page === MainMenuPage.SETTINGS) {
+			} else if (page === MainMenuPageType.SETTINGS) {
 				currentSelectedNavbarButton = settingsButton;
-			} else if (page === MainMenuPage.AVATAR) {
+			} else if (page === MainMenuPageType.AVATAR) {
 				currentSelectedNavbarButton = avatarButton;
-			} else if (page === MainMenuPage.SHOP) {
+			} else if (page === MainMenuPageType.SHOP) {
 				currentSelectedNavbarButton = avatarButton;
 			}
 			if (currentSelectedNavbarButton) {
