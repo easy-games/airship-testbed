@@ -82,19 +82,24 @@ export class CharacterAbilities {
 		}
 	}
 
-	private SetAbilityOnCooldown(id: string, length: number) {
+	/**
+	 * Sets the provided ability on cooldown for the provided duration
+	 * @param id The ability id
+	 * @param duration The cooldown duration
+	 */
+	private SetAbilityOnCooldown(id: string, duration: number) {
 		const time = TimeUtil.GetServerTime();
 
 		this.cooldowns.set(id, {
 			startTimestamp: time,
-			endTimestamp: time + length,
-			length: Duration.fromSeconds(length),
+			endTimestamp: time + duration,
+			length: Duration.fromSeconds(duration),
 		});
 
 		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Server.FireClient(this.entity.player!.clientId, {
 			id,
-			timeEnd: time + length,
-			length,
+			timeEnd: time + duration,
+			length: duration,
 			timeStart: time,
 		});
 	}

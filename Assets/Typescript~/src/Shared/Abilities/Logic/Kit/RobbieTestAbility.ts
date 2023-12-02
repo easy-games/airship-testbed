@@ -26,7 +26,6 @@ export default class RobbieTestAbility extends AbilityLogic {
 		print("[ServerOnEnabled] ROBBIE ABILITY");
 		this.serverDisabledBin.Add(
 			CoreServerSignals.EntityDamage.Connect((event) => {
-				print("ONCE PER HIT");
 				if (event.fromEntity instanceof CharacterEntity && event.fromEntity === this.entity) {
 					event.amount = 100;
 				}
