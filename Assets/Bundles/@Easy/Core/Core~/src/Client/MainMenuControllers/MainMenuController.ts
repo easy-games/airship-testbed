@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import ObjectUtil from "@easy-games/unity-object-utils";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
@@ -81,7 +80,7 @@ export class MainMenuController implements OnStart {
 
 			const bgImage = bg.GetComponent<Image>();
 			const color = bgImage.color;
-			color.a = 0.92;
+			color.a = 0.98;
 			bgImage.color = color;
 
 			CanvasAPI.OnClickEvent(closeButton, () => {

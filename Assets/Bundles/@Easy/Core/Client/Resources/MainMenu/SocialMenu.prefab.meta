@@ -1,8 +1,7 @@
 fileFormatVersion: 2
-guid: 8c2c130c625d02c46a40f1f7993e493c
-NativeFormatImporter:
+guid: f3d5752ec85014492a5a2fbc8bd32b04
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 2100000
   userData: 
   assetBundleName: '@easy/core_client/resources'
   assetBundleVariant: 

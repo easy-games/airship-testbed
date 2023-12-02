@@ -28,7 +28,7 @@ export class MainMenuNavbarController implements OnStart {
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
 		const shopButton = refs.GetValue("UI", "NavbarShopButton");
-		const myServersButton = refs.GetValue("UI", "NavbarMyServersButton");
+		// const myServersButton = refs.GetValue("UI", "NavbarMyServersButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
 		const runningGameCloseButton = refs.GetValue("UI", "NavbarRunningGameCloseButton");
@@ -57,10 +57,10 @@ export class MainMenuNavbarController implements OnStart {
 			this.mainMenuController.RouteToPage(MainMenuPageType.SETTINGS);
 		});
 
-		CoreUI.SetupButton(myServersButton, { noHoverSound: true });
-		CanvasAPI.OnClickEvent(myServersButton, () => {
-			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
-		});
+		// CoreUI.SetupButton(myServersButton, { noHoverSound: true });
+		// CanvasAPI.OnClickEvent(myServersButton, () => {
+		// 	// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
+		// });
 
 		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
@@ -83,7 +83,7 @@ export class MainMenuNavbarController implements OnStart {
 			} else if (page === MainMenuPageType.AVATAR) {
 				currentSelectedNavbarButton = avatarButton;
 			} else if (page === MainMenuPageType.SHOP) {
-				currentSelectedNavbarButton = avatarButton;
+				currentSelectedNavbarButton = shopButton;
 			}
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, true);
@@ -139,10 +139,10 @@ export class MainMenuNavbarController implements OnStart {
 		const text = go.transform.GetChild(1).GetComponent<TMP_Text>();
 		if (selected) {
 			text.color = new Color(1, 1, 1, 1);
-			go.transform.GetChild(0).gameObject.SetActive(true);
+			// go.transform.GetChild(0).gameObject.SetActive(true);
 		} else {
-			text.color = ColorUtil.HexToColor("292524");
-			go.transform.GetChild(0).gameObject.SetActive(false);
+			text.color = ColorUtil.HexToColor("AEC5FF");
+			// go.transform.GetChild(0).gameObject.SetActive(false);
 		}
 	}
 
