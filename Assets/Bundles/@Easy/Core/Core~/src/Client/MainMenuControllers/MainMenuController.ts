@@ -116,6 +116,13 @@ export class MainMenuController implements OnStart {
 					Dependency<ChangeUsernameController>().Open();
 				},
 			});
+			options.push({
+				text: "Logout",
+				onClick: () => {
+					AuthManager.ClearSavedAccount();
+					Bridge.LoadScene("Login", true);
+				},
+			});
 			Dependency<RightClickMenuController>().OpenRightClickMenu(
 				this.mainContentCanvas,
 				mouse.GetLocation(),

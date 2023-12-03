@@ -517,6 +517,7 @@ interface AuthSave {
 interface AuthManagerStatic {
 	GetSavedAccount(): AuthSave | undefined;
 	SaveAuthAccount(refreshToken: string): void;
+	ClearSavedAccount(): void;
 }
 declare const AuthManager: AuthManagerStatic;
 
