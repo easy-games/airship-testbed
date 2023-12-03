@@ -14,7 +14,10 @@ export class AuthController implements OnStart {
 	public readonly onSignOut = new Signal<void>();
 
 	OnStart(): void {
-		this.TryAutoLogin();
+		const loginResult = this.TryAutoLogin();
+		if (!loginResult) {
+			Bridge.LoadScene("Login", true);
+		}
 	}
 
 	public async WaitForAuthed(): Promise<void> {
@@ -42,7 +45,8 @@ export class AuthController implements OnStart {
 			return this.LoginWithRefreshToken(savedAuthAccount.refreshToken);
 		}
 
-		return this.SignUpAnon();
+		return false;
+		// return this.SignUpAnon();
 	}
 
 	public LoginWithRefreshToken(refreshToken: string): boolean {
