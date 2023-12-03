@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
@@ -9,6 +9,9 @@ import { SetTimeout } from "Shared/Util/Timer";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuPageType } from "./MainMenuPageName";
 import MainMenuPageComponent from "./MenuPageComponent";
+import { ChangeUsernameController } from "./Social/ChangeUsernameController";
+import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
+import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
 
 @Controller()
 export class MainMenuController implements OnStart {
@@ -43,6 +46,8 @@ export class MainMenuController implements OnStart {
 		this.mainContentCanvas = this.refs.GetValue<Canvas>("UI", "MainContentCanvas");
 		this.mainContentGroup = this.refs.GetValue<CanvasGroup>("UI", "MainContentGroup");
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
+
+		const mouse = new Mouse();
 
 		print("home go: " + this.refs.GetValue("Pages", "Home").name);
 		print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>());
@@ -91,6 +96,31 @@ export class MainMenuController implements OnStart {
 		this.toggleSocialButton = this.refs.GetValue("UI", "ToggleSocialButton");
 		CanvasAPI.OnClickEvent(this.toggleSocialButton.gameObject, () => {
 			this.ToggleSocialView();
+		});
+
+		const profileGO = this.refs.GetValue("Social", "Profile");
+		CanvasAPI.OnClickEvent(profileGO, () => {
+			print("clicked profile.");
+			const options: RightClickMenuButton[] = [];
+			options.push({
+				text: "Verify Account",
+				onClick: () => {},
+			});
+			options.push({
+				text: "Change Profile Picture",
+				onClick: () => {},
+			});
+			options.push({
+				text: "Change Username",
+				onClick: () => {
+					Dependency<ChangeUsernameController>().Open();
+				},
+			});
+			Dependency<RightClickMenuController>().OpenRightClickMenu(
+				this.mainContentCanvas,
+				mouse.GetLocation(),
+				options,
+			);
 		});
 	}
 
