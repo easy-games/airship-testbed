@@ -5,6 +5,7 @@ import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
+import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -31,6 +32,7 @@ export class TabListController implements OnStart {
 	private showBin = new Bin();
 
 	private dirty = false;
+	private init = false;
 
 	private profilePicSprite: Sprite;
 
@@ -145,7 +147,7 @@ export class TabListController implements OnStart {
 				player = players[i];
 
 				let entry: GameObject | undefined;
-				let init = false;
+				let init = this.init;
 				if (i < this.tablistContentGO.transform.childCount) {
 					entry = this.tablistContentGO.transform.GetChild(i).gameObject;
 				} else {
@@ -161,6 +163,7 @@ export class TabListController implements OnStart {
 				}
 			}
 		}
+		this.init = false;
 	}
 
 	private UpdateEntry(entry: GameObject, player: Player, init: boolean): void {
@@ -182,11 +185,21 @@ export class TabListController implements OnStart {
 		image.sprite = this.profilePicSprite;
 
 		const addFriendGo = refs.GetValue<GameObject>("UI", "AddFriendButton");
-		addFriendGo.SetActive(player.IsFriend());
+		const isFriends = player.IsFriend();
+		addFriendGo.SetActive(!isFriends);
 		if (init) {
+			CoreUI.SetupButton(addFriendGo);
 			CanvasAPI.OnClickEvent(addFriendGo, () => {
 				Dependency<FriendsController>().SendFriendRequest(player.username + "#" + player.usernameTag);
+				addFriendGo.TweenGraphicAlpha(0.5, 0.12);
 			});
+		}
+		if (isFriends) {
+			if (Dependency<FriendsController>().HasOutgoingFriendRequest(player.userId)) {
+				addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 0.5);
+			} else {
+				addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+			}
 		}
 
 		usernameText.text = username;
@@ -202,9 +215,18 @@ export class TabListController implements OnStart {
 
 		this.shown = true;
 		this.tablistCanvas.enabled = true;
-		const mouseLockId = this.mouse.AddUnlocker();
+
+		let mouseUnlocked = false;
 		this.showBin.Add(() => {
-			this.mouse.RemoveUnlocker(mouseLockId);
+			this.mouse.RightDown.Connect(() => {
+				if (!mouseUnlocked) {
+					mouseUnlocked = true;
+					const mouseLockId = this.mouse.AddUnlocker();
+					this.showBin.Add(() => {
+						this.mouse.RemoveUnlocker(mouseLockId);
+					});
+				}
+			});
 		});
 	}
 
