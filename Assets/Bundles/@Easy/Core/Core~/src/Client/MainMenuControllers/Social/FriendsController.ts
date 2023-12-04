@@ -174,6 +174,21 @@ export class FriendsController implements OnStart {
 		return this.mainMenuController.refs.GetValue("Social", "FriendsContent").transform.FindChild(uid)?.gameObject;
 	}
 
+	public SendFriendRequest(usernameWithTag: string): boolean {
+		print('adding friend: "' + usernameWithTag + '"');
+		const res = InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinator + "/friends/requests/self",
+			encode({
+				discriminatedUsername: usernameWithTag,
+			}),
+		);
+		if (res.success) {
+			print("Sent friend request to " + usernameWithTag);
+			return true;
+		}
+		return false;
+	}
+
 	public UpdateFriendsList(): void {
 		let sorted = this.friendStatuses.sort((a, b) => {
 			let aOnline = a.status === "online" || a.status === "in_game";

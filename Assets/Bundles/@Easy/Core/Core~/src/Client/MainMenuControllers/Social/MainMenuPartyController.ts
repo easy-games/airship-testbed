@@ -8,7 +8,6 @@ import { encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
-import { ChangeUsernameController } from "./ChangeUsernameController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { Party } from "./SocketAPI";
 
@@ -62,11 +61,11 @@ export class MainMenuPartyController implements OnStart {
 			Dependency<MainMenuAddFriendsController>().Open();
 		});
 
-		const profilePictureButton = this.mainMenuController.refs.GetValue("UI", "ProfilePictureButton");
-		CoreUI.SetupButton(profilePictureButton);
-		CanvasAPI.OnClickEvent(profilePictureButton, () => {
-			Dependency<ChangeUsernameController>().Open();
-		});
+		// const profilePictureButton = this.mainMenuController.refs.GetValue("UI", "ProfilePictureButton");
+		// CoreUI.SetupButton(profilePictureButton);
+		// CanvasAPI.OnClickEvent(profilePictureButton, () => {
+		// 	Dependency<ChangeUsernameController>().Open();
+		// });
 	}
 
 	private UpdateParty(): void {
