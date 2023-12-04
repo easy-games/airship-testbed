@@ -7,7 +7,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	private animateInDuration = 0.1;
 
 	public pageType: MainMenuPageType = MainMenuPageType.HOME;
-	private refs?: GameObjectReferences;
+	protected refs?: GameObjectReferences;
 
 	private activePage = false;
 
