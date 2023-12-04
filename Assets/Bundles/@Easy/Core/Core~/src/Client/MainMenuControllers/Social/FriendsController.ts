@@ -270,7 +270,15 @@ export class FriendsController implements OnStart {
 				});
 
 				CanvasAPI.OnClickEvent(joinButton, () => {
-					Dependency<TransferController>().ClientTransferToServer(friend.gameId, friend.serverId);
+					print(
+						"Transfering to friend " +
+							friend.username +
+							". gameId=" +
+							friend.gameId +
+							", serverId=" +
+							friend.serverId,
+					);
+					Dependency<TransferController>().ClientTransferToServerAsync(friend.gameId, friend.serverId);
 				});
 			}
 			go.transform.SetSiblingIndex(i);
