@@ -21,6 +21,10 @@ export interface GeneratorCreationConfig {
     };
     /** If this field is set, generator will have a world-space label above it. */
     nameLabel?: boolean;
+    /**
+     * The override name text
+     */
+    nameOverride?: string;
     spawnTimeLabel?: boolean;
 }
 /** Describes a generator's state. */
@@ -34,6 +38,7 @@ export interface GeneratorDto {
     /** If this field is set, generator will have a world-space label above it. */
     readonly nameLabel?: boolean;
     readonly spawnTimeLabel?: boolean;
+    generatorName?: string;
     startSpawnTime: number;
     spawnRate: number;
 }

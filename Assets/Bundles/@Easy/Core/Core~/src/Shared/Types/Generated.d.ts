@@ -8466,6 +8466,13 @@ interface SelectableConstructor {
 }
 declare const Selectable: SelectableConstructor;
     
+interface Button extends Selectable, ISubmitHandler, IPointerClickHandler {
+    onClick: ButtonClickedEvent;
+
+
+    OnPointerClick(eventData: PointerEventData): void;
+    OnSubmit(eventData: BaseEventData): void;
+}
     
 interface UnityEventBase extends ISerializationCallbackReceiver {
 
@@ -12915,6 +12922,7 @@ interface BridgeConstructor {
     GetReservedRam(): number;
     GetVolume(): number;
     IsFullScreen(): boolean;
+    LoadScene(sceneName: string, restartLuau: boolean): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;

@@ -8,6 +8,7 @@ import { RightClickMenuButton } from "./RightClickMenuButton";
 
 @Controller({})
 export class RightClickMenuController implements OnStart {
+	private opened = false;
 	private currentBin = new Bin();
 	private openedTime = 0;
 
@@ -16,7 +17,14 @@ export class RightClickMenuController implements OnStart {
 	OnStart(): void {}
 
 	public OpenRightClickMenu(canvas: Canvas, position: Vector3, buttons: RightClickMenuButton[]): () => void {
-		this.currentBin.Clean();
+		if (this.opened) {
+			this.currentBin.Clean();
+			return () => {};
+		}
+		this.opened = true;
+		this.currentBin.Add(() => {
+			this.opened = false;
+		});
 		this.openedTime = Time.time;
 
 		const menuGo = GameObjectUtil.InstantiateIn(

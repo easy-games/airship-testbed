@@ -49,6 +49,7 @@ export class GeneratorSpawnService implements OnStart {
 				spawnRate: 1,
 				stackLimit: 100,
 				nameLabel: true,
+				nameOverride: "Team Generator",
 				split: {
 					range: 30,
 				},

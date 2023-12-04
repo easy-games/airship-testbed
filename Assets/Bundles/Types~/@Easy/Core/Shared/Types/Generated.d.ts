@@ -8466,6 +8466,13 @@ interface SelectableConstructor {
 }
 declare const Selectable: SelectableConstructor;
     
+interface Button extends Selectable, ISubmitHandler, IPointerClickHandler {
+    onClick: ButtonClickedEvent;
+
+
+    OnPointerClick(eventData: PointerEventData): void;
+    OnSubmit(eventData: BaseEventData): void;
+}
     
 interface UnityEventBase extends ISerializationCallbackReceiver {
 
@@ -11770,7 +11777,8 @@ interface VoxelWorldConstructor {
     runThreaded: boolean;
     doVisuals: boolean;
     maxActiveThreads: number;
-    maxMainThreadMeshUpdatesPerFrame: number;
+    maxMainThreadMeshMillisecondsPerFrame: number;
+    maxMainThreadThreadKickoffMillisecondsPerFrame: number;
     showDebugSpheres: boolean;
     showDebugBounds: boolean;
     chunkSize: number;
@@ -13201,6 +13209,8 @@ interface HttpManagerConstructor {
     PatchAsync(url: string, data: string, headers: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
     PostAsync(url: string, data: string, headers: string): HttpGetResponse;
+    PutAsync(url: string, data: string): HttpGetResponse;
+    PutAsync(url: string, data: string, headers: string): HttpGetResponse;
 }
 declare const HttpManager: HttpManagerConstructor;
     
@@ -13215,6 +13225,8 @@ interface InternalHttpManagerConstructor {
 
     GetAsync(url: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
+    PutAsync(url: string, data: string): HttpGetResponse;
+    SetAuthToken(authToken: string): void;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
     

@@ -229,6 +229,20 @@ export class GroundItemService implements OnStart {
 		const groundItem = new GroundItem(id, itemStack, drop, TimeUtil.GetServerTime() + pickupTime, data ?? {});
 		this.groundItems.set(id, groundItem);
 
+		if (data) {
+			if (typeIs(data.Spinning, "boolean")) {
+				drop.SetSpinActive(data.Spinning);
+			}
+
+			if (typeIs(data.Grounded, "boolean")) {
+				drop.SetGrounded(data.Grounded);
+			}
+
+			if (typeIs(data.Direction, "vector")) {
+				go.transform.LookAt(go.transform.position.add(data.Direction));
+			}
+		}
+
 		this.movingGroundItems.push(groundItem);
 
 		const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {

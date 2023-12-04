@@ -712,13 +712,6 @@ declare class StyleLength implements IStyleValue<Length> {
 	ToString(): string;
 }
 
-interface Button extends TextElement {
-	clickable: Clickable;
-
-	constructor(): Button;
-	constructor(clickEvent: unknown): Button;
-}
-
 interface Clickable extends PointerManipulator {
 	lastMousePosition: Vector2;
 

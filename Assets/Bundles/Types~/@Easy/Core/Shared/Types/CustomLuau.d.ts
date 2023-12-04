@@ -3,6 +3,10 @@ declare namespace task {
 	function spawn<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
 	function spawn(thread: thread, ...args: unknown[]): thread;
 
+	/** Resumes the passed thread or function at the end of the invocation cycle using the engine's scheduler. */
+	function defer<T extends Callback>(callback: T, ...args: Parameters<T>): thread;
+	function defer(thread: thread, ...args: unknown[]): thread;
+
 	/** Resumes the passed thread or function after the elapsed `delayTime` seconds using the engine's scheduler. */
 	function delay<T extends Callback>(delayTime: number, callback: T, ...args: Parameters<T>): thread;
 	function delay(delayTime: number, thread: thread, ...args: unknown[]): thread;

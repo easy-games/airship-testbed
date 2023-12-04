@@ -128,7 +128,7 @@ export class DirectMessageController implements OnStart {
 			AssetBridge.Instance.LoadAsset(
 				"@Easy/Core/Shared/Resources/Prefabs/UI/Messages/DirectMessageWindow.prefab",
 			),
-			this.mainMenuController.socialMenuCanvas.transform.GetChild(0),
+			this.mainMenuController.socialMenuGroup.transform,
 		);
 		this.windowGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(this.xPos, this.yPos);
 

@@ -712,13 +712,6 @@ declare class StyleLength implements IStyleValue<Length> {
 	ToString(): string;
 }
 
-interface Button extends TextElement {
-	clickable: Clickable;
-
-	constructor(): Button;
-	constructor(clickEvent: unknown): Button;
-}
-
 interface Clickable extends PointerManipulator {
 	lastMousePosition: Vector2;
 
@@ -1796,6 +1789,8 @@ interface Component extends Object {
 	TweenAudioSourcePitch (to: number, duration: number): Tween<number>;
 
 	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
+
+	IsDestroyed(): boolean;
 }
 
 interface GameObject extends Object {
@@ -1905,6 +1900,8 @@ interface GameObject extends Object {
 	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
 
 	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
+
+	IsDestroyed(): boolean;
 
 	/** Destroys all child gameobjects. */
 	ClearChildren(): void;

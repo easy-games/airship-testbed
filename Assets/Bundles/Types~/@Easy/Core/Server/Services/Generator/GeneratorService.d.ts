@@ -36,6 +36,12 @@ export declare class GeneratorService implements OnStart {
      */
     UpdateGeneratorSpawnRateById(generatorId: string, newSpawnRate: number): void;
     /**
+     * Update the Generator's Label based on generator id
+     * @param generatorId The generator's id
+     * @param generatorLabel The new label for the generator
+     */
+    UpdateGeneratorLabelById(generatorId: string, generatorLabel: string): void;
+    /**
      * @returns All `GeneratorStateDto`s on server.
      */
     GetAllGenerators(): GeneratorState[];
