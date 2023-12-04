@@ -15,6 +15,10 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.refs = gameObject.GetComponent<GameObjectReferences>();
 	}
 
+	public TEST() {
+		print("MAIN MENU PAGE COMPONENT TEST!");
+	}
+
 	public OpenPage() {
 		this.activePage = true;
 		gameObject.SetActive(true);
