@@ -103,10 +103,6 @@ export class MainMenuController implements OnStart {
 			print("clicked profile.");
 			const options: RightClickMenuButton[] = [];
 			options.push({
-				text: "Verify Account",
-				onClick: () => {},
-			});
-			options.push({
 				text: "Change Profile Picture",
 				onClick: () => {},
 			});

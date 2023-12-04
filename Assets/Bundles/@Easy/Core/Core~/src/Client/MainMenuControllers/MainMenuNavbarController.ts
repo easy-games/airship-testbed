@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -7,7 +7,6 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
-import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { UserController } from "./User/UserController";
 
 @Controller({})
@@ -90,14 +89,14 @@ export class MainMenuNavbarController implements OnStart {
 			}
 		});
 
-		const profileButton = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton");
-		CanvasAPI.OnClickEvent(profileButton, () => {
-			Dependency<ChangeUsernameController>().Open();
-			// const user = this.userController.localUser;
-			// if (user) {
-			// 	Bridge.CopyToClipboard(user.username + "#" + user.discriminator);
-			// }
-		});
+		// const profileButton = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton");
+		// CanvasAPI.OnClickEvent(profileButton, () => {
+		// 	Dependency<ChangeUsernameController>().Open();
+		// 	// const user = this.userController.localUser;
+		// 	// if (user) {
+		// 	// 	Bridge.CopyToClipboard(user.username + "#" + user.discriminator);
+		// 	// }
+		// })
 
 		this.UpdateProfileSection();
 		this.userController.onLocalUserUpdated.Connect((user) => {

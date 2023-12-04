@@ -2,6 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { DamageType } from "Shared/Damage/DamageType";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
@@ -83,76 +84,7 @@ export class DamageIndicatorController implements OnStart {
 					});
 				}
 
-				// Indicator
-				{
-					this.damageIndicatorBin.Clean();
-
-					const go = PoolManager.SpawnObject(this.indicatorPrefab);
-					go.transform.SetParent(this.combatEffectsCanvas.transform);
-					const rect = go.GetComponent<RectTransform>();
-					rect.anchoredPosition = this.indicatorPos;
-					const baseScale = new Vector3(1, 1, 1).mul(event.criticalHit ? 1.6 : 1);
-					rect.localScale = baseScale;
-
-					const text = go.GetComponent<TMP_Text>();
-					text.text = math.floor(event.amount) + "";
-					text.alpha = 1;
-
-					if (event.criticalHit) {
-						text.color = ColorUtil.HexToColor("#FFF82A");
-					} else {
-						text.color = ColorUtil.HexToColor("#FF3B57");
-					}
-
-					let startedFadeOut = false;
-
-					// pop in
-					const popInScale = 2.5;
-					rect.TweenLocalScale(
-						baseScale.mul(new Vector3(popInScale, popInScale, popInScale)),
-						0.11,
-					).SetPingPong();
-
-					const DoFadeOut = (bumpUp: boolean) => {
-						if (bumpUp) {
-							rect.anchoredPosition = rect.anchoredPosition.add(new Vector2(0, 30));
-							rect.TweenAnchoredPositionY(this.indicatorPos.y + 40 + (bumpUp ? 30 : 0), 0.68).SetEase(
-								EaseType.QuadIn,
-							);
-						}
-						text.TweenGraphicAlpha(0, 0.8).SetEase(EaseType.QuadIn);
-						startedFadeOut = true;
-
-						let completed = false;
-						SetTimeout(0.8, () => {
-							completed = true;
-						});
-						// this.damageIndicatorBin.Add(() => {
-						// 	if (!completed) {
-						// 		text.TweenGraphicAlpha(0, 0);
-						// 	}
-						// });
-
-						SetTimeout(1.5, () => {
-							PoolManager.ReleaseObject(go);
-						});
-					};
-
-					// fade out
-					this.damageIndicatorBin.Add(
-						SetTimeout(0.8, () => {
-							if (!startedFadeOut) {
-								DoFadeOut(false);
-							}
-						}),
-					);
-
-					this.damageIndicatorBin.Add(() => {
-						if (!startedFadeOut) {
-							DoFadeOut(true);
-						}
-					});
-				}
+				this.CreateDamageIndicator(event.amount, event.criticalHit, event.damageType);
 			}
 		});
 
@@ -169,6 +101,77 @@ export class DamageIndicatorController implements OnStart {
 				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
 					volumeScale: 0.3,
 				});
+			}
+		});
+	}
+
+	public CreateDamageIndicator(amount: number, criticalHit: boolean, damageType: DamageType): void {
+		if (damageType === DamageType.VOID) {
+			return;
+		}
+
+		this.damageIndicatorBin.Clean();
+
+		const go = PoolManager.SpawnObject(this.indicatorPrefab);
+		go.transform.SetParent(this.combatEffectsCanvas.transform);
+		const rect = go.GetComponent<RectTransform>();
+		rect.anchoredPosition = this.indicatorPos;
+		const baseScale = new Vector3(1, 1, 1).mul(criticalHit ? 1.6 : 1);
+		rect.localScale = baseScale;
+
+		const text = go.GetComponent<TMP_Text>();
+		text.text = math.floor(amount) + "";
+		text.alpha = 1;
+
+		if (criticalHit) {
+			text.color = ColorUtil.HexToColor("#FFF82A");
+		} else {
+			text.color = ColorUtil.HexToColor("#FF3B57");
+		}
+
+		let startedFadeOut = false;
+
+		// pop in
+		const popInScale = 2.5;
+		rect.TweenLocalScale(baseScale.mul(new Vector3(popInScale, popInScale, popInScale)), 0.11).SetPingPong();
+
+		const DoFadeOut = (bumpUp: boolean) => {
+			if (bumpUp) {
+				rect.anchoredPosition = rect.anchoredPosition.add(new Vector2(0, 30));
+				rect.TweenAnchoredPositionY(this.indicatorPos.y + 40 + (bumpUp ? 30 : 0), 0.68).SetEase(
+					EaseType.QuadIn,
+				);
+			}
+			text.TweenGraphicAlpha(0, 0.8).SetEase(EaseType.QuadIn);
+			startedFadeOut = true;
+
+			let completed = false;
+			SetTimeout(0.8, () => {
+				completed = true;
+			});
+			// this.damageIndicatorBin.Add(() => {
+			// 	if (!completed) {
+			// 		text.TweenGraphicAlpha(0, 0);
+			// 	}
+			// });
+
+			SetTimeout(1.5, () => {
+				PoolManager.ReleaseObject(go);
+			});
+		};
+
+		// fade out
+		this.damageIndicatorBin.Add(
+			SetTimeout(0.8, () => {
+				if (!startedFadeOut) {
+					DoFadeOut(false);
+				}
+			}),
+		);
+
+		this.damageIndicatorBin.Add(() => {
+			if (!startedFadeOut) {
+				DoFadeOut(true);
 			}
 		});
 	}

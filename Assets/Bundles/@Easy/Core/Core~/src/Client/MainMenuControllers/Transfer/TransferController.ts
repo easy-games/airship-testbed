@@ -1,6 +1,8 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import { GameServer } from "Shared/SocketIOMessages/Party";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
+import { encode } from "Shared/json";
 import { SocketController } from "../Socket/SocketController";
 
 @Controller({})
@@ -20,10 +22,18 @@ export class TransferController implements OnStart {
 		});
 	}
 
-	public ClientTransferToServer(gameId: string, serverId?: string): void {
-		this.socketController.Emit("request-transfer", {
-			gameId: gameId,
-			preferredServerId: serverId,
-		});
+	/**
+	 * Sends a server transfer request to the backend.
+	 * @param gameId GameID of the desired server
+	 * @param serverId Specific ServerID to teleport to. If not included, the backend will select a server for you.
+	 */
+	public ClientTransferToServerAsync(gameId: string, serverId?: string): void {
+		InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinator + "/transfers/transfer/self",
+			encode({
+				gameId: gameId,
+				preferredServerId: serverId,
+			}),
+		);
 	}
 }
