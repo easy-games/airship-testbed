@@ -174,6 +174,10 @@ export class FriendsController implements OnStart {
 		return this.mainMenuController.refs.GetValue("Social", "FriendsContent").transform.FindChild(uid)?.gameObject;
 	}
 
+	public HasOutgoingFriendRequest(userId: string): boolean {
+		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
+	}
+
 	public SendFriendRequest(usernameWithTag: string): boolean {
 		print('adding friend: "' + usernameWithTag + '"');
 		const res = InternalHttpManager.PostAsync(
