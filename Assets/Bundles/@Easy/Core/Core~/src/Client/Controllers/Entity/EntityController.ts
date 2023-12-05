@@ -222,7 +222,7 @@ export class EntityController implements OnStart {
 			}
 
 			const abilities = characterEntityDto.abilities.mapFiltered((abilityDto) => {
-				const ability = this.abilityRegistry.GetAbilityById(abilityDto.id);
+				const ability = this.abilityRegistry.GetAbilityById(abilityDto.abilityId);
 				return ability;
 			});
 

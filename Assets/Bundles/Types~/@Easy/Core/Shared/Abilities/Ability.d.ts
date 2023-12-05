@@ -87,7 +87,7 @@ export interface AbilityDto {
     /**
      * The id of the ability
      */
-    readonly id: string;
+    readonly abilityId: string;
     /**
      * The enabled state of the ability
      */
@@ -109,7 +109,7 @@ export interface ChargingAbilityDto {
     readonly displayText: string;
 }
 export interface AbilityCooldownDto {
-    readonly id: string;
+    readonly abilityId: string;
     readonly timeStart: number;
     readonly timeEnd: number;
     readonly length: number;

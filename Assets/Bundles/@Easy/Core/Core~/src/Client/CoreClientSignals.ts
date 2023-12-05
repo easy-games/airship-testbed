@@ -59,4 +59,7 @@ export const CoreClientSignals = {
 
 	AbilityChargeBegan: new Signal<AbilityChargeClientSignal>(),
 	AbilityChargeEnded: new Signal<AbilityChargeEndClientSignal>(),
+
+	// ----- REFACTORING -----
+	LocalAbilityUseRequest: new Signal<{ abilityId: string }>(),
 };

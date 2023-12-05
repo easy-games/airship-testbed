@@ -67,4 +67,7 @@ export declare const CoreClientSignals: {
     AbilitiesCleared: Signal<AbilitiesClearedClientSignal>;
     AbilityChargeBegan: Signal<AbilityChargeClientSignal>;
     AbilityChargeEnded: Signal<AbilityChargeEndClientSignal>;
+    LocalAbilityUseRequest: Signal<{
+        abilityId: string;
+    }>;
 };

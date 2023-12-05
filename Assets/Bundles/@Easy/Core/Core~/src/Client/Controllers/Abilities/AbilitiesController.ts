@@ -87,7 +87,7 @@ export class AbilitiesController implements OnStart {
 	}
 
 	private UnregisterAbility(abilityId: string) {
-		const matchingSlot = this.allSlots.find((f) => f.GetBound()?.id === abilityId);
+		const matchingSlot = this.allSlots.find((f) => f.GetBound()?.abilityId === abilityId);
 		if (matchingSlot) {
 			matchingSlot.Unbind();
 		}
@@ -95,7 +95,7 @@ export class AbilitiesController implements OnStart {
 
 	// TODO: in future a much friendlier Input API
 	private OnKeyboardInputEnded: BindingAction = (state, binding) => {
-		const boundAbilityId = binding.GetBound()?.id;
+		const boundAbilityId = binding.GetBound()?.abilityId;
 
 		const character = Game.LocalPlayer.character;
 		if (!character) return;
@@ -125,20 +125,20 @@ export class AbilitiesController implements OnStart {
 				// Run character ability fetch
 				const abilities = CoreNetwork.ClientToServer.GetAbilities.Client.FireServer();
 				for (const ability of abilities) {
-					this.RegisterAbility(ability);
+					//this.RegisterAbility(ability);
 				}
 			}
 		});
 
 		CoreClientSignals.AbilityAdded.Connect((event) => {
 			const abilities = event.characterEntity.GetAbilities();
-			const ability = this.abilityRegistry.GetAbilityById(event.ability.id);
+			const ability = this.abilityRegistry.GetAbilityById(event.ability.abilityId);
 			if (ability) {
-				abilities.AddAbilityWithId(event.ability.id, ability);
+				abilities.AddAbilityWithId(event.ability.abilityId, ability);
 			}
 
 			if (event.IsLocalPlayer()) {
-				this.RegisterAbility(event.ability);
+				//this.RegisterAbility(event.ability);
 			}
 		});
 
@@ -193,7 +193,7 @@ export class AbilitiesController implements OnStart {
 		});
 
 		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((event) => {
-			const matchingSlot = this.allSlots.find((f) => f.GetBound()?.id === event.id);
+			const matchingSlot = this.allSlots.find((f) => f.GetBound()?.abilityId === event.abilityId);
 			if (matchingSlot) {
 				matchingSlot.SetCooldown({
 					startTime: event.timeStart,

@@ -3,11 +3,13 @@ import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { ItemType } from "Shared/Item/ItemType";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
+import { Ability } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Team } from "Shared/Team/Team";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
 import { Block } from "Shared/VoxelWorld/Block";
 import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
+import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";
@@ -18,7 +20,6 @@ import { EntitySpawnEvent } from "./Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "./Signals/MoveCommandDataEvent";
 import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
-import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly entity: Entity | undefined };
 
@@ -60,4 +61,7 @@ export const CoreServerSignals = {
 	CustomMoveCommand: new Signal<MoveCommandDataEvent>(),
 	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
 	TeamAdded: new Signal<Team>(),
+
+	AbilityAdded: new Signal<{ clientId: number; ability: Ability }>(),
+	AbilityRemoved: new Signal<{ clientId: number; ability: Ability }>(),
 };

@@ -68,7 +68,7 @@ export class AbilityBinding {
 	public ToAbilityState(): ClientAbilityState | undefined {
 		if (!this.boundTo) return;
 
-		const ability = Dependency<AbilityRegistry>().GetAbilityById(this.boundTo.id);
+		const ability = Dependency<AbilityRegistry>().GetAbilityById(this.boundTo.abilityId);
 		if (!ability) {
 			return;
 		}

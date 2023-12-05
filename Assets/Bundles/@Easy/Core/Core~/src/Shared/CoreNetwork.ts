@@ -172,6 +172,11 @@ export const CoreNetwork = {
 
 		AbilityChargeBegan: new RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>(),
 		AbilityChargeEnded: new RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>(),
+
+		// ----- REFACTORING -----
+		AbilityCooldownStateChangeNew: new RemoteEvent<[dto: AbilityCooldownDto]>(),
+		AbilityStateChangeNew: new RemoteEvent<[clientId: number, abilityId: string, enabled: boolean]>(),
+		AbilityAddedNew: new RemoteEvent<[clientId: number, dto: AbilityDto]>(),
 	},
 };
 

@@ -25,6 +25,11 @@ export declare class CharacterAbilities {
     private boundAbilities;
     private currentChargingAbilityState;
     constructor(entity: CharacterEntity);
+    /**
+     * Sets the provided ability on cooldown for the provided duration
+     * @param id The ability id
+     * @param duration The cooldown duration
+     */
     private SetAbilityOnCooldown;
     /**
      * Returns all the abilities registered to this character

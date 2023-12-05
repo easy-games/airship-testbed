@@ -97,7 +97,7 @@ export class CharacterAbilities {
 		});
 
 		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Server.FireClient(this.entity.player!.clientId, {
-			id,
+			abilityId: id,
 			timeEnd: time + duration,
 			length: duration,
 			timeStart: time,

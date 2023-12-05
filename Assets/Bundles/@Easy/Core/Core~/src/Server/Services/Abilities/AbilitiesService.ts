@@ -1,4 +1,4 @@
-import { OnStart, OnTick, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { AbilityCancellationTrigger } from "Shared/Abilities/Ability";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -23,7 +23,6 @@ export class AbilitiesService implements OnStart {
 				const abilities = character.GetAbilities();
 				return abilities.Encode();
 			}
-
 			return [];
 		});
 

@@ -1,4 +1,5 @@
 import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { AbilityService } from "@Easy/Core/Server/Services/Abilities/AbilityService";
 import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { Service } from "@easy-games/flamework-core";
@@ -13,10 +14,11 @@ export class BWAbilitiesService {
 		private readonly gameAbilities: GameAbilities,
 		private readonly playerService: PlayerService,
 		private readonly matchService: MatchService,
+		private readonly abilityService: AbilityService,
 	) {
 		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (event.entity instanceof CharacterEntity && event.entity.player && this.matchService.IsRunning()) {
-				this.AddAbilitiesToCharacter(event.entity);
+				this.AddAbilitiesToCharacter(event.entity, event.entity.ClientId!);
 			}
 		});
 
@@ -24,12 +26,14 @@ export class BWAbilitiesService {
 			const players = this.playerService.GetPlayers();
 			for (const player of players) {
 				if (!player.character) continue;
-				this.AddAbilitiesToCharacter(player.character);
+				this.AddAbilitiesToCharacter(player.character, player.character.ClientId!);
 			}
 		});
 	}
 
-	private AddAbilitiesToCharacter(characterEntity: CharacterEntity) {
-		this.gameAbilities.AddAbilityToCharacter(AbilityId.RECALL, characterEntity);
+	private AddAbilitiesToCharacter(characterEntity: CharacterEntity, clientId: number) {
+		//this.gameAbilities.AddAbilityToCharacter(AbilityId.RECALL, characterEntity);
+		//Dependency<AbilityService>();
+		this.abilityService.AddAbilityToClient(clientId, AbilityId.RECALL);
 	}
 }

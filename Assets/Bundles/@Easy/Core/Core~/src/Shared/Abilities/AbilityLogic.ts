@@ -101,7 +101,7 @@ export class AbilityLogic {
 	 */
 	public Encode(): AbilityDto {
 		let dto: AbilityDto = {
-			id: this.GetId(),
+			abilityId: this.GetId(),
 			enabled: this.GetEnabled(),
 			slot: this.GetConfig().slot,
 		};
