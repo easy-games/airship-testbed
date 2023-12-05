@@ -1,6 +1,8 @@
 import {} from "@easy-games/flamework-core";
 import MainMenuPageComponent from "../MenuPageComponent";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { ItemType } from "Shared/Item/ItemType";
+import { ItemUtil } from "Shared/Item/ItemUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly tweenDuration = 1;
@@ -99,5 +101,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				button.colors.normalColor = active ? Color.red : Color.white;
 			}
 		}
+		this.DisplayItems(AccessorySlot.Hat)
+	}
+
+	private DisplayItems(itemType: ItemType) {
+		const items = ItemUtil.GetAllAvatarItems(itemType);
+		items.forEach((value) => {
+			this.AddItemButton(value);
+		});
+	}
+
+	private AddItemButton(acc: Accessory) {
+		print("loading item: " + acc.DisplayName);
 	}
 }

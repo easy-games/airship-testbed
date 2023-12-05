@@ -3,6 +3,7 @@ import { Signal } from "Shared/Util/Signal";
 import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
 import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
+import { includes } from "Shared/Types/StringUtil";
 
 export interface ItemRegistrationConfig {
 	accessoryFolder?: string;
@@ -17,6 +18,7 @@ export class ItemUtil {
 	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
+	private static readonly avatarAccessories = new Map<AccessorySlot, Accessory[]>();
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 
@@ -114,7 +116,14 @@ export class ItemUtil {
 				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".asset"];
 			}
 		}
+		if(config?.accessoryFolder){
+			this.avatarAccessories.set(itemDefinition.)
+		}
 		items[itemType] = itemDefinition;
+	}
+
+	public static GetAllAvatarItems(slotType: AccessorySlot) {
+		return this.avatarAccessories.get(slotType);
 	}
 
 	/**
