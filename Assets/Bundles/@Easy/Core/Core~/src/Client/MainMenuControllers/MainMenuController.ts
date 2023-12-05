@@ -70,7 +70,7 @@ export class MainMenuController implements OnStart {
 
 		for (const [key, value] of this.pageMap) {
 			print("Loaded page: " + key + ", " + value);
-			value.SetActive(false);
+			// value.SetActive(false);
 			//value.pageType = key;
 		}
 
@@ -199,14 +199,14 @@ export class MainMenuController implements OnStart {
 
 		// Remove old page
 		if (oldPage) {
-			//print("Closing old page: " + oldPage?.pageType);
+			print("Closing old page: " + oldPageType);
 			//oldPage.ClosePage();
 			oldPage.SetActive(false);
 		}
 
-		//print("opening new page: " + this.currentPage?.pageType);
+		print("opening new page: " + this.currentPageType);
 		//this.currentPage?.OpenPage();
-		this.currentPage?.SetActive(true);
+		// this.currentPage?.SetActive(true);
 
 		this.OnCurrentPageChanged.Fire(pageType, oldPageType);
 	}

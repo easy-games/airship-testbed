@@ -28,5 +28,19 @@
             ""
         ],
         "description": ""
-    }
+    },
+    "Component": {
+        "prefix": "component",
+        "body": [
+            "export default class ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g} extends AirshipBehaviour {",
+            "\toverride OnStart(): void {",
+            "\t\t${0}",
+            "\t}",
+            "",
+            "\toverride OnDestroy(): void {}",
+            "}",
+            ""
+        ],
+        "description": "Creates an AirshipBehaviour class."
+    },
 }
