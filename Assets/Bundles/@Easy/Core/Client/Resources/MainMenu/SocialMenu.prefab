@@ -1617,7 +1617,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3560782242306921149}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -2707,7 +2707,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2330992413050427376}
   m_HandleRect: {fileID: 7363531328088842990}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4281,7 +4281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchorMin.x
@@ -4289,11 +4289,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 294.99997
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -4329,11 +4329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 152.49998
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -18.52625
       objectReference: {fileID: 0}
     - target: {fileID: 2962330411399591800, guid: 767f9492a1be84efca58a92b3df7748f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
