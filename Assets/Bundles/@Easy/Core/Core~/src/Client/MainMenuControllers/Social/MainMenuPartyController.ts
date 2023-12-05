@@ -2,11 +2,12 @@ import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { encode } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
-import { ChangeUsernameController } from "./ChangeUsernameController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { Party } from "./SocketAPI";
 
@@ -30,9 +31,12 @@ export class MainMenuPartyController implements OnStart {
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
-			this.socketController.Emit("join-party", {
-				partyId: data.partyId,
-			});
+			InternalHttpManager.PostAsync(
+				AirshipUrl.GameCoordinator + "/parties/party/join",
+				encode({
+					partyId: data.partyId,
+				}),
+			);
 		});
 
 		this.Setup();
@@ -57,11 +61,11 @@ export class MainMenuPartyController implements OnStart {
 			Dependency<MainMenuAddFriendsController>().Open();
 		});
 
-		const profilePictureButton = this.mainMenuController.refs.GetValue("UI", "ProfilePictureButton");
-		CoreUI.SetupButton(profilePictureButton);
-		CanvasAPI.OnClickEvent(profilePictureButton, () => {
-			Dependency<ChangeUsernameController>().Open();
-		});
+		// const profilePictureButton = this.mainMenuController.refs.GetValue("UI", "ProfilePictureButton");
+		// CoreUI.SetupButton(profilePictureButton);
+		// CanvasAPI.OnClickEvent(profilePictureButton, () => {
+		// 	Dependency<ChangeUsernameController>().Open();
+		// });
 	}
 
 	private UpdateParty(): void {
@@ -70,7 +74,7 @@ export class MainMenuPartyController implements OnStart {
 			partyContent.ClearChildren();
 
 			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `Party (0/8)`;
+			partyTitle.text = `(0/8)`;
 
 			const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
 			leaveButton.SetActive(false);
@@ -146,19 +150,25 @@ export class MainMenuPartyController implements OnStart {
 			LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
 
 			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `Party (${this.party.members.size()}/8)`;
+			partyTitle.text = `(${this.party.members.size()}/8)`;
 
 			if (init) {
 				CanvasAPI.OnClickEvent(kickButton, () => {
-					this.socketController.Emit("remove-from-party", {
-						userToRemove: member.uid,
-					});
+					InternalHttpManager.PostAsync(
+						AirshipUrl.GameCoordinator + "/parties/party/remove",
+						encode({
+							userToRemove: member.uid,
+						}),
+					);
 				});
 
 				CanvasAPI.OnClickEvent(leaveButton, () => {
-					this.socketController.Emit("remove-from-party", {
-						userToRemove: member.uid,
-					});
+					InternalHttpManager.PostAsync(
+						AirshipUrl.GameCoordinator + "/parties/party/remove",
+						encode({
+							userToRemove: member.uid,
+						}),
+					);
 				});
 			}
 		}

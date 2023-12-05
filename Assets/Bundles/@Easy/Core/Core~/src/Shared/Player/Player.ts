@@ -1,6 +1,7 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
@@ -116,6 +117,9 @@ export class Player {
 
 	/** Is player friends with the local player? */
 	public IsFriend(): boolean {
+		if (RunUtil.IsClient()) {
+			return Dependency<FriendsController>().friends.find((u) => u.uid === this.userId) !== undefined;
+		}
 		return false;
 	}
 
@@ -179,7 +183,7 @@ export class Player {
 
 		const jwt = GameObject.Find("ServerBootstrap")?.GetComponent<ServerBootstrap>().airshipJWT;
 		const res = HttpManager.PostAsync(
-			AirshipUrl.GameCoordinatorSocket + "/transfers/transfer",
+			AirshipUrl.GameCoordinator + "/transfers/transfer",
 			encode({
 				uid: this.userId,
 				serverId,

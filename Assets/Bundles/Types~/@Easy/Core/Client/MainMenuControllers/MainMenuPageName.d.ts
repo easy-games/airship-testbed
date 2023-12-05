@@ -1,4 +1,6 @@
-export declare enum MainMenuPage {
+export declare enum MainMenuPageType {
     HOME = "Home",
-    SETTINGS = "Settings"
+    SETTINGS = "Settings",
+    AVATAR = "Avatar",
+    SHOP = "Shop"
 }

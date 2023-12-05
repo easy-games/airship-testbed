@@ -7,7 +7,6 @@ import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
@@ -85,11 +84,21 @@ export class ProjectileService implements OnStart {
 
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
-				this.damageService.InflictDamage(event.hitEntity, math.floor(damage + 0.5), {
+				let criticalHit = false;
+				const hitHeight = event.hitPosition.sub(event.hitEntity.model.transform.position).magnitude;
+				if (event.hitEntity.IsHeadshotHitHeight(hitHeight)) {
+					criticalHit = true;
+				}
+				damage = math.floor(damage + 0.5);
+				if (criticalHit) {
+					damage *= 1.5;
+				}
+				this.damageService.InflictDamage(event.hitEntity, damage, {
 					fromEntity: projectile.shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
 					knockbackDirection: knockbackDirection,
+					criticalHit: criticalHit,
 				});
 			} else {
 				// anchor ammo in ground
@@ -128,24 +137,12 @@ export class ProjectileService implements OnStart {
 
 		ProjectileManager.Instance.OnProjectileLaunched((easyProjectile, shooterGO) => {
 			const shooterEntity = Entity.FindByGameObject(shooterGO);
-			if (!shooterEntity) return;
-			const ammoType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
-			if (!ammoType) {
+			const itemType = ItemUtil.GetItemTypeFromItemId(easyProjectile.itemTypeId);
+			if (!itemType) {
 				Debug.LogError("Failed to find itemType with id " + easyProjectile.itemTypeId);
 				return;
 			}
-			const itemMeta = ItemUtil.GetItemMeta(ammoType);
-			let launcherItem = ItemType.WOOD_BOW;
-			if (shooterEntity instanceof CharacterEntity) {
-				const heldItem = shooterEntity.GetInventory().GetHeldItem()?.GetItemType();
-				if (heldItem) launcherItem = heldItem;
-			}
-			CoreServerSignals.ProjectileFired.Fire({
-				shooter: shooterEntity,
-				launcherItemType: launcherItem,
-				ammoItemType: ammoType,
-			});
-			const projectile = new Projectile(easyProjectile, ammoType, shooterEntity);
+			const projectile = new Projectile(easyProjectile, itemType, shooterEntity);
 		});
 	}
 

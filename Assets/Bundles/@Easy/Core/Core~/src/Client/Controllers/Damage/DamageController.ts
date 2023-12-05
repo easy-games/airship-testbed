@@ -11,20 +11,24 @@ export class DamageController implements OnStart {
 	constructor(private readonly entityController: EntityController) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.EntityDamage.Client.OnServerEvent((entityId, amount, damageType, fromEntityId) => {
-			const entity = this.entityController.GetEntityById(entityId);
-			if (!entity) {
-				error("Failed to find entity for damage event: " + entityId);
-				return;
-			}
+		CoreNetwork.ServerToClient.EntityDamage.Client.OnServerEvent(
+			(entityId, amount, damageType, fromEntityId, criticalHit) => {
+				const entity = this.entityController.GetEntityById(entityId);
+				if (!entity) {
+					error("Failed to find entity for damage event: " + entityId);
+					return;
+				}
 
-			let fromEntity: Entity | undefined;
-			if (fromEntityId !== undefined) {
-				fromEntity = this.entityController.GetEntityById(fromEntityId);
-			}
+				let fromEntity: Entity | undefined;
+				if (fromEntityId !== undefined) {
+					fromEntity = this.entityController.GetEntityById(fromEntityId);
+				}
 
-			CoreClientSignals.EntityDamage.Fire(new EntityDamageClientSignal(entity, amount, damageType, fromEntity));
-		});
+				CoreClientSignals.EntityDamage.Fire(
+					new EntityDamageClientSignal(entity, amount, damageType, criticalHit ?? false, fromEntity),
+				);
+			},
+		);
 
 		CoreNetwork.ServerToClient.EntityDeath.Client.OnServerEvent(
 			(entityId, damageType, fromEntityId, respawnTime) => {

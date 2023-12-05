@@ -72,7 +72,13 @@ export const CoreNetwork = {
 		BlockGroupDestroyed: new RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>(),
 		ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
 		EntityDamage: new RemoteEvent<
-			[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined]
+			[
+				entityId: number,
+				amount: number,
+				damageType: DamageType,
+				fromEntityId: number | undefined,
+				criticalHit: boolean | undefined,
+			]
 		>(),
 		ProjectileHit: new RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>(),
 		Entity: {
@@ -119,6 +125,8 @@ export const CoreNetwork = {
 		PlayEntityItemAnimation: new RemoteEvent<[entityId: number, useIndex?: number, modeIndex?: number]>(),
 		/** Fired when a generator is created. */
 		GeneratorCreated: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
+		/** Fired when a generator is modified */
+		GeneratorModified: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 		/** Fired when a generator is looted. */
 		GeneratorLooted: new RemoteEvent<[generatorId: string]>(),
 		/** Fired when a generator's spawn rate changes. */

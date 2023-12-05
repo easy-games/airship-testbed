@@ -80,7 +80,7 @@ export class MapService implements OnStart {
 	public WaitForMapLoaded(): LoadedMap {
 		if (this.loadedMap && this.mapLoaded && this.voxelBinaryFile) return this.loadedMap;
 		while (!this.loadedMap && !this.mapLoaded && !this.voxelBinaryFile) {
-			Task.Wait(0.1);
+			task.wait(0.1);
 		}
 		return this.loadedMap!;
 	}

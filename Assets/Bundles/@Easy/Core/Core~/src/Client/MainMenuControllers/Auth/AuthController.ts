@@ -14,7 +14,10 @@ export class AuthController implements OnStart {
 	public readonly onSignOut = new Signal<void>();
 
 	OnStart(): void {
-		this.TryAutoLogin();
+		const loginResult = this.TryAutoLogin();
+		if (!loginResult) {
+			Bridge.LoadScene("Login", true);
+		}
 	}
 
 	public async WaitForAuthed(): Promise<void> {
@@ -42,7 +45,8 @@ export class AuthController implements OnStart {
 			return this.LoginWithRefreshToken(savedAuthAccount.refreshToken);
 		}
 
-		return this.SignUpAnon();
+		return false;
+		// return this.SignUpAnon();
 	}
 
 	public LoginWithRefreshToken(refreshToken: string): boolean {
@@ -58,6 +62,7 @@ export class AuthController implements OnStart {
 		if (res.success) {
 			const data = decode(res.data) as FirebaseTokenResponse;
 			this.idToken = data.id_token;
+			InternalHttpManager.SetAuthToken(data.id_token);
 			StateManager.SetString("firebase_idToken", data.id_token);
 			StateManager.SetString("firebase_refreshToken", data.refresh_token);
 			StateManager.SetString("firebase_localId", data.user_id);
@@ -81,6 +86,7 @@ export class AuthController implements OnStart {
 			const data = decode(res.data) as FirebaseSignUpResponse;
 
 			this.idToken = data.idToken;
+			InternalHttpManager.SetAuthToken(data.idToken);
 			StateManager.SetString("firebase_idToken", data.idToken);
 			StateManager.SetString("firebase_refreshToken", data.refreshToken);
 			StateManager.SetString("firebase_localId", data.localId);

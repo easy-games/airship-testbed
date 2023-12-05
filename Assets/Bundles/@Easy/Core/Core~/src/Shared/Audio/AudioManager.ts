@@ -1,3 +1,4 @@
+import { AssetCache } from "Shared/AssetCache/AssetCache";
 import StringUtils from "../Types/StringUtil";
 import { Task } from "../Util/Task";
 
@@ -152,7 +153,7 @@ export class AudioManager {
 	}
 
 	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {
-		const clip = AssetBridge.Instance.LoadAssetIfExists<AudioClip>(fullPath);
+		const clip = AssetCache.LoadAssetIfExists<AudioClip>(fullPath);
 		if (!clip) {
 			warn("Unable to load clip: " + fullPath);
 		}

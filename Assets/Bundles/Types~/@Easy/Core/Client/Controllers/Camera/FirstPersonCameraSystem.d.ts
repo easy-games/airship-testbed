@@ -1,11 +1,15 @@
 import { EntityReferences } from "../../../Shared/Entity/Entity";
 import { CameraReferences } from "./CameraReferences";
 export declare class FirstPersonCameraSystem {
+    private bobLerpMod;
     cameras: CameraReferences;
     private sprintingBob;
     private walkingBob;
     private slidingBob;
-    private bobData;
+    private targetBobData;
+    private currentBobData;
+    private targetBobStrength;
+    private currentBobStrength;
     private manualSpineOffset;
     private calculatedSpineOffset;
     private entityReferences;
@@ -17,7 +21,7 @@ export declare class FirstPersonCameraSystem {
     private originalSpineTopPosition;
     private originalShoulderLPosition;
     private originalShoulderRPosition;
-    private bobStrength;
+    private currentTime;
     constructor(entityReferences: EntityReferences, startInFirstPerson: boolean);
     Destroy(): void;
     private LateUpdate;

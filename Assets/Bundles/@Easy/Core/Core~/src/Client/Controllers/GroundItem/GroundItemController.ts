@@ -15,7 +15,6 @@ import { SetInterval } from "Shared/Util/Timer";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
 import { PlayerController } from "../Player/PlayerController";
-import inspect from "@easy-games/unity-inspect";
 
 interface GroundItemEntry {
 	nob: NetworkObject;
@@ -42,6 +41,7 @@ export class GroundItemController implements OnStart {
 		);
 		// this.offlineGroundItems = this.groundItemsFolder.GetComponent<OfflineGroundItems>();
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");
+		// PoolManager.PreLoadPool(this.groundItemPrefab, 4);
 		this.fallbackDisplayObj = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Shared/Resources/Prefabs/GroundItems/_fallback.prefab",
 		);
@@ -93,7 +93,7 @@ export class GroundItemController implements OnStart {
 
 				let go = undefined; //this.groundItemPool.pop();
 				if (!go) {
-					go = GameObjectUtil.InstantiateAt(this.groundItemPrefab, dto.pos, Quaternion.identity);
+					go = PoolManager.SpawnObject(this.groundItemPrefab, dto.pos, Quaternion.identity);
 					const displayGO = this.CreateDisplayGO(
 						itemStack,
 						go.transform.GetChild(0),
@@ -122,7 +122,7 @@ export class GroundItemController implements OnStart {
 				drop.SetVelocity(dto.velocity);
 				const groundItem = new GroundItem(dto.id, itemStack, drop, TimeUtil.GetServerTime() + 1.2, dto.data);
 
-				print("data", inspect(data));
+				// print("data", inspect(data));
 
 				if (typeIs(data.Spinning, "boolean")) {
 					drop.SetSpinActive(data.Spinning);
@@ -184,7 +184,8 @@ export class GroundItemController implements OnStart {
 			// this.groundItemPool.push(go);
 			// go.GetComponent<ParentSetter>().ClearParent();
 			// go.SetActive(false);
-			GameObjectUtil.Destroy(go);
+			go.transform.GetChild(0).gameObject.ClearChildren();
+			PoolManager.ReleaseObject(go);
 			this.groundItems.delete(groundItemId);
 			// this.offlineGroundItems.RemoveObject(go);
 		});
@@ -199,7 +200,8 @@ export class GroundItemController implements OnStart {
 			// this.groundItemPool.push(go);
 			// go.GetComponent<ParentSetter>().ClearParent();
 			// go.SetActive(false);
-			GameObjectUtil.Destroy(go);
+			go.transform.GetChild(0).gameObject.ClearChildren();
+			PoolManager.ReleaseObject(go);
 			this.groundItems.delete(groundItemId);
 			// this.offlineGroundItems.RemoveObject(go);
 		});
