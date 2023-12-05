@@ -3971,11 +3971,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_script: {fileID: 896007864590834925, guid: 3444c8da6a1ee5742be6b5bdd6d7892e, type: 3}
   m_fileFullPath: '@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua'
   m_error: 0
   m_yielded: 0
   m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua
-  m_binaryFile: {fileID: 896007864590834925, guid: 0250d2b2c3d9c45f09ce7a59225997bb, type: 3}
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
