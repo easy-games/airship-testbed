@@ -23,7 +23,7 @@ export class BubbleChatController implements OnStart {
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			this.GetOrCreateChatContainer(event.entity);
 
-			this.startSendingRandomMessages(event.entity);
+			// this.startSendingRandomMessages(event.entity);
 		});
 
 		CoreNetwork.ServerToClient.PlayerChatted.Client.OnServerEvent((rawMessage, senderClientId) => {
@@ -140,7 +140,7 @@ export class BubbleChatController implements OnStart {
 
 		// Destroy
 		task.delay(20, () => {
-			// if (!chatMessageObject) return;
+			if (!chatMessageObject) return;
 
 			messageCanvasGroup.TweenCanvasGroupAlpha(0, 0.3);
 			GameObjectUtil.Destroy(chatMessageObject, 2);
