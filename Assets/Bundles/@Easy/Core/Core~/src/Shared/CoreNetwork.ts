@@ -119,6 +119,8 @@ export const CoreNetwork = {
 		},
 		CharacterModelChanged: new RemoteEvent<[characterModelId: number]>(),
 		ChatMessage: new RemoteEvent<[text: string, senderClientId?: number]>(),
+		/** Fired when a player sends a chat message with the raw chat message */
+		PlayerChatted: new RemoteEvent<[rawMessage: string, senderClientId: number]>(),
 		SetAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot, accessoryPath: string]>(),
 		RemoveAccessory: new RemoteEvent<[entityId: number, slot: AccessorySlot]>(),
 		AddPlayer: new RemoteEvent<[player: PlayerDto]>(),
