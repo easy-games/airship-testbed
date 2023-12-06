@@ -15,7 +15,10 @@ export declare class TabListController implements OnStart {
     private rowCount;
     private maxSlots;
     private shown;
+    private mouse;
+    private showBin;
     private dirty;
+    private init;
     private profilePicSprite;
     constructor(playerController: PlayerController, coreUIController: CoreUIController, teamController: TeamController);
     OnStart(): void;
