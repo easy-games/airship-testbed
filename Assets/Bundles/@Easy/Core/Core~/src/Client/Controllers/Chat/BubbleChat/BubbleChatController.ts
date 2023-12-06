@@ -132,14 +132,16 @@ export class BubbleChatController implements OnStart {
 		const messageBackgroundImage = chatMessageObject.GetComponent<Image>();
 
 		// Tween to semi-transparent state
-		Task.Delay(8, () => {
+		task.delay(8, () => {
 			if (chatMessageObject === undefined) return;
 
 			messageBackgroundImage.TweenGraphicAlpha(0.4, 2);
 		});
 
 		// Destroy
-		Task.Delay(20, () => {
+		task.delay(20, () => {
+			// if (!chatMessageObject) return;
+
 			messageCanvasGroup.TweenCanvasGroupAlpha(0, 0.3);
 			GameObjectUtil.Destroy(chatMessageObject, 2);
 		});
