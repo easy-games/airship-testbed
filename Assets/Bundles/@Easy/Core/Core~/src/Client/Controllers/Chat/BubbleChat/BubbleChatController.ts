@@ -22,8 +22,6 @@ export class BubbleChatController implements OnStart {
 		// Register BubbleChat container on spawn
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			this.GetOrCreateChatContainer(event.entity);
-
-			// this.startSendingRandomMessages(event.entity);
 		});
 
 		CoreNetwork.ServerToClient.PlayerChatted.Client.OnServerEvent((rawMessage, senderClientId) => {
@@ -46,11 +44,10 @@ export class BubbleChatController implements OnStart {
 
 				for (const [containerTransform, minimized] of this.chatContainerMinimized) {
 					// Clear out destroyed containers
-					// TOOD ADD THIS BACK WE ARE KEEPING REFERENCES AND CAUSING MEMORY LEAK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					// if (containerTransform.gameObject.IsDestroyed()) {
-					// 	this.chatContainerMinimized.delete(containerTransform);
-					// 	continue;
-					// }
+					if (!containerTransform.gameObject) {
+						this.chatContainerMinimized.delete(containerTransform);
+						continue;
+					}
 
 					const shouldBeMinimized = this.ShouldChatBeMinimized(containerTransform, cameraPosition);
 					if (shouldBeMinimized === minimized) continue;
