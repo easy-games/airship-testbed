@@ -16,11 +16,7 @@ export declare class AbilityBindingController implements OnStart, OnInit {
     OnInit(): void;
     OnStart(): void;
     /**
-     * Creates and sets up ability bindings for provided keys and slot type.
-     *
-     * @param bindingKeys Keys to create bindings for.
-     * @param slotType Slot type to assign to keys.
-     * @param bindingArray The backing binding array.
+     * Creates and sets up ability bindings for all keys and slot types.
      */
     private CreateBindingSlots;
     /**

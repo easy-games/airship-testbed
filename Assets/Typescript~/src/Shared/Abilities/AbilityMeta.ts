@@ -24,7 +24,7 @@ export const Abilities: Record<AbilityId, Ability> = {
 				],
 				displayText: "Teleporting back to base",
 			},
-			cooldownTimeSeconds: 0.5,
+			cooldownTimeSeconds: 3,
 		},
 	},
 	[AbilityId.VORLIAS_TEST]: {

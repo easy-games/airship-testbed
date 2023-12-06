@@ -1,10 +1,12 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { CoreServerSignals } from "Server/CoreServerSignals";
 import { AbilityUtil } from "Shared/Abilities/AbilityUtil";
 import { AbilityCooldown } from "Shared/Abilities/CharacterAbilities";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Duration } from "Shared/Util/Duration";
 import { TimeUtil } from "Shared/Util/TimeUtil";
+import { EntityService } from "../Entity/EntityService";
 
 @Service({})
 export class AbilityService implements OnStart {
@@ -15,16 +17,30 @@ export class AbilityService implements OnStart {
 	/** Mapping of **client id** to ability enabled states. */
 	private enabledMap = new Map<number, Map<string, boolean>>();
 
-	constructor(private readonly abilityRegistry: AbilityRegistry) {}
+	constructor(private readonly abilityRegistry: AbilityRegistry, private readonly entityService: EntityService) {}
 
 	OnStart(): void {
-		// CoreServerSignals.AbilityAdded.Connect(({ clientId, ability }) => {
-		// 	this.AddAbilityToClient(clientId, ability);
-		// });
-		CoreNetwork.ClientToServer.UseAbility.Server.OnClientEvent((clientId, request) => {
-			print(clientId);
-			print(request);
+		CoreNetwork.ClientToServer.AbilityActivateRequest.Server.OnClientEvent((clientId, abilityId) => {
+			this.UseAbility(clientId, abilityId);
 		});
+	}
+
+	/**
+	 * Attempts use provided ability for client. Ability is successfully used if the ability
+	 * exists and `CanUseAbility` validation is successful.
+	 *
+	 * @param clientId The client using ability.
+	 * @param abilityId The ability client is using.
+	 * @returns Whether or not ability was successfully used.
+	 */
+	private UseAbility(clientId: number, abilityId: string): boolean {
+		if (!this.CanUseAbility(clientId, abilityId)) return false;
+		const abilityMeta = this.abilityRegistry.GetAbilityById(abilityId);
+		if (!abilityMeta) return false;
+		CoreServerSignals.AbilityUsed.Fire({ clientId: clientId, abilityId: abilityId });
+		CoreNetwork.ServerToClient.AbilityUsedNew.Server.FireAllClients(clientId, abilityId);
+		this.SetAbilityOnCooldown(clientId, abilityId);
+		return true;
 	}
 
 	/**
@@ -35,9 +51,7 @@ export class AbilityService implements OnStart {
 	 * @returns Whether or not ability was successfully added to client.
 	 */
 	public AddAbilityToClient(clientId: number, abilityId: string): boolean {
-		print(`AddAbilityToClient (0)`);
 		if (this.ClientHasAbility(clientId, abilityId)) return false;
-		print(`AddAbilityToClient (1)`);
 		const abilityMeta = this.abilityRegistry.GetAbilityById(abilityId);
 		if (!abilityMeta) return false;
 
@@ -49,7 +63,6 @@ export class AbilityService implements OnStart {
 		}
 		const abilityDto = AbilityUtil.CreateAbilityDto(abilityId, true);
 		if (abilityDto) {
-			print(`AddAbilityToClient (2)`);
 			CoreNetwork.ServerToClient.AbilityAddedNew.Server.FireAllClients(clientId, abilityDto);
 		}
 		// Abilities _automatically_ enable on add.
@@ -72,6 +85,7 @@ export class AbilityService implements OnStart {
 		if (!clientAbilities) return false;
 		const updatedAbilities = clientAbilities.filter((clientAbilityId) => clientAbilityId !== abilityId);
 		this.abilityMap.set(clientId, updatedAbilities);
+		CoreNetwork.ServerToClient.AbilityRemovedNew.Server.FireAllClients(clientId, abilityId);
 		return true;
 	}
 
@@ -97,14 +111,18 @@ export class AbilityService implements OnStart {
 	 * @param duration The cooldown duration in **seconds**.
 	 * @returns Whether or not the cooldown was successfully applied.
 	 */
-	public SetAbilityOnCooldown(clientId: number, abilityId: string, duration: number): boolean {
+	public SetAbilityOnCooldown(clientId: number, abilityId: string, duration?: number): boolean {
 		if (!this.ClientHasAbility(clientId, abilityId)) return false;
+		const abilityMeta = this.abilityRegistry.GetAbilityById(abilityId);
+		if (!abilityMeta) return false;
+		const cooldownDuration = duration ?? abilityMeta.config.cooldownTimeSeconds;
+		if (!cooldownDuration) return false;
 		const now = TimeUtil.GetServerTime();
-		const cooldownEnd = now + duration;
+		const cooldownEnd = now + cooldownDuration;
 		const abilityCooldown: AbilityCooldown = {
 			startTimestamp: now,
 			endTimestamp: cooldownEnd,
-			length: Duration.fromSeconds(duration),
+			length: Duration.fromSeconds(cooldownDuration),
 		};
 		const clientCooldowns = this.cooldownMap.get(clientId);
 		if (!clientCooldowns) {
@@ -117,7 +135,7 @@ export class AbilityService implements OnStart {
 			abilityId: abilityId,
 			timeStart: abilityCooldown.startTimestamp,
 			timeEnd: abilityCooldown.endTimestamp,
-			length: duration,
+			length: cooldownDuration,
 		});
 		return true;
 	}
@@ -150,7 +168,7 @@ export class AbilityService implements OnStart {
 	}
 
 	/**
-	 * Returns whether or not the provided ability is disabled for client. If the client does
+	 * Returns whether- or not the provided ability is disabled for client. If the client does
 	 * **not** have the provided ability, this function returns `true`.
 	 *
 	 * @param clientId The client that is being queried.
@@ -162,7 +180,8 @@ export class AbilityService implements OnStart {
 		const clientEnabledStates = this.enabledMap.get(clientId);
 		if (!clientEnabledStates) return true;
 		const abilityState = clientEnabledStates.get(abilityId);
-		return abilityState === undefined ? true : abilityState;
+		if (abilityState === undefined) return true;
+		return abilityState === false;
 	}
 
 	/**
@@ -188,7 +207,8 @@ export class AbilityService implements OnStart {
 
 	/**
 	 * Returns whether or not the provided ability is _currently_ usable by the client. An ability
-	 * is usable if it is **not** disabled and **not** on cooldown.
+	 * is usable if it is **not** disabled, **not** on cooldown, and an entity **currently** belongs to
+	 * `clientId`.
 	 *
 	 * @param clientId The client that is being queried.
 	 * @param abilityId The ability that is being queried.
@@ -196,6 +216,10 @@ export class AbilityService implements OnStart {
 	 */
 	public CanUseAbility(clientId: number, abilityId: string): boolean {
 		if (!this.ClientHasAbility(clientId, abilityId)) return false;
-		return !this.IsAbilityDisabled(clientId, abilityId) && !this.IsAbilityOnCooldown(clientId, abilityId);
+		return (
+			!this.IsAbilityDisabled(clientId, abilityId) &&
+			!this.IsAbilityOnCooldown(clientId, abilityId) &&
+			this.entityService.GetEntityByClientId(clientId) !== undefined
+		);
 	}
 }

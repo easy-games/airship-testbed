@@ -35,5 +35,6 @@ export class BWAbilitiesService {
 		//this.gameAbilities.AddAbilityToCharacter(AbilityId.RECALL, characterEntity);
 		//Dependency<AbilityService>();
 		this.abilityService.AddAbilityToClient(clientId, AbilityId.RECALL);
+		this.abilityService.AddAbilityToClient(clientId, AbilityId.VORLIAS_TEST);
 	}
 }

@@ -9,6 +9,7 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnUpdate } from "Shared/Util/Timer";
 import { CoreUIController } from "../UI/CoreUIController";
 import { AbilitiesController } from "./AbilitiesController";
+import { AbilityBindingController } from "./AbilityBindingController";
 
 export interface ClientAbilityCooldownState {
 	startTime: number;
@@ -41,6 +42,7 @@ export class AbilitiesUIController implements OnStart {
 	public constructor(
 		public readonly coreUIController: CoreUIController,
 		public readonly abilitiesController: AbilitiesController,
+		public readonly abilityBindingController: AbilityBindingController,
 	) {
 		const go = this.coreUIController.refs.GetValue("Apps", "Abilities");
 		this.canvas = go.GetComponent<Canvas>();
@@ -218,7 +220,7 @@ export class AbilitiesUIController implements OnStart {
 		});
 
 		// Update local abilities
-		this.abilitiesController.ObserveAbilityBindings((abilities) => {
+		this.abilityBindingController.ObserveAbilityBindings((abilities) => {
 			const bin = new Bin();
 			let idx = 0;
 			for (const ability of abilities) {

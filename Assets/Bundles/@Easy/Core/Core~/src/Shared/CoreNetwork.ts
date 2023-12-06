@@ -51,6 +51,9 @@ export const CoreNetwork = {
 
 		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
 		UseAbility: new RemoteEvent<[req: UseAbilityRequest]>(),
+
+		// ----- REFACTORING -----
+		AbilityActivateRequest: new RemoteEvent<[abilityId: string]>(),
 	},
 	ServerToClient: {
 		ServerInfo: new RemoteEvent<[gameId: string, serverId: string]>(),
@@ -185,6 +188,8 @@ export const CoreNetwork = {
 		AbilityCooldownStateChangeNew: new RemoteEvent<[dto: AbilityCooldownDto]>(),
 		AbilityStateChangeNew: new RemoteEvent<[clientId: number, abilityId: string, enabled: boolean]>(),
 		AbilityAddedNew: new RemoteEvent<[clientId: number, dto: AbilityDto]>(),
+		AbilityRemovedNew: new RemoteEvent<[clientId: number, abilityId: string]>(),
+		AbilityUsedNew: new RemoteEvent<[clientId: number, abilityId: string]>(),
 	},
 };
 

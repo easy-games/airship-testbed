@@ -1,11 +1,12 @@
-import { Controller, OnInit, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
-import { AbilityDto } from "Shared/Abilities/Ability";
+import { AbilityCooldownDto, AbilityDto, AbilityKind } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Keyboard } from "Shared/UserInput/Keyboard";
+import { Bin } from "Shared/Util/Bin";
 import { AbilityBinding, BindingInputState } from "./Class/AbilityBinding";
 
 /** Primary ability keys. */
@@ -16,7 +17,7 @@ const secondaryKeys: ReadonlyArray<KeyCode> = [KeyCode.Z, KeyCode.X, KeyCode.V];
 const utilityKeys: ReadonlyArray<KeyCode> = [KeyCode.B, KeyCode.N, KeyCode.M];
 
 @Controller({})
-export class AbilityBindingController implements OnStart, OnInit {
+export class AbilityBindingController implements OnStart {
 	/** Ability keyboard instance. */
 	private readonly keyboard = new Keyboard();
 	/** Primary slot ability bindings. */
@@ -28,9 +29,7 @@ export class AbilityBindingController implements OnStart, OnInit {
 	/** All slot ability bindings. */
 	private combinedSlots = new Array<AbilityBinding>();
 
-	constructor(private readonly abilityRegistry: AbilityRegistry) {}
-
-	OnInit(): void {
+	constructor(private readonly abilityRegistry: AbilityRegistry) {
 		this.CreateBindingSlots();
 		this.combinedSlots = [...this.primaryAbilitySlots, ...this.secondaryAbilitySlots, ...this.utilityAbiltySlots];
 	}
@@ -39,10 +38,20 @@ export class AbilityBindingController implements OnStart, OnInit {
 		CoreNetwork.ServerToClient.AbilityAddedNew.Client.OnServerEvent((clientId, abilityDto) => {
 			// If this ability was added to the local client AND it's an active ability,
 			// bind ability to key.
-			if (clientId === Game.LocalPlayer.clientId && abilityDto.slot) {
-				print(`BINDING ${abilityDto.abilityId} (0)`);
+			const abilityMeta = this.abilityRegistry.GetAbilityById(abilityDto.abilityId);
+			if (!abilityMeta) return;
+			if (
+				clientId === Game.LocalPlayer.clientId &&
+				abilityMeta.config.kind === AbilityKind.Active &&
+				abilityDto.slot
+			) {
 				this.RegisterLocalAbility(abilityDto);
 			}
+		});
+		// If one of the local client's abilities had a cooldown update, update
+		// binding and UI accordingly.
+		CoreNetwork.ServerToClient.AbilityCooldownStateChangeNew.Client.OnServerEvent((abilityCooldownDto) => {
+			this.UpdateAbilityBindingCooldown(abilityCooldownDto);
 		});
 	}
 
@@ -59,6 +68,22 @@ export class AbilityBindingController implements OnStart, OnInit {
 		for (const key of utilityKeys) {
 			this.utilityAbiltySlots.push(new AbilityBinding(AbilitySlot.Utility, false, key));
 		}
+	}
+
+	/**
+	 * Updates ability binding for ability associated with provided ability cooldown data,
+	 * if binding exists.
+	 *
+	 * @param abilityCooldownDto The ability cooldown data transfer object representation.
+	 */
+	private UpdateAbilityBindingCooldown(abilityCooldownDto: AbilityCooldownDto): void {
+		const abilityBinding = this.GetAbilityBindingByAbilityId(abilityCooldownDto.abilityId);
+		if (!abilityBinding) return;
+		abilityBinding.SetCooldown({
+			startTime: abilityCooldownDto.timeStart,
+			endTime: abilityCooldownDto.timeEnd,
+			length: abilityCooldownDto.length,
+		});
 	}
 
 	/**
@@ -82,14 +107,13 @@ export class AbilityBindingController implements OnStart, OnInit {
 				break;
 		}
 		if (!nextSlot) return false;
-		print(`BINDING ${abilityDto.abilityId} (1)`);
 		nextSlot.BindTo(abilityDto);
 		nextSlot.BindToAction(this.keyboard, (inputState, abilityBinding) => {
 			const boundAbilityId = abilityBinding.GetBound()?.abilityId;
 			if (!boundAbilityId) return;
 			if (inputState === BindingInputState.InputBegan) {
 				abilityBinding.SetActive(true);
-				CoreClientSignals.LocalAbilityUseRequest.Fire({ abilityId: boundAbilityId });
+				CoreClientSignals.LocalAbilityActivateRequest.Fire({ abilityId: boundAbilityId });
 			} else if (inputState === BindingInputState.InputEnded) {
 				abilityBinding.SetActive(false);
 			}
@@ -105,11 +129,35 @@ export class AbilityBindingController implements OnStart, OnInit {
 	 * @returns The next available slot, if it exists.
 	 */
 	private FindNextAvailableSlot(slots: Array<AbilityBinding>): AbilityBinding | undefined {
-		print(`SLOT SIZE: ${slots.size()}`);
 		for (const slot of slots) {
-			print(slot.GetBound()?.abilityId);
 			if (slot.GetBound() === undefined) return slot;
 		}
 		return undefined;
+	}
+
+	/**
+	 * Returns ability binding associated with provided ability id, if it exists.
+	 *
+	 * @param abilityId The ability id being queried.
+	 * @returns Returns ability binding associated with provided ability id, if it exists.
+	 */
+	private GetAbilityBindingByAbilityId(abilityId: string): AbilityBinding | undefined {
+		for (const slot of this.combinedSlots) {
+			if (slot.GetBound()?.abilityId === abilityId) return slot;
+		}
+		return undefined;
+	}
+
+	/**
+	 * Observe ability bindings for local ability updates. Returns a `Bin` to clean up `BindingStateChanged`
+	 * connections.
+	 *
+	 * @param callback A callback that operates on _all_ ability bindings.
+	 * @returns `Bin` to clean up `BindingStateChanged` connections.
+	 */
+	public ObserveAbilityBindings(callback: (abilities: ReadonlyArray<AbilityBinding>) => Bin) {
+		const bin = new Bin();
+		bin.Add(callback(this.combinedSlots));
+		return bin;
 	}
 }

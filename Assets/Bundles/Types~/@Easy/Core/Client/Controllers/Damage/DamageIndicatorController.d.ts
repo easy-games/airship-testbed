@@ -1,4 +1,5 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { DamageType } from "../../../Shared/Damage/DamageType";
 export declare class DamageIndicatorController implements OnStart {
     private combatEffectsCanvas;
     hitMarkerImage: Image;
@@ -10,4 +11,5 @@ export declare class DamageIndicatorController implements OnStart {
     private damageIndicatorBin;
     constructor();
     OnStart(): void;
+    CreateDamageIndicator(amount: number, criticalHit: boolean, damageType: DamageType): void;
 }

@@ -3,7 +3,6 @@ import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { ItemType } from "Shared/Item/ItemType";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "Shared/Signals/BlockPlaceSignal";
-import { Ability } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Team } from "Shared/Team/Team";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
@@ -62,6 +61,8 @@ export const CoreServerSignals = {
 	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
 	TeamAdded: new Signal<Team>(),
 
-	AbilityAdded: new Signal<{ clientId: number; ability: Ability }>(),
-	AbilityRemoved: new Signal<{ clientId: number; ability: Ability }>(),
+	// ----- REFACTORING -----
+	AbilityAdded: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityRemoved: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityUsed: new Signal<{ clientId: number; abilityId: string }>(),
 };
