@@ -706,6 +706,15 @@ MonoBehaviour:
       decorators: []
       serializedValue: 
       serializedObject: {fileID: 4747334059101062720}
+    - name: remoteImage
+      type: object
+      objectType: RemoteImage
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      serializedValue: 
+      serializedObject: {fileID: 0}
 --- !u!1 &7334092849454283308
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,6 +728,7 @@ GameObject:
   - component: {fileID: 4272896538262094076}
   - component: {fileID: 3586970315758590938}
   - component: {fileID: 1080242479796895828}
+  - component: {fileID: 1224758353300491981}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -774,7 +784,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f76e2df2075634bcb8e794170bccdb1e, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -842,3 +852,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1224758353300491981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7334092849454283308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181f1e456b3647d6b9962075e2ab60ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  url: 
+  image: {fileID: 4272896538262094076}
+  downloadOnStart: 0

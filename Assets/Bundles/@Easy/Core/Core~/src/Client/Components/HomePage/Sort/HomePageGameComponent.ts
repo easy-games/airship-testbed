@@ -1,7 +1,9 @@
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { GameDto } from "../API/GamesAPI";
 
 export default class HomePageGameComponent extends AirshipBehaviour {
 	public titleText5!: TMP_Text;
+	public remoteImage!: RemoteImage;
 
 	override OnStart(): void {}
 
@@ -11,8 +13,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		// this.titleText.GetComponent<TMP_Text>().text = gameDto;
 		this.titleText5.text = "Hi";
 
-		const remoteImage = gameObject.GetComponent<RemoteImage>();
-		// remoteImage.url = imageUrl;
-		remoteImage.StartDownload();
+		let url = AirshipUrl.CDN + gameDto.icon;
+
+		this.remoteImage.url = url;
+		this.remoteImage.StartDownload();
 	}
 }
