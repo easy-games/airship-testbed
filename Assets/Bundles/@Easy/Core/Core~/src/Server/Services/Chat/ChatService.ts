@@ -66,6 +66,7 @@ export class ChatService implements OnStart {
 
 	OnStart(): void {
 		CoreNetwork.ClientToServer.SendChatMessage.Server.OnClientEvent((clientId, text) => {
+			const rawMessage = text;
 			const player = this.playerService.GetPlayerFromClientId(clientId);
 			if (!player) {
 				error("player not found.");
@@ -104,6 +105,7 @@ export class ChatService implements OnStart {
 			let message = username + ": " + text;
 			print(message);
 			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message, player.clientId);
+			CoreNetwork.ServerToClient.PlayerChatted.Server.FireAllClients(rawMessage, player.clientId);
 		});
 	}
 
