@@ -20,6 +20,18 @@ export class AbilityController implements OnStart {
 	constructor(private readonly abilityRegistry: AbilityRegistry) {}
 
 	OnStart(): void {
+		CoreClientSignals.LocalAbilityActivateRequest.Connect((event) => {
+			if (this.LocalClientCanUseAbility(event.abilityId)) {
+				print(`Local client is sending ability request: ${event.abilityId}`);
+				CoreNetwork.ClientToServer.AbilityActivateRequest.Client.FireServer(event.abilityId);
+			}
+		});
+
+		CoreNetwork.ServerToClient.AbilityUsedNew.Client.OnServerEvent((clientId, abilityId) => {
+			CoreClientSignals.AbilityUsedNew.Fire({ clientId: clientId, abilityId: abilityId });
+			print(`Ability was used: ${abilityId} by: ${clientId}`);
+		});
+
 		CoreNetwork.ServerToClient.AbilityAddedNew.Client.OnServerEvent((clientId, abilityDto) => {
 			if (clientId === Game.LocalPlayer.clientId) {
 				this.AddAbilityToLocalClient(abilityDto);
@@ -42,20 +54,16 @@ export class AbilityController implements OnStart {
 			}
 		});
 
-		CoreClientSignals.LocalAbilityActivateRequest.Connect((event) => {
-			if (this.LocalClientCanUseAbility(event.abilityId)) {
-				print(`Local client is sending ability request: ${event.abilityId}`);
-				CoreNetwork.ClientToServer.AbilityActivateRequest.Client.FireServer(event.abilityId);
-			}
-		});
-
-		CoreNetwork.ServerToClient.AbilityUsedNew.Client.OnServerEvent((clientId, abilityId) => {
-			CoreClientSignals.AbilityUsedNew.Fire({ clientId: clientId, abilityId: abilityId });
-			print(`Ability was used: ${abilityId} by: ${clientId}`);
-		});
-
 		CoreNetwork.ServerToClient.AbilityCooldownStateChangeNew.Client.OnServerEvent((abilityCooldownDto) => {
 			this.SetLocalAbilityOnCooldown(abilityCooldownDto);
+		});
+
+		CoreNetwork.ServerToClient.AbilityStateChangeNew.Client.OnServerEvent((clientId, abilityId, enabled) => {
+			if (clientId === Game.LocalPlayer.clientId) {
+				this.SetLocalAbilityEnabledState(abilityId, enabled);
+			} else {
+				this.FireAbilityEnabledStateUpdateSignal(clientId, abilityId, enabled);
+			}
 		});
 	}
 
@@ -81,7 +89,8 @@ export class AbilityController implements OnStart {
 	}
 
 	/**
-	 * Removes the provided ability to the local client. Fires `AbilityRemoved` event
+	 * Removes the provided ability to the local client. Fires `AbilityRemoved` event.
+	 *
 	 * @param abilityId The ability being removed.
 	 */
 	private RemoveAbilityFromLocalClient(abilityId: string): void {
@@ -91,23 +100,6 @@ export class AbilityController implements OnStart {
 			clientId: Game.LocalPlayer.clientId,
 			abilityId: abilityId,
 		});
-	}
-
-	/**
-	 * Returns whether or not the provided ability is _currently_ usable by the local client. An ability
-	 * is usable if it is **not** disabled, **not** on cooldown, and an entity **currently** belongs to
-	 * the local client.
-	 *
-	 * @param abilityId The ability that is being queried.
-	 * @returns Whether or not the provided ability is _currently_ usable by the local client.
-	 */
-	public LocalClientCanUseAbility(abilityId: string): boolean {
-		if (!this.LocalClientHasAbility(abilityId)) return false;
-		return (
-			!this.IsLocalAbilityDisabled(abilityId) &&
-			!this.IsLocalAbilityOnCooldown(abilityId) &&
-			Game.LocalPlayer.character !== undefined
-		);
 	}
 
 	/**
@@ -125,6 +117,54 @@ export class AbilityController implements OnStart {
 			length: Duration.fromSeconds(abilityCooldownDto.length),
 		});
 		return true;
+	}
+
+	/**
+	 * Sets the local client's ability enabled state. Returns whether or not the enabled state was
+	 * successfully applied.
+	 *
+	 * @param abilityId The ability that is being updated.
+	 * @param enabled The new enabled state.
+	 * @returns Whether or not the enabled state was successfully set.
+	 */
+	private SetLocalAbilityEnabledState(abilityId: string, enabled: boolean): boolean {
+		if (!this.LocalClientHasAbility(abilityId)) return false;
+		this.localStateMap.set(abilityId, enabled);
+		this.FireAbilityEnabledStateUpdateSignal(Game.LocalPlayer.clientId, abilityId, enabled);
+		return true;
+	}
+
+	/**
+	 * Fires either `AbilityEnabled` or `AbilityDisabled` signal based on updated ability
+	 * state.
+	 *
+	 * @param clientId The client whose ability had a state update.
+	 * @param abilityId The ability that had a state update.
+	 * @param enabled The ability's new enabled state.
+	 */
+	private FireAbilityEnabledStateUpdateSignal(clientId: number, abilityId: string, enabled: boolean): void {
+		if (enabled) {
+			CoreClientSignals.AbilityEnabled.Fire({ clientId: clientId, abilityId: abilityId });
+		} else {
+			CoreClientSignals.AbilityDisabled.Fire({ clientId: clientId, abilityId: abilityId });
+		}
+	}
+
+	/**
+	 * Returns whether or not the provided ability is _currently_ usable by the local client. An ability
+	 * is usable if it is **not** disabled, **not** on cooldown, and an entity **currently** belongs to
+	 * the local client.
+	 *
+	 * @param abilityId The ability that is being queried.
+	 * @returns Whether or not the provided ability is _currently_ usable by the local client.
+	 */
+	public LocalClientCanUseAbility(abilityId: string): boolean {
+		if (!this.LocalClientHasAbility(abilityId)) return false;
+		return (
+			!this.IsLocalAbilityDisabled(abilityId) &&
+			!this.IsLocalAbilityOnCooldown(abilityId) &&
+			Game.LocalPlayer.character !== undefined
+		);
 	}
 
 	/**
