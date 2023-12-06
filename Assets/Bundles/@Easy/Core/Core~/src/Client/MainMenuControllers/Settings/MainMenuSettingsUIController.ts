@@ -47,19 +47,19 @@ export class MainMenuSettingsUIController implements OnStart {
 			},
 		);
 
-		//HD Rendering
-		const toggleHD: Toggle = this.mainMenuController.refs.GetValue("Settings", "HDToggle");
-		toggleHD.isOn = this.clientSettingsController.GetScreenshotRenderHD();
-		this.SetupToggle(toggleHD, (value) => {
-			this.clientSettingsController.SetScreenshotRenderHD(value);
-		});
+		// HD Rendering
+		// const toggleHD: Toggle = this.mainMenuController.refs.GetValue("Settings", "HDToggle");
+		// toggleHD.isOn = this.clientSettingsController.GetScreenshotRenderHD();
+		// this.SetupToggle(toggleHD, (value) => {
+		// 	this.clientSettingsController.SetScreenshotRenderHD(value);
+		// });
 
-		//Screenshot UI
-		const toggleUI: Toggle = this.mainMenuController.refs.GetValue("Settings", "UIToggle");
-		toggleUI.isOn = this.clientSettingsController.GetScreenshotShowUI();
-		this.SetupToggle(toggleUI, (value) => {
-			this.clientSettingsController.SetScreenshotShowUI(value);
-		});
+		// Screenshot UI
+		// const toggleUI: Toggle = this.mainMenuController.refs.GetValue("Settings", "UIToggle");
+		// toggleUI.isOn = this.clientSettingsController.GetScreenshotShowUI();
+		// this.SetupToggle(toggleUI, (value) => {
+		// 	this.clientSettingsController.SetScreenshotShowUI(value);
+		// });
 	}
 
 	private SetupSlider(go: GameObject, startingValue: number, onChange: (val: number) => void): void {
