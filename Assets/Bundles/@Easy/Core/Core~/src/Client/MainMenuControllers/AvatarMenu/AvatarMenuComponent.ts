@@ -5,8 +5,9 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly tweenDuration = 1;
 
-	private navBars?: CSArray<RectTransform>;
+	private subNavBarBtns: (CSArray<RectTransform> | undefined)[] = [];
 	private mainNavBtns?: CSArray<RectTransform>;
+	private subNavBars?: CSArray<RectTransform>;
 	private activeMainIndex = -1;
 
 	private Log(message: string) {
@@ -16,25 +17,37 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OnStart() {
 		super.OnStart();
 
-		this.navBars = this.refs?.GetAllValues<RectTransform>("NavBars");
-		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavBtns");
+		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
+		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
+		let i = 0;
 
-		if (!this.mainNavBtns || !this.navBars) {
+		if (!this.mainNavBtns) {
 			return;
 		}
 
-		let i = 0;
+		//Hookup sub nav buttons
+		for (i = 0; i < this.mainNavBtns.Length; i++) {
+			this.subNavBarBtns[i] = this.refs?.GetAllValues<RectTransform>("SubNavRects" + i);
+
+			if (this.subNavBarBtns[i]) {
+				for (let j = 0; j < this.subNavBarBtns.size(); j++) {
+					const navI = i;
+					const subNavI = j;
+					const go = this.subNavBarBtns[i]?.GetValue(j).gameObject;
+					if (go) {
+						CanvasAPI.OnClickEvent(go, () => {
+							this.SelectSubNav(navI, subNavI);
+						});
+					}
+				}
+			}
+		}
+
+		//
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
 			const navI = i;
 			CanvasAPI.OnClickEvent(this.mainNavBtns.GetValue(i).gameObject, () => {
 				this.SelectMainNav(navI);
-			});
-		}
-
-		for (i = 0; i < this.navBars.Length; i++) {
-			const navI = i;
-			CanvasAPI.OnClickEvent(this.navBars.GetValue(i).gameObject, () => {
-				this.SelectSubNav(navI);
 			});
 		}
 	}
@@ -50,7 +63,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectMainNav(index: number) {
-		if (!this.mainNavBtns || !this.navBars) {
+		if (!this.mainNavBtns || !this.subNavBars) {
 			return;
 		}
 
@@ -65,18 +78,26 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			let button = nav.gameObject.GetComponent<Button>();
 		}
 
-		for (i = 0; i < this.navBars.Length; i++) {
+		for (i = 0; i < this.subNavBars.Length; i++) {
 			const active = i === index;
-			const nav = this.navBars.GetValue(i);
-			nav.gameObject.SetActive(active);
+			const nav = this.subNavBars.GetValue(i);
 			nav.anchoredPosition = new Vector2(0, 0);
+			nav.gameObject.SetActive(active);
 		}
 	}
 
-	private SelectSubNav(index: number) {
-		this.Log("Selecting SUB nav: " + index);
-		let subBar = this.navBars?.GetValue(this.activeMainIndex);
+	private SelectSubNav(mainIndex: number, subIndex: number) {
+		this.Log("Selecting SUB nav: " + subIndex);
+		if (!this.subNavBarBtns) {
+			return;
+		}
+		let subBar = this.subNavBarBtns[this.activeMainIndex];
 		if (subBar) {
+			for (let i = 0; i < subBar.Length; i++) {
+				const active = i === subIndex;
+				let button = subBar.GetValue(i).gameObject.GetComponent<Button>();
+				button.colors.normalColor = active ? Color.red : Color.white;
+			}
 		}
 	}
 }

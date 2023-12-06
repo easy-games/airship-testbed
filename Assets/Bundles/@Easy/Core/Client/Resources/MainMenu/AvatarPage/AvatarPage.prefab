@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 98629860430141082}
   - component: {fileID: 3428903758798075265}
   - component: {fileID: 7815662951505243774}
+  - component: {fileID: 7489676922720409085}
   m_Layer: 0
   m_Name: AvatarPage
   m_TagString: Untagged
@@ -156,19 +157,122 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: '@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua'
+  m_fileFullPath: '@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua'
   m_error: 0
   m_yielded: 0
-  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/MenuPageComponent.lua
-  m_binaryFile: {fileID: 896007864590834925, guid: 7a2819298ca99144b9c4ba8f29f6911a, type: 3}
+  m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuComponent.lua
+  m_binaryFile: {fileID: 2843296466033088328, guid: 32e05d8d729117c4db939f21dac42b0b, type: 3}
   m_canResume: 0
   m_asyncYield: 0
   m_onUpdateHandle: -1
   m_onLateUpdateHandle: -1
   m_shortFileName: 
   m_metadata:
-    name: MainMenuPageComponent
+    name: AvatarMenuComponent
     properties: []
+--- !u!114 &7489676922720409085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723402029732460798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStaticInstance: 1
+  staticBundleId: AvatarEditor
+  bundledReferences:
+  - key: MainNavRects
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 4765458115722898440}
+    - key: MainRect2
+      value: {fileID: 2021074429971552578}
+    - key: MainRect3
+      value: {fileID: 8832297101249186694}
+    - key: MainRect4
+      value: {fileID: 4901084752969144321}
+    - key: MainRect5
+      value: {fileID: 7633836231775440349}
+    - key: MainRect6
+      value: {fileID: 4446181019031757189}
+    - key: MainRect7
+      value: {fileID: 7466646260307858544}
+  - key: SubNavHolderRects
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 2681900888766811353}
+    - key: MainRect2
+      value: {fileID: 8813402243345516030}
+    - key: MainRect3
+      value: {fileID: 1479855932340265714}
+    - key: MainRect4
+      value: {fileID: 2839121141632130580}
+    - key: MainRect5
+      value: {fileID: 185932909280385544}
+    - key: MainRect6
+      value: {fileID: 8735044039329864998}
+    - key: MainRect7
+      value: {fileID: 2102190261115409396}
+  - key: SubNavRects1
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 1340353158825985350}
+    - key: MainRect2
+      value: {fileID: 8962554324818923186}
+    - key: MainRect3
+      value: {fileID: 2401664511386502621}
+    - key: MainRect4
+      value: {fileID: 8950411337368954231}
+  - key: SubNavRects2
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 4903485319913462047}
+    - key: MainRect2
+      value: {fileID: 3942977249088187460}
+    - key: MainRect3
+      value: {fileID: 1505223475209564420}
+  - key: SubNavRects3
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 7709501746754280439}
+    - key: MainRect2
+      value: {fileID: 3152643774872365168}
+    - key: MainRect3
+      value: {fileID: 3722408057505051878}
+  - key: SubNavRects4
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 2327033234980141123}
+    - key: MainRect2
+      value: {fileID: 4502329438927659133}
+    - key: MainRect3
+      value: {fileID: 3106162598134390733}
+  - key: SubNavRects5
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 8618150841389945024}
+    - key: MainRect2
+      value: {fileID: 5870007970975466364}
+    - key: MainRect3
+      value: {fileID: 9221297191061914559}
+  - key: SubNavRects6
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 6665210255434384393}
+    - key: MainRect2
+      value: {fileID: 5127910389154768717}
+  - key: SubNavRects7
+    keyValuePairs:
+    - key: MainRect1
+      value: {fileID: 4923610416928944211}
+    - key: MainRect2
+      value: {fileID: 579532804535365176}
+    - key: MainRect3
+      value: {fileID: 4131500767913253259}
 --- !u!1 &2710814123513779923
 GameObject:
   m_ObjectHideFlags: 0
