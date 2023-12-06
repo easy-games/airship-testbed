@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
-  m_Name: diamond_pickaxe
+  m_Name: BlockHead
   m_EditorClassIdentifier: 
-  DisplayName: Diamond Pickaxe
+  DisplayName: Block Head
   AccessorySlot: 6
-  Prefab: {fileID: 5201375224750791660, guid: 84d1dc73126554d8f9c189f5c1800e01, type: 3}
-  Position: {x: 0.06, y: 0.2, z: 0.01}
-  Rotation: {x: 282.09998, y: 88.99997, z: 93.00003}
-  Scale: {x: 1, y: 1, z: 1}
+  Prefab: {fileID: 2952415837642855887, guid: 67c75516206544c488a3c1828f7043dc, type: 3}
+  Position: {x: 0.14, y: 0.011, z: 0.124}
+  Rotation: {x: -0, y: 0, z: 332.96124}
+  Scale: {x: 0.28068, y: 0.28068, z: 0.28068}
   visibilityMode: 2
   SkinnedToCharacter: 1

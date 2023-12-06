@@ -696,7 +696,16 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: HomePageGameComponent
-    properties: []
+    properties:
+    - name: titleText5
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      serializedValue: 
+      serializedObject: {fileID: 4747334059101062720}
 --- !u!1 &7334092849454283308
 GameObject:
   m_ObjectHideFlags: 0

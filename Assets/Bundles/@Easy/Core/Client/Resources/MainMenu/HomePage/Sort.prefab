@@ -608,7 +608,7 @@ MonoBehaviour:
         objectType: 
       decorators: []
       serializedValue: 
-      serializedObject: {fileID: 0}
+      serializedObject: {fileID: 5954992641236088674}
     - name: gamePrefab
       type: object
       objectType: GameObject
