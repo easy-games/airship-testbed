@@ -30,7 +30,7 @@ export interface ClientAbilityState {
 const ACTIVE_TWEEN_TIME = 0.1;
 
 @Controller()
-export class AbilitiesUIController implements OnStart {
+export class AbilityUIController implements OnStart {
 	private abilitySlots = 9;
 
 	private canvas: Canvas;

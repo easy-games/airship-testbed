@@ -24,6 +24,10 @@ export class AbilityController implements OnStart {
 			if (clientId === Game.LocalPlayer.clientId) {
 				this.AddAbilityToLocalClient(abilityDto);
 			} else {
+				CoreClientSignals.AbilityAddedNew.Fire({
+					clientId: clientId,
+					abilityId: abilityDto.abilityId,
+				});
 			}
 		});
 
@@ -31,6 +35,10 @@ export class AbilityController implements OnStart {
 			if (clientId === Game.LocalPlayer.clientId) {
 				this.RemoveAbilityFromLocalClient(abilityId);
 			} else {
+				CoreClientSignals.AbilityRemovedNew.Fire({
+					clientId: clientId,
+					abilityId: abilityId,
+				});
 			}
 		});
 
@@ -60,9 +68,15 @@ export class AbilityController implements OnStart {
 	private AddAbilityToLocalClient(abilityDto: AbilityDto): void {
 		this.localAbilitySet.add(abilityDto.abilityId);
 		this.localStateMap.set(abilityDto.abilityId, abilityDto.enabled);
-		// Fire `AbilityAdded`.
+		CoreClientSignals.AbilityAddedNew.Fire({
+			clientId: Game.LocalPlayer.clientId,
+			abilityId: abilityDto.abilityId,
+		});
 		if (abilityDto.enabled) {
-			// Fire `AbiltiyEnabled`.
+			CoreClientSignals.AbilityEnabled.Fire({
+				clientId: Game.LocalPlayer.clientId,
+				abilityId: abilityDto.abilityId,
+			});
 		}
 	}
 
@@ -73,7 +87,10 @@ export class AbilityController implements OnStart {
 	private RemoveAbilityFromLocalClient(abilityId: string): void {
 		this.localAbilitySet.delete(abilityId);
 		this.localStateMap.delete(abilityId);
-		// Fire `AbilityRemoved`.
+		CoreClientSignals.AbilityRemovedNew.Fire({
+			clientId: Game.LocalPlayer.clientId,
+			abilityId: abilityId,
+		});
 	}
 
 	/**

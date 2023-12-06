@@ -65,4 +65,5 @@ export const CoreClientSignals = {
 	AbilityAddedNew: new Signal<{ clientId: number; abilityId: string }>(),
 	AbilityRemovedNew: new Signal<{ clientId: number; abilityId: string }>(),
 	AbilityUsedNew: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityEnabled: new Signal<{ clientId: number; abilityId: string }>(),
 };

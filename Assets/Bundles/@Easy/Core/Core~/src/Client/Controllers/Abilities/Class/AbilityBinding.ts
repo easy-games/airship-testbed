@@ -5,7 +5,7 @@ import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
-import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilitiesUIController";
+import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilityUIController";
 
 export enum BindingInputState {
 	InputBegan,

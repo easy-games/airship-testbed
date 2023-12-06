@@ -35,9 +35,9 @@ export class AbilityBindingController implements OnStart {
 	}
 
 	OnStart(): void {
+		// If ability was added to the local client AND it's an active ability,
+		// bind ability to key.
 		CoreNetwork.ServerToClient.AbilityAddedNew.Client.OnServerEvent((clientId, abilityDto) => {
-			// If this ability was added to the local client AND it's an active ability,
-			// bind ability to key.
 			const abilityMeta = this.abilityRegistry.GetAbilityById(abilityDto.abilityId);
 			if (!abilityMeta) return;
 			if (
@@ -46,6 +46,19 @@ export class AbilityBindingController implements OnStart {
 				abilityDto.slot
 			) {
 				this.RegisterLocalAbility(abilityDto);
+			}
+		});
+		// If ability was removed to the local client AND it's an active ability,
+		// unbind ability from key.
+		CoreNetwork.ServerToClient.AbilityRemovedNew.Client.OnServerEvent((clientId, abilityId) => {
+			const abilityMeta = this.abilityRegistry.GetAbilityById(abilityId);
+			if (!abilityMeta) return;
+			if (
+				clientId === Game.LocalPlayer.clientId &&
+				abilityMeta.config.kind === AbilityKind.Active &&
+				abilityMeta.config.slot
+			) {
+				this.UnregisterLocalAbility(abilityId);
 			}
 		});
 		// If one of the local client's abilities had a cooldown update, update
@@ -71,24 +84,8 @@ export class AbilityBindingController implements OnStart {
 	}
 
 	/**
-	 * Updates ability binding for ability associated with provided ability cooldown data,
-	 * if binding exists.
-	 *
-	 * @param abilityCooldownDto The ability cooldown data transfer object representation.
-	 */
-	private UpdateAbilityBindingCooldown(abilityCooldownDto: AbilityCooldownDto): void {
-		const abilityBinding = this.GetAbilityBindingByAbilityId(abilityCooldownDto.abilityId);
-		if (!abilityBinding) return;
-		abilityBinding.SetCooldown({
-			startTime: abilityCooldownDto.timeStart,
-			endTime: abilityCooldownDto.timeEnd,
-			length: abilityCooldownDto.length,
-		});
-	}
-
-	/**
-	 * Returns whether or not the local ability was successfully registered. If this
-	 * returns `false`, no available slot existed for ability.
+	 * Registers provided ability for local client. Returns whether or not the local ability
+	 * was successfully registered. If this returns `false`, no available slot existed for ability.
 	 *
 	 * @param abilityDto The added ability's data transfer object representation.
 	 * @returns Whether or not the local ability was successfuly registered.
@@ -119,6 +116,34 @@ export class AbilityBindingController implements OnStart {
 			}
 		});
 		return true;
+	}
+
+	/**
+	 * Unregisters provided ability for local client. Unbinds keybinding associated
+	 * with ability.
+	 *
+	 * @param abilityId The ability being removed.
+	 */
+	private UnregisterLocalAbility(abilityId: string): void {
+		const abilityBinding = this.GetAbilityBindingByAbilityId(abilityId);
+		if (!abilityBinding) return;
+		abilityBinding.Unbind();
+	}
+
+	/**
+	 * Updates ability binding for ability associated with provided ability cooldown data,
+	 * if binding exists.
+	 *
+	 * @param abilityCooldownDto The ability cooldown data transfer object representation.
+	 */
+	private UpdateAbilityBindingCooldown(abilityCooldownDto: AbilityCooldownDto): void {
+		const abilityBinding = this.GetAbilityBindingByAbilityId(abilityCooldownDto.abilityId);
+		if (!abilityBinding) return;
+		abilityBinding.SetCooldown({
+			startTime: abilityCooldownDto.timeStart,
+			endTime: abilityCooldownDto.timeEnd,
+			length: abilityCooldownDto.length,
+		});
 	}
 
 	/**
