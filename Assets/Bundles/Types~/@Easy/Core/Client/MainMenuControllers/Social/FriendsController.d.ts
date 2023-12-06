@@ -30,6 +30,8 @@ export declare class FriendsController implements OnStart {
     SendStatusUpdate(): void;
     FetchFriends(): void;
     GetFriendGo(uid: string): GameObject | undefined;
+    HasOutgoingFriendRequest(userId: string): boolean;
+    SendFriendRequest(usernameWithTag: string): boolean;
     UpdateFriendsList(): void;
     GetFriendStatus(uid: string): FriendStatus | undefined;
     UpdateFriendStatusUI(friend: FriendStatus, refs: GameObjectReferences, config: {

@@ -4,9 +4,10 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
     private animateOutDuration;
     private animateInDuration;
     pageType: MainMenuPageType;
-    private refs?;
+    protected refs?: GameObjectReferences;
     private activePage;
     OnStart(): void;
+    TEST(): void;
     OpenPage(): void;
     ClosePage(): void;
 }

@@ -167,6 +167,10 @@ export class CanvasAPI {
 
 	public static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
+		if (!this.eventInterceptor) {
+			return -1;
+		}
+		print("this.eventInterceptor: " + this.eventInterceptor);
 		return this.eventInterceptor!.OnClickEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {
@@ -212,9 +216,11 @@ export class CanvasAPI {
 		if (CanvasAPI.eventInterceptor === undefined) {
 			this.eventInterceptor =
 				GameObject.Find("CanvasUIEventsInterceptor").GetComponent<CanvasUIEventInterceptor>();
+
 			this.eventInterceptor.OnSelectEvent((instanceId) => {
 				this.selectedInstanceId = instanceId;
 			});
+
 			this.eventInterceptor.OnDeselectEvent((instanceId) => {
 				if (this.selectedInstanceId !== instanceId) return;
 				this.selectedInstanceId = undefined;

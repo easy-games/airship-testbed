@@ -11,10 +11,10 @@ declare namespace task {
 	function delay<T extends Callback>(delayTime: number, callback: T, ...args: Parameters<T>): thread;
 	function delay(delayTime: number, thread: thread, ...args: unknown[]): thread;
 
-	/** Yields the current thread until the next frame. */
-	function wait(): void;
-	/** Yields the current thread for `delayTime` seconds. */
-	function wait(delayTime: number): void;
+	/** Yields the current thread until the next frame. Returns the delta time waited. */
+	function wait(): number;
+	/** Yields the current thread for `delayTime` seconds. Returns the delta time waited. */
+	function wait(delayTime: number): number;
 
 	/** Cancels the given thread. */
 	function cancel(thread: thread): void;

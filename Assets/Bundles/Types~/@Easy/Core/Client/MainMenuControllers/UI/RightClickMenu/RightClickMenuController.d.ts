@@ -3,6 +3,7 @@
 import { OnStart } from "../../../../../node_modules/@easy-games/flamework-core";
 import { RightClickMenuButton } from "./RightClickMenuButton";
 export declare class RightClickMenuController implements OnStart {
+    private opened;
     private currentBin;
     private openedTime;
     constructor();

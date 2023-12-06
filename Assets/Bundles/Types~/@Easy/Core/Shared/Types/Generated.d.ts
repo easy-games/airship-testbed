@@ -12922,6 +12922,7 @@ interface BridgeConstructor {
     GetReservedRam(): number;
     GetVolume(): number;
     IsFullScreen(): boolean;
+    LoadScene(sceneName: string, restartLuau: boolean): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
@@ -13224,6 +13225,7 @@ interface InternalHttpManagerConstructor {
 
 
     GetAsync(url: string): HttpGetResponse;
+    PatchAsync(url: string, data: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
     PutAsync(url: string, data: string): HttpGetResponse;
     SetAuthToken(authToken: string): void;

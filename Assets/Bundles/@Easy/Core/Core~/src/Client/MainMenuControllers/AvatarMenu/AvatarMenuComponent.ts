@@ -3,8 +3,12 @@ import MainMenuPageComponent from "../MenuPageComponent";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
+import { Task } from "Shared/Util/Task";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
+	private readonly GeneralHookupKey = "General";
 	private readonly tweenDuration = 1;
 
 	private subNavBarBtns: (CSArray<RectTransform> | undefined)[] = [];
@@ -12,46 +16,79 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private subNavBars?: CSArray<RectTransform>;
 	private activeMainIndex = -1;
 
+	public itemButtonHolder?: Transform;
+	public itemButtonTemplate?: GameObject;
+
+	//public buttons?: Transform[];
+
 	private Log(message: string) {
 		this.Log("Avatar Editor: " + message);
 	}
 
 	override OnStart() {
-		super.OnStart();
+		this.refs = gameObject.GetComponent<GameObjectReferences>();
 
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
+
 		let i = 0;
 
-		if (!this.mainNavBtns) {
-			return;
-		}
+		//Hookup Nav buttons
+		task.delay(2, () => {
+			if (!this.mainNavBtns) {
+				return;
+			}
+			for (i = 0; i < this.mainNavBtns.Length; i++) {
+				const navI = i;
+				// CanvasAPI.OnClickEvent(this.mainNavBtns.GetValue(i).gameObject, () => {
+				// 	this.SelectMainNav(navI);
+				// });
 
-		//Hookup sub nav buttons
-		for (i = 0; i < this.mainNavBtns.Length; i++) {
-			this.subNavBarBtns[i] = this.refs?.GetAllValues<RectTransform>("SubNavRects" + i);
-
-			if (this.subNavBarBtns[i]) {
-				for (let j = 0; j < this.subNavBarBtns.size(); j++) {
-					const navI = i;
-					const subNavI = j;
-					const go = this.subNavBarBtns[i]?.GetValue(j).gameObject;
-					if (go) {
-						CanvasAPI.OnClickEvent(go, () => {
-							this.SelectSubNav(navI, subNavI);
-						});
+				let subNavRects = this.refs?.GetAllValues<RectTransform>("SubNavRects" + (i + 1));
+				this.subNavBarBtns[i] = subNavRects;
+				if (subNavRects) {
+					for (let j = 0; j < subNavRects.Length; j++) {
+						const navI = i;
+						const subNavI = j;
+						const go = subNavRects.GetValue(j).gameObject;
+						if (go) {
+							print(
+								"setting up sub nav: " +
+									i +
+									", " +
+									j +
+									": " +
+									this.mainNavBtns.GetValue(i).gameObject.name +
+									", " +
+									go.name,
+							);
+							CanvasAPI.OnClickEvent(go, () => {
+								this.SelectSubNav(navI, subNavI);
+							});
+						}
 					}
 				}
 			}
-		}
 
-		//
-		for (i = 0; i < this.mainNavBtns.Length; i++) {
-			const navI = i;
-			CanvasAPI.OnClickEvent(this.mainNavBtns.GetValue(i).gameObject, () => {
-				this.SelectMainNav(navI);
-			});
-		}
+			//Hookup general buttons
+			// CanvasAPI.OnDragEvent(
+			// 	this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "AvatarInteractionBtn").gameObject,
+			// 	() => {
+			// 		this.OnDragAvatar();
+			// 	},
+			// );
+
+			// CanvasAPI.OnDragEvent(this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject, () => {
+			// 	this.OnSelectClear();
+			// });
+
+			// CanvasAPI.OnDragEvent(
+			// 	this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "CurrentBtn").gameObject,
+			// 	() => {
+			// 		this.OnSelectCurrent();
+			// 	},
+			// );
+		});
 	}
 
 	override OpenPage(): void {
@@ -86,6 +123,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			nav.anchoredPosition = new Vector2(0, 0);
 			nav.gameObject.SetActive(active);
 		}
+
+		this.SelectSubNav(index, 0);
 	}
 
 	private SelectSubNav(mainIndex: number, subIndex: number) {
@@ -101,17 +140,34 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				button.colors.normalColor = active ? Color.red : Color.white;
 			}
 		}
-		this.DisplayItems(AccessorySlot.Hat)
+		this.DisplayItems(AccessorySlot.Hat);
 	}
 
-	private DisplayItems(itemType: ItemType) {
-		const items = ItemUtil.GetAllAvatarItems(itemType);
-		items.forEach((value) => {
-			this.AddItemButton(value);
-		});
+	private DisplayItems(slotType: AccessorySlot) {
+		const items = ItemUtil.GetAllAvatarItems(slotType);
+		if (items) {
+			items.forEach((value) => {
+				this.AddItemButton(value);
+			});
+		}
 	}
 
 	private AddItemButton(acc: Accessory) {
 		print("loading item: " + acc.DisplayName);
+		if (this.itemButtonTemplate && this.itemButtonHolder) {
+			GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+		}
+	}
+
+	private OnSelectClear() {
+		//Unequip this slot
+	}
+
+	private OnSelectCurrent() {
+		//Select the item that is saved for this sot
+	}
+
+	private OnDragAvatar() {
+		//Move the avatar in the 3D scene
 	}
 }

@@ -4,5 +4,10 @@ export declare class TransferController implements OnStart {
     private readonly socketController;
     constructor(socketController: SocketController);
     OnStart(): void;
-    ClientTransferToServer(gameId: string, serverId?: string): void;
+    /**
+     * Sends a server transfer request to the backend.
+     * @param gameId GameID of the desired server
+     * @param serverId Specific ServerID to teleport to. If not included, the backend will select a server for you.
+     */
+    ClientTransferToServerAsync(gameId: string, serverId?: string): void;
 }

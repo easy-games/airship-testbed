@@ -14,7 +14,7 @@ export interface ItemRegistrationConfig {
  */
 export class ItemUtil {
 	public static readonly DefaultAccessoryCollectionPath =
-		"@Easy/Core/Shared/Resources/Accessories/Collections/GothGirl/Kit_GothGirl_Collection.asset";
+		"@Easy/Core/Shared/Resources/Accessories/LiveAvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
@@ -82,6 +82,10 @@ export class ItemUtil {
 						continue;
 					}
 
+					if (accessoryName.find("LiveAvatarItem", 0, true)) {
+						this.AddAvailableAvatarItem(accessory.AccessorySlot, accessory);
+					}
+
 					// this.itemAccessories.set(itemType, accessory);
 					accessories.push(accessory);
 				}
@@ -116,10 +120,16 @@ export class ItemUtil {
 				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".asset"];
 			}
 		}
-		if(config?.accessoryFolder){
-			this.avatarAccessories.set(itemDefinition.)
-		}
 		items[itemType] = itemDefinition;
+	}
+
+	public static AddAvailableAvatarItem(slotType: AccessorySlot, item: Accessory) {
+		let items = this.avatarAccessories.get(slotType);
+		if (!items) {
+			items = [];
+		}
+		items.push(item);
+		this.avatarAccessories.set(slotType, items);
 	}
 
 	public static GetAllAvatarItems(slotType: AccessorySlot) {

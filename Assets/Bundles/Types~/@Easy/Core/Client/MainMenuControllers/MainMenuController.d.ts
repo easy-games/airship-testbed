@@ -2,13 +2,13 @@ import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
 import { Signal } from "../../Shared/Util/Signal";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuPageType } from "./MainMenuPageName";
+import MainMenuPageComponent from "./MenuPageComponent";
 export declare class MainMenuController implements OnStart {
     private readonly authController;
     private readonly socialTweenDuration;
     mainMenuGo: GameObject;
     refs: GameObjectReferences;
-    currentPage: GameObject | undefined;
-    currentPageType: MainMenuPageType;
+    currentPage?: MainMenuPageComponent;
     OnCurrentPageChanged: Signal<[page: MainMenuPageType, oldPage: MainMenuPageType | undefined]>;
     private pageMap;
     private wrapperRect;

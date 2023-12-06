@@ -12,6 +12,7 @@ export declare class ItemUtil {
     static readonly DefaultAccessoryCollectionPath = "@Easy/Core/Shared/Resources/Accessories/Collections/GothGirl/Kit_GothGirl_Collection.asset";
     static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
     private static readonly itemAccessories;
+    private static readonly avatarAccessories;
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;
     static missingItemAccessory: Accessory;
@@ -26,6 +27,8 @@ export declare class ItemUtil {
     static Initialize(): void;
     static WaitForInitialized(): Promise<void>;
     static RegisterItem(itemType: ItemType, itemDefinition: Omit<ItemMeta, "id" | "itemType">, config?: ItemRegistrationConfig): void;
+    static AddAvailableAvatarItem(slotType: AccessorySlot, item: Accessory): void;
+    static GetAllAvatarItems(slotType: AccessorySlot): Accessory[] | undefined;
     /**
      * @deprecated
      */
