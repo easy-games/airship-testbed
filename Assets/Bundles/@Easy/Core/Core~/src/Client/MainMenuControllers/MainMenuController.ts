@@ -8,7 +8,7 @@ import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuPageType } from "./MainMenuPageName";
-import MainMenuPageComponent from "./MenuPageComponent";
+import MainMenuPageComponent from "./MainMenuPageComponent";
 import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";

@@ -1,6 +1,7 @@
 import {} from "@easy-games/flamework-core";
 import { MainMenuPageType } from "./MainMenuPageName";
 import { SetTimeout } from "Shared/Util/Timer";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 
 export default class MainMenuPageComponent extends AirshipBehaviour {
 	private animateOutDuration = 0.1;
@@ -13,6 +14,15 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 
 	public override OnStart(): void {
 		this.refs = gameObject.GetComponent<GameObjectReferences>();
+
+		let button = this.refs?.GetAllValues<RectTransform>("MainNavRects");
+		if (button) {
+			print("BUTTON: " + button.GetValue(0).GetComponent<Button>().name);
+			CanvasAPI.OnClickEventTEST(button.GetValue(0).gameObject, () => {
+				print("IS THIS WORKING");
+			});
+			print("BUTTON DONE");
+		}
 	}
 
 	public TEST() {

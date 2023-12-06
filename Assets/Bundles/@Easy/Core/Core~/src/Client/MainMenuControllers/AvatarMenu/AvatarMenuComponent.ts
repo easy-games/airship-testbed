@@ -1,11 +1,8 @@
 import {} from "@easy-games/flamework-core";
-import MainMenuPageComponent from "../MenuPageComponent";
+import MainMenuPageComponent from "../MainMenuPageComponent";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
-import { Task } from "Shared/Util/Task";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly GeneralHookupKey = "General";
