@@ -147,6 +147,7 @@ export class MainMenuController implements OnStart {
 		if (!this.open) return;
 		this.open = false;
 		this.avatarScene?.SetActive(false);
+		EventSystem.current.ClearSelected();
 
 		const duration = 0.06;
 		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);
