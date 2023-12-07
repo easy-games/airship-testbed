@@ -10,13 +10,13 @@ import { Bin } from "Shared/Util/Bin";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { AudioBundlePlayMode, AudioBundleSpacialMode, AudioClipBundle } from "../../Audio/AudioClipBundle";
-import { AudioManager } from "../../Audio/AudioManager";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { ArrayUtil } from "../../Util/ArrayUtil";
 import { BundleReferenceManager } from "../../Util/BundleReferenceManager";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "../../Util/ReferenceManagerResources";
 import { Task } from "../../Util/Task";
-import { Entity, EntityReferences } from "../Entity";
+import { Entity } from "../Entity";
+import EntityReferencesComponent from "../EntityReferencesComponent";
 import { EntityAnimationLayer } from "./EntityAnimationLayer";
 
 export abstract class EntityAnimator {
@@ -25,7 +25,7 @@ export abstract class EntityAnimator {
 	public readonly anim: AnimancerComponent;
 	public readonly defaultTransitionTime: number = 0.15;
 
-	protected readonly entityRef: EntityReferences;
+	protected readonly entityRef: EntityReferencesComponent;
 	protected bin = new Bin();
 	private flinchClipFPS?: AnimationClip;
 	private deathClipFPS?: AnimationClip;
@@ -45,7 +45,7 @@ export abstract class EntityAnimator {
 
 	public baseFootstepVolumeScale = 0.1;
 
-	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
+	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferencesComponent) {
 		this.anim = anim;
 		this.entityRef = entityRef;
 		this.isFlashing = false;
@@ -59,7 +59,7 @@ export abstract class EntityAnimator {
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
-			this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
+			this.slideAudioBundle = new AudioClipBundle(entityRef.GetSlideSoundPaths());
 			this.slideAudioBundle.volumeScale = 0.2;
 			this.slideAudioBundle.useFullPath = true;
 			this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
@@ -271,7 +271,10 @@ export abstract class EntityAnimator {
 
 	public SetFresnelColor(color: Color, power: number, strength: number) {
 		if (this.entity.IsDestroyed()) return;
-		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.meshes);
+		let allMeshes = ArrayUtil.Combine(
+			this.entity.GetAccessoryMeshes(AccessorySlot.Root),
+			this.entityRef.GetMeshRenderers(),
+		);
 		//TODO: Material property block AddColor doesn't seem to be working???
 		/* const propertyBlock: MaterialPropertyBlock = Bridge.MakeMaterialPropertyBlock();
 		propertyBlock.AddFloat("_RimPower", power);
@@ -353,39 +356,39 @@ export abstract class EntityAnimator {
 				this.slideAudioBundle?.Stop(1);
 				break;
 			case EntityAnimationEventKey.JUMP:
-				if (this.entityRef.jumpSound) {
-					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.entityRef.jumpSound, {
-							volumeScale: 0.2,
-						});
-					} else {
-						AudioManager.PlayClipAtPosition(
-							this.entityRef.jumpSound,
-							this.entity.model.transform.position,
-							{
-								volumeScale: 0.2,
-							},
-						);
-					}
-				}
+				// if (this.entityRef.jumpSound) {
+				// 	if (this.entity.IsLocalCharacter()) {
+				// 		AudioManager.PlayClipGlobal(this.entityRef.jumpSound, {
+				// 			volumeScale: 0.2,
+				// 		});
+				// 	} else {
+				// 		AudioManager.PlayClipAtPosition(
+				// 			this.entityRef.jumpSound,
+				// 			this.entity.model.transform.position,
+				// 			{
+				// 				volumeScale: 0.2,
+				// 			},
+				// 		);
+				// 	}
+				// }
 				break;
 			case EntityAnimationEventKey.LAND:
 				this.PlayFootstepSound(1.4);
-				if (this.entityRef.landSound) {
-					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.entityRef.landSound, {
-							volumeScale: 0.2,
-						});
-					} else {
-						AudioManager.PlayClipAtPosition(
-							this.entityRef.landSound,
-							this.entity.model.transform.position,
-							{
-								volumeScale: 0.2,
-							},
-						);
-					}
-				}
+				// if (this.entityRef.landSound) {
+				// 	if (this.entity.IsLocalCharacter()) {
+				// 		AudioManager.PlayClipGlobal(this.entityRef.landSound, {
+				// 			volumeScale: 0.2,
+				// 		});
+				// 	} else {
+				// 		AudioManager.PlayClipAtPosition(
+				// 			this.entityRef.landSound,
+				// 			this.entity.model.transform.position,
+				// 			{
+				// 				volumeScale: 0.2,
+				// 			},
+				// 		);
+				// 	}
+				// }
 				break;
 		}
 	}

@@ -1,11 +1,11 @@
 ﻿//import {CameraController} from "./CameraController";
-import { EntityReferences } from "Shared/Entity/Entity";
+import EntityReferencesComponent from "Shared/Entity/EntityReferencesComponent";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { CameraReferences } from "./CameraReferences";
-import { MathUtil } from "Shared/Util/MathUtil";
 
 interface BobData {
 	bobMovementFrequency: number;
@@ -49,7 +49,7 @@ export class FirstPersonCameraSystem {
 	private manualSpineOffset = 0.28;
 	private calculatedSpineOffset: Vector3 = Vector3.zero;
 
-	private entityReferences: EntityReferences;
+	private entityReferences: EntityReferencesComponent;
 	private cameraVars: DynamicVariables;
 	private trackedHeadRotation: Quaternion = Quaternion.identity;
 	private inFirstPerson;
@@ -60,7 +60,7 @@ export class FirstPersonCameraSystem {
 	private originalShoulderRPosition: Vector3 = Vector3.zero;
 	private currentTime = 0.01;
 
-	public constructor(entityReferences: EntityReferences, startInFirstPerson: boolean) {
+	public constructor(entityReferences: EntityReferencesComponent, startInFirstPerson: boolean) {
 		this.entityReferences = entityReferences;
 		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
 

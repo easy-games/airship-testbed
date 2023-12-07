@@ -1,7 +1,8 @@
 ﻿﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { ItemMeta } from "Shared/Item/ItemMeta";
 import { RandomUtil } from "Shared/Util/RandomUtil";
-import { Entity, EntityReferences } from "../Entity";
+import { Entity } from "../Entity";
+import EntityReferencesComponent from "../EntityReferencesComponent";
 import { EntityAnimationLayer } from "./EntityAnimationLayer";
 import { EntityAnimator } from "./EntityAnimator";
 
@@ -49,7 +50,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	//private camera: Camera;
 
-	public constructor(entity: Entity, anim: AnimancerComponent, ref: EntityReferences) {
+	public constructor(entity: Entity, anim: AnimancerComponent, ref: EntityReferencesComponent) {
 		super(entity, anim, ref);
 		//Initial animation setup
 		// this.LoadNewItemResources(undefined);

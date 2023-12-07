@@ -25,6 +25,7 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntityAnimator } from "./Animation/EntityAnimator";
+import EntityReferencesComponent from "./EntityReferencesComponent";
 import { EntitySerializer } from "./EntitySerializer";
 
 export interface EntityDto {
@@ -127,10 +128,11 @@ export class Entity {
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
 	public animator: EntityAnimator;
-	public readonly references: EntityReferences;
+	// public readonly references: EntityReferences;
 	public readonly accessoryBuilder: AccessoryBuilder;
 
 	public player: Player | undefined;
+	public references: EntityReferencesComponent;
 
 	/**
 	 * The connection ID of whoever is controlling this entity.
@@ -168,7 +170,8 @@ export class Entity {
 
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		Profiler.BeginSample("EntityReferences.Constructor");
-		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
+		this.references = this.gameObject.GetComponent<EntityReferencesComponent>();
+		// this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		Profiler.EndSample();
 		this.model = this.references.root.gameObject;
 		this.model.transform.localPosition = new Vector3(0, 0, 0);
