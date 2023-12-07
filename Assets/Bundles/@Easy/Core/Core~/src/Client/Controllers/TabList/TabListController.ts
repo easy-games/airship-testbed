@@ -231,13 +231,13 @@ export class TabListController implements OnStart {
 	}
 
 	public Hide(force = false): void {
+		this.showBin.Clean();
 		if (!force) {
 			if (!this.shown) return;
 		}
 
 		this.shown = false;
 		this.tablistCanvas.enabled = false;
-		this.showBin.Clean();
 	}
 
 	public IsShown(): boolean {
