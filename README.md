@@ -4,7 +4,7 @@ This project contains the source to BedWars & the Core package.
 - The BedWars game is just a game. It's not shared globally.
 
 ## Prerequisites
-- Unity Editor version `2021.3.12f1`. This can be found on [unity's download archive page](https://unity.com/releases/editor/archive).
+- Unity Editor version `2021.3.33f1`. This can be found on [unity's download archive page](https://unity.com/releases/editor/archive).
   - The following modules are required in the Unity install:
     - Android Build Support
     - iOS Build Support
