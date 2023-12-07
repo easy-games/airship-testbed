@@ -1,4 +1,5 @@
-﻿import { AllBundleItems, BundleData, BundleGroupNames, ReferenceManagerAssets } from "./ReferenceManagerResources";
+﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
+import { AllBundleItems, BundleData, BundleGroupNames, ReferenceManagerAssets } from "./ReferenceManagerResources";
 
 export class BundleReferenceManager {
 	public static LoadResources<T>(groupId: BundleGroupNames, bundleIndex = 0): Array<T> {
@@ -43,7 +44,7 @@ export class BundleReferenceManager {
 			if (filePath === "") {
 				delete loadedResources[index];
 			} else {
-				loadedResources[index] = AssetBridge.Instance.LoadAsset<T>(filePath);
+				loadedResources[index] = AssetCache.LoadAsset<T>(filePath);
 			}
 		});
 		return loadedResources;
@@ -54,7 +55,7 @@ export class BundleReferenceManager {
 			return undefined;
 		}
 		let path = filePaths.get(itemKey);
-		return AssetBridge.Instance.LoadAsset<T>(path ? path : "");
+		return AssetCache.LoadAsset<T>(path ? path : "");
 	}
 
 	public static GetDirectPath(bundleId: AllBundleItems) {
@@ -64,7 +65,7 @@ export class BundleReferenceManager {
 	public static LoadDirectResource<T>(bundleId: AllBundleItems) {
 		const path: string = bundleId as string;
 		if (path && path !== "") {
-			return AssetBridge.Instance.LoadAsset<T>(path);
+			return AssetCache.LoadAsset<T>(path);
 		}
 		return undefined;
 	}
