@@ -1,7 +1,7 @@
 export interface GameDto {
 	createdAt: string;
 	description: string;
-	icon: string;
+	iconImageId: string;
 	id: string;
 	name: string;
 	organization: {

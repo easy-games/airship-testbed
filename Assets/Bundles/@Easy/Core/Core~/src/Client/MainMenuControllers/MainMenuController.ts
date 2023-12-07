@@ -208,7 +208,7 @@ export class MainMenuController implements OnStart {
 
 		print("opening new page: " + this.currentPageType);
 		//this.currentPage?.OpenPage();
-		// this.currentPage?.SetActive(true);
+		this.currentPage?.SetActive(true);
 
 		this.OnCurrentPageChanged.Fire(pageType, oldPageType);
 	}
