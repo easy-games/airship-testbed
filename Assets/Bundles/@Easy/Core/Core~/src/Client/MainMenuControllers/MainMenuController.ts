@@ -51,6 +51,7 @@ export class MainMenuController implements OnStart {
 
 		print("home go: " + this.refs.GetValue("Pages", "Home").name);
 		print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>());
+		//print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>().TEST());
 
 		// this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 		// 	[MainMenuPageType.HOME, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
@@ -146,6 +147,7 @@ export class MainMenuController implements OnStart {
 		if (!this.open) return;
 		this.open = false;
 		this.avatarScene?.SetActive(false);
+		EventSystem.current.ClearSelected();
 
 		const duration = 0.06;
 		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);

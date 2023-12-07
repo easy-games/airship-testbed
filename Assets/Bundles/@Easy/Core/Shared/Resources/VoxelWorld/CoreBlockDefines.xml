@@ -88,14 +88,14 @@
     <Name>Oak Log</Name>
 <!--    <TopTexture>log_oak.td</TopTexture>-->
 <!--    <SideTexture>log_oak.s</SideTexture>-->
-<!-- <Material>StylizedWood</Material> -->
+ <Material>StylizedWood</Material>
     <Solid>false</Solid>
     <Collision>Solid</Collision>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>17</Minecraft>
     <Brightness>2</Brightness>
-    <TileSet>TileSets/WoodQuarterRound/</TileSet>
+<!--    <TileSet>TileSets/WoodQuarterRound/</TileSet>-->
   </Block>
 
   <Block>

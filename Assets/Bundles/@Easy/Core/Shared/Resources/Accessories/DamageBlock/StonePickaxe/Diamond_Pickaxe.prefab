@@ -120,11 +120,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.59131366, g: 0.7383137, b: 0.8301887, a: 1}
-    emissiveColor: {r: 0.30704877, g: 0.41713437, b: 0.9433962, a: 1}
-    emissiveMix: 0.023
+  - materialColor: {r: 0.004538984, g: 0.03666408, b: 0.05660379, a: 1}
+    emissiveColor: {r: 0.4269313, g: 0.48037282, b: 0.735849, a: 1}
+    emissiveMix: 1
     reference: DiamondMat
-  - materialColor: {r: 0.2924528, g: 0.24890697, b: 0.18899073, a: 1}
+  - materialColor: {r: 0.4811321, g: 0.42552957, b: 0.36992702, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
     reference: Clay
