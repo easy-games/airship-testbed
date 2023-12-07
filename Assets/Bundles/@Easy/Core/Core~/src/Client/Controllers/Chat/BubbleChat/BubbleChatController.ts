@@ -2,6 +2,7 @@ import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Entity } from "Shared/Entity/Entity";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -151,7 +152,7 @@ export class BubbleChatController implements OnStart {
 			return existingChatContainer.gameObject;
 		}
 
-		const chatContainer = AssetBridge.Instance.LoadAsset<Object>(
+		const chatContainer = AssetCache.LoadAsset<Object>(
 			"@Easy/Core/Client/Resources/Prefabs/BubbleChatContainer.prefab",
 		);
 		const chatContainerObject = GameObjectUtil.Instantiate(chatContainer);

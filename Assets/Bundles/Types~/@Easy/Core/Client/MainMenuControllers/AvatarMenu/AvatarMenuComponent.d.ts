@@ -1,8 +1,9 @@
 import MainMenuPageComponent from "../MenuPageComponent";
 export default class AvatarMenuComponent extends MainMenuPageComponent {
     private readonly tweenDuration;
-    private navBars?;
+    private subNavBarBtns;
     private mainNavBtns?;
+    private subNavBars?;
     private activeMainIndex;
     private Log;
     OnStart(): void;
