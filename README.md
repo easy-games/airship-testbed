@@ -6,10 +6,7 @@ This project contains the source to BedWars & the Core package.
 ## Prerequisites
 - Unity Editor version `2021.3.33f1`. This can be found on [unity's download archive page](https://unity.com/releases/editor/archive).
   - The following modules are required in the Unity install:
-    - Android Build Support
-    - iOS Build Support
     - Linux Build Support (IL2CPP)
-    - Linux Dedicated Server Build Support
     - Mac Build Support (IL2CPP)
     - Windows Build Support (Mono)
 - [LTS version of Node.js](https://nodejs.org/en)
