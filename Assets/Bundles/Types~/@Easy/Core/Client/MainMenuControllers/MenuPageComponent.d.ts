@@ -7,6 +7,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
     protected refs?: GameObjectReferences;
     private activePage;
     OnStart(): void;
+    TEST(): void;
     OpenPage(): void;
     ClosePage(): void;
 }

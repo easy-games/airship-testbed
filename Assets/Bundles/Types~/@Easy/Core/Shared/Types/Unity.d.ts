@@ -1725,7 +1725,10 @@ interface Component extends Object {
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
 	CompareTag(tag: string): boolean;
 	GetComponent<T>(): T;
-	GetComponent(type: string): Component;
+	/**
+	 * Throws error if no component found.
+	 */
+	GetComponent<T extends Component | AirshipBehaviour = Component>(name: string): T;
 	AddComponent(componentName: string): Component;
 	SendMessage(methodName: string, value: unknown): void;
 	SendMessage(methodName: string): void;
@@ -1836,7 +1839,6 @@ interface GameObject extends Object {
 	 * Throws error if no component found.
 	 */
 	GetComponent<T>(): T;
-	GetComponent(name: string): Component;
 	GetComponentsInChildren<T>(): CSArray<T>;
 	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
 	/**
