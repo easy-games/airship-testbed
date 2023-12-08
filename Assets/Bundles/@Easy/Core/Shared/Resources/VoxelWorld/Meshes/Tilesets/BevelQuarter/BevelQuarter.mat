@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 39c258cc6c9af7e45b1cde74acdb2d8b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 32c0875cb74ee436994c633be301d13d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 100}
     - _MetalTex:
@@ -132,11 +132,11 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 0
-    - _TriplanarScale: 0.05
+    - _TriplanarScale: 0.125
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.12220478, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
