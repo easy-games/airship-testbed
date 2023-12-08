@@ -53,6 +53,8 @@ export class LocalEntityController implements OnStart {
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
 
+	public readonly onCustomMoveDataProcessed = new Signal<void>();
+
 	constructor(
 		private readonly cameraController: CameraController,
 		private readonly clientSettings: ClientSettingsController,
@@ -102,10 +104,22 @@ export class LocalEntityController implements OnStart {
 	}
 
 	/** Add custom data to the move data command stream. */
-	public AddToMoveData<K extends keyof DataStreamItems, T extends DataStreamItems[K]>(key: K, value: T) {
+	public AddToMoveData<K extends keyof DataStreamItems, T extends DataStreamItems[K]>(
+		key: K,
+		value: T,
+		/**
+		 * Fired when the move data has been processed during the tick loop.
+		 * This will be fired **before** movement is calculated.
+		 **/
+		onProcessedCallback?: () => void,
+	) {
 		this.customDataQueue.push({ key, value });
 		const blob = new BinaryBlob(this.customDataQueue);
 		this.entityDriver?.SetCustomData(blob);
+
+		if (onProcessedCallback !== undefined) {
+			this.onCustomMoveDataProcessed.Once(onProcessedCallback);
+		}
 	}
 
 	private TakeScreenshot() {
@@ -177,6 +191,7 @@ export class LocalEntityController implements OnStart {
 
 			const customDataFlushedConn = this.entityDriver.OnCustomDataFlushed(() => {
 				this.customDataQueue.clear();
+				this.onCustomMoveDataProcessed.Fire();
 			});
 			bin.Add(() => {
 				Bridge.DisconnectEvent(customDataFlushedConn);
