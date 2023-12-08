@@ -17,8 +17,14 @@ export class AuthController implements OnStart {
 
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
-		if (!loginResult && Game.Context === CoreContext.MAIN_MENU) {
-			Bridge.LoadScene("Login", true);
+		if (!loginResult) {
+			let ignore = false;
+			if (Game.Context === CoreContext.GAME && RunUtil.IsEditor()) {
+				ignore = true;
+			}
+			if (!ignore) {
+				Bridge.LoadScene("Login", true);
+			}
 		}
 	}
 
