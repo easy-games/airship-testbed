@@ -1,7 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
-import { AbilityCooldownDto, AbilityDto } from "Shared/Abilities/Ability";
-import { AbilityCooldown } from "Shared/Abilities/CharacterAbilities";
+import { AbilityCooldown, AbilityCooldownDto, AbilityDto } from "Shared/Abilities/Ability";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
@@ -10,60 +9,76 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 
 @Controller({})
 export class AbilityController implements OnStart {
-	/** **All** of the local user's abilities. */
+	/** **All** of the local client's abilities. */
 	private localAbilitySet = new Set<string>();
-	/** Local user ability cooldown states. */
+	/** Local client ability cooldown states. */
 	private localCooldownMap = new Map<string, AbilityCooldown>();
-	/** Local user ability enabled states. */
+	/** Local client ability enabled states. */
 	private localStateMap = new Map<string, boolean>();
+	/** Whether or not the local client is **currently** charging an ability. */
+	private chargingAbility = false;
 
 	constructor(private readonly abilityRegistry: AbilityRegistry) {}
 
 	OnStart(): void {
 		CoreClientSignals.LocalAbilityActivateRequest.Connect((event) => {
 			if (this.LocalClientCanUseAbility(event.abilityId)) {
-				print(`Local client is sending ability request: ${event.abilityId}`);
 				CoreNetwork.ClientToServer.AbilityActivateRequest.Client.FireServer(event.abilityId);
 			}
 		});
 
-		CoreNetwork.ServerToClient.AbilityUsedNew.Client.OnServerEvent((clientId, abilityId) => {
-			CoreClientSignals.AbilityUsedNew.Fire({ clientId: clientId, abilityId: abilityId });
-			print(`Ability was used: ${abilityId} by: ${clientId}`);
+		CoreNetwork.ServerToClient.AbilityUsed.Client.OnServerEvent((clientId, abilityId) => {
+			CoreClientSignals.AbilityUsed.Fire({ clientId: clientId, abilityId: abilityId });
 		});
 
-		CoreNetwork.ServerToClient.AbilityAddedNew.Client.OnServerEvent((clientId, abilityDto) => {
+		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((clientId, abilityDto) => {
 			if (clientId === Game.LocalPlayer.clientId) {
 				this.AddAbilityToLocalClient(abilityDto);
 			} else {
-				CoreClientSignals.AbilityAddedNew.Fire({
+				CoreClientSignals.AbilityAdded.Fire({
 					clientId: clientId,
 					abilityId: abilityDto.abilityId,
 				});
 			}
 		});
 
-		CoreNetwork.ServerToClient.AbilityRemovedNew.Client.OnServerEvent((clientId, abilityId) => {
+		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((clientId, abilityId) => {
 			if (clientId === Game.LocalPlayer.clientId) {
 				this.RemoveAbilityFromLocalClient(abilityId);
 			} else {
-				CoreClientSignals.AbilityRemovedNew.Fire({
+				CoreClientSignals.AbilityRemoved.Fire({
 					clientId: clientId,
 					abilityId: abilityId,
 				});
 			}
 		});
 
-		CoreNetwork.ServerToClient.AbilityCooldownStateChangeNew.Client.OnServerEvent((abilityCooldownDto) => {
+		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((abilityCooldownDto) => {
 			this.SetLocalAbilityOnCooldown(abilityCooldownDto);
 		});
 
-		CoreNetwork.ServerToClient.AbilityStateChangeNew.Client.OnServerEvent((clientId, abilityId, enabled) => {
+		CoreNetwork.ServerToClient.AbilityStateChange.Client.OnServerEvent((clientId, abilityId, enabled) => {
 			if (clientId === Game.LocalPlayer.clientId) {
 				this.SetLocalAbilityEnabledState(abilityId, enabled);
 			} else {
 				this.FireAbilityEnabledStateUpdateSignal(clientId, abilityId, enabled);
 			}
+		});
+
+		CoreNetwork.ServerToClient.AbilityChargeStarted.Client.OnServerEvent((clientId, chargingAbilityDto) => {
+			if (clientId === Game.LocalPlayer.clientId) this.chargingAbility = true;
+			CoreClientSignals.AbilityChargeStarted.Fire({
+				clientId: clientId,
+				chargingAbilityDto: chargingAbilityDto,
+			});
+		});
+
+		CoreNetwork.ServerToClient.AbilityChargeEnded.Client.OnServerEvent((clientId, chargingAbilityEndedDto) => {
+			if (clientId === Game.LocalPlayer.clientId) this.chargingAbility = false;
+			CoreClientSignals.AbilityChargeEnded.Fire({
+				clientId: clientId,
+				chargingAbilityDto: chargingAbilityEndedDto,
+			});
 		});
 	}
 
@@ -76,7 +91,7 @@ export class AbilityController implements OnStart {
 	private AddAbilityToLocalClient(abilityDto: AbilityDto): void {
 		this.localAbilitySet.add(abilityDto.abilityId);
 		this.localStateMap.set(abilityDto.abilityId, abilityDto.enabled);
-		CoreClientSignals.AbilityAddedNew.Fire({
+		CoreClientSignals.AbilityAdded.Fire({
 			clientId: Game.LocalPlayer.clientId,
 			abilityId: abilityDto.abilityId,
 		});
@@ -96,7 +111,7 @@ export class AbilityController implements OnStart {
 	private RemoveAbilityFromLocalClient(abilityId: string): void {
 		this.localAbilitySet.delete(abilityId);
 		this.localStateMap.delete(abilityId);
-		CoreClientSignals.AbilityRemovedNew.Fire({
+		CoreClientSignals.AbilityRemoved.Fire({
 			clientId: Game.LocalPlayer.clientId,
 			abilityId: abilityId,
 		});
@@ -129,6 +144,8 @@ export class AbilityController implements OnStart {
 	 */
 	private SetLocalAbilityEnabledState(abilityId: string, enabled: boolean): boolean {
 		if (!this.LocalClientHasAbility(abilityId)) return false;
+		const currentEnabledState = this.localStateMap.get(abilityId);
+		if (currentEnabledState === enabled) return false;
 		this.localStateMap.set(abilityId, enabled);
 		this.FireAbilityEnabledStateUpdateSignal(Game.LocalPlayer.clientId, abilityId, enabled);
 		return true;
@@ -163,6 +180,7 @@ export class AbilityController implements OnStart {
 		return (
 			!this.IsLocalAbilityDisabled(abilityId) &&
 			!this.IsLocalAbilityOnCooldown(abilityId) &&
+			!this.chargingAbility &&
 			Game.LocalPlayer.character !== undefined
 		);
 	}

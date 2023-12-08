@@ -1,15 +1,48 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { AbilityRegistry } from "../../../Shared/Strollers/Abilities/AbilityRegistry";
+import { EntityService } from "../Entity/EntityService";
 export declare class AbilityService implements OnStart {
     private readonly abilityRegistry;
+    private readonly entityService;
     /** Mapping of **client id** to owned ability ids. */
     private abilityMap;
     /** Mapping of **client id** to ability cooldown states. */
     private cooldownMap;
     /** Mapping of **client id** to ability enabled states. */
     private enabledMap;
-    constructor(abilityRegistry: AbilityRegistry);
+    /** Mapping of **client id** to ability charging state. */
+    private chargingMap;
+    constructor(abilityRegistry: AbilityRegistry, entityService: EntityService);
     OnStart(): void;
+    /**
+     * Attempts use provided ability for client. Ability is successfully used if the ability
+     * exists and `CanUseAbility` validation is successful.
+     *
+     * @param clientId The client using ability.
+     * @param abilityId The ability client is using.
+     */
+    private UseAbility;
+    /**
+     * Begins charging ability for provided client. If the ability completely charges,
+     * the ability is used.
+     *
+     * @param clientId The client using ability.
+     * @param abilityMeta The ability meta of the ability the client is using.
+     */
+    private HandleChargeAbility;
+    /**
+     * Creates cancellation triggers for charge ability. If a cancellation trigger is triggered,
+     * the ability is immediately cancelled, and all trigger connections are cleaned up. Returns
+     * `Bin` that cleans up cancellation triggers if ability is successfully used.
+     *
+     * @param clientId The client using a charge ability.
+     * @param abilityId The id of the ability being charged.
+     * @param cancellationTriggers The triggers that cancel ability.
+     * @param cancelCallback Callback that cancels scheduled ability.
+     * @param chargeEndedCallback Callback that fires charge ended remote and signals.
+     * @returns Bin that cleans up cancellation triggers.
+     */
+    private CreateCancellationTriggers;
     /**
      * Adds the provided ability to client `clientId`. Returns whether or not ability was successfully added to client.
      *
@@ -43,7 +76,7 @@ export declare class AbilityService implements OnStart {
      * @param duration The cooldown duration in **seconds**.
      * @returns Whether or not the cooldown was successfully applied.
      */
-    SetAbilityOnCooldown(clientId: number, abilityId: string, duration: number): boolean;
+    SetAbilityOnCooldown(clientId: number, abilityId: string, duration?: number): boolean;
     /**
      * Sets the client's ability enabled state. Returns whether or not the state was successfully updated.
      * Returns whether or not the ability's state was updated. If this function returns `false` the client
@@ -56,7 +89,16 @@ export declare class AbilityService implements OnStart {
      */
     SetAbilityEnabledState(clientId: number, abilityId: string, enabled: boolean): boolean;
     /**
-     * Returns whether or not the provided ability is disabled for client. If the client does
+     * Fires either `AbilityEnabled` or `AbilityDisabled` signal based on updated ability
+     * state.
+     *
+     * @param clientId The client whose ability had a state update.
+     * @param abilityId The ability that had a state update.
+     * @param enabled The ability's new enabled state.
+     */
+    private FireAbilityEnabledStateUpdateSignal;
+    /**
+     * Returns whether- or not the provided ability is disabled for client. If the client does
      * **not** have the provided ability, this function returns `true`.
      *
      * @param clientId The client that is being queried.
@@ -74,8 +116,17 @@ export declare class AbilityService implements OnStart {
      */
     IsAbilityOnCooldown(clientId: number, abilityId: string): boolean;
     /**
+     * Returns whether or not the provided client is **currently** charging an
+     * ability.
+     *
+     * @param clientId The client that is being queried.
+     * @returns Whether or not the client is currently charging an ability.
+     */
+    IsClientChargingAbility(clientId: number): boolean;
+    /**
      * Returns whether or not the provided ability is _currently_ usable by the client. An ability
-     * is usable if it is **not** disabled and **not** on cooldown.
+     * is usable if it is **not** disabled, **not** on cooldown, **not** charging an ability, and an entity **currently** belongs to
+     * `clientId`.
      *
      * @param clientId The client that is being queried.
      * @param abilityId The ability that is being queried.

@@ -1,10 +1,4 @@
-import {
-	AbilityCooldownDto,
-	AbilityDto,
-	ChargingAbilityDto,
-	ChargingAbilityEndedDto,
-	UseAbilityRequest,
-} from "./Abilities/Ability";
+import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto } from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -48,9 +42,6 @@ export const CoreNetwork = {
 		TEST_LATENCY: new RemoteFunction<void, number>(),
 		TestKnockback2: new RemoteEvent<[]>(),
 		LibonatiTest: new RemoteEvent<[]>(),
-
-		GetAbilities: new RemoteFunction<[], ReadonlyArray<AbilityDto>>(),
-		UseAbility: new RemoteEvent<[req: UseAbilityRequest]>(),
 
 		// ----- REFACTORING -----
 		AbilityActivateRequest: new RemoteEvent<[abilityId: string]>(),
@@ -176,22 +167,13 @@ export const CoreNetwork = {
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
-		AbilityAdded: new RemoteEvent<[entityId: number, dto: AbilityDto]>(),
-		AbilityRemoved: new RemoteEvent<[entityId: number, id: string]>(),
-		AbilityStateChange: new RemoteEvent<[entityId: number, id: string, enabled: boolean]>(),
-		AbilitiesCleared: new RemoteEvent<[entityId: number]>(),
-
 		AbilityCooldownStateChange: new RemoteEvent<[dto: AbilityCooldownDto]>(),
-
-		AbilityChargeBegan: new RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>(),
-		AbilityChargeEnded: new RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>(),
-
-		// ----- REFACTORING -----
-		AbilityCooldownStateChangeNew: new RemoteEvent<[dto: AbilityCooldownDto]>(),
-		AbilityStateChangeNew: new RemoteEvent<[clientId: number, abilityId: string, enabled: boolean]>(),
-		AbilityAddedNew: new RemoteEvent<[clientId: number, dto: AbilityDto]>(),
-		AbilityRemovedNew: new RemoteEvent<[clientId: number, abilityId: string]>(),
-		AbilityUsedNew: new RemoteEvent<[clientId: number, abilityId: string]>(),
+		AbilityStateChange: new RemoteEvent<[clientId: number, abilityId: string, enabled: boolean]>(),
+		AbilityAdded: new RemoteEvent<[clientId: number, dto: AbilityDto]>(),
+		AbilityRemoved: new RemoteEvent<[clientId: number, abilityId: string]>(),
+		AbilityUsed: new RemoteEvent<[clientId: number, abilityId: string]>(),
+		AbilityChargeStarted: new RemoteEvent<[clientId: number, dto: ChargingAbilityDto]>(),
+		AbilityChargeEnded: new RemoteEvent<[clientId: number, dto: ChargingAbilityEndedDto]>(),
 	},
 };
 

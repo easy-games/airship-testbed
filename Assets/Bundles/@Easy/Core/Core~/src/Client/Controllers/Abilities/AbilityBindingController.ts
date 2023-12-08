@@ -37,33 +37,33 @@ export class AbilityBindingController implements OnStart {
 	OnStart(): void {
 		// If ability was added to the local client AND it's an active ability,
 		// bind ability to key.
-		CoreNetwork.ServerToClient.AbilityAddedNew.Client.OnServerEvent((clientId, abilityDto) => {
+		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((clientId, abilityDto) => {
 			const abilityMeta = this.abilityRegistry.GetAbilityById(abilityDto.abilityId);
 			if (!abilityMeta) return;
 			if (
 				clientId === Game.LocalPlayer.clientId &&
 				abilityMeta.config.kind === AbilityKind.Active &&
-				abilityDto.slot
+				abilityDto.slot !== undefined
 			) {
 				this.RegisterLocalAbility(abilityDto);
 			}
 		});
 		// If ability was removed to the local client AND it's an active ability,
 		// unbind ability from key.
-		CoreNetwork.ServerToClient.AbilityRemovedNew.Client.OnServerEvent((clientId, abilityId) => {
+		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((clientId, abilityId) => {
 			const abilityMeta = this.abilityRegistry.GetAbilityById(abilityId);
 			if (!abilityMeta) return;
 			if (
 				clientId === Game.LocalPlayer.clientId &&
 				abilityMeta.config.kind === AbilityKind.Active &&
-				abilityMeta.config.slot
+				abilityMeta.config.slot !== undefined
 			) {
 				this.UnregisterLocalAbility(abilityId);
 			}
 		});
 		// If one of the local client's abilities had a cooldown update, update
 		// binding and UI accordingly.
-		CoreNetwork.ServerToClient.AbilityCooldownStateChangeNew.Client.OnServerEvent((abilityCooldownDto) => {
+		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((abilityCooldownDto) => {
 			this.UpdateAbilityBindingCooldown(abilityCooldownDto);
 		});
 	}
@@ -104,6 +104,7 @@ export class AbilityBindingController implements OnStart {
 				break;
 		}
 		if (!nextSlot) return false;
+		print(`Registering ability (2)`);
 		nextSlot.BindTo(abilityDto);
 		nextSlot.BindToAction(this.keyboard, (inputState, abilityBinding) => {
 			const boundAbilityId = abilityBinding.GetBound()?.abilityId;

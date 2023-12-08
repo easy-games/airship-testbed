@@ -1,3 +1,4 @@
+import { ChargingAbilityDto, ChargingAbilityEndedDto } from "Shared/Abilities/Ability";
 import { Entity } from "Shared/Entity/Entity";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { ItemType } from "Shared/Item/ItemType";
@@ -61,8 +62,11 @@ export const CoreServerSignals = {
 	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
 	TeamAdded: new Signal<Team>(),
 
-	// ----- REFACTORING -----
 	AbilityAdded: new Signal<{ clientId: number; abilityId: string }>(),
 	AbilityRemoved: new Signal<{ clientId: number; abilityId: string }>(),
 	AbilityUsed: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityEnabled: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityDisabled: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityChargeStarted: new Signal<{ clientId: number; chargingAbilityDto: ChargingAbilityDto }>(),
+	AbilityChargeEnded: new Signal<{ clientId: number; chargingAbilityEndedDto: ChargingAbilityEndedDto }>(),
 };

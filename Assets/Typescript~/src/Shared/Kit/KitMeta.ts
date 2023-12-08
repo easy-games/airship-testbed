@@ -18,6 +18,6 @@ export const bedwarsKits: { [key in KitType]: Kit } = {
 		name: "None",
 		description: "Just you!",
 		activeAbilities: [],
-		passiveAbilities: [AbilityId.ROBBIE_TEST],
+		passiveAbilities: [],
 	},
 };

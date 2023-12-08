@@ -2,7 +2,7 @@ import { AbilityDto } from "../../../../Shared/Abilities/Ability";
 import { AbilitySlot } from "../../../../Shared/Abilities/AbilitySlot";
 import { Keyboard } from "../../../../Shared/UserInput";
 import { Signal } from "../../../../Shared/Util/Signal";
-import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilitiesUIController";
+import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilityUIController";
 export declare enum BindingInputState {
     InputBegan = 0,
     InputEnded = 1

@@ -2,13 +2,13 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { ChargingAbilityEndedState } from "Shared/Abilities/Ability";
+import { Game } from "Shared/Game";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Bin } from "Shared/Util/Bin";
 import { InputUtils } from "Shared/Util/InputUtils";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnUpdate } from "Shared/Util/Timer";
 import { CoreUIController } from "../UI/CoreUIController";
-import { AbilitiesController } from "./AbilitiesController";
 import { AbilityBindingController } from "./AbilityBindingController";
 
 export interface ClientAbilityCooldownState {
@@ -41,7 +41,6 @@ export class AbilityUIController implements OnStart {
 
 	public constructor(
 		public readonly coreUIController: CoreUIController,
-		public readonly abilitiesController: AbilitiesController,
 		public readonly abilityBindingController: AbilityBindingController,
 	) {
 		const go = this.coreUIController.refs.GetValue("Apps", "Abilities");
@@ -101,13 +100,9 @@ export class AbilityUIController implements OnStart {
 			if (!prevState?.active && nextState.active) {
 				contentRect.TweenLocalScale(new Vector3(0.9, 0.9, 0.9), ACTIVE_TWEEN_TIME);
 				contentRect.TweenGraphicAlpha(0.8, ACTIVE_TWEEN_TIME);
-				// contentRect
-				// 	.GetComponent<Image>()
-				// 	.TweenGraphicColor(new Color(40 / 255, 110 / 255, 185 / 255, 1), ACTIVE_TWEEN_TIME);
 			} else if (prevState?.active && !nextState.active) {
 				contentRect.TweenLocalScale(new Vector3(1, 1, 1), ACTIVE_TWEEN_TIME);
 				contentRect.TweenGraphicAlpha(1, ACTIVE_TWEEN_TIME);
-				// contentRect.GetComponent<Image>().TweenGraphicColor(new Color(0, 0, 0, 0.65), ACTIVE_TWEEN_TIME);
 			}
 
 			const clearSlotCooldown = this.slotCooldowns.get(slotIdx);
@@ -178,9 +173,9 @@ export class AbilityUIController implements OnStart {
 
 		let disconnectTimer: (() => void) | undefined;
 
-		CoreClientSignals.AbilityChargeBegan.Connect((event) => {
-			if (event.IsLocalPlayer()) {
-				const chargingEvent = event.chargingAbility;
+		CoreClientSignals.AbilityChargeStarted.Connect((event) => {
+			if (event.clientId === Game.LocalPlayer.clientId) {
+				const chargingEvent = event.chargingAbilityDto;
 
 				const startTime = chargingEvent.timeStart;
 				const endTime = chargingEvent.timeEnd;
@@ -194,29 +189,19 @@ export class AbilityUIController implements OnStart {
 
 				this.castbar.InstantlySetValue(0);
 				this.castbar.SetActive(true);
-				this.castbarText.text = event.chargingAbility.displayText;
+				this.castbarText.text = event.chargingAbilityDto.displayText;
 			}
-
-			const abilities = event.characterEntity.GetAbilities();
-			const logic = abilities.GetAbilityLogicById(event.chargingAbility.id);
-			logic?.OnClientChargeBegan();
 		});
 
 		CoreClientSignals.AbilityChargeEnded.Connect((event) => {
-			if (event.IsLocalPlayer()) {
-				if (event.chargingAbility.endState === ChargingAbilityEndedState.Cancelled) {
+			if (event.clientId === Game.LocalPlayer.clientId) {
+				if (event.chargingAbilityDto.endState === ChargingAbilityEndedState.Cancelled) {
 					this.castbar.SetValue(0);
 				}
 
 				disconnectTimer?.();
 				this.castbar.SetActive(false);
 			}
-
-			const abilities = event.characterEntity.GetAbilities();
-			const logic = abilities.GetAbilityLogicById(event.chargingAbility.id);
-			logic?.OnClientChargeEnded({
-				endState: event.chargingAbility.endState,
-			});
 		});
 
 		// Update local abilities

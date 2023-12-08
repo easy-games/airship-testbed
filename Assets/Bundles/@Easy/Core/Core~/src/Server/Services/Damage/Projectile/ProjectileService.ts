@@ -7,6 +7,7 @@ import { DamageType } from "Shared/Damage/DamageType";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
 import { ItemStack } from "Shared/Inventory/ItemStack";
+import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
@@ -142,6 +143,21 @@ export class ProjectileService implements OnStart {
 				Debug.LogError("Failed to find itemType with id " + easyProjectile.itemTypeId);
 				return;
 			}
+
+			let launcherItemType: ItemType | undefined;
+
+			if (shooterEntity instanceof CharacterEntity) {
+				launcherItemType = shooterEntity.GetInventory().GetHeldItem()?.GetItemType();
+			}
+
+			if (shooterEntity) {
+				CoreServerSignals.ProjectileFired.Fire({
+					shooter: shooterEntity,
+					launcherItemType: launcherItemType ?? ItemType.WOOD_BOW,
+					ammoItemType: itemType,
+				});
+			}
+
 			const projectile = new Projectile(easyProjectile, itemType, shooterEntity);
 		});
 	}

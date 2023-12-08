@@ -176,3 +176,4 @@ MonoBehaviour:
   blockMask:
     serializedVersion: 2
     m_Bits: 64
+  boxCollider: {fileID: 8542979086540251234}

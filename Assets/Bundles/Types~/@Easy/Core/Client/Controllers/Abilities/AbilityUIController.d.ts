@@ -1,6 +1,6 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { CoreUIController } from "../UI/CoreUIController";
-import { AbilitiesController } from "./AbilitiesController";
+import { AbilityBindingController } from "./AbilityBindingController";
 export interface ClientAbilityCooldownState {
     startTime: number;
     length: number;
@@ -15,16 +15,16 @@ export interface ClientAbilityState {
     active: boolean;
     charging?: boolean;
 }
-export declare class AbilitiesUIController implements OnStart {
+export declare class AbilityUIController implements OnStart {
     readonly coreUIController: CoreUIController;
-    readonly abilitiesController: AbilitiesController;
+    readonly abilityBindingController: AbilityBindingController;
     private abilitySlots;
     private canvas;
     private abilitiesRefs;
     private abilitybarContent;
     private castbar;
     private castbarText;
-    constructor(coreUIController: CoreUIController, abilitiesController: AbilitiesController);
+    constructor(coreUIController: CoreUIController, abilityBindingController: AbilityBindingController);
     private slotCooldowns;
     private UpdateAbilityBarSlot;
     private SetupAbilityBar;

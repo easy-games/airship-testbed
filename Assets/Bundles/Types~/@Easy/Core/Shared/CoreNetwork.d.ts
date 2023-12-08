@@ -2,7 +2,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
-import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto, UseAbilityRequest } from "./Abilities/Ability";
+import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto } from "./Abilities/Ability";
 import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
 import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
@@ -40,8 +40,7 @@ export declare const CoreNetwork: {
         TEST_LATENCY: RemoteFunction<void, number>;
         TestKnockback2: RemoteEvent<[]>;
         LibonatiTest: RemoteEvent<[]>;
-        GetAbilities: RemoteFunction<[], readonly AbilityDto[]>;
-        UseAbility: RemoteEvent<[req: UseAbilityRequest]>;
+        AbilityActivateRequest: RemoteEvent<[abilityId: string]>;
     };
     ServerToClient: {
         ServerInfo: RemoteEvent<[gameId: string, serverId: string]>;
@@ -137,15 +136,12 @@ export declare const CoreNetwork: {
         GroundItemDestroyed: RemoteEvent<[groundItemId: number]>;
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
-        AbilityAdded: RemoteEvent<[entityId: number, dto: AbilityDto]>;
-        AbilityRemoved: RemoteEvent<[entityId: number, id: string]>;
-        AbilityStateChange: RemoteEvent<[entityId: number, id: string, enabled: boolean]>;
-        AbilitiesCleared: RemoteEvent<[entityId: number]>;
         AbilityCooldownStateChange: RemoteEvent<[dto: AbilityCooldownDto]>;
-        AbilityChargeBegan: RemoteEvent<[entityId: number, dto: ChargingAbilityDto]>;
-        AbilityChargeEnded: RemoteEvent<[entityId: number, dto: ChargingAbilityEndedDto]>;
-        AbilityCooldownStateChangeNew: RemoteEvent<[dto: AbilityCooldownDto]>;
-        AbilityStateChangeNew: RemoteEvent<[clientId: number, abilityId: string, enabled: boolean]>;
-        AbilityAddedNew: RemoteEvent<[clientId: number, dto: AbilityDto]>;
+        AbilityStateChange: RemoteEvent<[clientId: number, abilityId: string, enabled: boolean]>;
+        AbilityAdded: RemoteEvent<[clientId: number, dto: AbilityDto]>;
+        AbilityRemoved: RemoteEvent<[clientId: number, abilityId: string]>;
+        AbilityUsed: RemoteEvent<[clientId: number, abilityId: string]>;
+        AbilityChargeStarted: RemoteEvent<[clientId: number, dto: ChargingAbilityDto]>;
+        AbilityChargeEnded: RemoteEvent<[clientId: number, dto: ChargingAbilityEndedDto]>;
     };
 };

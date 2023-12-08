@@ -1,11 +1,11 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
+import { ChargingAbilityDto, ChargingAbilityEndedDto } from "../Shared/Abilities/Ability";
 import { Entity } from "../Shared/Entity/Entity";
 import { GroundItem } from "../Shared/GroundItem/GroundItem";
 import { ItemType } from "../Shared/Item/ItemType";
 import { BeforeBlockPlacedSignal } from "../Shared/Signals/BeforeBlockPlacedSignal";
 import { BlockGroupPlaceSignal, BlockPlaceSignal } from "../Shared/Signals/BlockPlaceSignal";
-import { Ability } from "../Shared/Strollers/Abilities/AbilityRegistry";
 import { Team } from "../Shared/Team/Team";
 import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
 import { Signal } from "../Shared/Util/Signal";
@@ -86,10 +86,30 @@ export declare const CoreServerSignals: {
     TeamAdded: Signal<Team>;
     AbilityAdded: Signal<{
         clientId: number;
-        ability: Ability;
+        abilityId: string;
     }>;
     AbilityRemoved: Signal<{
         clientId: number;
-        ability: Ability;
+        abilityId: string;
+    }>;
+    AbilityUsed: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityEnabled: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityDisabled: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityChargeStarted: Signal<{
+        clientId: number;
+        chargingAbilityDto: ChargingAbilityDto;
+    }>;
+    AbilityChargeEnded: Signal<{
+        clientId: number;
+        chargingAbilityEndedDto: ChargingAbilityEndedDto;
     }>;
 };

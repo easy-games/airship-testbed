@@ -1,5 +1,3 @@
-import { AbilityDto } from "Shared/Abilities/Ability";
-import { CharacterAbilities } from "Shared/Abilities/CharacterAbilities";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { Ability } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Entity, EntityDto } from "../Entity";
@@ -7,12 +5,10 @@ import { EntitySerializer } from "../EntitySerializer";
 
 export interface CharacterEntityDto extends EntityDto {
 	invId: number;
-	abilities: AbilityDto[];
 }
 
 export class CharacterEntity extends Entity {
 	private inventory: Inventory;
-	private abilities: CharacterAbilities;
 
 	private armor = 0;
 
@@ -25,7 +21,6 @@ export class CharacterEntity extends Entity {
 	) {
 		super(id, networkObject, clientId);
 		this.inventory = inventory;
-		this.abilities = new CharacterAbilities(this);
 
 		this.bin.Add(
 			this.inventory.SlotChanged.Connect((slot, itemStack) => {
@@ -33,12 +28,6 @@ export class CharacterEntity extends Entity {
 			}),
 		);
 		this.CalcArmor();
-
-		if (abilities) {
-			for (const ability of abilities) {
-				this.abilities.AddAbilityWithId(ability.id, ability, ability.config);
-			}
-		}
 	}
 
 	public IsMoving() {
@@ -53,16 +42,11 @@ export class CharacterEntity extends Entity {
 		return this.inventory;
 	}
 
-	public GetAbilities() {
-		return this.abilities;
-	}
-
 	public Encode(): CharacterEntityDto {
 		return {
 			...super.Encode(),
 			serializer: EntitySerializer.CHARACTER,
 			invId: this.inventory.Id,
-			abilities: this.abilities.Encode(),
 		};
 	}
 
