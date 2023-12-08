@@ -3,6 +3,8 @@ import { CoreServerSignals } from "Server/CoreServerSignals";
 import { ItemType } from "Shared/Item/ItemType";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
+const CHARACTER_VOXEL_SIZE = 2;
+
 @Service({})
 export class TelepearlService implements OnStart {
 	OnStart(): void {
@@ -32,9 +34,10 @@ export class TelepearlService implements OnStart {
 					return;
 				}
 
+				let allowedHeight = 12;
 				let topMostBlockPos = WorldAPI.GetVoxelPosition(adjustedHitPoint);
 				let foundAir = false;
-				for (let i = 0; i < 30; i++) {
+				for (let i = 0; i < allowedHeight; i++) {
 					//print(`topMostVoxelPoint: ${topMostBlockPos}`);
 
 					const testPos = topMostBlockPos.add(new Vector3(0, 1, 0));
@@ -48,7 +51,14 @@ export class TelepearlService implements OnStart {
 					topMostBlockPos = testPos;
 				}
 				if (!foundAir) {
-					warn("Failed to find air for telepearl.");
+					let nonTopPos = adjustedHitPoint.sub(
+						event.velocity.normalized.mul(new Vector3(CHARACTER_VOXEL_SIZE, 0, CHARACTER_VOXEL_SIZE)),
+					);
+					const below = nonTopPos.sub(new Vector3(0, CHARACTER_VOXEL_SIZE, 0));
+					if (world.GetBlockAt(below).IsAir()) {
+						nonTopPos = below;
+					}
+					event.projectile.shooter.Teleport(nonTopPos);
 					return;
 				}
 

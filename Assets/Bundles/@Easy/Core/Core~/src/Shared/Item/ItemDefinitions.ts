@@ -795,8 +795,8 @@ export const items: {
 		accessoryPaths: [AccPath(ItemType.TELEPEARL)],
 		projectileLauncher: {
 			ammoItemType: ItemType.TELEPEARL,
-			minVelocityScaler: 4,
-			maxVelocityScaler: 40,
+			minVelocityScaler: 40,
+			maxVelocityScaler: 60,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),
 		},
 		projectile: {
@@ -813,7 +813,7 @@ export const items: {
 			minChargeSeconds: 0,
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
-			onUseSound: ["Fireball_Throw"],
+			//onUseSound: ["Fireball_Throw"],
 			onUseAnimFP: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
 			onUseAnimTP: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 		},
