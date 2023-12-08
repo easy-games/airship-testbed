@@ -23,6 +23,7 @@ export declare class HeldItemManager {
     private currentHeldItem;
     private currentItemState;
     private bin;
+    private newStateQueued;
     private static heldItemClasses;
     static RegisterHeldItem(condition: HeldItemCondition, factory: HeldItemFactory): void;
     GetLabel(): number;

@@ -112,9 +112,5 @@ export declare class Player {
      */
     IsConnected(): boolean;
     Destroy(): void;
-    /**
-     * **Server Only**
-     */
-    TransferToServer(serverId: string, serverTransferData?: unknown, clientTransferData?: unknown): void;
     static FindByClientId(clientId: number): Player | undefined;
 }
