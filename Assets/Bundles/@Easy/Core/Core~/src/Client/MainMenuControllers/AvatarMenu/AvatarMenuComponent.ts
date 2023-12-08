@@ -4,10 +4,13 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
+import { MainMenuController } from "../MainMenuController";
+import { MainMenuPageType } from "../MainMenuPageName";
+import { Bin } from "Shared/Util/Bin";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly GeneralHookupKey = "General";
-	private readonly tweenDuration = 1;
+	private readonly tweenDuration = 0.15;
 
 	private subNavBarBtns: (CSArray<RectTransform> | undefined)[] = [];
 	private mainNavBtns?: CSArray<RectTransform>;
@@ -23,8 +26,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		print("Avatar Editor: " + message);
 	}
 
-	override OnStart() {
-		//super.OnStart();
+	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
+		super.Init(mainMenu, pageType);
 
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
@@ -33,6 +36,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
+			error("Unablet to find main nav btns on Avatar Editor Page");
 			return;
 		}
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
@@ -50,17 +54,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					const subNavI = j;
 					const go = subNavRects.GetValue(j).gameObject;
 					if (go) {
-						print(
-							"setting up sub nav: " +
-								i +
-								", " +
-								j +
-								": " +
-								this.mainNavBtns.GetValue(i).gameObject.name +
-								", " +
-								go.name,
-						);
-
 						CoreUI.SetupButton(go, { noHoverSound: true });
 						CanvasAPI.OnClickEvent(go, () => {
 							this.SelectSubNav(navI, subNavI);
@@ -71,15 +64,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		//Hookup general buttons
-		let button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "AvatarInteractionBtn").gameObject;
-		if (button) {
-			CoreUI.SetupButton(button, { noHoverSound: true });
-			CanvasAPI.OnDragEvent(button, () => {
-				this.OnDragAvatar();
-			});
-		}
-
-		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject;
+		let button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject;
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnDragEvent(button, () => {
@@ -118,14 +103,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
 			const active = i === index;
 			const nav = this.mainNavBtns.GetValue(i);
-			nav.TweenLocalScale(Vector3.one.mul(active ? 1 : 0.75), this.tweenDuration);
+			nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
 			let button = nav.gameObject.GetComponent<Button>();
+			let colors = button.colors;
+			colors.normalColor = active ? Color.green : Color.white;
+			button.colors = colors;
 		}
 
 		for (i = 0; i < this.subNavBars.Length; i++) {
 			const active = i === index;
 			const nav = this.subNavBars.GetValue(i);
-			nav.anchoredPosition = new Vector2(0, 0);
+			nav.anchoredPosition = new Vector2(nav.anchoredPosition.x, 0);
 			nav.gameObject.SetActive(active);
 		}
 
@@ -141,15 +129,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (subBar) {
 			for (let i = 0; i < subBar.Length; i++) {
 				const active = i === subIndex;
-				let button = subBar.GetValue(i).gameObject.GetComponent<Button>();
-				button.colors.normalColor = active ? Color.red : Color.white;
+				const nav = subBar.GetValue(i);
+				nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
+				let button = nav.gameObject.GetComponent<Button>();
+				let colors = button.colors;
+				colors.normalColor = active ? Color.green : Color.white;
+				button.colors = colors;
 			}
 		}
-		this.DisplayItems(AccessorySlot.Hat);
+		this.DisplayItems(ItemUtil.GetAllAvatarItems(AccessorySlot.Shirt));
 	}
 
-	private DisplayItems(slotType: AccessorySlot) {
-		const items = ItemUtil.GetAllAvatarItems(slotType);
+	private DisplayItems(items: Accessory[] | undefined) {
+		this.ClearItembuttons();
 		if (items) {
 			items.forEach((value) => {
 				this.AddItemButton(value);
@@ -157,11 +149,33 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(acc: Accessory) {
-		print("loading item: " + acc.DisplayName);
-		if (this.itemButtonTemplate && this.itemButtonHolder) {
-			GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+	private itemButtonBin: Bin = new Bin();
+	private ClearItembuttons() {
+		this.itemButtonBin.Clean();
+		if (this.itemButtonHolder) {
+			for (let i = 0; i < this.itemButtonHolder.GetChildCount(); i++) {
+				GameObjectUtil.Destroy(this.itemButtonHolder.GetChild(0).gameObject);
+			}
 		}
+	}
+
+	private AddItemButton(acc: Accessory) {
+		this.Log("loading item: " + acc.DisplayName);
+		if (this.itemButtonTemplate && this.itemButtonHolder) {
+			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+			let eventIndex = CanvasAPI.OnClickEvent(newButton, () => {
+				this.SelectItem(acc);
+			});
+			this.itemButtonBin.Add(() => {
+				Bridge.DisconnectEvent(eventIndex);
+			});
+		} else {
+			error("Missing item template or holder for items on AvatarEditor");
+		}
+	}
+
+	private SelectItem(acc: Accessory) {
+		this.Log("Selecting item: " + acc.DisplayName);
 	}
 
 	private OnSelectClear() {
@@ -170,9 +184,5 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private OnSelectCurrent() {
 		//Select the item that is saved for this sot
-	}
-
-	private OnDragAvatar() {
-		//Move the avatar in the 3D scene
 	}
 }

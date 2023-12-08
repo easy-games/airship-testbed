@@ -13,6 +13,8 @@ import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
+import AvatarViewComponent from "./AvatarMenu/AvatarViewComponent";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 @Controller()
 export class MainMenuController implements OnStart {
@@ -34,7 +36,7 @@ export class MainMenuController implements OnStart {
 
 	private open = false;
 	private socialIsVisible = true;
-	private avatarScene?: GameObject;
+	private avatarView?: AvatarViewComponent;
 
 	constructor(private readonly authController: AuthController) {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
@@ -59,15 +61,15 @@ export class MainMenuController implements OnStart {
 			[MainMenuPageType.AVATAR, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
 		]);
 
-		this.avatarScene = GameObject.Create("AvatarHolder");
-		let avatarGo = this.refs.GetValue<GameObject>("Avatar", "Avatar3DScene");
-		avatarGo.transform.SetParent(this.avatarScene.transform);
+		//let avatarHolder = GameObject.Create("AvatarHolder");
+		this.avatarView = GameObjectUtil.Instantiate(
+			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
+		).GetComponent<AvatarViewComponent>();
 
 		for (const [key, value] of this.pageMap) {
 			print("Loaded page: " + key + ", " + value);
 			if (value) {
-				value.ClosePage();
-				value.pageType = key;
+				value.Init(this, key);
 			}
 		}
 

@@ -2,24 +2,24 @@ import {} from "@easy-games/flamework-core";
 import { MainMenuPageType } from "./MainMenuPageName";
 import { SetTimeout } from "Shared/Util/Timer";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { MainMenuController } from "./MainMenuController";
 
 export default class MainMenuPageComponent extends AirshipBehaviour {
 	private animateOutDuration = 0.1;
 	private animateInDuration = 0.1;
 
+	public usesAvatarRender = false;
+
 	public pageType: MainMenuPageType = MainMenuPageType.HOME;
 	protected refs?: GameObjectReferences;
 
 	private activePage = false;
+	protected mainMenu?: MainMenuController;
 
-	public override OnStart(): void {
-		//super.OnStart();
+	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
+		this.mainMenu = mainMenu;
+		this.pageType = pageType;
 		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
-	}
-
-	public TEST() {
-		print("MAIN MENU PAGE COMPONENT TEST!");
-		return "MainMenuTestComplete";
 	}
 
 	public OpenPage() {

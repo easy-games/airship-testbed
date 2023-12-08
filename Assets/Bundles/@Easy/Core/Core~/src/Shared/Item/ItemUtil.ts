@@ -19,6 +19,7 @@ export class ItemUtil {
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
 	private static readonly avatarAccessories = new Map<AccessorySlot, Accessory[]>();
+	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 
@@ -43,6 +44,22 @@ export class ItemUtil {
 		print("Init kit: " + ItemUtil.defaultKitAccessory?.name);
 
 		let i = 0;
+		//Load avatar accessories
+		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarCollection>(
+			"@Easy/Core/Shared/Resources/Accessories/AvatarItems/AllAvatarItems.asset",
+		);
+		for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
+			const element = avatarCollection.skinAccessories.GetValue(i);
+			print("Found avatar skin item: " + element.DisplayName);
+			this.avatarSkinAccessories.push(element);
+		}
+		for (let i = 0; i < avatarCollection.torsoAccessories.Length; i++) {
+			const element = avatarCollection.torsoAccessories.GetValue(i);
+			print("Found avatar item: " + element.DisplayName);
+			this.AddAvailableAvatarItem(element.AccessorySlot, element);
+		}
+
+		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(items)) {
 			this.itemTypes.push(itemType);
 
@@ -80,10 +97,6 @@ export class ItemUtil {
 					if (!accessory) {
 						// warn("Couldn't find: " + accNameLower);
 						continue;
-					}
-
-					if (accessoryName.find("LiveAvatarItem", 0, true)) {
-						this.AddAvailableAvatarItem(accessory.AccessorySlot, accessory);
 					}
 
 					// this.itemAccessories.set(itemType, accessory);
@@ -135,6 +148,8 @@ export class ItemUtil {
 	public static GetAllAvatarItems(slotType: AccessorySlot) {
 		return this.avatarAccessories.get(slotType);
 	}
+
+	public static GetAllAvatarSkins() {}
 
 	/**
 	 * @deprecated

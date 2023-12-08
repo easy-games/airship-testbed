@@ -18,6 +18,14 @@ declare const enum HideFlags {
     DontSave = 52,
     HideAndDontSave = 61,
 }
+declare const enum FindObjectsInactive {
+    Exclude = 0,
+    Include = 1,
+}
+declare const enum FindObjectsSortMode {
+    None = 0,
+    InstanceID = 1,
+}
 declare const enum Space {
     World = 0,
     Self = 1,
@@ -1494,6 +1502,13 @@ declare const enum AtlasPopulationMode {
     Static = 0,
     Dynamic = 1,
 }
+declare const enum GlyphClassDefinitionType {
+    Undefined = 0,
+    Base = 1,
+    Ligature = 2,
+    Mark = 3,
+    Component = 4,
+}
 declare const enum TextElementType {
     Character = 1,
     Sprite = 2,
@@ -1509,6 +1524,8 @@ declare const enum GlyphRenderMode {
     SDF8 = 8230,
     SDF16 = 16422,
     SDF32 = 32806,
+    COLOR = 69652,
+    COLOR_HINTED = 69656,
 }
 declare const enum FontFeatureLookupFlags {
     None = 0,
@@ -3490,6 +3507,7 @@ interface Texture extends Object {
     mipMapBias: number;
     texelSize: Vector2;
     updateCount: number;
+    isDataSRGB: boolean;
     imageContentsHash: Hash128;
 
 
@@ -5336,6 +5354,7 @@ interface RenderTextureDescriptor {
     constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
+    constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number, readWrite: RenderTextureReadWrite): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat, mipCount: number): RenderTextureDescriptor;
@@ -5789,6 +5808,7 @@ interface Material extends Object {
     constructor(contents: string): Material;
 
     ComputeCRC(): number;
+    CopyMatchingPropertiesFromMaterial(mat: Material): void;
     CopyPropertiesFromMaterial(mat: Material): void;
     DisableKeyword(keyword: string): void;
     DisableKeyword(keyword: unknown): void;
@@ -7320,6 +7340,8 @@ interface RaycastResult {
     distance: number;
     index: number;
     depth: number;
+    sortingGroupID: number;
+    sortingGroupOrder: number;
     sortingLayer: number;
     sortingOrder: number;
     worldPosition: Vector3;
@@ -7534,6 +7556,7 @@ interface Graphic extends UIBehaviour, ICanvasElement {
     SetLayoutDirty(): void;
     SetMaterialDirty(): void;
     SetNativeSize(): void;
+    SetRaycastDirty(): void;
     SetVerticesDirty(): void;
     UnregisterDirtyLayoutCallback(action: UnityAction): void;
     UnregisterDirtyMaterialCallback(action: UnityAction): void;
@@ -7842,6 +7865,8 @@ interface Animator extends Behaviour {
     logWarnings: boolean;
     fireEvents: boolean;
     keepAnimatorControllerStateOnDisable: boolean;
+    keepAnimatorStateOnDisable: boolean;
+    writeDefaultValuesOnDisable: boolean;
 
     constructor(): Animator;
 
@@ -8812,6 +8837,7 @@ interface Glyph {
     glyphRect: GlyphRect;
     scale: number;
     atlasIndex: number;
+    classDefinitionType: GlyphClassDefinitionType;
 
     constructor(): Glyph;
     constructor(glyph: Glyph): Glyph;
@@ -9497,6 +9523,13 @@ interface AirshipPackageDocument {
     constructor(): AirshipPackageDocument;
 
 }
+    
+interface AirshipPackageDocumentConstructor {
+
+
+    FindPathFromDocument(document: AirshipPackageDocument): string;
+}
+declare const AirshipPackageDocument: AirshipPackageDocumentConstructor;
     
 interface GameConfigConstructor {
 
@@ -11722,6 +11755,7 @@ interface VoxelMeshCopy {
     meshMaterialName: string;
 
     constructor(mesh: Mesh): VoxelMeshCopy;
+    constructor(src: VoxelMeshCopy): VoxelMeshCopy;
     constructor(assetPath: string, showError: boolean): VoxelMeshCopy;
 
     AdjustUVs(uvs: Rect): void;
@@ -11751,6 +11785,7 @@ interface VoxelBlocksConstructor {
     TileSizeNames: CSArray<string>;
     ContextBlockNames: CSArray<string>;
     QuarterBlockNames: CSArray<string>;
+    QuarterBlockSubstitutions: CSArray<number>;
 
 
 }
@@ -13072,6 +13107,9 @@ interface TrailRenderer extends Renderer {
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
+    GetVisiblePositions(positions: CSArray<Vector3>): number;
+    GetVisiblePositions(positions: CSArray<Vector3>): number;
+    GetVisiblePositions(positions: CSArray<Vector3>): number;
     SetPosition(index: number, position: Vector3): void;
     SetPositions(positions: CSArray<Vector3>): void;
     SetPositions(positions: CSArray<Vector3>): void;
@@ -13676,6 +13714,7 @@ interface EasyMotion extends MonoBehaviour {
 }
     
 interface GroundItemDrop extends MonoBehaviour {
+    boxCollider: BoxCollider;
 
     constructor(): GroundItemDrop;
 
@@ -13685,5 +13724,28 @@ interface GroundItemDrop extends MonoBehaviour {
     SetPosition(position: Vector3): void;
     SetSpinActive(active: boolean): void;
     SetVelocity(velocity: Vector3): void;
+}
+    
+interface RemoteImage extends MonoBehaviour {
+    url: string;
+    image: Image;
+    downloadOnStart: boolean;
+
+    constructor(): RemoteImage;
+
+    StartDownload(): void;
+}
+    
+interface AvatarCollection extends ScriptableObject {
+    skinAccessories: CSArray<AccessorySkin>;
+    headShapeAccessories: CSArray<Accessory>;
+    headAccessories: CSArray<Accessory>;
+    torsoAccessories: CSArray<Accessory>;
+    handAccessories: CSArray<Accessory>;
+    legAccessories: CSArray<Accessory>;
+    feetAccessories: CSArray<Accessory>;
+
+    constructor(): AvatarCollection;
+
 }
 
