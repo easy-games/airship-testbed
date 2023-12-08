@@ -32,6 +32,7 @@ export class HeldItemManager {
 	private currentHeldItem: HeldItem;
 	private currentItemState: HeldItemState = HeldItemState.NONE;
 	private bin = new Bin();
+	private newStateQueued = false;
 
 	private static heldItemClasses = new Array<HeldItemEntry>();
 
@@ -104,17 +105,25 @@ export class HeldItemManager {
 
 	//LOCAL CLIENT ONLY
 	public TriggerNewState(itemState: HeldItemState) {
+		if (this.newStateQueued) return;
+		this.newStateQueued = true;
+
 		const lookVector = this.entity.entityDriver.GetLookVector();
 
 		//Notify server of new State
-		Dependency<LocalEntityController>().AddToMoveData("HeldItemState", {
-			e: this.entity.id,
-			s: itemState,
-			l: lookVector,
-		});
-
-		//Handle the state locally
-		this.OnNewState(itemState, lookVector);
+		Dependency<LocalEntityController>().AddToMoveData(
+			"HeldItemState",
+			{
+				e: this.entity.id,
+				s: itemState,
+				l: lookVector,
+			},
+			() => {
+				this.newStateQueued = false;
+				//Handle the state locally
+				this.OnNewState(itemState, lookVector);
+			},
+		);
 	}
 
 	public OnNewState(itemState: HeldItemState, lookVector: Vector3) {
