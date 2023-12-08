@@ -30,6 +30,7 @@ export declare class LocalEntityController implements OnStart {
     private defaultFirstPerson;
     private firstSpawn;
     private sprintOverlayEmission?;
+    readonly onCustomMoveDataProcessed: Signal<void>;
     constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: InventoryController);
     /** Returns `true` if the player is in first-person mode. */
     IsFirstPerson(): boolean;
@@ -38,7 +39,12 @@ export declare class LocalEntityController implements OnStart {
     /** Observes whether or not the player wants to look backwards. */
     ObserveLookBackwards(observer: (lookBackwards: boolean) => CleanupFunc): () => void;
     /** Add custom data to the move data command stream. */
-    AddToMoveData<K extends keyof DataStreamItems, T extends DataStreamItems[K]>(key: K, value: T): void;
+    AddToMoveData<K extends keyof DataStreamItems, T extends DataStreamItems[K]>(key: K, value: T, 
+    /**
+     * Fired when the move data has been processed during the tick loop.
+     * This will be fired **before** movement is calculated.
+     **/
+    onProcessedCallback?: () => void): void;
     private TakeScreenshot;
     private GetCamYOffset;
     private CreateHumanoidCameraMode;

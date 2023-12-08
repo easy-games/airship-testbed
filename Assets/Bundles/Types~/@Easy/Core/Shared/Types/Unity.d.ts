@@ -4162,3 +4162,11 @@ interface MaterialPropertyBlockConstructor {
     new(): MaterialPropertyBlock;
 }
 declare const MaterialPropertyBlock: MaterialPropertyBlockConstructor;
+
+interface RemoteImage {
+    /**
+     * Fired when the remote image has finished downloading (or has failed).
+     * @param callback 
+     */
+    OnFinishedLoading(callback: (success: boolean) => void): EngineEventConnection;
+}

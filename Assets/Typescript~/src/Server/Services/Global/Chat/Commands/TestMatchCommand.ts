@@ -18,7 +18,7 @@ export class TestMatchCommand extends ChatCommand {
 		}
 		player.SendMessage(`Created server with ID "${server.serverId}". Teleporting all players...`);
 		for (const player of Dependency<PlayerService>().GetPlayers()) {
-			player.TransferToServer(server.serverId);
+			Dependency<TransferService>().TransferToServer(player, server.serverId);
 		}
 	}
 }

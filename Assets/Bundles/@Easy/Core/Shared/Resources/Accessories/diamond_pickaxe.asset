@@ -16,7 +16,7 @@ MonoBehaviour:
   AccessorySlot: 6
   Prefab: {fileID: 5201375224750791660, guid: 84d1dc73126554d8f9c189f5c1800e01, type: 3}
   Position: {x: 0.06, y: 0.2, z: 0.01}
-  Rotation: {x: -77.9, y: 89, z: 93}
+  Rotation: {x: 282.09998, y: 88.99997, z: 93.00003}
   Scale: {x: 1, y: 1, z: 1}
-  MeshDeformed: 0
-  VisibleInFirstPerson: 1
+  visibilityMode: 2
+  SkinnedToCharacter: 1

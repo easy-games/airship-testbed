@@ -13225,6 +13225,7 @@ interface InternalHttpManagerConstructor {
 
 
     GetAsync(url: string): HttpGetResponse;
+    PatchAsync(url: string, data: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
     PutAsync(url: string, data: string): HttpGetResponse;
     SetAuthToken(authToken: string): void;
@@ -13684,5 +13685,15 @@ interface GroundItemDrop extends MonoBehaviour {
     SetPosition(position: Vector3): void;
     SetSpinActive(active: boolean): void;
     SetVelocity(velocity: Vector3): void;
+}
+    
+interface RemoteImage extends MonoBehaviour {
+    url: string;
+    image: Image;
+    downloadOnStart: boolean;
+
+    constructor(): RemoteImage;
+
+    StartDownload(): void;
 }
 
