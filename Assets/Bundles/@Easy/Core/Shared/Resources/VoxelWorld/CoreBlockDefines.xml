@@ -51,11 +51,13 @@
 <!--    <TopTexture>rock_test_C</TopTexture>-->
 <!--    <SideTexture>rock_test_C</SideTexture>-->
     <Material>StylizedStone</Material>
-    <Solid>true</Solid>
     <Metallic>0</Metallic>
     <Roughness>2</Roughness>
     <Minecraft>1,43,43:8</Minecraft>
     <Brightness>1.8</Brightness>
+    <Solid>false</Solid>
+    <Collision>Solid</Collision>
+    <TileSet>TileSets/BevelQuarter/</TileSet>
   </Block>
 
   <Block>
@@ -64,7 +66,10 @@
     <Material>StylizedStoneDark</Material>
 <!--    <TopTexture>stone_brick.s</TopTexture>-->
 <!--    <SideTexture>stone_brick.s</SideTexture>-->
-    <Solid>true</Solid>
+    <Solid>false</Solid>
+    <Collision>Solid</Collision>
+    <TileSet>TileSets/BevelQuarter/</TileSet>
+    
     <Minecraft>98,97:2</Minecraft>
     <Brightness>1</Brightness>
   </Block>
@@ -101,10 +106,12 @@
   <Block>
     <Id>COBBLESTONE</Id>
     <Name>Cobblestone</Name>
-    <Material>StylizedStone</Material>
+    <Material>StylizedStoneLight</Material>
 <!--    <TopTexture>cobblestone.s</TopTexture>-->
 <!--    <SideTexture>cobblestone.s</SideTexture>-->
-    <Solid>true</Solid>
+    <Solid>false</Solid>
+    <Collision>Solid</Collision>
+    <TileSet>TileSets/BevelQuarter/</TileSet>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>4</Minecraft>
@@ -161,7 +168,9 @@
     <Material>StylizedStone</Material>
 <!--    <TopTexture>andesite.s</TopTexture>-->
 <!--    <SideTexture>andesite.s</SideTexture>-->
-    <Solid>true</Solid>
+    <Solid>false</Solid>
+    <Collision>Solid</Collision>
+    <TileSet>TileSets/BevelQuarter/</TileSet>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>1:5,1:1</Minecraft>
@@ -446,9 +455,7 @@
     <Brightness>2</Brightness>
     <Minecraft>48</Minecraft>
     <RandomRotation>true</RandomRotation>
-    <!--<TileSet>TileSets/OakLeaf/Leaf</TileSet> 
-    <TileSet>TileSets/SoftCube/</TileSet>-->
-    <TileSet>TileSets/LeafQuarterRound/</TileSet>
+    <TileSet>TileSets/BevelQuarterRound/</TileSet>
   </Block>
 
 

@@ -8,8 +8,6 @@ import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "Shared/ProfilePicture/ProfilePictureMeta";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { encode } from "Shared/json";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
@@ -170,28 +168,6 @@ export class Player {
 		this.bin.Clean();
 		this.onLeave.Fire();
 		this.onLeave.DisconnectAll();
-	}
-
-	/**
-	 * **Server Only**
-	 */
-	public TransferToServer(serverId: string, serverTransferData?: unknown, clientTransferData?: unknown) {
-		if (RunUtil.IsClient()) {
-			print("Player.TransferToServer can only be called on the server.");
-			return;
-		}
-
-		const jwt = GameObject.Find("ServerBootstrap")?.GetComponent<ServerBootstrap>().airshipJWT;
-		const res = HttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/transfers/transfer",
-			encode({
-				uid: this.userId,
-				serverId,
-				serverTransferData,
-				clientTransferData,
-			}),
-			`Authorization=Bearer ${jwt}`,
-		);
 	}
 
 	public static FindByClientId(clientId: number): Player | undefined {

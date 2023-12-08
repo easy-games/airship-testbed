@@ -104,7 +104,6 @@ export class AbilityBindingController implements OnStart {
 				break;
 		}
 		if (!nextSlot) return false;
-		print(`Registering ability (2)`);
 		nextSlot.BindTo(abilityDto);
 		nextSlot.BindToAction(this.keyboard, (inputState, abilityBinding) => {
 			const boundAbilityId = abilityBinding.GetBound()?.abilityId;

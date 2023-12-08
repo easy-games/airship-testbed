@@ -304,8 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_script: {fileID: 6049858258227388506, guid: 710cf788cfb7e409e921bd5e1f0c3ba0, type: 3}
-  m_fileFullPath: shared/resources/ts/main
+  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Main.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -317,7 +316,7 @@ MonoBehaviour:
   m_metadata:
     name: 
     properties: []
---- !u!21 &328425097
+--- !u!21 &357739317
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0

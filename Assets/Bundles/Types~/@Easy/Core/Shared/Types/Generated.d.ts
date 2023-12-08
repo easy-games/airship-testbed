@@ -13686,4 +13686,14 @@ interface GroundItemDrop extends MonoBehaviour {
     SetSpinActive(active: boolean): void;
     SetVelocity(velocity: Vector3): void;
 }
+    
+interface RemoteImage extends MonoBehaviour {
+    url: string;
+    image: Image;
+    downloadOnStart: boolean;
+
+    constructor(): RemoteImage;
+
+    StartDownload(): void;
+}
 
