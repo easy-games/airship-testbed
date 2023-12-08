@@ -37,6 +37,8 @@ export class ClientSettingsController implements OnStart {
 			this.data = defaultData;
 		}
 
+		this.SetGlobalVolume(this.GetGlobalVolume());
+
 		Task.Spawn(() => {
 			this.settingsLoaded = true;
 			this.onSettingsLoaded.Fire();
