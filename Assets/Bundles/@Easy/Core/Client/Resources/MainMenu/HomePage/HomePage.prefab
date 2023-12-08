@@ -3884,8 +3884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_script: {fileID: -7925665179405292110, guid: ee35ecc6a1bd24a3ebd6313b9f383774, type: 3}
-  m_fileFullPath: 
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/HomePageComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 

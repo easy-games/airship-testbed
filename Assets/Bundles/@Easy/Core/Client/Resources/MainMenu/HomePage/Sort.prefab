@@ -578,8 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_script: {fileID: 7599712495539943218, guid: 85d1c327b651b44ffaec1f15ee404b25, type: 3}
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/SortComponent.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/Sort/SortComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/SortComponent.lua
