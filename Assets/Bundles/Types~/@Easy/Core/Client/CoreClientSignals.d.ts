@@ -1,3 +1,4 @@
+import { ChargingAbilityDto, ChargingAbilityEndedDto } from "../Shared/Abilities/Ability";
 import { Entity } from "../Shared/Entity/Entity";
 import { GroundItem } from "../Shared/GroundItem/GroundItem";
 import { ItemType } from "../Shared/Item/ItemType";
@@ -5,11 +6,6 @@ import { Player } from "../Shared/Player/Player";
 import { BeforeBlockPlacedSignal } from "../Shared/Signals/BeforeBlockPlacedSignal";
 import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
 import { Signal } from "../Shared/Util/Signal";
-import { AbilitiesClearedClientSignal } from "./Controllers/Abilities/Event/AbilitiesClearedClientSignal";
-import { AbilityAddedClientSignal } from "./Controllers/Abilities/Event/AbilityAddedClientSignal";
-import { AbilityChargeClientSignal } from "./Controllers/Abilities/Event/AbilityChargeClientSignal";
-import { AbilityChargeEndClientSignal } from "./Controllers/Abilities/Event/AbilityChargeEndClientSignal";
-import { AbilityRemovedClientSignal } from "./Controllers/Abilities/Event/AbilityRemovedClientSignal";
 import { BeforeBlockHitSignal } from "./Controllers/BlockInteractions/Signal/BeforeBlockHitSignal";
 import { ProjectileCollideClientSignal } from "./Controllers/Damage/Projectile/ProjectileCollideClientSignal";
 import { ProjectileLaunchedClientSignal } from "./Controllers/Damage/Projectile/ProjectileLaunchedClientSignal";
@@ -60,9 +56,35 @@ export declare const CoreClientSignals: {
         entity: Entity;
         groundItem: GroundItem;
     }>;
-    AbilityAdded: Signal<AbilityAddedClientSignal>;
-    AbilityRemoved: Signal<AbilityRemovedClientSignal>;
-    AbilitiesCleared: Signal<AbilitiesClearedClientSignal>;
-    AbilityChargeBegan: Signal<AbilityChargeClientSignal>;
-    AbilityChargeEnded: Signal<AbilityChargeEndClientSignal>;
+    LocalAbilityActivateRequest: Signal<{
+        abilityId: string;
+    }>;
+    AbilityAdded: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityRemoved: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityUsed: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityEnabled: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityDisabled: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityChargeStarted: Signal<{
+        clientId: number;
+        chargingAbilityDto: ChargingAbilityDto;
+    }>;
+    AbilityChargeEnded: Signal<{
+        clientId: number;
+        chargingAbilityDto: ChargingAbilityEndedDto;
+    }>;
 };

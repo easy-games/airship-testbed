@@ -1,5 +1,5 @@
-﻿export class ItemAnimationData{
-    public equip:string = "";
-    public unEquip:string = "";
-    public uses:Array<string> = new Array<string>();
+﻿export class ItemAnimationData {
+	public equip = "";
+	public unEquip = "";
+	public uses: Array<string> = new Array<string>();
 }
