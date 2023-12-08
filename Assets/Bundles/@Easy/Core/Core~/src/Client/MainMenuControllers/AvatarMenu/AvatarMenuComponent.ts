@@ -3,6 +3,7 @@ import MainMenuPageComponent from "../MainMenuPageComponent";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CoreUI } from "Shared/UI/CoreUI";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly GeneralHookupKey = "General";
@@ -19,11 +20,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	//public buttons?: Transform[];
 
 	private Log(message: string) {
-		this.Log("Avatar Editor: " + message);
+		print("Avatar Editor: " + message);
 	}
 
 	override OnStart() {
-		this.refs = gameObject.GetComponent<GameObjectReferences>();
+		//super.OnStart();
 
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
@@ -31,61 +32,68 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let i = 0;
 
 		//Hookup Nav buttons
-		task.delay(2, () => {
-			if (!this.mainNavBtns) {
-				return;
-			}
-			for (i = 0; i < this.mainNavBtns.Length; i++) {
-				const navI = i;
-				// CanvasAPI.OnClickEvent(this.mainNavBtns.GetValue(i).gameObject, () => {
-				// 	this.SelectMainNav(navI);
-				// });
+		if (!this.mainNavBtns) {
+			return;
+		}
+		for (i = 0; i < this.mainNavBtns.Length; i++) {
+			const navI = i;
+			CoreUI.SetupButton(this.mainNavBtns.GetValue(i).gameObject, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(this.mainNavBtns.GetValue(i).gameObject, () => {
+				this.SelectMainNav(navI);
+			});
 
-				let subNavRects = this.refs?.GetAllValues<RectTransform>("SubNavRects" + (i + 1));
-				this.subNavBarBtns[i] = subNavRects;
-				if (subNavRects) {
-					for (let j = 0; j < subNavRects.Length; j++) {
-						const navI = i;
-						const subNavI = j;
-						const go = subNavRects.GetValue(j).gameObject;
-						if (go) {
-							print(
-								"setting up sub nav: " +
-									i +
-									", " +
-									j +
-									": " +
-									this.mainNavBtns.GetValue(i).gameObject.name +
-									", " +
-									go.name,
-							);
-							CanvasAPI.OnClickEvent(go, () => {
-								this.SelectSubNav(navI, subNavI);
-							});
-						}
+			let subNavRects = this.refs?.GetAllValues<RectTransform>("SubNavRects" + (i + 1));
+			this.subNavBarBtns[i] = subNavRects;
+			if (subNavRects) {
+				for (let j = 0; j < subNavRects.Length; j++) {
+					const navI = i;
+					const subNavI = j;
+					const go = subNavRects.GetValue(j).gameObject;
+					if (go) {
+						print(
+							"setting up sub nav: " +
+								i +
+								", " +
+								j +
+								": " +
+								this.mainNavBtns.GetValue(i).gameObject.name +
+								", " +
+								go.name,
+						);
+
+						CoreUI.SetupButton(go, { noHoverSound: true });
+						CanvasAPI.OnClickEvent(go, () => {
+							this.SelectSubNav(navI, subNavI);
+						});
 					}
 				}
 			}
+		}
 
-			//Hookup general buttons
-			// CanvasAPI.OnDragEvent(
-			// 	this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "AvatarInteractionBtn").gameObject,
-			// 	() => {
-			// 		this.OnDragAvatar();
-			// 	},
-			// );
+		//Hookup general buttons
+		let button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "AvatarInteractionBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnDragEvent(button, () => {
+				this.OnDragAvatar();
+			});
+		}
 
-			// CanvasAPI.OnDragEvent(this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject, () => {
-			// 	this.OnSelectClear();
-			// });
+		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnDragEvent(button, () => {
+				this.OnSelectClear();
+			});
+		}
 
-			// CanvasAPI.OnDragEvent(
-			// 	this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "CurrentBtn").gameObject,
-			// 	() => {
-			// 		this.OnSelectCurrent();
-			// 	},
-			// );
-		});
+		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "CurrentBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnDragEvent(button, () => {
+				this.OnSelectCurrent();
+			});
+		}
 	}
 
 	override OpenPage(): void {

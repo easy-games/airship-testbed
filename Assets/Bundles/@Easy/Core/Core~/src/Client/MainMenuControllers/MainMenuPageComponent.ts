@@ -13,33 +13,31 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	private activePage = false;
 
 	public override OnStart(): void {
-		this.refs = gameObject.GetComponent<GameObjectReferences>();
-
-		let button = this.refs?.GetAllValues<RectTransform>("MainNavRects");
-		if (button) {
-			print("BUTTON: " + button.GetValue(0).GetComponent<Button>().name);
-			CanvasAPI.OnClickEventTEST(button.GetValue(0).gameObject, () => {
-				print("IS THIS WORKING");
-			});
-			print("BUTTON DONE");
-		}
+		//super.OnStart();
+		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
 	}
 
 	public TEST() {
 		print("MAIN MENU PAGE COMPONENT TEST!");
+		return "MainMenuTestComplete";
 	}
 
 	public OpenPage() {
 		this.activePage = true;
-		gameObject.SetActive(true);
+		this.gameObject.SetActive(true);
 
-		const canvasGroup = gameObject.GetComponent<CanvasGroup>();
-		if (this.animateInDuration <= 0) {
-			gameObject.transform.localPosition = new Vector3(0, 0, 0);
+		print("Opening page: " + this.gameObject.name);
+		print("Opening page: " + gameObject.name);
+
+		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+		if (canvasGroup && this.animateInDuration <= 0) {
+			this.gameObject.transform.localPosition = new Vector3(0, 0, 0);
 			canvasGroup.alpha = 1;
 		} else {
-			gameObject.transform.localPosition = new Vector3(0, -20, 0);
-			gameObject.GetComponent<RectTransform>().TweenLocalPosition(new Vector3(0, 0, 0), this.animateInDuration);
+			this.gameObject.transform.localPosition = new Vector3(0, -20, 0);
+			this.gameObject
+				.GetComponent<RectTransform>()
+				.TweenLocalPosition(new Vector3(0, 0, 0), this.animateInDuration);
 			canvasGroup.alpha = 0;
 			canvasGroup.TweenCanvasGroupAlpha(1, this.animateInDuration);
 		}
@@ -47,12 +45,15 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 
 	public ClosePage() {
 		this.activePage = false;
+		print("Closeing page: " + this.gameObject.name);
+		print("Closeing page: " + gameObject.name);
 
 		// gameObject.GetComponent<RectTransform>().TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
-		gameObject.GetComponent<CanvasGroup>().TweenCanvasGroupAlpha(0, this.animateOutDuration);
+		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+		canvasGroup?.TweenCanvasGroupAlpha(0, this.animateOutDuration);
 		SetTimeout(this.animateOutDuration, () => {
 			if (this.activePage) {
-				gameObject.SetActive(false);
+				this.gameObject.SetActive(false);
 			}
 		});
 	}

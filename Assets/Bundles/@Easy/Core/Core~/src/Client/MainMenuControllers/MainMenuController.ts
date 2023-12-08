@@ -49,14 +49,14 @@ export class MainMenuController implements OnStart {
 
 		const mouse = new Mouse();
 
-		print("home go: " + this.refs.GetValue("Pages", "Home").name);
-		print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>());
+		//print("home go: " + this.refs.GetValue("Pages", "Home").name);
+		//print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>());
 		//print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>().TEST());
 
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.HOME, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
 			[MainMenuPageType.SETTINGS, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.AVATAR, this.refs.GetValue("Pages", "Avatar").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.AVATAR, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
 		]);
 
 		this.avatarScene = GameObject.Create("AvatarHolder");
