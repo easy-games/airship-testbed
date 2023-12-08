@@ -1,5 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
+import { ChargingAbilityDto, ChargingAbilityEndedDto } from "../Shared/Abilities/Ability";
 import { Entity } from "../Shared/Entity/Entity";
 import { GroundItem } from "../Shared/GroundItem/GroundItem";
 import { ItemType } from "../Shared/Item/ItemType";
@@ -10,6 +11,7 @@ import { ChangeTeamSignal } from "../Shared/Team/TeamJoinSignal";
 import { Signal } from "../Shared/Util/Signal";
 import { Block } from "../Shared/VoxelWorld/Block";
 import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
+import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";
@@ -20,7 +22,6 @@ import { EntitySpawnEvent } from "./Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "./Signals/MoveCommandDataEvent";
 import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
-import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
 export type BlockHitSignal = {
     blockId: number;
     blockPos: Vector3;
@@ -83,4 +84,32 @@ export declare const CoreServerSignals: {
         groundItem: GroundItem;
     }>;
     TeamAdded: Signal<Team>;
+    AbilityAdded: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityRemoved: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityUsed: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityEnabled: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityDisabled: Signal<{
+        clientId: number;
+        abilityId: string;
+    }>;
+    AbilityChargeStarted: Signal<{
+        clientId: number;
+        chargingAbilityDto: ChargingAbilityDto;
+    }>;
+    AbilityChargeEnded: Signal<{
+        clientId: number;
+        chargingAbilityEndedDto: ChargingAbilityEndedDto;
+    }>;
 };

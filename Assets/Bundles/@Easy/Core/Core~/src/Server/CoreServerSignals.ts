@@ -1,3 +1,4 @@
+import { ChargingAbilityDto, ChargingAbilityEndedDto } from "Shared/Abilities/Ability";
 import { Entity } from "Shared/Entity/Entity";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { ItemType } from "Shared/Item/ItemType";
@@ -8,6 +9,7 @@ import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
 import { Block } from "Shared/VoxelWorld/Block";
 import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
+import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";
@@ -18,7 +20,6 @@ import { EntitySpawnEvent } from "./Signals/EntitySpawnServerEvent";
 import { MoveCommandDataEvent } from "./Signals/MoveCommandDataEvent";
 import { PlayerJoinServerEvent } from "./Signals/PlayerJoinServerEvent";
 import { PlayerLeaveServerEvent } from "./Signals/PlayerLeaveServerEvent";
-import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly entity: Entity | undefined };
 
@@ -60,4 +61,12 @@ export const CoreServerSignals = {
 	CustomMoveCommand: new Signal<MoveCommandDataEvent>(),
 	EntityPickupItem: new Signal<{ entity: Entity; groundItem: GroundItem }>(),
 	TeamAdded: new Signal<Team>(),
+
+	AbilityAdded: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityRemoved: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityUsed: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityEnabled: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityDisabled: new Signal<{ clientId: number; abilityId: string }>(),
+	AbilityChargeStarted: new Signal<{ clientId: number; chargingAbilityDto: ChargingAbilityDto }>(),
+	AbilityChargeEnded: new Signal<{ clientId: number; chargingAbilityEndedDto: ChargingAbilityEndedDto }>(),
 };

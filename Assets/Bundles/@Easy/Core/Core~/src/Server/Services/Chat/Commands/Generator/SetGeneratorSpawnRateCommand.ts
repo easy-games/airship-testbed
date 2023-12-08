@@ -15,19 +15,19 @@ export class SetGeneratorSpawnRateCommand extends ChatCommand {
 		let spawnRate: number | undefined;
 		let generatorId: string | undefined;
 
-		/* If no arguments are provided fallback to defaults. */
+		// If no arguments are provided fallback to defaults.
 		if (args.size() === 0) {
 			player.SendMessage("Invalid arguments");
 			return;
 		}
 
-		/* generator id argument provided, fallback to default spawn rate. */
+		// Generator id argument provided, fallback to default spawn rate.
 		if (args.size() === 1) {
 			generatorId = `generator_${args[0]}`;
 			spawnRate = DEFAULT_SPAWN_RATE;
 		}
 
-		/* generator id and spawn rate arguments provided */
+		// Generator id and spawn rate arguments provided.
 		if (args.size() === 2) {
 			generatorId = `generator_${args[0]}`;
 			spawnRate = tonumber(args[1]);
@@ -38,7 +38,7 @@ export class SetGeneratorSpawnRateCommand extends ChatCommand {
 			return;
 		}
 
-		/* Update spawn rate. */
+		// Update spawn rate.
 		Dependency<GeneratorService>().UpdateGeneratorSpawnRateById(generatorId, spawnRate);
 	}
 }

@@ -14,7 +14,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	override OnStart(): void {}
 
-	override OnDestroy(): void {
+	override OnDestroy(): void {}
+
+	public OnDisabled(): void {
 		this.bin.Clean();
 	}
 
@@ -22,25 +24,28 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.titleText.text = gameDto.name;
 		this.playerCountText.text = gameDto.liveStats.playerCount + "";
 
-		let url = AirshipUrl.CDN + "/" + gameDto.iconImageId;
+		let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".jpg";
 
-		// let remoteImage = this.gameObject.transform.GetChild(0).GetComponent<RemoteImage>();
-		// remoteImage.url = url;
-		// remoteImage.StartDownload();
+		let remoteImage = this.gameObject.transform.GetChild(0).GetComponent<RemoteImage>();
+		remoteImage.url = url;
+		remoteImage.StartDownload();
 
-		// const downloadConn = remoteImage.OnFinishedLoading((success) => {
-		// 	if (success) {
-		// 		remoteImage.image.color = new Color(1, 1, 1, 1);
-		// 	} else {
-		// 		remoteImage.image.color = new Color(0, 0, 0, 0.3);
-		// 	}
-		// });
-		// this.bin.Add(() => {
-		// 	Bridge.DisconnectEvent(downloadConn);
-		// });
+		const downloadConn = remoteImage.OnFinishedLoading((success) => {
+			if (success) {
+				remoteImage.image.color = new Color(1, 1, 1, 1);
+			} else {
+				remoteImage.image.color = new Color(0, 0, 0, 0.3);
+			}
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(downloadConn);
+		});
 
 		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
 			Dependency<TransferController>().ClientTransferToServerAsync(gameDto.id);
+		});
+		this.bin.Add(() => {
+			Bridge.DisconnectEvent(clickConn);
 		});
 	}
 }

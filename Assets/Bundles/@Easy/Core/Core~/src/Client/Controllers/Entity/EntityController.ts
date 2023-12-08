@@ -16,7 +16,6 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
-import { Task } from "Shared/Util/Task";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
@@ -221,14 +220,9 @@ export class EntityController implements OnStart {
 				this.invController.RegisterInventory(inv);
 			}
 
-			const abilities = characterEntityDto.abilities.mapFiltered((abilityDto) => {
-				const ability = this.abilityRegistry.GetAbilityById(abilityDto.id);
-				return ability;
-			});
-
 			Profiler.BeginSample("CharacterEntity.Constructor");
 
-			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv, abilities);
+			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv);
 			Profiler.EndSample();
 		} else {
 			error("Unable to find entity serializer for dto: " + entityDto);
