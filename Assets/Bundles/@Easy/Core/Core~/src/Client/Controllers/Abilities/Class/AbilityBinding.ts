@@ -1,14 +1,11 @@
+import { Dependency } from "@easy-games/flamework-core";
 import { AbilityDto } from "Shared/Abilities/Ability";
 import { AbilitySlot } from "Shared/Abilities/AbilitySlot";
+import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
-import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilitiesUIController";
-import { Dependency } from "@easy-games/flamework-core";
-import { AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
-import { Game } from "Shared/Game";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
-import { AbilityLogic } from "Shared/Abilities/AbilityLogic";
+import { ClientAbilityCooldownState, ClientAbilityState } from "../AbilityUIController";
 
 export enum BindingInputState {
 	InputBegan,
@@ -71,7 +68,7 @@ export class AbilityBinding {
 	public ToAbilityState(): ClientAbilityState | undefined {
 		if (!this.boundTo) return;
 
-		const ability = Dependency<AbilityRegistry>().GetAbilityById(this.boundTo.id);
+		const ability = Dependency<AbilityRegistry>().GetAbilityById(this.boundTo.abilityId);
 		if (!ability) {
 			return;
 		}

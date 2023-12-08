@@ -1775,7 +1775,8 @@ function Promise.prototype:_resolve(...)
 
 	-- We assume that these callbacks will not throw errors.
 	for _, callback in ipairs(self._queuedResolve) do
-		coroutine.wrap(callback)(...)
+		-- coroutine.wrap(callback)(...)
+		task.spawn(callback, ...)
 	end
 
 	self:_finalize()
@@ -1793,7 +1794,8 @@ function Promise.prototype:_reject(...)
 	if not isEmpty(self._queuedReject) then
 		-- We assume that these callbacks will not throw errors.
 		for _, callback in ipairs(self._queuedReject) do
-			coroutine.wrap(callback)(...)
+			-- coroutine.wrap(callback)(...)
+			task.spawn(callback, ...)
 		end
 	else
 		-- At this point, no one was able to observe the error.
@@ -1803,7 +1805,8 @@ function Promise.prototype:_reject(...)
 
 		local err = tostring((...))
 
-		coroutine.wrap(function()
+		-- coroutine.wrap(function()
+		task.spawn(function()
 			-- Promise._timeEvent:Wait()
 			task.wait()
 
@@ -1825,7 +1828,7 @@ function Promise.prototype:_reject(...)
 			end
 
 			warn(message)
-		end)()
+		end)--()
 	end
 
 	self:_finalize()
@@ -1841,7 +1844,9 @@ function Promise.prototype:_finalize()
 		-- Purposefully not passing values to callbacks here, as it could be the
 		-- resolved values, or rejected errors. If the developer needs the values,
 		-- they should use :andThen or :catch explicitly.
-		coroutine.wrap(callback)(self._status)
+
+		-- coroutine.wrap(callback)(self._status)
+		task.spawn(callback, self._status)
 	end
 
 	self._queuedFinally = nil

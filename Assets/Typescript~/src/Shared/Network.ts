@@ -1,6 +1,7 @@
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { RemoteFunction } from "@Easy/Core/Shared/Network/RemoteFunction";
+import { KitType } from "./Kit/KitType";
 import { MatchInfoDto } from "./Match/MatchInfoDto";
 import { MatchState } from "./Match/MatchState";
 import { PlayerMatchStatsDto } from "./Match/PlayerMatchStats";
@@ -49,6 +50,9 @@ export const Network = {
 		MapLoaded: new RemoteEvent<[gameMapId: string]>(),
 		PlayerMatchStats: new RemoteEvent<[playerMatchStats: PlayerMatchStatsDto[]]>(),
 		UpdateHud: new RemoteEvent<[hudDto: MatchHUDDto]>(),
+
+		/** Fired when a player's kit is updated. */
+		KitUpdated: new RemoteEvent<[clientId: number, type: KitType]>(),
 	},
 };
 

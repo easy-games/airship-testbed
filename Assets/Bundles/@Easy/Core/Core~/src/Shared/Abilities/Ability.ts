@@ -2,15 +2,29 @@ import { Duration } from "Shared/Util/Duration";
 import { AbilityLogic } from "./AbilityLogic";
 import { AbilitySlot } from "./AbilitySlot";
 
+export enum AbilityKind {
+	/**
+	 * The ability is active.
+	 */
+	Active,
+	/**
+	 * The ability is passive.
+	 */
+	Passive,
+}
 export enum AbilityCancellationTrigger {
 	/**
-	 * Damage is taken by the casting entity
+	 * Damage is taken by the casting entity.
 	 */
 	EntityDamageTaken,
 	/**
-	 * The casting entity moves
+	 * The casting entity moves.
 	 */
 	EntityMovement,
+	/**
+	 * The casting entity fires a projectile.
+	 */
+	EntityFiredProjectile,
 }
 
 export interface AbilityChargeConfig {
@@ -31,6 +45,10 @@ export interface AbilityChargeConfig {
 
 export interface AbilityConfig {
 	/**
+	 * The kind of ability this is
+	 */
+	readonly kind: AbilityKind;
+	/**
 	 * The slot for this ability
 	 *
 	 * This will bind appropriate bindings on a per-platform basis depending on the slot
@@ -42,7 +60,7 @@ export interface AbilityConfig {
 	 *
 	 * @see {@link AbilitySlot} for more details
 	 */
-	readonly slot: AbilitySlot;
+	readonly slot?: AbilitySlot;
 	/**
 	 * The priority of this ability, will change whether or not this ability
 	 */
@@ -85,48 +103,79 @@ export type AbilityLogicConstructor<T extends AbilityLogic = AbilityLogic> = new
 
 export interface AbilityDto {
 	/**
-	 * The id of the ability
+	 * The id of the ability.
 	 */
-	readonly id: string;
+	readonly abilityId: string;
 	/**
-	 * The enabled state of the ability
+	 * The enabled state of the ability.
 	 */
 	readonly enabled: boolean;
 	/**
-	 * The slot the ability is in
+	 * The slot the ability is in.
 	 */
-	readonly slot: AbilitySlot;
+	readonly slot?: AbilitySlot;
 	/**
-	 * Charging
+	 * The ability's charge configuration, if it exists.
 	 */
 	charging?: AbilityChargeConfig;
 }
 
 export interface ChargingAbilityDto {
-	readonly id: string;
+	/** The ability's id. */
+	readonly abilityId: string;
+	/** The time the ability began charging. */
 	readonly timeStart: number;
+	/** The duration of the charge. */
 	readonly length: number;
+	/** The time the ability will stop charging. */
 	readonly timeEnd: number;
+	/** The ability's display text. This is displayed above the charge bar on the **client**. */
 	readonly displayText: string;
 }
 
 export interface AbilityCooldownDto {
-	readonly id: string;
+	/** The ability's id. */
+	readonly abilityId: string;
+	/** The time the cooldown began. */
 	readonly timeStart: number;
+	/** The time the cooldown will end. */
 	readonly timeEnd: number;
+	/** The duration of the cooldown. */
 	readonly length: number;
 }
 
 export enum ChargingAbilityEndedState {
+	/** Indicates ability was successfully charged. */
 	Finished,
+	/** Indicates the ability charge was cancelled. */
 	Cancelled,
 }
+
 export interface ChargingAbilityEndedDto {
-	readonly id: string;
+	/** The ability's id. */
+	readonly abilityId: string;
+	/** The result of the charge ability. */
 	readonly endState: ChargingAbilityEndedState;
 }
 
-export interface UseAbilityRequest {
-	readonly abilityId: string;
+export interface AbilityCooldown {
+	/** The duration of the cooldown. */
+	readonly length: Duration;
+	/** When the cooldown began. */
+	readonly startTimestamp: number;
+	/** When the cooldown will end. */
+	readonly endTimestamp: number;
 }
-export interface UseAbilityResponse {}
+
+export interface AbilityChargingState {
+	/** The ability's id. */
+	readonly abilityId: string;
+	/** When the ability began charging. */
+	readonly timeStarted: number;
+	/** How long the ability will charge for. */
+	readonly timeLength: Duration;
+	/** The custom triggers that will cancel ability. */
+	readonly cancellationTriggers: ReadonlySet<AbilityCancellationTrigger>;
+	/** Callback that cancels ability. */
+	readonly cancel: () => void;
+}

@@ -138,11 +138,9 @@ export class DamageService implements OnStart {
 			damageEvent.criticalHit,
 		);
 
-		const damageBefore = amount;
 		const armor = entity.GetArmor();
 		if (armor > 0) {
-			amount = amount * (100 / (100 + armor));
-			//print("mitigated damage: " + (damageBefore - amount));
+			amount = damageEvent.amount * (100 / (100 + armor));
 		}
 
 		let despawned = false;

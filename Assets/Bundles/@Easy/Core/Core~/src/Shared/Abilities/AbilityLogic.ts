@@ -8,7 +8,7 @@ export interface AbilityChargeEndEvent {
 /**
  * A logic class surrounding an ability
  */
-export abstract class AbilityLogic {
+export class AbilityLogic {
 	private enabled = false;
 
 	public constructor(
@@ -34,8 +34,8 @@ export abstract class AbilityLogic {
 	 * @param enabled Whether or not this ability is enabled
 	 */
 	public SetEnabled(enabled: boolean) {
+		if (this.enabled === enabled) return;
 		this.enabled = enabled;
-
 		// Handle side-effects of enabling/disabling this ability
 		if (enabled) {
 			this.OnEnabled();
@@ -79,7 +79,7 @@ export abstract class AbilityLogic {
 	 * - This may be after a charge duration
 	 * 		if the charge duration is set and the ability charge wasn't cancelled
 	 */
-	public abstract OnServerTriggered(): void;
+	public OnServerTriggered() {}
 
 	/**
 	 * Invoked when the ability is triggered on the client
@@ -101,7 +101,7 @@ export abstract class AbilityLogic {
 	 */
 	public Encode(): AbilityDto {
 		let dto: AbilityDto = {
-			id: this.GetId(),
+			abilityId: this.GetId(),
 			enabled: this.GetEnabled(),
 			slot: this.GetConfig().slot,
 		};

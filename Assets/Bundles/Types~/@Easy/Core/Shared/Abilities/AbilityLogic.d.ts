@@ -6,7 +6,7 @@ export interface AbilityChargeEndEvent {
 /**
  * A logic class surrounding an ability
  */
-export declare abstract class AbilityLogic {
+export declare class AbilityLogic {
     protected readonly entity: CharacterEntity;
     protected readonly id: string;
     protected readonly configuration: AbilityConfig;
@@ -46,7 +46,7 @@ export declare abstract class AbilityLogic {
      * - This may be after a charge duration
      * 		if the charge duration is set and the ability charge wasn't cancelled
      */
-    abstract OnServerTriggered(): void;
+    OnServerTriggered(): void;
     /**
      * Invoked when the ability is triggered on the client
      *
