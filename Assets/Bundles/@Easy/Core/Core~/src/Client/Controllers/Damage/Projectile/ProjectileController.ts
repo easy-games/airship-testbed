@@ -14,7 +14,7 @@ export class ProjectileController implements OnStart {
 	constructor() {
 		for (const itemTypeStr of ItemUtil.GetItemTypes()) {
 			const itemType = itemTypeStr as ItemType;
-			const itemMeta = ItemUtil.GetItemMeta(itemType);
+			const itemMeta = ItemUtil.GetItemDef(itemType);
 
 			if (itemMeta.projectile) {
 				const [, id] = ItemUtil.GetItemTypeComponents(itemType);
@@ -55,7 +55,7 @@ export class ProjectileController implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).projectile!;
+		const ammoMeta = ItemUtil.GetItemDef(projectile.itemType).projectile!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		const projectileHitSignal = new ProjectileCollideClientSignal(

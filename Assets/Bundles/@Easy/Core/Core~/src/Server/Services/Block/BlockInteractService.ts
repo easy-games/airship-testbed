@@ -3,7 +3,7 @@ import { CoreServerSignals } from "Server/CoreServerSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { AOEDamageMeta, BlockDamageType, BreakBlockMeta, ItemMeta, TillBlockMeta } from "Shared/Item/ItemMeta";
+import { AOEDamageDef, BlockDamageType, BreakBlockDef, ItemDef, TillBlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { BeforeBlockPlacedSignal } from "Shared/Signals/BeforeBlockPlacedSignal";
@@ -37,7 +37,7 @@ export class BlockInteractService implements OnStart {
 			const clientId = event.clientId;
 
 			const world = WorldAPI.GetMainWorld();
-			const itemMeta = ItemUtil.GetItemMeta(itemType);
+			const itemMeta = ItemUtil.GetItemDef(itemType);
 
 			const rollback = () => {
 				CoreNetwork.ServerToClient.RevertBlockPlace.Server.FireClient(clientId, pos);
@@ -138,7 +138,7 @@ export class BlockInteractService implements OnStart {
 		CoreNetwork.ClientToServer.HitBlock.Server.OnClientEvent((clientId, pos) => {});
 	}
 
-	public PlaceBlock(entity: CharacterEntity, pos: Vector3, item: ItemMeta, blockData?: BlockData) {
+	public PlaceBlock(entity: CharacterEntity, pos: Vector3, item: ItemDef, blockData?: BlockData) {
 		if (item.block) {
 			entity.GetInventory().Decrement(item.itemType, 1);
 
@@ -157,7 +157,7 @@ export class BlockInteractService implements OnStart {
 		}
 	}
 
-	public PlaceBlockGroup(entity: CharacterEntity, positions: Vector3[], items: ItemMeta[]) {
+	public PlaceBlockGroup(entity: CharacterEntity, positions: Vector3[], items: ItemDef[]) {
 		let itemTypes: ItemType[] = [];
 		let blockTypes: string[] = [];
 		let itemMap: Map<ItemType, number> = new Map<ItemType, number>();
@@ -188,7 +188,7 @@ export class BlockInteractService implements OnStart {
 		entity.SendItemAnimationToClients(0, 0, entity.ClientId);
 	}
 
-	public TillBlock(entity: Entity | undefined, tillBlockMeta: TillBlockMeta, voxelPos: Vector3): boolean {
+	public TillBlock(entity: Entity | undefined, tillBlockMeta: TillBlockDef, voxelPos: Vector3): boolean {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return false;
@@ -201,7 +201,7 @@ export class BlockInteractService implements OnStart {
 			return false;
 		}
 
-		const tillable = block.itemMeta?.block?.tillable;
+		const tillable = block.itemDef?.block?.tillable;
 		if (!tillable) return false;
 
 		const breakState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.CAN_BREAK);
@@ -212,7 +212,7 @@ export class BlockInteractService implements OnStart {
 		// If the resulting block is also tillable, mark tillable ?
 		const tillBlockType = ItemUtil.GetItemTypeFromStringId(tillable.tillsToBlockId);
 		if (tillBlockType !== undefined) {
-			const tillBlockMeta = ItemUtil.GetItemMeta(tillBlockType);
+			const tillBlockMeta = ItemUtil.GetItemDef(tillBlockType);
 			BlockDataAPI.SetBlockData(
 				voxelPos,
 				CoreBlockMetaKeys.CAN_TILL,
@@ -224,7 +224,7 @@ export class BlockInteractService implements OnStart {
 		return true;
 	}
 
-	public DamageBlock(entity: Entity | undefined, breakBlockMeta: BreakBlockMeta, voxelPos: Vector3): boolean {
+	public DamageBlock(entity: Entity | undefined, breakBlockMeta: BreakBlockDef, voxelPos: Vector3): boolean {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return false;
@@ -398,7 +398,7 @@ export class BlockInteractService implements OnStart {
 		}
 	}
 
-	public DamageBlockAOE(entity: Entity | undefined, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
+	public DamageBlockAOE(entity: Entity | undefined, centerPosition: Vector3, aoeMeta: AOEDamageDef) {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
 			return;
@@ -542,7 +542,7 @@ export class BlockInteractService implements OnStart {
 		this.DamageBlocks(entity, BlockDamageType.BLAST, positions, damages);
 	}
 
-	public DamageBlockAOESimple(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageMeta) {
+	public DamageBlockAOESimple(entity: Entity, centerPosition: Vector3, aoeMeta: AOEDamageDef) {
 		//TODO add array to store all blocks that need to be destroyed and handle in this function not DamageBlock()
 		let positions: Vector3[] = [];
 		let damages: number[] = [];
@@ -577,7 +577,7 @@ export class BlockInteractService implements OnStart {
 		this.DamageBlocks(entity, BlockDamageType.BLAST, positions, damages);
 	}
 
-	private GetMaxAOEDamage(voxelPos: Vector3, aoeCenter: Vector3, aoeMeta: AOEDamageMeta) {
+	private GetMaxAOEDamage(voxelPos: Vector3, aoeCenter: Vector3, aoeMeta: AOEDamageDef) {
 		const distanceDelta = voxelPos.Distance(aoeCenter) / aoeMeta.damageRadius;
 		if (distanceDelta > 1) {
 			return 0;

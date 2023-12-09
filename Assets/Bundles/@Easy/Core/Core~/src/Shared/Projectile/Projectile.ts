@@ -36,7 +36,7 @@ export class Projectile {
 		this.itemType = itemType;
 		this.shooter = shooter;
 
-		const itemDef = ItemUtil.GetItemMeta(itemType);
+		const itemDef = ItemUtil.GetItemDef(itemType);
 
 		this.bin.Add(
 			this.OnDestroy.Connect(() => {

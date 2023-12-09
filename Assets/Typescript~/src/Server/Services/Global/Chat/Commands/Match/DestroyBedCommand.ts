@@ -32,13 +32,13 @@ export class DestroyBedCommand extends ChatCommand {
 		if (!bedState || bedState.destroyed) {
 			player.SendMessage("Bed does not exist or is already destroyed.");
 		} else {
-			const bedMeta = ItemUtil.GetItemMeta(ItemType.BED);
+			const bedMeta = ItemUtil.GetItemDef(ItemType.BED);
 			const world = WorldAPI.GetMainWorld();
 			if (!world) return;
 
 			Dependency<BlockInteractService>().DamageBlock(
 				player.character,
-				ItemUtil.GetItemMeta(ItemType.DIAMOND_PICKAXE).breakBlock!,
+				ItemUtil.GetItemDef(ItemType.DIAMOND_PICKAXE).breakBlock!,
 				bedState.position,
 			);
 		}

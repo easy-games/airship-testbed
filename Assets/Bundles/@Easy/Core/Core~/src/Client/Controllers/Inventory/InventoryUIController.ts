@@ -234,7 +234,7 @@ export class InventoryUIController implements OnStart {
 			return;
 		}
 
-		const itemMeta = itemStack.GetItemMeta();
+		const itemMeta = itemStack.GetItemDef();
 		const itemType = itemStack.GetItemType();
 		const [, id] = ItemUtil.GetItemTypeComponents(itemType);
 		let imageSrc = id.lower() + ".png";

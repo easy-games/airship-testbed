@@ -102,7 +102,7 @@ export class BWBedService implements OnStart {
 				destroyed: false,
 			};
 			this.teamToBed.set(team.id, bedState);
-			const itemMeta = ItemUtil.GetItemMeta(ItemType.BED);
+			const itemMeta = ItemUtil.GetItemDef(ItemType.BED);
 			WorldAPI.GetMainWorld()!.PlaceBlockByItemType(bedPos, ItemType.BED, {
 				blockData: {
 					teamId: team.id,

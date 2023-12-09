@@ -19,6 +19,6 @@ export class VorliasCommand extends ChatCommand {
 		if (!player.character) return;
 
 		player.character.GetInventory().AddItem(itemStack);
-		player.SendMessage(`Given ${amount} ${itemStack.GetItemMeta().displayName}`);
+		player.SendMessage(`Given ${amount} ${itemStack.GetItemDef().displayName}`);
 	}
 }

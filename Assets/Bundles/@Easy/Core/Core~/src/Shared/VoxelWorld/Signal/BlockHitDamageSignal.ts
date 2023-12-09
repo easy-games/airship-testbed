@@ -1,5 +1,5 @@
 import { Entity } from "Shared/Entity/Entity";
-import { BreakBlockMeta } from "Shared/Item/ItemMeta";
+import { BreakBlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { Block } from "../Block";
 
 export class BlockHitDamageSignal {
@@ -8,6 +8,6 @@ export class BlockHitDamageSignal {
 		public readonly entity: Entity | undefined,
 		public readonly block: Block,
 		public readonly blockPos: Vector3,
-		public readonly breakBlockMeta: BreakBlockMeta | undefined,
+		public readonly breakBlockMeta: BreakBlockDef | undefined,
 	) {}
 }

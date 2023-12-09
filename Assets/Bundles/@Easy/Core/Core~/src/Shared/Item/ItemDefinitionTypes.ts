@@ -6,14 +6,14 @@ import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { ItemType } from "./ItemType";
 
-export interface TillableBlockMeta {
+export interface TillableBlockDef {
 	tillsToBlockId: string;
 }
 
-export interface BlockMeta {
+export interface BlockDef {
 	health?: number;
 	blockId: string;
-	tillable?: TillableBlockMeta;
+	tillable?: TillableBlockDef;
 	blockArchetype?: BlockArchetype;
 	prefab?: {
 		path: string;
@@ -34,22 +34,22 @@ export interface BlockMeta {
 	requiresFoundation?: boolean;
 }
 
-export type SoundMeta = { path: string } & PlaySoundConfig;
+export type SoundDef = { path: string } & PlaySoundConfig;
 
-export interface AmmoMeta {
+export interface AmmoDef {
 	projectileHitLayerMask: number;
 	yAxisAimAdjust: number;
 	damage: number;
-	aoeDamage?: AOEDamageMeta;
-	blockDamage?: BreakBlockMeta;
+	aoeDamage?: AOEDamageDef;
+	blockDamage?: BreakBlockDef;
 	lifetimeSec?: number;
 	gravity: number;
 	/**
 	 * Will "stick" a ground item inside whatever was piereced on miss (e.g. arrows in blocks)
 	 */
 	stickItemAtSurfaceOnMiss?: boolean;
-	onHitEntitySound?: SoundMeta[];
-	onHitGroundSound?: SoundMeta[];
+	onHitEntitySound?: SoundDef[];
+	onHitGroundSound?: SoundDef[];
 	onHitVFXTemplate: AllBundleItems;
 }
 
@@ -60,7 +60,7 @@ export interface HitSignal {
 	AmmoItemType: ItemType;
 }
 
-export interface ProjectileLauncherMeta {
+export interface ProjectileLauncherDef {
 	ammoItemType: ItemType;
 	minVelocityScaler: number;
 	maxVelocityScaler: number;
@@ -74,10 +74,10 @@ export interface ProjectileLauncherMeta {
 	powerMultiplier?: number;
 	chargingWalkSpeedMultiplier?: number;
 	firstPersonLaunchOffset: Vector3;
-	chargeSound?: SoundMeta[];
+	chargeSound?: SoundDef[];
 }
 
-export interface ViewModelMeta {
+export interface ViewModelDef {
 	idleAnimFP?: string[];
 	idleAnimTP?: string[];
 	equipAnimFP?: string[];
@@ -87,12 +87,12 @@ export interface ViewModelMeta {
 	equipSound?: string[];
 }
 
-export interface CropBlockMeta {
+export interface CropBlockDef {
 	numStages: number;
 	stageGrowthDuration: Duration;
 }
 
-export interface ItemMeta {
+export interface ItemDef {
 	//Identification
 	displayName: string;
 	id: number;
@@ -101,21 +101,21 @@ export interface ItemMeta {
 	/** Path to image. */
 	image?: string;
 
-	usable?: UsableHeldItemMeta;
-	viewModel?: ViewModelMeta;
+	usable?: UsableHeldItemDef;
+	viewModel?: ViewModelDef;
 
 	maxStackSize?: number;
 	inspectAnimPath?: string;
 
 	//Optional Item Archetypes
-	melee?: MeleeItemMeta;
-	block?: BlockMeta;
-	breakBlock?: BreakBlockMeta;
-	cropBlock?: CropBlockMeta;
-	tillBlock?: TillBlockMeta;
+	melee?: MeleeItemDef;
+	block?: BlockDef;
+	breakBlock?: BreakBlockDef;
+	cropBlock?: CropBlockDef;
+	tillBlock?: TillBlockDef;
 	accessoryPaths?: string[];
-	projectileLauncher?: ProjectileLauncherMeta;
-	projectile?: AmmoMeta;
+	projectileLauncher?: ProjectileLauncherDef;
+	projectile?: AmmoDef;
 	armor?: {
 		armorType: ArmorType;
 		protectionAmount: number;
@@ -124,7 +124,7 @@ export interface ItemMeta {
 	groundItemPrefab?: string;
 }
 
-export interface UsableHeldItemMeta {
+export interface UsableHeldItemDef {
 	minChargeSeconds?: number;
 	maxChargeSeconds?: number;
 	startUpInSeconds?: number;
@@ -148,9 +148,9 @@ export interface UsableHeldItemMeta {
 	onUseAnimTP?: string[];
 }
 
-export interface TillBlockMeta {}
+export interface TillBlockDef {}
 
-export interface BreakBlockMeta {
+export interface BreakBlockDef {
 	extraDamageBlockArchetype?: BlockArchetype;
 	extraDamage?: number;
 
@@ -168,7 +168,7 @@ export enum BlockDamageType {
 	BLAST,
 }
 
-export interface AOEDamageMeta {
+export interface AOEDamageDef {
 	innerDamage: number;
 	outerDamage: number;
 	damageRadius: number;
@@ -188,7 +188,7 @@ export enum BlockArchetype {
 	BLAST_PROOF,
 }
 
-export interface MeleeItemMeta {
+export interface MeleeItemDef {
 	damageType?: DamageType;
 	canHitMultipleTargets?: boolean;
 	damage: number;

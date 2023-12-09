@@ -74,7 +74,7 @@ export class ShopService implements OnStart {
 					}
 					let itemsToAdd = shopItem.spawnWithItems;
 					for (let itemType of itemsToAdd) {
-						const itemMeta = ItemUtil.GetItemMeta(itemType);
+						const itemMeta = ItemUtil.GetItemDef(itemType);
 						if (itemMeta.armor) {
 							inv.SetItem(inv.armorSlots[itemMeta.armor?.armorType], new ItemStack(itemType, 1));
 						} else {
@@ -128,7 +128,7 @@ export class ShopService implements OnStart {
 			// Give item
 			let itemsToAdd = shopElement.spawnWithItems ?? [shopElement.itemType];
 			for (let itemTypeToAdd of itemsToAdd) {
-				const itemMeta = ItemUtil.GetItemMeta(itemTypeToAdd);
+				const itemMeta = ItemUtil.GetItemDef(itemTypeToAdd);
 				if (itemMeta.armor) {
 					inv.SetItem(inv.armorSlots[itemMeta.armor?.armorType], new ItemStack(itemTypeToAdd, 1));
 				} else {

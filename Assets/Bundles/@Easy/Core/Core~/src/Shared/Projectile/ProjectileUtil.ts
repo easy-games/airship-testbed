@@ -1,5 +1,5 @@
 import { Entity } from "Shared/Entity/Entity";
-import { ItemMeta } from "Shared/Item/ItemMeta";
+import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { NormalizeV3 } from "Shared/Util/Vector3Util";
 
@@ -25,7 +25,7 @@ export class ProjectileUtil {
 		return launchPos;
 	}
 
-	public static GetLaunchForceData(itemMeta: ItemMeta, aimVector: Vector3, chargeSec: number) {
+	public static GetLaunchForceData(itemMeta: ItemDef, aimVector: Vector3, chargeSec: number) {
 		let chargePercent = 1;
 		if (itemMeta.usable) {
 			chargePercent = MathUtil.InvLerp(

@@ -141,13 +141,13 @@ export class TeamUpgradeController implements OnStart {
 		// Price
 		switch (tier) {
 			case 0:
-				priceText.text = `${tier1Meta.cost} ${ItemUtil.GetItemMeta(tier1Meta.currency).displayName}`;
+				priceText.text = `${tier1Meta.cost} ${ItemUtil.GetItemDef(tier1Meta.currency).displayName}`;
 				break;
 			case 1:
-				priceText.text = `${tier2Meta.cost} ${ItemUtil.GetItemMeta(tier2Meta.currency).displayName}`;
+				priceText.text = `${tier2Meta.cost} ${ItemUtil.GetItemDef(tier2Meta.currency).displayName}`;
 				break;
 			case 2:
-				priceText.text = `${tier3Meta.cost} ${ItemUtil.GetItemMeta(tier3Meta.currency).displayName}`;
+				priceText.text = `${tier3Meta.cost} ${ItemUtil.GetItemDef(tier3Meta.currency).displayName}`;
 				break;
 			default:
 				priceText.enabled = false;

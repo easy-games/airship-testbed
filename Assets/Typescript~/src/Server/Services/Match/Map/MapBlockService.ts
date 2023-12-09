@@ -3,7 +3,7 @@ import { BlockInteractService } from "@Easy/Core/Server/Services/Block/BlockInte
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
-import { ItemMeta } from "@Easy/Core/Shared/Item/ItemMeta";
+import { ItemDef } from "@Easy/Core/Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
@@ -47,7 +47,7 @@ export class MapBlockService implements OnStart {
 
 			const sphereRadius = 4.5;
 			let voxelPositions: Vector3[] = [];
-			let itemMeta: ItemMeta[] = [];
+			let itemDef: ItemDef[] = [];
 			let i = 0;
 			let world = WorldAPI.GetMainWorld();
 			for (let x = -sphereRadius; x < sphereRadius; x++) {
@@ -67,7 +67,7 @@ export class MapBlockService implements OnStart {
 							if (block && block.IsAir()) {
 								if (localBlockPos.magnitude <= sphereRadius) {
 									voxelPositions[i] = voxelPos;
-									itemMeta[i] = ItemUtil.GetItemMeta(
+									itemDef[i] = ItemUtil.GetItemDef(
 										localBlockPos.magnitude < sphereRadius / 2 ? ItemType.DIRT : ItemType.STONE,
 									);
 									i++;
@@ -77,7 +77,7 @@ export class MapBlockService implements OnStart {
 					}
 				}
 			}
-			this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemMeta);
+			this.blockService.PlaceBlockGroup(entity as CharacterEntity, voxelPositions, itemDef);
 			MapBlockService.toggle = !MapBlockService.toggle;
 		});
 	}

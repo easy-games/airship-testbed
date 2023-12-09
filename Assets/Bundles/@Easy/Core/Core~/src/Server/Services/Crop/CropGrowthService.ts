@@ -1,11 +1,10 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CropStateDto } from "Shared/Crops/CropMeta";
 import { Task } from "Shared/Util/Task";
-import { SharedTime, TimeUtil } from "Shared/Util/TimeUtil";
-import { OnFixedUpdate, OnTick, SetInterval } from "Shared/Util/Timer";
+import { SharedTime } from "Shared/Util/TimeUtil";
+import { SetInterval } from "Shared/Util/Timer";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
@@ -64,7 +63,7 @@ export class CropGrowthService implements OnStart {
 			const world = WorldAPI.GetMainWorld();
 			if (!world) return;
 
-			const cropBlock = world.GetBlockAt(event.pos).itemMeta?.cropBlock;
+			const cropBlock = world.GetBlockAt(event.pos).itemDef?.cropBlock;
 			if (cropBlock) {
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_GROWTH_LEVEL, 0, true);
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_HARVESTABLE, false, true);

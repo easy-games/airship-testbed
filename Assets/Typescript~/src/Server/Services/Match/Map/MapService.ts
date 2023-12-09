@@ -55,7 +55,7 @@ export class MapService implements OnStart {
 
 		/* Load world. */
 		// world.LoadEmptyWorld(blockDefines, "");
-		// const grass = GetItemMeta(ItemType.GRASS).BlockId;
+		// const grass = GetItemDef(ItemType.GRASS).BlockId;
 		// world.WriteVoxelAt(new Vector3(1, 1, 1), grass!);
 		world.LoadWorldFromSaveFile(this.voxelBinaryFile);
 		/* Parse map objects and finish loading map. */

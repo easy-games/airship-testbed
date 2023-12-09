@@ -1,9 +1,9 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { Crosshair } from "Shared/Crosshair/Crosshair";
+import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Entity } from "Shared/Entity/Entity";
-import { AmmoMeta, ItemMeta, SoundMeta } from "Shared/Item/ItemMeta";
+import { AmmoDef, ItemDef, SoundDef } from "Shared/Item/ItemDefinitionTypes";
 import { ProjectileUtil } from "Shared/Projectile/ProjectileUtil";
 import { Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -74,7 +74,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		//Play the draw sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
 
-		let sound: SoundMeta | undefined = undefined;
+		let sound: SoundDef | undefined = undefined;
 		if (this.itemMeta.projectileLauncher.chargeSound) {
 			sound = RandomUtil.FromArray(this.itemMeta.projectileLauncher.chargeSound);
 		}
@@ -96,10 +96,10 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		this.PlayAnimationOnItem(0, true); //ie bow draw string
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
-			const ammoItemMeta = ItemUtil.GetItemMeta(this.itemMeta.projectileLauncher.ammoItemType);
+			const ammoItemMeta = ItemUtil.GetItemDef(this.itemMeta.projectileLauncher.ammoItemType);
 			const ammoMeta = ammoItemMeta.projectile!;
 
-			this.chargeBin.Add(Crosshair.AddDisabler());
+			this.chargeBin.Add(Dependency(CrosshairController).AddDisabler());
 
 			this.isCharging = true;
 
@@ -233,7 +233,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	private GetLaunchData(
 		entity: Entity,
 		mouse: Mouse,
-		launcherItemMeta: ItemMeta,
+		launcherItemMeta: ItemDef,
 		chargeSec: number,
 		launchPos: Vector3,
 	): {
@@ -242,7 +242,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		velocity: Vector3;
 	} {
 		const launcherMeta = launcherItemMeta.projectileLauncher!;
-		const ammoItemMeta = ItemUtil.GetItemMeta(launcherMeta.ammoItemType);
+		const ammoItemMeta = ItemUtil.GetItemDef(launcherMeta.ammoItemType);
 		const ammoMeta = ammoItemMeta.projectile!;
 
 		const aimVector = this.GetAimVector(mouse, launchPos, ammoMeta);
@@ -256,7 +256,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		};
 	}
 
-	private GetAimVector(mouse: Mouse, launchPosition: Vector3, ammoMeta: AmmoMeta) {
+	private GetAimVector(mouse: Mouse, launchPosition: Vector3, ammoMeta: AmmoDef) {
 		// Note: We could probably get more advanced with this calculation but this constant works pretty well.
 		// Alternatively, we could calculate the "distance" of the path and choose X percent along that distance.
 		const aimDistance = 100;
