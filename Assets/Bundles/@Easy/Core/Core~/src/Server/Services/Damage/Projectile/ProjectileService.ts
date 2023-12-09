@@ -28,7 +28,7 @@ export class ProjectileService implements OnStart {
 		CoreServerSignals.ProjectileHit.Connect((event) => {
 			const projectile = event.projectile;
 			const launcherItemType = projectile.GetLauncherItemType();
-			const launcherMeta = launcherItemType ? ItemUtil.GetItemMeta(launcherItemType) : undefined;
+			const launcherMeta = launcherItemType ? ItemUtil.GetItemDef(launcherItemType) : undefined;
 
 			let damage = event.ammoMeta.damage;
 
@@ -125,7 +125,7 @@ export class ProjectileService implements OnStart {
 
 			const itemType = ItemUtil.GetItemTypeFromItemId(event.itemTypeId);
 			if (itemType) {
-				const itemMeta = ItemUtil.GetItemMeta(itemType);
+				const itemMeta = ItemUtil.GetItemDef(itemType);
 				const entity = Entity.FindByGameObject(event.shooter);
 				if (entity && entity instanceof CharacterEntity) {
 					const inv = entity.GetInventory();
@@ -169,7 +169,7 @@ export class ProjectileService implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = ItemUtil.GetItemMeta(projectile.itemType).projectile!;
+		const ammoMeta = ItemUtil.GetItemDef(projectile.itemType).projectile!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		const projectileHitSignal = new ProjectileCollideServerSignal(

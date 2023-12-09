@@ -1,9 +1,9 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
+import { BlockDef } from "../Item/ItemDefinitionTypes";
 import { ItemType } from "../Item/ItemType";
 import { Signal } from "../Util/Signal";
-import { BlockMeta } from "../Item/ItemMeta";
 import { Block } from "./Block";
 export type BlockData = {
     [key: string]: unknown;
@@ -49,8 +49,8 @@ export declare class World {
      * @param pos
      * @returns BlockMeta under the position.
      */
-    GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined;
-    RaycastBlockBelow(startPos: Vector3, maxDistance?: number): BlockMeta | undefined;
+    GetBlockBelowMeta(pos: Vector3): BlockDef | undefined;
+    RaycastBlockBelow(startPos: Vector3, maxDistance?: number): BlockDef | undefined;
     /**
      * Translates the string block id to the corresponding voxel block id
      * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`

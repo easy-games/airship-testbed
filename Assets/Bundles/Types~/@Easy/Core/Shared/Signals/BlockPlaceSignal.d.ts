@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { Entity } from "../Entity/Entity";
-import { ItemMeta } from "../Item/ItemMeta";
+import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { ItemType } from "../Item/ItemType";
 export declare class BlockPlaceSignal {
     readonly pos: Vector3;
@@ -9,7 +9,7 @@ export declare class BlockPlaceSignal {
     readonly blockId: string;
     /** Will always be undefined on client. */
     readonly entity?: Entity | undefined;
-    readonly itemMeta: ItemMeta;
+    readonly itemMeta: ItemDef;
     constructor(pos: Vector3, itemType: ItemType, blockId: string, 
     /** Will always be undefined on client. */
     entity?: Entity | undefined);

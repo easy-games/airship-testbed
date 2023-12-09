@@ -6,7 +6,7 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Entity } from "Shared/Entity/Entity";
-import { AOEDamageMeta } from "Shared/Item/ItemMeta";
+import { AOEDamageDef } from "Shared/Item/ItemDefinitionTypes";
 import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
@@ -55,7 +55,7 @@ export class DamageService implements OnStart {
 	public InflictAOEDamage(
 		centerPosition: Vector3,
 		innerDamage: number,
-		aoeMeta: AOEDamageMeta,
+		aoeMeta: AOEDamageDef,
 		config: InflictDamageConfig,
 	) {
 		if (!config.knockbackDirection) {

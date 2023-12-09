@@ -1,4 +1,4 @@
-import { ItemMeta } from "../Item/ItemMeta";
+import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { ItemType } from "../Item/ItemType";
 import { Signal } from "../Util/Signal";
 export interface ItemStackDto {
@@ -27,7 +27,7 @@ export declare class ItemStack {
     private hasBeenDestroyed;
     constructor(itemType: ItemType, amount?: number);
     GetItemType(): ItemType;
-    GetItemMeta(): ItemMeta;
+    GetItemDef(): ItemDef;
     SetItemType(itemType: ItemType): void;
     GetAmount(): number;
     SetAmount(val: number, config?: {
@@ -36,7 +36,7 @@ export declare class ItemStack {
     CanMerge(other: ItemStack): boolean;
     Encode(): ItemStackDto;
     static Decode(dto: ItemStackDto): ItemStack;
-    GetMeta(): ItemMeta;
+    GetMeta(): ItemDef;
     Decrement(amount: number, config?: {
         noNetwork?: boolean;
     }): void;

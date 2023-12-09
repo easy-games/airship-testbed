@@ -10,13 +10,13 @@ import { SetInterval } from "Shared/Util/Timer";
 import { Entity } from "../../Entity/Entity";
 import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
-import { ItemMeta } from "../ItemMeta";
+import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemUtil } from "../ItemUtil";
 
 export class HeldItem {
 	private serverOffsetMargin = 0.025;
 	/** Undefined when holding nothing */
-	protected readonly itemMeta: ItemMeta | undefined;
+	protected readonly itemMeta: ItemDef | undefined;
 	protected clickBufferMargin = 0.2;
 	public readonly entity: Entity;
 	private lastUsedTime = 0;
@@ -39,7 +39,7 @@ export class HeldItem {
 	 */
 	protected lookVector: Vector3 = new Vector3();
 
-	constructor(entity: Entity, newMeta: ItemMeta | undefined) {
+	constructor(entity: Entity, newMeta: ItemDef | undefined) {
 		this.entity = entity;
 		this.itemMeta = newMeta;
 	}

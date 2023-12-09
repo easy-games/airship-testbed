@@ -1,11 +1,11 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { Entity } from "../../Entity/Entity";
-import { ItemMeta } from "../ItemMeta";
+import { ItemDef } from "../ItemDefinitionTypes";
 export declare class HeldItem {
     private serverOffsetMargin;
     /** Undefined when holding nothing */
-    protected readonly itemMeta: ItemMeta | undefined;
+    protected readonly itemMeta: ItemDef | undefined;
     protected clickBufferMargin: number;
     readonly entity: Entity;
     private lastUsedTime;
@@ -26,7 +26,7 @@ export declare class HeldItem {
      * This vector will match the exact direction the entity was facing during the frame they clicked (as opposed to the tick they clicked).
      */
     protected lookVector: Vector3;
-    constructor(entity: Entity, newMeta: ItemMeta | undefined);
+    constructor(entity: Entity, newMeta: ItemDef | undefined);
     /**
      * Internally used to update the current look vector.
      */

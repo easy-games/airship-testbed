@@ -1,7 +1,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { Entity } from "../Entity/Entity";
-import { BreakBlockMeta } from "../Item/ItemMeta";
+import { BreakBlockDef } from "../Item/ItemDefinitionTypes";
 import { Signal } from "../Util/Signal";
 import { Block } from "./Block";
 import { BlockHitDamageSignal } from "./Signal/BlockHitDamageSignal";
@@ -13,5 +13,5 @@ export declare class WorldAPI {
     static OnBlockHitDamageCalc: Signal<BlockHitDamageSignal>;
     static GetMainWorld(): World | undefined;
     static GetVoxelPosition(worldPosition: Vector3): Vector3;
-    static CalculateBlockHitDamage(entity: Entity | undefined, block: Block, blockPos: Vector3, breakBlockMeta: BreakBlockMeta): number;
+    static CalculateBlockHitDamage(entity: Entity | undefined, block: Block, blockPos: Vector3, breakBlockMeta: BreakBlockDef): number;
 }
