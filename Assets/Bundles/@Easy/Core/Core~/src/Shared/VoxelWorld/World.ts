@@ -286,6 +286,10 @@ export class World {
 		this.voxelWorld.LoadEmptyWorld(cubeMapPath);
 	}
 
+	public LoadWorld(): void {
+		this.voxelWorld.LoadWorld();
+	}
+
 	public RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult {
 		return this.voxelWorld.RaycastVoxel(pos, direction, maxDistance);
 	}
