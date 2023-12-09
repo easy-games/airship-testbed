@@ -1,4 +1,4 @@
-import { ItemMeta } from "Shared/Item/ItemMeta";
+import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import { Signal } from "Shared/Util/Signal";
 import { ItemUtil } from "../Item/ItemUtil";
@@ -41,8 +41,8 @@ export class ItemStack {
 		return this.itemType;
 	}
 
-	public GetItemMeta(): ItemMeta {
-		return ItemUtil.GetItemMeta(this.itemType);
+	public GetItemDef(): ItemDef {
+		return ItemUtil.GetItemDef(this.itemType);
 	}
 
 	public SetItemType(itemType: ItemType): void {
@@ -89,8 +89,8 @@ export class ItemStack {
 		return item;
 	}
 
-	public GetMeta(): ItemMeta {
-		return ItemUtil.GetItemMeta(this.itemType);
+	public GetMeta(): ItemDef {
+		return ItemUtil.GetItemDef(this.itemType);
 	}
 
 	public Decrement(
@@ -117,7 +117,7 @@ export class ItemStack {
 	}
 
 	public GetMaxStackSize(): number {
-		return this.GetItemMeta()?.maxStackSize ?? 999;
+		return this.GetItemDef()?.maxStackSize ?? 999;
 	}
 
 	public Clone(): ItemStack {

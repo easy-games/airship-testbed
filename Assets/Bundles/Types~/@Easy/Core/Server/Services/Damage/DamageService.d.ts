@@ -3,7 +3,7 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { DamageType } from "../../../Shared/Damage/DamageType";
 import { Entity } from "../../../Shared/Entity/Entity";
-import { AOEDamageMeta } from "../../../Shared/Item/ItemMeta";
+import { AOEDamageDef } from "../../../Shared/Item/ItemDefinitionTypes";
 import { EntityService } from "../Entity/EntityService";
 import { ProjectileCollideServerSignal } from "./Projectile/ProjectileCollideServerSignal";
 export declare class DamageService implements OnStart {
@@ -12,7 +12,7 @@ export declare class DamageService implements OnStart {
     constructor(entityService: EntityService);
     GetDefaultKnockbackY(): number;
     OnStart(): void;
-    InflictAOEDamage(centerPosition: Vector3, innerDamage: number, aoeMeta: AOEDamageMeta, config: InflictDamageConfig): void;
+    InflictAOEDamage(centerPosition: Vector3, innerDamage: number, aoeMeta: AOEDamageDef, config: InflictDamageConfig): void;
     InflictFallDamage(entity: Entity, verticalSpeed: number): boolean;
     /**
      *

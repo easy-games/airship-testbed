@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { $print } from "@easy-games/unity-component-transformer";
 import ObjectUtil from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -103,7 +102,7 @@ export class GeneratorController implements OnStart {
 		const refs = go.GetComponent<GameObjectReferences>();
 
 		const nameText = refs.GetValue("UI", "NameText") as TMP_Text;
-		const itemMeta = ItemUtil.GetItemMeta(dto.item);
+		const itemMeta = ItemUtil.GetItemDef(dto.item);
 		let textColor: Color;
 		if (dto.item === ItemType.EMERALD) {
 			textColor = Theme.Green;

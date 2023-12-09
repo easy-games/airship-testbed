@@ -1,5 +1,5 @@
 ﻿﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
-import { ItemMeta } from "Shared/Item/ItemMeta";
+import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Entity, EntityReferences } from "../Entity";
 import { EntityAnimationLayer } from "./EntityAnimationLayer";
@@ -33,7 +33,7 @@ const BLOCK_USE_FP = AssetCache.LoadAsset<AnimationClip>(
 
 export class CharacterEntityAnimator extends EntityAnimator {
 	private currentItemClipMap: Map<ItemAnimationId, AnimationClip[]> = new Map();
-	private currentItemMeta: ItemMeta | undefined;
+	private currentItemMeta: ItemDef | undefined;
 	private currentItemState: string = ItemAnimationId.IDLE;
 	private currentEndEventConnection = -1;
 
@@ -118,7 +118,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		return animState;
 	}
 
-	private LoadNewItemResources(itemMeta: ItemMeta | undefined) {
+	private LoadNewItemResources(itemMeta: ItemDef | undefined) {
 		this.Log("Loading Item: " + itemMeta?.itemType);
 		this.currentItemMeta = itemMeta;
 		// this.itemLayer.DestroyStates();
@@ -207,7 +207,7 @@ export class CharacterEntityAnimator extends EntityAnimator {
         currentItem.OnAnimEvent(eventData);*/
 	}
 
-	public override EquipItem(itemMeta: ItemMeta | undefined) {
+	public override EquipItem(itemMeta: ItemDef | undefined) {
 		this.LoadNewItemResources(itemMeta);
 		this.StartIdleAnim(false);
 	}

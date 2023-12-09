@@ -2,7 +2,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { DamageType } from "../../Damage/DamageType";
-import { ItemMeta } from "../../Item/ItemMeta";
+import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { Bin } from "../../Util/Bin";
 import { Entity, EntityReferences } from "../Entity";
 export declare abstract class EntityAnimator {
@@ -39,7 +39,7 @@ export declare abstract class EntityAnimator {
         fadeOutDuration?: number;
         autoFadeOut?: boolean;
     }): void;
-    EquipItem(itemMeta: ItemMeta | undefined): void;
+    EquipItem(itemMeta: ItemDef | undefined): void;
     abstract PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;

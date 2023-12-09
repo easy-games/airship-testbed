@@ -3,7 +3,7 @@ import { LocalEntityController } from "Client/Controllers/Character/LocalEntityC
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
-import { ItemMeta } from "Shared/Item/ItemMeta";
+import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import StringUtils from "Shared/Types/StringUtil";
 import { Bin } from "Shared/Util/Bin";
@@ -152,7 +152,7 @@ export abstract class EntityAnimator {
 		},
 	): void {}
 
-	public EquipItem(itemMeta: ItemMeta | undefined): void {}
+	public EquipItem(itemMeta: ItemDef | undefined): void {}
 
 	public abstract PlayAnimation(
 		clip: AnimationClip,
@@ -321,10 +321,10 @@ export abstract class EntityAnimator {
 			itemType = ItemType.STONE;
 		}
 
-		const itemMeta = ItemUtil.GetItemMeta(itemType);
+		const itemMeta = ItemUtil.GetItemDef(itemType);
 
 		// fallback to stone sounds.
-		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemMeta(ItemType.STONE).block?.stepSound;
+		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemDef(ItemType.STONE).block?.stepSound;
 		if (stepSounds === undefined) {
 			stepSounds = [];
 		}

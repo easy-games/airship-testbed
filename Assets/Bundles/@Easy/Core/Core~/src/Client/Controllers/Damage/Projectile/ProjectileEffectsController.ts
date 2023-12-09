@@ -14,7 +14,7 @@ export class ProjectileEffectsController implements OnStart {
 
 	OnStart(): void {
 		CoreClientSignals.ProjectileCollide.Connect((event) => {
-			const itemMeta = ItemUtil.GetItemMeta(event.projectile.itemType);
+			const itemMeta = ItemUtil.GetItemDef(event.projectile.itemType);
 
 			if (itemMeta.projectile?.onHitVFXTemplate) {
 				const effect = EffectsManager.SpawnBundleEffectById(

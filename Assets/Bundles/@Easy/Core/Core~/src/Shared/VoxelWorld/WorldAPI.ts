@@ -1,5 +1,5 @@
 import { Entity } from "Shared/Entity/Entity";
-import { BlockArchetype, BlockDamageType, BreakBlockMeta } from "Shared/Item/ItemMeta";
+import { BlockArchetype, BlockDamageType, BreakBlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Block } from "./Block";
@@ -33,14 +33,14 @@ export class WorldAPI {
 		entity: Entity | undefined,
 		block: Block,
 		blockPos: Vector3,
-		breakBlockMeta: BreakBlockMeta,
+		breakBlockMeta: BreakBlockDef,
 	): number {
 		let signal = new BlockHitDamageSignal(breakBlockMeta.damage, entity, block, blockPos, breakBlockMeta);
 		this.OnBlockHitDamageCalc.Fire(signal);
 
 		//Global Hit Damage Calcs
 		//Block Types
-		const archetype = signal.block.itemMeta?.block?.blockArchetype ?? BlockArchetype.NONE;
+		const archetype = signal.block.itemDef?.block?.blockArchetype ?? BlockArchetype.NONE;
 
 		//Bonuse damage from item type
 		if (archetype !== BlockArchetype.NONE) {

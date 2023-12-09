@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { ItemMeta } from "../../Item/ItemMeta";
+import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { Entity, EntityReferences } from "../Entity";
 import { EntityAnimator } from "./EntityAnimator";
 export declare enum ItemAnimationId {
@@ -33,7 +33,7 @@ export declare class CharacterEntityAnimator extends EntityAnimator {
     }): AnimancerState;
     private LoadNewItemResources;
     private TriggerEvent;
-    EquipItem(itemMeta: ItemMeta | undefined): void;
+    EquipItem(itemMeta: ItemDef | undefined): void;
     StartIdleAnim(instantTransition: boolean): void;
     PlayUseAnim(useIndex?: number, config?: {
         fadeMode?: FadeMode;

@@ -13,7 +13,7 @@ export class GroundItemPickupSoundsController implements OnStart {
 		CoreClientSignals.EntityPickupItem.Connect((event) => {
 			if (!event.entity.IsLocalCharacter()) return;
 
-			const itemMeta = ItemUtil.GetItemMeta(event.groundItem.itemStack.GetItemType());
+			const itemMeta = ItemUtil.GetItemDef(event.groundItem.itemStack.GetItemType());
 			const pickupSound = RandomUtil.FromArray(itemMeta.pickupSound ?? PICKUP_ITEM_DEFAULT_SOUND);
 			AudioManager.PlayGlobal(pickupSound, {
 				volumeScale: 0.6,

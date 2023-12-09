@@ -1,7 +1,7 @@
 import { Controller } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { Entity } from "Shared/Entity/Entity";
-import { BreakBlockMeta, TillBlockMeta } from "Shared/Item/ItemMeta";
+import { BreakBlockDef, TillBlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
@@ -17,7 +17,7 @@ export class BlockInteractController {
 
 	public PerformBlockHit(
 		entity: Entity,
-		breakBlock: BreakBlockMeta | undefined,
+		breakBlock: BreakBlockDef | undefined,
 		voxelPos: Vector3,
 		showHealthbars: boolean,
 	) {
@@ -66,7 +66,7 @@ export class BlockInteractController {
 		}
 	}
 
-	public PerformBlockTill(entity: Entity, tillBlock: TillBlockMeta | undefined, voxelPos: Vector3) {
+	public PerformBlockTill(entity: Entity, tillBlock: TillBlockDef | undefined, voxelPos: Vector3) {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return;
 
@@ -77,7 +77,7 @@ export class BlockInteractController {
 			}
 
 			const block = world.GetBlockAt(voxelPos);
-			const tillable = block.itemMeta?.block?.tillable;
+			const tillable = block.itemDef?.block?.tillable;
 			if (!tillable) {
 				return;
 			}

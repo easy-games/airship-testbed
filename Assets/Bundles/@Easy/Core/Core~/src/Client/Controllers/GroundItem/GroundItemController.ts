@@ -48,7 +48,7 @@ export class GroundItemController implements OnStart {
 
 		ItemUtil.WaitForInitialized().then(() => {
 			for (const itemType of ItemUtil.GetItemTypes()) {
-				const itemMeta = ItemUtil.GetItemMeta(itemType);
+				const itemMeta = ItemUtil.GetItemDef(itemType);
 				let obj: Object | undefined;
 				if (itemMeta.groundItemPrefab) {
 					obj = AssetBridge.Instance.LoadAssetIfExists<Object>(itemMeta.groundItemPrefab);

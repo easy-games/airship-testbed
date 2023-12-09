@@ -64,7 +64,7 @@ export class PrefabBlockManager {
 	}
 
 	private OnBlockPlace(pos: Vector3, itemType: ItemType): void {
-		const itemMeta = ItemUtil.GetItemMeta(itemType);
+		const itemMeta = ItemUtil.GetItemDef(itemType);
 		if (itemMeta.block?.prefab) {
 			const prefab = AssetBridge.Instance.LoadAsset<Object>(itemMeta.block.prefab.path);
 			const prefabGO = GameObjectUtil.InstantiateAt(prefab, pos, Quaternion.identity);

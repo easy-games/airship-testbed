@@ -6,7 +6,14 @@ import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
-import { BlockArchetype, BlockMeta, ItemMeta, MeleeItemMeta, UsableHeldItemMeta, ViewModelMeta } from "./ItemMeta";
+import {
+	BlockArchetype,
+	BlockDef,
+	ItemDef,
+	MeleeItemDef,
+	UsableHeldItemDef,
+	ViewModelDef,
+} from "./ItemDefinitionTypes";
 import { ItemType } from "./ItemType";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
@@ -24,7 +31,7 @@ const GroundItemPrefab = (s: string) => {
 };
 
 const defaultGravity = PhysicsUtil.Gravity;
-const blockUsable: UsableHeldItemMeta = {
+const blockUsable: UsableHeldItemDef = {
 	startUpInSeconds: 0,
 	minChargeSeconds: 0,
 	maxChargeSeconds: 0,
@@ -34,7 +41,7 @@ const blockUsable: UsableHeldItemMeta = {
 	onUseAnimTP: CoreAnim("TP_Block_Place"),
 	canHoldToUse: true,
 };
-const swordUsable: UsableHeldItemMeta = {
+const swordUsable: UsableHeldItemDef = {
 	startUpInSeconds: 0,
 	minChargeSeconds: 0,
 	maxChargeSeconds: 0,
@@ -56,7 +63,7 @@ const swordUsable: UsableHeldItemMeta = {
 		AllBundleItems.ItemSword_ThirdPerson_Swing02 as string,
 	],
 };
-const bigSwordUsable: UsableHeldItemMeta = {
+const bigSwordUsable: UsableHeldItemDef = {
 	...swordUsable,
 	onUseSoundVolume: 0.4,
 	cooldownSeconds: 0.25,
@@ -69,49 +76,49 @@ const bigSwordUsable: UsableHeldItemMeta = {
 		AllBundleItems.ItemSwordBig_ThirdPerson_Swing02 as string,
 	],
 };
-const swordViewModel: ViewModelMeta = {
+const swordViewModel: ViewModelDef = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	idleAnimTP: CoreAnim("Airship_Empty"),
 };
 
-const bigSwordViewModel: ViewModelMeta = {
+const bigSwordViewModel: ViewModelDef = {
 	// idleAnimFP: CoreAnim("FP_SwordBig_Idle"),
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	idleAnimTP: CoreAnim("Airship_Empty"),
 };
 
-const swordMelee: MeleeItemMeta = {
+const swordMelee: MeleeItemDef = {
 	damage: 10,
 	instantDamage: true,
-	hitDelay: 0.1345,
+	// hitDelay: 0.1345,
 	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit as string,
 	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
 	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],
 	canHitMultipleTargets: false,
 	damageType: DamageType.SWORD,
 };
-const pickaxeUsable: Partial<UsableHeldItemMeta> = {
+const pickaxeUsable: Partial<UsableHeldItemDef> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
 	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 	canHoldToUse: true,
 };
 
-const plowUsable: Partial<UsableHeldItemMeta> = {
+const plowUsable: Partial<UsableHeldItemDef> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
 	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 };
 
-const seedsUsable: Partial<UsableHeldItemMeta> = {
+const seedsUsable: Partial<UsableHeldItemDef> = {
 	onUseAnimFP: CoreAnim("FP_Sword_Use"),
 	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 };
 
-const pickaxeViewModel: Partial<ViewModelMeta> = {
+const pickaxeViewModel: Partial<ViewModelDef> = {
 	idleAnimFP: CoreAnim("FP_Sword_Idle"),
 	// idleAnimTP: CoreAnim("TP_Sword_Idle"),
 };
 
-const woolBlock: BlockMeta = {
+const woolBlock: BlockDef = {
 	health: 10,
 	blockId: ItemType.WHITE_WOOL,
 	stepSound: CoreSound.footstepWool,
@@ -143,7 +150,7 @@ function AccPath(itemType: ItemType): string {
 }
 
 export const items: {
-	[key in ItemType]: Omit<ItemMeta, "id" | "itemType">;
+	[key in ItemType]: Omit<ItemDef, "id" | "itemType">;
 } = {
 	////BLOCKS
 	[ItemType.BED]: {
@@ -732,8 +739,8 @@ export const items: {
 	[ItemType.WOOD_CROSSBOW]: {
 		displayName: "Wood Crossbow",
 		usable: {
-			minChargeSeconds: 0.12,
-			maxChargeSeconds: 0.2,
+			minChargeSeconds: 0,
+			maxChargeSeconds: 0.1,
 			cooldownSeconds: 1.15,
 			onUseSound: [CoreSound.bowShoot],
 			onUseAnimFP: CoreAnim("FP_Crossbow_Charge", "FP_Crossbow_Shoot"),
@@ -742,8 +749,8 @@ export const items: {
 		accessoryPaths: [AccPath(ItemType.WOOD_CROSSBOW)],
 		projectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
-			minVelocityScaler: 5,
-			maxVelocityScaler: 130,
+			minVelocityScaler: 250,
+			maxVelocityScaler: 250,
 			damageMultiplier: 1.5,
 			powerMultiplier: 1.35,
 			firstPersonLaunchOffset: new Vector3(1, -0.5, 0),

@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { InventoryController } from "@Easy/Core/Client/Controllers/Inventory/InventoryController";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
@@ -157,7 +156,7 @@ export class ItemShopController implements OnStart {
 				return;
 			}
 
-			const itemMeta = ItemUtil.GetItemMeta(shopItem.itemType);
+			const itemMeta = ItemUtil.GetItemDef(shopItem.itemType);
 			let itemGO = container.transform.FindChild("id_" + itemMeta.id)?.gameObject;
 			if (itemGO === undefined) {
 				itemGO = GameObjectUtil.InstantiateIn(this.shopItemPrefab, container.transform);
@@ -247,7 +246,7 @@ export class ItemShopController implements OnStart {
 		const selectedItemCost = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemCost");
 
 		CanvasUIBridge.SetSprite(selectedItemIcon, ItemUtil.GetItemRenderPath(shopItem.itemType));
-		const itemMeta = ItemUtil.GetItemMeta(shopItem.itemType);
+		const itemMeta = ItemUtil.GetItemDef(shopItem.itemType);
 		selectedItemQuantity.text = `x${shopItem.quantity}`;
 		selectedItemName.text = itemMeta.displayName;
 
@@ -256,7 +255,7 @@ export class ItemShopController implements OnStart {
 			itemRect.TweenLocalScale(new Vector3(0.9, 1.23, 1), 0.05).SetPingPong();
 		}
 
-		const currencyMeta = ItemUtil.GetItemMeta(shopItem.currency);
+		const currencyMeta = ItemUtil.GetItemDef(shopItem.currency);
 		selectedItemCost.text = `${shopItem.price} ${currencyMeta.displayName}`;
 
 		if (shopItem.currency === ItemType.EMERALD) {
