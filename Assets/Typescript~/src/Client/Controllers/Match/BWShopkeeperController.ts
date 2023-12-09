@@ -12,7 +12,7 @@ const PROXIMITY_PROMPT_OFFSET = new Vector3(0, -0.2, 0);
 @Controller({})
 export class BWShopkeeperController implements OnStart {
 	private itemShopAccessoryCollection = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
-		"@Easy/Core/Shared/Resources/Accessories/LiveAvatarItems/ItemShopKeeper/ItemShopKeeperCollection.asset",
+		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/ItemShopKeeper/ItemShopKeeperCollection.asset",
 	);
 	private teamUpgradesAccessoryCollection = this.itemShopAccessoryCollection;
 

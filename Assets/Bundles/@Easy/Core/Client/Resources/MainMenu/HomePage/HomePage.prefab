@@ -3884,7 +3884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/HomePageComponent.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/MainMenuPageComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -3894,35 +3894,17 @@ MonoBehaviour:
   m_onLateUpdateHandle: -1
   m_shortFileName: 
   m_metadata:
-    name: HomePageComponent
+    name: MainMenuPageComponent
     properties:
-    - name: mainContent
-      type: object
-      objectType: Transform
+    - name: usesAvatarRender
+      type: boolean
+      objectType: 
       items:
         type: 
         objectType: 
       decorators: []
       serializedValue: 
-      serializedObject: {fileID: 93598130775553359}
-    - name: spacerPrefab
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      serializedValue: 
-      serializedObject: {fileID: 4373083881801557931, guid: d76da8712519a4829928d80e8248b74f, type: 3}
-    - name: sortPrefab
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      serializedValue: 
-      serializedObject: {fileID: 4761209533630879677, guid: 94d376d75a21a4df49361c0c50038b64, type: 3}
+      serializedObject: {fileID: 0}
 --- !u!114 &5274232462038562316
 MonoBehaviour:
   m_ObjectHideFlags: 0

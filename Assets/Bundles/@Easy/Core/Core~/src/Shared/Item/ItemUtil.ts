@@ -13,18 +13,13 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export class ItemUtil {
-	public static readonly DefaultAccessoryCollectionPath =
-		"@Easy/Core/Shared/Resources/Accessories/LiveAvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
-	private static readonly avatarAccessories = new Map<AccessorySlot, Accessory[]>();
-	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 
 	public static missingItemAccessory: Accessory;
-	public static defaultKitAccessory: AccessoryCollection | undefined;
 
 	private static itemTypes: ItemType[] = [];
 	private static implictItemTypeMap = new Map<string, ItemType>();
@@ -38,26 +33,8 @@ export class ItemUtil {
 	public static Initialize() {
 		//Load default items
 		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
-		ItemUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
-			ItemUtil.DefaultAccessoryCollectionPath,
-		);
-		print("Init kit: " + ItemUtil.defaultKitAccessory?.name);
 
 		let i = 0;
-		//Load avatar accessories
-		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarCollection>(
-			"@Easy/Core/Shared/Resources/Accessories/AvatarItems/AllAvatarItems.asset",
-		);
-		for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
-			const element = avatarCollection.skinAccessories.GetValue(i);
-			print("Found avatar skin item: " + element.DisplayName);
-			this.avatarSkinAccessories.push(element);
-		}
-		for (let i = 0; i < avatarCollection.torsoAccessories.Length; i++) {
-			const element = avatarCollection.torsoAccessories.GetValue(i);
-			print("Found avatar item: " + element.DisplayName);
-			this.AddAvailableAvatarItem(element.AccessorySlot, element);
-		}
 
 		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(items)) {
@@ -135,21 +112,6 @@ export class ItemUtil {
 		}
 		items[itemType] = itemDefinition;
 	}
-
-	public static AddAvailableAvatarItem(slotType: AccessorySlot, item: Accessory) {
-		let items = this.avatarAccessories.get(slotType);
-		if (!items) {
-			items = [];
-		}
-		items.push(item);
-		this.avatarAccessories.set(slotType, items);
-	}
-
-	public static GetAllAvatarItems(slotType: AccessorySlot) {
-		return this.avatarAccessories.get(slotType);
-	}
-
-	public static GetAllAvatarSkins() {}
 
 	/**
 	 * @deprecated

@@ -167,10 +167,6 @@ export class CanvasAPI {
 
 	public static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
-		if (!this.eventInterceptor) {
-			return -1;
-		}
-		print("this.eventInterceptor: " + this.eventInterceptor);
 		return this.eventInterceptor!.OnClickEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
 			if (instanceId === targetGameObject.GetInstanceID()) {

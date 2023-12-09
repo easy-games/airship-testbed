@@ -2,16 +2,14 @@ import {} from "@easy-games/flamework-core";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 export default class AvatarViewComponent extends AirshipBehaviour {
-	public builder?: AccessoryBuilder;
-	public avatarDragBtn?: Button;
+	public humanEntityGo?: GameObject;
+	public avatarDragBtn?: GameObject;
+	public dragSpeedMod = 10;
+
+	public accessoryBuilder?: AccessoryBuilder;
 
 	public override OnStart(): void {
-		if (this.avatarDragBtn) {
-			CoreUI.SetupButton(this.avatarDragBtn.gameObject, { noHoverSound: true });
-			CanvasAPI.OnDragEvent(this.avatarDragBtn.gameObject, () => {
-				this.OnDragAvatar();
-			});
-		}
+		this.accessoryBuilder = this.humanEntityGo?.GetComponent<AccessoryBuilder>();
 	}
 
 	public ShowAvatar() {
@@ -26,7 +24,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		//TODO move the camera to this position
 	}
 
-	public OnDragAvatar() {
+	public DragView(mouseDelta: Vector2) {
 		//TODO rotate the avatar with mouse movement
+		this.humanEntityGo?.transform.Rotate(mouseDelta.x * this.dragSpeedMod, 0, 0);
 	}
 }

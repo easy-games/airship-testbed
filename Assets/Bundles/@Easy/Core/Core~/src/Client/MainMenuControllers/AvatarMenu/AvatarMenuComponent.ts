@@ -1,12 +1,12 @@
 import {} from "@easy-games/flamework-core";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { MainMenuController } from "../MainMenuController";
 import { MainMenuPageType } from "../MainMenuPageName";
 import { Bin } from "Shared/Util/Bin";
+import { AvatarUtils } from "Client/Avatar/AvatarUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly GeneralHookupKey = "General";
@@ -56,7 +56,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					if (go) {
 						CoreUI.SetupButton(go, { noHoverSound: true });
 						CanvasAPI.OnClickEvent(go, () => {
-							this.SelectSubNav(navI, subNavI);
+							this.SelectSubNav(subNavI);
 						});
 					}
 				}
@@ -64,7 +64,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		//Hookup general buttons
-		let button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject;
+		let button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "AvatarInteractionBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnDragEvent(button, () => {
+				this.OnDragAvatar();
+			});
+		}
+		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject;
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnDragEvent(button, () => {
@@ -117,10 +124,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			nav.gameObject.SetActive(active);
 		}
 
-		this.SelectSubNav(index, 0);
+		this.SelectSubNav(0);
 	}
 
-	private SelectSubNav(mainIndex: number, subIndex: number) {
+	private SelectSubNav(subIndex: number) {
 		this.Log("Selecting SUB nav: " + subIndex);
 		if (!this.subNavBarBtns) {
 			return;
@@ -137,15 +144,24 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				button.colors = colors;
 			}
 		}
-		this.DisplayItems(ItemUtil.GetAllAvatarItems(AccessorySlot.Shirt));
+		this.DisplayItemsOfType(AccessorySlot.Torso);
+	}
+
+	private DisplayItemsOfType(slot: AccessorySlot) {
+		let foundItems = AvatarUtils.GetAllAvatarItems(slot);
+		this.Log("Found items for type " + slot + ": " + foundItems?.size().ToString());
+		this.DisplayItems(foundItems);
 	}
 
 	private DisplayItems(items: Accessory[] | undefined) {
 		this.ClearItembuttons();
-		if (items) {
+		if (items && items.size() > 0) {
+			print("displaying items");
 			items.forEach((value) => {
 				this.AddItemButton(value);
 			});
+		} else {
+			print("Displaying no items");
 		}
 	}
 
@@ -154,13 +170,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.itemButtonBin.Clean();
 		if (this.itemButtonHolder) {
 			for (let i = 0; i < this.itemButtonHolder.GetChildCount(); i++) {
-				GameObjectUtil.Destroy(this.itemButtonHolder.GetChild(0).gameObject);
+				GameObjectUtil.Destroy(this.itemButtonHolder.GetChild(i).gameObject);
 			}
 		}
 	}
 
 	private AddItemButton(acc: Accessory) {
-		this.Log("loading item: " + acc.DisplayName);
+		this.Log("loading item: " + acc.ToString());
 		if (this.itemButtonTemplate && this.itemButtonHolder) {
 			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, () => {
@@ -175,7 +191,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectItem(acc: Accessory) {
-		this.Log("Selecting item: " + acc.DisplayName);
+		this.Log("Selecting item: " + acc.ToString());
 	}
 
 	private OnSelectClear() {
@@ -184,5 +200,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private OnSelectCurrent() {
 		//Select the item that is saved for this sot
+	}
+
+	private OnDragAvatar() {
+		this.mainMenu?.avatarView?.DragView(Input.mouseScrollDelta);
 	}
 }

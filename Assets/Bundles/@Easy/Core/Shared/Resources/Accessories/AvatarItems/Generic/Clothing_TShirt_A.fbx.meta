@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 56ba06d61b72e60438b6e6c97d174e9d
+guid: 07d466b455e420e43ba7209bb99a0156
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -102,5 +102,5 @@ ModelImporter:
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
-  assetBundleName: '@easy/core_shared/resources'
+  assetBundleName: 
   assetBundleVariant: 

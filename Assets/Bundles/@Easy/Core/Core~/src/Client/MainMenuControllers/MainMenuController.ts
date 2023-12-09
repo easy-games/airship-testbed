@@ -13,8 +13,9 @@ import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
-import AvatarViewComponent from "./AvatarMenu/AvatarViewComponent";
+import AvatarViewComponent from "../Avatar/AvatarViewComponent";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { AvatarUtils } from "Client/Avatar/AvatarUtil";
 
 @Controller()
 export class MainMenuController implements OnStart {
@@ -23,6 +24,7 @@ export class MainMenuController implements OnStart {
 	public mainMenuGo: GameObject;
 	public refs: GameObjectReferences;
 	public currentPage?: MainMenuPageComponent;
+	public avatarView?: AvatarViewComponent;
 	public OnCurrentPageChanged = new Signal<[page: MainMenuPageType, oldPage: MainMenuPageType | undefined]>();
 	private pageMap: Map<MainMenuPageType, MainMenuPageComponent>;
 	private wrapperRect: RectTransform;
@@ -36,7 +38,6 @@ export class MainMenuController implements OnStart {
 
 	private open = false;
 	private socialIsVisible = true;
-	private avatarView?: AvatarViewComponent;
 
 	constructor(private readonly authController: AuthController) {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
@@ -128,7 +129,7 @@ export class MainMenuController implements OnStart {
 
 	public OpenFromGame(): void {
 		if (this.open) return;
-		this.avatarScene?.SetActive(true);
+		this.avatarView?.ShowAvatar();
 
 		AppManager.OpenCustom(() => {
 			this.CloseFromGame();
@@ -144,7 +145,7 @@ export class MainMenuController implements OnStart {
 	public CloseFromGame(): void {
 		if (!this.open) return;
 		this.open = false;
-		this.avatarScene?.SetActive(false);
+		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();
 
 		const duration = 0.06;

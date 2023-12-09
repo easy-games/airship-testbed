@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultAvatarSkin
   m_EditorClassIdentifier: 
   DisplayName: 
-  skinTextureDiffuse: {fileID: 0}
-  skinTextureNormal: {fileID: 0}
-  skinTextureORM: {fileID: 0}
-  faceTextureDiffuse: {fileID: 0}
+  skinTextureDiffuse: {fileID: 2800000, guid: c793e1a7b58d6df4e9ed0a2c0838cf27, type: 3}
+  skinTextureNormal: {fileID: 2800000, guid: 96186e239638d40d883845320e22e424, type: 3}
+  skinTextureORM: {fileID: 2800000, guid: 3fcbe8116c7eee54ea369250e979e1c1, type: 3}
+  faceTextureDiffuse: {fileID: 2800000, guid: f8134b93858cd4ed5a2e43de8939e84c, type: 3}

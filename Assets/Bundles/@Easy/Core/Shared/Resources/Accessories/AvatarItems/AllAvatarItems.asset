@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f847151e48f04a24da87b6b5981b14cf, type: 3}
   m_Name: AllAvatarItems
   m_EditorClassIdentifier: 
-  skinAccessories: []
+  skinAccessories:
+  - {fileID: 11400000, guid: 3db33dde7d6c2f744b18a4f4bf187f3b, type: 2}
+  - {fileID: 11400000, guid: 86413a4b71bf0394886d3d4acbe0b73c, type: 2}
   headShapeAccessories: []
   headAccessories: []
-  torsoAccessories: []
+  torsoAccessories:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 39de11c24c9298643af660e6e05f962e, type: 2}
+  - {fileID: 0}
   handAccessories: []
   legAccessories: []
   feetAccessories: []

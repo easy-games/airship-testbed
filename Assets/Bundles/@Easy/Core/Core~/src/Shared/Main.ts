@@ -1,3 +1,4 @@
+import { AvatarUtils } from "Client/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
@@ -23,6 +24,7 @@ TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
+AvatarUtils.Initialize();
 InitNet();
 
 const coreCamera = GameObject.Find("CoreCamera");

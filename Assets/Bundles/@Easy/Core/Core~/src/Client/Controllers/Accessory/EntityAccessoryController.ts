@@ -7,6 +7,7 @@ import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { AvatarUtils } from "Client/Avatar/AvatarUtil";
 
 @Controller({})
 export class EntityAccessoryController implements OnStart {
@@ -22,10 +23,10 @@ export class EntityAccessoryController implements OnStart {
 			if (event.entity instanceof CharacterEntity) {
 				if (event.entity.IsPlayerOwned()) {
 					//Add Kit Accessory
-					if (ItemUtil.defaultKitAccessory) {
+					if (AvatarUtils.defaultKitAccessory) {
 						Profiler.BeginSample("EquipAccessories");
 						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
-							ItemUtil.defaultKitAccessory,
+							AvatarUtils.defaultKitAccessory,
 							true,
 						);
 						Profiler.EndSample();
