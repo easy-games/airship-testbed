@@ -108,6 +108,7 @@ export declare class World {
     private PlaceBlockGroupByVoxelId;
     LoadWorldFromSaveFile(binaryFile: WorldSaveFile): void;
     LoadEmptyWorld(cubeMapPath: string): void;
+    LoadWorld(): void;
     RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
     GetBlockDefinition(blockId: number): BlockDefinition | undefined;
     GetBlockAverageColor(blockId: number): Color | undefined;
