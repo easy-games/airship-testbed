@@ -11,6 +11,7 @@ export class MapEditService implements OnStart {
 	constructor(private readonly playerService: PlayerService, private readonly entityService: EntityService) {}
 
 	OnStart(): void {
+		print("starting scene: " + Game.startingScene);
 		if (Game.startingScene !== "MapEdit") {
 			return;
 		}
