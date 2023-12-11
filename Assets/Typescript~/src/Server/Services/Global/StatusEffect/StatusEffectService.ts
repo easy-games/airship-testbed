@@ -1,5 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { ServerSignals } from "Server/ServerSignals";
+import { MatchService } from "Server/Services/Match/MatchService";
 import { Network } from "Shared/Network";
 import { GetStatusEffectMeta } from "Shared/StatusEffect/StatusEffectDefinitions";
 import { StatusEffectDto } from "Shared/StatusEffect/StatusEffectMeta";
@@ -10,7 +12,23 @@ export class StatusEffectService implements OnStart {
 	/** Mapping of client to **currently active** status effects. */
 	private statusEffectMap = new Map<number, StatusEffectDto[]>();
 
-	OnStart(): void {}
+	constructor(private readonly matchService: MatchService) {}
+
+	OnStart(): void {
+		// If a player joins _after_ the match has started, send over a full
+		// status effect snapshot.
+		ServerSignals.PlayerJoin.Connect((event) => {
+			if (!this.matchService.IsRunning()) return;
+			Network.ServerToClient.StatusEffectSnapshot.Server.FireClient(
+				event.player.clientId,
+				this.EncodeStatusEffects(),
+			);
+		});
+		// Handle clean up on player leave.
+		ServerSignals.PlayerLeave.Connect((event) => {
+			this.statusEffectMap.delete(event.player.clientId);
+		});
+	}
 
 	/**
 	 * Adds provided status effect to client, if request is valid. Returns whether or not the status effect was
@@ -27,7 +45,7 @@ export class StatusEffectService implements OnStart {
 		if (tier > statusEffectMeta.maxTier) return false;
 
 		const statusEffects = this.statusEffectMap.get(clientId);
-		const statusEffectDto = { statusEffectType: statusEffect, tier: tier };
+		const statusEffectDto = { clientId: clientId, statusEffectType: statusEffect, tier: tier };
 		if (!statusEffects) {
 			this.statusEffectMap.set(clientId, [statusEffectDto]);
 		} else {
@@ -83,5 +101,22 @@ export class StatusEffectService implements OnStart {
 	 */
 	public GetAllStatusEffectsForClient(clientId: number): StatusEffectDto[] {
 		return this.statusEffectMap.get(clientId) ?? [];
+	}
+
+	/**
+	 * Returns flattened array of *all* active status effects for this
+	 * match.
+	 *
+	 * @returns Flat array of **all** active status effects.
+	 */
+	private EncodeStatusEffects(): StatusEffectDto[] {
+		const allStatusEffects = ObjectUtils.values(this.statusEffectMap);
+		const flatStatusEffects: StatusEffectDto[] = [];
+		for (const statusEffectsForClient of allStatusEffects) {
+			for (const statusEffect of statusEffectsForClient) {
+				flatStatusEffects.push(statusEffect);
+			}
+		}
+		return flatStatusEffects;
 	}
 }

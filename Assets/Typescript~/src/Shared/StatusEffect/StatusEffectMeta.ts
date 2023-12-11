@@ -10,6 +10,8 @@ export interface StatusEffectMeta {
 }
 
 export interface StatusEffectDto {
+	/** The client status effect belongs to. */
+	clientId: number;
 	/** The type of status effect. */
 	statusEffectType: StatusEffectType;
 	/** The status effect's **current** tier. */
