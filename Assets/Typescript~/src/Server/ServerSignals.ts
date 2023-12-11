@@ -6,6 +6,7 @@ import { ShopElement } from "./ItemShop/ItemShopMeta";
 import { MatchState } from "./Match/MatchState";
 import { MapLoadEvent } from "./Signals/MapLoadEvent";
 import { MatchStartServerEvent } from "./Signals/MatchStartServerEvent";
+import { StatusEffectType } from "./StatusEffect/StatusEffectType";
 import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";
 
 export type BlockHitSignal = { blockId: number; blockPos: Vector3; readonly player: Player };
@@ -27,4 +28,8 @@ export const ServerSignals = {
 	PlayerEliminated: new Signal<{ player: Player }>(),
 	/** Fired when a bed is destroyed. */
 	BedDestroyed: new Signal<{ team: Team }>(),
+	/** Fired when a status effect is added to a player. */
+	StatusEffectAdded: new Signal<[clientId: number, statusEffectType: StatusEffectType, tier: number]>(),
+	/** Fired when a status effect is removed from a player. */
+	StatusEffectRemoved: new Signal<[clientId: number, statusEffectType: StatusEffectType]>(),
 };

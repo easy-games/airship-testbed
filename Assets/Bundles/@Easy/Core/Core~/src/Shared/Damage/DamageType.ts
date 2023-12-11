@@ -3,4 +3,5 @@ export enum DamageType {
 	SWORD,
 	PROJECTILE,
 	FALL,
+	FIRE,
 }
