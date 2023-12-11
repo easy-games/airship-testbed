@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Network } from "Shared/Network";
@@ -20,6 +21,31 @@ export class StatusEffectController implements OnStart {
 		Network.ServerToClient.StatusEffectRemoved.Client.OnServerEvent((clientId, statusEffectType) => {
 			this.HandleStatusEffectRemoved(clientId, statusEffectType);
 		});
+	}
+
+	/**
+	 * Returns status effect data transfer object that corresponds to provided status effect type, if it exists.
+	 *
+	 * @param statusEffect The status effect type.
+	 * @returns The status effect data transfer object, if it exists.
+	 */
+	public GetStatusEffectForLocalClient(statusEffect: StatusEffectType): StatusEffectDto | undefined {
+		const statusEffects = this.statusEffectMap.get(Game.LocalPlayer.clientId);
+		if (!statusEffects) return undefined;
+		return statusEffects.find((effect) => effect.statusEffectType === statusEffect);
+	}
+
+	/**
+	 * Returns status effect data transfer object that corresponds to provided status effect type, if it exists.
+	 *
+	 * @param clientId The client being queried.
+	 * @param statusEffect The status effect type.
+	 * @returns The status effect data transfer object, if it exists.
+	 */
+	public GetStatusEffectForClient(clientId: number, statusEffect: StatusEffectType): StatusEffectDto | undefined {
+		const statusEffects = this.statusEffectMap.get(clientId);
+		if (!statusEffects) return undefined;
+		return statusEffects.find((effect) => effect.statusEffectType === statusEffect);
 	}
 
 	/**
