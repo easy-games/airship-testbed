@@ -32,9 +32,7 @@ export class StatusEffectService implements OnStart {
 			this.statusEffectMap.set(clientId, [statusEffectDto]);
 		} else {
 			const existingStatusEffect = this.GetStatusEffectForClient(clientId, statusEffect);
-			if (existingStatusEffect) {
-				this.RemoveStatusEffectFromClient(clientId, statusEffect);
-			}
+			if (existingStatusEffect) this.RemoveStatusEffectFromClient(clientId, statusEffect);
 			statusEffects.push(statusEffectDto);
 		}
 		Network.ServerToClient.StatusEffectAdded.Server.FireAllClients(clientId, statusEffect, tier);
