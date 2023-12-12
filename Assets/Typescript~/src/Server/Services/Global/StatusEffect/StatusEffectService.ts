@@ -32,7 +32,7 @@ export class StatusEffectService implements OnStart {
 
 	/**
 	 * Adds provided status effect to client, if request is valid. Returns whether or not the status effect was
-	 * successfully given to client. If the `tier` argument is greater than the `maxTier` property
+	 * successfully given to client. If `tier` is less than 1 or the `tier` argument is greater than the `maxTier` property
 	 * specified in the status effect's meta, `false` is returned.
 	 *
 	 * @param clientId The client who is receiving the status effect.
@@ -42,6 +42,7 @@ export class StatusEffectService implements OnStart {
 	 */
 	public AddStatusEffectToClient(clientId: number, statusEffect: StatusEffectType, tier: number): boolean {
 		const statusEffectMeta = GetStatusEffectMeta(statusEffect);
+		if (tier < 1) return false;
 		if (tier > statusEffectMeta.maxTier) return false;
 
 		const statusEffects = this.statusEffectMap.get(clientId);
