@@ -40,7 +40,16 @@ export class AddStatusEffectCommand extends ChatCommand {
 			);
 			return;
 		}
-		// Validated! Give client status effect.
-		Dependency<StatusEffectService>().AddStatusEffectToClient(player.clientId, statusEffectType, tier);
+		// Validated input! Try to give client status effect.
+		const result = Dependency<StatusEffectService>().AddStatusEffectToClient(
+			player.clientId,
+			statusEffectType,
+			tier,
+		);
+		if (result) {
+			player.SendMessage(`Successfully applied status effect: ${statusEffectType}`);
+		} else {
+			player.SendMessage(`Could not apply status effect: ${statusEffectType}`);
+		}
 	}
 }

@@ -20,6 +20,14 @@ export class RemoveStatusEffectCommand extends ChatCommand {
 		}
 		// Validated! Remove status effect from client.
 		// Note: If the client did **not** have the provided status effect type, this call with do nothing.
-		Dependency<StatusEffectService>().RemoveStatusEffectFromClient(player.clientId, statusEffectType);
+		const result = Dependency<StatusEffectService>().RemoveStatusEffectFromClient(
+			player.clientId,
+			statusEffectType,
+		);
+		if (result) {
+			player.SendMessage(`Successfully removed status effect: ${statusEffectType}`);
+		} else {
+			player.SendMessage(`Could not remove status effect: ${statusEffectType}`);
+		}
 	}
 }
