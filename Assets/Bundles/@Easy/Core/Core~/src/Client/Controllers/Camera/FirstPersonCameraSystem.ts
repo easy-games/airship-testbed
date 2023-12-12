@@ -2,10 +2,10 @@
 import { EntityReferences } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { CameraReferences } from "./CameraReferences";
-import { MathUtil } from "Shared/Util/MathUtil";
 
 interface BobData {
 	bobMovementFrequency: number;
@@ -200,7 +200,6 @@ export class FirstPersonCameraSystem {
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
 		Game.LocalPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
-		this.entityReferences.humanEntityAnimator.SetForceLookForward(!isFirstPerson);
 
 		//Reset shoulders since not all animations will key these values
 		this.entityReferences.shoulderL.localPosition = this.originalShoulderLPosition;
