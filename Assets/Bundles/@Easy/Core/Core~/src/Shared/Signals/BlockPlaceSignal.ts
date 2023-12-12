@@ -1,10 +1,10 @@
 import { Entity } from "Shared/Entity/Entity";
-import { ItemMeta } from "Shared/Item/ItemMeta";
+import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "../Item/ItemUtil";
 
 export class BlockPlaceSignal {
-	public readonly itemMeta: ItemMeta;
+	public readonly itemMeta: ItemDef;
 
 	constructor(
 		public readonly pos: Vector3,
@@ -14,7 +14,7 @@ export class BlockPlaceSignal {
 		/** Will always be undefined on client. */
 		public readonly entity?: Entity,
 	) {
-		this.itemMeta = ItemUtil.GetItemMeta(itemType);
+		this.itemMeta = ItemUtil.GetItemDef(itemType);
 	}
 }
 

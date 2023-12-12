@@ -3,7 +3,7 @@ import { LocalEntityController } from "Client/Controllers/Character/LocalEntityC
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
-import { MeleeItemMeta } from "Shared/Item/ItemMeta";
+import { MeleeItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { Bin } from "Shared/Util/Bin";
 import { Layer } from "Shared/Util/Layer";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -104,7 +104,7 @@ export class MeleeHeldItem extends HeldItem {
 		}
 	}
 
-	private ClientPredictDamage(meleeData: MeleeItemMeta) {
+	private ClientPredictDamage(meleeData: MeleeItemDef) {
 		//Only local player should do collisions checks
 		if (this.entity.IsLocalCharacter()) {
 			Profiler.BeginSample("MeleeClientEffect");
@@ -171,7 +171,7 @@ export class MeleeHeldItem extends HeldItem {
 		}
 	}
 
-	private ServerHit(meleeData: MeleeItemMeta | undefined) {
+	private ServerHit(meleeData: MeleeItemDef | undefined) {
 		let hitTargets = this.ScanForHits();
 		hitTargets.forEach((data) => {
 			let damage = meleeData?.damage ?? 0;

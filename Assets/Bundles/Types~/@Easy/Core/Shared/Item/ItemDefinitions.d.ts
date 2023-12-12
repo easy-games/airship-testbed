@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { ItemMeta } from "./ItemMeta";
+import { ItemDef } from "./ItemDefinitionTypes";
 import { ItemType } from "./ItemType";
 /**
  * Internal use - External use is through `ItemUtil.ItemTypeComponents`.
@@ -8,5 +8,5 @@ import { ItemType } from "./ItemType";
  */
 export declare function ItemTypeComponentsInternal(itemType: ItemType): [scope: string, id: string];
 export declare const items: {
-    [key in ItemType]: Omit<ItemMeta, "id" | "itemType">;
+    [key in ItemType]: Omit<ItemDef, "id" | "itemType">;
 };

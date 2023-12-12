@@ -2,11 +2,11 @@
 /// <reference types="@easy-games/types" />
 import { Entity } from "../../Entity/Entity";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
-import { ItemMeta } from "../ItemMeta";
+import { ItemDef } from "../ItemDefinitionTypes";
 import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
-export type HeldItemCondition = (itemMeta: ItemMeta) => boolean;
-export type HeldItemFactory = (entity: Entity, itemMeta: ItemMeta) => HeldItem;
+export type HeldItemCondition = (itemDef: ItemDef) => boolean;
+export type HeldItemFactory = (entity: Entity, itemDef: ItemDef) => HeldItem;
 export type HeldItemEntry = {
     condition: HeldItemCondition;
     factory: HeldItemFactory;
@@ -23,6 +23,7 @@ export declare class HeldItemManager {
     private currentHeldItem;
     private currentItemState;
     private bin;
+    private newStateQueued;
     private static heldItemClasses;
     static RegisterHeldItem(condition: HeldItemCondition, factory: HeldItemFactory): void;
     GetLabel(): number;

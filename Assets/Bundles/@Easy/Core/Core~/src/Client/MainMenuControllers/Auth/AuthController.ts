@@ -1,4 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { CoreContext } from "Shared/CoreClientContext";
+import { Game } from "Shared/Game";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { decode, encode } from "Shared/json";
@@ -16,7 +18,13 @@ export class AuthController implements OnStart {
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
-			Bridge.LoadScene("Login", true);
+			let ignore = false;
+			if (Game.Context === CoreContext.GAME && RunUtil.IsEditor()) {
+				ignore = true;
+			}
+			if (!ignore) {
+				Bridge.LoadScene("Login", true);
+			}
 		}
 	}
 

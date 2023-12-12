@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AudioManager } from "Shared/Audio/AudioManager";
-import { BlockArchetype, ItemMeta } from "Shared/Item/ItemMeta";
+import { BlockArchetype, ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { CoreSound } from "Shared/Sound/CoreSound";
 import { RandomUtil } from "Shared/Util/RandomUtil";
@@ -19,9 +19,9 @@ export class BlockEffectsController implements OnStart {
 				return;
 			}
 			if (event.block.blockId === "@Easy/Core:CHILD_OF_BLOCK") return;
-			let sound = event.block.itemMeta?.block?.placeSound;
+			let sound = event.block.itemDef?.block?.placeSound;
 			if (sound === undefined) {
-				switch (event.block.itemMeta?.block?.blockArchetype) {
+				switch (event.block.itemDef?.block?.blockArchetype) {
 					case BlockArchetype.STONE:
 						sound = CoreSound.blockPlaceStone;
 						break;
@@ -44,9 +44,9 @@ export class BlockEffectsController implements OnStart {
 
 		CoreClientSignals.AfterBlockHit.Connect((event) => {
 			const itemType = ItemUtil.GetItemTypeFromBlockId(event.blockRuntimeId);
-			let itemMeta: ItemMeta | undefined;
+			let itemMeta: ItemDef | undefined;
 			if (itemType) {
-				itemMeta = ItemUtil.GetItemMeta(itemType);
+				itemMeta = ItemUtil.GetItemDef(itemType);
 			}
 
 			let sound: string[] | undefined;
@@ -98,9 +98,9 @@ export class BlockEffectsController implements OnStart {
 		});
 
 		CoreClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
-			let sound = event.block.itemMeta?.block?.hitSound;
+			let sound = event.block.itemDef?.block?.hitSound;
 			if (sound === undefined) {
-				switch (event.block.itemMeta?.block?.blockArchetype) {
+				switch (event.block.itemDef?.block?.blockArchetype) {
 					case BlockArchetype.STONE:
 						sound = CoreSound.blockHitStone;
 						break;

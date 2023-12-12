@@ -1,7 +1,7 @@
 import Object from "@easy-games/unity-object-utils";
 import { Signal } from "Shared/Util/Signal";
+import { ItemDef } from "./ItemDefinitionTypes";
 import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
-import { ItemMeta } from "./ItemMeta";
 import { ItemType } from "./ItemType";
 
 export interface ItemRegistrationConfig {
@@ -49,7 +49,7 @@ export class ItemUtil {
 				this.implictItemTypeMap.set(item, itemType);
 			}
 
-			const itemMeta = ItemUtil.GetItemMeta(itemType);
+			const itemMeta = ItemUtil.GetItemDef(itemType);
 
 			// Assign ID to each ItemType
 			itemMeta.itemType = itemType;
@@ -102,7 +102,7 @@ export class ItemUtil {
 
 	public static RegisterItem(
 		itemType: ItemType,
-		itemDefinition: Omit<ItemMeta, "id" | "itemType">,
+		itemDefinition: Omit<ItemDef, "id" | "itemType">,
 		config?: ItemRegistrationConfig,
 	) {
 		if (config?.accessoryFolder) {
@@ -137,8 +137,8 @@ export class ItemUtil {
 		return ItemUtil.itemIdToItemType.get(itemId);
 	}
 
-	public static GetItemMeta(itemType: ItemType): ItemMeta {
-		const val = items[itemType] as ItemMeta;
+	public static GetItemDef(itemType: ItemType): ItemDef {
+		const val = items[itemType] as ItemDef;
 		if (val === undefined) {
 			error("FATAL: ItemType had no ItemMeta: " + itemType);
 		}

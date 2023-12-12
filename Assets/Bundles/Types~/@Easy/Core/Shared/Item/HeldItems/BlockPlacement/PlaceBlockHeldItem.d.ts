@@ -3,6 +3,7 @@
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
 export declare class PlaceBlockHeldItem extends BlockSelectHeldItem {
     private characterLayerMask;
+    private placementQueued;
     OnEquip(): void;
     OnUseClient(useIndex: number): void;
     private TryPlaceBlock;

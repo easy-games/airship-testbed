@@ -9,6 +9,7 @@ import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
 
 export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
+	private placementQueued = false;
 
 	override OnEquip() {
 		super.OnEquip();
@@ -50,6 +51,8 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	}
 
 	private TryPlaceBlock(): boolean {
+		if (this.placementQueued) return false;
+
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return false;
 
@@ -85,21 +88,26 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			}
 		}
 
-		print("PlaceBlock tick=" + InstanceFinder.TimeManager.LocalTick);
-
-		// Write the voxel at the predicted position
-		world.PlaceBlockById(placePosition, blockMeta.blockId, {
-			placedByEntityId: this.entity.id,
-			priority: true,
-		});
-
-		Dependency<LocalEntityController>().AddToMoveData("PlaceBlock", {
-			pos: placePosition,
-			itemType: this.itemMeta.itemType,
-		});
-		if (isVoidPlacement) {
-			blockSelectController.PlacedVoidBridgeBlock();
-		}
+		this.placementQueued = true;
+		Dependency<LocalEntityController>().AddToMoveData(
+			"PlaceBlock",
+			{
+				pos: placePosition,
+				itemType: this.itemMeta.itemType,
+			},
+			() => {
+				// print("PlaceBlock tick=" + InstanceFinder.TimeManager.LocalTick + " time=" + Time.time);
+				this.placementQueued = false;
+				// Write the voxel at the predicted position
+				world.PlaceBlockById(placePosition, blockMeta.blockId, {
+					placedByEntityId: this.entity.id,
+					priority: true,
+				});
+				if (isVoidPlacement) {
+					blockSelectController.PlacedVoidBridgeBlock();
+				}
+			},
+		);
 		return true;
 	}
 

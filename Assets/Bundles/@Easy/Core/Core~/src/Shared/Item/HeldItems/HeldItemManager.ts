@@ -3,7 +3,7 @@ import { LocalEntityController } from "Client/Controllers/Character/LocalEntityC
 import { Entity } from "Shared/Entity/Entity";
 import { Bin } from "Shared/Util/Bin";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
-import { ItemMeta } from "../ItemMeta";
+import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemType } from "../ItemType";
 import { BreakBlockHeldItem } from "./BlockPlacement/BreakBlockHeldItem";
 import { PlaceBlockHeldItem } from "./BlockPlacement/PlaceBlockHeldItem";
@@ -13,8 +13,8 @@ import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
 import { ProjectileLauncherHeldItem } from "./ProjectileLauncher/ProjectileLauncherHeldItem";
 
-export type HeldItemCondition = (itemMeta: ItemMeta) => boolean;
-export type HeldItemFactory = (entity: Entity, itemMeta: ItemMeta) => HeldItem;
+export type HeldItemCondition = (itemDef: ItemDef) => boolean;
+export type HeldItemFactory = (entity: Entity, itemDef: ItemDef) => HeldItem;
 export type HeldItemEntry = {
 	condition: HeldItemCondition;
 	factory: HeldItemFactory;
@@ -32,6 +32,7 @@ export class HeldItemManager {
 	private currentHeldItem: HeldItem;
 	private currentItemState: HeldItemState = HeldItemState.NONE;
 	private bin = new Bin();
+	private newStateQueued = false;
 
 	private static heldItemClasses = new Array<HeldItemEntry>();
 
@@ -48,30 +49,30 @@ export class HeldItemManager {
 		print("Entity " + this.entity.id + " " + message);
 	}
 
-	private GetOrCreateHeldItem(itemMeta?: ItemMeta) {
-		if (itemMeta === undefined) {
+	private GetOrCreateHeldItem(itemDef?: ItemDef) {
+		if (itemDef === undefined) {
 			if (this.emptyHeldItem) {
 				return this.emptyHeldItem;
 			}
-			this.emptyHeldItem = new HeldItem(this.entity, itemMeta);
+			this.emptyHeldItem = new HeldItem(this.entity, itemDef);
 			this.emptyHeldItem.OnLoadAssets();
 			return this.emptyHeldItem;
 		}
 
-		let item = this.heldItemMap.get(itemMeta.itemType);
+		let item = this.heldItemMap.get(itemDef.itemType);
 		if (item === undefined) {
 			//Create the held item instance
 			for (let i = HeldItemManager.heldItemClasses.size() - 1; i >= 0; i--) {
 				const entry = HeldItemManager.heldItemClasses[i];
-				if (entry.condition(itemMeta)) {
-					item = entry.factory(this.entity, itemMeta);
+				if (entry.condition(itemDef)) {
+					item = entry.factory(this.entity, itemDef);
 				}
 			}
 			if (item === undefined) {
-				item = new HeldItem(this.entity, itemMeta);
+				item = new HeldItem(this.entity, itemDef);
 			}
 			item.OnLoadAssets();
-			this.heldItemMap.set(itemMeta.itemType, item);
+			this.heldItemMap.set(itemDef.itemType, item);
 		}
 		return item;
 	}
@@ -104,17 +105,25 @@ export class HeldItemManager {
 
 	//LOCAL CLIENT ONLY
 	public TriggerNewState(itemState: HeldItemState) {
+		if (this.newStateQueued) return;
+		this.newStateQueued = true;
+
 		const lookVector = this.entity.entityDriver.GetLookVector();
 
 		//Notify server of new State
-		Dependency<LocalEntityController>().AddToMoveData("HeldItemState", {
-			e: this.entity.id,
-			s: itemState,
-			l: lookVector,
-		});
-
-		//Handle the state locally
-		this.OnNewState(itemState, lookVector);
+		Dependency<LocalEntityController>().AddToMoveData(
+			"HeldItemState",
+			{
+				e: this.entity.id,
+				s: itemState,
+				l: lookVector,
+			},
+			() => {
+				this.newStateQueued = false;
+				//Handle the state locally
+				this.OnNewState(itemState, lookVector);
+			},
+		);
 	}
 
 	public OnNewState(itemState: HeldItemState, lookVector: Vector3) {

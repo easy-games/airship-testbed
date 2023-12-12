@@ -17,9 +17,10 @@ MonoBehaviour:
   gameScenes:
   - {fileID: 102900000, guid: 151df1f7c6b0343e79e7af3b65595f86, type: 3}
   - {fileID: 102900000, guid: ddc161ab142d24f90b8a5708208f5982, type: 3}
+  - {fileID: 102900000, guid: 6cfe908d91715491fbc562fc58c6e084, type: 3}
   packages:
   - id: '@Easy/Core'
-    version: 127
+    version: 132
     game: 0
     localSource: 1
     disabled: 0

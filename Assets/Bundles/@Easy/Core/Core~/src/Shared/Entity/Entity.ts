@@ -7,7 +7,7 @@ import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
-import { BlockMeta } from "Shared/Item/ItemMeta";
+import { BlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
@@ -605,7 +605,7 @@ export class Entity {
 		return this.dead;
 	}
 
-	public GetBlockBelowMeta(): BlockMeta | undefined {
+	public GetBlockBelowMeta(): BlockDef | undefined {
 		return WorldAPI.GetMainWorld()?.GetBlockBelowMeta(this.model.transform.position);
 	}
 
@@ -631,8 +631,8 @@ export class Entity {
 		launchPos: Vector3,
 		velocity: Vector3,
 	): AirshipProjectile | undefined {
-		const itemMeta = ItemUtil.GetItemMeta(projectileItemType);
-		const launcherItemMeta = launcherItemType ? ItemUtil.GetItemMeta(launcherItemType) : undefined; // I kind of wish there was syntactic sugar for this lol
+		const itemMeta = ItemUtil.GetItemDef(projectileItemType);
+		const launcherItemMeta = launcherItemType ? ItemUtil.GetItemDef(launcherItemType) : undefined; // I kind of wish there was syntactic sugar for this lol
 
 		if (!itemMeta.projectile) {
 			return error("Tried to launch item that wasn't a projectile: " + projectileItemType);

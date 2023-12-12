@@ -6,4 +6,5 @@ export declare class Game {
     static Context: CoreContext;
     static serverId: string;
     static gameId: string;
+    static startingScene: string;
 }

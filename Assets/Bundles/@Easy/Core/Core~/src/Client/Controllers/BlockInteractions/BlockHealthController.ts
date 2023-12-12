@@ -179,7 +179,7 @@ export class BlockHealthController implements OnStart {
 		}
 
 		//Get the meta for the hit block
-		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.itemMeta;
+		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.itemDef;
 
 		//Create health bar entry
 		let maxHealth = itemMeta?.block?.health ?? WorldAPI.DefaultVoxelHealth;

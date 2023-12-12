@@ -1,10 +1,10 @@
 import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
+import { BlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
-import { BlockMeta } from "../Item/ItemMeta";
 import { ItemUtil } from "../Item/ItemUtil";
 import { Block } from "./Block";
 import { BlockDataAPI } from "./BlockData/BlockDataAPI";
@@ -120,16 +120,16 @@ export class World {
 	 * @param pos
 	 * @returns BlockMeta under the position.
 	 */
-	public GetBlockBelowMeta(pos: Vector3): BlockMeta | undefined {
-		return this.GetBlockBelow(pos)?.itemMeta?.block;
+	public GetBlockBelowMeta(pos: Vector3): BlockDef | undefined {
+		return this.GetBlockBelow(pos)?.itemDef?.block;
 	}
 
-	public RaycastBlockBelow(startPos: Vector3, maxDistance = 10): BlockMeta | undefined {
+	public RaycastBlockBelow(startPos: Vector3, maxDistance = 10): BlockDef | undefined {
 		const raycastPoint = this.RaycastVoxel(startPos, Vector3.down, maxDistance).HitPosition.sub(
 			new Vector3(0, 0.1, 0),
 		);
 		const block = this.GetBlockAt(raycastPoint);
-		return block?.itemMeta?.block;
+		return block?.itemDef?.block;
 	}
 
 	/**
@@ -157,10 +157,10 @@ export class World {
 	 * @param config  The configuration for this placed block
 	 */
 	public PlaceBlockByItemType(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
-		const itemMeta = ItemUtil.GetItemMeta(itemType);
-		if (!itemMeta.block) return;
+		const itemDef = ItemUtil.GetItemDef(itemType);
+		if (!itemDef.block) return;
 
-		this.PlaceBlockById(pos, itemMeta.block.blockId, config);
+		this.PlaceBlockById(pos, itemDef.block.blockId, config);
 	}
 
 	/**
@@ -284,6 +284,10 @@ export class World {
 
 	public LoadEmptyWorld(cubeMapPath: string): void {
 		this.voxelWorld.LoadEmptyWorld(cubeMapPath);
+	}
+
+	public LoadWorld(): void {
+		this.voxelWorld.LoadWorld();
 	}
 
 	public RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult {

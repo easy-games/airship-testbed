@@ -2,7 +2,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
-import { BlockMeta } from "../Item/ItemMeta";
+import { BlockDef } from "../Item/ItemDefinitionTypes";
 import { ItemType } from "../Item/ItemType";
 import { Player } from "../Player/Player";
 import { Team } from "../Team/Team";
@@ -134,7 +134,7 @@ export declare class Entity {
     GetDisplayName(): string;
     Kill(): void;
     IsDead(): boolean;
-    GetBlockBelowMeta(): BlockMeta | undefined;
+    GetBlockBelowMeta(): BlockDef | undefined;
     GetBin(): Bin;
     GetAccessoryMeshes(slot: AccessorySlot): Renderer[];
     private PushToArray;
