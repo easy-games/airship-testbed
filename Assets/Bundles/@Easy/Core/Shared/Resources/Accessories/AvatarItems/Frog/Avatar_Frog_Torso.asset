@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
   m_Name: Avatar_Frog_Torso
   m_EditorClassIdentifier: 
-  DisplayName: 
   AccessorySlot: 5
-  Prefab: {fileID: 919132149155446097, guid: b5e0a616a3b37cd44a1c1d6b06717f5c, type: 3}
+  Prefab: {fileID: 919132149155446097, guid: b891bb9ee5fbe2547a59f2e10e5b8651, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

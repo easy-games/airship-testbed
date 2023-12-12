@@ -18,9 +18,10 @@ MonoBehaviour:
   headShapeAccessories: []
   headAccessories: []
   torsoAccessories:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: c89eea06e7e8dde42ab7b74fc271effd, type: 2}
+  - {fileID: 11400000, guid: e645564dc52f3de43b4725821ac2e24c, type: 2}
   - {fileID: 11400000, guid: 39de11c24c9298643af660e6e05f962e, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 9fb09912168761245b18b7f26c07cbec, type: 2}
   handAccessories: []
   legAccessories: []
   feetAccessories: []

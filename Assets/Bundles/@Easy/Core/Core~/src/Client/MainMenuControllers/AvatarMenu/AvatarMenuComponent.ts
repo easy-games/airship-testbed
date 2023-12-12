@@ -148,8 +148,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayItemsOfType(slot: AccessorySlot) {
+		this.Log("Displaying item type: " + tostring(slot));
 		let foundItems = AvatarUtils.GetAllAvatarItems(slot);
-		this.Log("Found items for type " + slot + ": " + foundItems?.size().ToString());
+		this.Log("Found items for type " + tostring(slot) + ": " + tostring(foundItems?.size()));
 		this.DisplayItems(foundItems);
 	}
 

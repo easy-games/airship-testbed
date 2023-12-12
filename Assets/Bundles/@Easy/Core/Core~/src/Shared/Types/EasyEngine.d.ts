@@ -97,6 +97,10 @@ interface VoxelWorld {
 	OnFinishedReplicatingChunksFromServer(callback: () => void): EngineEventConnection;
 }
 
+interface VoxelWorldConstructor {
+	VoxelDataToBlockId(voxel: number);
+}
+
 interface PhysicsConstructor {
 	EasyRaycast(
 		start: Vector3,
