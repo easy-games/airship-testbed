@@ -5,6 +5,8 @@ export interface StatusEffectMeta {
 	name: string;
 	/** The status effect's description. */
 	description: string;
+	/** The status effect's icon.  */
+	icon: string;
 	/** The **max** tier for status effect. */
 	maxTier: number;
 }

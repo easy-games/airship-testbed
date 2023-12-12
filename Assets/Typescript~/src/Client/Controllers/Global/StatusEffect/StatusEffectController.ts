@@ -1,3 +1,4 @@
+import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
@@ -21,10 +22,15 @@ export class StatusEffectController implements OnStart {
 		Network.ServerToClient.StatusEffectRemoved.Client.OnServerEvent((clientId, statusEffectType) => {
 			this.HandleStatusEffectRemoved(clientId, statusEffectType);
 		});
+
+		// Handle clean up on player leave.
+		CoreClientSignals.PlayerLeave.Connect((player) => {
+			this.statusEffectMap.delete(player.clientId);
+		});
 	}
 
 	/**
-	 * Returns status effect data transfer object that corresponds to provided status effect type, if it exists.
+	 * Returns status effect object that corresponds to provided status effect type, if it exists.
 	 *
 	 * @param statusEffect The status effect type.
 	 * @returns The status effect data transfer object, if it exists.
@@ -36,7 +42,7 @@ export class StatusEffectController implements OnStart {
 	}
 
 	/**
-	 * Returns status effect data transfer object that corresponds to provided status effect type, if it exists.
+	 * Returns status effect object that corresponds to provided status effect type, if it exists.
 	 *
 	 * @param clientId The client being queried.
 	 * @param statusEffect The status effect type.
@@ -46,6 +52,27 @@ export class StatusEffectController implements OnStart {
 		const statusEffects = this.statusEffectMap.get(clientId);
 		if (!statusEffects) return undefined;
 		return statusEffects.find((effect) => effect.statusEffectType === statusEffect);
+	}
+
+	/**
+	 * Returns all **currently active** status effects for local client. If local client has _no_
+	 * status effects, empty array is returned.
+	 *
+	 * @returns All **currently active** status effects for local client.
+	 */
+	public GetAllStatusEffectsForLocalClient(): StatusEffectDto[] {
+		return this.GetAllStatusEffectsForClient(Game.LocalPlayer.clientId);
+	}
+
+	/**
+	 * Returns all **currently active** status effects for provided client. If client has _no_
+	 * status effects, empty array is returned.
+	 *
+	 * @param clientId The client being queried.
+	 * @returns All **currently active** status effects for client.
+	 */
+	public GetAllStatusEffectsForClient(clientId: number): StatusEffectDto[] {
+		return this.statusEffectMap.get(clientId) ?? [];
 	}
 
 	/**

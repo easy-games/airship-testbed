@@ -6,6 +6,13 @@ const statusEffects: { [key in StatusEffectType]: StatusEffectMeta } = {
 	[StatusEffectType.FIRE_ASPECT]: {
 		name: "Fire Aspect",
 		description: "Fire hurts",
+		icon: "",
+		maxTier: 3,
+	},
+	[StatusEffectType.STATIC]: {
+		name: "Static",
+		description: "Zap",
+		icon: "",
 		maxTier: 3,
 	},
 };
