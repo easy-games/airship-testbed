@@ -32,7 +32,8 @@ export class PreGameService implements OnStart {
 			event.respawnTime = 0;
 			Task.Delay(0, () => {
 				if (this.matchService.GetState() === MatchState.PRE && event.entity.player) {
-					const entity = Dependency<EntityService>().SpawnEntityForPlayer(
+					print(event.entity.player.IsConnected());
+					const entity = Dependency<EntityService>().SpawnPlayerEntity(
 						event.entity.player,
 						EntityPrefabType.HUMAN,
 					);
