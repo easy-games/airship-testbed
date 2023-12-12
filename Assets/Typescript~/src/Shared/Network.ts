@@ -6,6 +6,7 @@ import { MatchInfoDto } from "./Match/MatchInfoDto";
 import { MatchState } from "./Match/MatchState";
 import { PlayerMatchStatsDto } from "./Match/PlayerMatchStats";
 import { MatchHUDDto } from "./MatchHUD/MatchHUDDto";
+import { StatusEffectType } from "./StatusEffect/StatusEffectType";
 import { TeamUpgradeStateDto } from "./TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";
 
@@ -52,7 +53,12 @@ export const Network = {
 		UpdateHud: new RemoteEvent<[hudDto: MatchHUDDto]>(),
 
 		/** Fired when a player's kit is updated. */
-		KitUpdated: new RemoteEvent<[clientId: number, type: KitType]>(),
+		KitUpdated: new RemoteEvent<[clientId: number, kitType: KitType]>(),
+
+		/** Fired when a status effect is added to a player. */
+		StatusEffectAdded: new RemoteEvent<[clientId: number, statusEffectType: StatusEffectType, tier: number]>(),
+		/** Fired when a status effect is removed from a player. */
+		StatusEffectRemoved: new RemoteEvent<[clientId: number, statusEffectType: StatusEffectType]>(),
 	},
 };
 

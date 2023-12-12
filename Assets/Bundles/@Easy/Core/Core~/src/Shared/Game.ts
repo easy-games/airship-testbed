@@ -24,4 +24,6 @@ export class Game {
 
 	public static serverId: string;
 	public static gameId: string;
+
+	public static startingScene = SceneManager.GetActiveScene().name;
 }
