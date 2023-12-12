@@ -116,7 +116,7 @@ export class BWSpawnService implements OnStart {
 	}
 
 	public SpawnPlayer(player: Player): void {
-		const entity = Dependency<EntityService>().SpawnEntityForPlayer(player, EntityPrefabType.HUMAN);
+		const entity = Dependency<EntityService>().SpawnPlayerEntity(player, EntityPrefabType.HUMAN);
 		entity.AddHealthbar();
 	}
 

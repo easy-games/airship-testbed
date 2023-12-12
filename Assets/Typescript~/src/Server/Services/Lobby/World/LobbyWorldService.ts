@@ -45,7 +45,7 @@ export class LobbyWorldService implements OnStart {
 	}
 
 	private SpawnPlayer(player: Player): void {
-		this.entityService.SpawnEntityForPlayer(player, EntityPrefabType.HUMAN, this.spawnPos);
+		this.entityService.SpawnPlayerEntity(player, EntityPrefabType.HUMAN, this.spawnPos);
 	}
 
 	OnStart(): void {}

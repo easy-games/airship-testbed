@@ -16,7 +16,7 @@ export class MapEditService implements OnStart {
 			return;
 		}
 		this.playerService.ObservePlayers((p) => {
-			this.entityService.SpawnEntityForPlayer(p, EntityPrefabType.HUMAN, this.spawnPos);
+			this.entityService.SpawnPlayerEntity(p, EntityPrefabType.HUMAN, this.spawnPos);
 		});
 
 		this.LoadWorld();

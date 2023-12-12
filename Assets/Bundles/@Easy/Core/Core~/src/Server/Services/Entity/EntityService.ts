@@ -66,7 +66,24 @@ export class EntityService implements OnStart {
 		return entityPrefab;
 	}
 
-	public SpawnEntityForPlayer(
+	public SpawnEntity(entityPrefabType: EntityPrefabType, pos?: Vector3, rotation?: Quaternion): CharacterEntity {
+		return this.SpawnEntityInternal(undefined, entityPrefabType, pos, rotation);
+	}
+
+	public SpawnPlayerEntity(
+		player: Player,
+		entityPrefabType: EntityPrefabType,
+		pos?: Vector3,
+		rotation?: Quaternion,
+	): CharacterEntity {
+		if (player === undefined || !player.IsConnected()) {
+			error(`Called SpawnEntityForPlayer but player is disconnected.`);
+		}
+
+		return this.SpawnEntityInternal(player, entityPrefabType, pos, rotation);
+	}
+
+	private SpawnEntityInternal(
 		player: Player | undefined,
 		entityPrefabType: EntityPrefabType,
 		pos?: Vector3,
