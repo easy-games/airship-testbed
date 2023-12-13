@@ -1,3 +1,4 @@
+import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { StatusEffectMeta } from "./StatusEffectMeta";
 import { StatusEffectType } from "./StatusEffectType";
 
@@ -6,13 +7,14 @@ const statusEffects: { [key in StatusEffectType]: StatusEffectMeta } = {
 	[StatusEffectType.FIRE_ASPECT]: {
 		name: "Fire Aspect",
 		description: "Fire hurts",
-		icon: "",
+		icon: "Shared/Resources/Images/Fire.png",
 		maxTier: 3,
+		damageType: DamageType.FIRE,
 	},
 	[StatusEffectType.STATIC]: {
 		name: "Static",
 		description: "Zap",
-		icon: "",
+		icon: "Shared/Resources/Images/Static.png",
 		maxTier: 3,
 	},
 };

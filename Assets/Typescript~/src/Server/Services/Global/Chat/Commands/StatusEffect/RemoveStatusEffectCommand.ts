@@ -7,10 +7,15 @@ import { StatusEffectType } from "Shared/StatusEffect/StatusEffectType";
 
 export class RemoveStatusEffectCommand extends ChatCommand {
 	constructor() {
-		super("removeStatusEffect");
+		super("removeStatusEffect", ["removeStatus", "deleteStatusEffect", "rse"]);
 	}
 
 	public Execute(player: Player, args: string[]): void {
+		// Invalid args size.
+		if (args.size() !== 1) {
+			player.SendMessage(`Invalid argument count. Expecting (1) {statusEffectType}.`);
+			return;
+		}
 		const allStatusEffects = ObjectUtils.values(StatusEffectType);
 		const statusEffectType = args[0] as StatusEffectType;
 		// Status effect type does not exist.
@@ -18,7 +23,7 @@ export class RemoveStatusEffectCommand extends ChatCommand {
 			player.SendMessage(`Invalid status effect type. Provided value: ${statusEffectType}`);
 			return;
 		}
-		// Validated! Remove status effect from client.
+		// Validated! Try to remove status effect from client.
 		// Note: If the client did **not** have the provided status effect type, this call with do nothing.
 		const result = Dependency<StatusEffectService>().RemoveStatusEffectFromClient(
 			player.clientId,

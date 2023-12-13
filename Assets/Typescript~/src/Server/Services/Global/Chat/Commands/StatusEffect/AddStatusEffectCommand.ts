@@ -8,10 +8,15 @@ import { StatusEffectType } from "Shared/StatusEffect/StatusEffectType";
 
 export class AddStatusEffectCommand extends ChatCommand {
 	constructor() {
-		super("addStatusEffect");
+		super("addStatusEffect", ["giveStatusEffect", "addStatus", "ase"]);
 	}
 
 	public Execute(player: Player, args: string[]): void {
+		// Invalid args size.
+		if (args.size() !== 2) {
+			player.SendMessage(`Invalid argument count. Expecting (2) {statusEffectType} {tier}.`);
+			return;
+		}
 		const allStatusEffects = ObjectUtils.values(StatusEffectType);
 		const statusEffectType = args[0] as StatusEffectType;
 		// Status effect type does not exist.

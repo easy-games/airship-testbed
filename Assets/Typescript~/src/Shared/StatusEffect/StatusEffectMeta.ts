@@ -1,3 +1,4 @@
+import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { StatusEffectType } from "./StatusEffectType";
 
 export interface StatusEffectMeta {
@@ -9,6 +10,8 @@ export interface StatusEffectMeta {
 	icon: string;
 	/** The **max** tier for status effect. */
 	maxTier: number;
+	/** The damage type associated with this status effect, if applicable. */
+	damageType?: DamageType;
 }
 
 export interface StatusEffectDto {
