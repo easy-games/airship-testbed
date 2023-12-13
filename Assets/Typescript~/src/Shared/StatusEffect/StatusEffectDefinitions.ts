@@ -16,6 +16,7 @@ const statusEffects: { [key in StatusEffectType]: StatusEffectMeta } = {
 		description: "Zap",
 		icon: "Shared/Resources/Images/Static.png",
 		maxTier: 3,
+		damageType: DamageType.ELECTRIC,
 	},
 };
 

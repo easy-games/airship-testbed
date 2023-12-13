@@ -1,3 +1,4 @@
+import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { OnStart, Service } from "@easy-games/flamework-core";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { ServerSignals } from "Server/ServerSignals";
@@ -27,6 +28,13 @@ export class StatusEffectService implements OnStart {
 		// Handle clean up on player leave.
 		ServerSignals.PlayerLeave.Connect((event) => {
 			this.statusEffectMap.delete(event.player.clientId);
+		});
+		// Remove all status effects on death.
+		// TODO: Do we want to make this configurable?
+		ServerSignals.EntityDeath.Connect((event) => {
+			if (event.entity instanceof CharacterEntity) {
+				this.RemoveAllStatusEffectsFromClient(event.entity.ClientId!);
+			}
 		});
 	}
 
@@ -78,6 +86,18 @@ export class StatusEffectService implements OnStart {
 		Network.ServerToClient.StatusEffectRemoved.Server.FireAllClients(clientId, statusEffect);
 		ServerSignals.StatusEffectRemoved.Fire(clientId, statusEffect);
 		return true;
+	}
+
+	/**
+	 * Removes all status effects from client.
+	 *
+	 * @param clientId The client status effects are being removed from.
+	 */
+	public RemoveAllStatusEffectsFromClient(clientId: number): void {
+		const statusEffects = this.GetAllStatusEffectsForClient(clientId);
+		for (const statusEffect of statusEffects) {
+			this.RemoveStatusEffectFromClient(clientId, statusEffect.statusEffectType);
+		}
 	}
 
 	/**
