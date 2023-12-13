@@ -1719,6 +1719,8 @@ interface Component extends Object {
 	hingeJoint: Component;
 	particleSystem: Component;
 
+    enabled: boolean;
+
 	constructor(): Component;
 
 	BroadcastMessage(methodName: string): void;

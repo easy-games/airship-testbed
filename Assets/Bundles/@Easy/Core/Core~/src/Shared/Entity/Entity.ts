@@ -167,20 +167,17 @@ export class Entity {
 		this.gameObject = networkObject.gameObject;
 
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
+		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
+		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
+
 		Profiler.BeginSample("EntityReferences.Constructor");
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
 		Profiler.EndSample();
 		this.model = this.references.root.gameObject;
 		this.model.transform.localPosition = new Vector3(0, 0, 0);
 		Profiler.BeginSample("CharacterEntityAnimator.Constructor");
-		this.animator = new CharacterEntityAnimator(
-			this,
-			this.model.GetComponent<AnimancerComponent>(),
-			this.references,
-		);
+		this.animator = new CharacterEntityAnimator(this, this.references);
 		Profiler.EndSample();
-		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
-		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
 		this.state = this.entityDriver.GetState();
 
 		if (this.ClientId !== undefined) {

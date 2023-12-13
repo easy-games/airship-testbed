@@ -957,9 +957,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1775174581922975298}
-  - component: {fileID: 4048615768199981328}
+  - component: {fileID: 2759180310563225891}
   m_Layer: 3
-  m_Name: ThirdPersonAnimation
+  m_Name: WorldmodelAnimancer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -980,7 +980,7 @@ Transform:
   m_Father: {fileID: 6257349734585276189}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4048615768199981328
+--- !u!114 &2759180310563225891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6904,9 +6904,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1148784458482301568}
-  - component: {fileID: 6133600281208181101}
+  - component: {fileID: 2514988974101222357}
   m_Layer: 3
-  m_Name: FirstPersonAnimation
+  m_Name: ViewmodelAnimancer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6927,7 +6927,7 @@ Transform:
   m_Father: {fileID: 6257349734585276189}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6133600281208181101
+--- !u!114 &2514988974101222357
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7688,7 +7688,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: -98370938496583557}
   _networkObjectCache: {fileID: -98370938496583557}
   configuration: {fileID: 11400000, guid: 1c8010473ddaf443a9bd26abea56e1b6, type: 2}
-  anim: {fileID: 903796914586745664}
+  animator: {fileID: 903796914586745664}
   groundedBlockId: 0
   groundedBlockPos: {x: 0, y: 0, z: 0}
   disableInput: 0
@@ -7791,12 +7791,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aff24d436e74f47a8b777f6ce9a5676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 0}
+  worldmodelAnimancer: {fileID: 2759180310563225891}
+  viewmodelAnimancer: {fileID: 2514988974101222357}
   events: {fileID: 8770161942407837672}
-  rootMask: {fileID: 31900000, guid: 9d711888274077741aa30b904ddb2124, type: 2}
-  handsMask: {fileID: 0}
-  JumpAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
-  FallAnimation: {fileID: 7400000, guid: b9aa64ab47b46472b922302f0d7f79ba, type: 2}
   SlideAnimation: {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
   moveTransition:
     _FadeDuration: 0.1
@@ -7817,50 +7814,6 @@ MonoBehaviour:
     - {fileID: -179978175154924664, guid: 8bd9c22b498ffea40af271f55a5e1221, type: 3}
     - {fileID: 8096805665073535597, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     - {fileID: -6386761637293832611, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
-    _Speeds:
-    - 1.15
-    - 1.15
-    - 1.15
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    _SynchronizeChildren: 01010100
-    _Thresholds:
-    - {x: 0, y: 2}
-    - {x: -2, y: 0}
-    - {x: 2, y: 0}
-    - {x: 0, y: 0}
-    - {x: 0, y: 1}
-    - {x: 0, y: -1}
-    - {x: -1, y: 0}
-    - {x: 1, y: 0}
-    - {x: -1, y: -1}
-    - {x: 1, y: -1}
-    _DefaultParameter: {x: 0, y: 0}
-    _Type: 1
-  moveWithItemTransition:
-    _FadeDuration: 0.1
-    _Events:
-      _NormalizedTimes:
-      - 0.98999995
-      _Callbacks: []
-      _Names: []
-    _Speed: 0
-    _Animations:
-    - {fileID: -1816207066627079974, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
-    - {fileID: 750752148649338699, guid: 8bd9c22b498ffea40af271f55a5e1221, type: 3}
-    - {fileID: 8269465770601427059, guid: 8bd9c22b498ffea40af271f55a5e1221, type: 3}
-    - {fileID: -284443630328104674, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
-    - {fileID: -1816207066627079974, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
-    - {fileID: -8950454082296755233, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
-    - {fileID: 210401524756289960, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
-    - {fileID: 4635818215884505396, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
-    - {fileID: -2629102201210480002, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
-    - {fileID: -8738556676227599779, guid: a0c3e7df603f8b74dbb67f6b641f5b58, type: 3}
     _Speeds:
     - 1.15
     - 1.15

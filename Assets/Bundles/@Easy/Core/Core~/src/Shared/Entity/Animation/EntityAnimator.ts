@@ -22,8 +22,9 @@ import { EntityAnimationLayer } from "./EntityAnimationLayer";
 export abstract class EntityAnimator {
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
-	public readonly anim: AnimancerComponent;
-	public readonly defaultTransitionTime: number = 0.15;
+	public readonly worldmodelAnimancer: AnimancerComponent;
+	public readonly viewmodelAnimancer: AnimancerComponent;
+	public readonly defaultTransitionTime: number = 0.05;
 
 	protected readonly entityRef: EntityReferences;
 	protected bin = new Bin();
@@ -45,8 +46,10 @@ export abstract class EntityAnimator {
 
 	public baseFootstepVolumeScale = 0.1;
 
-	constructor(protected entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences) {
-		this.anim = anim;
+	constructor(protected entity: Entity, entityRef: EntityReferences) {
+		const animator = entity.entityDriver.animator;
+		this.worldmodelAnimancer = animator.worldmodelAnimancer;
+		this.viewmodelAnimancer = animator.viewmodelAnimancer;
 		this.entityRef = entityRef;
 		this.isFlashing = false;
 
@@ -129,16 +132,6 @@ export abstract class EntityAnimator {
 		this.bin.Clean();
 	}
 
-	public PlayAnimationOnLayer(
-		clip: AnimationClip,
-		layer: number,
-		wrapMode: WrapMode = WrapMode.Default,
-		transitionTime = this.defaultTransitionTime,
-		onEnd?: Callback,
-	): AnimancerState {
-		return AnimancerBridge.PlayOnLayer(this.anim, clip, layer, transitionTime, FadeMode.FromStart, wrapMode);
-	}
-
 	public StartIdleAnim(instantTransition: boolean): void {}
 
 	public PlayUseAnim(
@@ -154,7 +147,20 @@ export abstract class EntityAnimator {
 
 	public EquipItem(itemMeta: ItemDef | undefined): void {}
 
-	public abstract PlayAnimation(
+	public abstract PlayAnimationInWorldmodel(
+		clip: AnimationClip,
+		layer: number,
+		onEnd?: Callback,
+		config?: {
+			fadeMode?: FadeMode;
+			wrapMode?: WrapMode;
+			fadeInDuration?: number;
+			fadeOutDuration?: number;
+			autoFadeOut?: boolean;
+		},
+	): AnimancerState;
+
+	public abstract PlayAnimationInViewmodel(
 		clip: AnimationClip,
 		layer: number,
 		onEnd?: Callback,
@@ -185,12 +191,12 @@ export abstract class EntityAnimator {
 		//Animate flinch
 		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
 		if (flinchClip) {
-			this.PlayAnimation(flinchClip, EntityAnimationLayer.ROOT_OVERRIDE, undefined, {
+			this.PlayAnimationInWorldmodel(flinchClip, EntityAnimationLayer.ROOT, undefined, {
 				autoFadeOut: false,
 				fadeInDuration: 0.01,
 			});
 			Task.Delay(flinchDuration, () => {
-				AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ROOT_OVERRIDE).StartFade(0, 0.05);
+				AnimancerBridge.GetLayer(this.worldmodelAnimancer, EntityAnimationLayer.ROOT).StartFade(0, 0.05);
 			});
 		}
 
@@ -227,7 +233,7 @@ export abstract class EntityAnimator {
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
-			this.PlayAnimation(deathClip, EntityAnimationLayer.TOP_MOST);
+			this.PlayAnimationInWorldmodel(deathClip, EntityAnimationLayer.LAYER_3);
 		}
 		//Spawn death particle
 		const inVoid = damageType === DamageType.VOID;
@@ -395,6 +401,6 @@ export abstract class EntityAnimator {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		AnimancerBridge.SetGlobalSpeed(this.anim, newSpeed);
+		AnimancerBridge.SetGlobalSpeed(this.worldmodelAnimancer, newSpeed);
 	}
 }

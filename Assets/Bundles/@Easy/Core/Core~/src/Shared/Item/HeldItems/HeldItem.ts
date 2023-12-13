@@ -176,7 +176,7 @@ export class HeldItem {
 			inspectPath = this.itemMeta.inspectAnimPath;
 		}
 		const clip = AssetCache.LoadAsset<AnimationClip>(inspectPath);
-		this.entity.animator?.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, () => {
+		this.entity.animator?.PlayAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, () => {
 			// this.entity.anim.StartIdleAnim();
 		});
 	}

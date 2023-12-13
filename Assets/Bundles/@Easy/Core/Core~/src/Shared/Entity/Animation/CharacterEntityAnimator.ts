@@ -49,8 +49,8 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	//private camera: Camera;
 
-	public constructor(entity: Entity, anim: AnimancerComponent, ref: EntityReferences) {
-		super(entity, anim, ref);
+	public constructor(entity: Entity, ref: EntityReferences) {
+		super(entity, ref);
 		//Initial animation setup
 		// this.LoadNewItemResources(undefined);
 		// this.SetFirstPerson(false);
@@ -63,12 +63,16 @@ export class CharacterEntityAnimator extends EntityAnimator {
 
 	public override SetFirstPerson(isFirstPerson: boolean) {
 		super.SetFirstPerson(isFirstPerson);
+
+		this.viewmodelAnimancer.enabled = isFirstPerson;
+		this.worldmodelAnimancer.enabled = !isFirstPerson;
+
 		this.entityRef.humanEntityAnimator.SetFirstPerson(isFirstPerson);
 		this.LoadNewItemResources(this.currentItemMeta);
 		this.StartIdleAnim(true);
 	}
 
-	public override PlayAnimation(
+	public override PlayAnimationInWorldmodel(
 		clip: AnimationClip,
 		layer: number,
 		onEnd?: Callback,
@@ -80,16 +84,11 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			autoFadeOut?: boolean;
 		},
 	): AnimancerState {
-		// if (this.currentEndEventConnection !== -1) {
-		// 	Bridge.DisconnectEvent(this.currentEndEventConnection);
-		// 	this.currentEndEventConnection = -1;
-		// }
-
 		let animState: AnimancerState;
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
-				this.anim,
+				this.worldmodelAnimancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -100,7 +99,52 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		} else {
 			//Play permenantly on player
 			animState = AnimancerBridge.PlayOnLayer(
-				this.anim,
+				this.worldmodelAnimancer,
+				clip,
+				layer,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
+				config?.fadeMode ?? FadeMode.FromStart,
+				config?.wrapMode ?? WrapMode.Default,
+			);
+		}
+
+		if (onEnd !== undefined) {
+			this.currentEndEventConnection = animState.Events.OnEndTS(() => {
+				Bridge.DisconnectEvent(this.currentEndEventConnection);
+				onEnd();
+			});
+		}
+		return animState;
+	}
+
+	public override PlayAnimationInViewmodel(
+		clip: AnimationClip,
+		layer: number,
+		onEnd?: Callback,
+		config?: {
+			fadeMode?: FadeMode;
+			wrapMode?: WrapMode;
+			fadeInDuration?: number;
+			fadeOutDuration?: number;
+			autoFadeOut?: boolean;
+		},
+	): AnimancerState {
+		let animState: AnimancerState;
+		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
+			//Play once then fade away
+			animState = AnimancerBridge.PlayOnceOnLayer(
+				this.viewmodelAnimancer,
+				clip,
+				layer,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
+				config?.fadeOutDuration ?? this.defaultTransitionTime,
+				config?.fadeMode ?? FadeMode.FromStart,
+				config?.wrapMode ?? WrapMode.Default,
+			);
+		} else {
+			//Play permenantly on player
+			animState = AnimancerBridge.PlayOnLayer(
+				this.viewmodelAnimancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -220,17 +264,21 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		// 	return;
 		// }
 
-		let clips: AnimationClip[] | undefined;
 		if (this.isFirstPerson) {
-			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
+			let clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
+			const clip = RandomUtil.FromArray(clips);
+			this.PlayAnimationInViewmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
+				fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
+			});
+			// AnimancerBridge.GetLayer(this.viewmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 		} else {
-			clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
+			let clips = this.currentItemClipMap.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
+			const clip = RandomUtil.FromArray(clips);
+			this.PlayAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
+				fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
+			});
+			// AnimancerBridge.GetLayer(this.worldmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 		}
-		const clip = RandomUtil.FromArray(clips);
-		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_IDLE, undefined, {
-			fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
-		});
-		AnimancerBridge.GetLayer(this.anim, EntityAnimationLayer.ITEM_ACTION).StartFade(0, this.defaultTransitionTime);
 	}
 
 	public override PlayUseAnim(
@@ -251,7 +299,11 @@ export class CharacterEntityAnimator extends EntityAnimator {
 			return;
 		}
 
-		this.PlayAnimation(clips[useIndex], EntityAnimationLayer.ITEM_ACTION, undefined, config);
+		if (this.isFirstPerson) {
+			this.PlayAnimationInViewmodel(clips[useIndex], EntityAnimationLayer.LAYER_2, undefined, config);
+		} else {
+			this.PlayAnimationInWorldmodel(clips[useIndex], EntityAnimationLayer.LAYER_2, undefined, config);
+		}
 	}
 
 	public PlayRandomUseAnim(config?: {
@@ -268,6 +320,10 @@ export class CharacterEntityAnimator extends EntityAnimator {
 		}
 
 		const clip = RandomUtil.FromArray(clips);
-		this.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, undefined, config);
+		if (this.isFirstPerson) {
+			this.PlayAnimationInViewmodel(clip, EntityAnimationLayer.LAYER_2, undefined, config);
+		} else {
+			this.PlayAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, undefined, config);
+		}
 	}
 }
