@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
-  m_Name: Avatar_Fashionable_Torso
+  m_Name: Avatar_Duck_Hat
   m_EditorClassIdentifier: 
-  AccessorySlot: 5
-  Prefab: {fileID: 2882927088623738556, guid: 97fa46b4948728d48bac021b21686a6c, type: 3}
-  Position: {x: 0, y: 0, z: 0}
-  Rotation: {x: 0, y: 0, z: 0}
-  Scale: {x: 1, y: 1, z: 1}
-  visibilityMode: 2
-  SkinnedToCharacter: 1
+  AccessorySlot: 1
+  Prefab: {fileID: 8596552198816704982, guid: 15bf8fd688ae02a4a92932b3ccb43d28, type: 3}
+  Position: {x: 0.001, y: 0.194, z: 0.047}
+  Rotation: {x: 355.89728, y: 0.000000022467711, z: -0.0000003742979}
+  Scale: {x: 0.86742, y: 0.86742, z: 0.86742}
+  visibilityMode: 1
+  SkinnedToCharacter: 0

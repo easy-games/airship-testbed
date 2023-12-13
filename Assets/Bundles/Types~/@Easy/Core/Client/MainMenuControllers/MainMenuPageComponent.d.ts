@@ -1,13 +1,14 @@
 /// <reference types="@easy-games/compiler-types" />
 import { MainMenuPageType } from "./MainMenuPageName";
+import { MainMenuController } from "./MainMenuController";
 export default class MainMenuPageComponent extends AirshipBehaviour {
     private animateOutDuration;
     private animateInDuration;
     pageType: MainMenuPageType;
     protected refs?: GameObjectReferences;
     private activePage;
-    OnStart(): void;
-    TEST(): void;
+    protected mainMenu?: MainMenuController;
+    Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
     OpenPage(): void;
-    ClosePage(): void;
+    ClosePage(instant?: boolean): void;
 }

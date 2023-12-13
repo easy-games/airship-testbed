@@ -53,7 +53,7 @@ export class EntityAccessoryController implements OnStart {
 							}
 						}
 						for (const acc of armorAccessories) {
-							accessoryBuilder.SetAccessory(acc, true);
+							accessoryBuilder.AddSingleAccessory(acc, true);
 						}
 						currentArmor = armorAccessories;
 					} else {

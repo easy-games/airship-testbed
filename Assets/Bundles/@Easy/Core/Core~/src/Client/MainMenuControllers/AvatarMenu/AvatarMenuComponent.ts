@@ -19,6 +19,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	public itemButtonHolder?: Transform;
 	public itemButtonTemplate?: GameObject;
+	public TESTBOOL?: boolean = true;
+	public TESTFLOAT?: number = 10;
+	public TESTGO?: GameObject;
+
+	private currentSlot: AccessorySlot = AccessorySlot.Root;
 
 	//public buttons?: Transform[];
 
@@ -28,6 +33,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
 		super.Init(mainMenu, pageType);
+		this.TESTFLOAT = 11;
 
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
@@ -144,25 +150,53 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				button.colors = colors;
 			}
 		}
-		this.DisplayItemsOfType(AccessorySlot.Torso);
+
+		let targetSlot = AccessorySlot.Root;
+		switch (this.activeMainIndex) {
+			case 1:
+				switch (subIndex) {
+					case 0:
+						targetSlot = AccessorySlot.Head;
+						break;
+					case 1:
+						targetSlot = AccessorySlot.Ears;
+						break;
+					case 2:
+						targetSlot = AccessorySlot.Nose;
+						break;
+				}
+				break;
+			case 2:
+				switch (subIndex) {
+					case 0:
+						targetSlot = AccessorySlot.Torso;
+						break;
+					case 1:
+						targetSlot = AccessorySlot.TorsoOuter;
+						break;
+					case 2:
+						targetSlot = AccessorySlot.TorsoInner;
+						break;
+				}
+				break;
+		}
+		this.DisplayItemsOfType(targetSlot);
 	}
 
 	private DisplayItemsOfType(slot: AccessorySlot) {
 		this.Log("Displaying item type: " + tostring(slot));
 		let foundItems = AvatarUtils.GetAllAvatarItems(slot);
-		this.Log("Found items for type " + tostring(slot) + ": " + tostring(foundItems?.size()));
 		this.DisplayItems(foundItems);
 	}
 
 	private DisplayItems(items: Accessory[] | undefined) {
 		this.ClearItembuttons();
 		if (items && items.size() > 0) {
-			print("displaying items");
 			items.forEach((value) => {
 				this.AddItemButton(value);
 			});
 		} else {
-			print("Displaying no items");
+			this.Log("Displaying no items");
 		}
 	}
 
@@ -192,14 +226,23 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectItem(acc: Accessory) {
+		if (!acc) {
+			return;
+		}
 		this.Log("Selecting item: " + acc.ToString());
+		this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(acc, this.TESTBOOL ?? true);
 	}
 
 	private OnSelectClear() {
+		this.Log("Clearing Item: " + this.currentSlot);
 		//Unequip this slot
+		if (this.currentSlot !== AccessorySlot.Root) {
+			this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAccessorySlot(this.currentSlot, this.TESTBOOL ?? true);
+		}
 	}
 
 	private OnSelectCurrent() {
+		this.Log("Selecting currently saved Item");
 		//Select the item that is saved for this sot
 	}
 

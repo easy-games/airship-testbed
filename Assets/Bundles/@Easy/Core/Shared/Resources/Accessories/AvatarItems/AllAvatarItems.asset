@@ -15,13 +15,16 @@ MonoBehaviour:
   skinAccessories:
   - {fileID: 11400000, guid: 3db33dde7d6c2f744b18a4f4bf187f3b, type: 2}
   - {fileID: 11400000, guid: 86413a4b71bf0394886d3d4acbe0b73c, type: 2}
-  headShapeAccessories: []
-  headAccessories: []
-  torsoAccessories:
+  generalAccessories:
   - {fileID: 11400000, guid: c89eea06e7e8dde42ab7b74fc271effd, type: 2}
-  - {fileID: 11400000, guid: e645564dc52f3de43b4725821ac2e24c, type: 2}
-  - {fileID: 11400000, guid: 39de11c24c9298643af660e6e05f962e, type: 2}
   - {fileID: 11400000, guid: 9fb09912168761245b18b7f26c07cbec, type: 2}
-  handAccessories: []
-  legAccessories: []
-  feetAccessories: []
+  - {fileID: 11400000, guid: e645564dc52f3de43b4725821ac2e24c, type: 2}
+  - {fileID: 11400000, guid: e1e590b66b6e943459b7c32d9972bd8c, type: 2}
+  - {fileID: 11400000, guid: bac5a3a7b047d3f488f505fd96e0c89f, type: 2}
+  - {fileID: 11400000, guid: 5ea21fcbbdb77974f8a882993cb06ea3, type: 2}
+  - {fileID: 11400000, guid: 39de11c24c9298643af660e6e05f962e, type: 2}
+  - {fileID: 11400000, guid: a2699b1cac285af43a56ea0c975d324d, type: 2}
+  - {fileID: 11400000, guid: aeedcf4d0dcdd9049b47aa6238fe44bd, type: 2}
+  - {fileID: 11400000, guid: dd171aabef2c2e94881e94b86d5e3e82, type: 2}
+  - {fileID: 11400000, guid: dbaa0a13ff8ebf744a7394fe2b7cf64b, type: 2}
+  - {fileID: 11400000, guid: f671ddcec2d0dc4419180c3b26fbc54e, type: 2}

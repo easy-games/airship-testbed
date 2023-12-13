@@ -23,8 +23,8 @@ export class AvatarUtils {
 			print("Found avatar skin item: " + element.ToString());
 			this.avatarSkinAccessories.push(element);
 		}
-		for (let i = 0; i < avatarCollection.torsoAccessories.Length; i++) {
-			const element = avatarCollection.torsoAccessories.GetValue(i);
+		for (let i = 0; i < avatarCollection.generalAccessories.Length; i++) {
+			const element = avatarCollection.generalAccessories.GetValue(i);
 			print("Found avatar item: " + element.ToString());
 			this.AddAvailableAvatarItem(element);
 		}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
-  m_Name: Avatar_Fashionable_Torso
+  m_Name: Avatar_Duck_Torso
   m_EditorClassIdentifier: 
   AccessorySlot: 5
-  Prefab: {fileID: 2882927088623738556, guid: 97fa46b4948728d48bac021b21686a6c, type: 3}
+  Prefab: {fileID: 4882958677950756035, guid: 507a88bb00638d640a35cd39c3cd4268, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

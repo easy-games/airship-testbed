@@ -97,6 +97,10 @@ interface VoxelWorld {
 	OnFinishedReplicatingChunksFromServer(callback: () => void): EngineEventConnection;
 }
 
+interface VoxelWorldConstructor {
+	VoxelDataToBlockId(voxel: number);
+}
+
 interface PhysicsConstructor {
 	EasyRaycast(
 		start: Vector3,
@@ -440,6 +444,46 @@ interface ProjectileManagerConstructor {
 	Instance: ProjectileManager;
 }
 declare const ProjectileManager: ProjectileManagerConstructor;
+
+interface WorldSaveFile extends ScriptableObject {
+    chunks: CSArray<SaveChunk>;
+    worldPositions: CSArray<WorldPosition>;
+    pointLights: CSArray<SavePointLight>;
+    blockIdToScopeName: CSArray<BlockIdToScopedName>;
+    cubeMapPath: string;
+    globalSkySaturation: number;
+    globalSunColor: Color;
+    globalSunBrightness: number;
+    globalAmbientLight: Color;
+    globalAmbientBrightness: number;
+    globalAmbientOcclusion: number;
+    globalRadiosityScale: number;
+    globalRadiosityDirectLightAmp: number;
+    globalFogStart: number;
+    globalFogEnd: number;
+    globalFogColor: Color;
+
+    constructor(): WorldSaveFile;
+
+    CreateFromVoxelWorld(world: VoxelWorld): void;
+    GetChunks(): CSArray<SaveChunk>;
+    GetFileBlockIdFromStringId(blockTypeId: string): number;
+    GetFileScopedBlockTypeId(fileBlockId: number): string;
+    GetMapObjects(): CSArray<WorldPosition>;
+    GetPointlights(): CSArray<SavePointLight>;
+    LoadIntoVoxelWorld(world: VoxelWorld): void;
+}
+
+interface SavePointLight {
+    name: string;
+    color: Color;
+    position: Vector3;
+    rotation: Quaternion;
+    intensity: number;
+    range: number;
+    castShadows: boolean;
+    highQualityLight: boolean;
+}
 
 interface AirshipProjectile {
 	OnHit(callback: (event: ProjectileHitEvent) => void): EngineEventConnection;

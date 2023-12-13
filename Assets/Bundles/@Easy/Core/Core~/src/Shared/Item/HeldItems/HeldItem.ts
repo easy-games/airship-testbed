@@ -99,7 +99,7 @@ export class HeldItem {
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let i = 0;
 		for (const accessory of accessories) {
-			this.activeAccessories[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
+			this.activeAccessories[i] = this.entity.accessoryBuilder.AddSingleAccessory(accessory, false);
 
 			//Load the animator for the held item if one exists
 			const go = this.activeAccessories[i].rootTransform.gameObject;

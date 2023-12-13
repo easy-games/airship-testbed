@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Avatar_Generic_Torso
   m_EditorClassIdentifier: 
   AccessorySlot: 5
-  Prefab: {fileID: 919132149155446097, guid: 07d466b455e420e43ba7209bb99a0156, type: 3}
+  Prefab: {fileID: 6708580695402226969, guid: a89a209f0c59de1489876f50cd58aeb3, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}
