@@ -115,17 +115,18 @@ export class GroundItemController implements OnStart {
 
 				const data = dto.data;
 
-				// go.SetActive(true);
-				// const rb = go.GetComponent<Rigidbody>();
-				// rb.velocity = dto.velocity;
 				const drop = go.GetComponent<GroundItemDrop>();
+
 				drop.SetVelocity(dto.velocity);
 				const groundItem = new GroundItem(dto.id, itemStack, drop, TimeUtil.GetServerTime() + 1.2, dto.data);
 
-				// print("data", inspect(data));
-
 				if (typeIs(data.Spinning, "boolean")) {
 					drop.SetSpinActive(data.Spinning);
+
+					// Reset rotation of pooled item
+					if (!data.Spinning) {
+						go.transform.GetChild(0).transform.rotation = Quaternion.identity;
+					}
 				}
 
 				if (typeIs(data.Grounded, "boolean")) {

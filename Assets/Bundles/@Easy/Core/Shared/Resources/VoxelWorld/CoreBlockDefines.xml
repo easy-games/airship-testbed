@@ -100,7 +100,9 @@
     <Roughness>1</Roughness>
     <Minecraft>17</Minecraft>
     <Brightness>2</Brightness>
-<!--    <TileSet>TileSets/WoodQuarterRound/</TileSet>-->
+       
+    
+    <TileSet>TileSets/BevelQuarterRound/</TileSet>
   </Block>
 
   <Block>
@@ -166,11 +168,10 @@
     <Id>ANDESITE</Id>
     <Name>Andesite</Name>
     <Material>StylizedStone</Material>
-<!--    <TopTexture>andesite.s</TopTexture>-->
-<!--    <SideTexture>andesite.s</SideTexture>-->
+ 
     <Solid>false</Solid>
     <Collision>Solid</Collision>
-    <TileSet>TileSets/BevelQuarter/</TileSet>
+    <TileSet>TileSets/BevelQuarterThin/</TileSet>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>1:5,1:1</Minecraft>
