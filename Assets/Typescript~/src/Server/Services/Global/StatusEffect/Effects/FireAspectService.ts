@@ -53,6 +53,8 @@ export class FireAspectService implements OnStart {
 			this.entitiesOnFire.set(targetEntity.id, true);
 			let elapsed = 0;
 			while (elapsed < FireDuration && this.IsEntityOnFire(targetEntity)) {
+				task.wait(FireTickRate);
+				elapsed++;
 				const damageForTier = GetFireDamageByTier(statusEffect.tier);
 				this.damageService.InflictDamage(targetEntity, damageForTier, {
 					fromEntity: fromEntity,
@@ -60,8 +62,6 @@ export class FireAspectService implements OnStart {
 					damageType: this.statusMeta.damageType!,
 					knockbackDirection: new Vector3(0, 0, 0),
 				});
-				task.wait(FireTickRate);
-				elapsed++;
 			}
 			this.entitiesOnFire.set(targetEntity.id, false);
 		});
