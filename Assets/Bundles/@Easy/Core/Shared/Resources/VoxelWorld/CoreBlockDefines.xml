@@ -17,12 +17,12 @@
 <!--    <TopTexture>liamgrass.t</TopTexture>-->
 <!--    <BottomTexture>liamgrass.t</BottomTexture>-->
 <!--    <SideTexture>liamgrass.s</SideTexture>-->
-   <Material>StylizedGrassTop</Material>
-    <SideMaterial>StylizedGrassSide</SideMaterial>
-<!--    <TopMaterial>StylizedGrassTop</TopMaterial>-->
+  <!--    <TopMaterial>StylizedGrassTop</TopMaterial>-->
     <!--    <TileSet>TileSets/BevelQuarter/</TileSet> -->
     <TopTexture>grass_top</TopTexture>
-    <Solid>true</Solid>
+    <TileSet>TileSets/Grass Test/</TileSet>
+    <Solid>false</Solid>
+    <Collision>Solid</Collision>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>2</Minecraft>
