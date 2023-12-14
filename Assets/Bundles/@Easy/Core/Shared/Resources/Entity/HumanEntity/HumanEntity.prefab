@@ -993,7 +993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Animator: {fileID: 4264009622433178088}
-  _ActionOnDisable: 2
+  _ActionOnDisable: 0
 --- !u!1 &2381545753476681761
 GameObject:
   m_ObjectHideFlags: 0
@@ -6940,7 +6940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Animator: {fileID: 4264009622433178088}
-  _ActionOnDisable: 2
+  _ActionOnDisable: 0
 --- !u!1 &6958035153746565230
 GameObject:
   m_ObjectHideFlags: 0

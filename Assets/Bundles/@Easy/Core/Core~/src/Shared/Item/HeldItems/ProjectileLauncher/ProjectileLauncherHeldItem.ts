@@ -92,7 +92,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 
 		//Play Charge Animation
-		this.entity.animator.PlayUseAnim(0, { autoFadeOut: false });
+		this.entity.animator.PlayItemUseAnim(0, { autoFadeOut: false });
 		this.PlayAnimationOnItem(0, true); //ie bow draw string
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
@@ -167,7 +167,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	protected override OnChargeEnd(): void {
 		this.processChargeAfterCooldown = false;
 		super.OnChargeEnd();
-		this.entity.animator?.StartIdleAnim(false);
+		this.entity.animator?.StartItemIdleAnim(false);
 		this.CancelChargeSound();
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
@@ -191,7 +191,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		super.OnUseClient(useIndex);
 
 		//Play the use animation
-		this.entity.animator.PlayUseAnim(1, { fadeInDuration: 0 });
+		this.entity.animator.PlayItemUseAnim(1, { fadeInDuration: 0 });
 
 		//Play the items animation  (bow shoot)
 		this.PlayAnimationOnItem(1);

@@ -1641,6 +1641,7 @@ declare const AssetBridge: AssetBridgeConstructor;
 
 interface AnimancerState {
     StartFade(weight: number, duration: number): void;
+    Stop(): void;
     IsPlaying: boolean;
 	Events: Sequence;
 }

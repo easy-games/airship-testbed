@@ -29,7 +29,7 @@ export class MeleeHeldItem extends HeldItem {
 		super.OnUseClient(useIndex);
 
 		//Animation
-		this.entity.animator.PlayUseAnim(this.animationIndex, {
+		this.entity.animator.PlayItemUseAnim(this.animationIndex, {
 			fadeInDuration: 0.05,
 			fadeOutDuration: 0.1,
 		});

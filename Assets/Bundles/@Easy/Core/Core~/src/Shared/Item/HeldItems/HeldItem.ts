@@ -176,7 +176,7 @@ export class HeldItem {
 			inspectPath = this.itemMeta.inspectAnimPath;
 		}
 		const clip = AssetCache.LoadAsset<AnimationClip>(inspectPath);
-		this.entity.animator?.PlayAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, () => {
+		this.entity.animator?.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, () => {
 			// this.entity.anim.StartIdleAnim();
 		});
 	}
@@ -259,7 +259,7 @@ export class HeldItem {
 
 		//Play the use locally
 		if (this.playEffectsOnUse) {
-			this.entity.animator.PlayUseAnim(useIndex);
+			this.entity.animator.PlayItemUseAnim(useIndex);
 			this.PlayItemSound();
 		}
 	}

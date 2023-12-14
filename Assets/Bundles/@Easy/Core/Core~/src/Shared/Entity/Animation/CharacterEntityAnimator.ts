@@ -66,7 +66,7 @@ export class CharacterEntityAnimator {
 	private readonly flashOnTime = 0.07;
 	public readonly worldmodelAnimancer: AnimancerComponent;
 	public readonly viewmodelAnimancer: AnimancerComponent;
-	public readonly defaultTransitionTime: number = 0.05;
+	public readonly defaultTransitionTime: number = 0.15;
 
 	protected bin = new Bin();
 	private flinchClipFPS?: AnimationClip;
@@ -88,6 +88,8 @@ export class CharacterEntityAnimator {
 	private deathVfx?: GameObject;
 
 	public baseFootstepVolumeScale = 0.1;
+
+	private itemAnimStates: AnimancerState[] = [];
 
 	//private camera: Camera;
 
@@ -177,12 +179,13 @@ export class CharacterEntityAnimator {
 	public SetFirstPerson(isFirstPerson: boolean) {
 		this.isFirstPerson = isFirstPerson;
 
+		this.ClearItemAnimations();
 		this.viewmodelAnimancer.enabled = isFirstPerson;
 		this.worldmodelAnimancer.enabled = !isFirstPerson;
 
 		this.refs.animationHelper.SetFirstPerson(isFirstPerson);
 		this.LoadNewItemResources(this.currentItemMeta);
-		this.StartIdleAnim(true);
+		this.StartItemIdleAnim(true);
 	}
 
 	public PlayTakeDamage(
@@ -199,12 +202,12 @@ export class CharacterEntityAnimator {
 		//Animate flinch
 		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
 		if (flinchClip) {
-			this.PlayAnimationInWorldmodel(flinchClip, EntityAnimationLayer.LAYER_2, undefined, {
+			this.PlayItemAnimationInWorldmodel(flinchClip, EntityAnimationLayer.LAYER_2, undefined, {
 				autoFadeOut: false,
 				fadeInDuration: 0.01,
 			});
 			if (this.IsViewModelEnabled()) {
-				this.PlayAnimationInViewmodel(flinchClip, EntityAnimationLayer.LAYER_2, undefined, {
+				this.PlayItemAnimationInViewmodel(flinchClip, EntityAnimationLayer.LAYER_2, undefined, {
 					autoFadeOut: false,
 					fadeInDuration: 0.01,
 				});
@@ -231,7 +234,7 @@ export class CharacterEntityAnimator {
 		}
 	}
 
-	public PlayAnimationInWorldmodel(
+	public PlayItemAnimationInWorldmodel(
 		clip: AnimationClip,
 		layer: number,
 		onEnd?: Callback,
@@ -273,10 +276,11 @@ export class CharacterEntityAnimator {
 				onEnd();
 			});
 		}
+		this.itemAnimStates.push(animState);
 		return animState;
 	}
 
-	public PlayAnimationInViewmodel(
+	public PlayItemAnimationInViewmodel(
 		clip: AnimationClip,
 		layer: number,
 		onEnd?: Callback,
@@ -318,7 +322,16 @@ export class CharacterEntityAnimator {
 				onEnd();
 			});
 		}
+		this.itemAnimStates.push(animState);
 		return animState;
+	}
+
+	public ClearItemAnimations(): void {
+		for (let animState of this.itemAnimStates) {
+			if (animState.IsPlaying) {
+				animState.StartFade(0, 0.15);
+			}
+		}
 	}
 
 	private LoadNewItemResources(itemMeta: ItemDef | undefined) {
@@ -326,6 +339,9 @@ export class CharacterEntityAnimator {
 		this.currentItemMeta = itemMeta;
 		// this.itemLayer.DestroyStates();
 		//Load the animation clips for the new item
+
+		this.ClearItemAnimations();
+		this.itemAnimStates.clear();
 
 		this.worldmodelClips.clear();
 		this.viewmodelClips.clear();
@@ -414,10 +430,10 @@ export class CharacterEntityAnimator {
 
 	public EquipItem(itemMeta: ItemDef | undefined) {
 		this.LoadNewItemResources(itemMeta);
-		this.StartIdleAnim(false);
+		this.StartItemIdleAnim(false);
 	}
 
-	public StartIdleAnim(instantTransition: boolean) {
+	public StartItemIdleAnim(instantTransition: boolean) {
 		this.TriggerEvent(ItemAnimationId.IDLE);
 
 		// if (this.currentItemMeta === undefined) {
@@ -426,22 +442,23 @@ export class CharacterEntityAnimator {
 		// }
 
 		if (this.IsViewModelEnabled()) {
+			print("starting idle: " + this.currentItemMeta?.displayName);
 			let clips = this.viewmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
 			const clip = RandomUtil.FromArray(clips);
-			this.PlayAnimationInViewmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
+			this.PlayItemAnimationInViewmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
 				fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 			});
 			// AnimancerBridge.GetLayer(this.viewmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 		}
 		let clips = this.worldmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
 		const clip = RandomUtil.FromArray(clips);
-		this.PlayAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
+		this.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
 			fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 		});
 		// AnimancerBridge.GetLayer(this.worldmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 	}
 
-	public PlayUseAnim(
+	public PlayItemUseAnim(
 		useIndex = 0,
 		config?: {
 			fadeMode?: FadeMode;
@@ -457,21 +474,21 @@ export class CharacterEntityAnimator {
 		if (this.IsViewModelEnabled()) {
 			let clips: AnimationClip[] | undefined = this.viewmodelClips.get(ItemAnimationId.USE);
 			if (!clips || clips.isEmpty() || useIndex >= clips.size()) {
-				this.StartIdleAnim(false);
+				this.StartItemIdleAnim(false);
 				return;
 			}
-			this.PlayAnimationInViewmodel(clips[useIndex], EntityAnimationLayer.LAYER_2, undefined, config);
+			this.PlayItemAnimationInViewmodel(clips[useIndex], EntityAnimationLayer.LAYER_2, undefined, config);
 		}
 
 		let clips: AnimationClip[] | undefined = this.worldmodelClips.get(ItemAnimationId.USE);
 		if (!clips || clips.isEmpty() || useIndex >= clips.size()) {
-			this.StartIdleAnim(false);
+			this.StartItemIdleAnim(false);
 			return;
 		}
-		this.PlayAnimationInWorldmodel(clips[useIndex], EntityAnimationLayer.LAYER_2, undefined, config);
+		this.PlayItemAnimationInWorldmodel(clips[useIndex], EntityAnimationLayer.LAYER_2, undefined, config);
 	}
 
-	public PlayRandomUseAnim(config?: {
+	public PlayRandomItemUseAnim(config?: {
 		fadeMode?: FadeMode;
 		wrapMode?: WrapMode;
 		transitionTime?: number;
@@ -483,7 +500,7 @@ export class CharacterEntityAnimator {
 		if (this.IsViewModelEnabled()) {
 			let clips = this.viewmodelClips.get(ItemAnimationId.USE);
 			if (clips && clips.size() > 0) {
-				this.PlayAnimationInViewmodel(
+				this.PlayItemAnimationInViewmodel(
 					RandomUtil.FromArray(clips),
 					EntityAnimationLayer.LAYER_2,
 					undefined,
@@ -494,7 +511,7 @@ export class CharacterEntityAnimator {
 		let clips: AnimationClip[] | undefined = this.worldmodelClips.get(ItemAnimationId.USE);
 		if (clips && clips.size() > 0) {
 			const clip = RandomUtil.FromArray(clips);
-			this.PlayAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, undefined, config);
+			this.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, undefined, config);
 		}
 	}
 
@@ -511,7 +528,7 @@ export class CharacterEntityAnimator {
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
-			this.PlayAnimationInWorldmodel(deathClip, EntityAnimationLayer.LAYER_3);
+			this.PlayItemAnimationInWorldmodel(deathClip, EntityAnimationLayer.LAYER_3);
 		}
 		//Spawn death particle
 		const inVoid = damageType === DamageType.VOID;

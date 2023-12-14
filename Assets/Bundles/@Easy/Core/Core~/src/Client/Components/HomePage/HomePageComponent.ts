@@ -61,4 +61,8 @@ export default class HomePageComponent extends AirshipBehaviour {
 		print("HomePageComponent.OnDisable");
 		this.bin.Clean();
 	}
+
+	public override OnDestroy(): void {
+		this.bin.Clean();
+	}
 }

@@ -522,6 +522,7 @@ interface CharacterAnimationHelper extends Component {
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
+	ClearStatesOnNonRootLayers(): void;
 }
 
 interface PoolManager {
