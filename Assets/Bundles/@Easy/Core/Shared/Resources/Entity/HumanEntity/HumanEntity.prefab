@@ -993,7 +993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Animator: {fileID: 4264009622433178088}
-  _ActionOnDisable: 1
+  _ActionOnDisable: 2
 --- !u!1 &2381545753476681761
 GameObject:
   m_ObjectHideFlags: 0
@@ -6940,7 +6940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Animator: {fileID: 4264009622433178088}
-  _ActionOnDisable: 1
+  _ActionOnDisable: 2
 --- !u!1 &6958035153746565230
 GameObject:
   m_ObjectHideFlags: 0
@@ -7182,7 +7182,7 @@ Animator:
   m_GameObject: {fileID: 7387929036933538088}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0e8260dffa8bd9245ba8fee7eed419ce, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4720bed45a7b7d242be13d2a55b889e3, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

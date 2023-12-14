@@ -66,8 +66,8 @@ export class HeldItem {
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
 		if (this.itemMeta !== undefined) {
 			let equipPath = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg";
-			if (this.itemMeta.viewModel?.equipSound) {
-				equipPath = RandomUtil.FromArray(this.itemMeta.viewModel.equipSound);
+			if (this.itemMeta.holdConfig?.equipSound) {
+				equipPath = RandomUtil.FromArray(this.itemMeta.holdConfig.equipSound);
 			}
 			if (equipPath !== "") {
 				if (this.entity.IsLocalCharacter()) {

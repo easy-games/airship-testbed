@@ -24,7 +24,6 @@ import { Theme } from "Shared/Util/Theme";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
-import { EntityAnimator } from "./Animation/EntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 
 export interface EntityDto {
@@ -57,7 +56,7 @@ export class EntityReferences {
 	rig: Transform;
 	characterCollider: Collider;
 	animationEvents: EntityAnimationEvents;
-	humanEntityAnimator: CoreEntityAnimator;
+	animationHelper: CharacterAnimationHelper;
 	jumpSound: AudioClip | undefined;
 	slideSoundPaths: Array<string> = [];
 	landSound: AudioClip | undefined;
@@ -69,7 +68,7 @@ export class EntityReferences {
 		let colliderKey = "Colliders";
 		let vfxKey = "VFX";
 
-		this.humanEntityAnimator = ref.gameObject.GetComponent<CoreEntityAnimator>();
+		this.animationHelper = ref.gameObject.GetComponent<CharacterAnimationHelper>();
 
 		//Get the meshes
 		let meshesCS: CSArray<Renderer> = ref.GetAllValues<Renderer>(meshKey);
@@ -126,7 +125,7 @@ export class Entity {
 	public readonly entityDriver: EntityDriver;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
-	public animator: EntityAnimator;
+	public animator: CharacterEntityAnimator;
 	public readonly references: EntityReferences;
 	public readonly accessoryBuilder: AccessoryBuilder;
 

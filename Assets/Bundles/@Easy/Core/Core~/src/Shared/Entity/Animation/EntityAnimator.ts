@@ -38,6 +38,8 @@ export abstract class EntityAnimator {
 	private isFlashing = false;
 	protected isFirstPerson = false;
 
+	protected viewModelEnabled = false;
+
 	private footstepAudioBundle: AudioClipBundle | undefined;
 	private slideAudioBundle: AudioClipBundle | undefined;
 	private steppedOnBlockType = 0;
@@ -52,6 +54,7 @@ export abstract class EntityAnimator {
 		this.viewmodelAnimancer = animator.viewmodelAnimancer;
 		this.entityRef = entityRef;
 		this.isFlashing = false;
+		this.viewModelEnabled = this.entity.IsLocalCharacter();
 
 		//AUDIO
 		if (RunUtil.IsClient()) {
@@ -175,49 +178,6 @@ export abstract class EntityAnimator {
 
 	public SetFirstPerson(isFirstPerson: boolean): void {
 		this.isFirstPerson = isFirstPerson;
-	}
-
-	public PlayTakeDamage(
-		flinchDuration: number,
-		damageType: DamageType,
-		position: Vector3,
-		entityModel: GameObject | undefined,
-	) {
-		const isFirstPerson =
-			RunUtil.IsClient() && this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
-
-		this.PlayDamageFlash();
-
-		//Animate flinch
-		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
-		if (flinchClip) {
-			this.PlayAnimationInWorldmodel(flinchClip, EntityAnimationLayer.ROOT, undefined, {
-				autoFadeOut: false,
-				fadeInDuration: 0.01,
-			});
-			Task.Delay(flinchDuration, () => {
-				AnimancerBridge.GetLayer(this.worldmodelAnimancer, EntityAnimationLayer.ROOT).StartFade(0, 0.05);
-			});
-		}
-
-		//Don't render some effects if we are in first person
-		if (isFirstPerson) {
-			return;
-		}
-
-		//Play specific effects for different damage types like fire attacks or magic damage
-		let vfxTemplate;
-		switch (damageType) {
-			default:
-				vfxTemplate = this.damageEffectTemplate;
-				break;
-		}
-		if (vfxTemplate) {
-			const go = EffectsManager.SpawnGameObjectAtPosition(vfxTemplate, position, undefined, 2);
-			if (entityModel) {
-				go.transform.SetParent(entityModel.transform);
-			}
-		}
 	}
 
 	public PlayDeath(damageType: DamageType) {
@@ -402,5 +362,9 @@ export abstract class EntityAnimator {
 
 	public SetPlaybackSpeed(newSpeed: number) {
 		AnimancerBridge.SetGlobalSpeed(this.worldmodelAnimancer, newSpeed);
+	}
+
+	public IsViewModelEnabled(): boolean {
+		return this.viewModelEnabled;
 	}
 }

@@ -89,7 +89,7 @@ interface EntityDriver extends Component {
 	replicatedLookVector: Vector3;
 	disableInput: boolean;
 
-	animator: CoreEntityAnimator;
+	animator: CharacterAnimationHelper;
 }
 
 interface VoxelWorld {
@@ -516,7 +516,7 @@ interface MeshProcessorConstructor {
 }
 declare const MeshProcessor: MeshProcessorConstructor;
 
-interface CoreEntityAnimator extends Component {
+interface CharacterAnimationHelper extends Component {
 	viewmodelAnimancer: AnimancerComponent;
 	worldmodelAnimancer: AnimancerComponent;
 	SetForceLookForward(forceLookForward: boolean): void;

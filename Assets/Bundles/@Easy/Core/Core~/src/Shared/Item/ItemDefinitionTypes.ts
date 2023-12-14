@@ -77,13 +77,17 @@ export interface ProjectileLauncherDef {
 	chargeSound?: SoundDef[];
 }
 
-export interface ViewModelDef {
-	idleAnimFP?: string[];
-	idleAnimTP?: string[];
-	equipAnimFP?: string[];
-	equipAnimTP?: string[];
-	unequipAnimFP?: string[];
-	unequipAnimTP?: string[];
+export interface HoldConfig {
+	worldmodel?: {
+		idleAnim?: string[];
+		equipAnim?: string[];
+		unequipAnim?: string[];
+	};
+	viewmodel?: {
+		idleAnim?: string[];
+		equipAnim?: string[];
+		unequipAnim?: string[];
+	};
 	equipSound?: string[];
 }
 
@@ -102,7 +106,7 @@ export interface ItemDef {
 	image?: string;
 
 	usable?: UsableHeldItemDef;
-	viewModel?: ViewModelDef;
+	holdConfig?: HoldConfig;
 
 	maxStackSize?: number;
 	inspectAnimPath?: string;
@@ -139,13 +143,13 @@ export interface UsableHeldItemDef {
 	 * First element charge animation.
 	 * Second element is shoot animation.
 	 */
-	onUseAnimFP?: string[];
+	onUseAnimViewmodel?: string[];
 
 	/**
 	 * First element charge animation.
 	 * Second element is shoot animation.
 	 */
-	onUseAnimTP?: string[];
+	onUseAnimWorldmodel?: string[];
 }
 
 export interface TillBlockDef {}
