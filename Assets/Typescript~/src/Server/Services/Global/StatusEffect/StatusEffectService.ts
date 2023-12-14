@@ -59,8 +59,18 @@ export class StatusEffectService implements OnStart {
 			this.statusEffectMap.set(clientId, [statusEffectDto]);
 		} else {
 			const existingStatusEffect = this.GetStatusEffectForClient(clientId, statusEffect);
-			if (existingStatusEffect) this.RemoveStatusEffectFromClient(clientId, statusEffect);
-			statusEffects.push(statusEffectDto);
+			// This handles the same status effect being added with a **different** tier.
+			if (existingStatusEffect) {
+				this.RemoveStatusEffectFromClient(clientId, statusEffect);
+				const updatedStatusEffects = this.statusEffectMap.get(clientId);
+				if (updatedStatusEffects) {
+					updatedStatusEffects.push(statusEffectDto);
+				} else {
+					this.statusEffectMap.set(clientId, [statusEffectDto]);
+				}
+			} else {
+				statusEffects.push(statusEffectDto);
+			}
 		}
 		Network.ServerToClient.StatusEffectAdded.Server.FireAllClients(clientId, statusEffect, tier);
 		ServerSignals.StatusEffectAdded.Fire(clientId, statusEffect, tier);
