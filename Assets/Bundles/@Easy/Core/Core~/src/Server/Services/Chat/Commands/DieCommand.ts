@@ -10,16 +10,16 @@ export class DieCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		/* Fetch target entity. */
+		// Fetch target entity.
 		const target = Dependency<EntityService>().GetEntityByClientId(player.clientId);
 
-		/* Handle invalid entity. */
+		// Handle invalid entity.
 		if (target === undefined) {
 			player.SendMessage("invalid target");
 			return;
 		}
 
-		/* Kill entity. */
+		// Kill entity.
 		Dependency<DamageService>().InflictDamage(target, math.huge, {
 			ignoreCancelled: true,
 		});

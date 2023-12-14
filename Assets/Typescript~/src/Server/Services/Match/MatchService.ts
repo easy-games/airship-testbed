@@ -1,6 +1,5 @@
 import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
 import { Team } from "@Easy/Core/Shared/Team/Team";
-import { Task } from "@Easy/Core/Shared/Util/Task";
 import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
@@ -35,7 +34,7 @@ export class MatchService implements OnStart {
 
 	OnStart(): void {
 		const loadedMap = Dependency<MapService>().WaitForMapLoaded();
-		/* Immediately transition into `MatchState.PRE` after map load. */
+		// Immediately transition into `MatchState.PRE` after map load.
 		this.SetState(MatchState.PRE);
 
 		Dependency<PlayerService>().ObservePlayers((p) => {
@@ -89,7 +88,7 @@ export class MatchService implements OnStart {
 		if (this.state !== MatchState.PRE) return;
 		this.matchStartTime = TimeUtil.GetServerTime();
 		this.SetState(MatchState.RUNNING);
-		/* Fire signal and remote. */
+		// Fire signal and remote.
 		ServerSignals.MatchStart.Fire(new MatchStartServerEvent());
 		Network.ServerToClient.MatchStarted.Server.FireAllClients();
 	}
@@ -98,7 +97,7 @@ export class MatchService implements OnStart {
 	public EndMatch(winningTeam?: Team): void {
 		if (this.state !== MatchState.RUNNING) return;
 		this.SetState(MatchState.POST);
-		/* Fire signal and remote. */
+		// Fire signal and remote.
 		ServerSignals.MatchEnded.Fire({ winningTeam });
 		Network.ServerToClient.MatchEnded.Server.FireAllClients(winningTeam?.id);
 	}
@@ -107,7 +106,7 @@ export class MatchService implements OnStart {
 	private SetState(state: MatchState) {
 		const oldState = this.state;
 		this.state = state;
-		/* Fire signal and remote. */
+		// Fire signal and remote.
 		ServerSignals.MatchStateChange.Fire({ newState: this.state, oldState: oldState });
 		Network.ServerToClient.MatchStateChange.Server.FireAllClients(this.state, oldState);
 	}

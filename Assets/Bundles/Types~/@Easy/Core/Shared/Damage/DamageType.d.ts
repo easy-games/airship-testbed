@@ -3,5 +3,6 @@ export declare enum DamageType {
     SWORD = 1,
     PROJECTILE = 2,
     FALL = 3,
-    FIRE = 4
+    FIRE = 4,
+    ELECTRIC = 5
 }
