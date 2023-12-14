@@ -2,7 +2,6 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
-import { DamageType } from "Shared/Damage/DamageType";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
@@ -84,7 +83,7 @@ export class DamageIndicatorController implements OnStart {
 					});
 				}
 
-				this.CreateDamageIndicator(event.amount, event.criticalHit, event.damageType);
+				this.CreateDamageIndicator(event.amount, event.criticalHit);
 			}
 		});
 
@@ -105,11 +104,7 @@ export class DamageIndicatorController implements OnStart {
 		});
 	}
 
-	public CreateDamageIndicator(amount: number, criticalHit: boolean, damageType: DamageType): void {
-		if (damageType === DamageType.VOID) {
-			return;
-		}
-
+	public CreateDamageIndicator(amount: number, criticalHit: boolean): void {
 		this.damageIndicatorBin.Clean();
 
 		const go = PoolManager.SpawnObject(this.indicatorPrefab);

@@ -1,5 +1,6 @@
-import { Controller } from "@easy-games/flamework-core";
+import { Controller, Dependency } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { DamageType } from "Shared/Damage/DamageType";
 import { Entity } from "Shared/Entity/Entity";
 import { BreakBlockDef, TillBlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
@@ -7,6 +8,7 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockHealthController } from "../BlockInteractions/BlockHealthController";
 import { BeforeBlockHitSignal } from "../BlockInteractions/Signal/BeforeBlockHitSignal";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { DamageIndicatorController } from "../Damage/DamageIndicatorController";
 
 @Controller({})
 export class BlockInteractController {
@@ -42,6 +44,12 @@ export class BlockInteractController {
 			//Do the actual damage
 			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
 			const newHealth = math.max(health - damage, 0);
+
+			Dependency(DamageIndicatorController).CreateDamageIndicator(
+				math.ceil(health - newHealth),
+				false,
+				DamageType.FALL,
+			);
 
 			BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
 

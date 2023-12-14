@@ -98,9 +98,16 @@ const swordMelee: MeleeItemDef = {
 	damageType: DamageType.SWORD,
 };
 const pickaxeUsable: Partial<UsableHeldItemDef> = {
-	onUseAnimFP: CoreAnim("FP_Sword_Use"),
+	onUseAnimFP: CoreAnim("FP_Pickaxe_Use"),
 	onUseAnimTP: CoreAnim("TP_Sword_Use"),
 	canHoldToUse: true,
+	onUseSound: [
+		coreSoundPath + "s_Sword_Swing_Wood_01.wav",
+		coreSoundPath + "s_Sword_Swing_Wood_02.wav",
+		coreSoundPath + "s_Sword_Swing_Wood_03.wav",
+		coreSoundPath + "s_Sword_Swing_Wood_04.wav",
+	],
+	onUseSoundVolume: 0.15,
 };
 
 const plowUsable: Partial<UsableHeldItemDef> = {
@@ -559,7 +566,7 @@ export const items: {
 		displayName: "Wood Pickaxe",
 		usable: {
 			...pickaxeUsable,
-			cooldownSeconds: 0.22,
+			cooldownSeconds: 0.45,
 		},
 		viewModel: {
 			...pickaxeViewModel,

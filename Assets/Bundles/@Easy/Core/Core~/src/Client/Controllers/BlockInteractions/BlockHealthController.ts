@@ -114,10 +114,36 @@ export class BlockHealthController implements OnStart {
 				blockPos,
 				Vector3.zero,
 			);
-			if (effect) {
+
+			const world = WorldAPI.GetMainWorld();
+			if (world) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
 				if (block) {
-					this.SetParticlesToBlockMaterial(block.runtimeBlockId, effect);
+					if (effect) {
+						this.SetParticlesToBlockMaterial(block.runtimeBlockId, effect);
+					}
+
+					// const voxelId = world.GetVoxelIdFromId(block.blockId);
+					// const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 2, 1.02);
+					// if (blockGO) {
+					// 	const initPos = blockPos.add(new Vector3(0.5, 0.5, 0.5));
+					// 	blockGO.transform.position = initPos;
+					// 	blockGO.transform.localScale = new Vector3(1.02, 1.02, 1.02);
+
+					// 	const randomAngle = math.random() * 2 * math.pi;
+					// 	for (let i = 0; i < 4; i++) {
+					// 		task.delay(0.03 * i, () => {
+					// 			let ampl = 0.01;
+					// 			const angle = randomAngle + i * math.pi * 1.2;
+					// 			let offset = new Vector3(math.sin(angle), 0, math.cos(angle)).mul(ampl);
+					// 			blockGO.transform.TweenPosition(initPos.add(offset), 0.03);
+					// 		});
+					// 	}
+
+					// 	task.delay(0.12, () => {
+					// 		GameObjectUtil.Destroy(blockGO);
+					// 	});
+					// }
 				}
 			}
 		}
@@ -177,6 +203,7 @@ export class BlockHealthController implements OnStart {
 			error("Missing health bar graphic!");
 			return undefined;
 		}
+		healthBarGo.active = false; // temp
 
 		//Get the meta for the hit block
 		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.itemDef;

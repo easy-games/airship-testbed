@@ -15,7 +15,9 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 	override OnUseClient(useIndex: number) {
 		super.OnUseClient(useIndex);
 		if (this.entity.IsLocalCharacter()) {
-			this.HitBlockLocal();
+			task.delay(0.13, () => {
+				this.HitBlockLocal();
+			});
 		}
 	}
 
@@ -24,6 +26,11 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
+		this.entity.animator.SetPlaybackSpeed(0.05);
+		task.delay(0.03, () => {
+			this.entity.animator.SetPlaybackSpeed(1);
+		});
+
 		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.itemMeta?.breakBlock, voxelPos, true);
 	}
 

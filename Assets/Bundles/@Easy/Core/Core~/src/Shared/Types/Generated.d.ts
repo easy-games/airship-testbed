@@ -10713,17 +10713,6 @@ interface WorldPosition {
 
 }
     
-interface SavePointLight {
-    name: string;
-    color: Color;
-    position: Vector3;
-    rotation: Quaternion;
-    intensity: number;
-    range: number;
-    castShadows: boolean;
-    highQualityLight: boolean;
-}
-    
 interface BlockIdToScopedName {
     id: number;
     name: string;
