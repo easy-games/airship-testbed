@@ -1,10 +1,12 @@
 ﻿//import {CameraController} from "./CameraController";
-import { EntityReferences } from "Shared/Entity/Entity";
+import { Dependency } from "@easy-games/flamework-core";
+import { Entity, EntityReferences } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
+import { ViewmodelController } from "../Viewmodel/ViewmodelController";
 import { CameraReferences } from "./CameraReferences";
 
 interface BobData {
@@ -59,10 +61,16 @@ export class FirstPersonCameraSystem {
 	private originalShoulderLPosition: Vector3 = Vector3.zero;
 	private originalShoulderRPosition: Vector3 = Vector3.zero;
 	private currentTime = 0.01;
+	private viewmodelController: ViewmodelController;
 
-	public constructor(entityReferences: EntityReferences, startInFirstPerson: boolean) {
+	public constructor(
+		public readonly entity: Entity,
+		entityReferences: EntityReferences,
+		startInFirstPerson: boolean,
+	) {
 		this.entityReferences = entityReferences;
 		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
+		this.viewmodelController = Dependency<ViewmodelController>();
 
 		this.cameras = CameraReferences.Instance();
 
@@ -136,6 +144,9 @@ export class FirstPersonCameraSystem {
 		let headLookPosition = transform.position;
 		let headLookRotation = transform.rotation.mul(headBobRotationOffset);
 
+		this.viewmodelController.viewmodelTransform.position = transform.position;
+		this.viewmodelController.viewmodelTransform.rotation = transform.rotation;
+
 		//Animated to the look direction
 		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
 		// let lerpMod = MathUtil.Lerp(
@@ -204,6 +215,9 @@ export class FirstPersonCameraSystem {
 		//Reset shoulders since not all animations will key these values
 		this.entityReferences.shoulderL.localPosition = this.originalShoulderLPosition;
 		this.entityReferences.shoulderR.localPosition = this.originalShoulderRPosition;
+
+		this.viewmodelController.viewmodelGo.SetActive(isFirstPerson);
+		this.entity.model.SetActive(!isFirstPerson);
 
 		if (!isFirstPerson) {
 			//Reset the spine positions to defaults after messing with them in first person

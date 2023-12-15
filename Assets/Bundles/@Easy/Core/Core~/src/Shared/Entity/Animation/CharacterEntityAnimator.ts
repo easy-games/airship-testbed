@@ -1,5 +1,6 @@
 ﻿﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioBundlePlayMode, AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
 import { AudioManager } from "Shared/Audio/AudioManager";
@@ -64,8 +65,7 @@ export class CharacterEntityAnimator {
 
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
-	public readonly worldmodelAnimancer: AnimancerComponent;
-	public readonly viewmodelAnimancer: AnimancerComponent;
+	public readonly worldmodelAnimancerComponent: AnimancerComponent;
 	public readonly defaultTransitionTime: number = 0.15;
 
 	protected bin = new Bin();
@@ -95,8 +95,7 @@ export class CharacterEntityAnimator {
 
 	public constructor(public readonly entity: Entity, public readonly refs: EntityReferences) {
 		const animator = entity.entityDriver.animator;
-		this.worldmodelAnimancer = animator.worldmodelAnimancer;
-		this.viewmodelAnimancer = animator.viewmodelAnimancer;
+		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
 		this.isFlashing = false;
 		this.viewModelEnabled = this.entity.IsLocalCharacter();
 
@@ -180,8 +179,10 @@ export class CharacterEntityAnimator {
 		this.isFirstPerson = isFirstPerson;
 
 		this.ClearItemAnimations();
-		this.viewmodelAnimancer.enabled = isFirstPerson;
-		this.worldmodelAnimancer.enabled = !isFirstPerson;
+		if (RunUtil.IsClient()) {
+			// this.viewmodelAnimancerComponent.enabled = isFirstPerson;
+		}
+		this.worldmodelAnimancerComponent.enabled = !isFirstPerson;
 
 		this.refs.animationHelper.SetFirstPerson(isFirstPerson);
 		this.LoadNewItemResources(this.currentItemMeta);
@@ -250,7 +251,7 @@ export class CharacterEntityAnimator {
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
-				this.worldmodelAnimancer,
+				this.worldmodelAnimancerComponent,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -261,7 +262,7 @@ export class CharacterEntityAnimator {
 		} else {
 			//Play permenantly on player
 			animState = AnimancerBridge.PlayOnLayer(
-				this.worldmodelAnimancer,
+				this.worldmodelAnimancerComponent,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -292,11 +293,14 @@ export class CharacterEntityAnimator {
 			autoFadeOut?: boolean;
 		},
 	): AnimancerState {
+		if (!RunUtil.IsClient()) {
+			return error("Tried to play viewmodel animation on server.");
+		}
 		let animState: AnimancerState;
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
-				this.viewmodelAnimancer,
+				Dependency<ViewmodelController>().animancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -307,7 +311,7 @@ export class CharacterEntityAnimator {
 		} else {
 			//Play permenantly on player
 			animState = AnimancerBridge.PlayOnLayer(
-				this.viewmodelAnimancer,
+				Dependency<ViewmodelController>().animancer,
 				clip,
 				layer,
 				config?.fadeInDuration ?? this.defaultTransitionTime,
@@ -688,7 +692,7 @@ export class CharacterEntityAnimator {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		AnimancerBridge.SetGlobalSpeed(this.worldmodelAnimancer, newSpeed);
+		AnimancerBridge.SetGlobalSpeed(this.worldmodelAnimancerComponent, newSpeed);
 	}
 
 	public IsViewModelEnabled(): boolean {

@@ -7287,7 +7287,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldmodelAnimancer: {fileID: 7657285036290108066}
-  viewmodelAnimancer: {fileID: 0}
   events: {fileID: 8770161942407837672}
   SlideAnimation: {fileID: 7400000, guid: 3e640d7fcaf774c91b154bdcbeae903c, type: 2}
   moveTransition:
