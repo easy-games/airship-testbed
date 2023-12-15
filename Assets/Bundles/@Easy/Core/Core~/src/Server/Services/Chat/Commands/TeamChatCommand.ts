@@ -22,9 +22,11 @@ export class TeamChatCommand extends ChatCommand {
 		const rawMessage = args.join(" ");
 
 		const hex = ColorUtil.ColorToHex(team.color);
-		const message =
-			`<color=${hex}>[<b>TEAM</b>]</color>` +
-			chatService.FormatUserChatMessage(player, rawMessage, chatService.CanUseRichText);
+		const message = `<color=${hex}>[<b>TEAM</b>]</color> ${chatService.FormatUserChatMessage(
+			player,
+			rawMessage,
+			chatService.CanUseRichText,
+		)}`;
 
 		for (const teamPlayer of team.GetPlayers()) {
 			CoreNetwork.ServerToClient.ChatMessage.Server.FireClient(teamPlayer.clientId, message, player.clientId);
