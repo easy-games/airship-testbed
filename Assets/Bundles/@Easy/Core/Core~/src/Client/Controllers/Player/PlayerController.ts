@@ -9,6 +9,7 @@ import { Player, PlayerDto } from "Shared/Player/Player";
 import { Team } from "Shared/Team/Team";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { TeamController } from "../Team/TeamController";
+import { PlayerUtils } from "Shared/Util/PlayerUtils";
 
 @Controller({})
 export class PlayerController implements OnStart {
@@ -53,6 +54,16 @@ export class PlayerController implements OnStart {
 				player.Destroy();
 			}
 		});
+	}
+
+	/**
+	 * Looks for a player using a case insensitive fuzzy search
+	 *
+	 * Specific players can be grabbed using the full discriminator as well - e.g. `Luke#0001` would be a specific player
+	 * @param searchName The name of the plaeyr
+	 */
+	public FuzzyFindFirstPlayerByName(searchName: string): Player | undefined {
+		return PlayerUtils.FuzzyFindPlayerByName([...this.players], searchName);
 	}
 
 	public GetPlayerFromClientId(clientId: number): Player | undefined {

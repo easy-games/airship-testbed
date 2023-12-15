@@ -27,6 +27,7 @@ import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { VorliasCommand } from "./Commands/VorliasCommand";
+import { PlayersCommand } from "./Commands/TestPlayerCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -56,6 +57,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new AddAbilityCommand());
 		this.RegisterCommand(new RemoveAbilityCommand());
 		this.RegisterCommand(new AbilityEnableStateCommand());
+		this.RegisterCommand(new PlayersCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
