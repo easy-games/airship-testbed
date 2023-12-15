@@ -99,10 +99,10 @@ export class PlayerService implements OnStart {
 	}
 
 	/**
-	 * Find the first player with the matching name using a fuzzy search
+	 * Looks for a player using a case insensitive fuzzy search
 	 *
-	 * e.g.
-	 * `lu`, `luke` (usernames) or `Luke#0001` (exact discriminator identifier)
+	 * Specific players can be grabbed using the full discriminator as well - e.g. `Luke#0001` would be a specific player
+	 * @param searchName The name of the plaeyr
 	 */
 	public FuzzyFindFirstPlayerByName(searchName: string): Player | undefined {
 		return PlayerUtils.FuzzyFindPlayerByName(this.players, searchName);
