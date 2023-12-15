@@ -43,7 +43,7 @@ export class PlayerUtils {
 		// e.g. if we search `lu` and there's a user called `lu` - we'd prioritize that over `luke` even if luke was in the server first.
 		matchingPlayers.sort(
 			(firstPlayer, secondPlayer) =>
-				Levenshtein(`${firstPlayer.username.lower()}#${secondPlayer.usernameTag}`, searchName) <
+				Levenshtein(`${firstPlayer.username.lower()}#${firstPlayer.usernameTag}`, searchName) <
 				Levenshtein(`${secondPlayer.username.lower()}#${secondPlayer.usernameTag}`, searchName),
 		);
 
