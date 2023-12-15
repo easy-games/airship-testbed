@@ -5,6 +5,7 @@ import { PlayerLeaveServerEvent } from "Server/Signals/PlayerLeaveServerEvent";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
+import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
 @Service({})
@@ -95,6 +96,16 @@ export class PlayerService implements OnStart {
 
 		this.PlayerAdded.Fire(player);
 		CoreServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
+	}
+
+	/**
+	 * Find the first player with the matching name using a fuzzy search
+	 *
+	 * e.g.
+	 * `lu`, `luke` (usernames) or `Luke#0001` (exact discriminator identifier)
+	 */
+	public FuzzyFindFirstPlayerByName(searchName: string): Player | undefined {
+		return PlayerUtils.FuzzyFindPlayerByName(this.players, searchName);
 	}
 
 	public AddBotPlayer(): void {
