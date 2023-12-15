@@ -27,6 +27,7 @@ import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { VorliasCommand } from "./Commands/VorliasCommand";
+import { PlayersCommand } from "./Commands/TestPlayerCommand";
 import { Player } from "Shared/Player/Player";
 import { TeamChatCommand } from "./Commands/TeamChatCommand";
 
@@ -60,6 +61,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new AddAbilityCommand());
 		this.RegisterCommand(new RemoveAbilityCommand());
 		this.RegisterCommand(new AbilityEnableStateCommand());
+		this.RegisterCommand(new PlayersCommand());
 		this.RegisterCommand(new TeamChatCommand());
 	}
 
