@@ -1643,6 +1643,7 @@ interface AnimancerState {
     StartFade(weight: number, duration: number): void;
     Stop(): void;
     IsPlaying: boolean;
+    IsValid: boolean;
 	Events: Sequence;
 }
 
@@ -1663,6 +1664,7 @@ interface AnimancerComponent extends Component {
 	Play(clip: AnimationClip): AnimancerState;
     States: AnimancerStateDictionary;
     Layers: AnimancerLayers;
+    Animator: Animator;
 }
 
 interface AnimancerBridge {}

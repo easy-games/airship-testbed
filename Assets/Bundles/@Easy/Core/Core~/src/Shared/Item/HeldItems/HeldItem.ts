@@ -24,7 +24,8 @@ export class HeldItem {
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 	protected isCharging = false;
-	protected activeAccessories: ActiveAccessory[] = [];
+	protected activeAccessoriesWorldmodel: ActiveAccessory[] = [];
+	protected activeAccessoriesViewmodel: ActiveAccessory[] = [];
 	protected currentItemGOs: GameObject[] = [];
 	protected currentItemAnimations: Animator[] = [];
 	private holdingDownBin = new Bin();
@@ -106,12 +107,16 @@ export class HeldItem {
 		const firstPerson = this.entity.animator.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let i = 0;
+		this.activeAccessoriesWorldmodel.clear();
+		this.activeAccessoriesViewmodel.clear();
 		for (const accessory of accessories) {
-			this.activeAccessories[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
-			viewmodelAccessoryBuilder?.SetAccessory(accessory, false);
+			this.activeAccessoriesWorldmodel[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
+			if (viewmodelAccessoryBuilder) {
+				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.SetAccessory(accessory, false);
+			}
 
 			//Load the animator for the held item if one exists
-			const go = this.activeAccessories[i].rootTransform.gameObject;
+			const go = this.activeAccessoriesWorldmodel[i].rootTransform.gameObject;
 			this.currentItemGOs.push(go);
 			const anim = go.GetComponent<Animator>();
 			if (anim) {

@@ -354,6 +354,7 @@ interface Animator extends MonoBehaviour {
 	SetFloat(name: string, value: number, dampTime: number, deltaTime: number): void;
 	SetFloat(id: number, value: number): void;
 	SetFloat(id: number, value: number, dampTime: number, deltaTime: number): void;
+	Rebind(): void;
 }
 
 interface AnimatorStatic {

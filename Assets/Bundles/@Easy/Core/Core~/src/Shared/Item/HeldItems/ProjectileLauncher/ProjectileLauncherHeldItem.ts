@@ -81,7 +81,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		if (sound) {
 			if (this.entity.IsLocalCharacter()) {
-				AudioManager.PlayFullPathGlobal(sound.path, sound);
+				this.chargeAudioSource = AudioManager.PlayFullPathGlobal(sound.path, sound);
 			} else {
 				this.chargeAudioSource = AudioManager.PlayFullPathAtPosition(
 					sound.path,
@@ -112,10 +112,15 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 					if (this.isCharging) {
 						const chargeSec = os.clock() - this.startHoldTimeSec;
 
+						const isFirstPerson = localEntityController.IsFirstPerson();
+						let launcherAccessory = isFirstPerson
+							? this.activeAccessoriesViewmodel[0]
+							: this.activeAccessoriesWorldmodel[0];
+
 						const launchPos = ProjectileUtil.GetLaunchPosition(
-							this.activeAccessories[0].rootTransform,
+							launcherAccessory.rootTransform,
 							this.entity,
-							localEntityController.IsFirstPerson(),
+							isFirstPerson,
 						);
 						const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
 
@@ -174,11 +179,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	}
 
 	private CancelChargeSound() {
-		if (this.entity.IsLocalCharacter()) {
-			AudioManager.StopGlobalAudio();
-		} else if (this.chargeAudioSource) {
-			this.chargeAudioSource.Stop();
-		}
+		this.chargeAudioSource?.Stop();
 	}
 
 	protected override OnUseClient(useIndex: number): void {
@@ -210,8 +211,13 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		this.startHoldTimeSec = -1;
 
 		const mouse = new Mouse();
+		const isFirstPerson = false;
+		let launcherAccessory = this.activeAccessoriesWorldmodel[0];
+		if (RunUtil.IsClient() && Dependency<LocalEntityController>().IsFirstPerson()) {
+			launcherAccessory = this.activeAccessoriesViewmodel[0];
+		}
 		const launchPos = ProjectileUtil.GetLaunchPosition(
-			this.activeAccessories[0].rootTransform,
+			launcherAccessory.rootTransform,
 			this.entity,
 			Dependency<LocalEntityController>().IsFirstPerson(),
 		);

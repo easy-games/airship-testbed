@@ -6,6 +6,9 @@ export class ViewmodelController implements OnStart {
 	public readonly viewmodelTransform: Transform;
 	public readonly animancer: AnimancerComponent;
 	public readonly accessoryBuilder: AccessoryBuilder;
+	public readonly boneTransforms: {
+		spineMiddle: Transform;
+	};
 
 	// private rootLayer: AnimancerLayer;
 	// private layer1: AnimancerLayer;
@@ -22,6 +25,11 @@ export class ViewmodelController implements OnStart {
 		const content = this.viewmodelTransform.GetChild(0).gameObject;
 		this.animancer = content.GetComponent<AnimancerComponent>();
 		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>();
+
+		const refs = content.GetComponent<GameObjectReferences>();
+		this.boneTransforms = {
+			spineMiddle: refs.GetValue("Bones", "SpineMiddle"),
+		};
 
 		// this.rootLayer = this.animancer.Layers.GetLayer(0);
 		// this.rootLayer.SetDebugName("Root");

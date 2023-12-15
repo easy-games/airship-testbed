@@ -182,7 +182,7 @@ export class CharacterEntityAnimator {
 		if (RunUtil.IsClient()) {
 			// this.viewmodelAnimancerComponent.enabled = isFirstPerson;
 		}
-		this.worldmodelAnimancerComponent.enabled = !isFirstPerson;
+		// this.worldmodelAnimancerComponent.enabled = !isFirstPerson;
 
 		this.refs.animationHelper.SetFirstPerson(isFirstPerson);
 		this.LoadNewItemResources(this.currentItemMeta);
@@ -204,12 +204,10 @@ export class CharacterEntityAnimator {
 		const flinchClip = isFirstPerson ? this.flinchClipFPS : this.flinchClipTP;
 		if (flinchClip) {
 			this.PlayItemAnimationInWorldmodel(flinchClip, EntityAnimationLayer.LAYER_2, undefined, {
-				autoFadeOut: false,
 				fadeInDuration: 0.01,
 			});
 			if (this.IsViewModelEnabled()) {
 				this.PlayItemAnimationInViewmodel(flinchClip, EntityAnimationLayer.LAYER_2, undefined, {
-					autoFadeOut: false,
 					fadeInDuration: 0.01,
 				});
 			}
@@ -246,7 +244,9 @@ export class CharacterEntityAnimator {
 			fadeOutDuration?: number;
 			autoFadeOut?: boolean;
 		},
-	): AnimancerState {
+	): AnimancerState | undefined {
+		if (this.entity.IsLocalCharacter() && this.isFirstPerson) return undefined;
+
 		let animState: AnimancerState;
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
@@ -292,10 +292,12 @@ export class CharacterEntityAnimator {
 			fadeOutDuration?: number;
 			autoFadeOut?: boolean;
 		},
-	): AnimancerState {
+	): AnimancerState | undefined {
 		if (!RunUtil.IsClient()) {
 			return error("Tried to play viewmodel animation on server.");
 		}
+		if (!this.isFirstPerson) return undefined;
+
 		let animState: AnimancerState;
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
@@ -332,10 +334,11 @@ export class CharacterEntityAnimator {
 
 	public ClearItemAnimations(): void {
 		for (let animState of this.itemAnimStates) {
-			if (animState.IsPlaying) {
+			if (animState.IsValid && animState.IsPlaying) {
 				animState.StartFade(0, 0.15);
 			}
 		}
+		this.itemAnimStates.clear();
 	}
 
 	private LoadNewItemResources(itemMeta: ItemDef | undefined) {
@@ -345,7 +348,6 @@ export class CharacterEntityAnimator {
 		//Load the animation clips for the new item
 
 		this.ClearItemAnimations();
-		this.itemAnimStates.clear();
 
 		this.worldmodelClips.clear();
 		this.viewmodelClips.clear();
@@ -446,7 +448,6 @@ export class CharacterEntityAnimator {
 		// }
 
 		if (this.IsViewModelEnabled()) {
-			print("starting idle: " + this.currentItemMeta?.displayName);
 			let clips = this.viewmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
 			const clip = RandomUtil.FromArray(clips);
 			this.PlayItemAnimationInViewmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {

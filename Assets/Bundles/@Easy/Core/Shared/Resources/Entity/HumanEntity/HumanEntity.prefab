@@ -6852,7 +6852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Animator: {fileID: 4264009622433178088}
-  _ActionOnDisable: 0
+  _ActionOnDisable: 2
 --- !u!1 &7972479724201818487
 GameObject:
   m_ObjectHideFlags: 0
@@ -7228,7 +7228,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 1
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 0
+  <PrefabId>k__BackingField: 1
   <SpawnableCollectionId>k__BackingField: 1
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
