@@ -4,4 +4,5 @@
  */
 export enum StatusEffectType {
 	FIRE_ASPECT = "FIRE_ASPECT",
+	STATIC = "STATIC",
 }

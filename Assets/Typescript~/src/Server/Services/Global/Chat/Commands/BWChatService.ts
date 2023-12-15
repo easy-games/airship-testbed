@@ -3,6 +3,8 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import { LobbyCommand } from "./LobbyCommand";
 import { DestroyBedCommand } from "./Match/DestroyBedCommand";
 import { MatchStartCommand } from "./Match/MatchStartCommand";
+import { AddStatusEffectCommand } from "./StatusEffect/AddStatusEffectCommand";
+import { RemoveStatusEffectCommand } from "./StatusEffect/RemoveStatusEffectCommand";
 import { StuckCommand } from "./StuckCommand";
 import { TestMatchCommand } from "./TestMatchCommand";
 
@@ -15,5 +17,7 @@ export class BWChatService implements OnStart {
 		this.chatService.RegisterCommand(new TestMatchCommand());
 		this.chatService.RegisterCommand(new StuckCommand());
 		this.chatService.RegisterCommand(new LobbyCommand());
+		this.chatService.RegisterCommand(new AddStatusEffectCommand());
+		this.chatService.RegisterCommand(new RemoveStatusEffectCommand());
 	}
 }

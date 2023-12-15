@@ -5,6 +5,7 @@ import { PlayerLeaveServerEvent } from "Server/Signals/PlayerLeaveServerEvent";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
+import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
 @Service({})
@@ -95,6 +96,16 @@ export class PlayerService implements OnStart {
 
 		this.PlayerAdded.Fire(player);
 		CoreServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
+	}
+
+	/**
+	 * Looks for a player using a case insensitive fuzzy search
+	 *
+	 * Specific players can be grabbed using the full discriminator as well - e.g. `Luke#0001` would be a specific player
+	 * @param searchName The name of the plaeyr
+	 */
+	public FuzzyFindFirstPlayerByName(searchName: string): Player | undefined {
+		return PlayerUtils.FuzzyFindPlayerByName(this.players, searchName);
 	}
 
 	public AddBotPlayer(): void {

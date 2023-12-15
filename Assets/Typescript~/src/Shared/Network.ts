@@ -6,6 +6,7 @@ import { MatchInfoDto } from "./Match/MatchInfoDto";
 import { MatchState } from "./Match/MatchState";
 import { PlayerMatchStatsDto } from "./Match/PlayerMatchStats";
 import { MatchHUDDto } from "./MatchHUD/MatchHUDDto";
+import { StatusEffectDto } from "./StatusEffect/StatusEffectMeta";
 import { StatusEffectType } from "./StatusEffect/StatusEffectType";
 import { TeamUpgradeStateDto } from "./TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgrade/TeamUpgradeType";
@@ -55,6 +56,8 @@ export const Network = {
 		/** Fired when a player's kit is updated. */
 		KitUpdated: new RemoteEvent<[clientId: number, kitType: KitType]>(),
 
+		/** Fired when a late joiner connects, sends over status effect snapshot. */
+		StatusEffectSnapshot: new RemoteEvent<[snapshot: StatusEffectDto[]]>(),
 		/** Fired when a status effect is added to a player. */
 		StatusEffectAdded: new RemoteEvent<[clientId: number, statusEffectType: StatusEffectType, tier: number]>(),
 		/** Fired when a status effect is removed from a player. */

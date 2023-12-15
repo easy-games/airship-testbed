@@ -4,4 +4,5 @@ export enum DamageType {
 	PROJECTILE,
 	FALL,
 	FIRE,
+	ELECTRIC,
 }
