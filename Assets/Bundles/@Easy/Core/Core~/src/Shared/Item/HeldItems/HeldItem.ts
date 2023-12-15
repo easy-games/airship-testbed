@@ -1,4 +1,6 @@
-﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
+﻿import { Dependency } from "@easy-games/flamework-core";
+import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { EntityAnimationLayer } from "Shared/Entity/Animation/EntityAnimationLayer";
 import { Bin } from "Shared/Util/Bin";
@@ -94,12 +96,19 @@ export class HeldItem {
 		this.currentItemGOs = [];
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+		let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
+		if (this.entity.IsLocalCharacter()) {
+			viewmodelAccessoryBuilder = Dependency<ViewmodelController>().accessoryBuilder;
+			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+		}
 
 		const firstPerson = this.entity.animator.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let i = 0;
 		for (const accessory of accessories) {
 			this.activeAccessories[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
+			viewmodelAccessoryBuilder?.SetAccessory(accessory, false);
 
 			//Load the animator for the held item if one exists
 			const go = this.activeAccessories[i].rootTransform.gameObject;

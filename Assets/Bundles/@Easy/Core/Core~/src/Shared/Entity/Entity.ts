@@ -424,7 +424,7 @@ export class Entity {
 		if (!RunUtil.IsClient()) {
 			return false;
 		} else {
-			return this.ClientId === Dependency<PlayerController>().LocalConnection.ClientId;
+			return this.ClientId === Dependency<PlayerController>().clientId;
 		}
 	}
 

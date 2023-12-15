@@ -9782,7 +9782,6 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
     SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
     SetAccessoryColor(slot: AccessorySlot, color: Color, combineMeshes: boolean): void;
-    SetFirstPersonEnabled(firstPersonEnabled: boolean): void;
     SetSkinColor(color: Color, combineMeshes: boolean): void;
     TryCombineMeshes(): void;
 }

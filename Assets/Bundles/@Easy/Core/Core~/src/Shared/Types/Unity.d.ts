@@ -1651,8 +1651,18 @@ interface Sequence {
 	ClearEndTSEvent(): void;
 }
 
+interface AnimancerStateDictionary extends CSDictionary<Object, AnimancerState> {
+    GetOrCreate(state: AnimancerState): Object;
+}
+
+interface AnimancerLayers {
+    GetLayer(index: number): AnimancerLayer;
+}
+
 interface AnimancerComponent extends Component {
 	Play(clip: AnimationClip): AnimancerState;
+    States: AnimancerStateDictionary;
+    Layers: AnimancerLayers;
 }
 
 interface AnimancerBridge {}
@@ -1684,6 +1694,7 @@ interface AnimancerLayer {
 	StartFade(value: number, fadeDuration: number): void;
 	SetWeight(value: number): void;
 	SetMask(mask: AvatarMask): void;
+    SetDebugName(name: string): void;
 	Play(clip: AnimationClip, fadeDuration: number, fadeMode: FadeMode): AnimationState;
 	DestroyStates(): void;
 	CurrentState: AnimancerState;
