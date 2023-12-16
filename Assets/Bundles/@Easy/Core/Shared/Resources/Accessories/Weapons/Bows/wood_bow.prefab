@@ -1417,7 +1417,7 @@ GameObject:
   - component: {fileID: 9054256861218082895}
   - component: {fileID: 1574948047046929794}
   m_Layer: 0
-  m_Name: BowWood
+  m_Name: wood_bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
