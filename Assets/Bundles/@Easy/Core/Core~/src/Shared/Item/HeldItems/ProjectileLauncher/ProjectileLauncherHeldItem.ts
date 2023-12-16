@@ -81,7 +81,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		if (sound) {
 			if (this.entity.IsLocalCharacter()) {
-				AudioManager.PlayFullPathGlobal(sound.path, sound);
+				this.chargeAudioSource = AudioManager.PlayFullPathGlobal(sound.path, sound);
 			} else {
 				this.chargeAudioSource = AudioManager.PlayFullPathAtPosition(
 					sound.path,
@@ -92,7 +92,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 
 		//Play Charge Animation
-		this.entity.animator.PlayUseAnim(0, { autoFadeOut: false });
+		this.entity.animator.PlayItemUseAnim(0, { autoFadeOut: false });
 		this.PlayAnimationOnItem(0, true); //ie bow draw string
 
 		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
@@ -112,10 +112,15 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 					if (this.isCharging) {
 						const chargeSec = os.clock() - this.startHoldTimeSec;
 
+						const isFirstPerson = localEntityController.IsFirstPerson();
+						let launcherAccessory = isFirstPerson
+							? this.activeAccessoriesViewmodel[0]
+							: this.activeAccessoriesWorldmodel[0];
+
 						const launchPos = ProjectileUtil.GetLaunchPosition(
-							this.activeAccessories[0].rootTransform,
+							launcherAccessory.rootTransform,
 							this.entity,
-							localEntityController.IsFirstPerson(),
+							isFirstPerson,
 						);
 						const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
 
@@ -167,18 +172,14 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	protected override OnChargeEnd(): void {
 		this.processChargeAfterCooldown = false;
 		super.OnChargeEnd();
-		this.entity.animator?.StartIdleAnim(false);
+		this.entity.animator?.StartItemIdleAnim(false);
 		this.CancelChargeSound();
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
 	}
 
 	private CancelChargeSound() {
-		if (this.entity.IsLocalCharacter()) {
-			AudioManager.StopGlobalAudio();
-		} else if (this.chargeAudioSource) {
-			this.chargeAudioSource.Stop();
-		}
+		this.chargeAudioSource?.Stop();
 	}
 
 	protected override OnUseClient(useIndex: number): void {
@@ -191,7 +192,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		super.OnUseClient(useIndex);
 
 		//Play the use animation
-		this.entity.animator.PlayUseAnim(1, { fadeInDuration: 0 });
+		this.entity.animator.PlayItemUseAnim(1, { fadeInDuration: 0 });
 
 		//Play the items animation  (bow shoot)
 		this.PlayAnimationOnItem(1);
@@ -210,8 +211,13 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		this.startHoldTimeSec = -1;
 
 		const mouse = new Mouse();
+		const isFirstPerson = false;
+		let launcherAccessory = this.activeAccessoriesWorldmodel[0];
+		if (RunUtil.IsClient() && Dependency<LocalEntityController>().IsFirstPerson()) {
+			launcherAccessory = this.activeAccessoriesViewmodel[0];
+		}
 		const launchPos = ProjectileUtil.GetLaunchPosition(
-			this.activeAccessories[0].rootTransform,
+			launcherAccessory.rootTransform,
 			this.entity,
 			Dependency<LocalEntityController>().IsFirstPerson(),
 		);

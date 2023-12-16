@@ -1,4 +1,6 @@
-﻿import { AssetCache } from "Shared/AssetCache/AssetCache";
+﻿import { Dependency } from "@easy-games/flamework-core";
+import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { EntityAnimationLayer } from "Shared/Entity/Animation/EntityAnimationLayer";
 import { Bin } from "Shared/Util/Bin";
@@ -22,7 +24,8 @@ export class HeldItem {
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 	protected isCharging = false;
-	protected activeAccessories: ActiveAccessory[] = [];
+	protected activeAccessoriesWorldmodel: ActiveAccessory[] = [];
+	protected activeAccessoriesViewmodel: ActiveAccessory[] = [];
 	protected currentItemGOs: GameObject[] = [];
 	protected currentItemAnimations: Animator[] = [];
 	private holdingDownBin = new Bin();
@@ -66,8 +69,8 @@ export class HeldItem {
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
 		if (this.itemMeta !== undefined) {
 			let equipPath = "@Easy/Core/Shared/Resources/Sound/Items/Equip/Equip_Generic.ogg";
-			if (this.itemMeta.viewModel?.equipSound) {
-				equipPath = RandomUtil.FromArray(this.itemMeta.viewModel.equipSound);
+			if (this.itemMeta.holdConfig?.equipSound) {
+				equipPath = RandomUtil.FromArray(this.itemMeta.holdConfig.equipSound);
 			}
 			if (equipPath !== "") {
 				if (this.entity.IsLocalCharacter()) {
@@ -94,15 +97,26 @@ export class HeldItem {
 		this.currentItemGOs = [];
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+		let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
+		if (this.entity.IsLocalCharacter()) {
+			viewmodelAccessoryBuilder = Dependency<ViewmodelController>().accessoryBuilder;
+			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+		}
 
 		const firstPerson = this.entity.animator.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let i = 0;
+		this.activeAccessoriesWorldmodel.clear();
+		this.activeAccessoriesViewmodel.clear();
 		for (const accessory of accessories) {
-			this.activeAccessories[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
+			this.activeAccessoriesWorldmodel[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
+			if (viewmodelAccessoryBuilder) {
+				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.SetAccessory(accessory, false);
+			}
 
 			//Load the animator for the held item if one exists
-			const go = this.activeAccessories[i].rootTransform.gameObject;
+			const go = this.activeAccessoriesWorldmodel[i].rootTransform.gameObject;
 			this.currentItemGOs.push(go);
 			const anim = go.GetComponent<Animator>();
 			if (anim) {
@@ -176,7 +190,7 @@ export class HeldItem {
 			inspectPath = this.itemMeta.inspectAnimPath;
 		}
 		const clip = AssetCache.LoadAsset<AnimationClip>(inspectPath);
-		this.entity.animator?.PlayAnimation(clip, EntityAnimationLayer.ITEM_ACTION, () => {
+		this.entity.animator?.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, () => {
 			// this.entity.anim.StartIdleAnim();
 		});
 	}
@@ -259,7 +273,7 @@ export class HeldItem {
 
 		//Play the use locally
 		if (this.playEffectsOnUse) {
-			this.entity.animator.PlayUseAnim(useIndex);
+			this.entity.animator.PlayItemUseAnim(useIndex);
 			this.PlayItemSound();
 		}
 	}

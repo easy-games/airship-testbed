@@ -94,7 +94,6 @@ export class HeldItemManager {
 				this.currentItemState = HeldItemState.NONE;
 				this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
 				this.currentHeldItem.OnEquip();
-				this.entity.references.humanEntityAnimator.SetRootMovementLayer(itemStack !== undefined);
 			}),
 		);
 	}

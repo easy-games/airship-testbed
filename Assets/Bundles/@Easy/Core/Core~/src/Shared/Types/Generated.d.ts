@@ -18,6 +18,14 @@ declare const enum HideFlags {
     DontSave = 52,
     HideAndDontSave = 61,
 }
+declare const enum FindObjectsInactive {
+    Exclude = 0,
+    Include = 1,
+}
+declare const enum FindObjectsSortMode {
+    None = 0,
+    InstanceID = 1,
+}
 declare const enum Space {
     World = 0,
     Self = 1,
@@ -1494,6 +1502,13 @@ declare const enum AtlasPopulationMode {
     Static = 0,
     Dynamic = 1,
 }
+declare const enum GlyphClassDefinitionType {
+    Undefined = 0,
+    Base = 1,
+    Ligature = 2,
+    Mark = 3,
+    Component = 4,
+}
 declare const enum TextElementType {
     Character = 1,
     Sprite = 2,
@@ -1509,6 +1524,8 @@ declare const enum GlyphRenderMode {
     SDF8 = 8230,
     SDF16 = 16422,
     SDF32 = 32806,
+    COLOR = 69652,
+    COLOR_HINTED = 69656,
 }
 declare const enum FontFeatureLookupFlags {
     None = 0,
@@ -2019,17 +2036,6 @@ declare const enum AvatarMaskBodyPart {
     RightHandIK = 12,
     LastBodyPart = 13,
 }
-declare const enum CollisionType {
-    None = 0,
-    Solid = 1,
-    Slope = 2,
-}
-declare const enum ContextStyle {
-    None = 0,
-    GreedyMeshingTiles = 1,
-    ContextBlocks = 2,
-    QuarterTiles = 3,
-}
 declare const enum ApplicationInstallMode {
     Unknown = 0,
     Store = 1,
@@ -2515,6 +2521,17 @@ declare const enum StereoScreenCaptureMode {
     LeftEye = 1,
     RightEye = 2,
     BothEyes = 3,
+}
+declare const enum CollisionType {
+    None = 0,
+    Solid = 1,
+    Slope = 2,
+}
+declare const enum ContextStyle {
+    None = 0,
+    GreedyMeshingTiles = 1,
+    ContextBlocks = 2,
+    QuarterTiles = 3,
 }
 declare const enum CollisionFlags {
     None = 0,
@@ -3490,6 +3507,7 @@ interface Texture extends Object {
     mipMapBias: number;
     texelSize: Vector2;
     updateCount: number;
+    isDataSRGB: boolean;
     imageContentsHash: Hash128;
 
 
@@ -5330,6 +5348,7 @@ interface RenderTextureDescriptor {
     constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
+    constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number, readWrite: RenderTextureReadWrite): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat, mipCount: number): RenderTextureDescriptor;
@@ -5789,6 +5808,7 @@ interface Material extends Object {
     constructor(contents: string): Material;
 
     ComputeCRC(): number;
+    CopyMatchingPropertiesFromMaterial(mat: Material): void;
     CopyPropertiesFromMaterial(mat: Material): void;
     DisableKeyword(keyword: string): void;
     DisableKeyword(keyword: unknown): void;
@@ -7320,6 +7340,8 @@ interface RaycastResult {
     distance: number;
     index: number;
     depth: number;
+    sortingGroupID: number;
+    sortingGroupOrder: number;
     sortingLayer: number;
     sortingOrder: number;
     worldPosition: Vector3;
@@ -7534,6 +7556,7 @@ interface Graphic extends UIBehaviour, ICanvasElement {
     SetLayoutDirty(): void;
     SetMaterialDirty(): void;
     SetNativeSize(): void;
+    SetRaycastDirty(): void;
     SetVerticesDirty(): void;
     UnregisterDirtyLayoutCallback(action: UnityAction): void;
     UnregisterDirtyMaterialCallback(action: UnityAction): void;
@@ -7842,6 +7865,8 @@ interface Animator extends Behaviour {
     logWarnings: boolean;
     fireEvents: boolean;
     keepAnimatorControllerStateOnDisable: boolean;
+    keepAnimatorStateOnDisable: boolean;
+    writeDefaultValuesOnDisable: boolean;
 
     constructor(): Animator;
 
@@ -8812,6 +8837,7 @@ interface Glyph {
     glyphRect: GlyphRect;
     scale: number;
     atlasIndex: number;
+    classDefinitionType: GlyphClassDefinitionType;
 
     constructor(): Glyph;
     constructor(glyph: Glyph): Glyph;
@@ -9498,6 +9524,13 @@ interface AirshipPackageDocument {
 
 }
     
+interface AirshipPackageDocumentConstructor {
+
+
+    FindPathFromDocument(document: AirshipPackageDocument): string;
+}
+declare const AirshipPackageDocument: AirshipPackageDocumentConstructor;
+    
 interface GameConfigConstructor {
 
 
@@ -9749,7 +9782,6 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
     SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
     SetAccessoryColor(slot: AccessorySlot, color: Color, combineMeshes: boolean): void;
-    SetFirstPersonEnabled(firstPersonEnabled: boolean): void;
     SetSkinColor(color: Color, combineMeshes: boolean): void;
     TryCombineMeshes(): void;
 }
@@ -10695,952 +10727,6 @@ interface AvatarMask extends Object {
     SetTransformActive(index: number, value: boolean): void;
     SetTransformPath(index: number, path: string): void;
 }
-    
-interface SaveChunk {
-    key: unknown;
-    data: CSArray<number>;
-
-    constructor(key: unknown, data: CSArray<number>): SaveChunk;
-
-}
-    
-interface WorldPosition {
-    name: string;
-    position: Vector3;
-    rotation: Quaternion;
-
-    constructor(name: string, position: Vector3, rotation: Quaternion): WorldPosition;
-
-}
-    
-interface SavePointLight {
-    name: string;
-    color: Color;
-    position: Vector3;
-    rotation: Quaternion;
-    intensity: number;
-    range: number;
-    castShadows: boolean;
-    highQualityLight: boolean;
-}
-    
-interface BlockIdToScopedName {
-    id: number;
-    name: string;
-
-
-}
-    
-interface VoxelWorldNetworker extends NetworkBehaviour {
-    world: VoxelWorld;
-
-    constructor(): VoxelWorldNetworker;
-
-    Awake(): void;
-    Awake___UserLogic(): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    OnSpawnServer(connection: NetworkConnection): void;
-    OnStartClient(): void;
-    RpcLogic___TargetAddPointLights_178810215(conn: NetworkConnection, dtos: CSArray<PointLightDto>): void;
-    RpcLogic___TargetDirtyLights_328543758(conn: NetworkConnection): void;
-    RpcLogic___TargetFinishedSendingWorldRpc_328543758(conn: NetworkConnection): void;
-    RpcLogic___TargetSetLightingProperties_2623000413(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
-    RpcLogic___TargetWriteChunksRpc_517074003(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
-    RpcLogic___TargetWriteVoxelGroupRpc_39176218(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
-    RpcLogic___TargetWriteVoxelRpc_1359590914(conn: NetworkConnection, pos: unknown, voxel: number): void;
-    TargetAddPointLights(conn: NetworkConnection, dtos: CSArray<PointLightDto>): void;
-    TargetDirtyLights(conn: NetworkConnection): void;
-    TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
-    TargetSetLightingProperties(conn: NetworkConnection, globalSunBrightness: number, globalSkyBrightness: number, globalSkySaturation: number, globalSunColor: Color, globalAmbientLight: Color, globalAmbientBrightness: number, globalAmbientOcclusion: number, globalRadiosityScale: number, globalRadiosityDirectLightAmp: number, globalFogStart: number, globalFogEnd: number, globalFogColor: Color): void;
-    TargetWriteChunksRpc(conn: NetworkConnection, positions: CSArray<unknown>, chunks: CSArray<Chunk>): void;
-    TargetWriteVoxelGroupRpc(conn: NetworkConnection, positions: CSArray<Vector3>, nums: CSArray<number>, priority: boolean): void;
-    TargetWriteVoxelRpc(conn: NetworkConnection, pos: unknown, voxel: number): void;
-}
-    
-interface PointLightDto {
-    color: Color;
-    position: Vector3;
-    rotation: Quaternion;
-    intensity: number;
-    range: number;
-    castShadows: boolean;
-    highQualityLight: boolean;
-
-
-}
-    
-interface Chunk {
-    readWriteVoxel: CSArray<number>;
-    materialPropertiesDirty: boolean;
-    world: VoxelWorld;
-    bottomLeftInt: unknown;
-    bounds: Bounds;
-    probes: CSArray<RadiosityProbe>;
-    probeCount: number;
-    numUpdates: number;
-    updatingRadiosity: boolean;
-    bakedLightingDirty: boolean;
-    lightingConverged: number;
-    previousEnergy: number;
-    currentCamera: Camera;
-    chunkKey: unknown;
-    colliders: CSArray<BoxCollider>;
-    meshPersistantData: PersistantData;
-
-    constructor(srcPosition: unknown): Chunk;
-
-    AddLight(id: number, light: LightReference): void;
-    Busy(): boolean;
-    Clear(): void;
-    ForceRemoveAllLightReferences(): void;
-    Free(): void;
-    GetDetailLightArray(): CSArray<LightReference>;
-    GetGameObject(): GameObject;
-    GetHighQualityLightArray(): CSArray<LightReference>;
-    GetKey(): unknown;
-    GetLocalVoxelAt(localPos: unknown): number;
-    GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
-    GetPriorityUpdate(): boolean;
-    GetTimeOfLastRadiosityUpdate(): string;
-    GetVoxelAt(worldPos: unknown): number;
-    HasVoxels(): boolean;
-    IsGeometryDirty(): boolean;
-    IsProcessingMesh(): boolean;
-    MainThreadAddSamplesToProbes(): void;
-    MainthreadForceCollisionRebuild(): void;
-    MainthreadUpdateMesh(world: VoxelWorld): boolean;
-    NeedsToCopyMeshToScene(): boolean;
-    NeedsToGenerateMesh(): boolean;
-    RemoveLight(id: number): void;
-    SetGeometryDirty(dirty: boolean, priority: boolean): void;
-    SetWorld(world: VoxelWorld): void;
-    UpdateMaterialPropertiesForChunk(): void;
-    WriteVoxel(worldPos: unknown, num: number): void;
-}
-    
-interface RadiosityProbe {
-    position: Vector3;
-    enabled: boolean;
-    debugging: boolean;
-
-    constructor(world: VoxelWorld, position: Vector3, chunk: Chunk, sample: RadiosityProbeSample, enabled: boolean): RadiosityProbe;
-
-    AddSamples(): number;
-    CalculateDirectColor(): number;
-    CalculateIndirectColor(): number;
-}
-    
-interface BoxCollider extends Collider {
-    extents: Vector3;
-    center: Vector3;
-    size: Vector3;
-
-    constructor(): BoxCollider;
-
-}
-    
-interface PersistantData {
-    detailLightArray: CSArray<LightReference>;
-    highQualityLightArray: CSArray<LightReference>;
-
-    constructor(): PersistantData;
-
-}
-    
-interface LightReference {
-    position: Vector3;
-    radius: number;
-    radiusSquare: number;
-    lightRef: unknown;
-    dirty: boolean;
-    chunkKeys: CSArray<unknown>;
-    instanceId: number;
-    highQualityLight: boolean;
-    color: Color;
-    shadow: boolean;
-
-    constructor(light: PointLight): LightReference;
-
-    ForceAddAllLightReferencesToChunks(world: VoxelWorld): void;
-    RemoveLightReferenceFromWorld(world: VoxelWorld): void;
-    Update(): void;
-}
-    
-interface ChunkConstructor {
-
-
-    TestAABBSphere(aabb: Bounds, sphereCenter: Vector3, sphereRadius: number): boolean;
-    WorldPosToLocalPos(globalCoord: Vector3): Vector3;
-    WorldPosToLocalPos(globalCoord: unknown): unknown;
-    WorldPosToProbeIndex(globalCoord: unknown): number;
-    WorldPosToVoxelIndex(globalCoord: unknown): number;
-}
-declare const Chunk: ChunkConstructor;
-    
-interface float3 {
-    x: number;
-    y: number;
-    z: number;
-    xxxx: float4;
-    xxxy: float4;
-    xxxz: float4;
-    xxyx: float4;
-    xxyy: float4;
-    xxyz: float4;
-    xxzx: float4;
-    xxzy: float4;
-    xxzz: float4;
-    xyxx: float4;
-    xyxy: float4;
-    xyxz: float4;
-    xyyx: float4;
-    xyyy: float4;
-    xyyz: float4;
-    xyzx: float4;
-    xyzy: float4;
-    xyzz: float4;
-    xzxx: float4;
-    xzxy: float4;
-    xzxz: float4;
-    xzyx: float4;
-    xzyy: float4;
-    xzyz: float4;
-    xzzx: float4;
-    xzzy: float4;
-    xzzz: float4;
-    yxxx: float4;
-    yxxy: float4;
-    yxxz: float4;
-    yxyx: float4;
-    yxyy: float4;
-    yxyz: float4;
-    yxzx: float4;
-    yxzy: float4;
-    yxzz: float4;
-    yyxx: float4;
-    yyxy: float4;
-    yyxz: float4;
-    yyyx: float4;
-    yyyy: float4;
-    yyyz: float4;
-    yyzx: float4;
-    yyzy: float4;
-    yyzz: float4;
-    yzxx: float4;
-    yzxy: float4;
-    yzxz: float4;
-    yzyx: float4;
-    yzyy: float4;
-    yzyz: float4;
-    yzzx: float4;
-    yzzy: float4;
-    yzzz: float4;
-    zxxx: float4;
-    zxxy: float4;
-    zxxz: float4;
-    zxyx: float4;
-    zxyy: float4;
-    zxyz: float4;
-    zxzx: float4;
-    zxzy: float4;
-    zxzz: float4;
-    zyxx: float4;
-    zyxy: float4;
-    zyxz: float4;
-    zyyx: float4;
-    zyyy: float4;
-    zyyz: float4;
-    zyzx: float4;
-    zyzy: float4;
-    zyzz: float4;
-    zzxx: float4;
-    zzxy: float4;
-    zzxz: float4;
-    zzyx: float4;
-    zzyy: float4;
-    zzyz: float4;
-    zzzx: float4;
-    zzzy: float4;
-    zzzz: float4;
-    xxx: float3;
-    xxy: float3;
-    xxz: float3;
-    xyx: float3;
-    xyy: float3;
-    xyz: float3;
-    xzx: float3;
-    xzy: float3;
-    xzz: float3;
-    yxx: float3;
-    yxy: float3;
-    yxz: float3;
-    yyx: float3;
-    yyy: float3;
-    yyz: float3;
-    yzx: float3;
-    yzy: float3;
-    yzz: float3;
-    zxx: float3;
-    zxy: float3;
-    zxz: float3;
-    zyx: float3;
-    zyy: float3;
-    zyz: float3;
-    zzx: float3;
-    zzy: float3;
-    zzz: float3;
-    xx: float2;
-    xy: float2;
-    xz: float2;
-    yx: float2;
-    yy: float2;
-    yz: float2;
-    zx: float2;
-    zy: float2;
-    zz: float2;
-    Item: number;
-
-    constructor(x: number, y: number, z: number): float3;
-    constructor(x: number, yz: float2): float3;
-    constructor(xy: float2, z: number): float3;
-    constructor(xyz: float3): float3;
-    constructor(v: number): float3;
-    constructor(v: boolean): float3;
-    constructor(v: bool3): float3;
-    constructor(v: number): float3;
-    constructor(v: int3): float3;
-    constructor(v: number): float3;
-    constructor(v: uint3): float3;
-    constructor(v: half): float3;
-    constructor(v: half3): float3;
-    constructor(v: number): float3;
-    constructor(v: double3): float3;
-
-    Equals(rhs: float3): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
-    
-interface float4 {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-    xxxx: float4;
-    xxxy: float4;
-    xxxz: float4;
-    xxxw: float4;
-    xxyx: float4;
-    xxyy: float4;
-    xxyz: float4;
-    xxyw: float4;
-    xxzx: float4;
-    xxzy: float4;
-    xxzz: float4;
-    xxzw: float4;
-    xxwx: float4;
-    xxwy: float4;
-    xxwz: float4;
-    xxww: float4;
-    xyxx: float4;
-    xyxy: float4;
-    xyxz: float4;
-    xyxw: float4;
-    xyyx: float4;
-    xyyy: float4;
-    xyyz: float4;
-    xyyw: float4;
-    xyzx: float4;
-    xyzy: float4;
-    xyzz: float4;
-    xyzw: float4;
-    xywx: float4;
-    xywy: float4;
-    xywz: float4;
-    xyww: float4;
-    xzxx: float4;
-    xzxy: float4;
-    xzxz: float4;
-    xzxw: float4;
-    xzyx: float4;
-    xzyy: float4;
-    xzyz: float4;
-    xzyw: float4;
-    xzzx: float4;
-    xzzy: float4;
-    xzzz: float4;
-    xzzw: float4;
-    xzwx: float4;
-    xzwy: float4;
-    xzwz: float4;
-    xzww: float4;
-    xwxx: float4;
-    xwxy: float4;
-    xwxz: float4;
-    xwxw: float4;
-    xwyx: float4;
-    xwyy: float4;
-    xwyz: float4;
-    xwyw: float4;
-    xwzx: float4;
-    xwzy: float4;
-    xwzz: float4;
-    xwzw: float4;
-    xwwx: float4;
-    xwwy: float4;
-    xwwz: float4;
-    xwww: float4;
-    yxxx: float4;
-    yxxy: float4;
-    yxxz: float4;
-    yxxw: float4;
-    yxyx: float4;
-    yxyy: float4;
-    yxyz: float4;
-    yxyw: float4;
-    yxzx: float4;
-    yxzy: float4;
-    yxzz: float4;
-    yxzw: float4;
-    yxwx: float4;
-    yxwy: float4;
-    yxwz: float4;
-    yxww: float4;
-    yyxx: float4;
-    yyxy: float4;
-    yyxz: float4;
-    yyxw: float4;
-    yyyx: float4;
-    yyyy: float4;
-    yyyz: float4;
-    yyyw: float4;
-    yyzx: float4;
-    yyzy: float4;
-    yyzz: float4;
-    yyzw: float4;
-    yywx: float4;
-    yywy: float4;
-    yywz: float4;
-    yyww: float4;
-    yzxx: float4;
-    yzxy: float4;
-    yzxz: float4;
-    yzxw: float4;
-    yzyx: float4;
-    yzyy: float4;
-    yzyz: float4;
-    yzyw: float4;
-    yzzx: float4;
-    yzzy: float4;
-    yzzz: float4;
-    yzzw: float4;
-    yzwx: float4;
-    yzwy: float4;
-    yzwz: float4;
-    yzww: float4;
-    ywxx: float4;
-    ywxy: float4;
-    ywxz: float4;
-    ywxw: float4;
-    ywyx: float4;
-    ywyy: float4;
-    ywyz: float4;
-    ywyw: float4;
-    ywzx: float4;
-    ywzy: float4;
-    ywzz: float4;
-    ywzw: float4;
-    ywwx: float4;
-    ywwy: float4;
-    ywwz: float4;
-    ywww: float4;
-    zxxx: float4;
-    zxxy: float4;
-    zxxz: float4;
-    zxxw: float4;
-    zxyx: float4;
-    zxyy: float4;
-    zxyz: float4;
-    zxyw: float4;
-    zxzx: float4;
-    zxzy: float4;
-    zxzz: float4;
-    zxzw: float4;
-    zxwx: float4;
-    zxwy: float4;
-    zxwz: float4;
-    zxww: float4;
-    zyxx: float4;
-    zyxy: float4;
-    zyxz: float4;
-    zyxw: float4;
-    zyyx: float4;
-    zyyy: float4;
-    zyyz: float4;
-    zyyw: float4;
-    zyzx: float4;
-    zyzy: float4;
-    zyzz: float4;
-    zyzw: float4;
-    zywx: float4;
-    zywy: float4;
-    zywz: float4;
-    zyww: float4;
-    zzxx: float4;
-    zzxy: float4;
-    zzxz: float4;
-    zzxw: float4;
-    zzyx: float4;
-    zzyy: float4;
-    zzyz: float4;
-    zzyw: float4;
-    zzzx: float4;
-    zzzy: float4;
-    zzzz: float4;
-    zzzw: float4;
-    zzwx: float4;
-    zzwy: float4;
-    zzwz: float4;
-    zzww: float4;
-    zwxx: float4;
-    zwxy: float4;
-    zwxz: float4;
-    zwxw: float4;
-    zwyx: float4;
-    zwyy: float4;
-    zwyz: float4;
-    zwyw: float4;
-    zwzx: float4;
-    zwzy: float4;
-    zwzz: float4;
-    zwzw: float4;
-    zwwx: float4;
-    zwwy: float4;
-    zwwz: float4;
-    zwww: float4;
-    wxxx: float4;
-    wxxy: float4;
-    wxxz: float4;
-    wxxw: float4;
-    wxyx: float4;
-    wxyy: float4;
-    wxyz: float4;
-    wxyw: float4;
-    wxzx: float4;
-    wxzy: float4;
-    wxzz: float4;
-    wxzw: float4;
-    wxwx: float4;
-    wxwy: float4;
-    wxwz: float4;
-    wxww: float4;
-    wyxx: float4;
-    wyxy: float4;
-    wyxz: float4;
-    wyxw: float4;
-    wyyx: float4;
-    wyyy: float4;
-    wyyz: float4;
-    wyyw: float4;
-    wyzx: float4;
-    wyzy: float4;
-    wyzz: float4;
-    wyzw: float4;
-    wywx: float4;
-    wywy: float4;
-    wywz: float4;
-    wyww: float4;
-    wzxx: float4;
-    wzxy: float4;
-    wzxz: float4;
-    wzxw: float4;
-    wzyx: float4;
-    wzyy: float4;
-    wzyz: float4;
-    wzyw: float4;
-    wzzx: float4;
-    wzzy: float4;
-    wzzz: float4;
-    wzzw: float4;
-    wzwx: float4;
-    wzwy: float4;
-    wzwz: float4;
-    wzww: float4;
-    wwxx: float4;
-    wwxy: float4;
-    wwxz: float4;
-    wwxw: float4;
-    wwyx: float4;
-    wwyy: float4;
-    wwyz: float4;
-    wwyw: float4;
-    wwzx: float4;
-    wwzy: float4;
-    wwzz: float4;
-    wwzw: float4;
-    wwwx: float4;
-    wwwy: float4;
-    wwwz: float4;
-    wwww: float4;
-    xxx: float3;
-    xxy: float3;
-    xxz: float3;
-    xxw: float3;
-    xyx: float3;
-    xyy: float3;
-    xyz: float3;
-    xyw: float3;
-    xzx: float3;
-    xzy: float3;
-    xzz: float3;
-    xzw: float3;
-    xwx: float3;
-    xwy: float3;
-    xwz: float3;
-    xww: float3;
-    yxx: float3;
-    yxy: float3;
-    yxz: float3;
-    yxw: float3;
-    yyx: float3;
-    yyy: float3;
-    yyz: float3;
-    yyw: float3;
-    yzx: float3;
-    yzy: float3;
-    yzz: float3;
-    yzw: float3;
-    ywx: float3;
-    ywy: float3;
-    ywz: float3;
-    yww: float3;
-    zxx: float3;
-    zxy: float3;
-    zxz: float3;
-    zxw: float3;
-    zyx: float3;
-    zyy: float3;
-    zyz: float3;
-    zyw: float3;
-    zzx: float3;
-    zzy: float3;
-    zzz: float3;
-    zzw: float3;
-    zwx: float3;
-    zwy: float3;
-    zwz: float3;
-    zww: float3;
-    wxx: float3;
-    wxy: float3;
-    wxz: float3;
-    wxw: float3;
-    wyx: float3;
-    wyy: float3;
-    wyz: float3;
-    wyw: float3;
-    wzx: float3;
-    wzy: float3;
-    wzz: float3;
-    wzw: float3;
-    wwx: float3;
-    wwy: float3;
-    wwz: float3;
-    www: float3;
-    xx: float2;
-    xy: float2;
-    xz: float2;
-    xw: float2;
-    yx: float2;
-    yy: float2;
-    yz: float2;
-    yw: float2;
-    zx: float2;
-    zy: float2;
-    zz: float2;
-    zw: float2;
-    wx: float2;
-    wy: float2;
-    wz: float2;
-    ww: float2;
-    Item: number;
-
-    constructor(x: number, y: number, z: number, w: number): float4;
-    constructor(x: number, y: number, zw: float2): float4;
-    constructor(x: number, yz: float2, w: number): float4;
-    constructor(x: number, yzw: float3): float4;
-    constructor(xy: float2, z: number, w: number): float4;
-    constructor(xy: float2, zw: float2): float4;
-    constructor(xyz: float3, w: number): float4;
-    constructor(xyzw: float4): float4;
-    constructor(v: number): float4;
-    constructor(v: boolean): float4;
-    constructor(v: bool4): float4;
-    constructor(v: number): float4;
-    constructor(v: int4): float4;
-    constructor(v: number): float4;
-    constructor(v: uint4): float4;
-    constructor(v: half): float4;
-    constructor(v: half4): float4;
-    constructor(v: number): float4;
-    constructor(v: double4): float4;
-
-    Equals(rhs: float4): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
-    
-interface float2 {
-    x: number;
-    y: number;
-    xxxx: float4;
-    xxxy: float4;
-    xxyx: float4;
-    xxyy: float4;
-    xyxx: float4;
-    xyxy: float4;
-    xyyx: float4;
-    xyyy: float4;
-    yxxx: float4;
-    yxxy: float4;
-    yxyx: float4;
-    yxyy: float4;
-    yyxx: float4;
-    yyxy: float4;
-    yyyx: float4;
-    yyyy: float4;
-    xxx: float3;
-    xxy: float3;
-    xyx: float3;
-    xyy: float3;
-    yxx: float3;
-    yxy: float3;
-    yyx: float3;
-    yyy: float3;
-    xx: float2;
-    xy: float2;
-    yx: float2;
-    yy: float2;
-    Item: number;
-
-    constructor(x: number, y: number): float2;
-    constructor(xy: float2): float2;
-    constructor(v: number): float2;
-    constructor(v: boolean): float2;
-    constructor(v: bool2): float2;
-    constructor(v: number): float2;
-    constructor(v: int2): float2;
-    constructor(v: number): float2;
-    constructor(v: uint2): float2;
-    constructor(v: half): float2;
-    constructor(v: half2): float2;
-    constructor(v: number): float2;
-    constructor(v: double2): float2;
-
-    Equals(rhs: float2): boolean;
-    Equals(o: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
-    
-interface float2Constructor {
-    zero: float2;
-
-
-}
-declare const float2: float2Constructor;
-    
-interface float4Constructor {
-    zero: float4;
-
-
-}
-declare const float4: float4Constructor;
-    
-interface float3Constructor {
-    zero: float3;
-
-
-}
-declare const float3: float3Constructor;
-    
-interface VoxelBlocks {
-    maxResolution: number;
-    atlasSize: number;
-    pointFiltering: boolean;
-    atlas: TexturePacker;
-    materials: CSDictionary<string, Material>;
-    loadedBlocks: CSDictionary<number, BlockDefinition>;
-    rootAssetPath: string;
-    m_bundlePaths: CSArray<string>;
-
-    constructor(): VoxelBlocks;
-
-    AddSolidMaskToVoxelValue(voxelValue: number): number;
-    GetBlock(index: number): BlockDefinition;
-    GetBlockDefinitionByStringId(blockTypeId: string): BlockDefinition;
-    GetBlockDefinitionFromIndex(index: number): BlockDefinition;
-    GetBlockIdFromStringId(stringId: string): number;
-    GetStringIdFromBlockId(blockVoxelId: number): string;
-    Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
-    UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
-}
-    
-interface TexturePacker {
-    diffuse: RenderTexture;
-    normals: RenderTexture;
-
-    constructor(): TexturePacker;
-
-    Dispose(): void;
-    GetColor(texture: string): Color;
-    GetUVs(texture: string): Rect;
-    PackTextures(textures: CSDictionary<string, TextureSet>, desiredPadding: number, width: number, height: number, numMips: number, normalizedSize: number): void;
-}
-    
-interface TextureSet {
-    diffuse: Texture2D;
-    normals: Texture2D;
-    roughTexture: Texture2D;
-    metalTexture: Texture2D;
-    emissiveTexture: Texture2D;
-    roughness: number;
-    metallic: number;
-    normalScale: number;
-    emissive: number;
-    brightness: number;
-
-    constructor(diffuse: Texture2D, normals: Texture2D, roughTex: Texture2D, metalTex: Texture2D, emissiveTex: Texture2D, roughness: number, metallic: number, normalScale: number, emissive: number, brightness: number): TextureSet;
-
-}
-    
-interface TexturePackerConstructor {
-
-
-    CustomBlit(renderTarget: RenderTexture, sourceTexture: Texture, material: Material, destX: number, destY: number, destWidth: number, destHeight: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number): void;
-    DoPadding(target: RenderTexture, source: Texture2D, rect: Rect, pad: number, flipMaterial: Material): void;
-}
-declare const TexturePacker: TexturePackerConstructor;
-    
-interface BlockDefinition {
-    prefab: boolean;
-    metallic: number;
-    roughness: number;
-    normalScale: number;
-    emissive: number;
-    brightness: number;
-    solid: boolean;
-    collisionType: CollisionType;
-    randomRotation: boolean;
-    mesh: VoxelMeshCopy;
-    meshLod: VoxelMeshCopy;
-    meshTiles: CSDictionary<number, LodSet>;
-    meshTileProcessingOrder: CSArray<number>;
-    contextStyle: ContextStyle;
-    meshContexts: CSDictionary<number, VoxelMeshCopy>;
-    detail: boolean;
-    meshTexturePath: string;
-    topTexturePath: string;
-    sideTexturePath: string;
-    bottomTexturePath: string;
-    editorTexture: Texture2D;
-    topUvs: Rect;
-    bottomUvs: Rect;
-    sideUvs: Rect;
-    doOcclusion: boolean;
-    materials: CSArray<string>;
-    meshMaterialName: string;
-    averageColor: CSArray<Color>;
-    minecraftConversions: CSArray<string>;
-    blockId: number;
-    blockTypeId: string;
-    name: string;
-    material: string;
-    topMaterial: string;
-    sideMaterial: string;
-    bottomMaterial: string;
-    topTexture: string;
-    sideTexture: string;
-    bottomTexture: string;
-    meshTexture: string;
-    meshPath: string;
-    meshPathLod: string;
-
-    constructor(): BlockDefinition;
-
-    GetUvsForFace(i: number): Rect;
-}
-    
-interface VoxelMeshCopy {
-    quaternions: CSArray<unknown>;
-    rotation: CSDictionary<number, PrecalculatedRotation>;
-    uvs: CSArray<Vector2>;
-    triangles: CSArray<number>;
-    colors: CSArray<Color>;
-    srcVertices: CSArray<Vector3>;
-    srcNormals: CSArray<Vector3>;
-    meshMaterial: Material;
-    meshMaterialName: string;
-
-    constructor(mesh: Mesh): VoxelMeshCopy;
-    constructor(assetPath: string, showError: boolean): VoxelMeshCopy;
-
-    AdjustUVs(uvs: Rect): void;
-}
-    
-interface PrecalculatedRotation {
-    vertices: CSArray<Vector3>;
-    normals: CSArray<Vector3>;
-
-    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
-    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
-
-}
-    
-interface LodSet {
-    lod0: VoxelMeshCopy;
-    lod1: VoxelMeshCopy;
-    lod2: VoxelMeshCopy;
-
-    constructor(): LodSet;
-
-}
-    
-interface VoxelBlocksConstructor {
-    meshTileOffsets: CSDictionary<number, Vector3>;
-    meshTileSizes: CSDictionary<number, unknown>;
-    TileSizeNames: CSArray<string>;
-    ContextBlockNames: CSArray<string>;
-    QuarterBlockNames: CSArray<string>;
-
-
-}
-declare const VoxelBlocks: VoxelBlocksConstructor;
-    
-interface RadiosityProbeSample {
-    position: Vector3;
-    color: Color;
-
-    constructor(position: Vector3, color: Color): RadiosityProbeSample;
-
-}
-    
-interface VoxelRaycastResult {
-    Hit: boolean;
-    Distance: number;
-    HitPosition: Vector3;
-    HitNormal: Vector3;
-
-
-}
-    
-
     
 interface DebugUtil extends Debug {
 
@@ -12807,6 +11893,161 @@ interface ScreenCaptureConstructor {
 }
 declare const ScreenCapture: ScreenCaptureConstructor;
     
+interface VoxelBlocks {
+    maxResolution: number;
+    atlasSize: number;
+    pointFiltering: boolean;
+    atlas: TexturePacker;
+    materials: CSDictionary<string, Material>;
+    loadedBlocks: CSDictionary<number, BlockDefinition>;
+    rootAssetPath: string;
+    m_bundlePaths: CSArray<string>;
+
+    constructor(): VoxelBlocks;
+
+    AddSolidMaskToVoxelValue(voxelValue: number): number;
+    GetBlock(index: number): BlockDefinition;
+    GetBlockDefinitionByStringId(blockTypeId: string): BlockDefinition;
+    GetBlockDefinitionFromIndex(index: number): BlockDefinition;
+    GetBlockIdFromStringId(stringId: string): number;
+    GetStringIdFromBlockId(blockVoxelId: number): string;
+    Load(contentsOfBlockDefines: CSArray<string>, loadTexturesDirectlyFromDisk: boolean): void;
+    UpdateVoxelBlockId(voxelValue: number, blockId: number): number;
+}
+    
+interface TexturePacker {
+    diffuse: RenderTexture;
+    normals: RenderTexture;
+
+    constructor(): TexturePacker;
+
+    Dispose(): void;
+    GetColor(texture: string): Color;
+    GetUVs(texture: string): Rect;
+    PackTextures(textures: CSDictionary<string, TextureSet>, desiredPadding: number, width: number, height: number, numMips: number, normalizedSize: number): void;
+}
+    
+interface TextureSet {
+    diffuse: Texture2D;
+    normals: Texture2D;
+    roughTexture: Texture2D;
+    metalTexture: Texture2D;
+    emissiveTexture: Texture2D;
+    roughness: number;
+    metallic: number;
+    normalScale: number;
+    emissive: number;
+    brightness: number;
+
+    constructor(diffuse: Texture2D, normals: Texture2D, roughTex: Texture2D, metalTex: Texture2D, emissiveTex: Texture2D, roughness: number, metallic: number, normalScale: number, emissive: number, brightness: number): TextureSet;
+
+}
+    
+interface TexturePackerConstructor {
+
+
+    CustomBlit(renderTarget: RenderTexture, sourceTexture: Texture, material: Material, destX: number, destY: number, destWidth: number, destHeight: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number): void;
+    DoPadding(target: RenderTexture, source: Texture2D, rect: Rect, pad: number, flipMaterial: Material): void;
+}
+declare const TexturePacker: TexturePackerConstructor;
+    
+interface BlockDefinition {
+    prefab: boolean;
+    metallic: number;
+    roughness: number;
+    normalScale: number;
+    emissive: number;
+    brightness: number;
+    solid: boolean;
+    collisionType: CollisionType;
+    randomRotation: boolean;
+    mesh: VoxelMeshCopy;
+    meshLod: VoxelMeshCopy;
+    meshTiles: CSDictionary<number, LodSet>;
+    meshTileProcessingOrder: CSArray<number>;
+    contextStyle: ContextStyle;
+    meshContexts: CSDictionary<number, VoxelMeshCopy>;
+    detail: boolean;
+    meshTexturePath: string;
+    topTexturePath: string;
+    sideTexturePath: string;
+    bottomTexturePath: string;
+    editorTexture: Texture2D;
+    topUvs: Rect;
+    bottomUvs: Rect;
+    sideUvs: Rect;
+    doOcclusion: boolean;
+    materials: CSArray<string>;
+    meshMaterialName: string;
+    averageColor: CSArray<Color>;
+    minecraftConversions: CSArray<string>;
+    blockId: number;
+    blockTypeId: string;
+    name: string;
+    material: string;
+    topMaterial: string;
+    sideMaterial: string;
+    bottomMaterial: string;
+    topTexture: string;
+    sideTexture: string;
+    bottomTexture: string;
+    meshTexture: string;
+    meshPath: string;
+    meshPathLod: string;
+
+    constructor(): BlockDefinition;
+
+    GetUvsForFace(i: number): Rect;
+}
+    
+interface VoxelMeshCopy {
+    quaternions: CSArray<unknown>;
+    rotation: CSDictionary<number, PrecalculatedRotation>;
+    uvs: CSArray<Vector2>;
+    triangles: CSArray<number>;
+    colors: CSArray<Color>;
+    srcVertices: CSArray<Vector3>;
+    srcNormals: CSArray<Vector3>;
+    meshMaterial: Material;
+    meshMaterialName: string;
+
+    constructor(mesh: Mesh): VoxelMeshCopy;
+    constructor(src: VoxelMeshCopy): VoxelMeshCopy;
+    constructor(assetPath: string, showError: boolean): VoxelMeshCopy;
+
+    AdjustUVs(uvs: Rect): void;
+}
+    
+interface PrecalculatedRotation {
+    vertices: CSArray<Vector3>;
+    normals: CSArray<Vector3>;
+
+    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+
+}
+    
+interface LodSet {
+    lod0: VoxelMeshCopy;
+    lod1: VoxelMeshCopy;
+    lod2: VoxelMeshCopy;
+
+    constructor(): LodSet;
+
+}
+    
+interface VoxelBlocksConstructor {
+    meshTileOffsets: CSDictionary<number, Vector3>;
+    meshTileSizes: CSDictionary<number, unknown>;
+    TileSizeNames: CSArray<string>;
+    ContextBlockNames: CSArray<string>;
+    QuarterBlockNames: CSArray<string>;
+    QuarterBlockSubstitutions: CSArray<number>;
+
+
+}
+declare const VoxelBlocks: VoxelBlocksConstructor;
+    
 interface CharacterController extends Collider {
     velocity: Vector3;
     isGrounded: boolean;
@@ -12908,6 +12149,9 @@ interface TrailRenderer extends Renderer {
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
     GetPositions(positions: CSArray<Vector3>): number;
+    GetVisiblePositions(positions: CSArray<Vector3>): number;
+    GetVisiblePositions(positions: CSArray<Vector3>): number;
+    GetVisiblePositions(positions: CSArray<Vector3>): number;
     SetPosition(index: number, position: Vector3): void;
     SetPositions(positions: CSArray<Vector3>): void;
     SetPositions(positions: CSArray<Vector3>): void;
@@ -13512,6 +12756,7 @@ interface EasyMotion extends MonoBehaviour {
 }
     
 interface GroundItemDrop extends MonoBehaviour {
+    boxCollider: BoxCollider;
 
     constructor(): GroundItemDrop;
 
@@ -13521,6 +12766,15 @@ interface GroundItemDrop extends MonoBehaviour {
     SetPosition(position: Vector3): void;
     SetSpinActive(active: boolean): void;
     SetVelocity(velocity: Vector3): void;
+}
+    
+interface BoxCollider extends Collider {
+    extents: Vector3;
+    center: Vector3;
+    size: Vector3;
+
+    constructor(): BoxCollider;
+
 }
     
 interface RemoteImage extends MonoBehaviour {

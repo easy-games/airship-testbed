@@ -214,7 +214,7 @@ export class LocalEntityController implements OnStart {
 			});
 
 			//Set up first person camera
-			this.fps = new FirstPersonCameraSystem(entity.references, this.firstPerson);
+			this.fps = new FirstPersonCameraSystem(entity, entity.references, this.firstPerson);
 
 			const stateChangedConn = this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
