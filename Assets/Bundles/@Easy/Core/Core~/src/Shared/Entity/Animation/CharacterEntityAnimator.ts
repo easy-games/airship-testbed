@@ -57,7 +57,7 @@ export class CharacterEntityAnimator {
 		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Idle.anim",
 	);
 	private defaultIdleAnimFPUnarmed = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Unarmed_Idle.anim",
+		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
 	);
 	private defaultIdleAnimTP = AssetCache.LoadAsset<AnimationClip>(
 		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
@@ -417,9 +417,7 @@ export class CharacterEntityAnimator {
 			}
 		} else {
 			//UNARMED
-			if (this.isFirstPerson) {
-				this.worldmodelClips.set(ItemAnimationId.IDLE, [this.defaultIdleAnimFPUnarmed]);
-			}
+			this.viewmodelClips.set(ItemAnimationId.IDLE, [this.defaultIdleAnimFPUnarmed]);
 		}
 	}
 
