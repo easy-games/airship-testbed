@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f344ad3be842d59b0d8a2fb5e612f1, type: 3}
   m_Name: Avatar_Frog_Torso
   m_EditorClassIdentifier: 
-  AccessorySlot: 5
+  AccessorySlot: 13
   Prefab: {fileID: 8456005780138021441, guid: 31cfbf3e5aa6d244cac60d669624511d, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
