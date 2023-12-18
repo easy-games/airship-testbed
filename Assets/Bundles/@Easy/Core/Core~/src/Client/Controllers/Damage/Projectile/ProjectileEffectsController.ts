@@ -29,7 +29,7 @@ export class ProjectileEffectsController implements OnStart {
 				const pos = trail.position;
 				Bridge.SetParentToSceneRoot(trail);
 				trail.position = pos;
-				SetTimeout(1, () => {
+				SetTimeout(itemMeta.projectile?.destroyTrailImmediately ? 0 : 1, () => {
 					Object.Destroy(trail.gameObject);
 				});
 			}

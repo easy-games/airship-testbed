@@ -837,8 +837,8 @@ export const items: {
 		accessoryPaths: [AccPath(ItemType.FIREBALL)],
 		projectileLauncher: {
 			ammoItemType: ItemType.FIREBALL,
-			minVelocityScaler: 15,
-			maxVelocityScaler: 50,
+			minVelocityScaler: 40,
+			maxVelocityScaler: 60,
 			firstPersonLaunchOffset: new Vector3(1.5, 0, 0),
 		},
 		projectile: {
@@ -857,7 +857,7 @@ export const items: {
 				extraDamageBlockArchetype: BlockArchetype.WOOD,
 				onHitPrefabPath: "@Easy/Core/Shared/Resources/Prefabs/VFX/Blocks/OnBlockHitFireVFX.prefab",
 			},
-			gravity: defaultGravity * 0.09,
+			gravity: defaultGravity * 0.2,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
 			// onHitGroundSound: [
 			// 	{
@@ -868,6 +868,7 @@ export const items: {
 			// 	},
 			// ],
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_FireballExplosion,
+			destroyTrailImmediately: true,
 		},
 	},
 	[ItemType.FARMLAND]: {
