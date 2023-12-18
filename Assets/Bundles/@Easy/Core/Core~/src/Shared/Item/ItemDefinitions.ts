@@ -6,14 +6,7 @@ import { LayerUtil } from "Shared/Util/LayerUtil";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
-import {
-	BlockArchetype,
-	BlockDef,
-	ItemDef,
-	MeleeItemDef,
-	UsableHeldItemDef,
-	ViewModelDef,
-} from "./ItemDefinitionTypes";
+import { BlockArchetype, BlockDef, HoldConfig, ItemDef, MeleeItemDef, UsableHeldItemDef } from "./ItemDefinitionTypes";
 import { ItemType } from "./ItemType";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
@@ -37,8 +30,8 @@ const blockUsable: UsableHeldItemDef = {
 	maxChargeSeconds: 0,
 	cooldownSeconds: 0.0,
 	holdToUseCooldownInSeconds: 0.16,
-	onUseAnimFP: CoreAnim("FP_Block_Place"),
-	onUseAnimTP: CoreAnim("TP_Block_Place"),
+	onUseAnimViewmodel: CoreAnim("FP_Block_Place"),
+	onUseAnimWorldmodel: CoreAnim("TP_Block_Place"),
 	canHoldToUse: true,
 };
 const swordUsable: UsableHeldItemDef = {
@@ -54,11 +47,11 @@ const swordUsable: UsableHeldItemDef = {
 		coreSoundPath + "s_Sword_Swing_Wood_04.wav",
 	],
 	onUseSoundVolume: 0.3,
-	onUseAnimFP: [
+	onUseAnimViewmodel: [
 		AllBundleItems.ItemSword_FirstPerson_Swing01 as string,
 		AllBundleItems.ItemSword_FirstPerson_Swing02 as string,
 	],
-	onUseAnimTP: [
+	onUseAnimWorldmodel: [
 		AllBundleItems.ItemSword_ThirdPerson_Swing01 as string,
 		AllBundleItems.ItemSword_ThirdPerson_Swing02 as string,
 	],
@@ -67,24 +60,32 @@ const bigSwordUsable: UsableHeldItemDef = {
 	...swordUsable,
 	onUseSoundVolume: 0.4,
 	cooldownSeconds: 0.25,
-	onUseAnimFP: [
+	onUseAnimViewmodel: [
 		AllBundleItems.ItemSwordBig_FirstPerson_Swing01 as string,
 		AllBundleItems.ItemSwordBig_FirstPerson_Swing02 as string,
 	],
-	onUseAnimTP: [
+	onUseAnimWorldmodel: [
 		AllBundleItems.ItemSwordBig_ThirdPerson_Swing01 as string,
 		AllBundleItems.ItemSwordBig_ThirdPerson_Swing02 as string,
 	],
 };
-const swordViewModel: ViewModelDef = {
-	idleAnimFP: CoreAnim("FP_Sword_Idle"),
-	idleAnimTP: CoreAnim("Airship_Empty"),
+const swordViewModel: HoldConfig = {
+	viewmodel: {
+		idleAnim: CoreAnim("FP_Sword_Idle"),
+	},
+	worldmodel: {
+		idleAnim: CoreAnim("Airship_Empty"),
+	},
 };
 
-const bigSwordViewModel: ViewModelDef = {
+const bigSwordViewModel: HoldConfig = {
 	// idleAnimFP: CoreAnim("FP_SwordBig_Idle"),
-	idleAnimFP: CoreAnim("FP_Sword_Idle"),
-	idleAnimTP: CoreAnim("Airship_Empty"),
+	viewmodel: {
+		idleAnim: CoreAnim("FP_Sword_Idle"),
+	},
+	worldmodel: {
+		idleAnim: CoreAnim("Airship_Empty"),
+	},
 };
 
 const swordMelee: MeleeItemDef = {
@@ -98,23 +99,25 @@ const swordMelee: MeleeItemDef = {
 	damageType: DamageType.SWORD,
 };
 const pickaxeUsable: Partial<UsableHeldItemDef> = {
-	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+	onUseAnimViewmodel: CoreAnim("FP_Sword_Use"),
+	onUseAnimWorldmodel: CoreAnim("TP_Sword_Use"),
 	canHoldToUse: true,
 };
 
 const plowUsable: Partial<UsableHeldItemDef> = {
-	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+	onUseAnimViewmodel: CoreAnim("FP_Sword_Use"),
+	onUseAnimWorldmodel: CoreAnim("TP_Sword_Use"),
 };
 
 const seedsUsable: Partial<UsableHeldItemDef> = {
-	onUseAnimFP: CoreAnim("FP_Sword_Use"),
-	onUseAnimTP: CoreAnim("TP_Sword_Use"),
+	onUseAnimViewmodel: CoreAnim("FP_Sword_Use"),
+	onUseAnimWorldmodel: CoreAnim("TP_Sword_Use"),
 };
 
-const pickaxeViewModel: Partial<ViewModelDef> = {
-	idleAnimFP: CoreAnim("FP_Sword_Idle"),
+const pickaxeViewModel: Partial<HoldConfig> = {
+	viewmodel: {
+		idleAnim: CoreAnim("FP_Sword_Idle"),
+	},
 	// idleAnimTP: CoreAnim("TP_Sword_Idle"),
 };
 
@@ -561,7 +564,7 @@ export const items: {
 			...pickaxeUsable,
 			cooldownSeconds: 0.22,
 		},
-		viewModel: {
+		holdConfig: {
 			...pickaxeViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
@@ -576,7 +579,7 @@ export const items: {
 			...pickaxeUsable,
 			cooldownSeconds: 0.2,
 		},
-		viewModel: {
+		holdConfig: {
 			...pickaxeViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.STONE_PICKAXE)],
@@ -591,7 +594,7 @@ export const items: {
 			...pickaxeUsable,
 			cooldownSeconds: 0.18,
 		},
-		viewModel: {
+		holdConfig: {
 			...pickaxeViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE)],
@@ -606,7 +609,7 @@ export const items: {
 			...pickaxeUsable,
 			cooldownSeconds: 0.16,
 		},
-		viewModel: {
+		holdConfig: {
 			...pickaxeViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_PICKAXE)],
@@ -622,7 +625,7 @@ export const items: {
 		usable: {
 			...swordUsable,
 		},
-		viewModel: {
+		holdConfig: {
 			...swordViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
@@ -636,7 +639,7 @@ export const items: {
 		usable: {
 			...swordUsable,
 		},
-		viewModel: {
+		holdConfig: {
 			...swordViewModel,
 		},
 		accessoryPaths: ["@Easy/Core/Shared/Resources/Accessories/stone_sword_temp.asset"],
@@ -650,7 +653,7 @@ export const items: {
 		usable: {
 			...swordUsable,
 		},
-		viewModel: {
+		holdConfig: {
 			...swordViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
@@ -664,7 +667,7 @@ export const items: {
 		usable: {
 			...bigSwordUsable,
 		},
-		viewModel: {
+		holdConfig: {
 			...bigSwordViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
@@ -679,7 +682,7 @@ export const items: {
 		usable: {
 			...bigSwordUsable,
 		},
-		viewModel: {
+		holdConfig: {
 			...bigSwordViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.EMERALD_SWORD)],
@@ -720,8 +723,8 @@ export const items: {
 			maxChargeSeconds: 0.75,
 			cooldownSeconds: 0.4,
 			onUseSound: [CoreSound.bowShoot],
-			onUseAnimFP: CoreAnim("FP_Bow_Charge", "FP_Bow_Shoot"),
-			onUseAnimTP: CoreAnim("TP_Bow_Charge", "TP_Bow_Shoot"),
+			onUseAnimViewmodel: CoreAnim("FP_Bow_Charge", "FP_Bow_Shoot"),
+			onUseAnimWorldmodel: CoreAnim("TP_Bow_Charge", "TP_Bow_Shoot"),
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
 		projectileLauncher: {
@@ -732,8 +735,10 @@ export const items: {
 			chargingWalkSpeedMultiplier: 0.25,
 			chargeSound: [{ path: CoreSound.bowCharge }],
 		},
-		viewModel: {
-			idleAnimFP: CoreAnim("FP_Bow_Idle"),
+		holdConfig: {
+			viewmodel: {
+				idleAnim: CoreAnim("FP_Bow_Idle"),
+			},
 		},
 	},
 	[ItemType.WOOD_CROSSBOW]: {
@@ -743,8 +748,8 @@ export const items: {
 			maxChargeSeconds: 0.1,
 			cooldownSeconds: 1.15,
 			onUseSound: [CoreSound.bowShoot],
-			onUseAnimFP: CoreAnim("FP_Crossbow_Charge", "FP_Crossbow_Shoot"),
-			onUseAnimTP: CoreAnim("TP_Crossbow_Charge", "TP_Crossbow_Shoot"),
+			onUseAnimViewmodel: CoreAnim("FP_Crossbow_Charge", "FP_Crossbow_Shoot"),
+			onUseAnimWorldmodel: CoreAnim("TP_Crossbow_Charge", "TP_Crossbow_Shoot"),
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_CROSSBOW)],
 		projectileLauncher: {
@@ -757,9 +762,13 @@ export const items: {
 			chargingWalkSpeedMultiplier: 0.25,
 			chargeSound: [{ path: CoreSound.bowCharge }],
 		},
-		viewModel: {
-			idleAnimFP: CoreAnim("FP_Crossbow_Idle"),
-			idleAnimTP: CoreAnim("TP_Crossbow_Idle"),
+		holdConfig: {
+			viewmodel: {
+				idleAnim: CoreAnim("FP_Crossbow_Idle"),
+			},
+			worldmodel: {
+				idleAnim: CoreAnim("TP_Crossbow_Idle"),
+			},
 		},
 	},
 	[ItemType.WOOD_ARROW]: {
@@ -796,8 +805,8 @@ export const items: {
 			maxChargeSeconds: 0.4,
 			cooldownSeconds: 0.25,
 			onUseSound: ["@Easy/Core/Shared/Resources/Sound/TelepearlThrow"],
-			onUseAnimFP: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
-			onUseAnimTP: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
+			onUseAnimViewmodel: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
+			onUseAnimWorldmodel: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 		},
 		accessoryPaths: [AccPath(ItemType.TELEPEARL)],
 		projectileLauncher: {
@@ -821,8 +830,8 @@ export const items: {
 			maxChargeSeconds: 0.6,
 			cooldownSeconds: 0.25,
 			//onUseSound: ["Fireball_Throw"],
-			onUseAnimFP: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
-			onUseAnimTP: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
+			onUseAnimViewmodel: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
+			onUseAnimWorldmodel: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 		},
 		maxStackSize: 20,
 		accessoryPaths: [AccPath(ItemType.FIREBALL)],
@@ -880,7 +889,7 @@ export const items: {
 			...plowUsable,
 			cooldownSeconds: 0.22,
 		},
-		viewModel: {
+		holdConfig: {
 			...pickaxeViewModel,
 		},
 		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
@@ -909,7 +918,7 @@ export const items: {
 			...seedsUsable,
 			cooldownSeconds: 0.22,
 		},
-		viewModel: {
+		holdConfig: {
 			...pickaxeViewModel,
 		},
 		block: {

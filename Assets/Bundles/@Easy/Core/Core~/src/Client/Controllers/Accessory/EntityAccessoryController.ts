@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CoreTest } from "Shared/CoreTest";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
@@ -7,6 +7,7 @@ import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { LocalEntityController } from "../Character/LocalEntityController";
+import { ViewmodelController } from "../Viewmodel/ViewmodelController";
 import { AvatarUtils } from "Client/Avatar/AvatarUtil";
 
 @Controller({})
@@ -29,6 +30,12 @@ export class EntityAccessoryController implements OnStart {
 							AvatarUtils.defaultKitAccessory,
 							true,
 						);
+						if (event.entity.IsLocalCharacter()) {
+							Dependency<ViewmodelController>().accessoryBuilder.EquipAccessoryCollection(
+								ItemUtil.defaultKitAccessory,
+								true,
+							);
+						}
 						Profiler.EndSample();
 					}
 				}
@@ -50,10 +57,16 @@ export class EntityAccessoryController implements OnStart {
 							const slotsToRemove = currentSlots.filter((slot) => !newSlots.includes(slot));
 							for (const slot of slotsToRemove) {
 								accessoryBuilder.RemoveAccessorySlot(slot, false);
+								if (event.entity.IsLocalCharacter()) {
+									Dependency<ViewmodelController>().accessoryBuilder.RemoveAccessorySlot(slot, false);
+								}
 							}
 						}
 						for (const acc of armorAccessories) {
 							accessoryBuilder.AddSingleAccessory(acc, true);
+							if (event.entity.IsLocalCharacter()) {
+								Dependency<ViewmodelController>().accessoryBuilder.SetAccessory(acc, true);
+							}
 						}
 						currentArmor = armorAccessories;
 					} else {
@@ -61,6 +74,12 @@ export class EntityAccessoryController implements OnStart {
 							// Clear armor:
 							for (const acc of currentArmor) {
 								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, false);
+								if (event.entity.IsLocalCharacter()) {
+									Dependency<ViewmodelController>().accessoryBuilder.RemoveAccessorySlot(
+										acc.AccessorySlot,
+										false,
+									);
+								}
 							}
 							currentArmor = undefined;
 						}
@@ -109,10 +128,6 @@ export class EntityAccessoryController implements OnStart {
 						this.SetFirstPersonLayer(accessoryBuilder);
 					}),
 				);
-				// cleanup for pooling
-				bin.Add(() => {
-					accessoryBuilder.SetFirstPersonEnabled(false);
-				});
 			}
 
 			event.entity.OnDespawn.Once(() => {
@@ -124,8 +139,8 @@ export class EntityAccessoryController implements OnStart {
 	//Turn off root accessories unless they are on the first person layer
 	private SetFirstPersonLayer(accessoryBuilder: AccessoryBuilder) {
 		//Accessories with first person mesh variants need to be on layer FPS
-		Profiler.BeginSample("ToggleMeshVisibility");
-		accessoryBuilder.SetFirstPersonEnabled(this.isFirstPerson);
-		Profiler.EndSample();
+		// Profiler.BeginSample("ToggleMeshVisibility");
+		// accessoryBuilder.SetFirstPersonEnabled(this.isFirstPerson);
+		// Profiler.EndSample();
 	}
 }

@@ -1,11 +1,13 @@
 ﻿//import {CameraController} from "./CameraController";
-import { EntityReferences } from "Shared/Entity/Entity";
+import { Dependency } from "@easy-games/flamework-core";
+import { Entity, EntityReferences } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
+import { MathUtil } from "Shared/Util/MathUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
+import { ViewmodelController } from "../Viewmodel/ViewmodelController";
 import { CameraReferences } from "./CameraReferences";
-import { MathUtil } from "Shared/Util/MathUtil";
 
 interface BobData {
 	bobMovementFrequency: number;
@@ -59,10 +61,16 @@ export class FirstPersonCameraSystem {
 	private originalShoulderLPosition: Vector3 = Vector3.zero;
 	private originalShoulderRPosition: Vector3 = Vector3.zero;
 	private currentTime = 0.01;
+	private viewmodelController: ViewmodelController;
 
-	public constructor(entityReferences: EntityReferences, startInFirstPerson: boolean) {
+	public constructor(
+		public readonly entity: Entity,
+		entityReferences: EntityReferences,
+		startInFirstPerson: boolean,
+	) {
 		this.entityReferences = entityReferences;
 		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
+		this.viewmodelController = Dependency<ViewmodelController>();
 
 		this.cameras = CameraReferences.Instance();
 
@@ -133,8 +141,11 @@ export class FirstPersonCameraSystem {
 
 		//Get the cameras transform
 		const transform = this.cameras.fpsCamera.transform;
-		let headLookPosition = transform.position;
-		let headLookRotation = transform.rotation.mul(headBobRotationOffset);
+		// let headLookPosition = transform.position;
+		// let headLookRotation = transform.rotation.mul(headBobRotationOffset);
+
+		this.viewmodelController.viewmodelTransform.position = transform.position;
+		this.viewmodelController.viewmodelTransform.rotation = transform.rotation;
 
 		//Animated to the look direction
 		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
@@ -152,23 +163,23 @@ export class FirstPersonCameraSystem {
 		// 	Time.deltaTime * this.cameraVars.GetNumber("FPSLerpMax"),
 		// );
 
-		this.trackedHeadRotation = headLookRotation;
+		// this.trackedHeadRotation = headLookRotation;
 
 		//Calculate new position based on head rotation
-		let newPosition = headLookPosition.sub(
-			this.trackedHeadRotation.mul(this.calculatedSpineOffset.add(headBobOffset)),
-		);
+		// let newPosition = headLookPosition.sub(
+		// 	this.trackedHeadRotation.mul(this.calculatedSpineOffset.add(headBobOffset)),
+		// );
 
 		//Apply the new rotation
-		this.entityReferences.spineBoneMiddle.rotation = this.trackedHeadRotation;
-		this.entityReferences.spineBoneTop.localRotation = Quaternion.identity;
+		// this.entityReferences.spineBoneMiddle.rotation = this.trackedHeadRotation;
+		// this.entityReferences.spineBoneTop.localRotation = Quaternion.identity;
 
 		//Avoiding possible NaN
-		if (newPosition && newPosition.x) {
-			//Apply the new positions
-			this.entityReferences.spineBoneMiddle.position = newPosition;
-			this.entityReferences.spineBoneTop.position = newPosition;
-		}
+		// if (newPosition && newPosition.x) {
+		// 	//Apply the new positions
+		// 	this.entityReferences.spineBoneMiddle.position = newPosition;
+		// 	this.entityReferences.spineBoneTop.position = newPosition;
+		// }
 	}
 
 	public OnMovementStateChange(state: EntityState) {
@@ -200,16 +211,37 @@ export class FirstPersonCameraSystem {
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
 		Game.LocalPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
-		this.entityReferences.humanEntityAnimator.SetForceLookForward(!isFirstPerson);
+
+		Dependency<ViewmodelController>().animancer.Animator.Rebind();
 
 		//Reset shoulders since not all animations will key these values
-		this.entityReferences.shoulderL.localPosition = this.originalShoulderLPosition;
-		this.entityReferences.shoulderR.localPosition = this.originalShoulderRPosition;
+		// this.entityReferences.shoulderL.localPosition = this.originalShoulderLPosition;
+		// this.entityReferences.shoulderR.localPosition = this.originalShoulderRPosition;
+
+		// Viewmodel visibility
+		// {
+		// 	let childCount = this.viewmodelController.viewmodelTransform.GetChildCount();
+		// 	for (let i = 0; i < childCount; i++) {
+		// 		this.viewmodelController.viewmodelTransform.GetChild(i).gameObject.SetActive(isFirstPerson);
+		// 	}
+		// }
+
+		// // Worldmodel visibility
+		// {
+		// 	let childCount = this.entity.model.transform.GetChildCount();
+		// 	for (let i = 0; i < childCount; i++) {
+		// 		this.entity.model.transform.GetChild(i).gameObject.SetActive(!isFirstPerson);
+		// 	}
+		// }
+
+		this.viewmodelController.viewmodelGo.SetActive(isFirstPerson);
+		this.entity.model.SetActive(!isFirstPerson);
 
 		if (!isFirstPerson) {
 			//Reset the spine positions to defaults after messing with them in first person
-			this.entityReferences.spineBoneMiddle.localPosition = this.originalSpineMiddlePosition;
-			this.entityReferences.spineBoneTop.localPosition = this.originalSpineTopPosition;
+			// this.entityReferences.spineBoneMiddle.localPosition = this.originalSpineMiddlePosition;
+			// this.entityReferences.spineBoneTop.localPosition = this.originalSpineTopPosition;
 		}
+		this.LateUpdate();
 	}
 }

@@ -1,10 +1,12 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { DamageService } from "Server/Services/Damage/DamageService";
 import { DamageType } from "Shared/Damage/DamageType";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { MeleeItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { Bin } from "Shared/Util/Bin";
+import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { Layer } from "Shared/Util/Layer";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
@@ -29,7 +31,7 @@ export class MeleeHeldItem extends HeldItem {
 		super.OnUseClient(useIndex);
 
 		//Animation
-		this.entity.animator.PlayUseAnim(this.animationIndex, {
+		this.entity.animator.PlayItemUseAnim(this.animationIndex, {
 			fadeInDuration: 0.05,
 			fadeOutDuration: 0.1,
 		});
@@ -47,10 +49,11 @@ export class MeleeHeldItem extends HeldItem {
 				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
 				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
-					this.currentUseVFX.transform.SetParent(this.entity.references.spineBoneMiddle);
+					this.currentUseVFX.transform.SetParent(
+						Dependency<ViewmodelController>().boneTransforms.spineMiddle,
+					);
 					this.currentUseVFX.transform.localRotation = Quaternion.identity;
 					this.currentUseVFX.transform.localPosition = Vector3.zero;
-					this.currentUseVFX.layer = Layer.FIRST_PERSON;
 				}
 			} else {
 				//Spawn third person effect on the root
@@ -62,7 +65,13 @@ export class MeleeHeldItem extends HeldItem {
 				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
 					this.currentUseVFX.transform.SetParent(this.entity.model.transform);
-					this.currentUseVFX.layer = Layer.CHARACTER;
+				}
+			}
+			if (this.currentUseVFX) {
+				const particleSystems = this.currentUseVFX.gameObject.GetComponentsInChildren<ParticleSystem>();
+				for (const particleSystem of CSArrayUtil.Convert(particleSystems)) {
+					particleSystem.gameObject.layer = isFirstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
+					particleSystem.Play();
 				}
 			}
 

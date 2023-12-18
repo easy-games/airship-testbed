@@ -27,10 +27,15 @@ import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { VorliasCommand } from "./Commands/VorliasCommand";
+import { PlayersCommand } from "./Commands/TestPlayerCommand";
+import { Player } from "Shared/Player/Player";
+import { TeamChatCommand } from "./Commands/TeamChatCommand";
 
 @Service({})
 export class ChatService implements OnStart {
 	private commands = new Map<string, ChatCommand>();
+
+	public readonly CanUseRichText = true;
 
 	constructor(private readonly playerService: PlayerService) {
 		this.RegisterCommand(new DamageCommand());
@@ -56,6 +61,8 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new AddAbilityCommand());
 		this.RegisterCommand(new RemoveAbilityCommand());
 		this.RegisterCommand(new AbilityEnableStateCommand());
+		this.RegisterCommand(new PlayersCommand());
+		this.RegisterCommand(new TeamChatCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
@@ -63,6 +70,31 @@ export class ChatService implements OnStart {
 		for (let alias of command.aliases) {
 			this.commands.set(alias.lower(), command);
 		}
+	}
+
+	/**
+	 *
+	 * @internal
+	 * @param player The player
+	 * @param message The chat message
+	 * @param canRichText Whether or not the chat message allows rich text
+	 * @returns
+	 */
+	public FormatUserChatMessage(player: Player, message: string, canRichText = true): string {
+		let username = "<b>" + player.username + "</b>";
+		const team = player.GetTeam();
+		if (team) {
+			const hex = ColorUtil.ColorToHex(team.color);
+			print("hex: " + hex);
+			username = `<color=${hex}>${username}</color>`;
+		}
+		if (!canRichText) {
+			message = "<noparse>" + message + "</noparse>";
+		}
+
+		message = username + ": " + message;
+
+		return message;
 	}
 
 	OnStart(): void {
@@ -90,21 +122,7 @@ export class ChatService implements OnStart {
 				return;
 			}
 
-			let canRichText = true;
-
-			let username = "<b>" + player.username + "</b>";
-			const team = player.GetTeam();
-			if (team) {
-				const hex = ColorUtil.ColorToHex(team.color);
-				print("hex: " + hex);
-				username = `<color=${hex}>${username}</color>`;
-			}
-			if (!canRichText) {
-				text = "<noparse>" + text + "</noparse>";
-			}
-
-			let message = username + ": " + text;
-			print(message);
+			let message = this.FormatUserChatMessage(player, text, this.CanUseRichText);
 			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message, player.clientId);
 			CoreNetwork.ServerToClient.PlayerChatted.Server.FireAllClients(rawMessage, player.clientId);
 		});
