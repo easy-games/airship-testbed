@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Avatar_Military_Torso
   m_EditorClassIdentifier: 
   AccessorySlot: 14
-  Prefab: {fileID: 919132149155446097, guid: 196d25bd641169641b4196f6def3f32d, type: 3}
+  Prefab: {fileID: 8735790134821130824, guid: c54baabebd5ee544193d4ef693b44e3f, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

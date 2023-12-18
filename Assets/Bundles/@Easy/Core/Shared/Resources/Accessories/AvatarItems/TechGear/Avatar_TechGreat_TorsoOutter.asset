@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Avatar_TechGreat_TorsoOutter
   m_EditorClassIdentifier: 
   AccessorySlot: 13
-  Prefab: {fileID: 919132149155446097, guid: fe0e491ad9e3d2048a43b14cbd8c0dc5, type: 3}
+  Prefab: {fileID: 3539133149799986972, guid: 2493c4e362153c247b8c3762ca463c2c, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

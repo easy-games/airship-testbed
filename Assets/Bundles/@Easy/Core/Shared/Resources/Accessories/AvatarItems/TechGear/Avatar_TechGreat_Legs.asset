@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Avatar_TechGreat_Legs
   m_EditorClassIdentifier: 
   AccessorySlot: 9
-  Prefab: {fileID: 919132149155446097, guid: c81c83bb946aad640a2cfd457fd6773c, type: 3}
+  Prefab: {fileID: 233889684372335165, guid: 028b85e095262194ea8e4131fe641b6f, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

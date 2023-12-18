@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Avatar_WinterGear_TorsoOuter
   m_EditorClassIdentifier: 
   AccessorySlot: 13
-  Prefab: {fileID: 919132149155446097, guid: b483c9e86518baf469dc0aaf9cfd2f8b, type: 3}
+  Prefab: {fileID: 6276329803027659347, guid: dcff42cfc17923a44acb81a0ccd59edb, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

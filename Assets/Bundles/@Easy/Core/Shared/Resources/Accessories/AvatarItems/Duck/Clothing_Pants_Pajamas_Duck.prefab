@@ -1260,6 +1260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6765061161034553427}
   - component: {fileID: 1452394897711547128}
+  - component: {fileID: 1142211844162597966}
   m_Layer: 0
   m_Name: Clothing_Pants_Pajamas_Duck
   m_TagString: Untagged
@@ -1368,6 +1369,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00014276803, y: -0.27960157, z: 0.04896298}
     m_Extent: {x: 0.2972483, y: 0.53454685, z: 0.2855491}
   m_DirtyAABB: 0
+--- !u!114 &1142211844162597966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6794115849570228816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.9245283, g: 0.608307, b: 0.31835172, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+    reference: Clay
+  addedByEditorScript: 0
 --- !u!1 &6892593511580816356
 GameObject:
   m_ObjectHideFlags: 0

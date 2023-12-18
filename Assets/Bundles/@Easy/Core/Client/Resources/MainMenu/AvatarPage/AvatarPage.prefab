@@ -302,6 +302,8 @@ MonoBehaviour:
       value: {fileID: 3152643774872365168}
     - key: MainRect3
       value: {fileID: 3722408057505051878}
+    - key: MainRect4
+      value: {fileID: 9183070014823859293}
   - key: SubNavRects4
     keyValuePairs:
     - key: MainRect1
@@ -454,7 +456,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7241177937820457223}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.7539612
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -932,7 +934,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -24692.578}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &982984482520169929

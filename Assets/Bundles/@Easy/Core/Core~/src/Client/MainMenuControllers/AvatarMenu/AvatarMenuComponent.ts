@@ -3,8 +3,6 @@ import MainMenuPageComponent from "../MainMenuPageComponent";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
-import { MainMenuController } from "../MainMenuController";
-import { MainMenuPageType } from "../MainMenuPageName";
 import { Bin } from "Shared/Util/Bin";
 import { AvatarUtil } from "Client/Avatar/AvatarUtil";
 
@@ -29,9 +27,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		print("Avatar Editor: " + message);
 	}
 
-	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
-		super.Init(mainMenu, pageType);
-
+	protected override InitChild() {
+		print("INIT CHILD AVATAR");
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
 
@@ -95,10 +92,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		super.OpenPage();
 		this.Log("Open AVATAR");
 		this.SelectMainNav(0);
-	}
-	override ClosePage(): void {
-		super.ClosePage();
-		this.Log("Close AVATAR");
 	}
 
 	private SelectMainNav(index: number) {
