@@ -15,7 +15,7 @@ import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuCont
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import AvatarViewComponent from "../Avatar/AvatarViewComponent";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { AvatarUtils } from "Client/Avatar/AvatarUtil";
+import { AvatarUtil } from "Client/Avatar/AvatarUtil";
 
 @Controller()
 export class MainMenuController implements OnStart {

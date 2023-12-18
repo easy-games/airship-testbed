@@ -1,4 +1,6 @@
-export class AvatarUtils {
+import { ColorUtil } from "Shared/Util/ColorUtil";
+
+export class AvatarUtil {
 	public static readonly DefaultAccessoryCollectionPath =
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
@@ -7,11 +9,31 @@ export class AvatarUtils {
 
 	public static defaultKitAccessory: AccessoryCollection | undefined;
 
+	public static readonly SkinColors = [
+		//Natural
+		ColorUtil.HexToColor("#edcdad"),
+		ColorUtil.HexToColor("#f2c291"),
+		ColorUtil.HexToColor("#cc9d6a"),
+		ColorUtil.HexToColor("#ebbc78"),
+		ColorUtil.HexToColor("#f2c27e"),
+		ColorUtil.HexToColor("#d69e5e"),
+		ColorUtil.HexToColor("#e8bd92"),
+		ColorUtil.HexToColor("#4d2a22"),
+		ColorUtil.HexToColor("#5e372e"),
+
+		//Fun
+		ColorUtil.HexToColor("#9bc063"),
+		ColorUtil.HexToColor("#5a4862"),
+		ColorUtil.HexToColor("#DB2E2A"),
+		ColorUtil.HexToColor("#7D8C93"),
+		ColorUtil.HexToColor("#251000"),
+	];
+
 	public static Initialize() {
-		AvatarUtils.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
-			AvatarUtils.DefaultAccessoryCollectionPath,
+		AvatarUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
+			AvatarUtil.DefaultAccessoryCollectionPath,
 		);
-		print("Init kit: " + AvatarUtils.defaultKitAccessory?.name);
+		print("Init kit: " + AvatarUtil.defaultKitAccessory?.name);
 
 		let i = 0;
 		//Load avatar accessories

@@ -6,16 +6,17 @@ import { CoreUI } from "Shared/UI/CoreUI";
 import { MainMenuController } from "../MainMenuController";
 import { MainMenuPageType } from "../MainMenuPageName";
 import { Bin } from "Shared/Util/Bin";
-import { AvatarUtils } from "Client/Avatar/AvatarUtil";
+import { AvatarUtil } from "Client/Avatar/AvatarUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly GeneralHookupKey = "General";
-	private readonly tweenDuration = 0.15;
+	private readonly TweenDuration = 0.15;
 
 	private subNavBarBtns: (CSArray<RectTransform> | undefined)[] = [];
 	private mainNavBtns?: CSArray<RectTransform>;
 	private subNavBars?: CSArray<RectTransform>;
 	private activeMainIndex = -1;
+	private activeSubIndex = -1;
 
 	public itemButtonHolder?: Transform;
 	public itemButtonTemplate?: GameObject;
@@ -112,7 +113,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
 			const active = i === index;
 			const nav = this.mainNavBtns.GetValue(i);
-			nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
+			nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.TweenDuration);
 			let button = nav.gameObject.GetComponent<Button>();
 			let colors = button.colors;
 			colors.normalColor = active ? Color.green : Color.white;
@@ -131,6 +132,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private SelectSubNav(subIndex: number) {
 		this.Log("Selecting SUB nav: " + subIndex);
+		this.activeSubIndex = subIndex;
 		if (!this.subNavBarBtns) {
 			return;
 		}
@@ -139,7 +141,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			for (let i = 0; i < subBar.Length; i++) {
 				const active = i === subIndex;
 				const nav = subBar.GetValue(i);
-				nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
+				nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.TweenDuration);
 				let button = nav.gameObject.GetComponent<Button>();
 				let colors = button.colors;
 				colors.normalColor = active ? Color.green : Color.white;
@@ -155,18 +157,25 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				//BODY
 				switch (subIndex) {
 					case 0:
-						//SKIN
+						//SKIN COLOR
 						targetSlot = AccessorySlot.Root;
+						this.DisplayColorScheme();
 						break;
 					case 1:
+						//SKIN TEXTURE
+						targetSlot = AccessorySlot.Root;
+						this.DisplaySkinTextures();
+						break;
+					case 2:
 						//FACE
 						targetSlot = AccessorySlot.Root;
 						break;
-					case 2:
+					case 3:
 						//FACE SHAPE
 						targetSlot = AccessorySlot.Root;
 						break;
-					case 3:
+					case 4:
+						//HAIR
 						targetSlot = AccessorySlot.Hair;
 						break;
 				}
@@ -197,17 +206,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					case 2:
 						targetSlot = AccessorySlot.TorsoInner;
 						break;
-				}
-				break;
-			case 3:
-				//LEGS
-				switch (subIndex) {
-					case 0:
-						targetSlot = AccessorySlot.Legs;
+					case 3:
+						targetSlot = AccessorySlot.Backpack;
 						break;
 				}
 				break;
-			case 4:
+			case 3:
 				//HANDS
 				switch (subIndex) {
 					case 0:
@@ -222,11 +226,32 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						break;
 				}
 				break;
+			case 4:
+				//LEGS
+				switch (subIndex) {
+					case 0:
+						targetSlot = AccessorySlot.Legs;
+						break;
+					case 1:
+						targetSlot = AccessorySlot.LegsOuter;
+						break;
+					case 2:
+						targetSlot = AccessorySlot.LegsInner;
+						break;
+				}
+				break;
 			case 5:
 				//FEET
 				switch (subIndex) {
 					case 0:
 						targetSlot = AccessorySlot.Feet;
+						break;
+					case 1:
+						targetSlot = AccessorySlot.FeetInner;
+						break;
+					case 2:
+						targetSlot = AccessorySlot.RightFoot;
+						this.DisplayItemsOfType(AccessorySlot.LeftFoot);
 						break;
 				}
 				break;
@@ -237,15 +262,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private DisplayItemsOfType(slot: AccessorySlot) {
 		this.Log("Displaying item type: " + tostring(slot));
+
 		this.currentSlot = slot;
-		let foundItems = AvatarUtils.GetAllAvatarItems(slot);
+		//Accessories
+		let foundItems = AvatarUtil.GetAllAvatarItems(slot);
 		this.DisplayItems(foundItems);
 	}
 
 	private DisplayItems(items: Accessory[] | undefined) {
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
-				this.AddItemButton(value);
+				this.AddItemButton(value.ToString(), () => {
+					//Accessory
+					this.SelectItem(value);
+				});
 			});
 		} else {
 			this.Log("Displaying no items");
@@ -262,19 +292,62 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(acc: Accessory) {
-		this.Log("loading item: " + acc.ToString());
+	private DisplayColorScheme() {
+		for (let i = 0; i < AvatarUtil.SkinColors.size(); i++) {
+			this.AddColorButton(AvatarUtil.SkinColors[i]);
+		}
+	}
+
+	private DisplaySkinTextures() {
+		let items = AvatarUtil.GetAllAvatarSkins();
+		if (items && items.size() > 0) {
+			items.forEach((value) => {
+				this.AddItemButton(value.ToString(), () => {
+					//Accessory
+					this.SelectSkinItem(value);
+				});
+			});
+		} else {
+			this.Log("Displaying no skin items");
+		}
+	}
+
+	private AddColorButton(color: Color) {
+		this.Log("loading color: " + color);
 		if (this.itemButtonTemplate && this.itemButtonHolder) {
 			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, () => {
-				this.SelectItem(acc);
+				//Skin Color
+				this.SelectSkinColor(color);
 			});
+			this.itemButtonBin.Add(() => {
+				Bridge.DisconnectEvent(eventIndex);
+			});
+			let button = newButton.transform.GetComponent<Button>();
+			let newColors = button.colors;
+			newColors.selectedColor = Color.white;
+			newColors.normalColor = Color.white;
+			button.colors = newColors;
+			let image1 = newButton.transform.GetComponent<Image>();
+			let image2 = newButton.transform.GetChild(0).GetComponent<Image>();
+			image1.color = color;
+			image2.enabled = false;
+		} else {
+			error("Missing item template or holder for items on AvatarEditor");
+		}
+	}
+
+	private AddItemButton(name: string, onClickCallback: () => void) {
+		this.Log("loading item: " + name);
+		if (this.itemButtonTemplate && this.itemButtonHolder) {
+			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
 			this.itemButtonBin.Add(() => {
 				Bridge.DisconnectEvent(eventIndex);
 			});
 			let text = newButton.GetComponentsInChildren<TextMeshProUGUI>();
 			if (text && text.Length > 0) {
-				text.GetValue(0).text = acc.ToString();
+				text.GetValue(0).text = name;
 			}
 			let image = newButton.transform.GetChild(0).GetComponent<Image>();
 			if (image) {
@@ -291,6 +364,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.Log("Selecting item: " + acc.ToString());
 		this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(acc, true);
+	}
+
+	private SelectSkinItem(acc: AccessorySkin) {
+		if (!acc) {
+			return;
+		}
+		this.Log("Selecting skin item: " + acc.ToString());
+		this.mainMenu?.avatarView?.accessoryBuilder?.AddSkinAccessory(acc, true);
+	}
+
+	private SelectSkinColor(color: Color) {
+		this.Log("Selecting Color: " + color);
+		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color, true);
 	}
 
 	private OnSelectClear() {

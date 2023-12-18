@@ -3895,16 +3895,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MainMenuPageComponent
-    properties:
-    - name: usesAvatarRender
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      serializedValue: 
-      serializedObject: {fileID: 0}
+    properties: []
 --- !u!114 &5274232462038562316
 MonoBehaviour:
   m_ObjectHideFlags: 0
