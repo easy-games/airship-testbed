@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntitySpawnClientSignal } from "Client/Signals/EntitySpawnClientEvent";
@@ -19,6 +19,7 @@ import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { InventoryController } from "../Inventory/InventoryController";
+import { ViewmodelController } from "../Viewmodel/ViewmodelController";
 
 @Controller({})
 export class EntityController implements OnStart {
@@ -70,7 +71,7 @@ export class EntityController implements OnStart {
 			const entity = this.GetEntityById(entityId);
 			if (!entity) return;
 
-			entity.animator?.PlayUseAnim(animationId);
+			entity.animator?.PlayItemUseAnim(animationId);
 		});
 
 		CoreNetwork.ServerToClient.Entity.SetHealth.Client.OnServerEvent((entityId, health, maxHealth) => {
@@ -188,6 +189,9 @@ export class EntityController implements OnStart {
 			//Body Meshes
 			Profiler.BeginSample("ColorRandomization");
 			event.entity.accessoryBuilder.SetSkinColor(skinColor, false);
+			if (event.entity.IsLocalCharacter()) {
+				Dependency<ViewmodelController>().accessoryBuilder.SetSkinColor(skinColor, false);
+			}
 			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
 			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
 			Profiler.EndSample();

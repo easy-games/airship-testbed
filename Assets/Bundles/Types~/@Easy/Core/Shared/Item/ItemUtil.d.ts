@@ -9,13 +9,11 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export declare class ItemUtil {
-    static readonly DefaultAccessoryCollectionPath = "@Easy/Core/Shared/Resources/Accessories/Collections/GothGirl/Kit_GothGirl_Collection.asset";
     static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
     private static readonly itemAccessories;
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;
     static missingItemAccessory: Accessory;
-    static defaultKitAccessory: AccessoryCollection | undefined;
     private static itemTypes;
     private static implictItemTypeMap;
     private static initialized;

@@ -88,6 +88,8 @@ interface EntityDriver extends Component {
 	groundedBlockPos: Vector3;
 	replicatedLookVector: Vector3;
 	disableInput: boolean;
+
+	animator: CharacterAnimationHelper;
 }
 
 interface VoxelWorld {
@@ -95,6 +97,10 @@ interface VoxelWorld {
 	OnPreVoxelPlaced(callback: (voxel: number, x: number, y: number, z: number) => void): EngineEventConnection;
 	OnFinishedLoading(callback: () => void): EngineEventConnection;
 	OnFinishedReplicatingChunksFromServer(callback: () => void): EngineEventConnection;
+}
+
+interface VoxelWorldConstructor {
+	VoxelDataToBlockId(voxel: number);
 }
 
 interface PhysicsConstructor {
@@ -352,6 +358,7 @@ interface Animator extends MonoBehaviour {
 	SetFloat(name: string, value: number, dampTime: number, deltaTime: number): void;
 	SetFloat(id: number, value: number): void;
 	SetFloat(id: number, value: number, dampTime: number, deltaTime: number): void;
+	Rebind(): void;
 }
 
 interface AnimatorStatic {
@@ -442,43 +449,43 @@ interface ProjectileManagerConstructor {
 declare const ProjectileManager: ProjectileManagerConstructor;
 
 interface WorldSaveFile extends ScriptableObject {
-    chunks: CSArray<SaveChunk>;
-    worldPositions: CSArray<WorldPosition>;
-    pointLights: CSArray<SavePointLight>;
-    blockIdToScopeName: CSArray<BlockIdToScopedName>;
-    cubeMapPath: string;
-    globalSkySaturation: number;
-    globalSunColor: Color;
-    globalSunBrightness: number;
-    globalAmbientLight: Color;
-    globalAmbientBrightness: number;
-    globalAmbientOcclusion: number;
-    globalRadiosityScale: number;
-    globalRadiosityDirectLightAmp: number;
-    globalFogStart: number;
-    globalFogEnd: number;
-    globalFogColor: Color;
+	chunks: CSArray<SaveChunk>;
+	worldPositions: CSArray<WorldPosition>;
+	pointLights: CSArray<SavePointLight>;
+	blockIdToScopeName: CSArray<BlockIdToScopedName>;
+	cubeMapPath: string;
+	globalSkySaturation: number;
+	globalSunColor: Color;
+	globalSunBrightness: number;
+	globalAmbientLight: Color;
+	globalAmbientBrightness: number;
+	globalAmbientOcclusion: number;
+	globalRadiosityScale: number;
+	globalRadiosityDirectLightAmp: number;
+	globalFogStart: number;
+	globalFogEnd: number;
+	globalFogColor: Color;
 
-    constructor(): WorldSaveFile;
+	constructor(): WorldSaveFile;
 
-    CreateFromVoxelWorld(world: VoxelWorld): void;
-    GetChunks(): CSArray<SaveChunk>;
-    GetFileBlockIdFromStringId(blockTypeId: string): number;
-    GetFileScopedBlockTypeId(fileBlockId: number): string;
-    GetMapObjects(): CSArray<WorldPosition>;
-    GetPointlights(): CSArray<SavePointLight>;
-    LoadIntoVoxelWorld(world: VoxelWorld): void;
+	CreateFromVoxelWorld(world: VoxelWorld): void;
+	GetChunks(): CSArray<SaveChunk>;
+	GetFileBlockIdFromStringId(blockTypeId: string): number;
+	GetFileScopedBlockTypeId(fileBlockId: number): string;
+	GetMapObjects(): CSArray<WorldPosition>;
+	GetPointlights(): CSArray<SavePointLight>;
+	LoadIntoVoxelWorld(world: VoxelWorld): void;
 }
 
 interface SavePointLight {
-    name: string;
-    color: Color;
-    position: Vector3;
-    rotation: Quaternion;
-    intensity: number;
-    range: number;
-    castShadows: boolean;
-    highQualityLight: boolean;
+	name: string;
+	color: Color;
+	position: Vector3;
+	rotation: Quaternion;
+	intensity: number;
+	range: number;
+	castShadows: boolean;
+	highQualityLight: boolean;
 }
 
 interface AirshipProjectile {
@@ -514,10 +521,13 @@ interface MeshProcessorConstructor {
 }
 declare const MeshProcessor: MeshProcessorConstructor;
 
-interface CoreEntityAnimator extends Component {
+interface CharacterAnimationHelper extends Component {
+	viewmodelAnimancer: AnimancerComponent;
+	worldmodelAnimancer: AnimancerComponent;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
+	ClearStatesOnNonRootLayers(): void;
 }
 
 interface PoolManager {

@@ -13,6 +13,7 @@ import { PlayerUtils } from "Shared/Util/PlayerUtils";
 
 @Controller({})
 export class PlayerController implements OnStart {
+	public readonly clientId: number;
 	public readonly LocalConnection: NetworkConnection;
 	private players = new Set<Player>([Game.LocalPlayer]);
 
@@ -21,6 +22,7 @@ export class PlayerController implements OnStart {
 		private readonly authController: AuthController,
 	) {
 		this.LocalConnection = InstanceFinder.ClientManager.Connection;
+		this.clientId = this.LocalConnection.ClientId;
 		this.players.add(Game.LocalPlayer);
 
 		CoreNetwork.ServerToClient.ServerInfo.Client.OnServerEvent((gameId, serverId) => {

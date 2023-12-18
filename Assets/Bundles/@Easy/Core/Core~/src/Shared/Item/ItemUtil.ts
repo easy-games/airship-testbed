@@ -3,6 +3,7 @@ import { Signal } from "Shared/Util/Signal";
 import { ItemDef } from "./ItemDefinitionTypes";
 import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
 import { ItemType } from "./ItemType";
+import { includes } from "Shared/Types/StringUtil";
 
 export interface ItemRegistrationConfig {
 	accessoryFolder?: string;
@@ -12,8 +13,6 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export class ItemUtil {
-	public static readonly DefaultAccessoryCollectionPath =
-		"@Easy/Core/Shared/Resources/Accessories/Collections/GothGirl/Kit_GothGirl_Collection.asset";
 	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
@@ -21,7 +20,6 @@ export class ItemUtil {
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 
 	public static missingItemAccessory: Accessory;
-	public static defaultKitAccessory: AccessoryCollection | undefined;
 
 	private static itemTypes: ItemType[] = [];
 	private static implictItemTypeMap = new Map<string, ItemType>();
@@ -35,12 +33,10 @@ export class ItemUtil {
 	public static Initialize() {
 		//Load default items
 		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
-		ItemUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
-			ItemUtil.DefaultAccessoryCollectionPath,
-		);
-		print("Init kit: " + ItemUtil.defaultKitAccessory?.name);
 
 		let i = 0;
+
+		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(items)) {
 			this.itemTypes.push(itemType);
 

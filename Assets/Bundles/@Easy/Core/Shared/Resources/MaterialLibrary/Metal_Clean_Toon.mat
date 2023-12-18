@@ -8,10 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Metal_Clean_Toon
-  m_Shader: {fileID: 4800000, guid: 410783aed0f0b264892c0f0b913801e8, type: 3}
-  m_ValidKeywords:
+  m_Shader: {fileID: 4800000, guid: 386517b47559d944982eab60b192b2ab, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - NUM_LIGHTS_LIGHTS0
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -49,9 +49,17 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: 333e39a643fe78141b6d5132c5192308, type: 3}
         m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _ORMTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -61,9 +69,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShadowRamp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - INSTANCE_DATA: 0
     - NUM_LIGHTS: 0
+    - _AmbientMod: 1
     - _AmbientStrength: 0.2
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -76,13 +90,20 @@ Material:
     - _Mode: 0
     - _NormalIntensity: 0.5
     - _OcclusionStrength: 1
+    - _OverrideStrength: 0
     - _Parallax: 0.02
     - _RimAmount: 0.593
+    - _RimDistanceOffset: 10
+    - _RimIntensity: 1
+    - _RimPower: 10
     - _RimThreshold: 0.315
+    - _SaturationMod: 1
     - _ShadowCutoff: 0.092
     - _SmoothnessTextureChannel: 0
+    - _SpecMod: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TestFloat: 1
     - _UVCenter: 0.5
     - _UVRotation: 0
     - _UVSec: 0
@@ -93,6 +114,8 @@ Material:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColorShadow: {r: 0.25, g: 0.5, b: 0.5, a: 1}
     - _ShadowColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecularColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_BuildTextureStacks: []
