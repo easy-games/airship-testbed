@@ -1782,6 +1782,10 @@ declare const enum AccessorySlot {
     TorsoOuter = 13,
     TorsoInner = 14,
     Backpack = 15,
+    Hands = 16,
+    HandsOuter = 17,
+    LeftWrist = 18,
+    RightWrist = 19,
 }
 declare const enum VisibilityMode {
     THIRD_PERSON = 0,
@@ -9772,9 +9776,9 @@ interface AccessoryBuilder extends MonoBehaviour {
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, combineMeshes: boolean): CSArray<ActiveAccessory>;
+    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
-    AddSkinAccessory(skin: AccessorySkin, combineMeshes: boolean): void;
+    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
     EquipAccessoryCollection(collection: AccessoryCollection, combineMeshes: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
@@ -9785,10 +9789,10 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetCombinedStaticMesh(firstPerson: boolean): MeshRenderer;
     GetSlotTransform(slot: AccessorySlot): Transform;
     RemoveAccessories(): void;
-    RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
-    SetAccessoryColor(slot: AccessorySlot, color: Color, combineMeshes: boolean): void;
+    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
     SetFirstPersonEnabled(firstPersonEnabled: boolean): void;
-    SetSkinColor(color: Color, combineMeshes: boolean): void;
+    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
 }
     
@@ -12011,12 +12015,10 @@ interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
     rotation: CSDictionary<number, PrecalculatedRotation>;
     uvs: CSArray<Vector2>;
-    triangles: CSArray<number>;
     colors: CSArray<Color>;
     srcVertices: CSArray<Vector3>;
     srcNormals: CSArray<Vector3>;
-    meshMaterial: Material;
-    meshMaterialName: string;
+    surfaces: CSArray<Surface>;
 
     constructor(mesh: Mesh): VoxelMeshCopy;
     constructor(src: VoxelMeshCopy): VoxelMeshCopy;
@@ -12031,6 +12033,16 @@ interface PrecalculatedRotation {
 
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+
+}
+    
+interface Surface {
+    triangles: CSArray<number>;
+    meshMaterial: Material;
+    meshMaterialName: string;
+
+    constructor(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    constructor(): Surface;
 
 }
     

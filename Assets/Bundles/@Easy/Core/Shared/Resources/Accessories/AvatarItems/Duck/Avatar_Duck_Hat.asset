@@ -17,5 +17,5 @@ MonoBehaviour:
   Position: {x: 0.001, y: 0.194, z: 0.047}
   Rotation: {x: 355.89728, y: 0.000000022467711, z: -0.0000003742979}
   Scale: {x: 0.86742, y: 0.86742, z: 0.86742}
-  visibilityMode: 1
+  visibilityMode: 0
   SkinnedToCharacter: 0

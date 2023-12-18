@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AccessorySlot: 1
   Prefab: {fileID: 6722563228691224082, guid: eda3579bb800288458aac57e6c6ede1e, type: 3}
-  Position: {x: 0, y: 0, z: 0}
-  Rotation: {x: 0, y: 0, z: 0}
-  Scale: {x: 1, y: 1, z: 1}
-  visibilityMode: 1
+  Position: {x: -0.001, y: 0.231, z: 0.06}
+  Rotation: {x: -0, y: 0, z: 0}
+  Scale: {x: 0.033342954, y: 0.033342954, z: 0.033342954}
+  visibilityMode: 0
   SkinnedToCharacter: 0
