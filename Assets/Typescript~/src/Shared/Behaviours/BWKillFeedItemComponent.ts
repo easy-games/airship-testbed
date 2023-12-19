@@ -1,3 +1,4 @@
+import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -22,11 +23,15 @@ const EntityTypeColorMap: Record<KillFeedColor, Color> = {
 export default class BWKillFeedItemComponent extends AirshipBehaviour {
 	private attackerName!: TMP_Text;
 	private targetName!: TMP_Text;
+
 	private attackerImage!: Image;
 	private targetImage!: Image;
+	private damageTypeImage!: Image;
 
-	public constructor() {
-		super();
+	private attackerGo!: GameObject;
+	private targetGo!: GameObject;
+
+	public override OnAwake(): void {
 		const references = this.gameObject.GetComponent<GameObjectReferences>();
 
 		this.attackerName = references.GetValue("UI", "AttackerName") as TMP_Text;
@@ -34,6 +39,10 @@ export default class BWKillFeedItemComponent extends AirshipBehaviour {
 
 		this.attackerImage = references.GetValue("UI", "AttackerImage") as Image;
 		this.targetImage = references.GetValue("UI", "TargetImage") as Image;
+		this.damageTypeImage = references.GetValue("UI", "DamageTypeImage") as Image;
+
+		this.attackerGo = references.GetValue("GameObjects", "Attacker") as GameObject;
+		this.targetGo = references.GetValue("GameObjects", "Target") as GameObject;
 	}
 
 	public override OnStart(): void {}
@@ -63,8 +72,35 @@ export default class BWKillFeedItemComponent extends AirshipBehaviour {
 		this.targetImage.color = EntityTypeColorMap[color];
 	}
 
-	public SetAttackEntity(entity: Entity) {
-		this.SetAttacker(entity.GetDisplayName(), this.GetEntryColor(entity));
+	public SetAttackEntity(entity: Entity | undefined) {
+		if (entity) {
+			this.attackerGo.active = true;
+			this.SetAttacker(entity.GetDisplayName(), this.GetEntryColor(entity));
+		} else {
+			this.attackerGo.active = false;
+		}
+	}
+
+	public SetDamageType(damageType: DamageType) {
+		let iconPath = "Shared/Resources/Images/DamageType/Sword.png";
+
+		switch (damageType) {
+			case DamageType.FALL:
+				iconPath = "Shared/Resources/Images/DamageType/Falling.png";
+				break;
+			case DamageType.PROJECTILE:
+				iconPath = "Shared/Resources/Images/DamageType/Bow.png";
+				break;
+			case DamageType.FIRE:
+				iconPath = "Shared/Resources/Images/DamageType/Fire.png";
+				break;
+			case DamageType.ELECTRIC:
+				iconPath = "Shared/Resources/Images/DamageType/Electric.png";
+				break;
+		}
+
+		const iconTexture = AssetBridge.Instance.LoadAsset<Texture2D>(iconPath);
+		this.damageTypeImage.sprite = Bridge.MakeSprite(iconTexture);
 	}
 
 	public SetKilledEntity(target: Entity) {

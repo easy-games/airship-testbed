@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6302087036273595504}
   - component: {fileID: 1353975235571349126}
   m_Layer: 5
-  m_Name: Image
+  m_Name: DamageTypeImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -616,6 +616,14 @@ MonoBehaviour:
       value: {fileID: 3740897393246291620}
     - key: TargetImage
       value: {fileID: 8538246545643469072}
+    - key: DamageTypeImage
+      value: {fileID: 1353975235571349126}
+  - key: GameObjects
+    keyValuePairs:
+    - key: Attacker
+      value: {fileID: 5078135206926100718}
+    - key: Target
+      value: {fileID: 7072418382395890513}
 --- !u!114 &3008914802402272124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,7 +679,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 5
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
