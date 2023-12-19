@@ -103,6 +103,7 @@ Material:
     m_Floats:
     - EMISSIVE: 1
     - EXPLICIT_MAPS: 1
+    - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
@@ -141,6 +142,7 @@ Material:
     - _RoughOverride: 0.04
     - _ShineFresnelPower: 3
     - _ShineFresnelStrength: 1
+    - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
@@ -150,7 +152,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.30874828, b: 0, a: 0.15686275}
+    - _Color: {r: 1, g: 0.0936263, b: 0, a: 0.15686275}
     - _DepthColor: {r: 1, g: 0.35296807, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0.2735849, g: 0.13085268, b: 0.086463146, a: 1}
@@ -158,5 +160,6 @@ Material:
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.053014517, g: 1, b: 0, a: 1}
     - _ShineColor: {r: 1, g: 0.9473777, b: 0.4198113, a: 1}
+    - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 0.22532359, b: 0, a: 1}
   m_BuildTextureStacks: []

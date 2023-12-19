@@ -43,6 +43,7 @@ export interface AmmoDef {
 	aoeDamage?: AOEDamageDef;
 	blockDamage?: BreakBlockDef;
 	lifetimeSec?: number;
+	destroyTrailImmediately?: boolean;
 	gravity: number;
 	/**
 	 * Will "stick" a ground item inside whatever was piereced on miss (e.g. arrows in blocks)
