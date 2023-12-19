@@ -519,7 +519,6 @@ GameObject:
   - component: {fileID: 6468032694967702642}
   - component: {fileID: 7523347133806374175}
   - component: {fileID: 3008914802402272124}
-  - component: {fileID: 3150330744012111268}
   - component: {fileID: 4258151844232863154}
   - component: {fileID: 6220406342486303199}
   - component: {fileID: 2927695474316464617}
@@ -648,20 +647,6 @@ MonoBehaviour:
   m_metadata:
     name: BWKillFeedItemComponent
     properties: []
---- !u!114 &3150330744012111268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6840727426690286320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 0
 --- !u!114 &4258151844232863154
 MonoBehaviour:
   m_ObjectHideFlags: 0
