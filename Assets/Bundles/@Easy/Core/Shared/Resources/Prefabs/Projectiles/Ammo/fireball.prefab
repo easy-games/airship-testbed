@@ -347,6 +347,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4312091937773402144, guid: ddd64d6ffc3512942acc0d9a9be42385, type: 3}
+      propertyPath: UVModule.fps
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312091937773402144, guid: ddd64d6ffc3512942acc0d9a9be42385, type: 3}
+      propertyPath: UVModule.timeMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4312091937773402157, guid: ddd64d6ffc3512942acc0d9a9be42385, type: 3}
       propertyPath: m_Name
       value: InnerTrail
