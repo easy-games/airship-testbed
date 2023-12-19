@@ -86,6 +86,7 @@ export default class BWKillFeedItemComponent extends AirshipBehaviour {
 
 		switch (damageType) {
 			case DamageType.FALL:
+			case DamageType.VOID:
 				iconPath = "Shared/Resources/Images/DamageType/Falling.png";
 				break;
 			case DamageType.PROJECTILE:
