@@ -4,6 +4,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { GetStatusEffectMeta } from "Shared/StatusEffect/StatusEffectDefinitions";
 import { StatusEffectType } from "Shared/StatusEffect/StatusEffectType";
+import { StatusEffectUtil } from "Shared/StatusEffect/StatusEffectUtil";
 
 @Controller({})
 export class StatusEffectUIController implements OnStart {
@@ -55,7 +56,7 @@ export class StatusEffectUIController implements OnStart {
 		print(iconTexture);
 		iconImage.sprite = Bridge.MakeSprite(iconTexture);
 		const iconTier = iconRefs.GetValue<TextMeshProUGUI>("IconComponents", "Tier");
-		iconTier.text = tostring(tier);
+		iconTier.text = StatusEffectUtil.decimalToRomanNumeral(tier);
 		this.statusEffectMap.set(statusEffectType, iconGameObject);
 	}
 
