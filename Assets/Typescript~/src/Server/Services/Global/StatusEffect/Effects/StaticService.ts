@@ -48,6 +48,7 @@ export class StaticService implements OnStart {
 	private HandleStatic(_targetEntity: Entity, fromEntity: Entity, statusEffect: StatusEffectDto): void {
 		const damageForTier = GetStaticDamageByTier(statusEffect.tier);
 		this.entityService.GetEntities().forEach((entity) => {
+			if (entity.GetTeam()?.id === fromEntity.GetTeam()?.id) return;
 			const entityPos = entity.GetCenterOfMass();
 			const distanceFromAttacker = entityPos.Distance(fromEntity.GetPosition());
 			if (distanceFromAttacker <= StaticAOERange) {
