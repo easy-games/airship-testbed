@@ -31,10 +31,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
-		print("INIT AVATAR");
-	}
-
-	protected override InitChild() {
 		print("INIT CHILD AVATAR");
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
@@ -96,12 +92,28 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.OnSelectCurrent();
 			});
 		}
+
+		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ResetCameraBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(button, () => {
+				this.mainMenu?.avatarView?.FocusSlot(AccessorySlot.Root);
+			});
+		}
 	}
 
 	override OpenPage(): void {
 		super.OpenPage();
 		this.Log("Open AVATAR");
 		this.SelectMainNav(0);
+	}
+
+	override ClosePage(instant?: boolean): void {
+		super.ClosePage(instant);
+		this.Log("Close AVATAR");
+		if (this.mainMenu?.avatarView) {
+			this.mainMenu.avatarView.dragging = false;
+		}
 	}
 
 	private SelectMainNav(index: number) {

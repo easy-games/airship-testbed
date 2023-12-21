@@ -21,39 +21,18 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
-	private transitionStartTime = 0;
-	private transitionStartPos? = Vector3.zero;
-	private transitionStartRot? = Quaternion.identity;
 
 	public override OnStart(): void {
 		this.accessoryBuilder = this.humanEntityGo?.GetComponent<AccessoryBuilder>();
+		this.dragging = false;
 		this.mouse = new Mouse();
 		this.mouse.Moved.Connect((pos: Vector3) => {
 			if (this.dragging) {
 				let diff = pos.sub(this.lastMousePos);
-				this.avatarHolder?.Rotate(0, diff.x * this.dragSpeedMod, 0);
+				this.avatarHolder?.Rotate(0, diff.x * -this.dragSpeedMod, 0);
 			}
 			this.lastMousePos = pos;
 		});
-	}
-
-	override OnLateUpdate(dt: number): void {
-		if (this.transitionStartTime <= 0) {
-			return;
-		}
-		let delta = (Time.time - this.transitionStartTime) / this.cameraTransitionDuration;
-		if (delta >= 1) {
-			this.transitionStartTime = 0;
-			delta = 1;
-		}
-		if (this.cameraTransform && this.transitionStartPos && this.targetTransform && this.transitionStartRot) {
-			this.cameraTransform.position = Vector3.Lerp(this.transitionStartPos, this.targetTransform.position, delta);
-			this.cameraTransform.rotation = Quaternion.Slerp(
-				this.transitionStartRot,
-				this.targetTransform.rotation,
-				delta,
-			);
-		}
 	}
 
 	public ShowAvatar() {
@@ -71,7 +50,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			slotType === AccessorySlot.Head ||
 			slotType === AccessorySlot.Face ||
 			slotType === AccessorySlot.Hair ||
-			slotType === AccessorySlot.Neck
+			slotType === AccessorySlot.Neck ||
+			slotType === AccessorySlot.Ears
 		) {
 			this.targetTransform = this.cameraWaypointHead;
 		} else if (
@@ -90,8 +70,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		} else if (slotType === AccessorySlot.Backpack) {
 			this.targetTransform = this.cameraWaypointBack;
 		}
-		this.transitionStartTime = Time.time;
-		this.transitionStartPos = this.cameraTransform?.position;
-		this.transitionStartRot = this.cameraTransform?.rotation;
+		if (this.cameraTransform && this.targetTransform) {
+			this.cameraTransform
+				.TweenPosition(this.targetTransform.position, this.cameraTransitionDuration)
+				.SetEaseQuadInOut();
+			this.cameraTransform
+				.TweenRotation(this.targetTransform.rotation.eulerAngles, this.cameraTransitionDuration)
+				.SetEaseQuadInOut();
+		}
 	}
 }

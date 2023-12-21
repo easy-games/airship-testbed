@@ -23,10 +23,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		} else {
 			this.ClosePage(true);
 		}
-		this.InitChild();
 	}
-
-	protected InitChild() {}
 
 	public OpenPage() {
 		if (this.activePage) {
