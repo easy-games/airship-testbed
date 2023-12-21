@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Avatar_Duck_Feet
   m_EditorClassIdentifier: 
   AccessorySlot: 10
-  Prefab: {fileID: 6393205915681257726, guid: 7e0b89446ea33774f864a04981e4a314, type: 3}
+  Prefab: {fileID: 7648365872453300000, guid: ccf1519e05f50a44696bbed0feb9815c, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}

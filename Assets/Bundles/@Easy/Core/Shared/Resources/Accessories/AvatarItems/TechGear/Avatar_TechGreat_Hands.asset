@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Avatar_TechGreat_Hands
   m_EditorClassIdentifier: 
   AccessorySlot: 16
-  Prefab: {fileID: 919132149155446097, guid: dfc5ed180f8db324a98ecac972e37d5c, type: 3}
+  Prefab: {fileID: 2353967102613144738, guid: 75312dfadce4991449ae9853e3841c66, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotation: {x: 0, y: 0, z: 0}
   Scale: {x: 1, y: 1, z: 1}
