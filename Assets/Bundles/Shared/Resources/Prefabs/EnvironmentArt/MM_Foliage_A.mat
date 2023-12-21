@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MM_Foliage_A
+  m_Shader: {fileID: 4800000, guid: 4f5b3a974792e59449d345f4e37ec96b, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - EXPLICIT_MAPS_ON_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 91019e34df140414095d7595a7c73f9e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - EXPLICIT_MAPS_ON: 1
+    - _Alpha: 1
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DeformSpeed: 0.214
+    - _DeformStrength: 0.331
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _FlutterSpeed: 2
+    - _FlutterStrength: 1
+    - _FresnelPower: 10
+    - _FresnelStrength: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _LightShimmerStrength: 0
+    - _Metallic: 0
+    - _MinLight: 1
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _RimIntensity: 0
+    - _RimPower: 2.08
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _TexColorStrength: 1
+    - _UVSec: 0
+    - _WindSpeed: 2
+    - _WindStrength: 2
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorA: {r: 0.12213881, g: 0.30498737, b: 0.10946172, a: 1}
+    - _ColorB: {r: 0, g: 0.09758736, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FresnelColor: {r: 1, g: 0.843632, b: 0.073584795, a: 1}
+    - _RimColor: {r: 0.81435597, g: 0.93962264, b: 0.06205042, a: 1}
+    - _ShadowColor: {r: 0, g: 0.4415095, b: 0.0035912942, a: 1}
+  m_BuildTextureStacks: []
