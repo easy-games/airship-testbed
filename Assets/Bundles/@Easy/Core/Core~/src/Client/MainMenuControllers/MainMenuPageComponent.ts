@@ -14,7 +14,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	protected mainMenu?: MainMenuController;
 
 	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
-		print("INIT: " + pageType);
+		print("MAIN MENU COMPONENT INIT: " + pageType);
 		this.mainMenu = mainMenu;
 		this.pageType = pageType;
 		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
@@ -23,10 +23,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		} else {
 			this.ClosePage(true);
 		}
-		this.InitChild();
 	}
-
-	protected InitChild() {}
 
 	public OpenPage() {
 		if (this.activePage) {
