@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 60909fdd3814f4949bf810357b099623, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
-  - _DSTBLEND_ONEMINUSSRCALPHA
+  - _DSTBLEND_ONE
   - _SRCBLEND_SRCALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -63,8 +63,8 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DstBlend: 10
-    - _Emissive: 0.478
+    - _DstBlend: 1
+    - _Emissive: 0.399
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -84,5 +84,5 @@ Material:
     - _Color1: {r: 1, g: 0.12816064, b: 0, a: 0}
     - _Color2: {r: 5.3403134, g: 1.6164848, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SmoothColor: {r: 0, g: 1, b: 0, a: 0}
+    - _SmoothColor: {r: 0, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []

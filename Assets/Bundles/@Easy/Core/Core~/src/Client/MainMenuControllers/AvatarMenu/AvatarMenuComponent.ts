@@ -5,6 +5,8 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
 import { AvatarUtil } from "Client/Avatar/AvatarUtil";
+import { MainMenuController } from "../MainMenuController";
+import { MainMenuPageType } from "../MainMenuPageName";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly GeneralHookupKey = "General";
@@ -27,7 +29,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		print("Avatar Editor: " + message);
 	}
 
-	protected override InitChild() {
+	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
+		super.Init(mainMenu, pageType);
 		print("INIT CHILD AVATAR");
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
@@ -67,8 +70,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "AvatarInteractionBtn").gameObject;
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
-			CanvasAPI.OnDragEvent(button, () => {
-				this.OnDragAvatar();
+			CanvasAPI.OnBeginDragEvent(button, () => {
+				this.OnDragAvatar(true);
+			});
+			CanvasAPI.OnEndDragEvent(button, () => {
+				this.OnDragAvatar(false);
 			});
 		}
 		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject;
@@ -86,12 +92,28 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.OnSelectCurrent();
 			});
 		}
+
+		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ResetCameraBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(button, () => {
+				this.mainMenu?.avatarView?.FocusSlot(AccessorySlot.Root);
+			});
+		}
 	}
 
 	override OpenPage(): void {
 		super.OpenPage();
 		this.Log("Open AVATAR");
 		this.SelectMainNav(0);
+	}
+
+	override ClosePage(instant?: boolean): void {
+		super.ClosePage(instant);
+		this.Log("Close AVATAR");
+		if (this.mainMenu?.avatarView) {
+			this.mainMenu.avatarView.dragging = false;
+		}
 	}
 
 	private SelectMainNav(index: number) {
@@ -260,6 +282,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Accessories
 		let foundItems = AvatarUtil.GetAllAvatarItems(slot);
 		this.DisplayItems(foundItems);
+		this.mainMenu?.avatarView?.FocusSlot(slot);
 	}
 
 	private DisplayItems(items: Accessory[] | undefined) {
@@ -306,7 +329,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private AddColorButton(color: Color) {
-		this.Log("loading color: " + color);
 		if (this.itemButtonTemplate && this.itemButtonHolder) {
 			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, () => {
@@ -331,7 +353,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private AddItemButton(name: string, onClickCallback: () => void) {
-		this.Log("loading item: " + name);
 		if (this.itemButtonTemplate && this.itemButtonHolder) {
 			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
@@ -385,7 +406,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Select the item that is saved for this sot
 	}
 
-	private OnDragAvatar() {
-		this.mainMenu?.avatarView?.DragView(Input.mouseScrollDelta);
+	private OnDragAvatar(down: boolean) {
+		if (this.mainMenu?.avatarView) {
+			print("Dragging avatar: " + down);
+			this.mainMenu.avatarView.dragging = down;
+		}
 	}
 }

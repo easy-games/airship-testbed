@@ -70,6 +70,8 @@ Shader "Airship/AirshipSpriteDissolve"
             fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
             {
                 float2 uv_Noise = i.uv.xy * _Noise_ST.xy + _Noise_ST.zw;
+
+
                 float4 finalColor = tex2D(_MainTex, i.uv) * SRGBtoLinear(_Color) * i.color;
                 finalColor.a = finalColor.a * step(     (i.uv.z + _Step)    , tex2D(_Noise, (uv_Noise + i.uv.w)).r );
                 MRT0 = finalColor;
