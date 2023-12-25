@@ -110,9 +110,9 @@ export class HeldItem {
 		this.activeAccessoriesWorldmodel.clear();
 		this.activeAccessoriesViewmodel.clear();
 		for (const accessory of accessories) {
-			this.activeAccessoriesWorldmodel[i] = this.entity.accessoryBuilder.SetAccessory(accessory, false);
+			this.activeAccessoriesWorldmodel[i] = this.entity.accessoryBuilder.AddSingleAccessory(accessory, false);
 			if (viewmodelAccessoryBuilder) {
-				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.SetAccessory(accessory, false);
+				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.AddSingleAccessory(accessory, false);
 			}
 
 			//Load the animator for the held item if one exists

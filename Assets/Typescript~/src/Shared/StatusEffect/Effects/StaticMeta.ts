@@ -4,6 +4,9 @@ import { StatusEffectType } from "../StatusEffectType";
 /** Static damage ordered by **tier**. */
 const StaticDamageByTier = [5, 8, 12];
 
+/** Static AOE range. */
+export const StaticAOERange = 8;
+
 /**
  * Returns damage that corresponds to provided tier. If tier is below `1` or above the status
  * effect's max tier, the value clamped to the tier range.

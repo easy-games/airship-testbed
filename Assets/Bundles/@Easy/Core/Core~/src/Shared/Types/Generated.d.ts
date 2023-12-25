@@ -549,6 +549,18 @@ declare const enum GateFitMode {
     Fill = 3,
     Overscan = 4,
 }
+declare const enum VRTextureUsage {
+    None = 0,
+    OneEye = 1,
+    TwoEyes = 2,
+    DeviceSpecific = 3,
+}
+declare const enum RenderTextureMemoryless {
+    None = 0,
+    Color = 1,
+    Depth = 2,
+    MSAA = 4,
+}
 declare const enum RenderTextureFormat {
     ARGB32 = 0,
     Depth = 1,
@@ -584,12 +596,6 @@ declare const enum ShadowSamplingMode {
     RawDepth = 1,
     None = 2,
 }
-declare const enum VRTextureUsage {
-    None = 0,
-    OneEye = 1,
-    TwoEyes = 2,
-    DeviceSpecific = 3,
-}
 declare const enum RenderTextureCreationFlags {
     MipMap = 1,
     AutoGenerateMips = 2,
@@ -601,12 +607,6 @@ declare const enum RenderTextureCreationFlags {
     NoResolvedColorSurface = 256,
     DynamicallyScalable = 1024,
     BindMS = 2048,
-}
-declare const enum RenderTextureMemoryless {
-    None = 0,
-    Color = 1,
-    Depth = 2,
-    MSAA = 4,
 }
 declare const enum MonoOrStereoscopicEye {
     Left = 0,
@@ -1767,16 +1767,30 @@ declare const enum UnloadSceneOptions {
 }
 declare const enum AccessorySlot {
     Root = 0,
-    Hat = 1,
+    Head = 1,
     Hair = 2,
     Face = 3,
     Neck = 4,
-    Shirt = 5,
+    Torso = 5,
     RightHand = 6,
     LeftHand = 7,
-    Belt = 8,
-    Pants = 9,
-    Shoes = 10,
+    Waist = 8,
+    Legs = 9,
+    Feet = 10,
+    Ears = 11,
+    Nose = 12,
+    TorsoOuter = 13,
+    TorsoInner = 14,
+    Backpack = 15,
+    Hands = 16,
+    HandsOuter = 17,
+    LeftWrist = 18,
+    RightWrist = 19,
+    LegsOuter = 20,
+    LegsInner = 21,
+    FeetInner = 22,
+    LeftFoot = 23,
+    RightFoot = 24,
 }
 declare const enum VisibilityMode {
     THIRD_PERSON = 0,
@@ -2610,7 +2624,6 @@ declare const enum LogContext {
 
     
 interface RaycastHit {
-    textureCoord1: Vector2;
     collider: Collider;
     colliderInstanceID: number;
     point: Vector3;
@@ -2624,64 +2637,10 @@ interface RaycastHit {
     rigidbody: Rigidbody;
     articulationBody: ArticulationBody;
     lightmapCoord: Vector2;
+    textureCoord1: Vector2;
 
 
 }
-    
-interface Vector2 {
-    x: number;
-    y: number;
-    Item: number;
-    normalized: Vector2;
-    magnitude: number;
-    sqrMagnitude: number;
-
-    constructor(x: number, y: number): Vector2;
-
-    Equals(other: unknown): boolean;
-    Equals(other: Vector2): boolean;
-    GetHashCode(): number;
-    Normalize(): void;
-    Scale(scale: Vector2): void;
-    Set(newX: number, newY: number): void;
-    SqrMagnitude(): number;
-    ToString(): string;
-    ToString(format: string): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
-    
-interface Vector2Constructor {
-    kEpsilon: number;
-    kEpsilonNormalSqrt: number;
-    zero: Vector2;
-    one: Vector2;
-    up: Vector2;
-    down: Vector2;
-    left: Vector2;
-    right: Vector2;
-    positiveInfinity: Vector2;
-    negativeInfinity: Vector2;
-
-
-    Angle(from: Vector2, to: Vector2): number;
-    ClampMagnitude(vector: Vector2, maxLength: number): Vector2;
-    Distance(a: Vector2, b: Vector2): number;
-    Dot(lhs: Vector2, rhs: Vector2): number;
-    Lerp(a: Vector2, b: Vector2, t: number): Vector2;
-    LerpUnclamped(a: Vector2, b: Vector2, t: number): Vector2;
-    Max(lhs: Vector2, rhs: Vector2): Vector2;
-    Min(lhs: Vector2, rhs: Vector2): Vector2;
-    MoveTowards(current: Vector2, target: Vector2, maxDistanceDelta: number): Vector2;
-    Perpendicular(inDirection: Vector2): Vector2;
-    Reflect(inDirection: Vector2, inNormal: Vector2): Vector2;
-    Scale(a: Vector2, b: Vector2): Vector2;
-    SignedAngle(from: Vector2, to: Vector2): number;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number): Vector2;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number): Vector2;
-    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): Vector2;
-    SqrMagnitude(a: Vector2): number;
-}
-declare const Vector2: Vector2Constructor;
     
     
     
@@ -2874,11 +2833,6 @@ interface Scene {
     
     
 interface Rigidbody extends Component {
-    sleepVelocity: number;
-    sleepAngularVelocity: number;
-    useConeFriction: boolean;
-    solverIterationCount: number;
-    solverVelocityIterationCount: number;
     velocity: Vector3;
     angularVelocity: Vector3;
     drag: number;
@@ -2902,6 +2856,11 @@ interface Rigidbody extends Component {
     sleepThreshold: number;
     maxAngularVelocity: number;
     solverVelocityIterations: number;
+    sleepVelocity: number;
+    sleepAngularVelocity: number;
+    useConeFriction: boolean;
+    solverIterationCount: number;
+    solverVelocityIterationCount: number;
 
     constructor(): Rigidbody;
 
@@ -3088,21 +3047,76 @@ interface Bounds {
 }
     
 interface PhysicMaterial extends Object {
-    bouncyness: number;
-    frictionDirection2: Vector3;
-    dynamicFriction2: number;
-    staticFriction2: number;
-    frictionDirection: Vector3;
     bounciness: number;
     dynamicFriction: number;
     staticFriction: number;
     frictionCombine: PhysicMaterialCombine;
     bounceCombine: PhysicMaterialCombine;
+    bouncyness: number;
+    frictionDirection2: Vector3;
+    dynamicFriction2: number;
+    staticFriction2: number;
+    frictionDirection: Vector3;
 
     constructor(): PhysicMaterial;
     constructor(name: string): PhysicMaterial;
 
 }
+    
+interface Vector2 {
+    x: number;
+    y: number;
+    Item: number;
+    normalized: Vector2;
+    magnitude: number;
+    sqrMagnitude: number;
+
+    constructor(x: number, y: number): Vector2;
+
+    Equals(other: unknown): boolean;
+    Equals(other: Vector2): boolean;
+    GetHashCode(): number;
+    Normalize(): void;
+    Scale(scale: Vector2): void;
+    Set(newX: number, newY: number): void;
+    SqrMagnitude(): number;
+    ToString(): string;
+    ToString(format: string): string;
+    ToString(format: string, formatProvider: unknown): string;
+}
+    
+interface Vector2Constructor {
+    kEpsilon: number;
+    kEpsilonNormalSqrt: number;
+    zero: Vector2;
+    one: Vector2;
+    up: Vector2;
+    down: Vector2;
+    left: Vector2;
+    right: Vector2;
+    positiveInfinity: Vector2;
+    negativeInfinity: Vector2;
+
+
+    Angle(from: Vector2, to: Vector2): number;
+    ClampMagnitude(vector: Vector2, maxLength: number): Vector2;
+    Distance(a: Vector2, b: Vector2): number;
+    Dot(lhs: Vector2, rhs: Vector2): number;
+    Lerp(a: Vector2, b: Vector2, t: number): Vector2;
+    LerpUnclamped(a: Vector2, b: Vector2, t: number): Vector2;
+    Max(lhs: Vector2, rhs: Vector2): Vector2;
+    Min(lhs: Vector2, rhs: Vector2): Vector2;
+    MoveTowards(current: Vector2, target: Vector2, maxDistanceDelta: number): Vector2;
+    Perpendicular(inDirection: Vector2): Vector2;
+    Reflect(inDirection: Vector2, inNormal: Vector2): Vector2;
+    Scale(a: Vector2, b: Vector2): Vector2;
+    SignedAngle(from: Vector2, to: Vector2): number;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number): Vector2;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number): Vector2;
+    SmoothDamp(current: Vector2, target: Vector2, currentVelocity: unknown, smoothTime: number, maxSpeed: number, deltaTime: number): Vector2;
+    SqrMagnitude(a: Vector2): number;
+}
+declare const Vector2: Vector2Constructor;
     
 interface Physics {
 
@@ -3138,20 +3152,12 @@ interface PhysicsScene {
 }
     
 interface PhysicsConstructor {
-    kIgnoreRaycastLayer: number;
-    kDefaultRaycastLayers: number;
-    kAllLayers: number;
     IgnoreRaycastLayer: number;
     DefaultRaycastLayers: number;
     AllLayers: number;
-    minPenetrationForPenalty: number;
-    bounceTreshold: number;
-    sleepVelocity: number;
-    sleepAngularVelocity: number;
-    maxAngularVelocity: number;
-    solverIterationCount: number;
-    solverVelocityIterationCount: number;
-    penetrationPenaltyForce: number;
+    kIgnoreRaycastLayer: number;
+    kDefaultRaycastLayers: number;
+    kAllLayers: number;
     gravity: Vector3;
     defaultContactOffset: number;
     sleepThreshold: number;
@@ -3171,6 +3177,14 @@ interface PhysicsConstructor {
     interCollisionStiffness: number;
     interCollisionSettingsToggle: boolean;
     clothGravity: Vector3;
+    minPenetrationForPenalty: number;
+    bounceTreshold: number;
+    sleepVelocity: number;
+    sleepAngularVelocity: number;
+    maxAngularVelocity: number;
+    solverIterationCount: number;
+    solverVelocityIterationCount: number;
+    penetrationPenaltyForce: number;
 
 
     BakeMesh(meshID: number, convex: boolean): void;
@@ -3369,19 +3383,19 @@ interface Debug {
     
     
 interface DebugConstructor {
-    logger: unknown;
     unityLogger: unknown;
     developerConsoleVisible: boolean;
     isDebugBuild: boolean;
+    logger: unknown;
 
 
-    Assert(condition: boolean, format: string, args: CSArray<unknown>): void;
     Assert(condition: boolean): void;
     Assert(condition: boolean, context: Object): void;
     Assert(condition: boolean, message: unknown): void;
     Assert(condition: boolean, message: string): void;
     Assert(condition: boolean, message: unknown, context: Object): void;
     Assert(condition: boolean, message: string, context: Object): void;
+    Assert(condition: boolean, format: string, args: CSArray<unknown>): void;
     AssertFormat(condition: boolean, format: string, args: CSArray<unknown>): void;
     AssertFormat(condition: boolean, context: Object, format: string, args: CSArray<unknown>): void;
     Break(): void;
@@ -3618,14 +3632,14 @@ interface Texture2D extends Texture {
     GetPixelBilinear(u: number, v: number): Color;
     GetPixelBilinear(u: number, v: number, mipLevel: number): Color;
     GetPixelData<T>(mipLevel: number): CSArray<T>;
-    GetPixels(miplevel: number): CSArray<Color>;
-    GetPixels(): CSArray<Color>;
     GetPixels(x: number, y: number, blockWidth: number, blockHeight: number, miplevel: number): CSArray<Color>;
     GetPixels(x: number, y: number, blockWidth: number, blockHeight: number): CSArray<Color>;
+    GetPixels(miplevel: number): CSArray<Color>;
+    GetPixels(): CSArray<Color>;
     GetPixels32(miplevel: number): CSArray<Color32>;
     GetPixels32(): CSArray<Color32>;
-    GetRawTextureData<T>(): CSArray<T>;
     GetRawTextureData(): CSArray<number>;
+    GetRawTextureData<T>(): CSArray<T>;
     IsRequestedMipmapLevelLoaded(): boolean;
     LoadRawTextureData(data: unknown, size: number): void;
     LoadRawTextureData(data: CSArray<number>): void;
@@ -5266,10 +5280,6 @@ interface Camera extends Behaviour {
 }
     
 interface RenderTexture extends Texture {
-    generateMips: boolean;
-    isCubemap: boolean;
-    isVolume: boolean;
-    descriptor: RenderTextureDescriptor;
     width: number;
     height: number;
     dimension: TextureDimension;
@@ -5291,6 +5301,10 @@ interface RenderTexture extends Texture {
     colorBuffer: RenderBuffer;
     depthBuffer: RenderBuffer;
     depth: number;
+    descriptor: RenderTextureDescriptor;
+    generateMips: boolean;
+    isCubemap: boolean;
+    isVolume: boolean;
 
     constructor(desc: RenderTextureDescriptor): RenderTexture;
     constructor(textureToCopy: RenderTexture): RenderTexture;
@@ -5318,6 +5332,12 @@ interface RenderTexture extends Texture {
     ResolveAntiAliasedSurface(target: RenderTexture): void;
     SetBorderColor(color: Color): void;
     SetGlobalShaderProperty(propertyName: string): void;
+}
+    
+interface RenderBuffer {
+
+
+    GetNativeRenderBufferPtr(): unknown;
 }
     
 interface RenderTextureDescriptor {
@@ -5355,15 +5375,9 @@ interface RenderTextureDescriptor {
 
 }
     
-interface RenderBuffer {
-
-
-    GetNativeRenderBufferPtr(): unknown;
-}
-    
 interface RenderTextureConstructor {
-    enabled: boolean;
     active: RenderTexture;
+    enabled: boolean;
 
 
     GetTemporary(desc: RenderTextureDescriptor): RenderTexture;
@@ -6086,12 +6100,12 @@ interface GraphicsBufferConstructor {
 declare const GraphicsBuffer: GraphicsBufferConstructor;
     
 interface ShaderConstructor {
+    globalShaderHardwareTier: ShaderHardwareTier;
     maximumChunksOverride: number;
     globalMaximumLOD: number;
     globalRenderPipeline: string;
     enabledGlobalKeywords: CSArray<GlobalKeyword>;
     globalKeywords: CSArray<GlobalKeyword>;
-    globalShaderHardwareTier: ShaderHardwareTier;
 
 
     DisableKeyword(keyword: string): void;
@@ -6202,6 +6216,11 @@ interface RayTracingAccelerationStructure {
 }
     
 interface Renderer extends Component {
+    lightmapTilingOffset: Vector4;
+    lightProbeAnchor: Transform;
+    castShadows: boolean;
+    motionVectors: boolean;
+    useLightProbes: boolean;
     bounds: Bounds;
     localBounds: Bounds;
     enabled: boolean;
@@ -6233,11 +6252,6 @@ interface Renderer extends Component {
     material: Material;
     sharedMaterial: Material;
     sharedMaterials: CSArray<Material>;
-    lightmapTilingOffset: Vector4;
-    lightProbeAnchor: Transform;
-    castShadows: boolean;
-    motionVectors: boolean;
-    useLightProbes: boolean;
 
     constructor(): Renderer;
 
@@ -6539,6 +6553,17 @@ interface RayTracingShader extends Object {
 }
     
 interface Mesh extends Object {
+    uv1: CSArray<Vector2>;
+    indexFormat: IndexFormat;
+    vertexBufferCount: number;
+    vertexBufferTarget: Target;
+    indexBufferTarget: Target;
+    blendShapeCount: number;
+    bindposes: CSArray<Matrix4x4>;
+    isReadable: boolean;
+    vertexCount: number;
+    subMeshCount: number;
+    bounds: Bounds;
     vertices: CSArray<Vector3>;
     normals: CSArray<Vector3>;
     tangents: CSArray<Vector4>;
@@ -6555,17 +6580,6 @@ interface Mesh extends Object {
     vertexAttributeCount: number;
     triangles: CSArray<number>;
     boneWeights: CSArray<BoneWeight>;
-    indexFormat: IndexFormat;
-    vertexBufferCount: number;
-    vertexBufferTarget: Target;
-    indexBufferTarget: Target;
-    blendShapeCount: number;
-    bindposes: CSArray<Matrix4x4>;
-    isReadable: boolean;
-    vertexCount: number;
-    subMeshCount: number;
-    bounds: Bounds;
-    uv1: CSArray<Vector2>;
 
     constructor(): Mesh;
 
@@ -7705,6 +7719,12 @@ interface GraphicConstructor {
 }
 declare const Graphic: GraphicConstructor;
     
+interface ICanvasRaycastFilter {
+
+
+    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
+}
+    
 interface ISerializationCallbackReceiver {
 
 
@@ -7724,12 +7744,6 @@ interface ILayoutElement {
 
     CalculateLayoutInputHorizontal(): void;
     CalculateLayoutInputVertical(): void;
-}
-    
-interface ICanvasRaycastFilter {
-
-
-    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 }
     
 interface IMaterialModifier {
@@ -7776,7 +7790,7 @@ interface CullStateChangedEvent {
 
 }
     
-interface Image extends MaskableGraphic, ISerializationCallbackReceiver, ILayoutElement, ICanvasRaycastFilter {
+interface Image extends MaskableGraphic, ICanvasRaycastFilter, ISerializationCallbackReceiver, ILayoutElement {
     sprite: Sprite;
     overrideSprite: Sprite;
     type: Type;
@@ -9629,6 +9643,7 @@ interface LightConstructor {
 declare const Light: LightConstructor;
     
 interface RenderSettingsConstructor {
+    ambientSkyboxAmount: number;
     fog: boolean;
     fogStartDistance: number;
     fogEndDistance: number;
@@ -9653,7 +9668,6 @@ interface RenderSettingsConstructor {
     haloStrength: number;
     flareStrength: number;
     flareFadeSpeed: number;
-    ambientSkyboxAmount: number;
 
 
 }
@@ -9764,26 +9778,28 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
+    firstPerson: boolean;
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, combineMeshes: boolean): CSArray<ActiveAccessory>;
-    AddSkinAccessory(skin: AccessorySkin, combineMeshes: boolean): void;
+    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddSingleAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
+    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
     EquipAccessoryCollection(collection: AccessoryCollection, combineMeshes: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
     GetActiveAccessoriesBySlot(target: AccessorySlot): CSArray<ActiveAccessory>;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
-    GetCombinedSkinnedMesh(firstPerson: boolean): SkinnedMeshRenderer;
-    GetCombinedStaticMesh(firstPerson: boolean): MeshRenderer;
+    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
+    GetCombinedStaticMesh(): MeshRenderer;
     GetSlotTransform(slot: AccessorySlot): Transform;
     RemoveAccessories(): void;
-    RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
-    SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
-    SetAccessoryColor(slot: AccessorySlot, color: Color, combineMeshes: boolean): void;
-    SetSkinColor(color: Color, combineMeshes: boolean): void;
+    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
+    UpdateAccessoryLayers(): void;
 }
     
 interface ActiveAccessory {
@@ -9796,7 +9812,6 @@ interface ActiveAccessory {
 }
     
 interface Accessory extends ScriptableObject {
-    DisplayName: string;
     AccessorySlot: AccessorySlot;
     Prefab: GameObject;
     Position: Vector3;
@@ -9808,10 +9823,11 @@ interface Accessory extends ScriptableObject {
 
     constructor(): Accessory;
 
+    GetSlotNumber(): number;
+    ToString(): string;
 }
     
 interface AccessorySkin extends ScriptableObject {
-    DisplayName: string;
     skinTextureDiffuse: Texture2D;
     skinTextureNormal: Texture2D;
     skinTextureORM: Texture2D;
@@ -9819,6 +9835,7 @@ interface AccessorySkin extends ScriptableObject {
 
     constructor(): AccessorySkin;
 
+    ToString(): string;
 }
     
 interface AccessoryCollection extends ScriptableObject {
@@ -9981,6 +9998,7 @@ interface MainModule {
 }
     
 interface MinMaxCurve {
+    curveScalar: number;
     mode: ParticleSystemCurveMode;
     curveMultiplier: number;
     curveMax: AnimationCurve;
@@ -9989,7 +10007,6 @@ interface MinMaxCurve {
     constantMin: number;
     constant: number;
     curve: AnimationCurve;
-    curveScalar: number;
 
     constructor(constant: number): MinMaxCurve;
     constructor(multiplier: number, curve: AnimationCurve): MinMaxCurve;
@@ -10625,6 +10642,10 @@ interface CustomDataModule {
 }
     
 interface Particle {
+    lifetime: number;
+    randomValue: number;
+    size: number;
+    color: Color32;
     position: Vector3;
     velocity: Vector3;
     animatedVelocity: Vector3;
@@ -10640,10 +10661,6 @@ interface Particle {
     rotation3D: Vector3;
     angularVelocity: number;
     angularVelocity3D: Vector3;
-    lifetime: number;
-    randomValue: number;
-    size: number;
-    color: Color32;
 
 
     GetCurrentColor(system: ParticleSystem): Color32;
@@ -11238,17 +11255,6 @@ interface TMP_InputValidator extends ScriptableObject {
 }
     
 interface Event {
-    mouseRay: Ray;
-    shift: boolean;
-    control: boolean;
-    alt: boolean;
-    command: boolean;
-    capsLock: boolean;
-    numeric: boolean;
-    functionKey: boolean;
-    isKey: boolean;
-    isMouse: boolean;
-    isScrollWheel: boolean;
     rawType: EventType;
     mousePosition: Vector2;
     delta: Vector2;
@@ -11262,6 +11268,17 @@ interface Event {
     displayIndex: number;
     type: EventType;
     commandName: string;
+    mouseRay: Ray;
+    shift: boolean;
+    control: boolean;
+    alt: boolean;
+    command: boolean;
+    capsLock: boolean;
+    numeric: boolean;
+    functionKey: boolean;
+    isKey: boolean;
+    isMouse: boolean;
+    isScrollWheel: boolean;
 
     constructor(): Event;
     constructor(displayIndex: number): Event;
@@ -12003,13 +12020,11 @@ interface BlockDefinition {
 interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
     rotation: CSDictionary<number, PrecalculatedRotation>;
-    uvs: CSArray<Vector2>;
-    triangles: CSArray<number>;
-    colors: CSArray<Color>;
+    srcUvs: CSArray<Vector2>;
+    srcColors: CSArray<Color32>;
     srcVertices: CSArray<Vector3>;
     srcNormals: CSArray<Vector3>;
-    meshMaterial: Material;
-    meshMaterialName: string;
+    surfaces: CSArray<Surface>;
 
     constructor(mesh: Mesh): VoxelMeshCopy;
     constructor(src: VoxelMeshCopy): VoxelMeshCopy;
@@ -12024,6 +12039,16 @@ interface PrecalculatedRotation {
 
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+
+}
+    
+interface Surface {
+    triangles: CSArray<number>;
+    meshMaterial: Material;
+    meshMaterialName: string;
+
+    constructor(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    constructor(): Surface;
 
 }
     
@@ -12116,6 +12141,7 @@ interface ProjectileValidateEvent {
 }
     
 interface TrailRenderer extends Renderer {
+    numPositions: number;
     time: number;
     startWidth: number;
     endWidth: number;
@@ -12134,7 +12160,6 @@ interface TrailRenderer extends Renderer {
     alignment: LineAlignment;
     widthCurve: AnimationCurve;
     colorGradient: Gradient;
-    numPositions: number;
 
     constructor(): TrailRenderer;
 
@@ -12769,9 +12794,9 @@ interface GroundItemDrop extends MonoBehaviour {
 }
     
 interface BoxCollider extends Collider {
-    extents: Vector3;
     center: Vector3;
     size: Vector3;
+    extents: Vector3;
 
     constructor(): BoxCollider;
 
@@ -12785,5 +12810,13 @@ interface RemoteImage extends MonoBehaviour {
     constructor(): RemoteImage;
 
     StartDownload(): void;
+}
+    
+interface AvatarCollection extends ScriptableObject {
+    skinAccessories: CSArray<AccessorySkin>;
+    generalAccessories: CSArray<Accessory>;
+
+    constructor(): AvatarCollection;
+
 }
 

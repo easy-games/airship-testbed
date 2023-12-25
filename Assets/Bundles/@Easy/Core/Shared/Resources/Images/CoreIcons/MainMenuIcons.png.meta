@@ -531,7 +531,7 @@ TextureImporter:
       name: FootShoes
       rect:
         serializedVersion: 2
-        x: 480
+        x: 478
         y: 802
         width: 160
         height: 160
@@ -641,7 +641,7 @@ TextureImporter:
         width: 160
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -649,6 +649,111 @@ TextureImporter:
       bones: []
       spriteID: eefb0101c5f108642a18db632b753fc2
       internalID: 2136314706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Backpack
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 800
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb08dc4f2148281409883e09e6b77612
+      internalID: 441916279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: glasses
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 800
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 971def4daf04903429fa611f6c1c827e
+      internalID: 334200459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rotate360
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 640
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 032e5fe97efbe0142b191ec170e6dd06
+      internalID: -1866618046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VideoCamera
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 640
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a05d966a5a92e4348876b395b5706635
+      internalID: -13463156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gemstone
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 640
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 974f41e8563cb5f4e8426fb83aa6ca73
+      internalID: -243802283
       vertices: []
       indices: 
       edges: []
@@ -664,31 +769,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      StopCircle: -1578995769
+      Arrow: -232363364
+      ArrowBack: 522164252
+      ArrowCollapse: -1722662964
+      Backpack: 441916279
+      BodyChoicesSkin: -1375575502
+      Circle: 1161249967
+      CircleBorder: 1479962481
+      Face: -1374407192
+      FootShoes: -1724854469
+      Gemstone: -243802283
+      HandGlove: -1015367605
+      HatHead: 2136314706
+      HeadFace: 1376973921
+      HeadFaceShape: 759014628
+      HeadHair: -1516630291
+      LegPants: -2062873918
+      NoneCancelStop: -1842937021
       Pause: -1988365315
-      ShirtTorso: -784355841
+      PauseCircle: 1099573981
+      PersonRun: -405299348
+      PersonSitMeditate: -389913061
+      PersonTaunt: 38387568
       Play: 441233439
       PlayCircle: -1414896395
-      PauseCircle: 1099573981
-      Arrow: -232363364
-      CircleBorder: 1479962481
-      HeadFaceShape: 759014628
-      ArrowCollapse: -1722662964
-      HeadFace: 1376973921
-      LegPants: -2062873918
-      Circle: 1161249967
-      PersonTaunt: 38387568
-      BodyChoicesSkin: -1375575502
-      HeadHair: -1516630291
-      FootShoes: -1724854469
-      HandGlove: -1015367605
-      PersonRun: -405299348
-      NoneCancelStop: -1842937021
-      ArrowBack: 522164252
-      Face: -1374407192
-      HatHead: 2136314706
+      ShirtTorso: -784355841
       Stop: -1017287580
-      PersonSitMeditate: -389913061
+      StopCircle: -1578995769
+      VideoCamera: -13463156
+      glasses: 334200459
+      rotate360: -1866618046
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

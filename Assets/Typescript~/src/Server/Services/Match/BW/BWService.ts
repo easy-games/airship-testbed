@@ -71,16 +71,6 @@ export class BWService implements OnStart {
 					}
 				}
 			}
-			// Kill message in chat
-			const killerTeam = event.killer?.GetTeam();
-			const deadTeam = event.entity.GetTeam();
-			if (event.killer && killerTeam && deadTeam) {
-				Game.BroadcastMessage(
-					ColorUtil.ColoredText(killerTeam.color, event.killer.GetDisplayName()) +
-						ColorUtil.ColoredText(Theme.Gray, " killed ") +
-						ColorUtil.ColoredText(deadTeam.color, event.entity.GetDisplayName()),
-				);
-			}
 		});
 		// Teammates _cannot_ damage each other.
 		CoreServerSignals.EntityDamage.Connect((event) => {

@@ -8,6 +8,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { ViewmodelController } from "../Viewmodel/ViewmodelController";
+import { AvatarUtil } from "Client/Avatar/AvatarUtil";
 
 @Controller({})
 export class EntityAccessoryController implements OnStart {
@@ -23,15 +24,15 @@ export class EntityAccessoryController implements OnStart {
 			if (event.entity instanceof CharacterEntity) {
 				if (event.entity.IsPlayerOwned()) {
 					//Add Kit Accessory
-					if (ItemUtil.defaultKitAccessory) {
+					if (AvatarUtil.defaultKitAccessory) {
 						Profiler.BeginSample("EquipAccessories");
 						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
-							ItemUtil.defaultKitAccessory,
+							AvatarUtil.defaultKitAccessory,
 							true,
 						);
 						if (event.entity.IsLocalCharacter()) {
 							Dependency<ViewmodelController>().accessoryBuilder.EquipAccessoryCollection(
-								ItemUtil.defaultKitAccessory,
+								AvatarUtil.defaultKitAccessory,
 								true,
 							);
 						}
@@ -62,9 +63,9 @@ export class EntityAccessoryController implements OnStart {
 							}
 						}
 						for (const acc of armorAccessories) {
-							accessoryBuilder.SetAccessory(acc, true);
+							accessoryBuilder.AddSingleAccessory(acc, true);
 							if (event.entity.IsLocalCharacter()) {
-								Dependency<ViewmodelController>().accessoryBuilder.SetAccessory(acc, true);
+								Dependency<ViewmodelController>().accessoryBuilder.AddSingleAccessory(acc, true);
 							}
 						}
 						currentArmor = armorAccessories;
