@@ -14,8 +14,13 @@ export default class HomePageComponent extends AirshipBehaviour {
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 
-	public OnAwake(): void {
-		print("HomePage.OnAwake");
+	override OnEnabled(): void {
+		this.ClearSorts();
+		this.CreateSort(SortId.POPULAR, "Popular", "featured");
+		this.FetchGames();
+	}
+
+	private ClearSorts(): void {
 		let toRemove: Transform[] = [];
 		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
 			toRemove.push(this.mainContent.GetChild(i));
@@ -23,11 +28,6 @@ export default class HomePageComponent extends AirshipBehaviour {
 		for (const t of toRemove) {
 			Object.Destroy(t.gameObject);
 		}
-	}
-
-	override OnEnabled(): void {
-		this.CreateSort(SortId.POPULAR, "Popular", "featured");
-		this.FetchGames();
 	}
 
 	private CreateSort(sortId: SortId, title: string, backendName: string): void {
