@@ -65,6 +65,9 @@ export class MainMenuController implements OnStart {
 		this.avatarView = GameObjectUtil.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 		).GetComponent<AvatarViewComponent>();
+		if (Game.Context === CoreContext.GAME) {
+			this.avatarView.HideAvatar();
+		}
 
 		for (const [key, value] of this.pageMap) {
 			print("Loaded page: " + key + ", " + value);
