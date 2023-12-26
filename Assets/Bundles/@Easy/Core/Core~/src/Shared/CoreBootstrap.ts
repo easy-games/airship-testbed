@@ -1,5 +1,10 @@
+/**
+ * This is the entrypoint of Core.
+ */
+
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
+import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
@@ -47,13 +52,17 @@ if (InstanceFinder.TimeManager !== undefined) {
 }
 
 if (RunUtil.IsServer()) {
-	const server = require("@Easy/Core/Server/Resources/TS/MainServer") as {
+	const server = require("@Easy/Core/Server/Resources/TS/CoreServerBootstrap") as {
 		SetupServer: () => void;
 	};
 	server.SetupServer();
 } else {
-	const client = require("@Easy/Core/Client/Resources/TS/MainClient") as {
+	const client = require("@Easy/Core/Client/Resources/TS/CoreClientBootstrap") as {
 		SetupClient: (context: CoreContext) => void;
 	};
 	client.SetupClient(CoreContext.GAME);
 }
+
+Bootstrap.PrepareVoxelWorld();
+Bootstrap.Prepare();
+Bootstrap.FinishedSetup();

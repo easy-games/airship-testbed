@@ -26,7 +26,7 @@ gameObject.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
-const client = require("@Easy/Core/Client/Resources/TS/MainClient") as {
+const client = require("@Easy/Core/Client/Resources/TS/CoreClientBootstrap") as {
 	SetupClient: (context: CoreContext) => void;
 };
 client.SetupClient(CoreContext.MAIN_MENU);

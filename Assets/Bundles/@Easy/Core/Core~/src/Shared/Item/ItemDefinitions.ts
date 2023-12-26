@@ -152,7 +152,7 @@ function AccPath(itemType: ItemType): string {
 	return scope + "/Shared/Resources/Accessories/" + itemId.lower() + ".asset";
 }
 
-export const items: {
+export const CoreItemDefinitions: {
 	[key in ItemType]: Omit<ItemDef, "id" | "itemType">;
 } = {
 	////BLOCKS

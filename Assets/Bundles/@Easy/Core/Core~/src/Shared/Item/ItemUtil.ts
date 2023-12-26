@@ -1,9 +1,8 @@
 import Object from "@easy-games/unity-object-utils";
 import { Signal } from "Shared/Util/Signal";
 import { ItemDef } from "./ItemDefinitionTypes";
-import { ItemTypeComponentsInternal, items } from "./ItemDefinitions";
+import { CoreItemDefinitions, ItemTypeComponentsInternal } from "./ItemDefinitions";
 import { ItemType } from "./ItemType";
-import { includes } from "Shared/Types/StringUtil";
 
 export interface ItemRegistrationConfig {
 	accessoryFolder?: string;
@@ -18,6 +17,7 @@ export class ItemUtil {
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
+	private static runtimeIdCounter = 0;
 
 	public static missingItemAccessory: Accessory;
 
@@ -34,54 +34,9 @@ export class ItemUtil {
 		//Load default items
 		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
 
-		let i = 0;
-
 		//Load the defined items and map them to accessories
-		for (const itemType of Object.keys(items)) {
-			this.itemTypes.push(itemType);
-
-			const [, item] = ItemUtil.GetItemTypeComponents(itemType);
-			if (!this.implictItemTypeMap.get(item)) {
-				this.implictItemTypeMap.set(item, itemType);
-			}
-
-			const itemMeta = ItemUtil.GetItemDef(itemType);
-
-			// Assign ID to each ItemType
-			itemMeta.itemType = itemType;
-			itemMeta.id = i;
-			ItemUtil.itemIdToItemType.set(i, itemType);
-
-			// Map Block types to items
-			if (itemMeta.block?.blockId !== undefined) {
-				this.blockIdToItemType.set(itemMeta.block.blockId, itemType);
-			}
-
-			// Map items to accessories
-			let accessoryPaths: string[] = [];
-			if (itemMeta.accessoryPaths) {
-				accessoryPaths = itemMeta.accessoryPaths;
-			} else if (itemMeta.block?.blockId) {
-				accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.asset"];
-			}
-
-			if (accessoryPaths.size() > 0) {
-				const accessories: Accessory[] = [];
-				ItemUtil.itemAccessories.set(itemType, accessories);
-
-				for (const accessoryName of accessoryPaths) {
-					let accessory = AssetBridge.Instance.LoadAssetIfExists<Accessory>(accessoryName);
-					if (!accessory) {
-						// warn("Couldn't find: " + accNameLower);
-						continue;
-					}
-
-					// this.itemAccessories.set(itemType, accessory);
-					accessories.push(accessory);
-				}
-			}
-
-			i++;
+		for (const itemType of Object.keys(CoreItemDefinitions)) {
+			this.RegisterItem(itemType, CoreItemDefinitions[itemType]);
 		}
 		this.initialized = true;
 		this.onInitialized.Fire();
@@ -110,7 +65,53 @@ export class ItemUtil {
 				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".asset"];
 			}
 		}
-		items[itemType] = itemDefinition;
+		CoreItemDefinitions[itemType] = itemDefinition;
+
+		/********/
+
+		this.itemTypes.push(itemType);
+
+		const [, item] = ItemUtil.GetItemTypeComponents(itemType);
+		if (!this.implictItemTypeMap.get(item)) {
+			this.implictItemTypeMap.set(item, itemType);
+		}
+
+		const itemMeta = ItemUtil.GetItemDef(itemType);
+
+		// Assign ID to each ItemType
+		itemMeta.itemType = itemType;
+		itemMeta.id = this.runtimeIdCounter;
+		ItemUtil.itemIdToItemType.set(this.runtimeIdCounter, itemType);
+
+		// Map Block types to items
+		if (itemMeta.block?.blockId !== undefined) {
+			this.blockIdToItemType.set(itemMeta.block.blockId, itemType);
+		}
+
+		// Map items to accessories
+		let accessoryPaths: string[] = [];
+		if (itemMeta.accessoryPaths) {
+			accessoryPaths = itemMeta.accessoryPaths;
+		} else if (itemMeta.block?.blockId) {
+			accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.asset"];
+		}
+
+		if (accessoryPaths.size() > 0) {
+			const accessories: Accessory[] = [];
+			ItemUtil.itemAccessories.set(itemType, accessories);
+
+			for (const accessoryName of accessoryPaths) {
+				let accessory = AssetBridge.Instance.LoadAssetIfExists<Accessory>(accessoryName);
+				if (!accessory) {
+					// warn("Couldn't find: " + accNameLower);
+					continue;
+				}
+
+				// this.itemAccessories.set(itemType, accessory);
+				accessories.push(accessory);
+			}
+		}
+		this.runtimeIdCounter++;
 	}
 
 	/**
@@ -134,7 +135,7 @@ export class ItemUtil {
 	}
 
 	public static GetItemDef(itemType: ItemType): ItemDef {
-		const val = items[itemType] as ItemDef;
+		const val = CoreItemDefinitions[itemType] as ItemDef;
 		if (val === undefined) {
 			error("FATAL: ItemType had no ItemMeta: " + itemType);
 		}
@@ -156,7 +157,7 @@ export class ItemUtil {
 	}
 
 	public static IsItemType(s: string): boolean {
-		return items[s as ItemType] !== undefined;
+		return CoreItemDefinitions[s as ItemType] !== undefined;
 	}
 
 	/**
@@ -165,7 +166,7 @@ export class ItemUtil {
 	 * @returns The `ItemType` (if found) - otherwise `undefined`.
 	 */
 	public static FindItemTypeFromExpression(expression: string): ItemType | undefined {
-		if (items[expression as ItemType] !== undefined) return expression as ItemType;
+		if (CoreItemDefinitions[expression as ItemType] !== undefined) return expression as ItemType;
 
 		let [scope, id] = this.GetItemTypeComponents(expression as ItemType);
 		if (scope === "") {
@@ -185,7 +186,7 @@ export class ItemUtil {
 		}
 
 		// 	// Explicit find
-		for (const [key] of pairs(items)) {
+		for (const [key] of pairs(CoreItemDefinitions)) {
 			if (key.lower() === expression.lower()) {
 				return key;
 			}
