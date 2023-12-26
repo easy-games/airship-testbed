@@ -1,21 +1,20 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
+import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import { AuthController } from "./Auth/AuthController";
-import { MainMenuPageType } from "./MainMenuPageName";
+import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import MainMenuPageComponent from "./MainMenuPageComponent";
+import { MainMenuPageType } from "./MainMenuPageName";
 import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
-import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
-import AvatarViewComponent from "../Avatar/AvatarViewComponent";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { AvatarUtil } from "Client/Avatar/AvatarUtil";
 
 @Controller()
 export class MainMenuController implements OnStart {

@@ -1,4 +1,4 @@
-import { AvatarUtil } from "Client/Avatar/AvatarUtil";
+import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
