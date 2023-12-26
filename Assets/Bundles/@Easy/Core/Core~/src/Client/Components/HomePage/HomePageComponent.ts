@@ -16,9 +16,6 @@ export default class HomePageComponent extends AirshipBehaviour {
 
 	public OnAwake(): void {
 		print("HomePage.OnAwake");
-	}
-
-	override OnEnabled(): void {
 		let toRemove: Transform[] = [];
 		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
 			toRemove.push(this.mainContent.GetChild(i));
@@ -26,6 +23,9 @@ export default class HomePageComponent extends AirshipBehaviour {
 		for (const t of toRemove) {
 			Object.Destroy(t.gameObject);
 		}
+	}
+
+	override OnEnabled(): void {
 		this.CreateSort(SortId.POPULAR, "Popular", "featured");
 		this.FetchGames();
 	}
