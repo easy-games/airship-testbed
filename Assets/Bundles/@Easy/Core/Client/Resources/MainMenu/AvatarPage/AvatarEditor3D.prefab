@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Avatar/AvatarViewComponent.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Avatar/AvatarViewComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -318,21 +318,21 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 6979185126918950297}
-      modified: 0
-    - name: dragSpeedMod
-      type: number
-      objectType: 
+      modified: 1
+    - name: avatarHolder
+      type: object
+      objectType: Transform
       items:
         type: 
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 0.15
-      serializedObject: {fileID: 0}
+      serializedValue: 
+      serializedObject: {fileID: 2077388227170953706}
       modified: 1
-    - name: accessoryBuilder
+    - name: cameraTransform
       type: object
-      objectType: AccessoryBuilder
+      objectType: Transform
       items:
         type: 
         objectType: 
@@ -385,17 +385,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2014619521640985698}
       modified: 1
-    - name: dragging
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
     - name: cameraWaypointBack
       type: object
       objectType: Transform
@@ -404,20 +393,20 @@ MonoBehaviour:
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 
       serializedObject: {fileID: 8527059260511817935}
       modified: 1
-    - name: cameraTransform
-      type: object
-      objectType: Transform
+    - name: dragSpeedMod
+      type: number
+      objectType: 
       items:
         type: 
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 8604313087782663235}
-      modified: 1
+      serializedValue: 10
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cameraTransitionDuration
       type: number
       objectType: 
@@ -426,20 +415,31 @@ MonoBehaviour:
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 0.5
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: dragging
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 1
-    - name: avatarHolder
+    - name: accessoryBuilder
       type: object
-      objectType: Transform
+      objectType: AccessoryBuilder
       items:
         type: 
         objectType: 
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 2077388227170953706}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
 --- !u!1 &4433631764270028334
 GameObject:
   m_ObjectHideFlags: 0
