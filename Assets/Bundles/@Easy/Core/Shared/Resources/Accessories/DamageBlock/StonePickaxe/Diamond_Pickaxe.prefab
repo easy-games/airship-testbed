@@ -23,6 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5201375224750791660}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -30,13 +31,13 @@ Transform:
   m_Children:
   - {fileID: 4659468798372782021}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5126076393393485870
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7425600105175474101}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
@@ -84,11 +85,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 39678bf160cbc4444b1fdbc44406ae4d, type: 2}
     - target: {fileID: -7511558181221131132, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
     - target: {fileID: 919132149155446097, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
@@ -96,6 +97,12 @@ PrefabInstance:
       value: SM_Pickaxe
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5459421518949901548}
   m_SourcePrefab: {fileID: 100100000, guid: b21559764c93ab342abcf9cc2f4d2f78, type: 3}
 --- !u!4 &4659468798372782021 stripped
 Transform:
