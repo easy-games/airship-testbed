@@ -1,10 +1,22 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { BlockInteractController } from "Client/Controllers/Blocks/BlockInteractController";
+import { Entity } from "Shared/Entity/Entity";
+import { Cancellable } from "Shared/Util/Cancellable";
+import { Signal } from "Shared/Util/Signal";
+import { Block } from "Shared/VoxelWorld/Block";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
 
+class CanUseBlockSignal extends Cancellable {
+	constructor(public readonly block: Block, public readonly blockPos: Vector3, public readonly entity: Entity) {
+		super();
+	}
+}
+
 export class BreakBlockHeldItem extends BlockSelectHeldItem {
+	public static canUseBlockSignal = new Signal<CanUseBlockSignal>();
+
 	override OnEquip(): void {
 		super.OnEquip();
 		if (this.blockSelect) {
@@ -37,22 +49,24 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 			return false;
 		}
 
-		//print("Break Block Can Use");
 		const block = WorldAPI.GetMainWorld()?.GetBlockAt(selectedPos);
 		if (!block) {
-			//print("FALSE no block");
 			return false;
 		}
 		if (block.IsAir()) {
-			//print("FALSE is air");
 			return false;
 		}
-		const canBreak = BlockDataAPI.GetBlockData(selectedPos, CoreBlockMetaKeys.CAN_BREAK);
-		if (!canBreak) {
-			//print("FALSE cant break");
+		const noBreak = BlockDataAPI.GetBlockData(selectedPos, CoreBlockMetaKeys.NO_BREAK);
+		if (noBreak) {
 			return false;
 		}
-		//print("TRUE");
+
+		const useSignal = new CanUseBlockSignal(block, selectedPos, this.entity);
+		BreakBlockHeldItem.canUseBlockSignal.Fire(useSignal);
+		if (useSignal.IsCancelled()) {
+			return false;
+		}
+
 		return true;
 	}
 }

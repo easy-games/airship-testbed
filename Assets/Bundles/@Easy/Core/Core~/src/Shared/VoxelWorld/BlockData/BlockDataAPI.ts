@@ -1,10 +1,9 @@
 import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { BlockData } from "../World";
 
 export enum CoreBlockMetaKeys {
-	CAN_BREAK = "canBreak",
+	NO_BREAK = "noBreak",
 	CURRENT_HEALTH = "health",
 	CAN_TILL = "canTill",
 }

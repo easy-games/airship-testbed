@@ -9,8 +9,7 @@ import { Team } from "../Team/Team";
 import { Healthbar } from "../UI/Healthbar";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
-import { ItemPlayMode } from "./Animation/CharacterEntityAnimator";
-import { EntityAnimator } from "./Animation/EntityAnimator";
+import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 export interface EntityDto {
     serializer: EntitySerializer;
@@ -37,7 +36,7 @@ export declare class EntityReferences {
     rig: Transform;
     characterCollider: Collider;
     animationEvents: EntityAnimationEvents;
-    humanEntityAnimator: CoreEntityAnimator;
+    animationHelper: CharacterAnimationHelper;
     jumpSound: AudioClip | undefined;
     slideSoundPaths: Array<string>;
     landSound: AudioClip | undefined;
@@ -52,7 +51,7 @@ export declare class Entity {
     readonly entityDriver: EntityDriver;
     readonly model: GameObject;
     readonly attributes: EasyAttributes;
-    animator: EntityAnimator;
+    animator: CharacterEntityAnimator;
     readonly references: EntityReferences;
     readonly accessoryBuilder: AccessoryBuilder;
     player: Player | undefined;

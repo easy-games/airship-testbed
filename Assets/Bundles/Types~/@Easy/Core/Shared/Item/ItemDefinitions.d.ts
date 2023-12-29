@@ -7,6 +7,6 @@ import { ItemType } from "./ItemType";
  * @internal - Will not show up in types
  */
 export declare function ItemTypeComponentsInternal(itemType: ItemType): [scope: string, id: string];
-export declare const items: {
+export declare const CoreItemDefinitions: {
     [key in ItemType]: Omit<ItemDef, "id" | "itemType">;
 };

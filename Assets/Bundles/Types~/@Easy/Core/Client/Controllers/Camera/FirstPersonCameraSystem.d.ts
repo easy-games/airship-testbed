@@ -1,6 +1,7 @@
-import { EntityReferences } from "../../../Shared/Entity/Entity";
+import { Entity, EntityReferences } from "../../../Shared/Entity/Entity";
 import { CameraReferences } from "./CameraReferences";
 export declare class FirstPersonCameraSystem {
+    readonly entity: Entity;
     private bobLerpMod;
     cameras: CameraReferences;
     private sprintingBob;
@@ -22,7 +23,8 @@ export declare class FirstPersonCameraSystem {
     private originalShoulderLPosition;
     private originalShoulderRPosition;
     private currentTime;
-    constructor(entityReferences: EntityReferences, startInFirstPerson: boolean);
+    private viewmodelController;
+    constructor(entity: Entity, entityReferences: EntityReferences, startInFirstPerson: boolean);
     Destroy(): void;
     private LateUpdate;
     OnMovementStateChange(state: EntityState): void;

@@ -47,7 +47,7 @@ export class TillBlockHeldItem extends BlockSelectHeldItem {
 			//print("FALSE is air");
 			return false;
 		}
-		const canBreak = BlockDataAPI.GetBlockData(selectedPos, CoreBlockMetaKeys.CAN_BREAK);
+		const canBreak = BlockDataAPI.GetBlockData(selectedPos, CoreBlockMetaKeys.NO_BREAK);
 		if (!canBreak) {
 			//print("FALSE cant break");
 			return false;

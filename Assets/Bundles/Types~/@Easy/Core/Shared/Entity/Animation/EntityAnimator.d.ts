@@ -9,7 +9,8 @@ export declare abstract class EntityAnimator {
     protected entity: Entity;
     private readonly flashTransitionDuration;
     private readonly flashOnTime;
-    readonly anim: AnimancerComponent;
+    readonly worldmodelAnimancer: AnimancerComponent;
+    readonly viewmodelAnimancer: AnimancerComponent;
     readonly defaultTransitionTime: number;
     protected readonly entityRef: EntityReferences;
     protected bin: Bin;
@@ -22,15 +23,15 @@ export declare abstract class EntityAnimator {
     private deathEffectVoidTemplate?;
     private isFlashing;
     protected isFirstPerson: boolean;
+    protected viewModelEnabled: boolean;
     private footstepAudioBundle;
     private slideAudioBundle;
     private steppedOnBlockType;
     private lastFootstepSoundTime;
     private deathVfx?;
     baseFootstepVolumeScale: number;
-    constructor(entity: Entity, anim: AnimancerComponent, entityRef: EntityReferences);
+    constructor(entity: Entity, entityRef: EntityReferences);
     Destroy(): void;
-    PlayAnimationOnLayer(clip: AnimationClip, layer: number, wrapMode?: WrapMode, transitionTime?: number, onEnd?: Callback): AnimancerState;
     StartIdleAnim(instantTransition: boolean): void;
     PlayUseAnim(useIndex?: number, config?: {
         fadeMode?: FadeMode;
@@ -40,7 +41,14 @@ export declare abstract class EntityAnimator {
         autoFadeOut?: boolean;
     }): void;
     EquipItem(itemMeta: ItemDef | undefined): void;
-    abstract PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
+    abstract PlayAnimationInWorldmodel(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
+        fadeMode?: FadeMode;
+        wrapMode?: WrapMode;
+        fadeInDuration?: number;
+        fadeOutDuration?: number;
+        autoFadeOut?: boolean;
+    }): AnimancerState;
+    abstract PlayAnimationInViewmodel(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
         fadeInDuration?: number;
@@ -48,7 +56,6 @@ export declare abstract class EntityAnimator {
         autoFadeOut?: boolean;
     }): AnimancerState;
     SetFirstPerson(isFirstPerson: boolean): void;
-    PlayTakeDamage(flinchDuration: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
     PlayDeath(damageType: DamageType): void;
     private PlayDamageFlash;
     SetFresnelColor(color: Color, power: number, strength: number): void;
@@ -62,4 +69,5 @@ export declare abstract class EntityAnimator {
     private OnAnimationEvent;
     IsFirstPerson(): boolean;
     SetPlaybackSpeed(newSpeed: number): void;
+    IsViewModelEnabled(): boolean;
 }

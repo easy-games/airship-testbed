@@ -13,6 +13,7 @@ export declare class ItemUtil {
     private static readonly itemAccessories;
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;
+    private static runtimeIdCounter;
     static missingItemAccessory: Accessory;
     private static itemTypes;
     private static implictItemTypeMap;

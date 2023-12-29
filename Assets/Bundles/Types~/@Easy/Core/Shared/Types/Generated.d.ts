@@ -1777,6 +1777,20 @@ declare const enum AccessorySlot {
     Waist = 8,
     Legs = 9,
     Feet = 10,
+    Ears = 11,
+    Nose = 12,
+    TorsoOuter = 13,
+    TorsoInner = 14,
+    Backpack = 15,
+    Hands = 16,
+    HandsOuter = 17,
+    LeftWrist = 18,
+    RightWrist = 19,
+    LegsOuter = 20,
+    LegsInner = 21,
+    FeetInner = 22,
+    LeftFoot = 23,
+    RightFoot = 24,
 }
 declare const enum VisibilityMode {
     THIRD_PERSON = 0,
@@ -9764,27 +9778,28 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
+    firstPerson: boolean;
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, combineMeshes: boolean): CSArray<ActiveAccessory>;
-    AddSkinAccessory(skin: AccessorySkin, combineMeshes: boolean): void;
+    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddSingleAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
+    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
     EquipAccessoryCollection(collection: AccessoryCollection, combineMeshes: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
     GetActiveAccessoriesBySlot(target: AccessorySlot): CSArray<ActiveAccessory>;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
-    GetCombinedSkinnedMesh(firstPerson: boolean): SkinnedMeshRenderer;
-    GetCombinedStaticMesh(firstPerson: boolean): MeshRenderer;
+    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
+    GetCombinedStaticMesh(): MeshRenderer;
     GetSlotTransform(slot: AccessorySlot): Transform;
     RemoveAccessories(): void;
-    RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
-    SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
-    SetAccessoryColor(slot: AccessorySlot, color: Color, combineMeshes: boolean): void;
-    SetFirstPersonEnabled(firstPersonEnabled: boolean): void;
-    SetSkinColor(color: Color, combineMeshes: boolean): void;
+    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
+    UpdateAccessoryLayers(): void;
 }
     
 interface ActiveAccessory {
@@ -12005,13 +12020,11 @@ interface BlockDefinition {
 interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
     rotation: CSDictionary<number, PrecalculatedRotation>;
-    uvs: CSArray<Vector2>;
-    triangles: CSArray<number>;
-    colors: CSArray<Color>;
+    srcUvs: CSArray<Vector2>;
+    srcColors: CSArray<Color32>;
     srcVertices: CSArray<Vector3>;
     srcNormals: CSArray<Vector3>;
-    meshMaterial: Material;
-    meshMaterialName: string;
+    surfaces: CSArray<Surface>;
 
     constructor(mesh: Mesh): VoxelMeshCopy;
     constructor(src: VoxelMeshCopy): VoxelMeshCopy;
@@ -12026,6 +12039,16 @@ interface PrecalculatedRotation {
 
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+
+}
+    
+interface Surface {
+    triangles: CSArray<number>;
+    meshMaterial: Material;
+    meshMaterialName: string;
+
+    constructor(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    constructor(): Surface;
 
 }
     
@@ -12791,12 +12814,7 @@ interface RemoteImage extends MonoBehaviour {
     
 interface AvatarCollection extends ScriptableObject {
     skinAccessories: CSArray<AccessorySkin>;
-    headShapeAccessories: CSArray<Accessory>;
-    headAccessories: CSArray<Accessory>;
-    torsoAccessories: CSArray<Accessory>;
-    handAccessories: CSArray<Accessory>;
-    legAccessories: CSArray<Accessory>;
-    feetAccessories: CSArray<Accessory>;
+    generalAccessories: CSArray<Accessory>;
 
     constructor(): AvatarCollection;
 

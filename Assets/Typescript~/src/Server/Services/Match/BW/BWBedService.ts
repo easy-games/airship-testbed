@@ -9,7 +9,7 @@ import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
-import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
@@ -107,7 +107,6 @@ export class BWBedService implements OnStart {
 				blockData: {
 					teamId: team.id,
 					health: itemMeta.block!.health!, // this is a hack.
-					[CoreBlockMetaKeys.CAN_BREAK]: true,
 				},
 			});
 		}
