@@ -75,6 +75,7 @@ export class ChatController implements OnStart {
 	private historyIndex = -1;
 
 	private commands = new Map<string, ChatCommand>();
+	private lastChatMessageRenderedTime = Time.time;
 
 	constructor(
 		private readonly localEntityController: LocalEntityController,
@@ -143,7 +144,7 @@ export class ChatController implements OnStart {
 			KeyCode.Slash,
 			(event) => {
 				if (!this.selected) {
-					this.inputField.SetTextWithoutNotify("/");
+					this.inputField.text = "/";
 					this.inputField.caretPosition = 1;
 					this.inputField.Select();
 				}
@@ -285,9 +286,12 @@ export class ChatController implements OnStart {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
-				volumeScale: 0.24,
-			});
+			if (Time.time > this.lastChatMessageRenderedTime) {
+				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
+					volumeScale: 0.24,
+				});
+			}
+			this.lastChatMessageRenderedTime = Time.time;
 		} catch (err) {
 			Debug.LogError("chat error:");
 			Debug.LogError(err);
