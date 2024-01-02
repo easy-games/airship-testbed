@@ -38,6 +38,12 @@ export class MatchWorldEvents {
 			}
 		});
 
+		WorldAPI.OnBlockHitDamageCalc.Connect((event) => {
+			if (event.entity && !BlockDataAPI.GetBlockData(event.blockPos, "player_placed")) {
+				event.damage = 0;
+			}
+		});
+
 		BreakBlockHeldItem.canUseBlockSignal.Connect((event) => {
 			if (event.block.itemType !== ItemType.BED && !BlockDataAPI.GetBlockData(event.blockPos, "player_placed")) {
 				event.SetCancelled(true);
