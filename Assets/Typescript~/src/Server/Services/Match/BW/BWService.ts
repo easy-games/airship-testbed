@@ -31,7 +31,7 @@ export class BWService implements OnStart {
 	/** Set of eliminated players. */
 	private eliminatedPlayers = new Set<Player>();
 	/** Whether or not winner has been declared. */
-	public winnerDeclared = false;
+	public WinnerDeclared = false;
 	/** Whether or not a bed has been destroyed. */
 	private bedHasBeenDestroyed = false;
 
@@ -46,17 +46,17 @@ export class BWService implements OnStart {
 			if (!this.matchService.IsRunning()) return;
 			// Eliminate player, if applicable.
 			if (event.entity instanceof CharacterEntity) {
-				const team = event.entity.player?.GetTeam();
-				if (event.entity.player && team && this.bedService.IsBedDestroyed(team)) {
-					this.EliminatePlayer(event.entity.player);
+				const team = event.entity.Player?.GetTeam();
+				if (event.entity.Player && team && this.bedService.IsBedDestroyed(team)) {
+					this.EliminatePlayer(event.entity.Player);
 					event.respawnTime = 0;
 				}
 			}
 			// Give resources to killer.
 			if (
-				event.entity?.player &&
+				event.entity?.Player &&
 				event.entity instanceof CharacterEntity &&
-				event.killer?.player &&
+				event.killer?.Player &&
 				event.killer instanceof CharacterEntity
 			) {
 				const deathEntityInv = event.entity.GetInventory();
@@ -79,13 +79,13 @@ export class BWService implements OnStart {
 			}
 
 			if (
-				event.fromEntity?.player &&
+				event.fromEntity?.Player &&
 				event.fromEntity instanceof CharacterEntity &&
-				event.entity.player &&
+				event.entity.Player &&
 				event.entity instanceof CharacterEntity
 			) {
-				const fromEntityTeam = event.fromEntity.player.GetTeam();
-				const entityTeam = event.entity.player.GetTeam();
+				const fromEntityTeam = event.fromEntity.Player.GetTeam();
+				const entityTeam = event.entity.Player.GetTeam();
 				if (fromEntityTeam?.id === entityTeam?.id) {
 					event.SetCancelled(true);
 				}
@@ -193,7 +193,7 @@ export class BWService implements OnStart {
 
 	/** Declares a team as winner. */
 	private DeclareWinner(team: Team) {
-		this.winnerDeclared = true;
+		this.WinnerDeclared = true;
 		this.matchService.EndMatch(team);
 	}
 }

@@ -4,11 +4,11 @@ import { EntityDamageServerSignal } from "Server/Signals/EntityDamageServerSigna
 import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
-import { doesDamageTypeGrantImmunity } from "Shared/Damage/DamageTypeMeta";
+import { DoesDamageTypeGrantImmunity } from "Shared/Damage/DamageTypeMeta";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Entity } from "Shared/Entity/Entity";
 import { AOEDamageDef } from "Shared/Item/ItemDefinitionTypes";
-import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
+import { DefaultRespawnTime } from "Shared/Respawn/Respawn";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
@@ -28,15 +28,15 @@ export class DamageService implements OnStart {
 		CoreNetwork.ClientToServer.TEST_LATENCY.Server.SetCallback((clientId) => {
 			print("-----");
 			for (const entity of this.entityService.GetEntities()) {
-				print(entity.GetDisplayName() + ": " + entity.id);
+				print(entity.GetDisplayName() + ": " + entity.Id);
 			}
 			print("-----");
 
 			print("Received: " + InstanceFinder.TimeManager.Tick);
 			const entity = this.entityService.GetEntityByClientId(clientId);
 			if (!entity) return -1;
-			const entityDriver = entity.gameObject.GetComponent<EntityDriver>();
-			const dir = entity.model.transform.forward;
+			const entityDriver = entity.GameObject.GetComponent<EntityDriver>();
+			const dir = entity.Model.transform.forward;
 
 			this.ApplyKnockback(entityDriver, dir.mul(new Vector3(-1, 1, -1)).add(new Vector3(0, 1, 0)));
 			return InstanceFinder.TimeManager.Tick;
@@ -45,10 +45,10 @@ export class DamageService implements OnStart {
 		CoreNetwork.ClientToServer.TestKnockback2.Server.OnClientEvent((clientId) => {
 			const entity = Entity.FindByClientId(clientId);
 			if (entity) {
-				const dir = entity.model.transform.forward;
+				const dir = entity.Model.transform.forward;
 				const horizontalScalar = this.combatVars.GetNumber("kbX");
 				const verticalScalar = this.combatVars.GetNumber("kbY");
-				entity.entityDriver.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
+				entity.EntityDriver.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
 			}
 		});
 	}
@@ -75,7 +75,7 @@ export class DamageService implements OnStart {
 				if (
 					aoeMeta.selfKnockbackMultiplier &&
 					aoeMeta.selfKnockbackMultiplier > 0 &&
-					entity.id === config.fromEntity?.id
+					entity.Id === config.fromEntity?.Id
 				) {
 					//Hitting self with AOE explosive
 					damage *= 0.5;
@@ -132,10 +132,10 @@ export class DamageService implements OnStart {
 		}
 
 		CoreNetwork.ServerToClient.EntityDamage.Server.FireAllClients(
-			entity.id,
+			entity.Id,
 			damageEvent.amount,
 			damageEvent.damageType,
-			damageEvent.fromEntity?.id,
+			damageEvent.fromEntity?.Id,
 			damageEvent.criticalHit,
 		);
 
@@ -150,19 +150,19 @@ export class DamageService implements OnStart {
 		const dead = entity.GetHealth() === 0;
 		if (dead) {
 			entity.Kill();
-			entity.entityDriver.disableInput = true;
+			entity.EntityDriver.disableInput = true;
 			const entityDeathEvent = new EntityDeathServerSignal(
 				entity,
 				damageEvent.fromEntity,
 				damageEvent,
-				DEFAULT_RESPAWN_TIME,
+				DefaultRespawnTime,
 			);
 			CoreServerSignals.EntityDeath.Fire(entityDeathEvent);
 
 			CoreNetwork.ServerToClient.EntityDeath.Server.FireAllClients(
-				entity.id,
+				entity.Id,
 				damageEvent.damageType,
-				entityDeathEvent.killer?.id,
+				entityDeathEvent.killer?.Id,
 				entityDeathEvent.respawnTime,
 			);
 
@@ -175,12 +175,12 @@ export class DamageService implements OnStart {
 		} else {
 			let shouldGrantImmunity = true;
 			if (config?.damageType) {
-				shouldGrantImmunity = doesDamageTypeGrantImmunity(config.damageType);
+				shouldGrantImmunity = DoesDamageTypeGrantImmunity(config.damageType);
 			}
 			if (shouldGrantImmunity) entity.GrantImmunity(0.24);
 
 			//Hit stun and Knockback
-			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
+			const driver = entity.NetworkObject.gameObject.GetComponent<EntityDriver>();
 			if (driver) {
 				//DamageUtils.AddHitstun(entity, amount, () => {
 				this.ApplyKnockback(driver, config?.knockbackDirection);

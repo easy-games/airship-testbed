@@ -152,17 +152,17 @@ export class GroundItemController implements OnStart {
 
 		// Pickup when nearbys
 		SetInterval(0.1, () => {
-			const characterPos = Game.LocalPlayer.character?.gameObject.transform.position;
+			const characterPos = Game.LocalPlayer.Character?.GameObject.transform.position;
 			if (!characterPos) return;
 
 			let toPickup: GroundItem[] = [];
 			for (let pair of this.groundItems) {
-				if (!GroundItemUtil.CanPickupGroundItem(pair[1], pair[1].transform.position, characterPos)) continue;
+				if (!GroundItemUtil.CanPickupGroundItem(pair[1], pair[1].Transform.position, characterPos)) continue;
 				toPickup.push(pair[1]);
 			}
 
 			toPickup = toPickup.sort((a, b) => {
-				return a.transform.position.Distance(characterPos) < b.transform.position.Distance(characterPos);
+				return a.Transform.position.Distance(characterPos) < b.Transform.position.Distance(characterPos);
 			});
 
 			for (let groundItem of toPickup) {

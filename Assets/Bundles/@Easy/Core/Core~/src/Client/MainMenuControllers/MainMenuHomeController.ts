@@ -3,13 +3,14 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { decode } from "Shared/json";
+import { DecodeJSON } from "Shared/json";
 import { MainMenuController } from "./MainMenuController";
 import { GameServer } from "./Social/SocketAPI";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 
 @Controller({})
 export class MainMenuHomeController implements OnStart {
-	public gameCoordinatorUrl = "https://game-coordinator-fxy2zritya-uc.a.run.app/";
+	public GameCoordinatorUrl = AirshipUrl.GameCoordinator;
 	private errorMessageText: TMP_Text;
 	private errorMessageWrapper: GameObject;
 	private errorCloseButton: GameObject;
@@ -18,22 +19,22 @@ export class MainMenuHomeController implements OnStart {
 	private localBundlesToggle: Toggle;
 
 	constructor(private readonly mainMenuController: MainMenuController) {
-		this.errorMessageText = this.mainMenuController.refs.GetValue("UI", "ErrorMessageText");
-		this.errorMessageWrapper = this.mainMenuController.refs.GetValue("UI", "ErrorMessageWrapper");
+		this.errorMessageText = this.mainMenuController.Refs.GetValue("UI", "ErrorMessageText");
+		this.errorMessageWrapper = this.mainMenuController.Refs.GetValue("UI", "ErrorMessageWrapper");
 
-		this.createServerButton = this.mainMenuController.refs.GetValue("UI", "CreateServerButton");
+		this.createServerButton = this.mainMenuController.Refs.GetValue("UI", "CreateServerButton");
 		CoreUI.SetupButton(this.createServerButton);
 
-		this.createLobbyButton = this.mainMenuController.refs.GetValue("UI", "CreateLobbyButton");
+		this.createLobbyButton = this.mainMenuController.Refs.GetValue("UI", "CreateLobbyButton");
 		CoreUI.SetupButton(this.createLobbyButton);
 
-		this.errorCloseButton = this.mainMenuController.refs.GetValue("UI", "ErrorCloseButton");
+		this.errorCloseButton = this.mainMenuController.Refs.GetValue("UI", "ErrorCloseButton");
 		CoreUI.SetupButton(this.errorCloseButton);
 
-		this.localBundlesToggle = this.mainMenuController.refs.GetValue("UI", "LocalBundlesToggle");
+		this.localBundlesToggle = this.mainMenuController.Refs.GetValue("UI", "LocalBundlesToggle");
 
 		if (Game.Context === CoreContext.GAME) {
-			this.mainMenuController.mainContentCanvas.enabled = false;
+			this.mainMenuController.MainContentCanvas.enabled = false;
 		}
 	}
 
@@ -48,10 +49,10 @@ export class MainMenuHomeController implements OnStart {
 
 			print("pressed create server!");
 
-			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/allocate`, "{}");
+			const res = InternalHttpManager.PostAsync(`${this.GameCoordinatorUrl}/custom-servers/allocate`, "{}");
 			if (res.success) {
 				print("data: " + res.data);
-				const data = decode(res.data) as {
+				const data = DecodeJSON(res.data) as {
 					gameServer: GameServer;
 				};
 				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
@@ -68,10 +69,10 @@ export class MainMenuHomeController implements OnStart {
 			this.UpdateCrossSceneState();
 
 			print("pressed create server!");
-			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/lobby/allocate`, "{}");
+			const res = InternalHttpManager.PostAsync(`${this.GameCoordinatorUrl}/custom-servers/lobby/allocate`, "{}");
 			if (res.success) {
 				print("data: " + res.data);
-				const data = decode(res.data) as {
+				const data = DecodeJSON(res.data) as {
 					gameServer: GameServer;
 				};
 				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
@@ -87,10 +88,10 @@ export class MainMenuHomeController implements OnStart {
 			this.CloseError();
 		});
 
-		const joinCodeButton = this.mainMenuController.refs.GetValue("UI", "JoinCodeButton");
-		const joinCodeWrapper = this.mainMenuController.refs.GetValue("UI", "JoinCodeWrapper");
-		const joinCodeConnectButton = this.mainMenuController.refs.GetValue("UI", "JoinCodeConnectButton");
-		const joinCodeTextInput = this.mainMenuController.refs.GetValue<TMP_InputField>("UI", "JoinCodeField");
+		const joinCodeButton = this.mainMenuController.Refs.GetValue("UI", "JoinCodeButton");
+		const joinCodeWrapper = this.mainMenuController.Refs.GetValue("UI", "JoinCodeWrapper");
+		const joinCodeConnectButton = this.mainMenuController.Refs.GetValue("UI", "JoinCodeConnectButton");
+		const joinCodeTextInput = this.mainMenuController.Refs.GetValue<TMP_InputField>("UI", "JoinCodeField");
 
 		CanvasAPI.Register(joinCodeTextInput.gameObject);
 
@@ -110,14 +111,14 @@ export class MainMenuHomeController implements OnStart {
 			this.ConnectToWithCode(code);
 		});
 
-		const localServerButton = this.mainMenuController.refs.GetValue("UI", "LocalServerButton");
+		const localServerButton = this.mainMenuController.Refs.GetValue("UI", "LocalServerButton");
 		CoreUI.SetupButton(localServerButton);
 		CanvasAPI.OnClickEvent(localServerButton, () => {
 			this.UpdateCrossSceneState();
 			TransferManager.Instance.ConnectToServer("127.0.0.1", 7770);
 		});
 
-		const quitButton = this.mainMenuController.refs.GetValue("UI", "QuitButton");
+		const quitButton = this.mainMenuController.Refs.GetValue("UI", "QuitButton");
 		CoreUI.SetupButton(quitButton);
 		CanvasAPI.OnClickEvent(quitButton, () => {
 			Application.Quit();
@@ -128,11 +129,11 @@ export class MainMenuHomeController implements OnStart {
 		this.UpdateCrossSceneState();
 
 		const res = InternalHttpManager.GetAsync(
-			`${this.gameCoordinatorUrl}/custom-servers/gameId/6536ee084c9987573c3a3c03/code/${code}`,
+			`${this.GameCoordinatorUrl}/custom-servers/gameId/6536ee084c9987573c3a3c03/code/${code}`,
 		);
 		if (res.success) {
 			print("data: " + res.data);
-			const data = decode(res.data) as {
+			const data = DecodeJSON(res.data) as {
 				gameServer: GameServer;
 			};
 			print(`found server ${data.gameServer.ip}:${data.gameServer.port}`);

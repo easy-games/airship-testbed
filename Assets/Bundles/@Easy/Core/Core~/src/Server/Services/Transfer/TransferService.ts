@@ -1,7 +1,7 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import { Player } from "Shared/Player/Player";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { decode, encode } from "Shared/json";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { CreateServerResponse } from "./TransferServiceTypes";
 
 @Service({})
@@ -11,12 +11,12 @@ export class TransferService implements OnStart {
 	public CreateServer(sceneId?: string): CreateServerResponse | undefined {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/servers/create",
-			encode({
+			EncodeJSON({
 				sceneId: sceneId,
 			}),
 		);
 		if (res.success) {
-			const data = decode<{
+			const data = DecodeJSON<{
 				serverId: string;
 			}>(res.data);
 			return data;
@@ -28,7 +28,7 @@ export class TransferService implements OnStart {
 		const jwt = GameObject.Find("ServerBootstrap")?.GetComponent<ServerBootstrap>().airshipJWT;
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer",
-			encode({
+			EncodeJSON({
 				uid: player.userId,
 				gameId,
 				serverTransferData,
@@ -46,7 +46,7 @@ export class TransferService implements OnStart {
 		const jwt = GameObject.Find("ServerBootstrap")?.GetComponent<ServerBootstrap>().airshipJWT;
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer",
-			encode({
+			EncodeJSON({
 				uid: player.userId,
 				serverId,
 				serverTransferData,

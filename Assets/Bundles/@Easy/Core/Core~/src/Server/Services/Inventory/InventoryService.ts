@@ -26,7 +26,7 @@ export class InventoryService implements OnStart {
 
 			entity.GetInventory().SetHeldSlot(slot);
 
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.Server.FireAllClients(entity.id, slot, true);
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.Server.FireAllClients(entity.Id, slot, true);
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.Server.OnClientEvent(
@@ -90,7 +90,7 @@ export class InventoryService implements OnStart {
 					const itemMeta = itemStack.GetMeta();
 					if (!completed) {
 						if (itemMeta.armor) {
-							const armorSlot = fromInv.armorSlots[itemMeta.armor.armorType];
+							const armorSlot = fromInv.ArmorSlots[itemMeta.armor.armorType];
 							const existingArmor = fromInv.GetItem(armorSlot);
 							if (existingArmor === undefined) {
 								this.SwapSlots(fromInv, fromSlot, toInv, armorSlot, {
@@ -144,7 +144,7 @@ export class InventoryService implements OnStart {
 
 					if (!completed) {
 						if (itemMeta.armor) {
-							const armorSlot = fromInv.armorSlots[itemMeta.armor.armorType];
+							const armorSlot = fromInv.ArmorSlots[itemMeta.armor.armorType];
 							const existingArmor = fromInv.GetItem(armorSlot);
 							if (existingArmor === undefined) {
 								this.SwapSlots(fromInv, fromSlot, toInv, armorSlot, {

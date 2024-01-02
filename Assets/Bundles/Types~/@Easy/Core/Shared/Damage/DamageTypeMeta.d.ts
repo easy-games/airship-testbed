@@ -6,4 +6,4 @@ import { DamageType } from "./DamageType";
  * @param damageType The damage type being queried.
  * @returns Whether or not damage type should grant immunity.
  */
-export declare const doesDamageTypeGrantImmunity: (damageType: DamageType) => boolean;
+export declare const DoesDamageTypeGrantImmunity: (damageType: DamageType) => boolean;

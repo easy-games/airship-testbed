@@ -17,7 +17,7 @@ export type HeldItemEntry = {
  * One item manager per entity, calls functionality on currently equipped item for that entity
  */
 export declare class HeldItemManager {
-    entity: CharacterEntity;
+    Entity: CharacterEntity;
     private heldItemMap;
     private emptyHeldItem;
     private currentHeldItem;

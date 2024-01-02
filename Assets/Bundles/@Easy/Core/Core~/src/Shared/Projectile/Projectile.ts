@@ -17,9 +17,9 @@ export interface ProjectileDto {
 }
 
 export class Projectile {
-	public readonly gameObject: GameObject;
-	public readonly itemType: ItemType;
-	public readonly shooter: Entity | undefined;
+	public readonly GameObject: GameObject;
+	public readonly ItemType: ItemType;
+	public readonly Shooter: Entity | undefined;
 	private destroyed = false;
 	private bin = new Bin();
 
@@ -32,9 +32,9 @@ export class Projectile {
 	public readonly OnHit = new Signal<[hitPoint: Vector3, collider: Collider]>();
 
 	constructor(private easyProjectile: AirshipProjectile, itemType: ItemType, shooter: Entity | undefined) {
-		this.gameObject = easyProjectile.gameObject;
-		this.itemType = itemType;
-		this.shooter = shooter;
+		this.GameObject = easyProjectile.gameObject;
+		this.ItemType = itemType;
+		this.Shooter = shooter;
 
 		const itemDef = ItemUtil.GetItemDef(itemType);
 
@@ -63,7 +63,7 @@ export class Projectile {
 		});
 		this.bin.Add(() => Bridge.DisconnectEvent(onHitConn));
 
-		const dw = this.gameObject.GetComponent<DestroyWatcher>();
+		const dw = this.GameObject.GetComponent<DestroyWatcher>();
 		const destroyedConn = dw.OnDestroyedEvent(() => {
 			this.OnDestroy.Fire();
 			this.bin.Clean();
@@ -94,6 +94,6 @@ export class Projectile {
 		this.OnDestroy.DisconnectAll();
 		this.OnHit.DisconnectAll();
 
-		Object.Destroy(this.gameObject);
+		Object.Destroy(this.GameObject);
 	}
 }

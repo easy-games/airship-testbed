@@ -10,7 +10,7 @@ export class MatchWorldEvents {
 		WorldAPI.OnBlockHitDamageCalc.Connect((event) => {
 			// BW: dont allow breaking your own team's bed
 			const teamBlockId = BlockDataAPI.GetBlockData<string>(event.blockPos, "teamId");
-			if (teamBlockId !== undefined && teamBlockId === event.entity?.player?.GetTeam()?.id) {
+			if (teamBlockId !== undefined && teamBlockId === event.entity?.Player?.GetTeam()?.id) {
 				event.damage = 0;
 			}
 
@@ -23,10 +23,10 @@ export class MatchWorldEvents {
 			// }
 
 			//Team Upgrades
-			if (event.entity?.player) {
+			if (event.entity?.Player) {
 				const upgradeState = TeamUpgradeUtil.GetUpgradeStateForPlayer(
 					TeamUpgradeType.BREAK_SPEED,
-					event.entity.player,
+					event.entity.Player,
 				);
 				if (upgradeState?.currentUpgradeTier) {
 					const damageMultiplier = TeamUpgradeUtil.GetUpgradeTierForType(
@@ -44,8 +44,8 @@ export class MatchWorldEvents {
 			}
 		});
 
-		BreakBlockHeldItem.canUseBlockSignal.Connect((event) => {
-			if (event.block.itemType !== ItemType.BED && !BlockDataAPI.GetBlockData(event.blockPos, "player_placed")) {
+		BreakBlockHeldItem.CanUseBlockSignal.Connect((event) => {
+			if (event.block.ItemType !== ItemType.BED && !BlockDataAPI.GetBlockData(event.blockPos, "player_placed")) {
 				event.SetCancelled(true);
 			}
 		});

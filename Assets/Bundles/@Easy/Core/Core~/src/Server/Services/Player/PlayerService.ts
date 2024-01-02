@@ -83,7 +83,7 @@ export class PlayerService implements OnStart {
 	}
 
 	public HandlePlayerReady(player: Player): void {
-		CoreNetwork.ServerToClient.ServerInfo.Server.FireClient(player.clientId, Game.gameId, Game.serverId);
+		CoreNetwork.ServerToClient.ServerInfo.Server.FireClient(player.clientId, Game.GameId, Game.ServerId);
 
 		// notify all clients of the joining player
 		CoreNetwork.ServerToClient.AddPlayer.Server.FireAllClients(player.Encode());

@@ -2,7 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import { GameServer } from "Shared/SocketIOMessages/Party";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { encode } from "Shared/json";
+import { EncodeJSON } from "Shared/json";
 import { SocketController } from "../Socket/SocketController";
 
 @Controller({})
@@ -30,7 +30,7 @@ export class TransferController implements OnStart {
 	public ClientTransferToServerAsync(gameId: string, serverId?: string): void {
 		InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/transfers/transfer/self",
-			encode({
+			EncodeJSON({
 				gameId: gameId,
 				preferredServerId: serverId,
 			}),

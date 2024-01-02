@@ -29,7 +29,7 @@ interface HealthBarEntry {
 @Controller({})
 export class BlockHealthController implements OnStart {
 	private blockHealthBars = new Map<Vector3, HealthBarEntry>();
-	HEALTHBAR_EXPIRE_TIME = 1.25;
+	HealthbarExpireTime = 1.25;
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -78,7 +78,7 @@ export class BlockHealthController implements OnStart {
 		SetInterval(0.1, () => {
 			const toRemove = new Map<Vector3, HealthBarEntry>();
 			this.blockHealthBars.forEach((entry, pos) => {
-				if (Time.time >= entry.lastHitTime + this.HEALTHBAR_EXPIRE_TIME) {
+				if (Time.time >= entry.lastHitTime + this.HealthbarExpireTime) {
 					toRemove.set(pos, entry);
 				}
 			});
@@ -117,7 +117,7 @@ export class BlockHealthController implements OnStart {
 			if (effect) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
 				if (block) {
-					this.SetParticlesToBlockMaterial(block.runtimeBlockId, effect);
+					this.SetParticlesToBlockMaterial(block.RuntimeBlockId, effect);
 				}
 			}
 		}
@@ -179,7 +179,7 @@ export class BlockHealthController implements OnStart {
 		}
 
 		//Get the meta for the hit block
-		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.itemDef;
+		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.ItemDef;
 
 		//Create health bar entry
 		let maxHealth = itemMeta?.block?.health ?? WorldAPI.DefaultVoxelHealth;
@@ -194,7 +194,7 @@ export class BlockHealthController implements OnStart {
 			}),
 			maxHealth: maxHealth,
 		};
-		healthBarEntry.healthbar.changeDelayInSeconds = 0.12;
+		healthBarEntry.healthbar.ChangeDelayInSeconds = 0.12;
 
 		this.blockHealthBars.set(blockPos, healthBarEntry);
 		return healthBarEntry;

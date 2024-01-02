@@ -46,7 +46,7 @@ export class InventoryUIController implements OnStart {
 		private readonly invController: InventoryController,
 		private readonly coreUIController: CoreUIController,
 	) {
-		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
+		const go = this.coreUIController.Refs.GetValue("Apps", "Inventory");
 		this.hotbarCanvas = go.GetComponent<Canvas>();
 		this.hotbarCanvas.enabled = true;
 
@@ -173,10 +173,10 @@ export class InventoryUIController implements OnStart {
 
 			if (entity === undefined) {
 				this.healthBar.SetValue(0);
-				this.healthBar.transform.gameObject.SetActive(false);
+				this.healthBar.Transform.gameObject.SetActive(false);
 				return;
 			}
-			this.healthBar.transform.gameObject.SetActive(true);
+			this.healthBar.Transform.gameObject.SetActive(true);
 			const SetFill = (newHealth: number, instant: boolean) => {
 				let fill = newHealth / entity.GetMaxHealth();
 				if (instant) {

@@ -11,10 +11,10 @@ import { SetTimeout } from "Shared/Util/Timer";
 @Controller({})
 export class DamageIndicatorController implements OnStart {
 	private combatEffectsCanvas: Canvas;
-	public hitMarkerImage: Image;
+	public HitMarkerImage: Image;
 	private hitMarkerBin = new Bin();
-	public hitMarkerAudioClip: AudioClip | undefined;
-	public criticalHitAudioClips: AudioClip[] = [];
+	public HitMarkerAudioClip: AudioClip | undefined;
+	public CriticalHitAudioClips: AudioClip[] = [];
 	private indicatorPrefab: GameObject;
 	private indicatorPos: Vector2;
 	private damageIndicatorBin = new Bin();
@@ -25,8 +25,8 @@ export class DamageIndicatorController implements OnStart {
 		);
 		this.combatEffectsCanvas = combatEffectsUI.GetComponent<Canvas>();
 		Object.Destroy(combatEffectsUI.transform.FindChild("DamageIndicator")!.gameObject);
-		this.hitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>();
-		this.hitMarkerImage.enabled = false;
+		this.HitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>();
+		this.HitMarkerImage.enabled = false;
 		this.indicatorPrefab = AssetCache.LoadAsset(
 			"@Easy/Core/Shared/Resources/Prefabs/UI/Combat/DamageIndicator.prefab",
 		);
@@ -36,20 +36,20 @@ export class DamageIndicatorController implements OnStart {
 
 	OnStart(): void {
 		// this.damageIndicatorObject = AssetBridge.Instance.LoadAsset("Client/Resources/Prefabs/DamageIndicator.prefab");
-		this.hitMarkerAudioClip = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Hit_Health.ogg");
-		this.criticalHitAudioClips = [
+		this.HitMarkerAudioClip = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Hit_Health.ogg");
+		this.CriticalHitAudioClips = [
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Drone_Damage_01.ogg"),
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Drone_Damage_02.ogg"),
 		];
 
 		CoreClientSignals.EntityDamage.Connect((event) => {
-			const entityGO = event.entity.networkObject.gameObject;
+			const entityGO = event.entity.NetworkObject.gameObject;
 
 			//Hitstun
 			//const hitstunDuration = DamageUtils.AddHitstun(event.entity, event.amount, () => {});
 
 			//Entity Damage Animation
-			event.entity.animator?.PlayTakeDamage(0.25, event.damageType, entityGO.transform.position, entityGO);
+			event.entity.Animator?.PlayTakeDamage(0.25, event.damageType, entityGO.transform.position, entityGO);
 
 			// Damage taken sound
 			AudioManager.PlayAtPosition(
@@ -64,22 +64,22 @@ export class DamageIndicatorController implements OnStart {
 
 			if (event.fromEntity?.IsLocalCharacter()) {
 				this.hitMarkerBin.Clean();
-				this.hitMarkerImage.enabled = true;
+				this.HitMarkerImage.enabled = true;
 				this.hitMarkerBin.Add(
 					SetTimeout(0.08, () => {
-						this.hitMarkerImage.enabled = false;
+						this.HitMarkerImage.enabled = false;
 					}),
 				);
 
 				if (event.criticalHit) {
-					if (this.criticalHitAudioClips.size() > 0) {
-						const clip = RandomUtil.FromArray(this.criticalHitAudioClips);
+					if (this.CriticalHitAudioClips.size() > 0) {
+						const clip = RandomUtil.FromArray(this.CriticalHitAudioClips);
 						AudioManager.PlayClipGlobal(clip, {
 							volumeScale: 0.6,
 						});
 					}
 				} else {
-					AudioManager.PlayClipGlobal(this.hitMarkerAudioClip!, {
+					AudioManager.PlayClipGlobal(this.HitMarkerAudioClip!, {
 						volumeScale: 0.6,
 					});
 				}
@@ -89,7 +89,7 @@ export class DamageIndicatorController implements OnStart {
 		});
 
 		CoreClientSignals.EntityDeath.Connect((event) => {
-			event.entity.animator?.PlayDeath(event.damageType);
+			event.entity.Animator?.PlayDeath(event.damageType);
 
 			// PvP Kill
 			if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {

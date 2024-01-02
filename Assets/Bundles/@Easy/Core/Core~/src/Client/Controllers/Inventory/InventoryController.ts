@@ -207,8 +207,8 @@ export class InventoryController implements OnStart {
 	public ObserveLocalInventory(callback: (inv: Inventory) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
-		if (Game.LocalPlayer.character && Game.LocalPlayer.character instanceof CharacterEntity) {
-			cleanup = callback(Game.LocalPlayer.character.GetInventory());
+		if (Game.LocalPlayer.Character && Game.LocalPlayer.Character instanceof CharacterEntity) {
+			cleanup = callback(Game.LocalPlayer.Character.GetInventory());
 		}
 
 		bin.Add(
@@ -250,7 +250,7 @@ export class InventoryController implements OnStart {
 	}
 
 	public SetHeldSlot(slot: number): void {
-		if (Game.LocalPlayer.character === undefined) return;
+		if (Game.LocalPlayer.Character === undefined) return;
 		if (this.LocalInventory === undefined) return;
 
 		this.LocalInventory.SetHeldSlot(slot);
@@ -315,7 +315,7 @@ export class InventoryController implements OnStart {
 			const itemMeta = itemStack.GetMeta();
 			if (!completed) {
 				if (itemMeta.armor) {
-					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
+					const armorSlot = inv.ArmorSlots[itemMeta.armor.armorType];
 					const existingArmor = inv.GetItem(armorSlot);
 					if (existingArmor === undefined) {
 						this.SwapSlots(inv, slot, inv, armorSlot, {
@@ -368,7 +368,7 @@ export class InventoryController implements OnStart {
 			// armor
 			if (!completed) {
 				if (itemMeta.armor) {
-					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
+					const armorSlot = inv.ArmorSlots[itemMeta.armor.armorType];
 					const existingArmor = inv.GetItem(armorSlot);
 					if (existingArmor === undefined) {
 						this.SwapSlots(inv, slot, inv, armorSlot, {

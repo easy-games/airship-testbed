@@ -14,7 +14,7 @@ export class ProjectileEffectsController implements OnStart {
 
 	OnStart(): void {
 		CoreClientSignals.ProjectileCollide.Connect((event) => {
-			const itemMeta = ItemUtil.GetItemDef(event.projectile.itemType);
+			const itemMeta = ItemUtil.GetItemDef(event.projectile.ItemType);
 
 			if (itemMeta.projectile?.onHitVFXTemplate) {
 				const effect = EffectsManager.SpawnBundleEffectById(
@@ -24,7 +24,7 @@ export class ProjectileEffectsController implements OnStart {
 				);
 			}
 
-			const trail = event.projectile.gameObject.transform.Find("Trail");
+			const trail = event.projectile.GameObject.transform.Find("Trail");
 			if (trail) {
 				const pos = trail.position;
 				Bridge.SetParentToSceneRoot(trail);

@@ -31,7 +31,7 @@ export class BWBedService implements OnStart {
 	OnStart(): void {
 		// Listen for bed destroyed.
 		CoreServerSignals.BeforeBlockDestroyed.Connect((event) => {
-			if (event.block.blockId === ItemType.BED) {
+			if (event.block.BlockId === ItemType.BED) {
 				this.TryDestroyBed(event.blockPos, event.entity);
 				print("damage block aoe.");
 				Dependency<BlockInteractService>().DamageBlockAOE(undefined, event.blockPos, {
@@ -60,7 +60,7 @@ export class BWBedService implements OnStart {
 		if (!teamId) return false;
 		const team = this.teamService.GetTeamById(teamId);
 		if (team) {
-			const breakerTeam = entity?.player?.GetTeam();
+			const breakerTeam = entity?.Player?.GetTeam();
 			if (entity && breakerTeam) {
 				Game.BroadcastMessage(
 					ColorUtil.ColoredText(breakerTeam.color, entity.GetDisplayName()) +
@@ -93,7 +93,7 @@ export class BWBedService implements OnStart {
 		for (let team of this.teamService.GetTeams()) {
 			const bedPosition = loadedMap.GetWorldPosition(team.id + "_bed");
 			const bedPos = MathUtil.FloorVec(
-				new Vector3(bedPosition.Position.x, bedPosition.Position.y, bedPosition.Position.z),
+				new Vector3(bedPosition.position.x, bedPosition.position.y, bedPosition.position.z),
 			);
 			const bedState: BedState = {
 				teamId: team.id,

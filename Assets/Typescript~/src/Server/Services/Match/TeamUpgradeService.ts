@@ -71,7 +71,7 @@ export class TeamUpgradeService implements OnStart {
 	private ApplyPersistentUpgradeEffects(): void {
 		/* Damage. */
 		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			const fromTeam = event.fromEntity?.player?.GetTeam();
+			const fromTeam = event.fromEntity?.Player?.GetTeam();
 			if (!fromTeam) return;
 			const upgradeMapForTeam = this.teamUpgradeMap.get(fromTeam);
 			if (!upgradeMapForTeam) return;
@@ -89,7 +89,7 @@ export class TeamUpgradeService implements OnStart {
 		});
 		/* Armor protection. */
 		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			const entityTeam = event.entity.player?.GetTeam();
+			const entityTeam = event.entity.Player?.GetTeam();
 			if (!entityTeam) return;
 			const upgradeMapForTeam = this.teamUpgradeMap.get(entityTeam);
 			if (!upgradeMapForTeam) return;

@@ -63,7 +63,7 @@ export class CropGrowthService implements OnStart {
 			const world = WorldAPI.GetMainWorld();
 			if (!world) return;
 
-			const cropBlock = world.GetBlockAt(event.pos).itemDef?.cropBlock;
+			const cropBlock = world.GetBlockAt(event.pos).ItemDef?.cropBlock;
 			if (cropBlock) {
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_GROWTH_LEVEL, 0, true);
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_HARVESTABLE, false, true);

@@ -1,3 +1,3 @@
 export class CharacterSpawnClientEvent {
-	constructor(public readonly CharacterGO: GameObject) {}
+	constructor(public readonly characterGO: GameObject) {}
 }

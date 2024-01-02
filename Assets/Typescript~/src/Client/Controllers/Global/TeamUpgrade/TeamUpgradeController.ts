@@ -16,7 +16,7 @@ import { TeamUpgradeUtil } from "Shared/TeamUpgrade/TeamUpgradeUtil";
 
 @Controller({})
 export class TeamUpgradeController implements OnStart {
-	public localUpgradeMap = new Map<TeamUpgradeType, TeamUpgradeStateDto>();
+	public LocalUpgradeMap = new Map<TeamUpgradeType, TeamUpgradeStateDto>();
 	private canvas: Canvas;
 	private content: Transform;
 	constructor() {
@@ -42,7 +42,7 @@ export class TeamUpgradeController implements OnStart {
 				teamId: Game.LocalPlayer.GetTeam()?.id ?? "0",
 				currentUpgradeTier: 0,
 			};
-			this.localUpgradeMap.set(upgradeType, dto);
+			this.LocalUpgradeMap.set(upgradeType, dto);
 
 			this.UpdateCard(upgradeType, true);
 
@@ -74,7 +74,7 @@ export class TeamUpgradeController implements OnStart {
 	/** Updates team upgrade interface to reflect an incoming state change. */
 	private HandleUpgradeStateChange(upgradeType: TeamUpgradeType, tier: number): void {
 		// Update local client state.
-		const state = this.localUpgradeMap.get(upgradeType);
+		const state = this.LocalUpgradeMap.get(upgradeType);
 		if (state) {
 			state.currentUpgradeTier = tier;
 		}
@@ -93,7 +93,7 @@ export class TeamUpgradeController implements OnStart {
 
 	/** Initializes interface `VisualElement` that corresponds to type. */
 	private UpdateCard(upgradeType: TeamUpgradeType, init = false): void {
-		const state = this.localUpgradeMap.get(upgradeType);
+		const state = this.LocalUpgradeMap.get(upgradeType);
 		const tier = state?.currentUpgradeTier ?? 0;
 
 		const card = this.GetUpgradeCard(upgradeType);
@@ -157,9 +157,10 @@ export class TeamUpgradeController implements OnStart {
 			let canPurchase = false;
 			if (tier < upgradeMeta.tiers.size()) {
 				if (
-					Game.LocalPlayer.character
-						?.GetInventory()
-						.HasEnough(upgradeMeta.tiers[tier].currency, upgradeMeta.tiers[tier].cost)
+					Game.LocalPlayer.Character?.GetInventory().HasEnough(
+						upgradeMeta.tiers[tier].currency,
+						upgradeMeta.tiers[tier].cost,
+					)
 				) {
 					canPurchase = true;
 				}
@@ -179,7 +180,7 @@ export class TeamUpgradeController implements OnStart {
 		if (init) {
 			CoreUI.SetupButton(buttonGO);
 			CanvasAPI.OnClickEvent(buttonGO, () => {
-				const currentTier = this.localUpgradeMap.get(upgradeType)?.currentUpgradeTier;
+				const currentTier = this.LocalUpgradeMap.get(upgradeType)?.currentUpgradeTier;
 				if (currentTier !== undefined) {
 					const nextTier = currentTier + 1;
 					const result = Network.ClientToServer.TeamUpgrade.UpgradeRequest.Client.FireServer(
@@ -200,19 +201,19 @@ export class TeamUpgradeController implements OnStart {
 		this.UpdateUI();
 
 		const bin = new Bin();
-		const inv = Game.LocalPlayer.character?.GetInventory();
+		const inv = Game.LocalPlayer.Character?.GetInventory();
 		if (inv) {
 			inv.Changed.Connect(() => {
 				this.UpdateUI();
 			});
 		}
 
-		if (Game.LocalPlayer.character) {
-			const startingPos = Game.LocalPlayer.character.model.transform.position;
+		if (Game.LocalPlayer.Character) {
+			const startingPos = Game.LocalPlayer.Character.Model.transform.position;
 			bin.Add(
 				SetInterval(0.1, () => {
-					if (Game.LocalPlayer.character) {
-						if (startingPos.sub(Game.LocalPlayer.character.model.transform.position).magnitude >= 1) {
+					if (Game.LocalPlayer.Character) {
+						if (startingPos.sub(Game.LocalPlayer.Character.Model.transform.position).magnitude >= 1) {
 							AppManager.Close();
 						}
 					}

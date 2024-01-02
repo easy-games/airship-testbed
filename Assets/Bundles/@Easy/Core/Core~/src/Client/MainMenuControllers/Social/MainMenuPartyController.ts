@@ -4,7 +4,7 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { encode } from "Shared/json";
+import { EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
@@ -33,7 +33,7 @@ export class MainMenuPartyController implements OnStart {
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
 			InternalHttpManager.PostAsync(
 				AirshipUrl.GameCoordinator + "/parties/party/join",
-				encode({
+				EncodeJSON({
 					partyId: data.partyId,
 				}),
 			);
@@ -51,11 +51,11 @@ export class MainMenuPartyController implements OnStart {
 				this.UpdateParty();
 			});
 
-		Game.LocalPlayer.onUsernameChanged.Connect(() => {
+		Game.LocalPlayer.OnUsernameChanged.Connect(() => {
 			this.UpdateParty();
 		});
 
-		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");
+		const addFriendsButton = this.mainMenuController.Refs.GetValue("Social", "AddFriendsButton");
 		CoreUI.SetupButton(addFriendsButton);
 		CanvasAPI.OnClickEvent(addFriendsButton, () => {
 			Dependency<MainMenuAddFriendsController>().Open();
@@ -70,22 +70,22 @@ export class MainMenuPartyController implements OnStart {
 
 	private UpdateParty(): void {
 		if (this.party === undefined) {
-			const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
+			const partyContent = this.mainMenuController.Refs.GetValue("Social", "PartyContent");
 			partyContent.ClearChildren();
 
-			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
+			const partyTitle = this.mainMenuController.Refs.GetValue("Social", "PartyTitle") as TMP_Text;
 			partyTitle.text = `(0/8)`;
 
-			const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
+			const leaveButton = this.mainMenuController.Refs.GetValue("Social", "LeavePartyButton");
 			leaveButton.SetActive(false);
 
 			return;
 		}
 
-		const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
+		const partyContent = this.mainMenuController.Refs.GetValue("Social", "PartyContent");
 		const partyMemberUids = this.party.members.map((m) => m.uid);
 
-		const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
+		const leaveButton = this.mainMenuController.Refs.GetValue("Social", "LeavePartyButton");
 		if (this.party.leader === Game.LocalPlayer.userId) {
 			leaveButton.SetActive(false);
 		} else {
@@ -149,14 +149,14 @@ export class MainMenuPartyController implements OnStart {
 			const leftLayout = refs.GetValue("UI", "LeftLayout") as HorizontalLayoutGroup;
 			LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
 
-			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
+			const partyTitle = this.mainMenuController.Refs.GetValue("Social", "PartyTitle") as TMP_Text;
 			partyTitle.text = `(${this.party.members.size()}/8)`;
 
 			if (init) {
 				CanvasAPI.OnClickEvent(kickButton, () => {
 					InternalHttpManager.PostAsync(
 						AirshipUrl.GameCoordinator + "/parties/party/remove",
-						encode({
+						EncodeJSON({
 							userToRemove: member.uid,
 						}),
 					);
@@ -165,7 +165,7 @@ export class MainMenuPartyController implements OnStart {
 				CanvasAPI.OnClickEvent(leaveButton, () => {
 					InternalHttpManager.PostAsync(
 						AirshipUrl.GameCoordinator + "/parties/party/remove",
-						encode({
+						EncodeJSON({
 							userToRemove: member.uid,
 						}),
 					);

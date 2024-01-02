@@ -2,7 +2,7 @@ import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
 import { MainMenuController } from "./MainMenuController";
 export declare class MainMenuHomeController implements OnStart {
     private readonly mainMenuController;
-    gameCoordinatorUrl: string;
+    GameCoordinatorUrl: string;
     private errorMessageText;
     private errorMessageWrapper;
     private errorCloseButton;

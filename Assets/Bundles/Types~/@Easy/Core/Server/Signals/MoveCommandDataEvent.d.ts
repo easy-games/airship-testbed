@@ -26,5 +26,5 @@ export declare class MoveCommandDataEvent<T = unknown, K = unknown> {
      * }
      * ```
      */
-    is<IsK extends keyof DataStreamItems, IsT extends DataStreamItems[IsK]>(key: IsK): this is MoveCommandDataEvent<IsT, IsK>;
+    Is<IsK extends keyof DataStreamItems, IsT extends DataStreamItems[IsK]>(key: IsK): this is MoveCommandDataEvent<IsT, IsK>;
 }

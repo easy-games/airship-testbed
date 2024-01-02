@@ -11,24 +11,24 @@ export class SpringTween {
 		this.spring = new Spring(position, angularFrequency);
 	}
 
-	public setGoal(goal: Vector3) {
+	public SetGoal(goal: Vector3) {
 		this.elapsedTime = 0;
-		this.spring.goal = goal;
+		this.spring.Goal = goal;
 	}
 
-	public impulse(impulse: Vector3) {
+	public Impulse(impulse: Vector3) {
 		this.elapsedTime = 0;
-		this.spring.impulse(impulse);
+		this.spring.Impulse(impulse);
 	}
 
-	public resetTo(position: Vector3) {
+	public ResetTo(position: Vector3) {
 		this.elapsedTime = 0;
-		this.spring.resetTo(position);
+		this.spring.ResetTo(position);
 	}
 
-	public update(deltaTime: number): LuaTuple<[position: Vector3, isDone: boolean]> {
+	public Update(deltaTime: number): LuaTuple<[position: Vector3, isDone: boolean]> {
 		this.elapsedTime += deltaTime;
-		const springPos = this.spring.update(deltaTime);
-		return $tuple(springPos, this.elapsedTime >= this.minDuration && this.spring.velocity.magnitude < EPSILON);
+		const springPos = this.spring.Update(deltaTime);
+		return $tuple(springPos, this.elapsedTime >= this.minDuration && this.spring.Velocity.magnitude < EPSILON);
 	}
 }

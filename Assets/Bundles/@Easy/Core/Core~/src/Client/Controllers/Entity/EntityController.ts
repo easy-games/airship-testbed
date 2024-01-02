@@ -24,7 +24,7 @@ import { ViewmodelController } from "../Viewmodel/ViewmodelController";
 @Controller({})
 export class EntityController implements OnStart {
 	private entities = new Map<number, Entity>();
-	public entityHealthbarPrefab: Object;
+	public EntityHealthbarPrefab: Object;
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -37,10 +37,10 @@ export class EntityController implements OnStart {
 		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as AirshipObjectPool;
 		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
 
-		this.entityHealthbarPrefab = AssetBridge.Instance.LoadAsset(
+		this.EntityHealthbarPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/EntityHealthbar.prefab",
 		) as Object;
-		PoolManager.PreLoadPool(this.entityHealthbarPrefab, 60);
+		PoolManager.PreLoadPool(this.EntityHealthbarPrefab, 60);
 
 		CoreNetwork.ServerToClient.SpawnEntities.Client.OnServerEvent((entityDtos) => {
 			// if (RunUtil.IsEditor()) {
@@ -71,7 +71,7 @@ export class EntityController implements OnStart {
 			const entity = this.GetEntityById(entityId);
 			if (!entity) return;
 
-			entity.animator?.PlayItemUseAnim(animationId);
+			entity.Animator?.PlayItemUseAnim(animationId);
 		});
 
 		CoreNetwork.ServerToClient.Entity.SetHealth.Client.OnServerEvent((entityId, health, maxHealth) => {
@@ -96,7 +96,7 @@ export class EntityController implements OnStart {
 		CoreNetwork.ServerToClient.Entity.SetLookVector.Client.OnServerEvent((entityId, lookVector) => {
 			const entity = this.GetEntityById(entityId);
 			if (entity?.IsLocalCharacter()) {
-				this.localEntityController.humanoidCameraMode?.SetDirection(lookVector);
+				this.localEntityController.HumanoidCameraMode?.SetDirection(lookVector);
 			}
 		});
 		CoreNetwork.ServerToClient.Entity.FallDamageTaken.Client.OnServerEvent((entityId, velocity) => {
@@ -105,7 +105,7 @@ export class EntityController implements OnStart {
 				return;
 			}
 			if (DamageUtils.GetFallDamage(velocity.y) > 0) {
-				let effectPos = entity.model.transform.position;
+				let effectPos = entity.Model.transform.position;
 				const raycastPos = WorldAPI.GetMainWorld()?.RaycastVoxel(effectPos, Vector3.down, 4);
 				const landingEffect = EffectsManager.SpawnPrefabEffect(
 					AllBundleItems.Entity_Movement_LandVFX,
@@ -121,7 +121,7 @@ export class EntityController implements OnStart {
 					const world = WorldAPI.GetMainWorld();
 
 					const blockId = world?.RaycastBlockBelow(
-						entity.model.transform.position.add(new Vector3(0, 0.25, 0)),
+						entity.Model.transform.position.add(new Vector3(0, 0.25, 0)),
 					)?.blockId;
 
 					for (let i = 0; i < particles.Length; i++) {
@@ -188,9 +188,9 @@ export class EntityController implements OnStart {
 
 			//Body Meshes
 			Profiler.BeginSample("ColorRandomization");
-			event.entity.accessoryBuilder.SetSkinColor(skinColor, false);
+			event.entity.AccessoryBuilder.SetSkinColor(skinColor, false);
 			if (event.entity.IsLocalCharacter()) {
-				Dependency<ViewmodelController>().accessoryBuilder.SetSkinColor(skinColor, false);
+				Dependency<ViewmodelController>().AccessoryBuilder.SetSkinColor(skinColor, false);
 			}
 			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Hair, hairColor, false);
 			// event.entity.accessoryBuilder.SetAccessoryColor(AccessorySlot.Shirt, shirtColor, true);
@@ -201,7 +201,7 @@ export class EntityController implements OnStart {
 	private DespawnEntity(entity: Entity): void {
 		entity.Destroy();
 		CoreClientSignals.EntityDespawn.Fire(entity);
-		this.entities.delete(entity.id);
+		this.entities.delete(entity.Id);
 	}
 
 	private AddEntity(entityDto: EntityDto): Entity | undefined {
@@ -240,11 +240,11 @@ export class EntityController implements OnStart {
 			Profiler.EndSample();
 		}
 
-		this.entities.set(entity.id, entity);
+		this.entities.set(entity.Id, entity);
 
-		if (entity.player) {
+		if (entity.Player) {
 			if (entity instanceof CharacterEntity) {
-				entity.player.SetCharacter(entity);
+				entity.Player.SetCharacter(entity);
 			} else {
 				print("Failed to set player character because it wasn't a CharacterEntity.");
 			}
@@ -270,7 +270,7 @@ export class EntityController implements OnStart {
 			const bin = new Bin();
 			bin.Add(
 				CoreClientSignals.EntitySpawn.Connect((event) => {
-					if (event.entity.id === entityId) {
+					if (event.entity.Id === entityId) {
 						bin.Clean();
 						resolve(event.entity);
 						return;

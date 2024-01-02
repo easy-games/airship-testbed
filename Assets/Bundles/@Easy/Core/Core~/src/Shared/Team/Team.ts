@@ -13,8 +13,8 @@ export interface TeamDto {
 
 export class Team {
 	private players = new Set<Player>();
-	public readonly onPlayerAdded = new Signal<Player>();
-	public readonly onPlayerRemoved = new Signal<Player>();
+	public readonly OnPlayerAdded = new Signal<Player>();
+	public readonly OnPlayerRemoved = new Signal<Player>();
 
 	constructor(public readonly name: string, public readonly id: string, public readonly color: Color) {}
 
@@ -27,7 +27,7 @@ export class Team {
 
 		this.players.add(player);
 		player.SetTeam(this);
-		this.onPlayerAdded.Fire(player);
+		this.OnPlayerAdded.Fire(player);
 
 		if (RunUtil.IsClient()) {
 			import("Client/CoreClientSignals").then((i) => {
@@ -42,7 +42,7 @@ export class Team {
 
 	public RemovePlayer(player: Player): void {
 		if (this.players.delete(player)) {
-			this.onPlayerRemoved.Fire(player);
+			this.OnPlayerRemoved.Fire(player);
 		}
 	}
 

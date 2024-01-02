@@ -14,8 +14,8 @@ export declare class GroundItem {
     readonly drop: GroundItemDrop;
     readonly pickupTime: number;
     data: GroundItemData;
-    readonly transform: Transform;
-    shouldMerge: boolean;
+    readonly Transform: Transform;
+    ShouldMerge: boolean;
     constructor(id: number, itemStack: ItemStack, drop: GroundItemDrop, pickupTime: number, data: GroundItemData);
     SetData(key: string, value: unknown): void;
     GetData<T>(key: string): T | undefined;

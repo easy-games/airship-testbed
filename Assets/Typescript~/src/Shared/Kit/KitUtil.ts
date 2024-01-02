@@ -1,4 +1,4 @@
-import { Kit, bedwarsKits } from "./KitMeta";
+import { Kit, BedwarsKits } from "./KitMeta";
 import { KitType } from "./KitType";
 
 export class KitUtil {
@@ -8,6 +8,6 @@ export class KitUtil {
 	 * @return The kit's meta.
 	 */
 	public static GetKitMeta(kitType: KitType): Kit {
-		return bedwarsKits[kitType];
+		return BedwarsKits[kitType];
 	}
 }

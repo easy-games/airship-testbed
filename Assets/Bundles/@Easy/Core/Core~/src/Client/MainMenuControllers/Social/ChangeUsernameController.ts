@@ -8,7 +8,7 @@ import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { SignalPriority } from "Shared/Util/Signal";
-import { encode } from "Shared/json";
+import { EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { UserController } from "../User/UserController";
 
@@ -76,7 +76,7 @@ export class ChangeUsernameController implements OnStart {
 
 		const res = HttpManager.PatchAsync(
 			AirshipUrl.GameCoordinator + "/users",
-			encode({
+			EncodeJSON({
 				username: split[0],
 				discriminator: split[1],
 			}),

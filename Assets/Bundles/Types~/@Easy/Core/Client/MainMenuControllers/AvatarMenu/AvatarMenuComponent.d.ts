@@ -9,8 +9,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private subNavBars?;
     private activeMainIndex;
     private activeSubIndex;
-    itemButtonHolder?: Transform;
-    itemButtonTemplate?: GameObject;
+    ItemButtonHolder?: Transform;
+    ItemButtonTemplate?: GameObject;
     private currentSlot;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;

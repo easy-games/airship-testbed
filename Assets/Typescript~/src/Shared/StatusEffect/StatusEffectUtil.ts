@@ -6,7 +6,7 @@ export class StatusEffectUtil {
 	 * @param tier The tier to convert to a roman numeral.
 	 * @returns Roman numeral representation of tier if it is 10 or below, otherwise decimal.
 	 */
-	public static decimalToRomanNumeral(tier: number): string {
+	public static DecimalToRomanNumeral(tier: number): string {
 		switch (tier) {
 			case 1:
 				return "I";

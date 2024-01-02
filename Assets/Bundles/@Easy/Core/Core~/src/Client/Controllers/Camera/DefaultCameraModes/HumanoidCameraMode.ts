@@ -194,7 +194,7 @@ export class HumanoidCameraMode implements CameraMode {
 		const posOffset = new Vector3(xPos, yPos, zPos);
 
 		if (this.yOffsetSpring !== undefined) {
-			const [newYOffset, isDone] = this.yOffsetSpring.update(dt);
+			const [newYOffset, isDone] = this.yOffsetSpring.Update(dt);
 			this.yOffset = newYOffset.y;
 			if (isDone) {
 				this.yOffsetSpring = undefined;
@@ -235,14 +235,14 @@ export class HumanoidCameraMode implements CameraMode {
 		if (immediate) {
 			this.yOffset = yOffset;
 			if (this.yOffsetSpring) {
-				this.yOffsetSpring.resetTo(new Vector3(0, yOffset, 0));
+				this.yOffsetSpring.ResetTo(new Vector3(0, yOffset, 0));
 			}
 			return;
 		}
 		if (this.yOffsetSpring === undefined) {
 			this.yOffsetSpring = new SpringTween(new Vector3(0, this.yOffset, 0), 5, 2);
 		}
-		this.yOffsetSpring.setGoal(new Vector3(0, yOffset, 0));
+		this.yOffsetSpring.SetGoal(new Vector3(0, yOffset, 0));
 	}
 
 	public SetLookBackwards(lookBackwards: boolean) {

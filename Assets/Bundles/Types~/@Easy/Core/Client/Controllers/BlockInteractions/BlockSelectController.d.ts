@@ -10,7 +10,7 @@ export declare class BlockSelectController implements OnStart {
     HighlightBlockPosition?: Vector3;
     PlaceBlockPosition?: Vector3;
     IsVoidPlacement: boolean;
-    highlightOnPlacement: boolean;
+    HighlightOnPlacement: boolean;
     private voidPlane;
     private enabledCount;
     private lastVoidPlaceTime;
