@@ -2,26 +2,26 @@
  * Unique class for holding the position and rotation of the camera. Used by `CameraMode` classes.
  */
 export class CameraTransform {
-	public static readonly identity = new CameraTransform();
+	public static readonly Identity = new CameraTransform();
 
 	/** The position of the camera in 3D world space. */
-	public readonly position: Vector3;
+	public readonly Position: Vector3;
 
 	/** The rotation of the camera in 3D world space. */
-	public readonly rotation: Quaternion;
+	public readonly Rotation: Quaternion;
 
-	public static fromTransform(transform: Transform) {
+	public static FromTransform(transform: Transform) {
 		return new CameraTransform(transform.position, transform.rotation);
 	}
 
 	constructor(position?: Vector3, rotation?: Quaternion) {
-		this.position = position !== undefined ? position : Vector3.zero;
-		this.rotation = rotation !== undefined ? rotation : Quaternion.identity;
+		this.Position = position !== undefined ? position : Vector3.zero;
+		this.Rotation = rotation !== undefined ? rotation : Quaternion.identity;
 	}
 
 	public Lerp(other: CameraTransform, alpha: number): CameraTransform {
-		const position = this.position.Lerp(other.position, alpha);
-		const rotation = Quaternion.Slerp(this.rotation, other.rotation, alpha);
+		const position = this.Position.Lerp(other.Position, alpha);
+		const rotation = Quaternion.Slerp(this.Rotation, other.Rotation, alpha);
 		return new CameraTransform(position, rotation);
 	}
 }

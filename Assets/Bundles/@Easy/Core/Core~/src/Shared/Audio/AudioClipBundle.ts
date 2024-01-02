@@ -17,13 +17,13 @@ export enum AudioBundleSpacialMode {
 }
 
 export class AudioClipBundle {
-	public playMode: AudioBundlePlayMode = AudioBundlePlayMode.RANDOM_NO_REPEAT;
-	public spacialMode: AudioBundleSpacialMode = AudioBundleSpacialMode.SPACIAL;
-	public spacialPosition = Vector3.zero;
-	public volumeScale = 1;
-	public useFullPath = false;
+	public PlayMode: AudioBundlePlayMode = AudioBundlePlayMode.RANDOM_NO_REPEAT;
+	public SpacialMode: AudioBundleSpacialMode = AudioBundleSpacialMode.SPACIAL;
+	public SpacialPosition = Vector3.zero;
+	public VolumeScale = 1;
+	public UseFullPath = false;
 
-	public soundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
+	public SoundOptions: PlaySoundConfig = { volumeScale: 1, loop: false };
 	private clipPaths: string[];
 	private possibleRandomIndex: number[] = [];
 	private lastIndexPlayed = -1;
@@ -73,26 +73,26 @@ export class AudioClipBundle {
 			print("Playing Audio Bundle: " + index);
 		} */
 		this.lastIndexPlayed = index;
-		this.soundOptions.volumeScale = this.volumeScale;
-		if (this.spacialMode === AudioBundleSpacialMode.SPACIAL) {
-			if (this.useFullPath) {
+		this.SoundOptions.volumeScale = this.VolumeScale;
+		if (this.SpacialMode === AudioBundleSpacialMode.SPACIAL) {
+			if (this.UseFullPath) {
 				this.lastAudioSource = AudioManager.PlayFullPathAtPosition(
 					this.clipPaths[index],
-					this.spacialPosition,
-					this.soundOptions,
+					this.SpacialPosition,
+					this.SoundOptions,
 				);
 			} else {
 				this.lastAudioSource = AudioManager.PlayAtPosition(
 					this.clipPaths[index],
-					this.spacialPosition,
-					this.soundOptions,
+					this.SpacialPosition,
+					this.SoundOptions,
 				);
 			}
 		} else {
-			if (this.useFullPath) {
-				this.lastAudioSource = AudioManager.PlayFullPathGlobal(this.clipPaths[index], this.soundOptions);
+			if (this.UseFullPath) {
+				this.lastAudioSource = AudioManager.PlayFullPathGlobal(this.clipPaths[index], this.SoundOptions);
 			} else {
-				this.lastAudioSource = AudioManager.PlayGlobal(this.clipPaths[index], this.soundOptions);
+				this.lastAudioSource = AudioManager.PlayGlobal(this.clipPaths[index], this.SoundOptions);
 			}
 		}
 
@@ -104,14 +104,14 @@ export class AudioClipBundle {
 	}
 
 	public PlayNext() {
-		if (this.playMode === AudioBundlePlayMode.MANUAL) {
+		if (this.PlayMode === AudioBundlePlayMode.MANUAL) {
 			warn("Trying to play an audio bundle sequence without a mode selected");
 			return;
 		}
-		this.soundOptions.loop = false;
+		this.SoundOptions.loop = false;
 
 		//SEQUENCE
-		if (this.playMode === AudioBundlePlayMode.SEQUENCE) {
+		if (this.PlayMode === AudioBundlePlayMode.SEQUENCE) {
 			//Step to the next index and play it
 			this.StepIndex();
 			this.PlayManual(this.lastIndexPlayed);
@@ -121,19 +121,19 @@ export class AudioClipBundle {
 		//LOOP & RANDOM TO LOOP
 		const arraySize = this.clipPaths.size();
 		const lastIndex = arraySize - 1;
-		if (this.playMode === AudioBundlePlayMode.LOOP) {
-			this.soundOptions.loop = true;
+		if (this.PlayMode === AudioBundlePlayMode.LOOP) {
+			this.SoundOptions.loop = true;
 			this.PlayManual(lastIndex);
 		}
 
 		//RANDOM play sounds
 		let randomIndex = 0;
-		if (this.playMode === AudioBundlePlayMode.RANDOM) {
+		if (this.PlayMode === AudioBundlePlayMode.RANDOM) {
 			//Randomly select an index and play that sound
 			randomIndex = this.GetRandomIndex(arraySize);
 			//print("Playing random number: " + randomIndex);
 			this.PlayManual(randomIndex);
-		} else if (this.playMode === AudioBundlePlayMode.RANDOM_NO_REPEAT) {
+		} else if (this.PlayMode === AudioBundlePlayMode.RANDOM_NO_REPEAT) {
 			//Randomly select an index ignoring the last played index
 			randomIndex = this.GetRandomIndex(lastIndex);
 			//print("Playing random no repeat number: " + this.possibleRandomIndex[randomIndex]);
@@ -141,7 +141,7 @@ export class AudioClipBundle {
 			this.PlayManual(this.possibleRandomIndex[randomIndex]);
 
 			this.RefreshPossibleRandomIndex();
-		} else if (this.playMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed !== lastIndex) {
+		} else if (this.PlayMode === AudioBundlePlayMode.RANDOM_TO_LOOP && this.lastIndexPlayed !== lastIndex) {
 			//RANDOM TO LOOP - sending to the loop after a delay
 			randomIndex = this.GetRandomIndex(lastIndex);
 			this.PlayManual(randomIndex);
@@ -155,7 +155,7 @@ export class AudioClipBundle {
 						//Fade out current sound
 						this.Stop(0.35);
 						//Play a Loop
-						this.soundOptions.loop = true;
+						this.SoundOptions.loop = true;
 						this.PlayManual(lastIndex, 0.15);
 					}
 				});

@@ -4,7 +4,7 @@ import { Game } from "Shared/Game";
 @Controller({})
 export class MapEditController implements OnStart {
 	OnStart(): void {
-		if (Game.startingScene !== "MapEdit") {
+		if (Game.StartingScene !== "MapEdit") {
 			return;
 		}
 	}

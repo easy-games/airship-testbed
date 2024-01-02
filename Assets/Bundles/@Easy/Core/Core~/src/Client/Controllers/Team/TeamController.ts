@@ -8,7 +8,7 @@ import { PlayerController } from "../Player/PlayerController";
 @Controller({})
 export class TeamController implements OnStart {
 	private teams = new Map<string, Team>();
-	public onTeamAdded = new Signal<[team: Team]>();
+	public OnTeamAdded = new Signal<[team: Team]>();
 
 	constructor(private readonly playerController: PlayerController) {}
 
@@ -21,7 +21,7 @@ export class TeamController implements OnStart {
 					new Color(dto.color[0], dto.color[1], dto.color[2], dto.color[3]),
 				);
 				this.teams.set(dto.id, team);
-				this.onTeamAdded.Fire(team);
+				this.OnTeamAdded.Fire(team);
 				for (let userId of dto.userIds) {
 					const player = this.playerController.GetPlayerFromUserId(userId);
 					if (player) {

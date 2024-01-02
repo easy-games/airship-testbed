@@ -43,7 +43,7 @@ export class BWShopkeeperController implements OnStart {
 						this.itemShopController.Open();
 					});
 					// Clothing
-					entity.accessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
+					entity.AccessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
 				});
 			}
 		});
@@ -69,7 +69,7 @@ export class BWShopkeeperController implements OnStart {
 					});
 
 					// Clothing
-					entity.accessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
+					entity.AccessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
 				});
 			}
 		});

@@ -16,7 +16,7 @@ export class TouchscreenDriver {
 	}
 
 	/** **NOTE:** Internal only. Use `Touchscreen` class instead. */
-	public static instance() {
+	public static Instance() {
 		return (this.inst ??= new TouchscreenDriver());
 	}
 }

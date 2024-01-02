@@ -9,8 +9,8 @@ export interface GroundItemData {
 }
 
 export class GroundItem {
-	public readonly transform: Transform;
-	public shouldMerge = true;
+	public readonly Transform: Transform;
+	public ShouldMerge = true;
 
 	constructor(
 		public readonly id: number,
@@ -20,7 +20,7 @@ export class GroundItem {
 		public readonly pickupTime: number,
 		public data: GroundItemData,
 	) {
-		this.transform = drop.transform;
+		this.Transform = drop.transform;
 	}
 
 	public SetData(key: string, value: unknown): void {

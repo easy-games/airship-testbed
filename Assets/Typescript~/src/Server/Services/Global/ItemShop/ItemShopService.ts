@@ -53,9 +53,9 @@ export class ShopService implements OnStart {
 		});
 
 		CoreServerSignals.EntitySpawn.Connect((event) => {
-			if (!event.entity.player) return;
-			if (event.entity.player.IsBot()) return;
-			const purchases = this.purchasedItems.get(event.entity.player.userId);
+			if (!event.entity.Player) return;
+			if (event.entity.Player.IsBot()) return;
+			const purchases = this.purchasedItems.get(event.entity.Player.userId);
 			if (!purchases) return;
 
 			if (!(event.entity instanceof CharacterEntity)) return;
@@ -76,7 +76,7 @@ export class ShopService implements OnStart {
 					for (let itemType of itemsToAdd) {
 						const itemMeta = ItemUtil.GetItemDef(itemType);
 						if (itemMeta.armor) {
-							inv.SetItem(inv.armorSlots[itemMeta.armor?.armorType], new ItemStack(itemType, 1));
+							inv.SetItem(inv.ArmorSlots[itemMeta.armor?.armorType], new ItemStack(itemType, 1));
 						} else {
 							finalAddedItems.push(new ItemStack(itemType, 1));
 							if (this.pickaxes.includes(itemType)) {
@@ -130,7 +130,7 @@ export class ShopService implements OnStart {
 			for (let itemTypeToAdd of itemsToAdd) {
 				const itemMeta = ItemUtil.GetItemDef(itemTypeToAdd);
 				if (itemMeta.armor) {
-					inv.SetItem(inv.armorSlots[itemMeta.armor?.armorType], new ItemStack(itemTypeToAdd, 1));
+					inv.SetItem(inv.ArmorSlots[itemMeta.armor?.armorType], new ItemStack(itemTypeToAdd, 1));
 				} else {
 					let given = false;
 
@@ -211,7 +211,7 @@ export class ShopService implements OnStart {
 
 			Network.ServerToClient.ItemShop.ItemPurchased.Server.FireAllClients(
 				// clientId,
-				player.character!.id,
+				player.Character!.Id,
 				shopElement.itemType,
 			);
 
@@ -219,8 +219,8 @@ export class ShopService implements OnStart {
 		});
 
 		CoreServerSignals.EntityDeath.Connect((event) => {
-			if (event.entity.player) {
-				const purchases = this.purchasedItems.get(event.entity.player.userId);
+			if (event.entity.Player) {
+				const purchases = this.purchasedItems.get(event.entity.Player.userId);
 				if (purchases) {
 					const toRemove: ItemType[] = [];
 					for (const itemType of purchases) {
@@ -233,7 +233,7 @@ export class ShopService implements OnStart {
 						purchases.delete(itemType);
 					}
 					Network.ServerToClient.ItemShop.RemoveTierPurchases.Server.FireClient(
-						event.entity.player.clientId,
+						event.entity.Player.clientId,
 						toRemove,
 					);
 				}

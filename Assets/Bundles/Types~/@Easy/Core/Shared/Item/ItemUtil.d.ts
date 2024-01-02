@@ -14,7 +14,7 @@ export declare class ItemUtil {
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;
     private static runtimeIdCounter;
-    static missingItemAccessory: Accessory;
+    static MissingItemAccessory: Accessory;
     private static itemTypes;
     private static implictItemTypeMap;
     private static initialized;

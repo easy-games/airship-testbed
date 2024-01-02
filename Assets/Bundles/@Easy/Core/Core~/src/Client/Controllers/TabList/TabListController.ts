@@ -41,7 +41,7 @@ export class TabListController implements OnStart {
 		private readonly coreUIController: CoreUIController,
 		private readonly teamController: TeamController,
 	) {
-		this.tablistGO = this.coreUIController.refs.GetValue("Apps", "TabList");
+		this.tablistGO = this.coreUIController.Refs.GetValue("Apps", "TabList");
 		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>();
 		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>();
 		this.tablistContentGO = this.tablistRefs.GetValue("UI", "Content");

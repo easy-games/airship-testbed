@@ -4,8 +4,8 @@ import { AuthController } from "../Auth/AuthController";
 import { User } from "./User";
 export declare class UserController implements OnStart {
     private readonly authController;
-    localUser: User | undefined;
-    onLocalUserUpdated: Signal<User>;
+    LocalUser: User | undefined;
+    OnLocalUserUpdated: Signal<User>;
     constructor(authController: AuthController);
     OnStart(): void;
     FetchLocalUser(): void;

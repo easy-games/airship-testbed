@@ -44,10 +44,10 @@ export class GroundItemService implements OnStart {
 				if (!item) return;
 				if (item.GetAmount() < amount) return;
 
-				const transform = entity.model.transform;
+				const transform = entity.Model.transform;
 				const position = transform.position.add(new Vector3(0, 1.5, 0)).add(transform.forward.mul(0.6));
 				let velocity = transform.forward.add(new Vector3(0, 0.7, 0)).mul(6);
-				velocity = velocity.add(entity.entityDriver.GetVelocity());
+				velocity = velocity.add(entity.EntityDriver.GetVelocity());
 				// print("velocity: " + tostring(velocity));
 
 				const beforeEvent = CoreServerSignals.BeforeEntityDropItem.Fire(
@@ -76,7 +76,7 @@ export class GroundItemService implements OnStart {
 					CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Server.FireAllClients([
 						{
 							id: groundItem.id,
-							pos: groundItem.transform.position,
+							pos: groundItem.Transform.position,
 							vel: groundItem.drop.GetVelocity(),
 						},
 					]);
@@ -94,8 +94,8 @@ export class GroundItemService implements OnStart {
 			if (
 				!GroundItemUtil.CanPickupGroundItem(
 					groundItem,
-					groundItem.transform.position,
-					entity.networkObject.gameObject.transform.position,
+					groundItem.Transform.position,
+					entity.NetworkObject.gameObject.transform.position,
 				)
 			) {
 				return;
@@ -110,7 +110,7 @@ export class GroundItemService implements OnStart {
 			// GameObjectUtil.Destroy(groundItem.rb.gameObject);
 			this.DestroyGroundItem(groundItem);
 
-			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.id, groundItem.id);
+			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.Id, groundItem.id);
 			if (entity instanceof CharacterEntity) {
 				entity.GetInventory().AddItem(groundItem.itemStack);
 			}
@@ -123,7 +123,7 @@ export class GroundItemService implements OnStart {
 					return {
 						id: i.id,
 						itemStack: i.itemStack.Encode(),
-						pos: i.transform.position,
+						pos: i.Transform.position,
 						velocity: i.drop.GetVelocity(),
 						pickupTime: i.pickupTime,
 						data: i.data,
@@ -154,7 +154,7 @@ export class GroundItemService implements OnStart {
 	}
 
 	private GetGroundItemPositionKey(groundItem: GroundItem): Vector3 {
-		const pos = groundItem.transform.position;
+		const pos = groundItem.Transform.position;
 		return new Vector3(
 			math.round(pos.x / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
 			math.round(pos.y / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
@@ -183,7 +183,7 @@ export class GroundItemService implements OnStart {
 				// See if it can merge with anything:
 				let didMerge = false;
 				for (const item of itemsAtPos) {
-					if (item.shouldMerge && item.itemStack.CanMerge(groundItem.itemStack)) {
+					if (item.ShouldMerge && item.itemStack.CanMerge(groundItem.itemStack)) {
 						// Merge
 						item.itemStack.SetAmount(item.itemStack.GetAmount() + groundItem.itemStack.GetAmount());
 						didMerge = true;

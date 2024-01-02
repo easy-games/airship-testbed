@@ -97,12 +97,12 @@ export class ItemShopController implements OnStart {
 			this.SetSidebarItem(this.selectedShopElement, true);
 		}
 
-		if (Game.LocalPlayer.character) {
-			const startingPos = Game.LocalPlayer.character.model.transform.position;
+		if (Game.LocalPlayer.Character) {
+			const startingPos = Game.LocalPlayer.Character.Model.transform.position;
 			bin.Add(
 				SetInterval(0.1, () => {
-					if (Game.LocalPlayer.character) {
-						if (startingPos.sub(Game.LocalPlayer.character.model.transform.position).magnitude >= 1) {
+					if (Game.LocalPlayer.Character) {
+						if (startingPos.sub(Game.LocalPlayer.Character.Model.transform.position).magnitude >= 1) {
 							AppManager.Close();
 						}
 					}
@@ -119,7 +119,7 @@ export class ItemShopController implements OnStart {
 	}
 
 	private Init(): void {
-		const shopItems = ItemShopMeta.defaultItems.shopItems;
+		const shopItems = ItemShopMeta.DefaultItems.shopItems;
 		// Default sidebar to _first_ item in default shop array..
 		const defaultItem = shopItems[0];
 		this.SetSidebarItem(defaultItem, true);
@@ -142,7 +142,7 @@ export class ItemShopController implements OnStart {
 	}
 
 	private UpdateItems(init: boolean): void {
-		ItemShopMeta.defaultItems.shopItems.forEach((shopItem) => {
+		ItemShopMeta.DefaultItems.shopItems.forEach((shopItem) => {
 			let shown = true;
 			if (shopItem.prevTier && !this.purchasedTierItems.has(shopItem.prevTier)) {
 				shown = false;
@@ -197,7 +197,7 @@ export class ItemShopController implements OnStart {
 	}
 
 	private CanPurchase(shopElement: ShopElement): boolean {
-		if (!Game.LocalPlayer.character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
+		if (!Game.LocalPlayer.Character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
 			return false;
 		}
 		if (shopElement.lockAfterPurchase && this.purchasedTierItems.has(shopElement.itemType)) {
@@ -270,7 +270,7 @@ export class ItemShopController implements OnStart {
 
 		const updateButton = () => {
 			this.purchaseButtonEnabled = false;
-			const inv = Game.LocalPlayer.character?.GetInventory();
+			const inv = Game.LocalPlayer.Character?.GetInventory();
 
 			if (shopItem.lockAfterPurchase && this.purchasedTierItems.has(shopItem.itemType)) {
 				this.purchaseButtonText.text = "Owned";

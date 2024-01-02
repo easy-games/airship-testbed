@@ -8,7 +8,7 @@ import { SetInterval } from "Shared/Util/Timer";
 export class BotService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.EntitySpawn.Connect((event) => {
-			if (event.entity.player?.IsBot()) {
+			if (event.entity.Player?.IsBot()) {
 				this.StartRandomMovement(event.entity);
 			}
 		});
@@ -30,7 +30,7 @@ export class BotService implements OnStart {
 
 		const doMove = () => {
 			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
-			entity.entityDriver.SetMoveInput(direction, math.random() < 0.2, math.random() < 0.5, math.random() < 0.2);
+			entity.EntityDriver.SetMoveInput(direction, math.random() < 0.2, math.random() < 0.5, math.random() < 0.2);
 		};
 		doMove();
 

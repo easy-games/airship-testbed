@@ -4,13 +4,13 @@ import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Cancellable } from "Shared/Util/Cancellable";
 
 export class BlockDropItemSignal extends Cancellable {
-	public giveToCharacterWhoBroke = true;
+	public GiveToCharacterWhoBroke = true;
 
 	constructor(public entity: Entity | undefined, public readonly position: Vector3, public itemStack: ItemStack) {
 		super();
 	}
 
 	public IsGivingToCharacter(): this is BlockDropItemSignal & { entity: CharacterEntity } {
-		return this.entity instanceof CharacterEntity && this.giveToCharacterWhoBroke;
+		return this.entity instanceof CharacterEntity && this.GiveToCharacterWhoBroke;
 	}
 }

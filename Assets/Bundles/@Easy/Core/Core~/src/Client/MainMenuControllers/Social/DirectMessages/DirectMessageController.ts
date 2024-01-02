@@ -15,7 +15,7 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
-import { decode, encode } from "Shared/json";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
 import { FriendStatus } from "../SocketAPI";
@@ -44,9 +44,9 @@ export class DirectMessageController implements OnStart {
 	private doScrollToBottom = 0;
 	private inputFieldSelected = false;
 
-	public lastMessagedFriend: FriendStatus | undefined;
+	public LastMessagedFriend: FriendStatus | undefined;
 
-	public onDirectMessageReceived = new Signal<DirectMessage>();
+	public OnDirectMessageReceived = new Signal<DirectMessage>();
 
 	private xPos = -320;
 	private yPos = -280;
@@ -71,7 +71,7 @@ export class DirectMessageController implements OnStart {
 			}
 
 			messages.push(data);
-			this.onDirectMessageReceived.Fire(data);
+			this.OnDirectMessageReceived.Fire(data);
 
 			// sound
 			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/MessageReceived.wav", {
@@ -100,10 +100,10 @@ export class DirectMessageController implements OnStart {
 
 			if (data.sender !== "") {
 				const friend = this.friendsController.GetFriendStatus(data.sender);
-				this.lastMessagedFriend = friend;
+				this.LastMessagedFriend = friend;
 			}
 
-			StateManager.SetString("direct-messages:" + data.sender, encode(messages));
+			StateManager.SetString("direct-messages:" + data.sender, EncodeJSON(messages));
 		});
 	}
 
@@ -128,7 +128,7 @@ export class DirectMessageController implements OnStart {
 			AssetBridge.Instance.LoadAsset(
 				"@Easy/Core/Shared/Resources/Prefabs/UI/Messages/DirectMessageWindow.prefab",
 			),
-			this.mainMenuController.socialMenuGroup.transform,
+			this.mainMenuController.SocialMenuGroup.transform,
 		);
 		this.windowGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(this.xPos, this.yPos);
 
@@ -188,7 +188,7 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public GetFriendLastMessaged(): FriendStatus | undefined {
-		return this.lastMessagedFriend;
+		return this.LastMessagedFriend;
 	}
 
 	public SendDirectMessage(uid: string, message: string): void {
@@ -202,7 +202,7 @@ export class DirectMessageController implements OnStart {
 		if (message === "") return;
 		InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/direct",
-			encode({
+			EncodeJSON({
 				target: uid,
 				text: message,
 			}),
@@ -277,14 +277,14 @@ export class DirectMessageController implements OnStart {
 		}
 		print("open.3");
 		this.openWindowBin.Add(
-			this.onDirectMessageReceived.Connect((dm) => {
+			this.OnDirectMessageReceived.Connect((dm) => {
 				if (dm.sender === uid) {
 					this.RenderChatMessage(dm, true);
 				}
 			}),
 		);
 		this.openWindowBin.Add(
-			this.friendsController.friendStatusChanged.Connect((status) => {
+			this.friendsController.FriendStatusChanged.Connect((status) => {
 				if (status.userId === uid) {
 					this.UpdateOfflineNotice(status);
 					this.friendsController.UpdateFriendStatusUI(status, headerUserRefs, {
@@ -338,7 +338,7 @@ export class DirectMessageController implements OnStart {
 			this.loadedMessagesFromUserIdFromDisk.add(uid);
 			const raw = StateManager.GetString("direct-messages:" + uid);
 			if (raw) {
-				const messages = decode<Array<DirectMessage>>(raw);
+				const messages = DecodeJSON<Array<DirectMessage>>(raw);
 				this.messagesMap.set(uid, messages);
 				return messages;
 			}

@@ -7,7 +7,7 @@ export declare class Healthbar {
     private readonly TransformKey;
     private readonly GraphicsKey;
     private readonly AnimKey;
-    transform: RectTransform;
+    Transform: RectTransform;
     private refs;
     private fillImage;
     private fillTransform;
@@ -16,11 +16,11 @@ export declare class Healthbar {
     private graphicsHolder;
     private brokenGraphicsHolder;
     private deathAnim;
-    fillDurationInSeconds: number;
-    changeDelayInSeconds: number;
-    changeDurationInSeconds: number;
+    FillDurationInSeconds: number;
+    ChangeDelayInSeconds: number;
+    ChangeDurationInSeconds: number;
     private enabled;
-    deathOnZero: boolean;
+    DeathOnZero: boolean;
     private currentDelta;
     constructor(transform: Transform, options?: ProgressBarOptions);
     SetActive(visible: boolean): void;

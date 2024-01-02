@@ -35,7 +35,7 @@ export class FireAspectService implements OnStart {
 			this.HandleFireAspect(event.entity, event.fromEntity, fireAspectStatusEffect);
 		});
 		CoreServerSignals.EntityDeath.Connect((event) => {
-			this.entitiesOnFire.delete(event.entity.id);
+			this.entitiesOnFire.delete(event.entity.Id);
 		});
 	}
 
@@ -50,7 +50,7 @@ export class FireAspectService implements OnStart {
 	private HandleFireAspect(targetEntity: Entity, fromEntity: Entity, statusEffect: StatusEffectDto): void {
 		if (this.IsEntityOnFire(targetEntity)) return;
 		task.spawn(() => {
-			this.entitiesOnFire.set(targetEntity.id, true);
+			this.entitiesOnFire.set(targetEntity.Id, true);
 			let elapsed = 0;
 			while (elapsed < FireDuration && this.IsEntityOnFire(targetEntity)) {
 				task.wait(FireTickRate);
@@ -63,7 +63,7 @@ export class FireAspectService implements OnStart {
 					knockbackDirection: new Vector3(0, 0, 0),
 				});
 			}
-			this.entitiesOnFire.set(targetEntity.id, false);
+			this.entitiesOnFire.set(targetEntity.Id, false);
 		});
 	}
 
@@ -74,6 +74,6 @@ export class FireAspectService implements OnStart {
 	 * @returns Whether or not entity is **currently** on fire.
 	 */
 	public IsEntityOnFire(entity: Entity): boolean {
-		return this.entitiesOnFire.get(entity.id) ?? false;
+		return this.entitiesOnFire.get(entity.Id) ?? false;
 	}
 }

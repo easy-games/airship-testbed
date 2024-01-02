@@ -14,12 +14,12 @@ export declare enum AudioBundleSpacialMode {
     SPACIAL = 1
 }
 export declare class AudioClipBundle {
-    playMode: AudioBundlePlayMode;
-    spacialMode: AudioBundleSpacialMode;
-    spacialPosition: Vector3;
-    volumeScale: number;
-    useFullPath: boolean;
-    soundOptions: PlaySoundConfig;
+    PlayMode: AudioBundlePlayMode;
+    SpacialMode: AudioBundleSpacialMode;
+    SpacialPosition: Vector3;
+    VolumeScale: number;
+    UseFullPath: boolean;
+    SoundOptions: PlaySoundConfig;
     private clipPaths;
     private possibleRandomIndex;
     private lastIndexPlayed;

@@ -26,7 +26,7 @@ export type HeldItemEntry = {
  * One item manager per entity, calls functionality on currently equipped item for that entity
  */
 export class HeldItemManager {
-	public entity: CharacterEntity;
+	public Entity: CharacterEntity;
 	private heldItemMap = new Map<ItemType, HeldItem>();
 	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
@@ -41,12 +41,12 @@ export class HeldItemManager {
 	}
 
 	public GetLabel() {
-		return this.entity.id;
+		return this.Entity.Id;
 	}
 
 	private Log(message: string) {
 		return;
-		print("Entity " + this.entity.id + " " + message);
+		print("Entity " + this.Entity.Id + " " + message);
 	}
 
 	private GetOrCreateHeldItem(itemDef?: ItemDef) {
@@ -54,7 +54,7 @@ export class HeldItemManager {
 			if (this.emptyHeldItem) {
 				return this.emptyHeldItem;
 			}
-			this.emptyHeldItem = new HeldItem(this.entity, itemDef);
+			this.emptyHeldItem = new HeldItem(this.Entity, itemDef);
 			this.emptyHeldItem.OnLoadAssets();
 			return this.emptyHeldItem;
 		}
@@ -65,11 +65,11 @@ export class HeldItemManager {
 			for (let i = HeldItemManager.heldItemClasses.size() - 1; i >= 0; i--) {
 				const entry = HeldItemManager.heldItemClasses[i];
 				if (entry.condition(itemDef)) {
-					item = entry.factory(this.entity, itemDef);
+					item = entry.factory(this.Entity, itemDef);
 				}
 			}
 			if (item === undefined) {
-				item = new HeldItem(this.entity, itemDef);
+				item = new HeldItem(this.Entity, itemDef);
 			}
 			item.OnLoadAssets();
 			this.heldItemMap.set(itemDef.itemType, item);
@@ -78,13 +78,13 @@ export class HeldItemManager {
 	}
 
 	constructor(entity: CharacterEntity) {
-		this.entity = entity;
+		this.Entity = entity;
 		this.Log("Creating Held Items");
 		this.currentHeldItem = this.GetOrCreateHeldItem();
 
 		//Listen for item switches
 		this.bin.Add(
-			this.entity.GetInventory().ObserveHeldItem((itemStack) => {
+			this.Entity.GetInventory().ObserveHeldItem((itemStack) => {
 				this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
 				//UnEquip last item
 				if (this.currentHeldItem !== undefined) {
@@ -107,13 +107,13 @@ export class HeldItemManager {
 		if (this.newStateQueued) return;
 		this.newStateQueued = true;
 
-		const lookVector = this.entity.entityDriver.GetLookVector();
+		const lookVector = this.Entity.EntityDriver.GetLookVector();
 
 		//Notify server of new State
 		Dependency<LocalEntityController>().AddToMoveData(
 			"HeldItemState",
 			{
-				e: this.entity.id,
+				e: this.Entity.Id,
 				s: itemState,
 				l: lookVector,
 			},

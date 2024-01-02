@@ -466,6 +466,7 @@ interface WorldSaveFile extends ScriptableObject {
 	globalFogEnd: number;
 	globalFogColor: Color;
 
+	// eslint-disable-next-line @typescript-eslint/no-misused-new
 	constructor(): WorldSaveFile;
 
 	CreateFromVoxelWorld(world: VoxelWorld): void;
@@ -650,6 +651,7 @@ interface VoxelWorld extends MonoBehaviour {
 	globalSunDirection: Vector3;
 	globalSunDirectionNormalized: Vector3;
 
+	// eslint-disable-next-line @typescript-eslint/no-misused-new
 	constructor(): VoxelWorld;
 
 	AddChunk(key: unknown, chunk: Chunk): void;

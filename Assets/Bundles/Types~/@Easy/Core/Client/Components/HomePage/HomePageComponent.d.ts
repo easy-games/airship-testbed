@@ -1,8 +1,8 @@
 /// <reference types="@easy-games/compiler-types" />
 export default class HomePageComponent extends AirshipBehaviour {
-    mainContent: Transform;
-    spacerPrefab: GameObject;
-    sortPrefab: GameObject;
+    MainContent: Transform;
+    SpacerPrefab: GameObject;
+    SortPrefab: GameObject;
     private bin;
     private sorts;
     OnEnabled(): void;

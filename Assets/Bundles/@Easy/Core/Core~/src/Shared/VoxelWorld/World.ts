@@ -121,7 +121,7 @@ export class World {
 	 * @returns BlockMeta under the position.
 	 */
 	public GetBlockBelowMeta(pos: Vector3): BlockDef | undefined {
-		return this.GetBlockBelow(pos)?.itemDef?.block;
+		return this.GetBlockBelow(pos)?.ItemDef?.block;
 	}
 
 	public RaycastBlockBelow(startPos: Vector3, maxDistance = 10): BlockDef | undefined {
@@ -129,7 +129,7 @@ export class World {
 			new Vector3(0, 0.1, 0),
 		);
 		const block = this.GetBlockAt(raycastPoint);
-		return block?.itemDef?.block;
+		return block?.ItemDef?.block;
 	}
 
 	/**
@@ -202,7 +202,7 @@ export class World {
 		if (RunCore.IsServer()) {
 			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
 		} else {
-			if (config?.placedByEntityId === Game.LocalPlayer.character?.id) {
+			if (config?.placedByEntityId === Game.LocalPlayer.Character?.Id) {
 				// Client predicted block place event
 				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
@@ -210,7 +210,7 @@ export class World {
 
 				const block = new Block(blockVoxelId, this);
 				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.character, false),
+					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character, false),
 				);
 			}
 		}
@@ -242,7 +242,7 @@ export class World {
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 
 		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
-		let isLocalPrediction = config?.placedByEntityId === Game.LocalPlayer.character?.id;
+		let isLocalPrediction = config?.placedByEntityId === Game.LocalPlayer.Character?.Id;
 
 		positions.forEach((position, i) => {
 			if (config?.blockData) {
@@ -265,7 +265,7 @@ export class World {
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 					.BlockPlaceClientSignal;
 				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(position, blocks[i], Game.LocalPlayer.character, true),
+					new BlockPlaceClientSignal(position, blocks[i], Game.LocalPlayer.Character, true),
 				);
 			}
 		});

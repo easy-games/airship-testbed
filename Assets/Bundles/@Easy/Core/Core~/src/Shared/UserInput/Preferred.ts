@@ -7,7 +7,7 @@ export type ControlScheme = "MouseKeyboard" | "Touch";
 /** Utility class for observing the player's currently-used control scheme. */
 export class Preferred {
 	private readonly bin = new Bin();
-	private readonly preferredDriver = PreferredDriver.instance();
+	private readonly preferredDriver = PreferredDriver.Instance();
 
 	/** A signal that fires every time the currently-used control scheme changes. */
 	public readonly ControlSchemeChanged = new Signal<[controlScheme: ControlScheme]>();

@@ -6,8 +6,8 @@ export declare class SpringTween {
     private readonly spring;
     private elapsedTime;
     constructor(position: Vector3, angularFrequency: number, minDuration: number);
-    setGoal(goal: Vector3): void;
-    impulse(impulse: Vector3): void;
-    resetTo(position: Vector3): void;
-    update(deltaTime: number): LuaTuple<[position: Vector3, isDone: boolean]>;
+    SetGoal(goal: Vector3): void;
+    Impulse(impulse: Vector3): void;
+    ResetTo(position: Vector3): void;
+    Update(deltaTime: number): LuaTuple<[position: Vector3, isDone: boolean]>;
 }

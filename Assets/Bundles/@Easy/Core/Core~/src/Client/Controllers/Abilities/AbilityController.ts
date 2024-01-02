@@ -129,7 +129,7 @@ export class AbilityController implements OnStart {
 		this.localCooldownMap.set(abilityCooldownDto.abilityId, {
 			startTimestamp: abilityCooldownDto.timeStart,
 			endTimestamp: abilityCooldownDto.timeEnd,
-			length: Duration.fromSeconds(abilityCooldownDto.length),
+			length: Duration.FromSeconds(abilityCooldownDto.length),
 		});
 		return true;
 	}
@@ -181,7 +181,7 @@ export class AbilityController implements OnStart {
 			!this.IsLocalAbilityDisabled(abilityId) &&
 			!this.IsLocalAbilityOnCooldown(abilityId) &&
 			!this.chargingAbility &&
-			Game.LocalPlayer.character !== undefined
+			Game.LocalPlayer.Character !== undefined
 		);
 	}
 

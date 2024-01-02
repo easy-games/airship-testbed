@@ -20,7 +20,7 @@ export class MobileJoystickDriver {
 	}
 
 	/** **NOTE:** Internal only. Use `Touchscreen` class instead. */
-	public static instance() {
+	public static Instance() {
 		return (this.inst ??= new MobileJoystickDriver());
 	}
 }

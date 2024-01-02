@@ -115,7 +115,7 @@ export class KeyboardDriver {
 	}
 
 	/** **NOTE:** Internal only. Use `Keyboard` class instead. */
-	public static instance() {
+	public static Instance() {
 		return (this.inst ??= new KeyboardDriver());
 	}
 }

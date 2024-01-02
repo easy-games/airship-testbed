@@ -128,7 +128,7 @@ export class AbilityService implements OnStart {
 			abilityId: abilityMeta.id,
 			cancel: cancellableAbility,
 			timeStarted: now,
-			timeLength: Duration.fromSeconds(chargeEndTime),
+			timeLength: Duration.FromSeconds(chargeEndTime),
 			cancellationTriggers: new ReadonlySet<AbilityCancellationTrigger>(chargeMeta.cancelTriggers),
 		});
 	}
@@ -293,7 +293,7 @@ export class AbilityService implements OnStart {
 		const abilityCooldown: AbilityCooldown = {
 			startTimestamp: now,
 			endTimestamp: cooldownEnd,
-			length: Duration.fromSeconds(cooldownDuration),
+			length: Duration.FromSeconds(cooldownDuration),
 		};
 		const clientCooldowns = this.cooldownMap.get(clientId);
 		if (!clientCooldowns) {
@@ -313,8 +313,8 @@ export class AbilityService implements OnStart {
 
 	/**
 	 * Sets the client's ability enabled state. Returns whether or not the state was successfully updated.
-	 * Returns whether or not the ability's state was updated. If this function returns `false` the client
-	 * either does **not** have the provided ability or the ability was already in the provided state.
+	 * If this function returns `false` the client either does **not** have the provided ability or the
+	 * ability was already in the provided state.
 	 *
 	 * @param clientId The client that ability enabled state is being set for.
 	 * @param abilityId The ability to enabled or disable.

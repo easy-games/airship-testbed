@@ -70,7 +70,7 @@ class TwoFingerGestureCapture {
 
 export class GestureDriver {
 	private readonly bin = new Bin();
-	private readonly touchscreenDriver = TouchscreenDriver.instance();
+	private readonly touchscreenDriver = TouchscreenDriver.Instance();
 
 	public readonly Pan = new Signal<[position: Vector3, phase: TouchPhase]>();
 	public readonly Pinch = new Signal<[distance: number, scale: number, phase: TouchPhase]>();

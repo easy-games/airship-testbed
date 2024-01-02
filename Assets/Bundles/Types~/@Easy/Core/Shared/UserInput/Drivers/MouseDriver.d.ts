@@ -21,5 +21,5 @@ export declare class MouseDriver {
     IsLocked(): boolean;
     SetLocked(locked: boolean): void;
     /** **NOTE:** Internal only. Use `Mouse` class instead. */
-    static instance(): MouseDriver;
+    static Instance(): MouseDriver;
 }

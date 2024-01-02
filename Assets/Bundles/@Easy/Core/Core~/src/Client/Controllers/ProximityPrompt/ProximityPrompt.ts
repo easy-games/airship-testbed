@@ -23,15 +23,15 @@ export interface ProximityPromptData {
 /** Proximity Prompt. */
 export class ProximityPrompt {
 	/** Global, incrementing id counter. */
-	public static idCounter = 0;
+	public static IdCounter = 0;
 	/** Proximity prompt prefab. */
 	private promptPrefab: Object;
 	/** Proximity prompt id. */
-	public id: string;
+	public Id: string;
 	/** Proximity prompt data. */
-	public data: ProximityPromptData;
+	public Data: ProximityPromptData;
 	/** Proximity prompt gameobject. */
-	public promptGameObject: GameObject | undefined;
+	public PromptGameObject: GameObject | undefined;
 	/** On activated signal. */
 	public OnActivated = new Signal<void>();
 	/** On activated signal. */
@@ -44,30 +44,30 @@ export class ProximityPrompt {
 		this.promptPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/ProximityPrompt.prefab",
 		);
-		this.id = tostring(ProximityPrompt.idCounter++);
-		this.data = promptData;
+		this.Id = tostring(ProximityPrompt.IdCounter++);
+		this.Data = promptData;
 		this.CreatePrompt();
 	}
 
 	/** Creates prompt from prompt data. */
 	private CreatePrompt(): void {
-		this.promptGameObject = GameObjectUtil.InstantiateAt(
+		this.PromptGameObject = GameObjectUtil.InstantiateAt(
 			this.promptPrefab,
-			this.data.promptPosition,
+			this.Data.promptPosition,
 			Quaternion.identity,
 		);
 		// Prompt starts inactive.
-		this.promptGameObject.SetActive(false);
+		this.PromptGameObject.SetActive(false);
 		// Set activation key, action, and object text.
-		const keyCode = this.promptGameObject.transform
+		const keyCode = this.PromptGameObject.transform
 			.Find("Canvas/Background/KeyCodeBackground/KeyCode")!
 			.GetComponent<TextMeshProUGUI>();
-		const textWrapper = this.promptGameObject.transform.Find("Canvas/Background/TextWrapper")!;
+		const textWrapper = this.PromptGameObject.transform.Find("Canvas/Background/TextWrapper")!;
 		const bottomText = textWrapper.FindChild("BottomText")!.GetComponent<TextMeshProUGUI>();
 		const topText = textWrapper.FindChild("TopText")!.GetComponent<TextMeshProUGUI>();
-		keyCode.text = this.data.activationKeyString;
-		bottomText.text = this.data.bottomText;
-		topText.text = this.data.topText;
+		keyCode.text = this.Data.activationKeyString;
+		bottomText.text = this.Data.bottomText;
+		topText.text = this.Data.topText;
 		Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
 	}
 
@@ -76,7 +76,7 @@ export class ProximityPrompt {
 		this.canActivate = true;
 		if (canActivate) {
 			const keyboard = this.canActivateBin.Add(new Keyboard());
-			keyboard.OnKeyDown(this.data.activationKey, (event) => {
+			keyboard.OnKeyDown(this.Data.activationKey, (event) => {
 				if (event.uiProcessed) return;
 				this.OnRequestActivated.Fire();
 			});

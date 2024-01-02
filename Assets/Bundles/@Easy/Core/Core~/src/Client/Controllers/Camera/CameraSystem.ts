@@ -64,8 +64,8 @@ export class CameraSystem {
 
 	constructor() {
 		const ref = CameraReferences.Instance();
-		this.camera = ref.mainCamera;
-		this.allCameras = [ref.mainCamera, ref.uiCamera, ref.fpsCamera];
+		this.camera = ref.MainCamera;
+		this.allCameras = [ref.MainCamera, ref.UiCamera, ref.FpsCamera];
 		this.transform = this.camera.transform;
 		this.fovSpring = new Spring(new Vector3(this.camera.fieldOfView, 0, 0), 5);
 
@@ -77,7 +77,7 @@ export class CameraSystem {
 
 		OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
 			const camTransform = this.currentMode.OnLateUpdate(dt);
-			this.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
+			this.transform.SetPositionAndRotation(camTransform.Position, camTransform.Rotation);
 			this.currentMode.OnPostUpdate(this.camera);
 			if (this.fovSpringMoving) {
 				this.UpdateFOVSpring(dt);
@@ -162,19 +162,19 @@ export class CameraSystem {
 	 */
 	public SetFOV(fieldOfView: number, immediate = false) {
 		if (immediate) {
-			this.fovSpring.resetTo(new Vector3(fieldOfView, 0, 0));
+			this.fovSpring.ResetTo(new Vector3(fieldOfView, 0, 0));
 			this.UpdateFOV(fieldOfView);
 			this.fovSpringMoving = false;
 		} else {
-			this.fovSpring.goal = new Vector3(fieldOfView, 0, 0);
+			this.fovSpring.Goal = new Vector3(fieldOfView, 0, 0);
 			this.fovSpringMoving = true;
 			this.fovSpringMovingStart = Time.time;
 		}
 	}
 
 	private UpdateFOVSpring(dt: number) {
-		this.UpdateFOV(this.fovSpring.update(dt).x);
-		if (Time.time - this.fovSpringMovingStart > 2 && math.abs(this.fovSpring.velocity.x) < 0.01) {
+		this.UpdateFOV(this.fovSpring.Update(dt).x);
+		if (Time.time - this.fovSpringMovingStart > 2 && math.abs(this.fovSpring.Velocity.x) < 0.01) {
 			this.fovSpringMoving = false;
 		}
 	}

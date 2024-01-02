@@ -17,7 +17,7 @@ export class BlockSelectController implements OnStart {
 	public HighlightBlockPosition?: Vector3;
 	public PlaceBlockPosition?: Vector3;
 	public IsVoidPlacement = false;
-	public highlightOnPlacement = false;
+	public HighlightOnPlacement = false;
 
 	private voidPlane: GameObject | undefined;
 	private enabledCount = 0;
@@ -67,7 +67,7 @@ export class BlockSelectController implements OnStart {
 
 			this.CalcSelectedBlock();
 
-			if (this.IsVoidPlacement || this.highlightOnPlacement) {
+			if (this.IsVoidPlacement || this.HighlightOnPlacement) {
 				if (this.PlaceBlockPosition && this.highlightGO) {
 					this.highlightGO.transform.position = this.PlaceBlockPosition.add(new Vector3(0.5, 0.5, 0.5));
 					this.Highlight(true);
@@ -96,12 +96,12 @@ export class BlockSelectController implements OnStart {
 
 	private CalcSelectedBlock(): void {
 		const player = Game.LocalPlayer;
-		if (!player?.character) {
+		if (!player?.Character) {
 			this.SelectedBlockPosition = undefined;
 			this.PlaceBlockPosition = undefined;
 			return;
 		}
-		const characterPos = player.character.gameObject.transform.position;
+		const characterPos = player.Character.GameObject.transform.position;
 
 		if (os.clock() - this.lastVoidPlaceTime < 0.3) {
 			const voidSuccess = this.TryVoidSelect(characterPos);

@@ -1,7 +1,7 @@
 import { ItemType } from "Shared/Item/ItemType";
 
 /** Generator pickup range. */
-export const GENERATOR_PICKUP_RANGE = 1.5;
+export const GeneratorPickupRange = 1.5;
 
 /** Describes a generator. */
 export interface GeneratorCreationConfig {

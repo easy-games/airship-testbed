@@ -24,19 +24,19 @@ import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 
 class ChatMessageElement {
-	public canvasGroup: CanvasGroup;
-	public shownAt = os.clock();
-	public shown = true;
+	public CanvasGroup: CanvasGroup;
+	public ShownAt = os.clock();
+	public Shown = true;
 	private hideBin = new Bin();
 
 	constructor(public readonly gameObject: GameObject, public time: number) {
-		this.canvasGroup = gameObject.GetComponent<CanvasGroup>();
+		this.CanvasGroup = gameObject.GetComponent<CanvasGroup>();
 	}
 
 	public Hide(): void {
-		if (!this.shown) return;
-		this.shown = false;
-		const t = this.canvasGroup.TweenCanvasGroupAlpha(0, 0.2);
+		if (!this.Shown) return;
+		this.Shown = false;
+		const t = this.CanvasGroup.TweenCanvasGroupAlpha(0, 0.2);
 		this.hideBin.Add(() => {
 			if (!t.IsDestroyed()) {
 				t.Cancel();
@@ -45,11 +45,11 @@ class ChatMessageElement {
 	}
 
 	public Show(): void {
-		this.shownAt = os.clock();
-		if (this.shown) return;
-		this.shown = true;
+		this.ShownAt = os.clock();
+		if (this.Shown) return;
+		this.Shown = true;
 		this.hideBin.Clean();
-		this.canvasGroup.alpha = 1;
+		this.CanvasGroup.alpha = 1;
 	}
 
 	public Destroy(): void {
@@ -84,7 +84,7 @@ export class ChatController implements OnStart {
 		private readonly directMessageController: DirectMessageController,
 		private readonly friendsController: FriendsController,
 	) {
-		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
+		const refs = this.coreUIController.Refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");

@@ -4,7 +4,7 @@ import { CameraSystem } from "./CameraSystem";
 export declare class CameraController implements OnStart {
     static readonly CameraReferenceKey: string;
     /** The underlying camera system for the game. */
-    readonly cameraSystem: CameraSystem;
+    readonly CameraSystem: CameraSystem;
     constructor();
     /**
      * Proxy for `cameraSystem.SetMode()`.

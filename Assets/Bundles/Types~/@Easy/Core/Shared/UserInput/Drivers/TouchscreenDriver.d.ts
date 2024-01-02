@@ -7,5 +7,5 @@ export declare class TouchscreenDriver {
     readonly TouchTap: Signal<[touchIndex: number, position: Vector3, phase: InputActionPhase]>;
     private constructor();
     /** **NOTE:** Internal only. Use `Touchscreen` class instead. */
-    static instance(): TouchscreenDriver;
+    static Instance(): TouchscreenDriver;
 }

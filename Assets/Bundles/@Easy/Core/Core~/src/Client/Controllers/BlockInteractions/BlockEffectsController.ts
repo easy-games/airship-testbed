@@ -18,10 +18,10 @@ export class BlockEffectsController implements OnStart {
 			if (event.isGroupEvent || event.block.IsAir()) {
 				return;
 			}
-			if (event.block.blockId === "@Easy/Core:CHILD_OF_BLOCK") return;
-			let sound = event.block.itemDef?.block?.placeSound;
+			if (event.block.BlockId === "@Easy/Core:CHILD_OF_BLOCK") return;
+			let sound = event.block.ItemDef?.block?.placeSound;
 			if (sound === undefined) {
-				switch (event.block.itemDef?.block?.blockArchetype) {
+				switch (event.block.ItemDef?.block?.blockArchetype) {
 					case BlockArchetype.STONE:
 						sound = CoreSound.blockPlaceStone;
 						break;
@@ -98,9 +98,9 @@ export class BlockEffectsController implements OnStart {
 		});
 
 		CoreClientSignals.BeforeBlockHit.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
-			let sound = event.block.itemDef?.block?.hitSound;
+			let sound = event.block.ItemDef?.block?.hitSound;
 			if (sound === undefined) {
-				switch (event.block.itemDef?.block?.blockArchetype) {
+				switch (event.block.ItemDef?.block?.blockArchetype) {
 					case BlockArchetype.STONE:
 						sound = CoreSound.blockHitStone;
 						break;

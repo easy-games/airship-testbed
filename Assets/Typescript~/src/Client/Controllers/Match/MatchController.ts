@@ -16,23 +16,23 @@ import { Network } from "Shared/Network";
 export class MatchController implements OnStart {
 	/** Initial state is always `MatchState.SETUP. */
 	private state: MatchState = MatchState.SETUP;
-	public matchStartTime: number | undefined;
-	public matchInfo: MatchInfoDto | undefined;
-	public eliminated = false;
-	public onEliminated = new Signal<void>();
+	public MatchStartTime: number | undefined;
+	public MatchInfo: MatchInfoDto | undefined;
+	public Eliminated = false;
+	public OnEliminated = new Signal<void>();
 
 	constructor(private readonly tablistController: TabListController) {
 		Network.ServerToClient.MatchInfo.Client.OnServerEvent((matchInfoDto) => {
-			this.matchInfo = matchInfoDto;
+			this.MatchInfo = matchInfoDto;
 			this.state = matchInfoDto.matchState;
 			if (matchInfoDto.matchStartTime !== undefined) {
-				this.matchStartTime = matchInfoDto.matchStartTime;
+				this.MatchStartTime = matchInfoDto.matchStartTime;
 			}
 		});
 		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId) => {
 			if (clientId === Game.LocalPlayer.clientId) {
-				this.eliminated = true;
-				this.onEliminated.Fire();
+				this.Eliminated = true;
+				this.OnEliminated.Fire();
 			}
 		});
 	}
@@ -47,14 +47,14 @@ export class MatchController implements OnStart {
 		/* Listen for match start. */
 		Network.ServerToClient.MatchStarted.Client.OnServerEvent(() => {
 			this.state = MatchState.RUNNING;
-			this.matchStartTime = TimeUtil.GetServerTime();
+			this.MatchStartTime = TimeUtil.GetServerTime();
 			/* Fire signal */
 			ClientSignals.MatchStart.Fire();
 		});
 
 		let timer = 0;
-		if (this.matchStartTime !== undefined) {
-			timer = math.floor(this.matchStartTime - TimeUtil.GetServerTime());
+		if (this.MatchStartTime !== undefined) {
+			timer = math.floor(this.MatchStartTime - TimeUtil.GetServerTime());
 		}
 		SetInterval(
 			1,
@@ -69,11 +69,11 @@ export class MatchController implements OnStart {
 				let time = string.format("%02d:%02d", minutes, seconds);
 
 				let map = "";
-				if (this.matchInfo) {
+				if (this.MatchInfo) {
 					map =
-						ColorUtil.ColoredText(Theme.Aqua, "<b>" + this.matchInfo.mapName + "</b>") +
+						ColorUtil.ColoredText(Theme.Aqua, "<b>" + this.MatchInfo.mapName + "</b>") +
 						ColorUtil.ColoredText(Theme.Gray, " by ") +
-						ColorUtil.ColoredText(Theme.Aqua, this.matchInfo.mapAuthors[0]);
+						ColorUtil.ColoredText(Theme.Aqua, this.MatchInfo.mapAuthors[0]);
 				}
 
 				let text =
@@ -83,8 +83,8 @@ export class MatchController implements OnStart {
 					"    " +
 					map;
 				this.tablistController.SetTitleText(text);
-				if (this.matchInfo) {
-					Dependency<FriendsController>().SetCustomGameTitle("BedWars | " + this.matchInfo?.mapName);
+				if (this.MatchInfo) {
+					Dependency<FriendsController>().SetCustomGameTitle("BedWars | " + this.MatchInfo?.mapName);
 				} else {
 					Dependency<FriendsController>().SetCustomGameTitle("BedWars | In Game");
 				}

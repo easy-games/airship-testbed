@@ -4,10 +4,10 @@ import { World } from "./World";
 export declare class Block {
     readonly voxel: number;
     readonly world: World;
-    readonly blockId: string;
-    readonly runtimeBlockId: number;
-    readonly itemType: ItemType | undefined;
-    readonly itemDef: ItemDef | undefined;
+    readonly BlockId: string;
+    readonly RuntimeBlockId: number;
+    readonly ItemType: ItemType | undefined;
+    readonly ItemDef: ItemDef | undefined;
     constructor(voxel: number, world: World);
     IsCrop(): boolean;
     IsAir(): boolean;

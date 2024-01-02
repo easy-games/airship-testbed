@@ -1,12 +1,12 @@
 import { Entity } from "../Entity/Entity";
 export declare class DamageUtils {
-    static readonly minDamageFallSpeed = 35;
-    static readonly maxDamageFallSpeed = 60;
-    static readonly minFallDamage = 10;
-    static readonly maxFallDamage = 100;
-    static readonly maxHitstunDamage = 50;
-    static readonly minHitStunRadius = 0.08;
-    static readonly maxHitStunRadius = 0.1;
+    static readonly MinDamageFallSpeed = 35;
+    static readonly MaxDamageFallSpeed = 60;
+    static readonly MinFallDamage = 10;
+    static readonly MaxFallDamage = 100;
+    static readonly MaxHitstunDamage = 50;
+    static readonly MinHitStunRadius = 0.08;
+    static readonly MaxHitStunRadius = 0.1;
     static GetFallDamage(verticalSpeed: number): number;
     static GetFallDelta(verticalSpeed: number): number;
     static AddHitstun(entity: Entity, damageAmount: number, OnComplete: () => void): number;

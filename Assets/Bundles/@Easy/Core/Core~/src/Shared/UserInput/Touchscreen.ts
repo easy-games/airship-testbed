@@ -5,7 +5,7 @@ import { TouchscreenDriver } from "./Drivers/TouchscreenDriver";
 
 export class Touchscreen {
 	private readonly bin = new Bin();
-	private readonly touchscreenDriver = TouchscreenDriver.instance();
+	private readonly touchscreenDriver = TouchscreenDriver.Instance();
 	private readonly gestureDriver = new GestureDriver();
 
 	public readonly Touch = new Signal<[touchIndex: number, position: Vector3, phase: TouchPhase]>();

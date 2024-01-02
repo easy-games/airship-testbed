@@ -43,11 +43,11 @@ export class ProjectileService implements OnStart {
 			}
 
 			//Send event to client
-			if (projectile.shooter?.player) {
+			if (projectile.Shooter?.Player) {
 				CoreNetwork.ServerToClient.ProjectileHit.Server.FireClient(
-					projectile.shooter.player.clientId,
+					projectile.Shooter.Player.clientId,
 					event.hitPosition,
-					event.hitEntity?.id,
+					event.hitEntity?.Id,
 				);
 			}
 
@@ -57,7 +57,7 @@ export class ProjectileService implements OnStart {
 			//Deal AOE damage
 			if (event.ammoMeta.aoeDamage && event.ammoMeta.aoeDamage.damageRadius > 0) {
 				const config: InflictDamageConfig = {
-					fromEntity: projectile.shooter,
+					fromEntity: projectile.Shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
 					knockbackDirection: knockbackDirection,
@@ -72,9 +72,9 @@ export class ProjectileService implements OnStart {
 				);
 
 				//AOE Block Damage
-				if (event.projectile.shooter && event.ammoMeta.blockDamage) {
+				if (event.projectile.Shooter && event.ammoMeta.blockDamage) {
 					this.blockService.DamageBlockAOE(
-						event.projectile.shooter,
+						event.projectile.Shooter,
 						event.hitPosition.add(event.velocity.normalized.mul(0.5)),
 						event.ammoMeta.aoeDamage,
 					);
@@ -86,7 +86,7 @@ export class ProjectileService implements OnStart {
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
 				let criticalHit = false;
-				const hitHeight = event.hitPosition.sub(event.hitEntity.model.transform.position).magnitude;
+				const hitHeight = event.hitPosition.sub(event.hitEntity.Model.transform.position).magnitude;
 				if (event.hitEntity.IsHeadshotHitHeight(hitHeight)) {
 					criticalHit = true;
 				}
@@ -95,7 +95,7 @@ export class ProjectileService implements OnStart {
 					damage *= 1.5;
 				}
 				this.damageService.InflictDamage(event.hitEntity, damage, {
-					fromEntity: projectile.shooter,
+					fromEntity: projectile.Shooter,
 					damageType: DamageType.PROJECTILE,
 					projectileHitSignal: event,
 					knockbackDirection: knockbackDirection,
@@ -105,7 +105,7 @@ export class ProjectileService implements OnStart {
 				// anchor ammo in ground
 				if (event.ammoMeta.stickItemAtSurfaceOnMiss) {
 					const groundItem = this.groundItemService.SpawnGroundItem(
-						new ItemStack(event.projectile.itemType, 1),
+						new ItemStack(event.projectile.ItemType, 1),
 						event.hitPosition,
 						undefined,
 						{
@@ -115,7 +115,7 @@ export class ProjectileService implements OnStart {
 							Direction: event.velocity.normalized,
 						},
 					);
-					groundItem.shouldMerge = false;
+					groundItem.ShouldMerge = false;
 				}
 			}
 		});
@@ -169,7 +169,7 @@ export class ProjectileService implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = ItemUtil.GetItemDef(projectile.itemType).projectile!;
+		const ammoMeta = ItemUtil.GetItemDef(projectile.ItemType).projectile!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		const projectileHitSignal = new ProjectileCollideServerSignal(
