@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Avatar/AvatarViewComponent.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Avatar/AvatarViewComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -329,8 +329,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 6979185126918950297}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: avatarHolder
       type: object
       objectType: Transform
@@ -340,8 +340,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 2077388227170953706}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cameraTransform
       type: object
       objectType: Transform
@@ -351,8 +351,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 8604313087782663235}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cameraWaypointDefault
       type: object
       objectType: Transform
@@ -362,8 +362,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 5777340848789901489}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cameraWaypointHead
       type: object
       objectType: Transform
@@ -373,8 +373,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 7412782048215372824}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cameraWaypointFeet
       type: object
       objectType: Transform
@@ -384,8 +384,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 1032914374697848426}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cameraWaypointHands
       type: object
       objectType: Transform
@@ -395,8 +395,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 2014619521640985698}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: cameraWaypointBack
       type: object
       objectType: Transform
@@ -406,8 +406,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 8527059260511817935}
-      modified: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     - name: dragSpeedMod
       type: number
       objectType: 
@@ -416,9 +416,9 @@ MonoBehaviour:
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 5
+      serializedValue: 10
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
     - name: cameraTransitionDuration
       type: number
       objectType: 
@@ -438,9 +438,9 @@ MonoBehaviour:
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 0
+      serializedValue: 
       serializedObject: {fileID: 0}
-      modified: 1
+      modified: 0
     - name: accessoryBuilder
       type: object
       objectType: AccessoryBuilder
@@ -1512,17 +1512,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
---- !u!1 &6979185126918950297 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8616685848737228372, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
-  m_PrefabInstance: {fileID: 1679725859720637389}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7632776605925888950 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -98370938496583557, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
   m_PrefabInstance: {fileID: 1679725859720637389}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6979185126918950297}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
@@ -1538,7 +1533,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -1773167598321551048, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
   m_PrefabInstance: {fileID: 1679725859720637389}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6979185126918950297}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0de2729e868641feb575594f4d2657be, type: 3}
@@ -1549,7 +1544,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7931457288082626079, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
   m_PrefabInstance: {fileID: 1679725859720637389}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6979185126918950297}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 397a6d94112248d3a428dae0e33a118b, type: 3}
