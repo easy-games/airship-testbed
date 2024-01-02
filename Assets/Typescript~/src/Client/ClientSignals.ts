@@ -1,3 +1,4 @@
+import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -5,6 +6,7 @@ import { MatchState } from "./Match/MatchState";
 import { StatusEffectType } from "./StatusEffect/StatusEffectType";
 
 export const ClientSignals = {
+	...CoreClientSignals,
 	/** Fired when match starts. */
 	MatchStart: new Signal<void>(),
 	/** Fired when match state changes. */
