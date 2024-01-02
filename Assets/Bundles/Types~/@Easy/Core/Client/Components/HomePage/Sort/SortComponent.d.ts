@@ -1,10 +1,10 @@
 /// <reference types="@easy-games/compiler-types" />
 import { GameDto } from "../API/GamesAPI";
 export default class SortComponent extends AirshipBehaviour {
-    titleText: GameObject;
-    content: Transform;
-    gamePrefab: GameObject;
-    backendName: string;
+    TitleText: GameObject;
+    Content: Transform;
+    GamePrefab: GameObject;
+    BackendName: string;
     OnAwake(): void;
     OnStart(): void;
     OnDestroy(): void;

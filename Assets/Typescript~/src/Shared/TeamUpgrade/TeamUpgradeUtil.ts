@@ -3,7 +3,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { TeamUpgradeController } from "Client/Controllers/Global/TeamUpgrade/TeamUpgradeController";
 import { TeamUpgradeService } from "Server/Services/Match/TeamUpgradeService";
-import { TeamUpgrade, teamUpgrades, TeamUpgradeStateDto, TeamUpgradeTier } from "./TeamUpgradeMeta";
+import { TeamUpgrade, TeamUpgrades, TeamUpgradeStateDto, TeamUpgradeTier } from "./TeamUpgradeMeta";
 import { TeamUpgradeType } from "./TeamUpgradeType";
 
 /** Set of utilities for interfacing team upgrades. */
@@ -14,7 +14,7 @@ export class TeamUpgradeUtil {
 	 * @returns `TeamUpgrade` meta that corresponds to type.
 	 */
 	public static GetTeamUpgradeMeta(teamUpgradeType: TeamUpgradeType): TeamUpgrade {
-		return teamUpgrades[teamUpgradeType];
+		return TeamUpgrades[teamUpgradeType];
 	}
 
 	/**
@@ -62,7 +62,7 @@ export class TeamUpgradeUtil {
 		player: Player,
 	): TeamUpgradeStateDto | undefined {
 		if (RunUtil.IsClient()) {
-			return Dependency<TeamUpgradeController>().localUpgradeMap.get(upgradeType);
+			return Dependency<TeamUpgradeController>().LocalUpgradeMap.get(upgradeType);
 		} else {
 			return Dependency<TeamUpgradeService>().GetUpgradeStateForPlayer(player, upgradeType);
 		}

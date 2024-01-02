@@ -900,7 +900,7 @@ export const CoreItemDefinitions: {
 		displayName: "Wheat",
 		cropBlock: {
 			numStages: 4,
-			stageGrowthDuration: Duration.fromSeconds(10),
+			stageGrowthDuration: Duration.FromSeconds(10),
 		},
 		block: {
 			blockId: ItemType.WHEAT_CROP,

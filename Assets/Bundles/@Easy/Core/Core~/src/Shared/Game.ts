@@ -22,8 +22,8 @@ export class Game {
 
 	public static Context: CoreContext;
 
-	public static serverId: string;
-	public static gameId: string;
+	public static ServerId: string;
+	public static GameId: string;
 
-	public static startingScene = SceneManager.GetActiveScene().name;
+	public static StartingScene = SceneManager.GetActiveScene().name;
 }

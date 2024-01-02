@@ -10,9 +10,9 @@ export interface ProjectileDto {
 }
 export declare class Projectile {
     private easyProjectile;
-    readonly gameObject: GameObject;
-    readonly itemType: ItemType;
-    readonly shooter: Entity | undefined;
+    readonly GameObject: GameObject;
+    readonly ItemType: ItemType;
+    readonly Shooter: Entity | undefined;
     private destroyed;
     private bin;
     readonly OnDestroy: Signal<void>;

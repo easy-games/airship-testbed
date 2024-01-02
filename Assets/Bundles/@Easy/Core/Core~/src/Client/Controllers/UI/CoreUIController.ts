@@ -3,15 +3,15 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 @Controller({})
 export class CoreUIController implements OnStart {
-	public readonly coreUIGO: GameObject;
-	public readonly refs: GameObjectReferences;
+	public readonly CoreUIGO: GameObject;
+	public readonly Refs: GameObjectReferences;
 
 	constructor() {
-		this.coreUIGO = GameObjectUtil.Instantiate(
+		this.CoreUIGO = GameObjectUtil.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/CoreUI.prefab"),
 		);
-		this.coreUIGO.name = "CoreUI";
-		this.refs = this.coreUIGO.GetComponent<GameObjectReferences>();
+		this.CoreUIGO.name = "CoreUI";
+		this.Refs = this.CoreUIGO.GetComponent<GameObjectReferences>();
 	}
 
 	OnStart(): void {}

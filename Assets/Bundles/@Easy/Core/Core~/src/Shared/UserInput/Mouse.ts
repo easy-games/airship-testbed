@@ -9,7 +9,7 @@ let mouseUnlockerIdCounter = 1;
 
 export class Mouse {
 	private readonly bin = new Bin();
-	private readonly mouseDriver = MouseDriver.instance();
+	private readonly mouseDriver = MouseDriver.Instance();
 
 	public readonly LeftDown = new Signal<[event: PointerButtonSignal]>();
 	public readonly LeftUp = new Signal<[event: PointerButtonSignal]>();

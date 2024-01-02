@@ -21,6 +21,7 @@ export declare class ChatController implements OnStart {
     private prevSentMessages;
     private historyIndex;
     private commands;
+    private lastChatMessageRenderedTime;
     constructor(localEntityController: LocalEntityController, coreUIController: CoreUIController, socketController: SocketController, directMessageController: DirectMessageController, friendsController: FriendsController);
     RegisterCommand(command: ChatCommand): void;
     OnStart(): void;

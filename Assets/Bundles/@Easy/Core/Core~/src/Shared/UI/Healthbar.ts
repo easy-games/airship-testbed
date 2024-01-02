@@ -11,7 +11,7 @@ export class Healthbar {
 	private readonly TransformKey = "Transforms";
 	private readonly GraphicsKey = "Graphics";
 	private readonly AnimKey = "Animations";
-	public transform: RectTransform;
+	public Transform: RectTransform;
 	private refs: GameObjectReferences;
 	private fillImage: Image;
 	private fillTransform: RectTransform;
@@ -21,15 +21,15 @@ export class Healthbar {
 	private brokenGraphicsHolder: RectTransform;
 	private deathAnim: Animation;
 
-	public fillDurationInSeconds = 0.08;
-	public changeDelayInSeconds = 0.25;
-	public changeDurationInSeconds = 0.09;
+	public FillDurationInSeconds = 0.08;
+	public ChangeDelayInSeconds = 0.25;
+	public ChangeDurationInSeconds = 0.09;
 	private enabled = true;
-	public deathOnZero = true;
+	public DeathOnZero = true;
 	private currentDelta = -999;
 
 	constructor(transform: Transform, options?: ProgressBarOptions) {
-		this.transform = transform.gameObject.GetComponent<RectTransform>();
+		this.Transform = transform.gameObject.GetComponent<RectTransform>();
 		this.refs = transform.GetComponent<GameObjectReferences>();
 		this.fillImage = this.refs.GetValue<Image>(this.GraphicsKey, "Fill");
 		this.fillTransform = this.refs.GetValue<RectTransform>(this.TransformKey, "Fill");
@@ -43,7 +43,7 @@ export class Healthbar {
 		this.brokenGraphicsHolder.gameObject.SetActive(false);
 		this.growthFillTransform.gameObject.SetActive(false);
 
-		this.deathOnZero = options?.deathOnZero ?? true;
+		this.DeathOnZero = options?.deathOnZero ?? true;
 
 		if (options?.fillColor) {
 			this.SetColor(options.fillColor);
@@ -53,7 +53,7 @@ export class Healthbar {
 	}
 
 	public SetActive(visible: boolean) {
-		this.transform.gameObject.active = visible;
+		this.Transform.gameObject.active = visible;
 	}
 
 	public SetColor(newColor: Color) {
@@ -72,16 +72,16 @@ export class Healthbar {
 			return;
 		}
 
-		if (this.deathOnZero && percentDelta <= 0) {
+		if (this.DeathOnZero && percentDelta <= 0) {
 			//Wait for the change animation
-			Task.Delay(this.fillDurationInSeconds, () => {
-				if (this.transform) {
+			Task.Delay(this.FillDurationInSeconds, () => {
+				if (this.Transform) {
 					//Play the death animation
 					this.deathAnim.Play();
 					this.graphicsHolder.gameObject.SetActive(false);
 					this.brokenGraphicsHolder.gameObject.SetActive(true);
 					Task.Delay(1.1, () => {
-						if (this.transform && this.currentDelta > 0) {
+						if (this.Transform && this.currentDelta > 0) {
 							//Reset if the progress has filled back up (Respawn)
 							this.SetValue(this.currentDelta);
 						}
@@ -95,7 +95,7 @@ export class Healthbar {
 		}
 
 		//Animate fill down
-		this.fillTransform.TweenLocalScaleX(percentDelta, this.fillDurationInSeconds);
+		this.fillTransform.TweenLocalScaleX(percentDelta, this.FillDurationInSeconds);
 
 		if (percentDelta > this.currentDelta) {
 			//Growth
@@ -107,14 +107,14 @@ export class Healthbar {
 				this.growthFillTransform.localScale.z,
 			);
 			this.growthFillTransform.anchoredPosition = new Vector2(
-				this.transform.rect.width * this.currentDelta,
+				this.Transform.rect.width * this.currentDelta,
 				this.growthFillTransform.anchoredPosition.y,
 			);
 
-			this.growthFillTransform.TweenLocalScaleX(0, this.fillDurationInSeconds);
+			this.growthFillTransform.TweenLocalScaleX(0, this.FillDurationInSeconds);
 			this.growthFillTransform.TweenAnchoredPositionX(
-				this.transform.rect.width * percentDelta,
-				this.changeDurationInSeconds,
+				this.Transform.rect.width * percentDelta,
+				this.ChangeDurationInSeconds,
 			);
 		} else {
 			//Decay
@@ -122,9 +122,9 @@ export class Healthbar {
 			this.changeFillTransform.gameObject.SetActive(true);
 
 			//Hold then animate change indicator
-			Task.Delay(this.changeDelayInSeconds, () => {
+			Task.Delay(this.ChangeDelayInSeconds, () => {
 				if (!this.enabled) return;
-				this.changeFillTransform.TweenLocalScaleX(percentDelta, this.changeDurationInSeconds);
+				this.changeFillTransform.TweenLocalScaleX(percentDelta, this.ChangeDurationInSeconds);
 			});
 		}
 

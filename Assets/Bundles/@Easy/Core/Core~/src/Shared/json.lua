@@ -131,7 +131,7 @@ encode = function(val, stack)
 end
 
 
-function json.encode(val)
+function json.EncodeJSON(val)
   return ( encode(val) )
 end
 
@@ -372,7 +372,7 @@ parse = function(str, idx)
 end
 
 
-function json.decode(str)
+function json.DecodeJSON(str)
   if type(str) ~= "string" then
     error("expected argument of type string, got " .. type(str))
   end

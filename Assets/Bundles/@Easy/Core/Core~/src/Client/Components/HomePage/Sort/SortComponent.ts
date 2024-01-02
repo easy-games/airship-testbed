@@ -2,13 +2,13 @@ import { GameDto } from "../API/GamesAPI";
 import HomePageGameComponent from "./HomePageGameComponent";
 
 export default class SortComponent extends AirshipBehaviour {
-	public titleText!: GameObject;
-	public content!: Transform;
-	public gamePrefab!: GameObject;
-	public backendName!: string;
+	public TitleText!: GameObject;
+	public Content!: Transform;
+	public GamePrefab!: GameObject;
+	public BackendName!: string;
 
 	override OnAwake(): void {
-		this.content.gameObject.ClearChildren();
+		this.Content.gameObject.ClearChildren();
 	}
 
 	override OnStart(): void {}
@@ -17,20 +17,20 @@ export default class SortComponent extends AirshipBehaviour {
 
 	public Setup(title: string, backendName: string): void {
 		this.SetTitle(title);
-		this.backendName = backendName;
+		this.BackendName = backendName;
 	}
 
 	public SetGames(games: GameDto[]): void {
-		this.content.gameObject.ClearChildren();
+		this.Content.gameObject.ClearChildren();
 
 		for (const gameDto of games) {
-			const gameGo = Object.Instantiate(this.gamePrefab, this.content) as GameObject;
+			const gameGo = Object.Instantiate(this.GamePrefab, this.Content) as GameObject;
 			const gameComponent = gameGo.GetComponent<HomePageGameComponent>();
 			gameComponent.Init(gameDto);
 		}
 	}
 
 	public SetTitle(title: string) {
-		this.titleText.GetComponent<TMP_Text>().text = title;
+		this.TitleText.GetComponent<TMP_Text>().text = title;
 	}
 }

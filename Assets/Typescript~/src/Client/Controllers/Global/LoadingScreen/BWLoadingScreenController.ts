@@ -33,11 +33,11 @@ export class BWLoadingScreenController implements OnStart {
 	}
 
 	private CheckCharacter(): void {
-		if (BedWars.IsMatchMode() && Dependency<MatchController>().eliminated) {
+		if (BedWars.IsMatchMode() && Dependency<MatchController>().Eliminated) {
 			this.loadingScreenController.FinishLoading();
 			return;
 		}
-		if (Game.LocalPlayer.character) {
+		if (Game.LocalPlayer.Character) {
 			this.loadingScreenController.FinishLoading();
 		} else {
 			const startTime = os.clock();
@@ -55,7 +55,7 @@ export class BWLoadingScreenController implements OnStart {
 			);
 			if (BedWars.IsMatchMode())
 				bin.Add(
-					Dependency<MatchController>().onEliminated.Connect(() => {
+					Dependency<MatchController>().OnEliminated.Connect(() => {
 						bin.Clean();
 						this.loadingScreenController.FinishLoading();
 					}),

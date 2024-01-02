@@ -3,7 +3,7 @@ import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Task } from "@Easy/Core/Shared/Util/Task";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
-import { decode } from "@Easy/Core/Shared/json";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
 import { MapLoadEvent } from "Server/Signals/MapLoadEvent";
@@ -34,7 +34,7 @@ export class MapService implements OnStart {
 				const gameConfigFile = AssetBridge.Instance.LoadAsset<TextAsset>(
 					"Shared/Resources/BWEditorConfig.json",
 				);
-				const gameConfig = decode<BWEditorConfig>(gameConfigFile.text);
+				const gameConfig = DecodeJSON<BWEditorConfig>(gameConfigFile.text);
 				mapId = gameConfig.gameMap;
 			}
 

@@ -13,5 +13,5 @@ export declare class KeyboardDriver {
     OnKeyUp(key: KeyCode, callback: (event: KeySignal) => void, priority?: SignalPriority): () => void;
     IsKeyDown(key: KeyCode): boolean;
     /** **NOTE:** Internal only. Use `Keyboard` class instead. */
-    static instance(): KeyboardDriver;
+    static Instance(): KeyboardDriver;
 }

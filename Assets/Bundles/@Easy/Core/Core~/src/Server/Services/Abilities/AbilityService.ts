@@ -128,7 +128,7 @@ export class AbilityService implements OnStart {
 			abilityId: abilityMeta.id,
 			cancel: cancellableAbility,
 			timeStarted: now,
-			timeLength: Duration.fromSeconds(chargeEndTime),
+			timeLength: Duration.FromSeconds(chargeEndTime),
 			cancellationTriggers: new ReadonlySet<AbilityCancellationTrigger>(chargeMeta.cancelTriggers),
 		});
 	}
@@ -293,7 +293,7 @@ export class AbilityService implements OnStart {
 		const abilityCooldown: AbilityCooldown = {
 			startTimestamp: now,
 			endTimestamp: cooldownEnd,
-			length: Duration.fromSeconds(cooldownDuration),
+			length: Duration.FromSeconds(cooldownDuration),
 		};
 		const clientCooldowns = this.cooldownMap.get(clientId);
 		if (!clientCooldowns) {

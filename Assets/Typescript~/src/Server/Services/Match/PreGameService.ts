@@ -24,17 +24,17 @@ export class PreGameService implements OnStart {
 		Task.Spawn(() => {
 			this.loadedMap = Dependency<MapService>().WaitForMapLoaded();
 			this.spawnPosition = this.loadedMap.GetSpawnPlatform();
-			this.mapCenter = this.loadedMap.GetCenter().Position;
+			this.mapCenter = this.loadedMap.GetCenter().position;
 			this.CreateSpawnPlatform(this.spawnPosition);
 		});
 
 		CoreServerSignals.EntityDeath.Connect((event) => {
 			event.respawnTime = 0;
 			Task.Delay(0, () => {
-				if (this.matchService.GetState() === MatchState.PRE && event.entity.player) {
-					print(event.entity.player.IsConnected());
+				if (this.matchService.GetState() === MatchState.PRE && event.entity.Player) {
+					print(event.entity.Player.IsConnected());
 					const entity = Dependency<EntityService>().SpawnPlayerEntity(
-						event.entity.player,
+						event.entity.Player,
 						EntityPrefabType.HUMAN,
 					);
 					entity.AddHealthbar();
@@ -46,7 +46,7 @@ export class PreGameService implements OnStart {
 			if (this.matchService.GetState() === MatchState.PRE && event.player) {
 				const pos = this.loadedMap?.GetSpawnPlatform();
 				if (pos) {
-					event.spawnPosition = pos.Position.add(
+					event.spawnPosition = pos.position.add(
 						new Vector3(math.random() * 2 - 1, 0.2, math.random() * 2 - 1),
 					);
 				}
@@ -69,7 +69,7 @@ export class PreGameService implements OnStart {
 
 		let pos = new Vector3(50, 50, 50);
 		if (spawnPlatformPosition) {
-			pos = spawnPlatformPosition.Position.add(new Vector3(-20, 20, -20));
+			pos = spawnPlatformPosition.position.add(new Vector3(-20, 20, -20));
 			camera.transform.position = pos;
 			camera.transform.LookAt(this.mapCenter);
 		}

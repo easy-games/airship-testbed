@@ -10,7 +10,7 @@ export declare class EntityController implements OnStart {
     private readonly localEntityController;
     private readonly abilityRegistry;
     private entities;
-    entityHealthbarPrefab: Object;
+    EntityHealthbarPrefab: Object;
     constructor(invController: InventoryController, localEntityController: LocalEntityController, abilityRegistry: AbilityRegistry);
     OnStart(): void;
     private DespawnEntity;

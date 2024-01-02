@@ -43,7 +43,7 @@ export class AbilityUIController implements OnStart {
 		public readonly coreUIController: CoreUIController,
 		public readonly abilityBindingController: AbilityBindingController,
 	) {
-		const go = this.coreUIController.refs.GetValue("Apps", "Abilities");
+		const go = this.coreUIController.Refs.GetValue("Apps", "Abilities");
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = true; // Enable if using abilities
 

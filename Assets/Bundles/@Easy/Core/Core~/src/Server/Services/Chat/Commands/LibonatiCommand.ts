@@ -39,9 +39,9 @@ export class LibonatiCommand extends ChatCommand {
 	private AddItem(player: Player, itemType: ItemType, amount: number) {
 		const itemStack = new ItemStack(itemType, amount);
 
-		if (!player.character) return;
+		if (!player.Character) return;
 
-		player.character.GetInventory().AddItem(itemStack);
+		player.Character.GetInventory().AddItem(itemStack);
 		player.SendMessage(`Given ${amount} ${itemStack.GetItemDef().displayName}`);
 	}
 }

@@ -5,9 +5,9 @@ export declare class CameraReferences {
     private static _instance;
     static Instance(): CameraReferences;
     private mouse;
-    readonly mainCamera: Camera;
-    readonly fpsCamera: Camera;
-    readonly uiCamera: Camera;
+    readonly MainCamera: Camera;
+    readonly FpsCamera: Camera;
+    readonly UiCamera: Camera;
     constructor();
     /**
      *

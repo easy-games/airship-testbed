@@ -16,7 +16,7 @@ export declare class Inventory {
     private heldSlot;
     private maxSlots;
     private hotbarSlots;
-    armorSlots: {
+    ArmorSlots: {
         [key in ArmorType]: number;
     };
     /** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */

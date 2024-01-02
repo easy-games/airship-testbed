@@ -1,4 +1,4 @@
-export declare const baseCharacters: {
+export declare const BaseCharacters: {
     readonly TestCharacter: "Shared/Resources/Characters/BaseCharacters/TestCharacter.prefab";
     readonly BaseCharacter: "Shared/Resources/Characters/BaseCharacters/BaseCharacter.prefab";
     readonly DummyCharacter: "Shared/Resources/Characters/BaseCharacters/DummyCharacter.prefab";

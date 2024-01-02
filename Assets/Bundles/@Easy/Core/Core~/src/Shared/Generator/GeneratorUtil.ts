@@ -1,4 +1,4 @@
-import { GENERATOR_PICKUP_RANGE, GeneratorDto } from "./GeneratorMeta";
+import { GeneratorPickupRange, GeneratorDto } from "./GeneratorMeta";
 
 /** Set of utilities pertaining to generators. */
 export class GeneratorUtil {
@@ -11,6 +11,6 @@ export class GeneratorUtil {
 	public static CanPickupGeneratorStack(generatorStateDto: GeneratorDto, entityPosition: Vector3): boolean {
 		const generatorPosition = generatorStateDto.pos;
 		const distFromGenerator = generatorPosition.sub(entityPosition).magnitude;
-		return distFromGenerator <= GENERATOR_PICKUP_RANGE;
+		return distFromGenerator <= GeneratorPickupRange;
 	}
 }

@@ -10,12 +10,12 @@ export class TelepearlService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.ProjectileHit.Connect((event) => {
 			//print("projectile itemType: " + event.projectile.itemType);
-			if (event.projectile.itemType !== ItemType.TELEPEARL) {
+			if (event.projectile.ItemType !== ItemType.TELEPEARL) {
 				return;
 			}
 
 			// Verify player threw telepearl.
-			if (!event.projectile.shooter) {
+			if (!event.projectile.Shooter) {
 				return;
 			}
 
@@ -58,7 +58,7 @@ export class TelepearlService implements OnStart {
 					if (world.GetBlockAt(below).IsAir()) {
 						nonTopPos = below;
 					}
-					event.projectile.shooter.Teleport(nonTopPos);
+					event.projectile.Shooter.Teleport(nonTopPos);
 					return;
 				}
 
@@ -66,7 +66,7 @@ export class TelepearlService implements OnStart {
 				const teleportPos = topMostBlockPos.add(new Vector3(0.5, 1.05, 0.5));
 
 				// Teleport player to hit position.
-				event.projectile.shooter.Teleport(teleportPos);
+				event.projectile.Shooter.Teleport(teleportPos);
 			}
 		});
 	}

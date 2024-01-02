@@ -77,7 +77,7 @@ export class MouseDriver {
 	}
 
 	/** **NOTE:** Internal only. Use `Mouse` class instead. */
-	public static instance() {
+	public static Instance() {
 		return (this.inst ??= new MouseDriver());
 	}
 }

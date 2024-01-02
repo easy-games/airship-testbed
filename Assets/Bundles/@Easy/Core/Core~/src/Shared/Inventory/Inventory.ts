@@ -19,7 +19,7 @@ export class Inventory {
 	private heldSlot = 0;
 	private maxSlots = 48;
 	private hotbarSlots = 9;
-	public armorSlots: {
+	public ArmorSlots: {
 		[key in ArmorType]: number;
 	} = {
 		[ArmorType.HELMET]: 45,

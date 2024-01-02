@@ -34,7 +34,7 @@ export interface TeamUpgradeStateDto {
 }
 
 /** Mapping of `TeamUpgradeType` to `TeamUpgrade`. */
-export const teamUpgrades: { [key in TeamUpgradeType]: TeamUpgrade } = {
+export const TeamUpgrades: { [key in TeamUpgradeType]: TeamUpgrade } = {
 	[TeamUpgradeType.TEAM_GENERATOR]: {
 		type: TeamUpgradeType.TEAM_GENERATOR,
 		displayName: "Team Generator",

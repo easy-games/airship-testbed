@@ -6,5 +6,5 @@ export declare class PreferredDriver {
     private constructor();
     GetScheme(): string;
     /** **NOTE:** Internal only. Use `Preferred` class instead. */
-    static instance(): PreferredDriver;
+    static Instance(): PreferredDriver;
 }

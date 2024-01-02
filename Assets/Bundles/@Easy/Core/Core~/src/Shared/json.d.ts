@@ -1,3 +1,3 @@
-export function encode(obj: unknown): string;
+export function EncodeJSON(obj: unknown): string;
 
-export function decode<T = unknown>(encodedString: string): T;
+export function DecodeJSON<T = unknown>(encodedString: string): T;

@@ -19,7 +19,7 @@ export class PreferredDriver {
 	}
 
 	/** **NOTE:** Internal only. Use `Preferred` class instead. */
-	public static instance() {
+	public static Instance() {
 		return (this.inst ??= new PreferredDriver());
 	}
 }

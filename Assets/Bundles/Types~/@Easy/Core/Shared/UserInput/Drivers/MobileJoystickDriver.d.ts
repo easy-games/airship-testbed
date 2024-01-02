@@ -8,5 +8,5 @@ export declare class MobileJoystickDriver {
     SetVisible(visible: boolean): void;
     IsVisible(): boolean;
     /** **NOTE:** Internal only. Use `Touchscreen` class instead. */
-    static instance(): MobileJoystickDriver;
+    static Instance(): MobileJoystickDriver;
 }

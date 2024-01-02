@@ -30,7 +30,7 @@ export class Signal<T extends unknown[] | unknown> {
 	private debugLogging = false;
 	private trackYielding = true;
 	private readonly connections: Map<number, Array<CallbackItem<T>>> = new Map();
-	public debugGameObject = false;
+	public DebugGameObject = false;
 	// private readonly connections: Array<CallbackItem<T>> = [];
 
 	/**

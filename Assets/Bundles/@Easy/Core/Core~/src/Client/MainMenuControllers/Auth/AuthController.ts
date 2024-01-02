@@ -3,7 +3,7 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
-import { decode, encode } from "Shared/json";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI";
 
 @Controller({ loadOrder: -1 })
@@ -12,8 +12,8 @@ export class AuthController implements OnStart {
 	private appId = "1:987279961241:web:944327bc9353f4f1f15c08";
 	private idToken = "";
 	private authenticated = false;
-	public readonly onAuthenticated = new Signal<void>();
-	public readonly onSignOut = new Signal<void>();
+	public readonly OnAuthenticated = new Signal<void>();
+	public readonly OnSignOut = new Signal<void>();
 
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
@@ -33,7 +33,7 @@ export class AuthController implements OnStart {
 			return;
 		}
 		return new Promise<void>((resolve) => {
-			this.onAuthenticated.Wait();
+			this.OnAuthenticated.Wait();
 			resolve();
 		});
 	}
@@ -62,20 +62,20 @@ export class AuthController implements OnStart {
 		// https://firebase.google.com/docs/reference/rest/auth#section-refresh-token
 		const res = HttpManager.PostAsync(
 			`https://securetoken.googleapis.com/v1/token?key=${this.apiKey}`,
-			encode({
+			EncodeJSON({
 				grant_type: "refresh_token",
 				refresh_token: refreshToken,
 			}),
 		);
 		if (res.success) {
-			const data = decode(res.data) as FirebaseTokenResponse;
+			const data = DecodeJSON(res.data) as FirebaseTokenResponse;
 			this.idToken = data.id_token;
 			InternalHttpManager.SetAuthToken(data.id_token);
 			StateManager.SetString("firebase_idToken", data.id_token);
 			StateManager.SetString("firebase_refreshToken", data.refresh_token);
 			StateManager.SetString("firebase_localId", data.user_id);
 			this.authenticated = true;
-			this.onAuthenticated.Fire();
+			this.OnAuthenticated.Fire();
 			return true;
 		}
 		print("failed login with refresh token: " + res.error + " statusCode=" + res.statusCode);
@@ -86,12 +86,12 @@ export class AuthController implements OnStart {
 		print("signing up...");
 		const res = HttpManager.PostAsync(
 			`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${this.apiKey}`,
-			encode({
+			EncodeJSON({
 				returnSecureToken: true,
 			}),
 		);
 		if (res.success) {
-			const data = decode(res.data) as FirebaseSignUpResponse;
+			const data = DecodeJSON(res.data) as FirebaseSignUpResponse;
 
 			this.idToken = data.idToken;
 			InternalHttpManager.SetAuthToken(data.idToken);
@@ -99,7 +99,7 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_refreshToken", data.refreshToken);
 			StateManager.SetString("firebase_localId", data.localId);
 			this.authenticated = true;
-			this.onAuthenticated.Fire();
+			this.OnAuthenticated.Fire();
 
 			if (!RunUtil.IsClone()) {
 				AuthManager.SaveAuthAccount(data.refreshToken);

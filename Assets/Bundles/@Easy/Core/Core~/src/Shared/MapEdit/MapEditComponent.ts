@@ -9,7 +9,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 export default class MapEditComponent extends AirshipBehaviour {
-	public spawnPosition!: Transform;
+	public SpawnPosition!: Transform;
 
 	public OnAwake(): void {
 		const world = WorldAPI.GetMainWorld()!;
@@ -19,8 +19,8 @@ export default class MapEditComponent extends AirshipBehaviour {
 				const entity = Dependency<EntityService>().SpawnPlayerEntity(
 					p,
 					EntityPrefabType.HUMAN,
-					this.spawnPosition.position,
-					this.spawnPosition.rotation,
+					this.SpawnPosition.position,
+					this.SpawnPosition.rotation,
 				);
 				const inv = entity.GetInventory();
 				inv.AddItem(new ItemStack(ItemType.DIAMOND_PICKAXE, 1));

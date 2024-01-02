@@ -18,8 +18,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private activeMainIndex = -1;
 	private activeSubIndex = -1;
 
-	public itemButtonHolder?: Transform;
-	public itemButtonTemplate?: GameObject;
+	public ItemButtonHolder?: Transform;
+	public ItemButtonTemplate?: GameObject;
 
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
 
@@ -97,7 +97,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(button, () => {
-				this.mainMenu?.avatarView?.FocusSlot(AccessorySlot.Root);
+				this.mainMenu?.AvatarView?.FocusSlot(AccessorySlot.Root);
 			});
 		}
 	}
@@ -111,8 +111,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override ClosePage(instant?: boolean): void {
 		super.ClosePage(instant);
 		this.Log("Close AVATAR");
-		if (this.mainMenu?.avatarView) {
-			this.mainMenu.avatarView.dragging = false;
+		if (this.mainMenu?.AvatarView) {
+			this.mainMenu.AvatarView.Dragging = false;
 		}
 	}
 
@@ -282,7 +282,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Accessories
 		let foundItems = AvatarUtil.GetAllAvatarItems(slot);
 		this.DisplayItems(foundItems);
-		this.mainMenu?.avatarView?.FocusSlot(slot);
+		this.mainMenu?.AvatarView?.FocusSlot(slot);
 	}
 
 	private DisplayItems(items: Accessory[] | undefined) {
@@ -301,9 +301,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private itemButtonBin: Bin = new Bin();
 	private ClearItembuttons() {
 		this.itemButtonBin.Clean();
-		if (this.itemButtonHolder) {
-			for (let i = 0; i < this.itemButtonHolder.GetChildCount(); i++) {
-				GameObjectUtil.Destroy(this.itemButtonHolder.GetChild(i).gameObject);
+		if (this.ItemButtonHolder) {
+			for (let i = 0; i < this.ItemButtonHolder.GetChildCount(); i++) {
+				GameObjectUtil.Destroy(this.ItemButtonHolder.GetChild(i).gameObject);
 			}
 		}
 	}
@@ -329,8 +329,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private AddColorButton(color: Color) {
-		if (this.itemButtonTemplate && this.itemButtonHolder) {
-			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+		if (this.ItemButtonTemplate && this.ItemButtonHolder) {
+			let newButton = GameObjectUtil.InstantiateIn(this.ItemButtonTemplate, this.ItemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, () => {
 				//Skin Color
 				this.SelectSkinColor(color);
@@ -353,8 +353,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private AddItemButton(name: string, onClickCallback: () => void) {
-		if (this.itemButtonTemplate && this.itemButtonHolder) {
-			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+		if (this.ItemButtonTemplate && this.ItemButtonHolder) {
+			let newButton = GameObjectUtil.InstantiateIn(this.ItemButtonTemplate, this.ItemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
 			this.itemButtonBin.Add(() => {
 				Bridge.DisconnectEvent(eventIndex);
@@ -377,7 +377,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		this.Log("Selecting item: " + acc.ToString());
-		this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(acc, true);
+		this.mainMenu?.AvatarView?.AccessoryBuilder?.AddSingleAccessory(acc, true);
 	}
 
 	private SelectSkinItem(acc: AccessorySkin) {
@@ -385,19 +385,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		this.Log("Selecting skin item: " + acc.ToString());
-		this.mainMenu?.avatarView?.accessoryBuilder?.AddSkinAccessory(acc, true);
+		this.mainMenu?.AvatarView?.AccessoryBuilder?.AddSkinAccessory(acc, true);
 	}
 
 	private SelectSkinColor(color: Color) {
 		this.Log("Selecting Color: " + color);
-		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color, true);
+		this.mainMenu?.AvatarView?.AccessoryBuilder?.SetSkinColor(color, true);
 	}
 
 	private OnSelectClear() {
 		this.Log("Clearing Item: " + this.currentSlot);
 		//Unequip this slot
 		if (this.currentSlot !== AccessorySlot.Root) {
-			this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAccessorySlot(this.currentSlot, true);
+			this.mainMenu?.AvatarView?.AccessoryBuilder?.RemoveAccessorySlot(this.currentSlot, true);
 		}
 	}
 
@@ -407,9 +407,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private OnDragAvatar(down: boolean) {
-		if (this.mainMenu?.avatarView) {
+		if (this.mainMenu?.AvatarView) {
 			print("Dragging avatar: " + down);
-			this.mainMenu.avatarView.dragging = down;
+			this.mainMenu.AvatarView.Dragging = down;
 		}
 	}
 }

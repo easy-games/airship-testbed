@@ -14,7 +14,7 @@ export class EntityInput {
 	private autoSprinting = false;
 
 	constructor(private readonly entity: Entity) {
-		this.entityDriver = entity.entityDriver;
+		this.entityDriver = entity.EntityDriver;
 		this.InitControls();
 	}
 

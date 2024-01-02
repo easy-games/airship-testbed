@@ -19,28 +19,28 @@ export class MainMenuSettingsUIController implements OnStart {
 
 	public Setup(): void {
 		this.SetupSlider(
-			this.mainMenuController.refs.GetValue("Settings", "MouseSensitivity"),
+			this.mainMenuController.Refs.GetValue("Settings", "MouseSensitivity"),
 			this.clientSettingsController.GetMouseSensitivity(),
 			(val) => {
 				this.clientSettingsController.SetMouseSensitivity(val);
 			},
 		);
 		this.SetupSlider(
-			this.mainMenuController.refs.GetValue("Settings", "Volume"),
+			this.mainMenuController.Refs.GetValue("Settings", "Volume"),
 			this.clientSettingsController.GetGlobalVolume(),
 			(val) => {
 				this.clientSettingsController.SetGlobalVolume(val);
 			},
 		);
 		this.SetupSlider(
-			this.mainMenuController.refs.GetValue("Settings", "AmbientVolume"),
+			this.mainMenuController.Refs.GetValue("Settings", "AmbientVolume"),
 			this.clientSettingsController.GetAmbientVolume(),
 			(val) => {
 				this.clientSettingsController.SetAmbientVolume(val);
 			},
 		);
 		this.SetupSlider(
-			this.mainMenuController.refs.GetValue("Settings", "MusicVolume"),
+			this.mainMenuController.Refs.GetValue("Settings", "MusicVolume"),
 			this.clientSettingsController.GetMusicVolume(),
 			(val) => {
 				this.clientSettingsController.SetMusicVolume(val);

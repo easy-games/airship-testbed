@@ -12,7 +12,7 @@ import { PrefabBlockManager } from "@Easy/Core/Shared/VoxelWorld/PrefabBlockMana
 export class BedController implements OnStart {
 	OnStart(): void {
 		CoreClientSignals.BlockPlace.Connect((event) => {
-			if (event.block.itemType === ItemType.BED) {
+			if (event.block.ItemType === ItemType.BED) {
 				const go = PrefabBlockManager.Get().GetBlockGameObject(event.pos);
 				if (go) {
 					const teamId = BlockDataAPI.GetBlockData<string>(event.pos, "teamId");

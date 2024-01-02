@@ -1,5 +1,5 @@
 import { LoadedMap } from "Server/Services/Match/Map/LoadedMap";
 
 export class MapLoadEvent {
-	constructor(public readonly LoadedMap: LoadedMap) {}
+	constructor(public readonly loadedMap: LoadedMap) {}
 }

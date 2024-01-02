@@ -11,9 +11,9 @@ export class CameraReferences {
 	}
 
 	private mouse = new Mouse();
-	public readonly mainCamera: Camera;
-	public readonly fpsCamera: Camera;
-	public readonly uiCamera: Camera;
+	public readonly MainCamera: Camera;
+	public readonly FpsCamera: Camera;
+	public readonly UiCamera: Camera;
 
 	public constructor() {
 		if (CameraReferences._instance) {
@@ -28,9 +28,9 @@ export class CameraReferences {
 			error("Camera rig not found. Please make sure to add a CameraRig to scene.");
 			return;
 		}
-		this.mainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
-		this.fpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
-		this.uiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
+		this.MainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
+		this.FpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
+		this.UiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
 	}
 
 	/**

@@ -3,7 +3,7 @@ import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";
-import { decode, encode } from "Shared/json";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 
 @Controller({})
@@ -22,7 +22,7 @@ export class SocketController implements OnStart {
 				this.Connect();
 			});
 		}
-		this.authController.onAuthenticated.Connect(() => {
+		this.authController.OnAuthenticated.Connect(() => {
 			Task.Spawn(() => {
 				this.Connect();
 			});
@@ -32,7 +32,7 @@ export class SocketController implements OnStart {
 				() => {
 					InternalHttpManager.PutAsync(
 						AirshipUrl.GameCoordinator + "/user-session/data",
-						encode({
+						EncodeJSON({
 							selectedRegion: "na",
 						}),
 					);
@@ -45,7 +45,7 @@ export class SocketController implements OnStart {
 	public On<T = unknown>(eventName: string, callback: (data: T) => void): void {
 		this.onEvent.Connect((e, d) => {
 			if (e === eventName) {
-				callback(decode(d));
+				callback(DecodeJSON(d));
 			}
 		});
 	}
@@ -55,7 +55,7 @@ export class SocketController implements OnStart {
 			data = { _hold: "yes" };
 		}
 		Task.Spawn(() => {
-			SocketManager.EmitAsync(eventName, encode(data));
+			SocketManager.EmitAsync(eventName, EncodeJSON(data));
 		});
 	}
 
