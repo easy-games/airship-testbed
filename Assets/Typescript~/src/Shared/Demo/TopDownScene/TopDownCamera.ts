@@ -15,10 +15,11 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 	private entity: Entity | undefined;
 	private bin = new Bin();
 
-	public override OnUpdate(dt: number): void {
+	public override OnLateUpdate(dt: number): void {
 		if (this.entity) {
-			print("OnUpdate");
-			this.camera.transform.position = this.entity.GetPosition().add(this.cameraOffset);
+			const entityPos = this.entity.model.transform.position;
+			this.camera.transform.position = entityPos.add(this.cameraOffset);
+			this.camera.transform.LookAt(entityPos);
 		}
 	}
 
