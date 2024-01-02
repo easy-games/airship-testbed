@@ -44,7 +44,7 @@ export class GeneratorSpawnService implements OnStart {
 		// Team generators.
 		for (let team of this.teamService.GetTeams()) {
 			const ironGeneratorPos = loadedMap.GetWorldPosition(team.id + "_generator");
-			const generatorId = this.generatorService.CreateGenerator(ironGeneratorPos.Position, {
+			const generatorId = this.generatorService.CreateGenerator(ironGeneratorPos.position, {
 				item: ItemType.IRON,
 				spawnRate: 1,
 				stackLimit: 100,
@@ -55,7 +55,7 @@ export class GeneratorSpawnService implements OnStart {
 				},
 			});
 
-			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(ironGeneratorPos.Position), DENY_REGION_SIZE);
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(ironGeneratorPos.position), DENY_REGION_SIZE);
 
 			const teamGenerators = this.teamMap.get(team);
 			if (teamGenerators) {
@@ -68,7 +68,7 @@ export class GeneratorSpawnService implements OnStart {
 		// Map generators.
 		const diamondGenerators = loadedMap.GetWorldPositionsForTag("diamond");
 		diamondGenerators.forEach((mapPosition) => {
-			this.generatorService.CreateGenerator(mapPosition.Position, {
+			this.generatorService.CreateGenerator(mapPosition.position, {
 				item: ItemType.DIAMOND,
 				spawnRate: 25,
 				stackLimit: 6,
@@ -76,12 +76,12 @@ export class GeneratorSpawnService implements OnStart {
 				spawnTimeLabel: true,
 			});
 			// Create deny region on generator.
-			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.position), DENY_REGION_SIZE);
 		});
 
 		const emeraldGenerators = loadedMap.GetWorldPositionsForTag("emerald");
 		emeraldGenerators.forEach((mapPosition) => {
-			this.generatorService.CreateGenerator(mapPosition.Position, {
+			this.generatorService.CreateGenerator(mapPosition.position, {
 				item: ItemType.EMERALD,
 				spawnRate: 45,
 				stackLimit: 3,
@@ -89,7 +89,7 @@ export class GeneratorSpawnService implements OnStart {
 				spawnTimeLabel: true,
 			});
 			// Create deny region on generator.
-			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.Position), DENY_REGION_SIZE);
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(mapPosition.position), DENY_REGION_SIZE);
 		});
 	}
 

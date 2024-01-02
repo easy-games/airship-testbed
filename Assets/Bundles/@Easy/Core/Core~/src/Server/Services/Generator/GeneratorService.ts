@@ -36,7 +36,7 @@ export class GeneratorService implements OnStart {
 
 			const genState = this.GetGeneratorById(generatorId);
 			if (!genState) return;
-			const pickupPlayer = event.entity.player;
+			const pickupPlayer = event.entity.Player;
 			if (pickupPlayer && genState?.split) {
 				const splitTeam = pickupPlayer.GetTeam();
 				if (!splitTeam) return;
@@ -45,7 +45,7 @@ export class GeneratorService implements OnStart {
 					const playerEntity = Dependency<EntityService>().GetEntityByClientId(player.clientId);
 					if (!playerEntity) return;
 					if (!(playerEntity instanceof CharacterEntity)) return;
-					const distanceFromGen = playerEntity.gameObject.transform.position.sub(genState.dto.pos).magnitude;
+					const distanceFromGen = playerEntity.GameObject.transform.position.sub(genState.dto.pos).magnitude;
 					if (player !== pickupPlayer && distanceFromGen <= splitRange) {
 						const inv = playerEntity.GetInventory();
 						inv.AddItem(

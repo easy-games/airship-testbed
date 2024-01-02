@@ -26,8 +26,8 @@ export declare class DirectMessageController implements OnStart {
     private openedWindowUserId;
     private doScrollToBottom;
     private inputFieldSelected;
-    lastMessagedFriend: FriendStatus | undefined;
-    onDirectMessageReceived: Signal<DirectMessage>;
+    LastMessagedFriend: FriendStatus | undefined;
+    OnDirectMessageReceived: Signal<DirectMessage>;
     private xPos;
     private yPos;
     private loadedMessagesFromUserIdFromDisk;

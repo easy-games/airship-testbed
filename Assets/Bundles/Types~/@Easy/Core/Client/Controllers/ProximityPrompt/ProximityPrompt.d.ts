@@ -18,15 +18,15 @@ export interface ProximityPromptData {
 /** Proximity Prompt. */
 export declare class ProximityPrompt {
     /** Global, incrementing id counter. */
-    static idCounter: number;
+    static IdCounter: number;
     /** Proximity prompt prefab. */
     private promptPrefab;
     /** Proximity prompt id. */
-    id: string;
+    Id: string;
     /** Proximity prompt data. */
-    data: ProximityPromptData;
+    Data: ProximityPromptData;
     /** Proximity prompt gameobject. */
-    promptGameObject: GameObject | undefined;
+    PromptGameObject: GameObject | undefined;
     /** On activated signal. */
     OnActivated: Signal<void>;
     /** On activated signal. */

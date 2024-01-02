@@ -24,13 +24,13 @@ export declare class LocalEntityController implements OnStart {
     private entityInput;
     private prevState;
     private currentState;
-    humanoidCameraMode: HumanoidCameraMode | undefined;
+    HumanoidCameraMode: HumanoidCameraMode | undefined;
     private orbitCameraMode;
     private characterCameraMode;
     private defaultFirstPerson;
     private firstSpawn;
     private sprintOverlayEmission?;
-    readonly onCustomMoveDataProcessed: Signal<void>;
+    readonly OnCustomMoveDataProcessed: Signal<void>;
     constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: InventoryController);
     /** Returns `true` if the player is in first-person mode. */
     IsFirstPerson(): boolean;

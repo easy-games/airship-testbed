@@ -7,7 +7,7 @@ export class AvatarUtil {
 	private static readonly avatarAccessories = new Map<AccessorySlot, Accessory[]>();
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
-	public static defaultKitAccessory: AccessoryCollection | undefined;
+	public static DefaultKitAccessory: AccessoryCollection | undefined;
 
 	public static readonly SkinColors = [
 		//Natural
@@ -30,7 +30,7 @@ export class AvatarUtil {
 	];
 
 	public static Initialize() {
-		AvatarUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
+		AvatarUtil.DefaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
 			AvatarUtil.DefaultAccessoryCollectionPath,
 		);
 		//print("Init kit: " + AvatarUtil.defaultKitAccessory?.name);

@@ -6,7 +6,7 @@ import { KeySignal } from "./Drivers/Signals/KeySignal";
 
 export class Keyboard {
 	private readonly bin = new Bin();
-	private readonly keyboardDriver = KeyboardDriver.instance();
+	private readonly keyboardDriver = KeyboardDriver.Instance();
 	// private readonly keysDown = new Map<KeyCode, boolean>();
 
 	private readonly keyUpDownDisconnects: Callback[] = [];

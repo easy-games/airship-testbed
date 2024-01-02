@@ -42,7 +42,7 @@ export class BWSpawnService implements OnStart {
 				const spawnPos = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 				if (spawnPos) {
 					Dependency<DenyRegionService>().CreateDenyRegion(
-						MathUtil.FloorVec(spawnPos.Position),
+						MathUtil.FloorVec(spawnPos.position),
 						new Vector3(3, 3, 3),
 					);
 				}
@@ -83,10 +83,10 @@ export class BWSpawnService implements OnStart {
 			// Listen for entity death, respawn if applicable.
 			CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 				if (!this.matchService.IsRunning()) return;
-				if (event.entity instanceof CharacterEntity && !this.bwService.winnerDeclared) {
+				if (event.entity instanceof CharacterEntity && !this.bwService.WinnerDeclared) {
 					Task.Delay(event.respawnTime, () => {
-						if (event.entity.player && !this.bwService.IsPlayerEliminated(event.entity.player)) {
-							this.SpawnPlayer(event.entity.player);
+						if (event.entity.Player && !this.bwService.IsPlayerEliminated(event.entity.Player)) {
+							this.SpawnPlayer(event.entity.Player);
 						}
 					});
 				}
@@ -106,10 +106,10 @@ export class BWSpawnService implements OnStart {
 				if (!team) return;
 				const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 				if (teamSpawnPosition) {
-					const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
+					const pos = teamSpawnPosition.position.add(new Vector3(0, 0.2, 0));
 					event.spawnPosition = pos;
-					event.spawnRotation = teamSpawnPosition.Rotation;
-					event.player.character?.Teleport(pos, teamSpawnPosition.Rotation.mul(Vector3.forward));
+					event.spawnRotation = teamSpawnPosition.rotation;
+					event.player.Character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
 				}
 			}
 		});
@@ -127,8 +127,8 @@ export class BWSpawnService implements OnStart {
 		if (!team) return;
 		const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 		if (teamSpawnPosition) {
-			const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
-			player.character?.Teleport(pos, teamSpawnPosition.Rotation.mul(Vector3.forward));
+			const pos = teamSpawnPosition.position.add(new Vector3(0, 0.2, 0));
+			player.Character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
 		}
 	}
 }

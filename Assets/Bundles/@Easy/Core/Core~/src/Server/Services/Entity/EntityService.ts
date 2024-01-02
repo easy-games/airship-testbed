@@ -43,14 +43,14 @@ export class EntityService implements OnStart {
 			CoreNetwork.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
 
 			return () => {
-				if (player.character) {
-					this.DespawnEntity(player.character);
+				if (player.Character) {
+					this.DespawnEntity(player.Character);
 				}
 			};
 		}, SignalPriority.HIGHEST);
 		CoreServerSignals.PlayerLeave.Connect((event) => {
-			if (event.player.character) {
-				this.DespawnEntity(event.player.character);
+			if (event.player.Character) {
+				this.DespawnEntity(event.player.Character);
 			}
 		});
 	}
@@ -127,7 +127,7 @@ export class EntityService implements OnStart {
 		}
 
 		// Custom move command data handling:
-		const customDataConn = entity.entityDriver.OnDispatchCustomData((tick, customData) => {
+		const customDataConn = entity.EntityDriver.OnDispatchCustomData((tick, customData) => {
 			const allData = customData.Decode() as { key: unknown; value: unknown }[];
 			for (const data of allData) {
 				const moveEvent = new MoveCommandDataEvent(player?.clientId ?? -1, tick, data.key, data.value);
@@ -151,7 +151,7 @@ export class EntityService implements OnStart {
 	public DespawnEntity(entity: Entity): void {
 		CoreServerSignals.EntityDespawn.Fire(entity);
 		entity.Destroy();
-		this.entities.delete(entity.id);
+		this.entities.delete(entity.Id);
 	}
 
 	public GetEntityById(entityId: number): Entity | undefined {

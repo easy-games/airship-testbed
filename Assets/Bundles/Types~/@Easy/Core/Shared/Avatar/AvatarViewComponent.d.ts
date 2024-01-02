@@ -1,17 +1,17 @@
 /// <reference types="@easy-games/compiler-types" />
 export default class AvatarViewComponent extends AirshipBehaviour {
-    humanEntityGo?: GameObject;
-    avatarHolder?: Transform;
-    cameraTransform?: Transform;
-    cameraWaypointDefault?: Transform;
-    cameraWaypointHead?: Transform;
-    cameraWaypointFeet?: Transform;
-    cameraWaypointHands?: Transform;
-    cameraWaypointBack?: Transform;
-    dragSpeedMod: number;
-    cameraTransitionDuration: number;
-    dragging: boolean;
-    accessoryBuilder?: AccessoryBuilder;
+    HumanEntityGo?: GameObject;
+    AvatarHolder?: Transform;
+    CameraTransform?: Transform;
+    CameraWaypointDefault?: Transform;
+    CameraWaypointHead?: Transform;
+    CameraWaypointFeet?: Transform;
+    CameraWaypointHands?: Transform;
+    CameraWaypointBack?: Transform;
+    DragSpeedMod: number;
+    CameraTransitionDuration: number;
+    Dragging: boolean;
+    AccessoryBuilder?: AccessoryBuilder;
     private targetTransform?;
     private mouse?;
     private lastMousePos;

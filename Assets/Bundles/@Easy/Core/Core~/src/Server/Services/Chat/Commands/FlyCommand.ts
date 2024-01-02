@@ -8,9 +8,9 @@ export class FlyCommand extends ChatCommand {
 		super("fly");
 	}
 	public Execute(player: Player, args: string[]): void {
-		if (player.character) {
-			const newValue = !player.character.entityDriver.IsAllowFlight();
-			player.character.entityDriver.SetAllowFlight(newValue);
+		if (player.Character) {
+			const newValue = !player.Character.EntityDriver.IsAllowFlight();
+			player.Character.EntityDriver.SetAllowFlight(newValue);
 			player.SendMessage(
 				newValue
 					? ColorUtil.ColoredText(Theme.Green, "Fly mode enabled.")

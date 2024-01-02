@@ -40,12 +40,12 @@ export class TeamService implements OnStart {
 		CoreNetwork.ServerToClient.AddTeams.Server.FireAllClients([dto]);
 
 		entry.bin.Add(
-			team.onPlayerAdded.Connect((player) => {
+			team.OnPlayerAdded.Connect((player) => {
 				CoreNetwork.ServerToClient.AddPlayerToTeam.Server.FireAllClients(team.id, player.userId);
 			}),
 		);
 		entry.bin.Add(
-			team.onPlayerRemoved.Connect((player) => {
+			team.OnPlayerRemoved.Connect((player) => {
 				CoreNetwork.ServerToClient.RemovePlayerFromTeam.Server.FireAllClients(team.id, player.userId);
 			}),
 		);

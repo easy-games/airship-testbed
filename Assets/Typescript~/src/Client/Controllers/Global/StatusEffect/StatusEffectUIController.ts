@@ -56,7 +56,7 @@ export class StatusEffectUIController implements OnStart {
 		print(iconTexture);
 		iconImage.sprite = Bridge.MakeSprite(iconTexture);
 		const iconTier = iconRefs.GetValue<TextMeshProUGUI>("IconComponents", "Tier");
-		iconTier.text = StatusEffectUtil.decimalToRomanNumeral(tier);
+		iconTier.text = StatusEffectUtil.DecimalToRomanNumeral(tier);
 		this.statusEffectMap.set(statusEffectType, iconGameObject);
 	}
 

@@ -19,7 +19,7 @@ export class ItemUtil {
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 	private static runtimeIdCounter = 0;
 
-	public static missingItemAccessory: Accessory;
+	public static MissingItemAccessory: Accessory;
 
 	private static itemTypes: ItemType[] = [];
 	private static implictItemTypeMap = new Map<string, ItemType>();
@@ -32,7 +32,7 @@ export class ItemUtil {
 	 */
 	public static Initialize() {
 		//Load default items
-		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
+		ItemUtil.MissingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
 
 		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(CoreItemDefinitions)) {
@@ -146,14 +146,14 @@ export class ItemUtil {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories[0];
 
-		return ItemUtil.missingItemAccessory;
+		return ItemUtil.MissingItemAccessory;
 	}
 
 	public static GetAccessoriesForItemType(itemType: ItemType): Readonly<Accessory[]> {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories;
 
-		return [ItemUtil.missingItemAccessory];
+		return [ItemUtil.MissingItemAccessory];
 	}
 
 	public static IsItemType(s: string): boolean {

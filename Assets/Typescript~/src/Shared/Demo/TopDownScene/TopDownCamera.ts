@@ -9,17 +9,17 @@ import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Dependency } from "@easy-games/flamework-core";
 
 export default class TopDownCameraComponent extends AirshipBehaviour {
-	public camera!: Camera;
-	public cameraOffset: Vector3 = new Vector3(0, 15, 0);
+	public Camera!: Camera;
+	public CameraOffset: Vector3 = new Vector3(0, 15, 0);
 
 	private entity: Entity | undefined;
 	private bin = new Bin();
 
 	public override OnLateUpdate(dt: number): void {
 		if (this.entity) {
-			const entityPos = this.entity.model.transform.position;
-			this.camera.transform.position = entityPos.add(this.cameraOffset);
-			this.camera.transform.LookAt(entityPos);
+			const entityPos = this.entity.Model.transform.position;
+			this.Camera.transform.position = entityPos.add(this.CameraOffset);
+			this.Camera.transform.LookAt(entityPos);
 		}
 	}
 

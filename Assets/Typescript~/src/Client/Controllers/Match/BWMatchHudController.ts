@@ -28,7 +28,7 @@ export class BWMatchHudController implements OnStart {
 			this.UpdateTeam(team, go.gameObject, undefined);
 			i++;
 		}
-		this.teamController.onTeamAdded.Connect((team) => {
+		this.teamController.OnTeamAdded.Connect((team) => {
 			const go = teamsWrapperGo.GetChild(i);
 			go.name = team.id;
 			this.UpdateTeam(team, go.gameObject, undefined);

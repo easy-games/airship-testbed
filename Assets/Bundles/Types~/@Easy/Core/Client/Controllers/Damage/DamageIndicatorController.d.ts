@@ -2,10 +2,10 @@ import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { DamageType } from "../../../Shared/Damage/DamageType";
 export declare class DamageIndicatorController implements OnStart {
     private combatEffectsCanvas;
-    hitMarkerImage: Image;
+    HitMarkerImage: Image;
     private hitMarkerBin;
-    hitMarkerAudioClip: AudioClip | undefined;
-    criticalHitAudioClips: AudioClip[];
+    HitMarkerAudioClip: AudioClip | undefined;
+    CriticalHitAudioClips: AudioClip[];
     private indicatorPrefab;
     private indicatorPos;
     private damageIndicatorBin;

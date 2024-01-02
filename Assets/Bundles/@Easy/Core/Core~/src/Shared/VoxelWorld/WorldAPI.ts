@@ -40,7 +40,7 @@ export class WorldAPI {
 
 		//Global Hit Damage Calcs
 		//Block Types
-		const archetype = signal.block.itemDef?.block?.blockArchetype ?? BlockArchetype.NONE;
+		const archetype = signal.block.ItemDef?.block?.blockArchetype ?? BlockArchetype.NONE;
 
 		//Bonuse damage from item type
 		if (archetype !== BlockArchetype.NONE) {

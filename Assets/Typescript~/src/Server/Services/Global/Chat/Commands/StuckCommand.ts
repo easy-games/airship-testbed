@@ -7,8 +7,8 @@ export class StuckCommand extends ChatCommand {
 	}
 
 	Execute(player: Player, args: string[]): void {
-		if (player.character) {
-			player.character.Teleport(player.character.model.transform.position.add(new Vector3(0, 1.1, 0)));
+		if (player.Character) {
+			player.Character.Teleport(player.Character.Model.transform.position.add(new Vector3(0, 1.1, 0)));
 		}
 	}
 }

@@ -30,9 +30,9 @@ export class BubbleChatController implements OnStart {
 			if (senderClientId !== undefined) {
 				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
 			}
-			if (sender?.character) {
+			if (sender?.Character) {
 				const messageSanitized = this.SanitizeRawChatInput(rawMessage);
-				this.RenderBubble(messageSanitized, sender.character);
+				this.RenderBubble(messageSanitized, sender.Character);
 			}
 		});
 
@@ -147,7 +147,7 @@ export class BubbleChatController implements OnStart {
 
 	/** Creates a chat container for an entity (or returns one if it already exists) */
 	private GetOrCreateChatContainer(entity: Entity): GameObject {
-		const existingChatContainer = entity.model.gameObject.transform.Find("BubbleChatContainer");
+		const existingChatContainer = entity.Model.gameObject.transform.Find("BubbleChatContainer");
 		if (existingChatContainer) {
 			return existingChatContainer.gameObject;
 		}
@@ -173,7 +173,7 @@ export class BubbleChatController implements OnStart {
 			}
 		}
 
-		chatTransform.SetParent(entity.model.gameObject.transform);
+		chatTransform.SetParent(entity.Model.gameObject.transform);
 		chatTransform.localPosition = new Vector3(0, 3.2, 0);
 
 		const shouldBeMinimized = this.ShouldChatBeMinimized(chatTransform, Camera.main.transform.position);

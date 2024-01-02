@@ -1,6 +1,6 @@
 // export function QuaternionLookRotation(forward: Vector3, up: Vector3) : Quaternion {
 // 	forward = forward.Normalize();
- 
+
 // 	const vector2 = NormalizeV3(CrossV3(up, forward));
 // 	const vector3 = CrossV3(forward, vector2);
 // 	const m00 = vector2.x;
@@ -46,7 +46,7 @@
 // 		quaternion.y = 0.5 * num6;
 // 		quaternion.z = (m21 + m12) * num3;
 // 		quaternion.w = (m20 - m02) * num3;
-// 		return quaternion; 
+// 		return quaternion;
 // 	}
 
 // 	const num5 = math.sqrt(((1 + m22) - m00) - m11);
@@ -65,11 +65,11 @@
 // 	quaternion.y = lhs.w * rhs.y + lhs.y * rhs.w + lhs.z * rhs.x - lhs.x * rhs.z;
 // 	quaternion.z = lhs.w * rhs.z + lhs.z * rhs.w + lhs.x * rhs.y - lhs.y * rhs.x;
 // 	quaternion.w = lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z;
-	
+
 // 	return quaternion;
 // }
 
-export function Quat_Vec_Mult(quaternion: Quaternion, point: Vector3): Vector3 {
+export function QuatVecMult(quaternion: Quaternion, point: Vector3): Vector3 {
 	const x = quaternion.x * 2;
 	const y = quaternion.y * 2;
 	const z = quaternion.z * 2;
@@ -86,5 +86,6 @@ export function Quat_Vec_Mult(quaternion: Quaternion, point: Vector3): Vector3 {
 	return new Vector3(
 		(1 - (yy + zz)) * point.x + (xy - wz) * point.y + (xz + wy) * point.z,
 		(xy + wz) * point.x + (1 - (xx + zz)) * point.y + (yz - wx) * point.z,
-		(xz - wy) * point.x + (yz + wx) * point.y + (1 - (xx + yy)) * point.z);
+		(xz - wy) * point.x + (yz + wx) * point.y + (1 - (xx + yy)) * point.z,
+	);
 }

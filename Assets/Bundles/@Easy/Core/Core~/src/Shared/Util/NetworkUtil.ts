@@ -11,7 +11,7 @@ if (RunUtil.IsServer()) {
 }
 export const NetworkObjectAdded = new Signal<NetworkObject>();
 managed.OnAddedToSpawnedEvent((nob) => {
-	NetworkObjectAdded.debugGameObject = true;
+	NetworkObjectAdded.DebugGameObject = true;
 	NetworkObjectAdded.Fire(nob);
 	waitingByName.set(nob.gameObject.name, nob);
 	// print("end of onAdded", nob.gameObject);

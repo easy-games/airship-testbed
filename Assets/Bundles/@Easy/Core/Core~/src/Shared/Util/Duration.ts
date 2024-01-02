@@ -1,7 +1,7 @@
-export const SECONDS_TO_MINUTES = 60;
-export const SECONDS_TO_HOURS = 3600;
-export const SECONDS_TO_DAYS = 86400;
-export const MINUTES_TO_DAYS = 1440;
+export const SecondsToMinutes = 60;
+export const SecondsToHours = 3600;
+export const SecondsToDays = 86400;
+export const MinutesToDays = 1440;
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Duration {
@@ -16,48 +16,48 @@ export class Duration {
 
 	private constructor(public readonly totalSeconds: number) {}
 
-	public add(time: Duration) {
+	public Add(time: Duration) {
 		return new Duration(this.totalSeconds + time.totalSeconds);
 	}
 
-	public sub(time: Duration) {
+	public Sub(time: Duration) {
 		return new Duration(this.totalSeconds - time.totalSeconds);
 	}
 
-	public mul(factor: number) {
+	public Mul(factor: number) {
 		return new Duration(this.totalSeconds * factor);
 	}
 
-	public negate() {
+	public Negate() {
 		return new Duration(-this.totalSeconds);
 	}
 
-	public static fromSeconds(seconds: number) {
+	public static FromSeconds(seconds: number) {
 		return new Duration(seconds);
 	}
 
-	public static fromMinutes(minutes: number) {
+	public static FromMinutes(minutes: number) {
 		return new Duration(minutes * 60);
 	}
 
-	public static fromHours(hours: number) {
+	public static FromHours(hours: number) {
 		return new Duration(hours * 60 * 60);
 	}
 
-	public static fromDays(days: number) {
+	public static FromDays(days: number) {
 		return new Duration(days * 60 * 60 * 24);
 	}
 
-	public static fromWeeks(weeks: number) {
+	public static FromWeeks(weeks: number) {
 		return new Duration(weeks * 60 * 60 * 24 * 7);
 	}
 
-	public format(format = "%H:%M:%S") {
-		const days = math.floor(this.getDays());
-		const hours = math.floor(this.getHours());
-		const minutes = math.floor(this.getMinutes());
-		const seconds = math.floor(this.getSeconds()) % SECONDS_TO_MINUTES;
-		const totalSeconds = this.getTotalSeconds();
+	public Format(format = "%H:%M:%S") {
+		const days = math.floor(this.GetDays());
+		const hours = math.floor(this.GetHours());
+		const minutes = math.floor(this.GetMinutes());
+		const seconds = math.floor(this.GetSeconds()) % SecondsToMinutes;
+		const totalSeconds = this.GetTotalSeconds();
 
 		return format.gsub("%%([HhMmSsDdupI][?]*)", {
 			H: string.format("%02d", hours),
@@ -74,35 +74,35 @@ export class Duration {
 		})[0];
 	}
 
-	public getDays() {
-		return math.floor(this.getTotalDays());
+	public GetDays() {
+		return math.floor(this.GetTotalDays());
 	}
 
-	public getHours() {
-		return math.floor(this.getTotalHours()) % 24;
+	public GetHours() {
+		return math.floor(this.GetTotalHours()) % 24;
 	}
 
-	public getMinutes() {
-		return math.floor(this.getTotalMinutes()) % 60;
+	public GetMinutes() {
+		return math.floor(this.GetTotalMinutes()) % 60;
 	}
 
-	public getSeconds() {
-		return math.floor(this.getTotalSeconds()) % SECONDS_TO_MINUTES;
+	public GetSeconds() {
+		return math.floor(this.GetTotalSeconds()) % SecondsToMinutes;
 	}
 
-	public getTotalDays() {
-		return this.totalSeconds / SECONDS_TO_DAYS;
+	public GetTotalDays() {
+		return this.totalSeconds / SecondsToDays;
 	}
 
-	public getTotalHours() {
-		return this.totalSeconds / SECONDS_TO_HOURS;
+	public GetTotalHours() {
+		return this.totalSeconds / SecondsToHours;
 	}
 
-	public getTotalMinutes() {
-		return this.totalSeconds / SECONDS_TO_MINUTES;
+	public GetTotalMinutes() {
+		return this.totalSeconds / SecondsToMinutes;
 	}
 
-	public getTotalSeconds() {
+	public GetTotalSeconds() {
 		return this.totalSeconds;
 	}
 }

@@ -49,7 +49,7 @@ export default class BWKillFeedItemComponent extends AirshipBehaviour {
 
 	private GetEntryColor(entity: Entity): KillFeedColor {
 		const localPlayer = Game.LocalPlayer;
-		if (localPlayer === entity.player) {
+		if (localPlayer === entity.Player) {
 			return KillFeedColor.Self;
 		}
 

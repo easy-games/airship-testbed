@@ -7,7 +7,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	private animateOutDuration = 0.1;
 	private animateInDuration = 0.1;
 
-	public pageType: MainMenuPageType = MainMenuPageType.HOME;
+	public PageType: MainMenuPageType = MainMenuPageType.HOME;
 	protected refs?: GameObjectReferences;
 
 	private activePage = false;
@@ -16,7 +16,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
 		print("MAIN MENU COMPONENT INIT: " + pageType);
 		this.mainMenu = mainMenu;
-		this.pageType = pageType;
+		this.PageType = pageType;
 		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
 		if (pageType === MainMenuPageType.HOME) {
 			this.OpenPage();
@@ -29,7 +29,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		if (this.activePage) {
 			return;
 		}
-		print("Opened page: " + this.pageType);
+		print("Opened page: " + this.PageType);
 		this.activePage = true;
 		this.gameObject.SetActive(true);
 
@@ -52,7 +52,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 			return;
 		}
 		this.activePage = false;
-		print("closing page: " + this.pageType);
+		print("closing page: " + this.PageType);
 
 		// gameObject.GetComponent<RectTransform>().TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
 		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();

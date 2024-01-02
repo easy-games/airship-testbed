@@ -46,8 +46,8 @@ export class PrefabBlockManager {
 				world.WaitForFinishedReplicatingChunksFromServer().then(() => {
 					for (const pos of blockPositions) {
 						const block = world.GetBlockAt(pos);
-						if (block.itemType) {
-							this.OnBlockPlace(pos, block.itemType);
+						if (block.ItemType) {
+							this.OnBlockPlace(pos, block.ItemType);
 							const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 							const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 								.BlockPlaceClientSignal;

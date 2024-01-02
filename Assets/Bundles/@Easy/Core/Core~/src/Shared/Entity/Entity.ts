@@ -43,24 +43,24 @@ const friendlyHealthbarFillColor = Theme.Green;
 const enemyHealthbarFillColor = ColorUtil.HexToColor("#FF4646");
 
 export class EntityReferences {
-	meshes: Array<Renderer>;
-	fpsMesh: Renderer;
-	neckBone: Transform;
-	headBone: Transform;
-	spineBoneRoot: Transform;
-	spineBoneMiddle: Transform;
-	spineBoneTop: Transform;
-	shoulderR: Transform;
-	shoulderL: Transform;
-	root: Transform;
-	rig: Transform;
-	characterCollider: Collider;
-	animationEvents: EntityAnimationEvents;
-	animationHelper: CharacterAnimationHelper;
-	jumpSound: AudioClip | undefined;
-	slideSoundPaths: Array<string> = [];
-	landSound: AudioClip | undefined;
-	footstepAudioSource: AudioSource;
+	Meshes: Array<Renderer>;
+	FpsMesh: Renderer;
+	NeckBone: Transform;
+	HeadBone: Transform;
+	SpineBoneRoot: Transform;
+	SpineBoneMiddle: Transform;
+	SpineBoneTop: Transform;
+	ShoulderR: Transform;
+	ShoulderL: Transform;
+	Root: Transform;
+	Rig: Transform;
+	CharacterCollider: Collider;
+	AnimationEvents: EntityAnimationEvents;
+	AnimationHelper: CharacterAnimationHelper;
+	JumpSound: AudioClip | undefined;
+	SlideSoundPaths: Array<string> = [];
+	LandSound: AudioClip | undefined;
+	FootstepAudioSource: AudioSource;
 
 	constructor(ref: GameObjectReferences) {
 		let boneKey = "Bones";
@@ -68,31 +68,31 @@ export class EntityReferences {
 		let colliderKey = "Colliders";
 		let vfxKey = "VFX";
 
-		this.animationHelper = ref.gameObject.GetComponent<CharacterAnimationHelper>();
+		this.AnimationHelper = ref.gameObject.GetComponent<CharacterAnimationHelper>();
 
 		//Get the meshes
 		let meshesCS: CSArray<Renderer> = ref.GetAllValues<Renderer>(meshKey);
-		this.meshes = table.create(meshesCS.Length);
+		this.Meshes = table.create(meshesCS.Length);
 		for (let i = 0; i < meshesCS.Length; i++) {
-			this.meshes[i] = meshesCS.GetValue(i);
+			this.Meshes[i] = meshesCS.GetValue(i);
 		}
-		this.fpsMesh = ref.GetValue<Renderer>(meshKey, "FirstPerson");
+		this.FpsMesh = ref.GetValue<Renderer>(meshKey, "FirstPerson");
 		//Get the bones
-		this.neckBone = ref.GetValue<Transform>(boneKey, "Neck");
-		this.spineBoneTop = ref.GetValue<Transform>(boneKey, "SpineTop");
-		this.spineBoneMiddle = ref.GetValue<Transform>(boneKey, "SpineMiddle");
-		this.spineBoneRoot = ref.GetValue<Transform>(boneKey, "SpineRoot");
-		this.headBone = ref.GetValue<Transform>(boneKey, "Head");
-		this.root = ref.GetValue<Transform>(boneKey, "Root");
-		this.rig = ref.GetValue<Transform>(boneKey, "Rig");
-		this.shoulderL = ref.GetValue<Transform>(boneKey, "ShoulderL");
-		this.shoulderR = ref.GetValue<Transform>(boneKey, "ShoulderR");
+		this.NeckBone = ref.GetValue<Transform>(boneKey, "Neck");
+		this.SpineBoneTop = ref.GetValue<Transform>(boneKey, "SpineTop");
+		this.SpineBoneMiddle = ref.GetValue<Transform>(boneKey, "SpineMiddle");
+		this.SpineBoneRoot = ref.GetValue<Transform>(boneKey, "SpineRoot");
+		this.HeadBone = ref.GetValue<Transform>(boneKey, "Head");
+		this.Root = ref.GetValue<Transform>(boneKey, "Root");
+		this.Rig = ref.GetValue<Transform>(boneKey, "Rig");
+		this.ShoulderL = ref.GetValue<Transform>(boneKey, "ShoulderL");
+		this.ShoulderR = ref.GetValue<Transform>(boneKey, "ShoulderR");
 
-		this.characterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
-		this.characterCollider.enabled = true;
+		this.CharacterCollider = ref.GetValue<Collider>(colliderKey, "CharacterController");
+		this.CharacterCollider.enabled = true;
 
-		this.animationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
-		this.footstepAudioSource = ref.GetValue<AudioSource>(vfxKey, "FootstepAudioSource");
+		this.AnimationEvents = ref.GetValue<EntityAnimationEvents>(vfxKey, "AnimationEvents");
+		this.FootstepAudioSource = ref.GetValue<AudioSource>(vfxKey, "FootstepAudioSource");
 
 		/*this.jumpSound = AudioManager.LoadFullPathAudioClip(BundleReferenceManager.GetPathForResource(
 			BundleGroupNames.Entity,
@@ -101,11 +101,11 @@ export class EntityReferences {
 		));*/
 
 		//Slide sound path: Shared/Resources/Sound/Movement/s_Movement_Slide_Start_01.wav
-		this.slideSoundPaths[0] = AllBundleItems.Entity_Movement_SlideSFX0;
-		this.slideSoundPaths[1] = AllBundleItems.Entity_Movement_SlideSFX1;
-		this.slideSoundPaths[2] = AllBundleItems.Entity_Movement_SlideSFX2;
-		this.slideSoundPaths[3] = AllBundleItems.Entity_Movement_SlideSFX3;
-		this.slideSoundPaths[4] = AllBundleItems.Entity_Movement_SlideSFXLoop;
+		this.SlideSoundPaths[0] = AllBundleItems.Entity_Movement_SlideSFX0;
+		this.SlideSoundPaths[1] = AllBundleItems.Entity_Movement_SlideSFX1;
+		this.SlideSoundPaths[2] = AllBundleItems.Entity_Movement_SlideSFX2;
+		this.SlideSoundPaths[3] = AllBundleItems.Entity_Movement_SlideSFX3;
+		this.SlideSoundPaths[4] = AllBundleItems.Entity_Movement_SlideSFXLoop;
 
 		/*this.landSound = AudioManager.LoadFullPathAudioClip(
 			BundleReferenceManager.GetPathForResource(
@@ -119,17 +119,17 @@ export class EntityReferences {
 
 export class Entity {
 	/** Entity's unique id. */
-	public readonly id: number;
-	public readonly gameObject: GameObject;
-	public readonly networkObject: NetworkObject;
-	public readonly entityDriver: EntityDriver;
-	public readonly model: GameObject;
-	public readonly attributes: EasyAttributes;
-	public animator: CharacterEntityAnimator;
-	public readonly references: EntityReferences;
-	public readonly accessoryBuilder: AccessoryBuilder;
+	public readonly Id: number;
+	public readonly GameObject: GameObject;
+	public readonly NetworkObject: NetworkObject;
+	public readonly EntityDriver: EntityDriver;
+	public readonly Model: GameObject;
+	public readonly Attributes: EasyAttributes;
+	public Animator: CharacterEntityAnimator;
+	public readonly References: EntityReferences;
+	public readonly AccessoryBuilder: AccessoryBuilder;
 
-	public player: Player | undefined;
+	public Player: Player | undefined;
 
 	/**
 	 * The connection ID of whoever is controlling this entity.
@@ -160,24 +160,24 @@ export class Entity {
 	public readonly OnArmorChanged = new Signal<number>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
-		this.id = id;
+		this.Id = id;
 		this.ClientId = clientId;
-		this.networkObject = networkObject;
-		this.gameObject = networkObject.gameObject;
+		this.NetworkObject = networkObject;
+		this.GameObject = networkObject.gameObject;
 
-		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
-		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
-		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
+		this.Attributes = this.GameObject.GetComponent<EasyAttributes>();
+		this.AccessoryBuilder = this.GameObject.GetComponent<AccessoryBuilder>();
+		this.EntityDriver = this.GameObject.GetComponent<EntityDriver>();
 
 		Profiler.BeginSample("EntityReferences.Constructor");
-		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
+		this.References = new EntityReferences(this.GameObject.GetComponent<GameObjectReferences>());
 		Profiler.EndSample();
-		this.model = this.references.root.gameObject;
-		this.model.transform.localPosition = new Vector3(0, 0, 0);
+		this.Model = this.References.Root.gameObject;
+		this.Model.transform.localPosition = new Vector3(0, 0, 0);
 		Profiler.BeginSample("CharacterEntityAnimator.Constructor");
-		this.animator = new CharacterEntityAnimator(this, this.references);
+		this.Animator = new CharacterEntityAnimator(this, this.References);
 		Profiler.EndSample();
-		this.state = this.entityDriver.GetState();
+		this.state = this.EntityDriver.GetState();
 
 		if (this.ClientId !== undefined) {
 			if (RunUtil.IsServer()) {
@@ -188,18 +188,18 @@ export class Entity {
 				this.SetPlayer(player);
 			}
 		}
-		if (this.player) {
-			this.displayName = this.player.username;
+		if (this.Player) {
+			this.displayName = this.Player.username;
 		} else {
-			this.displayName = `entity_${this.id}`;
+			this.displayName = `entity_${this.Id}`;
 		}
 
-		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
-			this.animator?.PlayFootstepSound(1.4);
+		const impactConn = this.EntityDriver.OnImpactWithGround((velocity) => {
+			this.Animator?.PlayFootstepSound(1.4);
 			if (RunUtil.IsServer()) {
 				const result = Dependency<DamageService>().InflictFallDamage(this, velocity.y);
 				if (result) {
-					CoreNetwork.ServerToClient.Entity.FallDamageTaken.Server.FireAllClients(this.id, velocity);
+					CoreNetwork.ServerToClient.Entity.FallDamageTaken.Server.FireAllClients(this.Id, velocity);
 				}
 			}
 		});
@@ -208,7 +208,7 @@ export class Entity {
 		});
 
 		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
-			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
+			const adjustMoveConn = this.EntityDriver.OnAdjustMove((moveModifier) => {
 				this.OnAdjustMove.Fire(moveModifier);
 			});
 			this.bin.Add(() => {
@@ -217,7 +217,7 @@ export class Entity {
 		}
 
 		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
-			const movementChangeConn = this.entityDriver.OnMoveDirectionChanged((direction) => {
+			const movementChangeConn = this.EntityDriver.OnMoveDirectionChanged((direction) => {
 				this.OnMoveDirectionChanged.Fire(direction);
 				this.moveDirection = direction;
 			});
@@ -227,7 +227,7 @@ export class Entity {
 			});
 		}
 
-		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
+		const stateChangeConn = this.EntityDriver.OnStateChanged((newState) => {
 			// print("state change (" + this.displayName + "): " + newState);
 			const oldState = this.state;
 			this.state = newState;
@@ -239,20 +239,20 @@ export class Entity {
 		});
 
 		if (this.IsLocalCharacter()) {
-			this.references.footstepAudioSource.spatialBlend = 0;
+			this.References.FootstepAudioSource.spatialBlend = 0;
 		} else {
-			this.references.footstepAudioSource.spatialBlend = 1;
+			this.References.FootstepAudioSource.spatialBlend = 1;
 		}
 	}
 
 	public Teleport(pos: Vector3, lookVector?: Vector3) {
-		this.entityDriver.Teleport(pos);
+		this.EntityDriver.Teleport(pos);
 		if (lookVector) {
-			this.entityDriver.SetLookVector(lookVector);
-			if (RunUtil.IsServer() && this.player) {
+			this.EntityDriver.SetLookVector(lookVector);
+			if (RunUtil.IsServer() && this.Player) {
 				CoreNetwork.ServerToClient.Entity.SetLookVector.Server.FireClient(
-					this.player.clientId,
-					this.id,
+					this.Player.clientId,
+					this.Id,
 					lookVector,
 				);
 			}
@@ -272,7 +272,7 @@ export class Entity {
 	public AddHealthbar(): void {
 		if (RunUtil.IsServer()) {
 			this.healthbarEnabled = true;
-			CoreNetwork.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.id);
+			CoreNetwork.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.Id);
 			return;
 		}
 		if (this.IsLocalCharacter()) return;
@@ -283,9 +283,9 @@ export class Entity {
 			sameTeam = true;
 		}
 
-		const healthbarGO = PoolManager.SpawnObject(Dependency<EntityController>().entityHealthbarPrefab);
+		const healthbarGO = PoolManager.SpawnObject(Dependency<EntityController>().EntityHealthbarPrefab);
 		const transform = healthbarGO.transform;
-		transform.SetParent(this.model.transform);
+		transform.SetParent(this.Model.transform);
 		transform.localPosition = new Vector3(0, 2.2, 0);
 		this.healthbar = new Healthbar(transform.GetChild(0), {
 			fillColor: sameTeam ? friendlyHealthbarFillColor : enemyHealthbarFillColor,
@@ -300,7 +300,7 @@ export class Entity {
 	 * @returns
 	 */
 	public GetPosition() {
-		return this.gameObject.transform.position;
+		return this.GameObject.transform.position;
 	}
 
 	public GetHealthbar(): Healthbar | undefined {
@@ -308,14 +308,14 @@ export class Entity {
 	}
 
 	public GetTeam(): Team | undefined {
-		return this.player?.GetTeam();
+		return this.Player?.GetTeam();
 	}
 
 	public CanDamage(entity: Entity): boolean {
 		if (entity.HasImmunity()) return false;
 
-		const thisTeam = this.player?.GetTeam();
-		const otherTeam = entity.player?.GetTeam();
+		const thisTeam = this.Player?.GetTeam();
+		const otherTeam = entity.Player?.GetTeam();
 		if (thisTeam !== undefined && otherTeam !== undefined && thisTeam === otherTeam) {
 			return false;
 		}
@@ -324,8 +324,8 @@ export class Entity {
 	}
 
 	public SetPlayer(player: Player | undefined): void {
-		const oldPlayer = this.player;
-		this.player = player;
+		const oldPlayer = this.Player;
+		this.Player = player;
 		this.OnPlayerChanged.Fire(player, oldPlayer);
 	}
 
@@ -333,7 +333,7 @@ export class Entity {
 		this.displayName = displayName;
 		this.OnDisplayNameChanged.Fire(displayName);
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Entity.SetDisplayName.Server.FireAllClients(this.id, displayName);
+			CoreNetwork.ServerToClient.Entity.SetDisplayName.Server.FireAllClients(this.Id, displayName);
 		}
 	}
 
@@ -346,7 +346,7 @@ export class Entity {
 	}
 
 	public GetEntityDriver(): EntityDriver {
-		return this.entityDriver;
+		return this.EntityDriver;
 	}
 
 	public GetMoveDirection(): Vector3 {
@@ -362,7 +362,7 @@ export class Entity {
 		this.healthbar?.SetValue(this.health / this.maxHealth);
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health);
+			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.Id, this.health);
 		}
 	}
 
@@ -370,7 +370,7 @@ export class Entity {
 		this.maxHealth = maxHealth;
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health, this.maxHealth);
+			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.Id, this.health, this.maxHealth);
 		}
 	}
 
@@ -380,22 +380,22 @@ export class Entity {
 	public Destroy(): void {
 		this.bin.Clean();
 		this.OnDespawn.Fire();
-		this.animator.Destroy();
+		this.Animator.Destroy();
 		this.destroyed = true;
 
-		if (this.player && this.id === this.player.character?.id) {
-			this.player.SetCharacter(undefined);
+		if (this.Player && this.Id === this.Player.Character?.Id) {
+			this.Player.SetCharacter(undefined);
 		}
 		if (this.healthbar) {
-			const go = this.healthbar.transform.parent.gameObject;
+			const go = this.healthbar.Transform.parent.gameObject;
 			this.healthbar.Destroy();
 			Object.Destroy(go);
 		}
-		this.gameObject.name = "DespawnedEntity";
+		this.GameObject.name = "DespawnedEntity";
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
-			NetworkUtil.Despawn(this.networkObject.gameObject);
+			CoreNetwork.ServerToClient.DespawnEntity.Server.FireAllClients(this.Id);
+			NetworkUtil.Despawn(this.NetworkObject.gameObject);
 		}
 	}
 
@@ -406,9 +406,9 @@ export class Entity {
 	public Encode(): EntityDto {
 		return {
 			serializer: EntitySerializer.DEFAULT,
-			id: this.id,
+			id: this.Id,
 			clientId: this.ClientId,
-			nobId: this.networkObject.ObjectId,
+			nobId: this.NetworkObject.ObjectId,
 			health: this.health,
 			maxHealth: this.maxHealth,
 			displayName: this.displayName,
@@ -424,7 +424,7 @@ export class Entity {
 		if (!RunUtil.IsClient()) {
 			return false;
 		} else {
-			return this.ClientId === Dependency<PlayerController>().clientId;
+			return this.ClientId === Dependency<PlayerController>().ClientId;
 		}
 	}
 
@@ -491,13 +491,13 @@ export class Entity {
 			if (exceptClientId !== undefined) {
 				CoreNetwork.ServerToClient.PlayEntityItemAnimation.Server.FireExcept(
 					exceptClientId,
-					this.id,
+					this.Id,
 					useIndex,
 					animationMode,
 				);
 			} else {
 				CoreNetwork.ServerToClient.PlayEntityItemAnimation.Server.FireAllClients(
-					this.id,
+					this.Id,
 					useIndex,
 					animationMode,
 				);
@@ -508,7 +508,7 @@ export class Entity {
 	}
 
 	public HasImmunity(): boolean {
-		let immuneUntilTime = this.attributes.GetNumber("immunity");
+		let immuneUntilTime = this.Attributes.GetNumber("immunity");
 		if (immuneUntilTime !== undefined) {
 			return TimeUtil.GetServerTime() < immuneUntilTime;
 		}
@@ -516,11 +516,11 @@ export class Entity {
 	}
 
 	public GetImmuneUntilTime(): number {
-		return this.attributes.GetNumber("immunity") ?? 0;
+		return this.Attributes.GetNumber("immunity") ?? 0;
 	}
 
 	public GetLastDamagedTime(): number {
-		return this.attributes.GetNumber("last_damaged") ?? 0;
+		return this.Attributes.GetNumber("last_damaged") ?? 0;
 	}
 
 	public TimeSinceLastDamaged(): number {
@@ -528,18 +528,18 @@ export class Entity {
 	}
 
 	public SetLastDamagedTime(time: number): void {
-		this.attributes.SetAttribute("last_damaged", time);
+		this.Attributes.SetAttribute("last_damaged", time);
 	}
 
 	public GrantImmunity(duration: number): void {
 		let newTime = TimeUtil.GetServerTime() + duration;
 
-		let currentTime = this.attributes.GetNumber("immunity");
+		let currentTime = this.Attributes.GetNumber("immunity");
 		if (currentTime !== undefined && currentTime > newTime) {
 			return;
 		}
 
-		this.attributes.SetAttribute("immunity", newTime);
+		this.Attributes.SetAttribute("immunity", newTime);
 	}
 
 	public GetState(): EntityState {
@@ -547,12 +547,12 @@ export class Entity {
 	}
 
 	public GetCenterOfMass(): Vector3 {
-		return this.model.transform.position.add(this.GetHeadOffset().mul(0.5));
+		return this.Model.transform.position.add(this.GetHeadOffset().mul(0.5));
 	}
 
 	public GetHeadPosition(): Vector3 {
 		const offset = this.GetHeadOffset();
-		return this.model.transform.position.add(offset);
+		return this.Model.transform.position.add(offset);
 	}
 
 	public GetHeadOffset(): Vector3 {
@@ -578,11 +578,11 @@ export class Entity {
 	}
 
 	public GetMiddlePosition(): Vector3 {
-		return this.model.transform.position.add(new Vector3(0, 0.9, 0));
+		return this.Model.transform.position.add(new Vector3(0, 0.9, 0));
 	}
 
 	public LocalOffsetToWorldPoint(localOffset: Vector3) {
-		const worldDir = this.model.transform.TransformDirection(localOffset);
+		const worldDir = this.Model.transform.TransformDirection(localOffset);
 		const worldPoint = this.GetMiddlePosition().add(worldDir);
 		return worldPoint;
 	}
@@ -602,7 +602,7 @@ export class Entity {
 	}
 
 	public GetBlockBelowMeta(): BlockDef | undefined {
-		return WorldAPI.GetMainWorld()?.GetBlockBelowMeta(this.model.transform.position);
+		return WorldAPI.GetMainWorld()?.GetBlockBelowMeta(this.Model.transform.position);
 	}
 
 	public GetBin(): Bin {
@@ -610,7 +610,7 @@ export class Entity {
 	}
 
 	public GetAccessoryMeshes(slot: AccessorySlot): Renderer[] {
-		return this.PushToArray(this.accessoryBuilder.GetAccessoryMeshes(slot));
+		return this.PushToArray(this.AccessoryBuilder.GetAccessoryMeshes(slot));
 	}
 
 	private PushToArray<T>(array: CSArray<T>): T[] {
@@ -640,7 +640,7 @@ export class Entity {
 
 		const [, id] = ItemUtil.GetItemTypeComponents(projectileItemType);
 		const projectilePath = `@Easy/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(id)}.prefab`;
-		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
+		const projectileLauncher = this.GameObject.GetComponent<ProjectileLauncher>();
 
 		const powerMulitplier = itemMeta.projectileLauncher?.powerMultiplier ?? 1;
 		const easyProjectile = projectileLauncher.ClientFire(

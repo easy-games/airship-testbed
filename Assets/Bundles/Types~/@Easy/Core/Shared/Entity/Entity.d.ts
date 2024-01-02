@@ -23,38 +23,38 @@ export interface EntityDto {
     healthbar?: boolean;
 }
 export declare class EntityReferences {
-    meshes: Array<Renderer>;
-    fpsMesh: Renderer;
-    neckBone: Transform;
-    headBone: Transform;
-    spineBoneRoot: Transform;
-    spineBoneMiddle: Transform;
-    spineBoneTop: Transform;
-    shoulderR: Transform;
-    shoulderL: Transform;
-    root: Transform;
-    rig: Transform;
-    characterCollider: Collider;
-    animationEvents: EntityAnimationEvents;
-    animationHelper: CharacterAnimationHelper;
-    jumpSound: AudioClip | undefined;
-    slideSoundPaths: Array<string>;
-    landSound: AudioClip | undefined;
-    footstepAudioSource: AudioSource;
+    Meshes: Array<Renderer>;
+    FpsMesh: Renderer;
+    NeckBone: Transform;
+    HeadBone: Transform;
+    SpineBoneRoot: Transform;
+    SpineBoneMiddle: Transform;
+    SpineBoneTop: Transform;
+    ShoulderR: Transform;
+    ShoulderL: Transform;
+    Root: Transform;
+    Rig: Transform;
+    CharacterCollider: Collider;
+    AnimationEvents: EntityAnimationEvents;
+    AnimationHelper: CharacterAnimationHelper;
+    JumpSound: AudioClip | undefined;
+    SlideSoundPaths: Array<string>;
+    LandSound: AudioClip | undefined;
+    FootstepAudioSource: AudioSource;
     constructor(ref: GameObjectReferences);
 }
 export declare class Entity {
     /** Entity's unique id. */
-    readonly id: number;
-    readonly gameObject: GameObject;
-    readonly networkObject: NetworkObject;
-    readonly entityDriver: EntityDriver;
-    readonly model: GameObject;
-    readonly attributes: EasyAttributes;
-    animator: CharacterEntityAnimator;
-    readonly references: EntityReferences;
-    readonly accessoryBuilder: AccessoryBuilder;
-    player: Player | undefined;
+    readonly Id: number;
+    readonly GameObject: GameObject;
+    readonly NetworkObject: NetworkObject;
+    readonly EntityDriver: EntityDriver;
+    readonly Model: GameObject;
+    readonly Attributes: EasyAttributes;
+    Animator: CharacterEntityAnimator;
+    readonly References: EntityReferences;
+    readonly AccessoryBuilder: AccessoryBuilder;
+    Player: Player | undefined;
     /**
      * The connection ID of whoever is controlling this entity.
      * Only exists if this entity is attached to a player.

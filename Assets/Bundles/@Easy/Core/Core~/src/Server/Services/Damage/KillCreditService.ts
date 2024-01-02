@@ -20,8 +20,8 @@ export class KillCreditService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 			if (event.fromEntity) {
-				this.entityIdToDamageCreditMap.set(event.entity.id, {
-					creditToEntityId: event.fromEntity.id,
+				this.entityIdToDamageCreditMap.set(event.entity.Id, {
+					creditToEntityId: event.fromEntity.Id,
 					time: os.clock(),
 				});
 			}
@@ -29,7 +29,7 @@ export class KillCreditService implements OnStart {
 
 		CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.damageTypes.has(event.damageEvent.damageType) && event.killer === undefined) {
-				const credit = this.entityIdToDamageCreditMap.get(event.entity.id);
+				const credit = this.entityIdToDamageCreditMap.get(event.entity.Id);
 				if (credit) {
 					const killerEntity = Entity.FindById(credit.creditToEntityId);
 					if (killerEntity) {

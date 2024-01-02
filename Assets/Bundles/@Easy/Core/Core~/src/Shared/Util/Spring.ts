@@ -1,9 +1,9 @@
 export class Spring {
 	/** The goal for the spring. */
-	public goal: Vector3;
+	public Goal: Vector3;
 
 	/** The current velocity of the spring. */
-	public velocity: Vector3;
+	public Velocity: Vector3;
 
 	constructor(
 		/** The position of the spring */
@@ -12,16 +12,16 @@ export class Spring {
 		/** The angular frequency of the spring. */
 		private angularFrequency: number,
 	) {
-		this.goal = position;
-		this.velocity = new Vector3(0, 0, 0);
+		this.Goal = position;
+		this.Velocity = new Vector3(0, 0, 0);
 	}
 
 	/** Update the spring. */
-	public update(deltaTime: number): Vector3 {
+	public Update(deltaTime: number): Vector3 {
 		const angFreq = this.angularFrequency * math.pi * 2;
-		const goal = this.goal;
+		const goal = this.Goal;
 		const p0 = this.position;
-		const v0 = this.velocity;
+		const v0 = this.Velocity;
 		const offset = p0.sub(goal);
 		const decay = math.exp(-angFreq * deltaTime);
 		const position = offset
@@ -29,7 +29,7 @@ export class Spring {
 			.add(v0.mul(deltaTime))
 			.mul(decay)
 			.add(goal);
-		this.velocity = v0
+		this.Velocity = v0
 			.mul(1 - angFreq * deltaTime)
 			.sub(offset.mul(angFreq * angFreq * deltaTime))
 			.mul(decay);
@@ -38,14 +38,14 @@ export class Spring {
 	}
 
 	/** Reset the spring to a specific position. */
-	public resetTo(position: Vector3) {
+	public ResetTo(position: Vector3) {
 		this.position = position;
-		this.goal = position;
-		this.velocity = new Vector3(0, 0, 0);
+		this.Goal = position;
+		this.Velocity = new Vector3(0, 0, 0);
 	}
 
 	/** Impulse the spring with a given impulse velocity. */
-	public impulse(impulse: Vector3) {
-		this.velocity = this.velocity.add(impulse);
+	public Impulse(impulse: Vector3) {
+		this.Velocity = this.Velocity.add(impulse);
 	}
 }
