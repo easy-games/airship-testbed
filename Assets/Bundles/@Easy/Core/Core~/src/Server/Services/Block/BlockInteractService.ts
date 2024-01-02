@@ -204,7 +204,7 @@ export class BlockInteractService implements OnStart {
 		const tillable = block.itemDef?.block?.tillable;
 		if (!tillable) return false;
 
-		const breakState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.CAN_BREAK);
+		const breakState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.NO_BREAK);
 		const tillState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.CAN_TILL);
 
 		world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, { placedByEntityId: entity?.id });
@@ -220,7 +220,7 @@ export class BlockInteractService implements OnStart {
 			);
 		}
 
-		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CAN_BREAK, breakState);
+		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.NO_BREAK, breakState);
 		return true;
 	}
 

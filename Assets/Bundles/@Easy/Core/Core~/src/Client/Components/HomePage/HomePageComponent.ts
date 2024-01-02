@@ -15,16 +15,19 @@ export default class HomePageComponent extends AirshipBehaviour {
 	private sorts = new Map<SortId, SortComponent>();
 
 	override OnEnabled(): void {
-		// print("mainContent: " + this.mainContent);
-		// let toRemove: Transform[] = [];
-		// for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
-		// 	toRemove.push(this.mainContent.GetChild(i));
-		// }
-		// for (const t of toRemove) {
-		// 	Object.Destroy(t.gameObject);
-		// }
-		// this.CreateSort(SortId.POPULAR, "Popular", "featured");
-		// this.FetchGames();
+		this.ClearSorts();
+		this.CreateSort(SortId.POPULAR, "Popular", "featured");
+		this.FetchGames();
+	}
+
+	private ClearSorts(): void {
+		let toRemove: Transform[] = [];
+		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
+			toRemove.push(this.mainContent.GetChild(i));
+		}
+		for (const t of toRemove) {
+			Object.Destroy(t.gameObject);
+		}
 	}
 
 	private CreateSort(sortId: SortId, title: string, backendName: string): void {

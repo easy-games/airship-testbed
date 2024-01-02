@@ -1,4 +1,3 @@
-import { Bootstrap } from "@Easy/Core/Shared/Bootstrap/Bootstrap";
 import { Flamework } from "@easy-games/flamework-core";
 import { BedWars } from "./BedWars/BedWars";
 
@@ -20,7 +19,7 @@ Flamework.Ignite();
 // Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.ORBIT);
 // Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
 
-Bootstrap.FinishedSetup();
+// Bootstrap.FinishedSetup();
 
 // Hack to allow require(). Will remove eventually.
 export = { _: true };

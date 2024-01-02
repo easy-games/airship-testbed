@@ -1,3 +1,6 @@
+/**
+ * @deprecated This should be used by Core only.
+ */
 export declare class Bootstrap {
     static PrepareVoxelWorld(skybox?: string): void;
     /**

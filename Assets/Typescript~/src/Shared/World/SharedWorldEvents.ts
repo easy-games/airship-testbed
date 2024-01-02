@@ -1,5 +1,6 @@
+import { BreakBlockHeldItem } from "@Easy/Core/Shared/Item/HeldItems/BlockPlacement/BreakBlockHeldItem";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
-import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { TeamUpgradeType } from "Shared/TeamUpgrade/TeamUpgradeType";
 import { TeamUpgradeUtil } from "Shared/TeamUpgrade/TeamUpgradeUtil";
@@ -14,12 +15,12 @@ export class MatchWorldEvents {
 			}
 
 			// Disable breaking map blocks
-			if (event.block.itemType !== ItemType.BED) {
-				const canBreak = BlockDataAPI.GetBlockData<number>(event.blockPos, CoreBlockMetaKeys.CAN_BREAK);
-				if (!canBreak) {
-					event.damage = 0;
-				}
-			}
+			// if (event.block.itemType !== ItemType.BED) {
+			// 	const canBreak = BlockDataAPI.GetBlockData<number>(event.blockPos, CoreBlockMetaKeys.CAN_BREAK);
+			// 	if (!canBreak) {
+			// 		event.damage = 0;
+			// 	}
+			// }
 
 			//Team Upgrades
 			if (event.entity?.player) {
@@ -34,6 +35,12 @@ export class MatchWorldEvents {
 					).value;
 					event.damage *= 1 + damageMultiplier / 100;
 				}
+			}
+		});
+
+		BreakBlockHeldItem.canUseBlockSignal.Connect((event) => {
+			if (event.block.itemType !== ItemType.BED && !BlockDataAPI.GetBlockData(event.blockPos, "player_placed")) {
+				event.SetCancelled(true);
 			}
 		});
 	}

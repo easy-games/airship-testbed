@@ -124,7 +124,12 @@ export class HeldItem {
 			}
 			i++;
 		}
+
 		// this.entity.accessoryBuilder.TryCombineMeshes();
+		this.entity.accessoryBuilder.UpdateAccessoryLayers();
+		if (RunUtil.IsClient()) {
+			Dependency<ViewmodelController>().accessoryBuilder.UpdateAccessoryLayers();
+		}
 	}
 
 	/**

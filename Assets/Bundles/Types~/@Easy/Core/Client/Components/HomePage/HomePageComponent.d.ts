@@ -6,7 +6,9 @@ export default class HomePageComponent extends AirshipBehaviour {
     private bin;
     private sorts;
     OnEnabled(): void;
+    private ClearSorts;
     private CreateSort;
     FetchGames(): void;
     OnDisabled(): void;
+    OnDestroy(): void;
 }

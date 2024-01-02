@@ -1,4 +1,4 @@
-import { AvatarUtil } from "Client/Avatar/AvatarUtil";
+import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
 import { Game } from "./Game";
@@ -26,7 +26,7 @@ gameObject.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
-const client = require("@Easy/Core/Client/Resources/TS/MainClient") as {
+const client = require("@Easy/Core/Client/Resources/TS/CoreClientBootstrap") as {
 	SetupClient: (context: CoreContext) => void;
 };
 client.SetupClient(CoreContext.MAIN_MENU);

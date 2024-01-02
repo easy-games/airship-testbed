@@ -7,10 +7,13 @@ import { PrefabBlockManager } from "Shared/VoxelWorld/PrefabBlockManager/PrefabB
 import { World } from "Shared/VoxelWorld/World";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
+/**
+ * @deprecated This should be used by Core only.
+ */
 export class Bootstrap {
 	public static PrepareVoxelWorld(skybox = World.SKYBOX): void {
 		if (RunCore.IsClient()) {
-			WorldAPI.GetMainWorld()?.LoadEmptyWorld(World.SKYBOX);
+			WorldAPI.GetMainWorld()?.LoadEmptyWorld(skybox);
 		}
 
 		// Setup Managers

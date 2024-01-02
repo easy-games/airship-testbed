@@ -15,6 +15,13 @@ export declare class PlayerService implements OnStart {
     private botCounter;
     constructor();
     HandlePlayerReady(player: Player): void;
+    /**
+     * Looks for a player using a case insensitive fuzzy search
+     *
+     * Specific players can be grabbed using the full discriminator as well - e.g. `Luke#0001` would be a specific player
+     * @param searchName The name of the plaeyr
+     */
+    FuzzyFindFirstPlayerByName(searchName: string): Player | undefined;
     AddBotPlayer(): void;
     /** Get all players. */
     GetPlayers(): Readonly<Array<Player>>;

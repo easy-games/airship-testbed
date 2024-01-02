@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c196a948571684d49a825d3107c6ff13
+guid: 4804ab050edb94521a24fbec7e4b251a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -143,5 +143,5 @@ TextureImporter:
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 

@@ -2,6 +2,7 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -21,15 +22,15 @@ import { HelpCommand } from "./Commands/HelpCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
 import { LibonatiCommand } from "./Commands/LibonatiCommand";
+import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
+import { TeamChatCommand } from "./Commands/TeamChatCommand";
 import { TeamCommand } from "./Commands/TeamCommand";
+import { PlayersCommand } from "./Commands/TestPlayerCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { VorliasCommand } from "./Commands/VorliasCommand";
-import { PlayersCommand } from "./Commands/TestPlayerCommand";
-import { Player } from "Shared/Player/Player";
-import { TeamChatCommand } from "./Commands/TeamChatCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -63,6 +64,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new AbilityEnableStateCommand());
 		this.RegisterCommand(new PlayersCommand());
 		this.RegisterCommand(new TeamChatCommand());
+		this.RegisterCommand(new SaveWorldCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {

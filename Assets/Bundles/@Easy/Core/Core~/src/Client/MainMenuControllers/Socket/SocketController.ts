@@ -12,7 +12,7 @@ export class SocketController implements OnStart {
 	constructor(private readonly authController: AuthController) {}
 	OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
-			print(`[${eventName}]: ${data}`);
+			// print(`[${eventName}]: ${data}`);
 			this.onEvent.Fire(eventName, data);
 		});
 		SocketManager.SetScriptListening(true);

@@ -1,9 +1,9 @@
 import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
 import { Signal } from "../../Shared/Util/Signal";
+import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import { AuthController } from "./Auth/AuthController";
-import { MainMenuPageType } from "./MainMenuPageName";
 import MainMenuPageComponent from "./MainMenuPageComponent";
-import AvatarViewComponent from "../Avatar/AvatarViewComponent";
+import { MainMenuPageType } from "./MainMenuPageName";
 export declare class MainMenuController implements OnStart {
     private readonly authController;
     private readonly socialTweenDuration;

@@ -1,11 +1,11 @@
 import {} from "@easy-games/flamework-core";
-import MainMenuPageComponent from "../MainMenuPageComponent";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
-import { AvatarUtil } from "Client/Avatar/AvatarUtil";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
+import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
