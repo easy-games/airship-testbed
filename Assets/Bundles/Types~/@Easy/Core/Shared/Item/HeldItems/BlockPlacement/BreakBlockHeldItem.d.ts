@@ -12,7 +12,7 @@ declare class CanUseBlockSignal extends Cancellable {
     constructor(block: Block, blockPos: Vector3, entity: Entity);
 }
 export declare class BreakBlockHeldItem extends BlockSelectHeldItem {
-    static CanUseBlockSignal: Signal<CanUseBlockSignal>;
+    static canUseBlockSignal: Signal<CanUseBlockSignal>;
     OnEquip(): void;
     OnUseClient(useIndex: number): void;
     private HitBlockLocal;

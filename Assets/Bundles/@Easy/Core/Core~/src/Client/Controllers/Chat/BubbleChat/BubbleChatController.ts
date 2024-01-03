@@ -13,7 +13,7 @@ import { Task } from "Shared/Util/Task";
 
 @Controller({})
 export class BubbleChatController implements OnStart {
-	private static MAX_DISPLAYED_MESSAGES = 3;
+	private static maxDisplayedMessages = 3;
 	/** Map from transform to minimized status (true = minimized) */
 	private chatContainerMinimized = new Map<Transform, boolean>();
 	/** Map from chat message to original text */
@@ -25,14 +25,14 @@ export class BubbleChatController implements OnStart {
 			this.GetOrCreateChatContainer(event.entity);
 		});
 
-		CoreNetwork.ServerToClient.PlayerChatted.Client.OnServerEvent((rawMessage, senderClientId) => {
+		CoreNetwork.ServerToClient.PlayerChatted.client.OnServerEvent((rawMessage, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
 			}
-			if (sender?.Character) {
+			if (sender?.character) {
 				const messageSanitized = this.SanitizeRawChatInput(rawMessage);
-				this.RenderBubble(messageSanitized, sender.Character);
+				this.RenderBubble(messageSanitized, sender.character);
 			}
 		});
 
@@ -121,7 +121,7 @@ export class BubbleChatController implements OnStart {
 		chatMessageObject.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.2).SetEase(EaseType.QuadInOut);
 
 		// Purge if child count is too high
-		if (canvas.transform.GetChildCount() > BubbleChatController.MAX_DISPLAYED_MESSAGES) {
+		if (canvas.transform.GetChildCount() > BubbleChatController.maxDisplayedMessages) {
 			const firstChild = canvas.transform.GetChild(0);
 			GameObjectUtil.Destroy(firstChild.gameObject);
 		}
@@ -147,7 +147,7 @@ export class BubbleChatController implements OnStart {
 
 	/** Creates a chat container for an entity (or returns one if it already exists) */
 	private GetOrCreateChatContainer(entity: Entity): GameObject {
-		const existingChatContainer = entity.Model.gameObject.transform.Find("BubbleChatContainer");
+		const existingChatContainer = entity.model.gameObject.transform.Find("BubbleChatContainer");
 		if (existingChatContainer) {
 			return existingChatContainer.gameObject;
 		}
@@ -167,13 +167,13 @@ export class BubbleChatController implements OnStart {
 			if (entity.IsLocalCharacter()) {
 				const isFirstPerson = Dependency<LocalEntityController>().IsFirstPerson();
 				canvasComponent.enabled = !isFirstPerson;
-				Dependency<LocalEntityController>().FirstPersonChanged.Connect((isFirst) => {
+				Dependency<LocalEntityController>().firstPersonChanged.Connect((isFirst) => {
 					canvasComponent.enabled = !isFirst;
 				});
 			}
 		}
 
-		chatTransform.SetParent(entity.Model.gameObject.transform);
+		chatTransform.SetParent(entity.model.gameObject.transform);
 		chatTransform.localPosition = new Vector3(0, 3.2, 0);
 
 		const shouldBeMinimized = this.ShouldChatBeMinimized(chatTransform, Camera.main.transform.position);

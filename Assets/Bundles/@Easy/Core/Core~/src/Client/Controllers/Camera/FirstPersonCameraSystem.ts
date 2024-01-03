@@ -17,7 +17,7 @@ interface BobData {
 
 export class FirstPersonCameraSystem {
 	private bobLerpMod = 10;
-	public Cameras: CameraReferences;
+	public cameras: CameraReferences;
 
 	private sprintingBob: BobData = {
 		bobMovementFrequency: 22,
@@ -72,13 +72,13 @@ export class FirstPersonCameraSystem {
 		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
 		this.viewmodelController = Dependency<ViewmodelController>();
 
-		this.Cameras = CameraReferences.Instance();
+		this.cameras = CameraReferences.Instance();
 
 		//Store the default spine positions
-		this.originalSpineMiddlePosition = this.entityReferences.SpineBoneMiddle.localPosition;
-		this.originalSpineTopPosition = this.entityReferences.SpineBoneTop.localPosition;
-		this.originalShoulderLPosition = this.entityReferences.ShoulderL.localPosition;
-		this.originalShoulderRPosition = this.entityReferences.ShoulderR.localPosition;
+		this.originalSpineMiddlePosition = this.entityReferences.spineBoneMiddle.localPosition;
+		this.originalSpineTopPosition = this.entityReferences.spineBoneTop.localPosition;
+		this.originalShoulderLPosition = this.entityReferences.shoulderL.localPosition;
+		this.originalShoulderRPosition = this.entityReferences.shoulderR.localPosition;
 
 		//Calculate how high the neck bone is off the spine bone
 		this.calculatedSpineOffset = new Vector3(0, this.manualSpineOffset, 0);
@@ -140,12 +140,12 @@ export class FirstPersonCameraSystem {
 		);
 
 		//Get the cameras transform
-		const transform = this.Cameras.FpsCamera.transform;
+		const transform = this.cameras.fpsCamera.transform;
 		// let headLookPosition = transform.position;
 		// let headLookRotation = transform.rotation.mul(headBobRotationOffset);
 
-		this.viewmodelController.ViewmodelTransform.position = transform.position;
-		this.viewmodelController.ViewmodelTransform.rotation = transform.rotation;
+		this.viewmodelController.viewmodelTransform.position = transform.position;
+		this.viewmodelController.viewmodelTransform.rotation = transform.rotation;
 
 		//Animated to the look direction
 		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
@@ -208,11 +208,11 @@ export class FirstPersonCameraSystem {
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {
 		this.inFirstPerson = isFirstPerson;
-		this.Cameras.FpsCamera.gameObject.SetActive(isFirstPerson);
-		Game.LocalPlayer.Character?.Animator?.SetFirstPerson(isFirstPerson);
-		this.trackedHeadRotation = this.Cameras.FpsCamera.transform.rotation;
+		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
+		Game.localPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
+		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
 
-		Dependency<ViewmodelController>().Animancer.Animator.Rebind();
+		Dependency<ViewmodelController>().animancer.Animator.Rebind();
 
 		//Reset shoulders since not all animations will key these values
 		// this.entityReferences.shoulderL.localPosition = this.originalShoulderLPosition;
@@ -234,8 +234,8 @@ export class FirstPersonCameraSystem {
 		// 	}
 		// }
 
-		this.viewmodelController.ViewmodelGo.SetActive(isFirstPerson);
-		this.entity.Model.SetActive(!isFirstPerson);
+		this.viewmodelController.viewmodelGo.SetActive(isFirstPerson);
+		this.entity.model.SetActive(!isFirstPerson);
 
 		if (!isFirstPerson) {
 			//Reset the spine positions to defaults after messing with them in first person

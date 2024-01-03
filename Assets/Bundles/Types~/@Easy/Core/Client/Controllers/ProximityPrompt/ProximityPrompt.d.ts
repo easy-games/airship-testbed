@@ -18,19 +18,19 @@ export interface ProximityPromptData {
 /** Proximity Prompt. */
 export declare class ProximityPrompt {
     /** Global, incrementing id counter. */
-    static IdCounter: number;
+    static idCounter: number;
     /** Proximity prompt prefab. */
     private promptPrefab;
     /** Proximity prompt id. */
-    Id: string;
+    id: string;
     /** Proximity prompt data. */
-    Data: ProximityPromptData;
+    data: ProximityPromptData;
     /** Proximity prompt gameobject. */
-    PromptGameObject: GameObject | undefined;
+    promptGameObject: GameObject | undefined;
     /** On activated signal. */
-    OnActivated: Signal<void>;
+    onActivated: Signal<void>;
     /** On activated signal. */
-    OnRequestActivated: Signal<void>;
+    onRequestActivated: Signal<void>;
     private canActivate;
     private readonly canActivateBin;
     constructor(promptData: ProximityPromptData);

@@ -12,14 +12,14 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export class ItemUtil {
-	public static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
+	public static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
 	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 	private static runtimeIdCounter = 0;
 
-	public static MissingItemAccessory: Accessory;
+	public static missingItemAccessory: Accessory;
 
 	private static itemTypes: ItemType[] = [];
 	private static implictItemTypeMap = new Map<string, ItemType>();
@@ -32,7 +32,7 @@ export class ItemUtil {
 	 */
 	public static Initialize() {
 		//Load default items
-		ItemUtil.MissingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.DefaultItemPath);
+		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.defaultItemPath);
 
 		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(CoreItemDefinitions)) {
@@ -146,14 +146,14 @@ export class ItemUtil {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories[0];
 
-		return ItemUtil.MissingItemAccessory;
+		return ItemUtil.missingItemAccessory;
 	}
 
 	public static GetAccessoriesForItemType(itemType: ItemType): Readonly<Accessory[]> {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories;
 
-		return [ItemUtil.MissingItemAccessory];
+		return [ItemUtil.missingItemAccessory];
 	}
 
 	public static IsItemType(s: string): boolean {

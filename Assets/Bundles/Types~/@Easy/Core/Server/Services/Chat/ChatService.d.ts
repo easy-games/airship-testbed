@@ -5,7 +5,7 @@ import { PlayerService } from "../Player/PlayerService";
 export declare class ChatService implements OnStart {
     private readonly playerService;
     private commands;
-    readonly CanUseRichText = true;
+    readonly canUseRichText = true;
     constructor(playerService: PlayerService);
     RegisterCommand(command: ChatCommand): void;
     /**

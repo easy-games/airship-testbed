@@ -10,18 +10,18 @@ export class BWAmbientSoundController implements OnStart {
 
 	OnStart(): void {
 		const ambientClip = AssetBridge.Instance.LoadAsset<AudioClip>("Shared/Resources/Sound/Ambience_Forest.ogg");
-		this.ambientSoundController.AmbientSource.spatialBlend = 0;
-		this.ambientSoundController.AmbientSource.loop = true;
-		this.ambientSoundController.AmbientSource.clip = ambientClip;
-		this.ambientSoundController.AmbientSource.volume = Dependency<ClientSettingsController>().GetAmbientVolume();
-		this.ambientSoundController.AmbientSource.Play();
+		this.ambientSoundController.ambientSource.spatialBlend = 0;
+		this.ambientSoundController.ambientSource.loop = true;
+		this.ambientSoundController.ambientSource.clip = ambientClip;
+		this.ambientSoundController.ambientSource.volume = Dependency<ClientSettingsController>().GetAmbientVolume();
+		this.ambientSoundController.ambientSource.Play();
 
 		const musicClip = AssetBridge.Instance.LoadAsset<AudioClip>("Shared/Resources/Sound/MatchMidIntensity.ogg");
-		this.ambientSoundController.MusicSource.spatialBlend = 0;
-		this.ambientSoundController.MusicSource.loop = true;
-		this.ambientSoundController.MusicSource.clip = musicClip;
-		this.ambientSoundController.MusicSource.volume = Dependency<ClientSettingsController>().GetMusicVolume();
-		this.ambientSoundController.MusicSource.Play();
+		this.ambientSoundController.musicSource.spatialBlend = 0;
+		this.ambientSoundController.musicSource.loop = true;
+		this.ambientSoundController.musicSource.clip = musicClip;
+		this.ambientSoundController.musicSource.volume = Dependency<ClientSettingsController>().GetMusicVolume();
+		this.ambientSoundController.musicSource.Play();
 
 		// Hack to fix GC.
 		// TODO: remove once GC fix is in.

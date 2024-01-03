@@ -13,7 +13,7 @@ export class SpringTween {
 
 	public SetGoal(goal: Vector3) {
 		this.elapsedTime = 0;
-		this.spring.Goal = goal;
+		this.spring.goal = goal;
 	}
 
 	public Impulse(impulse: Vector3) {
@@ -29,6 +29,6 @@ export class SpringTween {
 	public Update(deltaTime: number): LuaTuple<[position: Vector3, isDone: boolean]> {
 		this.elapsedTime += deltaTime;
 		const springPos = this.spring.Update(deltaTime);
-		return $tuple(springPos, this.elapsedTime >= this.minDuration && this.spring.Velocity.magnitude < EPSILON);
+		return $tuple(springPos, this.elapsedTime >= this.minDuration && this.spring.velocity.magnitude < EPSILON);
 	}
 }

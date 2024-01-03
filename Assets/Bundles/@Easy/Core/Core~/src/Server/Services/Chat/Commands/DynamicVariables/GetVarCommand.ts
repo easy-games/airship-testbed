@@ -11,20 +11,20 @@ export class GetVarCommand extends ChatCommand {
 
 	public Execute(player: Player, args: string[]): void {
 		if (args.size() !== 1) {
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, "Invalid usage: /getvar <var collection>.<key>"));
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, "Example: /getvar combat.kbY"));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, "Invalid usage: /getvar <var collection>.<key>"));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, "Example: /getvar combat.kbY"));
 			return;
 		}
 		let split = args[0].split(".");
 		if (split.size() !== 2) {
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, `Invalid DynamicVariables key: ` + args[0]));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, `Invalid DynamicVariables key: ` + args[0]));
 			return;
 		}
 
 		let varsKey = split[0];
 		const vars = DynamicVariablesManager.Instance.GetVars(varsKey);
 		if (vars === undefined) {
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, `DynamicVariables with key "${varsKey}" not found.`));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, `DynamicVariables with key "${varsKey}" not found.`));
 			return;
 		}
 

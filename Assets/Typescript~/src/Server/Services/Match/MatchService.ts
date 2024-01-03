@@ -38,7 +38,7 @@ export class MatchService implements OnStart {
 		this.SetState(MatchState.PRE);
 
 		Dependency<PlayerService>().ObservePlayers((p) => {
-			Network.ServerToClient.MatchInfo.Server.FireClient(p.clientId, {
+			Network.ServerToClient.MatchInfo.server.FireClient(p.clientId, {
 				mapName: loadedMap.displayName,
 				mapAuthors: loadedMap.authors,
 				matchStartTime:
@@ -90,7 +90,7 @@ export class MatchService implements OnStart {
 		this.SetState(MatchState.RUNNING);
 		// Fire signal and remote.
 		ServerSignals.MatchStart.Fire(new MatchStartServerEvent());
-		Network.ServerToClient.MatchStarted.Server.FireAllClients();
+		Network.ServerToClient.MatchStarted.server.FireAllClients();
 	}
 
 	/** Ends current match. Optionally accepts a winning team. */
@@ -99,7 +99,7 @@ export class MatchService implements OnStart {
 		this.SetState(MatchState.POST);
 		// Fire signal and remote.
 		ServerSignals.MatchEnded.Fire({ winningTeam });
-		Network.ServerToClient.MatchEnded.Server.FireAllClients(winningTeam?.id);
+		Network.ServerToClient.MatchEnded.server.FireAllClients(winningTeam?.id);
 	}
 
 	/** Sets match state. */
@@ -108,7 +108,7 @@ export class MatchService implements OnStart {
 		this.state = state;
 		// Fire signal and remote.
 		ServerSignals.MatchStateChange.Fire({ newState: this.state, oldState: oldState });
-		Network.ServerToClient.MatchStateChange.Server.FireAllClients(this.state, oldState);
+		Network.ServerToClient.MatchStateChange.server.FireAllClients(this.state, oldState);
 	}
 
 	/**

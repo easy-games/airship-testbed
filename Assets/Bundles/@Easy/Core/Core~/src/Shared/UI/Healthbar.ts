@@ -8,10 +8,10 @@ export interface ProgressBarOptions {
 }
 
 export class Healthbar {
-	private readonly TransformKey = "Transforms";
-	private readonly GraphicsKey = "Graphics";
-	private readonly AnimKey = "Animations";
-	public Transform: RectTransform;
+	private readonly transformKey = "Transforms";
+	private readonly graphicsKey = "Graphics";
+	private readonly animKey = "Animations";
+	public transform: RectTransform;
 	private refs: GameObjectReferences;
 	private fillImage: Image;
 	private fillTransform: RectTransform;
@@ -21,29 +21,29 @@ export class Healthbar {
 	private brokenGraphicsHolder: RectTransform;
 	private deathAnim: Animation;
 
-	public FillDurationInSeconds = 0.08;
-	public ChangeDelayInSeconds = 0.25;
-	public ChangeDurationInSeconds = 0.09;
+	public fillDurationInSeconds = 0.08;
+	public changeDelayInSeconds = 0.25;
+	public changeDurationInSeconds = 0.09;
 	private enabled = true;
-	public DeathOnZero = true;
+	public deathOnZero = true;
 	private currentDelta = -999;
 
 	constructor(transform: Transform, options?: ProgressBarOptions) {
-		this.Transform = transform.gameObject.GetComponent<RectTransform>();
+		this.transform = transform.gameObject.GetComponent<RectTransform>();
 		this.refs = transform.GetComponent<GameObjectReferences>();
-		this.fillImage = this.refs.GetValue<Image>(this.GraphicsKey, "Fill");
-		this.fillTransform = this.refs.GetValue<RectTransform>(this.TransformKey, "Fill");
-		this.changeFillTransform = this.refs.GetValue<RectTransform>(this.TransformKey, "ChangeFill");
-		this.growthFillTransform = this.refs.GetValue<RectTransform>(this.TransformKey, "GrowthFill");
-		this.graphicsHolder = this.refs.GetValue<RectTransform>(this.TransformKey, "GraphicsHolder");
-		this.brokenGraphicsHolder = this.refs.GetValue<RectTransform>(this.TransformKey, "BrokenGraphicsHolder");
-		this.deathAnim = this.refs.GetValue<Animation>(this.AnimKey, "Finished");
+		this.fillImage = this.refs.GetValue<Image>(this.graphicsKey, "Fill");
+		this.fillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "Fill");
+		this.changeFillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "ChangeFill");
+		this.growthFillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "GrowthFill");
+		this.graphicsHolder = this.refs.GetValue<RectTransform>(this.transformKey, "GraphicsHolder");
+		this.brokenGraphicsHolder = this.refs.GetValue<RectTransform>(this.transformKey, "BrokenGraphicsHolder");
+		this.deathAnim = this.refs.GetValue<Animation>(this.animKey, "Finished");
 
 		this.graphicsHolder.gameObject.SetActive(true);
 		this.brokenGraphicsHolder.gameObject.SetActive(false);
 		this.growthFillTransform.gameObject.SetActive(false);
 
-		this.DeathOnZero = options?.deathOnZero ?? true;
+		this.deathOnZero = options?.deathOnZero ?? true;
 
 		if (options?.fillColor) {
 			this.SetColor(options.fillColor);
@@ -53,7 +53,7 @@ export class Healthbar {
 	}
 
 	public SetActive(visible: boolean) {
-		this.Transform.gameObject.active = visible;
+		this.transform.gameObject.active = visible;
 	}
 
 	public SetColor(newColor: Color) {
@@ -72,16 +72,16 @@ export class Healthbar {
 			return;
 		}
 
-		if (this.DeathOnZero && percentDelta <= 0) {
+		if (this.deathOnZero && percentDelta <= 0) {
 			//Wait for the change animation
-			Task.Delay(this.FillDurationInSeconds, () => {
-				if (this.Transform) {
+			Task.Delay(this.fillDurationInSeconds, () => {
+				if (this.transform) {
 					//Play the death animation
 					this.deathAnim.Play();
 					this.graphicsHolder.gameObject.SetActive(false);
 					this.brokenGraphicsHolder.gameObject.SetActive(true);
 					Task.Delay(1.1, () => {
-						if (this.Transform && this.currentDelta > 0) {
+						if (this.transform && this.currentDelta > 0) {
 							//Reset if the progress has filled back up (Respawn)
 							this.SetValue(this.currentDelta);
 						}
@@ -95,7 +95,7 @@ export class Healthbar {
 		}
 
 		//Animate fill down
-		this.fillTransform.TweenLocalScaleX(percentDelta, this.FillDurationInSeconds);
+		this.fillTransform.TweenLocalScaleX(percentDelta, this.fillDurationInSeconds);
 
 		if (percentDelta > this.currentDelta) {
 			//Growth
@@ -107,14 +107,14 @@ export class Healthbar {
 				this.growthFillTransform.localScale.z,
 			);
 			this.growthFillTransform.anchoredPosition = new Vector2(
-				this.Transform.rect.width * this.currentDelta,
+				this.transform.rect.width * this.currentDelta,
 				this.growthFillTransform.anchoredPosition.y,
 			);
 
-			this.growthFillTransform.TweenLocalScaleX(0, this.FillDurationInSeconds);
+			this.growthFillTransform.TweenLocalScaleX(0, this.fillDurationInSeconds);
 			this.growthFillTransform.TweenAnchoredPositionX(
-				this.Transform.rect.width * percentDelta,
-				this.ChangeDurationInSeconds,
+				this.transform.rect.width * percentDelta,
+				this.changeDurationInSeconds,
 			);
 		} else {
 			//Decay
@@ -122,9 +122,9 @@ export class Healthbar {
 			this.changeFillTransform.gameObject.SetActive(true);
 
 			//Hold then animate change indicator
-			Task.Delay(this.ChangeDelayInSeconds, () => {
+			Task.Delay(this.changeDelayInSeconds, () => {
 				if (!this.enabled) return;
-				this.changeFillTransform.TweenLocalScaleX(percentDelta, this.ChangeDurationInSeconds);
+				this.changeFillTransform.TweenLocalScaleX(percentDelta, this.changeDurationInSeconds);
 			});
 		}
 

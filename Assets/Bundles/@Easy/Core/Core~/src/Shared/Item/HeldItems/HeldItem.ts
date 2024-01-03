@@ -20,7 +20,7 @@ export class HeldItem {
 	/** Undefined when holding nothing */
 	protected readonly itemMeta: ItemDef | undefined;
 	protected clickBufferMargin = 0.2;
-	public readonly Entity: Entity;
+	public readonly entity: Entity;
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 	protected isCharging = false;
@@ -43,7 +43,7 @@ export class HeldItem {
 	protected lookVector: Vector3 = new Vector3();
 
 	constructor(entity: Entity, newMeta: ItemDef | undefined) {
-		this.Entity = entity;
+		this.entity = entity;
 		this.itemMeta = newMeta;
 	}
 
@@ -56,14 +56,14 @@ export class HeldItem {
 
 	protected Log(message: string) {
 		return;
-		let fullMessage = "Entity: " + this.Entity.Id + " Item: " + this.itemMeta?.displayName + " " + message;
+		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.itemMeta?.displayName + " " + message;
 		print(fullMessage);
 	}
 
 	public OnEquip() {
 		this.Log("OnEquip");
 		//Load that items animations and play equip animation
-		this.Entity.Animator?.EquipItem(this.itemMeta);
+		this.entity.animator?.EquipItem(this.itemMeta);
 
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading
@@ -73,12 +73,12 @@ export class HeldItem {
 				equipPath = RandomUtil.FromArray(this.itemMeta.holdConfig.equipSound);
 			}
 			if (equipPath !== "") {
-				if (this.Entity.IsLocalCharacter()) {
+				if (this.entity.IsLocalCharacter()) {
 					AudioManager.PlayFullPathGlobal(equipPath, {
 						volumeScale: 0.5,
 					});
 				} else {
-					AudioManager.PlayFullPathAtPosition(equipPath, this.Entity.Model.transform.position, {
+					AudioManager.PlayFullPathAtPosition(equipPath, this.entity.model.transform.position, {
 						volumeScale: 0.2,
 					});
 				}
@@ -95,22 +95,22 @@ export class HeldItem {
 
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
-		this.Entity.AccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-		this.Entity.AccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
 		let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
-		if (this.Entity.IsLocalCharacter()) {
-			viewmodelAccessoryBuilder = Dependency<ViewmodelController>().AccessoryBuilder;
+		if (this.entity.IsLocalCharacter()) {
+			viewmodelAccessoryBuilder = Dependency<ViewmodelController>().accessoryBuilder;
 			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
 		}
 
-		const firstPerson = this.Entity.Animator.IsFirstPerson();
+		const firstPerson = this.entity.animator.IsFirstPerson();
 		let layer = firstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
 		let i = 0;
 		this.activeAccessoriesWorldmodel.clear();
 		this.activeAccessoriesViewmodel.clear();
 		for (const accessory of accessories) {
-			this.activeAccessoriesWorldmodel[i] = this.Entity.AccessoryBuilder.AddSingleAccessory(accessory, false);
+			this.activeAccessoriesWorldmodel[i] = this.entity.accessoryBuilder.AddSingleAccessory(accessory, false);
 			if (viewmodelAccessoryBuilder) {
 				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.AddSingleAccessory(accessory, false);
 			}
@@ -126,9 +126,9 @@ export class HeldItem {
 		}
 
 		// this.entity.accessoryBuilder.TryCombineMeshes();
-		this.Entity.AccessoryBuilder.UpdateAccessoryLayers();
+		this.entity.accessoryBuilder.UpdateAccessoryLayers();
 		if (RunUtil.IsClient()) {
-			Dependency<ViewmodelController>().AccessoryBuilder.UpdateAccessoryLayers();
+			Dependency<ViewmodelController>().accessoryBuilder.UpdateAccessoryLayers();
 		}
 	}
 
@@ -195,7 +195,7 @@ export class HeldItem {
 			inspectPath = this.itemMeta.inspectAnimPath;
 		}
 		const clip = AssetCache.LoadAsset<AnimationClip>(inspectPath);
-		this.Entity.Animator?.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, () => {
+		this.entity.animator?.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, () => {
 			// this.entity.anim.StartIdleAnim();
 		});
 	}
@@ -278,7 +278,7 @@ export class HeldItem {
 
 		//Play the use locally
 		if (this.playEffectsOnUse) {
-			this.Entity.Animator.PlayItemUseAnim(useIndex);
+			this.entity.animator.PlayItemUseAnim(useIndex);
 			this.PlayItemSound();
 		}
 	}
@@ -286,14 +286,14 @@ export class HeldItem {
 	protected PlayItemSound() {
 		if (this.itemMeta === undefined) return;
 		if (this.itemMeta.usable?.onUseSound) {
-			if (this.Entity.IsLocalCharacter()) {
+			if (this.entity.IsLocalCharacter()) {
 				AudioManager.PlayGlobal(RandomUtil.FromArray(this.itemMeta.usable.onUseSound), {
 					volumeScale: this.itemMeta.usable.onUseSoundVolume ?? 1,
 				});
 			} else {
 				AudioManager.PlayAtPosition(
 					RandomUtil.FromArray(this.itemMeta.usable.onUseSound),
-					this.Entity.Model.transform.position,
+					this.entity.model.transform.position,
 					{
 						volumeScale: this.itemMeta.usable.onUseSoundVolume ?? 1,
 					},

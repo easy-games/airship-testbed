@@ -7,7 +7,7 @@ export declare class HeldItem {
     /** Undefined when holding nothing */
     protected readonly itemMeta: ItemDef | undefined;
     protected clickBufferMargin: number;
-    readonly Entity: Entity;
+    readonly entity: Entity;
     private lastUsedTime;
     private chargeStartTime;
     protected isCharging: boolean;

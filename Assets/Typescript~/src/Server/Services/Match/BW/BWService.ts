@@ -31,7 +31,7 @@ export class BWService implements OnStart {
 	/** Set of eliminated players. */
 	private eliminatedPlayers = new Set<Player>();
 	/** Whether or not winner has been declared. */
-	public WinnerDeclared = false;
+	public winnerDeclared = false;
 	/** Whether or not a bed has been destroyed. */
 	private bedHasBeenDestroyed = false;
 
@@ -46,17 +46,17 @@ export class BWService implements OnStart {
 			if (!this.matchService.IsRunning()) return;
 			// Eliminate player, if applicable.
 			if (event.entity instanceof CharacterEntity) {
-				const team = event.entity.Player?.GetTeam();
-				if (event.entity.Player && team && this.bedService.IsBedDestroyed(team)) {
-					this.EliminatePlayer(event.entity.Player);
+				const team = event.entity.player?.GetTeam();
+				if (event.entity.player && team && this.bedService.IsBedDestroyed(team)) {
+					this.EliminatePlayer(event.entity.player);
 					event.respawnTime = 0;
 				}
 			}
 			// Give resources to killer.
 			if (
-				event.entity?.Player &&
+				event.entity?.player &&
 				event.entity instanceof CharacterEntity &&
-				event.killer?.Player &&
+				event.killer?.player &&
 				event.killer instanceof CharacterEntity
 			) {
 				const deathEntityInv = event.entity.GetInventory();
@@ -79,13 +79,13 @@ export class BWService implements OnStart {
 			}
 
 			if (
-				event.fromEntity?.Player &&
+				event.fromEntity?.player &&
 				event.fromEntity instanceof CharacterEntity &&
-				event.entity.Player &&
+				event.entity.player &&
 				event.entity instanceof CharacterEntity
 			) {
-				const fromEntityTeam = event.fromEntity.Player.GetTeam();
-				const entityTeam = event.entity.Player.GetTeam();
+				const fromEntityTeam = event.fromEntity.player.GetTeam();
+				const entityTeam = event.entity.player.GetTeam();
 				if (fromEntityTeam?.id === entityTeam?.id) {
 					event.SetCancelled(true);
 				}
@@ -110,7 +110,7 @@ export class BWService implements OnStart {
 	public EliminatePlayer(player: Player): void {
 		this.eliminatedPlayers.add(player);
 		ServerSignals.PlayerEliminated.Fire({ player: player });
-		Network.ServerToClient.PlayerEliminated.Server.FireAllClients(player.clientId);
+		Network.ServerToClient.PlayerEliminated.server.FireAllClients(player.clientId);
 		// this.CheckForWin();
 	}
 
@@ -193,7 +193,7 @@ export class BWService implements OnStart {
 
 	/** Declares a team as winner. */
 	private DeclareWinner(team: Team) {
-		this.WinnerDeclared = true;
+		this.winnerDeclared = true;
 		this.matchService.EndMatch(team);
 	}
 }

@@ -87,7 +87,7 @@ export class HumanoidCameraMode implements CameraMode {
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
 		let touchOverUI = false;
-		touchscreen.Pan.Connect((position, phase) => {
+		touchscreen.pan.Connect((position, phase) => {
 			switch (phase) {
 				case TouchPhase.Began:
 					if (UserInputService.InputProxy.IsPointerOverUI()) {

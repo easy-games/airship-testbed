@@ -19,25 +19,25 @@ export class BWController implements OnStart {
 
 	OnStart(): void {
 		// Listen for player eliminated.
-		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId: number) => {
+		Network.ServerToClient.PlayerEliminated.client.OnServerEvent((clientId: number) => {
 			const player = this.playerController.GetPlayerFromClientId(clientId);
 			if (!player) return;
 			this.eliminatedPlayers.add(player);
 			ClientSignals.PlayerEliminated.Fire({ player });
 		});
 		// Listen for match end.
-		Network.ServerToClient.MatchEnded.Client.OnServerEvent((winningTeamId?: string) => {
+		Network.ServerToClient.MatchEnded.client.OnServerEvent((winningTeamId?: string) => {
 			if (winningTeamId) this.ShowWinscreen(winningTeamId);
 		});
 
 		// Listen for team assignements.
 		CoreClientSignals.PlayerChangeTeam.Connect((teamSignal) => {
-			if (!teamSignal.player.Character || teamSignal.player.Character?.IsLocalCharacter()) {
+			if (!teamSignal.player.character || teamSignal.player.character?.IsLocalCharacter()) {
 				return;
 			}
-			const team = teamSignal.player.Character?.GetTeam();
+			const team = teamSignal.player.character?.GetTeam();
 			if (team) {
-				this.SetTeamColor(teamSignal.player.Character, team);
+				this.SetTeamColor(teamSignal.player.character, team);
 			}
 		});
 
@@ -52,14 +52,14 @@ export class BWController implements OnStart {
 	}
 
 	private SetTeamColor(entity: Entity, team: Team) {
-		if (entity.IsLocalCharacter() || !entity.Player) {
+		if (entity.IsLocalCharacter() || !entity.player) {
 			return;
 		}
 		// Show a glow to indicate friend or foe.
-		const sameTeam = team?.id === Game.LocalPlayer.Character?.GetTeam()?.id;
+		const sameTeam = team?.id === Game.localPlayer.character?.GetTeam()?.id;
 		const targetColor = sameTeam ? Color.cyan : Color.red;
 		const strength = sameTeam ? 0 : 1;
-		entity.Animator.SetFresnelColor(targetColor, 5, strength);
+		entity.animator.SetFresnelColor(targetColor, 5, strength);
 	}
 
 	/**

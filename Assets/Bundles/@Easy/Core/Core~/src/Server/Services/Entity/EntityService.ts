@@ -36,21 +36,21 @@ export class EntityService implements OnStart {
 			for (let entity of ObjectUtil.values(this.entities)) {
 				if (entity instanceof CharacterEntity) {
 					const invDto = entity.GetInventory().Encode();
-					CoreNetwork.ServerToClient.UpdateInventory.Server.FireClient(player.clientId, invDto);
+					CoreNetwork.ServerToClient.UpdateInventory.server.FireClient(player.clientId, invDto);
 				}
 			}
 			const dto = ObjectUtil.values(this.entities).map((e) => e.Encode());
-			CoreNetwork.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
+			CoreNetwork.ServerToClient.SpawnEntities.server.FireClient(player.clientId, dto);
 
 			return () => {
-				if (player.Character) {
-					this.DespawnEntity(player.Character);
+				if (player.character) {
+					this.DespawnEntity(player.character);
 				}
 			};
 		}, SignalPriority.HIGHEST);
 		CoreServerSignals.PlayerLeave.Connect((event) => {
-			if (event.player.Character) {
-				this.DespawnEntity(event.player.Character);
+			if (event.player.character) {
+				this.DespawnEntity(event.player.character);
 			}
 		});
 	}
@@ -127,7 +127,7 @@ export class EntityService implements OnStart {
 		}
 
 		// Custom move command data handling:
-		const customDataConn = entity.EntityDriver.OnDispatchCustomData((tick, customData) => {
+		const customDataConn = entity.entityDriver.OnDispatchCustomData((tick, customData) => {
 			const allData = customData.Decode() as { key: unknown; value: unknown }[];
 			for (const data of allData) {
 				const moveEvent = new MoveCommandDataEvent(player?.clientId ?? -1, tick, data.key, data.value);
@@ -141,8 +141,8 @@ export class EntityService implements OnStart {
 		// fire SpawnEntities after so the initial entity packet has all the latest info.
 		CoreServerSignals.EntitySpawn.Fire(new EntitySpawnEvent(entity));
 
-		CoreNetwork.ServerToClient.SpawnEntities.Server.FireAllClients([entity.Encode()]);
-		CoreNetwork.ServerToClient.UpdateInventory.Server.FireAllClients(entity.GetInventory().Encode());
+		CoreNetwork.ServerToClient.SpawnEntities.server.FireAllClients([entity.Encode()]);
+		CoreNetwork.ServerToClient.UpdateInventory.server.FireAllClients(entity.GetInventory().Encode());
 		entity.GetInventory().StartNetworkingDiffs();
 
 		return entity;
@@ -151,7 +151,7 @@ export class EntityService implements OnStart {
 	public DespawnEntity(entity: Entity): void {
 		CoreServerSignals.EntityDespawn.Fire(entity);
 		entity.Destroy();
-		this.entities.delete(entity.Id);
+		this.entities.delete(entity.id);
 	}
 
 	public GetEntityById(entityId: number): Entity | undefined {
@@ -159,7 +159,7 @@ export class EntityService implements OnStart {
 	}
 
 	public GetEntityByClientId(clientId: number) {
-		return ObjectUtil.values(this.entities).find((e) => e.ClientId === clientId);
+		return ObjectUtil.values(this.entities).find((e) => e.clientId === clientId);
 	}
 
 	public GetEntities(): Entity[] {

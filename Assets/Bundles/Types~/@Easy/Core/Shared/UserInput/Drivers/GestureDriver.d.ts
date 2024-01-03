@@ -4,8 +4,8 @@ import { Signal } from "../../Util/Signal";
 export declare class GestureDriver {
     private readonly bin;
     private readonly touchscreenDriver;
-    readonly Pan: Signal<[position: Vector3, phase: TouchPhase]>;
-    readonly Pinch: Signal<[distance: number, scale: number, phase: TouchPhase]>;
+    readonly pan: Signal<[position: Vector3, phase: TouchPhase]>;
+    readonly pinch: Signal<[distance: number, scale: number, phase: TouchPhase]>;
     private readonly positions;
     private oneFingerGestureCapture?;
     private twoFingerGestureCapture?;

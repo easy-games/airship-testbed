@@ -33,23 +33,23 @@ export class CropController implements OnStart {
 	}
 
 	public OnStart(): void {
-		CoreNetwork.ServerToClient.CropPlanted.Client.OnServerEvent((event) => {
+		CoreNetwork.ServerToClient.CropPlanted.client.OnServerEvent((event) => {
 			print("planted", event.cropIdx);
 			this.cropStates.set(event.cropIdx, event);
 			this.UpdateCropState(event.cropIdx, 0);
 		});
 
-		CoreNetwork.ServerToClient.CropGrowthUpdated.Client.OnServerEvent((cropId, level) => {
+		CoreNetwork.ServerToClient.CropGrowthUpdated.client.OnServerEvent((cropId, level) => {
 			print("growth updated", cropId);
 			this.UpdateCropState(cropId, level);
 		});
 
-		CoreNetwork.ServerToClient.CropHarvested.Client.OnServerEvent((cropId) => {
+		CoreNetwork.ServerToClient.CropHarvested.client.OnServerEvent((cropId) => {
 			print("harvested", cropId);
 			this.cropStates.delete(cropId);
 		});
 
-		CoreNetwork.ServerToClient.CropSnapshot.Client.OnServerEvent((snapshots) => {
+		CoreNetwork.ServerToClient.CropSnapshot.client.OnServerEvent((snapshots) => {
 			for (const snapshot of snapshots) {
 				this.cropStates.set(snapshot.cropIdx, snapshot);
 				this.UpdateCropState(snapshot.cropIdx, snapshot.cropGrowthLevel);

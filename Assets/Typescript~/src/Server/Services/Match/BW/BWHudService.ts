@@ -37,7 +37,7 @@ export class BWHudService implements OnStart {
 		for (const team of this.teamService.GetTeams()) {
 			SetupTeam(team);
 		}
-		Network.ServerToClient.UpdateHud.Server.FireAllClients({
+		Network.ServerToClient.UpdateHud.server.FireAllClients({
 			teamUpdates: ObjectUtils.values(this.teamDataMap),
 		});
 
@@ -45,7 +45,7 @@ export class BWHudService implements OnStart {
 
 		CoreServerSignals.PlayerJoin.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 			const stats = this.matchStatService.GetMatchStats(event.player.userId);
-			Network.ServerToClient.UpdateHud.Server.FireAllClients({
+			Network.ServerToClient.UpdateHud.server.FireAllClients({
 				teamUpdates: ObjectUtils.values(this.teamDataMap),
 				kills: stats.kills,
 			});
@@ -92,7 +92,7 @@ export class BWHudService implements OnStart {
 		const stats = this.teamDataMap.get(team)!;
 		callback(stats);
 		print("firing update team stats: " + inspect(stats));
-		Network.ServerToClient.UpdateHud.Server.FireAllClients({
+		Network.ServerToClient.UpdateHud.server.FireAllClients({
 			teamUpdates: [stats],
 		});
 	}

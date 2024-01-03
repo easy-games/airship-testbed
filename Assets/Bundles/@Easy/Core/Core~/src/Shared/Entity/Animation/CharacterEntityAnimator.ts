@@ -65,8 +65,8 @@ export class CharacterEntityAnimator {
 
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
-	public readonly WorldmodelAnimancerComponent: AnimancerComponent;
-	public readonly DefaultTransitionTime: number = 0.15;
+	public readonly worldmodelAnimancerComponent: AnimancerComponent;
+	public readonly defaultTransitionTime: number = 0.15;
 
 	protected bin = new Bin();
 	private flinchClipFPS?: AnimationClip;
@@ -87,32 +87,32 @@ export class CharacterEntityAnimator {
 	private lastFootstepSoundTime = 0;
 	private deathVfx?: GameObject;
 
-	public BaseFootstepVolumeScale = 0.1;
+	public baseFootstepVolumeScale = 0.1;
 
 	private itemAnimStates: AnimancerState[] = [];
 
 	//private camera: Camera;
 
 	public constructor(public readonly entity: Entity, public readonly refs: EntityReferences) {
-		const animator = entity.EntityDriver.animator;
-		this.WorldmodelAnimancerComponent = animator.worldmodelAnimancer;
+		const animator = entity.entityDriver.animator;
+		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
 		this.isFlashing = false;
 		this.viewModelEnabled = this.entity.IsLocalCharacter();
 
 		//AUDIO
 		if (RunUtil.IsClient()) {
 			this.footstepAudioBundle = new AudioClipBundle([]);
-			this.footstepAudioBundle.VolumeScale = this.BaseFootstepVolumeScale;
-			this.footstepAudioBundle.SoundOptions.maxDistance = 15;
-			this.footstepAudioBundle.SpacialMode = entity.IsLocalCharacter()
+			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
+			this.footstepAudioBundle.soundOptions.maxDistance = 15;
+			this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
-			this.slideAudioBundle = new AudioClipBundle(this.refs.SlideSoundPaths);
-			this.slideAudioBundle.VolumeScale = 0.2;
-			this.slideAudioBundle.UseFullPath = true;
-			this.slideAudioBundle.PlayMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
-			this.slideAudioBundle.SpacialMode = entity.IsLocalCharacter()
+			this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
+			this.slideAudioBundle.volumeScale = 0.2;
+			this.slideAudioBundle.useFullPath = true;
+			this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+			this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
@@ -157,7 +157,7 @@ export class CharacterEntityAnimator {
 		}
 
 		//Listen to animation events
-		const animConn = this.refs.AnimationEvents.OnEntityAnimationEvent((data) => {
+		const animConn = this.refs.animationEvents.OnEntityAnimationEvent((data) => {
 			// if (data !== 0) {
 			// 	print("Animation Event: " + data + " On Entity: " + this.entity.id);
 			// }
@@ -167,12 +167,12 @@ export class CharacterEntityAnimator {
 			Bridge.DisconnectEvent(animConn);
 		});
 
-		this.refs.Root.gameObject.SetActive(true);
+		this.refs.root.gameObject.SetActive(true);
 	}
 
 	private Log(message: string) {
 		return;
-		print("Animator " + this.entity.Id + ": " + message);
+		print("Animator " + this.entity.id + ": " + message);
 	}
 
 	public SetFirstPerson(isFirstPerson: boolean) {
@@ -184,7 +184,7 @@ export class CharacterEntityAnimator {
 		}
 		// this.worldmodelAnimancerComponent.enabled = !isFirstPerson;
 
-		this.refs.AnimationHelper.SetFirstPerson(isFirstPerson);
+		this.refs.animationHelper.SetFirstPerson(isFirstPerson);
 		this.LoadNewItemResources(this.currentItemMeta);
 		this.StartItemIdleAnim(true);
 	}
@@ -251,21 +251,21 @@ export class CharacterEntityAnimator {
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
-				this.WorldmodelAnimancerComponent,
+				this.worldmodelAnimancerComponent,
 				clip,
 				layer,
-				config?.fadeInDuration ?? this.DefaultTransitionTime,
-				config?.fadeOutDuration ?? this.DefaultTransitionTime,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
+				config?.fadeOutDuration ?? this.defaultTransitionTime,
 				config?.fadeMode ?? FadeMode.FromStart,
 				config?.wrapMode ?? WrapMode.Default,
 			);
 		} else {
 			//Play permenantly on player
 			animState = AnimancerBridge.PlayOnLayer(
-				this.WorldmodelAnimancerComponent,
+				this.worldmodelAnimancerComponent,
 				clip,
 				layer,
-				config?.fadeInDuration ?? this.DefaultTransitionTime,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
 				config?.fadeMode ?? FadeMode.FromStart,
 				config?.wrapMode ?? WrapMode.Default,
 			);
@@ -302,21 +302,21 @@ export class CharacterEntityAnimator {
 		if ((config?.autoFadeOut === undefined || config?.autoFadeOut) && !clip.isLooping) {
 			//Play once then fade away
 			animState = AnimancerBridge.PlayOnceOnLayer(
-				Dependency<ViewmodelController>().Animancer,
+				Dependency<ViewmodelController>().animancer,
 				clip,
 				layer,
-				config?.fadeInDuration ?? this.DefaultTransitionTime,
-				config?.fadeOutDuration ?? this.DefaultTransitionTime,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
+				config?.fadeOutDuration ?? this.defaultTransitionTime,
 				config?.fadeMode ?? FadeMode.FromStart,
 				config?.wrapMode ?? WrapMode.Default,
 			);
 		} else {
 			//Play permenantly on player
 			animState = AnimancerBridge.PlayOnLayer(
-				Dependency<ViewmodelController>().Animancer,
+				Dependency<ViewmodelController>().animancer,
 				clip,
 				layer,
-				config?.fadeInDuration ?? this.DefaultTransitionTime,
+				config?.fadeInDuration ?? this.defaultTransitionTime,
 				config?.fadeMode ?? FadeMode.FromStart,
 				config?.wrapMode ?? WrapMode.Default,
 			);
@@ -449,14 +449,14 @@ export class CharacterEntityAnimator {
 			let clips = this.viewmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
 			const clip = RandomUtil.FromArray(clips);
 			this.PlayItemAnimationInViewmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
-				fadeInDuration: instantTransition ? 0 : this.DefaultTransitionTime,
+				fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 			});
 			// AnimancerBridge.GetLayer(this.viewmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 		}
 		let clips = this.worldmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
 		const clip = RandomUtil.FromArray(clips);
 		this.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_1, undefined, {
-			fadeInDuration: instantTransition ? 0 : this.DefaultTransitionTime,
+			fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 		});
 		// AnimancerBridge.GetLayer(this.worldmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 	}
@@ -527,7 +527,7 @@ export class CharacterEntityAnimator {
 			//Always play death animation in third person
 			// localController.ForceFirstPersonMode(false);
 			//Lock Inputs
-			this.entity.EntityDriver.disableInput = true;
+			this.entity.entityDriver.disableInput = true;
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
@@ -546,18 +546,18 @@ export class CharacterEntityAnimator {
 				undefined,
 			);
 			if (!inVoid) {
-				this.deathVfx.transform.SetParent(this.entity.GameObject.transform);
+				this.deathVfx.transform.SetParent(this.entity.gameObject.transform);
 			}
 		}
 
 		Task.Delay(0.5, () => {
-			this.refs.Root.gameObject.SetActive(false);
+			this.refs.root.gameObject.SetActive(false);
 		});
 	}
 
 	private PlayDamageFlash() {
 		if (this.entity.IsDestroyed() || this.isFlashing) return;
-		let allMeshes = this.entity.AccessoryBuilder.GetAllAccessoryMeshes();
+		let allMeshes = this.entity.accessoryBuilder.GetAllAccessoryMeshes();
 		const duration = this.flashTransitionDuration + this.flashOnTime;
 		this.isFlashing = true;
 		for (let i = 0; i < allMeshes.Length; i++) {
@@ -575,7 +575,7 @@ export class CharacterEntityAnimator {
 
 	public SetFresnelColor(color: Color, power: number, strength: number) {
 		if (this.entity.IsDestroyed()) return;
-		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.refs.Meshes);
+		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.refs.meshes);
 		//TODO: Material property block AddColor doesn't seem to be working???
 		/* const propertyBlock: MaterialPropertyBlock = Bridge.MakeMaterialPropertyBlock();
 		propertyBlock.AddFloat("_RimPower", power);
@@ -607,13 +607,13 @@ export class CharacterEntityAnimator {
 		if (os.clock() - this.lastFootstepSoundTime < 0.18) {
 			return;
 		}
-		const blockId = this.entity.EntityDriver.groundedBlockId;
+		const blockId = this.entity.entityDriver.groundedBlockId;
 		if (blockId === 0) return;
 
 		if (!cameraPos) {
 			cameraPos = Camera.main.transform.position;
 		}
-		if (cameraPos.sub(this.entity.Model.transform.position).magnitude > 20) {
+		if (cameraPos.sub(this.entity.model.transform.position).magnitude > 20) {
 			return;
 		}
 
@@ -639,8 +639,8 @@ export class CharacterEntityAnimator {
 				soundPath += ".ogg";
 			}
 			let audioClip = AssetCache.LoadAsset<AudioClip>(soundPath);
-			let volume = this.BaseFootstepVolumeScale * volumeScale;
-			this.refs.FootstepAudioSource.PlayOneShot(audioClip, volume);
+			let volume = this.baseFootstepVolumeScale * volumeScale;
+			this.refs.footstepAudioSource.PlayOneShot(audioClip, volume);
 		}
 	}
 
@@ -648,7 +648,7 @@ export class CharacterEntityAnimator {
 		switch (key) {
 			case EntityAnimationEventKey.SLIDE_START:
 				if (this.slideAudioBundle) {
-					this.slideAudioBundle.SpacialPosition = this.entity.Model.transform.position;
+					this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
 					this.slideAudioBundle.Stop();
 					this.slideAudioBundle.PlayNext();
 				}
@@ -657,13 +657,13 @@ export class CharacterEntityAnimator {
 				this.slideAudioBundle?.Stop(1);
 				break;
 			case EntityAnimationEventKey.JUMP:
-				if (this.refs.JumpSound) {
+				if (this.refs.jumpSound) {
 					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.refs.JumpSound, {
+						AudioManager.PlayClipGlobal(this.refs.jumpSound, {
 							volumeScale: 0.2,
 						});
 					} else {
-						AudioManager.PlayClipAtPosition(this.refs.JumpSound, this.entity.Model.transform.position, {
+						AudioManager.PlayClipAtPosition(this.refs.jumpSound, this.entity.model.transform.position, {
 							volumeScale: 0.2,
 						});
 					}
@@ -671,13 +671,13 @@ export class CharacterEntityAnimator {
 				break;
 			case EntityAnimationEventKey.LAND:
 				this.PlayFootstepSound(1.4);
-				if (this.refs.LandSound) {
+				if (this.refs.landSound) {
 					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.refs.LandSound, {
+						AudioManager.PlayClipGlobal(this.refs.landSound, {
 							volumeScale: 0.2,
 						});
 					} else {
-						AudioManager.PlayClipAtPosition(this.refs.LandSound, this.entity.Model.transform.position, {
+						AudioManager.PlayClipAtPosition(this.refs.landSound, this.entity.model.transform.position, {
 							volumeScale: 0.2,
 						});
 					}
@@ -691,7 +691,7 @@ export class CharacterEntityAnimator {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		AnimancerBridge.SetGlobalSpeed(this.WorldmodelAnimancerComponent, newSpeed);
+		AnimancerBridge.SetGlobalSpeed(this.worldmodelAnimancerComponent, newSpeed);
 	}
 
 	public IsViewModelEnabled(): boolean {

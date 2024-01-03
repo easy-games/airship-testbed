@@ -3,7 +3,7 @@ import { CameraReferences } from "./CameraReferences";
 export declare class FirstPersonCameraSystem {
     readonly entity: Entity;
     private bobLerpMod;
-    Cameras: CameraReferences;
+    cameras: CameraReferences;
     private sprintingBob;
     private walkingBob;
     private slidingBob;

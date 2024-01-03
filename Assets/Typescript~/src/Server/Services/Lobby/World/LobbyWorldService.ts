@@ -9,8 +9,8 @@ import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 
 @Service({})
 export class LobbyWorldService implements OnStart {
-	public SpawnPos = new Vector3(0, 0, 0);
-	public SpawnPosRot = Quaternion.identity;
+	public spawnPos = new Vector3(0, 0, 0);
+	public spawnPosRot = Quaternion.identity;
 
 	constructor(private readonly entityService: EntityService) {
 		CoreServerSignals.PlayerJoin.Connect((event) => {
@@ -20,7 +20,7 @@ export class LobbyWorldService implements OnStart {
 		});
 
 		CoreServerSignals.EntityDeath.Connect((event) => {
-			const player = event.entity.Player;
+			const player = event.entity.player;
 			if (!player) return;
 
 			SetTimeout(1, () => {
@@ -38,14 +38,14 @@ export class LobbyWorldService implements OnStart {
 		for (let i = 0; i < mapObjects.Length; i++) {
 			const mapObj = mapObjects.GetValue(i);
 			if (mapObj.name === "spawn") {
-				this.SpawnPos = mapObj.position;
-				this.SpawnPosRot = mapObj.rotation;
+				this.spawnPos = mapObj.position;
+				this.spawnPosRot = mapObj.rotation;
 			}
 		}
 	}
 
 	private SpawnPlayer(player: Player): void {
-		this.entityService.SpawnPlayerEntity(player, EntityPrefabType.HUMAN, this.SpawnPos);
+		this.entityService.SpawnPlayerEntity(player, EntityPrefabType.HUMAN, this.spawnPos);
 	}
 
 	OnStart(): void {}

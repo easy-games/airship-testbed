@@ -16,7 +16,7 @@ import { BWController } from "./BWController";
 
 @Controller({})
 export class SpectateController implements OnStart {
-	public readonly SpectateCamDistance = 5;
+	public readonly spectateCamDistance = 5;
 
 	private spectateIndex = 0;
 	private currentlySpectatingEntityId = 0;
@@ -30,7 +30,7 @@ export class SpectateController implements OnStart {
 	OnStart() {
 		// Start spectating once player is eliminated:
 		ClientSignals.PlayerEliminated.Connect((event) => {
-			if (event.player !== Game.LocalPlayer) return;
+			if (event.player !== Game.localPlayer) return;
 			SetTimeout(0.1, () => {
 				this.StartSpectating();
 			});
@@ -79,7 +79,7 @@ export class SpectateController implements OnStart {
 
 		const bin = new Bin();
 
-		const orbitCamMode = new OrbitCameraMode(this.SpectateCamDistance, entities[0].Model.transform);
+		const orbitCamMode = new OrbitCameraMode(this.spectateCamDistance, entities[0].model.transform);
 		this.cameraController.SetMode(orbitCamMode);
 		Dependency<LocalEntityController>().SetFirstPerson(false);
 
@@ -88,7 +88,7 @@ export class SpectateController implements OnStart {
 		// Handle changing who is spectated:
 		const mouse = bin.Add(new Mouse());
 		const keyboard = bin.Add(new Keyboard());
-		mouse.LeftDown.Connect(() => {
+		mouse.leftDown.Connect(() => {
 			this.GoToIncrement(orbitCamMode, keyboard.IsKeyDown(KeyCode.LeftShift) ? -1 : 1);
 		});
 
@@ -98,7 +98,7 @@ export class SpectateController implements OnStart {
 
 		bin.Connect(CoreClientSignals.EntityDespawn, (entity) => {
 			// If currently-spectated entity goes away, switch to the next entity:
-			if (entity.Id === this.currentlySpectatingEntityId) {
+			if (entity.id === this.currentlySpectatingEntityId) {
 				this.FitIndexToId();
 				this.GoToIncrement(orbitCamMode, 1);
 			} else {
@@ -107,7 +107,7 @@ export class SpectateController implements OnStart {
 		});
 
 		// Clean up after camera mode is changed:
-		bin.Connect(this.cameraController.CameraSystem.ModeChangedBegin, (newMode, oldMode) => {
+		bin.Connect(this.cameraController.cameraSystem.modeChangedBegin, (newMode, oldMode) => {
 			if (oldMode === orbitCamMode) {
 				bin.Clean();
 			}
@@ -118,7 +118,7 @@ export class SpectateController implements OnStart {
 	private FitIndexToId() {
 		this.spectateIndex = math.max(
 			0,
-			this.GetSortedEntities().findIndex((e) => e.Id === this.currentlySpectatingEntityId),
+			this.GetSortedEntities().findIndex((e) => e.id === this.currentlySpectatingEntityId),
 		);
 	}
 
@@ -127,16 +127,16 @@ export class SpectateController implements OnStart {
 		const entities = this.GetSortedEntities();
 		this.spectateIndex = (this.spectateIndex + inc) % entities.size();
 		const entity = entities[this.spectateIndex];
-		this.currentlySpectatingEntityId = entity.Id;
-		mode.SetTransform(entity.Model.transform);
+		this.currentlySpectatingEntityId = entity.id;
+		mode.SetTransform(entity.model.transform);
 		ClientSignals.SpectatorTargetChanged.Fire({ entity });
 	}
 
 	/** Get a list of valid entities that can be spectated, sorted by ID. */
 	private GetSortedEntities(): Entity[] {
-		const team = Game.LocalPlayer.GetTeam();
+		const team = Game.localPlayer.GetTeam();
 		if (team) {
-			const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.Character);
+			const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.character);
 			if (alivePlayers.size() > 0) {
 				return alivePlayers;
 			}
@@ -145,7 +145,7 @@ export class SpectateController implements OnStart {
 		return Dependency<PlayerController>()
 			.GetPlayers()
 			.filter((p) => !this.bwController.IsPlayerEliminated(p))
-			.mapFiltered((p) => p.Character);
+			.mapFiltered((p) => p.character);
 
 		// All entities
 		// return this.entityController

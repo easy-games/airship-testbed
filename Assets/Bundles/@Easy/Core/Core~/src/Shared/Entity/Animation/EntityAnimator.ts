@@ -22,9 +22,9 @@ import { EntityAnimationLayer } from "./EntityAnimationLayer";
 export abstract class EntityAnimator {
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
-	public readonly WorldmodelAnimancer: AnimancerComponent;
-	public readonly ViewmodelAnimancer: AnimancerComponent;
-	public readonly DefaultTransitionTime: number = 0.05;
+	public readonly worldmodelAnimancer: AnimancerComponent;
+	public readonly viewmodelAnimancer: AnimancerComponent;
+	public readonly defaultTransitionTime: number = 0.05;
 
 	protected readonly entityRef: EntityReferences;
 	protected bin = new Bin();
@@ -46,12 +46,12 @@ export abstract class EntityAnimator {
 	private lastFootstepSoundTime = 0;
 	private deathVfx?: GameObject;
 
-	public BaseFootstepVolumeScale = 0.1;
+	public baseFootstepVolumeScale = 0.1;
 
 	constructor(protected entity: Entity, entityRef: EntityReferences) {
-		const animator = entity.EntityDriver.animator;
-		this.WorldmodelAnimancer = animator.worldmodelAnimancer;
-		this.ViewmodelAnimancer = animator.viewmodelAnimancer;
+		const animator = entity.entityDriver.animator;
+		this.worldmodelAnimancer = animator.worldmodelAnimancer;
+		this.viewmodelAnimancer = animator.viewmodelAnimancer;
 		this.entityRef = entityRef;
 		this.isFlashing = false;
 		this.viewModelEnabled = this.entity.IsLocalCharacter();
@@ -59,17 +59,17 @@ export abstract class EntityAnimator {
 		//AUDIO
 		if (RunUtil.IsClient()) {
 			this.footstepAudioBundle = new AudioClipBundle([]);
-			this.footstepAudioBundle.VolumeScale = this.BaseFootstepVolumeScale;
-			this.footstepAudioBundle.SoundOptions.maxDistance = 15;
-			this.footstepAudioBundle.SpacialMode = entity.IsLocalCharacter()
+			this.footstepAudioBundle.volumeScale = this.baseFootstepVolumeScale;
+			this.footstepAudioBundle.soundOptions.maxDistance = 15;
+			this.footstepAudioBundle.spacialMode = entity.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
-			this.slideAudioBundle = new AudioClipBundle(entityRef.SlideSoundPaths);
-			this.slideAudioBundle.VolumeScale = 0.2;
-			this.slideAudioBundle.UseFullPath = true;
-			this.slideAudioBundle.PlayMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
-			this.slideAudioBundle.SpacialMode = entity.IsLocalCharacter()
+			this.slideAudioBundle = new AudioClipBundle(entityRef.slideSoundPaths);
+			this.slideAudioBundle.volumeScale = 0.2;
+			this.slideAudioBundle.useFullPath = true;
+			this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+			this.slideAudioBundle.spacialMode = entity.IsLocalCharacter()
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
@@ -114,7 +114,7 @@ export abstract class EntityAnimator {
 		}
 
 		//Listen to animation events
-		const animConn = this.entityRef.AnimationEvents.OnEntityAnimationEvent((data) => {
+		const animConn = this.entityRef.animationEvents.OnEntityAnimationEvent((data) => {
 			// if (data !== 0) {
 			// 	print("Animation Event: " + data + " On Entity: " + this.entity.id);
 			// }
@@ -124,7 +124,7 @@ export abstract class EntityAnimator {
 			Bridge.DisconnectEvent(animConn);
 		});
 
-		this.entityRef.Root.gameObject.SetActive(true);
+		this.entityRef.root.gameObject.SetActive(true);
 	}
 
 	public Destroy(): void {
@@ -189,7 +189,7 @@ export abstract class EntityAnimator {
 			//Always play death animation in third person
 			// localController.ForceFirstPersonMode(false);
 			//Lock Inputs
-			this.entity.EntityDriver.disableInput = true;
+			this.entity.entityDriver.disableInput = true;
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
@@ -208,18 +208,18 @@ export abstract class EntityAnimator {
 				undefined,
 			);
 			if (!inVoid) {
-				this.deathVfx.transform.SetParent(this.entity.GameObject.transform);
+				this.deathVfx.transform.SetParent(this.entity.gameObject.transform);
 			}
 		}
 
 		Task.Delay(0.5, () => {
-			this.entityRef.Root.gameObject.SetActive(false);
+			this.entityRef.root.gameObject.SetActive(false);
 		});
 	}
 
 	private PlayDamageFlash() {
 		if (this.entity.IsDestroyed() || this.isFlashing) return;
-		let allMeshes = this.entity.AccessoryBuilder.GetAllAccessoryMeshes();
+		let allMeshes = this.entity.accessoryBuilder.GetAllAccessoryMeshes();
 		const duration = this.flashTransitionDuration + this.flashOnTime;
 		this.isFlashing = true;
 		for (let i = 0; i < allMeshes.Length; i++) {
@@ -237,7 +237,7 @@ export abstract class EntityAnimator {
 
 	public SetFresnelColor(color: Color, power: number, strength: number) {
 		if (this.entity.IsDestroyed()) return;
-		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.Meshes);
+		let allMeshes = ArrayUtil.Combine(this.entity.GetAccessoryMeshes(AccessorySlot.Root), this.entityRef.meshes);
 		//TODO: Material property block AddColor doesn't seem to be working???
 		/* const propertyBlock: MaterialPropertyBlock = Bridge.MakeMaterialPropertyBlock();
 		propertyBlock.AddFloat("_RimPower", power);
@@ -269,13 +269,13 @@ export abstract class EntityAnimator {
 		if (os.clock() - this.lastFootstepSoundTime < 0.18) {
 			return;
 		}
-		const blockId = this.entity.EntityDriver.groundedBlockId;
+		const blockId = this.entity.entityDriver.groundedBlockId;
 		if (blockId === 0) return;
 
 		if (!cameraPos) {
 			cameraPos = Camera.main.transform.position;
 		}
-		if (cameraPos.sub(this.entity.Model.transform.position).magnitude > 20) {
+		if (cameraPos.sub(this.entity.model.transform.position).magnitude > 20) {
 			return;
 		}
 
@@ -301,8 +301,8 @@ export abstract class EntityAnimator {
 				soundPath += ".ogg";
 			}
 			let audioClip = AssetCache.LoadAsset<AudioClip>(soundPath);
-			let volume = this.BaseFootstepVolumeScale * volumeScale;
-			this.entityRef.FootstepAudioSource.PlayOneShot(audioClip, volume);
+			let volume = this.baseFootstepVolumeScale * volumeScale;
+			this.entityRef.footstepAudioSource.PlayOneShot(audioClip, volume);
 		}
 	}
 
@@ -310,7 +310,7 @@ export abstract class EntityAnimator {
 		switch (key) {
 			case EntityAnimationEventKey.SLIDE_START:
 				if (this.slideAudioBundle) {
-					this.slideAudioBundle.SpacialPosition = this.entity.Model.transform.position;
+					this.slideAudioBundle.spacialPosition = this.entity.model.transform.position;
 					this.slideAudioBundle.Stop();
 					this.slideAudioBundle.PlayNext();
 				}
@@ -319,15 +319,15 @@ export abstract class EntityAnimator {
 				this.slideAudioBundle?.Stop(1);
 				break;
 			case EntityAnimationEventKey.JUMP:
-				if (this.entityRef.JumpSound) {
+				if (this.entityRef.jumpSound) {
 					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.entityRef.JumpSound, {
+						AudioManager.PlayClipGlobal(this.entityRef.jumpSound, {
 							volumeScale: 0.2,
 						});
 					} else {
 						AudioManager.PlayClipAtPosition(
-							this.entityRef.JumpSound,
-							this.entity.Model.transform.position,
+							this.entityRef.jumpSound,
+							this.entity.model.transform.position,
 							{
 								volumeScale: 0.2,
 							},
@@ -337,15 +337,15 @@ export abstract class EntityAnimator {
 				break;
 			case EntityAnimationEventKey.LAND:
 				this.PlayFootstepSound(1.4);
-				if (this.entityRef.LandSound) {
+				if (this.entityRef.landSound) {
 					if (this.entity.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.entityRef.LandSound, {
+						AudioManager.PlayClipGlobal(this.entityRef.landSound, {
 							volumeScale: 0.2,
 						});
 					} else {
 						AudioManager.PlayClipAtPosition(
-							this.entityRef.LandSound,
-							this.entity.Model.transform.position,
+							this.entityRef.landSound,
+							this.entity.model.transform.position,
 							{
 								volumeScale: 0.2,
 							},
@@ -361,7 +361,7 @@ export abstract class EntityAnimator {
 	}
 
 	public SetPlaybackSpeed(newSpeed: number) {
-		AnimancerBridge.SetGlobalSpeed(this.WorldmodelAnimancer, newSpeed);
+		AnimancerBridge.SetGlobalSpeed(this.worldmodelAnimancer, newSpeed);
 	}
 
 	public IsViewModelEnabled(): boolean {

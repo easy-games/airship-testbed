@@ -3,7 +3,7 @@ export declare class AppManager {
     /** Global mouse instance. */
     private static mouse;
     /** Global keyboard instance. */
-    static Keyboard: Keyboard;
+    static keyboard: Keyboard;
     private static opened;
     private static stack;
     private static backgroundCanvas;

@@ -8,23 +8,23 @@ export class TillBlockHeldItem extends BlockSelectHeldItem {
 	override OnEquip(): void {
 		super.OnEquip();
 		if (this.blockSelect) {
-			this.blockSelect.HighlightOnPlacement = false;
+			this.blockSelect.highlightOnPlacement = false;
 		}
 	}
 
 	override OnUseClient(useIndex: number) {
 		super.OnUseClient(useIndex);
-		if (this.Entity.IsLocalCharacter()) {
+		if (this.entity.IsLocalCharacter()) {
 			this.HitBlockLocal();
 		}
 	}
 
 	private HitBlockLocal(): void {
-		const voxelPos = this.blockSelect?.SelectedBlockPosition;
+		const voxelPos = this.blockSelect?.selectedBlockPosition;
 		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
-		Dependency<BlockInteractController>().PerformBlockTill(this.Entity, this.itemMeta?.tillBlock, voxelPos);
+		Dependency<BlockInteractController>().PerformBlockTill(this.entity, this.itemMeta?.tillBlock, voxelPos);
 	}
 
 	override CanUseBlock(

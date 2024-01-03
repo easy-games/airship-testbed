@@ -1,9 +1,9 @@
 export declare class AvatarUtil {
-    static readonly DefaultAccessoryCollectionPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
+    static readonly defaultAccessoryCollectionPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
     private static readonly avatarAccessories;
     private static readonly avatarSkinAccessories;
-    static DefaultKitAccessory: AccessoryCollection | undefined;
-    static readonly SkinColors: Color[];
+    static defaultKitAccessory: AccessoryCollection | undefined;
+    static readonly skinColors: Color[];
     static Initialize(): void;
     static AddAvailableAvatarItem(item: Accessory): void;
     static GetAllAvatarItems(slotType: AccessorySlot): Accessory[] | undefined;

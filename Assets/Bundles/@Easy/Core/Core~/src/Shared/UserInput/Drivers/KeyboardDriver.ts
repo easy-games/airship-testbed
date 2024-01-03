@@ -13,8 +13,8 @@ export class KeyboardDriver {
 	private readonly keyDownCounter = new Map<KeyCode, number>();
 	private readonly keyUpCounter = new Map<KeyCode, number>();
 
-	public readonly AnyKeyDownSignal = new Signal<[key: KeySignal]>();
-	public readonly AnyKeyUpSignal = new Signal<[key: KeySignal]>();
+	public readonly anyKeyDownSignal = new Signal<[key: KeySignal]>();
+	public readonly anyKeyUpSignal = new Signal<[key: KeySignal]>();
 
 	private static inst: KeyboardDriver;
 
@@ -23,13 +23,13 @@ export class KeyboardDriver {
 			const uiSelected = CanvasAPI.GetSelectedInstanceId() !== undefined;
 			if (isDown) {
 				const event = new KeySignal(key, uiSelected);
-				this.AnyKeyDownSignal.Fire(event);
+				this.anyKeyDownSignal.Fire(event);
 				if (!event.IsCancelled()) {
 					this.keyDownSignals.get(key)?.Fire(event);
 				}
 			} else {
 				const event = new KeySignal(key, uiSelected);
-				this.AnyKeyUpSignal.Fire(event);
+				this.anyKeyUpSignal.Fire(event);
 				if (!event.IsCancelled()) {
 					this.keyUpSignals.get(key)?.Fire(event);
 				}

@@ -8,9 +8,9 @@ import { World } from "./World";
 
 export class WorldAPI {
 	private static world: World | undefined;
-	public static DefaultVoxelHealth = 10;
-	public static ChildVoxelId = 22;
-	public static OnBlockHitDamageCalc = new Signal<BlockHitDamageSignal>();
+	public static defaultVoxelHealth = 10;
+	public static childVoxelId = 22;
+	public static onBlockHitDamageCalc = new Signal<BlockHitDamageSignal>();
 
 	public static GetMainWorld(): World | undefined {
 		if (this.world) {
@@ -36,11 +36,11 @@ export class WorldAPI {
 		breakBlockMeta: BreakBlockDef,
 	): number {
 		let signal = new BlockHitDamageSignal(breakBlockMeta.damage, entity, block, blockPos, breakBlockMeta);
-		this.OnBlockHitDamageCalc.Fire(signal);
+		this.onBlockHitDamageCalc.Fire(signal);
 
 		//Global Hit Damage Calcs
 		//Block Types
-		const archetype = signal.block.ItemDef?.block?.blockArchetype ?? BlockArchetype.NONE;
+		const archetype = signal.block.itemDef?.block?.blockArchetype ?? BlockArchetype.NONE;
 
 		//Bonuse damage from item type
 		if (archetype !== BlockArchetype.NONE) {

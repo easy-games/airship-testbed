@@ -22,7 +22,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			const world = WorldAPI.GetMainWorld()!;
 			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
 
-			const rightHandRens = this.Entity.AccessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
+			const rightHandRens = this.entity.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
 			if (rightHandRens && rightHandRens.Length > 0) {
 				const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 2, 5);
 				if (blockGO) {
@@ -41,7 +41,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 
 	override OnUseClient(useIndex: number) {
 		//Only run for local player
-		if (this.Entity.IsLocalCharacter()) {
+		if (this.entity.IsLocalCharacter()) {
 			//Try to place a block
 			if (this.TryPlaceBlock()) {
 				//Only play use animations if we actually think we can place a block
@@ -64,8 +64,8 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		const blockSelectController = Dependency<BlockSelectController>();
-		const placePosition = blockSelectController.PlaceBlockPosition;
-		const isVoidPlacement = blockSelectController.IsVoidPlacement;
+		const placePosition = blockSelectController.placeBlockPosition;
+		const isVoidPlacement = blockSelectController.isVoidPlacement;
 
 		if (!placePosition) {
 			return false;
@@ -81,7 +81,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		if (blockMeta.placeOnWhitelist) {
-			const belowItemType = world.GetBlockBelow(placePosition).ItemType;
+			const belowItemType = world.GetBlockBelow(placePosition).itemType;
 			if (!belowItemType || !blockMeta.placeOnWhitelist.includes(belowItemType)) {
 				warn("invalid type, expecting ", inspect(blockMeta.placeOnWhitelist), "got", belowItemType ?? "<NONE>");
 				return false;
@@ -100,7 +100,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 				this.placementQueued = false;
 				// Write the voxel at the predicted position
 				world.PlaceBlockById(placePosition, blockMeta.blockId, {
-					placedByEntityId: this.Entity.Id,
+					placedByEntityId: this.entity.id,
 					priority: true,
 				});
 				if (isVoidPlacement) {

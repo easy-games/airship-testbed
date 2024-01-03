@@ -5,11 +5,11 @@ import { PointerButtonSignal } from "./Signals/PointerButtonSignal";
 import { ScrollSignal } from "./Signals/ScrollSignal";
 export declare class MouseDriver {
     private static inst;
-    readonly LeftButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
-    readonly RightButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
-    readonly MiddleButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
-    readonly Scrolled: Signal<[event: ScrollSignal]>;
-    readonly Moved: Signal<[location: Vector3]>;
+    readonly leftButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
+    readonly rightButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
+    readonly middleButtonChanged: Signal<[mouseEvent: PointerButtonSignal]>;
+    readonly scrolled: Signal<[event: ScrollSignal]>;
+    readonly moved: Signal<[location: Vector3]>;
     private readonly inputProxy;
     private constructor();
     IsLeftDown(): boolean;
