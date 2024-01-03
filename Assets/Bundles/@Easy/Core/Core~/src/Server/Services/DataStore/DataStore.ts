@@ -3,56 +3,24 @@ import inspect from "@easy-games/unity-inspect";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
+/**
+ * The Data Store provides simple key/value persistent storage.
+ *
+ * The data store provides durable storage that can be accessed from any game server. Data access is slower than
+ * the Cache Store, but the data will never expire.
+ *
+ * The Data Store is good for things like user configuration settings. If you want to keep track of user statistics or
+ * inventory, check out the Leaderboard and AirshipInventory systems.
+ */
 @Service({})
 export class DataStore implements OnStart {
 	OnStart(): void {}
 
-	public async GetCacheKey<T extends object>(key: string, expireTimeSec?: number): Promise<T | void> {
-		this.checkKey(key);
-
-		const query: string = expireTimeSec !== undefined ? `?expiry=${expireTimeSec}` : "";
-		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
-		if (!result.success) {
-			throw error(`Unable to get cache key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
-		}
-
-		return DecodeJSON(result.data) as T;
-	}
-
-	public async SetCacheKey<T extends object>(key: string, data: T, expireTimeSec?: number): Promise<T> {
-		this.checkKey(key);
-
-		const query: string = expireTimeSec !== undefined ? `?expiry=${expireTimeSec}` : "";
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`,
-			EncodeJSON(data),
-		);
-		if (!result.success) {
-			throw error(`Unable to set cache key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
-		}
-
-		return DecodeJSON(result.data) as T;
-	}
-
-	public async DeleteCacheKey(key: string): Promise<void> {
-		this.checkKey(key);
-
-		await this.SetCacheKeyTTL(key, 0);
-	}
-
-	public async SetCacheKeyTTL(key: string, expireTimeSec: number): Promise<number> {
-		this.checkKey(key);
-
-		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${expireTimeSec}`,
-		);
-		if (!result.success) {
-			throw error(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
-		}
-
-		return (DecodeJSON(result.data) as { ttl: number }).ttl;
-	}
-
+	/**
+	 * Gets the data associated with the given key.
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
+	 */
 	public async GetDataKey<T extends object>(key: string): Promise<T | void> {
 		this.checkKey(key);
 
@@ -66,6 +34,12 @@ export class DataStore implements OnStart {
 		return DecodeJSON(result.data) as T;
 	}
 
+	/**
+	 * Sets the data for the given key.
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @param data The data to associate with the provided key.
+	 * @returns The data that was associated with the provided key.
+	 */
 	public async SetDataKey<T extends object>(key: string, data: T): Promise<T> {
 		this.checkKey(key);
 
@@ -80,6 +54,11 @@ export class DataStore implements OnStart {
 		return DecodeJSON(result.data) as T;
 	}
 
+	/**
+	 * Deletes the data associated with the given key.
+	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
+	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
+	 */
 	public async DeleteDataKey<T extends object>(key: string): Promise<T | void> {
 		this.checkKey(key);
 
@@ -93,6 +72,9 @@ export class DataStore implements OnStart {
 		return DecodeJSON(result.data) as T;
 	}
 
+	/**
+	 * Checks that the key is valid
+	 */
 	private checkKey(key: string): void {
 		if (!key || key.match("^[%w%.%:]+$")[0] === undefined) {
 			throw error(
