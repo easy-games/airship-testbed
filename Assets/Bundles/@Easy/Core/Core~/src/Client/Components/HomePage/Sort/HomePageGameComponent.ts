@@ -12,7 +12,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	override OnStart(): void {}
+	override Start(): void {}
 
 	override OnDestroy(): void {}
 

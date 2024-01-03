@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@easy-games/compiler-types": "^3.0.0-22",
+    "@easy-games/compiler-types": "^3.0.0-23",
     "@easy-games/flamework-core": "^3.0.0-71",
     "@easy-games/types": "^1.0.81-163",
     "@easy-games/unity-component-transformer": "^1.0.0-11",
