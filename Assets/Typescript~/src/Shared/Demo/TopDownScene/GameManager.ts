@@ -1,5 +1,3 @@
-import { CameraController } from "@Easy/Core/Client/Controllers/Camera/CameraController";
-import { StaticCameraMode } from "@Easy/Core/Client/Controllers/Camera/DefaultCameraModes/StaticCameraMode";
 import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
 import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
@@ -45,7 +43,6 @@ export default class GameManager extends AirshipBehaviour {
 			Dependency<LocalEntityController>().SetFirstPerson(false);
 			Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
 			Dependency<LoadingScreenController>().FinishLoading();
-			Dependency<CameraController>().SetMode(new StaticCameraMode(new Vector3(), Quaternion.identity));
 		}
 	}
 
