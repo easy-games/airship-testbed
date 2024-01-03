@@ -9,8 +9,18 @@ export class CameraController implements OnStart {
 	/** The underlying camera system for the game. */
 	public readonly cameraSystem: CameraSystem;
 
+	private enabled = true;
+
 	constructor() {
 		this.cameraSystem = new CameraSystem();
+	}
+
+	public SetEnabled(enabled: boolean): void {
+		this.enabled = enabled;
+	}
+
+	public IsEnabled(): boolean {
+		return this.enabled;
 	}
 
 	/**

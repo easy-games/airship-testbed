@@ -253,6 +253,7 @@ export class LocalEntityController implements OnStart {
 
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
+				if (!this.cameraController.IsEnabled()) return;
 				if (event.uiProcessed) return;
 				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.ToggleFirstPerson();
@@ -352,8 +353,10 @@ export class LocalEntityController implements OnStart {
 
 			// Cleanup:
 			bin.Add(() => {
-				this.cameraController.cameraSystem.SetOnClearCallback(undefined);
-				this.cameraController.ClearMode();
+				if (this.cameraController.IsEnabled()) {
+					this.cameraController.cameraSystem.SetOnClearCallback(undefined);
+					this.cameraController.ClearMode();
+				}
 				this.fps?.Destroy();
 				this.entityInput?.Destroy();
 			});
@@ -394,6 +397,7 @@ export class LocalEntityController implements OnStart {
 	}
 
 	public UpdateFov(): void {
+		if (!this.cameraController.IsEnabled()) return;
 		let baseFov = this.IsFirstPerson()
 			? this.clientSettings.GetFirstPersonFov()
 			: this.clientSettings.GetThirdPersonFov();

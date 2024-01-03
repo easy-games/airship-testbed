@@ -5,7 +5,10 @@ export declare class CameraController implements OnStart {
     static readonly cameraReferenceKey: string;
     /** The underlying camera system for the game. */
     readonly cameraSystem: CameraSystem;
+    private enabled;
     constructor();
+    SetEnabled(enabled: boolean): void;
+    IsEnabled(): boolean;
     /**
      * Proxy for `cameraSystem.SetMode()`.
      *
