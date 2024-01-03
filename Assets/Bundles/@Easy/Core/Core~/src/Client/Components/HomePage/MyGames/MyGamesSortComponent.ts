@@ -22,7 +22,7 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 	}
 
 	public FetchGames(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self");
+		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true");
 		if (!res.success) {
 			warn("Failed to fetch my games. Retrying in 1s..");
 			this.bin.Add(
