@@ -11,7 +11,7 @@ export class DamageController implements OnStart {
 	constructor(private readonly entityController: EntityController) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.EntityDamage.Client.OnServerEvent(
+		CoreNetwork.ServerToClient.EntityDamage.client.OnServerEvent(
 			(entityId, amount, damageType, fromEntityId, criticalHit) => {
 				const entity = this.entityController.GetEntityById(entityId);
 				if (!entity) {
@@ -30,7 +30,7 @@ export class DamageController implements OnStart {
 			},
 		);
 
-		CoreNetwork.ServerToClient.EntityDeath.Client.OnServerEvent(
+		CoreNetwork.ServerToClient.EntityDeath.client.OnServerEvent(
 			(entityId, damageType, fromEntityId, respawnTime) => {
 				const entity = this.entityController.GetEntityById(entityId);
 				if (!entity) {

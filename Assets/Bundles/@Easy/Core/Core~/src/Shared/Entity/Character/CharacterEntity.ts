@@ -23,7 +23,7 @@ export class CharacterEntity extends Entity {
 		this.inventory = inventory;
 
 		this.bin.Add(
-			this.inventory.SlotChanged.Connect((slot, itemStack) => {
+			this.inventory.slotChanged.Connect((slot, itemStack) => {
 				this.CalcArmor();
 			}),
 		);
@@ -46,7 +46,7 @@ export class CharacterEntity extends Entity {
 		return {
 			...super.Encode(),
 			serializer: EntitySerializer.CHARACTER,
-			invId: this.inventory.Id,
+			invId: this.inventory.id,
 		};
 	}
 
@@ -63,7 +63,7 @@ export class CharacterEntity extends Entity {
 		}
 		if (armor !== this.armor) {
 			this.armor = armor;
-			this.OnArmorChanged.Fire(this.armor);
+			this.onArmorChanged.Fire(this.armor);
 		}
 	}
 

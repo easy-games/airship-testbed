@@ -5,7 +5,7 @@ export declare class Preferred {
     private readonly bin;
     private readonly preferredDriver;
     /** A signal that fires every time the currently-used control scheme changes. */
-    readonly ControlSchemeChanged: Signal<[controlScheme: ControlScheme]>;
+    readonly controlSchemeChanged: Signal<[controlScheme: ControlScheme]>;
     private controlScheme;
     constructor();
     /** Get the currently-used control scheme. */

@@ -15,28 +15,28 @@ class CanUseBlockSignal extends Cancellable {
 }
 
 export class BreakBlockHeldItem extends BlockSelectHeldItem {
-	public static CanUseBlockSignal = new Signal<CanUseBlockSignal>();
+	public static canUseBlockSignal = new Signal<CanUseBlockSignal>();
 
 	override OnEquip(): void {
 		super.OnEquip();
 		if (this.blockSelect) {
-			this.blockSelect.HighlightOnPlacement = false;
+			this.blockSelect.highlightOnPlacement = false;
 		}
 	}
 
 	override OnUseClient(useIndex: number) {
 		super.OnUseClient(useIndex);
-		if (this.Entity.IsLocalCharacter()) {
+		if (this.entity.IsLocalCharacter()) {
 			this.HitBlockLocal();
 		}
 	}
 
 	private HitBlockLocal(): void {
-		const voxelPos = this.blockSelect?.SelectedBlockPosition;
+		const voxelPos = this.blockSelect?.selectedBlockPosition;
 		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
-		Dependency<BlockInteractController>().PerformBlockHit(this.Entity, this.itemMeta?.breakBlock, voxelPos, true);
+		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.itemMeta?.breakBlock, voxelPos, true);
 	}
 
 	override CanUseBlock(
@@ -61,8 +61,8 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 			return false;
 		}
 
-		const useSignal = new CanUseBlockSignal(block, selectedPos, this.Entity);
-		BreakBlockHeldItem.CanUseBlockSignal.Fire(useSignal);
+		const useSignal = new CanUseBlockSignal(block, selectedPos, this.entity);
+		BreakBlockHeldItem.canUseBlockSignal.Fire(useSignal);
 		if (useSignal.IsCancelled()) {
 			return false;
 		}

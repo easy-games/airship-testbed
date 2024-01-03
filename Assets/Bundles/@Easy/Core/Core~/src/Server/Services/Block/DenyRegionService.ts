@@ -25,7 +25,7 @@ export class DenyRegionService implements OnStart {
 		// Send deny region snapshot to late joiners.
 		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_DELAY, () => {
-				CoreNetwork.ServerToClient.DenyRegionSnapshot.Server.FireClient(
+				CoreNetwork.ServerToClient.DenyRegionSnapshot.server.FireClient(
 					event.player.clientId,
 					this.trackedDenyRegions,
 				);
@@ -53,7 +53,7 @@ export class DenyRegionService implements OnStart {
 				}
 			}
 		}
-		CoreNetwork.ServerToClient.DenyRegionCreated.Server.FireAllClients(newTrackedDenyRegion);
+		CoreNetwork.ServerToClient.DenyRegionCreated.server.FireAllClients(newTrackedDenyRegion);
 	}
 
 	/**

@@ -9,7 +9,7 @@ export declare class BlockPlaceSignal {
     readonly blockId: string;
     /** Will always be undefined on client. */
     readonly entity?: Entity | undefined;
-    readonly ItemMeta: ItemDef;
+    readonly itemMeta: ItemDef;
     constructor(pos: Vector3, itemType: ItemType, blockId: string, 
     /** Will always be undefined on client. */
     entity?: Entity | undefined);

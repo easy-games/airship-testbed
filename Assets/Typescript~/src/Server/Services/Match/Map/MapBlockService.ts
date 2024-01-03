@@ -17,7 +17,7 @@ export class MapBlockService implements OnStart {
 	constructor(private readonly blockService: BlockInteractService) {}
 	OnStart(): void {
 		CoreServerSignals.BlockPlace.Connect((event) => {
-			if (event.ItemMeta.tillBlock) {
+			if (event.itemMeta.tillBlock) {
 				// tillable blocks can be modified to the tillable equiv.
 				BlockDataAPI.SetBlockData(event.pos, CoreBlockMetaKeys.CAN_TILL, true);
 			}
@@ -31,7 +31,7 @@ export class MapBlockService implements OnStart {
 			// }
 		});
 
-		CoreNetwork.ClientToServer.LibonatiTest.Server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.LibonatiTest.server.OnClientEvent((clientId) => {
 			const entity = Entity.FindByClientId(clientId);
 			if (!entity) {
 				return;
@@ -49,9 +49,9 @@ export class MapBlockService implements OnStart {
 						let voxelPos = new Vector3(0, 0, 0);
 						if (entity) {
 							voxelPos = WorldAPI.GetVoxelPosition(
-								entity.Model.transform.position
+								entity.model.transform.position
 									.add(localBlockPos)
-									.add(entity.Model.transform.forward.mul(sphereRadius + 1)),
+									.add(entity.model.transform.forward.mul(sphereRadius + 1)),
 							);
 						}
 						if (world) {

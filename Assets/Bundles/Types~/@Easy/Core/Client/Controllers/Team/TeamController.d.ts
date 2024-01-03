@@ -5,7 +5,7 @@ import { PlayerController } from "../Player/PlayerController";
 export declare class TeamController implements OnStart {
     private readonly playerController;
     private teams;
-    OnTeamAdded: Signal<[team: Team]>;
+    onTeamAdded: Signal<[team: Team]>;
     constructor(playerController: PlayerController);
     OnStart(): void;
     GetTeam(teamId: string): Team | undefined;

@@ -24,15 +24,15 @@ export class EntityAccessoryController implements OnStart {
 			if (event.entity instanceof CharacterEntity) {
 				if (event.entity.IsPlayerOwned()) {
 					//Add Kit Accessory
-					if (AvatarUtil.DefaultKitAccessory) {
+					if (AvatarUtil.defaultKitAccessory) {
 						Profiler.BeginSample("EquipAccessories");
-						const accessories = event.entity.AccessoryBuilder.EquipAccessoryCollection(
-							AvatarUtil.DefaultKitAccessory,
+						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
+							AvatarUtil.defaultKitAccessory,
 							true,
 						);
 						if (event.entity.IsLocalCharacter()) {
-							Dependency<ViewmodelController>().AccessoryBuilder.EquipAccessoryCollection(
-								AvatarUtil.DefaultKitAccessory,
+							Dependency<ViewmodelController>().accessoryBuilder.EquipAccessoryCollection(
+								AvatarUtil.defaultKitAccessory,
 								true,
 							);
 						}
@@ -41,7 +41,7 @@ export class EntityAccessoryController implements OnStart {
 				}
 
 				const inventory = event.entity.GetInventory();
-				const accessoryBuilder = event.entity.GameObject.GetComponent<AccessoryBuilder>();
+				const accessoryBuilder = event.entity.gameObject.GetComponent<AccessoryBuilder>();
 				const bin = new Bin();
 
 				let currentArmor: Readonly<Accessory[]> | undefined;
@@ -58,14 +58,14 @@ export class EntityAccessoryController implements OnStart {
 							for (const slot of slotsToRemove) {
 								accessoryBuilder.RemoveAccessorySlot(slot, false);
 								if (event.entity.IsLocalCharacter()) {
-									Dependency<ViewmodelController>().AccessoryBuilder.RemoveAccessorySlot(slot, false);
+									Dependency<ViewmodelController>().accessoryBuilder.RemoveAccessorySlot(slot, false);
 								}
 							}
 						}
 						for (const acc of armorAccessories) {
 							accessoryBuilder.AddSingleAccessory(acc, true);
 							if (event.entity.IsLocalCharacter()) {
-								Dependency<ViewmodelController>().AccessoryBuilder.AddSingleAccessory(acc, true);
+								Dependency<ViewmodelController>().accessoryBuilder.AddSingleAccessory(acc, true);
 							}
 						}
 						currentArmor = armorAccessories;
@@ -75,7 +75,7 @@ export class EntityAccessoryController implements OnStart {
 							for (const acc of currentArmor) {
 								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, false);
 								if (event.entity.IsLocalCharacter()) {
-									Dependency<ViewmodelController>().AccessoryBuilder.RemoveAccessorySlot(
+									Dependency<ViewmodelController>().accessoryBuilder.RemoveAccessorySlot(
 										acc.AccessorySlot,
 										false,
 									);
@@ -86,17 +86,17 @@ export class EntityAccessoryController implements OnStart {
 					}
 				};
 
-				onArmorSlotChanged(inventory.GetItem(inventory.ArmorSlots[ArmorType.HELMET]));
-				onArmorSlotChanged(inventory.GetItem(inventory.ArmorSlots[ArmorType.CHESTPLATE]));
-				onArmorSlotChanged(inventory.GetItem(inventory.ArmorSlots[ArmorType.BOOTS]));
+				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.HELMET]));
+				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.CHESTPLATE]));
+				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.BOOTS]));
 
-				bin.Connect(inventory.SlotChanged, (slotIndex, itemStack) => {
-					if (slotIndex === inventory.ArmorSlots[ArmorType.HELMET]) {
+				bin.Connect(inventory.slotChanged, (slotIndex, itemStack) => {
+					if (slotIndex === inventory.armorSlots[ArmorType.HELMET]) {
 						onArmorSlotChanged(itemStack);
 					}
 				});
 
-				event.entity.OnDespawn.Once(() => {
+				event.entity.onDespawn.Once(() => {
 					bin.Clean();
 				});
 			}
@@ -110,7 +110,7 @@ export class EntityAccessoryController implements OnStart {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
 			if (!(event.entity instanceof CharacterEntity)) return;
 
-			const accessoryBuilder = event.entity.AccessoryBuilder;
+			const accessoryBuilder = event.entity.accessoryBuilder;
 
 			const bin = new Bin();
 			bin.Add(
@@ -130,7 +130,7 @@ export class EntityAccessoryController implements OnStart {
 				);
 			}
 
-			event.entity.OnDespawn.Once(() => {
+			event.entity.onDespawn.Once(() => {
 				bin.Clean();
 			});
 		});

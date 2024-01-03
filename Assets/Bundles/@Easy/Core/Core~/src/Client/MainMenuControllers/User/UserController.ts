@@ -10,24 +10,24 @@ import { User } from "./User";
 
 @Controller({})
 export class UserController implements OnStart {
-	public LocalUser: User | undefined;
+	public localUser: User | undefined;
 
-	public OnLocalUserUpdated = new Signal<User>();
+	public onLocalUserUpdated = new Signal<User>();
 
 	constructor(private readonly authController: AuthController) {}
 
 	OnStart(): void {
-		this.authController.OnAuthenticated.Connect(() => {
+		this.authController.onAuthenticated.Connect(() => {
 			task.spawn(() => {
 				this.FetchLocalUser();
-				if (this.LocalUser) {
-					print("Hello " + this.LocalUser.username);
+				if (this.localUser) {
+					print("Hello " + this.localUser.username);
 				}
 			});
 		});
 
-		this.authController.OnSignOut.Connect(() => {
-			this.LocalUser = undefined;
+		this.authController.onSignOut.Connect(() => {
+			this.localUser = undefined;
 		});
 	}
 
@@ -38,14 +38,14 @@ export class UserController implements OnStart {
 		);
 		if (res.success) {
 			const data = DecodeJSON(res.data) as User;
-			this.LocalUser = data;
+			this.localUser = data;
 
-			const writeUser = Game.LocalPlayer as Writable<Player>;
+			const writeUser = Game.localPlayer as Writable<Player>;
 			writeUser.userId = data.uid;
 			writeUser.username = data.username;
 			writeUser.usernameTag = data.discriminator;
 
-			this.OnLocalUserUpdated.Fire(this.LocalUser);
+			this.onLocalUserUpdated.Fire(this.localUser);
 			return;
 		}
 

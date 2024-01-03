@@ -17,7 +17,7 @@ export class FireAspectController implements OnStart {
 				event.fromEntity instanceof CharacterEntity &&
 				event.damageType !== DamageType.FIRE &&
 				this.statusEffectController.GetStatusEffectForClient(
-					event.fromEntity.ClientId!,
+					event.fromEntity.clientId!,
 					StatusEffectType.FIRE_ASPECT,
 				)
 			) {
@@ -31,7 +31,7 @@ export class FireAspectController implements OnStart {
 					0.25,
 				);
 				effectGO.transform.localScale = new Vector3(0.25, 0.25, 0.25);
-				effectGO.transform.SetParent(event.entity.Model.transform);
+				effectGO.transform.SetParent(event.entity.model.transform);
 			}
 		});
 	}

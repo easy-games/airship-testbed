@@ -44,7 +44,7 @@ export class MainMenuAddFriendsController implements OnStart {
 				this.inputFieldSelected = false;
 			});
 			const keyboard = new Keyboard();
-			keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+			keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 				if (this.inputFieldSelected) {
 					if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
 						e.SetCancelled(true);

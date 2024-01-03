@@ -14,7 +14,7 @@ import { RunUtil } from "./Util/RunUtil";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
 
-Game.Context = CoreContext.GAME;
+Game.context = CoreContext.GAME;
 
 const vars: DynamicVariables[] = [
 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),

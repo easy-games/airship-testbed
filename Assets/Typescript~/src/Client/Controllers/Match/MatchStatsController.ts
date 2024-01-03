@@ -8,19 +8,19 @@ import { Network } from "Shared/Network";
 @Controller({})
 export class MatchStatsController implements OnStart {
 	private matchStats = new Map<string, PlayerMatchStats>();
-	public OnStatsUpdated = new Signal<[userId: string, newStats: PlayerMatchStats, oldStats: PlayerMatchStats]>();
+	public onStatsUpdated = new Signal<[userId: string, newStats: PlayerMatchStats, oldStats: PlayerMatchStats]>();
 
 	OnStart(): void {
-		Network.ServerToClient.PlayerMatchStats.Client.OnServerEvent((stats) => {
+		Network.ServerToClient.PlayerMatchStats.client.OnServerEvent((stats) => {
 			for (const stat of stats) {
 				this.matchStats.set(stat.userId, stat);
 			}
 		});
 
 		CoreClientSignals.EntityDeath.Connect((e) => {
-			if (e.killer?.Player && e.entity.Player && e.entity !== e.killer) {
-				this.UpdateMatchStats(e.killer.Player.userId, (stats) => stats.kills++);
-				this.UpdateMatchStats(e.entity.Player.userId, (stats) => stats.deaths++);
+			if (e.killer?.player && e.entity.player && e.entity !== e.killer) {
+				this.UpdateMatchStats(e.killer.player.userId, (stats) => stats.kills++);
+				this.UpdateMatchStats(e.entity.player.userId, (stats) => stats.deaths++);
 			}
 		});
 	}
@@ -40,6 +40,6 @@ export class MatchStatsController implements OnStart {
 
 		updateFunc(stats);
 
-		this.OnStatsUpdated.Fire(userId, stats, before);
+		this.onStatsUpdated.Fire(userId, stats, before);
 	}
 }

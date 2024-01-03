@@ -11,7 +11,7 @@ import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
  * @deprecated This should be used by Core only.
  */
 export class Bootstrap {
-	public static PrepareVoxelWorld(skybox = World.SKYBOX): void {
+	public static PrepareVoxelWorld(skybox = World.skybox): void {
 		if (RunCore.IsClient()) {
 			WorldAPI.GetMainWorld()?.LoadEmptyWorld(skybox);
 		}
@@ -43,7 +43,7 @@ export class Bootstrap {
 			const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>();
 			serverBootstrap.FinishedSetup();
 		} else if (RunUtil.IsClient()) {
-			CoreNetwork.ClientToServer.Ready.Client.FireServer();
+			CoreNetwork.ClientToServer.Ready.client.FireServer();
 		}
 	}
 }

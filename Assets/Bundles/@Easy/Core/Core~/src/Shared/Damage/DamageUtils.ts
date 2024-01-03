@@ -7,26 +7,26 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
 
 export class DamageUtils {
-	public static readonly MinDamageFallSpeed = 35;
-	public static readonly MaxDamageFallSpeed = 60;
-	public static readonly MinFallDamage = 10;
-	public static readonly MaxFallDamage = 100;
-	public static readonly MaxHitstunDamage = 50;
-	public static readonly MinHitStunRadius = 0.08;
-	public static readonly MaxHitStunRadius = 0.1;
+	public static readonly minDamageFallSpeed = 35;
+	public static readonly maxDamageFallSpeed = 60;
+	public static readonly minFallDamage = 10;
+	public static readonly maxFallDamage = 100;
+	public static readonly maxHitstunDamage = 50;
+	public static readonly minHitStunRadius = 0.08;
+	public static readonly maxHitStunRadius = 0.1;
 
 	public static GetFallDamage(verticalSpeed: number): number {
 		//Don't damage short falls
-		if (math.abs(verticalSpeed) < this.MinDamageFallSpeed) {
+		if (math.abs(verticalSpeed) < this.minDamageFallSpeed) {
 			return 0;
 		}
 
-		return MathUtil.Lerp(this.MinFallDamage, this.MaxFallDamage, this.GetFallDelta(verticalSpeed));
+		return MathUtil.Lerp(this.minFallDamage, this.maxFallDamage, this.GetFallDelta(verticalSpeed));
 	}
 
 	public static GetFallDelta(verticalSpeed: number) {
-		let speed = math.abs(verticalSpeed) - this.MinDamageFallSpeed;
-		let max = this.MaxDamageFallSpeed - this.MinDamageFallSpeed;
+		let speed = math.abs(verticalSpeed) - this.minDamageFallSpeed;
+		let max = this.maxDamageFallSpeed - this.minDamageFallSpeed;
 		return math.clamp(speed, 0, max) / max;
 	}
 
@@ -37,11 +37,11 @@ export class DamageUtils {
 			return 0;
 		}
 
-		const driver = entity.NetworkObject.gameObject.GetComponent<EntityDriver>();
-		const damageDelta = math.clamp(damageAmount / this.MaxHitstunDamage, 0, 1);
+		const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
+		const damageDelta = math.clamp(damageAmount / this.maxHitstunDamage, 0, 1);
 		const hitStunDuration = this.GetStunDuration(damageDelta);
 		const hitStunFrequency = MathUtil.Lerp(30, 60, damageDelta);
-		const hitStrunRadius = MathUtil.Lerp(this.MinHitStunRadius, this.MaxHitStunRadius, damageDelta);
+		const hitStrunRadius = MathUtil.Lerp(this.minHitStunRadius, this.maxHitStunRadius, damageDelta);
 
 		//Stop entity from moving
 		driver.DisableMovement();
@@ -51,10 +51,10 @@ export class DamageUtils {
 
 		if (RunUtil.IsClient()) {
 			//Shake the entity
-			let shake = entity.References.Rig.gameObject.AddComponent<EasyShake>();
+			let shake = entity.references.rig.gameObject.AddComponent<EasyShake>();
 			shake.resolveShakeOverTime = true;
 			shake.maxRadius = new Vector3(hitStrunRadius, 0, hitStrunRadius);
-			const minRadius = math.max(this.MaxHitStunRadius, hitStrunRadius / 2);
+			const minRadius = math.max(this.maxHitStunRadius, hitStrunRadius / 2);
 			shake.minRadius = new Vector3(minRadius, 0, minRadius);
 			shake.duration = hitStunDuration;
 			shake.movementsPerSecond = hitStunFrequency;
@@ -81,10 +81,10 @@ export class DamageUtils {
 		disableMovement: boolean,
 		vfx: GameObject[] | undefined,
 	) {
-		const anim = entity.Animator as CharacterEntityAnimator;
-		const driver = entity.NetworkObject.gameObject.GetComponent<EntityDriver>();
+		const anim = entity.animator as CharacterEntityAnimator;
+		const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
 		if (anim) {
-			const duration = this.GetStunDuration(math.clamp(damageDealt / this.MaxHitstunDamage, 0, 1));
+			const duration = this.GetStunDuration(math.clamp(damageDealt / this.maxHitstunDamage, 0, 1));
 			let particles: ParticleSystem[] = [];
 			if (vfx) {
 				let particleI = 0;

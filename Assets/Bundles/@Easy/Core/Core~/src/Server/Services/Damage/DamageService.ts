@@ -25,30 +25,30 @@ export class DamageService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.TEST_LATENCY.Server.SetCallback((clientId) => {
+		CoreNetwork.ClientToServer.TEST_LATENCY.server.SetCallback((clientId) => {
 			print("-----");
 			for (const entity of this.entityService.GetEntities()) {
-				print(entity.GetDisplayName() + ": " + entity.Id);
+				print(entity.GetDisplayName() + ": " + entity.id);
 			}
 			print("-----");
 
 			print("Received: " + InstanceFinder.TimeManager.Tick);
 			const entity = this.entityService.GetEntityByClientId(clientId);
 			if (!entity) return -1;
-			const entityDriver = entity.GameObject.GetComponent<EntityDriver>();
-			const dir = entity.Model.transform.forward;
+			const entityDriver = entity.gameObject.GetComponent<EntityDriver>();
+			const dir = entity.model.transform.forward;
 
 			this.ApplyKnockback(entityDriver, dir.mul(new Vector3(-1, 1, -1)).add(new Vector3(0, 1, 0)));
 			return InstanceFinder.TimeManager.Tick;
 		});
 
-		CoreNetwork.ClientToServer.TestKnockback2.Server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.TestKnockback2.server.OnClientEvent((clientId) => {
 			const entity = Entity.FindByClientId(clientId);
 			if (entity) {
-				const dir = entity.Model.transform.forward;
+				const dir = entity.model.transform.forward;
 				const horizontalScalar = this.combatVars.GetNumber("kbX");
 				const verticalScalar = this.combatVars.GetNumber("kbY");
-				entity.EntityDriver.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
+				entity.entityDriver.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
 			}
 		});
 	}
@@ -75,7 +75,7 @@ export class DamageService implements OnStart {
 				if (
 					aoeMeta.selfKnockbackMultiplier &&
 					aoeMeta.selfKnockbackMultiplier > 0 &&
-					entity.Id === config.fromEntity?.Id
+					entity.id === config.fromEntity?.id
 				) {
 					//Hitting self with AOE explosive
 					damage *= 0.5;
@@ -131,11 +131,11 @@ export class DamageService implements OnStart {
 			return false;
 		}
 
-		CoreNetwork.ServerToClient.EntityDamage.Server.FireAllClients(
-			entity.Id,
+		CoreNetwork.ServerToClient.EntityDamage.server.FireAllClients(
+			entity.id,
 			damageEvent.amount,
 			damageEvent.damageType,
-			damageEvent.fromEntity?.Id,
+			damageEvent.fromEntity?.id,
 			damageEvent.criticalHit,
 		);
 
@@ -150,7 +150,7 @@ export class DamageService implements OnStart {
 		const dead = entity.GetHealth() === 0;
 		if (dead) {
 			entity.Kill();
-			entity.EntityDriver.disableInput = true;
+			entity.entityDriver.disableInput = true;
 			const entityDeathEvent = new EntityDeathServerSignal(
 				entity,
 				damageEvent.fromEntity,
@@ -159,10 +159,10 @@ export class DamageService implements OnStart {
 			);
 			CoreServerSignals.EntityDeath.Fire(entityDeathEvent);
 
-			CoreNetwork.ServerToClient.EntityDeath.Server.FireAllClients(
-				entity.Id,
+			CoreNetwork.ServerToClient.EntityDeath.server.FireAllClients(
+				entity.id,
 				damageEvent.damageType,
-				entityDeathEvent.killer?.Id,
+				entityDeathEvent.killer?.id,
 				entityDeathEvent.respawnTime,
 			);
 
@@ -180,7 +180,7 @@ export class DamageService implements OnStart {
 			if (shouldGrantImmunity) entity.GrantImmunity(0.24);
 
 			//Hit stun and Knockback
-			const driver = entity.NetworkObject.gameObject.GetComponent<EntityDriver>();
+			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
 			if (driver) {
 				//DamageUtils.AddHitstun(entity, amount, () => {
 				this.ApplyKnockback(driver, config?.knockbackDirection);

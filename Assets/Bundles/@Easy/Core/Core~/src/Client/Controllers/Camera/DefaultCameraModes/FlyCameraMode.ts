@@ -55,7 +55,7 @@ export class FlyCameraMode implements CameraMode {
 		this.xRotSpring = new Spring(new Vector3(math.rad(90), 0, 0), 5);
 		this.yRotVelSpring = new Spring(new Vector3(0, 0, 0), 3);
 		this.fovSpring = new Spring(new Vector3(0, 0, camera.fieldOfView), 5);
-		this.fovSpring.Goal = new Vector3(0, 0, START_FOV);
+		this.fovSpring.goal = new Vector3(0, 0, START_FOV);
 
 		this.camera = camera;
 		this.originalFov = camera.fieldOfView;
@@ -100,9 +100,9 @@ export class FlyCameraMode implements CameraMode {
 			);
 		}
 
-		this.bin.Connect(this.mouse.Scrolled, (event) => {
+		this.bin.Connect(this.mouse.scrolled, (event) => {
 			const delta = -event.delta * FOV_SCROLL_SENSITIVITY;
-			this.fovSpring.Goal = new Vector3(0, 0, math.clamp(this.fovSpring.Goal.z + delta, MIN_FOV, MAX_FOV));
+			this.fovSpring.goal = new Vector3(0, 0, math.clamp(this.fovSpring.goal.z + delta, MIN_FOV, MAX_FOV));
 		});
 
 		this.bin.Add(() => {
@@ -142,7 +142,7 @@ export class FlyCameraMode implements CameraMode {
 
 		// Set new position:
 		if (moveVector.sqrMagnitude > 0) {
-			this.positionSpring.Goal = this.positionSpring.Goal.add(moveVector.normalized.mul(SPEED * dt));
+			this.positionSpring.goal = this.positionSpring.goal.add(moveVector.normalized.mul(SPEED * dt));
 		}
 
 		// Handle camera rotation when right-clicking:
@@ -151,14 +151,14 @@ export class FlyCameraMode implements CameraMode {
 			const sensFovScalar = MathUtil.Map(this.currentFov, MIN_FOV, MAX_FOV, 0.2, 1);
 			const mouseDelta = this.mouse.GetDelta();
 			const sensitivity = this.clientSettingsController.GetMouseSensitivity() * MOUSE_SENS_SCALAR * sensFovScalar;
-			this.xRotSpring.Goal = new Vector3(
-				math.clamp(this.xRotSpring.Goal.x + mouseDelta.y * sensitivity, MIN_ROT_X, MAX_ROT_X),
+			this.xRotSpring.goal = new Vector3(
+				math.clamp(this.xRotSpring.goal.x + mouseDelta.y * sensitivity, MIN_ROT_X, MAX_ROT_X),
 				0,
 				0,
 			);
-			this.yRotVelSpring.Goal = new Vector3(0, -mouseDelta.x * sensitivity, 0);
+			this.yRotVelSpring.goal = new Vector3(0, -mouseDelta.x * sensitivity, 0);
 		} else {
-			this.yRotVelSpring.Goal = new Vector3(0, 0, 0);
+			this.yRotVelSpring.goal = new Vector3(0, 0, 0);
 		}
 		this.xRot = this.xRotSpring.Update(dt).x;
 		this.yRot = (this.yRot + this.yRotVelSpring.Update(dt).y) % (math.pi * 2);

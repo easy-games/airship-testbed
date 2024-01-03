@@ -12,8 +12,8 @@ export class RecallService implements OnStart {
 		CoreServerSignals.AbilityUsed.Connect((event) => {
 			if (event.abilityId !== AbilityId.RECALL) return;
 			const entity = this.entityService.GetEntityByClientId(event.clientId);
-			if (!entity || !entity.Player) return;
-			this.bwSpawnService.TeleportPlayerToSpawn(entity.Player);
+			if (!entity || !entity.player) return;
+			this.bwSpawnService.TeleportPlayerToSpawn(entity.player);
 		});
 	}
 }

@@ -21,7 +21,7 @@ export declare class AbilityBinding {
     private active;
     private boundTo;
     private cooldownState;
-    readonly BindingStateChanged: Signal<{
+    readonly bindingStateChanged: Signal<{
         oldState: ClientAbilityState | undefined;
         newState: ClientAbilityState | undefined;
     }>;

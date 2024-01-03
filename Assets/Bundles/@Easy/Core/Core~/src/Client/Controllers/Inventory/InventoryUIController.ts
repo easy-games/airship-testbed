@@ -46,7 +46,7 @@ export class InventoryUIController implements OnStart {
 		private readonly invController: InventoryController,
 		private readonly coreUIController: CoreUIController,
 	) {
-		const go = this.coreUIController.Refs.GetValue("Apps", "Inventory");
+		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
 		this.hotbarCanvas = go.GetComponent<Canvas>();
 		this.hotbarCanvas.enabled = true;
 
@@ -106,7 +106,7 @@ export class InventoryUIController implements OnStart {
 
 	private SetupHotbar(): void {
 		for (let i = 0; i < this.hotbarSlots; i++) {
-			this.UpdateHotbarSlot(i, this.invController.LocalInventory?.GetHeldSlot() ?? 0, undefined, true);
+			this.UpdateHotbarSlot(i, this.invController.localInventory?.GetHeldSlot() ?? 0, undefined, true);
 		}
 
 		let init = false;
@@ -114,7 +114,7 @@ export class InventoryUIController implements OnStart {
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
 			invBin.Add(
-				inv.SlotChanged.Connect((slot, itemStack) => {
+				inv.slotChanged.Connect((slot, itemStack) => {
 					slotBinMap.get(slot)?.Clean();
 					if (slot < this.hotbarSlots) {
 						const slotBin = new Bin();
@@ -124,12 +124,12 @@ export class InventoryUIController implements OnStart {
 
 						if (itemStack) {
 							slotBin.Add(
-								itemStack.AmountChanged.Connect((e) => {
+								itemStack.amountChanged.Connect((e) => {
 									this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
 								}),
 							);
 							slotBin.Add(
-								itemStack.ItemTypeChanged.Connect((e) => {
+								itemStack.itemTypeChanged.Connect((e) => {
 									this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
 								}),
 							);
@@ -146,7 +146,7 @@ export class InventoryUIController implements OnStart {
 			});
 
 			invBin.Add(
-				inv.HeldSlotChanged.Connect((slot) => {
+				inv.heldSlotChanged.Connect((slot) => {
 					for (let i = 0; i < this.hotbarSlots; i++) {
 						const itemStack = inv.GetItem(i);
 						this.UpdateHotbarSlot(i, slot, itemStack);
@@ -168,15 +168,15 @@ export class InventoryUIController implements OnStart {
 		});
 
 		// Healthbar
-		Game.LocalPlayer.ObserveCharacter((entity) => {
+		Game.localPlayer.ObserveCharacter((entity) => {
 			const bin = new Bin();
 
 			if (entity === undefined) {
 				this.healthBar.SetValue(0);
-				this.healthBar.Transform.gameObject.SetActive(false);
+				this.healthBar.transform.gameObject.SetActive(false);
 				return;
 			}
-			this.healthBar.Transform.gameObject.SetActive(true);
+			this.healthBar.transform.gameObject.SetActive(true);
 			const SetFill = (newHealth: number, instant: boolean) => {
 				let fill = newHealth / entity.GetMaxHealth();
 				if (instant) {
@@ -187,7 +187,7 @@ export class InventoryUIController implements OnStart {
 			};
 			SetFill(entity.GetHealth(), false);
 			bin.Add(
-				entity.OnHealthChanged.Connect((h) => {
+				entity.onHealthChanged.Connect((h) => {
 					SetFill(h, false);
 				}),
 			);
@@ -210,7 +210,7 @@ export class InventoryUIController implements OnStart {
 			} else {
 				SetArmor(entity.GetArmor());
 				bin.Add(
-					entity.OnArmorChanged.Connect((armor) => {
+					entity.onArmorChanged.Connect((armor) => {
 						SetArmor(armor);
 					}),
 				);
@@ -315,7 +315,7 @@ export class InventoryUIController implements OnStart {
 			invBin.Clean();
 			const slotBinMap = new Map<number, Bin>();
 
-			inv.SlotChanged.Connect((slot, itemStack) => {
+			inv.slotChanged.Connect((slot, itemStack) => {
 				slotBinMap.get(slot)?.Clean();
 				const slotBin = new Bin();
 				slotBinMap.set(slot, slotBin);
@@ -325,12 +325,12 @@ export class InventoryUIController implements OnStart {
 
 				if (itemStack) {
 					slotBin.Add(
-						itemStack.AmountChanged.Connect((e) => {
+						itemStack.amountChanged.Connect((e) => {
 							this.UpdateTile(tile, itemStack);
 						}),
 					);
 					slotBin.Add(
-						itemStack.ItemTypeChanged.Connect((e) => {
+						itemStack.itemTypeChanged.Connect((e) => {
 							this.UpdateTile(tile, itemStack);
 						}),
 					);
@@ -353,13 +353,13 @@ export class InventoryUIController implements OnStart {
 					CoreUI.SetupButton(tile);
 					const button = tile.transform.GetChild(0).gameObject;
 					CanvasAPI.OnClickEvent(button, () => {
-						if (!this.invController.LocalInventory) return;
+						if (!this.invController.localInventory) return;
 
 						if (i < this.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
 								if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
-									this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+									this.invController.QuickMoveSlot(this.invController.localInventory, i);
 								}
 							} else {
 								this.invController.SetHeldSlot(i);
@@ -367,7 +367,7 @@ export class InventoryUIController implements OnStart {
 						} else {
 							// backpack
 							if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
-								this.invController.QuickMoveSlot(this.invController.LocalInventory, i);
+								this.invController.QuickMoveSlot(this.invController.localInventory, i);
 							}
 						}
 					});
@@ -376,8 +376,8 @@ export class InventoryUIController implements OnStart {
 						if (!this.IsBackpackShown()) return;
 						if (keyboard.IsKeyDown(KeyCode.LeftShift)) return;
 
-						if (!this.invController.LocalInventory) return;
-						const itemStack = this.invController.LocalInventory.GetItem(i);
+						if (!this.invController.localInventory) return;
+						const itemStack = this.invController.localInventory.GetItem(i);
 						if (!itemStack) return;
 
 						const visual = button.transform.GetChild(0).gameObject;
@@ -406,7 +406,7 @@ export class InventoryUIController implements OnStart {
 						this.draggingState = {
 							slot: i,
 							itemStack,
-							inventory: this.invController.LocalInventory,
+							inventory: this.invController.localInventory,
 							transform: cloneTransform,
 							consumed: false,
 						};
@@ -416,12 +416,12 @@ export class InventoryUIController implements OnStart {
 					CanvasAPI.OnDropEvent(tile.transform.GetChild(0).gameObject, () => {
 						if (!this.IsBackpackShown()) return;
 						if (!this.draggingState) return;
-						if (!this.invController.LocalInventory) return;
+						if (!this.invController.localInventory) return;
 
 						this.invController.MoveToSlot(
 							this.draggingState.inventory,
 							this.draggingState.slot,
-							this.invController.LocalInventory,
+							this.invController.localInventory,
 							i,
 							this.draggingState.itemStack.GetAmount(),
 						);

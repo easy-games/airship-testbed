@@ -33,10 +33,10 @@ export class LocalEntityController implements OnStart {
 	private fps?: FirstPersonCameraSystem;
 
 	/** Fires whenever the user changes their first-person state. */
-	public readonly FirstPersonChanged = new Signal<[isFirstPerson: boolean]>();
+	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
 
 	/** Fires whenever the user requests to look (or stop looking) backwards. */
-	public readonly LookBackwardsChanged = new Signal<[lookBackwards: boolean]>();
+	public readonly lookBackwardsChanged = new Signal<[lookBackwards: boolean]>();
 
 	private customDataQueue: { key: keyof DataStreamItems; value: unknown }[] = [];
 
@@ -45,7 +45,7 @@ export class LocalEntityController implements OnStart {
 	private entityInput: EntityInput | undefined;
 	private prevState: EntityState = EntityState.Idle;
 	private currentState: EntityState = EntityState.Idle;
-	public HumanoidCameraMode: HumanoidCameraMode | undefined;
+	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.LOCKED;
@@ -53,7 +53,7 @@ export class LocalEntityController implements OnStart {
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
 
-	public readonly OnCustomMoveDataProcessed = new Signal<void>();
+	public readonly onCustomMoveDataProcessed = new Signal<void>();
 
 	constructor(
 		private readonly cameraController: CameraController,
@@ -76,7 +76,7 @@ export class LocalEntityController implements OnStart {
 			this.UpdateFov();
 		};
 
-		const disconnect = this.FirstPersonChanged.Connect(onChanged);
+		const disconnect = this.firstPersonChanged.Connect(onChanged);
 		onChanged(this.firstPerson);
 
 		return () => {
@@ -94,7 +94,7 @@ export class LocalEntityController implements OnStart {
 			currentCleanup = observer(lookBackwards);
 		};
 
-		const disconnect = this.LookBackwardsChanged.Connect(onChanged);
+		const disconnect = this.lookBackwardsChanged.Connect(onChanged);
 		onChanged(this.lookBackwards);
 
 		return () => {
@@ -118,7 +118,7 @@ export class LocalEntityController implements OnStart {
 		this.entityDriver?.SetCustomData(blob);
 
 		if (onProcessedCallback !== undefined) {
-			this.OnCustomMoveDataProcessed.Once(onProcessedCallback);
+			this.onCustomMoveDataProcessed.Once(onProcessedCallback);
 		}
 	}
 
@@ -135,17 +135,17 @@ export class LocalEntityController implements OnStart {
 			this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize);
 		} else {
 			this.screenshot.TakeCameraScreenshot(
-				this.cameraController.CameraSystem.GetActiveCamera(),
+				this.cameraController.cameraSystem.GetActiveCamera(),
 				screenshotFilename,
 				superSampleSize,
 			);
 		}
 		if (supersample && !showUI) {
-			Game.LocalPlayer.SendMessage(
-				ColorUtil.ColoredText(Theme.Red, "HD withoutout UI is currently not supported"),
+			Game.localPlayer.SendMessage(
+				ColorUtil.ColoredText(Theme.red, "HD withoutout UI is currently not supported"),
 			);
 		}
-		Game.LocalPlayer.SendMessage(ColorUtil.ColoredText(Theme.Yellow, `Captured screenshot ${screenshotFilename}`));
+		Game.localPlayer.SendMessage(ColorUtil.ColoredText(Theme.yellow, `Captured screenshot ${screenshotFilename}`));
 	}
 
 	private GetCamYOffset(state: EntityState, isFirstPerson: boolean) {
@@ -161,18 +161,18 @@ export class LocalEntityController implements OnStart {
 	private CreateHumanoidCameraMode(entity: Entity): HumanoidCameraMode {
 		const state = this.entityDriver?.GetState() ?? EntityState.Idle;
 		const yOffset = this.GetCamYOffset(state, this.firstPerson);
-		this.HumanoidCameraMode = new HumanoidCameraMode(entity.GameObject, entity.Model, this.firstPerson, yOffset);
-		this.HumanoidCameraMode.SetLookBackwards(this.lookBackwards);
-		this.HumanoidCameraMode.SetFirstPerson(this.firstPerson);
-		return this.HumanoidCameraMode;
+		this.humanoidCameraMode = new HumanoidCameraMode(entity.gameObject, entity.model, this.firstPerson, yOffset);
+		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
+		this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
+		return this.humanoidCameraMode;
 	}
 
 	private CreateOrbitCameraMode(entity: Entity): OrbitCameraMode {
-		return new OrbitCameraMode(6, entity.GameObject.transform, entity.Model.transform);
+		return new OrbitCameraMode(6, entity.gameObject.transform, entity.model.transform);
 	}
 
 	OnStart() {
-		Game.LocalPlayer.ObserveCharacter((entity) => {
+		Game.localPlayer.ObserveCharacter((entity) => {
 			if (!entity) return;
 
 			const isFirstSpawn = this.firstSpawn;
@@ -184,14 +184,14 @@ export class LocalEntityController implements OnStart {
 				this.firstPerson = this.defaultFirstPerson;
 			}
 
-			this.entityDriver = entity.GameObject.GetComponent<EntityDriver>();
+			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
 			this.entityInput = new EntityInput(entity);
 
-			this.screenshot = entity.GameObject.AddComponent<CameraScreenshotRecorder>();
+			this.screenshot = entity.gameObject.AddComponent<CameraScreenshotRecorder>();
 
 			const customDataFlushedConn = this.entityDriver.OnCustomDataFlushed(() => {
 				this.customDataQueue.clear();
-				this.OnCustomMoveDataProcessed.Fire();
+				this.onCustomMoveDataProcessed.Fire();
 			});
 			bin.Add(() => {
 				Bridge.DisconnectEvent(customDataFlushedConn);
@@ -200,28 +200,28 @@ export class LocalEntityController implements OnStart {
 			// Set up camera
 			if (this.characterCameraMode === CharacterCameraMode.LOCKED) {
 				this.cameraController.SetMode(this.CreateHumanoidCameraMode(entity));
-				this.cameraController.CameraSystem.SetOnClearCallback(() => this.CreateHumanoidCameraMode(entity));
+				this.cameraController.cameraSystem.SetOnClearCallback(() => this.CreateHumanoidCameraMode(entity));
 			} else if (this.characterCameraMode === CharacterCameraMode.ORBIT) {
 				this.cameraController.SetMode(this.CreateOrbitCameraMode(entity));
-				this.cameraController.CameraSystem.SetOnClearCallback(() => this.CreateOrbitCameraMode(entity));
+				this.cameraController.cameraSystem.SetOnClearCallback(() => this.CreateOrbitCameraMode(entity));
 			}
 
-			this.FirstPersonChanged.Connect((isFirstPerson) => {
-				this.HumanoidCameraMode?.SetYOffset(
+			this.firstPersonChanged.Connect((isFirstPerson) => {
+				this.humanoidCameraMode?.SetYOffset(
 					this.GetCamYOffset(this.entityDriver?.GetState() ?? EntityState.Idle, isFirstPerson),
 					true,
 				);
 			});
 
 			//Set up first person camera
-			this.fps = new FirstPersonCameraSystem(entity, entity.References, this.firstPerson);
+			this.fps = new FirstPersonCameraSystem(entity, entity.references, this.firstPerson);
 
 			const stateChangedConn = this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
 					this.prevState = this.currentState;
 					this.currentState = state;
 				}
-				this.HumanoidCameraMode?.SetYOffset(this.GetCamYOffset(state, this.firstPerson));
+				this.humanoidCameraMode?.SetYOffset(this.GetCamYOffset(state, this.firstPerson));
 				this.UpdateFov();
 				this.fps?.OnMovementStateChange(state);
 				if (this.sprintOverlayEmission) {
@@ -254,7 +254,7 @@ export class LocalEntityController implements OnStart {
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
 				if (event.uiProcessed) return;
-				if (this.cameraController.CameraSystem.GetMode() === this.HumanoidCameraMode) {
+				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.ToggleFirstPerson();
 				}
 			});
@@ -304,7 +304,7 @@ export class LocalEntityController implements OnStart {
 			// Toggle look backwards:
 			keyboard.OnKeyDown(KeyCode.H, (event) => {
 				if (event.uiProcessed) return;
-				if (this.cameraController.CameraSystem.GetMode() === this.HumanoidCameraMode) {
+				if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
 					this.SetLookBackwards(!this.lookBackwards);
 				}
 			});
@@ -321,13 +321,13 @@ export class LocalEntityController implements OnStart {
 				if (event.uiProcessed) return;
 				print("-----");
 				for (const entity of Dependency<EntityController>().GetEntities()) {
-					print(entity.GetDisplayName() + ": " + entity.Id);
+					print(entity.GetDisplayName() + ": " + entity.id);
 				}
 				print("-----");
 				// TEST: Knock-back:
 				Task.Spawn(() => {
 					const sentTick = InstanceFinder.TimeManager.Tick;
-					const halfWay = CoreNetwork.ClientToServer.TEST_LATENCY.Client.FireServer();
+					const halfWay = CoreNetwork.ClientToServer.TEST_LATENCY.client.FireServer();
 					const endTick = InstanceFinder.TimeManager.Tick;
 					print(
 						"Round trip: " +
@@ -341,7 +341,7 @@ export class LocalEntityController implements OnStart {
 			});
 
 			keyboard.OnKeyDown(KeyCode.Semicolon, (event) => {
-				CoreNetwork.ClientToServer.TestKnockback2.Client.FireServer();
+				CoreNetwork.ClientToServer.TestKnockback2.client.FireServer();
 			});
 
 			//Libonati Test Space - DONT COMMIT
@@ -352,13 +352,13 @@ export class LocalEntityController implements OnStart {
 
 			// Cleanup:
 			bin.Add(() => {
-				this.cameraController.CameraSystem.SetOnClearCallback(undefined);
+				this.cameraController.cameraSystem.SetOnClearCallback(undefined);
 				this.cameraController.ClearMode();
 				this.fps?.Destroy();
 				this.entityInput?.Destroy();
 			});
 
-			entity.OnDeath.Connect(() => {
+			entity.onDeath.Connect(() => {
 				bin.Clean();
 			});
 
@@ -383,8 +383,8 @@ export class LocalEntityController implements OnStart {
 	public SetCharacterCameraMode(mode: CharacterCameraMode): void {
 		this.characterCameraMode = mode;
 
-		if (Game.LocalPlayer.Character) {
-			const entity = Game.LocalPlayer.Character;
+		if (Game.localPlayer.character) {
+			const entity = Game.localPlayer.character;
 			if (mode === CharacterCameraMode.LOCKED) {
 				this.cameraController.SetMode(this.CreateHumanoidCameraMode(entity));
 			} else if (mode === CharacterCameraMode.ORBIT) {
@@ -413,10 +413,10 @@ export class LocalEntityController implements OnStart {
 	private SetLookBackwards(lookBackwards: boolean) {
 		if (this.lookBackwards === lookBackwards) return;
 		this.lookBackwards = lookBackwards;
-		this.LookBackwardsChanged.Fire(this.lookBackwards);
+		this.lookBackwardsChanged.Fire(this.lookBackwards);
 
-		if (this.cameraController.CameraSystem.GetMode() === this.HumanoidCameraMode) {
-			this.HumanoidCameraMode.SetLookBackwards(this.lookBackwards);
+		if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+			this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
 		}
 	}
 
@@ -430,10 +430,10 @@ export class LocalEntityController implements OnStart {
 		}
 
 		this.firstPerson = value;
-		this.FirstPersonChanged.Fire(this.firstPerson);
+		this.firstPersonChanged.Fire(this.firstPerson);
 
-		if (this.cameraController.CameraSystem.GetMode() === this.HumanoidCameraMode) {
-			this.HumanoidCameraMode.SetFirstPerson(this.firstPerson);
+		if (this.cameraController.cameraSystem.GetMode() === this.humanoidCameraMode) {
+			this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
 		}
 		this.fps?.OnFirstPersonChanged(this.firstPerson);
 	}

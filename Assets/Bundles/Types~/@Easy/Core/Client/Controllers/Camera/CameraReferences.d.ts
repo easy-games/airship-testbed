@@ -2,12 +2,12 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 export declare class CameraReferences {
-    private static _instance;
+    private static instances;
     static Instance(): CameraReferences;
     private mouse;
-    readonly MainCamera: Camera;
-    readonly FpsCamera: Camera;
-    readonly UiCamera: Camera;
+    readonly mainCamera: Camera;
+    readonly fpsCamera: Camera;
+    readonly uiCamera: Camera;
     constructor();
     /**
      *

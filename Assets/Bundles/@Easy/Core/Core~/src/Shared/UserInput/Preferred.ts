@@ -10,16 +10,16 @@ export class Preferred {
 	private readonly preferredDriver = PreferredDriver.Instance();
 
 	/** A signal that fires every time the currently-used control scheme changes. */
-	public readonly ControlSchemeChanged = new Signal<[controlScheme: ControlScheme]>();
+	public readonly controlSchemeChanged = new Signal<[controlScheme: ControlScheme]>();
 
 	private controlScheme: ControlScheme;
 
 	constructor() {
-		this.bin.Add(this.ControlSchemeChanged);
+		this.bin.Add(this.controlSchemeChanged);
 		this.controlScheme = this.preferredDriver.GetScheme() as ControlScheme;
-		this.bin.Connect(this.preferredDriver.SchemeChanged, (scheme) => {
+		this.bin.Connect(this.preferredDriver.schemeChanged, (scheme) => {
 			this.controlScheme = scheme as ControlScheme;
-			this.ControlSchemeChanged.Fire(this.controlScheme);
+			this.controlSchemeChanged.Fire(this.controlScheme);
 		});
 	}
 
@@ -58,7 +58,7 @@ export class Preferred {
 	public ObserveControlScheme(observer: (preferred: ControlScheme) => CleanupFunc): () => void {
 		let cleanup: CleanupFunc;
 		cleanup = observer(this.controlScheme);
-		const disconnectChanged = this.ControlSchemeChanged.Connect((controlScheme) => {
+		const disconnectChanged = this.controlSchemeChanged.Connect((controlScheme) => {
 			cleanup?.();
 			cleanup = observer(controlScheme);
 		});

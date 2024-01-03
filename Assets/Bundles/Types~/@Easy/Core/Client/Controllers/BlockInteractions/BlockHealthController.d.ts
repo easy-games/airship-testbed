@@ -9,7 +9,7 @@ export declare class BlockHealthController implements OnStart {
     private readonly blockSelectController;
     private readonly entityController;
     private blockHealthBars;
-    HealthbarExpireTime: number;
+    healthbarExpireTime: number;
     constructor(invController: InventoryController, blockSelectController: BlockSelectController, entityController: EntityController);
     OnStart(): void;
     VisualizeBlockHealth(blockPos: Vector3, damage: number, showHealthbar?: boolean): number | undefined;

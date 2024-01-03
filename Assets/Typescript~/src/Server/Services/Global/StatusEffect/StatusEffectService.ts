@@ -20,7 +20,7 @@ export class StatusEffectService implements OnStart {
 		// status effect snapshot.
 		ServerSignals.PlayerJoin.Connect((event) => {
 			if (!this.matchService.IsRunning()) return;
-			Network.ServerToClient.StatusEffectSnapshot.Server.FireClient(
+			Network.ServerToClient.StatusEffectSnapshot.server.FireClient(
 				event.player.clientId,
 				this.EncodeStatusEffects(),
 			);
@@ -33,7 +33,7 @@ export class StatusEffectService implements OnStart {
 		// TODO: Do we want to make this configurable?
 		ServerSignals.EntityDeath.Connect((event) => {
 			if (event.entity instanceof CharacterEntity) {
-				this.RemoveAllStatusEffectsFromClient(event.entity.ClientId!);
+				this.RemoveAllStatusEffectsFromClient(event.entity.clientId!);
 			}
 		});
 	}
@@ -72,7 +72,7 @@ export class StatusEffectService implements OnStart {
 				statusEffects.push(statusEffectDto);
 			}
 		}
-		Network.ServerToClient.StatusEffectAdded.Server.FireAllClients(clientId, statusEffect, tier);
+		Network.ServerToClient.StatusEffectAdded.server.FireAllClients(clientId, statusEffect, tier);
 		ServerSignals.StatusEffectAdded.Fire(clientId, statusEffect, tier);
 		return true;
 	}
@@ -93,7 +93,7 @@ export class StatusEffectService implements OnStart {
 		if (!existingStatusEffect) return false;
 		const updatedStatusEffects = statusEffects.filter((effect) => effect.statusEffectType !== statusEffect);
 		this.statusEffectMap.set(clientId, updatedStatusEffects);
-		Network.ServerToClient.StatusEffectRemoved.Server.FireAllClients(clientId, statusEffect);
+		Network.ServerToClient.StatusEffectRemoved.server.FireAllClients(clientId, statusEffect);
 		ServerSignals.StatusEffectRemoved.Fire(clientId, statusEffect);
 		return true;
 	}

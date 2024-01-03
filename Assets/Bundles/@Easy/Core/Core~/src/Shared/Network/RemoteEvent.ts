@@ -56,12 +56,12 @@ class RemoteEventClient<T extends unknown[] | unknown> {
 }
 
 export class RemoteEvent<T extends unknown[] | unknown> {
-	public readonly Server: RemoteEventServer<T>;
-	public readonly Client: RemoteEventClient<T>;
+	public readonly server: RemoteEventServer<T>;
+	public readonly client: RemoteEventClient<T>;
 
 	constructor(channel: NetworkChannel = NetworkChannel.Reliable) {
 		const id = ID_COUNTER++;
-		this.Server = new RemoteEventServer(id, channel);
-		this.Client = new RemoteEventClient(id, channel);
+		this.server = new RemoteEventServer(id, channel);
+		this.client = new RemoteEventClient(id, channel);
 	}
 }

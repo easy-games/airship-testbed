@@ -1,15 +1,15 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
 
 export class AvatarUtil {
-	public static readonly DefaultAccessoryCollectionPath =
+	public static readonly defaultAccessoryCollectionPath =
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
 	private static readonly avatarAccessories = new Map<AccessorySlot, Accessory[]>();
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
-	public static DefaultKitAccessory: AccessoryCollection | undefined;
+	public static defaultKitAccessory: AccessoryCollection | undefined;
 
-	public static readonly SkinColors = [
+	public static readonly skinColors = [
 		//Natural
 		ColorUtil.HexToColor("#edcdad"),
 		ColorUtil.HexToColor("#f2c291"),
@@ -30,8 +30,8 @@ export class AvatarUtil {
 	];
 
 	public static Initialize() {
-		AvatarUtil.DefaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
-			AvatarUtil.DefaultAccessoryCollectionPath,
+		AvatarUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
+			AvatarUtil.defaultAccessoryCollectionPath,
 		);
 		//print("Init kit: " + AvatarUtil.defaultKitAccessory?.name);
 

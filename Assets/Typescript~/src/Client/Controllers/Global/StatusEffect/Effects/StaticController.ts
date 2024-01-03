@@ -16,7 +16,7 @@ export class StaticController implements OnStart {
 				event.fromEntity instanceof CharacterEntity &&
 				event.damageType === DamageType.ELECTRIC &&
 				this.statusEffectController.GetStatusEffectForClient(
-					event.fromEntity.ClientId!,
+					event.fromEntity.clientId!,
 					StatusEffectType.STATIC,
 				)
 			) {

@@ -16,7 +16,7 @@ import { TeamUpgradeUtil } from "Shared/TeamUpgrade/TeamUpgradeUtil";
 
 @Controller({})
 export class TeamUpgradeController implements OnStart {
-	public LocalUpgradeMap = new Map<TeamUpgradeType, TeamUpgradeStateDto>();
+	public localUpgradeMap = new Map<TeamUpgradeType, TeamUpgradeStateDto>();
 	private canvas: Canvas;
 	private content: Transform;
 	constructor() {
@@ -39,10 +39,10 @@ export class TeamUpgradeController implements OnStart {
 			const teamUpgradeMeta = TeamUpgradeUtil.GetTeamUpgradeMeta(upgradeType);
 			const dto: TeamUpgradeStateDto = {
 				teamUpgrade: teamUpgradeMeta,
-				teamId: Game.LocalPlayer.GetTeam()?.id ?? "0",
+				teamId: Game.localPlayer.GetTeam()?.id ?? "0",
 				currentUpgradeTier: 0,
 			};
-			this.LocalUpgradeMap.set(upgradeType, dto);
+			this.localUpgradeMap.set(upgradeType, dto);
 
 			this.UpdateCard(upgradeType, true);
 
@@ -52,17 +52,17 @@ export class TeamUpgradeController implements OnStart {
 
 	OnStart(): void {
 		/* Sync up existing server state, if applicable. */
-		Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.Client.OnServerEvent((dtos) => {
+		Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.client.OnServerEvent((dtos) => {
 			dtos.forEach((dto) => {
 				this.HandleUpgradeStateChange(dto.teamUpgrade.type, dto.currentUpgradeTier);
 			});
 		});
 		/* Handle incoming team upgrade state change. */
-		Network.ServerToClient.TeamUpgrade.UpgradeProcessed.Client.OnServerEvent(
+		Network.ServerToClient.TeamUpgrade.UpgradeProcessed.client.OnServerEvent(
 			(purchaserClientId, upgradeType, tier) => {
 				this.HandleUpgradeStateChange(upgradeType, tier);
 
-				if (purchaserClientId !== Game.LocalPlayer.clientId) {
+				if (purchaserClientId !== Game.localPlayer.clientId) {
 					AudioManager.PlayGlobal(CoreSound.purchaseSuccess, {
 						volumeScale: 0.3,
 					});
@@ -74,7 +74,7 @@ export class TeamUpgradeController implements OnStart {
 	/** Updates team upgrade interface to reflect an incoming state change. */
 	private HandleUpgradeStateChange(upgradeType: TeamUpgradeType, tier: number): void {
 		// Update local client state.
-		const state = this.LocalUpgradeMap.get(upgradeType);
+		const state = this.localUpgradeMap.get(upgradeType);
 		if (state) {
 			state.currentUpgradeTier = tier;
 		}
@@ -93,7 +93,7 @@ export class TeamUpgradeController implements OnStart {
 
 	/** Initializes interface `VisualElement` that corresponds to type. */
 	private UpdateCard(upgradeType: TeamUpgradeType, init = false): void {
-		const state = this.LocalUpgradeMap.get(upgradeType);
+		const state = this.localUpgradeMap.get(upgradeType);
 		const tier = state?.currentUpgradeTier ?? 0;
 
 		const card = this.GetUpgradeCard(upgradeType);
@@ -157,10 +157,9 @@ export class TeamUpgradeController implements OnStart {
 			let canPurchase = false;
 			if (tier < upgradeMeta.tiers.size()) {
 				if (
-					Game.LocalPlayer.Character?.GetInventory().HasEnough(
-						upgradeMeta.tiers[tier].currency,
-						upgradeMeta.tiers[tier].cost,
-					)
+					Game.localPlayer.character
+						?.GetInventory()
+						.HasEnough(upgradeMeta.tiers[tier].currency, upgradeMeta.tiers[tier].cost)
 				) {
 					canPurchase = true;
 				}
@@ -180,10 +179,10 @@ export class TeamUpgradeController implements OnStart {
 		if (init) {
 			CoreUI.SetupButton(buttonGO);
 			CanvasAPI.OnClickEvent(buttonGO, () => {
-				const currentTier = this.LocalUpgradeMap.get(upgradeType)?.currentUpgradeTier;
+				const currentTier = this.localUpgradeMap.get(upgradeType)?.currentUpgradeTier;
 				if (currentTier !== undefined) {
 					const nextTier = currentTier + 1;
-					const result = Network.ClientToServer.TeamUpgrade.UpgradeRequest.Client.FireServer(
+					const result = Network.ClientToServer.TeamUpgrade.UpgradeRequest.client.FireServer(
 						upgradeType,
 						nextTier,
 					);
@@ -201,19 +200,19 @@ export class TeamUpgradeController implements OnStart {
 		this.UpdateUI();
 
 		const bin = new Bin();
-		const inv = Game.LocalPlayer.Character?.GetInventory();
+		const inv = Game.localPlayer.character?.GetInventory();
 		if (inv) {
-			inv.Changed.Connect(() => {
+			inv.changed.Connect(() => {
 				this.UpdateUI();
 			});
 		}
 
-		if (Game.LocalPlayer.Character) {
-			const startingPos = Game.LocalPlayer.Character.Model.transform.position;
+		if (Game.localPlayer.character) {
+			const startingPos = Game.localPlayer.character.model.transform.position;
 			bin.Add(
 				SetInterval(0.1, () => {
-					if (Game.LocalPlayer.Character) {
-						if (startingPos.sub(Game.LocalPlayer.Character.Model.transform.position).magnitude >= 1) {
+					if (Game.localPlayer.character) {
+						if (startingPos.sub(Game.localPlayer.character.model.transform.position).magnitude >= 1) {
 							AppManager.Close();
 						}
 					}

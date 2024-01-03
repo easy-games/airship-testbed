@@ -9,5 +9,5 @@ export class BedWars {
 		return scene.lower().find("bwmatchscene")[0] !== undefined;
 	}
 
-	public static GameId = "6536ee084c9987573c3a3c03";
+	public static gameId = "6536ee084c9987573c3a3c03";
 }

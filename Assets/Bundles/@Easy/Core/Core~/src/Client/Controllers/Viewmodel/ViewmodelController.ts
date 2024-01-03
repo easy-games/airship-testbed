@@ -2,11 +2,11 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 
 @Controller({})
 export class ViewmodelController implements OnStart {
-	public readonly ViewmodelGo: GameObject;
-	public readonly ViewmodelTransform: Transform;
-	public readonly Animancer: AnimancerComponent;
-	public readonly AccessoryBuilder: AccessoryBuilder;
-	public readonly BoneTransforms: {
+	public readonly viewmodelGo: GameObject;
+	public readonly viewmodelTransform: Transform;
+	public readonly animancer: AnimancerComponent;
+	public readonly accessoryBuilder: AccessoryBuilder;
+	public readonly boneTransforms: {
 		spineMiddle: Transform;
 	};
 
@@ -17,17 +17,17 @@ export class ViewmodelController implements OnStart {
 	// private layer4: AnimancerLayer;
 
 	constructor() {
-		this.ViewmodelGo = Object.Instantiate(
+		this.viewmodelGo = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanViewmodel.prefab"),
 		) as GameObject;
-		this.ViewmodelTransform = this.ViewmodelGo.transform;
+		this.viewmodelTransform = this.viewmodelGo.transform;
 
-		const content = this.ViewmodelTransform.GetChild(0).gameObject;
-		this.Animancer = content.GetComponent<AnimancerComponent>();
-		this.AccessoryBuilder = content.GetComponent<AccessoryBuilder>();
+		const content = this.viewmodelTransform.GetChild(0).gameObject;
+		this.animancer = content.GetComponent<AnimancerComponent>();
+		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>();
 
 		const refs = content.GetComponent<GameObjectReferences>();
-		this.BoneTransforms = {
+		this.boneTransforms = {
 			spineMiddle: refs.GetValue("Bones", "SpineMiddle"),
 		};
 

@@ -7,16 +7,16 @@ import { TouchscreenDriver } from "./TouchscreenDriver";
 const PINCH_DOT_THRESHOLD = -0.8;
 
 class OneFingerGestureCapture {
-	public readonly Pan = new Signal<[position: Vector3, phase: TouchPhase]>();
+	public readonly pan = new Signal<[position: Vector3, phase: TouchPhase]>();
 
 	constructor() {}
 
 	public Update(position: Vector3, phase: TouchPhase) {
-		this.Pan.Fire(position, phase);
+		this.pan.Fire(position, phase);
 	}
 
 	public Destroy() {
-		this.Pan.Destroy();
+		this.pan.Destroy();
 	}
 }
 
@@ -24,7 +24,7 @@ class TwoFingerGestureCapture {
 	private readonly centerStart: Vector3;
 	private readonly startDistance: number;
 
-	public readonly Pinch = new Signal<[distance: number, scale: number, phase: TouchPhase]>();
+	public readonly pinch = new Signal<[distance: number, scale: number, phase: TouchPhase]>();
 
 	private pinching = false;
 	private lastPinchDistance = 0;
@@ -50,21 +50,21 @@ class TwoFingerGestureCapture {
 			const scale = distanceBetween / this.startDistance;
 			this.lastPinchDistance = distance;
 			this.lastPinchScale = scale;
-			this.Pinch.Fire(distance, scale, started ? TouchPhase.Began : TouchPhase.Moved);
+			this.pinch.Fire(distance, scale, started ? TouchPhase.Began : TouchPhase.Moved);
 		} else {
 			// Bad pinch
 			if (this.pinching) {
 				this.pinching = false;
-				this.Pinch.Fire(this.lastPinchDistance, this.lastPinchScale, TouchPhase.Ended);
+				this.pinch.Fire(this.lastPinchDistance, this.lastPinchScale, TouchPhase.Ended);
 			}
 		}
 	}
 
 	public Destroy() {
 		if (this.pinching) {
-			this.Pinch.Fire(this.lastPinchDistance, this.lastPinchScale, TouchPhase.Ended);
+			this.pinch.Fire(this.lastPinchDistance, this.lastPinchScale, TouchPhase.Ended);
 		}
-		this.Pinch.Destroy();
+		this.pinch.Destroy();
 	}
 }
 
@@ -72,8 +72,8 @@ export class GestureDriver {
 	private readonly bin = new Bin();
 	private readonly touchscreenDriver = TouchscreenDriver.Instance();
 
-	public readonly Pan = new Signal<[position: Vector3, phase: TouchPhase]>();
-	public readonly Pinch = new Signal<[distance: number, scale: number, phase: TouchPhase]>();
+	public readonly pan = new Signal<[position: Vector3, phase: TouchPhase]>();
+	public readonly pinch = new Signal<[distance: number, scale: number, phase: TouchPhase]>();
 
 	private readonly positions = new Map<number, Vector3>();
 
@@ -81,10 +81,10 @@ export class GestureDriver {
 	private twoFingerGestureCapture?: TwoFingerGestureCapture;
 
 	constructor() {
-		this.bin.Add(this.Pan);
-		this.bin.Add(this.Pinch);
+		this.bin.Add(this.pan);
+		this.bin.Add(this.pinch);
 
-		this.bin.Connect(this.touchscreenDriver.Touch, (touchIndex, position, phase) => {
+		this.bin.Connect(this.touchscreenDriver.touch, (touchIndex, position, phase) => {
 			switch (phase) {
 				case TouchPhase.Began:
 				case TouchPhase.Moved:
@@ -92,7 +92,7 @@ export class GestureDriver {
 					if (touchIndex === 0 && this.hasOneTouching()) {
 						if (this.oneFingerGestureCapture === undefined) {
 							this.oneFingerGestureCapture = new OneFingerGestureCapture();
-							this.oneFingerGestureCapture.Pan.Proxy(this.Pan);
+							this.oneFingerGestureCapture.pan.Proxy(this.pan);
 						}
 						this.oneFingerGestureCapture.Update(position, phase);
 					} else if ((touchIndex === 0 || touchIndex === 1) && this.hasTwoTouching()) {
@@ -100,7 +100,7 @@ export class GestureDriver {
 						const secondary = this.positions.get(1)!;
 						if (this.twoFingerGestureCapture === undefined) {
 							this.twoFingerGestureCapture = new TwoFingerGestureCapture(primary, secondary);
-							this.twoFingerGestureCapture.Pinch.Proxy(this.Pinch);
+							this.twoFingerGestureCapture.pinch.Proxy(this.pinch);
 						}
 						this.twoFingerGestureCapture.Update(primary, secondary);
 					}

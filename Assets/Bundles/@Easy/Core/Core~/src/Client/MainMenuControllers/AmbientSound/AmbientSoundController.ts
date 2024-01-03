@@ -3,17 +3,17 @@ import { ClientSettingsController } from "../Settings/ClientSettingsController";
 
 @Controller({})
 export class AmbientSoundController implements OnStart {
-	public AmbientSource: AudioSource;
-	public MusicSource: AudioSource;
+	public ambientSource: AudioSource;
+	public musicSource: AudioSource;
 
 	constructor(private clientSettingsController: ClientSettingsController) {
 		const ambientSoundGo = GameObject.Create("AmbientSound");
-		this.AmbientSource = ambientSoundGo.AddComponent("AudioSource") as AudioSource;
-		this.AmbientSource.volume = 0;
+		this.ambientSource = ambientSoundGo.AddComponent("AudioSource") as AudioSource;
+		this.ambientSource.volume = 0;
 
 		const musicGo = GameObject.Create("Music");
-		this.MusicSource = musicGo.AddComponent("AudioSource") as AudioSource;
-		this.MusicSource.volume = 0;
+		this.musicSource = musicGo.AddComponent("AudioSource") as AudioSource;
+		this.musicSource.volume = 0;
 	}
 
 	OnStart(): void {
@@ -24,10 +24,10 @@ export class AmbientSoundController implements OnStart {
 	}
 
 	public SetAmbientVolume(val: number): void {
-		this.AmbientSource.volume = val;
+		this.ambientSource.volume = val;
 	}
 
 	public SetMusicVolume(val: number): void {
-		this.MusicSource.volume = val;
+		this.musicSource.volume = val;
 	}
 }

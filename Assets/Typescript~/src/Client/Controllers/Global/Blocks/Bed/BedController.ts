@@ -12,13 +12,13 @@ import { PrefabBlockManager } from "@Easy/Core/Shared/VoxelWorld/PrefabBlockMana
 export class BedController implements OnStart {
 	OnStart(): void {
 		CoreClientSignals.BlockPlace.Connect((event) => {
-			if (event.block.ItemType === ItemType.BED) {
+			if (event.block.itemType === ItemType.BED) {
 				const go = PrefabBlockManager.Get().GetBlockGameObject(event.pos);
 				if (go) {
 					const teamId = BlockDataAPI.GetBlockData<string>(event.pos, "teamId");
 					if (teamId) {
 						const team = Dependency<TeamController>().GetTeam(teamId);
-						const teamColor = team?.color ?? Theme.White;
+						const teamColor = team?.color ?? Theme.white;
 
 						const colorSetters = go.GetComponentsInChildren<MaterialColor>();
 						for (let i = 0; i < colorSetters.Length; i++) {

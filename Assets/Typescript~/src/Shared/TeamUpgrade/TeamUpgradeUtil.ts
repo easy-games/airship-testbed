@@ -62,7 +62,7 @@ export class TeamUpgradeUtil {
 		player: Player,
 	): TeamUpgradeStateDto | undefined {
 		if (RunUtil.IsClient()) {
-			return Dependency<TeamUpgradeController>().LocalUpgradeMap.get(upgradeType);
+			return Dependency<TeamUpgradeController>().localUpgradeMap.get(upgradeType);
 		} else {
 			return Dependency<TeamUpgradeService>().GetUpgradeStateForPlayer(player, upgradeType);
 		}
