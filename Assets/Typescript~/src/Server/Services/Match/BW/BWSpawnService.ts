@@ -83,10 +83,10 @@ export class BWSpawnService implements OnStart {
 			// Listen for entity death, respawn if applicable.
 			CoreServerSignals.EntityDeath.ConnectWithPriority(SignalPriority.MONITOR, (event) => {
 				if (!this.matchService.IsRunning()) return;
-				if (event.entity instanceof CharacterEntity && !this.bwService.WinnerDeclared) {
+				if (event.entity instanceof CharacterEntity && !this.bwService.winnerDeclared) {
 					Task.Delay(event.respawnTime, () => {
-						if (event.entity.Player && !this.bwService.IsPlayerEliminated(event.entity.Player)) {
-							this.SpawnPlayer(event.entity.Player);
+						if (event.entity.player && !this.bwService.IsPlayerEliminated(event.entity.player)) {
+							this.SpawnPlayer(event.entity.player);
 						}
 					});
 				}
@@ -109,7 +109,7 @@ export class BWSpawnService implements OnStart {
 					const pos = teamSpawnPosition.position.add(new Vector3(0, 0.2, 0));
 					event.spawnPosition = pos;
 					event.spawnRotation = teamSpawnPosition.rotation;
-					event.player.Character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
+					event.player.character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
 				}
 			}
 		});
@@ -128,7 +128,7 @@ export class BWSpawnService implements OnStart {
 		const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 		if (teamSpawnPosition) {
 			const pos = teamSpawnPosition.position.add(new Vector3(0, 0.2, 0));
-			player.Character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
+			player.character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
 		}
 	}
 }

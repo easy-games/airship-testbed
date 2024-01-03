@@ -31,10 +31,10 @@ export class PreGameService implements OnStart {
 		CoreServerSignals.EntityDeath.Connect((event) => {
 			event.respawnTime = 0;
 			Task.Delay(0, () => {
-				if (this.matchService.GetState() === MatchState.PRE && event.entity.Player) {
-					print(event.entity.Player.IsConnected());
+				if (this.matchService.GetState() === MatchState.PRE && event.entity.player) {
+					print(event.entity.player.IsConnected());
 					const entity = Dependency<EntityService>().SpawnPlayerEntity(
-						event.entity.Player,
+						event.entity.player,
 						EntityPrefabType.HUMAN,
 					);
 					entity.AddHealthbar();

@@ -10,7 +10,7 @@ export class LobbyCommand extends ChatCommand {
 	}
 
 	override Execute(player: Player, args: string[]): void {
-		Dependency<TransferService>().TransferToGame(player, BedWars.GameId, {
+		Dependency<TransferService>().TransferToGame(player, BedWars.gameId, {
 			startSceneId: "BWLobbyScene",
 		});
 	}

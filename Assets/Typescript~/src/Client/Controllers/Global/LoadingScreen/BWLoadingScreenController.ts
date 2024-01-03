@@ -22,7 +22,7 @@ export class BWLoadingScreenController implements OnStart {
 
 		if (!world.IsFinishedReplicatingChunksFromServer()) {
 			const startTime = os.clock();
-			world.OnFinishedReplicatingChunksFromServer.Connect(() => {
+			world.onFinishedReplicatingChunksFromServer.Connect(() => {
 				const timeSpent = os.clock() - startTime;
 				print("Time spent building world: " + math.floor(timeSpent * 1000) + "ms");
 				this.CheckCharacter();
@@ -33,11 +33,11 @@ export class BWLoadingScreenController implements OnStart {
 	}
 
 	private CheckCharacter(): void {
-		if (BedWars.IsMatchMode() && Dependency<MatchController>().Eliminated) {
+		if (BedWars.IsMatchMode() && Dependency<MatchController>().eliminated) {
 			this.loadingScreenController.FinishLoading();
 			return;
 		}
-		if (Game.LocalPlayer.Character) {
+		if (Game.localPlayer.character) {
 			this.loadingScreenController.FinishLoading();
 		} else {
 			const startTime = os.clock();
@@ -55,7 +55,7 @@ export class BWLoadingScreenController implements OnStart {
 			);
 			if (BedWars.IsMatchMode())
 				bin.Add(
-					Dependency<MatchController>().OnEliminated.Connect(() => {
+					Dependency<MatchController>().onEliminated.Connect(() => {
 						bin.Clean();
 						this.loadingScreenController.FinishLoading();
 					}),

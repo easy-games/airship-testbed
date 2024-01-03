@@ -28,7 +28,7 @@ export class BWMatchHudController implements OnStart {
 			this.UpdateTeam(team, go.gameObject, undefined);
 			i++;
 		}
-		this.teamController.OnTeamAdded.Connect((team) => {
+		this.teamController.onTeamAdded.Connect((team) => {
 			const go = teamsWrapperGo.GetChild(i);
 			go.name = team.id;
 			this.UpdateTeam(team, go.gameObject, undefined);
@@ -36,7 +36,7 @@ export class BWMatchHudController implements OnStart {
 		});
 		Bridge.UpdateLayout(teamsWrapperGo.transform, false);
 
-		Network.ServerToClient.UpdateHud.Client.OnServerEvent((event) => {
+		Network.ServerToClient.UpdateHud.client.OnServerEvent((event) => {
 			if (event.teamUpdates) {
 				for (const teamStats of event.teamUpdates) {
 					const team = this.teamController.GetTeam(teamStats.id);

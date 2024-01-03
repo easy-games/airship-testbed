@@ -24,17 +24,17 @@ export class BWKitService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.PlayerJoin.Connect((event) => {
 			this.kitMap.set(event.player.clientId, KitType.NONE);
-			Network.ServerToClient.KitUpdated.Server.FireAllClients(event.player.clientId, KitType.NONE);
+			Network.ServerToClient.KitUpdated.server.FireAllClients(event.player.clientId, KitType.NONE);
 		});
 
 		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (!this.matchService.IsRunning()) return;
 			if (!(event.entity instanceof CharacterEntity)) return;
-			if (event.entity.ClientId === undefined) return;
-			const usingKit = this.kitMap.get(event.entity.ClientId);
+			if (event.entity.clientId === undefined) return;
+			const usingKit = this.kitMap.get(event.entity.clientId);
 			if (usingKit === undefined) return;
 			const kitMeta = KitUtil.GetKitMeta(usingKit);
-			this.ApplyKitAbilitiesToClient(event.entity.ClientId, kitMeta);
+			this.ApplyKitAbilitiesToClient(event.entity.clientId, kitMeta);
 		});
 
 		ServerSignals.MatchStart.Connect(() => {

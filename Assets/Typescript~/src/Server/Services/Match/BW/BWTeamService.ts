@@ -48,7 +48,7 @@ export class BWTeamService implements OnStart {
 			const color = ColorUtil.ColorToHex(assignedTeam.color);
 			Game.BroadcastMessage(
 				`<b><color=${color}>${event.player.username}</color></b> <color=${ColorUtil.ColorToHex(
-					Theme.Gray,
+					Theme.gray,
 				)}>joined the server.</color>`,
 			);
 		});
@@ -59,12 +59,12 @@ export class BWTeamService implements OnStart {
 				const color = ColorUtil.ColorToHex(team.color);
 				Game.BroadcastMessage(
 					`<b><color=${color}>${event.player.username}</color></b> <color=${ColorUtil.ColorToHex(
-						Theme.Gray,
+						Theme.gray,
 					)}>left the server.</color>`,
 				);
 			} else {
 				Game.BroadcastMessage(
-					`<b>${event.player.username}</b> <color=${ColorUtil.ColorToHex(Theme.Gray)}>left.</color>`,
+					`<b>${event.player.username}</b> <color=${ColorUtil.ColorToHex(Theme.gray)}>left.</color>`,
 				);
 			}
 		});

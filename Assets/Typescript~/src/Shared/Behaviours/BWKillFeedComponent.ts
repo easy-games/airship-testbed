@@ -6,11 +6,11 @@ import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 
 export default class BWKillFeedComponent extends AirshipBehaviour {
-	public KillListItemPrefab?: GameObject = undefined;
+	public killListItemPrefab?: GameObject = undefined;
 	private bin = new Bin();
 
 	private AddTargetKillEntry(killedEntity: Entity, damageType: DamageType, killedByEntity: Entity | undefined) {
-		let entry = GameObjectUtil.Instantiate(this.KillListItemPrefab!);
+		let entry = GameObjectUtil.Instantiate(this.killListItemPrefab!);
 
 		const canvasGroup = entry.GetComponent<CanvasGroup>();
 		canvasGroup.alpha = 0;

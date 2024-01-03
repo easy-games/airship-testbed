@@ -28,9 +28,9 @@ export class StaticService implements OnStart {
 			if (event.damageType === DamageType.FIRE) return;
 			if (!event.fromEntity) return;
 			if (!(event.fromEntity instanceof CharacterEntity)) return;
-			if (event.fromEntity.ClientId === undefined) return;
+			if (event.fromEntity.clientId === undefined) return;
 			const staticStatusEffect = this.statusEffectService.GetStatusEffectForClient(
-				event.fromEntity.ClientId,
+				event.fromEntity.clientId,
 				StatusEffectType.STATIC,
 			);
 			if (!staticStatusEffect) return;
