@@ -9199,7 +9199,7 @@ MonoBehaviour:
       value: {fileID: 8437203759414609352}
     - key: SocialGroup
       value: {fileID: 6564892009444396960}
-    - key: MyGamesButton
+    - key: NavbarMyGamesButton
       value: {fileID: 8798269985657282307}
   - key: Pages
     keyValuePairs:

@@ -22,7 +22,11 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	public Init(gameDto: GameDto) {
 		this.titleText.text = gameDto.name;
-		this.playerCountText.text = gameDto.liveStats.playerCount + "";
+		if (gameDto.liveStats?.playerCount !== undefined) {
+			this.playerCountText.text = gameDto.liveStats.playerCount + "";
+		} else {
+			this.playerCountText.text = "???";
+		}
 
 		let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".jpg";
 

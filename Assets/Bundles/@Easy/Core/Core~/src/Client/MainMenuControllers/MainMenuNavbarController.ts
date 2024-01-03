@@ -88,6 +88,8 @@ export class MainMenuNavbarController implements OnStart {
 				currentSelectedNavbarButton = avatarButton;
 			} else if (page === MainMenuPageType.Shop) {
 				currentSelectedNavbarButton = shopButton;
+			} else if (page === MainMenuPageType.MyGames) {
+				currentSelectedNavbarButton = myGamesButton;
 			}
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, true);

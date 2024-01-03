@@ -14,7 +14,10 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 		this.sort = this.gameObject.GetComponent<SortComponent>();
 	}
 
-	public OnEnabled(): void {}
+	public OnEnabled(): void {
+		this.sort.Clear();
+		this.FetchGames();
+	}
 
 	public FetchGames(): void {
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self");
@@ -31,7 +34,7 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 		const data = DecodeJSON<MyGamesDto>(res.data);
 		print("My games: " + inspect(data));
 
-		this.sort.SetGames(data.games);
+		this.sort.SetGames(data);
 	}
 
 	override Start(): void {

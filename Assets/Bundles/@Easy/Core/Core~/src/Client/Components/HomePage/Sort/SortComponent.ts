@@ -7,7 +7,7 @@ export default class SortComponent extends AirshipBehaviour {
 	public gamePrefab!: GameObject;
 
 	override Awake(): void {
-		this.content.gameObject.ClearChildren();
+		this.Clear();
 	}
 
 	override Start(): void {}
@@ -16,6 +16,10 @@ export default class SortComponent extends AirshipBehaviour {
 
 	public Init(title: string): void {
 		this.SetTitle(title);
+	}
+
+	public Clear(): void {
+		this.content.gameObject.ClearChildren();
 	}
 
 	public SetGames(games: GameDto[]): void {

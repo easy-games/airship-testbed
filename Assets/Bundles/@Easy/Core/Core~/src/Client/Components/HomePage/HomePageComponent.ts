@@ -15,6 +15,7 @@ export default class HomePageComponent extends AirshipBehaviour {
 	private sorts = new Map<SortId, SortComponent>();
 
 	override OnEnable(): void {
+		print("HomePage.OnEnable");
 		this.ClearSorts();
 		this.CreateSort(SortId.POPULAR, "Popular", "featured");
 		this.FetchGames();
@@ -59,7 +60,7 @@ export default class HomePageComponent extends AirshipBehaviour {
 		}
 	}
 
-	OnDisabled(): void {
+	override OnDisable(): void {
 		print("HomePageComponent.OnDisable");
 		this.bin.Clean();
 	}
