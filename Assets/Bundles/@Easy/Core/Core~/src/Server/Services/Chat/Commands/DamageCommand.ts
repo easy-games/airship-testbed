@@ -33,7 +33,7 @@ export class DamageCommand extends ChatCommand {
 			Dependency<DamageService>().InflictDamage(target, amount, {
 				ignoreCancelled: true,
 			});
-			player.SendMessage(`Inflicted ${amount} dmg to ${target.Id}`);
+			player.SendMessage(`Inflicted ${amount} dmg to ${target.id}`);
 		});
 	}
 }

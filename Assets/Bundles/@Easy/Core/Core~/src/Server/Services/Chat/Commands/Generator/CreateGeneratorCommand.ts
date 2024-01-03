@@ -48,7 +48,7 @@ export class CreateGeneratorCommand extends ChatCommand {
 		// Spawn generator underneath command executor.
 		const executorEntity = Dependency<EntityService>().GetEntityByClientId(player.clientId);
 		if (!executorEntity) return;
-		const generatorPosition = executorEntity.GameObject.transform.position;
+		const generatorPosition = executorEntity.gameObject.transform.position;
 		Dependency<GeneratorService>().CreateGenerator(generatorPosition, {
 			item: itemType,
 			spawnRate: spawnRate,

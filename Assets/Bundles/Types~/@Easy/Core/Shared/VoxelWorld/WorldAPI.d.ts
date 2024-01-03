@@ -8,9 +8,9 @@ import { BlockHitDamageSignal } from "./Signal/BlockHitDamageSignal";
 import { World } from "./World";
 export declare class WorldAPI {
     private static world;
-    static DefaultVoxelHealth: number;
-    static ChildVoxelId: number;
-    static OnBlockHitDamageCalc: Signal<BlockHitDamageSignal>;
+    static defaultVoxelHealth: number;
+    static childVoxelId: number;
+    static onBlockHitDamageCalc: Signal<BlockHitDamageSignal>;
     static GetMainWorld(): World | undefined;
     static GetVoxelPosition(worldPosition: Vector3): Vector3;
     static CalculateBlockHitDamage(entity: Entity | undefined, block: Block, blockPos: Vector3, breakBlockMeta: BreakBlockDef): number;

@@ -39,7 +39,7 @@ export class CropGrowthService implements OnStart {
 
 					cropState.lastGrowthTick = SharedTime();
 
-					CoreNetwork.ServerToClient.CropGrowthUpdated.Server.FireAllClients(
+					CoreNetwork.ServerToClient.CropGrowthUpdated.server.FireAllClients(
 						cropState.cropIdx,
 						cropState.cropGrowthLevel,
 					);
@@ -55,7 +55,7 @@ export class CropGrowthService implements OnStart {
 		/* Handle late joiners. */
 		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
-				CoreNetwork.ServerToClient.CropSnapshot.Server.FireClient(event.player.clientId, this.cropStates);
+				CoreNetwork.ServerToClient.CropSnapshot.server.FireClient(event.player.clientId, this.cropStates);
 			});
 		});
 
@@ -63,7 +63,7 @@ export class CropGrowthService implements OnStart {
 			const world = WorldAPI.GetMainWorld();
 			if (!world) return;
 
-			const cropBlock = world.GetBlockAt(event.pos).ItemDef?.cropBlock;
+			const cropBlock = world.GetBlockAt(event.pos).itemDef?.cropBlock;
 			if (cropBlock) {
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_GROWTH_LEVEL, 0, true);
 				BlockDataAPI.SetBlockData(event.pos, CoreCropBlockMetaKeys.CROP_HARVESTABLE, false, true);
@@ -78,7 +78,7 @@ export class CropGrowthService implements OnStart {
 				};
 
 				this.cropStates.push(cropState);
-				CoreNetwork.ServerToClient.CropPlanted.Server.FireAllClients(cropState);
+				CoreNetwork.ServerToClient.CropPlanted.server.FireAllClients(cropState);
 			}
 		});
 
@@ -89,7 +89,7 @@ export class CropGrowthService implements OnStart {
 				print("destroy block at", cropState.position);
 
 				this.cropStates.remove(matchingBlock);
-				CoreNetwork.ServerToClient.CropHarvested.Server.FireAllClients(cropState.cropIdx);
+				CoreNetwork.ServerToClient.CropHarvested.server.FireAllClients(cropState.cropIdx);
 			}
 		});
 	}

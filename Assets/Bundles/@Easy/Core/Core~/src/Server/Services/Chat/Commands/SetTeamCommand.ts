@@ -37,10 +37,10 @@ export class SetTeamCommand extends ChatCommand {
 		/* Assign to team. */
 		targetTeam.AddPlayer(targetPlayer);
 		Game.BroadcastMessage(
-			ColorUtil.ColoredText(Theme.Aqua, player.username) +
-				ColorUtil.ColoredText(Theme.Gray, " added ") +
-				ColorUtil.ColoredText(Theme.Yellow, targetPlayer.username) +
-				ColorUtil.ColoredText(Theme.Gray, " to the ") +
+			ColorUtil.ColoredText(Theme.aqua, player.username) +
+				ColorUtil.ColoredText(Theme.gray, " added ") +
+				ColorUtil.ColoredText(Theme.yellow, targetPlayer.username) +
+				ColorUtil.ColoredText(Theme.gray, " to the ") +
 				ColorUtil.ColoredText(targetTeam.color, targetTeam.id + " team"),
 		);
 	}

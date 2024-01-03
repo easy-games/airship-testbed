@@ -8,9 +8,9 @@ import SortComponent from "./Sort/SortComponent";
 import { SortId } from "./Sort/SortId";
 
 export default class HomePageComponent extends AirshipBehaviour {
-	public MainContent!: Transform;
-	public SpacerPrefab!: GameObject;
-	public SortPrefab!: GameObject;
+	public mainContent!: Transform;
+	public spacerPrefab!: GameObject;
+	public sortPrefab!: GameObject;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 
@@ -22,8 +22,8 @@ export default class HomePageComponent extends AirshipBehaviour {
 
 	private ClearSorts(): void {
 		let toRemove: Transform[] = [];
-		for (let i = 1; i < this.MainContent.GetChildCount(); i++) {
-			toRemove.push(this.MainContent.GetChild(i));
+		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
+			toRemove.push(this.mainContent.GetChild(i));
 		}
 		for (const t of toRemove) {
 			Object.Destroy(t.gameObject);
@@ -31,7 +31,7 @@ export default class HomePageComponent extends AirshipBehaviour {
 	}
 
 	private CreateSort(sortId: SortId, title: string, backendName: string): void {
-		const sortGo = Object.Instantiate(this.SortPrefab, this.MainContent) as GameObject;
+		const sortGo = Object.Instantiate(this.sortPrefab, this.mainContent) as GameObject;
 		const sortComponent = sortGo.GetComponent<SortComponent>();
 		sortComponent.SetTitle(title);
 		this.sorts.set(sortId, sortComponent);

@@ -2,34 +2,34 @@ import {} from "@easy-games/flamework-core";
 import { Mouse } from "Shared/UserInput";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
-	public HumanEntityGo?: GameObject;
-	public AvatarHolder?: Transform;
-	public CameraTransform?: Transform;
+	public humanEntityGo?: GameObject;
+	public avatarHolder?: Transform;
+	public cameraTransform?: Transform;
 
-	public CameraWaypointDefault?: Transform;
-	public CameraWaypointHead?: Transform;
-	public CameraWaypointFeet?: Transform;
-	public CameraWaypointHands?: Transform;
-	public CameraWaypointBack?: Transform;
+	public cameraWaypointDefault?: Transform;
+	public cameraWaypointHead?: Transform;
+	public cameraWaypointFeet?: Transform;
+	public cameraWaypointHands?: Transform;
+	public cameraWaypointBack?: Transform;
 
-	public DragSpeedMod = 10;
-	public CameraTransitionDuration = 1;
-	public Dragging = false;
+	public dragSpeedMod = 10;
+	public cameraTransitionDuration = 1;
+	public dragging = false;
 
-	public AccessoryBuilder?: AccessoryBuilder;
+	public accessoryBuilder?: AccessoryBuilder;
 
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
 
 	public override OnStart(): void {
-		this.AccessoryBuilder = this.HumanEntityGo?.GetComponent<AccessoryBuilder>();
-		this.Dragging = false;
+		this.accessoryBuilder = this.humanEntityGo?.GetComponent<AccessoryBuilder>();
+		this.dragging = false;
 		this.mouse = new Mouse();
-		this.mouse.Moved.Connect((pos: Vector3) => {
-			if (this.Dragging) {
+		this.mouse.moved.Connect((pos: Vector3) => {
+			if (this.dragging) {
 				let diff = pos.sub(this.lastMousePos);
-				this.AvatarHolder?.Rotate(0, diff.x * -this.DragSpeedMod, 0);
+				this.avatarHolder?.Rotate(0, diff.x * -this.dragSpeedMod, 0);
 			}
 			this.lastMousePos = pos;
 		});
@@ -45,7 +45,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public FocusSlot(slotType: AccessorySlot) {
 		print("Fosuing slot: " + slotType);
-		this.targetTransform = this.CameraWaypointDefault;
+		this.targetTransform = this.cameraWaypointDefault;
 		if (
 			slotType === AccessorySlot.Head ||
 			slotType === AccessorySlot.Face ||
@@ -53,32 +53,30 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			slotType === AccessorySlot.Neck ||
 			slotType === AccessorySlot.Ears
 		) {
-			this.targetTransform = this.CameraWaypointHead;
+			this.targetTransform = this.cameraWaypointHead;
 		} else if (
 			slotType === AccessorySlot.Feet ||
 			slotType === AccessorySlot.Waist ||
 			slotType === AccessorySlot.Legs
 		) {
-			this.targetTransform = this.CameraWaypointFeet;
+			this.targetTransform = this.cameraWaypointFeet;
 		} else if (
 			slotType === AccessorySlot.Hands ||
 			slotType === AccessorySlot.LeftHand ||
 			slotType === AccessorySlot.RightHand ||
 			slotType === AccessorySlot.Torso
 		) {
-			this.targetTransform = this.CameraWaypointHands;
+			this.targetTransform = this.cameraWaypointHands;
 		} else if (slotType === AccessorySlot.Backpack) {
-			this.targetTransform = this.CameraWaypointBack;
+			this.targetTransform = this.cameraWaypointBack;
 		}
-		if (this.CameraTransform && this.targetTransform) {
-			this.CameraTransform.TweenPosition(
-				this.targetTransform.position,
-				this.CameraTransitionDuration,
-			).SetEaseQuadInOut();
-			this.CameraTransform.TweenRotation(
-				this.targetTransform.rotation.eulerAngles,
-				this.CameraTransitionDuration,
-			).SetEaseQuadInOut();
+		if (this.cameraTransform && this.targetTransform) {
+			this.cameraTransform
+				.TweenPosition(this.targetTransform.position, this.cameraTransitionDuration)
+				.SetEaseQuadInOut();
+			this.cameraTransform
+				.TweenRotation(this.targetTransform.rotation.eulerAngles, this.cameraTransitionDuration)
+				.SetEaseQuadInOut();
 		}
 	}
 }

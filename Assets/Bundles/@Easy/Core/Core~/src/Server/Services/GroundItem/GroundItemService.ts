@@ -37,17 +37,17 @@ export class GroundItemService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.DropItemInSlot.Server.OnClientEvent((clientId, slot, amount) => {
+		CoreNetwork.ClientToServer.DropItemInSlot.server.OnClientEvent((clientId, slot, amount) => {
 			const entity = this.entityService.GetEntityByClientId(clientId);
 			if (entity?.IsAlive() && entity instanceof CharacterEntity) {
 				const item = entity.GetInventory().GetItem(slot);
 				if (!item) return;
 				if (item.GetAmount() < amount) return;
 
-				const transform = entity.Model.transform;
+				const transform = entity.model.transform;
 				const position = transform.position.add(new Vector3(0, 1.5, 0)).add(transform.forward.mul(0.6));
 				let velocity = transform.forward.add(new Vector3(0, 0.7, 0)).mul(6);
-				velocity = velocity.add(entity.EntityDriver.GetVelocity());
+				velocity = velocity.add(entity.entityDriver.GetVelocity());
 				// print("velocity: " + tostring(velocity));
 
 				const beforeEvent = CoreServerSignals.BeforeEntityDropItem.Fire(
@@ -73,10 +73,10 @@ export class GroundItemService implements OnStart {
 					if (!groundItem.drop.IsGrounded()) return;
 
 					stopRepeat();
-					CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Server.FireAllClients([
+					CoreNetwork.ServerToClient.GroundItem.UpdatePosition.server.FireAllClients([
 						{
 							id: groundItem.id,
-							pos: groundItem.Transform.position,
+							pos: groundItem.transform.position,
 							vel: groundItem.drop.GetVelocity(),
 						},
 					]);
@@ -84,7 +84,7 @@ export class GroundItemService implements OnStart {
 			}
 		});
 
-		CoreNetwork.ClientToServer.PickupGroundItem.Server.OnClientEvent((clientId, groundItemId) => {
+		CoreNetwork.ClientToServer.PickupGroundItem.server.OnClientEvent((clientId, groundItemId) => {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) return;
 
@@ -94,8 +94,8 @@ export class GroundItemService implements OnStart {
 			if (
 				!GroundItemUtil.CanPickupGroundItem(
 					groundItem,
-					groundItem.Transform.position,
-					entity.NetworkObject.gameObject.transform.position,
+					groundItem.transform.position,
+					entity.networkObject.gameObject.transform.position,
 				)
 			) {
 				return;
@@ -110,20 +110,20 @@ export class GroundItemService implements OnStart {
 			// GameObjectUtil.Destroy(groundItem.rb.gameObject);
 			this.DestroyGroundItem(groundItem);
 
-			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.Id, groundItem.id);
+			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.server.FireAllClients(entity.id, groundItem.id);
 			if (entity instanceof CharacterEntity) {
 				entity.GetInventory().AddItem(groundItem.itemStack);
 			}
 		});
 
 		Dependency<PlayerService>().ObservePlayers((player) => {
-			CoreNetwork.ServerToClient.GroundItem.Add.Server.FireClient(
+			CoreNetwork.ServerToClient.GroundItem.Add.server.FireClient(
 				player.clientId,
 				Object.values(this.groundItems).map((i) => {
 					return {
 						id: i.id,
 						itemStack: i.itemStack.Encode(),
-						pos: i.Transform.position,
+						pos: i.transform.position,
 						velocity: i.drop.GetVelocity(),
 						pickupTime: i.pickupTime,
 						data: i.data,
@@ -154,7 +154,7 @@ export class GroundItemService implements OnStart {
 	}
 
 	private GetGroundItemPositionKey(groundItem: GroundItem): Vector3 {
-		const pos = groundItem.Transform.position;
+		const pos = groundItem.transform.position;
 		return new Vector3(
 			math.round(pos.x / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
 			math.round(pos.y / MERGE_POSITION_SIZE) * MERGE_POSITION_SIZE,
@@ -183,7 +183,7 @@ export class GroundItemService implements OnStart {
 				// See if it can merge with anything:
 				let didMerge = false;
 				for (const item of itemsAtPos) {
-					if (item.ShouldMerge && item.itemStack.CanMerge(groundItem.itemStack)) {
+					if (item.shouldMerge && item.itemStack.CanMerge(groundItem.itemStack)) {
 						// Merge
 						item.itemStack.SetAmount(item.itemStack.GetAmount() + groundItem.itemStack.GetAmount());
 						didMerge = true;
@@ -248,10 +248,10 @@ export class GroundItemService implements OnStart {
 		const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
 			this.RemoveGroundItemFromTracking(groundItem);
 			this.groundItems.delete(groundItem.id);
-			CoreNetwork.ServerToClient.GroundItemDestroyed.Server.FireAllClients(groundItem.id);
+			CoreNetwork.ServerToClient.GroundItemDestroyed.server.FireAllClients(groundItem.id);
 		});
 
-		CoreNetwork.ServerToClient.GroundItem.Add.Server.FireAllClients([
+		CoreNetwork.ServerToClient.GroundItem.Add.server.FireAllClients([
 			{
 				id: groundItem.id,
 				itemStack: groundItem.itemStack.Encode(),

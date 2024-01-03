@@ -45,7 +45,7 @@ export class GeneratorController implements OnStart {
 
 	OnStart(): void {
 		/* Listen for generator snapshot. Should only be received on late joins. */
-		CoreNetwork.ServerToClient.GeneratorSnapshot.Client.OnServerEvent((generatorStateDtos) => {
+		CoreNetwork.ServerToClient.GeneratorSnapshot.client.OnServerEvent((generatorStateDtos) => {
 			generatorStateDtos.forEach((dto) => {
 				// Skip generator if it already exists on client.
 				if (this.generatorMap.has(dto.id)) return;
@@ -57,14 +57,14 @@ export class GeneratorController implements OnStart {
 			});
 		});
 		// Listen for generator creation.
-		CoreNetwork.ServerToClient.GeneratorCreated.Client.OnServerEvent((dto) => {
+		CoreNetwork.ServerToClient.GeneratorCreated.client.OnServerEvent((dto) => {
 			this.generatorMap.set(dto.id, dto);
 			// Set up generator label if applicable.
 			if (dto.nameLabel || dto.spawnTimeLabel) this.CreateGeneratorLabel(dto);
 		});
 
 		// Listen for modifications - e.g. generator name changing
-		CoreNetwork.ServerToClient.GeneratorModified.Client.OnServerEvent((dto) => {
+		CoreNetwork.ServerToClient.GeneratorModified.client.OnServerEvent((dto) => {
 			if (!this.generatorMap.has(dto.id)) return;
 			this.generatorMap.set(dto.id, dto);
 
@@ -73,7 +73,7 @@ export class GeneratorController implements OnStart {
 			}
 		});
 
-		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.Client.OnServerEvent((genId, spawnRate) => {
+		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.client.OnServerEvent((genId, spawnRate) => {
 			const dto = this.generatorMap.get(genId);
 			if (!dto) return;
 
@@ -105,11 +105,11 @@ export class GeneratorController implements OnStart {
 		const itemMeta = ItemUtil.GetItemDef(dto.item);
 		let textColor: Color;
 		if (dto.item === ItemType.EMERALD) {
-			textColor = Theme.Green;
+			textColor = Theme.green;
 		} else if (dto.item === ItemType.DIAMOND) {
-			textColor = Theme.Aqua;
+			textColor = Theme.aqua;
 		} else {
-			textColor = Theme.White;
+			textColor = Theme.white;
 		}
 		nameText.text = dto.generatorName ?? `${itemMeta.displayName} Generator`;
 		nameText.color = textColor;
@@ -127,9 +127,9 @@ export class GeneratorController implements OnStart {
 						let timeRemaining = dto.spawnRate - progress;
 						timeRemaining = math.floor(timeRemaining);
 						spawnTimeText.text =
-							ColorUtil.ColoredText(Theme.Yellow, "Spawning in ") +
-							ColorUtil.ColoredText(Theme.Red, timeRemaining + "") +
-							ColorUtil.ColoredText(Theme.Yellow, " seconds!");
+							ColorUtil.ColoredText(Theme.yellow, "Spawning in ") +
+							ColorUtil.ColoredText(Theme.red, timeRemaining + "") +
+							ColorUtil.ColoredText(Theme.yellow, " seconds!");
 					},
 					true,
 				),

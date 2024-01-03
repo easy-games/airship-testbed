@@ -59,7 +59,7 @@ export class OrbitCameraMode implements CameraMode {
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
 		let touchOverUI = false;
-		touchscreen.Pan.Connect((position, phase) => {
+		touchscreen.pan.Connect((position, phase) => {
 			switch (phase) {
 				case TouchPhase.Began:
 					if (UserInputService.InputProxy.IsPointerOverUI()) {
@@ -117,13 +117,13 @@ export class OrbitCameraMode implements CameraMode {
 
 		let rightClickUnlocker = this.mouse.AddUnlocker();
 
-		this.mouse.RightDown.Connect(() => {
+		this.mouse.rightDown.Connect(() => {
 			if (rightClickUnlocker === -1) return;
 			this.mouse.RemoveUnlocker(rightClickUnlocker);
 			rightClickUnlocker = -1;
 		});
 
-		this.mouse.RightUp.Connect(() => {
+		this.mouse.rightUp.Connect(() => {
 			rightClickUnlocker = this.mouse.AddUnlocker();
 		});
 

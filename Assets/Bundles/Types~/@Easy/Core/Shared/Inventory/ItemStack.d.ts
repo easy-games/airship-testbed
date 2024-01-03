@@ -20,10 +20,10 @@ export type ItemStackAmountChangeSignal = {
 export declare class ItemStack {
     private itemType;
     private amount;
-    Changed: Signal<void>;
-    ItemTypeChanged: Signal<ItemStackTypeChangeSignal>;
-    AmountChanged: Signal<ItemStackAmountChangeSignal>;
-    Destroyed: Signal<ItemStack>;
+    changed: Signal<void>;
+    itemTypeChanged: Signal<ItemStackTypeChangeSignal>;
+    amountChanged: Signal<ItemStackAmountChangeSignal>;
+    destroyed: Signal<ItemStack>;
     private hasBeenDestroyed;
     constructor(itemType: ItemType, amount?: number);
     GetItemType(): ItemType;

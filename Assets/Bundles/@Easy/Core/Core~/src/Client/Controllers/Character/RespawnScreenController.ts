@@ -36,18 +36,18 @@ export class RespawnScreenController implements OnStart {
 		const bottomText = refs.GetValue("UI", "BottomText") as TMP_Text;
 
 		if (deathSignal.killer) {
-			topText.text = ColorUtil.ColoredText(Theme.Red, `Killed by ${deathSignal.killer.GetDisplayName()}`);
+			topText.text = ColorUtil.ColoredText(Theme.red, `Killed by ${deathSignal.killer.GetDisplayName()}`);
 		} else {
-			topText.text = ColorUtil.ColoredText(Theme.Red, "You Died!");
+			topText.text = ColorUtil.ColoredText(Theme.red, "You Died!");
 		}
 
 		const respawnTime = Time.time + deathSignal.respawnTime;
 		const UpdateTimer = () => {
 			const remaining = math.max(respawnTime - Time.time, 0);
 			bottomText.text =
-				ColorUtil.ColoredText(Theme.Red, "Respawning in ") +
-				ColorUtil.ColoredText(Theme.Aqua, string.format("%.1f", remaining)) +
-				ColorUtil.ColoredText(Theme.Red, "s");
+				ColorUtil.ColoredText(Theme.red, "Respawning in ") +
+				ColorUtil.ColoredText(Theme.aqua, string.format("%.1f", remaining)) +
+				ColorUtil.ColoredText(Theme.red, "s");
 		};
 		UpdateTimer();
 		this.respawnBin.Add(

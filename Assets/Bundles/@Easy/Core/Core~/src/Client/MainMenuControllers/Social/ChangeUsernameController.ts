@@ -50,7 +50,7 @@ export class ChangeUsernameController implements OnStart {
 			this.inputFieldSelected = false;
 		});
 		const keyboard = new Keyboard();
-		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 			if (this.inputFieldSelected) {
 				if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
 					e.SetCancelled(true);
@@ -84,7 +84,7 @@ export class ChangeUsernameController implements OnStart {
 		);
 		if (res.success) {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
-			Game.LocalPlayer.UpdateUsername(split[0], split[1]);
+			Game.localPlayer.UpdateUsername(split[0], split[1]);
 			Dependency<UserController>().FetchLocalUser();
 		} else if (res.statusCode === 409) {
 			this.SetResponseText("error", `The username "${text}" is taken.`);

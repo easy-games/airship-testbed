@@ -11,14 +11,14 @@ export class Mouse {
 	private readonly bin = new Bin();
 	private readonly mouseDriver = MouseDriver.Instance();
 
-	public readonly LeftDown = new Signal<[event: PointerButtonSignal]>();
-	public readonly LeftUp = new Signal<[event: PointerButtonSignal]>();
-	public readonly RightDown = new Signal<[event: PointerButtonSignal]>();
-	public readonly RightUp = new Signal<[event: PointerButtonSignal]>();
-	public readonly MiddleDown = new Signal<[event: PointerButtonSignal]>();
-	public readonly MiddleUp = new Signal<[event: PointerButtonSignal]>();
-	public readonly Scrolled = new Signal<[event: ScrollSignal]>();
-	public readonly Moved = new Signal<[location: Vector3]>();
+	public readonly leftDown = new Signal<[event: PointerButtonSignal]>();
+	public readonly leftUp = new Signal<[event: PointerButtonSignal]>();
+	public readonly rightDown = new Signal<[event: PointerButtonSignal]>();
+	public readonly rightUp = new Signal<[event: PointerButtonSignal]>();
+	public readonly middleDown = new Signal<[event: PointerButtonSignal]>();
+	public readonly middleUp = new Signal<[event: PointerButtonSignal]>();
+	public readonly scrolled = new Signal<[event: ScrollSignal]>();
+	public readonly moved = new Signal<[location: Vector3]>();
 	// public readonly Delta = new Signal<[delta: Vector3]>();
 
 	private isLeftDown = false;
@@ -28,14 +28,14 @@ export class Mouse {
 
 	constructor() {
 		// Track signals in bin:
-		this.bin.Add(this.LeftDown);
-		this.bin.Add(this.LeftUp);
-		this.bin.Add(this.RightDown);
-		this.bin.Add(this.RightUp);
-		this.bin.Add(this.MiddleDown);
-		this.bin.Add(this.MiddleUp);
-		this.bin.Add(this.Scrolled);
-		this.bin.Add(this.Moved);
+		this.bin.Add(this.leftDown);
+		this.bin.Add(this.leftUp);
+		this.bin.Add(this.rightDown);
+		this.bin.Add(this.rightUp);
+		this.bin.Add(this.middleDown);
+		this.bin.Add(this.middleUp);
+		this.bin.Add(this.scrolled);
+		this.bin.Add(this.moved);
 		// this.bin.Add(this.Delta);
 
 		// Initial states:
@@ -50,44 +50,44 @@ export class Mouse {
 
 		// Connect to mouse driver:
 
-		this.bin.Connect(this.mouseDriver.LeftButtonChanged, (event) => {
+		this.bin.Connect(this.mouseDriver.leftButtonChanged, (event) => {
 			this.isLeftDown = event.isDown;
 			if (event.isDown) {
-				this.LeftDown.Fire(event);
+				this.leftDown.Fire(event);
 			} else {
-				this.LeftUp.Fire(event);
+				this.leftUp.Fire(event);
 			}
 		});
 
-		this.bin.Connect(this.mouseDriver.RightButtonChanged, (event) => {
+		this.bin.Connect(this.mouseDriver.rightButtonChanged, (event) => {
 			this.isRightDown = event.isDown;
 			if (event.isDown) {
-				this.RightDown.Fire(event);
+				this.rightDown.Fire(event);
 			} else {
-				this.RightUp.Fire(event);
+				this.rightUp.Fire(event);
 			}
 		});
 
-		this.bin.Connect(this.mouseDriver.MiddleButtonChanged, (event) => {
+		this.bin.Connect(this.mouseDriver.middleButtonChanged, (event) => {
 			this.isMiddleDown = event.isDown;
 			if (event.isDown) {
-				this.MiddleDown.Fire(event);
+				this.middleDown.Fire(event);
 			} else {
-				this.MiddleUp.Fire(event);
+				this.middleUp.Fire(event);
 			}
 		});
 
-		this.bin.Connect(this.mouseDriver.Moved, (location) => {
+		this.bin.Connect(this.mouseDriver.moved, (location) => {
 			this.location = location;
-			this.Moved.Fire(location);
+			this.moved.Fire(location);
 		});
 
 		// this.bin.Connect(this.mouseDriver.Delta, (delta) => {
 		// 	this.Delta.Fire(delta);
 		// });
 
-		this.bin.Connect(this.mouseDriver.Scrolled, (delta) => {
-			this.Scrolled.Fire(delta);
+		this.bin.Connect(this.mouseDriver.scrolled, (delta) => {
+			this.scrolled.Fire(delta);
 		});
 	}
 

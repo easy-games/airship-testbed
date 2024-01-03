@@ -4,7 +4,7 @@ import { MainMenuController } from "./MainMenuController";
 export default class MainMenuPageComponent extends AirshipBehaviour {
     private animateOutDuration;
     private animateInDuration;
-    PageType: MainMenuPageType;
+    pageType: MainMenuPageType;
     protected refs?: GameObjectReferences;
     private activePage;
     protected mainMenu?: MainMenuController;

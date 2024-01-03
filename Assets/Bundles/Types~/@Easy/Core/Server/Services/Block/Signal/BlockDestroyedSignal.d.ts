@@ -8,7 +8,7 @@ export declare class BlockDropItemSignal extends Cancellable {
     entity: Entity | undefined;
     readonly position: Vector3;
     itemStack: ItemStack;
-    GiveToCharacterWhoBroke: boolean;
+    giveToCharacterWhoBroke: boolean;
     constructor(entity: Entity | undefined, position: Vector3, itemStack: ItemStack);
     IsGivingToCharacter(): this is BlockDropItemSignal & {
         entity: CharacterEntity;

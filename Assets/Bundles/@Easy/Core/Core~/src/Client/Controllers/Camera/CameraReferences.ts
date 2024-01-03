@@ -2,25 +2,25 @@
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 export class CameraReferences {
-	private static _instance: CameraReferences;
+	private static instances: CameraReferences;
 	public static Instance(): CameraReferences {
-		if (!CameraReferences._instance) {
+		if (!CameraReferences.instances) {
 			new CameraReferences();
 		}
-		return CameraReferences._instance;
+		return CameraReferences.instances;
 	}
 
 	private mouse = new Mouse();
-	public readonly MainCamera: Camera;
-	public readonly FpsCamera: Camera;
-	public readonly UiCamera: Camera;
+	public readonly mainCamera: Camera;
+	public readonly fpsCamera: Camera;
+	public readonly uiCamera: Camera;
 
 	public constructor() {
-		if (CameraReferences._instance) {
+		if (CameraReferences.instances) {
 			error("TRYING TO INITIALIZE SINGLETON THAT ALREADY EXISTS: CameraReferences");
 			return;
 		}
-		CameraReferences._instance = this;
+		CameraReferences.instances = this;
 
 		//Get Camera references
 		let refs = GameObject.Find("CameraRig")?.GetComponent<GameObjectReferences>();
@@ -28,9 +28,9 @@ export class CameraReferences {
 			error("Camera rig not found. Please make sure to add a CameraRig to scene.");
 			return;
 		}
-		this.MainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
-		this.FpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
-		this.UiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
+		this.mainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
+		this.fpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
+		this.uiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
 	}
 
 	/**

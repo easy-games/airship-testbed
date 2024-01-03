@@ -29,7 +29,7 @@ interface HealthBarEntry {
 @Controller({})
 export class BlockHealthController implements OnStart {
 	private blockHealthBars = new Map<Vector3, HealthBarEntry>();
-	HealthbarExpireTime = 1.25;
+	healthbarExpireTime = 1.25;
 
 	constructor(
 		private readonly invController: InventoryController,
@@ -38,7 +38,7 @@ export class BlockHealthController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.BlockHit.Client.OnServerEvent((blockPos, blockId, entityId, damage, broken) => {
+		CoreNetwork.ServerToClient.BlockHit.client.OnServerEvent((blockPos, blockId, entityId, damage, broken) => {
 			let entity: Entity | undefined;
 			if (entityId !== undefined) {
 				entity = this.entityController.GetEntityById(entityId);
@@ -61,7 +61,7 @@ export class BlockHealthController implements OnStart {
 		// 	this.VisualizeBlockBreak(blockPos, blockId);
 		// });
 
-		CoreNetwork.ServerToClient.BlockGroupDestroyed.Client.OnServerEvent((blockPositions, blockIds) => {
+		CoreNetwork.ServerToClient.BlockGroupDestroyed.client.OnServerEvent((blockPositions, blockIds) => {
 			blockPositions.forEach((position, index) => {
 				this.VisualizeBlockBreak(position, blockIds[index], false);
 			});
@@ -78,7 +78,7 @@ export class BlockHealthController implements OnStart {
 		SetInterval(0.1, () => {
 			const toRemove = new Map<Vector3, HealthBarEntry>();
 			this.blockHealthBars.forEach((entry, pos) => {
-				if (Time.time >= entry.lastHitTime + this.HealthbarExpireTime) {
+				if (Time.time >= entry.lastHitTime + this.healthbarExpireTime) {
 					toRemove.set(pos, entry);
 				}
 			});
@@ -117,7 +117,7 @@ export class BlockHealthController implements OnStart {
 			if (effect) {
 				const block = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos);
 				if (block) {
-					this.SetParticlesToBlockMaterial(block.RuntimeBlockId, effect);
+					this.SetParticlesToBlockMaterial(block.runtimeBlockId, effect);
 				}
 			}
 		}
@@ -160,7 +160,7 @@ export class BlockHealthController implements OnStart {
 	}
 
 	private GetBlockHealth(blockPos: Vector3) {
-		return BlockDataAPI.GetBlockData<number>(blockPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+		return BlockDataAPI.GetBlockData<number>(blockPos, "health") ?? WorldAPI.defaultVoxelHealth;
 	}
 
 	private AddHealthBar(blockPos: Vector3, initialHealth: number): HealthBarEntry | undefined {
@@ -179,22 +179,22 @@ export class BlockHealthController implements OnStart {
 		}
 
 		//Get the meta for the hit block
-		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.ItemDef;
+		const itemMeta = WorldAPI.GetMainWorld()?.GetBlockAt(blockPos)?.itemDef;
 
 		//Create health bar entry
-		let maxHealth = itemMeta?.block?.health ?? WorldAPI.DefaultVoxelHealth;
+		let maxHealth = itemMeta?.block?.health ?? WorldAPI.defaultVoxelHealth;
 		let initialFill = initialHealth / maxHealth;
 		let healthBarEntry = {
 			gameObject: healthBarGo,
 			lastHitTime: Time.time,
 			healthbar: new Healthbar(healthBarGo.transform.GetChild(0), {
 				initialPercentDelta: initialFill,
-				fillColor: Theme.Green,
+				fillColor: Theme.green,
 				deathOnZero: false,
 			}),
 			maxHealth: maxHealth,
 		};
-		healthBarEntry.healthbar.ChangeDelayInSeconds = 0.12;
+		healthBarEntry.healthbar.changeDelayInSeconds = 0.12;
 
 		this.blockHealthBars.set(blockPos, healthBarEntry);
 		return healthBarEntry;

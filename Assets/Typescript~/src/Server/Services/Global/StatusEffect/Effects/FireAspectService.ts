@@ -26,16 +26,16 @@ export class FireAspectService implements OnStart {
 			if (event.damageType === this.statusMeta.damageType!) return;
 			if (!event.fromEntity) return;
 			if (!(event.fromEntity instanceof CharacterEntity)) return;
-			if (event.fromEntity.ClientId === undefined) return;
+			if (event.fromEntity.clientId === undefined) return;
 			const fireAspectStatusEffect = this.statusEffectService.GetStatusEffectForClient(
-				event.fromEntity.ClientId,
+				event.fromEntity.clientId,
 				StatusEffectType.FIRE_ASPECT,
 			);
 			if (!fireAspectStatusEffect) return;
 			this.HandleFireAspect(event.entity, event.fromEntity, fireAspectStatusEffect);
 		});
 		CoreServerSignals.EntityDeath.Connect((event) => {
-			this.entitiesOnFire.delete(event.entity.Id);
+			this.entitiesOnFire.delete(event.entity.id);
 		});
 	}
 
@@ -50,7 +50,7 @@ export class FireAspectService implements OnStart {
 	private HandleFireAspect(targetEntity: Entity, fromEntity: Entity, statusEffect: StatusEffectDto): void {
 		if (this.IsEntityOnFire(targetEntity)) return;
 		task.spawn(() => {
-			this.entitiesOnFire.set(targetEntity.Id, true);
+			this.entitiesOnFire.set(targetEntity.id, true);
 			let elapsed = 0;
 			while (elapsed < FireDuration && this.IsEntityOnFire(targetEntity)) {
 				task.wait(FireTickRate);
@@ -63,7 +63,7 @@ export class FireAspectService implements OnStart {
 					knockbackDirection: new Vector3(0, 0, 0),
 				});
 			}
-			this.entitiesOnFire.set(targetEntity.Id, false);
+			this.entitiesOnFire.set(targetEntity.id, false);
 		});
 	}
 
@@ -74,6 +74,6 @@ export class FireAspectService implements OnStart {
 	 * @returns Whether or not entity is **currently** on fire.
 	 */
 	public IsEntityOnFire(entity: Entity): boolean {
-		return this.entitiesOnFire.get(entity.Id) ?? false;
+		return this.entitiesOnFire.get(entity.id) ?? false;
 	}
 }

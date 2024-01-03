@@ -3,7 +3,7 @@ import { Signal } from "Shared/Util/Signal";
 export class MobileJoystickDriver {
 	private static inst: MobileJoystickDriver;
 
-	public readonly Changed = new Signal<[position: Vector3, phase: MobileJoystickPhase]>();
+	public readonly changed = new Signal<[position: Vector3, phase: MobileJoystickPhase]>();
 
 	private constructor() {
 		// UserInputService.InputProxy.OnMobileJoystickEvent((position, phase) => {

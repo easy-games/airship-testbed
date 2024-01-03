@@ -37,7 +37,7 @@ export class DestroyBedCommand extends ChatCommand {
 			if (!world) return;
 
 			Dependency<BlockInteractService>().DamageBlock(
-				player.Character,
+				player.character,
 				ItemUtil.GetItemDef(ItemType.DIAMOND_PICKAXE).breakBlock!,
 				bedState.position,
 			);

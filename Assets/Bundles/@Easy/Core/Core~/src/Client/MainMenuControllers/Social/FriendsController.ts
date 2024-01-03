@@ -24,14 +24,14 @@ import { FriendStatus } from "./SocketAPI";
 
 @Controller({})
 export class FriendsController implements OnStart {
-	public Friends: User[] = [];
-	public IncomingFriendRequests: User[] = [];
-	public OutgoingFriendRequests: User[] = [];
-	public FriendStatuses: FriendStatus[] = [];
+	public friends: User[] = [];
+	public incomingFriendRequests: User[] = [];
+	public outgoingFriendRequests: User[] = [];
+	public friendStatuses: FriendStatus[] = [];
 	private renderedFriendUids = new Set<string>();
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
-	public FriendStatusChanged = new Signal<FriendStatus>();
+	public friendStatusChanged = new Signal<FriendStatus>();
 	private customGameTitle: string | undefined;
 
 	constructor(
@@ -42,18 +42,18 @@ export class FriendsController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		const friendsContent = this.mainMenuController.Refs.GetValue("Social", "FriendsContent");
+		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
 
 		const cachedStatusesRaw = StateManager.GetString("main-menu:friend-statuses");
 		if (cachedStatusesRaw) {
-			this.FriendStatuses = DecodeJSON(cachedStatusesRaw);
+			this.friendStatuses = DecodeJSON(cachedStatusesRaw);
 			this.UpdateFriendsList();
 		}
 
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
-			if (Game.Context === CoreContext.MAIN_MENU) {
+			if (Game.context === CoreContext.MAIN_MENU) {
 				this.SendStatusUpdate();
 			}
 			this.FetchFriends();
@@ -71,18 +71,18 @@ export class FriendsController implements OnStart {
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
 			print("friend statuses: " + inspect(data));
 			for (const newFriend of data) {
-				const existing = this.FriendStatuses.find((f) => f.userId === newFriend.userId);
+				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
 					Object.assign(existing, newFriend);
-					this.FriendStatusChanged.Fire(existing);
+					this.friendStatusChanged.Fire(existing);
 				} else {
-					this.FriendStatuses.push(newFriend);
-					this.FriendStatusChanged.Fire(newFriend);
+					this.friendStatuses.push(newFriend);
+					this.friendStatusChanged.Fire(newFriend);
 				}
 			}
 			this.UpdateFriendsList();
 
-			const saveRaw = EncodeJSON(this.FriendStatuses);
+			const saveRaw = EncodeJSON(this.friendStatuses);
 			StateManager.SetString("main-menu:friend-statuses", saveRaw);
 		});
 
@@ -94,7 +94,7 @@ export class FriendsController implements OnStart {
 	}
 
 	public Setup(): void {
-		const statusTextInput = this.mainMenuController.Refs.GetValue("Social", "StatusInputField") as TMP_InputField;
+		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
 		const savedStatus = StateManager.GetString("social:status-text");
 		if (savedStatus) {
 			this.statusText = savedStatus;
@@ -114,7 +114,7 @@ export class FriendsController implements OnStart {
 	}
 
 	public GetFriendByUsername(username: string): User | undefined {
-		return this.Friends.find((f) => f.username.lower() === username.lower());
+		return this.friends.find((f) => f.username.lower() === username.lower());
 	}
 
 	public SetStatusText(text: string): void {
@@ -127,10 +127,10 @@ export class FriendsController implements OnStart {
 
 	public SendStatusUpdate(): void {
 		const status: Partial<FriendStatus> = {
-			userId: Game.LocalPlayer.userId,
-			status: Game.Context === CoreContext.GAME ? "in_game" : "online",
-			serverId: Game.ServerId,
-			gameId: Game.GameId,
+			userId: Game.localPlayer.userId,
+			status: Game.context === CoreContext.GAME ? "in_game" : "online",
+			serverId: Game.serverId,
+			gameId: Game.gameId,
 			metadata: {
 				statusText: this.statusText,
 				customGameTitle: this.customGameTitle,
@@ -150,12 +150,12 @@ export class FriendsController implements OnStart {
 			outgoingRequests: User[];
 			incomingRequests: User[];
 		};
-		this.Friends = data.friends;
-		this.IncomingFriendRequests = data.incomingRequests;
-		this.OutgoingFriendRequests = data.outgoingRequests;
+		this.friends = data.friends;
+		this.incomingFriendRequests = data.incomingRequests;
+		this.outgoingFriendRequests = data.outgoingRequests;
 
 		// auto accept
-		for (const user of this.IncomingFriendRequests) {
+		for (const user of this.incomingFriendRequests) {
 			Task.Spawn(() => {
 				const res = HttpManager.PostAsync(
 					AirshipUrl.GameCoordinator + "/friends/requests/self",
@@ -171,11 +171,11 @@ export class FriendsController implements OnStart {
 	}
 
 	public GetFriendGo(uid: string): GameObject | undefined {
-		return this.mainMenuController.Refs.GetValue("Social", "FriendsContent").transform.FindChild(uid)?.gameObject;
+		return this.mainMenuController.refs.GetValue("Social", "FriendsContent").transform.FindChild(uid)?.gameObject;
 	}
 
 	public HasOutgoingFriendRequest(userId: string): boolean {
-		return this.OutgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
+		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
 	}
 
 	public SendFriendRequest(usernameWithTag: string): boolean {
@@ -194,7 +194,7 @@ export class FriendsController implements OnStart {
 	}
 
 	public UpdateFriendsList(): void {
-		let sorted = this.FriendStatuses.sort((a, b) => {
+		let sorted = this.friendStatuses.sort((a, b) => {
 			let aOnline = a.status === "online" || a.status === "in_game";
 			let bOnline = b.status === "online" || b.status === "in_game";
 			if (aOnline && !bOnline) {
@@ -206,14 +206,14 @@ export class FriendsController implements OnStart {
 			return a.username < b.username;
 		});
 
-		const onlineCount = this.FriendStatuses.filter((f) => f.status === "online").size();
-		const onlineCountText = this.mainMenuController.Refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
-		onlineCountText.text = `(${onlineCount}/${this.FriendStatuses.size()})`;
+		const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
+		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
+		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
 		const mouse = new Mouse();
 
 		// Add & update
-		const friendsContent = this.mainMenuController.Refs.GetValue("Social", "FriendsContent");
+		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		let i = 0;
 		for (const friend of sorted) {
 			const friendBin = new Bin();
@@ -244,7 +244,7 @@ export class FriendsController implements OnStart {
 					if (button === PointerButton.RIGHT) {
 						print("right clicked " + friend.username);
 						this.rightClickMenuController.OpenRightClickMenu(
-							this.mainMenuController.MainContentCanvas,
+							this.mainMenuController.mainContentCanvas,
 							mouse.GetLocation(),
 							[
 								{
@@ -297,7 +297,7 @@ export class FriendsController implements OnStart {
 		// Remove
 		let removed = new Array<string>();
 		for (const renderedUid of this.renderedFriendUids) {
-			if (this.FriendStatuses.find((f) => f.userId === renderedUid) === undefined) {
+			if (this.friendStatuses.find((f) => f.userId === renderedUid) === undefined) {
 				const go = friendsContent.transform.FindChild(renderedUid);
 				if (go) {
 					this.friendBinMap.get(renderedUid)?.Clean();
@@ -313,7 +313,7 @@ export class FriendsController implements OnStart {
 	}
 
 	public GetFriendStatus(uid: string): FriendStatus | undefined {
-		return this.FriendStatuses.find((f) => f.userId === uid);
+		return this.friendStatuses.find((f) => f.userId === uid);
 	}
 
 	public UpdateFriendStatusUI(

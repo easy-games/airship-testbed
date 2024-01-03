@@ -8,12 +8,12 @@ export declare class Keyboard {
      * The `AnyKeyDown` signal will fire when any already-registered key is pressed. This means that
      * it will only fire for keys that are already being listened for via `OnKeyDown`.
      */
-    readonly AnyKeyDown: Signal<[event: KeySignal]>;
+    readonly anyKeyDown: Signal<[event: KeySignal]>;
     /**
      * The `AnyKeyDown` signal will fire when any already-registered key is released. This means that
      * it will only fire for keys that are already being listened for via `OnKeyUp`.
      */
-    readonly AnyKeyUp: Signal<[event: KeySignal]>;
+    readonly anyKeyUp: Signal<[event: KeySignal]>;
     constructor();
     private TrackDisconnect;
     OnKeyDown(key: KeyCode, callback: (event: KeySignal) => void, priority?: SignalPriority): () => void;

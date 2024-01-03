@@ -11,7 +11,7 @@ import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Dependency } from "@easy-games/flamework-core";
 
 export default class GameManager extends AirshipBehaviour {
-	public SpawnPosition!: Transform;
+	public spawnPosition!: Transform;
 	private bin = new Bin();
 
 	public override OnAwake(): void {
@@ -25,17 +25,17 @@ export default class GameManager extends AirshipBehaviour {
 				Dependency<EntityService>().SpawnPlayerEntity(
 					player,
 					EntityPrefabType.HUMAN,
-					this.SpawnPosition.position,
+					this.spawnPosition.position,
 				);
 			});
 			this.bin.Add(
 				CoreServerSignals.EntityDeath.Connect((event) => {
 					event.respawnTime = 0;
-					if (event.entity.Player) {
+					if (event.entity.player) {
 						Dependency<EntityService>().SpawnPlayerEntity(
-							event.entity.Player,
+							event.entity.player,
 							EntityPrefabType.HUMAN,
-							this.SpawnPosition.position,
+							this.spawnPosition.position,
 						);
 					}
 				}),

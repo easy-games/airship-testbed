@@ -43,7 +43,7 @@ export class AbilityUIController implements OnStart {
 		public readonly coreUIController: CoreUIController,
 		public readonly abilityBindingController: AbilityBindingController,
 	) {
-		const go = this.coreUIController.Refs.GetValue("Apps", "Abilities");
+		const go = this.coreUIController.refs.GetValue("Apps", "Abilities");
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = true; // Enable if using abilities
 
@@ -174,7 +174,7 @@ export class AbilityUIController implements OnStart {
 		let disconnectTimer: (() => void) | undefined;
 
 		CoreClientSignals.AbilityChargeStarted.Connect((event) => {
-			if (event.clientId === Game.LocalPlayer.clientId) {
+			if (event.clientId === Game.localPlayer.clientId) {
 				const chargingEvent = event.chargingAbilityDto;
 
 				const startTime = chargingEvent.timeStart;
@@ -194,7 +194,7 @@ export class AbilityUIController implements OnStart {
 		});
 
 		CoreClientSignals.AbilityChargeEnded.Connect((event) => {
-			if (event.clientId === Game.LocalPlayer.clientId) {
+			if (event.clientId === Game.localPlayer.clientId) {
 				if (event.chargingAbilityDto.endState === ChargingAbilityEndedState.Cancelled) {
 					this.castbar.SetValue(0);
 				}
@@ -212,7 +212,7 @@ export class AbilityUIController implements OnStart {
 				let currIdx = idx;
 				this.UpdateAbilityBarSlot(currIdx, ability.ToAbilityState(), undefined);
 				bin.Add(
-					ability.BindingStateChanged.Connect((event) => {
+					ability.bindingStateChanged.Connect((event) => {
 						this.UpdateAbilityBarSlot(currIdx, event.newState, event.oldState);
 					}),
 				);

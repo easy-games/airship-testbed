@@ -29,8 +29,8 @@ export declare class CharacterEntityAnimator {
     private defaultIdleAnimTP;
     private readonly flashTransitionDuration;
     private readonly flashOnTime;
-    readonly WorldmodelAnimancerComponent: AnimancerComponent;
-    readonly DefaultTransitionTime: number;
+    readonly worldmodelAnimancerComponent: AnimancerComponent;
+    readonly defaultTransitionTime: number;
     protected bin: Bin;
     private flinchClipFPS?;
     private deathClipFPS?;
@@ -47,7 +47,7 @@ export declare class CharacterEntityAnimator {
     private steppedOnBlockType;
     private lastFootstepSoundTime;
     private deathVfx?;
-    BaseFootstepVolumeScale: number;
+    baseFootstepVolumeScale: number;
     private itemAnimStates;
     constructor(entity: Entity, refs: EntityReferences);
     private Log;

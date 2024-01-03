@@ -12,7 +12,7 @@ export declare namespace Duration {
  */
 export declare class Duration {
     readonly totalSeconds: number;
-    static readonly ZERO: Duration;
+    static readonly zero: Duration;
     private constructor();
     Add(time: Duration): Duration;
     Sub(time: Duration): Duration;

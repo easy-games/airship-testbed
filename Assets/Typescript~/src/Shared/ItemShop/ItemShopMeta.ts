@@ -46,10 +46,10 @@ export interface ItemShop {
 
 export class ItemShopMeta {
 	public static GetShopElementFromItemType(itemType: ItemType): ShopElement | undefined {
-		return this.DefaultItems.shopItems.find((x) => x.itemType === itemType);
+		return this.defaultItems.shopItems.find((x) => x.itemType === itemType);
 	}
 
-	public static DefaultItems: ItemShop = {
+	public static defaultItems: ItemShop = {
 		shopItems: [
 			{
 				itemType: ItemType.WHITE_WOOL,

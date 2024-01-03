@@ -18,7 +18,7 @@ export declare class Signal<T extends unknown[] | unknown> {
     private debugLogging;
     private trackYielding;
     private readonly connections;
-    DebugGameObject: boolean;
+    debugGameObject: boolean;
     /**
      * Connect a callback function to the signal.
      *

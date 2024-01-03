@@ -22,7 +22,7 @@ export class SocketController implements OnStart {
 				this.Connect();
 			});
 		}
-		this.authController.OnAuthenticated.Connect(() => {
+		this.authController.onAuthenticated.Connect(() => {
 			Task.Spawn(() => {
 				this.Connect();
 			});

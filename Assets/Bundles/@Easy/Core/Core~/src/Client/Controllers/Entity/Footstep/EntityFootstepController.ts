@@ -29,11 +29,11 @@ export class EntityFootstepController implements OnStart {
 					if (cooldown === -1) {
 						continue;
 					}
-					const lastTime = this.entityLastFootstepTime.get(entity.Id) || 0;
+					const lastTime = this.entityLastFootstepTime.get(entity.id) || 0;
 					if (currentTime - lastTime < cooldown) {
 						continue;
 					}
-					this.entityLastFootstepTime.set(entity.Id, currentTime);
+					this.entityLastFootstepTime.set(entity.id, currentTime);
 
 					let volumeScale = entity.GetState() === EntityState.Crouching ? 0.3 : 1;
 					if (!entity.IsLocalCharacter()) {
@@ -41,7 +41,7 @@ export class EntityFootstepController implements OnStart {
 					}
 					Profiler.BeginSample("PlayFootstepSound");
 					try {
-						entity.Animator.PlayFootstepSound(volumeScale, camPos);
+						entity.animator.PlayFootstepSound(volumeScale, camPos);
 					} catch (err) {
 						Debug.LogError("footstep error: " + err);
 					}

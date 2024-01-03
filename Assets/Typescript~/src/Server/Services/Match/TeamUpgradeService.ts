@@ -48,7 +48,7 @@ export class TeamUpgradeService implements OnStart {
 			this.InitializeTeamUpgrades();
 		});
 		/* Handle incoming upgrade requests. */
-		Network.ClientToServer.TeamUpgrade.UpgradeRequest.Server.SetCallback((clientId, upgradeType, tier) => {
+		Network.ClientToServer.TeamUpgrade.UpgradeRequest.server.SetCallback((clientId, upgradeType, tier) => {
 			const player = this.playerService.GetPlayerFromClientId(clientId);
 			if (!player) return false;
 
@@ -62,7 +62,7 @@ export class TeamUpgradeService implements OnStart {
 				const teamUpgradeMap = this.teamUpgradeMap.get(team);
 				if (!teamUpgradeMap) return;
 				const dtos = Object.values(teamUpgradeMap);
-				Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.Server.FireClient(event.player.clientId, dtos);
+				Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.server.FireClient(event.player.clientId, dtos);
 			});
 		});
 	}
@@ -71,7 +71,7 @@ export class TeamUpgradeService implements OnStart {
 	private ApplyPersistentUpgradeEffects(): void {
 		/* Damage. */
 		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			const fromTeam = event.fromEntity?.Player?.GetTeam();
+			const fromTeam = event.fromEntity?.player?.GetTeam();
 			if (!fromTeam) return;
 			const upgradeMapForTeam = this.teamUpgradeMap.get(fromTeam);
 			if (!upgradeMapForTeam) return;
@@ -89,7 +89,7 @@ export class TeamUpgradeService implements OnStart {
 		});
 		/* Armor protection. */
 		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			const entityTeam = event.entity.Player?.GetTeam();
+			const entityTeam = event.entity.player?.GetTeam();
 			if (!entityTeam) return;
 			const upgradeMapForTeam = this.teamUpgradeMap.get(entityTeam);
 			if (!upgradeMapForTeam) return;
@@ -278,7 +278,7 @@ export class TeamUpgradeService implements OnStart {
 		});
 		const clientIds = SetUtil.ToArray(purchaseForTeam.GetPlayers()).mapFiltered((player) => player.clientId);
 		clientIds.forEach((clientId) => {
-			Network.ServerToClient.TeamUpgrade.UpgradeProcessed.Server.FireClient(
+			Network.ServerToClient.TeamUpgrade.UpgradeProcessed.server.FireClient(
 				clientId,
 				player.clientId,
 				upgradeType,

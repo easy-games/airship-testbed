@@ -23,11 +23,11 @@ export interface PlaceBlockConfig {
 }
 
 export class World {
-	public static SKYBOX = "@Easy/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png";
+	public static skybox = "@Easy/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png";
 
-	public OnVoxelPlaced = new Signal<[pos: Vector3, voxel: number]>();
-	public OnFinishedLoading = new Signal<void>();
-	public OnFinishedReplicatingChunksFromServer = new Signal<void>();
+	public onVoxelPlaced = new Signal<[pos: Vector3, voxel: number]>();
+	public onFinishedLoading = new Signal<void>();
+	public onFinishedReplicatingChunksFromServer = new Signal<void>();
 	private finishedLoading = false;
 	private finishedReplicatingChunksFromServer = false;
 
@@ -37,28 +37,28 @@ export class World {
 			// print("VoxelPlaced (" + x + "," + y + "," + z + ")");
 			BlockDataAPI.ClearBlockData(vec);
 			voxel = VoxelWorld.VoxelDataToBlockId(voxel);
-			this.OnVoxelPlaced.Fire(vec, voxel);
+			this.onVoxelPlaced.Fire(vec, voxel);
 		});
 
 		if (!voxelWorld.finishedLoading) {
 			voxelWorld.OnFinishedLoading(() => {
 				print("World finished loading!");
 				this.finishedLoading = true;
-				this.OnFinishedLoading.Fire();
+				this.onFinishedLoading.Fire();
 			});
 		} else {
 			this.finishedLoading = true;
-			this.OnFinishedLoading.Fire();
+			this.onFinishedLoading.Fire();
 		}
 
 		if (!voxelWorld.finishedReplicatingChunksFromServer) {
 			voxelWorld.OnFinishedReplicatingChunksFromServer(() => {
 				this.finishedReplicatingChunksFromServer = true;
-				this.OnFinishedReplicatingChunksFromServer.Fire();
+				this.onFinishedReplicatingChunksFromServer.Fire();
 			});
 		} else {
 			this.finishedReplicatingChunksFromServer = true;
-			this.OnFinishedReplicatingChunksFromServer.Fire();
+			this.onFinishedReplicatingChunksFromServer.Fire();
 		}
 	}
 
@@ -70,7 +70,7 @@ export class World {
 		if (this.finishedLoading) return;
 
 		return new Promise<void>((resolve) => {
-			this.OnFinishedLoading.Wait();
+			this.onFinishedLoading.Wait();
 			resolve();
 		});
 	}
@@ -83,7 +83,7 @@ export class World {
 		if (this.finishedReplicatingChunksFromServer) return;
 
 		return new Promise<void>((resolve) => {
-			this.OnFinishedReplicatingChunksFromServer.Wait();
+			this.onFinishedReplicatingChunksFromServer.Wait();
 			resolve();
 		});
 	}
@@ -121,7 +121,7 @@ export class World {
 	 * @returns BlockMeta under the position.
 	 */
 	public GetBlockBelowMeta(pos: Vector3): BlockDef | undefined {
-		return this.GetBlockBelow(pos)?.ItemDef?.block;
+		return this.GetBlockBelow(pos)?.itemDef?.block;
 	}
 
 	public RaycastBlockBelow(startPos: Vector3, maxDistance = 10): BlockDef | undefined {
@@ -129,7 +129,7 @@ export class World {
 			new Vector3(0, 0.1, 0),
 		);
 		const block = this.GetBlockAt(raycastPoint);
-		return block?.ItemDef?.block;
+		return block?.itemDef?.block;
 	}
 
 	/**
@@ -200,9 +200,9 @@ export class World {
 		}
 
 		if (RunCore.IsServer()) {
-			CoreNetwork.ServerToClient.BlockPlace.Server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
+			CoreNetwork.ServerToClient.BlockPlace.server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
 		} else {
-			if (config?.placedByEntityId === Game.LocalPlayer.Character?.Id) {
+			if (config?.placedByEntityId === Game.localPlayer.character?.id) {
 				// Client predicted block place event
 				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
@@ -210,7 +210,7 @@ export class World {
 
 				const block = new Block(blockVoxelId, this);
 				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(pos, block, Game.LocalPlayer.Character, false),
+					new BlockPlaceClientSignal(pos, block, Game.localPlayer.character, false),
 				);
 			}
 		}
@@ -242,7 +242,7 @@ export class World {
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 
 		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
-		let isLocalPrediction = config?.placedByEntityId === Game.LocalPlayer.Character?.Id;
+		let isLocalPrediction = config?.placedByEntityId === Game.localPlayer.character?.id;
 
 		positions.forEach((position, i) => {
 			if (config?.blockData) {
@@ -265,7 +265,7 @@ export class World {
 				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
 					.BlockPlaceClientSignal;
 				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(position, blocks[i], Game.LocalPlayer.Character, true),
+					new BlockPlaceClientSignal(position, blocks[i], Game.localPlayer.character, true),
 				);
 			}
 		});

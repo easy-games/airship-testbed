@@ -12,14 +12,14 @@ export class StatusEffectController implements OnStart {
 	private statusEffectMap = new Map<number, StatusEffectDto[]>();
 
 	OnStart(): void {
-		Network.ServerToClient.StatusEffectSnapshot.Client.OnServerEvent((snapshot) => {
+		Network.ServerToClient.StatusEffectSnapshot.client.OnServerEvent((snapshot) => {
 			this.HandleStatusEffectSnapshot(snapshot);
 		});
 
-		Network.ServerToClient.StatusEffectAdded.Client.OnServerEvent((clientId, statusEffectType, tier) => {
+		Network.ServerToClient.StatusEffectAdded.client.OnServerEvent((clientId, statusEffectType, tier) => {
 			this.HandleStatusEffectAdded(clientId, statusEffectType, tier);
 		});
-		Network.ServerToClient.StatusEffectRemoved.Client.OnServerEvent((clientId, statusEffectType) => {
+		Network.ServerToClient.StatusEffectRemoved.client.OnServerEvent((clientId, statusEffectType) => {
 			this.HandleStatusEffectRemoved(clientId, statusEffectType);
 		});
 
@@ -36,7 +36,7 @@ export class StatusEffectController implements OnStart {
 	 * @returns The status effect data transfer object, if it exists.
 	 */
 	public GetStatusEffectForLocalClient(statusEffect: StatusEffectType): StatusEffectDto | undefined {
-		const statusEffects = this.statusEffectMap.get(Game.LocalPlayer.clientId);
+		const statusEffects = this.statusEffectMap.get(Game.localPlayer.clientId);
 		if (!statusEffects) return undefined;
 		return statusEffects.find((effect) => effect.statusEffectType === statusEffect);
 	}
@@ -61,7 +61,7 @@ export class StatusEffectController implements OnStart {
 	 * @returns All **currently active** status effects for local client.
 	 */
 	public GetAllStatusEffectsForLocalClient(): StatusEffectDto[] {
-		return this.GetAllStatusEffectsForClient(Game.LocalPlayer.clientId);
+		return this.GetAllStatusEffectsForClient(Game.localPlayer.clientId);
 	}
 
 	/**

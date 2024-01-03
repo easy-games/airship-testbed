@@ -295,7 +295,7 @@
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>35</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>0.8</Brightness>
   </Block>
   <Block>
     <Id>RED_WOOL</Id>

@@ -261,7 +261,7 @@ MonoBehaviour:
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 0,8,-1.5
+      serializedValue: 0,10,-3
       serializedObject: {fileID: 0}
       modified: 1
 --- !u!1001 &1307679726

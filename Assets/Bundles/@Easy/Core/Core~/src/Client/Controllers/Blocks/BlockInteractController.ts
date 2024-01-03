@@ -32,7 +32,7 @@ export class BlockInteractController {
 
 		this.localEntity.AddToMoveData("HitBlock", voxelPos);
 
-		if (entity.Player && breakBlock) {
+		if (entity.player && breakBlock) {
 			//Check to see if we can actually do damage here
 			const damage = WorldAPI.CalculateBlockHitDamage(entity, block, voxelPos, breakBlock);
 			if (damage === 0) {
@@ -40,7 +40,7 @@ export class BlockInteractController {
 			}
 
 			//Do the actual damage
-			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.defaultVoxelHealth;
 			const newHealth = math.max(health - damage, 0);
 
 			BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
@@ -55,7 +55,7 @@ export class BlockInteractController {
 				//Destroy block
 				world.DeleteBlock(voxelPos);
 				if (showHealthbars) {
-					this.blockHealth.VisualizeBlockBreak(voxelPos, block.RuntimeBlockId, true, damage);
+					this.blockHealth.VisualizeBlockBreak(voxelPos, block.runtimeBlockId, true, damage);
 				}
 			} else {
 				//Damage block
@@ -70,14 +70,14 @@ export class BlockInteractController {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return;
 
-		if (entity.Player && tillBlock) {
+		if (entity.player && tillBlock) {
 			const above = world.GetBlockAbove(voxelPos);
 			if (above.IsCrop()) {
 				return;
 			}
 
 			const block = world.GetBlockAt(voxelPos);
-			const tillable = block.ItemDef?.block?.tillable;
+			const tillable = block.itemDef?.block?.tillable;
 			if (!tillable) {
 				return;
 			}
@@ -85,7 +85,7 @@ export class BlockInteractController {
 			this.localEntity.AddToMoveData("TillBlock", voxelPos);
 
 			world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, {
-				placedByEntityId: entity.Id,
+				placedByEntityId: entity.id,
 			});
 		}
 	}

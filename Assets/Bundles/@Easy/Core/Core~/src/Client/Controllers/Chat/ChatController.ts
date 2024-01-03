@@ -24,19 +24,19 @@ import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
 
 class ChatMessageElement {
-	public CanvasGroup: CanvasGroup;
-	public ShownAt = os.clock();
-	public Shown = true;
+	public canvasGroup: CanvasGroup;
+	public shownAt = os.clock();
+	public shown = true;
 	private hideBin = new Bin();
 
 	constructor(public readonly gameObject: GameObject, public time: number) {
-		this.CanvasGroup = gameObject.GetComponent<CanvasGroup>();
+		this.canvasGroup = gameObject.GetComponent<CanvasGroup>();
 	}
 
 	public Hide(): void {
-		if (!this.Shown) return;
-		this.Shown = false;
-		const t = this.CanvasGroup.TweenCanvasGroupAlpha(0, 0.2);
+		if (!this.shown) return;
+		this.shown = false;
+		const t = this.canvasGroup.TweenCanvasGroupAlpha(0, 0.2);
 		this.hideBin.Add(() => {
 			if (!t.IsDestroyed()) {
 				t.Cancel();
@@ -45,11 +45,11 @@ class ChatMessageElement {
 	}
 
 	public Show(): void {
-		this.ShownAt = os.clock();
-		if (this.Shown) return;
-		this.Shown = true;
+		this.shownAt = os.clock();
+		if (this.shown) return;
+		this.shown = true;
 		this.hideBin.Clean();
-		this.CanvasGroup.alpha = 1;
+		this.canvasGroup.alpha = 1;
 	}
 
 	public Destroy(): void {
@@ -84,7 +84,7 @@ export class ChatController implements OnStart {
 		private readonly directMessageController: DirectMessageController,
 		private readonly friendsController: FriendsController,
 	) {
-		const refs = this.coreUIController.Refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
+		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
@@ -103,7 +103,7 @@ export class ChatController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text, senderClientId) => {
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((text, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
@@ -178,7 +178,7 @@ export class ChatController implements OnStart {
 		});
 
 		// Sink key events when selected:
-		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (this.selected) {
 				if (
 					event.keyCode !== KeyCode.Return &&
@@ -257,13 +257,13 @@ export class ChatController implements OnStart {
 		if (commandData) {
 			const command = this.commands.get(commandData.label);
 			if (command) {
-				command.Execute(Game.LocalPlayer, commandData.args);
+				command.Execute(Game.localPlayer, commandData.args);
 				sendChatToServer = false;
 			}
 		}
 
 		if (sendChatToServer) {
-			CoreNetwork.ClientToServer.SendChatMessage.Client.FireServer(message);
+			CoreNetwork.ClientToServer.SendChatMessage.client.FireServer(message);
 		}
 	}
 

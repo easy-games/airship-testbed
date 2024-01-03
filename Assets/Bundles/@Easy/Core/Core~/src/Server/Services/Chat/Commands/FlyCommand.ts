@@ -8,13 +8,13 @@ export class FlyCommand extends ChatCommand {
 		super("fly");
 	}
 	public Execute(player: Player, args: string[]): void {
-		if (player.Character) {
-			const newValue = !player.Character.EntityDriver.IsAllowFlight();
-			player.Character.EntityDriver.SetAllowFlight(newValue);
+		if (player.character) {
+			const newValue = !player.character.entityDriver.IsAllowFlight();
+			player.character.entityDriver.SetAllowFlight(newValue);
 			player.SendMessage(
 				newValue
-					? ColorUtil.ColoredText(Theme.Green, "Fly mode enabled.")
-					: ColorUtil.ColoredText(Theme.Red, "Fly mode disabled."),
+					? ColorUtil.ColoredText(Theme.green, "Fly mode enabled.")
+					: ColorUtil.ColoredText(Theme.red, "Fly mode disabled."),
 			);
 		}
 	}

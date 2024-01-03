@@ -24,14 +24,14 @@ export class MeleeHeldItem extends HeldItem {
 	// private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
-		if (this.Entity.IsDead()) return;
+		if (this.entity.IsDead()) return;
 
 		//Don't do the default use animations
 		this.playEffectsOnUse = false;
 		super.OnUseClient(useIndex);
 
 		//Animation
-		this.Entity.Animator.PlayItemUseAnim(this.animationIndex, {
+		this.entity.animator.PlayItemUseAnim(this.animationIndex, {
 			fadeInDuration: 0.05,
 			fadeOutDuration: 0.1,
 		});
@@ -43,14 +43,14 @@ export class MeleeHeldItem extends HeldItem {
 		}
 
 		//Play the items use effect
-		const isFirstPerson = this.Entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
+		const isFirstPerson = this.entity.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
 		if (meleeData.onUseVFX) {
 			if (isFirstPerson) {
 				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
 				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
 					this.currentUseVFX.transform.SetParent(
-						Dependency<ViewmodelController>().BoneTransforms.spineMiddle,
+						Dependency<ViewmodelController>().boneTransforms.spineMiddle,
 					);
 					this.currentUseVFX.transform.localRotation = Quaternion.identity;
 					this.currentUseVFX.transform.localPosition = Vector3.zero;
@@ -59,12 +59,12 @@ export class MeleeHeldItem extends HeldItem {
 				//Spawn third person effect on the root
 				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(
 					meleeData.onUseVFX[this.animationIndex],
-					this.Entity.Model.transform.position,
-					this.Entity.Model.transform.eulerAngles,
+					this.entity.model.transform.position,
+					this.entity.model.transform.eulerAngles,
 				);
 				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
-					this.currentUseVFX.transform.SetParent(this.Entity.Model.transform);
+					this.currentUseVFX.transform.SetParent(this.entity.model.transform);
 				}
 			}
 			if (this.currentUseVFX) {
@@ -115,7 +115,7 @@ export class MeleeHeldItem extends HeldItem {
 
 	private ClientPredictDamage(meleeData: MeleeItemDef) {
 		//Only local player should do collisions checks
-		if (this.Entity.IsLocalCharacter()) {
+		if (this.entity.IsLocalCharacter()) {
 			Profiler.BeginSample("MeleeClientEffect");
 			// const entityDriver = this.entity.GetEntityDriver();
 			// entityDriver.UpdateSyncTick();
@@ -133,7 +133,7 @@ export class MeleeHeldItem extends HeldItem {
 						Quaternion.LookRotation(data.hitDirection).eulerAngles,
 					);
 					if (effectGO) {
-						effectGO.transform.SetParent(data.hitEntity.Model.transform);
+						effectGO.transform.SetParent(data.hitEntity.model.transform);
 					}
 				}
 			}
@@ -149,7 +149,7 @@ export class MeleeHeldItem extends HeldItem {
 					effects[effectI] = effectGO;
 					effectI++;
 				}
-				DamageUtils.AddAttackStun(this.Entity, meleeData.damage, false, effects);
+				DamageUtils.AddAttackStun(this.entity, meleeData.damage, false, effects);
 			} else {
 				this.Log("No client hits found");
 			}
@@ -160,7 +160,7 @@ export class MeleeHeldItem extends HeldItem {
 	override OnUseServer(useIndex: number) {
 		super.OnUseServer(useIndex);
 
-		if (this.Entity.IsDead()) return;
+		if (this.entity.IsDead()) return;
 
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
@@ -190,7 +190,7 @@ export class MeleeHeldItem extends HeldItem {
 			}
 			Dependency<DamageService>().InflictDamage(data.hitEntity, damage, {
 				damageType: meleeData?.damageType ?? DamageType.SWORD,
-				fromEntity: this.Entity,
+				fromEntity: this.entity,
 				knockbackDirection: data.knockbackDirection,
 				criticalHit: data.criticalHit,
 			});
@@ -205,12 +205,12 @@ export class MeleeHeldItem extends HeldItem {
 		// let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
 		this.Log("scanning for hits");
-		let hits = this.ScanBox(closeBox, [], Theme.Green, true);
+		let hits = this.ScanBox(closeBox, [], Theme.green, true);
 		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			let farHits = this.ScanBox(
 				farBox,
-				hits.map((x) => x.hitEntity.Id),
-				Theme.Red,
+				hits.map((x) => x.hitEntity.id),
+				Theme.red,
 				false,
 			);
 			hits = [...hits, ...farHits];
@@ -228,8 +228,8 @@ export class MeleeHeldItem extends HeldItem {
 		const lookVec = this.lookVector;
 		box = box.add(new Vector3(0, 0, 0.5));
 		let halfExtents = new Vector3(box.x / 2, box.y / 2, box.z / 2);
-		let headOffset = this.Entity.GetFirstPersonHeadOffset();
-		const t = this.Entity.Model.transform;
+		let headOffset = this.entity.GetFirstPersonHeadOffset();
+		const t = this.entity.model.transform;
 		let colliderWorldPos = t.position.add(headOffset).add(lookVec.mul(-0.5 + box.z / 2));
 
 		let rotation = Quaternion.LookRotation(lookVec);
@@ -257,24 +257,24 @@ export class MeleeHeldItem extends HeldItem {
 				//Box check doesn't care about non entities
 				continue;
 			}
-			this.Log("hit entity: " + targetEntity.Id);
-			if (targetEntity === this.Entity) {
+			this.Log("hit entity: " + targetEntity.id);
+			if (targetEntity === this.entity) {
 				//Hit Self
 				this.Log("hit self");
 				continue;
 			}
-			if (ignoreEntityIds.includes(targetEntity.Id)) {
-				this.Log("ignored entity: " + targetEntity.Id);
+			if (ignoreEntityIds.includes(targetEntity.id)) {
+				this.Log("ignored entity: " + targetEntity.id);
 				continue;
 			}
 
-			if (!this.Entity.CanDamage(targetEntity)) {
+			if (!this.entity.CanDamage(targetEntity)) {
 				this.Log("cant damage");
 				continue;
 			}
 
 			//Raycast to the target to find a more concrete collisions
-			const headPosition = this.Entity.GetHeadPosition();
+			const headPosition = this.entity.GetHeadPosition();
 			let rayStart = headPosition;
 			let rayEnd = targetEntity.GetMiddlePosition();
 			let hitDirection = rayEnd.sub(rayStart).normalized;
@@ -298,13 +298,13 @@ export class MeleeHeldItem extends HeldItem {
 				//Look for entities and blocking colliders
 				const hitEntity = Entity.FindByCollider(hitInfo.collider);
 				if (hitEntity) {
-					if (hitEntity.Id === this.Entity.Id) {
+					if (hitEntity.id === this.entity.id) {
 						//Hit self, skip
 						this.Log("skipping self");
 						continue;
-					} else if (hitEntity.Id === targetEntity.Id) {
+					} else if (hitEntity.id === targetEntity.id) {
 						//Raycast hit the target entity
-						let knockbackDirection = this.Entity.GameObject.transform.forward;
+						let knockbackDirection = this.entity.gameObject.transform.forward;
 						if (RunUtil.IsServer()) {
 							knockbackDirection = new Vector3(knockbackDirection.x, 1, knockbackDirection.z);
 						}
@@ -363,7 +363,7 @@ export class MeleeHeldItem extends HeldItem {
 
 		for (let collision of collisionData) {
 			if (allowCriticalHit) {
-				const hitHeight = collision.hitPosition.sub(collision.hitEntity.Model.transform.position).magnitude;
+				const hitHeight = collision.hitPosition.sub(collision.hitEntity.model.transform.position).magnitude;
 				if (collision.hitEntity.IsHeadshotHitHeight(hitHeight)) {
 					collision.criticalHit = true;
 				}

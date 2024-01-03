@@ -44,9 +44,9 @@ export class DirectMessageController implements OnStart {
 	private doScrollToBottom = 0;
 	private inputFieldSelected = false;
 
-	public LastMessagedFriend: FriendStatus | undefined;
+	public lastMessagedFriend: FriendStatus | undefined;
 
-	public OnDirectMessageReceived = new Signal<DirectMessage>();
+	public onDirectMessageReceived = new Signal<DirectMessage>();
 
 	private xPos = -320;
 	private yPos = -280;
@@ -71,7 +71,7 @@ export class DirectMessageController implements OnStart {
 			}
 
 			messages.push(data);
-			this.OnDirectMessageReceived.Fire(data);
+			this.onDirectMessageReceived.Fire(data);
 
 			// sound
 			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/MessageReceived.wav", {
@@ -87,20 +87,20 @@ export class DirectMessageController implements OnStart {
 			}
 
 			// in-game chat
-			if (Game.Context === CoreContext.GAME) {
+			if (Game.context === CoreContext.GAME) {
 				const friend = this.friendsController.GetFriendStatus(data.sender);
 				if (!friend) return;
 
 				let text =
-					ColorUtil.ColoredText(Theme.Pink, "From ") +
-					ColorUtil.ColoredText(Theme.White, friend.username) +
-					ColorUtil.ColoredText(Theme.Gray, ": " + data.text);
+					ColorUtil.ColoredText(Theme.pink, "From ") +
+					ColorUtil.ColoredText(Theme.white, friend.username) +
+					ColorUtil.ColoredText(Theme.gray, ": " + data.text);
 				Dependency<ChatController>().RenderChatMessage(text);
 			}
 
 			if (data.sender !== "") {
 				const friend = this.friendsController.GetFriendStatus(data.sender);
-				this.LastMessagedFriend = friend;
+				this.lastMessagedFriend = friend;
 			}
 
 			StateManager.SetString("direct-messages:" + data.sender, EncodeJSON(messages));
@@ -128,7 +128,7 @@ export class DirectMessageController implements OnStart {
 			AssetBridge.Instance.LoadAsset(
 				"@Easy/Core/Shared/Resources/Prefabs/UI/Messages/DirectMessageWindow.prefab",
 			),
-			this.mainMenuController.SocialMenuGroup.transform,
+			this.mainMenuController.socialMenuGroup.transform,
 		);
 		this.windowGo.GetComponent<RectTransform>().anchoredPosition = new Vector2(this.xPos, this.yPos);
 
@@ -164,7 +164,7 @@ export class DirectMessageController implements OnStart {
 			this.inputFieldSelected = false;
 		});
 		const keyboard = new Keyboard();
-		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.inputFieldSelected) {
 				if (
 					event.keyCode !== KeyCode.Return &&
@@ -188,7 +188,7 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public GetFriendLastMessaged(): FriendStatus | undefined {
-		return this.LastMessagedFriend;
+		return this.lastMessagedFriend;
 	}
 
 	public SendDirectMessage(uid: string, message: string): void {
@@ -209,7 +209,7 @@ export class DirectMessageController implements OnStart {
 		);
 		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
-			sender: Game.LocalPlayer.userId,
+			sender: Game.localPlayer.userId,
 			sentAt: os.time(),
 			text: message,
 		};
@@ -220,17 +220,17 @@ export class DirectMessageController implements OnStart {
 			pitch: 1.5,
 		});
 
-		if (Game.Context === CoreContext.GAME) {
+		if (Game.context === CoreContext.GAME) {
 			let text =
-				ColorUtil.ColoredText(Theme.Pink, "To ") +
-				ColorUtil.ColoredText(Theme.White, status.username) +
-				ColorUtil.ColoredText(Theme.Gray, ": " + message);
+				ColorUtil.ColoredText(Theme.pink, "To ") +
+				ColorUtil.ColoredText(Theme.white, status.username) +
+				ColorUtil.ColoredText(Theme.gray, ": " + message);
 			Dependency<ChatController>().RenderChatMessage(text);
 		}
 	}
 
 	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean): void {
-		let outgoing = dm.sender === Game.LocalPlayer.userId;
+		let outgoing = dm.sender === Game.localPlayer.userId;
 
 		let messageGo: GameObject;
 		if (outgoing) {
@@ -277,14 +277,14 @@ export class DirectMessageController implements OnStart {
 		}
 		print("open.3");
 		this.openWindowBin.Add(
-			this.OnDirectMessageReceived.Connect((dm) => {
+			this.onDirectMessageReceived.Connect((dm) => {
 				if (dm.sender === uid) {
 					this.RenderChatMessage(dm, true);
 				}
 			}),
 		);
 		this.openWindowBin.Add(
-			this.friendsController.FriendStatusChanged.Connect((status) => {
+			this.friendsController.friendStatusChanged.Connect((status) => {
 				if (status.userId === uid) {
 					this.UpdateOfflineNotice(status);
 					this.friendsController.UpdateFriendStatusUI(status, headerUserRefs, {
