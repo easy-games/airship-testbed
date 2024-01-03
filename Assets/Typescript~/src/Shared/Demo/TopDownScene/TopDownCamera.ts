@@ -1,7 +1,5 @@
 import { CameraController } from "@Easy/Core/Client/Controllers/Camera/CameraController";
-import { StaticCameraMode } from "@Easy/Core/Client/Controllers/Camera/DefaultCameraModes/StaticCameraMode";
-import { CharacterCameraMode } from "@Easy/Core/Client/Controllers/Character/CharacterCameraMode";
-import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
+import { CrosshairController } from "@Easy/Core/Client/Controllers/Crosshair/CrosshairController";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
@@ -44,10 +42,8 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 	public override OnEnabled(): void {
 		if (RunUtil.IsServer()) return;
 
-		Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.NONE);
-		Dependency<CameraController>().SetMode(new StaticCameraMode(Vector3.zero, Quaternion.identity));
 		Dependency<CameraController>().SetEnabled(false);
-		Dependency<CameraController>().SetFOV(70);
+		Dependency<CrosshairController>().AddDisabler();
 
 		const mouseUnlockId = this.mouse.AddUnlocker();
 		this.bin.Add(() => {
