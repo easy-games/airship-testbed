@@ -11,12 +11,12 @@ import { Signal, SignalPriority } from "Shared/Util/Signal";
 @Service({})
 export class PlayerService implements OnStart {
 	/** Fires when a player first connects to the server. */
-	public readonly PlayerPreReady = new Signal<[player: Player]>();
+	public readonly playerPreReady = new Signal<[player: Player]>();
 
-	public readonly PlayerAdded = new Signal<[player: Player]>();
+	public readonly playerAdded = new Signal<[player: Player]>();
 
 	/** Fires when a player is removed from the game. */
-	public readonly PlayerRemoved = new Signal<[player: Player]>();
+	public readonly playerRemoved = new Signal<[player: Player]>();
 
 	private playerManager = PlayerManager.Instance;
 	private readonly players: Player[] = [];
@@ -34,7 +34,7 @@ export class PlayerService implements OnStart {
 			);
 			playerInfo.gameObject.name = `Player_${playerInfo.username}`;
 			this.playersPendingReady.set(playerInfo.clientId, player);
-			this.PlayerPreReady.Fire(player);
+			this.playerPreReady.Fire(player);
 
 			// Ready bots immediately
 			if (playerInfo.clientId < 0) {
@@ -49,9 +49,9 @@ export class PlayerService implements OnStart {
 			if (index === -1) return;
 			const player = this.players[index];
 			this.players.remove(index);
-			this.PlayerRemoved.Fire(player);
+			this.playerRemoved.Fire(player);
 			CoreServerSignals.PlayerLeave.Fire(new PlayerLeaveServerEvent(player));
-			CoreNetwork.ServerToClient.RemovePlayer.Server.FireAllClients(player.clientId);
+			CoreNetwork.ServerToClient.RemovePlayer.server.FireAllClients(player.clientId);
 			player.Destroy();
 		};
 		const players = this.playerManager.GetPlayers();
@@ -67,7 +67,7 @@ export class PlayerService implements OnStart {
 		});
 
 		// Player completes join
-		CoreNetwork.ClientToServer.Ready.Server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((clientId) => {
 			if (!this.playersPendingReady.has(clientId)) {
 				//print("player not found in pending: " + clientId);
 				warn("Player not found in pending: " + clientId);
@@ -83,18 +83,18 @@ export class PlayerService implements OnStart {
 	}
 
 	public HandlePlayerReady(player: Player): void {
-		CoreNetwork.ServerToClient.ServerInfo.Server.FireClient(player.clientId, Game.gameId, Game.serverId);
+		CoreNetwork.ServerToClient.ServerInfo.server.FireClient(player.clientId, Game.gameId, Game.serverId);
 
 		// notify all clients of the joining player
-		CoreNetwork.ServerToClient.AddPlayer.Server.FireAllClients(player.Encode());
+		CoreNetwork.ServerToClient.AddPlayer.server.FireAllClients(player.Encode());
 
 		// send list of all connected players to the joining player
-		CoreNetwork.ServerToClient.AllPlayers.Server.FireClient(
+		CoreNetwork.ServerToClient.AllPlayers.server.FireClient(
 			player.clientId,
 			this.players.map((p) => p.Encode()),
 		);
 
-		this.PlayerAdded.Fire(player);
+		this.playerAdded.Fire(player);
 		CoreServerSignals.PlayerJoin.Fire(new PlayerJoinServerEvent(player));
 	}
 
@@ -166,13 +166,13 @@ export class PlayerService implements OnStart {
 		for (const player of this.players) {
 			observe(player);
 		}
-		const stopPlayerAdded = this.PlayerAdded.ConnectWithPriority(
+		const stopPlayerAdded = this.playerAdded.ConnectWithPriority(
 			signalPriority ?? SignalPriority.NORMAL,
 			(player) => {
 				observe(player);
 			},
 		);
-		const stopPlayerRemoved = this.PlayerRemoved.ConnectWithPriority(
+		const stopPlayerRemoved = this.playerRemoved.ConnectWithPriority(
 			signalPriority ?? SignalPriority.NORMAL,
 			(player) => {
 				const cleanup = cleanupPerPlayer.get(player);

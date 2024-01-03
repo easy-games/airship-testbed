@@ -22,7 +22,7 @@ export class BWShopkeeperController implements OnStart {
 	) {}
 
 	OnStart(): void {
-		Network.ServerToClient.ItemShop.AddNPCs.Client.OnServerEvent((entityIds) => {
+		Network.ServerToClient.ItemShop.AddNPCs.client.OnServerEvent((entityIds) => {
 			for (const id of entityIds) {
 				Task.Spawn(async () => {
 					const entity = await Entity.WaitForId(id);
@@ -39,7 +39,7 @@ export class BWShopkeeperController implements OnStart {
 						topText: "Open",
 					});
 					// Open shop UI on prompt activation.
-					prompt.OnActivated.Connect(() => {
+					prompt.onActivated.Connect(() => {
 						this.itemShopController.Open();
 					});
 					// Clothing
@@ -47,7 +47,7 @@ export class BWShopkeeperController implements OnStart {
 				});
 			}
 		});
-		Network.ServerToClient.TeamUpgradeShop.AddNPCs.Client.OnServerEvent((entityIds) => {
+		Network.ServerToClient.TeamUpgradeShop.AddNPCs.client.OnServerEvent((entityIds) => {
 			for (const id of entityIds) {
 				Task.Spawn(async () => {
 					const entity = await Entity.WaitForId(id);
@@ -64,7 +64,7 @@ export class BWShopkeeperController implements OnStart {
 						topText: "Open",
 					});
 					/* Open shop UI on prompt activation. */
-					prompt.OnActivated.Connect(() => {
+					prompt.onActivated.Connect(() => {
 						this.teamUpgradeController.Open();
 					});
 

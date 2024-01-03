@@ -42,7 +42,7 @@ export class BWSpawnService implements OnStart {
 				const spawnPos = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 				if (spawnPos) {
 					Dependency<DenyRegionService>().CreateDenyRegion(
-						MathUtil.FloorVec(spawnPos.Position),
+						MathUtil.FloorVec(spawnPos.position),
 						new Vector3(3, 3, 3),
 					);
 				}
@@ -106,10 +106,10 @@ export class BWSpawnService implements OnStart {
 				if (!team) return;
 				const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 				if (teamSpawnPosition) {
-					const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
+					const pos = teamSpawnPosition.position.add(new Vector3(0, 0.2, 0));
 					event.spawnPosition = pos;
-					event.spawnRotation = teamSpawnPosition.Rotation;
-					event.player.character?.Teleport(pos, teamSpawnPosition.Rotation.mul(Vector3.forward));
+					event.spawnRotation = teamSpawnPosition.rotation;
+					event.player.character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
 				}
 			}
 		});
@@ -127,8 +127,8 @@ export class BWSpawnService implements OnStart {
 		if (!team) return;
 		const teamSpawnPosition = this.mapService.GetLoadedMap()?.GetWorldPosition(team.id + "_spawn");
 		if (teamSpawnPosition) {
-			const pos = teamSpawnPosition.Position.add(new Vector3(0, 0.2, 0));
-			player.character?.Teleport(pos, teamSpawnPosition.Rotation.mul(Vector3.forward));
+			const pos = teamSpawnPosition.position.add(new Vector3(0, 0.2, 0));
+			player.character?.Teleport(pos, teamSpawnPosition.rotation.mul(Vector3.forward));
 		}
 	}
 }

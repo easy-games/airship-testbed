@@ -33,9 +33,9 @@ export class ProximityPrompt {
 	/** Proximity prompt gameobject. */
 	public promptGameObject: GameObject | undefined;
 	/** On activated signal. */
-	public OnActivated = new Signal<void>();
+	public onActivated = new Signal<void>();
 	/** On activated signal. */
-	public OnRequestActivated = new Signal<void>();
+	public onRequestActivated = new Signal<void>();
 
 	private canActivate = false;
 	private readonly canActivateBin = new Bin();
@@ -78,7 +78,7 @@ export class ProximityPrompt {
 			const keyboard = this.canActivateBin.Add(new Keyboard());
 			keyboard.OnKeyDown(this.data.activationKey, (event) => {
 				if (event.uiProcessed) return;
-				this.OnRequestActivated.Fire();
+				this.onRequestActivated.Fire();
 			});
 		} else {
 			this.canActivateBin.Clean();
@@ -87,6 +87,6 @@ export class ProximityPrompt {
 
 	/** Called when prompt activates. */
 	public ActivatePrompt(): void {
-		this.OnActivated.Fire();
+		this.onActivated.Fire();
 	}
 }

@@ -38,8 +38,8 @@ export class ShopkeeperService implements OnStart {
 
 	OnStart(): void {
 		CoreServerSignals.PlayerJoin.Connect((event) => {
-			Network.ServerToClient.ItemShop.AddNPCs.Server.FireClient(event.player.clientId, this.itemShopEntityIds);
-			Network.ServerToClient.TeamUpgradeShop.AddNPCs.Server.FireClient(
+			Network.ServerToClient.ItemShop.AddNPCs.server.FireClient(event.player.clientId, this.itemShopEntityIds);
+			Network.ServerToClient.TeamUpgradeShop.AddNPCs.server.FireClient(
 				event.player.clientId,
 				this.upgradeShopEntityIds,
 			);
@@ -59,33 +59,33 @@ export class ShopkeeperService implements OnStart {
 		for (let team of this.teamService.GetTeams()) {
 			// Item Shop
 			const itemShopWorldPos = loadedMap.GetWorldPosition(team.id + "_upgrade_shop");
-			const itemShopEntity = this.entityService.SpawnEntity(EntityPrefabType.HUMAN, itemShopWorldPos.Position);
+			const itemShopEntity = this.entityService.SpawnEntity(EntityPrefabType.HUMAN, itemShopWorldPos.position);
 			itemShopEntity.entityDriver.SetLookVector(
-				itemShopWorldPos.Rotation.mul(itemShopEntity.entityDriver.transform.forward),
+				itemShopWorldPos.rotation.mul(itemShopEntity.entityDriver.transform.forward),
 			);
-			itemShopEntity.SetDisplayName(ColorUtil.ColoredText(Theme.Yellow, "Item Shop"));
+			itemShopEntity.SetDisplayName(ColorUtil.ColoredText(Theme.yellow, "Item Shop"));
 			itemShopEntity.GrantImmunity(math.huge);
 			this.itemShopEntityIds.push(itemShopEntity.id);
 
-			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(itemShopWorldPos.Position), DENY_REGION_SIZE);
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(itemShopWorldPos.position), DENY_REGION_SIZE);
 
 			// Team Upgrades
 			const teamUpgradeWorldPos = loadedMap.GetWorldPosition(team.id + "_item_shop");
 			const upgradeShopEntity = this.entityService.SpawnEntity(
 				EntityPrefabType.HUMAN,
-				teamUpgradeWorldPos.Position,
+				teamUpgradeWorldPos.position,
 			);
 			upgradeShopEntity.entityDriver.SetLookVector(
-				teamUpgradeWorldPos.Rotation.mul(upgradeShopEntity.entityDriver.transform.forward),
+				teamUpgradeWorldPos.rotation.mul(upgradeShopEntity.entityDriver.transform.forward),
 			);
-			upgradeShopEntity.SetDisplayName(ColorUtil.ColoredText(Theme.Yellow, "Team Upgrades"));
+			upgradeShopEntity.SetDisplayName(ColorUtil.ColoredText(Theme.yellow, "Team Upgrades"));
 			upgradeShopEntity.GrantImmunity(math.huge);
 			this.upgradeShopEntityIds.push(upgradeShopEntity.id);
 
-			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(teamUpgradeWorldPos.Position), DENY_REGION_SIZE);
+			this.denyRegionService.CreateDenyRegion(MathUtil.FloorVec(teamUpgradeWorldPos.position), DENY_REGION_SIZE);
 		}
 
-		Network.ServerToClient.ItemShop.AddNPCs.Server.FireAllClients(this.itemShopEntityIds);
-		Network.ServerToClient.TeamUpgradeShop.AddNPCs.Server.FireAllClients(this.upgradeShopEntityIds);
+		Network.ServerToClient.ItemShop.AddNPCs.server.FireAllClients(this.itemShopEntityIds);
+		Network.ServerToClient.TeamUpgradeShop.AddNPCs.server.FireAllClients(this.upgradeShopEntityIds);
 	}
 }

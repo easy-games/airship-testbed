@@ -13,10 +13,10 @@ import { EntityController } from "../Entity/EntityController";
 @Controller({})
 export class BlockSelectController implements OnStart {
 	private highlightGO: GameObject | undefined;
-	public SelectedBlockPosition?: Vector3;
-	public HighlightBlockPosition?: Vector3;
-	public PlaceBlockPosition?: Vector3;
-	public IsVoidPlacement = false;
+	public selectedBlockPosition?: Vector3;
+	public highlightBlockPosition?: Vector3;
+	public placeBlockPosition?: Vector3;
+	public isVoidPlacement = false;
 	public highlightOnPlacement = false;
 
 	private voidPlane: GameObject | undefined;
@@ -25,7 +25,7 @@ export class BlockSelectController implements OnStart {
 	private highlightEnabled = true;
 	private isHighlighting = false;
 
-	public OnNewBlockSelected: Signal<{
+	public onNewBlockSelected: Signal<{
 		selectedPos: Vector3 | undefined;
 		placedPos: Vector3 | undefined;
 		highlightedPos: Vector3 | undefined;
@@ -67,15 +67,15 @@ export class BlockSelectController implements OnStart {
 
 			this.CalcSelectedBlock();
 
-			if (this.IsVoidPlacement || this.highlightOnPlacement) {
-				if (this.PlaceBlockPosition && this.highlightGO) {
-					this.highlightGO.transform.position = this.PlaceBlockPosition.add(new Vector3(0.5, 0.5, 0.5));
+			if (this.isVoidPlacement || this.highlightOnPlacement) {
+				if (this.placeBlockPosition && this.highlightGO) {
+					this.highlightGO.transform.position = this.placeBlockPosition.add(new Vector3(0.5, 0.5, 0.5));
 					this.Highlight(true);
 					return;
 				}
 			}
-			if (this.HighlightBlockPosition && this.highlightGO) {
-				this.highlightGO.transform.position = this.HighlightBlockPosition.add(new Vector3(0.5, 0.5, 0.5));
+			if (this.highlightBlockPosition && this.highlightGO) {
+				this.highlightGO.transform.position = this.highlightBlockPosition.add(new Vector3(0.5, 0.5, 0.5));
 				this.Highlight(true);
 				return;
 			}
@@ -95,10 +95,10 @@ export class BlockSelectController implements OnStart {
 	}
 
 	private CalcSelectedBlock(): void {
-		const player = Game.LocalPlayer;
+		const player = Game.localPlayer;
 		if (!player?.character) {
-			this.SelectedBlockPosition = undefined;
-			this.PlaceBlockPosition = undefined;
+			this.selectedBlockPosition = undefined;
+			this.placeBlockPosition = undefined;
 			return;
 		}
 		const characterPos = player.character.gameObject.transform.position;
@@ -130,7 +130,7 @@ export class BlockSelectController implements OnStart {
 					newSelectedPos = parentBlockPos;
 				}
 				this.UpdatePositions(newSelectedPos, newPlacedPos, newHighlightPos);
-				this.IsVoidPlacement = false;
+				this.isVoidPlacement = false;
 				return true;
 			}
 		}
@@ -177,7 +177,7 @@ export class BlockSelectController implements OnStart {
 				if (emptyBlockPos !== undefined) {
 					const newPlacePos = new Vector3(emptyBlockPos.x, math.round(emptyBlockPos.y), emptyBlockPos.z);
 					this.UpdatePositions(newPlacePos, newPlacePos, newPlacePos);
-					this.IsVoidPlacement = true;
+					this.isVoidPlacement = true;
 					return true;
 				}
 			}
@@ -191,18 +191,18 @@ export class BlockSelectController implements OnStart {
 		newHighlightPos: Vector3 | undefined,
 	) {
 		if (
-			newSelectedPos === this.SelectedBlockPosition &&
-			newPlacePos === this.PlaceBlockPosition &&
-			newHighlightPos === this.HighlightBlockPosition
+			newSelectedPos === this.selectedBlockPosition &&
+			newPlacePos === this.placeBlockPosition &&
+			newHighlightPos === this.highlightBlockPosition
 		) {
 			return;
 		}
 
-		this.SelectedBlockPosition = newSelectedPos;
-		this.PlaceBlockPosition = newPlacePos;
-		this.HighlightBlockPosition = newHighlightPos;
+		this.selectedBlockPosition = newSelectedPos;
+		this.placeBlockPosition = newPlacePos;
+		this.highlightBlockPosition = newHighlightPos;
 
-		this.OnNewBlockSelected.Fire({
+		this.onNewBlockSelected.Fire({
 			selectedPos: newSelectedPos,
 			placedPos: newPlacePos,
 			highlightedPos: newHighlightPos,
@@ -211,7 +211,7 @@ export class BlockSelectController implements OnStart {
 
 	private ResetVariables() {
 		this.UpdatePositions(undefined, undefined, undefined);
-		this.IsVoidPlacement = false;
+		this.isVoidPlacement = false;
 	}
 
 	public Enable() {

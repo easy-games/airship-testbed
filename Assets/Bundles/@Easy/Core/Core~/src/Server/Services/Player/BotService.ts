@@ -40,7 +40,7 @@ export class BotService implements OnStart {
 			}),
 		);
 		bin.Add(
-			entity.OnDespawn.Connect(() => {
+			entity.onDespawn.Connect(() => {
 				bin.Clean();
 			}),
 		);

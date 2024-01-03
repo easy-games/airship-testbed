@@ -5,16 +5,23 @@ import { Player } from "../../../Shared/Player/Player";
 import { Signal, SignalPriority } from "../../../Shared/Util/Signal";
 export declare class PlayerService implements OnStart {
     /** Fires when a player first connects to the server. */
-    readonly PlayerPreReady: Signal<[player: Player]>;
-    readonly PlayerAdded: Signal<[player: Player]>;
+    readonly playerPreReady: Signal<[player: Player]>;
+    readonly playerAdded: Signal<[player: Player]>;
     /** Fires when a player is removed from the game. */
-    readonly PlayerRemoved: Signal<[player: Player]>;
+    readonly playerRemoved: Signal<[player: Player]>;
     private playerManager;
     private readonly players;
     private playersPendingReady;
     private botCounter;
     constructor();
     HandlePlayerReady(player: Player): void;
+    /**
+     * Looks for a player using a case insensitive fuzzy search
+     *
+     * Specific players can be grabbed using the full discriminator as well - e.g. `Luke#0001` would be a specific player
+     * @param searchName The name of the plaeyr
+     */
+    FuzzyFindFirstPlayerByName(searchName: string): Player | undefined;
     AddBotPlayer(): void;
     /** Get all players. */
     GetPlayers(): Readonly<Array<Player>>;

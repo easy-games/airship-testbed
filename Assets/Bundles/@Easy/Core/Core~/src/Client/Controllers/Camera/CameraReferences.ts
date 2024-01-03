@@ -2,12 +2,12 @@
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 export class CameraReferences {
-	private static _instance: CameraReferences;
+	private static instances: CameraReferences;
 	public static Instance(): CameraReferences {
-		if (!CameraReferences._instance) {
+		if (!CameraReferences.instances) {
 			new CameraReferences();
 		}
-		return CameraReferences._instance;
+		return CameraReferences.instances;
 	}
 
 	private mouse = new Mouse();
@@ -16,11 +16,11 @@ export class CameraReferences {
 	public readonly uiCamera: Camera;
 
 	public constructor() {
-		if (CameraReferences._instance) {
+		if (CameraReferences.instances) {
 			error("TRYING TO INITIALIZE SINGLETON THAT ALREADY EXISTS: CameraReferences");
 			return;
 		}
-		CameraReferences._instance = this;
+		CameraReferences.instances = this;
 
 		//Get Camera references
 		let refs = GameObject.Find("CameraRig")?.GetComponent<GameObjectReferences>();

@@ -7,7 +7,16 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 
-const CHARACTER_MASK = -4239;
+const CAMERA_IGNORE_MASK = LayerMask.InvertMask(
+	LayerMask.GetMask(
+		"TransparentFX",
+		"Ignore Raycast",
+		"Character",
+		"BridgeAssist",
+		"GroundItem",
+		"ProjectileReceiver",
+	),
+);
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -59,7 +68,7 @@ export class OrbitCameraMode implements CameraMode {
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
 		let touchOverUI = false;
-		touchscreen.Pan.Connect((position, phase) => {
+		touchscreen.pan.Connect((position, phase) => {
 			switch (phase) {
 				case TouchPhase.Began:
 					if (UserInputService.InputProxy.IsPointerOverUI()) {
@@ -117,13 +126,13 @@ export class OrbitCameraMode implements CameraMode {
 
 		let rightClickUnlocker = this.mouse.AddUnlocker();
 
-		this.mouse.RightDown.Connect(() => {
+		this.mouse.rightDown.Connect(() => {
 			if (rightClickUnlocker === -1) return;
 			this.mouse.RemoveUnlocker(rightClickUnlocker);
 			rightClickUnlocker = -1;
 		});
 
-		this.mouse.RightUp.Connect(() => {
+		this.mouse.rightUp.Connect(() => {
 			rightClickUnlocker = this.mouse.AddUnlocker();
 		});
 
@@ -189,7 +198,7 @@ export class OrbitCameraMode implements CameraMode {
 	OnPostUpdate(camera: Camera) {
 		const transform = camera.transform;
 		transform.LookAt(this.lastAttachToPos);
-		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CHARACTER_MASK);
+		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CAMERA_IGNORE_MASK);
 
 		// Update character direction:
 		if (this.entityDriver !== undefined) {

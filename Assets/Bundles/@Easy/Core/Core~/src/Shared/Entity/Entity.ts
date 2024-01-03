@@ -38,7 +38,7 @@ export interface EntityDto {
 	healthbar?: boolean;
 }
 
-const friendlyHealthbarFillColor = Theme.Green;
+const friendlyHealthbarFillColor = Theme.green;
 // ColorUtil.HexToColor("#89CC7F");
 const enemyHealthbarFillColor = ColorUtil.HexToColor("#FF4646");
 
@@ -137,7 +137,7 @@ export class Entity {
 	 *
 	 * **This should NOT be used to uniquely identify an entity.**
 	 */
-	public readonly ClientId?: number;
+	public readonly clientId?: number;
 	protected health = 100;
 	protected maxHealth = 100;
 	protected moveDirection = new Vector3();
@@ -149,19 +149,19 @@ export class Entity {
 	protected state: EntityState;
 	protected bin: Bin = new Bin();
 
-	public readonly OnHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
-	public readonly OnDespawn = new Signal<void>();
-	public readonly OnPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
-	public readonly OnAdjustMove = new Signal<[moveModifier: MoveModifier]>();
-	public readonly OnMoveDirectionChanged = new Signal<[moveDirection: Vector3]>();
-	public readonly OnDisplayNameChanged = new Signal<[displayName: string]>();
-	public readonly OnStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
-	public readonly OnDeath = new Signal<void>();
-	public readonly OnArmorChanged = new Signal<number>();
+	public readonly onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+	public readonly onDespawn = new Signal<void>();
+	public readonly onPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
+	public readonly onAdjustMove = new Signal<[moveModifier: MoveModifier]>();
+	public readonly onMoveDirectionChanged = new Signal<[moveDirection: Vector3]>();
+	public readonly onDisplayNameChanged = new Signal<[displayName: string]>();
+	public readonly onStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
+	public readonly onDeath = new Signal<void>();
+	public readonly onArmorChanged = new Signal<number>();
 
 	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
 		this.id = id;
-		this.ClientId = clientId;
+		this.clientId = clientId;
 		this.networkObject = networkObject;
 		this.gameObject = networkObject.gameObject;
 
@@ -179,12 +179,12 @@ export class Entity {
 		Profiler.EndSample();
 		this.state = this.entityDriver.GetState();
 
-		if (this.ClientId !== undefined) {
+		if (this.clientId !== undefined) {
 			if (RunUtil.IsServer()) {
-				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.ClientId);
+				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.clientId);
 				this.SetPlayer(player);
 			} else {
-				const player = Dependency<PlayerController>().GetPlayerFromClientId(this.ClientId);
+				const player = Dependency<PlayerController>().GetPlayerFromClientId(this.clientId);
 				this.SetPlayer(player);
 			}
 		}
@@ -199,7 +199,7 @@ export class Entity {
 			if (RunUtil.IsServer()) {
 				const result = Dependency<DamageService>().InflictFallDamage(this, velocity.y);
 				if (result) {
-					CoreNetwork.ServerToClient.Entity.FallDamageTaken.Server.FireAllClients(this.id, velocity);
+					CoreNetwork.ServerToClient.Entity.FallDamageTaken.server.FireAllClients(this.id, velocity);
 				}
 			}
 		});
@@ -209,7 +209,7 @@ export class Entity {
 
 		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
 			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
-				this.OnAdjustMove.Fire(moveModifier);
+				this.onAdjustMove.Fire(moveModifier);
 			});
 			this.bin.Add(() => {
 				Bridge.DisconnectEvent(adjustMoveConn);
@@ -218,7 +218,7 @@ export class Entity {
 
 		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
 			const movementChangeConn = this.entityDriver.OnMoveDirectionChanged((direction) => {
-				this.OnMoveDirectionChanged.Fire(direction);
+				this.onMoveDirectionChanged.Fire(direction);
 				this.moveDirection = direction;
 			});
 
@@ -231,7 +231,7 @@ export class Entity {
 			// print("state change (" + this.displayName + "): " + newState);
 			const oldState = this.state;
 			this.state = newState;
-			this.OnStateChanged.Fire(newState, oldState);
+			this.onStateChanged.Fire(newState, oldState);
 		});
 
 		this.bin.Add(() => {
@@ -250,7 +250,7 @@ export class Entity {
 		if (lookVector) {
 			this.entityDriver.SetLookVector(lookVector);
 			if (RunUtil.IsServer() && this.player) {
-				CoreNetwork.ServerToClient.Entity.SetLookVector.Server.FireClient(
+				CoreNetwork.ServerToClient.Entity.SetLookVector.server.FireClient(
 					this.player.clientId,
 					this.id,
 					lookVector,
@@ -272,14 +272,14 @@ export class Entity {
 	public AddHealthbar(): void {
 		if (RunUtil.IsServer()) {
 			this.healthbarEnabled = true;
-			CoreNetwork.ServerToClient.Entity.AddHealthbar.Server.FireAllClients(this.id);
+			CoreNetwork.ServerToClient.Entity.AddHealthbar.server.FireAllClients(this.id);
 			return;
 		}
 		if (this.IsLocalCharacter()) return;
 
 		let sameTeam = false;
 		let team = this.GetTeam();
-		if (team && team === Game.LocalPlayer.GetTeam()) {
+		if (team && team === Game.localPlayer.GetTeam()) {
 			sameTeam = true;
 		}
 
@@ -326,14 +326,14 @@ export class Entity {
 	public SetPlayer(player: Player | undefined): void {
 		const oldPlayer = this.player;
 		this.player = player;
-		this.OnPlayerChanged.Fire(player, oldPlayer);
+		this.onPlayerChanged.Fire(player, oldPlayer);
 	}
 
 	public SetDisplayName(displayName: string) {
 		this.displayName = displayName;
-		this.OnDisplayNameChanged.Fire(displayName);
+		this.onDisplayNameChanged.Fire(displayName);
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Entity.SetDisplayName.Server.FireAllClients(this.id, displayName);
+			CoreNetwork.ServerToClient.Entity.SetDisplayName.server.FireAllClients(this.id, displayName);
 		}
 	}
 
@@ -358,11 +358,11 @@ export class Entity {
 		if (health === this.health) return;
 		const oldHealth = this.health;
 		this.health = health;
-		this.OnHealthChanged.Fire(health, oldHealth);
+		this.onHealthChanged.Fire(health, oldHealth);
 		this.healthbar?.SetValue(this.health / this.maxHealth);
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health);
+			CoreNetwork.ServerToClient.Entity.SetHealth.server.FireAllClients(this.id, this.health);
 		}
 	}
 
@@ -370,7 +370,7 @@ export class Entity {
 		this.maxHealth = maxHealth;
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Entity.SetHealth.Server.FireAllClients(this.id, this.health, this.maxHealth);
+			CoreNetwork.ServerToClient.Entity.SetHealth.server.FireAllClients(this.id, this.health, this.maxHealth);
 		}
 	}
 
@@ -379,7 +379,7 @@ export class Entity {
 	 */
 	public Destroy(): void {
 		this.bin.Clean();
-		this.OnDespawn.Fire();
+		this.onDespawn.Fire();
 		this.animator.Destroy();
 		this.destroyed = true;
 
@@ -394,7 +394,7 @@ export class Entity {
 		this.gameObject.name = "DespawnedEntity";
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.DespawnEntity.Server.FireAllClients(this.id);
+			CoreNetwork.ServerToClient.DespawnEntity.server.FireAllClients(this.id);
 			NetworkUtil.Despawn(this.networkObject.gameObject);
 		}
 	}
@@ -407,7 +407,7 @@ export class Entity {
 		return {
 			serializer: EntitySerializer.DEFAULT,
 			id: this.id,
-			clientId: this.ClientId,
+			clientId: this.clientId,
 			nobId: this.networkObject.ObjectId,
 			health: this.health,
 			maxHealth: this.maxHealth,
@@ -417,14 +417,14 @@ export class Entity {
 	}
 
 	public IsPlayerOwned(): boolean {
-		return this.ClientId !== undefined;
+		return this.clientId !== undefined;
 	}
 
 	public IsLocalCharacter(): boolean {
 		if (!RunUtil.IsClient()) {
 			return false;
 		} else {
-			return this.ClientId === Dependency<PlayerController>().clientId;
+			return this.clientId === Dependency<PlayerController>().clientId;
 		}
 	}
 
@@ -489,14 +489,14 @@ export class Entity {
 	public SendItemAnimationToClients(useIndex = 0, animationMode: ItemPlayMode = 0, exceptClientId?: number) {
 		if (RunUtil.IsServer()) {
 			if (exceptClientId !== undefined) {
-				CoreNetwork.ServerToClient.PlayEntityItemAnimation.Server.FireExcept(
+				CoreNetwork.ServerToClient.PlayEntityItemAnimation.server.FireExcept(
 					exceptClientId,
 					this.id,
 					useIndex,
 					animationMode,
 				);
 			} else {
-				CoreNetwork.ServerToClient.PlayEntityItemAnimation.Server.FireAllClients(
+				CoreNetwork.ServerToClient.PlayEntityItemAnimation.server.FireAllClients(
 					this.id,
 					useIndex,
 					animationMode,
@@ -594,7 +594,7 @@ export class Entity {
 	public Kill(): void {
 		if (this.dead) return;
 		this.dead = true;
-		this.OnDeath.Fire();
+		this.onDeath.Fire();
 	}
 
 	public IsDead(): boolean {

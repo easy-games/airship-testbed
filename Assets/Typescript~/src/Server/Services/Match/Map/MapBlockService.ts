@@ -17,10 +17,6 @@ export class MapBlockService implements OnStart {
 	constructor(private readonly blockService: BlockInteractService) {}
 	OnStart(): void {
 		CoreServerSignals.BlockPlace.Connect((event) => {
-			if (event.entity) {
-				BlockDataAPI.SetBlockData(event.pos, CoreBlockMetaKeys.CAN_BREAK, true);
-			}
-
 			if (event.itemMeta.tillBlock) {
 				// tillable blocks can be modified to the tillable equiv.
 				BlockDataAPI.SetBlockData(event.pos, CoreBlockMetaKeys.CAN_TILL, true);
@@ -28,10 +24,6 @@ export class MapBlockService implements OnStart {
 		});
 
 		CoreServerSignals.BlockGroupPlace.Connect((event) => {
-			if (event.entity) {
-				BlockDataAPI.SetBlockGroupSameData(event.positions, CoreBlockMetaKeys.CAN_BREAK, true);
-			}
-
 			//TODO get item meta from itemType
 			// if (event.itemMeta.tillBlock) {
 			// 	// tillable blocks can be modified to the tillable equiv.
@@ -39,7 +31,7 @@ export class MapBlockService implements OnStart {
 			// }
 		});
 
-		CoreNetwork.ClientToServer.LibonatiTest.Server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.LibonatiTest.server.OnClientEvent((clientId) => {
 			const entity = Entity.FindByClientId(clientId);
 			if (!entity) {
 				return;

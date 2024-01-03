@@ -75,6 +75,7 @@ export class ChatController implements OnStart {
 	private historyIndex = -1;
 
 	private commands = new Map<string, ChatCommand>();
+	private lastChatMessageRenderedTime = Time.time;
 
 	constructor(
 		private readonly localEntityController: LocalEntityController,
@@ -102,7 +103,7 @@ export class ChatController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.ChatMessage.Client.OnServerEvent((text, senderClientId) => {
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((text, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
 				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
@@ -143,7 +144,7 @@ export class ChatController implements OnStart {
 			KeyCode.Slash,
 			(event) => {
 				if (!this.selected) {
-					this.inputField.SetTextWithoutNotify("/");
+					this.inputField.text = "/";
 					this.inputField.caretPosition = 1;
 					this.inputField.Select();
 				}
@@ -177,7 +178,7 @@ export class ChatController implements OnStart {
 		});
 
 		// Sink key events when selected:
-		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (this.selected) {
 				if (
 					event.keyCode !== KeyCode.Return &&
@@ -256,13 +257,13 @@ export class ChatController implements OnStart {
 		if (commandData) {
 			const command = this.commands.get(commandData.label);
 			if (command) {
-				command.Execute(Game.LocalPlayer, commandData.args);
+				command.Execute(Game.localPlayer, commandData.args);
 				sendChatToServer = false;
 			}
 		}
 
 		if (sendChatToServer) {
-			CoreNetwork.ClientToServer.SendChatMessage.Client.FireServer(message);
+			CoreNetwork.ClientToServer.SendChatMessage.client.FireServer(message);
 		}
 	}
 
@@ -285,9 +286,12 @@ export class ChatController implements OnStart {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
-				volumeScale: 0.24,
-			});
+			if (Time.time > this.lastChatMessageRenderedTime) {
+				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
+					volumeScale: 0.24,
+				});
+			}
+			this.lastChatMessageRenderedTime = Time.time;
 		} catch (err) {
 			Debug.LogError("chat error:");
 			Debug.LogError(err);

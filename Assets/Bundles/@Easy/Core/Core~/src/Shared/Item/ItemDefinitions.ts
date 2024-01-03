@@ -23,7 +23,7 @@ const GroundItemPrefab = (s: string) => {
 	return `@Easy/Core/Shared/Resources/Prefabs/GroundItems/${s}.prefab`;
 };
 
-const defaultGravity = PhysicsUtil.Gravity;
+const defaultGravity = PhysicsUtil.gravity;
 const blockUsable: UsableHeldItemDef = {
 	startUpInSeconds: 0,
 	minChargeSeconds: 0,
@@ -152,7 +152,7 @@ function AccPath(itemType: ItemType): string {
 	return scope + "/Shared/Resources/Accessories/" + itemId.lower() + ".asset";
 }
 
-export const items: {
+export const CoreItemDefinitions: {
 	[key in ItemType]: Omit<ItemDef, "id" | "itemType">;
 } = {
 	////BLOCKS
@@ -900,7 +900,7 @@ export const items: {
 		displayName: "Wheat",
 		cropBlock: {
 			numStages: 4,
-			stageGrowthDuration: Duration.fromSeconds(10),
+			stageGrowthDuration: Duration.FromSeconds(10),
 		},
 		block: {
 			blockId: ItemType.WHEAT_CROP,

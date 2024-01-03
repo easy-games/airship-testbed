@@ -4,7 +4,7 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { encode } from "Shared/json";
+import { EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
@@ -33,7 +33,7 @@ export class MainMenuPartyController implements OnStart {
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
 			InternalHttpManager.PostAsync(
 				AirshipUrl.GameCoordinator + "/parties/party/join",
-				encode({
+				EncodeJSON({
 					partyId: data.partyId,
 				}),
 			);
@@ -51,7 +51,7 @@ export class MainMenuPartyController implements OnStart {
 				this.UpdateParty();
 			});
 
-		Game.LocalPlayer.onUsernameChanged.Connect(() => {
+		Game.localPlayer.onUsernameChanged.Connect(() => {
 			this.UpdateParty();
 		});
 
@@ -86,7 +86,7 @@ export class MainMenuPartyController implements OnStart {
 		const partyMemberUids = this.party.members.map((m) => m.uid);
 
 		const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
-		if (this.party.leader === Game.LocalPlayer.userId) {
+		if (this.party.leader === Game.localPlayer.userId) {
 			leaveButton.SetActive(false);
 		} else {
 			leaveButton.SetActive(true);
@@ -108,7 +108,7 @@ export class MainMenuPartyController implements OnStart {
 			Object.Destroy(go);
 		}
 
-		let isLocalPartyLeader = Game.LocalPlayer.userId === this.party.leader;
+		let isLocalPartyLeader = Game.localPlayer.userId === this.party.leader;
 
 		// Add new & update existing
 		for (const member of this.party.members) {
@@ -124,8 +124,8 @@ export class MainMenuPartyController implements OnStart {
 			const refs = go.GetComponent<GameObjectReferences>();
 
 			const usernameText = refs.GetValue("UI", "Username") as TMP_Text;
-			if (member.uid === Game.LocalPlayer.userId) {
-				usernameText.text = Game.LocalPlayer.username;
+			if (member.uid === Game.localPlayer.userId) {
+				usernameText.text = Game.localPlayer.username;
 			} else {
 				usernameText.text = member.username;
 			}
@@ -133,7 +133,7 @@ export class MainMenuPartyController implements OnStart {
 			const kickButton = refs.GetValue("UI", "KickButton");
 
 			let showModTools = isLocalPartyLeader;
-			if (member.uid === Game.LocalPlayer.userId) {
+			if (member.uid === Game.localPlayer.userId) {
 				showModTools = false;
 			}
 
@@ -156,7 +156,7 @@ export class MainMenuPartyController implements OnStart {
 				CanvasAPI.OnClickEvent(kickButton, () => {
 					InternalHttpManager.PostAsync(
 						AirshipUrl.GameCoordinator + "/parties/party/remove",
-						encode({
+						EncodeJSON({
 							userToRemove: member.uid,
 						}),
 					);
@@ -165,7 +165,7 @@ export class MainMenuPartyController implements OnStart {
 				CanvasAPI.OnClickEvent(leaveButton, () => {
 					InternalHttpManager.PostAsync(
 						AirshipUrl.GameCoordinator + "/parties/party/remove",
-						encode({
+						EncodeJSON({
 							userToRemove: member.uid,
 						}),
 					);

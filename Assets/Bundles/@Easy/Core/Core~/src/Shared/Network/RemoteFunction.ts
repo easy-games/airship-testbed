@@ -79,15 +79,15 @@ class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] 
 }
 
 export class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
-	public readonly Server: RemoteFunctionServer<TX, RX>;
-	public readonly Client: RemoteFunctionClient<TX, RX>;
+	public readonly server: RemoteFunctionServer<TX, RX>;
+	public readonly client: RemoteFunctionClient<TX, RX>;
 
 	constructor() {
 		let id = ID_COUNTER;
 		ID_COUNTER++;
 		id += RF_ID_OFFSET;
-		this.Server = new RemoteFunctionServer(id);
-		this.Client = new RemoteFunctionClient(id);
+		this.server = new RemoteFunctionServer(id);
+		this.client = new RemoteFunctionClient(id);
 	}
 }
 

@@ -15,13 +15,13 @@ export declare class Projectile {
     readonly shooter: Entity | undefined;
     private destroyed;
     private bin;
-    readonly OnDestroy: Signal<void>;
+    readonly onDestroy: Signal<void>;
     /**
      * Fired when the projectile hits something that will destroy it.
      *
      * For additional collide information, you should instead listen to either `ClientSignals.ProjectileHit` or `ServerSignals.ProjectileHit`
      */
-    readonly OnHit: Signal<[hitPoint: Vector3, collider: Collider]>;
+    readonly onHit: Signal<[hitPoint: Vector3, collider: Collider]>;
     constructor(easyProjectile: AirshipProjectile, itemType: ItemType, shooter: Entity | undefined);
     /**
      * Get the item type of what launched this projectile

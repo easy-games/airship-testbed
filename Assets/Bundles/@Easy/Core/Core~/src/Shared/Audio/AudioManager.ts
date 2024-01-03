@@ -13,14 +13,14 @@ export interface PlaySoundConfig {
 }
 
 export class AudioManager {
-	public static SoundFolderPath = "Shared/Resources/Sound/";
+	public static soundFolderPath = "Shared/Resources/Sound/";
 	private static soundFolderIndex: number;
 
 	private static audioSourceTemplate: GameObject;
 	private static globalAudioSources: Map<number, AudioSource> = new Map();
 
 	public static Init(): void {
-		this.soundFolderIndex = this.SoundFolderPath.size();
+		this.soundFolderIndex = this.soundFolderPath.size();
 		this.CacheAudioSources();
 	}
 
@@ -149,7 +149,7 @@ export class AudioManager {
 		if (StringUtils.includes(sound, "@")) {
 			return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
 		}
-		return this.LoadFullPathAudioClip(this.SoundFolderPath + this.FriendlyPath(sound));
+		return this.LoadFullPathAudioClip(this.soundFolderPath + this.FriendlyPath(sound));
 	}
 
 	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {

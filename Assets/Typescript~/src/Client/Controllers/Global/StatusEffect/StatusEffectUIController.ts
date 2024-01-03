@@ -25,12 +25,12 @@ export class StatusEffectUIController implements OnStart {
 
 	OnStart(): void {
 		ClientSignals.StatusEffectAdded.Connect((clientId, statusEffectType, tier) => {
-			if (clientId === Game.LocalPlayer.clientId) {
+			if (clientId === Game.localPlayer.clientId) {
 				this.CreateStatusEffectIcon(statusEffectType, tier);
 			}
 		});
 		ClientSignals.StatusEffectRemoved.Connect((clientId, statusEffectType) => {
-			if (clientId === Game.LocalPlayer.clientId) {
+			if (clientId === Game.localPlayer.clientId) {
 				this.RemoveStatusEffectIcon(statusEffectType);
 			}
 		});
@@ -56,7 +56,7 @@ export class StatusEffectUIController implements OnStart {
 		print(iconTexture);
 		iconImage.sprite = Bridge.MakeSprite(iconTexture);
 		const iconTier = iconRefs.GetValue<TextMeshProUGUI>("IconComponents", "Tier");
-		iconTier.text = StatusEffectUtil.decimalToRomanNumeral(tier);
+		iconTier.text = StatusEffectUtil.DecimalToRomanNumeral(tier);
 		this.statusEffectMap.set(statusEffectType, iconGameObject);
 	}
 

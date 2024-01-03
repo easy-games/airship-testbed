@@ -3,7 +3,7 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BodyAttachment } from "./Accessory/BodyAttachment";
-import { baseCharacters } from "./BaseCharacters";
+import { BaseCharacters } from "./BaseCharacters";
 import { CharacterDefinition } from "./CharacterDefinition";
 
 export class CharacterBuilder {
@@ -21,7 +21,7 @@ export class CharacterBuilder {
 		}
 
 		// Get character model prefab:
-		const assetPath = baseCharacters[this.characterDef.BaseCharacter];
+		const assetPath = BaseCharacters[this.characterDef.BaseCharacter];
 		let characterModelPrefab: GameObject;
 		if (CharacterBuilder.prefabCache.has(assetPath)) {
 			characterModelPrefab = CharacterBuilder.prefabCache.get(assetPath)!;
@@ -48,7 +48,7 @@ export class CharacterBuilder {
 		if (this.clientId !== undefined) {
 			NetworkUtil.SpawnWithClientOwnership(characterModel, this.clientId);
 			const nob = characterModel.GetComponent<NetworkObject>();
-			CoreNetwork.ServerToClient.CharacterModelChanged.Server.FireClient(this.clientId, nob.ObjectId);
+			CoreNetwork.ServerToClient.CharacterModelChanged.server.FireClient(this.clientId, nob.ObjectId);
 		} else {
 			NetworkUtil.Spawn(characterModel);
 		}

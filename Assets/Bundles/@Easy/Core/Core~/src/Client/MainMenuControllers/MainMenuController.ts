@@ -1,21 +1,20 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
+import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import { AuthController } from "./Auth/AuthController";
-import { MainMenuPageType } from "./MainMenuPageName";
+import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import MainMenuPageComponent from "./MainMenuPageComponent";
+import { MainMenuPageType } from "./MainMenuPageName";
 import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
-import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
-import AvatarViewComponent from "../Avatar/AvatarViewComponent";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { AvatarUtil } from "Client/Avatar/AvatarUtil";
 
 @Controller()
 export class MainMenuController implements OnStart {
@@ -25,7 +24,7 @@ export class MainMenuController implements OnStart {
 	public refs: GameObjectReferences;
 	public currentPage?: MainMenuPageComponent;
 	public avatarView?: AvatarViewComponent;
-	public OnCurrentPageChanged = new Signal<[page: MainMenuPageType, oldPage: MainMenuPageType | undefined]>();
+	public onCurrentPageChanged = new Signal<[page: MainMenuPageType, oldPage: MainMenuPageType | undefined]>();
 	private pageMap: Map<MainMenuPageType, MainMenuPageComponent>;
 	private wrapperRect: RectTransform;
 
@@ -57,15 +56,19 @@ export class MainMenuController implements OnStart {
 		//print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>().TEST());
 
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
-			[MainMenuPageType.HOME, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.SETTINGS, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.AVATAR, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
+			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
 		]);
 
 		//let avatarHolder = GameObject.Create("AvatarHolder");
 		this.avatarView = GameObjectUtil.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 		).GetComponent<AvatarViewComponent>();
+		if (Game.context === CoreContext.GAME) {
+			this.avatarView.HideAvatar();
+		}
 
 		for (const [key, value] of this.pageMap) {
 			print("Loaded page: " + key + ", " + value);
@@ -75,7 +78,7 @@ export class MainMenuController implements OnStart {
 		}
 
 		const closeButton = this.refs.GetValue("UI", "CloseButton");
-		if (Game.Context === CoreContext.MAIN_MENU) {
+		if (Game.context === CoreContext.MAIN_MENU) {
 			const mouse = new Mouse();
 			mouse.AddUnlocker();
 
@@ -164,10 +167,10 @@ export class MainMenuController implements OnStart {
 
 	OnStart(): void {
 		if (this.currentPage === undefined) {
-			this.RouteToPage(MainMenuPageType.HOME, true, true);
+			this.RouteToPage(MainMenuPageType.Home, true, true);
 		}
 
-		if (Game.Context === CoreContext.GAME) {
+		if (Game.context === CoreContext.GAME) {
 			const keyboard = new Keyboard();
 			keyboard.OnKeyDown(
 				KeyCode.Escape,
@@ -204,7 +207,7 @@ export class MainMenuController implements OnStart {
 		print("opening new page: " + this.currentPage?.pageType);
 		this.currentPage?.OpenPage();
 
-		this.OnCurrentPageChanged.Fire(pageType, oldPage?.pageType);
+		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);
 	}
 
 	private ToggleSocialView() {

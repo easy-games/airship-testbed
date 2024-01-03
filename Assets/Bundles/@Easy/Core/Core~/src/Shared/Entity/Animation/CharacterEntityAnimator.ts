@@ -428,8 +428,8 @@ export class CharacterEntityAnimator {
 		this.Log("Trigger State: " + key + " index: " + index);
 		this.currentItemState = key;
 		/*eventData.eventKey = key;
-        eventData.eventIndex = index;
-        currentItem.OnAnimEvent(eventData);*/
+		eventData.eventIndex = index;
+		currentItem.OnAnimEvent(eventData);*/
 	}
 
 	public EquipItem(itemMeta: ItemDef | undefined) {

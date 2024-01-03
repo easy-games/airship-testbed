@@ -16,7 +16,7 @@ export class BWAbilitiesService {
 	) {
 		CoreServerSignals.EntitySpawn.Connect((event) => {
 			if (event.entity instanceof CharacterEntity && event.entity.player && this.matchService.IsRunning()) {
-				this.AddAbilitiesToCharacter(event.entity.ClientId!);
+				this.AddAbilitiesToCharacter(event.entity.clientId!);
 			}
 		});
 
@@ -24,7 +24,7 @@ export class BWAbilitiesService {
 			const players = this.playerService.GetPlayers();
 			for (const player of players) {
 				if (!player.character) continue;
-				this.AddAbilitiesToCharacter(player.character.ClientId!);
+				this.AddAbilitiesToCharacter(player.character.clientId!);
 			}
 		});
 	}

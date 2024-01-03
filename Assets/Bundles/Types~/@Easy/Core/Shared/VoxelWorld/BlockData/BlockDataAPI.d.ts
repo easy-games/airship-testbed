@@ -2,7 +2,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 export declare enum CoreBlockMetaKeys {
-    CAN_BREAK = "canBreak",
+    NO_BREAK = "noBreak",
     CURRENT_HEALTH = "health",
     CAN_TILL = "canTill"
 }

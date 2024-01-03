@@ -1,6 +1,6 @@
 import { AccessoryType } from "./Accessory/AccessoryType";
-import { baseCharacters } from "./BaseCharacters";
+import { BaseCharacters } from "./BaseCharacters";
 export interface CharacterDefinition {
-    BaseCharacter: keyof typeof baseCharacters;
+    BaseCharacter: keyof typeof BaseCharacters;
     Accessories: AccessoryType[];
 }

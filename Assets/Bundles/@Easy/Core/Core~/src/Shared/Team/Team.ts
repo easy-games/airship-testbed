@@ -60,7 +60,7 @@ export class Team {
 	}
 
 	public HasLocalPlayer(): boolean {
-		return Game.LocalPlayer !== undefined && this.players.has(Game.LocalPlayer);
+		return Game.localPlayer !== undefined && this.players.has(Game.localPlayer);
 	}
 
 	public SendMessage(message: string): void {

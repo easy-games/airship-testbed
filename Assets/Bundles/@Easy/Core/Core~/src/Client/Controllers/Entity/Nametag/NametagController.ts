@@ -26,7 +26,7 @@ export class NametagController implements OnStart {
 				return;
 			}
 			this.UpdateNametag(event.entity);
-			event.entity.OnDisplayNameChanged.Connect(() => {
+			event.entity.onDisplayNameChanged.Connect(() => {
 				this.UpdateNametag(event.entity);
 			});
 			const SetNametagAlpha = (entity: Entity, alpha: number) => {
@@ -45,7 +45,7 @@ export class NametagController implements OnStart {
 					}
 				}
 			};
-			event.entity.OnStateChanged.Connect((newState, oldState) => {
+			event.entity.onStateChanged.Connect((newState, oldState) => {
 				if (newState === EntityState.Crouching) {
 					SetNametagAlpha(event.entity, 0.1);
 				} else if (oldState === EntityState.Crouching) {
@@ -54,7 +54,7 @@ export class NametagController implements OnStart {
 			});
 		});
 		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
-			if (event.player === Game.LocalPlayer) {
+			if (event.player === Game.localPlayer) {
 				for (const entity of this.entityController.GetEntities()) {
 					this.UpdateNametag(entity);
 				}
@@ -90,7 +90,7 @@ export class NametagController implements OnStart {
 		if (entity.IsLocalCharacter()) return;
 
 		const team: Team | undefined = entity.player?.GetTeam();
-		const localTeam = Game.LocalPlayer.GetTeam();
+		const localTeam = Game.localPlayer.GetTeam();
 
 		const nameTag = entity.model.transform.FindChild(this.nameTageId);
 		if (nameTag === undefined) {
@@ -115,13 +115,13 @@ export class NametagController implements OnStart {
 		let color: Color | undefined;
 		if (localTeam) {
 			if (entity.player && localTeam.GetPlayers().has(entity.player)) {
-				color = Theme.Green;
+				color = Theme.green;
 			} else {
-				color = Theme.Red;
+				color = Theme.red;
 			}
 		}
 		if (color === undefined) {
-			color = Theme.White;
+			color = Theme.white;
 		}
 		textLabel.color = color;
 

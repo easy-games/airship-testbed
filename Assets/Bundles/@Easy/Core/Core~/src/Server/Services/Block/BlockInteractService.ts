@@ -28,7 +28,7 @@ export class BlockInteractService implements OnStart {
 	OnStart(): void {
 		//Placed a block
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
-			if (!event.is("PlaceBlock")) return;
+			if (!event.Is("PlaceBlock")) return;
 
 			print("PlaceBlock tick=" + InstanceFinder.TimeManager.LocalTick);
 
@@ -40,7 +40,7 @@ export class BlockInteractService implements OnStart {
 			const itemMeta = ItemUtil.GetItemDef(itemType);
 
 			const rollback = () => {
-				CoreNetwork.ServerToClient.RevertBlockPlace.Server.FireClient(clientId, pos);
+				CoreNetwork.ServerToClient.RevertBlockPlace.server.FireClient(clientId, pos);
 			};
 
 			if (!itemMeta.block?.blockId) {
@@ -72,7 +72,7 @@ export class BlockInteractService implements OnStart {
 
 		//Hit Block with an Item
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
-			if (!event.is("HitBlock")) return;
+			if (!event.Is("HitBlock")) return;
 
 			const world = WorldAPI.GetMainWorld();
 			if (world === undefined) return;
@@ -104,7 +104,7 @@ export class BlockInteractService implements OnStart {
 
 		//Hit Block with an Item
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
-			if (!event.is("TillBlock")) return;
+			if (!event.Is("TillBlock")) return;
 
 			const world = WorldAPI.GetMainWorld();
 			if (world === undefined) return;
@@ -135,7 +135,7 @@ export class BlockInteractService implements OnStart {
 		});
 
 		//Deprecated? Now using "HitBlock" move command
-		CoreNetwork.ClientToServer.HitBlock.Server.OnClientEvent((clientId, pos) => {});
+		CoreNetwork.ClientToServer.HitBlock.server.OnClientEvent((clientId, pos) => {});
 	}
 
 	public PlaceBlock(entity: CharacterEntity, pos: Vector3, item: ItemDef, blockData?: BlockData) {
@@ -153,7 +153,7 @@ export class BlockInteractService implements OnStart {
 			// 	canBreak: true,
 			// }
 			CoreServerSignals.BlockPlace.Fire(new BlockPlaceSignal(pos, item.itemType, item.block.blockId, entity));
-			entity.SendItemAnimationToClients(0, 0, entity.ClientId);
+			entity.SendItemAnimationToClients(0, 0, entity.clientId);
 		}
 	}
 
@@ -185,7 +185,7 @@ export class BlockInteractService implements OnStart {
 			placedByEntityId: entity.id,
 		});
 		CoreServerSignals.BlockGroupPlace.Fire(new BlockGroupPlaceSignal(positions, itemTypes, blockTypes, entity));
-		entity.SendItemAnimationToClients(0, 0, entity.ClientId);
+		entity.SendItemAnimationToClients(0, 0, entity.clientId);
 	}
 
 	public TillBlock(entity: Entity | undefined, tillBlockMeta: TillBlockDef, voxelPos: Vector3): boolean {
@@ -204,7 +204,7 @@ export class BlockInteractService implements OnStart {
 		const tillable = block.itemDef?.block?.tillable;
 		if (!tillable) return false;
 
-		const breakState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.CAN_BREAK);
+		const breakState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.NO_BREAK);
 		const tillState = BlockDataAPI.GetBlockData(voxelPos, CoreBlockMetaKeys.CAN_TILL);
 
 		world.PlaceBlockById(voxelPos, tillable.tillsToBlockId, { placedByEntityId: entity?.id });
@@ -220,7 +220,7 @@ export class BlockInteractService implements OnStart {
 			);
 		}
 
-		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CAN_BREAK, breakState);
+		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.NO_BREAK, breakState);
 		return true;
 	}
 
@@ -249,7 +249,7 @@ export class BlockInteractService implements OnStart {
 		//BLOCK DAMAGE
 		const health =
 			BlockDataAPI.GetBlockData<number>(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH) ??
-			WorldAPI.DefaultVoxelHealth;
+			WorldAPI.defaultVoxelHealth;
 		const newHealth = math.max(health - beforeSignal.damage, 0);
 		BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);
 
@@ -261,7 +261,7 @@ export class BlockInteractService implements OnStart {
 		});
 
 		if (entity?.player) {
-			CoreNetwork.ServerToClient.BlockHit.Server.FireExcept(
+			CoreNetwork.ServerToClient.BlockHit.server.FireExcept(
 				entity.player.clientId,
 				voxelPos,
 				block.runtimeBlockId,
@@ -270,7 +270,7 @@ export class BlockInteractService implements OnStart {
 				newHealth === 0,
 			);
 		} else {
-			CoreNetwork.ServerToClient.BlockHit.Server.FireAllClients(
+			CoreNetwork.ServerToClient.BlockHit.server.FireAllClients(
 				voxelPos,
 				block.runtimeBlockId,
 				entity?.id,
@@ -337,7 +337,7 @@ export class BlockInteractService implements OnStart {
 			CoreServerSignals.BeforeBlockHit.Fire(new BeforeBlockHitSignal(block, voxelPos, entity, damage, true));
 
 			//BLOCK DAMAGE
-			let health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+			let health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.defaultVoxelHealth;
 			health = math.max(health - damage, 0);
 
 			damagePositions[damageI] = voxelPos;

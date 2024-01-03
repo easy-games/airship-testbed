@@ -18,7 +18,7 @@ export class TeamService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.PlayerJoin.ConnectWithPriority(SignalPriority.LOWEST, (event) => {
 			const teamDtos = Object.values(this.teams).map((e) => e.team.Encode());
-			CoreNetwork.ServerToClient.AddTeams.Server.FireClient(event.player.clientId, teamDtos);
+			CoreNetwork.ServerToClient.AddTeams.server.FireClient(event.player.clientId, teamDtos);
 		});
 	}
 
@@ -37,16 +37,16 @@ export class TeamService implements OnStart {
 		CoreServerSignals.TeamAdded.Fire(team);
 
 		const dto = team.Encode();
-		CoreNetwork.ServerToClient.AddTeams.Server.FireAllClients([dto]);
+		CoreNetwork.ServerToClient.AddTeams.server.FireAllClients([dto]);
 
 		entry.bin.Add(
 			team.onPlayerAdded.Connect((player) => {
-				CoreNetwork.ServerToClient.AddPlayerToTeam.Server.FireAllClients(team.id, player.userId);
+				CoreNetwork.ServerToClient.AddPlayerToTeam.server.FireAllClients(team.id, player.userId);
 			}),
 		);
 		entry.bin.Add(
 			team.onPlayerRemoved.Connect((player) => {
-				CoreNetwork.ServerToClient.RemovePlayerFromTeam.Server.FireAllClients(team.id, player.userId);
+				CoreNetwork.ServerToClient.RemovePlayerFromTeam.server.FireAllClients(team.id, player.userId);
 			}),
 		);
 	}
@@ -60,7 +60,7 @@ export class TeamService implements OnStart {
 		if (!entry) return;
 
 		entry.bin.Clean();
-		CoreNetwork.ServerToClient.RemoveTeams.Server.FireAllClients([team.id]);
+		CoreNetwork.ServerToClient.RemoveTeams.server.FireAllClients([team.id]);
 	}
 
 	/**

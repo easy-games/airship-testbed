@@ -18,10 +18,10 @@ export interface PlaceBlockConfig {
 }
 export declare class World {
     readonly voxelWorld: VoxelWorld;
-    static SKYBOX: string;
-    OnVoxelPlaced: Signal<[pos: Vector3, voxel: number]>;
-    OnFinishedLoading: Signal<void>;
-    OnFinishedReplicatingChunksFromServer: Signal<void>;
+    static skybox: string;
+    onVoxelPlaced: Signal<[pos: Vector3, voxel: number]>;
+    onFinishedLoading: Signal<void>;
+    onFinishedReplicatingChunksFromServer: Signal<void>;
     private finishedLoading;
     private finishedReplicatingChunksFromServer;
     constructor(voxelWorld: VoxelWorld);

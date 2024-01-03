@@ -13,6 +13,6 @@ export class HealCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		const entity = Entity.FindByClientId(player.clientId);
 		entity?.SetHealth(entity.GetMaxHealth());
-		Game.BroadcastMessage(ColorUtil.ColoredText(Theme.Green, player.username + " used /heal"));
+		Game.BroadcastMessage(ColorUtil.ColoredText(Theme.green, player.username + " used /heal"));
 	}
 }

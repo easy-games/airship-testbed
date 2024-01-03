@@ -19,14 +19,14 @@ export class BWController implements OnStart {
 
 	OnStart(): void {
 		// Listen for player eliminated.
-		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId: number) => {
+		Network.ServerToClient.PlayerEliminated.client.OnServerEvent((clientId: number) => {
 			const player = this.playerController.GetPlayerFromClientId(clientId);
 			if (!player) return;
 			this.eliminatedPlayers.add(player);
 			ClientSignals.PlayerEliminated.Fire({ player });
 		});
 		// Listen for match end.
-		Network.ServerToClient.MatchEnded.Client.OnServerEvent((winningTeamId?: string) => {
+		Network.ServerToClient.MatchEnded.client.OnServerEvent((winningTeamId?: string) => {
 			if (winningTeamId) this.ShowWinscreen(winningTeamId);
 		});
 
@@ -56,7 +56,7 @@ export class BWController implements OnStart {
 			return;
 		}
 		// Show a glow to indicate friend or foe.
-		const sameTeam = team?.id === Game.LocalPlayer.character?.GetTeam()?.id;
+		const sameTeam = team?.id === Game.localPlayer.character?.GetTeam()?.id;
 		const targetColor = sameTeam ? Color.cyan : Color.red;
 		const strength = sameTeam ? 0 : 1;
 		entity.animator.SetFresnelColor(targetColor, 5, strength);

@@ -30,7 +30,7 @@ export class AbilityService implements OnStart {
 	constructor(private readonly abilityRegistry: AbilityRegistry, private readonly entityService: EntityService) {}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.AbilityActivateRequest.Server.OnClientEvent((clientId, abilityId) => {
+		CoreNetwork.ClientToServer.AbilityActivateRequest.server.OnClientEvent((clientId, abilityId) => {
 			this.UseAbility(clientId, abilityId);
 		});
 	}
@@ -50,7 +50,7 @@ export class AbilityService implements OnStart {
 			this.HandleChargeAbility(clientId, abilityMeta);
 		} else {
 			CoreServerSignals.AbilityUsed.Fire({ clientId: clientId, abilityId: abilityId });
-			CoreNetwork.ServerToClient.AbilityUsed.Server.FireAllClients(clientId, abilityId);
+			CoreNetwork.ServerToClient.AbilityUsed.server.FireAllClients(clientId, abilityId);
 			this.SetAbilityOnCooldown(clientId, abilityId);
 		}
 	}
@@ -77,7 +77,7 @@ export class AbilityService implements OnStart {
 			timeStart: now,
 			timeEnd: chargeEndTime,
 		};
-		CoreNetwork.ServerToClient.AbilityChargeStarted.Server.FireAllClients(clientId, chargingAbilityDto);
+		CoreNetwork.ServerToClient.AbilityChargeStarted.server.FireAllClients(clientId, chargingAbilityDto);
 		CoreServerSignals.AbilityChargeStarted.Fire({ clientId: clientId, chargingAbilityDto: chargingAbilityDto });
 
 		let triggerBin: Bin | undefined;
@@ -87,7 +87,7 @@ export class AbilityService implements OnStart {
 				abilityId: abilityMeta.id,
 				endState: ChargingAbilityEndedState.Finished,
 			};
-			CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireAllClients(clientId, chargingAbilityEndedDto);
+			CoreNetwork.ServerToClient.AbilityChargeEnded.server.FireAllClients(clientId, chargingAbilityEndedDto);
 			CoreServerSignals.AbilityChargeEnded.Fire({
 				clientId: clientId,
 				chargingAbilityEndedDto: chargingAbilityEndedDto,
@@ -95,7 +95,7 @@ export class AbilityService implements OnStart {
 
 			if (triggerBin) triggerBin.Clean();
 			CoreServerSignals.AbilityUsed.Fire({ clientId: clientId, abilityId: abilityMeta.id });
-			CoreNetwork.ServerToClient.AbilityUsed.Server.FireAllClients(clientId, abilityMeta.id);
+			CoreNetwork.ServerToClient.AbilityUsed.server.FireAllClients(clientId, abilityMeta.id);
 			this.chargingMap.delete(clientId);
 			if (abilityMeta.config.cooldownTimeSeconds) {
 				this.SetAbilityOnCooldown(clientId, abilityMeta.id);
@@ -112,7 +112,7 @@ export class AbilityService implements OnStart {
 					abilityId: abilityMeta.id,
 					endState: ChargingAbilityEndedState.Cancelled,
 				};
-				CoreNetwork.ServerToClient.AbilityChargeEnded.Server.FireAllClients(
+				CoreNetwork.ServerToClient.AbilityChargeEnded.server.FireAllClients(
 					clientId,
 					cancelledChargingAbilityEndedDto,
 				);
@@ -128,7 +128,7 @@ export class AbilityService implements OnStart {
 			abilityId: abilityMeta.id,
 			cancel: cancellableAbility,
 			timeStarted: now,
-			timeLength: Duration.fromSeconds(chargeEndTime),
+			timeLength: Duration.FromSeconds(chargeEndTime),
 			cancellationTriggers: new ReadonlySet<AbilityCancellationTrigger>(chargeMeta.cancelTriggers),
 		});
 	}
@@ -166,7 +166,7 @@ export class AbilityService implements OnStart {
 		// We **always** cancel charge abilities on death.
 		triggerBin.Add(
 			CoreServerSignals.EntityDeath.Connect((event) => {
-				if (event.entity.ClientId === clientId) cleanup();
+				if (event.entity.clientId === clientId) cleanup();
 			}),
 		);
 		// We **always** cancel the charge ability if it is removed.
@@ -188,19 +188,19 @@ export class AbilityService implements OnStart {
 				case AbilityCancellationTrigger.EntityDamageTaken:
 					triggerBin.Add(
 						CoreServerSignals.EntityDamage.Connect((event) => {
-							if (event.entity.ClientId === clientId) cleanup();
+							if (event.entity.clientId === clientId) cleanup();
 						}),
 					);
 					break;
 				case AbilityCancellationTrigger.EntityMovement:
 					if (entity) {
-						triggerBin.Add(entity.OnMoveDirectionChanged.Connect(() => cleanup()));
+						triggerBin.Add(entity.onMoveDirectionChanged.Connect(() => cleanup()));
 					}
 					break;
 				case AbilityCancellationTrigger.EntityFiredProjectile:
 					triggerBin.Add(
 						CoreServerSignals.ProjectileFired.Connect((event) => {
-							if (event.shooter.ClientId === clientId) cleanup();
+							if (event.shooter.clientId === clientId) cleanup();
 						}),
 					);
 					break;
@@ -229,7 +229,7 @@ export class AbilityService implements OnStart {
 		}
 		const abilityDto = AbilityUtil.CreateAbilityDto(abilityId, true);
 		if (abilityDto) {
-			CoreNetwork.ServerToClient.AbilityAdded.Server.FireAllClients(clientId, abilityDto);
+			CoreNetwork.ServerToClient.AbilityAdded.server.FireAllClients(clientId, abilityDto);
 		}
 		CoreServerSignals.AbilityAdded.Fire({ clientId: clientId, abilityId: abilityId });
 		// Abilities _automatically_ enable on add.
@@ -253,7 +253,7 @@ export class AbilityService implements OnStart {
 		const updatedAbilities = clientAbilities.filter((clientAbilityId) => clientAbilityId !== abilityId);
 		this.abilityMap.set(clientId, updatedAbilities);
 		CoreServerSignals.AbilityRemoved.Fire({ clientId: clientId, abilityId: abilityId });
-		CoreNetwork.ServerToClient.AbilityRemoved.Server.FireAllClients(clientId, abilityId);
+		CoreNetwork.ServerToClient.AbilityRemoved.server.FireAllClients(clientId, abilityId);
 		return true;
 	}
 
@@ -293,7 +293,7 @@ export class AbilityService implements OnStart {
 		const abilityCooldown: AbilityCooldown = {
 			startTimestamp: now,
 			endTimestamp: cooldownEnd,
-			length: Duration.fromSeconds(cooldownDuration),
+			length: Duration.FromSeconds(cooldownDuration),
 		};
 		const clientCooldowns = this.cooldownMap.get(clientId);
 		if (!clientCooldowns) {
@@ -302,7 +302,7 @@ export class AbilityService implements OnStart {
 		} else {
 			clientCooldowns.set(abilityId, abilityCooldown);
 		}
-		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Server.FireClient(clientId, {
+		CoreNetwork.ServerToClient.AbilityCooldownStateChange.server.FireClient(clientId, {
 			abilityId: abilityId,
 			timeStart: abilityCooldown.startTimestamp,
 			timeEnd: abilityCooldown.endTimestamp,
@@ -313,8 +313,8 @@ export class AbilityService implements OnStart {
 
 	/**
 	 * Sets the client's ability enabled state. Returns whether or not the state was successfully updated.
-	 * Returns whether or not the ability's state was updated. If this function returns `false` the client
-	 * either does **not** have the provided ability or the ability was already in the provided state.
+	 * If this function returns `false` the client either does **not** have the provided ability or the
+	 * ability was already in the provided state.
 	 *
 	 * @param clientId The client that ability enabled state is being set for.
 	 * @param abilityId The ability to enabled or disable.
@@ -327,7 +327,7 @@ export class AbilityService implements OnStart {
 		if (!clientEnabledStates) {
 			const enabledEntry = new Map<string, boolean>([[abilityId, enabled]]);
 			this.enabledMap.set(clientId, enabledEntry);
-			CoreNetwork.ServerToClient.AbilityStateChange.Server.FireAllClients(clientId, abilityId, enabled);
+			CoreNetwork.ServerToClient.AbilityStateChange.server.FireAllClients(clientId, abilityId, enabled);
 			this.FireAbilityEnabledStateUpdateSignal(clientId, abilityId, enabled);
 
 			return true;
@@ -335,7 +335,7 @@ export class AbilityService implements OnStart {
 			const currentEnabledState = clientEnabledStates.get(abilityId);
 			if (currentEnabledState === enabled) return false;
 			clientEnabledStates.set(abilityId, enabled);
-			CoreNetwork.ServerToClient.AbilityStateChange.Server.FireAllClients(clientId, abilityId, enabled);
+			CoreNetwork.ServerToClient.AbilityStateChange.server.FireAllClients(clientId, abilityId, enabled);
 			this.FireAbilityEnabledStateUpdateSignal(clientId, abilityId, enabled);
 
 			return true;

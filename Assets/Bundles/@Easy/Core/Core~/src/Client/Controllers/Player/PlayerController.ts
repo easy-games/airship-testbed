@@ -14,18 +14,18 @@ import { PlayerUtils } from "Shared/Util/PlayerUtils";
 @Controller({})
 export class PlayerController implements OnStart {
 	public readonly clientId: number;
-	public readonly LocalConnection: NetworkConnection;
-	private players = new Set<Player>([Game.LocalPlayer]);
+	public readonly localConnection: NetworkConnection;
+	private players = new Set<Player>([Game.localPlayer]);
 
 	constructor(
 		private readonly friendsController: FriendsController,
 		private readonly authController: AuthController,
 	) {
-		this.LocalConnection = InstanceFinder.ClientManager.Connection;
-		this.clientId = this.LocalConnection.ClientId;
-		this.players.add(Game.LocalPlayer);
+		this.localConnection = InstanceFinder.ClientManager.Connection;
+		this.clientId = this.localConnection.ClientId;
+		this.players.add(Game.localPlayer);
 
-		CoreNetwork.ServerToClient.ServerInfo.Client.OnServerEvent((gameId, serverId) => {
+		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId) => {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			print(`GameId=${gameId} ServerId=${serverId}`);
@@ -40,15 +40,15 @@ export class PlayerController implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.AllPlayers.Client.OnServerEvent((playerDtos) => {
+		CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
 			for (let dto of playerDtos) {
 				this.AddPlayer(dto);
 			}
 		});
-		CoreNetwork.ServerToClient.AddPlayer.Client.OnServerEvent((playerDto) => {
+		CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
 			this.AddPlayer(playerDto);
 		});
-		CoreNetwork.ServerToClient.RemovePlayer.Client.OnServerEvent((clientId) => {
+		CoreNetwork.ServerToClient.RemovePlayer.client.OnServerEvent((clientId) => {
 			const player = this.GetPlayerFromClientId(clientId);
 			if (player) {
 				this.players.delete(player);
@@ -99,7 +99,7 @@ export class PlayerController implements OnStart {
 	private AddPlayer(dto: PlayerDto): void {
 		const existing = this.GetPlayerFromClientId(dto.clientId);
 		if (existing) {
-			if (Game.LocalPlayer !== existing) {
+			if (Game.localPlayer !== existing) {
 				warn("Tried to add existing player " + dto.username);
 			}
 			return;
@@ -112,8 +112,8 @@ export class PlayerController implements OnStart {
 			team = Dependency<TeamController>().GetTeam(dto.teamId);
 		}
 
-		if (dto.clientId === this.LocalConnection.ClientId) {
-			const mutablePlayer = Game.LocalPlayer as Mutable<Player>;
+		if (dto.clientId === this.localConnection.ClientId) {
+			const mutablePlayer = Game.localPlayer as Mutable<Player>;
 			mutablePlayer.nob = nob;
 			mutablePlayer.clientId = dto.clientId;
 			mutablePlayer.userId = dto.userId;

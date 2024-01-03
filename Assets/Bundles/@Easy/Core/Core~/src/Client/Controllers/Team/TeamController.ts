@@ -13,7 +13,7 @@ export class TeamController implements OnStart {
 	constructor(private readonly playerController: PlayerController) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.AddTeams.Client.OnServerEvent((teamDtos) => {
+		CoreNetwork.ServerToClient.AddTeams.client.OnServerEvent((teamDtos) => {
 			for (let dto of teamDtos) {
 				const team = new Team(
 					dto.name,
@@ -31,7 +31,7 @@ export class TeamController implements OnStart {
 			}
 		});
 
-		CoreNetwork.ServerToClient.RemoveTeams.Client.OnServerEvent((teamIds) => {
+		CoreNetwork.ServerToClient.RemoveTeams.client.OnServerEvent((teamIds) => {
 			for (let teamId of teamIds) {
 				const team = this.GetTeam(teamId);
 				if (!team) continue;
@@ -40,7 +40,7 @@ export class TeamController implements OnStart {
 			}
 		});
 
-		CoreNetwork.ServerToClient.AddPlayerToTeam.Client.OnServerEvent((teamId, userId) => {
+		CoreNetwork.ServerToClient.AddPlayerToTeam.client.OnServerEvent((teamId, userId) => {
 			const team = this.GetTeam(teamId);
 			if (!team) return;
 
@@ -50,7 +50,7 @@ export class TeamController implements OnStart {
 			team.AddPlayer(player);
 		});
 
-		CoreNetwork.ServerToClient.RemovePlayerFromTeam.Client.OnServerEvent((teamId, playerId) => {
+		CoreNetwork.ServerToClient.RemovePlayerFromTeam.client.OnServerEvent((teamId, playerId) => {
 			const team = this.GetTeam(teamId);
 			if (!team) return;
 

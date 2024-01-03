@@ -1,16 +1,16 @@
 import {} from "@easy-games/flamework-core";
-import MainMenuPageComponent from "../MainMenuPageComponent";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
-import { AvatarUtil } from "Client/Avatar/AvatarUtil";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
+import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
-	private readonly GeneralHookupKey = "General";
-	private readonly TweenDuration = 0.15;
+	private readonly generalHookupKey = "General";
+	private readonly tweenDuration = 0.15;
 
 	private subNavBarBtns: (CSArray<RectTransform> | undefined)[] = [];
 	private mainNavBtns?: CSArray<RectTransform>;
@@ -67,7 +67,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		//Hookup general buttons
-		let button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "AvatarInteractionBtn").gameObject;
+		let button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "AvatarInteractionBtn").gameObject;
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnBeginDragEvent(button, () => {
@@ -77,7 +77,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.OnDragAvatar(false);
 			});
 		}
-		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ClearBtn").gameObject;
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "ClearBtn").gameObject;
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(button, () => {
@@ -85,7 +85,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "CurrentBtn").gameObject;
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "CurrentBtn").gameObject;
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(button, () => {
@@ -93,7 +93,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		button = this.refs?.GetValue<RectTransform>(this.GeneralHookupKey, "ResetCameraBtn").gameObject;
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "ResetCameraBtn").gameObject;
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(button, () => {
@@ -128,7 +128,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
 			const active = i === index;
 			const nav = this.mainNavBtns.GetValue(i);
-			nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.TweenDuration);
+			nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
 			let button = nav.gameObject.GetComponent<Button>();
 			let colors = button.colors;
 			colors.normalColor = active ? Color.green : Color.white;
@@ -156,7 +156,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			for (let i = 0; i < subBar.Length; i++) {
 				const active = i === subIndex;
 				const nav = subBar.GetValue(i);
-				nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.TweenDuration);
+				nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
 				let button = nav.gameObject.GetComponent<Button>();
 				let colors = button.colors;
 				colors.normalColor = active ? Color.green : Color.white;
@@ -309,8 +309,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayColorScheme() {
-		for (let i = 0; i < AvatarUtil.SkinColors.size(); i++) {
-			this.AddColorButton(AvatarUtil.SkinColors[i]);
+		for (let i = 0; i < AvatarUtil.skinColors.size(); i++) {
+			this.AddColorButton(AvatarUtil.skinColors[i]);
 		}
 	}
 

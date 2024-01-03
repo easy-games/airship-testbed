@@ -5,6 +5,7 @@ export default class SortComponent extends AirshipBehaviour {
     content: Transform;
     gamePrefab: GameObject;
     backendName: string;
+    OnAwake(): void;
     OnStart(): void;
     OnDestroy(): void;
     Setup(title: string, backendName: string): void;

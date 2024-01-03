@@ -17,7 +17,7 @@ export class InventoryService implements OnStart {
 	private invIdCounter = 1;
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.SetHeldSlot.Server.OnClientEvent((clientId, slot) => {
+		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((clientId, slot) => {
 			const entity = Dependency<EntityService>().GetEntityByClientId(clientId);
 			if (!entity) return;
 			if (!(entity instanceof CharacterEntity)) {
@@ -26,14 +26,14 @@ export class InventoryService implements OnStart {
 
 			entity.GetInventory().SetHeldSlot(slot);
 
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.Server.FireAllClients(entity.id, slot, true);
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(entity.id, slot, true);
 		});
 
-		CoreNetwork.ClientToServer.Inventory.SwapSlots.Server.OnClientEvent(
+		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
 			(clientId, frommInvId, fromSlot, toInvId, toSlot) => {},
 		);
 
-		CoreNetwork.ClientToServer.Inventory.MoveToSlot.Server.OnClientEvent(
+		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
 			(clientId, fromInvId, fromSlot, toInvId, toSlot, amount) => {
 				const fromInv = this.GetInventoryFromId(fromInvId);
 				if (!fromInv) return;
@@ -50,10 +50,10 @@ export class InventoryService implements OnStart {
 						if (toItemStack.GetAmount() + amount <= toItemStack.GetMaxStackSize()) {
 							toItemStack.SetAmount(toItemStack.GetAmount() + amount);
 							fromItemStack.Decrement(amount);
-							CoreNetwork.ClientToServer.Inventory.MoveToSlot.Client.FireServer(
-								fromInv.Id,
+							CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+								fromInv.id,
 								fromSlot,
-								toInv.Id,
+								toInv.id,
 								toSlot,
 								amount,
 							);
@@ -70,7 +70,7 @@ export class InventoryService implements OnStart {
 			},
 		);
 
-		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.Server.OnClientEvent(
+		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.server.OnClientEvent(
 			(clientId, fromInvId, fromSlot, toInvId) => {
 				const fromInv = this.GetInventoryFromId(fromInvId);
 				if (!fromInv) return;
@@ -194,7 +194,7 @@ export class InventoryService implements OnStart {
 			},
 		);
 
-		CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.Server.OnClientEvent((clientId, invDto) => {
+		CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.server.OnClientEvent((clientId, invDto) => {
 			const entity = Dependency<EntityService>().GetEntityByClientId(clientId) as CharacterEntity | undefined;
 			if (!entity) {
 				error("Entity not found.");
@@ -246,7 +246,7 @@ export class InventoryService implements OnStart {
 	}
 
 	public GetInvEntry(inventory: Inventory): InventoryEntry {
-		const found = this.inventories.get(inventory.Id);
+		const found = this.inventories.get(inventory.id);
 		if (found) {
 			return found;
 		}
@@ -255,7 +255,7 @@ export class InventoryService implements OnStart {
 			Viewers: new Set(),
 			Owners: new Set(),
 		};
-		this.inventories.set(inventory.Id, entry);
+		this.inventories.set(inventory.id, entry);
 		return entry;
 	}
 

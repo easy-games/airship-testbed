@@ -30,7 +30,7 @@ export class SpectateController implements OnStart {
 	OnStart() {
 		// Start spectating once player is eliminated:
 		ClientSignals.PlayerEliminated.Connect((event) => {
-			if (event.player !== Game.LocalPlayer) return;
+			if (event.player !== Game.localPlayer) return;
 			SetTimeout(0.1, () => {
 				this.StartSpectating();
 			});
@@ -88,7 +88,7 @@ export class SpectateController implements OnStart {
 		// Handle changing who is spectated:
 		const mouse = bin.Add(new Mouse());
 		const keyboard = bin.Add(new Keyboard());
-		mouse.LeftDown.Connect(() => {
+		mouse.leftDown.Connect(() => {
 			this.GoToIncrement(orbitCamMode, keyboard.IsKeyDown(KeyCode.LeftShift) ? -1 : 1);
 		});
 
@@ -107,7 +107,7 @@ export class SpectateController implements OnStart {
 		});
 
 		// Clean up after camera mode is changed:
-		bin.Connect(this.cameraController.cameraSystem.ModeChangedBegin, (newMode, oldMode) => {
+		bin.Connect(this.cameraController.cameraSystem.modeChangedBegin, (newMode, oldMode) => {
 			if (oldMode === orbitCamMode) {
 				bin.Clean();
 			}
@@ -134,7 +134,7 @@ export class SpectateController implements OnStart {
 
 	/** Get a list of valid entities that can be spectated, sorted by ID. */
 	private GetSortedEntities(): Entity[] {
-		const team = Game.LocalPlayer.GetTeam();
+		const team = Game.localPlayer.GetTeam();
 		if (team) {
 			const alivePlayers = this.bwController.GetAlivePlayersOnTeam(team).mapFiltered((p) => p.character);
 			if (alivePlayers.size() > 0) {

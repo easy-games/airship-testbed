@@ -205,12 +205,12 @@ export class MeleeHeldItem extends HeldItem {
 		// let closeBox = this.combatVars.GetVector3("swordBoxClose");
 
 		this.Log("scanning for hits");
-		let hits = this.ScanBox(closeBox, [], Theme.Green, true);
+		let hits = this.ScanBox(closeBox, [], Theme.green, true);
 		if (this.itemMeta?.melee?.canHitMultipleTargets) {
 			let farHits = this.ScanBox(
 				farBox,
 				hits.map((x) => x.hitEntity.id),
-				Theme.Red,
+				Theme.red,
 				false,
 			);
 			hits = [...hits, ...farHits];

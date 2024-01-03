@@ -18,7 +18,7 @@ export class BedController implements OnStart {
 					const teamId = BlockDataAPI.GetBlockData<string>(event.pos, "teamId");
 					if (teamId) {
 						const team = Dependency<TeamController>().GetTeam(teamId);
-						const teamColor = team?.color ?? Theme.White;
+						const teamColor = team?.color ?? Theme.white;
 
 						const colorSetters = go.GetComponentsInChildren<MaterialColor>();
 						for (let i = 0; i < colorSetters.Length; i++) {

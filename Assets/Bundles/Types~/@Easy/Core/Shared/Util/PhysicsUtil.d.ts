@@ -1,3 +1,3 @@
 export declare class PhysicsUtil {
-    static Gravity: number;
+    static gravity: number;
 }

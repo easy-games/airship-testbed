@@ -13,8 +13,8 @@ export class FlyCommand extends ChatCommand {
 			player.character.entityDriver.SetAllowFlight(newValue);
 			player.SendMessage(
 				newValue
-					? ColorUtil.ColoredText(Theme.Green, "Fly mode enabled.")
-					: ColorUtil.ColoredText(Theme.Red, "Fly mode disabled."),
+					? ColorUtil.ColoredText(Theme.green, "Fly mode enabled.")
+					: ColorUtil.ColoredText(Theme.red, "Fly mode disabled."),
 			);
 		}
 	}

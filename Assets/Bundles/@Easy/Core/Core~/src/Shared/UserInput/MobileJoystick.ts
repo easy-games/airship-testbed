@@ -4,10 +4,10 @@ import { MobileJoystickDriver } from "./Drivers/MobileJoystickDriver";
 
 export class MobileJoystick {
 	private readonly bin = new Bin();
-	private readonly mobileJoystickDriver = MobileJoystickDriver.instance();
+	private readonly mobileJoystickDriver = MobileJoystickDriver.Instance();
 
 	/** Fires when the position of the joystick changes, including when it's released. */
-	public readonly Changed = new Signal<[position: Vector3, phase: MobileJoystickPhase]>();
+	public readonly changed = new Signal<[position: Vector3, phase: MobileJoystickPhase]>();
 
 	/** Returns `true` if the mobile joystick is visible. */
 	public IsVisible() {
@@ -20,8 +20,8 @@ export class MobileJoystick {
 	}
 
 	constructor() {
-		this.bin.Add(this.Changed);
-		this.bin.Add(this.mobileJoystickDriver.Changed.Proxy(this.Changed));
+		this.bin.Add(this.changed);
+		this.bin.Add(this.mobileJoystickDriver.changed.Proxy(this.changed));
 	}
 
 	/** Cleans up the mobile joystick listener. */

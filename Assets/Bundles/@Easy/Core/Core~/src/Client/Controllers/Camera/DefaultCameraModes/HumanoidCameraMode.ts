@@ -25,7 +25,6 @@ const MAX_ROT_X = math.rad(179);
 const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
 const Y_LOCKED_ROTATION = 0;
 
-const ANGLE_EPSILON = 0.0001;
 const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 0.1;
@@ -87,7 +86,7 @@ export class HumanoidCameraMode implements CameraMode {
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
 		let touchOverUI = false;
-		touchscreen.Pan.Connect((position, phase) => {
+		touchscreen.pan.Connect((position, phase) => {
 			switch (phase) {
 				case TouchPhase.Began:
 					if (UserInputService.InputProxy.IsPointerOverUI()) {
@@ -194,7 +193,7 @@ export class HumanoidCameraMode implements CameraMode {
 		const posOffset = new Vector3(xPos, yPos, zPos);
 
 		if (this.yOffsetSpring !== undefined) {
-			const [newYOffset, isDone] = this.yOffsetSpring.update(dt);
+			const [newYOffset, isDone] = this.yOffsetSpring.Update(dt);
 			this.yOffset = newYOffset.y;
 			if (isDone) {
 				this.yOffsetSpring = undefined;
@@ -235,14 +234,14 @@ export class HumanoidCameraMode implements CameraMode {
 		if (immediate) {
 			this.yOffset = yOffset;
 			if (this.yOffsetSpring) {
-				this.yOffsetSpring.resetTo(new Vector3(0, yOffset, 0));
+				this.yOffsetSpring.ResetTo(new Vector3(0, yOffset, 0));
 			}
 			return;
 		}
 		if (this.yOffsetSpring === undefined) {
 			this.yOffsetSpring = new SpringTween(new Vector3(0, this.yOffset, 0), 5, 2);
 		}
-		this.yOffsetSpring.setGoal(new Vector3(0, yOffset, 0));
+		this.yOffsetSpring.SetGoal(new Vector3(0, yOffset, 0));
 	}
 
 	public SetLookBackwards(lookBackwards: boolean) {

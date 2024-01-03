@@ -2,7 +2,7 @@ import inspect from "@easy-games/unity-inspect";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
-import { decode } from "Shared/json";
+import { DecodeJSON } from "Shared/json";
 import { GamesDto } from "./API/GamesAPI";
 import SortComponent from "./Sort/SortComponent";
 import { SortId } from "./Sort/SortId";
@@ -14,17 +14,21 @@ export default class HomePageComponent extends AirshipBehaviour {
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 
-	override OnEnabled(): void {
-		// print("mainContent: " + this.mainContent);
-		// let toRemove: Transform[] = [];
-		// for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
-		// 	toRemove.push(this.mainContent.GetChild(i));
-		// }
-		// for (const t of toRemove) {
-		// 	Object.Destroy(t.gameObject);
-		// }
-		// this.CreateSort(SortId.POPULAR, "Popular", "featured");
-		// this.FetchGames();
+	override OnEnable(): void {
+		print("HomePage.OnEnable");
+		this.ClearSorts();
+		this.CreateSort(SortId.POPULAR, "Popular", "featured");
+		this.FetchGames();
+	}
+
+	private ClearSorts(): void {
+		let toRemove: Transform[] = [];
+		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
+			toRemove.push(this.mainContent.GetChild(i));
+		}
+		for (const t of toRemove) {
+			Object.Destroy(t.gameObject);
+		}
 	}
 
 	private CreateSort(sortId: SortId, title: string, backendName: string): void {
@@ -46,7 +50,7 @@ export default class HomePageComponent extends AirshipBehaviour {
 			return;
 		}
 
-		const data = decode<GamesDto>(res.data);
+		const data = DecodeJSON<GamesDto>(res.data);
 		print("Games data: " + inspect(data));
 
 		// Popular
@@ -56,7 +60,7 @@ export default class HomePageComponent extends AirshipBehaviour {
 		}
 	}
 
-	OnDisabled(): void {
+	override OnDisable(): void {
 		print("HomePageComponent.OnDisable");
 		this.bin.Clean();
 	}

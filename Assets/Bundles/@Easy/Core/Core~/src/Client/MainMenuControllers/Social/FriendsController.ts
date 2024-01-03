@@ -13,7 +13,7 @@ import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
-import { decode, encode } from "Shared/json";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
@@ -47,13 +47,13 @@ export class FriendsController implements OnStart {
 
 		const cachedStatusesRaw = StateManager.GetString("main-menu:friend-statuses");
 		if (cachedStatusesRaw) {
-			this.friendStatuses = decode(cachedStatusesRaw);
+			this.friendStatuses = DecodeJSON(cachedStatusesRaw);
 			this.UpdateFriendsList();
 		}
 
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
-			if (Game.Context === CoreContext.MAIN_MENU) {
+			if (Game.context === CoreContext.MAIN_MENU) {
 				this.SendStatusUpdate();
 			}
 			this.FetchFriends();
@@ -82,7 +82,7 @@ export class FriendsController implements OnStart {
 			}
 			this.UpdateFriendsList();
 
-			const saveRaw = encode(this.friendStatuses);
+			const saveRaw = EncodeJSON(this.friendStatuses);
 			StateManager.SetString("main-menu:friend-statuses", saveRaw);
 		});
 
@@ -127,8 +127,8 @@ export class FriendsController implements OnStart {
 
 	public SendStatusUpdate(): void {
 		const status: Partial<FriendStatus> = {
-			userId: Game.LocalPlayer.userId,
-			status: Game.Context === CoreContext.GAME ? "in_game" : "online",
+			userId: Game.localPlayer.userId,
+			status: Game.context === CoreContext.GAME ? "in_game" : "online",
 			serverId: Game.serverId,
 			gameId: Game.gameId,
 			metadata: {
@@ -137,7 +137,7 @@ export class FriendsController implements OnStart {
 			},
 		};
 		print("Sending status update: " + inspect(status));
-		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", encode(status));
+		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", EncodeJSON(status));
 	}
 
 	public FetchFriends(): void {
@@ -145,7 +145,7 @@ export class FriendsController implements OnStart {
 		if (!res.success) {
 			return;
 		}
-		const data = decode(res.data) as {
+		const data = DecodeJSON(res.data) as {
 			friends: User[];
 			outgoingRequests: User[];
 			incomingRequests: User[];
@@ -159,7 +159,7 @@ export class FriendsController implements OnStart {
 			Task.Spawn(() => {
 				const res = HttpManager.PostAsync(
 					AirshipUrl.GameCoordinator + "/friends/requests/self",
-					encode({
+					EncodeJSON({
 						discriminatedUsername: user.discriminatedUsername,
 					}),
 					this.authController.GetAuthHeaders(),
@@ -182,7 +182,7 @@ export class FriendsController implements OnStart {
 		print('adding friend: "' + usernameWithTag + '"');
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			encode({
+			EncodeJSON({
 				discriminatedUsername: usernameWithTag,
 			}),
 		);
@@ -252,7 +252,7 @@ export class FriendsController implements OnStart {
 									onClick: () => {
 										InternalHttpManager.PostAsync(
 											AirshipUrl.GameCoordinator + "/parties/party/invite",
-											encode({
+											EncodeJSON({
 												userToAdd: friend.userId,
 											}),
 										);

@@ -2,6 +2,7 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -21,21 +22,21 @@ import { HelpCommand } from "./Commands/HelpCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
 import { LibonatiCommand } from "./Commands/LibonatiCommand";
+import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
+import { TeamChatCommand } from "./Commands/TeamChatCommand";
 import { TeamCommand } from "./Commands/TeamCommand";
+import { PlayersCommand } from "./Commands/TestPlayerCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
 import { VorliasCommand } from "./Commands/VorliasCommand";
-import { PlayersCommand } from "./Commands/TestPlayerCommand";
-import { Player } from "Shared/Player/Player";
-import { TeamChatCommand } from "./Commands/TeamChatCommand";
 
 @Service({})
 export class ChatService implements OnStart {
 	private commands = new Map<string, ChatCommand>();
 
-	public readonly CanUseRichText = true;
+	public readonly canUseRichText = true;
 
 	constructor(private readonly playerService: PlayerService) {
 		this.RegisterCommand(new DamageCommand());
@@ -63,6 +64,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new AbilityEnableStateCommand());
 		this.RegisterCommand(new PlayersCommand());
 		this.RegisterCommand(new TeamChatCommand());
+		this.RegisterCommand(new SaveWorldCommand());
 	}
 
 	public RegisterCommand(command: ChatCommand) {
@@ -98,7 +100,7 @@ export class ChatService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.SendChatMessage.Server.OnClientEvent((clientId, text) => {
+		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((clientId, text) => {
 			const rawMessage = text;
 			const player = this.playerService.GetPlayerFromClientId(clientId);
 			if (!player) {
@@ -122,9 +124,9 @@ export class ChatService implements OnStart {
 				return;
 			}
 
-			let message = this.FormatUserChatMessage(player, text, this.CanUseRichText);
-			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message, player.clientId);
-			CoreNetwork.ServerToClient.PlayerChatted.Server.FireAllClients(rawMessage, player.clientId);
+			let message = this.FormatUserChatMessage(player, text, this.canUseRichText);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(message, player.clientId);
+			CoreNetwork.ServerToClient.PlayerChatted.server.FireAllClients(rawMessage, player.clientId);
 		});
 	}
 

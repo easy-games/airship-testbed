@@ -26,10 +26,10 @@ export type ItemStackAmountChangeSignal = {
 export class ItemStack {
 	private itemType: ItemType;
 	private amount: number;
-	public Changed = new Signal<void>();
-	public ItemTypeChanged = new Signal<ItemStackTypeChangeSignal>();
-	public AmountChanged = new Signal<ItemStackAmountChangeSignal>();
-	public Destroyed = new Signal<ItemStack>();
+	public changed = new Signal<void>();
+	public itemTypeChanged = new Signal<ItemStackTypeChangeSignal>();
+	public amountChanged = new Signal<ItemStackAmountChangeSignal>();
+	public destroyed = new Signal<ItemStack>();
 	private hasBeenDestroyed = false;
 
 	constructor(itemType: ItemType, amount = 1) {
@@ -47,8 +47,8 @@ export class ItemStack {
 
 	public SetItemType(itemType: ItemType): void {
 		this.itemType = itemType;
-		this.ItemTypeChanged.Fire({ ItemStack: this, ItemType: itemType, NoNetwork: false });
-		this.Changed.Fire();
+		this.itemTypeChanged.Fire({ ItemStack: this, ItemType: itemType, NoNetwork: false });
+		this.changed.Fire();
 	}
 
 	public GetAmount(): number {
@@ -62,8 +62,8 @@ export class ItemStack {
 		},
 	): void {
 		this.amount = val;
-		this.AmountChanged.Fire({ ItemStack: this, NoNetwork: config?.noNetwork ?? false, Amount: val });
-		this.Changed.Fire();
+		this.amountChanged.Fire({ ItemStack: this, NoNetwork: config?.noNetwork ?? false, Amount: val });
+		this.changed.Fire();
 
 		if (this.amount <= 0) {
 			this.Destroy();
@@ -109,11 +109,11 @@ export class ItemStack {
 
 		this.hasBeenDestroyed = true;
 
-		this.ItemTypeChanged.DisconnectAll();
-		this.AmountChanged.DisconnectAll();
+		this.itemTypeChanged.DisconnectAll();
+		this.amountChanged.DisconnectAll();
 
-		this.Destroyed.Fire(this);
-		this.Destroyed.DisconnectAll();
+		this.destroyed.Fire(this);
+		this.destroyed.DisconnectAll();
 	}
 
 	public GetMaxStackSize(): number {

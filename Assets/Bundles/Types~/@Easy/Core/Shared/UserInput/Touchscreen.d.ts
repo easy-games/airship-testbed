@@ -5,12 +5,12 @@ export declare class Touchscreen {
     private readonly bin;
     private readonly touchscreenDriver;
     private readonly gestureDriver;
-    readonly Touch: Signal<[touchIndex: number, position: Vector3, phase: TouchPhase]>;
-    readonly TouchTap: Signal<[touchIndex: number, position: Vector3, phase: InputActionPhase]>;
-    readonly PrimaryTouch: Signal<[position: Vector3, phase: TouchPhase]>;
-    readonly PrimaryTouchTap: Signal<[position: Vector3, phase: InputActionPhase]>;
-    readonly Pan: Signal<[position: Vector3, phase: TouchPhase]>;
-    readonly Pinch: Signal<[distance: number, scale: number, phase: TouchPhase]>;
+    readonly touch: Signal<[touchIndex: number, position: Vector3, phase: TouchPhase]>;
+    readonly touchTap: Signal<[touchIndex: number, position: Vector3, phase: InputActionPhase]>;
+    readonly primaryTouch: Signal<[position: Vector3, phase: TouchPhase]>;
+    readonly primaryTouchTap: Signal<[position: Vector3, phase: InputActionPhase]>;
+    readonly pan: Signal<[position: Vector3, phase: TouchPhase]>;
+    readonly pinch: Signal<[distance: number, scale: number, phase: TouchPhase]>;
     constructor();
     /**
      * Cleans up the touchscreen listener.

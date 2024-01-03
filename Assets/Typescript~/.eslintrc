@@ -37,6 +37,20 @@
         "no-empty": "off",
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-var-requires": "off",
-        "@typescript-eslint/no-empty-interface": "off"
+        "@typescript-eslint/no-empty-interface": "off",
+		"@typescript-eslint/naming-convention": [
+			"error",
+			{ "selector": ["accessor"], "format": ["PascalCase"], "modifiers": ["public"] },
+			{ "selector": ["class"], "format": ["PascalCase"], "modifiers": ["exported"] },
+			{ "selector": ["classMethod"], "format": ["PascalCase"], "modifiers": ["public"] },
+			{ "selector": ["classProperty"], "format": ["camelCase"] },
+			{ "selector": ["enum"], "format": ["PascalCase"], "modifiers": ["exported"] },
+			{ "selector": ["enumMember"], "format": ["PascalCase"], "modifiers": ["public"] },
+			{ "selector": ["function"], "format": ["PascalCase"], "modifiers": ["exported", "global"] },
+			{ "selector": ["interface"], "format": ["PascalCase"], "modifiers": ["exported"] },
+			{ "selector": ["parameterProperty"], "format": ["camelCase"]},
+			{ "selector": ["typeAlias"], "format": ["PascalCase"], "modifiers": ["exported"] },
+			{ "selector": ["variable"], "format": ["PascalCase"], "modifiers": ["exported"] }
+		]
 	}
 }

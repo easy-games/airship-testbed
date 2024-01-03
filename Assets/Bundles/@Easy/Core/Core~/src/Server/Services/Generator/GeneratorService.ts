@@ -65,7 +65,7 @@ export class GeneratorService implements OnStart {
 		// Handle late joiners.
 		CoreServerSignals.PlayerJoin.Connect((event) => {
 			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
-				CoreNetwork.ServerToClient.GeneratorSnapshot.Server.FireClient(
+				CoreNetwork.ServerToClient.GeneratorSnapshot.server.FireClient(
 					event.player.clientId,
 					this.GetAllGenerators().map((state) => state.dto),
 				);
@@ -102,7 +102,7 @@ export class GeneratorService implements OnStart {
 
 		// Store generator in map, notify client of generator creation.
 		this.generatorMap.set(state.dto.id, state);
-		CoreNetwork.ServerToClient.GeneratorCreated.Server.FireAllClients(state.dto);
+		CoreNetwork.ServerToClient.GeneratorCreated.server.FireAllClients(state.dto);
 		// Return id.
 		return generatorId;
 	}
@@ -169,7 +169,7 @@ export class GeneratorService implements OnStart {
 		state.ticker = this.TickGenerator(state);
 
 		// Inform clients of _all_ server-sided generator spawn rate changes.
-		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.Server.FireAllClients(state.dto.id, newSpawnRate);
+		CoreNetwork.ServerToClient.GeneratorSpawnRateChanged.server.FireAllClients(state.dto.id, newSpawnRate);
 	}
 
 	/**
@@ -181,7 +181,7 @@ export class GeneratorService implements OnStart {
 		const state = this.generatorMap.get(generatorId);
 		if (!state) return;
 		state.dto.generatorName = generatorLabel;
-		CoreNetwork.ServerToClient.GeneratorModified.Server.FireAllClients(state.dto);
+		CoreNetwork.ServerToClient.GeneratorModified.server.FireAllClients(state.dto);
 	}
 
 	/**

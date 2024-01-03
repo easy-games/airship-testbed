@@ -23,8 +23,8 @@ declare class RemoteEventClient<T extends unknown[] | unknown> {
     OnServerEvent(callback: RemoteCallbackFromServer<T>): () => void;
 }
 export declare class RemoteEvent<T extends unknown[] | unknown> {
-    readonly Server: RemoteEventServer<T>;
-    readonly Client: RemoteEventClient<T>;
+    readonly server: RemoteEventServer<T>;
+    readonly client: RemoteEventClient<T>;
     constructor(channel?: NetworkChannel);
 }
 export {};

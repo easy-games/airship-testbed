@@ -1,5 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { CoreTest } from "Shared/CoreTest";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ItemStack } from "Shared/Inventory/ItemStack";
@@ -8,7 +9,6 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { LocalEntityController } from "../Character/LocalEntityController";
 import { ViewmodelController } from "../Viewmodel/ViewmodelController";
-import { AvatarUtil } from "Client/Avatar/AvatarUtil";
 
 @Controller({})
 export class EntityAccessoryController implements OnStart {
@@ -90,13 +90,13 @@ export class EntityAccessoryController implements OnStart {
 				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.CHESTPLATE]));
 				onArmorSlotChanged(inventory.GetItem(inventory.armorSlots[ArmorType.BOOTS]));
 
-				bin.Connect(inventory.SlotChanged, (slotIndex, itemStack) => {
+				bin.Connect(inventory.slotChanged, (slotIndex, itemStack) => {
 					if (slotIndex === inventory.armorSlots[ArmorType.HELMET]) {
 						onArmorSlotChanged(itemStack);
 					}
 				});
 
-				event.entity.OnDespawn.Once(() => {
+				event.entity.onDespawn.Once(() => {
 					bin.Clean();
 				});
 			}
@@ -130,7 +130,7 @@ export class EntityAccessoryController implements OnStart {
 				);
 			}
 
-			event.entity.OnDespawn.Once(() => {
+			event.entity.onDespawn.Once(() => {
 				bin.Clean();
 			});
 		});

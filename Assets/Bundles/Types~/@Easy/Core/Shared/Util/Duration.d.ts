@@ -1,7 +1,7 @@
-export declare const SECONDS_TO_MINUTES = 60;
-export declare const SECONDS_TO_HOURS = 3600;
-export declare const SECONDS_TO_DAYS = 86400;
-export declare const MINUTES_TO_DAYS = 1440;
+export declare const SecondsToMinutes = 60;
+export declare const SecondsToHours = 3600;
+export declare const SecondsToDays = 86400;
+export declare const MinutesToDays = 1440;
 export declare namespace Duration {
     type Seconds = number & {
         readonly tag?: never;
@@ -12,24 +12,24 @@ export declare namespace Duration {
  */
 export declare class Duration {
     readonly totalSeconds: number;
-    static readonly ZERO: Duration;
+    static readonly zero: Duration;
     private constructor();
-    add(time: Duration): Duration;
-    sub(time: Duration): Duration;
-    mul(factor: number): Duration;
-    negate(): Duration;
-    static fromSeconds(seconds: number): Duration;
-    static fromMinutes(minutes: number): Duration;
-    static fromHours(hours: number): Duration;
-    static fromDays(days: number): Duration;
-    static fromWeeks(weeks: number): Duration;
-    format(format?: string): string;
-    getDays(): number;
-    getHours(): number;
-    getMinutes(): number;
-    getSeconds(): number;
-    getTotalDays(): number;
-    getTotalHours(): number;
-    getTotalMinutes(): number;
-    getTotalSeconds(): number;
+    Add(time: Duration): Duration;
+    Sub(time: Duration): Duration;
+    Mul(factor: number): Duration;
+    Negate(): Duration;
+    static FromSeconds(seconds: number): Duration;
+    static FromMinutes(minutes: number): Duration;
+    static FromHours(hours: number): Duration;
+    static FromDays(days: number): Duration;
+    static FromWeeks(weeks: number): Duration;
+    Format(format?: string): string;
+    GetDays(): number;
+    GetHours(): number;
+    GetMinutes(): number;
+    GetSeconds(): number;
+    GetTotalDays(): number;
+    GetTotalHours(): number;
+    GetTotalMinutes(): number;
+    GetTotalSeconds(): number;
 }

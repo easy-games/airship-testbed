@@ -11,7 +11,7 @@ export interface InventoryDto {
     heldSlot: number;
 }
 export declare class Inventory {
-    readonly Id: number;
+    readonly id: number;
     private items;
     private heldSlot;
     private maxSlots;
@@ -20,13 +20,13 @@ export declare class Inventory {
         [key in ArmorType]: number;
     };
     /** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
-    readonly SlotChanged: Signal<[slot: number, itemStack: ItemStack | undefined]>;
-    readonly HeldSlotChanged: Signal<number>;
+    readonly slotChanged: Signal<[slot: number, itemStack: ItemStack | undefined]>;
+    readonly heldSlotChanged: Signal<number>;
     /**
      * Fired whenever any change happens.
      * This includes changes to ItemStacks.
      **/
-    readonly Changed: Signal<void>;
+    readonly changed: Signal<void>;
     private finishedInitialReplication;
     private slotConnections;
     constructor(id: number);

@@ -9,8 +9,7 @@ import { Team } from "../Team/Team";
 import { Healthbar } from "../UI/Healthbar";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
-import { ItemPlayMode } from "./Animation/CharacterEntityAnimator";
-import { EntityAnimator } from "./Animation/EntityAnimator";
+import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 export interface EntityDto {
     serializer: EntitySerializer;
@@ -37,7 +36,7 @@ export declare class EntityReferences {
     rig: Transform;
     characterCollider: Collider;
     animationEvents: EntityAnimationEvents;
-    humanEntityAnimator: CoreEntityAnimator;
+    animationHelper: CharacterAnimationHelper;
     jumpSound: AudioClip | undefined;
     slideSoundPaths: Array<string>;
     landSound: AudioClip | undefined;
@@ -52,7 +51,7 @@ export declare class Entity {
     readonly entityDriver: EntityDriver;
     readonly model: GameObject;
     readonly attributes: EasyAttributes;
-    animator: EntityAnimator;
+    animator: CharacterEntityAnimator;
     readonly references: EntityReferences;
     readonly accessoryBuilder: AccessoryBuilder;
     player: Player | undefined;
@@ -62,7 +61,7 @@ export declare class Entity {
      *
      * **This should NOT be used to uniquely identify an entity.**
      */
-    readonly ClientId?: number;
+    readonly clientId?: number;
     protected health: number;
     protected maxHealth: number;
     protected moveDirection: Vector3;
@@ -73,15 +72,15 @@ export declare class Entity {
     protected healthbar?: Healthbar;
     protected state: EntityState;
     protected bin: Bin;
-    readonly OnHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
-    readonly OnDespawn: Signal<void>;
-    readonly OnPlayerChanged: Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>;
-    readonly OnAdjustMove: Signal<[moveModifier: MoveModifier]>;
-    readonly OnMoveDirectionChanged: Signal<[moveDirection: Vector3]>;
-    readonly OnDisplayNameChanged: Signal<[displayName: string]>;
-    readonly OnStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
-    readonly OnDeath: Signal<void>;
-    readonly OnArmorChanged: Signal<number>;
+    readonly onHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
+    readonly onDespawn: Signal<void>;
+    readonly onPlayerChanged: Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>;
+    readonly onAdjustMove: Signal<[moveModifier: MoveModifier]>;
+    readonly onMoveDirectionChanged: Signal<[moveDirection: Vector3]>;
+    readonly onDisplayNameChanged: Signal<[displayName: string]>;
+    readonly onStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
+    readonly onDeath: Signal<void>;
+    readonly onArmorChanged: Signal<number>;
     constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
     Teleport(pos: Vector3, lookVector?: Vector3): void;
     IsHeadshotHitHeight(height: number): boolean;

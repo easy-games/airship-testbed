@@ -107,7 +107,7 @@ export class ShopService implements OnStart {
 		});
 
 		/* Handle incoming purchase requests. */
-		Network.ClientToServer.ItemShop.PurchaseRequest.Server.SetCallback((clientId, purchaseItemType) => {
+		Network.ClientToServer.ItemShop.PurchaseRequest.server.SetCallback((clientId, purchaseItemType) => {
 			const shopElement = ItemShopMeta.GetShopElementFromItemType(purchaseItemType);
 			if (!shopElement) return false;
 
@@ -181,16 +181,16 @@ export class ShopService implements OnStart {
 							const team = player.GetTeam();
 							if (team) {
 								switch (team.color) {
-									case Theme.TeamColor.Blue:
+									case Theme.teamColor.Blue:
 										itemTypeToAdd = ItemType.BLUE_WOOL;
 										break;
-									case Theme.TeamColor.Red:
+									case Theme.teamColor.Red:
 										itemTypeToAdd = ItemType.RED_WOOL;
 										break;
-									case Theme.TeamColor.Yellow:
+									case Theme.teamColor.Yellow:
 										itemTypeToAdd = ItemType.YELLOW_WOOL;
 										break;
-									case Theme.TeamColor.Green:
+									case Theme.teamColor.Green:
 										itemTypeToAdd = ItemType.GREEN_WOOL;
 										break;
 								}
@@ -209,7 +209,7 @@ export class ShopService implements OnStart {
 			const purchases = this.purchasedItems.get(player.userId);
 			purchases?.add(shopElement.itemType);
 
-			Network.ServerToClient.ItemShop.ItemPurchased.Server.FireAllClients(
+			Network.ServerToClient.ItemShop.ItemPurchased.server.FireAllClients(
 				// clientId,
 				player.character!.id,
 				shopElement.itemType,
@@ -232,7 +232,7 @@ export class ShopService implements OnStart {
 					for (const itemType of toRemove) {
 						purchases.delete(itemType);
 					}
-					Network.ServerToClient.ItemShop.RemoveTierPurchases.Server.FireClient(
+					Network.ServerToClient.ItemShop.RemoveTierPurchases.server.FireClient(
 						event.entity.player.clientId,
 						toRemove,
 					);

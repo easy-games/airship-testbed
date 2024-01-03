@@ -87,11 +87,57 @@ declare const enum ArticulationDofLock {
     LimitedMotion = 1,
     FreeMotion = 2,
 }
+declare const enum ArticulationDriveType {
+    Force = 0,
+    Acceleration = 1,
+    Target = 2,
+    Velocity = 3,
+}
+declare const enum ArticulationDriveAxis {
+    X = 0,
+    Y = 1,
+    Z = 2,
+}
+declare const enum GeometryType {
+    Sphere = 0,
+    Capsule = 2,
+    Box = 3,
+    ConvexMesh = 4,
+    TriangleMesh = 5,
+    Terrain = 6,
+    Invalid = -1,
+}
 declare const enum PhysicMaterialCombine {
     Average = 0,
     Multiply = 1,
     Minimum = 2,
     Maximum = 3,
+}
+declare const enum SimulationMode {
+    FixedUpdate = 0,
+    Update = 1,
+    Script = 2,
+}
+declare const enum SimulationStage {
+    None = 0,
+    PrepareSimulation = 1,
+    RunSimulation = 2,
+    PublishSimulationResults = 4,
+    All = 7,
+}
+declare const enum SimulationOption {
+    None = 0,
+    SyncTransforms = 1,
+    IgnoreEmptyScenes = 2,
+    All = 3,
+}
+declare const enum MeshColliderCookingOptions {
+    None = 0,
+    InflateConvexMesh = 1,
+    CookForFasterSimulation = 2,
+    EnableMeshCleaning = 4,
+    WeldColocatedVertices = 8,
+    UseFastMidphase = 16,
 }
 declare const enum LogType {
     Error = 0,
@@ -252,6 +298,7 @@ declare const enum GraphicsFormat {
     RGBA_ASTC8X8_UFloat = 148,
     RGBA_ASTC10X10_UFloat = 149,
     RGBA_ASTC12X12_UFloat = 150,
+    D16_UNorm_S8_UInt = 151,
 }
 declare const enum TextureDimension {
     None = 0,
@@ -273,6 +320,18 @@ declare const enum FilterMode {
     Point = 0,
     Bilinear = 1,
     Trilinear = 2,
+}
+declare const enum GraphicsTextureDescriptorFlags {
+    None = 0,
+    RenderTarget = 1,
+    RandomWriteTarget = 2,
+}
+declare const enum GraphicsTextureState {
+    Constructed = 0,
+    Initializing = 1,
+    InitializedOnRenderThread = 2,
+    DestroyQueued = 3,
+    Destroyed = 4,
 }
 declare const enum AnisotropicFiltering {
     Disable = 0,
@@ -318,25 +377,11 @@ declare const enum TextureFormat {
     ETC2_RGBA1 = 46,
     ETC2_RGBA8 = 47,
     ASTC_4x4 = 48,
-    ASTC_RGB_4x4 = 48,
-    ASTC_RGB_5x5 = 49,
     ASTC_5x5 = 49,
-    ASTC_RGB_6x6 = 50,
     ASTC_6x6 = 50,
     ASTC_8x8 = 51,
-    ASTC_RGB_8x8 = 51,
     ASTC_10x10 = 52,
-    ASTC_RGB_10x10 = 52,
-    ASTC_RGB_12x12 = 53,
     ASTC_12x12 = 53,
-    ASTC_RGBA_4x4 = 54,
-    ASTC_RGBA_5x5 = 55,
-    ASTC_RGBA_6x6 = 56,
-    ASTC_RGBA_8x8 = 57,
-    ASTC_RGBA_10x10 = 58,
-    ASTC_RGBA_12x12 = 59,
-    ETC_RGB4_3DS = 60,
-    ETC_RGBA8_3DS = 61,
     RG16 = 62,
     R8 = 63,
     ETC_RGB4Crunched = 64,
@@ -350,12 +395,28 @@ declare const enum TextureFormat {
     RG32 = 72,
     RGB48 = 73,
     RGBA64 = 74,
-    PVRTC_2BPP_RGB = -127,
-    PVRTC_2BPP_RGBA = -127,
-    ATC_RGB4 = -127,
-    PVRTC_4BPP_RGB = -127,
-    ATC_RGBA8 = -127,
-    PVRTC_4BPP_RGBA = -127,
+    R8_SIGNED = 75,
+    RG16_SIGNED = 76,
+    RGB24_SIGNED = 77,
+    RGBA32_SIGNED = 78,
+    R16_SIGNED = 79,
+    RG32_SIGNED = 80,
+    RGB48_SIGNED = 81,
+    RGBA64_SIGNED = 82,
+    ETC_RGBA8_3DS = -61,
+    ETC_RGB4_3DS = -60,
+    ASTC_RGBA_12x12 = -59,
+    ASTC_RGBA_10x10 = -58,
+    ASTC_RGBA_8x8 = -57,
+    ASTC_RGBA_6x6 = -56,
+    ASTC_RGBA_5x5 = -55,
+    ASTC_RGBA_4x4 = -54,
+    ASTC_RGB_12x12 = -53,
+    ASTC_RGB_10x10 = -52,
+    ASTC_RGB_8x8 = -51,
+    ASTC_RGB_6x6 = -50,
+    ASTC_RGB_5x5 = -49,
+    ASTC_RGB_4x4 = -48,
 }
 declare const enum SpritePackingMode {
     Tight = 0,
@@ -382,7 +443,10 @@ declare const enum DefaultFormat {
 declare const enum TextureCreationFlags {
     None = 0,
     MipChain = 1,
+    DontInitializePixels = 4,
     Crunch = 64,
+    DontUploadUponCreate = 1024,
+    IgnoreMipmapLimit = 2048,
 }
 declare const enum ConditionOverrideType {
     AddMissing = 1,
@@ -607,6 +671,7 @@ declare const enum RenderTextureCreationFlags {
     NoResolvedColorSurface = 256,
     DynamicallyScalable = 1024,
     BindMS = 2048,
+    DynamicallyScalableExplicit = 65536,
 }
 declare const enum MonoOrStereoscopicEye {
     Left = 0,
@@ -655,6 +720,23 @@ declare const enum CameraEvent {
     BeforeHaloAndLensFlares = 23,
     AfterHaloAndLensFlares = 24,
 }
+declare const enum RenderBufferLoadAction {
+    Load = 0,
+    Clear = 1,
+    DontCare = 2,
+}
+declare const enum RenderBufferStoreAction {
+    Store = 0,
+    Resolve = 1,
+    StoreAndResolve = 2,
+    DontCare = 3,
+}
+declare const enum SubPassFlags {
+    None = 0,
+    ReadOnlyDepth = 2,
+    ReadOnlyStencil = 4,
+    ReadOnlyDepthStencil = 6,
+}
 declare const enum ShaderKeywordType {
     None = 0,
     BuiltinDefault = 2,
@@ -700,26 +782,9 @@ declare const enum Target {
     IndirectArguments = 256,
     Constant = 512,
 }
-declare const enum TexGenMode {
+declare const enum UsageFlags {
     None = 0,
-    SphereMap = 1,
-    Object = 2,
-    EyeLinear = 3,
-    CubeReflect = 4,
-    CubeNormal = 5,
-}
-declare const enum RenderTextureSubElement {
-    Color = 0,
-    Depth = 1,
-    Stencil = 2,
-    Default = 3,
-}
-declare const enum MaterialGlobalIlluminationFlags {
-    None = 0,
-    RealtimeEmissive = 1,
-    BakedEmissive = 2,
-    AnyEmissive = 3,
-    EmissiveIsBlack = 4,
+    LockBufferForWrite = 1,
 }
 declare const enum ShadowCastingMode {
     Off = 0,
@@ -750,6 +815,12 @@ declare const enum RayTracingMode {
     DynamicTransform = 2,
     DynamicGeometry = 3,
 }
+declare const enum RayTracingAccelerationStructureBuildFlags {
+    None = 0,
+    PreferFastTrace = 1,
+    PreferFastBuild = 2,
+    MinimizeMemory = 4,
+}
 declare const enum ReflectionProbeType {
     Cube = 0,
     Card = 1,
@@ -772,6 +843,36 @@ declare const enum ReflectionProbeTimeSlicingMode {
     AllFacesAtOnce = 0,
     IndividualFaces = 1,
     NoTimeSlicing = 2,
+}
+declare const enum RenderTextureSubElement {
+    Color = 0,
+    Depth = 1,
+    Stencil = 2,
+    Default = 3,
+}
+declare const enum TexGenMode {
+    None = 0,
+    SphereMap = 1,
+    Object = 2,
+    EyeLinear = 3,
+    CubeReflect = 4,
+    CubeNormal = 5,
+}
+declare const enum MaterialGlobalIlluminationFlags {
+    None = 0,
+    RealtimeEmissive = 1,
+    BakedEmissive = 2,
+    AnyEmissive = 3,
+    EmissiveIsBlack = 4,
+}
+declare const enum MaterialPropertyType {
+    Float = 0,
+    Int = 1,
+    Vector = 2,
+    Matrix = 3,
+    Texture = 4,
+    ConstantBuffer = 5,
+    ComputeBuffer = 6,
 }
 declare const enum RTClearFlags {
     None = 0,
@@ -800,6 +901,17 @@ declare const enum SynchronisationStageFlags {
 declare const enum IndexFormat {
     UInt16 = 0,
     UInt32 = 1,
+}
+declare const enum SkinWeights {
+    None = 0,
+    OneBone = 1,
+    TwoBones = 2,
+    FourBones = 4,
+    Unlimited = 255,
+}
+declare const enum BlendShapeBufferLayout {
+    PerShape = 0,
+    PerVertex = 1,
 }
 declare const enum MeshTopology {
     Triangles = 0,
@@ -845,6 +957,10 @@ declare const enum MeshUpdateFlags {
     DontNotifyMeshUsers = 4,
     DontRecalculateBounds = 8,
 }
+declare const enum CustomMarkerCallbackFlags {
+    CustomMarkerCallbackDefault = 0,
+    CustomMarkerCallbackForceInvalidateStateTracking = 4,
+}
 declare const enum CameraLateLatchMatrixType {
     View = 0,
     InverseView = 1,
@@ -855,16 +971,9 @@ declare const enum CommandBufferExecutionFlags {
     None = 0,
     AsyncCompute = 2,
 }
-declare const enum RenderBufferLoadAction {
-    Load = 0,
-    Clear = 1,
-    DontCare = 2,
-}
-declare const enum RenderBufferStoreAction {
-    Store = 0,
-    Resolve = 1,
-    StoreAndResolve = 2,
-    DontCare = 3,
+declare const enum FoveatedRenderingMode {
+    Disabled = 0,
+    Enabled = 1,
 }
 declare const enum CubemapFace {
     PositiveX = 0,
@@ -1098,6 +1207,8 @@ declare const enum KeyCode {
     SysReq = 317,
     Break = 318,
     Menu = 319,
+    WheelUp = 321,
+    WheelDown = 322,
     Mouse0 = 323,
     Mouse1 = 324,
     Mouse2 = 325,
@@ -1286,6 +1397,18 @@ declare const enum KeyCode {
     Joystick8Button18 = 508,
     Joystick8Button19 = 509,
 }
+declare const enum PenStatus {
+    None = 0,
+    Contact = 1,
+    Barrel = 2,
+    Inverted = 4,
+    Eraser = 8,
+}
+declare const enum PenEventType {
+    NoContact = 0,
+    PenDown = 1,
+    PenUp = 2,
+}
 declare const enum InputButton {
     Left = 0,
     Right = 1,
@@ -1342,6 +1465,10 @@ declare const enum AdditionalCanvasShaderChannels {
     Normal = 8,
     Tangent = 16,
 }
+declare const enum StandaloneRenderResize {
+    Enabled = 0,
+    Disabled = 1,
+}
 declare const enum Type {
     Simple = 0,
     Sliced = 1,
@@ -1357,6 +1484,7 @@ declare const enum FillMethod {
 }
 declare const enum AnimatorUpdateMode {
     Normal = 0,
+    Fixed = 1,
     AnimatePhysics = 1,
     UnscaledTime = 2,
 }
@@ -1501,6 +1629,7 @@ declare const enum FontStyle {
 declare const enum AtlasPopulationMode {
     Static = 0,
     Dynamic = 1,
+    DynamicOS = 2,
 }
 declare const enum GlyphClassDefinitionType {
     Undefined = 0,
@@ -1617,6 +1746,12 @@ declare const enum TextAlignmentOptions {
     CaplineGeoAligned = 8224,
     Converted = 65535,
 }
+declare const enum TextWrappingModes {
+    NoWrap = 0,
+    Normal = 1,
+    PreserveWhitespace = 2,
+    PreserveWhitespaceNoWrap = 3,
+}
 declare const enum TextOverflowModes {
     Overflow = 0,
     Ellipsis = 1,
@@ -1625,6 +1760,12 @@ declare const enum TextOverflowModes {
     ScrollRect = 4,
     Page = 5,
     Linked = 6,
+}
+declare const enum OTL_FeatureTag {
+    kern = 1801810542,
+    liga = 1818847073,
+    mark = 1835102827,
+    mkmk = 1835756907,
 }
 declare const enum TextureMappingOptions {
     Character = 0,
@@ -1652,6 +1793,10 @@ declare const enum TMP_VertexDataUpdateFlags {
     Uv4 = 8,
     Colors32 = 16,
     All = 255,
+}
+declare const enum AnimationUpdateMode {
+    Normal = 0,
+    Fixed = 1,
 }
 declare const enum AnimationCullingType {
     AlwaysAnimate = 0,
@@ -1690,6 +1835,9 @@ declare const enum LightType {
     Area = 3,
     Rectangle = 3,
     Disc = 4,
+    Pyramid = 5,
+    Box = 6,
+    Tube = 7,
 }
 declare const enum LightShape {
     Cone = 0,
@@ -1756,6 +1904,7 @@ declare const enum ShadowMapPass {
     Directional = 960,
     Spotlight = 1024,
     All = 2047,
+    AreaLight = 2048,
 }
 declare const enum DefaultReflectionMode {
     Skybox = 0,
@@ -1777,6 +1926,20 @@ declare const enum AccessorySlot {
     Waist = 8,
     Legs = 9,
     Feet = 10,
+    Ears = 11,
+    Nose = 12,
+    TorsoOuter = 13,
+    TorsoInner = 14,
+    Backpack = 15,
+    Hands = 16,
+    HandsOuter = 17,
+    LeftWrist = 18,
+    RightWrist = 19,
+    LegsOuter = 20,
+    LegsInner = 21,
+    FeetInner = 22,
+    LeftFoot = 23,
+    RightFoot = 24,
 }
 declare const enum VisibilityMode {
     THIRD_PERSON = 0,
@@ -1815,6 +1978,16 @@ declare const enum ParticleSystemGradientMode {
 declare const enum GradientMode {
     Blend = 0,
     Fixed = 1,
+    PerceptualBlend = 2,
+}
+declare const enum ColorSpace {
+    Gamma = 0,
+    Linear = 1,
+    Uninitialized = -1,
+}
+declare const enum ParticleSystemGravitySource {
+    Physics3D = 0,
+    Physics2D = 1,
 }
 declare const enum ParticleSystemEmitterVelocityMode {
     Transform = 0,
@@ -1998,6 +2171,7 @@ declare const enum ParticleSystemTrailTextureMode {
     Tile = 1,
     DistributePerSegment = 2,
     RepeatPerSegment = 3,
+    Static = 4,
 }
 declare const enum ParticleSystemCustomData {
     Custom1 = 0,
@@ -2085,8 +2259,8 @@ declare const enum RuntimePlatform {
     MetroPlayerARM = 20,
     WSAPlayerARM = 20,
     WP8Player = 21,
-    BlackBerryPlayer = 22,
     BB10Player = 22,
+    BlackBerryPlayer = 22,
     TizenPlayer = 23,
     PSP2 = 24,
     PS4 = 25,
@@ -2098,7 +2272,7 @@ declare const enum RuntimePlatform {
     Switch = 32,
     Lumin = 33,
     Stadia = 34,
-    CloudRendering = 35,
+    LinuxHeadlessSimulation = 35,
     GameCoreXboxSeries = 36,
     GameCoreXboxOne = 37,
     PS5 = 38,
@@ -2109,7 +2283,12 @@ declare const enum RuntimePlatform {
     LinuxServer = 43,
     WindowsServer = 44,
     OSXServer = 45,
+    QNXArm32 = 46,
+    QNXArm64 = 47,
+    QNXX64 = 48,
+    QNXX86 = 49,
     GameCoreScarlett = -1,
+    CloudRendering = -1,
 }
 declare const enum SystemLanguage {
     Afrikaans = 0,
@@ -2155,7 +2334,8 @@ declare const enum SystemLanguage {
     Vietnamese = 39,
     ChineseSimplified = 40,
     ChineseTraditional = 41,
-    Unknown = 42,
+    Hindi = 42,
+    Unknown = 43,
 }
 declare const enum NetworkReachability {
     NotReachable = 0,
@@ -2191,6 +2371,8 @@ declare const enum ParticleSystemSortMode {
     OldestInFront = 2,
     YoungestInFront = 3,
     Depth = 4,
+    DistanceReverse = 5,
+    DepthReverse = 6,
 }
 declare const enum ParticleSystemVertexStreams {
     None = 0,
@@ -2209,6 +2391,19 @@ declare const enum ParticleSystemVertexStreams {
     Custom2 = 4096,
     Random = 8192,
     All = 2147483647,
+}
+declare const enum ParticleSystemBakeMeshOptions {
+    Default = 0,
+    BakeRotationAndScale = 1,
+    BakePosition = 2,
+}
+declare const enum ParticleSystemBakeTextureOptions {
+    BakeRotationAndScale = 1,
+    BakePosition = 2,
+    PerVertex = 4,
+    Default = 4,
+    PerParticle = 8,
+    IncludeParticleIndices = 16,
 }
 declare const enum ParticleSystemVertexStream {
     Position = 0,
@@ -2257,6 +2452,13 @@ declare const enum ParticleSystemVertexStream {
     NoiseImpulseXY = 43,
     NoiseImpulseXYZ = 44,
     MeshIndex = 45,
+    ParticleIndex = 46,
+    ColorPackedAsTwoFloats = 47,
+    MeshAxisOfRotation = 48,
+    NextTrailCenter = 49,
+    PreviousTrailCenter = 50,
+    PercentageAlongTrail = 51,
+    TrailWidth = 52,
 }
 declare const enum ProfilerArea {
     CPU = 0,
@@ -2301,6 +2503,12 @@ declare const enum InputType {
     Standard = 0,
     AutoCorrect = 1,
     Password = 2,
+}
+declare const enum Status {
+    Visible = 0,
+    Done = 1,
+    Canceled = 2,
+    LostFocus = 3,
 }
 declare const enum TouchScreenKeyboardType {
     Default = 0,
@@ -2414,6 +2622,13 @@ declare const enum CollisionDetectionMode2D {
 declare const enum ForceMode2D {
     Force = 0,
     Impulse = 1,
+}
+declare const enum CompositeOperation {
+    None = 0,
+    Merge = 1,
+    Intersect = 2,
+    Difference = 3,
+    Flip = 4,
 }
 declare const enum GeometryType {
     Outlines = 0,
@@ -2547,6 +2762,7 @@ declare const enum LineTextureMode {
     Tile = 1,
     DistributePerSegment = 2,
     RepeatPerSegment = 3,
+    Static = 4,
 }
 declare const enum LineAlignment {
     View = 0,
@@ -2813,6 +3029,19 @@ interface Scene {
     IsValid(): boolean;
 }
     
+interface TagHandle {
+
+
+    ToString(): string;
+}
+    
+interface TagHandleConstructor {
+
+
+    GetExistingTag(tagName: string): TagHandle;
+}
+declare const TagHandle: TagHandleConstructor;
+    
     
     
     
@@ -2830,8 +3059,10 @@ interface Rigidbody extends Component {
     freezeRotation: boolean;
     constraints: RigidbodyConstraints;
     collisionDetectionMode: CollisionDetectionMode;
+    automaticCenterOfMass: boolean;
     centerOfMass: Vector3;
     worldCenterOfMass: Vector3;
+    automaticInertiaTensor: boolean;
     inertiaTensorRotation: Quaternion;
     inertiaTensor: Vector3;
     detectCollisions: boolean;
@@ -2841,7 +3072,10 @@ interface Rigidbody extends Component {
     solverIterations: number;
     sleepThreshold: number;
     maxAngularVelocity: number;
+    maxLinearVelocity: number;
     solverVelocityIterations: number;
+    excludeLayers: LayerMask;
+    includeLayers: LayerMask;
     sleepVelocity: number;
     sleepAngularVelocity: number;
     useConeFriction: boolean;
@@ -2872,11 +3106,17 @@ interface Rigidbody extends Component {
     AddTorque(x: number, y: number, z: number, mode: ForceMode): void;
     AddTorque(x: number, y: number, z: number): void;
     ClosestPointOnBounds(position: Vector3): Vector3;
+    GetAccumulatedForce(step: number): Vector3;
+    GetAccumulatedForce(): Vector3;
+    GetAccumulatedTorque(step: number): Vector3;
+    GetAccumulatedTorque(): Vector3;
     GetPointVelocity(worldPoint: Vector3): Vector3;
     GetRelativePointVelocity(relativePoint: Vector3): Vector3;
     IsSleeping(): boolean;
+    Move(position: Vector3, rotation: Quaternion): void;
     MovePosition(position: Vector3): void;
     MoveRotation(rot: Quaternion): void;
+    PublishTransform(): void;
     ResetCenterOfMass(): void;
     ResetInertiaTensor(): void;
     SetDensity(density: number): void;
@@ -2890,6 +3130,8 @@ interface Rigidbody extends Component {
     SweepTestAll(direction: Vector3): CSArray<RaycastHit>;
     WakeUp(): void;
 }
+    
+    
     
 interface Behaviour extends Component {
     enabled: boolean;
@@ -2906,7 +3148,6 @@ interface ArticulationBody extends Behaviour {
     anchorRotation: Quaternion;
     parentAnchorRotation: Quaternion;
     isRoot: boolean;
-    computeParentAnchor: boolean;
     matchAnchors: boolean;
     linearLockX: ArticulationDofLock;
     linearLockY: ArticulationDofLock;
@@ -2922,11 +3163,15 @@ interface ArticulationBody extends Behaviour {
     linearDamping: number;
     angularDamping: number;
     jointFriction: number;
+    excludeLayers: LayerMask;
+    includeLayers: LayerMask;
     velocity: Vector3;
     angularVelocity: Vector3;
     mass: number;
+    automaticCenterOfMass: boolean;
     centerOfMass: Vector3;
     worldCenterOfMass: Vector3;
+    automaticInertiaTensor: boolean;
     inertiaTensor: Vector3;
     inertiaTensorRotation: Quaternion;
     sleepThreshold: number;
@@ -2940,9 +3185,11 @@ interface ArticulationBody extends Behaviour {
     jointVelocity: ArticulationReducedSpace;
     jointAcceleration: ArticulationReducedSpace;
     jointForce: ArticulationReducedSpace;
+    driveForce: ArticulationReducedSpace;
     dofCount: number;
     index: number;
     collisionDetectionMode: CollisionDetectionMode;
+    computeParentAnchor: boolean;
 
     constructor(): ArticulationBody;
 
@@ -2956,22 +3203,38 @@ interface ArticulationBody extends Behaviour {
     AddRelativeTorque(torque: Vector3): void;
     AddTorque(torque: Vector3, mode: ForceMode): void;
     AddTorque(torque: Vector3): void;
+    GetAccumulatedForce(step: number): Vector3;
+    GetAccumulatedForce(): Vector3;
+    GetAccumulatedTorque(step: number): Vector3;
+    GetAccumulatedTorque(): Vector3;
     GetClosestPoint(point: Vector3): Vector3;
     GetDenseJacobian(jacobian: unknown): number;
     GetDofStartIndices(dofStartIndices: CSArray<number>): number;
+    GetDriveForces(forces: CSArray<number>): number;
     GetDriveTargets(targets: CSArray<number>): number;
     GetDriveTargetVelocities(targetVelocities: CSArray<number>): number;
     GetJointAccelerations(accelerations: CSArray<number>): number;
+    GetJointCoriolisCentrifugalForces(forces: CSArray<number>): number;
+    GetJointExternalForces(forces: CSArray<number>, step: number): number;
     GetJointForces(forces: CSArray<number>): number;
+    GetJointForcesForAcceleration(acceleration: ArticulationReducedSpace): ArticulationReducedSpace;
+    GetJointGravityForces(forces: CSArray<number>): number;
     GetJointPositions(positions: CSArray<number>): number;
     GetJointVelocities(velocities: CSArray<number>): number;
     GetPointVelocity(worldPoint: Vector3): Vector3;
     GetRelativePointVelocity(relativePoint: Vector3): Vector3;
     IsSleeping(): boolean;
+    PublishTransform(): void;
     ResetCenterOfMass(): void;
     ResetInertiaTensor(): void;
+    SetDriveDamping(axis: ArticulationDriveAxis, value: number): void;
+    SetDriveForceLimit(axis: ArticulationDriveAxis, value: number): void;
+    SetDriveLimits(axis: ArticulationDriveAxis, lower: number, upper: number): void;
+    SetDriveStiffness(axis: ArticulationDriveAxis, value: number): void;
+    SetDriveTarget(axis: ArticulationDriveAxis, value: number): void;
     SetDriveTargets(targets: CSArray<number>): void;
     SetDriveTargetVelocities(targetVelocities: CSArray<number>): void;
+    SetDriveTargetVelocity(axis: ArticulationDriveAxis, value: number): void;
     SetJointAccelerations(accelerations: CSArray<number>): void;
     SetJointForces(forces: CSArray<number>): void;
     SetJointPositions(positions: CSArray<number>): void;
@@ -2990,6 +3253,7 @@ interface ArticulationDrive {
     forceLimit: number;
     target: number;
     targetVelocity: number;
+    driveType: ArticulationDriveType;
 
 
 }
@@ -3031,6 +3295,21 @@ interface Bounds {
     ToString(format: string): string;
     ToString(format: string, formatProvider: unknown): string;
 }
+    
+interface GeometryHolder {
+    Type: GeometryType;
+
+    constructor(): GeometryHolder;
+
+    As<T>(): T;
+}
+    
+interface GeometryHolderConstructor {
+
+
+    Create<T>(geometry: T): GeometryHolder;
+}
+declare const GeometryHolder: GeometryHolderConstructor;
     
 interface PhysicMaterial extends Object {
     bounciness: number;
@@ -3122,6 +3401,7 @@ interface PhysicsScene {
     Equals(other: unknown): boolean;
     Equals(other: PhysicsScene): boolean;
     GetHashCode(): number;
+    InterpolateBodies(): void;
     IsEmpty(): boolean;
     IsValid(): boolean;
     OverlapBox(center: Vector3, halfExtents: Vector3, results: CSArray<Collider>, orientation: Quaternion, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
@@ -3131,6 +3411,8 @@ interface PhysicsScene {
     Raycast(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     Raycast(origin: Vector3, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     Raycast(origin: Vector3, direction: Vector3, raycastHits: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
+    ResetInterpolationPoses(): void;
+    RunSimulationStages(step: number, stages: SimulationStage, options: SimulationOption): void;
     Simulate(step: number): void;
     SphereCast(origin: Vector3, radius: number, direction: Vector3, hitInfo: unknown, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     SphereCast(origin: Vector3, radius: number, direction: Vector3, results: CSArray<RaycastHit>, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): number;
@@ -3153,10 +3435,11 @@ interface PhysicsConstructor {
     defaultMaxDepenetrationVelocity: number;
     defaultSolverIterations: number;
     defaultSolverVelocityIterations: number;
+    simulationMode: SimulationMode;
     defaultMaxAngularSpeed: number;
     improvedPatchFriction: boolean;
+    invokeCollisionCallbacks: boolean;
     defaultPhysicsScene: PhysicsScene;
-    autoSimulation: boolean;
     autoSyncTransforms: boolean;
     reuseCollisionCallbacks: boolean;
     interCollisionDistance: number;
@@ -3171,8 +3454,10 @@ interface PhysicsConstructor {
     solverIterationCount: number;
     solverVelocityIterationCount: number;
     penetrationPenaltyForce: number;
+    autoSimulation: boolean;
 
 
+    BakeMesh(meshID: number, convex: boolean, cookingOptions: MeshColliderCookingOptions): void;
     BakeMesh(meshID: number, convex: boolean): void;
     BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, orientation: Quaternion, maxDistance: number, layerMask: number, queryTriggerInteraction: QueryTriggerInteraction): boolean;
     BoxCast(center: Vector3, halfExtents: Vector3, direction: Vector3, orientation: Quaternion, maxDistance: number, layerMask: number): boolean;
@@ -3321,7 +3606,10 @@ interface PhysicsConstructor {
 declare const Physics: PhysicsConstructor;
     
 interface MonoBehaviour extends Behaviour {
+    destroyCancellationToken: unknown;
     useGUILayout: boolean;
+    didStart: boolean;
+    didAwake: boolean;
     runInEditMode: boolean;
 
     constructor(): MonoBehaviour;
@@ -3368,8 +3656,17 @@ interface Debug {
     
     
     
+interface StartupLog {
+    timestamp: number;
+    logType: LogType;
+    message: string;
+
+
+}
+    
 interface DebugConstructor {
     unityLogger: unknown;
+    developerConsoleEnabled: boolean;
     developerConsoleVisible: boolean;
     isDebugBuild: boolean;
     logger: unknown;
@@ -3415,6 +3712,7 @@ interface DebugConstructor {
     LogWarning(message: unknown, context: Object): void;
     LogWarningFormat(format: string, args: CSArray<unknown>): void;
     LogWarningFormat(context: Object, format: string, args: CSArray<unknown>): void;
+    RetrieveStartupLogs(): CSArray<StartupLog>;
 }
 declare const Debug: DebugConstructor;
     
@@ -3437,11 +3735,18 @@ interface Sprite extends Object {
     uv: CSArray<Vector2>;
 
 
+    AddScriptableObject(obj: ScriptableObject): boolean;
     GetPhysicsShape(shapeIdx: number, physicsShape: CSArray<Vector2>): number;
     GetPhysicsShapeCount(): number;
     GetPhysicsShapePointCount(shapeIdx: number): number;
+    GetScriptableObjects(scriptableObjects: CSArray<ScriptableObject>): number;
+    GetScriptableObjectsCount(): number;
+    GetSecondaryTextureCount(): number;
+    GetSecondaryTextures(secondaryTexture: CSArray<SecondarySpriteTexture>): number;
     OverrideGeometry(vertices: CSArray<Vector2>, triangles: CSArray<number>): void;
     OverridePhysicsShape(physicsShapes: CSArray<CSArray<Vector2>>): void;
+    RemoveScriptableObjectAt(i: number): boolean;
+    SetScriptableObjectAt(obj: ScriptableObject, i: number): boolean;
 }
     
 interface Rect {
@@ -3509,6 +3814,7 @@ interface Texture extends Object {
     updateCount: number;
     isDataSRGB: boolean;
     imageContentsHash: Hash128;
+    graphicsTexture: GraphicsTexture;
 
 
     GetNativeTextureID(): number;
@@ -3559,9 +3865,40 @@ interface Hash128Constructor {
 }
 declare const Hash128: Hash128Constructor;
     
+interface GraphicsTexture {
+    descriptor: GraphicsTextureDescriptor;
+    state: GraphicsTextureState;
+
+    constructor(desc: GraphicsTextureDescriptor): GraphicsTexture;
+
+    Dispose(): void;
+}
+    
+interface GraphicsTextureDescriptor {
+    width: number;
+    height: number;
+    depth: number;
+    arrayLength: number;
+    format: GraphicsFormat;
+    dimension: TextureDimension;
+    mipCount: number;
+    numSamples: number;
+    flags: GraphicsTextureDescriptorFlags;
+
+
+}
+    
+interface GraphicsTextureConstructor {
+    active: GraphicsTexture;
+
+
+}
+declare const GraphicsTexture: GraphicsTextureConstructor;
+    
 interface TextureConstructor {
     GenerateAllMips: number;
     masterTextureLimit: number;
+    globalMipmapLimit: number;
     anisotropicFiltering: AnisotropicFiltering;
     totalTextureMemory: number;
     desiredTextureMemory: number;
@@ -3586,7 +3923,8 @@ declare const Texture: TextureConstructor;
     
 interface Texture2D extends Texture {
     format: TextureFormat;
-    ignoreMipmapLimit: boolean;
+    mipmapLimitGroup: string;
+    activeMipmapLimit: number;
     isReadable: boolean;
     vtOnly: boolean;
     streamingMipmaps: boolean;
@@ -3598,12 +3936,22 @@ interface Texture2D extends Texture {
     loadingMipmapLevel: number;
     loadedMipmapLevel: number;
     alphaIsTransparency: boolean;
+    ignoreMipmapLimit: boolean;
 
     constructor(width: number, height: number, format: DefaultFormat, flags: TextureCreationFlags): Texture2D;
+    constructor(width: number, height: number, format: DefaultFormat, mipCount: number, flags: TextureCreationFlags): Texture2D;
+    constructor(width: number, height: number, format: DefaultFormat, mipCount: number, mipmapLimitGroupName: string, flags: TextureCreationFlags): Texture2D;
+    constructor(width: number, height: number, format: DefaultFormat, mipCount: number, flags: TextureCreationFlags, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
     constructor(width: number, height: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture2D;
     constructor(width: number, height: number, format: GraphicsFormat, mipCount: number, flags: TextureCreationFlags): Texture2D;
+    constructor(width: number, height: number, format: GraphicsFormat, mipCount: number, mipmapLimitGroupName: string, flags: TextureCreationFlags): Texture2D;
+    constructor(width: number, height: number, format: GraphicsFormat, mipCount: number, flags: TextureCreationFlags, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
     constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean): Texture2D;
+    constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean): Texture2D;
+    constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
+    constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, ignoreMipmapLimit: boolean, mipmapLimitGroupName: string): Texture2D;
     constructor(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
+    constructor(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean, createUninitialized: boolean): Texture2D;
     constructor(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean): Texture2D;
     constructor(width: number, height: number): Texture2D;
 
@@ -3692,10 +4040,34 @@ interface Texture2DConstructor {
 }
 declare const Texture2D: Texture2DConstructor;
     
+interface ScriptableObject extends Object {
+
+    constructor(): ScriptableObject;
+
+    SetDirty(): void;
+}
+    
+interface ScriptableObjectConstructor {
+
+
+    CreateInstance(className: string): ScriptableObject;
+    CreateInstance(type: unknown): ScriptableObject;
+    CreateInstance<T>(): T;
+}
+declare const ScriptableObject: ScriptableObjectConstructor;
+    
+interface SecondarySpriteTexture {
+    name: string;
+    texture: Texture2D;
+
+
+}
+    
 interface SpriteConstructor {
 
 
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType, border: Vector4, generateFallbackPhysicsShape: boolean): Sprite;
+    Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType, border: Vector4, generateFallbackPhysicsShape: boolean, secondaryTextures: CSArray<SecondarySpriteTexture>): Sprite;
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType, border: Vector4): Sprite;
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number, meshType: SpriteMeshType): Sprite;
     Create(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number, extrude: number): Sprite;
@@ -3746,6 +4118,9 @@ interface ResourcesConstructor {
     FindObjectsOfTypeAll<T>(): CSArray<T>;
     GetBuiltinResource(type: unknown, path: string): Object;
     GetBuiltinResource<T>(path: string): T;
+    InstanceIDIsValid(instanceId: number): boolean;
+    InstanceIDsToValidArray(instanceIDs: CSArray<number>, validArray: CSArray<boolean>): void;
+    InstanceIDsToValidArray(instanceIDs: unknown, validArray: unknown): void;
     InstanceIDToObject(instanceID: number): Object;
     InstanceIDToObjectList(instanceIDs: CSArray<number>, objects: CSArray<Object>): void;
     Load(path: string): Object;
@@ -4051,22 +4426,6 @@ interface NetworkObserver extends MonoBehaviour {
     GetObserverCondition<T>(): ObserverCondition;
     SetUpdateHostVisibility(value: boolean): void;
 }
-    
-interface ScriptableObject extends Object {
-
-    constructor(): ScriptableObject;
-
-    SetDirty(): void;
-}
-    
-interface ScriptableObjectConstructor {
-
-
-    CreateInstance(className: string): ScriptableObject;
-    CreateInstance(type: unknown): ScriptableObject;
-    CreateInstance<T>(): T;
-}
-declare const ScriptableObject: ScriptableObjectConstructor;
     
 interface ObserverCondition extends ScriptableObject {
     NetworkObject: NetworkObject;
@@ -5164,9 +5523,17 @@ interface Camera extends Behaviour {
     depthTextureMode: DepthTextureMode;
     clearStencilAfterLightingPass: boolean;
     usePhysicalProperties: boolean;
+    iso: number;
+    shutterSpeed: number;
+    aperture: number;
+    focusDistance: number;
+    focalLength: number;
+    bladeCount: number;
+    curvature: Vector2;
+    barrelClipping: number;
+    anamorphism: number;
     sensorSize: Vector2;
     lensShift: Vector2;
-    focalLength: number;
     gateFit: GateFitMode;
     rect: Rect;
     pixelRect: Rect;
@@ -5191,6 +5558,7 @@ interface Camera extends Behaviour {
     stereoTargetEye: StereoTargetEyeMask;
     stereoActiveEye: MonoOrStereoscopicEye;
     sceneViewFilterMode: SceneViewFilterMode;
+    renderCloudsInSceneView: boolean;
     commandBufferCount: number;
     isOrthoGraphic: boolean;
     near: number;
@@ -5251,6 +5619,7 @@ interface Camera extends Behaviour {
     SetStereoViewMatrix(eye: StereoscopicEye, matrix: Matrix4x4): void;
     SetTargetBuffers(colorBuffer: RenderBuffer, depthBuffer: RenderBuffer): void;
     SetTargetBuffers(colorBuffer: CSArray<RenderBuffer>, depthBuffer: RenderBuffer): void;
+    SubmitRenderRequest<RequestData>(renderRequest: RequestData): void;
     SubmitRenderRequests(renderRequests: CSArray<RenderRequest>): void;
     TryGetCullingParameters(cullingParameters: unknown): boolean;
     TryGetCullingParameters(stereoAware: boolean, cullingParameters: unknown): boolean;
@@ -5283,6 +5652,7 @@ interface RenderTexture extends Texture {
     bindTextureMS: boolean;
     enableRandomWrite: boolean;
     useDynamicScale: boolean;
+    useDynamicScaleExplicit: boolean;
     isPowerOfTwo: boolean;
     colorBuffer: RenderBuffer;
     depthBuffer: RenderBuffer;
@@ -5304,6 +5674,7 @@ interface RenderTexture extends Texture {
     constructor(width: number, height: number, depth: number): RenderTexture;
     constructor(width: number, height: number, depth: number, format: RenderTextureFormat, mipCount: number): RenderTexture;
 
+    ApplyDynamicScale(): void;
     ConvertToEquirect(equirect: RenderTexture, eye: MonoOrStereoscopicEye): void;
     Create(): boolean;
     DiscardContents(discardColor: boolean, discardDepth: boolean): void;
@@ -5348,6 +5719,7 @@ interface RenderTextureDescriptor {
     enableRandomWrite: boolean;
     bindMS: boolean;
     useDynamicScale: boolean;
+    useDynamicScaleExplicit: boolean;
 
     constructor(width: number, height: number): RenderTextureDescriptor;
     constructor(width: number, height: number, colorFormat: RenderTextureFormat): RenderTextureDescriptor;
@@ -5391,8 +5763,13 @@ interface CommandBuffer {
 
     constructor(): CommandBuffer;
 
+    BeginRenderPass(width: number, height: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>): void;
+    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>): void;
+    BeginRenderPass(width: number, height: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>, debugNameUtf8: unknown): void;
+    BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>, debugNameUtf8: unknown): void;
     BeginSample(name: string): void;
     BeginSample(sampler: CustomSampler): void;
+    BeginSample(marker: ProfilerMarker): void;
     Blit(source: Texture, dest: RenderTargetIdentifier): void;
     Blit(source: Texture, dest: RenderTargetIdentifier, scale: Vector2, offset: Vector2): void;
     Blit(source: Texture, dest: RenderTargetIdentifier, mat: Material): void;
@@ -5406,11 +5783,15 @@ interface CommandBuffer {
     Blit(source: RenderTargetIdentifier, dest: RenderTargetIdentifier, mat: Material, pass: number, destDepthSlice: number): void;
     BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure): void;
     BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure, relativeOrigin: Vector3): void;
+    BuildRayTracingAccelerationStructure(accelerationStructure: RayTracingAccelerationStructure, buildSettings: BuildSettings): void;
     Clear(): void;
     ClearRandomWriteTargets(): void;
-    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color): void;
     ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number): void;
+    ClearRenderTarget(clearDepth: boolean, clearColor: boolean, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColor: Color, depth: number, stencil: number): void;
+    ClearRenderTarget(clearFlags: RTClearFlags, backgroundColors: CSArray<Color>, depth: number, stencil: number): void;
+    ConfigureFoveatedRendering(platformData: unknown): void;
     ConvertTexture(src: RenderTargetIdentifier, dst: RenderTargetIdentifier): void;
     ConvertTexture(src: RenderTargetIdentifier, srcElement: number, dst: RenderTargetIdentifier, dstElement: number): void;
     CopyBuffer(source: GraphicsBuffer, dest: GraphicsBuffer): void;
@@ -5451,6 +5832,7 @@ interface CommandBuffer {
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer, argsOffset: number): void;
     DrawMeshInstancedIndirect(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, bufferWithArgs: GraphicsBuffer): void;
     DrawMeshInstancedProcedural(mesh: Mesh, submeshIndex: number, material: Material, shaderPass: number, count: number, properties: MaterialPropertyBlock): void;
+    DrawMultipleMeshes(matrices: CSArray<Matrix4x4>, meshes: CSArray<Mesh>, subsetIndices: CSArray<number>, count: number, material: Material, shaderPass: number, properties: MaterialPropertyBlock): void;
     DrawOcclusionMesh(normalizedCamViewport: RectInt): void;
     DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number, properties: MaterialPropertyBlock): void;
     DrawProcedural(matrix: Matrix4x4, material: Material, shaderPass: number, topology: MeshTopology, vertexCount: number, instanceCount: number): void;
@@ -5479,8 +5861,10 @@ interface CommandBuffer {
     EnableKeyword(computeShader: ComputeShader, keyword: unknown): void;
     EnableScissorRect(scissor: Rect): void;
     EnableShaderKeyword(keyword: string): void;
+    EndRenderPass(): void;
     EndSample(name: string): void;
     EndSample(sampler: CustomSampler): void;
+    EndSample(marker: ProfilerMarker): void;
     GenerateMips(rt: RenderTargetIdentifier): void;
     GenerateMips(rt: RenderTexture): void;
     GetTemporaryRT(nameID: number, width: number, height: number, depthBuffer: number, filter: FilterMode, format: GraphicsFormat, antiAliasing: number, enableRandomWrite: boolean, memorylessMode: RenderTextureMemoryless, useDynamicScale: boolean): void;
@@ -5511,13 +5895,16 @@ interface CommandBuffer {
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number, depthBuffer: number): void;
     GetTemporaryRTArray(nameID: number, width: number, height: number, slices: number): void;
     IncrementUpdateCount(dest: RenderTargetIdentifier): void;
+    InvokeOnRenderObjectCallbacks(): void;
     IssuePluginCustomBlit(callback: unknown, command: number, source: RenderTargetIdentifier, dest: RenderTargetIdentifier, commandParam: number, commandFlags: number): void;
     IssuePluginCustomTextureUpdate(callback: unknown, targetTexture: Texture, userData: number): void;
     IssuePluginCustomTextureUpdateV1(callback: unknown, targetTexture: Texture, userData: number): void;
     IssuePluginCustomTextureUpdateV2(callback: unknown, targetTexture: Texture, userData: number): void;
     IssuePluginEvent(callback: unknown, eventID: number): void;
     IssuePluginEventAndData(callback: unknown, eventID: number, data: unknown): void;
+    IssuePluginEventAndDataWithFlags(callback: unknown, eventID: number, flags: CustomMarkerCallbackFlags, data: unknown): void;
     MarkLateLatchMatrixShaderPropertyID(matrixPropertyType: CameraLateLatchMatrixType, shaderPropertyID: number): void;
+    NextSubPass(): void;
     ProcessVTFeedback(rt: RenderTargetIdentifier, resolver: unknown, slice: number, x: number, width: number, y: number, height: number, mip: number): void;
     Release(): void;
     ReleaseTemporaryRT(nameID: number): void;
@@ -5578,6 +5965,8 @@ interface CommandBuffer {
     SetComputeBufferData<T>(buffer: ComputeBuffer, data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: ComputeBuffer): void;
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: ComputeBuffer): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, bufferHandle: GraphicsBufferHandle): void;
+    SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, bufferHandle: GraphicsBufferHandle): void;
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, buffer: GraphicsBuffer): void;
     SetComputeBufferParam(computeShader: ComputeShader, kernelIndex: number, name: string, buffer: GraphicsBuffer): void;
     SetComputeConstantBufferParam(computeShader: ComputeShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
@@ -5596,6 +5985,7 @@ interface CommandBuffer {
     SetComputeMatrixArrayParam(computeShader: ComputeShader, name: string, values: CSArray<Matrix4x4>): void;
     SetComputeMatrixParam(computeShader: ComputeShader, nameID: number, val: Matrix4x4): void;
     SetComputeMatrixParam(computeShader: ComputeShader, name: string, val: Matrix4x4): void;
+    SetComputeParamsFromMaterial(computeShader: ComputeShader, kernelIndex: number, material: Material): void;
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: RenderTargetIdentifier): void;
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, nameID: number, rt: RenderTargetIdentifier): void;
     SetComputeTextureParam(computeShader: ComputeShader, kernelIndex: number, name: string, rt: RenderTargetIdentifier, mipLevel: number): void;
@@ -5607,6 +5997,7 @@ interface CommandBuffer {
     SetComputeVectorParam(computeShader: ComputeShader, nameID: number, val: Vector4): void;
     SetComputeVectorParam(computeShader: ComputeShader, name: string, val: Vector4): void;
     SetExecutionFlags(flags: CommandBufferExecutionFlags): void;
+    SetFoveatedRenderingMode(foveatedRenderingMode: FoveatedRenderingMode): void;
     SetGlobalBuffer(name: string, value: ComputeBuffer): void;
     SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
     SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
@@ -5634,6 +6025,8 @@ interface CommandBuffer {
     SetGlobalMatrixArray(propertyName: string, values: CSArray<Matrix4x4>): void;
     SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
     SetGlobalMatrixArray(propertyName: string, values: CSArray<Matrix4x4>): void;
+    SetGlobalRayTracingAccelerationStructure(name: string, accelerationStructure: RayTracingAccelerationStructure): void;
+    SetGlobalRayTracingAccelerationStructure(nameID: number, accelerationStructure: RayTracingAccelerationStructure): void;
     SetGlobalTexture(name: string, value: RenderTargetIdentifier): void;
     SetGlobalTexture(nameID: number, value: RenderTargetIdentifier): void;
     SetGlobalTexture(name: string, value: RenderTargetIdentifier, element: RenderTextureSubElement): void;
@@ -5658,8 +6051,14 @@ interface CommandBuffer {
     SetRandomWriteTarget(index: number, buffer: GraphicsBuffer): void;
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
     SetRayTracingAccelerationStructure(rayTracingShader: RayTracingShader, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, name: string, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(computeShader: ComputeShader, kernelIndex: number, nameID: number, rayTracingAccelerationStructure: RayTracingAccelerationStructure): void;
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer): void;
     SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, name: string, bufferHandle: GraphicsBufferHandle): void;
+    SetRayTracingBufferParam(rayTracingShader: RayTracingShader, nameID: number, bufferHandle: GraphicsBufferHandle): void;
     SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
     SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, name: string, buffer: ComputeBuffer, offset: number, size: number): void;
     SetRayTracingConstantBufferParam(rayTracingShader: RayTracingShader, nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
@@ -5700,9 +6099,11 @@ interface CommandBuffer {
     SetRenderTarget(binding: RenderTargetBinding): void;
     SetShadowSamplingMode(shadowmap: RenderTargetIdentifier, mode: ShadowSamplingMode): void;
     SetSinglePassStereo(mode: SinglePassStereoMode): void;
+    SetupCameraProperties(camera: Camera): void;
     SetViewMatrix(view: Matrix4x4): void;
     SetViewport(pixelRect: Rect): void;
     SetViewProjectionMatrices(view: Matrix4x4, proj: Matrix4x4): void;
+    SetWireframe(enable: boolean): void;
     UnmarkLateLatchMatrix(matrixPropertyType: CameraLateLatchMatrixType): void;
     WaitAllAsyncReadbackRequests(): void;
     WaitOnAsyncGraphicsFence(fence: GraphicsFence): void;
@@ -5711,6 +6112,81 @@ interface CommandBuffer {
     WaitOnGPUFence(fence: GPUFence, stage: SynchronisationStage): void;
     WaitOnGPUFence(fence: GPUFence): void;
 }
+    
+interface AttachmentDescriptor {
+    loadAction: RenderBufferLoadAction;
+    storeAction: RenderBufferStoreAction;
+    graphicsFormat: GraphicsFormat;
+    format: RenderTextureFormat;
+    loadStoreTarget: RenderTargetIdentifier;
+    resolveTarget: RenderTargetIdentifier;
+    clearColor: Color;
+    clearDepth: number;
+    clearStencil: number;
+
+    constructor(format: GraphicsFormat): AttachmentDescriptor;
+    constructor(format: RenderTextureFormat): AttachmentDescriptor;
+    constructor(format: RenderTextureFormat, target: RenderTargetIdentifier, loadExistingContents: boolean, storeResults: boolean, resolve: boolean): AttachmentDescriptor;
+
+    ConfigureClear(clearColor: Color, clearDepth: number, clearStencil: number): void;
+    ConfigureResolveTarget(target: RenderTargetIdentifier): void;
+    ConfigureTarget(target: RenderTargetIdentifier, loadExistingContents: boolean, storeResults: boolean): void;
+    Equals(other: AttachmentDescriptor): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+}
+    
+interface RenderTargetIdentifier {
+
+    constructor(type: BuiltinRenderTextureType): RenderTargetIdentifier;
+    constructor(type: BuiltinRenderTextureType, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    constructor(name: string): RenderTargetIdentifier;
+    constructor(name: string, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    constructor(nameID: number): RenderTargetIdentifier;
+    constructor(nameID: number, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    constructor(renderTargetIdentifier: RenderTargetIdentifier, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    constructor(tex: Texture): RenderTargetIdentifier;
+    constructor(tex: Texture, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    constructor(buf: RenderBuffer, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+
+    Equals(rhs: RenderTargetIdentifier): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface RenderTargetIdentifierConstructor {
+    AllDepthSlices: number;
+
+
+}
+declare const RenderTargetIdentifier: RenderTargetIdentifierConstructor;
+    
+interface SubPassDescriptor {
+    inputs: AttachmentIndexArray;
+    colorOutputs: AttachmentIndexArray;
+    flags: SubPassFlags;
+
+
+}
+    
+interface AttachmentIndexArray {
+    Item: number;
+    Length: number;
+
+    constructor(numAttachments: number): AttachmentIndexArray;
+    constructor(attachments: CSArray<number>): AttachmentIndexArray;
+    constructor(attachments: CSArray<number>): AttachmentIndexArray;
+
+}
+    
+interface AttachmentIndexArrayConstructor {
+    Emtpy: AttachmentIndexArray;
+    MaxAttachments: number;
+
+
+}
+declare const AttachmentIndexArray: AttachmentIndexArrayConstructor;
     
 interface Sampler {
     isValid: boolean;
@@ -5763,31 +6239,27 @@ interface CustomSamplerConstructor {
 }
 declare const CustomSampler: CustomSamplerConstructor;
     
-interface RenderTargetIdentifier {
+interface ProfilerMarker {
+    Handle: unknown;
 
-    constructor(type: BuiltinRenderTextureType): RenderTargetIdentifier;
-    constructor(type: BuiltinRenderTextureType, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(name: string): RenderTargetIdentifier;
-    constructor(name: string, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(nameID: number): RenderTargetIdentifier;
-    constructor(nameID: number, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(renderTargetIdentifier: RenderTargetIdentifier, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(tex: Texture): RenderTargetIdentifier;
-    constructor(tex: Texture, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(buf: RenderBuffer, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    constructor(name: string): ProfilerMarker;
+    constructor(name: unknown, nameLen: number): ProfilerMarker;
+    constructor(category: ProfilerCategory, name: string): ProfilerMarker;
+    constructor(category: ProfilerCategory, name: unknown, nameLen: number): ProfilerMarker;
+    constructor(category: ProfilerCategory, name: string, flags: MarkerFlags): ProfilerMarker;
+    constructor(category: ProfilerCategory, name: unknown, nameLen: number, flags: MarkerFlags): ProfilerMarker;
 
-    Equals(rhs: RenderTargetIdentifier): boolean;
-    Equals(obj: unknown): boolean;
-    GetHashCode(): number;
-    ToString(): string;
+    Auto(): AutoScope;
+    Begin(): void;
+    Begin(contextUnityObject: Object): void;
+    End(): void;
 }
     
-interface RenderTargetIdentifierConstructor {
-    AllDepthSlices: number;
+interface AutoScope {
 
 
+    Dispose(): void;
 }
-declare const RenderTargetIdentifier: RenderTargetIdentifierConstructor;
     
 interface Material extends Object {
     shader: Shader;
@@ -5802,11 +6274,15 @@ interface Material extends Object {
     enableInstancing: boolean;
     passCount: number;
     shaderKeywords: CSArray<string>;
+    parent: Material;
+    isVariant: boolean;
 
     constructor(shader: Shader): Material;
     constructor(source: Material): Material;
     constructor(contents: string): Material;
 
+    ApplyPropertyOverride(destination: Material, nameID: number, recordUndo: boolean): void;
+    ApplyPropertyOverride(destination: Material, name: string, recordUndo: boolean): void;
     ComputeCRC(): number;
     CopyMatchingPropertiesFromMaterial(mat: Material): void;
     CopyPropertiesFromMaterial(mat: Material): void;
@@ -5815,12 +6291,14 @@ interface Material extends Object {
     EnableKeyword(keyword: string): void;
     EnableKeyword(keyword: unknown): void;
     FindPass(passName: string): number;
+    GetBuffer(name: string): GraphicsBufferHandle;
     GetColor(name: string): Color;
     GetColor(nameID: number): Color;
     GetColorArray(name: string): CSArray<Color>;
     GetColorArray(nameID: number): CSArray<Color>;
     GetColorArray(name: string, values: CSArray<Color>): void;
     GetColorArray(nameID: number, values: CSArray<Color>): void;
+    GetConstantBuffer(name: string): GraphicsBufferHandle;
     GetFloat(name: string): number;
     GetFloat(nameID: number): number;
     GetFloatArray(name: string): CSArray<number>;
@@ -5838,6 +6316,7 @@ interface Material extends Object {
     GetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
     GetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
     GetPassName(pass: number): string;
+    GetPropertyNames(type: MaterialPropertyType): CSArray<string>;
     GetShaderPassEnabled(passName: string): boolean;
     GetTag(tag: string, searchFallbacks: boolean, defaultValue: string): string;
     GetTag(tag: string, searchFallbacks: boolean): string;
@@ -5877,9 +6356,19 @@ interface Material extends Object {
     HasTexture(nameID: number): boolean;
     HasVector(name: string): boolean;
     HasVector(nameID: number): boolean;
+    IsChildOf(ancestor: Material): boolean;
     IsKeywordEnabled(keyword: string): boolean;
     IsKeywordEnabled(keyword: unknown): boolean;
+    IsPropertyLocked(nameID: number): boolean;
+    IsPropertyLocked(name: string): boolean;
+    IsPropertyLockedByAncestor(nameID: number): boolean;
+    IsPropertyLockedByAncestor(name: string): boolean;
+    IsPropertyOverriden(nameID: number): boolean;
+    IsPropertyOverriden(name: string): boolean;
     Lerp(start: Material, end: Material, t: number): void;
+    RevertAllPropertyOverrides(): void;
+    RevertPropertyOverride(nameID: number): void;
+    RevertPropertyOverride(name: string): void;
     SetBuffer(name: string, value: ComputeBuffer): void;
     SetBuffer(nameID: number, value: ComputeBuffer): void;
     SetBuffer(name: string, value: GraphicsBuffer): void;
@@ -5913,6 +6402,8 @@ interface Material extends Object {
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
     SetOverrideTag(tag: string, val: string): void;
     SetPass(pass: number): boolean;
+    SetPropertyLock(nameID: number, value: boolean): void;
+    SetPropertyLock(name: string, value: boolean): void;
     SetShaderPassEnabled(passName: string, enabled: boolean): void;
     SetTexture(name: string, value: Texture): void;
     SetTexture(nameID: number, value: Texture): void;
@@ -5949,6 +6440,7 @@ interface Shader extends Object {
     GetPropertyAttributes(propertyIndex: number): CSArray<string>;
     GetPropertyCount(): number;
     GetPropertyDefaultFloatValue(propertyIndex: number): number;
+    GetPropertyDefaultIntValue(propertyIndex: number): number;
     GetPropertyDefaultVectorValue(propertyIndex: number): Vector4;
     GetPropertyDescription(propertyIndex: number): string;
     GetPropertyFlags(propertyIndex: number): ShaderPropertyFlags;
@@ -5974,6 +6466,7 @@ interface LocalKeywordSpace {
     
 interface LocalKeyword {
     name: string;
+    isDynamic: boolean;
     isOverridable: boolean;
     isValid: boolean;
     type: ShaderKeywordType;
@@ -6056,15 +6549,19 @@ interface GraphicsBuffer {
     count: number;
     stride: number;
     target: Target;
+    usageFlags: UsageFlags;
+    bufferHandle: GraphicsBufferHandle;
     name: string;
 
     constructor(target: Target, count: number, stride: number): GraphicsBuffer;
+    constructor(target: Target, usageFlags: UsageFlags, count: number, stride: number): GraphicsBuffer;
 
     Dispose(): void;
     GetData(data: unknown): void;
     GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
     GetNativeBufferPtr(): unknown;
     IsValid(): boolean;
+    LockBufferForWrite<T>(bufferStartIndex: number, count: number): CSArray<T>;
     Release(): void;
     SetCounterValue(counterValue: number): void;
     SetData(data: unknown): void;
@@ -6073,6 +6570,17 @@ interface GraphicsBuffer {
     SetData(data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
     SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    UnlockBufferAfterWrite<T>(countWritten: number): void;
+}
+    
+interface GraphicsBufferHandle {
+    value: number;
+
+
+    CompareTo(other: GraphicsBufferHandle): number;
+    Equals(obj: unknown): boolean;
+    Equals(other: GraphicsBufferHandle): boolean;
+    GetHashCode(): number;
 }
     
 interface GraphicsBufferConstructor {
@@ -6085,120 +6593,44 @@ interface GraphicsBufferConstructor {
 }
 declare const GraphicsBuffer: GraphicsBufferConstructor;
     
-interface ShaderConstructor {
-    globalShaderHardwareTier: ShaderHardwareTier;
-    maximumChunksOverride: number;
-    globalMaximumLOD: number;
-    globalRenderPipeline: string;
-    enabledGlobalKeywords: CSArray<GlobalKeyword>;
-    globalKeywords: CSArray<GlobalKeyword>;
-
-
-    DisableKeyword(keyword: string): void;
-    DisableKeyword(keyword: unknown): void;
-    EnableKeyword(keyword: string): void;
-    EnableKeyword(keyword: unknown): void;
-    Find(name: string): Shader;
-    GetGlobalColor(name: string): Color;
-    GetGlobalColor(nameID: number): Color;
-    GetGlobalFloat(name: string): number;
-    GetGlobalFloat(nameID: number): number;
-    GetGlobalFloatArray(name: string): CSArray<number>;
-    GetGlobalFloatArray(nameID: number): CSArray<number>;
-    GetGlobalFloatArray(name: string, values: CSArray<number>): void;
-    GetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
-    GetGlobalInt(name: string): number;
-    GetGlobalInt(nameID: number): number;
-    GetGlobalInteger(name: string): number;
-    GetGlobalInteger(nameID: number): number;
-    GetGlobalMatrix(name: string): Matrix4x4;
-    GetGlobalMatrix(nameID: number): Matrix4x4;
-    GetGlobalMatrixArray(name: string): CSArray<Matrix4x4>;
-    GetGlobalMatrixArray(nameID: number): CSArray<Matrix4x4>;
-    GetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    GetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
-    GetGlobalTexture(name: string): Texture;
-    GetGlobalTexture(nameID: number): Texture;
-    GetGlobalVector(name: string): Vector4;
-    GetGlobalVector(nameID: number): Vector4;
-    GetGlobalVectorArray(name: string): CSArray<Vector4>;
-    GetGlobalVectorArray(nameID: number): CSArray<Vector4>;
-    GetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
-    GetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
-    IsKeywordEnabled(keyword: string): boolean;
-    IsKeywordEnabled(keyword: unknown): boolean;
-    PropertyToID(name: string): number;
-    SetGlobalBuffer(name: string, value: ComputeBuffer): void;
-    SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
-    SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
-    SetGlobalBuffer(nameID: number, value: GraphicsBuffer): void;
-    SetGlobalColor(name: string, value: Color): void;
-    SetGlobalColor(nameID: number, value: Color): void;
-    SetGlobalConstantBuffer(name: string, value: ComputeBuffer, offset: number, size: number): void;
-    SetGlobalConstantBuffer(nameID: number, value: ComputeBuffer, offset: number, size: number): void;
-    SetGlobalConstantBuffer(name: string, value: GraphicsBuffer, offset: number, size: number): void;
-    SetGlobalConstantBuffer(nameID: number, value: GraphicsBuffer, offset: number, size: number): void;
-    SetGlobalFloat(name: string, value: number): void;
-    SetGlobalFloat(nameID: number, value: number): void;
-    SetGlobalFloatArray(name: string, values: CSArray<number>): void;
-    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
-    SetGlobalFloatArray(name: string, values: CSArray<number>): void;
-    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
-    SetGlobalInt(name: string, value: number): void;
-    SetGlobalInt(nameID: number, value: number): void;
-    SetGlobalInteger(name: string, value: number): void;
-    SetGlobalInteger(nameID: number, value: number): void;
-    SetGlobalMatrix(name: string, value: Matrix4x4): void;
-    SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
-    SetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
-    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
-    SetGlobalTexGenMode(propertyName: string, mode: TexGenMode): void;
-    SetGlobalTexture(name: string, value: Texture): void;
-    SetGlobalTexture(nameID: number, value: Texture): void;
-    SetGlobalTexture(name: string, value: RenderTexture, element: RenderTextureSubElement): void;
-    SetGlobalTexture(nameID: number, value: RenderTexture, element: RenderTextureSubElement): void;
-    SetGlobalTextureMatrixName(propertyName: string, matrixName: string): void;
-    SetGlobalVector(name: string, value: Vector4): void;
-    SetGlobalVector(nameID: number, value: Vector4): void;
-    SetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
-    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
-    SetKeyword(keyword: unknown, value: boolean): void;
-    WarmupAllShaders(): void;
-}
-declare const Shader: ShaderConstructor;
-    
-interface MaterialConstructor {
-
-
-    Create(scriptContents: string): Material;
-}
-declare const Material: MaterialConstructor;
-    
 interface RayTracingAccelerationStructure {
 
-    constructor(settings: RASSettings): RayTracingAccelerationStructure;
+    constructor(settings: Settings): RayTracingAccelerationStructure;
     constructor(): RayTracingAccelerationStructure;
 
+    AddInstance(targetRenderer: Renderer, subMeshFlags: CSArray<number>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): number;
+    AddInstance(config: RayTracingAABBsInstanceConfig, matrix: Matrix4x4, id: number): number;
+    AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
+    AddInstance(config: unknown, matrix: Matrix4x4, prevMatrix: unknown, id: number): number;
     AddInstance(targetRenderer: Renderer, subMeshMask: CSArray<boolean>, subMeshTransparencyFlags: CSArray<boolean>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): void;
-    AddInstance(targetRenderer: Renderer, subMeshFlags: CSArray<number>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): void;
     AddInstance(aabbBuffer: GraphicsBuffer, numElements: number, material: Material, isCutOff: boolean, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, reuseBounds: boolean, id: number): void;
-    AddInstance(aabbBuffer: GraphicsBuffer, numElements: number, material: Material, instanceTransform: Matrix4x4, isCutOff: boolean, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, reuseBounds: boolean, id: number): void;
+    AddInstance(aabbBuffer: GraphicsBuffer, aabbCount: number, dynamicData: boolean, matrix: Matrix4x4, material: Material, opaqueMaterial: boolean, properties: MaterialPropertyBlock, mask: number, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: CSArray<T>, instanceCount: number, startInstance: number, id: number): number;
+    AddInstances<T>(config: unknown, instanceData: CSArray<T>, id: number): number;
+    AddVFXInstances(targetRenderer: Renderer, vfxSystemMasks: CSArray<number>): void;
     Build(): void;
     Build(relativeOrigin: Vector3): void;
+    Build(buildSettings: BuildSettings): void;
+    ClearInstances(): void;
+    CullInstances(cullingConfig: unknown): RayTracingInstanceCullingResults;
     Dispose(): void;
     GetInstanceCount(): number;
     GetSize(): number;
     Release(): void;
     RemoveInstance(targetRenderer: Renderer): void;
+    RemoveInstance(handle: number): void;
+    RemoveVFXInstances(targetRenderer: Renderer): void;
     Update(): void;
     Update(relativeOrigin: Vector3): void;
     UpdateInstanceID(renderer: Renderer, instanceID: number): void;
+    UpdateInstanceID(handle: number, instanceID: number): void;
     UpdateInstanceMask(renderer: Renderer, mask: number): void;
+    UpdateInstanceMask(handle: number, mask: number): void;
+    UpdateInstancePropertyBlock(handle: number, properties: MaterialPropertyBlock): void;
     UpdateInstanceTransform(renderer: Renderer): void;
+    UpdateInstanceTransform(handle: number, matrix: Matrix4x4): void;
 }
     
 interface Renderer extends Component {
@@ -6221,6 +6653,8 @@ interface Renderer extends Component {
     renderingLayerMask: number;
     rendererPriority: number;
     rayTracingMode: RayTracingMode;
+    rayTracingAccelerationStructureBuildFlags: RayTracingAccelerationStructureBuildFlags;
+    rayTracingAccelerationStructureBuildFlagsOverride: boolean;
     sortingLayerName: string;
     sortingLayerID: number;
     sortingOrder: number;
@@ -6249,8 +6683,10 @@ interface Renderer extends Component {
     HasPropertyBlock(): boolean;
     ResetBounds(): void;
     ResetLocalBounds(): void;
+    SetMaterials(materials: CSArray<Material>): void;
     SetPropertyBlock(properties: MaterialPropertyBlock): void;
     SetPropertyBlock(properties: MaterialPropertyBlock, materialIndex: number): void;
+    SetSharedMaterials(materials: CSArray<Material>): void;
 }
     
 interface ReflectionProbeBlendInfo {
@@ -6428,6 +6864,142 @@ interface SphericalHarmonicsL2 {
     GetHashCode(): number;
 }
     
+interface RayTracingAABBsInstanceConfig {
+    aabbBuffer: GraphicsBuffer;
+    aabbCount: number;
+    aabbOffset: number;
+    dynamicGeometry: boolean;
+    opaqueMaterial: boolean;
+    material: Material;
+    materialProperties: MaterialPropertyBlock;
+    layer: number;
+    mask: number;
+    accelerationStructureBuildFlags: RayTracingAccelerationStructureBuildFlags;
+    accelerationStructureBuildFlagsOverride: boolean;
+
+    constructor(): RayTracingAABBsInstanceConfig;
+    constructor(aabbBuffer: GraphicsBuffer, aabbCount: number, dynamicGeometry: boolean, material: Material): RayTracingAABBsInstanceConfig;
+
+}
+    
+interface BuildSettings {
+    buildFlags: RayTracingAccelerationStructureBuildFlags;
+    relativeOrigin: Vector3;
+
+    constructor(): BuildSettings;
+    constructor(buildFlags: RayTracingAccelerationStructureBuildFlags, relativeOrigin: Vector3): BuildSettings;
+
+}
+    
+interface RayTracingInstanceCullingResults {
+    materialsCRC: CSArray<RayTracingInstanceMaterialCRC>;
+    transformsChanged: boolean;
+
+
+}
+    
+interface RayTracingInstanceMaterialCRC {
+    instanceID: number;
+    crc: number;
+
+
+}
+    
+interface ShaderConstructor {
+    globalShaderHardwareTier: ShaderHardwareTier;
+    maximumChunksOverride: number;
+    globalMaximumLOD: number;
+    globalRenderPipeline: string;
+    enabledGlobalKeywords: CSArray<GlobalKeyword>;
+    globalKeywords: CSArray<GlobalKeyword>;
+
+
+    DisableKeyword(keyword: string): void;
+    DisableKeyword(keyword: unknown): void;
+    EnableKeyword(keyword: string): void;
+    EnableKeyword(keyword: unknown): void;
+    Find(name: string): Shader;
+    GetGlobalColor(name: string): Color;
+    GetGlobalColor(nameID: number): Color;
+    GetGlobalFloat(name: string): number;
+    GetGlobalFloat(nameID: number): number;
+    GetGlobalFloatArray(name: string): CSArray<number>;
+    GetGlobalFloatArray(nameID: number): CSArray<number>;
+    GetGlobalFloatArray(name: string, values: CSArray<number>): void;
+    GetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
+    GetGlobalInt(name: string): number;
+    GetGlobalInt(nameID: number): number;
+    GetGlobalInteger(name: string): number;
+    GetGlobalInteger(nameID: number): number;
+    GetGlobalMatrix(name: string): Matrix4x4;
+    GetGlobalMatrix(nameID: number): Matrix4x4;
+    GetGlobalMatrixArray(name: string): CSArray<Matrix4x4>;
+    GetGlobalMatrixArray(nameID: number): CSArray<Matrix4x4>;
+    GetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    GetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    GetGlobalTexture(name: string): Texture;
+    GetGlobalTexture(nameID: number): Texture;
+    GetGlobalVector(name: string): Vector4;
+    GetGlobalVector(nameID: number): Vector4;
+    GetGlobalVectorArray(name: string): CSArray<Vector4>;
+    GetGlobalVectorArray(nameID: number): CSArray<Vector4>;
+    GetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
+    GetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    IsKeywordEnabled(keyword: string): boolean;
+    IsKeywordEnabled(keyword: unknown): boolean;
+    PropertyToID(name: string): number;
+    SetGlobalBuffer(name: string, value: ComputeBuffer): void;
+    SetGlobalBuffer(nameID: number, value: ComputeBuffer): void;
+    SetGlobalBuffer(name: string, value: GraphicsBuffer): void;
+    SetGlobalBuffer(nameID: number, value: GraphicsBuffer): void;
+    SetGlobalColor(name: string, value: Color): void;
+    SetGlobalColor(nameID: number, value: Color): void;
+    SetGlobalConstantBuffer(name: string, value: ComputeBuffer, offset: number, size: number): void;
+    SetGlobalConstantBuffer(nameID: number, value: ComputeBuffer, offset: number, size: number): void;
+    SetGlobalConstantBuffer(name: string, value: GraphicsBuffer, offset: number, size: number): void;
+    SetGlobalConstantBuffer(nameID: number, value: GraphicsBuffer, offset: number, size: number): void;
+    SetGlobalFloat(name: string, value: number): void;
+    SetGlobalFloat(nameID: number, value: number): void;
+    SetGlobalFloatArray(name: string, values: CSArray<number>): void;
+    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
+    SetGlobalFloatArray(name: string, values: CSArray<number>): void;
+    SetGlobalFloatArray(nameID: number, values: CSArray<number>): void;
+    SetGlobalInt(name: string, value: number): void;
+    SetGlobalInt(nameID: number, value: number): void;
+    SetGlobalInteger(name: string, value: number): void;
+    SetGlobalInteger(nameID: number, value: number): void;
+    SetGlobalMatrix(name: string, value: Matrix4x4): void;
+    SetGlobalMatrix(nameID: number, value: Matrix4x4): void;
+    SetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetGlobalMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    SetGlobalMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
+    SetGlobalRayTracingAccelerationStructure(name: string, value: RayTracingAccelerationStructure): void;
+    SetGlobalRayTracingAccelerationStructure(nameID: number, value: RayTracingAccelerationStructure): void;
+    SetGlobalTexGenMode(propertyName: string, mode: TexGenMode): void;
+    SetGlobalTexture(name: string, value: Texture): void;
+    SetGlobalTexture(nameID: number, value: Texture): void;
+    SetGlobalTexture(name: string, value: RenderTexture, element: RenderTextureSubElement): void;
+    SetGlobalTexture(nameID: number, value: RenderTexture, element: RenderTextureSubElement): void;
+    SetGlobalTextureMatrixName(propertyName: string, matrixName: string): void;
+    SetGlobalVector(name: string, value: Vector4): void;
+    SetGlobalVector(nameID: number, value: Vector4): void;
+    SetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
+    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetGlobalVectorArray(name: string, values: CSArray<Vector4>): void;
+    SetGlobalVectorArray(nameID: number, values: CSArray<Vector4>): void;
+    SetKeyword(keyword: unknown, value: boolean): void;
+    WarmupAllShaders(): void;
+}
+declare const Shader: ShaderConstructor;
+    
+interface MaterialConstructor {
+
+
+    Create(scriptContents: string): Material;
+}
+declare const Material: MaterialConstructor;
+    
 interface GraphicsFence {
     passed: boolean;
 
@@ -6484,6 +7056,8 @@ interface ComputeShader extends Object {
     SetMatrix(name: string, val: Matrix4x4): void;
     SetMatrixArray(nameID: number, values: CSArray<Matrix4x4>): void;
     SetMatrixArray(name: string, values: CSArray<Matrix4x4>): void;
+    SetRayTracingAccelerationStructure(kernelIndex: number, nameID: number, accelerationStructure: RayTracingAccelerationStructure): void;
+    SetRayTracingAccelerationStructure(kernelIndex: number, name: string, accelerationStructure: RayTracingAccelerationStructure): void;
     SetTexture(kernelIndex: number, nameID: number, texture: Texture, mipLevel: number): void;
     SetTexture(kernelIndex: number, nameID: number, texture: Texture): void;
     SetTexture(kernelIndex: number, name: string, texture: Texture): void;
@@ -6509,8 +7083,10 @@ interface RayTracingShader extends Object {
     SetBool(nameID: number, val: boolean): void;
     SetBuffer(nameID: number, buffer: ComputeBuffer): void;
     SetBuffer(nameID: number, buffer: GraphicsBuffer): void;
+    SetBuffer(nameID: number, bufferHandle: GraphicsBufferHandle): void;
     SetBuffer(name: string, buffer: ComputeBuffer): void;
     SetBuffer(name: string, buffer: GraphicsBuffer): void;
+    SetBuffer(name: string, bufferHandle: GraphicsBufferHandle): void;
     SetConstantBuffer(nameID: number, buffer: ComputeBuffer, offset: number, size: number): void;
     SetConstantBuffer(name: string, buffer: ComputeBuffer, offset: number, size: number): void;
     SetConstantBuffer(nameID: number, buffer: GraphicsBuffer, offset: number, size: number): void;
@@ -6545,6 +7121,7 @@ interface Mesh extends Object {
     vertexBufferTarget: Target;
     indexBufferTarget: Target;
     blendShapeCount: number;
+    bindposeCount: number;
     bindposes: CSArray<Matrix4x4>;
     isReadable: boolean;
     vertexCount: number;
@@ -6566,6 +7143,7 @@ interface Mesh extends Object {
     vertexAttributeCount: number;
     triangles: CSArray<number>;
     boneWeights: CSArray<BoneWeight>;
+    skinWeightBufferLayout: SkinWeights;
 
     constructor(): Mesh;
 
@@ -6579,13 +7157,18 @@ interface Mesh extends Object {
     CombineMeshes(combine: CSArray<CombineInstance>): void;
     GetAllBoneWeights(): CSArray<BoneWeight1>;
     GetBaseVertex(submesh: number): number;
+    GetBindposes(): CSArray<Matrix4x4>;
     GetBindposes(bindposes: CSArray<Matrix4x4>): void;
+    GetBlendShapeBuffer(layout: BlendShapeBufferLayout): GraphicsBuffer;
+    GetBlendShapeBuffer(): GraphicsBuffer;
+    GetBlendShapeBufferRange(blendShapeIndex: number): BlendShapeBufferRange;
     GetBlendShapeFrameCount(shapeIndex: number): number;
     GetBlendShapeFrameVertices(shapeIndex: number, frameIndex: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
     GetBlendShapeFrameWeight(shapeIndex: number, frameIndex: number): number;
     GetBlendShapeIndex(blendShapeName: string): number;
     GetBlendShapeName(shapeIndex: number): string;
     GetBonesPerVertex(): CSArray<number>;
+    GetBoneWeightBuffer(layout: SkinWeights): GraphicsBuffer;
     GetBoneWeights(boneWeights: CSArray<BoneWeight>): void;
     GetColors(colors: CSArray<Color>): void;
     GetColors(colors: CSArray<Color32>): void;
@@ -6637,6 +7220,7 @@ interface Mesh extends Object {
     RecalculateTangents(flags: MeshUpdateFlags): void;
     RecalculateUVDistributionMetric(uvSetIndex: number, uvAreaThreshold: number): void;
     RecalculateUVDistributionMetrics(uvAreaThreshold: number): void;
+    SetBindposes(poses: CSArray<Matrix4x4>): void;
     SetBoneWeights(bonesPerVertex: CSArray<number>, weights: CSArray<BoneWeight1>): void;
     SetColors(inColors: CSArray<Color>): void;
     SetColors(inColors: CSArray<Color>, start: number, length: number): void;
@@ -6780,6 +7364,13 @@ interface BoneWeight1 {
     GetHashCode(): number;
 }
     
+interface BlendShapeBufferRange {
+    startIndex: number;
+    endIndex: number;
+
+
+}
+    
 interface SubMeshDescriptor {
     bounds: Bounds;
     topology: MeshTopology;
@@ -6855,6 +7446,9 @@ interface MeshConstructor {
     AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
     AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
     AllocateWritableMeshData(meshCount: number): MeshDataArray;
+    AllocateWritableMeshData(mesh: Mesh): MeshDataArray;
+    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
+    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
     ApplyAndDisposeWritableMeshData(data: MeshDataArray, mesh: Mesh, flags: MeshUpdateFlags): void;
     ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
     ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
@@ -6882,7 +7476,9 @@ interface RectInt {
 
     ClampToBounds(bounds: RectInt): void;
     Contains(position: Vector2Int): boolean;
+    Equals(other: unknown): boolean;
     Equals(other: RectInt): boolean;
+    GetHashCode(): number;
     Overlaps(other: RectInt): boolean;
     SetMinMax(minPosition: Vector2Int, maxPosition: Vector2Int): void;
     ToString(): string;
@@ -6899,6 +7495,13 @@ interface PositionEnumerator {
     MoveNext(): boolean;
     Reset(): void;
 }
+    
+interface RectIntConstructor {
+    zero: RectInt;
+
+
+}
+declare const RectInt: RectIntConstructor;
     
 interface RendererList {
     isValid: boolean;
@@ -6928,6 +7531,13 @@ interface RenderTargetBinding {
 
 }
     
+interface CommandBufferConstructor {
+    ThrowOnSetRenderTarget: boolean;
+
+
+}
+declare const CommandBuffer: CommandBufferConstructor;
+    
 interface Cubemap extends Texture {
     format: TextureFormat;
     isReadable: boolean;
@@ -6939,10 +7549,13 @@ interface Cubemap extends Texture {
     loadedMipmapLevel: number;
 
     constructor(width: number, format: DefaultFormat, flags: TextureCreationFlags): Cubemap;
+    constructor(width: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Cubemap;
     constructor(width: number, format: GraphicsFormat, flags: TextureCreationFlags): Cubemap;
-    constructor(width: number, format: TextureFormat, mipCount: number): Cubemap;
     constructor(width: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Cubemap;
     constructor(width: number, textureFormat: TextureFormat, mipChain: boolean): Cubemap;
+    constructor(width: number, textureFormat: TextureFormat, mipChain: boolean, createUninitialized: boolean): Cubemap;
+    constructor(width: number, format: TextureFormat, mipCount: number): Cubemap;
+    constructor(width: number, format: TextureFormat, mipCount: number, createUninitialized: boolean): Cubemap;
 
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
@@ -7001,6 +7614,10 @@ interface GateFitParameters {
 }
     
 interface CameraConstructor {
+    kMinAperture: number;
+    kMaxAperture: number;
+    kMinBladeCount: number;
+    kMaxBladeCount: number;
     onPreCull: CameraCallback;
     onPreRender: CameraCallback;
     onPostRender: CameraCallback;
@@ -7101,12 +7718,25 @@ interface AccelerationEvent {
 
 }
     
+interface PenData {
+    position: Vector2;
+    tilt: Vector2;
+    penStatus: PenStatus;
+    twist: number;
+    pressure: number;
+    contactType: PenEventType;
+    deltaPos: Vector2;
+
+
+}
+    
 interface InputConstructor {
     simulateMouseWithTouches: boolean;
     anyKey: boolean;
     anyKeyDown: boolean;
     inputString: string;
     mousePosition: Vector3;
+    mousePositionDelta: Vector3;
     mouseScrollDelta: Vector2;
     imeCompositionMode: IMECompositionMode;
     compositionString: string;
@@ -7114,6 +7744,7 @@ interface InputConstructor {
     compositionCursorPos: Vector2;
     eatKeyPressOnTextFieldFocus: boolean;
     mousePresent: boolean;
+    penEventCount: number;
     touchCount: number;
     touchPressureSupported: boolean;
     stylusTouchSupported: boolean;
@@ -7132,6 +7763,7 @@ interface InputConstructor {
     accelerationEvents: CSArray<AccelerationEvent>;
 
 
+    ClearLastPenContactEvent(): void;
     GetAccelerationEvent(index: number): AccelerationEvent;
     GetAxis(axisName: string): number;
     GetAxisRaw(axisName: string): number;
@@ -7145,12 +7777,15 @@ interface InputConstructor {
     GetKeyDown(name: string): boolean;
     GetKeyUp(key: KeyCode): boolean;
     GetKeyUp(name: string): boolean;
+    GetLastPenContactEvent(): PenData;
     GetMouseButton(button: number): boolean;
     GetMouseButtonDown(button: number): boolean;
     GetMouseButtonUp(button: number): boolean;
+    GetPenEvent(index: number): PenData;
     GetTouch(index: number): Touch;
     IsJoystickPreconfigured(joystickName: string): boolean;
     ResetInputAxes(): void;
+    ResetPenEvents(): void;
 }
 declare const Input: InputConstructor;
     
@@ -7303,6 +7938,7 @@ interface PointerEventData extends BaseEventData {
     pointerCurrentRaycast: RaycastResult;
     pointerPressRaycast: RaycastResult;
     eligibleForClick: boolean;
+    displayIndex: number;
     pointerId: number;
     position: Vector2;
     delta: Vector2;
@@ -7320,6 +7956,8 @@ interface PointerEventData extends BaseEventData {
     altitudeAngle: number;
     azimuthAngle: number;
     twist: number;
+    tilt: Vector2;
+    penStatus: PenStatus;
     radius: Vector2;
     radiusVariance: Vector2;
     fullyExited: boolean;
@@ -7591,6 +8229,7 @@ interface Canvas extends Behaviour {
     scaleFactor: number;
     referencePixelsPerUnit: number;
     overridePixelPerfect: boolean;
+    vertexColorAlwaysGammaSpace: boolean;
     pixelPerfect: boolean;
     planeDistance: number;
     renderOrder: number;
@@ -7603,6 +8242,7 @@ interface Canvas extends Behaviour {
     sortingLayerName: string;
     rootCanvas: Canvas;
     renderingDisplaySize: Vector2;
+    updateRectTransformForStandalone: StandaloneRenderResize;
     worldCamera: Camera;
     normalizedSortingGridSize: number;
     sortingGridNormalizedSize: number;
@@ -7644,6 +8284,7 @@ interface CanvasRenderer extends Component {
     GetInheritedAlpha(): number;
     GetMaterial(index: number): Material;
     GetMaterial(): Material;
+    GetMesh(): Mesh;
     GetPopMaterial(index: number): Material;
     SetAlpha(alpha: number): void;
     SetAlphaTexture(texture: Texture): void;
@@ -7705,17 +8346,17 @@ interface GraphicConstructor {
 }
 declare const Graphic: GraphicConstructor;
     
-interface ICanvasRaycastFilter {
-
-
-    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
-}
-    
 interface ISerializationCallbackReceiver {
 
 
     OnAfterDeserialize(): void;
     OnBeforeSerialize(): void;
+}
+    
+interface ICanvasRaycastFilter {
+
+
+    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 }
     
 interface ILayoutElement {
@@ -7732,6 +8373,17 @@ interface ILayoutElement {
     CalculateLayoutInputVertical(): void;
 }
     
+interface IClippable {
+    gameObject: GameObject;
+    rectTransform: RectTransform;
+
+
+    Cull(clipRect: Rect, validRect: boolean): void;
+    RecalculateClipping(): void;
+    SetClipRect(value: Rect, validRect: boolean): void;
+    SetClipSoftness(clipSoftness: Vector2): void;
+}
+    
 interface IMaterialModifier {
 
 
@@ -7744,18 +8396,7 @@ interface IMaskable {
     RecalculateMasking(): void;
 }
     
-interface IClippable {
-    gameObject: GameObject;
-    rectTransform: RectTransform;
-
-
-    Cull(clipRect: Rect, validRect: boolean): void;
-    RecalculateClipping(): void;
-    SetClipRect(value: Rect, validRect: boolean): void;
-    SetClipSoftness(clipSoftness: Vector2): void;
-}
-    
-interface MaskableGraphic extends Graphic, IMaterialModifier, IMaskable, IClippable {
+interface MaskableGraphic extends Graphic, IClippable, IMaterialModifier, IMaskable {
     onCullStateChanged: CullStateChangedEvent;
     maskable: boolean;
     isMaskingGraphic: boolean;
@@ -7776,7 +8417,7 @@ interface CullStateChangedEvent {
 
 }
     
-interface Image extends MaskableGraphic, ICanvasRaycastFilter, ISerializationCallbackReceiver, ILayoutElement {
+interface Image extends MaskableGraphic, ISerializationCallbackReceiver, ICanvasRaycastFilter, ILayoutElement {
     sprite: Sprite;
     overrideSprite: Sprite;
     type: Type;
@@ -7850,6 +8491,7 @@ interface Animator extends Behaviour {
     speed: number;
     targetPosition: Vector3;
     targetRotation: Quaternion;
+    avatarRoot: Transform;
     cullingMode: AnimatorCullingMode;
     playbackTime: number;
     recorderStartTime: number;
@@ -8125,6 +8767,8 @@ interface AnimationCurve {
 
     AddKey(time: number, value: number): number;
     AddKey(key: Keyframe): number;
+    ClearKeys(): void;
+    CopyFrom(other: AnimationCurve): void;
     Equals(o: unknown): boolean;
     Equals(other: AnimationCurve): boolean;
     Evaluate(time: number): number;
@@ -8593,6 +9237,7 @@ interface TMP_Text extends MaskableGraphic {
     lineSpacingAdjustment: number;
     paragraphSpacing: number;
     characterWidthAdjustment: number;
+    textWrappingMode: TextWrappingModes;
     enableWordWrapping: boolean;
     wordWrappingRatios: number;
     overflowMode: TextOverflowModes;
@@ -8601,8 +9246,10 @@ interface TMP_Text extends MaskableGraphic {
     linkedTextComponent: TMP_Text;
     isTextTruncated: boolean;
     enableKerning: boolean;
+    fontFeatures: CSArray<OTL_FeatureTag>;
     extraPadding: boolean;
     richText: boolean;
+    emojiFallbackSupport: boolean;
     parseCtrlCharacters: boolean;
     isOverlay: boolean;
     isOrthographic: boolean;
@@ -8661,6 +9308,7 @@ interface TMP_Text extends MaskableGraphic {
     GetTextInfo(text: string): TMP_TextInfo;
     SetCharArray(sourceText: CSArray<string>): void;
     SetCharArray(sourceText: CSArray<string>, start: number, length: number): void;
+    SetText(sourceText: string): void;
     SetText(sourceText: string, syncTextInputBox: boolean): void;
     SetText(sourceText: string, arg0: number): void;
     SetText(sourceText: string, arg0: number, arg1: number): void;
@@ -8687,26 +9335,52 @@ interface ITextPreprocessor {
 }
     
 interface TMP_Asset extends ScriptableObject {
+    version: string;
+    instanceID: number;
     hashCode: number;
+    faceInfo: FaceInfo;
     material: Material;
     materialHashCode: number;
-    instanceID: number;
 
 
 }
     
+interface FaceInfo {
+    familyName: string;
+    styleName: string;
+    pointSize: number;
+    scale: number;
+    lineHeight: number;
+    ascentLine: number;
+    capLine: number;
+    meanLine: number;
+    baseline: number;
+    descentLine: number;
+    superscriptOffset: number;
+    superscriptSize: number;
+    subscriptOffset: number;
+    subscriptSize: number;
+    underlineOffset: number;
+    underlineThickness: number;
+    strikethroughOffset: number;
+    strikethroughThickness: number;
+    tabWidth: number;
+
+
+    Compare(other: FaceInfo): boolean;
+}
+    
 interface TMP_FontAsset extends TMP_Asset {
-    atlas: Texture2D;
     normalStyle: number;
     normalSpacingOffset: number;
     boldStyle: number;
     boldSpacing: number;
     italicStyle: number;
     tabSize: number;
-    version: string;
+    atlas: Texture2D;
+    creationSettings: FontAssetCreationSettings;
     sourceFontFile: Font;
     atlasPopulationMode: AtlasPopulationMode;
-    faceInfo: FaceInfo;
     glyphTable: CSArray<Glyph>;
     glyphLookupTable: CSDictionary<number, Glyph>;
     characterTable: CSArray<TMP_Character>;
@@ -8715,15 +9389,15 @@ interface TMP_FontAsset extends TMP_Asset {
     atlasTextures: CSArray<Texture2D>;
     atlasTextureCount: number;
     isMultiAtlasTexturesEnabled: boolean;
-    fontInfo: FaceInfo_Legacy;
+    getFontFeatures: boolean;
     atlasWidth: number;
     atlasHeight: number;
     atlasPadding: number;
     atlasRenderMode: GlyphRenderMode;
     fontFeatureTable: TMP_FontFeatureTable;
     fallbackFontAssetTable: CSArray<TMP_FontAsset>;
-    creationSettings: FontAssetCreationSettings;
     fontWeightTable: CSArray<TMP_FontWeightPair>;
+    fontInfo: FaceInfo_Legacy;
 
     constructor(): TMP_FontAsset;
 
@@ -8738,6 +9412,29 @@ interface TMP_FontAsset extends TMP_Asset {
     TryAddCharacters(unicodes: CSArray<number>, missingUnicodes: CSArray<number>, includeFontFeatures: boolean): boolean;
     TryAddCharacters(characters: string, includeFontFeatures: boolean): boolean;
     TryAddCharacters(characters: string, missingCharacters: CSArray<string>, includeFontFeatures: boolean): boolean;
+}
+    
+interface FontAssetCreationSettings {
+    sourceFontFileName: string;
+    sourceFontFileGUID: string;
+    faceIndex: number;
+    pointSizeSamplingMode: number;
+    pointSize: number;
+    padding: number;
+    paddingMode: number;
+    packingMode: number;
+    atlasWidth: number;
+    atlasHeight: number;
+    characterSetSelectionMode: number;
+    characterSequence: string;
+    referencedFontAssetGUID: string;
+    referencedTextAssetGUID: string;
+    fontStyle: number;
+    fontStyleModifier: number;
+    renderMode: number;
+    includeFontFeatures: boolean;
+
+
 }
     
 interface Font extends Object {
@@ -8805,31 +9502,6 @@ interface FontConstructor {
     GetPathsToOSFonts(): CSArray<string>;
 }
 declare const Font: FontConstructor;
-    
-interface FaceInfo {
-    familyName: string;
-    styleName: string;
-    pointSize: number;
-    scale: number;
-    lineHeight: number;
-    ascentLine: number;
-    capLine: number;
-    meanLine: number;
-    baseline: number;
-    descentLine: number;
-    superscriptOffset: number;
-    superscriptSize: number;
-    subscriptOffset: number;
-    subscriptSize: number;
-    underlineOffset: number;
-    underlineThickness: number;
-    strikethroughOffset: number;
-    strikethroughThickness: number;
-    tabWidth: number;
-
-
-    Compare(other: FaceInfo): boolean;
-}
     
 interface Glyph {
     index: number;
@@ -8902,6 +9574,110 @@ interface TMP_Character extends TMP_TextElement {
 
 }
     
+interface TMP_FontFeatureTable {
+    multipleSubstitutionRecords: CSArray<MultipleSubstitutionRecord>;
+    ligatureRecords: CSArray<LigatureSubstitutionRecord>;
+    glyphPairAdjustmentRecords: CSArray<GlyphPairAdjustmentRecord>;
+    MarkToBaseAdjustmentRecords: CSArray<MarkToBaseAdjustmentRecord>;
+    MarkToMarkAdjustmentRecords: CSArray<MarkToMarkAdjustmentRecord>;
+
+    constructor(): TMP_FontFeatureTable;
+
+    SortGlyphPairAdjustmentRecords(): void;
+    SortMarkToBaseAdjustmentRecords(): void;
+    SortMarkToMarkAdjustmentRecords(): void;
+}
+    
+interface MultipleSubstitutionRecord {
+    targetGlyphID: number;
+    substituteGlyphIDs: CSArray<number>;
+
+
+}
+    
+interface LigatureSubstitutionRecord {
+    componentGlyphIDs: CSArray<number>;
+    ligatureGlyphID: number;
+
+
+}
+    
+interface GlyphPairAdjustmentRecord {
+    firstAdjustmentRecord: GlyphAdjustmentRecord;
+    secondAdjustmentRecord: GlyphAdjustmentRecord;
+    featureLookupFlags: FontFeatureLookupFlags;
+
+    constructor(firstAdjustmentRecord: GlyphAdjustmentRecord, secondAdjustmentRecord: GlyphAdjustmentRecord): GlyphPairAdjustmentRecord;
+
+    Equals(obj: unknown): boolean;
+    Equals(other: GlyphPairAdjustmentRecord): boolean;
+    GetHashCode(): number;
+}
+    
+interface GlyphAdjustmentRecord {
+    glyphIndex: number;
+    glyphValueRecord: GlyphValueRecord;
+
+    constructor(glyphIndex: number, glyphValueRecord: GlyphValueRecord): GlyphAdjustmentRecord;
+
+    Equals(obj: unknown): boolean;
+    Equals(other: GlyphAdjustmentRecord): boolean;
+    GetHashCode(): number;
+}
+    
+interface GlyphValueRecord {
+    xPlacement: number;
+    yPlacement: number;
+    xAdvance: number;
+    yAdvance: number;
+
+    constructor(xPlacement: number, yPlacement: number, xAdvance: number, yAdvance: number): GlyphValueRecord;
+
+    Equals(obj: unknown): boolean;
+    Equals(other: GlyphValueRecord): boolean;
+    GetHashCode(): number;
+}
+    
+interface MarkToBaseAdjustmentRecord {
+    baseGlyphID: number;
+    baseGlyphAnchorPoint: GlyphAnchorPoint;
+    markGlyphID: number;
+    markPositionAdjustment: MarkPositionAdjustment;
+
+
+}
+    
+interface GlyphAnchorPoint {
+    xCoordinate: number;
+    yCoordinate: number;
+
+
+}
+    
+interface MarkPositionAdjustment {
+    xPositionAdjustment: number;
+    yPositionAdjustment: number;
+
+    constructor(x: number, y: number): MarkPositionAdjustment;
+
+}
+    
+interface MarkToMarkAdjustmentRecord {
+    baseMarkGlyphID: number;
+    baseMarkGlyphAnchorPoint: GlyphAnchorPoint;
+    combiningMarkGlyphID: number;
+    combiningMarkPositionAdjustment: MarkPositionAdjustment;
+
+
+}
+    
+interface TMP_FontWeightPair {
+    regularTypeface: TMP_FontAsset;
+    italicTypeface: TMP_FontAsset;
+
+
+}
+    
 interface FaceInfo_Legacy {
     Name: string;
     PointSize: number;
@@ -8929,72 +9705,11 @@ interface FaceInfo_Legacy {
 
 }
     
-interface TMP_FontFeatureTable {
-    glyphPairAdjustmentRecords: CSArray<TMP_GlyphPairAdjustmentRecord>;
-
-    constructor(): TMP_FontFeatureTable;
-
-    SortGlyphPairAdjustmentRecords(): void;
-}
-    
-interface TMP_GlyphPairAdjustmentRecord {
-    firstAdjustmentRecord: TMP_GlyphAdjustmentRecord;
-    secondAdjustmentRecord: TMP_GlyphAdjustmentRecord;
-    featureLookupFlags: FontFeatureLookupFlags;
-
-    constructor(firstAdjustmentRecord: TMP_GlyphAdjustmentRecord, secondAdjustmentRecord: TMP_GlyphAdjustmentRecord): TMP_GlyphPairAdjustmentRecord;
-
-}
-    
-interface TMP_GlyphAdjustmentRecord {
-    glyphIndex: number;
-    glyphValueRecord: TMP_GlyphValueRecord;
-
-    constructor(glyphIndex: number, glyphValueRecord: TMP_GlyphValueRecord): TMP_GlyphAdjustmentRecord;
-
-}
-    
-interface TMP_GlyphValueRecord {
-    xPlacement: number;
-    yPlacement: number;
-    xAdvance: number;
-    yAdvance: number;
-
-    constructor(xPlacement: number, yPlacement: number, xAdvance: number, yAdvance: number): TMP_GlyphValueRecord;
-
-}
-    
-interface FontAssetCreationSettings {
-    sourceFontFileName: string;
-    sourceFontFileGUID: string;
-    pointSizeSamplingMode: number;
-    pointSize: number;
-    padding: number;
-    packingMode: number;
-    atlasWidth: number;
-    atlasHeight: number;
-    characterSetSelectionMode: number;
-    characterSequence: string;
-    referencedFontAssetGUID: string;
-    referencedTextAssetGUID: string;
-    fontStyle: number;
-    fontStyleModifier: number;
-    renderMode: number;
-    includeFontFeatures: boolean;
-
-
-}
-    
-interface TMP_FontWeightPair {
-    regularTypeface: TMP_FontAsset;
-    italicTypeface: TMP_FontAsset;
-
-
-}
-    
 interface TMP_FontAssetConstructor {
 
 
+    CreateFontAsset(familyName: string, styleName: string, pointSize: number): TMP_FontAsset;
+    CreateFontAsset(fontFilePath: string, faceIndex: number, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number): TMP_FontAsset;
     CreateFontAsset(font: Font): TMP_FontAsset;
     CreateFontAsset(font: Font, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number, atlasPopulationMode: AtlasPopulationMode, enableMultiAtlasSupport: boolean): TMP_FontAsset;
     GetCharacters(fontAsset: TMP_FontAsset): string;
@@ -9030,8 +9745,6 @@ interface TMP_SpriteAsset extends TMP_Asset {
     spriteSheet: Texture;
     spriteInfoList: CSArray<TMP_Sprite>;
     fallbackSpriteAssets: CSArray<TMP_SpriteAsset>;
-    version: string;
-    faceInfo: FaceInfo;
     spriteCharacterTable: CSArray<TMP_SpriteCharacter>;
     spriteCharacterLookupTable: CSDictionary<number, TMP_SpriteCharacter>;
     spriteGlyphTable: CSArray<TMP_SpriteGlyph>;
@@ -9073,7 +9786,6 @@ interface TMP_Sprite extends TMP_TextElement_Legacy {
     
 interface TMP_SpriteCharacter extends TMP_TextElement {
     name: string;
-    hashCode: number;
 
     constructor(): TMP_SpriteCharacter;
     constructor(unicode: number, glyph: TMP_SpriteGlyph): TMP_SpriteCharacter;
@@ -9146,9 +9858,7 @@ interface TMP_TextInfo {
     constructor(): TMP_TextInfo;
     constructor(textComponent: TMP_Text): TMP_TextInfo;
 
-    Clear(): void;
     ClearAllMeshInfo(): void;
-    ClearLineInfo(): void;
     ClearMeshInfo(updateMesh: boolean): void;
     ClearUnusedVertices(materials: CSArray<MaterialReference>): void;
     CopyMeshInfoVertexData(): CSArray<TMP_MeshInfo>;
@@ -9156,14 +9866,13 @@ interface TMP_TextInfo {
 }
     
 interface TMP_CharacterInfo {
+    elementType: TMP_TextElementType;
     character: string;
     index: number;
     stringLength: number;
-    elementType: TMP_TextElementType;
     textElement: TMP_TextElement;
+    alternativeGlyph: Glyph;
     fontAsset: TMP_FontAsset;
-    spriteAsset: TMP_SpriteAsset;
-    spriteIndex: number;
     material: Material;
     materialReferenceIndex: number;
     isUsingAlternateTypeface: boolean;
@@ -9201,9 +9910,8 @@ interface TMP_CharacterInfo {
     
 interface TMP_Vertex {
     position: Vector3;
-    uv: Vector2;
+    uv: Vector4;
     uv2: Vector2;
-    uv4: Vector2;
     color: Color32;
 
 
@@ -9269,6 +9977,7 @@ interface TMP_LinkInfo {
     linkTextLength: number;
 
 
+    GetLink(): string;
     GetLinkID(): string;
     GetLinkText(): string;
 }
@@ -9277,6 +9986,7 @@ interface TMP_LineInfo {
     characterCount: number;
     visibleCharacterCount: number;
     spaceCount: number;
+    visibleSpaceCount: number;
     wordCount: number;
     firstCharacterIndex: number;
     firstVisibleCharacterIndex: number;
@@ -9322,7 +10032,7 @@ interface TMP_MeshInfo {
     vertices: CSArray<Vector3>;
     normals: CSArray<Vector3>;
     tangents: CSArray<Vector4>;
-    uvs0: CSArray<Vector2>;
+    uvs0: CSArray<Vector4>;
     uvs2: CSArray<Vector2>;
     colors32: CSArray<Color32>;
     triangles: CSArray<number>;
@@ -9412,6 +10122,7 @@ interface Animation extends Behaviour {
     isPlaying: boolean;
     Item: AnimationState;
     animatePhysics: boolean;
+    updateMode: AnimationUpdateMode;
     animateOnlyIfVisible: boolean;
     cullingType: AnimationCullingType;
     localBounds: Bounds;
@@ -9487,7 +10198,6 @@ interface TextField {
     constructor(label: string): TextField;
     constructor(label: string, maxLength: number, multiline: boolean, isPasswordField: boolean, maskChar: string): TextField;
 
-    SelectRange(rangeCursorIndex: number, selectionIndex: number): void;
     SetValueWithoutNotify(newValue: string): void;
 }
     
@@ -9563,6 +10273,7 @@ interface Light extends Behaviour {
     useShadowMatrixOverride: boolean;
     shadowMatrixOverride: Matrix4x4;
     range: number;
+    dilatedRange: number;
     flare: Flare;
     bakingOutput: LightBakingOutput;
     cullingMask: number;
@@ -9646,7 +10357,8 @@ interface RenderSettingsConstructor {
     skybox: Material;
     sun: Light;
     ambientProbe: SphericalHarmonicsL2;
-    customReflection: Texture;
+    customReflection: Cubemap;
+    customReflectionTexture: Texture;
     reflectionIntensity: number;
     reflectionBounces: number;
     defaultReflectionMode: DefaultReflectionMode;
@@ -9725,6 +10437,7 @@ interface CreateSceneParameters {
     
 interface SceneManagerConstructor {
     sceneCount: number;
+    loadedSceneCount: number;
     sceneCountInBuildSettings: number;
 
 
@@ -9749,6 +10462,7 @@ interface SceneManagerConstructor {
     LoadSceneAsync(sceneName: string): AsyncOperation;
     LoadSceneAsync(sceneName: string, parameters: LoadSceneParameters): AsyncOperation;
     MergeScenes(sourceScene: Scene, destinationScene: Scene): void;
+    MoveGameObjectsToScene(instanceIDs: CSArray<number>, scene: Scene): void;
     MoveGameObjectToScene(go: GameObject, scene: Scene): void;
     SetActiveScene(scene: Scene): boolean;
     UnloadScene(scene: Scene): boolean;
@@ -9764,27 +10478,28 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
+    firstPerson: boolean;
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, combineMeshes: boolean): CSArray<ActiveAccessory>;
-    AddSkinAccessory(skin: AccessorySkin, combineMeshes: boolean): void;
-    EquipAccessoryCollection(collection: AccessoryCollection, combineMeshes: boolean): CSArray<ActiveAccessory>;
+    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddSingleAccessory(accessory: Accessory, rebuildMeshImmediately: boolean): ActiveAccessory;
+    AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
+    EquipAccessoryCollection(collection: AccessoryCollection, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
     GetActiveAccessoriesBySlot(target: AccessorySlot): CSArray<ActiveAccessory>;
     GetAllAccessoryMeshes(): CSArray<Renderer>;
-    GetCombinedSkinnedMesh(firstPerson: boolean): SkinnedMeshRenderer;
-    GetCombinedStaticMesh(firstPerson: boolean): MeshRenderer;
+    GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
+    GetCombinedStaticMesh(): MeshRenderer;
     GetSlotTransform(slot: AccessorySlot): Transform;
     RemoveAccessories(): void;
-    RemoveAccessorySlot(slot: AccessorySlot, rebuildImmediately: boolean): void;
-    SetAccessory(accessory: Accessory, combineMeshes: boolean): ActiveAccessory;
-    SetAccessoryColor(slot: AccessorySlot, color: Color, combineMeshes: boolean): void;
-    SetFirstPersonEnabled(firstPersonEnabled: boolean): void;
-    SetSkinColor(color: Color, combineMeshes: boolean): void;
+    RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
+    UpdateAccessoryLayers(): void;
 }
     
 interface ActiveAccessory {
@@ -9857,9 +10572,12 @@ interface ParticleSystem extends Component {
     isPaused: boolean;
     particleCount: number;
     time: number;
+    totalTime: number;
     randomSeed: number;
     useAutoRandomSeed: boolean;
     proceduralSimulationSupported: boolean;
+    has3DParticleRotations: boolean;
+    hasNonUniformParticleSizes: boolean;
     main: MainModule;
     emission: EmissionModule;
     shape: ShapeModule;
@@ -9964,6 +10682,7 @@ interface MainModule {
     startRotationZMultiplier: number;
     flipRotation: number;
     startColor: MinMaxGradient;
+    gravitySource: ParticleSystemGravitySource;
     gravityModifier: MinMaxCurve;
     gravityModifierMultiplier: number;
     simulationSpace: ParticleSystemSimulationSpace;
@@ -10024,6 +10743,7 @@ interface Gradient {
     colorKeys: CSArray<GradientColorKey>;
     alphaKeys: CSArray<GradientAlphaKey>;
     mode: GradientMode;
+    colorSpace: ColorSpace;
 
     constructor(): Gradient;
 
@@ -10350,8 +11070,6 @@ interface ExternalForcesModule {
     SetInfluence(index: number, field: ParticleSystemForceField): void;
 }
     
-    
-    
 interface ParticleSystemForceField extends Behaviour {
     shape: ParticleSystemForceFieldShape;
     startRange: number;
@@ -10382,11 +11100,14 @@ interface Texture3D extends Texture {
     isReadable: boolean;
 
     constructor(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags): Texture3D;
+    constructor(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
     constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture3D;
     constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
     constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number): Texture3D;
     constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown): Texture3D;
+    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown, createUninitialized: boolean): Texture3D;
     constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture3D;
+    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, createUninitialized: boolean): Texture3D;
     constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
 
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
@@ -10594,6 +11315,7 @@ interface TrailModule {
     lifetimeMultiplier: number;
     minVertexDistance: number;
     textureMode: ParticleSystemTrailTextureMode;
+    textureScale: Vector2;
     worldSpace: boolean;
     dieWithParticles: boolean;
     sizeAffectsWidth: boolean;
@@ -10850,6 +11572,7 @@ interface ApplicationConstructor {
     systemLanguage: SystemLanguage;
     internetReachability: NetworkReachability;
     isPlayer: boolean;
+    exitCancellationToken: unknown;
     levelCount: number;
     loadedLevel: number;
     loadedLevelName: string;
@@ -10926,6 +11649,7 @@ interface ParticleSystemRenderer extends Renderer {
     mesh: Mesh;
     meshCount: number;
     activeVertexStreamsCount: number;
+    activeTrailVertexStreamsCount: number;
     supportsMeshInstancing: boolean;
 
     constructor(): ParticleSystemRenderer;
@@ -10933,14 +11657,26 @@ interface ParticleSystemRenderer extends Renderer {
     AreVertexStreamsEnabled(streams: ParticleSystemVertexStreams): boolean;
     BakeMesh(mesh: Mesh, useTransform: boolean): void;
     BakeMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    BakeMesh(mesh: Mesh, options: ParticleSystemBakeMeshOptions): void;
+    BakeMesh(mesh: Mesh, camera: Camera, options: ParticleSystemBakeMeshOptions): void;
+    BakeTexture(verticesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    BakeTexture(verticesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
+    BakeTexture(verticesTexture: unknown, indicesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    BakeTexture(verticesTexture: unknown, indicesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
     BakeTrailsMesh(mesh: Mesh, useTransform: boolean): void;
     BakeTrailsMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    BakeTrailsMesh(mesh: Mesh, options: ParticleSystemBakeMeshOptions): void;
+    BakeTrailsMesh(mesh: Mesh, camera: Camera, options: ParticleSystemBakeMeshOptions): void;
+    BakeTrailsTexture(verticesTexture: unknown, indicesTexture: unknown, options: ParticleSystemBakeTextureOptions): number;
+    BakeTrailsTexture(verticesTexture: unknown, indicesTexture: unknown, camera: Camera, options: ParticleSystemBakeTextureOptions): number;
     DisableVertexStreams(streams: ParticleSystemVertexStreams): void;
     EnableVertexStreams(streams: ParticleSystemVertexStreams): void;
+    GetActiveTrailVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
     GetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
     GetEnabledVertexStreams(streams: ParticleSystemVertexStreams): ParticleSystemVertexStreams;
     GetMeshes(meshes: CSArray<Mesh>): number;
     GetMeshWeightings(weightings: CSArray<number>): number;
+    SetActiveTrailVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
     SetActiveVertexStreams(streams: CSArray<ParticleSystemVertexStream>): void;
     SetMeshes(meshes: CSArray<Mesh>, size: number): void;
     SetMeshes(meshes: CSArray<Mesh>): void;
@@ -10968,6 +11704,7 @@ interface ProfilerCategoryConstructor {
     Scripts: ProfilerCategory;
     Gui: ProfilerCategory;
     Physics: ProfilerCategory;
+    Physics2D: ProfilerCategory;
     Animation: ProfilerCategory;
     Ai: ProfilerCategory;
     Audio: ProfilerCategory;
@@ -11038,6 +11775,12 @@ interface ProfilerConstructor {
 }
 declare const Profiler: ProfilerConstructor;
     
+interface ICancelHandler extends IEventSystemHandler {
+
+
+    OnCancel(eventData: BaseEventData): void;
+}
+    
 interface IBeginDragHandler extends IEventSystemHandler {
 
 
@@ -11068,7 +11811,9 @@ interface IUpdateSelectedHandler extends IEventSystemHandler {
     OnUpdateSelected(eventData: BaseEventData): void;
 }
     
-interface TMP_InputField extends Selectable, IBeginDragHandler, IDragHandler, IEndDragHandler, ICanvasElement, IScrollHandler, IUpdateSelectedHandler, ILayoutElement, ISubmitHandler, IPointerClickHandler {
+interface TMP_InputField extends Selectable, ISubmitHandler, IPointerClickHandler, ICancelHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, ICanvasElement, IScrollHandler, IUpdateSelectedHandler, ILayoutElement {
+    isAlert: boolean;
+    shouldActivateOnSelect: boolean;
     shouldHideMobileInput: boolean;
     shouldHideSoftKeyboard: boolean;
     text: string;
@@ -11097,12 +11842,14 @@ interface TMP_InputField extends Selectable, IBeginDragHandler, IDragHandler, IE
     fontAsset: TMP_FontAsset;
     onFocusSelectAll: boolean;
     resetOnDeActivation: boolean;
+    keepTextSelectionVisible: boolean;
     restoreOriginalTextOnEscape: boolean;
     isRichTextEditingAllowed: boolean;
     contentType: ContentType;
     lineType: LineType;
     lineLimit: number;
     inputType: InputType;
+    touchScreenKeyboard: TouchScreenKeyboard;
     keyboardType: TouchScreenKeyboardType;
     characterValidation: CharacterValidation;
     inputValidator: TMP_InputValidator;
@@ -11138,10 +11885,12 @@ interface TMP_InputField extends Selectable, IBeginDragHandler, IDragHandler, IE
     MoveToEndOfLine(shift: boolean, ctrl: boolean): void;
     MoveToStartOfLine(shift: boolean, ctrl: boolean): void;
     OnBeginDrag(eventData: PointerEventData): void;
+    OnCancel(eventData: BaseEventData): void;
     OnControlClick(): void;
     OnDeselect(eventData: BaseEventData): void;
     OnDrag(eventData: PointerEventData): void;
     OnEndDrag(eventData: PointerEventData): void;
+    OnMove(eventData: AxisEventData): void;
     OnPointerClick(eventData: PointerEventData): void;
     OnPointerDown(eventData: PointerEventData): void;
     OnScroll(eventData: PointerEventData): void;
@@ -11233,6 +11982,51 @@ interface OnValidateInput {
     Invoke(text: string, charIndex: number, addedChar: string): string;
 }
     
+interface TouchScreenKeyboard {
+    text: string;
+    active: boolean;
+    done: boolean;
+    wasCanceled: boolean;
+    status: Status;
+    characterLimit: number;
+    canGetSelection: boolean;
+    canSetSelection: boolean;
+    selection: RangeInt;
+    type: TouchScreenKeyboardType;
+    targetDisplay: number;
+
+    constructor(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
+
+}
+    
+interface RangeInt {
+    start: number;
+    length: number;
+    end: number;
+
+    constructor(start: number, length: number): RangeInt;
+
+}
+    
+interface TouchScreenKeyboardConstructor {
+    isSupported: boolean;
+    isInPlaceEditingAllowed: boolean;
+    hideInput: boolean;
+    area: Rect;
+    visible: boolean;
+
+
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean): TouchScreenKeyboard;
+    Open(text: string, keyboardType: TouchScreenKeyboardType): TouchScreenKeyboard;
+    Open(text: string): TouchScreenKeyboard;
+}
+declare const TouchScreenKeyboard: TouchScreenKeyboardConstructor;
+    
 interface TMP_InputValidator extends ScriptableObject {
 
 
@@ -11247,6 +12041,9 @@ interface Event {
     button: number;
     modifiers: EventModifiers;
     pressure: number;
+    twist: number;
+    tilt: Vector2;
+    penStatus: PenStatus;
     clickCount: number;
     character: string;
     keyCode: KeyCode;
@@ -11290,6 +12087,8 @@ interface Rigidbody2D extends Component {
     position: Vector2;
     rotation: number;
     velocity: Vector2;
+    velocityX: number;
+    velocityY: number;
     angularVelocity: number;
     useAutoMass: boolean;
     mass: number;
@@ -11303,7 +12102,6 @@ interface Rigidbody2D extends Component {
     bodyType: RigidbodyType2D;
     useFullKinematicContacts: boolean;
     isKinematic: boolean;
-    fixedAngle: boolean;
     freezeRotation: boolean;
     constraints: RigidbodyConstraints2D;
     simulated: boolean;
@@ -11311,6 +12109,12 @@ interface Rigidbody2D extends Component {
     sleepMode: RigidbodySleepMode2D;
     collisionDetectionMode: CollisionDetectionMode2D;
     attachedColliderCount: number;
+    totalForce: Vector2;
+    totalTorque: number;
+    excludeLayers: LayerMask;
+    includeLayers: LayerMask;
+    localToWorldMatrix: Matrix4x4;
+    fixedAngle: boolean;
 
     constructor(): Rigidbody2D;
 
@@ -11318,8 +12122,12 @@ interface Rigidbody2D extends Component {
     AddForce(force: Vector2, mode: ForceMode2D): void;
     AddForceAtPosition(force: Vector2, position: Vector2): void;
     AddForceAtPosition(force: Vector2, position: Vector2, mode: ForceMode2D): void;
+    AddForceX(force: number, mode: ForceMode2D): void;
+    AddForceY(force: number, mode: ForceMode2D): void;
     AddRelativeForce(relativeForce: Vector2): void;
     AddRelativeForce(relativeForce: Vector2, mode: ForceMode2D): void;
+    AddRelativeForceX(force: number, mode: ForceMode2D): void;
+    AddRelativeForceY(force: number, mode: ForceMode2D): void;
     AddTorque(torque: number): void;
     AddTorque(torque: number, mode: ForceMode2D): void;
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
@@ -11328,10 +12136,15 @@ interface Rigidbody2D extends Component {
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
     ClosestPoint(position: Vector2): Vector2;
     Distance(collider: Collider2D): ColliderDistance2D;
+    Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
     GetAttachedColliders(results: CSArray<Collider2D>): number;
     GetAttachedColliders(results: CSArray<Collider2D>): number;
+    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
+    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
@@ -11355,14 +12168,22 @@ interface Rigidbody2D extends Component {
     IsTouchingLayers(): boolean;
     IsTouchingLayers(layerMask: number): boolean;
     MovePosition(position: Vector2): void;
+    MovePositionAndRotation(position: Vector2, angle: number): void;
+    MovePositionAndRotation(position: Vector2, rotation: Quaternion): void;
     MoveRotation(angle: number): void;
     MoveRotation(rotation: Quaternion): void;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(results: CSArray<Collider2D>): number;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapPoint(point: Vector2): boolean;
     SetRotation(angle: number): void;
     SetRotation(rotation: Quaternion): void;
     Sleep(): void;
+    Slide(velocity: Vector2, deltaTime: number, slideMovement: SlideMovement): SlideResults;
     WakeUp(): void;
 }
     
@@ -11393,16 +12214,27 @@ interface Collider2D extends Behaviour {
     density: number;
     isTrigger: boolean;
     usedByEffector: boolean;
-    usedByComposite: boolean;
+    compositeOperation: CompositeOperation;
+    compositeOrder: number;
     composite: CompositeCollider2D;
     offset: Vector2;
     attachedRigidbody: Rigidbody2D;
+    localToWorldMatrix: Matrix4x4;
     shapeCount: number;
     bounds: Bounds;
     errorState: ColliderErrorState2D;
+    compositeCapable: boolean;
     sharedMaterial: PhysicsMaterial2D;
+    layerOverridePriority: number;
+    excludeLayers: LayerMask;
+    includeLayers: LayerMask;
+    forceSendLayers: LayerMask;
+    forceReceiveLayers: LayerMask;
+    contactCaptureLayers: LayerMask;
+    callbackLayers: LayerMask;
     friction: number;
     bounciness: number;
+    usedByComposite: boolean;
 
     constructor(): Collider2D;
 
@@ -11412,10 +12244,15 @@ interface Collider2D extends Behaviour {
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
     Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
     ClosestPoint(position: Vector2): Vector2;
     CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean): Mesh;
+    CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean, useDelaunay: boolean): Mesh;
     Distance(collider: Collider2D): ColliderDistance2D;
+    Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contacts: CSArray<ContactPoint2D>): number;
     GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
@@ -11424,6 +12261,7 @@ interface Collider2D extends Behaviour {
     GetContacts(colliders: CSArray<Collider2D>): number;
     GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
     GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetShapeBounds(bounds: CSArray<Bounds>, useRadii: boolean, useWorldSpace: boolean): Bounds;
     GetShapeHash(): number;
     GetShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
     GetShapes(physicsShapeGroup: PhysicsShapeGroup2D, shapeIndex: number, shapeCount: number): number;
@@ -11432,6 +12270,11 @@ interface Collider2D extends Behaviour {
     IsTouching(contactFilter: ContactFilter2D): boolean;
     IsTouchingLayers(): boolean;
     IsTouchingLayers(layerMask: number): boolean;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(results: CSArray<Collider2D>): number;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
     OverlapPoint(point: Vector2): boolean;
@@ -11448,6 +12291,7 @@ interface Collider2D extends Behaviour {
 interface CompositeCollider2D extends Collider2D {
     geometryType: GeometryType;
     generationType: GenerationType;
+    useDelaunayMesh: boolean;
     vertexDistance: number;
     edgeRadius: number;
     offsetDistance: number;
@@ -11457,6 +12301,7 @@ interface CompositeCollider2D extends Collider2D {
     constructor(): CompositeCollider2D;
 
     GenerateGeometry(): void;
+    GetCompositedColliders(colliders: CSArray<Collider2D>): number;
     GetPath(index: number, points: CSArray<Vector2>): number;
     GetPath(index: number, points: CSArray<Vector2>): number;
     GetPathPointCount(index: number): number;
@@ -11564,6 +12409,38 @@ interface PhysicsShape2D {
 
 }
     
+interface SlideResults {
+    remainingVelocity: Vector2;
+    position: Vector2;
+    iterationsUsed: number;
+    slideHit: RaycastHit2D;
+    surfaceHit: RaycastHit2D;
+
+
+}
+    
+interface SlideMovement {
+    maxIterations: number;
+    surfaceSlideAngle: number;
+    gravitySlipAngle: number;
+    surfaceUp: Vector2;
+    surfaceAnchor: Vector2;
+    gravity: Vector2;
+    startPosition: Vector2;
+    selectedCollider: Collider2D;
+    layerMask: LayerMask;
+    useLayerMask: boolean;
+    useStartPosition: boolean;
+    useNoMove: boolean;
+    useSimulationMove: boolean;
+    useAttachedTriggers: boolean;
+
+    constructor(): SlideMovement;
+
+    SetLayerMask(mask: LayerMask): void;
+    SetStartPosition(position: Vector2): void;
+}
+    
 interface Slider extends Selectable, IInitializePotentialDragHandler, IDragHandler, ICanvasElement {
     fillRect: RectTransform;
     handleRect: RectTransform;
@@ -11619,6 +12496,7 @@ interface AudioSource extends AudioBehaviour {
     time: number;
     timeSamples: number;
     clip: AudioClip;
+    resource: AudioResource;
     outputAudioMixerGroup: AudioMixerGroup;
     gamepadSpeakerOutputType: GamepadSpeakerOutputType;
     isPlaying: boolean;
@@ -11677,7 +12555,12 @@ interface AudioSource extends AudioBehaviour {
     UnPause(): void;
 }
     
-interface AudioClip extends Object {
+interface AudioResource extends Object {
+
+
+}
+    
+interface AudioClip extends AudioResource {
     length: number;
     samples: number;
     channels: number;
@@ -11690,9 +12573,11 @@ interface AudioClip extends Object {
     loadState: AudioDataLoadState;
 
 
+    GetData(data: unknown, offsetSamples: number): boolean;
     GetData(data: CSArray<number>, offsetSamples: number): boolean;
     LoadAudioData(): boolean;
     SetData(data: CSArray<number>, offsetSamples: number): boolean;
+    SetData(data: unknown, offsetSamples: number): boolean;
     UnloadAudioData(): boolean;
 }
     
@@ -12005,13 +12890,11 @@ interface BlockDefinition {
 interface VoxelMeshCopy {
     quaternions: CSArray<unknown>;
     rotation: CSDictionary<number, PrecalculatedRotation>;
-    uvs: CSArray<Vector2>;
-    triangles: CSArray<number>;
-    colors: CSArray<Color>;
+    srcUvs: CSArray<Vector2>;
+    srcColors: CSArray<Color32>;
     srcVertices: CSArray<Vector3>;
     srcNormals: CSArray<Vector3>;
-    meshMaterial: Material;
-    meshMaterialName: string;
+    surfaces: CSArray<Surface>;
 
     constructor(mesh: Mesh): VoxelMeshCopy;
     constructor(src: VoxelMeshCopy): VoxelMeshCopy;
@@ -12026,6 +12909,16 @@ interface PrecalculatedRotation {
 
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
     constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+
+}
+    
+interface Surface {
+    triangles: CSArray<number>;
+    meshMaterial: Material;
+    meshMaterialName: string;
+
+    constructor(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    constructor(): Surface;
 
 }
     
@@ -12131,10 +13024,12 @@ interface TrailRenderer extends Renderer {
     startColor: Color;
     endColor: Color;
     positionCount: number;
+    textureScale: Vector2;
     shadowBias: number;
     generateLightingData: boolean;
     textureMode: LineTextureMode;
     alignment: LineAlignment;
+    maskInteraction: SpriteMaskInteraction;
     widthCurve: AnimationCurve;
     colorGradient: Gradient;
 
@@ -12286,6 +13181,8 @@ interface HttpManager {
 interface HttpManagerConstructor {
 
 
+    DeleteAsync(url: string, data: string): HttpGetResponse;
+    DeleteAsync(url: string, data: string, headers: string): HttpGetResponse;
     GetAsync(url: string, headers: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
     PatchAsync(url: string, data: string): HttpGetResponse;
@@ -12306,6 +13203,7 @@ interface InternalHttpManager {
 interface InternalHttpManagerConstructor {
 
 
+    DeleteAsync(url: string, data: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
     PatchAsync(url: string, data: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
@@ -12336,7 +13234,7 @@ interface CrossSceneStateConstructor {
 }
 declare const CrossSceneState: CrossSceneStateConstructor;
     
-interface Toggle extends Selectable, ICanvasElement, ISubmitHandler, IPointerClickHandler {
+interface Toggle extends Selectable, ISubmitHandler, IPointerClickHandler, ICanvasElement {
     toggleTransition: ToggleTransition;
     graphic: Graphic;
     onValueChanged: ToggleEvent;
@@ -12791,12 +13689,7 @@ interface RemoteImage extends MonoBehaviour {
     
 interface AvatarCollection extends ScriptableObject {
     skinAccessories: CSArray<AccessorySkin>;
-    headShapeAccessories: CSArray<Accessory>;
-    headAccessories: CSArray<Accessory>;
-    torsoAccessories: CSArray<Accessory>;
-    handAccessories: CSArray<Accessory>;
-    legAccessories: CSArray<Accessory>;
-    feetAccessories: CSArray<Accessory>;
+    generalAccessories: CSArray<Accessory>;
 
     constructor(): AvatarCollection;
 

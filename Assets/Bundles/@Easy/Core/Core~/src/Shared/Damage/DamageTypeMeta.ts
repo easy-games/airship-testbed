@@ -15,6 +15,6 @@ const DamageTypeGrantsImmunity: { [key in DamageType]?: boolean } = {
  * @param damageType The damage type being queried.
  * @returns Whether or not damage type should grant immunity.
  */
-export const doesDamageTypeGrantImmunity = (damageType: DamageType): boolean => {
+export const DoesDamageTypeGrantImmunity = (damageType: DamageType): boolean => {
 	return DamageTypeGrantsImmunity[damageType] ?? true;
 };

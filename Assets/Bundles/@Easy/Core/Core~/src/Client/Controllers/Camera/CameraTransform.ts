@@ -10,7 +10,7 @@ export class CameraTransform {
 	/** The rotation of the camera in 3D world space. */
 	public readonly rotation: Quaternion;
 
-	public static fromTransform(transform: Transform) {
+	public static FromTransform(transform: Transform) {
 		return new CameraTransform(transform.position, transform.rotation);
 	}
 

@@ -8,9 +8,9 @@ export interface ProgressBarOptions {
 }
 
 export class Healthbar {
-	private readonly TransformKey = "Transforms";
-	private readonly GraphicsKey = "Graphics";
-	private readonly AnimKey = "Animations";
+	private readonly transformKey = "Transforms";
+	private readonly graphicsKey = "Graphics";
+	private readonly animKey = "Animations";
 	public transform: RectTransform;
 	private refs: GameObjectReferences;
 	private fillImage: Image;
@@ -31,13 +31,13 @@ export class Healthbar {
 	constructor(transform: Transform, options?: ProgressBarOptions) {
 		this.transform = transform.gameObject.GetComponent<RectTransform>();
 		this.refs = transform.GetComponent<GameObjectReferences>();
-		this.fillImage = this.refs.GetValue<Image>(this.GraphicsKey, "Fill");
-		this.fillTransform = this.refs.GetValue<RectTransform>(this.TransformKey, "Fill");
-		this.changeFillTransform = this.refs.GetValue<RectTransform>(this.TransformKey, "ChangeFill");
-		this.growthFillTransform = this.refs.GetValue<RectTransform>(this.TransformKey, "GrowthFill");
-		this.graphicsHolder = this.refs.GetValue<RectTransform>(this.TransformKey, "GraphicsHolder");
-		this.brokenGraphicsHolder = this.refs.GetValue<RectTransform>(this.TransformKey, "BrokenGraphicsHolder");
-		this.deathAnim = this.refs.GetValue<Animation>(this.AnimKey, "Finished");
+		this.fillImage = this.refs.GetValue<Image>(this.graphicsKey, "Fill");
+		this.fillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "Fill");
+		this.changeFillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "ChangeFill");
+		this.growthFillTransform = this.refs.GetValue<RectTransform>(this.transformKey, "GrowthFill");
+		this.graphicsHolder = this.refs.GetValue<RectTransform>(this.transformKey, "GraphicsHolder");
+		this.brokenGraphicsHolder = this.refs.GetValue<RectTransform>(this.transformKey, "BrokenGraphicsHolder");
+		this.deathAnim = this.refs.GetValue<Animation>(this.animKey, "Finished");
 
 		this.graphicsHolder.gameObject.SetActive(true);
 		this.brokenGraphicsHolder.gameObject.SetActive(false);

@@ -36,11 +36,11 @@ export class EntityService implements OnStart {
 			for (let entity of ObjectUtil.values(this.entities)) {
 				if (entity instanceof CharacterEntity) {
 					const invDto = entity.GetInventory().Encode();
-					CoreNetwork.ServerToClient.UpdateInventory.Server.FireClient(player.clientId, invDto);
+					CoreNetwork.ServerToClient.UpdateInventory.server.FireClient(player.clientId, invDto);
 				}
 			}
 			const dto = ObjectUtil.values(this.entities).map((e) => e.Encode());
-			CoreNetwork.ServerToClient.SpawnEntities.Server.FireClient(player.clientId, dto);
+			CoreNetwork.ServerToClient.SpawnEntities.server.FireClient(player.clientId, dto);
 
 			return () => {
 				if (player.character) {
@@ -141,8 +141,8 @@ export class EntityService implements OnStart {
 		// fire SpawnEntities after so the initial entity packet has all the latest info.
 		CoreServerSignals.EntitySpawn.Fire(new EntitySpawnEvent(entity));
 
-		CoreNetwork.ServerToClient.SpawnEntities.Server.FireAllClients([entity.Encode()]);
-		CoreNetwork.ServerToClient.UpdateInventory.Server.FireAllClients(entity.GetInventory().Encode());
+		CoreNetwork.ServerToClient.SpawnEntities.server.FireAllClients([entity.Encode()]);
+		CoreNetwork.ServerToClient.UpdateInventory.server.FireAllClients(entity.GetInventory().Encode());
 		entity.GetInventory().StartNetworkingDiffs();
 
 		return entity;
@@ -159,7 +159,7 @@ export class EntityService implements OnStart {
 	}
 
 	public GetEntityByClientId(clientId: number) {
-		return ObjectUtil.values(this.entities).find((e) => e.ClientId === clientId);
+		return ObjectUtil.values(this.entities).find((e) => e.clientId === clientId);
 	}
 
 	public GetEntities(): Entity[] {

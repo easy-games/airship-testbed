@@ -18,8 +18,8 @@ declare class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends un
     SetCallback(callback: RemoteFunctionCallback<TX, RX>): void;
 }
 export declare class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
-    readonly Server: RemoteFunctionServer<TX, RX>;
-    readonly Client: RemoteFunctionClient<TX, RX>;
+    readonly server: RemoteFunctionServer<TX, RX>;
+    readonly client: RemoteFunctionClient<TX, RX>;
     constructor();
 }
 export {};

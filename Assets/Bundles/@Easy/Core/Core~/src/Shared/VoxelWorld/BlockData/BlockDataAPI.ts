@@ -1,10 +1,9 @@
 import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { BlockData } from "../World";
 
 export enum CoreBlockMetaKeys {
-	CAN_BREAK = "canBreak",
+	NO_BREAK = "noBreak",
 	CURRENT_HEALTH = "health",
 	CAN_TILL = "canTill",
 }
@@ -21,13 +20,13 @@ export class BlockDataAPI {
 
 	public static Init(): void {
 		if (RunCore.IsClient()) {
-			CoreNetwork.ServerToClient.SetBlockData.Client.OnServerEvent((blockPos, key, data) => {
+			CoreNetwork.ServerToClient.SetBlockData.client.OnServerEvent((blockPos, key, data) => {
 				this.SetBlockData(blockPos, key, data);
 			});
-			CoreNetwork.ServerToClient.SetBlockGroupCustomData.Client.OnServerEvent((blockPos, key, data) => {
+			CoreNetwork.ServerToClient.SetBlockGroupCustomData.client.OnServerEvent((blockPos, key, data) => {
 				this.SetBlockGroupCustomData(blockPos, key, data);
 			});
-			CoreNetwork.ServerToClient.SetBlockGroupSameData.Client.OnServerEvent((blockPos, key, data) => {
+			CoreNetwork.ServerToClient.SetBlockGroupSameData.client.OnServerEvent((blockPos, key, data) => {
 				this.SetBlockGroupSameData(blockPos, key, data);
 			});
 		} else {
@@ -35,7 +34,7 @@ export class BlockDataAPI {
 			serverSignals.PlayerJoin.Connect((event) => {
 				for (const pair1 of this.blockDataMap) {
 					for (const pair2 of pair1[1]) {
-						CoreNetwork.ServerToClient.SetBlockData.Server.FireClient(
+						CoreNetwork.ServerToClient.SetBlockData.server.FireClient(
 							event.player.clientId,
 							pair1[0],
 							pair2[0],
@@ -57,7 +56,7 @@ export class BlockDataAPI {
 		}
 		map.set(key, data);
 		if (notifyClient && RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.SetBlockData.Server.FireAllClients(blockPos, key, data);
+			CoreNetwork.ServerToClient.SetBlockData.server.FireAllClients(blockPos, key, data);
 		}
 	}
 
@@ -76,7 +75,7 @@ export class BlockDataAPI {
 			this.SetBlockData(blockPos, key, data[index], false);
 		});
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.SetBlockGroupCustomData.Server.FireAllClients(blockPositions, key, data);
+			CoreNetwork.ServerToClient.SetBlockGroupCustomData.server.FireAllClients(blockPositions, key, data);
 		}
 	}
 
@@ -85,7 +84,7 @@ export class BlockDataAPI {
 			this.SetBlockData(blockPos, key, data, false);
 		});
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.SetBlockGroupSameData.Server.FireAllClients(blockPositions, key, data);
+			CoreNetwork.ServerToClient.SetBlockGroupSameData.server.FireAllClients(blockPositions, key, data);
 		}
 	}
 

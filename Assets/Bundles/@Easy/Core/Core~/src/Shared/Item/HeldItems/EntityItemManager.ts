@@ -45,7 +45,7 @@ export class EntityItemManager {
 			//Process Inputs locally
 			const mouse = new userInputRef.Mouse();
 			const keyboard = new userInputRef.Keyboard();
-			mouse.LeftDown.Connect(() => {
+			mouse.leftDown.Connect(() => {
 				this.Log("LeftDown");
 				if (CanvasAPI.IsPointerOverUI()) {
 					return;
@@ -57,7 +57,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.LeftUp.Connect(() => {
+			mouse.leftUp.Connect(() => {
 				this.Log("LeftUp");
 				if (!this.mouseIsDownLeft) {
 					return;
@@ -69,7 +69,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.RightDown.Connect(() => {
+			mouse.rightDown.Connect(() => {
 				this.Log("RightDown");
 				if (CanvasAPI.IsPointerOverUI()) {
 					return;
@@ -81,7 +81,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.RightUp.Connect(() => {
+			mouse.rightUp.Connect(() => {
 				this.Log("RightUp");
 				if (!this.mouseIsDownRight) {
 					return;
@@ -129,7 +129,7 @@ export class EntityItemManager {
 			});
 
 			//Server Events
-			CoreNetwork.ServerToClient.HeldItemStateChanged.Client.OnServerEvent((entityId, newState, lookVector) => {
+			CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((entityId, newState, lookVector) => {
 				const heldItem = this.entityItems.get(entityId);
 				if (heldItem) {
 					heldItem.OnNewState(newState, lookVector);
@@ -162,13 +162,13 @@ export class EntityItemManager {
 
 			//Listen to state changes triggered by client
 			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
-				if (event.is("HeldItemState")) {
+				if (event.Is("HeldItemState")) {
 					this.Log("NewState: " + event.value.s);
 					const heldItemManager = this.entityItems.get(event.value.e);
 					if (heldItemManager) {
 						const lookVec = event.value.l;
 						heldItemManager.OnNewState(event.value.s, lookVec);
-						CoreNetwork.ServerToClient.HeldItemStateChanged.Server.FireExcept(
+						CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
 							event.clientId,
 							event.value.e,
 							event.value.s,

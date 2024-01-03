@@ -7,7 +7,7 @@ import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { SignalPriority } from "Shared/Util/Signal";
-import { encode } from "Shared/json";
+import { EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { SocketController } from "../Socket/SocketController";
 
@@ -44,7 +44,7 @@ export class MainMenuAddFriendsController implements OnStart {
 				this.inputFieldSelected = false;
 			});
 			const keyboard = new Keyboard();
-			keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+			keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 				if (this.inputFieldSelected) {
 					if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
 						e.SetCancelled(true);
@@ -65,7 +65,7 @@ export class MainMenuAddFriendsController implements OnStart {
 				print('adding friend: "' + searchInput.text + '"');
 				const res = InternalHttpManager.PostAsync(
 					AirshipUrl.GameCoordinator + "/friends/requests/self",
-					encode({
+					EncodeJSON({
 						discriminatedUsername: username,
 					}),
 				);

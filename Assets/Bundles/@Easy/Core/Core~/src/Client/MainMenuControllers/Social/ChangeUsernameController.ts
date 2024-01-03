@@ -8,7 +8,7 @@ import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { SignalPriority } from "Shared/Util/Signal";
-import { encode } from "Shared/json";
+import { EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { UserController } from "../User/UserController";
 
@@ -50,7 +50,7 @@ export class ChangeUsernameController implements OnStart {
 			this.inputFieldSelected = false;
 		});
 		const keyboard = new Keyboard();
-		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 			if (this.inputFieldSelected) {
 				if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
 					e.SetCancelled(true);
@@ -76,7 +76,7 @@ export class ChangeUsernameController implements OnStart {
 
 		const res = HttpManager.PatchAsync(
 			AirshipUrl.GameCoordinator + "/users",
-			encode({
+			EncodeJSON({
 				username: split[0],
 				discriminator: split[1],
 			}),
@@ -84,7 +84,7 @@ export class ChangeUsernameController implements OnStart {
 		);
 		if (res.success) {
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
-			Game.LocalPlayer.UpdateUsername(split[0], split[1]);
+			Game.localPlayer.UpdateUsername(split[0], split[1]);
 			Dependency<UserController>().FetchLocalUser();
 		} else if (res.statusCode === 409) {
 			this.SetResponseText("error", `The username "${text}" is taken.`);

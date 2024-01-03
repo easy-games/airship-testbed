@@ -6,17 +6,17 @@ import { EntityController } from "../Entity/EntityController";
 export declare class BlockSelectController implements OnStart {
     private readonly entityController;
     private highlightGO;
-    SelectedBlockPosition?: Vector3;
-    HighlightBlockPosition?: Vector3;
-    PlaceBlockPosition?: Vector3;
-    IsVoidPlacement: boolean;
+    selectedBlockPosition?: Vector3;
+    highlightBlockPosition?: Vector3;
+    placeBlockPosition?: Vector3;
+    isVoidPlacement: boolean;
     highlightOnPlacement: boolean;
     private voidPlane;
     private enabledCount;
     private lastVoidPlaceTime;
     private highlightEnabled;
     private isHighlighting;
-    OnNewBlockSelected: Signal<{
+    onNewBlockSelected: Signal<{
         selectedPos: Vector3 | undefined;
         placedPos: Vector3 | undefined;
         highlightedPos: Vector3 | undefined;

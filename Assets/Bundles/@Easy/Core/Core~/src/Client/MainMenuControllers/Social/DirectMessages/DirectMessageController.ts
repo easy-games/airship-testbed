@@ -15,7 +15,7 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { MapUtil } from "Shared/Util/MapUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
-import { decode, encode } from "Shared/json";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
 import { FriendStatus } from "../SocketAPI";
@@ -87,14 +87,14 @@ export class DirectMessageController implements OnStart {
 			}
 
 			// in-game chat
-			if (Game.Context === CoreContext.GAME) {
+			if (Game.context === CoreContext.GAME) {
 				const friend = this.friendsController.GetFriendStatus(data.sender);
 				if (!friend) return;
 
 				let text =
-					ColorUtil.ColoredText(Theme.Pink, "From ") +
-					ColorUtil.ColoredText(Theme.White, friend.username) +
-					ColorUtil.ColoredText(Theme.Gray, ": " + data.text);
+					ColorUtil.ColoredText(Theme.pink, "From ") +
+					ColorUtil.ColoredText(Theme.white, friend.username) +
+					ColorUtil.ColoredText(Theme.gray, ": " + data.text);
 				Dependency<ChatController>().RenderChatMessage(text);
 			}
 
@@ -103,7 +103,7 @@ export class DirectMessageController implements OnStart {
 				this.lastMessagedFriend = friend;
 			}
 
-			StateManager.SetString("direct-messages:" + data.sender, encode(messages));
+			StateManager.SetString("direct-messages:" + data.sender, EncodeJSON(messages));
 		});
 	}
 
@@ -164,7 +164,7 @@ export class DirectMessageController implements OnStart {
 			this.inputFieldSelected = false;
 		});
 		const keyboard = new Keyboard();
-		keyboard.AnyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.inputFieldSelected) {
 				if (
 					event.keyCode !== KeyCode.Return &&
@@ -202,14 +202,14 @@ export class DirectMessageController implements OnStart {
 		if (message === "") return;
 		InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/direct",
-			encode({
+			EncodeJSON({
 				target: uid,
 				text: message,
 			}),
 		);
 		this.inputField!.text = "";
 		const sentMessage: DirectMessage = {
-			sender: Game.LocalPlayer.userId,
+			sender: Game.localPlayer.userId,
 			sentAt: os.time(),
 			text: message,
 		};
@@ -220,17 +220,17 @@ export class DirectMessageController implements OnStart {
 			pitch: 1.5,
 		});
 
-		if (Game.Context === CoreContext.GAME) {
+		if (Game.context === CoreContext.GAME) {
 			let text =
-				ColorUtil.ColoredText(Theme.Pink, "To ") +
-				ColorUtil.ColoredText(Theme.White, status.username) +
-				ColorUtil.ColoredText(Theme.Gray, ": " + message);
+				ColorUtil.ColoredText(Theme.pink, "To ") +
+				ColorUtil.ColoredText(Theme.white, status.username) +
+				ColorUtil.ColoredText(Theme.gray, ": " + message);
 			Dependency<ChatController>().RenderChatMessage(text);
 		}
 	}
 
 	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean): void {
-		let outgoing = dm.sender === Game.LocalPlayer.userId;
+		let outgoing = dm.sender === Game.localPlayer.userId;
 
 		let messageGo: GameObject;
 		if (outgoing) {
@@ -338,7 +338,7 @@ export class DirectMessageController implements OnStart {
 			this.loadedMessagesFromUserIdFromDisk.add(uid);
 			const raw = StateManager.GetString("direct-messages:" + uid);
 			if (raw) {
-				const messages = decode<Array<DirectMessage>>(raw);
+				const messages = DecodeJSON<Array<DirectMessage>>(raw);
 				this.messagesMap.set(uid, messages);
 				return messages;
 			}

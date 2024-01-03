@@ -24,7 +24,7 @@ export class AbilityBinding {
 	private boundTo: AbilityDto | undefined;
 	private cooldownState: ClientAbilityCooldownState | undefined;
 
-	public readonly BindingStateChanged = new Signal<{
+	public readonly bindingStateChanged = new Signal<{
 		oldState: ClientAbilityState | undefined;
 		newState: ClientAbilityState | undefined;
 	}>();
@@ -39,7 +39,7 @@ export class AbilityBinding {
 
 		this.enabled = enabled;
 
-		this.BindingStateChanged.Fire({
+		this.bindingStateChanged.Fire({
 			oldState,
 			newState: this.ToAbilityState(),
 		});
@@ -55,7 +55,7 @@ export class AbilityBinding {
 
 		this.active = active;
 
-		this.BindingStateChanged.Fire({
+		this.bindingStateChanged.Fire({
 			oldState,
 			newState: this.ToAbilityState(),
 		});
@@ -94,7 +94,7 @@ export class AbilityBinding {
 
 		this.cooldownState = cooldown;
 
-		this.BindingStateChanged.Fire({
+		this.bindingStateChanged.Fire({
 			oldState,
 			newState: this.ToAbilityState(),
 		});
@@ -111,7 +111,7 @@ export class AbilityBinding {
 		this.boundTo = abilityDto;
 		this.enabled = abilityDto.enabled;
 
-		this.BindingStateChanged.Fire({
+		this.bindingStateChanged.Fire({
 			oldState,
 			newState: this.ToAbilityState(),
 		});
@@ -171,7 +171,7 @@ export class AbilityBinding {
 		this.boundTo = undefined;
 		this.enabled = false;
 
-		this.BindingStateChanged.Fire({
+		this.bindingStateChanged.Fire({
 			oldState: this.ToAbilityState(),
 			newState: undefined,
 		});

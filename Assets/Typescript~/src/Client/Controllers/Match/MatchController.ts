@@ -22,15 +22,15 @@ export class MatchController implements OnStart {
 	public onEliminated = new Signal<void>();
 
 	constructor(private readonly tablistController: TabListController) {
-		Network.ServerToClient.MatchInfo.Client.OnServerEvent((matchInfoDto) => {
+		Network.ServerToClient.MatchInfo.client.OnServerEvent((matchInfoDto) => {
 			this.matchInfo = matchInfoDto;
 			this.state = matchInfoDto.matchState;
 			if (matchInfoDto.matchStartTime !== undefined) {
 				this.matchStartTime = matchInfoDto.matchStartTime;
 			}
 		});
-		Network.ServerToClient.PlayerEliminated.Client.OnServerEvent((clientId) => {
-			if (clientId === Game.LocalPlayer.clientId) {
+		Network.ServerToClient.PlayerEliminated.client.OnServerEvent((clientId) => {
+			if (clientId === Game.localPlayer.clientId) {
 				this.eliminated = true;
 				this.onEliminated.Fire();
 			}
@@ -39,13 +39,13 @@ export class MatchController implements OnStart {
 
 	OnStart(): void {
 		/* Listen for match state change.  */
-		Network.ServerToClient.MatchStateChange.Client.OnServerEvent((newState, oldState) => {
+		Network.ServerToClient.MatchStateChange.client.OnServerEvent((newState, oldState) => {
 			this.state = newState;
 			/* Fire signal. */
 			ClientSignals.MatchStateChange.Fire({ newState: this.state, oldState: oldState });
 		});
 		/* Listen for match start. */
-		Network.ServerToClient.MatchStarted.Client.OnServerEvent(() => {
+		Network.ServerToClient.MatchStarted.client.OnServerEvent(() => {
 			this.state = MatchState.RUNNING;
 			this.matchStartTime = TimeUtil.GetServerTime();
 			/* Fire signal */
@@ -71,15 +71,15 @@ export class MatchController implements OnStart {
 				let map = "";
 				if (this.matchInfo) {
 					map =
-						ColorUtil.ColoredText(Theme.Aqua, "<b>" + this.matchInfo.mapName + "</b>") +
-						ColorUtil.ColoredText(Theme.Gray, " by ") +
-						ColorUtil.ColoredText(Theme.Aqua, this.matchInfo.mapAuthors[0]);
+						ColorUtil.ColoredText(Theme.aqua, "<b>" + this.matchInfo.mapName + "</b>") +
+						ColorUtil.ColoredText(Theme.gray, " by ") +
+						ColorUtil.ColoredText(Theme.aqua, this.matchInfo.mapAuthors[0]);
 				}
 
 				let text =
-					ColorUtil.ColoredText(Theme.White, `<b>BedWars.com</b>`) +
-					ColorUtil.ColoredText(Theme.Gray, "    Time: ") +
-					ColorUtil.ColoredText(Theme.Green, time) +
+					ColorUtil.ColoredText(Theme.white, `<b>BedWars.com</b>`) +
+					ColorUtil.ColoredText(Theme.gray, "    Time: ") +
+					ColorUtil.ColoredText(Theme.green, time) +
 					"    " +
 					map;
 				this.tablistController.SetTitleText(text);

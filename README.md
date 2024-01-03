@@ -4,15 +4,12 @@ This project contains the source to BedWars & the Core package.
 - The BedWars game is just a game. It's not shared globally.
 
 ## Prerequisites
-- Unity Editor version `2021.3.33f1`. This can be found on [unity's download archive page](https://unity.com/releases/editor/archive).
-  - The following modules are required in the Unity install:
-    - Linux Build Support (IL2CPP)
-    - Mac Build Support (IL2CPP)
-    - Windows Build Support (Mono)
+- Unity Hub 
 - [LTS version of Node.js](https://nodejs.org/en)
 
-## Folder Setup
+## First Steps
 1. Clone [Airship](https://github.com/easy-games/airship) into the same parent folder as this repo. That is, both "airship" and "bedwars-airship" should be siblings.
+2. In Unity Hub, click **Add > Add Project From Disk** and select the bedwars-airship folder.
 
 ## Github Access Token
 1. An access token is required to download private code from our node repositories. Create and copy a Github Personal Access Token from Github.com. [Here is the link to the create token page](https://github.com/settings/tokens). **Generate a "classic" token. For permissions, check "repo" and "read packages".**

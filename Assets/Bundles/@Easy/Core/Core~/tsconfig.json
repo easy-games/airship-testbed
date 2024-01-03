@@ -34,7 +34,7 @@
 		"plugins": [
             { "transform": "@easy-games/unity-component-transformer" },
 			{ "transform": "@easy-games/unity-flamework-transformer" },
-		]
+		],
 	},
     "include": [
         // "../../Types~/**/*.d.ts",
@@ -49,5 +49,5 @@
 		"includePath": "../Bundles/Shared/Resources/include",
         "type": "airshipbundle",
         "copyNodeModules": true
-	}
+	},
 }

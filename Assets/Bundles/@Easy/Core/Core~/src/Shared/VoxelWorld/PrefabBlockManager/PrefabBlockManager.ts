@@ -22,7 +22,7 @@ export class PrefabBlockManager {
 	constructor() {
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return;
-		world.OnVoxelPlaced.Connect((pos, voxel) => {
+		world.onVoxelPlaced.Connect((pos, voxel) => {
 			const blockId = VoxelWorld.VoxelDataToBlockId(voxel);
 			const itemType = ItemUtil.GetItemTypeFromStringId(world.GetIdFromVoxelId(blockId));
 
@@ -36,13 +36,13 @@ export class PrefabBlockManager {
 		if (RunUtil.IsServer()) {
 			const serverSignals = import("Server/CoreServerSignals").expect().CoreServerSignals;
 			serverSignals.PlayerJoin.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-				CoreNetwork.ServerToClient.SyncPrefabBlocks.Server.FireClient(
+				CoreNetwork.ServerToClient.SyncPrefabBlocks.server.FireClient(
 					event.player.clientId,
 					ObjectUtils.keys(this.objectMap),
 				);
 			});
 		} else {
-			CoreNetwork.ServerToClient.SyncPrefabBlocks.Client.OnServerEvent((blockPositions) => {
+			CoreNetwork.ServerToClient.SyncPrefabBlocks.client.OnServerEvent((blockPositions) => {
 				world.WaitForFinishedReplicatingChunksFromServer().then(() => {
 					for (const pos of blockPositions) {
 						const block = world.GetBlockAt(pos);

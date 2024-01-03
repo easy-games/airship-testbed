@@ -4,9 +4,9 @@ export interface ProgressBarOptions {
     deathOnZero?: boolean;
 }
 export declare class Healthbar {
-    private readonly TransformKey;
-    private readonly GraphicsKey;
-    private readonly AnimKey;
+    private readonly transformKey;
+    private readonly graphicsKey;
+    private readonly animKey;
     transform: RectTransform;
     private refs;
     private fillImage;

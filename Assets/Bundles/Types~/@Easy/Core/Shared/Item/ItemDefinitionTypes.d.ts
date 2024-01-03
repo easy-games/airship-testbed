@@ -42,6 +42,7 @@ export interface AmmoDef {
     aoeDamage?: AOEDamageDef;
     blockDamage?: BreakBlockDef;
     lifetimeSec?: number;
+    destroyTrailImmediately?: boolean;
     gravity: number;
     /**
      * Will "stick" a ground item inside whatever was piereced on miss (e.g. arrows in blocks)
@@ -73,13 +74,17 @@ export interface ProjectileLauncherDef {
     firstPersonLaunchOffset: Vector3;
     chargeSound?: SoundDef[];
 }
-export interface ViewModelDef {
-    idleAnimFP?: string[];
-    idleAnimTP?: string[];
-    equipAnimFP?: string[];
-    equipAnimTP?: string[];
-    unequipAnimFP?: string[];
-    unequipAnimTP?: string[];
+export interface HoldConfig {
+    worldmodel?: {
+        idleAnim?: string[];
+        equipAnim?: string[];
+        unequipAnim?: string[];
+    };
+    viewmodel?: {
+        idleAnim?: string[];
+        equipAnim?: string[];
+        unequipAnim?: string[];
+    };
     equipSound?: string[];
 }
 export interface CropBlockDef {
@@ -93,7 +98,7 @@ export interface ItemDef {
     /** Path to image. */
     image?: string;
     usable?: UsableHeldItemDef;
-    viewModel?: ViewModelDef;
+    holdConfig?: HoldConfig;
     maxStackSize?: number;
     inspectAnimPath?: string;
     melee?: MeleeItemDef;
@@ -125,12 +130,12 @@ export interface UsableHeldItemDef {
      * First element charge animation.
      * Second element is shoot animation.
      */
-    onUseAnimFP?: string[];
+    onUseAnimViewmodel?: string[];
     /**
      * First element charge animation.
      * Second element is shoot animation.
      */
-    onUseAnimTP?: string[];
+    onUseAnimWorldmodel?: string[];
 }
 export interface TillBlockDef {
 }

@@ -37,7 +37,7 @@ export class GroundItemService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.DropItemInSlot.Server.OnClientEvent((clientId, slot, amount) => {
+		CoreNetwork.ClientToServer.DropItemInSlot.server.OnClientEvent((clientId, slot, amount) => {
 			const entity = this.entityService.GetEntityByClientId(clientId);
 			if (entity?.IsAlive() && entity instanceof CharacterEntity) {
 				const item = entity.GetInventory().GetItem(slot);
@@ -73,7 +73,7 @@ export class GroundItemService implements OnStart {
 					if (!groundItem.drop.IsGrounded()) return;
 
 					stopRepeat();
-					CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Server.FireAllClients([
+					CoreNetwork.ServerToClient.GroundItem.UpdatePosition.server.FireAllClients([
 						{
 							id: groundItem.id,
 							pos: groundItem.transform.position,
@@ -84,7 +84,7 @@ export class GroundItemService implements OnStart {
 			}
 		});
 
-		CoreNetwork.ClientToServer.PickupGroundItem.Server.OnClientEvent((clientId, groundItemId) => {
+		CoreNetwork.ClientToServer.PickupGroundItem.server.OnClientEvent((clientId, groundItemId) => {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) return;
 
@@ -110,14 +110,14 @@ export class GroundItemService implements OnStart {
 			// GameObjectUtil.Destroy(groundItem.rb.gameObject);
 			this.DestroyGroundItem(groundItem);
 
-			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Server.FireAllClients(entity.id, groundItem.id);
+			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.server.FireAllClients(entity.id, groundItem.id);
 			if (entity instanceof CharacterEntity) {
 				entity.GetInventory().AddItem(groundItem.itemStack);
 			}
 		});
 
 		Dependency<PlayerService>().ObservePlayers((player) => {
-			CoreNetwork.ServerToClient.GroundItem.Add.Server.FireClient(
+			CoreNetwork.ServerToClient.GroundItem.Add.server.FireClient(
 				player.clientId,
 				Object.values(this.groundItems).map((i) => {
 					return {
@@ -248,10 +248,10 @@ export class GroundItemService implements OnStart {
 		const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
 			this.RemoveGroundItemFromTracking(groundItem);
 			this.groundItems.delete(groundItem.id);
-			CoreNetwork.ServerToClient.GroundItemDestroyed.Server.FireAllClients(groundItem.id);
+			CoreNetwork.ServerToClient.GroundItemDestroyed.server.FireAllClients(groundItem.id);
 		});
 
-		CoreNetwork.ServerToClient.GroundItem.Add.Server.FireAllClients([
+		CoreNetwork.ServerToClient.GroundItem.Add.server.FireAllClients([
 			{
 				id: groundItem.id,
 				itemStack: groundItem.itemStack.Encode(),

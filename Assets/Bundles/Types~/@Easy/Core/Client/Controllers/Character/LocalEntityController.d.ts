@@ -15,9 +15,9 @@ export declare class LocalEntityController implements OnStart {
     private lookBackwards;
     private fps?;
     /** Fires whenever the user changes their first-person state. */
-    readonly FirstPersonChanged: Signal<[isFirstPerson: boolean]>;
+    readonly firstPersonChanged: Signal<[isFirstPerson: boolean]>;
     /** Fires whenever the user requests to look (or stop looking) backwards. */
-    readonly LookBackwardsChanged: Signal<[lookBackwards: boolean]>;
+    readonly lookBackwardsChanged: Signal<[lookBackwards: boolean]>;
     private customDataQueue;
     private entityDriver;
     private screenshot;

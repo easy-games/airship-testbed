@@ -40,7 +40,7 @@ export class BlockInteractController {
 			}
 
 			//Do the actual damage
-			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.DefaultVoxelHealth;
+			const health = BlockDataAPI.GetBlockData<number>(voxelPos, "health") ?? WorldAPI.defaultVoxelHealth;
 			const newHealth = math.max(health - damage, 0);
 
 			BlockDataAPI.SetBlockData(voxelPos, CoreBlockMetaKeys.CURRENT_HEALTH, newHealth);

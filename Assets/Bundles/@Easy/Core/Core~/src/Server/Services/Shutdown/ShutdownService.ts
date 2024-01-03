@@ -9,8 +9,8 @@ export class ShutdownService implements OnStart {
 	private playerConnected = false;
 	private timeWithNoPlayers = 0;
 
-	private static SHUTDOWN_TIME_NOBODY_CONNECTED = 10 * 60;
-	private static SHUTDOWN_TIME_ALL_PLAYERS_LEFT = 1 * 60;
+	private static shutdownTimeNobodyConnected = 10 * 60;
+	private static shutdownTimeAllPlayersLeft = 1 * 60;
 
 	constructor(private readonly playerService: PlayerService) {}
 
@@ -34,12 +34,12 @@ export class ShutdownService implements OnStart {
 				}
 
 				if (this.playerConnected) {
-					if (this.timeWithNoPlayers >= ShutdownService.SHUTDOWN_TIME_ALL_PLAYERS_LEFT) {
+					if (this.timeWithNoPlayers >= ShutdownService.shutdownTimeAllPlayersLeft) {
 						print("Server will shutdown due to excessive time with all players having left.");
 						this.Shutdown();
 					}
 				} else {
-					if (this.timeWithNoPlayers >= ShutdownService.SHUTDOWN_TIME_NOBODY_CONNECTED) {
+					if (this.timeWithNoPlayers >= ShutdownService.shutdownTimeNobodyConnected) {
 						print("Server will shutdown due to excessive time with nobody ever connecting.");
 						this.Shutdown();
 					}

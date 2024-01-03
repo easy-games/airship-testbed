@@ -13,7 +13,7 @@ export class BlockSelectHeldItem extends HeldItem {
 			this.blockSelect = Dependency<BlockSelectController>();
 			this.blockSelect.Enable();
 			this.bin.Add(
-				this.blockSelect.OnNewBlockSelected.Connect((event) => {
+				this.blockSelect.onNewBlockSelected.Connect((event) => {
 					this.OnBlockSelect(event.selectedPos, event.placedPos, event.highlightedPos);
 				}),
 			);

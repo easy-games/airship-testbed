@@ -3,13 +3,14 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { decode } from "Shared/json";
+import { DecodeJSON } from "Shared/json";
 import { MainMenuController } from "./MainMenuController";
 import { GameServer } from "./Social/SocketAPI";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 
 @Controller({})
 export class MainMenuHomeController implements OnStart {
-	public gameCoordinatorUrl = "https://game-coordinator-fxy2zritya-uc.a.run.app/";
+	public gameCoordinatorUrl = AirshipUrl.GameCoordinator;
 	private errorMessageText: TMP_Text;
 	private errorMessageWrapper: GameObject;
 	private errorCloseButton: GameObject;
@@ -32,7 +33,7 @@ export class MainMenuHomeController implements OnStart {
 
 		this.localBundlesToggle = this.mainMenuController.refs.GetValue("UI", "LocalBundlesToggle");
 
-		if (Game.Context === CoreContext.GAME) {
+		if (Game.context === CoreContext.GAME) {
 			this.mainMenuController.mainContentCanvas.enabled = false;
 		}
 	}
@@ -51,7 +52,7 @@ export class MainMenuHomeController implements OnStart {
 			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/allocate`, "{}");
 			if (res.success) {
 				print("data: " + res.data);
-				const data = decode(res.data) as {
+				const data = DecodeJSON(res.data) as {
 					gameServer: GameServer;
 				};
 				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
@@ -71,7 +72,7 @@ export class MainMenuHomeController implements OnStart {
 			const res = InternalHttpManager.PostAsync(`${this.gameCoordinatorUrl}/custom-servers/lobby/allocate`, "{}");
 			if (res.success) {
 				print("data: " + res.data);
-				const data = decode(res.data) as {
+				const data = DecodeJSON(res.data) as {
 					gameServer: GameServer;
 				};
 				print(`got server ${data.gameServer.ip}:${data.gameServer.port}`);
@@ -132,7 +133,7 @@ export class MainMenuHomeController implements OnStart {
 		);
 		if (res.success) {
 			print("data: " + res.data);
-			const data = decode(res.data) as {
+			const data = DecodeJSON(res.data) as {
 				gameServer: GameServer;
 			};
 			print(`found server ${data.gameServer.ip}:${data.gameServer.port}`);

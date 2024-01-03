@@ -2,7 +2,7 @@
 /// <reference types="@easy-games/types" />
 import { ItemType } from "../Item/ItemType";
 /** Generator pickup range. */
-export declare const GENERATOR_PICKUP_RANGE = 1.5;
+export declare const GeneratorPickupRange = 1.5;
 /** Describes a generator. */
 export interface GeneratorCreationConfig {
     /** The type of item a generator produces. */

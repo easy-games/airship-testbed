@@ -110,7 +110,7 @@ export class BWService implements OnStart {
 	public EliminatePlayer(player: Player): void {
 		this.eliminatedPlayers.add(player);
 		ServerSignals.PlayerEliminated.Fire({ player: player });
-		Network.ServerToClient.PlayerEliminated.Server.FireAllClients(player.clientId);
+		Network.ServerToClient.PlayerEliminated.server.FireAllClients(player.clientId);
 		// this.CheckForWin();
 	}
 

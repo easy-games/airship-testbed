@@ -17,7 +17,7 @@ export class FireAspectController implements OnStart {
 				event.fromEntity instanceof CharacterEntity &&
 				event.damageType !== DamageType.FIRE &&
 				this.statusEffectController.GetStatusEffectForClient(
-					event.fromEntity.ClientId!,
+					event.fromEntity.clientId!,
 					StatusEffectType.FIRE_ASPECT,
 				)
 			) {

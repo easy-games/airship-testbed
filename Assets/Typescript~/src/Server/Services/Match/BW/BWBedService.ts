@@ -9,7 +9,7 @@ import { Team } from "@Easy/Core/Shared/Team/Team";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
-import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { BlockDataAPI } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { ServerSignals } from "Server/ServerSignals";
@@ -64,14 +64,14 @@ export class BWBedService implements OnStart {
 			if (entity && breakerTeam) {
 				Game.BroadcastMessage(
 					ColorUtil.ColoredText(breakerTeam.color, entity.GetDisplayName()) +
-						ColorUtil.ColoredText(Theme.Aqua, " destroyed ") +
+						ColorUtil.ColoredText(Theme.aqua, " destroyed ") +
 						ColorUtil.ColoredText(team.color, `${team.name} team's bed`) +
-						ColorUtil.ColoredText(Theme.Aqua, "!"),
+						ColorUtil.ColoredText(Theme.aqua, "!"),
 				);
 			} else {
 				Game.BroadcastMessage(
 					ColorUtil.ColoredText(team.color, `${team.name}'s bed`) +
-						ColorUtil.ColoredText(Theme.Aqua, " has been destroyed!"),
+						ColorUtil.ColoredText(Theme.aqua, " has been destroyed!"),
 				);
 			}
 			const bedState = this.GetBedStateForTeam(team);
@@ -93,7 +93,7 @@ export class BWBedService implements OnStart {
 		for (let team of this.teamService.GetTeams()) {
 			const bedPosition = loadedMap.GetWorldPosition(team.id + "_bed");
 			const bedPos = MathUtil.FloorVec(
-				new Vector3(bedPosition.Position.x, bedPosition.Position.y, bedPosition.Position.z),
+				new Vector3(bedPosition.position.x, bedPosition.position.y, bedPosition.position.z),
 			);
 			const bedState: BedState = {
 				teamId: team.id,
@@ -107,7 +107,6 @@ export class BWBedService implements OnStart {
 				blockData: {
 					teamId: team.id,
 					health: itemMeta.block!.health!, // this is a hack.
-					[CoreBlockMetaKeys.CAN_BREAK]: true,
 				},
 			});
 		}

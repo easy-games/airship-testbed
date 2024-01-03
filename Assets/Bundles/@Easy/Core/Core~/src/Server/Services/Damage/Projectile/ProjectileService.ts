@@ -44,7 +44,7 @@ export class ProjectileService implements OnStart {
 
 			//Send event to client
 			if (projectile.shooter?.player) {
-				CoreNetwork.ServerToClient.ProjectileHit.Server.FireClient(
+				CoreNetwork.ServerToClient.ProjectileHit.server.FireClient(
 					projectile.shooter.player.clientId,
 					event.hitPosition,
 					event.hitEntity?.id,

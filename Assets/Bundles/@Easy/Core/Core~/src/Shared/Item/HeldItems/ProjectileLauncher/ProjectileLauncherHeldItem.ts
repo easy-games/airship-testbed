@@ -141,7 +141,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 		if (RunUtil.IsServer() || this.entity.IsLocalCharacter()) {
 			this.chargeBin.Add(
-				this.entity.OnAdjustMove.Connect((moveModifier) => {
+				this.entity.onAdjustMove.Connect((moveModifier) => {
 					moveModifier.blockSprint = true;
 					moveModifier.speedMultiplier *= 0.4;
 				}),

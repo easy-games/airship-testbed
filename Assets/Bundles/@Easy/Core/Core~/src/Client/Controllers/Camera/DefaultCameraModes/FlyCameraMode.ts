@@ -100,7 +100,7 @@ export class FlyCameraMode implements CameraMode {
 			);
 		}
 
-		this.bin.Connect(this.mouse.Scrolled, (event) => {
+		this.bin.Connect(this.mouse.scrolled, (event) => {
 			const delta = -event.delta * FOV_SCROLL_SENSITIVITY;
 			this.fovSpring.goal = new Vector3(0, 0, math.clamp(this.fovSpring.goal.z + delta, MIN_FOV, MAX_FOV));
 		});
@@ -160,18 +160,18 @@ export class FlyCameraMode implements CameraMode {
 		} else {
 			this.yRotVelSpring.goal = new Vector3(0, 0, 0);
 		}
-		this.xRot = this.xRotSpring.update(dt).x;
-		this.yRot = (this.yRot + this.yRotVelSpring.update(dt).y) % (math.pi * 2);
+		this.xRot = this.xRotSpring.Update(dt).x;
+		this.yRot = (this.yRot + this.yRotVelSpring.Update(dt).y) % (math.pi * 2);
 	}
 
 	OnPostUpdate() {}
 
 	OnLateUpdate(dt: number) {
-		const fov = this.fovSpring.update(dt).z;
+		const fov = this.fovSpring.Update(dt).z;
 		this.currentFov = fov;
 		this.camera.fieldOfView = fov;
 
-		const position = this.positionSpring.update(dt);
+		const position = this.positionSpring.Update(dt);
 		const rotation = Quaternion.Euler(math.deg(-this.xRot + math.pi / 2), math.deg(-this.yRot), 0);
 
 		return new CameraTransform(position, rotation);

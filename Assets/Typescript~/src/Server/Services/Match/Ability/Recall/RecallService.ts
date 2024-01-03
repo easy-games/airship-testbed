@@ -6,14 +6,14 @@ import { BWSpawnService } from "../../BW/BWSpawnService";
 
 @Service({})
 export class RecallService implements OnStart {
-	constructor(private readonly entityService: EntityService, private readonly BWSpawnService: BWSpawnService) {}
+	constructor(private readonly entityService: EntityService, private readonly bwSpawnService: BWSpawnService) {}
 
 	OnStart(): void {
 		CoreServerSignals.AbilityUsed.Connect((event) => {
 			if (event.abilityId !== AbilityId.RECALL) return;
 			const entity = this.entityService.GetEntityByClientId(event.clientId);
 			if (!entity || !entity.player) return;
-			this.BWSpawnService.TeleportPlayerToSpawn(entity.player);
+			this.bwSpawnService.TeleportPlayerToSpawn(entity.player);
 		});
 	}
 }

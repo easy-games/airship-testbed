@@ -9,7 +9,7 @@ export declare class CameraTransform {
     readonly position: Vector3;
     /** The rotation of the camera in 3D world space. */
     readonly rotation: Quaternion;
-    static fromTransform(transform: Transform): CameraTransform;
+    static FromTransform(transform: Transform): CameraTransform;
     constructor(position?: Vector3, rotation?: Quaternion);
     Lerp(other: CameraTransform, alpha: number): CameraTransform;
 }

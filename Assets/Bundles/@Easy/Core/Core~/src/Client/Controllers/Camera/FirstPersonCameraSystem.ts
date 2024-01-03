@@ -1,5 +1,4 @@
-﻿//import {CameraController} from "./CameraController";
-import { Dependency } from "@easy-games/flamework-core";
+﻿import { Dependency } from "@easy-games/flamework-core";
 import { Entity, EntityReferences } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
@@ -209,7 +208,7 @@ export class FirstPersonCameraSystem {
 	public OnFirstPersonChanged(isFirstPerson: boolean) {
 		this.inFirstPerson = isFirstPerson;
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
-		Game.LocalPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
+		Game.localPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
 
 		Dependency<ViewmodelController>().animancer.Animator.Rebind();

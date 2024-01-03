@@ -11,7 +11,7 @@ export class MatchStatsController implements OnStart {
 	public onStatsUpdated = new Signal<[userId: string, newStats: PlayerMatchStats, oldStats: PlayerMatchStats]>();
 
 	OnStart(): void {
-		Network.ServerToClient.PlayerMatchStats.Client.OnServerEvent((stats) => {
+		Network.ServerToClient.PlayerMatchStats.client.OnServerEvent((stats) => {
 			for (const stat of stats) {
 				this.matchStats.set(stat.userId, stat);
 			}

@@ -32,8 +32,8 @@ export class TpCommand extends ChatCommand {
 
 		player.character.Teleport(pos, targetPlayer.character?.entityDriver.GetLookVector());
 		player.SendMessage(
-			ColorUtil.ColoredText(Theme.Gray, "Teleported to ") +
-				ColorUtil.ColoredText(Theme.Yellow, targetPlayer.username),
+			ColorUtil.ColoredText(Theme.gray, "Teleported to ") +
+				ColorUtil.ColoredText(Theme.yellow, targetPlayer.username),
 		);
 	}
 }

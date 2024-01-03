@@ -26,9 +26,9 @@ export class FireAspectService implements OnStart {
 			if (event.damageType === this.statusMeta.damageType!) return;
 			if (!event.fromEntity) return;
 			if (!(event.fromEntity instanceof CharacterEntity)) return;
-			if (event.fromEntity.ClientId === undefined) return;
+			if (event.fromEntity.clientId === undefined) return;
 			const fireAspectStatusEffect = this.statusEffectService.GetStatusEffectForClient(
-				event.fromEntity.ClientId,
+				event.fromEntity.clientId,
 				StatusEffectType.FIRE_ASPECT,
 			);
 			if (!fireAspectStatusEffect) return;

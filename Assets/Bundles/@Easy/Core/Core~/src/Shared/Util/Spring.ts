@@ -17,7 +17,7 @@ export class Spring {
 	}
 
 	/** Update the spring. */
-	public update(deltaTime: number): Vector3 {
+	public Update(deltaTime: number): Vector3 {
 		const angFreq = this.angularFrequency * math.pi * 2;
 		const goal = this.goal;
 		const p0 = this.position;
@@ -38,14 +38,14 @@ export class Spring {
 	}
 
 	/** Reset the spring to a specific position. */
-	public resetTo(position: Vector3) {
+	public ResetTo(position: Vector3) {
 		this.position = position;
 		this.goal = position;
 		this.velocity = new Vector3(0, 0, 0);
 	}
 
 	/** Impulse the spring with a given impulse velocity. */
-	public impulse(impulse: Vector3) {
+	public Impulse(impulse: Vector3) {
 		this.velocity = this.velocity.add(impulse);
 	}
 }

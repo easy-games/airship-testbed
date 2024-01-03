@@ -23,13 +23,13 @@ export class Projectile {
 	private destroyed = false;
 	private bin = new Bin();
 
-	public readonly OnDestroy = new Signal<void>();
+	public readonly onDestroy = new Signal<void>();
 	/**
 	 * Fired when the projectile hits something that will destroy it.
 	 *
 	 * For additional collide information, you should instead listen to either `ClientSignals.ProjectileHit` or `ServerSignals.ProjectileHit`
 	 */
-	public readonly OnHit = new Signal<[hitPoint: Vector3, collider: Collider]>();
+	public readonly onHit = new Signal<[hitPoint: Vector3, collider: Collider]>();
 
 	constructor(private easyProjectile: AirshipProjectile, itemType: ItemType, shooter: Entity | undefined) {
 		this.gameObject = easyProjectile.gameObject;
@@ -39,7 +39,7 @@ export class Projectile {
 		const itemDef = ItemUtil.GetItemDef(itemType);
 
 		this.bin.Add(
-			this.OnDestroy.Connect(() => {
+			this.onDestroy.Connect(() => {
 				this.destroyed = true;
 			}),
 		);
@@ -53,7 +53,7 @@ export class Projectile {
 
 			const ignored = ProjectileSharedImpl.ShouldIgnoreCollision(this, hitPoint, normal, collider);
 			if (ignored) return;
-			this.OnHit.Fire(hitPoint, collider);
+			this.onHit.Fire(hitPoint, collider);
 
 			if (RunUtil.IsServer()) {
 				Dependency<ProjectileService>().HandleCollision(this, collider, hitPoint, normal, velocity);
@@ -65,7 +65,7 @@ export class Projectile {
 
 		const dw = this.gameObject.GetComponent<DestroyWatcher>();
 		const destroyedConn = dw.OnDestroyedEvent(() => {
-			this.OnDestroy.Fire();
+			this.onDestroy.Fire();
 			this.bin.Clean();
 		});
 		this.bin.Add(() => {
@@ -91,8 +91,8 @@ export class Projectile {
 		if (this.destroyed) return;
 		this.destroyed = true;
 		this.bin.Clean();
-		this.OnDestroy.DisconnectAll();
-		this.OnHit.DisconnectAll();
+		this.onDestroy.DisconnectAll();
+		this.onHit.DisconnectAll();
 
 		Object.Destroy(this.gameObject);
 	}

@@ -4,7 +4,7 @@ import { Player } from "Shared/Player/Player";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
-import { decode } from "Shared/json";
+import { DecodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { User } from "./User";
 
@@ -37,10 +37,10 @@ export class UserController implements OnStart {
 			this.authController.GetAuthHeaders(),
 		);
 		if (res.success) {
-			const data = decode(res.data) as User;
+			const data = DecodeJSON(res.data) as User;
 			this.localUser = data;
 
-			const writeUser = Game.LocalPlayer as Writable<Player>;
+			const writeUser = Game.localPlayer as Writable<Player>;
 			writeUser.userId = data.uid;
 			writeUser.username = data.username;
 			writeUser.usernameTag = data.discriminator;

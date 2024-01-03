@@ -4,11 +4,11 @@ import { EntityDamageServerSignal } from "Server/Signals/EntityDamageServerSigna
 import { EntityDeathServerSignal } from "Server/Signals/EntityDeathServerSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { DamageType } from "Shared/Damage/DamageType";
-import { doesDamageTypeGrantImmunity } from "Shared/Damage/DamageTypeMeta";
+import { DoesDamageTypeGrantImmunity } from "Shared/Damage/DamageTypeMeta";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Entity } from "Shared/Entity/Entity";
 import { AOEDamageDef } from "Shared/Item/ItemDefinitionTypes";
-import { DEFAULT_RESPAWN_TIME } from "Shared/Respawn/Respawn";
+import { DefaultRespawnTime } from "Shared/Respawn/Respawn";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Task } from "Shared/Util/Task";
 import { EntityService } from "../Entity/EntityService";
@@ -25,7 +25,7 @@ export class DamageService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.TEST_LATENCY.Server.SetCallback((clientId) => {
+		CoreNetwork.ClientToServer.TEST_LATENCY.server.SetCallback((clientId) => {
 			print("-----");
 			for (const entity of this.entityService.GetEntities()) {
 				print(entity.GetDisplayName() + ": " + entity.id);
@@ -42,7 +42,7 @@ export class DamageService implements OnStart {
 			return InstanceFinder.TimeManager.Tick;
 		});
 
-		CoreNetwork.ClientToServer.TestKnockback2.Server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.TestKnockback2.server.OnClientEvent((clientId) => {
 			const entity = Entity.FindByClientId(clientId);
 			if (entity) {
 				const dir = entity.model.transform.forward;
@@ -131,7 +131,7 @@ export class DamageService implements OnStart {
 			return false;
 		}
 
-		CoreNetwork.ServerToClient.EntityDamage.Server.FireAllClients(
+		CoreNetwork.ServerToClient.EntityDamage.server.FireAllClients(
 			entity.id,
 			damageEvent.amount,
 			damageEvent.damageType,
@@ -155,11 +155,11 @@ export class DamageService implements OnStart {
 				entity,
 				damageEvent.fromEntity,
 				damageEvent,
-				DEFAULT_RESPAWN_TIME,
+				DefaultRespawnTime,
 			);
 			CoreServerSignals.EntityDeath.Fire(entityDeathEvent);
 
-			CoreNetwork.ServerToClient.EntityDeath.Server.FireAllClients(
+			CoreNetwork.ServerToClient.EntityDeath.server.FireAllClients(
 				entity.id,
 				damageEvent.damageType,
 				entityDeathEvent.killer?.id,
@@ -175,7 +175,7 @@ export class DamageService implements OnStart {
 		} else {
 			let shouldGrantImmunity = true;
 			if (config?.damageType) {
-				shouldGrantImmunity = doesDamageTypeGrantImmunity(config.damageType);
+				shouldGrantImmunity = DoesDamageTypeGrantImmunity(config.damageType);
 			}
 			if (shouldGrantImmunity) entity.GrantImmunity(0.24);
 

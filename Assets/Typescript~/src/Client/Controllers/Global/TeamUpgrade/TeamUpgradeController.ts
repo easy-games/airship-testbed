@@ -39,7 +39,7 @@ export class TeamUpgradeController implements OnStart {
 			const teamUpgradeMeta = TeamUpgradeUtil.GetTeamUpgradeMeta(upgradeType);
 			const dto: TeamUpgradeStateDto = {
 				teamUpgrade: teamUpgradeMeta,
-				teamId: Game.LocalPlayer.GetTeam()?.id ?? "0",
+				teamId: Game.localPlayer.GetTeam()?.id ?? "0",
 				currentUpgradeTier: 0,
 			};
 			this.localUpgradeMap.set(upgradeType, dto);
@@ -52,17 +52,17 @@ export class TeamUpgradeController implements OnStart {
 
 	OnStart(): void {
 		/* Sync up existing server state, if applicable. */
-		Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.Client.OnServerEvent((dtos) => {
+		Network.ServerToClient.TeamUpgrade.UpgradeSnapshot.client.OnServerEvent((dtos) => {
 			dtos.forEach((dto) => {
 				this.HandleUpgradeStateChange(dto.teamUpgrade.type, dto.currentUpgradeTier);
 			});
 		});
 		/* Handle incoming team upgrade state change. */
-		Network.ServerToClient.TeamUpgrade.UpgradeProcessed.Client.OnServerEvent(
+		Network.ServerToClient.TeamUpgrade.UpgradeProcessed.client.OnServerEvent(
 			(purchaserClientId, upgradeType, tier) => {
 				this.HandleUpgradeStateChange(upgradeType, tier);
 
-				if (purchaserClientId !== Game.LocalPlayer.clientId) {
+				if (purchaserClientId !== Game.localPlayer.clientId) {
 					AudioManager.PlayGlobal(CoreSound.purchaseSuccess, {
 						volumeScale: 0.3,
 					});
@@ -157,7 +157,7 @@ export class TeamUpgradeController implements OnStart {
 			let canPurchase = false;
 			if (tier < upgradeMeta.tiers.size()) {
 				if (
-					Game.LocalPlayer.character
+					Game.localPlayer.character
 						?.GetInventory()
 						.HasEnough(upgradeMeta.tiers[tier].currency, upgradeMeta.tiers[tier].cost)
 				) {
@@ -182,7 +182,7 @@ export class TeamUpgradeController implements OnStart {
 				const currentTier = this.localUpgradeMap.get(upgradeType)?.currentUpgradeTier;
 				if (currentTier !== undefined) {
 					const nextTier = currentTier + 1;
-					const result = Network.ClientToServer.TeamUpgrade.UpgradeRequest.Client.FireServer(
+					const result = Network.ClientToServer.TeamUpgrade.UpgradeRequest.client.FireServer(
 						upgradeType,
 						nextTier,
 					);
@@ -200,19 +200,19 @@ export class TeamUpgradeController implements OnStart {
 		this.UpdateUI();
 
 		const bin = new Bin();
-		const inv = Game.LocalPlayer.character?.GetInventory();
+		const inv = Game.localPlayer.character?.GetInventory();
 		if (inv) {
-			inv.Changed.Connect(() => {
+			inv.changed.Connect(() => {
 				this.UpdateUI();
 			});
 		}
 
-		if (Game.LocalPlayer.character) {
-			const startingPos = Game.LocalPlayer.character.model.transform.position;
+		if (Game.localPlayer.character) {
+			const startingPos = Game.localPlayer.character.model.transform.position;
 			bin.Add(
 				SetInterval(0.1, () => {
-					if (Game.LocalPlayer.character) {
-						if (startingPos.sub(Game.LocalPlayer.character.model.transform.position).magnitude >= 1) {
+					if (Game.localPlayer.character) {
+						if (startingPos.sub(Game.localPlayer.character.model.transform.position).magnitude >= 1) {
 							AppManager.Close();
 						}
 					}

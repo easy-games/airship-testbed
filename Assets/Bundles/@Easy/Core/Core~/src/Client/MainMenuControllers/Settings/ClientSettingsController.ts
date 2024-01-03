@@ -2,7 +2,7 @@ import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";
-import { decode, encode } from "Shared/json";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { AmbientSoundController } from "../AmbientSound/AmbientSoundController";
 import { ClientSettingsFile } from "./ClientSettingsFile";
 
@@ -32,7 +32,7 @@ export class ClientSettingsController implements OnStart {
 	OnStart(): void {
 		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
 		if (savedContents && savedContents !== "") {
-			this.data = decode(savedContents);
+			this.data = DecodeJSON(savedContents);
 		} else {
 			this.data = defaultData;
 		}
@@ -64,7 +64,7 @@ export class ClientSettingsController implements OnStart {
 	}
 
 	public SaveSettings(): void {
-		DiskManager.WriteFileAsync("ClientSettings.json", encode(this.data));
+		DiskManager.WriteFileAsync("ClientSettings.json", EncodeJSON(this.data));
 		print("Saved settings to disk.");
 	}
 

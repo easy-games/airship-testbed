@@ -1,7 +1,10 @@
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
+import { DamageType } from "../../Damage/DamageType";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";
+import { Bin } from "../../Util/Bin";
 import { Entity, EntityReferences } from "../Entity";
-import { EntityAnimator } from "./EntityAnimator";
 export declare enum ItemAnimationId {
     IDLE = "Idle",
     EQUIP = "Equip",
@@ -13,38 +16,88 @@ export declare enum ItemPlayMode {
     LOOP = 1,
     HOLD = 2
 }
-export declare class CharacterEntityAnimator extends EntityAnimator {
-    private currentItemClipMap;
+export declare class CharacterEntityAnimator {
+    readonly entity: Entity;
+    readonly refs: EntityReferences;
+    private worldmodelClips;
+    private viewmodelClips;
     private currentItemMeta;
     private currentItemState;
     private currentEndEventConnection;
     private defaultIdleAnimFP;
     private defaultIdleAnimFPUnarmed;
     private defaultIdleAnimTP;
-    constructor(entity: Entity, anim: AnimancerComponent, ref: EntityReferences);
+    private readonly flashTransitionDuration;
+    private readonly flashOnTime;
+    readonly worldmodelAnimancerComponent: AnimancerComponent;
+    readonly defaultTransitionTime: number;
+    protected bin: Bin;
+    private flinchClipFPS?;
+    private deathClipFPS?;
+    private flinchClipTP?;
+    private deathClipTP?;
+    private damageEffectTemplate?;
+    private deathEffectTemplate?;
+    private deathEffectVoidTemplate?;
+    private isFlashing;
+    protected isFirstPerson: boolean;
+    protected viewModelEnabled: boolean;
+    private footstepAudioBundle;
+    private slideAudioBundle;
+    private steppedOnBlockType;
+    private lastFootstepSoundTime;
+    private deathVfx?;
+    baseFootstepVolumeScale: number;
+    private itemAnimStates;
+    constructor(entity: Entity, refs: EntityReferences);
     private Log;
     SetFirstPerson(isFirstPerson: boolean): void;
-    PlayAnimation(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
+    PlayTakeDamage(flinchDuration: number, damageType: DamageType, position: Vector3, entityModel: GameObject | undefined): void;
+    PlayItemAnimationInWorldmodel(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
         fadeInDuration?: number;
         fadeOutDuration?: number;
         autoFadeOut?: boolean;
-    }): AnimancerState;
+    }): AnimancerState | undefined;
+    PlayItemAnimationInViewmodel(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
+        fadeMode?: FadeMode;
+        wrapMode?: WrapMode;
+        fadeInDuration?: number;
+        fadeOutDuration?: number;
+        autoFadeOut?: boolean;
+    }): AnimancerState | undefined;
+    ClearItemAnimations(): void;
     private LoadNewItemResources;
     private TriggerEvent;
     EquipItem(itemMeta: ItemDef | undefined): void;
-    StartIdleAnim(instantTransition: boolean): void;
-    PlayUseAnim(useIndex?: number, config?: {
+    StartItemIdleAnim(instantTransition: boolean): void;
+    PlayItemUseAnim(useIndex?: number, config?: {
+        fadeMode?: FadeMode;
+        wrapMode?: WrapMode;
+        fadeInDuration?: number;
+        fadeOutDuration?: number;
+        autoFadeOut?: boolean;
+    }): void;
+    PlayRandomItemUseAnim(config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
         transitionTime?: number;
         autoFadeOut?: boolean;
     }): void;
-    PlayRandomUseAnim(config?: {
-        fadeMode?: FadeMode;
-        wrapMode?: WrapMode;
-        transitionTime?: number;
-        autoFadeOut?: boolean;
-    }): void;
+    PlayDeath(damageType: DamageType): void;
+    private PlayDamageFlash;
+    SetFresnelColor(color: Color, power: number, strength: number): void;
+    /**
+     *
+     * @param volumeScale
+     * @param cameraPos Pass in cached camera position if playing lots of sounds to improve performance.
+     * @returns
+     */
+    PlayFootstepSound(volumeScale: number, cameraPos?: Vector3): void;
+    private OnAnimationEvent;
+    IsFirstPerson(): boolean;
+    SetPlaybackSpeed(newSpeed: number): void;
+    IsViewModelEnabled(): boolean;
+    Destroy(): void;
 }

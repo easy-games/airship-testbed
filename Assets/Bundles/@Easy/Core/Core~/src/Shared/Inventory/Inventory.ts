@@ -14,7 +14,7 @@ export interface InventoryDto {
 }
 
 export class Inventory {
-	public readonly Id: number;
+	public readonly id: number;
 	private items = new Map<number, ItemStack>();
 	private heldSlot = 0;
 	private maxSlots = 48;
@@ -27,18 +27,18 @@ export class Inventory {
 		[ArmorType.BOOTS]: 47,
 	};
 	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
-	public readonly SlotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
-	public readonly HeldSlotChanged = new Signal<number>();
+	public readonly slotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
+	public readonly heldSlotChanged = new Signal<number>();
 	/**
 	 * Fired whenever any change happens.
 	 * This includes changes to ItemStacks.
 	 **/
-	public readonly Changed = new Signal<void>();
+	public readonly changed = new Signal<void>();
 	private finishedInitialReplication = false;
 	private slotConnections = new Map<number, Bin>();
 
 	constructor(id: number) {
-		this.Id = id;
+		this.id = id;
 	}
 
 	public GetItem(slot: number): ItemStack | undefined {
@@ -59,7 +59,7 @@ export class Inventory {
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
 		bin.Add(
-			this.HeldSlotChanged.Connect((newSlot) => {
+			this.heldSlotChanged.Connect((newSlot) => {
 				const selected = this.items.get(newSlot);
 				if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
 
@@ -71,7 +71,7 @@ export class Inventory {
 			}),
 		);
 		bin.Add(
-			this.SlotChanged.Connect((slot, itemStack) => {
+			this.slotChanged.Connect((slot, itemStack) => {
 				if (slot === this.heldSlot) {
 					if (itemStack?.GetItemType() === currentItemStack?.GetItemType()) return;
 					if (cleanup !== undefined) {
@@ -107,24 +107,24 @@ export class Inventory {
 		if (itemStack) {
 			const bin = new Bin();
 			bin.Add(
-				itemStack.Destroyed.Connect(() => {
+				itemStack.destroyed.Connect(() => {
 					this.SetItem(slot, undefined);
-					this.Changed.Fire();
+					this.changed.Fire();
 				}),
 			);
 			bin.Add(
-				itemStack.Changed.Connect(() => {
-					this.Changed.Fire();
+				itemStack.changed.Connect(() => {
+					this.changed.Fire();
 				}),
 			);
 			this.slotConnections.set(slot, bin);
 
 			if (RunUtil.IsServer()) {
 				bin.Add(
-					itemStack.AmountChanged.Connect((e) => {
+					itemStack.amountChanged.Connect((e) => {
 						if (e.NoNetwork) return;
-						CoreNetwork.ServerToClient.UpdateInventorySlot.Server.FireAllClients(
-							this.Id,
+						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
+							this.id,
 							slot,
 							undefined,
 							e.Amount,
@@ -132,10 +132,10 @@ export class Inventory {
 					}),
 				);
 				bin.Add(
-					itemStack.ItemTypeChanged.Connect((e) => {
+					itemStack.itemTypeChanged.Connect((e) => {
 						if (e.NoNetwork) return;
-						CoreNetwork.ServerToClient.UpdateInventorySlot.Server.FireAllClients(
-							this.Id,
+						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
+							this.id,
 							slot,
 							e.ItemType,
 							undefined,
@@ -144,13 +144,13 @@ export class Inventory {
 				);
 			}
 		}
-		this.SlotChanged.Fire(slot, itemStack);
-		this.Changed.Fire();
+		this.slotChanged.Fire(slot, itemStack);
+		this.changed.Fire();
 
 		if (RunUtil.IsServer() && this.finishedInitialReplication) {
 			// todo: figure out which clients to include
-			CoreNetwork.ServerToClient.SetInventorySlot.Server.FireAllClients(
-				this.Id,
+			CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
+				this.id,
 				slot,
 				itemStack?.Encode(),
 				config?.clientPredicted ?? false,
@@ -219,7 +219,7 @@ export class Inventory {
 
 	public SetHeldSlot(slot: number): void {
 		this.heldSlot = slot;
-		this.HeldSlotChanged.Fire(slot);
+		this.heldSlotChanged.Fire(slot);
 		const itemStack = this.GetHeldItem();
 	}
 
@@ -229,7 +229,7 @@ export class Inventory {
 			mappedItems.set(item[0], item[1].Encode());
 		}
 		return {
-			id: this.Id,
+			id: this.id,
 			items: mappedItems,
 			heldSlot: this.heldSlot,
 		};

@@ -18,8 +18,8 @@ export class TpAllCommand extends ChatCommand {
 			if (p !== player) {
 				if (p.character) {
 					p.SendMessage(
-						ColorUtil.ColoredText(Theme.Aqua, player.username) +
-							ColorUtil.ColoredText(Theme.Gray, " teleported you."),
+						ColorUtil.ColoredText(Theme.aqua, player.username) +
+							ColorUtil.ColoredText(Theme.gray, " teleported you."),
 					);
 					p.character.Teleport(pos, player.character?.entityDriver.GetLookVector());
 				}

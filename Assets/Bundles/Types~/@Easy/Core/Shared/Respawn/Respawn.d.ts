@@ -1,2 +1,2 @@
 /** Default respawn time. */
-export declare const DEFAULT_RESPAWN_TIME = 3;
+export declare const DefaultRespawnTime = 3;

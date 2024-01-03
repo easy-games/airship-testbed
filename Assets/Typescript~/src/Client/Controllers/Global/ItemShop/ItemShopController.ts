@@ -33,7 +33,7 @@ export class ItemShopController implements OnStart {
 
 	private purchasedTierItems = new Set<ItemType>();
 
-	public OnPurchase = new Signal<ShopElement>();
+	public onPurchase = new Signal<ShopElement>();
 
 	private itemPurchasePopupPrefab: GameObject;
 	private purchaseButtonEnabled = false;
@@ -55,13 +55,13 @@ export class ItemShopController implements OnStart {
 	OnStart(): void {
 		this.Init();
 
-		Network.ServerToClient.ItemShop.RemoveTierPurchases.Client.OnServerEvent((itemTypes) => {
+		Network.ServerToClient.ItemShop.RemoveTierPurchases.client.OnServerEvent((itemTypes) => {
 			for (const itemType of itemTypes) {
 				this.purchasedTierItems.delete(itemType);
 			}
 		});
 
-		Network.ServerToClient.ItemShop.ItemPurchased.Client.OnServerEvent((entityId, itemType) => {
+		Network.ServerToClient.ItemShop.ItemPurchased.client.OnServerEvent((entityId, itemType) => {
 			const entity = Entity.FindById(entityId);
 			if (!entity) return;
 			if (entity.IsLocalCharacter()) return;
@@ -97,12 +97,12 @@ export class ItemShopController implements OnStart {
 			this.SetSidebarItem(this.selectedShopElement, true);
 		}
 
-		if (Game.LocalPlayer.character) {
-			const startingPos = Game.LocalPlayer.character.model.transform.position;
+		if (Game.localPlayer.character) {
+			const startingPos = Game.localPlayer.character.model.transform.position;
 			bin.Add(
 				SetInterval(0.1, () => {
-					if (Game.LocalPlayer.character) {
-						if (startingPos.sub(Game.LocalPlayer.character.model.transform.position).magnitude >= 1) {
+					if (Game.localPlayer.character) {
+						if (startingPos.sub(Game.localPlayer.character.model.transform.position).magnitude >= 1) {
 							AppManager.Close();
 						}
 					}
@@ -197,7 +197,7 @@ export class ItemShopController implements OnStart {
 	}
 
 	private CanPurchase(shopElement: ShopElement): boolean {
-		if (!Game.LocalPlayer.character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
+		if (!Game.localPlayer.character?.GetInventory().HasEnough(shopElement.currency, shopElement.price)) {
 			return false;
 		}
 		if (shopElement.lockAfterPurchase && this.purchasedTierItems.has(shopElement.itemType)) {
@@ -216,7 +216,7 @@ export class ItemShopController implements OnStart {
 			});
 			return;
 		}
-		const result = Network.ClientToServer.ItemShop.PurchaseRequest.Client.FireServer(shopElement.itemType);
+		const result = Network.ClientToServer.ItemShop.PurchaseRequest.client.FireServer(shopElement.itemType);
 		if (result) {
 			this.purchasedTierItems.add(shopElement.itemType);
 			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav", {
@@ -227,7 +227,7 @@ export class ItemShopController implements OnStart {
 			if (shopElement.nextTier) {
 				this.SetSidebarItem(ItemShopMeta.GetShopElementFromItemType(shopElement.nextTier)!);
 			}
-			this.OnPurchase.Fire(shopElement);
+			this.onPurchase.Fire(shopElement);
 		}
 	}
 
@@ -259,18 +259,18 @@ export class ItemShopController implements OnStart {
 		selectedItemCost.text = `${shopItem.price} ${currencyMeta.displayName}`;
 
 		if (shopItem.currency === ItemType.EMERALD) {
-			selectedItemCost.color = Theme.Green;
+			selectedItemCost.color = Theme.green;
 		} else if (shopItem.currency === ItemType.DIAMOND) {
-			selectedItemCost.color = Theme.Aqua;
+			selectedItemCost.color = Theme.aqua;
 		} else {
-			selectedItemCost.color = Theme.White;
+			selectedItemCost.color = Theme.white;
 		}
 
 		const purchaseButtonImage = this.purchaseButton.GetComponent<Image>();
 
 		const updateButton = () => {
 			this.purchaseButtonEnabled = false;
-			const inv = Game.LocalPlayer.character?.GetInventory();
+			const inv = Game.localPlayer.character?.GetInventory();
 
 			if (shopItem.lockAfterPurchase && this.purchasedTierItems.has(shopItem.itemType)) {
 				this.purchaseButtonText.text = "Owned";
@@ -304,18 +304,18 @@ export class ItemShopController implements OnStart {
 				const slotId = inv.FindSlotWithItemType(shopItem.currency);
 				if (slotId !== undefined) {
 					this.selectedItemBin.Add(
-						inv.GetItem(slotId)!.Changed.Connect(() => {
+						inv.GetItem(slotId)!.changed.Connect(() => {
 							updateButton();
 						}),
 					);
 				}
 
 				this.selectedItemBin.Add(
-					inv.SlotChanged.Connect((slot, itemStack) => {
+					inv.slotChanged.Connect((slot, itemStack) => {
 						if (itemStack) {
 							updateButton();
 							this.selectedItemBin.Add(
-								itemStack.Changed.Connect(() => {
+								itemStack.changed.Connect(() => {
 									updateButton();
 								}),
 							);
@@ -326,7 +326,7 @@ export class ItemShopController implements OnStart {
 		);
 
 		this.selectedItemBin.Add(
-			this.OnPurchase.Connect((shopItem) => {
+			this.onPurchase.Connect((shopItem) => {
 				if (shopItem.lockAfterPurchase) {
 					updateButton();
 				}

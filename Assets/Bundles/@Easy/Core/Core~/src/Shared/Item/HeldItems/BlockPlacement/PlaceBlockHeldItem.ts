@@ -64,8 +64,8 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		const blockSelectController = Dependency<BlockSelectController>();
-		const placePosition = blockSelectController.PlaceBlockPosition;
-		const isVoidPlacement = blockSelectController.IsVoidPlacement;
+		const placePosition = blockSelectController.placeBlockPosition;
+		const isVoidPlacement = blockSelectController.isVoidPlacement;
 
 		if (!placePosition) {
 			return false;

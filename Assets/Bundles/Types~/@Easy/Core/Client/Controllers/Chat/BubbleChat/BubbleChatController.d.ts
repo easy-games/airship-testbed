@@ -1,6 +1,6 @@
 import { OnStart } from "../../../../../node_modules/@easy-games/flamework-core";
 export declare class BubbleChatController implements OnStart {
-    private static MAX_DISPLAYED_MESSAGES;
+    private static maxDisplayedMessages;
     /** Map from transform to minimized status (true = minimized) */
     private chatContainerMinimized;
     /** Map from chat message to original text */
