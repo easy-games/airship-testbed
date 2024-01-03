@@ -4,13 +4,13 @@ import { CameraSystem } from "./CameraSystem";
 
 @Controller({})
 export class CameraController implements OnStart {
-	public static readonly CameraReferenceKey: string = "CameraRig";
+	public static readonly cameraReferenceKey: string = "CameraRig";
 
 	/** The underlying camera system for the game. */
-	public readonly CameraSystem: CameraSystem;
+	public readonly cameraSystem: CameraSystem;
 
 	constructor() {
-		this.CameraSystem = new CameraSystem();
+		this.cameraSystem = new CameraSystem();
 	}
 
 	/**
@@ -25,7 +25,7 @@ export class CameraController implements OnStart {
 	 * @param transition Optional transition configuration.
 	 */
 	public SetMode(mode: CameraMode, transition?: CameraModeTransition) {
-		this.CameraSystem.SetMode(mode, transition);
+		this.cameraSystem.SetMode(mode, transition);
 	}
 
 	/**
@@ -36,7 +36,7 @@ export class CameraController implements OnStart {
 	 * @param transition Optional transition configuration.
 	 */
 	public ClearMode(transition?: CameraModeTransition) {
-		this.CameraSystem.ClearMode(transition);
+		this.cameraSystem.ClearMode(transition);
 	}
 
 	/**
@@ -47,7 +47,7 @@ export class CameraController implements OnStart {
 	 * @param immediate If `true`, goes directly to the FOV without springing towards it.
 	 */
 	public SetFOV(fieldOfView: number, immediate = false) {
-		this.CameraSystem.SetFOV(fieldOfView, immediate);
+		this.cameraSystem.SetFOV(fieldOfView, immediate);
 	}
 
 	OnStart() {}

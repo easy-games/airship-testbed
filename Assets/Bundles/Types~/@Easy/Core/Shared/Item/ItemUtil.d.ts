@@ -9,12 +9,12 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export declare class ItemUtil {
-    static readonly DefaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
+    static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
     private static readonly itemAccessories;
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;
     private static runtimeIdCounter;
-    static MissingItemAccessory: Accessory;
+    static missingItemAccessory: Accessory;
     private static itemTypes;
     private static implictItemTypeMap;
     private static initialized;

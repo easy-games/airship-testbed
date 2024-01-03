@@ -16,8 +16,8 @@ export class HelpCommand extends ChatCommand {
 		const commands = Dependency<ChatService>().GetCommands();
 		for (const com of commands) {
 			const msg = ColorUtil.ColoredText(
-				Theme.Yellow,
-				"/" + com.commandLabel + ColorUtil.ColoredText(Theme.White, " " + com.usage),
+				Theme.yellow,
+				"/" + com.commandLabel + ColorUtil.ColoredText(Theme.white, " " + com.usage),
 			);
 			player.SendMessage(msg);
 		}

@@ -37,11 +37,11 @@ export class AbilityBindingController implements OnStart {
 	OnStart(): void {
 		// If ability was added to the local client AND it's an active ability,
 		// bind ability to key.
-		CoreNetwork.ServerToClient.AbilityAdded.Client.OnServerEvent((clientId, abilityDto) => {
+		CoreNetwork.ServerToClient.AbilityAdded.client.OnServerEvent((clientId, abilityDto) => {
 			const abilityMeta = this.abilityRegistry.GetAbilityById(abilityDto.abilityId);
 			if (!abilityMeta) return;
 			if (
-				clientId === Game.LocalPlayer.clientId &&
+				clientId === Game.localPlayer.clientId &&
 				abilityMeta.config.kind === AbilityKind.Active &&
 				abilityDto.slot !== undefined
 			) {
@@ -50,11 +50,11 @@ export class AbilityBindingController implements OnStart {
 		});
 		// If ability was removed to the local client AND it's an active ability,
 		// unbind ability from key.
-		CoreNetwork.ServerToClient.AbilityRemoved.Client.OnServerEvent((clientId, abilityId) => {
+		CoreNetwork.ServerToClient.AbilityRemoved.client.OnServerEvent((clientId, abilityId) => {
 			const abilityMeta = this.abilityRegistry.GetAbilityById(abilityId);
 			if (!abilityMeta) return;
 			if (
-				clientId === Game.LocalPlayer.clientId &&
+				clientId === Game.localPlayer.clientId &&
 				abilityMeta.config.kind === AbilityKind.Active &&
 				abilityMeta.config.slot !== undefined
 			) {
@@ -63,7 +63,7 @@ export class AbilityBindingController implements OnStart {
 		});
 		// If one of the local client's abilities had a cooldown update, update
 		// binding and UI accordingly.
-		CoreNetwork.ServerToClient.AbilityCooldownStateChange.Client.OnServerEvent((abilityCooldownDto) => {
+		CoreNetwork.ServerToClient.AbilityCooldownStateChange.client.OnServerEvent((abilityCooldownDto) => {
 			this.UpdateAbilityBindingCooldown(abilityCooldownDto);
 		});
 	}

@@ -1,14 +1,14 @@
 export declare class Theme {
-    static Green: Color;
-    static Red: Color;
-    static Blue: Color;
-    static Yellow: Color;
-    static White: Color;
-    static Black: Color;
-    static Gray: Color;
-    static Aqua: Color;
-    static Pink: Color;
-    static TeamColor: {
+    static green: Color;
+    static red: Color;
+    static blue: Color;
+    static yellow: Color;
+    static white: Color;
+    static black: Color;
+    static gray: Color;
+    static aqua: Color;
+    static pink: Color;
+    static teamColor: {
         Green: Color;
         Red: Color;
         Blue: Color;

@@ -45,7 +45,7 @@ export class EntityItemManager {
 			//Process Inputs locally
 			const mouse = new userInputRef.Mouse();
 			const keyboard = new userInputRef.Keyboard();
-			mouse.LeftDown.Connect(() => {
+			mouse.leftDown.Connect(() => {
 				this.Log("LeftDown");
 				if (CanvasAPI.IsPointerOverUI()) {
 					return;
@@ -57,7 +57,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.LeftUp.Connect(() => {
+			mouse.leftUp.Connect(() => {
 				this.Log("LeftUp");
 				if (!this.mouseIsDownLeft) {
 					return;
@@ -69,7 +69,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.RightDown.Connect(() => {
+			mouse.rightDown.Connect(() => {
 				this.Log("RightDown");
 				if (CanvasAPI.IsPointerOverUI()) {
 					return;
@@ -81,7 +81,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.RightUp.Connect(() => {
+			mouse.rightUp.Connect(() => {
 				this.Log("RightUp");
 				if (!this.mouseIsDownRight) {
 					return;
@@ -106,8 +106,8 @@ export class EntityItemManager {
 			this.Log("ClientSignals");
 			//Listen to new entities
 			clientSignalRef.CoreClientSignals.EntitySpawn.Connect((event) => {
-				this.Log("EntitySpawn: " + event.entity.Id);
-				if (event.entity instanceof CharacterEntity && event.entity.Id !== undefined) {
+				this.Log("EntitySpawn: " + event.entity.id);
+				if (event.entity instanceof CharacterEntity && event.entity.id !== undefined) {
 					Profiler.BeginSample("EntityItemManager.GetOrCreateItemManager");
 					//Create the Item Manager on the Client
 					this.GetOrCreateItemManager(event.entity as CharacterEntity);
@@ -122,14 +122,14 @@ export class EntityItemManager {
 
 			//Clean up destroyed entities
 			clientSignalRef.CoreClientSignals.EntityDespawn.Connect((entity) => {
-				this.Log("EntityDespawn: " + entity.Id);
+				this.Log("EntityDespawn: " + entity.id);
 				if (entity instanceof CharacterEntity) {
 					this.DestroyItemManager(entity);
 				}
 			});
 
 			//Server Events
-			CoreNetwork.ServerToClient.HeldItemStateChanged.Client.OnServerEvent((entityId, newState, lookVector) => {
+			CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((entityId, newState, lookVector) => {
 				const heldItem = this.entityItems.get(entityId);
 				if (heldItem) {
 					heldItem.OnNewState(newState, lookVector);
@@ -145,8 +145,8 @@ export class EntityItemManager {
 
 			//Listen to new entity spawns
 			serverSignalsRef.CoreServerSignals.EntitySpawn.Connect((event) => {
-				this.Log("EntitySpawn: " + event.entity.Id);
-				if ((event.entity as CharacterEntity) && event.entity.Id !== undefined) {
+				this.Log("EntitySpawn: " + event.entity.id);
+				if ((event.entity as CharacterEntity) && event.entity.id !== undefined) {
 					//Create the Item Manager on the Server
 					this.GetOrCreateItemManager(event.entity as CharacterEntity);
 				}
@@ -154,7 +154,7 @@ export class EntityItemManager {
 
 			//Clean up destroyed entities
 			serverSignalsRef.CoreServerSignals.EntityDespawn.Connect((entity) => {
-				this.Log("EntityDespawn: " + entity.Id);
+				this.Log("EntityDespawn: " + entity.id);
 				if (entity instanceof CharacterEntity) {
 					this.DestroyItemManager(entity);
 				}
@@ -168,7 +168,7 @@ export class EntityItemManager {
 					if (heldItemManager) {
 						const lookVec = event.value.l;
 						heldItemManager.OnNewState(event.value.s, lookVec);
-						CoreNetwork.ServerToClient.HeldItemStateChanged.Server.FireExcept(
+						CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
 							event.clientId,
 							event.value.e,
 							event.value.s,
@@ -183,12 +183,12 @@ export class EntityItemManager {
 	}
 
 	public GetOrCreateItemManager(entity: CharacterEntity): HeldItemManager {
-		this.Log("GetOrCreateItemManager: " + entity.Id);
-		let items = this.entityItems.get(entity.Id ?? 0);
+		this.Log("GetOrCreateItemManager: " + entity.id);
+		let items = this.entityItems.get(entity.id ?? 0);
 		if (items === undefined) {
-			this.Log("New Item: " + entity.Id);
+			this.Log("New Item: " + entity.id);
 			items = new HeldItemManager(entity);
-			this.entityItems.set(entity.Id ?? 0, items);
+			this.entityItems.set(entity.id ?? 0, items);
 		}
 		this.Log("Returning Item: " + items.GetLabel());
 		return items;
@@ -196,10 +196,10 @@ export class EntityItemManager {
 
 	//Called by both client and server based on entity death events
 	private DestroyItemManager(entity: CharacterEntity) {
-		let entityId = entity.Id ?? 0;
+		let entityId = entity.id ?? 0;
 		let items = this.entityItems.get(entityId);
 		if (items) {
-			items.OnNewState(HeldItemState.ON_DESTROY, entity.EntityDriver.GetLookVector());
+			items.OnNewState(HeldItemState.ON_DESTROY, entity.entityDriver.GetLookVector());
 			items.Destroy();
 			this.entityItems.delete(entityId);
 		}

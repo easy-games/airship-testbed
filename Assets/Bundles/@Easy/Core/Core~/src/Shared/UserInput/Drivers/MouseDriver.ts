@@ -6,11 +6,11 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 export class MouseDriver {
 	private static inst: MouseDriver;
 
-	public readonly LeftButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
-	public readonly RightButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
-	public readonly MiddleButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
-	public readonly Scrolled = new Signal<[event: ScrollSignal]>();
-	public readonly Moved = new Signal<[location: Vector3]>();
+	public readonly leftButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
+	public readonly rightButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
+	public readonly middleButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
+	public readonly scrolled = new Signal<[event: ScrollSignal]>();
+	public readonly moved = new Signal<[location: Vector3]>();
 	// public readonly Delta = new Signal<[delta: Vector3]>();
 
 	private readonly inputProxy = UserInputService.InputProxy;
@@ -19,25 +19,25 @@ export class MouseDriver {
 		this.inputProxy.OnLeftMouseButtonPressEvent((isDown) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new PointerButtonSignal(isDown, uiProcessed);
-			this.LeftButtonChanged.Fire(event);
+			this.leftButtonChanged.Fire(event);
 		});
 		this.inputProxy.OnRightMouseButtonPressEvent((isDown) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new PointerButtonSignal(isDown, uiProcessed);
-			this.RightButtonChanged.Fire(event);
+			this.rightButtonChanged.Fire(event);
 		});
 		this.inputProxy.OnMiddleMouseButtonPressEvent((isDown) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new PointerButtonSignal(isDown, uiProcessed);
-			this.MiddleButtonChanged.Fire(event);
+			this.middleButtonChanged.Fire(event);
 		});
 		this.inputProxy.OnMouseScrollEvent((scrollAmount) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new ScrollSignal(scrollAmount, uiProcessed);
-			this.Scrolled.Fire(event);
+			this.scrolled.Fire(event);
 		});
 		this.inputProxy.OnMouseMoveEvent((location) => {
-			this.Moved.Fire(location);
+			this.moved.Fire(location);
 		});
 		// this.inputProxy.OnMouseDeltaEvent((delta) => {
 		// 	this.Delta.Fire(delta);

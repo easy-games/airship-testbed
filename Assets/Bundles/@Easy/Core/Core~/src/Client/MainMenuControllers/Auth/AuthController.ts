@@ -12,14 +12,14 @@ export class AuthController implements OnStart {
 	private appId = "1:987279961241:web:944327bc9353f4f1f15c08";
 	private idToken = "";
 	private authenticated = false;
-	public readonly OnAuthenticated = new Signal<void>();
-	public readonly OnSignOut = new Signal<void>();
+	public readonly onAuthenticated = new Signal<void>();
+	public readonly onSignOut = new Signal<void>();
 
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
 			let ignore = false;
-			if (Game.Context === CoreContext.GAME && RunUtil.IsEditor()) {
+			if (Game.context === CoreContext.GAME && RunUtil.IsEditor()) {
 				ignore = true;
 			}
 			if (!ignore) {
@@ -33,7 +33,7 @@ export class AuthController implements OnStart {
 			return;
 		}
 		return new Promise<void>((resolve) => {
-			this.OnAuthenticated.Wait();
+			this.onAuthenticated.Wait();
 			resolve();
 		});
 	}
@@ -75,7 +75,7 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_refreshToken", data.refresh_token);
 			StateManager.SetString("firebase_localId", data.user_id);
 			this.authenticated = true;
-			this.OnAuthenticated.Fire();
+			this.onAuthenticated.Fire();
 			return true;
 		}
 		print("failed login with refresh token: " + res.error + " statusCode=" + res.statusCode);
@@ -99,7 +99,7 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_refreshToken", data.refreshToken);
 			StateManager.SetString("firebase_localId", data.localId);
 			this.authenticated = true;
-			this.OnAuthenticated.Fire();
+			this.onAuthenticated.Fire();
 
 			if (!RunUtil.IsClone()) {
 				AuthManager.SaveAuthAccount(data.refreshToken);

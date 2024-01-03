@@ -2,9 +2,9 @@ import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { CameraMode, CameraModeTransition } from ".";
 import { CameraSystem } from "./CameraSystem";
 export declare class CameraController implements OnStart {
-    static readonly CameraReferenceKey: string;
+    static readonly cameraReferenceKey: string;
     /** The underlying camera system for the game. */
-    readonly CameraSystem: CameraSystem;
+    readonly cameraSystem: CameraSystem;
     constructor();
     /**
      * Proxy for `cameraSystem.SetMode()`.

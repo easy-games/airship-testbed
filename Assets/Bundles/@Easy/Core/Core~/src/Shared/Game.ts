@@ -4,7 +4,7 @@ import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
 
 export class Game {
-	public static LocalPlayer: Player = new Player(
+	public static localPlayer: Player = new Player(
 		undefined as unknown as NetworkObject,
 		-1,
 		"1",
@@ -14,16 +14,16 @@ export class Game {
 
 	public static BroadcastMessage(message: string): void {
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.ChatMessage.Server.FireAllClients(message);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(message);
 		} else {
-			Game.LocalPlayer.SendMessage(message);
+			Game.localPlayer.SendMessage(message);
 		}
 	}
 
-	public static Context: CoreContext;
+	public static context: CoreContext;
 
-	public static ServerId: string;
-	public static GameId: string;
+	public static serverId: string;
+	public static gameId: string;
 
-	public static StartingScene = SceneManager.GetActiveScene().name;
+	public static startingScene = SceneManager.GetActiveScene().name;
 }

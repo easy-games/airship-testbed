@@ -55,8 +55,8 @@ export class CameraSystem {
 	private fovSpringMoving = false;
 	private fovSpringMovingStart = 0;
 
-	public readonly ModeChangedBegin = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
-	public readonly ModeChangedEnd = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
+	public readonly modeChangedBegin = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
+	public readonly modeChangedEnd = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
 
 	public GetActiveCamera(): Camera {
 		return this.camera;
@@ -64,8 +64,8 @@ export class CameraSystem {
 
 	constructor() {
 		const ref = CameraReferences.Instance();
-		this.camera = ref.MainCamera;
-		this.allCameras = [ref.MainCamera, ref.UiCamera, ref.FpsCamera];
+		this.camera = ref.mainCamera;
+		this.allCameras = [ref.mainCamera, ref.uiCamera, ref.fpsCamera];
 		this.transform = this.camera.transform;
 		this.fovSpring = new Spring(new Vector3(this.camera.fieldOfView, 0, 0), 5);
 
@@ -77,7 +77,7 @@ export class CameraSystem {
 
 		OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
 			const camTransform = this.currentMode.OnLateUpdate(dt);
-			this.transform.SetPositionAndRotation(camTransform.Position, camTransform.Rotation);
+			this.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 			this.currentMode.OnPostUpdate(this.camera);
 			if (this.fovSpringMoving) {
 				this.UpdateFOVSpring(dt);
@@ -108,19 +108,19 @@ export class CameraSystem {
 
 		if (transition === undefined) {
 			const oldMode = this.currentMode;
-			this.ModeChangedBegin.Fire(mode, oldMode);
+			this.modeChangedBegin.Fire(mode, oldMode);
 			this.currentMode.OnStop();
 			this.currentMode = mode;
 			this.currentMode.OnStart(this.camera);
-			this.ModeChangedEnd.Fire(mode, oldMode);
+			this.modeChangedEnd.Fire(mode, oldMode);
 		} else {
 			const oldMode = this.currentMode;
-			this.ModeChangedBegin.Fire(mode, oldMode);
+			this.modeChangedBegin.Fire(mode, oldMode);
 			mode.OnStart(this.camera);
 			this.currentMode = new TransitionMode(transition, oldMode, mode, () => {
 				oldMode.OnStop();
 				this.currentMode = mode;
-				this.ModeChangedEnd.Fire(mode, oldMode);
+				this.modeChangedEnd.Fire(mode, oldMode);
 			});
 		}
 	}
@@ -166,7 +166,7 @@ export class CameraSystem {
 			this.UpdateFOV(fieldOfView);
 			this.fovSpringMoving = false;
 		} else {
-			this.fovSpring.Goal = new Vector3(fieldOfView, 0, 0);
+			this.fovSpring.goal = new Vector3(fieldOfView, 0, 0);
 			this.fovSpringMoving = true;
 			this.fovSpringMovingStart = Time.time;
 		}
@@ -174,7 +174,7 @@ export class CameraSystem {
 
 	private UpdateFOVSpring(dt: number) {
 		this.UpdateFOV(this.fovSpring.Update(dt).x);
-		if (Time.time - this.fovSpringMovingStart > 2 && math.abs(this.fovSpring.Velocity.x) < 0.01) {
+		if (Time.time - this.fovSpringMovingStart > 2 && math.abs(this.fovSpring.velocity.x) < 0.01) {
 			this.fovSpringMoving = false;
 		}
 	}

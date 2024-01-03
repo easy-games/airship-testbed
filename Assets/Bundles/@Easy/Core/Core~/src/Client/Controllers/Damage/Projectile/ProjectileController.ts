@@ -55,7 +55,7 @@ export class ProjectileController implements OnStart {
 		normal: Vector3,
 		velocity: Vector3,
 	): boolean {
-		const ammoMeta = ItemUtil.GetItemDef(projectile.ItemType).projectile!;
+		const ammoMeta = ItemUtil.GetItemDef(projectile.itemType).projectile!;
 		const hitEntity = Entity.FindByCollider(collider);
 
 		const projectileHitSignal = new ProjectileCollideClientSignal(

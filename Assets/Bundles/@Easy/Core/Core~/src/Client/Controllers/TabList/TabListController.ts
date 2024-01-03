@@ -41,7 +41,7 @@ export class TabListController implements OnStart {
 		private readonly coreUIController: CoreUIController,
 		private readonly teamController: TeamController,
 	) {
-		this.tablistGO = this.coreUIController.Refs.GetValue("Apps", "TabList");
+		this.tablistGO = this.coreUIController.refs.GetValue("Apps", "TabList");
 		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>();
 		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>();
 		this.tablistContentGO = this.tablistRefs.GetValue("UI", "Content");
@@ -87,7 +87,7 @@ export class TabListController implements OnStart {
 			this.Hide();
 		});
 
-		Window.FocusChanged.Connect((hasFocus) => {
+		Window.focusChanged.Connect((hasFocus) => {
 			if (hasFocus) {
 				Task.Delay(0, () => {
 					this.Hide();
@@ -123,7 +123,7 @@ export class TabListController implements OnStart {
 		// 	});
 		// }
 		let players = this.playerController.GetPlayers().sort((a, b) => {
-			if (a === Game.LocalPlayer) return true;
+			if (a === Game.localPlayer) return true;
 
 			let aTeamIndex = math.huge;
 			let bTeamIndex = math.huge;
@@ -171,7 +171,7 @@ export class TabListController implements OnStart {
 		const usernameText = refs.GetValue<TMP_Text>("UI", "Username");
 
 		let username = player.username;
-		if (player === Game.LocalPlayer) {
+		if (player === Game.localPlayer) {
 			username = "<b>" + username + "</b>";
 		}
 		const team = player.GetTeam();
@@ -218,7 +218,7 @@ export class TabListController implements OnStart {
 
 		let mouseUnlocked = false;
 		this.showBin.Add(() => {
-			this.mouse.RightDown.Connect(() => {
+			this.mouse.rightDown.Connect(() => {
 				if (!mouseUnlocked) {
 					mouseUnlocked = true;
 					const mouseLockId = this.mouse.AddUnlocker();

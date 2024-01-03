@@ -83,7 +83,7 @@ export class GroundItemController implements OnStart {
 
 	// private readonly groundItemPool: GameObject[] = [];
 	OnStart(): void {
-		CoreNetwork.ServerToClient.GroundItem.Add.Client.OnServerEvent(async (dtos) => {
+		CoreNetwork.ServerToClient.GroundItem.Add.client.OnServerEvent(async (dtos) => {
 			// print("Received " + dtos.size() + " ground items.");
 			if (WorldAPI.GetMainWorld()) {
 				await WorldAPI.GetMainWorld()!.WaitForFinishedLoading();
@@ -141,7 +141,7 @@ export class GroundItemController implements OnStart {
 			}
 		});
 
-		CoreNetwork.ServerToClient.GroundItem.UpdatePosition.Client.OnServerEvent((dtos) => {
+		CoreNetwork.ServerToClient.GroundItem.UpdatePosition.client.OnServerEvent((dtos) => {
 			for (const dto of dtos) {
 				const groundItem = this.groundItems.get(dto.id);
 				if (groundItem) {
@@ -152,25 +152,25 @@ export class GroundItemController implements OnStart {
 
 		// Pickup when nearbys
 		SetInterval(0.1, () => {
-			const characterPos = Game.LocalPlayer.Character?.GameObject.transform.position;
+			const characterPos = Game.localPlayer.character?.gameObject.transform.position;
 			if (!characterPos) return;
 
 			let toPickup: GroundItem[] = [];
 			for (let pair of this.groundItems) {
-				if (!GroundItemUtil.CanPickupGroundItem(pair[1], pair[1].Transform.position, characterPos)) continue;
+				if (!GroundItemUtil.CanPickupGroundItem(pair[1], pair[1].transform.position, characterPos)) continue;
 				toPickup.push(pair[1]);
 			}
 
 			toPickup = toPickup.sort((a, b) => {
-				return a.Transform.position.Distance(characterPos) < b.Transform.position.Distance(characterPos);
+				return a.transform.position.Distance(characterPos) < b.transform.position.Distance(characterPos);
 			});
 
 			for (let groundItem of toPickup) {
-				CoreNetwork.ClientToServer.PickupGroundItem.Client.FireServer(groundItem.id);
+				CoreNetwork.ClientToServer.PickupGroundItem.client.FireServer(groundItem.id);
 			}
 		});
 
-		CoreNetwork.ServerToClient.EntityPickedUpGroundItem.Client.OnServerEvent((entityId, groundItemId) => {
+		CoreNetwork.ServerToClient.EntityPickedUpGroundItem.client.OnServerEvent((entityId, groundItemId) => {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) {
 				return;
@@ -191,7 +191,7 @@ export class GroundItemController implements OnStart {
 			// this.offlineGroundItems.RemoveObject(go);
 		});
 
-		CoreNetwork.ServerToClient.GroundItemDestroyed.Client.OnServerEvent((groundItemId) => {
+		CoreNetwork.ServerToClient.GroundItemDestroyed.client.OnServerEvent((groundItemId) => {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) {
 				return;

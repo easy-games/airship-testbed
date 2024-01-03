@@ -14,7 +14,7 @@ export class EntityInput {
 	private autoSprinting = false;
 
 	constructor(private readonly entity: Entity) {
-		this.entityDriver = entity.EntityDriver;
+		this.entityDriver = entity.entityDriver;
 		this.InitControls();
 	}
 
@@ -61,7 +61,7 @@ export class EntityInput {
 
 		this.autoSprinting = false;
 		this.bin.Add(
-			this.entity.OnStateChanged.Connect((newState, oldState) => {
+			this.entity.onStateChanged.Connect((newState, oldState) => {
 				if (newState === EntityState.Sprinting) {
 					this.autoSprinting = true;
 				} else if (newState !== EntityState.Jumping) {
@@ -125,7 +125,7 @@ export class EntityInput {
 					break;
 				case "Touch":
 					mobileJoystick.SetVisible(true);
-					controlSchemeBin.Connect(mobileJoystick.Changed, onMobileJoystickChanged);
+					controlSchemeBin.Connect(mobileJoystick.changed, onMobileJoystickChanged);
 					break;
 				default:
 					print(`unknown control scheme: ${controlScheme}`);

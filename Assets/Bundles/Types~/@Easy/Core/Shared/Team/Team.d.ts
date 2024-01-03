@@ -12,8 +12,8 @@ export declare class Team {
     readonly id: string;
     readonly color: Color;
     private players;
-    readonly OnPlayerAdded: Signal<Player>;
-    readonly OnPlayerRemoved: Signal<Player>;
+    readonly onPlayerAdded: Signal<Player>;
+    readonly onPlayerRemoved: Signal<Player>;
     constructor(name: string, id: string, color: Color);
     GetPlayers(): Set<Player>;
     AddPlayer(player: Player): void;

@@ -6,9 +6,9 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { GameDto } from "../API/GamesAPI";
 
 export default class HomePageGameComponent extends AirshipBehaviour {
-	public TitleText!: TMP_Text;
-	public PlayerCountText!: TMP_Text;
-	public ButtonGo!: GameObject;
+	public titleText!: TMP_Text;
+	public playerCountText!: TMP_Text;
+	public buttonGo!: GameObject;
 
 	private bin = new Bin();
 
@@ -21,8 +21,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	}
 
 	public Init(gameDto: GameDto) {
-		this.TitleText.text = gameDto.name;
-		this.PlayerCountText.text = gameDto.liveStats.playerCount + "";
+		this.titleText.text = gameDto.name;
+		this.playerCountText.text = gameDto.liveStats.playerCount + "";
 
 		let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".jpg";
 
@@ -41,7 +41,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			Bridge.DisconnectEvent(downloadConn);
 		});
 
-		const clickConn = CanvasAPI.OnClickEvent(this.ButtonGo, () => {
+		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
 			Dependency<TransferController>().ClientTransferToServerAsync(gameDto.id);
 		});
 		this.bin.Add(() => {

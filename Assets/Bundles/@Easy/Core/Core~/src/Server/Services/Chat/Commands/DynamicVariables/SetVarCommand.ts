@@ -13,21 +13,21 @@ export class SetVarCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		if (args.size() !== 2) {
 			player.SendMessage(
-				ColorUtil.ColoredText(Theme.Red, "Invalid usage: /setvar <var collection>.<key> <value>"),
+				ColorUtil.ColoredText(Theme.red, "Invalid usage: /setvar <var collection>.<key> <value>"),
 			);
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, "Example: /setvar combat.kbY 11"));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, "Example: /setvar combat.kbY 11"));
 			return;
 		}
 		let split = args[0].split(".");
 		if (split.size() !== 2) {
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, `Invalid DynamicVariables key: ` + args[0]));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, `Invalid DynamicVariables key: ` + args[0]));
 			return;
 		}
 
 		let varsKey = split[0];
 		const vars = DynamicVariablesManager.Instance.GetVars(varsKey);
 		if (vars === undefined) {
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, `DynamicVariables with key "${varsKey}" not found.`));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, `DynamicVariables with key "${varsKey}" not found.`));
 			return;
 		}
 
@@ -65,7 +65,7 @@ export class SetVarCommand extends ChatCommand {
 		}
 
 		if (!set) {
-			player.SendMessage(ColorUtil.ColoredText(Theme.Red, `Failed to parse value "${valueString}"`));
+			player.SendMessage(ColorUtil.ColoredText(Theme.red, `Failed to parse value "${valueString}"`));
 			return;
 		}
 

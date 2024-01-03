@@ -51,11 +51,11 @@ export class MainMenuPartyController implements OnStart {
 				this.UpdateParty();
 			});
 
-		Game.LocalPlayer.OnUsernameChanged.Connect(() => {
+		Game.localPlayer.onUsernameChanged.Connect(() => {
 			this.UpdateParty();
 		});
 
-		const addFriendsButton = this.mainMenuController.Refs.GetValue("Social", "AddFriendsButton");
+		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");
 		CoreUI.SetupButton(addFriendsButton);
 		CanvasAPI.OnClickEvent(addFriendsButton, () => {
 			Dependency<MainMenuAddFriendsController>().Open();
@@ -70,23 +70,23 @@ export class MainMenuPartyController implements OnStart {
 
 	private UpdateParty(): void {
 		if (this.party === undefined) {
-			const partyContent = this.mainMenuController.Refs.GetValue("Social", "PartyContent");
+			const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
 			partyContent.ClearChildren();
 
-			const partyTitle = this.mainMenuController.Refs.GetValue("Social", "PartyTitle") as TMP_Text;
+			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
 			partyTitle.text = `(0/8)`;
 
-			const leaveButton = this.mainMenuController.Refs.GetValue("Social", "LeavePartyButton");
+			const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
 			leaveButton.SetActive(false);
 
 			return;
 		}
 
-		const partyContent = this.mainMenuController.Refs.GetValue("Social", "PartyContent");
+		const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
 		const partyMemberUids = this.party.members.map((m) => m.uid);
 
-		const leaveButton = this.mainMenuController.Refs.GetValue("Social", "LeavePartyButton");
-		if (this.party.leader === Game.LocalPlayer.userId) {
+		const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
+		if (this.party.leader === Game.localPlayer.userId) {
 			leaveButton.SetActive(false);
 		} else {
 			leaveButton.SetActive(true);
@@ -108,7 +108,7 @@ export class MainMenuPartyController implements OnStart {
 			Object.Destroy(go);
 		}
 
-		let isLocalPartyLeader = Game.LocalPlayer.userId === this.party.leader;
+		let isLocalPartyLeader = Game.localPlayer.userId === this.party.leader;
 
 		// Add new & update existing
 		for (const member of this.party.members) {
@@ -124,8 +124,8 @@ export class MainMenuPartyController implements OnStart {
 			const refs = go.GetComponent<GameObjectReferences>();
 
 			const usernameText = refs.GetValue("UI", "Username") as TMP_Text;
-			if (member.uid === Game.LocalPlayer.userId) {
-				usernameText.text = Game.LocalPlayer.username;
+			if (member.uid === Game.localPlayer.userId) {
+				usernameText.text = Game.localPlayer.username;
 			} else {
 				usernameText.text = member.username;
 			}
@@ -133,7 +133,7 @@ export class MainMenuPartyController implements OnStart {
 			const kickButton = refs.GetValue("UI", "KickButton");
 
 			let showModTools = isLocalPartyLeader;
-			if (member.uid === Game.LocalPlayer.userId) {
+			if (member.uid === Game.localPlayer.userId) {
 				showModTools = false;
 			}
 
@@ -149,7 +149,7 @@ export class MainMenuPartyController implements OnStart {
 			const leftLayout = refs.GetValue("UI", "LeftLayout") as HorizontalLayoutGroup;
 			LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
 
-			const partyTitle = this.mainMenuController.Refs.GetValue("Social", "PartyTitle") as TMP_Text;
+			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
 			partyTitle.text = `(${this.party.members.size()}/8)`;
 
 			if (init) {

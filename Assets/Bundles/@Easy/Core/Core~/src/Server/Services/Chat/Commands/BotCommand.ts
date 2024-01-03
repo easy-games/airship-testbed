@@ -26,7 +26,7 @@ export class BotCommand extends ChatCommand {
 			Dependency<PlayerService>().AddBotPlayer();
 		}
 		player.SendMessage(
-			ColorUtil.ColoredText(Theme.Green, `Finished spawning ${amount} bot${amount > 1 ? "s" : ""}!`),
+			ColorUtil.ColoredText(Theme.green, `Finished spawning ${amount} bot${amount > 1 ? "s" : ""}!`),
 		);
 	}
 }

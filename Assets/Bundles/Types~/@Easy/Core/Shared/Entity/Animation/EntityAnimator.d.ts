@@ -9,9 +9,9 @@ export declare abstract class EntityAnimator {
     protected entity: Entity;
     private readonly flashTransitionDuration;
     private readonly flashOnTime;
-    readonly WorldmodelAnimancer: AnimancerComponent;
-    readonly ViewmodelAnimancer: AnimancerComponent;
-    readonly DefaultTransitionTime: number;
+    readonly worldmodelAnimancer: AnimancerComponent;
+    readonly viewmodelAnimancer: AnimancerComponent;
+    readonly defaultTransitionTime: number;
     protected readonly entityRef: EntityReferences;
     protected bin: Bin;
     private flinchClipFPS?;
@@ -29,7 +29,7 @@ export declare abstract class EntityAnimator {
     private steppedOnBlockType;
     private lastFootstepSoundTime;
     private deathVfx?;
-    BaseFootstepVolumeScale: number;
+    baseFootstepVolumeScale: number;
     constructor(entity: Entity, entityRef: EntityReferences);
     Destroy(): void;
     StartIdleAnim(instantTransition: boolean): void;

@@ -4,8 +4,8 @@ export declare class ShutdownService implements OnStart {
     private readonly playerService;
     private playerConnected;
     private timeWithNoPlayers;
-    private static SHUTDOWN_TIME_NOBODY_CONNECTED;
-    private static SHUTDOWN_TIME_ALL_PLAYERS_LEFT;
+    private static shutdownTimeNobodyConnected;
+    private static shutdownTimeAllPlayersLeft;
     constructor(playerService: PlayerService);
     OnStart(): void;
     Shutdown(): void;

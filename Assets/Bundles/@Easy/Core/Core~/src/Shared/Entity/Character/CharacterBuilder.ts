@@ -48,7 +48,7 @@ export class CharacterBuilder {
 		if (this.clientId !== undefined) {
 			NetworkUtil.SpawnWithClientOwnership(characterModel, this.clientId);
 			const nob = characterModel.GetComponent<NetworkObject>();
-			CoreNetwork.ServerToClient.CharacterModelChanged.Server.FireClient(this.clientId, nob.ObjectId);
+			CoreNetwork.ServerToClient.CharacterModelChanged.server.FireClient(this.clientId, nob.ObjectId);
 		} else {
 			NetworkUtil.Spawn(characterModel);
 		}

@@ -5,7 +5,7 @@ export class PreferredDriver {
 
 	private scheme = UserInputService.InputProxy.GetScheme();
 
-	public readonly SchemeChanged = new Signal<[scheme: string]>();
+	public readonly schemeChanged = new Signal<[scheme: string]>();
 
 	private constructor() {
 		// UserInputService.InputProxy.OnSchemeChangedEvent((scheme) => {

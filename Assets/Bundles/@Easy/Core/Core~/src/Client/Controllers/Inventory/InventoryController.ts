@@ -13,10 +13,10 @@ import { Signal, SignalPriority } from "Shared/Util/Signal";
 @Controller({})
 export class InventoryController implements OnStart {
 	private inventories = new Map<number, Inventory>();
-	public LocalInventory?: Inventory;
+	public localInventory?: Inventory;
 
-	public HeldSlotChanged = new Signal<number>();
-	public LocalInventoryAdded = new Signal<Inventory>();
+	public heldSlotChanged = new Signal<number>();
+	public localInventoryAdded = new Signal<Inventory>();
 
 	private enabled = true;
 	private disablers = new Set<number>();
@@ -28,7 +28,7 @@ export class InventoryController implements OnStart {
 	constructor() {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.UpdateInventory.Client.OnServerEvent((dto) => {
+		CoreNetwork.ServerToClient.UpdateInventory.client.OnServerEvent((dto) => {
 			let inv = this.GetInventory(dto.id);
 			if (!inv) {
 				inv = new Inventory(dto.id);
@@ -36,18 +36,18 @@ export class InventoryController implements OnStart {
 			}
 			inv.ProcessDto(dto);
 		});
-		CoreNetwork.ServerToClient.SetInventorySlot.Client.OnServerEvent(
+		CoreNetwork.ServerToClient.SetInventorySlot.client.OnServerEvent(
 			(invId, slot, itemStackDto, clientPredicted) => {
 				const inv = this.GetInventory(invId);
 				if (!inv) return;
 
-				if (this.LocalInventory === inv && clientPredicted) return;
+				if (this.localInventory === inv && clientPredicted) return;
 
 				const itemStack = itemStackDto !== undefined ? ItemStack.Decode(itemStackDto) : undefined;
 				inv.SetItem(slot, itemStack);
 			},
 		);
-		CoreNetwork.ServerToClient.UpdateInventorySlot.Client.OnServerEvent((invId, slot, itemType, amount) => {
+		CoreNetwork.ServerToClient.UpdateInventorySlot.client.OnServerEvent((invId, slot, itemType, amount) => {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
@@ -61,17 +61,17 @@ export class InventoryController implements OnStart {
 				itemStack.SetAmount(amount);
 			}
 		});
-		CoreNetwork.ServerToClient.SetHeldInventorySlot.Client.OnServerEvent((invId, slot, clientPredicted) => {
+		CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot, clientPredicted) => {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
-			if (this.LocalInventory === inv && clientPredicted) return;
+			if (this.localInventory === inv && clientPredicted) return;
 
 			inv.SetHeldSlot(slot);
 		});
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (event.entity instanceof CharacterEntity) {
-				this.inventories.set(event.entity.GetInventory().Id, event.entity.GetInventory());
+				this.inventories.set(event.entity.GetInventory().id, event.entity.GetInventory());
 				if (event.entity.IsLocalCharacter()) {
 					this.SetLocalInventory((event.entity as CharacterEntity).GetInventory());
 				}
@@ -106,7 +106,7 @@ export class InventoryController implements OnStart {
 		});
 
 		// Scroll to select held item:
-		mouse.Scrolled.Connect((event) => {
+		mouse.scrolled.Connect((event) => {
 			if (!this.enabled || event.uiProcessed) return;
 			// print("scroll: " + delta);
 			if (math.abs(event.delta) < 0.05) return;
@@ -118,7 +118,7 @@ export class InventoryController implements OnStart {
 
 			this.lastScrollTime = now;
 
-			const selectedSlot = this.LocalInventory?.GetHeldSlot();
+			const selectedSlot = this.localInventory?.GetHeldSlot();
 			if (selectedSlot === undefined) return;
 
 			const inc = event.delta < 0 ? 1 : -1;
@@ -136,7 +136,7 @@ export class InventoryController implements OnStart {
 				}
 
 				// If the item at the given `trySlot` index exists, set it as the held item:
-				const itemAtSlot = this.LocalInventory?.GetItem(trySlot);
+				const itemAtSlot = this.localInventory?.GetItem(trySlot);
 				if (itemAtSlot !== undefined) {
 					this.SetHeldSlot(trySlot);
 					break;
@@ -181,38 +181,38 @@ export class InventoryController implements OnStart {
 	}
 
 	public CheckInventoryOutOfSync(): void {
-		if (!this.LocalInventory) {
+		if (!this.localInventory) {
 			error("missing local inventory.");
 		}
 
-		CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.Client.FireServer(this.LocalInventory.Encode());
+		CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.client.FireServer(this.localInventory.Encode());
 	}
 
 	public DropItemInHand(): void {
-		const heldItem = this.LocalInventory?.GetHeldItem();
+		const heldItem = this.localInventory?.GetHeldItem();
 		if (heldItem) {
-			CoreNetwork.ClientToServer.DropItemInSlot.Client.FireServer(this.LocalInventory!.GetHeldSlot(), 1);
+			CoreNetwork.ClientToServer.DropItemInSlot.client.FireServer(this.localInventory!.GetHeldSlot(), 1);
 		}
 	}
 
 	public DropItemInSlot(slot: number, amount: number): void {
-		CoreNetwork.ClientToServer.DropItemInSlot.Client.FireServer(slot, amount);
+		CoreNetwork.ClientToServer.DropItemInSlot.client.FireServer(slot, amount);
 	}
 
 	public SetLocalInventory(inventory: Inventory): void {
-		this.LocalInventory = inventory;
-		this.LocalInventoryAdded.Fire(inventory);
+		this.localInventory = inventory;
+		this.localInventoryAdded.Fire(inventory);
 	}
 
 	public ObserveLocalInventory(callback: (inv: Inventory) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
-		if (Game.LocalPlayer.Character && Game.LocalPlayer.Character instanceof CharacterEntity) {
-			cleanup = callback(Game.LocalPlayer.Character.GetInventory());
+		if (Game.localPlayer.character && Game.localPlayer.character instanceof CharacterEntity) {
+			cleanup = callback(Game.localPlayer.character.GetInventory());
 		}
 
 		bin.Add(
-			Game.LocalPlayer.ObserveCharacter((entity) => {
+			Game.localPlayer.ObserveCharacter((entity) => {
 				cleanup?.();
 				if (entity && entity instanceof CharacterEntity) {
 					cleanup = callback(entity.GetInventory());
@@ -250,12 +250,12 @@ export class InventoryController implements OnStart {
 	}
 
 	public SetHeldSlot(slot: number): void {
-		if (Game.LocalPlayer.Character === undefined) return;
-		if (this.LocalInventory === undefined) return;
+		if (Game.localPlayer.character === undefined) return;
+		if (this.localInventory === undefined) return;
 
-		this.LocalInventory.SetHeldSlot(slot);
-		this.HeldSlotChanged.Fire(slot);
-		CoreNetwork.ClientToServer.SetHeldSlot.Client.FireServer(slot);
+		this.localInventory.SetHeldSlot(slot);
+		this.heldSlotChanged.Fire(slot);
+		CoreNetwork.ClientToServer.SetHeldSlot.client.FireServer(slot);
 	}
 
 	public GetInventory(id: number): Inventory | undefined {
@@ -263,7 +263,7 @@ export class InventoryController implements OnStart {
 	}
 
 	public RegisterInventory(inv: Inventory): void {
-		this.inventories.set(inv.Id, inv);
+		this.inventories.set(inv.id, inv);
 	}
 
 	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void {
@@ -276,10 +276,10 @@ export class InventoryController implements OnStart {
 				if (toItemStack.GetAmount() + amount <= toItemStack.GetMaxStackSize()) {
 					toItemStack.SetAmount(toItemStack.GetAmount() + amount);
 					fromItemStack.Decrement(amount);
-					CoreNetwork.ClientToServer.Inventory.MoveToSlot.Client.FireServer(
-						fromInv.Id,
+					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+						fromInv.id,
 						fromSlot,
-						toInv.Id,
+						toInv.id,
 						toSlot,
 						amount,
 					);
@@ -293,10 +293,10 @@ export class InventoryController implements OnStart {
 		this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
 			noNetwork: true,
 		});
-		CoreNetwork.ClientToServer.Inventory.MoveToSlot.Client.FireServer(
-			fromInv.Id,
+		CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+			fromInv.id,
 			fromSlot,
-			toInv.Id,
+			toInv.id,
 			toSlot,
 			amount,
 		);
@@ -315,7 +315,7 @@ export class InventoryController implements OnStart {
 			const itemMeta = itemStack.GetMeta();
 			if (!completed) {
 				if (itemMeta.armor) {
-					const armorSlot = inv.ArmorSlots[itemMeta.armor.armorType];
+					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
 					const existingArmor = inv.GetItem(armorSlot);
 					if (existingArmor === undefined) {
 						this.SwapSlots(inv, slot, inv, armorSlot, {
@@ -368,7 +368,7 @@ export class InventoryController implements OnStart {
 			// armor
 			if (!completed) {
 				if (itemMeta.armor) {
-					const armorSlot = inv.ArmorSlots[itemMeta.armor.armorType];
+					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
 					const existingArmor = inv.GetItem(armorSlot);
 					if (existingArmor === undefined) {
 						this.SwapSlots(inv, slot, inv, armorSlot, {
@@ -414,7 +414,7 @@ export class InventoryController implements OnStart {
 			}
 		}
 
-		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.Client.FireServer(inv.Id, slot, inv.Id);
+		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.client.FireServer(inv.id, slot, inv.id);
 
 		// SetTimeout(0.1, () => {
 		// 	this.CheckInventoryOutOfSync();

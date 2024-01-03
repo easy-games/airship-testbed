@@ -15,15 +15,15 @@ export class EntityCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		const entityService = Dependency<EntityService>();
 
-		if (!player.Character) return;
+		if (!player.character) return;
 
-		const pos = player.Character.GameObject.transform.position;
+		const pos = player.character.gameObject.transform.position;
 		const entity = entityService.SpawnEntity(EntityPrefabType.HUMAN, pos);
 		entity.AddHealthbar();
 
 		entity
 			.GetInventory()
-			.SetItem(entity.GetInventory().ArmorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET));
+			.SetItem(entity.GetInventory().armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET));
 
 		if (args.size() >= 1) {
 			const health = tonumber(args[0]);

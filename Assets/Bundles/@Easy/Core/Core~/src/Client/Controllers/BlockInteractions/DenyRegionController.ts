@@ -13,11 +13,11 @@ export class DenyRegionController implements OnStart {
 
 	OnStart(): void {
 		/* Listen for incoming deny region snapshots. */
-		CoreNetwork.ServerToClient.DenyRegionSnapshot.Client.OnServerEvent((denyRegions) => {
+		CoreNetwork.ServerToClient.DenyRegionSnapshot.client.OnServerEvent((denyRegions) => {
 			denyRegions.forEach((denyRegion) => this.CreateDenyRegionFromDto(denyRegion));
 		});
 		/* Listen for created deny regions. */
-		CoreNetwork.ServerToClient.DenyRegionCreated.Client.OnServerEvent((denyRegion) => {
+		CoreNetwork.ServerToClient.DenyRegionCreated.client.OnServerEvent((denyRegion) => {
 			this.CreateDenyRegionFromDto(denyRegion);
 		});
 		/* Cancel block placed if voxel position is inside of a deny region. */

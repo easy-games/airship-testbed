@@ -5,9 +5,9 @@ import { Bin } from "../../../Shared/Util/Bin";
 import { Signal } from "../../../Shared/Util/Signal";
 export declare class InventoryController implements OnStart {
     private inventories;
-    LocalInventory?: Inventory;
-    HeldSlotChanged: Signal<number>;
-    LocalInventoryAdded: Signal<Inventory>;
+    localInventory?: Inventory;
+    heldSlotChanged: Signal<number>;
+    localInventoryAdded: Signal<Inventory>;
     private enabled;
     private disablers;
     private disablerCounter;

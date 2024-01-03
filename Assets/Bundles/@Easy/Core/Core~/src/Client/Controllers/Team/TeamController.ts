@@ -8,12 +8,12 @@ import { PlayerController } from "../Player/PlayerController";
 @Controller({})
 export class TeamController implements OnStart {
 	private teams = new Map<string, Team>();
-	public OnTeamAdded = new Signal<[team: Team]>();
+	public onTeamAdded = new Signal<[team: Team]>();
 
 	constructor(private readonly playerController: PlayerController) {}
 
 	OnStart(): void {
-		CoreNetwork.ServerToClient.AddTeams.Client.OnServerEvent((teamDtos) => {
+		CoreNetwork.ServerToClient.AddTeams.client.OnServerEvent((teamDtos) => {
 			for (let dto of teamDtos) {
 				const team = new Team(
 					dto.name,
@@ -21,7 +21,7 @@ export class TeamController implements OnStart {
 					new Color(dto.color[0], dto.color[1], dto.color[2], dto.color[3]),
 				);
 				this.teams.set(dto.id, team);
-				this.OnTeamAdded.Fire(team);
+				this.onTeamAdded.Fire(team);
 				for (let userId of dto.userIds) {
 					const player = this.playerController.GetPlayerFromUserId(userId);
 					if (player) {
@@ -31,7 +31,7 @@ export class TeamController implements OnStart {
 			}
 		});
 
-		CoreNetwork.ServerToClient.RemoveTeams.Client.OnServerEvent((teamIds) => {
+		CoreNetwork.ServerToClient.RemoveTeams.client.OnServerEvent((teamIds) => {
 			for (let teamId of teamIds) {
 				const team = this.GetTeam(teamId);
 				if (!team) continue;
@@ -40,7 +40,7 @@ export class TeamController implements OnStart {
 			}
 		});
 
-		CoreNetwork.ServerToClient.AddPlayerToTeam.Client.OnServerEvent((teamId, userId) => {
+		CoreNetwork.ServerToClient.AddPlayerToTeam.client.OnServerEvent((teamId, userId) => {
 			const team = this.GetTeam(teamId);
 			if (!team) return;
 
@@ -50,7 +50,7 @@ export class TeamController implements OnStart {
 			team.AddPlayer(player);
 		});
 
-		CoreNetwork.ServerToClient.RemovePlayerFromTeam.Client.OnServerEvent((teamId, playerId) => {
+		CoreNetwork.ServerToClient.RemovePlayerFromTeam.client.OnServerEvent((teamId, playerId) => {
 			const team = this.GetTeam(teamId);
 			if (!team) return;
 

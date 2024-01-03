@@ -8,7 +8,7 @@ export interface PlaySoundConfig {
     rollOffMode?: AudioRolloffMode;
 }
 export declare class AudioManager {
-    static SoundFolderPath: string;
+    static soundFolderPath: string;
     private static soundFolderIndex;
     private static audioSourceTemplate;
     private static globalAudioSources;

@@ -22,7 +22,7 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	public Setup(): void {
-		const refs = this.mainMenuController.Refs;
+		const refs = this.mainMenuController.refs;
 
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
@@ -32,7 +32,7 @@ export class MainMenuNavbarController implements OnStart {
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
 		const runningGameCloseButton = refs.GetValue("UI", "NavbarRunningGameCloseButton");
 
-		if (Game.Context !== CoreContext.GAME) {
+		if (Game.context !== CoreContext.GAME) {
 			runningGameButton.SetActive(false);
 		}
 
@@ -71,7 +71,7 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
-		this.mainMenuController.OnCurrentPageChanged.Connect((page, oldPage) => {
+		this.mainMenuController.onCurrentPageChanged.Connect((page, oldPage) => {
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, false);
 			}
@@ -99,18 +99,18 @@ export class MainMenuNavbarController implements OnStart {
 		// })
 
 		this.UpdateProfileSection();
-		this.userController.OnLocalUserUpdated.Connect((user) => {
+		this.userController.onLocalUserUpdated.Connect((user) => {
 			this.UpdateProfileSection();
 		});
 	}
 
 	public UpdateProfileSection(): void {
-		const profileWrapper = this.mainMenuController.Refs.GetValue("Navbar", "ProfileButton") as GameObject;
-		const usernameText = this.mainMenuController.Refs.GetValue("Navbar", "AccountUsername") as TMP_Text;
-		const picture = this.mainMenuController.Refs.GetValue("Navbar", "AccountPicture") as Image;
-		const disc = this.mainMenuController.Refs.GetValue("Navbar", "AccountDiscriminator") as TMP_Text;
+		const profileWrapper = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton") as GameObject;
+		const usernameText = this.mainMenuController.refs.GetValue("Navbar", "AccountUsername") as TMP_Text;
+		const picture = this.mainMenuController.refs.GetValue("Navbar", "AccountPicture") as Image;
+		const disc = this.mainMenuController.refs.GetValue("Navbar", "AccountDiscriminator") as TMP_Text;
 
-		let user = this.userController.LocalUser;
+		let user = this.userController.localUser;
 		if (!user) {
 			profileWrapper.SetActive(false);
 			return;
@@ -124,10 +124,10 @@ export class MainMenuNavbarController implements OnStart {
 		disc.text = "#" + user.discriminator;
 		profileWrapper.SetActive(true);
 
-		const profileLayoutGroup = this.mainMenuController.Refs.GetValue("Navbar", "ProfileLayoutGroup");
+		const profileLayoutGroup = this.mainMenuController.refs.GetValue("Navbar", "ProfileLayoutGroup");
 		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>());
 
-		const profilerWrapperWrapper = this.mainMenuController.Refs.GetValue(
+		const profilerWrapperWrapper = this.mainMenuController.refs.GetValue(
 			"Navbar",
 			"ProfileWrapperWrapper",
 		) as HorizontalLayoutGroup;

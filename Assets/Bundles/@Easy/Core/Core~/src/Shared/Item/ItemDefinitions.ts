@@ -23,7 +23,7 @@ const GroundItemPrefab = (s: string) => {
 	return `@Easy/Core/Shared/Resources/Prefabs/GroundItems/${s}.prefab`;
 };
 
-const defaultGravity = PhysicsUtil.Gravity;
+const defaultGravity = PhysicsUtil.gravity;
 const blockUsable: UsableHeldItemDef = {
 	startUpInSeconds: 0,
 	minChargeSeconds: 0,

@@ -37,7 +37,7 @@
 			{ "selector": ["accessor"], "format": ["PascalCase"], "modifiers": ["public"] },
 			{ "selector": ["class"], "format": ["PascalCase"], "modifiers": ["exported"] },
 			{ "selector": ["classMethod"], "format": ["PascalCase"], "modifiers": ["public"] },
-			{ "selector": ["classProperty"], "format": ["PascalCase"], "modifiers": ["public"] },
+			{ "selector": ["classProperty"], "format": ["camelCase"] },
 			{ "selector": ["enum"], "format": ["PascalCase"], "modifiers": ["exported"] },
 			{ "selector": ["enumMember"], "format": ["PascalCase"], "modifiers": ["public"] },
 			{ "selector": ["function"], "format": ["PascalCase"], "modifiers": ["exported", "global"] },

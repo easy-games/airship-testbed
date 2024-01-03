@@ -19,7 +19,7 @@ export class AppManager {
 	/** Global mouse instance. */
 	private static mouse = new Mouse();
 	/** Global keyboard instance. */
-	public static Keyboard = new Keyboard();
+	public static keyboard = new Keyboard();
 
 	private static opened: boolean;
 
@@ -197,7 +197,7 @@ export class AppManager {
 }
 
 /* Listen for close key globally. */
-AppManager.Keyboard.OnKeyDown(
+AppManager.keyboard.OnKeyDown(
 	CLOSE_KEY,
 	(event) => {
 		if (AppManager.IsOpen()) {
@@ -207,7 +207,7 @@ AppManager.Keyboard.OnKeyDown(
 	},
 	SignalPriority.HIGH,
 );
-AppManager.Keyboard.OnKeyDown(
+AppManager.keyboard.OnKeyDown(
 	KeyCode.F,
 	(event) => {
 		if (event.uiProcessed) return;

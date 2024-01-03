@@ -15,16 +15,16 @@ export class Keyboard {
 	 * The `AnyKeyDown` signal will fire when any already-registered key is pressed. This means that
 	 * it will only fire for keys that are already being listened for via `OnKeyDown`.
 	 */
-	public readonly AnyKeyDown: Signal<[event: KeySignal]>;
+	public readonly anyKeyDown: Signal<[event: KeySignal]>;
 	/**
 	 * The `AnyKeyDown` signal will fire when any already-registered key is released. This means that
 	 * it will only fire for keys that are already being listened for via `OnKeyUp`.
 	 */
-	public readonly AnyKeyUp: Signal<[event: KeySignal]>;
+	public readonly anyKeyUp: Signal<[event: KeySignal]>;
 
 	constructor() {
-		this.AnyKeyDown = this.bin.Add(new SignalProxy<[KeySignal]>(this.keyboardDriver.AnyKeyDownSignal));
-		this.AnyKeyUp = this.bin.Add(new SignalProxy<[KeySignal]>(this.keyboardDriver.AnyKeyUpSignal));
+		this.anyKeyDown = this.bin.Add(new SignalProxy<[KeySignal]>(this.keyboardDriver.anyKeyDownSignal));
+		this.anyKeyUp = this.bin.Add(new SignalProxy<[KeySignal]>(this.keyboardDriver.anyKeyUpSignal));
 		// this.KeyDown = this.bin.Add(new SignalProxy<[KeySignal]>(this.keyboardDriver.KeyDown));
 		// this.bin.Add(this.KeyDown);
 		// this.bin.Add(this.KeyUp);

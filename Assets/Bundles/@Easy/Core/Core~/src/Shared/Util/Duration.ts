@@ -12,7 +12,7 @@ export namespace Duration {
  * Represents a span of time
  */
 export class Duration {
-	public static readonly ZERO = new Duration(0);
+	public static readonly zero = new Duration(0);
 
 	private constructor(public readonly totalSeconds: number) {}
 

@@ -6,9 +6,9 @@ export declare class Spring {
     /** The angular frequency of the spring. */
     private angularFrequency;
     /** The goal for the spring. */
-    Goal: Vector3;
+    goal: Vector3;
     /** The current velocity of the spring. */
-    Velocity: Vector3;
+    velocity: Vector3;
     constructor(
     /** The position of the spring */
     position: Vector3, 
