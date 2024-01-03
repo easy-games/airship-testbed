@@ -5291,7 +5291,6 @@ GameObject:
   - component: {fileID: 8617271789765328896}
   - component: {fileID: 2632136322167437168}
   - component: {fileID: 9048768913399064187}
-  - component: {fileID: 7074033771802162179}
   m_Layer: 5
   m_Name: MyGamesPage
   m_TagString: Untagged
@@ -5378,63 +5377,6 @@ MonoBehaviour:
     keyValuePairs:
     - key: Content
       value: {fileID: 3604872749232365794}
---- !u!114 &7074033771802162179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5203342000828829738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/HomePageComponent.lua
-  m_error: 0
-  m_yielded: 0
-  m_assetPath: 
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: HomePageComponent
-    properties:
-    - name: mainContent
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 3886322914003232056}
-      modified: 1
-    - name: spacerPrefab
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 4373083881801557931, guid: d76da8712519a4829928d80e8248b74f, type: 3}
-      modified: 1
-    - name: sortPrefab
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 4761209533630879677, guid: 94d376d75a21a4df49361c0c50038b64, type: 3}
-      modified: 1
 --- !u!1 &5252295022998855583
 GameObject:
   m_ObjectHideFlags: 0
@@ -11251,23 +11193,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 294.99997
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 152.49998
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -18.52625
       objectReference: {fileID: 0}
     - target: {fileID: 8388194800662935014, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.x

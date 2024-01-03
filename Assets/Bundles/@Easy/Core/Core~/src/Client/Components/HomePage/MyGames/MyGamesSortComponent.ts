@@ -10,11 +10,13 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 	private sort!: SortComponent;
 	private bin = new Bin();
 
-	public OnAwake(): void {
+	public override Awake(): void {
+		print("MyGames.OnAwake");
 		this.sort = this.gameObject.GetComponent<SortComponent>();
+		print("sort: " + this.sort);
 	}
 
-	public OnEnabled(): void {
+	public override OnEnable(): void {
 		this.sort.Clear();
 		this.FetchGames();
 	}
