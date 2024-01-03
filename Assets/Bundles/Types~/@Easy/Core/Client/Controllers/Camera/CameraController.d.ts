@@ -1,41 +1,33 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
-import { CameraMode, CameraModeTransition } from ".";
+import { CameraMode } from ".";
 import { CameraSystem } from "./CameraSystem";
-export declare class CameraController implements OnStart {
-    static readonly cameraReferenceKey: string;
+export declare class CameraController {
+    static readonly cameraReferenceKey = "CameraRig";
     /** The underlying camera system for the game. */
     readonly cameraSystem: CameraSystem;
-    private enabled;
     constructor();
+    /**
+     * Sets whether or not the camera system is enabled. Disable the
+     * camera system if custom camera code is being used.
+     */
     SetEnabled(enabled: boolean): void;
+    /**
+     * Returns `true` if the camera system is enabled.
+     */
     IsEnabled(): boolean;
     /**
-     * Proxy for `cameraSystem.SetMode()`.
-     *
-     * Set the current camera mode. If `transition` is provided, then the new
-     * mode will be interpolated from the old mode based on the configuration
-     * provided within `transition`. Otherwise, the camera will snap immediately
-     * to the new mode.
+     * Set the current camera mode.
      *
      * @param mode New mode.
-     * @param transition Optional transition configuration.
      */
-    SetMode(mode: CameraMode, transition?: CameraModeTransition): void;
+    SetMode(mode: CameraMode): void;
     /**
-     * Proxy for `cameraSystem.ClearMode()`.
-     *
      * Sets the camera to a static view.
-     *
-     * @param transition Optional transition configuration.
      */
-    ClearMode(transition?: CameraModeTransition): void;
+    ClearMode(): void;
     /**
-     * Proxy for `cameraSystem.SetFOV()`.
-     *
      * Set the camera's field-of-view.
      * @param fieldOfView Field of view.
      * @param immediate If `true`, goes directly to the FOV without springing towards it.
      */
     SetFOV(fieldOfView: number, immediate?: boolean): void;
-    OnStart(): void;
 }
