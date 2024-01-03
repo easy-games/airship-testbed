@@ -67,6 +67,8 @@ export const enum ItemType {
 	// Farming
 	WHEAT_SEEDS = "@Easy/Core:WHEAT_SEEDS",
 	WHEAT_CROP = "@Easy/Core:WHEAT_CROP",
+
+	TNT = "@Easy/Core:TNT",
 }
 export enum ItemArchetype {
 	DEFAULT = 0,

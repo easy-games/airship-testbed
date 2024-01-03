@@ -929,4 +929,13 @@ export const CoreItemDefinitions: {
 		},
 		accessoryPaths: [AccPath(ItemType.WHEAT_SEEDS)],
 	},
+	[ItemType.TNT]: {
+		displayName: "TNT",
+		usable: {
+			cooldownSeconds: 1,
+		},
+		block: {
+			blockId: ItemType.TNT,
+		},
+	},
 };
