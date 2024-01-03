@@ -2,43 +2,9 @@ import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "Shared/Util/Timer";
 import { CameraMode } from "./CameraMode";
-import { CameraModeTransition } from "./CameraModeTransition";
 import { CameraReferences } from "./CameraReferences";
 import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
-
-class TransitionMode implements CameraMode {
-	private readonly start: number;
-
-	constructor(
-		private readonly config: CameraModeTransition,
-		private readonly modeStart: CameraMode,
-		private readonly modeGoal: CameraMode,
-		private readonly onDone: () => void,
-	) {
-		this.start = Time.time;
-	}
-
-	OnStart() {}
-
-	OnStop() {
-		this.modeStart.OnStop();
-		this.modeGoal.OnStop();
-	}
-
-	OnUpdate(dt: number) {}
-
-	OnPostUpdate() {}
-
-	OnLateUpdate(dt: number) {
-		const transformStart = this.modeStart.OnLateUpdate(dt);
-		const transformGoal = this.modeGoal.OnLateUpdate(dt);
-		const alpha = math.clamp((Time.time - this.start) / this.config.Duration, 0, 1);
-		if (alpha === 1) {
-			this.onDone();
-		}
-		return transformStart.Lerp(transformGoal, alpha);
-	}
-}
+import { Bin } from "Shared/Util/Bin";
 
 /**
  * Drives the camera modes.
@@ -55,8 +21,8 @@ export class CameraSystem {
 	private fovSpringMoving = false;
 	private fovSpringMovingStart = 0;
 
-	public readonly modeChangedBegin = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
-	public readonly modeChangedEnd = new Signal<[newMode: CameraMode, oldMode: CameraMode]>();
+	private enabled = true;
+	private readonly enabledBin = new Bin();
 
 	public GetActiveCamera(): Camera {
 		return this.camera;
@@ -69,13 +35,19 @@ export class CameraSystem {
 		this.transform = this.camera.transform;
 		this.fovSpring = new Spring(new Vector3(this.camera.fieldOfView, 0, 0), 5);
 
-		this.currentMode.OnStart(this.camera);
+		if (this.enabled) {
+			this.OnEnabled();
+		} else {
+			this.OnDisabled();
+		}
+	}
 
-		OnUpdate.ConnectWithPriority(SignalPriority.LOWEST, (dt) => {
+	private OnEnabled() {
+		const stopOnUpdate = OnUpdate.ConnectWithPriority(SignalPriority.LOWEST, (dt) => {
 			this.currentMode.OnUpdate(dt);
 		});
 
-		OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
+		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
 			const camTransform = this.currentMode.OnLateUpdate(dt);
 			this.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 			this.currentMode.OnPostUpdate(this.camera);
@@ -83,6 +55,45 @@ export class CameraSystem {
 				this.UpdateFOVSpring(dt);
 			}
 		});
+
+		// Reset FOV spring on enabled and on disabled:
+		this.SetFOV(this.fovSpring.goal.x, true);
+		this.enabledBin.Add(() => {
+			this.SetFOV(this.fovSpring.goal.x, true);
+		});
+
+		this.currentMode.OnStart(this.camera);
+		this.enabledBin.Add(() => {
+			this.currentMode.OnStop();
+		});
+
+		this.enabledBin.Add(stopOnUpdate);
+		this.enabledBin.Add(stopOnLateUpdate);
+	}
+
+	private OnDisabled() {
+		this.enabledBin.Clean();
+	}
+
+	/**
+	 * Sets whether or not the camera system is enabled. Disable the
+	 * camera system if custom camera code is being used.
+	 */
+	public SetEnabled(enabled: boolean) {
+		if (this.enabled === enabled) return;
+		this.enabled = enabled;
+		if (enabled) {
+			this.OnEnabled();
+		} else {
+			this.OnDisabled();
+		}
+	}
+
+	/**
+	 * Returns `true` if the camera system is enabled.
+	 */
+	public IsEnabled() {
+		return this.enabled;
 	}
 
 	/**
@@ -94,47 +105,27 @@ export class CameraSystem {
 	}
 
 	/**
-	 * Set the current camera mode. If `transition` is provided, then the new
-	 * mode will be interpolated from the old mode based on the configuration
-	 * provided within `transition`. Otherwise, the camera will snap immediately
-	 * to the new mode.
+	 * Set the current camera mode.
 	 *
 	 * @param mode New mode.
-	 * @param transition Optional transition configuration.
 	 */
-	public SetMode(mode: CameraMode, transition?: CameraModeTransition) {
+	public SetMode(mode: CameraMode) {
 		if (mode === this.currentMode) return;
 		this.modeCleared = false;
 
-		if (transition === undefined) {
-			const oldMode = this.currentMode;
-			this.modeChangedBegin.Fire(mode, oldMode);
-			this.currentMode.OnStop();
-			this.currentMode = mode;
-			this.currentMode.OnStart(this.camera);
-			this.modeChangedEnd.Fire(mode, oldMode);
-		} else {
-			const oldMode = this.currentMode;
-			this.modeChangedBegin.Fire(mode, oldMode);
-			mode.OnStart(this.camera);
-			this.currentMode = new TransitionMode(transition, oldMode, mode, () => {
-				oldMode.OnStop();
-				this.currentMode = mode;
-				this.modeChangedEnd.Fire(mode, oldMode);
-			});
-		}
+		if (this.enabled) this.currentMode.OnStop();
+		this.currentMode = mode;
+		if (this.enabled) this.currentMode.OnStart(this.camera);
 	}
 
 	/**
 	 * Sets the camera to a static view.
-	 *
-	 * @param transition Optional transition configuration.
 	 */
-	public ClearMode(transition?: CameraModeTransition) {
+	public ClearMode() {
 		if (this.onClearCallback) {
-			this.SetMode(this.onClearCallback(), transition);
+			this.SetMode(this.onClearCallback());
 		} else {
-			this.SetMode(new StaticCameraMode(this.transform.position, this.transform.rotation), transition);
+			this.SetMode(new StaticCameraMode(this.transform.position, this.transform.rotation));
 			this.modeCleared = true;
 		}
 	}

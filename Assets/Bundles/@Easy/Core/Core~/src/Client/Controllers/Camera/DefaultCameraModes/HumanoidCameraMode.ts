@@ -25,7 +25,6 @@ const MAX_ROT_X = math.rad(179);
 const XZ_LOCKED_OFFSET = new Vector3(0.45, 0, 3.5);
 const Y_LOCKED_ROTATION = 0;
 
-const ANGLE_EPSILON = 0.0001;
 const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 0.1;

@@ -1,57 +1,50 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CameraMode, CameraModeTransition } from ".";
+import { Controller } from "@easy-games/flamework-core";
+import { CameraMode } from ".";
 import { CameraSystem } from "./CameraSystem";
 
 @Controller({})
-export class CameraController implements OnStart {
-	public static readonly cameraReferenceKey: string = "CameraRig";
+export class CameraController {
+	public static readonly cameraReferenceKey = "CameraRig";
 
 	/** The underlying camera system for the game. */
 	public readonly cameraSystem: CameraSystem;
-
-	private enabled = true;
 
 	constructor() {
 		this.cameraSystem = new CameraSystem();
 	}
 
-	public SetEnabled(enabled: boolean): void {
-		this.enabled = enabled;
-	}
-
-	public IsEnabled(): boolean {
-		return this.enabled;
+	/**
+	 * Sets whether or not the camera system is enabled. Disable the
+	 * camera system if custom camera code is being used.
+	 */
+	public SetEnabled(enabled: boolean) {
+		this.cameraSystem.SetEnabled(enabled);
 	}
 
 	/**
-	 * Proxy for `cameraSystem.SetMode()`.
-	 *
-	 * Set the current camera mode. If `transition` is provided, then the new
-	 * mode will be interpolated from the old mode based on the configuration
-	 * provided within `transition`. Otherwise, the camera will snap immediately
-	 * to the new mode.
+	 * Returns `true` if the camera system is enabled.
+	 */
+	public IsEnabled() {
+		return this.cameraSystem.IsEnabled();
+	}
+
+	/**
+	 * Set the current camera mode.
 	 *
 	 * @param mode New mode.
-	 * @param transition Optional transition configuration.
 	 */
-	public SetMode(mode: CameraMode, transition?: CameraModeTransition) {
-		this.cameraSystem.SetMode(mode, transition);
+	public SetMode(mode: CameraMode) {
+		this.cameraSystem.SetMode(mode);
 	}
 
 	/**
-	 * Proxy for `cameraSystem.ClearMode()`.
-	 *
 	 * Sets the camera to a static view.
-	 *
-	 * @param transition Optional transition configuration.
 	 */
-	public ClearMode(transition?: CameraModeTransition) {
-		this.cameraSystem.ClearMode(transition);
+	public ClearMode() {
+		this.cameraSystem.ClearMode();
 	}
 
 	/**
-	 * Proxy for `cameraSystem.SetFOV()`.
-	 *
 	 * Set the camera's field-of-view.
 	 * @param fieldOfView Field of view.
 	 * @param immediate If `true`, goes directly to the FOV without springing towards it.
@@ -59,6 +52,4 @@ export class CameraController implements OnStart {
 	public SetFOV(fieldOfView: number, immediate = false) {
 		this.cameraSystem.SetFOV(fieldOfView, immediate);
 	}
-
-	OnStart() {}
 }
