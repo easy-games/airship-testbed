@@ -34,11 +34,11 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 		this.sort.SetGames(data.games);
 	}
 
-	override OnStart(): void {
+	override Start(): void {
 		this.sort.Init("My Games");
 	}
 
-	public OnDisabled(): void {
+	public OnDisable(): void {
 		this.bin.Clean();
 	}
 

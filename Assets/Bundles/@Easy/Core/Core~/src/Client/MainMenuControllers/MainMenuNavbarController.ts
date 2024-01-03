@@ -27,7 +27,7 @@ export class MainMenuNavbarController implements OnStart {
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
 		const shopButton = refs.GetValue("UI", "NavbarShopButton");
-		// const myServersButton = refs.GetValue("UI", "NavbarMyServersButton");
+		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
 		const runningGameCloseButton = refs.GetValue("UI", "NavbarRunningGameCloseButton");
@@ -38,22 +38,27 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(homeButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(homeButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.HOME);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Home);
 		});
 
 		CoreUI.SetupButton(avatarButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(avatarButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.AVATAR);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Avatar);
 		});
 
 		CoreUI.SetupButton(shopButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(shopButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.SHOP);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Shop);
+		});
+
+		CoreUI.SetupButton(myGamesButton, { noHoverSound: true });
+		CanvasAPI.OnClickEvent(myGamesButton, () => {
+			this.mainMenuController.RouteToPage(MainMenuPageType.MyGames);
 		});
 
 		CoreUI.SetupButton(settingsButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(settingsButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.SETTINGS);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
 		});
 
 		// CoreUI.SetupButton(myServersButton, { noHoverSound: true });
@@ -75,13 +80,13 @@ export class MainMenuNavbarController implements OnStart {
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, false);
 			}
-			if (page === MainMenuPageType.HOME) {
+			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
-			} else if (page === MainMenuPageType.SETTINGS) {
+			} else if (page === MainMenuPageType.Settings) {
 				currentSelectedNavbarButton = settingsButton;
-			} else if (page === MainMenuPageType.AVATAR) {
+			} else if (page === MainMenuPageType.Avatar) {
 				currentSelectedNavbarButton = avatarButton;
-			} else if (page === MainMenuPageType.SHOP) {
+			} else if (page === MainMenuPageType.Shop) {
 				currentSelectedNavbarButton = shopButton;
 			}
 			if (currentSelectedNavbarButton) {
