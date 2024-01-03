@@ -22,3 +22,7 @@ export interface GamesDto {
 	popular: GameDto[];
 	featured: GameDto[];
 }
+
+export interface MyGamesDto {
+	games: GameDto[];
+}

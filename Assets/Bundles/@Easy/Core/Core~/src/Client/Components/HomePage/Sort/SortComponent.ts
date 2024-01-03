@@ -5,7 +5,6 @@ export default class SortComponent extends AirshipBehaviour {
 	public titleText!: GameObject;
 	public content!: Transform;
 	public gamePrefab!: GameObject;
-	public backendName!: string;
 
 	override OnAwake(): void {
 		this.content.gameObject.ClearChildren();
@@ -15,9 +14,8 @@ export default class SortComponent extends AirshipBehaviour {
 
 	override OnDestroy(): void {}
 
-	public Setup(title: string, backendName: string): void {
+	public Init(title: string): void {
 		this.SetTitle(title);
-		this.backendName = backendName;
 	}
 
 	public SetGames(games: GameDto[]): void {
