@@ -7,7 +7,16 @@ import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 
-const CHARACTER_MASK = -4239;
+const CAMERA_IGNORE_MASK = LayerMask.InvertMask(
+	LayerMask.GetMask(
+		"TransparentFX",
+		"Ignore Raycast",
+		"Character",
+		"BridgeAssist",
+		"GroundItem",
+		"ProjectileReceiver",
+	),
+);
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -189,7 +198,7 @@ export class OrbitCameraMode implements CameraMode {
 	OnPostUpdate(camera: Camera) {
 		const transform = camera.transform;
 		transform.LookAt(this.lastAttachToPos);
-		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CHARACTER_MASK);
+		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CAMERA_IGNORE_MASK);
 
 		// Update character direction:
 		if (this.entityDriver !== undefined) {
