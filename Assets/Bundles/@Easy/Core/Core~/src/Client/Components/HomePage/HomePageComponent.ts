@@ -14,7 +14,7 @@ export default class HomePageComponent extends AirshipBehaviour {
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 
-	override OnEnabled(): void {
+	override OnEnable(): void {
 		this.ClearSorts();
 		this.CreateSort(SortId.POPULAR, "Popular", "featured");
 		this.FetchGames();

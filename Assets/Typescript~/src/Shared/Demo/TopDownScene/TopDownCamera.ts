@@ -15,7 +15,7 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 	private bin = new Bin();
 	private mouse = new Mouse();
 
-	public override OnUpdate(dt: number): void {
+	public override Update(dt: number): void {
 		if (this.entity?.IsAlive()) {
 			const mousePos = this.mouse.GetLocation();
 			const worldPos = this.camera.ScreenToWorldPoint(
@@ -31,7 +31,7 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 		}
 	}
 
-	public override OnLateUpdate(dt: number): void {
+	public override LateUpdate(dt: number): void {
 		if (this.entity) {
 			const entityPos = this.entity.model.transform.position;
 			this.camera.transform.position = entityPos.add(this.cameraOffset);
@@ -39,7 +39,7 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 		}
 	}
 
-	public override OnEnabled(): void {
+	public override OnEnable(): void {
 		if (RunUtil.IsServer()) return;
 
 		Dependency<CameraController>().SetEnabled(false);
@@ -57,7 +57,7 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 		);
 	}
 
-	public override OnDisabled(): void {
+	public override OnDisable(): void {
 		this.bin.Clean();
 	}
 

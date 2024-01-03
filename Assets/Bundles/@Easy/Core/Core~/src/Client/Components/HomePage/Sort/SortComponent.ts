@@ -6,11 +6,11 @@ export default class SortComponent extends AirshipBehaviour {
 	public content!: Transform;
 	public gamePrefab!: GameObject;
 
-	override OnAwake(): void {
+	override Awake(): void {
 		this.content.gameObject.ClearChildren();
 	}
 
-	override OnStart(): void {}
+	override Start(): void {}
 
 	override OnDestroy(): void {}
 
