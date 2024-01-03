@@ -1,5 +1,4 @@
-﻿//import {CameraController} from "./CameraController";
-import { Dependency } from "@easy-games/flamework-core";
+﻿import { Dependency } from "@easy-games/flamework-core";
 import { Entity, EntityReferences } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";

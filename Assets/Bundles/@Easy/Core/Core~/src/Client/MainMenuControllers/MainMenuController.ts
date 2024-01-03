@@ -56,9 +56,10 @@ export class MainMenuController implements OnStart {
 		//print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>().TEST());
 
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
-			[MainMenuPageType.HOME, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.SETTINGS, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.AVATAR, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
+			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
 		]);
 
 		//let avatarHolder = GameObject.Create("AvatarHolder");
@@ -166,7 +167,7 @@ export class MainMenuController implements OnStart {
 
 	OnStart(): void {
 		if (this.currentPage === undefined) {
-			this.RouteToPage(MainMenuPageType.HOME, true, true);
+			this.RouteToPage(MainMenuPageType.Home, true, true);
 		}
 
 		if (Game.context === CoreContext.GAME) {
