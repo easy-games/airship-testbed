@@ -196,26 +196,24 @@ export class BlockInteractService implements OnStart {
 
 			const world = WorldAPI.GetMainWorld();
 			if (world) {
-				let prefab = MeshProcessor.ProduceSingleBlock(
-					world.voxelWorld.blocks.GetBlockIdFromStringId(item.itemType),
-					world.voxelWorld,
-					0,
-					0,
-				);
-				if (prefab) {
-					const obj = prefab;
-					Bridge.SetParentToSceneRoot(obj.transform);
-					// obj.transform.SetParent(undefined);
-					obj.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
-
-					if (item.blockEntity.scripts) {
-						for (const scriptPath of item.blockEntity.scripts) {
-							const binding = obj.AddComponent<ScriptBinding>();
-							binding.SetScriptFromPath(scriptPath);
-						}
-					}
+				if (item.blockEntity.prefab) {
+					let prefab = AssetBridge.Instance.LoadAsset<Object>(item.blockEntity.prefab.path);
+					const go = GameObjectUtil.Instantiate(prefab);
+					Bridge.SetParentToSceneRoot(go.transform);
+					go.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
 				} else {
-					warn("no prefab");
+					let prefab = MeshProcessor.ProduceSingleBlock(
+						world.voxelWorld.blocks.GetBlockIdFromStringId(item.itemType),
+						world.voxelWorld,
+						0,
+						0,
+					);
+					if (prefab) {
+						const obj = prefab;
+						obj.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
+					} else {
+						warn("no prefab");
+					}
 				}
 			}
 
