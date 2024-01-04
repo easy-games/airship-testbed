@@ -26,8 +26,8 @@ export class EnchantTableService implements OnStart {
 	}
 
 	/**
-	 * Spawns an enchant table at every team's spawn. This assumes that a sign named `${team_id}_misc_2`
-	 * exists at each spawn.
+	 * Spawns an enchant table at every team's spawn location. The specific spawn location is
+	 * determined by the `${team_id}_misc_2` sign.
 	 */
 	private SpawnEnchantTables(): void {
 		if (!this.loadedMap) return;
