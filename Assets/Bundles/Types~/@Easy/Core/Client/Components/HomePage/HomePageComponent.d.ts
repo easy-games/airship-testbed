@@ -5,10 +5,10 @@ export default class HomePageComponent extends AirshipBehaviour {
     sortPrefab: GameObject;
     private bin;
     private sorts;
-    OnEnabled(): void;
+    OnEnable(): void;
     private ClearSorts;
     private CreateSort;
     FetchGames(): void;
-    OnDisabled(): void;
+    OnDisable(): void;
     OnDestroy(): void;
 }
