@@ -1,13 +1,13 @@
 import {} from "@easy-games/flamework-core";
-import { MainMenuPageType } from "./MainMenuPageName";
 import { SetTimeout } from "Shared/Util/Timer";
 import { MainMenuController } from "./MainMenuController";
+import { MainMenuPageType } from "./MainMenuPageName";
 
 export default class MainMenuPageComponent extends AirshipBehaviour {
 	private animateOutDuration = 0.1;
 	private animateInDuration = 0.1;
 
-	public pageType: MainMenuPageType = MainMenuPageType.HOME;
+	public pageType: MainMenuPageType = MainMenuPageType.Home;
 	protected refs?: GameObjectReferences;
 
 	private activePage = false;
@@ -18,7 +18,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.mainMenu = mainMenu;
 		this.pageType = pageType;
 		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
-		if (pageType === MainMenuPageType.HOME) {
+		if (pageType === MainMenuPageType.Home) {
 			this.OpenPage();
 		} else {
 			this.ClosePage(true);

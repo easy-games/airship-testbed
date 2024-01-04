@@ -12,11 +12,11 @@ export default class GameManager extends AirshipBehaviour {
 	public spawnPosition!: Transform;
 	private bin = new Bin();
 
-	public override OnAwake(): void {
+	public override Awake(): void {
 		print("GameManager.OnAwake");
 	}
 
-	override OnStart(): void {
+	override Start(): void {
 		print("GameManager.OnStart");
 		if (RunUtil.IsServer()) {
 			Dependency<PlayerService>().ObservePlayers((player) => {

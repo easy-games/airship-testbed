@@ -23,7 +23,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
 
-	public override OnStart(): void {
+	public override Start(): void {
 		this.accessoryBuilder = this.humanEntityGo?.GetComponent<AccessoryBuilder>();
 		this.dragging = false;
 		this.mouse = new Mouse();

@@ -13,8 +13,8 @@ export interface GameDto {
 		slug: string;
 		slugProperCase: string;
 	};
-	liveStats: {
-		playerCount: number;
+	liveStats?: {
+		playerCount?: number;
 	};
 }
 
@@ -22,3 +22,5 @@ export interface GamesDto {
 	popular: GameDto[];
 	featured: GameDto[];
 }
+
+export type MyGamesDto = GameDto[];

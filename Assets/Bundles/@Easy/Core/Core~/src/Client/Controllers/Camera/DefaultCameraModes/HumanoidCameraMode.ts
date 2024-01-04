@@ -7,17 +7,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { SpringTween } from "Shared/Util/SpringTween";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "..";
-
-const CAMERA_IGNORE_MASK = LayerMask.InvertMask(
-	LayerMask.GetMask(
-		"TransparentFX",
-		"Ignore Raycast",
-		"Character",
-		"BridgeAssist",
-		"GroundItem",
-		"ProjectileReceiver",
-	),
-);
+import DefaultCameraMask from "../DefaultCameraMask";
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -214,7 +204,7 @@ export class HumanoidCameraMode implements CameraMode {
 		const transform = camera.transform;
 		if (!this.firstPerson) {
 			transform.LookAt(this.lastAttachToPos);
-			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CAMERA_IGNORE_MASK);
+			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
 		}
 		this.camRight = transform.right;
 

@@ -176,6 +176,7 @@ export class HeldItem {
 
 	public OnCallToActionEnd() {
 		this.Log("OnCallToActionEnd");
+		this.bufferingUse = false;
 		this.holdingDownBin.Clean();
 		if (this.isCharging) {
 			this.TryChargeUse();

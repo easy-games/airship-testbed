@@ -776,7 +776,7 @@ export const CoreItemDefinitions: {
 		accessoryPaths: [AccPath(ItemType.WOOD_ARROW)],
 		projectile: {
 			stickItemAtSurfaceOnMiss: true,
-			yAxisAimAdjust: 0.1,
+			yAxisAimAdjust: 0,
 			damage: 15,
 			gravity: defaultGravity * 0.4,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),

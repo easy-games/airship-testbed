@@ -61,7 +61,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 	}
 
-	OnDisabled(): void {
+	override OnDisable(): void {
 		print("HomePageComponent.OnDisable");
 		this.bin.Clean();
 	}
