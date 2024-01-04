@@ -16,20 +16,30 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	private sorts = new Map<SortId, SortComponent>();
 
 	override OpenPage(): void {
+		super.OpenPage();
+
+		let avatarView = this.mainMenu?.avatarView;
+		if (avatarView) {
+			avatarView.ResetAvatar();
+			avatarView.CameraFocusTransform(avatarView.cameraWaypointCenterHero, true);
+		}
 		this.ClearSorts();
 		this.CreateSort(SortId.POPULAR, "Popular", "featured");
 		this.FetchGames();
 	}
 
 	private ClearSorts(): void {
-		//let toRemove: Transform[] = [];
-		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
-			Object.Destroy(this.mainContent.GetChild(i));
-			//toRemove.push(this.mainContent.GetChild(i));
-		}
-		// for (const t of toRemove) {
-		// 	Object.Destroy(t.gameObject);
+		// for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
+		// 	Object.Destroy(this.mainContent.GetChild(i));
 		// }
+
+		let toRemove: Transform[] = [];
+		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
+			toRemove.push(this.mainContent.GetChild(i));
+		}
+		for (const t of toRemove) {
+			Object.Destroy(t.gameObject);
+		}
 	}
 
 	private CreateSort(sortId: SortId, title: string, backendName: string): void {

@@ -12,6 +12,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraWaypointHands?: Transform;
 	public cameraWaypointBack?: Transform;
 	public cameraWaypointCenterHero?: Transform;
+	public cameraWaypointBirdsEye?: Transform;
 
 	public dragSpeedMod = 10;
 	public cameraTransitionDuration = 1;
@@ -44,7 +45,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.gameObject.SetActive(false);
 	}
 
-	public FocusSlot(slotType: AccessorySlot) {
+	public ResetAvatar(){
+		if(this.avatarHolder){
+			this.avatarHolder.localEulerAngles = Vector3.zero;
+		}
+	}
+
+	public CameraFocusSlot(slotType: AccessorySlot) {
 		print("Fosuing slot: " + slotType);
 		this.targetTransform = this.cameraWaypointDefault;
 		if (
@@ -71,12 +78,16 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		} else if (slotType === AccessorySlot.Backpack) {
 			this.targetTransform = this.cameraWaypointBack;
 		}
-		this.FocusTransform(this.targetTransform);
+		this.CameraFocusTransform(this.targetTransform);
 	}
 
-	public FocusTransform(transform?: Transform){
+	public CameraFocusTransform(transform?: Transform, instant = false){
 		this.targetTransform = transform;
 		if (this.cameraTransform && this.targetTransform) {
+			if (instant) {
+				this.cameraTransform.position = this.targetTransform.position;
+				this.cameraTransform.rotation = this.targetTransform.rotation;
+			}
 			this.cameraTransform
 				.TweenPosition(this.targetTransform.position, this.cameraTransitionDuration)
 				.SetEaseQuadInOut();

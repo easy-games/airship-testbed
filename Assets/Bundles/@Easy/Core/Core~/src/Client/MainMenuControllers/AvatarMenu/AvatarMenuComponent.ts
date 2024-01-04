@@ -97,7 +97,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (button) {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(button, () => {
-				this.mainMenu?.avatarView?.FocusSlot(AccessorySlot.Root);
+				this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
 			});
 		}
 	}
@@ -105,6 +105,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OpenPage(): void {
 		super.OpenPage();
 		this.Log("Open AVATAR");
+		let avatarView = this.mainMenu?.avatarView;
+		if (avatarView) {
+			avatarView.CameraFocusTransform(avatarView.cameraWaypointBirdsEye, true);
+		}
 		this.SelectMainNav(0);
 	}
 
@@ -282,7 +286,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Accessories
 		let foundItems = AvatarUtil.GetAllAvatarItems(slot);
 		this.DisplayItems(foundItems);
-		this.mainMenu?.avatarView?.FocusSlot(slot);
+		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
 	private DisplayItems(items: Accessory[] | undefined) {

@@ -15,6 +15,7 @@ import { MainMenuPageType } from "./MainMenuPageName";
 import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
+import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 
 @Controller()
 export class MainMenuController implements OnStart {
@@ -51,12 +52,12 @@ export class MainMenuController implements OnStart {
 
 		const mouse = new Mouse();
 
-		//print("home go: " + this.refs.GetValue("Pages", "Home").name);
-		//print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>());
-		//print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>().TEST());
+		// print("home go: " + this.refs.GetValue("Pages", "Home").name);
+		// print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>());
+		// print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>().TEST());
 
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
-			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>()],
 			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
 			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
 			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
