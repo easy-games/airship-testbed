@@ -97,6 +97,10 @@ export interface CropBlockDef {
 	stageGrowthDuration: Duration;
 }
 
+export interface EntitySpawner {
+	scripts?: string[];
+}
+
 export interface ItemDef {
 	//Identification
 	displayName: string;
@@ -115,6 +119,7 @@ export interface ItemDef {
 	//Optional Item Archetypes
 	melee?: MeleeItemDef;
 	block?: BlockDef;
+	blockEntity?: BlockDef & EntitySpawner;
 	breakBlock?: BreakBlockDef;
 	cropBlock?: CropBlockDef;
 	tillBlock?: TillBlockDef;

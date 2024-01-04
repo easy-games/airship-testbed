@@ -7,6 +7,10 @@ export type DataStreamItems = {
 		pos: Vector3;
 		itemType: ItemType;
 	};
+	PlaceBlockEntity: {
+		pos: Vector3;
+		itemType: ItemType;
+	};
 	HitBlock: Vector3;
 	TillBlock: Vector3;
 	HeldItemState: HeldItemStateInfo;

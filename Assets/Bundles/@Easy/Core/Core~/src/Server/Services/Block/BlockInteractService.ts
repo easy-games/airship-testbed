@@ -16,6 +16,7 @@ import { EntityService } from "../Entity/EntityService";
 import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -68,6 +69,55 @@ export class BlockInteractService implements OnStart {
 			}
 
 			this.PlaceBlock(entity, pos, itemMeta);
+		});
+
+		//Placed a block
+		CoreServerSignals.CustomMoveCommand.Connect((event) => {
+			if (!event.Is("PlaceBlockEntity")) return;
+
+			print("PlaceBlockEntity tick=" + InstanceFinder.TimeManager.LocalTick);
+
+			const itemType = event.value.itemType;
+			const pos = event.value.pos;
+			const clientId = event.clientId;
+
+			const world = WorldAPI.GetMainWorld();
+			const itemMeta = ItemUtil.GetItemDef(itemType);
+
+			const rollback = () => {
+				// CoreNetwork.ServerToClient.RevertBlockPlace.server.FireClient(clientId, pos);
+			};
+
+			if (!itemMeta.blockEntity?.blockId) {
+				return rollback();
+			}
+
+			// const player = Dependency<PlayerService>().GetPlayerFromClientId(clientId);
+			const entity = Dependency<EntityService>().GetEntityByClientId(clientId);
+			if (!entity) {
+				return rollback();
+			}
+			if (!(entity instanceof CharacterEntity)) {
+				return rollback();
+			}
+			if (!entity.GetInventory().HasEnough(itemType, 1)) {
+				return rollback();
+			}
+
+			const beforeBlockPlaced = CoreServerSignals.BeforeBlockPlaced.Fire(
+				new BeforeBlockPlacedSignal(
+					pos,
+					itemType,
+					world!.GetVoxelIdFromId(itemMeta.blockEntity!.blockId),
+					entity,
+				),
+			);
+
+			if (beforeBlockPlaced.IsCancelled()) {
+				return rollback();
+			}
+
+			this.PlaceBlockEntity(entity, pos, itemMeta);
 		});
 
 		//Hit Block with an Item
@@ -136,6 +186,41 @@ export class BlockInteractService implements OnStart {
 
 		//Deprecated? Now using "HitBlock" move command
 		CoreNetwork.ClientToServer.HitBlock.server.OnClientEvent((clientId, pos) => {});
+	}
+
+	public PlaceBlockEntity(entity: CharacterEntity, pos: Vector3, item: ItemDef, blockData?: BlockData) {
+		print("place block entity = ", pos);
+
+		if (item.blockEntity) {
+			entity.GetInventory().Decrement(item.itemType, 1);
+
+			const world = WorldAPI.GetMainWorld();
+			if (world) {
+				let prefab = MeshProcessor.ProduceSingleBlock(
+					world.voxelWorld.blocks.GetBlockIdFromStringId(item.itemType),
+					world.voxelWorld,
+					0,
+					0,
+				);
+				if (prefab) {
+					const obj = prefab;
+					Bridge.SetParentToSceneRoot(obj.transform);
+					// obj.transform.SetParent(undefined);
+					obj.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
+
+					if (item.blockEntity.scripts) {
+						for (const scriptPath of item.blockEntity.scripts) {
+							const binding = obj.AddComponent<ScriptBinding>();
+							binding.SetScriptFromPath(scriptPath);
+						}
+					}
+				} else {
+					warn("no prefab");
+				}
+			}
+
+			entity.SendItemAnimationToClients(0, 0, entity.clientId);
+		}
 	}
 
 	public PlaceBlock(entity: CharacterEntity, pos: Vector3, item: ItemDef, blockData?: BlockData) {

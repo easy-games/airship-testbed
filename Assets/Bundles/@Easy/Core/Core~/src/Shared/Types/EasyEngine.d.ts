@@ -748,3 +748,7 @@ interface VoxelWorldConstructor {
 	VoxelIsSolid(voxel: number): boolean;
 }
 declare const VoxelWorld: VoxelWorldConstructor;
+
+interface ScriptBinding extends Component {
+	SetScriptFromPath(path: string): void;
+}
