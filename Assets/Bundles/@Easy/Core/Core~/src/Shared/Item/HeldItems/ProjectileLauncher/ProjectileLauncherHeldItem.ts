@@ -232,6 +232,8 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 	public override OnCallToActionEnd(): void {
 		super.OnCallToActionEnd();
+
+		this.processChargeAfterCooldown = false;
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
 	}
