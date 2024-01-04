@@ -10,7 +10,7 @@ import { Bin } from "Shared/Util/Bin";
  * Drives the camera modes.
  */
 export class CameraSystem {
-	private currentMode: CameraMode = new StaticCameraMode(new Vector3(0, 10, 0), Quaternion.identity);
+	private currentMode: CameraMode;
 	private readonly transform: Transform;
 	private readonly camera: Camera;
 	private readonly allCameras: Camera[];
@@ -34,6 +34,7 @@ export class CameraSystem {
 		this.allCameras = [ref.mainCamera, ref.uiCamera, ref.fpsCamera];
 		this.transform = this.camera.transform;
 		this.fovSpring = new Spring(new Vector3(this.camera.fieldOfView, 0, 0), 5);
+		this.currentMode = new StaticCameraMode(this.camera.transform.position, this.camera.transform.rotation);
 
 		if (this.enabled) {
 			this.OnEnabled();
