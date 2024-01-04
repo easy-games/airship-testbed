@@ -15,7 +15,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     private targetTransform?;
     private mouse?;
     private lastMousePos;
-    OnStart(): void;
+    Start(): void;
     ShowAvatar(): void;
     HideAvatar(): void;
     FocusSlot(slotType: AccessorySlot): void;

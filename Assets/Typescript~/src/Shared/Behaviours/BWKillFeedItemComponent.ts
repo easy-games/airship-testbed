@@ -31,7 +31,7 @@ export default class BWKillFeedItemComponent extends AirshipBehaviour {
 	private attackerGo!: GameObject;
 	private targetGo!: GameObject;
 
-	public override OnAwake(): void {
+	public override Awake(): void {
 		const references = this.gameObject.GetComponent<GameObjectReferences>();
 
 		this.attackerName = references.GetValue("UI", "AttackerName") as TMP_Text;
@@ -45,7 +45,7 @@ export default class BWKillFeedItemComponent extends AirshipBehaviour {
 		this.targetGo = references.GetValue("GameObjects", "Target") as GameObject;
 	}
 
-	public override OnStart(): void {}
+	public override Start(): void {}
 
 	private GetEntryColor(entity: Entity): KillFeedColor {
 		const localPlayer = Game.localPlayer;

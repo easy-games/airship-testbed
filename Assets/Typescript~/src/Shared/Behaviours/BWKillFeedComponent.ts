@@ -29,7 +29,7 @@ export default class BWKillFeedComponent extends AirshipBehaviour {
 		task.delay(5.2, () => GameObjectUtil.Destroy(entry));
 	}
 
-	public override OnStart(): void {
+	public override Start(): void {
 		this.gameObject.ClearChildren();
 
 		this.bin.Add(

@@ -228,7 +228,7 @@ Material:
     - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &95728319
+--- !u!21 &114338225
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -368,6 +368,63 @@ MonoBehaviour:
   m_metadata:
     name: 
     properties: []
+--- !u!1 &241369935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 241369937}
+  - component: {fileID: 241369936}
+  m_Layer: 0
+  m_Name: Lighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &241369936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241369935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 328324b9b586ee749acb4d8a5762986f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _negativeSunDirectionNormalized: {x: 0.17588589, y: 0.9387168, z: -0.2964369}
+  _sunDirectionNormalized: {x: -0.17588589, y: -0.9387168, z: 0.2964369}
+  _sunDirection: {x: -0.89, y: -4.75, z: 1.5}
+  sunBrightness: 0.5
+  sunColor: {r: 1, g: 0.9977872, b: 0.9009434, a: 1}
+  skySaturation: 0.3
+  cubeMapPath: '@Easy/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
+  globalAmbientLight: {r: 0.9575472, g: 0.9927549, b: 1, a: 1}
+  globalAmbientBrightness: 0.5
+  globalAmbientOcclusion: 0.25
+  fogStart: 75
+  fogEnd: 280
+  fogColor: {r: 0.5, g: 0.8, b: 1, a: 1}
+--- !u!4 &241369937
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241369935}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 106.81359, y: 30.309187, z: 76.937805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!21 &250167050
 Material:
   serializedVersion: 8
@@ -410,47 +467,7 @@ Material:
     - _rect2props: {r: 2.5000153, g: 0, b: 72.31016, a: 72.31016}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &307295551
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
---- !u!21 &334726607
+--- !u!21 &291175542
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -488,6 +505,46 @@ Material:
     - _UseUIAlphaClip: 0
     m_Colors:
     - _WidthHeightRadius: {r: 384.521, g: 96.233, b: 10, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &335810119
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 163.42902, g: 50.188904, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &350972775
@@ -530,46 +587,6 @@ Material:
     - _halfSize: {r: 85, g: 19.762, b: 0, a: 0}
     - _r: {r: 0, g: 5, b: 5, a: 0}
     - _rect2props: {r: -2.4999847, g: 0, b: 72.31016, a: 72.31016}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
---- !u!21 &447562502
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &455239910
@@ -1141,7 +1158,7 @@ Material:
     - _WidthHeightRadius: {r: 67.9064, g: 50.1889, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &541735743
+--- !u!21 &586594386
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -1179,8 +1196,48 @@ Material:
     - _UseUIAlphaClip: 0
     m_Colors:
     - _halfSize: {r: 85, g: 19.762, b: 0, a: 0}
-    - _r: {r: 0, g: 5, b: 5, a: 0}
-    - _rect2props: {r: -2.4999847, g: 0, b: 72.31016, a: 72.31016}
+    - _r: {r: 5, g: 0, b: 0, a: 5}
+    - _rect2props: {r: 2.5000153, g: 0, b: 72.31016, a: 72.31016}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &598488643
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &661409360
@@ -1270,46 +1327,6 @@ Material:
     - _rect2props: {r: -2.4999847, g: 0, b: 72.31016, a: 72.31016}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &781335599
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 67.9064, g: 50.1889, b: 10, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &837152732
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,7 +1372,49 @@ Transform:
   - {fileID: 224617884}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &852593792
+--- !u!21 &874098232
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/IndependentRoundedCorners
+  m_Shader: {fileID: 4800000, guid: 5811f645f799c494c999aea8eb71d015, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _halfSize: {r: 85, g: 19.762, b: 0, a: 0}
+    - _r: {r: 0, g: 5, b: 5, a: 0}
+    - _rect2props: {r: -2.4999847, g: 0, b: 72.31016, a: 72.31016}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &881798312
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -1393,46 +1452,6 @@ Material:
     - _UseUIAlphaClip: 0
     m_Colors:
     - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
---- !u!21 &931545065
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 254.978, g: 78.83301, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1148834385
@@ -1590,20 +1609,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugReloadOnScriptReloadMode: 0
   radiosityEnabled: 0
-  globalSunBrightness: 0.4
-  globalSkyBrightness: 1
-  globalFogStart: 90
-  globalFogEnd: 387
-  globalFogColor: {r: 0.3160377, g: 0.7575872, b: 1, a: 1}
-  globalSkySaturation: 0
-  globalSunColor: {r: 1, g: 1, b: 1, a: 1}
-  globalAmbientLight: {r: 1, g: 1, b: 1, a: 1}
-  globalAmbientBrightness: 0.5
-  globalAmbientOcclusion: 0.25
   globalRadiosityScale: 0.25
   globalRadiosityDirectLightAmp: 1
   showRadioistyProbes: 0
-  focusPosition: {x: 110.2802, y: 33.146976, z: 25.08496}
+  focusPosition: {x: 107.22018, y: 32.402615, z: 140.4006}
   autoLoad: 0
   voxelWorldFile: {fileID: 11400000, guid: e91dde60ceac54971b9cf9e50cd5c032, type: 2}
   blockDefines:
@@ -1612,2989 +1621,6 @@ MonoBehaviour:
   chunksFolder: {fileID: 0}
   lightsFolder: {fileID: 0}
   finishedReplicatingChunksFromServer: 0
-  worldPositions:
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: -0, y: 1, z: -0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: -0, y: -0, z: -0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  - name: corner_2
-    position: {x: 223.51898, y: 20, z: 223.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_bed
-    position: {x: 35.518982, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_bed
-    position: {x: 110.51898, y: 30, z: 34.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_bed
-    position: {x: 110.51898, y: 30, z: 184.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_bed
-    position: {x: 185.51898, y: 30, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald1
-    position: {x: 86.51898, y: 31, z: 118.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald2
-    position: {x: 101.51898, y: 31, z: 85.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald3
-    position: {x: 119.51898, y: 31, z: 133.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: emerald4
-    position: {x: 134.51898, y: 31, z: 100.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_generator
-    position: {x: 15.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_spawn
-    position: {x: 18.518982, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 1_item_shop
-    position: {x: 19.518982, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_upgrade_shop
-    position: {x: 19.518982, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 1_misc_1
-    position: {x: 25.518982, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 1_misc_2
-    position: {x: 25.518982, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond1
-    position: {x: 60.519012, y: 32, z: 157.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond2
-    position: {x: 62.519012, y: 32, z: 59.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_upgrade_shop
-    position: {x: 105.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 3_item_shop
-    position: {x: 105.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.707107, z: 0, w: 0.70710653}
-  - name: 2_misc_2
-    position: {x: 106.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_1
-    position: {x: 106.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_generator
-    position: {x: 110.51898, y: 32, z: 14.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_spawn
-    position: {x: 110.51898, y: 32, z: 17.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_spawn
-    position: {x: 110.51898, y: 32, z: 201.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 3_generator
-    position: {x: 110.51898, y: 32, z: 204.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 2_misc_1
-    position: {x: 114.51898, y: 32, z: 24.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 3_misc_2
-    position: {x: 114.51898, y: 32, z: 194.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 2_item_shop
-    position: {x: 115.51898, y: 32, z: 18.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 3_upgrade_shop
-    position: {x: 115.51898, y: 32, z: 200.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: diamond3
-    position: {x: 158.51898, y: 32, z: 159.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: diamond4
-    position: {x: 160.51898, y: 32, z: 61.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_2
-    position: {x: 195.51898, y: 32, z: 105.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_misc_1
-    position: {x: 195.51898, y: 32, z: 113.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_upgrade_shop
-    position: {x: 201.51898, y: 32, z: 104.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: 4_item_shop
-    position: {x: 201.51898, y: 32, z: 114.5}
-    rotation: {x: 0, y: 1, z: 0, w: 0}
-  - name: 4_spawn
-    position: {x: 202.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0.7098638, z: 0, w: -0.70433897}
-  - name: 4_generator
-    position: {x: 205.51898, y: 32, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: center
-    position: {x: 110.51898, y: 43, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: corner_1
-    position: {x: 0.51898193, y: 58, z: 0.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: respawn_view
-    position: {x: 110.51898, y: 74, z: 109.5}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  - name: spectator_spawn
-    position: {x: 40.518982, y: 77.5, z: 37.5}
-    rotation: {x: 0, y: 0.38330433, z: 0, w: 0.9236221}
-  cubeMap: {fileID: 8900000, guid: 98fc12523466e9841bcac080b0b16b28, type: 3}
-  cubeMapPath: '@Easy/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
-  cubeMapSHData:
-  - x: 0.33
-    y: 0.42
-    z: 0.48
-  - x: 0.02
-    y: -0.03
-    z: -0.04
-  - x: 0.01
-    y: 0
-    z: 0
-  - x: 0.01
-    y: 0
-    z: 0
-  - x: 0
-    y: 0
-    z: 0
-  - x: 0
-    y: 0
-    z: 0
-  - x: -0.01
-    y: 0
-    z: 0
-  - x: 0
-    y: 0
-    z: 0
-  - x: -0.02
-    y: 0
-    z: 0
   selectedBlockIndex: 6
   renderingDisabled: 0
 --- !u!4 &1157595726
@@ -4639,46 +1665,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voxelWorld: {fileID: 1157595725}
---- !u!21 &1195630964
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 384.521, g: 96.233, b: 10, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &1313020013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4797,15 +1783,15 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4388402499213633425, guid: 5cdf05a2aa118074489e21f88c3314f4, type: 3}
   m_PrefabInstance: {fileID: 1313020013}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1560188225
+--- !u!21 &1393779407
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/IndependentRoundedCorners
-  m_Shader: {fileID: 4800000, guid: 5811f645f799c494c999aea8eb71d015, type: 3}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -4834,9 +1820,127 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _halfSize: {r: 85, g: 19.762, b: 0, a: 0}
-    - _r: {r: 0, g: 5, b: 5, a: 0}
-    - _rect2props: {r: -2.4999847, g: 0, b: 72.31016, a: 72.31016}
+    - _WidthHeightRadius: {r: 254.978, g: 78.83301, b: 10, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &1448619178
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 384.521, g: 96.233, b: 10, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &1503892407
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &1513960544
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1568966598
@@ -4861,7 +1965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 129164077964998160, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 697.364
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 129164077964998160, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4966,11 +2070,11 @@ PrefabInstance:
     - target: {fileID: 1890427127004936069, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 334726607}
+      objectReference: {fileID: 291175542}
     - target: {fileID: 1890427127519913587, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1751902782}
+      objectReference: {fileID: 1393779407}
     - target: {fileID: 1890427127674631044, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
@@ -5277,7 +2381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5559832814774225973, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 697.364
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5559832814774225973, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5401,7 +2505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9201211083081559619, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 697.364
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9201211083081559619, guid: a5a5f417705824172bd6d644dddc22f8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5460,48 +2564,6 @@ Material:
     - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &1672657333
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/IndependentRoundedCorners
-  m_Shader: {fileID: 4800000, guid: 5811f645f799c494c999aea8eb71d015, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _halfSize: {r: 85, g: 19.762, b: 0, a: 0}
-    - _r: {r: 5, g: 0, b: 0, a: 5}
-    - _rect2props: {r: 2.5000153, g: 0, b: 72.31016, a: 72.31016}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!21 &1699719926
 Material:
   serializedVersion: 8
@@ -5542,7 +2604,7 @@ Material:
     - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &1751902782
+--- !u!21 &1710595125
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -5580,46 +2642,6 @@ Material:
     - _UseUIAlphaClip: 0
     m_Colors:
     - _WidthHeightRadius: {r: 254.978, g: 78.83301, b: 10, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
---- !u!21 &1822699255
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 31, g: 31, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1865291604
@@ -5662,7 +2684,7 @@ Material:
     - _WidthHeightRadius: {r: 163.42902, g: 50.188904, b: 10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &2034816849
+--- !u!21 &1974008432
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -5699,7 +2721,49 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _WidthHeightRadius: {r: 163.42902, g: 50.188904, b: 10, a: 0}
+    - _WidthHeightRadius: {r: 67.9064, g: 50.1889, b: 10, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!21 &2011734203
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/IndependentRoundedCorners
+  m_Shader: {fileID: 4800000, guid: 5811f645f799c494c999aea8eb71d015, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _halfSize: {r: 85, g: 19.762, b: 0, a: 0}
+    - _r: {r: 0, g: 5, b: 5, a: 0}
+    - _rect2props: {r: -2.4999847, g: 0, b: 72.31016, a: 72.31016}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1660057539 &9223372036854775807
@@ -5713,3 +2777,4 @@ SceneRoots:
   - {fileID: 12970886}
   - {fileID: 661409362}
   - {fileID: 455239910}
+  - {fileID: 241369937}

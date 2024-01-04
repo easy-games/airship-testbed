@@ -107,11 +107,12 @@ export class SpectateController implements OnStart {
 		});
 
 		// Clean up after camera mode is changed:
-		bin.Connect(this.cameraController.cameraSystem.modeChangedBegin, (newMode, oldMode) => {
-			if (oldMode === orbitCamMode) {
-				bin.Clean();
-			}
-		});
+		// TODO Luke
+		// bin.Connect(this.cameraController.cameraSystem.modeChangedBegin, (newMode, oldMode) => {
+		// 	if (oldMode === orbitCamMode) {
+		// 		bin.Clean();
+		// 	}
+		// });
 	}
 
 	/** Adjust the index to reflect the currently-spectated ID. */
