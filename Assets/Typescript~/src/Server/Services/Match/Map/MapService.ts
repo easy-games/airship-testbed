@@ -44,7 +44,6 @@ export class MapService implements OnStart {
 	}
 
 	public BuildMap(mapId: string): void {
-		/* Fetch world, load map voxel file and block defines. */
 		print("Loading world " + mapId);
 		const world = WorldAPI.GetMainWorld();
 		if (!world) {
@@ -53,13 +52,7 @@ export class MapService implements OnStart {
 		}
 		this.voxelBinaryFile = AssetBridge.Instance.LoadAsset<WorldSaveFile>(`Server/Resources/Worlds/${mapId}.asset`);
 
-		/* Load world. */
-		// world.LoadEmptyWorld(blockDefines, "");
-		// const grass = GetItemDef(ItemType.GRASS).BlockId;
-		// world.WriteVoxelAt(new Vector3(1, 1, 1), grass!);
 		world.LoadWorldFromSaveFile(this.voxelBinaryFile);
-		/* Parse map objects and finish loading map. */
-		/* TEMP: This is to get around memory pinning issue. */
 		this.loadedMap = new LoadedMap(mapId, mapId, ["Rascal"]);
 		const rawMaps = this.voxelBinaryFile.GetMapObjects();
 		for (let i = 0; i < rawMaps.Length; i++) {

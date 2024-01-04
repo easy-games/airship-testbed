@@ -53,7 +53,6 @@ export class StatusEffectUIController implements OnStart {
 		// TODO: Do we need a sprite cache here? This _should_ happen infrequently enough that
 		// this doesn't matter, but it might be worth looking into.
 		const iconTexture = AssetBridge.Instance.LoadAsset<Texture2D>(statusEffectMeta.icon);
-		print(iconTexture);
 		iconImage.sprite = Bridge.MakeSprite(iconTexture);
 		const iconTier = iconRefs.GetValue<TextMeshProUGUI>("IconComponents", "Tier");
 		iconTier.text = StatusEffectUtil.DecimalToRomanNumeral(tier);
