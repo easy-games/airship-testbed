@@ -122,8 +122,6 @@ export class MainMenuController implements OnStart {
 				options,
 			);
 		});
-
-		print("MainMenuController.end");
 	}
 
 	public OpenFromGame(): void {
@@ -185,8 +183,6 @@ export class MainMenuController implements OnStart {
 	}
 
 	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false) {
-		print("Routing to page: " + pageType);
-
 		if (this.currentPage?.pageType === pageType && !force) {
 			return;
 		}
