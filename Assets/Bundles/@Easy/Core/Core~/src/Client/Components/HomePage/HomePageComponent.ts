@@ -6,22 +6,33 @@ import { DecodeJSON } from "Shared/json";
 import { GamesDto } from "./API/GamesAPI";
 import SortComponent from "./Sort/SortComponent";
 import { SortId } from "./Sort/SortId";
+import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 
-export default class HomePageComponent extends AirshipBehaviour {
+export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
 	public spacerPrefab!: GameObject;
 	public sortPrefab!: GameObject;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 
-	override OnEnable(): void {
-		print("HomePage.OnEnable");
+	override OpenPage(): void {
+		super.OpenPage();
+
+		let avatarView = this.mainMenu?.avatarView;
+		if (avatarView) {
+			avatarView.ResetAvatar();
+			avatarView.CameraFocusTransform(avatarView.cameraWaypointCenterHero, true);
+		}
 		this.ClearSorts();
 		this.CreateSort(SortId.POPULAR, "Popular", "featured");
 		this.FetchGames();
 	}
 
 	private ClearSorts(): void {
+		// for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
+		// 	Object.Destroy(this.mainContent.GetChild(i));
+		// }
+
 		let toRemove: Transform[] = [];
 		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
 			toRemove.push(this.mainContent.GetChild(i));
