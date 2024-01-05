@@ -11,7 +11,9 @@ import { Tween } from "Shared/Tween/Tween";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import MeshFlashingBehaviour from "./MeshFlashingBehaviour";
+import MeshFlashingBehaviour, { MeshFlashType } from "./MeshFlashingBehaviour";
+import { SetInterval, SetIntervalWithModifier } from "Shared/Util/Timer";
+import { Bin } from "Shared/Util/Bin";
 
 export default class TntBehaviour extends AirshipBehaviour {
 	public renderModelOnServer = false;
@@ -46,7 +48,10 @@ export default class TntBehaviour extends AirshipBehaviour {
 		if (this.blockMeshObject) {
 			meshFlash = this.gameObject.GetComponent<MeshFlashingBehaviour>();
 			meshFlash.meshRenderer = this.blockMeshObject.GetComponent<MeshRenderer>();
-			meshFlash.FlashStart();
+
+			meshFlash.FlashStart(MeshFlashType.Instant, {
+				IntervalTickMod: 0.8,
+			});
 		}
 
 		task.delay(this.secondsToDetonate, () => {

@@ -1,34 +1,79 @@
 import { Bin } from "Shared/Util/Bin";
-import { SetInterval } from "Shared/Util/Timer";
+import { SetInterval, SetIntervalWithModifier } from "Shared/Util/Timer";
+
+export enum MeshFlashType {
+	Tween,
+	Instant,
+}
 
 export default class MeshFlashingBehaviour extends AirshipBehaviour {
 	private originalColor!: Color;
 
 	public meshRenderer!: MeshRenderer;
+
 	public flashFrequency = 0.5;
+	public flashIntensity = 2;
 
 	public Start(): void {
 		this.originalColor = Color.white;
 	}
 
-	public Flash(count = 1) {
-		this.meshRenderer.TweenMaterialColor(new Color(2, 2, 2), this.flashFrequency / 2);
-		task.wait(this.flashFrequency / 2);
-		this.meshRenderer.TweenMaterialColor(this.originalColor, this.flashFrequency / 2);
+	public TweenFlash(count = 1, frequency = this.flashFrequency) {
+		const { r, g, b } = this.originalColor;
+		const intensity = (r + g + b) / 3;
+		const factor = this.flashIntensity / intensity;
+
+		for (const _ of $range(1, count)) {
+			this.meshRenderer.TweenMaterialColor(new Color(r * factor, g * factor, b * factor), frequency / 2);
+			task.wait(frequency / 2);
+			this.meshRenderer.TweenMaterialColor(this.originalColor, frequency / 2);
+		}
+	}
+
+	public InstantFlash(count = 1, frequency = this.flashFrequency) {
+		for (const _ of $range(1, count)) {
+			this.meshRenderer.material.color = new Color(2, 2, 2);
+			task.wait(frequency / 2);
+			this.meshRenderer.material.color = this.originalColor;
+		}
 	}
 
 	private flashingBin = new Bin();
 
-	public FlashStart() {
-		this.flashingBin.Add(
-			SetInterval(this.flashFrequency, () => {
-				this.Flash();
-			}),
-		);
+	public FlashStart(flashType: MeshFlashType, options: MeshFlashOptions) {
+		print("flash start w/ freq", this.flashFrequency, "intense", this.flashIntensity);
+
+		if (options.IntervalTickMod) {
+			this.flashingBin.Add(
+				SetIntervalWithModifier(options.Frequency ?? this.flashFrequency, (interval, setInterval) => {
+					if (flashType === MeshFlashType.Instant) {
+						this.InstantFlash(undefined, interval);
+					} else {
+						this.TweenFlash(undefined, interval);
+					}
+					setInterval(interval * options.IntervalTickMod!);
+				}),
+			);
+		} else {
+			this.flashingBin.Add(
+				SetInterval(options.Frequency ?? this.flashFrequency, () => {
+					if (flashType === MeshFlashType.Instant) {
+						this.InstantFlash();
+					} else {
+						this.TweenFlash();
+					}
+				}),
+			);
+		}
 	}
 
 	public FlashStop() {
 		this.flashingBin.Clean();
 		this.meshRenderer.material.color = this.originalColor;
 	}
+}
+
+export interface MeshFlashOptions {
+	readonly IntervalTickMod?: number;
+	readonly Frequency?: number;
 }
