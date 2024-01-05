@@ -459,7 +459,7 @@ export class Entity {
 	public static FindByCollider(collider: Collider): Entity | undefined {
 		let nb = collider.gameObject.GetComponent<NetworkBehaviour>();
 		if (nb === undefined) {
-			nb = collider.transform.parent.gameObject.GetComponent<NetworkBehaviour>();
+			nb = collider.transform.parent?.gameObject.GetComponent<NetworkBehaviour>();
 		}
 
 		if (nb !== undefined) {

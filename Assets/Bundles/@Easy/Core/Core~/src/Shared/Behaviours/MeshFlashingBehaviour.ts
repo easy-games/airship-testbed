@@ -26,23 +26,25 @@ export default class MeshFlashingBehaviour extends AirshipBehaviour {
 		for (const _ of $range(1, count)) {
 			this.meshRenderer.TweenMaterialColor(new Color(r * factor, g * factor, b * factor), frequency / 2);
 			task.wait(frequency / 2);
-			this.meshRenderer.TweenMaterialColor(this.originalColor, frequency / 2);
+			if (this.meshRenderer.material) this.meshRenderer.TweenMaterialColor(this.originalColor, frequency / 2);
 		}
 	}
 
 	public InstantFlash(count = 1, frequency = this.flashFrequency) {
+		const { r, g, b } = this.originalColor;
+		const intensity = (r + g + b) / 3;
+		const factor = this.flashIntensity / intensity;
+
 		for (const _ of $range(1, count)) {
-			this.meshRenderer.material.color = new Color(2, 2, 2);
+			this.meshRenderer.material.color = new Color(r * factor, g * factor, b * factor);
 			task.wait(frequency / 2);
-			this.meshRenderer.material.color = this.originalColor;
+			if (this.meshRenderer.material) this.meshRenderer.material.color = this.originalColor;
 		}
 	}
 
 	private flashingBin = new Bin();
 
 	public FlashStart(flashType: MeshFlashType, options: MeshFlashOptions) {
-		print("flash start w/ freq", this.flashFrequency, "intense", this.flashIntensity);
-
 		if (options.IntervalTickMod) {
 			this.flashingBin.Add(
 				SetIntervalWithModifier(options.Frequency ?? this.flashFrequency, (interval, setInterval) => {
