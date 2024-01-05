@@ -1,4 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -15,7 +16,6 @@ import { MainMenuPageType } from "./MainMenuPageName";
 import { ChangeUsernameController } from "./Social/ChangeUsernameController";
 import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
-import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 
 @Controller()
 export class MainMenuController implements OnStart {
@@ -52,10 +52,6 @@ export class MainMenuController implements OnStart {
 
 		const mouse = new Mouse();
 
-		// print("home go: " + this.refs.GetValue("Pages", "Home").name);
-		// print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>());
-		// print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>().TEST());
-
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
 			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>()],
 			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
@@ -63,7 +59,6 @@ export class MainMenuController implements OnStart {
 			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
 		]);
 
-		//let avatarHolder = GameObject.Create("AvatarHolder");
 		this.avatarView = GameObjectUtil.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 		).GetComponent<AvatarViewComponent>();
@@ -72,7 +67,6 @@ export class MainMenuController implements OnStart {
 		}
 
 		for (const [key, value] of this.pageMap) {
-			print("Loaded page: " + key + ", " + value);
 			if (value) {
 				value.Init(this, key);
 			}
@@ -104,7 +98,6 @@ export class MainMenuController implements OnStart {
 
 		const profileGO = this.refs.GetValue("Social", "Profile");
 		CanvasAPI.OnClickEvent(profileGO, () => {
-			print("clicked profile.");
 			const options: RightClickMenuButton[] = [];
 			options.push({
 				text: "Change Profile Picture",
@@ -129,6 +122,8 @@ export class MainMenuController implements OnStart {
 				options,
 			);
 		});
+
+		print("MainMenuController.end");
 	}
 
 	public OpenFromGame(): void {

@@ -1,4 +1,4 @@
-import inspect from "@easy-games/unity-inspect";
+import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
@@ -6,7 +6,6 @@ import { DecodeJSON } from "Shared/json";
 import { GamesDto } from "./API/GamesAPI";
 import SortComponent from "./Sort/SortComponent";
 import { SortId } from "./Sort/SortId";
-import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
@@ -25,7 +24,9 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 		this.ClearSorts();
 		this.CreateSort(SortId.POPULAR, "Popular", "featured");
-		this.FetchGames();
+		task.spawn(() => {
+			this.FetchGames();
+		});
 	}
 
 	private ClearSorts(): void {
@@ -62,7 +63,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 
 		const data = DecodeJSON<GamesDto>(res.data);
-		print("Games data: " + inspect(data));
+		// print("Games data: " + inspect(data));
 
 		// Popular
 		{
@@ -72,7 +73,6 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	override OnDisable(): void {
-		print("HomePageComponent.OnDisable");
 		this.bin.Clean();
 	}
 

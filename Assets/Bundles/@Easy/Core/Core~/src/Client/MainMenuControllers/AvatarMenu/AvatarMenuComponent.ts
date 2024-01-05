@@ -31,7 +31,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
-		print("INIT CHILD AVATAR");
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
 
@@ -39,7 +38,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
-			error("Unablet to find main nav btns on Avatar Editor Page");
+			print("Unablet to find main nav btns on Avatar Editor Page");
 			return;
 		}
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
