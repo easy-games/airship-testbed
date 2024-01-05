@@ -8,6 +8,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Team } from "@Easy/Core/Shared/Team/Team";
+import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { SetUtil } from "@Easy/Core/Shared/Util/SetUtil";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -20,7 +21,6 @@ import { TeamUpgradeStateDto } from "Shared/TeamUpgrade/TeamUpgradeMeta";
 import { TeamUpgradeType } from "Shared/TeamUpgrade/TeamUpgradeType";
 import { TeamUpgradeUtil } from "Shared/TeamUpgrade/TeamUpgradeUtil";
 import { GeneratorSpawnService } from "./GeneratorSpawnService";
-import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 
 /** Snapshot send delay after user connects. */
 const SNAPSHOT_SEND_DELAY = 2;
@@ -111,7 +111,6 @@ export class TeamUpgradeService implements OnStart {
 	/** Apply generator upgrade effects. */
 	private ApplyGeneratorUpgradeEffects(): void {
 		ServerSignals.TeamUpgradePurchase.Connect((event) => {
-			/* Handle team generator upgrades. */
 			if (event.upgradeType === TeamUpgradeType.TEAM_GENERATOR) {
 				const ironGenerators = this.generatorSpawnService.GetTeamGeneratorByType(event.team, ItemType.IRON);
 
@@ -163,7 +162,6 @@ export class TeamUpgradeService implements OnStart {
 				const tierMeta = TeamUpgradeUtil.GetUpgradeTierForType(event.upgradeType, event.tier);
 				switch (event.tier) {
 					case 1: {
-						/* Spawn diamonds. */
 						if (ironGenerators && ironGenerators.size() > 0) {
 							const diamondGeneratorSpawnPos = ironGenerators[0].dto.pos;
 							const generatorId = this.generatorService.CreateGenerator(diamondGeneratorSpawnPos, {
@@ -177,7 +175,6 @@ export class TeamUpgradeService implements OnStart {
 						break;
 					}
 					case 2: {
-						/* Increase diamond generator speed. */
 						const diamondGenerators = this.generatorSpawnService.GetTeamGeneratorByType(
 							event.team,
 							ItemType.DIAMOND,
@@ -189,7 +186,6 @@ export class TeamUpgradeService implements OnStart {
 						break;
 					}
 					case 3: {
-						/* Increase diamond generator speed. */
 						const diamondGenerators = this.generatorSpawnService.GetTeamGeneratorByType(
 							event.team,
 							ItemType.DIAMOND,
@@ -248,27 +244,27 @@ export class TeamUpgradeService implements OnStart {
 	/** Process incoming upgrade purchase request. */
 	private HandleUpgradePurchaseRequest(player: Player, upgradeType: TeamUpgradeType, tier: number): boolean {
 		const playerEntity = this.entityService.GetEntityByClientId(player.clientId);
-		/* Validate entity. */
+		// Validate entity.
 		if (!playerEntity || !(playerEntity instanceof CharacterEntity)) return false;
 		const playerInv = playerEntity.GetInventory();
 		const purchaseForTeam = player.GetTeam();
-		/* Validate team. */
+		// Validate team.
 		if (!purchaseForTeam) return false;
 		const upgradeState = this.teamUpgradeMap.get(purchaseForTeam)?.get(upgradeType);
-		/* Validate update state. */
+		// Validate update state.
 		if (!upgradeState) return false;
 		const currentTier = upgradeState.currentUpgradeTier;
-		/* Validate that upgrade is not maxed out. */
+		// Validate that upgrade is not maxed out.
 		const maxUpgrades = TeamUpgradeUtil.GetUpgradeTierCountForType(upgradeType);
 		if (currentTier === maxUpgrades) return false;
-		/* Validate that tier request is next tier. */
+		// Validate that tier request is next tier.
 		if (tier !== currentTier + 1) return false;
 		const nextTier = currentTier + 1;
 		const nextTierMeta = TeamUpgradeUtil.GetUpgradeTierForType(upgradeType, nextTier);
 		const canAfford = playerInv.HasEnough(nextTierMeta.currency, nextTierMeta.cost);
-		/* Validate that player can afford upgrade. */
+		// Validate that player can afford upgrade.
 		if (!canAfford) return false;
-		/* Accept upgrade request. */
+		// Accept upgrade request.
 		playerInv.Decrement(nextTierMeta.currency, nextTierMeta.cost);
 		upgradeState.currentUpgradeTier = math.clamp(upgradeState.currentUpgradeTier + 1, 1, maxUpgrades);
 		ServerSignals.TeamUpgradePurchase.Fire({

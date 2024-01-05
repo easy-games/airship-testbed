@@ -21,6 +21,14 @@ export const Network = {
 			/** Fired when client attempts to purchase shop item. */
 			PurchaseRequest: new RemoteFunction<[itemType: ItemType], boolean>(),
 		},
+		EnchantTable: {
+			/** Fired when enchant table prefab is replicated to client. */
+			EnchantTableStateRequest: new RemoteFunction<[nob: number], { teamId: string; unlocked: boolean }>(),
+			/** Fired when a user attempts to repair enchant table. */
+			EnchantTableRepairRequest: new RemoteEvent<[tableNob: number]>(),
+			/** Fired when a user attempts to purchase an enchant. */
+			EnchantPurchaseRequest: new RemoteEvent<[tableNob: number]>(),
+		},
 	},
 	ServerToClient: {
 		ItemShop: {
@@ -30,6 +38,9 @@ export const Network = {
 		},
 		TeamUpgradeShop: {
 			AddNPCs: new RemoteEvent<[entityIds: number[]]>(),
+		},
+		EnchantTable: {
+			EnchantTableUnlocked: new RemoteEvent<[tableNob: number]>(),
 		},
 		/** Fired when match starts. */
 		MatchStarted: new RemoteEvent<[]>(),

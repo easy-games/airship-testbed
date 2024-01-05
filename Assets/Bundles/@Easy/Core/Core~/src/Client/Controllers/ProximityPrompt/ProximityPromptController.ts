@@ -28,8 +28,6 @@ export class ProximityPromptController implements OnStart {
 			const eligiblePrompt = this.activatableProximityPrompts[0];
 			eligiblePrompt.ActivatePrompt();
 		});
-
-		this.keyboard.OnKeyDown(KeyCode.E, (event) => {});
 	}
 
 	public RegisterProximityPrompt(prompt: ProximityPrompt): void {
@@ -38,10 +36,10 @@ export class ProximityPromptController implements OnStart {
 
 	/** Returns distance between local player and a proximity prompt. */
 	private GetDistanceToPrompt(prompt: ProximityPrompt): number {
-		/* If local character does _not_ have a position, fallback to `math.huge`. */
+		// If local character does _not_ have a position, fallback to `math.huge`.
 		const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
 		if (!localCharacterPosition) return math.huge;
-		/* Otherwise, return distance. */
+		// Otherwise, return distance.
 		return localCharacterPosition.sub(prompt.data.promptPosition).magnitude;
 	}
 
@@ -53,13 +51,9 @@ export class ProximityPromptController implements OnStart {
 					const distToPrompt = this.GetDistanceToPrompt(prompt);
 					if (distToPrompt <= prompt.data.activationRange) {
 						const alreadyActive = this.GetActivePromptIndexById(prompt.id) > -1;
-						// const keycodeActive = this.activatableKeycodes.has(prompt.data.activationKey);
-						/*
-						 * If prompt is already active or prompt with same keycode is active,
-						 * do nothing. Otherwise, display prompt.
-						 */
+						// If prompt is already active or prompt with same keycode is active,
+						// do nothing. Otherwise, display prompt.
 						if (!alreadyActive) {
-							// this.activatableKeycodes.add(prompt.data.activationKey);
 							this.activatableProximityPrompts.push(prompt);
 							this.ShowPrompt(prompt);
 							prompt.SetCanActivate(true);
@@ -67,9 +61,8 @@ export class ProximityPromptController implements OnStart {
 					} else {
 						const promptIndex = this.GetActivePromptIndexById(prompt.id);
 						const wasActive = promptIndex > -1;
-						/* If prompt was active, but is now out of range, hide prompt. */
+						//If prompt was active, but is now out of range, hide prompt.
 						if (wasActive) {
-							// this.activatableKeycodes.delete(prompt.data.activationKey);
 							this.activatableProximityPrompts.remove(promptIndex);
 							this.HidePrompt(prompt);
 							prompt.SetCanActivate(false);
@@ -117,6 +110,7 @@ export class ProximityPromptController implements OnStart {
 
 	/**
 	 * Returns an active proximity prompt's index.
+	 *
 	 * @param promptId An active proximity prompt id.
 	 * @returns Index that corresponds to active prompt with `promptId`. If prompt is _not_ active, the function returns -1.
 	 */
@@ -130,5 +124,15 @@ export class ProximityPromptController implements OnStart {
 			}
 		}
 		return promptIndex;
+	}
+
+	/**
+	 * Removes prompt from `proximityPrompts` and `activatableProximityPrompts`.
+	 *
+	 * @param prompt The prompt to remove.
+	 */
+	public RemovePrompt(prompt: ProximityPrompt): void {
+		this.proximityPrompts = this.proximityPrompts.filter((p) => p.id !== prompt.id);
+		this.activatableProximityPrompts = this.activatableProximityPrompts.filter((p) => p.id !== prompt.id);
 	}
 }

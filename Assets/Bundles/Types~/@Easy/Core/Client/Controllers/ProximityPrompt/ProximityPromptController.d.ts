@@ -19,8 +19,15 @@ export declare class ProximityPromptController implements OnStart {
     private HidePrompt;
     /**
      * Returns an active proximity prompt's index.
+     *
      * @param promptId An active proximity prompt id.
      * @returns Index that corresponds to active prompt with `promptId`. If prompt is _not_ active, the function returns -1.
      */
     private GetActivePromptIndexById;
+    /**
+     * Removes prompt from `proximityPrompts` and `activatableProximityPrompts`.
+     *
+     * @param prompt The prompt to remove.
+     */
+    RemovePrompt(prompt: ProximityPrompt): void;
 }

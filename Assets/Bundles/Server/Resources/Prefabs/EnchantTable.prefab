@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7412213181897405832}
   - component: {fileID: 2623233036487259183}
+  - component: {fileID: 7809390259905879597}
   m_Layer: 0
   m_Name: EnchantTable
   m_TagString: Untagged
@@ -65,6 +66,30 @@ MonoBehaviour:
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 0
+--- !u!114 &7809390259905879597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400618020144435251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Behaviours/EnchantTableComponent.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: EnchantTableComponent
+    properties: []
 --- !u!1001 &1223420120540276370
 PrefabInstance:
   m_ObjectHideFlags: 0
