@@ -68,7 +68,13 @@ interface EntityDriver extends Component {
 	IsGrounded(): boolean;
 	enabled: boolean;
 
-	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
+	SetMoveInput(
+		direction: Vector3,
+		jump: boolean,
+		sprinting: boolean,
+		crouchOrSlide: boolean,
+		moveDirWorldSpace: boolean,
+	): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;

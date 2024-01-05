@@ -1,4 +1,5 @@
 import { CameraController } from "@Easy/Core/Client/Controllers/Camera/CameraController";
+import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { CrosshairController } from "@Easy/Core/Client/Controllers/Crosshair/CrosshairController";
 import { Entity } from "@Easy/Core/Shared/Entity/Entity";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -10,6 +11,11 @@ import { Dependency } from "@easy-games/flamework-core";
 export default class TopDownCameraComponent extends AirshipBehaviour {
 	public camera!: Camera;
 	public cameraOffset: Vector3 = new Vector3(0, 15, 0);
+	public cameraEntityMaxRange = 3;
+	public cameraSmoothTime = 0.3;
+
+	private savedCameraTargetWorldPos = new Vector3();
+	private cameraVelocity = new Vector3();
 
 	private entity: Entity | undefined;
 	private bin = new Bin();
@@ -18,32 +24,68 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 	public override Update(dt: number): void {
 		if (this.entity?.IsAlive()) {
 			const mousePos = this.mouse.GetLocation();
-			const worldPos = this.camera.ScreenToWorldPoint(
-				new Vector3(mousePos.x, this.camera.pixelHeight - mousePos.y, this.camera.nearClipPlane),
-			);
-			// print("mousePos: " + mousePos + ", worldPos: " + worldPos);
 
-			const relativePos = this.entity.model.transform.position.sub(worldPos);
-			print("relativePos: " + relativePos);
+			let entityScreenSpacePos = this.camera.WorldToScreenPoint(this.entity.model.transform.position);
+			let relPos = mousePos.sub(entityScreenSpacePos).normalized;
 
-			let lookVec = new Vector3(relativePos.x, relativePos.y, relativePos.z);
+			let lookVec = new Vector3(relPos.x, 0, relPos.y);
 			this.entity.entityDriver.SetLookVector(lookVec);
 		}
 	}
 
 	public override LateUpdate(dt: number): void {
 		if (this.entity) {
-			const entityPos = this.entity.model.transform.position;
-			this.camera.transform.position = entityPos.add(this.cameraOffset);
-			this.camera.transform.LookAt(entityPos);
+			const entityWorldPos = this.entity.model.transform.position;
+
+			// let dist = entityWorldPos.sub(this.savedCameraTargetWorldPos).magnitude;
+			// print("dist: " + dist);
+			// if (dist > this.cameraEntityMaxRange || true) {
+			// 	let entityScreenPos = this.camera.WorldToScreenPoint(entityWorldPos);
+			// 	let cameraTargetWorldPos = this.camera.ScreenToWorldPoint(
+			// 		new Vector3(Screen.width / 2, Screen.height / 2, entityScreenPos.z),
+			// 	);
+
+			// 	// go to edge of radius
+			// 	let newCameraWorldPos = entityWorldPos.sub(
+			// 		cameraTargetWorldPos.normalized.mul(this.cameraEntityMaxRange),
+			// 	);
+			// 	this.savedCameraTargetWorldPos = newCameraWorldPos;
+			// 	newCameraWorldPos = newCameraWorldPos.add(this.cameraOffset);
+
+			// 	const camPos = this.camera.transform.position;
+			// 	const [pos, vel] = camPos.SmoothDamp(
+			// 		newCameraWorldPos,
+			// 		this.cameraVelocity,
+			// 		this.cameraSmoothTime,
+			// 		Time.deltaTime,
+			// 	);
+			// 	this.camera.transform.position = pos;
+			// 	this.cameraVelocity = vel;
+			// } else {
+			// 	// this.camera.transform.position = entityPos.add(this.cameraOffset);
+			// }
+
+			const camPos = this.camera.transform.position;
+			const newCamPos = entityWorldPos.add(this.cameraOffset);
+			const [pos, vel] = camPos.SmoothDamp(newCamPos, this.cameraVelocity, this.cameraSmoothTime, Time.deltaTime);
+			this.camera.transform.position = pos;
+			this.cameraVelocity = vel;
+
+			this.camera.transform.LookAt(entityWorldPos);
 		}
 	}
 
 	public override OnEnable(): void {
 		if (RunUtil.IsServer()) return;
 
+		Dependency<LocalEntityController>().SetMoveDirWorldSpace(true);
 		Dependency<CameraController>().SetEnabled(false);
 		Dependency<CrosshairController>().AddDisabler();
+
+		Dependency<LocalEntityController>().onBeforeLocalEntityInput.Connect((event) => {
+			event.jump = false;
+			event.crouchOrSlide = false;
+		});
 
 		const mouseUnlockId = this.mouse.AddUnlocker();
 		this.bin.Add(() => {

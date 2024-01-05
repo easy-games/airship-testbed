@@ -19,6 +19,7 @@ import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
+import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -42,7 +43,7 @@ export class LocalEntityController implements OnStart {
 
 	private entityDriver: EntityDriver | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
-	private entityInput: EntityInput | undefined;
+	public entityInput: EntityInput | undefined;
 	private prevState: EntityState = EntityState.Idle;
 	private currentState: EntityState = EntityState.Idle;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
@@ -53,7 +54,14 @@ export class LocalEntityController implements OnStart {
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
 
+	private moveDirWorldSpace = false;
+
 	public readonly onCustomMoveDataProcessed = new Signal<void>();
+
+	/**
+	 * This can be used to change input before it's processed by the entity system.
+	 */
+	public readonly onBeforeLocalEntityInput = new Signal<LocalEntityInputSignal>();
 
 	constructor(
 		private readonly cameraController: CameraController,
@@ -452,5 +460,19 @@ export class LocalEntityController implements OnStart {
 
 	public IsDefaultFirstPerson(): boolean {
 		return this.defaultFirstPerson;
+	}
+
+	/**
+	 * When set to true, the move input will always make "W" point north, "A" west, etc.
+	 *
+	 * The default value is false.
+	 * @param worldSpace True if should use world space. False if should use local space.
+	 */
+	public SetMoveDirWorldSpace(worldSpace: boolean): void {
+		this.moveDirWorldSpace = worldSpace;
+	}
+
+	public IsMoveDirWorldSpace(): boolean {
+		return this.moveDirWorldSpace;
 	}
 }

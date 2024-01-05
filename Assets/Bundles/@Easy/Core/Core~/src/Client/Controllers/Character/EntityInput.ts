@@ -1,7 +1,10 @@
+import { Dependency } from "@easy-games/flamework-core";
 import { Entity } from "Shared/Entity/Entity";
 import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
+import { LocalEntityController } from "./LocalEntityController";
+import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
 
 export class EntityInput {
 	private readonly bin = new Bin();
@@ -26,7 +29,7 @@ export class EntityInput {
 	public SetEnabled(enabled: boolean) {
 		this.enabled = enabled;
 		if (!enabled) {
-			this.entityDriver.SetMoveInput(Vector3.zero, false, false, false);
+			this.entityDriver.SetMoveInput(Vector3.zero, false, false, false, false);
 		}
 	}
 
@@ -102,7 +105,16 @@ export class EntityInput {
 					this.jumping = jump;
 				}
 
-				this.entityDriver.SetMoveInput(moveDirection, jump, sprinting, leftCtrl || c);
+				const moveSignal = new LocalEntityInputSignal(moveDirection, jump, sprinting, leftCtrl || c);
+				Dependency<LocalEntityController>().onBeforeLocalEntityInput.Fire(moveSignal);
+
+				this.entityDriver.SetMoveInput(
+					moveSignal.moveDirection,
+					moveSignal.jump,
+					moveSignal.sprinting,
+					moveSignal.crouchOrSlide,
+					Dependency<LocalEntityController>().IsMoveDirWorldSpace(),
+				);
 			});
 			if (!success) {
 				print(err);
@@ -111,7 +123,7 @@ export class EntityInput {
 
 		const onMobileJoystickChanged = (position: Vector3, phase: MobileJoystickPhase) => {
 			if (!this.enabled) return;
-			this.entityDriver.SetMoveInput(position, false, false, false);
+			this.entityDriver.SetMoveInput(position, false, false, false, false);
 		};
 
 		// Switch controls based on preferred user input:

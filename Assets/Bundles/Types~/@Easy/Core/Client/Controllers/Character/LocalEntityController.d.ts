@@ -7,6 +7,7 @@ import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraM
 import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
+import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
 export declare class LocalEntityController implements OnStart {
     private readonly cameraController;
     private readonly clientSettings;
@@ -21,7 +22,7 @@ export declare class LocalEntityController implements OnStart {
     private customDataQueue;
     private entityDriver;
     private screenshot;
-    private entityInput;
+    entityInput: EntityInput | undefined;
     private prevState;
     private currentState;
     humanoidCameraMode: HumanoidCameraMode | undefined;
@@ -30,7 +31,12 @@ export declare class LocalEntityController implements OnStart {
     private defaultFirstPerson;
     private firstSpawn;
     private sprintOverlayEmission?;
+    private moveDirWorldSpace;
     readonly onCustomMoveDataProcessed: Signal<void>;
+    /**
+     * This can be used to change input before it's processed by the entity system.
+     */
+    readonly onBeforeLocalEntityInput: Signal<LocalEntityInputSignal>;
     constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: InventoryController);
     /** Returns `true` if the player is in first-person mode. */
     IsFirstPerson(): boolean;
@@ -58,4 +64,12 @@ export declare class LocalEntityController implements OnStart {
     GetEntityInput(): EntityInput | undefined;
     SetDefaultFirstPerson(val: boolean): void;
     IsDefaultFirstPerson(): boolean;
+    /**
+     * When set to true, the move input will always make "W" point north, "A" west, etc.
+     *
+     * The default value is false.
+     * @param worldSpace True if should use world space. False if should use local space.
+     */
+    SetMoveDirWorldSpace(worldSpace: boolean): void;
+    IsMoveDirWorldSpace(): boolean;
 }
