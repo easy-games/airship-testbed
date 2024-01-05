@@ -275,6 +275,17 @@ MonoBehaviour:
       serializedValue: 3
       serializedObject: {fileID: 0}
       modified: 0
+    - name: cameraSmoothTime
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0.3
+      serializedObject: {fileID: 0}
+      modified: 0
 --- !u!1001 &1307679726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -653,7 +664,7 @@ Transform:
   m_GameObject: {fileID: 1744718878}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.31677, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

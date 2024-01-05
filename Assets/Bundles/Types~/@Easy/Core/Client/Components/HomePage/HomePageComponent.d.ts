@@ -1,11 +1,11 @@
-/// <reference types="@easy-games/compiler-types" />
-export default class HomePageComponent extends AirshipBehaviour {
+import MainMenuPageComponent from "../../MainMenuControllers/MainMenuPageComponent";
+export default class HomePageComponent extends MainMenuPageComponent {
     mainContent: Transform;
     spacerPrefab: GameObject;
     sortPrefab: GameObject;
     private bin;
     private sorts;
-    OnEnable(): void;
+    OpenPage(): void;
     private ClearSorts;
     private CreateSort;
     FetchGames(): void;

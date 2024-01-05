@@ -8,6 +8,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     cameraWaypointFeet?: Transform;
     cameraWaypointHands?: Transform;
     cameraWaypointBack?: Transform;
+    cameraWaypointCenterHero?: Transform;
+    cameraWaypointBirdsEye?: Transform;
     dragSpeedMod: number;
     cameraTransitionDuration: number;
     dragging: boolean;
@@ -18,5 +20,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     Start(): void;
     ShowAvatar(): void;
     HideAvatar(): void;
-    FocusSlot(slotType: AccessorySlot): void;
+    ResetAvatar(): void;
+    CameraFocusSlot(slotType: AccessorySlot): void;
+    CameraFocusTransform(transform?: Transform, instant?: boolean): void;
 }
