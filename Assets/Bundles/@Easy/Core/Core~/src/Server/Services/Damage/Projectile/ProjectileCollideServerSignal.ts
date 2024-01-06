@@ -11,6 +11,6 @@ export class ProjectileCollideServerSignal {
 		public readonly normal: Vector3,
 		public readonly velocity: Vector3,
 		public readonly hitEntity: Entity | undefined,
-		public readonly hitObserver: ProjectileHitBehaviour | undefined,
+		public readonly hitBehaviour: ProjectileHitBehaviour | undefined,
 	) {}
 }

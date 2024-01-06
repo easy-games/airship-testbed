@@ -83,7 +83,7 @@ export class ProjectileService implements OnStart {
 			}
 
 			print("inflict damage", damage, "base:", event.ammoMeta.damage);
-			print("hit stuff", event.hitObserver, event.hitEntity, event.hitPosition);
+			print("hit stuff", event.hitBehaviour, event.hitEntity, event.hitPosition);
 
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
@@ -103,11 +103,11 @@ export class ProjectileService implements OnStart {
 					knockbackDirection: knockbackDirection,
 					criticalHit: criticalHit,
 				});
-			} else if (event.hitObserver) {
+			} else if (event.hitBehaviour) {
 				// let knockbackDirection = event.velocity.normalized;
 				// knockbackDirection = new Vector3(knockbackDirection.x, 1, knockbackDirection.z);
 
-				event.hitObserver.ProjectileHit(event.velocity.normalized);
+				event.hitBehaviour.ProjectileHit(event.velocity.normalized);
 			} else {
 				// anchor ammo in ground
 				if (event.ammoMeta.stickItemAtSurfaceOnMiss) {
