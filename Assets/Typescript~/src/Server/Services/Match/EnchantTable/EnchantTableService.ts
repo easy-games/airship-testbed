@@ -1,7 +1,9 @@
 import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
 import { TeamService } from "@Easy/Core/Server/Services/Team/TeamService";
 import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
+import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { OnStart, Service } from "@easy-games/flamework-core";
@@ -77,6 +79,12 @@ export class EnchantTableService implements OnStart {
 		}
 	}
 
+	/**
+	 * Returns enchant table data that corresponds to provided table id.
+	 *
+	 * @param tableNob The network object id of the enchant table being queried.
+	 * @returns Relevant enchant table data.
+	 */
 	private HandleTableStateRequest(tableNob: number): { teamId: string; unlocked: boolean } {
 		const enchantTableData = this.enchantTableMap.get(tableNob);
 		return {
@@ -108,7 +116,21 @@ export class EnchantTableService implements OnStart {
 		requestorEntity.GetInventory().Decrement(EnchantTableMeta.repairCurrency, EnchantTableMeta.repairCost);
 		tableData.unlocked = true;
 		Network.ServerToClient.EnchantTable.EnchantTableUnlocked.server.FireAllClients(tableNob);
+		this.BroadcastTableRepairedMessage(tableData.teamId);
 		return true;
+	}
+
+	/**
+	 * Broadcasts a global message on table repair.
+	 *
+	 * @param teamId The team whose enchant table was unlocked.
+	 */
+	private BroadcastTableRepairedMessage(teamId: string): void {
+		const team = this.teamService.GetTeamById(teamId);
+		if (!team) return;
+		Game.BroadcastMessage(
+			`${ChatColor.Color(team.color, team.name)} team's ${ChatColor.Aqua("Enchant Table")} was repaired.`,
+		);
 	}
 
 	/**

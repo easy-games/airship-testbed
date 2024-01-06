@@ -69,7 +69,7 @@ export class TeamUpgradeService implements OnStart {
 
 	/** Apply active team upgrade effects. */
 	private ApplyPersistentUpgradeEffects(): void {
-		/* Damage. */
+		// Team damage.
 		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			const fromTeam = event.fromEntity?.player?.GetTeam();
 			if (!fromTeam) return;
@@ -83,11 +83,10 @@ export class TeamUpgradeService implements OnStart {
 					TeamUpgradeType.DAMAGE,
 					damageUpgradeTier,
 				).value;
-				/* Apply multiplier. */
 				event.amount *= 1 + damageMultiplier / 100;
 			}
 		});
-		/* Armor protection. */
+		// Armor protection.
 		CoreServerSignals.EntityDamage.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			const entityTeam = event.entity.player?.GetTeam();
 			if (!entityTeam) return;
@@ -101,11 +100,10 @@ export class TeamUpgradeService implements OnStart {
 					TeamUpgradeType.ARMOR_PROTECTION,
 					armorProtectionUpgradeTier,
 				).value;
-				/* Apply multiplier. */
 				event.amount *= damageReduction / 100;
 			}
 		});
-		/* READ: Break speed handling lives in `BlockHitDamageCalc.ts`.*/
+		// READ: Break speed handling lives in `BlockHitDamageCalc.ts`.
 	}
 
 	/** Apply generator upgrade effects. */
@@ -117,7 +115,6 @@ export class TeamUpgradeService implements OnStart {
 				const tierMeta = TeamUpgradeUtil.GetUpgradeTierForType(event.upgradeType, event.tier);
 				switch (event.tier) {
 					case 1: {
-						/* Increase generator speed. */
 						ironGenerators?.forEach((generator) => {
 							const newSpeed = generator.originalSpawnRate / (1 + tierMeta.value / 100);
 							this.generatorService.UpdateGeneratorSpawnRateById(generator.dto.id, newSpeed);
@@ -125,7 +122,6 @@ export class TeamUpgradeService implements OnStart {
 						break;
 					}
 					case 2: {
-						/* Increase generator speed. */
 						ironGenerators?.forEach((generator) => {
 							const newSpeed = generator.originalSpawnRate / (1 + tierMeta.value / 100);
 							this.generatorService.UpdateGeneratorSpawnRateById(generator.dto.id, newSpeed);
@@ -133,7 +129,6 @@ export class TeamUpgradeService implements OnStart {
 						break;
 					}
 					case 3: {
-						/* Spawn emeralds. */
 						if (ironGenerators && ironGenerators.size() > 0) {
 							const emeraldGeneratorSpawnPos = ironGenerators[0].dto.pos;
 							const generatorId = this.generatorService.CreateGenerator(emeraldGeneratorSpawnPos, {

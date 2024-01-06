@@ -7,9 +7,11 @@ import { Network } from "Shared/Network";
 
 export default class EnchantTableComponent extends AirshipBehaviour {
 	/** The team that **this** enchant table belongs to. */
-	public teamId?: string = undefined;
+	public teamId?: string;
 	/** The table's network object id. */
 	private nob = 0;
+	/** References to specific table meshes. */
+	private tableRefs?: GameObjectReferences;
 	/** Whether or not **this** enchant table is currently unlocked. */
 	private unlocked = false;
 	/** The prompt that corresponds to **this** enchant table. */
@@ -19,6 +21,7 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 
 	public override Start(): void {
 		this.nob = this.gameObject.GetComponent<NetworkObject>().ObjectId;
+		this.tableRefs = this.gameObject.GetComponent<GameObjectReferences>();
 		if (RunCore.IsClient()) {
 			const tableData = Network.ClientToServer.EnchantTable.EnchantTableStateRequest.client.FireServer(this.nob);
 			this.teamId = tableData.teamId;
@@ -34,6 +37,7 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 			this.CreateRepairPrompt();
 		} else {
 			this.CreatePurchasePrompt();
+			this.PlayTableEffects();
 		}
 		Network.ServerToClient.EnchantTable.EnchantTableUnlocked.client.OnServerEvent((tableNob) => {
 			if (tableNob !== this.nob) return;
@@ -41,6 +45,7 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 			// TODO: Clean up prompt destruction.
 			this.unlocked = true;
 			this.CreatePurchasePrompt();
+			this.PlayTableEffects();
 		});
 	}
 
@@ -94,5 +99,25 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 				Network.ClientToServer.EnchantTable.EnchantPurchaseRequest.client.FireServer(this.nob);
 			}),
 		);
+	}
+
+	private PlayTableEffects(): void {
+		if (!this.tableRefs) return;
+		const particle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "Particle");
+		const orbA = this.tableRefs.GetValue("TableParts", "OrbA");
+		const swirl = this.tableRefs.GetValue("TableParts", "Swirl");
+		orbA.transform.TweenLocalScale(new Vector3(1, 1, 1), 1).SetEaseBounceInOut();
+		swirl.transform.TweenLocalScale(new Vector3(1, 1, 1), 2).SetEaseBounceInOut();
+		task.delay(1.2, () => {
+			const orbGoalPos = orbA.transform.position.add(new Vector3(0, 0.035, 0));
+			const orbGoalRot = 1;
+			orbA.transform.TweenPosition(orbGoalPos, 0.5).SetPingPong().SetLoopCount(1000000);
+			orbA.transform.TweenRotationZ(orbGoalRot, 10).SetEaseSineIn().SetLoopCount(1000000);
+			const swirlGoalPos = swirl.transform.position.add(new Vector3(0, 0.05, 0));
+			const swirlGoalRot = 1;
+			swirl.transform.TweenPosition(swirlGoalPos, 0.75).SetPingPong().SetLoopCount(1000000);
+			swirl.transform.TweenRotationZ(swirlGoalRot, 6).SetEaseSineIn().SetLoopCount(1000000);
+			particle.Play();
+		});
 	}
 }
