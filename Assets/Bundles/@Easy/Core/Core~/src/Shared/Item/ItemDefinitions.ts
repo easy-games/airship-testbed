@@ -937,6 +937,12 @@ export const CoreItemDefinitions: {
 			blockId: ItemType.TNT,
 			activePrefab: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/TntBindingPrefab.prefab",
+				activateOnProjectilePierce: {
+					applyKnockback: {
+						knockbackForce: 10,
+						knockbackModifier: new Vector3(0, 0.5, 0),
+					},
+				},
 			},
 		},
 	},

@@ -2,6 +2,7 @@ import ProjectileHitBehaviour from "Shared/Behaviours/Projectiles/ProjectileHitB
 import { Entity } from "Shared/Entity/Entity";
 import { AmmoDef } from "Shared/Item/ItemDefinitionTypes";
 import { Projectile } from "Shared/Projectile/Projectile";
+import { Block } from "Shared/VoxelWorld/Block";
 
 export class ProjectileCollideServerSignal {
 	constructor(
@@ -11,6 +12,7 @@ export class ProjectileCollideServerSignal {
 		public readonly normal: Vector3,
 		public readonly velocity: Vector3,
 		public readonly hitEntity: Entity | undefined,
+		public readonly hitBlock: Block | undefined,
 		public readonly hitBehaviour: ProjectileHitBehaviour | undefined,
 	) {}
 }

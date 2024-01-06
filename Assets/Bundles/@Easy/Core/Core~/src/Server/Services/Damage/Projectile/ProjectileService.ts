@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { BlockInteractService } from "Server/Services/Block/BlockInteractService";
 import { GroundItemService } from "Server/Services/GroundItem/GroundItemService";
@@ -13,6 +13,7 @@ import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
 import ProjectileHitBehaviour from "Shared/Behaviours/Projectiles/ProjectileHitBehaviour";
+import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -104,13 +105,30 @@ export class ProjectileService implements OnStart {
 					criticalHit: criticalHit,
 				});
 			} else if (event.hitBehaviour) {
-				// let knockbackDirection = event.velocity.normalized;
-				// knockbackDirection = new Vector3(knockbackDirection.x, 1, knockbackDirection.z);
-
 				event.hitBehaviour.ProjectileHit(event.velocity.normalized);
 			} else {
-				// anchor ammo in ground
-				if (event.ammoMeta.stickItemAtSurfaceOnMiss) {
+				const hitItemBlockMeta = event.hitBlock?.itemDef?.block;
+				const activateOnPierce = hitItemBlockMeta?.activePrefab?.activateOnProjectilePierce;
+				if (activateOnPierce) {
+					Dependency<BlockInteractService>().ActivateBlockAtPosition(
+						event.hitEntity,
+						event.hitPosition,
+						(gameObject) => {
+							if (activateOnPierce.applyKnockback) {
+								const knockback = activateOnPierce.applyKnockback;
+								const knockbackMod = knockback.knockbackModifier ?? new Vector3();
+
+								const rb = gameObject.GetComponent<Rigidbody>();
+								if (rb) {
+									rb.AddForce(
+										event.velocity.normalized.add(knockbackMod).mul(knockback.knockbackForce),
+										ForceMode.Impulse,
+									);
+								}
+							}
+						},
+					);
+				} else if (event.ammoMeta.stickItemAtSurfaceOnMiss) {
 					const groundItem = this.groundItemService.SpawnGroundItem(
 						new ItemStack(event.projectile.itemType, 1),
 						event.hitPosition,
@@ -177,6 +195,7 @@ export class ProjectileService implements OnStart {
 		velocity: Vector3,
 	): boolean {
 		const ammoMeta = ItemUtil.GetItemDef(projectile.itemType).projectile!;
+		const hitBlock = WorldAPI.GetMainWorld()?.GetBlockAt(hitPoint);
 		const hitEntity = Entity.FindByCollider(collider);
 
 		const projectileHitSignal = new ProjectileCollideServerSignal(
@@ -186,6 +205,7 @@ export class ProjectileService implements OnStart {
 			normal,
 			velocity,
 			hitEntity,
+			hitBlock,
 			collider.gameObject.GetComponent<ProjectileHitBehaviour>(),
 		);
 

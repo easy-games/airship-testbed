@@ -33,6 +33,15 @@ export interface BlockDef {
 	 */
 	activePrefab?: {
 		path: string;
+		/**
+		 * Activate this
+		 */
+		activateOnProjectilePierce?: {
+			applyKnockback?: {
+				knockbackModifier?: Vector3;
+				knockbackForce: number;
+			};
+		};
 	};
 
 	/**

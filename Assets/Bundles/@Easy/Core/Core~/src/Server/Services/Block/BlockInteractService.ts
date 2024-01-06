@@ -146,7 +146,11 @@ export class BlockInteractService implements OnStart {
 	 * @param pos The position of the block
 	 * @returns True if a block was activated successfully
 	 */
-	public ActivateBlockAtPosition(entity: Entity | undefined, pos: Vector3) {
+	public ActivateBlockAtPosition(
+		entity: Entity | undefined,
+		pos: Vector3,
+		onSpawn?: (gameObject: GameObject) => void,
+	) {
 		const world = WorldAPI.GetMainWorld();
 		if (world) {
 			const block = world.GetBlockAt(pos);
@@ -164,6 +168,8 @@ export class BlockInteractService implements OnStart {
 					if (networkObject !== undefined) {
 						NetworkUtil.Spawn(go);
 					}
+
+					onSpawn?.(go);
 				});
 				return true;
 			}
