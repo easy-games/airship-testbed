@@ -933,11 +933,9 @@ export const CoreItemDefinitions: {
 	},
 	[ItemType.TNT]: {
 		displayName: "TNT",
-		blockEntity: {
+		block: {
 			blockId: ItemType.TNT,
-			scripts: ["@Easy/Core/Shared/Resources/TS/Behaviours/TNTBehaviour.lua"],
-			prefab: {
-				// Right now we need to do this through a prefab to have the AirshipBehaviour, when stephen adds AddComponent stuff - then can remove this.
+			activePrefab: {
 				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/TntBindingPrefab.prefab",
 			},
 		},

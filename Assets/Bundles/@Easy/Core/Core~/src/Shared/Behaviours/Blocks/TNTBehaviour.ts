@@ -40,7 +40,7 @@ export default class TntBehaviour extends AirshipBehaviour {
 
 	public LightFuse() {
 		if (RunUtil.IsServer()) {
-			this.rigidBody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+			this.rigidBody.AddForce(new Vector3(0, 5, 0), ForceMode.Impulse);
 		}
 
 		let meshFlash: MeshFlashingBehaviour | undefined;

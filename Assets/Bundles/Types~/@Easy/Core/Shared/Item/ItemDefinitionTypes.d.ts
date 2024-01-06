@@ -24,6 +24,12 @@ export interface BlockDef {
     hitSound?: string[];
     breakSound?: string[];
     /**
+     * The prefab to spawn at the voxel if the block is "activated"
+     */
+    activePrefab?: {
+        path: string;
+    };
+    /**
      * A filter for what this block can be placed on
      */
     placeOnWhitelist?: ItemType[];
@@ -90,6 +96,9 @@ export interface HoldConfig {
 export interface CropBlockDef {
     numStages: number;
     stageGrowthDuration: Duration;
+}
+export interface EntitySpawner {
+    scripts?: string[];
 }
 export interface ItemDef {
     displayName: string;

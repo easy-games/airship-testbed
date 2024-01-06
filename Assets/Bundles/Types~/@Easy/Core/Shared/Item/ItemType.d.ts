@@ -57,7 +57,8 @@ export declare const enum ItemType {
     DIAMOND_HELMET = "@Easy/Core:DIAMOND_HELMET",
     EMERALD_HELMET = "@Easy/Core:EMERALD_HELMET",
     WHEAT_SEEDS = "@Easy/Core:WHEAT_SEEDS",
-    WHEAT_CROP = "@Easy/Core:WHEAT_CROP"
+    WHEAT_CROP = "@Easy/Core:WHEAT_CROP",
+    TNT = "@Easy/Core:TNT"
 }
 export declare enum ItemArchetype {
     DEFAULT = 0,

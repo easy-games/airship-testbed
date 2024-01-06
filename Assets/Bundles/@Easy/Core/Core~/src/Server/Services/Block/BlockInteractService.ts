@@ -72,55 +72,6 @@ export class BlockInteractService implements OnStart {
 			this.PlaceBlock(entity, pos, itemMeta);
 		});
 
-		//Placed a block
-		CoreServerSignals.CustomMoveCommand.Connect((event) => {
-			if (!event.Is("PlaceBlockEntity")) return;
-
-			print("PlaceBlockEntity tick=" + InstanceFinder.TimeManager.LocalTick);
-
-			const itemType = event.value.itemType;
-			const pos = event.value.pos;
-			const clientId = event.clientId;
-
-			const world = WorldAPI.GetMainWorld();
-			const itemMeta = ItemUtil.GetItemDef(itemType);
-
-			const rollback = () => {
-				// CoreNetwork.ServerToClient.RevertBlockPlace.server.FireClient(clientId, pos);
-			};
-
-			if (!itemMeta.blockEntity?.blockId) {
-				return rollback();
-			}
-
-			// const player = Dependency<PlayerService>().GetPlayerFromClientId(clientId);
-			const entity = Dependency<EntityService>().GetEntityByClientId(clientId);
-			if (!entity) {
-				return rollback();
-			}
-			if (!(entity instanceof CharacterEntity)) {
-				return rollback();
-			}
-			if (!entity.GetInventory().HasEnough(itemType, 1)) {
-				return rollback();
-			}
-
-			const beforeBlockPlaced = CoreServerSignals.BeforeBlockPlaced.Fire(
-				new BeforeBlockPlacedSignal(
-					pos,
-					itemType,
-					world!.GetVoxelIdFromId(itemMeta.blockEntity!.blockId),
-					entity,
-				),
-			);
-
-			if (beforeBlockPlaced.IsCancelled()) {
-				return rollback();
-			}
-
-			this.PlaceBlockEntity(entity, pos, itemMeta);
-		});
-
 		//Hit Block with an Item
 		CoreServerSignals.CustomMoveCommand.Connect((event) => {
 			if (!event.Is("HitBlock")) return;
@@ -189,39 +140,36 @@ export class BlockInteractService implements OnStart {
 		CoreNetwork.ClientToServer.HitBlock.server.OnClientEvent((clientId, pos) => {});
 	}
 
-	public PlaceBlockEntity(entity: CharacterEntity, pos: Vector3, item: ItemDef, blockData?: BlockData) {
-		print("place block entity = ", pos);
+	/**
+	 * Will activate the block at the given position if it has an active state prefab
+	 * @param entity The entity activating the block
+	 * @param pos The position of the block
+	 * @returns True if a block was activated successfully
+	 */
+	public ActivateBlockAtPosition(entity: Entity | undefined, pos: Vector3) {
+		const world = WorldAPI.GetMainWorld();
+		if (world) {
+			const block = world.GetBlockAt(pos);
+			const blockMeta = block.itemDef;
 
-		if (item.blockEntity) {
-			entity.GetInventory().Decrement(item.itemType, 1);
-
-			const world = WorldAPI.GetMainWorld();
-			if (world) {
-				if (item.blockEntity.prefab) {
-					let prefab = AssetBridge.Instance.LoadAsset<Object>(item.blockEntity.prefab.path);
+			const activePrefab = blockMeta?.block?.activePrefab;
+			if (activePrefab) {
+				world.DeleteBlock(pos);
+				task.defer(() => {
+					let prefab = AssetBridge.Instance.LoadAsset<Object>(activePrefab.path);
 					const go = GameObjectUtil.Instantiate(prefab);
 					go.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
-					NetworkUtil.Spawn(go);
-					//Bridge.SetParentToSceneRoot(go.transform);
-					//go.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
-				} else {
-					// let prefab = MeshProcessor.ProduceSingleBlock(
-					// 	world.voxelWorld.blocks.GetBlockIdFromStringId(item.itemType),
-					// 	world.voxelWorld,
-					// 	0,
-					// 	0,
-					// );
-					// if (prefab) {
-					// 	const obj = prefab;
-					// 	obj.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
-					// } else {
-					// 	warn("no prefab");
-					// }
-				}
-			}
 
-			entity.SendItemAnimationToClients(0, 0, entity.clientId);
+					const networkObject = go.GetComponent<NetworkObject>();
+					if (networkObject !== undefined) {
+						NetworkUtil.Spawn(go);
+					}
+				});
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	public PlaceBlock(entity: CharacterEntity, pos: Vector3, item: ItemDef, blockData?: BlockData) {

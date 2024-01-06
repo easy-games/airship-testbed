@@ -25,6 +25,17 @@ export interface BlockDef {
 	breakSound?: string[];
 
 	/**
+	 * The prefab to spawn at the voxel if the block is "activated"
+	 *
+	 * E.g. with TNT this would spawn an active entity that will explode - this could be triggered instantly (bedwars) or can be primed like in Minecraft via a player tool/interaction
+	 *
+	 *
+	 */
+	activePrefab?: {
+		path: string;
+	};
+
+	/**
 	 * A filter for what this block can be placed on
 	 */
 	placeOnWhitelist?: ItemType[];
@@ -119,7 +130,7 @@ export interface ItemDef {
 	//Optional Item Archetypes
 	melee?: MeleeItemDef;
 	block?: BlockDef;
-	blockEntity?: BlockDef & EntitySpawner;
+	// blockEntity?: BlockDef & EntitySpawner;
 	breakBlock?: BreakBlockDef;
 	cropBlock?: CropBlockDef;
 	tillBlock?: TillBlockDef;
