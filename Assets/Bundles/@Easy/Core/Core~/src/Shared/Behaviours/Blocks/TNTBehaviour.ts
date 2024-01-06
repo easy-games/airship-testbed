@@ -45,12 +45,15 @@ export default class TntBehaviour extends AirshipBehaviour {
 
 		let meshFlash: MeshFlashingBehaviour | undefined;
 		if (this.blockMeshObject) {
-			meshFlash = this.gameObject.GetComponent<MeshFlashingBehaviour>();
-			meshFlash.meshRenderer = this.blockMeshObject.GetComponent<MeshRenderer>();
+			task.spawn(() => {
+				meshFlash = this.gameObject.GetComponent<MeshFlashingBehaviour>();
+				meshFlash.meshRenderer = this.blockMeshObject!.GetComponent<MeshRenderer>();
 
-			meshFlash.flashFrequency = this.secondsToDetonate / 5;
-			meshFlash.FlashStart(MeshFlashType.Instant, {
-				IntervalTickMod: 0.8,
+				meshFlash.flashFrequency = this.secondsToDetonate / 5;
+				meshFlash.InstantFlash();
+				meshFlash.FlashStart(MeshFlashType.Instant, {
+					IntervalTickMod: 0.8,
+				});
 			});
 		}
 

@@ -47,35 +47,44 @@ export default class MeshFlashingBehaviour extends AirshipBehaviour {
 	public FlashStart(flashType: MeshFlashType, options: MeshFlashOptions) {
 		if (options.IntervalTickMod) {
 			this.flashingBin.Add(
-				SetIntervalWithModifier(options.Frequency ?? this.flashFrequency, (interval, setInterval) => {
-					if (flashType === MeshFlashType.Instant) {
-						this.InstantFlash(undefined, interval);
-					} else {
-						this.TweenFlash(undefined, interval);
-					}
-					setInterval(interval * options.IntervalTickMod!);
-				}),
+				SetIntervalWithModifier(
+					options.Frequency ?? this.flashFrequency,
+					(interval, setInterval) => {
+						if (flashType === MeshFlashType.Instant) {
+							this.InstantFlash(undefined, interval);
+						} else {
+							this.TweenFlash(undefined, interval);
+						}
+						setInterval(interval * options.IntervalTickMod!);
+					},
+					options.Immediate,
+				),
 			);
 		} else {
 			this.flashingBin.Add(
-				SetInterval(options.Frequency ?? this.flashFrequency, () => {
-					if (flashType === MeshFlashType.Instant) {
-						this.InstantFlash();
-					} else {
-						this.TweenFlash();
-					}
-				}),
+				SetInterval(
+					options.Frequency ?? this.flashFrequency,
+					() => {
+						if (flashType === MeshFlashType.Instant) {
+							this.InstantFlash();
+						} else {
+							this.TweenFlash();
+						}
+					},
+					options.Immediate,
+				),
 			);
 		}
 	}
 
 	public FlashStop() {
-		this.flashingBin.Clean();
 		this.meshRenderer.material.color = this.originalColor;
+		this.flashingBin.Clean();
 	}
 }
 
 export interface MeshFlashOptions {
 	readonly IntervalTickMod?: number;
 	readonly Frequency?: number;
+	readonly Immediate?: boolean;
 }
