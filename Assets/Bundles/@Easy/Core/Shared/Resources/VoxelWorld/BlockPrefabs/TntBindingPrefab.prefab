@@ -310,7 +310,7 @@ MonoBehaviour:
         objectType: 
       decorators: []
       nullable: 0
-      serializedValue: 0,1,0
+      serializedValue: 0,0.5,0
       serializedObject: {fileID: 0}
       modified: 1
     - name: knockbackForce
