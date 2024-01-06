@@ -210,7 +210,7 @@ MonoBehaviour:
     Position: 1
     Rotation: 1
     Scale: 0
-  _interpolation: 1
+  _interpolation: 2
   _extrapolation: 0
   _enableTeleport: 0
   _teleportThreshold: 1
