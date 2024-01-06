@@ -17,6 +17,7 @@ import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 
 @Service({})
 export class BlockInteractService implements OnStart {
@@ -199,21 +200,23 @@ export class BlockInteractService implements OnStart {
 				if (item.blockEntity.prefab) {
 					let prefab = AssetBridge.Instance.LoadAsset<Object>(item.blockEntity.prefab.path);
 					const go = GameObjectUtil.Instantiate(prefab);
-					Bridge.SetParentToSceneRoot(go.transform);
 					go.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
+					NetworkUtil.Spawn(go);
+					//Bridge.SetParentToSceneRoot(go.transform);
+					//go.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
 				} else {
-					let prefab = MeshProcessor.ProduceSingleBlock(
-						world.voxelWorld.blocks.GetBlockIdFromStringId(item.itemType),
-						world.voxelWorld,
-						0,
-						0,
-					);
-					if (prefab) {
-						const obj = prefab;
-						obj.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
-					} else {
-						warn("no prefab");
-					}
+					// let prefab = MeshProcessor.ProduceSingleBlock(
+					// 	world.voxelWorld.blocks.GetBlockIdFromStringId(item.itemType),
+					// 	world.voxelWorld,
+					// 	0,
+					// 	0,
+					// );
+					// if (prefab) {
+					// 	const obj = prefab;
+					// 	obj.transform.position = pos.add(new Vector3(0.5, 0.5, 0.5));
+					// } else {
+					// 	warn("no prefab");
+					// }
 				}
 			}
 

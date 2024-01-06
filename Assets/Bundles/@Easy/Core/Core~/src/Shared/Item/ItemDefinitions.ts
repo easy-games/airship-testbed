@@ -8,7 +8,7 @@ import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { BlockArchetype, BlockDef, HoldConfig, ItemDef, MeleeItemDef, UsableHeldItemDef } from "./ItemDefinitionTypes";
 import { ItemType } from "./ItemType";
-import TntBehaviour from "Shared/Behaviours/TNTBehaviour";
+import TntBehaviour from "Shared/Behaviours/Blocks/TNTBehaviour";
 import { $nameof } from "@easy-games/unity-component-transformer";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";

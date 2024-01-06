@@ -12,6 +12,7 @@ import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Projectile } from "Shared/Projectile/Projectile";
 import { DamageService, InflictDamageConfig } from "../DamageService";
 import { ProjectileCollideServerSignal } from "./ProjectileCollideServerSignal";
+import ProjectileHitBehaviour from "Shared/Behaviours/Projectiles/ProjectileHitBehaviour";
 
 @Service({})
 export class ProjectileService implements OnStart {
@@ -82,6 +83,7 @@ export class ProjectileService implements OnStart {
 			}
 
 			print("inflict damage", damage, "base:", event.ammoMeta.damage);
+			print("hit stuff", event.hitObserver, event.hitEntity, event.hitPosition);
 
 			//Deal direct damage to hit entity
 			if (event.hitEntity) {
@@ -101,6 +103,11 @@ export class ProjectileService implements OnStart {
 					knockbackDirection: knockbackDirection,
 					criticalHit: criticalHit,
 				});
+			} else if (event.hitObserver) {
+				// let knockbackDirection = event.velocity.normalized;
+				// knockbackDirection = new Vector3(knockbackDirection.x, 1, knockbackDirection.z);
+
+				event.hitObserver.ProjectileHit(event.velocity.normalized);
 			} else {
 				// anchor ammo in ground
 				if (event.ammoMeta.stickItemAtSurfaceOnMiss) {
@@ -179,6 +186,7 @@ export class ProjectileService implements OnStart {
 			normal,
 			velocity,
 			hitEntity,
+			collider.gameObject.GetComponent<ProjectileHitBehaviour>(),
 		);
 
 		CoreServerSignals.ProjectileHit.Fire(projectileHitSignal);

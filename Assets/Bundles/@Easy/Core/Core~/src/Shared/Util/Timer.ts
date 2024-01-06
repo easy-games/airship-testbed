@@ -30,3 +30,24 @@ export function SetInterval(interval: number, callback: Callback, immediate?: bo
 	});
 	return disconnect;
 }
+
+export function SetIntervalWithModifier(
+	interval: number,
+	callback: (interval: number, setInterval: (interval: number) => void) => void,
+	immediate?: boolean,
+) {
+	const setInterval = (value: number) => (interval = value);
+
+	if (immediate) {
+		callback(interval, setInterval);
+	}
+	let nextTriggerTime = Time.time + interval;
+	const disconnect = OnUpdate.Connect(() => {
+		const now = Time.time;
+		if (now >= nextTriggerTime) {
+			nextTriggerTime = now + interval;
+			callback(interval, setInterval);
+		}
+	});
+	return disconnect;
+}

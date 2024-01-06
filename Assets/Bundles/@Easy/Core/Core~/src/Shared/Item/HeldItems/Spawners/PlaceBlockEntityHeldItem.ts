@@ -105,17 +105,17 @@ export class PlaceBlockEntityHeldItem extends BlockSelectHeldItem {
 				// 	priority: true,
 				// });
 
-				const item = this.itemMeta;
-				if (item?.blockEntity) {
-					if (item.blockEntity.prefab) {
-						let prefab = AssetBridge.Instance.LoadAsset<Object>(item.blockEntity.prefab.path);
-						const go = GameObjectUtil.Instantiate(prefab);
-						Bridge.SetParentToSceneRoot(go.transform);
-						go.transform.position = placePosition.add(new Vector3(0.5, 0.5, 0.5));
-					} else {
-						// TODO: Not yet supported
-					}
-				}
+				// const item = this.itemMeta;
+				// if (item?.blockEntity) {
+				// 	if (item.blockEntity.prefab) {
+				// 		let prefab = AssetBridge.Instance.LoadAsset<Object>(item.blockEntity.prefab.path);
+				// 		const go = GameObjectUtil.Instantiate(prefab);
+				// 		Bridge.SetParentToSceneRoot(go.transform);
+				// 		go.transform.position = placePosition.add(new Vector3(0.5, 0.5, 0.5));
+				// 	} else {
+				// 		// TODO: Not yet supported
+				// 	}
+				// }
 
 				if (isVoidPlacement) {
 					blockSelectController.PlacedVoidBridgeBlock();

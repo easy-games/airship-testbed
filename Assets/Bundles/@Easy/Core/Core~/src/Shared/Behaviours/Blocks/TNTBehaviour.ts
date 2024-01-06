@@ -9,7 +9,8 @@ import { ItemType } from "Shared/Item/ItemType";
 import { AllBundleItems } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import MeshFlashingBehaviour, { MeshFlashType } from "./MeshFlashingBehaviour";
+import MeshFlashingBehaviour, { MeshFlashType } from "../Effects/MeshFlashingBehaviour";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 
 export default class TntBehaviour extends AirshipBehaviour {
 	public renderModelOnServer = false;
@@ -38,7 +39,9 @@ export default class TntBehaviour extends AirshipBehaviour {
 	}
 
 	public LightFuse() {
-		this.rigidBody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+		if (RunUtil.IsServer()) {
+			this.rigidBody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+		}
 
 		let meshFlash: MeshFlashingBehaviour | undefined;
 		if (this.blockMeshObject) {
@@ -70,6 +73,8 @@ export default class TntBehaviour extends AirshipBehaviour {
 			Dependency<DamageService>().InflictAOEDamage(this.gameObject.transform.position, 30, damageDef, {
 				damageType: DamageType.FIRE,
 			});
+
+			NetworkUtil.Despawn(this.gameObject);
 		} else {
 			EffectsManager.SpawnPrefabEffect(
 				AllBundleItems.Projectiles_OnHitVFX_FireballExplosion,
@@ -77,7 +82,5 @@ export default class TntBehaviour extends AirshipBehaviour {
 				Vector3.zero,
 			);
 		}
-
-		GameObjectUtil.Destroy(this.gameObject);
 	}
 }
