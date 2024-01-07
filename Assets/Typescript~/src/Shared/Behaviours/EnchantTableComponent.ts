@@ -164,8 +164,13 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 		const startPos = enchantOrb.transform.position;
 		let orbProgress = 0;
 		const orbMover = OnUpdate.Connect((dt) => {
+			const targetPos = Game.localPlayer.character?.GetHeadPosition();
+			if (orbProgress >= 1 || !targetPos) {
+				orbMover();
+				GameObjectUtil.Destroy(enchantOrb, 1);
+				return;
+			}
 			const orbSpeed = 3.5;
-			const targetPos = Game.localPlayer.character!.GetHeadPosition();
 			const distToTarget = enchantOrb.transform.position.sub(targetPos).magnitude;
 			const stepScale = orbSpeed / distToTarget;
 			orbProgress = math.min(orbProgress + dt * stepScale, 1);
@@ -173,12 +178,6 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 			const arcHeight = 4;
 			const nextPos = Vector3.Lerp(startPos, targetPos, orbProgress).add(new Vector3(0, parabola * arcHeight, 0));
 			enchantOrb.transform.position = nextPos;
-			if (orbProgress >= 1) {
-				orbMover();
-				task.delay(1, () => {
-					GameObjectUtil.Destroy(enchantOrb);
-				});
-			}
 		});
 	}
 }
