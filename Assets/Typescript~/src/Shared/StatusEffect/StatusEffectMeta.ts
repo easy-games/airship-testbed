@@ -12,6 +12,8 @@ export interface StatusEffectMeta {
 	maxTier: number;
 	/** The damage type associated with this status effect, if applicable. */
 	damageType?: DamageType;
+	/** The color associated with this status effect, if applicable. */
+	color?: Color;
 }
 
 export interface StatusEffectDto {

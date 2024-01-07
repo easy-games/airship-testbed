@@ -10,6 +10,7 @@ import { OnStart, Service } from "@easy-games/flamework-core";
 import { StatusEffectService } from "Server/Services/Global/StatusEffect/StatusEffectService";
 import { EnchantTableMeta } from "Shared/Enchant/EnchantMeta";
 import { Network } from "Shared/Network";
+import { StatusEffectType } from "Shared/StatusEffect/StatusEffectType";
 import { LoadedMap } from "../Map/LoadedMap";
 import { MapService } from "../Map/MapService";
 
@@ -40,8 +41,8 @@ export class EnchantTableService implements OnStart {
 		Network.ClientToServer.EnchantTable.EnchantTableRepairRequest.server.OnClientEvent((clientId, nob) => {
 			this.HandleEnchantTableRepairRequest(clientId, nob);
 		});
-		Network.ClientToServer.EnchantTable.EnchantPurchaseRequest.server.OnClientEvent((clientId, nob) => {
-			this.HandleEnchantPurchaseRequest(clientId, nob);
+		Network.ClientToServer.EnchantTable.EnchantPurchaseRequest.server.SetCallback((clientId, nob) => {
+			return this.HandleEnchantPurchaseRequest(clientId, nob);
 		});
 		task.spawn(() => {
 			this.loadedMap = this.mapService.WaitForMapLoaded();
@@ -140,23 +141,29 @@ export class EnchantTableService implements OnStart {
 	 * @param tableNob The network object id of the table being used.
 	 * @returns Whether or not purchase was successful.
 	 */
-	private HandleEnchantPurchaseRequest(requestor: number, tableNob: number): boolean {
+	private HandleEnchantPurchaseRequest(
+		requestor: number,
+		tableNob: number,
+	): { success: boolean; enchantType?: StatusEffectType } {
 		const tableData = this.enchantTableMap.get(tableNob);
-		if (!tableData) return false;
-		if (!tableData.unlocked) return false;
+		if (!tableData) return { success: false };
+		if (!tableData.unlocked) return { success: false };
 		const requestorEntity = this.entityService.GetEntityByClientId(requestor);
-		if (!requestorEntity) return false;
-		if (!(requestorEntity instanceof CharacterEntity)) return false;
+		if (!requestorEntity) return { success: false };
+		if (!(requestorEntity instanceof CharacterEntity)) return { success: false };
 		const distanceToTable = tableData.gameObject.transform.position.sub(requestorEntity.GetPosition()).magnitude;
-		if (distanceToTable > 20) return false;
+		if (distanceToTable > 20) return { success: false };
 		const canAfford = requestorEntity
 			.GetInventory()
 			.HasEnough(EnchantTableMeta.purchaseCurrency, EnchantTableMeta.purchaseCost);
-		if (!canAfford) return false;
+		if (!canAfford) return { success: false };
 		requestorEntity.GetInventory().Decrement(EnchantTableMeta.purchaseCurrency, EnchantTableMeta.purchaseCost);
 		this.statusEffectService.RemoveAllStatusEffectsFromClient(requestor);
 		const enchant = RandomUtil.FromArray(EnchantTableMeta.enchantPool);
 		this.statusEffectService.AddStatusEffectToClient(requestor, enchant.type, enchant.tier);
-		return true;
+		return {
+			success: true,
+			enchantType: enchant.type,
+		};
 	}
 }

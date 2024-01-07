@@ -26,8 +26,14 @@ export const Network = {
 			EnchantTableStateRequest: new RemoteFunction<[nob: number], { teamId: string; unlocked: boolean }>(),
 			/** Fired when a user attempts to repair enchant table. */
 			EnchantTableRepairRequest: new RemoteEvent<[tableNob: number]>(),
-			/** Fired when a user attempts to purchase an enchant. */
-			EnchantPurchaseRequest: new RemoteEvent<[tableNob: number]>(),
+			/**
+			 * Fired when a user attempts to purchase an enchant. Returns whether or not
+			 * enchant was successfully purchased and the enchant, if applicable.
+			 */
+			EnchantPurchaseRequest: new RemoteFunction<
+				[tableNob: number],
+				{ success: boolean; enchantType?: StatusEffectType }
+			>(),
 		},
 	},
 	ServerToClient: {

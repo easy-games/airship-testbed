@@ -238,7 +238,6 @@ export class ItemShopController implements OnStart {
 	private SetSidebarItem(shopItem: ShopElement, noEffect = false): void {
 		this.selectedItemBin.Clean();
 
-		/* TODO: We should probably fetch and cache these references inside of `OnStart` or the constructor. */
 		this.selectedShopElement = shopItem;
 		const selectedItemIcon = this.refs.GetValue<GameObject>("SidebarContainer", "SelectedItemIcon");
 		const selectedItemQuantity = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemQuantity");

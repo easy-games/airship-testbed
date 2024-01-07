@@ -1,9 +1,13 @@
 import { ProximityPrompt } from "@Easy/Core/Client/Controllers/ProximityPrompt/ProximityPrompt";
 import { ProximityPromptController } from "@Easy/Core/Client/Controllers/ProximityPrompt/ProximityPromptController";
+import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Dependency } from "@easy-games/flamework-core";
 import { Network } from "Shared/Network";
+import { GetStatusEffectMeta } from "Shared/StatusEffect/StatusEffectDefinitions";
+import { StatusEffectType } from "Shared/StatusEffect/StatusEffectType";
 
 export default class EnchantTableComponent extends AirshipBehaviour {
 	/** The team that **this** enchant table belongs to. */
@@ -37,7 +41,7 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 			this.CreateRepairPrompt();
 		} else {
 			this.CreatePurchasePrompt();
-			this.PlayTableEffects();
+			this.PlayTableRepairEffects();
 		}
 		Network.ServerToClient.EnchantTable.EnchantTableUnlocked.client.OnServerEvent((tableNob) => {
 			if (tableNob !== this.nob) return;
@@ -45,7 +49,7 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 			// TODO: Clean up prompt destruction.
 			this.unlocked = true;
 			this.CreatePurchasePrompt();
-			this.PlayTableEffects();
+			this.PlayTableRepairEffects();
 		});
 	}
 
@@ -96,18 +100,26 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 		});
 		this.promptBin.Add(
 			this.prompt.onActivated.Connect(() => {
-				Network.ClientToServer.EnchantTable.EnchantPurchaseRequest.client.FireServer(this.nob);
+				const result = Network.ClientToServer.EnchantTable.EnchantPurchaseRequest.client.FireServer(this.nob);
+				if (result.success && result.enchantType !== undefined) {
+					this.PlayTablePurchaseEffects(result.enchantType);
+				}
 			}),
 		);
 	}
 
-	private PlayTableEffects(): void {
+	/**
+	 * Plays table unlock effects.
+	 * TODO: Lots of improvements to be made here, table needs to be separated
+	 * out into more meshes.
+	 */
+	private PlayTableRepairEffects(): void {
 		if (!this.tableRefs) return;
 		const particle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "Particle");
 		const orbA = this.tableRefs.GetValue("TableParts", "OrbA");
 		const swirl = this.tableRefs.GetValue("TableParts", "Swirl");
 		orbA.transform.TweenLocalScale(new Vector3(1, 1, 1), 1).SetEaseBounceInOut();
-		swirl.transform.TweenLocalScale(new Vector3(1, 1, 1), 2).SetEaseBounceInOut();
+		swirl.transform.TweenLocalScale(new Vector3(1, 1, 1), 0.5).SetEaseBounceInOut();
 		task.delay(1.2, () => {
 			const orbGoalPos = orbA.transform.position.add(new Vector3(0, 0.035, 0));
 			const orbGoalRot = 1;
@@ -118,6 +130,55 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 			swirl.transform.TweenPosition(swirlGoalPos, 0.75).SetPingPong().SetLoopCount(1000000);
 			swirl.transform.TweenRotationZ(swirlGoalRot, 6).SetEaseSineIn().SetLoopCount(1000000);
 			particle.Play();
+		});
+	}
+
+	/**
+	 * Plays table purchase effects on **successful** enchant purchase.
+	 * @param enchantType The type of enchant that was purchased.
+	 */
+	private PlayTablePurchaseEffects(enchantType: StatusEffectType): void {
+		if (!this.tableRefs) return;
+		const statusMeta = GetStatusEffectMeta(enchantType);
+		// Speed up ambient particle effect.
+		const ambientParticle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "Particle");
+		const originalEmissionRate = 5;
+		const originalPlaybackSpeed = 1;
+		ambientParticle.emissionRate = 15;
+		ambientParticle.playbackSpeed = 1.5;
+		task.delay(1, () => {
+			ambientParticle.emissionRate = originalEmissionRate;
+			ambientParticle.playbackSpeed = originalPlaybackSpeed;
+		});
+		// Move orb towards local character on a parabolic curve.
+		const enchantOrbPrefab = AssetBridge.Instance.LoadAsset<Object>("Client/Resources/Prefabs/EnchantOrb.prefab");
+		const enchantOrb = GameObjectUtil.InstantiateAt(
+			enchantOrbPrefab,
+			this.gameObject.transform.position,
+			Quaternion.identity,
+		);
+		if (statusMeta.color) {
+			const orbColor = enchantOrb.GetComponent<MaterialColor>();
+			orbColor.SetAllColors(statusMeta.color, true);
+		}
+		const startPos = enchantOrb.transform.position;
+		let orbProgress = 0;
+		const orbMover = OnUpdate.Connect((dt) => {
+			const orbSpeed = 3.5;
+			const targetPos = Game.localPlayer.character!.GetHeadPosition();
+			const distToTarget = enchantOrb.transform.position.sub(targetPos).magnitude;
+			const stepScale = orbSpeed / distToTarget;
+			orbProgress = math.min(orbProgress + dt * stepScale, 1);
+			const parabola = 1.0 - 4.0 * (orbProgress - 0.5) * (orbProgress - 0.5);
+			const arcHeight = 4;
+			const nextPos = Vector3.Lerp(startPos, targetPos, orbProgress).add(new Vector3(0, parabola * arcHeight, 0));
+			enchantOrb.transform.position = nextPos;
+			if (orbProgress >= 1) {
+				orbMover();
+				task.delay(1, () => {
+					GameObjectUtil.Destroy(enchantOrb);
+				});
+			}
 		});
 	}
 }
