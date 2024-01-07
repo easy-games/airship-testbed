@@ -35,7 +35,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		// }
 
 		let toRemove: Transform[] = [];
-		for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
+		for (let i = 0; i < this.mainContent.GetChildCount(); i++) {
 			toRemove.push(this.mainContent.GetChild(i));
 		}
 		for (const t of toRemove) {

@@ -20,9 +20,6 @@ export class UserController implements OnStart {
 		this.authController.onAuthenticated.Connect(() => {
 			task.spawn(() => {
 				this.FetchLocalUser();
-				if (this.localUser) {
-					print("Hello " + this.localUser.username);
-				}
 			});
 		});
 
