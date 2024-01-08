@@ -1,5 +1,6 @@
 import { ProximityPrompt } from "@Easy/Core/Client/Controllers/ProximityPrompt/ProximityPrompt";
 import { ProximityPromptController } from "@Easy/Core/Client/Controllers/ProximityPrompt/ProximityPromptController";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -115,7 +116,7 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 	 */
 	private PlayTableRepairEffects(): void {
 		if (!this.tableRefs) return;
-		const particle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "Particle");
+		const particle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "AmbientParticles");
 		const orbA = this.tableRefs.GetValue("TableParts", "OrbA");
 		const swirl = this.tableRefs.GetValue("TableParts", "Swirl");
 		orbA.transform.TweenLocalScale(new Vector3(1, 1, 1), 1).SetEaseBounceInOut();
@@ -141,7 +142,7 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 		if (!this.tableRefs) return;
 		const statusMeta = GetStatusEffectMeta(enchantType);
 		// Speed up ambient particle effect.
-		const ambientParticle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "Particle");
+		const ambientParticle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "AmbientParticles");
 		const originalEmissionRate = 5;
 		const originalPlaybackSpeed = 1;
 		ambientParticle.emissionRate = 15;
@@ -149,6 +150,16 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 		task.delay(1, () => {
 			ambientParticle.emissionRate = originalEmissionRate;
 			ambientParticle.playbackSpeed = originalPlaybackSpeed;
+		});
+		// Play purchase particle effect.
+		const purchaseParticle = this.tableRefs.GetValue<ParticleSystem>("TableParts", "PurchaseParticles");
+		purchaseParticle.Play();
+		task.delay(1, () => {
+			purchaseParticle.Stop();
+		});
+		// Play purchase sound effect.
+		AudioManager.PlayGlobal("Client/Resources/Sound/EnchantPurchased.ogg", {
+			volumeScale: 0.3,
 		});
 		// Move orb towards local character on a parabolic curve.
 		const enchantOrbPrefab = AssetBridge.Instance.LoadAsset<Object>("Client/Resources/Prefabs/EnchantOrb.prefab");
@@ -168,14 +179,15 @@ export default class EnchantTableComponent extends AirshipBehaviour {
 			if (orbProgress >= 1 || !targetPos) {
 				orbMover();
 				GameObjectUtil.Destroy(enchantOrb, 1);
+				// Play speific enchant sound and show popup UI.
 				return;
 			}
-			const orbSpeed = 3.5;
+			const orbSpeed = 5.5;
 			const distToTarget = enchantOrb.transform.position.sub(targetPos).magnitude;
 			const stepScale = orbSpeed / distToTarget;
 			orbProgress = math.min(orbProgress + dt * stepScale, 1);
 			const parabola = 1.0 - 4.0 * (orbProgress - 0.5) * (orbProgress - 0.5);
-			const arcHeight = 4;
+			const arcHeight = 3.5;
 			const nextPos = Vector3.Lerp(startPos, targetPos, orbProgress).add(new Vector3(0, parabola * arcHeight, 0));
 			enchantOrb.transform.position = nextPos;
 		});
