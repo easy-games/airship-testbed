@@ -28,7 +28,7 @@ export class Game {
 		}
 	}
 
-	public static coreContext: CoreContext;
+	public static context: CoreContext;
 
 	public static serverId: string;
 	public static gameId: string;
