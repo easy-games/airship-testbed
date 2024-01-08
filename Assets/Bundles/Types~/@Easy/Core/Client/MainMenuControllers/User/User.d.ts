@@ -3,4 +3,5 @@ export interface User {
     username: string;
     discriminator: string;
     discriminatedUsername: string;
+    lastUsernameChangeTime?: string;
 }
