@@ -13181,8 +13181,8 @@ interface HttpManager {
 interface HttpManagerConstructor {
 
 
-    DeleteAsync(url: string, data: string): HttpGetResponse;
-    DeleteAsync(url: string, data: string, headers: string): HttpGetResponse;
+    DeleteAsync(url: string): HttpGetResponse;
+    DeleteAsync(url: string, headers: string): HttpGetResponse;
     GetAsync(url: string, headers: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
     PatchAsync(url: string, data: string): HttpGetResponse;
@@ -13203,7 +13203,7 @@ interface InternalHttpManager {
 interface InternalHttpManagerConstructor {
 
 
-    DeleteAsync(url: string, data: string): HttpGetResponse;
+    DeleteAsync(url: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
     PatchAsync(url: string, data: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;
