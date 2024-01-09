@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3624261834906416580}
   - component: {fileID: 7214524564532379550}
   - component: {fileID: 4095063833881203490}
+  - component: {fileID: 5626655986038503225}
   m_Layer: 0
   m_Name: FireballHeld
   m_TagString: Untagged
@@ -27,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 3624261834906416581}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.519502, y: 0.519502, z: 0.519502}
+  m_LocalPosition: {x: -0.082, y: 0.031, z: 0.122}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6618876092888267258}
@@ -152,6 +153,21 @@ MonoBehaviour:
     keyValuePairs:
     - key: ShootPosition
       value: {fileID: 6618876092888267258}
+--- !u!114 &5626655986038503225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3624261834906416581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessorySlot: 6
+  visibilityMode: 2
+  skinnedToCharacter: 1
 --- !u!1 &5956733827524871340
 GameObject:
   m_ObjectHideFlags: 0
