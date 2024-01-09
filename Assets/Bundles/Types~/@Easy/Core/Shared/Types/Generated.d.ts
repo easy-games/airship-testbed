@@ -10379,6 +10379,7 @@ interface ServerBootstrap extends MonoBehaviour {
     overrideCoreBundleVersion: string;
     overrideQueueType: string;
     airshipJWT: string;
+    agones: AgonesSdk;
     gameId: string;
     serverId: string;
     editorConfig: AirshipEditorConfig;
@@ -10404,6 +10405,115 @@ interface StartupConfig {
     packages: CSArray<AirshipPackageDocument>;
 
 
+}
+    
+interface AgonesSdk extends MonoBehaviour {
+    healthIntervalSecond: number;
+    healthEnabled: boolean;
+    logEnabled: boolean;
+
+    constructor(): AgonesSdk;
+
+    Allocate(): boolean;
+    Connect(): boolean;
+    GameServer(): GameServer;
+    Ready(): boolean;
+    Reserve(duration: unknown): boolean;
+    SetAnnotation(key: string, value: string): boolean;
+    SetLabel(key: string, value: string): boolean;
+    Shutdown(): boolean;
+    WatchGameServer(callback: WatchGameServerCallback): void;
+}
+    
+interface GameServer {
+    ObjectMeta: GameServerObjectMeta;
+    Spec: GameServerSpec;
+    Status: GameServerStatus;
+
+    constructor(data: CSDictionary<string, unknown>): GameServer;
+
+    Equals(input: unknown): boolean;
+    Equals(input: GameServer): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface GameServerObjectMeta {
+    Name: string;
+    Namespace: string;
+    Uid: string;
+    ResourceVersion: string;
+    Generation: number;
+    CreationTimestamp: string;
+    DeletionTimestamp?: string;
+    Annotations: CSDictionary<string, string>;
+    Labels: CSDictionary<string, string>;
+
+    constructor(data: CSDictionary<string, unknown>): GameServerObjectMeta;
+
+    Equals(input: unknown): boolean;
+    Equals(input: GameServerObjectMeta): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface GameServerSpec {
+    Health: SpecHealth;
+
+    constructor(data: CSDictionary<string, unknown>): GameServerSpec;
+
+    Equals(input: unknown): boolean;
+    Equals(input: GameServerSpec): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface SpecHealth {
+    Disabled: boolean;
+    PeriodSeconds: number;
+    FailureThreshold: number;
+    InitialDelaySeconds: number;
+
+    constructor(data: CSDictionary<string, unknown>): SpecHealth;
+
+    Equals(input: unknown): boolean;
+    Equals(input: SpecHealth): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface GameServerStatus {
+    State: string;
+    Address: string;
+    Ports: CSArray<StatusPort>;
+
+    constructor(data: CSDictionary<string, unknown>): GameServerStatus;
+
+    Equals(input: unknown): boolean;
+    Equals(input: GameServerStatus): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface StatusPort {
+    Name: string;
+    Port: number;
+
+    constructor(data: CSDictionary<string, unknown>): StatusPort;
+
+    Equals(input: unknown): boolean;
+    Equals(input: StatusPort): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface WatchGameServerCallback {
+
+    constructor(object: unknown, method: unknown): WatchGameServerCallback;
+
+    BeginInvoke(gameServer: GameServer, callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(gameServer: GameServer): void;
 }
     
 interface AirshipEditorConfig extends ScriptableObject {
@@ -12733,6 +12843,7 @@ interface BridgeConstructor {
     IsFullScreen(): boolean;
     LoadScene(sceneName: string, restartLuau: boolean): void;
     MakeMaterialPropertyBlock(): MaterialPropertyBlock;
+    MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeVector2(x: number, y: number): Vector2;
     RemoveRichText(input: string): string;
@@ -13181,8 +13292,8 @@ interface HttpManager {
 interface HttpManagerConstructor {
 
 
-    DeleteAsync(url: string, data: string): HttpGetResponse;
-    DeleteAsync(url: string, data: string, headers: string): HttpGetResponse;
+    DeleteAsync(url: string): HttpGetResponse;
+    DeleteAsync(url: string, headers: string): HttpGetResponse;
     GetAsync(url: string, headers: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
     PatchAsync(url: string, data: string): HttpGetResponse;
@@ -13203,7 +13314,7 @@ interface InternalHttpManager {
 interface InternalHttpManagerConstructor {
 
 
-    DeleteAsync(url: string, data: string): HttpGetResponse;
+    DeleteAsync(url: string): HttpGetResponse;
     GetAsync(url: string): HttpGetResponse;
     PatchAsync(url: string, data: string): HttpGetResponse;
     PostAsync(url: string, data: string): HttpGetResponse;

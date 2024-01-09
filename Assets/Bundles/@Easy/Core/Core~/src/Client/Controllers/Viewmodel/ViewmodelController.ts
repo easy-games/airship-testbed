@@ -21,6 +21,7 @@ export class ViewmodelController implements OnStart {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanViewmodel.prefab"),
 		) as GameObject;
 		this.viewmodelTransform = this.viewmodelGo.transform;
+		this.viewmodelTransform.position = new Vector3(10_000, 0, 10_000);
 
 		const content = this.viewmodelTransform.GetChild(0).gameObject;
 		this.animancer = content.GetComponent<AnimancerComponent>();

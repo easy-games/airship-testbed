@@ -68,7 +68,7 @@ export class InventoryUIController implements OnStart {
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.E, (event) => {
-			if (event.uiProcessed) return;
+			if (event.uiProcessed || !this.enabled) return;
 			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();
 			} else {
@@ -79,6 +79,7 @@ export class InventoryUIController implements OnStart {
 
 	public SetEnabled(enabled: boolean): void {
 		if (this.enabled === enabled) return;
+		this.enabled = enabled;
 
 		if (!enabled) {
 			this.hotbarCanvas.enabled = false;

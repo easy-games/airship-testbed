@@ -1,4 +1,4 @@
-import { Service, OnStart } from "@easy-games/flamework-core";
+import { OnStart, Service } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
@@ -62,7 +62,7 @@ export class DataStore implements OnStart {
 	public async DeleteDataKey<T extends object>(key: string): Promise<T | void> {
 		this.checkKey(key);
 
-		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`, "");
+		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
 		if (!result.success) {
 			throw error(`Unable to delete data key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
 		}

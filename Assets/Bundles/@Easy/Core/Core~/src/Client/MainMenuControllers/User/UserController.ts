@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -20,9 +21,6 @@ export class UserController implements OnStart {
 		this.authController.onAuthenticated.Connect(() => {
 			task.spawn(() => {
 				this.FetchLocalUser();
-				if (this.localUser) {
-					print("Hello " + this.localUser.username);
-				}
 			});
 		});
 
@@ -39,11 +37,14 @@ export class UserController implements OnStart {
 		if (res.success) {
 			const data = DecodeJSON(res.data) as User;
 			this.localUser = data;
+			print("local user: " + inspect(data));
 
 			const writeUser = Game.localPlayer as Writable<Player>;
 			writeUser.userId = data.uid;
 			writeUser.username = data.username;
 			writeUser.usernameTag = data.discriminator;
+			Game.localPlayerLoaded = true;
+			Game.onLocalPlayerLoaded.Fire();
 
 			this.onLocalUserUpdated.Fire(this.localUser);
 			return;

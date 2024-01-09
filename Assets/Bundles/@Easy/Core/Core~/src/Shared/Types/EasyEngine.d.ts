@@ -109,18 +109,6 @@ interface VoxelWorldConstructor {
 	VoxelDataToBlockId(voxel: number);
 }
 
-interface PhysicsConstructor {
-	EasyRaycast(
-		start: Vector3,
-		dir: Vector3,
-		distance: number,
-		layerMask?: number,
-	): LuaTuple<
-		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
-		| [hit: false, point: undefined, normal: undefined, collider: undefined]
-	>;
-}
-
 interface Screen {
 	height: number;
 	width: number;
@@ -422,11 +410,10 @@ interface CanvasUIBridgeConstructor {
 }
 declare const CanvasUIBridge: CanvasUIBridgeConstructor;
 
-interface DebugConstructor {
-	traceback: (co: thread, msg?: string, level?: number) => string;
-	traceback: (msg?: string, level?: number) => string;
+declare namespace debug {
+	function traceback(message?: string, level?: number): string;
+	function traceback(thread: thread, message?: string, level?: number): string;
 }
-declare const debug: DebugConstructor;
 
 interface TimeManager {
 	/**
