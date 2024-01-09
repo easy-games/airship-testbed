@@ -68,7 +68,7 @@ export class InventoryUIController implements OnStart {
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.E, (event) => {
-			if (event.uiProcessed) return;
+			if (event.uiProcessed || !this.enabled) return;
 			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();
 			} else {
