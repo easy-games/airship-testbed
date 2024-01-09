@@ -73,11 +73,11 @@ Shader "Airship/AirshipSpritedoubleColor"
 
             fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
             {
-               
+               float2 uv_MainTex = i.uv.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 
-                float smoothstepCol = smoothstep(_SmoothColor.x, _SmoothColor.y, tex2D(_MainTex, i.uv).r);
+                float smoothstepCol = smoothstep(_SmoothColor.x, _SmoothColor.y, tex2D(_MainTex, uv_MainTex).r);
                 float4 finalColor = lerp(SRGBtoLinear(_Color1), SRGBtoLinear(_Color2), smoothstepCol) * i.color;
-                finalColor.a = pow(tex2D(_MainTex, i.uv).a, _PowerAlpha) * i.color.a;
+                finalColor.a = pow(tex2D(_MainTex, uv_MainTex).a, _PowerAlpha) * i.color.a;
                     
 
                

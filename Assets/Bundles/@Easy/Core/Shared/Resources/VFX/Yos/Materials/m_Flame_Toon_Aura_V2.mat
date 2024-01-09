@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: m_Flame_Toon_Aura_V2
   m_Shader: {fileID: 4800000, guid: 60909fdd3814f4949bf810357b099623, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _DSTBLEND_ONEMINUSSRCALPHA
@@ -19,6 +21,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -43,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 113ba0a22ca9d2f44a4fee3cd24fa64a, type: 3}
+        m_Texture: {fileID: 2800000, guid: ea029af33c0fb154ba215eb9dd7fdc11, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -86,3 +89,4 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SmoothColor: {r: 0, g: 2.1, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
