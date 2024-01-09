@@ -1296,71 +1296,88 @@ interface PhysicsConstructor {
 	): number;
 	OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>, layerMask: number): number;
 	OverlapSphereNonAlloc(position: Vector3, radius: number, results: Array<Collider>): number;
+	// Raycast(
+	// 	origin: Vector3,
+	// 	direction: Vector3,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+
+	/**
+	 * @deprecated Use {@link Physics.Raycast} instead
+	 * @param start
+	 * @param dir
+	 * @param distance
+	 * @param layerMask
+	 */
+	EasyRaycast(
+		start: Vector3,
+		dir: Vector3,
+		distance: number,
+		layerMask?: number,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
 	Raycast(
 		origin: Vector3,
 		direction: Vector3,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(
-		origin: Vector3,
-		direction: Vector3,
-		maxDistance: number,
-		layerMask: number,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(
-		origin: Vector3,
-		direction: Vector3,
-		maxDistance: number,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(origin: Vector3, direction: Vector3): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(
-		origin: Vector3,
-		direction: Vector3,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(
-		origin: Vector3,
-		direction: Vector3,
-		hitInfo: unknown,
 		maxDistance: number,
 		layerMask: number,
 	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
 	Raycast(
 		origin: Vector3,
 		direction: Vector3,
-		hitInfo: unknown,
 		maxDistance: number,
 	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(origin: Vector3, direction: Vector3, hitInfo: unknown): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(
-		ray: Ray,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(ray: Ray, maxDistance: number, layerMask: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(ray: Ray, maxDistance: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(ray: Ray): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(
-		ray: Ray,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-		queryTriggerInteraction: QueryTriggerInteraction,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(
-		ray: Ray,
-		hitInfo: unknown,
-		maxDistance: number,
-		layerMask: number,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(ray: Ray, hitInfo: unknown, maxDistance: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
-	Raycast(ray: Ray, hitInfo: unknown): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(origin: Vector3, direction: Vector3): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(
+	// 	origin: Vector3,
+	// 	direction: Vector3,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(
+	// 	origin: Vector3,
+	// 	direction: Vector3,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(
+	// 	origin: Vector3,
+	// 	direction: Vector3,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(origin: Vector3, direction: Vector3, hitInfo: unknown): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(
+	// 	ray: Ray,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(ray: Ray, maxDistance: number, layerMask: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(ray: Ray, maxDistance: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(ray: Ray): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(
+	// 	ray: Ray,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// 	queryTriggerInteraction: QueryTriggerInteraction,
+	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(
+	// 	ray: Ray,
+	// 	hitInfo: unknown,
+	// 	maxDistance: number,
+	// 	layerMask: number,
+	// ): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(ray: Ray, hitInfo: unknown, maxDistance: number): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	// Raycast(ray: Ray, hitInfo: unknown): LuaTuple<[true, RaycastHit] | [false, undefined]>;
 	RaycastAll(
 		origin: Vector3,
 		direction: Vector3,
@@ -1640,10 +1657,10 @@ interface AssetBridgeConstructor {
 declare const AssetBridge: AssetBridgeConstructor;
 
 interface AnimancerState {
-    StartFade(weight: number, duration: number): void;
-    Stop(): void;
-    IsPlaying: boolean;
-    IsValid: boolean;
+	StartFade(weight: number, duration: number): void;
+	Stop(): void;
+	IsPlaying: boolean;
+	IsValid: boolean;
 	Events: Sequence;
 }
 
@@ -1653,18 +1670,18 @@ interface Sequence {
 }
 
 interface AnimancerStateDictionary extends CSDictionary<Object, AnimancerState> {
-    GetOrCreate(state: AnimancerState): Object;
+	GetOrCreate(state: AnimancerState): Object;
 }
 
 interface AnimancerLayers {
-    GetLayer(index: number): AnimancerLayer;
+	GetLayer(index: number): AnimancerLayer;
 }
 
 interface AnimancerComponent extends Component {
 	Play(clip: AnimationClip): AnimancerState;
-    States: AnimancerStateDictionary;
-    Layers: AnimancerLayers;
-    Animator: Animator;
+	States: AnimancerStateDictionary;
+	Layers: AnimancerLayers;
+	Animator: Animator;
 }
 
 interface AnimancerBridge {}
@@ -1684,7 +1701,7 @@ interface AnimancerBridgeConstructor {
 		fadeInDuration: number,
 		fadeOutDuration: number,
 		fadeMode: FadeMode,
-        wrapMode: WrapMode,
+		wrapMode: WrapMode,
 	): AnimancerState;
 	GetLayer(component: AnimancerComponent, layer: number): AnimancerLayer;
 	SetGlobalSpeed(animancerComponent: AnimancerComponent, speed: number);
@@ -1696,7 +1713,7 @@ interface AnimancerLayer {
 	StartFade(value: number, fadeDuration: number): void;
 	SetWeight(value: number): void;
 	SetMask(mask: AvatarMask): void;
-    SetDebugName(name: string): void;
+	SetDebugName(name: string): void;
 	Play(clip: AnimationClip, fadeDuration: number, fadeMode: FadeMode): AnimationState;
 	DestroyStates(): void;
 	CurrentState: AnimancerState;
@@ -1707,7 +1724,7 @@ interface Ray {
 	direction: Vector3;
 }
 interface RayConstructor {
-    new(origin: Vector3, direction: Vector3): Ray;
+	new (origin: Vector3, direction: Vector3): Ray;
 }
 declare const Ray: RayConstructor;
 
@@ -1733,7 +1750,7 @@ interface Component extends Object {
 	hingeJoint: Component;
 	particleSystem: Component;
 
-    enabled: boolean;
+	enabled: boolean;
 
 	constructor(): Component;
 
@@ -1803,9 +1820,9 @@ interface Component extends Object {
 	TweenTextMeshProColor(to: Color, duration: number): Tween<Color>;
 	TweenTextMeshProAlpha(to: number, duration: number): Tween<number>;
 	TweenCanvasGroupAlpha(to: number, duration: number): Tween<number>;
-	
-	TweenAudioSourceVolume (to: number, duration: number): Tween<number>;
-	TweenAudioSourcePitch (to: number, duration: number): Tween<number>;
+
+	TweenAudioSourceVolume(to: number, duration: number): Tween<number>;
+	TweenAudioSourcePitch(to: number, duration: number): Tween<number>;
 
 	TweenCancelAll(includeChildren: boolean, includeInactive: boolean): void;
 
@@ -4157,32 +4174,32 @@ interface Transform extends Component {
 }
 
 interface Collider extends Component {
-    enabled: boolean;
-    attachedRigidbody: Rigidbody;
-    attachedArticulationBody: ArticulationBody;
-    isTrigger: boolean;
-    contactOffset: number;
-    bounds: Bounds;
-    hasModifiableContacts: boolean;
-    sharedMaterial: PhysicMaterial;
-    material: PhysicMaterial;
+	enabled: boolean;
+	attachedRigidbody: Rigidbody;
+	attachedArticulationBody: ArticulationBody;
+	isTrigger: boolean;
+	contactOffset: number;
+	bounds: Bounds;
+	hasModifiableContacts: boolean;
+	sharedMaterial: PhysicMaterial;
+	material: PhysicMaterial;
 
-    constructor(): Collider;
+	constructor(): Collider;
 
-    ClosestPoint(position: Vector3): Vector3;
-    ClosestPointOnBounds(position: Vector3): Vector3;
-    Raycast(ray: Ray, maxDistance: number): RaycastHit | undefined;
+	ClosestPoint(position: Vector3): Vector3;
+	ClosestPointOnBounds(position: Vector3): Vector3;
+	Raycast(ray: Ray, maxDistance: number): RaycastHit | undefined;
 }
 
 interface MaterialPropertyBlockConstructor {
-    new(): MaterialPropertyBlock;
+	new (): MaterialPropertyBlock;
 }
 declare const MaterialPropertyBlock: MaterialPropertyBlockConstructor;
 
 interface RemoteImage {
-    /**
-     * Fired when the remote image has finished downloading (or has failed).
-     * @param callback 
-     */
-    OnFinishedLoading(callback: (success: boolean) => void): EngineEventConnection;
+	/**
+	 * Fired when the remote image has finished downloading (or has failed).
+	 * @param callback
+	 */
+	OnFinishedLoading(callback: (success: boolean) => void): EngineEventConnection;
 }

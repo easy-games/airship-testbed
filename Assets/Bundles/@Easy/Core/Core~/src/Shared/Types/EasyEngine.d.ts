@@ -109,18 +109,6 @@ interface VoxelWorldConstructor {
 	VoxelDataToBlockId(voxel: number);
 }
 
-interface PhysicsConstructor {
-	EasyRaycast(
-		start: Vector3,
-		dir: Vector3,
-		distance: number,
-		layerMask?: number,
-	): LuaTuple<
-		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
-		| [hit: false, point: undefined, normal: undefined, collider: undefined]
-	>;
-}
-
 interface Screen {
 	height: number;
 	width: number;
