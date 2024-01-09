@@ -79,6 +79,7 @@ export class InventoryUIController implements OnStart {
 
 	public SetEnabled(enabled: boolean): void {
 		if (this.enabled === enabled) return;
+		this.enabled = enabled;
 
 		if (!enabled) {
 			this.hotbarCanvas.enabled = false;
