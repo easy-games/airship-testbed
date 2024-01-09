@@ -65,7 +65,6 @@ export class ClientSettingsController implements OnStart {
 
 	public SaveSettings(): void {
 		DiskManager.WriteFileAsync("ClientSettings.json", EncodeJSON(this.data));
-		print("Saved settings to disk.");
 	}
 
 	public GetMouseSensitivity(): number {

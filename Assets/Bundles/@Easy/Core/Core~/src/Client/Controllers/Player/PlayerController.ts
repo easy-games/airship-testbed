@@ -8,8 +8,8 @@ import { Game } from "Shared/Game";
 import { Player, PlayerDto } from "Shared/Player/Player";
 import { Team } from "Shared/Team/Team";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
-import { TeamController } from "../Team/TeamController";
 import { PlayerUtils } from "Shared/Util/PlayerUtils";
+import { TeamController } from "../Team/TeamController";
 
 @Controller({})
 export class PlayerController implements OnStart {
@@ -28,7 +28,6 @@ export class PlayerController implements OnStart {
 		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId) => {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
-			print(`GameId=${gameId} ServerId=${serverId}`);
 			if (this.authController.IsAuthenticated()) {
 				this.friendsController.SendStatusUpdate();
 			} else {

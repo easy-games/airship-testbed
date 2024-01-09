@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -37,7 +36,6 @@ export class UserController implements OnStart {
 		if (res.success) {
 			const data = DecodeJSON(res.data) as User;
 			this.localUser = data;
-			print("local user: " + inspect(data));
 
 			const writeUser = Game.localPlayer as Writable<Player>;
 			writeUser.userId = data.uid;
