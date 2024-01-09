@@ -11,9 +11,10 @@ export class CameraReferences {
 	}
 
 	private mouse = new Mouse();
-	public readonly mainCamera: Camera;
-	public readonly fpsCamera: Camera;
-	public readonly uiCamera: Camera;
+	public readonly mainCamera?: Camera;
+	public readonly fpsCamera?: Camera;
+	public readonly uiCamera?: Camera;
+	private exists = false;
 
 	public constructor() {
 		if (CameraReferences.instances) {
@@ -25,12 +26,17 @@ export class CameraReferences {
 		//Get Camera references
 		let refs = GameObject.Find("CameraRig")?.GetComponent<GameObjectReferences>();
 		if (!refs) {
-			error("Camera rig not found. Please make sure to add a CameraRig to scene.");
+			// error("Camera rig not found. Please make sure to add a CameraRig to scene.");
 			return;
 		}
+		this.exists = true;
 		this.mainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
 		this.fpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
 		this.uiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
+	}
+
+	public DoesCameraRigExist(): boolean {
+		return this.exists;
 	}
 
 	/**

@@ -1,10 +1,10 @@
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Bin } from "Shared/Util/Bin";
+import { SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "Shared/Util/Timer";
 import { CameraMode } from "./CameraMode";
 import { CameraReferences } from "./CameraReferences";
 import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
-import { Bin } from "Shared/Util/Bin";
 
 /**
  * Drives the camera modes.
@@ -30,8 +30,8 @@ export class CameraSystem {
 
 	constructor() {
 		const ref = CameraReferences.Instance();
-		this.camera = ref.mainCamera;
-		this.allCameras = [ref.mainCamera, ref.uiCamera, ref.fpsCamera];
+		this.camera = ref.mainCamera!;
+		this.allCameras = [ref.mainCamera!, ref.uiCamera!, ref.fpsCamera!];
 		this.transform = this.camera.transform;
 		this.fovSpring = new Spring(new Vector3(this.camera.fieldOfView, 0, 0), 5);
 		this.currentMode = new StaticCameraMode(this.camera.transform.position, this.camera.transform.rotation);
@@ -41,6 +41,10 @@ export class CameraSystem {
 		} else {
 			this.OnDisabled();
 		}
+	}
+
+	public HasCameraRig(): boolean {
+		return CameraReferences.Instance().DoesCameraRigExist();
 	}
 
 	private OnEnabled() {

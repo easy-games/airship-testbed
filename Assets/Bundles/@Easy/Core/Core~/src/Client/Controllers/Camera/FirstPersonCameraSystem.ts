@@ -102,6 +102,7 @@ export class FirstPersonCameraSystem {
 		if (!this.inFirstPerson) {
 			return;
 		}
+		if (!this.cameras.fpsCamera) return;
 		this.currentTime += Time.deltaTime;
 
 		//Head bobbing when running
@@ -207,6 +208,7 @@ export class FirstPersonCameraSystem {
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {
 		this.inFirstPerson = isFirstPerson;
+		if (!this.cameras.fpsCamera) return;
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
 		Game.localPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
 		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
