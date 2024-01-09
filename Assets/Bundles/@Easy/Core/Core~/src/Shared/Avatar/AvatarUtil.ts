@@ -1,4 +1,8 @@
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { RandomUtil } from "Shared/Util/RandomUtil";
+import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { Outfit } from "./AvatarBackendTypes";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryCollectionPath =
@@ -79,5 +83,51 @@ export class AvatarUtil {
 
 	public static GetAllAvatarSkins() {
 		return this.avatarSkinAccessories;
+	}
+
+	public static GetAllOutfits(): Outfit[] | undefined {
+		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits`);
+		if (res.success) {
+			return DecodeJSON(res.data) as Outfit[];
+		}
+	}
+
+	public static GetEquippedOutfit(): Outfit | undefined{
+		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits/equipped`);
+		if (res.success) {
+			return DecodeJSON(res.data) as Outfit;
+		}
+	}
+
+	public static GetAvatarOutfit(outfitId: string): Outfit | undefined{
+		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfitId}`);
+		if (res.success) {
+			return DecodeJSON(res.data) as Outfit;
+		}
+	}
+
+	public static CreateAvatarOutfit(outfit: Outfit){
+		HttpManager.PostAsync(`${AirshipUrl.ContentService}/outfits/create`, EncodeJSON(outfit));
+	}
+
+	public static EquipAvatarOutfit(outfitId: string){
+		HttpManager.PostAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfitId}/equip`, outfitId);
+	}
+
+	public static CreateDefaultAvatarOutfit(entityId: string, name: string, id: string): Outfit{
+		let outfit = {
+			name: name,
+			outfitId: id,
+			accessories: [],
+			equipped: true,
+			owner: entityId,
+			skinColor: RandomUtil.FromArray(this.skinColors).ToString(),
+		};
+		this.CreateAvatarOutfit(outfit);
+		return outfit;
+	}
+
+	public static SaveAvatarOutfit(outfit: Outfit){
+		HttpManager.PatchAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfit.outfitId}`, EncodeJSON(outfit));
 	}
 }

@@ -1,4 +1,5 @@
 import {} from "@easy-games/flamework-core";
+import { Entity } from "Shared/Entity/Entity";
 import { Mouse } from "Shared/UserInput";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
@@ -19,13 +20,15 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public dragging = false;
 
 	public accessoryBuilder?: AccessoryBuilder;
+	public entity?: Entity;
 
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
 
 	public override Start(): void {
-		this.accessoryBuilder = this.humanEntityGo?.GetComponent<AccessoryBuilder>();
+		this.entity = this.humanEntityGo?.GetComponent<Entity>();
+		this.accessoryBuilder = this.entity?.accessoryBuilder;
 		this.dragging = false;
 		this.mouse = new Mouse();
 		this.mouse.moved.Connect((pos: Vector3) => {

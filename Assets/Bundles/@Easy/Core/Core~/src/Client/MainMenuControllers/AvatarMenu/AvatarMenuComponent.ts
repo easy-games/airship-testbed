@@ -1,4 +1,4 @@
-import {} from "@easy-games/flamework-core";
+import { Dependency } from "@easy-games/flamework-core";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -7,6 +7,8 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
+import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { PlayerController } from "Client/Controllers/Player/PlayerController";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -22,6 +24,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public itemButtonTemplate?: GameObject;
 
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
+	private currentOutfit?: Outfit;
 
 	//public buttons?: Transform[];
 
@@ -97,6 +100,22 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(button, () => {
 				this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
+			});
+		}
+
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "SaveBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(button, () => {
+				this.Save();
+			});
+		}
+
+		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "RevertBtn").gameObject;
+		if (button) {
+			CoreUI.SetupButton(button, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(button, () => {
+				this.Revert();
 			});
 		}
 	}
@@ -414,5 +433,48 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			print("Dragging avatar: " + down);
 			this.mainMenu.avatarView.dragging = down;
 		}
+	}
+
+	private LoadOrCreateOutfit(){
+		this.currentOutfit = AvatarUtil.GetEquippedOutfit();
+		if(!this.currentOutfit){
+			//No outfit equipped
+			let allOutfits = AvatarUtil.GetAllOutfits();
+			if(allOutfits && allOutfits.size() > 0){
+				//Has outfits though
+				this.currentOutfit = allOutfits[0];
+				AvatarUtil.EquipAvatarOutfit(this.currentOutfit.outfitId);
+			}else{
+				//No outfits exist so create one
+				this.currentOutfit = AvatarUtil.CreateDefaultAvatarOutfit(Dependency<PlayerController>().clientId.ToString(), "Default 0", "Default0");
+			}
+		}
+	}
+
+	private Save(){
+		const outfitId = "Default";
+		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
+		if(accBuilder){
+			let accs = accBuilder.GetActiveAccessories();
+			let accessoryMaps: OutfitAccessory[] = [];
+			for(let i=0; i< accs.Length; i++){
+				let acc = accs.GetValue(i);
+				accessoryMaps[i] = {
+					instanceId: acc.accessory.name,
+					outfitId: outfitId,
+			}
+			let outfit: Outfit = {
+				name: "Entity Outfit",
+				equipped: true,
+				owner: accBuilder.controll,
+				accessories: accessoryMaps,
+				skinColor: accBuilder.GetSkinColor(),
+				outfitId: outfitId,
+			}
+		}
+	}
+
+	private Revert(){
+
 	}
 }
