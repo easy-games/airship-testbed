@@ -1,3 +1,5 @@
+import { CharacterCameraMode } from "@Easy/Core/Client/Controllers/Character/CharacterCameraMode";
+import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { PlayerController } from "@Easy/Core/Client/Controllers/Player/PlayerController";
 import { TeamController } from "@Easy/Core/Client/Controllers/Team/TeamController";
 import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
@@ -6,7 +8,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { SetUtil } from "@Easy/Core/Shared/Util/SetUtil";
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ClientSignals } from "Client/ClientSignals";
 import { Network } from "Shared/Network";
 
@@ -18,6 +20,9 @@ export class BWController implements OnStart {
 	constructor(private readonly teamController: TeamController, private readonly playerController: PlayerController) {}
 
 	OnStart(): void {
+		Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.LOCKED);
+		Dependency<LocalEntityController>().SetDefaultFirstPerson(true);
+
 		// Listen for player eliminated.
 		Network.ServerToClient.PlayerEliminated.client.OnServerEvent((clientId: number) => {
 			const player = this.playerController.GetPlayerFromClientId(clientId);

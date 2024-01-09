@@ -29,7 +29,7 @@ const CAM_Y_OFFSET_CROUCH_3RD_PERSON = CAM_Y_OFFSET;
 	loadOrder: 10000,
 })
 export class LocalEntityController implements OnStart {
-	private firstPerson = true;
+	private firstPerson = false;
 	private lookBackwards = false;
 	private fps?: FirstPersonCameraSystem;
 
@@ -49,8 +49,8 @@ export class LocalEntityController implements OnStart {
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
-	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.LOCKED;
-	private defaultFirstPerson = true;
+	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.ORBIT;
+	private defaultFirstPerson = false;
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
 
