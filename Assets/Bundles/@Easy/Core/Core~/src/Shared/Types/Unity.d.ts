@@ -1325,12 +1325,18 @@ interface PhysicsConstructor {
 		direction: Vector3,
 		maxDistance: number,
 		layerMask: number,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
 	Raycast(
 		origin: Vector3,
 		direction: Vector3,
 		maxDistance: number,
-	): LuaTuple<[true, RaycastHit] | [false, undefined]>;
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
 	// Raycast(origin: Vector3, direction: Vector3): LuaTuple<[true, RaycastHit] | [false, undefined]>;
 	// Raycast(
 	// 	origin: Vector3,
@@ -1757,11 +1763,21 @@ interface Component extends Object {
 	BroadcastMessage(methodName: string): void;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
 	CompareTag(tag: string): boolean;
-	GetComponent<T>(): T;
+	GetComponent<T extends Component | AirshipBehaviour>(): T;
 	/**
 	 * Throws error if no component found.
 	 */
-	GetComponent<T extends Component | AirshipBehaviour = Component>(name: string): T;
+	GetComponent<T extends Component | AirshipBehaviour>(name: string): T;
+
+	/**
+	 * Throws error if no component found.
+	 */
+	GetComponents<T extends Component | AirshipBehaviour>(): CSArray<T>;
+	/**
+	 * Throws error if no component found.
+	 */
+	GetComponents<T extends Component | AirshipBehaviour>(name: string): CSArray<T>;
+
 	AddComponent(componentName: string): Component;
 	SendMessage(methodName: string, value: unknown): void;
 	SendMessage(methodName: string): void;
@@ -1868,16 +1884,21 @@ interface GameObject extends Object {
 	StopAnimation(): void;
 	BroadcastMessage(methodName: string): void;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
+	GetComponentsInChildren<T>(): CSArray<T>;
+	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
+
 	/**
 	 * Throws error if no component found.
 	 */
-	GetComponent<T>(): T;
-	GetComponentsInChildren<T>(): CSArray<T>;
-	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
+	GetComponent<T extends AirshipBehaviour | Component>(): T;
 	/**
 	 * Throws error if no component found.
 	 */
 	GetComponent<T extends Component | AirshipBehaviour = Component>(type: string): T;
+
+	GetComponents<T extends AirshipBehaviour | Component>(): CSArray<T>;
+	GetComponents<T extends Component | AirshipBehaviour = Component>(type: string): CSArray<T>;
+
 	GetComponentIfExists<T extends Component = Component>(type: string): T | undefined;
 	AddComponent<T>(): T;
 	AddComponent<T extends Component = Component>(componentName: string): T;

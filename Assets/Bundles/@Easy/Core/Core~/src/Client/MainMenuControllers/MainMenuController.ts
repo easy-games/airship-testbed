@@ -192,11 +192,9 @@ export class MainMenuController implements OnStart {
 
 		// Remove old page
 		if (oldPage) {
-			print("Closing old page: " + oldPage?.pageType);
 			oldPage.ClosePage();
 		}
 
-		print("opening new page: " + this.currentPage?.pageType);
 		this.currentPage?.OpenPage();
 
 		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);

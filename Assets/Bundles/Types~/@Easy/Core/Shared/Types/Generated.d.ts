@@ -13272,6 +13272,7 @@ interface AirshipObjectPool extends DefaultObjectPool {
 
     constructor(): AirshipObjectPool;
 
+    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
 }
     

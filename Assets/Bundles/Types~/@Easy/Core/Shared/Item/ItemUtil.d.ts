@@ -42,18 +42,6 @@ export declare class ItemUtil {
      */
     static FindItemTypeFromExpression(expression: string): ItemType | undefined;
     /**
-     * Fetch a render texture for a provided item.
-     * @param itemType An item.
-     * @returns Render texture that corresponds to item.
-     */
-    static GetItemRenderTexture(itemType: ItemType): Texture2D;
-    /**
-     * Fetch an asset bundle item render path for a provided item.
-     * @param itemType An item.
-     * @returns Render path that corresponds to item.
-     */
-    static GetItemRenderPath(itemType: ItemType): string;
-    /**
      * Checks whether or not an item is a resource.
      * @param itemType An item.
      * @returns Whether or not item is a resource.
