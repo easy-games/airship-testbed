@@ -1877,7 +1877,7 @@ interface GameObject extends Object {
 	/**
 	 * Throws error if no component found.
 	 */
-	GetComponent<T>(): T;
+	GetComponent<T extends AirshipBehaviour | Component>(): T;
 	GetComponentsInChildren<T>(): CSArray<T>;
 	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
 	/**
