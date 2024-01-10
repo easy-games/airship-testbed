@@ -1,5 +1,6 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { Result } from "../../../Shared/Types/Result";
 export interface LeaderboardUpdate {
     [id: string]: number;
 }
@@ -27,13 +28,13 @@ export declare class LeaderboardService implements OnStart {
      * @param leaderboardName The name of the leaderboard that should be updated with the given scores
      * @param update An object containing a map of ids and scores.
      */
-    Update(leaderboardName: string, update: LeaderboardUpdate): Promise<void>;
+    Update(leaderboardName: string, update: LeaderboardUpdate): Promise<Result<undefined, undefined>>;
     /**
      * Gets the rank of a given id.
      * @param leaderboardName The name of the leaderboard
      * @param id The id
      */
-    GetRank(leaderboardName: string, id: string): Promise<RankData | undefined>;
+    GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>>;
     /**
      * Gets a section of the leaderboard. This function is helpful for displaying leaderboards in your game.
      * By default, this function returns the top 100 entries.
@@ -44,6 +45,6 @@ export declare class LeaderboardService implements OnStart {
      * @param startIndex The start index of the selection. Defaults to 0, which is the top of the leaderboard.
      * @param count The number of entries to retrieve. Defaults to 100.
      */
-    GetRankRange(leaderboardName: string, startIndex?: number, count?: number): Promise<RankData[]>;
+    GetRankRange(leaderboardName: string, startIndex?: number, count?: number): Promise<Result<RankData[], undefined>>;
 }
 export {};

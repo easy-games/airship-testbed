@@ -1,4 +1,4 @@
-import { TransferService } from "@Easy/Core/Server/Services/Transfer/TransferService";
+import { TransferService } from "@Easy/Core/Server/Airship/Transfer/TransferService";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Dependency } from "@easy-games/flamework-core";

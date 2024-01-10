@@ -1,13 +1,23 @@
+/// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { SocketController } from "../Socket/SocketController";
+import { Result } from "../../../Shared/Types/Result";
 export declare class TransferController implements OnStart {
     private readonly socketController;
     constructor(socketController: SocketController);
     OnStart(): void;
     /**
-     * Sends a server transfer request to the backend.
-     * @param gameId GameID of the desired server
-     * @param serverId Specific ServerID to teleport to. If not included, the backend will select a server for you.
+     * Submits a request to transfer to the provided game id. The client can optionally request to transfer
+     * to a specific server of the given game by providing the perferred server id. It is possible that the
+     * client will be transferred to a different server if the perferred server is full or was not allocated
+     * with the default scene.
+     * @param gameId Game id to join.
+     * @param preferredServerId Specific ServerID to teleport to. If not included, the backend will select a server for you.
      */
-    ClientTransferToServerAsync(gameId: string, serverId?: string): void;
+    TransferToGameAsync(gameId: string, preferredServerId?: string): Promise<Result<undefined, undefined>>;
+    /**
+     * Submits a request to transfer to the current party leader. If the party leader is not in a game,
+     * or the client is not in a party, this function will have no effect.
+     */
+    TransferToPartyLeader(): Promise<Result<undefined, undefined>>;
 }
