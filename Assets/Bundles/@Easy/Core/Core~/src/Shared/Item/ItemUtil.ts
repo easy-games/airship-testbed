@@ -14,12 +14,12 @@ export interface ItemRegistrationConfig {
 export class ItemUtil {
 	public static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
 
-	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
+	private static readonly itemAccessories = new Map<ItemType, AccessoryComponent[]>();
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 	private static runtimeIdCounter = 0;
 
-	public static missingItemAccessory: Accessory;
+	public static missingItemAccessory: AccessoryComponent;
 
 	private static itemTypes: ItemType[] = [];
 	private static implictItemTypeMap = new Map<string, ItemType>();
@@ -32,7 +32,7 @@ export class ItemUtil {
 	 */
 	public static Initialize() {
 		//Load default items
-		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.defaultItemPath);
+		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<AccessoryComponent>(ItemUtil.defaultItemPath);
 
 		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(CoreItemDefinitions)) {
@@ -97,11 +97,11 @@ export class ItemUtil {
 		}
 
 		if (accessoryPaths.size() > 0) {
-			const accessories: Accessory[] = [];
+			const accessories: AccessoryComponent[] = [];
 			ItemUtil.itemAccessories.set(itemType, accessories);
 
 			for (const accessoryName of accessoryPaths) {
-				let accessory = AssetBridge.Instance.LoadAssetIfExists<Accessory>(accessoryName);
+				let accessory = AssetBridge.Instance.LoadAssetIfExists<AccessoryComponent>(accessoryName);
 				if (!accessory) {
 					// warn("Couldn't find: " + accNameLower);
 					continue;
@@ -142,14 +142,14 @@ export class ItemUtil {
 		return val;
 	}
 
-	public static GetFirstAccessoryForItemType(itemType: ItemType): Accessory {
+	public static GetFirstAccessoryForItemType(itemType: ItemType): AccessoryComponent {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories[0];
 
 		return ItemUtil.missingItemAccessory;
 	}
 
-	public static GetAccessoriesForItemType(itemType: ItemType): Readonly<Accessory[]> {
+	public static GetAccessoriesForItemType(itemType: ItemType): Readonly<AccessoryComponent[]> {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories;
 

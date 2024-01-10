@@ -7,8 +7,9 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { Accessory, AvatarPlatformAPI, Outfit } from "Shared/Avatar/AvatarPlatformAPI";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -307,7 +308,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private DisplayItems(items: Accessory[] | undefined) {
+	private DisplayItems(items: AccessoryComponent[] | undefined) {
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
 				this.AddItemButton(value.ToString(), () => {
@@ -394,7 +395,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private SelectItem(acc: Accessory) {
+	private SelectItem(acc: AccessoryComponent) {
 		if (!acc) {
 			return;
 		}
@@ -435,46 +436,44 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private LoadOrCreateOutfit(){
-		this.currentOutfit = AvatarUtil.GetEquippedOutfit();
-		if(!this.currentOutfit){
+	private LoadOrCreateOutfit() {
+		this.currentOutfit = AvatarPlatformAPI.GetEquippedOutfit();
+		if (!this.currentOutfit) {
 			//No outfit equipped
-			let allOutfits = AvatarUtil.GetAllOutfits();
-			if(allOutfits && allOutfits.size() > 0){
+			let allOutfits = AvatarPlatformAPI.GetAllOutfits();
+			if (allOutfits && allOutfits.size() > 0) {
 				//Has outfits though
 				this.currentOutfit = allOutfits[0];
-				AvatarUtil.EquipAvatarOutfit(this.currentOutfit.outfitId);
-			}else{
+				AvatarPlatformAPI.EquipAvatarOutfit(this.currentOutfit.outfitId);
+			} else {
 				//No outfits exist so create one
-				this.currentOutfit = AvatarUtil.CreateDefaultAvatarOutfit(Dependency<PlayerController>().clientId.ToString(), "Default 0", "Default0");
+				this.currentOutfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+					Dependency<PlayerController>().clientId.ToString(),
+					"Default0",
+					"Default 0",
+					RandomUtil.FromArray(AvatarUtil.skinColors),
+				);
 			}
 		}
 	}
 
-	private Save(){
+	private Save() {
+		if (!this.currentOutfit) {
+			Debug.LogError("Trying to save with no outfit selected!");
+			return;
+		}
 		const outfitId = "Default";
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
-		if(accBuilder){
+		if (accBuilder) {
 			let accs = accBuilder.GetActiveAccessories();
-			let accessoryMaps: OutfitAccessory[] = [];
-			for(let i=0; i< accs.Length; i++){
+			let accessories: Accessory[] = [];
+			for (let i = 0; i < accs.Length; i++) {
 				let acc = accs.GetValue(i);
-				accessoryMaps[i] = {
-					instanceId: acc.accessory.name,
-					outfitId: outfitId,
-			}
-			let outfit: Outfit = {
-				name: "Entity Outfit",
-				equipped: true,
-				owner: accBuilder.controll,
-				accessories: accessoryMaps,
-				skinColor: accBuilder.GetSkinColor(),
-				outfitId: outfitId,
+				//TODO fill outfit with new accessories
+				//accessories[i] = 0;
 			}
 		}
 	}
 
-	private Revert(){
-
-	}
+	private Revert() {}
 }

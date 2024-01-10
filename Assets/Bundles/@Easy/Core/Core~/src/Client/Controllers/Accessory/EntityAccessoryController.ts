@@ -44,7 +44,7 @@ export class EntityAccessoryController implements OnStart {
 				const accessoryBuilder = event.entity.gameObject.GetComponent<AccessoryBuilder>();
 				const bin = new Bin();
 
-				let currentArmor: Readonly<Accessory[]> | undefined;
+				let currentArmor: Readonly<AccessoryComponent[]> | undefined;
 
 				const onArmorSlotChanged = (itemStack?: ItemStack) => {
 					if (itemStack) {
@@ -52,8 +52,8 @@ export class EntityAccessoryController implements OnStart {
 						const armorAccessories = ItemUtil.GetAccessoriesForItemType(itemType);
 						if (currentArmor) {
 							// Remove accessory slots from previous armor that aren't on the new armor:
-							const currentSlots = currentArmor.map((acc) => acc.AccessorySlot);
-							const newSlots = armorAccessories.map((acc) => acc.AccessorySlot);
+							const currentSlots = currentArmor.map((acc) => acc.accessorySlot);
+							const newSlots = armorAccessories.map((acc) => acc.accessorySlot);
 							const slotsToRemove = currentSlots.filter((slot) => !newSlots.includes(slot));
 							for (const slot of slotsToRemove) {
 								accessoryBuilder.RemoveAccessorySlot(slot, false);
@@ -73,10 +73,10 @@ export class EntityAccessoryController implements OnStart {
 						if (currentArmor) {
 							// Clear armor:
 							for (const acc of currentArmor) {
-								accessoryBuilder.RemoveAccessorySlot(acc.AccessorySlot, false);
+								accessoryBuilder.RemoveAccessorySlot(acc.accessorySlot, false);
 								if (event.entity.IsLocalCharacter()) {
 									Dependency<ViewmodelController>().accessoryBuilder.RemoveAccessorySlot(
-										acc.AccessorySlot,
+										acc.accessorySlot,
 										false,
 									);
 								}

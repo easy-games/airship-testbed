@@ -62,20 +62,16 @@ export class GroundItemController implements OnStart {
 
 	private CreateDisplayGO(itemStack: ItemStack, parent: Transform, displayOffset: Vector3): GameObject {
 		let obj = this.itemTypeToDisplayObjMap.get(itemStack.GetItemType());
-		let accessory: Accessory | undefined;
+		let accessory: AccessoryComponent | undefined;
 		if (!obj) {
 			const acc = ItemUtil.GetFirstAccessoryForItemType(itemStack.GetItemType());
-			obj = acc.Prefab;
+			obj = acc.gameObject;
 			accessory = acc;
 		}
 		const displayGO = GameObjectUtil.InstantiateIn(obj, parent);
 		if (accessory) {
-			displayGO.transform.localScale = accessory.Scale.add(new Vector3(1, 1, 1));
-			displayGO.transform.localRotation = Quaternion.Euler(
-				accessory.Rotation.x,
-				accessory.Rotation.y,
-				accessory.Rotation.z,
-			);
+			displayGO.transform.localScale = accessory.localScale.add(new Vector3(1, 1, 1));
+			displayGO.transform.localRotation = accessory.localRotation;
 		}
 		displayGO.transform.localPosition = displayOffset;
 		return displayGO;

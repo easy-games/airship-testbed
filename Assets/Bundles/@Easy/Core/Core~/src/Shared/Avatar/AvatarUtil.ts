@@ -1,14 +1,10 @@
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { RandomUtil } from "Shared/Util/RandomUtil";
-import { DecodeJSON, EncodeJSON } from "Shared/json";
-import { Outfit } from "./AvatarBackendTypes";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryCollectionPath =
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
-	private static readonly avatarAccessories = new Map<AccessorySlot, Accessory[]>();
+	private static readonly avatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
 	public static defaultKitAccessory: AccessoryCollection | undefined;
@@ -64,7 +60,7 @@ export class AvatarUtil {
 		// }
 	}
 
-	public static AddAvailableAvatarItem(item: Accessory) {
+	public static AddAvailableAvatarItem(item: AccessoryComponent) {
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.avatarAccessories.get(slotNumber);
 		if (!items) {
@@ -83,51 +79,5 @@ export class AvatarUtil {
 
 	public static GetAllAvatarSkins() {
 		return this.avatarSkinAccessories;
-	}
-
-	public static GetAllOutfits(): Outfit[] | undefined {
-		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits`);
-		if (res.success) {
-			return DecodeJSON(res.data) as Outfit[];
-		}
-	}
-
-	public static GetEquippedOutfit(): Outfit | undefined{
-		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits/equipped`);
-		if (res.success) {
-			return DecodeJSON(res.data) as Outfit;
-		}
-	}
-
-	public static GetAvatarOutfit(outfitId: string): Outfit | undefined{
-		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfitId}`);
-		if (res.success) {
-			return DecodeJSON(res.data) as Outfit;
-		}
-	}
-
-	public static CreateAvatarOutfit(outfit: Outfit){
-		HttpManager.PostAsync(`${AirshipUrl.ContentService}/outfits/create`, EncodeJSON(outfit));
-	}
-
-	public static EquipAvatarOutfit(outfitId: string){
-		HttpManager.PostAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfitId}/equip`, outfitId);
-	}
-
-	public static CreateDefaultAvatarOutfit(entityId: string, name: string, id: string): Outfit{
-		let outfit = {
-			name: name,
-			outfitId: id,
-			accessories: [],
-			equipped: true,
-			owner: entityId,
-			skinColor: RandomUtil.FromArray(this.skinColors).ToString(),
-		};
-		this.CreateAvatarOutfit(outfit);
-		return outfit;
-	}
-
-	public static SaveAvatarOutfit(outfit: Outfit){
-		HttpManager.PatchAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfit.outfitId}`, EncodeJSON(outfit));
 	}
 }

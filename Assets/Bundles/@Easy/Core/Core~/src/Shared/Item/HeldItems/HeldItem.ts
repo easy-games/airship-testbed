@@ -56,8 +56,6 @@ export class HeldItem {
 
 	protected Log(message: string) {
 		return;
-		let fullMessage = "Entity: " + this.entity.id + " Item: " + this.itemMeta?.displayName + " " + message;
-		print(fullMessage);
 	}
 
 	public OnEquip() {
@@ -88,7 +86,7 @@ export class HeldItem {
 		}
 
 		//Spawn the accessories graphics
-		let accessories: Accessory[] = [];
+		let accessories: AccessoryComponent[] = [];
 		if (this.itemMeta) {
 			accessories = [...ItemUtil.GetAccessoriesForItemType(this.itemMeta.itemType)];
 		}

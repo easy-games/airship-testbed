@@ -39,7 +39,6 @@ export class MeleeHeldItem extends HeldItem {
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
 			error("No melee data on a melee weapon?");
-			return;
 		}
 
 		//Play the items use effect
@@ -165,7 +164,6 @@ export class MeleeHeldItem extends HeldItem {
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {
 			error("Melee item doesn't have melee data?");
-			return;
 		}
 
 		const hitDelay = meleeData.hitDelay ?? 0;
@@ -235,7 +233,7 @@ export class MeleeHeldItem extends HeldItem {
 		let rotation = Quaternion.LookRotation(lookVec);
 
 		if (this.gizmoEnabled) {
-			// DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 2);
+			DebugUtil.DrawBox(colliderWorldPos, rotation, halfExtents, debugColor, 2);
 		}
 		const hitColliders = Physics.OverlapBox(
 			colliderWorldPos,
