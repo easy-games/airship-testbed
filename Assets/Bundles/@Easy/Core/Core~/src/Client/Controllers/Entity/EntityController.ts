@@ -34,7 +34,7 @@ export class EntityController implements OnStart {
 		const humanEntityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 			EntityPrefabType.HUMAN,
 		).GetComponent<NetworkObject>();
-		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as AirshipObjectPool;
+		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as unknown as AirshipObjectPool;
 		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
 
 		this.entityHealthbarPrefab = AssetBridge.Instance.LoadAsset(
