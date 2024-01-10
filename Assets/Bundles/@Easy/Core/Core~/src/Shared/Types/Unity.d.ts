@@ -4134,7 +4134,7 @@ interface Transform extends Component {
 	rotation: Quaternion;
 	localRotation: Quaternion;
 	localScale: Vector3;
-	parent: Transform;
+	parent: Transform | undefined;
 	worldToLocalMatrix: Matrix4x4;
 	localToWorldMatrix: Matrix4x4;
 	root: Transform;

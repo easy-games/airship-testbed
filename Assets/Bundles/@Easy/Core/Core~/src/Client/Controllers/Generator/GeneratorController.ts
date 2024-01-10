@@ -118,7 +118,7 @@ export class GeneratorController implements OnStart {
 
 		const spawnTimeText = refs.GetValue("UI", "SpawnTimeText") as TMP_Text;
 		if (dto.spawnTimeLabel) {
-			spawnTimeText.transform.parent.gameObject.SetActive(true);
+			spawnTimeText.transform.parent!.gameObject.SetActive(true);
 			bin.Add(
 				SetInterval(
 					1,
@@ -135,7 +135,7 @@ export class GeneratorController implements OnStart {
 				),
 			);
 		} else {
-			spawnTimeText.transform.parent.gameObject.SetActive(false);
+			spawnTimeText.transform.parent!.gameObject.SetActive(false);
 		}
 	}
 
