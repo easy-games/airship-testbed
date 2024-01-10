@@ -282,7 +282,7 @@ export class FriendsController implements OnStart {
 							", serverId=" +
 							friend.serverId,
 					);
-					Dependency<TransferController>().ClientTransferToServerAsync(friend.gameId, friend.serverId);
+					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				});
 			}
 			go.transform.SetSiblingIndex(i);

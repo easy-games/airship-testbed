@@ -16,6 +16,7 @@ export declare class CameraSystem {
     private readonly enabledBin;
     GetActiveCamera(): Camera;
     constructor();
+    HasCameraRig(): boolean;
     private OnEnabled;
     private OnDisabled;
     /**

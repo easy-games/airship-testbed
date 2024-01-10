@@ -1,5 +1,6 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
+import { Result } from "Shared/Types/Result";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
@@ -21,17 +22,29 @@ export class DataStore implements OnStart {
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
 	 */
-	public async GetDataKey<T extends object>(key: string): Promise<T | void> {
+	public async GetDataKey<T extends object>(key: string): Promise<Result<T, undefined>> {
 		this.checkKey(key);
 
 		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
-		if (!result.success) {
-			throw error(`Unable to get data key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to get data key. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		if (!result.data) return undefined;
+		if (!result.data) {
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
 
-		return DecodeJSON(result.data) as T;
+		return {
+			success: true,
+			data: DecodeJSON(result.data) as T,
+		};
 	}
 
 	/**
@@ -40,18 +53,25 @@ export class DataStore implements OnStart {
 	 * @param data The data to associate with the provided key.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetDataKey<T extends object>(key: string, data: T): Promise<T> {
+	public async SetDataKey<T extends object>(key: string, data: T): Promise<Result<T, undefined>> {
 		this.checkKey(key);
 
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/data/key/${key}`,
 			EncodeJSON(data),
 		);
-		if (!result.success) {
-			throw error(`Unable to set data key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		return DecodeJSON(result.data) as T;
+		return {
+			success: true,
+			data: DecodeJSON(result.data) as T,
+		};
 	}
 
 	/**
@@ -59,17 +79,29 @@ export class DataStore implements OnStart {
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 * @returns The data that was deleted. If no data was deleted, nothing will be returned.
 	 */
-	public async DeleteDataKey<T extends object>(key: string): Promise<T | void> {
+	public async DeleteDataKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>> {
 		this.checkKey(key);
 
 		const result = InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`);
-		if (!result.success) {
-			throw error(`Unable to delete data key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		if (!result.data) return;
+		if (!result.data) {
+			return {
+				success: true,
+				data: undefined,
+			};
+		}
 
-		return DecodeJSON(result.data) as T;
+		return {
+			success: true,
+			data: DecodeJSON(result.data) as T,
+		};
 	}
 
 	/**

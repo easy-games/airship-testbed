@@ -1,5 +1,6 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
+import { Result } from "Shared/Types/Result";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
@@ -27,19 +28,30 @@ export class CacheStore implements OnStart {
 	 * be unchanged. The maximum expire time is 24 hours.
 	 * @returns The data associated with the provided key. If no data is associated with the provided key, then nothing will be returned.
 	 */
-	public async GetCacheKey<T extends object>(key: string, expireTimeSec?: number): Promise<T | void> {
+	public async GetCacheKey<T extends object>(key: string, expireTimeSec?: number): Promise<Result<T, undefined>> {
 		this.checkKey(key);
 
 		const query: string =
 			expireTimeSec !== undefined ? `?expiry=${math.clamp(expireTimeSec, 0, this.maxExpireSec)}` : "";
 		const result = InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`);
 		if (!result.success) {
-			throw error(`Unable to get cache key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		if (!result.data) return;
-
-		return DecodeJSON(result.data) as T;
+		if (!result.data) {
+			return {
+				success: false,
+				data: undefined,
+			};
+		}
+		return {
+			success: true,
+			data: DecodeJSON(result.data) as T,
+		};
 	}
 
 	/**
@@ -49,27 +61,39 @@ export class CacheStore implements OnStart {
 	 * @param expireTimeSec The duration this key should live after being set in seconds. The maximum duration is 24 hours.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetCacheKey<T extends object>(key: string, data: T, expireTimeSec: number): Promise<T> {
+	public async SetCacheKey<T extends object>(
+		key: string,
+		data: T,
+		expireTimeSec: number,
+	): Promise<Result<T, undefined>> {
 		this.checkKey(key);
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${math.clamp(expireTimeSec, 0, this.maxExpireSec)}`,
 			EncodeJSON(data),
 		);
-		if (!result.success) {
-			throw error(`Unable to set cache key. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		return DecodeJSON(result.data) as T;
+		return {
+			success: true,
+			data: DecodeJSON(result.data) as T,
+		};
 	}
 
 	/**
 	 * Deletes the data associated with the provided key.
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 */
-	public async DeleteCacheKey(key: string): Promise<void> {
+	public async DeleteCacheKey(key: string): Promise<Result<number, undefined>> {
 		this.checkKey(key);
 
-		await this.SetCacheKeyTTL(key, 0);
+		const res = await this.SetCacheKeyTTL(key, 0);
+		return res;
 	}
 
 	/**
@@ -78,7 +102,7 @@ export class CacheStore implements OnStart {
 	 * @param expireTimeSec The duration this key should live in seconds. The maximum duration is 24 hours.
 	 * @returns The new lifetime of the key.
 	 */
-	public async SetCacheKeyTTL(key: string, expireTimeSec: number): Promise<number> {
+	public async SetCacheKeyTTL(key: string, expireTimeSec: number): Promise<Result<number, undefined>> {
 		this.checkKey(key);
 
 		const result = InternalHttpManager.GetAsync(
@@ -88,15 +112,22 @@ export class CacheStore implements OnStart {
 				this.maxExpireSec,
 			)}`,
 		);
-		if (!result.success) {
-			throw error(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		return (DecodeJSON(result.data) as { ttl: number }).ttl;
+		return {
+			success: true,
+			data: (DecodeJSON(result.data) as { ttl: number }).ttl,
+		};
 	}
 
 	/**
-	 * Checks that the key is valid
+	 * Checks that the key is valid. Throws an error if not valid.
 	 */
 	private checkKey(key: string): void {
 		if (!key || key.match("^[%w%.%:]+$")[0] === undefined) {

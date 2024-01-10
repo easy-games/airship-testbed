@@ -4343,6 +4343,9 @@ interface NetworkObject extends MonoBehaviour {
     PredictedSpawner: NetworkConnection;
     IsSceneObject: boolean;
     ComponentIndex: number;
+    /**
+     * This ID will be 0 until it is spawned via {@link NetworkUtil.Spawn()}
+     */
     ObjectId: number;
     PredictedSpawn: PredictedSpawn;
     NetworkBehaviours: CSArray<NetworkBehaviour>;

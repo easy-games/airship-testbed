@@ -46,7 +46,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		});
 
 		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
-			Dependency<TransferController>().ClientTransferToServerAsync(gameDto.id);
+			Dependency<TransferController>().TransferToGameAsync(gameDto.id);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(clickConn);

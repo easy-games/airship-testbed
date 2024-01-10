@@ -1,6 +1,7 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
 import inspect from "@easy-games/unity-inspect";
 import { Game } from "Shared/Game";
+import { Result } from "Shared/Types/Result";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
@@ -35,16 +36,25 @@ export class LeaderboardService implements OnStart {
 	 * @param leaderboardName The name of the leaderboard that should be updated with the given scores
 	 * @param update An object containing a map of ids and scores.
 	 */
-	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<void> {
+	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<Result<undefined, undefined>> {
 		const result = InternalHttpManager.PostAsync(
 			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/stats`,
 			EncodeJSON({
 				stats: update,
 			}),
 		);
-		if (!result.success) {
-			throw error(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
+
+		return {
+			success: true,
+			data: undefined,
+		};
 	}
 
 	/**
@@ -52,17 +62,29 @@ export class LeaderboardService implements OnStart {
 	 * @param leaderboardName The name of the leaderboard
 	 * @param id The id
 	 */
-	public async GetRank(leaderboardName: string, id: string): Promise<RankData | undefined> {
+	public async GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>> {
 		const result = InternalHttpManager.GetAsync(
 			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/id/${id}/ranking`,
 		);
-		if (!result.success) {
-			throw error(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n${inspect(result.data)}`);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		if (!result.data) return undefined;
+		if (!result.data) {
+			return {
+				success: true,
+				data: undefined,
+			};
+		}
 
-		return DecodeJSON(result.data) as RankData;
+		return {
+			success: true,
+			data: DecodeJSON(result.data) as RankData,
+		};
 	}
 
 	/**
@@ -75,20 +97,34 @@ export class LeaderboardService implements OnStart {
 	 * @param startIndex The start index of the selection. Defaults to 0, which is the top of the leaderboard.
 	 * @param count The number of entries to retrieve. Defaults to 100.
 	 */
-	public async GetRankRange(leaderboardName: string, startIndex = 0, count = 100): Promise<RankData[]> {
+	public async GetRankRange(
+		leaderboardName: string,
+		startIndex = 0,
+		count = 100,
+	): Promise<Result<RankData[], undefined>> {
 		count = math.clamp(count, 1, 1000 - startIndex); // ensure they don't reach past 1000;
 
 		const result = InternalHttpManager.GetAsync(
 			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/rankings`,
 		);
-		if (!result.success) {
-			throw error(
-				`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n${inspect(result.data)}`,
-			);
+		if (!result.success || result.statusCode > 299) {
+			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n${result.data}`);
+			return {
+				success: false,
+				data: undefined,
+			};
 		}
 
-		if (!result.data) return [];
+		if (!result.data) {
+			return {
+				success: true,
+				data: [],
+			};
+		}
 
-		return DecodeJSON(result.data) as RankData[];
+		return {
+			success: true,
+			data: DecodeJSON(result.data) as RankData[],
+		};
 	}
 }
