@@ -4343,9 +4343,6 @@ interface NetworkObject extends MonoBehaviour {
     PredictedSpawner: NetworkConnection;
     IsSceneObject: boolean;
     ComponentIndex: number;
-    /**
-     * This ID will be 0 until it is spawned via {@link NetworkUtil.Spawn()}
-     */
     ObjectId: number;
     PredictedSpawn: PredictedSpawn;
     NetworkBehaviours: CSArray<NetworkBehaviour>;
@@ -13272,6 +13269,7 @@ interface AirshipObjectPool extends DefaultObjectPool {
 
     constructor(): AirshipObjectPool;
 
+    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
 }
     
