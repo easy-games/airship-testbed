@@ -30,7 +30,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	//public buttons?: Transform[];
 
 	private Log(message: string) {
-		print("Avatar Editor: " + message);
+		// print("Avatar Editor: " + message);
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {

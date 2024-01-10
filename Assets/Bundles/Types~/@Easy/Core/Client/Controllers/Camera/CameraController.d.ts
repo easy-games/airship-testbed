@@ -3,7 +3,7 @@ import { CameraSystem } from "./CameraSystem";
 export declare class CameraController {
     static readonly cameraReferenceKey = "CameraRig";
     /** The underlying camera system for the game. */
-    readonly cameraSystem: CameraSystem;
+    readonly cameraSystem?: CameraSystem;
     constructor();
     /**
      * Sets whether or not the camera system is enabled. Disable the
@@ -13,7 +13,7 @@ export declare class CameraController {
     /**
      * Returns `true` if the camera system is enabled.
      */
-    IsEnabled(): boolean;
+    IsEnabled(): boolean | undefined;
     /**
      * Set the current camera mode.
      *

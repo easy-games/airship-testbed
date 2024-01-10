@@ -102,6 +102,10 @@ export class ChatController implements OnStart {
 		}
 	}
 
+	public IsOpen(): boolean {
+		return this.selected;
+	}
+
 	OnStart(): void {
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((text, senderClientId) => {
 			let sender: Player | undefined;

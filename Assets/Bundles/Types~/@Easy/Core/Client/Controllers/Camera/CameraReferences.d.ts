@@ -5,10 +5,12 @@ export declare class CameraReferences {
     private static instances;
     static Instance(): CameraReferences;
     private mouse;
-    readonly mainCamera: Camera;
-    readonly fpsCamera: Camera;
-    readonly uiCamera: Camera;
+    readonly mainCamera?: Camera;
+    readonly fpsCamera?: Camera;
+    readonly uiCamera?: Camera;
+    private exists;
     constructor();
+    DoesCameraRigExist(): boolean;
     /**
      *
      * @param distance

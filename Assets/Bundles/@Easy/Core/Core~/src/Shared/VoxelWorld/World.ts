@@ -42,7 +42,6 @@ export class World {
 
 		if (!voxelWorld.finishedLoading) {
 			voxelWorld.OnFinishedLoading(() => {
-				print("World finished loading!");
 				this.finishedLoading = true;
 				this.onFinishedLoading.Fire();
 			});

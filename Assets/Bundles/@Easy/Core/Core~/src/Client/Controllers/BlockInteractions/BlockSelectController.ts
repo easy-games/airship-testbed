@@ -34,6 +34,9 @@ export class BlockSelectController implements OnStart {
 	constructor(private readonly entityController: EntityController) {}
 
 	OnStart(): void {
+		const world = WorldAPI.GetMainWorld();
+		if (!world) return;
+
 		const highlightPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/BlockSelect/BlockSelectHighlight.prefab",
 		);
@@ -43,6 +46,7 @@ export class BlockSelectController implements OnStart {
 		}
 		this.highlightGO = GameObjectUtil.Instantiate(highlightPrefab);
 		this.highlightGO.layer = Layer.IGNORE_RAYCAST;
+		this.highlightGO.transform.position = new Vector3(10_000, 0, 10_000);
 		this.highlightGO.SetActive(false);
 
 		const voidPlanePrefab = AssetBridge.Instance.LoadAsset(
@@ -51,6 +55,7 @@ export class BlockSelectController implements OnStart {
 		this.voidPlane = GameObjectUtil.Instantiate(voidPlanePrefab);
 		this.voidPlane.name = "VoidPlane";
 		this.voidPlane.transform.localScale = new Vector3(50, 0.99, 50);
+		this.voidPlane.transform.position = new Vector3(10_000, 0, 10_000);
 		this.voidPlane.layer = Layer.BRIDGE_ASSIST;
 
 		//If our local player dies then this should be disabled
