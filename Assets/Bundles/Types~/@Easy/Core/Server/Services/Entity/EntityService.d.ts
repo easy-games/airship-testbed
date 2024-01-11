@@ -15,6 +15,7 @@ export declare class EntityService implements OnStart {
     private loadedEntityPrefabs;
     private airshipPool;
     constructor(invService: InventoryService, chatService: ChatService);
+    PreLoadHumanEntities(amount: number): void;
     OnStart(): void;
     GetEntityPrefab(entityPrefabType: EntityPrefabType): NetworkObject;
     SpawnEntity(entityPrefabType: EntityPrefabType, pos?: Vector3, rotation?: Quaternion): CharacterEntity;

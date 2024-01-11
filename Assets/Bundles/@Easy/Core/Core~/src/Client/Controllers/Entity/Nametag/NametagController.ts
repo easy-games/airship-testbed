@@ -37,7 +37,7 @@ export class NametagController implements OnStart {
 				}
 				const healthbar = entity.GetHealthbar();
 				if (healthbar) {
-					const canvasGroup = healthbar.transform.parent.GetComponent<CanvasGroup>();
+					const canvasGroup = healthbar.transform.parent!.GetComponent<CanvasGroup>();
 					if (alpha < 1) {
 						canvasGroup.TweenCanvasGroupAlpha(alpha * 0.6, 0.1);
 					} else {

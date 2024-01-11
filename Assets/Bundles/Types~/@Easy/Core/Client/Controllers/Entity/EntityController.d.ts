@@ -12,6 +12,7 @@ export declare class EntityController implements OnStart {
     private entities;
     entityHealthbarPrefab: Object;
     constructor(invController: InventoryController, localEntityController: LocalEntityController, abilityRegistry: AbilityRegistry);
+    PreLoadHumanEntities(amount: number): void;
     OnStart(): void;
     private DespawnEntity;
     private AddEntity;

@@ -1,3 +1,4 @@
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { DamageType } from "Shared/Damage/DamageType";
 import { CoreSound } from "Shared/Sound/CoreSound";
 import { Duration } from "Shared/Util/Duration";
@@ -933,3 +934,11 @@ export const CoreItemDefinitions: {
 		accessoryPaths: [AccPath(ItemType.WHEAT_SEEDS, "Placeables/Seeds")],
 	},
 };
+
+for (const itemType of ObjectUtils.keys(CoreItemDefinitions)) {
+	const itemDef = CoreItemDefinitions[itemType];
+	if (!itemDef.image) {
+		const [_, id] = ItemTypeComponentsInternal(itemType);
+		itemDef.image = `@Easy/Core/Shared/Resources/ItemRenders/${id.lower()}.png`;
+	}
+}

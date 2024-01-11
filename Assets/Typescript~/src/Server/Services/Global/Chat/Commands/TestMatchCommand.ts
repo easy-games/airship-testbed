@@ -1,5 +1,5 @@
+import { TransferService } from "@Easy/Core/Server/Airship/Transfer/TransferService";
 import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
-import { TransferService } from "@Easy/Core/Server/Services/Transfer/TransferService";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Dependency } from "@easy-games/flamework-core";
@@ -9,16 +9,15 @@ export class TestMatchCommand extends ChatCommand {
 		super("testMatch", ["tm"], undefined, "Teleports all players on the server to a test match.");
 	}
 
-	Execute(player: Player, args: string[]): void {
+	async Execute(player: Player, args: string[]): Promise<void> {
 		player.SendMessage("Creating server...");
-		const server = Dependency<TransferService>().CreateServer("BWMatchScene");
-		if (!server) {
+		const server = await Dependency<TransferService>().CreateServer("BWMatchScene");
+		if (!server.success) {
 			player.SendMessage("Failed to create server.");
 			return;
 		}
-		player.SendMessage(`Created server with ID "${server.serverId}". Teleporting all players...`);
-		for (const player of Dependency<PlayerService>().GetPlayers()) {
-			Dependency<TransferService>().TransferToServer(player, server.serverId);
-		}
+		player.SendMessage(`Created server with ID "${server.data.serverId}". Teleporting all players...`);
+		const players = Dependency<PlayerService>().GetPlayers();
+		await Dependency<TransferService>().TransferGroupToServer(players, server.data.serverId);
 	}
 }

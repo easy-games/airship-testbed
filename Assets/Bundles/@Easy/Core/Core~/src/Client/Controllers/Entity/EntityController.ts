@@ -31,16 +31,10 @@ export class EntityController implements OnStart {
 		private readonly localEntityController: LocalEntityController,
 		private readonly abilityRegistry: AbilityRegistry,
 	) {
-		const humanEntityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
-			EntityPrefabType.HUMAN,
-		).GetComponent<NetworkObject>();
-		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as unknown as AirshipObjectPool;
-		airshipPool.SlowlyCacheObjects(humanEntityPrefab, 60);
-
 		this.entityHealthbarPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/EntityHealthbar.prefab",
 		) as Object;
-		PoolManager.PreLoadPool(this.entityHealthbarPrefab, 60);
+		// PoolManager.PreLoadPool(this.entityHealthbarPrefab, 5);
 
 		CoreNetwork.ServerToClient.SpawnEntities.client.OnServerEvent((entityDtos) => {
 			// if (RunUtil.IsEditor()) {
@@ -64,6 +58,14 @@ export class EntityController implements OnStart {
 				Profiler.EndSample();
 			}
 		});
+	}
+
+	public PreLoadHumanEntities(amount: number): void {
+		const humanEntityPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
+			EntityPrefabType.HUMAN,
+		).GetComponent<NetworkObject>();
+		const airshipPool = InstanceFinder.NetworkManager.ObjectPool as unknown as AirshipObjectPool;
+		airshipPool.SlowlyCacheObjects(humanEntityPrefab, amount);
 	}
 
 	OnStart(): void {

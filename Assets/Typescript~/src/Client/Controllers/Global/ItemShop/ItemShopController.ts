@@ -66,16 +66,19 @@ export class ItemShopController implements OnStart {
 			if (!entity) return;
 			if (entity.IsLocalCharacter()) return;
 
-			const pos = entity.GetHeadPosition().add(new Vector3(0, 0.7, 0));
-			const go = PoolManager.SpawnObject(this.itemPurchasePopupPrefab, pos, Quaternion.identity);
-			const image = go.transform.GetChild(0).GetChild(0).GetComponent<Image>();
-			CanvasUIBridge.SetSprite(image.gameObject, ItemUtil.GetItemRenderPath(itemType));
-			const canvasGroup = go.transform.GetChild(0).GetComponent<CanvasGroup>();
-			canvasGroup.alpha = 1;
-			SetTimeout(0.4, () => {
-				canvasGroup.TweenCanvasGroupAlpha(0, 0.1);
-			});
-			go.transform.TweenLocalPosition(pos.add(new Vector3(0, 0.5, 0)), 0.5).SetEase(EaseType.QuadOut);
+			const itemMeta = ItemUtil.GetItemDef(itemType);
+			if (itemMeta.image) {
+				const pos = entity.GetHeadPosition().add(new Vector3(0, 0.7, 0));
+				const go = PoolManager.SpawnObject(this.itemPurchasePopupPrefab, pos, Quaternion.identity);
+				const image = go.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+				CanvasUIBridge.SetSprite(image.gameObject, itemMeta.image);
+				const canvasGroup = go.transform.GetChild(0).GetComponent<CanvasGroup>();
+				canvasGroup.alpha = 1;
+				SetTimeout(0.4, () => {
+					canvasGroup.TweenCanvasGroupAlpha(0, 0.1);
+				});
+				go.transform.TweenLocalPosition(pos.add(new Vector3(0, 0.5, 0)), 0.5).SetEase(EaseType.QuadOut);
+			}
 
 			AudioManager.PlayAtPosition(
 				"@Easy/Core/Shared/Resources/Sound/ItemShopPurchase.wav",
@@ -156,16 +159,13 @@ export class ItemShopController implements OnStart {
 				return;
 			}
 
-			const itemMeta = ItemUtil.GetItemDef(shopItem.itemType);
-			let itemGO = container.transform.FindChild("id_" + itemMeta.id)?.gameObject;
+			const itemDef = ItemUtil.GetItemDef(shopItem.itemType);
+			let itemGO = container.transform.FindChild("id_" + itemDef.id)?.gameObject;
 			if (itemGO === undefined) {
 				itemGO = GameObjectUtil.InstantiateIn(this.shopItemPrefab, container.transform);
-				itemGO.name = "id_" + itemMeta.id;
+				itemGO.name = "id_" + itemDef.id;
 			}
-			CanvasUIBridge.SetSprite(
-				itemGO.transform.GetChild(0).gameObject,
-				ItemUtil.GetItemRenderPath(shopItem.itemType),
-			);
+			CanvasUIBridge.SetSprite(itemGO.transform.GetChild(0).gameObject, itemDef.image!);
 
 			if (shown) {
 				itemGO.SetActive(true);
@@ -245,8 +245,8 @@ export class ItemShopController implements OnStart {
 		const selectedItemName = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemName");
 		const selectedItemCost = this.refs.GetValue<TextMeshProUGUI>("SidebarContainer", "SelectedItemCost");
 
-		CanvasUIBridge.SetSprite(selectedItemIcon, ItemUtil.GetItemRenderPath(shopItem.itemType));
 		const itemMeta = ItemUtil.GetItemDef(shopItem.itemType);
+		CanvasUIBridge.SetSprite(selectedItemIcon, itemMeta.image!);
 		selectedItemQuantity.text = `x${shopItem.quantity}`;
 		selectedItemName.text = itemMeta.displayName;
 

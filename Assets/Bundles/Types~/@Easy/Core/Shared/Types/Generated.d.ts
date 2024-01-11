@@ -13806,4 +13806,43 @@ interface AvatarCollection extends ScriptableObject {
     constructor(): AvatarCollection;
 
 }
+    
+interface LineRenderer extends Renderer {
+    numPositions: number;
+    startWidth: number;
+    endWidth: number;
+    widthMultiplier: number;
+    numCornerVertices: number;
+    numCapVertices: number;
+    useWorldSpace: boolean;
+    loop: boolean;
+    startColor: Color;
+    endColor: Color;
+    positionCount: number;
+    textureScale: Vector2;
+    shadowBias: number;
+    generateLightingData: boolean;
+    textureMode: LineTextureMode;
+    alignment: LineAlignment;
+    maskInteraction: SpriteMaskInteraction;
+    widthCurve: AnimationCurve;
+    colorGradient: Gradient;
+
+    constructor(): LineRenderer;
+
+    BakeMesh(mesh: Mesh, useTransform: boolean): void;
+    BakeMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
+    GetPosition(index: number): Vector3;
+    GetPositions(positions: CSArray<Vector3>): number;
+    GetPositions(positions: CSArray<Vector3>): number;
+    GetPositions(positions: CSArray<Vector3>): number;
+    SetColors(start: Color, end: Color): void;
+    SetPosition(index: number, position: Vector3): void;
+    SetPositions(positions: CSArray<Vector3>): void;
+    SetPositions(positions: CSArray<Vector3>): void;
+    SetPositions(positions: CSArray<Vector3>): void;
+    SetVertexCount(count: number): void;
+    SetWidth(start: number, end: number): void;
+    Simplify(tolerance: number): void;
+}
 

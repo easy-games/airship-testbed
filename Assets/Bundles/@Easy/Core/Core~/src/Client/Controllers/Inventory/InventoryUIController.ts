@@ -5,7 +5,6 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Keyboard, Mouse } from "Shared/UserInput";
@@ -237,10 +236,11 @@ export class InventoryUIController implements OnStart {
 
 		const itemMeta = itemStack.GetItemDef();
 		const itemType = itemStack.GetItemType();
-		const [, id] = ItemUtil.GetItemTypeComponents(itemType);
-		let imageSrc = id.lower() + ".png";
-
-		let texture2d = AssetCache.LoadAssetIfExists<Texture2D>(`Client/Resources/Assets/ItemRenders/${imageSrc}`);
+		let imageSrc = itemMeta.image;
+		let texture2d: Texture2D | undefined;
+		if (imageSrc) {
+			texture2d = AssetCache.LoadAssetIfExists<Texture2D>(imageSrc);
+		}
 		if (texture2d) {
 			let cachedSprite = this.spriteCache.get(itemMeta.itemType);
 			if (!cachedSprite) {
