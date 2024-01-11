@@ -25,9 +25,11 @@ export class EntityService implements OnStart {
 
 	constructor(private readonly invService: InventoryService, private readonly chatService: ChatService) {
 		this.chatService.RegisterCommand(new EntityCommand());
+	}
 
+	public PreLoadHumanEntities(amount: number): void {
 		const humanEntityPrefab = this.GetEntityPrefab(EntityPrefabType.HUMAN);
-		this.airshipPool.SlowlyCacheObjects(humanEntityPrefab, 100);
+		this.airshipPool.SlowlyCacheObjects(humanEntityPrefab, amount);
 	}
 
 	OnStart(): void {
