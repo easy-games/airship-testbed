@@ -1884,8 +1884,8 @@ interface GameObject extends Object {
 	StopAnimation(): void;
 	BroadcastMessage(methodName: string): void;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
-	GetComponentsInChildren<T>(): CSArray<T>;
-	GetComponentsInChildren<T>(typeName: string): CSArray<T>;
+	GetComponentsInChildren<T>(): T extends AirshipBehaviour ? T[] : CSArray<T>;
+	GetComponentsInChildren<T>(typeName: string): T extends AirshipBehaviour ? T[] : CSArray<T>;
 
 	/**
 	 * Throws error if no component found.
