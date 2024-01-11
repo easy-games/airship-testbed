@@ -18,20 +18,28 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		//Load the blocks mesh
+		print("Setting block mesh");
 		if (this.itemMeta?.block?.blockId) {
 			const world = WorldAPI.GetMainWorld()!;
 			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
 
 			const rightHandRens = this.entity.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
+			print("rightHandRens: " + rightHandRens.Length);
 			if (rightHandRens && rightHandRens.Length > 0) {
+				print("found right hands");
 				const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 2, 5);
 				if (blockGO) {
 					let heldItemRen = rightHandRens.GetValue(0);
+
+					print("Made block: " + heldItemRen.gameObject.transform.GetInstanceID());
 					const meshRen = blockGO.GetComponent<MeshRenderer>();
 					const meshFilter = blockGO.GetComponent<MeshFilter>();
 					heldItemRen.material = meshRen.material;
 					heldItemRen.GetComponent<MeshFilter>().mesh = meshFilter.mesh;
-					GameObjectUtil.Destroy(blockGO);
+					print("Copied material to: " + heldItemRen.GetComponent<MeshFilter>().GetInstanceID());
+					//GameObjectUtil.Destroy(blockGO);
+					blockGO.transform.position = heldItemRen.transform.position;
+					blockGO.transform.rotation = heldItemRen.transform.rotation;
 				}
 			} else {
 				print("Could not produce block", inspect(this.itemMeta.block));
