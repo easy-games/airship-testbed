@@ -65,7 +65,6 @@ export class ItemUtil {
 				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".prefab"];
 			}
 		}
-		print("Refestering item: " + itemType);
 		CoreItemDefinitions[itemType] = itemDefinition;
 
 		/********/
@@ -97,16 +96,13 @@ export class ItemUtil {
 			accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.prefab"];
 		}
 
-		print("acc size: " + accessoryPaths.size());
 		if (accessoryPaths.size() > 0) {
 			const accessories: AccessoryComponent[] = [];
 			ItemUtil.itemAccessories.set(itemType, accessories);
 
 			for (const accessoryName of accessoryPaths) {
-				print("accessoryName: " + accessoryName);
 				let accessory = AssetBridge.Instance.LoadAssetIfExists<GameObject>(accessoryName);
 				if (!accessory) {
-					warn("Couldn't find: " + accessoryName);
 					continue;
 				}
 

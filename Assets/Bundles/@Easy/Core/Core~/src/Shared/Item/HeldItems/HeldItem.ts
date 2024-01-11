@@ -33,6 +33,7 @@ export class HeldItem {
 	private bufferingUse = false;
 	protected audioPitchShift = 1;
 	protected playEffectsOnUse = true;
+	protected viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
 
 	/**
 	 * The look vector for the latest action.
@@ -95,11 +96,10 @@ export class HeldItem {
 		this.currentItemGOs = [];
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
 		this.entity.accessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
-		let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
 		if (this.entity.IsLocalCharacter()) {
-			viewmodelAccessoryBuilder = Dependency<ViewmodelController>().accessoryBuilder;
-			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
-			viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
+			this.viewmodelAccessoryBuilder = Dependency<ViewmodelController>().accessoryBuilder;
+			this.viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.LeftHand, false);
+			this.viewmodelAccessoryBuilder.RemoveAccessorySlot(AccessorySlot.RightHand, false);
 		}
 
 		const firstPerson = this.entity.animator.IsFirstPerson();
@@ -112,8 +112,8 @@ export class HeldItem {
 				accessoryTemplate,
 				false,
 			);
-			if (viewmodelAccessoryBuilder) {
-				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.AddSingleAccessory(
+			if (this.viewmodelAccessoryBuilder) {
+				this.activeAccessoriesViewmodel[i] = this.viewmodelAccessoryBuilder.AddSingleAccessory(
 					accessoryTemplate,
 					false,
 				);

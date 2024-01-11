@@ -1,5 +1,4 @@
 import {} from "@easy-games/flamework-core";
-import { Entity } from "Shared/Entity/Entity";
 import { Mouse } from "Shared/UserInput";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
@@ -53,7 +52,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public CameraFocusSlot(slotType: AccessorySlot) {
-		print("Fosuing slot: " + slotType);
+		//print("Fosuing slot: " + slotType);
 		this.targetTransform = this.cameraWaypointDefault;
 		if (
 			slotType === AccessorySlot.Head ||

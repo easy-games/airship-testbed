@@ -6,10 +6,13 @@ import { LocalEntityController } from "Client/Controllers/Character/LocalEntityC
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
+import { World } from "Shared/VoxelWorld/World";
 
 export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
 	private placementQueued = false;
+	private dynamicBlock?: GameObject;
+	private dynamicBlockViewmodel?: GameObject;
 
 	override OnEquip() {
 		super.OnEquip();
@@ -18,32 +21,51 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 		}
 
 		//Load the blocks mesh
-		print("Setting block mesh");
 		if (this.itemMeta?.block?.blockId) {
 			const world = WorldAPI.GetMainWorld()!;
 			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
 
+			//Third person accessory
 			const rightHandRens = this.entity.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
-			print("rightHandRens: " + rightHandRens.Length);
 			if (rightHandRens && rightHandRens.Length > 0) {
-				print("found right hands");
-				const blockGO = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 2, 5);
-				if (blockGO) {
-					let heldItemRen = rightHandRens.GetValue(0);
-
-					print("Made block: " + heldItemRen.gameObject.transform.GetInstanceID());
-					const meshRen = blockGO.GetComponent<MeshRenderer>();
-					const meshFilter = blockGO.GetComponent<MeshFilter>();
-					heldItemRen.material = meshRen.material;
-					heldItemRen.GetComponent<MeshFilter>().mesh = meshFilter.mesh;
-					print("Copied material to: " + heldItemRen.GetComponent<MeshFilter>().GetInstanceID());
-					//GameObjectUtil.Destroy(blockGO);
-					blockGO.transform.position = heldItemRen.transform.position;
-					blockGO.transform.rotation = heldItemRen.transform.rotation;
-				}
+				this.dynamicBlock = this.GenerateBlock(rightHandRens.GetValue(0), voxelId, world);
 			} else {
 				print("Could not produce block", inspect(this.itemMeta.block));
 			}
+
+			//First person accessory
+			if (this.viewmodelAccessoryBuilder) {
+				const rightHandRensViewModel = this.viewmodelAccessoryBuilder.GetAccessoryMeshes(
+					AccessorySlot.RightHand,
+				);
+				if (rightHandRensViewModel && rightHandRensViewModel.Length > 0) {
+					this.dynamicBlockViewmodel = this.GenerateBlock(rightHandRensViewModel.GetValue(0), voxelId, world);
+				}
+			}
+		}
+	}
+
+	private GenerateBlock(tempRen: Renderer, voxelId: number, world: World): GameObject | undefined {
+		let dynamicBlock = MeshProcessor.ProduceSingleBlock(voxelId, world.voxelWorld, 2, 5);
+		if (dynamicBlock) {
+			dynamicBlock.transform.SetParent(tempRen.transform, false);
+			dynamicBlock.gameObject.layer = tempRen.gameObject.layer;
+			dynamicBlock.transform.localPosition = Vector3.zero;
+			dynamicBlock.transform.localRotation = Quaternion.identity;
+			dynamicBlock.transform.localScale = Vector3.one;
+			//this.dynamicBlock.transform.ClearLocalTransform();
+			tempRen.enabled = false;
+			return dynamicBlock;
+		}
+	}
+
+	override OnUnEquip() {
+		super.OnUnEquip();
+		if (this.dynamicBlock) {
+			GameObjectUtil.Destroy(this.dynamicBlock);
+		}
+		if (this.dynamicBlockViewmodel) {
+			GameObjectUtil.Destroy(this.dynamicBlockViewmodel);
 		}
 	}
 
