@@ -8,7 +8,7 @@ import { EncodeJSON } from "Shared/json";
  * for managing parties.
  */
 @Controller({})
-export class PartyService implements OnStart {
+export class PartyController implements OnStart {
 	// TODO: Signals/Access to current party data. Likely already exists in the
 	// main menu controllers somewhere
 

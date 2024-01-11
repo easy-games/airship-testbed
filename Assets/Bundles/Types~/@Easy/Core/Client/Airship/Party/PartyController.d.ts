@@ -5,7 +5,7 @@ import { Result } from "../../../Shared/Types/Result";
  * This controller provides information about the users current party as well as functions
  * for managing parties.
  */
-export declare class PartyService implements OnStart {
+export declare class PartyController implements OnStart {
     OnStart(): void;
     /**
      * Sends an invite to the provided user, allowing them to join the existing party.
