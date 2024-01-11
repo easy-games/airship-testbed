@@ -10617,8 +10617,6 @@ interface ActiveAccessory {
     rootTransform: Transform;
     gameObjects: CSArray<GameObject>;
     renderers: CSArray<Renderer>;
-
-
 }
     
 interface AccessoryComponent extends MonoBehaviour {

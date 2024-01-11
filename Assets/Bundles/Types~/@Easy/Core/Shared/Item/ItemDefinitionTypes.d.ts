@@ -50,6 +50,7 @@ export interface AmmoDef {
     stickItemAtSurfaceOnMiss?: boolean;
     onHitEntitySound?: SoundDef[];
     onHitGroundSound?: SoundDef[];
+    prefabPath: string;
     onHitVFXTemplate: AllBundleItems;
 }
 export interface HitSignal {

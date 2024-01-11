@@ -20,6 +20,7 @@ export declare class HeldItem {
     private bufferingUse;
     protected audioPitchShift: number;
     protected playEffectsOnUse: boolean;
+    protected viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
     /**
      * The look vector for the latest action.
      *
