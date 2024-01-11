@@ -42,11 +42,19 @@ export class AvatarUtil {
 		);
 		for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
 			const element = avatarCollection.skinAccessories.GetValue(i);
+			if (!element) {
+				warn("Empty element in avatar skinAccessories collection: " + i);
+				continue;
+			}
 			//print("Found avatar skin item: " + element.ToString());
 			this.avatarSkinAccessories.push(element);
 		}
 		for (let i = 0; i < avatarCollection.generalAccessories.Length; i++) {
 			const element = avatarCollection.generalAccessories.GetValue(i);
+			if (!element) {
+				warn("Empty element in avatar generalAccessories collection: " + i);
+				continue;
+			}
 			//print("Found avatar item: " + element.ToString());
 			this.AddAvailableAvatarItem(element);
 		}

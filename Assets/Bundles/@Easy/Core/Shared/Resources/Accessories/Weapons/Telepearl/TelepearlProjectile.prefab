@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3542524278454429405}
   - component: {fileID: 3048744672800820957}
   m_Layer: 11
-  m_Name: telepearl
+  m_Name: TelepearlProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -12,6 +12,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     itemButtonHolder?: Transform;
     itemButtonTemplate?: GameObject;
     private currentSlot;
+    private currentOutfit?;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
     OpenPage(): void;
@@ -32,4 +33,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private OnSelectClear;
     private OnSelectCurrent;
     private OnDragAvatar;
+    private LoadOrCreateOutfit;
+    private Save;
+    private Revert;
 }

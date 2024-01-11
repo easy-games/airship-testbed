@@ -10592,8 +10592,8 @@ interface AccessoryBuilder extends MonoBehaviour {
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<Accessory>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddSingleAccessory(accessory: Accessory, rebuildMeshImmediately: boolean): ActiveAccessory;
+    AddAccessories(accessories: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddSingleAccessory(accessoryComponent: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
     EquipAccessoryCollection(collection: AccessoryCollection, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
@@ -10613,7 +10613,7 @@ interface AccessoryBuilder extends MonoBehaviour {
 }
     
 interface ActiveAccessory {
-    accessory: Accessory;
+    AccessoryComponent: AccessoryComponent;
     rootTransform: Transform;
     gameObjects: CSArray<GameObject>;
     renderers: CSArray<Renderer>;
@@ -10621,18 +10621,18 @@ interface ActiveAccessory {
 
 }
     
-interface Accessory extends ScriptableObject {
-    AccessorySlot: AccessorySlot;
-    Prefab: GameObject;
-    Position: Vector3;
-    Rotation: Vector3;
-    Scale: Vector3;
+interface AccessoryComponent extends MonoBehaviour {
+    accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
-    SkinnedToCharacter: boolean;
+    skinnedToCharacter: boolean;
+    localPosition: Vector3;
+    localRotation: Quaternion;
+    localScale: Vector3;
     HasSkinnedMeshes: boolean;
 
-    constructor(): Accessory;
+    constructor(): AccessoryComponent;
 
+    Copy(other: AccessoryComponent): void;
     GetSlotNumber(): number;
     ToString(): string;
 }
@@ -10649,7 +10649,7 @@ interface AccessorySkin extends ScriptableObject {
 }
     
 interface AccessoryCollection extends ScriptableObject {
-    accessories: CSArray<Accessory>;
+    accessories: CSArray<AccessoryComponent>;
     customSkin: AccessorySkin;
 
     constructor(): AccessoryCollection;
@@ -13801,7 +13801,7 @@ interface RemoteImage extends MonoBehaviour {
     
 interface AvatarCollection extends ScriptableObject {
     skinAccessories: CSArray<AccessorySkin>;
-    generalAccessories: CSArray<Accessory>;
+    generalAccessories: CSArray<AccessoryComponent>;
 
     constructor(): AvatarCollection;
 

@@ -639,7 +639,7 @@ export class Entity {
 		}
 
 		const [, id] = ItemUtil.GetItemTypeComponents(projectileItemType);
-		const projectilePath = `@Easy/Core/Shared/Resources/Prefabs/Projectiles/Ammo/${string.lower(id)}.prefab`;
+		const projectilePath = itemMeta.projectile.prefabPath;
 		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
 		const powerMulitplier = itemMeta.projectileLauncher?.powerMultiplier ?? 1;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5826609871021465668}
   - component: {fileID: 8587363106055407850}
   m_Layer: 11
-  m_Name: wood_arrow
+  m_Name: WoodArrowProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

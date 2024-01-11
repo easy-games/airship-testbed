@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4713775417591134567}
   - component: {fileID: 8009865837907276620}
   m_Layer: 0
-  m_Name: WheatSeeds
+  m_Name: Wheat_Seeds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

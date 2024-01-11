@@ -14,7 +14,7 @@ export declare class ItemUtil {
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;
     private static runtimeIdCounter;
-    static missingItemAccessory: Accessory;
+    static missingItemAccessory: AccessoryComponent;
     private static itemTypes;
     private static implictItemTypeMap;
     private static initialized;
@@ -32,8 +32,8 @@ export declare class ItemUtil {
     static GetItemTypeFromStringId(stringId: string): ItemType | undefined;
     static GetItemTypeFromItemId(itemId: number): ItemType | undefined;
     static GetItemDef(itemType: ItemType): ItemDef;
-    static GetFirstAccessoryForItemType(itemType: ItemType): Accessory;
-    static GetAccessoriesForItemType(itemType: ItemType): Readonly<Accessory[]>;
+    static GetFirstAccessoryForItemType(itemType: ItemType): AccessoryComponent;
+    static GetAccessoriesForItemType(itemType: ItemType): Readonly<AccessoryComponent[]>;
     static IsItemType(s: string): boolean;
     /**
      * Find an `ItemType` from the given string, first trying direct then case-insensitive searching the items

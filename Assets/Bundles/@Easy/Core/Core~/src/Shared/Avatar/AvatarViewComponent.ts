@@ -20,15 +20,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public dragging = false;
 
 	public accessoryBuilder?: AccessoryBuilder;
-	public entity?: Entity;
 
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
 
 	public override Start(): void {
-		this.entity = this.humanEntityGo?.GetComponent<Entity>();
-		this.accessoryBuilder = this.entity?.accessoryBuilder;
+		this.accessoryBuilder = this.humanEntityGo?.GetComponent<AccessoryBuilder>();
 		this.dragging = false;
 		this.mouse = new Mouse();
 		this.mouse.moved.Connect((pos: Vector3) => {
@@ -48,8 +46,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.gameObject.SetActive(false);
 	}
 
-	public ResetAvatar(){
-		if(this.avatarHolder){
+	public ResetAvatar() {
+		if (this.avatarHolder) {
 			this.avatarHolder.localEulerAngles = Vector3.zero;
 		}
 	}
@@ -84,7 +82,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.CameraFocusTransform(this.targetTransform);
 	}
 
-	public CameraFocusTransform(transform?: Transform, instant = false){
+	public CameraFocusTransform(transform?: Transform, instant = false) {
 		this.targetTransform = transform;
 		if (this.cameraTransform && this.targetTransform) {
 			if (instant) {

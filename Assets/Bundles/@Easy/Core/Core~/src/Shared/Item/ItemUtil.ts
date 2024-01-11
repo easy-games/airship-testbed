@@ -12,7 +12,7 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export class ItemUtil {
-	public static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
+	public static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.prefab";
 
 	private static readonly itemAccessories = new Map<ItemType, AccessoryComponent[]>();
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
@@ -62,9 +62,10 @@ export class ItemUtil {
 					(name) => config.accessoryFolder + "/" + name,
 				);
 			} else {
-				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".asset"];
+				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".prefab"];
 			}
 		}
+		print("Refestering item: " + itemType);
 		CoreItemDefinitions[itemType] = itemDefinition;
 
 		/********/
@@ -93,22 +94,24 @@ export class ItemUtil {
 		if (itemMeta.accessoryPaths) {
 			accessoryPaths = itemMeta.accessoryPaths;
 		} else if (itemMeta.block?.blockId) {
-			accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.asset"];
+			accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.prefab"];
 		}
 
+		print("acc size: " + accessoryPaths.size());
 		if (accessoryPaths.size() > 0) {
 			const accessories: AccessoryComponent[] = [];
 			ItemUtil.itemAccessories.set(itemType, accessories);
 
 			for (const accessoryName of accessoryPaths) {
-				let accessory = AssetBridge.Instance.LoadAssetIfExists<AccessoryComponent>(accessoryName);
+				print("accessoryName: " + accessoryName);
+				let accessory = AssetBridge.Instance.LoadAssetIfExists<GameObject>(accessoryName);
 				if (!accessory) {
-					// warn("Couldn't find: " + accNameLower);
+					warn("Couldn't find: " + accessoryName);
 					continue;
 				}
 
 				// this.itemAccessories.set(itemType, accessory);
-				accessories.push(accessory);
+				accessories.push(accessory.GetComponent<AccessoryComponent>());
 			}
 		}
 		this.runtimeIdCounter++;

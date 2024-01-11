@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1574948047046929794}
   - component: {fileID: 4005618632735258049}
   m_Layer: 0
-  m_Name: CrossbowWood
+  m_Name: Wood_Crossbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -5,7 +5,7 @@ export declare class AvatarUtil {
     static defaultKitAccessory: AccessoryCollection | undefined;
     static readonly skinColors: Color[];
     static Initialize(): void;
-    static AddAvailableAvatarItem(item: Accessory): void;
-    static GetAllAvatarItems(slotType: AccessorySlot): Accessory[] | undefined;
+    static AddAvailableAvatarItem(item: AccessoryComponent): void;
+    static GetAllAvatarItems(slotType: AccessorySlot): AccessoryComponent[] | undefined;
     static GetAllAvatarSkins(): AccessorySkin[];
 }

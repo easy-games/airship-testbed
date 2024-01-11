@@ -146,10 +146,10 @@ export function ItemTypeComponentsInternal(itemType: ItemType): [scope: string, 
 	}
 }
 
-function AccPath(itemType: ItemType): string {
+function AccPath(itemType: ItemType, localPath = "", itemName: string | undefined = undefined): string {
 	const [scope, itemId] = ItemTypeComponentsInternal(itemType);
 
-	return scope + "/Shared/Resources/Accessories/" + itemId.lower() + ".asset";
+	return scope + "/Shared/Resources/Accessories/" + localPath + "/" + (itemName ?? itemId.lower()) + ".prefab";
 }
 
 export const CoreItemDefinitions: {
@@ -526,7 +526,7 @@ export const CoreItemDefinitions: {
 	////ARMOR
 	[ItemType.LEATHER_HELMET]: {
 		displayName: "Leather Helmet",
-		accessoryPaths: ["@Easy/Core/Shared/Resources/Accessories/Armor/Leather/LeatherHelmet.asset"],
+		accessoryPaths: [AccPath(ItemType.LEATHER_HELMET, "Armor/Leather")],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 40,
@@ -534,7 +534,7 @@ export const CoreItemDefinitions: {
 	},
 	[ItemType.IRON_HELMET]: {
 		displayName: "Iron Helmet",
-		accessoryPaths: ["@Easy/Core/Shared/Resources/Accessories/Armor/Iron/IronHelmet.asset"],
+		accessoryPaths: [AccPath(ItemType.IRON_HELMET, "Armor/Iron")],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 65,
@@ -542,7 +542,7 @@ export const CoreItemDefinitions: {
 	},
 	[ItemType.DIAMOND_HELMET]: {
 		displayName: "Diamond Helmet",
-		accessoryPaths: ["@Easy/Core/Shared/Resources/Accessories/Armor/Diamond/DiamondHelmet.asset"],
+		accessoryPaths: [AccPath(ItemType.DIAMOND_HELMET, "Armor/Diamond")],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 90,
@@ -550,7 +550,7 @@ export const CoreItemDefinitions: {
 	},
 	[ItemType.EMERALD_HELMET]: {
 		displayName: "Emerald Helmet",
-		accessoryPaths: ["@Easy/Core/Shared/Resources/Accessories/Armor/Emerald/EmeraldHelmet.asset"],
+		accessoryPaths: [AccPath(ItemType.EMERALD_HELMET, "Armor/Emerald")],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 150,
@@ -567,7 +567,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...pickaxeViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
+		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE, "DamageBlock/Pickaxe")],
 		breakBlock: {
 			damage: 2,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
@@ -582,7 +582,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...pickaxeViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.STONE_PICKAXE)],
+		accessoryPaths: [AccPath(ItemType.STONE_PICKAXE, "DamageBlock/Pickaxe")],
 		breakBlock: {
 			damage: 3,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
@@ -597,7 +597,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...pickaxeViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE)],
+		accessoryPaths: [AccPath(ItemType.IRON_PICKAXE, "DamageBlock/Pickaxe")],
 		breakBlock: {
 			damage: 4,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
@@ -612,7 +612,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...pickaxeViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.DIAMOND_PICKAXE)],
+		accessoryPaths: [AccPath(ItemType.DIAMOND_PICKAXE, "DamageBlock/Pickaxe")],
 		breakBlock: {
 			damage: 5,
 			extraDamageBlockArchetype: BlockArchetype.STONE,
@@ -628,7 +628,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...swordViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_SWORD)],
+		accessoryPaths: [AccPath(ItemType.WOOD_SWORD, "Weapons/Swords/WoodSword")],
 		melee: {
 			...swordMelee,
 			damage: 18,
@@ -642,7 +642,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...swordViewModel,
 		},
-		accessoryPaths: ["@Easy/Core/Shared/Resources/Accessories/stone_sword_temp.asset"],
+		accessoryPaths: [AccPath(ItemType.STONE_SWORD, "Weapons/Swords/StoneSword")],
 		melee: {
 			...swordMelee,
 			damage: 25,
@@ -656,7 +656,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...swordViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.IRON_SWORD)],
+		accessoryPaths: [AccPath(ItemType.IRON_SWORD, "Weapons/Swords/IronSword")],
 		melee: {
 			...swordMelee,
 			damage: 35,
@@ -670,7 +670,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...bigSwordViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD)],
+		accessoryPaths: [AccPath(ItemType.DIAMOND_SWORD, "Weapons/Swords/DiamondSword")],
 		inspectAnimPath: AllBundleItems.ItemSwordBig_FirstPerson_Inspect as string,
 		melee: {
 			...swordMelee,
@@ -685,7 +685,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...bigSwordViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.EMERALD_SWORD)],
+		accessoryPaths: [AccPath(ItemType.EMERALD_SWORD, "Weapons/Swords/EmeraldSword")],
 		inspectAnimPath: AllBundleItems.ItemSwordBig_FirstPerson_Inspect as string,
 		melee: {
 			...swordMelee,
@@ -726,7 +726,7 @@ export const CoreItemDefinitions: {
 			onUseAnimViewmodel: CoreAnim("FP_Bow_Charge", "FP_Bow_Shoot"),
 			onUseAnimWorldmodel: CoreAnim("TP_Bow_Charge", "TP_Bow_Shoot"),
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_BOW)],
+		accessoryPaths: [AccPath(ItemType.WOOD_BOW, "Weapons/Bows")],
 		projectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 5,
@@ -751,7 +751,7 @@ export const CoreItemDefinitions: {
 			onUseAnimViewmodel: CoreAnim("FP_Crossbow_Charge", "FP_Crossbow_Shoot"),
 			onUseAnimWorldmodel: CoreAnim("TP_Crossbow_Charge", "TP_Crossbow_Shoot"),
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_CROSSBOW)],
+		accessoryPaths: [AccPath(ItemType.WOOD_CROSSBOW, "Weapons/Crossbows")],
 		projectileLauncher: {
 			ammoItemType: ItemType.WOOD_ARROW,
 			minVelocityScaler: 250,
@@ -793,6 +793,7 @@ export const CoreItemDefinitions: {
 					maxDistance: 50,
 				},
 			],
+			prefabPath: AccPath(ItemType.WOOD_ARROW, "Weapons/Bows", "WoodArrowProjectile"),
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_ArrowHit,
 		},
 	},
@@ -808,7 +809,7 @@ export const CoreItemDefinitions: {
 			onUseAnimViewmodel: CoreAnim("FP_Generic_Charge", "FP_Generic_Throw"),
 			onUseAnimWorldmodel: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 		},
-		accessoryPaths: [AccPath(ItemType.TELEPEARL)],
+		accessoryPaths: [AccPath(ItemType.TELEPEARL, "Weapons/Telepearl")],
 		projectileLauncher: {
 			ammoItemType: ItemType.TELEPEARL,
 			minVelocityScaler: 40,
@@ -820,6 +821,7 @@ export const CoreItemDefinitions: {
 			damage: 15,
 			gravity: defaultGravity * 0.2,
 			projectileHitLayerMask: LayerUtil.GetLayerMask([Layer.DEFAULT, Layer.BLOCK, Layer.CHARACTER]),
+			prefabPath: AccPath(ItemType.TELEPEARL, "Weapons/Telepearl", "TelepearlProjectile"),
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_ArrowHit,
 		},
 	},
@@ -834,7 +836,7 @@ export const CoreItemDefinitions: {
 			onUseAnimWorldmodel: CoreAnim("TP_Generic_Charge", "TP_Generic_Throw"),
 		},
 		maxStackSize: 20,
-		accessoryPaths: [AccPath(ItemType.FIREBALL)],
+		accessoryPaths: [AccPath(ItemType.FIREBALL, "Weapons/Fireball")],
 		projectileLauncher: {
 			ammoItemType: ItemType.FIREBALL,
 			minVelocityScaler: 40,
@@ -867,6 +869,7 @@ export const CoreItemDefinitions: {
 			// 		maxDistance: 700,
 			// 	},
 			// ],
+			prefabPath: AccPath(ItemType.FIREBALL, "Weapons/Fireball", "FireballProjectile"),
 			onHitVFXTemplate: AllBundleItems.Projectiles_OnHitVFX_FireballExplosion,
 			destroyTrailImmediately: true,
 		},
@@ -893,7 +896,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...pickaxeViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE)],
+		accessoryPaths: [AccPath(ItemType.WOOD_PICKAXE, "DamageBlock/Pickaxe")],
 		tillBlock: {},
 	},
 	[ItemType.WHEAT_CROP]: {
@@ -927,6 +930,6 @@ export const CoreItemDefinitions: {
 			placeOnWhitelist: [ItemType.FARMLAND],
 			requiresFoundation: true,
 		},
-		accessoryPaths: [AccPath(ItemType.WHEAT_SEEDS)],
+		accessoryPaths: [AccPath(ItemType.WHEAT_SEEDS, "Placeables/Seeds")],
 	},
 };

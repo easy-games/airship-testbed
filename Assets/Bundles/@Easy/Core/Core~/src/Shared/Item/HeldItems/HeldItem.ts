@@ -86,9 +86,9 @@ export class HeldItem {
 		}
 
 		//Spawn the accessories graphics
-		let accessories: AccessoryComponent[] = [];
+		let accessoryTemplates: AccessoryComponent[] = [];
 		if (this.itemMeta) {
-			accessories = [...ItemUtil.GetAccessoriesForItemType(this.itemMeta.itemType)];
+			accessoryTemplates = [...ItemUtil.GetAccessoriesForItemType(this.itemMeta.itemType)];
 		}
 
 		this.currentItemAnimations = [];
@@ -107,10 +107,16 @@ export class HeldItem {
 		let i = 0;
 		this.activeAccessoriesWorldmodel.clear();
 		this.activeAccessoriesViewmodel.clear();
-		for (const accessory of accessories) {
-			this.activeAccessoriesWorldmodel[i] = this.entity.accessoryBuilder.AddSingleAccessory(accessory, false);
+		for (const accessoryTemplate of accessoryTemplates) {
+			this.activeAccessoriesWorldmodel[i] = this.entity.accessoryBuilder.AddSingleAccessory(
+				accessoryTemplate,
+				false,
+			);
 			if (viewmodelAccessoryBuilder) {
-				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.AddSingleAccessory(accessory, false);
+				this.activeAccessoriesViewmodel[i] = viewmodelAccessoryBuilder.AddSingleAccessory(
+					accessoryTemplate,
+					false,
+				);
 			}
 
 			//Load the animator for the held item if one exists

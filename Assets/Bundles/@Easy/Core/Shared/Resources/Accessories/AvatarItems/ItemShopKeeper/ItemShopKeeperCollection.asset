@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ItemShopKeeperCollection
   m_EditorClassIdentifier: 
   accessories:
-  - {fileID: 11400000, guid: bac5a3a7b047d3f488f505fd96e0c89f, type: 2}
-  - {fileID: 11400000, guid: 5ea21fcbbdb77974f8a882993cb06ea3, type: 2}
-  - {fileID: 11400000, guid: 39de11c24c9298643af660e6e05f962e, type: 2}
+  - {fileID: 3951789404177486776, guid: eda3579bb800288458aac57e6c6ede1e, type: 3}
+  - {fileID: 5660788679855312428, guid: 45be7b6105384da47bcfcc04e8b6bcce, type: 3}
+  - {fileID: 5873576580403382919, guid: 36f3ea781eaebdf41853218236d3cb6c, type: 3}
   customSkin: {fileID: 11400000, guid: 86413a4b71bf0394886d3d4acbe0b73c, type: 2}
