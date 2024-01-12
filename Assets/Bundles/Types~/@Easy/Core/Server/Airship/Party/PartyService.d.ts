@@ -24,7 +24,7 @@ export declare class PartyService implements OnStart {
      * must be playing the current game.
      * @param userId The id of the user
      */
-    GetPartyByUserId(userId: string): Promise<Result<GameServerPartyData | undefined, undefined>>;
+    GetPartyForUserId(userId: string): Promise<Result<GameServerPartyData | undefined, undefined>>;
     /**
      * Gets the party. To be allowed access to party information, the party leader must be playing
      * the current game.
