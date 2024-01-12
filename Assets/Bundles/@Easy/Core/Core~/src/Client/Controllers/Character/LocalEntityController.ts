@@ -172,7 +172,7 @@ export class LocalEntityController implements OnStart {
 	}
 
 	private CreateOrbitCameraMode(entity: Entity): OrbitCameraMode {
-		return new OrbitCameraMode(6, entity.gameObject.transform, entity.model.transform);
+		return new OrbitCameraMode(4, entity.gameObject.transform, entity.model.transform);
 	}
 
 	OnStart() {
