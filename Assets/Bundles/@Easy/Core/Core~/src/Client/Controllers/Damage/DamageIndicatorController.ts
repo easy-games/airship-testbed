@@ -2,6 +2,7 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { CoreRefs } from "Shared/CoreRefs";
 import { DamageType } from "Shared/Damage/DamageType";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -22,6 +23,7 @@ export class DamageIndicatorController implements OnStart {
 	constructor() {
 		const combatEffectsUI = Object.Instantiate<GameObject>(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Combat/CombatEffectsUI.prefab"),
+			CoreRefs.rootTransform,
 		);
 		this.combatEffectsCanvas = combatEffectsUI.GetComponent<Canvas>();
 		Object.Destroy(combatEffectsUI.transform.FindChild("DamageIndicator")!.gameObject);

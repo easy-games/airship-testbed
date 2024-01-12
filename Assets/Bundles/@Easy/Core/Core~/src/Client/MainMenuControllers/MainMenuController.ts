@@ -1,8 +1,8 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -41,7 +41,7 @@ export class MainMenuController implements OnStart {
 
 	constructor(private readonly authController: AuthController) {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
-		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
+		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
@@ -59,8 +59,9 @@ export class MainMenuController implements OnStart {
 			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
 		]);
 
-		this.avatarView = GameObjectUtil.Instantiate(
+		this.avatarView = Object.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
+			CoreRefs.rootTransform,
 		).GetComponent<AvatarViewComponent>();
 		if (Game.context === CoreContext.GAME) {
 			this.avatarView.HideAvatar();

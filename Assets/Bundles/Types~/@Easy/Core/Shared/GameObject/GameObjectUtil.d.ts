@@ -1,6 +1,8 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-/** Wrapper around `Object` functionality. */
+/**
+ * @deprecated Use `Object` instead. Example: `Object.Instantiate()`
+ */
 export declare class GameObjectUtil {
     /**
      * Instantiate an Object.

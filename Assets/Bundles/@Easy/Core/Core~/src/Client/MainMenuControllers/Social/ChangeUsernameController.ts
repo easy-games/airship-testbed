@@ -1,6 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard } from "Shared/UserInput";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -21,8 +21,9 @@ export class ChangeUsernameController implements OnStart {
 	private inputFieldSelected = false;
 
 	constructor(private readonly authController: AuthController) {
-		const go = GameObjectUtil.Instantiate(
+		const go = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
+			CoreRefs.rootTransform,
 		);
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = false;
@@ -83,7 +84,7 @@ export class ChangeUsernameController implements OnStart {
 			this.authController.GetAuthHeaders(),
 		);
 		if (res.success) {
-			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
+			this.SetResponseText("success", `Success! Your name has been changed to "${split[0]}".`);
 			Game.localPlayer.UpdateUsername(split[0], split[1]);
 			Dependency<UserController>().FetchLocalUser();
 		} else if (res.statusCode === 409) {

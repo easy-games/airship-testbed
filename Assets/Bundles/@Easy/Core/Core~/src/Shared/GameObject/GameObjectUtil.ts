@@ -1,4 +1,6 @@
-/** Wrapper around `Object` functionality. */
+/**
+ * @deprecated Use `Object` instead. Example: `Object.Instantiate()`
+ */
 export class GameObjectUtil {
 	/**
 	 * Instantiate an Object.

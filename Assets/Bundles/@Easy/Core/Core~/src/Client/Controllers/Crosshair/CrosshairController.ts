@@ -1,4 +1,5 @@
 import { Controller } from "@easy-games/flamework-core";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Modifier } from "Shared/Util/Modifier";
 
 @Controller({})
@@ -11,6 +12,7 @@ export class CrosshairController {
 	constructor() {
 		this.crosshairPrefab = Object.Instantiate<GameObject>(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Crosshair/CrosshairUI.prefab"),
+			CoreRefs.rootTransform,
 		);
 		this.crosshairImage = this.crosshairPrefab.transform.FindChild("Crosshair")!.GetComponent<Image>();
 
