@@ -20,7 +20,7 @@ export class MatchmakingService implements OnStart {
 	 * @returns A list of currently available matchmaking regions.
 	 */
 	public async GetMatchmakingRegions(): Promise<Result<string[], undefined>> {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + `/matchmaking/regions`);
+		const res = await MatchmakingServiceBackend.GetMatchmakingRegions();
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get matchmaking regions. Status Code:  ${res.statusCode}.\n${res.data}`);
@@ -49,8 +49,8 @@ export class MatchmakingService implements OnStart {
 		queueId: string,
 		regions?: string[],
 	): Promise<Result<undefined, undefined>> {
-		const res = InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + `/matchmaking/party-id/${partyId}/queue`,
+		const res = await MatchmakingServiceBackend.JoinPartyToQueue(
+			partyId,
 			EncodeJSON({
 				regions,
 				queueId,
@@ -76,10 +76,7 @@ export class MatchmakingService implements OnStart {
 	 * @param partyId The id of the party
 	 */
 	public async RemovePartyFromQueue(partyId: string): Promise<Result<undefined, undefined>> {
-		const res = InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + `/matchmaking/user-id/${partyId}/queue`,
-			EncodeJSON({}),
-		);
+		const res = await MatchmakingServiceBackend.RemovePartyFromQueue(partyId);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to queue user party. Status Code:  ${res.statusCode}.\n${res.data}`);
