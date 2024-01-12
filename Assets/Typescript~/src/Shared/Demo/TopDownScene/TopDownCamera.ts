@@ -37,34 +37,6 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 		if (this.entity) {
 			const entityWorldPos = this.entity.model.transform.position;
 
-			// let dist = entityWorldPos.sub(this.savedCameraTargetWorldPos).magnitude;
-			// print("dist: " + dist);
-			// if (dist > this.cameraEntityMaxRange || true) {
-			// 	let entityScreenPos = this.camera.WorldToScreenPoint(entityWorldPos);
-			// 	let cameraTargetWorldPos = this.camera.ScreenToWorldPoint(
-			// 		new Vector3(Screen.width / 2, Screen.height / 2, entityScreenPos.z),
-			// 	);
-
-			// 	// go to edge of radius
-			// 	let newCameraWorldPos = entityWorldPos.sub(
-			// 		cameraTargetWorldPos.normalized.mul(this.cameraEntityMaxRange),
-			// 	);
-			// 	this.savedCameraTargetWorldPos = newCameraWorldPos;
-			// 	newCameraWorldPos = newCameraWorldPos.add(this.cameraOffset);
-
-			// 	const camPos = this.camera.transform.position;
-			// 	const [pos, vel] = camPos.SmoothDamp(
-			// 		newCameraWorldPos,
-			// 		this.cameraVelocity,
-			// 		this.cameraSmoothTime,
-			// 		Time.deltaTime,
-			// 	);
-			// 	this.camera.transform.position = pos;
-			// 	this.cameraVelocity = vel;
-			// } else {
-			// 	// this.camera.transform.position = entityPos.add(this.cameraOffset);
-			// }
-
 			const camPos = this.camera.transform.position;
 			const newCamPos = entityWorldPos.add(this.cameraOffset);
 			const [pos, vel] = camPos.SmoothDamp(newCamPos, this.cameraVelocity, this.cameraSmoothTime, Time.deltaTime);
