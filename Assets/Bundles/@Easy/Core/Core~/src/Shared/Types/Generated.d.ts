@@ -10592,8 +10592,8 @@ interface AccessoryBuilder extends MonoBehaviour {
 
     constructor(): AccessoryBuilder;
 
-    AddAccessories(accessories: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
-    AddSingleAccessory(accessoryComponent: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
+    AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
     EquipAccessoryCollection(collection: AccessoryCollection, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
@@ -10617,6 +10617,8 @@ interface ActiveAccessory {
     rootTransform: Transform;
     gameObjects: CSArray<GameObject>;
     renderers: CSArray<Renderer>;
+
+
 }
     
 interface AccessoryComponent extends MonoBehaviour {
@@ -13230,6 +13232,7 @@ interface MaterialColor extends MonoBehaviour {
 
     ConvertColor(color: Color): Color;
     DoUpdate(): void;
+    EditorFirstTimeSetup(): void;
     GetColor(materialIndex: number): ColorSetting;
     SetAllColors(diffuseColor: Color, combine: boolean): void;
     SetColor(settings: ColorSetting, materialIndex: number): boolean;
@@ -13287,20 +13290,28 @@ interface HttpManager {
 
 }
     
+interface HttpResponse {
+    success: boolean;
+    statusCode: number;
+    data: string;
+    error: string;
+
+
+}
     
 interface HttpManagerConstructor {
 
 
-    DeleteAsync(url: string): HttpGetResponse;
-    DeleteAsync(url: string, headers: string): HttpGetResponse;
-    GetAsync(url: string, headers: string): HttpGetResponse;
-    GetAsync(url: string): HttpGetResponse;
-    PatchAsync(url: string, data: string): HttpGetResponse;
-    PatchAsync(url: string, data: string, headers: string): HttpGetResponse;
-    PostAsync(url: string, data: string): HttpGetResponse;
-    PostAsync(url: string, data: string, headers: string): HttpGetResponse;
-    PutAsync(url: string, data: string): HttpGetResponse;
-    PutAsync(url: string, data: string, headers: string): HttpGetResponse;
+    DeleteAsync(url: string): HttpResponse;
+    DeleteAsync(url: string, headers: string): HttpResponse;
+    GetAsync(url: string, headers: string): HttpResponse;
+    GetAsync(url: string): HttpResponse;
+    PatchAsync(url: string, data: string): HttpResponse;
+    PatchAsync(url: string, data: string, headers: string): HttpResponse;
+    PostAsync(url: string, data: string): HttpResponse;
+    PostAsync(url: string, data: string, headers: string): HttpResponse;
+    PutAsync(url: string, data: string): HttpResponse;
+    PutAsync(url: string, data: string, headers: string): HttpResponse;
 }
 declare const HttpManager: HttpManagerConstructor;
     
@@ -13313,14 +13324,160 @@ interface InternalHttpManager {
 interface InternalHttpManagerConstructor {
 
 
-    DeleteAsync(url: string): HttpGetResponse;
-    GetAsync(url: string): HttpGetResponse;
-    PatchAsync(url: string, data: string): HttpGetResponse;
-    PostAsync(url: string, data: string): HttpGetResponse;
-    PutAsync(url: string, data: string): HttpGetResponse;
+    DeleteAsync(url: string): HttpResponse;
+    GetAsync(url: string): HttpResponse;
+    PatchAsync(url: string, data: string): HttpResponse;
+    PostAsync(url: string, data: string): HttpResponse;
+    PutAsync(url: string, data: string): HttpResponse;
     SetAuthToken(authToken: string): void;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
+    
+interface FriendsControllerBackend {
+
+    constructor(): FriendsControllerBackend;
+
+}
+    
+interface FriendsControllerBackendConstructor {
+
+
+    GetFriends(): HttpResponse;
+    IsFriendsWith(uid: string): HttpResponse;
+}
+declare const FriendsControllerBackend: FriendsControllerBackendConstructor;
+    
+interface MatchmakingControllerBackend {
+
+    constructor(): MatchmakingControllerBackend;
+
+}
+    
+interface MatchmakingControllerBackendConstructor {
+
+
+    GetStatus(): HttpResponse;
+}
+declare const MatchmakingControllerBackend: MatchmakingControllerBackendConstructor;
+    
+interface PartyControllerBackend {
+
+    constructor(): PartyControllerBackend;
+
+}
+    
+interface PartyControllerBackendConstructor {
+
+
+    GetParty(): HttpResponse;
+}
+declare const PartyControllerBackend: PartyControllerBackendConstructor;
+    
+interface SocketControllerBackend {
+
+    constructor(): SocketControllerBackend;
+
+}
+    
+interface TransferControllerBackend {
+
+    constructor(): TransferControllerBackend;
+
+}
+    
+interface TransferControllerBackendConstructor {
+
+
+    TransferToGame(body: string): HttpResponse;
+    TransferToPartyLeader(): HttpResponse;
+}
+declare const TransferControllerBackend: TransferControllerBackendConstructor;
+    
+interface UsersControllerBackend {
+
+    constructor(): UsersControllerBackend;
+
+}
+    
+interface UsersControllerBackendConstructor {
+
+
+    GetUser(username: string): HttpResponse;
+}
+declare const UsersControllerBackend: UsersControllerBackendConstructor;
+    
+interface CacheStoreServiceBackend {
+
+    constructor(): CacheStoreServiceBackend;
+
+}
+    
+interface CacheStoreServiceBackendConstructor {
+
+
+    GetKey(key: string, expireTimeSec: unknown): HttpResponse;
+    SetKey(key: string, expireTimeSec: number, body: string): HttpResponse;
+    SetKeyTTL(key: string, expireTimeSec: number): HttpResponse;
+}
+declare const CacheStoreServiceBackend: CacheStoreServiceBackendConstructor;
+    
+interface DataStoreServiceBackend {
+
+    constructor(): DataStoreServiceBackend;
+
+}
+    
+interface DataStoreServiceBackendConstructor {
+
+
+    DeleteKey(key: string): HttpResponse;
+    GetKey(key: string): HttpResponse;
+    SetKey(key: string, body: string): HttpResponse;
+}
+declare const DataStoreServiceBackend: DataStoreServiceBackendConstructor;
+    
+interface LeaderboardServiceBackend {
+
+    constructor(): LeaderboardServiceBackend;
+
+}
+    
+interface LeaderboardServiceBackendConstructor {
+
+
+    GetRank(leaderboardName: string, id: string): HttpResponse;
+    GetRankRange(leaderboardName: string, startIndex: number, count: number): HttpResponse;
+    Update(leaderboardName: string, body: string): HttpResponse;
+}
+declare const LeaderboardServiceBackend: LeaderboardServiceBackendConstructor;
+    
+interface PartyServiceBackend {
+
+    constructor(): PartyServiceBackend;
+
+}
+    
+interface PartyServiceBackendConstructor {
+
+
+    GetPartyById(partyId: string): HttpResponse;
+    GetPartyForUserId(userId: string): HttpResponse;
+}
+declare const PartyServiceBackend: PartyServiceBackendConstructor;
+    
+interface TransferServiceBackend {
+
+    constructor(): TransferServiceBackend;
+
+}
+    
+interface TransferServiceBackendConstructor {
+
+
+    CreateServer(body: string): HttpResponse;
+    Transfer(body: string): HttpResponse;
+}
+declare const TransferServiceBackend: TransferServiceBackendConstructor;
     
 interface CrossSceneState {
 
