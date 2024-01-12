@@ -137,11 +137,16 @@ interface ObjectConstructor {
 	FindObjectsOfTypeAll(type: unknown): Array<Object>;
 	FindObjectsOfTypeIncludingAssets(type: unknown): Array<Object>;
 	FindSceneObjectsOfType(type: unknown): Array<Object>;
-	Instantiate(original: Object, position: Vector3, rotation: Quaternion): Object;
-	Instantiate(original: Object, position: Vector3, rotation: Quaternion, parent: Transform): Object;
-	Instantiate(original: Object): Object;
-	Instantiate(original: Object, parent: Transform): Object;
-	Instantiate(original: Object, parent: Transform, instantiateInWorldSpace: boolean): Object;
+	Instantiate<T extends Object = GameObject>(original: T, position: Vector3, rotation: Quaternion): T;
+	Instantiate<T extends Object = GameObject>(
+		original: T,
+		position: Vector3,
+		rotation: Quaternion,
+		parent: Transform,
+	): T;
+	Instantiate<T extends Object = GameObject>(original: T): T;
+	Instantiate<T extends Object = GameObject>(original: T, parent: Transform): T;
+	Instantiate<T extends Object = GameObject>(original: T, parent: Transform, instantiateInWorldSpace: boolean): T;
 	Instantiate<T>(original: T): T;
 	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion): T;
 	Instantiate<T>(original: T, position: Vector3, rotation: Quaternion, parent: Transform): T;
