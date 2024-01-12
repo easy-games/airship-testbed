@@ -576,6 +576,12 @@ interface SocketManager {
 }
 declare const SocketManager: SocketManager;
 
+interface AirshipEventControllerBackend {
+	Instance: {
+		OnEvent(callback: (eventName: string, data: string) => void): void;
+	};
+}
+
 type HttpGetResponse = {
 	success: boolean;
 	statusCode: number;
