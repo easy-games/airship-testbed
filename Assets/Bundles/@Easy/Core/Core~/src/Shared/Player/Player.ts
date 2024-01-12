@@ -76,6 +76,8 @@ export class Player {
 		public username: string,
 
 		/**
+		 * @deprecated Username tags will be removed.
+		 *
 		 * The player's username tag. Append this value onto `username` for a
 		 * unique username.
 		 * ```ts

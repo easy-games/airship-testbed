@@ -84,7 +84,7 @@ export class ChangeUsernameController implements OnStart {
 			this.authController.GetAuthHeaders(),
 		);
 		if (res.success) {
-			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
+			this.SetResponseText("success", `Success! Your name has been changed to "${split[0]}".`);
 			Game.localPlayer.UpdateUsername(split[0], split[1]);
 			Dependency<UserController>().FetchLocalUser();
 		} else if (res.statusCode === 409) {
