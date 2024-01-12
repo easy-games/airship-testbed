@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
@@ -53,8 +53,9 @@ export class InventoryUIController implements OnStart {
 		this.hotbarContent = this.inventoryRefs.GetValue("UI", "HotbarContentGO").transform;
 		this.healthBar = new Healthbar(this.inventoryRefs.GetValue("UI", "HealthBarTransform"));
 
-		const backpackGo = GameObjectUtil.Instantiate(
+		const backpackGo = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Inventory/Backpack.prefab"),
+			CoreRefs.rootTransform,
 		);
 		this.backpackRefs = backpackGo.GetComponent<GameObjectReferences>();
 		this.backpackCanvas = backpackGo.GetComponent<Canvas>();

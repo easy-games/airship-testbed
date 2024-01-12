@@ -6,6 +6,7 @@ import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
+import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
 import { InitNet } from "./Network/NetworkAPI";
 import { AppManager } from "./Util/AppManager";
@@ -13,6 +14,8 @@ import { CanvasAPI } from "./Util/CanvasAPI";
 import { RunUtil } from "./Util/RunUtil";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
+
+CoreRefs.Init();
 
 Game.context = CoreContext.GAME;
 

@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { CoreRefs } from "Shared/CoreRefs";
 import { ClientSettingsController } from "../Settings/ClientSettingsController";
 
 @Controller({})
@@ -10,10 +11,12 @@ export class AmbientSoundController implements OnStart {
 		const ambientSoundGo = GameObject.Create("AmbientSound");
 		this.ambientSource = ambientSoundGo.AddComponent("AudioSource") as AudioSource;
 		this.ambientSource.volume = 0;
+		this.ambientSource.transform.SetParent(CoreRefs.rootTransform);
 
 		const musicGo = GameObject.Create("Music");
 		this.musicSource = musicGo.AddComponent("AudioSource") as AudioSource;
 		this.musicSource.volume = 0;
+		this.musicSource.transform.SetParent(CoreRefs.rootTransform);
 	}
 
 	OnStart(): void {

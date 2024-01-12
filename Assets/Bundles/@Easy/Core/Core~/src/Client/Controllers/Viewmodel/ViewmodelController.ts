@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { CoreRefs } from "Shared/CoreRefs";
 
 @Controller({})
 export class ViewmodelController implements OnStart {
@@ -19,7 +20,8 @@ export class ViewmodelController implements OnStart {
 	constructor() {
 		this.viewmodelGo = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanViewmodel.prefab"),
-		) as GameObject;
+			CoreRefs.rootTransform,
+		);
 		this.viewmodelTransform = this.viewmodelGo.transform;
 		this.viewmodelTransform.position = new Vector3(10_000, 0, 10_000);
 
