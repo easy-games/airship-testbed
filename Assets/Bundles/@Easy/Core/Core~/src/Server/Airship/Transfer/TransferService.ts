@@ -22,8 +22,7 @@ export class TransferService implements OnStart {
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
 	public async CreateServer(sceneId?: string): Promise<Result<CreateServerResponse, undefined>> {
-		const res = InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/servers/create",
+		const res = await TransferServiceBackend.CreateServer(
 			EncodeJSON({
 				sceneId: sceneId,
 			}),
@@ -74,8 +73,7 @@ export class TransferService implements OnStart {
 		serverTransferData?: unknown,
 		clientTransferData?: unknown,
 	): Promise<Result<undefined, undefined>> {
-		const res = InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/transfers/transfer",
+		const res = await TransferServiceBackend.Transfer(
 			EncodeJSON({
 				uid: players.map((p) => p.userId),
 				gameId,
@@ -127,8 +125,7 @@ export class TransferService implements OnStart {
 		serverTransferData?: unknown,
 		clientTransferData?: unknown,
 	): Promise<Result<undefined, undefined>> {
-		const res = InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/transfers/transfer",
+		const res = await TransferServiceBackend.Transfer(
 			EncodeJSON({
 				uids: players.map((p) => p.userId),
 				serverId,

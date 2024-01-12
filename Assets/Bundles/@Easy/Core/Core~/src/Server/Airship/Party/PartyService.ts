@@ -29,8 +29,8 @@ export class PartyService implements OnStart {
 	 * must be playing the current game.
 	 * @param userId The id of the user
 	 */
-	public async GetPartyByUserId(userId: string): Promise<Result<GameServerPartyData | undefined, undefined>> {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + `/parties/uid/${userId}`);
+	public async GetPartyForUserId(userId: string): Promise<Result<GameServerPartyData | undefined, undefined>> {
+		const res = await PartyServiceBackend.GetPartyForUserId(userId);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n${res.data}`);
@@ -56,7 +56,7 @@ export class PartyService implements OnStart {
 	 * @param partyId The id of the party
 	 */
 	public async GetPartyById(partyId: string): Promise<Result<GameServerPartyData | undefined, undefined>> {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + `/parties/party-id/${partyId}`);
+		const res = await PartyServiceBackend.GetPartyById(partyId);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n${res.data}`);

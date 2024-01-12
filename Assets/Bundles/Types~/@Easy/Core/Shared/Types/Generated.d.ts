@@ -13446,7 +13446,7 @@ interface LeaderboardServiceBackendConstructor {
 
 
     GetRank(leaderboardName: string, id: string): HttpResponse;
-    GetRankRange(leaderboardName: string, startIndex: number, count: number): HttpResponse;
+    GetRankRange(leaderboardName: string, skip: number, limit: number): HttpResponse;
     Update(leaderboardName: string, body: string): HttpResponse;
 }
 declare const LeaderboardServiceBackend: LeaderboardServiceBackendConstructor;
@@ -13464,6 +13464,21 @@ interface PartyServiceBackendConstructor {
     GetPartyForUserId(userId: string): HttpResponse;
 }
 declare const PartyServiceBackend: PartyServiceBackendConstructor;
+    
+interface MatchmakingServiceBackend {
+
+    constructor(): MatchmakingServiceBackend;
+
+}
+    
+interface MatchmakingServiceBackendConstructor {
+
+
+    GetMatchmakingRegions(): HttpResponse;
+    JoinPartyToQueue(partyId: string, body: string): HttpResponse;
+    RemovePartyFromQueue(partyId: string): HttpResponse;
+}
+declare const MatchmakingServiceBackend: MatchmakingServiceBackendConstructor;
     
 interface TransferServiceBackend {
 
