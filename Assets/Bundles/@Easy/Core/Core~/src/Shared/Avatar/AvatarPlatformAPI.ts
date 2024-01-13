@@ -1,6 +1,8 @@
+import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { Dependency } from "@easy-games/flamework-core";
 
 export type ItemClass = {
 	resourceType: "GAME" | "ORGANIZATION";
@@ -11,13 +13,17 @@ export type ItemClass = {
 	description: string;
 };
 
+export type AccessoryClass = ItemClass & {
+	accessory: {};
+};
+
+export type AccessoryItem = {
+	instanceId: string;
+	class: AccessoryClass;
+};
+
 export type Accessory = {
-	item: {
-		instanceId: string;
-		class: ItemClass & {
-			accessory: {};
-		};
-	};
+	item: AccessoryItem;
 };
 
 export type Outfit = {
@@ -32,33 +38,59 @@ export type Outfit = {
 };
 
 export class AvatarPlatformAPI {
+	private static Log(message: string) {
+		print("AvatarAPI: " + message);
+	}
+
+	public static GetHttpUrl(path: string) {
+		let url = `${AirshipUrl.ContentService}/${path}`;
+		this.Log("HTTP URL: " + url);
+		return url;
+	}
+
 	public static GetAllOutfits(): Outfit[] | undefined {
-		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits`);
+		this.Log("GetAllOutfits");
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
 		if (res.success) {
 			return DecodeJSON(res.data) as Outfit[];
 		}
 	}
 
 	public static GetEquippedOutfit(): Outfit | undefined {
-		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits/equipped`);
+		this.Log("GetEquippedOutfit");
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped`));
 		if (res.success) {
 			return DecodeJSON(res.data) as Outfit;
 		}
 	}
 
 	public static GetAvatarOutfit(outfitId: string): Outfit | undefined {
-		let res = HttpManager.GetAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfitId}`);
+		this.Log("GetAvatarOutfit");
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success) {
 			return DecodeJSON(res.data) as Outfit;
 		}
 	}
 
 	public static CreateAvatarOutfit(outfit: Outfit) {
-		HttpManager.PostAsync(`${AirshipUrl.ContentService}/outfits/create`, EncodeJSON(outfit));
+		this.Log("CreateAvatarOutfit");
+		InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/create`), EncodeJSON(outfit));
 	}
 
 	public static EquipAvatarOutfit(outfitId: string) {
-		HttpManager.PostAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfitId}/equip`, outfitId);
+		this.Log("EquipAvatarOutfit");
+		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
+		if (res.success) {
+			print("EQUIPPED OUTFIT: " + DecodeJSON<Outfit>(res.data).name);
+		}
+	}
+
+	public static GetAccessories() {
+		this.Log("GetAccessories");
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories`));
+		if (res.success) {
+			return DecodeJSON<AccessoryItem[]>(res.data);
+		}
 	}
 
 	public static CreateDefaultAvatarOutfit(
@@ -67,6 +99,7 @@ export class AvatarPlatformAPI {
 		name: string,
 		skinColor: Color,
 	): Outfit {
+		this.Log("CreateDefaultAvatarOutfit");
 		let outfit = {
 			name: name,
 			outfitId: outfitId,
@@ -81,6 +114,37 @@ export class AvatarPlatformAPI {
 	}
 
 	public static SaveAvatarOutfit(outfit: Outfit) {
-		HttpManager.PatchAsync(`${AirshipUrl.ContentService}/outfits/outfit-id/${outfit.outfitId}`, EncodeJSON(outfit));
+		this.Log("SaveAvatarOutfit");
+		InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(outfit));
+	}
+
+	private static LoadOrCreateEquippedOutfit(defaultSkinColor: Color) {
+		this.Log("LoadOrCreateEquippedOutfit");
+		let outfit = AvatarPlatformAPI.GetEquippedOutfit();
+		if (!outfit) {
+			//No outfit equipped
+			let allOutfits = AvatarPlatformAPI.GetAllOutfits();
+			if (allOutfits && allOutfits.size() > 0) {
+				//Has outfits though
+				outfit = allOutfits[0];
+				AvatarPlatformAPI.EquipAvatarOutfit(outfit.outfitId);
+			} else {
+				//No outfits exist so create one
+				outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+					Dependency<PlayerController>().clientId.ToString(),
+					"Default0",
+					"Default 0",
+					defaultSkinColor,
+				);
+			}
+		}
+		return outfit;
+	}
+
+	public static LoadImage(fileId: string) {
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`images/${fileId}`));
+		if (res.success) {
+			return DecodeJSON<AccessoryItem[]>(res.data);
+		}
 	}
 }
