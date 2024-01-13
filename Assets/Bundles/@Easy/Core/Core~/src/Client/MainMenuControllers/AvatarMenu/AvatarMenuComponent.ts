@@ -7,9 +7,8 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
-import { Accessory, AvatarPlatformAPI, Outfit } from "Shared/Avatar/AvatarPlatformAPI";
-import { RandomUtil } from "Shared/Util/RandomUtil";
+import { Accessory, AccessoryClass, AvatarPlatformAPI, Outfit } from "Shared/Avatar/AvatarPlatformAPI";
+import { AuthController } from "../Auth/AuthController";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -18,6 +17,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private subNavBarBtns: (CSArray<RectTransform> | undefined)[] = [];
 	private mainNavBtns?: CSArray<RectTransform>;
 	private subNavBars?: CSArray<RectTransform>;
+	private outfitBtns?: CSArray<RectTransform>;
 	private activeMainIndex = -1;
 	private activeSubIndex = -1;
 
@@ -25,7 +25,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public itemButtonTemplate?: GameObject;
 
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
-	private currentOutfit?: Outfit;
+	private outfits?: Outfit[];
+	private currentUserOutfit?: Outfit;
 
 	//public buttons?: Transform[];
 
@@ -35,8 +36,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
+
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
+		this.outfitBtns = this.refs?.GetAllValues<RectTransform>("OutfitRects");
 
 		let i = 0;
 
@@ -67,6 +70,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					}
 				}
 			}
+		}
+
+		//Hookup outfit buttons
+		if (!this.outfitBtns) {
+			print("Unablet to find outfit btns on Avatar Editor Page");
+			return;
+		}
+		for (i = 0; i < this.outfitBtns.Length; i++) {
+			const outfitI = i;
+			const go = this.outfitBtns.GetValue(i).gameObject;
+			CoreUI.SetupButton(go, { noHoverSound: true });
+			CanvasAPI.OnClickEvent(go, () => {
+				this.SelectOutfit(outfitI);
+			});
 		}
 
 		//Hookup general buttons
@@ -119,6 +136,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.Revert();
 			});
 		}
+
+		this.InitializeAutherizedAccessories();
 	}
 
 	override OpenPage(): void {
@@ -304,14 +323,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.currentSlot = slot;
 		//Accessories
 		let foundItems = AvatarUtil.GetAllAvatarItems(slot);
-		this.DisplayItems(foundItems);
+		if (foundItems) {
+			this.DisplayItems(foundItems);
+		}
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private DisplayItems(items: AccessoryComponent[] | undefined) {
+	private DisplayItems(items: AccessoryComponent[]) {
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
-				this.AddItemButton(value.ToString(), () => {
+				this.AddItemButton(value.name, () => {
 					//Accessory
 					this.SelectItem(value);
 				});
@@ -375,7 +396,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(name: string, onClickCallback: () => void) {
+	private AddItemButton(itemName: string, onClickCallback: () => void) {
 		if (this.itemButtonTemplate && this.itemButtonHolder) {
 			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
@@ -384,10 +405,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 			let text = newButton.GetComponentsInChildren<TextMeshProUGUI>();
 			if (text && text.Length > 0) {
-				text.GetValue(0).text = name;
+				text.GetValue(0).text = itemName;
 			}
 			let image = newButton.transform.GetChild(0).GetComponent<Image>();
 			if (image) {
+				//AvatarPlatformAPI.LoadImage(itemData.imageId);
 				image.enabled = false;
 			}
 		} else {
@@ -395,7 +417,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private SelectItem(acc: AccessoryComponent) {
+	private SelectItem(acc?: AccessoryComponent) {
 		if (!acc) {
 			return;
 		}
@@ -431,35 +453,72 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private OnDragAvatar(down: boolean) {
 		if (this.mainMenu?.avatarView) {
-			print("Dragging avatar: " + down);
 			this.mainMenu.avatarView.dragging = down;
 		}
 	}
 
-	private LoadOrCreateOutfit() {
-		this.currentOutfit = AvatarPlatformAPI.GetEquippedOutfit();
-		if (!this.currentOutfit) {
-			//No outfit equipped
-			let allOutfits = AvatarPlatformAPI.GetAllOutfits();
-			if (allOutfits && allOutfits.size() > 0) {
-				//Has outfits though
-				this.currentOutfit = allOutfits[0];
-				AvatarPlatformAPI.EquipAvatarOutfit(this.currentOutfit.outfitId);
-			} else {
-				//No outfits exist so create one
-				this.currentOutfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-					Dependency<PlayerController>().clientId.ToString(),
-					"Default0",
-					"Default 0",
-					RandomUtil.FromArray(AvatarUtil.skinColors),
-				);
+	private InitializeAutherizedAccessories() {
+		Dependency<AuthController>()
+			.WaitForAuthed()
+			.then(() => {
+				this.outfits = AvatarPlatformAPI.GetAllOutfits();
+				const outfitSize = this.outfits ? this.outfits.size() : 0;
+				if (!this.outfits) {
+					warn("Need to handle the case of not having any outfits on a user");
+				}
+				if (this.outfitBtns) {
+					for (let i = 0; i < this.outfitBtns.Length; i++) {
+						this.outfitBtns.GetValue(i).gameObject.SetActive(i < outfitSize);
+					}
+				}
+
+				//Get all owned accessories and map them to usable values
+				AvatarUtil.GetOwnedAccessories();
+			});
+	}
+
+	private SelectOutfit(index: number) {
+		if (!this.outfits || index < 0 || index >= this.outfits.size()) {
+			error("Index out of range of outfits");
+		}
+		if (this.outfitBtns) {
+			for (let i = 0; i < this.outfitBtns.Length; i++) {
+				const button = this.outfitBtns?.GetValue(index)?.GetComponent<Button>();
+				if (button) {
+					const color = i === index ? Color.green : Color.gray;
+					let colors = button.colors;
+					colors.normalColor = color;
+					colors.selectedColor = color;
+					colors.highlightedColor = color;
+					button.colors = colors;
+				}
 			}
 		}
+		this.currentUserOutfit = this.outfits[index];
+		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId);
+
+		this.LoadCurrentOutfit();
+	}
+
+	private LoadCurrentOutfit() {
+		const builder = this.mainMenu?.avatarView?.accessoryBuilder;
+		if (!builder || !this.currentUserOutfit) {
+			return;
+		}
+		builder.RemoveAccessories();
+
+		print("Loading outfit: " + this.currentUserOutfit.name);
+		this.currentUserOutfit.accessories.forEach((acc, index) => {
+			print("Outfit acc: " + acc.item.class.name + ": " + acc.item.class.classId);
+			this.SelectItem(AvatarUtil.GetAccessoryFromClassId(acc.item.class.classId));
+		});
+
+		//builder.TryCombineMeshes();
 	}
 
 	private Save() {
-		if (!this.currentOutfit) {
-			Debug.LogError("Trying to save with no outfit selected!");
+		if (!this.currentUserOutfit) {
+			warn("Trying to save with no outfit selected!");
 			return;
 		}
 		const outfitId = "Default";

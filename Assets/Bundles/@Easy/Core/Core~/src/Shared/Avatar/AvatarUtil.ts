@@ -1,10 +1,12 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryCollectionPath =
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
-	private static readonly avatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
+	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
+	private static readonly ownedAvatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
 	public static defaultKitAccessory: AccessoryCollection | undefined;
@@ -56,7 +58,7 @@ export class AvatarUtil {
 				continue;
 			}
 			//print("Found avatar item: " + element.ToString());
-			this.AddAvailableAvatarItem(element);
+			this.allAvatarAccessories.set(element.serverClassId, element);
 		}
 
 		//Print all of the mapped accessories
@@ -68,24 +70,41 @@ export class AvatarUtil {
 		// }
 	}
 
+	public static GetOwnedAccessories() {
+		let acc = AvatarPlatformAPI.GetAccessories();
+		if (acc) {
+			acc.forEach((itemData) => {
+				let item = this.allAvatarAccessories.get(itemData.class.classId);
+				if (item) {
+					//print("Found item: " + item.gameObject.name);
+					this.AddAvailableAvatarItem(item);
+				}
+			});
+		}
+	}
+
 	public static AddAvailableAvatarItem(item: AccessoryComponent) {
 		const slotNumber: number = item.GetSlotNumber();
-		let items = this.avatarAccessories.get(slotNumber);
+		let items = this.ownedAvatarAccessories.get(slotNumber);
 		if (!items) {
 			//print("making new items for slot: " + slotNumber);
 			items = [];
 		}
 		items.push(item);
 		//print("setting item slot " + slotNumber + " to: " + item.ToString());
-		this.avatarAccessories.set(slotNumber, items);
+		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
 
 	public static GetAllAvatarItems(slotType: AccessorySlot) {
 		//print("Getting slot " + tostring(slotType) + " size: " + this.avatarAccessories.get(slotType)?.size());
-		return this.avatarAccessories.get(slotType);
+		return this.ownedAvatarAccessories.get(slotType);
 	}
 
 	public static GetAllAvatarSkins() {
 		return this.avatarSkinAccessories;
+	}
+
+	public static GetAccessoryFromClassId(classId: string) {
+		return this.allAvatarAccessories.get(classId);
 	}
 }
