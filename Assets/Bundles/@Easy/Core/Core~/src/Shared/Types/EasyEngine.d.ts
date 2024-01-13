@@ -578,7 +578,8 @@ declare const SocketManager: SocketManager;
 
 interface AirshipEventControllerBackend {
 	Instance: {
-		OnEvent(callback: (eventName: string, data: string) => void): void;
+		// Airship platform events can be added here
+		// OnExampleEvent(callback: (eventName: string, data: string) => void): void;
 	};
 }
 
