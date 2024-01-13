@@ -1,11 +1,14 @@
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
+import { CoreRefs } from "./CoreRefs";
 import { Game } from "./Game";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { TimeUtil } from "./Util/TimeUtil";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
+
+CoreRefs.Init();
 
 Game.context = CoreContext.MAIN_MENU;
 

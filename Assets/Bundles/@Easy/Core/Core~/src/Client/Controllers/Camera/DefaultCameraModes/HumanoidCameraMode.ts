@@ -113,7 +113,7 @@ export class HumanoidCameraMode implements CameraMode {
 	OnStart(camera: Camera) {
 		this.occlusionCam = camera.transform.GetComponent<OcclusionCam>();
 		if (this.occlusionCam === undefined) {
-			this.occlusionCam = camera.transform.gameObject.AddComponent("OcclusionCam") as OcclusionCam;
+			this.occlusionCam = camera.transform.gameObject.AddComponent<OcclusionCam>();
 		}
 		this.bin.Add(this.preferred);
 		this.bin.Add(this.keyboard);

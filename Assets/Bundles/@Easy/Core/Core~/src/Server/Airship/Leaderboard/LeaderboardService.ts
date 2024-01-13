@@ -1,8 +1,5 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
-import { Game } from "Shared/Game";
 import { Result } from "Shared/Types/Result";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
 export interface LeaderboardUpdate {
@@ -37,8 +34,8 @@ export class LeaderboardService implements OnStart {
 	 * @param update An object containing a map of ids and scores.
 	 */
 	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<Result<undefined, undefined>> {
-		const result = InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/stats`,
+		const result = await LeaderboardServiceBackend.Update(
+			leaderboardName,
 			EncodeJSON({
 				stats: update,
 			}),
@@ -63,9 +60,7 @@ export class LeaderboardService implements OnStart {
 	 * @param id The id
 	 */
 	public async GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>> {
-		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/id/${id}/ranking`,
-		);
+		const result = await LeaderboardServiceBackend.GetRank(leaderboardName, id);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n${result.data}`);
 			return {
@@ -104,9 +99,7 @@ export class LeaderboardService implements OnStart {
 	): Promise<Result<RankData[], undefined>> {
 		count = math.clamp(count, 1, 1000 - startIndex); // ensure they don't reach past 1000;
 
-		const result = InternalHttpManager.GetAsync(
-			`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${leaderboardName}/rankings`,
-		);
+		const result = await LeaderboardServiceBackend.GetRankRange(leaderboardName, startIndex, count);
 		if (!result.success || result.statusCode > 299) {
 			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n${result.data}`);
 			return {

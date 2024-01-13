@@ -1,6 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -36,8 +37,9 @@ export class GroundItemController implements OnStart {
 		private readonly entityAccessoryController: EntityAccessoryController,
 	) {
 		// this.groundItemsFolder = GameObject.Create("GroundItems");
-		this.groundItemsFolder = GameObjectUtil.Instantiate(
+		this.groundItemsFolder = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItems.prefab"),
+			CoreRefs.rootTransform,
 		);
 		// this.offlineGroundItems = this.groundItemsFolder.GetComponent<OfflineGroundItems>();
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");

@@ -166,7 +166,7 @@ export const CoreItemDefinitions: {
 			health: 50,
 			blockId: ItemType.BED,
 			prefab: {
-				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
+				path: "@Easy/Survival/Shared/Resources/VoxelWorld/BlockPrefabs/Bed/Bed.prefab",
 				childBlocks: [
 					new Vector3(0, 0, 1),
 					// new Vector3(1, 0, 1),
@@ -913,7 +913,7 @@ export const CoreItemDefinitions: {
 			breakSound: CoreSound.blockBreakDirt,
 			placeSound: CoreSound.blockPlaceDirt,
 			prefab: {
-				path: "@Easy/Core/Shared/Resources/VoxelWorld/BlockPrefabs/WheatCrop/WheatCrop.prefab",
+				path: "@Easy/Survival/Shared/Resources/VoxelWorld/BlockPrefabs/WheatCrop/WheatCrop.prefab",
 			},
 		},
 	},

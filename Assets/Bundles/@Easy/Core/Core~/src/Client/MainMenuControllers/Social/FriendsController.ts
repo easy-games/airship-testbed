@@ -341,9 +341,9 @@ export class FriendsController implements OnStart {
 		if (displayName.size() > 16) {
 			displayName = displayName.sub(0, 15);
 		}
-		if (config.includeTag) {
-			displayName += "#" + friend.discriminator;
-		}
+		// if (config.includeTag) {
+		// 	displayName += "#" + friend.discriminator;
+		// }
 		username.text = displayName;
 
 		if (friend.metadata?.statusText && friend.metadata.statusText !== "") {
