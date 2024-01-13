@@ -1545,6 +1545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accessoryId: 417bfa38-c61b-4565-ba9d-e6434c9aa73d
   accessorySlot: 10
   visibilityMode: 2
   skinnedToCharacter: 1

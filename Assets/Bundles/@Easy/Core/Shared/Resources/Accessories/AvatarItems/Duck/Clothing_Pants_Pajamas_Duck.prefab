@@ -1530,6 +1530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accessoryId: 79992239-0c98-4577-a2d3-61413ef6fcb9
   accessorySlot: 9
   visibilityMode: 0
   skinnedToCharacter: 1
