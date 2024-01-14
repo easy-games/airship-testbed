@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Task } from "Shared/Util/Task";
@@ -16,6 +17,13 @@ export class ProximityPromptController implements OnStart {
 	private proximityPrompts: ProximityPrompt[] = [];
 	/** Proximity prompts in activation range. */
 	private activatableProximityPrompts: ProximityPrompt[] = [];
+	public promptFolder: Transform;
+
+	constructor() {
+		const go = GameObject.Create("Proximity Prompts");
+		this.promptFolder = go.transform;
+		this.promptFolder.SetParent(CoreRefs.rootTransform);
+	}
 
 	OnStart(): void {
 		this.FindActivatablePrompts();
