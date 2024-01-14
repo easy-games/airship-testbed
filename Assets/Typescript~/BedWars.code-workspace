@@ -7,6 +7,10 @@
         {
             "name": "Core~",
             "path": "../Bundles/@Easy/Core/Core~"
+        },
+        {
+            "name": "Survival~",
+            "path": "../Bundles/@Easy/Survival/Survival~"
         }
     ],
     "settings": {

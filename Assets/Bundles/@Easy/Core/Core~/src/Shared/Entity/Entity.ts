@@ -2,7 +2,6 @@ import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { EntityController } from "Client/Controllers/Entity/EntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
-import { DamageService } from "Server/Services/Damage/DamageService";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -193,19 +192,6 @@ export class Entity {
 		} else {
 			this.displayName = `entity_${this.id}`;
 		}
-
-		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
-			this.animator?.PlayFootstepSound(1.4);
-			if (RunUtil.IsServer()) {
-				const result = Dependency<DamageService>().InflictFallDamage(this, velocity.y);
-				if (result) {
-					CoreNetwork.ServerToClient.Entity.FallDamageTaken.server.FireAllClients(this.id, velocity);
-				}
-			}
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(impactConn);
-		});
 
 		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
 			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {

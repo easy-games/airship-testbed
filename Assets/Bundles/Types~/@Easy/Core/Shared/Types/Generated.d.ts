@@ -10622,6 +10622,7 @@ interface ActiveAccessory {
 }
     
 interface AccessoryComponent extends MonoBehaviour {
+    serverClassId: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
@@ -13328,6 +13329,7 @@ interface InternalHttpManagerConstructor {
     GetAsync(url: string): HttpResponse;
     PatchAsync(url: string, data: string): HttpResponse;
     PostAsync(url: string, data: string): HttpResponse;
+    PostAsync(url: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
     SetAuthToken(authToken: string): void;
 }
