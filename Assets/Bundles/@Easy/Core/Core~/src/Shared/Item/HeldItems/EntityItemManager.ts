@@ -30,7 +30,8 @@ export class EntityItemManager {
 		try {
 			if (RunUtil.IsClient()) {
 				this.InitializeClient();
-			} else if (RunUtil.IsServer()) {
+			}
+			if (RunUtil.IsServer()) {
 				this.InitializeServer();
 			}
 		} catch (e) {

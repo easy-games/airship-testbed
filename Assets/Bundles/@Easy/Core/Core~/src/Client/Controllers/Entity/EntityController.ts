@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntitySpawnClientSignal } from "Client/Signals/EntitySpawnClientEvent";
@@ -42,14 +41,11 @@ export class EntityController implements OnStart {
 			// 	print(`Spawning ${entityDtos.size()} ${entityDtos.size() > 1 ? "entities" : "entity"}.`);
 			// }
 			entityDtos.forEach((entityDto) => {
-				print("spawnEntity: " + inspect(entityDto));
-				Profiler.BeginSample("SpawnEntity");
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
 					error("[FATAL]: Failed to add entity: " + err);
 				}
-				Profiler.EndSample();
 			});
 		});
 		CoreNetwork.ServerToClient.DespawnEntity.client.OnServerEvent((entityId) => {

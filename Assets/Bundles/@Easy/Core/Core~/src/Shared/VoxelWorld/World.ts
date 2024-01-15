@@ -42,6 +42,7 @@ export class World {
 
 		if (!voxelWorld.finishedLoading) {
 			voxelWorld.OnFinishedLoading(() => {
+				print("VoxelWorld.finishedLoading");
 				this.finishedLoading = true;
 				this.onFinishedLoading.Fire();
 			});
@@ -52,6 +53,7 @@ export class World {
 
 		if (!voxelWorld.finishedReplicatingChunksFromServer) {
 			voxelWorld.OnFinishedReplicatingChunksFromServer(() => {
+				print("VoxelWorld.finishedReplicating");
 				this.finishedReplicatingChunksFromServer = true;
 				this.onFinishedReplicatingChunksFromServer.Fire();
 			});
@@ -198,9 +200,10 @@ export class World {
 			}
 		}
 
-		if (RunCore.IsServer()) {
+		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.BlockPlace.server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
-		} else {
+		}
+		if (RunUtil.IsClient()) {
 			if (config?.placedByEntityId === Game.localPlayer.character?.id) {
 				// Client predicted block place event
 				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;

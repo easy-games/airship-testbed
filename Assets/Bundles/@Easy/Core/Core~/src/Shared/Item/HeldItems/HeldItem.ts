@@ -256,7 +256,8 @@ export class HeldItem {
 		//Play the use locally
 		if (RunUtil.IsClient()) {
 			this.OnUseClient(useIndex);
-		} else if (RunUtil.IsServer()) {
+		}
+		if (RunUtil.IsServer()) {
 			this.OnUseServer(useIndex);
 		}
 
