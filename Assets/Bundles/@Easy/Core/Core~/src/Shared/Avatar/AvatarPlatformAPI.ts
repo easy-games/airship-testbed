@@ -1,8 +1,6 @@
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { Game } from "Shared/Game";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { RandomUtil } from "Shared/Util/RandomUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
-import { Dependency } from "@easy-games/flamework-core";
 
 export type ItemClass = {
 	resourceType: "GAME" | "ORGANIZATION";
@@ -131,7 +129,7 @@ export class AvatarPlatformAPI {
 			} else {
 				//No outfits exist so create one
 				outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-					Dependency<PlayerController>().clientId.ToString(),
+					Game.localPlayer.userId,
 					"Default0",
 					"Default 0",
 					defaultSkinColor,

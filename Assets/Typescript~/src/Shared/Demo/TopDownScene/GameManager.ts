@@ -20,6 +20,7 @@ export default class GameManager extends AirshipBehaviour {
 		print("GameManager.OnStart");
 		if (RunUtil.IsServer()) {
 			Dependency<PlayerService>().ObservePlayers((player) => {
+				print("spawning player: " + player.username);
 				Dependency<EntityService>().SpawnPlayerEntity(
 					player,
 					EntityPrefabType.HUMAN,

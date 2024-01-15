@@ -12,6 +12,7 @@ if (BedWars.IsMatchMode()) {
 
 if (RunUtil.IsServer()) {
 	require("Server/Resources/TS/MainServer");
-} else {
+}
+if (RunUtil.IsClient()) {
 	require("Client/Resources/TS/MainClient");
 }

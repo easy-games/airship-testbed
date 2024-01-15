@@ -42,8 +42,14 @@ export class Bootstrap {
 
 			const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>();
 			serverBootstrap.FinishedSetup();
-		} else if (RunUtil.IsClient()) {
+		}
+		if (RunUtil.IsClient()) {
+			// while (!InstanceFinder.ClientManager.Connection.Authenticated) {
+			// 	print("waiting for client to start.");
+			// 	task.wait();
+			// }
 			CoreNetwork.ClientToServer.Ready.client.FireServer();
+			print("sent ready.");
 		}
 	}
 }

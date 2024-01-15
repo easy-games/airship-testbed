@@ -182,7 +182,8 @@ export class Entity {
 			if (RunUtil.IsServer()) {
 				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.clientId);
 				this.SetPlayer(player);
-			} else {
+			}
+			if (RunUtil.IsClient()) {
 				const player = Dependency<PlayerController>().GetPlayerFromClientId(this.clientId);
 				this.SetPlayer(player);
 			}
@@ -407,11 +408,10 @@ export class Entity {
 	}
 
 	public IsLocalCharacter(): boolean {
-		if (!RunUtil.IsClient()) {
-			return false;
-		} else {
+		if (RunUtil.IsClient()) {
 			return this.clientId === Dependency<PlayerController>().clientId;
 		}
+		return false;
 	}
 
 	public IsAlive(): boolean {

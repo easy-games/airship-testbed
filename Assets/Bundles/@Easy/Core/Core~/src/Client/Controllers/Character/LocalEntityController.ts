@@ -67,7 +67,9 @@ export class LocalEntityController implements OnStart {
 		private readonly cameraController: CameraController,
 		private readonly clientSettings: ClientSettingsController,
 		private readonly inventoryController: InventoryController,
-	) {}
+	) {
+		print("LocalEntityController.Constructor");
+	}
 
 	/** Returns `true` if the player is in first-person mode. */
 	public IsFirstPerson() {
@@ -176,7 +178,9 @@ export class LocalEntityController implements OnStart {
 	}
 
 	OnStart() {
+		print("LocalEntityController.OnStart");
 		Game.localPlayer.ObserveCharacter((entity) => {
+			print("local entity: " + entity?.id);
 			if (!entity) return;
 
 			const isFirstSpawn = this.firstSpawn;
