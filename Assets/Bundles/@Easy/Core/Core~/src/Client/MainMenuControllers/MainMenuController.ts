@@ -40,7 +40,6 @@ export class MainMenuController implements OnStart {
 	private socialIsVisible = true;
 
 	constructor(private readonly authController: AuthController) {
-		print("mainmenucontroller");
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
@@ -128,7 +127,6 @@ export class MainMenuController implements OnStart {
 		if (Game.context === CoreContext.GAME) {
 			this.mainContentCanvas.enabled = false;
 		}
-		print("mainmenucontroller.end");
 	}
 
 	public OpenFromGame(): void {

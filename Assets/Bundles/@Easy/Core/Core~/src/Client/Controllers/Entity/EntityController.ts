@@ -1,4 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntitySpawnClientSignal } from "Client/Signals/EntitySpawnClientEvent";
@@ -41,6 +42,7 @@ export class EntityController implements OnStart {
 			// 	print(`Spawning ${entityDtos.size()} ${entityDtos.size() > 1 ? "entities" : "entity"}.`);
 			// }
 			entityDtos.forEach((entityDto) => {
+				print("spawn entity: " + inspect(entityDto));
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
@@ -205,7 +207,9 @@ export class EntityController implements OnStart {
 	}
 
 	private AddEntity(entityDto: EntityDto): Entity | undefined {
+		print("add.1");
 		const nob = NetworkUtil.WaitForNobId(entityDto.nobId);
+		print("add.2");
 
 		nob.gameObject.name = `entity_${entityDto.id}`;
 		let entity: Entity;
@@ -253,6 +257,8 @@ export class EntityController implements OnStart {
 		Profiler.BeginSample("EntitySpawnSignal");
 		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
 		Profiler.EndSample();
+
+		print("add.end");
 
 		return entity;
 	}

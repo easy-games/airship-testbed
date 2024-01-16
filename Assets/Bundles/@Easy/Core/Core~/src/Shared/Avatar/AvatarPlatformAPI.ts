@@ -37,7 +37,7 @@ export type Outfit = {
 
 export class AvatarPlatformAPI {
 	private static Log(message: string) {
-		print("AvatarAPI: " + message);
+		// print("AvatarAPI: " + message);
 	}
 
 	public static GetHttpUrl(path: string) {

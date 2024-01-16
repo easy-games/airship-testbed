@@ -52,15 +52,15 @@ export class NetworkUtil {
 		if (objectId === undefined) {
 			return undefined;
 		}
-		if (RunUtil.IsClient()) {
-			if (InstanceFinder.ClientManager.Objects.Spawned.ContainsKey(objectId)) {
-				return InstanceFinder.ClientManager.Objects.Spawned.Get(objectId);
+		if (RunUtil.IsServer()) {
+			if (InstanceFinder.ServerManager.Objects.Spawned.ContainsKey(objectId)) {
+				return InstanceFinder.ServerManager.Objects.Spawned.Get(objectId);
 			} else {
 				return undefined;
 			}
 		} else {
-			if (InstanceFinder.ServerManager.Objects.Spawned.ContainsKey(objectId)) {
-				return InstanceFinder.ServerManager.Objects.Spawned.Get(objectId);
+			if (InstanceFinder.ClientManager.Objects.Spawned.ContainsKey(objectId)) {
+				return InstanceFinder.ClientManager.Objects.Spawned.Get(objectId);
 			} else {
 				return undefined;
 			}

@@ -57,11 +57,9 @@ export class PlayerService implements OnStart {
 		const players = this.playerManager.GetPlayers();
 		for (let i = 0; i < players.Length; i++) {
 			const clientInfo = players.GetValue(i);
-			print("player pre-added: " + clientInfo.clientId);
 			onPlayerPreJoin(clientInfo);
 		}
 		this.playerManager.OnPlayerAdded((clientInfo) => {
-			print("player added: " + clientInfo.clientId);
 			onPlayerPreJoin(clientInfo);
 		});
 		this.playerManager.OnPlayerRemoved((clientInfo) => {
@@ -70,18 +68,16 @@ export class PlayerService implements OnStart {
 
 		// Player completes join
 		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((clientId) => {
-			print("received ready.");
 			let retry = 0;
 			while (!this.playersPendingReady.has(clientId)) {
 				//print("player not found in pending: " + clientId);
-				warn("Player not found in pending: " + clientId);
+				// warn("Player not found in pending: " + clientId);
 				retry++;
 				task.wait();
 				// return;
 			}
 
 			const player = this.playersPendingReady.get(clientId)!;
-			print("player ready: " + clientId);
 
 			this.playersPendingReady.delete(clientId);
 			this.players.push(player);

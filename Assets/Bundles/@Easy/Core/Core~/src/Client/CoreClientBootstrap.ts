@@ -7,9 +7,7 @@ function LoadFlamework(context: CoreContext) {
 		Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/strollers", "^.*.lua$");
 	}
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
-	print("client igniting... ");
 	Flamework.Ignite();
-	print("finished client ignite.");
 }
 
 export function SetupClient(context: CoreContext) {

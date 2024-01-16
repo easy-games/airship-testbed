@@ -111,9 +111,7 @@ export class PlayerController implements OnStart {
 			team = Dependency<TeamController>().GetTeam(dto.teamId);
 		}
 
-		print("incoming player: " + dto.clientId + " conn=" + this.clientId);
 		if (dto.clientId === this.clientId) {
-			print("updating local player.");
 			const mutablePlayer = Game.localPlayer as Mutable<Player>;
 			mutablePlayer.nob = nob;
 			mutablePlayer.clientId = dto.clientId;

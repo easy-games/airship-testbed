@@ -42,7 +42,6 @@ export class World {
 
 		if (!voxelWorld.finishedLoading) {
 			voxelWorld.OnFinishedLoading(() => {
-				print("VoxelWorld.finishedLoading");
 				this.finishedLoading = true;
 				this.onFinishedLoading.Fire();
 			});
@@ -53,7 +52,6 @@ export class World {
 
 		if (!voxelWorld.finishedReplicatingChunksFromServer) {
 			voxelWorld.OnFinishedReplicatingChunksFromServer(() => {
-				print("VoxelWorld.finishedReplicating");
 				this.finishedReplicatingChunksFromServer = true;
 				this.onFinishedReplicatingChunksFromServer.Fire();
 			});

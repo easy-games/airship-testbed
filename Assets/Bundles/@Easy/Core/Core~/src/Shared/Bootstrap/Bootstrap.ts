@@ -49,7 +49,6 @@ export class Bootstrap {
 			// 	task.wait();
 			// }
 			CoreNetwork.ClientToServer.Ready.client.FireServer();
-			print("sent ready.");
 		}
 	}
 }

@@ -1,4 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntityDamageClientSignal } from "Client/Signals/EntityDamageClientSignal";
 import { EntityDeathClientSignal } from "Client/Signals/EntityDeathClientSignal";
@@ -15,6 +16,7 @@ export class DamageController implements OnStart {
 			(entityId, amount, damageType, fromEntityId, criticalHit) => {
 				const entity = this.entityController.GetEntityById(entityId);
 				if (!entity) {
+					print("all entities: " + inspect(this.entityController.GetEntities().map((e) => e.id)));
 					error("Failed to find entity for damage event: " + entityId);
 					return;
 				}

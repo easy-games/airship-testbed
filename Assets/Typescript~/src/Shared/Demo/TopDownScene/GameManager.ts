@@ -12,15 +12,11 @@ export default class GameManager extends AirshipBehaviour {
 	public spawnPosition!: Transform;
 	private bin = new Bin();
 
-	public override Awake(): void {
-		print("GameManager.OnAwake");
-	}
+	public override Awake(): void {}
 
 	override Start(): void {
-		print("GameManager.OnStart");
 		if (RunUtil.IsServer()) {
 			Dependency<PlayerService>().ObservePlayers((player) => {
-				print("spawning player: " + player.username);
 				Dependency<EntityService>().SpawnPlayerEntity(
 					player,
 					EntityPrefabType.HUMAN,
