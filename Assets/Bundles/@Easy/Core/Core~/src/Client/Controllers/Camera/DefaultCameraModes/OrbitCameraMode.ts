@@ -127,14 +127,12 @@ export class OrbitCameraMode implements CameraMode {
 
 		this.bin.Add(
 			this.mouse.rightUp.Connect(() => {
-				print("adding unlocker");
 				if (rightClickUnlocker !== -1) return;
 				rightClickUnlocker = this.mouse.AddUnlocker();
 			}),
 		);
 
 		this.bin.Add(() => {
-			print("clearing unlocker");
 			if (rightClickUnlocker === -1) return;
 			this.mouse.RemoveUnlocker(rightClickUnlocker);
 			rightClickUnlocker = -1;
