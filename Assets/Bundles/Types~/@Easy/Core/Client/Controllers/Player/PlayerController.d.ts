@@ -5,8 +5,8 @@ import { Player } from "../../../Shared/Player/Player";
 export declare class PlayerController implements OnStart {
     private readonly friendsController;
     private readonly authController;
-    readonly clientId: number;
-    readonly localConnection: NetworkConnection;
+    clientId?: number;
+    localConnection?: NetworkConnection;
     private players;
     constructor(friendsController: FriendsController, authController: AuthController);
     OnStart(): void;
