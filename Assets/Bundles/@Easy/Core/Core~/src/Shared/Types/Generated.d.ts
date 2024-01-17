@@ -10589,6 +10589,7 @@ declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
     firstPerson: boolean;
+    thirdPersonLayer: number;
 
     constructor(): AccessoryBuilder;
 
