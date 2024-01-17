@@ -116,6 +116,10 @@ export class MainMenuController implements OnStart {
 				options,
 			);
 		});
+
+		if (Game.context === CoreContext.GAME) {
+			this.mainContentCanvas.enabled = false;
+		}
 	}
 
 	public OpenFromGame(): void {

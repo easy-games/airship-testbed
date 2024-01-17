@@ -23,13 +23,21 @@ export class BWMatchHudController implements OnStart {
 		const teams = this.teamController.GetTeams();
 		let i = 0;
 		for (const team of teams) {
+			if (i >= teamsWrapperGo.childCount) return;
 			const go = teamsWrapperGo.GetChild(i);
+			if (!go) {
+				error("Failed to find team wrapper for " + i);
+			}
 			go.gameObject.name = team.id;
 			this.UpdateTeam(team, go.gameObject, undefined);
 			i++;
 		}
 		this.teamController.onTeamAdded.Connect((team) => {
+			if (i >= teamsWrapperGo.childCount) return;
 			const go = teamsWrapperGo.GetChild(i);
+			if (!go) {
+				error("Failed to find team wrapper for " + i);
+			}
 			go.name = team.id;
 			this.UpdateTeam(team, go.gameObject, undefined);
 			i++;

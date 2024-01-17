@@ -29,6 +29,7 @@ export class BotService implements OnStart {
 		};
 
 		const doMove = () => {
+			print("doMove");
 			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
 			entity.entityDriver.SetMoveInput(
 				direction,

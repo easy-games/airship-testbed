@@ -1,3 +1,4 @@
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { OnStart, Service } from "@easy-games/flamework-core";
 
 @Service({})
@@ -6,7 +7,9 @@ export class DisableServerUIService implements OnStart {
 
 	OnStart(): void {
 		// Disables all UI
-		this.DisableChildren(GameObject.Find("UI").transform);
+		if (!RunUtil.IsClient()) {
+			this.DisableChildren(GameObject.Find("UI").transform);
+		}
 	}
 
 	private DisableChildren(transform: Transform): void {
@@ -19,4 +22,3 @@ export class DisableServerUIService implements OnStart {
 		}
 	}
 }
-print("outside DisableServerUIService");

@@ -59,7 +59,8 @@ if (RunUtil.IsServer()) {
 		SetupServer: () => void;
 	};
 	server.SetupServer();
-} else {
+}
+if (RunUtil.IsClient()) {
 	const client = require("@Easy/Core/Client/Resources/TS/CoreClientBootstrap") as {
 		SetupClient: (context: CoreContext) => void;
 	};

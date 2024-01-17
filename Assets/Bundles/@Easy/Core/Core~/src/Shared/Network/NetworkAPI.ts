@@ -35,7 +35,6 @@ function addToQueue(msg: BlobData) {
 
 export function InitNet() {
 	if (RunUtil.IsServer()) {
-		// Server
 		NetworkCore.Net.OnBroadcastFromClientAction((clientId, blob) => {
 			const msg = blob.Decode() as BlobData;
 			const id = msg.i;
@@ -46,8 +45,8 @@ export function InitNet() {
 				callback.callback(clientId, ...data);
 			}
 		});
-	} else {
-		// Client
+	}
+	if (RunUtil.IsClient()) {
 		NetworkCore.Net.OnBroadcastFromServerAction((blob) => {
 			const msg = blob.Decode() as BlobData;
 			const id = msg.i;

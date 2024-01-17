@@ -7,7 +7,7 @@ export interface CharacterEntityDto extends EntityDto {
 export declare class CharacterEntity extends Entity {
     private inventory;
     private armor;
-    constructor(id: number, networkObject: NetworkObject, clientId: number | undefined, inventory: Inventory, abilities?: readonly Ability[]);
+    constructor(id: number, networkObject: NetworkObject, asServer: boolean, clientId: number | undefined, inventory: Inventory, abilities?: readonly Ability[]);
     IsMoving(): void;
     GetInventory(): Inventory;
     Encode(): CharacterEntityDto;

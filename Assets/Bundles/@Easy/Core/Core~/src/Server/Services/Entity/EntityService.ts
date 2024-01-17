@@ -122,7 +122,7 @@ export class EntityService implements OnStart {
 			this.invService.Subscribe(player.clientId, inv, true);
 		}
 
-		const entity = new CharacterEntity(id, entityNob, player?.clientId, inv);
+		const entity = new CharacterEntity(id, entityNob, true, player?.clientId, inv);
 		this.entities.set(id, entity);
 		if (player) {
 			player.SetCharacter(entity);

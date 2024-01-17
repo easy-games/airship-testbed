@@ -15,11 +15,12 @@ export class CharacterEntity extends Entity {
 	constructor(
 		id: number,
 		networkObject: NetworkObject,
+		asServer: boolean,
 		clientId: number | undefined,
 		inventory: Inventory,
 		abilities?: readonly Ability[],
 	) {
-		super(id, networkObject, clientId);
+		super(id, networkObject, asServer, clientId);
 		this.inventory = inventory;
 
 		this.bin.Add(

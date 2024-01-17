@@ -13,19 +13,19 @@ import { TeamController } from "../Team/TeamController";
 
 @Controller({})
 export class PlayerController implements OnStart {
-	public readonly clientId: number;
-	public readonly localConnection: NetworkConnection;
+	public clientId?: number;
+	public localConnection?: NetworkConnection;
 	private players = new Set<Player>([Game.localPlayer]);
 
 	constructor(
 		private readonly friendsController: FriendsController,
 		private readonly authController: AuthController,
 	) {
-		this.localConnection = InstanceFinder.ClientManager.Connection;
-		this.clientId = this.localConnection.ClientId;
 		this.players.add(Game.localPlayer);
 
 		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId) => {
+			this.localConnection = InstanceFinder.ClientManager.Connection;
+			this.clientId = this.localConnection.ClientId;
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			if (this.authController.IsAuthenticated()) {
@@ -111,7 +111,7 @@ export class PlayerController implements OnStart {
 			team = Dependency<TeamController>().GetTeam(dto.teamId);
 		}
 
-		if (dto.clientId === this.localConnection.ClientId) {
+		if (dto.clientId === this.clientId) {
 			const mutablePlayer = Game.localPlayer as Mutable<Player>;
 			mutablePlayer.nob = nob;
 			mutablePlayer.clientId = dto.clientId;
@@ -120,6 +120,9 @@ export class PlayerController implements OnStart {
 			mutablePlayer.usernameTag = dto.usernameTag;
 
 			team?.AddPlayer(mutablePlayer as Player);
+
+			Game.localPlayerLoaded = true;
+			Game.onLocalPlayerLoaded.Fire();
 
 			return;
 		}

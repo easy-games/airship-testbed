@@ -44,6 +44,7 @@ export declare class EntityReferences {
     constructor(ref: GameObjectReferences);
 }
 export declare class Entity {
+    readonly asServer: boolean;
     /** Entity's unique id. */
     readonly id: number;
     readonly gameObject: GameObject;
@@ -81,7 +82,7 @@ export declare class Entity {
     readonly onStateChanged: Signal<[state: EntityState, oldState: EntityState]>;
     readonly onDeath: Signal<void>;
     readonly onArmorChanged: Signal<number>;
-    constructor(id: number, networkObject: NetworkObject, clientId: number | undefined);
+    constructor(id: number, networkObject: NetworkObject, asServer: boolean, clientId: number | undefined);
     Teleport(pos: Vector3, lookVector?: Vector3): void;
     IsHeadshotHitHeight(height: number): boolean;
     IsCrouched(): boolean;

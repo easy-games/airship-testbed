@@ -68,13 +68,17 @@ export class PlayerService implements OnStart {
 
 		// Player completes join
 		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((clientId) => {
-			if (!this.playersPendingReady.has(clientId)) {
+			let retry = 0;
+			while (!this.playersPendingReady.has(clientId)) {
 				//print("player not found in pending: " + clientId);
-				warn("Player not found in pending: " + clientId);
-				return;
+				// warn("Player not found in pending: " + clientId);
+				retry++;
+				task.wait();
+				// return;
 			}
 
 			const player = this.playersPendingReady.get(clientId)!;
+
 			this.playersPendingReady.delete(clientId);
 			this.players.push(player);
 

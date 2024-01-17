@@ -57,7 +57,8 @@ export class Projectile {
 
 			if (RunUtil.IsServer()) {
 				Dependency<ProjectileService>().HandleCollision(this, collider, hitPoint, normal, velocity);
-			} else {
+			}
+			if (RunUtil.IsClient()) {
 				Dependency<ProjectileController>().HandleCollision(this, collider, hitPoint, normal, velocity);
 			}
 		});
