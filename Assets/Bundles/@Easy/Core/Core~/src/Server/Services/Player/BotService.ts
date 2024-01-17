@@ -8,9 +8,7 @@ import { SetInterval } from "Shared/Util/Timer";
 export class BotService implements OnStart {
 	OnStart(): void {
 		CoreServerSignals.EntitySpawn.Connect((event) => {
-			print(`bot.1 clientId=${event.entity.clientId} player=${event.entity.player?.username}`);
 			if (event.entity.player?.IsBot()) {
-				print("bot.2");
 				this.StartRandomMovement(event.entity);
 			}
 		});

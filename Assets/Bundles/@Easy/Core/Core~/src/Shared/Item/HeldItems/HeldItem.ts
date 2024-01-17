@@ -56,7 +56,7 @@ export class HeldItem {
 	}
 
 	protected Log(message: string) {
-		return;
+		// print("[HeldItem]: " + message);
 	}
 
 	public OnEquip() {
@@ -337,7 +337,7 @@ export class HeldItem {
 	protected OnUseServer(useIndex: number) {
 		this.Log("OnUse Server");
 		//Update visual state to match client
-		this.OnUseClient(useIndex);
+		// this.OnUseClient(useIndex);
 	}
 
 	public GetRemainingCooldownTime(): number {

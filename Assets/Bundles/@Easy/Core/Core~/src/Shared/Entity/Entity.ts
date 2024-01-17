@@ -164,7 +164,6 @@ export class Entity {
 		public readonly asServer: boolean,
 		clientId: number | undefined,
 	) {
-		print(`Entity.constructor asServer=${asServer}`);
 		this.id = id;
 		this.clientId = clientId;
 		this.networkObject = networkObject;
@@ -187,14 +186,12 @@ export class Entity {
 		if (this.clientId !== undefined) {
 			if (this.asServer) {
 				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.clientId);
-				print("entity got player: " + player?.username);
 				this.SetPlayer(player);
 			} else {
 				const player = Dependency<PlayerController>().GetPlayerFromClientId(this.clientId);
 				this.SetPlayer(player);
 			}
 		}
-		print("entity_" + this.id + " player=" + this.player?.username);
 		if (this.player) {
 			this.displayName = this.player.username;
 		} else {

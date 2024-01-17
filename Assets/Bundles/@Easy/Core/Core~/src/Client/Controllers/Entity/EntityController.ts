@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { CoreClientSignals } from "Client/CoreClientSignals";
 import { EntitySpawnClientSignal } from "Client/Signals/EntitySpawnClientEvent";
@@ -42,7 +41,6 @@ export class EntityController implements OnStart {
 			// 	print(`Spawning ${entityDtos.size()} ${entityDtos.size() > 1 ? "entities" : "entity"}.`);
 			// }
 			entityDtos.forEach((entityDto) => {
-				print("spawn entity: " + inspect(entityDto));
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
@@ -174,10 +172,10 @@ export class EntityController implements OnStart {
 			ColorUtil.HexToColor("#aa8866"),
 		];
 		CoreClientSignals.EntitySpawn.Connect((event) => {
-			if (event.entity.IsLocalCharacter()) {
-				//Keep local player the default look for now
-				return;
-			}
+			// if (event.entity.IsLocalCharacter()) {
+			// 	//Keep local player the default look for now
+			// 	return;
+			// }
 			let randomId: number;
 			//if (event.entity.player) {
 			//randomId = string.byte(event.entity.player.userId)[0];
@@ -207,9 +205,7 @@ export class EntityController implements OnStart {
 	}
 
 	private AddEntity(entityDto: EntityDto): Entity | undefined {
-		print("add.1");
 		const nob = NetworkUtil.WaitForNobId(entityDto.nobId);
-		print("add.2");
 
 		nob.gameObject.name = `entity_${entityDto.id}`;
 		let entity: Entity;
@@ -262,8 +258,6 @@ export class EntityController implements OnStart {
 		task.delay(0.1, () => {
 			entity.accessoryBuilder.TryCombineMeshes();
 		});
-
-		print("add.end");
 
 		return entity;
 	}

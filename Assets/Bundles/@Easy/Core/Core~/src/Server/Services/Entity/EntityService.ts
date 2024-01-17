@@ -91,7 +91,6 @@ export class EntityService implements OnStart {
 		pos?: Vector3,
 		rotation?: Quaternion,
 	): CharacterEntity {
-		print("Server.SpawnEntity.start");
 		const id = this.idCounter;
 		this.idCounter++;
 
@@ -147,8 +146,6 @@ export class EntityService implements OnStart {
 		CoreNetwork.ServerToClient.SpawnEntities.server.FireAllClients([entity.Encode()]);
 		CoreNetwork.ServerToClient.UpdateInventory.server.FireAllClients(entity.GetInventory().Encode());
 		entity.GetInventory().StartNetworkingDiffs();
-
-		print("Server.SpawnEntity.end");
 
 		return entity;
 	}
