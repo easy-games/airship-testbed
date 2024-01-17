@@ -214,7 +214,7 @@ export class EntityController implements OnStart {
 		nob.gameObject.name = `entity_${entityDto.id}`;
 		let entity: Entity;
 		if (entityDto.serializer === EntitySerializer.DEFAULT) {
-			entity = new Entity(entityDto.id, nob, entityDto.clientId);
+			entity = new Entity(entityDto.id, nob, false, entityDto.clientId);
 		} else if (entityDto.serializer === EntitySerializer.CHARACTER) {
 			const characterEntityDto = entityDto as CharacterEntityDto;
 
@@ -230,7 +230,7 @@ export class EntityController implements OnStart {
 
 			Profiler.BeginSample("CharacterEntity.Constructor");
 
-			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv);
+			entity = new CharacterEntity(entityDto.id, nob, false, entityDto.clientId, inv);
 			Profiler.EndSample();
 		} else {
 			error("Unable to find entity serializer for dto: " + entityDto);
@@ -257,6 +257,11 @@ export class EntityController implements OnStart {
 		Profiler.BeginSample("EntitySpawnSignal");
 		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
 		Profiler.EndSample();
+
+		entity.accessoryBuilder.TryCombineMeshes();
+		task.delay(0.1, () => {
+			entity.accessoryBuilder.TryCombineMeshes();
+		});
 
 		print("add.end");
 

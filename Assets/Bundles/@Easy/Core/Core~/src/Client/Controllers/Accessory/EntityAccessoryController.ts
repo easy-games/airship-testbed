@@ -22,7 +22,7 @@ export class EntityAccessoryController implements OnStart {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
 			Profiler.BeginSample("AutoEqupArmor");
 			if (event.entity instanceof CharacterEntity) {
-				if (event.entity.IsPlayerOwned()) {
+				if (event.entity.IsPlayerOwned() || true) {
 					//Add Kit Accessory
 					if (AvatarUtil.defaultKitAccessory) {
 						Profiler.BeginSample("EquipAccessories");
@@ -110,22 +110,12 @@ export class EntityAccessoryController implements OnStart {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
 			if (!(event.entity instanceof CharacterEntity)) return;
 
-			const accessoryBuilder = event.entity.accessoryBuilder;
-
 			const bin = new Bin();
-			bin.Add(
-				event.entity.GetInventory().ObserveHeldItem((itemStack) => {
-					if (event.entity.IsLocalCharacter()) {
-						this.SetFirstPersonLayer(accessoryBuilder);
-					}
-				}),
-			);
 
 			if (event.entity.IsLocalCharacter()) {
 				bin.Add(
 					this.localController.ObserveFirstPerson((isFirstPerson: boolean) => {
 						this.isFirstPerson = isFirstPerson;
-						this.SetFirstPersonLayer(accessoryBuilder);
 					}),
 				);
 			}
@@ -134,13 +124,5 @@ export class EntityAccessoryController implements OnStart {
 				bin.Clean();
 			});
 		});
-	}
-
-	//Turn off root accessories unless they are on the first person layer
-	private SetFirstPersonLayer(accessoryBuilder: AccessoryBuilder) {
-		//Accessories with first person mesh variants need to be on layer FPS
-		// Profiler.BeginSample("ToggleMeshVisibility");
-		// accessoryBuilder.SetFirstPersonEnabled(this.isFirstPerson);
-		// Profiler.EndSample();
 	}
 }

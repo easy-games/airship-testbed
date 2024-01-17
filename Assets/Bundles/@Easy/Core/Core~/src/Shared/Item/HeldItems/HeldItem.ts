@@ -131,7 +131,7 @@ export class HeldItem {
 
 		// this.entity.accessoryBuilder.TryCombineMeshes();
 		this.entity.accessoryBuilder.UpdateAccessoryLayers();
-		if (RunUtil.IsClient()) {
+		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			Dependency<ViewmodelController>().accessoryBuilder.UpdateAccessoryLayers();
 		}
 	}
