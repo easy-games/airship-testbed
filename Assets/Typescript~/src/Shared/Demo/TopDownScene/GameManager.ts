@@ -1,6 +1,5 @@
 import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
-import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
 import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
 import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
 import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
@@ -14,7 +13,7 @@ import { Dependency } from "@easy-games/flamework-core";
 
 export default class GameManager extends AirshipBehaviour {
 	public spawnPosition!: Transform;
-    public testPrefab!: GameObject;
+	public testPrefab!: GameObject;
 
 	private bin = new Bin();
 
@@ -25,8 +24,9 @@ export default class GameManager extends AirshipBehaviour {
 			Dependency<PlayerService>().ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
+			const coreServerSignals = import("@Easy/Core/Server/CoreServerSignals").expect().CoreServerSignals;
 			this.bin.Add(
-				CoreServerSignals.EntityDeath.Connect((event) => {
+				coreServerSignals.EntityDeath.Connect((event) => {
 					event.respawnTime = 0;
 					if (event.entity.player) {
 						this.SpawnPlayer(event.entity.player);
@@ -40,12 +40,12 @@ export default class GameManager extends AirshipBehaviour {
 			Dependency<LoadingScreenController>().FinishLoading();
 		}
 
-        if (RunUtil.IsServer()) {
-            for (let i = 0; i < 50; i++) {
-                const go = Object.Instantiate(this.testPrefab);
-                NetworkUtil.Spawn(go)
-            }
-        }
+		if (RunUtil.IsServer()) {
+			for (let i = 0; i < 50; i++) {
+				const go = Object.Instantiate(this.testPrefab);
+				NetworkUtil.Spawn(go);
+			}
+		}
 	}
 
 	public SpawnPlayer(player: Player): void {
