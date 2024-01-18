@@ -2,11 +2,15 @@ export default class NetComponent extends AirshipBehaviour {
 
     public override Awake(): void {
         print("NetComponent.Awake");
+        const nob = this.gameObject.GetComponent<NetworkObject>();
+        print("nob id: " + nob);
+        if (nob === undefined) {
+            Debug.Break();
+        }
     }
 	override Start(): void {
         // print("NetComponent.Start");
 		// const nob = this.gameObject.GetComponent<NetworkObject>();
-		// print("Nob: " + nob.ObjectId);
 		// nob.OnStartClient(() => {
 		// 	print("OnStartClient");
 		// });

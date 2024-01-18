@@ -8,11 +8,14 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Dependency } from "@easy-games/flamework-core";
 
 export default class GameManager extends AirshipBehaviour {
 	public spawnPosition!: Transform;
+    public testPrefab!: GameObject;
+
 	private bin = new Bin();
 
 	public override Awake(): void {}
@@ -36,6 +39,11 @@ export default class GameManager extends AirshipBehaviour {
 			Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
 			Dependency<LoadingScreenController>().FinishLoading();
 		}
+
+        for (let i = 0; i < 50; i++) {
+            const go = Object.Instantiate(this.testPrefab);
+            NetworkUtil.Spawn(go)
+        }
 	}
 
 	public SpawnPlayer(player: Player): void {
