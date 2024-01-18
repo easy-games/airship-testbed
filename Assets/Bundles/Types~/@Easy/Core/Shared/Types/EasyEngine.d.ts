@@ -748,3 +748,102 @@ interface VoxelWorldConstructor {
 	VoxelIsSolid(voxel: number): boolean;
 }
 declare const VoxelWorld: VoxelWorldConstructor;
+
+interface NetworkObjectConstructor {
+	UNSET_OBJECTID_VALUE: number;
+	UNSET_PREFABID_VALUE: number;
+}
+declare const NetworkObject: NetworkObjectConstructor;
+
+interface NetworkObject extends MonoBehaviour {
+	NetworkObserver: NetworkObserver;
+	Observers: CSArray<NetworkConnection>;
+	IsNested: boolean;
+	PredictedSpawner: NetworkConnection;
+	IsSceneObject: boolean;
+	ComponentIndex: number;
+	ObjectId: number;
+	PredictedSpawn: PredictedSpawn;
+	NetworkBehaviours: CSArray<NetworkBehaviour>;
+	ParentNetworkObject: NetworkObject;
+	ChildNetworkObjects: CSArray<NetworkObject>;
+	RuntimeParentNetworkObject: NetworkObject;
+	RuntimeParentTransform: Transform;
+	RuntimeChildNetworkObjects: CSArray<NetworkObject>;
+	IsNetworked: boolean;
+	IsGlobal: boolean;
+	IsClientInitialized: boolean;
+	ClientInitialized: boolean;
+	IsClient: boolean;
+	IsClientOnly: boolean;
+	IsServerInitialized: boolean;
+	IsServer: boolean;
+	IsServerOnly: boolean;
+	IsHost: boolean;
+	IsOffline: boolean;
+	IsOwner: boolean;
+	Owner: NetworkConnection;
+	OwnerId: number;
+	IsSpawned: boolean;
+	LocalConnection: NetworkConnection;
+	NetworkManager: NetworkManager;
+	ServerManager: ServerManager;
+	ClientManager: ClientManager;
+	ObserverManager: ObserverManager;
+	TransportManager: TransportManager;
+	TimeManager: TimeManager;
+	SceneManager: SceneManager;
+	PredictionManager: PredictionManager;
+	RollbackManager: RollbackManager;
+	PrefabId: number;
+	SpawnableCollectionId: number;
+	AssetPathHash: number;
+
+	constructor(): NetworkObject;
+
+	Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
+	Despawn(go: GameObject, despawnType: unknown): void;
+	Despawn(nob: NetworkObject, despawnType: unknown): void;
+	Despawn(despawnType: unknown): void;
+	GetDefaultDespawnType(): DespawnType;
+	GetInitializeOrder(): number;
+	GetInstance<T>(): T;
+	GetNetworkBehaviour(componentIndex: number, error: boolean): NetworkBehaviour;
+	GiveOwnership(newOwner: NetworkConnection): void;
+	HasInstance<T>(): boolean;
+	RegisterInstance<T>(component: T, replace: boolean): void;
+	RegisterInvokeOnInstance<T>(handler: unknown): void;
+	RemoveOwnership(): void;
+	ResetForObjectPool(): void;
+	ResetState(): void;
+	SetAssetPathHash(value: number): void;
+	SetDefaultDespawnType(despawnType: DespawnType): void;
+	SetIsGlobal(value: boolean): void;
+	SetIsNetworked(value: boolean): void;
+	SetLocalOwnership(caller: NetworkConnection): void;
+	SetParent(nb: NetworkBehaviour): void;
+	SetParent(nob: NetworkObject): void;
+	SetRenderersVisible(visible: boolean, force: boolean): void;
+	Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
+	Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
+	ToString(): string;
+	TryGetInstance<T>(component: unknown): boolean;
+	TryRegisterInstance<T>(component: T): boolean;
+	UnregisterInstance<T>(): void;
+	UnregisterInvokeOnInstance<T>(handler: unknown): void;
+	UnsetParent(): void;
+	UpdateRenderers(updateVisibility: boolean): void;
+
+	OnStartNetwork(callback: () => void): EngineEventConnection;
+	OnStopNetwork(callback: () => void): EngineEventConnection;
+
+	OnStartServer(callback: () => void): EngineEventConnection;
+	OnOwnershipServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+	OnStopServer(callback: () => void): EngineEventConnection;
+	OnSpawnServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+	OnDespawnServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+
+	OnStartClient(callback: () => void): EngineEventConnection;
+	OnOwnershipClient(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+	OnStopClient(callback: () => void): EngineEventConnection;
+}

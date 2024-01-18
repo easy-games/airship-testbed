@@ -34,7 +34,7 @@ export declare class AvatarPlatformAPI {
     static EquipAvatarOutfit(outfitId: string): void;
     static GetAccessories(): AccessoryItem[] | undefined;
     static CreateDefaultAvatarOutfit(entityId: string, outfitId: string, name: string, skinColor: Color): Outfit;
+    static SaveOutfitAccessories(classIds: string[]): void;
     static SaveAvatarOutfit(outfit: Outfit): void;
-    private static LoadOrCreateEquippedOutfit;
     static LoadImage(fileId: string): AccessoryItem[] | undefined;
 }

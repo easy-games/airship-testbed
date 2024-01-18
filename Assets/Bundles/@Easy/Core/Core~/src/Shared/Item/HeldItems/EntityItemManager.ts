@@ -24,8 +24,8 @@ export class EntityItemManager {
 	private mouseIsDownRight = false;
 
 	private Log(message: string) {
-		return;
-		print("EntityItemManager: " + message);
+		// return;
+		// print("EntityItemManager: " + message);
 	}
 
 	constructor() {
@@ -163,7 +163,7 @@ export class EntityItemManager {
 			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
 				if (event.Is("HeldItemState")) {
 					const player = Player.FindByClientId(event.clientId);
-					if (player?.userId === Game.localPlayer.userId) {
+					if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
 						return;
 					}
 					this.Log("NewState: " + event.value.s);
