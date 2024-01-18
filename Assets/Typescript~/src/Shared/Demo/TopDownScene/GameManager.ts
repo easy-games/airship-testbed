@@ -40,9 +40,11 @@ export default class GameManager extends AirshipBehaviour {
 			Dependency<LoadingScreenController>().FinishLoading();
 		}
 
-        for (let i = 0; i < 50; i++) {
-            const go = Object.Instantiate(this.testPrefab);
-            NetworkUtil.Spawn(go)
+        if (RunUtil.IsServer()) {
+            for (let i = 0; i < 50; i++) {
+                const go = Object.Instantiate(this.testPrefab);
+                NetworkUtil.Spawn(go)
+            }
         }
 	}
 
