@@ -14,6 +14,5 @@ export declare class AuthController implements OnStart {
     LoginWithRefreshToken(refreshToken: string): boolean;
     SignUpAnon(): boolean;
     GetAuthHeaders(): string;
-    GetAuthToken(): string;
     IsAuthenticated(): boolean;
 }

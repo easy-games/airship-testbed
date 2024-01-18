@@ -4,6 +4,7 @@ import { CoreServerSignals } from "Server/CoreServerSignals";
 import { BeforeEntityDropItemSignal } from "Server/Signals/BeforeEntityDropItemSignal";
 import { EntityDropItemSignal } from "Server/Signals/EntityDropItemSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { CoreRefs } from "Shared/CoreRefs";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GroundItem, GroundItemData } from "Shared/GroundItem/GroundItem";
@@ -32,7 +33,8 @@ export class GroundItemService implements OnStart {
 	private groundItemsFolder: GameObject;
 
 	constructor(private readonly entityService: EntityService) {
-		this.groundItemsFolder = GameObject.Create("GroundItems");
+		this.groundItemsFolder = GameObject.Create("GroundItemsServer");
+		this.groundItemsFolder.transform.SetParent(CoreRefs.rootTransform);
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");
 	}
 

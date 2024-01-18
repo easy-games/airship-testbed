@@ -7,6 +7,8 @@ export declare class ProximityPromptController implements OnStart {
     private proximityPrompts;
     /** Proximity prompts in activation range. */
     private activatableProximityPrompts;
+    promptFolder: Transform;
+    constructor();
     OnStart(): void;
     RegisterProximityPrompt(prompt: ProximityPrompt): void;
     /** Returns distance between local player and a proximity prompt. */

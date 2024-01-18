@@ -117,19 +117,25 @@ export class OrbitCameraMode implements CameraMode {
 
 		let rightClickUnlocker = this.mouse.AddUnlocker();
 
-		this.mouse.rightDown.Connect(() => {
-			if (rightClickUnlocker === -1) return;
-			this.mouse.RemoveUnlocker(rightClickUnlocker);
-			rightClickUnlocker = -1;
-		});
+		this.bin.Add(
+			this.mouse.rightDown.Connect(() => {
+				if (rightClickUnlocker === -1) return;
+				this.mouse.RemoveUnlocker(rightClickUnlocker);
+				rightClickUnlocker = -1;
+			}),
+		);
 
-		this.mouse.rightUp.Connect(() => {
-			rightClickUnlocker = this.mouse.AddUnlocker();
-		});
+		this.bin.Add(
+			this.mouse.rightUp.Connect(() => {
+				if (rightClickUnlocker !== -1) return;
+				rightClickUnlocker = this.mouse.AddUnlocker();
+			}),
+		);
 
 		this.bin.Add(() => {
 			if (rightClickUnlocker === -1) return;
 			this.mouse.RemoveUnlocker(rightClickUnlocker);
+			rightClickUnlocker = -1;
 		});
 
 		this.bin.Add(Dependency<CrosshairController>().AddDisabler());

@@ -30,8 +30,20 @@ export class Game {
 
 	public static context: CoreContext;
 
+	/**
+	 * Empty string when in editor.
+	 */
 	public static serverId: string;
+
+	/**
+	 * While in editor, this will reflect whatever is defined in `Assets/GameConfig.asset`
+	 */
 	public static gameId: string;
+
+	/**
+	 * Empty string when in editor.
+	 */
+	public static organizationId: string;
 
 	public static startingScene = SceneManager.GetActiveScene().name;
 }

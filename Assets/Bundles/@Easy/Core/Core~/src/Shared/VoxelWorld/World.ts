@@ -198,9 +198,10 @@ export class World {
 			}
 		}
 
-		if (RunCore.IsServer()) {
+		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.BlockPlace.server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
-		} else {
+		}
+		if (RunUtil.IsClient()) {
 			if (config?.placedByEntityId === Game.localPlayer.character?.id) {
 				// Client predicted block place event
 				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;

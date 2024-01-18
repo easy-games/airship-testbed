@@ -56,7 +56,7 @@ export class HeldItem {
 	}
 
 	protected Log(message: string) {
-		return;
+		// print("[HeldItem]: " + message);
 	}
 
 	public OnEquip() {
@@ -131,7 +131,7 @@ export class HeldItem {
 
 		// this.entity.accessoryBuilder.TryCombineMeshes();
 		this.entity.accessoryBuilder.UpdateAccessoryLayers();
-		if (RunUtil.IsClient()) {
+		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
 			Dependency<ViewmodelController>().accessoryBuilder.UpdateAccessoryLayers();
 		}
 	}
@@ -256,7 +256,8 @@ export class HeldItem {
 		//Play the use locally
 		if (RunUtil.IsClient()) {
 			this.OnUseClient(useIndex);
-		} else if (RunUtil.IsServer()) {
+		}
+		if (RunUtil.IsServer()) {
 			this.OnUseServer(useIndex);
 		}
 
@@ -336,7 +337,7 @@ export class HeldItem {
 	protected OnUseServer(useIndex: number) {
 		this.Log("OnUse Server");
 		//Update visual state to match client
-		this.OnUseClient(useIndex);
+		// this.OnUseClient(useIndex);
 	}
 
 	public GetRemainingCooldownTime(): number {

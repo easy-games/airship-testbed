@@ -1,4 +1,6 @@
-﻿import { CanvasAPI } from "Shared/Util/CanvasAPI";
+﻿import { Game } from "Shared/Game";
+import { Player } from "Shared/Player/Player";
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreNetwork } from "../../CoreNetwork";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { RunUtil } from "../../Util/RunUtil";
@@ -22,19 +24,16 @@ export class EntityItemManager {
 	private mouseIsDownRight = false;
 
 	private Log(message: string) {
-		return;
-		print("EntityItemManager: " + message);
+		// return;
+		// print("EntityItemManager: " + message);
 	}
 
 	constructor() {
-		try {
-			if (RunUtil.IsClient()) {
-				this.InitializeClient();
-			} else if (RunUtil.IsServer()) {
-				this.InitializeServer();
-			}
-		} catch (e) {
-			error("EntityItemManager ERROR: " + e);
+		if (RunUtil.IsClient()) {
+			this.InitializeClient();
+		}
+		if (RunUtil.IsServer()) {
+			this.InitializeServer();
 		}
 	}
 
@@ -163,6 +162,10 @@ export class EntityItemManager {
 			//Listen to state changes triggered by client
 			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
 				if (event.Is("HeldItemState")) {
+					const player = Player.FindByClientId(event.clientId);
+					if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
+						return;
+					}
 					this.Log("NewState: " + event.value.s);
 					const heldItemManager = this.entityItems.get(event.value.e);
 					if (heldItemManager) {

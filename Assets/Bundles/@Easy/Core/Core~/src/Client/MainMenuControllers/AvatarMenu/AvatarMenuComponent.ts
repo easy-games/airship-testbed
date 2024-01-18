@@ -1,14 +1,16 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
-import { Accessory, AccessoryClass, AvatarPlatformAPI, Outfit } from "Shared/Avatar/AvatarPlatformAPI";
+import { Accessory, AvatarPlatformAPI, Outfit } from "Shared/Avatar/AvatarPlatformAPI";
 import { AuthController } from "../Auth/AuthController";
+import { PlayerController } from "Client/Controllers/Player/PlayerController";
+import { RandomUtil } from "Shared/Util/RandomUtil";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -27,6 +29,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
 	private outfits?: Outfit[];
 	private currentUserOutfit?: Outfit;
+	private clientId = -1;
 
 	//public buttons?: Transform[];
 
@@ -36,6 +39,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
+		this.clientId = 9999;//Dependency<PlayerController>().clientId;
 
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
@@ -147,6 +151,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (avatarView) {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointBirdsEye, true);
 		}
+		
+		this.LoadAllOutfits();
 		this.SelectMainNav(0);
 	}
 
@@ -347,7 +353,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.itemButtonBin.Clean();
 		if (this.itemButtonHolder) {
 			for (let i = 0; i < this.itemButtonHolder.GetChildCount(); i++) {
-				GameObjectUtil.Destroy(this.itemButtonHolder.GetChild(i).gameObject);
+				Object.Destroy(this.itemButtonHolder.GetChild(i).gameObject);
 			}
 		}
 	}
@@ -448,7 +454,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private OnSelectCurrent() {
 		this.Log("Selecting currently saved Item");
-		//Select the item that is saved for this sot
+		//Select the item that is saved for this slot
+		this.currentUserOutfit?.accessories.forEach((accessory, index) =>{
+			let accComponent = AvatarUtil.GetAccessoryFromClassId(accessory.item.class.classId);
+			if (accComponent?.GetSlotNumber() === (this.currentSlot as number)) {
+				this.SelectItem(accComponent);
+			}
+		});
 	}
 
 	private OnDragAvatar(down: boolean) {
@@ -461,20 +473,49 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		Dependency<AuthController>()
 			.WaitForAuthed()
 			.then(() => {
-				this.outfits = AvatarPlatformAPI.GetAllOutfits();
-				const outfitSize = this.outfits ? this.outfits.size() : 0;
-				if (!this.outfits) {
-					warn("Need to handle the case of not having any outfits on a user");
-				}
-				if (this.outfitBtns) {
-					for (let i = 0; i < this.outfitBtns.Length; i++) {
-						this.outfitBtns.GetValue(i).gameObject.SetActive(i < outfitSize);
-					}
-				}
-
 				//Get all owned accessories and map them to usable values
 				AvatarUtil.GetOwnedAccessories();
 			});
+	}
+
+	private LoadAllOutfits(){
+		print("LOADIN ALL OUTFITS");
+		this.outfits = AvatarPlatformAPI.GetAllOutfits();
+		const outfitSize = this.outfits ? this.outfits.size() : 0;
+		if (outfitSize <= 0) {
+			warn("No outfits exist on user. Making initial default one");
+			this.outfits = [AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+				"9999",
+				"Default0",
+				"Default0",
+				RandomUtil.FromArray(AvatarUtil.skinColors),
+			)];
+		}
+
+		//Disable Outfit buttons that we don't need
+		if (this.outfitBtns) {
+			for (let i = 0; i < this.outfitBtns.Length; i++) {
+				this.outfitBtns.GetValue(i).gameObject.SetActive(i < outfitSize);
+			}
+		}
+
+		const equippedOutfit = AvatarPlatformAPI.GetEquippedOutfit();
+		if(equippedOutfit && this.outfits){
+			let i=0;
+			for(let outfit of this.outfits){
+				if(outfit.outfitId === equippedOutfit.outfitId){
+					//Select equipped outfit
+					print("Found default outfit index: " + i);
+					this.SelectOutfit(i);
+					return;
+				}
+				i++;
+			}
+		}
+		
+		//Select the first outfit
+		print("Selecting default outfit");
+		this.SelectOutfit(0);
 	}
 
 	private SelectOutfit(index: number) {
@@ -483,14 +524,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		if (this.outfitBtns) {
 			for (let i = 0; i < this.outfitBtns.Length; i++) {
-				const button = this.outfitBtns?.GetValue(index)?.GetComponent<Button>();
+				let button = this.outfitBtns?.GetValue(index)?.GetComponent<Button>();
 				if (button) {
 					const color = i === index ? Color.green : Color.gray;
+					button.image.color = color;
 					let colors = button.colors;
 					colors.normalColor = color;
 					colors.selectedColor = color;
 					colors.highlightedColor = color;
-					button.colors = colors;
+					//button.colors = colors;
 				}
 			}
 		}
@@ -521,18 +563,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			warn("Trying to save with no outfit selected!");
 			return;
 		}
-		const outfitId = "Default";
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
+		let accessoryIds: string[] = [];
 		if (accBuilder) {
 			let accs = accBuilder.GetActiveAccessories();
-			let accessories: Accessory[] = [];
 			for (let i = 0; i < accs.Length; i++) {
-				let acc = accs.GetValue(i);
-				//TODO fill outfit with new accessories
-				//accessories[i] = 0;
+				accessoryIds[i] = accs.GetValue(i).AccessoryComponent.serverClassId;
 			}
 		}
+		AvatarPlatformAPI.SaveOutfitAccessories(accessoryIds);
 	}
 
-	private Revert() {}
+	private Revert() {
+		this.LoadCurrentOutfit();
+	}
 }

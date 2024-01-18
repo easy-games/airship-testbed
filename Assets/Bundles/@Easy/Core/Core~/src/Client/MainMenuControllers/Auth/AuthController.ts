@@ -114,10 +114,6 @@ export class AuthController implements OnStart {
 		return "Authorization=Bearer " + this.idToken;
 	}
 
-	public GetAuthToken(): string {
-		return this.idToken;
-	}
-
 	public IsAuthenticated(): boolean {
 		return this.authenticated;
 	}

@@ -1,8 +1,6 @@
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
-import { RandomUtil } from "Shared/Util/RandomUtil";
+import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
-import { Dependency } from "@easy-games/flamework-core";
 
 export type ItemClass = {
 	resourceType: "GAME" | "ORGANIZATION";
@@ -74,7 +72,10 @@ export class AvatarPlatformAPI {
 
 	public static CreateAvatarOutfit(outfit: Outfit) {
 		this.Log("CreateAvatarOutfit");
-		InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/create`), EncodeJSON(outfit));
+		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), EncodeJSON(outfit));
+		if (res.success) {
+			print("CREATED OUTFIT: " + res.data);
+		}
 	}
 
 	public static EquipAvatarOutfit(outfitId: string) {
@@ -106,39 +107,22 @@ export class AvatarPlatformAPI {
 			accessories: [],
 			equipped: true,
 			owner: entityId,
-			//skinColor: RandomUtil.FromArray(this.skinColors).ToString(),
-			skinColor: skinColor.ToString(),
+			skinColor: ColorUtil.ColorToHex(skinColor),
 		};
 		this.CreateAvatarOutfit(outfit);
 		return outfit;
 	}
 
-	public static SaveAvatarOutfit(outfit: Outfit) {
-		this.Log("SaveAvatarOutfit");
-		InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(outfit));
+	public static SaveOutfitAccessories(classIds: string[]){
+		this.Log("SaveOutfitAccessories");
+		//TODO: Save Accessories to server
+		//InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(classIds));
 	}
 
-	private static LoadOrCreateEquippedOutfit(defaultSkinColor: Color) {
-		this.Log("LoadOrCreateEquippedOutfit");
-		let outfit = AvatarPlatformAPI.GetEquippedOutfit();
-		if (!outfit) {
-			//No outfit equipped
-			let allOutfits = AvatarPlatformAPI.GetAllOutfits();
-			if (allOutfits && allOutfits.size() > 0) {
-				//Has outfits though
-				outfit = allOutfits[0];
-				AvatarPlatformAPI.EquipAvatarOutfit(outfit.outfitId);
-			} else {
-				//No outfits exist so create one
-				outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-					Dependency<PlayerController>().clientId.ToString(),
-					"Default0",
-					"Default 0",
-					defaultSkinColor,
-				);
-			}
-		}
-		return outfit;
+	public static SaveAvatarOutfit(outfit: Outfit) {
+		this.Log("SaveAvatarOutfit");
+		//TODO: Save Outfit to server
+		//InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(outfit));
 	}
 
 	public static LoadImage(fileId: string) {

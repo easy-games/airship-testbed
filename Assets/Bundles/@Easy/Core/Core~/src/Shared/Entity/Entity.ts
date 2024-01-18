@@ -2,7 +2,6 @@ import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { EntityController } from "Client/Controllers/Entity/EntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
-import { DamageService } from "Server/Services/Damage/DamageService";
 import { EntityService } from "Server/Services/Entity/EntityService";
 import { PlayerService } from "Server/Services/Player/PlayerService";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -159,7 +158,12 @@ export class Entity {
 	public readonly onDeath = new Signal<void>();
 	public readonly onArmorChanged = new Signal<number>();
 
-	constructor(id: number, networkObject: NetworkObject, clientId: number | undefined) {
+	constructor(
+		id: number,
+		networkObject: NetworkObject,
+		public readonly asServer: boolean,
+		clientId: number | undefined,
+	) {
 		this.id = id;
 		this.clientId = clientId;
 		this.networkObject = networkObject;
@@ -180,7 +184,7 @@ export class Entity {
 		this.state = this.entityDriver.GetState();
 
 		if (this.clientId !== undefined) {
-			if (RunUtil.IsServer()) {
+			if (this.asServer) {
 				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.clientId);
 				this.SetPlayer(player);
 			} else {
@@ -194,20 +198,7 @@ export class Entity {
 			this.displayName = `entity_${this.id}`;
 		}
 
-		const impactConn = this.entityDriver.OnImpactWithGround((velocity) => {
-			this.animator?.PlayFootstepSound(1.4);
-			if (RunUtil.IsServer()) {
-				const result = Dependency<DamageService>().InflictFallDamage(this, velocity.y);
-				if (result) {
-					CoreNetwork.ServerToClient.Entity.FallDamageTaken.server.FireAllClients(this.id, velocity);
-				}
-			}
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(impactConn);
-		});
-
-		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
+		if (this.IsLocalCharacter() || this.asServer) {
 			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
 				this.onAdjustMove.Fire(moveModifier);
 			});
@@ -216,7 +207,7 @@ export class Entity {
 			});
 		}
 
-		if (this.IsLocalCharacter() || RunUtil.IsServer()) {
+		if (this.IsLocalCharacter() || this.asServer) {
 			const movementChangeConn = this.entityDriver.OnMoveDirectionChanged((direction) => {
 				this.onMoveDirectionChanged.Fire(direction);
 				this.moveDirection = direction;
@@ -249,7 +240,7 @@ export class Entity {
 		this.entityDriver.Teleport(pos);
 		if (lookVector) {
 			this.entityDriver.SetLookVector(lookVector);
-			if (RunUtil.IsServer() && this.player) {
+			if (this.asServer && this.player) {
 				CoreNetwork.ServerToClient.Entity.SetLookVector.server.FireClient(
 					this.player.clientId,
 					this.id,
@@ -270,7 +261,7 @@ export class Entity {
 	}
 
 	public AddHealthbar(): void {
-		if (RunUtil.IsServer()) {
+		if (this.asServer) {
 			this.healthbarEnabled = true;
 			CoreNetwork.ServerToClient.Entity.AddHealthbar.server.FireAllClients(this.id);
 			return;
@@ -332,7 +323,7 @@ export class Entity {
 	public SetDisplayName(displayName: string) {
 		this.displayName = displayName;
 		this.onDisplayNameChanged.Fire(displayName);
-		if (RunUtil.IsServer()) {
+		if (this.asServer) {
 			CoreNetwork.ServerToClient.Entity.SetDisplayName.server.FireAllClients(this.id, displayName);
 		}
 	}
@@ -361,7 +352,7 @@ export class Entity {
 		this.onHealthChanged.Fire(health, oldHealth);
 		this.healthbar?.SetValue(this.health / this.maxHealth);
 
-		if (RunUtil.IsServer()) {
+		if (this.asServer) {
 			CoreNetwork.ServerToClient.Entity.SetHealth.server.FireAllClients(this.id, this.health);
 		}
 	}
@@ -369,7 +360,7 @@ export class Entity {
 	public SetMaxHealth(maxHealth: number): void {
 		this.maxHealth = maxHealth;
 
-		if (RunUtil.IsServer()) {
+		if (this.asServer) {
 			CoreNetwork.ServerToClient.Entity.SetHealth.server.FireAllClients(this.id, this.health, this.maxHealth);
 		}
 	}
@@ -393,7 +384,7 @@ export class Entity {
 		}
 		this.gameObject.name = "DespawnedEntity";
 
-		if (RunUtil.IsServer()) {
+		if (this.asServer) {
 			CoreNetwork.ServerToClient.DespawnEntity.server.FireAllClients(this.id);
 			NetworkUtil.Despawn(this.networkObject.gameObject);
 		}
@@ -421,11 +412,10 @@ export class Entity {
 	}
 
 	public IsLocalCharacter(): boolean {
-		if (!RunUtil.IsClient()) {
-			return false;
-		} else {
+		if (!this.asServer) {
 			return this.clientId === Dependency<PlayerController>().clientId;
 		}
+		return false;
 	}
 
 	public IsAlive(): boolean {
@@ -487,7 +477,7 @@ export class Entity {
 	}
 
 	public SendItemAnimationToClients(useIndex = 0, animationMode: ItemPlayMode = 0, exceptClientId?: number) {
-		if (RunUtil.IsServer()) {
+		if (this.asServer) {
 			if (exceptClientId !== undefined) {
 				CoreNetwork.ServerToClient.PlayEntityItemAnimation.server.FireExcept(
 					exceptClientId,
@@ -653,7 +643,7 @@ export class Entity {
 			0,
 		);
 		const projectile = new Projectile(easyProjectile, projectileItemType, this);
-		if (RunUtil.IsClient()) {
+		if (!this.asServer) {
 			const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
 			const ProjectileLaunchedClientSignal = import(
 				"Client/Controllers/Damage/Projectile/ProjectileLaunchedClientSignal"

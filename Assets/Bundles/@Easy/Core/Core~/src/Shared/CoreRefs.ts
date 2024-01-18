@@ -10,8 +10,17 @@ export class CoreRefs {
 		let coreGo = GameObject.Find("AirshipCore");
 		if (coreGo) {
 			this.rootTransform = coreGo.transform;
+			const coreScene = SceneManager.GetSceneByName("CoreScene");
+			if (coreScene.IsValid()) {
+				SceneManager.MoveGameObjectToScene(this.rootTransform.gameObject, coreScene);
+			}
 		} else {
-			this.rootTransform = GameObject.Create("AirshipCore").transform;
+			const rootGo = GameObject.Create("AirshipCore");
+			const coreScene = SceneManager.GetSceneByName("CoreScene");
+			if (coreScene.IsValid()) {
+				SceneManager.MoveGameObjectToScene(rootGo, coreScene);
+			}
+			this.rootTransform = rootGo.transform;
 		}
 	}
 }

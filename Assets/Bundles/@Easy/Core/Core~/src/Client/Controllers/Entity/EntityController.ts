@@ -41,13 +41,11 @@ export class EntityController implements OnStart {
 			// 	print(`Spawning ${entityDtos.size()} ${entityDtos.size() > 1 ? "entities" : "entity"}.`);
 			// }
 			entityDtos.forEach((entityDto) => {
-				Profiler.BeginSample("SpawnEntity");
 				try {
 					this.AddEntity(entityDto);
 				} catch (err) {
 					error("[FATAL]: Failed to add entity: " + err);
 				}
-				Profiler.EndSample();
 			});
 		});
 		CoreNetwork.ServerToClient.DespawnEntity.client.OnServerEvent((entityId) => {
@@ -174,10 +172,10 @@ export class EntityController implements OnStart {
 			ColorUtil.HexToColor("#aa8866"),
 		];
 		CoreClientSignals.EntitySpawn.Connect((event) => {
-			if (event.entity.IsLocalCharacter()) {
-				//Keep local player the default look for now
-				return;
-			}
+			// if (event.entity.IsLocalCharacter()) {
+			// 	//Keep local player the default look for now
+			// 	return;
+			// }
 			let randomId: number;
 			//if (event.entity.player) {
 			//randomId = string.byte(event.entity.player.userId)[0];
@@ -212,7 +210,7 @@ export class EntityController implements OnStart {
 		nob.gameObject.name = `entity_${entityDto.id}`;
 		let entity: Entity;
 		if (entityDto.serializer === EntitySerializer.DEFAULT) {
-			entity = new Entity(entityDto.id, nob, entityDto.clientId);
+			entity = new Entity(entityDto.id, nob, false, entityDto.clientId);
 		} else if (entityDto.serializer === EntitySerializer.CHARACTER) {
 			const characterEntityDto = entityDto as CharacterEntityDto;
 
@@ -228,7 +226,7 @@ export class EntityController implements OnStart {
 
 			Profiler.BeginSample("CharacterEntity.Constructor");
 
-			entity = new CharacterEntity(entityDto.id, nob, entityDto.clientId, inv);
+			entity = new CharacterEntity(entityDto.id, nob, false, entityDto.clientId, inv);
 			Profiler.EndSample();
 		} else {
 			error("Unable to find entity serializer for dto: " + entityDto);
@@ -255,6 +253,11 @@ export class EntityController implements OnStart {
 		Profiler.BeginSample("EntitySpawnSignal");
 		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));
 		Profiler.EndSample();
+
+		entity.accessoryBuilder.TryCombineMeshes();
+		task.delay(0.1, () => {
+			entity.accessoryBuilder.TryCombineMeshes();
+		});
 
 		return entity;
 	}

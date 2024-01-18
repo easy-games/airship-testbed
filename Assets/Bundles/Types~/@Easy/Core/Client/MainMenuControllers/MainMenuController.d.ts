@@ -1,11 +1,9 @@
 import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
 import { Signal } from "../../Shared/Util/Signal";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
-import { AuthController } from "./Auth/AuthController";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
 export declare class MainMenuController implements OnStart {
-    private readonly authController;
     private readonly socialTweenDuration;
     mainMenuGo: GameObject;
     refs: GameObjectReferences;
@@ -21,7 +19,7 @@ export declare class MainMenuController implements OnStart {
     private toggleSocialButton;
     private open;
     private socialIsVisible;
-    constructor(authController: AuthController);
+    constructor();
     OpenFromGame(): void;
     CloseFromGame(): void;
     IsOpen(): boolean;

@@ -1,12 +1,10 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreContext } from "Shared/CoreClientContext";
-import { Game } from "Shared/Game";
 import { CoreUI } from "Shared/UI/CoreUI";
+import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { DecodeJSON } from "Shared/json";
 import { MainMenuController } from "./MainMenuController";
 import { GameServer } from "./Social/SocketAPI";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
 
 @Controller({})
 export class MainMenuHomeController implements OnStart {
@@ -32,10 +30,6 @@ export class MainMenuHomeController implements OnStart {
 		CoreUI.SetupButton(this.errorCloseButton);
 
 		this.localBundlesToggle = this.mainMenuController.refs.GetValue("UI", "LocalBundlesToggle");
-
-		if (Game.context === CoreContext.GAME) {
-			this.mainMenuController.mainContentCanvas.enabled = false;
-		}
 	}
 
 	OnStart(): void {

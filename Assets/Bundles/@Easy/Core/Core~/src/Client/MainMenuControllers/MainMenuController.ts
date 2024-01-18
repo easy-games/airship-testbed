@@ -9,7 +9,6 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
-import { AuthController } from "./Auth/AuthController";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
@@ -39,7 +38,7 @@ export class MainMenuController implements OnStart {
 	private open = false;
 	private socialIsVisible = true;
 
-	constructor(private readonly authController: AuthController) {
+	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
@@ -65,12 +64,6 @@ export class MainMenuController implements OnStart {
 		).GetComponent<AvatarViewComponent>();
 		if (Game.context === CoreContext.GAME) {
 			this.avatarView.HideAvatar();
-		}
-
-		for (const [key, value] of this.pageMap) {
-			if (value) {
-				value.Init(this, key);
-			}
 		}
 
 		const closeButton = this.refs.GetValue("UI", "CloseButton");
@@ -123,6 +116,10 @@ export class MainMenuController implements OnStart {
 				options,
 			);
 		});
+
+		if (Game.context === CoreContext.GAME) {
+			this.mainContentCanvas.enabled = false;
+		}
 	}
 
 	public OpenFromGame(): void {
@@ -162,6 +159,13 @@ export class MainMenuController implements OnStart {
 
 	OnStart(): void {
 		if (this.currentPage === undefined) {
+			//init pages
+			for (const [key, value] of this.pageMap) {
+				if (value) {
+					value.Init(this, key);
+				}
+			}
+			
 			this.RouteToPage(MainMenuPageType.Home, true, true);
 		}
 
