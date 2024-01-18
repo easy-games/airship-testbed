@@ -29,6 +29,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
 	private outfits?: Outfit[];
 	private currentUserOutfit?: Outfit;
+	private currentUserOutfitIndex = -1;
 	private clientId = -1;
 
 	//public buttons?: Transform[];
@@ -39,7 +40,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
 		super.Init(mainMenu, pageType);
-		this.clientId = 9999;//Dependency<PlayerController>().clientId;
+		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
 		this.mainNavBtns = this.refs?.GetAllValues<RectTransform>("MainNavRects");
 		this.subNavBars = this.refs?.GetAllValues<RectTransform>("SubNavHolderRects");
@@ -151,7 +152,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (avatarView) {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointBirdsEye, true);
 		}
-		
+
 		this.LoadAllOutfits();
 		this.SelectMainNav(0);
 	}
@@ -455,7 +456,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private OnSelectCurrent() {
 		this.Log("Selecting currently saved Item");
 		//Select the item that is saved for this slot
-		this.currentUserOutfit?.accessories.forEach((accessory, index) =>{
+		this.currentUserOutfit?.accessories.forEach((accessory, index) => {
 			let accComponent = AvatarUtil.GetAccessoryFromClassId(accessory.item.class.classId);
 			if (accComponent?.GetSlotNumber() === (this.currentSlot as number)) {
 				this.SelectItem(accComponent);
@@ -478,18 +479,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 	}
 
-	private LoadAllOutfits(){
+	private LoadAllOutfits() {
 		print("LOADIN ALL OUTFITS");
 		this.outfits = AvatarPlatformAPI.GetAllOutfits();
 		const outfitSize = this.outfits ? this.outfits.size() : 0;
 		if (outfitSize <= 0) {
 			warn("No outfits exist on user. Making initial default one");
-			this.outfits = [AvatarPlatformAPI.CreateDefaultAvatarOutfit(
-				"9999",
-				"Default0",
-				"Default0",
-				RandomUtil.FromArray(AvatarUtil.skinColors),
-			)];
+			this.outfits = [
+				AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+					"9999",
+					"Default0",
+					"Default0",
+					RandomUtil.FromArray(AvatarUtil.skinColors),
+				),
+			];
 		}
 
 		//Disable Outfit buttons that we don't need
@@ -500,10 +503,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		const equippedOutfit = AvatarPlatformAPI.GetEquippedOutfit();
-		if(equippedOutfit && this.outfits){
-			let i=0;
-			for(let outfit of this.outfits){
-				if(outfit.outfitId === equippedOutfit.outfitId){
+		if (equippedOutfit && this.outfits) {
+			let i = 0;
+			for (let outfit of this.outfits) {
+				if (outfit.outfitId === equippedOutfit.outfitId) {
 					//Select equipped outfit
 					print("Found default outfit index: " + i);
 					this.SelectOutfit(i);
@@ -512,7 +515,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				i++;
 			}
 		}
-		
+
 		//Select the first outfit
 		print("Selecting default outfit");
 		this.SelectOutfit(0);
@@ -522,6 +525,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (!this.outfits || index < 0 || index >= this.outfits.size()) {
 			error("Index out of range of outfits");
 		}
+		this.currentUserOutfitIndex = index;
 		if (this.outfitBtns) {
 			for (let i = 0; i < this.outfitBtns.Length; i++) {
 				let button = this.outfitBtns?.GetValue(index)?.GetComponent<Button>();
@@ -568,10 +572,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (accBuilder) {
 			let accs = accBuilder.GetActiveAccessories();
 			for (let i = 0; i < accs.Length; i++) {
-				accessoryIds[i] = accs.GetValue(i).AccessoryComponent.serverClassId;
+				const instanceId = accs.GetValue(i).AccessoryComponent.serverInstanceId;
+				if (instanceId === "") {
+					warn("Trying to save avatar accessory without a proper instance ID");
+				}
+				accessoryIds[i] = instanceId;
 			}
 		}
-		AvatarPlatformAPI.SaveOutfitAccessories(accessoryIds);
+
+		this.currentUserOutfit = AvatarPlatformAPI.SaveOutfitAccessories(this.currentUserOutfit.outfitId, accessoryIds);
+		if (this.outfits) {
+			this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
+		}
 	}
 
 	private Revert() {

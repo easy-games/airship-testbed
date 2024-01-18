@@ -113,10 +113,20 @@ export class AvatarPlatformAPI {
 		return outfit;
 	}
 
-	public static SaveOutfitAccessories(classIds: string[]){
+	public static SaveOutfitAccessories(outfitId: string, instanceIds: string[]) {
 		this.Log("SaveOutfitAccessories");
-		//TODO: Save Accessories to server
-		//InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(classIds));
+		let res = InternalHttpManager.PatchAsync(
+			this.GetHttpUrl(`outfits/outfit-id/${outfitId}`),
+			EncodeJSON({
+				accessories: instanceIds,
+			}),
+		);
+		if (res.success) {
+			print("Outfit Saved: " + res.data);
+			return DecodeJSON<Outfit>(res.data);
+		} else {
+			error("Error Saving: " + res.error);
+		}
 	}
 
 	public static SaveAvatarOutfit(outfit: Outfit) {
@@ -129,6 +139,8 @@ export class AvatarPlatformAPI {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`images/${fileId}`));
 		if (res.success) {
 			return DecodeJSON<AccessoryItem[]>(res.data);
+		} else {
+			error("Error loading image: " + res.error);
 		}
 	}
 }

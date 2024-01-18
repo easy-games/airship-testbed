@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: AirshipCharacterBaseToon
   m_Shader: {fileID: 4800000, guid: 386517b47559d944982eab60b192b2ab, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - EXPLICIT_MAPS
@@ -28,6 +30,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -179,3 +182,4 @@ Material:
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 0.9811321, g: 0.5970096, b: 0.5970096, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
