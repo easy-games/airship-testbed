@@ -13293,6 +13293,25 @@ interface PartyControllerBackendConstructor {
 }
 declare const PartyControllerBackend: PartyControllerBackendConstructor;
     
+interface AirshipInventoryControllerBackend {
+
+    constructor(): AirshipInventoryControllerBackend;
+
+}
+    
+interface AirshipInventoryControllerBackendConstructor {
+
+
+    GetAccessories(): HttpResponse;
+    GetEquippedOutfit(): HttpResponse;
+    GetItems(): HttpResponse;
+    GetProfilePictures(): HttpResponse;
+    HasAccessory(): HttpResponse;
+    HasItem(): HttpResponse;
+    HasProfilePicture(): HttpResponse;
+}
+declare const AirshipInventoryControllerBackend: AirshipInventoryControllerBackendConstructor;
+    
 interface TransferControllerBackend {
 
     constructor(): TransferControllerBackend;
@@ -13407,6 +13426,32 @@ interface TransferServiceBackendConstructor {
     Transfer(body: string): HttpResponse;
 }
 declare const TransferServiceBackend: TransferServiceBackendConstructor;
+    
+interface AirshipInventoryServiceBackend {
+
+    constructor(): AirshipInventoryServiceBackend;
+
+}
+    
+interface AirshipInventoryServiceBackendConstructor {
+
+
+    DeleteAccessory(): HttpResponse;
+    DeleteItem(): HttpResponse;
+    DeleteProfilePicture(): HttpResponse;
+    GetAccessories(): HttpResponse;
+    GetEquippedOutfit(): HttpResponse;
+    GetItems(): HttpResponse;
+    GetProfilePictures(): HttpResponse;
+    GrantAccessory(body: string): HttpResponse;
+    GrantItem(body: string): HttpResponse;
+    GrantProfilePicture(body: string): HttpResponse;
+    HasAccessory(): HttpResponse;
+    HasItem(): HttpResponse;
+    HasProfilePicture(): HttpResponse;
+    PerformTrade(): HttpResponse;
+}
+declare const AirshipInventoryServiceBackend: AirshipInventoryServiceBackendConstructor;
     
 interface CrossSceneState {
 

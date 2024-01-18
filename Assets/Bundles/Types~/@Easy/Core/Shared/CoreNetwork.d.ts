@@ -43,7 +43,7 @@ export declare const CoreNetwork: {
         AbilityActivateRequest: RemoteEvent<[abilityId: string]>;
     };
     ServerToClient: {
-        ServerInfo: RemoteEvent<[gameId: string, serverId: string]>;
+        ServerInfo: RemoteEvent<[gameId: string, serverId: string, organizationId: string]>;
         UpdateInventory: RemoteEvent<InventoryDto>;
         /** Creates a new instance of an `ItemStack`. */
         SetInventorySlot: RemoteEvent<[invId: number, slot: number, itemStack: ItemStackDto | undefined, clientPredicted: boolean]>;
