@@ -9,6 +9,7 @@ if (autoShutdownBridge) {
 const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>();
 Game.gameId = serverBootstrap.gameId;
 Game.serverId = serverBootstrap.serverId;
+Game.organizationId = serverBootstrap.organizationId;
 
 function LoadFlamework() {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/services", "^.*service.lua$");

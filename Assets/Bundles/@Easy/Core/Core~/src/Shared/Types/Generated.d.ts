@@ -4169,12 +4169,14 @@ interface RunCore {
 }
     
 interface RunCoreConstructor {
+    launchInDedicatedServerMode: boolean;
 
 
     IsClient(): boolean;
     IsClone(): boolean;
     IsEditor(): boolean;
     IsServer(): boolean;
+    OnLoad(): void;
 }
 declare const RunCore: RunCoreConstructor;
     
@@ -4336,85 +4338,6 @@ interface NetworkConnection {
     ToString(): string;
 }
     
-interface NetworkObject extends MonoBehaviour {
-    NetworkObserver: NetworkObserver;
-    Observers: CSArray<NetworkConnection>;
-    IsNested: boolean;
-    PredictedSpawner: NetworkConnection;
-    IsSceneObject: boolean;
-    ComponentIndex: number;
-    ObjectId: number;
-    PredictedSpawn: PredictedSpawn;
-    NetworkBehaviours: CSArray<NetworkBehaviour>;
-    ParentNetworkObject: NetworkObject;
-    ChildNetworkObjects: CSArray<NetworkObject>;
-    RuntimeParentNetworkObject: NetworkObject;
-    RuntimeParentTransform: Transform;
-    RuntimeChildNetworkObjects: CSArray<NetworkObject>;
-    IsNetworked: boolean;
-    IsGlobal: boolean;
-    IsClientInitialized: boolean;
-    ClientInitialized: boolean;
-    IsClient: boolean;
-    IsClientOnly: boolean;
-    IsServerInitialized: boolean;
-    IsServer: boolean;
-    IsServerOnly: boolean;
-    IsHost: boolean;
-    IsOffline: boolean;
-    IsOwner: boolean;
-    Owner: NetworkConnection;
-    OwnerId: number;
-    IsSpawned: boolean;
-    LocalConnection: NetworkConnection;
-    NetworkManager: NetworkManager;
-    ServerManager: ServerManager;
-    ClientManager: ClientManager;
-    ObserverManager: ObserverManager;
-    TransportManager: TransportManager;
-    TimeManager: TimeManager;
-    SceneManager: SceneManager;
-    PredictionManager: PredictionManager;
-    RollbackManager: RollbackManager;
-    PrefabId: number;
-    SpawnableCollectionId: number;
-    AssetPathHash: number;
-
-    constructor(): NetworkObject;
-
-    Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
-    Despawn(go: GameObject, despawnType: unknown): void;
-    Despawn(nob: NetworkObject, despawnType: unknown): void;
-    Despawn(despawnType: unknown): void;
-    GetDefaultDespawnType(): DespawnType;
-    GetInitializeOrder(): number;
-    GetInstance<T>(): T;
-    GetNetworkBehaviour(componentIndex: number, error: boolean): NetworkBehaviour;
-    GiveOwnership(newOwner: NetworkConnection): void;
-    HasInstance<T>(): boolean;
-    RegisterInstance<T>(component: T, replace: boolean): void;
-    RegisterInvokeOnInstance<T>(handler: unknown): void;
-    RemoveOwnership(): void;
-    ResetForObjectPool(): void;
-    ResetState(): void;
-    SetAssetPathHash(value: number): void;
-    SetDefaultDespawnType(despawnType: DespawnType): void;
-    SetIsGlobal(value: boolean): void;
-    SetIsNetworked(value: boolean): void;
-    SetLocalOwnership(caller: NetworkConnection): void;
-    SetParent(nb: NetworkBehaviour): void;
-    SetParent(nob: NetworkObject): void;
-    SetRenderersVisible(visible: boolean, force: boolean): void;
-    Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
-    Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
-    ToString(): string;
-    TryGetInstance<T>(component: unknown): boolean;
-    TryRegisterInstance<T>(component: T): boolean;
-    UnregisterInstance<T>(): void;
-    UnregisterInvokeOnInstance<T>(handler: unknown): void;
-    UnsetParent(): void;
-    UpdateRenderers(updateVisibility: boolean): void;
-}
     
 interface NetworkObserver extends MonoBehaviour {
     OverrideType: ConditionOverrideType;
@@ -5311,13 +5234,6 @@ interface PredictedSpawn extends NetworkBehaviour {
     SetAllowSyncTypes(value: boolean): void;
 }
     
-interface NetworkObjectConstructor {
-    UNSET_OBJECTID_VALUE: number;
-    UNSET_PREFABID_VALUE: number;
-
-
-}
-declare const NetworkObject: NetworkObjectConstructor;
     
 interface EstimatedTick {
     LocalTick: number;
@@ -10382,6 +10298,7 @@ interface ServerBootstrap extends MonoBehaviour {
     agones: AgonesSdk;
     gameId: string;
     serverId: string;
+    organizationId: string;
     editorConfig: AirshipEditorConfig;
     serverReady: boolean;
     isStartupConfigReady: boolean;
@@ -10396,8 +10313,6 @@ interface ServerBootstrap extends MonoBehaviour {
 }
     
 interface StartupConfig {
-    CoreBundleId: string;
-    CoreBundleVersion: string;
     GameBundleId: string;
     GameBundleVersion: string;
     StartingSceneName: string;
@@ -10589,6 +10504,7 @@ declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
     firstPerson: boolean;
+    firstPersonLayer: number;
     thirdPersonLayer: number;
 
     constructor(): AccessoryBuilder;
@@ -13324,6 +13240,7 @@ interface InternalHttpManager {
 }
     
 interface InternalHttpManagerConstructor {
+    authToken: string;
 
 
     DeleteAsync(url: string): HttpResponse;
@@ -13375,12 +13292,6 @@ interface PartyControllerBackendConstructor {
     GetParty(): HttpResponse;
 }
 declare const PartyControllerBackend: PartyControllerBackendConstructor;
-    
-interface SocketControllerBackend {
-
-    constructor(): SocketControllerBackend;
-
-}
     
 interface TransferControllerBackend {
 

@@ -23,11 +23,12 @@ export class PlayerController implements OnStart {
 	) {
 		this.players.add(Game.localPlayer);
 
-		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId) => {
+		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId, organizationId) => {
 			this.localConnection = InstanceFinder.ClientManager.Connection;
 			this.clientId = this.localConnection.ClientId;
 			Game.gameId = gameId;
 			Game.serverId = serverId;
+			Game.organizationId = organizationId;
 			if (this.authController.IsAuthenticated()) {
 				this.friendsController.SendStatusUpdate();
 			} else {
