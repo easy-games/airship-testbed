@@ -566,7 +566,7 @@ interface AuthManagerStatic {
 declare const AuthManager: AuthManagerStatic;
 
 interface SocketManager {
-	ConnectAsync(url: string, authToken: string): boolean;
+	ConnectAsyncInternal(): boolean;
 	IsConnected(): boolean;
 	SetScriptListening(val: boolean): void;
 	EmitAsync(eventName: string, data: string): void;

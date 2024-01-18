@@ -30,10 +30,7 @@ export class UserController implements OnStart {
 	}
 
 	public FetchLocalUser(): void {
-		const res = HttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/users/self`,
-			this.authController.GetAuthHeaders(),
-		);
+		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
 		if (res.success) {
 			const data = DecodeJSON(res.data) as User;
 			this.localUser = data;

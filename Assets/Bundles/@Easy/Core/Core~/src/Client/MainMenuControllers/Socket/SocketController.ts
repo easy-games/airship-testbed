@@ -60,6 +60,6 @@ export class SocketController implements OnStart {
 	}
 
 	private Connect(): void {
-		SocketManager.ConnectAsync(AirshipUrl.GameCoordinatorSocket, this.authController.GetAuthToken());
+		SocketManager.ConnectAsyncInternal();
 	}
 }
