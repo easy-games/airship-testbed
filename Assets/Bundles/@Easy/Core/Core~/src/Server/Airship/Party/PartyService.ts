@@ -33,7 +33,7 @@ export class PartyService implements OnStart {
 		const res = await PartyServiceBackend.GetPartyForUserId(userId);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -59,7 +59,7 @@ export class PartyService implements OnStart {
 		const res = await PartyServiceBackend.GetPartyById(partyId);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

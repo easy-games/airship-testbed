@@ -14,7 +14,7 @@ export class MatchmakingController implements OnStart {
 		const res = await MatchmakingControllerBackend.GetStatus();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get matchmaking status. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to get matchmaking status. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

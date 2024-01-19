@@ -29,7 +29,7 @@ export class TransferService implements OnStart {
 		);
 
 		if (!res.success && res.statusCode > 299) {
-			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -83,7 +83,7 @@ export class TransferService implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -135,7 +135,7 @@ export class TransferService implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

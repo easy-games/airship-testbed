@@ -34,7 +34,7 @@ export class TransferController implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -55,7 +55,7 @@ export class TransferController implements OnStart {
 		const res = await TransferControllerBackend.TransferToPartyLeader();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

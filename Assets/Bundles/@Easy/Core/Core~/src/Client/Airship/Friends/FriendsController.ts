@@ -17,7 +17,7 @@ export class FriendsController implements OnStart {
 		const res = await FriendsControllerBackend.GetFriends();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get friends. Status Code ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -39,7 +39,7 @@ export class FriendsController implements OnStart {
 		const res = await FriendsControllerBackend.IsFriendsWith(userId);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get friends. Status Code ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

@@ -41,7 +41,7 @@ export class LeaderboardService implements OnStart {
 			}),
 		);
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,
@@ -62,7 +62,7 @@ export class LeaderboardService implements OnStart {
 	public async GetRank(leaderboardName: string, id: string): Promise<Result<RankData | undefined, undefined>> {
 		const result = await LeaderboardServiceBackend.GetRank(leaderboardName, id);
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,
@@ -101,7 +101,7 @@ export class LeaderboardService implements OnStart {
 
 		const result = await LeaderboardServiceBackend.GetRankRange(leaderboardName, startIndex, count);
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,

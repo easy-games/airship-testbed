@@ -25,7 +25,7 @@ export class DataStoreService implements OnStart {
 
 		const result = await DataStoreServiceBackend.GetKey(key);
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to get data key. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,
@@ -56,7 +56,7 @@ export class DataStoreService implements OnStart {
 
 		const result = await DataStoreServiceBackend.SetKey(key, EncodeJSON(data));
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,
@@ -79,7 +79,7 @@ export class DataStoreService implements OnStart {
 
 		const result = await DataStoreServiceBackend.DeleteKey(key);
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,

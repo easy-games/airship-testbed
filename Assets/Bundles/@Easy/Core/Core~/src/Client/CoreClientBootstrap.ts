@@ -3,6 +3,7 @@ import { CoreContext } from "Shared/CoreClientContext";
 
 function LoadFlamework(context: CoreContext) {
 	if (context === CoreContext.GAME) {
+		Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
 		Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$");
 		Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/strollers", "^.*.lua$");
 	}

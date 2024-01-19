@@ -29,7 +29,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.GrantItem("");
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -49,7 +49,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.GrantAccessory("");
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -69,7 +69,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.GrantProfilePicture("");
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -89,7 +89,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.DeleteItem();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -109,7 +109,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.DeleteAccessory();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -129,7 +129,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.DeleteProfilePicture();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -149,7 +149,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.HasItem();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -169,7 +169,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.HasAccessory();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -189,7 +189,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.HasProfilePicture();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -209,7 +209,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.GetItems();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -229,7 +229,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.GetAccessories();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -249,7 +249,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.GetProfilePictures();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -269,7 +269,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.GetEquippedOutfit();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -296,7 +296,7 @@ export class PlatformInventoryService implements OnStart {
 		const res = await AirshipInventoryServiceBackend.PerformTrade();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

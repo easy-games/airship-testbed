@@ -23,7 +23,7 @@ export class MatchmakingService implements OnStart {
 		const res = await MatchmakingServiceBackend.GetMatchmakingRegions();
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get matchmaking regions. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to get matchmaking regions. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -58,7 +58,7 @@ export class MatchmakingService implements OnStart {
 		);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to queue user party. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to queue user party. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,
@@ -79,7 +79,7 @@ export class MatchmakingService implements OnStart {
 		const res = await MatchmakingServiceBackend.RemovePartyFromQueue(partyId);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to queue user party. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to queue user party. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

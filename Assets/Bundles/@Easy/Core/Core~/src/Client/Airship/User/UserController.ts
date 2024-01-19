@@ -18,7 +18,7 @@ export class UserController implements OnStart {
 		const res = await UsersControllerBackend.GetUser(username);
 
 		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n${res.data}`);
+			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
 			return {
 				success: false,
 				data: undefined,

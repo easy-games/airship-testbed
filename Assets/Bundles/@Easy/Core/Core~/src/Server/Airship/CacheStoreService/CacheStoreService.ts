@@ -32,7 +32,7 @@ export class CacheStoreService implements OnStart {
 		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
 		const result = CacheStoreServiceBackend.GetKey(key, expireTime);
 		if (!result.success) {
-			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,
@@ -64,7 +64,7 @@ export class CacheStoreService implements OnStart {
 		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
 		const result = CacheStoreServiceBackend.SetKey(key, expireTime, EncodeJSON(data));
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,
@@ -99,7 +99,7 @@ export class CacheStoreService implements OnStart {
 
 		const result = CacheStoreServiceBackend.SetKeyTTL(key, math.clamp(expireTimeSec, 0, this.maxExpireSec));
 		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n${result.data}`);
+			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.data);
 			return {
 				success: false,
 				data: undefined,
