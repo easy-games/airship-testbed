@@ -10,7 +10,7 @@ import { Result } from "../../../Shared/Types/Result";
  * The Data Store is good for things like user configuration settings. If you want to keep track of user statistics or
  * inventory, check out the Leaderboard and AirshipInventory systems.
  */
-export declare class DataStore implements OnStart {
+export declare class DataStoreService implements OnStart {
     OnStart(): void;
     /**
      * Gets the data associated with the given key.

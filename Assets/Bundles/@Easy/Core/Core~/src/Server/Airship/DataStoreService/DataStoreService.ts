@@ -12,7 +12,7 @@ import { DecodeJSON, EncodeJSON } from "Shared/json";
  * inventory, check out the Leaderboard and AirshipInventory systems.
  */
 @Service({})
-export class DataStore implements OnStart {
+export class DataStoreService implements OnStart {
 	OnStart(): void {}
 
 	/**

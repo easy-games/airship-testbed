@@ -13,7 +13,7 @@ import { DecodeJSON, EncodeJSON } from "Shared/json";
  * out the Data Store.
  */
 @Service({})
-export class CacheStore implements OnStart {
+export class CacheStoreService implements OnStart {
 	/** Reflects backend data-store-service settings */
 	private maxExpireSec = 60 * 60 * 24; // 24h in seconds
 

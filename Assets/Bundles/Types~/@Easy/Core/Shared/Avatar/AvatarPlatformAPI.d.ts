@@ -13,11 +13,6 @@ export type AccessoryItem = {
     instanceId: string;
     class: AccessoryClass;
 };
-export type AccessoryModification = {
-    item: {
-        instanceId: string;
-    };
-};
 export type Accessory = {
     item: AccessoryItem;
 };
@@ -39,7 +34,7 @@ export declare class AvatarPlatformAPI {
     static EquipAvatarOutfit(outfitId: string): void;
     static GetAccessories(): AccessoryItem[] | undefined;
     static CreateDefaultAvatarOutfit(entityId: string, outfitId: string, name: string, skinColor: Color): Outfit;
-    static SaveOutfitAccessories(outfitId: string, instanceIds: string[]): void;
+    static SaveOutfitAccessories(outfitId: string, instanceIds: string[]): Outfit;
     static SaveAvatarOutfit(outfit: Outfit): void;
-    static LoadImage(fileId: string): AccessoryItem[] | undefined;
+    static LoadImage(fileId: string): AccessoryItem[];
 }

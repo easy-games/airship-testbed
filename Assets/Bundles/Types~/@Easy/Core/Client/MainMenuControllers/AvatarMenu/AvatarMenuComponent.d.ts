@@ -15,6 +15,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private currentSlot;
     private outfits?;
     private currentUserOutfit?;
+    private currentUserOutfitIndex;
     private clientId;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;

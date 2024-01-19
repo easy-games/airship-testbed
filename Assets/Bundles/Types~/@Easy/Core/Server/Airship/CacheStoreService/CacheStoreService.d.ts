@@ -11,7 +11,7 @@ import { Result } from "../../../Shared/Types/Result";
  * The Cache Store is good for things like queue cooldowns or share codes. If you want your data to be persistent, check
  * out the Data Store.
  */
-export declare class CacheStore implements OnStart {
+export declare class CacheStoreService implements OnStart {
     /** Reflects backend data-store-service settings */
     private maxExpireSec;
     OnStart(): void;
