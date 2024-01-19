@@ -16,4 +16,5 @@ MonoBehaviour:
   - {fileID: 3951789404177486776, guid: eda3579bb800288458aac57e6c6ede1e, type: 3}
   - {fileID: 5660788679855312428, guid: 45be7b6105384da47bcfcc04e8b6bcce, type: 3}
   - {fileID: 5873576580403382919, guid: 36f3ea781eaebdf41853218236d3cb6c, type: 3}
-  customSkin: {fileID: 11400000, guid: 86413a4b71bf0394886d3d4acbe0b73c, type: 2}
+  customSkin: {fileID: 11400000, guid: 3db33dde7d6c2f744b18a4f4bf187f3b, type: 2}
+  skinColor: {r: 0.85, g: 0.65, b: 0.5, a: 1}
