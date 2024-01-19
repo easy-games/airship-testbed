@@ -11,7 +11,7 @@ const PROXIMITY_PROMPT_OFFSET = new Vector3(0, -0.2, 0);
 
 @Controller({})
 export class BWShopkeeperController implements OnStart {
-	private itemShopAccessoryCollection = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
+	private itemShopAccessoryCollection = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/ItemShopKeeper/ItemShopKeeperCollection.asset",
 	);
 	private teamUpgradesAccessoryCollection = this.itemShopAccessoryCollection;
@@ -43,7 +43,7 @@ export class BWShopkeeperController implements OnStart {
 						this.itemShopController.Open();
 					});
 					// Clothing
-					entity.accessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
+					entity.accessoryBuilder.EquipAccessoryOutfit(this.itemShopAccessoryCollection, true);
 				});
 			}
 		});
@@ -69,7 +69,7 @@ export class BWShopkeeperController implements OnStart {
 					});
 
 					// Clothing
-					entity.accessoryBuilder.EquipAccessoryCollection(this.itemShopAccessoryCollection, true);
+					entity.accessoryBuilder.EquipAccessoryOutfit(this.itemShopAccessoryCollection, true);
 				});
 			}
 		});
