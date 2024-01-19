@@ -2,14 +2,14 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
-	public static readonly defaultAccessoryCollectionPath =
+	public static readonly defaultAccessoryOutfitPath =
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
 	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
 	private static readonly ownedAvatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
-	public static defaultKitAccessory: AccessoryCollection | undefined;
+	public static defaultOutfit: AccessoryOutfit | undefined;
 
 	public static readonly skinColors = [
 		//Natural
@@ -32,17 +32,17 @@ export class AvatarUtil {
 	];
 
 	public static Initialize() {
-		AvatarUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
-			AvatarUtil.defaultAccessoryCollectionPath,
+		AvatarUtil.defaultOutfit = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
+			AvatarUtil.defaultAccessoryOutfitPath,
 		);
 		//print("Init kit: " + AvatarUtil.defaultKitAccessory?.name);
 
 		let i = 0;
 		//Load avatar accessories
-		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarCollection>(
+		let avatarCollection = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
 			"@Easy/Core/Shared/Resources/Accessories/AvatarItems/AllAvatarItems.asset",
 		);
-		for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
+		/*for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
 			const element = avatarCollection.skinAccessories.GetValue(i);
 			if (!element) {
 				warn("Empty element in avatar skinAccessories collection: " + i);
@@ -50,9 +50,10 @@ export class AvatarUtil {
 			}
 			//print("Found avatar skin item: " + element.ToString());
 			this.avatarSkinAccessories.push(element);
-		}
-		for (let i = 0; i < avatarCollection.generalAccessories.Length; i++) {
-			const element = avatarCollection.generalAccessories.GetValue(i);
+		}*/
+		print("Found avatar collection: " + avatarCollection);
+		for (let i = 0; i < avatarCollection.accessories.Length; i++) {
+			const element = avatarCollection.accessories.GetValue(i);
 			if (!element) {
 				warn("Empty element in avatar generalAccessories collection: " + i);
 				continue;
@@ -77,6 +78,7 @@ export class AvatarUtil {
 				let item = this.allAvatarAccessories.get(itemData.class.classId);
 				if (item) {
 					//print("Found item: " + item.gameObject.name);
+					item.serverInstanceId = itemData.instanceId;
 					this.AddAvailableAvatarItem(item);
 				}
 			});

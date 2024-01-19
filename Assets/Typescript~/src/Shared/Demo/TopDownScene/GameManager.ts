@@ -42,7 +42,7 @@ export default class GameManager extends AirshipBehaviour {
 
 		if (RunUtil.IsServer()) {
 			for (let i = 0; i < 50; i++) {
-				const go = Object.Instantiate(this.testPrefab);
+				const go = Object.Instantiate<GameObject>(this.testPrefab);
 				NetworkUtil.Spawn(go);
 			}
 		}

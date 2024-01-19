@@ -10512,7 +10512,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
     AddSkinAccessory(skin: AccessorySkin, rebuildMeshImmediately: boolean): void;
-    EquipAccessoryCollection(collection: AccessoryCollection, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
+    EquipAccessoryOutfit(outfit: AccessoryOutfit, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     GetAccessoryMeshes(slot: AccessorySlot): CSArray<Renderer>;
     GetAccessoryParticles(slot: AccessorySlot): CSArray<ParticleSystem>;
     GetActiveAccessories(): CSArray<ActiveAccessory>;
@@ -10540,6 +10540,7 @@ interface ActiveAccessory {
     
 interface AccessoryComponent extends MonoBehaviour {
     serverClassId: string;
+    serverInstanceId: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
@@ -10566,11 +10567,12 @@ interface AccessorySkin extends ScriptableObject {
     ToString(): string;
 }
     
-interface AccessoryCollection extends ScriptableObject {
+interface AccessoryOutfit extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
     customSkin: AccessorySkin;
+    skinColor: Color;
 
-    constructor(): AccessoryCollection;
+    constructor(): AccessoryOutfit;
 
 }
     
@@ -13926,14 +13928,6 @@ interface RemoteImage extends MonoBehaviour {
     constructor(): RemoteImage;
 
     StartDownload(): void;
-}
-    
-interface AvatarCollection extends ScriptableObject {
-    skinAccessories: CSArray<AccessorySkin>;
-    generalAccessories: CSArray<AccessoryComponent>;
-
-    constructor(): AvatarCollection;
-
 }
     
 interface LineRenderer extends Renderer {

@@ -10540,6 +10540,7 @@ interface ActiveAccessory {
     
 interface AccessoryComponent extends MonoBehaviour {
     serverClassId: string;
+    serverInstanceId: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
