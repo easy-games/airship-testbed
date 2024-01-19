@@ -24,15 +24,15 @@ export class EntityAccessoryController implements OnStart {
 			if (event.entity instanceof CharacterEntity) {
 				if (event.entity.IsPlayerOwned() || true) {
 					//Add Kit Accessory
-					if (AvatarUtil.defaultKitAccessory) {
+					if (AvatarUtil.defaultOutfit) {
 						Profiler.BeginSample("EquipAccessories");
-						const accessories = event.entity.accessoryBuilder.EquipAccessoryCollection(
-							AvatarUtil.defaultKitAccessory,
+						const accessories = event.entity.accessoryBuilder.EquipAccessoryOutfit(
+							AvatarUtil.defaultOutfit,
 							true,
 						);
 						if (event.entity.IsLocalCharacter()) {
-							Dependency<ViewmodelController>().accessoryBuilder.EquipAccessoryCollection(
-								AvatarUtil.defaultKitAccessory,
+							Dependency<ViewmodelController>().accessoryBuilder.EquipAccessoryOutfit(
+								AvatarUtil.defaultOutfit,
 								true,
 							);
 						}
