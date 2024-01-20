@@ -1,4 +1,4 @@
-import { DataStoreService } from "@Easy/Core/Server/Airship/DataStoreService/DataStoreService";
+import { DataStoreService } from "@Easy/Core/Server/Airship/DataStore/DataStoreService";
 import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
 import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
@@ -26,7 +26,12 @@ export default class TestScript extends AirshipBehaviour {
 
 		const bounds = this.spawnArea.GetComponent<BoxCollider>("Box Collider").bounds;
 
+		// const go = GameObject.Find("Canvas");
+		// const scoreboard = go.GetComponent<Scoreboard>();
+
 		SetInterval(1, () => {
+			if (this.entityService.GetEntities().size() > 25) return;
+
 			const randomLoc = new Vector3(
 				math.random(bounds.min.x, bounds.max.x),
 				math.random(bounds.min.y, bounds.max.y) + 1,

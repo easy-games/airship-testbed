@@ -5,7 +5,8 @@ export default class ClientScript extends AirshipBehaviour {
 		if (RunUtil.IsServer()) return;
 
 		// Only runs on client
-		const coreServerSignals = import("@Easy/Core/Client/CoreClientSignals").expect().CoreClientSignals;
+		const coreClientSignals = import("@Easy/Core/Client/CoreClientSignals").expect().CoreClientSignals;
+		coreClientSignals.EntityDeath;
 	}
 
 	override OnDestroy(): void {}

@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Service, OnStart } from "@easy-games/flamework-core";
 import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
 import { Result } from "Shared/Types/Result";
 import { DecodeJSON } from "Shared/json";
@@ -6,16 +6,12 @@ import { DecodeJSON } from "Shared/json";
 /**
  * Provides access to user information.
  */
-@Controller({})
-export class UserController implements OnStart {
+@Service({})
+export class UserService implements OnStart {
 	OnStart(): void {}
 
-	/**
-	 * Gets a users data by their username.
-	 * @param username The username of the user
-	 */
 	public async GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>> {
-		const res = await UsersControllerBackend.GetUserByUsername(username);
+		const res = await UsersServiceBackend.GetUserByUsername(username);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
@@ -39,7 +35,7 @@ export class UserController implements OnStart {
 	}
 
 	public async GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>> {
-		const res = await UsersControllerBackend.GetUserById(userId);
+		const res = await UsersServiceBackend.GetUserById(userId);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
@@ -81,7 +77,7 @@ export class UserController implements OnStart {
 			};
 		}
 
-		const res = await UsersControllerBackend.GetUsersById(`users[]=${userIds.join("&users[]=")}&strict=${strict}`);
+		const res = await UsersServiceBackend.GetUsersById(`users[]=${userIds.join("&users[]=")}&strict=${strict}`);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);

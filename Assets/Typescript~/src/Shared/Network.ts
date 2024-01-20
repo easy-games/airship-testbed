@@ -62,6 +62,10 @@ export const Network = {
 		StatusEffectAdded: new RemoteEvent<[clientId: number, statusEffectType: StatusEffectType, tier: number]>(),
 		/** Fired when a status effect is removed from a player. */
 		StatusEffectRemoved: new RemoteEvent<[clientId: number, statusEffectType: StatusEffectType]>(),
+
+		//DEMO SCENE
+		KillData: new RemoteEvent<[rank: string, total: number]>(),
+		TopScores: new RemoteEvent<[topKills: { id: string; rank: number; value: string }[]]>(),
 	},
 };
 

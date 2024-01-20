@@ -13337,7 +13337,9 @@ interface UsersControllerBackend {
 interface UsersControllerBackendConstructor {
 
 
-    GetUser(username: string): HttpResponse;
+    GetUserById(userId: string): HttpResponse;
+    GetUserByUsername(username: string): HttpResponse;
+    GetUsersById(query: string): HttpResponse;
 }
 declare const UsersControllerBackend: UsersControllerBackendConstructor;
     
@@ -13454,6 +13456,21 @@ interface AirshipInventoryServiceBackendConstructor {
     PerformTrade(): HttpResponse;
 }
 declare const AirshipInventoryServiceBackend: AirshipInventoryServiceBackendConstructor;
+    
+interface UsersServiceBackend {
+
+    constructor(): UsersServiceBackend;
+
+}
+    
+interface UsersServiceBackendConstructor {
+
+
+    GetUserById(userId: string): HttpResponse;
+    GetUserByUsername(username: string): HttpResponse;
+    GetUsersById(query: string): HttpResponse;
+}
+declare const UsersServiceBackend: UsersServiceBackendConstructor;
     
 interface CrossSceneState {
 

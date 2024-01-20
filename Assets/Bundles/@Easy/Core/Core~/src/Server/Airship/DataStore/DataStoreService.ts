@@ -20,7 +20,7 @@ export class DataStoreService implements OnStart {
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
 	 * @returns The data associated with the provided key. If no data is found, nothing is returned.
 	 */
-	public async GetKey<T extends object>(key: string): Promise<Result<T, undefined>> {
+	public async GetKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>> {
 		this.checkKey(key);
 
 		const result = await DataStoreServiceBackend.GetKey(key);

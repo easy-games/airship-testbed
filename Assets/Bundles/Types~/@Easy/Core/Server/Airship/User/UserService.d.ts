@@ -5,12 +5,8 @@ import { Result } from "../../../Shared/Types/Result";
 /**
  * Provides access to user information.
  */
-export declare class UserController implements OnStart {
+export declare class UserService implements OnStart {
     OnStart(): void;
-    /**
-     * Gets a users data by their username.
-     * @param username The username of the user
-     */
     GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>>;
     GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>>;
     /**

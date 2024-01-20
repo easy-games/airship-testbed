@@ -17,7 +17,7 @@ export declare class DataStoreService implements OnStart {
      * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
      * @returns The data associated with the provided key. If no data is found, nothing is returned.
      */
-    GetKey<T extends object>(key: string): Promise<Result<T, undefined>>;
+    GetKey<T extends object>(key: string): Promise<Result<T | undefined, undefined>>;
     /**
      * Sets the data for the given key.
      * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _.:
