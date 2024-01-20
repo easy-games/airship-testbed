@@ -36,7 +36,7 @@ Shader "Airship/AirshipDoubleColor2"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipShaderIncludes.cginc"
+            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
             struct appdata
             {
