@@ -84,7 +84,7 @@ Shader "Airship/WaterPlaneShader"
             #pragma fragment fragFunction
             
             #include "UnityCG.cginc"
-            #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipShaderIncludes.cginc"
+            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
             struct Attributes
             {
