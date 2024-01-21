@@ -1,5 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, OnStart } from "@easy-games/flamework-core";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
@@ -7,7 +6,6 @@ import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 import { Signal } from "Shared/Util/Signal";
-import { Task } from "Shared/Util/Task";
 import { Theme } from "Shared/Util/Theme";
 import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
 import { CameraController } from "../Camera/CameraController";
@@ -15,7 +13,6 @@ import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
-import { EntityController } from "../Entity/EntityController";
 import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
@@ -320,34 +317,9 @@ export class LocalEntityController implements OnStart {
 				this.TakeScreenshot();
 			});
 
-			// Debug knockback:
-			keyboard.OnKeyDown(KeyCode.L, (event) => {
-				// if (!RunUtil.IsEditor()) return;
-				if (event.uiProcessed) return;
-				print("-----");
-				for (const entity of Dependency<EntityController>().GetEntities()) {
-					print(entity.GetDisplayName() + ": " + entity.id);
-				}
-				print("-----");
-				// TEST: Knock-back:
-				Task.Spawn(() => {
-					const sentTick = InstanceFinder.TimeManager.Tick;
-					const halfWay = CoreNetwork.ClientToServer.TEST_LATENCY.client.FireServer();
-					const endTick = InstanceFinder.TimeManager.Tick;
-					print(
-						"Round trip: " +
-							(endTick - sentTick) +
-							" | trip 1: " +
-							(halfWay - sentTick) +
-							" | trip 2: " +
-							(endTick - halfWay),
-					);
-				});
-			});
-
-			keyboard.OnKeyDown(KeyCode.Semicolon, (event) => {
-				CoreNetwork.ClientToServer.TestKnockback2.client.FireServer();
-			});
+			// keyboard.OnKeyDown(KeyCode.Semicolon, (event) => {
+			// 	CoreNetwork.ClientToServer.TestKnockback2.client.FireServer();
+			// });
 
 			//Libonati Test Space - DONT COMMIT
 			/*keyboard.OnKeyDown(KeyCode.G, (event) => {

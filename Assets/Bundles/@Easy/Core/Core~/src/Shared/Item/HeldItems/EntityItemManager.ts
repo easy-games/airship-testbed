@@ -46,7 +46,7 @@ export class EntityItemManager {
 			const keyboard = new userInputRef.Keyboard();
 			mouse.leftDown.Connect(() => {
 				this.Log("LeftDown");
-				if (CanvasAPI.IsPointerOverUI()) {
+				if (CanvasAPI.IsPointerOverUI() || EventSystem.current.currentSelectedGameObject) {
 					return;
 				}
 				if (this.localEntity) {

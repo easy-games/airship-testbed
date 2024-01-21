@@ -82,6 +82,7 @@ export class EntityInput {
 
 		const updateMouseKeyboardControls = (dt: number) => {
 			if (!this.enabled) return;
+			if (EventSystem.current.currentSelectedGameObject !== undefined) return;
 
 			const [success, err] = pcall(() => {
 				const jump = keyboard.IsKeyDown(KeyCode.Space);
