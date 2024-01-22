@@ -8,7 +8,7 @@ import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
 
 export class EntityInput {
 	private readonly bin = new Bin();
-	private readonly movement: HumanMovement;
+	private readonly movement: CharacterMovement;
 	private disablers = new Set<number>();
 	private disablerCounter = 1;
 

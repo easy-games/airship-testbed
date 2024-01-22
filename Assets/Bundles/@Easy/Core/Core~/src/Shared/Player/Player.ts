@@ -3,8 +3,8 @@ import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { PlayerService } from "Server/Services/Player/PlayerService";
+import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "Shared/ProfilePicture/ProfilePictureMeta";
@@ -26,9 +26,9 @@ export class Player {
 	/**
 	 * The player controls this entity.
 	 */
-	public character: CharacterEntity | undefined;
+	public character: Character | undefined;
 	/** Fired when the player's character changes. */
-	public readonly onCharacterChanged = new Signal<CharacterEntity | undefined>();
+	public readonly onCharacterChanged = new Signal<Character | undefined>();
 	/**
 	 * Fired when the player disconnects from the server.
 	 * Connections will automatically be disconnected when the player leaves.
@@ -87,6 +87,8 @@ export class Player {
 		public usernameTag: string,
 	) {}
 
+	public SpawnCharacter(): void {}
+
 	public GetProfilePicture(): ProfilePictureMeta {
 		return ProfilePictureDefinitions[this.profilePicture];
 	}
@@ -138,12 +140,12 @@ export class Player {
 		};
 	}
 
-	public SetCharacter(entity: CharacterEntity | undefined): void {
+	public SetCharacter(entity: Character | undefined): void {
 		this.character = entity;
 		this.onCharacterChanged.Fire(entity);
 	}
 
-	public ObserveCharacter(observer: (entity: CharacterEntity | undefined) => CleanupFunc): Bin {
+	public ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup = observer(this.character);
 

@@ -56,7 +56,7 @@ interface PlayerInfoDto extends Component {
 	gameObject: GameObject;
 }
 
-interface HumanMovement extends Component {
+interface CharacterMovement extends Component {
 	OnStateChanged(callback: (state: HumanState) => void): EngineEventConnection;
 	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;

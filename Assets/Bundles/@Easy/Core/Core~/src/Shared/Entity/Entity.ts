@@ -121,7 +121,7 @@ export class Entity {
 	public readonly id: number;
 	public readonly gameObject: GameObject;
 	public readonly networkObject: NetworkObject;
-	public readonly movement: HumanMovement;
+	public readonly movement: CharacterMovement;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
 	public animator: CharacterEntityAnimator;
@@ -151,7 +151,7 @@ export class Entity {
 	public readonly onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly onDespawn = new Signal<void>();
 	public readonly onPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
-	public readonly onAdjustMove = new Signal<[moveModifier: HumanMoveModifier]>();
+	public readonly onAdjustMove = new Signal<[moveModifier: CharacterMoveModifier]>();
 	public readonly onMoveDirectionChanged = new Signal<[moveDirection: Vector3]>();
 	public readonly onDisplayNameChanged = new Signal<[displayName: string]>();
 	public readonly onStateChanged = new Signal<[state: HumanState, oldState: HumanState]>();
@@ -171,7 +171,7 @@ export class Entity {
 
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
-		this.movement = this.gameObject.GetComponent<HumanMovement>();
+		this.movement = this.gameObject.GetComponent<CharacterMovement>();
 
 		Profiler.BeginSample("EntityReferences.Constructor");
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());

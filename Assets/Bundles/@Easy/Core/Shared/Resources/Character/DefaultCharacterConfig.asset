@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9d0a47793548c8aaf9c8f8b493e7bc, type: 3}
-  m_Name: DefaultEntityConfig
+  m_Name: DefaultCharacterConfig
   m_EditorClassIdentifier: 
   speed: 4.6666665
   sprintSpeed: 6.6666665

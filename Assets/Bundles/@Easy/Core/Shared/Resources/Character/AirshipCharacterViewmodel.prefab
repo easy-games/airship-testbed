@@ -877,7 +877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3544194686419381052}
   m_Layer: 10
-  m_Name: HumanViewmodel
+  m_Name: AirshipCharacterViewmodel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

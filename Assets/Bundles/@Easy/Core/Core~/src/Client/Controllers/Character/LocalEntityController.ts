@@ -38,7 +38,7 @@ export class LocalEntityController implements OnStart {
 
 	private customDataQueue: { key: keyof DataStreamItems; value: unknown }[] = [];
 
-	private entityDriver: HumanMovement | undefined;
+	private entityDriver: CharacterMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
 	public entityInput: EntityInput | undefined;
 	private prevState: HumanState = HumanState.Idle;
@@ -185,7 +185,7 @@ export class LocalEntityController implements OnStart {
 				this.firstPerson = this.defaultFirstPerson;
 			}
 
-			this.entityDriver = entity.gameObject.GetComponent<HumanMovement>();
+			this.entityDriver = entity.gameObject.GetComponent<CharacterMovement>();
 			this.entityInput = new EntityInput(entity);
 
 			this.screenshot = entity.gameObject.AddComponent<CameraScreenshotRecorder>();

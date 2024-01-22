@@ -29,7 +29,7 @@ export class HumanoidCameraMode implements CameraMode {
 	private readonly bin = new Bin();
 
 	private lookVector = Vector3.zero;
-	private readonly entityDriver: HumanMovement;
+	private readonly entityDriver: CharacterMovement;
 	private occlusionCam!: OcclusionCam;
 	private lookBackwards = false;
 
@@ -61,7 +61,7 @@ export class HumanoidCameraMode implements CameraMode {
 		initialFirstPerson: boolean,
 		initialYOffset: number,
 	) {
-		this.entityDriver = characterGO.GetComponent<HumanMovement>();
+		this.entityDriver = characterGO.GetComponent<CharacterMovement>();
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
 		this.yOffset = initialYOffset;

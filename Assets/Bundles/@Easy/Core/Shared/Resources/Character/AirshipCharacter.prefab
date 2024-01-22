@@ -6893,20 +6893,21 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8997996947095583982}
+  - component: {fileID: -1624083086148811293}
   - component: {fileID: 8616685848737228382}
-  - component: {fileID: 5420625271334097286}
-  - component: {fileID: 889479376615667292}
   - component: {fileID: 7931457288082626079}
   - component: {fileID: 903796914586745664}
+  - component: {fileID: 5420625271334097286}
+  - component: {fileID: 889479376615667292}
   - component: {fileID: 5043041770756594627}
-  - component: {fileID: 3518502800460232220}
   - component: {fileID: -98370938496583557}
   - component: {fileID: -1773167598321551048}
   - component: {fileID: -6219229748269268009}
+  - component: {fileID: 3518502800460232220}
   - component: {fileID: 7516339568983518855}
   - component: {fileID: 5838268274975822121}
   m_Layer: 3
-  m_Name: HumanEntity
+  m_Name: AirshipCharacter
   m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6930,6 +6931,52 @@ Transform:
   - {fileID: 5797592413269172210}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-1624083086148811293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Character/Character.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: Character
+    properties:
+    - name: characterMovement
+      type: object
+      objectType: CharacterMovement
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7931457288082626079}
+      modified: 1
+    - name: animationHelper
+      type: object
+      objectType: CharacterAnimationHelper
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 903796914586745664}
+      modified: 1
 --- !u!143 &8616685848737228382
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6956,93 +7003,6 @@ CharacterController:
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.95, z: 0}
---- !u!114 &5420625271334097286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: -98370938496583557}
-  _networkObjectCache: {fileID: -98370938496583557}
-  _componentConfiguration: 0
-  _synchronizeParent: 0
-  _packing:
-    Position: 1
-    Rotation: 1
-    Scale: 0
-  _interpolation: 1
-  _extrapolation: 0
-  _enableTeleport: 1
-  _teleportThreshold: 2
-  _scaleThreshold: 1
-  _clientAuthoritative: 0
-  _sendToOwner: 0
-  _enableNetworkLod: 1
-  _interval: 1
-  _synchronizePosition: 1
-  _positionSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeRotation: 1
-  _rotationSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeScale: 1
-  _scaleSnapping:
-    X: 0
-    Y: 0
-    Z: 0
---- !u!114 &889479376615667292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 402926ef33e0a894d9fec352693988ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 1
-  _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: -98370938496583557}
-  _implementsPredictionMethods: 1
-  _graphicalObject: {fileID: 7911948219130051474}
-  _enableTeleport: 1
-  _teleportThreshold: 8
-  _ownerSmoothPosition: 1
-  _ownerSmoothRotation: 1
-  _ownerInterpolation: 1
-  _predictionType: 0
-  _rigidbody: {fileID: 0}
-  _rigidbody2d: {fileID: 0}
-  _spectatorSmoothPosition: 1
-  _spectatorSmoothRotation: 1
-  _spectatorSmoothingType: 1
-  _customSmoothingData:
-    InterpolationPercent: 1
-    CollisionInterpolationPercent: 0.1
-    InterpolationDecreaseStep: 1
-    InterpolationIncreaseStep: 3
-  _preconfiguredSmoothingDataPreview:
-    InterpolationPercent: 1
-    CollisionInterpolationPercent: 0.1
-    InterpolationDecreaseStep: 1
-    InterpolationIncreaseStep: 3
-  _maintainedVelocity: 0
-  _resendType: 0
-  _resendInterval: 30
-  _networkTransform: {fileID: 5420625271334097286}
 --- !u!114 &7931457288082626079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7162,6 +7122,93 @@ MonoBehaviour:
   spineClampAngle: 15
   neckClampAngle: 35
   particleMaxDistance: 25
+--- !u!114 &5420625271334097286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: -98370938496583557}
+  _networkObjectCache: {fileID: -98370938496583557}
+  _componentConfiguration: 0
+  _synchronizeParent: 0
+  _packing:
+    Position: 1
+    Rotation: 1
+    Scale: 0
+  _interpolation: 1
+  _extrapolation: 0
+  _enableTeleport: 1
+  _teleportThreshold: 2
+  _scaleThreshold: 1
+  _clientAuthoritative: 0
+  _sendToOwner: 0
+  _enableNetworkLod: 1
+  _interval: 1
+  _synchronizePosition: 1
+  _positionSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeRotation: 1
+  _rotationSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeScale: 1
+  _scaleSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+--- !u!114 &889479376615667292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402926ef33e0a894d9fec352693988ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: -98370938496583557}
+  _implementsPredictionMethods: 1
+  _graphicalObject: {fileID: 7911948219130051474}
+  _enableTeleport: 1
+  _teleportThreshold: 8
+  _ownerSmoothPosition: 1
+  _ownerSmoothRotation: 1
+  _ownerInterpolation: 1
+  _predictionType: 0
+  _rigidbody: {fileID: 0}
+  _rigidbody2d: {fileID: 0}
+  _spectatorSmoothPosition: 1
+  _spectatorSmoothRotation: 1
+  _spectatorSmoothingType: 1
+  _customSmoothingData:
+    InterpolationPercent: 1
+    CollisionInterpolationPercent: 0.1
+    InterpolationDecreaseStep: 1
+    InterpolationIncreaseStep: 3
+  _preconfiguredSmoothingDataPreview:
+    InterpolationPercent: 1
+    CollisionInterpolationPercent: 0.1
+    InterpolationDecreaseStep: 1
+    InterpolationIncreaseStep: 3
+  _maintainedVelocity: 0
+  _resendType: 0
+  _resendInterval: 30
+  _networkTransform: {fileID: 5420625271334097286}
 --- !u!114 &5043041770756594627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7178,69 +7225,6 @@ MonoBehaviour:
   firstPerson: 0
   firstPersonLayer: 0
   thirdPersonLayer: 0
---- !u!114 &3518502800460232220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStaticInstance: 0
-  staticBundleId: UniqueID
-  bundledReferences:
-  - key: Meshes
-    keyValuePairs:
-    - key: Body
-      value: {fileID: 2695573961177313877}
-    - key: FirstPerson
-      value: {fileID: 0}
-    - key: Head
-      value: {fileID: 8156819807530903880}
-    - key: Face
-      value: {fileID: 7826042772468676150}
-  - key: Bones
-    keyValuePairs:
-    - key: HeadTop
-      value: {fileID: 2489647868183149004}
-    - key: Head
-      value: {fileID: 3128516438244712813}
-    - key: Neck
-      value: {fileID: 8848304915733543562}
-    - key: SpineTop
-      value: {fileID: 3711621242454114017}
-    - key: SpineMiddle
-      value: {fileID: 3119050434576616272}
-    - key: SpineRoot
-      value: {fileID: 1306623784457441339}
-    - key: Rig
-      value: {fileID: 5511855736031289890}
-    - key: Root
-      value: {fileID: 7911948219130051474}
-    - key: HandL
-      value: {fileID: 3629289340962763505}
-    - key: HandR
-      value: {fileID: 4288901034534830371}
-    - key: ShoulderL
-      value: {fileID: 4412913557028469195}
-    - key: ShoulderR
-      value: {fileID: 892189392788074714}
-  - key: Colliders
-    keyValuePairs:
-    - key: CharacterController
-      value: {fileID: 8616685848737228382}
-  - key: VFX
-    keyValuePairs:
-    - key: SprintTrailParticle
-      value: {fileID: 3167209969606938282}
-    - key: AnimationEvents
-      value: {fileID: 8770161942407837672}
-    - key: FootstepAudioSource
-      value: {fileID: 2719586711620922124}
 --- !u!114 &-98370938496583557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7305,6 +7289,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f040aaa0ede2946a769bea3d71a08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3518502800460232220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStaticInstance: 0
+  staticBundleId: UniqueID
+  bundledReferences:
+  - key: Meshes
+    keyValuePairs:
+    - key: Body
+      value: {fileID: 2695573961177313877}
+    - key: FirstPerson
+      value: {fileID: 0}
+    - key: Head
+      value: {fileID: 8156819807530903880}
+    - key: Face
+      value: {fileID: 7826042772468676150}
+  - key: Bones
+    keyValuePairs:
+    - key: HeadTop
+      value: {fileID: 2489647868183149004}
+    - key: Head
+      value: {fileID: 3128516438244712813}
+    - key: Neck
+      value: {fileID: 8848304915733543562}
+    - key: SpineTop
+      value: {fileID: 3711621242454114017}
+    - key: SpineMiddle
+      value: {fileID: 3119050434576616272}
+    - key: SpineRoot
+      value: {fileID: 1306623784457441339}
+    - key: Rig
+      value: {fileID: 5511855736031289890}
+    - key: Root
+      value: {fileID: 7911948219130051474}
+    - key: HandL
+      value: {fileID: 3629289340962763505}
+    - key: HandR
+      value: {fileID: 4288901034534830371}
+    - key: ShoulderL
+      value: {fileID: 4412913557028469195}
+    - key: ShoulderR
+      value: {fileID: 892189392788074714}
+  - key: Colliders
+    keyValuePairs:
+    - key: CharacterController
+      value: {fileID: 8616685848737228382}
+  - key: VFX
+    keyValuePairs:
+    - key: SprintTrailParticle
+      value: {fileID: 3167209969606938282}
+    - key: AnimationEvents
+      value: {fileID: 8770161942407837672}
+    - key: FootstepAudioSource
+      value: {fileID: 2719586711620922124}
 --- !u!114 &7516339568983518855
 MonoBehaviour:
   m_ObjectHideFlags: 0
