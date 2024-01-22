@@ -1,11 +1,8 @@
-Shader "Airship/AirshipToonOrb2"
+Shader "Airship/AirshipToonOrbv1"
 {
     Properties
     {
-        [HDR] _Color1("Color1", Color) = (1,1,1,1)
-        [HDR] _Color2("Color2", Color) = (1,1,1,1)
-        _SmoothColor("SmoothColor", Vector) = (0,1,0,0)
-       
+        _Color("Tint", Color) = (1,1,1,1)
         _Emissive("Emissive", Range(0,1)) = 1
         _MainTex ("Texture", 2D) = "white" {}
         _Mask ("Mask", 2D) = "white" {}
@@ -13,8 +10,7 @@ Shader "Airship/AirshipToonOrb2"
         _Posterize ("Posterize", Float) = 0
         _Scale ("Scale", Vector) = (1,1,0,0)
         _Powernoise ("Powernoise", Float) = 1
-
-       
+ 
         [KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _SrcBlend("SourceBlend", Float) = 1.0
 		[KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _DstBlend("DestBlend", Float) = 10.0
     }
@@ -27,6 +23,7 @@ Shader "Airship/AirshipToonOrb2"
 			"Queue"="Transparent"}
         Blend[_SrcBlend][_DstBlend]
 
+
 		ZWrite off
 		Cull off
         
@@ -38,6 +35,7 @@ Shader "Airship/AirshipToonOrb2"
             #pragma fragment frag
             // make fog work
             #pragma multi_compile_fog
+
             #include "UnityCG.cginc"
             #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.cginc"
 
@@ -56,10 +54,7 @@ Shader "Airship/AirshipToonOrb2"
                 fixed4 color : COLOR;
             };
 
-            float4 _Color1;
-            float4 _Color2;
-            float2 _SmoothColor;
-           
+            float4 _Color;
             float _Emissive;
             sampler2D _MainTex;
             sampler2D _Mask;    
@@ -91,20 +86,10 @@ Shader "Airship/AirshipToonOrb2"
                 float4 temp_cast_3 = (_Step).xxxx;
                
                 float3 Color = posterize15.rgb;
-
-
-
-                float smoothstepCol = smoothstep(_SmoothColor.x, _SmoothColor.y, posterize15.r);
-                
-
-
-
-
-
-                //float Alpha = step(temp_cast_3, posterize15).r;
+                float Alpha = step(temp_cast_3, posterize15).r;
 
                 
-                float4 finalColor = lerp(SRGBtoLinear(_Color1), SRGBtoLinear(_Color2), smoothstepCol) * i.color;
+                float4 finalColor = posterize15 * SRGBtoLinear(_Color) * i.color;
                 finalColor.a = step(temp_cast_3, posterize15).r;
                 MRT0 = finalColor;
 				MRT1 = _Emissive * finalColor;
