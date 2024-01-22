@@ -33,8 +33,8 @@ export class CharacterEntity extends Entity {
 
 	public IsMoving() {
 		switch (this.GetState()) {
-			case HumanState.Idle:
-			case HumanState.Crouching:
+			case CharacterState.Idle:
+			case CharacterState.Crouching:
 				break;
 		}
 	}

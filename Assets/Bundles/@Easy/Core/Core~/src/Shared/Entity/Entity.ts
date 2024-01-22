@@ -145,7 +145,7 @@ export class Entity {
 	protected displayName: string;
 	protected healthbarEnabled = false;
 	protected healthbar?: Healthbar;
-	protected state: HumanState;
+	protected state: CharacterState;
 	protected bin: Bin = new Bin();
 
 	public readonly onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
@@ -154,7 +154,7 @@ export class Entity {
 	public readonly onAdjustMove = new Signal<[moveModifier: CharacterMoveModifier]>();
 	public readonly onMoveDirectionChanged = new Signal<[moveDirection: Vector3]>();
 	public readonly onDisplayNameChanged = new Signal<[displayName: string]>();
-	public readonly onStateChanged = new Signal<[state: HumanState, oldState: HumanState]>();
+	public readonly onStateChanged = new Signal<[state: CharacterState, oldState: CharacterState]>();
 	public readonly onDeath = new Signal<void>();
 	public readonly onArmorChanged = new Signal<number>();
 
@@ -257,7 +257,7 @@ export class Entity {
 	}
 
 	public IsCrouched(): boolean {
-		return this.state === HumanState.Crouching;
+		return this.state === CharacterState.Crouching;
 	}
 
 	public AddHealthbar(): void {
@@ -528,7 +528,7 @@ export class Entity {
 		this.attributes.SetAttribute("immunity", newTime);
 	}
 
-	public GetState(): HumanState {
+	public GetState(): CharacterState {
 		return this.state;
 	}
 
@@ -544,9 +544,9 @@ export class Entity {
 	public GetHeadOffset(): Vector3 {
 		const state = this.GetState();
 		let offset = new Vector3(0, 2, 0);
-		if (state === HumanState.Crouching) {
+		if (state === CharacterState.Crouching) {
 			offset = new Vector3(0, 1, 0);
-		} else if (state === HumanState.Sliding) {
+		} else if (state === CharacterState.Sliding) {
 			offset = new Vector3(0, 0.8, 0);
 		}
 		return offset;
@@ -555,9 +555,9 @@ export class Entity {
 	public GetFirstPersonHeadOffset(): Vector3 {
 		const state = this.GetState();
 		let offset = new Vector3(0, 1.7, 0);
-		if (state === HumanState.Crouching) {
+		if (state === CharacterState.Crouching) {
 			offset = new Vector3(0, 1, 0);
-		} else if (state === HumanState.Sliding) {
+		} else if (state === CharacterState.Sliding) {
 			offset = new Vector3(0, 0.8, 0);
 		}
 		return offset;

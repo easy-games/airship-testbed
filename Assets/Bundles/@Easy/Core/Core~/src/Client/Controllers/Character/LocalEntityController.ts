@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { Entity } from "Shared/Entity/Entity";
+import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -41,8 +41,8 @@ export class LocalEntityController implements OnStart {
 	private entityDriver: CharacterMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
 	public entityInput: EntityInput | undefined;
-	private prevState: HumanState = HumanState.Idle;
-	private currentState: HumanState = HumanState.Idle;
+	private prevState: CharacterState = CharacterState.Idle;
+	private currentState: CharacterState = CharacterState.Idle;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
@@ -149,9 +149,9 @@ export class LocalEntityController implements OnStart {
 		Game.localPlayer.SendMessage(ColorUtil.ColoredText(Theme.yellow, `Captured screenshot ${screenshotFilename}`));
 	}
 
-	private GetCamYOffset(state: HumanState, isFirstPerson: boolean) {
+	private GetCamYOffset(state: CharacterState, isFirstPerson: boolean) {
 		const yOffset =
-			state === HumanState.Crouching || state === HumanState.Sliding
+			state === CharacterState.Crouching || state === CharacterState.Sliding
 				? isFirstPerson
 					? CAM_Y_OFFSET_CROUCH_1ST_PERSON
 					: CAM_Y_OFFSET_CROUCH_3RD_PERSON
@@ -159,17 +159,22 @@ export class LocalEntityController implements OnStart {
 		return yOffset;
 	}
 
-	private CreateHumanoidCameraMode(entity: Entity): HumanoidCameraMode {
-		const state = this.entityDriver?.GetState() ?? HumanState.Idle;
+	private CreateHumanoidCameraMode(character: Character): HumanoidCameraMode {
+		const state = this.entityDriver?.GetState() ?? CharacterState.Idle;
 		const yOffset = this.GetCamYOffset(state, this.firstPerson);
-		this.humanoidCameraMode = new HumanoidCameraMode(entity.gameObject, entity.model, this.firstPerson, yOffset);
+		this.humanoidCameraMode = new HumanoidCameraMode(
+			character.gameObject,
+			character.model,
+			this.firstPerson,
+			yOffset,
+		);
 		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
 		this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
 		return this.humanoidCameraMode;
 	}
 
-	private CreateOrbitCameraMode(entity: Entity): OrbitCameraMode {
-		return new OrbitCameraMode(4, entity.gameObject.transform, entity.model.transform);
+	private CreateOrbitCameraMode(character: Character): OrbitCameraMode {
+		return new OrbitCameraMode(4, character.gameObject.transform, character.model.transform);
 	}
 
 	OnStart() {
@@ -209,13 +214,13 @@ export class LocalEntityController implements OnStart {
 
 			this.firstPersonChanged.Connect((isFirstPerson) => {
 				this.humanoidCameraMode?.SetYOffset(
-					this.GetCamYOffset(this.entityDriver?.GetState() ?? HumanState.Idle, isFirstPerson),
+					this.GetCamYOffset(this.entityDriver?.GetState() ?? CharacterState.Idle, isFirstPerson),
 					true,
 				);
 			});
 
 			//Set up first person camera
-			this.fps = new FirstPersonCameraSystem(entity, entity.references, this.firstPerson);
+			this.fps = new FirstPersonCameraSystem(entity, this.firstPerson);
 
 			const stateChangedConn = this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
@@ -226,7 +231,8 @@ export class LocalEntityController implements OnStart {
 				this.UpdateFov();
 				this.fps?.OnMovementStateChange(state);
 				if (this.sprintOverlayEmission) {
-					this.sprintOverlayEmission.enabled = state === HumanState.Sprinting || state === HumanState.Sliding;
+					this.sprintOverlayEmission.enabled =
+						state === CharacterState.Sprinting || state === CharacterState.Sliding;
 				}
 			});
 			bin.Add(() => {
@@ -377,8 +383,8 @@ export class LocalEntityController implements OnStart {
 			? this.clientSettings.GetFirstPersonFov()
 			: this.clientSettings.GetThirdPersonFov();
 		if (
-			this.currentState === HumanState.Sprinting ||
-			this.currentState === HumanState.Sliding ||
+			this.currentState === CharacterState.Sprinting ||
+			this.currentState === CharacterState.Sliding ||
 			this.entityInput?.IsSprinting()
 			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
 		) {

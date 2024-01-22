@@ -15,7 +15,7 @@ export class UserController implements OnStart {
 	 * @param username The username of the user
 	 */
 	public async GetUser(username: string): Promise<Result<PublicUser | undefined, undefined>> {
-		const res = await UsersControllerBackend.GetUser(username);
+		const res = await UsersControllerBackend.GetUserByUsername(username);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);

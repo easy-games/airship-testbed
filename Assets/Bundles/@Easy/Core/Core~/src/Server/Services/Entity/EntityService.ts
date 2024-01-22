@@ -46,13 +46,13 @@ export class EntityService implements OnStart {
 
 			return () => {
 				if (player.character) {
-					this.DespawnEntity(player.character);
+					// this.DespawnEntity(player.character);
 				}
 			};
 		}, SignalPriority.HIGHEST);
 		CoreServerSignals.PlayerLeave.Connect((event) => {
 			if (event.player.character) {
-				this.DespawnEntity(event.player.character);
+				// this.DespawnEntity(event.player.character);
 			}
 		});
 	}
@@ -125,7 +125,7 @@ export class EntityService implements OnStart {
 		const entity = new CharacterEntity(id, entityNob, true, player?.clientId, inv);
 		this.entities.set(id, entity);
 		if (player) {
-			player.SetCharacter(entity);
+			// player.SetCharacter(entity);
 		}
 
 		// Custom move command data handling:

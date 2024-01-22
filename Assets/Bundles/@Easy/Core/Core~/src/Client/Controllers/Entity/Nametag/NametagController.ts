@@ -1,5 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import Character from "Shared/Character/Character";
 import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -25,10 +26,10 @@ export class NametagController implements OnStart {
 			if (event.entity.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
-			this.UpdateNametag(event.entity);
-			event.entity.onDisplayNameChanged.Connect(() => {
-				this.UpdateNametag(event.entity);
-			});
+			// this.UpdateNametag(event.character);
+			// event.entity.onDisplayNameChanged.Connect(() => {
+			// 	this.UpdateNametag(event.character);
+			// });
 			const SetNametagAlpha = (entity: Entity, alpha: number) => {
 				const nameTag = entity.model.transform.FindChild(this.nameTageId);
 				if (nameTag) {
@@ -46,24 +47,24 @@ export class NametagController implements OnStart {
 				}
 			};
 			event.entity.onStateChanged.Connect((newState, oldState) => {
-				if (newState === HumanState.Crouching) {
+				if (newState === CharacterState.Crouching) {
 					SetNametagAlpha(event.entity, 0.1);
-				} else if (oldState === HumanState.Crouching) {
+				} else if (oldState === CharacterState.Crouching) {
 					SetNametagAlpha(event.entity, 1);
 				}
 			});
 		});
-		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
-			if (event.player === Game.localPlayer) {
-				for (const entity of this.entityController.GetEntities()) {
-					this.UpdateNametag(entity);
-				}
-				return;
-			}
-			if (event.player.character) {
-				this.UpdateNametag(event.player.character);
-			}
-		});
+		// CoreClientSignals.PlayerChangeTeam.Connect((event) => {
+		// 	if (event.player === Game.localPlayer) {
+		// 		for (const entity of this.entityController.GetEntities()) {
+		// 			this.UpdateNametag(entity);
+		// 		}
+		// 		return;
+		// 	}
+		// 	if (event.player.character) {
+		// 		this.UpdateNametag(event.player.character);
+		// 	}
+		// });
 		CoreClientSignals.EntityDespawn.Connect((entity) => {
 			const nameTag = entity.model.transform.FindChild(this.nameTageId);
 			if (nameTag) {
@@ -72,29 +73,29 @@ export class NametagController implements OnStart {
 		});
 	}
 
-	private CreateNametag(entity: Entity): GameObject {
+	private CreateNametag(character: Character): GameObject {
 		const nametagPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/Nametag.prefab",
 		) as GameObject;
 		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
 		nametag.name = this.nameTageId;
-		nametag.transform.SetParent(entity.model.transform);
+		nametag.transform.SetParent(character.model.transform);
 		nametag.transform.localPosition = new Vector3(0, 2.3, 0);
 
-		this.UpdateNametag(entity);
+		this.UpdateNametag(character);
 
 		return nametag;
 	}
 
-	public UpdateNametag(entity: Entity): void {
-		if (entity.IsLocalCharacter()) return;
+	public UpdateNametag(character: Character): void {
+		if (character.IsLocalCharacter()) return;
 
-		const team: Team | undefined = entity.player?.GetTeam();
+		const team: Team | undefined = character.player?.GetTeam();
 		const localTeam = Game.localPlayer.GetTeam();
 
-		const nameTag = entity.model.transform.FindChild(this.nameTageId);
+		const nameTag = character.model.transform.FindChild(this.nameTageId);
 		if (nameTag === undefined) {
-			this.CreateNametag(entity);
+			this.CreateNametag(character);
 			return;
 		}
 
@@ -104,7 +105,7 @@ export class NametagController implements OnStart {
 		const canvas = references.GetValue<Canvas>(this.graphicsBundleName, "Canvas");
 
 		// Username text
-		let displayName = entity.GetDisplayName();
+		let displayName = character.player?.username ?? character.gameObject.name;
 		textLabel.text = displayName;
 
 		const rawDisplayName = Bridge.RemoveRichText(displayName);
@@ -114,7 +115,7 @@ export class NametagController implements OnStart {
 		// Username color
 		let color: Color | undefined;
 		if (localTeam) {
-			if (entity.player && localTeam.GetPlayers().has(entity.player)) {
+			if (character.player && localTeam.GetPlayers().has(character.player)) {
 				color = Theme.green;
 			} else {
 				color = Theme.red;

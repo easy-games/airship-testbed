@@ -1,5 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { Entity } from "Shared/Entity/Entity";
+import Character from "Shared/Character/Character";
 import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
@@ -16,8 +16,8 @@ export class EntityInput {
 	private enabled = true;
 	private autoSprinting = false;
 
-	constructor(private readonly entity: Entity) {
-		this.movement = entity.movement;
+	constructor(private readonly character: Character) {
+		this.movement = character.movement;
 		this.InitControls();
 	}
 
@@ -64,10 +64,10 @@ export class EntityInput {
 
 		this.autoSprinting = false;
 		this.bin.Add(
-			this.entity.onStateChanged.Connect((newState, oldState) => {
-				if (newState === HumanState.Sprinting) {
+			this.character.onStateChanged.Connect((newState, oldState) => {
+				if (newState === CharacterState.Sprinting) {
 					this.autoSprinting = true;
-				} else if (newState !== HumanState.Jumping) {
+				} else if (newState !== CharacterState.Jumping) {
 					this.autoSprinting = false;
 				}
 			}),

@@ -33,7 +33,7 @@ export class AddInventoryCommand extends ChatCommand {
 
 		if (!player.character) return;
 
-		player.character.GetInventory().AddItem(itemStack);
+		// player.character.GetInventory().AddItem(itemStack);
 		player.SendMessage(`Given ${amount} ${itemStack.GetItemDef().displayName} (${itemType.lower()})`);
 	}
 }

@@ -242,13 +242,13 @@ export class EntityController implements OnStart {
 
 		this.entities.set(entity.id, entity);
 
-		if (entity.player) {
-			if (entity instanceof CharacterEntity) {
-				entity.player.SetCharacter(entity);
-			} else {
-				print("Failed to set player character because it wasn't a CharacterEntity.");
-			}
-		}
+		// if (entity.player) {
+		// 	if (entity instanceof CharacterEntity) {
+		// 		entity.player.SetCharacter(entity);
+		// 	} else {
+		// 		print("Failed to set player character because it wasn't a CharacterEntity.");
+		// 	}
+		// }
 
 		Profiler.BeginSample("EntitySpawnSignal");
 		CoreClientSignals.EntitySpawn.Fire(new EntitySpawnClientSignal(entity));

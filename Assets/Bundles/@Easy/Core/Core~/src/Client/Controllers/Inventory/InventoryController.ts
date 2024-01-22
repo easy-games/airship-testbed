@@ -7,7 +7,6 @@ import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
 @Controller({})
@@ -208,14 +207,16 @@ export class InventoryController implements OnStart {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
 		if (Game.localPlayer.character && Game.localPlayer.character instanceof CharacterEntity) {
-			cleanup = callback(Game.localPlayer.character.GetInventory());
+			// todo: inventory
+			// cleanup = callback(Game.localPlayer.character.GetInventory());
 		}
 
 		bin.Add(
 			Game.localPlayer.ObserveCharacter((entity) => {
 				cleanup?.();
 				if (entity && entity instanceof CharacterEntity) {
-					cleanup = callback(entity.GetInventory());
+					// todo: inventory
+					// cleanup = callback(entity.GetInventory());
 				}
 			}),
 		);

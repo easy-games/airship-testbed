@@ -57,7 +57,7 @@ interface PlayerInfoDto extends Component {
 }
 
 interface CharacterMovement extends Component {
-	OnStateChanged(callback: (state: HumanState) => void): EngineEventConnection;
+	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
 	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
@@ -87,7 +87,7 @@ interface CharacterMovement extends Component {
 	GetVelocity(): Vector3;
 	DisableMovement();
 	EnableMovement();
-	GetState(): HumanState;
+	GetState(): CharacterState;
 	UpdateSyncTick(): void;
 
 	groundedBlockId: number;
@@ -360,7 +360,7 @@ interface AnimatorStatic {
 }
 declare const Animator: AnimatorStatic;
 
-declare const enum HumanState {
+declare const enum CharacterState {
 	Idle = 0,
 	Running = 1,
 	Jumping = 2,

@@ -32,7 +32,7 @@ export class BubbleChatController implements OnStart {
 			}
 			if (sender?.character) {
 				const messageSanitized = this.SanitizeRawChatInput(rawMessage);
-				this.RenderBubble(messageSanitized, sender.character);
+				// this.RenderBubble(messageSanitized, sender.character);
 			}
 		});
 

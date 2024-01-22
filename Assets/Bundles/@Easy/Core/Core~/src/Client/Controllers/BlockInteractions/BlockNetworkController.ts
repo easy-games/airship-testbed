@@ -1,6 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
-import { BlockPlaceClientSignal } from "Client/Signals/BlockPlaceClientSignal";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Entity } from "Shared/Entity/Entity";
 import { Block } from "Shared/VoxelWorld/Block";
@@ -22,7 +20,7 @@ export class BlockNetworkController implements OnStart {
 				return;
 			}
 
-			CoreClientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, voxel, placer, false));
+			// CoreClientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, voxel, placer, false));
 		});
 	}
 }

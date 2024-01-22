@@ -21,9 +21,9 @@ export class EntityFootstepController implements OnStart {
 					if (entity.IsDead()) continue;
 					let cooldown = -1;
 					const state = entity.GetState();
-					if (state === HumanState.Sprinting) {
+					if (state === CharacterState.Sprinting) {
 						cooldown = 0.23;
-					} else if (state === HumanState.Running) {
+					} else if (state === CharacterState.Running) {
 						cooldown = 0.36;
 					}
 					if (cooldown === -1) {
@@ -35,7 +35,7 @@ export class EntityFootstepController implements OnStart {
 					}
 					this.entityLastFootstepTime.set(entity.id, currentTime);
 
-					let volumeScale = entity.GetState() === HumanState.Crouching ? 0.3 : 1;
+					let volumeScale = entity.GetState() === CharacterState.Crouching ? 0.3 : 1;
 					if (!entity.IsLocalCharacter()) {
 						volumeScale *= 2;
 					}

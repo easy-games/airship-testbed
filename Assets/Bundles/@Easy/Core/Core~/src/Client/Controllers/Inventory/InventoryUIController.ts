@@ -192,30 +192,6 @@ export class InventoryUIController implements OnStart {
 					SetFill(h, false);
 				}),
 			);
-
-			// Armor label
-			const armorLabelImage = this.inventoryRefs.GetValue("Healthbar", "ArmorLabelImage") as Image;
-			const armorLabelText = this.inventoryRefs.GetValue("Healthbar", "ArmorLabelText") as TMP_Text;
-			const SetArmor = (armor: number) => {
-				if (armor === 0) {
-					armorLabelImage.gameObject.SetActive(false);
-					armorLabelText.gameObject.SetActive(false);
-					return;
-				}
-				armorLabelImage.gameObject.SetActive(true);
-				armorLabelText.gameObject.SetActive(true);
-				armorLabelText.text = armor + "";
-			};
-			if (entity === undefined) {
-				SetArmor(0);
-			} else {
-				SetArmor(entity.GetArmor());
-				bin.Add(
-					entity.onArmorChanged.Connect((armor) => {
-						SetArmor(armor);
-					}),
-				);
-			}
 			return () => {
 				bin.Clean();
 			};
