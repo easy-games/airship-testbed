@@ -119,6 +119,7 @@ export class ChatController implements OnStart {
 		keyboard.OnKeyDown(
 			KeyCode.Return,
 			(event) => {
+				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (this.selected) {
 					if (this.inputField.text === "") {
 						EventSystem.current.ClearSelected();
@@ -147,6 +148,7 @@ export class ChatController implements OnStart {
 		keyboard.OnKeyDown(
 			KeyCode.Slash,
 			(event) => {
+				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (!this.selected) {
 					this.inputField.text = "/";
 					this.inputField.caretPosition = 1;

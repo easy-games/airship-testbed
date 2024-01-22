@@ -7,7 +7,6 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Dependency } from "@easy-games/flamework-core";
 
@@ -40,12 +39,12 @@ export default class GameManager extends AirshipBehaviour {
 			Dependency<LoadingScreenController>().FinishLoading();
 		}
 
-		if (RunUtil.IsServer()) {
-			for (let i = 0; i < 50; i++) {
-				const go = Object.Instantiate<GameObject>(this.testPrefab);
-				NetworkUtil.Spawn(go);
-			}
-		}
+		// if (RunUtil.IsServer()) {
+		// 	for (let i = 0; i < 50; i++) {
+		// 		const go = Object.Instantiate<GameObject>(this.testPrefab);
+		// 		NetworkUtil.Spawn(go);
+		// 	}
+		// }
 	}
 
 	public SpawnPlayer(player: Player): void {
