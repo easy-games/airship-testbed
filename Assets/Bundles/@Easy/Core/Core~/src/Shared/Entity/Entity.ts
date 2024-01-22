@@ -121,7 +121,7 @@ export class Entity {
 	public readonly id: number;
 	public readonly gameObject: GameObject;
 	public readonly networkObject: NetworkObject;
-	public readonly entityDriver: EntityDriver;
+	public readonly movement: HumanMovement;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
 	public animator: CharacterEntityAnimator;
@@ -145,16 +145,16 @@ export class Entity {
 	protected displayName: string;
 	protected healthbarEnabled = false;
 	protected healthbar?: Healthbar;
-	protected state: EntityState;
+	protected state: HumanState;
 	protected bin: Bin = new Bin();
 
 	public readonly onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 	public readonly onDespawn = new Signal<void>();
 	public readonly onPlayerChanged = new Signal<[newPlayer: Player | undefined, oldPlayer: Player | undefined]>();
-	public readonly onAdjustMove = new Signal<[moveModifier: MoveModifier]>();
+	public readonly onAdjustMove = new Signal<[moveModifier: HumanMoveModifier]>();
 	public readonly onMoveDirectionChanged = new Signal<[moveDirection: Vector3]>();
 	public readonly onDisplayNameChanged = new Signal<[displayName: string]>();
-	public readonly onStateChanged = new Signal<[state: EntityState, oldState: EntityState]>();
+	public readonly onStateChanged = new Signal<[state: HumanState, oldState: HumanState]>();
 	public readonly onDeath = new Signal<void>();
 	public readonly onArmorChanged = new Signal<number>();
 
@@ -171,7 +171,7 @@ export class Entity {
 
 		this.attributes = this.gameObject.GetComponent<EasyAttributes>();
 		this.accessoryBuilder = this.gameObject.GetComponent<AccessoryBuilder>();
-		this.entityDriver = this.gameObject.GetComponent<EntityDriver>();
+		this.movement = this.gameObject.GetComponent<HumanMovement>();
 
 		Profiler.BeginSample("EntityReferences.Constructor");
 		this.references = new EntityReferences(this.gameObject.GetComponent<GameObjectReferences>());
@@ -181,7 +181,7 @@ export class Entity {
 		Profiler.BeginSample("CharacterEntityAnimator.Constructor");
 		this.animator = new CharacterEntityAnimator(this, this.references);
 		Profiler.EndSample();
-		this.state = this.entityDriver.GetState();
+		this.state = this.movement.GetState();
 
 		if (this.clientId !== undefined) {
 			if (this.asServer) {
@@ -199,7 +199,7 @@ export class Entity {
 		}
 
 		if (this.IsLocalCharacter() || this.asServer) {
-			const adjustMoveConn = this.entityDriver.OnAdjustMove((moveModifier) => {
+			const adjustMoveConn = this.movement.OnAdjustMove((moveModifier) => {
 				this.onAdjustMove.Fire(moveModifier);
 			});
 			this.bin.Add(() => {
@@ -208,7 +208,7 @@ export class Entity {
 		}
 
 		if (this.IsLocalCharacter() || this.asServer) {
-			const movementChangeConn = this.entityDriver.OnMoveDirectionChanged((direction) => {
+			const movementChangeConn = this.movement.OnMoveDirectionChanged((direction) => {
 				this.onMoveDirectionChanged.Fire(direction);
 				this.moveDirection = direction;
 			});
@@ -218,7 +218,7 @@ export class Entity {
 			});
 		}
 
-		const stateChangeConn = this.entityDriver.OnStateChanged((newState) => {
+		const stateChangeConn = this.movement.OnStateChanged((newState) => {
 			// print("state change (" + this.displayName + "): " + newState);
 			const oldState = this.state;
 			this.state = newState;
@@ -237,9 +237,9 @@ export class Entity {
 	}
 
 	public Teleport(pos: Vector3, lookVector?: Vector3) {
-		this.entityDriver.Teleport(pos);
+		this.movement.Teleport(pos);
 		if (lookVector) {
-			this.entityDriver.SetLookVector(lookVector);
+			this.movement.SetLookVector(lookVector);
 			if (this.asServer && this.player) {
 				CoreNetwork.ServerToClient.Entity.SetLookVector.server.FireClient(
 					this.player.clientId,
@@ -257,7 +257,7 @@ export class Entity {
 	}
 
 	public IsCrouched(): boolean {
-		return this.state === EntityState.Crouching;
+		return this.state === HumanState.Crouching;
 	}
 
 	public AddHealthbar(): void {
@@ -334,10 +334,6 @@ export class Entity {
 
 	public GetMaxHealth(): number {
 		return this.maxHealth;
-	}
-
-	public GetEntityDriver(): EntityDriver {
-		return this.entityDriver;
 	}
 
 	public GetMoveDirection(): Vector3 {
@@ -532,7 +528,7 @@ export class Entity {
 		this.attributes.SetAttribute("immunity", newTime);
 	}
 
-	public GetState(): EntityState {
+	public GetState(): HumanState {
 		return this.state;
 	}
 
@@ -548,9 +544,9 @@ export class Entity {
 	public GetHeadOffset(): Vector3 {
 		const state = this.GetState();
 		let offset = new Vector3(0, 2, 0);
-		if (state === EntityState.Crouching) {
+		if (state === HumanState.Crouching) {
 			offset = new Vector3(0, 1, 0);
-		} else if (state === EntityState.Sliding) {
+		} else if (state === HumanState.Sliding) {
 			offset = new Vector3(0, 0.8, 0);
 		}
 		return offset;
@@ -559,9 +555,9 @@ export class Entity {
 	public GetFirstPersonHeadOffset(): Vector3 {
 		const state = this.GetState();
 		let offset = new Vector3(0, 1.7, 0);
-		if (state === EntityState.Crouching) {
+		if (state === HumanState.Crouching) {
 			offset = new Vector3(0, 1, 0);
-		} else if (state === EntityState.Sliding) {
+		} else if (state === HumanState.Sliding) {
 			offset = new Vector3(0, 0.8, 0);
 		}
 		return offset;

@@ -38,11 +38,11 @@ export class LocalEntityController implements OnStart {
 
 	private customDataQueue: { key: keyof DataStreamItems; value: unknown }[] = [];
 
-	private entityDriver: EntityDriver | undefined;
+	private entityDriver: HumanMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
 	public entityInput: EntityInput | undefined;
-	private prevState: EntityState = EntityState.Idle;
-	private currentState: EntityState = EntityState.Idle;
+	private prevState: HumanState = HumanState.Idle;
+	private currentState: HumanState = HumanState.Idle;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
@@ -149,9 +149,9 @@ export class LocalEntityController implements OnStart {
 		Game.localPlayer.SendMessage(ColorUtil.ColoredText(Theme.yellow, `Captured screenshot ${screenshotFilename}`));
 	}
 
-	private GetCamYOffset(state: EntityState, isFirstPerson: boolean) {
+	private GetCamYOffset(state: HumanState, isFirstPerson: boolean) {
 		const yOffset =
-			state === EntityState.Crouching || state === EntityState.Sliding
+			state === HumanState.Crouching || state === HumanState.Sliding
 				? isFirstPerson
 					? CAM_Y_OFFSET_CROUCH_1ST_PERSON
 					: CAM_Y_OFFSET_CROUCH_3RD_PERSON
@@ -160,7 +160,7 @@ export class LocalEntityController implements OnStart {
 	}
 
 	private CreateHumanoidCameraMode(entity: Entity): HumanoidCameraMode {
-		const state = this.entityDriver?.GetState() ?? EntityState.Idle;
+		const state = this.entityDriver?.GetState() ?? HumanState.Idle;
 		const yOffset = this.GetCamYOffset(state, this.firstPerson);
 		this.humanoidCameraMode = new HumanoidCameraMode(entity.gameObject, entity.model, this.firstPerson, yOffset);
 		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
@@ -185,7 +185,7 @@ export class LocalEntityController implements OnStart {
 				this.firstPerson = this.defaultFirstPerson;
 			}
 
-			this.entityDriver = entity.gameObject.GetComponent<EntityDriver>();
+			this.entityDriver = entity.gameObject.GetComponent<HumanMovement>();
 			this.entityInput = new EntityInput(entity);
 
 			this.screenshot = entity.gameObject.AddComponent<CameraScreenshotRecorder>();
@@ -209,7 +209,7 @@ export class LocalEntityController implements OnStart {
 
 			this.firstPersonChanged.Connect((isFirstPerson) => {
 				this.humanoidCameraMode?.SetYOffset(
-					this.GetCamYOffset(this.entityDriver?.GetState() ?? EntityState.Idle, isFirstPerson),
+					this.GetCamYOffset(this.entityDriver?.GetState() ?? HumanState.Idle, isFirstPerson),
 					true,
 				);
 			});
@@ -226,8 +226,7 @@ export class LocalEntityController implements OnStart {
 				this.UpdateFov();
 				this.fps?.OnMovementStateChange(state);
 				if (this.sprintOverlayEmission) {
-					this.sprintOverlayEmission.enabled =
-						state === EntityState.Sprinting || state === EntityState.Sliding;
+					this.sprintOverlayEmission.enabled = state === HumanState.Sprinting || state === HumanState.Sliding;
 				}
 			});
 			bin.Add(() => {
@@ -378,8 +377,8 @@ export class LocalEntityController implements OnStart {
 			? this.clientSettings.GetFirstPersonFov()
 			: this.clientSettings.GetThirdPersonFov();
 		if (
-			this.currentState === EntityState.Sprinting ||
-			this.currentState === EntityState.Sliding ||
+			this.currentState === HumanState.Sprinting ||
+			this.currentState === HumanState.Sliding ||
 			this.entityInput?.IsSprinting()
 			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
 		) {

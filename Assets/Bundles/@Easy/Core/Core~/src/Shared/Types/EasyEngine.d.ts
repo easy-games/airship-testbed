@@ -56,8 +56,8 @@ interface PlayerInfoDto extends Component {
 	gameObject: GameObject;
 }
 
-interface EntityDriver extends Component {
-	OnStateChanged(callback: (state: EntityState) => void): EngineEventConnection;
+interface HumanMovement extends Component {
+	OnStateChanged(callback: (state: HumanState) => void): EngineEventConnection;
 	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
@@ -87,7 +87,7 @@ interface EntityDriver extends Component {
 	GetVelocity(): Vector3;
 	DisableMovement();
 	EnableMovement();
-	GetState(): EntityState;
+	GetState(): HumanState;
 	UpdateSyncTick(): void;
 
 	groundedBlockId: number;
@@ -360,7 +360,7 @@ interface AnimatorStatic {
 }
 declare const Animator: AnimatorStatic;
 
-declare const enum EntityState {
+declare const enum HumanState {
 	Idle = 0,
 	Running = 1,
 	Jumping = 2,

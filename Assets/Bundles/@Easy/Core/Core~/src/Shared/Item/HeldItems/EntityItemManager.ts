@@ -202,7 +202,7 @@ export class EntityItemManager {
 		let entityId = entity.id ?? 0;
 		let items = this.entityItems.get(entityId);
 		if (items) {
-			items.OnNewState(HeldItemState.ON_DESTROY, entity.entityDriver.GetLookVector());
+			items.OnNewState(HeldItemState.ON_DESTROY, entity.movement.GetLookVector());
 			items.Destroy();
 			this.entityItems.delete(entityId);
 		}

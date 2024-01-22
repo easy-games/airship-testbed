@@ -49,7 +49,7 @@ export class GroundItemService implements OnStart {
 				const transform = entity.model.transform;
 				const position = transform.position.add(new Vector3(0, 1.5, 0)).add(transform.forward.mul(0.6));
 				let velocity = transform.forward.add(new Vector3(0, 0.7, 0)).mul(6);
-				velocity = velocity.add(entity.entityDriver.GetVelocity());
+				velocity = velocity.add(entity.movement.GetVelocity());
 				// print("velocity: " + tostring(velocity));
 
 				const beforeEvent = CoreServerSignals.BeforeEntityDropItem.Fire(

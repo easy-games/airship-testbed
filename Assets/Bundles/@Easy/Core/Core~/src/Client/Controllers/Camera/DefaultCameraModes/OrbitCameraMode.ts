@@ -37,7 +37,7 @@ export class OrbitCameraMode implements CameraMode {
 	private lookVector = Vector3.zero;
 	private lastAttachToPos = Vector3.zero;
 
-	private readonly entityDriver?: EntityDriver;
+	private readonly entityDriver?: HumanMovement;
 
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly keyboard = this.bin.Add(new Keyboard());
@@ -47,7 +47,7 @@ export class OrbitCameraMode implements CameraMode {
 
 	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
 		if (graphicalCharacter !== undefined) {
-			this.entityDriver = transform.GetComponent<EntityDriver>();
+			this.entityDriver = transform.GetComponent<HumanMovement>();
 			this.transform = graphicalCharacter;
 		}
 		this.SetupMobileControls();

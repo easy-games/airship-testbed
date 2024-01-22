@@ -8,7 +8,7 @@ import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
 
 export class EntityInput {
 	private readonly bin = new Bin();
-	private readonly entityDriver: EntityDriver;
+	private readonly movement: HumanMovement;
 	private disablers = new Set<number>();
 	private disablerCounter = 1;
 
@@ -17,7 +17,7 @@ export class EntityInput {
 	private autoSprinting = false;
 
 	constructor(private readonly entity: Entity) {
-		this.entityDriver = entity.entityDriver;
+		this.movement = entity.movement;
 		this.InitControls();
 	}
 
@@ -29,7 +29,7 @@ export class EntityInput {
 	public SetEnabled(enabled: boolean) {
 		this.enabled = enabled;
 		if (!enabled) {
-			this.entityDriver.SetMoveInput(Vector3.zero, false, false, false, false);
+			this.movement.SetMoveInput(Vector3.zero, false, false, false, false);
 		}
 	}
 
@@ -65,9 +65,9 @@ export class EntityInput {
 		this.autoSprinting = false;
 		this.bin.Add(
 			this.entity.onStateChanged.Connect((newState, oldState) => {
-				if (newState === EntityState.Sprinting) {
+				if (newState === HumanState.Sprinting) {
 					this.autoSprinting = true;
-				} else if (newState !== EntityState.Jumping) {
+				} else if (newState !== HumanState.Jumping) {
 					this.autoSprinting = false;
 				}
 			}),
@@ -109,7 +109,7 @@ export class EntityInput {
 				const moveSignal = new LocalEntityInputSignal(moveDirection, jump, sprinting, leftCtrl || c);
 				Dependency<LocalEntityController>().onBeforeLocalEntityInput.Fire(moveSignal);
 
-				this.entityDriver.SetMoveInput(
+				this.movement.SetMoveInput(
 					moveSignal.moveDirection,
 					moveSignal.jump,
 					moveSignal.sprinting,
@@ -124,7 +124,7 @@ export class EntityInput {
 
 		const onMobileJoystickChanged = (position: Vector3, phase: MobileJoystickPhase) => {
 			if (!this.enabled) return;
-			this.entityDriver.SetMoveInput(position, false, false, false, false);
+			this.movement.SetMoveInput(position, false, false, false, false);
 		};
 
 		// Switch controls based on preferred user input:

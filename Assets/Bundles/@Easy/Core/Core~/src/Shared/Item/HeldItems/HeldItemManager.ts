@@ -107,7 +107,7 @@ export class HeldItemManager {
 		if (this.newStateQueued) return;
 		this.newStateQueued = true;
 
-		const lookVector = this.entity.entityDriver.GetLookVector();
+		const lookVector = this.entity.movement.GetLookVector();
 
 		//Notify server of new State
 		Dependency<LocalEntityController>().AddToMoveData(

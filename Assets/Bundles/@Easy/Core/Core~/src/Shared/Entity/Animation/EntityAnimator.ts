@@ -49,7 +49,7 @@ export abstract class EntityAnimator {
 	public baseFootstepVolumeScale = 0.1;
 
 	constructor(protected entity: Entity, entityRef: EntityReferences) {
-		const animator = entity.entityDriver.animator;
+		const animator = entity.movement.animator;
 		this.worldmodelAnimancer = animator.worldmodelAnimancer;
 		this.viewmodelAnimancer = animator.viewmodelAnimancer;
 		this.entityRef = entityRef;
@@ -189,7 +189,7 @@ export abstract class EntityAnimator {
 			//Always play death animation in third person
 			// localController.ForceFirstPersonMode(false);
 			//Lock Inputs
-			this.entity.entityDriver.disableInput = true;
+			this.entity.movement.disableInput = true;
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
@@ -269,7 +269,7 @@ export abstract class EntityAnimator {
 		if (os.clock() - this.lastFootstepSoundTime < 0.18) {
 			return;
 		}
-		const blockId = this.entity.entityDriver.groundedBlockId;
+		const blockId = this.entity.movement.groundedBlockId;
 		if (blockId === 0) return;
 
 		if (!cameraPos) {

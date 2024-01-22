@@ -21,7 +21,7 @@ export class TpAllCommand extends ChatCommand {
 						ColorUtil.ColoredText(Theme.aqua, player.username) +
 							ColorUtil.ColoredText(Theme.gray, " teleported you."),
 					);
-					p.character.Teleport(pos, player.character?.entityDriver.GetLookVector());
+					p.character.Teleport(pos, player.character?.movement.GetLookVector());
 				}
 			}
 		}

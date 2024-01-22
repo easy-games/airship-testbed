@@ -94,7 +94,7 @@ export class CharacterEntityAnimator {
 	//private camera: Camera;
 
 	public constructor(public readonly entity: Entity, public readonly refs: EntityReferences) {
-		const animator = entity.entityDriver.animator;
+		const animator = entity.movement.animator;
 		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
 		this.isFlashing = false;
 		this.viewModelEnabled = this.entity.IsLocalCharacter();
@@ -527,7 +527,7 @@ export class CharacterEntityAnimator {
 			//Always play death animation in third person
 			// localController.ForceFirstPersonMode(false);
 			//Lock Inputs
-			this.entity.entityDriver.disableInput = true;
+			this.entity.movement.disableInput = true;
 		}
 		const deathClip = this.deathClipTP; // isFirstPerson ? this.deathClipFPS : this.deathClipTP;
 		if (deathClip) {
@@ -607,7 +607,7 @@ export class CharacterEntityAnimator {
 		if (os.clock() - this.lastFootstepSoundTime < 0.18) {
 			return;
 		}
-		const blockId = this.entity.entityDriver.groundedBlockId;
+		const blockId = this.entity.movement.groundedBlockId;
 		if (blockId === 0) return;
 
 		if (!cameraPos) {

@@ -46,9 +46,9 @@ export class NametagController implements OnStart {
 				}
 			};
 			event.entity.onStateChanged.Connect((newState, oldState) => {
-				if (newState === EntityState.Crouching) {
+				if (newState === HumanState.Crouching) {
 					SetNametagAlpha(event.entity, 0.1);
-				} else if (oldState === EntityState.Crouching) {
+				} else if (oldState === HumanState.Crouching) {
 					SetNametagAlpha(event.entity, 1);
 				}
 			});

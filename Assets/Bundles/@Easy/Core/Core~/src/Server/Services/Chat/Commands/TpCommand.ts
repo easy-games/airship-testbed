@@ -30,7 +30,7 @@ export class TpCommand extends ChatCommand {
 
 		if (!player.character) return;
 
-		player.character.Teleport(pos, targetPlayer.character?.entityDriver.GetLookVector());
+		player.character.Teleport(pos, targetPlayer.character?.movement.GetLookVector());
 		player.SendMessage(
 			ColorUtil.ColoredText(Theme.gray, "Teleported to ") +
 				ColorUtil.ColoredText(Theme.yellow, targetPlayer.username),

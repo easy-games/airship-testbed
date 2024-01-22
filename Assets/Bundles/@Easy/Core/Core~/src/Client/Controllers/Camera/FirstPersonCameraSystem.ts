@@ -182,17 +182,17 @@ export class FirstPersonCameraSystem {
 		// }
 	}
 
-	public OnMovementStateChange(state: EntityState) {
-		if (state === EntityState.Sprinting) {
+	public OnMovementStateChange(state: HumanState) {
+		if (state === HumanState.Sprinting) {
 			this.targetBobData = this.sprintingBob;
 			this.targetBobStrength = 1;
-		} else if (state === EntityState.Running) {
+		} else if (state === HumanState.Running) {
 			this.targetBobData = this.walkingBob;
 			this.targetBobStrength = 1;
-		} else if (state === EntityState.Sliding) {
+		} else if (state === HumanState.Sliding) {
 			this.targetBobData = this.slidingBob;
 			this.targetBobStrength = 1;
-		} else if (state === EntityState.Jumping) {
+		} else if (state === HumanState.Jumping) {
 			this.targetBobData = this.slidingBob;
 			this.targetBobStrength = 0.5;
 		} else {

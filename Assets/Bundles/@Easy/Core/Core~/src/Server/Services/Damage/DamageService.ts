@@ -35,7 +35,7 @@ export class DamageService implements OnStart {
 			print("Received: " + InstanceFinder.TimeManager.Tick);
 			const entity = this.entityService.GetEntityByClientId(clientId);
 			if (!entity) return -1;
-			const entityDriver = entity.gameObject.GetComponent<EntityDriver>();
+			const entityDriver = entity.gameObject.GetComponent<HumanMovement>();
 			const dir = entity.model.transform.forward;
 
 			this.ApplyKnockback(entityDriver, dir.mul(new Vector3(-1, 1, -1)).add(new Vector3(0, 1, 0)));
@@ -48,7 +48,7 @@ export class DamageService implements OnStart {
 				const dir = entity.model.transform.forward;
 				const horizontalScalar = this.combatVars.GetNumber("kbX");
 				const verticalScalar = this.combatVars.GetNumber("kbY");
-				entity.entityDriver.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
+				entity.movement.SetVelocity(dir.mul(-horizontalScalar).add(new Vector3(0, verticalScalar, 0)));
 			}
 		});
 	}
@@ -150,7 +150,7 @@ export class DamageService implements OnStart {
 		const dead = entity.GetHealth() === 0;
 		if (dead) {
 			entity.Kill();
-			entity.entityDriver.disableInput = true;
+			entity.movement.disableInput = true;
 			const entityDeathEvent = new EntityDeathServerSignal(
 				entity,
 				damageEvent.fromEntity,
@@ -180,7 +180,7 @@ export class DamageService implements OnStart {
 			if (shouldGrantImmunity) entity.GrantImmunity(0.24);
 
 			//Hit stun and Knockback
-			const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
+			const driver = entity.networkObject.gameObject.GetComponent<HumanMovement>();
 			if (driver) {
 				//DamageUtils.AddHitstun(entity, amount, () => {
 				this.ApplyKnockback(driver, config?.knockbackDirection);
@@ -191,7 +191,7 @@ export class DamageService implements OnStart {
 		return true;
 	}
 
-	public ApplyKnockback(driver: EntityDriver, knockbackVel: Vector3 | undefined) {
+	public ApplyKnockback(driver: HumanMovement, knockbackVel: Vector3 | undefined) {
 		let horizontalScalar = this.combatVars.GetNumber("kbX");
 		let verticalScalar = this.combatVars.GetNumber("kbY");
 

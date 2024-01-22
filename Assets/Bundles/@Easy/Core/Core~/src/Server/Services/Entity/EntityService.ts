@@ -129,7 +129,7 @@ export class EntityService implements OnStart {
 		}
 
 		// Custom move command data handling:
-		const customDataConn = entity.entityDriver.OnDispatchCustomData((tick, customData) => {
+		const customDataConn = entity.movement.OnDispatchCustomData((tick, customData) => {
 			const allData = customData.Decode() as { key: unknown; value: unknown }[];
 			for (const data of allData) {
 				const moveEvent = new MoveCommandDataEvent(player?.clientId ?? -1, tick, data.key, data.value);
