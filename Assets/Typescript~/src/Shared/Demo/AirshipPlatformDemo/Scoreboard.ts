@@ -51,9 +51,14 @@ export default class Scoreboard extends AirshipBehaviour {
 		);
 
 		this.bin.Add(
-			Network.ServerToClient.TopScores.client.OnServerEvent((data) => {
-				this.leaderList.text = data.reduce((text, value, index) => {
-					text += `${value.rank}: ${value.value}\n`;
+			Network.ServerToClient.TopScores.client.OnServerEvent(async (event) => {
+				const { data } = await Dependency<UserController>().GetUsersById(
+					event.map((u) => u.id),
+					false,
+				);
+				if (!data) return;
+				this.leaderList.text = event.reduce((text, value, index) => {
+					text += `${value.rank}: ${data[index]} (${value.value})\n`;
 					return text;
 				}, "Leaders:\n");
 			}),

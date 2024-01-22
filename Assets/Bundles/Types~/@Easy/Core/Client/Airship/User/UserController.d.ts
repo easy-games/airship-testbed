@@ -8,10 +8,16 @@ import { Result } from "../../../Shared/Types/Result";
 export declare class UserController implements OnStart {
     OnStart(): void;
     /**
-     * Gets a users data by their username.
-     * @param username The username of the user
+     * Gets a single user by their username.
+     * @param username The username of the user.
+     * @returns A user object
      */
     GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>>;
+    /**
+     * Gets a single user by their ID.
+     * @param userId The users ID
+     * @returns A user object
+     */
     GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>>;
     /**
      * Gets multiple users at once. This function will not succeed if it is unable to
@@ -21,5 +27,5 @@ export declare class UserController implements OnStart {
      * succeed even if not all userIds resolve to a user.
      * @returns An array of user objects.
      */
-    GetUsersById(userIds: string[], strict?: "true" | "false"): Promise<Result<PublicUser[], undefined>>;
+    GetUsersById(userIds: string[], strict?: boolean): Promise<Result<PublicUser[], undefined>>;
 }

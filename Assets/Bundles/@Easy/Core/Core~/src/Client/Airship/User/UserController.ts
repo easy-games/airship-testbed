@@ -11,8 +11,9 @@ export class UserController implements OnStart {
 	OnStart(): void {}
 
 	/**
-	 * Gets a users data by their username.
-	 * @param username The username of the user
+	 * Gets a single user by their username.
+	 * @param username The username of the user.
+	 * @returns A user object
 	 */
 	public async GetUserByUsername(username: string): Promise<Result<PublicUser | undefined, undefined>> {
 		const res = await UsersControllerBackend.GetUserByUsername(username);
@@ -38,6 +39,11 @@ export class UserController implements OnStart {
 		};
 	}
 
+	/**
+	 * Gets a single user by their ID.
+	 * @param userId The users ID
+	 * @returns A user object
+	 */
 	public async GetUserById(userId: string): Promise<Result<PublicUser | undefined, undefined>> {
 		const res = await UsersControllerBackend.GetUserById(userId);
 
@@ -70,10 +76,7 @@ export class UserController implements OnStart {
 	 * succeed even if not all userIds resolve to a user.
 	 * @returns An array of user objects.
 	 */
-	public async GetUsersById(
-		userIds: string[],
-		strict: "true" | "false" = "true",
-	): Promise<Result<PublicUser[], undefined>> {
+	public async GetUsersById(userIds: string[], strict = true): Promise<Result<PublicUser[], undefined>> {
 		if (userIds.size() === 0) {
 			return {
 				success: true,
@@ -81,7 +84,9 @@ export class UserController implements OnStart {
 			};
 		}
 
-		const res = await UsersControllerBackend.GetUsersById(`users[]=${userIds.join("&users[]=")}&strict=${strict}`);
+		const res = await UsersControllerBackend.GetUsersById(
+			`users[]=${userIds.join("&users[]=")}&strict=${strict ? "true" : "false"}`,
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.data);
