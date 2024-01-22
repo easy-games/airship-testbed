@@ -22,22 +22,14 @@ export class EntityAccessoryController implements OnStart {
 		CoreClientSignals.EntitySpawn.Connect((event) => {
 			Profiler.BeginSample("AutoEqupArmor");
 			if (event.entity instanceof CharacterEntity) {
-				if (event.entity.IsPlayerOwned() || true) {
-					//Add Kit Accessory
-					if (AvatarUtil.defaultOutfit) {
-						Profiler.BeginSample("EquipAccessories");
-						const accessories = event.entity.accessoryBuilder.EquipAccessoryOutfit(
-							AvatarUtil.defaultOutfit,
-							true,
-						);
-						if (event.entity.IsLocalCharacter()) {
-							Dependency<ViewmodelController>().accessoryBuilder.EquipAccessoryOutfit(
-								AvatarUtil.defaultOutfit,
-								true,
-							);
-						}
-						Profiler.EndSample();
+				if (event.entity.IsPlayerOwned()) {
+					//Load Users Equipped Outfit
+					AvatarUtil.LoadEquippedUserOutfit(event.entity.accessoryBuilder);
+					if (event.entity.IsLocalCharacter()) {
+						AvatarUtil.LoadEquippedUserOutfit(Dependency<ViewmodelController>().accessoryBuilder);
 					}
+				} else {
+					AvatarUtil.LoadDefaultOutfit(event.entity.accessoryBuilder);
 				}
 
 				const inventory = event.entity.GetInventory();

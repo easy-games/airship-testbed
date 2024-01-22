@@ -14,7 +14,9 @@ export class BWShopkeeperController implements OnStart {
 	private itemShopAccessoryCollection = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/ItemShopKeeper/ItemShopKeeperCollection.asset",
 	);
-	private teamUpgradesAccessoryCollection = this.itemShopAccessoryCollection;
+	private teamUpgradesAccessoryCollection = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
+		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/ItemShopKeeper/TeamUpgradeKeeperCollection.asset",
+	);
 
 	constructor(
 		private readonly teamUpgradeController: TeamUpgradeController,
@@ -24,7 +26,7 @@ export class BWShopkeeperController implements OnStart {
 	OnStart(): void {
 		Network.ServerToClient.ItemShop.AddNPCs.client.OnServerEvent((entityIds) => {
 			for (const id of entityIds) {
-				Task.Spawn(async () => {
+				task.spawn(async () => {
 					const entity = await Entity.WaitForId(id);
 					if (!entity) {
 						warn("Failed to find Item Shop entity: " + id);
@@ -69,7 +71,7 @@ export class BWShopkeeperController implements OnStart {
 					});
 
 					// Clothing
-					entity.accessoryBuilder.EquipAccessoryOutfit(this.itemShopAccessoryCollection, true);
+					entity.accessoryBuilder.EquipAccessoryOutfit(this.teamUpgradesAccessoryCollection, true);
 				});
 			}
 		});
