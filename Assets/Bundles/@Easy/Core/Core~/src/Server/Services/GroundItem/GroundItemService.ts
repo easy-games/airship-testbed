@@ -1,8 +1,9 @@
-import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
 import { CoreServerSignals } from "Server/CoreServerSignals";
 import { BeforeEntityDropItemSignal } from "Server/Signals/BeforeEntityDropItemSignal";
 import { EntityDropItemSignal } from "Server/Signals/EntityDropItemSignal";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CoreRefs } from "Shared/CoreRefs";
 import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
@@ -12,8 +13,6 @@ import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Task } from "Shared/Util/Task";
 import { TimeUtil } from "Shared/Util/TimeUtil";
-import { EntityService } from "../Entity/EntityService";
-import { PlayerService } from "../Player/PlayerService";
 
 // Position of items are rounded to a multiple of this number,
 // and are merged if they share the same rounded position:
@@ -32,7 +31,7 @@ export class GroundItemService implements OnStart {
 	private idleGroundItemsByPosition = new Map<Vector3, GroundItem[]>();
 	private groundItemsFolder: GameObject;
 
-	constructor(private readonly entityService: EntityService) {
+	constructor() {
 		this.groundItemsFolder = GameObject.Create("GroundItemsServer");
 		this.groundItemsFolder.transform.SetParent(CoreRefs.rootTransform);
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");
@@ -90,35 +89,35 @@ export class GroundItemService implements OnStart {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) return;
 
-			const entity = this.entityService.GetEntityByClientId(clientId);
-			if (!entity?.IsAlive()) return;
+			const character = Airship.Characters.FindByClientId(clientId);
+			if (!character?.IsAlive()) return;
 
 			if (
 				!GroundItemUtil.CanPickupGroundItem(
 					groundItem,
 					groundItem.transform.position,
-					entity.networkObject.gameObject.transform.position,
+					character.networkObject.gameObject.transform.position,
 				)
 			) {
 				return;
 			}
 
-			CoreServerSignals.EntityPickupItem.Fire({
-				entity,
-				groundItem: groundItem,
-			});
+			// CoreServerSignals.EntityPickupItem.Fire({
+			// 	entity,
+			// 	groundItem: groundItem,
+			// });
 
 			// this.RemoveGroundItemFromTracking(groundItem);
 			// GameObjectUtil.Destroy(groundItem.rb.gameObject);
 			this.DestroyGroundItem(groundItem);
 
-			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.server.FireAllClients(entity.id, groundItem.id);
-			if (entity instanceof CharacterEntity) {
-				entity.GetInventory().AddItem(groundItem.itemStack);
-			}
+			CoreNetwork.ServerToClient.EntityPickedUpGroundItem.server.FireAllClients(character.id, groundItem.id);
+			// if (entity instanceof CharacterEntity) {
+			// 	entity.GetInventory().AddItem(groundItem.itemStack);
+			// }
 		});
 
-		Dependency<PlayerService>().ObservePlayers((player) => {
+		Airship.Players.ObservePlayers((player) => {
 			CoreNetwork.ServerToClient.GroundItem.Add.server.FireClient(
 				player.clientId,
 				Object.values(this.groundItems).map((i) => {

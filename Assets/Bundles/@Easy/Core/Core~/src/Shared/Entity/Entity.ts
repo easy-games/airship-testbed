@@ -3,7 +3,7 @@ import { LocalEntityController } from "Client/Controllers/Character/LocalEntityC
 import { EntityController } from "Client/Controllers/Entity/EntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { EntityService } from "Server/Services/Entity/EntityService";
-import { PlayerService } from "Server/Services/Player/PlayerService";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { BlockDef } from "Shared/Item/ItemDefinitionTypes";
@@ -184,13 +184,8 @@ export class Entity {
 		this.state = this.movement.GetState();
 
 		if (this.clientId !== undefined) {
-			if (this.asServer) {
-				const player = Dependency<PlayerService>().GetPlayerFromClientId(this.clientId);
-				this.SetPlayer(player);
-			} else {
-				const player = Dependency<PlayerController>().GetPlayerFromClientId(this.clientId);
-				this.SetPlayer(player);
-			}
+			const player = Airship.Players.FindByClientId(this.clientId);
+			this.SetPlayer(player);
 		}
 		if (this.player) {
 			this.displayName = this.player.username;

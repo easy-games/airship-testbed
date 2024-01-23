@@ -37,16 +37,16 @@ interface Time {
 
 declare const Time: Time;
 
-interface PlayerManager extends Component {
+interface PlayerManagerBridge extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	GetPlayers(): CSArray<PlayerInfoDto>;
 	AddBotPlayer(username: string, tag: string, userId: string): void;
 }
 interface PlayerManagerConstructor {
-	Instance: PlayerManager;
+	Instance: PlayerManagerBridge;
 }
-declare const PlayerManager: PlayerManagerConstructor;
+declare const PlayerManagerBridge: PlayerManagerConstructor;
 
 interface PlayerInfoDto extends Component {
 	clientId: number;
@@ -798,8 +798,6 @@ interface NetworkObject extends MonoBehaviour {
 	PrefabId: number;
 	SpawnableCollectionId: number;
 	AssetPathHash: number;
-
-	constructor(): NetworkObject;
 
 	Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
 	Despawn(go: GameObject, despawnType: unknown): void;

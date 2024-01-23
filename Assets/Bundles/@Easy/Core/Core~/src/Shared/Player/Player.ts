@@ -1,8 +1,7 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
-import { PlayerService } from "Server/Services/Player/PlayerService";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
@@ -21,6 +20,8 @@ export interface PlayerDto {
 	usernameTag: string;
 	teamId: string | undefined;
 }
+
+const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/Character.prefab");
 
 export class Player {
 	/**
@@ -87,7 +88,21 @@ export class Player {
 		public usernameTag: string,
 	) {}
 
-	public SpawnCharacter(): void {}
+	public SpawnCharacter(
+		pos: Vector3,
+		config?: {
+			lookDirection?: Vector3;
+		},
+	): void {
+		if (!RunUtil.IsServer()) {
+			error("Player.SpawnCharacter must be called on the server.");
+		}
+
+		const go = Object.Instantiate(characterPrefab);
+		const characterComponent = go.GetComponent<Character>();
+		characterComponent.Init(this);
+		InstanceFinder.ServerManager.Spawn(go, this.nob.Owner);
+	}
 
 	public GetProfilePicture(): ProfilePictureMeta {
 		return ProfilePictureDefinitions[this.profilePicture];
@@ -172,13 +187,5 @@ export class Player {
 		this.bin.Clean();
 		this.onLeave.Fire();
 		this.onLeave.DisconnectAll();
-	}
-
-	public static FindByClientId(clientId: number): Player | undefined {
-		if (RunUtil.IsServer()) {
-			return Dependency<PlayerService>().GetPlayerFromClientId(clientId);
-		} else {
-			return Dependency<PlayerController>().GetPlayerFromClientId(clientId);
-		}
 	}
 }

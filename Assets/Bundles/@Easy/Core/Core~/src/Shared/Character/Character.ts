@@ -30,6 +30,14 @@ export default class Character extends AirshipBehaviour {
 
 	public Teleport(pos: Vector3, lookDirection?: Vector3): void {}
 
+	public IsAlive(): boolean {
+		return this.health > 0;
+	}
+
+	public IsDead(): boolean {
+		return !this.IsAlive();
+	}
+
 	public GetHealth(): number {
 		return this.health;
 	}

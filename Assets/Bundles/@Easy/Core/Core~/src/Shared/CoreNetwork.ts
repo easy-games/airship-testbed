@@ -174,6 +174,8 @@ export const CoreNetwork = {
 		AbilityUsed: new RemoteEvent<[clientId: number, abilityId: string]>(),
 		AbilityChargeStarted: new RemoteEvent<[clientId: number, dto: ChargingAbilityDto]>(),
 		AbilityChargeEnded: new RemoteEvent<[clientId: number, dto: ChargingAbilityEndedDto]>(),
+
+		SpawnCharacters: new RemoteEvent<[[userId: string, nobId: number][]]>(),
 	},
 };
 

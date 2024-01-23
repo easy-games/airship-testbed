@@ -1,12 +1,12 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { PlayerService } from "../Player/PlayerService";
 import { AbilityEnableStateCommand, AddAbilityCommand, RemoveAbilityCommand } from "./Commands/AbilityCommands";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
@@ -38,7 +38,7 @@ export class ChatService implements OnStart {
 
 	public readonly canUseRichText = true;
 
-	constructor(private readonly playerService: PlayerService) {
+	constructor() {
 		this.RegisterCommand(new DamageCommand());
 		this.RegisterCommand(new JoinCodeCommand());
 		this.RegisterCommand(new CreateGeneratorCommand());
@@ -102,7 +102,7 @@ export class ChatService implements OnStart {
 	OnStart(): void {
 		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((clientId, text) => {
 			const rawMessage = text;
-			const player = this.playerService.GetPlayerFromClientId(clientId);
+			const player = Airship.Players.FindByClientId(clientId);
 			if (!player) {
 				error("player not found.");
 			}

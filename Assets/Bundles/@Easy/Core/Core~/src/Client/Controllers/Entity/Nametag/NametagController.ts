@@ -7,19 +7,12 @@ import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Team } from "Shared/Team/Team";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
-import { PlayerController } from "../../Player/PlayerController";
-import { EntityController } from "../EntityController";
 
 @Controller({})
 export class NametagController implements OnStart {
 	private readonly nameTageId = "Nametag";
 	private readonly graphicsBundleName = "Graphics";
 	private showSelfNametag = false;
-
-	constructor(
-		private readonly playerController: PlayerController,
-		private readonly entityController: EntityController,
-	) {}
 
 	OnStart(): void {
 		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {

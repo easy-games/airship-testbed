@@ -1,5 +1,5 @@
-﻿import { Game } from "Shared/Game";
-import { Player } from "Shared/Player/Player";
+﻿import { Airship } from "Shared/Airship";
+import { Game } from "Shared/Game";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreNetwork } from "../../CoreNetwork";
 import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
@@ -162,7 +162,7 @@ export class EntityItemManager {
 			//Listen to state changes triggered by client
 			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
 				if (event.Is("HeldItemState")) {
-					const player = Player.FindByClientId(event.clientId);
+					const player = Airship.Players.FindByClientId(event.clientId);
 					if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
 						return;
 					}
