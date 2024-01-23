@@ -1901,6 +1901,9 @@ interface GameObject extends Object {
 	 */
 	GetComponent<T extends Component | AirshipBehaviour = Component>(type: string): T;
 
+	GetAirshipComponent<T extends AirshipBehaviour>(): T | undefined;
+	GetAirshipComponent<T extends Component | AirshipBehaviour = AirshipBehaviour>(type: string): T | undefined;
+
 	GetComponents<T extends AirshipBehaviour | Component>(): CSArray<T>;
 	GetComponents<T extends Component | AirshipBehaviour = Component>(type: string): CSArray<T>;
 
