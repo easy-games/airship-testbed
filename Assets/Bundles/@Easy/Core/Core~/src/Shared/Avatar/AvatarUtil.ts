@@ -1,5 +1,5 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import { AvatarPlatformAPI, Outfit } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -108,5 +108,43 @@ export class AvatarUtil {
 
 	public static GetAccessoryFromClassId(classId: string) {
 		return this.allAvatarAccessories.get(classId);
+	}
+
+	public static LoadEquippedUserOutfit(
+		builder: AccessoryBuilder,
+		options: { keepOldAccessories?: boolean; combineMeshes?: boolean } = {},
+	) {
+		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
+		if (!outfit) {
+			warn("Unable to load users default outfit. Equipping baked default outfit");
+			this.LoadDefaultOutfit(builder);
+			return;
+		}
+		this.LoadUserOutfit(outfit, builder, options);
+	}
+
+	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
+		if (this.defaultOutfit) {
+			builder.EquipAccessoryOutfit(this.defaultOutfit, true);
+		}
+	}
+
+	public static LoadUserOutfit(
+		outfit: Outfit,
+		builder: AccessoryBuilder,
+		options: { keepOldAccessories?: boolean } = {},
+	) {
+		if (!options.keepOldAccessories) {
+			builder.RemoveAccessories();
+		}
+		outfit.accessories.forEach((acc) => {
+			const accComponent = this.GetAccessoryFromClassId(acc.item.class.classId);
+			if (!accComponent) {
+				warn("Unable to find accessory with class ID: " + acc.item.class.classId);
+				return; //Continue
+			}
+			builder.AddSingleAccessory(accComponent, false);
+		});
+		builder.TryCombineMeshes();
 	}
 }

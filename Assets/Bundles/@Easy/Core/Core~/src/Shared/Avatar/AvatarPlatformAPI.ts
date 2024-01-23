@@ -37,6 +37,7 @@ export type Outfit = {
 
 export class AvatarPlatformAPI {
 	private static Log(message: string) {
+		return;
 		print("AvatarAPI: " + message);
 	}
 
@@ -57,7 +58,7 @@ export class AvatarPlatformAPI {
 	public static GetEquippedOutfit(): Outfit | undefined {
 		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped`));
-		if (res.success) {
+		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as Outfit;
 		}
 	}
@@ -65,7 +66,7 @@ export class AvatarPlatformAPI {
 	public static GetAvatarOutfit(outfitId: string): Outfit | undefined {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
-		if (res.success) {
+		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as Outfit;
 		}
 	}
