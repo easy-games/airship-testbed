@@ -1,5 +1,4 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { EntityController } from "Client/Controllers/Entity/EntityController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { EntityService } from "Server/Services/Entity/EntityService";
@@ -7,10 +6,7 @@ import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { BlockDef } from "Shared/Item/ItemDefinitionTypes";
-import { ItemType } from "Shared/Item/ItemType";
-import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Player } from "Shared/Player/Player";
-import { Projectile } from "Shared/Projectile/Projectile";
 import { Team } from "Shared/Team/Team";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Bin } from "Shared/Util/Bin";
@@ -22,7 +18,7 @@ import { Signal } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { CharacterEntityAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
+import { CharacterAnimator, ItemPlayMode } from "./Animation/CharacterEntityAnimator";
 import { EntitySerializer } from "./EntitySerializer";
 
 export interface EntityDto {
@@ -124,7 +120,7 @@ export class Entity {
 	public readonly movement: CharacterMovement;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
-	public animator: CharacterEntityAnimator;
+	public animator: CharacterAnimator;
 	public readonly references: EntityReferences;
 	public readonly accessoryBuilder: AccessoryBuilder;
 
@@ -179,7 +175,7 @@ export class Entity {
 		this.model = this.references.root.gameObject;
 		this.model.transform.localPosition = new Vector3(0, 0, 0);
 		Profiler.BeginSample("CharacterEntityAnimator.Constructor");
-		this.animator = new CharacterEntityAnimator(this, this.references);
+		this.animator = new CharacterAnimator(this, this.references);
 		Profiler.EndSample();
 		this.state = this.movement.GetState();
 
@@ -602,47 +598,47 @@ export class Entity {
 		return results;
 	}
 
-	public LaunchProjectile(
-		launcherItemType: ItemType | undefined,
-		projectileItemType: ItemType,
-		launchPos: Vector3,
-		velocity: Vector3,
-	): AirshipProjectile | undefined {
-		const itemMeta = ItemUtil.GetItemDef(projectileItemType);
-		const launcherItemMeta = launcherItemType ? ItemUtil.GetItemDef(launcherItemType) : undefined; // I kind of wish there was syntactic sugar for this lol
+	// public LaunchProjectile(
+	// 	launcherItemType: ItemType | undefined,
+	// 	projectileItemType: ItemType,
+	// 	launchPos: Vector3,
+	// 	velocity: Vector3,
+	// ): AirshipProjectile | undefined {
+	// 	const itemMeta = ItemUtil.GetItemDef(projectileItemType);
+	// 	const launcherItemMeta = launcherItemType ? ItemUtil.GetItemDef(launcherItemType) : undefined; // I kind of wish there was syntactic sugar for this lol
 
-		if (!itemMeta.projectile) {
-			return error("Tried to launch item that wasn't a projectile: " + projectileItemType);
-		}
-		let firstPerson = false;
-		if (this.IsLocalCharacter()) {
-			firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
-		}
+	// 	if (!itemMeta.projectile) {
+	// 		return error("Tried to launch item that wasn't a projectile: " + projectileItemType);
+	// 	}
+	// 	let firstPerson = false;
+	// 	if (this.IsLocalCharacter()) {
+	// 		firstPerson = Dependency<LocalEntityController>().IsFirstPerson();
+	// 	}
 
-		const [, id] = ItemUtil.GetItemTypeComponents(projectileItemType);
-		const projectilePath = itemMeta.projectile.prefabPath;
-		const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
+	// 	const [, id] = ItemUtil.GetItemTypeComponents(projectileItemType);
+	// 	const projectilePath = itemMeta.projectile.prefabPath;
+	// 	const projectileLauncher = this.gameObject.GetComponent<ProjectileLauncher>();
 
-		const powerMulitplier = itemMeta.projectileLauncher?.powerMultiplier ?? 1;
-		const easyProjectile = projectileLauncher.ClientFire(
-			projectilePath,
-			launcherItemMeta?.id ?? -1,
-			itemMeta.id,
-			launchPos,
-			velocity,
-			itemMeta.projectile.gravity / powerMulitplier,
-			0,
-		);
-		const projectile = new Projectile(easyProjectile, projectileItemType, this);
-		if (!this.asServer) {
-			const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
-			const ProjectileLaunchedClientSignal = import(
-				"Client/Controllers/Damage/Projectile/ProjectileLaunchedClientSignal"
-			).expect().ProjectileLaunchedClientSignal;
+	// 	const powerMulitplier = itemMeta.projectileLauncher?.powerMultiplier ?? 1;
+	// 	const easyProjectile = projectileLauncher.ClientFire(
+	// 		projectilePath,
+	// 		launcherItemMeta?.id ?? -1,
+	// 		itemMeta.id,
+	// 		launchPos,
+	// 		velocity,
+	// 		itemMeta.projectile.gravity / powerMulitplier,
+	// 		0,
+	// 	);
+	// 	const projectile = new Projectile(easyProjectile, projectileItemType, this);
+	// 	if (!this.asServer) {
+	// 		const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
+	// 		const ProjectileLaunchedClientSignal = import(
+	// 			"Client/Controllers/Damage/Projectile/ProjectileLaunchedClientSignal"
+	// 		).expect().ProjectileLaunchedClientSignal;
 
-			clientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));
-		}
-	}
+	// 		clientSignals.ProjectileLaunched.Fire(new ProjectileLaunchedClientSignal(projectile));
+	// 	}
+	// }
 
 	public GetArmor(): number {
 		return 0;

@@ -1,7 +1,7 @@
 import { Entity } from "Shared/Entity/Entity";
 import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
-import { ItemUtil } from "../Item/ItemUtil";
+import { ItemUtil } from "../../../../Bundles/@Easy/Core/Core~/src/Shared/Item/ItemUtil";
 
 export class BlockPlaceSignal {
 	public readonly itemMeta: ItemDef;

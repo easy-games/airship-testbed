@@ -41,6 +41,19 @@ export class CharacterManager implements OnStart {
 		return undefined;
 	}
 
+	public FindByCollider(collider: Collider): Character | undefined {
+		// todo: optimize
+		for (let character of this.characters) {
+			if (
+				character.gameObject === collider.gameObject ||
+				character.gameObject.transform.parent?.gameObject === collider.gameObject
+			) {
+				return character;
+			}
+		}
+		return undefined;
+	}
+
 	public RegisterCharacter(character: Character): void {
 		this.characters.add(character);
 	}

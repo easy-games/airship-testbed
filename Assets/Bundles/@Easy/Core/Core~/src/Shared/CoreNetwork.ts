@@ -1,7 +1,5 @@
 import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto } from "./Abilities/Ability";
-import { CropStateDto } from "./Crops/CropMeta";
 import { DamageType } from "./Damage/DamageType";
-import { DenyRegionDto } from "./DenyRegion/DenyRegionMeta";
 import { AccessorySlot } from "./Entity/Character/Accessory/AccessorySlot";
 import { EntityDto } from "./Entity/Entity";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
@@ -11,9 +9,7 @@ import { ItemStackDto } from "./Inventory/ItemStack";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
 import { ItemType } from "./Item/ItemType";
 import { RemoteEvent } from "./Network/RemoteEvent";
-import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
-import { ProjectileDto } from "./Projectile/Projectile";
 import { TeamDto } from "./Team/Team";
 
 export const CoreNetwork = {
@@ -39,10 +35,6 @@ export const CoreNetwork = {
 		SendChatMessage: new RemoteEvent<[text: string]>(),
 		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
 
-		TEST_LATENCY: new RemoteFunction<void, number>(),
-		TestKnockback2: new RemoteEvent<[]>(),
-		LibonatiTest: new RemoteEvent<[]>(),
-
 		// ----- REFACTORING -----
 		AbilityActivateRequest: new RemoteEvent<[abilityId: string]>(),
 	},
@@ -64,7 +56,7 @@ export const CoreNetwork = {
 		>(),
 		// BlockDestroyed: new RemoteEvent<[blockPos: Vector3, blockId: number]>(),
 		BlockGroupDestroyed: new RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>(),
-		ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
+		// ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
 		EntityDamage: new RemoteEvent<
 			[
 				entityId: number,
@@ -129,18 +121,6 @@ export const CoreNetwork = {
 		GeneratorSpawnRateChanged: new RemoteEvent<[generatorId: string, newSpawnRate: number]>(),
 		/** Fired when a user joins late. Sends full generator state snapshot. */
 		GeneratorSnapshot: new RemoteEvent<[generatorStateDtos: GeneratorDto[]]>(),
-		/** Fired when a crop is planted */
-		CropPlanted: new RemoteEvent<[cropStateDto: CropStateDto]>(),
-		/** Fired when a crop is planted */
-		CropHarvested: new RemoteEvent<[cropIdx: number]>(),
-		/** Fired when a crop  */
-		CropGrowthUpdated: new RemoteEvent<[cropIdx: number, cropLevel: number]>(),
-		/** Fired when a user joins late. Sends full crop state snapshot */
-		CropSnapshot: new RemoteEvent<[cropStateDtos: CropStateDto[]]>(),
-		/** Fired when a **tagged** GameObject is spawned on the server. */
-		NetGameObjectReplicating: new RemoteEvent<[networkObjectId: number, tag: string]>(),
-		/** Fired when a player joins. Sends `CollectionManager` replicated set state. */
-		CollectionManagerState: new RemoteEvent<[state: Map<string, Set<number>>]>(),
 		/** Fired when client first joins to send existing teams and when new teams are created. */
 		AddTeams: new RemoteEvent<[teams: TeamDto[]]>(),
 		AddPlayerToTeam: new RemoteEvent<[teamId: string, userId: string]>(),
@@ -152,10 +132,6 @@ export const CoreNetwork = {
 		SyncPrefabBlocks: new RemoteEvent<[blockPositions: Vector3[]]>(),
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
-		/** Fired when a deny region is created. */
-		DenyRegionCreated: new RemoteEvent<[denyRegion: DenyRegionDto]>(),
-		/** Fired when a player joins. Sends entire deny region state. */
-		DenyRegionSnapshot: new RemoteEvent<[denyRegions: DenyRegionDto[]]>(),
 		/** Fired when the current selected items state changes on an entity*/
 		HeldItemStateChanged: new RemoteEvent<[entityId: number, state: HeldItemState, lookVector: Vector3]>(),
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>(),

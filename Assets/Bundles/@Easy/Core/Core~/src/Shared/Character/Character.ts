@@ -1,3 +1,4 @@
+import { CharacterAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -7,15 +8,25 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized()
 	public player?: Player;
 
+	@NonSerialized()
+	public animator!: CharacterAnimator;
+
 	@Header("References")
 	public movement!: CharacterMovement;
 	public animationHelper!: CharacterAnimationHelper;
+	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
 	public networkObject!: NetworkObject;
+	public rig!: GameObject;
+
+	@Header("Bones")
+	public headBone!: GameObject;
+	public chestBone!: GameObject;
 
 	// State
 	@NonSerialized() public id!: number;
 	@NonSerialized() public state!: CharacterState;
+	@Header("State")
 	private health!: number;
 	private maxHealth!: number;
 
@@ -29,6 +40,10 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public Teleport(pos: Vector3, lookDirection?: Vector3): void {}
+
+	public IsDestroyed(): boolean {
+		return this.gameObject.IsDestroyed();
+	}
 
 	public IsAlive(): boolean {
 		return this.health > 0;

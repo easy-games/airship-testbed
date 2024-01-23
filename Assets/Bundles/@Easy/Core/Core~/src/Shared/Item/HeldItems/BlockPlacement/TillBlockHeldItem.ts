@@ -14,7 +14,7 @@ export class TillBlockHeldItem extends BlockSelectHeldItem {
 
 	override OnUseClient(useIndex: number) {
 		super.OnUseClient(useIndex);
-		if (this.entity.IsLocalCharacter()) {
+		if (this.character.IsLocalCharacter()) {
 			this.HitBlockLocal();
 		}
 	}
@@ -24,7 +24,7 @@ export class TillBlockHeldItem extends BlockSelectHeldItem {
 		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
-		Dependency<BlockInteractController>().PerformBlockTill(this.entity, this.itemMeta?.tillBlock, voxelPos);
+		Dependency<BlockInteractController>().PerformBlockTill(this.character, this.itemMeta?.tillBlock, voxelPos);
 	}
 
 	override CanUseBlock(

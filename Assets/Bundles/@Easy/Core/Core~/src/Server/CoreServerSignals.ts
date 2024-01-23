@@ -8,8 +8,11 @@ import { Team } from "Shared/Team/Team";
 import { ChangeTeamSignal } from "Shared/Team/TeamJoinSignal";
 import { Signal } from "Shared/Util/Signal";
 import { Block } from "Shared/VoxelWorld/Block";
-import { BeforeBlockGroupHitSignal, BeforeBlockHitSignal } from "./Services/Block/Signal/BeforeBlockHitSignal";
-import { BlockDropItemSignal } from "./Services/Block/Signal/BlockDestroyedSignal";
+import {
+	BeforeBlockGroupHitSignal,
+	BeforeBlockHitSignal,
+} from "../../../../../../Typescript~/src/Server/Services/Global/Block/Signal/BeforeBlockHitSignal";
+import { BlockDropItemSignal } from "../../../../../../Typescript~/src/Server/Services/Global/Block/Signal/BlockDestroyedSignal";
 import { ProjectileCollideServerSignal } from "./Services/Damage/Projectile/ProjectileCollideServerSignal";
 import { BeforeEntityDropItemSignal } from "./Signals/BeforeEntityDropItemSignal";
 import { BeforeEntitySpawnServerEvent } from "./Signals/BeforeEntitySpawnServerEvent";

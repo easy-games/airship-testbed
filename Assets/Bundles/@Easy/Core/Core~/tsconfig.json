@@ -39,7 +39,7 @@
     "include": [
         // "../../Types~/**/*.d.ts",
         "src/**/*"
-    ],
+, "../../../../Typescript~/src/Server/Services/Global/Block", "../../../../Typescript~/src/Shared/Signals"    ],
     "exclude": [
         "node_modules",
         "**/*.spec.ts"

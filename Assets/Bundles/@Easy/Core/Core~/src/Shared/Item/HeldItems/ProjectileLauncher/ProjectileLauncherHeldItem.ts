@@ -80,22 +80,22 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 
 		if (sound) {
-			if (this.entity.IsLocalCharacter()) {
+			if (this.character.IsLocalCharacter()) {
 				this.chargeAudioSource = AudioManager.PlayFullPathGlobal(sound.path, sound);
 			} else {
 				this.chargeAudioSource = AudioManager.PlayFullPathAtPosition(
 					sound.path,
-					this.entity.model.transform.position,
+					this.character.model.transform.position,
 					sound,
 				);
 			}
 		}
 
 		//Play Charge Animation
-		this.entity.animator.PlayItemUseAnim(0, { autoFadeOut: false });
+		this.character.animator.PlayItemUseAnim(0, { autoFadeOut: false });
 		this.PlayAnimationOnItem(0, true); //ie bow draw string
 
-		if (RunUtil.IsClient() && this.entity.IsLocalCharacter()) {
+		if (RunUtil.IsClient() && this.character.IsLocalCharacter()) {
 			const ammoItemMeta = ItemUtil.GetItemDef(this.itemMeta.projectileLauncher.ammoItemType);
 			const ammoMeta = ammoItemMeta.projectile!;
 
@@ -119,10 +119,16 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 
 						const launchPos = ProjectileUtil.GetLaunchPosition(
 							launcherAccessory.rootTransform,
-							this.entity,
+							this.character,
 							isFirstPerson,
 						);
-						const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
+						const launchData = this.GetLaunchData(
+							this.character,
+							mouse,
+							this.itemMeta!,
+							chargeSec,
+							launchPos,
+						);
 
 						const powerMul = this.itemMeta?.projectileLauncher?.powerMultiplier ?? 1;
 						this.projectileTrajectoryRenderer.UpdateInfo(
@@ -139,9 +145,9 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 			});
 		}
 
-		if (RunUtil.IsServer() || this.entity.IsLocalCharacter()) {
+		if (RunUtil.IsServer() || this.character.IsLocalCharacter()) {
 			this.chargeBin.Add(
-				this.entity.onAdjustMove.Connect((moveModifier) => {
+				this.character.onAdjustMove.Connect((moveModifier) => {
 					moveModifier.blockSprint = true;
 					moveModifier.speedMultiplier *= 0.4;
 				}),
@@ -150,11 +156,11 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	}
 
 	private HasRequiredAmmo(): boolean {
-		if (!this.entity.IsAlive() || !(this.entity instanceof CharacterEntity)) {
+		if (!this.character.IsAlive() || !(this.character instanceof CharacterEntity)) {
 			return false;
 		}
 
-		const inventory = this.entity.GetInventory();
+		const inventory = this.character.GetInventory();
 		const launcherItemMeta = inventory.GetHeldItem()?.GetMeta();
 		const nullableProjectileLauncherMeta = launcherItemMeta?.projectileLauncher;
 
@@ -172,7 +178,7 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 	protected override OnChargeEnd(): void {
 		this.processChargeAfterCooldown = false;
 		super.OnChargeEnd();
-		this.entity.animator?.StartItemIdleAnim(false);
+		this.character.animator?.StartItemIdleAnim(false);
 		this.CancelChargeSound();
 		this.chargeBin.Clean();
 		this.projectileTrajectoryRenderer.SetDrawingEnabled(false);
@@ -192,12 +198,12 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		super.OnUseClient(useIndex);
 
 		//Play the use animation
-		this.entity.animator.PlayItemUseAnim(1, { fadeInDuration: 0 });
+		this.character.animator.PlayItemUseAnim(1, { fadeInDuration: 0 });
 
 		//Play the items animation  (bow shoot)
 		this.PlayAnimationOnItem(1);
 
-		if (!this.entity.IsLocalCharacter()) return;
+		if (!this.character.IsLocalCharacter()) return;
 
 		if (CanvasAPI.IsPointerOverUI()) {
 			return;
@@ -218,11 +224,11 @@ export class ProjectileLauncherHeldItem extends HeldItem {
 		}
 		const launchPos = ProjectileUtil.GetLaunchPosition(
 			launcherAccessory.rootTransform,
-			this.entity,
+			this.character,
 			Dependency<LocalEntityController>().IsFirstPerson(),
 		);
-		const launchData = this.GetLaunchData(this.entity, mouse, this.itemMeta!, chargeSec, launchPos);
-		this.entity.LaunchProjectile(
+		const launchData = this.GetLaunchData(this.character, mouse, this.itemMeta!, chargeSec, launchPos);
+		this.character.LaunchProjectile(
 			this.itemMeta!.itemType,
 			this.itemMeta!.projectileLauncher!.ammoItemType,
 			launchData.launchPos,

@@ -4,9 +4,9 @@ import { BlockSelectController } from "Client/Controllers/BlockInteractions/Bloc
 import { DenyRegionController } from "Client/Controllers/BlockInteractions/DenyRegionController";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { World } from "Shared/VoxelWorld/World";
 import { WorldAPI } from "../../../VoxelWorld/WorldAPI";
 import { BlockSelectHeldItem } from "./BlockSelectHeldItem";
-import { World } from "Shared/VoxelWorld/World";
 
 export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 	private characterLayerMask = LayerMask.GetMask("Character");
@@ -26,7 +26,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 			const voxelId = world.GetVoxelIdFromId(this.itemMeta.block.blockId);
 
 			//Third person accessory
-			const rightHandRens = this.entity.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
+			const rightHandRens = this.character.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.RightHand);
 			if (rightHandRens && rightHandRens.Length > 0) {
 				this.dynamicBlock = this.GenerateBlock(rightHandRens.GetValue(0), voxelId, world);
 			} else {
@@ -71,7 +71,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 
 	override OnUseClient(useIndex: number) {
 		//Only run for local player
-		if (this.entity.IsLocalCharacter()) {
+		if (this.character.IsLocalCharacter()) {
 			//Try to place a block
 			if (this.TryPlaceBlock()) {
 				//Only play use animations if we actually think we can place a block
@@ -130,7 +130,7 @@ export class PlaceBlockHeldItem extends BlockSelectHeldItem {
 				this.placementQueued = false;
 				// Write the voxel at the predicted position
 				world.PlaceBlockById(placePosition, blockMeta.blockId, {
-					placedByEntityId: this.entity.id,
+					placedByEntityId: this.character.id,
 					priority: true,
 				});
 				if (isVoidPlacement) {

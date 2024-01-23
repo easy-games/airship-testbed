@@ -9,7 +9,7 @@ export class BlockSelectHeldItem extends HeldItem {
 
 	override OnEquip() {
 		super.OnEquip();
-		if (this.entity.IsLocalCharacter()) {
+		if (this.character.IsLocalCharacter()) {
 			this.blockSelect = Dependency<BlockSelectController>();
 			this.blockSelect.Enable();
 			this.bin.Add(
@@ -24,7 +24,7 @@ export class BlockSelectHeldItem extends HeldItem {
 		super.OnUnEquip();
 		this.bin.Clean();
 
-		if (this.entity.IsLocalCharacter()) {
+		if (this.character.IsLocalCharacter()) {
 			this.blockSelect?.Disable();
 		}
 	}

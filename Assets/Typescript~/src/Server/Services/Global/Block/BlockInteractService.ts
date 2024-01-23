@@ -12,8 +12,8 @@ import { MathUtil } from "Shared/Util/MathUtil";
 import { BlockDataAPI, CoreBlockMetaKeys } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { BlockData } from "Shared/VoxelWorld/World";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
+import { InventoryService } from "../../../../../../Bundles/@Easy/Core/Core~/src/Server/Services/Inventory/InventoryService";
 import { EntityService } from "../Entity/EntityService";
-import { InventoryService } from "../Inventory/InventoryService";
 import { PlayerService } from "../Player/PlayerService";
 import { BeforeBlockHitSignal } from "./Signal/BeforeBlockHitSignal";
 

@@ -1,6 +1,7 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { CharacterEntityAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
+import Character from "Shared/Character/Character";
+import { CharacterAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { Entity } from "Shared/Entity/Entity";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -76,13 +77,13 @@ export class DamageUtils {
 	}
 
 	public static AddAttackStun(
-		entity: Entity,
+		character: Character,
 		damageDealt: number,
 		disableMovement: boolean,
 		vfx: GameObject[] | undefined,
 	) {
-		const anim = entity.animator as CharacterEntityAnimator;
-		const driver = entity.networkObject.gameObject.GetComponent<CharacterMovement>();
+		const anim = character.animator as CharacterAnimator;
+		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>();
 		if (anim) {
 			const duration = this.GetStunDuration(math.clamp(damageDealt / this.maxHitstunDamage, 0, 1));
 			let particles: ParticleSystem[] = [];
@@ -101,7 +102,7 @@ export class DamageUtils {
 				anim.SetPlaybackSpeed(0.05);
 				if (disableMovement) {
 					driver.DisableMovement();
-					if (entity.IsLocalCharacter()) {
+					if (character.IsLocalCharacter()) {
 						Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
 					}
 				}
@@ -113,7 +114,7 @@ export class DamageUtils {
 					anim.SetPlaybackSpeed(1);
 					if (disableMovement) {
 						driver.EnableMovement();
-						if (entity.IsLocalCharacter()) {
+						if (character.IsLocalCharacter()) {
 							Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
 						}
 					}

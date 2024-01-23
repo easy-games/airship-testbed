@@ -26,7 +26,7 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 
 	override OnUseClient(useIndex: number) {
 		super.OnUseClient(useIndex);
-		if (this.entity.IsLocalCharacter()) {
+		if (this.character.IsLocalCharacter()) {
 			this.HitBlockLocal();
 		}
 	}
@@ -36,7 +36,12 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 		if (!voxelPos || !this.CanUseBlock(voxelPos, undefined, undefined)) {
 			return;
 		}
-		Dependency<BlockInteractController>().PerformBlockHit(this.entity, this.itemMeta?.breakBlock, voxelPos, true);
+		Dependency<BlockInteractController>().PerformBlockHit(
+			this.character,
+			this.itemMeta?.breakBlock,
+			voxelPos,
+			true,
+		);
 	}
 
 	override CanUseBlock(
@@ -61,7 +66,7 @@ export class BreakBlockHeldItem extends BlockSelectHeldItem {
 			return false;
 		}
 
-		const useSignal = new CanUseBlockSignal(block, selectedPos, this.entity);
+		const useSignal = new CanUseBlockSignal(block, selectedPos, this.character);
 		BreakBlockHeldItem.canUseBlockSignal.Fire(useSignal);
 		if (useSignal.IsCancelled()) {
 			return false;
