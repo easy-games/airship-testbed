@@ -26,7 +26,10 @@ export class CacheStoreService implements OnStart {
 	 * be unchanged. The maximum expire time is 24 hours.
 	 * @returns The data associated with the provided key. If no data is associated with the provided key, then nothing will be returned.
 	 */
-	public async GetKey<T extends object>(key: string, expireTimeSec?: number): Promise<Result<T, undefined>> {
+	public async GetKey<T extends object>(
+		key: string,
+		expireTimeSec?: number,
+	): Promise<Result<T | undefined, undefined>> {
 		this.CheckKey(key);
 
 		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;

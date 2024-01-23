@@ -4,6 +4,7 @@ Shader "Airship/AirshipSpriteSimple"
     {
         _Color("Tint", Color) = (1,1,1,1)
         _Emissive("Emissive", Range(0,1)) = 1
+        _AlphaCutoff("Alpha Cutoff", Range(0,1)) = .1
         _MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
@@ -54,6 +55,7 @@ Shader "Airship/AirshipSpriteSimple"
             float4 _MainTex_ST;
             float4 _Color;
             float _Emissive;
+            float _AlphaCutoff;
 
             v2f vert (appdata v)
             {
@@ -64,15 +66,14 @@ Shader "Airship/AirshipSpriteSimple"
                 return o;
             }
 
-            fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
+            void frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
             {
                 float4 texColor = tex2D(_MainTex, i.uv);
                 float4 finalColor = texColor * SRGBtoLinear(_Color) * i.color;
-                clip(texColor.a-.1);
+                clip(texColor.a-_AlphaCutoff);
                 //finalColor.a =texColor.a;
 				MRT0 = finalColor;
 				MRT1 = _Emissive * finalColor;
-                return finalColor;
             }
             ENDCG
         }
