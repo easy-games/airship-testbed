@@ -32,6 +32,14 @@ export default class ClientScript extends AirshipBehaviour {
 				}, "Leaders:\n");
 			}),
 		);
+
+		this.bin.Add(
+			Network.ServerToClient.KillData.client.OnServerEvent((rank, total) => {
+				this.scoreboard.totalKills = total;
+				this.scoreboard.totalKillsScore.text = `Total Kills: ${this.scoreboard.sessionKills + total}`;
+				this.scoreboard.currentRank.text = `Rank: ${rank}`;
+			}),
+		);
 	}
 
 	override OnDestroy(): void {}

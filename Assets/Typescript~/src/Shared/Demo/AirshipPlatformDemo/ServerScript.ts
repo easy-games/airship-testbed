@@ -65,7 +65,7 @@ export default class TestScript extends AirshipBehaviour {
 
 				Network.ServerToClient.KillData.server.FireClient(
 					event.player.clientId,
-					res.data?.value ?? "No Rank",
+					res.data?.value !== undefined ? res.data.value : "No Rank",
 					dataRes.data?.kills ?? 0,
 				);
 
@@ -92,7 +92,7 @@ export default class TestScript extends AirshipBehaviour {
 			this.entityService.SpawnEntity(EntityPrefabType.HUMAN, randomLoc);
 		}
 
-		SetInterval(1, () => {
+		SetInterval(0.25, () => {
 			if (this.entityService.GetEntities().size() > 25) return;
 
 			const randomLoc = new Vector3(

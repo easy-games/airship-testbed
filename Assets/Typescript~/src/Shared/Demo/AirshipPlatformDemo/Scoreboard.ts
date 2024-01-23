@@ -17,8 +17,8 @@ export default class Scoreboard extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	private sessionKills = 0;
-	private totalKills = 0;
+	public sessionKills = 0;
+	public totalKills = 0;
 
 	override Start(): void {
 		if (RunUtil.IsClient()) this.ClientStart();
@@ -35,14 +35,6 @@ export default class Scoreboard extends AirshipBehaviour {
 				this.sessionKills++;
 				this.sessionKillsScore.text = `Session Kills: ${this.sessionKills}`;
 				this.totalKillsScore.text = `Total Kills: ${this.sessionKills + this.totalKills}`;
-			}),
-		);
-
-		this.bin.Add(
-			Network.ServerToClient.KillData.client.OnServerEvent((rank, total) => {
-				this.totalKills = total;
-				this.totalKillsScore.text = `Total Kills: ${this.sessionKills + this.totalKills}`;
-				this.currentRank.text = `Rank: ${rank}`;
 			}),
 		);
 	}
