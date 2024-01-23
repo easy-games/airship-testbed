@@ -27,7 +27,7 @@ export default class ClientScript extends AirshipBehaviour {
 				);
 				if (!data) return;
 				this.scoreboard.leaderList.text = event.reduce((text, value, index) => {
-					text += `${value.rank}: ${data[index].username} (${value.value})\n`;
+					text += `${value.rank}: ${data.map[value.id].username} (${value.value})\n`;
 					return text;
 				}, "Leaders:\n");
 			}),

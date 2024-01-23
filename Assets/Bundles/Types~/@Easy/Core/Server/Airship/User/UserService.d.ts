@@ -1,4 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { PublicUser } from "../../../Shared/SocketIOMessages/PublicUser";
 import { Result } from "../../../Shared/Types/Result";
@@ -27,5 +28,8 @@ export declare class UserService implements OnStart {
      * succeed even if not all userIds resolve to a user.
      * @returns An array of user objects.
      */
-    GetUsersById(userIds: string[], strict?: boolean): Promise<Result<PublicUser[], undefined>>;
+    GetUsersById(userIds: string[], strict?: boolean): Promise<Result<{
+        map: Record<string, PublicUser>;
+        array: PublicUser[];
+    }, undefined>>;
 }

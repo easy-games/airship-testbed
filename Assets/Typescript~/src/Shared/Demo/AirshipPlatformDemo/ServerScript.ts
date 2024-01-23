@@ -65,7 +65,7 @@ export default class TestScript extends AirshipBehaviour {
 
 				Network.ServerToClient.KillData.server.FireClient(
 					event.player.clientId,
-					res.data?.value !== undefined ? res.data.value : "No Rank",
+					res.data?.rank !== undefined ? `${res.data.rank}` : "No Rank",
 					dataRes.data?.kills ?? 0,
 				);
 

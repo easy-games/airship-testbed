@@ -76,11 +76,17 @@ export class UserController implements OnStart {
 	 * succeed even if not all userIds resolve to a user.
 	 * @returns An array of user objects.
 	 */
-	public async GetUsersById(userIds: string[], strict = true): Promise<Result<PublicUser[], undefined>> {
+	public async GetUsersById(
+		userIds: string[],
+		strict = true,
+	): Promise<Result<{ map: Record<string, PublicUser>; array: PublicUser[] }, undefined>> {
 		if (userIds.size() === 0) {
 			return {
 				success: true,
-				data: [],
+				data: {
+					map: {},
+					array: [],
+				},
 			};
 		}
 
@@ -99,13 +105,23 @@ export class UserController implements OnStart {
 		if (!res.data) {
 			return {
 				success: true,
-				data: [],
+				data: {
+					map: {},
+					array: [],
+				},
 			};
 		}
 
+		const array = DecodeJSON(res.data) as PublicUser[];
+		const map: Record<string, PublicUser> = {};
+		array.forEach((u) => (map[u.uid] = u));
+
 		return {
 			success: true,
-			data: DecodeJSON(res.data) as PublicUser[],
+			data: {
+				map,
+				array,
+			},
 		};
 	}
 }
