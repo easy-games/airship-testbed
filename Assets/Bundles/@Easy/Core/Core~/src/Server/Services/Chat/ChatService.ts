@@ -26,7 +26,6 @@ import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
 import { TeamChatCommand } from "./Commands/TeamChatCommand";
 import { TeamCommand } from "./Commands/TeamCommand";
-import { PlayersCommand } from "./Commands/TestPlayerCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
@@ -62,7 +61,6 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new AddAbilityCommand());
 		this.RegisterCommand(new RemoveAbilityCommand());
 		this.RegisterCommand(new AbilityEnableStateCommand());
-		this.RegisterCommand(new PlayersCommand());
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new SaveWorldCommand());
 	}
@@ -102,7 +100,7 @@ export class ChatService implements OnStart {
 	OnStart(): void {
 		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((clientId, text) => {
 			const rawMessage = text;
-			const player = Airship.Players.FindByClientId(clientId);
+			const player = Airship.players.FindByClientId(clientId);
 			if (!player) {
 				error("player not found.");
 			}

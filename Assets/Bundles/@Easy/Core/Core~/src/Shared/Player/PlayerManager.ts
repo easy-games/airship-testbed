@@ -30,7 +30,7 @@ export class PlayerManager implements OnStart {
 	};
 
 	constructor() {
-		Airship.Players = this;
+		Airship.players = this;
 
 		if (RunUtil.IsClient()) {
 			this.client = {

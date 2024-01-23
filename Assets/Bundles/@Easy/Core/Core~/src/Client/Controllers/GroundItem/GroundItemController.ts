@@ -14,8 +14,6 @@ import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
-import { PlayerController } from "../Player/PlayerController";
 
 interface GroundItemEntry {
 	nob: NetworkObject;
@@ -32,10 +30,7 @@ export class GroundItemController implements OnStart {
 	private readonly groundItemsFolder: GameObject;
 	// private readonly offlineGroundItems: OfflineGroundItems;
 
-	constructor(
-		private readonly playerController: PlayerController,
-		private readonly entityAccessoryController: EntityAccessoryController,
-	) {
+	constructor() {
 		// this.groundItemsFolder = GameObject.Create("GroundItems");
 		this.groundItemsFolder = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItems.prefab"),

@@ -1,20 +1,20 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Server/CoreServerSignals";
-import { Entity } from "Shared/Entity/Entity";
+import { Airship } from "Shared/Airship";
+import Character from "Shared/Character/Character";
 import { Bin } from "Shared/Util/Bin";
 import { SetInterval } from "Shared/Util/Timer";
 
 @Service({})
 export class BotService implements OnStart {
 	OnStart(): void {
-		CoreServerSignals.EntitySpawn.Connect((event) => {
-			if (event.entity.player?.IsBot()) {
-				this.StartRandomMovement(event.entity);
+		Airship.characters.onCharacterSpawned.Connect((character) => {
+			if (character.player?.IsBot()) {
+				this.StartRandomMovement(character);
 			}
 		});
 	}
 
-	private StartRandomMovement(entity: Entity): void {
+	private StartRandomMovement(character: Character): void {
 		const bin = new Bin();
 
 		let randDirectionComponent = () => {
@@ -31,7 +31,7 @@ export class BotService implements OnStart {
 		const doMove = () => {
 			print("doMove");
 			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
-			entity.movement.SetMoveInput(
+			character.movement.SetMoveInput(
 				direction,
 				math.random() < 0.2,
 				math.random() < 0.5,
@@ -47,7 +47,7 @@ export class BotService implements OnStart {
 			}),
 		);
 		bin.Add(
-			entity.onDespawn.Connect(() => {
+			character.onDespawn.Connect(() => {
 				bin.Clean();
 			}),
 		);

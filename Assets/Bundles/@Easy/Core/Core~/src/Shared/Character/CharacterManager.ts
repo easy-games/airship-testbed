@@ -1,6 +1,7 @@
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
 import { Player } from "Shared/Player/Player";
+import { Signal } from "Shared/Util/Signal";
 import Character from "./Character";
 
 @Service()
@@ -8,8 +9,11 @@ import Character from "./Character";
 export class CharacterManager implements OnStart {
 	private characters = new Set<Character>();
 
+	public onCharacterSpawned = new Signal<Character>();
+	public onCharacterDespawned = new Signal<Character>();
+
 	constructor() {
-		Airship.Characters = this;
+		Airship.characters = this;
 	}
 
 	OnStart(): void {}

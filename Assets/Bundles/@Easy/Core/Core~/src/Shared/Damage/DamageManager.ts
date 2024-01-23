@@ -27,7 +27,7 @@ export class DamageManager implements OnStart {
 	>();
 
 	constructor() {
-		Airship.Damage = this;
+		Airship.damage = this;
 	}
 
 	OnStart(): void {

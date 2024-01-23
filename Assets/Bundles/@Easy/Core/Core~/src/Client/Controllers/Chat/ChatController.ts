@@ -1,7 +1,8 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "@easy-games/flamework-core";
 import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
+import { Airship } from "Shared/Airship";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ClearCommand } from "Shared/Commands/ClearCommand";
@@ -18,7 +19,6 @@ import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
 import { LocalEntityController } from "../Character/LocalEntityController";
-import { PlayerController } from "../Player/PlayerController";
 import { CoreUIController } from "../UI/CoreUIController";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
@@ -110,7 +110,7 @@ export class ChatController implements OnStart {
 		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((text, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
-				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
+				sender = Airship.players.FindByClientId(senderClientId);
 			}
 			this.RenderChatMessage(text, sender);
 		});

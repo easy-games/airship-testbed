@@ -15,7 +15,7 @@ export class TpCommand extends ChatCommand {
 			return;
 		}
 
-		const targetPlayer = Airship.Players.FindByFuzzySearch(args[0]);
+		const targetPlayer = Airship.players.FindByFuzzySearch(args[0]);
 		if (!targetPlayer) {
 			player.SendMessage("Unable to find player: " + args[0]);
 			return;

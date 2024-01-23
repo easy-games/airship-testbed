@@ -1,9 +1,9 @@
+import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { DenyRegionDto } from "@Easy/Core/Shared/DenyRegion/DenyRegionMeta";
+import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Task } from "@Easy/Core/Shared/Util/Task";
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Server/CoreServerSignals";
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { DenyRegionDto } from "Shared/DenyRegion/DenyRegionMeta";
-import { SignalPriority } from "Shared/Util/Signal";
-import { Task } from "Shared/Util/Task";
 
 /** Deny region snapshot send delay. */
 const SNAPSHOT_DELAY = 0.5;

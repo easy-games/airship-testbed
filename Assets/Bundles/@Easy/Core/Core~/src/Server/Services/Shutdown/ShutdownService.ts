@@ -1,5 +1,4 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
-import { CoreServerSignals } from "Server/CoreServerSignals";
 import { Airship } from "Shared/Airship";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SetInterval } from "Shared/Util/Timer";
@@ -15,14 +14,15 @@ export class ShutdownService implements OnStart {
 	constructor() {}
 
 	OnStart(): void {
-		CoreServerSignals.PlayerJoin.Connect((event) => {
+		Airship.players.onPlayerJoined.Connect((player) => {
 			this.playerConnected = true;
 			this.timeWithNoPlayers = 0;
 		});
 
 		const intervalTime = 10;
 		SetInterval(intervalTime, () => {
-			let realPlayerCount = Airship.Players.GetPlayers()
+			let realPlayerCount = Airship.players
+				.GetPlayers()
 				.filter((p) => !p.IsBot())
 				.size();
 			if (realPlayerCount === 0) {

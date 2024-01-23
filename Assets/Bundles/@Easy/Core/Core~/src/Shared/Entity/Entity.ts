@@ -1,7 +1,4 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { EntityController } from "Client/Controllers/Entity/EntityController";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
-import { EntityService } from "Server/Services/Entity/EntityService";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
@@ -120,7 +117,7 @@ export class Entity {
 	public readonly movement: CharacterMovement;
 	public readonly model: GameObject;
 	public readonly attributes: EasyAttributes;
-	public animator: CharacterAnimator;
+	public animator!: CharacterAnimator;
 	public readonly references: EntityReferences;
 	public readonly accessoryBuilder: AccessoryBuilder;
 
@@ -175,12 +172,12 @@ export class Entity {
 		this.model = this.references.root.gameObject;
 		this.model.transform.localPosition = new Vector3(0, 0, 0);
 		Profiler.BeginSample("CharacterEntityAnimator.Constructor");
-		this.animator = new CharacterAnimator(this, this.references);
+		// this.animator = new CharacterAnimator(this, this.references);
 		Profiler.EndSample();
 		this.state = this.movement.GetState();
 
 		if (this.clientId !== undefined) {
-			const player = Airship.Players.FindByClientId(this.clientId);
+			const player = Airship.players.FindByClientId(this.clientId);
 			this.SetPlayer(player);
 		}
 		if (this.player) {

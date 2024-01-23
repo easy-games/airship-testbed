@@ -1,6 +1,7 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
+import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -101,7 +102,9 @@ export class Player {
 		const go = Object.Instantiate(characterPrefab);
 		const characterComponent = go.GetComponent<Character>();
 		characterComponent.Init(this);
+		this.character = characterComponent;
 		InstanceFinder.ServerManager.Spawn(go, this.nob.Owner);
+		Airship.characters.onCharacterSpawned.Fire(characterComponent);
 	}
 
 	public GetProfilePicture(): ProfilePictureMeta {

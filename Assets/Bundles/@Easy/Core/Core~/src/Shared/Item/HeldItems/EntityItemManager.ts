@@ -1,4 +1,5 @@
 ﻿import { Airship } from "Shared/Airship";
+import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreNetwork } from "../../CoreNetwork";
@@ -19,7 +20,7 @@ export class EntityItemManager {
 
 	//Private
 	private entityItems = new Map<number, HeldItemManager>();
-	private localEntity?: CharacterEntity;
+	private localCharacter?: Character;
 	private mouseIsDownLeft = false;
 	private mouseIsDownRight = false;
 
@@ -49,9 +50,9 @@ export class EntityItemManager {
 				if (CanvasAPI.IsPointerOverUI() || EventSystem.current.currentSelectedGameObject) {
 					return;
 				}
-				if (this.localEntity) {
+				if (this.localCharacter) {
 					this.mouseIsDownLeft = true;
-					let items = this.GetOrCreateItemManager(this.localEntity);
+					let items = this.GetOrCreateItemManager(this.localCharacter);
 					items.TriggerNewState(HeldItemState.CALL_TO_ACTION_START);
 				}
 			});
@@ -62,8 +63,8 @@ export class EntityItemManager {
 					return;
 				}
 				this.mouseIsDownLeft = false;
-				if (this.localEntity) {
-					let items = this.GetOrCreateItemManager(this.localEntity);
+				if (this.localCharacter) {
+					let items = this.GetOrCreateItemManager(this.localCharacter);
 					items.TriggerNewState(HeldItemState.CALL_TO_ACTION_END);
 				}
 			});
@@ -73,9 +74,9 @@ export class EntityItemManager {
 				if (CanvasAPI.IsPointerOverUI()) {
 					return;
 				}
-				if (this.localEntity) {
+				if (this.localCharacter) {
 					this.mouseIsDownRight = true;
-					let items = this.GetOrCreateItemManager(this.localEntity);
+					let items = this.GetOrCreateItemManager(this.localCharacter);
 					items.TriggerNewState(HeldItemState.SECONDARY_ACTION_START);
 				}
 			});
@@ -86,16 +87,16 @@ export class EntityItemManager {
 					return;
 				}
 				this.mouseIsDownRight = false;
-				if (this.localEntity) {
-					let items = this.GetOrCreateItemManager(this.localEntity);
+				if (this.localCharacter) {
+					let items = this.GetOrCreateItemManager(this.localCharacter);
 					items.TriggerNewState(HeldItemState.SECONDARY_ACTION_END);
 				}
 			});
 
 			keyboard.OnKeyDown(KeyCode.Y, (event) => {
 				if (event.uiProcessed) return;
-				if (this.localEntity) {
-					let items = this.GetOrCreateItemManager(this.localEntity);
+				if (this.localCharacter) {
+					let items = this.GetOrCreateItemManager(this.localCharacter);
 					items.TriggerNewState(HeldItemState.INSPECT);
 				}
 			});
@@ -104,18 +105,10 @@ export class EntityItemManager {
 		import("../../../Client/CoreClientSignals").then((clientSignalRef) => {
 			this.Log("ClientSignals");
 			//Listen to new entities
-			clientSignalRef.CoreClientSignals.EntitySpawn.Connect((event) => {
-				this.Log("EntitySpawn: " + event.entity.id);
-				if (event.entity instanceof CharacterEntity && event.entity.id !== undefined) {
-					Profiler.BeginSample("EntityItemManager.GetOrCreateItemManager");
-					//Create the Item Manager on the Client
-					this.GetOrCreateItemManager(event.entity as CharacterEntity);
-
-					//Local Events
-					if (event.entity.IsLocalCharacter()) {
-						this.localEntity = event.entity;
-					}
-					Profiler.EndSample();
+			Airship.characters.onCharacterSpawned.Connect((character) => {
+				this.GetOrCreateItemManager(character);
+				if (character.IsLocalCharacter()) {
+					this.localCharacter = character;
 				}
 			});
 
@@ -143,12 +136,8 @@ export class EntityItemManager {
 			this.Log("serverSignalsRef");
 
 			//Listen to new entity spawns
-			serverSignalsRef.CoreServerSignals.EntitySpawn.Connect((event) => {
-				this.Log("EntitySpawn: " + event.entity.id);
-				if ((event.entity as CharacterEntity) && event.entity.id !== undefined) {
-					//Create the Item Manager on the Server
-					this.GetOrCreateItemManager(event.entity as CharacterEntity);
-				}
+			Airship.characters.onCharacterSpawned.Connect((character) => {
+				this.GetOrCreateItemManager(character);
 			});
 
 			//Clean up destroyed entities
@@ -162,7 +151,7 @@ export class EntityItemManager {
 			//Listen to state changes triggered by client
 			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
 				if (event.Is("HeldItemState")) {
-					const player = Airship.Players.FindByClientId(event.clientId);
+					const player = Airship.players.FindByClientId(event.clientId);
 					if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
 						return;
 					}
@@ -185,13 +174,13 @@ export class EntityItemManager {
 		});
 	}
 
-	public GetOrCreateItemManager(entity: CharacterEntity): HeldItemManager {
-		this.Log("GetOrCreateItemManager: " + entity.id);
-		let items = this.entityItems.get(entity.id ?? 0);
+	public GetOrCreateItemManager(character: Character): HeldItemManager {
+		this.Log("GetOrCreateItemManager: " + character.id);
+		let items = this.entityItems.get(character.id ?? 0);
 		if (items === undefined) {
-			this.Log("New Item: " + entity.id);
-			items = new HeldItemManager(entity);
-			this.entityItems.set(entity.id ?? 0, items);
+			this.Log("New Item: " + character.id);
+			items = new HeldItemManager(character);
+			this.entityItems.set(character.id ?? 0, items);
 		}
 		this.Log("Returning Item: " + items.GetLabel());
 		return items;

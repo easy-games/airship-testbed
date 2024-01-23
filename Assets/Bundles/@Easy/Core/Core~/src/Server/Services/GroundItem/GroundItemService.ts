@@ -77,7 +77,7 @@ export class GroundItemService implements OnStart {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) return;
 
-			const character = Airship.Characters.FindByClientId(clientId);
+			const character = Airship.characters.FindByClientId(clientId);
 			if (!character?.IsAlive()) return;
 
 			if (
@@ -105,7 +105,7 @@ export class GroundItemService implements OnStart {
 			// }
 		});
 
-		Airship.Players.ObservePlayers((player) => {
+		Airship.players.ObservePlayers((player) => {
 			CoreNetwork.ServerToClient.GroundItem.Add.server.FireClient(
 				player.clientId,
 				Object.values(this.groundItems).map((i) => {

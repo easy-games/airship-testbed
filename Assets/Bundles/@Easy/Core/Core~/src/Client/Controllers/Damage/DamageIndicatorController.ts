@@ -1,12 +1,11 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import Character from "Shared/Character/Character";
 import { CoreRefs } from "Shared/CoreRefs";
-import { DamageType } from "Shared/Damage/DamageType";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { RandomUtil } from "Shared/Util/RandomUtil";
 import { SetTimeout } from "Shared/Util/Timer";
 
 @Controller({})
@@ -46,21 +45,19 @@ export class DamageIndicatorController implements OnStart {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Sound/Drone_Damage_02.ogg"),
 		];
 
-		CoreClientSignals.EntityDamage.Connect((event) => {
+		Airship.damage.onDamage.Connect((event) => {
 			if (!this.enabled) return;
 
-			const entityGO = event.entity.networkObject.gameObject;
+			const character = event.gameObject.GetAirshipComponent<Character>();
+			if (!character) return;
+			character.animator?.PlayTakeDamage(character.model.transform.position, character.model);
 
-			//Hitstun
-			//const hitstunDuration = DamageUtils.AddHitstun(event.entity, event.amount, () => {});
-
-			//Entity Damage Animation
-			event.entity.animator?.PlayTakeDamage(0.25, event.damageType, entityGO.transform.position, entityGO);
+			const attackerCharacter = event.attacker?.GetAirshipComponent<Character>();
 
 			// Damage taken sound
 			AudioManager.PlayAtPosition(
 				"@Easy/Core/Shared/Resources/Sound/Damage_Taken.wav",
-				entityGO.transform.position,
+				character.model.transform.position,
 				{
 					maxDistance: 50,
 					rollOffMode: AudioRolloffMode.Linear,
@@ -68,7 +65,7 @@ export class DamageIndicatorController implements OnStart {
 				},
 			);
 
-			if (event.fromEntity?.IsLocalCharacter()) {
+			if (attackerCharacter?.IsLocalCharacter()) {
 				this.hitMarkerBin.Clean();
 				this.hitMarkerImage.enabled = true;
 				this.hitMarkerBin.Add(
@@ -77,47 +74,45 @@ export class DamageIndicatorController implements OnStart {
 					}),
 				);
 
-				if (event.criticalHit) {
-					if (this.criticalHitAudioClips.size() > 0) {
-						const clip = RandomUtil.FromArray(this.criticalHitAudioClips);
-						AudioManager.PlayClipGlobal(clip, {
-							volumeScale: 0.6,
-						});
-					}
-				} else {
-					AudioManager.PlayClipGlobal(this.hitMarkerAudioClip!, {
-						volumeScale: 0.6,
-					});
-				}
+				// if (event.criticalHit) {
+				// 	if (this.criticalHitAudioClips.size() > 0) {
+				// 		const clip = RandomUtil.FromArray(this.criticalHitAudioClips);
+				// 		AudioManager.PlayClipGlobal(clip, {
+				// 			volumeScale: 0.6,
+				// 		});
+				// 	}
+				// } else {
+				AudioManager.PlayClipGlobal(this.hitMarkerAudioClip!, {
+					volumeScale: 0.6,
+				});
+				// }
 
-				this.CreateDamageIndicator(event.amount, event.criticalHit, event.damageType);
+				this.CreateDamageIndicator(event.damage, false);
 			}
 		});
 
-		CoreClientSignals.EntityDeath.Connect((event) => {
-			if (!this.enabled) return;
+		Airship.players.ObservePlayers((player) => {
+			player.ObserveCharacter((character) => {
+				character?.onDeath.Connect(() => {
+					character.animator.PlayDeath();
 
-			event.entity.animator?.PlayDeath(event.damageType);
+					// PvP Kill
+					// if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
+					// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
+					// }
 
-			// PvP Kill
-			if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
-				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
-			}
-
-			// Local death
-			if (event.entity.IsLocalCharacter()) {
-				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
-					volumeScale: 0.3,
+					// // Local death
+					// if (event.entity.IsLocalCharacter()) {
+					// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
+					// 		volumeScale: 0.3,
+					// 	});
+					// }
 				});
-			}
+			});
 		});
 	}
 
-	public CreateDamageIndicator(amount: number, criticalHit: boolean, damageType: DamageType): void {
-		if (damageType === DamageType.VOID) {
-			return;
-		}
-
+	public CreateDamageIndicator(amount: number, criticalHit: boolean): void {
 		this.damageIndicatorBin.Clean();
 
 		const go = PoolManager.SpawnObject(this.indicatorPrefab);

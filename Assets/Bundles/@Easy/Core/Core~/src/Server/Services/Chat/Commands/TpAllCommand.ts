@@ -13,7 +13,7 @@ export class TpAllCommand extends ChatCommand {
 		const pos = player.character?.gameObject.transform.position;
 		if (!pos) return;
 
-		for (const p of Airship.Players.GetPlayers()) {
+		for (const p of Airship.players.GetPlayers()) {
 			if (p !== player) {
 				if (p.character) {
 					p.SendMessage(

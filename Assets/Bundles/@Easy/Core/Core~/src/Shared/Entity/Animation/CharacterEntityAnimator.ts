@@ -5,7 +5,6 @@ import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioBundlePlayMode, AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import Character from "Shared/Character/Character";
-import { DamageType } from "Shared/Damage/DamageType";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
@@ -191,12 +190,7 @@ export class CharacterAnimator {
 		this.StartItemIdleAnim(true);
 	}
 
-	public PlayTakeDamage(
-		flinchDuration: number,
-		damageType: DamageType,
-		position: Vector3,
-		entityModel: GameObject | undefined,
-	) {
+	public PlayTakeDamage(position: Vector3, characterModel: GameObject | undefined) {
 		const isFirstPerson =
 			RunUtil.IsClient() &&
 			this.character.IsLocalCharacter() &&
@@ -223,16 +217,11 @@ export class CharacterAnimator {
 		}
 
 		//Play specific effects for different damage types like fire attacks or magic damage
-		let vfxTemplate;
-		switch (damageType) {
-			default:
-				vfxTemplate = this.damageEffectTemplate;
-				break;
-		}
+		let vfxTemplate = this.damageEffectTemplate;
 		if (vfxTemplate) {
 			const go = EffectsManager.SpawnGameObjectAtPosition(vfxTemplate, position, undefined, 2);
-			if (entityModel) {
-				go.transform.SetParent(entityModel.transform);
+			if (characterModel) {
+				go.transform.SetParent(characterModel.transform);
 			}
 		}
 	}
@@ -522,7 +511,7 @@ export class CharacterAnimator {
 		}
 	}
 
-	public PlayDeath(damageType: DamageType) {
+	public PlayDeath() {
 		//Play death animation
 		let isFirstPerson = false;
 		if (this.character.IsLocalCharacter()) {
@@ -538,20 +527,20 @@ export class CharacterAnimator {
 			this.PlayItemAnimationInWorldmodel(deathClip, EntityAnimationLayer.LAYER_3);
 		}
 		//Spawn death particle
-		const inVoid = damageType === DamageType.VOID;
-		let deathEffect = inVoid ? this.deathEffectVoidTemplate : this.deathEffectTemplate;
-		if (inVoid && this.character.IsLocalCharacter()) {
-			deathEffect = undefined;
-		}
+		// const inVoid = damageType === DamageType.VOID;
+		let deathEffect = this.deathEffectTemplate;
+		// if (inVoid && this.character.IsLocalCharacter()) {
+		// 	deathEffect = undefined;
+		// }
 		if (deathEffect) {
 			this.deathVfx = EffectsManager.SpawnGameObjectAtPosition(
 				deathEffect,
 				this.character.headBone.transform.position,
 				undefined,
 			);
-			if (!inVoid) {
-				this.deathVfx.transform.SetParent(this.character.gameObject.transform);
-			}
+			// if (!inVoid) {
+			this.deathVfx.transform.SetParent(this.character.gameObject.transform);
+			// }
 		}
 
 		Task.Delay(0.5, () => {

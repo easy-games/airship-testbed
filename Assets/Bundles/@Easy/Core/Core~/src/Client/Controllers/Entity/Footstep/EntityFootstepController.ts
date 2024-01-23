@@ -17,7 +17,7 @@ export class EntityFootstepController implements OnStart {
 				const camPos = camTransform.position;
 				Profiler.BeginSample("Footsteps");
 				let footstepCount = 0;
-				for (const character of Airship.Characters.GetCharacters()) {
+				for (const character of Airship.characters.GetCharacters()) {
 					if (character.IsDead()) continue;
 					let cooldown = -1;
 					const state = character.state;

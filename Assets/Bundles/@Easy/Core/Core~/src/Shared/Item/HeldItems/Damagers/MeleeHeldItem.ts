@@ -185,7 +185,7 @@ export class MeleeHeldItem extends HeldItem {
 				damage *= 1.3;
 				damage = math.floor(damage);
 			}
-			Airship.Damage.InflictDamage(data.hitCharacter.gameObject, damage, this.character.gameObject, {
+			Airship.damage.InflictDamage(data.hitCharacter.gameObject, damage, this.character.gameObject, {
 				// damageType: meleeData?.damageType ?? DamageType.SWORD,
 				knockback: data.knockbackDirection,
 				// criticalHit: data.criticalHit,
@@ -246,7 +246,7 @@ export class MeleeHeldItem extends HeldItem {
 		//For each collider in the box detection
 		for (let i = 0; i < hitColliders.Length; i++) {
 			const collider = hitColliders.GetValue(i);
-			const targetCharacter = Airship.Characters.FindByCollider(collider);
+			const targetCharacter = Airship.characters.FindByCollider(collider);
 			//If we hit an entity that is not the owner of this item
 			if (!targetCharacter) {
 				//Box check doesn't care about non entities
@@ -263,7 +263,7 @@ export class MeleeHeldItem extends HeldItem {
 				continue;
 			}
 
-            if (!Airship.Damage.CanClientDamage(targetCharacter.gameObject, this.character.gameObject))
+			if (!Airship.damage.CanClientDamage(targetCharacter.gameObject, this.character.gameObject)) {
 				this.Log("cannot damage");
 				continue;
 			}
@@ -290,7 +290,7 @@ export class MeleeHeldItem extends HeldItem {
 				let hitInfo = hitInfos.GetValue(i);
 				this.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
 				//Look for entities and blocking colliders
-				const hitCharacter = Airship.Characters.FindByCollider(hitInfo.collider);
+				const hitCharacter = Airship.characters.FindByCollider(hitInfo.collider);
 				if (hitCharacter) {
 					if (hitCharacter.id === this.character.id) {
 						//Hit self, skip

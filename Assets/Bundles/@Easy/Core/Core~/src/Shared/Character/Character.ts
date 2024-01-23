@@ -1,3 +1,4 @@
+import { Airship } from "Shared/Airship";
 import { CharacterAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
@@ -32,6 +33,7 @@ export default class Character extends AirshipBehaviour {
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
+	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 
@@ -40,6 +42,11 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public Teleport(pos: Vector3, lookDirection?: Vector3): void {}
+
+	public OnDisable(): void {
+		this.onDespawn.Fire();
+		Airship.characters.onCharacterDespawned.Fire(this);
+	}
 
 	public IsDestroyed(): boolean {
 		return this.gameObject.IsDestroyed();

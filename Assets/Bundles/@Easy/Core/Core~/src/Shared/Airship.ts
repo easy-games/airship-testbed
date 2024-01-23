@@ -5,13 +5,13 @@ import { DamageManager } from "./Damage/DamageManager";
 import { PlayerManager } from "./Player/PlayerManager";
 
 export const Airship = {
-	Players: undefined as unknown as Omit<PlayerManager, "OnStart">,
-	Characters: undefined as unknown as Omit<CharacterManager, "OnStart">,
-	Damage: undefined as unknown as Omit<DamageManager, "OnStart">,
-	Client: {
-		Inventory: undefined as unknown as InventoryController,
+	players: undefined as unknown as Omit<PlayerManager, "OnStart">,
+	characters: undefined as unknown as Omit<CharacterManager, "OnStart">,
+	damage: undefined as unknown as Omit<DamageManager, "OnStart">,
+	client: {
+		inventory: undefined as unknown as InventoryController,
 	},
-	Server: {
-		Inventory: undefined as unknown as InventoryService,
+	server: {
+		inventory: undefined as unknown as InventoryService,
 	},
 };
