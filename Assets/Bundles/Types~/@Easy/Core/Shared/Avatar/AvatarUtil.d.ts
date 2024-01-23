@@ -16,8 +16,8 @@ export declare class AvatarUtil {
         keepOldAccessories?: boolean;
         combineMeshes?: boolean;
     }): void;
+    static LoadDefaultOutfit(builder: AccessoryBuilder): void;
     static LoadUserOutfit(outfit: Outfit, builder: AccessoryBuilder, options?: {
         keepOldAccessories?: boolean;
-        combineMeshes?: boolean;
     }): void;
 }
