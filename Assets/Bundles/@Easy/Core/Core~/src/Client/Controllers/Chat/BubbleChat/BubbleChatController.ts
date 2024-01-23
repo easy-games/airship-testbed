@@ -1,7 +1,7 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Entity } from "Shared/Entity/Entity";
@@ -28,7 +28,7 @@ export class BubbleChatController implements OnStart {
 		CoreNetwork.ServerToClient.PlayerChatted.client.OnServerEvent((rawMessage, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
-				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
+				sender = Airship.Players.FindByClientId(senderClientId);
 			}
 			if (sender?.character) {
 				const messageSanitized = this.SanitizeRawChatInput(rawMessage);

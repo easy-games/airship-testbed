@@ -48,4 +48,8 @@ export class CharacterManager implements OnStart {
 	public UnregisterCharacter(character: Character): void {
 		this.characters.delete(character);
 	}
+
+	public GetCharacters() {
+		return this.characters;
+	}
 }

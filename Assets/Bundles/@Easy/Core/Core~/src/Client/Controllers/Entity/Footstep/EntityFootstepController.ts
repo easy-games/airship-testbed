@@ -1,13 +1,13 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Airship } from "Shared/Airship";
 import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";
-import { EntityController } from "../EntityController";
 
 @Controller({})
 export class EntityFootstepController implements OnStart {
 	private entityLastFootstepTime = new Map<number, number>();
 
-	constructor(private readonly entityController: EntityController) {}
+	constructor() {}
 
 	OnStart(): void {
 		Task.Spawn(() => {
@@ -17,10 +17,10 @@ export class EntityFootstepController implements OnStart {
 				const camPos = camTransform.position;
 				Profiler.BeginSample("Footsteps");
 				let footstepCount = 0;
-				for (const entity of this.entityController.GetEntities()) {
-					if (entity.IsDead()) continue;
+				for (const character of Airship.Characters.GetCharacters()) {
+					if (character.IsDead()) continue;
 					let cooldown = -1;
-					const state = entity.GetState();
+					const state = character.state;
 					if (state === CharacterState.Sprinting) {
 						cooldown = 0.23;
 					} else if (state === CharacterState.Running) {
@@ -29,19 +29,20 @@ export class EntityFootstepController implements OnStart {
 					if (cooldown === -1) {
 						continue;
 					}
-					const lastTime = this.entityLastFootstepTime.get(entity.id) || 0;
+					const lastTime = this.entityLastFootstepTime.get(character.id) || 0;
 					if (currentTime - lastTime < cooldown) {
 						continue;
 					}
-					this.entityLastFootstepTime.set(entity.id, currentTime);
+					this.entityLastFootstepTime.set(character.id, currentTime);
 
-					let volumeScale = entity.GetState() === CharacterState.Crouching ? 0.3 : 1;
-					if (!entity.IsLocalCharacter()) {
+					let volumeScale = character.state === CharacterState.Crouching ? 0.3 : 1;
+					if (!character.IsLocalCharacter()) {
 						volumeScale *= 2;
 					}
 					Profiler.BeginSample("PlayFootstepSound");
 					try {
-						entity.animator.PlayFootstepSound(volumeScale, camPos);
+						// todo: footsteps
+						// character.animator.PlayFootstepSound(volumeScale, camPos);
 					} catch (err) {
 						Debug.LogError("footstep error: " + err);
 					}

@@ -20,6 +20,8 @@ export class DamageIndicatorController implements OnStart {
 	private indicatorPos: Vector2;
 	private damageIndicatorBin = new Bin();
 
+	public enabled = false;
+
 	constructor() {
 		const combatEffectsUI = Object.Instantiate<GameObject>(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Combat/CombatEffectsUI.prefab"),
@@ -45,6 +47,8 @@ export class DamageIndicatorController implements OnStart {
 		];
 
 		CoreClientSignals.EntityDamage.Connect((event) => {
+			if (!this.enabled) return;
+
 			const entityGO = event.entity.networkObject.gameObject;
 
 			//Hitstun
@@ -91,6 +95,8 @@ export class DamageIndicatorController implements OnStart {
 		});
 
 		CoreClientSignals.EntityDeath.Connect((event) => {
+			if (!this.enabled) return;
+
 			event.entity.animator?.PlayDeath(event.damageType);
 
 			// PvP Kill
