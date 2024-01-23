@@ -11,6 +11,7 @@ import { AuthController } from "../Auth/AuthController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { Game } from "Shared/Game";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -476,6 +477,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			.then(() => {
 				//Get all owned accessories and map them to usable values
 				AvatarUtil.GetOwnedAccessories();
+				AvatarUtil.InitUserOutfits(Game.localPlayer.userId);
 			});
 	}
 

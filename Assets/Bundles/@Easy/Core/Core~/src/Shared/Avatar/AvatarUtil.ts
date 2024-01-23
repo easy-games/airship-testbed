@@ -1,5 +1,6 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AvatarPlatformAPI, Outfit } from "./AvatarPlatformAPI";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -82,6 +83,31 @@ export class AvatarUtil {
 					this.AddAvailableAvatarItem(item);
 				}
 			});
+		}
+	}
+
+	public static InitUserOutfits(userId: string) {
+		const maxNumberOfOutfits = 5;
+		let outfits = AvatarPlatformAPI.GetAllOutfits();
+		const numberOfOutfits = outfits ? outfits.size() : 0;
+		let name = "";
+		//Create missing outfits up to 5
+		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
+			name = "Default" + i;
+			print("Creating missing outfit: " + name);
+			let outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+				userId,
+				name,
+				name,
+				RandomUtil.FromArray(this.skinColors),
+			);
+			if (!outfit) {
+				error("Unable to make a new outfit :(");
+			}
+		}
+		//Make sure an outfit is equipped
+		if (!outfits || outfits.size() === 0 || AvatarPlatformAPI.GetEquippedOutfit() === undefined) {
+			AvatarPlatformAPI.EquipAvatarOutfit(name);
 		}
 	}
 
