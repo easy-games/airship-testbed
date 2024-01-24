@@ -51,7 +51,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
-			print("Unablet to find main nav btns on Avatar Editor Page");
+			warn("Unablet to find main nav btns on Avatar Editor Page");
 			return;
 		}
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
@@ -80,7 +80,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Hookup outfit buttons
 		if (!this.outfitBtns) {
-			print("Unablet to find outfit btns on Avatar Editor Page");
+			warn("Unable to find outfit btns on Avatar Editor Page");
 			return;
 		}
 		for (i = 0; i < this.outfitBtns.Length; i++) {
@@ -458,7 +458,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.Log("Selecting currently saved Item");
 		//Select the item that is saved for this slot
 		this.currentUserOutfit?.accessories.forEach((accessory, index) => {
-			let accComponent = AvatarUtil.GetAccessoryFromClassId(accessory.item.class.classId);
+			let accComponent = AvatarUtil.GetAccessoryFromClassId(accessory.class.classId);
 			if (accComponent?.GetSlotNumber() === (this.currentSlot as number)) {
 				this.SelectItem(accComponent);
 			}
@@ -482,7 +482,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private LoadAllOutfits() {
-		print("LOADIN ALL OUTFITS");
+		this.Log("LoadAllOutfits");
 		this.outfits = AvatarPlatformAPI.GetAllOutfits();
 		const outfitSize = this.outfits ? this.outfits.size() : 0;
 		if (outfitSize <= 0) {
@@ -510,7 +510,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			for (let outfit of this.outfits) {
 				if (outfit.outfitId === equippedOutfit.outfitId) {
 					//Select equipped outfit
-					print("Found default outfit index: " + i);
+					this.Log("Found default outfit index: " + i);
 					this.SelectOutfit(i);
 					return;
 				}
@@ -519,7 +519,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		//Select the first outfit
-		print("Selecting default outfit");
 		this.SelectOutfit(0);
 	}
 
@@ -555,10 +554,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		builder.RemoveAccessories();
 
-		print("Loading outfit: " + this.currentUserOutfit.name);
+		this.Log("Loading outfit: " + this.currentUserOutfit.name);
 		this.currentUserOutfit.accessories.forEach((acc, index) => {
-			print("Outfit acc: " + acc.item.class.name + ": " + acc.item.class.classId);
-			this.SelectItem(AvatarUtil.GetAccessoryFromClassId(acc.item.class.classId));
+			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
+			this.SelectItem(AvatarUtil.GetAccessoryFromClassId(acc.class.classId));
 		});
 
 		//builder.TryCombineMeshes();

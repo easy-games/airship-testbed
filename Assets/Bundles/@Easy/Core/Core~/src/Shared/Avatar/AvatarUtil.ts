@@ -138,7 +138,7 @@ export class AvatarUtil {
 
 	public static LoadEquippedUserOutfit(
 		builder: AccessoryBuilder,
-		options: { keepOldAccessories?: boolean; combineMeshes?: boolean } = {},
+		options: { removeAllOldAccessories?: boolean; combineMeshes?: boolean } = {},
 	) {
 		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
 		if (!outfit) {
@@ -158,15 +158,15 @@ export class AvatarUtil {
 	public static LoadUserOutfit(
 		outfit: Outfit,
 		builder: AccessoryBuilder,
-		options: { keepOldAccessories?: boolean } = {},
+		options: { removeAllOldAccessories?: boolean } = {},
 	) {
-		if (!options.keepOldAccessories) {
+		if (options.removeAllOldAccessories) {
 			builder.RemoveAccessories();
 		}
 		outfit.accessories.forEach((acc) => {
-			const accComponent = this.GetAccessoryFromClassId(acc.item.class.classId);
+			const accComponent = this.GetAccessoryFromClassId(acc.class.classId);
 			if (!accComponent) {
-				warn("Unable to find accessory with class ID: " + acc.item.class.classId);
+				warn("Unable to find accessory with class ID: " + acc.class.classId);
 				return; //Continue
 			}
 			builder.AddSingleAccessory(accComponent, false);
