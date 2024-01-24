@@ -1,10 +1,7 @@
 import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
-import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
-import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
-import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
-import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
@@ -20,15 +17,16 @@ export default class GameManager extends AirshipBehaviour {
 
 	override Start(): void {
 		if (RunUtil.IsServer()) {
-			Dependency<PlayerService>().ObservePlayers((player) => {
-				this.SpawnPlayer(player);
-			});
-			const coreServerSignals = import("@Easy/Core/Server/CoreServerSignals").expect().CoreServerSignals;
 			this.bin.Add(
-				coreServerSignals.EntityDeath.Connect((event) => {
-					event.respawnTime = 0;
-					if (event.entity.player) {
-						this.SpawnPlayer(event.entity.player);
+				Airship.players.ObservePlayers((player) => {
+					this.SpawnPlayer(player);
+				}),
+			);
+			this.bin.Add(
+				Airship.damage.onDeath.Connect((event) => {
+					const player = event.gameObject.GetComponent<Character>()?.player;
+					if (player) {
+						this.SpawnPlayer(player);
 					}
 				}),
 			);
@@ -48,13 +46,9 @@ export default class GameManager extends AirshipBehaviour {
 	}
 
 	public SpawnPlayer(player: Player): void {
-		const entity = Dependency<EntityService>().SpawnPlayerEntity(
-			player,
-			EntityPrefabType.HUMAN,
-			this.spawnPosition.position,
-		);
-		const inv = entity.GetInventory();
-		inv.AddItem(new ItemStack(ItemType.STONE_SWORD));
+		player.SpawnCharacter(this.spawnPosition.position);
+		// const inv = entity.GetInventory();
+		// inv.AddItem(new ItemStack(ItemType.STONE_SWORD));
 	}
 
 	override OnDestroy(): void {

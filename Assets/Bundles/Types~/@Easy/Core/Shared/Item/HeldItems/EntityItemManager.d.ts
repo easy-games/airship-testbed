@@ -1,16 +1,16 @@
-import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
+import Character from "../../Character/Character";
 import { HeldItemManager } from "./HeldItemManager";
 export declare class EntityItemManager {
     private static instance;
     static Get(): EntityItemManager;
     private entityItems;
-    private localEntity?;
+    private localCharacter?;
     private mouseIsDownLeft;
     private mouseIsDownRight;
     private Log;
     constructor();
     private InitializeClient;
     private InitializeServer;
-    GetOrCreateItemManager(entity: CharacterEntity): HeldItemManager;
+    GetOrCreateItemManager(character: Character): HeldItemManager;
     private DestroyItemManager;
 }

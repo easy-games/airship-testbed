@@ -1,18 +1,15 @@
 import { DataStoreService } from "@Easy/Core/Server/Airship/DataStore/DataStoreService";
 import { LeaderboardService } from "@Easy/Core/Server/Airship/Leaderboard/LeaderboardService";
-import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
-import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { SetInterval, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Dependency } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { Network } from "Shared/Network";
 
 export default class TestScript extends AirshipBehaviour {
-	private entityService!: EntityService;
 	public spawnArea!: GameObject;
 
 	private sessionKillMap = new Map<Player, number>();
@@ -22,7 +19,6 @@ export default class TestScript extends AirshipBehaviour {
 
 	override Awake(): void {
 		if (!RunUtil.IsServer()) return;
-		this.entityService = Dependency<EntityService>();
 	}
 
 	override Start(): void {
@@ -32,39 +28,34 @@ export default class TestScript extends AirshipBehaviour {
 
 		const bounds = this.spawnArea.GetComponent<BoxCollider>("Box Collider").bounds;
 
-		const coreServerSignals = import("@Easy/Core/Server/CoreServerSignals").expect().CoreServerSignals;
-		this.bin.Add(
-			coreServerSignals.EntityDeath.Connect((event) => {
-				const killer = event.killer?.player;
-				if (!killer) return;
+		Airship.damage.onDeath.Connect((damageInfo) => {
+			const killer = damageInfo.attacker?.GetComponent<Character>()?.player;
+			if (!killer) return;
 
-				let kills = this.sessionKillMap.get(killer) ?? 0;
-				this.sessionKillMap.set(killer, ++kills);
-			}),
-		);
+			let kills = this.sessionKillMap.get(killer) ?? 0;
+			this.sessionKillMap.set(killer, ++kills);
+		});
 
-		this.bin.Add(
-			coreServerSignals.PlayerLeave.Connect(async (event) => {
-				await this.UpdateDatastore(event.player);
-				await this.UpdateLeaderboard(event.player);
-				this.sessionKillMap.delete(event.player);
-				this.totalKillMap.delete(event.player);
-			}),
-		);
+		Airship.players.onPlayerDisconnected.Connect(async (player) => {
+			await this.UpdateDatastore(player);
+			await this.UpdateLeaderboard(player);
+			this.sessionKillMap.delete(player);
+			this.totalKillMap.delete(player);
+		});
 
 		this.bin.Add(
-			coreServerSignals.PlayerJoin.Connect(async (event) => {
-				const res = await Dependency<LeaderboardService>().GetRank("TopDemoSessionKills", event.player.userId);
+			Airship.players.onPlayerJoined.Connect(async (player) => {
+				const res = await Dependency<LeaderboardService>().GetRank("TopDemoSessionKills", player.userId);
 				if (!res.success) return;
-				const dataRes = await Dependency<DataStoreService>().GetKey<{ kills: number }>(event.player.userId);
+				const dataRes = await Dependency<DataStoreService>().GetKey<{ kills: number }>(player.userId);
 				if (!dataRes.success) return;
 				const topRes = await Dependency<LeaderboardService>().GetRankRange("TopDemoSessionKills", 0, 3);
 				if (!topRes.success) return;
 
-				this.totalKillMap.set(event.player, dataRes.data?.kills ?? 0);
+				this.totalKillMap.set(player, dataRes.data?.kills ?? 0);
 
 				Network.ServerToClient.KillData.server.FireClient(
-					event.player.clientId,
+					player.clientId,
 					res.data?.rank !== undefined ? `${res.data.rank}` : "No Rank",
 					dataRes.data?.kills ?? 0,
 				);
@@ -83,25 +74,25 @@ export default class TestScript extends AirshipBehaviour {
 			}),
 		);
 
-		for (let i = 0; i < 25; i++) {
-			const randomLoc = new Vector3(
-				math.random(bounds.min.x, bounds.max.x),
-				math.random(bounds.min.y, bounds.max.y) + 1,
-				math.random(bounds.min.z, bounds.max.z),
-			);
-			this.entityService.SpawnEntity(EntityPrefabType.HUMAN, randomLoc);
-		}
+		// for (let i = 0; i < 25; i++) {
+		// 	const randomLoc = new Vector3(
+		// 		math.random(bounds.min.x, bounds.max.x),
+		// 		math.random(bounds.min.y, bounds.max.y) + 1,
+		// 		math.random(bounds.min.z, bounds.max.z),
+		// 	);
+		// 	this.entityService.SpawnEntity(EntityPrefabType.HUMAN, randomLoc);
+		// }
 
-		SetInterval(0.25, () => {
-			if (this.entityService.GetEntities().size() > 25) return;
+		// SetInterval(0.25, () => {
+		// 	if (this.entityService.GetEntities().size() > 25) return;
 
-			const randomLoc = new Vector3(
-				math.random(bounds.min.x, bounds.max.x),
-				math.random(bounds.min.y, bounds.max.y) + 1,
-				math.random(bounds.min.z, bounds.max.z),
-			);
-			this.entityService.SpawnEntity(EntityPrefabType.HUMAN, randomLoc);
-		});
+		// 	const randomLoc = new Vector3(
+		// 		math.random(bounds.min.x, bounds.max.x),
+		// 		math.random(bounds.min.y, bounds.max.y) + 1,
+		// 		math.random(bounds.min.z, bounds.max.z),
+		// 	);
+		// 	this.entityService.SpawnEntity(EntityPrefabType.HUMAN, randomLoc);
+		// });
 	}
 
 	private async UpdateDatastore(player: Player) {

@@ -37,16 +37,16 @@ interface Time {
 
 declare const Time: Time;
 
-interface PlayerManager extends Component {
+interface PlayerManagerBridge extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	GetPlayers(): CSArray<PlayerInfoDto>;
 	AddBotPlayer(username: string, tag: string, userId: string): void;
 }
 interface PlayerManagerConstructor {
-	Instance: PlayerManager;
+	Instance: PlayerManagerBridge;
 }
-declare const PlayerManager: PlayerManagerConstructor;
+declare const PlayerManagerBridge: PlayerManagerConstructor;
 
 interface PlayerInfoDto extends Component {
 	clientId: number;
@@ -56,8 +56,8 @@ interface PlayerInfoDto extends Component {
 	gameObject: GameObject;
 }
 
-interface EntityDriver extends Component {
-	OnStateChanged(callback: (state: EntityState) => void): EngineEventConnection;
+interface CharacterMovement extends Component {
+	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
 	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
@@ -87,7 +87,7 @@ interface EntityDriver extends Component {
 	GetVelocity(): Vector3;
 	DisableMovement();
 	EnableMovement();
-	GetState(): EntityState;
+	GetState(): CharacterState;
 	UpdateSyncTick(): void;
 
 	groundedBlockId: number;
@@ -360,7 +360,7 @@ interface AnimatorStatic {
 }
 declare const Animator: AnimatorStatic;
 
-declare const enum EntityState {
+declare const enum CharacterState {
 	Idle = 0,
 	Running = 1,
 	Jumping = 2,
@@ -798,8 +798,6 @@ interface NetworkObject extends MonoBehaviour {
 	PrefabId: number;
 	SpawnableCollectionId: number;
 	AssetPathHash: number;
-
-	constructor(): NetworkObject;
 
 	Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
 	Despawn(go: GameObject, despawnType: unknown): void;

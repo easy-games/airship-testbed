@@ -1,14 +1,14 @@
-import { Entity } from "../../../Shared/Entity/Entity";
+import Character from "../../../Shared/Character/Character";
 export declare class EntityInput {
-    private readonly entity;
+    private readonly character;
     private readonly bin;
-    private readonly entityDriver;
+    private readonly movement;
     private disablers;
     private disablerCounter;
     private jumping;
     private enabled;
     private autoSprinting;
-    constructor(entity: Entity);
+    constructor(character: Character);
     /**
      * Sets whether or not the Humanoid Driver is enabled. If disabled, then the
      * character will not move from user input.

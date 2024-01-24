@@ -17,7 +17,6 @@ export default class ClientScript extends AirshipBehaviour {
 		this.scoreboard = go.GetComponent<Scoreboard>();
 
 		// Only runs on client
-		const coreClientSignals = import("@Easy/Core/Client/CoreClientSignals").expect().CoreClientSignals;
 
 		this.bin.Add(
 			Network.ServerToClient.TopScores.client.OnServerEvent(async (event) => {

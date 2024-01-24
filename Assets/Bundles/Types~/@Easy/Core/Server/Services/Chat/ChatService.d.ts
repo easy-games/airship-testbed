@@ -1,12 +1,10 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { ChatCommand } from "../../../Shared/Commands/ChatCommand";
 import { Player } from "../../../Shared/Player/Player";
-import { PlayerService } from "../Player/PlayerService";
 export declare class ChatService implements OnStart {
-    private readonly playerService;
     private commands;
     readonly canUseRichText = true;
-    constructor(playerService: PlayerService);
+    constructor();
     RegisterCommand(command: ChatCommand): void;
     /**
      *

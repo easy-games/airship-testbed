@@ -11,8 +11,9 @@ import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 @Service()
 @Controller()
 export class DamageManager implements OnStart {
-	public onDamage = new Signal<DamageInfo>();
-	public onCanClientDamage = new Signal<CanClientDamageInfo>();
+	public readonly onDamage = new Signal<DamageInfo>();
+	public readonly onCanClientDamage = new Signal<CanClientDamageInfo>();
+	public readonly onDeath = new Signal<DamageInfo>();
 
 	/**
 	 * If true, knockback will be applied using the "knockback" Vector3 property in data.
@@ -77,6 +78,10 @@ export class DamageManager implements OnStart {
 				);
 			}
 		}
+	}
+
+	public BroadcastDeath(damageInfo: DamageInfo): void {
+		this.onDeath.Fire(damageInfo);
 	}
 
 	/**
