@@ -4,41 +4,61 @@ import { DecodeJSON, EncodeJSON } from "Shared/json";
 
 export type ItemClass = {
 	resourceType: "GAME" | "ORGANIZATION";
-	resourceId: string;
+	resourceId: string; // either the game ID or the org ID depending on the type
+
 	classId: string;
+
 	name: string;
-	imageId: string;
+	imageId: string; // thumbnail ID (https://easy-cdn/images/{imageId}.jpg)
+	tags: string[];
 	description: string;
+
+	default: boolean; // whether or not it will be granted to users by default
+
+	tradable: {
+		permitted: boolean;
+	};
+
+	marketable: {
+		permitted: boolean;
+	};
+};
+export type Item = {
+	ownerId: string;
+
+	class: ItemClass;
+	instanceId: string;
+
+	createdAt: string;
+};
+export type ProfilePicture = ItemClass & {
+	profilePicture: {
+		imageId: string; // this is the avatar image
+	};
 };
 
-export type AccessoryClass = ItemClass & {
+export type ProfilePictureItem = Omit<Item, "class"> & {
+	class: ProfilePicture;
+};
+export type Accessory = ItemClass & {
 	accessory: {};
 };
-
-export type AccessoryItem = {
-	instanceId: string;
-	class: AccessoryClass;
+export type AccessoryItem = Omit<Item, "class"> & {
+	class: Accessory;
 };
-
-export type Accessory = {
-	item: AccessoryItem;
-};
-
 export type Outfit = {
 	outfitId: string;
-	owner: string;
 
 	name: string;
-	accessories: Accessory[];
-	skinColor: string;
+	skinColor: string; // hex string
+	accessories: Array<AccessoryItem>;
 
 	equipped: boolean;
 };
 
 export class AvatarPlatformAPI {
 	private static Log(message: string) {
-		return;
-		print("AvatarAPI: " + message);
+		//print("AvatarAPI: " + message);
 	}
 
 	public static GetHttpUrl(path: string) {
@@ -89,7 +109,7 @@ export class AvatarPlatformAPI {
 
 	public static GetAccessories() {
 		this.Log("GetAccessories");
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories`));
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
 		if (res.success) {
 			return DecodeJSON<AccessoryItem[]>(res.data);
 		}

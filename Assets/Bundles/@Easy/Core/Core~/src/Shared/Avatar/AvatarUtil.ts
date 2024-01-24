@@ -1,5 +1,6 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AvatarPlatformAPI, Outfit } from "./AvatarPlatformAPI";
+import { RandomUtil } from "Shared/Util/RandomUtil";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -85,6 +86,31 @@ export class AvatarUtil {
 		}
 	}
 
+	public static InitUserOutfits(userId: string) {
+		const maxNumberOfOutfits = 5;
+		let outfits = AvatarPlatformAPI.GetAllOutfits();
+		const numberOfOutfits = outfits ? outfits.size() : 0;
+		let name = "";
+		//Create missing outfits up to 5
+		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
+			name = "Default" + i;
+			print("Creating missing outfit: " + name);
+			let outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+				userId,
+				name,
+				name,
+				RandomUtil.FromArray(this.skinColors),
+			);
+			if (!outfit) {
+				error("Unable to make a new outfit :(");
+			}
+		}
+		//Make sure an outfit is equipped
+		if (!outfits || outfits.size() === 0 || AvatarPlatformAPI.GetEquippedOutfit() === undefined) {
+			AvatarPlatformAPI.EquipAvatarOutfit(name);
+		}
+	}
+
 	public static AddAvailableAvatarItem(item: AccessoryComponent) {
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
@@ -112,7 +138,7 @@ export class AvatarUtil {
 
 	public static LoadEquippedUserOutfit(
 		builder: AccessoryBuilder,
-		options: { keepOldAccessories?: boolean; combineMeshes?: boolean } = {},
+		options: { removeAllOldAccessories?: boolean; combineMeshes?: boolean } = {},
 	) {
 		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
 		if (!outfit) {
@@ -132,15 +158,15 @@ export class AvatarUtil {
 	public static LoadUserOutfit(
 		outfit: Outfit,
 		builder: AccessoryBuilder,
-		options: { keepOldAccessories?: boolean } = {},
+		options: { removeAllOldAccessories?: boolean } = {},
 	) {
-		if (!options.keepOldAccessories) {
+		if (options.removeAllOldAccessories) {
 			builder.RemoveAccessories();
 		}
 		outfit.accessories.forEach((acc) => {
-			const accComponent = this.GetAccessoryFromClassId(acc.item.class.classId);
+			const accComponent = this.GetAccessoryFromClassId(acc.class.classId);
 			if (!accComponent) {
-				warn("Unable to find accessory with class ID: " + acc.item.class.classId);
+				warn("Unable to find accessory with class ID: " + acc.class.classId);
 				return; //Continue
 			}
 			builder.AddSingleAccessory(accComponent, false);
