@@ -33,7 +33,6 @@
             "Shared/*": ["./Shared/*"]
         },
 		"baseUrl": "src",
-		"incremental": false,
         "skipLibCheck": true,
 		"plugins": [
             // { "transform": "@easy-games/unity-component-transformer" },

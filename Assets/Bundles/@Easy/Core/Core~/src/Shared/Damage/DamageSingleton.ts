@@ -10,7 +10,7 @@ import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 
 @Service()
 @Controller()
-export class DamageManager implements OnStart {
+export class DamageSingleton implements OnStart {
 	public readonly onDamage = new Signal<DamageInfo>();
 	public readonly onCanClientDamage = new Signal<CanClientDamageInfo>();
 	public readonly onDeath = new Signal<DamageInfo>();

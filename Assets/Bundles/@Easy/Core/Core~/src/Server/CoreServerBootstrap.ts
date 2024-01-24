@@ -14,8 +14,6 @@ Game.organizationId = serverBootstrap.organizationId;
 function LoadFlamework() {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/services", "^.*service.lua$");
-	Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts/strollers", "^.*.lua$");
-	Flamework.Ignite();
 }
 
 export function SetupServer() {

@@ -2,7 +2,7 @@ import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
 import { Player } from "../Player/Player";
 import { Signal } from "../Util/Signal";
 import { Team } from "./Team";
-export declare class TeamManager implements OnStart {
+export declare class TeamsSingleton implements OnStart {
     readonly onPlayerChangeTeam: Signal<[player: Player, newTeam: Team, oldTeam: Team | undefined]>;
     readonly onTeamAdded: Signal<Team>;
     private teams;

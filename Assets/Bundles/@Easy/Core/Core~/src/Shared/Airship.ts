@@ -1,15 +1,15 @@
 import { InventoryController } from "Client/Controllers/Inventory/InventoryController";
 import { InventoryService } from "Server/Services/Inventory/InventoryService";
-import { CharacterManager } from "./Character/CharacterManager";
-import { DamageManager } from "./Damage/DamageManager";
-import { PlayerManager } from "./Player/PlayerManager";
-import { TeamManager } from "./Team/TeamManager";
+import { CharactersSingleton } from "./Character/CharactersSingleton";
+import { DamageSingleton } from "./Damage/DamageSingleton";
+import { PlayersSingleton } from "./Player/PlayersSingleton";
+import { TeamsSingleton } from "./Team/TeamSingleton";
 
 export const Airship = {
-	players: undefined as unknown as Omit<PlayerManager, "OnStart">,
-	characters: undefined as unknown as Omit<CharacterManager, "OnStart">,
-	damage: undefined as unknown as Omit<DamageManager, "OnStart">,
-	teams: undefined as unknown as Omit<TeamManager, "OnStart">,
+	players: undefined as unknown as Omit<PlayersSingleton, "OnStart">,
+	characters: undefined as unknown as Omit<CharactersSingleton, "OnStart">,
+	damage: undefined as unknown as Omit<DamageSingleton, "OnStart">,
+	teams: undefined as unknown as Omit<TeamsSingleton, "OnStart">,
 	client: {
 		inventory: undefined as unknown as InventoryController,
 	},

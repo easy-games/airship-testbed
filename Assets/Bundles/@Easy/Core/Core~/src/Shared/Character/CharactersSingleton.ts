@@ -8,7 +8,7 @@ import { CustomMoveData } from "./CustomMoveData";
 
 @Service()
 @Controller()
-export class CharacterManager implements OnStart {
+export class CharactersSingleton implements OnStart {
 	private characters = new Set<Character>();
 
 	public onCharacterSpawned = new Signal<Character>();

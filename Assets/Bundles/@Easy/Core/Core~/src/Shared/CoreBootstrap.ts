@@ -2,6 +2,7 @@
  * This is the entrypoint of Core.
  */
 
+import { Flamework } from "@easy-games/flamework-core";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { Bootstrap } from "./Bootstrap/Bootstrap";
@@ -54,17 +55,23 @@ if (InstanceFinder.TimeManager !== undefined) {
 	});
 }
 
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$");
+if (RunUtil.IsClient()) {
+	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
+	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$");
+	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+}
+if (RunUtil.IsServer()) {
+	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");
+	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/services", "^.*service.lua$");
+}
+Flamework.Ignite();
+
 if (RunUtil.IsServer()) {
 	const server = require("@Easy/Core/Server/Resources/TS/CoreServerBootstrap") as {
 		SetupServer: () => void;
 	};
 	server.SetupServer();
-}
-if (RunUtil.IsClient()) {
-	const client = require("@Easy/Core/Client/Resources/TS/CoreClientBootstrap") as {
-		SetupClient: (context: CoreContext) => void;
-	};
-	client.SetupClient(CoreContext.GAME);
 }
 
 Bootstrap.PrepareVoxelWorld();

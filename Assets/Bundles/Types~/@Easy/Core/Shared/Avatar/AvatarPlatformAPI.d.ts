@@ -1,27 +1,46 @@
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export type ItemClass = {
     resourceType: "GAME" | "ORGANIZATION";
     resourceId: string;
     classId: string;
     name: string;
     imageId: string;
+    tags: string[];
     description: string;
+    default: boolean;
+    tradable: {
+        permitted: boolean;
+    };
+    marketable: {
+        permitted: boolean;
+    };
 };
-export type AccessoryClass = ItemClass & {
+export type Item = {
+    ownerId: string;
+    class: ItemClass;
+    instanceId: string;
+    createdAt: string;
+};
+export type ProfilePicture = ItemClass & {
+    profilePicture: {
+        imageId: string;
+    };
+};
+export type ProfilePictureItem = Omit<Item, "class"> & {
+    class: ProfilePicture;
+};
+export type Accessory = ItemClass & {
     accessory: {};
 };
-export type AccessoryItem = {
-    instanceId: string;
-    class: AccessoryClass;
-};
-export type Accessory = {
-    item: AccessoryItem;
+export type AccessoryItem = Omit<Item, "class"> & {
+    class: Accessory;
 };
 export type Outfit = {
     outfitId: string;
-    owner: string;
     name: string;
-    accessories: Accessory[];
     skinColor: string;
+    accessories: Array<AccessoryItem>;
     equipped: boolean;
 };
 export declare class AvatarPlatformAPI {

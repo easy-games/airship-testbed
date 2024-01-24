@@ -14,11 +14,11 @@ import { Player, PlayerDto } from "./Player";
 
 @Controller()
 @Service()
-export class PlayerManager implements OnStart {
+export class PlayersSingleton implements OnStart {
 	public onPlayerJoined = new Signal<Player>();
 	public onPlayerDisconnected = new Signal<Player>();
 
-	private players = new Set<Player>([Game.localPlayer]);
+	private players = new Set<Player>([]);
 	private playerManagerBridge = PlayerManagerBridge.Instance;
 	private client?: {
 		clientId: number;
@@ -184,9 +184,9 @@ export class PlayerManager implements OnStart {
 	private AddPlayerClient(dto: PlayerDto): void {
 		const existing = this.FindByClientId(dto.clientId);
 		if (existing) {
-			if (Game.localPlayer !== existing) {
-				warn("Tried to add existing player " + dto.username);
-			}
+			// if (Game.localPlayer !== existing) {
+			// 	warn("Tried to add existing player " + dto.username);
+			// }
 			return;
 		}
 		const nob = NetworkUtil.WaitForNobId(dto.nobId);

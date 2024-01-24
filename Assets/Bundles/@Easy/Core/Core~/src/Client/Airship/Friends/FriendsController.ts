@@ -1,5 +1,4 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { FriendStatusData } from "Shared/SocketIOMessages/FriendsDtos";
 import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
 import { Result } from "Shared/Types/Result";
 import { DecodeJSON } from "Shared/json";
@@ -7,6 +6,8 @@ import { DecodeJSON } from "Shared/json";
 /** Provides information about the users friends. */
 @Controller({})
 export class FriendsController implements OnStart {
+	constructor() {}
+
 	OnStart(): void {}
 
 	/**

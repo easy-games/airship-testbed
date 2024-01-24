@@ -4,7 +4,7 @@ import { Player } from "../Player/Player";
 import { Signal } from "../Util/Signal";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
-export declare class CharacterManager implements OnStart {
+export declare class CharactersSingleton implements OnStart {
     private characters;
     onCharacterSpawned: Signal<Character>;
     onCharacterDespawned: Signal<Character>;

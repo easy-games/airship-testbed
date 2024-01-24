@@ -1,6 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
-import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CoreContext } from "Shared/CoreClientContext";
@@ -56,7 +55,6 @@ export class DirectMessageController implements OnStart {
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly friendsController: FriendsController,
-		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
 	) {}
 

@@ -2,7 +2,7 @@ import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
 import { Signal } from "../Util/Signal";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
-export declare class DamageManager implements OnStart {
+export declare class DamageSingleton implements OnStart {
     readonly onDamage: Signal<DamageInfo>;
     readonly onCanClientDamage: Signal<CanClientDamageInfo>;
     readonly onDeath: Signal<DamageInfo>;

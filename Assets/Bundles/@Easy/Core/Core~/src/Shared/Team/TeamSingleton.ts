@@ -15,7 +15,7 @@ interface TeamEntry {
 
 @Controller()
 @Service()
-export class TeamManager implements OnStart {
+export class TeamsSingleton implements OnStart {
 	public readonly onPlayerChangeTeam = new Signal<[player: Player, newTeam: Team, oldTeam: Team | undefined]>();
 	public readonly onTeamAdded = new Signal<Team>();
 

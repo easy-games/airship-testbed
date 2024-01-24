@@ -8,6 +8,7 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "Shared/ProfilePicture/ProfilePictureMeta";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
@@ -90,7 +91,7 @@ export class Player {
 	) {}
 
 	public SpawnCharacter(
-		pos: Vector3,
+		position: Vector3,
 		config?: {
 			lookDirection?: Vector3;
 		},
@@ -102,8 +103,10 @@ export class Player {
 		const go = Object.Instantiate(characterPrefab);
 		const characterComponent = go.GetComponent<Character>();
 		characterComponent.Init(this);
-		this.character = characterComponent;
-		InstanceFinder.ServerManager.Spawn(go, this.nob.Owner);
+		Airship.characters.RegisterCharacter(characterComponent);
+		this.SetCharacter(characterComponent);
+		go.transform.position = position;
+		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
 	}
 

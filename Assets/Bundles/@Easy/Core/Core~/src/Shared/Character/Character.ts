@@ -29,8 +29,8 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public id!: number;
 	@NonSerialized() public state!: CharacterState;
 	@Header("State")
-	private health!: number;
-	private maxHealth!: number;
+	private health = 100;
+	private maxHealth = 100;
 	/** A bin that is cleaned when the entity despawns. */
 	public readonly bin = new Bin();
 
@@ -48,7 +48,9 @@ export default class Character extends AirshipBehaviour {
 
 	public OnDisable(): void {
 		this.onDespawn.Fire();
-		Airship.characters.onCharacterDespawned.Fire(this);
+		if (Airship.characters) {
+			Airship.characters.onCharacterDespawned.Fire(this);
+		}
 	}
 
 	public IsDestroyed(): boolean {

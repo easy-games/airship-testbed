@@ -6955,17 +6955,6 @@ MonoBehaviour:
   m_metadata:
     name: Character
     properties:
-    - name: characterMovement
-      type: object
-      objectType: CharacterMovement
-      items:
-        type: 
-        objectType: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 7931457288082626079}
-      modified: 1
     - name: animationHelper
       type: object
       objectType: CharacterAnimationHelper
@@ -6976,6 +6965,91 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 903796914586745664}
+      modified: 1
+    - name: movement
+      type: object
+      objectType: CharacterMovement
+      items:
+        type: 
+        objectType: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7931457288082626079}
+      modified: 1
+    - name: accessoryBuilder
+      type: object
+      objectType: AccessoryBuilder
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5043041770756594627}
+      modified: 1
+    - name: model
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7387929036933538088}
+      modified: 1
+    - name: networkObject
+      type: object
+      objectType: NetworkObject
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: -98370938496583557}
+      modified: 1
+    - name: rig
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1643805755984172738}
+      modified: 1
+    - name: headBone
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Bones"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6958035153746565230}
+      modified: 1
+    - name: chestBone
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8593688266890668837}
       modified: 1
 --- !u!143 &8616685848737228382
 CharacterController:
@@ -7257,7 +7331,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _defaultDespawnType: 1
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 1
+  <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 1
   _scenePathHash: 0
   <SceneId>k__BackingField: 0

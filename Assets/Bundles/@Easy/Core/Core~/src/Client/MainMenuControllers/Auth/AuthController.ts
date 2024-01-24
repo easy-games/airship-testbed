@@ -15,6 +15,8 @@ export class AuthController implements OnStart {
 	public readonly onAuthenticated = new Signal<void>();
 	public readonly onSignOut = new Signal<void>();
 
+	constructor() {}
+
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
