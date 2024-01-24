@@ -1,6 +1,6 @@
 import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 
-export class MoveCommandDataEvent<T = unknown, K = unknown> {
+export class CustomMoveData<T = unknown, K = unknown> {
 	constructor(
 		/** Client ID. */
 		public readonly clientId: number,
@@ -26,7 +26,7 @@ export class MoveCommandDataEvent<T = unknown, K = unknown> {
 	 */
 	public Is<IsK extends keyof DataStreamItems, IsT extends DataStreamItems[IsK]>(
 		key: IsK,
-	): this is MoveCommandDataEvent<IsT, IsK> {
+	): this is CustomMoveData<IsT, IsK> {
 		return key === (this.key as unknown);
 	}
 }

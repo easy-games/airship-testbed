@@ -1,14 +1,12 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import Character from "Shared/Character/Character";
-import { Entity } from "Shared/Entity/Entity";
 import { Bin } from "Shared/Util/Bin";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemType } from "../ItemType";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
-import { ProjectileLauncherHeldItem } from "./ProjectileLauncher/ProjectileLauncherHeldItem";
 
 export type HeldItemCondition = (itemDef: ItemDef) => boolean;
 export type HeldItemFactory = (character: Character, itemDef: ItemDef) => HeldItem;
@@ -163,7 +161,7 @@ HeldItemManager.RegisterHeldItem(
 	(itemMeta) => itemMeta.melee !== undefined,
 	(entity, itemMeta) => new MeleeHeldItem(entity, itemMeta),
 );
-HeldItemManager.RegisterHeldItem(
-	(itemMeta) => itemMeta.projectileLauncher !== undefined,
-	(entity, itemMeta) => new ProjectileLauncherHeldItem(entity, itemMeta),
-);
+// HeldItemManager.RegisterHeldItem(
+// 	(itemMeta) => itemMeta.projectileLauncher !== undefined,
+// 	(entity, itemMeta) => new ProjectileLauncherHeldItem(entity, itemMeta),
+// );

@@ -1,7 +1,8 @@
 import { Airship } from "Shared/Airship";
-import { CharacterAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
+import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
+import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 
@@ -30,6 +31,8 @@ export default class Character extends AirshipBehaviour {
 	@Header("State")
 	private health!: number;
 	private maxHealth!: number;
+	/** A bin that is cleaned when the entity despawns. */
+	public readonly bin = new Bin();
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();

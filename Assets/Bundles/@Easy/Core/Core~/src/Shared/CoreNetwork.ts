@@ -1,6 +1,11 @@
-import { AbilityCooldownDto, AbilityDto, ChargingAbilityDto, ChargingAbilityEndedDto } from "./Abilities/Ability";
+import {
+	AbilityCooldownDto,
+	AbilityDto,
+	ChargingAbilityDto,
+	ChargingAbilityEndedDto,
+} from "../../../../../../Typescript~/src/Shared/Abilities/Ability";
+import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { DamageType } from "./Damage/DamageType";
-import { AccessorySlot } from "./Entity/Character/Accessory/AccessorySlot";
 import { EntityDto } from "./Entity/Entity";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";

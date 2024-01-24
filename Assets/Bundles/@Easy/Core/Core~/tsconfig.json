@@ -39,7 +39,7 @@
     "include": [
         // "../../Types~/**/*.d.ts",
         "src/**/*"
-, "../../../../Typescript~/src/Server/Services/Global/Block", "../../../../Typescript~/src/Shared/Signals"    ],
+, "../../../../Typescript~/src/Server/Services/Global/Block", "../../../../Typescript~/src/Shared/Signals", "../../../../Typescript~/src/Client/Controllers/Abilities", "../../../../Typescript~/src/Shared/Abilities/Ability.ts", "../../../../Typescript~/src/Shared/Abilities/AbilityLogic.ts", "../../../../Typescript~/src/Shared/Abilities/AbilitySlot.ts", "../../../../Typescript~/src/Shared/Abilities/AbilityUtil.ts", "../../../../Typescript~/src/Server/Services/Abilities"    ],
     "exclude": [
         "node_modules",
         "**/*.spec.ts"

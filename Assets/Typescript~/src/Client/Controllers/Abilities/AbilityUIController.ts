@@ -8,7 +8,7 @@ import { Bin } from "Shared/Util/Bin";
 import { InputUtils } from "Shared/Util/InputUtils";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { OnUpdate } from "Shared/Util/Timer";
-import { CoreUIController } from "../UI/CoreUIController";
+import { CoreUIController } from "../../../../../Bundles/@Easy/Core/Core~/src/Client/Controllers/UI/CoreUIController";
 import { AbilityBindingController } from "./AbilityBindingController";
 
 export interface ClientAbilityCooldownState {

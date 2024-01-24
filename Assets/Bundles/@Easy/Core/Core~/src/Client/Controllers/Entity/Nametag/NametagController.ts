@@ -1,7 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
-import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Team } from "Shared/Team/Team";
@@ -15,35 +14,35 @@ export class NametagController implements OnStart {
 	private showSelfNametag = false;
 
 	OnStart(): void {
-		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			if (event.entity.IsLocalCharacter() && !this.showSelfNametag) {
+		Airship.characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
+			if (character.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
 			// this.UpdateNametag(event.character);
 			// event.entity.onDisplayNameChanged.Connect(() => {
 			// 	this.UpdateNametag(event.character);
 			// });
-			const SetNametagAlpha = (entity: Entity, alpha: number) => {
-				const nameTag = entity.model.transform.FindChild(this.nameTageId);
+			const SetNametagAlpha = (character: Character, alpha: number) => {
+				const nameTag = character.model.transform.FindChild(this.nameTageId);
 				if (nameTag) {
 					const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>();
 					canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
 				}
-				const healthbar = entity.GetHealthbar();
-				if (healthbar) {
-					const canvasGroup = healthbar.transform.parent!.GetComponent<CanvasGroup>();
-					if (alpha < 1) {
-						canvasGroup.TweenCanvasGroupAlpha(alpha * 0.6, 0.1);
-					} else {
-						canvasGroup.TweenCanvasGroupAlpha(1, 0.1);
-					}
-				}
+				// const healthbar = character.GetHealthbar();
+				// if (healthbar) {
+				// 	const canvasGroup = healthbar.transform.parent!.GetComponent<CanvasGroup>();
+				// 	if (alpha < 1) {
+				// 		canvasGroup.TweenCanvasGroupAlpha(alpha * 0.6, 0.1);
+				// 	} else {
+				// 		canvasGroup.TweenCanvasGroupAlpha(1, 0.1);
+				// 	}
+				// }
 			};
-			event.entity.onStateChanged.Connect((newState, oldState) => {
+			character.onStateChanged.Connect((newState, oldState) => {
 				if (newState === CharacterState.Crouching) {
-					SetNametagAlpha(event.entity, 0.1);
+					SetNametagAlpha(character, 0.1);
 				} else if (oldState === CharacterState.Crouching) {
-					SetNametagAlpha(event.entity, 1);
+					SetNametagAlpha(character, 1);
 				}
 			});
 		});
@@ -58,8 +57,8 @@ export class NametagController implements OnStart {
 		// 		this.UpdateNametag(event.player.character);
 		// 	}
 		// });
-		CoreClientSignals.EntityDespawn.Connect((entity) => {
-			const nameTag = entity.model.transform.FindChild(this.nameTageId);
+		Airship.characters.onCharacterDespawned.Connect((character) => {
+			const nameTag = character.model.transform.FindChild(this.nameTageId);
 			if (nameTag) {
 				Object.Destroy(nameTag.gameObject);
 			}

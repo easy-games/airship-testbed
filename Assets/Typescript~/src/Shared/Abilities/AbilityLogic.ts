@@ -1,4 +1,3 @@
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { AbilityConfig, AbilityDto, ChargingAbilityEndedState } from "./Ability";
 
 export interface AbilityChargeEndEvent {

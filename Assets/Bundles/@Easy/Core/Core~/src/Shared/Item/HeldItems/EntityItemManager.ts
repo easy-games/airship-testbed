@@ -3,7 +3,6 @@ import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreNetwork } from "../../CoreNetwork";
-import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { RunUtil } from "../../Util/RunUtil";
 import { HeldItemManager } from "./HeldItemManager";
 import { HeldItemState } from "./HeldItemState";
@@ -102,75 +101,64 @@ export class EntityItemManager {
 			});
 		});
 
-		import("../../../Client/CoreClientSignals").then((clientSignalRef) => {
-			this.Log("ClientSignals");
-			//Listen to new entities
-			Airship.characters.onCharacterSpawned.Connect((character) => {
-				this.GetOrCreateItemManager(character);
-				if (character.IsLocalCharacter()) {
-					this.localCharacter = character;
-				}
-			});
+		Airship.characters.onCharacterSpawned.Connect((character) => {
+			this.GetOrCreateItemManager(character);
+			if (character.IsLocalCharacter()) {
+				this.localCharacter = character;
+			}
+		});
 
-			//Clean up destroyed entities
-			clientSignalRef.CoreClientSignals.EntityDespawn.Connect((entity) => {
-				this.Log("EntityDespawn: " + entity.id);
-				if (entity instanceof CharacterEntity) {
-					this.DestroyItemManager(entity);
-				}
-			});
+		//Clean up destroyed entities
+		Airship.characters.onCharacterDespawned.Connect((character) => {
+			this.Log("EntityDespawn: " + character.id);
+			this.DestroyItemManager(character);
+		});
 
-			//Server Events
-			CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((entityId, newState, lookVector) => {
-				const heldItem = this.entityItems.get(entityId);
-				if (heldItem) {
-					heldItem.OnNewState(newState, lookVector);
-				}
-			});
+		//Server Events
+		CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((entityId, newState, lookVector) => {
+			const heldItem = this.entityItems.get(entityId);
+			if (heldItem) {
+				heldItem.OnNewState(newState, lookVector);
+			}
 		});
 	}
 
 	private InitializeServer() {
 		this.Log("InitializeServer");
-		import("../../../Server/CoreServerSignals").then((serverSignalsRef) => {
-			this.Log("serverSignalsRef");
 
-			//Listen to new entity spawns
-			Airship.characters.onCharacterSpawned.Connect((character) => {
-				this.GetOrCreateItemManager(character);
-			});
+		//Listen to new entity spawns
+		Airship.characters.onCharacterSpawned.Connect((character) => {
+			this.GetOrCreateItemManager(character);
+		});
 
-			//Clean up destroyed entities
-			serverSignalsRef.CoreServerSignals.EntityDespawn.Connect((entity) => {
-				this.Log("EntityDespawn: " + entity.id);
-				if (entity instanceof CharacterEntity) {
-					this.DestroyItemManager(entity);
+		//Clean up destroyed entities
+		Airship.characters.onCharacterDespawned.Connect((character) => {
+			this.Log("EntityDespawn: " + character.id);
+			this.DestroyItemManager(character);
+		});
+
+		//Listen to state changes triggered by client
+		Airship.characters.onServerCustomMoveCommand.Connect((event) => {
+			if (event.Is("HeldItemState")) {
+				const player = Airship.players.FindByClientId(event.clientId);
+				if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
+					return;
 				}
-			});
-
-			//Listen to state changes triggered by client
-			serverSignalsRef.CoreServerSignals.CustomMoveCommand.Connect((event) => {
-				if (event.Is("HeldItemState")) {
-					const player = Airship.players.FindByClientId(event.clientId);
-					if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
-						return;
-					}
-					this.Log("NewState: " + event.value.s);
-					const heldItemManager = this.entityItems.get(event.value.e);
-					if (heldItemManager) {
-						const lookVec = event.value.l;
-						heldItemManager.OnNewState(event.value.s, lookVec);
-						CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
-							event.clientId,
-							event.value.e,
-							event.value.s,
-							lookVec,
-						);
-					} else {
-						error("Reading custom move command from entity without held items???");
-					}
+				this.Log("NewState: " + event.value.s);
+				const heldItemManager = this.entityItems.get(event.value.e);
+				if (heldItemManager) {
+					const lookVec = event.value.l;
+					heldItemManager.OnNewState(event.value.s, lookVec);
+					CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
+						event.clientId,
+						event.value.e,
+						event.value.s,
+						lookVec,
+					);
+				} else {
+					error("Reading custom move command from entity without held items???");
 				}
-			});
+			}
 		});
 	}
 
@@ -187,11 +175,11 @@ export class EntityItemManager {
 	}
 
 	//Called by both client and server based on entity death events
-	private DestroyItemManager(entity: CharacterEntity) {
-		let entityId = entity.id ?? 0;
+	private DestroyItemManager(character: Character) {
+		let entityId = character.id ?? 0;
 		let items = this.entityItems.get(entityId);
 		if (items) {
-			items.OnNewState(HeldItemState.ON_DESTROY, entity.movement.GetLookVector());
+			items.OnNewState(HeldItemState.ON_DESTROY, character.movement.GetLookVector());
 			items.Destroy();
 			this.entityItems.delete(entityId);
 		}

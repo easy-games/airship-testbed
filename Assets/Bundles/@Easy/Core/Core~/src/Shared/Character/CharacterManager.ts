@@ -1,8 +1,10 @@
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
 import { Player } from "Shared/Player/Player";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import Character from "./Character";
+import { CustomMoveData } from "./CustomMoveData";
 
 @Service()
 @Controller()
@@ -11,6 +13,15 @@ export class CharacterManager implements OnStart {
 
 	public onCharacterSpawned = new Signal<Character>();
 	public onCharacterDespawned = new Signal<Character>();
+
+	/**
+	 * **SERVER ONLY**
+	 *
+	 * [Advanced]
+	 *
+	 * Custom data that the client sends in their move packet.
+	 */
+	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
 	constructor() {
 		Airship.characters = this;
@@ -60,6 +71,20 @@ export class CharacterManager implements OnStart {
 
 	public RegisterCharacter(character: Character): void {
 		this.characters.add(character);
+
+		if (RunUtil.IsServer() && character.player) {
+			// Custom move command data handling:
+			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
+				const allData = customData.Decode() as { key: unknown; value: unknown }[];
+				for (const data of allData) {
+					const moveEvent = new CustomMoveData(character.player?.clientId ?? -1, tick, data.key, data.value);
+					this.onServerCustomMoveCommand.Fire(moveEvent);
+				}
+			});
+			character.bin.Add(() => {
+				Bridge.DisconnectEvent(customDataConn);
+			});
+		}
 	}
 
 	public UnregisterCharacter(character: Character): void {

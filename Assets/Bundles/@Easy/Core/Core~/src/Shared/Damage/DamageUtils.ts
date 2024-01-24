@@ -1,7 +1,7 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
+import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
 import Character from "Shared/Character/Character";
-import { CharacterAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
 import { Entity } from "Shared/Entity/Entity";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";

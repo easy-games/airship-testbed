@@ -1,4 +1,4 @@
-import { Duration } from "Shared/Util/Duration";
+import { Duration } from "@Easy/Core/Shared/Util/Duration";
 import { AbilityLogic } from "./AbilityLogic";
 import { AbilitySlot } from "./AbilitySlot";
 

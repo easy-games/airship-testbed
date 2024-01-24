@@ -1,13 +1,11 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Game } from "Shared/Game";
 import { Inventory } from "Shared/Inventory/Inventory";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Signal } from "Shared/Util/Signal";
 
 @Controller({})
 export class InventoryController implements OnStart {
@@ -68,14 +66,13 @@ export class InventoryController implements OnStart {
 
 			inv.SetHeldSlot(slot);
 		});
-		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
-			if (event.entity instanceof CharacterEntity) {
-				this.inventories.set(event.entity.GetInventory().id, event.entity.GetInventory());
-				if (event.entity.IsLocalCharacter()) {
-					this.SetLocalInventory((event.entity as CharacterEntity).GetInventory());
-				}
-			}
-		});
+		// todo: inventory
+		// Airship.characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGHEST, (character) => {
+		// 	this.inventories.set(character.GetInventory().id, character.GetInventory());
+		// 	if (character.IsLocalCharacter()) {
+		// 		this.SetLocalInventory(character.GetInventory());
+		// 	}
+		// });
 
 		const keyboard = new Keyboard();
 		const mouse = new Mouse();
@@ -206,15 +203,15 @@ export class InventoryController implements OnStart {
 	public ObserveLocalInventory(callback: (inv: Inventory) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
-		if (Game.localPlayer.character && Game.localPlayer.character instanceof CharacterEntity) {
+		if (Game.localPlayer.character) {
 			// todo: inventory
 			// cleanup = callback(Game.localPlayer.character.GetInventory());
 		}
 
 		bin.Add(
-			Game.localPlayer.ObserveCharacter((entity) => {
+			Game.localPlayer.ObserveCharacter((character) => {
 				cleanup?.();
-				if (entity && entity instanceof CharacterEntity) {
+				if (character) {
 					// todo: inventory
 					// cleanup = callback(entity.GetInventory());
 				}

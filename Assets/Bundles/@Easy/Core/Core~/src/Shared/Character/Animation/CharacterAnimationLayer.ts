@@ -1,4 +1,4 @@
-export enum EntityAnimationLayer {
+export enum CharacterAnimationLayer {
 	/** Used for movement */
 	ROOT = 0,
 	/** Used for item idles */
