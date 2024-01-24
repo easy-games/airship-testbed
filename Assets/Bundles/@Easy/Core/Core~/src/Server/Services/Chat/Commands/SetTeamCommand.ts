@@ -1,11 +1,9 @@
-import { Dependency } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Theme } from "Shared/Util/Theme";
-import { TeamService } from "../../Team/TeamService";
 
 export class SetTeamCommand extends ChatCommand {
 	constructor() {
@@ -28,7 +26,7 @@ export class SetTeamCommand extends ChatCommand {
 		}
 
 		/* Validate team. */
-		const targetTeam = Dependency<TeamService>().GetTeamByName(teamName);
+		const targetTeam = Airship.teams.FindByName(teamName);
 		if (!targetTeam) {
 			player.SendMessage(`Invalid team name: ${teamName}`);
 			return;

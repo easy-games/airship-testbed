@@ -1,8 +1,6 @@
-import { Dependency } from "@easy-games/flamework-core";
-import { DamageService } from "Server/Services/Damage/DamageService";
-import { EntityService } from "Server/Services/Entity/EntityService";
+import { Airship } from "Shared/Airship";
+import Character from "Shared/Character/Character";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Entity } from "Shared/Entity/Entity";
 import { Player } from "Shared/Player/Player";
 import { Task } from "Shared/Util/Task";
 
@@ -13,11 +11,11 @@ export class DamageCommand extends ChatCommand {
 
 	public Execute(player: Player, args: string[]): void {
 		let amount: number | undefined;
-		let target: Entity | undefined;
+		let target: Character | undefined;
 
 		if (args.size() === 1) {
 			amount = tonumber(args[0]);
-			target = Dependency<EntityService>().GetEntityByClientId(player.clientId);
+			target = Airship.characters.FindByClientId(player.clientId);
 		}
 
 		Task.Delay(1, () => {
@@ -30,9 +28,7 @@ export class DamageCommand extends ChatCommand {
 				player.SendMessage("invalid target");
 				return;
 			}
-			Dependency<DamageService>().InflictDamage(target, amount, {
-				ignoreCancelled: true,
-			});
+			Airship.damage.InflictDamage(target.gameObject, amount);
 			player.SendMessage(`Inflicted ${amount} dmg to ${target.id}`);
 		});
 	}

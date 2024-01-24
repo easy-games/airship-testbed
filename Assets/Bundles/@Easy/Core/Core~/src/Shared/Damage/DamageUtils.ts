@@ -2,7 +2,6 @@
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
 import Character from "Shared/Character/Character";
-import { Entity } from "Shared/Entity/Entity";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
@@ -31,14 +30,14 @@ export class DamageUtils {
 		return math.clamp(speed, 0, max) / max;
 	}
 
-	public static AddHitstun(entity: Entity, damageAmount: number, OnComplete: () => void) {
+	public static AddHitstun(character: Character, damageAmount: number, OnComplete: () => void) {
 		//Don't do hit stun for small damage amounts
 		if (damageAmount < 25) {
 			OnComplete();
 			return 0;
 		}
 
-		const driver = entity.networkObject.gameObject.GetComponent<CharacterMovement>();
+		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>();
 		const damageDelta = math.clamp(damageAmount / this.maxHitstunDamage, 0, 1);
 		const hitStunDuration = this.GetStunDuration(damageDelta);
 		const hitStunFrequency = MathUtil.Lerp(30, 60, damageDelta);
@@ -46,24 +45,24 @@ export class DamageUtils {
 
 		//Stop entity from moving
 		driver.DisableMovement();
-		if (entity.IsLocalCharacter()) {
+		if (character.IsLocalCharacter()) {
 			Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
 		}
 
 		if (RunUtil.IsClient()) {
 			//Shake the entity
-			let shake = entity.references.rig.gameObject.AddComponent<EasyShake>();
-			shake.resolveShakeOverTime = true;
-			shake.maxRadius = new Vector3(hitStrunRadius, 0, hitStrunRadius);
-			const minRadius = math.max(this.maxHitStunRadius, hitStrunRadius / 2);
-			shake.minRadius = new Vector3(minRadius, 0, minRadius);
-			shake.duration = hitStunDuration;
-			shake.movementsPerSecond = hitStunFrequency;
+			// let shake = character.references.rig.gameObject.AddComponent<EasyShake>();
+			// shake.resolveShakeOverTime = true;
+			// shake.maxRadius = new Vector3(hitStrunRadius, 0, hitStrunRadius);
+			// const minRadius = math.max(this.maxHitStunRadius, hitStrunRadius / 2);
+			// shake.minRadius = new Vector3(minRadius, 0, minRadius);
+			// shake.duration = hitStunDuration;
+			// shake.movementsPerSecond = hitStunFrequency;
 		}
 
 		Task.Delay(hitStunDuration, () => {
 			driver.EnableMovement();
-			if (entity.IsLocalCharacter()) {
+			if (character.IsLocalCharacter()) {
 				Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
 			}
 			OnComplete();

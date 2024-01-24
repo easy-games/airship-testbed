@@ -1,4 +1,4 @@
-import { Entity } from "Shared/Entity/Entity";
+import Character from "Shared/Character/Character";
 import { BlockArchetype, BlockDamageType, BreakBlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { Signal } from "Shared/Util/Signal";
@@ -30,12 +30,12 @@ export class WorldAPI {
 	}
 
 	public static CalculateBlockHitDamage(
-		entity: Entity | undefined,
+		character: Character | undefined,
 		block: Block,
 		blockPos: Vector3,
 		breakBlockMeta: BreakBlockDef,
 	): number {
-		let signal = new BlockHitDamageSignal(breakBlockMeta.damage, entity, block, blockPos, breakBlockMeta);
+		let signal = new BlockHitDamageSignal(breakBlockMeta.damage, character, block, blockPos, breakBlockMeta);
 		this.onBlockHitDamageCalc.Fire(signal);
 
 		//Global Hit Damage Calcs

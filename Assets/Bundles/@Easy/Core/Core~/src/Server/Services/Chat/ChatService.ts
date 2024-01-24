@@ -7,7 +7,6 @@ import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { AbilityEnableStateCommand, AddAbilityCommand, RemoveAbilityCommand } from "./Commands/AbilityCommands";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
@@ -58,9 +57,6 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new LibonatiCommand());
 		this.RegisterCommand(new VorliasCommand());
 		this.RegisterCommand(new HelpCommand());
-		this.RegisterCommand(new AddAbilityCommand());
-		this.RegisterCommand(new RemoveAbilityCommand());
-		this.RegisterCommand(new AbilityEnableStateCommand());
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new SaveWorldCommand());
 	}

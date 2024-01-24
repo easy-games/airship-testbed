@@ -1,9 +1,7 @@
-import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
+import { OnStart, Service } from "@easy-games/flamework-core";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { Inventory } from "Shared/Inventory/Inventory";
-import { EntityService } from "../Entity/EntityService";
 
 interface InventoryEntry {
 	Inv: Inventory;
@@ -18,15 +16,13 @@ export class InventoryService implements OnStart {
 
 	OnStart(): void {
 		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((clientId, slot) => {
-			const entity = Dependency<EntityService>().GetEntityByClientId(clientId);
-			if (!entity) return;
-			if (!(entity instanceof CharacterEntity)) {
-				return;
-			}
+			const character = Airship.characters.FindByClientId(clientId);
+			if (!character) return;
 
-			entity.GetInventory().SetHeldSlot(slot);
+			// todo: inventory
+			// character.GetInventory().SetHeldSlot(slot);
 
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(entity.id, slot, true);
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(character.id, slot, true);
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
@@ -194,35 +190,35 @@ export class InventoryService implements OnStart {
 			},
 		);
 
-		CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.server.OnClientEvent((clientId, invDto) => {
-			const entity = Dependency<EntityService>().GetEntityByClientId(clientId) as CharacterEntity | undefined;
-			if (!entity) {
-				error("Entity not found.");
-			}
+		// CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.server.OnClientEvent((clientId, invDto) => {
+		// 	const character = Airship.characters.FindByClientId(clientId);
+		// 	if (!character) {
+		// 		error("Character not found.");
+		// 	}
 
-			const serverInvDto = entity.GetInventory().Encode();
+		// 	const serverInvDto = character.GetInventory().Encode();
 
-			//print("----- INV SYNC CHECK -----");
-			if (serverInvDto.items.size() !== invDto.items.size()) {
-				// print(
-				// 	"Inventory sizes don't match. Client: " +
-				// 		invDto.items.size() +
-				// 		", Server: " +
-				// 		serverInvDto.items.size(),
-				// );
-			}
+		// 	//print("----- INV SYNC CHECK -----");
+		// 	if (serverInvDto.items.size() !== invDto.items.size()) {
+		// 		// print(
+		// 		// 	"Inventory sizes don't match. Client: " +
+		// 		// 		invDto.items.size() +
+		// 		// 		", Server: " +
+		// 		// 		serverInvDto.items.size(),
+		// 		// );
+		// 	}
 
-			for (let slot = 0; slot < 45; slot++) {
-				const serverItem = serverInvDto.items.get(slot);
-				const clientItem = invDto.items.get(slot);
-				if (inspect(serverItem) !== inspect(clientItem)) {
-					// print(
-					// 	`Slot ${slot} mismatch. Server: ${serverItem?.i},${serverItem?.a}  Client: ${clientItem?.i},${clientItem?.a}`,
-					// );
-				}
-			}
-			//print("----- END -----");
-		});
+		// 	for (let slot = 0; slot < 45; slot++) {
+		// 		const serverItem = serverInvDto.items.get(slot);
+		// 		const clientItem = invDto.items.get(slot);
+		// 		if (inspect(serverItem) !== inspect(clientItem)) {
+		// 			// print(
+		// 			// 	`Slot ${slot} mismatch. Server: ${serverItem?.i},${serverItem?.a}  Client: ${clientItem?.i},${clientItem?.a}`,
+		// 			// );
+		// 		}
+		// 	}
+		// 	//print("----- END -----");
+		// });
 	}
 
 	private SwapSlots(

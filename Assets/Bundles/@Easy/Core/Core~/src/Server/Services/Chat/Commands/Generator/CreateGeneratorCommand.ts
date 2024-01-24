@@ -1,6 +1,6 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { EntityService } from "Server/Services/Entity/EntityService";
 import { GeneratorService } from "Server/Services/Generator/GeneratorService";
+import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
@@ -46,9 +46,9 @@ export class CreateGeneratorCommand extends ChatCommand {
 		}
 
 		// Spawn generator underneath command executor.
-		const executorEntity = Dependency<EntityService>().GetEntityByClientId(player.clientId);
-		if (!executorEntity) return;
-		const generatorPosition = executorEntity.gameObject.transform.position;
+		const executorCharacter = Airship.characters.FindByClientId(player.clientId);
+		if (!executorCharacter) return;
+		const generatorPosition = executorCharacter.gameObject.transform.position;
 		Dependency<GeneratorService>().CreateGenerator(generatorPosition, {
 			item: itemType,
 			spawnRate: spawnRate,

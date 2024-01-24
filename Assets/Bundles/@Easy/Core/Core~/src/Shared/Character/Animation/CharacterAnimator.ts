@@ -2,23 +2,19 @@
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
-import { AudioBundlePlayMode, AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
-import { AudioManager } from "Shared/Audio/AudioManager";
+import { AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
 import Character from "Shared/Character/Character";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import StringUtils from "Shared/Types/StringUtil";
-import { ArrayUtil } from "Shared/Util/ArrayUtil";
 import { Bin } from "Shared/Util/Bin";
 import { BundleReferenceManager } from "Shared/Util/BundleReferenceManager";
-import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
-import { EntityReferences } from "../../Entity/Entity";
 import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 
 export enum ItemAnimationId {
@@ -94,7 +90,7 @@ export class CharacterAnimator {
 
 	//private camera: Camera;
 
-	public constructor(public readonly character: Character, public readonly refs: EntityReferences) {
+	public constructor(public readonly character: Character) {
 		const animator = character.movement.animator;
 		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
 		this.isFlashing = false;
@@ -109,13 +105,13 @@ export class CharacterAnimator {
 				? AudioBundleSpacialMode.GLOBAL
 				: AudioBundleSpacialMode.SPACIAL;
 
-			this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
-			this.slideAudioBundle.volumeScale = 0.2;
-			this.slideAudioBundle.useFullPath = true;
-			this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
-			this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
-				? AudioBundleSpacialMode.GLOBAL
-				: AudioBundleSpacialMode.SPACIAL;
+			// this.slideAudioBundle = new AudioClipBundle(this.refs.slideSoundPaths);
+			// this.slideAudioBundle.volumeScale = 0.2;
+			// this.slideAudioBundle.useFullPath = true;
+			// this.slideAudioBundle.playMode = AudioBundlePlayMode.RANDOM_TO_LOOP;
+			// this.slideAudioBundle.spacialMode = character.IsLocalCharacter()
+			// 	? AudioBundleSpacialMode.GLOBAL
+			// 	: AudioBundleSpacialMode.SPACIAL;
 
 			//ANIMATIONS
 			this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
@@ -158,17 +154,18 @@ export class CharacterAnimator {
 		}
 
 		//Listen to animation events
-		const animConn = this.refs.animationEvents.OnEntityAnimationEvent((data) => {
-			// if (data !== 0) {
-			// 	print("Animation Event: " + data + " On Entity: " + this.entity.id);
-			// }
-			this.OnAnimationEvent(data);
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(animConn);
-		});
+		// const animConn = this.refs.animationEvents.OnEntityAnimationEvent((data) => {
+		// 	// if (data !== 0) {
+		// 	// 	print("Animation Event: " + data + " On Entity: " + this.entity.id);
+		// 	// }
+		// 	this.OnAnimationEvent(data);
+		// });
+		// this.bin.Add(() => {
+		// 	Bridge.DisconnectEvent(animConn);
+		// });
 
-		this.refs.root.gameObject.SetActive(true);
+		// todo: is this needed?
+		this.character.gameObject.SetActive(true);
 	}
 
 	private Log(message: string) {
@@ -185,7 +182,7 @@ export class CharacterAnimator {
 		}
 		// this.worldmodelAnimancerComponent.enabled = !isFirstPerson;
 
-		this.refs.animationHelper.SetFirstPerson(isFirstPerson);
+		this.character.animationHelper.SetFirstPerson(isFirstPerson);
 		this.LoadNewItemResources(this.currentItemMeta);
 		this.StartItemIdleAnim(true);
 	}
@@ -544,7 +541,7 @@ export class CharacterAnimator {
 		}
 
 		Task.Delay(0.5, () => {
-			this.refs.root.gameObject.SetActive(false);
+			this.character.gameObject.SetActive(false);
 		});
 	}
 
@@ -568,28 +565,28 @@ export class CharacterAnimator {
 
 	public SetFresnelColor(color: Color, power: number, strength: number) {
 		// if (this.character.) return;
-		let allMeshes = ArrayUtil.Combine(
-			CSArrayUtil.Convert(this.character.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.Root)),
-			this.refs.meshes,
-		);
-		//TODO: Material property block AddColor doesn't seem to be working???
-		/* const propertyBlock: MaterialPropertyBlock = Bridge.MakeMaterialPropertyBlock();
-		propertyBlock.AddFloat("_RimPower", power);
-		propertyBlock.AddFloat("_RimIntensity", strength);
-		propertyBlock.AddColor("_RimColor", color); */
-		allMeshes.forEach((renderer) => {
-			if (renderer && renderer.enabled) {
-				const materials = renderer.materials;
-				for (let i = 0; i < materials.Length; i++) {
-					const mat = materials.GetValue(i);
-					mat.EnableKeyword("RIM_LIGHT_ON");
-					mat.SetColor("_RimColor", color);
-					mat.SetFloat("_RimPower", power);
-					mat.SetFloat("_RimIntensity", strength);
-					//renderer.SetPropertyBlock(propertyBlock);
-				}
-			}
-		});
+		// let allMeshes = ArrayUtil.Combine(
+		// 	CSArrayUtil.Convert(this.character.accessoryBuilder.GetAccessoryMeshes(AccessorySlot.Root)),
+		// 	this.refs.meshes,
+		// );
+		// //TODO: Material property block AddColor doesn't seem to be working???
+		// /* const propertyBlock: MaterialPropertyBlock = Bridge.MakeMaterialPropertyBlock();
+		// propertyBlock.AddFloat("_RimPower", power);
+		// propertyBlock.AddFloat("_RimIntensity", strength);
+		// propertyBlock.AddColor("_RimColor", color); */
+		// allMeshes.forEach((renderer) => {
+		// 	if (renderer && renderer.enabled) {
+		// 		const materials = renderer.materials;
+		// 		for (let i = 0; i < materials.Length; i++) {
+		// 			const mat = materials.GetValue(i);
+		// 			mat.EnableKeyword("RIM_LIGHT_ON");
+		// 			mat.SetColor("_RimColor", color);
+		// 			mat.SetFloat("_RimPower", power);
+		// 			mat.SetFloat("_RimIntensity", strength);
+		// 			//renderer.SetPropertyBlock(propertyBlock);
+		// 		}
+		// 	}
+		// });
 	}
 
 	/**
@@ -634,9 +631,9 @@ export class CharacterAnimator {
 			if (!StringUtils.includes(soundPath, ".")) {
 				soundPath += ".ogg";
 			}
-			let audioClip = AssetCache.LoadAsset<AudioClip>(soundPath);
-			let volume = this.baseFootstepVolumeScale * volumeScale;
-			this.refs.footstepAudioSource.PlayOneShot(audioClip, volume);
+			// let audioClip = AssetCache.LoadAsset<AudioClip>(soundPath);
+			// let volume = this.baseFootstepVolumeScale * volumeScale;
+			// this.refs.footstepAudioSource.PlayOneShot(audioClip, volume);
 		}
 	}
 
@@ -653,31 +650,31 @@ export class CharacterAnimator {
 				this.slideAudioBundle?.Stop(1);
 				break;
 			case EntityAnimationEventKey.JUMP:
-				if (this.refs.jumpSound) {
-					if (this.character.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.refs.jumpSound, {
-							volumeScale: 0.2,
-						});
-					} else {
-						AudioManager.PlayClipAtPosition(this.refs.jumpSound, this.character.model.transform.position, {
-							volumeScale: 0.2,
-						});
-					}
-				}
+				// if (this.refs.jumpSound) {
+				// 	if (this.character.IsLocalCharacter()) {
+				// 		AudioManager.PlayClipGlobal(this.refs.jumpSound, {
+				// 			volumeScale: 0.2,
+				// 		});
+				// 	} else {
+				// 		AudioManager.PlayClipAtPosition(this.refs.jumpSound, this.character.model.transform.position, {
+				// 			volumeScale: 0.2,
+				// 		});
+				// 	}
+				// }
 				break;
 			case EntityAnimationEventKey.LAND:
 				this.PlayFootstepSound(1.4);
-				if (this.refs.landSound) {
-					if (this.character.IsLocalCharacter()) {
-						AudioManager.PlayClipGlobal(this.refs.landSound, {
-							volumeScale: 0.2,
-						});
-					} else {
-						AudioManager.PlayClipAtPosition(this.refs.landSound, this.character.model.transform.position, {
-							volumeScale: 0.2,
-						});
-					}
-				}
+				// if (this.refs.landSound) {
+				// 	if (this.character.IsLocalCharacter()) {
+				// 		AudioManager.PlayClipGlobal(this.refs.landSound, {
+				// 			volumeScale: 0.2,
+				// 		});
+				// 	} else {
+				// 		AudioManager.PlayClipAtPosition(this.refs.landSound, this.character.model.transform.position, {
+				// 			volumeScale: 0.2,
+				// 		});
+				// 	}
+				// }
 				break;
 		}
 	}

@@ -1,6 +1,6 @@
-import { Entity } from "Shared/Entity/Entity";
-import { ItemType } from "Shared/Item/ItemType";
-import { Cancellable } from "Shared/Util/Cancellable";
+import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { Cancellable } from "@Easy/Core/Shared/Util/Cancellable";
+import { ItemType } from "../../../../Bundles/@Easy/Core/Core~/src/Shared/Item/ItemType";
 
 export class BeforeBlockPlacedSignal extends Cancellable {
 	constructor(

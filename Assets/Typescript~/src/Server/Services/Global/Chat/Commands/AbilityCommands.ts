@@ -1,8 +1,8 @@
+import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Dependency } from "@easy-games/flamework-core";
 import { AbilityService } from "Server/Services/Abilities/AbilityService";
-import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { Player } from "Shared/Player/Player";
-import { Ability, AbilityRegistry } from "Shared/Strollers/Abilities/AbilityRegistry";
+import { Ability, AbilityRegistry } from "Shared/Abilities/AbilityRegistry";
 
 abstract class AbilityChatCommand extends ChatCommand {
 	/**

@@ -1,12 +1,5 @@
-import {
-	AbilityCooldownDto,
-	AbilityDto,
-	ChargingAbilityDto,
-	ChargingAbilityEndedDto,
-} from "../../../../../../Typescript~/src/Shared/Abilities/Ability";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { DamageType } from "./Damage/DamageType";
-import { EntityDto } from "./Entity/Entity";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
@@ -54,8 +47,6 @@ export const CoreNetwork = {
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
 		UpdateInventorySlot: new RemoteEvent<[invId: number, slot: number, itemType?: ItemType, amount?: number]>(),
 		SetHeldInventorySlot: new RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>(),
-		SpawnEntities: new RemoteEvent<[entities: EntityDto[]]>(),
-		DespawnEntity: new RemoteEvent<[entityId: number]>(),
 		BlockHit: new RemoteEvent<
 			[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean]
 		>(),
@@ -147,14 +138,6 @@ export const CoreNetwork = {
 
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
-
-		AbilityCooldownStateChange: new RemoteEvent<[dto: AbilityCooldownDto]>(),
-		AbilityStateChange: new RemoteEvent<[clientId: number, abilityId: string, enabled: boolean]>(),
-		AbilityAdded: new RemoteEvent<[clientId: number, dto: AbilityDto]>(),
-		AbilityRemoved: new RemoteEvent<[clientId: number, abilityId: string]>(),
-		AbilityUsed: new RemoteEvent<[clientId: number, abilityId: string]>(),
-		AbilityChargeStarted: new RemoteEvent<[clientId: number, dto: ChargingAbilityDto]>(),
-		AbilityChargeEnded: new RemoteEvent<[clientId: number, dto: ChargingAbilityEndedDto]>(),
 
 		SpawnCharacters: new RemoteEvent<[[userId: string, nobId: number][]]>(),
 	},

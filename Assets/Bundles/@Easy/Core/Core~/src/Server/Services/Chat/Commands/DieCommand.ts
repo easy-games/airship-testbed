@@ -1,6 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
-import { DamageService } from "Server/Services/Damage/DamageService";
-import { EntityService } from "Server/Services/Entity/EntityService";
+import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Player } from "Shared/Player/Player";
 
@@ -11,7 +9,7 @@ export class DieCommand extends ChatCommand {
 
 	public Execute(player: Player, args: string[]): void {
 		// Fetch target entity.
-		const target = Dependency<EntityService>().GetEntityByClientId(player.clientId);
+		const target = Airship.characters.FindByPlayer(player);
 
 		// Handle invalid entity.
 		if (target === undefined) {
@@ -20,8 +18,6 @@ export class DieCommand extends ChatCommand {
 		}
 
 		// Kill entity.
-		Dependency<DamageService>().InflictDamage(target, math.huge, {
-			ignoreCancelled: true,
-		});
+		Airship.damage.InflictDamage(target.gameObject, math.huge);
 	}
 }

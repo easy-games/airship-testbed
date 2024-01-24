@@ -1,7 +1,5 @@
 import { Controller, Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { TeamController } from "Client/Controllers/Team/TeamController";
-import { CoreClientSignals } from "Client/CoreClientSignals";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
@@ -83,7 +81,7 @@ export class PlayerManager implements OnStart {
 			const player = this.FindByClientId(clientId);
 			if (player) {
 				this.players.delete(player);
-				CoreClientSignals.PlayerLeave.Fire(player);
+				this.onPlayerDisconnected.Fire(player);
 				player.Destroy();
 			}
 		});
@@ -196,7 +194,7 @@ export class PlayerManager implements OnStart {
 
 		let team: Team | undefined;
 		if (dto.teamId) {
-			team = Dependency<TeamController>().GetTeam(dto.teamId);
+			team = Airship.teams.FindById(dto.teamId);
 		}
 
 		if (dto.clientId === this.client!.clientId) {
@@ -219,7 +217,7 @@ export class PlayerManager implements OnStart {
 		team?.AddPlayer(player);
 
 		this.players.add(player);
-		CoreClientSignals.PlayerJoin.Fire(player);
+		this.onPlayerJoined.Fire(player);
 	}
 
 	public AddBotPlayer(): void {
