@@ -5,11 +5,18 @@ import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
 
 export class Game {
+	/**
+	 * The local client's player.
+	 *
+	 * On the server this is undefined.
+	 *
+	 * There is a brief moment on client startup when localPlayer is undefined.
+	 */
 	public static localPlayer: Player = new Player(
 		undefined as unknown as NetworkObject,
-		-1,
-		"1",
-		"LocalPlayer",
+		undefined as unknown as number,
+		"loading",
+		"loading",
 		"null",
 	);
 	public static localPlayerLoaded = false;

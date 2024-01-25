@@ -12,13 +12,13 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { Player, PlayerDto } from "./Player";
 
-@Controller()
-@Service()
+@Controller({ loadOrder: -1000 })
+@Service({ loadOrder: -1000 })
 export class PlayersSingleton implements OnStart {
 	public onPlayerJoined = new Signal<Player>();
 	public onPlayerDisconnected = new Signal<Player>();
 
-	private players = new Set<Player>([]);
+	private players = new Set<Player>([Game.localPlayer]);
 	private playerManagerBridge = PlayerManagerBridge.Instance;
 	private client?: {
 		clientId: number;
@@ -114,7 +114,6 @@ export class PlayersSingleton implements OnStart {
 			// Ready bots immediately
 			if (playerInfo.clientId < 0) {
 				playersPendingReady.delete(playerInfo.clientId);
-				this.players.add(player);
 				this.HandlePlayerReadyServer(player);
 			}
 		};
@@ -154,8 +153,6 @@ export class PlayersSingleton implements OnStart {
 			const player = playersPendingReady.get(clientId)!;
 
 			playersPendingReady.delete(clientId);
-			this.players.add(player);
-
 			this.HandlePlayerReadyServer(player);
 		});
 	}
@@ -167,6 +164,17 @@ export class PlayersSingleton implements OnStart {
 			Game.serverId,
 			Game.organizationId,
 		);
+
+		if (RunUtil.IsClient() && Game.localPlayer?.clientId === undefined) {
+			const mutablePlayer = Game.localPlayer as Mutable<Player>;
+			mutablePlayer.networkObject = player.networkObject;
+			mutablePlayer.clientId = player.clientId;
+			mutablePlayer.userId = player.userId;
+			mutablePlayer.username = player.username;
+			mutablePlayer.usernameTag = player.usernameTag;
+		} else {
+			this.players.add(player);
+		}
 
 		// notify all clients of the joining player
 		CoreNetwork.ServerToClient.AddPlayer.server.FireAllClients(player.Encode());
@@ -182,13 +190,13 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	private AddPlayerClient(dto: PlayerDto): void {
-		const existing = this.FindByClientId(dto.clientId);
-		if (existing) {
-			// if (Game.localPlayer !== existing) {
-			// 	warn("Tried to add existing player " + dto.username);
-			// }
-			return;
-		}
+		// const existing = this.FindByClientId(dto.clientId);
+		// if (existing) {
+		// 	if (Game.localPlayer !== existing) {
+		// 		warn("Tried to add existing player " + dto.username);
+		// 	}
+		// 	return;
+		// }
 		const nob = NetworkUtil.WaitForNobId(dto.nobId);
 		nob.gameObject.name = `Player_${dto.username}`;
 
@@ -197,9 +205,10 @@ export class PlayersSingleton implements OnStart {
 			team = Airship.teams.FindById(dto.teamId);
 		}
 
-		if (dto.clientId === this.client!.clientId) {
+		if (Game.localPlayer.clientId === undefined && RunUtil.IsServer()) {
+			print("client mutable");
 			const mutablePlayer = Game.localPlayer as Mutable<Player>;
-			mutablePlayer.nob = nob;
+			mutablePlayer.networkObject = nob;
 			mutablePlayer.clientId = dto.clientId;
 			mutablePlayer.userId = dto.userId;
 			mutablePlayer.username = dto.username;

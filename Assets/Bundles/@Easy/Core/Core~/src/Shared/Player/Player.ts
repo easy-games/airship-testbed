@@ -52,7 +52,7 @@ export class Player {
 		/**
 		 * The GameObject representing the player.
 		 */
-		public readonly nob: NetworkObject,
+		public readonly networkObject: NetworkObject,
 
 		/**
 		 * Unique network ID for the player in the given server. This ID
@@ -152,7 +152,7 @@ export class Player {
 
 	public Encode(): PlayerDto {
 		return {
-			nobId: this.nob.ObjectId,
+			nobId: this.networkObject.ObjectId,
 			clientId: this.clientId,
 			userId: this.userId,
 			username: this.username,
@@ -161,9 +161,9 @@ export class Player {
 		};
 	}
 
-	public SetCharacter(entity: Character | undefined): void {
-		this.character = entity;
-		this.onCharacterChanged.Fire(entity);
+	public SetCharacter(character: Character | undefined): void {
+		this.character = character;
+		this.onCharacterChanged.Fire(character);
 	}
 
 	public ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin {
