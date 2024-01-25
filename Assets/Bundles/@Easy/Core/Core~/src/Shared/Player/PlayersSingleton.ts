@@ -31,6 +31,9 @@ export class PlayersSingleton implements OnStart {
 		Airship.players = this;
 
 		if (RunUtil.IsClient()) {
+			const mutable = Game.localPlayer as Mutable<Player>;
+			mutable.clientId === InstanceFinder.ClientManager.Connection.ClientId;
+
 			this.client = {
 				clientId: InstanceFinder.ClientManager.Connection.ClientId,
 			};
