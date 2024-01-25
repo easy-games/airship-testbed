@@ -1342,6 +1342,10 @@ interface PhysicsConstructor {
 		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
 		| [hit: false, point: undefined, normal: undefined, collider: undefined]
 	>;
+
+	RaycastLegacy(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number): RaycastHit | undefined;
+	RaycastLegacy(origin: Vector3, direction: Vector3, maxDistance: number): RaycastHit | undefined;
+
 	// Raycast(origin: Vector3, direction: Vector3): LuaTuple<[true, RaycastHit] | [false, undefined]>;
 	// Raycast(
 	// 	origin: Vector3,
@@ -1900,6 +1904,12 @@ interface GameObject extends Object {
 	 * Throws error if no component found.
 	 */
 	GetComponent<T extends Component | AirshipBehaviour = Component>(type: string): T;
+
+	GetAirshipComponent<T extends AirshipBehaviour>(): T | undefined;
+	/**
+	 * Throws error if no component found.
+	 */
+	GetAirshipComponent<T extends AirshipBehaviour>(name: string): T | undefined;
 
 	GetComponents<T extends AirshipBehaviour | Component>(): CSArray<T>;
 	GetComponents<T extends Component | AirshipBehaviour = Component>(type: string): CSArray<T>;
