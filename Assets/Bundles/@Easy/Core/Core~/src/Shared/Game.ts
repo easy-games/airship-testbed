@@ -11,14 +11,9 @@ export class Game {
 	 * On the server this is undefined.
 	 *
 	 * There is a brief moment on client startup when localPlayer is undefined.
+	 * You can listen for when the local player is loaded with {@link WaitForLocalPlayerLoaded}
 	 */
-	public static localPlayer: Player = new Player(
-		undefined as unknown as NetworkObject,
-		undefined as unknown as number,
-		"loading",
-		"loading",
-		"null",
-	);
+	public static localPlayer: Player = undefined as unknown as Player;
 	public static localPlayerLoaded = false;
 	public static onLocalPlayerLoaded = new Signal<void>();
 

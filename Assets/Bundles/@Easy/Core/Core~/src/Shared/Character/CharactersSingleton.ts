@@ -1,6 +1,8 @@
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
+import { RemoteEvent } from "Shared/Network/RemoteEvent";
 import { Player } from "Shared/Player/Player";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import Character from "./Character";
@@ -23,11 +25,32 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
+	private characterSpawnedRemote = new RemoteEvent<[objectId: number, ownerClientId?: number]>();
+
 	constructor() {
 		Airship.characters = this;
 	}
 
-	OnStart(): void {}
+	OnStart(): void {
+		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
+			this.characterSpawnedRemote.client.OnServerEvent((objectId, ownerClientId) => {
+				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
+				print("found nob: " + characterNetworkObj?.name);
+				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
+				assert(character, "Spawned character was missing a Character component.");
+				let player: Player | undefined;
+				if (ownerClientId) {
+					player = Airship.players.FindByClientId(ownerClientId);
+					assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
+					characterNetworkObj.gameObject.name = "Character_" + player.username;
+				}
+				character.Init(player);
+				Airship.characters.RegisterCharacter(character);
+				player?.SetCharacter(character);
+				Airship.characters.onCharacterSpawned.Fire(character);
+			});
+		}
+	}
 
 	public FindById(characterId: number): Character | undefined {
 		for (let character of this.characters) {
@@ -69,6 +92,10 @@ export class CharactersSingleton implements OnStart {
 		return undefined;
 	}
 
+	/**
+	 * Internal method for spawning a character.
+	 * @param character
+	 */
 	public RegisterCharacter(character: Character): void {
 		this.characters.add(character);
 
@@ -84,6 +111,13 @@ export class CharactersSingleton implements OnStart {
 			character.bin.Add(() => {
 				Bridge.DisconnectEvent(customDataConn);
 			});
+		}
+
+		if (RunUtil.IsServer()) {
+			this.characterSpawnedRemote.server.FireAllClients(
+				character.networkObject.ObjectId,
+				character.player?.clientId,
+			);
 		}
 	}
 

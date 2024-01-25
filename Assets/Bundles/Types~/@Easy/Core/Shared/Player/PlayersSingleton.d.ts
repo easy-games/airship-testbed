@@ -6,7 +6,6 @@ export declare class PlayersSingleton implements OnStart {
     onPlayerDisconnected: Signal<Player>;
     private players;
     private playerManagerBridge;
-    private client?;
     private server?;
     constructor();
     OnStart(): void;

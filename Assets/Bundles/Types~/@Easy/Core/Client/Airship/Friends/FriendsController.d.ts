@@ -4,6 +4,7 @@ import { PublicUser } from "../../../Shared/SocketIOMessages/PublicUser";
 import { Result } from "../../../Shared/Types/Result";
 /** Provides information about the users friends. */
 export declare class FriendsController implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets the users friends list.

@@ -73,7 +73,7 @@ export class NetworkUtil {
 	 * @param timeout How long in seconds to wait for `objectId` to exist before timing out.
 	 * @returns `NetworkObject` that corresponds to `objectId`.
 	 */
-	public static WaitForNobIdTimeout(objectId: number, timeout: number): NetworkObject | undefined {
+	public static WaitForNetworkObjectTimeout(objectId: number, timeout: number): NetworkObject | undefined {
 		/* Return NetworkObject if it already exists. */
 		let nob = NetworkUtil.GetNetworkObject(objectId);
 		if (nob) return nob;
@@ -126,7 +126,7 @@ export class NetworkUtil {
 	 * @param objectId Corresponds to a replicated `NetworkObject`.
 	 * @returns `NetworkObject` that corresponds to `name`.
 	 */
-	public static WaitForNob(name: string): NetworkObject {
+	public static WaitForNetworkObjectByName(name: string): NetworkObject {
 		const gameObject = GameObject.Find(name);
 		if (gameObject) {
 			return gameObject.GetComponent<NetworkObject>();
@@ -144,7 +144,7 @@ export class NetworkUtil {
 	 * @param objectId Corresponds to a replicated `NetworkObject`.
 	 * @returns `NetworkObject` that corresponds to `objectId`.
 	 */
-	public static WaitForNobId(objectId: number): NetworkObject {
+	public static WaitForNetworkObject(objectId: number): NetworkObject {
 		let nob = NetworkUtil.GetNetworkObject(objectId);
 		if (nob) {
 			// print("found existing", nob.gameObject + ", nobId=" + objectId);

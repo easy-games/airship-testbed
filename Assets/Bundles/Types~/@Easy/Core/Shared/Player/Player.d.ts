@@ -17,7 +17,7 @@ export declare class Player {
     /**
      * The GameObject representing the player.
      */
-    readonly nob: NetworkObject;
+    readonly networkObject: NetworkObject;
     /**
      * Unique network ID for the player in the given server. This ID
      * is typically given to network requests as a way to identify the
@@ -70,7 +70,7 @@ export declare class Player {
     /**
      * The GameObject representing the player.
      */
-    nob: NetworkObject, 
+    networkObject: NetworkObject, 
     /**
      * Unique network ID for the player in the given server. This ID
      * is typically given to network requests as a way to identify the
@@ -102,7 +102,7 @@ export declare class Player {
      * ```
      */
     usernameTag: string);
-    SpawnCharacter(pos: Vector3, config?: {
+    SpawnCharacter(position: Vector3, config?: {
         lookDirection?: Vector3;
     }): void;
     GetProfilePicture(): ProfilePictureMeta;
@@ -114,7 +114,7 @@ export declare class Player {
     IsFriend(): boolean;
     IsBot(): boolean;
     Encode(): PlayerDto;
-    SetCharacter(entity: Character | undefined): void;
+    SetCharacter(character: Character | undefined): void;
     ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin;
     /**
      * Is the player connected to the server?

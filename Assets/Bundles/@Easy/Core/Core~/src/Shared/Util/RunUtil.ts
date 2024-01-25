@@ -18,6 +18,13 @@ export class RunUtil {
 		return isEditor;
 	}
 
+	/**
+	 * Shortcut for checking if both IsClient() and IsServer() is true.
+	 */
+	public static IsHosting(): boolean {
+		return isClient && isServer;
+	}
+
 	public static IsClone(): boolean {
 		return isClone;
 	}

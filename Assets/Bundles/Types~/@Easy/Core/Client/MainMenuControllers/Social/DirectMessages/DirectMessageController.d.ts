@@ -1,5 +1,4 @@
 import { OnStart } from "../../../../../node_modules/@easy-games/flamework-core";
-import { AuthController } from "../../Auth/AuthController";
 import { SocketController } from "../../Socket/SocketController";
 import { Signal } from "../../../../Shared/Util/Signal";
 import { MainMenuController } from "../../MainMenuController";
@@ -9,7 +8,6 @@ import { DirectMessage } from "./DirectMessage";
 export declare class DirectMessageController implements OnStart {
     private readonly mainMenuController;
     private readonly friendsController;
-    private readonly authController;
     private readonly socketController;
     private incomingMessagePrefab;
     private outgoingMessagePrefab;
@@ -31,7 +29,7 @@ export declare class DirectMessageController implements OnStart {
     private xPos;
     private yPos;
     private loadedMessagesFromUserIdFromDisk;
-    constructor(mainMenuController: MainMenuController, friendsController: FriendsController, authController: AuthController, socketController: SocketController);
+    constructor(mainMenuController: MainMenuController, friendsController: FriendsController, socketController: SocketController);
     OnStart(): void;
     private IncrementUnreadCounter;
     Setup(): void;

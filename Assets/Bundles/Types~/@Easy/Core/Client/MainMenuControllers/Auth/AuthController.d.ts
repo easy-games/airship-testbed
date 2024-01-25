@@ -8,6 +8,7 @@ export declare class AuthController implements OnStart {
     private authenticated;
     readonly onAuthenticated: Signal<void>;
     readonly onSignOut: Signal<void>;
+    constructor();
     OnStart(): void;
     WaitForAuthed(): Promise<void>;
     TryAutoLogin(): boolean;

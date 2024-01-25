@@ -26,7 +26,7 @@ export declare class NetworkUtil {
      * @param timeout How long in seconds to wait for `objectId` to exist before timing out.
      * @returns `NetworkObject` that corresponds to `objectId`.
      */
-    static WaitForNobIdTimeout(objectId: number, timeout: number): NetworkObject | undefined;
+    static WaitForNetworkObjectTimeout(objectId: number, timeout: number): NetworkObject | undefined;
     /**
      * Wait for (`timeout`) and fetch `NetworkObject` that corresponds to `name`.
      * @param objectId Corresponds to a replicated `NetworkObject`.
@@ -39,11 +39,11 @@ export declare class NetworkUtil {
      * @param objectId Corresponds to a replicated `NetworkObject`.
      * @returns `NetworkObject` that corresponds to `name`.
      */
-    static WaitForNob(name: string): NetworkObject;
+    static WaitForNetworkObjectByName(name: string): NetworkObject;
     /**
      * Wait for and fetch `NetworkObject` that corresponds to `objectId`.
      * @param objectId Corresponds to a replicated `NetworkObject`.
      * @returns `NetworkObject` that corresponds to `objectId`.
      */
-    static WaitForNobId(objectId: number): NetworkObject;
+    static WaitForNetworkObject(objectId: number): NetworkObject;
 }

@@ -16,12 +16,17 @@ export declare class CharactersSingleton implements OnStart {
      * Custom data that the client sends in their move packet.
      */
     onServerCustomMoveCommand: Signal<CustomMoveData<unknown, unknown>>;
+    private characterSpawnedRemote;
     constructor();
     OnStart(): void;
     FindById(characterId: number): Character | undefined;
     FindByPlayer(player: Player): Character | undefined;
     FindByClientId(clientId: number): Character | undefined;
     FindByCollider(collider: Collider): Character | undefined;
+    /**
+     * Internal method for spawning a character.
+     * @param character
+     */
     RegisterCharacter(character: Character): void;
     UnregisterCharacter(character: Character): void;
     GetCharacters(): Set<Character>;

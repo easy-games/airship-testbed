@@ -101,6 +101,7 @@ export class Player {
 		}
 
 		const go = Object.Instantiate(characterPrefab);
+		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetComponent<Character>();
 		characterComponent.Init(this);
 		Airship.characters.RegisterCharacter(characterComponent);
