@@ -32,7 +32,8 @@ export class PlayersSingleton implements OnStart {
 
 		if (RunUtil.IsClient()) {
 			const mutable = Game.localPlayer as Mutable<Player>;
-			mutable.clientId === InstanceFinder.ClientManager.Connection.ClientId;
+			mutable.clientId = InstanceFinder.ClientManager.Connection.ClientId;
+			print("local client id: " + mutable.clientId);
 
 			this.client = {
 				clientId: InstanceFinder.ClientManager.Connection.ClientId,
