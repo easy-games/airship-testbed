@@ -217,12 +217,12 @@ export class HeldItem {
 		this.chargeStartTime = 0;
 	}
 
-	protected TryUse() {
+	protected TryUse(index = 0) {
 		this.Log("TryUse");
 		this.bufferingUse = false;
 		const remainingTime = this.GetRemainingCooldownTime();
 		if (remainingTime === 0) {
-			this.TriggerUse(0);
+			this.TriggerUse(index);
 			return true;
 		} else if (remainingTime < this.clickBufferMargin) {
 			this.bufferingUse = true;
