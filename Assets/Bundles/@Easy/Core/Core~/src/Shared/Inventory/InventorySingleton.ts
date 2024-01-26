@@ -2,9 +2,10 @@ import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { RemoteFunction } from "Shared/Network/RemoteFunction";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
-import Inventory from "./Inventory";
+import Inventory, { InventoryDto } from "./Inventory";
 import { ItemStack } from "./ItemStack";
 
 interface InventoryEntry {
@@ -17,6 +18,12 @@ interface InventoryEntry {
 @Service({})
 export class InventorySingleton implements OnStart {
 	private inventories = new Map<number, InventoryEntry>();
+
+	public remotes = {
+		clientToServer: {
+			getFullUpdate: new RemoteFunction<[invId: number], InventoryDto | string>(),
+		},
+	};
 
 	constructor(public readonly localCharacterInventory: CharacterInventorySingleton) {
 		Airship.inventory = this;
@@ -72,6 +79,12 @@ export class InventorySingleton implements OnStart {
 	}
 
 	private StartServer(): void {
+		this.remotes.clientToServer.getFullUpdate.server.SetCallback((clientId, invId) => {
+			print("setCallback test");
+			return "test";
+			// return this.GetInventory(invId)?.Encode();
+		});
+
 		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((clientId, slot) => {
 			const character = Airship.characters.FindByClientId(clientId);
 			if (!character) return;

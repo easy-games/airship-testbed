@@ -1,4 +1,3 @@
-import { CoreNetwork } from "Shared/CoreNetwork";
 import { EntityItemManager } from "Shared/Item/HeldItems/CharacterItemManager";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -48,7 +47,7 @@ export class Bootstrap {
 			// 	print("waiting for client to start.");
 			// 	task.wait();
 			// }
-			CoreNetwork.ClientToServer.Ready.client.FireServer();
+			// CoreNetwork.ClientToServer.Ready.client.FireServer();
 		}
 	}
 }

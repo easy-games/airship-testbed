@@ -1,3 +1,4 @@
+import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -42,15 +43,35 @@ export default class Inventory extends AirshipBehaviour {
 	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
 	public Awake(): void {
+		print("Inventory.Awake");
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
 			Airship.inventory.RegisterInventory(this);
+			if (RunUtil.IsClient()) {
+				task.spawn(() => {
+					this.RequestFullUpdate();
+				});
+			}
 		} else {
 			const conn = this.networkObject.OnStartNetwork(() => {
+				print("onStartNetwork");
 				Bridge.DisconnectEvent(conn);
 				this.id = this.networkObject.ObjectId;
 				Airship.inventory.RegisterInventory(this);
+				if (RunUtil.IsClient()) {
+					task.spawn(() => {
+						this.RequestFullUpdate();
+					});
+				}
 			});
+		}
+	}
+
+	private RequestFullUpdate(): void {
+		const dto = Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
+		if (dto) {
+			print("inv dto: " + inspect(dto));
+			// this.ProcessDto(dto);
 		}
 	}
 

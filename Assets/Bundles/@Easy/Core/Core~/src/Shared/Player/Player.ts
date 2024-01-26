@@ -109,6 +109,7 @@ export class Player {
 		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
 		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
+		print("Spawned character " + this.username);
 		return characterComponent;
 	}
 

@@ -29,11 +29,11 @@ export class CharactersSingleton implements OnStart {
 
 	constructor() {
 		Airship.characters = this;
-	}
 
-	OnStart(): void {
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
+			print("adding listener.");
 			this.characterSpawnedRemote.client.OnServerEvent((objectId, ownerClientId) => {
+				print("Received character spawn.");
 				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
 				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
 				assert(character, "Spawned character was missing a Character component.");
@@ -50,10 +50,18 @@ export class CharactersSingleton implements OnStart {
 				print("Spawned character " + character.gameObject.name);
 			});
 		}
+	}
 
+	OnStart(): void {
 		if (RunUtil.IsServer()) {
+			const players = Airship.players.GetPlayers();
+			print("Existing players: " + players.size());
+			for (const player of players) {
+				print("    - " + player.clientId);
+			}
 			Airship.players.ObservePlayers((player) => {
 				for (let character of this.characters) {
+					print("sending existing character to " + player.clientId);
 					this.characterSpawnedRemote.server.FireClient(
 						player.clientId,
 						character.networkObject.ObjectId,
@@ -126,6 +134,7 @@ export class CharactersSingleton implements OnStart {
 		}
 
 		if (RunUtil.IsServer()) {
+			print("Sending character spawn to all");
 			this.characterSpawnedRemote.server.FireAllClients(
 				character.networkObject.ObjectId,
 				character.player?.clientId,

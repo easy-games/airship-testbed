@@ -26,6 +26,7 @@ export class PlayersSingleton implements OnStart {
 
 	constructor() {
 		Airship.players = this;
+		const timeStart = Time.time;
 
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
@@ -42,11 +43,16 @@ export class PlayersSingleton implements OnStart {
 			mutable.userId = localPlayerInfo.userId;
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
+
+			const timeDiff = Time.time - timeStart;
+			print("took " + timeDiff + " ms to load local player.");
 		};
 
 		if (RunUtil.IsClient()) {
 			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading", "null");
-			this.players.add(Game.localPlayer);
+			if (!RunUtil.IsHosting()) {
+				this.players.add(Game.localPlayer);
+			}
 
 			task.spawn(() => {
 				FetchLocalPlayerWithWait();
@@ -73,6 +79,11 @@ export class PlayersSingleton implements OnStart {
 					Game.WaitForLocalPlayerLoaded();
 				}
 				this.InitServer();
+			}
+
+			if (RunUtil.IsClient()) {
+				Game.WaitForLocalPlayerLoaded();
+				CoreNetwork.ClientToServer.Ready.client.FireServer();
 			}
 		});
 	}
@@ -215,29 +226,21 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	private AddPlayerClient(dto: PlayerDto): void {
-		const existing = this.FindByClientId(dto.clientId);
-		if (existing && RunUtil.IsServer()) {
-			// if (Game.localPlayer !== existing) {
-			// 	warn("Tried to add existing player " + dto.username);
-			// }
-			return;
-		}
-		const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
-		nob.gameObject.name = `Player_${dto.username}`;
+		if (RunUtil.IsHosting()) return;
 
 		let team: Team | undefined;
 		if (dto.teamId) {
 			team = Airship.teams.FindById(dto.teamId);
 		}
 
-		if (existing) {
+		const existing = this.FindByClientId(dto.clientId);
+		if (existing && RunUtil.IsHosting()) {
+			print("existing player.");
 			team?.AddPlayer(existing);
-
-			Game.localPlayerLoaded = true;
-			Game.onLocalPlayerLoaded.Fire();
-
 			return;
 		}
+		const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
+		nob.gameObject.name = `Player_${dto.username}`;
 
 		const player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.usernameTag);
 		team?.AddPlayer(player);
