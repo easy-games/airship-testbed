@@ -1,6 +1,7 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
 import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import Character from "Shared/Character/Character";
+import Inventory from "Shared/Inventory/Inventory";
 import { Bin } from "Shared/Util/Bin";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemType } from "../ItemType";
@@ -78,20 +79,22 @@ export class HeldItemManager {
 		this.currentHeldItem = this.GetOrCreateHeldItem();
 
 		//Listen for item switches
-		// todo: inventory
-		// this.bin.Add(
-		// 	this.character.GetInventory().ObserveHeldItem((itemStack) => {
-		// 		this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
-		// 		//UnEquip last item
-		// 		if (this.currentHeldItem !== undefined) {
-		// 			this.currentHeldItem.OnUnEquip();
-		// 		}
-		// 		//Equip the new item
-		// 		this.currentItemState = HeldItemState.NONE;
-		// 		this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
-		// 		this.currentHeldItem.OnEquip();
-		// 	}),
-		// );
+		const inv = this.character.gameObject.GetAirshipComponent<Inventory>();
+		if (inv) {
+			this.bin.Add(
+				inv.ObserveHeldItem((itemStack) => {
+					this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
+					//UnEquip last item
+					if (this.currentHeldItem !== undefined) {
+						this.currentHeldItem.OnUnEquip();
+					}
+					//Equip the new item
+					this.currentItemState = HeldItemState.NONE;
+					this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
+					this.currentHeldItem.OnEquip();
+				}),
+			);
+		}
 	}
 
 	public Destroy(): void {

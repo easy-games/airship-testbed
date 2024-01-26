@@ -2,6 +2,7 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 import { CharacterAnimator } from "./Animation/CharacterAnimator";
+import Inventory from "../Inventory/Inventory";
 import { Player } from "../Player/Player";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -22,10 +23,13 @@ export default class Character extends AirshipBehaviour {
     private maxHealth;
     /** A bin that is cleaned when the entity despawns. */
     readonly bin: Bin;
+    inventory: Inventory;
     onDeath: Signal<void>;
     onDespawn: Signal<void>;
     onStateChanged: Signal<[newState: CharacterState, oldState: CharacterState]>;
     onHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
+    Awake(): void;
+    Start(): void;
     Init(player: Player | undefined): void;
     Teleport(pos: Vector3, lookDirection?: Vector3): void;
     OnDisable(): void;

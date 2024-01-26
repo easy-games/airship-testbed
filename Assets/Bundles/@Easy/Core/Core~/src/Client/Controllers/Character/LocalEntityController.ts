@@ -1,6 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
+import { CharacterInventorySingleton } from "Shared/Inventory/CharacterInventorySingleton";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
@@ -13,7 +14,6 @@ import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
 import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
 import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
-import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
 import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
@@ -63,7 +63,7 @@ export class LocalEntityController implements OnStart {
 	constructor(
 		private readonly cameraController: CameraController,
 		private readonly clientSettings: ClientSettingsController,
-		private readonly inventoryController: InventoryController,
+		private readonly inventoryController: CharacterInventorySingleton,
 	) {}
 
 	/** Returns `true` if the player is in first-person mode. */

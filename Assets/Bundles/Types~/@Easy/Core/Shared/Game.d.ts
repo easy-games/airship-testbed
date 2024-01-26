@@ -8,6 +8,7 @@ export declare class Game {
      * On the server this is undefined.
      *
      * There is a brief moment on client startup when localPlayer is undefined.
+     * You can listen for when the local player is loaded with {@link WaitForLocalPlayerLoaded}
      */
     static localPlayer: Player;
     static localPlayerLoaded: boolean;

@@ -2,6 +2,8 @@ import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/L
 import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
@@ -46,9 +48,8 @@ export default class GameManager extends AirshipBehaviour {
 	}
 
 	public SpawnPlayer(player: Player): void {
-		player.SpawnCharacter(this.spawnPosition.position);
-		// const inv = entity.GetInventory();
-		// inv.AddItem(new ItemStack(ItemType.STONE_SWORD));
+		const character = player.SpawnCharacter(this.spawnPosition.position);
+		character.inventory.AddItem(new ItemStack(ItemType.WOOD_SWORD));
 	}
 
 	override OnDestroy(): void {

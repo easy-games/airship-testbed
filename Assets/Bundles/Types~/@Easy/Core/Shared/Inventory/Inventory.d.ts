@@ -1,5 +1,6 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { ArmorType } from "../Item/ArmorType";
 import { ItemType } from "../Item/ItemType";
 import { Bin } from "../Util/Bin";
@@ -10,15 +11,16 @@ export interface InventoryDto {
     items: Map<number, ItemStackDto>;
     heldSlot: number;
 }
-export declare class Inventory {
-    readonly id: number;
-    private items;
-    private heldSlot;
-    private maxSlots;
-    private hotbarSlots;
+export default class Inventory extends AirshipBehaviour {
+    networkObject: NetworkObject;
+    id: number;
+    maxSlots: number;
+    hotbarSlots: number;
+    heldSlot: number;
     armorSlots: {
         [key in ArmorType]: number;
     };
+    private items;
     /** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
     readonly slotChanged: Signal<[slot: number, itemStack: ItemStack | undefined]>;
     readonly heldSlotChanged: Signal<number>;
@@ -29,7 +31,7 @@ export declare class Inventory {
     readonly changed: Signal<void>;
     private finishedInitialReplication;
     private slotConnections;
-    constructor(id: number);
+    Awake(): void;
     GetItem(slot: number): ItemStack | undefined;
     GetSlot(itemStack: ItemStack): number | undefined;
     ObserveHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin;

@@ -1,7 +1,11 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
+import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { Inventory } from "Shared/Inventory/Inventory";
+import { RunUtil } from "Shared/Util/RunUtil";
+import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
+import Inventory from "./Inventory";
+import { ItemStack } from "./ItemStack";
 
 interface InventoryEntry {
 	Inv: Inventory;
@@ -9,18 +13,71 @@ interface InventoryEntry {
 	Owners: Set<number>;
 }
 
+@Controller({})
 @Service({})
-export class InventoryService implements OnStart {
+export class InventorySingleton implements OnStart {
 	private inventories = new Map<number, InventoryEntry>();
-	private invIdCounter = 1;
+
+	constructor(public readonly localCharacterInventory: CharacterInventorySingleton) {
+		Airship.inventory = this;
+	}
 
 	OnStart(): void {
+		if (RunUtil.IsClient()) {
+			this.StartClient();
+		}
+		if (RunUtil.IsServer()) {
+			this.StartServer();
+		}
+	}
+
+	private StartClient(): void {
+		CoreNetwork.ServerToClient.UpdateInventory.client.OnServerEvent((dto) => {
+			let inv = this.GetInventory(dto.id);
+			inv?.ProcessDto(dto);
+		});
+		CoreNetwork.ServerToClient.SetInventorySlot.client.OnServerEvent(
+			(invId, slot, itemStackDto, clientPredicted) => {
+				const inv = this.GetInventory(invId);
+				if (!inv) return;
+
+				// if (this.localInventory === inv && clientPredicted) return;
+
+				const itemStack = itemStackDto !== undefined ? ItemStack.Decode(itemStackDto) : undefined;
+				inv.SetItem(slot, itemStack);
+			},
+		);
+		CoreNetwork.ServerToClient.UpdateInventorySlot.client.OnServerEvent((invId, slot, itemType, amount) => {
+			const inv = this.GetInventory(invId);
+			if (!inv) return;
+
+			const itemStack = inv.GetItem(slot);
+			if (itemStack === undefined) return;
+
+			if (itemType !== undefined) {
+				itemStack.SetItemType(itemType);
+			}
+			if (amount !== undefined) {
+				itemStack.SetAmount(amount);
+			}
+		});
+		CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot, clientPredicted) => {
+			const inv = this.GetInventory(invId);
+			if (!inv) return;
+
+			// if (this.localInventory === inv && clientPredicted) return;
+
+			inv.SetHeldSlot(slot);
+		});
+	}
+
+	private StartServer(): void {
 		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((clientId, slot) => {
 			const character = Airship.characters.FindByClientId(clientId);
 			if (!character) return;
 
-			// todo: inventory
-			// character.GetInventory().SetHeldSlot(slot);
+			const inv = character.gameObject.GetAirshipComponent<Inventory>();
+			inv?.SetHeldSlot(slot);
 
 			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(character.id, slot, true);
 		});
@@ -31,10 +88,10 @@ export class InventoryService implements OnStart {
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
 			(clientId, fromInvId, fromSlot, toInvId, toSlot, amount) => {
-				const fromInv = this.GetInventoryFromId(fromInvId);
+				const fromInv = this.GetInventory(fromInvId);
 				if (!fromInv) return;
 
-				const toInv = this.GetInventoryFromId(toInvId);
+				const toInv = this.GetInventory(toInvId);
 				if (!toInv) return;
 
 				const fromItemStack = fromInv.GetItem(fromSlot);
@@ -68,10 +125,10 @@ export class InventoryService implements OnStart {
 
 		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.server.OnClientEvent(
 			(clientId, fromInvId, fromSlot, toInvId) => {
-				const fromInv = this.GetInventoryFromId(fromInvId);
+				const fromInv = this.GetInventory(fromInvId);
 				if (!fromInv) return;
 
-				const toInv = this.GetInventoryFromId(toInvId);
+				const toInv = this.GetInventory(toInvId);
 				if (!toInv) return;
 
 				const itemStack = fromInv.GetItem(fromSlot);
@@ -255,7 +312,7 @@ export class InventoryService implements OnStart {
 		return entry;
 	}
 
-	public GetInventoryFromId(id: number): Inventory | undefined {
+	public GetInventory(id: number): Inventory | undefined {
 		return this.inventories.get(id)?.Inv;
 	}
 
@@ -274,9 +331,180 @@ export class InventoryService implements OnStart {
 		entry.Viewers.delete(clientId);
 	}
 
-	public MakeInventory(): Inventory {
-		const inv = new Inventory(this.invIdCounter);
-		this.invIdCounter++;
-		return inv;
+	public RegisterInventory(inventory: Inventory): void {
+		const entry: InventoryEntry = {
+			Inv: inventory,
+			Viewers: new Set(),
+			Owners: new Set(),
+		};
+		this.inventories.set(inventory.id, entry);
+
+		const character = inventory.gameObject.GetAirshipComponent<Character>();
+		if (RunUtil.IsClient() && character?.IsLocalCharacter()) {
+			print("local inv");
+			this.localCharacterInventory.SetLocalInventory(inventory);
+		}
+		print("Registered inventory " + inventory.id);
+	}
+
+	public UnregisterInventory(inventory: Inventory): void {
+		this.inventories.delete(inventory.id);
+	}
+
+	public QuickMoveSlot(inv: Inventory, slot: number): void {
+		const itemStack = inv.GetItem(slot);
+		if (!itemStack) return;
+
+		if (slot < inv.GetHotbarSlotCount()) {
+			// move to backpack
+
+			let completed = false;
+
+			// armor
+			const itemMeta = itemStack.GetMeta();
+			if (!completed) {
+				if (itemMeta.armor) {
+					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
+					const existingArmor = inv.GetItem(armorSlot);
+					if (existingArmor === undefined) {
+						this.SwapSlots(inv, slot, inv, armorSlot, {
+							clientPredicted: RunUtil.IsClient(),
+						});
+						completed = true;
+					}
+				}
+			}
+
+			// find slots to merge
+			if (!completed) {
+				for (let i = inv.GetHotbarSlotCount(); i < inv.GetMaxSlots(); i++) {
+					const otherItemStack = inv.GetItem(i);
+					if (otherItemStack?.CanMerge(itemStack)) {
+						if (otherItemStack.GetAmount() < otherItemStack.GetMaxStackSize()) {
+							let delta = math.min(
+								itemStack.GetAmount(),
+								otherItemStack.GetMaxStackSize() - otherItemStack.GetAmount(),
+							);
+							otherItemStack.SetAmount(otherItemStack.GetAmount() + delta);
+							itemStack.Decrement(delta);
+							if (itemStack.IsDestroyed()) {
+								completed = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if (!completed) {
+				// find empty slot
+				for (let i = inv.GetHotbarSlotCount(); i < inv.GetMaxSlots(); i++) {
+					if (inv.GetItem(i) === undefined) {
+						this.SwapSlots(inv, slot, inv, i, {
+							clientPredicted: RunUtil.IsClient(),
+						});
+						completed = true;
+						break;
+					}
+				}
+			}
+		} else {
+			// move to hotbar
+
+			let completed = false;
+			const itemMeta = itemStack.GetMeta();
+
+			// armor
+			if (!completed) {
+				if (itemMeta.armor) {
+					const armorSlot = inv.armorSlots[itemMeta.armor.armorType];
+					const existingArmor = inv.GetItem(armorSlot);
+					if (existingArmor === undefined) {
+						this.SwapSlots(inv, slot, inv, armorSlot, {
+							clientPredicted: RunUtil.IsClient(),
+						});
+						completed = true;
+					}
+				}
+			}
+
+			// find slots to merge
+			if (!completed) {
+				for (let i = 0; i < inv.GetHotbarSlotCount(); i++) {
+					const otherItemStack = inv.GetItem(i);
+					if (otherItemStack?.CanMerge(itemStack)) {
+						if (otherItemStack.GetAmount() < otherItemStack.GetMaxStackSize()) {
+							let delta = math.max(
+								otherItemStack.GetMaxStackSize() - itemStack.GetAmount(),
+								otherItemStack.GetMaxStackSize() - otherItemStack.GetAmount(),
+							);
+							otherItemStack.SetAmount(otherItemStack.GetAmount() + delta);
+							itemStack.Decrement(delta);
+							if (itemStack.IsDestroyed()) {
+								completed = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if (!completed) {
+				// find empty slot
+				for (let i = 0; i < inv.GetHotbarSlotCount(); i++) {
+					if (inv.GetItem(i) === undefined) {
+						this.SwapSlots(inv, slot, inv, i, {
+							clientPredicted: RunUtil.IsClient(),
+						});
+						completed = true;
+						break;
+					}
+				}
+			}
+		}
+
+		if (RunUtil.IsClient()) {
+			CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.client.FireServer(inv.id, slot, inv.id);
+		}
+
+		// SetTimeout(0.1, () => {
+		// 	this.CheckInventoryOutOfSync();
+		// });
+	}
+
+	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void {
+		const fromItemStack = fromInv.GetItem(fromSlot);
+		if (!fromItemStack) return;
+
+		const toItemStack = toInv.GetItem(toSlot);
+		if (toItemStack !== undefined) {
+			if (toItemStack.CanMerge(fromItemStack)) {
+				if (toItemStack.GetAmount() + amount <= toItemStack.GetMaxStackSize()) {
+					toItemStack.SetAmount(toItemStack.GetAmount() + amount);
+					fromItemStack.Decrement(amount);
+					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+						fromInv.id,
+						fromSlot,
+						toInv.id,
+						toSlot,
+						amount,
+					);
+					return;
+				}
+				// can't merge so do nothing
+				return;
+			}
+		}
+
+		this.SwapSlots(fromInv, fromSlot, toInv, toSlot, {
+			clientPredicted: true,
+		});
+		CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
+			fromInv.id,
+			fromSlot,
+			toInv.id,
+			toSlot,
+			amount,
+		);
 	}
 }

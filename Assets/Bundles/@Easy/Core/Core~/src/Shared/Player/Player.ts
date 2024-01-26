@@ -95,7 +95,7 @@ export class Player {
 		config?: {
 			lookDirection?: Vector3;
 		},
-	): void {
+	): Character {
 		if (!RunUtil.IsServer()) {
 			error("Player.SpawnCharacter must be called on the server.");
 		}
@@ -109,6 +109,7 @@ export class Player {
 		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
 		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
+		return characterComponent;
 	}
 
 	public GetProfilePicture(): ProfilePictureMeta {

@@ -169,7 +169,7 @@ export class CharacterAnimator {
 	}
 
 	private Log(message: string) {
-		return;
+		// return;
 		print("Animator " + this.character.id + ": " + message);
 	}
 

@@ -1,10 +1,10 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { CharacterInventorySingleton } from "../../../Shared/Inventory/CharacterInventorySingleton";
 import { DataStreamItems } from "../../../Shared/Util/DataStreamTypes";
 import { Signal } from "../../../Shared/Util/Signal";
 import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
 import { CameraController } from "../Camera/CameraController";
 import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
-import { InventoryController } from "../Inventory/InventoryController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
 import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
@@ -37,7 +37,7 @@ export declare class LocalEntityController implements OnStart {
      * This can be used to change input before it's processed by the entity system.
      */
     readonly onBeforeLocalEntityInput: Signal<LocalEntityInputSignal>;
-    constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: InventoryController);
+    constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: CharacterInventorySingleton);
     /** Returns `true` if the player is in first-person mode. */
     IsFirstPerson(): boolean;
     /** Observes the current first-person state. */

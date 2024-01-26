@@ -3,7 +3,7 @@ import { HeldItemManager } from "./HeldItemManager";
 export declare class EntityItemManager {
     private static instance;
     static Get(): EntityItemManager;
-    private entityItems;
+    private characterItemManagers;
     private localCharacter?;
     private mouseIsDownLeft;
     private mouseIsDownRight;

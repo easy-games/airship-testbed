@@ -1,8 +1,10 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { CharacterInventorySingleton } from "../../../Shared/Inventory/CharacterInventorySingleton";
+import { InventorySingleton } from "../../../Shared/Inventory/InventorySingleton";
 import { CoreUIController } from "../UI/CoreUIController";
-import { InventoryController } from "./InventoryController";
 export declare class InventoryUIController implements OnStart {
     private readonly invController;
+    private readonly characterInvController;
     private readonly coreUIController;
     private hotbarSlots;
     private backpackShown;
@@ -17,7 +19,7 @@ export declare class InventoryUIController implements OnStart {
     private draggingState;
     private draggingBin;
     private spriteCache;
-    constructor(invController: InventoryController, coreUIController: CoreUIController);
+    constructor(invController: InventorySingleton, characterInvController: CharacterInventorySingleton, coreUIController: CoreUIController);
     OnStart(): void;
     SetEnabled(enabled: boolean): void;
     OpenBackpack(): void;

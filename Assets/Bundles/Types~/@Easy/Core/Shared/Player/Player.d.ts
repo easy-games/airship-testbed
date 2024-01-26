@@ -104,7 +104,7 @@ export declare class Player {
     usernameTag: string);
     SpawnCharacter(position: Vector3, config?: {
         lookDirection?: Vector3;
-    }): void;
+    }): Character;
     GetProfilePicture(): ProfilePictureMeta;
     SetTeam(team: Team): void;
     GetTeam(): Team | undefined;
