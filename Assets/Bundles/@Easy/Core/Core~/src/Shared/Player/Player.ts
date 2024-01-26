@@ -102,7 +102,7 @@ export class Player {
 
 		const go = Object.Instantiate(characterPrefab);
 		go.name = `Character_${this.username}`;
-		const characterComponent = go.GetComponent<Character>();
+		const characterComponent = go.GetAirshipComponent<Character>()!;
 		characterComponent.Init(this);
 		this.SetCharacter(characterComponent);
 		go.transform.position = position;

@@ -178,8 +178,9 @@ export class LocalEntityController implements OnStart {
 	}
 
 	OnStart() {
-		Game.localPlayer.ObserveCharacter((entity) => {
-			if (!entity) return;
+		Game.localPlayer.ObserveCharacter((character) => {
+			print("local player observe character: " + character?.gameObject.name);
+			if (!character) return;
 
 			const isFirstSpawn = this.firstSpawn;
 			this.firstSpawn = false;
@@ -190,10 +191,10 @@ export class LocalEntityController implements OnStart {
 				this.firstPerson = this.defaultFirstPerson;
 			}
 
-			this.entityDriver = entity.gameObject.GetComponent<CharacterMovement>();
-			this.entityInput = new EntityInput(entity);
+			this.entityDriver = character.gameObject.GetComponent<CharacterMovement>();
+			this.entityInput = new EntityInput(character);
 
-			this.screenshot = entity.gameObject.AddComponent<CameraScreenshotRecorder>();
+			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();
 
 			const customDataFlushedConn = this.entityDriver.OnCustomDataFlushed(() => {
 				this.customDataQueue.clear();
@@ -205,11 +206,11 @@ export class LocalEntityController implements OnStart {
 
 			// Set up camera
 			if (this.characterCameraMode === CharacterCameraMode.LOCKED) {
-				this.cameraController.SetMode(this.CreateHumanoidCameraMode(entity));
-				this.cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateHumanoidCameraMode(entity));
+				this.cameraController.SetMode(this.CreateHumanoidCameraMode(character));
+				this.cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateHumanoidCameraMode(character));
 			} else if (this.characterCameraMode === CharacterCameraMode.ORBIT) {
-				this.cameraController.SetMode(this.CreateOrbitCameraMode(entity));
-				this.cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(entity));
+				this.cameraController.SetMode(this.CreateOrbitCameraMode(character));
+				this.cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
 			}
 
 			this.firstPersonChanged.Connect((isFirstPerson) => {
@@ -220,7 +221,7 @@ export class LocalEntityController implements OnStart {
 			});
 
 			//Set up first person camera
-			this.fps = new FirstPersonCameraSystem(entity, this.firstPerson);
+			this.fps = new FirstPersonCameraSystem(character, this.firstPerson);
 
 			const stateChangedConn = this.entityDriver.OnStateChanged((state) => {
 				if (state !== this.currentState) {
@@ -342,7 +343,7 @@ export class LocalEntityController implements OnStart {
 				this.entityInput?.Destroy();
 			});
 
-			entity.onDeath.Connect(() => {
+			character.onDeath.Connect(() => {
 				bin.Clean();
 			});
 

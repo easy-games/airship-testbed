@@ -13,6 +13,7 @@ import { DamageCommand } from "./Commands/DamageCommand";
 import { DieCommand } from "./Commands/DieCommand";
 import { GetVarCommand } from "./Commands/DynamicVariables/GetVarCommand";
 import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
+import { EntityCommand } from "./Commands/EntityCommand";
 import { FlyCommand } from "./Commands/FlyCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
 import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorSpawnRateCommand";
@@ -37,6 +38,7 @@ export class ChatService implements OnStart {
 	public readonly canUseRichText = true;
 
 	constructor() {
+		this.RegisterCommand(new EntityCommand());
 		this.RegisterCommand(new DamageCommand());
 		this.RegisterCommand(new JoinCodeCommand());
 		this.RegisterCommand(new CreateGeneratorCommand());

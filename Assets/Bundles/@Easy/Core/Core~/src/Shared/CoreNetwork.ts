@@ -139,7 +139,7 @@ export const CoreNetwork = {
 		/** Fired when a generator item spawns. */
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
-		SpawnCharacters: new RemoteEvent<[[userId: string, nobId: number][]]>(),
+		CharacterSpawnedRemote: new RemoteEvent<[objectId: number, ownerClientId?: number]>(),
 	},
 };
 

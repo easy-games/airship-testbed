@@ -1,12 +1,15 @@
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
-import { RemoteEvent } from "Shared/Network/RemoteEvent";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
+
+const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/Character.prefab");
 
 @Service()
 @Controller()
@@ -25,14 +28,12 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
-	private characterSpawnedRemote = new RemoteEvent<[objectId: number, ownerClientId?: number]>();
-
 	constructor() {
 		Airship.characters = this;
 
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
 			print("adding listener.");
-			this.characterSpawnedRemote.client.OnServerEvent((objectId, ownerClientId) => {
+			CoreNetwork.ServerToClient.CharacterSpawnedRemote.client.OnServerEvent((objectId, ownerClientId) => {
 				print("Received character spawn.");
 				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
 				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
@@ -62,7 +63,7 @@ export class CharactersSingleton implements OnStart {
 			Airship.players.ObservePlayers((player) => {
 				for (let character of this.characters) {
 					print("sending existing character to " + player.clientId);
-					this.characterSpawnedRemote.server.FireClient(
+					CoreNetwork.ServerToClient.CharacterSpawnedRemote.server.FireClient(
 						player.clientId,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
@@ -70,6 +71,22 @@ export class CharactersSingleton implements OnStart {
 				}
 			});
 		}
+	}
+
+	public SpawnNonPlayerCharacter(position: Vector3): Character {
+		if (!RunUtil.IsServer()) {
+			error("Player.SpawnCharacter must be called on the server.");
+		}
+
+		const go = Object.Instantiate(characterPrefab);
+		go.name = `Character`;
+		const characterComponent = go.GetAirshipComponent<Character>()!;
+		characterComponent.Init(undefined);
+		go.transform.position = position;
+		NetworkUtil.Spawn(go);
+		this.RegisterCharacter(characterComponent);
+		this.onCharacterSpawned.Fire(characterComponent);
+		return characterComponent;
 	}
 
 	public FindById(characterId: number): Character | undefined {
@@ -135,7 +152,7 @@ export class CharactersSingleton implements OnStart {
 
 		if (RunUtil.IsServer()) {
 			print("Sending character spawn to all");
-			this.characterSpawnedRemote.server.FireAllClients(
+			CoreNetwork.ServerToClient.CharacterSpawnedRemote.server.FireAllClients(
 				character.networkObject.ObjectId,
 				character.player?.clientId,
 			);

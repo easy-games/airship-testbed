@@ -1,4 +1,3 @@
-import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -70,8 +69,7 @@ export default class Inventory extends AirshipBehaviour {
 	private RequestFullUpdate(): void {
 		const dto = Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
 		if (dto) {
-			print("inv dto: " + inspect(dto));
-			// this.ProcessDto(dto);
+			this.ProcessDto(dto);
 		}
 	}
 

@@ -1,4 +1,5 @@
 import { Controller, Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
@@ -64,6 +65,7 @@ export class PlayersSingleton implements OnStart {
 			};
 		}
 
+		print("PlayersSingleton constructor.");
 		this.onPlayerJoined.Connect((player) => {
 			print("[PLAYER JOINED]: username=" + player.username + " clientId=" + player.clientId);
 		});
@@ -107,11 +109,13 @@ export class PlayersSingleton implements OnStart {
 		});
 
 		CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
+			print("all players: " + inspect(playerDtos));
 			for (let dto of playerDtos) {
 				this.AddPlayerClient(dto);
 			}
 		});
 		CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
+			print("addplayer: " + inspect(playerDto));
 			this.AddPlayerClient(playerDto);
 		});
 		CoreNetwork.ServerToClient.RemovePlayer.client.OnServerEvent((clientId) => {
@@ -122,17 +126,6 @@ export class PlayersSingleton implements OnStart {
 				player.Destroy();
 			}
 		});
-
-		CoreNetwork.ServerToClient.SpawnCharacters.client.OnServerEvent((spawnPackets) => {
-			for (const spawnPacket of spawnPackets) {
-				task.spawn(() => {
-					const userId = spawnPacket[0];
-					const nobId = spawnPacket[1];
-					const nob = NetworkUtil.WaitForNetworkObject(nobId);
-					const player = this.FindByUserId(userId);
-				});
-			}
-		});
 	}
 
 	private InitServer(): void {
@@ -140,7 +133,7 @@ export class PlayersSingleton implements OnStart {
 		const onPlayerPreJoin = (playerInfo: PlayerInfoDto) => {
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
-			if (Game.localPlayer?.clientId === playerInfo.clientId) {
+			if (RunUtil.IsHosting() && playerInfo.clientId === 0) {
 				player = Game.localPlayer;
 			} else {
 				player = new Player(
@@ -184,6 +177,11 @@ export class PlayersSingleton implements OnStart {
 
 		// Player completes join
 		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((clientId) => {
+			if (RunUtil.IsHosting()) {
+				this.HandlePlayerReadyServer(Game.localPlayer);
+				return;
+			}
+
 			let retry = 0;
 			while (!playersPendingReady.has(clientId)) {
 				//print("player not found in pending: " + clientId);
@@ -208,12 +206,12 @@ export class PlayersSingleton implements OnStart {
 			Game.organizationId,
 		);
 
-		if (Game.localPlayer?.clientId !== player.clientId) {
+		if (player !== Game.localPlayer) {
 			this.players.add(player);
 		}
 
 		// notify all clients of the joining player
-		CoreNetwork.ServerToClient.AddPlayer.server.FireAllClients(player.Encode());
+		CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player.clientId, player.Encode());
 
 		// send list of all connected players to the joining player
 		const playerDtos: PlayerDto[] = [];
@@ -222,12 +220,11 @@ export class PlayersSingleton implements OnStart {
 		}
 		CoreNetwork.ServerToClient.AllPlayers.server.FireClient(player.clientId, playerDtos);
 
+		print("firing onPlayerJoined 2");
 		this.onPlayerJoined.Fire(player);
 	}
 
 	private AddPlayerClient(dto: PlayerDto): void {
-		if (RunUtil.IsHosting()) return;
-
 		let team: Team | undefined;
 		if (dto.teamId) {
 			team = Airship.teams.FindById(dto.teamId);
@@ -246,7 +243,11 @@ export class PlayersSingleton implements OnStart {
 		team?.AddPlayer(player);
 
 		this.players.add(player);
-		this.onPlayerJoined.Fire(player);
+
+		if (!RunUtil.IsHosting()) {
+			print("firing onPlayerJoined 1");
+			this.onPlayerJoined.Fire(player);
+		}
 	}
 
 	public AddBotPlayer(): void {

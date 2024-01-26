@@ -21,7 +21,7 @@ export class InventorySingleton implements OnStart {
 
 	public remotes = {
 		clientToServer: {
-			getFullUpdate: new RemoteFunction<[invId: number], InventoryDto | string>(),
+			getFullUpdate: new RemoteFunction<[invId: number], InventoryDto | undefined>(),
 		},
 	};
 
@@ -80,9 +80,7 @@ export class InventorySingleton implements OnStart {
 
 	private StartServer(): void {
 		this.remotes.clientToServer.getFullUpdate.server.SetCallback((clientId, invId) => {
-			print("setCallback test");
-			return "test";
-			// return this.GetInventory(invId)?.Encode();
+			return this.GetInventory(invId)?.Encode();
 		});
 
 		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((clientId, slot) => {
