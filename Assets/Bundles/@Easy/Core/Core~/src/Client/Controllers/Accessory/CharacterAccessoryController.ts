@@ -21,5 +21,7 @@ export class CharacterAccessoryController implements OnStart {
 		});
 	}
 
-	OnStart(): void {}
+	OnStart(): void {
+		this.AutoEquipArmor();
+	}
 }

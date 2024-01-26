@@ -274,6 +274,7 @@ export class ChatController implements OnStart {
 	}
 
 	public RenderChatMessage(message: string, sender?: Player): void {
+		print(message);
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
 			const refs = chatMessage.GetComponent<GameObjectReferences>();

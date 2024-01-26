@@ -42,7 +42,6 @@ export default class Inventory extends AirshipBehaviour {
 	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
 	public Awake(): void {
-		print("Inventory.Awake");
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
 			Airship.inventory.RegisterInventory(this);
@@ -53,7 +52,6 @@ export default class Inventory extends AirshipBehaviour {
 			}
 		} else {
 			const conn = this.networkObject.OnStartNetwork(() => {
-				print("onStartNetwork");
 				Bridge.DisconnectEvent(conn);
 				this.id = this.networkObject.ObjectId;
 				Airship.inventory.RegisterInventory(this);

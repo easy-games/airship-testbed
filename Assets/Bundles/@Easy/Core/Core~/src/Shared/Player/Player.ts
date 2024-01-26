@@ -103,13 +103,12 @@ export class Player {
 		const go = Object.Instantiate(characterPrefab);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
-		characterComponent.Init(this);
+		characterComponent.Init(this, Airship.characters.MakeNewId());
 		this.SetCharacter(characterComponent);
 		go.transform.position = position;
 		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
 		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
-		print("Spawned character " + this.username);
 		return characterComponent;
 	}
 

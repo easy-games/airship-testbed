@@ -11,10 +11,6 @@ export class EntityCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		print("Players:");
-		for (const player of Airship.players.GetPlayers()) {
-			print("   - " + player.clientId + " " + player.character?.gameObject.name);
-		}
 		if (!player.character) return;
 		const pos = player.character.gameObject.transform.position;
 		const character = Airship.characters.SpawnNonPlayerCharacter(pos);

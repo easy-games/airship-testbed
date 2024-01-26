@@ -179,7 +179,6 @@ export class LocalEntityController implements OnStart {
 
 	OnStart() {
 		Game.localPlayer.ObserveCharacter((character) => {
-			print("local player observe character: " + character?.gameObject.name);
 			if (!character) return;
 
 			const isFirstSpawn = this.firstSpawn;

@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart, Service } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
@@ -7,6 +6,7 @@ import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { Team } from "Shared/Team/Team";
+import { ChatColor } from "Shared/Util/ChatColor";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -19,6 +19,8 @@ export class PlayersSingleton implements OnStart {
 	public onPlayerJoined = new Signal<Player>();
 	public onPlayerDisconnected = new Signal<Player>();
 
+	public joinMessagesEnabled = true;
+
 	private players = new Set<Player>([]);
 	private playerManagerBridge = PlayerManagerBridge.Instance;
 	private server?: {
@@ -27,7 +29,7 @@ export class PlayersSingleton implements OnStart {
 
 	constructor() {
 		Airship.players = this;
-		const timeStart = Time.time;
+		// const timeStart = Time.time;
 
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
@@ -45,13 +47,18 @@ export class PlayersSingleton implements OnStart {
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
 
-			const timeDiff = Time.time - timeStart;
-			print("took " + timeDiff + " ms to load local player.");
+			// const timeDiff = Time.time - timeStart;
+			// print("took " + timeDiff + " ms to load local player.");
 		};
 
 		if (RunUtil.IsClient()) {
 			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading", "null");
 			if (!RunUtil.IsHosting()) {
+				/**
+				 * Host mode: start with no players
+				 * Dedicated client: start with LocalPlayer
+				 * Dedicated server: start with no players
+				 */
 				this.players.add(Game.localPlayer);
 			}
 
@@ -65,9 +72,10 @@ export class PlayersSingleton implements OnStart {
 			};
 		}
 
-		print("PlayersSingleton constructor.");
 		this.onPlayerJoined.Connect((player) => {
-			print("[PLAYER JOINED]: username=" + player.username + " clientId=" + player.clientId);
+			if (RunUtil.IsServer() && this.joinMessagesEnabled) {
+				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
+			}
 		});
 	}
 
@@ -109,13 +117,11 @@ export class PlayersSingleton implements OnStart {
 		});
 
 		CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
-			print("all players: " + inspect(playerDtos));
 			for (let dto of playerDtos) {
 				this.AddPlayerClient(dto);
 			}
 		});
 		CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
-			print("addplayer: " + inspect(playerDto));
 			this.AddPlayerClient(playerDto);
 		});
 		CoreNetwork.ServerToClient.RemovePlayer.client.OnServerEvent((clientId) => {
@@ -206,7 +212,7 @@ export class PlayersSingleton implements OnStart {
 			Game.organizationId,
 		);
 
-		if (player !== Game.localPlayer) {
+		if (RunUtil.IsHosting() || player !== Game.localPlayer) {
 			this.players.add(player);
 		}
 
@@ -220,7 +226,6 @@ export class PlayersSingleton implements OnStart {
 		}
 		CoreNetwork.ServerToClient.AllPlayers.server.FireClient(player.clientId, playerDtos);
 
-		print("firing onPlayerJoined 2");
 		this.onPlayerJoined.Fire(player);
 	}
 
@@ -230,22 +235,20 @@ export class PlayersSingleton implements OnStart {
 			team = Airship.teams.FindById(dto.teamId);
 		}
 
-		const existing = this.FindByClientId(dto.clientId);
-		if (existing && RunUtil.IsHosting()) {
-			print("existing player.");
-			team?.AddPlayer(existing);
-			return;
+		let player = this.FindByClientId(dto.clientId);
+		if (!player) {
+			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
+			nob.gameObject.name = `Player_${dto.username}`;
+			player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.usernameTag);
 		}
-		const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
-		nob.gameObject.name = `Player_${dto.username}`;
 
-		const player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.usernameTag);
 		team?.AddPlayer(player);
 
-		this.players.add(player);
+		if (Game.localPlayer !== player) {
+			this.players.add(player);
+		}
 
 		if (!RunUtil.IsHosting()) {
-			print("firing onPlayerJoined 1");
 			this.onPlayerJoined.Fire(player);
 		}
 	}

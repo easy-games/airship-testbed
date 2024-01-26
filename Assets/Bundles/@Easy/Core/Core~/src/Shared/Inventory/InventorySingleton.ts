@@ -352,10 +352,8 @@ export class InventorySingleton implements OnStart {
 
 		const character = inventory.gameObject.GetAirshipComponent<Character>();
 		if (RunUtil.IsClient() && character?.IsLocalCharacter()) {
-			print("local inv");
 			this.localCharacterInventory.SetLocalInventory(inventory);
 		}
-		print("Registered inventory " + inventory.id);
 	}
 
 	public UnregisterInventory(inventory: Inventory): void {

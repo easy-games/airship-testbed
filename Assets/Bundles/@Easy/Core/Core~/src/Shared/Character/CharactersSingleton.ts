@@ -28,13 +28,13 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
+	private idCounter = 0;
+
 	constructor() {
 		Airship.characters = this;
 
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
-			print("adding listener.");
 			CoreNetwork.ServerToClient.CharacterSpawnedRemote.client.OnServerEvent((objectId, ownerClientId) => {
-				print("Received character spawn.");
 				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
 				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
 				assert(character, "Spawned character was missing a Character component.");
@@ -44,25 +44,18 @@ export class CharactersSingleton implements OnStart {
 					assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
 					characterNetworkObj.gameObject.name = "Character_" + player.username;
 				}
-				character.Init(player);
+				character.Init(player, Airship.characters.MakeNewId());
 				Airship.characters.RegisterCharacter(character);
 				player?.SetCharacter(character);
 				Airship.characters.onCharacterSpawned.Fire(character);
-				print("Spawned character " + character.gameObject.name);
 			});
 		}
 	}
 
 	OnStart(): void {
 		if (RunUtil.IsServer()) {
-			const players = Airship.players.GetPlayers();
-			print("Existing players: " + players.size());
-			for (const player of players) {
-				print("    - " + player.clientId);
-			}
 			Airship.players.ObservePlayers((player) => {
 				for (let character of this.characters) {
-					print("sending existing character to " + player.clientId);
 					CoreNetwork.ServerToClient.CharacterSpawnedRemote.server.FireClient(
 						player.clientId,
 						character.networkObject.ObjectId,
@@ -81,7 +74,7 @@ export class CharactersSingleton implements OnStart {
 		const go = Object.Instantiate(characterPrefab);
 		go.name = `Character`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
-		characterComponent.Init(undefined);
+		characterComponent.Init(undefined, Airship.characters.MakeNewId());
 		go.transform.position = position;
 		NetworkUtil.Spawn(go);
 		this.RegisterCharacter(characterComponent);
@@ -151,7 +144,6 @@ export class CharactersSingleton implements OnStart {
 		}
 
 		if (RunUtil.IsServer()) {
-			print("Sending character spawn to all");
 			CoreNetwork.ServerToClient.CharacterSpawnedRemote.server.FireAllClients(
 				character.networkObject.ObjectId,
 				character.player?.clientId,
@@ -165,5 +157,10 @@ export class CharactersSingleton implements OnStart {
 
 	public GetCharacters() {
 		return this.characters;
+	}
+
+	public MakeNewId(): number {
+		this.idCounter++;
+		return this.idCounter;
 	}
 }

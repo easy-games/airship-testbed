@@ -56,8 +56,9 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	public Init(player: Player | undefined): void {
+	public Init(player: Player | undefined, id: number): void {
 		this.player = player;
+		this.id = id;
 	}
 
 	public Teleport(pos: Vector3, lookDirection?: Vector3): void {}
