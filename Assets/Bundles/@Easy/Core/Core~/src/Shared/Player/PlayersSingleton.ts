@@ -30,7 +30,6 @@ export class PlayersSingleton implements OnStart {
 		const FetchLocalPlayerWithWait = () => {
 			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
 			while (localPlayerInfo === undefined) {
-				print("waiting.");
 				task.wait();
 				localPlayerInfo = this.playerManagerBridge.localPlayer;
 			}
@@ -131,7 +130,6 @@ export class PlayersSingleton implements OnStart {
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
 			if (Game.localPlayer?.clientId === playerInfo.clientId) {
-				print("yes local player.");
 				player = Game.localPlayer;
 			} else {
 				player = new Player(
@@ -147,7 +145,6 @@ export class PlayersSingleton implements OnStart {
 
 			// Ready bots immediately
 			if (playerInfo.clientId < 0) {
-				print("handling bot immediately.");
 				playersPendingReady.delete(playerInfo.clientId);
 				this.HandlePlayerReadyServer(player);
 			}
@@ -165,11 +162,9 @@ export class PlayersSingleton implements OnStart {
 		const players = this.playerManagerBridge.GetPlayers();
 		for (let i = 0; i < players.Length; i++) {
 			const clientInfo = players.GetValue(i);
-			print("existing client info: " + clientInfo.clientId);
 			onPlayerPreJoin(clientInfo);
 		}
 		this.playerManagerBridge.OnPlayerAdded((clientInfo) => {
-			print("player added: " + clientInfo.clientId);
 			onPlayerPreJoin(clientInfo);
 		});
 		this.playerManagerBridge.OnPlayerRemoved((clientInfo) => {

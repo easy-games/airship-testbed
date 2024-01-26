@@ -47,7 +47,18 @@ export class CharactersSingleton implements OnStart {
 				Airship.characters.RegisterCharacter(character);
 				player?.SetCharacter(character);
 				Airship.characters.onCharacterSpawned.Fire(character);
-				print("Spawned character.");
+			});
+		}
+
+		if (RunUtil.IsServer()) {
+			Airship.players.onPlayerJoined.Connect((player) => {
+				for (let character of this.characters) {
+					this.characterSpawnedRemote.server.FireClient(
+						player.clientId,
+						character.networkObject.ObjectId,
+						character.player?.clientId,
+					);
+				}
 			});
 		}
 	}

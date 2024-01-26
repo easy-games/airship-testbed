@@ -1,6 +1,6 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { AvatarPlatformAPI, Outfit } from "./AvatarPlatformAPI";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { AvatarPlatformAPI, Outfit } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -52,7 +52,7 @@ export class AvatarUtil {
 			//print("Found avatar skin item: " + element.ToString());
 			this.avatarSkinAccessories.push(element);
 		}*/
-		print("Found avatar collection: " + avatarCollection);
+		// print("Found avatar collection: " + avatarCollection);
 		for (let i = 0; i < avatarCollection.accessories.Length; i++) {
 			const element = avatarCollection.accessories.GetValue(i);
 			if (!element) {

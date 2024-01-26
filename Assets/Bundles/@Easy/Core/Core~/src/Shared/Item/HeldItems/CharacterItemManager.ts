@@ -1,6 +1,5 @@
 ﻿import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
-import { Game } from "Shared/Game";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreNetwork } from "../../CoreNetwork";
 import { RunUtil } from "../../Util/RunUtil";
@@ -18,7 +17,7 @@ export class EntityItemManager {
 	}
 
 	//Private
-	private entityItems = new Map<number, HeldItemManager>();
+	private characterItemManagers = new Map<number, HeldItemManager>();
 	private localCharacter?: Character;
 	private mouseIsDownLeft = false;
 	private mouseIsDownRight = false;
@@ -116,7 +115,7 @@ export class EntityItemManager {
 
 		//Server Events
 		CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((entityId, newState, lookVector) => {
-			const heldItem = this.entityItems.get(entityId);
+			const heldItem = this.characterItemManagers.get(entityId);
 			if (heldItem) {
 				heldItem.OnNewState(newState, lookVector);
 			}
@@ -140,12 +139,12 @@ export class EntityItemManager {
 		//Listen to state changes triggered by client
 		Airship.characters.onServerCustomMoveCommand.Connect((event) => {
 			if (event.Is("HeldItemState")) {
-				const player = Airship.players.FindByClientId(event.clientId);
-				if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
-					return;
-				}
+				// const player = Airship.players.FindByClientId(event.clientId);
+				// if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
+				// 	return;
+				// }
 				this.Log("NewState: " + event.value.s);
-				const heldItemManager = this.entityItems.get(event.value.e);
+				const heldItemManager = this.characterItemManagers.get(event.value.e);
 				if (heldItemManager) {
 					const lookVec = event.value.l;
 					heldItemManager.OnNewState(event.value.s, lookVec);
@@ -164,11 +163,11 @@ export class EntityItemManager {
 
 	public GetOrCreateItemManager(character: Character): HeldItemManager {
 		this.Log("GetOrCreateItemManager: " + character.id);
-		let items = this.entityItems.get(character.id ?? 0);
+		let items = this.characterItemManagers.get(character.id ?? 0);
 		if (items === undefined) {
 			this.Log("New Item: " + character.id);
 			items = new HeldItemManager(character);
-			this.entityItems.set(character.id ?? 0, items);
+			this.characterItemManagers.set(character.id ?? 0, items);
 		}
 		this.Log("Returning Item: " + items.GetLabel());
 		return items;
@@ -177,11 +176,11 @@ export class EntityItemManager {
 	//Called by both client and server based on entity death events
 	private DestroyItemManager(character: Character) {
 		let entityId = character.id ?? 0;
-		let items = this.entityItems.get(entityId);
+		let items = this.characterItemManagers.get(entityId);
 		if (items) {
 			items.OnNewState(HeldItemState.ON_DESTROY, character.movement.GetLookVector());
 			items.Destroy();
-			this.entityItems.delete(entityId);
+			this.characterItemManagers.delete(entityId);
 		}
 	}
 }

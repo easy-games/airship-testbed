@@ -1,5 +1,5 @@
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { EntityItemManager } from "Shared/Item/HeldItems/EntityItemManager";
+import { EntityItemManager } from "Shared/Item/HeldItems/CharacterItemManager";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
