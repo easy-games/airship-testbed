@@ -59,7 +59,7 @@ export class HeldItem {
 		this.Log("OnEquip");
 		//Load that items animations and play equip animation
 		// todo: equip item
-		// this.character.animator?.EquipItem(this.itemMeta);
+		this.character.animator?.EquipItem(this.itemMeta);
 
 		//Play the equip sound
 		//TODO need to make bundles string accessible for when you dont know the exact bundle you are loading

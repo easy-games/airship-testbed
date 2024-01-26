@@ -170,7 +170,7 @@ export class CharacterAnimator {
 
 	private Log(message: string) {
 		// return;
-		print("Animator " + this.character.id + ": " + message);
+		// print("Animator " + this.character.id + ": " + message);
 	}
 
 	public SetFirstPerson(isFirstPerson: boolean) {
@@ -423,6 +423,7 @@ export class CharacterAnimator {
 	}
 
 	public EquipItem(itemMeta: ItemDef | undefined) {
+		this.Log("Equip: " + itemMeta?.displayName);
 		this.LoadNewItemResources(itemMeta);
 		this.StartItemIdleAnim(false);
 	}

@@ -30,6 +30,12 @@ export class CharacterInventorySingleton implements OnStart {
 	OnStart(): void {
 		if (!RunUtil.IsClient()) return;
 
+		Game.localPlayer.ObserveCharacter((character) => {
+			if (character) {
+				this.SetLocalInventory(character.inventory);
+			}
+		});
+
 		const keyboard = new Keyboard();
 		const mouse = new Mouse();
 
