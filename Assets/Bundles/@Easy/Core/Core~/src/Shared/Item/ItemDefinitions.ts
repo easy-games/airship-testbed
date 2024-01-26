@@ -16,7 +16,7 @@ const CoreAnim = (...p: string[]) => {
 		if (s === "none") {
 			return "none";
 		}
-		return `@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/${s}.anim`;
+		return `@Easy/Core/Shared/Resources/Character/Animations/${s}.anim`;
 	});
 };
 

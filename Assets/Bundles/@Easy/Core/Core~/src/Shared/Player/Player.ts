@@ -104,10 +104,10 @@ export class Player {
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetComponent<Character>();
 		characterComponent.Init(this);
-		Airship.characters.RegisterCharacter(characterComponent);
 		this.SetCharacter(characterComponent);
 		go.transform.position = position;
 		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
+		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
 	}
 

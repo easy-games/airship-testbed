@@ -31,16 +31,16 @@ export enum ItemPlayMode {
 }
 
 const EMPTY_ANIM = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
+	"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
 );
 const DEFAULT_USE_FP = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Sword_Use.anim",
+	"@Easy/Core/Shared/Resources/Character/Animations/FP_Sword_Use.anim",
 );
 const BLOCK_IDLE_FP = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Block_Idle.anim",
+	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Idle.anim",
 );
 const BLOCK_USE_FP = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Block_Place.anim",
+	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Place.anim",
 );
 
 export class CharacterAnimator {
@@ -51,13 +51,13 @@ export class CharacterAnimator {
 	private currentEndEventConnection = -1;
 
 	private defaultIdleAnimFP = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/FP_Generic_Idle.anim",
+		"@Easy/Core/Shared/Resources/Character/Animations/FP_Generic_Idle.anim",
 	);
 	private defaultIdleAnimFPUnarmed = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
+		"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
 	);
 	private defaultIdleAnimTP = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanAnimations/Airship_Empty.anim",
+		"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
 	);
 
 	private readonly flashTransitionDuration = 0.035;
@@ -91,7 +91,7 @@ export class CharacterAnimator {
 	//private camera: Camera;
 
 	public constructor(public readonly character: Character) {
-		const animator = character.movement.animator;
+		const animator = character.movement.animationHelper;
 		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
 		this.isFlashing = false;
 		this.viewModelEnabled = this.character.IsLocalCharacter();

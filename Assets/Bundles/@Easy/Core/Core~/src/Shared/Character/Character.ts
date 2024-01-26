@@ -40,6 +40,19 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 
+	public Awake(): void {
+		this.animator = new CharacterAnimator(this);
+	}
+
+	public Start(): void {
+		if (this.IsLocalCharacter()) {
+			task.spawn(() => {
+				Game.WaitForLocalPlayerLoaded();
+				this.gameObject.name = "Character_" + Game.localPlayer.username;
+			});
+		}
+	}
+
 	public Init(player: Player | undefined): void {
 		this.player = player;
 	}
@@ -82,6 +95,6 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public IsLocalCharacter(): boolean {
-		return RunUtil.IsClient() && this.player?.userId === Game.localPlayer.userId;
+		return RunUtil.IsClient() && this.player?.userId === Game.localPlayer?.userId;
 	}
 }

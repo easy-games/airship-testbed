@@ -27,46 +27,41 @@ export class PlayersSingleton implements OnStart {
 	constructor() {
 		Airship.players = this;
 
+		const FetchLocalPlayerWithWait = () => {
+			let localPlayerInfo: PlayerInfo | undefined = this.playerManagerBridge.localPlayer;
+			while (localPlayerInfo === undefined) {
+				print("waiting.");
+				task.wait();
+				localPlayerInfo = this.playerManagerBridge.localPlayer;
+			}
+
+			const mutable = Game.localPlayer as Mutable<Player>;
+			mutable.clientId = localPlayerInfo.clientId;
+			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>();
+			mutable.username = localPlayerInfo.username;
+			mutable.usernameTag = localPlayerInfo.usernameTag;
+			mutable.userId = localPlayerInfo.userId;
+			Game.localPlayerLoaded = true;
+			Game.onLocalPlayerLoaded.Fire();
+		};
+
 		if (RunUtil.IsClient()) {
 			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading", "null");
 			this.players.add(Game.localPlayer);
-		}
 
-		this.onPlayerJoined.Connect((player) => {
-			print("[PLAYER JOINED]: username=" + player.username + " clientId=" + player.clientId);
-		});
-
-		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
 			task.spawn(() => {
-				let clientManager = InstanceFinder.ClientManager;
-				while (clientManager.Connection.ClientId === -1) {
-					task.wait();
-				}
-				const clientId = clientManager.Connection.ClientId;
-				const playerInfo = this.playerManagerBridge.GetPlayerInfoByClientId(clientId);
-				const mutable = Game.localPlayer as Mutable<Player>;
-				mutable.clientId = clientId;
-				mutable.networkObject = playerInfo.gameObject.GetComponent<NetworkObject>();
-				mutable.username = playerInfo.username;
-				mutable.usernameTag = playerInfo.usernameTag;
-				mutable.userId = playerInfo.userId;
-				Game.localPlayerLoaded = true;
-				Game.onLocalPlayerLoaded.Fire();
+				FetchLocalPlayerWithWait();
 			});
 		}
 		if (RunUtil.IsServer()) {
 			this.server = {
 				botCounter: 0,
 			};
-			this.InitServer();
 		}
-		// if (RunUtil.IsHosting()) {
-		// 	const mutable = Game.localPlayer as Mutable<Player>;
-		// 	const clientId = InstanceFinder.ServerManager.Clients.Get(0)!.ClientId;
-		// 	const playerInfo = this.playerManagerBridge.GetPlayerInfoByClientId(clientId);
-		// 	mutable.clientId = clientId;
-		// 	mutable.networkObject = playerInfo.gameObject.GetComponent<NetworkObject>();
-		// }
+
+		this.onPlayerJoined.Connect((player) => {
+			print("[PLAYER JOINED]: username=" + player.username + " clientId=" + player.clientId);
+		});
 	}
 
 	OnStart(): void {
@@ -74,9 +69,12 @@ export class PlayersSingleton implements OnStart {
 			if (RunUtil.IsClient()) {
 				this.InitClient();
 			}
-			// if (RunUtil.IsServer()) {
-			// 	this.InitServer();
-			// }
+			if (RunUtil.IsServer()) {
+				if (RunUtil.IsClient()) {
+					Game.WaitForLocalPlayerLoaded();
+				}
+				this.InitServer();
+			}
 		});
 	}
 
@@ -130,18 +128,26 @@ export class PlayersSingleton implements OnStart {
 	private InitServer(): void {
 		const playersPendingReady = new Map<number, Player>();
 		const onPlayerPreJoin = (playerInfo: PlayerInfoDto) => {
-			const player = new Player(
-				playerInfo.gameObject.GetComponent<NetworkObject>(),
-				playerInfo.clientId,
-				playerInfo.userId,
-				playerInfo.username,
-				playerInfo.usernameTag,
-			);
+			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
+			let player: Player;
+			if (Game.localPlayer?.clientId === playerInfo.clientId) {
+				print("yes local player.");
+				player = Game.localPlayer;
+			} else {
+				player = new Player(
+					playerInfo.gameObject.GetComponent<NetworkObject>(),
+					playerInfo.clientId,
+					playerInfo.userId,
+					playerInfo.username,
+					playerInfo.usernameTag,
+				);
+			}
 			playerInfo.gameObject.name = `Player_${playerInfo.username}`;
 			playersPendingReady.set(playerInfo.clientId, player);
 
 			// Ready bots immediately
 			if (playerInfo.clientId < 0) {
+				print("handling bot immediately.");
 				playersPendingReady.delete(playerInfo.clientId);
 				this.HandlePlayerReadyServer(player);
 			}
@@ -159,9 +165,11 @@ export class PlayersSingleton implements OnStart {
 		const players = this.playerManagerBridge.GetPlayers();
 		for (let i = 0; i < players.Length; i++) {
 			const clientInfo = players.GetValue(i);
+			print("existing client info: " + clientInfo.clientId);
 			onPlayerPreJoin(clientInfo);
 		}
 		this.playerManagerBridge.OnPlayerAdded((clientInfo) => {
+			print("player added: " + clientInfo.clientId);
 			onPlayerPreJoin(clientInfo);
 		});
 		this.playerManagerBridge.OnPlayerRemoved((clientInfo) => {
@@ -194,14 +202,7 @@ export class PlayersSingleton implements OnStart {
 			Game.organizationId,
 		);
 
-		if (RunUtil.IsClient() && Game.localPlayer?.clientId === undefined) {
-			const mutablePlayer = Game.localPlayer as Mutable<Player>;
-			mutablePlayer.networkObject = player.networkObject;
-			mutablePlayer.clientId = player.clientId;
-			mutablePlayer.userId = player.userId;
-			mutablePlayer.username = player.username;
-			mutablePlayer.usernameTag = player.usernameTag;
-		} else {
+		if (Game.localPlayer?.clientId !== player.clientId) {
 			this.players.add(player);
 		}
 
@@ -220,7 +221,7 @@ export class PlayersSingleton implements OnStart {
 
 	private AddPlayerClient(dto: PlayerDto): void {
 		const existing = this.FindByClientId(dto.clientId);
-		if (existing) {
+		if (existing && RunUtil.IsServer()) {
 			// if (Game.localPlayer !== existing) {
 			// 	warn("Tried to add existing player " + dto.username);
 			// }
@@ -234,16 +235,8 @@ export class PlayersSingleton implements OnStart {
 			team = Airship.teams.FindById(dto.teamId);
 		}
 
-		if (Game.localPlayer.clientId === undefined && RunUtil.IsServer()) {
-			print("client mutable");
-			const mutablePlayer = Game.localPlayer as Mutable<Player>;
-			mutablePlayer.networkObject = nob;
-			mutablePlayer.clientId = dto.clientId;
-			mutablePlayer.userId = dto.userId;
-			mutablePlayer.username = dto.username;
-			mutablePlayer.usernameTag = dto.usernameTag;
-
-			team?.AddPlayer(mutablePlayer as Player);
+		if (existing) {
+			team?.AddPlayer(existing);
 
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();

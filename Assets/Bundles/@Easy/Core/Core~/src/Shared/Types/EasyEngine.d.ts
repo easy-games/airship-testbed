@@ -43,11 +43,19 @@ interface PlayerManagerBridge extends Component {
 	GetPlayers(): CSArray<PlayerInfoDto>;
 	AddBotPlayer(username: string, tag: string, userId: string): void;
 	GetPlayerInfoByClientId(clientId: number): PlayerInfoDto;
+	localPlayer: PlayerInfo;
 }
 interface PlayerManagerConstructor {
 	Instance: PlayerManagerBridge;
 }
 declare const PlayerManagerBridge: PlayerManagerConstructor;
+
+interface PlayerInfo extends Component {
+	clientId: number;
+	userId: string;
+	username: string;
+	usernameTag: string;
+}
 
 interface PlayerInfoDto extends Component {
 	clientId: number;
@@ -96,7 +104,7 @@ interface CharacterMovement extends Component {
 	replicatedLookVector: Vector3;
 	disableInput: boolean;
 
-	animator: CharacterAnimationHelper;
+	animationHelper: CharacterAnimationHelper;
 }
 
 interface VoxelWorld {

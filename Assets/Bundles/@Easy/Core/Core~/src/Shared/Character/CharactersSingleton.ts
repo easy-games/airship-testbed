@@ -35,11 +35,10 @@ export class CharactersSingleton implements OnStart {
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
 			this.characterSpawnedRemote.client.OnServerEvent((objectId, ownerClientId) => {
 				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
-				print("found nob: " + characterNetworkObj?.name);
 				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
 				assert(character, "Spawned character was missing a Character component.");
 				let player: Player | undefined;
-				if (ownerClientId) {
+				if (ownerClientId !== undefined) {
 					player = Airship.players.FindByClientId(ownerClientId);
 					assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
 					characterNetworkObj.gameObject.name = "Character_" + player.username;
@@ -48,6 +47,7 @@ export class CharactersSingleton implements OnStart {
 				Airship.characters.RegisterCharacter(character);
 				player?.SetCharacter(character);
 				Airship.characters.onCharacterSpawned.Fire(character);
+				print("Spawned character.");
 			});
 		}
 	}
