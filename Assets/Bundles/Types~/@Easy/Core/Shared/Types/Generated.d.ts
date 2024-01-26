@@ -13154,7 +13154,8 @@ interface MaterialColor extends MonoBehaviour {
     DoUpdate(): void;
     EditorFirstTimeSetup(): void;
     GetColor(materialIndex: number): ColorSetting;
-    SetAllColors(diffuseColor: Color, combine: boolean): void;
+    SetAllColors(diffuseColor: Color, multiplyColor: boolean): void;
+    SetAllEmissive(emissiveColor: Color, emissiveMix: number): void;
     SetColor(settings: ColorSetting, materialIndex: number): boolean;
     SetMaterialColor(index: number, color: Color): void;
 }

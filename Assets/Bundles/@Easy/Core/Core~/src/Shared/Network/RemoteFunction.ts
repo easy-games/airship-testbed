@@ -47,7 +47,7 @@ class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] 
 	private StartListening() {
 		if (this.listening) return;
 		this.listening = true;
-		NetworkAPI.connect(this.id, (sendId: number, ...args: unknown[]) => {
+		NetworkAPI.connect(false, this.id, (sendId: number, ...args: unknown[]) => {
 			const thread = this.yieldingThreads.get(sendId);
 			this.yieldingThreads.delete(sendId);
 			if (thread !== undefined) {
@@ -70,7 +70,7 @@ class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] 
 		if (this.disconnect !== undefined) {
 			this.disconnect();
 		}
-		this.disconnect = NetworkAPI.connect(this.id, (clientId: number, sendId: number, ...args: unknown[]) => {
+		this.disconnect = NetworkAPI.connect(true, this.id, (clientId: number, sendId: number, ...args: unknown[]) => {
 			const res = [(callback as Callback)(clientId, ...args)];
 			const argsReturn = [sendId, ...res];
 			NetworkAPI.fireClient(this.id, clientId, argsReturn, NetworkChannel.Reliable);
