@@ -6,6 +6,7 @@ import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DataStreamItems } from "Shared/Util/DataStreamTypes";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
 import { CameraController } from "../../../Client/Controllers/Camera/CameraController";
@@ -173,6 +174,7 @@ export class LocalCharacterSingleton implements OnStart {
 	}
 
 	OnStart() {
+		if (!RunUtil.IsClient()) return;
 		Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) return;
 
