@@ -142,7 +142,7 @@ export class AvatarUtil {
 	) {
 		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
 		if (!outfit) {
-			warn("Unable to load users default outfit. Equipping baked default outfit");
+			// warn("Unable to load users default outfit. Equipping baked default outfit");
 			this.LoadDefaultOutfit(builder);
 			return;
 		}

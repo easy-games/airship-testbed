@@ -106,6 +106,10 @@ export declare const CoreNetwork: {
         GroundItemDestroyed: RemoteEvent<[groundItemId: number]>;
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
-        SpawnCharacters: RemoteEvent<[[userId: string, nobId: number][]]>;
+        Character: {
+            Spawn: RemoteEvent<[objectId: number, ownerClientId?: number | undefined]>;
+            SetHealth: RemoteEvent<[characterId: number, health: number]>;
+            SetMaxHealth: RemoteEvent<[characterId: number, health: number]>;
+        };
     };
 };

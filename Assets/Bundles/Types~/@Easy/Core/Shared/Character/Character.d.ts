@@ -30,7 +30,7 @@ export default class Character extends AirshipBehaviour {
     onHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
     Awake(): void;
     Start(): void;
-    Init(player: Player | undefined): void;
+    Init(player: Player | undefined, id: number): void;
     Teleport(pos: Vector3, lookDirection?: Vector3): void;
     OnDisable(): void;
     IsDestroyed(): boolean;

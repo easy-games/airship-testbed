@@ -46,7 +46,6 @@ export declare class ItemUtil {
      * @param itemType An item.
      * @returns Whether or not item is a resource.
      */
-    static IsResource(itemType: ItemType): boolean;
     /**
      * Returns the component parts of an ItemType - the scope and the id
      *

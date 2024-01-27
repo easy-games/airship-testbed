@@ -179,7 +179,6 @@ export class MeleeHeldItem extends HeldItem {
 
 	private ServerHit(meleeData: MeleeItemDef | undefined) {
 		let hitTargets = this.ScanForHits();
-		print("hit targets: " + hitTargets.size());
 		hitTargets.forEach((data) => {
 			let damage = meleeData?.damage ?? 0;
 			if (data.criticalHit) {

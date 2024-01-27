@@ -4,6 +4,7 @@ import { Player } from "./Player";
 export declare class PlayersSingleton implements OnStart {
     onPlayerJoined: Signal<Player>;
     onPlayerDisconnected: Signal<Player>;
+    joinMessagesEnabled: boolean;
     private players;
     private playerManagerBridge;
     private server?;
@@ -25,7 +26,7 @@ export declare class PlayersSingleton implements OnStart {
      * function was called to stop the observation process).
      *
      * ```ts
-     * playersService.ObservePlayers((player) => {
+     * Airship.players.ObservePlayers((player) => {
      * 	print(`${player.name} entered`);
      * 	return () => {
      * 		print(`${player.name} left`);

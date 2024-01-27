@@ -32,6 +32,7 @@ export default class Inventory extends AirshipBehaviour {
     private finishedInitialReplication;
     private slotConnections;
     Awake(): void;
+    private RequestFullUpdate;
     GetItem(slot: number): ItemStack | undefined;
     GetSlot(itemStack: ItemStack): number | undefined;
     ObserveHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin;

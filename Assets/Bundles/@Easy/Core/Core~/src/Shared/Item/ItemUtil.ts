@@ -199,9 +199,9 @@ export class ItemUtil {
 	 * @param itemType An item.
 	 * @returns Whether or not item is a resource.
 	 */
-	public static IsResource(itemType: ItemType): boolean {
-		return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
-	}
+	// public static IsResource(itemType: ItemType): boolean {
+	// 	return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
+	// }
 
 	/**
 	 * Returns the component parts of an ItemType - the scope and the id

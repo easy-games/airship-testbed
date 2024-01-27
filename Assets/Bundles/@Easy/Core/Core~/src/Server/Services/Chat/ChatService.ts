@@ -21,7 +21,6 @@ import { HealCommand } from "./Commands/HealCommand";
 import { HelpCommand } from "./Commands/HelpCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
-import { LibonatiCommand } from "./Commands/LibonatiCommand";
 import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
 import { TeamChatCommand } from "./Commands/TeamChatCommand";
@@ -29,7 +28,6 @@ import { TeamCommand } from "./Commands/TeamCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
-import { VorliasCommand } from "./Commands/VorliasCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -56,8 +54,6 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new HealCommand());
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
-		this.RegisterCommand(new LibonatiCommand());
-		this.RegisterCommand(new VorliasCommand());
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new SaveWorldCommand());
