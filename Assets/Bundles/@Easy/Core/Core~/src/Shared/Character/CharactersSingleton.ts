@@ -34,7 +34,7 @@ export class CharactersSingleton implements OnStart {
 		Airship.characters = this;
 
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.CharacterSpawnedRemote.client.OnServerEvent((objectId, ownerClientId) => {
+			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((objectId, ownerClientId) => {
 				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
 				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
 				assert(character, "Spawned character was missing a Character component.");
@@ -56,7 +56,7 @@ export class CharactersSingleton implements OnStart {
 		if (RunUtil.IsServer()) {
 			Airship.players.ObservePlayers((player) => {
 				for (let character of this.characters) {
-					CoreNetwork.ServerToClient.CharacterSpawnedRemote.server.FireClient(
+					CoreNetwork.ServerToClient.Character.Spawn.server.FireClient(
 						player.clientId,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
@@ -231,7 +231,7 @@ export class CharactersSingleton implements OnStart {
 		}
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.CharacterSpawnedRemote.server.FireAllClients(
+			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients(
 				character.networkObject.ObjectId,
 				character.player?.clientId,
 			);
