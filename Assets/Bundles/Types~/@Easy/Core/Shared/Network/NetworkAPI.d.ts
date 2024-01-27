@@ -9,7 +9,7 @@ declare function fireAllClients(id: number, args: unknown[], channel: NetworkCha
 declare function fireClient(id: number, clientId: number, args: unknown[], channel: NetworkChannel): void;
 declare function fireExcept(id: number, ignoredClientId: number, args: unknown[], channel: NetworkChannel): void;
 declare function fireClients(id: number, clientIds: number[], args: unknown[], channel: NetworkChannel): void;
-declare function connect(id: number, callback: Callback): () => void;
+declare function connect(asServer: boolean, id: number, callback: Callback): () => void;
 declare const NetworkAPI: {
     fireServer: typeof fireServer;
     fireAllClients: typeof fireAllClients;

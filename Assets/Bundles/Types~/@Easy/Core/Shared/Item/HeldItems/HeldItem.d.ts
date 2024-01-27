@@ -48,7 +48,7 @@ export declare class HeldItem {
     OnInspect(): void;
     protected OnChargeStart(): void;
     protected OnChargeEnd(): void;
-    protected TryUse(): boolean;
+    protected TryUse(index?: number): boolean;
     protected TryChargeUse(): boolean;
     protected TriggerUse(useIndex: number): void;
     protected OnCooldownReset(): void;

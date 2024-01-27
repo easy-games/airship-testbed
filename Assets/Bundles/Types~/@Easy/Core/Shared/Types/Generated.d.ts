@@ -139,6 +139,148 @@ declare const enum MeshColliderCookingOptions {
     WeldColocatedVertices = 8,
     UseFastMidphase = 16,
 }
+declare const enum CompositeOperation {
+    None = 0,
+    Merge = 1,
+    Intersect = 2,
+    Difference = 3,
+    Flip = 4,
+}
+declare const enum GeometryType {
+    Outlines = 0,
+    Polygons = 1,
+}
+declare const enum GenerationType {
+    Synchronous = 0,
+    Manual = 1,
+}
+declare const enum RigidbodyType2D {
+    Dynamic = 0,
+    Kinematic = 1,
+    Static = 2,
+}
+declare const enum RigidbodyConstraints2D {
+    None = 0,
+    FreezePositionX = 1,
+    FreezePositionY = 2,
+    FreezePosition = 3,
+    FreezeRotation = 4,
+    FreezeAll = 7,
+}
+declare const enum RigidbodyInterpolation2D {
+    None = 0,
+    Interpolate = 1,
+    Extrapolate = 2,
+}
+declare const enum RigidbodySleepMode2D {
+    NeverSleep = 0,
+    StartAwake = 1,
+    StartAsleep = 2,
+}
+declare const enum CollisionDetectionMode2D {
+    None = 0,
+    Discrete = 0,
+    Continuous = 1,
+}
+declare const enum ForceMode2D {
+    Force = 0,
+    Impulse = 1,
+}
+declare const enum PhysicsShapeType2D {
+    Circle = 0,
+    Capsule = 1,
+    Polygon = 2,
+    Edges = 3,
+}
+declare const enum ColliderErrorState2D {
+    None = 0,
+    NoShapes = 1,
+    RemovedShapes = 2,
+}
+declare const enum IndexFormat {
+    UInt16 = 0,
+    UInt32 = 1,
+}
+declare const enum Target {
+    Vertex = 1,
+    Index = 2,
+    CopySource = 4,
+    CopyDestination = 8,
+    Structured = 16,
+    Raw = 32,
+    Append = 64,
+    Counter = 128,
+    IndirectArguments = 256,
+    Constant = 512,
+}
+declare const enum SkinWeights {
+    None = 0,
+    OneBone = 1,
+    TwoBones = 2,
+    FourBones = 4,
+    Unlimited = 255,
+}
+declare const enum UsageFlags {
+    None = 0,
+    LockBufferForWrite = 1,
+}
+declare const enum BlendShapeBufferLayout {
+    PerShape = 0,
+    PerVertex = 1,
+}
+declare const enum MeshTopology {
+    Triangles = 0,
+    Quads = 2,
+    Lines = 3,
+    LineStrip = 4,
+    Points = 5,
+}
+declare const enum VertexAttribute {
+    Position = 0,
+    Normal = 1,
+    Tangent = 2,
+    Color = 3,
+    TexCoord0 = 4,
+    TexCoord1 = 5,
+    TexCoord2 = 6,
+    TexCoord3 = 7,
+    TexCoord4 = 8,
+    TexCoord5 = 9,
+    TexCoord6 = 10,
+    TexCoord7 = 11,
+    BlendWeight = 12,
+    BlendIndices = 13,
+}
+declare const enum VertexAttributeFormat {
+    Float32 = 0,
+    Float16 = 1,
+    UNorm8 = 2,
+    SNorm8 = 3,
+    UNorm16 = 4,
+    SNorm16 = 5,
+    UInt8 = 6,
+    SInt8 = 7,
+    UInt16 = 8,
+    SInt16 = 9,
+    UInt32 = 10,
+    SInt32 = 11,
+}
+declare const enum MeshUpdateFlags {
+    Default = 0,
+    DontValidateIndices = 1,
+    DontResetBoneBounds = 2,
+    DontNotifyMeshUsers = 4,
+    DontRecalculateBounds = 8,
+}
+declare const enum CapsuleDirection2D {
+    Vertical = 0,
+    Horizontal = 1,
+}
+declare const enum SimulationMode2D {
+    FixedUpdate = 0,
+    Update = 1,
+    Script = 2,
+}
 declare const enum LogType {
     Error = 0,
     Assert = 1,
@@ -770,22 +912,6 @@ declare const enum ShaderHardwareTier {
     Tier2 = 1,
     Tier3 = 2,
 }
-declare const enum Target {
-    Vertex = 1,
-    Index = 2,
-    CopySource = 4,
-    CopyDestination = 8,
-    Structured = 16,
-    Raw = 32,
-    Append = 64,
-    Counter = 128,
-    IndirectArguments = 256,
-    Constant = 512,
-}
-declare const enum UsageFlags {
-    None = 0,
-    LockBufferForWrite = 1,
-}
 declare const enum ShadowCastingMode {
     Off = 0,
     On = 1,
@@ -897,65 +1023,6 @@ declare const enum SynchronisationStageFlags {
     PixelProcessing = 2,
     ComputeProcessing = 4,
     AllGPUOperations = 7,
-}
-declare const enum IndexFormat {
-    UInt16 = 0,
-    UInt32 = 1,
-}
-declare const enum SkinWeights {
-    None = 0,
-    OneBone = 1,
-    TwoBones = 2,
-    FourBones = 4,
-    Unlimited = 255,
-}
-declare const enum BlendShapeBufferLayout {
-    PerShape = 0,
-    PerVertex = 1,
-}
-declare const enum MeshTopology {
-    Triangles = 0,
-    Quads = 2,
-    Lines = 3,
-    LineStrip = 4,
-    Points = 5,
-}
-declare const enum VertexAttribute {
-    Position = 0,
-    Normal = 1,
-    Tangent = 2,
-    Color = 3,
-    TexCoord0 = 4,
-    TexCoord1 = 5,
-    TexCoord2 = 6,
-    TexCoord3 = 7,
-    TexCoord4 = 8,
-    TexCoord5 = 9,
-    TexCoord6 = 10,
-    TexCoord7 = 11,
-    BlendWeight = 12,
-    BlendIndices = 13,
-}
-declare const enum VertexAttributeFormat {
-    Float32 = 0,
-    Float16 = 1,
-    UNorm8 = 2,
-    SNorm8 = 3,
-    UNorm16 = 4,
-    SNorm16 = 5,
-    UInt8 = 6,
-    SInt8 = 7,
-    UInt16 = 8,
-    SInt16 = 9,
-    UInt32 = 10,
-    SInt32 = 11,
-}
-declare const enum MeshUpdateFlags {
-    Default = 0,
-    DontValidateIndices = 1,
-    DontResetBoneBounds = 2,
-    DontNotifyMeshUsers = 4,
-    DontRecalculateBounds = 8,
 }
 declare const enum CustomMarkerCallbackFlags {
     CustomMarkerCallbackDefault = 0,
@@ -2591,64 +2658,6 @@ declare const enum EventModifiers {
     CapsLock = 32,
     FunctionKey = 64,
 }
-declare const enum RigidbodyType2D {
-    Dynamic = 0,
-    Kinematic = 1,
-    Static = 2,
-}
-declare const enum RigidbodyConstraints2D {
-    None = 0,
-    FreezePositionX = 1,
-    FreezePositionY = 2,
-    FreezePosition = 3,
-    FreezeRotation = 4,
-    FreezeAll = 7,
-}
-declare const enum RigidbodyInterpolation2D {
-    None = 0,
-    Interpolate = 1,
-    Extrapolate = 2,
-}
-declare const enum RigidbodySleepMode2D {
-    NeverSleep = 0,
-    StartAwake = 1,
-    StartAsleep = 2,
-}
-declare const enum CollisionDetectionMode2D {
-    None = 0,
-    Discrete = 0,
-    Continuous = 1,
-}
-declare const enum ForceMode2D {
-    Force = 0,
-    Impulse = 1,
-}
-declare const enum CompositeOperation {
-    None = 0,
-    Merge = 1,
-    Intersect = 2,
-    Difference = 3,
-    Flip = 4,
-}
-declare const enum GeometryType {
-    Outlines = 0,
-    Polygons = 1,
-}
-declare const enum GenerationType {
-    Synchronous = 0,
-    Manual = 1,
-}
-declare const enum ColliderErrorState2D {
-    None = 0,
-    NoShapes = 1,
-    RemovedShapes = 2,
-}
-declare const enum PhysicsShapeType2D {
-    Circle = 0,
-    Capsule = 1,
-    Polygon = 2,
-    Edges = 3,
-}
 declare const enum Direction {
     LeftToRight = 0,
     RightToLeft = 1,
@@ -3605,6 +3614,1179 @@ interface PhysicsConstructor {
 }
 declare const Physics: PhysicsConstructor;
     
+interface Physics2D {
+
+    constructor(): Physics2D;
+
+}
+    
+interface PhysicsScene2D {
+    subStepCount: number;
+    subStepLostTime: number;
+
+
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Equals(other: unknown): boolean;
+    Equals(other: PhysicsScene2D): boolean;
+    GetHashCode(): number;
+    GetRayIntersection(ray: Ray, distance: number, layerMask: number): RaycastHit2D;
+    GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    IsEmpty(): boolean;
+    IsValid(): boolean;
+    Linecast(start: Vector2, end: Vector2, layerMask: number): RaycastHit2D;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D): RaycastHit2D;
+    Linecast(start: Vector2, end: Vector2, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number): Collider2D;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D): Collider2D;
+    OverlapArea(pointA: Vector2, pointB: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number): Collider2D;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D): Collider2D;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number): Collider2D;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D): Collider2D;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCircle(point: Vector2, radius: number, layerMask: number): Collider2D;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D): Collider2D;
+    OverlapCircle(point: Vector2, radius: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapPoint(point: Vector2, layerMask: number): Collider2D;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D): Collider2D;
+    OverlapPoint(point: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D): RaycastHit2D;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Simulate(deltaTime: number): boolean;
+    Simulate(deltaTime: number, simulationLayers: number): boolean;
+    ToString(): string;
+}
+    
+interface RaycastHit2D {
+    centroid: Vector2;
+    point: Vector2;
+    normal: Vector2;
+    distance: number;
+    fraction: number;
+    collider: Collider2D;
+    rigidbody: Rigidbody2D;
+    transform: Transform;
+
+
+    CompareTo(other: RaycastHit2D): number;
+}
+    
+interface Collider2D extends Behaviour {
+    density: number;
+    isTrigger: boolean;
+    usedByEffector: boolean;
+    compositeOperation: CompositeOperation;
+    compositeOrder: number;
+    composite: CompositeCollider2D;
+    offset: Vector2;
+    attachedRigidbody: Rigidbody2D;
+    localToWorldMatrix: Matrix4x4;
+    shapeCount: number;
+    bounds: Bounds;
+    errorState: ColliderErrorState2D;
+    compositeCapable: boolean;
+    sharedMaterial: PhysicsMaterial2D;
+    layerOverridePriority: number;
+    excludeLayers: LayerMask;
+    includeLayers: LayerMask;
+    forceSendLayers: LayerMask;
+    forceReceiveLayers: LayerMask;
+    contactCaptureLayers: LayerMask;
+    callbackLayers: LayerMask;
+    friction: number;
+    bounciness: number;
+    usedByComposite: boolean;
+
+    constructor(): Collider2D;
+
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
+    ClosestPoint(position: Vector2): Vector2;
+    CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean): Mesh;
+    CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean, useDelaunay: boolean): Mesh;
+    Distance(collider: Collider2D): ColliderDistance2D;
+    Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
+    GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(colliders: CSArray<Collider2D>): number;
+    GetContacts(colliders: CSArray<Collider2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetShapeBounds(bounds: CSArray<Bounds>, useRadii: boolean, useWorldSpace: boolean): Bounds;
+    GetShapeHash(): number;
+    GetShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
+    GetShapes(physicsShapeGroup: PhysicsShapeGroup2D, shapeIndex: number, shapeCount: number): number;
+    IsTouching(collider: Collider2D): boolean;
+    IsTouching(collider: Collider2D, contactFilter: ContactFilter2D): boolean;
+    IsTouching(contactFilter: ContactFilter2D): boolean;
+    IsTouchingLayers(): boolean;
+    IsTouchingLayers(layerMask: number): boolean;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(results: CSArray<Collider2D>): number;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapPoint(point: Vector2): boolean;
+    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
+    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
+    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+}
+    
+interface CompositeCollider2D extends Collider2D {
+    geometryType: GeometryType;
+    generationType: GenerationType;
+    useDelaunayMesh: boolean;
+    vertexDistance: number;
+    edgeRadius: number;
+    offsetDistance: number;
+    pathCount: number;
+    pointCount: number;
+
+    constructor(): CompositeCollider2D;
+
+    GenerateGeometry(): void;
+    GetCompositedColliders(colliders: CSArray<Collider2D>): number;
+    GetPath(index: number, points: CSArray<Vector2>): number;
+    GetPath(index: number, points: CSArray<Vector2>): number;
+    GetPathPointCount(index: number): number;
+}
+    
+interface Rigidbody2D extends Component {
+    position: Vector2;
+    rotation: number;
+    velocity: Vector2;
+    velocityX: number;
+    velocityY: number;
+    angularVelocity: number;
+    useAutoMass: boolean;
+    mass: number;
+    sharedMaterial: PhysicsMaterial2D;
+    centerOfMass: Vector2;
+    worldCenterOfMass: Vector2;
+    inertia: number;
+    drag: number;
+    angularDrag: number;
+    gravityScale: number;
+    bodyType: RigidbodyType2D;
+    useFullKinematicContacts: boolean;
+    isKinematic: boolean;
+    freezeRotation: boolean;
+    constraints: RigidbodyConstraints2D;
+    simulated: boolean;
+    interpolation: RigidbodyInterpolation2D;
+    sleepMode: RigidbodySleepMode2D;
+    collisionDetectionMode: CollisionDetectionMode2D;
+    attachedColliderCount: number;
+    totalForce: Vector2;
+    totalTorque: number;
+    excludeLayers: LayerMask;
+    includeLayers: LayerMask;
+    localToWorldMatrix: Matrix4x4;
+    fixedAngle: boolean;
+
+    constructor(): Rigidbody2D;
+
+    AddForce(force: Vector2): void;
+    AddForce(force: Vector2, mode: ForceMode2D): void;
+    AddForceAtPosition(force: Vector2, position: Vector2): void;
+    AddForceAtPosition(force: Vector2, position: Vector2, mode: ForceMode2D): void;
+    AddForceX(force: number, mode: ForceMode2D): void;
+    AddForceY(force: number, mode: ForceMode2D): void;
+    AddRelativeForce(relativeForce: Vector2): void;
+    AddRelativeForce(relativeForce: Vector2, mode: ForceMode2D): void;
+    AddRelativeForceX(force: number, mode: ForceMode2D): void;
+    AddRelativeForceY(force: number, mode: ForceMode2D): void;
+    AddTorque(torque: number): void;
+    AddTorque(torque: number, mode: ForceMode2D): void;
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    ClosestPoint(position: Vector2): Vector2;
+    Distance(collider: Collider2D): ColliderDistance2D;
+    Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
+    GetAttachedColliders(results: CSArray<Collider2D>): number;
+    GetAttachedColliders(results: CSArray<Collider2D>): number;
+    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
+    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
+    GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(colliders: CSArray<Collider2D>): number;
+    GetContacts(colliders: CSArray<Collider2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetPoint(point: Vector2): Vector2;
+    GetPointVelocity(point: Vector2): Vector2;
+    GetRelativePoint(relativePoint: Vector2): Vector2;
+    GetRelativePointVelocity(relativePoint: Vector2): Vector2;
+    GetRelativeVector(relativeVector: Vector2): Vector2;
+    GetShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
+    GetVector(vector: Vector2): Vector2;
+    IsAwake(): boolean;
+    IsSleeping(): boolean;
+    IsTouching(collider: Collider2D): boolean;
+    IsTouching(collider: Collider2D, contactFilter: ContactFilter2D): boolean;
+    IsTouching(contactFilter: ContactFilter2D): boolean;
+    IsTouchingLayers(): boolean;
+    IsTouchingLayers(layerMask: number): boolean;
+    MovePosition(position: Vector2): void;
+    MovePositionAndRotation(position: Vector2, angle: number): void;
+    MovePositionAndRotation(position: Vector2, rotation: Quaternion): void;
+    MoveRotation(angle: number): void;
+    MoveRotation(rotation: Quaternion): void;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(results: CSArray<Collider2D>): number;
+    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
+    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapPoint(point: Vector2): boolean;
+    SetRotation(angle: number): void;
+    SetRotation(rotation: Quaternion): void;
+    Sleep(): void;
+    Slide(velocity: Vector2, deltaTime: number, slideMovement: SlideMovement): SlideResults;
+    WakeUp(): void;
+}
+    
+interface PhysicsMaterial2D extends Object {
+    bounciness: number;
+    friction: number;
+
+    constructor(): PhysicsMaterial2D;
+    constructor(name: string): PhysicsMaterial2D;
+
+}
+    
+interface ContactFilter2D {
+    useTriggers: boolean;
+    useLayerMask: boolean;
+    useDepth: boolean;
+    useOutsideDepth: boolean;
+    useNormalAngle: boolean;
+    useOutsideNormalAngle: boolean;
+    layerMask: LayerMask;
+    minDepth: number;
+    maxDepth: number;
+    minNormalAngle: number;
+    maxNormalAngle: number;
+    isFiltering: boolean;
+
+
+    ClearDepth(): void;
+    ClearLayerMask(): void;
+    ClearNormalAngle(): void;
+    IsFilteringDepth(obj: GameObject): boolean;
+    IsFilteringLayerMask(obj: GameObject): boolean;
+    IsFilteringNormalAngle(normal: Vector2): boolean;
+    IsFilteringNormalAngle(angle: number): boolean;
+    IsFilteringTrigger(collider: Collider2D): boolean;
+    NoFilter(): ContactFilter2D;
+    SetDepth(minDepth: number, maxDepth: number): void;
+    SetLayerMask(layerMask: LayerMask): void;
+    SetNormalAngle(minNormalAngle: number, maxNormalAngle: number): void;
+}
+    
+interface ContactFilter2DConstructor {
+    NormalAngleUpperLimit: number;
+
+
+}
+declare const ContactFilter2D: ContactFilter2DConstructor;
+    
+interface ColliderDistance2D {
+    pointA: Vector2;
+    pointB: Vector2;
+    normal: Vector2;
+    distance: number;
+    isOverlapped: boolean;
+    isValid: boolean;
+
+
+}
+    
+interface ContactPoint2D {
+    point: Vector2;
+    normal: Vector2;
+    separation: number;
+    normalImpulse: number;
+    tangentImpulse: number;
+    relativeVelocity: Vector2;
+    collider: Collider2D;
+    otherCollider: Collider2D;
+    rigidbody: Rigidbody2D;
+    otherRigidbody: Rigidbody2D;
+    enabled: boolean;
+
+
+}
+    
+interface PhysicsShapeGroup2D {
+    shapeCount: number;
+    vertexCount: number;
+    localToWorldMatrix: Matrix4x4;
+
+    constructor(shapeCapacity: number, vertexCapacity: number): PhysicsShapeGroup2D;
+
+    Add(physicsShapeGroup: PhysicsShapeGroup2D): void;
+    AddBox(center: Vector2, size: Vector2, angle: number, edgeRadius: number): number;
+    AddCapsule(vertex0: Vector2, vertex1: Vector2, radius: number): number;
+    AddCircle(center: Vector2, radius: number): number;
+    AddEdges(vertices: CSArray<Vector2>, edgeRadius: number): number;
+    AddEdges(vertices: CSArray<Vector2>, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2, edgeRadius: number): number;
+    AddPolygon(vertices: CSArray<Vector2>): number;
+    Clear(): void;
+    DeleteShape(shapeIndex: number): void;
+    GetShape(shapeIndex: number): PhysicsShape2D;
+    GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
+    GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
+    GetShapeVertex(shapeIndex: number, vertexIndex: number): Vector2;
+    GetShapeVertices(shapeIndex: number, vertices: CSArray<Vector2>): void;
+    SetShapeAdjacentVertices(shapeIndex: number, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2): void;
+    SetShapeRadius(shapeIndex: number, radius: number): void;
+    SetShapeVertex(shapeIndex: number, vertexIndex: number, vertex: Vector2): void;
+}
+    
+interface PhysicsShape2D {
+    shapeType: PhysicsShapeType2D;
+    radius: number;
+    vertexStartIndex: number;
+    vertexCount: number;
+    useAdjacentStart: boolean;
+    useAdjacentEnd: boolean;
+    adjacentStart: Vector2;
+    adjacentEnd: Vector2;
+
+
+}
+    
+interface SlideResults {
+    remainingVelocity: Vector2;
+    position: Vector2;
+    iterationsUsed: number;
+    slideHit: RaycastHit2D;
+    surfaceHit: RaycastHit2D;
+
+
+}
+    
+interface SlideMovement {
+    maxIterations: number;
+    surfaceSlideAngle: number;
+    gravitySlipAngle: number;
+    surfaceUp: Vector2;
+    surfaceAnchor: Vector2;
+    gravity: Vector2;
+    startPosition: Vector2;
+    selectedCollider: Collider2D;
+    layerMask: LayerMask;
+    useLayerMask: boolean;
+    useStartPosition: boolean;
+    useNoMove: boolean;
+    useSimulationMove: boolean;
+    useAttachedTriggers: boolean;
+
+    constructor(): SlideMovement;
+
+    SetLayerMask(mask: LayerMask): void;
+    SetStartPosition(position: Vector2): void;
+}
+    
+interface Mesh extends Object {
+    uv1: CSArray<Vector2>;
+    indexFormat: IndexFormat;
+    vertexBufferCount: number;
+    vertexBufferTarget: Target;
+    indexBufferTarget: Target;
+    blendShapeCount: number;
+    bindposeCount: number;
+    bindposes: CSArray<Matrix4x4>;
+    isReadable: boolean;
+    vertexCount: number;
+    subMeshCount: number;
+    bounds: Bounds;
+    vertices: CSArray<Vector3>;
+    normals: CSArray<Vector3>;
+    tangents: CSArray<Vector4>;
+    uv: CSArray<Vector2>;
+    uv2: CSArray<Vector2>;
+    uv3: CSArray<Vector2>;
+    uv4: CSArray<Vector2>;
+    uv5: CSArray<Vector2>;
+    uv6: CSArray<Vector2>;
+    uv7: CSArray<Vector2>;
+    uv8: CSArray<Vector2>;
+    colors: CSArray<Color>;
+    colors32: CSArray<Color32>;
+    vertexAttributeCount: number;
+    triangles: CSArray<number>;
+    boneWeights: CSArray<BoneWeight>;
+    skinWeightBufferLayout: SkinWeights;
+
+    constructor(): Mesh;
+
+    AddBlendShapeFrame(shapeName: string, frameWeight: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
+    Clear(keepVertexLayout: boolean): void;
+    Clear(): void;
+    ClearBlendShapes(): void;
+    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean, hasLightmapData: boolean): void;
+    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean): void;
+    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean): void;
+    CombineMeshes(combine: CSArray<CombineInstance>): void;
+    GetAllBoneWeights(): CSArray<BoneWeight1>;
+    GetBaseVertex(submesh: number): number;
+    GetBindposes(): CSArray<Matrix4x4>;
+    GetBindposes(bindposes: CSArray<Matrix4x4>): void;
+    GetBlendShapeBuffer(layout: BlendShapeBufferLayout): GraphicsBuffer;
+    GetBlendShapeBuffer(): GraphicsBuffer;
+    GetBlendShapeBufferRange(blendShapeIndex: number): BlendShapeBufferRange;
+    GetBlendShapeFrameCount(shapeIndex: number): number;
+    GetBlendShapeFrameVertices(shapeIndex: number, frameIndex: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
+    GetBlendShapeFrameWeight(shapeIndex: number, frameIndex: number): number;
+    GetBlendShapeIndex(blendShapeName: string): number;
+    GetBlendShapeName(shapeIndex: number): string;
+    GetBonesPerVertex(): CSArray<number>;
+    GetBoneWeightBuffer(layout: SkinWeights): GraphicsBuffer;
+    GetBoneWeights(boneWeights: CSArray<BoneWeight>): void;
+    GetColors(colors: CSArray<Color>): void;
+    GetColors(colors: CSArray<Color32>): void;
+    GetIndexBuffer(): GraphicsBuffer;
+    GetIndexCount(submesh: number): number;
+    GetIndexStart(submesh: number): number;
+    GetIndices(submesh: number): CSArray<number>;
+    GetIndices(submesh: number, applyBaseVertex: boolean): CSArray<number>;
+    GetIndices(indices: CSArray<number>, submesh: number): void;
+    GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetNativeIndexBufferPtr(): unknown;
+    GetNativeVertexBufferPtr(index: number): unknown;
+    GetNormals(normals: CSArray<Vector3>): void;
+    GetSubMesh(index: number): SubMeshDescriptor;
+    GetTangents(tangents: CSArray<Vector4>): void;
+    GetTopology(submesh: number): MeshTopology;
+    GetTriangles(submesh: number): CSArray<number>;
+    GetTriangles(submesh: number, applyBaseVertex: boolean): CSArray<number>;
+    GetTriangles(triangles: CSArray<number>, submesh: number): void;
+    GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetUVDistributionMetric(uvSetIndex: number): number;
+    GetUVs(channel: number, uvs: CSArray<Vector2>): void;
+    GetUVs(channel: number, uvs: CSArray<Vector3>): void;
+    GetUVs(channel: number, uvs: CSArray<Vector4>): void;
+    GetVertexAttribute(index: number): VertexAttributeDescriptor;
+    GetVertexAttributeDimension(attr: VertexAttribute): number;
+    GetVertexAttributeFormat(attr: VertexAttribute): VertexAttributeFormat;
+    GetVertexAttributeOffset(attr: VertexAttribute): number;
+    GetVertexAttributes(): CSArray<VertexAttributeDescriptor>;
+    GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
+    GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
+    GetVertexAttributeStream(attr: VertexAttribute): number;
+    GetVertexBuffer(index: number): GraphicsBuffer;
+    GetVertexBufferStride(stream: number): number;
+    GetVertices(vertices: CSArray<Vector3>): void;
+    HasVertexAttribute(attr: VertexAttribute): boolean;
+    MarkDynamic(): void;
+    MarkModified(): void;
+    Optimize(): void;
+    OptimizeIndexBuffers(): void;
+    OptimizeReorderVertexBuffer(): void;
+    RecalculateBounds(): void;
+    RecalculateBounds(flags: MeshUpdateFlags): void;
+    RecalculateNormals(): void;
+    RecalculateNormals(flags: MeshUpdateFlags): void;
+    RecalculateTangents(): void;
+    RecalculateTangents(flags: MeshUpdateFlags): void;
+    RecalculateUVDistributionMetric(uvSetIndex: number, uvAreaThreshold: number): void;
+    RecalculateUVDistributionMetrics(uvAreaThreshold: number): void;
+    SetBindposes(poses: CSArray<Matrix4x4>): void;
+    SetBoneWeights(bonesPerVertex: CSArray<number>, weights: CSArray<BoneWeight1>): void;
+    SetColors(inColors: CSArray<Color>): void;
+    SetColors(inColors: CSArray<Color>, start: number, length: number): void;
+    SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetColors(inColors: CSArray<Color>): void;
+    SetColors(inColors: CSArray<Color>, start: number, length: number): void;
+    SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetColors(inColors: CSArray<Color32>): void;
+    SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
+    SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetColors(inColors: CSArray<Color32>): void;
+    SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
+    SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetColors<T>(inColors: CSArray<T>): void;
+    SetColors<T>(inColors: CSArray<T>, start: number, length: number): void;
+    SetColors<T>(inColors: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
+    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
+    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
+    SetIndexBufferParams(indexCount: number, format: IndexFormat): void;
+    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number): void;
+    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean): void;
+    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices<T>(indices: CSArray<T>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices<T>(indices: CSArray<T>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetNormals(inNormals: CSArray<Vector3>): void;
+    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
+    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetNormals(inNormals: CSArray<Vector3>): void;
+    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
+    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetNormals<T>(inNormals: CSArray<T>): void;
+    SetNormals<T>(inNormals: CSArray<T>, start: number, length: number): void;
+    SetNormals<T>(inNormals: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetSubMesh(index: number, desc: SubMeshDescriptor, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
+    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
+    SetSubMeshes<T>(desc: CSArray<T>, start: number, count: number, flags: MeshUpdateFlags): void;
+    SetSubMeshes<T>(desc: CSArray<T>, flags: MeshUpdateFlags): void;
+    SetTangents(inTangents: CSArray<Vector4>): void;
+    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
+    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetTangents(inTangents: CSArray<Vector4>): void;
+    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
+    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetTangents<T>(inTangents: CSArray<T>): void;
+    SetTangents<T>(inTangents: CSArray<T>, start: number, length: number): void;
+    SetTangents<T>(inTangents: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
+    SetUVs(channel: number, uvs: CSArray<Vector2>): void;
+    SetUVs(channel: number, uvs: CSArray<Vector3>): void;
+    SetUVs(channel: number, uvs: CSArray<Vector4>): void;
+    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: CSArray<Vector2>): void;
+    SetUVs(channel: number, uvs: CSArray<Vector3>): void;
+    SetUVs(channel: number, uvs: CSArray<Vector4>): void;
+    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
+    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetUVs<T>(channel: number, uvs: CSArray<T>): void;
+    SetUVs<T>(channel: number, uvs: CSArray<T>, start: number, length: number): void;
+    SetUVs<T>(channel: number, uvs: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
+    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
+    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
+    SetVertices(inVertices: CSArray<Vector3>): void;
+    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
+    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetVertices(inVertices: CSArray<Vector3>): void;
+    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
+    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
+    SetVertices<T>(inVertices: CSArray<T>): void;
+    SetVertices<T>(inVertices: CSArray<T>, start: number, length: number): void;
+    SetVertices<T>(inVertices: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
+    UploadMeshData(markNoLongerReadable: boolean): void;
+}
+    
+    
+    
+interface Color32 {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+    Item: number;
+
+    constructor(r: number, g: number, b: number, a: number): Color32;
+
+    ToString(): string;
+    ToString(format: string): string;
+    ToString(format: string, formatProvider: unknown): string;
+}
+    
+interface Color32Constructor {
+
+
+    Lerp(a: Color32, b: Color32, t: number): Color32;
+    LerpUnclamped(a: Color32, b: Color32, t: number): Color32;
+}
+declare const Color32: Color32Constructor;
+    
+interface BoneWeight {
+    weight0: number;
+    weight1: number;
+    weight2: number;
+    weight3: number;
+    boneIndex0: number;
+    boneIndex1: number;
+    boneIndex2: number;
+    boneIndex3: number;
+
+
+    Equals(other: unknown): boolean;
+    Equals(other: BoneWeight): boolean;
+    GetHashCode(): number;
+}
+    
+interface CombineInstance {
+    mesh: Mesh;
+    subMeshIndex: number;
+    transform: Matrix4x4;
+    lightmapScaleOffset: Vector4;
+    realtimeLightmapScaleOffset: Vector4;
+
+
+}
+    
+interface BoneWeight1 {
+    weight: number;
+    boneIndex: number;
+
+
+    Equals(other: unknown): boolean;
+    Equals(other: BoneWeight1): boolean;
+    GetHashCode(): number;
+}
+    
+interface GraphicsBuffer {
+    count: number;
+    stride: number;
+    target: Target;
+    usageFlags: UsageFlags;
+    bufferHandle: GraphicsBufferHandle;
+    name: string;
+
+    constructor(target: Target, count: number, stride: number): GraphicsBuffer;
+    constructor(target: Target, usageFlags: UsageFlags, count: number, stride: number): GraphicsBuffer;
+
+    Dispose(): void;
+    GetData(data: unknown): void;
+    GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    GetNativeBufferPtr(): unknown;
+    IsValid(): boolean;
+    LockBufferForWrite<T>(bufferStartIndex: number, count: number): CSArray<T>;
+    Release(): void;
+    SetCounterValue(counterValue: number): void;
+    SetData(data: unknown): void;
+    SetData<T>(data: CSArray<T>): void;
+    SetData<T>(data: CSArray<T>): void;
+    SetData(data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
+    UnlockBufferAfterWrite<T>(countWritten: number): void;
+}
+    
+interface GraphicsBufferHandle {
+    value: number;
+
+
+    CompareTo(other: GraphicsBufferHandle): number;
+    Equals(obj: unknown): boolean;
+    Equals(other: GraphicsBufferHandle): boolean;
+    GetHashCode(): number;
+}
+    
+interface ComputeBuffer {
+    count: number;
+    stride: number;
+    name: string;
+
+    constructor(count: number, stride: number): ComputeBuffer;
+    constructor(count: number, stride: number, type: ComputeBufferType): ComputeBuffer;
+    constructor(count: number, stride: number, type: ComputeBufferType, usage: ComputeBufferMode): ComputeBuffer;
+
+    BeginWrite<T>(computeBufferStartIndex: number, count: number): CSArray<T>;
+    Dispose(): void;
+    EndWrite<T>(countWritten: number): void;
+    GetData(data: unknown): void;
+    GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    GetNativeBufferPtr(): unknown;
+    IsValid(): boolean;
+    Release(): void;
+    SetCounterValue(counterValue: number): void;
+    SetData(data: unknown): void;
+    SetData<T>(data: CSArray<T>): void;
+    SetData<T>(data: CSArray<T>): void;
+    SetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+    SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
+}
+    
+interface ComputeBufferConstructor {
+
+
+    CopyCount(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+}
+declare const ComputeBuffer: ComputeBufferConstructor;
+    
+interface GraphicsBufferConstructor {
+
+
+    CopyCount(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCount(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
+    CopyCount(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+    CopyCount(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
+}
+declare const GraphicsBuffer: GraphicsBufferConstructor;
+    
+interface BlendShapeBufferRange {
+    startIndex: number;
+    endIndex: number;
+
+
+}
+    
+interface SubMeshDescriptor {
+    bounds: Bounds;
+    topology: MeshTopology;
+    indexStart: number;
+    indexCount: number;
+    baseVertex: number;
+    firstVertex: number;
+    vertexCount: number;
+
+    constructor(indexStart: number, indexCount: number, topology: MeshTopology): SubMeshDescriptor;
+
+    ToString(): string;
+}
+    
+interface VertexAttributeDescriptor {
+    attribute: VertexAttribute;
+    format: VertexAttributeFormat;
+    dimension: number;
+    stream: number;
+
+    constructor(attribute: VertexAttribute, format: VertexAttributeFormat, dimension: number, stream: number): VertexAttributeDescriptor;
+
+    Equals(other: unknown): boolean;
+    Equals(other: VertexAttributeDescriptor): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+}
+    
+interface MeshDataArray {
+    Length: number;
+    Item: MeshData;
+
+
+    Dispose(): void;
+}
+    
+interface MeshData {
+    vertexCount: number;
+    vertexBufferCount: number;
+    indexFormat: IndexFormat;
+    subMeshCount: number;
+
+
+    GetColors(outColors: CSArray<Color>): void;
+    GetColors(outColors: CSArray<Color32>): void;
+    GetIndexData<T>(): CSArray<T>;
+    GetIndices(outIndices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetIndices(outIndices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
+    GetNormals(outNormals: CSArray<Vector3>): void;
+    GetSubMesh(index: number): SubMeshDescriptor;
+    GetTangents(outTangents: CSArray<Vector4>): void;
+    GetUVs(channel: number, outUVs: CSArray<Vector2>): void;
+    GetUVs(channel: number, outUVs: CSArray<Vector3>): void;
+    GetUVs(channel: number, outUVs: CSArray<Vector4>): void;
+    GetVertexAttributeDimension(attr: VertexAttribute): number;
+    GetVertexAttributeFormat(attr: VertexAttribute): VertexAttributeFormat;
+    GetVertexAttributeOffset(attr: VertexAttribute): number;
+    GetVertexAttributeStream(attr: VertexAttribute): number;
+    GetVertexBufferStride(stream: number): number;
+    GetVertexData<T>(stream: number): CSArray<T>;
+    GetVertices(outVertices: CSArray<Vector3>): void;
+    HasVertexAttribute(attr: VertexAttribute): boolean;
+    SetIndexBufferParams(indexCount: number, format: IndexFormat): void;
+    SetSubMesh(index: number, desc: SubMeshDescriptor, flags: MeshUpdateFlags): void;
+    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
+    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
+}
+    
+interface MeshConstructor {
+
+
+    AcquireReadOnlyMeshData(mesh: Mesh): MeshDataArray;
+    AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
+    AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
+    AllocateWritableMeshData(meshCount: number): MeshDataArray;
+    AllocateWritableMeshData(mesh: Mesh): MeshDataArray;
+    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
+    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
+    ApplyAndDisposeWritableMeshData(data: MeshDataArray, mesh: Mesh, flags: MeshUpdateFlags): void;
+    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
+    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
+}
+declare const Mesh: MeshConstructor;
+    
+interface PhysicsScene2DConstructor {
+
+
+    OverlapCollider(collider: Collider2D, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(collider: Collider2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(position: Vector2, angle: number, collider: Collider2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(position: Vector2, angle: number, collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+}
+declare const PhysicsScene2D: PhysicsScene2DConstructor;
+    
+interface PhysicsJobOptions2D {
+    useMultithreading: boolean;
+    useConsistencySorting: boolean;
+    interpolationPosesPerJob: number;
+    newContactsPerJob: number;
+    collideContactsPerJob: number;
+    clearFlagsPerJob: number;
+    clearBodyForcesPerJob: number;
+    syncDiscreteFixturesPerJob: number;
+    syncContinuousFixturesPerJob: number;
+    findNearestContactsPerJob: number;
+    updateTriggerContactsPerJob: number;
+    islandSolverCostThreshold: number;
+    islandSolverBodyCostScale: number;
+    islandSolverContactCostScale: number;
+    islandSolverJointCostScale: number;
+    islandSolverBodiesPerJob: number;
+    islandSolverContactsPerJob: number;
+
+
+}
+    
+interface Physics2DConstructor {
+    IgnoreRaycastLayer: number;
+    DefaultRaycastLayers: number;
+    AllLayers: number;
+    MaxPolygonShapeVertices: number;
+    defaultPhysicsScene: PhysicsScene2D;
+    velocityIterations: number;
+    positionIterations: number;
+    gravity: Vector2;
+    queriesHitTriggers: boolean;
+    queriesStartInColliders: boolean;
+    callbacksOnDisable: boolean;
+    reuseCollisionCallbacks: boolean;
+    autoSyncTransforms: boolean;
+    simulationMode: SimulationMode2D;
+    simulationLayers: LayerMask;
+    useSubStepping: boolean;
+    useSubStepContacts: boolean;
+    minSubStepFPS: number;
+    maxSubStepCount: number;
+    jobOptions: PhysicsJobOptions2D;
+    bounceThreshold: number;
+    maxLinearCorrection: number;
+    maxAngularCorrection: number;
+    maxTranslationSpeed: number;
+    maxRotationSpeed: number;
+    defaultContactOffset: number;
+    baumgarteScale: number;
+    baumgarteTOIScale: number;
+    timeToSleep: number;
+    linearSleepTolerance: number;
+    angularSleepTolerance: number;
+    raycastsHitTriggers: boolean;
+    raycastsStartInColliders: boolean;
+    deleteStopsCallbacks: boolean;
+    changeStopsCallbacks: boolean;
+    minPenetrationForPenalty: number;
+    velocityThreshold: number;
+    autoSimulation: boolean;
+    colliderAwakeColor: Color;
+    colliderAsleepColor: Color;
+    colliderContactColor: Color;
+    colliderAABBColor: Color;
+    contactArrowScale: number;
+    alwaysShowColliders: boolean;
+    showCollidersFilled: boolean;
+    showColliderSleep: boolean;
+    showColliderContacts: boolean;
+    showColliderAABB: boolean;
+
+
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2): RaycastHit2D;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number): RaycastHit2D;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2): CSArray<RaycastHit2D>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
+    BoxCastAll(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    BoxCastNonAlloc(origin: Vector2, size: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    BoxCastNonAlloc(origin: Vector2, size: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    BoxCastNonAlloc(origin: Vector2, size: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    BoxCastNonAlloc(origin: Vector2, size: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
+    BoxCastNonAlloc(origin: Vector2, size: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2): RaycastHit2D;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number): RaycastHit2D;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    CapsuleCast(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2): CSArray<RaycastHit2D>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
+    CapsuleCastAll(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    CapsuleCastNonAlloc(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    CapsuleCastNonAlloc(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    CapsuleCastNonAlloc(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    CapsuleCastNonAlloc(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
+    CapsuleCastNonAlloc(origin: Vector2, size: Vector2, capsuleDirection: CapsuleDirection2D, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2): RaycastHit2D;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number): RaycastHit2D;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    CircleCast(origin: Vector2, radius: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2): CSArray<RaycastHit2D>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
+    CircleCastAll(origin: Vector2, radius: number, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    CircleCastNonAlloc(origin: Vector2, radius: number, direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    CircleCastNonAlloc(origin: Vector2, radius: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    CircleCastNonAlloc(origin: Vector2, radius: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    CircleCastNonAlloc(origin: Vector2, radius: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
+    CircleCastNonAlloc(origin: Vector2, radius: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
+    ClosestPoint(position: Vector2, collider: Collider2D): Vector2;
+    ClosestPoint(position: Vector2, rigidbody: Rigidbody2D): Vector2;
+    Distance(colliderA: Collider2D, colliderB: Collider2D): ColliderDistance2D;
+    Distance(colliderA: Collider2D, positionA: Vector2, angleA: number, colliderB: Collider2D, positionB: Vector2, angleB: number): ColliderDistance2D;
+    GetContacts(collider1: Collider2D, collider2: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(collider: Collider2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(collider: Collider2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(collider1: Collider2D, collider2: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(collider: Collider2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(collider: Collider2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(collider: Collider2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, colliders: CSArray<Collider2D>): number;
+    GetContacts(rigidbody: Rigidbody2D, contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
+    GetIgnoreCollision(collider1: Collider2D, collider2: Collider2D): boolean;
+    GetIgnoreLayerCollision(layer1: number, layer2: number): boolean;
+    GetLayerCollisionMask(layer: number): number;
+    GetRayIntersection(ray: Ray): RaycastHit2D;
+    GetRayIntersection(ray: Ray, distance: number): RaycastHit2D;
+    GetRayIntersection(ray: Ray, distance: number, layerMask: number): RaycastHit2D;
+    GetRayIntersection(ray: Ray, distance: number, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    GetRayIntersectionAll(ray: Ray): CSArray<RaycastHit2D>;
+    GetRayIntersectionAll(ray: Ray, distance: number): CSArray<RaycastHit2D>;
+    GetRayIntersectionAll(ray: Ray, distance: number, layerMask: number): CSArray<RaycastHit2D>;
+    GetRayIntersectionNonAlloc(ray: Ray, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    GetRayIntersectionNonAlloc(ray: Ray, results: CSArray<RaycastHit2D>): number;
+    GetRayIntersectionNonAlloc(ray: Ray, results: CSArray<RaycastHit2D>, distance: number): number;
+    IgnoreCollision(collider1: Collider2D, collider2: Collider2D): void;
+    IgnoreCollision(collider1: Collider2D, collider2: Collider2D, ignore: boolean): void;
+    IgnoreLayerCollision(layer1: number, layer2: number): void;
+    IgnoreLayerCollision(layer1: number, layer2: number, ignore: boolean): void;
+    IsTouching(collider1: Collider2D, collider2: Collider2D): boolean;
+    IsTouching(collider1: Collider2D, collider2: Collider2D, contactFilter: ContactFilter2D): boolean;
+    IsTouching(collider: Collider2D, contactFilter: ContactFilter2D): boolean;
+    IsTouchingLayers(collider: Collider2D): boolean;
+    IsTouchingLayers(collider: Collider2D, layerMask: number): boolean;
+    Linecast(start: Vector2, end: Vector2): RaycastHit2D;
+    Linecast(start: Vector2, end: Vector2, layerMask: number): RaycastHit2D;
+    Linecast(start: Vector2, end: Vector2, layerMask: number, minDepth: number): RaycastHit2D;
+    Linecast(start: Vector2, end: Vector2, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Linecast(start: Vector2, end: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    LinecastAll(start: Vector2, end: Vector2): CSArray<RaycastHit2D>;
+    LinecastAll(start: Vector2, end: Vector2, layerMask: number): CSArray<RaycastHit2D>;
+    LinecastAll(start: Vector2, end: Vector2, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
+    LinecastAll(start: Vector2, end: Vector2, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    LinecastNonAlloc(start: Vector2, end: Vector2, results: CSArray<RaycastHit2D>): number;
+    LinecastNonAlloc(start: Vector2, end: Vector2, results: CSArray<RaycastHit2D>, layerMask: number): number;
+    LinecastNonAlloc(start: Vector2, end: Vector2, results: CSArray<RaycastHit2D>, layerMask: number, minDepth: number): number;
+    LinecastNonAlloc(start: Vector2, end: Vector2, results: CSArray<RaycastHit2D>, layerMask: number, minDepth: number, maxDepth: number): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2): Collider2D;
+    OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number): Collider2D;
+    OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number): Collider2D;
+    OverlapArea(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapArea(pointA: Vector2, pointB: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2): CSArray<Collider2D>;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number): CSArray<Collider2D>;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number): CSArray<Collider2D>;
+    OverlapAreaAll(pointA: Vector2, pointB: Vector2, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapAreaNonAlloc(pointA: Vector2, pointB: Vector2, results: CSArray<Collider2D>): number;
+    OverlapAreaNonAlloc(pointA: Vector2, pointB: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapAreaNonAlloc(pointA: Vector2, pointB: Vector2, results: CSArray<Collider2D>, layerMask: number, minDepth: number): number;
+    OverlapAreaNonAlloc(pointA: Vector2, pointB: Vector2, results: CSArray<Collider2D>, layerMask: number, minDepth: number, maxDepth: number): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number): Collider2D;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number): Collider2D;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number): Collider2D;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapBox(point: Vector2, size: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number): CSArray<Collider2D>;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number): CSArray<Collider2D>;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number): CSArray<Collider2D>;
+    OverlapBoxAll(point: Vector2, size: Vector2, angle: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapBoxNonAlloc(point: Vector2, size: Vector2, angle: number, results: CSArray<Collider2D>): number;
+    OverlapBoxNonAlloc(point: Vector2, size: Vector2, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapBoxNonAlloc(point: Vector2, size: Vector2, angle: number, results: CSArray<Collider2D>, layerMask: number, minDepth: number): number;
+    OverlapBoxNonAlloc(point: Vector2, size: Vector2, angle: number, results: CSArray<Collider2D>, layerMask: number, minDepth: number, maxDepth: number): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number): Collider2D;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number): Collider2D;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number): Collider2D;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCapsule(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number): CSArray<Collider2D>;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number): CSArray<Collider2D>;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number): CSArray<Collider2D>;
+    OverlapCapsuleAll(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapCapsuleNonAlloc(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: CSArray<Collider2D>): number;
+    OverlapCapsuleNonAlloc(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapCapsuleNonAlloc(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: CSArray<Collider2D>, layerMask: number, minDepth: number): number;
+    OverlapCapsuleNonAlloc(point: Vector2, size: Vector2, direction: CapsuleDirection2D, angle: number, results: CSArray<Collider2D>, layerMask: number, minDepth: number, maxDepth: number): number;
+    OverlapCircle(point: Vector2, radius: number): Collider2D;
+    OverlapCircle(point: Vector2, radius: number, layerMask: number): Collider2D;
+    OverlapCircle(point: Vector2, radius: number, layerMask: number, minDepth: number): Collider2D;
+    OverlapCircle(point: Vector2, radius: number, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCircle(point: Vector2, radius: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCircleAll(point: Vector2, radius: number): CSArray<Collider2D>;
+    OverlapCircleAll(point: Vector2, radius: number, layerMask: number): CSArray<Collider2D>;
+    OverlapCircleAll(point: Vector2, radius: number, layerMask: number, minDepth: number): CSArray<Collider2D>;
+    OverlapCircleAll(point: Vector2, radius: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapCircleNonAlloc(point: Vector2, radius: number, results: CSArray<Collider2D>): number;
+    OverlapCircleNonAlloc(point: Vector2, radius: number, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapCircleNonAlloc(point: Vector2, radius: number, results: CSArray<Collider2D>, layerMask: number, minDepth: number): number;
+    OverlapCircleNonAlloc(point: Vector2, radius: number, results: CSArray<Collider2D>, layerMask: number, minDepth: number, maxDepth: number): number;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(collider: Collider2D, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapCollider(collider: Collider2D, results: CSArray<Collider2D>): number;
+    OverlapPoint(point: Vector2): Collider2D;
+    OverlapPoint(point: Vector2, layerMask: number): Collider2D;
+    OverlapPoint(point: Vector2, layerMask: number, minDepth: number): Collider2D;
+    OverlapPoint(point: Vector2, layerMask: number, minDepth: number, maxDepth: number): Collider2D;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapPoint(point: Vector2, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
+    OverlapPointAll(point: Vector2): CSArray<Collider2D>;
+    OverlapPointAll(point: Vector2, layerMask: number): CSArray<Collider2D>;
+    OverlapPointAll(point: Vector2, layerMask: number, minDepth: number): CSArray<Collider2D>;
+    OverlapPointAll(point: Vector2, layerMask: number, minDepth: number, maxDepth: number): CSArray<Collider2D>;
+    OverlapPointNonAlloc(point: Vector2, results: CSArray<Collider2D>): number;
+    OverlapPointNonAlloc(point: Vector2, results: CSArray<Collider2D>, layerMask: number): number;
+    OverlapPointNonAlloc(point: Vector2, results: CSArray<Collider2D>, layerMask: number, minDepth: number): number;
+    OverlapPointNonAlloc(point: Vector2, results: CSArray<Collider2D>, layerMask: number, minDepth: number, maxDepth: number): number;
+    Raycast(origin: Vector2, direction: Vector2): RaycastHit2D;
+    Raycast(origin: Vector2, direction: Vector2, distance: number): RaycastHit2D;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number): RaycastHit2D;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number): RaycastHit2D;
+    Raycast(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): RaycastHit2D;
+    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
+    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    Raycast(origin: Vector2, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
+    RaycastAll(origin: Vector2, direction: Vector2): CSArray<RaycastHit2D>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number): CSArray<RaycastHit2D>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number): CSArray<RaycastHit2D>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number): CSArray<RaycastHit2D>;
+    RaycastAll(origin: Vector2, direction: Vector2, distance: number, layerMask: number, minDepth: number, maxDepth: number): CSArray<RaycastHit2D>;
+    RaycastNonAlloc(origin: Vector2, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
+    RaycastNonAlloc(origin: Vector2, direction: Vector2, results: CSArray<RaycastHit2D>): number;
+    RaycastNonAlloc(origin: Vector2, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
+    RaycastNonAlloc(origin: Vector2, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
+    RaycastNonAlloc(origin: Vector2, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
+    SetLayerCollisionMask(layer: number, layerMask: number): void;
+    Simulate(deltaTime: number): boolean;
+    Simulate(deltaTime: number, simulationLayers: number): boolean;
+    SyncTransforms(): void;
+}
+declare const Physics2D: Physics2DConstructor;
+    
 interface MonoBehaviour extends Behaviour {
     destroyCancellationToken: unknown;
     useGUILayout: boolean;
@@ -3653,8 +4835,6 @@ interface Debug {
     constructor(): Debug;
 
 }
-    
-    
     
 interface StartupLog {
     timestamp: number;
@@ -4003,28 +5183,6 @@ interface Texture2D extends Texture {
     SetPixels32(x: number, y: number, blockWidth: number, blockHeight: number, colors: CSArray<Color32>): void;
     UpdateExternalTexture(nativeTex: unknown): void;
 }
-    
-interface Color32 {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-    Item: number;
-
-    constructor(r: number, g: number, b: number, a: number): Color32;
-
-    ToString(): string;
-    ToString(format: string): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
-    
-interface Color32Constructor {
-
-
-    Lerp(a: Color32, b: Color32, t: number): Color32;
-    LerpUnclamped(a: Color32, b: Color32, t: number): Color32;
-}
-declare const Color32: Color32Constructor;
     
 interface Texture2DConstructor {
     whiteTexture: Texture2D;
@@ -6428,87 +7586,6 @@ interface GlobalKeywordConstructor {
 }
 declare const GlobalKeyword: GlobalKeywordConstructor;
     
-interface ComputeBuffer {
-    count: number;
-    stride: number;
-    name: string;
-
-    constructor(count: number, stride: number): ComputeBuffer;
-    constructor(count: number, stride: number, type: ComputeBufferType): ComputeBuffer;
-    constructor(count: number, stride: number, type: ComputeBufferType, usage: ComputeBufferMode): ComputeBuffer;
-
-    BeginWrite<T>(computeBufferStartIndex: number, count: number): CSArray<T>;
-    Dispose(): void;
-    EndWrite<T>(countWritten: number): void;
-    GetData(data: unknown): void;
-    GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
-    GetNativeBufferPtr(): unknown;
-    IsValid(): boolean;
-    Release(): void;
-    SetCounterValue(counterValue: number): void;
-    SetData(data: unknown): void;
-    SetData<T>(data: CSArray<T>): void;
-    SetData<T>(data: CSArray<T>): void;
-    SetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
-}
-    
-interface ComputeBufferConstructor {
-
-
-    CopyCount(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
-}
-declare const ComputeBuffer: ComputeBufferConstructor;
-    
-interface GraphicsBuffer {
-    count: number;
-    stride: number;
-    target: Target;
-    usageFlags: UsageFlags;
-    bufferHandle: GraphicsBufferHandle;
-    name: string;
-
-    constructor(target: Target, count: number, stride: number): GraphicsBuffer;
-    constructor(target: Target, usageFlags: UsageFlags, count: number, stride: number): GraphicsBuffer;
-
-    Dispose(): void;
-    GetData(data: unknown): void;
-    GetData(data: unknown, managedBufferStartIndex: number, computeBufferStartIndex: number, count: number): void;
-    GetNativeBufferPtr(): unknown;
-    IsValid(): boolean;
-    LockBufferForWrite<T>(bufferStartIndex: number, count: number): CSArray<T>;
-    Release(): void;
-    SetCounterValue(counterValue: number): void;
-    SetData(data: unknown): void;
-    SetData<T>(data: CSArray<T>): void;
-    SetData<T>(data: CSArray<T>): void;
-    SetData(data: unknown, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, managedBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    SetData<T>(data: CSArray<T>, nativeBufferStartIndex: number, graphicsBufferStartIndex: number, count: number): void;
-    UnlockBufferAfterWrite<T>(countWritten: number): void;
-}
-    
-interface GraphicsBufferHandle {
-    value: number;
-
-
-    CompareTo(other: GraphicsBufferHandle): number;
-    Equals(obj: unknown): boolean;
-    Equals(other: GraphicsBufferHandle): boolean;
-    GetHashCode(): number;
-}
-    
-interface GraphicsBufferConstructor {
-
-
-    CopyCount(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
-    CopyCount(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
-    CopyCount(src: ComputeBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
-    CopyCount(src: GraphicsBuffer, dst: GraphicsBuffer, dstOffsetBytes: number): void;
-}
-declare const GraphicsBuffer: GraphicsBufferConstructor;
-    
 interface RayTracingAccelerationStructure {
 
     constructor(settings: Settings): RayTracingAccelerationStructure;
@@ -7029,347 +8106,6 @@ interface RayTracingShader extends Object {
     SetVectorArray(nameID: number, values: CSArray<Vector4>): void;
     SetVectorArray(name: string, values: CSArray<Vector4>): void;
 }
-    
-interface Mesh extends Object {
-    uv1: CSArray<Vector2>;
-    indexFormat: IndexFormat;
-    vertexBufferCount: number;
-    vertexBufferTarget: Target;
-    indexBufferTarget: Target;
-    blendShapeCount: number;
-    bindposeCount: number;
-    bindposes: CSArray<Matrix4x4>;
-    isReadable: boolean;
-    vertexCount: number;
-    subMeshCount: number;
-    bounds: Bounds;
-    vertices: CSArray<Vector3>;
-    normals: CSArray<Vector3>;
-    tangents: CSArray<Vector4>;
-    uv: CSArray<Vector2>;
-    uv2: CSArray<Vector2>;
-    uv3: CSArray<Vector2>;
-    uv4: CSArray<Vector2>;
-    uv5: CSArray<Vector2>;
-    uv6: CSArray<Vector2>;
-    uv7: CSArray<Vector2>;
-    uv8: CSArray<Vector2>;
-    colors: CSArray<Color>;
-    colors32: CSArray<Color32>;
-    vertexAttributeCount: number;
-    triangles: CSArray<number>;
-    boneWeights: CSArray<BoneWeight>;
-    skinWeightBufferLayout: SkinWeights;
-
-    constructor(): Mesh;
-
-    AddBlendShapeFrame(shapeName: string, frameWeight: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
-    Clear(keepVertexLayout: boolean): void;
-    Clear(): void;
-    ClearBlendShapes(): void;
-    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean, hasLightmapData: boolean): void;
-    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean, useMatrices: boolean): void;
-    CombineMeshes(combine: CSArray<CombineInstance>, mergeSubMeshes: boolean): void;
-    CombineMeshes(combine: CSArray<CombineInstance>): void;
-    GetAllBoneWeights(): CSArray<BoneWeight1>;
-    GetBaseVertex(submesh: number): number;
-    GetBindposes(): CSArray<Matrix4x4>;
-    GetBindposes(bindposes: CSArray<Matrix4x4>): void;
-    GetBlendShapeBuffer(layout: BlendShapeBufferLayout): GraphicsBuffer;
-    GetBlendShapeBuffer(): GraphicsBuffer;
-    GetBlendShapeBufferRange(blendShapeIndex: number): BlendShapeBufferRange;
-    GetBlendShapeFrameCount(shapeIndex: number): number;
-    GetBlendShapeFrameVertices(shapeIndex: number, frameIndex: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
-    GetBlendShapeFrameWeight(shapeIndex: number, frameIndex: number): number;
-    GetBlendShapeIndex(blendShapeName: string): number;
-    GetBlendShapeName(shapeIndex: number): string;
-    GetBonesPerVertex(): CSArray<number>;
-    GetBoneWeightBuffer(layout: SkinWeights): GraphicsBuffer;
-    GetBoneWeights(boneWeights: CSArray<BoneWeight>): void;
-    GetColors(colors: CSArray<Color>): void;
-    GetColors(colors: CSArray<Color32>): void;
-    GetIndexBuffer(): GraphicsBuffer;
-    GetIndexCount(submesh: number): number;
-    GetIndexStart(submesh: number): number;
-    GetIndices(submesh: number): CSArray<number>;
-    GetIndices(submesh: number, applyBaseVertex: boolean): CSArray<number>;
-    GetIndices(indices: CSArray<number>, submesh: number): void;
-    GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetIndices(indices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetNativeIndexBufferPtr(): unknown;
-    GetNativeVertexBufferPtr(index: number): unknown;
-    GetNormals(normals: CSArray<Vector3>): void;
-    GetSubMesh(index: number): SubMeshDescriptor;
-    GetTangents(tangents: CSArray<Vector4>): void;
-    GetTopology(submesh: number): MeshTopology;
-    GetTriangles(submesh: number): CSArray<number>;
-    GetTriangles(submesh: number, applyBaseVertex: boolean): CSArray<number>;
-    GetTriangles(triangles: CSArray<number>, submesh: number): void;
-    GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetTriangles(triangles: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetUVDistributionMetric(uvSetIndex: number): number;
-    GetUVs(channel: number, uvs: CSArray<Vector2>): void;
-    GetUVs(channel: number, uvs: CSArray<Vector3>): void;
-    GetUVs(channel: number, uvs: CSArray<Vector4>): void;
-    GetVertexAttribute(index: number): VertexAttributeDescriptor;
-    GetVertexAttributeDimension(attr: VertexAttribute): number;
-    GetVertexAttributeFormat(attr: VertexAttribute): VertexAttributeFormat;
-    GetVertexAttributeOffset(attr: VertexAttribute): number;
-    GetVertexAttributes(): CSArray<VertexAttributeDescriptor>;
-    GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
-    GetVertexAttributes(attributes: CSArray<VertexAttributeDescriptor>): number;
-    GetVertexAttributeStream(attr: VertexAttribute): number;
-    GetVertexBuffer(index: number): GraphicsBuffer;
-    GetVertexBufferStride(stream: number): number;
-    GetVertices(vertices: CSArray<Vector3>): void;
-    HasVertexAttribute(attr: VertexAttribute): boolean;
-    MarkDynamic(): void;
-    MarkModified(): void;
-    Optimize(): void;
-    OptimizeIndexBuffers(): void;
-    OptimizeReorderVertexBuffer(): void;
-    RecalculateBounds(): void;
-    RecalculateBounds(flags: MeshUpdateFlags): void;
-    RecalculateNormals(): void;
-    RecalculateNormals(flags: MeshUpdateFlags): void;
-    RecalculateTangents(): void;
-    RecalculateTangents(flags: MeshUpdateFlags): void;
-    RecalculateUVDistributionMetric(uvSetIndex: number, uvAreaThreshold: number): void;
-    RecalculateUVDistributionMetrics(uvAreaThreshold: number): void;
-    SetBindposes(poses: CSArray<Matrix4x4>): void;
-    SetBoneWeights(bonesPerVertex: CSArray<number>, weights: CSArray<BoneWeight1>): void;
-    SetColors(inColors: CSArray<Color>): void;
-    SetColors(inColors: CSArray<Color>, start: number, length: number): void;
-    SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetColors(inColors: CSArray<Color>): void;
-    SetColors(inColors: CSArray<Color>, start: number, length: number): void;
-    SetColors(inColors: CSArray<Color>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetColors(inColors: CSArray<Color32>): void;
-    SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
-    SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetColors(inColors: CSArray<Color32>): void;
-    SetColors(inColors: CSArray<Color32>, start: number, length: number): void;
-    SetColors(inColors: CSArray<Color32>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetColors<T>(inColors: CSArray<T>): void;
-    SetColors<T>(inColors: CSArray<T>, start: number, length: number): void;
-    SetColors<T>(inColors: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
-    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
-    SetIndexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, flags: MeshUpdateFlags): void;
-    SetIndexBufferParams(indexCount: number, format: IndexFormat): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices<T>(indices: CSArray<T>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices<T>(indices: CSArray<T>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetIndices(indices: CSArray<number>, indicesStart: number, indicesLength: number, topology: MeshTopology, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetNormals(inNormals: CSArray<Vector3>): void;
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetNormals(inNormals: CSArray<Vector3>): void;
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number): void;
-    SetNormals(inNormals: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetNormals<T>(inNormals: CSArray<T>): void;
-    SetNormals<T>(inNormals: CSArray<T>, start: number, length: number): void;
-    SetNormals<T>(inNormals: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetSubMesh(index: number, desc: SubMeshDescriptor, flags: MeshUpdateFlags): void;
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, start: number, count: number, flags: MeshUpdateFlags): void;
-    SetSubMeshes(desc: CSArray<SubMeshDescriptor>, flags: MeshUpdateFlags): void;
-    SetSubMeshes<T>(desc: CSArray<T>, start: number, count: number, flags: MeshUpdateFlags): void;
-    SetSubMeshes<T>(desc: CSArray<T>, flags: MeshUpdateFlags): void;
-    SetTangents(inTangents: CSArray<Vector4>): void;
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetTangents(inTangents: CSArray<Vector4>): void;
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number): void;
-    SetTangents(inTangents: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetTangents<T>(inTangents: CSArray<T>): void;
-    SetTangents<T>(inTangents: CSArray<T>, start: number, length: number): void;
-    SetTangents<T>(inTangents: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetTriangles(triangles: CSArray<number>, trianglesStart: number, trianglesLength: number, submesh: number, calculateBounds: boolean, baseVertex: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector2>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number): void;
-    SetUVs(channel: number, uvs: CSArray<Vector4>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetUVs<T>(channel: number, uvs: CSArray<T>): void;
-    SetUVs<T>(channel: number, uvs: CSArray<T>, start: number, length: number): void;
-    SetUVs<T>(channel: number, uvs: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
-    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
-    SetVertexBufferData<T>(data: CSArray<T>, dataStart: number, meshBufferStart: number, count: number, stream: number, flags: MeshUpdateFlags): void;
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
-    SetVertices(inVertices: CSArray<Vector3>): void;
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetVertices(inVertices: CSArray<Vector3>): void;
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number): void;
-    SetVertices(inVertices: CSArray<Vector3>, start: number, length: number, flags: MeshUpdateFlags): void;
-    SetVertices<T>(inVertices: CSArray<T>): void;
-    SetVertices<T>(inVertices: CSArray<T>, start: number, length: number): void;
-    SetVertices<T>(inVertices: CSArray<T>, start: number, length: number, flags: MeshUpdateFlags): void;
-    UploadMeshData(markNoLongerReadable: boolean): void;
-}
-    
-interface BoneWeight {
-    weight0: number;
-    weight1: number;
-    weight2: number;
-    weight3: number;
-    boneIndex0: number;
-    boneIndex1: number;
-    boneIndex2: number;
-    boneIndex3: number;
-
-
-    Equals(other: unknown): boolean;
-    Equals(other: BoneWeight): boolean;
-    GetHashCode(): number;
-}
-    
-interface CombineInstance {
-    mesh: Mesh;
-    subMeshIndex: number;
-    transform: Matrix4x4;
-    lightmapScaleOffset: Vector4;
-    realtimeLightmapScaleOffset: Vector4;
-
-
-}
-    
-interface BoneWeight1 {
-    weight: number;
-    boneIndex: number;
-
-
-    Equals(other: unknown): boolean;
-    Equals(other: BoneWeight1): boolean;
-    GetHashCode(): number;
-}
-    
-interface BlendShapeBufferRange {
-    startIndex: number;
-    endIndex: number;
-
-
-}
-    
-interface SubMeshDescriptor {
-    bounds: Bounds;
-    topology: MeshTopology;
-    indexStart: number;
-    indexCount: number;
-    baseVertex: number;
-    firstVertex: number;
-    vertexCount: number;
-
-    constructor(indexStart: number, indexCount: number, topology: MeshTopology): SubMeshDescriptor;
-
-    ToString(): string;
-}
-    
-interface VertexAttributeDescriptor {
-    attribute: VertexAttribute;
-    format: VertexAttributeFormat;
-    dimension: number;
-    stream: number;
-
-    constructor(attribute: VertexAttribute, format: VertexAttributeFormat, dimension: number, stream: number): VertexAttributeDescriptor;
-
-    Equals(other: unknown): boolean;
-    Equals(other: VertexAttributeDescriptor): boolean;
-    GetHashCode(): number;
-    ToString(): string;
-}
-    
-interface MeshDataArray {
-    Length: number;
-    Item: MeshData;
-
-
-    Dispose(): void;
-}
-    
-interface MeshData {
-    vertexCount: number;
-    vertexBufferCount: number;
-    indexFormat: IndexFormat;
-    subMeshCount: number;
-
-
-    GetColors(outColors: CSArray<Color>): void;
-    GetColors(outColors: CSArray<Color32>): void;
-    GetIndexData<T>(): CSArray<T>;
-    GetIndices(outIndices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetIndices(outIndices: CSArray<number>, submesh: number, applyBaseVertex: boolean): void;
-    GetNormals(outNormals: CSArray<Vector3>): void;
-    GetSubMesh(index: number): SubMeshDescriptor;
-    GetTangents(outTangents: CSArray<Vector4>): void;
-    GetUVs(channel: number, outUVs: CSArray<Vector2>): void;
-    GetUVs(channel: number, outUVs: CSArray<Vector3>): void;
-    GetUVs(channel: number, outUVs: CSArray<Vector4>): void;
-    GetVertexAttributeDimension(attr: VertexAttribute): number;
-    GetVertexAttributeFormat(attr: VertexAttribute): VertexAttributeFormat;
-    GetVertexAttributeOffset(attr: VertexAttribute): number;
-    GetVertexAttributeStream(attr: VertexAttribute): number;
-    GetVertexBufferStride(stream: number): number;
-    GetVertexData<T>(stream: number): CSArray<T>;
-    GetVertices(outVertices: CSArray<Vector3>): void;
-    HasVertexAttribute(attr: VertexAttribute): boolean;
-    SetIndexBufferParams(indexCount: number, format: IndexFormat): void;
-    SetSubMesh(index: number, desc: SubMeshDescriptor, flags: MeshUpdateFlags): void;
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
-    SetVertexBufferParams(vertexCount: number, attributes: CSArray<VertexAttributeDescriptor>): void;
-}
-    
-interface MeshConstructor {
-
-
-    AcquireReadOnlyMeshData(mesh: Mesh): MeshDataArray;
-    AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
-    AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
-    AllocateWritableMeshData(meshCount: number): MeshDataArray;
-    AllocateWritableMeshData(mesh: Mesh): MeshDataArray;
-    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
-    AllocateWritableMeshData(meshes: CSArray<Mesh>): MeshDataArray;
-    ApplyAndDisposeWritableMeshData(data: MeshDataArray, mesh: Mesh, flags: MeshUpdateFlags): void;
-    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
-    ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
-}
-declare const Mesh: MeshConstructor;
     
 interface RectInt {
     x: number;
@@ -12112,364 +12848,6 @@ interface EventConstructor {
     PopEvent(outEvent: Event): boolean;
 }
 declare const Event: EventConstructor;
-    
-interface Rigidbody2D extends Component {
-    position: Vector2;
-    rotation: number;
-    velocity: Vector2;
-    velocityX: number;
-    velocityY: number;
-    angularVelocity: number;
-    useAutoMass: boolean;
-    mass: number;
-    sharedMaterial: PhysicsMaterial2D;
-    centerOfMass: Vector2;
-    worldCenterOfMass: Vector2;
-    inertia: number;
-    drag: number;
-    angularDrag: number;
-    gravityScale: number;
-    bodyType: RigidbodyType2D;
-    useFullKinematicContacts: boolean;
-    isKinematic: boolean;
-    freezeRotation: boolean;
-    constraints: RigidbodyConstraints2D;
-    simulated: boolean;
-    interpolation: RigidbodyInterpolation2D;
-    sleepMode: RigidbodySleepMode2D;
-    collisionDetectionMode: CollisionDetectionMode2D;
-    attachedColliderCount: number;
-    totalForce: Vector2;
-    totalTorque: number;
-    excludeLayers: LayerMask;
-    includeLayers: LayerMask;
-    localToWorldMatrix: Matrix4x4;
-    fixedAngle: boolean;
-
-    constructor(): Rigidbody2D;
-
-    AddForce(force: Vector2): void;
-    AddForce(force: Vector2, mode: ForceMode2D): void;
-    AddForceAtPosition(force: Vector2, position: Vector2): void;
-    AddForceAtPosition(force: Vector2, position: Vector2, mode: ForceMode2D): void;
-    AddForceX(force: number, mode: ForceMode2D): void;
-    AddForceY(force: number, mode: ForceMode2D): void;
-    AddRelativeForce(relativeForce: Vector2): void;
-    AddRelativeForce(relativeForce: Vector2, mode: ForceMode2D): void;
-    AddRelativeForceX(force: number, mode: ForceMode2D): void;
-    AddRelativeForceY(force: number, mode: ForceMode2D): void;
-    AddTorque(torque: number): void;
-    AddTorque(torque: number, mode: ForceMode2D): void;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    ClosestPoint(position: Vector2): Vector2;
-    Distance(collider: Collider2D): ColliderDistance2D;
-    Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
-    GetAttachedColliders(results: CSArray<Collider2D>): number;
-    GetAttachedColliders(results: CSArray<Collider2D>): number;
-    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
-    GetAttachedColliders(results: CSArray<Collider2D>, findTriggers: boolean): number;
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(colliders: CSArray<Collider2D>): number;
-    GetContacts(colliders: CSArray<Collider2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetPoint(point: Vector2): Vector2;
-    GetPointVelocity(point: Vector2): Vector2;
-    GetRelativePoint(relativePoint: Vector2): Vector2;
-    GetRelativePointVelocity(relativePoint: Vector2): Vector2;
-    GetRelativeVector(relativeVector: Vector2): Vector2;
-    GetShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
-    GetVector(vector: Vector2): Vector2;
-    IsAwake(): boolean;
-    IsSleeping(): boolean;
-    IsTouching(collider: Collider2D): boolean;
-    IsTouching(collider: Collider2D, contactFilter: ContactFilter2D): boolean;
-    IsTouching(contactFilter: ContactFilter2D): boolean;
-    IsTouchingLayers(): boolean;
-    IsTouchingLayers(layerMask: number): boolean;
-    MovePosition(position: Vector2): void;
-    MovePositionAndRotation(position: Vector2, angle: number): void;
-    MovePositionAndRotation(position: Vector2, rotation: Quaternion): void;
-    MoveRotation(angle: number): void;
-    MoveRotation(rotation: Quaternion): void;
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(results: CSArray<Collider2D>): number;
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapPoint(point: Vector2): boolean;
-    SetRotation(angle: number): void;
-    SetRotation(rotation: Quaternion): void;
-    Sleep(): void;
-    Slide(velocity: Vector2, deltaTime: number, slideMovement: SlideMovement): SlideResults;
-    WakeUp(): void;
-}
-    
-interface PhysicsMaterial2D extends Object {
-    bounciness: number;
-    friction: number;
-
-    constructor(): PhysicsMaterial2D;
-    constructor(name: string): PhysicsMaterial2D;
-
-}
-    
-interface RaycastHit2D {
-    centroid: Vector2;
-    point: Vector2;
-    normal: Vector2;
-    distance: number;
-    fraction: number;
-    collider: Collider2D;
-    rigidbody: Rigidbody2D;
-    transform: Transform;
-
-
-    CompareTo(other: RaycastHit2D): number;
-}
-    
-interface Collider2D extends Behaviour {
-    density: number;
-    isTrigger: boolean;
-    usedByEffector: boolean;
-    compositeOperation: CompositeOperation;
-    compositeOrder: number;
-    composite: CompositeCollider2D;
-    offset: Vector2;
-    attachedRigidbody: Rigidbody2D;
-    localToWorldMatrix: Matrix4x4;
-    shapeCount: number;
-    bounds: Bounds;
-    errorState: ColliderErrorState2D;
-    compositeCapable: boolean;
-    sharedMaterial: PhysicsMaterial2D;
-    layerOverridePriority: number;
-    excludeLayers: LayerMask;
-    includeLayers: LayerMask;
-    forceSendLayers: LayerMask;
-    forceReceiveLayers: LayerMask;
-    contactCaptureLayers: LayerMask;
-    callbackLayers: LayerMask;
-    friction: number;
-    bounciness: number;
-    usedByComposite: boolean;
-
-    constructor(): Collider2D;
-
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    Cast(position: Vector2, angle: number, direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number, ignoreSiblingColliders: boolean): number;
-    ClosestPoint(position: Vector2): Vector2;
-    CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean): Mesh;
-    CreateMesh(useBodyPosition: boolean, useBodyRotation: boolean, useDelaunay: boolean): Mesh;
-    Distance(collider: Collider2D): ColliderDistance2D;
-    Distance(thisPosition: Vector2, thisAngle: number, collider: Collider2D, position: Vector2, angle: number): ColliderDistance2D;
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, contacts: CSArray<ContactPoint2D>): number;
-    GetContacts(colliders: CSArray<Collider2D>): number;
-    GetContacts(colliders: CSArray<Collider2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetContacts(contactFilter: ContactFilter2D, colliders: CSArray<Collider2D>): number;
-    GetShapeBounds(bounds: CSArray<Bounds>, useRadii: boolean, useWorldSpace: boolean): Bounds;
-    GetShapeHash(): number;
-    GetShapes(physicsShapeGroup: PhysicsShapeGroup2D): number;
-    GetShapes(physicsShapeGroup: PhysicsShapeGroup2D, shapeIndex: number, shapeCount: number): number;
-    IsTouching(collider: Collider2D): boolean;
-    IsTouching(collider: Collider2D, contactFilter: ContactFilter2D): boolean;
-    IsTouching(contactFilter: ContactFilter2D): boolean;
-    IsTouchingLayers(): boolean;
-    IsTouchingLayers(layerMask: number): boolean;
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(results: CSArray<Collider2D>): number;
-    Overlap(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, results: CSArray<Collider2D>): number;
-    Overlap(position: Vector2, angle: number, contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapCollider(contactFilter: ContactFilter2D, results: CSArray<Collider2D>): number;
-    OverlapPoint(point: Vector2): boolean;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number): number;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number): number;
-    Raycast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number, layerMask: number, minDepth: number, maxDepth: number): number;
-    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>): number;
-    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-    Raycast(direction: Vector2, contactFilter: ContactFilter2D, results: CSArray<RaycastHit2D>, distance: number): number;
-}
-    
-interface CompositeCollider2D extends Collider2D {
-    geometryType: GeometryType;
-    generationType: GenerationType;
-    useDelaunayMesh: boolean;
-    vertexDistance: number;
-    edgeRadius: number;
-    offsetDistance: number;
-    pathCount: number;
-    pointCount: number;
-
-    constructor(): CompositeCollider2D;
-
-    GenerateGeometry(): void;
-    GetCompositedColliders(colliders: CSArray<Collider2D>): number;
-    GetPath(index: number, points: CSArray<Vector2>): number;
-    GetPath(index: number, points: CSArray<Vector2>): number;
-    GetPathPointCount(index: number): number;
-}
-    
-interface ContactFilter2D {
-    useTriggers: boolean;
-    useLayerMask: boolean;
-    useDepth: boolean;
-    useOutsideDepth: boolean;
-    useNormalAngle: boolean;
-    useOutsideNormalAngle: boolean;
-    layerMask: LayerMask;
-    minDepth: number;
-    maxDepth: number;
-    minNormalAngle: number;
-    maxNormalAngle: number;
-    isFiltering: boolean;
-
-
-    ClearDepth(): void;
-    ClearLayerMask(): void;
-    ClearNormalAngle(): void;
-    IsFilteringDepth(obj: GameObject): boolean;
-    IsFilteringLayerMask(obj: GameObject): boolean;
-    IsFilteringNormalAngle(normal: Vector2): boolean;
-    IsFilteringNormalAngle(angle: number): boolean;
-    IsFilteringTrigger(collider: Collider2D): boolean;
-    NoFilter(): ContactFilter2D;
-    SetDepth(minDepth: number, maxDepth: number): void;
-    SetLayerMask(layerMask: LayerMask): void;
-    SetNormalAngle(minNormalAngle: number, maxNormalAngle: number): void;
-}
-    
-interface ContactFilter2DConstructor {
-    NormalAngleUpperLimit: number;
-
-
-}
-declare const ContactFilter2D: ContactFilter2DConstructor;
-    
-interface ColliderDistance2D {
-    pointA: Vector2;
-    pointB: Vector2;
-    normal: Vector2;
-    distance: number;
-    isOverlapped: boolean;
-    isValid: boolean;
-
-
-}
-    
-interface ContactPoint2D {
-    point: Vector2;
-    normal: Vector2;
-    separation: number;
-    normalImpulse: number;
-    tangentImpulse: number;
-    relativeVelocity: Vector2;
-    collider: Collider2D;
-    otherCollider: Collider2D;
-    rigidbody: Rigidbody2D;
-    otherRigidbody: Rigidbody2D;
-    enabled: boolean;
-
-
-}
-    
-interface PhysicsShapeGroup2D {
-    shapeCount: number;
-    vertexCount: number;
-    localToWorldMatrix: Matrix4x4;
-
-    constructor(shapeCapacity: number, vertexCapacity: number): PhysicsShapeGroup2D;
-
-    Add(physicsShapeGroup: PhysicsShapeGroup2D): void;
-    AddBox(center: Vector2, size: Vector2, angle: number, edgeRadius: number): number;
-    AddCapsule(vertex0: Vector2, vertex1: Vector2, radius: number): number;
-    AddCircle(center: Vector2, radius: number): number;
-    AddEdges(vertices: CSArray<Vector2>, edgeRadius: number): number;
-    AddEdges(vertices: CSArray<Vector2>, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2, edgeRadius: number): number;
-    AddPolygon(vertices: CSArray<Vector2>): number;
-    Clear(): void;
-    DeleteShape(shapeIndex: number): void;
-    GetShape(shapeIndex: number): PhysicsShape2D;
-    GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
-    GetShapeData(shapes: CSArray<PhysicsShape2D>, vertices: CSArray<Vector2>): void;
-    GetShapeVertex(shapeIndex: number, vertexIndex: number): Vector2;
-    GetShapeVertices(shapeIndex: number, vertices: CSArray<Vector2>): void;
-    SetShapeAdjacentVertices(shapeIndex: number, useAdjacentStart: boolean, useAdjacentEnd: boolean, adjacentStart: Vector2, adjacentEnd: Vector2): void;
-    SetShapeRadius(shapeIndex: number, radius: number): void;
-    SetShapeVertex(shapeIndex: number, vertexIndex: number, vertex: Vector2): void;
-}
-    
-interface PhysicsShape2D {
-    shapeType: PhysicsShapeType2D;
-    radius: number;
-    vertexStartIndex: number;
-    vertexCount: number;
-    useAdjacentStart: boolean;
-    useAdjacentEnd: boolean;
-    adjacentStart: Vector2;
-    adjacentEnd: Vector2;
-
-
-}
-    
-interface SlideResults {
-    remainingVelocity: Vector2;
-    position: Vector2;
-    iterationsUsed: number;
-    slideHit: RaycastHit2D;
-    surfaceHit: RaycastHit2D;
-
-
-}
-    
-interface SlideMovement {
-    maxIterations: number;
-    surfaceSlideAngle: number;
-    gravitySlipAngle: number;
-    surfaceUp: Vector2;
-    surfaceAnchor: Vector2;
-    gravity: Vector2;
-    startPosition: Vector2;
-    selectedCollider: Collider2D;
-    layerMask: LayerMask;
-    useLayerMask: boolean;
-    useStartPosition: boolean;
-    useNoMove: boolean;
-    useSimulationMove: boolean;
-    useAttachedTriggers: boolean;
-
-    constructor(): SlideMovement;
-
-    SetLayerMask(mask: LayerMask): void;
-    SetStartPosition(position: Vector2): void;
-}
     
 interface Slider extends Selectable, IInitializePotentialDragHandler, IDragHandler, ICanvasElement {
     fillRect: RectTransform;

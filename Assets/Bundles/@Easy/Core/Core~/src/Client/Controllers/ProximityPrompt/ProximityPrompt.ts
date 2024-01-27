@@ -34,6 +34,10 @@ export class ProximityPrompt {
 	public promptGameObject: GameObject | undefined;
 	/** On activated signal. */
 	public onActivated = new Signal<void>();
+	/** On entered proximity signal. */
+	public onProximityEnter = new Signal<void>();
+	/** On exited proximity signal. */
+	public onProximityExit = new Signal<void>();
 	/** On activated signal. */
 	public onRequestActivated = new Signal<void>();
 
@@ -82,7 +86,9 @@ export class ProximityPrompt {
 				if (event.uiProcessed) return;
 				this.onRequestActivated.Fire();
 			});
+			this.onProximityEnter.Fire();
 		} else {
+			this.onProximityExit.Fire();
 			this.canActivateBin.Clean();
 		}
 	}
