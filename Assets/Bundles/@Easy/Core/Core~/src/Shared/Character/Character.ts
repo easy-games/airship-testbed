@@ -5,7 +5,7 @@ import Inventory from "Shared/Inventory/Inventory";
 import { Player } from "Shared/Player/Player";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
 
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
@@ -54,6 +54,13 @@ export default class Character extends AirshipBehaviour {
 				this.gameObject.name = "Character_" + Game.localPlayer.username;
 			});
 		}
+
+		Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+			if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+				let newHealth = math.max(0, this.health - damageInfo.damage);
+				this.SetHealth(newHealth);
+			}
+		});
 	}
 
 	public Init(player: Player | undefined, id: number): void {
@@ -87,7 +94,13 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public SetHealth(health: number): void {
+		const oldHealth = this.health;
 		this.health = health;
+		this.onHealthChanged.Fire(health, oldHealth);
+
+		if (this.health <= 0) {
+			this.onDeath.Fire();
+		}
 	}
 
 	public GetMaxHealth(): number {

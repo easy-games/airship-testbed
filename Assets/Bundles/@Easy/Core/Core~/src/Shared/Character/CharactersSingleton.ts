@@ -5,7 +5,7 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { Signal, SignalPriority } from "Shared/Util/Signal";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
 
@@ -63,7 +63,85 @@ export class CharactersSingleton implements OnStart {
 					);
 				}
 			});
+			Airship.characters.ObserveCharacters((character) => {
+				character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
+					NetworkUtil.Despawn(character.gameObject);
+				});
+			});
 		}
+
+		Airship.characters.ObserveCharacters((character) => {
+			character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
+				if (RunUtil.IsServer()) {
+					NetworkUtil.Despawn(character.gameObject);
+				}
+				print("onDeath for player " + character.player?.username);
+				character.player?.SetCharacter(undefined);
+			});
+		});
+
+		if (RunUtil.IsClient()) {
+			CoreNetwork.ServerToClient.Character.SetHealth.client.OnServerEvent((id, health) => {
+				this.FindById(id)?.SetHealth(health);
+			});
+			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
+				this.FindById(id)?.SetHealth(maxHealth);
+			});
+		}
+	}
+
+	/**
+	 * Observe every character in the game. The returned function can be
+	 * called to stop observing.
+	 *
+	 * The `observer` function is fired for every character currently in the game and
+	 * every future character that spawns. The `observer` function must return another
+	 * function which is called when said character despawned (_or_ the top-level observer
+	 * function was called to stop the observation process).
+	 *
+	 * ```ts
+	 * Airship.characters.ObserveCharacters((character) => {
+	 *      character.SetMaxHealth(500);
+	 * });
+	 * ```
+	 */
+	public ObserveCharacters(
+		observer: (character: Character) => (() => void) | void,
+		signalPriority?: SignalPriority,
+	): () => void {
+		const cleanupPerCharacter = new Map<Character, () => void>();
+		const observe = (character: Character) => {
+			const cleanup = observer(character);
+			if (cleanup !== undefined) {
+				cleanupPerCharacter.set(character, cleanup);
+			}
+		};
+		for (const character of this.characters) {
+			observe(character);
+		}
+		const stopCharacterSpawned = this.onCharacterSpawned.ConnectWithPriority(
+			signalPriority ?? SignalPriority.NORMAL,
+			(character) => {
+				observe(character);
+			},
+		);
+		const stopCharacterDespawned = this.onCharacterDespawned.ConnectWithPriority(
+			signalPriority ?? SignalPriority.NORMAL,
+			(character) => {
+				const cleanup = cleanupPerCharacter.get(character);
+				if (cleanup !== undefined) {
+					cleanup();
+					cleanupPerCharacter.delete(character);
+				}
+			},
+		);
+		return () => {
+			stopCharacterSpawned();
+			stopCharacterDespawned();
+			for (const [character, cleanup] of cleanupPerCharacter) {
+				cleanup();
+			}
+		};
 	}
 
 	public SpawnNonPlayerCharacter(position: Vector3): Character {
@@ -112,9 +190,18 @@ export class CharactersSingleton implements OnStart {
 	public FindByCollider(collider: Collider): Character | undefined {
 		// todo: optimize
 		for (let character of this.characters) {
+			// print(
+			// 	"comparing " +
+			// 		character.gameObject.GetInstanceID() +
+			// 		" to " +
+			// 		collider.gameObject.GetInstanceID() +
+			// 		" or " +
+			// 		character.gameObject.transform.parent?.gameObject.GetInstanceID(),
+			// );
 			if (
-				character.gameObject === collider.gameObject ||
-				character.gameObject.transform.parent?.gameObject === collider.gameObject
+				character.gameObject.GetInstanceID() === collider.gameObject.GetInstanceID() ||
+				character.gameObject.transform.parent?.gameObject.GetInstanceID() ===
+					collider.gameObject.GetInstanceID()
 			) {
 				return character;
 			}

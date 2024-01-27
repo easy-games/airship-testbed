@@ -83,9 +83,7 @@ export class InventoryUIController implements OnStart {
 		if (this.enabled === enabled) return;
 		this.enabled = enabled;
 
-		if (!enabled) {
-			this.hotbarCanvas.enabled = false;
-		}
+		this.hotbarCanvas.enabled = enabled;
 	}
 
 	public OpenBackpack(): void {
@@ -171,26 +169,29 @@ export class InventoryUIController implements OnStart {
 		});
 
 		// Healthbar
-		Game.localPlayer.ObserveCharacter((entity) => {
+		Game.localPlayer.ObserveCharacter((character) => {
 			const bin = new Bin();
 
-			if (entity === undefined) {
+			if (character === undefined) {
 				this.healthBar.SetValue(0);
 				this.healthBar.transform.gameObject.SetActive(false);
+				this.SetEnabled(false);
 				return;
 			}
+			this.SetEnabled(true);
+
 			this.healthBar.transform.gameObject.SetActive(true);
 			const SetFill = (newHealth: number, instant: boolean) => {
-				let fill = newHealth / entity.GetMaxHealth();
+				let fill = newHealth / character.GetMaxHealth();
 				if (instant) {
 					this.healthBar.InstantlySetValue(fill);
 				} else {
 					this.healthBar.SetValue(fill);
 				}
 			};
-			SetFill(entity.GetHealth(), false);
+			SetFill(character.GetHealth(), false);
 			bin.Add(
-				entity.onHealthChanged.Connect((h) => {
+				character.onHealthChanged.Connect((h) => {
 					SetFill(h, false);
 				}),
 			);

@@ -179,15 +179,17 @@ export class MeleeHeldItem extends HeldItem {
 
 	private ServerHit(meleeData: MeleeItemDef | undefined) {
 		let hitTargets = this.ScanForHits();
+		print("hit targets: " + hitTargets.size());
 		hitTargets.forEach((data) => {
 			let damage = meleeData?.damage ?? 0;
 			if (data.criticalHit) {
 				damage *= 1.3;
 				damage = math.floor(damage);
 			}
+			let knockback = data.knockbackDirection.mul(8);
 			Airship.damage.InflictDamage(data.hitCharacter.gameObject, damage, this.character.gameObject, {
 				// damageType: meleeData?.damageType ?? DamageType.SWORD,
-				knockback: data.knockbackDirection,
+				knockback,
 				// criticalHit: data.criticalHit,
 			});
 		});
@@ -252,7 +254,7 @@ export class MeleeHeldItem extends HeldItem {
 				//Box check doesn't care about non entities
 				continue;
 			}
-			this.Log("hit entity: " + targetCharacter.id);
+
 			if (targetCharacter === this.character) {
 				//Hit Self
 				this.Log("hit self");
@@ -264,7 +266,6 @@ export class MeleeHeldItem extends HeldItem {
 			}
 
 			if (!Airship.damage.CanClientDamage(targetCharacter.gameObject, this.character.gameObject)) {
-				this.Log("cannot damage");
 				continue;
 			}
 
@@ -288,13 +289,11 @@ export class MeleeHeldItem extends HeldItem {
 			// Validate hitting through walls
 			for (let i = 0; i < hitInfos.Length; i++) {
 				let hitInfo = hitInfos.GetValue(i);
-				this.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
 				//Look for entities and blocking colliders
 				const hitCharacter = Airship.characters.FindByCollider(hitInfo.collider);
 				if (hitCharacter) {
 					if (hitCharacter.id === this.character.id) {
 						//Hit self, skip
-						this.Log("skipping self");
 						continue;
 					} else if (hitCharacter.id === targetCharacter.id) {
 						//Raycast hit the target entity
@@ -346,13 +345,13 @@ export class MeleeHeldItem extends HeldItem {
 					blockerDistance = math.min(blockerDistance, hitInfo.distance);
 				}
 			}
-			if (foundRaycastCollision) {
-				this.Log("found collision");
-				if (foundRaycastCollision.distance > blockerDistance) {
-					this.Log("target is farther than blocker");
-					return [];
-				}
-			}
+			// if (foundRaycastCollision) {
+			// 	this.Log("found collision");
+			// 	if (foundRaycastCollision.distance > blockerDistance) {
+			// 		print("target is farther than blocker");
+			// 		return [];
+			// 	}
+			// }
 		}
 
 		// for (let collision of collisionData) {
