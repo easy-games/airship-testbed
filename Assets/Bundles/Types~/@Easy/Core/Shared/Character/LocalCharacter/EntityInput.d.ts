@@ -1,4 +1,4 @@
-import Character from "../../../Shared/Character/Character";
+import Character from "../Character";
 export declare class EntityInput {
     private readonly character;
     private readonly bin;

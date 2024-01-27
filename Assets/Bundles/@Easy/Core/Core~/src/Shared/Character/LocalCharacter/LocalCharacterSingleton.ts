@@ -46,7 +46,7 @@ export class LocalCharacterSingleton implements OnStart {
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
-	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.ORBIT;
+	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Orbit;
 	private defaultFirstPerson = false;
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
@@ -200,10 +200,10 @@ export class LocalCharacterSingleton implements OnStart {
 
 			// Set up camera
 			const cameraController = Dependency<CameraController>();
-			if (this.characterCameraMode === CharacterCameraMode.LOCKED) {
+			if (this.characterCameraMode === CharacterCameraMode.Locked) {
 				cameraController.SetMode(this.CreateHumanoidCameraMode(character));
 				cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateHumanoidCameraMode(character));
-			} else if (this.characterCameraMode === CharacterCameraMode.ORBIT) {
+			} else if (this.characterCameraMode === CharacterCameraMode.Orbit) {
 				cameraController.SetMode(this.CreateOrbitCameraMode(character));
 				cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
 			}
@@ -366,11 +366,16 @@ export class LocalCharacterSingleton implements OnStart {
 		if (Game.localPlayer.character) {
 			const character = Game.localPlayer.character;
 			const cameraController = Dependency<CameraController>();
-			if (mode === CharacterCameraMode.LOCKED) {
+			if (mode === CharacterCameraMode.Locked) {
 				cameraController.SetMode(this.CreateHumanoidCameraMode(character));
-			} else if (mode === CharacterCameraMode.ORBIT) {
+			} else if (mode === CharacterCameraMode.Orbit) {
 				cameraController.SetMode(this.CreateOrbitCameraMode(character));
 			}
+		}
+
+		if (mode !== CharacterCameraMode.Locked) {
+			this.firstPerson = false;
+			this.defaultFirstPerson = false;
 		}
 	}
 
@@ -407,7 +412,19 @@ export class LocalCharacterSingleton implements OnStart {
 		this.SetFirstPerson(!this.firstPerson);
 	}
 
+	/**
+	 * Changes the perspective of the currently spawned local character.
+	 *
+	 * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetCharacterCameraMode()}
+	 *
+	 * You may also want to call {@link SetDefaultFirstPerson} to change the default for when new characters spawn.
+	 */
 	public SetFirstPerson(value: boolean) {
+		assert(
+			this.characterCameraMode === CharacterCameraMode.Locked,
+			"SetFirstPerson() can only be called when using CharacterCameraMode.Locked",
+		);
+
 		if (this.firstPerson === value) {
 			return;
 		}
@@ -426,6 +443,10 @@ export class LocalCharacterSingleton implements OnStart {
 	}
 
 	public SetDefaultFirstPerson(val: boolean): void {
+		assert(
+			this.characterCameraMode === CharacterCameraMode.Locked,
+			"SetDefaultFirstPerson() can only be called when using CharacterCameraMode.Locked",
+		);
 		this.defaultFirstPerson = val;
 	}
 

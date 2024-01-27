@@ -1,14 +1,11 @@
-import { CharacterCameraMode } from "@Easy/Core/Client/Controllers/Character/CharacterCameraMode";
-import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
-import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { Dependency } from "@easy-games/flamework-core";
 
 export default class GameManager extends AirshipBehaviour {
 	public spawnPosition!: Transform;
@@ -35,10 +32,9 @@ export default class GameManager extends AirshipBehaviour {
 			);
 		}
 		if (RunUtil.IsClient()) {
-			Dependency<LocalEntityController>().SetFirstPerson(true);
-			Dependency<LocalEntityController>().SetDefaultFirstPerson(true);
-			Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.LOCKED);
-			Dependency<LoadingScreenController>().FinishLoading();
+			Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			Airship.characters.localCharacterManager.SetDefaultFirstPerson(true);
+			Airship.loadingScreen.FinishLoading();
 		}
 
 		// if (RunUtil.IsServer()) {

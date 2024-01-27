@@ -1,17 +1,11 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
-import { CharacterInventorySingleton } from "../../../Shared/Inventory/CharacterInventorySingleton";
-import { DataStreamItems } from "../../../Shared/Util/DataStreamTypes";
-import { Signal } from "../../../Shared/Util/Signal";
-import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
-import { CameraController } from "../Camera/CameraController";
-import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
+import { DataStreamItems } from "../../Util/DataStreamTypes";
+import { Signal } from "../../Util/Signal";
+import { HumanoidCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/HumanoidCameraMode";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
-import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
-export declare class LocalEntityController implements OnStart {
-    private readonly cameraController;
-    private readonly clientSettings;
-    private readonly inventoryController;
+import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
+export declare class LocalCharacterSingleton implements OnStart {
     private firstPerson;
     private lookBackwards;
     private fps?;
@@ -36,8 +30,7 @@ export declare class LocalEntityController implements OnStart {
     /**
      * This can be used to change input before it's processed by the entity system.
      */
-    readonly onBeforeLocalEntityInput: Signal<LocalEntityInputSignal>;
-    constructor(cameraController: CameraController, clientSettings: ClientSettingsController, inventoryController: CharacterInventorySingleton);
+    readonly onBeforeLocalEntityInput: Signal<LocalCharacterInputSignal>;
     /** Returns `true` if the player is in first-person mode. */
     IsFirstPerson(): boolean;
     /** Observes the current first-person state. */
@@ -60,6 +53,13 @@ export declare class LocalEntityController implements OnStart {
     UpdateFov(): void;
     private SetLookBackwards;
     ToggleFirstPerson(): void;
+    /**
+     * Changes the perspective of the currently spawned local character.
+     *
+     * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetCharacterCameraMode()}
+     *
+     * You may also want to call {@link SetDefaultFirstPerson} to change the default for when new characters spawn.
+     */
     SetFirstPerson(value: boolean): void;
     GetEntityInput(): EntityInput | undefined;
     SetDefaultFirstPerson(val: boolean): void;

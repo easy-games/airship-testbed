@@ -116,6 +116,7 @@ export declare class Player {
     Encode(): PlayerDto;
     SetCharacter(character: Character | undefined): void;
     ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin;
+    IsLocalPlayer(): boolean;
     /**
      * Is the player connected to the server?
      */

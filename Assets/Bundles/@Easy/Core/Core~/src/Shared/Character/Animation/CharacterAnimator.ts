@@ -94,8 +94,6 @@ export class CharacterAnimator {
 		const animator = character.movement.animationHelper;
 		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
 		this.isFlashing = false;
-		// this.viewModelEnabled = this.character.IsLocalCharacter();
-		print("viewmodel enabled: " + this.viewModelEnabled);
 
 		//AUDIO
 		if (RunUtil.IsClient()) {
@@ -447,7 +445,6 @@ export class CharacterAnimator {
 			this.PlayItemAnimationInViewmodel(clip, CharacterAnimationLayer.LAYER_1, undefined, {
 				fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 			});
-			print("played idle.");
 			// AnimancerBridge.GetLayer(this.viewmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 		}
 		let clips = this.worldmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];

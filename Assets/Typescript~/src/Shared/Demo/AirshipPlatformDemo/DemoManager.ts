@@ -1,10 +1,8 @@
-import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { Dependency } from "@easy-games/flamework-core";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -28,7 +26,7 @@ export default class DemoManager extends AirshipBehaviour {
 			);
 		}
 		if (RunUtil.IsClient()) {
-			Dependency<LoadingScreenController>().FinishLoading();
+			Airship.loadingScreen.FinishLoading();
 		}
 	}
 

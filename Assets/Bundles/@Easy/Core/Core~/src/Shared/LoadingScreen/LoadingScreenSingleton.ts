@@ -1,13 +1,16 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Airship } from "Shared/Airship";
 import { Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 
 @Controller({ loadOrder: -10 })
-export class LoadingScreenController implements OnStart {
+export class LoadingScreenSingleton implements OnStart {
 	private coreLoadingScreen: CoreLoadingScreen;
 	private loadingBin = new Bin();
 
 	constructor() {
+		Airship.loadingScreen = this;
+
 		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen").GetComponent<CoreLoadingScreen>();
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
 

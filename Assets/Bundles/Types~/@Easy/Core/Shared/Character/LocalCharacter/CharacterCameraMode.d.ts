@@ -1,5 +1,5 @@
 export declare enum CharacterCameraMode {
-    LOCKED = 0,
-    ORBIT = 1,
-    NONE = 2
+    Locked = 0,
+    Orbit = 1,
+    None = 2
 }

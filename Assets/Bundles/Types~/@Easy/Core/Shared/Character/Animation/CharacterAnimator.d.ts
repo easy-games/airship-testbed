@@ -48,6 +48,7 @@ export declare class CharacterAnimator {
     baseFootstepVolumeScale: number;
     private itemAnimStates;
     constructor(character: Character);
+    SetViewModelEnabled(enabled: boolean): void;
     private Log;
     SetFirstPerson(isFirstPerson: boolean): void;
     PlayTakeDamage(position: Vector3, characterModel: GameObject | undefined): void;

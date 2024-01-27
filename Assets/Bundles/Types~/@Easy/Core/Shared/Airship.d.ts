@@ -2,6 +2,7 @@
 import { CharactersSingleton } from "./Character/CharactersSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
 import { InventorySingleton } from "./Inventory/InventorySingleton";
+import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
 export declare const Airship: {
@@ -10,4 +11,5 @@ export declare const Airship: {
     damage: Omit<DamageSingleton, "OnStart">;
     teams: Omit<TeamsSingleton, "OnStart">;
     inventory: Omit<InventorySingleton, "OnStart">;
+    loadingScreen: Omit<LoadingScreenSingleton, "OnStart">;
 };

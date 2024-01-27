@@ -6,7 +6,9 @@ import { Player } from "../Player/Player";
 import { Signal, SignalPriority } from "../Util/Signal";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
+import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 export declare class CharactersSingleton implements OnStart {
+    readonly localCharacterManager: LocalCharacterSingleton;
     private characters;
     onCharacterSpawned: Signal<Character>;
     onCharacterDespawned: Signal<Character>;
@@ -19,7 +21,7 @@ export declare class CharactersSingleton implements OnStart {
      */
     onServerCustomMoveCommand: Signal<CustomMoveData<unknown, unknown>>;
     private idCounter;
-    constructor();
+    constructor(localCharacterManager: LocalCharacterSingleton);
     OnStart(): void;
     /**
      * Observe every character in the game. The returned function can be

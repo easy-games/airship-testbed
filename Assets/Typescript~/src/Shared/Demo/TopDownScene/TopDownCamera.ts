@@ -1,6 +1,5 @@
-import { CameraController } from "@Easy/Core/Client/Controllers/Camera/CameraController";
-import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { CrosshairController } from "@Easy/Core/Client/Controllers/Crosshair/CrosshairController";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
@@ -50,11 +49,10 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 	public override OnEnable(): void {
 		if (RunUtil.IsServer()) return;
 
-		Dependency<LocalEntityController>().SetMoveDirWorldSpace(true);
-		Dependency<CameraController>().SetEnabled(false);
+		Airship.characters.localCharacterManager.SetMoveDirWorldSpace(true);
 		Dependency<CrosshairController>().AddDisabler();
 
-		Dependency<LocalEntityController>().onBeforeLocalEntityInput.Connect((event) => {
+		Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
 			event.jump = false;
 			event.crouchOrSlide = false;
 		});
