@@ -1,22 +1,22 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
-import { CharacterInventorySingleton } from "Shared/Inventory/CharacterInventorySingleton";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 import { Signal } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
-import { ClientSettingsController } from "../../MainMenuControllers/Settings/ClientSettingsController";
-import { CameraController } from "../Camera/CameraController";
-import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
-import { HumanoidCameraMode } from "../Camera/DefaultCameraModes/HumanoidCameraMode";
-import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
-import { FirstPersonCameraSystem } from "../Camera/FirstPersonCameraSystem";
+import { CameraController } from "../../../Client/Controllers/Camera/CameraController";
+import { FlyCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/FlyCameraMode";
+import { HumanoidCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/HumanoidCameraMode";
+import { OrbitCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/OrbitCameraMode";
+import { FirstPersonCameraSystem } from "../../../Client/Controllers/Camera/FirstPersonCameraSystem";
+import { ClientSettingsController } from "../../../Client/MainMenuControllers/Settings/ClientSettingsController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
 import { EntityInput } from "./EntityInput";
-import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
+import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -25,7 +25,7 @@ const CAM_Y_OFFSET_CROUCH_3RD_PERSON = CAM_Y_OFFSET;
 @Controller({
 	loadOrder: 10000,
 })
-export class LocalEntityController implements OnStart {
+export class LocalCharacterSingleton implements OnStart {
 	private firstPerson = false;
 	private lookBackwards = false;
 	private fps?: FirstPersonCameraSystem;
@@ -58,13 +58,7 @@ export class LocalEntityController implements OnStart {
 	/**
 	 * This can be used to change input before it's processed by the entity system.
 	 */
-	public readonly onBeforeLocalEntityInput = new Signal<LocalEntityInputSignal>();
-
-	constructor(
-		private readonly cameraController: CameraController,
-		private readonly clientSettings: ClientSettingsController,
-		private readonly inventoryController: CharacterInventorySingleton,
-	) {}
+	public readonly onBeforeLocalEntityInput = new Signal<LocalCharacterInputSignal>();
 
 	/** Returns `true` if the player is in first-person mode. */
 	public IsFirstPerson() {
@@ -131,8 +125,9 @@ export class LocalEntityController implements OnStart {
 		if (!this.screenshot) {
 			return;
 		}
-		const showUI = this.clientSettings.GetScreenshotShowUI();
-		const supersample = this.clientSettings.GetScreenshotRenderHD();
+		const clientSettings = Dependency<ClientSettingsController>();
+		const showUI = clientSettings.GetScreenshotShowUI();
+		const supersample = clientSettings.GetScreenshotRenderHD();
 		let screenshotFilename = os.date("Screenshot-%Y-%m-%d-%H-%M-%S");
 		const superSampleSize = supersample ? 4 : 1;
 		print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
@@ -204,12 +199,13 @@ export class LocalEntityController implements OnStart {
 			});
 
 			// Set up camera
+			const cameraController = Dependency<CameraController>();
 			if (this.characterCameraMode === CharacterCameraMode.LOCKED) {
-				this.cameraController.SetMode(this.CreateHumanoidCameraMode(character));
-				this.cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateHumanoidCameraMode(character));
+				cameraController.SetMode(this.CreateHumanoidCameraMode(character));
+				cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateHumanoidCameraMode(character));
 			} else if (this.characterCameraMode === CharacterCameraMode.ORBIT) {
-				this.cameraController.SetMode(this.CreateOrbitCameraMode(character));
-				this.cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
+				cameraController.SetMode(this.CreateOrbitCameraMode(character));
+				cameraController.cameraSystem?.SetOnClearCallback(() => this.CreateOrbitCameraMode(character));
 			}
 
 			this.firstPersonChanged.Connect((isFirstPerson) => {
@@ -259,9 +255,9 @@ export class LocalEntityController implements OnStart {
 
 			// Toggle first person:
 			keyboard.OnKeyDown(KeyCode.T, (event) => {
-				if (!this.cameraController.IsEnabled()) return;
+				if (!cameraController.IsEnabled()) return;
 				if (event.uiProcessed) return;
-				if (this.cameraController.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+				if (cameraController.cameraSystem?.GetMode() === this.humanoidCameraMode) {
 					this.ToggleFirstPerson();
 				}
 			});
@@ -279,15 +275,15 @@ export class LocalEntityController implements OnStart {
 						if (backToFirstPerson) {
 							this.SetFirstPerson(false);
 						}
-						this.cameraController.SetMode(new FlyCameraMode());
+						cameraController.SetMode(new FlyCameraMode());
 						flyingBin.Add(() => {
-							this.cameraController.ClearMode();
+							cameraController.ClearMode();
 							if (backToFirstPerson) {
 								this.SetFirstPerson(true);
 							}
 						});
 						flyingBin.Add(this.entityInput!.AddDisabler());
-						flyingBin.Add(this.inventoryController.AddDisabler());
+						flyingBin.Add(Airship.inventory.localCharacterInventory.AddDisabler());
 					}
 				}
 			});
@@ -311,7 +307,7 @@ export class LocalEntityController implements OnStart {
 			// Toggle look backwards:
 			keyboard.OnKeyDown(KeyCode.H, (event) => {
 				if (event.uiProcessed) return;
-				if (this.cameraController.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+				if (cameraController.cameraSystem?.GetMode() === this.humanoidCameraMode) {
 					this.SetLookBackwards(!this.lookBackwards);
 				}
 			});
@@ -334,9 +330,9 @@ export class LocalEntityController implements OnStart {
 
 			// Cleanup:
 			bin.Add(() => {
-				if (this.cameraController.IsEnabled()) {
-					this.cameraController.cameraSystem?.SetOnClearCallback(undefined);
-					this.cameraController.ClearMode();
+				if (cameraController.IsEnabled()) {
+					cameraController.cameraSystem?.SetOnClearCallback(undefined);
+					cameraController.ClearMode();
 				}
 				this.fps?.Destroy();
 				this.entityInput?.Destroy();
@@ -368,31 +364,33 @@ export class LocalEntityController implements OnStart {
 		this.characterCameraMode = mode;
 
 		if (Game.localPlayer.character) {
-			const entity = Game.localPlayer.character;
+			const character = Game.localPlayer.character;
+			const cameraController = Dependency<CameraController>();
 			if (mode === CharacterCameraMode.LOCKED) {
-				this.cameraController.SetMode(this.CreateHumanoidCameraMode(entity));
+				cameraController.SetMode(this.CreateHumanoidCameraMode(character));
 			} else if (mode === CharacterCameraMode.ORBIT) {
-				this.cameraController.SetMode(this.CreateOrbitCameraMode(entity));
+				cameraController.SetMode(this.CreateOrbitCameraMode(character));
 			}
 		}
 	}
 
 	public UpdateFov(): void {
-		if (!this.cameraController.IsEnabled()) return;
-		let baseFov = this.IsFirstPerson()
-			? this.clientSettings.GetFirstPersonFov()
-			: this.clientSettings.GetThirdPersonFov();
+		const cameraController = Dependency<CameraController>();
+		if (!cameraController.IsEnabled()) return;
+
+		const clientSettings = Dependency<ClientSettingsController>();
+		let baseFov = this.IsFirstPerson() ? clientSettings.GetFirstPersonFov() : clientSettings.GetThirdPersonFov();
 		if (
 			this.currentState === CharacterState.Sprinting ||
 			this.currentState === CharacterState.Sliding ||
 			this.entityInput?.IsSprinting()
 			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
 		) {
-			this.cameraController.SetFOV(baseFov * 1.08, false);
+			cameraController.SetFOV(baseFov * 1.08, false);
 		} else {
-			this.cameraController.SetFOV(baseFov, false);
+			cameraController.SetFOV(baseFov, false);
 		}
-		// this.cameraController.SetFOV(baseFov, false);
+		// cameraController.SetFOV(baseFov, false);
 	}
 
 	private SetLookBackwards(lookBackwards: boolean) {
@@ -400,7 +398,7 @@ export class LocalEntityController implements OnStart {
 		this.lookBackwards = lookBackwards;
 		this.lookBackwardsChanged.Fire(this.lookBackwards);
 
-		if (this.cameraController.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+		if (Dependency<CameraController>().cameraSystem?.GetMode() === this.humanoidCameraMode) {
 			this.humanoidCameraMode?.SetLookBackwards(this.lookBackwards);
 		}
 	}
@@ -417,7 +415,7 @@ export class LocalEntityController implements OnStart {
 		this.firstPerson = value;
 		this.firstPersonChanged.Fire(this.firstPerson);
 
-		if (this.cameraController.cameraSystem?.GetMode() === this.humanoidCameraMode) {
+		if (Dependency<CameraController>().cameraSystem?.GetMode() === this.humanoidCameraMode) {
 			this.humanoidCameraMode?.SetFirstPerson(this.firstPerson);
 		}
 		this.fps?.OnFirstPersonChanged(this.firstPerson);

@@ -1,9 +1,9 @@
 ﻿﻿import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
 import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
@@ -94,7 +94,8 @@ export class CharacterAnimator {
 		const animator = character.movement.animationHelper;
 		this.worldmodelAnimancerComponent = animator.worldmodelAnimancer;
 		this.isFlashing = false;
-		this.viewModelEnabled = this.character.IsLocalCharacter();
+		// this.viewModelEnabled = this.character.IsLocalCharacter();
+		print("viewmodel enabled: " + this.viewModelEnabled);
 
 		//AUDIO
 		if (RunUtil.IsClient()) {
@@ -168,6 +169,10 @@ export class CharacterAnimator {
 		this.character.gameObject.SetActive(true);
 	}
 
+	public SetViewModelEnabled(enabled: boolean): void {
+		this.viewModelEnabled = enabled;
+	}
+
 	private Log(message: string) {
 		// return;
 		// print("Animator " + this.character.id + ": " + message);
@@ -191,7 +196,7 @@ export class CharacterAnimator {
 		const isFirstPerson =
 			RunUtil.IsClient() &&
 			this.character.IsLocalCharacter() &&
-			Dependency<LocalEntityController>().IsFirstPerson();
+			Dependency<LocalCharacterSingleton>().IsFirstPerson();
 
 		this.PlayDamageFlash();
 
@@ -442,6 +447,7 @@ export class CharacterAnimator {
 			this.PlayItemAnimationInViewmodel(clip, CharacterAnimationLayer.LAYER_1, undefined, {
 				fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 			});
+			print("played idle.");
 			// AnimancerBridge.GetLayer(this.viewmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
 		}
 		let clips = this.worldmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
@@ -513,7 +519,7 @@ export class CharacterAnimator {
 		//Play death animation
 		let isFirstPerson = false;
 		if (this.character.IsLocalCharacter()) {
-			const localController = Dependency<LocalEntityController>();
+			const localController = Dependency<LocalCharacterSingleton>();
 			isFirstPerson = localController.IsFirstPerson();
 			//Always play death animation in third person
 			// localController.ForceFirstPersonMode(false);

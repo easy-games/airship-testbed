@@ -1,7 +1,7 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
 import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
@@ -46,7 +46,7 @@ export class DamageUtils {
 		//Stop entity from moving
 		driver.DisableMovement();
 		if (character.IsLocalCharacter()) {
-			Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
+			Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(false);
 		}
 
 		if (RunUtil.IsClient()) {
@@ -63,7 +63,7 @@ export class DamageUtils {
 		Task.Delay(hitStunDuration, () => {
 			driver.EnableMovement();
 			if (character.IsLocalCharacter()) {
-				Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
+				Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(true);
 			}
 			OnComplete();
 		});
@@ -102,7 +102,7 @@ export class DamageUtils {
 				if (disableMovement) {
 					driver.DisableMovement();
 					if (character.IsLocalCharacter()) {
-						Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
+						Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(false);
 					}
 				}
 				for (let i = 0; i < particles.size(); i++) {
@@ -114,7 +114,7 @@ export class DamageUtils {
 					if (disableMovement) {
 						driver.EnableMovement();
 						if (character.IsLocalCharacter()) {
-							Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
+							Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(true);
 						}
 					}
 					for (let i = 0; i < particles.size(); i++) {

@@ -5,6 +5,7 @@ import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Game } from "Shared/Game";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "Shared/ProfilePicture/ProfilePictureMeta";
@@ -181,6 +182,10 @@ export class Player {
 
 		this.bin.Add(bin);
 		return bin;
+	}
+
+	public IsLocalPlayer(): boolean {
+		return RunUtil.IsClient() && Game.localPlayer === this;
 	}
 
 	/**

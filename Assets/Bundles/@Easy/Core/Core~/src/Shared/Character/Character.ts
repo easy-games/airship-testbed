@@ -43,8 +43,8 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
 
 	public Awake(): void {
-		this.animator = new CharacterAnimator(this);
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
+		this.animator = new CharacterAnimator(this);
 	}
 
 	public Start(): void {
@@ -66,6 +66,7 @@ export default class Character extends AirshipBehaviour {
 	public Init(player: Player | undefined, id: number): void {
 		this.player = player;
 		this.id = id;
+		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
 	}
 
 	public Teleport(pos: Vector3, lookDirection?: Vector3): void {}

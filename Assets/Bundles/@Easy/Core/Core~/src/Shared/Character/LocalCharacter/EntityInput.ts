@@ -3,8 +3,8 @@ import Character from "Shared/Character/Character";
 import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
-import { LocalEntityController } from "./LocalEntityController";
-import { LocalEntityInputSignal } from "./LocalEntityInputSignal";
+import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
+import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
 export class EntityInput {
 	private readonly bin = new Bin();
@@ -106,15 +106,15 @@ export class EntityInput {
 					this.jumping = jump;
 				}
 
-				const moveSignal = new LocalEntityInputSignal(moveDirection, jump, sprinting, leftCtrl || c);
-				Dependency<LocalEntityController>().onBeforeLocalEntityInput.Fire(moveSignal);
+				const moveSignal = new LocalCharacterInputSignal(moveDirection, jump, sprinting, leftCtrl || c);
+				Dependency<LocalCharacterSingleton>().onBeforeLocalEntityInput.Fire(moveSignal);
 
 				this.movement.SetMoveInput(
 					moveSignal.moveDirection,
 					moveSignal.jump,
 					moveSignal.sprinting,
 					moveSignal.crouchOrSlide,
-					Dependency<LocalEntityController>().IsMoveDirWorldSpace(),
+					Dependency<LocalCharacterSingleton>().IsMoveDirWorldSpace(),
 				);
 			});
 			if (!success) {

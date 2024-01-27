@@ -1,8 +1,8 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Player } from "Shared/Player/Player";
@@ -163,9 +163,9 @@ export class BubbleChatController implements OnStart {
 
 			const canvasComponent = canvas.GetComponent<Canvas>();
 			if (character.IsLocalCharacter()) {
-				const isFirstPerson = Dependency<LocalEntityController>().IsFirstPerson();
+				const isFirstPerson = Dependency<LocalCharacterSingleton>().IsFirstPerson();
 				canvasComponent.enabled = !isFirstPerson;
-				Dependency<LocalEntityController>().firstPersonChanged.Connect((isFirst) => {
+				Dependency<LocalCharacterSingleton>().firstPersonChanged.Connect((isFirst) => {
 					canvasComponent.enabled = !isFirst;
 				});
 			}

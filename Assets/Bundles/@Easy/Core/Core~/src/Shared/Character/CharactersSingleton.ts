@@ -8,6 +8,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
+import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 
 const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/Character.prefab");
 
@@ -30,7 +31,7 @@ export class CharactersSingleton implements OnStart {
 
 	private idCounter = 0;
 
-	constructor() {
+	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
 		Airship.characters = this;
 
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {

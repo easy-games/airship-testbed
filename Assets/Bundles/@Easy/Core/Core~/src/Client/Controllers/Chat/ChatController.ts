@@ -18,7 +18,7 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { SetInterval, SetTimeout } from "Shared/Util/Timer";
-import { LocalEntityController } from "../Character/LocalEntityController";
+import { LocalCharacterSingleton } from "../../../Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreUIController } from "../UI/CoreUIController";
 import { MessageCommand } from "./ClientCommands/MessageCommand";
 import { ReplyCommand } from "./ClientCommands/ReplyCommand";
@@ -78,7 +78,7 @@ export class ChatController implements OnStart {
 	private lastChatMessageRenderedTime = Time.time;
 
 	constructor(
-		private readonly localEntityController: LocalEntityController,
+		private readonly localEntityController: LocalCharacterSingleton,
 		private readonly coreUIController: CoreUIController,
 		private readonly socketController: SocketController,
 		private readonly directMessageController: DirectMessageController,

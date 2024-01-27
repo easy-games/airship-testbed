@@ -1,3 +1,4 @@
+import { CharacterCameraMode } from "@Easy/Core/Client/Controllers/Character/CharacterCameraMode";
 import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
 import { Airship } from "@Easy/Core/Shared/Airship";
@@ -34,8 +35,9 @@ export default class GameManager extends AirshipBehaviour {
 			);
 		}
 		if (RunUtil.IsClient()) {
-			Dependency<LocalEntityController>().SetFirstPerson(false);
-			Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
+			Dependency<LocalEntityController>().SetFirstPerson(true);
+			Dependency<LocalEntityController>().SetDefaultFirstPerson(true);
+			Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.LOCKED);
 			Dependency<LoadingScreenController>().FinishLoading();
 		}
 

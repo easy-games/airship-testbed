@@ -1,6 +1,6 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import Inventory from "Shared/Inventory/Inventory";
 import { Bin } from "Shared/Util/Bin";
 import { ItemDef } from "../ItemDefinitionTypes";
@@ -109,7 +109,7 @@ export class HeldItemManager {
 		const lookVector = this.character.movement.GetLookVector();
 
 		//Notify server of new State
-		Dependency<LocalEntityController>().AddToMoveData(
+		Dependency<LocalCharacterSingleton>().AddToMoveData(
 			"HeldItemState",
 			{
 				e: this.character.id,

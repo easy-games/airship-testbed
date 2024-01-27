@@ -1,8 +1,8 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { MeleeItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { Bin } from "Shared/Util/Bin";
@@ -41,7 +41,8 @@ export class MeleeHeldItem extends HeldItem {
 		}
 
 		//Play the items use effect
-		const isFirstPerson = this.character.IsLocalCharacter() && Dependency<LocalEntityController>().IsFirstPerson();
+		const isFirstPerson =
+			this.character.IsLocalCharacter() && Dependency<LocalCharacterSingleton>().IsFirstPerson();
 		if (meleeData.onUseVFX) {
 			if (isFirstPerson) {
 				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
