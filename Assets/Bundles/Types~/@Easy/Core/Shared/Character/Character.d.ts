@@ -31,6 +31,11 @@ export default class Character extends AirshipBehaviour {
     Awake(): void;
     Start(): void;
     Init(player: Player | undefined, id: number): void;
+    /**
+     * This should be called from the server.
+     *
+     * You can call it from the client only when using Client Authoratative characters.
+     */
     Teleport(pos: Vector3, lookDirection?: Vector3): void;
     OnDisable(): void;
     IsDestroyed(): boolean;
