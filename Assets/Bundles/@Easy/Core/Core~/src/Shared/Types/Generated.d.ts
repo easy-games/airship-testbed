@@ -13228,7 +13228,7 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
-interface MoveModifier {
+interface CharacterMoveModifier {
     speedMultiplier: number;
     blockSprint: boolean;
     blockJump: boolean;
