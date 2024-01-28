@@ -1,4 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -129,6 +130,7 @@ export class HumanoidCameraMode implements CameraMode {
 
 		this.SetFirstPerson(this.firstPerson);
 		this.SetDirection(this.graphicalCharacterGO.transform.forward);
+		Dependency<CrosshairController>().SetEnabled(true);
 	}
 
 	OnStop() {

@@ -40,10 +40,9 @@ export class UserController implements OnStart {
 				writeUser.userId = data.uid;
 				writeUser.username = data.username;
 				writeUser.usernameTag = data.discriminator;
+				Game.localPlayerLoaded = true;
+				Game.onLocalPlayerLoaded.Fire();
 			}
-
-			// Game.localPlayerLoaded = true;
-			// Game.onLocalPlayerLoaded.Fire();
 
 			this.onLocalUserUpdated.Fire(this.localUser);
 			return;

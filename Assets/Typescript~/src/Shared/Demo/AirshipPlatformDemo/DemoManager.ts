@@ -21,6 +21,7 @@ export default class DemoManager extends AirshipBehaviour {
 			});
 		}
 		if (RunUtil.IsClient()) {
+			// Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
 			Airship.loadingScreen.FinishLoading();
 		}
 	}
