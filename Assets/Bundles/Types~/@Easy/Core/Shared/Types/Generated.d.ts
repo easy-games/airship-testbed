@@ -2886,7 +2886,6 @@ interface Matrix4x4 {
     transpose: Matrix4x4;
     Item: number;
 
-    constructor(column0: Vector4, column1: Vector4, column2: Vector4, column3: Vector4): Matrix4x4;
 
     Equals(other: unknown): boolean;
     Equals(other: Matrix4x4): boolean;
@@ -2928,9 +2927,6 @@ interface Vector4 {
     magnitude: number;
     sqrMagnitude: number;
 
-    constructor(x: number, y: number, z: number, w: number): Vector4;
-    constructor(x: number, y: number, z: number): Vector4;
-    constructor(x: number, y: number): Vector4;
 
     Equals(other: unknown): boolean;
     Equals(other: Vector4): boolean;
@@ -2951,6 +2947,9 @@ interface Vector4Constructor {
     positiveInfinity: Vector4;
     negativeInfinity: Vector4;
 
+    new(x: number, y: number, z: number, w: number): Vector4;
+    new(x: number, y: number, z: number): Vector4;
+    new(x: number, y: number): Vector4;
 
     Distance(a: Vector4, b: Vector4): number;
     Dot(a: Vector4, b: Vector4): number;
@@ -2972,9 +2971,6 @@ interface Plane {
     distance: number;
     flipped: Plane;
 
-    constructor(inNormal: Vector3, inPoint: Vector3): Plane;
-    constructor(inNormal: Vector3, d: number): Plane;
-    constructor(a: Vector3, b: Vector3, c: Vector3): Plane;
 
     ClosestPointOnPlane(point: Vector3): Vector3;
     Flip(): void;
@@ -2993,6 +2989,9 @@ interface Plane {
     
 interface PlaneConstructor {
 
+    new(inNormal: Vector3, inPoint: Vector3): Plane;
+    new(inNormal: Vector3, d: number): Plane;
+    new(a: Vector3, b: Vector3, c: Vector3): Plane;
 
     Translate(plane: Plane, translation: Vector3): Plane;
 }
@@ -3002,6 +3001,7 @@ interface Matrix4x4Constructor {
     zero: Matrix4x4;
     identity: Matrix4x4;
 
+    new(column0: Vector4, column1: Vector4, column2: Vector4, column3: Vector4): Matrix4x4;
 
     Determinant(m: Matrix4x4): number;
     Frustum(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number): Matrix4x4;
@@ -3091,7 +3091,6 @@ interface Rigidbody extends Component {
     solverIterationCount: number;
     solverVelocityIterationCount: number;
 
-    constructor(): Rigidbody;
 
     AddExplosionForce(explosionForce: number, explosionPosition: Vector3, explosionRadius: number, upwardsModifier: number, mode: ForceMode): void;
     AddExplosionForce(explosionForce: number, explosionPosition: Vector3, explosionRadius: number, upwardsModifier: number): void;
@@ -3146,7 +3145,6 @@ interface Behaviour extends Component {
     enabled: boolean;
     isActiveAndEnabled: boolean;
 
-    constructor(): Behaviour;
 
 }
     
@@ -3200,7 +3198,6 @@ interface ArticulationBody extends Behaviour {
     collisionDetectionMode: CollisionDetectionMode;
     computeParentAnchor: boolean;
 
-    constructor(): ArticulationBody;
 
     AddForce(force: Vector3, mode: ForceMode): void;
     AddForce(force: Vector3): void;
@@ -3271,9 +3268,6 @@ interface ArticulationReducedSpace {
     dofCount: number;
     Item: number;
 
-    constructor(a: number): ArticulationReducedSpace;
-    constructor(a: number, b: number): ArticulationReducedSpace;
-    constructor(a: number, b: number, c: number): ArticulationReducedSpace;
 
 }
     
@@ -3284,7 +3278,6 @@ interface Bounds {
     min: Vector3;
     max: Vector3;
 
-    constructor(center: Vector3, size: Vector3): Bounds;
 
     ClosestPoint(point: Vector3): Vector3;
     Contains(point: Vector3): boolean;
@@ -3308,13 +3301,13 @@ interface Bounds {
 interface GeometryHolder {
     Type: GeometryType;
 
-    constructor(): GeometryHolder;
 
     As<T>(): T;
 }
     
 interface GeometryHolderConstructor {
 
+    new(): GeometryHolder;
 
     Create<T>(geometry: T): GeometryHolder;
 }
@@ -3332,8 +3325,6 @@ interface PhysicMaterial extends Object {
     staticFriction2: number;
     frictionDirection: Vector3;
 
-    constructor(): PhysicMaterial;
-    constructor(name: string): PhysicMaterial;
 
 }
     
@@ -3345,7 +3336,6 @@ interface Vector2 {
     magnitude: number;
     sqrMagnitude: number;
 
-    constructor(x: number, y: number): Vector2;
 
     Equals(other: unknown): boolean;
     Equals(other: Vector2): boolean;
@@ -3371,6 +3361,7 @@ interface Vector2Constructor {
     positiveInfinity: Vector2;
     negativeInfinity: Vector2;
 
+    new(x: number, y: number): Vector2;
 
     Angle(from: Vector2, to: Vector2): number;
     ClampMagnitude(vector: Vector2, maxLength: number): Vector2;
@@ -3394,7 +3385,6 @@ declare const Vector2: Vector2Constructor;
     
 interface Physics {
 
-    constructor(): Physics;
 
 }
     
@@ -3465,6 +3455,7 @@ interface PhysicsConstructor {
     penetrationPenaltyForce: number;
     autoSimulation: boolean;
 
+    new(): Physics;
 
     BakeMesh(meshID: number, convex: boolean, cookingOptions: MeshColliderCookingOptions): void;
     BakeMesh(meshID: number, convex: boolean): void;
@@ -3616,7 +3607,6 @@ declare const Physics: PhysicsConstructor;
     
 interface Physics2D {
 
-    constructor(): Physics2D;
 
 }
     
@@ -3728,7 +3718,6 @@ interface Collider2D extends Behaviour {
     bounciness: number;
     usedByComposite: boolean;
 
-    constructor(): Collider2D;
 
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>): number;
     Cast(direction: Vector2, results: CSArray<RaycastHit2D>, distance: number): number;
@@ -3790,7 +3779,6 @@ interface CompositeCollider2D extends Collider2D {
     pathCount: number;
     pointCount: number;
 
-    constructor(): CompositeCollider2D;
 
     GenerateGeometry(): void;
     GetCompositedColliders(colliders: CSArray<Collider2D>): number;
@@ -3832,7 +3820,6 @@ interface Rigidbody2D extends Component {
     localToWorldMatrix: Matrix4x4;
     fixedAngle: boolean;
 
-    constructor(): Rigidbody2D;
 
     AddForce(force: Vector2): void;
     AddForce(force: Vector2, mode: ForceMode2D): void;
@@ -3907,8 +3894,6 @@ interface PhysicsMaterial2D extends Object {
     bounciness: number;
     friction: number;
 
-    constructor(): PhysicsMaterial2D;
-    constructor(name: string): PhysicsMaterial2D;
 
 }
     
@@ -3980,7 +3965,6 @@ interface PhysicsShapeGroup2D {
     vertexCount: number;
     localToWorldMatrix: Matrix4x4;
 
-    constructor(shapeCapacity: number, vertexCapacity: number): PhysicsShapeGroup2D;
 
     Add(physicsShapeGroup: PhysicsShapeGroup2D): void;
     AddBox(center: Vector2, size: Vector2, angle: number, edgeRadius: number): number;
@@ -4040,7 +4024,6 @@ interface SlideMovement {
     useSimulationMove: boolean;
     useAttachedTriggers: boolean;
 
-    constructor(): SlideMovement;
 
     SetLayerMask(mask: LayerMask): void;
     SetStartPosition(position: Vector2): void;
@@ -4077,7 +4060,6 @@ interface Mesh extends Object {
     boneWeights: CSArray<BoneWeight>;
     skinWeightBufferLayout: SkinWeights;
 
-    constructor(): Mesh;
 
     AddBlendShapeFrame(shapeName: string, frameWeight: number, deltaVertices: CSArray<Vector3>, deltaNormals: CSArray<Vector3>, deltaTangents: CSArray<Vector3>): void;
     Clear(keepVertexLayout: boolean): void;
@@ -4269,7 +4251,6 @@ interface Color32 {
     a: number;
     Item: number;
 
-    constructor(r: number, g: number, b: number, a: number): Color32;
 
     ToString(): string;
     ToString(format: string): string;
@@ -4278,6 +4259,7 @@ interface Color32 {
     
 interface Color32Constructor {
 
+    new(r: number, g: number, b: number, a: number): Color32;
 
     Lerp(a: Color32, b: Color32, t: number): Color32;
     LerpUnclamped(a: Color32, b: Color32, t: number): Color32;
@@ -4328,8 +4310,6 @@ interface GraphicsBuffer {
     bufferHandle: GraphicsBufferHandle;
     name: string;
 
-    constructor(target: Target, count: number, stride: number): GraphicsBuffer;
-    constructor(target: Target, usageFlags: UsageFlags, count: number, stride: number): GraphicsBuffer;
 
     Dispose(): void;
     GetData(data: unknown): void;
@@ -4363,9 +4343,6 @@ interface ComputeBuffer {
     stride: number;
     name: string;
 
-    constructor(count: number, stride: number): ComputeBuffer;
-    constructor(count: number, stride: number, type: ComputeBufferType): ComputeBuffer;
-    constructor(count: number, stride: number, type: ComputeBufferType, usage: ComputeBufferMode): ComputeBuffer;
 
     BeginWrite<T>(computeBufferStartIndex: number, count: number): CSArray<T>;
     Dispose(): void;
@@ -4386,6 +4363,9 @@ interface ComputeBuffer {
     
 interface ComputeBufferConstructor {
 
+    new(count: number, stride: number): ComputeBuffer;
+    new(count: number, stride: number, type: ComputeBufferType): ComputeBuffer;
+    new(count: number, stride: number, type: ComputeBufferType, usage: ComputeBufferMode): ComputeBuffer;
 
     CopyCount(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
 }
@@ -4393,6 +4373,8 @@ declare const ComputeBuffer: ComputeBufferConstructor;
     
 interface GraphicsBufferConstructor {
 
+    new(target: Target, count: number, stride: number): GraphicsBuffer;
+    new(target: Target, usageFlags: UsageFlags, count: number, stride: number): GraphicsBuffer;
 
     CopyCount(src: ComputeBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
     CopyCount(src: GraphicsBuffer, dst: ComputeBuffer, dstOffsetBytes: number): void;
@@ -4417,7 +4399,6 @@ interface SubMeshDescriptor {
     firstVertex: number;
     vertexCount: number;
 
-    constructor(indexStart: number, indexCount: number, topology: MeshTopology): SubMeshDescriptor;
 
     ToString(): string;
 }
@@ -4428,7 +4409,6 @@ interface VertexAttributeDescriptor {
     dimension: number;
     stream: number;
 
-    constructor(attribute: VertexAttribute, format: VertexAttributeFormat, dimension: number, stream: number): VertexAttributeDescriptor;
 
     Equals(other: unknown): boolean;
     Equals(other: VertexAttributeDescriptor): boolean;
@@ -4478,6 +4458,7 @@ interface MeshData {
     
 interface MeshConstructor {
 
+    new(): Mesh;
 
     AcquireReadOnlyMeshData(mesh: Mesh): MeshDataArray;
     AcquireReadOnlyMeshData(meshes: CSArray<Mesh>): MeshDataArray;
@@ -4576,6 +4557,7 @@ interface Physics2DConstructor {
     showColliderContacts: boolean;
     showColliderAABB: boolean;
 
+    new(): Physics2D;
 
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2): RaycastHit2D;
     BoxCast(origin: Vector2, size: Vector2, angle: number, direction: Vector2, distance: number): RaycastHit2D;
@@ -4794,7 +4776,6 @@ interface MonoBehaviour extends Behaviour {
     didAwake: boolean;
     runInEditMode: boolean;
 
-    constructor(): MonoBehaviour;
 
     CancelInvoke(): void;
     CancelInvoke(methodName: string): void;
@@ -4814,7 +4795,6 @@ interface MonoBehaviour extends Behaviour {
     
 interface YieldInstruction {
 
-    constructor(): YieldInstruction;
 
 }
     
@@ -4825,6 +4805,7 @@ interface Coroutine extends YieldInstruction {
     
 interface MonoBehaviourConstructor {
 
+    new(): MonoBehaviour;
 
     print(message: unknown): void;
 }
@@ -4832,7 +4813,6 @@ declare const MonoBehaviour: MonoBehaviourConstructor;
     
 interface Debug {
 
-    constructor(): Debug;
 
 }
     
@@ -4851,6 +4831,7 @@ interface DebugConstructor {
     isDebugBuild: boolean;
     logger: unknown;
 
+    new(): Debug;
 
     Assert(condition: boolean): void;
     Assert(condition: boolean, context: Object): void;
@@ -4948,9 +4929,6 @@ interface Rect {
     top: number;
     bottom: number;
 
-    constructor(x: number, y: number, width: number, height: number): Rect;
-    constructor(position: Vector2, size: Vector2): Rect;
-    constructor(source: Rect): Rect;
 
     Contains(point: Vector2): boolean;
     Contains(point: Vector3): boolean;
@@ -4969,6 +4947,9 @@ interface Rect {
 interface RectConstructor {
     zero: Rect;
 
+    new(x: number, y: number, width: number, height: number): Rect;
+    new(position: Vector2, size: Vector2): Rect;
+    new(source: Rect): Rect;
 
     MinMaxRect(xmin: number, ymin: number, xmax: number, ymax: number): Rect;
     NormalizedToPoint(rectangle: Rect, normalizedRectCoordinates: Vector2): Vector2;
@@ -5005,8 +4986,6 @@ interface Texture extends Object {
 interface Hash128 {
     isValid: boolean;
 
-    constructor(u32_0: number, u32_1: number, u32_2: number, u32_3: number): Hash128;
-    constructor(u64_0: number, u64_1: number): Hash128;
 
     Append(data: string): void;
     Append<T>(data: CSArray<T>): void;
@@ -5029,6 +5008,8 @@ interface Hash128 {
     
 interface Hash128Constructor {
 
+    new(u32_0: number, u32_1: number, u32_2: number, u32_3: number): Hash128;
+    new(u64_0: number, u64_1: number): Hash128;
 
     Compute(data: string): Hash128;
     Compute<T>(data: CSArray<T>): Hash128;
@@ -5049,7 +5030,6 @@ interface GraphicsTexture {
     descriptor: GraphicsTextureDescriptor;
     state: GraphicsTextureState;
 
-    constructor(desc: GraphicsTextureDescriptor): GraphicsTexture;
 
     Dispose(): void;
 }
@@ -5071,6 +5051,7 @@ interface GraphicsTextureDescriptor {
 interface GraphicsTextureConstructor {
     active: GraphicsTexture;
 
+    new(desc: GraphicsTextureDescriptor): GraphicsTexture;
 
 }
 declare const GraphicsTexture: GraphicsTextureConstructor;
@@ -5118,22 +5099,6 @@ interface Texture2D extends Texture {
     alphaIsTransparency: boolean;
     ignoreMipmapLimit: boolean;
 
-    constructor(width: number, height: number, format: DefaultFormat, flags: TextureCreationFlags): Texture2D;
-    constructor(width: number, height: number, format: DefaultFormat, mipCount: number, flags: TextureCreationFlags): Texture2D;
-    constructor(width: number, height: number, format: DefaultFormat, mipCount: number, mipmapLimitGroupName: string, flags: TextureCreationFlags): Texture2D;
-    constructor(width: number, height: number, format: DefaultFormat, mipCount: number, flags: TextureCreationFlags, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
-    constructor(width: number, height: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture2D;
-    constructor(width: number, height: number, format: GraphicsFormat, mipCount: number, flags: TextureCreationFlags): Texture2D;
-    constructor(width: number, height: number, format: GraphicsFormat, mipCount: number, mipmapLimitGroupName: string, flags: TextureCreationFlags): Texture2D;
-    constructor(width: number, height: number, format: GraphicsFormat, mipCount: number, flags: TextureCreationFlags, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
-    constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean): Texture2D;
-    constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean): Texture2D;
-    constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
-    constructor(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, ignoreMipmapLimit: boolean, mipmapLimitGroupName: string): Texture2D;
-    constructor(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
-    constructor(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean, createUninitialized: boolean): Texture2D;
-    constructor(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean): Texture2D;
-    constructor(width: number, height: number): Texture2D;
 
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
@@ -5192,6 +5157,22 @@ interface Texture2DConstructor {
     linearGrayTexture: Texture2D;
     normalTexture: Texture2D;
 
+    new(width: number, height: number, format: DefaultFormat, flags: TextureCreationFlags): Texture2D;
+    new(width: number, height: number, format: DefaultFormat, mipCount: number, flags: TextureCreationFlags): Texture2D;
+    new(width: number, height: number, format: DefaultFormat, mipCount: number, mipmapLimitGroupName: string, flags: TextureCreationFlags): Texture2D;
+    new(width: number, height: number, format: DefaultFormat, mipCount: number, flags: TextureCreationFlags, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
+    new(width: number, height: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture2D;
+    new(width: number, height: number, format: GraphicsFormat, mipCount: number, flags: TextureCreationFlags): Texture2D;
+    new(width: number, height: number, format: GraphicsFormat, mipCount: number, mipmapLimitGroupName: string, flags: TextureCreationFlags): Texture2D;
+    new(width: number, height: number, format: GraphicsFormat, mipCount: number, flags: TextureCreationFlags, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
+    new(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean): Texture2D;
+    new(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean): Texture2D;
+    new(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2D;
+    new(width: number, height: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, ignoreMipmapLimit: boolean, mipmapLimitGroupName: string): Texture2D;
+    new(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
+    new(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean, createUninitialized: boolean): Texture2D;
+    new(width: number, height: number, textureFormat: TextureFormat, mipChain: boolean): Texture2D;
+    new(width: number, height: number): Texture2D;
 
     CreateExternalTexture(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean, nativeTex: unknown): Texture2D;
     GenerateAtlas(sizes: CSArray<Vector2>, padding: number, atlasSize: number, results: CSArray<Rect>): boolean;
@@ -5200,13 +5181,13 @@ declare const Texture2D: Texture2DConstructor;
     
 interface ScriptableObject extends Object {
 
-    constructor(): ScriptableObject;
 
     SetDirty(): void;
 }
     
 interface ScriptableObjectConstructor {
 
+    new(): ScriptableObject;
 
     CreateInstance(className: string): ScriptableObject;
     CreateInstance(type: unknown): ScriptableObject;
@@ -5239,8 +5220,6 @@ interface TextAsset extends Object {
     text: string;
     dataSize: number;
 
-    constructor(): TextAsset;
-    constructor(text: string): TextAsset;
 
     GetData<T>(): CSArray<T>;
     ToString(): string;
@@ -5248,7 +5227,6 @@ interface TextAsset extends Object {
     
 interface Resources {
 
-    constructor(): Resources;
 
 }
     
@@ -5258,19 +5236,18 @@ interface AsyncOperation extends YieldInstruction {
     priority: number;
     allowSceneActivation: boolean;
 
-    constructor(): AsyncOperation;
 
 }
     
 interface ResourceRequest extends AsyncOperation {
     asset: Object;
 
-    constructor(): ResourceRequest;
 
 }
     
 interface ResourcesConstructor {
 
+    new(): Resources;
 
     FindObjectsOfTypeAll(type: unknown): CSArray<Object>;
     FindObjectsOfTypeAll<T>(): CSArray<T>;
@@ -5299,13 +5276,11 @@ declare const Resources: ResourcesConstructor;
     
 interface AgonesCore {
 
-    constructor(): AgonesCore;
 
 }
     
 interface AgonesProxy extends MonoBehaviour {
 
-    constructor(): AgonesProxy;
 
     Connect(): void;
     Ready(): void;
@@ -5315,6 +5290,7 @@ interface AgonesProxy extends MonoBehaviour {
 interface AgonesCoreConstructor {
     Agones: AgonesProxy;
 
+    new(): AgonesCore;
 
     SetAgonesProxy(agones: AgonesProxy): void;
 }
@@ -5322,13 +5298,13 @@ declare const AgonesCore: AgonesCoreConstructor;
     
 interface RunCore {
 
-    constructor(): RunCore;
 
 }
     
 interface RunCoreConstructor {
     launchInDedicatedServerMode: boolean;
 
+    new(): RunCore;
 
     IsClient(): boolean;
     IsClone(): boolean;
@@ -5340,13 +5316,11 @@ declare const RunCore: RunCoreConstructor;
     
 interface NetworkCore {
 
-    constructor(): NetworkCore;
 
 }
     
 interface Net extends MonoBehaviour {
 
-    constructor(): Net;
 
     BroadcastToAllClients(blob: BinaryBlob, reliable: number): void;
     BroadcastToAllExceptClient(ignoredClientId: number, blob: BinaryBlob, reliable: number): void;
@@ -5359,8 +5333,6 @@ interface BinaryBlob {
     m_dataSize: number;
     m_data: CSArray<number>;
 
-    constructor(): BinaryBlob;
-    constructor(bytes: CSArray<number>): BinaryBlob;
 
     GetDictionary(): CSDictionary<unknown, unknown>;
 }
@@ -5387,7 +5359,6 @@ interface NetworkManager extends MonoBehaviour {
     SpawnablePrefabs: PrefabObjects;
     RuntimeSpawnablePrefabs: CSDictionary<number, PrefabObjects>;
 
-    constructor(): NetworkManager;
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
     CanLog(loggingType: LoggingType): boolean;
@@ -5428,7 +5399,6 @@ interface ServerManager extends MonoBehaviour {
     NetworkManager: NetworkManager;
     Authenticator: Authenticator;
 
-    constructor(): ServerManager;
 
     AnyServerStarted(excludedIndex: unknown): boolean;
     Broadcast<T>(connection: NetworkConnection, message: T, requireAuthenticated: boolean, channel: Channel): void;
@@ -5479,8 +5449,6 @@ interface NetworkConnection {
     IsHost: boolean;
     IsLocalClient: boolean;
 
-    constructor(): NetworkConnection;
-    constructor(manager: NetworkManager, clientId: number, transportIndex: number, asServer: boolean): NetworkConnection;
 
     Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
     Disconnect(immediately: boolean): void;
@@ -5502,7 +5470,6 @@ interface NetworkObserver extends MonoBehaviour {
     UpdateHostVisibility: boolean;
     ObserverConditions: CSArray<ObserverCondition>;
 
-    constructor(): NetworkObserver;
 
     GetObserverCondition<T>(): ObserverCondition;
     SetUpdateHostVisibility(value: boolean): void;
@@ -5618,7 +5585,6 @@ interface ClientManager extends MonoBehaviour {
     NetworkManager: NetworkManager;
     LevelOfDetailInterval: number;
 
-    constructor(): ClientManager;
 
     Broadcast<T>(message: T, channel: Channel): void;
     GetTransportIndex(): number;
@@ -5658,7 +5624,6 @@ interface Writer {
     NetworkManager: NetworkManager;
     Capacity: number;
 
-    constructor(): Writer;
 
     EnsureBufferCapacity(count: number): void;
     EnsureBufferLength(count: number): void;
@@ -5730,7 +5695,6 @@ interface Ray2D {
     origin: Vector2;
     direction: Vector2;
 
-    constructor(origin: Vector2, direction: Vector2): Ray2D;
 
     GetPoint(distance: number): Vector2;
     ToString(): string;
@@ -5745,7 +5709,6 @@ interface Vector2Int {
     magnitude: number;
     sqrMagnitude: number;
 
-    constructor(x: number, y: number): Vector2Int;
 
     Clamp(min: Vector2Int, max: Vector2Int): void;
     Equals(other: unknown): boolean;
@@ -5766,6 +5729,7 @@ interface Vector2IntConstructor {
     left: Vector2Int;
     right: Vector2Int;
 
+    new(x: number, y: number): Vector2Int;
 
     CeilToInt(v: Vector2): Vector2Int;
     Distance(a: Vector2Int, b: Vector2Int): number;
@@ -5780,6 +5744,7 @@ declare const Vector2Int: Vector2IntConstructor;
 interface WriterConstructor {
     UNSET_COLLECTION_SIZE_VALUE: number;
 
+    new(): Writer;
 
 }
 declare const Writer: WriterConstructor;
@@ -5787,13 +5752,13 @@ declare const Writer: WriterConstructor;
 interface ObserverManager extends MonoBehaviour {
     UpdateHostVisibility: boolean;
 
-    constructor(): ObserverManager;
 
     SetUpdateHostVisibility(value: boolean, updateType: HostVisibilityUpdateTypes): void;
 }
     
 interface ObserverManagerConstructor {
 
+    new(): ObserverManager;
 
     GetLevelOfDetailInterval(lodIndex: number): number;
 }
@@ -5804,7 +5769,6 @@ interface TransportManager extends MonoBehaviour {
     HasIntermediateLayer: boolean;
     LatencySimulator: LatencySimulator;
 
-    constructor(): TransportManager;
 
     GetLowestMTU(channel: number): number;
     GetMTU(channel: number): number;
@@ -5855,7 +5819,6 @@ interface ClientConnectionStateArgs {
     ConnectionState: LocalConnectionState;
     TransportIndex: number;
 
-    constructor(connectionState: LocalConnectionState, transportIndex: number): ClientConnectionStateArgs;
 
 }
     
@@ -5864,7 +5827,6 @@ interface ClientReceivedDataArgs {
     Channel: Channel;
     TransportIndex: number;
 
-    constructor(data: CSArray<number>, channel: Channel, transportIndex: number): ClientReceivedDataArgs;
 
 }
     
@@ -5873,7 +5835,6 @@ interface RemoteConnectionStateArgs {
     ConnectionState: RemoteConnectionState;
     ConnectionId: number;
 
-    constructor(connectionState: RemoteConnectionState, connectionId: number, transportIndex: number): RemoteConnectionStateArgs;
 
 }
     
@@ -5881,7 +5842,6 @@ interface ServerConnectionStateArgs {
     TransportIndex: number;
     ConnectionState: LocalConnectionState;
 
-    constructor(connectionState: LocalConnectionState, transportIndex: number): ServerConnectionStateArgs;
 
 }
     
@@ -5892,14 +5852,11 @@ interface ServerReceivedDataArgs {
     TransportIndex: number;
     FinalizeMethod: unknown;
 
-    constructor(data: CSArray<number>, channel: Channel, connectionId: number, transportIndex: number): ServerReceivedDataArgs;
-    constructor(data: CSArray<number>, channel: Channel, connectionId: number, transportIndex: number, finalizeMethod: unknown): ServerReceivedDataArgs;
 
 }
     
 interface LatencySimulator {
 
-    constructor(): LatencySimulator;
 
     AddOutgoing(channelId: number, segment: CSArray<number>, toServer: boolean, connectionId: number): void;
     GetEnabled(): boolean;
@@ -5924,6 +5881,7 @@ interface TransportManagerConstructor {
     SPLIT_INDICATOR_SIZE: number;
     CHANNEL_COUNT: number;
 
+    new(): TransportManager;
 
 }
 declare const TransportManager: TransportManagerConstructor;
@@ -5940,7 +5898,6 @@ interface TimeManager extends MonoBehaviour {
     PhysicsMode: PhysicsMode;
     LocalTick: number;
 
-    constructor(): TimeManager;
 
     GetPreciseTick(tick: number): PreciseTick;
     GetPreciseTick(tickType: TickType): PreciseTick;
@@ -5962,13 +5919,13 @@ interface PreciseTick {
     Tick: number;
     Percent: number;
 
-    constructor(tick: number, percent: number): PreciseTick;
 
 }
     
 interface TimeManagerConstructor {
     UNSET_TICK: number;
 
+    new(): TimeManager;
 
 }
 declare const TimeManager: TimeManagerConstructor;
@@ -5977,7 +5934,6 @@ interface SceneManager extends MonoBehaviour {
     SceneConnections: CSDictionary<Scene, CSArray<NetworkConnection>>;
     NetworkManager: NetworkManager;
 
-    constructor(): SceneManager;
 
     AddConnectionToScene(conn: NetworkConnection, scene: Scene): void;
     AddOwnerToDefaultScene(nob: NetworkObject): void;
@@ -6024,8 +5980,6 @@ interface LoadSceneParameters {
     loadSceneMode: LoadSceneMode;
     localPhysicsMode: LocalPhysicsMode;
 
-    constructor(mode: LoadSceneMode): LoadSceneParameters;
-    constructor(mode: LoadSceneMode, physicsMode: LocalPhysicsMode): LoadSceneParameters;
 
 }
     
@@ -6036,7 +5990,6 @@ interface LoadQueueData {
     GlobalScenes: CSArray<string>;
     AsServer: boolean;
 
-    constructor(): LoadQueueData;
 
 }
     
@@ -6048,24 +6001,6 @@ interface SceneLoadData {
     Params: LoadParams;
     Options: LoadOptions;
 
-    constructor(): SceneLoadData;
-    constructor(scene: Scene): SceneLoadData;
-    constructor(sceneName: string): SceneLoadData;
-    constructor(sceneHandle: number): SceneLoadData;
-    constructor(sceneHandle: number, sceneName: string): SceneLoadData;
-    constructor(sceneLookupData: SceneLookupData): SceneLoadData;
-    constructor(scenes: CSArray<Scene>): SceneLoadData;
-    constructor(sceneNames: CSArray<string>): SceneLoadData;
-    constructor(sceneHandles: CSArray<number>): SceneLoadData;
-    constructor(scenes: CSArray<Scene>): SceneLoadData;
-    constructor(sceneNames: CSArray<string>): SceneLoadData;
-    constructor(sceneHandles: CSArray<number>): SceneLoadData;
-    constructor(sceneLookupDatas: CSArray<SceneLookupData>): SceneLoadData;
-    constructor(scene: Scene, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    constructor(scenes: CSArray<Scene>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    constructor(sceneNames: CSArray<string>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    constructor(sceneHandles: CSArray<number>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
-    constructor(sceneLookupDatas: CSArray<SceneLookupData>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
 
     GetFirstLookupScene(): Scene;
 }
@@ -6076,11 +6011,6 @@ interface SceneLookupData {
     NameOnly: string;
     IsValid: boolean;
 
-    constructor(): SceneLookupData;
-    constructor(scene: Scene): SceneLookupData;
-    constructor(name: string): SceneLookupData;
-    constructor(handle: number): SceneLookupData;
-    constructor(handle: number, name: string): SceneLookupData;
 
     Equals(sld: SceneLookupData): boolean;
     Equals(obj: unknown): boolean;
@@ -6091,6 +6021,11 @@ interface SceneLookupData {
     
 interface SceneLookupDataConstructor {
 
+    new(): SceneLookupData;
+    new(scene: Scene): SceneLookupData;
+    new(name: string): SceneLookupData;
+    new(handle: number): SceneLookupData;
+    new(handle: number, name: string): SceneLookupData;
 
     CreateData(scene: Scene): SceneLookupData;
     CreateData(name: string): SceneLookupData;
@@ -6110,7 +6045,6 @@ interface LoadParams {
     ServerParams: CSArray<unknown>;
     ClientParams: CSArray<number>;
 
-    constructor(): LoadParams;
 
 }
     
@@ -6121,7 +6055,6 @@ interface LoadOptions {
     ReloadScenes: boolean;
     Addressables: boolean;
 
-    constructor(): LoadOptions;
 
 }
     
@@ -6132,7 +6065,6 @@ interface UnloadQueueData {
     GlobalScenes: CSArray<string>;
     AsServer: boolean;
 
-    constructor(): UnloadQueueData;
 
 }
     
@@ -6142,18 +6074,6 @@ interface SceneUnloadData {
     Params: UnloadParams;
     Options: UnloadOptions;
 
-    constructor(): SceneUnloadData;
-    constructor(scene: Scene): SceneUnloadData;
-    constructor(sceneName: string): SceneUnloadData;
-    constructor(sceneHandle: number): SceneUnloadData;
-    constructor(sceneLookupData: SceneLookupData): SceneUnloadData;
-    constructor(scenes: CSArray<Scene>): SceneUnloadData;
-    constructor(sceneNames: CSArray<string>): SceneUnloadData;
-    constructor(sceneHandles: CSArray<number>): SceneUnloadData;
-    constructor(scenes: CSArray<Scene>): SceneUnloadData;
-    constructor(sceneNames: CSArray<string>): SceneUnloadData;
-    constructor(sceneHandles: CSArray<number>): SceneUnloadData;
-    constructor(sceneLookupDatas: CSArray<SceneLookupData>): SceneUnloadData;
 
 }
     
@@ -6161,7 +6081,6 @@ interface UnloadParams {
     ServerParams: CSArray<unknown>;
     ClientParams: CSArray<number>;
 
-    constructor(): UnloadParams;
 
 }
     
@@ -6169,12 +6088,12 @@ interface UnloadOptions {
     Mode: ServerUnloadMode;
     Addressables: boolean;
 
-    constructor(): UnloadOptions;
 
 }
     
 interface SceneManagerConstructor {
 
+    new(): SceneManager;
 
     GetScene(sceneName: string, nm: NetworkManager, warnIfDuplicates: boolean): Scene;
     GetScene(sceneHandle: number): Scene;
@@ -6186,7 +6105,6 @@ interface PredictionManager extends MonoBehaviour {
     LastReplicateTick: number;
     QueuedInputs: number;
 
-    constructor(): PredictionManager;
 
     AddRigidbodyCount(c: Component): void;
     GetMaximumServerReplicates(): number;
@@ -6199,7 +6117,6 @@ interface PredictionManager extends MonoBehaviour {
     
 interface RollbackManager extends MonoBehaviour {
 
-    constructor(): RollbackManager;
 
     Return(): void;
     Rollback(pt: PreciseTick, physicsType: PhysicsType, asOwner: boolean): void;
@@ -6222,8 +6139,6 @@ interface Reader {
     Remaining: number;
     NetworkConnection: NetworkConnection;
 
-    constructor(bytes: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
-    constructor(segment: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
 
     BlockCopy(target: CSArray<number>, targetOffset: number, count: number): void;
     Clear(): void;
@@ -6297,6 +6212,8 @@ interface ReaderConstructor {
     LastNetworkObject: NetworkObject;
     LastNetworkBehaviour: NetworkBehaviour;
 
+    new(bytes: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
+    new(segment: CSArray<number>, networkManager: NetworkManager, networkConnection: NetworkConnection, source: DataSource): Reader;
 
 }
 declare const Reader: ReaderConstructor;
@@ -6318,7 +6235,6 @@ interface IReconcileData {
     
 interface ClientRpcDelegate {
 
-    constructor(object: unknown, method: unknown): ClientRpcDelegate;
 
     BeginInvoke(reader: PooledReader, channel: Channel, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -6327,7 +6243,6 @@ interface ClientRpcDelegate {
     
 interface ReconcileRpcDelegate {
 
-    constructor(object: unknown, method: unknown): ReconcileRpcDelegate;
 
     BeginInvoke(reader: PooledReader, channel: Channel, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -6336,7 +6251,6 @@ interface ReconcileRpcDelegate {
     
 interface ReplicateRpcDelegate {
 
-    constructor(object: unknown, method: unknown): ReplicateRpcDelegate;
 
     BeginInvoke(reader: PooledReader, sender: NetworkConnection, channel: Channel, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -6345,7 +6259,6 @@ interface ReplicateRpcDelegate {
     
 interface ServerRpcDelegate {
 
-    constructor(object: unknown, method: unknown): ServerRpcDelegate;
 
     BeginInvoke(reader: PooledReader, channel: Channel, sender: NetworkConnection, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -6354,7 +6267,6 @@ interface ServerRpcDelegate {
     
 interface SyncVarReadDelegate {
 
-    constructor(object: unknown, method: unknown): SyncVarReadDelegate;
 
     BeginInvoke(reader: PooledReader, index: number, asServer: boolean, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): boolean;
@@ -6363,7 +6275,6 @@ interface SyncVarReadDelegate {
     
 interface PooledWriter extends Writer {
 
-    constructor(): PooledWriter;
 
     Dispose(): void;
     DisposeLength(): void;
@@ -6373,7 +6284,6 @@ interface PooledWriter extends Writer {
     
 interface PredictedSpawn extends NetworkBehaviour {
 
-    constructor(): PredictedSpawn;
 
     Awake(): void;
     Awake___UserLogic(): void;
@@ -6419,7 +6329,6 @@ interface LevelOfDetailData extends IResettable {
     CurrentLevelOfDetail: number;
     PreviousLevelOfDetail: number;
 
-    constructor(): LevelOfDetailData;
 
     InitializeState(): void;
     ResetState(): void;
@@ -6428,6 +6337,8 @@ interface LevelOfDetailData extends IResettable {
 interface NetworkConnectionConstructor {
     UNSET_CLIENTID_VALUE: number;
 
+    new(): NetworkConnection;
+    new(manager: NetworkManager, clientId: number, transportIndex: number, asServer: boolean): NetworkConnection;
 
 }
 declare const NetworkConnection: NetworkConnectionConstructor;
@@ -6465,6 +6376,7 @@ interface Authenticator extends MonoBehaviour {
 interface ServerManagerConstructor {
     MAXIMUM_REMOTE_CLIENT_TIMEOUT_DURATION: number;
 
+    new(): ServerManager;
 
 }
 declare const ServerManager: ServerManagerConstructor;
@@ -6477,14 +6389,12 @@ interface DebugManager extends MonoBehaviour {
     ReconcileRpcLinks: boolean;
     ServerRpcLinks: boolean;
 
-    constructor(): DebugManager;
 
 }
     
 interface StatisticsManager extends MonoBehaviour {
     NetworkTraffic: NetworkTraficStatistics;
 
-    constructor(): StatisticsManager;
 
 }
     
@@ -6492,7 +6402,6 @@ interface NetworkTraficStatistics {
     UpdateClient: boolean;
     UpdateServer: boolean;
 
-    constructor(): NetworkTraficStatistics;
 
     LocalClientReceivedData(dataLength: number): void;
     LocalServerReceivedData(dataLength: number): void;
@@ -6502,6 +6411,7 @@ interface NetworkTraficStatistics {
     
 interface NetworkTraficStatisticsConstructor {
 
+    new(): NetworkTraficStatistics;
 
     FormatBytesToLargest(bytes: number): string;
 }
@@ -6546,6 +6456,7 @@ interface NetworkManagerConstructor {
     Instances: CSArray<NetworkManager>;
     EmptyConnection: NetworkConnection;
 
+    new(): NetworkManager;
 
     StaticCanLog(loggingType: LoggingType): boolean;
     StaticLog(value: string): void;
@@ -6558,6 +6469,7 @@ interface NetworkCoreConstructor {
     Net: Net;
     NetworkManager: NetworkManager;
 
+    new(): NetworkCore;
 
     Despawn(obj: GameObject): void;
     SetNet(net: Net): void;
@@ -6641,7 +6553,6 @@ interface Camera extends Behaviour {
     hdr: boolean;
     stereoMirrorMode: boolean;
 
-    constructor(): Camera;
 
     AddCommandBuffer(evt: CameraEvent, buffer: CommandBuffer): void;
     AddCommandBufferAsync(evt: CameraEvent, buffer: CommandBuffer, queueType: ComputeQueueType): void;
@@ -6736,17 +6647,6 @@ interface RenderTexture extends Texture {
     isCubemap: boolean;
     isVolume: boolean;
 
-    constructor(desc: RenderTextureDescriptor): RenderTexture;
-    constructor(textureToCopy: RenderTexture): RenderTexture;
-    constructor(width: number, height: number, depth: number, format: DefaultFormat): RenderTexture;
-    constructor(width: number, height: number, depth: number, format: GraphicsFormat): RenderTexture;
-    constructor(width: number, height: number, depth: number, format: GraphicsFormat, mipCount: number): RenderTexture;
-    constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat, mipCount: number): RenderTexture;
-    constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat): RenderTexture;
-    constructor(width: number, height: number, depth: number, format: RenderTextureFormat, readWrite: RenderTextureReadWrite): RenderTexture;
-    constructor(width: number, height: number, depth: number, format: RenderTextureFormat): RenderTexture;
-    constructor(width: number, height: number, depth: number): RenderTexture;
-    constructor(width: number, height: number, depth: number, format: RenderTextureFormat, mipCount: number): RenderTexture;
 
     ApplyDynamicScale(): void;
     ConvertToEquirect(equirect: RenderTexture, eye: MonoOrStereoscopicEye): void;
@@ -6795,15 +6695,6 @@ interface RenderTextureDescriptor {
     useDynamicScale: boolean;
     useDynamicScaleExplicit: boolean;
 
-    constructor(width: number, height: number): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: RenderTextureFormat): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number, readWrite: RenderTextureReadWrite): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat): RenderTextureDescriptor;
-    constructor(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat, mipCount: number): RenderTextureDescriptor;
 
 }
     
@@ -6811,6 +6702,17 @@ interface RenderTextureConstructor {
     active: RenderTexture;
     enabled: boolean;
 
+    new(desc: RenderTextureDescriptor): RenderTexture;
+    new(textureToCopy: RenderTexture): RenderTexture;
+    new(width: number, height: number, depth: number, format: DefaultFormat): RenderTexture;
+    new(width: number, height: number, depth: number, format: GraphicsFormat): RenderTexture;
+    new(width: number, height: number, depth: number, format: GraphicsFormat, mipCount: number): RenderTexture;
+    new(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat, mipCount: number): RenderTexture;
+    new(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat): RenderTexture;
+    new(width: number, height: number, depth: number, format: RenderTextureFormat, readWrite: RenderTextureReadWrite): RenderTexture;
+    new(width: number, height: number, depth: number, format: RenderTextureFormat): RenderTexture;
+    new(width: number, height: number, depth: number): RenderTexture;
+    new(width: number, height: number, depth: number, format: RenderTextureFormat, mipCount: number): RenderTexture;
 
     GetTemporary(desc: RenderTextureDescriptor): RenderTexture;
     GetTemporary(width: number, height: number, depthBuffer: number, format: GraphicsFormat, antiAliasing: number, memorylessMode: RenderTextureMemoryless, vrUsage: VRTextureUsage, useDynamicScale: boolean): RenderTexture;
@@ -6835,7 +6737,6 @@ interface CommandBuffer {
     name: string;
     sizeInBytes: number;
 
-    constructor(): CommandBuffer;
 
     BeginRenderPass(width: number, height: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>): void;
     BeginRenderPass(width: number, height: number, volumeDepth: number, samples: number, attachments: CSArray<AttachmentDescriptor>, depthAttachmentIndex: number, subPasses: CSArray<SubPassDescriptor>): void;
@@ -7198,9 +7099,6 @@ interface AttachmentDescriptor {
     clearDepth: number;
     clearStencil: number;
 
-    constructor(format: GraphicsFormat): AttachmentDescriptor;
-    constructor(format: RenderTextureFormat): AttachmentDescriptor;
-    constructor(format: RenderTextureFormat, target: RenderTargetIdentifier, loadExistingContents: boolean, storeResults: boolean, resolve: boolean): AttachmentDescriptor;
 
     ConfigureClear(clearColor: Color, clearDepth: number, clearStencil: number): void;
     ConfigureResolveTarget(target: RenderTargetIdentifier): void;
@@ -7212,16 +7110,6 @@ interface AttachmentDescriptor {
     
 interface RenderTargetIdentifier {
 
-    constructor(type: BuiltinRenderTextureType): RenderTargetIdentifier;
-    constructor(type: BuiltinRenderTextureType, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(name: string): RenderTargetIdentifier;
-    constructor(name: string, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(nameID: number): RenderTargetIdentifier;
-    constructor(nameID: number, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(renderTargetIdentifier: RenderTargetIdentifier, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(tex: Texture): RenderTargetIdentifier;
-    constructor(tex: Texture, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
-    constructor(buf: RenderBuffer, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
 
     Equals(rhs: RenderTargetIdentifier): boolean;
     Equals(obj: unknown): boolean;
@@ -7232,6 +7120,16 @@ interface RenderTargetIdentifier {
 interface RenderTargetIdentifierConstructor {
     AllDepthSlices: number;
 
+    new(type: BuiltinRenderTextureType): RenderTargetIdentifier;
+    new(type: BuiltinRenderTextureType, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    new(name: string): RenderTargetIdentifier;
+    new(name: string, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    new(nameID: number): RenderTargetIdentifier;
+    new(nameID: number, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    new(renderTargetIdentifier: RenderTargetIdentifier, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    new(tex: Texture): RenderTargetIdentifier;
+    new(tex: Texture, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
+    new(buf: RenderBuffer, mipLevel: number, cubeFace: CubemapFace, depthSlice: number): RenderTargetIdentifier;
 
 }
 declare const RenderTargetIdentifier: RenderTargetIdentifierConstructor;
@@ -7248,9 +7146,6 @@ interface AttachmentIndexArray {
     Item: number;
     Length: number;
 
-    constructor(numAttachments: number): AttachmentIndexArray;
-    constructor(attachments: CSArray<number>): AttachmentIndexArray;
-    constructor(attachments: CSArray<number>): AttachmentIndexArray;
 
 }
     
@@ -7258,6 +7153,9 @@ interface AttachmentIndexArrayConstructor {
     Emtpy: AttachmentIndexArray;
     MaxAttachments: number;
 
+    new(numAttachments: number): AttachmentIndexArray;
+    new(attachments: CSArray<number>): AttachmentIndexArray;
+    new(attachments: CSArray<number>): AttachmentIndexArray;
 
 }
 declare const AttachmentIndexArray: AttachmentIndexArrayConstructor;
@@ -7316,12 +7214,6 @@ declare const CustomSampler: CustomSamplerConstructor;
 interface ProfilerMarker {
     Handle: unknown;
 
-    constructor(name: string): ProfilerMarker;
-    constructor(name: unknown, nameLen: number): ProfilerMarker;
-    constructor(category: ProfilerCategory, name: string): ProfilerMarker;
-    constructor(category: ProfilerCategory, name: unknown, nameLen: number): ProfilerMarker;
-    constructor(category: ProfilerCategory, name: string, flags: MarkerFlags): ProfilerMarker;
-    constructor(category: ProfilerCategory, name: unknown, nameLen: number, flags: MarkerFlags): ProfilerMarker;
 
     Auto(): AutoScope;
     Begin(): void;
@@ -7351,9 +7243,6 @@ interface Material extends Object {
     parent: Material;
     isVariant: boolean;
 
-    constructor(shader: Shader): Material;
-    constructor(source: Material): Material;
-    constructor(contents: string): Material;
 
     ApplyPropertyOverride(destination: Material, nameID: number, recordUndo: boolean): void;
     ApplyPropertyOverride(destination: Material, name: string, recordUndo: boolean): void;
@@ -7545,8 +7434,6 @@ interface LocalKeyword {
     isValid: boolean;
     type: ShaderKeywordType;
 
-    constructor(shader: Shader, name: string): LocalKeyword;
-    constructor(shader: ComputeShader, name: string): LocalKeyword;
 
     Equals(o: unknown): boolean;
     Equals(rhs: LocalKeyword): boolean;
@@ -7557,7 +7444,6 @@ interface LocalKeyword {
 interface ShaderTagId {
     name: string;
 
-    constructor(name: string): ShaderTagId;
 
     Equals(obj: unknown): boolean;
     Equals(other: ShaderTagId): boolean;
@@ -7567,6 +7453,7 @@ interface ShaderTagId {
 interface ShaderTagIdConstructor {
     none: ShaderTagId;
 
+    new(name: string): ShaderTagId;
 
 }
 declare const ShaderTagId: ShaderTagIdConstructor;
@@ -7574,13 +7461,13 @@ declare const ShaderTagId: ShaderTagIdConstructor;
 interface GlobalKeyword {
     name: string;
 
-    constructor(name: string): GlobalKeyword;
 
     ToString(): string;
 }
     
 interface GlobalKeywordConstructor {
 
+    new(name: string): GlobalKeyword;
 
     Create(name: string): GlobalKeyword;
 }
@@ -7588,8 +7475,6 @@ declare const GlobalKeyword: GlobalKeywordConstructor;
     
 interface RayTracingAccelerationStructure {
 
-    constructor(settings: Settings): RayTracingAccelerationStructure;
-    constructor(): RayTracingAccelerationStructure;
 
     AddInstance(targetRenderer: Renderer, subMeshFlags: CSArray<number>, enableTriangleCulling: boolean, frontTriangleCounterClockwise: boolean, mask: number, id: number): number;
     AddInstance(config: RayTracingAABBsInstanceConfig, matrix: Matrix4x4, id: number): number;
@@ -7666,7 +7551,6 @@ interface Renderer extends Component {
     sharedMaterial: Material;
     sharedMaterials: CSArray<Material>;
 
-    constructor(): Renderer;
 
     GetClosestReflectionProbes(result: CSArray<ReflectionProbeBlendInfo>): void;
     GetMaterials(m: CSArray<Material>): void;
@@ -7716,7 +7600,6 @@ interface ReflectionProbe extends Behaviour {
     texture: Texture;
     textureHDRDecodeValues: Vector4;
 
-    constructor(): ReflectionProbe;
 
     IsFinishedRendering(renderId: number): boolean;
     RenderProbe(): number;
@@ -7730,6 +7613,7 @@ interface ReflectionProbeConstructor {
     defaultTextureHDRDecodeValues: Vector4;
     defaultTexture: Texture;
 
+    new(): ReflectionProbe;
 
     BlendCubemap(src: Texture, dst: Texture, blend: number, target: RenderTexture): boolean;
     UpdateCachedState(): void;
@@ -7739,7 +7623,6 @@ declare const ReflectionProbe: ReflectionProbeConstructor;
 interface MaterialPropertyBlock {
     isEmpty: boolean;
 
-    constructor(): MaterialPropertyBlock;
 
     AddColor(name: string, value: Color): void;
     AddColor(nameID: number, value: Color): void;
@@ -7870,8 +7753,6 @@ interface RayTracingAABBsInstanceConfig {
     accelerationStructureBuildFlags: RayTracingAccelerationStructureBuildFlags;
     accelerationStructureBuildFlagsOverride: boolean;
 
-    constructor(): RayTracingAABBsInstanceConfig;
-    constructor(aabbBuffer: GraphicsBuffer, aabbCount: number, dynamicGeometry: boolean, material: Material): RayTracingAABBsInstanceConfig;
 
 }
     
@@ -7879,8 +7760,6 @@ interface BuildSettings {
     buildFlags: RayTracingAccelerationStructureBuildFlags;
     relativeOrigin: Vector3;
 
-    constructor(): BuildSettings;
-    constructor(buildFlags: RayTracingAccelerationStructureBuildFlags, relativeOrigin: Vector3): BuildSettings;
 
 }
     
@@ -7988,6 +7867,9 @@ declare const Shader: ShaderConstructor;
     
 interface MaterialConstructor {
 
+    new(shader: Shader): Material;
+    new(source: Material): Material;
+    new(contents: string): Material;
 
     Create(scriptContents: string): Material;
 }
@@ -8123,8 +8005,6 @@ interface RectInt {
     size: Vector2Int;
     allPositionsWithin: PositionEnumerator;
 
-    constructor(xMin: number, yMin: number, width: number, height: number): RectInt;
-    constructor(position: Vector2Int, size: Vector2Int): RectInt;
 
     ClampToBounds(bounds: RectInt): void;
     Contains(position: Vector2Int): boolean;
@@ -8141,7 +8021,6 @@ interface RectInt {
 interface PositionEnumerator {
     Current: Vector2Int;
 
-    constructor(min: Vector2Int, max: Vector2Int): PositionEnumerator;
 
     GetEnumerator(): PositionEnumerator;
     MoveNext(): boolean;
@@ -8151,6 +8030,8 @@ interface PositionEnumerator {
 interface RectIntConstructor {
     zero: RectInt;
 
+    new(xMin: number, yMin: number, width: number, height: number): RectInt;
+    new(position: Vector2Int, size: Vector2Int): RectInt;
 
 }
 declare const RectInt: RectIntConstructor;
@@ -8177,15 +8058,13 @@ interface RenderTargetBinding {
     depthStoreAction: RenderBufferStoreAction;
     flags: RenderTargetFlags;
 
-    constructor(colorRenderTargets: CSArray<RenderTargetIdentifier>, colorLoadActions: CSArray<number>, colorStoreActions: CSArray<number>, depthRenderTarget: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): RenderTargetBinding;
-    constructor(colorRenderTarget: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depthRenderTarget: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): RenderTargetBinding;
-    constructor(setup: RenderTargetSetup): RenderTargetBinding;
 
 }
     
 interface CommandBufferConstructor {
     ThrowOnSetRenderTarget: boolean;
 
+    new(): CommandBuffer;
 
 }
 declare const CommandBuffer: CommandBufferConstructor;
@@ -8200,14 +8079,6 @@ interface Cubemap extends Texture {
     loadingMipmapLevel: number;
     loadedMipmapLevel: number;
 
-    constructor(width: number, format: DefaultFormat, flags: TextureCreationFlags): Cubemap;
-    constructor(width: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Cubemap;
-    constructor(width: number, format: GraphicsFormat, flags: TextureCreationFlags): Cubemap;
-    constructor(width: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Cubemap;
-    constructor(width: number, textureFormat: TextureFormat, mipChain: boolean): Cubemap;
-    constructor(width: number, textureFormat: TextureFormat, mipChain: boolean, createUninitialized: boolean): Cubemap;
-    constructor(width: number, format: TextureFormat, mipCount: number): Cubemap;
-    constructor(width: number, format: TextureFormat, mipCount: number, createUninitialized: boolean): Cubemap;
 
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
@@ -8232,6 +8103,14 @@ interface Cubemap extends Texture {
     
 interface CubemapConstructor {
 
+    new(width: number, format: DefaultFormat, flags: TextureCreationFlags): Cubemap;
+    new(width: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Cubemap;
+    new(width: number, format: GraphicsFormat, flags: TextureCreationFlags): Cubemap;
+    new(width: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Cubemap;
+    new(width: number, textureFormat: TextureFormat, mipChain: boolean): Cubemap;
+    new(width: number, textureFormat: TextureFormat, mipChain: boolean, createUninitialized: boolean): Cubemap;
+    new(width: number, format: TextureFormat, mipCount: number): Cubemap;
+    new(width: number, format: TextureFormat, mipCount: number, createUninitialized: boolean): Cubemap;
 
     CreateExternalTexture(width: number, format: TextureFormat, mipmap: boolean, nativeTex: unknown): Cubemap;
 }
@@ -8243,14 +8122,11 @@ interface RenderRequest {
     result: RenderTexture;
     outputSpace: RenderRequestOutputSpace;
 
-    constructor(mode: RenderRequestMode, rt: RenderTexture): RenderRequest;
-    constructor(mode: RenderRequestMode, space: RenderRequestOutputSpace, rt: RenderTexture): RenderRequest;
 
 }
     
 interface CameraCallback {
 
-    constructor(object: unknown, method: unknown): CameraCallback;
 
     BeginInvoke(cam: Camera, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -8261,7 +8137,6 @@ interface GateFitParameters {
     mode: GateFitMode;
     aspect: number;
 
-    constructor(mode: GateFitMode, aspect: number): GateFitParameters;
 
 }
     
@@ -8279,6 +8154,7 @@ interface CameraConstructor {
     allCameras: CSArray<Camera>;
     mainCamera: Camera;
 
+    new(): Camera;
 
     CalculateProjectionMatrixFromPhysicalProperties(output: unknown, focalLength: number, sensorSize: Vector2, lensShift: Vector2, nearClip: number, farClip: number, gateFitParameters: GateFitParameters): void;
     FieldOfViewToFocalLength(fieldOfView: number, sensorSize: number): number;
@@ -8292,7 +8168,6 @@ declare const Camera: CameraConstructor;
     
 interface Input {
 
-    constructor(): Input;
 
 }
     
@@ -8301,7 +8176,6 @@ interface LocationService {
     status: LocationServiceStatus;
     lastData: LocationInfo;
 
-    constructor(): LocationService;
 
     Start(desiredAccuracyInMeters: number, updateDistanceInMeters: number): void;
     Start(desiredAccuracyInMeters: number): void;
@@ -8328,7 +8202,6 @@ interface Compass {
     timestamp: number;
     enabled: boolean;
 
-    constructor(): Compass;
 
 }
     
@@ -8414,6 +8287,7 @@ interface InputConstructor {
     touches: CSArray<Touch>;
     accelerationEvents: CSArray<AccelerationEvent>;
 
+    new(): Input;
 
     ClearLastPenContactEvent(): void;
     GetAccelerationEvent(index: number): AccelerationEvent;
@@ -8483,13 +8357,13 @@ interface IListItem {
     
 interface Key extends IListItem {
 
-    constructor(): Key;
 
 }
     
 interface KeyConstructor {
     NotInList: number;
 
+    new(): Key;
 
     IndexOf(key: Key): number;
     IsInList(key: Key): boolean;
@@ -8498,13 +8372,13 @@ declare const Key: KeyConstructor;
     
 interface Key extends IListItem {
 
-    constructor(): Key;
 
 }
     
 interface KeyConstructor {
     NotInList: number;
 
+    new(): Key;
 
     IndexOf(key: Key): number;
     IsInList(key: Key): boolean;
@@ -8534,7 +8408,6 @@ interface BaseEventData extends AbstractEventData {
     currentInputModule: BaseInputModule;
     selectedObject: GameObject;
 
-    constructor(eventSystem: EventSystem): BaseEventData;
 
 }
     
@@ -8570,7 +8443,6 @@ interface BaseInput extends UIBehaviour {
     touchSupported: boolean;
     touchCount: number;
 
-    constructor(): BaseInput;
 
     GetAxisRaw(axisName: string): number;
     GetButtonDown(buttonName: string): boolean;
@@ -8618,7 +8490,6 @@ interface PointerEventData extends BaseEventData {
     pressEventCamera: Camera;
     pointerPress: GameObject;
 
-    constructor(eventSystem: EventSystem): PointerEventData;
 
     IsPointerMoving(): boolean;
     IsScrolling(): boolean;
@@ -8710,7 +8581,6 @@ interface AxisEventData extends BaseEventData {
     moveVector: Vector2;
     moveDir: MoveDirection;
 
-    constructor(eventSystem: EventSystem): AxisEventData;
 
 }
     
@@ -8800,7 +8670,6 @@ interface AnimationTriggers {
     selectedTrigger: string;
     disabledTrigger: string;
 
-    constructor(): AnimationTriggers;
 
 }
     
@@ -8865,7 +8734,6 @@ interface RectTransform extends Transform {
     offsetMax: Vector2;
     drivenByObject: Object;
 
-    constructor(): RectTransform;
 
     ForceUpdateRectTransforms(): void;
     GetLocalCorners(fourCornersArray: CSArray<Vector3>): void;
@@ -8899,12 +8767,12 @@ interface Canvas extends Behaviour {
     normalizedSortingGridSize: number;
     sortingGridNormalizedSize: number;
 
-    constructor(): Canvas;
 
 }
     
 interface CanvasConstructor {
 
+    new(): Canvas;
 
     ForceUpdateCanvases(): void;
     GetDefaultCanvasMaterial(): Material;
@@ -8926,7 +8794,6 @@ interface CanvasRenderer extends Component {
     isMask: boolean;
     clippingSoftness: Vector2;
 
-    constructor(): CanvasRenderer;
 
     Clear(): void;
     DisableRectClipping(): void;
@@ -8972,6 +8839,7 @@ declare const UIVertex: UIVertexConstructor;
     
 interface CanvasRendererConstructor {
 
+    new(): CanvasRenderer;
 
     AddUIVertexStream(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>): void;
     AddUIVertexStream(verts: CSArray<UIVertex>, positions: CSArray<Vector3>, colors: CSArray<Color32>, uv0S: CSArray<Vector4>, uv1S: CSArray<Vector4>, uv2S: CSArray<Vector4>, uv3S: CSArray<Vector4>, normals: CSArray<Vector3>, tangents: CSArray<Vector4>): void;
@@ -8984,7 +8852,6 @@ declare const CanvasRenderer: CanvasRendererConstructor;
     
 interface UnityAction {
 
-    constructor(object: unknown, method: unknown): UnityAction;
 
     BeginInvoke(callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -9065,7 +8932,6 @@ interface MaskableGraphic extends Graphic, IClippable, IMaterialModifier, IMaska
     
 interface CullStateChangedEvent {
 
-    constructor(): CullStateChangedEvent;
 
 }
     
@@ -9162,7 +9028,6 @@ interface Animator extends Behaviour {
     keepAnimatorStateOnDisable: boolean;
     writeDefaultValuesOnDisable: boolean;
 
-    constructor(): Animator;
 
     ApplyBuiltinRootMotion(): void;
     CrossFade(stateName: string, normalizedTransitionDuration: number, layer: number, normalizedTimeOffset: number): void;
@@ -9288,7 +9153,6 @@ interface AnimatorControllerParameter {
     defaultInt: number;
     defaultBool: boolean;
 
-    constructor(): AnimatorControllerParameter;
 
     Equals(o: unknown): boolean;
     GetHashCode(): number;
@@ -9328,7 +9192,6 @@ interface AnimationClip extends Motion {
     hasRootCurves: boolean;
     events: CSArray<AnimationEvent>;
 
-    constructor(): AnimationClip;
 
     AddEvent(evt: AnimationEvent): void;
     ClearCurves(): void;
@@ -9352,7 +9215,6 @@ interface AnimationEvent {
     animatorStateInfo: AnimatorStateInfo;
     animatorClipInfo: AnimatorClipInfo;
 
-    constructor(): AnimationEvent;
 
 }
     
@@ -9377,7 +9239,6 @@ interface AnimationState extends TrackedReference {
     name: string;
     blendMode: AnimationBlendMode;
 
-    constructor(): AnimationState;
 
     AddMixingTransform(mix: Transform): void;
     AddMixingTransform(mix: Transform, recursive: boolean): void;
@@ -9414,8 +9275,6 @@ interface AnimationCurve {
     preWrapMode: WrapMode;
     postWrapMode: WrapMode;
 
-    constructor(keys: CSArray<Keyframe>): AnimationCurve;
-    constructor(): AnimationCurve;
 
     AddKey(time: number, value: number): number;
     AddKey(key: Keyframe): number;
@@ -9440,14 +9299,13 @@ interface Keyframe {
     weightedMode: WeightedMode;
     tangentMode: number;
 
-    constructor(time: number, value: number): Keyframe;
-    constructor(time: number, value: number, inTangent: number, outTangent: number): Keyframe;
-    constructor(time: number, value: number, inTangent: number, outTangent: number, inWeight: number, outWeight: number): Keyframe;
 
 }
     
 interface AnimationCurveConstructor {
 
+    new(keys: CSArray<Keyframe>): AnimationCurve;
+    new(): AnimationCurve;
 
     Constant(timeStart: number, timeEnd: number, value: number): AnimationCurve;
     EaseInOut(timeStart: number, valueStart: number, timeEnd: number, valueEnd: number): AnimationCurve;
@@ -9583,9 +9441,6 @@ interface IExposedPropertyTable {
     
 interface PropertyName {
 
-    constructor(name: string): PropertyName;
-    constructor(other: PropertyName): PropertyName;
-    constructor(id: number): PropertyName;
 
     Equals(other: unknown): boolean;
     Equals(other: PropertyName): boolean;
@@ -9595,6 +9450,9 @@ interface PropertyName {
     
 interface PropertyNameConstructor {
 
+    new(name: string): PropertyName;
+    new(other: PropertyName): PropertyName;
+    new(id: number): PropertyName;
 
     IsNullOrEmpty(prop: PropertyName): boolean;
 }
@@ -9766,12 +9624,12 @@ interface MatchTargetWeightMask {
     positionXYZWeight: Vector3;
     rotationWeight: number;
 
-    constructor(positionXYZWeight: Vector3, rotationWeight: number): MatchTargetWeightMask;
 
 }
     
 interface AnimatorConstructor {
 
+    new(): Animator;
 
     StringToHash(name: string): number;
 }
@@ -9817,7 +9675,6 @@ declare const UnityEventBase: UnityEventBaseConstructor;
     
 interface UnityEvent extends UnityEventBase {
 
-    constructor(): UnityEvent;
 
     AddListener(call: UnityAction): void;
     Invoke(): void;
@@ -9826,7 +9683,6 @@ interface UnityEvent extends UnityEventBase {
     
 interface ButtonClickedEvent extends UnityEvent {
 
-    constructor(): ButtonClickedEvent;
 
 }
     
@@ -9838,7 +9694,6 @@ interface MeshRenderer extends Renderer {
     receiveGI: ReceiveGI;
     stitchLightmapSeams: boolean;
 
-    constructor(): MeshRenderer;
 
 }
     
@@ -9846,7 +9701,6 @@ interface MeshFilter extends Component {
     sharedMesh: Mesh;
     mesh: Mesh;
 
-    constructor(): MeshFilter;
 
 }
     
@@ -10051,7 +9905,6 @@ interface TMP_FontAsset extends TMP_Asset {
     fontWeightTable: CSArray<TMP_FontWeightPair>;
     fontInfo: FaceInfo_Legacy;
 
-    constructor(): TMP_FontAsset;
 
     ClearFontAssetData(setAtlasSizeToZero: boolean): void;
     HasCharacter(character: number): boolean;
@@ -10099,8 +9952,6 @@ interface Font extends Object {
     lineHeight: number;
     textureRebuildCallback: FontTextureRebuildCallback;
 
-    constructor(): Font;
-    constructor(name: string): Font;
 
     GetCharacterInfo(ch: string, info: unknown, size: number, style: FontStyle): boolean;
     GetCharacterInfo(ch: string, info: unknown, size: number): boolean;
@@ -10137,7 +9988,6 @@ interface CharacterInfo {
     
 interface FontTextureRebuildCallback {
 
-    constructor(object: unknown, method: unknown): FontTextureRebuildCallback;
 
     BeginInvoke(callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -10146,6 +9996,8 @@ interface FontTextureRebuildCallback {
     
 interface FontConstructor {
 
+    new(): Font;
+    new(name: string): Font;
 
     CreateDynamicFontFromOSFont(fontname: string, size: number): Font;
     CreateDynamicFontFromOSFont(fontnames: CSArray<string>, size: number): Font;
@@ -10163,10 +10015,6 @@ interface Glyph {
     atlasIndex: number;
     classDefinitionType: GlyphClassDefinitionType;
 
-    constructor(): Glyph;
-    constructor(glyph: Glyph): Glyph;
-    constructor(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect): Glyph;
-    constructor(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect, scale: number, atlasIndex: number): Glyph;
 
     Compare(other: Glyph): boolean;
 }
@@ -10178,7 +10026,6 @@ interface GlyphMetrics {
     horizontalBearingY: number;
     horizontalAdvance: number;
 
-    constructor(width: number, height: number, bearingX: number, bearingY: number, advance: number): GlyphMetrics;
 
     Equals(obj: unknown): boolean;
     Equals(other: GlyphMetrics): boolean;
@@ -10191,8 +10038,6 @@ interface GlyphRect {
     width: number;
     height: number;
 
-    constructor(x: number, y: number, width: number, height: number): GlyphRect;
-    constructor(rect: Rect): GlyphRect;
 
     Equals(obj: unknown): boolean;
     Equals(other: GlyphRect): boolean;
@@ -10202,6 +10047,8 @@ interface GlyphRect {
 interface GlyphRectConstructor {
     zero: GlyphRect;
 
+    new(x: number, y: number, width: number, height: number): GlyphRect;
+    new(rect: Rect): GlyphRect;
 
 }
 declare const GlyphRect: GlyphRectConstructor;
@@ -10214,15 +10061,11 @@ interface TMP_TextElement {
     glyphIndex: number;
     scale: number;
 
-    constructor(): TMP_TextElement;
 
 }
     
 interface TMP_Character extends TMP_TextElement {
 
-    constructor(): TMP_Character;
-    constructor(unicode: number, glyph: Glyph): TMP_Character;
-    constructor(unicode: number, fontAsset: TMP_FontAsset, glyph: Glyph): TMP_Character;
 
 }
     
@@ -10233,7 +10076,6 @@ interface TMP_FontFeatureTable {
     MarkToBaseAdjustmentRecords: CSArray<MarkToBaseAdjustmentRecord>;
     MarkToMarkAdjustmentRecords: CSArray<MarkToMarkAdjustmentRecord>;
 
-    constructor(): TMP_FontFeatureTable;
 
     SortGlyphPairAdjustmentRecords(): void;
     SortMarkToBaseAdjustmentRecords(): void;
@@ -10259,7 +10101,6 @@ interface GlyphPairAdjustmentRecord {
     secondAdjustmentRecord: GlyphAdjustmentRecord;
     featureLookupFlags: FontFeatureLookupFlags;
 
-    constructor(firstAdjustmentRecord: GlyphAdjustmentRecord, secondAdjustmentRecord: GlyphAdjustmentRecord): GlyphPairAdjustmentRecord;
 
     Equals(obj: unknown): boolean;
     Equals(other: GlyphPairAdjustmentRecord): boolean;
@@ -10270,7 +10111,6 @@ interface GlyphAdjustmentRecord {
     glyphIndex: number;
     glyphValueRecord: GlyphValueRecord;
 
-    constructor(glyphIndex: number, glyphValueRecord: GlyphValueRecord): GlyphAdjustmentRecord;
 
     Equals(obj: unknown): boolean;
     Equals(other: GlyphAdjustmentRecord): boolean;
@@ -10283,7 +10123,6 @@ interface GlyphValueRecord {
     xAdvance: number;
     yAdvance: number;
 
-    constructor(xPlacement: number, yPlacement: number, xAdvance: number, yAdvance: number): GlyphValueRecord;
 
     Equals(obj: unknown): boolean;
     Equals(other: GlyphValueRecord): boolean;
@@ -10310,7 +10149,6 @@ interface MarkPositionAdjustment {
     xPositionAdjustment: number;
     yPositionAdjustment: number;
 
-    constructor(x: number, y: number): MarkPositionAdjustment;
 
 }
     
@@ -10353,12 +10191,12 @@ interface FaceInfo_Legacy {
     AtlasWidth: number;
     AtlasHeight: number;
 
-    constructor(): FaceInfo_Legacy;
 
 }
     
 interface TMP_FontAssetConstructor {
 
+    new(): TMP_FontAsset;
 
     CreateFontAsset(familyName: string, styleName: string, pointSize: number): TMP_FontAsset;
     CreateFontAsset(fontFilePath: string, faceIndex: number, samplingPointSize: number, atlasPadding: number, renderMode: GlyphRenderMode, atlasWidth: number, atlasHeight: number): TMP_FontAsset;
@@ -10375,8 +10213,6 @@ interface VertexGradient {
     bottomLeft: Color;
     bottomRight: Color;
 
-    constructor(color: Color): VertexGradient;
-    constructor(color0: Color, color1: Color, color2: Color, color3: Color): VertexGradient;
 
 }
     
@@ -10387,9 +10223,6 @@ interface TMP_ColorGradient extends ScriptableObject {
     bottomLeft: Color;
     bottomRight: Color;
 
-    constructor(): TMP_ColorGradient;
-    constructor(color: Color): TMP_ColorGradient;
-    constructor(color0: Color, color1: Color, color2: Color, color3: Color): TMP_ColorGradient;
 
 }
     
@@ -10401,7 +10234,6 @@ interface TMP_SpriteAsset extends TMP_Asset {
     spriteCharacterLookupTable: CSDictionary<number, TMP_SpriteCharacter>;
     spriteGlyphTable: CSArray<TMP_SpriteGlyph>;
 
-    constructor(): TMP_SpriteAsset;
 
     GetSpriteIndexFromHashcode(hashCode: number): number;
     GetSpriteIndexFromName(name: string): number;
@@ -10421,7 +10253,6 @@ interface TMP_TextElement_Legacy {
     xAdvance: number;
     scale: number;
 
-    constructor(): TMP_TextElement_Legacy;
 
 }
     
@@ -10432,30 +10263,24 @@ interface TMP_Sprite extends TMP_TextElement_Legacy {
     pivot: Vector2;
     sprite: Sprite;
 
-    constructor(): TMP_Sprite;
 
 }
     
 interface TMP_SpriteCharacter extends TMP_TextElement {
     name: string;
 
-    constructor(): TMP_SpriteCharacter;
-    constructor(unicode: number, glyph: TMP_SpriteGlyph): TMP_SpriteCharacter;
-    constructor(unicode: number, spriteAsset: TMP_SpriteAsset, glyph: TMP_SpriteGlyph): TMP_SpriteCharacter;
 
 }
     
 interface TMP_SpriteGlyph extends Glyph {
     sprite: Sprite;
 
-    constructor(): TMP_SpriteGlyph;
-    constructor(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect, scale: number, atlasIndex: number): TMP_SpriteGlyph;
-    constructor(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect, scale: number, atlasIndex: number, sprite: Sprite): TMP_SpriteGlyph;
 
 }
     
 interface TMP_SpriteAssetConstructor {
 
+    new(): TMP_SpriteAsset;
 
     SearchForSpriteByHashCode(spriteAsset: TMP_SpriteAsset, hashCode: number, includeFallbacks: boolean, spriteIndex: unknown): TMP_SpriteAsset;
     SearchForSpriteByUnicode(spriteAsset: TMP_SpriteAsset, unicode: number, includeFallbacks: boolean, spriteIndex: unknown): TMP_SpriteAsset;
@@ -10464,7 +10289,6 @@ declare const TMP_SpriteAsset: TMP_SpriteAssetConstructor;
     
 interface TMP_StyleSheet extends ScriptableObject {
 
-    constructor(): TMP_StyleSheet;
 
     GetStyle(hashCode: number): TMP_Style;
     GetStyle(name: string): TMP_Style;
@@ -10507,8 +10331,6 @@ interface TMP_TextInfo {
     pageInfo: CSArray<TMP_PageInfo>;
     meshInfo: CSArray<TMP_MeshInfo>;
 
-    constructor(): TMP_TextInfo;
-    constructor(textComponent: TMP_Text): TMP_TextInfo;
 
     ClearAllMeshInfo(): void;
     ClearMeshInfo(updateMesh: boolean): void;
@@ -10580,7 +10402,6 @@ interface HighlightState {
     color: Color32;
     padding: TMP_Offset;
 
-    constructor(color: Color32, padding: TMP_Offset): HighlightState;
 
     Equals(obj: unknown): boolean;
     Equals(other: HighlightState): boolean;
@@ -10595,8 +10416,6 @@ interface TMP_Offset {
     horizontal: number;
     vertical: number;
 
-    constructor(left: number, right: number, top: number, bottom: number): TMP_Offset;
-    constructor(horizontal: number, vertical: number): TMP_Offset;
 
     Equals(obj: unknown): boolean;
     Equals(other: TMP_Offset): boolean;
@@ -10606,6 +10425,8 @@ interface TMP_Offset {
 interface TMP_OffsetConstructor {
     zero: TMP_Offset;
 
+    new(left: number, right: number, top: number, bottom: number): TMP_Offset;
+    new(horizontal: number, vertical: number): TMP_Offset;
 
 }
 declare const TMP_Offset: TMP_OffsetConstructor;
@@ -10663,7 +10484,6 @@ interface Extents {
     min: Vector2;
     max: Vector2;
 
-    constructor(min: Vector2, max: Vector2): Extents;
 
     ToString(): string;
 }
@@ -10690,8 +10510,6 @@ interface TMP_MeshInfo {
     triangles: CSArray<number>;
     material: Material;
 
-    constructor(mesh: Mesh, size: number): TMP_MeshInfo;
-    constructor(mesh: Mesh, size: number, isVolumetric: boolean): TMP_MeshInfo;
 
     Clear(): void;
     Clear(uploadChanges: boolean): void;
@@ -10716,12 +10534,12 @@ interface MaterialReference {
     padding: number;
     referenceCount: number;
 
-    constructor(index: number, fontAsset: TMP_FontAsset, spriteAsset: TMP_SpriteAsset, material: Material, padding: number): MaterialReference;
 
 }
     
 interface MaterialReferenceConstructor {
 
+    new(index: number, fontAsset: TMP_FontAsset, spriteAsset: TMP_SpriteAsset, material: Material, padding: number): MaterialReference;
 
     AddMaterialReference(material: Material, fontAsset: TMP_FontAsset, materialReferences: CSArray<MaterialReference>, materialReferenceIndexLookup: CSDictionary<number, number>): number;
     AddMaterialReference(material: Material, spriteAsset: TMP_SpriteAsset, materialReferences: CSArray<MaterialReference>, materialReferenceIndexLookup: CSDictionary<number, number>): number;
@@ -10731,6 +10549,8 @@ declare const MaterialReference: MaterialReferenceConstructor;
     
 interface TMP_TextInfoConstructor {
 
+    new(): TMP_TextInfo;
+    new(textComponent: TMP_Text): TMP_TextInfo;
 
     Resize<T>(array: CSArray<T>, size: number): void;
     Resize<T>(array: CSArray<T>, size: number, isBlockAllocated: boolean): void;
@@ -10744,7 +10564,6 @@ interface TextMeshProUGUI extends TMP_Text, ILayoutElement {
     canvasRenderer: CanvasRenderer;
     maskOffset: Vector4;
 
-    constructor(): TextMeshProUGUI;
 
     CalculateLayoutInputHorizontal(): void;
     CalculateLayoutInputVertical(): void;
@@ -10779,7 +10598,6 @@ interface Animation extends Behaviour {
     cullingType: AnimationCullingType;
     localBounds: Bounds;
 
-    constructor(): Animation;
 
     AddClip(clip: AnimationClip, newName: string): void;
     AddClip(clip: AnimationClip, newName: string, firstFrame: number, lastFrame: number): void;
@@ -10821,7 +10639,6 @@ interface ClientSceneListener extends MonoBehaviour {
     IsGameSceneLoaded: boolean;
     SceneLoadPercent: number;
 
-    constructor(): ClientSceneListener;
 
 }
     
@@ -10835,7 +10652,6 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     progressText: TMP_Text;
     disconnectButton: Button;
 
-    constructor(): CoreLoadingScreen;
 
     Close(): void;
     SetProgress(text: string, percent: number): void;
@@ -10845,10 +10661,6 @@ interface TextField {
     multiline: boolean;
     value: string;
 
-    constructor(): TextField;
-    constructor(maxLength: number, multiline: boolean, isPasswordField: boolean, maskChar: string): TextField;
-    constructor(label: string): TextField;
-    constructor(label: string, maxLength: number, multiline: boolean, isPasswordField: boolean, maskChar: string): TextField;
 
     SetValueWithoutNotify(newValue: string): void;
 }
@@ -10858,6 +10670,10 @@ interface TextFieldConstructor {
     labelUssClassName: string;
     inputUssClassName: string;
 
+    new(): TextField;
+    new(maxLength: number, multiline: boolean, isPasswordField: boolean, maskChar: string): TextField;
+    new(label: string): TextField;
+    new(label: string, maxLength: number, multiline: boolean, isPasswordField: boolean, maskChar: string): TextField;
 
 }
 declare const TextField: TextFieldConstructor;
@@ -10868,7 +10684,6 @@ interface GameConfig extends ScriptableObject {
     gameScenes: CSArray<Object>;
     packages: CSArray<AirshipPackageDocument>;
 
-    constructor(): GameConfig;
 
     ToJson(): string;
 }
@@ -10882,12 +10697,12 @@ interface AirshipPackageDocument {
     defaultPackage: boolean;
     forceLatestVersion: boolean;
 
-    constructor(): AirshipPackageDocument;
 
 }
     
 interface AirshipPackageDocumentConstructor {
 
+    new(): AirshipPackageDocument;
 
     FindPathFromDocument(document: AirshipPackageDocument): string;
 }
@@ -10895,6 +10710,7 @@ declare const AirshipPackageDocument: AirshipPackageDocumentConstructor;
     
 interface GameConfigConstructor {
 
+    new(): GameConfig;
 
     Load(): GameConfig;
 }
@@ -10953,7 +10769,6 @@ interface Light extends Behaviour {
     isBaked: boolean;
     alreadyLightmapped: boolean;
 
-    constructor(): Light;
 
     AddCommandBuffer(evt: LightEvent, buffer: CommandBuffer): void;
     AddCommandBuffer(evt: LightEvent, buffer: CommandBuffer, shadowPassMask: ShadowMapPass): void;
@@ -10969,7 +10784,6 @@ interface Light extends Behaviour {
     
 interface Flare extends Object {
 
-    constructor(): Flare;
 
 }
     
@@ -10986,6 +10800,7 @@ interface LightBakingOutput {
 interface LightConstructor {
     pixelLightCount: number;
 
+    new(): Light;
 
     GetLights(type: LightType, layer: number): CSArray<Light>;
 }
@@ -11039,7 +10854,6 @@ interface ServerBootstrap extends MonoBehaviour {
     serverReady: boolean;
     isStartupConfigReady: boolean;
 
-    constructor(): ServerBootstrap;
 
     FinishedSetup(): void;
     GetJoinCode(): string;
@@ -11063,7 +10877,6 @@ interface AgonesSdk extends MonoBehaviour {
     healthEnabled: boolean;
     logEnabled: boolean;
 
-    constructor(): AgonesSdk;
 
     Allocate(): boolean;
     Connect(): boolean;
@@ -11081,7 +10894,6 @@ interface GameServer {
     Spec: GameServerSpec;
     Status: GameServerStatus;
 
-    constructor(data: CSDictionary<string, unknown>): GameServer;
 
     Equals(input: unknown): boolean;
     Equals(input: GameServer): boolean;
@@ -11100,7 +10912,6 @@ interface GameServerObjectMeta {
     Annotations: CSDictionary<string, string>;
     Labels: CSDictionary<string, string>;
 
-    constructor(data: CSDictionary<string, unknown>): GameServerObjectMeta;
 
     Equals(input: unknown): boolean;
     Equals(input: GameServerObjectMeta): boolean;
@@ -11111,7 +10922,6 @@ interface GameServerObjectMeta {
 interface GameServerSpec {
     Health: SpecHealth;
 
-    constructor(data: CSDictionary<string, unknown>): GameServerSpec;
 
     Equals(input: unknown): boolean;
     Equals(input: GameServerSpec): boolean;
@@ -11125,7 +10935,6 @@ interface SpecHealth {
     FailureThreshold: number;
     InitialDelaySeconds: number;
 
-    constructor(data: CSDictionary<string, unknown>): SpecHealth;
 
     Equals(input: unknown): boolean;
     Equals(input: SpecHealth): boolean;
@@ -11138,7 +10947,6 @@ interface GameServerStatus {
     Address: string;
     Ports: CSArray<StatusPort>;
 
-    constructor(data: CSDictionary<string, unknown>): GameServerStatus;
 
     Equals(input: unknown): boolean;
     Equals(input: GameServerStatus): boolean;
@@ -11150,7 +10958,6 @@ interface StatusPort {
     Name: string;
     Port: number;
 
-    constructor(data: CSDictionary<string, unknown>): StatusPort;
 
     Equals(input: unknown): boolean;
     Equals(input: StatusPort): boolean;
@@ -11160,7 +10967,6 @@ interface StatusPort {
     
 interface WatchGameServerCallback {
 
-    constructor(object: unknown, method: unknown): WatchGameServerCallback;
 
     BeginInvoke(gameServer: GameServer, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -11172,12 +10978,12 @@ interface AirshipEditorConfig extends ScriptableObject {
     buildBundlesOnPlay: boolean;
     downloadPackages: boolean;
 
-    constructor(): AirshipEditorConfig;
 
 }
     
 interface AirshipEditorConfigConstructor {
 
+    new(): AirshipEditorConfig;
 
     Load(): AirshipEditorConfig;
 }
@@ -11185,14 +10991,12 @@ declare const AirshipEditorConfig: AirshipEditorConfigConstructor;
     
 interface SceneManager {
 
-    constructor(): SceneManager;
 
 }
     
 interface CreateSceneParameters {
     localPhysicsMode: LocalPhysicsMode;
 
-    constructor(physicsMode: LocalPhysicsMode): CreateSceneParameters;
 
 }
     
@@ -11201,6 +11005,7 @@ interface SceneManagerConstructor {
     loadedSceneCount: number;
     sceneCountInBuildSettings: number;
 
+    new(): SceneManager;
 
     CreateScene(sceneName: string, parameters: CreateSceneParameters): Scene;
     CreateScene(sceneName: string): Scene;
@@ -11243,7 +11048,6 @@ interface AccessoryBuilder extends MonoBehaviour {
     firstPersonLayer: number;
     thirdPersonLayer: number;
 
-    constructor(): AccessoryBuilder;
 
     AddAccessories(accessoryTemplates: CSArray<AccessoryComponent>, addMode: AccessoryAddMode, rebuildMeshImmediately: boolean): CSArray<ActiveAccessory>;
     AddSingleAccessory(accessoryTemplate: AccessoryComponent, rebuildMeshImmediately: boolean): ActiveAccessory;
@@ -11285,7 +11089,6 @@ interface AccessoryComponent extends MonoBehaviour {
     localScale: Vector3;
     HasSkinnedMeshes: boolean;
 
-    constructor(): AccessoryComponent;
 
     Copy(other: AccessoryComponent): void;
     GetSlotNumber(): number;
@@ -11298,7 +11101,6 @@ interface AccessorySkin extends ScriptableObject {
     skinTextureORM: Texture2D;
     faceTextureDiffuse: Texture2D;
 
-    constructor(): AccessorySkin;
 
     ToString(): string;
 }
@@ -11308,7 +11110,6 @@ interface AccessoryOutfit extends ScriptableObject {
     customSkin: AccessorySkin;
     skinColor: Color;
 
-    constructor(): AccessoryOutfit;
 
 }
     
@@ -11368,7 +11169,6 @@ interface ParticleSystem extends Component {
     trails: TrailModule;
     customData: CustomDataModule;
 
-    constructor(): ParticleSystem;
 
     AllocateAxisOfRotationAttribute(): void;
     AllocateCustomDataAttribute(stream: ParticleSystemCustomData): void;
@@ -11478,10 +11278,6 @@ interface MinMaxCurve {
     constant: number;
     curve: AnimationCurve;
 
-    constructor(constant: number): MinMaxCurve;
-    constructor(multiplier: number, curve: AnimationCurve): MinMaxCurve;
-    constructor(multiplier: number, min: AnimationCurve, max: AnimationCurve): MinMaxCurve;
-    constructor(min: number, max: number): MinMaxCurve;
 
     Evaluate(time: number): number;
     Evaluate(time: number, lerpFactor: number): number;
@@ -11496,10 +11292,6 @@ interface MinMaxGradient {
     color: Color;
     gradient: Gradient;
 
-    constructor(color: Color): MinMaxGradient;
-    constructor(gradient: Gradient): MinMaxGradient;
-    constructor(min: Color, max: Color): MinMaxGradient;
-    constructor(min: Gradient, max: Gradient): MinMaxGradient;
 
     Evaluate(time: number): Color;
     Evaluate(time: number, lerpFactor: number): Color;
@@ -11511,7 +11303,6 @@ interface Gradient {
     mode: GradientMode;
     colorSpace: ColorSpace;
 
-    constructor(): Gradient;
 
     Equals(o: unknown): boolean;
     Equals(other: Gradient): boolean;
@@ -11524,7 +11315,6 @@ interface GradientColorKey {
     color: Color;
     time: number;
 
-    constructor(col: Color, time: number): GradientColorKey;
 
 }
     
@@ -11532,7 +11322,6 @@ interface GradientAlphaKey {
     alpha: number;
     time: number;
 
-    constructor(alpha: number, time: number): GradientAlphaKey;
 
 }
     
@@ -11564,11 +11353,6 @@ interface Burst {
     repeatInterval: number;
     probability: number;
 
-    constructor(_time: number, _count: number): Burst;
-    constructor(_time: number, _minCount: number, _maxCount: number): Burst;
-    constructor(_time: number, _minCount: number, _maxCount: number, _cycleCount: number, _repeatInterval: number): Burst;
-    constructor(_time: number, _count: MinMaxCurve): Burst;
-    constructor(_time: number, _count: MinMaxCurve, _cycleCount: number, _repeatInterval: number): Burst;
 
 }
     
@@ -11635,7 +11419,6 @@ interface SkinnedMeshRenderer extends Renderer {
     skinnedMotionVectors: boolean;
     vertexBufferTarget: Target;
 
-    constructor(): SkinnedMeshRenderer;
 
     BakeMesh(mesh: Mesh): void;
     BakeMesh(mesh: Mesh, useScale: boolean): void;
@@ -11657,7 +11440,6 @@ interface SpriteRenderer extends Renderer {
     flipY: boolean;
     spriteSortPoint: SpriteSortPoint;
 
-    constructor(): SpriteRenderer;
 
     RegisterSpriteChangeCallback(callback: unknown): void;
     UnregisterSpriteChangeCallback(callback: unknown): void;
@@ -11856,7 +11638,6 @@ interface ParticleSystemForceField extends Behaviour {
     vectorFieldSpeed: MinMaxCurve;
     vectorFieldAttraction: MinMaxCurve;
 
-    constructor(): ParticleSystemForceField;
 
 }
     
@@ -11865,16 +11646,6 @@ interface Texture3D extends Texture {
     format: TextureFormat;
     isReadable: boolean;
 
-    constructor(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags): Texture3D;
-    constructor(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
-    constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture3D;
-    constructor(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown, createUninitialized: boolean): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, createUninitialized: boolean): Texture3D;
-    constructor(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
 
     Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
     Apply(updateMipmaps: boolean): void;
@@ -11901,6 +11672,16 @@ interface Texture3D extends Texture {
     
 interface Texture3DConstructor {
 
+    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags): Texture3D;
+    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
+    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture3D;
+    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, nativeTex: unknown, createUninitialized: boolean): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, createUninitialized: boolean): Texture3D;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
 
     CreateExternalTexture(width: number, height: number, depth: number, format: TextureFormat, mipChain: boolean, nativeTex: unknown): Texture3D;
 }
@@ -11908,6 +11689,7 @@ declare const Texture3D: Texture3DConstructor;
     
 interface ParticleSystemForceFieldConstructor {
 
+    new(): ParticleSystemForceField;
 
     FindAll(): CSArray<ParticleSystemForceField>;
 }
@@ -12186,6 +11968,7 @@ interface Trails {
     
 interface ParticleSystemConstructor {
 
+    new(): ParticleSystem;
 
     ResetPreMappedBufferMemory(): void;
     SetMaximumPreMappedBufferCounts(vertexBuffersCount: number, indexBuffersCount: number): void;
@@ -12195,6 +11978,7 @@ declare const ParticleSystem: ParticleSystemConstructor;
 interface AccessoryBuilderConstructor {
     boneKey: string;
 
+    new(): AccessoryBuilder;
 
     GetBoneItemKey(slot: AccessorySlot): string;
 }
@@ -12204,7 +11988,6 @@ interface AvatarMask extends Object {
     humanoidBodyPartCount: number;
     transformCount: number;
 
-    constructor(): AvatarMask;
 
     AddTransformPath(transform: Transform): void;
     AddTransformPath(transform: Transform, recursive: boolean): void;
@@ -12220,12 +12003,12 @@ interface AvatarMask extends Object {
     
 interface DebugUtil extends Debug {
 
-    constructor(): DebugUtil;
 
 }
     
 interface DebugUtilConstructor {
 
+    new(): DebugUtil;
 
     DrawArc(startAngle: number, endAngle: number, position: Vector3, orientation: Quaternion, radius: number, color: Color, drawChord: boolean, drawSector: boolean, arcSegments: number, durationSec: number): void;
     DrawBox(position: Vector3, orientation: Quaternion, halfSize: Vector3, color: Color, durationSec: number): void;
@@ -12240,19 +12023,16 @@ declare const DebugUtil: DebugUtilConstructor;
     
 interface CollisionWatcher extends MonoBehaviour {
 
-    constructor(): CollisionWatcher;
 
 }
     
 interface TriggerWatcher extends MonoBehaviour {
 
-    constructor(): TriggerWatcher;
 
 }
     
 interface PhysicsExt {
 
-    constructor(): PhysicsExt;
 
 }
     
@@ -12260,12 +12040,12 @@ interface SphereCastReturnData {
     HitCount: number;
     RaycastHits: CSArray<RaycastHit>;
 
-    constructor(hitCount: number, raycastHits: CSArray<RaycastHit>): SphereCastReturnData;
 
 }
     
 interface PhysicsExtConstructor {
 
+    new(): PhysicsExt;
 
     EasySphereCast(start: Vector3, direction: Vector3, radius: number, distance: number, layerMask: number): SphereCastReturnData;
 }
@@ -12274,19 +12054,16 @@ declare const PhysicsExt: PhysicsExtConstructor;
 interface ServerConsole extends MonoBehaviour {
     RemoteLogging: boolean;
 
-    constructor(): ServerConsole;
 
 }
     
 interface Application {
 
-    constructor(): Application;
 
 }
     
 interface LogCallback {
 
-    constructor(object: unknown, method: unknown): LogCallback;
 
     BeginInvoke(condition: string, stackTrace: string, type: LogType, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -12295,7 +12072,6 @@ interface LogCallback {
     
 interface AdvertisingIdentifierCallback {
 
-    constructor(object: unknown, method: unknown): AdvertisingIdentifierCallback;
 
     BeginInvoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -12344,6 +12120,7 @@ interface ApplicationConstructor {
     loadedLevelName: string;
     isEditor: boolean;
 
+    new(): Application;
 
     CancelQuit(): void;
     CanStreamedLevelBeLoaded(levelIndex: number): boolean;
@@ -12387,7 +12164,6 @@ declare const Application: ApplicationConstructor;
 interface ClientNetworkConnector extends MonoBehaviour {
     expectingDisconnect: boolean;
 
-    constructor(): ClientNetworkConnector;
 
 }
     
@@ -12418,7 +12194,6 @@ interface ParticleSystemRenderer extends Renderer {
     activeTrailVertexStreamsCount: number;
     supportsMeshInstancing: boolean;
 
-    constructor(): ParticleSystemRenderer;
 
     AreVertexStreamsEnabled(streams: ParticleSystemVertexStreams): boolean;
     BakeMesh(mesh: Mesh, useTransform: boolean): void;
@@ -12459,8 +12234,6 @@ interface ProfilerCategory {
     Name: string;
     Color: Color32;
 
-    constructor(categoryName: string): ProfilerCategory;
-    constructor(categoryName: string, color: ProfilerCategoryColor): ProfilerCategory;
 
     ToString(): string;
 }
@@ -12486,6 +12259,8 @@ interface ProfilerCategoryConstructor {
     FileIO: ProfilerCategory;
     Internal: ProfilerCategory;
 
+    new(categoryName: string): ProfilerCategory;
+    new(categoryName: string, color: ProfilerCategoryColor): ProfilerCategory;
 
 }
 declare const ProfilerCategory: ProfilerCategoryConstructor;
@@ -12705,43 +12480,36 @@ interface Scrollbar extends Selectable, IBeginDragHandler, IInitializePotentialD
     
 interface ScrollEvent {
 
-    constructor(): ScrollEvent;
 
 }
     
 interface SubmitEvent {
 
-    constructor(): SubmitEvent;
 
 }
     
 interface SelectionEvent {
 
-    constructor(): SelectionEvent;
 
 }
     
 interface TextSelectionEvent {
 
-    constructor(): TextSelectionEvent;
 
 }
     
 interface OnChangeEvent {
 
-    constructor(): OnChangeEvent;
 
 }
     
 interface TouchScreenKeyboardEvent {
 
-    constructor(): TouchScreenKeyboardEvent;
 
 }
     
 interface OnValidateInput {
 
-    constructor(object: unknown, method: unknown): OnValidateInput;
 
     BeginInvoke(text: string, charIndex: number, addedChar: string, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): string;
@@ -12761,7 +12529,6 @@ interface TouchScreenKeyboard {
     type: TouchScreenKeyboardType;
     targetDisplay: number;
 
-    constructor(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
 
 }
     
@@ -12770,7 +12537,6 @@ interface RangeInt {
     length: number;
     end: number;
 
-    constructor(start: number, length: number): RangeInt;
 
 }
     
@@ -12781,6 +12547,7 @@ interface TouchScreenKeyboardConstructor {
     area: Rect;
     visible: boolean;
 
+    new(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
 
     Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string, characterLimit: number): TouchScreenKeyboard;
     Open(text: string, keyboardType: TouchScreenKeyboardType, autocorrection: boolean, multiline: boolean, secure: boolean, alert: boolean, textPlaceholder: string): TouchScreenKeyboard;
@@ -12828,9 +12595,6 @@ interface Event {
     isMouse: boolean;
     isScrollWheel: boolean;
 
-    constructor(): Event;
-    constructor(displayIndex: number): Event;
-    constructor(other: Event): Event;
 
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
@@ -12842,6 +12606,9 @@ interface Event {
 interface EventConstructor {
     current: Event;
 
+    new(): Event;
+    new(displayIndex: number): Event;
+    new(other: Event): Event;
 
     GetEventCount(): number;
     KeyboardEvent(key: string): Event;
@@ -12878,13 +12645,11 @@ interface Slider extends Selectable, IInitializePotentialDragHandler, IDragHandl
     
 interface SliderEvent {
 
-    constructor(): SliderEvent;
 
 }
     
 interface CanvasHitDetector extends MonoBehaviour {
 
-    constructor(): CanvasHitDetector;
 
     IsPointerOverTarget(target: GameObject): boolean;
     IsPointerOverUI(): boolean;
@@ -12892,7 +12657,6 @@ interface CanvasHitDetector extends MonoBehaviour {
     
 interface AudioBehaviour extends Behaviour {
 
-    constructor(): AudioBehaviour;
 
 }
     
@@ -12933,7 +12697,6 @@ interface AudioSource extends AudioBehaviour {
     maxVolume: number;
     rolloffFactor: number;
 
-    constructor(): AudioSource;
 
     DisableGamepadOutput(): boolean;
     GetAmbisonicDecoderFloat(index: number, value: unknown): boolean;
@@ -12991,7 +12754,6 @@ interface AudioClip extends AudioResource {
     
 interface PCMReaderCallback {
 
-    constructor(object: unknown, method: unknown): PCMReaderCallback;
 
     BeginInvoke(data: CSArray<number>, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -13000,7 +12762,6 @@ interface PCMReaderCallback {
     
 interface PCMSetPositionCallback {
 
-    constructor(object: unknown, method: unknown): PCMSetPositionCallback;
 
     BeginInvoke(position: number, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -13052,6 +12813,7 @@ interface AudioMixerSnapshot extends Object, ISubAssetNotDuplicatable {
     
 interface AudioSourceConstructor {
 
+    new(): AudioSource;
 
     GamepadSpeakerSupportsOutputType(outputType: GamepadSpeakerOutputType): boolean;
     PlayClipAtPoint(clip: AudioClip, position: Vector3): void;
@@ -13159,14 +12921,12 @@ interface CanvasGroup extends Behaviour, ICanvasRaycastFilter {
     blocksRaycasts: boolean;
     ignoreParentGroups: boolean;
 
-    constructor(): CanvasGroup;
 
     IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 }
     
 interface AutoShutdownBridge extends MonoBehaviour {
 
-    constructor(): AutoShutdownBridge;
 
     SetBundlesLoaded(assetBundlesLoaded: boolean): void;
 }
@@ -13199,7 +12959,6 @@ interface VoxelBlocks {
     rootAssetPath: string;
     m_bundlePaths: CSArray<string>;
 
-    constructor(): VoxelBlocks;
 
     AddSolidMaskToVoxelValue(voxelValue: number): number;
     GetBlock(index: number): BlockDefinition;
@@ -13215,7 +12974,6 @@ interface TexturePacker {
     diffuse: RenderTexture;
     normals: RenderTexture;
 
-    constructor(): TexturePacker;
 
     Dispose(): void;
     GetColor(texture: string): Color;
@@ -13235,12 +12993,12 @@ interface TextureSet {
     emissive: number;
     brightness: number;
 
-    constructor(diffuse: Texture2D, normals: Texture2D, roughTex: Texture2D, metalTex: Texture2D, emissiveTex: Texture2D, roughness: number, metallic: number, normalScale: number, emissive: number, brightness: number): TextureSet;
 
 }
     
 interface TexturePackerConstructor {
 
+    new(): TexturePacker;
 
     CustomBlit(renderTarget: RenderTexture, sourceTexture: Texture, material: Material, destX: number, destY: number, destWidth: number, destHeight: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number): void;
     DoPadding(target: RenderTexture, source: Texture2D, rect: Rect, pad: number, flipMaterial: Material): void;
@@ -13291,7 +13049,6 @@ interface BlockDefinition {
     meshPath: string;
     meshPathLod: string;
 
-    constructor(): BlockDefinition;
 
     GetUvsForFace(i: number): Rect;
 }
@@ -13305,9 +13062,6 @@ interface VoxelMeshCopy {
     srcNormals: CSArray<Vector3>;
     surfaces: CSArray<Surface>;
 
-    constructor(mesh: Mesh): VoxelMeshCopy;
-    constructor(src: VoxelMeshCopy): VoxelMeshCopy;
-    constructor(assetPath: string, showError: boolean): VoxelMeshCopy;
 
     AdjustUVs(uvs: Rect): void;
 }
@@ -13316,8 +13070,6 @@ interface PrecalculatedRotation {
     vertices: CSArray<Vector3>;
     normals: CSArray<Vector3>;
 
-    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
-    constructor(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
 
 }
     
@@ -13326,8 +13078,6 @@ interface Surface {
     meshMaterial: Material;
     meshMaterialName: string;
 
-    constructor(triangles: CSArray<number>, material: Material, materialName: string): Surface;
-    constructor(): Surface;
 
 }
     
@@ -13336,7 +13086,6 @@ interface LodSet {
     lod1: VoxelMeshCopy;
     lod2: VoxelMeshCopy;
 
-    constructor(): LodSet;
 
 }
     
@@ -13348,6 +13097,7 @@ interface VoxelBlocksConstructor {
     QuarterBlockNames: CSArray<string>;
     QuarterBlockSubstitutions: CSArray<number>;
 
+    new(): VoxelBlocks;
 
 }
 declare const VoxelBlocks: VoxelBlocksConstructor;
@@ -13366,7 +13116,6 @@ interface CharacterController extends Collider {
     detectCollisions: boolean;
     enableOverlapRecovery: boolean;
 
-    constructor(): CharacterController;
 
     Move(motion: Vector3): CollisionFlags;
     SimpleMove(speed: Vector3): boolean;
@@ -13377,7 +13126,6 @@ interface ProjectileTrajectoryRenderer extends MonoBehaviour {
     maxSegmentCount: number;
     segmentStepModulo: number;
 
-    constructor(): ProjectileTrajectoryRenderer;
 
     SetDrawingEnabled(enabled: boolean): void;
     UpdateInfo(startingPoint: Vector3, velocity: Vector3, drag: number, gravity: number): void;
@@ -13385,7 +13133,6 @@ interface ProjectileTrajectoryRenderer extends MonoBehaviour {
     
 interface ProjectileLauncher extends NetworkBehaviour {
 
-    constructor(): ProjectileLauncher;
 
     Awake(): void;
     Awake___UserLogic(): void;
@@ -13401,7 +13148,6 @@ interface AirshipProjectile extends MonoBehaviour {
     launcherItemTypeId: number;
     itemTypeId: number;
 
-    constructor(): AirshipProjectile;
 
     Initialize(startingVelocity: Vector3, gravity: number, drag: number, passedTime: number, itemTypeId: number, launcherItemTypeId: number): void;
 }
@@ -13442,7 +13188,6 @@ interface TrailRenderer extends Renderer {
     widthCurve: AnimationCurve;
     colorGradient: Gradient;
 
-    constructor(): TrailRenderer;
 
     AddPosition(position: Vector3): void;
     AddPositions(positions: CSArray<Vector3>): void;
@@ -13471,7 +13216,6 @@ interface WindowCore {
     
 interface WindowProxy extends MonoBehaviour {
 
-    constructor(): WindowProxy;
 
     HasFocus(): boolean;
 }
@@ -13484,12 +13228,11 @@ interface WindowCoreConstructor {
 }
 declare const WindowCore: WindowCoreConstructor;
     
-interface CharacterMoveModifier {
+interface MoveModifier {
     speedMultiplier: number;
     blockSprint: boolean;
     blockJump: boolean;
 
-    constructor(): CharacterMoveModifier;
 
 }
     
@@ -13499,7 +13242,6 @@ interface DynamicVariables extends ScriptableObject {
     numbers: CSArray<unknown>;
     vectors: CSArray<unknown>;
 
-    constructor(): DynamicVariables;
 
     GetAsString(key: string): string;
     GetNumber(key: string): number;
@@ -13526,7 +13268,6 @@ interface MaterialColor extends MonoBehaviour {
     colorSettings: CSArray<ColorSetting>;
     addedByEditorScript: boolean;
 
-    constructor(): MaterialColor;
 
     ConvertColor(color: Color): Color;
     DoUpdate(): void;
@@ -13545,7 +13286,6 @@ interface ColorSetting {
     block: MaterialPropertyBlock;
     reference: string;
 
-    constructor(materialColor: Color, emissiveColor: Color, emissiveMix: number): ColorSetting;
 
     CopyFrom(otherSettings: ColorSetting): void;
 }
@@ -13553,7 +13293,6 @@ interface ColorSetting {
 interface DefaultObjectPool extends ObjectPool {
     Cache: CSArray<CSDictionary<number, CSArray<NetworkObject>>>;
 
-    constructor(): DefaultObjectPool;
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
     ClearPool(): void;
@@ -13567,7 +13306,6 @@ interface DefaultObjectPool extends ObjectPool {
 interface AirshipObjectPool extends DefaultObjectPool {
     maxSpawnPerFrame: number;
 
-    constructor(): AirshipObjectPool;
 
     RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
@@ -13577,7 +13315,6 @@ interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
     progressText: TMP_Text;
 
-    constructor(): MainMenuLoadingScreen;
 
     Close(): void;
     SetProgress(text: string, percent: number): void;
@@ -13585,7 +13322,6 @@ interface MainMenuLoadingScreen extends BundleLoadingScreen {
     
 interface HttpManager {
 
-    constructor(): HttpManager;
 
 }
     
@@ -13600,6 +13336,7 @@ interface HttpResponse {
     
 interface HttpManagerConstructor {
 
+    new(): HttpManager;
 
     DeleteAsync(url: string): HttpResponse;
     DeleteAsync(url: string, headers: string): HttpResponse;
@@ -13616,13 +13353,13 @@ declare const HttpManager: HttpManagerConstructor;
     
 interface InternalHttpManager {
 
-    constructor(): InternalHttpManager;
 
 }
     
 interface InternalHttpManagerConstructor {
     authToken: string;
 
+    new(): InternalHttpManager;
 
     DeleteAsync(url: string): HttpResponse;
     GetAsync(url: string): HttpResponse;
@@ -13636,12 +13373,12 @@ declare const InternalHttpManager: InternalHttpManagerConstructor;
     
 interface FriendsControllerBackend {
 
-    constructor(): FriendsControllerBackend;
 
 }
     
 interface FriendsControllerBackendConstructor {
 
+    new(): FriendsControllerBackend;
 
     GetFriends(): HttpResponse;
     IsFriendsWith(uid: string): HttpResponse;
@@ -13650,12 +13387,12 @@ declare const FriendsControllerBackend: FriendsControllerBackendConstructor;
     
 interface MatchmakingControllerBackend {
 
-    constructor(): MatchmakingControllerBackend;
 
 }
     
 interface MatchmakingControllerBackendConstructor {
 
+    new(): MatchmakingControllerBackend;
 
     GetStatus(): HttpResponse;
 }
@@ -13663,12 +13400,12 @@ declare const MatchmakingControllerBackend: MatchmakingControllerBackendConstruc
     
 interface PartyControllerBackend {
 
-    constructor(): PartyControllerBackend;
 
 }
     
 interface PartyControllerBackendConstructor {
 
+    new(): PartyControllerBackend;
 
     GetParty(): HttpResponse;
 }
@@ -13676,12 +13413,12 @@ declare const PartyControllerBackend: PartyControllerBackendConstructor;
     
 interface AirshipInventoryControllerBackend {
 
-    constructor(): AirshipInventoryControllerBackend;
 
 }
     
 interface AirshipInventoryControllerBackendConstructor {
 
+    new(): AirshipInventoryControllerBackend;
 
     GetAccessories(): HttpResponse;
     GetEquippedOutfit(): HttpResponse;
@@ -13695,12 +13432,12 @@ declare const AirshipInventoryControllerBackend: AirshipInventoryControllerBacke
     
 interface TransferControllerBackend {
 
-    constructor(): TransferControllerBackend;
 
 }
     
 interface TransferControllerBackendConstructor {
 
+    new(): TransferControllerBackend;
 
     TransferToGame(body: string): HttpResponse;
     TransferToPartyLeader(): HttpResponse;
@@ -13709,12 +13446,12 @@ declare const TransferControllerBackend: TransferControllerBackendConstructor;
     
 interface UsersControllerBackend {
 
-    constructor(): UsersControllerBackend;
 
 }
     
 interface UsersControllerBackendConstructor {
 
+    new(): UsersControllerBackend;
 
     GetUserById(userId: string): HttpResponse;
     GetUserByUsername(username: string): HttpResponse;
@@ -13724,12 +13461,12 @@ declare const UsersControllerBackend: UsersControllerBackendConstructor;
     
 interface CacheStoreServiceBackend {
 
-    constructor(): CacheStoreServiceBackend;
 
 }
     
 interface CacheStoreServiceBackendConstructor {
 
+    new(): CacheStoreServiceBackend;
 
     GetKey(key: string, expireTimeSec: unknown): HttpResponse;
     SetKey(key: string, expireTimeSec: number, body: string): HttpResponse;
@@ -13739,12 +13476,12 @@ declare const CacheStoreServiceBackend: CacheStoreServiceBackendConstructor;
     
 interface DataStoreServiceBackend {
 
-    constructor(): DataStoreServiceBackend;
 
 }
     
 interface DataStoreServiceBackendConstructor {
 
+    new(): DataStoreServiceBackend;
 
     DeleteKey(key: string): HttpResponse;
     GetKey(key: string): HttpResponse;
@@ -13754,12 +13491,12 @@ declare const DataStoreServiceBackend: DataStoreServiceBackendConstructor;
     
 interface LeaderboardServiceBackend {
 
-    constructor(): LeaderboardServiceBackend;
 
 }
     
 interface LeaderboardServiceBackendConstructor {
 
+    new(): LeaderboardServiceBackend;
 
     GetRank(leaderboardName: string, id: string): HttpResponse;
     GetRankRange(leaderboardName: string, skip: number, limit: number): HttpResponse;
@@ -13769,12 +13506,12 @@ declare const LeaderboardServiceBackend: LeaderboardServiceBackendConstructor;
     
 interface PartyServiceBackend {
 
-    constructor(): PartyServiceBackend;
 
 }
     
 interface PartyServiceBackendConstructor {
 
+    new(): PartyServiceBackend;
 
     GetPartyById(partyId: string): HttpResponse;
     GetPartyForUserId(userId: string): HttpResponse;
@@ -13783,12 +13520,12 @@ declare const PartyServiceBackend: PartyServiceBackendConstructor;
     
 interface MatchmakingServiceBackend {
 
-    constructor(): MatchmakingServiceBackend;
 
 }
     
 interface MatchmakingServiceBackendConstructor {
 
+    new(): MatchmakingServiceBackend;
 
     GetMatchmakingRegions(): HttpResponse;
     JoinPartyToQueue(partyId: string, body: string): HttpResponse;
@@ -13798,12 +13535,12 @@ declare const MatchmakingServiceBackend: MatchmakingServiceBackendConstructor;
     
 interface TransferServiceBackend {
 
-    constructor(): TransferServiceBackend;
 
 }
     
 interface TransferServiceBackendConstructor {
 
+    new(): TransferServiceBackend;
 
     CreateServer(body: string): HttpResponse;
     Transfer(body: string): HttpResponse;
@@ -13812,12 +13549,12 @@ declare const TransferServiceBackend: TransferServiceBackendConstructor;
     
 interface AirshipInventoryServiceBackend {
 
-    constructor(): AirshipInventoryServiceBackend;
 
 }
     
 interface AirshipInventoryServiceBackendConstructor {
 
+    new(): AirshipInventoryServiceBackend;
 
     DeleteAccessory(): HttpResponse;
     DeleteItem(): HttpResponse;
@@ -13838,12 +13575,12 @@ declare const AirshipInventoryServiceBackend: AirshipInventoryServiceBackendCons
     
 interface UsersServiceBackend {
 
-    constructor(): UsersServiceBackend;
 
 }
     
 interface UsersServiceBackendConstructor {
 
+    new(): UsersServiceBackend;
 
     GetUserById(userId: string): HttpResponse;
     GetUserByUsername(username: string): HttpResponse;
@@ -13860,7 +13597,6 @@ interface ServerTransferData {
     address: string;
     port: number;
 
-    constructor(): ServerTransferData;
 
 }
     
@@ -13891,7 +13627,6 @@ interface Toggle extends Selectable, ISubmitHandler, IPointerClickHandler, ICanv
     
 interface ToggleEvent {
 
-    constructor(): ToggleEvent;
 
 }
     
@@ -13947,8 +13682,6 @@ interface RectOffset {
     horizontal: number;
     vertical: number;
 
-    constructor(): RectOffset;
-    constructor(left: number, right: number, top: number, bottom: number): RectOffset;
 
     Add(rect: Rect): Rect;
     Remove(rect: Rect): Rect;
@@ -14005,7 +13738,6 @@ interface ContentSizeFitter extends UIBehaviour, ILayoutSelfController {
 interface LayoutRebuilder extends ICanvasElement {
     transform: Transform;
 
-    constructor(): LayoutRebuilder;
 
     Equals(obj: unknown): boolean;
     GetHashCode(): number;
@@ -14018,6 +13750,7 @@ interface LayoutRebuilder extends ICanvasElement {
     
 interface LayoutRebuilderConstructor {
 
+    new(): LayoutRebuilder;
 
     ForceRebuildLayoutImmediate(layoutRoot: RectTransform): void;
     MarkLayoutForRebuild(rect: RectTransform): void;
@@ -14096,14 +13829,12 @@ interface ScrollRect extends UIBehaviour, ILayoutGroup, IBeginDragHandler, IInit
     
 interface ScrollRectEvent {
 
-    constructor(): ScrollRectEvent;
 
 }
     
 interface NetworkTransform extends NetworkBehaviour {
     TakenOwnership: boolean;
 
-    constructor(): NetworkTransform;
 
     Awake(): void;
     Awake___UserLogic(): void;
@@ -14141,6 +13872,7 @@ interface SnappedAxes {
 interface NetworkTransformConstructor {
     MAX_INTERPOLATION: number;
 
+    new(): NetworkTransform;
 
 }
 declare const NetworkTransform: NetworkTransformConstructor;
@@ -14152,7 +13884,6 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     resHeight: number;
     FolderName: string;
 
-    constructor(): CameraScreenshotRecorder;
 
     ScreenShotName(width: number, height: number): string;
     ScreenShotName(filename: string): string;
@@ -14163,7 +13894,6 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     
 interface OnPictureTaken {
 
-    constructor(object: unknown, method: unknown): OnPictureTaken;
 
     BeginInvoke(screenshot: Texture2D, callback: unknown, object: unknown): unknown;
     EndInvoke(result: unknown): void;
@@ -14174,6 +13904,7 @@ interface CameraScreenshotRecorderConstructor {
     onPictureTaken: OnPictureTaken;
     GetScreenshotTexture: Texture2D;
 
+    new(): CameraScreenshotRecorder;
 
 }
 declare const CameraScreenshotRecorder: CameraScreenshotRecorderConstructor;
@@ -14276,7 +14007,6 @@ interface EasyShake extends MonoBehaviour {
     resolveShakeOverTime: boolean;
     destroyOnEnd: boolean;
 
-    constructor(): EasyShake;
 
 }
     
@@ -14290,14 +14020,12 @@ interface EasyMotion extends MonoBehaviour {
     scale: boolean;
     scaleSpeed: Vector3;
 
-    constructor(): EasyMotion;
 
 }
     
 interface GroundItemDrop extends MonoBehaviour {
     boxCollider: BoxCollider;
 
-    constructor(): GroundItemDrop;
 
     GetVelocity(): Vector3;
     IsGrounded(): boolean;
@@ -14312,7 +14040,6 @@ interface BoxCollider extends Collider {
     size: Vector3;
     extents: Vector3;
 
-    constructor(): BoxCollider;
 
 }
     
@@ -14321,7 +14048,6 @@ interface RemoteImage extends MonoBehaviour {
     image: Image;
     downloadOnStart: boolean;
 
-    constructor(): RemoteImage;
 
     StartDownload(): void;
 }
@@ -14347,7 +14073,6 @@ interface LineRenderer extends Renderer {
     widthCurve: AnimationCurve;
     colorGradient: Gradient;
 
-    constructor(): LineRenderer;
 
     BakeMesh(mesh: Mesh, useTransform: boolean): void;
     BakeMesh(mesh: Mesh, camera: Camera, useTransform: boolean): void;
