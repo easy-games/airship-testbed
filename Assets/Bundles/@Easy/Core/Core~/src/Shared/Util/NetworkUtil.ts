@@ -1,3 +1,5 @@
+import { CoreContext } from "Shared/CoreClientContext";
+import { Game } from "Shared/Game";
 import { Bin } from "./Bin";
 import { RunUtil } from "./RunUtil";
 import { Signal } from "./Signal";
@@ -5,18 +7,20 @@ import { TimeUtil } from "./TimeUtil";
 
 const waitingByName = new Map<string, NetworkObject>();
 
-let managed: ManagedObjects = InstanceFinder.ClientManager.Objects;
-if (RunUtil.IsServer()) {
-	managed = InstanceFinder.ServerManager.Objects;
-}
 export const NetworkObjectAdded = new Signal<NetworkObject>();
-managed.OnAddedToSpawnedEvent((nob) => {
-	NetworkObjectAdded.debugGameObject = true;
-	NetworkObjectAdded.Fire(nob);
-	waitingByName.set(nob.gameObject.name, nob);
-	// print("end of onAdded", nob.gameObject);
-	// cleanup here
-});
+if (Game.context === CoreContext.GAME) {
+	let managed: ManagedObjects = InstanceFinder.ClientManager.Objects;
+	if (RunUtil.IsServer()) {
+		managed = InstanceFinder.ServerManager.Objects;
+	}
+	managed.OnAddedToSpawnedEvent((nob) => {
+		NetworkObjectAdded.debugGameObject = true;
+		NetworkObjectAdded.Fire(nob);
+		waitingByName.set(nob.gameObject.name, nob);
+		// print("end of onAdded", nob.gameObject);
+		// cleanup here
+	});
+}
 
 export class NetworkUtil {
 	/**
