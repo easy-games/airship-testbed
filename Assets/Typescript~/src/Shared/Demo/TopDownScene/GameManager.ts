@@ -21,7 +21,7 @@ export default class GameManager extends AirshipBehaviour {
 			});
 			Airship.damage.onDeath.Connect((event) => {
 				if (!this.autoRespawn) return;
-				const player = event.gameObject.GetComponent<Character>()?.player;
+				const player = event.gameObject.GetAirshipComponent<Character>()?.player;
 				if (player) {
 					task.delay(this.autoRespawnDelay, () => {
 						if (player.IsConnected()) {
