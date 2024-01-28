@@ -69,7 +69,14 @@ export default class Character extends AirshipBehaviour {
 		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
 	}
 
-	public Teleport(pos: Vector3, lookDirection?: Vector3): void {}
+	/**
+	 * This should be called from the server.
+	 *
+	 * You can call it from the client only when using Client Authoratative characters.
+	 */
+	public Teleport(pos: Vector3, lookDirection?: Vector3): void {
+		this.movement.Teleport(pos);
+	}
 
 	public OnDisable(): void {
 		this.onDespawn.Fire();
