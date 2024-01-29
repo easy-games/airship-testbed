@@ -1,52 +1,43 @@
-import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
-import { LoadingScreenController } from "@Easy/Core/Client/Controllers/Loading/LoadingScreenController";
-import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
-import { EntityService } from "@Easy/Core/Server/Services/Entity/EntityService";
-import { PlayerService } from "@Easy/Core/Server/Services/Player/PlayerService";
-import { EntityPrefabType } from "@Easy/Core/Shared/Entity/EntityPrefabType";
-import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { Dependency } from "@easy-games/flamework-core";
 
 export default class GameManager extends AirshipBehaviour {
+	@Header("References")
 	public spawnPosition!: Transform;
-	private bin = new Bin();
+	public testPrefab!: GameObject;
 
-	public override Awake(): void {
-		print("GameManager.OnAwake");
-	}
+	@Header("Variables")
+	public autoRespawn = true;
+	public autoRespawnDelay = 0;
 
 	override Start(): void {
-		print("GameManager.OnStart");
 		if (RunUtil.IsServer()) {
-			Dependency<PlayerService>().ObservePlayers((player) => {
-				Dependency<EntityService>().SpawnPlayerEntity(
-					player,
-					EntityPrefabType.HUMAN,
-					this.spawnPosition.position,
-				);
+			Airship.players.ObservePlayers((player) => {
+				this.SpawnPlayer(player);
 			});
-			this.bin.Add(
-				CoreServerSignals.EntityDeath.Connect((event) => {
-					event.respawnTime = 0;
-					if (event.entity.player) {
-						Dependency<EntityService>().SpawnPlayerEntity(
-							event.entity.player,
-							EntityPrefabType.HUMAN,
-							this.spawnPosition.position,
-						);
-					}
-				}),
-			);
+			Airship.damage.onDeath.Connect((event) => {
+				if (!this.autoRespawn) return;
+				const player = event.gameObject.GetAirshipComponent<Character>()?.player;
+				if (player) {
+					task.delay(this.autoRespawnDelay, () => {
+						if (player.IsConnected()) {
+							this.SpawnPlayer(player);
+						}
+					});
+				}
+			});
 		}
 		if (RunUtil.IsClient()) {
-			Dependency<LocalEntityController>().SetFirstPerson(false);
-			Dependency<LocalEntityController>().SetDefaultFirstPerson(false);
-			Dependency<LoadingScreenController>().FinishLoading();
+			Airship.loadingScreen.FinishLoading();
 		}
 	}
 
-	override OnDestroy(): void {
-		this.bin.Clean();
+	public SpawnPlayer(player: Player): void {
+		const character = player.SpawnCharacter(this.spawnPosition.position);
+		character.inventory.AddItem(new ItemStack(ItemType.WOOD_SWORD));
 	}
 }

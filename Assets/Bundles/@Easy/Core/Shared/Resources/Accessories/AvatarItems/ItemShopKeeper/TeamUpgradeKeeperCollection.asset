@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe3d2d8679e4833b63469f7e587a48c, type: 3}
+  m_Name: TeamUpgradeKeeperCollection
+  m_EditorClassIdentifier: 
+  accessories:
+  - {fileID: 3955224052497085270, guid: 15bf8fd688ae02a4a92932b3ccb43d28, type: 3}
+  - {fileID: 5660788679855312428, guid: 45be7b6105384da47bcfcc04e8b6bcce, type: 3}
+  - {fileID: 5873576580403382919, guid: 36f3ea781eaebdf41853218236d3cb6c, type: 3}
+  customSkin: {fileID: 11400000, guid: 3db33dde7d6c2f744b18a4f4bf187f3b, type: 2}
+  skinColor: {r: 0.5754717, g: 0.40792012, b: 0.28502136, a: 1}

@@ -29,6 +29,10 @@ export declare class ProximityPrompt {
     promptGameObject: GameObject | undefined;
     /** On activated signal. */
     onActivated: Signal<void>;
+    /** On entered proximity signal. */
+    onProximityEnter: Signal<void>;
+    /** On exited proximity signal. */
+    onProximityExit: Signal<void>;
     /** On activated signal. */
     onRequestActivated: Signal<void>;
     private canActivate;

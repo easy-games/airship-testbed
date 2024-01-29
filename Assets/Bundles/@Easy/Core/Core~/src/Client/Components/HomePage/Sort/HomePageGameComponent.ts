@@ -9,6 +9,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public titleText!: TMP_Text;
 	public playerCountText!: TMP_Text;
 	public buttonGo!: GameObject;
+	@SerializeField()
+	private redirectDrag!: AirshipRedirectDrag;
 
 	private bin = new Bin();
 
@@ -18,6 +20,10 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	public OnDisabled(): void {
 		this.bin.Clean();
+	}
+
+	public SetDragRedirectTarget(target: ScrollRect): void {
+		this.redirectDrag.redirectTarget = target;
 	}
 
 	public Init(gameDto: GameDto) {
@@ -46,7 +52,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		});
 
 		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
-			Dependency<TransferController>().ClientTransferToServerAsync(gameDto.id);
+			if (this.redirectDrag.isDragging) return;
+			Dependency<TransferController>().TransferToGameAsync(gameDto.id);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(clickConn);

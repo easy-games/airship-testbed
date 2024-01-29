@@ -32,7 +32,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6977425144866861155}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -129,7 +128,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6977425144866861155}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -207,15 +205,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -285,7 +285,6 @@ RectTransform:
   m_Children:
   - {fileID: 6977425144866861155}
   m_Father: {fileID: 1887127101124568663}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -362,7 +361,6 @@ RectTransform:
   - {fileID: 1748140059526347866}
   - {fileID: 512884760892855937}
   m_Father: {fileID: 4937528486100167338}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -492,7 +490,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1887127101124568663}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -527,7 +524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BedWars [Private Alpha]
+  m_text: 'BedWars [Private Alpha]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8d354403cbae24e3dadadced631ed91a, type: 2}
   m_sharedMaterial: {fileID: 4646554452606745, guid: 8d354403cbae24e3dadadced631ed91a, type: 2}
@@ -570,15 +567,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -631,7 +630,6 @@ RectTransform:
   - {fileID: 6985199288318405689}
   - {fileID: 4937528486100167338}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -684,7 +682,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_script: {fileID: 8830901836666216171, guid: 1e658900bbb7f4f3d98261cf7905437a, type: 3}
   m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/Components/HomePage/Sort/HomePageGameComponent.lua
   m_error: 0
   m_yielded: 0
@@ -704,8 +701,10 @@ MonoBehaviour:
         type: 
         objectType: 
       decorators: []
+      nullable: 0
       serializedValue: 
       serializedObject: {fileID: 4747334059101062720}
+      modified: 0
     - name: playerCountText
       type: object
       objectType: TMP_Text
@@ -713,8 +712,10 @@ MonoBehaviour:
         type: 
         objectType: 
       decorators: []
+      nullable: 0
       serializedValue: 
       serializedObject: {fileID: 6817281124973835665}
+      modified: 0
     - name: buttonGo
       type: object
       objectType: GameObject
@@ -722,8 +723,21 @@ MonoBehaviour:
         type: 
         objectType: 
       decorators: []
+      nullable: 0
       serializedValue: 
       serializedObject: {fileID: 7334092849454283308}
+      modified: 0
+    - name: redirectDrag
+      type: object
+      objectType: AirshipRedirectDrag
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5513109097700678103}
+      modified: 1
 --- !u!1 &7334092849454283308
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +752,7 @@ GameObject:
   - component: {fileID: 3586970315758590938}
   - component: {fileID: 1080242479796895828}
   - component: {fileID: 1224758353300491981}
+  - component: {fileID: 5513109097700678103}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -758,7 +773,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1887127101124568663}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -786,7 +800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.29803923}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.31764707}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -876,3 +890,17 @@ MonoBehaviour:
   url: 
   image: {fileID: 4272896538262094076}
   downloadOnStart: 0
+--- !u!114 &5513109097700678103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7334092849454283308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDragging: 0
+  redirectTarget: {fileID: 0}

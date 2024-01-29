@@ -1,4 +1,4 @@
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AudioManager } from "../Audio/AudioManager";
 import { Bin } from "./Bin";
@@ -32,8 +32,9 @@ export class AppManager {
 	private static darkBackgroundTransitionBin = new Bin();
 
 	public static Init() {
-		const backgroundGO = GameObjectUtil.Instantiate(
+		const backgroundGO = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/AppManagerBackground.prefab"),
+			CoreRefs.rootTransform,
 		);
 		this.backgroundCanvas = backgroundGO.GetComponent<Canvas>();
 		this.backgroundCanvas.enabled = false;

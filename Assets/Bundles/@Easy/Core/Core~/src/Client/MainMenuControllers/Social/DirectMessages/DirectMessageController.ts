@@ -1,6 +1,5 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
-import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CoreContext } from "Shared/CoreClientContext";
@@ -56,7 +55,6 @@ export class DirectMessageController implements OnStart {
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly friendsController: FriendsController,
-		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
 	) {}
 
@@ -263,7 +261,6 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public OpenFriend(uid: string): void {
-		print("open.1");
 		this.openWindowBin.Clean();
 		this.openedWindowUserId = uid;
 
@@ -271,11 +268,9 @@ export class DirectMessageController implements OnStart {
 
 		this.messagesContentGo!.ClearChildren();
 
-		print("open.2");
 		for (const dm of messages) {
 			this.RenderChatMessage(dm, false);
 		}
-		print("open.3");
 		this.openWindowBin.Add(
 			this.onDirectMessageReceived.Connect((dm) => {
 				if (dm.sender === uid) {
@@ -295,21 +290,18 @@ export class DirectMessageController implements OnStart {
 			}),
 		);
 
-		print("open.4");
 		const headerUserRefs = this.windowGoRefs?.GetValue("UI", "HeaderUserRefs") as GameObjectReferences;
 		let friendStatus = this.friendsController.GetFriendStatus(uid);
 		if (!friendStatus) {
 			Debug.LogError("Failed to find friend status.");
 			return;
 		}
-		print("open.5");
 
 		this.friendsController.UpdateFriendStatusUI(friendStatus, headerUserRefs, {
 			loadImage: true,
 			includeTag: true,
 		});
 
-		print("tween");
 		this.windowGo!.GetComponent<RectTransform>().TweenAnchoredPositionY(0, 0.1);
 		// this.windowGo!.transform.TweenLocalPositionY(0, 0.1);
 

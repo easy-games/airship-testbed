@@ -12,14 +12,14 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export class ItemUtil {
-	public static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
+	public static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.prefab";
 
-	private static readonly itemAccessories = new Map<ItemType, Accessory[]>();
+	private static readonly itemAccessories = new Map<ItemType, AccessoryComponent[]>();
 	private static readonly blockIdToItemType = new Map<string, ItemType>();
 	private static readonly itemIdToItemType = new Map<number, ItemType>();
 	private static runtimeIdCounter = 0;
 
-	public static missingItemAccessory: Accessory;
+	public static missingItemAccessory: AccessoryComponent;
 
 	private static itemTypes: ItemType[] = [];
 	private static implictItemTypeMap = new Map<string, ItemType>();
@@ -32,7 +32,7 @@ export class ItemUtil {
 	 */
 	public static Initialize() {
 		//Load default items
-		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<Accessory>(ItemUtil.defaultItemPath);
+		ItemUtil.missingItemAccessory = AssetBridge.Instance.LoadAsset<AccessoryComponent>(ItemUtil.defaultItemPath);
 
 		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(CoreItemDefinitions)) {
@@ -62,7 +62,7 @@ export class ItemUtil {
 					(name) => config.accessoryFolder + "/" + name,
 				);
 			} else {
-				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".asset"];
+				itemDefinition.accessoryPaths = [config.accessoryFolder + "/" + itemType.lower() + ".prefab"];
 			}
 		}
 		CoreItemDefinitions[itemType] = itemDefinition;
@@ -93,22 +93,21 @@ export class ItemUtil {
 		if (itemMeta.accessoryPaths) {
 			accessoryPaths = itemMeta.accessoryPaths;
 		} else if (itemMeta.block?.blockId) {
-			accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.asset"];
+			accessoryPaths = ["@Easy/Core/Shared/Resources/Accessories/block.prefab"];
 		}
 
 		if (accessoryPaths.size() > 0) {
-			const accessories: Accessory[] = [];
+			const accessories: AccessoryComponent[] = [];
 			ItemUtil.itemAccessories.set(itemType, accessories);
 
 			for (const accessoryName of accessoryPaths) {
-				let accessory = AssetBridge.Instance.LoadAssetIfExists<Accessory>(accessoryName);
+				let accessory = AssetBridge.Instance.LoadAssetIfExists<GameObject>(accessoryName);
 				if (!accessory) {
-					// warn("Couldn't find: " + accNameLower);
 					continue;
 				}
 
 				// this.itemAccessories.set(itemType, accessory);
-				accessories.push(accessory);
+				accessories.push(accessory.GetComponent<AccessoryComponent>());
 			}
 		}
 		this.runtimeIdCounter++;
@@ -142,14 +141,14 @@ export class ItemUtil {
 		return val;
 	}
 
-	public static GetFirstAccessoryForItemType(itemType: ItemType): Accessory {
+	public static GetFirstAccessoryForItemType(itemType: ItemType): AccessoryComponent {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories[0];
 
 		return ItemUtil.missingItemAccessory;
 	}
 
-	public static GetAccessoriesForItemType(itemType: ItemType): Readonly<Accessory[]> {
+	public static GetAccessoriesForItemType(itemType: ItemType): Readonly<AccessoryComponent[]> {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories;
 
@@ -196,35 +195,13 @@ export class ItemUtil {
 	}
 
 	/**
-	 * Fetch a render texture for a provided item.
-	 * @param itemType An item.
-	 * @returns Render texture that corresponds to item.
-	 */
-	public static GetItemRenderTexture(itemType: ItemType): Texture2D {
-		const [, id] = this.GetItemTypeComponents(itemType);
-		const imageSrc = `${id.lower()}.png`;
-		const path = `Client/Resources/Assets/ItemRenders/${imageSrc}`;
-		return AssetBridge.Instance.LoadAsset<Texture2D>(path);
-	}
-	/**
-	 * Fetch an asset bundle item render path for a provided item.
-	 * @param itemType An item.
-	 * @returns Render path that corresponds to item.
-	 */
-	public static GetItemRenderPath(itemType: ItemType): string {
-		const [, id] = this.GetItemTypeComponents(itemType);
-		const imageSrc = `${id.lower()}.png`;
-		return `Client/Resources/Assets/ItemRenders/${imageSrc}`;
-	}
-
-	/**
 	 * Checks whether or not an item is a resource.
 	 * @param itemType An item.
 	 * @returns Whether or not item is a resource.
 	 */
-	public static IsResource(itemType: ItemType): boolean {
-		return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
-	}
+	// public static IsResource(itemType: ItemType): boolean {
+	// 	return itemType === ItemType.IRON || itemType === ItemType.DIAMOND || itemType === ItemType.EMERALD;
+	// }
 
 	/**
 	 * Returns the component parts of an ItemType - the scope and the id

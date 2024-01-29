@@ -15,7 +15,11 @@
 		"moduleDetection": "force",
 		"strict": true,
 		"target": "ESNext",
-		"typeRoots": ["node_modules/@rbxts", "node_modules/@easy-games", "../../../Types~/"],
+		"typeRoots": [
+            "node_modules/@rbxts", 
+            "node_modules/@easy-games", 
+            "../../../Types~/"
+        ],
 
 		// configurable
 		// "rootDirs": ["src/Server", "src/Client", "src/Shared"],
@@ -29,10 +33,9 @@
             "Shared/*": ["./Shared/*"]
         },
 		"baseUrl": "src",
-		"incremental": false,
         "skipLibCheck": true,
 		"plugins": [
-            { "transform": "@easy-games/unity-component-transformer" },
+            // { "transform": "@easy-games/unity-component-transformer" },
 			{ "transform": "@easy-games/unity-flamework-transformer" },
 		],
 	},

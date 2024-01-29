@@ -1,7 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { Entity } from "Shared/Entity/Entity";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
@@ -13,8 +13,6 @@ import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
-import { PlayerController } from "../Player/PlayerController";
 
 interface GroundItemEntry {
 	nob: NetworkObject;
@@ -31,13 +29,11 @@ export class GroundItemController implements OnStart {
 	private readonly groundItemsFolder: GameObject;
 	// private readonly offlineGroundItems: OfflineGroundItems;
 
-	constructor(
-		private readonly playerController: PlayerController,
-		private readonly entityAccessoryController: EntityAccessoryController,
-	) {
+	constructor() {
 		// this.groundItemsFolder = GameObject.Create("GroundItems");
-		this.groundItemsFolder = GameObjectUtil.Instantiate(
+		this.groundItemsFolder = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItems.prefab"),
+			CoreRefs.rootTransform,
 		);
 		// this.offlineGroundItems = this.groundItemsFolder.GetComponent<OfflineGroundItems>();
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");
@@ -62,20 +58,16 @@ export class GroundItemController implements OnStart {
 
 	private CreateDisplayGO(itemStack: ItemStack, parent: Transform, displayOffset: Vector3): GameObject {
 		let obj = this.itemTypeToDisplayObjMap.get(itemStack.GetItemType());
-		let accessory: Accessory | undefined;
+		let accessory: AccessoryComponent | undefined;
 		if (!obj) {
 			const acc = ItemUtil.GetFirstAccessoryForItemType(itemStack.GetItemType());
-			obj = acc.Prefab;
+			obj = acc.gameObject;
 			accessory = acc;
 		}
 		const displayGO = GameObjectUtil.InstantiateIn(obj, parent);
 		if (accessory) {
-			displayGO.transform.localScale = accessory.Scale.add(new Vector3(1, 1, 1));
-			displayGO.transform.localRotation = Quaternion.Euler(
-				accessory.Rotation.x,
-				accessory.Rotation.y,
-				accessory.Rotation.z,
-			);
+			displayGO.transform.localScale = accessory.localScale.add(new Vector3(1, 1, 1));
+			displayGO.transform.localRotation = accessory.localRotation;
 		}
 		displayGO.transform.localPosition = displayOffset;
 		return displayGO;
@@ -176,10 +168,10 @@ export class GroundItemController implements OnStart {
 				return;
 			}
 
-			const entity = Entity.FindById(entityId);
-			if (entity) {
-				CoreClientSignals.EntityPickupItem.Fire({ entity, groundItem });
-			}
+			const entity = Airship.characters.FindById(entityId);
+			// if (entity) {
+			// 	CoreClientSignals.EntityPickupItem.Fire({ entity, groundItem });
+			// }
 
 			const go = groundItem.drop.gameObject;
 			// this.groundItemPool.push(go);

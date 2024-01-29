@@ -34,6 +34,10 @@ export class ProximityPrompt {
 	public promptGameObject: GameObject | undefined;
 	/** On activated signal. */
 	public onActivated = new Signal<void>();
+	/** On entered proximity signal. */
+	public onProximityEnter = new Signal<void>();
+	/** On exited proximity signal. */
+	public onProximityExit = new Signal<void>();
 	/** On activated signal. */
 	public onRequestActivated = new Signal<void>();
 
@@ -51,11 +55,13 @@ export class ProximityPrompt {
 
 	/** Creates prompt from prompt data. */
 	private CreatePrompt(): void {
+		const promptController = Dependency<ProximityPromptController>();
 		this.promptGameObject = GameObjectUtil.InstantiateAt(
 			this.promptPrefab,
 			this.data.promptPosition,
 			Quaternion.identity,
 		);
+		this.promptGameObject.transform.SetParent(promptController.promptFolder);
 		// Prompt starts inactive.
 		this.promptGameObject.SetActive(false);
 		// Set activation key, action, and object text.
@@ -68,7 +74,7 @@ export class ProximityPrompt {
 		keyCode.text = this.data.activationKeyString;
 		bottomText.text = this.data.bottomText;
 		topText.text = this.data.topText;
-		Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
+		promptController.RegisterProximityPrompt(this);
 	}
 
 	public SetCanActivate(canActivate: boolean) {
@@ -80,7 +86,9 @@ export class ProximityPrompt {
 				if (event.uiProcessed) return;
 				this.onRequestActivated.Fire();
 			});
+			this.onProximityEnter.Fire();
 		} else {
+			this.onProximityExit.Fire();
 			this.canActivateBin.Clean();
 		}
 	}

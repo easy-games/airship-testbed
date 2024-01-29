@@ -10,19 +10,19 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 	private sort!: SortComponent;
 	private bin = new Bin();
 
-	public OnAwake(): void {
+	public override Awake(): void {
 		this.sort = this.gameObject.GetComponent<SortComponent>();
 	}
 
-	public OnEnabled(): void {
+	public override OnEnable(): void {
 		this.sort.Clear();
 		this.FetchGames();
 	}
 
 	public FetchGames(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self");
+		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true");
 		if (!res.success) {
-			warn("Failed to fetch my games. Retrying in 1s..");
+			// warn("Failed to fetch my games. Retrying in 1s..");
 			this.bin.Add(
 				SetTimeout(1, () => {
 					this.FetchGames();

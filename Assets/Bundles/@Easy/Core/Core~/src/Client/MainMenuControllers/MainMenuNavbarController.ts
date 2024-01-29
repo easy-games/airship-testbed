@@ -115,7 +115,7 @@ export class MainMenuNavbarController implements OnStart {
 		const profileWrapper = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton") as GameObject;
 		const usernameText = this.mainMenuController.refs.GetValue("Navbar", "AccountUsername") as TMP_Text;
 		const picture = this.mainMenuController.refs.GetValue("Navbar", "AccountPicture") as Image;
-		const disc = this.mainMenuController.refs.GetValue("Navbar", "AccountDiscriminator") as TMP_Text;
+		// const disc = this.mainMenuController.refs.GetValue("Navbar", "AccountDiscriminator") as TMP_Text;
 
 		let user = this.userController.localUser;
 		if (!user) {
@@ -128,7 +128,7 @@ export class MainMenuNavbarController implements OnStart {
 			displayName = displayName.sub(0, 15);
 		}
 		usernameText.text = displayName;
-		disc.text = "#" + user.discriminator;
+		// disc.text = "#" + user.discriminator;
 		profileWrapper.SetActive(true);
 
 		const profileLayoutGroup = this.mainMenuController.refs.GetValue("Navbar", "ProfileLayoutGroup");

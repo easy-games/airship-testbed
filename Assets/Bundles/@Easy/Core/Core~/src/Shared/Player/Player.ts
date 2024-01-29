@@ -1,13 +1,15 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
-import { PlayerService } from "Server/Services/Player/PlayerService";
+import { Airship } from "Shared/Airship";
+import { AssetCache } from "Shared/AssetCache/AssetCache";
+import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
+import { Game } from "Shared/Game";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "Shared/ProfilePicture/ProfilePictureMeta";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
@@ -22,13 +24,15 @@ export interface PlayerDto {
 	teamId: string | undefined;
 }
 
+const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/Character.prefab");
+
 export class Player {
 	/**
 	 * The player controls this entity.
 	 */
-	public character: CharacterEntity | undefined;
+	public character: Character | undefined;
 	/** Fired when the player's character changes. */
-	public readonly onCharacterChanged = new Signal<CharacterEntity | undefined>();
+	public readonly onCharacterChanged = new Signal<Character | undefined>();
 	/**
 	 * Fired when the player disconnects from the server.
 	 * Connections will automatically be disconnected when the player leaves.
@@ -49,7 +53,7 @@ export class Player {
 		/**
 		 * The GameObject representing the player.
 		 */
-		public readonly nob: NetworkObject,
+		public readonly networkObject: NetworkObject,
 
 		/**
 		 * Unique network ID for the player in the given server. This ID
@@ -76,6 +80,8 @@ export class Player {
 		public username: string,
 
 		/**
+		 * @deprecated Username tags will be removed.
+		 *
 		 * The player's username tag. Append this value onto `username` for a
 		 * unique username.
 		 * ```ts
@@ -84,6 +90,28 @@ export class Player {
 		 */
 		public usernameTag: string,
 	) {}
+
+	public SpawnCharacter(
+		position: Vector3,
+		config?: {
+			lookDirection?: Vector3;
+		},
+	): Character {
+		if (!RunUtil.IsServer()) {
+			error("Player.SpawnCharacter must be called on the server.");
+		}
+
+		const go = Object.Instantiate(characterPrefab);
+		go.name = `Character_${this.username}`;
+		const characterComponent = go.GetAirshipComponent<Character>()!;
+		characterComponent.Init(this, Airship.characters.MakeNewId());
+		this.SetCharacter(characterComponent);
+		go.transform.position = position;
+		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
+		Airship.characters.RegisterCharacter(characterComponent);
+		Airship.characters.onCharacterSpawned.Fire(characterComponent);
+		return characterComponent;
+	}
 
 	public GetProfilePicture(): ProfilePictureMeta {
 		return ProfilePictureDefinitions[this.profilePicture];
@@ -127,7 +155,7 @@ export class Player {
 
 	public Encode(): PlayerDto {
 		return {
-			nobId: this.nob.ObjectId,
+			nobId: this.networkObject.ObjectId,
 			clientId: this.clientId,
 			userId: this.userId,
 			username: this.username,
@@ -136,12 +164,12 @@ export class Player {
 		};
 	}
 
-	public SetCharacter(entity: CharacterEntity | undefined): void {
-		this.character = entity;
-		this.onCharacterChanged.Fire(entity);
+	public SetCharacter(character: Character | undefined): void {
+		this.character = character;
+		this.onCharacterChanged.Fire(character);
 	}
 
-	public ObserveCharacter(observer: (entity: CharacterEntity | undefined) => CleanupFunc): Bin {
+	public ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup = observer(this.character);
 
@@ -156,6 +184,10 @@ export class Player {
 		return bin;
 	}
 
+	public IsLocalPlayer(): boolean {
+		return RunUtil.IsClient() && Game.localPlayer === this;
+	}
+
 	/**
 	 * Is the player connected to the server?
 	 */
@@ -168,13 +200,5 @@ export class Player {
 		this.bin.Clean();
 		this.onLeave.Fire();
 		this.onLeave.DisconnectAll();
-	}
-
-	public static FindByClientId(clientId: number): Player | undefined {
-		if (RunUtil.IsServer()) {
-			return Dependency<PlayerService>().GetPlayerFromClientId(clientId);
-		} else {
-			return Dependency<PlayerController>().GetPlayerFromClientId(clientId);
-		}
 	}
 }

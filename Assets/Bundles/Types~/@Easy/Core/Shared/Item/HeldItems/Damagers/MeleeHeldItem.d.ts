@@ -1,6 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
-import { Entity } from "../../../Entity/Entity";
+import Character from "../../../Character/Character";
 import { HeldItem } from "../HeldItem";
 export declare class MeleeHeldItem extends HeldItem {
     private gizmoEnabled;
@@ -15,7 +15,7 @@ export declare class MeleeHeldItem extends HeldItem {
     private ScanBox;
 }
 export interface MeleeHit {
-    hitEntity: Entity;
+    hitCharacter: Character;
     hitDirection: Vector3;
     hitPosition: Vector3;
     hitNormal: Vector3;

@@ -1,6 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
+import { Airship } from "Shared/Airship";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
@@ -13,8 +13,6 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { Window } from "Shared/Util/Window";
-import { PlayerController } from "../Player/PlayerController";
-import { TeamController } from "../Team/TeamController";
 import { CoreUIController } from "../UI/CoreUIController";
 
 @Controller({})
@@ -36,11 +34,7 @@ export class TabListController implements OnStart {
 
 	private profilePicSprite: Sprite;
 
-	constructor(
-		private readonly playerController: PlayerController,
-		private readonly coreUIController: CoreUIController,
-		private readonly teamController: TeamController,
-	) {
+	constructor(private readonly coreUIController: CoreUIController) {
 		this.tablistGO = this.coreUIController.refs.GetValue("Apps", "TabList");
 		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>();
 		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>();
@@ -57,13 +51,13 @@ export class TabListController implements OnStart {
 	OnStart(): void {
 		this.FullUpdate();
 
-		CoreClientSignals.PlayerJoin.Connect((player) => {
+		Airship.players.onPlayerJoined.Connect((player) => {
 			this.dirty = true;
 		});
-		CoreClientSignals.PlayerLeave.Connect((player) => {
+		Airship.players.onPlayerDisconnected.Connect((player) => {
 			this.dirty = true;
 		});
-		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
+		Airship.teams.onPlayerChangeTeam.Connect((player, team, oldTeam) => {
 			this.dirty = true;
 		});
 
@@ -110,7 +104,7 @@ export class TabListController implements OnStart {
 	}
 
 	public FullUpdate(): void {
-		let teams = this.teamController.GetTeams();
+		let teams = Airship.teams.GetTeams();
 		// if (teams.size() > 0) {
 		// 	teams = teams.sort((a, b) => {
 		// 		if (a.HasLocalPlayer()) {
@@ -122,7 +116,7 @@ export class TabListController implements OnStart {
 		// 		return string.byte(a.id)[0] < string.byte(b.id)[0];
 		// 	});
 		// }
-		let players = this.playerController.GetPlayers().sort((a, b) => {
+		let players = Airship.players.GetPlayers().sort((a, b) => {
 			if (a === Game.localPlayer) return true;
 
 			let aTeamIndex = math.huge;

@@ -39,7 +39,7 @@ class RemoteEventServer<T extends unknown[] | unknown> {
 	}
 
 	public OnClientEvent(callback: RemoteCallbackFromClient<T>) {
-		return NetworkAPI.connect(this.id, callback);
+		return NetworkAPI.connect(true, this.id, callback);
 	}
 }
 
@@ -51,7 +51,7 @@ class RemoteEventClient<T extends unknown[] | unknown> {
 	}
 
 	public OnServerEvent(callback: RemoteCallbackFromServer<T>) {
-		return NetworkAPI.connect(this.id, callback);
+		return NetworkAPI.connect(false, this.id, callback);
 	}
 }
 

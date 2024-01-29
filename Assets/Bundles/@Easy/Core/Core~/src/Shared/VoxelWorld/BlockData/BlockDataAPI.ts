@@ -1,4 +1,5 @@
 import Object from "@easy-games/unity-object-utils";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { RunUtil } from "Shared/Util/RunUtil";
 
@@ -30,12 +31,11 @@ export class BlockDataAPI {
 				this.SetBlockGroupSameData(blockPos, key, data);
 			});
 		} else {
-			const serverSignals = import("Server/CoreServerSignals").expect().CoreServerSignals;
-			serverSignals.PlayerJoin.Connect((event) => {
+			Airship.players.onPlayerJoined.Connect((player) => {
 				for (const pair1 of this.blockDataMap) {
 					for (const pair2 of pair1[1]) {
 						CoreNetwork.ServerToClient.SetBlockData.server.FireClient(
-							event.player.clientId,
+							player.clientId,
 							pair1[0],
 							pair2[0],
 							pair2[1],

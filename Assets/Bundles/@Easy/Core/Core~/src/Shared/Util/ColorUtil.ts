@@ -15,6 +15,9 @@ export class ColorUtil {
 	}
 
 	public static HexToColor(hex: string): Color {
+		if (StringUtils.startsWith(hex, "0x")) {
+			hex = hex.sub(2, hex.size());
+		}
 		if (!StringUtils.startsWith(hex, "#")) {
 			hex = "#" + hex;
 		}

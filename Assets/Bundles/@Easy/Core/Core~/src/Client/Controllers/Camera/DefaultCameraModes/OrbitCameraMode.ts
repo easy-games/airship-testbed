@@ -1,4 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -6,17 +7,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
-
-const CAMERA_IGNORE_MASK = LayerMask.InvertMask(
-	LayerMask.GetMask(
-		"TransparentFX",
-		"Ignore Raycast",
-		"Character",
-		"BridgeAssist",
-		"GroundItem",
-		"ProjectileReceiver",
-	),
-);
+import DefaultCameraMask from "../DefaultCameraMask";
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -46,7 +37,7 @@ export class OrbitCameraMode implements CameraMode {
 	private lookVector = Vector3.zero;
 	private lastAttachToPos = Vector3.zero;
 
-	private readonly entityDriver?: EntityDriver;
+	private readonly entityDriver?: CharacterMovement;
 
 	private readonly preferred = this.bin.Add(new Preferred());
 	private readonly keyboard = this.bin.Add(new Keyboard());
@@ -56,7 +47,7 @@ export class OrbitCameraMode implements CameraMode {
 
 	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
 		if (graphicalCharacter !== undefined) {
-			this.entityDriver = transform.GetComponent<EntityDriver>();
+			this.entityDriver = transform.GetComponent<CharacterMovement>();
 			this.transform = graphicalCharacter;
 		}
 		this.SetupMobileControls();
@@ -107,7 +98,7 @@ export class OrbitCameraMode implements CameraMode {
 	OnStart(camera: Camera) {
 		this.occlusionCam = camera.transform.GetComponent<OcclusionCam>();
 		if (this.occlusionCam === undefined) {
-			this.occlusionCam = camera.transform.gameObject.AddComponent("OcclusionCam") as OcclusionCam;
+			this.occlusionCam = camera.transform.gameObject.AddComponent<OcclusionCam>();
 		}
 		this.bin.Add(this.preferred);
 		this.bin.Add(this.keyboard);
@@ -126,20 +117,28 @@ export class OrbitCameraMode implements CameraMode {
 
 		let rightClickUnlocker = this.mouse.AddUnlocker();
 
-		this.mouse.rightDown.Connect(() => {
+		this.bin.Add(
+			this.mouse.rightDown.Connect(() => {
+				if (rightClickUnlocker === -1) return;
+				this.mouse.RemoveUnlocker(rightClickUnlocker);
+				rightClickUnlocker = -1;
+			}),
+		);
+
+		this.bin.Add(
+			this.mouse.rightUp.Connect(() => {
+				if (rightClickUnlocker !== -1) return;
+				rightClickUnlocker = this.mouse.AddUnlocker();
+			}),
+		);
+
+		this.bin.Add(() => {
 			if (rightClickUnlocker === -1) return;
 			this.mouse.RemoveUnlocker(rightClickUnlocker);
 			rightClickUnlocker = -1;
 		});
 
-		this.mouse.rightUp.Connect(() => {
-			rightClickUnlocker = this.mouse.AddUnlocker();
-		});
-
-		this.bin.Add(() => {
-			if (rightClickUnlocker === -1) return;
-			this.mouse.RemoveUnlocker(rightClickUnlocker);
-		});
+		this.bin.Add(Dependency<CrosshairController>().AddDisabler());
 	}
 
 	OnStop() {
@@ -198,7 +197,7 @@ export class OrbitCameraMode implements CameraMode {
 	OnPostUpdate(camera: Camera) {
 		const transform = camera.transform;
 		transform.LookAt(this.lastAttachToPos);
-		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CAMERA_IGNORE_MASK);
+		this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
 
 		// Update character direction:
 		if (this.entityDriver !== undefined) {

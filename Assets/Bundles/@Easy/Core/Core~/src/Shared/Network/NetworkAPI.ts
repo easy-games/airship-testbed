@@ -16,7 +16,8 @@ interface CallbackItem {
 
 const MAX_QUEUE = 10000;
 
-const callbacksById = new Map<string, Array<CallbackItem>>();
+const callbacksByIdServer = new Map<string, Array<CallbackItem>>();
+const callbacksByIdClient = new Map<string, Array<CallbackItem>>();
 const queuedDataById = new Map<string, Array<BlobData>>();
 
 function addToQueue(msg: BlobData) {
@@ -35,24 +36,23 @@ function addToQueue(msg: BlobData) {
 
 export function InitNet() {
 	if (RunUtil.IsServer()) {
-		// Server
 		NetworkCore.Net.OnBroadcastFromClientAction((clientId, blob) => {
 			const msg = blob.Decode() as BlobData;
 			const id = msg.i;
 			const data = msg.d;
-			const callbacks = callbacksById.get(tostring(id));
+			const callbacks = callbacksByIdServer.get(tostring(id));
 			if (callbacks === undefined) return;
 			for (const callback of callbacks) {
 				callback.callback(clientId, ...data);
 			}
 		});
-	} else {
-		// Client
+	}
+	if (RunUtil.IsClient()) {
 		NetworkCore.Net.OnBroadcastFromServerAction((blob) => {
 			const msg = blob.Decode() as BlobData;
 			const id = msg.i;
 			const data = msg.d;
-			const callbacks = callbacksById.get(tostring(id));
+			const callbacks = callbacksByIdClient.get(tostring(id));
 			if (callbacks === undefined) {
 				// Queue data
 				addToQueue(msg);
@@ -98,7 +98,9 @@ function fireClients(id: number, clientIds: number[], args: unknown[], channel: 
 	);
 }
 
-function connect(id: number, callback: Callback): () => void {
+function connect(asServer: boolean, id: number, callback: Callback): () => void {
+	const callbacksById = asServer ? callbacksByIdServer : callbacksByIdClient;
+
 	let connected = true;
 	let callbacks = callbacksById.get(tostring(id));
 	if (callbacks === undefined) {

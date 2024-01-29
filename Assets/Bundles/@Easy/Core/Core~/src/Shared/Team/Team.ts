@@ -1,8 +1,7 @@
+import { Airship } from "Shared/Airship";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
-import { ChangeTeamSignal } from "./TeamJoinSignal";
 
 export interface TeamDto {
 	name: string;
@@ -29,15 +28,7 @@ export class Team {
 		player.SetTeam(this);
 		this.onPlayerAdded.Fire(player);
 
-		if (RunUtil.IsClient()) {
-			import("Client/CoreClientSignals").then((i) => {
-				i.CoreClientSignals.PlayerChangeTeam.Fire(new ChangeTeamSignal(player, this, oldTeam));
-			});
-		} else {
-			import("Server/CoreServerSignals").then((i) => {
-				i.CoreServerSignals.PlayerChangeTeam.Fire(new ChangeTeamSignal(player, this, oldTeam));
-			});
-		}
+		Airship.teams.onPlayerChangeTeam.Fire(player, this, oldTeam);
 	}
 
 	public RemovePlayer(player: Player): void {

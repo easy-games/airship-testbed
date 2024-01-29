@@ -5,7 +5,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     playerCountText: TMP_Text;
     buttonGo: GameObject;
     private bin;
-    OnStart(): void;
+    Start(): void;
     OnDestroy(): void;
     OnDisabled(): void;
     Init(gameDto: GameDto): void;

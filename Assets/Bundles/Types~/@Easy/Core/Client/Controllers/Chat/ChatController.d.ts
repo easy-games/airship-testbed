@@ -4,7 +4,7 @@ import { FriendsController } from "../../MainMenuControllers/Social/FriendsContr
 import { SocketController } from "../../MainMenuControllers/Socket/SocketController";
 import { ChatCommand } from "../../../Shared/Commands/ChatCommand";
 import { Player } from "../../../Shared/Player/Player";
-import { LocalEntityController } from "../Character/LocalEntityController";
+import { LocalCharacterSingleton } from "../../../Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreUIController } from "../UI/CoreUIController";
 export declare class ChatController implements OnStart {
     private readonly localEntityController;
@@ -22,8 +22,9 @@ export declare class ChatController implements OnStart {
     private historyIndex;
     private commands;
     private lastChatMessageRenderedTime;
-    constructor(localEntityController: LocalEntityController, coreUIController: CoreUIController, socketController: SocketController, directMessageController: DirectMessageController, friendsController: FriendsController);
+    constructor(localEntityController: LocalCharacterSingleton, coreUIController: CoreUIController, socketController: SocketController, directMessageController: DirectMessageController, friendsController: FriendsController);
     RegisterCommand(command: ChatCommand): void;
+    IsOpen(): boolean;
     OnStart(): void;
     private CheckIfShouldHide;
     ShowAllChatMessages(): void;

@@ -63,10 +63,11 @@ export class MainMenuAddFriendsController implements OnStart {
 
 			const SendFriendRequest = (username: string) => {
 				print('adding friend: "' + searchInput.text + '"');
+				let fakedUsername = searchInput.text + "#0000";
 				const res = InternalHttpManager.PostAsync(
 					AirshipUrl.GameCoordinator + "/friends/requests/self",
 					EncodeJSON({
-						discriminatedUsername: username,
+						discriminatedUsername: fakedUsername,
 					}),
 				);
 				print("status code=" + res.statusCode);

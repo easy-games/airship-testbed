@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7038946560549389069}
   - component: {fileID: 5065331131798386631}
   - component: {fileID: 876639911333953423}
+  - component: {fileID: 3951789404177486776}
   m_Layer: 0
   m_Name: Clothing_Hat_Frog
   m_TagString: Untagged
@@ -27,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6722563228691224082}
   serializedVersion: 2
-  m_LocalRotation: {x: 1, y: 0, z: -0, w: -0.00000004371139}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: -0.040564373, y: -0.040564373, z: -0.040564373}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.001, y: 0.215, z: 0.06}
+  m_LocalScale: {x: 0.033342954, y: 0.033342954, z: 0.033342954}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -61,7 +62,6 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -130,3 +130,18 @@ MonoBehaviour:
     emissiveMix: 1
     reference: Rubber
   addedByEditorScript: 0
+--- !u!114 &3951789404177486776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6722563228691224082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessorySlot: 1
+  visibilityMode: 0
+  skinnedToCharacter: 0

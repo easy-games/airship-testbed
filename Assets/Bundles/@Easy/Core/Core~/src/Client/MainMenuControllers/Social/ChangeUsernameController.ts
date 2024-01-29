@@ -1,6 +1,6 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard } from "Shared/UserInput";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -21,41 +21,44 @@ export class ChangeUsernameController implements OnStart {
 	private inputFieldSelected = false;
 
 	constructor(private readonly authController: AuthController) {
-		const go = GameObjectUtil.Instantiate(
+		const go = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
+			CoreRefs.rootTransform,
 		);
 		this.canvas = go.GetComponent<Canvas>();
 		this.canvas.enabled = false;
 
 		const refs = go.GetComponent<GameObjectReferences>();
 		this.responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
-
-		const closeButton = refs.GetValue("UI", "CloseButton");
-		CoreUI.SetupButton(closeButton);
-		CanvasAPI.OnClickEvent(closeButton, () => {
-			AppManager.Close();
-		});
-
 		this.submitButton = refs.GetValue("UI", "SubmitButton");
-		CoreUI.SetupButton(this.submitButton);
-		CanvasAPI.OnClickEvent(this.submitButton, () => {
-			this.SubmitNameChange();
-		});
-
 		this.inputField = refs.GetValue("UI", "SearchBar") as TMP_InputField;
-		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
-			this.inputFieldSelected = true;
-		});
-		CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
-			this.inputFieldSelected = false;
-		});
-		const keyboard = new Keyboard();
-		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
-			if (this.inputFieldSelected) {
-				if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
-					e.SetCancelled(true);
+
+		task.spawn(() => {
+			const closeButton = refs.GetValue("UI", "CloseButton");
+			CoreUI.SetupButton(closeButton);
+			CanvasAPI.OnClickEvent(closeButton, () => {
+				AppManager.Close();
+			});
+
+			CoreUI.SetupButton(this.submitButton);
+			CanvasAPI.OnClickEvent(this.submitButton, () => {
+				this.SubmitNameChange();
+			});
+
+			CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
+				this.inputFieldSelected = true;
+			});
+			CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
+				this.inputFieldSelected = false;
+			});
+			const keyboard = new Keyboard();
+			keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+				if (this.inputFieldSelected) {
+					if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
+						e.SetCancelled(true);
+					}
 				}
-			}
+			});
 		});
 	}
 
@@ -83,7 +86,7 @@ export class ChangeUsernameController implements OnStart {
 			this.authController.GetAuthHeaders(),
 		);
 		if (res.success) {
-			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
+			this.SetResponseText("success", `Success! Your name has been changed to "${split[0]}".`);
 			Game.localPlayer.UpdateUsername(split[0], split[1]);
 			Dependency<UserController>().FetchLocalUser();
 		} else if (res.statusCode === 409) {

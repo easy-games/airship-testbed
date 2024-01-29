@@ -33,7 +33,7 @@ export class SocketController implements OnStart {
 					InternalHttpManager.PutAsync(
 						AirshipUrl.GameCoordinator + "/user-session/data",
 						EncodeJSON({
-							selectedRegion: "na",
+							regionPriority: ["na"],
 						}),
 					);
 				},
@@ -60,6 +60,6 @@ export class SocketController implements OnStart {
 	}
 
 	private Connect(): void {
-		SocketManager.ConnectAsync(AirshipUrl.GameCoordinatorSocket, this.authController.GetAuthToken());
+		SocketManager.ConnectAsyncInternal();
 	}
 }

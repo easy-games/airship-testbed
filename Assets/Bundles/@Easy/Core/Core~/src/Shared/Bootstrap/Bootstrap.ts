@@ -1,5 +1,4 @@
-import { CoreNetwork } from "Shared/CoreNetwork";
-import { EntityItemManager } from "Shared/Item/HeldItems/EntityItemManager";
+import { EntityItemManager } from "Shared/Item/HeldItems/CharacterItemManager";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
@@ -42,8 +41,13 @@ export class Bootstrap {
 
 			const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>();
 			serverBootstrap.FinishedSetup();
-		} else if (RunUtil.IsClient()) {
-			CoreNetwork.ClientToServer.Ready.client.FireServer();
+		}
+		if (RunUtil.IsClient()) {
+			// while (!InstanceFinder.ClientManager.Connection.Authenticated) {
+			// 	print("waiting for client to start.");
+			// 	task.wait();
+			// }
+			// CoreNetwork.ClientToServer.Ready.client.FireServer();
 		}
 	}
 }

@@ -1,7 +1,6 @@
 /// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/types" />
 import { PlaySoundConfig } from "../Audio/AudioManager";
-import { Entity } from "../Entity/Entity";
 import { Duration } from "../Util/Duration";
 import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
@@ -50,13 +49,8 @@ export interface AmmoDef {
     stickItemAtSurfaceOnMiss?: boolean;
     onHitEntitySound?: SoundDef[];
     onHitGroundSound?: SoundDef[];
+    prefabPath: string;
     onHitVFXTemplate: AllBundleItems;
-}
-export interface HitSignal {
-    Position: Vector3;
-    Velocity: Vector3;
-    HitEntity: Entity | undefined;
-    AmmoItemType: ItemType;
 }
 export interface ProjectileLauncherDef {
     ammoItemType: ItemType;

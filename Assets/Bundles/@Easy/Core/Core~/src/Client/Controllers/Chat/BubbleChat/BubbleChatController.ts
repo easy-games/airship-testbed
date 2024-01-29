@@ -1,14 +1,12 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
-import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
+import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { Entity } from "Shared/Entity/Entity";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
-import { SignalPriority } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 
 @Controller({})
@@ -21,18 +19,18 @@ export class BubbleChatController implements OnStart {
 
 	OnStart(): void {
 		// Register BubbleChat container on spawn
-		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			this.GetOrCreateChatContainer(event.entity);
+		Airship.characters.onCharacterSpawned.Connect((character) => {
+			this.GetOrCreateChatContainer(character);
 		});
 
 		CoreNetwork.ServerToClient.PlayerChatted.client.OnServerEvent((rawMessage, senderClientId) => {
 			let sender: Player | undefined;
 			if (senderClientId !== undefined) {
-				sender = Dependency<PlayerController>().GetPlayerFromClientId(senderClientId);
+				sender = Airship.players.FindByClientId(senderClientId);
 			}
 			if (sender?.character) {
 				const messageSanitized = this.SanitizeRawChatInput(rawMessage);
-				this.RenderBubble(messageSanitized, sender.character);
+				// this.RenderBubble(messageSanitized, sender.character);
 			}
 		});
 
@@ -70,7 +68,7 @@ export class BubbleChatController implements OnStart {
 		});
 	}
 
-	private startSendingRandomMessages(entity: Entity, i = 0) {
+	private startSendingRandomMessages(character: Character, i = 0) {
 		Task.Delay(10, () => {
 			const messageList = [
 				"Hi",
@@ -78,8 +76,8 @@ export class BubbleChatController implements OnStart {
 				"I'm gunna get some diamonds",
 				"hey can you join my party? I want to play super pet simulator with tim",
 			];
-			this.RenderBubble(messageList[i % messageList.size()], entity);
-			this.startSendingRandomMessages(entity, i + 1);
+			this.RenderBubble(messageList[i % messageList.size()], character);
+			this.startSendingRandomMessages(character, i + 1);
 		});
 	}
 
@@ -93,7 +91,7 @@ export class BubbleChatController implements OnStart {
 		return StringUtils.trim(shrunkString) + "...";
 	}
 
-	private RenderBubble(text: string, sender: Entity) {
+	private RenderBubble(text: string, sender: Character) {
 		const chatContainer = this.GetOrCreateChatContainer(sender);
 		const canvas = chatContainer.transform.Find("Canvas");
 		if (!canvas) {
@@ -146,8 +144,8 @@ export class BubbleChatController implements OnStart {
 	}
 
 	/** Creates a chat container for an entity (or returns one if it already exists) */
-	private GetOrCreateChatContainer(entity: Entity): GameObject {
-		const existingChatContainer = entity.model.gameObject.transform.Find("BubbleChatContainer");
+	private GetOrCreateChatContainer(character: Character): GameObject {
+		const existingChatContainer = character.model.gameObject.transform.Find("BubbleChatContainer");
 		if (existingChatContainer) {
 			return existingChatContainer.gameObject;
 		}
@@ -164,16 +162,16 @@ export class BubbleChatController implements OnStart {
 			canvas.gameObject.ClearChildren();
 
 			const canvasComponent = canvas.GetComponent<Canvas>();
-			if (entity.IsLocalCharacter()) {
-				const isFirstPerson = Dependency<LocalEntityController>().IsFirstPerson();
+			if (character.IsLocalCharacter()) {
+				const isFirstPerson = Dependency<LocalCharacterSingleton>().IsFirstPerson();
 				canvasComponent.enabled = !isFirstPerson;
-				Dependency<LocalEntityController>().firstPersonChanged.Connect((isFirst) => {
+				Dependency<LocalCharacterSingleton>().firstPersonChanged.Connect((isFirst) => {
 					canvasComponent.enabled = !isFirst;
 				});
 			}
 		}
 
-		chatTransform.SetParent(entity.model.gameObject.transform);
+		chatTransform.SetParent(character.model.gameObject.transform);
 		chatTransform.localPosition = new Vector3(0, 3.2, 0);
 
 		const shouldBeMinimized = this.ShouldChatBeMinimized(chatTransform, Camera.main.transform.position);

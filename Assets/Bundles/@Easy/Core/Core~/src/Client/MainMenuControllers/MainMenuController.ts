@@ -1,14 +1,14 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
+import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
-import { AuthController } from "./Auth/AuthController";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
@@ -38,9 +38,9 @@ export class MainMenuController implements OnStart {
 	private open = false;
 	private socialIsVisible = true;
 
-	constructor(private readonly authController: AuthController) {
+	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
-		this.mainMenuGo = Object.Instantiate(mainMenuPrefab) as GameObject;
+		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
 		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
 		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
@@ -51,30 +51,19 @@ export class MainMenuController implements OnStart {
 
 		const mouse = new Mouse();
 
-		//print("home go: " + this.refs.GetValue("Pages", "Home").name);
-		//print("home component: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>());
-		//print("HOME PAGE VALUE: " + this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>().TEST());
-
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
-			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>()],
 			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
 			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
 			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
 		]);
 
-		//let avatarHolder = GameObject.Create("AvatarHolder");
-		this.avatarView = GameObjectUtil.Instantiate(
+		this.avatarView = Object.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
+			CoreRefs.rootTransform,
 		).GetComponent<AvatarViewComponent>();
 		if (Game.context === CoreContext.GAME) {
 			this.avatarView.HideAvatar();
-		}
-
-		for (const [key, value] of this.pageMap) {
-			print("Loaded page: " + key + ", " + value);
-			if (value) {
-				value.Init(this, key);
-			}
 		}
 
 		const closeButton = this.refs.GetValue("UI", "CloseButton");
@@ -103,7 +92,6 @@ export class MainMenuController implements OnStart {
 
 		const profileGO = this.refs.GetValue("Social", "Profile");
 		CanvasAPI.OnClickEvent(profileGO, () => {
-			print("clicked profile.");
 			const options: RightClickMenuButton[] = [];
 			options.push({
 				text: "Change Profile Picture",
@@ -128,6 +116,10 @@ export class MainMenuController implements OnStart {
 				options,
 			);
 		});
+
+		if (Game.context === CoreContext.GAME) {
+			this.mainContentCanvas.enabled = false;
+		}
 	}
 
 	public OpenFromGame(): void {
@@ -167,6 +159,13 @@ export class MainMenuController implements OnStart {
 
 	OnStart(): void {
 		if (this.currentPage === undefined) {
+			//init pages
+			for (const [key, value] of this.pageMap) {
+				if (value) {
+					value.Init(this, key);
+				}
+			}
+			
 			this.RouteToPage(MainMenuPageType.Home, true, true);
 		}
 
@@ -189,8 +188,6 @@ export class MainMenuController implements OnStart {
 	}
 
 	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false) {
-		print("Routing to page: " + pageType);
-
 		if (this.currentPage?.pageType === pageType && !force) {
 			return;
 		}
@@ -200,11 +197,9 @@ export class MainMenuController implements OnStart {
 
 		// Remove old page
 		if (oldPage) {
-			print("Closing old page: " + oldPage?.pageType);
 			oldPage.ClosePage();
 		}
 
-		print("opening new page: " + this.currentPage?.pageType);
 		this.currentPage?.OpenPage();
 
 		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);

@@ -1,4 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -7,17 +8,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { SpringTween } from "Shared/Util/SpringTween";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "..";
-
-const CAMERA_IGNORE_MASK = LayerMask.InvertMask(
-	LayerMask.GetMask(
-		"TransparentFX",
-		"Ignore Raycast",
-		"Character",
-		"BridgeAssist",
-		"GroundItem",
-		"ProjectileReceiver",
-	),
-);
+import DefaultCameraMask from "../DefaultCameraMask";
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -39,7 +30,7 @@ export class HumanoidCameraMode implements CameraMode {
 	private readonly bin = new Bin();
 
 	private lookVector = Vector3.zero;
-	private readonly entityDriver: EntityDriver;
+	private readonly entityDriver: CharacterMovement;
 	private occlusionCam!: OcclusionCam;
 	private lookBackwards = false;
 
@@ -71,7 +62,7 @@ export class HumanoidCameraMode implements CameraMode {
 		initialFirstPerson: boolean,
 		initialYOffset: number,
 	) {
-		this.entityDriver = characterGO.GetComponent<EntityDriver>();
+		this.entityDriver = characterGO.GetComponent<CharacterMovement>();
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
 		this.yOffset = initialYOffset;
@@ -123,7 +114,7 @@ export class HumanoidCameraMode implements CameraMode {
 	OnStart(camera: Camera) {
 		this.occlusionCam = camera.transform.GetComponent<OcclusionCam>();
 		if (this.occlusionCam === undefined) {
-			this.occlusionCam = camera.transform.gameObject.AddComponent("OcclusionCam") as OcclusionCam;
+			this.occlusionCam = camera.transform.gameObject.AddComponent<OcclusionCam>();
 		}
 		this.bin.Add(this.preferred);
 		this.bin.Add(this.keyboard);
@@ -139,6 +130,7 @@ export class HumanoidCameraMode implements CameraMode {
 
 		this.SetFirstPerson(this.firstPerson);
 		this.SetDirection(this.graphicalCharacterGO.transform.forward);
+		Dependency<CrosshairController>().SetEnabled(true);
 	}
 
 	OnStop() {
@@ -214,7 +206,7 @@ export class HumanoidCameraMode implements CameraMode {
 		const transform = camera.transform;
 		if (!this.firstPerson) {
 			transform.LookAt(this.lastAttachToPos);
-			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, CAMERA_IGNORE_MASK);
+			this.occlusionCam.BumpForOcclusion(this.lastAttachToPos, DefaultCameraMask);
 		}
 		this.camRight = transform.right;
 
