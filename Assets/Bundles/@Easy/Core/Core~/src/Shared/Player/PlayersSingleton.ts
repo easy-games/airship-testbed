@@ -3,6 +3,7 @@ import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
+import { CoreContext } from "Shared/CoreClientContext";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { Team } from "Shared/Team/Team";
@@ -91,7 +92,7 @@ export class PlayersSingleton implements OnStart {
 				this.InitServer();
 			}
 
-			if (RunUtil.IsClient()) {
+			if (RunUtil.IsClient() && Game.context === CoreContext.GAME) {
 				Game.WaitForLocalPlayerLoaded();
 				CoreNetwork.ClientToServer.Ready.client.FireServer();
 			}
