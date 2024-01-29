@@ -23,7 +23,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointCenterHero, true);
 		}
 		this.ClearSorts();
-		this.CreateSort(SortId.POPULAR, "Popular", "featured");
+		this.CreateSort(SortId.Popular, "Popular", "featured");
+		// this.CreateSort(SortId.Popular, "Popular", "featured");
 		task.spawn(() => {
 			this.FetchGames();
 		});
@@ -53,7 +54,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	public FetchGames(): void {
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games");
 		if (!res.success) {
-			warn("Failed to fetch games. Retrying in 1s..");
+			// warn("Failed to fetch games. Retrying in 1s..");
 			this.bin.Add(
 				SetTimeout(1, () => {
 					this.FetchGames();
@@ -67,7 +68,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 		// Popular
 		{
-			const sortComponent = this.sorts.get(SortId.POPULAR)!;
+			const sortComponent = this.sorts.get(SortId.Popular)!;
 			sortComponent.SetGames(data.featured);
 		}
 	}
