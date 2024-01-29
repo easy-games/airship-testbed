@@ -1,5 +1,7 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { ItemQueryParameters } from "../../../Shared/Airship/Types/Inputs/PlatformInventory";
+import { AccessoryInstance, EquippedProfilePicture, ItemInstance, Outfit, ProfilePictureInstance, Transaction } from "../../../Shared/Airship/Types/Outputs/PlatformInventory";
 import { Result } from "../../../Shared/Types/Result";
 /**
  * Allows management of platform inventory for a player. These functions manipluate a persistent inventory
@@ -23,55 +25,48 @@ export declare class PlatformInventoryService implements OnStart {
     /**
      * Grants a user the provided item.
      */
-    GrantItem(): Promise<Result<undefined, undefined>>;
+    GrantItem(userId: string, classId: string): Promise<Result<ItemInstance, undefined>>;
     /**
      * Grants a user the provided accessory.
      */
-    GrantAccessory(): Promise<Result<undefined, undefined>>;
+    GrantAccessory(userId: string, classId: string): Promise<Result<AccessoryInstance, undefined>>;
     /**
      * Grants a user the provided profile picture.
      */
-    GrantProfilePicture(): Promise<Result<undefined, undefined>>;
+    GrantProfilePicture(userId: string, classId: string): Promise<Result<ProfilePictureInstance, undefined>>;
     /**
      * Deletes the given item instance from the users inventory.
      */
-    DeleteItem(): Promise<Result<undefined, undefined>>;
+    DeleteItem(instanceId: string): Promise<Result<ItemInstance, undefined>>;
     /**
      * Deletes the given accessory instance from the users inventory.
      */
-    DeleteAccessory(): Promise<Result<undefined, undefined>>;
+    DeleteAccessory(instanceId: string): Promise<Result<AccessoryInstance, undefined>>;
     /**
      * Deletes a the given profile picture instance from the users inventory.
      */
-    DeleteProfilePicture(): Promise<Result<undefined, undefined>>;
-    /**
-     * Checks if the user has and instance of the given item class.
-     */
-    HasItem(): Promise<Result<undefined, undefined>>;
-    /**
-     * Checks if the user has an instance of the given accessory class.
-     */
-    HasAccessory(): Promise<Result<undefined, undefined>>;
-    /**
-     * Checks if the user has an instance of the given profile picture class.
-     */
-    HasProfilePicture(): Promise<Result<undefined, undefined>>;
+    DeleteProfilePicture(instanceId: string): Promise<Result<ProfilePictureInstance, undefined>>;
     /**
      * Gets all items in a users inventory.
      */
-    GetItems(): Promise<Result<undefined, undefined>>;
+    GetItems(userId: string, query?: ItemQueryParameters): Promise<Result<ItemInstance[], undefined>>;
     /**
      * Gets all accessories in a users inventory.
      */
-    GetAccessories(): Promise<Result<undefined, undefined>>;
+    GetAccessories(userId: string, query?: ItemQueryParameters): Promise<Result<AccessoryInstance[], undefined>>;
     /**
      * Gets all profile pictures in a users inventory.
      */
-    GetProfilePictures(): Promise<Result<undefined, undefined>>;
+    GetProfilePictures(userId: string, query?: ItemQueryParameters): Promise<Result<ProfilePictureInstance, undefined>>;
     /**
      * Gets the users currently equipped outfit.
      */
-    GetEquippedOutfit(): Promise<Result<undefined, undefined>>;
+    GetEquippedOutfitByUserId(userId: string): Promise<Result<Outfit, undefined>>;
+    /**
+     * Gets the users equipped profile picture.
+     * @param userId The userId
+     */
+    GetEquippedProfilePictureByUserId(userId: string): Promise<Result<EquippedProfilePicture, undefined>>;
     /**
      * Performs a trade between two players. Trades are atomic, if the transaction does not succeed, no
      * items are lost or modified.
@@ -85,5 +80,6 @@ export declare class PlatformInventoryService implements OnStart {
     }, user2: {
         uid: string;
         itemInstanceIds: string[];
-    }): Promise<Result<undefined, undefined>>;
+    }): Promise<Result<Transaction, undefined>>;
+    private BuildItemQueryString;
 }

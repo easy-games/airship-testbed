@@ -1,6 +1,7 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { AvatarPlatformAPI, Outfit } from "./AvatarPlatformAPI";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 import { RandomUtil } from "Shared/Util/RandomUtil";
+import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =

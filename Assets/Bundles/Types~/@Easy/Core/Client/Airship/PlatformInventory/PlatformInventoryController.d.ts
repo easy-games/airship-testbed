@@ -1,5 +1,6 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { EquippedProfilePicture, Outfit } from "../../../Shared/Airship/Types/Outputs/PlatformInventory";
 import { Result } from "../../../Shared/Types/Result";
 /**
  * This controller allows access to the current players platform inventory. Platform inventory
@@ -8,31 +9,12 @@ import { Result } from "../../../Shared/Types/Result";
 export declare class PlatformInventoryController implements OnStart {
     OnStart(): void;
     /**
-     * Checks if the player has the specified item.
+     * Gets the users equipped profile picture.
+     * @param userId The userId
      */
-    HasItem(): Promise<Result<undefined, undefined>>;
+    GetEquippedProfilePictureByUserId(userId: string): Promise<Result<EquippedProfilePicture, undefined>>;
     /**
-     * Checks if the player has the specified accessory.
+     * Gets the users currently equipped outfit.
      */
-    HasAccessory(): Promise<Result<undefined, undefined>>;
-    /**
-     * Checks if the player has the specified profile picture.
-     */
-    HasProfilePicture(): Promise<Result<undefined, undefined>>;
-    /**
-     * Gets all items that the player owns.
-     */
-    GetItems(): Promise<Result<undefined, undefined>>;
-    /**
-     * Gets all accessories that the player owns.
-     */
-    GetAccessories(): Promise<Result<undefined, undefined>>;
-    /**
-     * Gets all profile pictures that the player owns.
-     */
-    GetProfilePictures(): Promise<Result<undefined, undefined>>;
-    /**
-     * Gets the players equipped outfit.
-     */
-    GetEquippedOutfit(): Promise<Result<undefined, undefined>>;
+    GetEquippedOutfitByUserId(userId: string): Promise<Result<Outfit | undefined, undefined>>;
 }

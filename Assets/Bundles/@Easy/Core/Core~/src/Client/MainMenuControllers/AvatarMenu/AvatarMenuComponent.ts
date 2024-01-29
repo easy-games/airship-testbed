@@ -6,12 +6,13 @@ import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
-import { Accessory, AvatarPlatformAPI, Outfit } from "Shared/Avatar/AvatarPlatformAPI";
+import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
 import { AuthController } from "../Auth/AuthController";
 import { PlayerController } from "Client/Controllers/Player/PlayerController";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Game } from "Shared/Game";
+import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";

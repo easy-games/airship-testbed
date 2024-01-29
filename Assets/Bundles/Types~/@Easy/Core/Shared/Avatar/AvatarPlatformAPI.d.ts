@@ -1,29 +1,4 @@
-export type ItemClass = {
-    resourceType: "GAME" | "ORGANIZATION";
-    resourceId: string;
-    classId: string;
-    name: string;
-    imageId: string;
-    description: string;
-};
-export type AccessoryClass = ItemClass & {
-    accessory: {};
-};
-export type AccessoryItem = {
-    instanceId: string;
-    class: AccessoryClass;
-};
-export type Accessory = {
-    item: AccessoryItem;
-};
-export type Outfit = {
-    outfitId: string;
-    owner: string;
-    name: string;
-    accessories: Accessory[];
-    skinColor: string;
-    equipped: boolean;
-};
+import { AccessoryInstance, Outfit } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarPlatformAPI {
     private static Log;
     static GetHttpUrl(path: string): string;
@@ -32,9 +7,9 @@ export declare class AvatarPlatformAPI {
     static GetAvatarOutfit(outfitId: string): Outfit | undefined;
     static CreateAvatarOutfit(outfit: Outfit): void;
     static EquipAvatarOutfit(outfitId: string): void;
-    static GetAccessories(): AccessoryItem[] | undefined;
+    static GetAccessories(): AccessoryInstance[] | undefined;
     static CreateDefaultAvatarOutfit(entityId: string, outfitId: string, name: string, skinColor: Color): Outfit;
     static SaveOutfitAccessories(outfitId: string, instanceIds: string[]): Outfit;
     static SaveAvatarOutfit(outfit: Outfit): void;
-    static LoadImage(fileId: string): AccessoryItem[];
+    static LoadImage(fileId: string): AccessoryInstance[];
 }
