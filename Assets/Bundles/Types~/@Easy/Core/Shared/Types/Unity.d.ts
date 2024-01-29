@@ -2039,11 +2039,11 @@ interface ColorConstructor {
 	grey: Color;
 	clear: Color;
 
-	HSVToRGB: (H: number, S: number, V: number) => Color;
-	// HSVToRGB: (H: number, S: number, V: number, hdr: boolean) => Color;
+	HSVToRGB: (h: number, s: number, v: number) => Color;
+	HSVToRGB: (h: number, s: number, v: number, hdr: boolean) => Color;
+	RGBToHSV: (color: Color) => LuaTuple<[H: number, S: number, V: number]>;
 	Lerp: (a: Color, b: Color, t: number) => Color;
 	LerpUnclamped: (a: Color, b: Color, t: number) => Color;
-	// RGBToHSV: (rgbColor: Color, R: number, G: number, B: number) => void;
 
 	new (r: number, g: number, b: number, a: number): Color;
 	new (r: number, g: number, b: number): Color;
