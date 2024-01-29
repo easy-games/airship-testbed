@@ -21,7 +21,9 @@ export default class DemoManager extends AirshipBehaviour {
 			});
 		}
 		if (RunUtil.IsClient()) {
+			// Optional: use locked camera mode for first person support
 			// Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
+
 			Airship.loadingScreen.FinishLoading();
 		}
 	}

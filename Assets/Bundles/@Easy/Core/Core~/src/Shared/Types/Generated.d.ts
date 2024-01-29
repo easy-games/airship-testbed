@@ -14089,4 +14089,14 @@ interface LineRenderer extends Renderer {
     SetWidth(start: number, end: number): void;
     Simplify(tolerance: number): void;
 }
+    
+interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+    isDragging: boolean;
+    redirectTarget: ScrollRect;
+
+
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnEndDrag(eventData: PointerEventData): void;
+}
 
