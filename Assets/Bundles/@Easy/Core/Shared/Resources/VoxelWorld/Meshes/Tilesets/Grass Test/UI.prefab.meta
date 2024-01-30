@@ -1,7 +1,11 @@
 fileFormatVersion: 2
-guid: a7c3949f87ca2d64e8491cdc6c820f16
+guid: 1164ed5cc80e8f845b3950e9a51a8991
 PrefabImporter:
   externalObjects: {}
   userData: 
+<<<<<<< Updated upstream:Assets/Bundles/@Easy/Core/Shared/Resources/VoxelWorld/Meshes/Tilesets/Grass Test/UI.prefab.meta
   assetBundleName: '@easy/core_shared/resources'
+=======
+  assetBundleName: 
+>>>>>>> Stashed changes:Assets/Bundles/@Easy/Survival/Shared/Resources/VoxelWorld/Meshes/Tilesets/Grass Test/UI.prefab.meta
   assetBundleVariant: 
