@@ -42,7 +42,6 @@ export class World {
 
 		if (!voxelWorld.finishedLoading) {
 			voxelWorld.OnFinishedLoading(() => {
-				print("World finished loading!");
 				this.finishedLoading = true;
 				this.onFinishedLoading.Fire();
 			});
@@ -199,19 +198,19 @@ export class World {
 			}
 		}
 
-		if (RunCore.IsServer()) {
+		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.BlockPlace.server.FireAllClients(pos, blockVoxelId, config?.placedByEntityId);
-		} else {
+		}
+		if (RunUtil.IsClient()) {
 			if (config?.placedByEntityId === Game.localPlayer.character?.id) {
 				// Client predicted block place event
-				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
-				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
-					.BlockPlaceClientSignal;
-
-				const block = new Block(blockVoxelId, this);
-				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(pos, block, Game.localPlayer.character, false),
-				);
+				// const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
+				// const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
+				// 	.BlockPlaceClientSignal;
+				// const block = new Block(blockVoxelId, this);
+				// clientSignals.BlockPlace.Fire(
+				// 	new BlockPlaceClientSignal(pos, block, Game.localPlayer.character, false),
+				// );
 			}
 		}
 	}
@@ -261,12 +260,12 @@ export class World {
 			binaryData.push({ pos: position, blockId: blockIds[i] });
 			if (isLocalPrediction && RunUtil.IsClient()) {
 				// Client predicted block place event
-				const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
-				const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
-					.BlockPlaceClientSignal;
-				clientSignals.BlockPlace.Fire(
-					new BlockPlaceClientSignal(position, blocks[i], Game.localPlayer.character, true),
-				);
+				// const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
+				// const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
+				// 	.BlockPlaceClientSignal;
+				// clientSignals.BlockPlace.Fire(
+				// 	new BlockPlaceClientSignal(position, blocks[i], Game.localPlayer.character, true),
+				// );
 			}
 		});
 

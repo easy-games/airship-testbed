@@ -1,4 +1,5 @@
 import { AssetCache } from "Shared/AssetCache/AssetCache";
+import { CoreRefs } from "Shared/CoreRefs";
 import StringUtils from "../Types/StringUtil";
 import { Task } from "../Util/Task";
 
@@ -29,6 +30,7 @@ export class AudioManager {
 		this.audioSourceTemplate = GameObject.Create("PooledAudioSource");
 		this.audioSourceTemplate.AddComponent<AudioSource>();
 		this.audioSourceTemplate.SetActive(false);
+		this.audioSourceTemplate.transform.SetParent(CoreRefs.rootTransform);
 
 		PoolManager.PreLoadPool(this.audioSourceTemplate, 15);
 	}

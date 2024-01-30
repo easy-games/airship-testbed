@@ -1,9 +1,8 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Theme } from "Shared/Util/Theme";
-import { PlayerService } from "../../Player/PlayerService";
 
 export class BotCommand extends ChatCommand {
 	constructor() {
@@ -23,7 +22,7 @@ export class BotCommand extends ChatCommand {
 
 		player.SendMessage(`Spawning ${amount} bot${amount > 1 ? "s" : ""}...`);
 		for (let i = 0; i < amount; i++) {
-			Dependency<PlayerService>().AddBotPlayer();
+			Airship.players.AddBotPlayer();
 		}
 		player.SendMessage(
 			ColorUtil.ColoredText(Theme.green, `Finished spawning ${amount} bot${amount > 1 ? "s" : ""}!`),

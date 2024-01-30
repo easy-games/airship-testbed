@@ -37,16 +37,25 @@ interface Time {
 
 declare const Time: Time;
 
-interface PlayerManager extends Component {
+interface PlayerManagerBridge extends Component {
 	OnPlayerAdded(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	OnPlayerRemoved(callback: (clientInfo: PlayerInfoDto) => void): EngineEventConnection;
 	GetPlayers(): CSArray<PlayerInfoDto>;
 	AddBotPlayer(username: string, tag: string, userId: string): void;
+	GetPlayerInfoByClientId(clientId: number): PlayerInfoDto;
+	localPlayer: PlayerInfo;
 }
 interface PlayerManagerConstructor {
-	Instance: PlayerManager;
+	Instance: PlayerManagerBridge;
 }
-declare const PlayerManager: PlayerManagerConstructor;
+declare const PlayerManagerBridge: PlayerManagerConstructor;
+
+interface PlayerInfo extends Component {
+	clientId: number;
+	userId: string;
+	username: string;
+	usernameTag: string;
+}
 
 interface PlayerInfoDto extends Component {
 	clientId: number;
@@ -56,8 +65,8 @@ interface PlayerInfoDto extends Component {
 	gameObject: GameObject;
 }
 
-interface EntityDriver extends Component {
-	OnStateChanged(callback: (state: EntityState) => void): EngineEventConnection;
+interface CharacterMovement extends Component {
+	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
 	OnCustomDataFlushed(callback: () => void): EngineEventConnection;
 	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3) => void): EngineEventConnection;
@@ -68,7 +77,13 @@ interface EntityDriver extends Component {
 	IsGrounded(): boolean;
 	enabled: boolean;
 
-	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouchOrSlide: boolean): void;
+	SetMoveInput(
+		direction: Vector3,
+		jump: boolean,
+		sprinting: boolean,
+		crouchOrSlide: boolean,
+		moveDirWorldSpace: boolean,
+	): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetCustomData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
@@ -81,7 +96,7 @@ interface EntityDriver extends Component {
 	GetVelocity(): Vector3;
 	DisableMovement();
 	EnableMovement();
-	GetState(): EntityState;
+	GetState(): CharacterState;
 	UpdateSyncTick(): void;
 
 	groundedBlockId: number;
@@ -89,7 +104,7 @@ interface EntityDriver extends Component {
 	replicatedLookVector: Vector3;
 	disableInput: boolean;
 
-	animator: CharacterAnimationHelper;
+	animationHelper: CharacterAnimationHelper;
 }
 
 interface VoxelWorld {
@@ -101,18 +116,6 @@ interface VoxelWorld {
 
 interface VoxelWorldConstructor {
 	VoxelDataToBlockId(voxel: number);
-}
-
-interface PhysicsConstructor {
-	EasyRaycast(
-		start: Vector3,
-		dir: Vector3,
-		distance: number,
-		layerMask?: number,
-	): LuaTuple<
-		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
-		| [hit: false, point: undefined, normal: undefined, collider: undefined]
-	>;
 }
 
 interface Screen {
@@ -366,7 +369,7 @@ interface AnimatorStatic {
 }
 declare const Animator: AnimatorStatic;
 
-declare const enum EntityState {
+declare const enum CharacterState {
 	Idle = 0,
 	Running = 1,
 	Jumping = 2,
@@ -416,11 +419,10 @@ interface CanvasUIBridgeConstructor {
 }
 declare const CanvasUIBridge: CanvasUIBridgeConstructor;
 
-interface DebugConstructor {
-	traceback: (co: thread, msg?: string, level?: number) => string;
-	traceback: (msg?: string, level?: number) => string;
+declare namespace debug {
+	function traceback(message?: string, level?: number): string;
+	function traceback(thread: thread, message?: string, level?: number): string;
 }
-declare const debug: DebugConstructor;
 
 interface TimeManager {
 	/**
@@ -573,7 +575,7 @@ interface AuthManagerStatic {
 declare const AuthManager: AuthManagerStatic;
 
 interface SocketManager {
-	ConnectAsync(url: string, authToken: string): boolean;
+	ConnectAsyncInternal(): boolean;
 	IsConnected(): boolean;
 	SetScriptListening(val: boolean): void;
 	EmitAsync(eventName: string, data: string): void;
@@ -582,6 +584,13 @@ interface SocketManager {
 	};
 }
 declare const SocketManager: SocketManager;
+
+interface AirshipEventControllerBackend {
+	Instance: {
+		// Airship platform events can be added here
+		// OnExampleEvent(callback: (eventName: string, data: string) => void): void;
+	};
+}
 
 type HttpGetResponse = {
 	success: boolean;
@@ -748,3 +757,100 @@ interface VoxelWorldConstructor {
 	VoxelIsSolid(voxel: number): boolean;
 }
 declare const VoxelWorld: VoxelWorldConstructor;
+
+interface NetworkObjectConstructor {
+	UNSET_OBJECTID_VALUE: number;
+	UNSET_PREFABID_VALUE: number;
+}
+declare const NetworkObject: NetworkObjectConstructor;
+
+interface NetworkObject extends MonoBehaviour {
+	NetworkObserver: NetworkObserver;
+	Observers: CSArray<NetworkConnection>;
+	IsNested: boolean;
+	PredictedSpawner: NetworkConnection;
+	IsSceneObject: boolean;
+	ComponentIndex: number;
+	ObjectId: number;
+	PredictedSpawn: PredictedSpawn;
+	NetworkBehaviours: CSArray<NetworkBehaviour>;
+	ParentNetworkObject: NetworkObject;
+	ChildNetworkObjects: CSArray<NetworkObject>;
+	RuntimeParentNetworkObject: NetworkObject;
+	RuntimeParentTransform: Transform;
+	RuntimeChildNetworkObjects: CSArray<NetworkObject>;
+	IsNetworked: boolean;
+	IsGlobal: boolean;
+	IsClientInitialized: boolean;
+	ClientInitialized: boolean;
+	IsClient: boolean;
+	IsClientOnly: boolean;
+	IsServerInitialized: boolean;
+	IsServer: boolean;
+	IsServerOnly: boolean;
+	IsHost: boolean;
+	IsOffline: boolean;
+	IsOwner: boolean;
+	Owner: NetworkConnection;
+	OwnerId: number;
+	IsSpawned: boolean;
+	LocalConnection: NetworkConnection;
+	NetworkManager: NetworkManager;
+	ServerManager: ServerManager;
+	ClientManager: ClientManager;
+	ObserverManager: ObserverManager;
+	TransportManager: TransportManager;
+	TimeManager: TimeManager;
+	SceneManager: SceneManager;
+	PredictionManager: PredictionManager;
+	RollbackManager: RollbackManager;
+	PrefabId: number;
+	SpawnableCollectionId: number;
+	AssetPathHash: number;
+
+	Broadcast<T>(message: T, requireAuthenticated: boolean, channel: Channel): void;
+	Despawn(go: GameObject, despawnType: unknown): void;
+	Despawn(nob: NetworkObject, despawnType: unknown): void;
+	Despawn(despawnType: unknown): void;
+	GetDefaultDespawnType(): DespawnType;
+	GetInitializeOrder(): number;
+	GetInstance<T>(): T;
+	GetNetworkBehaviour(componentIndex: number, error: boolean): NetworkBehaviour;
+	GiveOwnership(newOwner: NetworkConnection): void;
+	HasInstance<T>(): boolean;
+	RegisterInstance<T>(component: T, replace: boolean): void;
+	RegisterInvokeOnInstance<T>(handler: unknown): void;
+	RemoveOwnership(): void;
+	ResetForObjectPool(): void;
+	ResetState(): void;
+	SetAssetPathHash(value: number): void;
+	SetDefaultDespawnType(despawnType: DespawnType): void;
+	SetIsGlobal(value: boolean): void;
+	SetIsNetworked(value: boolean): void;
+	SetLocalOwnership(caller: NetworkConnection): void;
+	SetParent(nb: NetworkBehaviour): void;
+	SetParent(nob: NetworkObject): void;
+	SetRenderersVisible(visible: boolean, force: boolean): void;
+	Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
+	Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
+	ToString(): string;
+	TryGetInstance<T>(component: unknown): boolean;
+	TryRegisterInstance<T>(component: T): boolean;
+	UnregisterInstance<T>(): void;
+	UnregisterInvokeOnInstance<T>(handler: unknown): void;
+	UnsetParent(): void;
+	UpdateRenderers(updateVisibility: boolean): void;
+
+	OnStartNetwork(callback: () => void): EngineEventConnection;
+	OnStopNetwork(callback: () => void): EngineEventConnection;
+
+	OnStartServer(callback: () => void): EngineEventConnection;
+	OnOwnershipServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+	OnStopServer(callback: () => void): EngineEventConnection;
+	OnSpawnServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+	OnDespawnServer(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+
+	OnStartClient(callback: () => void): EngineEventConnection;
+	OnOwnershipClient(callback: (conn: NetworkConnection) => void): EngineEventConnection;
+	OnStopClient(callback: () => void): EngineEventConnection;
+}

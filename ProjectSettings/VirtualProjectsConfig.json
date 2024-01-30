@@ -1,5 +1,7 @@
 {
   "PlayerTags": [
-    "Server"
+    "Server",
+    "latejoin:5",
+    "Client"
   ]
 }

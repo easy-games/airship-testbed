@@ -1,5 +1,4 @@
 import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { CoreContext } from "Shared/CoreClientContext";
@@ -69,7 +68,6 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
-			print("friend statuses: " + inspect(data));
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
@@ -136,7 +134,6 @@ export class FriendsController implements OnStart {
 				customGameTitle: this.customGameTitle,
 			},
 		};
-		print("Sending status update: " + inspect(status));
 		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", EncodeJSON(status));
 	}
 
@@ -282,7 +279,7 @@ export class FriendsController implements OnStart {
 							", serverId=" +
 							friend.serverId,
 					);
-					Dependency<TransferController>().ClientTransferToServerAsync(friend.gameId, friend.serverId);
+					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				});
 			}
 			go.transform.SetSiblingIndex(i);
@@ -344,9 +341,9 @@ export class FriendsController implements OnStart {
 		if (displayName.size() > 16) {
 			displayName = displayName.sub(0, 15);
 		}
-		if (config.includeTag) {
-			displayName += "#" + friend.discriminator;
-		}
+		// if (config.includeTag) {
+		// 	displayName += "#" + friend.discriminator;
+		// }
 		username.text = displayName;
 
 		if (friend.metadata?.statusText && friend.metadata.statusText !== "") {

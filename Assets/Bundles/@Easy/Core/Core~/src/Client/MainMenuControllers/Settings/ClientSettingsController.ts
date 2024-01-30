@@ -13,7 +13,7 @@ const defaultData: ClientSettingsFile = {
 	ambientVolume: 0.1,
 	musicVolume: 0.11,
 	firstPersonFov: 80,
-	thirdPersonFov: 90,
+	thirdPersonFov: 80,
 	screenshotRenderHD: false,
 	screenshotShowUI: false,
 };
@@ -36,6 +36,7 @@ export class ClientSettingsController implements OnStart {
 		} else {
 			this.data = defaultData;
 		}
+		this.data.thirdPersonFov = 80;
 
 		this.SetGlobalVolume(this.GetGlobalVolume());
 
@@ -65,7 +66,6 @@ export class ClientSettingsController implements OnStart {
 
 	public SaveSettings(): void {
 		DiskManager.WriteFileAsync("ClientSettings.json", EncodeJSON(this.data));
-		print("Saved settings to disk.");
 	}
 
 	public GetMouseSensitivity(): number {

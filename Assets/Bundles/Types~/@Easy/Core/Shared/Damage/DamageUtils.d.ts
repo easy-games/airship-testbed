@@ -1,4 +1,4 @@
-import { Entity } from "../Entity/Entity";
+import Character from "../Character/Character";
 export declare class DamageUtils {
     static readonly minDamageFallSpeed = 35;
     static readonly maxDamageFallSpeed = 60;
@@ -9,7 +9,7 @@ export declare class DamageUtils {
     static readonly maxHitStunRadius = 0.1;
     static GetFallDamage(verticalSpeed: number): number;
     static GetFallDelta(verticalSpeed: number): number;
-    static AddHitstun(entity: Entity, damageAmount: number, OnComplete: () => void): number;
+    static AddHitstun(character: Character, damageAmount: number, OnComplete: () => void): number;
     private static GetStunDuration;
-    static AddAttackStun(entity: Entity, damageDealt: number, disableMovement: boolean, vfx: GameObject[] | undefined): void;
+    static AddAttackStun(character: Character, damageDealt: number, disableMovement: boolean, vfx: GameObject[] | undefined): void;
 }

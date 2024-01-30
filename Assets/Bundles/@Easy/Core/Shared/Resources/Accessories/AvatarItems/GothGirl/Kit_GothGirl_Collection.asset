@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Kit_GothGirl_Collection
   m_EditorClassIdentifier: 
   accessories:
-  - {fileID: 11400000, guid: bac5a3a7b047d3f488f505fd96e0c89f, type: 2}
-  - {fileID: 11400000, guid: 5ea21fcbbdb77974f8a882993cb06ea3, type: 2}
-  - {fileID: 11400000, guid: a2699b1cac285af43a56ea0c975d324d, type: 2}
-  - {fileID: 11400000, guid: 39de11c24c9298643af660e6e05f962e, type: 2}
-  - {fileID: 11400000, guid: b2ee8b470fb3987479939d2519cb1195, type: 2}
+  - {fileID: 5454789880492291037, guid: e8edef392ea22ec4d9cdff89f1dbdc48, type: 3}
+  - {fileID: 1839677199373751720, guid: 580032d75be31634c9524969355ef1eb, type: 3}
+  - {fileID: 4053772912124662843, guid: cf69b5d7c345cec4481e66cc0b9a567c, type: 3}
+  - {fileID: 4687774498355188848, guid: 507a8f57c51cd6d4a87fa8014d5f0b4e, type: 3}
+  - {fileID: 7446855311011774685, guid: b3468db6df7948649a67a9d195e92c1f, type: 3}
   customSkin: {fileID: 11400000, guid: 86413a4b71bf0394886d3d4acbe0b73c, type: 2}

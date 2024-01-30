@@ -1,6 +1,4 @@
-import { Signal } from "../../../Shared/Util/Signal";
 import { CameraMode } from "./CameraMode";
-import { CameraModeTransition } from "./CameraModeTransition";
 /**
  * Drives the camera modes.
  */
@@ -14,31 +12,37 @@ export declare class CameraSystem {
     private readonly fovSpring;
     private fovSpringMoving;
     private fovSpringMovingStart;
-    readonly modeChangedBegin: Signal<[newMode: CameraMode, oldMode: CameraMode]>;
-    readonly modeChangedEnd: Signal<[newMode: CameraMode, oldMode: CameraMode]>;
+    private enabled;
+    private readonly enabledBin;
     GetActiveCamera(): Camera;
     constructor();
+    HasCameraRig(): boolean;
+    private OnEnabled;
+    private OnDisabled;
+    /**
+     * Sets whether or not the camera system is enabled. Disable the
+     * camera system if custom camera code is being used.
+     */
+    SetEnabled(enabled: boolean): void;
+    /**
+     * Returns `true` if the camera system is enabled.
+     */
+    IsEnabled(): boolean;
     /**
      * Gets a reference to the current camera mode object.
      * @returns Camera mode.
      */
     GetMode(): CameraMode;
     /**
-     * Set the current camera mode. If `transition` is provided, then the new
-     * mode will be interpolated from the old mode based on the configuration
-     * provided within `transition`. Otherwise, the camera will snap immediately
-     * to the new mode.
+     * Set the current camera mode.
      *
      * @param mode New mode.
-     * @param transition Optional transition configuration.
      */
-    SetMode(mode: CameraMode, transition?: CameraModeTransition): void;
+    SetMode(mode: CameraMode): void;
     /**
      * Sets the camera to a static view.
-     *
-     * @param transition Optional transition configuration.
      */
-    ClearMode(transition?: CameraModeTransition): void;
+    ClearMode(): void;
     /**
      * Sets a callback function that is called when the camera mode is cleared. This
      * is useful for defaulting the camera system to a specific camera mode. Only

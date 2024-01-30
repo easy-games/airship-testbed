@@ -1,20 +1,16 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { Entity } from "Shared/Entity/Entity";
+import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
+import Inventory from "Shared/Inventory/Inventory";
 import { Bin } from "Shared/Util/Bin";
-import { CharacterEntity } from "../../Entity/Character/CharacterEntity";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemType } from "../ItemType";
-import { BreakBlockHeldItem } from "./BlockPlacement/BreakBlockHeldItem";
-import { PlaceBlockHeldItem } from "./BlockPlacement/PlaceBlockHeldItem";
-import { TillBlockHeldItem } from "./BlockPlacement/TillBlockHeldItem";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
-import { ProjectileLauncherHeldItem } from "./ProjectileLauncher/ProjectileLauncherHeldItem";
 
 export type HeldItemCondition = (itemDef: ItemDef) => boolean;
-export type HeldItemFactory = (entity: Entity, itemDef: ItemDef) => HeldItem;
+export type HeldItemFactory = (character: Character, itemDef: ItemDef) => HeldItem;
 export type HeldItemEntry = {
 	condition: HeldItemCondition;
 	factory: HeldItemFactory;
@@ -26,7 +22,7 @@ export type HeldItemEntry = {
  * One item manager per entity, calls functionality on currently equipped item for that entity
  */
 export class HeldItemManager {
-	public entity: CharacterEntity;
+	public character: Character;
 	private heldItemMap = new Map<ItemType, HeldItem>();
 	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
@@ -41,12 +37,12 @@ export class HeldItemManager {
 	}
 
 	public GetLabel() {
-		return this.entity.id;
+		return this.character.id;
 	}
 
 	private Log(message: string) {
 		return;
-		print("Entity " + this.entity.id + " " + message);
+		print("Entity " + this.character.id + " " + message);
 	}
 
 	private GetOrCreateHeldItem(itemDef?: ItemDef) {
@@ -54,7 +50,7 @@ export class HeldItemManager {
 			if (this.emptyHeldItem) {
 				return this.emptyHeldItem;
 			}
-			this.emptyHeldItem = new HeldItem(this.entity, itemDef);
+			this.emptyHeldItem = new HeldItem(this.character, itemDef);
 			this.emptyHeldItem.OnLoadAssets();
 			return this.emptyHeldItem;
 		}
@@ -65,11 +61,11 @@ export class HeldItemManager {
 			for (let i = HeldItemManager.heldItemClasses.size() - 1; i >= 0; i--) {
 				const entry = HeldItemManager.heldItemClasses[i];
 				if (entry.condition(itemDef)) {
-					item = entry.factory(this.entity, itemDef);
+					item = entry.factory(this.character, itemDef);
 				}
 			}
 			if (item === undefined) {
-				item = new HeldItem(this.entity, itemDef);
+				item = new HeldItem(this.character, itemDef);
 			}
 			item.OnLoadAssets();
 			this.heldItemMap.set(itemDef.itemType, item);
@@ -77,25 +73,28 @@ export class HeldItemManager {
 		return item;
 	}
 
-	constructor(entity: CharacterEntity) {
-		this.entity = entity;
+	constructor(character: Character) {
+		this.character = character;
 		this.Log("Creating Held Items");
 		this.currentHeldItem = this.GetOrCreateHeldItem();
 
 		//Listen for item switches
-		this.bin.Add(
-			this.entity.GetInventory().ObserveHeldItem((itemStack) => {
-				this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
-				//UnEquip last item
-				if (this.currentHeldItem !== undefined) {
-					this.currentHeldItem.OnUnEquip();
-				}
-				//Equip the new item
-				this.currentItemState = HeldItemState.NONE;
-				this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
-				this.currentHeldItem.OnEquip();
-			}),
-		);
+		const inv = this.character.gameObject.GetAirshipComponent<Inventory>();
+		if (inv) {
+			this.bin.Add(
+				inv.ObserveHeldItem((itemStack) => {
+					this.Log("is equipping a new item: " + itemStack?.GetMeta().displayName);
+					//UnEquip last item
+					if (this.currentHeldItem !== undefined) {
+						this.currentHeldItem.OnUnEquip();
+					}
+					//Equip the new item
+					this.currentItemState = HeldItemState.NONE;
+					this.currentHeldItem = this.GetOrCreateHeldItem(itemStack?.GetMeta());
+					this.currentHeldItem.OnEquip();
+				}),
+			);
+		}
 	}
 
 	public Destroy(): void {
@@ -107,13 +106,13 @@ export class HeldItemManager {
 		if (this.newStateQueued) return;
 		this.newStateQueued = true;
 
-		const lookVector = this.entity.entityDriver.GetLookVector();
+		const lookVector = this.character.movement.GetLookVector();
 
 		//Notify server of new State
-		Dependency<LocalEntityController>().AddToMoveData(
+		Dependency<LocalCharacterSingleton>().AddToMoveData(
 			"HeldItemState",
 			{
-				e: this.entity.id,
+				e: this.character.id,
 				s: itemState,
 				l: lookVector,
 			},
@@ -165,19 +164,7 @@ HeldItemManager.RegisterHeldItem(
 	(itemMeta) => itemMeta.melee !== undefined,
 	(entity, itemMeta) => new MeleeHeldItem(entity, itemMeta),
 );
-HeldItemManager.RegisterHeldItem(
-	(itemMeta) => itemMeta.block !== undefined,
-	(entity, itemMeta) => new PlaceBlockHeldItem(entity, itemMeta),
-);
-HeldItemManager.RegisterHeldItem(
-	(itemMeta) => itemMeta.breakBlock !== undefined,
-	(entity, itemMeta) => new BreakBlockHeldItem(entity, itemMeta),
-);
-HeldItemManager.RegisterHeldItem(
-	(itemMeta) => itemMeta.tillBlock !== undefined,
-	(entity, itemMeta) => new TillBlockHeldItem(entity, itemMeta),
-);
-HeldItemManager.RegisterHeldItem(
-	(itemMeta) => itemMeta.projectileLauncher !== undefined,
-	(entity, itemMeta) => new ProjectileLauncherHeldItem(entity, itemMeta),
-);
+// HeldItemManager.RegisterHeldItem(
+// 	(itemMeta) => itemMeta.projectileLauncher !== undefined,
+// 	(entity, itemMeta) => new ProjectileLauncherHeldItem(entity, itemMeta),
+// );

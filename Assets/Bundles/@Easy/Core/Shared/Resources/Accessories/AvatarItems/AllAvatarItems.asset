@@ -9,31 +9,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f847151e48f04a24da87b6b5981b14cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fe3d2d8679e4833b63469f7e587a48c, type: 3}
   m_Name: AllAvatarItems
   m_EditorClassIdentifier: 
-  skinAccessories:
-  - {fileID: 11400000, guid: 3db33dde7d6c2f744b18a4f4bf187f3b, type: 2}
-  - {fileID: 11400000, guid: 86413a4b71bf0394886d3d4acbe0b73c, type: 2}
-  generalAccessories:
-  - {fileID: 11400000, guid: c89eea06e7e8dde42ab7b74fc271effd, type: 2}
-  - {fileID: 11400000, guid: 4b2e9ab5d45e9384dbca7e1ae41ffc7b, type: 2}
-  - {fileID: 11400000, guid: 9fb09912168761245b18b7f26c07cbec, type: 2}
-  - {fileID: 11400000, guid: 2fe0f0fe9d9a86545af1ba29e831d0e0, type: 2}
-  - {fileID: 11400000, guid: e645564dc52f3de43b4725821ac2e24c, type: 2}
-  - {fileID: 11400000, guid: e1e590b66b6e943459b7c32d9972bd8c, type: 2}
-  - {fileID: 11400000, guid: bac5a3a7b047d3f488f505fd96e0c89f, type: 2}
-  - {fileID: 11400000, guid: 5ea21fcbbdb77974f8a882993cb06ea3, type: 2}
-  - {fileID: 11400000, guid: 39de11c24c9298643af660e6e05f962e, type: 2}
-  - {fileID: 11400000, guid: a2699b1cac285af43a56ea0c975d324d, type: 2}
-  - {fileID: 11400000, guid: aeedcf4d0dcdd9049b47aa6238fe44bd, type: 2}
-  - {fileID: 11400000, guid: dd171aabef2c2e94881e94b86d5e3e82, type: 2}
-  - {fileID: 11400000, guid: dbaa0a13ff8ebf744a7394fe2b7cf64b, type: 2}
-  - {fileID: 11400000, guid: f671ddcec2d0dc4419180c3b26fbc54e, type: 2}
-  - {fileID: 11400000, guid: e2f9bd00184b50a4f8de74ece493bac4, type: 2}
-  - {fileID: 11400000, guid: 3deca59aa87e7904cb81ca0ec0a32a4a, type: 2}
-  - {fileID: 11400000, guid: 3f542746310eae349bc52413e4d8d266, type: 2}
-  - {fileID: 11400000, guid: 1a6f21b85bcaed04fa76b0be0db6951b, type: 2}
-  - {fileID: 11400000, guid: df9fe435a4e60154eab157ead824c2a0, type: 2}
-  - {fileID: 11400000, guid: fef83f8ce77cf1c4095dc60431060fa9, type: 2}
-  - {fileID: 11400000, guid: f883cae2f3b1c3342bb7c20ba1288839, type: 2}
+  accessories:
+  - {fileID: 6888921468087521848, guid: 8e454da57dd890d4d9832745d0cb7231, type: 3}
+  - {fileID: 6821476131405702833, guid: 507a88bb00638d640a35cd39c3cd4268, type: 3}
+  - {fileID: 7960880087425178016, guid: ccf1519e05f50a44696bbed0feb9815c, type: 3}
+  - {fileID: 3955224052497085270, guid: 15bf8fd688ae02a4a92932b3ccb43d28, type: 3}
+  - {fileID: 3532210570716649121, guid: 82733835d5a0e194fabd18c53d104513, type: 3}
+  - {fileID: 5873576580403382919, guid: 36f3ea781eaebdf41853218236d3cb6c, type: 3}
+  - {fileID: 7997735767041433739, guid: 97fa46b4948728d48bac021b21686a6c, type: 3}
+  - {fileID: 3951789404177486776, guid: eda3579bb800288458aac57e6c6ede1e, type: 3}
+  - {fileID: 691215519860194182, guid: 31cfbf3e5aa6d244cac60d669624511d, type: 3}
+  - {fileID: 2965010553981355193, guid: 66ac53cee181a614fb7764f36cf74511, type: 3}
+  - {fileID: 5660788679855312428, guid: 45be7b6105384da47bcfcc04e8b6bcce, type: 3}
+  - {fileID: 41667040608641592, guid: da0f166ceab2a364a86b79a4edd29048, type: 3}
+  - {fileID: 5454789880492291037, guid: e8edef392ea22ec4d9cdff89f1dbdc48, type: 3}
+  - {fileID: 1839677199373751720, guid: 580032d75be31634c9524969355ef1eb, type: 3}
+  - {fileID: 4053772912124662843, guid: cf69b5d7c345cec4481e66cc0b9a567c, type: 3}
+  - {fileID: 4687774498355188848, guid: 507a8f57c51cd6d4a87fa8014d5f0b4e, type: 3}
+  - {fileID: 7446855311011774685, guid: b3468db6df7948649a67a9d195e92c1f, type: 3}
+  - {fileID: 7638501342747260519, guid: 506c6c919491a004798220b7dde634b8, type: 3}
+  - {fileID: 8235044750829885567, guid: c54baabebd5ee544193d4ef693b44e3f, type: 3}
+  - {fileID: 5825903357670283517, guid: 2493c4e362153c247b8c3762ca463c2c, type: 3}
+  - {fileID: 3833034999051446190, guid: 75312dfadce4991449ae9853e3841c66, type: 3}
+  - {fileID: 82585080373309768, guid: 028b85e095262194ea8e4131fe641b6f, type: 3}
+  - {fileID: 1690730982374684028, guid: dcff42cfc17923a44acb81a0ccd59edb, type: 3}
+  customSkin: {fileID: 11400000, guid: 3db33dde7d6c2f744b18a4f4bf187f3b, type: 2}
+  skinColor: {r: 0.85, g: 0.65, b: 0.5, a: 1}

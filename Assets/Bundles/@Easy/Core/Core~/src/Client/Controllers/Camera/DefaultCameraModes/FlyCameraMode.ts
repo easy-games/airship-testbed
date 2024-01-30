@@ -85,7 +85,7 @@ export class FlyCameraMode implements CameraMode {
 						this.keysDown.add(event.keyCode);
 						event.SetCancelled(true);
 					},
-					SignalPriority.HIGHEST,
+					SignalPriority.HIGHEST - 100,
 				),
 			);
 			this.bin.Add(
@@ -95,7 +95,7 @@ export class FlyCameraMode implements CameraMode {
 						this.keysDown.delete(event.keyCode);
 						event.SetCancelled(true);
 					},
-					SignalPriority.HIGHEST,
+					SignalPriority.HIGHEST - 100,
 				),
 			);
 		}

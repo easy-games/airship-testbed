@@ -1,5 +1,5 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { CoreRefs } from "Shared/CoreRefs";
 
 @Controller({})
 export class CoreUIController implements OnStart {
@@ -7,8 +7,9 @@ export class CoreUIController implements OnStart {
 	public readonly refs: GameObjectReferences;
 
 	constructor() {
-		this.coreUIGO = GameObjectUtil.Instantiate(
+		this.coreUIGO = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/CoreUI.prefab"),
+			CoreRefs.rootTransform,
 		);
 		this.coreUIGO.name = "CoreUI";
 		this.refs = this.coreUIGO.GetComponent<GameObjectReferences>();

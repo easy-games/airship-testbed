@@ -20,4 +20,24 @@ export declare class TimeUtil {
      * @returns The interval in seconds from the last physics frame to the current one.
      */
     static GetFixedDeltaTime(): number;
+    static FormatTimeAgo(secondsAgo: number, config?: {
+        includeAgo?: boolean;
+    }): string;
+    static FormatCountdown(
+    /** The remaining countdown time in seconds */
+    timeLeftSec: number, config?: {
+        seconds?: boolean;
+        minutes?: boolean;
+        hours?: boolean;
+        days?: boolean;
+        /**
+         * Makes sure single digits are padded with a 0. (ex. 7 sec -> 07 sec) DEFAULT TRUE.
+         */
+        disablePadding?: boolean;
+        /**
+         * How many decimals points to append to the seconds time
+         */
+        decimalPoints?: number;
+        seperator?: string;
+    }): string;
 }

@@ -4,9 +4,13 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     titleText: TMP_Text;
     playerCountText: TMP_Text;
     buttonGo: GameObject;
+    orgImage: RemoteImage;
+    authorText: TMP_Text;
+    private redirectDrag;
     private bin;
-    OnStart(): void;
+    Start(): void;
     OnDestroy(): void;
     OnDisabled(): void;
+    SetDragRedirectTarget(target: ScrollRect): void;
     Init(gameDto: GameDto): void;
 }

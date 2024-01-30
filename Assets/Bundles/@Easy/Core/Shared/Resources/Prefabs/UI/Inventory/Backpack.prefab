@@ -35,7 +35,6 @@ RectTransform:
   - {fileID: 672309554253864265}
   - {fileID: 7903063627620236470}
   m_Father: {fileID: 2564240101306593147}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -172,7 +171,6 @@ RectTransform:
   - {fileID: 1368209950374434034}
   - {fileID: 6651016912332980535}
   m_Father: {fileID: 2564240101306593147}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -273,7 +271,6 @@ RectTransform:
   - {fileID: 2841424778892536750}
   - {fileID: 6104970400395684627}
   m_Father: {fileID: 4071895800324590940}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -314,7 +311,6 @@ RectTransform:
   m_Children:
   - {fileID: 2564240101306593147}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -338,7 +334,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -450,7 +448,6 @@ RectTransform:
   - {fileID: 1568211648193431045}
   - {fileID: 2604348630080622092}
   m_Father: {fileID: 2564240101306593147}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -526,6 +523,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -535,10 +533,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -616,31 +610,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &873928160377526057 stripped
 RectTransform:
@@ -652,6 +625,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -661,10 +635,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -742,31 +712,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (18)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &1146664890558983740 stripped
 RectTransform:
@@ -778,6 +727,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6104970400395684627}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -787,10 +737,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -868,31 +814,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &672309554253864265 stripped
 RectTransform:
@@ -904,6 +829,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -913,10 +839,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -994,31 +916,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (27)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &361765457928255197 stripped
 RectTransform:
@@ -1030,6 +931,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1039,10 +941,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1120,23 +1018,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &2152619522728072505 stripped
 RectTransform:
@@ -1148,6 +1033,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1157,10 +1043,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1238,31 +1120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (14)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &2261888468193966158 stripped
 RectTransform:
@@ -1274,6 +1135,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1283,10 +1145,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1364,31 +1222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &1893905427111989534 stripped
 RectTransform:
@@ -1400,6 +1237,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6104970400395684627}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1409,10 +1247,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1490,31 +1324,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &1500596605017512994 stripped
 RectTransform:
@@ -1526,6 +1339,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1535,10 +1349,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1616,31 +1426,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (26)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &1526722619730837938 stripped
 RectTransform:
@@ -1652,6 +1441,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1661,10 +1451,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1742,23 +1528,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &1568211648193431045 stripped
 RectTransform:
@@ -1770,6 +1543,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1779,10 +1553,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1860,31 +1630,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (34)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &1368209950374434034 stripped
 RectTransform:
@@ -1896,6 +1645,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -1905,10 +1655,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1986,31 +1732,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (20)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &1411769757953194255 stripped
 RectTransform:
@@ -2022,6 +1747,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2031,10 +1757,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2112,31 +1834,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &3246578225124524224 stripped
 RectTransform:
@@ -2148,6 +1849,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2157,10 +1859,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2238,31 +1936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (21)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &2953773562688873582 stripped
 RectTransform:
@@ -2274,6 +1951,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2283,10 +1961,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2364,23 +2038,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &2604348630080622092 stripped
 RectTransform:
@@ -2392,6 +2053,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2401,10 +2063,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2482,31 +2140,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &2611804967741887981 stripped
 RectTransform:
@@ -2518,6 +2155,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2527,10 +2165,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2608,31 +2242,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &2717217721354069472 stripped
 RectTransform:
@@ -2644,6 +2257,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2653,10 +2267,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2734,31 +2344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (25)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &2557035865298361847 stripped
 RectTransform:
@@ -2770,6 +2359,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2779,10 +2369,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2860,31 +2446,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (13)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &4386568467695094903 stripped
 RectTransform:
@@ -2896,6 +2461,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -2905,10 +2471,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2986,31 +2548,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (32)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &4444467982790019027 stripped
 RectTransform:
@@ -3022,6 +2563,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3031,10 +2573,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3112,31 +2650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &4598407011862760336 stripped
 RectTransform:
@@ -3148,6 +2665,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3157,10 +2675,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3238,31 +2752,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &4314451205404057161 stripped
 RectTransform:
@@ -3274,6 +2767,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3283,10 +2777,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3364,23 +2854,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &3988930061620775961 stripped
 RectTransform:
@@ -3392,6 +2869,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3401,10 +2879,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3482,31 +2956,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &3473122789681028375 stripped
 RectTransform:
@@ -3518,6 +2971,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3527,10 +2981,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3608,31 +3058,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (16)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &3613393817572680088 stripped
 RectTransform:
@@ -3644,6 +3073,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3653,10 +3083,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3734,31 +3160,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (11)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &5714607440149744148 stripped
 RectTransform:
@@ -3770,6 +3175,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3779,10 +3185,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3860,31 +3262,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (23)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &4627468610490374144 stripped
 RectTransform:
@@ -3896,6 +3277,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -3905,10 +3287,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3986,31 +3364,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (22)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &4630788989943027865 stripped
 RectTransform:
@@ -4022,6 +3379,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4031,10 +3389,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4112,31 +3466,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (35)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &6651016912332980535 stripped
 RectTransform:
@@ -4148,6 +3481,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4157,10 +3491,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4238,31 +3568,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (28)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &6503912200389064927 stripped
 RectTransform:
@@ -4274,6 +3583,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4283,10 +3593,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4364,31 +3670,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &6554731661135282432 stripped
 RectTransform:
@@ -4400,6 +3685,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4409,10 +3695,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4490,31 +3772,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &6100911881260357262 stripped
 RectTransform:
@@ -4526,6 +3787,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4535,10 +3797,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4616,31 +3874,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (17)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &6245266880635243911 stripped
 RectTransform:
@@ -4652,6 +3889,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4661,10 +3899,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4742,31 +3976,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (33)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &5821261907833792279 stripped
 RectTransform:
@@ -4778,6 +3991,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6104970400395684627}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4787,10 +4001,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4868,31 +4078,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &7903063627620236470 stripped
 RectTransform:
@@ -4904,6 +4093,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -4913,10 +4103,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4994,31 +4180,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (29)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &7981057760878819894 stripped
 RectTransform:
@@ -5030,6 +4195,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5039,10 +4205,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5120,31 +4282,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (30)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8025130458810860804 stripped
 RectTransform:
@@ -5156,6 +4297,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5165,10 +4307,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5246,31 +4384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (24)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8066217829156044868 stripped
 RectTransform:
@@ -5282,6 +4399,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5291,10 +4409,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5372,23 +4486,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &7358285640378940757 stripped
 RectTransform:
@@ -5400,6 +4501,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5409,10 +4511,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5490,31 +4588,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (19)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &7421966695734168567 stripped
 RectTransform:
@@ -5526,6 +4603,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5535,10 +4613,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5616,31 +4690,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (31)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8968275390004448019 stripped
 RectTransform:
@@ -5652,6 +4705,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5661,10 +4715,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5742,23 +4792,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &9182228877501346862 stripped
 RectTransform:
@@ -5770,6 +4807,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5779,10 +4817,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5860,23 +4894,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &9194036019264263942 stripped
 RectTransform:
@@ -5888,6 +4909,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -5897,10 +4919,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5978,31 +4996,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (12)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8674092801688547308 stripped
 RectTransform:
@@ -6014,6 +5011,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -6023,10 +5021,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6104,23 +5098,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8737961008391172707 stripped
 RectTransform:
@@ -6132,6 +5113,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2991704471462604150}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -6141,10 +5123,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6222,23 +5200,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile
       objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8783216097256106616 stripped
 RectTransform:
@@ -6250,6 +5215,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -6259,10 +5225,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6340,31 +5302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8160173275744412281 stripped
 RectTransform:
@@ -6376,6 +5317,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2841424778892536750}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
@@ -6385,10 +5327,6 @@ PrefabInstance:
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_RootOrder
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 875650343500840758, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6466,31 +5404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotbarTile (15)
       objectReference: {fileID: 0}
-    - target: {fileID: 2641093856658375403, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2.6600952
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680791925926405557, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5183077354816409436, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7557974958359200835, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672615b4e3c004d4a9c5360f84b46a6d, type: 3}
 --- !u!224 &8163525196887269842 stripped
 RectTransform:

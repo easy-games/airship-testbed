@@ -1,5 +1,6 @@
 import { Controller } from "@easy-games/flamework-core";
 import { CameraMode } from ".";
+import { CameraReferences } from "./CameraReferences";
 import { CameraSystem } from "./CameraSystem";
 
 @Controller({})
@@ -7,10 +8,12 @@ export class CameraController {
 	public static readonly cameraReferenceKey = "CameraRig";
 
 	/** The underlying camera system for the game. */
-	public readonly cameraSystem: CameraSystem;
+	public readonly cameraSystem?: CameraSystem;
 
 	constructor() {
-		this.cameraSystem = new CameraSystem();
+		if (CameraReferences.Instance().DoesCameraRigExist()) {
+			this.cameraSystem = new CameraSystem();
+		}
 	}
 
 	/**
@@ -18,14 +21,14 @@ export class CameraController {
 	 * camera system if custom camera code is being used.
 	 */
 	public SetEnabled(enabled: boolean) {
-		this.cameraSystem.SetEnabled(enabled);
+		this.cameraSystem?.SetEnabled(enabled);
 	}
 
 	/**
 	 * Returns `true` if the camera system is enabled.
 	 */
 	public IsEnabled() {
-		return this.cameraSystem.IsEnabled();
+		return this.cameraSystem?.IsEnabled();
 	}
 
 	/**
@@ -34,14 +37,14 @@ export class CameraController {
 	 * @param mode New mode.
 	 */
 	public SetMode(mode: CameraMode) {
-		this.cameraSystem.SetMode(mode);
+		this.cameraSystem?.SetMode(mode);
 	}
 
 	/**
 	 * Sets the camera to a static view.
 	 */
 	public ClearMode() {
-		this.cameraSystem.ClearMode();
+		this.cameraSystem?.ClearMode();
 	}
 
 	/**
@@ -50,6 +53,6 @@ export class CameraController {
 	 * @param immediate If `true`, goes directly to the FOV without springing towards it.
 	 */
 	public SetFOV(fieldOfView: number, immediate = false) {
-		this.cameraSystem.SetFOV(fieldOfView, immediate);
+		this.cameraSystem?.SetFOV(fieldOfView, immediate);
 	}
 }

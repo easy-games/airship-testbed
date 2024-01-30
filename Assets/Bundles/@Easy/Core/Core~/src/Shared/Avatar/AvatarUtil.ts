@@ -1,13 +1,17 @@
 import { ColorUtil } from "Shared/Util/ColorUtil";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import { RandomUtil } from "Shared/Util/RandomUtil";
+import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 
 export class AvatarUtil {
-	public static readonly defaultAccessoryCollectionPath =
+	public static readonly defaultAccessoryOutfitPath =
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
-	private static readonly avatarAccessories = new Map<AccessorySlot, Accessory[]>();
+	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
+	private static readonly ownedAvatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
-	public static defaultKitAccessory: AccessoryCollection | undefined;
+	public static defaultOutfit: AccessoryOutfit | undefined;
 
 	public static readonly skinColors = [
 		//Natural
@@ -30,25 +34,34 @@ export class AvatarUtil {
 	];
 
 	public static Initialize() {
-		AvatarUtil.defaultKitAccessory = AssetBridge.Instance.LoadAsset<AccessoryCollection>(
-			AvatarUtil.defaultAccessoryCollectionPath,
+		AvatarUtil.defaultOutfit = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
+			AvatarUtil.defaultAccessoryOutfitPath,
 		);
 		//print("Init kit: " + AvatarUtil.defaultKitAccessory?.name);
 
 		let i = 0;
 		//Load avatar accessories
-		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarCollection>(
+		let avatarCollection = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
 			"@Easy/Core/Shared/Resources/Accessories/AvatarItems/AllAvatarItems.asset",
 		);
-		for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
+		/*for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
 			const element = avatarCollection.skinAccessories.GetValue(i);
+			if (!element) {
+				warn("Empty element in avatar skinAccessories collection: " + i);
+				continue;
+			}
 			//print("Found avatar skin item: " + element.ToString());
 			this.avatarSkinAccessories.push(element);
-		}
-		for (let i = 0; i < avatarCollection.generalAccessories.Length; i++) {
-			const element = avatarCollection.generalAccessories.GetValue(i);
+		}*/
+		// print("Found avatar collection: " + avatarCollection);
+		for (let i = 0; i < avatarCollection.accessories.Length; i++) {
+			const element = avatarCollection.accessories.GetValue(i);
+			if (!element) {
+				warn("Empty element in avatar generalAccessories collection: " + i);
+				continue;
+			}
 			//print("Found avatar item: " + element.ToString());
-			this.AddAvailableAvatarItem(element);
+			this.allAvatarAccessories.set(element.serverClassId, element);
 		}
 
 		//Print all of the mapped accessories
@@ -60,24 +73,105 @@ export class AvatarUtil {
 		// }
 	}
 
-	public static AddAvailableAvatarItem(item: Accessory) {
+	public static GetOwnedAccessories() {
+		let acc = AvatarPlatformAPI.GetAccessories();
+		if (acc) {
+			acc.forEach((itemData) => {
+				let item = this.allAvatarAccessories.get(itemData.class.classId);
+				if (item) {
+					//print("Found item: " + item.gameObject.name);
+					item.serverInstanceId = itemData.instanceId;
+					this.AddAvailableAvatarItem(item);
+				}
+			});
+		}
+	}
+
+	public static InitUserOutfits(userId: string) {
+		const maxNumberOfOutfits = 5;
+		let outfits = AvatarPlatformAPI.GetAllOutfits();
+		const numberOfOutfits = outfits ? outfits.size() : 0;
+		let name = "";
+		//Create missing outfits up to 5
+		for (let i = numberOfOutfits; i < maxNumberOfOutfits; i++) {
+			name = "Default" + i;
+			print("Creating missing outfit: " + name);
+			let outfit = AvatarPlatformAPI.CreateDefaultAvatarOutfit(
+				userId,
+				name,
+				name,
+				RandomUtil.FromArray(this.skinColors),
+			);
+			if (!outfit) {
+				error("Unable to make a new outfit :(");
+			}
+		}
+		//Make sure an outfit is equipped
+		if (!outfits || outfits.size() === 0 || AvatarPlatformAPI.GetEquippedOutfit() === undefined) {
+			AvatarPlatformAPI.EquipAvatarOutfit(name);
+		}
+	}
+
+	public static AddAvailableAvatarItem(item: AccessoryComponent) {
 		const slotNumber: number = item.GetSlotNumber();
-		let items = this.avatarAccessories.get(slotNumber);
+		let items = this.ownedAvatarAccessories.get(slotNumber);
 		if (!items) {
 			//print("making new items for slot: " + slotNumber);
 			items = [];
 		}
 		items.push(item);
 		//print("setting item slot " + slotNumber + " to: " + item.ToString());
-		this.avatarAccessories.set(slotNumber, items);
+		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
 
 	public static GetAllAvatarItems(slotType: AccessorySlot) {
 		//print("Getting slot " + tostring(slotType) + " size: " + this.avatarAccessories.get(slotType)?.size());
-		return this.avatarAccessories.get(slotType);
+		return this.ownedAvatarAccessories.get(slotType);
 	}
 
 	public static GetAllAvatarSkins() {
 		return this.avatarSkinAccessories;
+	}
+
+	public static GetAccessoryFromClassId(classId: string) {
+		return this.allAvatarAccessories.get(classId);
+	}
+
+	public static LoadEquippedUserOutfit(
+		builder: AccessoryBuilder,
+		options: { removeAllOldAccessories?: boolean; combineMeshes?: boolean } = {},
+	) {
+		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
+		if (!outfit) {
+			// warn("Unable to load users default outfit. Equipping baked default outfit");
+			this.LoadDefaultOutfit(builder);
+			return;
+		}
+		this.LoadUserOutfit(outfit, builder, options);
+	}
+
+	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
+		if (this.defaultOutfit) {
+			builder.EquipAccessoryOutfit(this.defaultOutfit, true);
+		}
+	}
+
+	public static LoadUserOutfit(
+		outfit: Outfit,
+		builder: AccessoryBuilder,
+		options: { removeAllOldAccessories?: boolean } = {},
+	) {
+		if (options.removeAllOldAccessories) {
+			builder.RemoveAccessories();
+		}
+		outfit.accessories.forEach((acc) => {
+			const accComponent = this.GetAccessoryFromClassId(acc.class.classId);
+			if (!accComponent) {
+				warn("Unable to find accessory with class ID: " + acc.class.classId);
+				return; //Continue
+			}
+			builder.AddSingleAccessory(accComponent, false);
+		});
+		builder.TryCombineMeshes();
 	}
 }

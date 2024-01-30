@@ -1,14 +1,10 @@
 import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import ObjectUtil from "@easy-games/unity-object-utils";
-import { CoreServerSignals } from "Server/CoreServerSignals";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { CharacterEntity } from "Shared/Entity/Character/CharacterEntity";
 import { GeneratorCreationConfig } from "Shared/Generator/GeneratorMeta";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { Task } from "Shared/Util/Task";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
-import { EntityService } from "../Entity/EntityService";
 import { GroundItemService } from "../GroundItem/GroundItemService";
 import { GeneratorState } from "./GeneratorState";
 
@@ -30,47 +26,45 @@ export class GeneratorService implements OnStart {
 
 	OnStart(): void {
 		// Split resources
-		CoreServerSignals.EntityPickupItem.Connect((event) => {
-			const generatorId = event.groundItem.data["generatorId"] as string | undefined;
-			if (!generatorId) return;
-
-			const genState = this.GetGeneratorById(generatorId);
-			if (!genState) return;
-			const pickupPlayer = event.entity.player;
-			if (pickupPlayer && genState?.split) {
-				const splitTeam = pickupPlayer.GetTeam();
-				if (!splitTeam) return;
-				const splitRange = genState.split.range;
-				splitTeam.GetPlayers().forEach((player) => {
-					const playerEntity = Dependency<EntityService>().GetEntityByClientId(player.clientId);
-					if (!playerEntity) return;
-					if (!(playerEntity instanceof CharacterEntity)) return;
-					const distanceFromGen = playerEntity.gameObject.transform.position.sub(genState.dto.pos).magnitude;
-					if (player !== pickupPlayer && distanceFromGen <= splitRange) {
-						const inv = playerEntity.GetInventory();
-						inv.AddItem(
-							new ItemStack(
-								event.groundItem.itemStack.GetItemType(),
-								event.groundItem.itemStack.GetAmount(),
-							),
-						);
-					}
-				});
-			}
-			// Generator cleanup.
-			genState.stackSize = 0;
-			this.stackMap.delete(generatorId);
-		});
-
+		// CoreServerSignals.EntityPickupItem.Connect((event) => {
+		// 	const generatorId = event.groundItem.data["generatorId"] as string | undefined;
+		// 	if (!generatorId) return;
+		// 	const genState = this.GetGeneratorById(generatorId);
+		// 	if (!genState) return;
+		// 	const pickupPlayer = event.entity.player;
+		// 	if (pickupPlayer && genState?.split) {
+		// 		const splitTeam = pickupPlayer.GetTeam();
+		// 		if (!splitTeam) return;
+		// 		const splitRange = genState.split.range;
+		// 		splitTeam.GetPlayers().forEach((player) => {
+		// 			const playerEntity = Dependency<EntityService>().GetEntityByClientId(player.clientId);
+		// 			if (!playerEntity) return;
+		// 			if (!(playerEntity instanceof CharacterEntity)) return;
+		// 			const distanceFromGen = playerEntity.gameObject.transform.position.sub(genState.dto.pos).magnitude;
+		// 			if (player !== pickupPlayer && distanceFromGen <= splitRange) {
+		// 				const inv = playerEntity.GetInventory();
+		// 				inv.AddItem(
+		// 					new ItemStack(
+		// 						event.groundItem.itemStack.GetItemType(),
+		// 						event.groundItem.itemStack.GetAmount(),
+		// 					),
+		// 				);
+		// 			}
+		// 		});
+		// 	}
+		// 	// Generator cleanup.
+		// 	genState.stackSize = 0;
+		// 	this.stackMap.delete(generatorId);
+		// });
 		// Handle late joiners.
-		CoreServerSignals.PlayerJoin.Connect((event) => {
-			Task.Delay(SNAPSHOT_SEND_DELAY, () => {
-				CoreNetwork.ServerToClient.GeneratorSnapshot.server.FireClient(
-					event.player.clientId,
-					this.GetAllGenerators().map((state) => state.dto),
-				);
-			});
-		});
+		// CoreServerSignals.PlayerJoin.Connect((event) => {
+		// 	Task.Delay(SNAPSHOT_SEND_DELAY, () => {
+		// 		CoreNetwork.ServerToClient.GeneratorSnapshot.server.FireClient(
+		// 			event.player.clientId,
+		// 			this.GetAllGenerators().map((state) => state.dto),
+		// 		);
+		// 	});
+		// });
 	}
 
 	/**

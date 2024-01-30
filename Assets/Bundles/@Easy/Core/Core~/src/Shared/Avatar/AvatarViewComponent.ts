@@ -11,6 +11,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraWaypointFeet?: Transform;
 	public cameraWaypointHands?: Transform;
 	public cameraWaypointBack?: Transform;
+	public cameraWaypointCenterHero?: Transform;
+	public cameraWaypointBirdsEye?: Transform;
 
 	public dragSpeedMod = 10;
 	public cameraTransitionDuration = 1;
@@ -23,7 +25,14 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private lastMousePos: Vector3 = Vector3.zero;
 
 	public override Start(): void {
-		this.accessoryBuilder = this.humanEntityGo?.GetComponent<AccessoryBuilder>();
+		print("AVATAR VIEW START");
+		if (this.humanEntityGo) {
+			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>();
+			if (this.accessoryBuilder) {
+				this.accessoryBuilder.thirdPersonLayer = this.humanEntityGo.layer;
+				this.accessoryBuilder.firstPersonLayer = this.humanEntityGo.layer;
+			}
+		}
 		this.dragging = false;
 		this.mouse = new Mouse();
 		this.mouse.moved.Connect((pos: Vector3) => {
@@ -43,8 +52,14 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.gameObject.SetActive(false);
 	}
 
-	public FocusSlot(slotType: AccessorySlot) {
-		print("Fosuing slot: " + slotType);
+	public ResetAvatar() {
+		if (this.avatarHolder) {
+			this.avatarHolder.localEulerAngles = Vector3.zero;
+		}
+	}
+
+	public CameraFocusSlot(slotType: AccessorySlot) {
+		//print("Fosuing slot: " + slotType);
 		this.targetTransform = this.cameraWaypointDefault;
 		if (
 			slotType === AccessorySlot.Head ||
@@ -70,7 +85,16 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		} else if (slotType === AccessorySlot.Backpack) {
 			this.targetTransform = this.cameraWaypointBack;
 		}
+		this.CameraFocusTransform(this.targetTransform);
+	}
+
+	public CameraFocusTransform(transform?: Transform, instant = false) {
+		this.targetTransform = transform;
 		if (this.cameraTransform && this.targetTransform) {
+			if (instant) {
+				this.cameraTransform.position = this.targetTransform.position;
+				this.cameraTransform.rotation = this.targetTransform.rotation;
+			}
 			this.cameraTransform
 				.TweenPosition(this.targetTransform.position, this.cameraTransitionDuration)
 				.SetEaseQuadInOut();

@@ -3,4 +3,5 @@ export interface PublicUser {
     username: string;
     discriminator: string;
     discriminatedUsername: string;
+    statusText?: string;
 }

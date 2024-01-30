@@ -9,12 +9,12 @@ export interface ItemRegistrationConfig {
  * Set of utilities for working with items.
  */
 export declare class ItemUtil {
-    static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.asset";
+    static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.prefab";
     private static readonly itemAccessories;
     private static readonly blockIdToItemType;
     private static readonly itemIdToItemType;
     private static runtimeIdCounter;
-    static missingItemAccessory: Accessory;
+    static missingItemAccessory: AccessoryComponent;
     private static itemTypes;
     private static implictItemTypeMap;
     private static initialized;
@@ -32,8 +32,8 @@ export declare class ItemUtil {
     static GetItemTypeFromStringId(stringId: string): ItemType | undefined;
     static GetItemTypeFromItemId(itemId: number): ItemType | undefined;
     static GetItemDef(itemType: ItemType): ItemDef;
-    static GetFirstAccessoryForItemType(itemType: ItemType): Accessory;
-    static GetAccessoriesForItemType(itemType: ItemType): Readonly<Accessory[]>;
+    static GetFirstAccessoryForItemType(itemType: ItemType): AccessoryComponent;
+    static GetAccessoriesForItemType(itemType: ItemType): Readonly<AccessoryComponent[]>;
     static IsItemType(s: string): boolean;
     /**
      * Find an `ItemType` from the given string, first trying direct then case-insensitive searching the items
@@ -42,23 +42,10 @@ export declare class ItemUtil {
      */
     static FindItemTypeFromExpression(expression: string): ItemType | undefined;
     /**
-     * Fetch a render texture for a provided item.
-     * @param itemType An item.
-     * @returns Render texture that corresponds to item.
-     */
-    static GetItemRenderTexture(itemType: ItemType): Texture2D;
-    /**
-     * Fetch an asset bundle item render path for a provided item.
-     * @param itemType An item.
-     * @returns Render path that corresponds to item.
-     */
-    static GetItemRenderPath(itemType: ItemType): string;
-    /**
      * Checks whether or not an item is a resource.
      * @param itemType An item.
      * @returns Whether or not item is a resource.
      */
-    static IsResource(itemType: ItemType): boolean;
     /**
      * Returns the component parts of an ItemType - the scope and the id
      *

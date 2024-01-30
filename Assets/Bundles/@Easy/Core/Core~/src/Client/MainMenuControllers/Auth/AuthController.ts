@@ -15,6 +15,8 @@ export class AuthController implements OnStart {
 	public readonly onAuthenticated = new Signal<void>();
 	public readonly onSignOut = new Signal<void>();
 
+	constructor() {}
+
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
@@ -112,10 +114,6 @@ export class AuthController implements OnStart {
 
 	public GetAuthHeaders(): string {
 		return "Authorization=Bearer " + this.idToken;
-	}
-
-	public GetAuthToken(): string {
-		return this.idToken;
 	}
 
 	public IsAuthenticated(): boolean {
