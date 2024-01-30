@@ -79,7 +79,7 @@ export class ProximityPrompt {
 
 	public SetCanActivate(canActivate: boolean) {
 		if (this.canActivate === canActivate) return;
-		this.canActivate = true;
+		this.canActivate = canActivate;
 		if (canActivate) {
 			const keyboard = this.canActivateBin.Add(new Keyboard());
 			keyboard.OnKeyDown(this.data.activationKey, (event) => {
