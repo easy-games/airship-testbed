@@ -4,6 +4,7 @@ export interface GameDto {
 	iconImageId: string;
 	id: string;
 	name: string;
+	lastVersionUpdate: string;
 	organization: {
 		createdAt: string;
 		description: string;
@@ -21,6 +22,7 @@ export interface GameDto {
 export interface GamesDto {
 	popular: GameDto[];
 	featured: GameDto[];
+	recentlyUpdated: GameDto[];
 }
 
 export type MyGamesDto = GameDto[];

@@ -1,8 +1,10 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { TransferController } from "Client/MainMenuControllers/Transfer/TransferController";
+import DateParser from "Shared/DateParser";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { TimeUtil } from "Shared/Util/TimeUtil";
 import { GameDto } from "../API/GamesAPI";
 
 export default class HomePageGameComponent extends AirshipBehaviour {
@@ -39,7 +41,6 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		let remoteImage = this.gameObject.transform.GetChild(0).GetComponent<RemoteImage>();
 		remoteImage.url = url;
 		remoteImage.StartDownload();
-
 		const downloadConn = remoteImage.OnFinishedLoading((success) => {
 			if (success) {
 				remoteImage.image.color = new Color(1, 1, 1, 1);
@@ -50,6 +51,13 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(downloadConn);
 		});
+
+		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate);
+		const timeDiff = os.time() - timeUpdatedSeconds;
+		const timeString = TimeUtil.FormatTimeAgo(timeDiff, {
+			includeAgo: true,
+		});
+		// print("updated: " + timeString);
 
 		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
 			if (this.redirectDrag.isDragging) return;

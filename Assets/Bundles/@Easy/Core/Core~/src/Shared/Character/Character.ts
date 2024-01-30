@@ -61,6 +61,18 @@ export default class Character extends AirshipBehaviour {
 				this.SetHealth(newHealth);
 			}
 		});
+
+		{
+			// state change
+			const conn = this.movement.OnStateChanged((state) => {
+				const oldState = this.state;
+				this.state = state;
+				this.onStateChanged.Fire(state, oldState);
+			});
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(conn);
+			});
+		}
 	}
 
 	public Init(player: Player | undefined, id: number): void {
