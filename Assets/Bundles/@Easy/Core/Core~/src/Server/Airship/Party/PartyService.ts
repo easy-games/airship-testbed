@@ -1,8 +1,10 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { PartyMode, PartyStatus } from "Shared/SocketIOMessages/Party";
 import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
 import { Result } from "Shared/Types/Result";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON } from "Shared/json";
 
 /**
@@ -17,11 +19,12 @@ export interface GameServerPartyData {
 	status: PartyStatus;
 }
 
-/**
- * Allows access to player party information.
- */
 @Service({})
 export class PartyService implements OnStart {
+	constructor() {
+		if (RunUtil.IsServer()) Platform.server.party = this;
+	}
+
 	OnStart(): void {}
 
 	/**

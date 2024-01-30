@@ -1,14 +1,16 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { Result } from "Shared/Types/Result";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
-/**
- * Allows game servers to match make players. These functions are currently only
- * enabled upon request. Email us at hello@easy.gg to see if you might qualify.
- */
 @Service({})
 export class MatchmakingService implements OnStart {
+	constructor() {
+		if (RunUtil.IsServer()) Platform.server.matchmaking = this;
+	}
+
 	OnStart(): void {}
 
 	/**

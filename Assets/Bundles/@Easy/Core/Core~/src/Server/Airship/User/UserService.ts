@@ -1,13 +1,16 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
 import { Result } from "Shared/Types/Result";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON } from "Shared/json";
 
-/**
- * Provides access to user information.
- */
 @Service({})
 export class UserService implements OnStart {
+	constructor() {
+		if (RunUtil.IsServer()) Platform.server.user = this;
+	}
+
 	OnStart(): void {}
 
 	/**

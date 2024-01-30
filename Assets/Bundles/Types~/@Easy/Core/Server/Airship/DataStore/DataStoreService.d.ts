@@ -1,16 +1,8 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { Result } from "../../../Shared/Types/Result";
-/**
- * The Data Store provides simple key/value persistent storage.
- *
- * The data store provides durable storage that can be accessed from any game server. Data access is slower than
- * the Cache Store, but the data will never expire.
- *
- * The Data Store is good for things like user configuration settings. If you want to keep track of user statistics or
- * inventory, check out the Leaderboard and AirshipInventory systems.
- */
 export declare class DataStoreService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets the data associated with the given key.

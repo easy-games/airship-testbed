@@ -13420,13 +13420,8 @@ interface AirshipInventoryControllerBackendConstructor {
 
     new(): AirshipInventoryControllerBackend;
 
-    GetAccessories(): HttpResponse;
-    GetEquippedOutfit(): HttpResponse;
-    GetItems(): HttpResponse;
-    GetProfilePictures(): HttpResponse;
-    HasAccessory(): HttpResponse;
-    HasItem(): HttpResponse;
-    HasProfilePicture(): HttpResponse;
+    GetEquippedOutfitByUserId(uid: string): HttpResponse;
+    GetEquippedProfilePictureByUserId(uid: string): HttpResponse;
 }
 declare const AirshipInventoryControllerBackend: AirshipInventoryControllerBackendConstructor;
     
@@ -13556,20 +13551,18 @@ interface AirshipInventoryServiceBackendConstructor {
 
     new(): AirshipInventoryServiceBackend;
 
-    DeleteAccessory(): HttpResponse;
-    DeleteItem(): HttpResponse;
-    DeleteProfilePicture(): HttpResponse;
-    GetAccessories(): HttpResponse;
-    GetEquippedOutfit(): HttpResponse;
-    GetItems(): HttpResponse;
-    GetProfilePictures(): HttpResponse;
-    GrantAccessory(body: string): HttpResponse;
-    GrantItem(body: string): HttpResponse;
-    GrantProfilePicture(body: string): HttpResponse;
-    HasAccessory(): HttpResponse;
-    HasItem(): HttpResponse;
-    HasProfilePicture(): HttpResponse;
-    PerformTrade(): HttpResponse;
+    DeleteAccessory(itemId: string): HttpResponse;
+    DeleteItem(itemId: string): HttpResponse;
+    DeleteProfilePicture(itemId: string): HttpResponse;
+    GetAccessories(uid: string, query: string): HttpResponse;
+    GetEquippedOutfitByUserId(userId: string): HttpResponse;
+    GetEquippedProfilePictureByUserId(uid: string): HttpResponse;
+    GetItems(uid: string, query: string): HttpResponse;
+    GetProfilePictures(uid: string, query: string): HttpResponse;
+    GrantAccessory(uid: string, classId: string): HttpResponse;
+    GrantItem(uid: string, classId: string): HttpResponse;
+    GrantProfilePicture(uid: string, classId: string): HttpResponse;
+    PerformTrade(body: string): HttpResponse;
 }
 declare const AirshipInventoryServiceBackend: AirshipInventoryServiceBackendConstructor;
     
@@ -14088,5 +14081,15 @@ interface LineRenderer extends Renderer {
     SetVertexCount(count: number): void;
     SetWidth(start: number, end: number): void;
     Simplify(tolerance: number): void;
+}
+    
+interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+    isDragging: boolean;
+    redirectTarget: ScrollRect;
+
+
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnEndDrag(eventData: PointerEventData): void;
 }
 

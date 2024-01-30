@@ -1,14 +1,19 @@
 import { Dependency } from "@easy-games/flamework-core";
 import { TransferController } from "Client/MainMenuControllers/Transfer/TransferController";
+import DateParser from "Shared/DateParser";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { TimeUtil } from "Shared/Util/TimeUtil";
 import { GameDto } from "../API/GamesAPI";
 
 export default class HomePageGameComponent extends AirshipBehaviour {
 	public titleText!: TMP_Text;
 	public playerCountText!: TMP_Text;
 	public buttonGo!: GameObject;
+	public orgImage!: RemoteImage;
+	public authorText!: TMP_Text;
+
 	@SerializeField()
 	private redirectDrag!: AirshipRedirectDrag;
 
@@ -34,22 +39,47 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			this.playerCountText.text = "???";
 		}
 
-		let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".jpg";
+		{
+			// Game image
+			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".jpg";
+			let remoteImage = this.gameObject.transform.GetChild(0).GetComponent<RemoteImage>();
+			remoteImage.url = url;
+			remoteImage.StartDownload();
+			const downloadConn = remoteImage.OnFinishedLoading((success) => {
+				if (success) {
+					remoteImage.image.color = new Color(1, 1, 1, 1);
+				} else {
+					remoteImage.image.color = new Color(0, 0, 0, 0.3);
+				}
+			});
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(downloadConn);
+			});
+		}
 
-		let remoteImage = this.gameObject.transform.GetChild(0).GetComponent<RemoteImage>();
-		remoteImage.url = url;
-		remoteImage.StartDownload();
+		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
+		const timeDiff = os.time() - timeUpdatedSeconds;
+		const timeString = TimeUtil.FormatTimeAgo(timeDiff, {
+			includeAgo: true,
+		});
+		this.authorText.text = `${gameDto.organization.name} • ${timeString}`;
 
-		const downloadConn = remoteImage.OnFinishedLoading((success) => {
-			if (success) {
-				remoteImage.image.color = new Color(1, 1, 1, 1);
-			} else {
-				remoteImage.image.color = new Color(0, 0, 0, 0.3);
-			}
-		});
-		this.bin.Add(() => {
-			Bridge.DisconnectEvent(downloadConn);
-		});
+		{
+			// Org image
+			let url = AirshipUrl.CDN + "/images/" + gameDto.organization.iconImageId + ".jpg";
+			this.orgImage.url = url;
+			this.orgImage.StartDownload();
+			const downloadConn = this.orgImage.OnFinishedLoading((success) => {
+				if (success) {
+					this.orgImage.image.color = new Color(1, 1, 1, 1);
+				} else {
+					this.orgImage.image.color = new Color(0, 0, 0, 0.3);
+				}
+			});
+			this.bin.Add(() => {
+				Bridge.DisconnectEvent(downloadConn);
+			});
+		}
 
 		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
 			if (this.redirectDrag.isDragging) return;

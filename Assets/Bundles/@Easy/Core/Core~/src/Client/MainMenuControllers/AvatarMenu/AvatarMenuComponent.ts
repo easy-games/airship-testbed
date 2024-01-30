@@ -1,5 +1,6 @@
 import { Dependency } from "@easy-games/flamework-core";
-import { AvatarPlatformAPI, Outfit } from "Shared/Avatar/AvatarPlatformAPI";
+import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";

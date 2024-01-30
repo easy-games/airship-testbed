@@ -1,19 +1,10 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { Result } from "../../../Shared/Types/Result";
-/**
- * The Cache Store provides simple key/value cache storage.
- *
- * The Cache Store provides non-durable storage that can be accessed from any game server. Data access is faster than
- * the Data Store, but the data will expire if it is not accessed frequently enough. Cached keys can live for up to 24 hours
- * without being accessed.
- *
- * The Cache Store is good for things like queue cooldowns or share codes. If you want your data to be persistent, check
- * out the Data Store.
- */
 export declare class CacheStoreService implements OnStart {
     /** Reflects backend data-store-service settings */
     private maxExpireSec;
+    constructor();
     OnStart(): void;
     /**
      * Gets the cached data for the provided key.

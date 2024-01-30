@@ -1,3 +1,4 @@
 export declare enum SortId {
-    POPULAR = "popular"
+    Popular = "popular",
+    RecentlyUpdated = "recentlyUpdated"
 }

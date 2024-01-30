@@ -1,4 +1,4 @@
-import { Outfit } from "./AvatarPlatformAPI";
+import { Outfit } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarUtil {
     static readonly defaultAccessoryOutfitPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
     private static readonly allAvatarAccessories;

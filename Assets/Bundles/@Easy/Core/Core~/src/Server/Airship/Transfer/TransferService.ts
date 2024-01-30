@@ -3,16 +3,19 @@ import { Player } from "Shared/Player/Player";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { Result } from "Shared/Types/Result";
+import { Platform } from "Shared/Airship";
+import { RunUtil } from "Shared/Util/RunUtil";
 
 export type CreateServerResponse = {
 	serverId: string;
 };
 
-/**
- * The transfer service allows you to move players between servers and create new servers.
- */
 @Service({})
 export class TransferService implements OnStart {
+	constructor() {
+		if (RunUtil.IsServer()) Platform.server.transfer = this;
+	}
+
 	OnStart(): void {}
 
 	/**
