@@ -1,7 +1,6 @@
-import { CameraController } from "@Easy/Core/Client/Controllers/Camera/CameraController";
-import { LocalEntityController } from "@Easy/Core/Client/Controllers/Character/LocalEntityController";
 import { CrosshairController } from "@Easy/Core/Client/Controllers/Crosshair/CrosshairController";
-import { Entity } from "@Easy/Core/Shared/Entity/Entity";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -17,25 +16,25 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 	private savedCameraTargetWorldPos = new Vector3();
 	private cameraVelocity = new Vector3();
 
-	private entity: Entity | undefined;
+	@NonSerialized() private character: Character | undefined;
 	private bin = new Bin();
 	private mouse = new Mouse();
 
 	public override Update(dt: number): void {
-		if (this.entity?.IsAlive()) {
+		if (this.character?.IsAlive()) {
 			const mousePos = this.mouse.GetLocation();
 
-			let entityScreenSpacePos = this.camera.WorldToScreenPoint(this.entity.model.transform.position);
+			let entityScreenSpacePos = this.camera.WorldToScreenPoint(this.character.model.transform.position);
 			let relPos = mousePos.sub(entityScreenSpacePos).normalized;
 
 			let lookVec = new Vector3(relPos.x, 0, relPos.y);
-			this.entity.entityDriver.SetLookVector(lookVec);
+			this.character.movement.SetLookVector(lookVec);
 		}
 	}
 
 	public override LateUpdate(dt: number): void {
-		if (this.entity) {
-			const entityWorldPos = this.entity.model.transform.position;
+		if (this.character) {
+			const entityWorldPos = this.character.model.transform.position;
 
 			const camPos = this.camera.transform.position;
 			const newCamPos = entityWorldPos.add(this.cameraOffset);
@@ -50,11 +49,10 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 	public override OnEnable(): void {
 		if (RunUtil.IsServer()) return;
 
-		Dependency<LocalEntityController>().SetMoveDirWorldSpace(true);
-		Dependency<CameraController>().SetEnabled(false);
+		Airship.characters.localCharacterManager.SetMoveDirWorldSpace(true);
 		Dependency<CrosshairController>().AddDisabler();
 
-		Dependency<LocalEntityController>().onBeforeLocalEntityInput.Connect((event) => {
+		Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
 			event.jump = false;
 			event.crouchOrSlide = false;
 		});
@@ -66,7 +64,7 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 
 		this.bin.Add(
 			Game.localPlayer.ObserveCharacter((entity) => {
-				this.entity = entity;
+				this.character = entity;
 			}),
 		);
 	}

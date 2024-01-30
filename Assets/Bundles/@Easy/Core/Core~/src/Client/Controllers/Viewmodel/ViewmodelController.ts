@@ -19,7 +19,7 @@ export class ViewmodelController implements OnStart {
 
 	constructor() {
 		this.viewmodelGo = Object.Instantiate(
-			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Entity/HumanEntity/HumanViewmodel.prefab"),
+			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Character/CharacterViewmodel.prefab"),
 			CoreRefs.rootTransform,
 		);
 		this.viewmodelTransform = this.viewmodelGo.transform;

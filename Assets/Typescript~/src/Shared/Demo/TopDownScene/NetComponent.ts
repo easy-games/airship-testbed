@@ -1,15 +1,14 @@
 export default class NetComponent extends AirshipBehaviour {
-
-    public override Awake(): void {
-        print("NetComponent.Awake");
-        const nob = this.gameObject.GetComponent<NetworkObject>();
-        print("nob id: " + nob);
-        if (nob === undefined) {
-            Debug.Break();
-        }
-    }
+	public override Awake(): void {
+		print("NetComponent.Awake");
+		const nob = this.gameObject.GetComponent<NetworkObject>();
+		print("nob id: " + nob);
+		if (nob === undefined) {
+			Debug.Break();
+		}
+	}
 	override Start(): void {
-        // print("NetComponent.Start");
+		// print("NetComponent.Start");
 		// const nob = this.gameObject.GetComponent<NetworkObject>();
 		// nob.OnStartClient(() => {
 		// 	print("OnStartClient");
@@ -31,13 +30,13 @@ export default class NetComponent extends AirshipBehaviour {
 		// });
 	}
 
-    public override OnEnable(): void {
-        print("NetComponent.OnEnable");
-    }
+	public override OnEnable(): void {
+		print("NetComponent.OnEnable");
+	}
 
-    override OnDisable(): void {
-        print("NetComponent.OnDisable");
-    }
+	override OnDisable(): void {
+		print("NetComponent.OnDisable");
+	}
 
 	override OnDestroy(): void {}
 }

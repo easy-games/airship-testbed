@@ -5,13 +5,15 @@ import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
 
 export class Game {
-	public static localPlayer: Player = new Player(
-		undefined as unknown as NetworkObject,
-		-1,
-		"1",
-		"LocalPlayer",
-		"null",
-	);
+	/**
+	 * The local client's player.
+	 *
+	 * On the server this is undefined.
+	 *
+	 * There is a brief moment on client startup when localPlayer is undefined.
+	 * You can listen for when the local player is loaded with {@link WaitForLocalPlayerLoaded}
+	 */
+	public static localPlayer: Player = undefined as unknown as Player;
 	public static localPlayerLoaded = false;
 	public static onLocalPlayerLoaded = new Signal<void>();
 

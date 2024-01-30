@@ -1,7 +1,7 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
-import { CharacterEntityAnimator } from "Shared/Entity/Animation/CharacterEntityAnimator";
-import { Entity } from "Shared/Entity/Entity";
+import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
+import Character from "Shared/Character/Character";
+import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
@@ -30,14 +30,14 @@ export class DamageUtils {
 		return math.clamp(speed, 0, max) / max;
 	}
 
-	public static AddHitstun(entity: Entity, damageAmount: number, OnComplete: () => void) {
+	public static AddHitstun(character: Character, damageAmount: number, OnComplete: () => void) {
 		//Don't do hit stun for small damage amounts
 		if (damageAmount < 25) {
 			OnComplete();
 			return 0;
 		}
 
-		const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
+		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>();
 		const damageDelta = math.clamp(damageAmount / this.maxHitstunDamage, 0, 1);
 		const hitStunDuration = this.GetStunDuration(damageDelta);
 		const hitStunFrequency = MathUtil.Lerp(30, 60, damageDelta);
@@ -45,25 +45,25 @@ export class DamageUtils {
 
 		//Stop entity from moving
 		driver.DisableMovement();
-		if (entity.IsLocalCharacter()) {
-			Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
+		if (character.IsLocalCharacter()) {
+			Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(false);
 		}
 
 		if (RunUtil.IsClient()) {
 			//Shake the entity
-			let shake = entity.references.rig.gameObject.AddComponent<EasyShake>();
-			shake.resolveShakeOverTime = true;
-			shake.maxRadius = new Vector3(hitStrunRadius, 0, hitStrunRadius);
-			const minRadius = math.max(this.maxHitStunRadius, hitStrunRadius / 2);
-			shake.minRadius = new Vector3(minRadius, 0, minRadius);
-			shake.duration = hitStunDuration;
-			shake.movementsPerSecond = hitStunFrequency;
+			// let shake = character.references.rig.gameObject.AddComponent<EasyShake>();
+			// shake.resolveShakeOverTime = true;
+			// shake.maxRadius = new Vector3(hitStrunRadius, 0, hitStrunRadius);
+			// const minRadius = math.max(this.maxHitStunRadius, hitStrunRadius / 2);
+			// shake.minRadius = new Vector3(minRadius, 0, minRadius);
+			// shake.duration = hitStunDuration;
+			// shake.movementsPerSecond = hitStunFrequency;
 		}
 
 		Task.Delay(hitStunDuration, () => {
 			driver.EnableMovement();
-			if (entity.IsLocalCharacter()) {
-				Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
+			if (character.IsLocalCharacter()) {
+				Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(true);
 			}
 			OnComplete();
 		});
@@ -76,13 +76,13 @@ export class DamageUtils {
 	}
 
 	public static AddAttackStun(
-		entity: Entity,
+		character: Character,
 		damageDealt: number,
 		disableMovement: boolean,
 		vfx: GameObject[] | undefined,
 	) {
-		const anim = entity.animator as CharacterEntityAnimator;
-		const driver = entity.networkObject.gameObject.GetComponent<EntityDriver>();
+		const anim = character.animator as CharacterAnimator;
+		const driver = character.networkObject.gameObject.GetComponent<CharacterMovement>();
 		if (anim) {
 			const duration = this.GetStunDuration(math.clamp(damageDealt / this.maxHitstunDamage, 0, 1));
 			let particles: ParticleSystem[] = [];
@@ -101,8 +101,8 @@ export class DamageUtils {
 				anim.SetPlaybackSpeed(0.05);
 				if (disableMovement) {
 					driver.DisableMovement();
-					if (entity.IsLocalCharacter()) {
-						Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(false);
+					if (character.IsLocalCharacter()) {
+						Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(false);
 					}
 				}
 				for (let i = 0; i < particles.size(); i++) {
@@ -113,8 +113,8 @@ export class DamageUtils {
 					anim.SetPlaybackSpeed(1);
 					if (disableMovement) {
 						driver.EnableMovement();
-						if (entity.IsLocalCharacter()) {
-							Dependency<LocalEntityController>().GetEntityInput()?.SetEnabled(true);
+						if (character.IsLocalCharacter()) {
+							Dependency<LocalCharacterSingleton>().GetEntityInput()?.SetEnabled(true);
 						}
 					}
 					for (let i = 0; i < particles.size(); i++) {

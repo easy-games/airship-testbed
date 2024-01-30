@@ -1,5 +1,5 @@
 ﻿import { Dependency } from "@easy-games/flamework-core";
-import { Entity, EntityReferences } from "Shared/Entity/Entity";
+import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
@@ -48,39 +48,16 @@ export class FirstPersonCameraSystem {
 	//public spineLerpMaxAngle = 75;
 
 	private manualSpineOffset = 0.28;
-	private calculatedSpineOffset: Vector3 = Vector3.zero;
 
-	private entityReferences: EntityReferences;
-	private cameraVars: DynamicVariables;
-	private trackedHeadRotation: Quaternion = Quaternion.identity;
 	private inFirstPerson;
 	private bin: Bin;
-	private originalSpineMiddlePosition: Vector3 = Vector3.zero;
-	private originalSpineTopPosition: Vector3 = Vector3.zero;
-	private originalShoulderLPosition: Vector3 = Vector3.zero;
-	private originalShoulderRPosition: Vector3 = Vector3.zero;
 	private currentTime = 0.01;
 	private viewmodelController: ViewmodelController;
 
-	public constructor(
-		public readonly entity: Entity,
-		entityReferences: EntityReferences,
-		startInFirstPerson: boolean,
-	) {
-		this.entityReferences = entityReferences;
-		this.cameraVars = DynamicVariablesManager.Instance.GetVars("Camera")!;
+	public constructor(public readonly character: Character, startInFirstPerson: boolean) {
 		this.viewmodelController = Dependency<ViewmodelController>();
 
 		this.cameras = CameraReferences.Instance();
-
-		//Store the default spine positions
-		this.originalSpineMiddlePosition = this.entityReferences.spineBoneMiddle.localPosition;
-		this.originalSpineTopPosition = this.entityReferences.spineBoneTop.localPosition;
-		this.originalShoulderLPosition = this.entityReferences.shoulderL.localPosition;
-		this.originalShoulderRPosition = this.entityReferences.shoulderR.localPosition;
-
-		//Calculate how high the neck bone is off the spine bone
-		this.calculatedSpineOffset = new Vector3(0, this.manualSpineOffset, 0);
 
 		this.inFirstPerson = startInFirstPerson;
 		this.OnFirstPersonChanged(this.inFirstPerson);
@@ -105,10 +82,6 @@ export class FirstPersonCameraSystem {
 		if (!this.cameras.fpsCamera) return;
 		this.currentTime += Time.deltaTime;
 
-		//Head bobbing when running
-		//this.bobMovementFrequency = this.cameraVars.GetNumber("FPSBobFrequency");
-		//this.bobMovementMagnitude = this.cameraVars.GetNumber("FPSBobMagnitude");
-		//this.bobRotationMagnitude = this.cameraVars.GetNumber("FPSBobRotMagnitude");
 		const lerpDelta = Time.deltaTime * this.bobLerpMod;
 		this.currentBobStrength = MathUtil.Lerp(this.currentBobStrength, this.targetBobStrength, lerpDelta);
 
@@ -182,17 +155,17 @@ export class FirstPersonCameraSystem {
 		// }
 	}
 
-	public OnMovementStateChange(state: EntityState) {
-		if (state === EntityState.Sprinting) {
+	public OnMovementStateChange(state: CharacterState) {
+		if (state === CharacterState.Sprinting) {
 			this.targetBobData = this.sprintingBob;
 			this.targetBobStrength = 1;
-		} else if (state === EntityState.Running) {
+		} else if (state === CharacterState.Running) {
 			this.targetBobData = this.walkingBob;
 			this.targetBobStrength = 1;
-		} else if (state === EntityState.Sliding) {
+		} else if (state === CharacterState.Sliding) {
 			this.targetBobData = this.slidingBob;
 			this.targetBobStrength = 1;
-		} else if (state === EntityState.Jumping) {
+		} else if (state === CharacterState.Jumping) {
 			this.targetBobData = this.slidingBob;
 			this.targetBobStrength = 0.5;
 		} else {
@@ -210,8 +183,8 @@ export class FirstPersonCameraSystem {
 		this.inFirstPerson = isFirstPerson;
 		if (!this.cameras.fpsCamera) return;
 		this.cameras.fpsCamera.gameObject.SetActive(isFirstPerson);
-		Game.localPlayer.character?.animator?.SetFirstPerson(isFirstPerson);
-		this.trackedHeadRotation = this.cameras.fpsCamera.transform.rotation;
+		// Game.localPlayer.character?.animationHelper?.SetFirstPerson(isFirstPerson);
+		Game.localPlayer.character?.animator.SetFirstPerson(isFirstPerson);
 
 		Dependency<ViewmodelController>().animancer.Animator.Rebind();
 
@@ -236,7 +209,7 @@ export class FirstPersonCameraSystem {
 		// }
 
 		this.viewmodelController.viewmodelGo.SetActive(isFirstPerson);
-		this.entity.model.SetActive(!isFirstPerson);
+		this.character.model.SetActive(!isFirstPerson);
 
 		if (!isFirstPerson) {
 			//Reset the spine positions to defaults after messing with them in first person

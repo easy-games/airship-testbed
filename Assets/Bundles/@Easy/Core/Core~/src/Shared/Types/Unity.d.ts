@@ -1342,6 +1342,10 @@ interface PhysicsConstructor {
 		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
 		| [hit: false, point: undefined, normal: undefined, collider: undefined]
 	>;
+
+	RaycastLegacy(origin: Vector3, direction: Vector3, maxDistance: number, layerMask: number): RaycastHit | undefined;
+	RaycastLegacy(origin: Vector3, direction: Vector3, maxDistance: number): RaycastHit | undefined;
+
 	// Raycast(origin: Vector3, direction: Vector3): LuaTuple<[true, RaycastHit] | [false, undefined]>;
 	// Raycast(
 	// 	origin: Vector3,
@@ -1901,6 +1905,12 @@ interface GameObject extends Object {
 	 */
 	GetComponent<T extends Component | AirshipBehaviour = Component>(type: string): T;
 
+	GetAirshipComponent<T extends AirshipBehaviour>(): T | undefined;
+	/**
+	 * Throws error if no component found.
+	 */
+	GetAirshipComponent<T extends AirshipBehaviour>(name: string): T | undefined;
+
 	GetComponents<T extends AirshipBehaviour | Component>(): CSArray<T>;
 	GetComponents<T extends Component | AirshipBehaviour = Component>(type: string): CSArray<T>;
 
@@ -2029,11 +2039,11 @@ interface ColorConstructor {
 	grey: Color;
 	clear: Color;
 
-	HSVToRGB: (H: number, S: number, V: number) => Color;
-	// HSVToRGB: (H: number, S: number, V: number, hdr: boolean) => Color;
+	HSVToRGB: (h: number, s: number, v: number) => Color;
+	HSVToRGB: (h: number, s: number, v: number, hdr: boolean) => Color;
+	RGBToHSV: (color: Color) => LuaTuple<[H: number, S: number, V: number]>;
 	Lerp: (a: Color, b: Color, t: number) => Color;
 	LerpUnclamped: (a: Color, b: Color, t: number) => Color;
-	// RGBToHSV: (rgbColor: Color, R: number, G: number, B: number) => void;
 
 	new (r: number, g: number, b: number, a: number): Color;
 	new (r: number, g: number, b: number): Color;

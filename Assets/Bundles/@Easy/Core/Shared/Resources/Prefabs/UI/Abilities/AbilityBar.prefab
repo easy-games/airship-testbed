@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1904037043210518790}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -109,15 +108,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -170,7 +171,6 @@ RectTransform:
   - {fileID: 3831800830582661072}
   - {fileID: 1904037043210518790}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -194,7 +194,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -293,7 +295,6 @@ RectTransform:
   m_Children:
   - {fileID: 2372482021638590594}
   m_Father: {fileID: 4071895800324590940}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -379,7 +380,6 @@ RectTransform:
   - {fileID: 6004405160465402061}
   - {fileID: 7155849760990190511}
   m_Father: {fileID: 3831800830582661072}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -455,6 +455,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -545,7 +546,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &2297709281317979097 stripped
 RectTransform:
@@ -557,6 +573,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -647,7 +664,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &1736328332791532635 stripped
 RectTransform:
@@ -659,6 +691,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -749,7 +782,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &1970674948928671187 stripped
 RectTransform:
@@ -761,6 +809,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -851,7 +900,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &3281292118048737258 stripped
 RectTransform:
@@ -863,6 +927,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -953,7 +1018,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &2608163442700594263 stripped
 RectTransform:
@@ -965,6 +1045,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -1055,7 +1136,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &3606093101704767314 stripped
 RectTransform:
@@ -1067,6 +1163,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -1157,7 +1254,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &6004405160465402061 stripped
 RectTransform:
@@ -1169,6 +1281,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 4071895800324590940}
     m_Modifications:
     - target: {fileID: 1724217263833403542, guid: ac74ba20768b80245ac030c7e2eb99b7, type: 3}
@@ -1284,6 +1397,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8928174294532739824, guid: ac74ba20768b80245ac030c7e2eb99b7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 688041940152035129}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac74ba20768b80245ac030c7e2eb99b7, type: 3}
 --- !u!224 &1904037043210518790 stripped
 RectTransform:
@@ -1295,6 +1414,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -1385,7 +1505,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &7299871945221002794 stripped
 RectTransform:
@@ -1397,6 +1532,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2372482021638590594}
     m_Modifications:
     - target: {fileID: 875650343500840758, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
@@ -1487,7 +1623,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityTile (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 5183077354816409436, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256875659848945334, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912591968371235070, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46eacf5d473dfb34aa6764faaca147dc, type: 3}
 --- !u!224 &7155849760990190511 stripped
 RectTransform:

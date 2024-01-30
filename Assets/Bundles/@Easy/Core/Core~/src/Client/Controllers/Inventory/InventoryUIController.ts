@@ -2,7 +2,9 @@ import { Controller, OnStart } from "@easy-games/flamework-core";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
-import { Inventory } from "Shared/Inventory/Inventory";
+import { CharacterInventorySingleton } from "Shared/Inventory/CharacterInventorySingleton";
+import Inventory from "Shared/Inventory/Inventory";
+import { InventorySingleton } from "Shared/Inventory/InventorySingleton";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ItemType } from "Shared/Item/ItemType";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -13,7 +15,6 @@ import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { OnUpdate } from "Shared/Util/Timer";
 import { CoreUIController } from "../UI/CoreUIController";
-import { InventoryController } from "./InventoryController";
 
 type DraggingState = {
 	inventory: Inventory;
@@ -42,7 +43,8 @@ export class InventoryUIController implements OnStart {
 	private spriteCache = new Map<ItemType, Sprite>();
 
 	constructor(
-		private readonly invController: InventoryController,
+		private readonly invController: InventorySingleton,
+		private readonly characterInvController: CharacterInventorySingleton,
 		private readonly coreUIController: CoreUIController,
 	) {
 		const go = this.coreUIController.refs.GetValue("Apps", "Inventory");
@@ -81,9 +83,7 @@ export class InventoryUIController implements OnStart {
 		if (this.enabled === enabled) return;
 		this.enabled = enabled;
 
-		if (!enabled) {
-			this.hotbarCanvas.enabled = false;
-		}
+		this.hotbarCanvas.enabled = enabled;
 	}
 
 	public OpenBackpack(): void {
@@ -107,11 +107,11 @@ export class InventoryUIController implements OnStart {
 
 	private SetupHotbar(): void {
 		for (let i = 0; i < this.hotbarSlots; i++) {
-			this.UpdateHotbarSlot(i, this.invController.localInventory?.GetHeldSlot() ?? 0, undefined, true);
+			this.UpdateHotbarSlot(i, this.characterInvController.localInventory?.GetHeldSlot() ?? 0, undefined, true);
 		}
 
 		let init = false;
-		this.invController.ObserveLocalInventory((inv) => {
+		this.characterInvController.ObserveLocalInventory((inv) => {
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
 			invBin.Add(
@@ -169,53 +169,32 @@ export class InventoryUIController implements OnStart {
 		});
 
 		// Healthbar
-		Game.localPlayer.ObserveCharacter((entity) => {
+		Game.localPlayer.ObserveCharacter((character) => {
 			const bin = new Bin();
 
-			if (entity === undefined) {
+			if (character === undefined) {
 				this.healthBar.SetValue(0);
 				this.healthBar.transform.gameObject.SetActive(false);
+				this.SetEnabled(false);
 				return;
 			}
+			this.SetEnabled(true);
+
 			this.healthBar.transform.gameObject.SetActive(true);
 			const SetFill = (newHealth: number, instant: boolean) => {
-				let fill = newHealth / entity.GetMaxHealth();
+				let fill = newHealth / character.GetMaxHealth();
 				if (instant) {
 					this.healthBar.InstantlySetValue(fill);
 				} else {
 					this.healthBar.SetValue(fill);
 				}
 			};
-			SetFill(entity.GetHealth(), false);
+			SetFill(character.GetHealth(), false);
 			bin.Add(
-				entity.onHealthChanged.Connect((h) => {
+				character.onHealthChanged.Connect((h) => {
 					SetFill(h, false);
 				}),
 			);
-
-			// Armor label
-			const armorLabelImage = this.inventoryRefs.GetValue("Healthbar", "ArmorLabelImage") as Image;
-			const armorLabelText = this.inventoryRefs.GetValue("Healthbar", "ArmorLabelText") as TMP_Text;
-			const SetArmor = (armor: number) => {
-				if (armor === 0) {
-					armorLabelImage.gameObject.SetActive(false);
-					armorLabelText.gameObject.SetActive(false);
-					return;
-				}
-				armorLabelImage.gameObject.SetActive(true);
-				armorLabelText.gameObject.SetActive(true);
-				armorLabelText.text = armor + "";
-			};
-			if (entity === undefined) {
-				SetArmor(0);
-			} else {
-				SetArmor(entity.GetArmor());
-				bin.Add(
-					entity.onArmorChanged.Connect((armor) => {
-						SetArmor(armor);
-					}),
-				);
-			}
 			return () => {
 				bin.Clean();
 			};
@@ -313,7 +292,7 @@ export class InventoryUIController implements OnStart {
 
 		const invBin = new Bin();
 		let init = true;
-		this.invController.ObserveLocalInventory((inv) => {
+		this.characterInvController.ObserveLocalInventory((inv) => {
 			invBin.Clean();
 			const slotBinMap = new Map<number, Bin>();
 
@@ -355,21 +334,21 @@ export class InventoryUIController implements OnStart {
 					CoreUI.SetupButton(tile);
 					const button = tile.transform.GetChild(0).gameObject;
 					CanvasAPI.OnClickEvent(button, () => {
-						if (!this.invController.localInventory) return;
+						if (!this.characterInvController.localInventory) return;
 
 						if (i < this.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
 								if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
-									this.invController.QuickMoveSlot(this.invController.localInventory, i);
+									this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
 								}
 							} else {
-								this.invController.SetHeldSlot(i);
+								this.characterInvController.SetHeldSlot(i);
 							}
 						} else {
 							// backpack
 							if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
-								this.invController.QuickMoveSlot(this.invController.localInventory, i);
+								this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
 							}
 						}
 					});
@@ -378,8 +357,8 @@ export class InventoryUIController implements OnStart {
 						if (!this.IsBackpackShown()) return;
 						if (keyboard.IsKeyDown(KeyCode.LeftShift)) return;
 
-						if (!this.invController.localInventory) return;
-						const itemStack = this.invController.localInventory.GetItem(i);
+						if (!this.characterInvController.localInventory) return;
+						const itemStack = this.characterInvController.localInventory.GetItem(i);
 						if (!itemStack) return;
 
 						const visual = button.transform.GetChild(0).gameObject;
@@ -408,7 +387,7 @@ export class InventoryUIController implements OnStart {
 						this.draggingState = {
 							slot: i,
 							itemStack,
-							inventory: this.invController.localInventory,
+							inventory: this.characterInvController.localInventory,
 							transform: cloneTransform,
 							consumed: false,
 						};
@@ -418,12 +397,12 @@ export class InventoryUIController implements OnStart {
 					CanvasAPI.OnDropEvent(tile.transform.GetChild(0).gameObject, () => {
 						if (!this.IsBackpackShown()) return;
 						if (!this.draggingState) return;
-						if (!this.invController.localInventory) return;
+						if (!this.characterInvController.localInventory) return;
 
 						this.invController.MoveToSlot(
 							this.draggingState.inventory,
 							this.draggingState.slot,
-							this.invController.localInventory,
+							this.characterInvController.localInventory,
 							i,
 							this.draggingState.itemStack.GetAmount(),
 						);
@@ -436,7 +415,7 @@ export class InventoryUIController implements OnStart {
 
 						if (this.draggingState) {
 							if (!this.draggingState.consumed) {
-								this.invController.DropItemInSlot(
+								this.characterInvController.DropItemInSlot(
 									this.draggingState.slot,
 									this.draggingState.itemStack.GetAmount(),
 								);

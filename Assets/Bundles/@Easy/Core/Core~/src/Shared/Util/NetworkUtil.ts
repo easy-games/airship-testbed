@@ -1,3 +1,5 @@
+import { CoreContext } from "Shared/CoreClientContext";
+import { Game } from "Shared/Game";
 import { Bin } from "./Bin";
 import { RunUtil } from "./RunUtil";
 import { Signal } from "./Signal";
@@ -5,18 +7,20 @@ import { TimeUtil } from "./TimeUtil";
 
 const waitingByName = new Map<string, NetworkObject>();
 
-let managed: ManagedObjects = InstanceFinder.ClientManager.Objects;
-if (RunUtil.IsServer()) {
-	managed = InstanceFinder.ServerManager.Objects;
-}
 export const NetworkObjectAdded = new Signal<NetworkObject>();
-managed.OnAddedToSpawnedEvent((nob) => {
-	NetworkObjectAdded.debugGameObject = true;
-	NetworkObjectAdded.Fire(nob);
-	waitingByName.set(nob.gameObject.name, nob);
-	// print("end of onAdded", nob.gameObject);
-	// cleanup here
-});
+if (Game.context === CoreContext.GAME) {
+	let managed: ManagedObjects = InstanceFinder.ClientManager.Objects;
+	if (RunUtil.IsServer()) {
+		managed = InstanceFinder.ServerManager.Objects;
+	}
+	managed.OnAddedToSpawnedEvent((nob) => {
+		NetworkObjectAdded.debugGameObject = true;
+		NetworkObjectAdded.Fire(nob);
+		waitingByName.set(nob.gameObject.name, nob);
+		// print("end of onAdded", nob.gameObject);
+		// cleanup here
+	});
+}
 
 export class NetworkUtil {
 	/**
@@ -73,7 +77,7 @@ export class NetworkUtil {
 	 * @param timeout How long in seconds to wait for `objectId` to exist before timing out.
 	 * @returns `NetworkObject` that corresponds to `objectId`.
 	 */
-	public static WaitForNobIdTimeout(objectId: number, timeout: number): NetworkObject | undefined {
+	public static WaitForNetworkObjectTimeout(objectId: number, timeout: number): NetworkObject | undefined {
 		/* Return NetworkObject if it already exists. */
 		let nob = NetworkUtil.GetNetworkObject(objectId);
 		if (nob) return nob;
@@ -126,7 +130,7 @@ export class NetworkUtil {
 	 * @param objectId Corresponds to a replicated `NetworkObject`.
 	 * @returns `NetworkObject` that corresponds to `name`.
 	 */
-	public static WaitForNob(name: string): NetworkObject {
+	public static WaitForNetworkObjectByName(name: string): NetworkObject {
 		const gameObject = GameObject.Find(name);
 		if (gameObject) {
 			return gameObject.GetComponent<NetworkObject>();
@@ -144,7 +148,7 @@ export class NetworkUtil {
 	 * @param objectId Corresponds to a replicated `NetworkObject`.
 	 * @returns `NetworkObject` that corresponds to `objectId`.
 	 */
-	public static WaitForNobId(objectId: number): NetworkObject {
+	public static WaitForNetworkObject(objectId: number): NetworkObject {
 		let nob = NetworkUtil.GetNetworkObject(objectId);
 		if (nob) {
 			// print("found existing", nob.gameObject + ", nobId=" + objectId);

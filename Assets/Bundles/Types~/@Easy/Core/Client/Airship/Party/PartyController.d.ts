@@ -6,6 +6,7 @@ import { Result } from "../../../Shared/Types/Result";
  * This controller provides information about the users current party.
  */
 export declare class PartyController implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets the users current party data.

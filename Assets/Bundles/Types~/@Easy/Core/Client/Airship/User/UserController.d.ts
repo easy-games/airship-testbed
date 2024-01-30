@@ -7,6 +7,7 @@ import { Result } from "../../../Shared/Types/Result";
  * Provides access to user information.
  */
 export declare class UserController implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets a single user by their username.

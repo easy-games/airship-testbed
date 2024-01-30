@@ -11,6 +11,7 @@ import { Result } from "../../../Shared/Types/Result";
  * inventory, check out the Leaderboard and AirshipInventory systems.
  */
 export declare class DataStoreService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets the data associated with the given key.

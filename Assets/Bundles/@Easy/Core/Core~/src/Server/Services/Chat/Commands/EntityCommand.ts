@@ -1,11 +1,9 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { EntityPrefabType } from "Shared/Entity/EntityPrefabType";
 import { ItemStack } from "Shared/Inventory/ItemStack";
 import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemType } from "Shared/Item/ItemType";
 import { Player } from "Shared/Player/Player";
-import { EntityService } from "../../Entity/EntityService";
 
 export class EntityCommand extends ChatCommand {
 	constructor() {
@@ -13,23 +11,19 @@ export class EntityCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		const entityService = Dependency<EntityService>();
-
 		if (!player.character) return;
-
 		const pos = player.character.gameObject.transform.position;
-		const entity = entityService.SpawnEntity(EntityPrefabType.HUMAN, pos);
-		entity.AddHealthbar();
-
-		entity
-			.GetInventory()
-			.SetItem(entity.GetInventory().armorSlots[ArmorType.HELMET], new ItemStack(ItemType.LEATHER_HELMET));
-
+		const character = Airship.characters.SpawnNonPlayerCharacter(pos);
+		// character.AddHealthbar();
+		character.inventory.SetItem(
+			character.inventory.armorSlots[ArmorType.HELMET],
+			new ItemStack(ItemType.LEATHER_HELMET),
+		);
 		if (args.size() >= 1) {
 			const health = tonumber(args[0]);
 			if (health !== undefined) {
-				entity.SetMaxHealth(health);
-				entity.SetHealth(health);
+				character.SetMaxHealth(health);
+				character.SetHealth(health);
 			}
 		}
 	}

@@ -21,6 +21,7 @@ import { Result } from "../../../Shared/Types/Result";
  * - Content that players may want to trade or sell to other players
  */
 export declare class PlatformInventoryService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Grants a user the provided item.

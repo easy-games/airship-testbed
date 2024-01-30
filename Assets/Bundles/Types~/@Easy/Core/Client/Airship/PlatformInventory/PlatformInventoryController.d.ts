@@ -7,6 +7,7 @@ import { Result } from "../../../Shared/Types/Result";
  * is managed by game servers and configured on the https://create.airship.gg website.
  */
 export declare class PlatformInventoryController implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets the users equipped profile picture.

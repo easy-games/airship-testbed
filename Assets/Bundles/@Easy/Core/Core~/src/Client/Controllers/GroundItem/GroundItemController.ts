@@ -1,8 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CoreRefs } from "Shared/CoreRefs";
-import { Entity } from "Shared/Entity/Entity";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
@@ -14,8 +13,6 @@ import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { SetInterval } from "Shared/Util/Timer";
 import { WorldAPI } from "Shared/VoxelWorld/WorldAPI";
-import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
-import { PlayerController } from "../Player/PlayerController";
 
 interface GroundItemEntry {
 	nob: NetworkObject;
@@ -32,10 +29,7 @@ export class GroundItemController implements OnStart {
 	private readonly groundItemsFolder: GameObject;
 	// private readonly offlineGroundItems: OfflineGroundItems;
 
-	constructor(
-		private readonly playerController: PlayerController,
-		private readonly entityAccessoryController: EntityAccessoryController,
-	) {
+	constructor() {
 		// this.groundItemsFolder = GameObject.Create("GroundItems");
 		this.groundItemsFolder = Object.Instantiate(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItems.prefab"),
@@ -174,10 +168,10 @@ export class GroundItemController implements OnStart {
 				return;
 			}
 
-			const entity = Entity.FindById(entityId);
-			if (entity) {
-				CoreClientSignals.EntityPickupItem.Fire({ entity, groundItem });
-			}
+			const entity = Airship.characters.FindById(entityId);
+			// if (entity) {
+			// 	CoreClientSignals.EntityPickupItem.Fire({ entity, groundItem });
+			// }
 
 			const go = groundItem.drop.gameObject;
 			// this.groundItemPool.push(go);

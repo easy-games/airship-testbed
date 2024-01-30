@@ -1,4 +1,6 @@
-import { CharacterEntity } from "../Entity/Character/CharacterEntity";
+/// <reference types="@easy-games/types" />
+/// <reference types="@easy-games/types" />
+import Character from "../Character/Character";
 import { ProfilePictureMeta } from "../ProfilePicture/ProfilePictureMeta";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
@@ -15,7 +17,7 @@ export declare class Player {
     /**
      * The GameObject representing the player.
      */
-    readonly nob: NetworkObject;
+    readonly networkObject: NetworkObject;
     /**
      * Unique network ID for the player in the given server. This ID
      * is typically given to network requests as a way to identify the
@@ -50,9 +52,9 @@ export declare class Player {
     /**
      * The player controls this entity.
      */
-    character: CharacterEntity | undefined;
+    character: Character | undefined;
     /** Fired when the player's character changes. */
-    readonly onCharacterChanged: Signal<CharacterEntity | undefined>;
+    readonly onCharacterChanged: Signal<Character | undefined>;
     /**
      * Fired when the player disconnects from the server.
      * Connections will automatically be disconnected when the player leaves.
@@ -68,7 +70,7 @@ export declare class Player {
     /**
      * The GameObject representing the player.
      */
-    nob: NetworkObject, 
+    networkObject: NetworkObject, 
     /**
      * Unique network ID for the player in the given server. This ID
      * is typically given to network requests as a way to identify the
@@ -100,6 +102,9 @@ export declare class Player {
      * ```
      */
     usernameTag: string);
+    SpawnCharacter(position: Vector3, config?: {
+        lookDirection?: Vector3;
+    }): Character;
     GetProfilePicture(): ProfilePictureMeta;
     SetTeam(team: Team): void;
     GetTeam(): Team | undefined;
@@ -109,12 +114,12 @@ export declare class Player {
     IsFriend(): boolean;
     IsBot(): boolean;
     Encode(): PlayerDto;
-    SetCharacter(entity: CharacterEntity | undefined): void;
-    ObserveCharacter(observer: (entity: CharacterEntity | undefined) => CleanupFunc): Bin;
+    SetCharacter(character: Character | undefined): void;
+    ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin;
+    IsLocalPlayer(): boolean;
     /**
      * Is the player connected to the server?
      */
     IsConnected(): boolean;
     Destroy(): void;
-    static FindByClientId(clientId: number): Player | undefined;
 }

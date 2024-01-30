@@ -1,18 +1,17 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
+import { Game } from "Shared/Game";
+import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
+import { RandomUtil } from "Shared/Util/RandomUtil";
+import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
-import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
-import { AuthController } from "../Auth/AuthController";
-import { PlayerController } from "Client/Controllers/Player/PlayerController";
-import { RandomUtil } from "Shared/Util/RandomUtil";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
-import { Game } from "Shared/Game";
-import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";

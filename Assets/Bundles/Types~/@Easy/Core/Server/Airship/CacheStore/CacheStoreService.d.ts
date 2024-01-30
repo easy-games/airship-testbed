@@ -14,6 +14,7 @@ import { Result } from "../../../Shared/Types/Result";
 export declare class CacheStoreService implements OnStart {
     /** Reflects backend data-store-service settings */
     private maxExpireSec;
+    constructor();
     OnStart(): void;
     /**
      * Gets the cached data for the provided key.

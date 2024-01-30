@@ -6,6 +6,7 @@ import { Result } from "../../../Shared/Types/Result";
  * enabled upon request. Email us at hello@easy.gg to see if you might qualify.
  */
 export declare class MatchmakingService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets the currently available matchmaking regions. Some or all of these regions can be provided

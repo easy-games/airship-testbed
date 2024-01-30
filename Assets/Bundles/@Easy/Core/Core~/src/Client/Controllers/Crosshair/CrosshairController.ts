@@ -7,7 +7,8 @@ export class CrosshairController {
 	private crosshairPrefab: GameObject;
 	private crosshairImage: Image;
 	private crosshairModifier = new Modifier<{ disabled: boolean }>();
-	private crosshairVisible = true;
+	private crosshairVisible = false;
+	private enabled = false;
 
 	constructor() {
 		this.crosshairPrefab = Object.Instantiate<GameObject>(
@@ -15,11 +16,17 @@ export class CrosshairController {
 			CoreRefs.rootTransform,
 		);
 		this.crosshairImage = this.crosshairPrefab.transform.FindChild("Crosshair")!.GetComponent<Image>();
+		this.crosshairImage.enabled = false;
 
 		this.crosshairModifier.Observe((tickets) => {
 			let shouldBeDisabled = tickets.some((v) => v.disabled);
 			this.SetVisible(!shouldBeDisabled);
 		});
+	}
+
+	public SetEnabled(enabled: boolean): void {
+		this.enabled = enabled;
+		this.SetVisible(enabled);
 	}
 
 	private SetVisible(visible: boolean) {

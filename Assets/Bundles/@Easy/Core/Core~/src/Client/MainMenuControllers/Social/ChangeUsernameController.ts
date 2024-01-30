@@ -30,33 +30,35 @@ export class ChangeUsernameController implements OnStart {
 
 		const refs = go.GetComponent<GameObjectReferences>();
 		this.responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
-
-		const closeButton = refs.GetValue("UI", "CloseButton");
-		CoreUI.SetupButton(closeButton);
-		CanvasAPI.OnClickEvent(closeButton, () => {
-			AppManager.Close();
-		});
-
 		this.submitButton = refs.GetValue("UI", "SubmitButton");
-		CoreUI.SetupButton(this.submitButton);
-		CanvasAPI.OnClickEvent(this.submitButton, () => {
-			this.SubmitNameChange();
-		});
-
 		this.inputField = refs.GetValue("UI", "SearchBar") as TMP_InputField;
-		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
-			this.inputFieldSelected = true;
-		});
-		CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
-			this.inputFieldSelected = false;
-		});
-		const keyboard = new Keyboard();
-		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
-			if (this.inputFieldSelected) {
-				if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
-					e.SetCancelled(true);
+
+		task.spawn(() => {
+			const closeButton = refs.GetValue("UI", "CloseButton");
+			CoreUI.SetupButton(closeButton);
+			CanvasAPI.OnClickEvent(closeButton, () => {
+				AppManager.Close();
+			});
+
+			CoreUI.SetupButton(this.submitButton);
+			CanvasAPI.OnClickEvent(this.submitButton, () => {
+				this.SubmitNameChange();
+			});
+
+			CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
+				this.inputFieldSelected = true;
+			});
+			CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
+				this.inputFieldSelected = false;
+			});
+			const keyboard = new Keyboard();
+			keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+				if (this.inputFieldSelected) {
+					if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
+						e.SetCancelled(true);
+					}
 				}
-			}
+			});
 		});
 	}
 

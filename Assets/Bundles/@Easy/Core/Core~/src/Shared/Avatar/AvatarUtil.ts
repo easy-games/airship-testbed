@@ -53,7 +53,7 @@ export class AvatarUtil {
 			//print("Found avatar skin item: " + element.ToString());
 			this.avatarSkinAccessories.push(element);
 		}*/
-		print("Found avatar collection: " + avatarCollection);
+		// print("Found avatar collection: " + avatarCollection);
 		for (let i = 0; i < avatarCollection.accessories.Length; i++) {
 			const element = avatarCollection.accessories.GetValue(i);
 			if (!element) {
@@ -143,7 +143,7 @@ export class AvatarUtil {
 	) {
 		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
 		if (!outfit) {
-			warn("Unable to load users default outfit. Equipping baked default outfit");
+			// warn("Unable to load users default outfit. Equipping baked default outfit");
 			this.LoadDefaultOutfit(builder);
 			return;
 		}

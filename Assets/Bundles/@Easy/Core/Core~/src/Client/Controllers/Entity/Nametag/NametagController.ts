@@ -1,13 +1,11 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
-import { CoreClientSignals } from "Client/CoreClientSignals";
-import { Entity } from "Shared/Entity/Entity";
+import { Airship } from "Shared/Airship";
+import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Team } from "Shared/Team/Team";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
-import { PlayerController } from "../../Player/PlayerController";
-import { EntityController } from "../EntityController";
 
 @Controller({})
 export class NametagController implements OnStart {
@@ -15,86 +13,81 @@ export class NametagController implements OnStart {
 	private readonly graphicsBundleName = "Graphics";
 	private showSelfNametag = false;
 
-	constructor(
-		private readonly playerController: PlayerController,
-		private readonly entityController: EntityController,
-	) {}
-
 	OnStart(): void {
-		CoreClientSignals.EntitySpawn.ConnectWithPriority(SignalPriority.HIGH, (event) => {
-			if (event.entity.IsLocalCharacter() && !this.showSelfNametag) {
+		Airship.characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
+			if (character.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
-			this.UpdateNametag(event.entity);
-			event.entity.onDisplayNameChanged.Connect(() => {
-				this.UpdateNametag(event.entity);
-			});
-			const SetNametagAlpha = (entity: Entity, alpha: number) => {
-				const nameTag = entity.model.transform.FindChild(this.nameTageId);
+			// this.UpdateNametag(event.character);
+			// event.entity.onDisplayNameChanged.Connect(() => {
+			// 	this.UpdateNametag(event.character);
+			// });
+			const SetNametagAlpha = (character: Character, alpha: number) => {
+				const nameTag = character.model.transform.FindChild(this.nameTageId);
 				if (nameTag) {
 					const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>();
 					canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
 				}
-				const healthbar = entity.GetHealthbar();
-				if (healthbar) {
-					const canvasGroup = healthbar.transform.parent!.GetComponent<CanvasGroup>();
-					if (alpha < 1) {
-						canvasGroup.TweenCanvasGroupAlpha(alpha * 0.6, 0.1);
-					} else {
-						canvasGroup.TweenCanvasGroupAlpha(1, 0.1);
-					}
-				}
+				// const healthbar = character.GetHealthbar();
+				// if (healthbar) {
+				// 	const canvasGroup = healthbar.transform.parent!.GetComponent<CanvasGroup>();
+				// 	if (alpha < 1) {
+				// 		canvasGroup.TweenCanvasGroupAlpha(alpha * 0.6, 0.1);
+				// 	} else {
+				// 		canvasGroup.TweenCanvasGroupAlpha(1, 0.1);
+				// 	}
+				// }
 			};
-			event.entity.onStateChanged.Connect((newState, oldState) => {
-				if (newState === EntityState.Crouching) {
-					SetNametagAlpha(event.entity, 0.1);
-				} else if (oldState === EntityState.Crouching) {
-					SetNametagAlpha(event.entity, 1);
+			character.onStateChanged.Connect((newState, oldState) => {
+				if (newState === CharacterState.Crouching) {
+					SetNametagAlpha(character, 0.1);
+				} else if (oldState === CharacterState.Crouching) {
+					SetNametagAlpha(character, 1);
 				}
 			});
 		});
-		CoreClientSignals.PlayerChangeTeam.Connect((event) => {
-			if (event.player === Game.localPlayer) {
-				for (const entity of this.entityController.GetEntities()) {
-					this.UpdateNametag(entity);
-				}
-				return;
-			}
-			if (event.player.character) {
-				this.UpdateNametag(event.player.character);
-			}
-		});
-		CoreClientSignals.EntityDespawn.Connect((entity) => {
-			const nameTag = entity.model.transform.FindChild(this.nameTageId);
+		// CoreClientSignals.PlayerChangeTeam.Connect((event) => {
+		// 	if (event.player === Game.localPlayer) {
+		// 		for (const entity of this.entityController.GetEntities()) {
+		// 			this.UpdateNametag(entity);
+		// 		}
+		// 		return;
+		// 	}
+		// 	if (event.player.character) {
+		// 		this.UpdateNametag(event.player.character);
+		// 	}
+		// });
+		Airship.characters.onCharacterDespawned.Connect((character) => {
+			const nameTag = character.model.transform.FindChild(this.nameTageId);
 			if (nameTag) {
 				Object.Destroy(nameTag.gameObject);
 			}
 		});
 	}
 
-	private CreateNametag(entity: Entity): GameObject {
+	private CreateNametag(character: Character): GameObject {
 		const nametagPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Client/Resources/Prefabs/Nametag.prefab",
 		) as GameObject;
 		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
 		nametag.name = this.nameTageId;
-		nametag.transform.SetParent(entity.model.transform);
+		nametag.transform.SetParent(character.model.transform);
 		nametag.transform.localPosition = new Vector3(0, 2.3, 0);
 
-		this.UpdateNametag(entity);
+		this.UpdateNametag(character);
 
 		return nametag;
 	}
 
-	public UpdateNametag(entity: Entity): void {
-		if (entity.IsLocalCharacter()) return;
+	public UpdateNametag(character: Character): void {
+		if (character.IsLocalCharacter()) return;
 
-		const team: Team | undefined = entity.player?.GetTeam();
+		const team: Team | undefined = character.player?.GetTeam();
 		const localTeam = Game.localPlayer.GetTeam();
 
-		const nameTag = entity.model.transform.FindChild(this.nameTageId);
+		const nameTag = character.model.transform.FindChild(this.nameTageId);
 		if (nameTag === undefined) {
-			this.CreateNametag(entity);
+			this.CreateNametag(character);
 			return;
 		}
 
@@ -104,7 +97,7 @@ export class NametagController implements OnStart {
 		const canvas = references.GetValue<Canvas>(this.graphicsBundleName, "Canvas");
 
 		// Username text
-		let displayName = entity.GetDisplayName();
+		let displayName = character.player?.username ?? character.gameObject.name;
 		textLabel.text = displayName;
 
 		const rawDisplayName = Bridge.RemoveRichText(displayName);
@@ -114,7 +107,7 @@ export class NametagController implements OnStart {
 		// Username color
 		let color: Color | undefined;
 		if (localTeam) {
-			if (entity.player && localTeam.GetPlayers().has(entity.player)) {
+			if (character.player && localTeam.GetPlayers().has(character.player)) {
 				color = Theme.green;
 			} else {
 				color = Theme.red;

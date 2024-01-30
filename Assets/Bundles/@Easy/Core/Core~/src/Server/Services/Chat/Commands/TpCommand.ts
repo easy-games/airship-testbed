@@ -1,9 +1,8 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Player } from "Shared/Player/Player";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Theme } from "Shared/Util/Theme";
-import { PlayerService } from "../../Player/PlayerService";
 
 export class TpCommand extends ChatCommand {
 	constructor() {
@@ -16,7 +15,7 @@ export class TpCommand extends ChatCommand {
 			return;
 		}
 
-		const targetPlayer = Dependency<PlayerService>().GetPlayerFromUsername(args[0]);
+		const targetPlayer = Airship.players.FindByFuzzySearch(args[0]);
 		if (!targetPlayer) {
 			player.SendMessage("Unable to find player: " + args[0]);
 			return;
@@ -30,7 +29,7 @@ export class TpCommand extends ChatCommand {
 
 		if (!player.character) return;
 
-		player.character.Teleport(pos, targetPlayer.character?.entityDriver.GetLookVector());
+		player.character.Teleport(pos, targetPlayer.character?.movement.GetLookVector());
 		player.SendMessage(
 			ColorUtil.ColoredText(Theme.gray, "Teleported to ") +
 				ColorUtil.ColoredText(Theme.yellow, targetPlayer.username),

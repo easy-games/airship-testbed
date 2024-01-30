@@ -9,6 +9,7 @@ export type CreateServerResponse = {
  * The transfer service allows you to move players between servers and create new servers.
  */
 export declare class TransferService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Creates a new server and returns a server id which can be used to transfer players to the new server.

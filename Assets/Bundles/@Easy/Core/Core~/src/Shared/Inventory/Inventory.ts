@@ -1,4 +1,5 @@
 import Object from "@easy-games/unity-object-utils";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { ArmorType } from "Shared/Item/ArmorType";
 import { ItemType } from "Shared/Item/ItemType";
@@ -13,32 +14,61 @@ export interface InventoryDto {
 	heldSlot: number;
 }
 
-export class Inventory {
-	public readonly id: number;
-	private items = new Map<number, ItemStack>();
-	private heldSlot = 0;
-	private maxSlots = 48;
-	private hotbarSlots = 9;
-	public armorSlots: {
+export default class Inventory extends AirshipBehaviour {
+	public networkObject!: NetworkObject;
+	@NonSerialized() public id!: number;
+	public maxSlots = 48;
+	public hotbarSlots = 9;
+	public heldSlot = 0;
+	@NonSerialized() public armorSlots: {
 		[key in ArmorType]: number;
 	} = {
 		[ArmorType.HELMET]: 45,
 		[ArmorType.CHESTPLATE]: 46,
 		[ArmorType.BOOTS]: 47,
 	};
+
+	@NonSerialized() private items = new Map<number, ItemStack>();
+
 	/** Fired when a `slot` points to a new `ItemStack`. Changes to the same ItemStack will **not** fire this event. */
-	public readonly slotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
-	public readonly heldSlotChanged = new Signal<number>();
+	@NonSerialized() public readonly slotChanged = new Signal<[slot: number, itemStack: ItemStack | undefined]>();
+	@NonSerialized() public readonly heldSlotChanged = new Signal<number>();
 	/**
 	 * Fired whenever any change happens.
 	 * This includes changes to ItemStacks.
 	 **/
-	public readonly changed = new Signal<void>();
-	private finishedInitialReplication = false;
-	private slotConnections = new Map<number, Bin>();
+	@NonSerialized() public readonly changed = new Signal<void>();
+	@NonSerialized() private finishedInitialReplication = false;
+	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
-	constructor(id: number) {
-		this.id = id;
+	public Awake(): void {
+		if (this.networkObject.IsSpawned) {
+			this.id = this.networkObject.ObjectId;
+			Airship.inventory.RegisterInventory(this);
+			if (RunUtil.IsClient()) {
+				task.spawn(() => {
+					this.RequestFullUpdate();
+				});
+			}
+		} else {
+			const conn = this.networkObject.OnStartNetwork(() => {
+				Bridge.DisconnectEvent(conn);
+				this.id = this.networkObject.ObjectId;
+				Airship.inventory.RegisterInventory(this);
+				if (RunUtil.IsClient()) {
+					task.spawn(() => {
+						this.RequestFullUpdate();
+					});
+				}
+			});
+		}
+	}
+
+	private RequestFullUpdate(): void {
+		const dto = Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
+		if (dto) {
+			this.ProcessDto(dto);
+		}
 	}
 
 	public GetItem(slot: number): ItemStack | undefined {

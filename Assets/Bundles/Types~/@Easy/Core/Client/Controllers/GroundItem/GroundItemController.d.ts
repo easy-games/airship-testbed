@@ -1,15 +1,11 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
-import { EntityAccessoryController } from "../Accessory/EntityAccessoryController";
-import { PlayerController } from "../Player/PlayerController";
 export declare class GroundItemController implements OnStart {
-    private readonly playerController;
-    private readonly entityAccessoryController;
     private groundItemPrefab;
     private fallbackDisplayObj;
     private groundItems;
     private itemTypeToDisplayObjMap;
     private readonly groundItemsFolder;
-    constructor(playerController: PlayerController, entityAccessoryController: EntityAccessoryController);
+    constructor();
     private CreateDisplayGO;
     OnStart(): void;
 }

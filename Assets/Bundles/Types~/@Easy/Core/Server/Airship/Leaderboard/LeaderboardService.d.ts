@@ -21,6 +21,7 @@ interface RankData {
  * accessed using the name provided during setup.
  */
 export declare class LeaderboardService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Sends an update to the provided leaderboard. The scores provided are added to, subtracted from, or replace the existing

@@ -1,14 +1,16 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { EquippedProfilePicture, Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { Result } from "Shared/Types/Result";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON } from "Shared/json";
 
-/**
- * This controller allows access to the current players platform inventory. Platform inventory
- * is managed by game servers and configured on the https://create.airship.gg website.
- */
 @Controller({})
 export class PlatformInventoryController implements OnStart {
+	constructor() {
+		if (RunUtil.IsClient()) Platform.client.inventory = this;
+	}
+
 	OnStart(): void {}
 
 	/**

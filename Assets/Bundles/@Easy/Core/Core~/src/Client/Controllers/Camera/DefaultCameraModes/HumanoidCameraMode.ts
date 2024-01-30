@@ -1,4 +1,5 @@
 import { Dependency } from "@easy-games/flamework-core";
+import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -29,7 +30,7 @@ export class HumanoidCameraMode implements CameraMode {
 	private readonly bin = new Bin();
 
 	private lookVector = Vector3.zero;
-	private readonly entityDriver: EntityDriver;
+	private readonly entityDriver: CharacterMovement;
 	private occlusionCam!: OcclusionCam;
 	private lookBackwards = false;
 
@@ -61,7 +62,7 @@ export class HumanoidCameraMode implements CameraMode {
 		initialFirstPerson: boolean,
 		initialYOffset: number,
 	) {
-		this.entityDriver = characterGO.GetComponent<EntityDriver>();
+		this.entityDriver = characterGO.GetComponent<CharacterMovement>();
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
 		this.yOffset = initialYOffset;
@@ -129,6 +130,7 @@ export class HumanoidCameraMode implements CameraMode {
 
 		this.SetFirstPerson(this.firstPerson);
 		this.SetDirection(this.graphicalCharacterGO.transform.forward);
+		Dependency<CrosshairController>().SetEnabled(true);
 	}
 
 	OnStop() {

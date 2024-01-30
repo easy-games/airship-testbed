@@ -1,5 +1,7 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { Result } from "Shared/Types/Result";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
 export interface LeaderboardUpdate {
@@ -18,13 +20,12 @@ interface RankData {
 	value: string;
 }
 
-/**
- * This service provides access to leaderboard information as well as methods for updating existing leaderboards.
- * Leaderboards must be created using the https://create.airship.gg website. Once a leaderboard is created, it can be
- * accessed using the name provided during setup.
- */
 @Service({})
 export class LeaderboardService implements OnStart {
+	constructor() {
+		if (RunUtil.IsServer()) Platform.server.leaderboard = this;
+	}
+
 	OnStart(): void {}
 
 	/**

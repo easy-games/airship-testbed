@@ -3,6 +3,7 @@ import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { Result } from "../../../Shared/Types/Result";
 /** Provides access to matchmaking status. */
 export declare class MatchmakingController implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Checks for updates in the users matchmaking status. Your game must be enrolled in matchmaking services

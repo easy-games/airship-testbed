@@ -1,13 +1,16 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { PublicUser } from "Shared/SocketIOMessages/PublicUser";
 import { Result } from "Shared/Types/Result";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON } from "Shared/json";
 
-/**
- * Provides access to user information.
- */
 @Controller({})
 export class UserController implements OnStart {
+	constructor() {
+		if (RunUtil.IsClient()) Platform.client.user = this;
+	}
+
 	OnStart(): void {}
 
 	/**

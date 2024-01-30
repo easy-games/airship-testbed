@@ -563,6 +563,17 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2743750730334327917}
       modified: 0
+    - name: redirectDrag
+      type: object
+      objectType: AirshipRedirectDrag
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
 --- !u!1 &2266745765406454616
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +705,17 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 2631960314904223061}
+      modified: 0
+    - name: redirectDrag
+      type: object
+      objectType: AirshipRedirectDrag
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
       modified: 0
 --- !u!1 &2322881537308203851
 GameObject:
@@ -1289,6 +1311,17 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 6788171637080642593, guid: bc2287e33f7d64e72a150d2e90e9d6b7, type: 3}
+      modified: 0
+    - name: scrollRect
+      type: object
+      objectType: ScrollRect
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
       modified: 0
 --- !u!114 &3648140437749999626
 MonoBehaviour:
@@ -4139,6 +4172,17 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 1137890826178376006}
       modified: 0
+    - name: redirectDrag
+      type: object
+      objectType: AirshipRedirectDrag
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
 --- !u!1 &3790632175978892536
 GameObject:
   m_ObjectHideFlags: 0
@@ -4291,7 +4335,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3980140052072046524}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4494,6 +4538,17 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 72502686295520605}
+      modified: 0
+    - name: redirectDrag
+      type: object
+      objectType: AirshipRedirectDrag
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
       modified: 0
 --- !u!1 &4439392565227671678
 GameObject:
@@ -5083,10 +5138,10 @@ RectTransform:
   - {fileID: 7859721171439656427}
   m_Father: {fileID: 3353185854521778624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 39.905, y: -13}
-  m_SizeDelta: {x: 0, y: 26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 39.905, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8356578029398704206
 CanvasRenderer:
@@ -6296,10 +6351,10 @@ RectTransform:
   - {fileID: 7194601152362142192}
   m_Father: {fileID: 2324954336579085787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 39.905, y: -13}
-  m_SizeDelta: {x: 0, y: 26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 39.905, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9021706293807318101
 CanvasRenderer:
@@ -7696,10 +7751,10 @@ RectTransform:
   - {fileID: 5070866916512641528}
   m_Father: {fileID: 415712837569187283}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 39.905, y: -13}
-  m_SizeDelta: {x: 0, y: 26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 39.905, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6391882385929530461
 CanvasRenderer:
@@ -7966,10 +8021,10 @@ RectTransform:
   - {fileID: 4956789383786494144}
   m_Father: {fileID: 527400170529277163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 39.905, y: -13}
-  m_SizeDelta: {x: 0, y: 26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 39.905, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6494714153455232357
 CanvasRenderer:

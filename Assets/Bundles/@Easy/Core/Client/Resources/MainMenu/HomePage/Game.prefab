@@ -33,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6977425144866861155}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24, y: -13}
-  m_SizeDelta: {x: 18, y: 18}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6812627189565904667
 CanvasRenderer:
@@ -129,10 +129,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6977425144866861155}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 46.405, y: -13}
-  m_SizeDelta: {x: 26.81, y: 22.27}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4561592610356718366
 CanvasRenderer:
@@ -286,9 +286,9 @@ RectTransform:
   - {fileID: 6977425144866861155}
   m_Father: {fileID: 1887127101124568663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 183.11, y: -257.4037}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 366.22, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3922667179535972441
@@ -362,10 +362,10 @@ RectTransform:
   - {fileID: 512884760892855937}
   m_Father: {fileID: 4937528486100167338}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 39.905, y: -13}
-  m_SizeDelta: {x: 79.81, y: 26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 39.905, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1870665424666430244
 CanvasRenderer:
@@ -491,9 +491,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1887127101124568663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 183.11, y: -225.20184}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 366.22, y: 38.4037}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5131170804106009668
@@ -727,6 +727,17 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 7334092849454283308}
       modified: 0
+    - name: redirectDrag
+      type: object
+      objectType: AirshipRedirectDrag
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5513109097700678103}
+      modified: 1
 --- !u!1 &7334092849454283308
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +752,7 @@ GameObject:
   - component: {fileID: 3586970315758590938}
   - component: {fileID: 1080242479796895828}
   - component: {fileID: 1224758353300491981}
+  - component: {fileID: 5513109097700678103}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -762,10 +774,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1887127101124568663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 183.11111, y: -103}
-  m_SizeDelta: {x: 0, y: 206}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 366.22223, y: 206}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3571137984080049433
 CanvasRenderer:
@@ -878,3 +890,17 @@ MonoBehaviour:
   url: 
   image: {fileID: 4272896538262094076}
   downloadOnStart: 0
+--- !u!114 &5513109097700678103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7334092849454283308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDragging: 0
+  redirectTarget: {fileID: 0}

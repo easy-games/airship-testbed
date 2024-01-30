@@ -1,3 +1,4 @@
+import { Flamework } from "@easy-games/flamework-core";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
@@ -29,10 +30,9 @@ gameObject.OnFixedUpdate(() => {
 	OnFixedUpdate.Fire(TimeUtil.GetFixedDeltaTime());
 });
 
-const client = require("@Easy/Core/Client/Resources/TS/CoreClientBootstrap") as {
-	SetupClient: (context: CoreContext) => void;
-};
-client.SetupClient(CoreContext.MAIN_MENU);
+Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton.lua$");
+Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+Flamework.Ignite();
 
 const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>();
 mainMenuLoadingScreen.Close();

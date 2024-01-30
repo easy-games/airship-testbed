@@ -1,10 +1,10 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
+import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "../../CoreNetwork";
 import { GameObjectUtil } from "../../GameObject/GameObjectUtil";
 import { ItemType } from "../../Item/ItemType";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { RunUtil } from "../../Util/RunUtil";
-import { SignalPriority } from "../../Util/Signal";
 import { BlockDataAPI, CoreBlockMetaKeys } from "../BlockData/BlockDataAPI";
 import { WorldAPI } from "../WorldAPI";
 
@@ -34,10 +34,9 @@ export class PrefabBlockManager {
 		});
 
 		if (RunUtil.IsServer()) {
-			const serverSignals = import("Server/CoreServerSignals").expect().CoreServerSignals;
-			serverSignals.PlayerJoin.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+			Airship.players.onPlayerJoined.Connect((player) => {
 				CoreNetwork.ServerToClient.SyncPrefabBlocks.server.FireClient(
-					event.player.clientId,
+					player.clientId,
 					ObjectUtils.keys(this.objectMap),
 				);
 			});
@@ -48,10 +47,10 @@ export class PrefabBlockManager {
 						const block = world.GetBlockAt(pos);
 						if (block.itemType) {
 							this.OnBlockPlace(pos, block.itemType);
-							const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
-							const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
-								.BlockPlaceClientSignal;
-							clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, undefined, true));
+							// const clientSignals = import("Client/CoreClientSignals").expect().CoreClientSignals;
+							// const BlockPlaceClientSignal = import("Client/Signals/BlockPlaceClientSignal").expect()
+							// 	.BlockPlaceClientSignal;
+							// clientSignals.BlockPlace.Fire(new BlockPlaceClientSignal(pos, block, undefined, true));
 						}
 					}
 				});

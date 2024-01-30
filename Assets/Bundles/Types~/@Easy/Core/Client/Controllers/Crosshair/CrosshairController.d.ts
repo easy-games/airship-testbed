@@ -3,7 +3,9 @@ export declare class CrosshairController {
     private crosshairImage;
     private crosshairModifier;
     private crosshairVisible;
+    private enabled;
     constructor();
+    SetEnabled(enabled: boolean): void;
     private SetVisible;
     /**
      * Registers a disabler for the crosshair

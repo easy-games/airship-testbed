@@ -1,4 +1,5 @@
 import { Service, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { ItemQueryParameters } from "Shared/Airship/Types/Inputs/PlatformInventory";
 import {
 	AccessoryInstance,
@@ -9,27 +10,15 @@ import {
 	Transaction,
 } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { Result } from "Shared/Types/Result";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
-/**
- * Allows management of platform inventory for a player. These functions manipluate a persistent inventory
- * that the player owns. Items, Accessories, and Profile Pictures are all managed by this inventory and the
- * configurations must be registered on the https://create.airship.gg website.
- *
- * It is **_NOT_** recommended to use this inventory system for things like a game economy or persisting game
- * inventory between servers. This inventory is meant to be used for items, accessories, and profile pictures that
- * may have real money value or that players may wish to trade or sell outside of the game. This inventory is the
- * way that the game can interact with the wider platform economy.
- *
- * Some examples of potential items to include in this inventory:
- * - Weapon skins
- * - Playable characters
- * - Trading cards
- * - Content purchased with real money
- * - Content that players may want to trade or sell to other players
- */
 @Service({})
 export class PlatformInventoryService implements OnStart {
+	constructor() {
+		if (RunUtil.IsServer()) Platform.server.inventory = this;
+	}
+
 	OnStart(): void {}
 
 	/**

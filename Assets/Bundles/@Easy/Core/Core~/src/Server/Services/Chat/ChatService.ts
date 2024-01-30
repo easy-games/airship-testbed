@@ -1,19 +1,19 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
 import Object from "@easy-games/unity-object-utils";
+import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { PlayerService } from "../Player/PlayerService";
-import { AbilityEnableStateCommand, AddAbilityCommand, RemoveAbilityCommand } from "./Commands/AbilityCommands";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
 import { DieCommand } from "./Commands/DieCommand";
 import { GetVarCommand } from "./Commands/DynamicVariables/GetVarCommand";
 import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
+import { EntityCommand } from "./Commands/EntityCommand";
 import { FlyCommand } from "./Commands/FlyCommand";
 import { CreateGeneratorCommand } from "./Commands/Generator/CreateGeneratorCommand";
 import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorSpawnRateCommand";
@@ -21,16 +21,13 @@ import { HealCommand } from "./Commands/HealCommand";
 import { HelpCommand } from "./Commands/HelpCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
 import { LagCommand } from "./Commands/LagCommand";
-import { LibonatiCommand } from "./Commands/LibonatiCommand";
 import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
 import { TeamChatCommand } from "./Commands/TeamChatCommand";
 import { TeamCommand } from "./Commands/TeamCommand";
-import { PlayersCommand } from "./Commands/TestPlayerCommand";
 import { TpAllCommand } from "./Commands/TpAllCommand";
 import { TpCommand } from "./Commands/TpCommand";
 import { TpsCommand } from "./Commands/TpsCommand";
-import { VorliasCommand } from "./Commands/VorliasCommand";
 
 @Service({})
 export class ChatService implements OnStart {
@@ -38,7 +35,8 @@ export class ChatService implements OnStart {
 
 	public readonly canUseRichText = true;
 
-	constructor(private readonly playerService: PlayerService) {
+	constructor() {
+		this.RegisterCommand(new EntityCommand());
 		this.RegisterCommand(new DamageCommand());
 		this.RegisterCommand(new JoinCodeCommand());
 		this.RegisterCommand(new CreateGeneratorCommand());
@@ -56,13 +54,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new HealCommand());
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
-		this.RegisterCommand(new LibonatiCommand());
-		this.RegisterCommand(new VorliasCommand());
 		this.RegisterCommand(new HelpCommand());
-		this.RegisterCommand(new AddAbilityCommand());
-		this.RegisterCommand(new RemoveAbilityCommand());
-		this.RegisterCommand(new AbilityEnableStateCommand());
-		this.RegisterCommand(new PlayersCommand());
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new SaveWorldCommand());
 	}
@@ -102,7 +94,7 @@ export class ChatService implements OnStart {
 	OnStart(): void {
 		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((clientId, text) => {
 			const rawMessage = text;
-			const player = this.playerService.GetPlayerFromClientId(clientId);
+			const player = Airship.players.FindByClientId(clientId);
 			if (!player) {
 				error("player not found.");
 			}
