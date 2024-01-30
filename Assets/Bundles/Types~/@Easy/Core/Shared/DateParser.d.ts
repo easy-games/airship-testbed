@@ -1,4 +1,4 @@
-export const DateParser = {
+export = {
 	/**
 	 * Converts an ISO date string to Unix time seconds.
 	 *

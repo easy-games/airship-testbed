@@ -3,9 +3,6 @@
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { PublicUser } from "../../../Shared/SocketIOMessages/PublicUser";
 import { Result } from "../../../Shared/Types/Result";
-/**
- * Provides access to user information.
- */
 export declare class UserController implements OnStart {
     constructor();
     OnStart(): void;

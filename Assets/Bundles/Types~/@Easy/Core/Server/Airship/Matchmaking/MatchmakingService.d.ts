@@ -1,10 +1,6 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { Result } from "../../../Shared/Types/Result";
-/**
- * Allows game servers to match make players. These functions are currently only
- * enabled upon request. Email us at hello@easy.gg to see if you might qualify.
- */
 export declare class MatchmakingService implements OnStart {
     constructor();
     OnStart(): void;

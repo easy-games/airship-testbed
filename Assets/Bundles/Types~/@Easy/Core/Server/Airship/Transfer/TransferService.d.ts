@@ -5,9 +5,6 @@ import { Result } from "../../../Shared/Types/Result";
 export type CreateServerResponse = {
     serverId: string;
 };
-/**
- * The transfer service allows you to move players between servers and create new servers.
- */
 export declare class TransferService implements OnStart {
     constructor();
     OnStart(): void;
