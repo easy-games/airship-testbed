@@ -31,8 +31,9 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 			return;
 		}
 
-		const data = DecodeJSON<MyGamesDto>(res.data);
+		let data = DecodeJSON<MyGamesDto>(res.data);
 		print("My games: " + inspect(data));
+		data = data.filter((g) => g.lastVersionUpdate !== undefined);
 
 		this.sort.SetGames(data);
 	}
