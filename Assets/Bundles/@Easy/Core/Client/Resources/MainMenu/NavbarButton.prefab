@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1587867228421241694}
   - component: {fileID: 6046103259811245346}
   - component: {fileID: 3596014655825402124}
+  - component: {fileID: 3685865388546015712}
   - component: {fileID: 8443160194368119045}
   - component: {fileID: 4008141618223913758}
   - component: {fileID: 3037290176941640421}
@@ -94,6 +95,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451472323512772192}
   m_CullTransparentMesh: 1
+--- !u!114 &3685865388546015712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451472323512772192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/MainMenuNavButton.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: MainMenuNavButton
+    properties:
+    - name: selected
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: image
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
 --- !u!114 &8443160194368119045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09411765, g: 0.09803922, b: 0.101960786, a: 1}
+  m_Color: {r: 0.09411765, g: 0.09803922, b: 0.101960786, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

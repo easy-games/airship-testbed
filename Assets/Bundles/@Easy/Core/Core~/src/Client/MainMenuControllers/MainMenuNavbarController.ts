@@ -1,6 +1,7 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
+import MainMenuNavButton from "Shared/MainMenu/Components/MainMenuNavButton";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { AuthController } from "./Auth/AuthController";
@@ -141,9 +142,9 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
-		const img = go.GetComponent<Image>();
-		img.TweenGraphicColor(selected ? new Color(255, 255, 255, 69) : new Color(24, 25, 26, 255), 0.2);
-
+		go.GetAirshipComponent<MainMenuNavButton>()?.SetSelected(selected);
+		// const img = go.GetComponent<Image>();
+		// img.TweenGraphicColor(selected ? new Color(1, 1, 1, 0.27) : ColorUtil.HexToColor("18191A"), 0.12);
 		// const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
 		// if (selected) {
 		// 	text.color = new Color(1, 1, 1, 1);
