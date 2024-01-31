@@ -4,13 +4,14 @@ import { GameServer } from "Shared/SocketIOMessages/Party";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { EncodeJSON } from "Shared/json";
 import { Result } from "Shared/Types/Result";
+import { Platform } from "Shared/Airship";
+import { RunUtil } from "Shared/Util/RunUtil";
 
-/**
- * Provides access to user initiated transfer functionality.
- */
 @Controller({})
 export class TransferController implements OnStart {
-	constructor() {}
+	constructor() {
+		if (RunUtil.IsClient()) Platform.client.transfer = this;
+	}
 
 	OnStart(): void {}
 

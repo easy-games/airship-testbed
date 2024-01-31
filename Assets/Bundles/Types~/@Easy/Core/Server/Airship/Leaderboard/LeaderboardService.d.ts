@@ -15,12 +15,8 @@ interface RankData {
     /** The score value on the leaderboard */
     value: string;
 }
-/**
- * This service provides access to leaderboard information as well as methods for updating existing leaderboards.
- * Leaderboards must be created using the https://create.airship.gg website. Once a leaderboard is created, it can be
- * accessed using the name provided during setup.
- */
 export declare class LeaderboardService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Sends an update to the provided leaderboard. The scores provided are added to, subtracted from, or replace the existing
