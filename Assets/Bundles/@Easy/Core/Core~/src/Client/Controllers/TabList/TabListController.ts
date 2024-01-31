@@ -180,7 +180,7 @@ export class TabListController implements OnStart {
 
 		const addFriendGo = refs.GetValue<GameObject>("UI", "AddFriendButton");
 		const isFriends = player.IsFriend();
-		addFriendGo.SetActive(!isFriends);
+		addFriendGo.SetActive(!isFriends && !player.IsLocalPlayer());
 		if (init) {
 			CoreUI.SetupButton(addFriendGo);
 			CanvasAPI.OnClickEvent(addFriendGo, () => {
