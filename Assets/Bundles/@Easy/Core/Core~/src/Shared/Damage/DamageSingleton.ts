@@ -1,5 +1,4 @@
 import { Controller, OnStart, Service } from "@easy-games/flamework-core";
-import inspect from "@easy-games/unity-inspect";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { RemoteEvent } from "Shared/Network/RemoteEvent";
@@ -48,12 +47,10 @@ export class DamageSingleton implements OnStart {
 		});
 
 		this.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-			print("damageInfo data: " + inspect(damageInfo.data));
 			if (RunUtil.IsServer() && this.applyKnockback && damageInfo.data["knockback"]) {
 				const knockback = damageInfo.data["knockback"] as Vector3;
 				const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 				if (character) {
-					print("applying knockback to character: " + knockback);
 					character.movement.ApplyImpulse(knockback);
 				}
 			}
@@ -68,7 +65,6 @@ export class DamageSingleton implements OnStart {
 	 * @param data
 	 */
 	public InflictDamage(gameObject: GameObject, damage: number, attacker?: GameObject, data?: DamageInfoCustomData) {
-		print("inflicting damage on " + gameObject.name);
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
 		this.onDamage.Fire(damageInfo);
 
