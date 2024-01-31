@@ -135,7 +135,7 @@ export class Player {
 
 	public SendMessage(message: string, sender?: Player): void {
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this.clientId, message);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message);
 		} else {
 			Dependency<ChatController>().RenderChatMessage(message);
 		}

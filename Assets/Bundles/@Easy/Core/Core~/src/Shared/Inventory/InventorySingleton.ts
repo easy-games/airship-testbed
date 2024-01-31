@@ -79,12 +79,12 @@ export class InventorySingleton implements OnStart {
 	}
 
 	private StartServer(): void {
-		this.remotes.clientToServer.getFullUpdate.server.SetCallback((clientId, invId) => {
+		this.remotes.clientToServer.getFullUpdate.server.SetCallback((player, invId) => {
 			return this.GetInventory(invId)?.Encode();
 		});
 
-		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((clientId, slot) => {
-			const character = Airship.characters.FindByClientId(clientId);
+		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, slot) => {
+			const character = Airship.characters.FindByPlayer(player);
 			if (!character) return;
 
 			const inv = character.gameObject.GetAirshipComponent<Inventory>();
@@ -94,11 +94,11 @@ export class InventorySingleton implements OnStart {
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
-			(clientId, frommInvId, fromSlot, toInvId, toSlot) => {},
+			(player, frommInvId, fromSlot, toInvId, toSlot) => {},
 		);
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
-			(clientId, fromInvId, fromSlot, toInvId, toSlot, amount) => {
+			(player, fromInvId, fromSlot, toInvId, toSlot, amount) => {
 				const fromInv = this.GetInventory(fromInvId);
 				if (!fromInv) return;
 
@@ -135,7 +135,7 @@ export class InventorySingleton implements OnStart {
 		);
 
 		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.server.OnClientEvent(
-			(clientId, fromInvId, fromSlot, toInvId) => {
+			(player, fromInvId, fromSlot, toInvId) => {
 				const fromInv = this.GetInventory(fromInvId);
 				if (!fromInv) return;
 

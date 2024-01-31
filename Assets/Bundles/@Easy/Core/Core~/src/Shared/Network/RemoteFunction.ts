@@ -1,11 +1,12 @@
+import { Player } from "Shared/Player/Player";
 import NetworkAPI, { NetworkChannel } from "./NetworkAPI";
 
 type RemoteParamsToClient<T> = Parameters<
 	T extends unknown[]
-		? (clientId: number, ...args: T) => void
+		? (player: Player, ...args: T) => void
 		: T extends unknown
-		? (clientId: number, arg: T) => void
-		: (clientId: number) => void
+			? (player: Player, arg: T) => void
+			: (player: Player) => void
 >;
 
 type RemoteParamsToServer<T> = Parameters<
@@ -14,11 +15,11 @@ type RemoteParamsToServer<T> = Parameters<
 
 type RemoteParamsToAllClients<T> = RemoteParamsToServer<T>;
 
-type RemoteCallbackFromClient<T> = (clientId: number, ...args: RemoteParamsToClient<T>) => void;
+type RemoteCallbackFromClient<T> = (player: Player, ...args: RemoteParamsToClient<T>) => void;
 type RemoteCallbackFromServer<T> = (...args: RemoteParamsToServer<T>) => void;
 
 type RemoteFunctionReturn<RX> = RX extends [infer A] ? A : RX;
-type RemoteFunctionCallback<TX, RX> = (clientId: number, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
+type RemoteFunctionCallback<TX, RX> = (player: Player, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
 
 // To prevent collisions with RemoteEvent IDs:
 const RF_ID_OFFSET = 1000000;
@@ -51,10 +52,6 @@ class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] 
 			const thread = this.yieldingThreads.get(sendId);
 			this.yieldingThreads.delete(sendId);
 			if (thread !== undefined) {
-				// const [success, err] = coroutine.resume(thread, ...args);
-				// if (!success) {
-				// 	print(`NETWORK HANDLER ERROR:\n${tostring(err)}`);
-				// }
 				task.spawn(thread, ...args);
 			}
 		});
@@ -70,10 +67,10 @@ class RemoteFunctionServer<TX extends unknown[] | unknown, RX extends unknown[] 
 		if (this.disconnect !== undefined) {
 			this.disconnect();
 		}
-		this.disconnect = NetworkAPI.connect(true, this.id, (clientId: number, sendId: number, ...args: unknown[]) => {
-			const res = [(callback as Callback)(clientId, ...args)];
+		this.disconnect = NetworkAPI.connect(true, this.id, (player: Player, sendId: number, ...args: unknown[]) => {
+			const res = [(callback as Callback)(player, ...args)];
 			const argsReturn = [sendId, ...res];
-			NetworkAPI.fireClient(this.id, clientId, argsReturn, NetworkChannel.Reliable);
+			NetworkAPI.fireClient(this.id, player, argsReturn, NetworkChannel.Reliable);
 		});
 	}
 }
@@ -90,11 +87,3 @@ export class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[]
 		this.client = new RemoteFunctionClient(id);
 	}
 }
-
-// const rf1 = new RemoteFunction<[msg: string], [numChars: number]>();
-
-// rf1.Server.SetCallback((clientId, msg) => {
-// 	return msg.size();
-// });
-
-// const numChars = rf1.Client.FireServer("hello world");

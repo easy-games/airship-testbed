@@ -1,3 +1,5 @@
+import { Airship } from "Shared/Airship";
+import { Player } from "Shared/Player/Player";
 import { RunUtil } from "Shared/Util/RunUtil";
 
 export enum NetworkChannel {
@@ -6,7 +8,10 @@ export enum NetworkChannel {
 }
 
 interface BlobData {
+	/** ID. */
 	i: number;
+
+	/** Data. */
 	d: unknown[];
 }
 
@@ -28,7 +33,7 @@ function addToQueue(msg: BlobData) {
 		queuedDataById.set(id, queue);
 	}
 	if (queue.size() >= MAX_QUEUE) {
-		print("REMOTE EVENT: MAX REQUEST QUEUE REACHED; DROPPING FUTURE MESSAGES");
+		warn("REMOTE EVENT: MAX REQUEST QUEUE REACHED; DROPPING FUTURE MESSAGES");
 		return;
 	}
 	queue.push(msg);
@@ -42,8 +47,15 @@ export function InitNet() {
 			const data = msg.d;
 			const callbacks = callbacksByIdServer.get(tostring(id));
 			if (callbacks === undefined) return;
+
+			const player = Airship.players.FindByClientIdIncludePending(clientId);
+			if (!player) {
+				warn(debug.traceback(`Dropping request from client ${clientId}: Failed to find Player object`));
+				return;
+			}
+
 			for (const callback of callbacks) {
-				callback.callback(clientId, ...data);
+				callback.callback(player, ...data);
 			}
 		});
 	}
@@ -66,7 +78,7 @@ export function InitNet() {
 }
 
 function pack(id: number, args: unknown[]) {
-	return new BinaryBlob({ i: id, d: args });
+	return new BinaryBlob({ i: id, d: args } satisfies BlobData);
 }
 
 function fireServer(id: number, args: unknown[], channel: NetworkChannel) {
@@ -79,18 +91,19 @@ function fireAllClients(id: number, args: unknown[], channel: NetworkChannel) {
 	NetworkCore.Net.BroadcastToAllClients(msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
-function fireClient(id: number, clientId: number, args: unknown[], channel: NetworkChannel) {
+function fireClient(id: number, player: Player, args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
-	NetworkCore.Net.BroadcastToClient(clientId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
+	NetworkCore.Net.BroadcastToClient(player.clientId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
-function fireExcept(id: number, ignoredClientId: number, args: unknown[], channel: NetworkChannel) {
+function fireExcept(id: number, ignorePlayer: Player, args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
-	NetworkCore.Net.BroadcastToAllExceptClient(ignoredClientId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
+	NetworkCore.Net.BroadcastToAllExceptClient(ignorePlayer.clientId, msg, channel === NetworkChannel.Reliable ? 1 : 0);
 }
 
-function fireClients(id: number, clientIds: number[], args: unknown[], channel: NetworkChannel) {
+function fireClients(id: number, players: Player[], args: unknown[], channel: NetworkChannel) {
 	const msg = pack(id, args);
+	const clientIds = players.map((player) => player.clientId);
 	NetworkCore.Net.BroadcastToClients(
 		clientIds as unknown as CSArray<number>,
 		msg,
@@ -141,7 +154,5 @@ const NetworkAPI = {
 	fireExcept,
 	connect,
 };
-
-// initNet();
 
 export default NetworkAPI;

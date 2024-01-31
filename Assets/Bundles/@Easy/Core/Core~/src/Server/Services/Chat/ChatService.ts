@@ -92,12 +92,8 @@ export class ChatService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((clientId, text) => {
+		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((player, text) => {
 			const rawMessage = text;
-			const player = Airship.players.FindByClientId(clientId);
-			if (!player) {
-				error("player not found.");
-			}
 
 			if (StringUtils.startsWith(text, "/")) {
 				const commandData = ChatUtil.ParseCommandData(text);

@@ -1,11 +1,12 @@
+import { Player } from "Shared/Player/Player";
 import NetworkAPI, { NetworkChannel } from "./NetworkAPI";
 
 type RemoteParamsToClient<T> = Parameters<
 	T extends unknown[]
-		? (clientId: number, ...args: T) => void
+		? (player: Player, ...args: T) => void
 		: T extends unknown
-		? (clientId: number, arg: T) => void
-		: (clientId: number) => void
+		? (player: Player, arg: T) => void
+		: (player: Player) => void
 >;
 
 type RemoteParamsToServer<T> = Parameters<
@@ -26,16 +27,16 @@ class RemoteEventServer<T extends unknown[] | unknown> {
 		NetworkAPI.fireAllClients(this.id, args, this.channel);
 	}
 
-	public FireExcept(ignoredClientId: number, ...args: RemoteParamsToAllClients<T>) {
-		NetworkAPI.fireExcept(this.id, ignoredClientId, args, this.channel);
+	public FireExcept(ignorePlayer: Player, ...args: RemoteParamsToAllClients<T>) {
+		NetworkAPI.fireExcept(this.id, ignorePlayer, args, this.channel);
 	}
 
-	public FireClient(clientId: number, ...args: RemoteParamsToAllClients<T>) {
-		NetworkAPI.fireClient(this.id, clientId, args, this.channel);
+	public FireClient(player: Player, ...args: RemoteParamsToAllClients<T>) {
+		NetworkAPI.fireClient(this.id, player, args, this.channel);
 	}
 
-	public FireClients(clientIds: number[], ...args: RemoteParamsToAllClients<T>) {
-		NetworkAPI.fireClients(this.id, clientIds, args, this.channel);
+	public FireClients(players: Player[], ...args: RemoteParamsToAllClients<T>) {
+		NetworkAPI.fireClients(this.id, players, args, this.channel);
 	}
 
 	public OnClientEvent(callback: RemoteCallbackFromClient<T>) {
