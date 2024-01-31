@@ -1,61 +1,9 @@
+import { AccessoryInstance, Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
-export type ItemClass = {
-	resourceType: "GAME" | "ORGANIZATION";
-	resourceId: string; // either the game ID or the org ID depending on the type
-
-	classId: string;
-
-	name: string;
-	imageId: string; // thumbnail ID (https://easy-cdn/images/{imageId}.jpg)
-	tags: string[];
-	description: string;
-
-	default: boolean; // whether or not it will be granted to users by default
-
-	tradable: {
-		permitted: boolean;
-	};
-
-	marketable: {
-		permitted: boolean;
-	};
-};
-export type Item = {
-	ownerId: string;
-
-	class: ItemClass;
-	instanceId: string;
-
-	createdAt: string;
-};
-export type ProfilePicture = ItemClass & {
-	profilePicture: {
-		imageId: string; // this is the avatar image
-	};
-};
-
-export type ProfilePictureItem = Omit<Item, "class"> & {
-	class: ProfilePicture;
-};
-export type Accessory = ItemClass & {
-	accessory: {};
-};
-export type AccessoryItem = Omit<Item, "class"> & {
-	class: Accessory;
-};
-export type Outfit = {
-	outfitId: string;
-
-	name: string;
-	skinColor: string; // hex string
-	accessories: Array<AccessoryItem>;
-
-	equipped: boolean;
-};
-
+// TODO this needs to be moved to the main menu lua sandbox
 export class AvatarPlatformAPI {
 	private static Log(message: string) {
 		//print("AvatarAPI: " + message);
@@ -77,7 +25,7 @@ export class AvatarPlatformAPI {
 
 	public static GetEquippedOutfit(): Outfit | undefined {
 		this.Log("GetEquippedOutfit");
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped`));
+		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success && res.data && res.data !== "") {
 			return DecodeJSON(res.data) as Outfit;
 		}
@@ -111,7 +59,7 @@ export class AvatarPlatformAPI {
 		this.Log("GetAccessories");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
 		if (res.success) {
-			return DecodeJSON<AccessoryItem[]>(res.data);
+			return DecodeJSON<AccessoryInstance[]>(res.data);
 		}
 	}
 
@@ -159,7 +107,7 @@ export class AvatarPlatformAPI {
 	public static LoadImage(fileId: string) {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`images/${fileId}`));
 		if (res.success) {
-			return DecodeJSON<AccessoryItem[]>(res.data);
+			return DecodeJSON<AccessoryInstance[]>(res.data);
 		} else {
 			error("Error loading image: " + res.error);
 		}

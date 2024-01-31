@@ -48,7 +48,6 @@ export class LocalCharacterSingleton implements OnStart {
 	private orbitCameraMode: OrbitCameraMode | undefined;
 
 	private characterCameraMode: CharacterCameraMode = CharacterCameraMode.Orbit;
-	private defaultFirstPerson = false;
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
 
@@ -178,14 +177,10 @@ export class LocalCharacterSingleton implements OnStart {
 		Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) return;
 
-			const isFirstSpawn = this.firstSpawn;
 			this.firstSpawn = false;
 
 			const bin = new Bin();
 			const keyboard = bin.Add(new Keyboard());
-			if (isFirstSpawn) {
-				this.firstPerson = this.defaultFirstPerson;
-			}
 
 			this.entityDriver = character.gameObject.GetComponent<CharacterMovement>();
 			this.entityInput = new EntityInput(character);
@@ -377,7 +372,6 @@ export class LocalCharacterSingleton implements OnStart {
 
 		if (mode !== CharacterCameraMode.Locked) {
 			this.firstPerson = false;
-			this.defaultFirstPerson = false;
 		}
 	}
 
@@ -415,11 +409,9 @@ export class LocalCharacterSingleton implements OnStart {
 	}
 
 	/**
-	 * Changes the perspective of the currently spawned local character.
+	 * Changes the preferred perspective for the local character.
 	 *
 	 * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetCharacterCameraMode()}
-	 *
-	 * You may also want to call {@link SetDefaultFirstPerson} to change the default for when new characters spawn.
 	 */
 	public SetFirstPerson(value: boolean) {
 		assert(
@@ -442,18 +434,6 @@ export class LocalCharacterSingleton implements OnStart {
 
 	public GetEntityInput(): EntityInput | undefined {
 		return this.entityInput;
-	}
-
-	public SetDefaultFirstPerson(val: boolean): void {
-		assert(
-			this.characterCameraMode === CharacterCameraMode.Locked,
-			"SetDefaultFirstPerson() can only be called when using CharacterCameraMode.Locked",
-		);
-		this.defaultFirstPerson = val;
-	}
-
-	public IsDefaultFirstPerson(): boolean {
-		return this.defaultFirstPerson;
 	}
 
 	/**

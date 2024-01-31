@@ -35,7 +35,7 @@ export class CharactersSingleton implements OnStart {
 		Airship.characters = this;
 
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((objectId, ownerClientId) => {
+			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((characterId, objectId, ownerClientId) => {
 				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
 				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
 				assert(character, "Spawned character was missing a Character component.");
@@ -45,7 +45,7 @@ export class CharactersSingleton implements OnStart {
 					assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
 					characterNetworkObj.gameObject.name = "Character_" + player.username;
 				}
-				character.Init(player, Airship.characters.MakeNewId());
+				character.Init(player, characterId);
 				Airship.characters.RegisterCharacter(character);
 				player?.SetCharacter(character);
 				Airship.characters.onCharacterSpawned.Fire(character);
@@ -59,15 +59,11 @@ export class CharactersSingleton implements OnStart {
 				for (let character of this.characters) {
 					CoreNetwork.ServerToClient.Character.Spawn.server.FireClient(
 						player.clientId,
+						character.id,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
 					);
 				}
-			});
-			Airship.characters.ObserveCharacters((character) => {
-				character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
-					NetworkUtil.Despawn(character.gameObject);
-				});
 			});
 		}
 
@@ -76,8 +72,6 @@ export class CharactersSingleton implements OnStart {
 				if (RunUtil.IsServer()) {
 					NetworkUtil.Despawn(character.gameObject);
 				}
-				print("onDeath for player " + character.player?.username);
-				character.player?.SetCharacter(undefined);
 			});
 		});
 
@@ -87,6 +81,9 @@ export class CharactersSingleton implements OnStart {
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
 				this.FindById(id)?.SetHealth(maxHealth);
+			});
+			CoreNetwork.ServerToClient.Character.Death.client.OnServerEvent((id) => {
+				this.FindById(id)?.onDeath.Fire();
 			});
 		}
 	}
@@ -233,6 +230,7 @@ export class CharactersSingleton implements OnStart {
 
 		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients(
+				character.id,
 				character.networkObject.ObjectId,
 				character.player?.clientId,
 			);

@@ -40,6 +40,14 @@ export class HeldItemManager {
 		return this.character.id;
 	}
 
+	public GetCurrentHeldItem() {
+		return this.currentHeldItem;
+	}
+
+	public TryGetItem(itemType: ItemType) {
+		return this.heldItemMap.get(itemType);
+	}
+
 	private Log(message: string) {
 		return;
 		print("Entity " + this.character.id + " " + message);
@@ -131,7 +139,6 @@ export class HeldItemManager {
 		// }
 		if (this.currentHeldItem === undefined) {
 			error("Trying to interact without any held item!");
-			return;
 		}
 		this.currentItemState = itemState;
 		this.currentHeldItem.SetLookVector(lookVector);

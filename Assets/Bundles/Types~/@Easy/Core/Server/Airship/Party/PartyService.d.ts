@@ -14,10 +14,8 @@ export interface GameServerPartyData {
     members: PublicUser[];
     status: PartyStatus;
 }
-/**
- * Allows access to player party information.
- */
 export declare class PartyService implements OnStart {
+    constructor();
     OnStart(): void;
     /**
      * Gets the users party. To be allowed access to party information, the user

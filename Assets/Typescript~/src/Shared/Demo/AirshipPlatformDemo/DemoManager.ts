@@ -7,6 +7,7 @@ import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
+	public testPrefab!: GameObject;
 
 	override Start(): void {
 		if (RunUtil.IsServer()) {
@@ -26,6 +27,8 @@ export default class DemoManager extends AirshipBehaviour {
 
 			Airship.loadingScreen.FinishLoading();
 		}
+
+		Object.Instantiate(this.testPrefab, new Vector3(0, 0, 0), Quaternion.identity, this.spawnPosition.transform);
 	}
 
 	public SpawnPlayer(player: Player): void {

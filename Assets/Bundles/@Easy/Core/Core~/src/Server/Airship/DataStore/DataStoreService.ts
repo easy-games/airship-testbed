@@ -1,18 +1,15 @@
 import { OnStart, Service } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { Result } from "Shared/Types/Result";
+import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 
-/**
- * The Data Store provides simple key/value persistent storage.
- *
- * The data store provides durable storage that can be accessed from any game server. Data access is slower than
- * the Cache Store, but the data will never expire.
- *
- * The Data Store is good for things like user configuration settings. If you want to keep track of user statistics or
- * inventory, check out the Leaderboard and AirshipInventory systems.
- */
 @Service({})
 export class DataStoreService implements OnStart {
+	constructor() {
+		if (RunUtil.IsServer()) Platform.server.dataStore = this;
+	}
+
 	OnStart(): void {}
 
 	/**

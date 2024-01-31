@@ -23,8 +23,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointCenterHero, true);
 		}
 		this.ClearSorts();
-		this.CreateSort(SortId.Popular, "Popular", "featured");
-		// this.CreateSort(SortId.Popular, "Popular", "featured");
+		// this.CreateSort(SortId.Popular, "Popular");
+		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		task.spawn(() => {
 			this.FetchGames();
 		});
@@ -44,7 +44,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private CreateSort(sortId: SortId, title: string, backendName: string): void {
+	private CreateSort(sortId: SortId, title: string): void {
 		const sortGo = Object.Instantiate(this.sortPrefab, this.mainContent) as GameObject;
 		const sortComponent = sortGo.GetComponent<SortComponent>();
 		sortComponent.SetTitle(title);
@@ -66,10 +66,16 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		const data = DecodeJSON<GamesDto>(res.data);
 		// print("Games data: " + inspect(data));
 
-		// Popular
-		{
-			const sortComponent = this.sorts.get(SortId.Popular)!;
-			sortComponent.SetGames(data.featured);
+		const sorts: SortId[] = [
+			// SortId.Popular,
+			SortId.RecentlyUpdated,
+		];
+
+		for (let sortId of sorts) {
+			const sortComponent = this.sorts.get(sortId)!;
+
+			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
+			sortComponent.SetGames(games);
 		}
 	}
 

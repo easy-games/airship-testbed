@@ -1,9 +1,14 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Platform } from "Shared/Airship";
 import { Result } from "Shared/Types/Result";
+import { RunUtil } from "Shared/Util/RunUtil";
 
-/** Provides access to matchmaking status. */
 @Controller({})
 export class MatchmakingController implements OnStart {
+	constructor() {
+		if (RunUtil.IsClient()) Platform.client.matchmaking = this;
+	}
+
 	OnStart(): void {}
 
 	/**

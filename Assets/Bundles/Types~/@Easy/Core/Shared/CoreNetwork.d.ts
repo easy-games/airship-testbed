@@ -110,6 +110,7 @@ export declare const CoreNetwork: {
             Spawn: RemoteEvent<[objectId: number, ownerClientId?: number | undefined]>;
             SetHealth: RemoteEvent<[characterId: number, health: number]>;
             SetMaxHealth: RemoteEvent<[characterId: number, health: number]>;
+            Death: RemoteEvent<[objectId: number]>;
         };
     };
 };
