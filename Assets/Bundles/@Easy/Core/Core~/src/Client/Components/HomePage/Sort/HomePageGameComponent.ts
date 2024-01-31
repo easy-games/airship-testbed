@@ -47,9 +47,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			remoteImage.StartDownload();
 			const downloadConn = remoteImage.OnFinishedLoading((success) => {
 				if (success) {
-					remoteImage.image.color = new Color(1, 1, 1, 1);
+					remoteImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
-					remoteImage.image.color = new Color(0, 0, 0, 0.3);
+					remoteImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
 			this.bin.Add(() => {
@@ -71,9 +71,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			this.orgImage.StartDownload();
 			const downloadConn = this.orgImage.OnFinishedLoading((success) => {
 				if (success) {
-					this.orgImage.image.color = new Color(1, 1, 1, 1);
+					this.orgImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
-					this.orgImage.image.color = new Color(0, 0, 0, 0.3);
+					this.orgImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
 			this.bin.Add(() => {

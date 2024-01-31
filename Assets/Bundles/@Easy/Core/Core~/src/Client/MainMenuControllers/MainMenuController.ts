@@ -66,6 +66,12 @@ export class MainMenuController implements OnStart {
 			this.avatarView.HideAvatar();
 		}
 
+		const gameBG = this.refs.GetValue("UI", "GameBG");
+		const mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
+		const isMainMenu = Game.context === CoreContext.MAIN_MENU;
+		gameBG.SetActive(!isMainMenu);
+		mainMenuBG.SetActive(isMainMenu);
+
 		const closeButton = this.refs.GetValue("UI", "CloseButton");
 		if (Game.context === CoreContext.MAIN_MENU) {
 			const mouse = new Mouse();
@@ -73,13 +79,6 @@ export class MainMenuController implements OnStart {
 
 			closeButton.SetActive(false);
 		} else {
-			const bg = this.refs.GetValue("UI", "Background");
-
-			const bgImage = bg.GetComponent<Image>();
-			const color = bgImage.color;
-			color.a = 0.98;
-			bgImage.color = color;
-
 			CanvasAPI.OnClickEvent(closeButton, () => {
 				AppManager.Close();
 			});
@@ -165,7 +164,7 @@ export class MainMenuController implements OnStart {
 					value.Init(this, key);
 				}
 			}
-			
+
 			this.RouteToPage(MainMenuPageType.Home, true, true);
 		}
 

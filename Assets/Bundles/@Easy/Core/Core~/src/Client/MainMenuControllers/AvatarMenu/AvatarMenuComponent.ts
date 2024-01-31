@@ -154,8 +154,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointBirdsEye, true);
 		}
 
-		this.LoadAllOutfits();
-		this.SelectMainNav(0);
+		task.spawn(() => {
+			this.LoadAllOutfits();
+			this.SelectMainNav(0);
+		});
 	}
 
 	override ClosePage(instant?: boolean): void {
