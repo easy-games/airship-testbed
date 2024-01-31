@@ -586,13 +586,27 @@
 		return (shadowDepth0 + shadowDepth1 + shadowDepth2 + shadowDepth3) * 0.25;
     }
 
+    half CalculatePreshadowFactor(half3 worldNormal, half3 lightDir)
+    {
+        //Do a small angle where shadows aggressively blend in based on incidence from the light - this stops shadows popping but they 
+        //appear a little 'earlier' than strictly realistic
+        const half lightFadeAngle = 0.1; //0.1 is about 6 degrees
+        half lightTerm = dot(worldNormal, -lightDir);
+        lightTerm = max(lightTerm, 0);
+        half underFadeAngleFactor = lightTerm < lightFadeAngle ? 1.0 : 0.0;
+        lightTerm = lerp(1.0, lightTerm / lightFadeAngle, underFadeAngleFactor);
+        
+        return lightTerm;
+    }
+
     half GetShadow(vertToFrag input, half3 worldNormal, half3 lightDir)
     {
         //Shadows
-        //Todo: move this to vertex interpolator
+		half lightTerm = CalculatePreshadowFactor(worldNormal, lightDir);
+                                      
         half3 shadowPos0 = input.shadowCasterPos0.xyz / input.shadowCasterPos0.w;
         half2 shadowUV0 = shadowPos0.xy * 0.5 + 0.5;
-                
+                    
         if (shadowUV0.x < 0 || shadowUV0.x > 1 || shadowUV0.y < 0 || shadowUV0.y > 1)
         {
             //Check the distant cascade
@@ -601,7 +615,7 @@
 
             if (shadowUV1.x < 0 || shadowUV1.x > 1 || shadowUV1.y < 0 || shadowUV1.y > 1)
             {
-                return 1;
+                return lightTerm;
             }            
 
             // Compare depths (shadow caster and current pixel)
@@ -611,10 +625,8 @@
 
             half3 input = half3(shadowUV1.x, 1 - shadowUV1.y, sampleDepth1);
             half shadowFactor = SAMPLE_TEXTURE2D_SHADOW(_GlobalShadowTexture1, sampler_GlobalShadowTexture1, input);
-            //float range = 0.42;
-            //shadowFactor = min(smoothstep(range, range + 0.05, saturate(dot(worldNormal, -lightDir))), shadowFactor);
-            
-            return shadowFactor;
+     
+            return shadowFactor * lightTerm;
         }
         else
         {
@@ -622,12 +634,8 @@
             half sampleDepth0 = -shadowPos0.z * 0.5f + 0.5f;
             //half bias = 0.0001;
             half shadowFactor0 =  GetShadowSample(_GlobalShadowTexture0, sampler_GlobalShadowTexture0, shadowUV0, 0, sampleDepth0);
-
-            //Quick darkening
-            //float range = 0.42;
-            //shadowFactor0 = min(smoothstep(range, range+0.05, saturate(dot(worldNormal, -lightDir))), shadowFactor0);
-            
-            return shadowFactor0;
+ 
+            return shadowFactor0 * lightTerm;
         }
     }
 
