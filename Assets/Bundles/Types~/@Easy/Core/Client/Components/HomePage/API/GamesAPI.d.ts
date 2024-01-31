@@ -4,11 +4,11 @@ export interface GameDto {
     iconImageId: string;
     id: string;
     name: string;
-    lastVersionUpdate: string;
+    lastVersionUpdate?: string;
     organization: {
         createdAt: string;
         description: string;
-        icon: string;
+        iconImageId: string;
         id: string;
         name: string;
         slug: string;

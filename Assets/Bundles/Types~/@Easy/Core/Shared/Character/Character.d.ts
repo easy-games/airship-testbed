@@ -28,6 +28,7 @@ export default class Character extends AirshipBehaviour {
     onDespawn: Signal<void>;
     onStateChanged: Signal<[newState: CharacterState, oldState: CharacterState]>;
     onHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
+    private despawned;
     Awake(): void;
     Start(): void;
     Init(player: Player | undefined, id: number): void;
@@ -37,7 +38,12 @@ export default class Character extends AirshipBehaviour {
      * You can call it from the client only when using Client Authoratative characters.
      */
     Teleport(pos: Vector3, lookDirection?: Vector3): void;
-    OnDisable(): void;
+    /**
+     * Despawns this character.
+     *
+     * **SERVER ONLY METHOD**
+     */
+    Despawn(): void;
     IsDestroyed(): boolean;
     IsAlive(): boolean;
     IsDead(): boolean;
