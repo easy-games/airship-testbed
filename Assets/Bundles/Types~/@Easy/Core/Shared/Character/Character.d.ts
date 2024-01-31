@@ -3,6 +3,7 @@
 /// <reference types="@easy-games/compiler-types" />
 import { CharacterAnimator } from "./Animation/CharacterAnimator";
 import Inventory from "../Inventory/Inventory";
+import { HeldItemManager } from "../Item/HeldItems/HeldItemManager";
 import { Player } from "../Player/Player";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -24,6 +25,7 @@ export default class Character extends AirshipBehaviour {
     /** A bin that is cleaned when the entity despawns. */
     readonly bin: Bin;
     inventory: Inventory;
+    heldItems: HeldItemManager;
     onDeath: Signal<void>;
     onDespawn: Signal<void>;
     onStateChanged: Signal<[newState: CharacterState, oldState: CharacterState]>;

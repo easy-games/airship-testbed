@@ -1,7 +1,8 @@
+import { Player } from "../Player/Player";
 import { DataStreamItems } from "../Util/DataStreamTypes";
 export declare class CustomMoveData<T = unknown, K = unknown> {
-    /** Client ID. */
-    readonly clientId: number;
+    /** Player. */
+    readonly player: Player;
     /** The server tick in which the event was created. */
     readonly tick: number;
     /** The key. Use `is` to narrow the type. */
@@ -9,8 +10,8 @@ export declare class CustomMoveData<T = unknown, K = unknown> {
     /** The value. Use `is` to narrow the type. */
     readonly value: T;
     constructor(
-    /** Client ID. */
-    clientId: number, 
+    /** Player. */
+    player: Player, 
     /** The server tick in which the event was created. */
     tick: number, 
     /** The key. Use `is` to narrow the type. */

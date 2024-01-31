@@ -8,6 +8,7 @@ export declare class PlayersSingleton implements OnStart {
     private players;
     private playerManagerBridge;
     private server?;
+    private playersPendingReady;
     constructor();
     OnStart(): void;
     private InitClient;
@@ -43,6 +44,8 @@ export declare class PlayersSingleton implements OnStart {
      */
     FindByFuzzySearch(searchName: string): Player | undefined;
     FindByClientId(clientId: number): Player | undefined;
+    /** Special method used for startup handshake. */
+    FindByClientIdIncludePending(clientId: number): Player | undefined;
     FindByUserId(userId: string): Player | undefined;
     FindByUsername(name: string): Player | undefined;
 }
