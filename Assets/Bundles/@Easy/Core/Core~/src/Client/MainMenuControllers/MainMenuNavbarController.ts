@@ -3,7 +3,6 @@ import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
@@ -142,14 +141,17 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
-		const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
-		if (selected) {
-			text.color = new Color(1, 1, 1, 1);
-			// go.transform.GetChild(0).gameObject.SetActive(true);
-		} else {
-			text.color = ColorUtil.HexToColor("AEC5FF");
-			// go.transform.GetChild(0).gameObject.SetActive(false);
-		}
+		const img = go.GetComponent<Image>();
+		img.TweenGraphicColor(selected ? new Color(255, 255, 255, 69) : new Color(24, 25, 26, 255), 0.2);
+
+		// const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+		// if (selected) {
+		// 	text.color = new Color(1, 1, 1, 1);
+		// 	// go.transform.GetChild(0).gameObject.SetActive(true);
+		// } else {
+		// 	text.color = ColorUtil.HexToColor("AEC5FF");
+		// 	// go.transform.GetChild(0).gameObject.SetActive(false);
+		// }
 	}
 
 	private Disconnect(): void {
