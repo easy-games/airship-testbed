@@ -22,7 +22,6 @@ export declare class LocalCharacterSingleton implements OnStart {
     humanoidCameraMode: HumanoidCameraMode | undefined;
     private orbitCameraMode;
     private characterCameraMode;
-    private defaultFirstPerson;
     private firstSpawn;
     private sprintOverlayEmission?;
     private moveDirWorldSpace;
@@ -54,16 +53,12 @@ export declare class LocalCharacterSingleton implements OnStart {
     private SetLookBackwards;
     ToggleFirstPerson(): void;
     /**
-     * Changes the perspective of the currently spawned local character.
+     * Changes the preferred perspective for the local character.
      *
      * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetCharacterCameraMode()}
-     *
-     * You may also want to call {@link SetDefaultFirstPerson} to change the default for when new characters spawn.
      */
     SetFirstPerson(value: boolean): void;
     GetEntityInput(): EntityInput | undefined;
-    SetDefaultFirstPerson(val: boolean): void;
-    IsDefaultFirstPerson(): boolean;
     /**
      * When set to true, the move input will always make "W" point north, "A" west, etc.
      *
