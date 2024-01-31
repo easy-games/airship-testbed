@@ -29,12 +29,8 @@ export class TeamChatCommand extends ChatCommand {
 		)}`;
 
 		for (const teamPlayer of team.GetPlayers()) {
-			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(teamPlayer.clientId, message, player.clientId);
-			CoreNetwork.ServerToClient.PlayerChatted.server.FireClient(
-				teamPlayer.clientId,
-				rawMessage,
-				player.clientId,
-			);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(teamPlayer, message, player.clientId);
+			CoreNetwork.ServerToClient.PlayerChatted.server.FireClient(teamPlayer, rawMessage, player.clientId);
 		}
 	}
 }

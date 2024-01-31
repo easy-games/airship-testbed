@@ -58,7 +58,7 @@ export class CharactersSingleton implements OnStart {
 			Airship.players.ObservePlayers((player) => {
 				for (let character of this.characters) {
 					CoreNetwork.ServerToClient.Character.Spawn.server.FireClient(
-						player.clientId,
+						player,
 						character.id,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
@@ -219,7 +219,9 @@ export class CharactersSingleton implements OnStart {
 			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
 				const allData = customData.Decode() as { key: unknown; value: unknown }[];
 				for (const data of allData) {
-					const moveEvent = new CustomMoveData(character.player?.clientId ?? -1, tick, data.key, data.value);
+					const player = character.player;
+					if (!player) continue;
+					const moveEvent = new CustomMoveData(player, tick, data.key, data.value);
 					this.onServerCustomMoveCommand.Fire(moveEvent);
 				}
 			});

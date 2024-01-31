@@ -149,7 +149,7 @@ export class EntityItemManager {
 					const lookVec = event.value.l;
 					heldItemManager.OnNewState(event.value.s, lookVec);
 					CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
-						event.clientId,
+						event.player,
 						event.value.e,
 						event.value.s,
 						lookVec,
