@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Character
   - TeamColor
+  - TestTag
   layers:
   - Default
   - TransparentFX
