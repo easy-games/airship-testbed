@@ -586,7 +586,7 @@
 		return (shadowDepth0 + shadowDepth1 + shadowDepth2 + shadowDepth3) * 0.25;
     }
 
-    half CalculatePreshadowFactor(half3 worldNormal, half3 lightDir)
+    half CalculateShadowLightTerm(half3 worldNormal, half3 lightDir)
     {
         //Do a small angle where shadows aggressively blend in based on incidence from the light - this stops shadows popping but they 
         //appear a little 'earlier' than strictly realistic
@@ -602,8 +602,12 @@
     half GetShadow(vertToFrag input, half3 worldNormal, half3 lightDir)
     {
         //Shadows
-		half lightTerm = CalculatePreshadowFactor(worldNormal, lightDir);
-                                      
+		half lightTerm = CalculateShadowLightTerm(worldNormal, lightDir);
+        if (lightTerm < 0.001)//benchmark me
+        {
+            return 0;
+        }
+
         half3 shadowPos0 = input.shadowCasterPos0.xyz / input.shadowCasterPos0.w;
         half2 shadowUV0 = shadowPos0.xy * 0.5 + 0.5;
                     
