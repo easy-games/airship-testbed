@@ -64,11 +64,6 @@ export class CharactersSingleton implements OnStart {
 					);
 				}
 			});
-			Airship.characters.ObserveCharacters((character) => {
-				character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
-					NetworkUtil.Despawn(character.gameObject);
-				});
-			});
 		}
 
 		Airship.characters.ObserveCharacters((character) => {
@@ -76,8 +71,6 @@ export class CharactersSingleton implements OnStart {
 				if (RunUtil.IsServer()) {
 					NetworkUtil.Despawn(character.gameObject);
 				}
-				print("onDeath for player " + character.player?.username);
-				character.player?.SetCharacter(undefined);
 			});
 		});
 
@@ -87,6 +80,9 @@ export class CharactersSingleton implements OnStart {
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
 				this.FindById(id)?.SetHealth(maxHealth);
+			});
+			CoreNetwork.ServerToClient.Character.Death.client.OnServerEvent((id) => {
+				this.FindById(id)?.onDeath.Fire();
 			});
 		}
 	}
