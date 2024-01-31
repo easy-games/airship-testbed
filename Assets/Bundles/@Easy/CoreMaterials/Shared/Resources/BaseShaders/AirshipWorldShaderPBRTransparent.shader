@@ -20,7 +20,7 @@ Shader "Airship/WorldShaderPBRTransparent"
 
         [Toggle] _ZWrite("Z-Write", Float) = 1.0
 
-        [Toggle] POINT_FILTER("Use Stylized Point Filtering", Float) = 1.0
+        [Toggle] POINT_FILTER("Use Stylized Point Filtering", Float) = 0.0
         [KeywordEnum(OFF, LOCAL, WORLD)] TRIPLANAR_STYLE("Triplanar", Float) = 0.0
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
 
