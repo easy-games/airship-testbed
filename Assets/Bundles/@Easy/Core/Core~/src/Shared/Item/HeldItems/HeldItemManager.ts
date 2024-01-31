@@ -83,6 +83,7 @@ export class HeldItemManager {
 
 	constructor(character: Character) {
 		this.character = character;
+		character.heldItems = this;
 		this.Log("Creating Held Items");
 		this.currentHeldItem = this.GetOrCreateHeldItem();
 
