@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StylizedLeaf 1
+  m_Name: Stylized_Foliage
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -17,7 +17,6 @@ Material:
   - RIM_LIGHT_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_WORLD
-  - VERTEX_LIGHT_ON
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
@@ -68,9 +67,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 073faecfb89b9a043bd026536696ca91, type: 3}
+        m_Texture: {fileID: 2800000, guid: 21d29a9996befda4cb30d3fdceb0ad79, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 100}
+        m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -108,7 +107,7 @@ Material:
     - RIM_LIGHT: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 2
-    - VERTEX_LIGHT: 1
+    - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -126,8 +125,8 @@ Material:
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _Parallax: 0.02
-    - _RimIntensity: 1.48
-    - _RimPower: 4.07
+    - _RimIntensity: 1
+    - _RimPower: 2
     - _RoughOverride: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
@@ -135,16 +134,16 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 0
-    - _TriplanarScale: 0.5
+    - _TriplanarScale: 0.25
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.11372547, g: 0.6666667, b: 0.44405702, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0.5896226, g: 1, b: 0.6042894, a: 1}
+    - _RimColor: {r: 0.026241222, g: 0.47932023, b: 0.07227186, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 1, g: 0.8655798, b: 0.096226394, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

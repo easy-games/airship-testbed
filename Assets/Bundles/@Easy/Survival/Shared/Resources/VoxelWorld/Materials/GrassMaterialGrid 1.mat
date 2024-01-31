@@ -7,24 +7,16 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StylizedLeaf 1
-  m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
+  m_Name: GrassMaterialGrid 1
+  m_Shader: {fileID: 4800000, guid: 61ee7065255edc547b5c0870379e5d17, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
-  - RIM_LIGHT_ON
-  - SLIDER_OVERRIDE_ON
-  - TRIPLANAR_STYLE_WORLD
-  - VERTEX_LIGHT_ON
+  m_ValidKeywords: []
   m_InvalidKeywords:
-  - EXPLICIT_MAPS
+  - EXPLICIT_MAPS_ON
   - METAL_ON_ON
   - OVERRIDE_ON
   - _LIGHTS_LIGHTS0
-  - _TRIPLANAR_OFF
-  - _ZWRITE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -35,10 +27,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AOTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -63,14 +51,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EmissiveMaskTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 073faecfb89b9a043bd026536696ca91, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 100}
+        m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -91,60 +75,59 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _RoughTex:
+    - _RoughnessTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - AO_ON: 0
-    - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
-    - INSTANCE_DATA: 0
+    - EXPLICIT_MAPS_ON: 0
     - METAL_ON: 1
-    - NUM_LIGHTS: 0
-    - OVERRIDE: 1
-    - POINT_FILTER: 0
-    - RIM_LIGHT: 1
-    - SLIDER_OVERRIDE: 1
-    - TRIPLANAR_STYLE: 2
-    - VERTEX_LIGHT: 1
+    - OVERRIDE: 0
     - _Alpha: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _DeformScale: 0.8
+    - _DeformSpeed: 0
+    - _DeformStrength: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Emissive: 0
-    - _EmissiveMix: 1
+    - _FlutterSpeed: 1
+    - _FlutterStrength: 0.5
+    - _FresnelPower: 0
+    - _FresnelStrength: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _LightMix: 0
+    - _LightShimmerStrength: 0
     - _Lights: 0
     - _MetalOverride: 0
     - _Metallic: 0
+    - _MinLight: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OverrideStrength: 0
     - _Parallax: 0.02
-    - _RimIntensity: 1.48
-    - _RimPower: 4.07
-    - _RoughOverride: 1
-    - _SkyShineStrength: 0
+    - _RimIntensity: 0
+    - _RimPower: 0
+    - _RoughOverride: 0.04
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _SunScale: 1
-    - _Triplanar: 0
-    - _TriplanarScale: 0.5
+    - _TexColorStrength: 1
     - _UVSec: 0
+    - _WindSpeed: 0
+    - _WindStrength: 1
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.11372547, g: 0.6666667, b: 0.44405702, a: 1}
+    - _Color: {r: 0, g: 0.42352942, b: 0, a: 1}
+    - _ColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorB: {r: 1, g: 1, b: 1, a: 1}
+    - _DarkColor: {r: 0, g: 0.19461787, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0.5896226, g: 1, b: 0.6042894, a: 1}
-    - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 0.8415094, g: 0.2657524, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
