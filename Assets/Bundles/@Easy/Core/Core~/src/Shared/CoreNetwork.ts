@@ -140,7 +140,7 @@ export const CoreNetwork = {
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
 		Character: {
-			Spawn: new RemoteEvent<[objectId: number, ownerClientId?: number]>(),
+			Spawn: new RemoteEvent<[characterId: number, objectId: number, ownerClientId?: number]>(),
 			SetHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			SetMaxHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			Death: new RemoteEvent<[objectId: number]>(),

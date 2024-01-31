@@ -926,6 +926,17 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 131862466}
       modified: 1
+    - name: testPrefab
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4365459686203615130, guid: 555b2e7a93ea944eba9f8abaca38051d, type: 3}
+      modified: 1
 --- !u!114 &913210014
 MonoBehaviour:
   m_ObjectHideFlags: 0
