@@ -31,10 +31,7 @@ export default class SortComponent extends AirshipBehaviour {
 			const gameComponent = gameGo.GetComponent<HomePageGameComponent>();
 			gameComponent.Init(gameDto);
 			if (this.pageScrollRect) {
-				print("scroll rect found!");
 				gameComponent.SetDragRedirectTarget(this.pageScrollRect);
-			} else {
-				print("scroll rect not found :(");
 			}
 		}
 	}

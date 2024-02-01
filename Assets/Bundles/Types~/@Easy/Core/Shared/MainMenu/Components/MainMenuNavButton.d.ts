@@ -2,6 +2,7 @@
 export default class MainMenuNavButton extends AirshipBehaviour {
     selected: boolean;
     image: Image;
+    trueShadow: TrueShadow;
     Awake(): void;
     Start(): void;
     OnDestroy(): void;
