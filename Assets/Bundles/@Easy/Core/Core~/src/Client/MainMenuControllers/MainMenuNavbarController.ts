@@ -76,6 +76,7 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
+		this.UpdateNavButton(currentSelectedNavbarButton, true);
 		this.mainMenuController.onCurrentPageChanged.Connect((page, oldPage) => {
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, false);
