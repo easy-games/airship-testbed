@@ -4,6 +4,7 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 export default class MainMenuNavButton extends AirshipBehaviour {
 	public selected = false;
 	public image!: Image;
+	public trueShadow!: TrueShadow;
 
 	public Awake(): void {
 		this.image = this.gameObject.GetComponent<Image>();
@@ -26,6 +27,9 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 
 	public SetSelected(val: boolean): void {
 		this.selected = val;
-		this.image.TweenGraphicColor(val ? new Color(1, 1, 1, 0.27) : ColorUtil.HexToColor("18191A"), 0.12);
+
+		this.image.color = val ? new Color(1, 1, 1, 0.05) : ColorUtil.HexToColor("18191A");
+		// this.image.TweenGraphicColor(val ? new Color(1, 1, 1, 0.05) : ColorUtil.HexToColor("18191A"), 0.12);
+		this.trueShadow.enabled = !val;
 	}
 }

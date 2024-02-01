@@ -5,7 +5,7 @@ export default class SortComponent extends AirshipBehaviour {
 	public titleText!: GameObject;
 	public content!: Transform;
 	public gamePrefab!: GameObject;
-	public scrollRect!: ScrollRect;
+	public pageScrollRect?: ScrollRect;
 
 	override Awake(): void {
 		this.Clear();
@@ -30,7 +30,12 @@ export default class SortComponent extends AirshipBehaviour {
 			const gameGo = Object.Instantiate(this.gamePrefab, this.content) as GameObject;
 			const gameComponent = gameGo.GetComponent<HomePageGameComponent>();
 			gameComponent.Init(gameDto);
-			gameComponent.SetDragRedirectTarget(this.scrollRect);
+			if (this.pageScrollRect) {
+				print("scroll rect found!");
+				gameComponent.SetDragRedirectTarget(this.pageScrollRect);
+			} else {
+				print("scroll rect not found :(");
+			}
 		}
 	}
 

@@ -1,3 +1,4 @@
+import ObjectUtils from "@easy-games/unity-object-utils";
 import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
@@ -11,6 +12,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
 	public spacerPrefab!: GameObject;
 	public sortPrefab!: GameObject;
+	public scrollRect!: ScrollRect;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 
@@ -23,8 +25,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointCenterHero, true);
 		}
 		this.ClearSorts();
-		// this.CreateSort(SortId.Popular, "Popular");
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
+		this.CreateSort(SortId.Popular, "Popular");
 		task.spawn(() => {
 			this.FetchGames();
 		});
@@ -48,6 +50,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		const sortGo = Object.Instantiate(this.sortPrefab, this.mainContent) as GameObject;
 		const sortComponent = sortGo.GetComponent<SortComponent>();
 		sortComponent.SetTitle(title);
+		sortComponent.pageScrollRect = this.scrollRect;
 		this.sorts.set(sortId, sortComponent);
 	}
 
@@ -66,15 +69,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		const data = DecodeJSON<GamesDto>(res.data);
 		// print("Games data: " + inspect(data));
 
-		const sorts: SortId[] = [
-			// SortId.Popular,
-			SortId.RecentlyUpdated,
-		];
+		let sorts: SortId[];
+		sorts = ObjectUtils.keys(this.sorts);
 
 		for (let sortId of sorts) {
 			const sortComponent = this.sorts.get(sortId)!;
 
-			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
+			let games = data[SortId.RecentlyUpdated].filter((g) => g.lastVersionUpdate !== undefined);
 			sortComponent.SetGames(games);
 		}
 	}
