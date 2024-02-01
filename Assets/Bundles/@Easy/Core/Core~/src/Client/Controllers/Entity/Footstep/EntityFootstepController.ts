@@ -1,6 +1,6 @@
 import { Controller, OnStart } from "@easy-games/flamework-core";
+import { CameraReferences } from "Client/Controllers/Camera/CameraReferences";
 import { Airship } from "Shared/Airship";
-import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";
 
 @Controller({})
@@ -10,9 +10,10 @@ export class EntityFootstepController implements OnStart {
 	constructor() {}
 
 	OnStart(): void {
-		Task.Spawn(() => {
-			const camTransform = Camera.main.transform;
+		task.delay(0.1, () => {
+			const camTransform = CameraReferences.Instance().mainCamera?.transform;
 			SetInterval(0.05, () => {
+				if (camTransform === undefined) return;
 				const currentTime = Time.time;
 				const camPos = camTransform.position;
 				Profiler.BeginSample("Footsteps");
@@ -42,7 +43,7 @@ export class EntityFootstepController implements OnStart {
 					Profiler.BeginSample("PlayFootstepSound");
 					try {
 						// todo: footsteps
-						// character.animator.PlayFootstepSound(volumeScale, camPos);
+						character.animator.PlayFootstepSound(volumeScale, camPos);
 					} catch (err) {
 						Debug.LogError("footstep error: " + err);
 					}
