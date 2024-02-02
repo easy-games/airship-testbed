@@ -5,6 +5,7 @@ export declare class PlayersSingleton implements OnStart {
     onPlayerJoined: Signal<Player>;
     onPlayerDisconnected: Signal<Player>;
     joinMessagesEnabled: boolean;
+    disconnectMessagesEnabled: boolean;
     private players;
     private playerManagerBridge;
     private server?;
