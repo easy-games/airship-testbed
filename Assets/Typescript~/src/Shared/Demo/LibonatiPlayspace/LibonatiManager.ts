@@ -1,5 +1,11 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
+import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
+import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export default class LibonatiManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -9,35 +15,29 @@ export default class LibonatiManager extends AirshipBehaviour {
 	public override Awake(): void {}
 
 	override Start(): void {
-		// if (RunUtil.IsServer()) {
-		// 	Dependency<PlayerService>().ObservePlayers((player) => {
-		// 		this.SpawnPlayer(player);
-		// 	});
-		// 	const coreServerSignals = import("@Easy/Core/Server/CoreServerSignals").expect().CoreServerSignals;
-		// 	this.bin.Add(
-		// 		coreServerSignals.EntityDeath.Connect((event) => {
-		// 			event.respawnTime = 0;
-		// 			if (event.entity.player) {
-		// 				this.SpawnPlayer(event.entity.player);
-		// 			}
-		// 		}),
-		// 	);
-		// }
-		// if (RunUtil.IsClient()) {
-		// 	Dependency<LocalEntityController>().SetCharacterCameraMode(CharacterCameraMode.LOCKED);
-		// 	Dependency<LocalEntityController>().SetFirstPerson(true);
-		// 	Dependency<LoadingScreenController>().FinishLoading();
-		// }
+		if (RunUtil.IsServer()) {
+			Airship.players.ObservePlayers((player) => {
+				this.SpawnCharacter(player);
+			});
+			this.bin.Add(
+				Airship.damage.onDeath.Connect((info) => {
+					const character = info.gameObject.GetAirshipComponent<Character>();
+					if (character?.player) {
+						this.SpawnCharacter(character.player);
+					}
+				}),
+			);
+		}
+		if (RunUtil.IsClient()) {
+			Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			Airship.characters.localCharacterManager.SetFirstPerson(true);
+			Airship.loadingScreen.FinishLoading();
+		}
 	}
 
-	public SpawnPlayer(player: Player): void {
-		// const entity = Dependency<EntityService>().SpawnPlayerEntity(
-		// 	player,
-		// 	EntityPrefabType.HUMAN,
-		// 	this.spawnPosition.transform.position,
-		// );
-		// const inv = entity.GetInventory();
-		// inv.AddItem(new ItemStack(ItemType.FIREBALL));
+	public SpawnCharacter(player: Player): void {
+		const char = player.SpawnCharacter(this.spawnPosition.transform.position);
+		char.inventory?.AddItem(new ItemStack(ItemType.WOOD_SWORD, -1));
 	}
 
 	override OnDestroy(): void {
