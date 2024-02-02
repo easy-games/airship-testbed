@@ -27,6 +27,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.ClearSorts();
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");
+		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {
 			this.FetchGames();
 		});
