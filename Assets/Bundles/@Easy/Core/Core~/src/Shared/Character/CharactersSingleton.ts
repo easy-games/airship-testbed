@@ -29,6 +29,11 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
+	/**
+	 * If true, when a player disconnects their character will automatically be despawned.
+	 */
+	public autoDespawnCharactersOnPlayerDisconnect = true;
+
 	private idCounter = 0;
 
 	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
@@ -64,6 +69,13 @@ export class CharactersSingleton implements OnStart {
 						character.player?.clientId,
 					);
 				}
+			});
+
+			// Auto disconnect
+			Airship.players.onPlayerDisconnected.Connect((player) => {
+				if (!this.autoDespawnCharactersOnPlayerDisconnect) return;
+
+				player.character?.Despawn();
 			});
 		}
 
