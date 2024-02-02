@@ -30,7 +30,7 @@ export class CameraReferences {
 			return;
 		}
 		this.exists = true;
-		this.cameraHolder = refs.GetValue<Transform>("Transforms", "Root");
+		this.cameraHolder = refs.transform;
 		this.mainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
 		this.fpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
 		this.uiCamera = refs.GetValue<Camera>("Cameras", "UICamera");
