@@ -1,9 +1,9 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/no-namespace */
 // import Signal from "@rbxts/signal";
+import { Constructor } from "./Types/types";
 import type { Flamework } from "./flamework";
 import { Reflect } from "./reflect";
-import { Constructor } from "./Types/types";
 
 interface BaseDescriptor {
 	/**

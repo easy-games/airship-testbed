@@ -1,12 +1,10 @@
+/* eslint-disable no-inner-declarations */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-namespace */
 import { t } from "@rbxts/t";
-import { Constructor, EasyFileServiceConstructor, RunCore, RunCoreConstructor } from "./Types/types";
 import { Modding } from "./modding";
 import { Reflect } from "./reflect";
-
-// Hacks
-declare var require: any
-declare const RunCore: RunCoreConstructor;
-declare const EasyFileService: EasyFileServiceConstructor;
+import { Constructor } from "./Types/types";
 
 // cache bridge crossings
 const isClient = RunCore.IsClient();
@@ -85,7 +83,6 @@ export namespace Flamework {
 		return Modding.getDecorator<typeof Controller>(ctor) !== undefined;
 	}
 
-
 	function isConstructor(obj: object): obj is Constructor {
 		return "new" in obj && "constructor" in obj;
 	}
@@ -105,7 +102,7 @@ export namespace Flamework {
 
 	type LoadableConfigs = ServiceConfig | ControllerConfig;
 	let hasFlameworkIgnited = false;
-    let startedIdentifiers = new Set<string>();
+	let startedIdentifiers = new Set<string>();
 
 	/**
 	 * Initialize Flamework.
@@ -129,16 +126,16 @@ export namespace Flamework {
 		}
 
 		for (const [ctor] of Reflect.objToId) {
-            let allowed = false;
-            if (isService(ctor) && isServer) {
-                allowed = true;
-            } else if (isController(ctor) && isClient) {
-                allowed = true;
-            } else if (isSingleton(ctor)) {
+			let allowed = false;
+			if (isService(ctor) && isServer) {
+				allowed = true;
+			} else if (isController(ctor) && isClient) {
+				allowed = true;
+			} else if (isSingleton(ctor)) {
 				allowed = true;
 			}
 
-            if (!allowed) continue;
+			if (!allowed) continue;
 			if (!isConstructor(ctor)) continue;
 
 			const isPatched = Reflect.getOwnMetadata<boolean>(ctor, "flamework:isPatched");
@@ -151,22 +148,27 @@ export namespace Flamework {
 		}
 
 		const dependencies = new Array<[unknown, LoadableConfigs]>();
-		// const decoratorType = RunCore.IsServer()
-		// 	? Flamework.id<typeof Service>()
-		// 	: Flamework.id<typeof Controller>();
 
-        for (let decoratorType of [Flamework.id<typeof Service>(), Flamework.id<typeof Controller>(), Flamework.id<typeof Singleton>()]) {
-            for (const [ctor] of Modding.getSingletons()) {
-                const decorator = Modding.getDecorator<typeof Service | typeof Controller | typeof Singleton>(ctor, undefined, decoratorType);
-                if (!decorator) continue;
-    
-                const isExternal = Reflect.getOwnMetadata<boolean>(ctor, "flamework:isExternal");
-                if (isExternal && !externalClasses.has(ctor as Constructor)) continue;
-    
-                const dependency = Modding.resolveSingleton(ctor);
-                dependencies.push([dependency, decorator.arguments[0] || {}]);
-            }   
-        }
+		for (let decoratorType of [
+			Flamework.id<typeof Service>(),
+			Flamework.id<typeof Controller>(),
+			Flamework.id<typeof Singleton>(),
+		]) {
+			for (const [ctor] of Modding.getSingletons()) {
+				const decorator = Modding.getDecorator<typeof Service | typeof Controller | typeof Singleton>(
+					ctor,
+					undefined,
+					decoratorType,
+				);
+				if (!decorator) continue;
+
+				const isExternal = Reflect.getOwnMetadata<boolean>(ctor, "flamework:isExternal");
+				if (isExternal && !externalClasses.has(ctor as Constructor)) continue;
+
+				const dependency = Modding.resolveSingleton(ctor);
+				dependencies.push([dependency, decorator.arguments[0] || {}]);
+			}
+		}
 
 		const start = new Map<OnStart, string>();
 		const init = new Map<OnInit, string>();
@@ -177,21 +179,13 @@ export namespace Flamework {
 
 		dependencies.sort(([, a], [, b]) => (a.loadOrder ?? 1) < (b.loadOrder ?? 1));
 
-		// Modding.onListenerAdded<OnTick>((object) => tick.set(object, getIdentifier(object, "/OnTick")));
-		// Modding.onListenerAdded<OnPhysics>((object) => physics.set(object, getIdentifier(object, "/OnPhysics")));
-		// Modding.onListenerAdded<OnRender>((object) => render.set(object, getIdentifier(object, "/OnRender")));
-
-		// Modding.onListenerRemoved<OnTick>((object) => tick.delete(object));
-		// Modding.onListenerRemoved<OnPhysics>((object) => physics.delete(object));
-		// Modding.onListenerRemoved<OnRender>((object) => render.delete(object));
-
 		for (const [dependency] of dependencies) {
 			if (Flamework.implements<OnInit>(dependency)) init.set(dependency, getIdentifier(dependency));
 			if (Flamework.implements<OnStart>(dependency)) start.set(dependency, getIdentifier(dependency));
 		}
 
 		for (const [dependency, identifier] of init) {
-            if (startedIdentifiers.has(identifier)) continue;
+			if (startedIdentifiers.has(identifier)) continue;
 			// debug.setmemorycategory(identifier);
 			const initResult = dependency.OnInit();
 			if (Promise.is(initResult)) {
@@ -205,45 +199,12 @@ export namespace Flamework {
 
 		isInitialized = true;
 
-		// RunCore.Heartbeat.Connect((dt) => {
-		// 	for (const [dependency, identifier] of tick) {
-		// 		task.spawn(() => {
-		// 			// debug.setmemorycategory(identifier);
-		// 			dependency.onTick(dt);
-		// 		});
-		// 	}
-		// });
-
-		// RunCore.Stepped.Connect((time, dt) => {
-		// 	for (const [dependency, identifier] of physics) {
-		// 		task.spawn(() => {
-		// 			// debug.setmemorycategory(identifier);
-		// 			dependency.onPhysics(dt, time);
-		// 		});
-		// 	}
-		// });
-
-		// if (RunCore.IsClient()) {
-		// 	RunCore.RenderStepped.Connect((dt) => {
-		// 		for (const [dependency, identifier] of render) {
-		// 			task.spawn(() => {
-		// 				// debug.setmemorycategory(identifier);
-		// 				dependency.onRender(dt);
-		// 			});
-		// 		}
-		// 	});
-		// }
-
 		for (const [dependency, identifier] of start) {
-            if (startedIdentifiers.has(identifier)) continue;
-            startedIdentifiers.add(identifier)
-            coroutine.wrap(() => {
-                dependency.OnStart();
-            })();
-			// task.spawn(() => {
-				// debug.setmemorycategory(indentifier);
-				// dependency.OnStart();
-			// });
+			if (startedIdentifiers.has(identifier)) continue;
+			startedIdentifiers.add(identifier);
+			coroutine.wrap(() => {
+				dependency.OnStart();
+			})();
 		}
 
 		return dependencies;
@@ -272,7 +233,7 @@ export namespace Flamework {
 	/**
 	 * Creates a type guard from any arbitrary type.
 	 */
-	export declare function createGuard<T>(): t.check<T>;
+	declare function createGuard<T>(): t.check<T>;
 
 	/**
 	 * Hash a function using the method used internally by Flamework.

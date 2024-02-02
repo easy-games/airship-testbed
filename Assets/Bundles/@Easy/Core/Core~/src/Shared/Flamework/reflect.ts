@@ -1,8 +1,8 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-namespace */
-import type { ClassDescriptor, MethodDescriptor, PropertyDescriptor } from "./modding";
 import { Constructor } from "./Types/types";
+import type { ClassDescriptor, MethodDescriptor, PropertyDescriptor } from "./modding";
 
 /**
  * Reflection/metadata API
