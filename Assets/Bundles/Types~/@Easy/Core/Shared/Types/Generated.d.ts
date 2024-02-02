@@ -14096,7 +14096,7 @@ interface LineRenderer extends Renderer {
     Simplify(tolerance: number): void;
 }
     
-interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
     isDragging: boolean;
     redirectTarget: ScrollRect;
 
@@ -14104,6 +14104,8 @@ interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHan
     OnBeginDrag(eventData: PointerEventData): void;
     OnDrag(eventData: PointerEventData): void;
     OnEndDrag(eventData: PointerEventData): void;
+    OnPointerEnter(eventData: PointerEventData): void;
+    OnPointerExit(eventData: PointerEventData): void;
 }
     
 interface IMeshModifier {

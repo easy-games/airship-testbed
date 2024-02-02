@@ -21,7 +21,7 @@ export declare class OrbitCameraMode implements CameraMode {
     constructor(distance: number, transform: Transform, graphicalCharacter?: Transform);
     private SetupMobileControls;
     SetTransform(transform: Transform): void;
-    OnStart(camera: Camera): void;
+    OnStart(camera: Camera, rootTransform: Transform): void;
     OnStop(): void;
     OnUpdate(dt: number): void;
     OnLateUpdate(dt: number): CameraTransform;

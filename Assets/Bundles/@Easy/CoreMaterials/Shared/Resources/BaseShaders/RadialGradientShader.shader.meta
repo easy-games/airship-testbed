@@ -7,5 +7,5 @@ ShaderImporter:
   - _NoiseTex: {instanceID: 0}
   nonModifiableTextures: []
   userData: 
-  assetBundleName: 
+  assetBundleName: '@easy/corematerials_shared/resources'
   assetBundleVariant: 

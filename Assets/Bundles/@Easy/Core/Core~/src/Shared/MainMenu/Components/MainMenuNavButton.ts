@@ -28,7 +28,7 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 	public SetSelected(val: boolean): void {
 		this.selected = val;
 
-		this.image.color = val ? new Color(1, 1, 1, 0.05) : ColorUtil.HexToColor("18191A");
+		this.image.color = val ? new Color(1, 1, 1, 0.07) : ColorUtil.HexToColor("18191A");
 		// this.image.TweenGraphicColor(val ? new Color(1, 1, 1, 0.05) : ColorUtil.HexToColor("18191A"), 0.12);
 		this.trueShadow.enabled = !val;
 	}
