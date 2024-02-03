@@ -152,24 +152,24 @@ export namespace Modding {
 	/**
 	 * Registers a listener added event.
 	 */
-	export function onListenerAdded(func: ListenerAddedEvent, id?: string) {
-		// if (id !== undefined) {
-		// 	let listenerAddedEvent = listenerAddedEvents.get(id);
-		// 	if (!listenerAddedEvent) listenerAddedEvents.set(id, (listenerAddedEvent = new Signal()));
-		// 	const existingListeners = lifecycleListeners.get(id) || decoratorListeners.get(id);
-		// 	if (existingListeners) {
-		// 		for (const listener of existingListeners) {
-		// 			task.spawn(func, listener);
-		// 		}
-		// 	}
-		// 	return listenerAddedEvent.Connect(func);
-		// } else {
-		// 	for (const [listener] of listeners) {
-		// 		task.spawn(func, listener);
-		// 	}
-		// 	return listenerAdded.Connect(func);
-		// }
-	}
+	// export function onListenerAdded(func: ListenerAddedEvent, id?: string) {
+	// if (id !== undefined) {
+	// 	let listenerAddedEvent = listenerAddedEvents.get(id);
+	// 	if (!listenerAddedEvent) listenerAddedEvents.set(id, (listenerAddedEvent = new Signal()));
+	// 	const existingListeners = lifecycleListeners.get(id) || decoratorListeners.get(id);
+	// 	if (existingListeners) {
+	// 		for (const listener of existingListeners) {
+	// 			task.spawn(func, listener);
+	// 		}
+	// 	}
+	// 	return listenerAddedEvent.Connect(func);
+	// } else {
+	// 	for (const [listener] of listeners) {
+	// 		task.spawn(func, listener);
+	// 	}
+	// 	return listenerAdded.Connect(func);
+	// }
+	// }
 
 	/**
 	 * Registers a listener removed event.

@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { Player } from "Shared/Player/Player";
 import { ChatCommand } from "./ChatCommand";

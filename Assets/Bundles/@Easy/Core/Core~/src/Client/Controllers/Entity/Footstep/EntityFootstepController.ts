@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";

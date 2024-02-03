@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";

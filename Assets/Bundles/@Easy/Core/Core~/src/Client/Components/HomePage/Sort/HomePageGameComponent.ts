@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { TransferController } from "Client/MainMenuControllers/Transfer/TransferController";
 import DateParser from "Shared/DateParser";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";

@@ -1,7 +1,6 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-namespace */
-import { t } from "@rbxts/t";
 import { Modding } from "./modding";
 import { Reflect } from "./reflect";
 import { Constructor } from "./Types/types";
@@ -10,6 +9,9 @@ import { Constructor } from "./Types/types";
 const isClient = RunCore.IsClient();
 const isServer = RunCore.IsServer();
 
+/**
+ * Dependency Injection Framework for Airship
+ */
 export namespace Flamework {
 	export interface ServiceConfig {
 		loadOrder?: number;
@@ -231,11 +233,6 @@ export namespace Flamework {
 	export declare function implements<T>(object: unknown): object is T;
 
 	/**
-	 * Creates a type guard from any arbitrary type.
-	 */
-	declare function createGuard<T>(): t.check<T>;
-
-	/**
 	 * Hash a function using the method used internally by Flamework.
 	 * If a context is provided, then Flamework will create a new hash
 	 * if the specified string does not have one in that context.
@@ -243,29 +240,6 @@ export namespace Flamework {
 	 * @param context A scope for the hash
 	 */
 	export declare function hash(str: string, context?: string): string;
-
-	/**
-	 * Utility for use in test suites, not recommended for anything else.
-	 */
-	export namespace Testing {
-		export function patchDependency<T>(patchedClass: Constructor<unknown>, id?: string) {
-			if (id === undefined) throw `Patching failed, no ID`;
-
-			const idCtor = Reflect.idToObj.get(id) as Constructor;
-			if (idCtor === undefined) throw `Dependency ${id} was not found and cannot be patched.`;
-			if (Modding.getSingletons().has(idCtor)) throw `${id} has already been resolved, continuing is unsafe`;
-
-			const objMetadata = Reflect.metadata.get(idCtor);
-			if (!objMetadata) throw `Dependency ${id} has no existing metadata.`;
-
-			Reflect.defineMetadata(idCtor, "flamework:isPatched", true);
-			Reflect.metadata.delete(idCtor);
-			Reflect.metadata.set(patchedClass, objMetadata);
-
-			Reflect.objToId.set(patchedClass, id);
-			Reflect.idToObj.set(id, patchedClass);
-		}
-	}
 }
 
 /**

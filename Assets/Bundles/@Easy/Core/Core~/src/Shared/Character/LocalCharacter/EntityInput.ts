@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import Character from "Shared/Character/Character";
 import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";

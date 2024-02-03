@@ -1,7 +1,7 @@
 import { UserController } from "@Easy/Core/Client/Airship/User/UserController";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Network } from "Shared/Network";
 import Scoreboard from "./Scoreboard";
 

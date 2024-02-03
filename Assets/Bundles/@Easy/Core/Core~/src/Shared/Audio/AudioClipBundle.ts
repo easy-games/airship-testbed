@@ -1,4 +1,4 @@
-import {} from "@easy-games/flamework-core";
+import {} from "Shared/Flamework";
 import { Task } from "Shared/Util/Task";
 import { AudioManager, PlaySoundConfig } from "./AudioManager";
 
