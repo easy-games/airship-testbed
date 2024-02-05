@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";

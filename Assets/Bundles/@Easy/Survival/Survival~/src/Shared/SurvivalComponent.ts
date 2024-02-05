@@ -1,4 +1,4 @@
-import { Flamework } from "@easy-games/flamework-core";
+import { Flamework } from "@Easy/Core/Shared/Flamework";
 import { RunUtil } from "../../../../../Types~/@Easy/Core/Shared/Util/RunUtil";
 
 export default class SurvivalComponent extends AirshipBehaviour {

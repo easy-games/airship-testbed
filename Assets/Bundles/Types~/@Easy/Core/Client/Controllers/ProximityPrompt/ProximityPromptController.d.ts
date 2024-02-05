@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { ProximityPrompt } from "./ProximityPrompt";
 export declare class ProximityPromptController implements OnStart {
     /** Keyboard instance. */

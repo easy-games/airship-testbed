@@ -1,6 +1,4 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { GeneratorCreationConfig } from "../../../Shared/Generator/GeneratorMeta";
 import { GeneratorState } from "./GeneratorState";
 export declare class GeneratorService implements OnStart {

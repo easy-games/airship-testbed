@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../Flamework";
 import { RemoteFunction } from "../Network/RemoteFunction";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
 import Inventory, { InventoryDto } from "./Inventory";

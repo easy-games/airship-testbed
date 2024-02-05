@@ -24,6 +24,7 @@
             "@*": [
                 "../../../../Types~/@*"
             ],
+			"@Easy/Core/*": ["./*"],
             "Client/*": ["./Client/*"],
             "Server/*": ["./Server/*"],
             "Shared/*": ["./Shared/*"]

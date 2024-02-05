@@ -1,4 +1,4 @@
-import { Flamework } from "@easy-games/flamework-core";
+import { Flamework } from "@Easy/Core/Shared/Flamework";
 
 Flamework.AddPath("assets/bundles/client/resources/ts/controllers/global", "^.*controller.lua$");
 Flamework.AddPath("assets/bundles/shared/resources/ts/strollers/global", "^.*.lua$");

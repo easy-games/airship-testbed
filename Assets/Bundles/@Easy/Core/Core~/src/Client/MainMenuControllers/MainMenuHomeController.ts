@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";

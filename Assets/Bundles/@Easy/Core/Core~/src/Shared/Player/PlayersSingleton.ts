@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";

@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { ChatCommand } from "Shared/Commands/ChatCommand";

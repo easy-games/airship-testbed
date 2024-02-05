@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { Signal } from "../../../Shared/Util/Signal";
 export declare class AuthController implements OnStart {
     private apiKey;

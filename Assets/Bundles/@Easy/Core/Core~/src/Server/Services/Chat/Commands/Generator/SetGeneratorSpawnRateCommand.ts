@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { GeneratorService } from "Server/Services/Generator/GeneratorService";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { Player } from "Shared/Player/Player";

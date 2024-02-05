@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard } from "Shared/UserInput";
@@ -18,7 +18,10 @@ export class MainMenuAddFriendsController implements OnStart {
 	private canvas: Canvas | undefined;
 	private inputFieldSelected = false;
 
-	constructor(private readonly authController: AuthController, private readonly socketController: SocketController) {}
+	constructor(
+		private readonly authController: AuthController,
+		private readonly socketController: SocketController,
+	) {}
 
 	OnStart(): void {}
 

@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import Character from "../../../Character/Character";
 import { HeldItem } from "../HeldItem";
 export declare class MeleeHeldItem extends HeldItem {

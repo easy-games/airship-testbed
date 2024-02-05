@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { CameraMode, CameraTransform } from "..";
 export declare class HumanoidCameraMode implements CameraMode {
     private characterGO;

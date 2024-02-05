@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "Shared/Flamework";
 import Object from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";

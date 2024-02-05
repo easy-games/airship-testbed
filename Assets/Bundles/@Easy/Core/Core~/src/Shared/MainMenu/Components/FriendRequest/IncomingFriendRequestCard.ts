@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { User } from "Client/MainMenuControllers/User/User";
 import { Bin } from "Shared/Util/Bin";

@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../../Shared/Flamework";
 import { SocketController } from "../../Socket/SocketController";
 import { Signal } from "../../../../Shared/Util/Signal";
 import { MainMenuController } from "../../MainMenuController";

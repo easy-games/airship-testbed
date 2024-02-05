@@ -1,6 +1,6 @@
 // import { CharacterEntity } from "@Easy/Core/Shared/Entity/Character/CharacterEntity";
 // import { Entity } from "@Easy/Core/Shared/Entity/Entity";
-// import { Dependency } from "@easy-games/flamework-core";
+// import { Dependency } from "Shared/Flamework";
 // import { LocalEntityController } from "Client/Controllers/Character/LocalEntityController";
 // import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 // import { AmmoDef, ItemDef, SoundDef } from "Shared/Item/ItemDefinitionTypes";

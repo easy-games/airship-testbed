@@ -1,4 +1,4 @@
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../Shared/Flamework";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { UserController } from "./User/UserController";

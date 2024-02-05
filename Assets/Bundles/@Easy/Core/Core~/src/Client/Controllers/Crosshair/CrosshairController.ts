@@ -1,4 +1,4 @@
-import { Controller } from "@easy-games/flamework-core";
+import { Controller } from "Shared/Flamework";
 import { CoreRefs } from "Shared/CoreRefs";
 import { Modifier } from "Shared/Util/Modifier";
 

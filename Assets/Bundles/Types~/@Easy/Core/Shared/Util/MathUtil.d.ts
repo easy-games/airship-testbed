@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 export declare class MathUtil {
     /**
      * An equal chance of returning either -1 or +1

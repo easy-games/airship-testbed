@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 export interface PlaySoundConfig {
     volumeScale?: number;
     loop?: boolean;

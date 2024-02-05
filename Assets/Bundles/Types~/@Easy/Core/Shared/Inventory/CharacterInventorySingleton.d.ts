@@ -1,4 +1,4 @@
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../Flamework";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import Inventory from "./Inventory";

@@ -1,4 +1,4 @@
-import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { Dependency, OnStart, Service } from "Shared/Flamework";
 import ObjectUtil from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { GeneratorCreationConfig } from "Shared/Generator/GeneratorMeta";

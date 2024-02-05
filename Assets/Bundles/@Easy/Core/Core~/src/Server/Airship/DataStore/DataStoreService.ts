@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
 import { Result } from "Shared/Types/Result";
 import { RunUtil } from "Shared/Util/RunUtil";

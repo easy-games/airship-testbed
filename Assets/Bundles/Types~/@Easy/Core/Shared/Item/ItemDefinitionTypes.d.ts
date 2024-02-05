@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { PlaySoundConfig } from "../Audio/AudioManager";
 import { Duration } from "../Util/Duration";
 import { DamageType } from "../Damage/DamageType";

@@ -1,4 +1,4 @@
-import { Controller, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";

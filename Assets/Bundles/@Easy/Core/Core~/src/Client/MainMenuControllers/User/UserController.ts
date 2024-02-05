@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";

@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 
 const PICKUP_ITEM_DEFAULT_SOUND = ["@Easy/Core/Shared/Resources/Sound/Pickup_Item.ogg"];
 

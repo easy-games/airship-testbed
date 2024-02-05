@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 export declare class CoreUIController implements OnStart {
     readonly coreUIGO: GameObject;
     readonly refs: GameObjectReferences;

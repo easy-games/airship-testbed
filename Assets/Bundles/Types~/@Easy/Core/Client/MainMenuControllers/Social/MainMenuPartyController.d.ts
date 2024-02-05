@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { Result } from "../../../Shared/Types/Result";
