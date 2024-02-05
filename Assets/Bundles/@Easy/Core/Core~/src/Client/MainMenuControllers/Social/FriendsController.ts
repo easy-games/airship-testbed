@@ -1,9 +1,11 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import SocialFriendRequestsButtonComponent from "Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
@@ -128,6 +130,13 @@ export class FriendsController implements OnStart {
 						}
 					}),
 				);
+
+				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
+				if (Game.context === CoreContext.GAME) {
+					Game.localPlayer.SendMessage(
+						ChatColor.Yellow(foundUser.username) + ChatColor.Gray(" sent you a friend request."),
+					);
+				}
 			}
 		});
 

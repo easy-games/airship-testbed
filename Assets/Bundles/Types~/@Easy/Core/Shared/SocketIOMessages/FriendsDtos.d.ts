@@ -16,11 +16,9 @@ export type FriendsStatus = {
     isFriends: boolean;
 };
 export interface RequestFriendDto {
-    discriminatedUsername: string;
+    username: string;
 }
 export type FriendStatusData = {
-    discriminatedUsername: string;
-    discriminator: string;
     userId: string;
     username: string;
     status: UserStatus;

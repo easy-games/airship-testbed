@@ -65,12 +65,11 @@ export class MainMenuAddFriendsController implements OnStart {
 			};
 
 			const SendFriendRequest = (username: string) => {
-				print('adding friend: "' + searchInput.text + '"');
-				let fakedUsername = searchInput.text + "#0000";
+				print('adding friend: "' + username + '"');
 				const res = InternalHttpManager.PostAsync(
 					AirshipUrl.GameCoordinator + "/friends/requests/self",
 					EncodeJSON({
-						discriminatedUsername: fakedUsername,
+						username,
 					}),
 				);
 				print("status code=" + res.statusCode);
@@ -100,6 +99,7 @@ export class MainMenuAddFriendsController implements OnStart {
 					SetResponseText("error", `Player ${username} does not exist.`);
 				} else {
 					SetResponseText("error", "Failed to send friend request.");
+					error(res.error);
 				}
 			};
 

@@ -1,5 +1,5 @@
-import { OnStart } from "../../../Shared/Flamework";
 import { RightClickMenuController } from "../UI/RightClickMenu/RightClickMenuController";
+import { OnStart } from "../../../Shared/Flamework";
 import { Signal } from "../../../Shared/Util/Signal";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
