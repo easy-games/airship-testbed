@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";

@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CoreRefs } from "Shared/CoreRefs";

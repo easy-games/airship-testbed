@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";

@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
 import { Party } from "Shared/SocketIOMessages/Party";
 import { Result } from "Shared/Types/Result";

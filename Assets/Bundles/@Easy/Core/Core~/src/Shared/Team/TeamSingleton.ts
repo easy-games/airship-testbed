@@ -1,4 +1,4 @@
-import { Controller, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";

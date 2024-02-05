@@ -1,4 +1,4 @@
-import {} from "@easy-games/flamework-core";
+import {} from "Shared/Flamework";
 import { Mouse } from "Shared/UserInput";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
