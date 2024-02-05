@@ -184,7 +184,7 @@ export class TabListController implements OnStart {
 		if (init) {
 			CoreUI.SetupButton(addFriendGo);
 			CanvasAPI.OnClickEvent(addFriendGo, () => {
-				Dependency<FriendsController>().SendFriendRequest(player.username + "#" + player.usernameTag);
+				Dependency<FriendsController>().SendFriendRequest(player.username);
 				addFriendGo.TweenGraphicAlpha(0.5, 0.12);
 			});
 		}

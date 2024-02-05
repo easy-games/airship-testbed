@@ -39,7 +39,6 @@ export class UserController implements OnStart {
 				const writeUser = Game.localPlayer as Writable<Player>;
 				writeUser.userId = data.uid;
 				writeUser.username = data.username;
-				writeUser.usernameTag = data.discriminator;
 				Game.localPlayerLoaded = true;
 				Game.onLocalPlayerLoaded.Fire();
 			}

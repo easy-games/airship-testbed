@@ -45,7 +45,7 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	private HandleResult(result: boolean) {
 		const friendsController = Dependency<FriendsController>();
 		if (result) {
-			friendsController.AcceptFriendRequestAsync(this.user.discriminatedUsername);
+			friendsController.AcceptFriendRequestAsync(this.user.username);
 		} else {
 			friendsController.RejectFriendRequestAsync(this.user.uid);
 		}

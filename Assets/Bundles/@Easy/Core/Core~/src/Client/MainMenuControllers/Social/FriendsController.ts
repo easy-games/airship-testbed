@@ -98,7 +98,7 @@ export class FriendsController implements OnStart {
 					if (accept) {
 						task.spawn(() => {
 							this.socialNotification.gameObject.SetActive(false);
-							this.AcceptFriendRequestAsync(foundUser.discriminatedUsername);
+							this.AcceptFriendRequestAsync(foundUser.username);
 							this.SetIncomingFriendRequests(
 								this.incomingFriendRequests.filter((u) => u.uid !== foundUser.uid),
 							);
@@ -106,7 +106,7 @@ export class FriendsController implements OnStart {
 					} else {
 						task.spawn(() => {
 							this.socialNotification.gameObject.SetActive(false);
-							this.RejectFriendRequestAsync(foundUser.discriminatedUsername);
+							this.RejectFriendRequestAsync(foundUser.uid);
 							this.SetIncomingFriendRequests(
 								this.incomingFriendRequests.filter((u) => u.uid !== foundUser.uid),
 							);
@@ -262,7 +262,7 @@ export class FriendsController implements OnStart {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			EncodeJSON({
-				discriminatedUsername: username,
+				username: username,
 			}),
 		);
 
@@ -282,16 +282,16 @@ export class FriendsController implements OnStart {
 		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
 	}
 
-	public SendFriendRequest(usernameWithTag: string): boolean {
-		print('adding friend: "' + usernameWithTag + '"');
+	public SendFriendRequest(username: string): boolean {
+		print('adding friend: "' + username + '"');
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			EncodeJSON({
-				discriminatedUsername: usernameWithTag,
+				username: username,
 			}),
 		);
 		if (res.success) {
-			print("Sent friend request to " + usernameWithTag);
+			print("Sent friend request to " + username);
 			return true;
 		}
 		return false;
