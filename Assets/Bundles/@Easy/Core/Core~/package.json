@@ -18,7 +18,7 @@
   "devDependencies": {
     "@easy-games/compiler-types": "^3.0.40",
     "@easy-games/types": "^1.0.81-163",
-    "@easy-games/unity-flamework-transformer": "^1.1.49",
+    "@easy-games/unity-flamework-transformer": "^1.1.50",
     "@easy-games/unity-rojo-resolver": "^1.0.3-7",
     "@easy-games/unity-ts": "^3.0.163",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
