@@ -1,0 +1,694 @@
+{
+	"version": 1,
+	"flameworkVersion": "1.1.49",
+	"identifiers": {
+		"@Easy/Core:Shared/Flamework/flamework@ArtificialDependency": "$:Flamework/flamework@ArtificialDependency",
+		"@Easy/Core:Shared/Flamework/flamework@Controller": "$:Flamework/flamework@Controller",
+		"@Easy/Core:Shared/Flamework/flamework@Service": "$:Flamework/flamework@Service",
+		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
+		"@Easy/Core:Shared/Flamework/flamework@OnInit": "$:Flamework/flamework@OnInit",
+		"@Easy/Core:Shared/Flamework/flamework@OnStart": "$:Flamework/flamework@OnStart"
+	},
+	"identifierPrefix": "$",
+	"classes": [
+		{
+			"filePath": "../Client/Airship/Events/AirshipEventController.lua",
+			"internalId": "@Easy/Core:Client/Airship/Events/AirshipEventController@AirshipEventController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/PlatformInventory/PlatformInventoryService.lua",
+			"internalId": "@Easy/Core:Server/Airship/PlatformInventory/PlatformInventoryService@PlatformInventoryService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Viewmodel/ViewmodelController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Viewmodel/ViewmodelController@ViewmodelController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Auth/AuthController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Auth/AuthController@AuthController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Socket/SocketController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Transfer/TransferController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Transfer/TransferController@TransferController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/User/UserController@UserController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Social/ChangeUsernameController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/MainMenuController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Social/FriendsController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Social/DirectMessages/DirectMessageController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Social/DirectMessages/DirectMessageController@DirectMessageController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/UI/CoreUIController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/UI/CoreUIController@CoreUIController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Chat/ChatController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Chat/ChatController@ChatController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Camera/CameraController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Camera/CameraController@CameraController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/AmbientSound/AmbientSoundController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Settings/ClientSettingsController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Crosshair/CrosshairController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Crosshair/CrosshairController@CrosshairController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Character/LocalCharacter/LocalCharacterSingleton.lua",
+			"internalId": "@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Character/CharactersSingleton.lua",
+			"internalId": "@Easy/Core:Shared/Character/CharactersSingleton@CharactersSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Damage/DamageSingleton.lua",
+			"internalId": "@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Inventory/CharacterInventorySingleton.lua",
+			"internalId": "@Easy/Core:Shared/Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Inventory/InventorySingleton.lua",
+			"internalId": "@Easy/Core:Shared/Inventory/InventorySingleton@InventorySingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/LoadingScreen/LoadingScreenSingleton.lua",
+			"internalId": "@Easy/Core:Shared/LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Player/PlayersSingleton.lua",
+			"internalId": "@Easy/Core:Shared/Player/PlayersSingleton@PlayersSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Team/TeamSingleton.lua",
+			"internalId": "@Easy/Core:Shared/Team/TeamSingleton@TeamsSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/CacheStore/CacheStoreService.lua",
+			"internalId": "@Easy/Core:Server/Airship/CacheStore/CacheStoreService@CacheStoreService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/DataStore/DataStoreService.lua",
+			"internalId": "@Easy/Core:Server/Airship/DataStore/DataStoreService@DataStoreService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/Leaderboard/LeaderboardService.lua",
+			"internalId": "@Easy/Core:Server/Airship/Leaderboard/LeaderboardService@LeaderboardService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/Matchmaking/MatchmakingService.lua",
+			"internalId": "@Easy/Core:Server/Airship/Matchmaking/MatchmakingService@MatchmakingService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/Party/PartyService.lua",
+			"internalId": "@Easy/Core:Server/Airship/Party/PartyService@PartyService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/Transfer/TransferService.lua",
+			"internalId": "@Easy/Core:Server/Airship/Transfer/TransferService@TransferService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/User/UserService.lua",
+			"internalId": "@Easy/Core:Server/Airship/User/UserService@UserService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Airship/Matchmaking/MatchmakingController.lua",
+			"internalId": "@Easy/Core:Client/Airship/Matchmaking/MatchmakingController@MatchmakingController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Airship/Party/PartyController.lua",
+			"internalId": "@Easy/Core:Client/Airship/Party/PartyController@PartyController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Airship/PlatformInventory/PlatformInventoryController.lua",
+			"internalId": "@Easy/Core:Client/Airship/PlatformInventory/PlatformInventoryController@PlatformInventoryController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Airship/Transfer/TransferController.lua",
+			"internalId": "@Easy/Core:Client/Airship/Transfer/TransferController@TransferController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Airship/User/UserController.lua",
+			"internalId": "@Easy/Core:Client/Airship/User/UserController@UserController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Airship/Friends/FriendsController.lua",
+			"internalId": "@Easy/Core:Client/Airship/Friends/FriendsController@FriendsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Accessory/CharacterAccessoryController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Chat/BubbleChat/BubbleChatController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Damage/DamageIndicatorController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Entity/Footstep/EntityFootstepController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Entity/Footstep/EntityFootstepController@EntityFootstepController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Entity/Nametag/NametagController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Entity/Nametag/NametagController@NametagController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/GroundItem/GroundItemController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/GroundItem/GroundItemController@GroundItemController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/GroundItem/GroundItemPickupSoundsController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/Inventory/InventoryUIController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/Inventory/InventoryUIController@InventoryUIController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/ProximityPrompt/ProximityPromptController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/Controllers/TabList/TabListController.lua",
+			"internalId": "@Easy/Core:Client/Controllers/TabList/TabListController@TabListController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/MainMenuHomeController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/MainMenuNavbarController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Settings/MainMenuSettingsUIController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Social/MainMenuAddFriendsController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Social/MainMenuPartyController.lua",
+			"internalId": "@Easy/Core:Client/MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Services/GroundItem/GroundItemService.lua",
+			"internalId": "@Easy/Core:Server/Services/GroundItem/GroundItemService@GroundItemService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Services/Generator/GeneratorService.lua",
+			"internalId": "@Easy/Core:Server/Services/Generator/GeneratorService@GeneratorService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Services/Chat/ChatService.lua",
+			"internalId": "@Easy/Core:Server/Services/Chat/ChatService@ChatService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Services/Player/BotService.lua",
+			"internalId": "@Easy/Core:Server/Services/Player/BotService@BotService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Services/Shutdown/ShutdownService.lua",
+			"internalId": "@Easy/Core:Server/Services/Shutdown/ShutdownService@ShutdownService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		}
+	]
+}

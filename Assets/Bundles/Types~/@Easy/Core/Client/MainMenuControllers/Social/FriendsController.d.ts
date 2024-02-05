@@ -37,7 +37,7 @@ export declare class FriendsController implements OnStart {
     RejectFriendRequestAsync(uid: string): boolean;
     GetFriendGo(uid: string): GameObject | undefined;
     HasOutgoingFriendRequest(userId: string): boolean;
-    SendFriendRequest(usernameWithTag: string): boolean;
+    SendFriendRequest(username: string): boolean;
     UpdateFriendsList(): void;
     GetFriendStatus(uid: string): FriendStatus | undefined;
     UpdateFriendStatusUI(friend: FriendStatus, refs: GameObjectReferences, config: {
