@@ -27,7 +27,7 @@ export declare class HumanoidCameraMode implements CameraMode {
     private readonly clientSettingsController;
     constructor(characterGO: GameObject, graphicalCharacterGO: GameObject, initialFirstPerson: boolean, initialYOffset: number);
     private SetupMobileControls;
-    OnStart(camera: Camera): void;
+    OnStart(camera: Camera, rootTransform: Transform): void;
     OnStop(): void;
     OnUpdate(dt: number): void;
     OnLateUpdate(dt: number): CameraTransform;

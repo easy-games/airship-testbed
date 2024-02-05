@@ -21,6 +21,7 @@ export class PlayersSingleton implements OnStart {
 	public onPlayerDisconnected = new Signal<Player>();
 
 	public joinMessagesEnabled = true;
+	public disconnectMessagesEnabled = true;
 
 	private players = new Set<Player>([]);
 	private playerManagerBridge = PlayerManagerBridge.Instance;
@@ -78,6 +79,11 @@ export class PlayersSingleton implements OnStart {
 		this.onPlayerJoined.Connect((player) => {
 			if (RunUtil.IsServer() && this.joinMessagesEnabled) {
 				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
+			}
+		});
+		this.onPlayerDisconnected.Connect((player) => {
+			if (RunUtil.IsServer() && this.disconnectMessagesEnabled) {
+				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
 			}
 		});
 	}

@@ -8,7 +8,7 @@ export class StaticCameraMode implements CameraMode {
 		this.transform = new CameraTransform(position, rotation);
 	}
 
-	OnStart() {}
+	OnStart(camera: Camera, rootTransform: Transform) {}
 
 	OnStop() {}
 

@@ -23,7 +23,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.pageType = pageType;
 		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
 		if (pageType === MainMenuPageType.Home) {
-			this.OpenPage();
+			// this.OpenPage();
 		} else {
 			this.ClosePage(true);
 		}

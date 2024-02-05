@@ -2832,6 +2832,19 @@ declare const enum LogContext {
     Client = 0,
     Server = 1,
 }
+declare const enum BlendMode {
+    Normal = 0,
+    Additive = 1,
+    Screen = 2,
+    Multiply = 3,
+}
+declare const enum ColorBleedMode {
+    ImageColor = 0,
+    ShadowColor = 1,
+    Black = 2,
+    White = 3,
+    Plugin = 4,
+}
 
     
 interface RaycastHit {
@@ -14083,7 +14096,7 @@ interface LineRenderer extends Renderer {
     Simplify(tolerance: number): void;
 }
     
-interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
     isDragging: boolean;
     redirectTarget: ScrollRect;
 
@@ -14091,5 +14104,77 @@ interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHan
     OnBeginDrag(eventData: PointerEventData): void;
     OnDrag(eventData: PointerEventData): void;
     OnEndDrag(eventData: PointerEventData): void;
+    OnPointerEnter(eventData: PointerEventData): void;
+    OnPointerExit(eventData: PointerEventData): void;
+}
+    
+interface IMeshModifier {
+
+
+    ModifyMesh(mesh: Mesh): void;
+    ModifyMesh(verts: VertexHelper): void;
+}
+    
+interface VertexHelper {
+    currentVertCount: number;
+    currentIndexCount: number;
+
+
+    AddTriangle(idx0: number, idx1: number, idx2: number): void;
+    AddUIVertexQuad(verts: CSArray<UIVertex>): void;
+    AddUIVertexStream(verts: CSArray<UIVertex>, indices: CSArray<number>): void;
+    AddUIVertexTriangleStream(verts: CSArray<UIVertex>): void;
+    AddVert(position: Vector3, color: Color32, uv0: Vector4, uv1: Vector4, uv2: Vector4, uv3: Vector4, normal: Vector3, tangent: Vector4): void;
+    AddVert(position: Vector3, color: Color32, uv0: Vector4, uv1: Vector4, normal: Vector3, tangent: Vector4): void;
+    AddVert(position: Vector3, color: Color32, uv0: Vector4): void;
+    AddVert(v: UIVertex): void;
+    Clear(): void;
+    Dispose(): void;
+    FillMesh(mesh: Mesh): void;
+    GetUIVertexStream(stream: CSArray<UIVertex>): void;
+    PopulateUIVertex(vertex: unknown, i: number): void;
+    SetUIVertex(vertex: UIVertex, i: number): void;
+}
+    
+interface TrueShadow extends UIBehaviour, IMeshModifier, ICanvasElement {
+    Size: number;
+    Spread: number;
+    UseGlobalAngle: boolean;
+    OffsetAngle: number;
+    OffsetDistance: number;
+    Color: Color;
+    UseCasterAlpha: boolean;
+    IgnoreCasterColor: boolean;
+    Inset: boolean;
+    BlendMode: BlendMode;
+    ColorBleedMode: ColorBleedMode;
+    DisableFitCompensation: boolean;
+    ClearColor: Color;
+    ShadowAsSibling: boolean;
+    CustomHash: number;
+    Offset: Vector2;
+    Cutout: boolean;
+    UsingRendererMaterialProvider: boolean;
+
+
+    ApplySerializedData(): void;
+    CopyTo(other: TrueShadow): void;
+    CopyTo(other: GameObject): void;
+    CopyToTMPSubMeshes(): void;
+    GetShadowCastingMaterial(): Material;
+    GetShadowRenderingMaterial(): Material;
+    GraphicUpdateComplete(): void;
+    LayoutComplete(): void;
+    ModifyMesh(mesh: Mesh): void;
+    ModifyMesh(verts: VertexHelper): void;
+    ModifyShadowCastingMaterialProperties(propertyBlock: MaterialPropertyBlock): void;
+    ModifyShadowCastingMesh(mesh: Mesh): void;
+    ModifyShadowRendererMaterial(baseMaterial: Material): void;
+    ModifyShadowRendererMesh(vertexHelper: VertexHelper): void;
+    Rebuild(executing: CanvasUpdate): void;
+    RefreshPlugins(): void;
+    SetHierachyDirty(): void;
+    SetLayoutDirty(): void;
+    SetTextureDirty(): void;
 }
 

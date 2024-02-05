@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8443160194368119045}
   - component: {fileID: 4008141618223913758}
   - component: {fileID: 3037290176941640421}
+  - component: {fileID: 2937145715476943702}
   m_Layer: 0
   m_Name: NavbarButton
   m_TagString: Untagged
@@ -141,6 +142,17 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    - name: trueShadow
+      type: object
+      objectType: TrueShadow
+      items:
+        type: 
+        objectType: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2937145715476943702}
+      modified: 1
 --- !u!114 &8443160194368119045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 130
+  m_MinWidth: 119.6
   m_MinHeight: -1
   m_PreferredWidth: 80
   m_PreferredHeight: -1
@@ -203,8 +215,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 20
+  radius: 17
   image: {fileID: 8443160194368119045}
+--- !u!114 &2937145715476943702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451472323512772192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c162dc854d2f24fa639ba0623de5ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 8
+  spread: 0
+  useGlobalAngle: 0
+  offsetAngle: 90
+  offsetDistance: 7
+  offset: {x: 0.00000041723257, y: -7}
+  color: {r: 0, g: 0, b: 0, a: 0.7372549}
+  inset: 0
+  blendMode: 0
+  useCasterAlpha: 1
+  ignoreCasterColor: 0
+  colorBleedMode: 2
+  disableFitCompensation: 0
+  shadowAsSibling: 0
+  cutout: 0
+  baked: 0
+  modifiedFromInspector: 0
+  bakedShadows: []
 --- !u!1 &2344376568846472764
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,8 +281,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 13.279, y: 0.0000076294}
-  m_SizeDelta: {x: 23.6998, y: 20.737}
+  m_AnchoredPosition: {x: 13.279, y: 0}
+  m_SizeDelta: {x: 18.7971, y: 16.4472}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4978955335663195606
 CanvasRenderer:
@@ -314,7 +356,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 36.979, y: 0}
+  m_AnchoredPosition: {x: 34.7, y: 0}
   m_SizeDelta: {x: -50.628, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2817970217322929914
@@ -372,8 +414,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21
-  m_fontSizeBase: 21
+  m_fontSize: 19
+  m_fontSizeBase: 19
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
