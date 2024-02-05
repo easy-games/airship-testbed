@@ -40,7 +40,6 @@ type AnyDecorator = DecoratorWithMetadata<(...args: never[]) => unknown, unknown
 type Decorator<P extends readonly unknown[], D> = DecoratorWithMetadata<P extends {
     length: 0;
 } ? ((...args: P) => D) & D : (...args: P) => D, P>;
-type ListenerAddedEvent = (object: object) => void;
 type DependencyRegistration = object | ((ctor: Constructor) => object);
 export declare namespace Modding {
     /**
@@ -72,7 +71,6 @@ export declare namespace Modding {
     /**
      * Registers a listener added event.
      */
-    export function onListenerAdded(func: ListenerAddedEvent, id?: string): void;
     /**
      * Registers a listener removed event.
      *

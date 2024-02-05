@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 import { BlockDef } from "../Item/ItemDefinitionTypes";
 import { ItemType } from "../Item/ItemType";

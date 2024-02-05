@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { Signal } from "../../../Shared/Util/Signal";
 export interface ProximityPromptData {
     /** Proximity prompt position. */

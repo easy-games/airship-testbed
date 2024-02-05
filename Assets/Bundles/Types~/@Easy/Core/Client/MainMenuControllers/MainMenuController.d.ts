@@ -1,4 +1,4 @@
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../Shared/Flamework";
 import { Signal } from "../../Shared/Util/Signal";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import MainMenuPageComponent from "./MainMenuPageComponent";

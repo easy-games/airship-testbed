@@ -2,6 +2,9 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
 import { Constructor } from "./Types/types";
+/**
+ * Dependency Injection Framework for Airship
+ */
 export declare namespace Flamework {
     export interface ServiceConfig {
         loadOrder?: number;
@@ -67,12 +70,6 @@ export declare namespace Flamework {
      * @param context A scope for the hash
      */
     export function hash(str: string, context?: string): string;
-    /**
-     * Utility for use in test suites, not recommended for anything else.
-     */
-    export namespace Testing {
-        function patchDependency<T>(patchedClass: Constructor<unknown>, id?: string): void;
-    }
     export {};
 }
 export declare function Dependency<T>(): T;

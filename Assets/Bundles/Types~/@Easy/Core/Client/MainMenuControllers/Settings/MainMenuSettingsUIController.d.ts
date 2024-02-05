@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { ClientSettingsController } from "./ClientSettingsController";
 import { MainMenuController } from "../MainMenuController";
 export declare class MainMenuSettingsUIController implements OnStart {

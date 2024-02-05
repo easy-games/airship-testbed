@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { ItemStack } from "../Inventory/ItemStack";
 export interface GroundItemData {
     [name: string]: unknown;

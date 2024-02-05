@@ -1,7 +1,5 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../Flamework";
 import { Player } from "../Player/Player";
 import { Signal, SignalPriority } from "../Util/Signal";
 import Character from "./Character";

@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /**
  * @deprecated Use `Object` instead. Example: `Object.Instantiate()`
  */

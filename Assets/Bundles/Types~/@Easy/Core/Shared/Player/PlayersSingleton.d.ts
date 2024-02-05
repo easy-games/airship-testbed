@@ -1,4 +1,4 @@
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../Flamework";
 import { Signal, SignalPriority } from "../Util/Signal";
 import { Player } from "./Player";
 export declare class PlayersSingleton implements OnStart {

@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /** Pointlight DTO. */
 export interface PointlightDto {
     /** Pointlight color. Unwrapped `Color` struct. */
