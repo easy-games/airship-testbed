@@ -484,7 +484,7 @@ MonoBehaviour:
   m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
-  m_DecelerationRate: 0.135
+  m_DecelerationRate: 0.18
   m_ScrollSensitivity: 12
   m_Viewport: {fileID: 7936102348030561553}
   m_HorizontalScrollbar: {fileID: 0}
@@ -496,6 +496,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  scrollDecelerationRate: 5
 --- !u!1 &1752838744887283606
 GameObject:
   m_ObjectHideFlags: 0
