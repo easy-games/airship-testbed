@@ -416,6 +416,41 @@ interface Vector3Constructor {
 
 declare const Vector3: Vector3Constructor;
 
+interface Vector4 {
+	/**
+	 * **DO NOT USE!**
+	 *
+	 * This field exists to force TypeScript to recognize this as a nominal type
+	 * @hidden
+	 * @deprecated
+	 */
+	readonly _nominal_Vector3: unique symbol;
+	readonly x: number;
+	readonly y: number;
+	readonly z: number;
+	readonly w: number;
+
+	/** Returns the magnitude of the vector. */
+	readonly magnitude: number;
+
+	/** Returns the square magnitude of the vector. This is faster to calculate than `magnitude`. */
+	readonly sqrMagnitude: number;
+
+	/** Returns a normalized copy of the vector. */
+	readonly normalized: Vector3;
+
+	Dot(other: Vector4): number;
+}
+
+interface Vector4Constructor {
+	readonly zero: Vector4;
+	readonly one: Vector4;
+	readonly positiveInfinity: Vector4;
+	readonly negativeInfinity: Vector4;
+}
+
+declare const Vector4: Vector4Constructor;
+
 interface Vector2 {
 	/**
 	 * **DO NOT USE!**
