@@ -145,7 +145,7 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
-			print("status updates: " + inspect(data));
+			// print("status updates: " + inspect(data));
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
@@ -241,7 +241,7 @@ export class FriendsController implements OnStart {
 		this.SetIncomingFriendRequests(data.incomingRequests);
 		this.outgoingFriendRequests = data.outgoingRequests;
 
-		print("friends: " + inspect(data));
+		// print("friends: " + inspect(data));
 
 		// auto decline
 		// for (const user of this.incomingFriendRequests) {
