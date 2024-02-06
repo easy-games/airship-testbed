@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../Flamework";
 import { DataStreamItems } from "../../Util/DataStreamTypes";
 import { Signal } from "../../Util/Signal";
 import { HumanoidCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/HumanoidCameraMode";

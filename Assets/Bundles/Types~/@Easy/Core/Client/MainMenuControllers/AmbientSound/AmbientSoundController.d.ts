@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { ClientSettingsController } from "../Settings/ClientSettingsController";
 export declare class AmbientSoundController implements OnStart {
     private clientSettingsController;

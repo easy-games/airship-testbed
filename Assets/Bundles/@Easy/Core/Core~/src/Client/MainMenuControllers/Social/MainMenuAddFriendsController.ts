@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard } from "Shared/UserInput";
@@ -18,7 +18,10 @@ export class MainMenuAddFriendsController implements OnStart {
 	private canvas: Canvas | undefined;
 	private inputFieldSelected = false;
 
-	constructor(private readonly authController: AuthController, private readonly socketController: SocketController) {}
+	constructor(
+		private readonly authController: AuthController,
+		private readonly socketController: SocketController,
+	) {}
 
 	OnStart(): void {}
 
@@ -62,12 +65,11 @@ export class MainMenuAddFriendsController implements OnStart {
 			};
 
 			const SendFriendRequest = (username: string) => {
-				print('adding friend: "' + searchInput.text + '"');
-				let fakedUsername = searchInput.text + "#0000";
+				print('adding friend: "' + username + '"');
 				const res = InternalHttpManager.PostAsync(
 					AirshipUrl.GameCoordinator + "/friends/requests/self",
 					EncodeJSON({
-						discriminatedUsername: fakedUsername,
+						username,
 					}),
 				);
 				print("status code=" + res.statusCode);
@@ -97,6 +99,7 @@ export class MainMenuAddFriendsController implements OnStart {
 					SetResponseText("error", `Player ${username} does not exist.`);
 				} else {
 					SetResponseText("error", "Failed to send friend request.");
+					error(res.error);
 				}
 			};
 

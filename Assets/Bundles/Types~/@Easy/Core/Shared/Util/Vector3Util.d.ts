@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 export declare function MagnitudeV3(v3: Vector3): number;
 export declare function SqrMagnitudeV3(v3: Vector3): number;
 export declare function DistanceV3(from: Vector3, to: Vector3): number;

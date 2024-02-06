@@ -6,8 +6,6 @@ export declare enum UserStatus {
 interface BaseUserData {
     userId: string;
     username: string;
-    discriminator: string;
-    discriminatedUsername: string;
 }
 interface BaseUserStatus<S extends UserStatus> extends BaseUserData {
     status: S;

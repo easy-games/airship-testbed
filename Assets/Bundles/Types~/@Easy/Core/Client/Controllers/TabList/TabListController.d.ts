@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { CoreUIController } from "../UI/CoreUIController";
 export declare class TabListController implements OnStart {
     private readonly coreUIController;

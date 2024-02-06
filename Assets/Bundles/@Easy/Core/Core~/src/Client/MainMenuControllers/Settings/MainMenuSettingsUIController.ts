@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CanvasAPI, PointerDirection } from "Shared/Util/CanvasAPI";

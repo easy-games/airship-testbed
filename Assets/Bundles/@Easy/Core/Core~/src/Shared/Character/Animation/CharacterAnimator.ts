@@ -1,4 +1,4 @@
-﻿﻿import { Dependency } from "@easy-games/flamework-core";
+﻿﻿import { Dependency } from "Shared/Flamework";
 import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";

@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { User } from "Client/MainMenuControllers/User/User";
 import { Bin } from "Shared/Util/Bin";
@@ -45,7 +45,7 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	private HandleResult(result: boolean) {
 		const friendsController = Dependency<FriendsController>();
 		if (result) {
-			friendsController.AcceptFriendRequestAsync(this.user.discriminatedUsername);
+			friendsController.AcceptFriendRequestAsync(this.user.username);
 		} else {
 			friendsController.RejectFriendRequestAsync(this.user.uid);
 		}

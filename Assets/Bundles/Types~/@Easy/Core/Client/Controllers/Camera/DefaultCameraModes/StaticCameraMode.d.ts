@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 export declare class StaticCameraMode implements CameraMode {

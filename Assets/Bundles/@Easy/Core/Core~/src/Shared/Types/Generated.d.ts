@@ -16620,3 +16620,13 @@ interface TrueShadow extends UIBehaviour, IMeshModifier, ICanvasElement {
 	SetLayoutDirty(): void;
 	SetTextureDirty(): void;
 }
+
+interface ScalableBufferManager {}
+
+interface ScalableBufferManagerConstructor {
+	widthScaleFactor: number;
+	heightScaleFactor: number;
+
+	ResizeBuffers(widthScale: number, heightScale: number): void;
+}
+declare const ScalableBufferManager: ScalableBufferManagerConstructor;

@@ -1,7 +1,7 @@
-import { Dependency } from "@easy-games/flamework-core";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Bin } from "Shared/Util/Bin";
 import IncomingFriendRequestCard from "./IncomingFriendRequestCard";
+import { Dependency } from "Shared/Flamework";
 
 export default class FriendRequestModal extends AirshipBehaviour {
 	public content!: Transform;

@@ -223,10 +223,7 @@ half EnvBRDFApproxNonmetal(half Roughness, half NoV)
     return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
 }
 
-half3 ProcessReflectionSample(half3 img)
-{
-    return (img * img) * 2;
-}
+
 
 struct Coordinates
 {

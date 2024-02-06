@@ -1,4 +1,4 @@
-import { Dependency, OnStart, Service } from "@easy-games/flamework-core";
+import { Dependency, OnStart, Service } from "@Easy/Core/Shared/Flamework";
 import { CoreServerSignals } from "@Easy/Core/Server/CoreServerSignals";
 import { DamageService } from "@Easy/Core/Server/Services/Damage/DamageService";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";

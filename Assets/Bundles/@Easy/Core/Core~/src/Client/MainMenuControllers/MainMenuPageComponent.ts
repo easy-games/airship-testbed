@@ -1,4 +1,4 @@
-import {} from "@easy-games/flamework-core";
+import {} from "Shared/Flamework";
 import { SetTimeout } from "Shared/Util/Timer";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";

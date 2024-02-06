@@ -16,9 +16,9 @@ half3 globalAmbientTint;
 
 //Point Lights
 float NUM_LIGHTS; //Required for dynamic lights
-float4 globalDynamicLightColor[2];
+half4 globalDynamicLightColor[2];
 float4 globalDynamicLightPos[2];
-float globalDynamicLightRadius[2];
+half globalDynamicLightRadius[2];
 
 float globalFogStart;
 float globalFogEnd;

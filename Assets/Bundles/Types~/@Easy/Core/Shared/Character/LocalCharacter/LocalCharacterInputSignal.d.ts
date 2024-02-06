@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 export declare class LocalCharacterInputSignal {
     moveDirection: Vector3;
     jump: boolean;

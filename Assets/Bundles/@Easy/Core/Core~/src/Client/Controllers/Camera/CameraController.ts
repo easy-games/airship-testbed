@@ -1,4 +1,4 @@
-import { Controller } from "@easy-games/flamework-core";
+import { Controller } from "Shared/Flamework";
 import { CameraMode } from ".";
 import { CameraReferences } from "./CameraReferences";
 import { CameraSystem } from "./CameraSystem";

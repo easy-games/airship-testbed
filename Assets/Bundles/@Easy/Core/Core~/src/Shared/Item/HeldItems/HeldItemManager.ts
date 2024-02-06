@@ -1,4 +1,4 @@
-﻿import { Dependency } from "@easy-games/flamework-core";
+﻿import { Dependency } from "Shared/Flamework";
 import Character from "Shared/Character/Character";
 import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import Inventory from "Shared/Inventory/Inventory";

@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../../Shared/Flamework";
 import Character from "../../../../Shared/Character/Character";
 export declare class NametagController implements OnStart {
     private readonly nameTageId;

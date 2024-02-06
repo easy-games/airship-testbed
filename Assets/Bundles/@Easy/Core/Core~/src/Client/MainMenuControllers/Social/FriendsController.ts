@@ -1,9 +1,11 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import SocialFriendRequestsButtonComponent from "Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
@@ -98,7 +100,7 @@ export class FriendsController implements OnStart {
 					if (accept) {
 						task.spawn(() => {
 							this.socialNotification.gameObject.SetActive(false);
-							this.AcceptFriendRequestAsync(foundUser.discriminatedUsername);
+							this.AcceptFriendRequestAsync(foundUser.username);
 							this.SetIncomingFriendRequests(
 								this.incomingFriendRequests.filter((u) => u.uid !== foundUser.uid),
 							);
@@ -106,7 +108,7 @@ export class FriendsController implements OnStart {
 					} else {
 						task.spawn(() => {
 							this.socialNotification.gameObject.SetActive(false);
-							this.RejectFriendRequestAsync(foundUser.discriminatedUsername);
+							this.RejectFriendRequestAsync(foundUser.uid);
 							this.SetIncomingFriendRequests(
 								this.incomingFriendRequests.filter((u) => u.uid !== foundUser.uid),
 							);
@@ -128,6 +130,13 @@ export class FriendsController implements OnStart {
 						}
 					}),
 				);
+
+				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
+				if (Game.context === CoreContext.GAME) {
+					Game.localPlayer.SendMessage(
+						ChatColor.Yellow(foundUser.username) + ChatColor.Gray(" sent you a friend request."),
+					);
+				}
 			}
 		});
 
@@ -262,7 +271,7 @@ export class FriendsController implements OnStart {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			EncodeJSON({
-				discriminatedUsername: username,
+				username: username,
 			}),
 		);
 
@@ -282,16 +291,16 @@ export class FriendsController implements OnStart {
 		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
 	}
 
-	public SendFriendRequest(usernameWithTag: string): boolean {
-		print('adding friend: "' + usernameWithTag + '"');
+	public SendFriendRequest(username: string): boolean {
+		print('adding friend: "' + username + '"');
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			EncodeJSON({
-				discriminatedUsername: usernameWithTag,
+				username: username,
 			}),
 		);
 		if (res.success) {
-			print("Sent friend request to " + usernameWithTag);
+			print("Sent friend request to " + username);
 			return true;
 		}
 		return false;

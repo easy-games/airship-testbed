@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { DamageType } from "./Damage/DamageType";
 import { GeneratorDto } from "./Generator/GeneratorMeta";

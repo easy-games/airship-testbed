@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { CameraReferences } from "Client/Controllers/Camera/CameraReferences";
 import { Airship } from "Shared/Airship";
 import { SetInterval } from "Shared/Util/Timer";

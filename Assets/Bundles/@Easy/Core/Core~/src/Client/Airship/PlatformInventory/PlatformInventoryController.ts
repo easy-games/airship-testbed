@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
 import { EquippedProfilePicture, Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { Result } from "Shared/Types/Result";

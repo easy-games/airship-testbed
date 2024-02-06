@@ -5,7 +5,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 
 export default class TopDownCameraComponent extends AirshipBehaviour {
 	public camera!: Camera;

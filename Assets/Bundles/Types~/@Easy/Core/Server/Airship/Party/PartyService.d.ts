@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { PartyMode, PartyStatus } from "../../../Shared/SocketIOMessages/Party";
 import { PublicUser } from "../../../Shared/SocketIOMessages/PublicUser";
 import { Result } from "../../../Shared/Types/Result";

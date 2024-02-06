@@ -1,5 +1,5 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
 import { RightClickMenuController } from "../UI/RightClickMenu/RightClickMenuController";
+import { OnStart } from "../../../Shared/Flamework";
 import { Signal } from "../../../Shared/Util/Signal";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
@@ -20,8 +20,12 @@ export declare class FriendsController implements OnStart {
     private friendBinMap;
     friendStatusChanged: Signal<FriendStatus>;
     private customGameTitle;
+    private socialNotification;
+    private friendRequestsButton;
+    onIncomingFriendRequestsChanged: Signal<void>;
     constructor(authController: AuthController, socketController: SocketController, mainMenuController: MainMenuController, rightClickMenuController: RightClickMenuController);
     OnStart(): void;
+    SetIncomingFriendRequests(friendRequests: User[]): void;
     Setup(): void;
     FuzzySearchFriend(name: string): User | undefined;
     GetFriendByUsername(username: string): User | undefined;
@@ -29,9 +33,11 @@ export declare class FriendsController implements OnStart {
     GetStatusText(): string;
     SendStatusUpdate(): void;
     FetchFriends(): void;
+    AcceptFriendRequestAsync(username: string): boolean;
+    RejectFriendRequestAsync(uid: string): boolean;
     GetFriendGo(uid: string): GameObject | undefined;
     HasOutgoingFriendRequest(userId: string): boolean;
-    SendFriendRequest(usernameWithTag: string): boolean;
+    SendFriendRequest(username: string): boolean;
     UpdateFriendsList(): void;
     GetFriendStatus(uid: string): FriendStatus | undefined;
     UpdateFriendStatusUI(friend: FriendStatus, refs: GameObjectReferences, config: {

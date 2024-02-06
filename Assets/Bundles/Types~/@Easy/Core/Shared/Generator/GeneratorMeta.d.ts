@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { ItemType } from "../Item/ItemType";
 /** Generator pickup range. */
 export declare const GeneratorPickupRange = 1.5;
