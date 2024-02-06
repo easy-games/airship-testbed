@@ -422,8 +422,7 @@
 
         return _RimColor.rgb * rim;
     }
-
-
+    
     half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 color, half lightRange)
     {
         float3 lightVec = lightPos - worldPos;
@@ -434,17 +433,16 @@
         float NoL = max(0, dot(normal, lightDir));
 
         float distanceNorm = saturate(distance / lightRange);
-        float falloff = distanceNorm * distanceNorm * distanceNorm;
+        float falloff = pow(distanceNorm, 2.0);
         falloff = 1.0 - falloff;
-
+        
         falloff *= NoL;
 
         half3 result = falloff * (albedo * color + specularColor * PhongApprox(roughness, RoL));
 
         return result;
     }
-
-
+    
     struct Coordinates
     {
         half2 ddx;
@@ -543,10 +541,7 @@
         half4 cx = tex.Sample(my_sampler_trilinear_repeat, uvs);
         return cx;
     }
-
-
-
-
+    
     half4 Tex2DSampleTextureDebug(Texture2D tex, Coordinates coords)
     {
         return debugColor(coords.lod);
@@ -562,10 +557,7 @@
         float result = metal > 0.5;
         return result;
     }
-
-
-
-    
+        
     #define SAMPLE_TEXTURE2D_SHADOW(textureName, samplerName, coord3) textureName.SampleCmpLevelZero(samplerName, (coord3).xy, (coord3).z)
     
     half GetShadowSample(Texture2D tex, SamplerComparisonState textureSampler, half2 uv, half bias, half comparison)
@@ -666,15 +658,11 @@
     coords.ddy = half2(0, 0);
     coords.lod = 0;
 #endif
-
-
-
+    
 #if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
         coords.pos = input.triplanarPos;
         coords.triplanarBlend = input.triplanarBlend;
 #endif    
-   
-        
         half4 texSample = Tex2DSampleTexture(_MainTex, coords);
 
         half3 textureNormal;
@@ -691,8 +679,7 @@
         half3 viewVector = _WorldSpaceCameraPos.xyz - input.worldPos;
         float viewDistance = length(viewVector);
         half3 viewDirection = normalize(viewVector);
-
-    
+            
 #if EXPLICIT_MAPS_ON
 
         half4 metalSample = Tex2DSampleTexture(_MetalTex, coords);
@@ -757,7 +744,6 @@
  
 #endif
    
-
         // Finish doing ALU calcs while the cubemap fetches in
 #ifdef SLIDER_OVERRIDE_ON
         metallicLevel = (metallicLevel + _MetalOverride) / 2;
@@ -768,16 +754,13 @@
  
         half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
         //half3 complexSunSample = SampleSunSphericalHarmonics(worldNormal);// *globalBrightness;
-        
-        
+                
         //Shadows and light masks
         half sunShadowMask = GetShadow(input, worldNormal, globalSunDirection);
         //sunShadowMask = sunShadowMask *.8 + .2;//Never have shadows go full black
         half pointLight0Mask = 1;
         half pointLight1Mask = 1;
         half ambientShadowMask = 1;
-    
-        //half2 textureCoordinate = input.screenPosition.xy / input.screenPosition.w;
 
         //Sun
         half RoL = max(0, dot(worldReflect, -globalSunDirection));
@@ -847,13 +830,7 @@
 
         //Sun mask
         float sunMask = sunShadowMask;
-        if (NoL < 0.01) 
-        {
-          //  sunMask = 0;
-        }
-        // sunShadowMask = saturate(sunShadowMask + 0.5);
         finalColor = ((sunShine * sunShadowMask) + ambientFinal) * ambientShadowMask;
-        
 
         //Point lights
 #ifdef NUM_LIGHTS_LIGHTS1
@@ -868,58 +845,9 @@
 #ifdef RIM_LIGHT_ON
         finalColor.xyz += RimLightSimple(worldNormal, viewDirection);
 #endif
-
-
         //Mix in fog
 		finalColor = CalculateAtmosphericFog(finalColor, viewDistance);
-        
-        {
-            //Assorted debug functions
-
-            //finalColor.xyz = skyboxSample.xyz;
-            //if (textureCoordinate.x < 0.5)
-            //{
-                //worldReflect = reflect(-viewDirection, worldNormal);
-            //}
-            //else
-            //{
-                //worldReflect = reflect(-viewDirection, normalize(input.worldNormal));
-            //}
-
-            //finalColor = cubeSample;
-            //finalColor = texSample.rgb;
-            //finalColor = texCUBE(_CubeTex, worldReflect);
-            //half4 trueNormal = float4(EncodeNormal(normalize(input.worldNormal)), 1);
-            //half4 texNormal = float4(EncodeNormal(normalize(worldNormal)), 1);
-
-            //finalColor = float4(EncodeNormal(input.triplanarNormal), 1);
-            //finalColor = texCUBE(_CubeTex, worldNormal);
-            //finalColor = normalSample;
-
-            //finalColor = float4(EncodeNormal(input.rawVertexNormal.xyz),0);
-            //finalColor = float4(EncodeNormal(textureNormal.xyz), 0);
-            //finalColor =  float4(EncodeNormal(worldNormal.xyz), 0);
-            //finalColor.r = 0;// coords.uvs.x % 1;
-            //finalColor.b = 0;// coords.uvs.y % 1;
-            
-            //finalColor =  ambientFinal;
-            //finalColor = diffuseColor;
-            //finalColor = half3(roughnessLevel, roughnessLevel, roughnessLevel);
-            //finalColor = half3(metallicLevel, metallicLevel, metallicLevel);  
-            //finalColor = half3(sunShadowMask, sunShadowMask, sunShadowMask);  
-            //finalColor = half3(ambientShadowMask, ambientShadowMask, ambientShadowMask);
-            //finalColor = diffuseColor;
-
-            // ambientShadowMask
-            //finalColor = half3(input.color.g, input.color.g, input.color.g); //occlusion
-
-            //finalColor = complexSunSample;
-            //finalColor = input.bakedLight.xyz;
-            //finalColor = input.color;
-
-            //finalColor = half3(specialSample.b, specialSample.b, specialSample.b);
-        }
-        
+               
 #ifdef EMISSIVE_ON  
         if (emissiveLevel > 0)
         {
@@ -963,8 +891,6 @@
             MRT1 = half4(0, 0, 0, alpha);
         }
 #endif        
-
-        
     }
 
 #endif
