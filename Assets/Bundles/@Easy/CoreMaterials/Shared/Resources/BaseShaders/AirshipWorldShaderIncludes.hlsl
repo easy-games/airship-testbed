@@ -52,9 +52,6 @@
     float4 _ProjectionParams;
     float4 _MainTex_ST;
 
-    float _SkyShineStrength;
-    float4 _SkyShineColor;
-
     half3 globalFogColor;
     float globalFogStart;
     float globalFogEnd;
@@ -85,8 +82,9 @@
     half3 globalSunLight[9];
     half3 globalSunDirection = normalize(half3(-1, -3, 1.5));
 
-    float globalAmbientBrightness;
-    float globalSunBrightness;
+    half globalAmbientBrightness;
+    half globalSunBrightness;
+    half globalSunShadow;
 
     half3 globalSunColor;
 
@@ -390,6 +388,7 @@
         half c = 0.72134752 * rcp_a2 + 0.39674113;
         return rcp_a2 * exp2(c * RoL - c);
     }
+
     half3 ProcessReflectionSample(half3 img)
     {
         return (img * img) * 2;
@@ -423,7 +422,7 @@
         return _RimColor.rgb * rim;
     }
     
-    half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 color, half lightRange)
+    half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 lightColor, half lightRange)
     {
         float3 lightVec = lightPos - worldPos;
         half distance = length(lightVec);
@@ -438,7 +437,7 @@
         
         falloff *= NoL;
 
-        half3 result = falloff * (albedo * color + specularColor * PhongApprox(roughness, RoL));
+        half3 result = falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
 
         return result;
     }
@@ -642,21 +641,21 @@
         Coordinates coords;  
         coords.uvs = input.uv_MainTex.xy; 
 #ifdef POINT_FILTER_ON
-    float2 texture_coordinate = input.uv_MainTex.xy * _MainTex_TexelSize.zw;
-    coords.ddx = ddx(texture_coordinate);
-    coords.ddy = ddy(texture_coordinate);
-    float delta_max_sqr = max(dot(coords.ddx, coords.ddx), dot(coords.ddy, coords.ddy));
-    coords.lod = 0.5 * log2(delta_max_sqr);
+        float2 texture_coordinate = input.uv_MainTex.xy * _MainTex_TexelSize.zw;
+        coords.ddx = ddx(texture_coordinate);
+        coords.ddy = ddy(texture_coordinate);
+        float delta_max_sqr = max(dot(coords.ddx, coords.ddx), dot(coords.ddy, coords.ddy));
+        coords.lod = 0.5 * log2(delta_max_sqr);
 #elif !defined(EXPLICIT_MAPS_ON) && defined(SHADER_API_METAL) //Metal specific fix
-    float2 texture_coordinate = input.uv_MainTex.xy * _MainTex_TexelSize.zw;
-    coords.ddx = ddx(texture_coordinate);
-    coords.ddy = ddy(texture_coordinate);
-    float delta_max_sqr = max(dot(coords.ddx, coords.ddx), dot(coords.ddy, coords.ddy));
-    coords.lod = 0.5 * log2(delta_max_sqr);
+        float2 texture_coordinate = input.uv_MainTex.xy * _MainTex_TexelSize.zw;
+        coords.ddx = ddx(texture_coordinate);
+        coords.ddy = ddy(texture_coordinate);
+        float delta_max_sqr = max(dot(coords.ddx, coords.ddx), dot(coords.ddy, coords.ddy));
+        coords.lod = 0.5 * log2(delta_max_sqr);
 #else
-    coords.ddx = half2(0, 0);
-    coords.ddy = half2(0, 0);
-    coords.lod = 0;
+        coords.ddx = half2(0, 0);
+        coords.ddy = half2(0, 0);
+        coords.lod = 0;
 #endif
     
 #if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
@@ -680,16 +679,16 @@
         float viewDistance = length(viewVector);
         half3 viewDirection = normalize(viewVector);
             
-#if EXPLICIT_MAPS_ON
-
+#if EXPLICIT_MAPS_ON //Path used by anything passing in explicit maps like triplanar materials
         half4 metalSample = Tex2DSampleTexture(_MetalTex, coords);
+        metalSample = pow(metalSample, 0.45454545); //Match Substance painter. However we should do this at the importer!
         half4 roughSample = Tex2DSampleTexture(_RoughTex, coords);
+        roughSample = pow(roughSample, 0.45454545); //Match Substance painter. However we should do this at the importer!
 
-#if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
-        worldNormal = TriplanarMapNormal(_NormalTex, coords, input.worldNormal);
         
-#else
-        //Path used by anything passing in explicit maps like triplanar materials
+    #if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
+        worldNormal = TriplanarMapNormal(_NormalTex, coords, input.worldNormal);
+    #else
         half4 normalSample = (Tex2DSampleTexture(_NormalTex, coords));
         textureNormal = (UnpackNormalmapRGorAG(normalSample)); 
         textureNormal = normalize(textureNormal);
@@ -697,8 +696,7 @@
         worldNormal.x = dot(input.tspace0, textureNormal);
         worldNormal.y = dot(input.tspace1, textureNormal);
         worldNormal.z = dot(input.tspace2, textureNormal);
-#endif
-        
+    #endif
         alpha = texSample.a * _Alpha;
 
         //worldNormal = (worldNormal); //Normalize?
@@ -707,18 +705,18 @@
         //Note to self: should try and sample reflectedCubeSample as early as possible
         roughnessLevel = max(roughSample.r, 0.04);
         metallicLevel = metalSample.r;
-#if EMISSIVE_ON
+    #if EMISSIVE_ON
         emissiveLevel = Tex2DSampleTexture(_EmissiveMaskTex, coords).r;
-#else
+    #else
 		emissiveLevel = 0;
-#endif
+    #endif
         
 #else   //Path used by atlas rendering
 
-#if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
+    #if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
         worldNormal = TriplanarMapNormal(_NormalTex, coords, input.worldNormal);
         half4 specialSample = Tex2DSampleTexture(_NormalTex, coords);
-#else
+    #else
         //Path used by atlas rendering
         half4 specialSample = Tex2DSampleTexture(_NormalTex, coords);
         textureNormal = (TextureDecodeNormal(specialSample.xyz));
@@ -727,9 +725,8 @@
         worldNormal.x = dot(input.tspace0, textureNormal);
         worldNormal.y = dot(input.tspace1, textureNormal);
         worldNormal.z = dot(input.tspace2, textureNormal);
-#else
-        
-#endif
+        //#else
+    #endif
         worldReflect = reflect(-viewDirection, worldNormal);
 
         //Note to self: should try and sample reflectedCubeSample as early as possible
@@ -737,10 +734,10 @@
 
         //metallic is packed
         metallicLevel = UnpackMetal(specialSample.b);
-#if EMISSIVE_ON
+    #if EMISSIVE_ON
         emissiveLevel = UnpackEmission(specialSample.b);
         _EmissiveMix = 0;
-#endif        
+    #endif        
  
 #endif
    
@@ -748,38 +745,36 @@
 #ifdef SLIDER_OVERRIDE_ON
         metallicLevel = (metallicLevel + _MetalOverride) / 2;
         roughnessLevel = (roughnessLevel + _RoughOverride) / 2;
+        roughnessLevel = max(roughnessLevel, 0.04);
 #endif
-        reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));
+        reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));;
         skyboxSample = texCUBE(_CubeTex, -viewDirection);
  
         half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
-        //half3 complexSunSample = SampleSunSphericalHarmonics(worldNormal);// *globalBrightness;
                 
         //Shadows and light masks
         half sunShadowMask = GetShadow(input, worldNormal, globalSunDirection);
         //sunShadowMask = sunShadowMask *.8 + .2;//Never have shadows go full black
         half pointLight0Mask = 1;
         half pointLight1Mask = 1;
-        half ambientShadowMask = 1;
+        half ambientOcclusionMask = 1;
 
         //Sun
         half RoL = max(0, dot(worldReflect, -globalSunDirection));
         half NoV = max(dot(viewDirection, worldNormal), 0);
         half NoL = dot(-globalSunDirection, worldNormal); // -1 to 1
         
-        NoL = saturate((NoL + 1)*.5); //Half Lambert
-        // NoL = pow(NoL,4);
+        /////////////////////////////////////////////////////
+        //If you want to use half lambert 
+        NoL = saturate((NoL + 1)*.5);
+        /////////////////////////////////////////////////////
 
         half3 textureColor = texSample.xyz;
 
 #if VERTEX_LIGHT_ON
         //If we're using baked shadows (voxel world geometry)
         //The input diffuse gets multiplied by the vertex color.r
-        
-        //Previously, this was the sun mask 
-        //textureColor.rgb *= input.color.r;
-        
-        ambientShadowMask = input.color.g; //Creases
+        ambientOcclusionMask = input.color.g; //Creases
         pointLight0Mask = input.color.b;
         pointLight1Mask = input.color.a;
 #else
@@ -794,12 +789,12 @@
         diffuseColor = textureColor - textureColor * metallicLevel;	// 1 mad
         specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + textureColor * metallicLevel;	// 2 mad
         specularColor = EnvBRDFApprox(specularColor * _SpecularColor, roughnessLevel, NoV);
-        /*        //Alternate material for when metal is totally ignored
+        /*//Alternate material for when metal is totally ignored
             diffuseColor = textureColor;
             half specLevel = EnvBRDFApproxNonmetal(roughnessLevel, NoV);
             specularColor = half3(specLevel, specLevel, specLevel);
         */
-        half3 imageSpecular = ProcessReflectionSample(reflectedCubeSample.xyz);
+        half3 imageSpecular = reflectedCubeSample.xyz;
 
         //Start compositing it all now
         half3 finalColor = half3(0, 0, 0);
@@ -809,29 +804,36 @@
         diffuseColor *= input.baseColor;
         half3 ibl = globalSunColor;
  
-        half3 sunShine = (ibl * NoL * (diffuseColor + specularColor * PhongApprox(roughnessLevel, RoL)));
-        sunShine += (NoL * imageSpecular * specularColor);
+        //Direct sun + specular
+        
+        //Sun Term
+        half3 sunShine = (ibl * NoL);
+        
+        //Sun Specular
+        half3 sunSpecular = specularColor * PhongApprox(roughnessLevel, RoL);
+        //Sun Rim
+        half3 sunRim = (NoL * imageSpecular * specularColor);
+        //Final sun term
+        half3 sunComposite = sunShine * diffuseColor + ((sunSpecular + sunRim) * globalSunBrightness);
+        //Mask the sun based on the shadows
+        half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
         
         //SH ambient 
         half3 ambientLight = (complexAmbientSample * globalAmbientTint);
-        
 #if VERTEX_LIGHT_ON
         half3 bakedLighting = input.bakedLight.xyz;
         ambientLight = max(ambientLight, bakedLighting);
 #endif        
-                
+        half3 finalAmbient = (ambientLight * diffuseColor);
 
-        //Incident Color
-        float incidentAngle =  1-NoV;
-        half3 skyShineColor = lerp(diffuseColor, _SkyShineColor, incidentAngle * incidentAngle * _SkyShineStrength * min(worldNormal.y + .3, 1));
+        //Composite sun and ambient together
+        finalColor = (finalSun + finalAmbient);
+        
 
-        //Final color before lighting application
-        half3 ambientFinal = (ambientLight * skyShineColor) + (imageSpecular * specularColor * ambientLight);
-
-        //Sun mask
-        float sunMask = sunShadowMask;
-        finalColor = ((sunShine * sunShadowMask) + ambientFinal) * ambientShadowMask;
-
+        //Start messing with the final color in fun ways
+        //Ambient occlusion term
+        finalColor *= ambientOcclusionMask;
+ 
         //Point lights
 #ifdef NUM_LIGHTS_LIGHTS1
         finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]) * pointLight0Mask;
@@ -865,7 +867,7 @@
             half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * (1 - roughnessLevel) * alpha;
        
             ///if (brightness > globalSunBrightness + globalAmbientBrightness)
-            if (brightness > 0.85)
+            if (brightness > 0.95)
             {
                 MRT1 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
             }

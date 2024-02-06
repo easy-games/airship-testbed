@@ -23,7 +23,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _MainTex
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -57,7 +57,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: a01e3612d0765a84fa99cde03647f9bb, type: 3}
-        m_Scale: {x: 12, y: 12}
+        m_Scale: {x: 8, y: 8}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 0}
