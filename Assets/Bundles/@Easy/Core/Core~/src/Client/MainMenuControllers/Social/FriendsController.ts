@@ -125,7 +125,7 @@ export class FriendsController implements OnStart {
 								break;
 							}
 						}
-						if (found) {
+						if (!found) {
 							this.socialNotification.gameObject.SetActive(false);
 						}
 					}),
