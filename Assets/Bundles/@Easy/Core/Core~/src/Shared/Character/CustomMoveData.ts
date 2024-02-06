@@ -1,9 +1,10 @@
+import { Player } from "Shared/Player/Player";
 import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 
 export class CustomMoveData<T = unknown, K = unknown> {
 	constructor(
-		/** Client ID. */
-		public readonly clientId: number,
+		/** Player. */
+		public readonly player: Player,
 
 		/** The server tick in which the event was created. */
 		public readonly tick: number,

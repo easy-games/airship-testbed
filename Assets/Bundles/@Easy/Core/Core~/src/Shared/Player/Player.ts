@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
@@ -135,7 +135,7 @@ export class Player {
 
 	public SendMessage(message: string, sender?: Player): void {
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this.clientId, message);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message);
 		} else {
 			Dependency<ChatController>().RenderChatMessage(message);
 		}

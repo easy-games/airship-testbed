@@ -34,12 +34,7 @@ export class BlockDataAPI {
 			Airship.players.onPlayerJoined.Connect((player) => {
 				for (const pair1 of this.blockDataMap) {
 					for (const pair2 of pair1[1]) {
-						CoreNetwork.ServerToClient.SetBlockData.server.FireClient(
-							player.clientId,
-							pair1[0],
-							pair2[0],
-							pair2[1],
-						);
+						CoreNetwork.ServerToClient.SetBlockData.server.FireClient(player, pair1[0], pair2[0], pair2[1]);
 					}
 				}
 			});

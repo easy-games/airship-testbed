@@ -1,4 +1,4 @@
-import { Controller, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { RemoteEvent } from "Shared/Network/RemoteEvent";

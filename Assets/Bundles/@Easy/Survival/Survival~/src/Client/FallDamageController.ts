@@ -1,5 +1,5 @@
 import { CoreClientSignals } from "@Easy/Core/Client/CoreClientSignals";
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "@Easy/Core/Shared/Flamework";
 
 @Controller({})
 export class FallDamageController implements OnStart {

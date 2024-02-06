@@ -1,4 +1,4 @@
-import {} from "@easy-games/flamework-core";
+import {} from "Shared/Flamework";
 import { SetTimeout } from "Shared/Util/Timer";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
@@ -23,7 +23,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.pageType = pageType;
 		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
 		if (pageType === MainMenuPageType.Home) {
-			this.OpenPage();
+			// this.OpenPage();
 		} else {
 			this.ClosePage(true);
 		}

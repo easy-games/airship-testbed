@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { Signal } from "../Util/Signal";
 import { PointerButtonSignal } from "./Drivers/Signals/PointerButtonSignal";
 import { ScrollSignal } from "./Drivers/Signals/ScrollSignal";

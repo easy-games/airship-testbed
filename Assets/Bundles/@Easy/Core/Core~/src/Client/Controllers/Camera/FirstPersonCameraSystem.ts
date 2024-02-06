@@ -1,4 +1,4 @@
-﻿import { Dependency } from "@easy-games/flamework-core";
+﻿import { Dependency } from "Shared/Flamework";
 import Character from "Shared/Character/Character";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
@@ -54,7 +54,10 @@ export class FirstPersonCameraSystem {
 	private currentTime = 0.01;
 	private viewmodelController: ViewmodelController;
 
-	public constructor(public readonly character: Character, startInFirstPerson: boolean) {
+	public constructor(
+		public readonly character: Character,
+		startInFirstPerson: boolean,
+	) {
 		this.viewmodelController = Dependency<ViewmodelController>();
 
 		this.cameras = CameraReferences.Instance();

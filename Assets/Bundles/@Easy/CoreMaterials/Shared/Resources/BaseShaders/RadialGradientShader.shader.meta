@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 6008c99da84ec4dd28fc548e9ee3cdd6
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _NoiseTex: {instanceID: 0}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: '@easy/corematerials_shared/resources'
+  assetBundleVariant: 

@@ -32,7 +32,7 @@ export class CameraSystem {
 		const ref = CameraReferences.Instance();
 		this.camera = ref.mainCamera!;
 		this.allCameras = [ref.mainCamera!, ref.uiCamera!, ref.fpsCamera!];
-		this.transform = this.camera.transform;
+		this.transform = ref.cameraHolder ?? this.camera.transform;
 		this.fovSpring = new Spring(new Vector3(this.camera.fieldOfView, 0, 0), 5);
 		this.currentMode = new StaticCameraMode(this.camera.transform.position, this.camera.transform.rotation);
 
@@ -67,7 +67,7 @@ export class CameraSystem {
 			this.SetFOV(this.fovSpring.goal.x, true);
 		});
 
-		this.currentMode.OnStart(this.camera);
+		this.currentMode.OnStart(this.camera, this.transform);
 		this.enabledBin.Add(() => {
 			this.currentMode.OnStop();
 		});
@@ -120,7 +120,7 @@ export class CameraSystem {
 
 		if (this.enabled) this.currentMode.OnStop();
 		this.currentMode = mode;
-		if (this.enabled) this.currentMode.OnStart(this.camera);
+		if (this.enabled) this.currentMode.OnStart(this.camera, this.transform);
 	}
 
 	/**

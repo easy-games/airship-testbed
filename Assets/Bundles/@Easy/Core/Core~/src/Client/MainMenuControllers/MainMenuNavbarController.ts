@@ -1,9 +1,9 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
+import MainMenuNavButton from "Shared/MainMenu/Components/MainMenuNavButton";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
-import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AuthController } from "./Auth/AuthController";
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
@@ -76,6 +76,7 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
+		this.UpdateNavButton(currentSelectedNavbarButton, true);
 		this.mainMenuController.onCurrentPageChanged.Connect((page, oldPage) => {
 			if (currentSelectedNavbarButton) {
 				this.UpdateNavButton(currentSelectedNavbarButton, false);
@@ -142,14 +143,17 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {
-		const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
-		if (selected) {
-			text.color = new Color(1, 1, 1, 1);
-			// go.transform.GetChild(0).gameObject.SetActive(true);
-		} else {
-			text.color = ColorUtil.HexToColor("AEC5FF");
-			// go.transform.GetChild(0).gameObject.SetActive(false);
-		}
+		go.GetAirshipComponent<MainMenuNavButton>()?.SetSelected(selected);
+		// const img = go.GetComponent<Image>();
+		// img.TweenGraphicColor(selected ? new Color(1, 1, 1, 0.27) : ColorUtil.HexToColor("18191A"), 0.12);
+		// const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+		// if (selected) {
+		// 	text.color = new Color(1, 1, 1, 1);
+		// 	// go.transform.GetChild(0).gameObject.SetActive(true);
+		// } else {
+		// 	text.color = ColorUtil.HexToColor("AEC5FF");
+		// 	// go.transform.GetChild(0).gameObject.SetActive(false);
+		// }
 	}
 
 	private Disconnect(): void {

@@ -4,7 +4,7 @@ export default class SortComponent extends AirshipBehaviour {
     titleText: GameObject;
     content: Transform;
     gamePrefab: GameObject;
-    scrollRect: ScrollRect;
+    pageScrollRect?: ScrollRect;
     Awake(): void;
     Start(): void;
     OnDestroy(): void;

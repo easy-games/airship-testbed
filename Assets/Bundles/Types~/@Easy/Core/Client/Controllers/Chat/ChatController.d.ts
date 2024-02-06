@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { DirectMessageController } from "../../MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "../../MainMenuControllers/Social/FriendsController";
 import { SocketController } from "../../MainMenuControllers/Socket/SocketController";

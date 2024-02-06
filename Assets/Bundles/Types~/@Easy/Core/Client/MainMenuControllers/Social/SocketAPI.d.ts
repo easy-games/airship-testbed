@@ -50,8 +50,6 @@ export type FriendStatus = {
     status: "offline" | "online" | "in_game";
     userId: string;
     username: string;
-    discriminator: string;
-    discriminatedUsername: string;
     serverId: string;
     gameId: string;
     metadata?: {

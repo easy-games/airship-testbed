@@ -1,7 +1,5 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../Flamework";
 import { Player } from "../Player/Player";
 import { Signal, SignalPriority } from "../Util/Signal";
 import Character from "./Character";
@@ -20,6 +18,10 @@ export declare class CharactersSingleton implements OnStart {
      * Custom data that the client sends in their move packet.
      */
     onServerCustomMoveCommand: Signal<CustomMoveData<unknown, unknown>>;
+    /**
+     * If true, when a player disconnects their character will automatically be despawned.
+     */
+    autoDespawnCharactersOnPlayerDisconnect: boolean;
     private idCounter;
     constructor(localCharacterManager: LocalCharacterSingleton);
     OnStart(): void;

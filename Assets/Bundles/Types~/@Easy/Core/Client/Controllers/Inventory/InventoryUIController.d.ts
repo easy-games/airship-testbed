@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { CharacterInventorySingleton } from "../../../Shared/Inventory/CharacterInventorySingleton";
 import { InventorySingleton } from "../../../Shared/Inventory/InventorySingleton";
 import { CoreUIController } from "../UI/CoreUIController";

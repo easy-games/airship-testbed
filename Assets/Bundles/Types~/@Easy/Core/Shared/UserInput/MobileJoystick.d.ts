@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { Signal } from "../Util/Signal";
 export declare class MobileJoystick {
     private readonly bin;

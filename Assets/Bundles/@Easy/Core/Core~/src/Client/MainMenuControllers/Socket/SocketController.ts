@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";

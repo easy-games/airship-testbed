@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
@@ -154,8 +154,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointBirdsEye, true);
 		}
 
-		this.LoadAllOutfits();
-		this.SelectMainNav(0);
+		task.spawn(() => {
+			this.LoadAllOutfits();
+			this.SelectMainNav(0);
+		});
 	}
 
 	override ClosePage(instant?: boolean): void {

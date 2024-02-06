@@ -3,6 +3,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
     mainContent: Transform;
     spacerPrefab: GameObject;
     sortPrefab: GameObject;
+    scrollRect: ScrollRect;
     private bin;
     private sorts;
     OpenPage(): void;

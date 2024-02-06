@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
 import { Game } from "Shared/Game";
@@ -184,7 +184,7 @@ export class TabListController implements OnStart {
 		if (init) {
 			CoreUI.SetupButton(addFriendGo);
 			CanvasAPI.OnClickEvent(addFriendGo, () => {
-				Dependency<FriendsController>().SendFriendRequest(player.username + "#" + player.usernameTag);
+				Dependency<FriendsController>().SendFriendRequest(player.username);
 				addFriendGo.TweenGraphicAlpha(0.5, 0.12);
 			});
 		}

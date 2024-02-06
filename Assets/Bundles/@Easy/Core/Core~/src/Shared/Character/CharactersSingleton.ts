@@ -1,4 +1,4 @@
-import { Controller, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -29,6 +29,11 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
+	/**
+	 * If true, when a player disconnects their character will automatically be despawned.
+	 */
+	public autoDespawnCharactersOnPlayerDisconnect = true;
+
 	private idCounter = 0;
 
 	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
@@ -58,12 +63,19 @@ export class CharactersSingleton implements OnStart {
 			Airship.players.ObservePlayers((player) => {
 				for (let character of this.characters) {
 					CoreNetwork.ServerToClient.Character.Spawn.server.FireClient(
-						player.clientId,
+						player,
 						character.id,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
 					);
 				}
+			});
+
+			// Auto disconnect
+			Airship.players.onPlayerDisconnected.Connect((player) => {
+				if (!this.autoDespawnCharactersOnPlayerDisconnect) return;
+
+				player.character?.Despawn();
 			});
 		}
 
@@ -219,7 +231,9 @@ export class CharactersSingleton implements OnStart {
 			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
 				const allData = customData.Decode() as { key: unknown; value: unknown }[];
 				for (const data of allData) {
-					const moveEvent = new CustomMoveData(character.player?.clientId ?? -1, tick, data.key, data.value);
+					const player = character.player;
+					if (!player) continue;
+					const moveEvent = new CustomMoveData(player, tick, data.key, data.value);
 					this.onServerCustomMoveCommand.Fire(moveEvent);
 				}
 			});

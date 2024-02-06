@@ -3,6 +3,7 @@ import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator"
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import Inventory from "Shared/Inventory/Inventory";
+import { HeldItemManager } from "Shared/Item/HeldItems/HeldItemManager";
 import { Player } from "Shared/Player/Player";
 import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
@@ -37,6 +38,7 @@ export default class Character extends AirshipBehaviour {
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory!: Inventory;
+	@NonSerialized() public heldItems!: HeldItemManager;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();

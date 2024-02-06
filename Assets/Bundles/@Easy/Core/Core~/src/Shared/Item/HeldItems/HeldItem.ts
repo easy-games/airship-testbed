@@ -1,4 +1,4 @@
-﻿import { Dependency } from "@easy-games/flamework-core";
+﻿import { Dependency } from "Shared/Flamework";
 import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import Character from "Shared/Character/Character";

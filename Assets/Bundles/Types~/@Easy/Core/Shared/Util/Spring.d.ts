@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 export declare class Spring {
     /** The position of the spring */
     private position;
