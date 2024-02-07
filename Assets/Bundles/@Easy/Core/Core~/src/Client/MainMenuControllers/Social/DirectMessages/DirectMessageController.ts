@@ -1,8 +1,8 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -48,7 +48,7 @@ export class DirectMessageController implements OnStart {
 	public onDirectMessageReceived = new Signal<DirectMessage>();
 
 	private xPos = -320;
-	private yPos = -280;
+	private yPos = -479;
 
 	private loadedMessagesFromUserIdFromDisk = new Set<string>();
 
