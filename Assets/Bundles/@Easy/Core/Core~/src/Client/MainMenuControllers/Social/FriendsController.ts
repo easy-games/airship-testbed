@@ -39,7 +39,9 @@ export class FriendsController implements OnStart {
 	private customGameTitle: string | undefined;
 
 	private socialNotification!: SocialNotificationComponent;
+	private socialNotificationBin = new Bin();
 	private friendRequestsButton!: SocialFriendRequestsButtonComponent;
+	private socialNotificationKey = "";
 
 	public onIncomingFriendRequestsChanged = new Signal<void>();
 
@@ -49,6 +51,34 @@ export class FriendsController implements OnStart {
 		private readonly mainMenuController: MainMenuController,
 		private readonly rightClickMenuController: RightClickMenuController,
 	) {}
+
+	public AddSocialNotification(
+		key: string,
+		title: string,
+		username: string,
+		onResult: (result: boolean) => void,
+	): void {
+		this.socialNotificationBin.Clean();
+		this.socialNotificationKey = key;
+		this.socialNotification.gameObject.SetActive(false);
+		this.socialNotification.gameObject.SetActive(true);
+
+		this.socialNotification.titleText.text = title;
+		this.socialNotification.usernameText.text = username;
+		this.socialNotification.onResult.Connect(onResult);
+	}
+
+	public ClearSocialNotification(): void {
+		this.socialNotificationBin.Clean();
+		this.socialNotificationKey = "";
+		this.socialNotification.gameObject.SetActive(false);
+	}
+
+	public FireNotificationKey(key: string): void {
+		if (key === this.socialNotificationKey) {
+			this.ClearSocialNotification();
+		}
+	}
 
 	OnStart(): void {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
@@ -95,41 +125,40 @@ export class FriendsController implements OnStart {
 					this.socialNotification.userImage.sprite = Bridge.MakeSprite(texture);
 				}
 
-				this.socialNotification.onResult.Connect((accept) => {
-					print("notif result: " + accept);
-					if (accept) {
-						task.spawn(() => {
-							this.socialNotification.gameObject.SetActive(false);
-							this.AcceptFriendRequestAsync(foundUser.username);
-							this.SetIncomingFriendRequests(
-								this.incomingFriendRequests.filter((u) => u.uid !== foundUser.uid),
-							);
-						});
-					} else {
-						task.spawn(() => {
-							this.socialNotification.gameObject.SetActive(false);
-							this.RejectFriendRequestAsync(foundUser.uid);
-							this.SetIncomingFriendRequests(
-								this.incomingFriendRequests.filter((u) => u.uid !== foundUser.uid),
-							);
-						});
-					}
-				});
-
-				this.socialNotification.bin.Add(
-					this.onIncomingFriendRequestsChanged.Connect(() => {
-						let found: User | undefined;
-						for (const u of this.incomingFriendRequests) {
-							if (u.uid === foundUser.uid) {
-								found = u;
-								break;
-							}
+				this.AddSocialNotification(
+					"friend-request:" + data.initiatorId,
+					"Friend Request",
+					foundUser.username,
+					(result) => {
+						print("notif result: " + result);
+						if (result) {
+							task.spawn(() => {
+								this.socialNotification.gameObject.SetActive(false);
+								this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
+							});
+						} else {
+							task.spawn(() => {
+								this.socialNotification.gameObject.SetActive(false);
+								this.RejectFriendRequestAsync(foundUser.uid);
+							});
 						}
-						if (found) {
-							this.socialNotification.gameObject.SetActive(false);
-						}
-					}),
+					},
 				);
+
+				// this.socialNotification.bin.Add(
+				// 	this.onIncomingFriendRequestsChanged.Connect(() => {
+				// 		let found: User | undefined;
+				// 		for (const u of this.incomingFriendRequests) {
+				// 			if (u.uid === foundUser.uid) {
+				// 				found = u;
+				// 				break;
+				// 			}
+				// 		}
+				// 		if (!found) {
+				// 			this.ClearSocialNotification();
+				// 		}
+				// 	}),
+				// );
 
 				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
 				if (Game.context === CoreContext.GAME) {
@@ -145,7 +174,7 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
-			print("status updates: " + inspect(data));
+			// print("status updates: " + inspect(data));
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
@@ -241,7 +270,7 @@ export class FriendsController implements OnStart {
 		this.SetIncomingFriendRequests(data.incomingRequests);
 		this.outgoingFriendRequests = data.outgoingRequests;
 
-		print("friends: " + inspect(data));
+		// print("friends: " + inspect(data));
 
 		// auto decline
 		// for (const user of this.incomingFriendRequests) {
@@ -267,19 +296,32 @@ export class FriendsController implements OnStart {
 		// }
 	}
 
-	public AcceptFriendRequestAsync(username: string): boolean {
+	public AcceptFriendRequestAsync(username: string, userId: string): boolean {
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			EncodeJSON({
 				username: username,
 			}),
 		);
+		if (res.success) {
+			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
+
+			this.FireNotificationKey("friend-request:" + userId);
+		}
 
 		return res.success;
 	}
 
-	public RejectFriendRequestAsync(uid: string): boolean {
-		const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + uid);
+	public RejectFriendRequestAsync(userId: string): boolean {
+		const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + userId);
+		if (res.success) {
+			this.friendStatuses = this.friendStatuses.filter((f) => f.userId !== userId);
+			this.UpdateFriendsList();
+
+			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
+
+			this.FireNotificationKey("friend-request:" + userId);
+		}
 		return res.success;
 	}
 
@@ -382,12 +424,6 @@ export class FriendsController implements OnStart {
 									onClick: () => {
 										task.spawn(() => {
 											const success = this.RejectFriendRequestAsync(friend.userId);
-											if (success) {
-												this.friendStatuses = this.friendStatuses.filter(
-													(f) => f.userId !== friend.userId,
-												);
-												this.UpdateFriendsList();
-											}
 										});
 									},
 								},

@@ -21,9 +21,14 @@ export declare class FriendsController implements OnStart {
     friendStatusChanged: Signal<FriendStatus>;
     private customGameTitle;
     private socialNotification;
+    private socialNotificationBin;
     private friendRequestsButton;
+    private socialNotificationKey;
     onIncomingFriendRequestsChanged: Signal<void>;
     constructor(authController: AuthController, socketController: SocketController, mainMenuController: MainMenuController, rightClickMenuController: RightClickMenuController);
+    AddSocialNotification(key: string, title: string, username: string, onResult: (result: boolean) => void): void;
+    ClearSocialNotification(): void;
+    FireNotificationKey(key: string): void;
     OnStart(): void;
     SetIncomingFriendRequests(friendRequests: User[]): void;
     Setup(): void;
@@ -33,8 +38,8 @@ export declare class FriendsController implements OnStart {
     GetStatusText(): string;
     SendStatusUpdate(): void;
     FetchFriends(): void;
-    AcceptFriendRequestAsync(username: string): boolean;
-    RejectFriendRequestAsync(uid: string): boolean;
+    AcceptFriendRequestAsync(username: string, userId: string): boolean;
+    RejectFriendRequestAsync(userId: string): boolean;
     GetFriendGo(uid: string): GameObject | undefined;
     HasOutgoingFriendRequest(userId: string): boolean;
     SendFriendRequest(username: string): boolean;

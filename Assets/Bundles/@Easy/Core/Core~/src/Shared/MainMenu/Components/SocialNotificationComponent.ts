@@ -16,10 +16,11 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 
 	public bin = new Bin();
 
-	override Start(): void {
+	override OnEnable(): void {
 		// Accept
 		{
 			const conn = CanvasAPI.OnClickEvent(this.acceptButton.gameObject, () => {
+				print("result: true");
 				this.onResult.Fire(true);
 			});
 			this.bin.Add(() => Bridge.DisconnectEvent(conn));
@@ -27,6 +28,7 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 		// Decline
 		{
 			const conn = CanvasAPI.OnClickEvent(this.declineButton.gameObject, () => {
+				print("result: false");
 				this.onResult.Fire(false);
 			});
 			this.bin.Add(() => Bridge.DisconnectEvent(conn));

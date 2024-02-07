@@ -1,8 +1,8 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../Shared/Flamework";
+import { Result } from "../../../Shared/Types/Result";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
-import { Result } from "../../../Shared/Types/Result";
 export declare class MainMenuPartyController implements OnStart {
     private readonly mainMenuController;
     private readonly socketController;

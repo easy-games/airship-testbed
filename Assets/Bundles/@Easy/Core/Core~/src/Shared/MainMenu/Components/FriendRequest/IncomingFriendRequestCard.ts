@@ -1,6 +1,6 @@
-import { Dependency } from "Shared/Flamework";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { User } from "Client/MainMenuControllers/User/User";
+import { Dependency } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 
@@ -45,13 +45,10 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	private HandleResult(result: boolean) {
 		const friendsController = Dependency<FriendsController>();
 		if (result) {
-			friendsController.AcceptFriendRequestAsync(this.user.username);
+			friendsController.AcceptFriendRequestAsync(this.user.username, this.user.uid);
 		} else {
 			friendsController.RejectFriendRequestAsync(this.user.uid);
 		}
-		friendsController.SetIncomingFriendRequests(
-			friendsController.incomingFriendRequests.filter((u) => u.uid !== this.user.uid),
-		);
 	}
 
 	override OnDestroy(): void {

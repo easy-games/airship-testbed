@@ -2845,6 +2845,59 @@ declare const enum ColorBleedMode {
     White = 3,
     Plugin = 4,
 }
+declare const enum AirshipPlatform {
+    IPhone = 0,
+    Android = 1,
+    Mac = 2,
+    Windows = 3,
+    Linux = 4,
+}
+declare const enum BuildTarget {
+    StandaloneOSX = 2,
+    StandaloneOSXUniversal = 3,
+    StandaloneOSXIntel = 4,
+    StandaloneWindows = 5,
+    WebPlayer = 6,
+    WebPlayerStreamed = 7,
+    iOS = 9,
+    PS3 = 10,
+    XBOX360 = 11,
+    Android = 13,
+    StandaloneLinux = 17,
+    StandaloneWindows64 = 19,
+    WebGL = 20,
+    WSAPlayer = 21,
+    StandaloneLinux64 = 24,
+    StandaloneLinuxUniversal = 25,
+    WP8Player = 26,
+    StandaloneOSXIntel64 = 27,
+    BlackBerry = 28,
+    Tizen = 29,
+    PSP2 = 30,
+    PS4 = 31,
+    PSM = 32,
+    XboxOne = 33,
+    SamsungTV = 34,
+    N3DS = 35,
+    WiiU = 36,
+    tvOS = 37,
+    Switch = 38,
+    Lumin = 39,
+    Stadia = 40,
+    LinuxHeadlessSimulation = 41,
+    CloudRendering = 41,
+    GameCoreScarlett = 42,
+    GameCoreXboxSeries = 42,
+    GameCoreXboxOne = 43,
+    PS5 = 44,
+    EmbeddedLinux = 45,
+    QNX = 46,
+    Bratwurst = 47,
+    NoTarget = -2,
+    MetroPlayer = -1,
+    iPhone = -1,
+    BB10 = -1,
+}
 
     
 interface RaycastHit {
@@ -2873,51 +2926,6 @@ interface RaycastHit {
     
     
     
-interface Matrix4x4 {
-    m00: number;
-    m10: number;
-    m20: number;
-    m30: number;
-    m01: number;
-    m11: number;
-    m21: number;
-    m31: number;
-    m02: number;
-    m12: number;
-    m22: number;
-    m32: number;
-    m03: number;
-    m13: number;
-    m23: number;
-    m33: number;
-    rotation: Quaternion;
-    lossyScale: Vector3;
-    isIdentity: boolean;
-    determinant: number;
-    decomposeProjection: FrustumPlanes;
-    inverse: Matrix4x4;
-    transpose: Matrix4x4;
-    Item: number;
-
-
-    Equals(other: unknown): boolean;
-    Equals(other: Matrix4x4): boolean;
-    GetColumn(index: number): Vector4;
-    GetHashCode(): number;
-    GetPosition(): Vector3;
-    GetRow(index: number): Vector4;
-    MultiplyPoint(point: Vector3): Vector3;
-    MultiplyPoint3x4(point: Vector3): Vector3;
-    MultiplyVector(vector: Vector3): Vector3;
-    SetColumn(index: number, column: Vector4): void;
-    SetRow(index: number, row: Vector4): void;
-    SetTRS(pos: Vector3, q: Quaternion, s: Vector3): void;
-    ToString(): string;
-    ToString(format: string): string;
-    ToString(format: string, formatProvider: unknown): string;
-    TransformPlane(plane: Plane): Plane;
-    ValidTRS(): boolean;
-}
     
 interface FrustumPlanes {
     left: number;
@@ -2930,54 +2938,7 @@ interface FrustumPlanes {
 
 }
     
-interface Vector4 {
-    x: number;
-    y: number;
-    z: number;
-    w: number;
-    Item: number;
-    normalized: Vector4;
-    magnitude: number;
-    sqrMagnitude: number;
-
-
-    Equals(other: unknown): boolean;
-    Equals(other: Vector4): boolean;
-    GetHashCode(): number;
-    Normalize(): void;
-    Scale(scale: Vector4): void;
-    Set(newX: number, newY: number, newZ: number, newW: number): void;
-    SqrMagnitude(): number;
-    ToString(): string;
-    ToString(format: string): string;
-    ToString(format: string, formatProvider: unknown): string;
-}
     
-interface Vector4Constructor {
-    kEpsilon: number;
-    zero: Vector4;
-    one: Vector4;
-    positiveInfinity: Vector4;
-    negativeInfinity: Vector4;
-
-    new(x: number, y: number, z: number, w: number): Vector4;
-    new(x: number, y: number, z: number): Vector4;
-    new(x: number, y: number): Vector4;
-
-    Distance(a: Vector4, b: Vector4): number;
-    Dot(a: Vector4, b: Vector4): number;
-    Lerp(a: Vector4, b: Vector4, t: number): Vector4;
-    LerpUnclamped(a: Vector4, b: Vector4, t: number): Vector4;
-    Magnitude(a: Vector4): number;
-    Max(lhs: Vector4, rhs: Vector4): Vector4;
-    Min(lhs: Vector4, rhs: Vector4): Vector4;
-    MoveTowards(current: Vector4, target: Vector4, maxDistanceDelta: number): Vector4;
-    Normalize(a: Vector4): Vector4;
-    Project(a: Vector4, b: Vector4): Vector4;
-    Scale(a: Vector4, b: Vector4): Vector4;
-    SqrMagnitude(a: Vector4): number;
-}
-declare const Vector4: Vector4Constructor;
     
 interface Plane {
     normal: Vector3;
@@ -3010,27 +2971,6 @@ interface PlaneConstructor {
 }
 declare const Plane: PlaneConstructor;
     
-interface Matrix4x4Constructor {
-    zero: Matrix4x4;
-    identity: Matrix4x4;
-
-    new(column0: Vector4, column1: Vector4, column2: Vector4, column3: Vector4): Matrix4x4;
-
-    Determinant(m: Matrix4x4): number;
-    Frustum(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number): Matrix4x4;
-    Frustum(fp: FrustumPlanes): Matrix4x4;
-    Inverse(m: Matrix4x4): Matrix4x4;
-    Inverse3DAffine(input: Matrix4x4, result: unknown): boolean;
-    LookAt(from: Vector3, to: Vector3, up: Vector3): Matrix4x4;
-    Ortho(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number): Matrix4x4;
-    Perspective(fov: number, aspect: number, zNear: number, zFar: number): Matrix4x4;
-    Rotate(q: Quaternion): Matrix4x4;
-    Scale(vector: Vector3): Matrix4x4;
-    Translate(vector: Vector3): Matrix4x4;
-    Transpose(m: Matrix4x4): Matrix4x4;
-    TRS(pos: Vector3, q: Quaternion, s: Vector3): Matrix4x4;
-}
-declare const Matrix4x4: Matrix4x4Constructor;
     
     
 interface Scene {
@@ -13296,7 +13236,6 @@ interface ColorSetting {
     materialColor: Color;
     emissiveColor: Color;
     emissiveMix: number;
-    block: MaterialPropertyBlock;
     reference: string;
 
 
@@ -13348,6 +13287,7 @@ interface HttpResponse {
 }
     
 interface HttpManagerConstructor {
+    loggingEnabled: boolean;
 
     new(): HttpManager;
 
@@ -14191,4 +14131,21 @@ interface ScalableBufferManagerConstructor {
     ResizeBuffers(widthScale: number, heightScale: number): void;
 }
 declare const ScalableBufferManager: ScalableBufferManagerConstructor;
+    
+interface AirshipPlatformUtil {
+
+
+}
+    
+interface AirshipPlatformUtilConstructor {
+    livePlatforms: CSArray<number>;
+
+    new(): AirshipPlatformUtil;
+
+    FromBuildTarget(buildTarget: BuildTarget): AirshipPlatform;
+    FromRuntimePlatform(runtimePlatform: RuntimePlatform): AirshipPlatform;
+    GetLocalPlatform(): AirshipPlatform;
+    ToBuildTarget(platform: AirshipPlatform): BuildTarget;
+}
+declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
 

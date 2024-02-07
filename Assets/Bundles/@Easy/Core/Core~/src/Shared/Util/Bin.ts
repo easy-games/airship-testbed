@@ -68,6 +68,10 @@ export class Bin {
 		return obj;
 	}
 
+	public AddEngineEventConnection(connection: EngineEventConnection): void {
+		this.Add(() => Bridge.DisconnectEvent(connection));
+	}
+
 	/** Connect a callback to a given signal. */
 	public Connect<T extends Callback>(
 		signal: SignalLike<T>,

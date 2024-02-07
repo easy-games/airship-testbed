@@ -12,7 +12,7 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
      */
     onResult: Signal<boolean>;
     bin: Bin;
-    Start(): void;
+    OnEnable(): void;
     OnDisable(): void;
     OnDestroy(): void;
 }
