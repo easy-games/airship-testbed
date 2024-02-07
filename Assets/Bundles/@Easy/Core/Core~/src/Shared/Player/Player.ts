@@ -1,10 +1,10 @@
-import { Dependency } from "Shared/Flamework";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Dependency } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";

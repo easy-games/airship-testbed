@@ -1,9 +1,9 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
-import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
@@ -118,11 +118,9 @@ export class FriendsController implements OnStart {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				const texture = AssetCache.LoadAssetIfExists<Texture2D>(
-					"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
-				);
-				if (texture !== undefined) {
-					this.socialNotification.userImage.sprite = Bridge.MakeSprite(texture);
+				const sprite = Airship.players.CreateProfilePictureSpriteAsync(foundUser.uid);
+				if (sprite) {
+					this.socialNotification.userImage.sprite = sprite;
 				}
 
 				this.AddSocialNotification(

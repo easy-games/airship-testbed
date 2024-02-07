@@ -1,10 +1,10 @@
-import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Team } from "Shared/Team/Team";
 import { ChatColor } from "Shared/Util/ChatColor";
@@ -12,6 +12,7 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { AssetCache } from "../AssetCache/AssetCache";
 import { Player, PlayerDto } from "./Player";
 
 @Controller({ loadOrder: -1000 })
@@ -30,6 +31,8 @@ export class PlayersSingleton implements OnStart {
 	};
 
 	private playersPendingReady = new Map<number, Player>();
+
+	private cachedProfilePictureSprite = new Map<string, Sprite>();
 
 	constructor() {
 		Airship.players = this;
@@ -378,5 +381,24 @@ export class PlayersSingleton implements OnStart {
 			}
 		}
 		return undefined;
+	}
+
+	/**
+	 * **MAY YIELD**
+	 * @param userId
+	 * @returns
+	 */
+	public CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined {
+		if (this.cachedProfilePictureSprite.has(userId)) {
+			return this.cachedProfilePictureSprite.get(userId);
+		}
+		const texture = AssetCache.LoadAssetIfExists<Texture2D>(
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
+		);
+		if (texture !== undefined) {
+			const sprite = Bridge.MakeSprite(texture);
+			this.cachedProfilePictureSprite.set(userId, sprite);
+			return sprite;
+		}
 	}
 }
