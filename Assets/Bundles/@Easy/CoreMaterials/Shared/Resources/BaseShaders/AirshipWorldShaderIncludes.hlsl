@@ -766,7 +766,7 @@
         
         /////////////////////////////////////////////////////
         //If you want to use half lambert 
-        NoL = saturate((NoL + 1)*.5);
+        //NoL = saturate((NoL + 1)*.5);
         /////////////////////////////////////////////////////
 
         half3 textureColor = texSample.xyz;

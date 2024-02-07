@@ -14,6 +14,7 @@ Material:
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
+  - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - _ZWRITE_ON
@@ -91,7 +92,7 @@ Material:
     - NUM_LIGHTS: 0
     - POINT_FILTER: 0
     - RIM_LIGHT: 0
-    - SLIDER_OVERRIDE: 0
+    - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
@@ -103,7 +104,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MetalOverride: 0
+    - _MetalOverride: 0.103
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -111,7 +112,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0
     - _RimPower: 0
-    - _RoughOverride: 0.04
+    - _RoughOverride: 0.267
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
