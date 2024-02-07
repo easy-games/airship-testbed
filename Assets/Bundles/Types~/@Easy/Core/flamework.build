@@ -164,6 +164,7 @@
 		"@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
 		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController": "$:MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
+		"@Easy/Core:Shared/MainMenu/Components/PartyMember@PartyMember": "$:MainMenu/Components/PartyMember@PartyMember",
 		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController": "$:MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
 		"@Easy/Core:Server/Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand": "$:Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/BotCommand@BotCommand": "$:Services/Chat/Commands/BotCommand@BotCommand",

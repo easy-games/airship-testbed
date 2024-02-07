@@ -25,6 +25,7 @@ export declare class Bin {
     private cleaning;
     /** Add an object to the bin. */
     Add<T extends Trackable>(obj: T, cleanupMethod?: string): T;
+    AddEngineEventConnection(connection: EngineEventConnection): void;
     /** Connect a callback to a given signal. */
     Connect<T extends Callback>(signal: SignalLike<T>, handler: (...args: Parameters<T>) => void): ReturnType<typeof signal.Connect>;
     /** Create a new Bin which will be immediately added to this bin. */
