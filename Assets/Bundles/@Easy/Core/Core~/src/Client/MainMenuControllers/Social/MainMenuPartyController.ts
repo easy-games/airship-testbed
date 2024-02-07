@@ -1,4 +1,7 @@
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Result } from "Shared/Types/Result";
@@ -56,6 +59,12 @@ export class MainMenuPartyController implements OnStart {
 					}
 				},
 			);
+			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
+			if (Game.context === CoreContext.GAME) {
+				Game.localPlayer.SendMessage(
+					ChatColor.Yellow(data.members[0].username) + ChatColor.Gray(" invited you to their party."),
+				);
+			}
 		});
 
 		this.Setup();
