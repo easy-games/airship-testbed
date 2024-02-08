@@ -1,5 +1,5 @@
-import { OnStart } from "../../../../Shared/Flamework";
 import { SocketController } from "../../Socket/SocketController";
+import { OnStart } from "../../../../Shared/Flamework";
 import { Signal } from "../../../../Shared/Util/Signal";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";

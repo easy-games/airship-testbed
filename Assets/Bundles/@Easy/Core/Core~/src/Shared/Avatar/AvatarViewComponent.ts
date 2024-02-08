@@ -23,6 +23,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
+	private initialized = false;
 
 	public override Start(): void {
 		print("AVATAR VIEW START");
@@ -42,6 +43,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			}
 			this.lastMousePos = pos;
 		});
+		this.initialized = true;
 	}
 
 	public ShowAvatar() {

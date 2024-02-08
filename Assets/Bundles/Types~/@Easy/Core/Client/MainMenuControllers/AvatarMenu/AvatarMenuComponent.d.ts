@@ -4,6 +4,8 @@ import { MainMenuPageType } from "../MainMenuPageName";
 export default class AvatarMenuComponent extends MainMenuPageComponent {
     private readonly generalHookupKey;
     private readonly tweenDuration;
+    private readonly highlightColor;
+    private readonly normalColor;
     private subNavBarBtns;
     private mainNavBtns?;
     private subNavBars?;
