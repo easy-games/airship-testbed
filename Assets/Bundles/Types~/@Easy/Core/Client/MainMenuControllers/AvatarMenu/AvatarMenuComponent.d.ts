@@ -14,6 +14,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private activeSubIndex;
     itemButtonHolder?: Transform;
     itemButtonTemplate?: GameObject;
+    avatarRenderHolder?: GameObject;
+    categoryLabelTxt?: TextMeshProUGUI;
     private currentSlot;
     private outfits?;
     private currentUserOutfit?;
@@ -45,4 +47,5 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private LoadCurrentOutfit;
     private Save;
     private Revert;
+    private SetButtonColor;
 }
