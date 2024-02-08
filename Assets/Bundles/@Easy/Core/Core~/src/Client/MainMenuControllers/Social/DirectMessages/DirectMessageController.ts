@@ -1,3 +1,4 @@
+import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
@@ -266,8 +267,6 @@ export class DirectMessageController implements OnStart {
 
 		let messages = this.GetMessages(uid);
 
-		this.messagesContentGo!.ClearChildren();
-
 		for (const dm of messages) {
 			this.RenderChatMessage(dm, false);
 		}
@@ -301,6 +300,9 @@ export class DirectMessageController implements OnStart {
 			loadImage: true,
 			includeTag: true,
 		});
+
+		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
+		directMessagesWindow.InitAsFriendChat(friendStatus);
 
 		this.windowGo!.GetComponent<RectTransform>().TweenAnchoredPositionY(0, 0.1);
 		// this.windowGo!.transform.TweenLocalPositionY(0, 0.1);

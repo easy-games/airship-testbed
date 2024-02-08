@@ -20,6 +20,7 @@
 		"@Easy/Core:Shared/Util/PhysicsUtil@PhysicsUtil": "$:Util/PhysicsUtil@PhysicsUtil",
 		"@Easy/Core:Client/Controllers/Viewmodel/ViewmodelController@ViewmodelController": "$:Controllers/Viewmodel/ViewmodelController@ViewmodelController",
 		"@Easy/Core:Shared/Audio/AudioClipBundle@AudioClipBundle": "$:Audio/AudioClipBundle@AudioClipBundle",
+		"@Easy/Core:Shared/MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow": "$:MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow",
 		"@Easy/Core:Client/MainMenuControllers/Auth/AuthController@AuthController": "$:MainMenuControllers/Auth/AuthController@AuthController",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
 		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
