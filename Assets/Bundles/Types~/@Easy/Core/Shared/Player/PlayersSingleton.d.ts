@@ -10,6 +10,7 @@ export declare class PlayersSingleton implements OnStart {
     private playerManagerBridge;
     private server?;
     private playersPendingReady;
+    private cachedProfilePictureSprite;
     constructor();
     OnStart(): void;
     private InitClient;
@@ -49,4 +50,10 @@ export declare class PlayersSingleton implements OnStart {
     FindByClientIdIncludePending(clientId: number): Player | undefined;
     FindByUserId(userId: string): Player | undefined;
     FindByUsername(name: string): Player | undefined;
+    /**
+     * **MAY YIELD**
+     * @param userId
+     * @returns
+     */
+    CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined;
 }

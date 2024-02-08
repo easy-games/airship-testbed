@@ -62,7 +62,9 @@ export class MainMenuController implements OnStart {
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 			CoreRefs.rootTransform,
 		).GetComponent<AvatarViewComponent>();
+
 		if (Game.context === CoreContext.GAME) {
+			print("HIDING AVATAR");
 			this.avatarView.HideAvatar();
 		}
 
@@ -139,6 +141,8 @@ export class MainMenuController implements OnStart {
 	public CloseFromGame(): void {
 		if (!this.open) return;
 		this.open = false;
+
+		print("HIDING AVATAR");
 		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();
 
@@ -199,7 +203,11 @@ export class MainMenuController implements OnStart {
 			oldPage.ClosePage();
 		}
 
-		this.currentPage?.OpenPage();
+		if (this.currentPage) {
+			this.currentPage.OpenPage();
+		} else {
+			error("Trying to route to undefined page: " + pageType);
+		}
 
 		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);
 	}

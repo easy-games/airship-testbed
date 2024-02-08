@@ -12,11 +12,13 @@ import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
 	private readonly tweenDuration = 0.15;
-
+	private readonly highlightColor = ColorUtil.HexToColor("#3173C1");
+	private readonly normalColor = ColorUtil.HexToColor("#505667");
 	private subNavBarBtns: (CSArray<RectTransform> | undefined)[] = [];
 	private mainNavBtns?: CSArray<RectTransform>;
 	private subNavBars?: CSArray<RectTransform>;
@@ -26,6 +28,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	public itemButtonHolder?: Transform;
 	public itemButtonTemplate?: GameObject;
+	public avatarRenderHolder?: GameObject;
+	public categoryLabelTxt?: TextMeshProUGUI;
 
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
 	private outfits?: Outfit[];
@@ -36,7 +40,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	//public buttons?: Transform[];
 
 	private Log(message: string) {
-		// print("Avatar Editor: " + message);
+		print("Avatar Editor: " + message);
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
@@ -143,15 +147,24 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
+		this.ClearItembuttons();
 		this.InitializeAutherizedAccessories();
 	}
 
 	override OpenPage(): void {
 		super.OpenPage();
 		this.Log("Open AVATAR");
+		if (this.avatarRenderHolder) {
+			this.Log("Showing avatar render");
+			this.avatarRenderHolder?.SetActive(true);
+		} else {
+			error("No avatar render veiew in avatar editor menu page");
+		}
 		let avatarView = this.mainMenu?.avatarView;
 		if (avatarView) {
 			avatarView.CameraFocusTransform(avatarView.cameraWaypointBirdsEye, true);
+		} else {
+			error("no 3D avatar to render in avatar editor");
 		}
 
 		task.spawn(() => {
@@ -163,13 +176,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override ClosePage(instant?: boolean): void {
 		super.ClosePage(instant);
 		this.Log("Close AVATAR");
+		this.avatarRenderHolder?.SetActive(false);
 		if (this.mainMenu?.avatarView) {
 			this.mainMenu.avatarView.dragging = false;
+		} else {
+			error("no 3D avatar to render in avatar editor");
 		}
 	}
 
 	private SelectMainNav(index: number) {
-		if (!this.mainNavBtns || !this.subNavBars) {
+		if (this.activeMainIndex === index || !this.mainNavBtns || !this.subNavBars) {
 			return;
 		}
 
@@ -177,22 +193,26 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let i = 0;
 		this.activeMainIndex = index;
 
+		//Highlight this category button
 		for (i = 0; i < this.mainNavBtns.Length; i++) {
 			const active = i === index;
 			const nav = this.mainNavBtns.GetValue(i);
-			nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
+			//nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
 			let button = nav.gameObject.GetComponent<Button>();
-			let colors = button.colors;
-			colors.normalColor = active ? Color.green : Color.white;
-			button.colors = colors;
+			this.SetButtonColor(button, active);
+			if (active && this.categoryLabelTxt) {
+				this.categoryLabelTxt.text =
+					button.gameObject.GetComponentsInChildren<TextMeshProUGUI>().GetValue(0).text ?? "No Category";
+			}
 		}
 
-		for (i = 0; i < this.subNavBars.Length; i++) {
+		//Show nave bar for this category
+		/*for (i = 0; i < this.subNavBars.Length; i++) {
 			const active = i === index;
 			const nav = this.subNavBars.GetValue(i);
 			nav.anchoredPosition = new Vector2(nav.anchoredPosition.x, 0);
 			nav.gameObject.SetActive(active);
-		}
+		}*/
 
 		this.SelectSubNav(0);
 	}
@@ -208,11 +228,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			for (let i = 0; i < subBar.Length; i++) {
 				const active = i === subIndex;
 				const nav = subBar.GetValue(i);
-				nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
-				let button = nav.gameObject.GetComponent<Button>();
-				let colors = button.colors;
-				colors.normalColor = active ? Color.green : Color.white;
-				button.colors = colors;
+				//nav.TweenLocalScale(Vector3.one.mul(active ? 1.25 : 1), this.tweenDuration);
+				this.SetButtonColor(nav.gameObject.GetComponent<Button>(), active);
 			}
 		}
 
@@ -525,6 +542,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectOutfit(index: number) {
+		this.Log("SelectOutfit: " + index);
 		if (!this.outfits || index < 0 || index >= this.outfits.size()) {
 			error("Index out of range of outfits");
 		}
@@ -533,13 +551,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			for (let i = 0; i < this.outfitBtns.Length; i++) {
 				let button = this.outfitBtns?.GetValue(index)?.GetComponent<Button>();
 				if (button) {
-					const color = i === index ? Color.green : Color.gray;
-					button.image.color = color;
-					let colors = button.colors;
-					colors.normalColor = color;
-					colors.selectedColor = color;
-					colors.highlightedColor = color;
-					//button.colors = colors;
+					this.SetButtonColor(button, i === index);
 				}
 			}
 		}
@@ -591,5 +603,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private Revert() {
 		this.LoadCurrentOutfit();
+	}
+
+	private SetButtonColor(button: Button, active: boolean) {
+		let colors = button.colors;
+		colors.normalColor = active ? this.highlightColor : this.normalColor;
+		button.colors = colors;
 	}
 }
