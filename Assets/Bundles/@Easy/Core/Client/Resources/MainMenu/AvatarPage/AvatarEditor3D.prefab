@@ -103,55 +103,6 @@ MonoBehaviour:
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
---- !u!1 &902278627457118420
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1905733049028468809}
-  - component: {fileID: 5834456661397027120}
-  m_Layer: 0
-  m_Name: AirshipPointlight (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1905733049028468809
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902278627457118420}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.593, y: 2.473, z: 0.311}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5945154007959514739}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5834456661397027120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902278627457118420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 0.8862745, g: 0.64806634, b: 0.5568628, a: 1}
-  intensity: 1
-  range: 6
-  castShadows: 1
-  highQualityLight: 1
 --- !u!1 &1317145230636633611
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,55 +427,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7924492006652418525}
   m_LocalEulerAnglesHint: {x: 10.356, y: 13.798, z: 1.699}
---- !u!1 &2583753351304821016
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 603087192259536192}
-  - component: {fileID: 6825865839651278182}
-  m_Layer: 0
-  m_Name: AirshipPointlight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &603087192259536192
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2583753351304821016}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.602, y: 0.793, z: -1.248}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5945154007959514739}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6825865839651278182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2583753351304821016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 0.55633676, g: 0.79092216, b: 0.8867924, a: 1}
-  intensity: 1
-  range: 6
-  castShadows: 1
-  highQualityLight: 1
 --- !u!1 &3683949970812632299
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +491,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -600,6 +504,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -611,6 +517,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -622,6 +530,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -633,6 +543,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -644,6 +556,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -655,6 +569,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -666,6 +582,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -677,6 +595,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 0.2
@@ -688,6 +608,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 0.5
@@ -699,6 +621,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -710,6 +634,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -721,6 +647,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -732,6 +660,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1022,8 +952,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 603087192259536192}
-  - {fileID: 1905733049028468809}
   - {fileID: 7821135771876542089}
   - {fileID: 7411719883774285951}
   - {fileID: 4269406107969682568}
