@@ -2011,6 +2011,7 @@ interface GameObject extends Object {
 	GetComponentIfExists<T extends Component = Component>(type: string): T | undefined;
 	AddComponent<T>(): T;
 	AddComponent<T extends Component = Component>(componentName: string): T;
+	AddAirshipComponent<T extends AirshipBehaviour>(): T;
 	SendMessage(methodName: string, value: unknown): void;
 	SendMessage(methodName: string): void;
 	SendMessage(methodName: string, value: unknown, options: SendMessageOptions): void;
