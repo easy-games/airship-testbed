@@ -13948,9 +13948,13 @@ declare const DevConsole: DevConsoleConstructor;
 interface EasyShake extends MonoBehaviour {
     duration: number;
     movementsPerSecond: number;
+    lerpMod: number;
     maxRadius: Vector3;
     minRadius: Vector3;
-    resolveShakeOverTime: boolean;
+    positionRadiusMod: number;
+    rotationRadiusMod: number;
+    minimizeShakeOverTime: boolean;
+    infinite: boolean;
     destroyOnEnd: boolean;
 
 

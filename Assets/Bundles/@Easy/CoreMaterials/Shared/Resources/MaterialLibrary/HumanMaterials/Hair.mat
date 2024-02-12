@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AirshipCharacterBaseToon
-  m_Shader: {fileID: 4800000, guid: 386517b47559d944982eab60b192b2ab, type: 3}
+  m_Name: Hair
+  m_Shader: {fileID: 4800000, guid: 498b6bf8d21a44021aa723f1c203bf20, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -17,9 +17,10 @@ Material:
   - EXPLICIT_MAPS_ON
   - METAL_ON_ON
   - NUM_LIGHTS_LIGHTS2
+  - RIM_LIGHT_ON
   - SLIDER_OVERRIDE
   - SLIDER_OVERRIDE_ON
-  - TRIPLANAR_STYLE_OFF
+  - TRIPLANAR_STYLE_LOCAL
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
   - _TRIPLANAR_TRIPLANAR_LOCAL
@@ -38,8 +39,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ARMTex:
-        m_Texture: {fileID: 2800000, guid: 3fcbe8116c7eee54ea369250e979e1c1, type: 3}
+    - _AnisoNoise:
+        m_Texture: {fileID: 2800000, guid: a105e948af60d0c42b066351709f07d6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AnisoTex:
+        m_Texture: {fileID: 2800000, guid: a105e948af60d0c42b066351709f07d6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -47,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeTex:
-        m_Texture: {fileID: 8900000, guid: 98fc12523466e9841bcac080b0b16b28, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -67,11 +72,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissiveMaskTex:
-        m_Texture: {fileID: 2800000, guid: c68c0c05d862ba24c874a924c7bb4a33, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c793e1a7b58d6df4e9ed0a2c0838cf27, type: 3}
+        m_Texture: {fileID: 2800000, guid: 631016985ed5ef34b8681ff253d3709f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -83,12 +88,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: 96186e239638d40d883845320e22e424, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 96186e239638d40d883845320e22e424, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 520b41f82aa6d454789d7d335e90753b, type: 3}
+        m_Scale: {x: 0, y: 0}
         m_Offset: {x: 0, y: 0}
     - _ORMTex:
         m_Texture: {fileID: 2800000, guid: 3fcbe8116c7eee54ea369250e979e1c1, type: 3}
@@ -103,7 +108,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughTex:
-        m_Texture: {fileID: 2800000, guid: eee692e85c03f43ca878a3ac0c12937d, type: 3}
+        m_Texture: {fileID: 2800000, guid: c68c0c05d862ba24c874a924c7bb4a33, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessTex:
@@ -124,19 +129,25 @@ Material:
     - NUM_LIGHTS: 0
     - OVERRIDE: 0
     - POINT_FILTER: 0
-    - RIM_LIGHT: 0
+    - RIM_LIGHT: 1
     - SLIDER_OVERRIDE: 1
-    - TRIPLANAR_STYLE: 0
+    - TRIPLANAR_STYLE: 1
     - VERTEX_LIGHT: 0
     - _Alpha: 1
-    - _AmbientMod: 0.5
+    - _AmbientMod: 0.1
+    - _AnisoNoiseFreq: 3
+    - _AnisoNoiseStrength: 1.09
+    - _AnisoOffset: -0.19
+    - _AnisoRampIntensity: 2.99
+    - _AnisoRampMod: 10.84
+    - _AnisoStrength: 0.25
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EXPLICIT_MAPS: 1
     - _Emissive: 0
-    - _EmissiveMix: 1
+    - _EmissiveMix: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -149,37 +160,40 @@ Material:
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
-    - _RimDistanceOffset: 0
+    - _RimDistanceOffset: 10
     - _RimIntensity: 1
-    - _RimPower: 1.5
-    - _RoughOverride: 0.5
+    - _RimPower: 2
+    - _RoughOverride: 0.814
     - _SLIDER_OVERRIDE: 1
-    - _SaturationMod: 0.5
-    - _ShadowIntensity: 0.5
+    - _SaturationMod: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecMod: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
-    - _TestFloat: 0.5
+    - _TestFloat: 1
     - _Triplanar: 1
-    - _TriplanarScale: 0
+    - _TriplanarScale: 8.8
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
+    - _VerticalStrength: 1
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.6024933, b: 0, a: 1}
+    - _ColorBot: {r: 0.33962262, g: 0.013297774, b: 0, a: 1}
+    - _ColorBottom: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorMid: {r: 1, g: 0.48793036, b: 0.3160377, a: 1}
+    - _ColorTop: {r: 1, g: 0.8050537, b: 0.23113209, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 1, g: 0, b: 0, a: 0}
+    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _OverrideColor: {r: 2, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.33490568, g: 0.99478364, b: 1, a: 1}
-    - _RimColorShadow: {r: 0.15481488, g: 0.25616926, b: 0.6698113, a: 1}
-    - _RimDir: {r: 1, g: 0, b: 1, a: 0}
-    - _ShadowColor: {r: 0.24528301, g: 0.16162051, b: 0.15156639, a: 1}
-    - _SkyShine: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecularColor: {r: 0.9811321, g: 0.5970096, b: 0.5970096, a: 1}
+    - _RimColor: {r: 0, g: 0.84483385, b: 1, a: 1}
+    - _RimColorShadow: {r: 0.25, g: 0.5, b: 0.5, a: 1}
+    - _ShadowColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
+    - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _SpecularColor: {r: 1, g: 0.73815185, b: 0.6462264, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
