@@ -1,4 +1,6 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
+import PartyChatButton from "@Easy/Core/Shared/MainMenu/Components/PartyChatButton";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
 import { AudioManager } from "Shared/Audio/AudioManager";
@@ -18,6 +20,7 @@ import { Theme } from "Shared/Util/Theme";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { MainMenuController } from "../../MainMenuController";
 import { FriendsController } from "../FriendsController";
+import { MainMenuPartyController } from "../MainMenuPartyController";
 import { FriendStatus } from "../SocketAPI";
 import { DirectMessage } from "./DirectMessage";
 
@@ -40,13 +43,20 @@ export class DirectMessageController implements OnStart {
 	private offlineNoticeText?: TMP_Text;
 	private inputField?: TMP_InputField;
 	private openWindowBin = new Bin();
-	private openedWindowUserId: string | undefined;
+	/**
+	 * Either a userId or "party"
+	 */
+	private openedWindowTarget: string | undefined;
 	private doScrollToBottom = 0;
 	private inputFieldSelected = false;
 
 	public lastMessagedFriend: FriendStatus | undefined;
 
 	public onDirectMessageReceived = new Signal<DirectMessage>();
+
+	private partyChatButton!: PartyChatButton;
+	public onPartyMessageReceived = new Signal<DirectMessage>();
+	private partyUnreadMessageCount = 0;
 
 	private xPos = -320;
 	private yPos = -479;
@@ -57,6 +67,7 @@ export class DirectMessageController implements OnStart {
 		private readonly mainMenuController: MainMenuController,
 		private readonly friendsController: FriendsController,
 		private readonly socketController: SocketController,
+		private readonly partyController: MainMenuPartyController,
 	) {}
 
 	OnStart(): void {
@@ -78,8 +89,8 @@ export class DirectMessageController implements OnStart {
 			});
 
 			if (
-				this.openedWindowUserId === undefined ||
-				this.openedWindowUserId !== data.sender
+				this.openedWindowTarget === undefined ||
+				this.openedWindowTarget !== data.sender
 				// !Application.isFocused
 			) {
 				this.IncrementUnreadCounter(data.sender, 1);
@@ -103,6 +114,36 @@ export class DirectMessageController implements OnStart {
 			}
 
 			StateManager.SetString("direct-messages:" + data.sender, EncodeJSON(messages));
+		});
+
+		this.socketController.On<DirectMessage>("game-coordinator/party-message", (data) => {
+			const messages = MapUtil.GetOrCreate(this.messagesMap, "party", []);
+			messages.push(data);
+			this.onPartyMessageReceived.Fire(data);
+
+			if (this.openedWindowTarget !== "party") {
+				this.partyUnreadMessageCount++;
+				this.partyChatButton.SetUnreadCount(this.partyUnreadMessageCount);
+			}
+
+			// sound
+			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/MessageReceived.wav", {
+				volumeScale: 0.3,
+			});
+
+			// in-game chat
+			if (Game.context === CoreContext.GAME) {
+				const member = this.partyController.party?.members.find((u) => u.uid === data.sender);
+				if (member) {
+					let text =
+						ColorUtil.ColoredText(Theme.pink, "[Party] ") +
+						ColorUtil.ColoredText(Theme.white, member.username) +
+						ColorUtil.ColoredText(Theme.gray, ": " + data.text);
+					Dependency<ChatController>().RenderChatMessage(text);
+				}
+			}
+
+			StateManager.SetString("direct-messages:party", EncodeJSON(messages));
 		});
 	}
 
@@ -137,6 +178,17 @@ export class DirectMessageController implements OnStart {
 		this.offlineNoticeWrapper = this.windowGoRefs.GetValue("UI", "NoticeWrapper");
 		this.offlineNoticeText = this.windowGoRefs.GetValue("UI", "NoticeText") as TMP_Text;
 
+		this.partyChatButton = this.mainMenuController.refs
+			.GetValue("Social", "PartyChatButton")
+			.GetAirshipComponent<PartyChatButton>()!;
+		this.partyChatButton.SetUnreadCount(0);
+		if ((this.partyController.party?.members.size() ?? 0) <= 1) {
+			this.partyChatButton.gameObject.SetActive(false);
+		}
+		this.partyController.onPartyUpdated.Connect((party) => {
+			this.partyChatButton.gameObject.SetActive((party?.members.size() ?? 0) > 1);
+		});
+
 		const closeButton = this.windowGoRefs.GetValue("UI", "CloseButton");
 		CoreUI.SetupButton(closeButton);
 		CanvasAPI.OnClickEvent(closeButton, () => {
@@ -145,18 +197,19 @@ export class DirectMessageController implements OnStart {
 
 		this.inputField = this.windowGoRefs!.GetValue("UI", "InputField") as TMP_InputField;
 		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
-			if (this.openedWindowUserId) {
-				this.SendDirectMessage(this.openedWindowUserId, this.inputField!.text);
+			if (this.openedWindowTarget === "party") {
+				this.SendPartyMessage(this.inputField!.text);
+			} else if (this.openedWindowTarget) {
+				this.SendDirectMessage(this.openedWindowTarget, this.inputField!.text);
 			}
 			this.inputField!.ActivateInputField();
 		});
 		// clear notifs on select
 		CanvasAPI.OnSelectEvent(this.inputField!.gameObject, () => {
 			this.inputFieldSelected = true;
-			print("input field selected.");
-			if (this.openedWindowUserId) {
-				this.unreadMessageCounterMap.set(this.openedWindowUserId, 0);
-				this.ClearUnreadBadge(this.openedWindowUserId);
+			if (this.openedWindowTarget) {
+				this.unreadMessageCounterMap.set(this.openedWindowTarget, 0);
+				this.ClearUnreadBadge(this.openedWindowTarget);
 			}
 		});
 		CanvasAPI.OnDeselectEvent(this.inputField!.gameObject, () => {
@@ -179,8 +232,10 @@ export class DirectMessageController implements OnStart {
 		const sendButton = this.windowGoRefs!.GetValue("UI", "SendButton");
 		CoreUI.SetupButton(sendButton);
 		CanvasAPI.OnClickEvent(sendButton, () => {
-			if (this.openedWindowUserId) {
-				this.SendDirectMessage(this.openedWindowUserId, this.inputField!.text);
+			if (this.openedWindowTarget === "party") {
+				this.SendPartyMessage(this.inputField!.text);
+			} else if (this.openedWindowTarget) {
+				this.SendDirectMessage(this.openedWindowTarget, this.inputField!.text);
 			}
 			this.inputField!.ActivateInputField();
 		});
@@ -228,18 +283,64 @@ export class DirectMessageController implements OnStart {
 		}
 	}
 
-	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean): void {
+	public SendPartyMessage(message: string): void {
+		if (message === "") return;
+		InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinator + "/chat/message/party",
+			EncodeJSON({
+				text: message,
+			}),
+		);
+		this.inputField!.text = "";
+		const sentMessage: DirectMessage = {
+			sender: Game.localPlayer.userId,
+			sentAt: os.time(),
+			text: message,
+		};
+		this.GetMessages("party").push(sentMessage);
+		this.RenderChatMessage(sentMessage, true, true);
+		AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/SendMessage.ogg", {
+			volumeScale: 0.8,
+			pitch: 1.5,
+		});
+
+		if (Game.context === CoreContext.GAME) {
+			let text =
+				ColorUtil.ColoredText(Theme.pink, "[Party] ") +
+				ColorUtil.ColoredText(Theme.white, Game.localPlayer.username) +
+				ColorUtil.ColoredText(Theme.gray, ": " + message);
+			Dependency<ChatController>().RenderChatMessage(text);
+		}
+	}
+
+	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean, isParty?: boolean): void {
 		let outgoing = dm.sender === Game.localPlayer.userId;
 
 		let messageGo: GameObject;
 		if (outgoing) {
-			messageGo = GameObjectUtil.InstantiateIn(this.outgoingMessagePrefab, this.messagesContentGo!.transform);
+			messageGo = Object.Instantiate(this.outgoingMessagePrefab, this.messagesContentGo!.transform);
 		} else {
-			messageGo = GameObjectUtil.InstantiateIn(this.incomingMessagePrefab, this.messagesContentGo!.transform);
+			messageGo = Object.Instantiate(this.incomingMessagePrefab, this.messagesContentGo!.transform);
 		}
 		const messageRefs = messageGo.GetComponent<GameObjectReferences>();
 		const text = messageRefs.GetValue("UI", "Text") as TMP_Text;
-		text.text = dm.text;
+
+		if (isParty && !outgoing) {
+			const content = messageGo.transform.GetChild(0);
+			const profilePictureGo = content.GetChild(0).gameObject;
+			const profilePicSprite = Airship.players.CreateProfilePictureSpriteAsync(dm.sender);
+			if (profilePicSprite) {
+				profilePictureGo.GetComponent<Image>().sprite = profilePicSprite;
+			}
+			profilePictureGo.SetActive(true);
+			content.GetChild(1).gameObject.SetActive(true);
+
+			const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);
+			let username = member?.username ?? "Unknown";
+			text.text = username + ": " + dm.text;
+		} else {
+			text.text = dm.text;
+		}
 
 		let doScroll = this.scrollRect!.verticalNormalizedPosition <= 0.06;
 
@@ -263,7 +364,7 @@ export class DirectMessageController implements OnStart {
 
 	public OpenFriend(uid: string): void {
 		this.openWindowBin.Clean();
-		this.openedWindowUserId = uid;
+		this.openedWindowTarget = uid;
 
 		let messages = this.GetMessages(uid);
 
@@ -304,20 +405,43 @@ export class DirectMessageController implements OnStart {
 		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
 		directMessagesWindow.InitAsFriendChat(friendStatus);
 
-		this.windowGo!.GetComponent<RectTransform>().TweenAnchoredPositionY(0, 0.1);
-		// this.windowGo!.transform.TweenLocalPositionY(0, 0.1);
-
-		Bridge.UpdateLayout(this.messagesContentGo!.transform, false);
-		this.scrollRect!.velocity = new Vector2(0, 0);
-		this.scrollRect!.verticalNormalizedPosition = 0;
-
-		this.inputField!.ActivateInputField();
-
 		// clear notifs
 		this.unreadMessageCounterMap.set(uid, 0);
 		this.ClearUnreadBadge(uid);
 
 		this.UpdateOfflineNotice(friendStatus);
+	}
+
+	public OpenParty() {
+		this.openWindowBin.Clean();
+		this.openedWindowTarget = "party";
+
+		let messages = this.GetMessages("party");
+		for (let msg of messages) {
+			this.RenderChatMessage(msg, false, true);
+		}
+
+		this.openWindowBin.Add(
+			this.onPartyMessageReceived.Connect((dm) => {
+				if (dm.sender === Game.localPlayer.userId) return;
+				this.RenderChatMessage(dm, true, true);
+			}),
+		);
+
+		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
+		const members = this.partyController.party?.members;
+		directMessagesWindow.InitAsPartyChat(members ?? []);
+
+		this.openWindowBin.Add(
+			this.partyController.onPartyUpdated.Connect((party, oldParty) => {
+				directMessagesWindow.UpdatePartyMembers(party?.members ?? []);
+				if (party?.partyId !== oldParty?.partyId) {
+					this.OpenParty();
+				}
+			}),
+		);
+
+		this.partyChatButton.SetUnreadCount(0);
 	}
 
 	private ClearUnreadBadge(uid: string): void {
@@ -343,6 +467,6 @@ export class DirectMessageController implements OnStart {
 
 	public Close(): void {
 		this.windowGo?.transform.TweenAnchoredPositionY(this.yPos, 0.1);
-		this.openedWindowUserId = undefined;
+		this.openedWindowTarget = undefined;
 	}
 }

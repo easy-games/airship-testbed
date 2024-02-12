@@ -390,12 +390,10 @@ export class FriendsController implements OnStart {
 					noHoverSound: true,
 				});
 				CanvasAPI.OnClickEvent(go, () => {
-					print("opening friend " + friend.username);
 					Dependency<DirectMessageController>().OpenFriend(friend.userId);
 				});
 				CanvasAPI.OnPointerEvent(go, (direction, button) => {
 					if (button === PointerButton.RIGHT) {
-						print("right clicked " + friend.username);
 						this.rightClickMenuController.OpenRightClickMenu(
 							this.mainMenuController.mainContentCanvas,
 							mouse.GetLocation(),

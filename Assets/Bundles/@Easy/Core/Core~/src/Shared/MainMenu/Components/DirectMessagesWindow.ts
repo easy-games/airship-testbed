@@ -8,19 +8,31 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 	public headerPartyProfilePictures!: GameObject;
 	public profilePicturePrefab!: GameObject;
 	public messagesParent!: GameObject;
-
 	public headerUser!: GameObject;
+	public messagesContent!: GameObject;
+	public scrollRect!: ScrollRect;
+	public inputField!: TMP_InputField;
 
 	override Start(): void {}
 
 	private Init(): void {
 		this.messagesParent.ClearChildren();
+
+		this.gameObject.GetComponent<RectTransform>().TweenAnchoredPositionY(0, 0.1);
+
+		Bridge.UpdateLayout(this.messagesContent.transform, false);
+		this.scrollRect.velocity = new Vector2(0, 0);
+		this.scrollRect.verticalNormalizedPosition = 0;
+
+		this.inputField!.ActivateInputField();
 	}
 
 	public InitAsFriendChat(user: FriendStatus): void {
 		this.Init();
 		this.headerParty.SetActive(false);
 		this.headerUser.SetActive(true);
+
+		this.offlineNotice.gameObject.SetActive(user.status === "offline");
 	}
 
 	public InitAsPartyChat(members: PublicUser[]): void {
