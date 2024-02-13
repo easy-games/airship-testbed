@@ -151,6 +151,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshCombiner: {fileID: 6202152778573744635}
   firstPerson: 1
+  firstPersonLayer: 0
+  thirdPersonLayer: 0
 --- !u!114 &3971942119244468517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +435,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9210795641045026114}
   - component: {fileID: 8603360075049126790}
-  - component: {fileID: 2495837152946289993}
   - component: {fileID: 1397164186866255679}
   m_Layer: 10
   m_Name: BodyFPS
@@ -545,19 +546,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 5, y: 5, z: 5}
   m_DirtyAABB: 0
---- !u!114 &2495837152946289993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2016119040067327829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
 --- !u!114 &1397164186866255679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,7 +562,6 @@ MonoBehaviour:
   - materialColor: {r: 0.90588236, g: 0.69803923, b: 0.5764706, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: AirshipCharacterBaseToon
   addedByEditorScript: 0
 --- !u!1 &2057427261521805601
 GameObject:
@@ -653,7 +640,6 @@ GameObject:
   - component: {fileID: 7927609555602851630}
   - component: {fileID: 5107994180138354890}
   - component: {fileID: 1410711371056595423}
-  - component: {fileID: 4835514045273791138}
   m_Layer: 10
   m_Name: MeshCombinerStatic
   m_TagString: Untagged
@@ -727,19 +713,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2422535457078668631}
   m_Mesh: {fileID: 0}
---- !u!114 &4835514045273791138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2422535457078668631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
 --- !u!1 &2944369775968854817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1292,7 +1265,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3667485065919759672}
   - component: {fileID: 3009443539572916871}
-  - component: {fileID: 893670724761821569}
   m_Layer: 10
   m_Name: MeshCombinerSkinned
   m_TagString: Untagged
@@ -1369,19 +1341,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_DirtyAABB: 0
---- !u!114 &893670724761821569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172678626230927459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a875eae99b998477c8035bd008374a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  warningMessage: No available voxel world
 --- !u!1 &7796741520293488511
 GameObject:
   m_ObjectHideFlags: 0
