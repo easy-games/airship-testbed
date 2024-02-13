@@ -243,7 +243,7 @@ Shader "Airship/AirshipToon"
             }
             ZWrite On
             CGPROGRAM
-                #include "Packages/gg.easy.airship/Runtime/Code/Airship/Resources/BaseShaders/AirshipSimpleShadowPass.hlsl"
+                #include "../AirshipSimpleShadowPass.hlsl"
             ENDCG
         }
     }
