@@ -21,12 +21,13 @@
 		"@Easy/Core:Client/Controllers/Viewmodel/ViewmodelController@ViewmodelController": "$:Controllers/Viewmodel/ViewmodelController@ViewmodelController",
 		"@Easy/Core:Shared/Audio/AudioClipBundle@AudioClipBundle": "$:Audio/AudioClipBundle@AudioClipBundle",
 		"@Easy/Core:Shared/MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow": "$:MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow",
+		"@Easy/Core:Shared/Util/Bin@Bin": "$:Util/Bin@Bin",
+		"@Easy/Core:Shared/Util/CanvasAPI@CanvasAPI": "$:Util/CanvasAPI@CanvasAPI",
+		"@Easy/Core:Shared/MainMenu/Components/PartyChatButton@PartyChatButton": "$:MainMenu/Components/PartyChatButton@PartyChatButton",
 		"@Easy/Core:Client/MainMenuControllers/Auth/AuthController@AuthController": "$:MainMenuControllers/Auth/AuthController@AuthController",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
 		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
-		"@Easy/Core:Shared/Util/CanvasAPI@CanvasAPI": "$:Util/CanvasAPI@CanvasAPI",
 		"@Easy/Core:Shared/UI/CoreUI@CoreUI": "$:UI/CoreUI@CoreUI",
-		"@Easy/Core:Shared/Util/Bin@Bin": "$:Util/Bin@Bin",
 		"@Easy/Core:Shared/UserInput/Drivers/Signals/PointerButtonSignal@PointerButtonSignal": "$:UserInput/Drivers/Signals/PointerButtonSignal@PointerButtonSignal",
 		"@Easy/Core:Shared/UserInput/Drivers/Signals/ScrollSignal@ScrollSignal": "$:UserInput/Drivers/Signals/ScrollSignal@ScrollSignal",
 		"@Easy/Core:Shared/UserInput/Drivers/MouseDriver@MouseDriver": "$:UserInput/Drivers/MouseDriver@MouseDriver",
@@ -65,6 +66,9 @@
 		"@Easy/Core:Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": "$:MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent",
 		"@Easy/Core:Shared/MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent": "$:MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent",
 		"@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController": "$:MainMenuControllers/Social/FriendsController@FriendsController",
+		"@Easy/Core:Shared/MainMenu/Components/PartyMember@PartyMember": "$:MainMenu/Components/PartyMember@PartyMember",
+		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController": "$:MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
+		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController": "$:MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
 		"@Easy/Core:Client/MainMenuControllers/Social/DirectMessages/DirectMessageController@DirectMessageController": "$:MainMenuControllers/Social/DirectMessages/DirectMessageController@DirectMessageController",
 		"@Easy/Core:Shared/Commands/ChatCommand@ChatCommand": "$:Commands/ChatCommand@ChatCommand",
 		"@Easy/Core:Shared/Commands/ClearCommand@ClearCommand": "$:Commands/ClearCommand@ClearCommand",
@@ -164,9 +168,6 @@
 		"@Easy/Core:Shared/MainMenu/Components/MainMenuNavButton@MainMenuNavButton": "$:MainMenu/Components/MainMenuNavButton@MainMenuNavButton",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
-		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController": "$:MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
-		"@Easy/Core:Shared/MainMenu/Components/PartyMember@PartyMember": "$:MainMenu/Components/PartyMember@PartyMember",
-		"@Easy/Core:Client/MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController": "$:MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
 		"@Easy/Core:Server/Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand": "$:Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/BotCommand@BotCommand": "$:Services/Chat/Commands/BotCommand@BotCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/DamageCommand@DamageCommand": "$:Services/Chat/Commands/DamageCommand@DamageCommand",
@@ -329,6 +330,28 @@
 		{
 			"filePath": "..\\Client\\MainMenuControllers\\Social\\FriendsController.lua",
 			"internalId": "$:MainMenuControllers/Social/FriendsController@FriendsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "..\\Client\\MainMenuControllers\\Social\\MainMenuAddFriendsController.lua",
+			"internalId": "$:MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "..\\Client\\MainMenuControllers\\Social\\MainMenuPartyController.lua",
+			"internalId": "$:MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
@@ -810,28 +833,6 @@
 		{
 			"filePath": "..\\Client\\MainMenuControllers\\Settings\\MainMenuSettingsUIController.lua",
 			"internalId": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Client\\MainMenuControllers\\Social\\MainMenuAddFriendsController.lua",
-			"internalId": "$:MainMenuControllers/Social/MainMenuAddFriendsController@MainMenuAddFriendsController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Client\\MainMenuControllers\\Social\\MainMenuPartyController.lua",
-			"internalId": "$:MainMenuControllers/Social/MainMenuPartyController@MainMenuPartyController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",

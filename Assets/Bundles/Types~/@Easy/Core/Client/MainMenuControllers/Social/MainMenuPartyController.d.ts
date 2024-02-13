@@ -1,12 +1,15 @@
 /// <reference types="@easy-games/compiler-types" />
+import { Signal } from "../../../Shared/Util/Signal";
 import { OnStart } from "../../../Shared/Flamework";
 import { Result } from "../../../Shared/Types/Result";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { Party } from "./SocketAPI";
 export declare class MainMenuPartyController implements OnStart {
     private readonly mainMenuController;
     private readonly socketController;
-    private party;
+    party: Party | undefined;
+    onPartyUpdated: Signal<[newParty: Party | undefined, oldParty: Party | undefined]>;
     private partyMemberPrefab;
     constructor(mainMenuController: MainMenuController, socketController: SocketController);
     OnStart(): void;
