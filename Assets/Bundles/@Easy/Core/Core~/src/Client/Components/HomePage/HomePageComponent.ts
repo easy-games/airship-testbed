@@ -34,7 +34,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 		const platform = AirshipPlatformUtil.GetLocalPlatform();
 		if (platform === AirshipPlatform.Windows) {
-			this.scrollRect.scrollSensitivity = 18;
+			this.scrollRect.scrollSensitivity = 22;
 		}
 	}
 
@@ -81,7 +81,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		for (let sortId of sorts) {
 			const sortComponent = this.sorts.get(sortId)!;
 
-			let games = data[SortId.RecentlyUpdated].filter((g) => g.lastVersionUpdate !== undefined);
+			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
 			sortComponent.SetGames(games);
 		}
 	}

@@ -11,6 +11,9 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
     messagesContent: GameObject;
     scrollRect: ScrollRect;
     inputField: TMP_InputField;
+    partyTeleportButton: GameObject;
+    friendTeleportButton: GameObject;
+    private bin;
     Start(): void;
     private Init;
     InitAsFriendChat(user: FriendStatus): void;

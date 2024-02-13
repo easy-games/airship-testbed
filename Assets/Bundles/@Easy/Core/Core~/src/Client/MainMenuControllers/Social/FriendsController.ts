@@ -128,7 +128,6 @@ export class FriendsController implements OnStart {
 					"Friend Request",
 					foundUser.username,
 					(result) => {
-						print("notif result: " + result);
 						if (result) {
 							task.spawn(() => {
 								this.socialNotification.gameObject.SetActive(false);
@@ -429,6 +428,8 @@ export class FriendsController implements OnStart {
 				});
 
 				CanvasAPI.OnClickEvent(joinButton, () => {
+					if (friend.gameId === undefined || friend.serverId === undefined) return;
+
 					print(
 						"Transfering to friend " +
 							friend.username +
