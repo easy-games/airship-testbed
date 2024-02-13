@@ -68,6 +68,15 @@ export class Bin {
 		return obj;
 	}
 
+	/**
+	 * Shortcut for cleaning up EngineEventConnections.
+	 *
+	 * For example: cleaning up a `CanvasAPI` event connection.
+	 *
+	 * This will automatically call `Bridge.DisconnectEvent()`
+	 *
+	 * @param connection
+	 */
 	public AddEngineEventConnection(connection: EngineEventConnection): void {
 		this.Add(() => Bridge.DisconnectEvent(connection));
 	}
