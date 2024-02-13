@@ -526,6 +526,15 @@ interface MeshProcessorConstructor {
 }
 declare const MeshProcessor: MeshProcessorConstructor;
 
+declare const enum CharacterState {
+	Idle = 0,
+	Running = 1,
+	Jumping = 2,
+	Sprinting = 3,
+	Sliding = 4,
+	Crouching = 5,
+}
+
 interface CharacterAnimationHelper extends Component {
 	viewmodelAnimancer: AnimancerComponent;
 	worldmodelAnimancer: AnimancerComponent;
@@ -533,6 +542,7 @@ interface CharacterAnimationHelper extends Component {
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
+	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
 }
 
 interface PoolManager {

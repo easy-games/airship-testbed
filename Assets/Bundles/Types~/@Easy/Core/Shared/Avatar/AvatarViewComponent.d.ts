@@ -14,6 +14,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     cameraTransitionDuration: number;
     dragging: boolean;
     accessoryBuilder?: AccessoryBuilder;
+    anim?: CharacterAnimationHelper;
     private targetTransform?;
     private mouse?;
     private lastMousePos;
@@ -22,6 +23,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     ShowAvatar(): void;
     HideAvatar(): void;
     ResetAvatar(): void;
+    AlignCamera(screenPos: Vector3): void;
     CameraFocusSlot(slotType: AccessorySlot): void;
     CameraFocusTransform(transform?: Transform, instant?: boolean): void;
 }

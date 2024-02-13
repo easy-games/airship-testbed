@@ -21,6 +21,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private currentUserOutfit?;
     private currentUserOutfitIndex;
     private clientId;
+    avatarCenterRect?: RectTransform;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
     OpenPage(): void;
