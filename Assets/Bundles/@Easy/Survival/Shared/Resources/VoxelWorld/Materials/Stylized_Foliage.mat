@@ -14,8 +14,7 @@ Material:
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
   - NUM_LIGHTS_LIGHTS0
-  - RIM_LIGHT_ON
-  - SLIDER_OVERRIDE_ON
+  - POINT_FILTER_ON
   - TRIPLANAR_STYLE_WORLD
   m_InvalidKeywords:
   - EXPLICIT_MAPS
@@ -103,9 +102,9 @@ Material:
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 1
-    - POINT_FILTER: 0
-    - RIM_LIGHT: 1
-    - SLIDER_OVERRIDE: 1
+    - POINT_FILTER: 1
+    - RIM_LIGHT: 0
+    - SLIDER_OVERRIDE: 0
     - TRIPLANAR_STYLE: 2
     - VERTEX_LIGHT: 0
     - _Alpha: 1
@@ -114,7 +113,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emissive: 0
-    - _EmissiveMix: 1
+    - _EmissiveMix: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -125,25 +124,25 @@ Material:
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _Parallax: 0.02
-    - _RimIntensity: 1
-    - _RimPower: 2
-    - _RoughOverride: 1
+    - _RimIntensity: 0.2
+    - _RimPower: 6
+    - _RoughOverride: 0.04
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 0
-    - _TriplanarScale: 0.25
+    - _TriplanarScale: 0.3
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OverrideColor: {r: 0.41008896, g: 0.9924528, b: 0.6527406, a: 1}
     - _RimColor: {r: 0.026241222, g: 0.47932023, b: 0.07227186, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
-    - _SpecularColor: {r: 1, g: 0.8655798, b: 0.096226394, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

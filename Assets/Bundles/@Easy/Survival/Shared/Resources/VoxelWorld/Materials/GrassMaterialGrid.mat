@@ -90,8 +90,8 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DeformScale: 0.8
-    - _DeformSpeed: 1
-    - _DeformStrength: 1
+    - _DeformSpeed: 0
+    - _DeformStrength: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FlutterSpeed: 1
@@ -118,8 +118,8 @@ Material:
     - _SrcBlend: 1
     - _TexColorStrength: 0
     - _UVSec: 0
-    - _WindSpeed: 3
-    - _WindStrength: 1
+    - _WindSpeed: 0
+    - _WindStrength: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0, g: 0.42352942, b: 0, a: 1}

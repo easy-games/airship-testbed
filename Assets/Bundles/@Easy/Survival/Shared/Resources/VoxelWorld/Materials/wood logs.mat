@@ -7,17 +7,19 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: foliage_flowers
-  m_Shader: {fileID: 4800000, guid: 61ee7065255edc547b5c0870379e5d17, type: 3}
+  m_Name: wood logs
+  m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - EXPLICIT_MAPS_ON
+  - NUM_LIGHTS_LIGHTS0
+  - SLIDER_OVERRIDE_ON
+  - TRIPLANAR_STYLE_WORLD
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
-  - NUM_LIGHTS_LIGHTS0
   - OVERRIDE_ON
-  - TRIPLANAR_STYLE_WORLD
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_OFF
   - _ZWRITE_ON
@@ -64,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 17717fe39c849fe4a9e43a914ecf76e3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 445a0532a41fc9e40a90f06a0952781d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -95,28 +97,23 @@ Material:
     m_Floats:
     - AO_ON: 0
     - EMISSIVE: 0
-    - EXPLICIT_MAPS: 0
-    - EXPLICIT_MAPS_ON: 0
+    - EXPLICIT_MAPS: 1
     - INSTANCE_DATA: 0
     - METAL_ON: 1
     - NUM_LIGHTS: 0
     - OVERRIDE: 1
     - POINT_FILTER: 0
     - RIM_LIGHT: 0
-    - SLIDER_OVERRIDE: 0
+    - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 2
     - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DeformSpeed: 1
-    - _DeformStrength: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emissive: 0
-    - _EmissiveMix: 0
-    - _FlutterSpeed: 1
-    - _FlutterStrength: 1
+    - _EmissiveMix: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -127,28 +124,23 @@ Material:
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _Parallax: 0.02
-    - _RimIntensity: 0.75
-    - _RimPower: 2.5
-    - _RoughOverride: 1
+    - _RimIntensity: 1.97
+    - _RimPower: 1.13
+    - _RoughOverride: 0.49
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
-    - _TexColorStrength: 0
     - _Triplanar: 0
-    - _TriplanarScale: 1
+    - _TriplanarScale: 0.85
     - _UVSec: 0
-    - _WindSpeed: 3
-    - _WindStrength: 1
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.06647379, g: 0.6830188, b: 0.055414677, a: 1}
-    - _ColorA: {r: 0.98225087, g: 0.730461, b: 0.12743773, a: 1}
-    - _ColorB: {r: 0.98225087, g: 0.730461, b: 0.12743773, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OverrideColor: {r: 1, g: 0.91132075, b: 0.91132075, a: 1}
+    - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}

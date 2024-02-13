@@ -122,8 +122,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0, g: 0.42352942, b: 0, a: 1}
-    - _ColorA: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorB: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorA: {r: 0.98490566, g: 0.98490566, b: 0.98490566, a: 1}
+    - _ColorB: {r: 0.10946172, g: 0.6795426, b: 0.09758736, a: 1}
     - _DarkColor: {r: 0, g: 0.19461787, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
