@@ -1,3 +1,4 @@
+import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -73,7 +74,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 
 		const data = DecodeJSON<GamesDto>(res.data);
-		// print("Games data: " + inspect(data));
+		print("Games data: " + inspect(data));
 
 		let sorts: SortId[];
 		sorts = ObjectUtils.keys(this.sorts);
