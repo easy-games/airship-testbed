@@ -13,9 +13,9 @@ export default class Character extends AirshipBehaviour {
     accessoryBuilder: AccessoryBuilder;
     model: GameObject;
     networkObject: NetworkObject;
-    rig: GameObject;
-    headBone: GameObject;
-    chestBone: GameObject;
+    rigRoot: GameObject;
+    collider: CharacterController;
+    rig: CharacterRig;
     id: number;
     state: CharacterState;
     private health;

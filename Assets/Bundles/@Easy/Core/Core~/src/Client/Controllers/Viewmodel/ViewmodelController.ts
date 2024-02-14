@@ -1,6 +1,5 @@
 import { Controller, OnStart } from "Shared/Flamework";
 import { CoreRefs } from "Shared/CoreRefs";
-import CharacterRig from "@Easy/Core/Shared/Character/CharacterRig";
 
 @Controller({})
 export class ViewmodelController implements OnStart {
@@ -28,7 +27,7 @@ export class ViewmodelController implements OnStart {
 		const rigHolder = content.transform.GetChild(0).gameObject;
 		this.animancer = content.GetComponent<AnimancerComponent>();
 		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>();
-		this.rig = rigHolder.GetAirshipComponent<CharacterRig>()!;
+		this.rig = rigHolder.GetComponent<CharacterRig>();
 
 		// this.rootLayer = this.animancer.Layers.GetLayer(0);
 		// this.rootLayer.SetDebugName("Root");

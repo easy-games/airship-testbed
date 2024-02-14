@@ -1981,6 +1981,12 @@ declare const enum UnloadSceneOptions {
     None = 0,
     UnloadAllEmbeddedSceneObjects = 1,
 }
+declare const enum SkinQuality {
+    Auto = 0,
+    Bone1 = 1,
+    Bone2 = 2,
+    Bone4 = 4,
+}
 declare const enum AccessorySlot {
     Root = 0,
     Head = 1,
@@ -2115,12 +2121,6 @@ declare const enum ParticleSystemMeshShapeType {
     Vertex = 0,
     Edge = 1,
     Triangle = 2,
-}
-declare const enum SkinQuality {
-    Auto = 0,
-    Bone1 = 1,
-    Bone2 = 2,
-    Bone4 = 4,
 }
 declare const enum SpriteDrawMode {
     Simple = 0,
@@ -10803,6 +10803,7 @@ interface ServerBootstrap extends MonoBehaviour {
     gameId: string;
     serverId: string;
     organizationId: string;
+    serverContext: ServerContext;
     editorConfig: AirshipEditorConfig;
     serverReady: boolean;
     isStartupConfigReady: boolean;
@@ -10926,6 +10927,26 @@ interface WatchGameServerCallback {
     Invoke(gameServer: GameServer): void;
 }
     
+interface ServerContext extends NetworkBehaviour {
+    serverId: string;
+    gameId: string;
+    organizationId: string;
+    syncVar___serverId: unknown;
+    syncVar___gameId: unknown;
+    syncVar___organizationId: unknown;
+    SyncAccessor_serverId: string;
+    SyncAccessor_gameId: string;
+    SyncAccessor_organizationId: string;
+
+
+    Awake(): void;
+    Awake___UserLogic(): void;
+    NetworkInitialize___Early(): void;
+    NetworkInitialize__Late(): void;
+    NetworkInitializeIfDisabled(): void;
+    ReadSyncVar___ServerContext(PooledReader0: PooledReader, UInt321: number, Boolean2: boolean): boolean;
+}
+    
 interface AirshipEditorConfig extends ScriptableObject {
     useBundlesInEditor: boolean;
     buildBundlesOnPlay: boolean;
@@ -10997,6 +11018,7 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface AccessoryBuilder extends MonoBehaviour {
+    rig: CharacterRig;
     firstPerson: boolean;
     firstPersonLayer: number;
     thirdPersonLayer: number;
@@ -11013,13 +11035,66 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetAllAccessoryMeshes(): CSArray<Renderer>;
     GetCombinedSkinnedMesh(): SkinnedMeshRenderer;
     GetCombinedStaticMesh(): MeshRenderer;
-    GetSlotTransform(slot: AccessorySlot): Transform;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
     UpdateAccessoryLayers(): void;
+}
+    
+interface CharacterRig extends MonoBehaviour {
+    bodyMesh: SkinnedMeshRenderer;
+    headMesh: SkinnedMeshRenderer;
+    faceMesh: SkinnedMeshRenderer;
+    rigHolder: Transform;
+    rootMotion: Transform;
+    master: Transform;
+    hips: Transform;
+    spine: Transform;
+    head: Transform;
+    upperArmL: Transform;
+    forearmL: Transform;
+    handL: Transform;
+    fingersL: Transform;
+    thumbL: Transform;
+    upperArmR: Transform;
+    forearmR: Transform;
+    handR: Transform;
+    fingersR: Transform;
+    thumbR: Transform;
+    thighL: Transform;
+    shinL: Transform;
+    footL: Transform;
+    thighR: Transform;
+    shinR: Transform;
+    footR: Transform;
+    headTop: Transform;
+    neck: Transform;
+    spineChest: Transform;
+    baseMeshes: CSArray<SkinnedMeshRenderer>;
+
+
+    GetSlotTransform(slot: AccessorySlot): Transform;
+}
+    
+interface SkinnedMeshRenderer extends Renderer {
+    quality: SkinQuality;
+    updateWhenOffscreen: boolean;
+    forceMatrixRecalculationPerRender: boolean;
+    rootBone: Transform;
+    bones: CSArray<Transform>;
+    sharedMesh: Mesh;
+    skinnedMotionVectors: boolean;
+    vertexBufferTarget: Target;
+
+
+    BakeMesh(mesh: Mesh): void;
+    BakeMesh(mesh: Mesh, useScale: boolean): void;
+    GetBlendShapeWeight(index: number): number;
+    GetPreviousVertexBuffer(): GraphicsBuffer;
+    GetVertexBuffer(): GraphicsBuffer;
+    SetBlendShapeWeight(index: number, value: number): void;
 }
     
 interface ActiveAccessory {
@@ -11360,25 +11435,6 @@ interface ShapeModule {
     textureUVChannel: number;
 
 
-}
-    
-interface SkinnedMeshRenderer extends Renderer {
-    quality: SkinQuality;
-    updateWhenOffscreen: boolean;
-    forceMatrixRecalculationPerRender: boolean;
-    rootBone: Transform;
-    bones: CSArray<Transform>;
-    sharedMesh: Mesh;
-    skinnedMotionVectors: boolean;
-    vertexBufferTarget: Target;
-
-
-    BakeMesh(mesh: Mesh): void;
-    BakeMesh(mesh: Mesh, useScale: boolean): void;
-    GetBlendShapeWeight(index: number): number;
-    GetPreviousVertexBuffer(): GraphicsBuffer;
-    GetVertexBuffer(): GraphicsBuffer;
-    SetBlendShapeWeight(index: number, value: number): void;
 }
     
 interface SpriteRenderer extends Renderer {
@@ -11927,15 +11983,6 @@ interface ParticleSystemConstructor {
     SetMaximumPreMappedBufferCounts(vertexBuffersCount: number, indexBuffersCount: number): void;
 }
 declare const ParticleSystem: ParticleSystemConstructor;
-    
-interface AccessoryBuilderConstructor {
-    boneKey: string;
-
-    new(): AccessoryBuilder;
-
-    GetBoneItemKey(slot: AccessorySlot): string;
-}
-declare const AccessoryBuilder: AccessoryBuilderConstructor;
     
 interface AvatarMask extends Object {
     humanoidBodyPartCount: number;
