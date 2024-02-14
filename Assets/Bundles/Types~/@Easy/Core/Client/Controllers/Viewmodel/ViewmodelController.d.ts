@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 export declare class ViewmodelController implements OnStart {
     readonly viewmodelGo: GameObject;
     readonly viewmodelTransform: Transform;

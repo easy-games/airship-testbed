@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "Shared/Flamework";
 import Object from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
@@ -92,12 +92,8 @@ export class ChatService implements OnStart {
 	}
 
 	OnStart(): void {
-		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((clientId, text) => {
+		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((player, text) => {
 			const rawMessage = text;
-			const player = Airship.players.FindByClientId(clientId);
-			if (!player) {
-				error("player not found.");
-			}
 
 			if (StringUtils.startsWith(text, "/")) {
 				const commandData = ChatUtil.ParseCommandData(text);

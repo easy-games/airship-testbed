@@ -1,9 +1,12 @@
 import { Airship } from "Shared/Airship";
 import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
+import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import Inventory from "Shared/Inventory/Inventory";
+import { HeldItemManager } from "Shared/Item/HeldItems/HeldItemManager";
 import { Player } from "Shared/Player/Player";
 import { Bin } from "Shared/Util/Bin";
+import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 
@@ -35,12 +38,15 @@ export default class Character extends AirshipBehaviour {
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory!: Inventory;
+	@NonSerialized() public heldItems!: HeldItemManager;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
 	@NonSerialized() public onDespawn = new Signal<void>();
 	@NonSerialized() public onStateChanged = new Signal<[newState: CharacterState, oldState: CharacterState]>();
 	@NonSerialized() public onHealthChanged = new Signal<[newHealth: number, oldHealth: number]>();
+
+	private despawned = false;
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -79,6 +85,7 @@ export default class Character extends AirshipBehaviour {
 		this.player = player;
 		this.id = id;
 		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
+		this.despawned = false;
 	}
 
 	/**
@@ -90,11 +97,20 @@ export default class Character extends AirshipBehaviour {
 		this.movement.Teleport(pos);
 	}
 
-	public OnDisable(): void {
+	/**
+	 * Despawns this character.
+	 *
+	 * **SERVER ONLY METHOD**
+	 */
+	public Despawn(): void {
+		assert(RunUtil.IsServer(), "You can only call Character.Despawn() on the server.");
+		assert(!this.despawned, "Character has already been despawned");
+
+		this.despawned = true;
 		this.onDespawn.Fire();
-		if (Airship.characters) {
-			Airship.characters.onCharacterDespawned.Fire(this);
-		}
+		Airship.characters.onCharacterDespawned.Fire(this);
+		this.player?.SetCharacter(undefined);
+		NetworkUtil.Despawn(this.gameObject);
 	}
 
 	public IsDestroyed(): boolean {
@@ -118,7 +134,8 @@ export default class Character extends AirshipBehaviour {
 		this.health = health;
 		this.onHealthChanged.Fire(health, oldHealth);
 
-		if (this.health <= 0) {
+		if (this.health <= 0 && RunUtil.IsServer()) {
+			CoreNetwork.ServerToClient.Character.Death.server.FireAllClients(this.networkObject.ObjectId);
 			this.onDeath.Fire();
 		}
 	}

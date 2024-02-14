@@ -7,6 +7,7 @@ Shader "Airship/FoliageShader"
         [HDR] _ColorB("Color B", Color) = (.2,.6,.1,1)
         
         _MainTex("Albedo", 2D) = "white" {}
+        _AlphaTex("Alpha", 2D) = "white" {}
         _TexColorStrength("Texture Color Strength", Range(0,1)) = 0
 
         [Header(Deformation)]
@@ -54,8 +55,9 @@ Shader "Airship/FoliageShader"
             {
                 //Cutout alpha
                 half4 texSample = _MainTex.Sample(my_sampler_Linear_repeat, input.uv_MainTex.xy);
+                half4 alphaSample = _AlphaTex.Sample(my_sampler_Linear_repeat, input.uv_MainTex.xy);
                 
-                clip(texSample.a - 0.1);
+                clip(alphaSample.a - 0.1);
                                 
                 //Cull based on global _Alpha
                 float2 screenPos = (input.positionCS.xy * 0.5 + 0.5) * _ScreenParams.xy;
@@ -103,7 +105,8 @@ Shader "Airship/FoliageShader"
             {
                 //Cutout alpha
                 half4 texSample = _MainTex.Sample(my_sampler_point_repeat, input.uv_MainTex.xy);
-                clip(texSample.a - 0.1);
+                half4 alphaSample = _AlphaTex.Sample(my_sampler_Linear_repeat, input.uv_MainTex.xy);
+                clip(alphaSample.a - 0.1);
                                                 
                 //Cull based on global _Alpha
                 float2 screenPos = (input.positionCS.xy * 0.5 + 0.5) * _ScreenParams.xy;

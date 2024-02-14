@@ -1,6 +1,4 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
-import { OnStart } from "../../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../../Shared/Flamework";
 import { RightClickMenuButton } from "./RightClickMenuButton";
 export declare class RightClickMenuController implements OnStart {
     private opened;

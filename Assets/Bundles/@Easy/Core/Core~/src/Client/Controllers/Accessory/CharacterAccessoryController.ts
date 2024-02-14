@@ -1,6 +1,6 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import { Airship } from "Shared/Airship";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { ViewmodelController } from "../Viewmodel/ViewmodelController";
 
 @Controller({})

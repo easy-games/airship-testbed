@@ -1,7 +1,8 @@
 /// <reference types="@easy-games/compiler-types" />
+import { Player } from "../Player/Player";
 type RemoteParamsToServer<T> = Parameters<T extends unknown[] ? (...args: T) => void : T extends unknown ? (arg: T) => void : () => void>;
 type RemoteFunctionReturn<RX> = RX extends [infer A] ? A : RX;
-type RemoteFunctionCallback<TX, RX> = (clientId: number, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
+type RemoteFunctionCallback<TX, RX> = (player: Player, ...args: RemoteParamsToServer<TX>) => RemoteFunctionReturn<RX>;
 declare class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
     private readonly id;
     private listening;

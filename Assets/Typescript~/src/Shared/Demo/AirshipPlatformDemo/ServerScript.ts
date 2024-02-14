@@ -6,7 +6,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Network } from "Shared/Network";
 
 export default class TestScript extends AirshipBehaviour {
@@ -55,7 +55,7 @@ export default class TestScript extends AirshipBehaviour {
 				this.totalKillMap.set(player, dataRes.data?.kills ?? 0);
 
 				Network.ServerToClient.KillData.server.FireClient(
-					player.clientId,
+					player,
 					res.data?.rank !== undefined ? `${res.data.rank}` : "No Rank",
 					dataRes.data?.kills ?? 0,
 				);

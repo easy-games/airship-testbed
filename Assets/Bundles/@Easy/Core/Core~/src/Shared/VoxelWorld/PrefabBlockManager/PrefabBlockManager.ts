@@ -35,10 +35,7 @@ export class PrefabBlockManager {
 
 		if (RunUtil.IsServer()) {
 			Airship.players.onPlayerJoined.Connect((player) => {
-				CoreNetwork.ServerToClient.SyncPrefabBlocks.server.FireClient(
-					player.clientId,
-					ObjectUtils.keys(this.objectMap),
-				);
+				CoreNetwork.ServerToClient.SyncPrefabBlocks.server.FireClient(player, ObjectUtils.keys(this.objectMap));
 			});
 		} else {
 			CoreNetwork.ServerToClient.SyncPrefabBlocks.client.OnServerEvent((blockPositions) => {

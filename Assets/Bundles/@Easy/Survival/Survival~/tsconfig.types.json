@@ -22,7 +22,7 @@
 		// "outDir": "../",
         "paths": {
             "@*": [
-                "../../../../Types~/@*"
+                "../../../Types~/@*"
             ],
             "Client/*": ["./Client/*"],
             "Server/*": ["./Server/*"],
@@ -32,7 +32,7 @@
 		"incremental": false,
         "skipLibCheck": true,
 		"plugins": [
-            { "transform": "typescript-transform-paths", "afterDeclarations": true }
+            // { "transform": "typescript-transform-paths", "afterDeclarations": true }
         ],
 
         "declaration": true,
@@ -40,13 +40,13 @@
         "outDir": "temp",
 	},
     "include": [
-        "../../Types~/**/*.d.ts",
+        "../../../Types~/**/*.d.ts",
         "src/**/*"
     ],
     "exclude": [
         "node_modules",
         "**/*.spec.ts",
-        "../../../Types~/Survival/*"
+        "../../../Types~/@Easy/Survival/*"
     ],
 	"rbxts": {
         "rojo": "./default.project.json",

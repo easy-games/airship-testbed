@@ -1,4 +1,4 @@
-import { Controller, OnStart, Service } from "@easy-games/flamework-core";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -29,13 +29,18 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public onServerCustomMoveCommand = new Signal<CustomMoveData>();
 
+	/**
+	 * If true, when a player disconnects their character will automatically be despawned.
+	 */
+	public autoDespawnCharactersOnPlayerDisconnect = true;
+
 	private idCounter = 0;
 
 	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
 		Airship.characters = this;
 
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((objectId, ownerClientId) => {
+			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((characterId, objectId, ownerClientId) => {
 				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
 				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
 				assert(character, "Spawned character was missing a Character component.");
@@ -45,7 +50,7 @@ export class CharactersSingleton implements OnStart {
 					assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
 					characterNetworkObj.gameObject.name = "Character_" + player.username;
 				}
-				character.Init(player, Airship.characters.MakeNewId());
+				character.Init(player, characterId);
 				Airship.characters.RegisterCharacter(character);
 				player?.SetCharacter(character);
 				Airship.characters.onCharacterSpawned.Fire(character);
@@ -58,16 +63,19 @@ export class CharactersSingleton implements OnStart {
 			Airship.players.ObservePlayers((player) => {
 				for (let character of this.characters) {
 					CoreNetwork.ServerToClient.Character.Spawn.server.FireClient(
-						player.clientId,
+						player,
+						character.id,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
 					);
 				}
 			});
-			Airship.characters.ObserveCharacters((character) => {
-				character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
-					NetworkUtil.Despawn(character.gameObject);
-				});
+
+			// Auto disconnect
+			Airship.players.onPlayerDisconnected.Connect((player) => {
+				if (!this.autoDespawnCharactersOnPlayerDisconnect) return;
+
+				player.character?.Despawn();
 			});
 		}
 
@@ -76,8 +84,6 @@ export class CharactersSingleton implements OnStart {
 				if (RunUtil.IsServer()) {
 					NetworkUtil.Despawn(character.gameObject);
 				}
-				print("onDeath for player " + character.player?.username);
-				character.player?.SetCharacter(undefined);
 			});
 		});
 
@@ -87,6 +93,9 @@ export class CharactersSingleton implements OnStart {
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
 				this.FindById(id)?.SetHealth(maxHealth);
+			});
+			CoreNetwork.ServerToClient.Character.Death.client.OnServerEvent((id) => {
+				this.FindById(id)?.onDeath.Fire();
 			});
 		}
 	}
@@ -222,7 +231,9 @@ export class CharactersSingleton implements OnStart {
 			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
 				const allData = customData.Decode() as { key: unknown; value: unknown }[];
 				for (const data of allData) {
-					const moveEvent = new CustomMoveData(character.player?.clientId ?? -1, tick, data.key, data.value);
+					const player = character.player;
+					if (!player) continue;
+					const moveEvent = new CustomMoveData(player, tick, data.key, data.value);
 					this.onServerCustomMoveCommand.Fire(moveEvent);
 				}
 			});
@@ -233,6 +244,7 @@ export class CharactersSingleton implements OnStart {
 
 		if (RunUtil.IsServer()) {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients(
+				character.id,
 				character.networkObject.ObjectId,
 				character.player?.clientId,
 			);

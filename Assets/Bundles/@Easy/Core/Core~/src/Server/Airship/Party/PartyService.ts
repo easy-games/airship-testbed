@@ -1,4 +1,4 @@
-import { Service, OnStart } from "@easy-games/flamework-core";
+import { Service, OnStart } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
 import { PartyMode, PartyStatus } from "Shared/SocketIOMessages/Party";
 import { PublicUser } from "Shared/SocketIOMessages/PublicUser";

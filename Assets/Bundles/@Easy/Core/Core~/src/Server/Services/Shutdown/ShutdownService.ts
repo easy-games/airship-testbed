@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { SetInterval } from "Shared/Util/Timer";

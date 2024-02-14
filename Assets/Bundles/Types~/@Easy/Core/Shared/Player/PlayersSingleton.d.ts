@@ -1,13 +1,16 @@
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../Flamework";
 import { Signal, SignalPriority } from "../Util/Signal";
 import { Player } from "./Player";
 export declare class PlayersSingleton implements OnStart {
     onPlayerJoined: Signal<Player>;
     onPlayerDisconnected: Signal<Player>;
     joinMessagesEnabled: boolean;
+    disconnectMessagesEnabled: boolean;
     private players;
     private playerManagerBridge;
     private server?;
+    private playersPendingReady;
+    private cachedProfilePictureSprite;
     constructor();
     OnStart(): void;
     private InitClient;
@@ -43,6 +46,14 @@ export declare class PlayersSingleton implements OnStart {
      */
     FindByFuzzySearch(searchName: string): Player | undefined;
     FindByClientId(clientId: number): Player | undefined;
+    /** Special method used for startup handshake. */
+    FindByClientIdIncludePending(clientId: number): Player | undefined;
     FindByUserId(userId: string): Player | undefined;
     FindByUsername(name: string): Player | undefined;
+    /**
+     * **MAY YIELD**
+     * @param userId
+     * @returns
+     */
+    CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined;
 }

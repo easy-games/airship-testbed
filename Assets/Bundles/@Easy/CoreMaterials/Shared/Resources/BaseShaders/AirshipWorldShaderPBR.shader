@@ -19,7 +19,7 @@ Shader "Airship/WorldShaderPBR"
         
         [Toggle] _ZWrite("Z-Write", Float) = 1.0
 
-        [Toggle] POINT_FILTER("Use Stylized Point Filtering", Float) = 1.0
+        [Toggle] POINT_FILTER("Use Stylized Point Filtering", Float) = 0.0
         [KeywordEnum(OFF, LOCAL, WORLD)] TRIPLANAR_STYLE("Triplanar", Float) = 0.0
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
 
@@ -27,7 +27,7 @@ Shader "Airship/WorldShaderPBR"
         [Toggle] SLIDER_OVERRIDE("Use Metal/Rough Sliders", Float) = 1.0
 
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
-        _RoughOverride("Rough", range(0.04, 1)) = 0.04
+        _RoughOverride("Rough", range(0.0, 1)) = 0.0
 
         [Toggle] EMISSIVE("Emissive", Float) = 0.0
         [HDR] _EmissiveColor("Emissive Color", Color) = (1,1,1,1)
@@ -39,9 +39,7 @@ Shader "Airship/WorldShaderPBR"
         [HDR] _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimPower("Rim Power", Range(0.0, 10)) = 2.5
         _RimIntensity("Rim Intensity", Range(0, 5)) = 0.75
-        _SkyShineStrength("Sky Shine Intensity", Range(0, 1)) = 0
-        [HDR] _SkyShine("Sky Shine Color", Color) = (.4,.75,1,1)
-
+        
         [Toggle] INSTANCE_DATA("Has Baked Instance Data", Float) = 0.0
     }
 

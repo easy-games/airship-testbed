@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
@@ -29,7 +29,10 @@ class ChatMessageElement {
 	public shown = true;
 	private hideBin = new Bin();
 
-	constructor(public readonly gameObject: GameObject, public time: number) {
+	constructor(
+		public readonly gameObject: GameObject,
+		public time: number,
+	) {
 		this.canvasGroup = gameObject.GetComponent<CanvasGroup>();
 	}
 

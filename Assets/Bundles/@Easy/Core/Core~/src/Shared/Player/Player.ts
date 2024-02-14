@@ -1,10 +1,10 @@
-import { Dependency } from "@easy-games/flamework-core";
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Dependency } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
@@ -135,7 +135,7 @@ export class Player {
 
 	public SendMessage(message: string, sender?: Player): void {
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this.clientId, message);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message);
 		} else {
 			Dependency<ChatController>().RenderChatMessage(message);
 		}

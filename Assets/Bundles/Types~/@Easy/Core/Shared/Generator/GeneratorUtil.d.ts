@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { GeneratorDto } from "./GeneratorMeta";
 /** Set of utilities pertaining to generators. */
 export declare class GeneratorUtil {

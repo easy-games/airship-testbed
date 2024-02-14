@@ -2,6 +2,7 @@
   "PlayerTags": [
     "Server",
     "latejoin:5",
-    "Client"
+    "Client",
+    "latejoin:30"
   ]
 }

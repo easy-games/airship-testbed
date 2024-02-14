@@ -42,6 +42,12 @@ export class CanvasAPI {
 		return this.canvasHitDetector.IsPointerOverTarget(target);
 	}
 
+	public static OnScreenSizeEvent(callback: (width: number, height: number) => void) {
+		return this.eventInterceptor!.OnScreenSizeChangeEvent((width, height) => {
+			callback(width as number, height as number);
+		});
+	}
+
 	/**
 	 * Subscribe to pointer events for a given target. `targetGameObject` MUST have an `EventTrigger` component
 	 * to be eligible to receive input events. See the `ShopItem` prefab for an example.

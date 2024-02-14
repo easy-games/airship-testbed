@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import Character from "../Character/Character";
 import { ProfilePictureMeta } from "../ProfilePicture/ProfilePictureMeta";
 import { Team } from "../Team/Team";

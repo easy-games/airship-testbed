@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -49,8 +49,8 @@ export class FlyCameraMode implements CameraMode {
 
 	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
-	OnStart(camera: Camera) {
-		const transform = camera.transform;
+	OnStart(camera: Camera, rootTransform: Transform) {
+		const transform = rootTransform;
 		this.positionSpring = new Spring(transform.position, 5);
 		this.xRotSpring = new Spring(new Vector3(math.rad(90), 0, 0), 5);
 		this.yRotVelSpring = new Spring(new Vector3(0, 0, 0), 3);

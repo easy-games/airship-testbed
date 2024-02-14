@@ -1,4 +1,4 @@
-import { Dependency } from "@easy-games/flamework-core";
+import { Dependency } from "Shared/Flamework";
 import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
@@ -45,7 +45,11 @@ export class OrbitCameraMode implements CameraMode {
 	private readonly mouse = this.bin.Add(new Mouse());
 	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
-	constructor(private readonly distance: number, private transform: Transform, graphicalCharacter?: Transform) {
+	constructor(
+		private readonly distance: number,
+		private transform: Transform,
+		graphicalCharacter?: Transform,
+	) {
 		if (graphicalCharacter !== undefined) {
 			this.entityDriver = transform.GetComponent<CharacterMovement>();
 			this.transform = graphicalCharacter;
@@ -95,11 +99,13 @@ export class OrbitCameraMode implements CameraMode {
 		this.transform = transform;
 	}
 
-	OnStart(camera: Camera) {
-		this.occlusionCam = camera.transform.GetComponent<OcclusionCam>();
+	OnStart(camera: Camera, rootTransform: Transform) {
+		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>();
 		if (this.occlusionCam === undefined) {
-			this.occlusionCam = camera.transform.gameObject.AddComponent<OcclusionCam>();
+			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
 		}
+		this.occlusionCam.Init(camera);
+
 		this.bin.Add(this.preferred);
 		this.bin.Add(this.keyboard);
 		this.bin.Add(this.touchscreen);

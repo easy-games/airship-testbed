@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { ChatCommand } from "../../../Shared/Commands/ChatCommand";
 import { Player } from "../../../Shared/Player/Player";
 export declare class ChatService implements OnStart {

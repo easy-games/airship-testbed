@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { AuthController } from "../Auth/AuthController";
 import { SocketController } from "../Socket/SocketController";
 export declare class MainMenuAddFriendsController implements OnStart {

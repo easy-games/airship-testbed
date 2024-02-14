@@ -1,4 +1,4 @@
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 export declare class GroundItemPickupSoundsController implements OnStart {
     OnStart(): void;
 }

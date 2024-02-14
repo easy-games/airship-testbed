@@ -1,6 +1,7 @@
 SamplerState my_sampler_point_repeat;
 SamplerState my_sampler_Linear_repeat;
 Texture2D _MainTex;
+Texture2D _AlphaTex;
 Texture2D _DitherTexture;
 float4 _DitherTexture_TexelSize;
 float _TexColorStrength;
@@ -223,10 +224,7 @@ half EnvBRDFApproxNonmetal(half Roughness, half NoV)
     return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
 }
 
-half3 ProcessReflectionSample(half3 img)
-{
-    return (img * img) * 2;
-}
+
 
 struct Coordinates
 {
