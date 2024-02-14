@@ -17,6 +17,7 @@ export interface GameDto {
 	liveStats?: {
 		playerCount?: number;
 	};
+	plays: number;
 }
 
 export interface GamesDto {

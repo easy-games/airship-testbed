@@ -1,7 +1,7 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";

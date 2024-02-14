@@ -363,7 +363,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: AirshipCharacterFace
   addedByEditorScript: 0
 --- !u!1 &1571342351252852423
 GameObject:
@@ -5884,7 +5883,6 @@ MonoBehaviour:
   - materialColor: {r: 0.9056604, g: 0.69945747, b: 0.5767177, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: AirshipCharacterBaseToon
   addedByEditorScript: 0
 --- !u!1 &4771920100964250519
 GameObject:
@@ -6182,7 +6180,6 @@ MonoBehaviour:
   - materialColor: {r: 0.9056604, g: 0.69945747, b: 0.5767177, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: AirshipCharacterBaseToon
   addedByEditorScript: 0
 --- !u!1 &5960472572424247457
 GameObject:
@@ -6961,6 +6958,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -6972,6 +6971,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators:
       - name: Header
         parameters:
@@ -6987,6 +6988,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -6998,6 +7001,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -7009,6 +7014,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -7020,6 +7027,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -7031,6 +7040,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators:
       - name: Header
         parameters:
@@ -7046,6 +7057,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -7211,7 +7224,6 @@ MonoBehaviour:
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: -98370938496583557}
   _networkObjectCache: {fileID: -98370938496583557}
-  _componentConfiguration: 0
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -7471,6 +7483,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -7482,6 +7496,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 48
@@ -7493,6 +7509,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 9
@@ -7504,9 +7522,11 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 0
+      serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
 --- !u!1 &8689356925778762488
