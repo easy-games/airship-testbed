@@ -7,10 +7,9 @@ import { DecodeJSON } from "@Easy/Core/Shared/json";
 export class GameInfoService implements OnStart {
 	OnStart(): void {}
 
-	public async GetGameData(gameId: string): Promise<GameData | undefined> {
-		const res = await Promise.try(() =>
-			InternalHttpManager.GetAsync(`${AirshipUrl.ContentService}/games/game-id/${gameId}`),
-		);
+	/** Yields */
+	public GetGameData(gameId: string): GameData | undefined {
+		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + gameId);
 		if (res.success) {
 			return DecodeJSON(res.data) as GameData;
 		} else {
