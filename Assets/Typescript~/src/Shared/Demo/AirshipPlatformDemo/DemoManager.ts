@@ -26,6 +26,14 @@ export default class DemoManager extends AirshipBehaviour {
 
 			Airship.loadingScreen.FinishLoading();
 		}
+        task.spawn(() => {
+            let count = 0;
+            while (true) {
+                print("Hello " + count);
+                count++;
+                task.wait();
+            }
+        })
 	}
 
 	public SpawnPlayer(player: Player): void {
