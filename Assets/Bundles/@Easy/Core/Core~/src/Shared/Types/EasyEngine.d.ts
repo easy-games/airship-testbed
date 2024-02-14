@@ -867,3 +867,8 @@ interface NetworkObject extends MonoBehaviour {
 	OnOwnershipClient(callback: (conn: NetworkConnection) => void): EngineEventConnection;
 	OnStopClient(callback: () => void): EngineEventConnection;
 }
+
+interface SteamLuauAPIConstructor {
+	SetRichPresence(gameName: string, status: string): boolean;
+}
+declare const SteamLuauAPI: SteamLuauAPIConstructor;

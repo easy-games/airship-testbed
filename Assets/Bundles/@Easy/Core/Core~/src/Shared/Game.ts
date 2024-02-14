@@ -1,5 +1,8 @@
+import { GameInfoService } from "../Server/Airship/Game/GameInfoService";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
+import { Dependency } from "./Flamework";
+import { GameData } from "./GameData";
 import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
@@ -48,4 +51,15 @@ export class Game {
 	public static organizationId: string;
 
 	public static startingScene = SceneManager.GetActiveScene().name;
+
+	public static gameData: GameData | undefined;
+
+	/** Returns game data if already fetched. Otherwise tries to fetch game data based on gameId */
+	public static async FetchGameData() {
+		if (Game.gameData) return Game.gameData;
+
+		const gameData = await Dependency(GameInfoService).GetGameData(this.gameId);
+		if (gameData) Game.gameData = gameData;
+		return gameData;
+	}
 }
