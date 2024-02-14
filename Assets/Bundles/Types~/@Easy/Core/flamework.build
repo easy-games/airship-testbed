@@ -20,7 +20,8 @@
 		"@Easy/Core:Shared/Util/PhysicsUtil@PhysicsUtil": "$:Util/PhysicsUtil@PhysicsUtil",
 		"@Easy/Core:Client/Controllers/Viewmodel/ViewmodelController@ViewmodelController": "$:Controllers/Viewmodel/ViewmodelController@ViewmodelController",
 		"@Easy/Core:Shared/Audio/AudioClipBundle@AudioClipBundle": "$:Audio/AudioClipBundle@AudioClipBundle",
-		"@Easy/Core:Server/Airship/Game/GameInfoService@GameInfoService": "$:Airship/Game/GameInfoService@GameInfoService",
+		"@Easy/Core:Shared/Airship/Game/GameInfoSingleton@GameInfoSingleton": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
+		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
 		"@Easy/Core:Shared/Util/ColorUtil@ColorUtil": "$:Util/ColorUtil@ColorUtil",
 		"@Easy/Core:Shared/Util/Theme@Theme": "$:Util/Theme@Theme",
 		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
@@ -215,7 +216,6 @@
 		"@Easy/Core:Shared/Util/LayerUtil@LayerUtil": "$:Util/LayerUtil@LayerUtil",
 		"@Easy/Core:Shared/Util/SetUtil@SetUtil": "$:Util/SetUtil@SetUtil",
 		"@Easy/Core:Shared/Util/Vector3Util@Vector3Util": "$:Util/Vector3Util@Vector3Util",
-		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
 		"@Easy/Core:Shared/Flamework/flamework@OnInit": "$:Flamework/flamework@OnInit",
 		"@Easy/Core:Shared/Flamework/flamework@OnStart": "$:Flamework/flamework@OnStart"
 	},
@@ -251,17 +251,6 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Server/Airship/Game/GameInfoService.lua",
-			"internalId": "$:Airship/Game/GameInfoService@GameInfoService",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Service",
-					"isFlameworkDecorator": true,
-					"name": "Service"
 				}
 			]
 		},
