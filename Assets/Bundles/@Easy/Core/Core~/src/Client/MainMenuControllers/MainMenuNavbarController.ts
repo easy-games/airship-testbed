@@ -1,5 +1,7 @@
-import { Controller, OnStart } from "Shared/Flamework";
+import NavbarControlButton from "@Easy/Core/Shared/MainMenu/Components/NavbarControlButton";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import MainMenuNavButton from "Shared/MainMenu/Components/MainMenuNavButton";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -11,6 +13,8 @@ import { UserController } from "./User/UserController";
 
 @Controller({})
 export class MainMenuNavbarController implements OnStart {
+	private refreshButton!: NavbarControlButton;
+
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly userController: UserController,
@@ -19,6 +23,21 @@ export class MainMenuNavbarController implements OnStart {
 
 	OnStart(): void {
 		this.Setup();
+
+		const keyboard = new Keyboard();
+		keyboard.OnKeyDown(KeyCode.R, (event) => {
+			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+				this.refreshButton.PlayClickEffect();
+				this.DoRefresh();
+			}
+		});
+	}
+
+	public DoRefresh(): void {
+		if (!this.mainMenuController.currentPage) return;
+		print("Refreshing!");
+
+		this.mainMenuController.RouteToPage(this.mainMenuController.currentPage.pageType, true);
 	}
 
 	public Setup(): void {
@@ -31,6 +50,11 @@ export class MainMenuNavbarController implements OnStart {
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
 		const runningGameCloseButton = refs.GetValue("UI", "NavbarRunningGameCloseButton");
+
+		this.refreshButton = refs.GetValue("UI", "RefreshPageButton").GetAirshipComponent<NavbarControlButton>()!;
+		CanvasAPI.OnClickEvent(this.refreshButton.gameObject, () => {
+			this.DoRefresh();
+		});
 
 		if (Game.context !== CoreContext.GAME) {
 			runningGameButton.SetActive(false);

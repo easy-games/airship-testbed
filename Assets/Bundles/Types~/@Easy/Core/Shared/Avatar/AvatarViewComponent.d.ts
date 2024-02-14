@@ -2,7 +2,9 @@
 export default class AvatarViewComponent extends AirshipBehaviour {
     humanEntityGo?: GameObject;
     avatarHolder?: Transform;
-    cameraTransform?: Transform;
+    cameraRigTransform?: Transform;
+    avatarCamera?: Camera;
+    testTransform?: Transform;
     cameraWaypointDefault?: Transform;
     cameraWaypointHead?: Transform;
     cameraWaypointFeet?: Transform;
@@ -12,6 +14,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     cameraWaypointBirdsEye?: Transform;
     dragSpeedMod: number;
     cameraTransitionDuration: number;
+    screenspaceDistance: number;
     dragging: boolean;
     accessoryBuilder?: AccessoryBuilder;
     anim?: CharacterAnimationHelper;

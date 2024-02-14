@@ -400,6 +400,7 @@ interface CanvasUIEventInterceptor extends Component {
 	OnToggleValueChangeEvent(callback: (instanceId: number, value: boolean) => void): EngineEventConnection;
 	OnBeginDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnScreenSizeChangeEvent(callback: (width: number, height: number) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dragged object.
@@ -866,3 +867,8 @@ interface NetworkObject extends MonoBehaviour {
 	OnOwnershipClient(callback: (conn: NetworkConnection) => void): EngineEventConnection;
 	OnStopClient(callback: () => void): EngineEventConnection;
 }
+
+interface SteamLuauAPIConstructor {
+	SetRichPresence(gameName: string, status: string): boolean;
+}
+declare const SteamLuauAPI: SteamLuauAPIConstructor;

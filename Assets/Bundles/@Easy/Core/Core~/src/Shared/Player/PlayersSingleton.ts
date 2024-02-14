@@ -119,6 +119,15 @@ export class PlayersSingleton implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
+			task.spawn(() => {
+				const gameData = Game.FetchGameData().expect();
+
+				const gameName = gameData?.name ?? "Unknown";
+
+				// Set default rich presence
+				SteamLuauAPI.SetRichPresence(gameName, "");
+			});
+
 			if (authController.IsAuthenticated()) {
 				friendsController.SendStatusUpdate();
 			} else {
