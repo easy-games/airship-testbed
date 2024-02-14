@@ -1,12 +1,12 @@
-import { Dependency } from "Shared/Flamework";
 import Character from "Shared/Character/Character";
+import { Dependency } from "Shared/Flamework";
 import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
-export class EntityInput {
+export class CharacterInput {
 	private readonly bin = new Bin();
 	private readonly movement: CharacterMovement;
 	private disablers = new Set<number>();

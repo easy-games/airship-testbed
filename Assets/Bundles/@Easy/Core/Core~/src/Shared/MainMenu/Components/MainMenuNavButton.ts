@@ -1,4 +1,4 @@
-import { CanvasAPI, HoverState } from "Shared/Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerDirection } from "Shared/Util/CanvasAPI";
 
 export default class MainMenuNavButton extends AirshipBehaviour {
 	public selected = false;
@@ -18,7 +18,20 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 			if (state === HoverState.ENTER) {
 				this.image.TweenGraphicAlpha(0.6, 0.12);
 			} else {
-				this.image.TweenGraphicAlpha(this.selected ? 0.7 : 0.9, 0.12);
+				this.image.TweenGraphicAlpha(this.selected ? 0.1 : 0.9, 0.12);
+			}
+		});
+
+		const rect = this.gameObject.GetComponent<RectTransform>();
+		let startPos: Vector3 | undefined;
+		CanvasAPI.OnPointerEvent(this.gameObject, (dir, button) => {
+			if (dir === PointerDirection.DOWN) {
+				if (this.selected) return;
+				startPos = rect.localPosition;
+				rect.TweenLocalPosition(startPos.sub(new Vector3(0, 2, 0)), 0.05);
+			} else if (startPos) {
+				rect.localPosition = startPos;
+				startPos = undefined;
 			}
 		});
 	}
