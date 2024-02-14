@@ -11,6 +11,7 @@ export class CameraReferences {
 	}
 
 	private mouse = new Mouse();
+	public readonly cameraHolder?: Transform;
 	public readonly mainCamera?: Camera;
 	public readonly fpsCamera?: Camera;
 	public readonly uiCamera?: Camera;
@@ -19,7 +20,6 @@ export class CameraReferences {
 	public constructor() {
 		if (CameraReferences.instances) {
 			error("TRYING TO INITIALIZE SINGLETON THAT ALREADY EXISTS: CameraReferences");
-			return;
 		}
 		CameraReferences.instances = this;
 
@@ -30,6 +30,7 @@ export class CameraReferences {
 			return;
 		}
 		this.exists = true;
+		this.cameraHolder = refs.transform;
 		this.mainCamera = refs.GetValue<Camera>("Cameras", "MainCamera");
 		this.fpsCamera = refs.GetValue<Camera>("Cameras", "FPSCamera");
 		this.uiCamera = refs.GetValue<Camera>("Cameras", "UICamera");

@@ -1,10 +1,10 @@
-import { Controller, Dependency, OnStart, Service } from "@easy-games/flamework-core";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, Dependency, OnStart, Service } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Team } from "Shared/Team/Team";
 import { ChatColor } from "Shared/Util/ChatColor";
@@ -12,6 +12,7 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { AssetCache } from "../AssetCache/AssetCache";
 import { Player, PlayerDto } from "./Player";
 
 @Controller({ loadOrder: -1000 })
@@ -21,12 +22,17 @@ export class PlayersSingleton implements OnStart {
 	public onPlayerDisconnected = new Signal<Player>();
 
 	public joinMessagesEnabled = true;
+	public disconnectMessagesEnabled = true;
 
 	private players = new Set<Player>([]);
 	private playerManagerBridge = PlayerManagerBridge.Instance;
 	private server?: {
 		botCounter: number;
 	};
+
+	private playersPendingReady = new Map<number, Player>();
+
+	private cachedProfilePictureSprite = new Map<string, Sprite>();
 
 	constructor() {
 		Airship.players = this;
@@ -78,6 +84,11 @@ export class PlayersSingleton implements OnStart {
 				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 			}
 		});
+		this.onPlayerDisconnected.Connect((player) => {
+			if (RunUtil.IsServer() && this.disconnectMessagesEnabled) {
+				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
+			}
+		});
 	}
 
 	OnStart(): void {
@@ -108,6 +119,15 @@ export class PlayersSingleton implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
+			task.spawn(() => {
+				const gameData = Game.FetchGameData().expect();
+
+				const gameName = gameData?.name ?? "Unknown";
+
+				// Set default rich presence
+				SteamLuauAPI.SetRichPresence(gameName, "");
+			});
+
 			if (authController.IsAuthenticated()) {
 				friendsController.SendStatusUpdate();
 			} else {
@@ -136,7 +156,6 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	private InitServer(): void {
-		const playersPendingReady = new Map<number, Player>();
 		const onPlayerPreJoin = (playerInfo: PlayerInfoDto) => {
 			// LocalPlayer is hardcoded, so we check if this client should be treated as local player.
 			let player: Player;
@@ -152,11 +171,11 @@ export class PlayersSingleton implements OnStart {
 				);
 			}
 			playerInfo.gameObject.name = `Player_${playerInfo.username}`;
-			playersPendingReady.set(playerInfo.clientId, player);
+			this.playersPendingReady.set(playerInfo.clientId, player);
 
 			// Ready bots immediately
 			if (playerInfo.clientId < 0) {
-				playersPendingReady.delete(playerInfo.clientId);
+				this.playersPendingReady.delete(playerInfo.clientId);
 				this.HandlePlayerReadyServer(player);
 			}
 		};
@@ -183,12 +202,13 @@ export class PlayersSingleton implements OnStart {
 		});
 
 		// Player completes join
-		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((clientId) => {
+		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
 			if (RunUtil.IsHosting()) {
 				this.HandlePlayerReadyServer(Game.localPlayer);
 				return;
 			}
 
+			/*
 			let retry = 0;
 			while (!playersPendingReady.has(clientId)) {
 				//print("player not found in pending: " + clientId);
@@ -201,13 +221,15 @@ export class PlayersSingleton implements OnStart {
 			const player = playersPendingReady.get(clientId)!;
 
 			playersPendingReady.delete(clientId);
+			*/
+			this.playersPendingReady.delete(player.clientId);
 			this.HandlePlayerReadyServer(player);
 		});
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {
 		CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
-			player.clientId,
+			player,
 			Game.gameId,
 			Game.serverId,
 			Game.organizationId,
@@ -218,14 +240,14 @@ export class PlayersSingleton implements OnStart {
 		}
 
 		// notify all clients of the joining player
-		CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player.clientId, player.Encode());
+		CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode());
 
 		// send list of all connected players to the joining player
-		const playerDtos: PlayerDto[] = [];
+		const playerDtos: PlayerDto[] = table.create(this.players.size());
 		for (let p of this.players) {
 			playerDtos.push(p.Encode());
 		}
-		CoreNetwork.ServerToClient.AllPlayers.server.FireClient(player.clientId, playerDtos);
+		CoreNetwork.ServerToClient.AllPlayers.server.FireClient(player, playerDtos);
 
 		this.onPlayerJoined.Fire(player);
 	}
@@ -338,7 +360,7 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	public FindByClientId(clientId: number): Player | undefined {
-		for (let player of this.players) {
+		for (const player of this.players) {
 			if (player.clientId === clientId) {
 				return player;
 			}
@@ -346,8 +368,13 @@ export class PlayersSingleton implements OnStart {
 		return undefined;
 	}
 
+	/** Special method used for startup handshake. */
+	public FindByClientIdIncludePending(clientId: number): Player | undefined {
+		return this.FindByClientId(clientId) ?? this.playersPendingReady.get(clientId);
+	}
+
 	public FindByUserId(userId: string): Player | undefined {
-		for (let player of this.players) {
+		for (const player of this.players) {
 			//print("checking player " + player.userId + " to " + userId);
 			if (player.userId === userId) {
 				return player;
@@ -357,11 +384,30 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	public FindByUsername(name: string): Player | undefined {
-		for (let player of this.players) {
+		for (const player of this.players) {
 			if (player.username === name) {
 				return player;
 			}
 		}
 		return undefined;
+	}
+
+	/**
+	 * **MAY YIELD**
+	 * @param userId
+	 * @returns
+	 */
+	public CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined {
+		if (this.cachedProfilePictureSprite.has(userId)) {
+			return this.cachedProfilePictureSprite.get(userId);
+		}
+		const texture = AssetCache.LoadAssetIfExists<Texture2D>(
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
+		);
+		if (texture !== undefined) {
+			const sprite = Bridge.MakeSprite(texture);
+			this.cachedProfilePictureSprite.set(userId, sprite);
+			return sprite;
+		}
 	}
 }

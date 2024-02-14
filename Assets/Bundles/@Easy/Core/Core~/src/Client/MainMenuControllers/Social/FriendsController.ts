@@ -1,9 +1,15 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
+import inspect from "@easy-games/unity-inspect";
 import Object from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import SocialFriendRequestsButtonComponent from "Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
+import SocialNotificationComponent from "Shared/MainMenu/Components/SocialNotificationComponent";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Mouse } from "Shared/UserInput";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -11,7 +17,6 @@ import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Signal } from "Shared/Util/Signal";
-import { Task } from "Shared/Util/Task";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
@@ -33,6 +38,13 @@ export class FriendsController implements OnStart {
 	public friendStatusChanged = new Signal<FriendStatus>();
 	private customGameTitle: string | undefined;
 
+	private socialNotification!: SocialNotificationComponent;
+	private socialNotificationBin = new Bin();
+	private friendRequestsButton!: SocialFriendRequestsButtonComponent;
+	private socialNotificationKey = "";
+
+	public onIncomingFriendRequestsChanged = new Signal<void>();
+
 	constructor(
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
@@ -40,9 +52,47 @@ export class FriendsController implements OnStart {
 		private readonly rightClickMenuController: RightClickMenuController,
 	) {}
 
+	public AddSocialNotification(
+		key: string,
+		title: string,
+		username: string,
+		onResult: (result: boolean) => void,
+	): void {
+		this.socialNotificationBin.Clean();
+		this.socialNotificationKey = key;
+		this.socialNotification.gameObject.SetActive(false);
+		this.socialNotification.gameObject.SetActive(true);
+
+		this.socialNotification.titleText.text = title;
+		this.socialNotification.usernameText.text = username;
+		this.socialNotification.onResult.Connect(onResult);
+	}
+
+	public ClearSocialNotification(): void {
+		this.socialNotificationBin.Clean();
+		this.socialNotificationKey = "";
+		this.socialNotification.gameObject.SetActive(false);
+	}
+
+	public FireNotificationKey(key: string): void {
+		if (key === this.socialNotificationKey) {
+			this.ClearSocialNotification();
+		}
+	}
+
 	OnStart(): void {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
+
+		this.socialNotification = this.mainMenuController.refs
+			.GetValue("Social", "SocialNotification")
+			.GetAirshipComponent<SocialNotificationComponent>()!;
+		this.socialNotification.gameObject.SetActive(false);
+
+		this.friendRequestsButton = this.mainMenuController.refs
+			.GetValue("Social", "FriendRequestsButton")
+			.GetAirshipComponent<SocialFriendRequestsButtonComponent>()!;
+		this.friendRequestsButton.gameObject.SetActive(false);
 
 		const cachedStatusesRaw = StateManager.GetString("main-menu:friend-statuses");
 		if (cachedStatusesRaw) {
@@ -59,15 +109,69 @@ export class FriendsController implements OnStart {
 		});
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-requested", (data) => {
+			print("friend-requested: " + inspect(data));
 			this.FetchFriends();
+			const foundUser = this.incomingFriendRequests.find((u) => u.uid === data.initiatorId);
+			if (foundUser) {
+				this.socialNotification.gameObject.SetActive(false);
+				this.socialNotification.gameObject.SetActive(true);
+
+				this.socialNotification.usernameText.text = foundUser.username;
+
+				const sprite = Airship.players.CreateProfilePictureSpriteAsync(foundUser.uid);
+				if (sprite) {
+					this.socialNotification.userImage.sprite = sprite;
+				}
+
+				this.AddSocialNotification(
+					"friend-request:" + data.initiatorId,
+					"Friend Request",
+					foundUser.username,
+					(result) => {
+						if (result) {
+							task.spawn(() => {
+								this.socialNotification.gameObject.SetActive(false);
+								this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
+							});
+						} else {
+							task.spawn(() => {
+								this.socialNotification.gameObject.SetActive(false);
+								this.RejectFriendRequestAsync(foundUser.uid);
+							});
+						}
+					},
+				);
+
+				// this.socialNotification.bin.Add(
+				// 	this.onIncomingFriendRequestsChanged.Connect(() => {
+				// 		let found: User | undefined;
+				// 		for (const u of this.incomingFriendRequests) {
+				// 			if (u.uid === foundUser.uid) {
+				// 				found = u;
+				// 				break;
+				// 			}
+				// 		}
+				// 		if (!found) {
+				// 			this.ClearSocialNotification();
+				// 		}
+				// 	}),
+				// );
+
+				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
+				if (Game.context === CoreContext.GAME) {
+					Game.localPlayer.SendMessage(
+						ChatColor.Yellow(foundUser.username) + ChatColor.Gray(" sent you a friend request."),
+					);
+				}
+			}
 		});
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-accepted", (data) => {
 			this.FetchFriends();
-			InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
 		});
 
 		this.socketController.On<FriendStatus[]>("game-coordinator/friend-status-update-multi", (data) => {
+			// print("status updates: " + inspect(data));
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
@@ -91,6 +195,19 @@ export class FriendsController implements OnStart {
 		this.Setup();
 	}
 
+	public SetIncomingFriendRequests(friendRequests: User[]): void {
+		this.incomingFriendRequests = friendRequests;
+
+		const count = friendRequests.size();
+		if (count > 0) {
+			this.friendRequestsButton.text.text = count + " Request" + (count > 1 ? "s" : "");
+			this.friendRequestsButton.gameObject.SetActive(true);
+		} else {
+			this.friendRequestsButton.gameObject.SetActive(false);
+		}
+		this.onIncomingFriendRequestsChanged.Fire();
+	}
+
 	public Setup(): void {
 		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
 		const savedStatus = StateManager.GetString("social:status-text");
@@ -99,7 +216,6 @@ export class FriendsController implements OnStart {
 			statusTextInput.text = savedStatus;
 		}
 		CanvasAPI.OnInputFieldSubmit(statusTextInput.gameObject, (data) => {
-			print("update status: " + data);
 			this.statusText = data;
 			StateManager.SetString("social:status-text", data);
 			this.SendStatusUpdate();
@@ -148,23 +264,62 @@ export class FriendsController implements OnStart {
 			incomingRequests: User[];
 		};
 		this.friends = data.friends;
-		this.incomingFriendRequests = data.incomingRequests;
+		this.SetIncomingFriendRequests(data.incomingRequests);
 		this.outgoingFriendRequests = data.outgoingRequests;
 
-		// auto accept
-		for (const user of this.incomingFriendRequests) {
-			Task.Spawn(() => {
-				const res = HttpManager.PostAsync(
-					AirshipUrl.GameCoordinator + "/friends/requests/self",
-					EncodeJSON({
-						discriminatedUsername: user.discriminatedUsername,
-					}),
-					this.authController.GetAuthHeaders(),
-				);
+		// print("friends: " + inspect(data));
 
-				InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
-			});
+		// auto decline
+		// for (const user of this.incomingFriendRequests) {
+		// 	task.spawn(() => {
+		// 		const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + user.uid);
+		// 		InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
+		// 	});
+		// }
+
+		// auto accept
+		// for (const user of this.incomingFriendRequests) {
+		// 	Task.Spawn(() => {
+		// 		const res = HttpManager.PostAsync(
+		// 			AirshipUrl.GameCoordinator + "/friends/requests/self",
+		// 			EncodeJSON({
+		// 				discriminatedUsername: user.discriminatedUsername,
+		// 			}),
+		// 			this.authController.GetAuthHeaders(),
+		// 		);
+
+		// 		InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/user-status/friends");
+		// 	});
+		// }
+	}
+
+	public AcceptFriendRequestAsync(username: string, userId: string): boolean {
+		const res = InternalHttpManager.PostAsync(
+			AirshipUrl.GameCoordinator + "/friends/requests/self",
+			EncodeJSON({
+				username: username,
+			}),
+		);
+		if (res.success) {
+			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
+
+			this.FireNotificationKey("friend-request:" + userId);
 		}
+
+		return res.success;
+	}
+
+	public RejectFriendRequestAsync(userId: string): boolean {
+		const res = InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + userId);
+		if (res.success) {
+			this.friendStatuses = this.friendStatuses.filter((f) => f.userId !== userId);
+			this.UpdateFriendsList();
+
+			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
+
+			this.FireNotificationKey("friend-request:" + userId);
+		}
+		return res.success;
 	}
 
 	public GetFriendGo(uid: string): GameObject | undefined {
@@ -175,16 +330,16 @@ export class FriendsController implements OnStart {
 		return this.outgoingFriendRequests.find((f) => f.uid === userId) !== undefined;
 	}
 
-	public SendFriendRequest(usernameWithTag: string): boolean {
-		print('adding friend: "' + usernameWithTag + '"');
+	public SendFriendRequest(username: string): boolean {
+		print('adding friend: "' + username + '"');
 		const res = InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/friends/requests/self",
 			EncodeJSON({
-				discriminatedUsername: usernameWithTag,
+				username: username,
 			}),
 		);
 		if (res.success) {
-			print("Sent friend request to " + usernameWithTag);
+			print("Sent friend request to " + username);
 			return true;
 		}
 		return false;
@@ -234,12 +389,10 @@ export class FriendsController implements OnStart {
 					noHoverSound: true,
 				});
 				CanvasAPI.OnClickEvent(go, () => {
-					print("opening friend " + friend.username);
 					Dependency<DirectMessageController>().OpenFriend(friend.userId);
 				});
 				CanvasAPI.OnPointerEvent(go, (direction, button) => {
 					if (button === PointerButton.RIGHT) {
-						print("right clicked " + friend.username);
 						this.rightClickMenuController.OpenRightClickMenu(
 							this.mainMenuController.mainContentCanvas,
 							mouse.GetLocation(),
@@ -263,7 +416,11 @@ export class FriendsController implements OnStart {
 								},
 								{
 									text: "Unfriend",
-									onClick: () => {},
+									onClick: () => {
+										task.spawn(() => {
+											const success = this.RejectFriendRequestAsync(friend.userId);
+										});
+									},
 								},
 							],
 						);
@@ -271,6 +428,8 @@ export class FriendsController implements OnStart {
 				});
 
 				CanvasAPI.OnClickEvent(joinButton, () => {
+					if (friend.gameId === undefined || friend.serverId === undefined) return;
+
 					print(
 						"Transfering to friend " +
 							friend.username +

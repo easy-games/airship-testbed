@@ -1,4 +1,4 @@
-import { OnStart, Service } from "@easy-games/flamework-core";
+import { OnStart, Service } from "Shared/Flamework";
 import Object from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -73,11 +73,11 @@ export class GroundItemService implements OnStart {
 			// }
 		});
 
-		CoreNetwork.ClientToServer.PickupGroundItem.server.OnClientEvent((clientId, groundItemId) => {
+		CoreNetwork.ClientToServer.PickupGroundItem.server.OnClientEvent((player, groundItemId) => {
 			const groundItem = this.groundItems.get(groundItemId);
 			if (!groundItem) return;
 
-			const character = Airship.characters.FindByClientId(clientId);
+			const character = Airship.characters.FindByPlayer(player);
 			if (!character?.IsAlive()) return;
 
 			if (
@@ -107,7 +107,7 @@ export class GroundItemService implements OnStart {
 
 		Airship.players.ObservePlayers((player) => {
 			CoreNetwork.ServerToClient.GroundItem.Add.server.FireClient(
-				player.clientId,
+				player,
 				Object.values(this.groundItems).map((i) => {
 					return {
 						id: i.id,

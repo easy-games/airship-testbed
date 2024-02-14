@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { EquippedProfilePicture, Outfit } from "../../../Shared/Airship/Types/Outputs/PlatformInventory";
 import { Result } from "../../../Shared/Types/Result";
 export declare class PlatformInventoryController implements OnStart {

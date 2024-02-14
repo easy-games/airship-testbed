@@ -28,6 +28,7 @@
             "@*": [
                 "../../../../Types~/@*"
             ],
+			"@Easy/Core/*": ["./*"],
             "Client/*": ["./Client/*"],
             "Server/*": ["./Server/*"],
             "Shared/*": ["./Shared/*"]
@@ -36,7 +37,11 @@
         "skipLibCheck": true,
 		"plugins": [
             // { "transform": "@easy-games/unity-component-transformer" },
-			{ "transform": "@easy-games/unity-flamework-transformer" },
+			{ 
+				"transform": "@easy-games/unity-flamework-transformer",
+				"$corepackmode$": true,
+				"hashPrefix": "$"
+			},
 		],
 	},
     "include": [

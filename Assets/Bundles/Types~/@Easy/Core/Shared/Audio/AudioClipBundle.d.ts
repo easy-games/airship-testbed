@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { PlaySoundConfig } from "./AudioManager";
 export declare enum AudioBundlePlayMode {
     MANUAL = 0,

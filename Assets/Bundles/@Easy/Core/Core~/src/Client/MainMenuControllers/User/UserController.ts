@@ -1,5 +1,5 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -39,7 +39,6 @@ export class UserController implements OnStart {
 				const writeUser = Game.localPlayer as Writable<Player>;
 				writeUser.userId = data.uid;
 				writeUser.username = data.username;
-				writeUser.usernameTag = data.discriminator;
 				Game.localPlayerLoaded = true;
 				Game.onLocalPlayerLoaded.Fire();
 			}

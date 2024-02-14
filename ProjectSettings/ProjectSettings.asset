@@ -839,7 +839,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: FISHNET;FISHNET_V3;FISHNET_PRO
     Server: AIRSHIP_INTERNAL
-    Standalone: FISHNET;FISHNET_V3;FISHNET_PRO;AIRSHIP_INTERNAL
+    Standalone: FISHNET;FISHNET_V3;FISHNET_PRO;AIRSHIP_INTERNAL;LETAI_TRUESHADOW;STEAMWORKS_NET
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

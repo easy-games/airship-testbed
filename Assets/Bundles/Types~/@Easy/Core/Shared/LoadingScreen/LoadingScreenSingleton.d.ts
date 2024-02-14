@@ -1,4 +1,4 @@
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../Flamework";
 export declare class LoadingScreenSingleton implements OnStart {
     private coreLoadingScreen?;
     private loadingBin;

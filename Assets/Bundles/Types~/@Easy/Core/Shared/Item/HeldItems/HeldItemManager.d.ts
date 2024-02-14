@@ -1,7 +1,6 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import Character from "../../Character/Character";
 import { ItemDef } from "../ItemDefinitionTypes";
+import { ItemType } from "../ItemType";
 import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
 export type HeldItemCondition = (itemDef: ItemDef) => boolean;
@@ -26,6 +25,8 @@ export declare class HeldItemManager {
     private static heldItemClasses;
     static RegisterHeldItem(condition: HeldItemCondition, factory: HeldItemFactory): void;
     GetLabel(): number;
+    GetCurrentHeldItem(): HeldItem;
+    TryGetItem(itemType: ItemType): HeldItem | undefined;
     private Log;
     private GetOrCreateHeldItem;
     constructor(character: Character);

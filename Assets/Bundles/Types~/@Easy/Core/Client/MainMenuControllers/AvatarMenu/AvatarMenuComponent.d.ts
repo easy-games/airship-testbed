@@ -4,6 +4,8 @@ import { MainMenuPageType } from "../MainMenuPageName";
 export default class AvatarMenuComponent extends MainMenuPageComponent {
     private readonly generalHookupKey;
     private readonly tweenDuration;
+    private readonly highlightColor;
+    private readonly normalColor;
     private subNavBarBtns;
     private mainNavBtns?;
     private subNavBars?;
@@ -12,14 +14,21 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private activeSubIndex;
     itemButtonHolder?: Transform;
     itemButtonTemplate?: GameObject;
+    avatarRenderHolder?: GameObject;
+    categoryLabelTxt?: TextMeshProUGUI;
+    canvas?: Canvas;
     private currentSlot;
     private outfits?;
     private currentUserOutfit?;
     private currentUserOutfitIndex;
     private clientId;
+    avatarCenterRect?: RectTransform;
+    avatarRenderCenterRect?: RectTransform;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
     OpenPage(): void;
+    private RefreshAvatar;
+    private GetCenter;
     ClosePage(instant?: boolean): void;
     private SelectMainNav;
     private SelectSubNav;
@@ -43,4 +52,5 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private LoadCurrentOutfit;
     private Save;
     private Revert;
+    private SetButtonColor;
 }

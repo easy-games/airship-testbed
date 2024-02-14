@@ -1,6 +1,11 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
+import { Result } from "Shared/Types/Result";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -8,13 +13,14 @@ import { EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { FriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { Party } from "./SocketAPI";
-import { Result } from "Shared/Types/Result";
 
 @Controller({})
 export class MainMenuPartyController implements OnStart {
-	private party: Party | undefined;
+	public party: Party | undefined;
+	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
 	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 		"@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/PartyMember.prefab",
@@ -27,17 +33,42 @@ export class MainMenuPartyController implements OnStart {
 
 	OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			let oldParty = this.party;
 			this.party = data;
+			this.onPartyUpdated.Fire(data, oldParty);
 			this.UpdateParty();
 		});
 
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
-			InternalHttpManager.PostAsync(
-				AirshipUrl.GameCoordinator + "/parties/party/join",
-				EncodeJSON({
-					partyId: data.partyId,
-				}),
+			Dependency<FriendsController>().AddSocialNotification(
+				"party-invite:" + data.leader,
+				"Party Invite",
+				data.members[0].username,
+				(result) => {
+					if (result) {
+						const res = InternalHttpManager.PostAsync(
+							AirshipUrl.GameCoordinator + "/parties/party/join",
+							EncodeJSON({
+								partyId: data.partyId,
+							}),
+						);
+						if (res.success) {
+							Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+						} else {
+							Debug.LogError(res.error);
+						}
+					} else {
+						// We don't have an endpoint for declining party invite. just close the UI.
+						Dependency<FriendsController>().FireNotificationKey("party-invite:" + data.leader);
+					}
+				},
 			);
+			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
+			if (Game.context === CoreContext.GAME) {
+				Game.localPlayer.SendMessage(
+					ChatColor.Yellow(data.members[0].username) + ChatColor.Gray(" invited you to their party."),
+				);
+			}
 		});
 
 		this.Setup();
@@ -118,9 +149,12 @@ export class MainMenuPartyController implements OnStart {
 			if (alreadyAddedUids.includes(member.uid)) {
 				go = partyContent.transform.FindChild(member.uid)!.gameObject;
 			} else {
-				go = GameObjectUtil.InstantiateIn(this.partyMemberPrefab, partyContent.transform);
+				go = Object.Instantiate(this.partyMemberPrefab, partyContent.transform);
 				init = true;
 			}
+
+			const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
+			partyMemberComponent.SetUser(member, isLocalPartyLeader);
 
 			const refs = go.GetComponent<GameObjectReferences>();
 
@@ -131,48 +165,21 @@ export class MainMenuPartyController implements OnStart {
 				usernameText.text = member.username;
 			}
 
-			const kickButton = refs.GetValue("UI", "KickButton");
-
-			let showModTools = isLocalPartyLeader;
-			if (member.uid === Game.localPlayer.userId) {
-				showModTools = false;
-			}
-
-			if (showModTools) {
-				kickButton.SetActive(true);
-			} else {
-				kickButton.SetActive(false);
-			}
-
-			const usernameLayout = refs.GetValue("UI", "UsernameLayout") as HorizontalLayoutGroup;
-			LayoutRebuilder.ForceRebuildLayoutImmediate(usernameLayout.GetComponent<RectTransform>());
-
-			const leftLayout = refs.GetValue("UI", "LeftLayout") as HorizontalLayoutGroup;
-			LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
+			// const leftLayout = refs.GetValue("UI", "LeftLayout") as HorizontalLayoutGroup;
+			// LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
 
 			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
 			partyTitle.text = `(${this.party.members.size()}/8)`;
-
-			if (init) {
-				CanvasAPI.OnClickEvent(kickButton, () => {
-					InternalHttpManager.PostAsync(
-						AirshipUrl.GameCoordinator + "/parties/party/remove",
-						EncodeJSON({
-							userToRemove: member.uid,
-						}),
-					);
-				});
-
-				CanvasAPI.OnClickEvent(leaveButton, () => {
-					InternalHttpManager.PostAsync(
-						AirshipUrl.GameCoordinator + "/parties/party/remove",
-						EncodeJSON({
-							userToRemove: member.uid,
-						}),
-					);
-				});
-			}
 		}
+
+		CanvasAPI.OnClickEvent(leaveButton, () => {
+			InternalHttpManager.PostAsync(
+				AirshipUrl.GameCoordinator + "/parties/party/remove",
+				EncodeJSON({
+					userToRemove: Game.localPlayer.userId,
+				}),
+			);
+		});
 	}
 
 	/**

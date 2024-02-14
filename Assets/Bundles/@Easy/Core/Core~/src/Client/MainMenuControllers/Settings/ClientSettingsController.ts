@@ -1,4 +1,4 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Signal } from "Shared/Util/Signal";
 import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";

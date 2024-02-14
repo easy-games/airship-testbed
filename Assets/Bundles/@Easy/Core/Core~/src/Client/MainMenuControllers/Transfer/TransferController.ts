@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import inspect from "@easy-games/unity-inspect";
 import { GameServer } from "Shared/SocketIOMessages/Party";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";

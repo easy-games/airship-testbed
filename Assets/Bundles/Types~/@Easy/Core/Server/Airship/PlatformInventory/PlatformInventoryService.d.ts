@@ -1,5 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
-import { OnStart } from "../../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../../Shared/Flamework";
 import { ItemQueryParameters } from "../../../Shared/Airship/Types/Inputs/PlatformInventory";
 import { AccessoryInstance, EquippedProfilePicture, ItemInstance, Outfit, ProfilePictureInstance, Transaction } from "../../../Shared/Airship/Types/Outputs/PlatformInventory";
 import { Result } from "../../../Shared/Types/Result";

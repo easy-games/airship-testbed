@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 import { AllBundleItems, BundleData, BundleGroup, BundleGroupNames } from "../Util/ReferenceManagerResources";
 export declare class EffectsManager {
     static SpawnPrefabEffect(path: string, worldPosition: Vector3, worldRotation: Vector3, destroyInSeconds?: number): GameObject;

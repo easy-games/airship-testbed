@@ -16,7 +16,7 @@ Material:
   - EXPLICIT_MAPS
   - EXPLICIT_MAPS_ON
   - METAL_ON_ON
-  - NUM_LIGHTS_LIGHTS0
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_OFF
@@ -154,7 +154,7 @@ Material:
     - _RimPower: 1.5
     - _RoughOverride: 0.5
     - _SLIDER_OVERRIDE: 1
-    - _SaturationMod: 5
+    - _SaturationMod: 0.5
     - _ShadowIntensity: 0.5
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0

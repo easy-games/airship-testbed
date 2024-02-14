@@ -1,4 +1,4 @@
-import { Controller, OnStart } from "@easy-games/flamework-core";
+import { Controller, OnStart } from "Shared/Flamework";
 import { CoreRefs } from "Shared/CoreRefs";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";

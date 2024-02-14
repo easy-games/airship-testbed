@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 import Character from "../Character";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";

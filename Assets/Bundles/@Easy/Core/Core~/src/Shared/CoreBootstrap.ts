@@ -2,7 +2,7 @@
  * This is the entrypoint of Core.
  */
 
-import { Flamework } from "@easy-games/flamework-core";
+import { Flamework } from "Shared/Flamework";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { AudioManager } from "./Audio/AudioManager";
 import { Bootstrap } from "./Bootstrap/Bootstrap";

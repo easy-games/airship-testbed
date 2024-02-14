@@ -1,4 +1,4 @@
-import { OnStart } from "../../../node_modules/@easy-games/flamework-core";
+import { OnStart } from "../../Shared/Flamework";
 import { MainMenuController } from "./MainMenuController";
 export declare class MainMenuHomeController implements OnStart {
     private readonly mainMenuController;

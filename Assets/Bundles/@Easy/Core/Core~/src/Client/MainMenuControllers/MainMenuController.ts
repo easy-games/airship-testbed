@@ -1,7 +1,7 @@
-import { Controller, Dependency, OnStart } from "@easy-games/flamework-core";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
@@ -62,9 +62,17 @@ export class MainMenuController implements OnStart {
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 			CoreRefs.rootTransform,
 		).GetComponent<AvatarViewComponent>();
+
 		if (Game.context === CoreContext.GAME) {
+			print("HIDING AVATAR");
 			this.avatarView.HideAvatar();
 		}
+
+		const gameBG = this.refs.GetValue("UI", "GameBG");
+		const mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
+		const isMainMenu = Game.context === CoreContext.MAIN_MENU;
+		gameBG.SetActive(!isMainMenu);
+		mainMenuBG.SetActive(isMainMenu);
 
 		const closeButton = this.refs.GetValue("UI", "CloseButton");
 		if (Game.context === CoreContext.MAIN_MENU) {
@@ -73,13 +81,6 @@ export class MainMenuController implements OnStart {
 
 			closeButton.SetActive(false);
 		} else {
-			const bg = this.refs.GetValue("UI", "Background");
-
-			const bgImage = bg.GetComponent<Image>();
-			const color = bgImage.color;
-			color.a = 0.98;
-			bgImage.color = color;
-
 			CanvasAPI.OnClickEvent(closeButton, () => {
 				AppManager.Close();
 			});
@@ -140,6 +141,8 @@ export class MainMenuController implements OnStart {
 	public CloseFromGame(): void {
 		if (!this.open) return;
 		this.open = false;
+
+		print("HIDING AVATAR");
 		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();
 
@@ -165,7 +168,7 @@ export class MainMenuController implements OnStart {
 					value.Init(this, key);
 				}
 			}
-			
+
 			this.RouteToPage(MainMenuPageType.Home, true, true);
 		}
 
@@ -200,7 +203,11 @@ export class MainMenuController implements OnStart {
 			oldPage.ClosePage();
 		}
 
-		this.currentPage?.OpenPage();
+		if (this.currentPage) {
+			this.currentPage.OpenPage();
+		} else {
+			error("Trying to route to undefined page: " + pageType);
+		}
 
 		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);
 	}

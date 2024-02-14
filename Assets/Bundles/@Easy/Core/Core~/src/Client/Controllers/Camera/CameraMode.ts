@@ -5,7 +5,7 @@ import { CameraTransform } from "./CameraTransform";
  */
 export interface CameraMode {
 	/** Called when the camera mode starts. */
-	OnStart(camera: Camera): void;
+	OnStart(camera: Camera, rootTransform: Transform): void;
 
 	/** Called when the camera mode stops. */
 	OnStop(): void;

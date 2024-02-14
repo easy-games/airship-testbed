@@ -15,7 +15,7 @@ export declare class FlyCameraMode implements CameraMode {
     private mouse;
     private readonly keysDown;
     private readonly clientSettingsController;
-    OnStart(camera: Camera): void;
+    OnStart(camera: Camera, rootTransform: Transform): void;
     OnStop(): void;
     OnUpdate(dt: number): void;
     OnPostUpdate(): void;

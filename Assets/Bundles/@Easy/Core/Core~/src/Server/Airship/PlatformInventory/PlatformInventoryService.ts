@@ -1,4 +1,4 @@
-import { Service, OnStart } from "@easy-games/flamework-core";
+import { Service, OnStart } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
 import { ItemQueryParameters } from "Shared/Airship/Types/Inputs/PlatformInventory";
 import {

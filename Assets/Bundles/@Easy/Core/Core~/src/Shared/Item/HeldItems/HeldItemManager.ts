@@ -1,4 +1,4 @@
-﻿import { Dependency } from "@easy-games/flamework-core";
+﻿import { Dependency } from "Shared/Flamework";
 import Character from "Shared/Character/Character";
 import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import Inventory from "Shared/Inventory/Inventory";
@@ -40,6 +40,14 @@ export class HeldItemManager {
 		return this.character.id;
 	}
 
+	public GetCurrentHeldItem() {
+		return this.currentHeldItem;
+	}
+
+	public TryGetItem(itemType: ItemType) {
+		return this.heldItemMap.get(itemType);
+	}
+
 	private Log(message: string) {
 		return;
 		print("Entity " + this.character.id + " " + message);
@@ -75,6 +83,7 @@ export class HeldItemManager {
 
 	constructor(character: Character) {
 		this.character = character;
+		character.heldItems = this;
 		this.Log("Creating Held Items");
 		this.currentHeldItem = this.GetOrCreateHeldItem();
 
@@ -131,7 +140,6 @@ export class HeldItemManager {
 		// }
 		if (this.currentHeldItem === undefined) {
 			error("Trying to interact without any held item!");
-			return;
 		}
 		this.currentItemState = itemState;
 		this.currentHeldItem.SetLookVector(lookVector);

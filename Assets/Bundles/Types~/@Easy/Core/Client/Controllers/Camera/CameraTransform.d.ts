@@ -1,5 +1,3 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /**
  * Unique class for holding the position and rotation of the camera. Used by `CameraMode` classes.
  */

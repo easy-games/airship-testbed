@@ -1,8 +1,7 @@
-/// <reference types="@easy-games/types" />
-/// <reference types="@easy-games/types" />
 /// <reference types="@easy-games/compiler-types" />
 import { CharacterAnimator } from "./Animation/CharacterAnimator";
 import Inventory from "../Inventory/Inventory";
+import { HeldItemManager } from "../Item/HeldItems/HeldItemManager";
 import { Player } from "../Player/Player";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -24,10 +23,12 @@ export default class Character extends AirshipBehaviour {
     /** A bin that is cleaned when the entity despawns. */
     readonly bin: Bin;
     inventory: Inventory;
+    heldItems: HeldItemManager;
     onDeath: Signal<void>;
     onDespawn: Signal<void>;
     onStateChanged: Signal<[newState: CharacterState, oldState: CharacterState]>;
     onHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
+    private despawned;
     Awake(): void;
     Start(): void;
     Init(player: Player | undefined, id: number): void;
@@ -37,7 +38,12 @@ export default class Character extends AirshipBehaviour {
      * You can call it from the client only when using Client Authoratative characters.
      */
     Teleport(pos: Vector3, lookDirection?: Vector3): void;
-    OnDisable(): void;
+    /**
+     * Despawns this character.
+     *
+     * **SERVER ONLY METHOD**
+     */
+    Despawn(): void;
     IsDestroyed(): boolean;
     IsAlive(): boolean;
     IsDead(): boolean;
