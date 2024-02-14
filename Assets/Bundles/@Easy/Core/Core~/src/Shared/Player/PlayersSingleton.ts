@@ -125,7 +125,7 @@ export class PlayersSingleton implements OnStart {
 				const gameName = gameData?.name ?? "Unknown";
 
 				// Set default rich presence
-				SteamAPI.SetRichPresence(gameName, "");
+				SteamLuauAPI.SetRichPresence(gameName, "");
 			});
 
 			if (authController.IsAuthenticated()) {

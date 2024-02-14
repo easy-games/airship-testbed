@@ -6,8 +6,10 @@ export declare class MainMenuNavbarController implements OnStart {
     private readonly mainMenuController;
     private readonly userController;
     private readonly authController;
+    private refreshButton;
     constructor(mainMenuController: MainMenuController, userController: UserController, authController: AuthController);
     OnStart(): void;
+    DoRefresh(): void;
     Setup(): void;
     UpdateProfileSection(): void;
     private UpdateNavButton;

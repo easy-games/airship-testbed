@@ -868,7 +868,7 @@ interface NetworkObject extends MonoBehaviour {
 	OnStopClient(callback: () => void): EngineEventConnection;
 }
 
-interface SteamAPI {
-	SetRichPresence(gameName: string, status: string): boolean;
+interface SteamLuauAPI {
+	SetRichPresence: (gameName: string, status: string) => boolean;
 }
-declare const SteamAPI: SteamAPI;
+declare const SteamLuauAPI: SteamLuauAPI;
