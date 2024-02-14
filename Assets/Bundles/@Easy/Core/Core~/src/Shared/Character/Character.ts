@@ -9,6 +9,7 @@ import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import CharacterRig from "./CharacterRig";
 
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
@@ -23,11 +24,9 @@ export default class Character extends AirshipBehaviour {
 	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
 	public networkObject!: NetworkObject;
-	public rig!: GameObject;
-
-	@Header("Bones")
-	public headBone!: GameObject;
-	public chestBone!: GameObject;
+	public rigRoot!: GameObject;
+	public collider!: CharacterController;
+	@NonSerialized() public rig!: CharacterRig;
 
 	// State
 	@NonSerialized() public id!: number;
@@ -51,6 +50,7 @@ export default class Character extends AirshipBehaviour {
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.animator = new CharacterAnimator(this);
+		this.rig = this.rigRoot.GetAirshipComponent<CharacterRig>()!;
 	}
 
 	public Start(): void {
