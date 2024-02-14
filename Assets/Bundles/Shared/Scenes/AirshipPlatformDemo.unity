@@ -540,13 +540,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131862465}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.932, y: 1.45, z: -0.08}
+  m_LocalRotation: {x: -0, y: 0.6058778, z: -0, w: 0.79555774}
+  m_LocalPosition: {x: -2.15, y: 1.45, z: 4.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 74.584, z: 0}
 --- !u!1 &289244184
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,6 +888,75 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &793058939
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.3794813
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4.3794813
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4.3794813
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.92309266
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.38457775
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 314.765
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8265472577892246911, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_Name
+      value: Character_-_ALPHA_UVdB (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
 --- !u!1 &890020360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1969,7 +2038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0.3254902, b: 0.9411765, a: 1}
+  - materialColor: {r: 0.40903667, g: 0.8018868, b: 0.2912513, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -2299,3 +2368,4 @@ SceneRoots:
   - {fileID: 1827094131}
   - {fileID: 1617099214}
   - {fileID: 944312509}
+  - {fileID: 793058939}
