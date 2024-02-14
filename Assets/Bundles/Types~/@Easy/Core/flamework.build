@@ -20,6 +20,7 @@
 		"@Easy/Core:Shared/Util/PhysicsUtil@PhysicsUtil": "$:Util/PhysicsUtil@PhysicsUtil",
 		"@Easy/Core:Client/Controllers/Viewmodel/ViewmodelController@ViewmodelController": "$:Controllers/Viewmodel/ViewmodelController@ViewmodelController",
 		"@Easy/Core:Shared/Audio/AudioClipBundle@AudioClipBundle": "$:Audio/AudioClipBundle@AudioClipBundle",
+		"@Easy/Core:Server/Airship/Game/GameInfoService@GameInfoService": "$:Airship/Game/GameInfoService@GameInfoService",
 		"@Easy/Core:Shared/Util/ColorUtil@ColorUtil": "$:Util/ColorUtil@ColorUtil",
 		"@Easy/Core:Shared/Util/Theme@Theme": "$:Util/Theme@Theme",
 		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
@@ -149,6 +150,7 @@
 		"@Easy/Core:Client/Airship/Transfer/TransferController@TransferController": "$:Airship/Transfer/TransferController@TransferController",
 		"@Easy/Core:Client/Airship/User/UserController@UserController": "$:Airship/User/UserController@UserController",
 		"@Easy/Core:Client/Airship/Friends/FriendsController@FriendsController": "$:Airship/Friends/FriendsController@FriendsController",
+		"@Easy/Core:Client/Airship/RichPresence/RichPresence@RichPresence": "$:Airship/RichPresence/RichPresence@RichPresence",
 		"@Easy/Core:Client/Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent": "$:Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent",
 		"@Easy/Core:Client/Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController": "$:Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
 		"@Easy/Core:Client/Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController": "$:Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController",
@@ -168,6 +170,7 @@
 		"@Easy/Core:Shared/MainMenu/Components/NavbarControlButton@NavbarControlButton": "$:MainMenu/Components/NavbarControlButton@NavbarControlButton",
 		"@Easy/Core:Shared/MainMenu/Components/MainMenuNavButton@MainMenuNavButton": "$:MainMenu/Components/MainMenuNavButton@MainMenuNavButton",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
+		"@Easy/Core:Client/MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController": "$:MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
 		"@Easy/Core:Server/Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand": "$:Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/BotCommand@BotCommand": "$:Services/Chat/Commands/BotCommand@BotCommand",
@@ -248,6 +251,17 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Server/Airship/Game/GameInfoService.lua",
+			"internalId": "$:Airship/Game/GameInfoService@GameInfoService",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
 				}
 			]
 		},
@@ -823,6 +837,17 @@
 		{
 			"filePath": "../Client/MainMenuControllers/MainMenuNavbarController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/RichPresence/MainMenuRichPresenceController.lua",
+			"internalId": "$:MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
