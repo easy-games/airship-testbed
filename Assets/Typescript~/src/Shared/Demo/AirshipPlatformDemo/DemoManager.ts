@@ -25,6 +25,7 @@ export default class DemoManager extends AirshipBehaviour {
 			});
 		}
 		if (RunUtil.IsClient()) {
+			print("RUNNING AS CLIENT");
 			// Optional: use locked camera mode for first person support
 			// Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
 
@@ -32,11 +33,13 @@ export default class DemoManager extends AirshipBehaviour {
 
 			// Display local player deaths
 			Game.localPlayer.ObserveCharacter((character) => {
+				print("CHARACTER FOUND");
 				if (!character) return;
 
 				const bin = new Bin();
 				bin.Add(
 					character?.onDeath.Connect(() => {
+						print("DIED");
 						this.deathCount++;
 						SteamRichPresence.SetStatus(`Deaths: ${this.deathCount}`);
 					}),
