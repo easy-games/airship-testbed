@@ -869,7 +869,7 @@ interface NetworkObject extends MonoBehaviour {
 }
 
 interface SteamLuauAPIConstructor {
-	SetRichPresence(gameName: string, status: string): boolean;
-	SetRichPresenceTag(tag: string): boolean;
+	SetGameRichPresence(gameName: string, status: string): boolean;
+	SetRichPresence(key: string, tag: string): boolean;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
