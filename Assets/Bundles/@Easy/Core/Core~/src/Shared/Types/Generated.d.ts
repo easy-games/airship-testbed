@@ -12057,6 +12057,15 @@ interface ServerConsole extends MonoBehaviour {
 
 }
     
+interface RawImage extends MaskableGraphic {
+    mainTexture: Texture;
+    texture: Texture;
+    uvRect: Rect;
+
+
+    SetNativeSize(): void;
+}
+    
 interface Application {
 
 

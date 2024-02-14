@@ -1,6 +1,7 @@
 import {} from "Shared/Flamework";
 import { Mouse } from "Shared/UserInput";
 import { Bin } from "../Util/Bin";
+import { CanvasAPI } from "../Util/CanvasAPI";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	public humanEntityGo?: GameObject;
@@ -21,6 +22,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraTransitionDuration = 1;
 	public screenspaceDistance = 3;
 	public dragging = false;
+	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
 	public accessoryBuilder?: AccessoryBuilder;
 	public anim?: CharacterAnimationHelper;
@@ -29,6 +31,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
 	private initialized = false;
+
+	private renderTexture?: RenderTexture;
+
+	private lastScreenRefreshTime = 0;
+	private screenRefreshCooldown = 1;
+	private screenIsDirty = false;
 
 	public override Start(): void {
 		print("AVATAR VIEW START");
@@ -50,6 +58,40 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.lastMousePos = pos;
 		});
 		this.initialized = true;
+
+		this.CreateRenderTexture(Screen.width, Screen.height);
+		CanvasAPI.OnScreenSizeEvent((width, height) => {
+			this.lastScreenRefreshTime = Time.time;
+			this.screenIsDirty = true;
+		});
+	}
+
+	override FixedUpdate(dt: number): void {
+		if (this.screenIsDirty && Time.time - this.lastScreenRefreshTime > this.screenRefreshCooldown) {
+			this.screenIsDirty = false;
+			this.CreateRenderTexture(Screen.width, Screen.height);
+		}
+	}
+
+	private CreateRenderTexture(width: number, height: number) {
+		if (!this.avatarCamera) {
+			return;
+		}
+		print("Creating new Avatar Render Texture: " + width + ", " + height);
+		this.renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
+		this.avatarCamera.targetTexture = this.renderTexture;
+		this.avatarCamera.enabled = true;
+		for (let i = 0; i < this.onNewRenderTexture.size(); i++) {
+			this.onNewRenderTexture[i](this.renderTexture);
+		}
+	}
+
+	private onNewRenderTexture: ((texture: RenderTexture) => void)[] = [];
+	public OnNewRenderTexture(callback: (texture: RenderTexture) => void) {
+		this.onNewRenderTexture.push(callback);
+		if (this.renderTexture) {
+			callback(this.renderTexture);
+		}
 	}
 
 	public ShowAvatar() {
@@ -86,8 +128,10 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.testTransform.position = worldspace;
 		}
 		let diff = this.cameraRigTransform.position.sub(worldspace);
-		this.cameraRigTransform.position = this.cameraRigTransform.position.add(new Vector3(diff.x, 0, 0));
-		this.CameraFocusTransform(this.targetTransform, false);
+		this.cameraRigTransform.position = this.cameraRigTransform.position
+			.add(new Vector3(diff.x, diff.y, 0))
+			.add(this.alignmentOffsetWorldpsace);
+		this.CameraFocusTransform(this.targetTransform, true);
 	}
 
 	public CameraFocusSlot(slotType: AccessorySlot) {

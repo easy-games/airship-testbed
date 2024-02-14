@@ -40,7 +40,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	//public buttons?: Transform[];
 	public avatarCenterRect?: RectTransform;
-	public avatarRenderCenterRect?: RectTransform;
 
 	private Log(message: string) {
 		//print("Avatar Editor: " + message);
@@ -56,7 +55,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		let i = 0;
 
-		CanvasAPI.OnScreenSizeEvent((width, height) => {
+		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
+			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
+			if (image) {
+				image.texture = texture;
+			}
 			this.RefreshAvatar();
 		});
 
@@ -180,14 +183,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private RefreshAvatar() {
 		let avatarView = this.mainMenu?.avatarView;
 		if (avatarView) {
-			if (this.avatarCenterRect && this.avatarRenderCenterRect) {
-				//let centerPos = new Vector2(this.avatarRenderCenterRect.anchorMin.x*Screen.width, avatarRenderCenterRect.anchorMin.y * Screen.height);
-				//let avatarPos =
-				//Vector2 screenPosition =
-
-				let diff = this.avatarCenterRect.position.sub(this.avatarRenderCenterRect.position);
-				//avatarView.AlignCamera(this.avatarCenterRect.position.add(diff));
-				avatarView.AlignCamera(this.avatarCenterRect.position.add(diff));
+			if (this.avatarCenterRect) {
+				avatarView.AlignCamera(this.avatarCenterRect.position);
 			}
 		} else {
 			error("no 3D avatar to render in avatar editor");
