@@ -34,6 +34,7 @@ export default class SortComponent extends AirshipBehaviour {
 				gameComponent.SetDragRedirectTarget(this.pageScrollRect);
 			}
 		}
+		Bridge.UpdateLayout(this.content, false);
 	}
 
 	public SetTitle(title: string) {

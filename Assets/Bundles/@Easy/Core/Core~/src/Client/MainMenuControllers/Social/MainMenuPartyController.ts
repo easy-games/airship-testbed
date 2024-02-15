@@ -2,6 +2,7 @@ import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Result } from "Shared/Types/Result";
@@ -18,7 +19,8 @@ import { Party } from "./SocketAPI";
 
 @Controller({})
 export class MainMenuPartyController implements OnStart {
-	private party: Party | undefined;
+	public party: Party | undefined;
+	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
 	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
 		"@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/PartyMember.prefab",
@@ -31,7 +33,9 @@ export class MainMenuPartyController implements OnStart {
 
 	OnStart(): void {
 		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+			let oldParty = this.party;
 			this.party = data;
+			this.onPartyUpdated.Fire(data, oldParty);
 			this.UpdateParty();
 		});
 

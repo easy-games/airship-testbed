@@ -533,8 +533,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 550.74713, y: 0}
-  m_SizeDelta: {x: 1101.4943, y: 0}
+  m_AnchoredPosition: {x: 960, y: 0}
+  m_SizeDelta: {x: 1920, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8364502986475131111
 MonoBehaviour:
@@ -3974,6 +3974,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3985,6 +3987,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3996,6 +4000,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -4007,6 +4013,8 @@ MonoBehaviour:
       items:
         type: 
         objectType: 
+        serializedItems: []
+        objectRefs: []
       decorators: []
       nullable: 0
       serializedValue: 

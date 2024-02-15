@@ -400,6 +400,7 @@ interface CanvasUIEventInterceptor extends Component {
 	OnToggleValueChangeEvent(callback: (instanceId: number, value: boolean) => void): EngineEventConnection;
 	OnBeginDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnScreenSizeChangeEvent(callback: (width: number, height: number) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dragged object.
@@ -526,6 +527,15 @@ interface MeshProcessorConstructor {
 }
 declare const MeshProcessor: MeshProcessorConstructor;
 
+declare const enum CharacterState {
+	Idle = 0,
+	Running = 1,
+	Jumping = 2,
+	Sprinting = 3,
+	Sliding = 4,
+	Crouching = 5,
+}
+
 interface CharacterAnimationHelper extends Component {
 	viewmodelAnimancer: AnimancerComponent;
 	worldmodelAnimancer: AnimancerComponent;
@@ -533,6 +543,7 @@ interface CharacterAnimationHelper extends Component {
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
+	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
 }
 
 interface PoolManager {
@@ -856,3 +867,11 @@ interface NetworkObject extends MonoBehaviour {
 	OnOwnershipClient(callback: (conn: NetworkConnection) => void): EngineEventConnection;
 	OnStopClient(callback: () => void): EngineEventConnection;
 }
+
+interface SteamLuauAPIConstructor {
+	SetGameRichPresence(gameName: string, status: string): boolean;
+	SetRichPresence(key: string, tag: string): boolean;
+
+	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
+}
+declare const SteamLuauAPI: SteamLuauAPIConstructor;

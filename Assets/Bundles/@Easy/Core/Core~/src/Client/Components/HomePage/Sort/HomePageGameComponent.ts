@@ -9,7 +9,13 @@ import { GameDto } from "../API/GamesAPI";
 
 export default class HomePageGameComponent extends AirshipBehaviour {
 	public titleText!: TMP_Text;
+
+	public playsWrapper!: GameObject;
+	public playsText!: TMP_Text;
+
+	public playerCountWrapper!: GameObject;
 	public playerCountText!: TMP_Text;
+
 	public buttonGo!: GameObject;
 	public orgImage!: RemoteImage;
 	public authorText!: TMP_Text;
@@ -33,10 +39,14 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	public Init(gameDto: GameDto) {
 		this.titleText.text = gameDto.name;
-		if (gameDto.liveStats?.playerCount !== undefined) {
+		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
 			this.playerCountText.text = gameDto.liveStats.playerCount + "";
+			this.playerCountWrapper.SetActive(true);
+			this.playsWrapper.SetActive(false);
 		} else {
-			this.playerCountText.text = "???";
+			this.playsText.text = gameDto.plays + "";
+			this.playsWrapper.SetActive(true);
+			this.playerCountWrapper.SetActive(false);
 		}
 
 		{

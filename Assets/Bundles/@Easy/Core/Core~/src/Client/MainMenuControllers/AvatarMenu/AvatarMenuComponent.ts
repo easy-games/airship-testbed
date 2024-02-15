@@ -30,6 +30,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public itemButtonTemplate?: GameObject;
 	public avatarRenderHolder?: GameObject;
 	public categoryLabelTxt?: TextMeshProUGUI;
+	public canvas?: Canvas;
 
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
 	private outfits?: Outfit[];
@@ -38,9 +39,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private clientId = -1;
 
 	//public buttons?: Transform[];
+	public avatarCenterRect?: RectTransform;
 
 	private Log(message: string) {
-		print("Avatar Editor: " + message);
+		//print("Avatar Editor: " + message);
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
@@ -52,6 +54,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.outfitBtns = this.refs?.GetAllValues<RectTransform>("OutfitRects");
 
 		let i = 0;
+
+		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
+			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
+			if (image) {
+				image.texture = texture;
+			}
+			this.RefreshAvatar();
+		});
 
 		//Hookup Nav buttons
 		if (!this.mainNavBtns) {
@@ -151,6 +161,24 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.InitializeAutherizedAccessories();
 	}
 
+	private RefreshAvatar() {
+		let avatarView = this.mainMenu?.avatarView;
+		if (avatarView) {
+			if (this.avatarCenterRect) {
+				avatarView.AlignCamera(this.avatarCenterRect.position);
+			}
+		} else {
+			error("no 3D avatar to render in avatar editor");
+		}
+	}
+
+	private GetCenter(rect: RectTransform) {
+		const screensize = this.canvas?.renderingDisplaySize;
+		if (screensize) {
+			return new Vector2(rect.anchorMin.x * screensize.x, rect.anchorMin.y * screensize.y);
+		}
+	}
+
 	override OpenPage(): void {
 		super.OpenPage();
 		this.Log("Open AVATAR");
@@ -160,16 +188,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		} else {
 			error("No avatar render veiew in avatar editor menu page");
 		}
-		let avatarView = this.mainMenu?.avatarView;
-		if (avatarView) {
-			avatarView.CameraFocusTransform(avatarView.cameraWaypointBirdsEye, true);
-		} else {
-			error("no 3D avatar to render in avatar editor");
-		}
+		this.RefreshAvatar();
+		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
 		task.spawn(() => {
 			this.LoadAllOutfits();
 			this.SelectMainNav(0);
+			this.SelectSubNav(0);
 		});
 	}
 

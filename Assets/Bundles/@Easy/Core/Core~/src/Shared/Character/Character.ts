@@ -23,11 +23,9 @@ export default class Character extends AirshipBehaviour {
 	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
 	public networkObject!: NetworkObject;
-	public rig!: GameObject;
-
-	@Header("Bones")
-	public headBone!: GameObject;
-	public chestBone!: GameObject;
+	public rigRoot!: GameObject;
+	public collider!: CharacterController;
+	@NonSerialized() public rig!: CharacterRig;
 
 	// State
 	@NonSerialized() public id!: number;
@@ -51,6 +49,7 @@ export default class Character extends AirshipBehaviour {
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.animator = new CharacterAnimator(this);
+		this.rig = this.rigRoot.GetComponent<CharacterRig>();
 	}
 
 	public Start(): void {

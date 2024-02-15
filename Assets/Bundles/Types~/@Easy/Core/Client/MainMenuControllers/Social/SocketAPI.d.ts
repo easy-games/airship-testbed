@@ -50,8 +50,8 @@ export type FriendStatus = {
     status: "offline" | "online" | "in_game";
     userId: string;
     username: string;
-    serverId: string;
-    gameId: string;
+    serverId: string | undefined;
+    gameId: string | undefined;
     metadata?: {
         statusText: string;
         customGameTitle?: string;

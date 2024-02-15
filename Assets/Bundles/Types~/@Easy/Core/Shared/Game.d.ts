@@ -1,4 +1,5 @@
 import { CoreContext } from "./CoreClientContext";
+import { GameData } from "./GameData";
 import { Player } from "./Player/Player";
 import { Signal } from "./Util/Signal";
 export declare class Game {
@@ -29,4 +30,7 @@ export declare class Game {
      */
     static organizationId: string;
     static startingScene: string;
+    static gameData: GameData | undefined;
+    /** Returns game data if already fetched. Otherwise tries to fetch game data based on gameId */
+    static FetchGameData(): GameData | undefined;
 }

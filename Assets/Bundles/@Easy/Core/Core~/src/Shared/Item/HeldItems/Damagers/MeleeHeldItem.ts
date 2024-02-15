@@ -48,9 +48,7 @@ export class MeleeHeldItem extends HeldItem {
 				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
 				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
-					this.currentUseVFX.transform.SetParent(
-						Dependency<ViewmodelController>().boneTransforms.spineMiddle,
-					);
+					this.currentUseVFX.transform.SetParent(Dependency<ViewmodelController>().rig.spineChest);
 					this.currentUseVFX.transform.localRotation = Quaternion.identity;
 					this.currentUseVFX.transform.localPosition = Vector3.zero;
 				}
@@ -226,7 +224,7 @@ export class MeleeHeldItem extends HeldItem {
 		const lookVec = this.lookVector;
 		box = box.add(new Vector3(0, 0, 0.5));
 		let halfExtents = new Vector3(box.x / 2, box.y / 2, box.z / 2);
-		const headPosition = this.character.headBone.transform.position;
+		const headPosition = this.character.rig.head.position;
 		let colliderWorldPos = headPosition.add(lookVec.mul(-0.5 + box.z / 2));
 
 		let rotation = Quaternion.LookRotation(lookVec);
@@ -271,7 +269,7 @@ export class MeleeHeldItem extends HeldItem {
 
 			//Raycast to the target to find a more concrete collisions
 			let rayStart = headPosition;
-			let rayEnd = targetCharacter.chestBone.transform.position;
+			let rayEnd = targetCharacter.rig.spineChest.position;
 			let hitDirection = rayEnd.sub(rayStart).normalized;
 
 			// Raycast against the map

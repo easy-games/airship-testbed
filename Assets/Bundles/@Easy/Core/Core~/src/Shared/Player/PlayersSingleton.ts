@@ -13,6 +13,7 @@ import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { AssetCache } from "../AssetCache/AssetCache";
+import { SteamworksSingleton } from "../Privileged/Steam/SteamworksSingleton";
 import { Player, PlayerDto } from "./Player";
 
 @Controller({ loadOrder: -1000 })
@@ -119,6 +120,12 @@ export class PlayersSingleton implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
+
+			task.spawn(() => {
+				Game.FetchGameData();
+				Dependency<SteamworksSingleton>().UpdateGameRichPresence();
+			});
+
 			if (authController.IsAuthenticated()) {
 				friendsController.SendStatusUpdate();
 			} else {

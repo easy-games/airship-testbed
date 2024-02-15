@@ -16,13 +16,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     itemButtonTemplate?: GameObject;
     avatarRenderHolder?: GameObject;
     categoryLabelTxt?: TextMeshProUGUI;
+    canvas?: Canvas;
     private currentSlot;
     private outfits?;
     private currentUserOutfit?;
     private currentUserOutfitIndex;
     private clientId;
+    avatarCenterRect?: RectTransform;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
+    private RefreshAvatar;
+    private GetCenter;
     OpenPage(): void;
     ClosePage(instant?: boolean): void;
     private SelectMainNav;

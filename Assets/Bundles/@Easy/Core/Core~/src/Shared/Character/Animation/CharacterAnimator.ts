@@ -536,7 +536,7 @@ export class CharacterAnimator {
 		if (deathEffect) {
 			this.deathVfx = EffectsManager.SpawnGameObjectAtPosition(
 				deathEffect,
-				this.character.headBone.transform.position,
+				this.character.rig.head.position,
 				undefined,
 			);
 			// if (!inVoid) {

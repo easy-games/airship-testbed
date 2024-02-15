@@ -2,7 +2,9 @@
 export default class AvatarViewComponent extends AirshipBehaviour {
     humanEntityGo?: GameObject;
     avatarHolder?: Transform;
-    cameraTransform?: Transform;
+    cameraRigTransform?: Transform;
+    avatarCamera?: Camera;
+    testTransform?: Transform;
     cameraWaypointDefault?: Transform;
     cameraWaypointHead?: Transform;
     cameraWaypointFeet?: Transform;
@@ -12,16 +14,28 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     cameraWaypointBirdsEye?: Transform;
     dragSpeedMod: number;
     cameraTransitionDuration: number;
+    screenspaceDistance: number;
     dragging: boolean;
+    alignmentOffsetWorldpsace: Vector3;
     accessoryBuilder?: AccessoryBuilder;
+    anim?: CharacterAnimationHelper;
     private targetTransform?;
     private mouse?;
     private lastMousePos;
     private initialized;
+    private renderTexture?;
+    private lastScreenRefreshTime;
+    private screenRefreshCooldown;
+    private screenIsDirty;
     Start(): void;
+    FixedUpdate(dt: number): void;
+    private CreateRenderTexture;
+    private onNewRenderTexture;
+    OnNewRenderTexture(callback: (texture: RenderTexture) => void): void;
     ShowAvatar(): void;
     HideAvatar(): void;
     ResetAvatar(): void;
+    AlignCamera(screenPos: Vector3): void;
     CameraFocusSlot(slotType: AccessorySlot): void;
     CameraFocusTransform(transform?: Transform, instant?: boolean): void;
 }

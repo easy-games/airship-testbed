@@ -4,9 +4,7 @@ export declare class ViewmodelController implements OnStart {
     readonly viewmodelTransform: Transform;
     readonly animancer: AnimancerComponent;
     readonly accessoryBuilder: AccessoryBuilder;
-    readonly boneTransforms: {
-        spineMiddle: Transform;
-    };
+    readonly rig: CharacterRig;
     constructor();
     OnStart(): void;
 }

@@ -8,6 +8,7 @@ export declare class Theme {
     static gray: Color;
     static aqua: Color;
     static pink: Color;
+    static primary: Color;
     static teamColor: {
         Green: Color;
         Red: Color;

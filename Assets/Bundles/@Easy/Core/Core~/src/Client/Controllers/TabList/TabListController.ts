@@ -1,6 +1,6 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
@@ -209,19 +209,6 @@ export class TabListController implements OnStart {
 
 		this.shown = true;
 		this.tablistCanvas.enabled = true;
-
-		let mouseUnlocked = false;
-		this.showBin.Add(() => {
-			this.mouse.rightDown.Connect(() => {
-				if (!mouseUnlocked) {
-					mouseUnlocked = true;
-					const mouseLockId = this.mouse.AddUnlocker();
-					this.showBin.Add(() => {
-						this.mouse.RemoveUnlocker(mouseLockId);
-					});
-				}
-			});
-		});
 	}
 
 	public Hide(force = false): void {
