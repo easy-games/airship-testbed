@@ -13,6 +13,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     cameraWaypointCenterHero?: Transform;
     cameraWaypointBirdsEye?: Transform;
     dragSpeedMod: number;
+    freeSpinDrag: number;
     cameraTransitionDuration: number;
     screenspaceDistance: number;
     dragging: boolean;
@@ -23,11 +24,15 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     private mouse?;
     private lastMousePos;
     private initialized;
+    private spinVel;
     private renderTexture?;
     private lastScreenRefreshTime;
     private screenRefreshCooldown;
-    private screenIsDirty;
+    private screenSizeIsDirty;
+    private bin;
     Start(): void;
+    OnEnable(): void;
+    OnDisable(): void;
     FixedUpdate(dt: number): void;
     private CreateRenderTexture;
     private onNewRenderTexture;

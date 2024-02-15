@@ -191,10 +191,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.RefreshAvatar();
 		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
+		this.SelectMainNav(0);
+		this.SelectSubNav(0);
+
 		task.spawn(() => {
 			this.LoadAllOutfits();
-			this.SelectMainNav(0);
-			this.SelectSubNav(0);
 		});
 	}
 
@@ -565,7 +566,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
-		//Select the first outfit
+		//Select the first outfit if no outfit was found
 		this.SelectOutfit(0);
 	}
 
