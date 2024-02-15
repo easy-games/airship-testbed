@@ -710,6 +710,92 @@ MonoBehaviour:
       serializedValue: '{"x":0.30000001192092898,"y":0.6000000238418579,"z":0.0}'
       serializedObject: {fileID: 0}
       modified: 1
+    - name: freeSpinDrag
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 3
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: spinBigRequiredTime
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Spin Big"'
+      nullable: 0
+      serializedValue: 0.5
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: spinBigRequiredSpeed
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 13
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: spinAnimLoop
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7400000, guid: 8d32939887866fc46854a31b3daecbb4, type: 2}
+      modified: 1
+    - name: spinAnimStop
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7400000, guid: 2b6f045a3fa0d0543a92d649dffca74f, type: 2}
+      modified: 1
+    - name: idleAnim
+      type: object
+      objectType: AnimationClip
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Spin Big"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
+      modified: 1
 --- !u!1 &3851732383462049854
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,7 +1008,6 @@ MonoBehaviour:
   intensity: 0.25
   range: 30
   castShadows: 1
-  highQualityLight: 1
 --- !u!1 &6142434986300703227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,7 +1498,6 @@ MonoBehaviour:
   intensity: 1
   range: 16.3
   castShadows: 1
-  highQualityLight: 1
 --- !u!1001 &1727726523347655367
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14208,4 +14208,5 @@ interface AirshipPlatformUtilConstructor {
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
+    
 

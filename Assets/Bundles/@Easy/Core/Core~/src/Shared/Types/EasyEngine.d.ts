@@ -544,7 +544,27 @@ interface CharacterAnimationHelper extends Component {
 	SetRootMovementLayer(itemInHand: boolean): void;
 	ClearStatesOnNonRootLayers(): void;
 	SetState(newState: CharacterState, force = false, noRootLayerFade = false);
+	PlayRoot(clip: AnimationClip, options: AnimationClipOptions): AnimancerState | undefined;
+	PlayRootOneShot(clip: AnimationClip): AnimancerState | undefined;
+	PlayOneShot(clip: AnimationClip, layer: number): AnimancerState | undefined;
+	Play(clip: AnimationClip, layerIndex: number, options: AnimationClipOptions): AnimancerState | undefined;
+	GetPlayingState(layerIndex: number): AnimancerState | undefined;
+	SetVelocity(vel: Vector3);
 }
+
+interface AnimationClipOptions {
+	fadeDuration: number;
+	fadeMode: FadeMode;
+	autoFadeOut: boolean;
+	playSpeed: number;
+	fadeOutToClip?: AnimationClip;
+}
+
+interface AnimationClipOptionsConstructor {
+	new (): AnimationClipOptions;
+}
+
+declare const AnimationClipOptions: AnimationClipOptionsConstructor;
 
 interface PoolManager {
 	PreLoadPool(prefab: Object, size: number): void;

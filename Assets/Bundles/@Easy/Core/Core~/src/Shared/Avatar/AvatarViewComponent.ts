@@ -29,6 +29,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public accessoryBuilder?: AccessoryBuilder;
 	public anim?: CharacterAnimationHelper;
 
+	@Header("Spin Big")
+	public idleAnim!: AnimationClip;
+	public spinAnimLoop!: AnimationClip;
+	public spinAnimStop!: AnimationClip;
+	public spinBigRequiredTime = 3;
+	public spinBigRequiredSpeed = 10;
+
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
@@ -40,6 +47,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private lastScreenRefreshTime = 0;
 	private screenRefreshCooldown = 0.5;
 	private screenSizeIsDirty = false;
+	private spinBigStartTime = 0;
+	private spinningBig = false;
+	private spinAnimationTriggered = false;
 
 	private bin = new Bin();
 
@@ -61,6 +71,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				let vel = diff.x * -this.dragSpeedMod;
 				this.avatarHolder?.Rotate(0, vel, 0);
 				this.spinVel = vel;
+				this.UpdateSpinAnimation();
 			}
 			this.lastMousePos = pos;
 		});
@@ -76,16 +87,45 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public OnEnable(): void {
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
-				if (!this.dragging && this.spinVel > 0) {
-					print("spinVel: " + this.spinVel);
-				}
+				//FREE SPINNING
 				if (!this.dragging && math.abs(this.spinVel) > 0.01) {
 					this.spinVel = this.spinVel * (1 - dt * this.freeSpinDrag);
 					// this.spinVel -= (this.spinVel / this.freeSpinDrag) * dt;
 					this.avatarHolder?.Rotate(0, this.spinVel, 0);
+					this.UpdateSpinAnimation();
 				}
 			}),
 		);
+	}
+
+	private UpdateSpinAnimation() {
+		//print("spinVel: " + this.spinVel);
+		const speed = math.abs(this.spinVel);
+		if (this.spinningBig) {
+			if (speed < this.spinBigRequiredSpeed) {
+				//Stop spinning big
+				this.spinningBig = false;
+				this.spinBigStartTime = 0;
+			} else if (!this.spinAnimationTriggered) {
+				if (Time.time - this.spinBigStartTime > this.spinBigRequiredTime) {
+					//Play the spin animation
+					this.spinAnimationTriggered = true;
+					this.anim?.PlayOneShot(this.spinAnimLoop, 0);
+				}
+			}
+		} else {
+			if (speed > this.spinBigRequiredSpeed) {
+				//Start spinning big
+				this.spinningBig = true;
+				this.spinBigStartTime = Time.time;
+			} else if (this.spinAnimationTriggered) {
+				//Stop the spin animation
+				this.spinAnimationTriggered = false;
+				let options = new AnimationClipOptions();
+				options.fadeOutToClip = this.idleAnim;
+				this.anim?.Play(this.spinAnimStop, 0, options);
+			}
+		}
 	}
 
 	public OnDisable(): void {

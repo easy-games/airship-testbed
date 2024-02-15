@@ -232,7 +232,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
-		//Show nave bar for this category
+		//Show nav bar for this category
 		/*for (i = 0; i < this.subNavBars.Length; i++) {
 			const active = i === index;
 			const nav = this.subNavBars.GetValue(i);
