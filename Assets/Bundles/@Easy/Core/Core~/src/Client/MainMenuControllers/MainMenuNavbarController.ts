@@ -134,6 +134,13 @@ export class MainMenuNavbarController implements OnStart {
 		this.userController.onLocalUserUpdated.Connect((user) => {
 			this.UpdateProfileSection();
 		});
+
+		task.spawn(() => {
+			const gameData = Game.WaitForGameData();
+			// print("child: " + runningGameButton.transform.GetChild(2).gameObject.name);
+			const text = runningGameButton.transform.GetChild(2).GetComponent<TMP_Text>();
+			text.text = gameData.name;
+		});
 	}
 
 	public UpdateProfileSection(): void {

@@ -1,7 +1,5 @@
-import { GameInfoSingleton } from "./Airship/Game/GameInfoSingleton";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
-import { Dependency } from "./Flamework";
 import { GameData } from "./GameData";
 import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
@@ -53,13 +51,9 @@ export class Game {
 	public static startingScene = SceneManager.GetActiveScene().name;
 
 	public static gameData: GameData | undefined;
-
-	/** Returns game data if already fetched. Otherwise tries to fetch game data based on gameId */
-	public static FetchGameData() {
-		if (Game.gameData) return Game.gameData;
-
-		const gameData = Dependency<GameInfoSingleton>().GetGameData(this.gameId);
-		if (gameData) Game.gameData = gameData;
-		return gameData;
+	public static onGameDataLoaded = new Signal<GameData>();
+	public static WaitForGameData(): GameData {
+		if (this.gameData) return this.gameData;
+		return this.onGameDataLoaded.Wait();
 	}
 }

@@ -35,6 +35,11 @@ export class SteamworksSingleton implements OnStart {
 				),
 			);
 		});
+
+		task.spawn(() => {
+			Game.WaitForGameData();
+			this.UpdateGameRichPresence();
+		});
 	}
 
 	public UpdateGameRichPresence() {
