@@ -23,7 +23,6 @@
 		"@Easy/Core:Shared/Airship/Game/GameInfoSingleton@GameInfoSingleton": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
 		"@Easy/Core:Shared/Util/ColorUtil@ColorUtil": "$:Util/ColorUtil@ColorUtil",
 		"@Easy/Core:Shared/Util/Theme@Theme": "$:Util/Theme@Theme",
-		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
 		"@Easy/Core:Shared/Util/CanvasAPI@CanvasAPI": "$:Util/CanvasAPI@CanvasAPI",
 		"@Easy/Core:Shared/UI/CoreUI@CoreUI": "$:UI/CoreUI@CoreUI",
 		"@Easy/Core:Shared/Util/Bin@Bin": "$:Util/Bin@Bin",
@@ -45,6 +44,7 @@
 		"@Easy/Core:Shared/UserInput/Drivers/PreferredDriver@PreferredDriver": "$:UserInput/Drivers/PreferredDriver@PreferredDriver",
 		"@Easy/Core:Shared/UserInput/Preferred@Preferred": "$:UserInput/Preferred@Preferred",
 		"@Easy/Core:Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController": "$:MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController",
+		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
 		"@Easy/Core:Shared/Util/AppManager@AppManager": "$:Util/AppManager@AppManager",
 		"@Easy/Core:Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": "$:MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent",
 		"@Easy/Core:Shared/MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent": "$:MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent",
@@ -60,8 +60,6 @@
 		"@Easy/Core:Shared/Util/RandomUtil@RandomUtil": "$:Util/RandomUtil@RandomUtil",
 		"@Easy/Core:Shared/Avatar/AvatarUtil@AvatarUtil": "$:Avatar/AvatarUtil@AvatarUtil",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent",
-		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
-		"@Easy/Core:Client/MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController": "$:MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController": "$:MainMenuControllers/MainMenuController@MainMenuController",
 		"@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController": "$:MainMenuControllers/Social/FriendsController@FriendsController",
 		"@Easy/Core:Shared/MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow": "$:MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow",
@@ -134,8 +132,9 @@
 		"@Easy/Core:Shared/Inventory/CharacterInventorySingleton@CharacterInventorySingleton": "$:Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
 		"@Easy/Core:Shared/Inventory/InventorySingleton@InventorySingleton": "$:Inventory/InventorySingleton@InventorySingleton",
 		"@Easy/Core:Shared/LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton": "$:LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
-		"@Easy/Core:Client/Airship/Steam/SteamRichPresence@SteamRichPresence": "$:Airship/Steam/SteamRichPresence@SteamRichPresence",
 		"@Easy/Core:Shared/Util/PlayerUtils@PlayerUtils": "$:Util/PlayerUtils@PlayerUtils",
+		"@Easy/Core:Client/Airship/Steam/SteamRichPresence@SteamRichPresence": "$:Airship/Steam/SteamRichPresence@SteamRichPresence",
+		"@Easy/Core:Shared/Privileged/Steam/SteamworksSingleton@SteamworksSingleton": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
 		"@Easy/Core:Shared/Player/PlayersSingleton@PlayersSingleton": "$:Player/PlayersSingleton@PlayersSingleton",
 		"@Easy/Core:Shared/Team/TeamSingleton@TeamsSingleton": "$:Team/TeamSingleton@TeamsSingleton",
 		"@Easy/Core:Server/Airship/CacheStore/CacheStoreService@CacheStoreService": "$:Airship/CacheStore/CacheStoreService@CacheStoreService",
@@ -152,6 +151,7 @@
 		"@Easy/Core:Client/Airship/User/UserController@UserController": "$:Airship/User/UserController@UserController",
 		"@Easy/Core:Client/Airship/Friends/FriendsController@FriendsController": "$:Airship/Friends/FriendsController@FriendsController",
 		"@Easy/Core:Client/Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent": "$:Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent",
+		"@Easy/Core:Client/Components/HomePage/Sort/GameImageButton@GameImageButton": "$:Components/HomePage/Sort/GameImageButton@GameImageButton",
 		"@Easy/Core:Client/Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController": "$:Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
 		"@Easy/Core:Client/Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController": "$:Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController",
 		"@Easy/Core:Client/Controllers/Damage/DamageIndicatorController@DamageIndicatorController": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
@@ -169,9 +169,11 @@
 		"@Easy/Core:Client/MainMenuControllers/MainMenuHomeController@MainMenuHomeController": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
 		"@Easy/Core:Shared/MainMenu/Components/NavbarControlButton@NavbarControlButton": "$:MainMenu/Components/NavbarControlButton@NavbarControlButton",
 		"@Easy/Core:Shared/MainMenu/Components/MainMenuNavButton@MainMenuNavButton": "$:MainMenu/Components/MainMenuNavButton@MainMenuNavButton",
+		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
 		"@Easy/Core:Client/MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController": "$:MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
+		"@Easy/Core:Client/MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController": "$:MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController",
 		"@Easy/Core:Server/Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand": "$:Services/Chat/Commands/AddInventoryCommand@AddInventoryCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/BotCommand@BotCommand": "$:Services/Chat/Commands/BotCommand@BotCommand",
 		"@Easy/Core:Server/Services/Chat/Commands/DamageCommand@DamageCommand": "$:Services/Chat/Commands/DamageCommand@DamageCommand",
@@ -203,6 +205,7 @@
 		"@Easy/Core:Shared/Bootstrap/Bootstrap@Bootstrap": "$:Bootstrap/Bootstrap@Bootstrap",
 		"@Easy/Core:Shared/Generator/GeneratorUtil@GeneratorUtil": "$:Generator/GeneratorUtil@GeneratorUtil",
 		"@Easy/Core:Shared/Item/ItemAnimationData@ItemAnimationData": "$:Item/ItemAnimationData@ItemAnimationData",
+		"@Easy/Core:Shared/MainMenu/Components/ProfileOptionsButton@ProfileOptionsButton": "$:MainMenu/Components/ProfileOptionsButton@ProfileOptionsButton",
 		"@Easy/Core:Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard": "$:MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard",
 		"@Easy/Core:Shared/MainMenu/Components/FriendRequest/FriendRequestModal@FriendRequestModal": "$:MainMenu/Components/FriendRequest/FriendRequestModal@FriendRequestModal",
 		"@Easy/Core:Shared/SocketIOMessages/UpdateUserDto@UpdateUserDto": "$:SocketIOMessages/UpdateUserDto@UpdateUserDto",
@@ -306,28 +309,6 @@
 		{
 			"filePath": "../Client/MainMenuControllers/Transfer/TransferController.lua",
 			"internalId": "$:MainMenuControllers/Transfer/TransferController@TransferController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
-			"internalId": "$:MainMenuControllers/User/UserController@UserController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/MainMenuControllers/Social/ChangeUsernameController.lua",
-			"internalId": "$:MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
@@ -540,6 +521,22 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Privileged/Steam/SteamworksSingleton.lua",
+			"internalId": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
 				}
 			]
 		},
@@ -840,6 +837,17 @@
 			]
 		},
 		{
+			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
+			"internalId": "$:MainMenuControllers/User/UserController@UserController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
 			"filePath": "../Client/MainMenuControllers/MainMenuNavbarController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
 			"decorators": [
@@ -864,6 +872,17 @@
 		{
 			"filePath": "../Client/MainMenuControllers/Settings/MainMenuSettingsUIController.lua",
 			"internalId": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Social/ChangeUsernameController.lua",
+			"internalId": "$:MainMenuControllers/Social/ChangeUsernameController@ChangeUsernameController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
