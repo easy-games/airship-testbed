@@ -19,6 +19,7 @@
     float4x4 unity_WorldToObject;
     float4 unity_WorldTransformParams;
     float3 _WorldSpaceCameraPos;
+    float4 shadowBias;
 
     //SamplerState sampler_MainTex;
     SamplerState my_sampler_point_repeat;
@@ -105,8 +106,6 @@
         float3 normal : NORMAL;
         float4 tangent: TANGENT;
         float4 uv_MainTex : TEXCOORD0;
-        float2 bakedLightA : TEXCOORD1;
-        float2 bakedLightB : TEXCOORD2;
 
         float2 instanceIndex : TEXCOORD7;
     };
@@ -124,8 +123,6 @@
         half3  tspace1 : TEXCOORD4;
         half3  tspace2 : TEXCOORD5;
         
-        float4 bakedLight : TEXCOORD6;
-
         half3 triplanarBlend : TEXCOORD7;
         float3 triplanarPos : TEXCOORD8;
 
@@ -178,8 +175,8 @@
         float3 shadowNormal = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
 
         // Apply the adjusted offset
-        output.shadowCasterPos0 = mul(_ShadowmapMatrix0, worldPos +float4((shadowNormal * 0.03),0));
-        output.shadowCasterPos1 = mul(_ShadowmapMatrix1, worldPos +float4((shadowNormal * 0.06),0));
+        output.shadowCasterPos0 = mul(_ShadowmapMatrix0, worldPos +float4((shadowNormal * shadowBias.x),0));
+        output.shadowCasterPos1 = mul(_ShadowmapMatrix1, worldPos +float4((shadowNormal * shadowBias.y),0));
                 
         output.uv_MainTex = input.uv_MainTex;
         output.uv_MainTex = float4((input.uv_MainTex * _MainTex_ST.xy + _MainTex_ST.zw).xy, 1, 1);
@@ -200,7 +197,7 @@
 
         //tex.uv* _MainTex_ST.xy + _MainTex_ST.zw;
 
-        output.bakedLight = float4(input.bakedLightA.x, input.bakedLightA.y, input.bakedLightB.x, 0);
+        //output.bakedLight = float4(input.bakedLightA.x, input.bakedLightA.y, input.bakedLightB.x, 0);
 
         output.worldPos = worldPos;
         output.color = input.color;
@@ -774,9 +771,9 @@
 #if VERTEX_LIGHT_ON
         //If we're using baked shadows (voxel world geometry)
         //The input diffuse gets multiplied by the vertex color.r
-        ambientOcclusionMask = input.color.g; //Creases
-        pointLight0Mask = input.color.b;
-        pointLight1Mask = input.color.a;
+        ambientOcclusionMask = 1;// input.color.g; //Creases
+        pointLight0Mask = 1;// input.color.b;
+        pointLight1Mask = 1;// input.color.a;
 #else
         //Otherwise it gets multiplied by the whole thing
         textureColor.rgb *= input.color.rgb;
@@ -821,8 +818,9 @@
         //SH ambient 
         half3 ambientLight = (complexAmbientSample * globalAmbientTint);
 #if VERTEX_LIGHT_ON
-        half3 bakedLighting = input.bakedLight.xyz;
-        ambientLight = max(ambientLight, bakedLighting);
+        //Todo, replace me with a texture based lookup
+        //half3 bakedLighting = input.bakedLight.xyz;
+        //ambientLight = max(ambientLight, bakedLighting);
 #endif        
         half3 finalAmbient = (ambientLight * diffuseColor);
 
