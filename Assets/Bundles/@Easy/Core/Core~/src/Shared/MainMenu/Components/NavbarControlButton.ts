@@ -5,7 +5,6 @@ export default class NavbarControlButton extends AirshipBehaviour {
 		CanvasAPI.OnPointerEvent(this.gameObject, (dir, button) => {
 			if (button !== PointerButton.LEFT) return;
 
-			print("dir: " + dir);
 			this.gameObject
 				.GetComponent<RectTransform>()
 				.TweenLocalScale(
