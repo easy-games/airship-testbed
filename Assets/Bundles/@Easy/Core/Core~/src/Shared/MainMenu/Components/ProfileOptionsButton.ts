@@ -27,6 +27,12 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 					Bridge.LoadScene("Login", true);
 				},
 			});
+			options.push({
+				text: "Quit",
+				onClick: () => {
+					Application.Quit();
+				},
+			});
 			Dependency<RightClickMenuController>().OpenRightClickMenu(
 				Dependency<MainMenuController>().mainContentCanvas,
 				new Mouse().GetLocation(),
