@@ -1,4 +1,3 @@
-import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
@@ -14,6 +13,7 @@ import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { AssetCache } from "../AssetCache/AssetCache";
+import { SteamworksSingleton } from "../Privileged/Steam/SteamworksSingleton";
 import { Player, PlayerDto } from "./Player";
 
 @Controller({ loadOrder: -1000 })
@@ -120,13 +120,10 @@ export class PlayersSingleton implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
+
 			task.spawn(() => {
-				const gameData = Game.FetchGameData();
-
-				const gameName = gameData?.name ?? "Unknown";
-
-				// Set default rich presence
-				SteamLuauAPI.SetGameRichPresence(gameName, SteamRichPresence.GetStatus());
+				Game.FetchGameData();
+				Dependency<SteamworksSingleton>().UpdateGameRichPresence();
 			});
 
 			if (authController.IsAuthenticated()) {
