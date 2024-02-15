@@ -17,6 +17,7 @@ Shader "Airship/AirshipToon"
         _SaturationMod("Saturation Increase", float) = .5
         _AmbientMod("Ambient Mod", float) = .1
         _OverrideStrength("Override Color Strength", Range(0,1)) = 0
+        [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
 
         [Toggle] INSTANCE_DATA("Has Baked Instance Data", Float) = 0.0
     }
@@ -39,6 +40,8 @@ Shader "Airship/AirshipToon"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile _ INSTANCE_DATA_ON
+            #pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
+            #pragma multi_compile _ VERTEX_LIGHT_ON
 
             //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
             float VERTEX_LIGHT;  
@@ -62,6 +65,7 @@ Shader "Airship/AirshipToon"
             struct VertToFrag
             {
                 float4 vertex : SV_POSITION;
+                float4 worldPos : TEXCOORD10;
                 float2 uv : TEXCOORD0;
                 float4 color      : COLOR;
                 // these three vectors will hold a 3x3 rotation matrix
@@ -96,9 +100,9 @@ Shader "Airship/AirshipToon"
             {
                 VertToFrag o;
                 o.uv = v.UV;
-                float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.viewDir = normalize(UnityWorldSpaceViewDir(worldPos));
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.viewDir = normalize(UnityWorldSpaceViewDir(o.worldPos));
                 o.color = v.color;
 
                 //Normal Matrix
@@ -122,8 +126,8 @@ Shader "Airship/AirshipToon"
                 //More accurate shadows (normal biased + lightmap resolution)
                 float3 shadowNormal = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject).xyz);
                 // Apply the adjusted offset
-                o.shadowCasterPos0 = mul(_ShadowmapMatrix0, worldPos + float4((shadowNormal * 0.03), 0));
-                o.shadowCasterPos1 = mul(_ShadowmapMatrix1, worldPos + float4((shadowNormal * 0.06), 0));
+                o.shadowCasterPos0 = mul(_ShadowmapMatrix0, o.worldPos + float4((shadowNormal * 0.03), 0));
+                o.shadowCasterPos1 = mul(_ShadowmapMatrix1, o.worldPos + float4((shadowNormal * 0.06), 0));
                                
                 #if INSTANCE_DATA_ON
 		            float4 instanceColor = _ColorInstanceData[v.instanceIndex.x];
@@ -170,6 +174,7 @@ Shader "Airship/AirshipToon"
                 worldNormal.y = dot(i.tspace1, tnormal);
                 worldNormal.z = dot(i.tspace2, tnormal);
 
+                //Vectors
                 half3 worldReflect = reflect(-i.viewDir, worldNormal);
                 half RoL = max(0, dot(worldReflect, -globalSunDirection));
                 half NoL = max(dot(-globalSunDirection, worldNormal), 0);
@@ -183,6 +188,8 @@ Shader "Airship/AirshipToon"
                 //DIFFUSE COLOR
                 fixed4 textureColor = tex2D(_MainTex, i.uv);
                 fixed4 ormSample = tex2D(_ORMTex, i.uv);
+                half3 specularColor;
+                half3 diffuseColor = textureColor * _Color * i.color;
 
                 //LIGHTING
                 float lightStrength = (dot(-globalSunDirection, worldNormal));// * globalSunBrightness;
@@ -191,18 +198,31 @@ Shader "Airship/AirshipToon"
                 //shadowMask = 1;
                 
                 //Specular//Specular
+                float occlusion = ormSample.r;
+                float roughnessLevel = ormSample.g;
                 float metallicLevel = ormSample.b;
-                half3 specularColor;
                 half dielectricSpecular = .3; //0.3 is the industry standard
-                half3 diffuseColor = textureColor * _Color * i.color;
                 half3 metallicColor = diffuseColor - diffuseColor * metallicLevel;// 1 mad
                 specularColor = (dielectricSpecular - dielectricSpecular * _Color * metallicLevel) + textureColor * _Color * metallicLevel;	// 2 mad
                 specularColor = EnvBRDFApprox(specularColor * _SpecColor, _Color * textureColor.y, NoV) * _SpecMod;
                 
                 half3 specularLight = NoL * (metallicColor + specularColor * PhongApprox(saturate(ormSample.r + ormSample.r * (1-_SpecMod)), RoL)) * _SpecColor;
                 specularLight = saturate(specularLight);// min(specularLight, half3(_SpecMod,_SpecMod,_SpecMod));
-                lightStrength = saturate(lightStrength + specularLight);
-                
+
+
+                //POINT LIGHTS
+                float4 pointLightColor = float4(0,0,0,0);
+                #ifdef NUM_LIGHTS_LIGHTS1
+                pointLightColor.rgb = CalculatePointLightForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
+                #endif
+                #ifdef NUM_LIGHTS_LIGHTS2
+                pointLightColor.rgb = CalculatePointLightForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
+                pointLightColor.rgb += CalculatePointLightForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
+                #endif
+                float pointLightDelta = saturate(pointLightColor.r+pointLightColor.g+pointLightColor.b);
+
+                //Combine all lighting
+                lightStrength = saturate(lightStrength + pointLightDelta + specularLight);
                 float halfLambertLightStrength = saturate((lightStrength + 1)*.5);
                 //Sample the shadow ramp
                 float lightRampValue = tex2D(_ShadowRamp, float2(lightStrength * shadowMask, 0));
@@ -223,9 +243,11 @@ Shader "Airship/AirshipToon"
                 half3 shadowColor = saturate(_ShadowColor + globalAmbientTint * _AmbientMod) * diffuseColor;
                 half3 finalColor = lerp(shadowColor, finalDiffuse, saturate(lightDelta)) + finalRimColor;
 
+
                 //finalColor =lerp(saturate((_ShadowColor + globalAmbientTint * _AmbientMod) + .35) * colorWithSpec, colorWithSpec, saturate(lightDelta))  ;
                 //finalColor = diffuseColor;
                 //finalColor = middleStrength;
+                //finalColor = pointLightColor;
                 
                 MRT0 = lerp(half4(finalColor, 1), half4(1,0,0,1), _OverrideStrength);
                 MRT1 = half4(0,0,0,1);

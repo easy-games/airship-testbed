@@ -128,24 +128,24 @@ half GetShadow(float4 shadowCasterPos0, float4 shadowCasterPos1, half3 worldNorm
         return shadowFactor0;
     }
 }
-
-float CalculatePointLight(float3 worldPos, float3 normal, float3 lightPos, float4 lightColor,  float lightRange)
+    
+half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 lightColor, half lightRange)
 {
     float3 lightVec = lightPos - worldPos;
     half distance = length(lightVec);
     half3 lightDir = normalize(lightVec);
 
-    //float RoL = max(0, dot(reflectionVector, lightDir));
+    float RoL = max(0, dot(reflectionVector, lightDir));
     float NoL = max(0, dot(normal, lightDir));
 
     float distanceNorm = saturate(distance / lightRange);
-    float falloff = distanceNorm * distanceNorm * distanceNorm;
+    float falloff = pow(distanceNorm, 2.0);
     falloff = 1.0 - falloff;
+    
+    falloff *= NoL;
 
-    //falloff *= NoL;
+    half3 result = falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
 
-    //half3 result = falloff * (albedo * lightColor + specularColor * PhongApprox(roughness, RoL));
-    float result = NoL * falloff;
     return result;
 }
 
