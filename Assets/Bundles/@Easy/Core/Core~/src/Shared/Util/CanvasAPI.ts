@@ -182,6 +182,14 @@ export class CanvasAPI {
 		});
 	}
 
+	/**
+	 * This works on Toggles, Sliders, and TMP_InputField
+	 *
+	 * For TMP_InputField, the value will always be `0`.
+	 * @param targetGameObject
+	 * @param callback
+	 * @returns
+	 */
 	public static OnValueChangeEvent(
 		targetGameObject: GameObject,
 		callback: (value: number) => void,
