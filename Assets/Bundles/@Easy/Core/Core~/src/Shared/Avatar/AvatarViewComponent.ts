@@ -2,6 +2,7 @@ import {} from "Shared/Flamework";
 import { Mouse } from "Shared/UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
+import { OnUpdate } from "../Util/Timer";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	public humanEntityGo?: GameObject;
@@ -19,6 +20,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraWaypointBirdsEye?: Transform;
 
 	public dragSpeedMod = 10;
+	public freeSpinDrag = 3;
 	public cameraTransitionDuration = 1;
 	public screenspaceDistance = 3;
 	public dragging = false;
@@ -31,12 +33,15 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private mouse?: Mouse;
 	private lastMousePos: Vector3 = Vector3.zero;
 	private initialized = false;
+	private spinVel = 0;
 
 	private renderTexture?: RenderTexture;
 
 	private lastScreenRefreshTime = 0;
 	private screenRefreshCooldown = 0.5;
-	private screenIsDirty = false;
+	private screenSizeIsDirty = false;
+
+	private bin = new Bin();
 
 	public override Start(): void {
 		print("AVATAR VIEW START");
@@ -53,7 +58,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.mouse.moved.Connect((pos: Vector3) => {
 			if (this.dragging) {
 				let diff = pos.sub(this.lastMousePos);
-				this.avatarHolder?.Rotate(0, diff.x * -this.dragSpeedMod, 0);
+				let vel = diff.x * -this.dragSpeedMod;
+				this.avatarHolder?.Rotate(0, vel, 0);
+				this.spinVel = vel;
 			}
 			this.lastMousePos = pos;
 		});
@@ -62,13 +69,32 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.CreateRenderTexture(Screen.width, Screen.height);
 		CanvasAPI.OnScreenSizeEvent((width, height) => {
 			this.lastScreenRefreshTime = Time.time;
-			this.screenIsDirty = true;
+			this.screenSizeIsDirty = true;
 		});
 	}
 
+	public OnEnable(): void {
+		this.bin.Add(
+			OnUpdate.Connect((dt) => {
+				if (!this.dragging && this.spinVel > 0) {
+					print("spinVel: " + this.spinVel);
+				}
+				if (!this.dragging && math.abs(this.spinVel) > 0.01) {
+					this.spinVel = this.spinVel * (1 - dt * this.freeSpinDrag);
+					// this.spinVel -= (this.spinVel / this.freeSpinDrag) * dt;
+					this.avatarHolder?.Rotate(0, this.spinVel, 0);
+				}
+			}),
+		);
+	}
+
+	public OnDisable(): void {
+		this.bin.Clean();
+	}
+
 	override FixedUpdate(dt: number): void {
-		if (this.screenIsDirty && Time.time - this.lastScreenRefreshTime > this.screenRefreshCooldown) {
-			this.screenIsDirty = false;
+		if (this.screenSizeIsDirty && Time.time - this.lastScreenRefreshTime > this.screenRefreshCooldown) {
+			this.screenSizeIsDirty = false;
 			this.CreateRenderTexture(Screen.width, Screen.height);
 		}
 	}
