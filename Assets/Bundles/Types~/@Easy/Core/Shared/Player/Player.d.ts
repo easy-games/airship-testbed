@@ -60,7 +60,7 @@ export declare class Player {
     readonly onLeave: Signal<void>;
     private team;
     readonly onChangeTeam: Signal<[team: Team | undefined, oldTeam: Team | undefined]>;
-    onUsernameChanged: Signal<[username: string, tag: string]>;
+    onUsernameChanged: Signal<[username: string]>;
     private profilePicture;
     private bin;
     private connected;
@@ -106,7 +106,7 @@ export declare class Player {
     GetProfilePicture(): ProfilePictureMeta;
     SetTeam(team: Team): void;
     GetTeam(): Team | undefined;
-    UpdateUsername(username: string, tag: string): void;
+    UpdateUsername(username: string): void;
     SendMessage(message: string, sender?: Player): void;
     /** Is player friends with the local player? */
     IsFriend(): boolean;
