@@ -2183,7 +2183,6 @@ MonoBehaviour:
   intensity: 0.81
   range: 6.9
   castShadows: 1
-  highQualityLight: 0
 --- !u!114 &1827094135
 MonoBehaviour:
   m_ObjectHideFlags: 0

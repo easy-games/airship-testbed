@@ -5,12 +5,19 @@ export declare class ChangeUsernameController implements OnStart {
     private canvas;
     private responseText;
     private submitButton;
+    private submitButtonDisabled;
     private inputField;
     private inputFieldSelected;
+    private lastCheckTime;
+    private lastCheckedUsername;
+    private lastInputTime;
+    private checkInputDelay;
+    private checkUsernameCooldown;
+    private openBin;
     constructor(authController: AuthController);
-    TestAvailability(): void;
     SubmitNameChange(): void;
-    SetResponseText(color: "success" | "error", text: string): void;
+    SetResponseText(status: "success" | "error" | "none", text: string): void;
     OnStart(): void;
+    private CheckUsername;
     Open(): void;
 }

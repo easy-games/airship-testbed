@@ -60,9 +60,10 @@ export class CanvasAPI {
 		callback: (direction: PointerDirection, button: PointerButton) => void,
 	): EngineEventConnection {
 		this.Setup(targetGameObject);
+		let id = targetGameObject.GetInstanceID();
 		return this.eventInterceptor!.OnPointerEvent((instanceId, direction, button) => {
 			/* Only run callback if instance ids match. */
-			if (instanceId === targetGameObject.GetInstanceID()) {
+			if (instanceId === id) {
 				callback(direction as PointerDirection, button as PointerButton);
 			}
 		});
@@ -80,9 +81,10 @@ export class CanvasAPI {
 		callback: (hoverState: HoverState) => void,
 	): EngineEventConnection {
 		this.Setup(targetGameObject);
+		let id = targetGameObject.GetInstanceID();
 		return this.eventInterceptor!.OnHoverEvent((instanceId, hoverState) => {
 			/* Only run callback if instance ids match. */
-			if (instanceId === targetGameObject.GetInstanceID()) {
+			if (instanceId === id) {
 				callback(hoverState as HoverState);
 			}
 		});
@@ -90,9 +92,10 @@ export class CanvasAPI {
 
 	public static OnSubmitEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
+		let id = targetGameObject.GetInstanceID();
 		return this.eventInterceptor!.OnSubmitEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
-			if (instanceId === targetGameObject.GetInstanceID()) {
+			if (instanceId === id) {
 				callback();
 			}
 		});
@@ -113,9 +116,10 @@ export class CanvasAPI {
 
 	public static OnSelectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
+		let id = targetGameObject.GetInstanceID();
 		return this.eventInterceptor!.OnSelectEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
-			if (instanceId === targetGameObject.GetInstanceID()) {
+			if (instanceId === id) {
 				callback();
 			}
 		});
@@ -123,9 +127,10 @@ export class CanvasAPI {
 
 	public static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
+		let id = targetGameObject.GetInstanceID();
 		return this.eventInterceptor!.OnDeselectEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
-			if (instanceId === targetGameObject.GetInstanceID()) {
+			if (instanceId === id) {
 				callback();
 			}
 		});
@@ -133,9 +138,10 @@ export class CanvasAPI {
 
 	public static OnBeginDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection {
 		this.Setup(targetGameObject);
+		let id = targetGameObject.GetInstanceID();
 		return this.eventInterceptor!.OnBeginDragEvent((instanceId) => {
 			/* Only run callback if instance ids match. */
-			if (instanceId === targetGameObject.GetInstanceID()) {
+			if (instanceId === id) {
 				callback();
 			}
 		});
@@ -182,6 +188,14 @@ export class CanvasAPI {
 		});
 	}
 
+	/**
+	 * This works on Toggles, Sliders, and TMP_InputField
+	 *
+	 * For TMP_InputField, the value will always be `0`.
+	 * @param targetGameObject
+	 * @param callback
+	 * @returns
+	 */
 	public static OnValueChangeEvent(
 		targetGameObject: GameObject,
 		callback: (value: number) => void,

@@ -1,6 +1,5 @@
 import { Airship } from "Shared/Airship";
 import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
-import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import Inventory from "Shared/Inventory/Inventory";
 import { HeldItemManager } from "Shared/Item/HeldItems/HeldItemManager";
@@ -60,12 +59,25 @@ export default class Character extends AirshipBehaviour {
 			});
 		}
 
-		Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-			if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
-				let newHealth = math.max(0, this.health - damageInfo.damage);
-				this.SetHealth(newHealth);
-			}
-		});
+		this.bin.Add(
+			Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					let newHealth = math.max(0, this.health - damageInfo.damage);
+					this.SetHealth(newHealth);
+
+					if (newHealth <= 0) {
+						Airship.damage.BroadcastDeath(damageInfo);
+					}
+				}
+			}),
+		);
+		this.bin.Add(
+			Airship.damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+				if (damageInfo.gameObject === this.gameObject) {
+					this.onDeath.Fire();
+				}
+			}),
+		);
 
 		{
 			// state change
@@ -132,11 +144,6 @@ export default class Character extends AirshipBehaviour {
 		const oldHealth = this.health;
 		this.health = health;
 		this.onHealthChanged.Fire(health, oldHealth);
-
-		if (this.health <= 0 && RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Character.Death.server.FireAllClients(this.networkObject.ObjectId);
-			this.onDeath.Fire();
-		}
 	}
 
 	public GetMaxHealth(): number {

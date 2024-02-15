@@ -1,7 +1,7 @@
-import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -78,6 +78,16 @@ export class CharactersSingleton implements OnStart {
 				player.character?.Despawn();
 			});
 		}
+
+		Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+			if (RunUtil.IsServer() && Airship.damage.applyKnockback && damageInfo.data["knockback"]) {
+				const knockback = damageInfo.data["knockback"] as Vector3;
+				const character = damageInfo.gameObject.GetAirshipComponent<Character>();
+				if (character) {
+					character.movement.ApplyImpulse(knockback);
+				}
+			}
+		});
 
 		Airship.characters.ObserveCharacters((character) => {
 			character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {

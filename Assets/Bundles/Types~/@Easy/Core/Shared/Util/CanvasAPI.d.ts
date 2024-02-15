@@ -50,6 +50,14 @@ export declare class CanvasAPI {
     static OnDropEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    /**
+     * This works on Toggles, Sliders, and TMP_InputField
+     *
+     * For TMP_InputField, the value will always be `0`.
+     * @param targetGameObject
+     * @param callback
+     * @returns
+     */
     static OnValueChangeEvent(targetGameObject: GameObject, callback: (value: number) => void): EngineEventConnection;
     static OnToggleValueChangeEvent(targetGameObject: GameObject, callback: (value: boolean) => void): EngineEventConnection;
     static GetSelectedInstanceId(): number | undefined;

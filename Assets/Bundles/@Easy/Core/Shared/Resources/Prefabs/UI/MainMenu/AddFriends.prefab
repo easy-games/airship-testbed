@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: 8760657070845337466}
   - component: {fileID: 8760657070845337465}
   - component: {fileID: 8760657070845337464}
+  - component: {fileID: 2558206618684304691}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -640,6 +641,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2558206618684304691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8760657070845337462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+  image: {fileID: 8760657070845337465}
 --- !u!1 &8760657070885712091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,7 +1067,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 230, y: 30}
+  m_CellSize: {x: 180, y: 30}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -1425,7 +1440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 5
+  radius: 15
   image: {fileID: 8760657071612027740}
 --- !u!1 &8760657071728503621
 GameObject:
@@ -1727,8 +1742,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.003622, y: -108.1}
-  m_SizeDelta: {x: 464.146, y: 71.2532}
+  m_AnchoredPosition: {x: -0.003622, y: -108.100006}
+  m_SizeDelta: {x: 322.8221, y: 71.2532}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8760657072092442984
 CanvasRenderer:
@@ -1758,7 +1773,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Enter your friend\u2019s username and \ntag to instantly sent a request."
+  m_text: "Enter your friend\u2019s username to instantly sent a request."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bd1a73c5cf984263ae0162d32ef943f, type: 2}
   m_sharedMaterial: {fileID: -2788826440412478560, guid: 8bd1a73c5cf984263ae0162d32ef943f, type: 2}
@@ -1767,8 +1782,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291151301
+  m_fontColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1994,10 +2009,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8760657071096340597}
     m_Modifications:
-    - target: {fileID: 6591645666151158269, guid: bb00535ef8e81460b94a39812f630a34, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
-      value: 1801810542
-      objectReference: {fileID: 0}
     - target: {fileID: 6591645667266841629, guid: bb00535ef8e81460b94a39812f630a34, type: 3}
       propertyPath: m_Name
       value: SentFriendRequest
@@ -2009,10 +2020,6 @@ PrefabInstance:
     - target: {fileID: 6591645667266841630, guid: bb00535ef8e81460b94a39812f630a34, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591645667266841630, guid: bb00535ef8e81460b94a39812f630a34, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6591645667266841630, guid: bb00535ef8e81460b94a39812f630a34, type: 3}
       propertyPath: m_AnchorMax.x

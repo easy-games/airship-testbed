@@ -27,7 +27,7 @@ export class MainMenuAddFriendsController implements OnStart {
 
 	public Open(): void {
 		if (this.canvas === undefined) {
-			const go = GameObjectUtil.Instantiate(
+			const go = Object.Instantiate(
 				AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/AddFriends.prefab"),
 			);
 			this.canvas = go.GetComponent<Canvas>();
@@ -123,6 +123,15 @@ export class MainMenuAddFriendsController implements OnStart {
 				AppManager.Close();
 			});
 		}
+
+		const refs = this.canvas.gameObject.GetComponent<GameObjectReferences>();
+		const searchInput = refs.GetValue("UI", "SearchBar") as TMP_InputField;
+		const responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
+
+		searchInput.text = "";
+		searchInput.Select();
+		responseText.gameObject.SetActive(false);
+
 		AppManager.Open(this.canvas, {
 			noOpenSound: true,
 			addToStack: true,

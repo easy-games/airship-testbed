@@ -42,7 +42,7 @@ export class Player {
 	private team: Team | undefined;
 	public readonly onChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
 
-	public onUsernameChanged = new Signal<[username: string, tag: string]>();
+	public onUsernameChanged = new Signal<[username: string]>();
 
 	private profilePicture: ProfilePictureId = ProfilePictureId.BEAR;
 
@@ -127,10 +127,9 @@ export class Player {
 		return this.team;
 	}
 
-	public UpdateUsername(username: string, tag: string): void {
+	public UpdateUsername(username: string): void {
 		this.username = username;
-		this.usernameTag = tag;
-		this.onUsernameChanged.Fire(username, tag);
+		this.onUsernameChanged.Fire(username);
 	}
 
 	public SendMessage(message: string, sender?: Player): void {
