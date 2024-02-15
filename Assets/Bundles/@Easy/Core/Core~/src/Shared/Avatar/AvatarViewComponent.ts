@@ -35,7 +35,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private renderTexture?: RenderTexture;
 
 	private lastScreenRefreshTime = 0;
-	private screenRefreshCooldown = 1;
+	private screenRefreshCooldown = 0.5;
 	private screenIsDirty = false;
 
 	public override Start(): void {

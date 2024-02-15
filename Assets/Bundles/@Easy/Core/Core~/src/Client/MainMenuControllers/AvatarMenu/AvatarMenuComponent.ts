@@ -161,25 +161,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.InitializeAutherizedAccessories();
 	}
 
-	override OpenPage(): void {
-		super.OpenPage();
-		this.Log("Open AVATAR");
-		if (this.avatarRenderHolder) {
-			this.Log("Showing avatar render");
-			this.avatarRenderHolder?.SetActive(true);
-		} else {
-			error("No avatar render veiew in avatar editor menu page");
-		}
-		this.RefreshAvatar();
-		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointBirdsEye, true);
-
-		task.spawn(() => {
-			this.LoadAllOutfits();
-			this.SelectMainNav(0);
-			this.SelectSubNav(0);
-		});
-	}
-
 	private RefreshAvatar() {
 		let avatarView = this.mainMenu?.avatarView;
 		if (avatarView) {
@@ -196,6 +177,25 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (screensize) {
 			return new Vector2(rect.anchorMin.x * screensize.x, rect.anchorMin.y * screensize.y);
 		}
+	}
+
+	override OpenPage(): void {
+		super.OpenPage();
+		this.Log("Open AVATAR");
+		if (this.avatarRenderHolder) {
+			this.Log("Showing avatar render");
+			this.avatarRenderHolder?.SetActive(true);
+		} else {
+			error("No avatar render veiew in avatar editor menu page");
+		}
+		this.RefreshAvatar();
+		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
+
+		task.spawn(() => {
+			this.LoadAllOutfits();
+			this.SelectMainNav(0);
+			this.SelectSubNav(0);
+		});
 	}
 
 	override ClosePage(instant?: boolean): void {
