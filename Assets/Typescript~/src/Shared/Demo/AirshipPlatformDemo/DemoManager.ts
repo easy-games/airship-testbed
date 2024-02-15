@@ -33,7 +33,6 @@ export default class DemoManager extends AirshipBehaviour {
 
 			// Display local player deaths
 			Game.localPlayer.ObserveCharacter((character) => {
-				print("CHARACTER FOUND");
 				if (!character) return;
 
 				const bin = new Bin();

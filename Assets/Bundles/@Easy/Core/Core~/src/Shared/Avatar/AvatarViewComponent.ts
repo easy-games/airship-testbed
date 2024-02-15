@@ -76,9 +76,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public OnEnable(): void {
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
-				if (!this.dragging && this.spinVel > 0) {
-					print("spinVel: " + this.spinVel);
-				}
 				if (!this.dragging && math.abs(this.spinVel) > 0.01) {
 					this.spinVel = this.spinVel * (1 - dt * this.freeSpinDrag);
 					// this.spinVel -= (this.spinVel / this.freeSpinDrag) * dt;
