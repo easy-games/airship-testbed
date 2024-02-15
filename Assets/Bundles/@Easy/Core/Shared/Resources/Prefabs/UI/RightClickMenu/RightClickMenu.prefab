@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1622373877850732205}
   - component: {fileID: 7180028839045128458}
   - component: {fileID: 3183045480143037463}
-  - component: {fileID: 7331438216191713023}
   - component: {fileID: 9095115639454460854}
   m_Layer: 5
   m_Name: RightClickMenu
@@ -35,7 +34,6 @@ RectTransform:
   m_Children:
   - {fileID: 2634314489197933514}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -63,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.11764706, g: 0.14117648, b: 0.22745098, a: 1}
+  m_Color: {r: 0.10412956, g: 0.10607484, b: 0.11320752, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -106,21 +104,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7331438216191713023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1709391303489335449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.05807226, g: 0.075951666, b: 0.14150941, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!114 &9095115639454460854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,13 +116,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
+  radius: 10
   image: {fileID: 7180028839045128458}
 --- !u!1001 &4576447404810085473
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 8931939486647033237}
     m_Modifications:
     - target: {fileID: 1948996205270276011, guid: 6314c9fa9518848dda080524bd38a09c, type: 3}
@@ -230,7 +214,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightClickButton
       objectReference: {fileID: 0}
+    - target: {fileID: 4496318154105062676, guid: 6314c9fa9518848dda080524bd38a09c, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6314c9fa9518848dda080524bd38a09c, type: 3}
 --- !u!224 &2634314489197933514 stripped
 RectTransform:
