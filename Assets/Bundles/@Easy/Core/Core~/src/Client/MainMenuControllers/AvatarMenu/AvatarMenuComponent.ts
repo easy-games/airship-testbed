@@ -1,7 +1,8 @@
-import { Dependency } from "Shared/Flamework";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
+import { Dependency } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -12,7 +13,6 @@ import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
-import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -42,7 +42,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarCenterRect?: RectTransform;
 
 	private Log(message: string) {
-		//print("Avatar Editor: " + message);
+		// print("Avatar Editor: " + message + " (" + Time.time + ")");
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
@@ -258,7 +258,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
+		this.Log("Buttons.1");
 		this.ClearItembuttons();
+		this.Log("Buttons.2");
 
 		let targetSlot = AccessorySlot.Root;
 		switch (this.activeMainIndex) {
@@ -268,6 +270,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					case 0:
 						//SKIN COLOR
 						targetSlot = AccessorySlot.Root;
+						this.Log("DisplayColorScheme");
 						this.DisplayColorScheme();
 						break;
 					case 1:
@@ -365,6 +368,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				}
 				break;
 		}
+		this.Log("Buttons.3");
 
 		this.DisplayItemsOfType(targetSlot);
 	}
@@ -396,11 +400,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private itemButtonBin: Bin = new Bin();
 	private ClearItembuttons() {
+		this.Log("ClearItemButtons");
 		this.itemButtonBin.Clean();
 		if (this.itemButtonHolder) {
-			for (let i = 0; i < this.itemButtonHolder.GetChildCount(); i++) {
-				Object.Destroy(this.itemButtonHolder.GetChild(i).gameObject);
-			}
+			this.itemButtonHolder.gameObject.ClearChildren();
 		}
 	}
 
@@ -426,7 +429,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private AddColorButton(color: Color) {
 		if (this.itemButtonTemplate && this.itemButtonHolder) {
-			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+			let newButton = Object.Instantiate(this.itemButtonTemplate, this.itemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, () => {
 				//Skin Color
 				this.SelectSkinColor(color);
