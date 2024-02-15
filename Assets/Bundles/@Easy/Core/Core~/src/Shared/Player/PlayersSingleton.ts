@@ -1,3 +1,4 @@
+import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
@@ -120,12 +121,12 @@ export class PlayersSingleton implements OnStart {
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
 			task.spawn(() => {
-				const gameData = Game.FetchGameData().expect();
+				const gameData = Game.FetchGameData();
 
 				const gameName = gameData?.name ?? "Unknown";
 
 				// Set default rich presence
-				SteamLuauAPI.SetRichPresence(gameName, "");
+				SteamLuauAPI.SetGameRichPresence(gameName, SteamRichPresence.GetStatus());
 			});
 
 			if (authController.IsAuthenticated()) {

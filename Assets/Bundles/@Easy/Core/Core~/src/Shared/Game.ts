@@ -1,4 +1,4 @@
-import { GameInfoService } from "../Server/Airship/Game/GameInfoService";
+import { GameInfoSingleton } from "./Airship/Game/GameInfoSingleton";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
 import { Dependency } from "./Flamework";
@@ -55,10 +55,10 @@ export class Game {
 	public static gameData: GameData | undefined;
 
 	/** Returns game data if already fetched. Otherwise tries to fetch game data based on gameId */
-	public static async FetchGameData() {
+	public static FetchGameData() {
 		if (Game.gameData) return Game.gameData;
 
-		const gameData = await Dependency(GameInfoService).GetGameData(this.gameId);
+		const gameData = Dependency<GameInfoSingleton>().GetGameData(this.gameId);
 		if (gameData) Game.gameData = gameData;
 		return gameData;
 	}

@@ -1,12 +1,16 @@
+import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { Game } from "@Easy/Core/Shared/Game";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
+	private deathCount = 0;
 
 	override Start(): void {
 		if (RunUtil.IsServer()) {
@@ -21,19 +25,30 @@ export default class DemoManager extends AirshipBehaviour {
 			});
 		}
 		if (RunUtil.IsClient()) {
+			print("RUNNING AS CLIENT");
 			// Optional: use locked camera mode for first person support
 			// Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
 
 			Airship.loadingScreen.FinishLoading();
+
+			// Display local player deaths
+			Game.localPlayer.ObserveCharacter((character) => {
+				print("CHARACTER FOUND");
+				if (!character) return;
+
+				const bin = new Bin();
+				bin.Add(
+					character?.onDeath.Connect(() => {
+						print("DIED");
+						this.deathCount++;
+						SteamRichPresence.SetStatus(`Deaths: ${this.deathCount}`);
+					}),
+				);
+				return () => {
+					bin.Clean();
+				};
+			});
 		}
-        task.spawn(() => {
-            let count = 0;
-            while (true) {
-                print("Hello " + count);
-                count++;
-                task.wait();
-            }
-        })
 	}
 
 	public SpawnPlayer(player: Player): void {

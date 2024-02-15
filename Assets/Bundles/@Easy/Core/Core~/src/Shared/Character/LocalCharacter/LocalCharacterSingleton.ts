@@ -1,6 +1,6 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
@@ -16,7 +16,7 @@ import { OrbitCameraMode } from "../../../Client/Controllers/Camera/DefaultCamer
 import { FirstPersonCameraSystem } from "../../../Client/Controllers/Camera/FirstPersonCameraSystem";
 import { ClientSettingsController } from "../../../Client/MainMenuControllers/Settings/ClientSettingsController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
-import { EntityInput } from "./EntityInput";
+import { CharacterInput } from "./EntityInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 
 const CAM_Y_OFFSET = 1.7;
@@ -41,7 +41,7 @@ export class LocalCharacterSingleton implements OnStart {
 
 	private entityDriver: CharacterMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
-	public entityInput: EntityInput | undefined;
+	public entityInput: CharacterInput | undefined;
 	private prevState: CharacterState = CharacterState.Idle;
 	private currentState: CharacterState = CharacterState.Idle;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
@@ -183,7 +183,7 @@ export class LocalCharacterSingleton implements OnStart {
 			const keyboard = bin.Add(new Keyboard());
 
 			this.entityDriver = character.gameObject.GetComponent<CharacterMovement>();
-			this.entityInput = new EntityInput(character);
+			this.entityInput = new CharacterInput(character);
 
 			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();
 
@@ -432,7 +432,7 @@ export class LocalCharacterSingleton implements OnStart {
 		this.fps?.OnFirstPersonChanged(this.firstPerson);
 	}
 
-	public GetEntityInput(): EntityInput | undefined {
+	public GetEntityInput(): CharacterInput | undefined {
 		return this.entityInput;
 	}
 
