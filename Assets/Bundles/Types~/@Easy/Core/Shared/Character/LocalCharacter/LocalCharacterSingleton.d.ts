@@ -3,7 +3,7 @@ import { DataStreamItems } from "../../Util/DataStreamTypes";
 import { Signal } from "../../Util/Signal";
 import { HumanoidCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/HumanoidCameraMode";
 import { CharacterCameraMode } from "./CharacterCameraMode";
-import { EntityInput } from "./EntityInput";
+import { CharacterInput } from "./EntityInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 export declare class LocalCharacterSingleton implements OnStart {
     private firstPerson;
@@ -16,7 +16,7 @@ export declare class LocalCharacterSingleton implements OnStart {
     private customDataQueue;
     private entityDriver;
     private screenshot;
-    entityInput: EntityInput | undefined;
+    entityInput: CharacterInput | undefined;
     private prevState;
     private currentState;
     humanoidCameraMode: HumanoidCameraMode | undefined;
@@ -58,7 +58,7 @@ export declare class LocalCharacterSingleton implements OnStart {
      * This will only work if using {@link CharacterCameraMode.Locked}. You can set this with {@link SetCharacterCameraMode()}
      */
     SetFirstPerson(value: boolean): void;
-    GetEntityInput(): EntityInput | undefined;
+    GetEntityInput(): CharacterInput | undefined;
     /**
      * When set to true, the move input will always make "W" point north, "A" west, etc.
      *

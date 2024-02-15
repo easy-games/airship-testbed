@@ -96,7 +96,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public ShowAvatar() {
 		this.gameObject.SetActive(true);
-		this.anim?.SetState(CharacterState.Idle, true);
+		//this.anim?.SetState(CharacterState.Idle, true);
 	}
 
 	public HideAvatar() {

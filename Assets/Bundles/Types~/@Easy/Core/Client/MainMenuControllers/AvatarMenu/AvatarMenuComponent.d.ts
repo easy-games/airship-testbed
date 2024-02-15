@@ -23,12 +23,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private currentUserOutfitIndex;
     private clientId;
     avatarCenterRect?: RectTransform;
-    avatarRenderCenterRect?: RectTransform;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
-    OpenPage(): void;
     private RefreshAvatar;
     private GetCenter;
+    OpenPage(): void;
     ClosePage(instant?: boolean): void;
     private SelectMainNav;
     private SelectSubNav;
