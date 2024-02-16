@@ -893,5 +893,6 @@ interface SteamLuauAPIConstructor {
 	SetRichPresence(key: string, tag: string): boolean;
 
 	OnRichPresenceGameJoinRequest(callback: (connectStr: string, steamId: number) => void): EngineEventConnection;
+	ProcessPendingJoinRequests(): void;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
