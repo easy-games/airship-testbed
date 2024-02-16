@@ -20,6 +20,7 @@ import { Signal } from "Shared/Util/Signal";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
+import { ClientSettingsController } from "../Settings/ClientSettingsController";
 import { SocketController } from "../Socket/SocketController";
 import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
@@ -211,7 +212,10 @@ export class FriendsController implements OnStart {
 
 	public Setup(): void {
 		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
-		const savedStatus = StateManager.GetString("social:status-text");
+		let savedStatus = StateManager.GetString("social:status-text");
+		if (!savedStatus) {
+			savedStatus = Dependency<ClientSettingsController>().data.statusText;
+		}
 		if (savedStatus) {
 			this.statusText = savedStatus;
 			statusTextInput.text = savedStatus;
@@ -234,6 +238,8 @@ export class FriendsController implements OnStart {
 
 	public SetStatusText(text: string): void {
 		this.statusText = text;
+		Dependency<ClientSettingsController>().data.statusText = text;
+		Dependency<ClientSettingsController>().MarkAsDirty();
 	}
 
 	public GetStatusText(): string {
