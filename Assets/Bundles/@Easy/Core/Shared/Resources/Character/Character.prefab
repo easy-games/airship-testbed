@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5733439473539740281}
   - component: {fileID: 1815581813687179063}
-  m_Layer: 0
+  - component: {fileID: 2750803619892193745}
+  m_Layer: 3
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,6 +111,23 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000029802322, y: -0.16689062, z: 1.5618718}
     m_Extent: {x: 0.17434396, y: 0.055885077, z: 0.18991852}
   m_DirtyAABB: 0
+--- !u!114 &2750803619892193745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053236251672884200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 0.6509434, g: 0.63596606, b: 0.617168, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 1
 --- !u!1 &1611444276698400702
 GameObject:
   m_ObjectHideFlags: 0
@@ -5507,7 +5525,7 @@ GameObject:
   - component: {fileID: 8119664724234704368}
   - component: {fileID: 2911094191388312299}
   - component: {fileID: 6273415653783523656}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

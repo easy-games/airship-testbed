@@ -750,7 +750,7 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 13
+      serializedValue: 28
       serializedObject: {fileID: 0}
       modified: 1
     - name: spinAnimLoop
@@ -1506,6 +1506,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8868174725847010011}
     m_Modifications:
+    - target: {fileID: 1020156648280376034, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1608199703042096777, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3305086825381478480, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413962692505036468, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8584166533509011294, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
       propertyPath: m_Name
       value: CharacterDummy

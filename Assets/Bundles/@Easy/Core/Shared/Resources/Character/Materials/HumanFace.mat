@@ -8,17 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HumanFace
-  m_Shader: {fileID: 4800000, guid: 6330d0f14dc3c884ea990fa91a7bd441, type: 3}
+  m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - EXPLICIT_MAPS_ON
+  - NUM_LIGHTS_LIGHTS2
+  - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - EXPLICIT_MAPS
-  - EXPLICIT_MAPS_ON
   - METAL_ON_ON
-  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE
-  - TRIPLANAR_STYLE_OFF
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
   - _TRIPLANAR_TRIPLANAR_LOCAL

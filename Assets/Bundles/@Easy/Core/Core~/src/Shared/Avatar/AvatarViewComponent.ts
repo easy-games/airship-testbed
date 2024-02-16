@@ -50,6 +50,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private spinBigStartTime = 0;
 	private spinningBig = false;
 	private spinAnimationTriggered = false;
+	private freeSpinning = false;
 
 	private bin = new Bin();
 
@@ -89,10 +90,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			OnUpdate.Connect((dt) => {
 				//FREE SPINNING
 				if (!this.dragging && math.abs(this.spinVel) > 0.01) {
+					this.freeSpinning = true;
 					this.spinVel = this.spinVel * (1 - dt * this.freeSpinDrag);
 					// this.spinVel -= (this.spinVel / this.freeSpinDrag) * dt;
 					this.avatarHolder?.Rotate(0, this.spinVel, 0);
 					this.UpdateSpinAnimation();
+				} else if (this.freeSpinning) {
+					this.freeSpinning = false;
 				}
 			}),
 		);
@@ -106,25 +110,30 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 				//Stop spinning big
 				this.spinningBig = false;
 				this.spinBigStartTime = 0;
+
+				if (this.spinAnimationTriggered) {
+					//Stumble animation
+					this.spinAnimationTriggered = false;
+					let options = new AnimationClipOptions();
+					options.fadeOutToClip = this.idleAnim;
+					this.anim?.Play(this.spinAnimStop, 0, options);
+				} else {
+					//Go to idle
+					let options = new AnimationClipOptions();
+					options.autoFadeOut = false;
+					this.anim?.Play(this.idleAnim, 0, options);
+				}
 			} else if (!this.spinAnimationTriggered) {
 				if (Time.time - this.spinBigStartTime > this.spinBigRequiredTime) {
-					//Play the spin animation
+					//We will stumble at the end
 					this.spinAnimationTriggered = true;
-					this.anim?.PlayOneShot(this.spinAnimLoop, 0);
 				}
 			}
-		} else {
-			if (speed > this.spinBigRequiredSpeed) {
-				//Start spinning big
-				this.spinningBig = true;
-				this.spinBigStartTime = Time.time;
-			} else if (this.spinAnimationTriggered) {
-				//Stop the spin animation
-				this.spinAnimationTriggered = false;
-				let options = new AnimationClipOptions();
-				options.fadeOutToClip = this.idleAnim;
-				this.anim?.Play(this.spinAnimStop, 0, options);
-			}
+		} else if (speed > this.spinBigRequiredSpeed) {
+			//Start spinning big
+			this.spinningBig = true;
+			this.spinBigStartTime = Time.time;
+			this.anim?.PlayOneShot(this.spinAnimLoop, 0);
 		}
 	}
 
