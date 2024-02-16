@@ -3979,6 +3979,10 @@ PrefabInstance:
       propertyPath: m_Size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6136699804409668924, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6574512735041070750, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_RaycastPadding.w
       value: -10
@@ -5136,6 +5140,14 @@ PrefabInstance:
     - target: {fileID: 3885864321288666281, guid: 181b2904433958842b5d064457bf28cf, type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970283056903301924, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_Elasticity
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 3970283056903301924, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: m_MovementType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3981167935638919472, guid: 181b2904433958842b5d064457bf28cf, type: 3}
       propertyPath: m_AnchorMax.y

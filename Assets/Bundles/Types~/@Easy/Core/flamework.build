@@ -60,6 +60,8 @@
 		"@Easy/Core:Shared/Avatar/AvatarUtil@AvatarUtil": "$:Avatar/AvatarUtil@AvatarUtil",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController": "$:MainMenuControllers/MainMenuController@MainMenuController",
+		"@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
+		"@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 		"@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController": "$:MainMenuControllers/Social/FriendsController@FriendsController",
 		"@Easy/Core:Shared/MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow": "$:MainMenu/Components/DirectMessagesWindow@DirectMessagesWindow",
 		"@Easy/Core:Shared/MainMenu/Components/PartyChatButton@PartyChatButton": "$:MainMenu/Components/PartyChatButton@PartyChatButton",
@@ -86,8 +88,6 @@
 		"@Easy/Core:Client/Controllers/Camera/DefaultCameraModes/StaticCameraMode@StaticCameraMode": "$:Controllers/Camera/DefaultCameraModes/StaticCameraMode@StaticCameraMode",
 		"@Easy/Core:Client/Controllers/Camera/CameraSystem@CameraSystem": "$:Controllers/Camera/CameraSystem@CameraSystem",
 		"@Easy/Core:Client/Controllers/Camera/CameraController@CameraController": "$:Controllers/Camera/CameraController@CameraController",
-		"@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
-		"@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 		"@Easy/Core:Shared/Util/MathUtil@MathUtil": "$:Util/MathUtil@MathUtil",
 		"@Easy/Core:Client/Controllers/Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode": "$:Controllers/Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode",
 		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
@@ -314,6 +314,28 @@
 			]
 		},
 		{
+			"filePath": "../Client/MainMenuControllers/AmbientSound/AmbientSoundController.lua",
+			"internalId": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Settings/ClientSettingsController.lua",
+			"internalId": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
 			"filePath": "../Client/MainMenuControllers/Social/FriendsController.lua",
 			"internalId": "$:MainMenuControllers/Social/FriendsController@FriendsController",
 			"decorators": [
@@ -382,28 +404,6 @@
 		{
 			"filePath": "../Client/Controllers/Camera/CameraController.lua",
 			"internalId": "$:Controllers/Camera/CameraController@CameraController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/MainMenuControllers/AmbientSound/AmbientSoundController.lua",
-			"internalId": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/MainMenuControllers/Settings/ClientSettingsController.lua",
-			"internalId": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
