@@ -248,7 +248,7 @@ export class FriendsController implements OnStart {
 			gameId: Game.gameId,
 			metadata: {
 				statusText: this.statusText,
-				customGameTitle: this.customGameTitle,
+				customGameTitle: Game.gameData?.name,
 			},
 		};
 		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", EncodeJSON(status));
