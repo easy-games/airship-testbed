@@ -3,6 +3,7 @@ import { OnStart } from "../../../Shared/Flamework";
 import { Signal } from "../../../Shared/Util/Signal";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
+import { ClientSettingsController } from "../Settings/ClientSettingsController";
 import { SocketController } from "../Socket/SocketController";
 import { User } from "../User/User";
 import { FriendStatus } from "./SocketAPI";
@@ -11,6 +12,7 @@ export declare class FriendsController implements OnStart {
     private readonly socketController;
     private readonly mainMenuController;
     private readonly rightClickMenuController;
+    private readonly clientSettingsController;
     friends: User[];
     incomingFriendRequests: User[];
     outgoingFriendRequests: User[];
@@ -25,7 +27,7 @@ export declare class FriendsController implements OnStart {
     private friendRequestsButton;
     private socialNotificationKey;
     onIncomingFriendRequestsChanged: Signal<void>;
-    constructor(authController: AuthController, socketController: SocketController, mainMenuController: MainMenuController, rightClickMenuController: RightClickMenuController);
+    constructor(authController: AuthController, socketController: SocketController, mainMenuController: MainMenuController, rightClickMenuController: RightClickMenuController, clientSettingsController: ClientSettingsController);
     AddSocialNotification(key: string, title: string, username: string, onResult: (result: boolean) => void): void;
     ClearSocialNotification(): void;
     FireNotificationKey(key: string): void;

@@ -8,4 +8,5 @@ export interface ClientSettingsFile {
     thirdPersonFov: number;
     screenshotShowUI: boolean;
     screenshotRenderHD: boolean;
+    statusText: string;
 }
