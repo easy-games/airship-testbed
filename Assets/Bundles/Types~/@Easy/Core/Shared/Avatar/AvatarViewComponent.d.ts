@@ -37,6 +37,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     private spinBigStartTime;
     private spinningBig;
     private spinAnimationTriggered;
+    private freeSpinning;
     private bin;
     Start(): void;
     OnEnable(): void;
