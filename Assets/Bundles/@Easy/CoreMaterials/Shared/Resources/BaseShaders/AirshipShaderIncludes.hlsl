@@ -65,9 +65,9 @@ half PhongApprox(half Roughness, half RoL)
     return rcp_a2 * exp2(c * RoL - c);
 }
 
-//Requires your vertToFrag structure to have 
-// output.shadowCasterPos0 = CalculateVertexShadowData0
-// output.shadowCasterPos1 = CalculateVertexShadowData1
+//Shadows require your vertex prog to have something akin to:
+//output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
+//output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
 
 float4 CalculateVertexShadowData0(float4 worldspacePos, float3 worldspaceNormal)
 {
