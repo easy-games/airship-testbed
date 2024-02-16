@@ -50,7 +50,7 @@ Shader "Airship/AirshipCrystal"
 			#pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
 			
 			#include "UnityCG.cginc"
-            #include "../AirshipShaderIncludes.cginc"
+            #include "../AirshipShaderIncludes.hlsl"
 
 			struct appdata
 			{

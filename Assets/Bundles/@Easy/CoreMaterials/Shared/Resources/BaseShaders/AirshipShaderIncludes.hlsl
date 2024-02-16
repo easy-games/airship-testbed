@@ -1,5 +1,3 @@
-// Upgrade NOTE: commented out 'float3 _WorldSpaceCameraPos', a built-in variable
-
 #ifndef AIRSHIPSHADER_INCLUDE
 #define AIRSHIPSHADER_INCLUDE
 
@@ -8,11 +6,12 @@ float4 _ColorInstanceData[16];//Instance data (for this material)
 
 //Lighting variables
 half3 globalSunDirection = normalize(half3(-1, -3, 1.5));
-float _SunScale = 1; //How much the sun is hitting you
-half3 globalSunColor;
-float globalSunBrightness;
+half globalSunShadow;   //Shadow transparency
+half3 globalSunColor;   //Suns color
+float globalSunBrightness;  //Suns brightness
 half3 globalAmbientLight[9];//Global ambient values
-half3 globalAmbientTint;
+half3 globalAmbientTint;    //last second RGB tint of the ambient SH
+half globalAmbientOcclusion; //For anything that calc's AO
 
 //Point Lights
 float NUM_LIGHTS; //Required for dynamic lights
@@ -20,16 +19,18 @@ half4 globalDynamicLightColor[2];
 float4 globalDynamicLightPos[2];
 half globalDynamicLightRadius[2];
 
+//Fog///////////////
 float globalFogStart;
 float globalFogEnd;
 half3 globalFogColor;
 
-
+//Rim lighting///
 half _RimPower;
 half _RimIntensity;
 half4 _RimColor;
 
 //Shadow stuff///////
+float4 _ShadowBias;
 float4x4 _ShadowmapMatrix0;
 float4x4 _ShadowmapMatrix1;
 Texture2D _GlobalShadowTexture0;
@@ -37,6 +38,8 @@ Texture2D _GlobalShadowTexture1;
 SamplerComparisonState sampler_GlobalShadowTexture0;
 SamplerComparisonState sampler_GlobalShadowTexture1;
 /////////////////////
+
+
 
 half4 SRGBtoLinear(half4 srgb)
 {
@@ -62,6 +65,20 @@ half PhongApprox(half Roughness, half RoL)
     return rcp_a2 * exp2(c * RoL - c);
 }
 
+//Shadows require your vertex prog to have something akin to:
+//output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
+//output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
+
+float4 CalculateVertexShadowData0(float4 worldspacePos, float3 worldspaceNormal)
+{
+    return mul(_ShadowmapMatrix0, worldspacePos + float4((worldspaceNormal * _ShadowBias.x), 0));
+}
+
+float4 CalculateVertexShadowData1(float4 worldspacePos, float3 worldspaceNormal)
+{
+    return mul(_ShadowmapMatrix1, worldspacePos + float4((worldspaceNormal * _ShadowBias.y), 0));
+}
+
 #define SAMPLE_TEXTURE2D_SHADOW(textureName, samplerName, coord3) textureName.SampleCmpLevelZero(samplerName, (coord3).xy, (coord3).z)
 
 half GetShadowSample(Texture2D tex, SamplerComparisonState textureSampler, half2 uv, half bias, half comparison)
@@ -82,10 +99,28 @@ half GetShadowSample(Texture2D tex, SamplerComparisonState textureSampler, half2
     return (shadowDepth0 + shadowDepth1 + shadowDepth2 + shadowDepth3) * 0.25;
 }
 
+half CalculateShadowLightTerm(half3 worldNormal, half3 lightDir)
+{
+    //Do a small angle where shadows aggressively blend in based on incidence from the light - this stops shadows popping but they 
+    //appear a little 'earlier' than strictly realistic
+    const half lightFadeAngle = 0.1; //0.1 is about 6 degrees
+    half lightTerm = dot(worldNormal, -lightDir);
+    lightTerm = max(lightTerm, 0);
+    half underFadeAngleFactor = lightTerm < lightFadeAngle ? 1.0 : 0.0;
+    lightTerm = lerp(1.0, lightTerm / lightFadeAngle, underFadeAngleFactor);
+
+    return lightTerm;
+}
+
 half GetShadow(float4 shadowCasterPos0, float4 shadowCasterPos1, half3 worldNormal, half3 lightDir)
 {
     //Shadows
-    //Todo: move this to vertex interpolator
+    half lightTerm = CalculateShadowLightTerm(worldNormal, lightDir);
+    if (lightTerm < 0.001)//benchmark me
+    {
+        return 0;
+    }
+
     half3 shadowPos0 = shadowCasterPos0.xyz / shadowCasterPos0.w;
     half2 shadowUV0 = shadowPos0.xy * 0.5 + 0.5;
 
@@ -97,38 +132,26 @@ half GetShadow(float4 shadowCasterPos0, float4 shadowCasterPos1, half3 worldNorm
 
         if (shadowUV1.x < 0 || shadowUV1.x > 1 || shadowUV1.y < 0 || shadowUV1.y > 1)
         {
-            return 1;
+            return lightTerm;
         }
-        
-         // Compare depths (shadow caster and current pixel)
-        half sampleDepth1 = -shadowPos1.z * 0.5f + 0.5f;
-        //half bias = 0.0001;
-        //sampleDepth1 += bias;
 
-        half3 input = half3(shadowUV1.x, 1 - shadowUV1.y, sampleDepth1);
-        half shadowFactor = SAMPLE_TEXTURE2D_SHADOW(_GlobalShadowTexture1, sampler_GlobalShadowTexture1, input);
-        
-        //Quick darkening
-        //float range = 0.42;
-        //shadowFactor = min(smoothstep(range, range + 0.05, saturate(dot(worldNormal, -lightDir))), shadowFactor);
-        
-        return shadowFactor;
+        // Compare depths (shadow caster and current pixel)
+        half sampleDepth1 = -shadowPos1.z * 0.5f + 0.5f;
+        half3 inputPos = half3(shadowUV1.x, 1 - shadowUV1.y, sampleDepth1);
+        half shadowFactor = SAMPLE_TEXTURE2D_SHADOW(_GlobalShadowTexture1, sampler_GlobalShadowTexture1, inputPos);
+
+        return shadowFactor * lightTerm;
     }
     else
     {
         // Compare depths (shadow caster and current pixel)
         half sampleDepth0 = -shadowPos0.z * 0.5f + 0.5f;
-        //half bias = 0.0001;
         half shadowFactor0 = GetShadowSample(_GlobalShadowTexture0, sampler_GlobalShadowTexture0, shadowUV0, 0, sampleDepth0);
-        
-        //Quick darkening
-        //float range = 0.42;
-        //shadowFactor0 = min(smoothstep(range, range + 0.05, saturate(dot(worldNormal, -lightDir))), shadowFactor0);
-        
-        return shadowFactor0;
+
+        return shadowFactor0 * lightTerm;
     }
 }
-    
+
 half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 lightColor, half lightRange)
 {
     float3 lightVec = lightPos - worldPos;
@@ -148,6 +171,8 @@ half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, h
 
     return result;
 }
+
+ 
 
 inline half3 CalculateAtmosphericFog(half3 currentFragColor, float viewDistance)
 {

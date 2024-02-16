@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.20784314}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.19215687}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -179,8 +179,8 @@ MonoBehaviour:
   m_Texture: {fileID: 0}
   _outlineWidth: 2
   _cornerRadius: 12
-  _cornerSegments: 20
-  _mappingBias: 0.5
+  _cornerSegments: 9
+  _mappingBias: 0.512
   _fillCenter: 0
 --- !u!1 &1949978661599695519
 GameObject:
@@ -1821,7 +1821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.078431375}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.02745098}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

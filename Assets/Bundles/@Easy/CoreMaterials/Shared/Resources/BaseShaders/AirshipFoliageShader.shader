@@ -46,7 +46,7 @@ Shader "Airship/FoliageShader"
             #pragma fragment fragFunction
             
             #include "UnityCG.cginc"
-            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.cginc"
+            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
             //Most of this shader lives in an include file
             #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipFoliageShaderInclude.hlsl"
@@ -96,7 +96,7 @@ Shader "Airship/FoliageShader"
             #pragma fragment fragFunction
             
             #include "UnityCG.cginc"
-            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.cginc"
+            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
             //Most of this shader lives in an include file
             #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipFoliageShaderInclude.hlsl"

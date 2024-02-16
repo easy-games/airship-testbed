@@ -16,11 +16,12 @@ const defaultData: ClientSettingsFile = {
 	thirdPersonFov: 80,
 	screenshotRenderHD: false,
 	screenshotShowUI: false,
+	statusText: "",
 };
 
 @Controller({ loadOrder: -1 })
 export class ClientSettingsController implements OnStart {
-	private data: ClientSettingsFile;
+	public data: ClientSettingsFile;
 	private unsavedChanges = false;
 	private settingsLoaded = false;
 	private onSettingsLoaded = new Signal<void>();
@@ -51,6 +52,10 @@ export class ClientSettingsController implements OnStart {
 				this.SaveSettings();
 			}
 		});
+	}
+
+	public MarkAsDirty(): void {
+		this.unsavedChanges = true;
 	}
 
 	public async WaitForSettingsLoaded(): Promise<void> {
