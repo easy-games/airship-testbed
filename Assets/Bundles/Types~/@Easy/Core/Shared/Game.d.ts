@@ -31,6 +31,6 @@ export declare class Game {
     static organizationId: string;
     static startingScene: string;
     static gameData: GameData | undefined;
-    /** Returns game data if already fetched. Otherwise tries to fetch game data based on gameId */
-    static FetchGameData(): GameData | undefined;
+    static onGameDataLoaded: Signal<GameData>;
+    static WaitForGameData(): GameData;
 }

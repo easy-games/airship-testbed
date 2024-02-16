@@ -408,6 +408,9 @@ export class FriendsController implements OnStart {
 													// partyId: friend,
 												}),
 											);
+											if (!res.success) {
+												Debug.LogError(res.error);
+											}
 										});
 									},
 								},
