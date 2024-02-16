@@ -8,15 +8,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BlacksmithHairMat
-  m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
+  m_Shader: {fileID: 4800000, guid: 498b6bf8d21a44021aa723f1c203bf20, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_OFF
-  m_InvalidKeywords:
   - _ZWRITE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -28,6 +28,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AnisoNoise:
+        m_Texture: {fileID: 2800000, guid: 4e58b2c4079714a9fbd6d29d31e18b0a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -57,7 +61,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 16514325ec5462044a628ca68739f75e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 781266cb27b0c364b8e44e55f768a517, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -66,6 +70,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: b0e125c9985c2e04a87f5b17fb12f825, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
@@ -84,6 +92,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShadowRamp:
+        m_Texture: {fileID: 2800000, guid: c4ab96ffa2ca78d41b6bd5cc761c300b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - EMISSIVE: 0
@@ -96,6 +108,13 @@ Material:
     - TRIPLANAR_STYLE: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
+    - _AmbientMod: 1
+    - _AnisoNoiseFreq: 6.86
+    - _AnisoNoiseStrength: 0.4
+    - _AnisoOffset: 0.46
+    - _AnisoRampIntensity: 0.2
+    - _AnisoRampMod: 3.81
+    - _AnisoStrength: 0.1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -110,10 +129,12 @@ Material:
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _Parallax: 0.02
-    - _RimIntensity: 0.75
-    - _RimPower: 2.5
+    - _RimIntensity: 1
+    - _RimPower: 2
     - _RoughOverride: 0
+    - _SaturationMod: 0.5
     - _SmoothnessTextureChannel: 0
+    - _SpecMod: 0.659
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _TriplanarScale: 0
@@ -121,10 +142,17 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorBot: {r: 0.16037738, g: 0.10459833, b: 0.100614116, a: 1}
+    - _ColorBottom: {r: 1, g: 0, b: 0.7747617, a: 1}
+    - _ColorMid: {r: 0.31132078, g: 0.27394092, b: 0.2599235, a: 1}
+    - _ColorTop: {r: 0.26415092, g: 0.19736558, b: 0.18066926, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 0.9245283, g: 0.5909632, b: 0.3532396, a: 1}
+    - _RimColorShadow: {r: 0.122641504, g: 0.030660376, b: 0.045377344, a: 1}
+    - _ShadowColor: {r: 0.2830189, g: 0.15259345, b: 0.11614455, a: 1}
+    - _SpecColor: {r: 0.990566, g: 0.4719206, b: 0.5574157, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
