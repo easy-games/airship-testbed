@@ -221,9 +221,7 @@ export class FriendsController implements OnStart {
 			statusTextInput.text = savedStatus;
 		}
 		CanvasAPI.OnInputFieldSubmit(statusTextInput.gameObject, (data) => {
-			this.statusText = data;
-			StateManager.SetString("social:status-text", data);
-			this.SendStatusUpdate();
+			this.SetStatusText(data);
 			EventSystem.current.ClearSelected();
 		});
 	}
@@ -238,8 +236,10 @@ export class FriendsController implements OnStart {
 
 	public SetStatusText(text: string): void {
 		this.statusText = text;
+		StateManager.SetString("social:status-text", text);
 		Dependency<ClientSettingsController>().data.statusText = text;
 		Dependency<ClientSettingsController>().MarkAsDirty();
+		this.SendStatusUpdate();
 	}
 
 	public GetStatusText(): string {
