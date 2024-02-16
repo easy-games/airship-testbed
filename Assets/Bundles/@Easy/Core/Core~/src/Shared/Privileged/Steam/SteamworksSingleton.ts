@@ -15,7 +15,6 @@ interface SteamConnectPacket {
 export class SteamworksSingleton implements OnStart {
 	OnStart(): void {
 		SteamLuauAPI.OnRichPresenceGameJoinRequest((connectionStr, steamId) => {
-			print("Received steam join request. ConnectionStr: " + connectionStr);
 			const connectInfo = DecodeJSON<SteamConnectPacket>(connectionStr);
 			Dependency<TransferController>().TransferToGameAsync(connectInfo.gameId, connectInfo.serverId);
 		});
