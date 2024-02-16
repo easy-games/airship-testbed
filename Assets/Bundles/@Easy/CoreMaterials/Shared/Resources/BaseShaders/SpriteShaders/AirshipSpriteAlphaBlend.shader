@@ -30,7 +30,7 @@ Shader "Airship/AirshipSpriteAlphaBlend"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "../AirshipShaderIncludes.cginc"
+            #include "../AirshipShaderIncludes.hlsl"
 
             struct appdata
             {

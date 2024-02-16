@@ -44,7 +44,7 @@ Shader "Airship/AirshipNoiseDistorttoon"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.cginc"
+            #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
             struct appdata
             {

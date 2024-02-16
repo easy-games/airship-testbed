@@ -41,7 +41,7 @@ Shader "Airship/AirshipToonHair"
             CGPROGRAM
             
 			#include "UnityCG.cginc"
-            #include "../AirshipShaderIncludes.cginc"
+            #include "../AirshipShaderIncludes.hlsl"
             
             static float4 RimDirTest = float4(1,1,0,1);
             static float LightingBlend = .5;

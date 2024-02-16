@@ -993,7 +993,7 @@ Shader "Airship/AirshipFaceShaderPBR"
             #pragma fragment frag
             
 			#include "UnityCG.cginc"
-            #include "../AirshipShaderIncludes.cginc"
+            #include "../AirshipShaderIncludes.hlsl"
                        
             struct VertData
             {

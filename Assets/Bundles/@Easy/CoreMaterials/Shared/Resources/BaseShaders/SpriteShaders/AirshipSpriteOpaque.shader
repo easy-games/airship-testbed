@@ -25,7 +25,7 @@ Shader "Airship/AirshipSpriteOpaque"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "../AirshipShaderIncludes.cginc"
+            #include "../AirshipShaderIncludes.hlsl"
 
             struct appdata
             {

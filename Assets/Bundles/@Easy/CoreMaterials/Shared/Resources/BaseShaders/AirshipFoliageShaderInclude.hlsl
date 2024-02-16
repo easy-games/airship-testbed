@@ -28,8 +28,6 @@ float4 _ShadowColor;
 float4 _FresnelColor;
 float4 _MainTex_ST;
 half _Alpha = 1;
-half globalAmbientOcclusion = 0;
-
 
 struct Attributes
 {
