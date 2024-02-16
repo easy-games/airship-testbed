@@ -52,6 +52,7 @@ export class FriendsController implements OnStart {
 		private readonly socketController: SocketController,
 		private readonly mainMenuController: MainMenuController,
 		private readonly rightClickMenuController: RightClickMenuController,
+		private readonly clientSettingsController: ClientSettingsController,
 	) {}
 
 	public AddSocialNotification(
@@ -213,11 +214,13 @@ export class FriendsController implements OnStart {
 	public Setup(): void {
 		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
 		let savedStatus = StateManager.GetString("social:status-text");
-		if (!savedStatus) {
-			savedStatus = Dependency<ClientSettingsController>().data.statusText;
+		if (!savedStatus || savedStatus === "") {
+			this.clientSettingsController.WaitForSettingsLoaded();
+			savedStatus = this.clientSettingsController.data.statusText;
+			print("saved: " + savedStatus);
 		}
 		if (savedStatus) {
-			this.statusText = savedStatus;
+			this.SetStatusText(savedStatus);
 			statusTextInput.text = savedStatus;
 		}
 		CanvasAPI.OnInputFieldSubmit(statusTextInput.gameObject, (data) => {
@@ -237,8 +240,8 @@ export class FriendsController implements OnStart {
 	public SetStatusText(text: string): void {
 		this.statusText = text;
 		StateManager.SetString("social:status-text", text);
-		Dependency<ClientSettingsController>().data.statusText = text;
-		Dependency<ClientSettingsController>().MarkAsDirty();
+		this.clientSettingsController.data.statusText = text;
+		this.clientSettingsController.MarkAsDirty();
 		this.SendStatusUpdate();
 	}
 
