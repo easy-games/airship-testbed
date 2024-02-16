@@ -20,6 +20,11 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     alignmentOffsetWorldpsace: Vector3;
     accessoryBuilder?: AccessoryBuilder;
     anim?: CharacterAnimationHelper;
+    idleAnim: AnimationClip;
+    spinAnimLoop: AnimationClip;
+    spinAnimStop: AnimationClip;
+    spinBigRequiredTime: number;
+    spinBigRequiredSpeed: number;
     private targetTransform?;
     private mouse?;
     private lastMousePos;
@@ -29,9 +34,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     private lastScreenRefreshTime;
     private screenRefreshCooldown;
     private screenSizeIsDirty;
+    private spinBigStartTime;
+    private spinningBig;
+    private spinAnimationTriggered;
     private bin;
     Start(): void;
     OnEnable(): void;
+    private UpdateSpinAnimation;
     OnDisable(): void;
     FixedUpdate(dt: number): void;
     private CreateRenderTexture;

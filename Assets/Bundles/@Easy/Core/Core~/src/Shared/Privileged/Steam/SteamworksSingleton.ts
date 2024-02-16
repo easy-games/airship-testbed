@@ -19,6 +19,7 @@ export class SteamworksSingleton implements OnStart {
 			const connectInfo = DecodeJSON<SteamConnectPacket>(connectionStr);
 			Dependency<TransferController>().TransferToGameAsync(connectInfo.gameId, connectInfo.serverId);
 		});
+		SteamLuauAPI.ProcessPendingJoinRequests();
 
 		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId, organizationId) => {
 			Game.gameId = gameId;
