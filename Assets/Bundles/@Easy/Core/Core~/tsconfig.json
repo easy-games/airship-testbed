@@ -23,6 +23,7 @@
 
 		// configurable
 		// "rootDirs": ["src/Server", "src/Client", "src/Shared"],
+		"rootDir": "src",
 		"outDir": "../",
         "paths": {
             "@*": [
