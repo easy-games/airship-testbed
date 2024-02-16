@@ -100,6 +100,7 @@ Shader "Airship/AirshipFaceShaderPBR"
             Texture2D _EyeMaskTex;
             
             
+            float4 _ShadowBias;
             Texture2D _GlobalShadowTexture0;
             Texture2D _GlobalShadowTexture1;
             SamplerComparisonState sampler_GlobalShadowTexture0;
@@ -222,6 +223,16 @@ Shader "Airship/AirshipFaceShaderPBR"
                 return o;
             }
 
+            float4 CalculateVertexShadowData0(float4 worldspacePos, float3 worldspaceNormal)
+            {
+                return mul(_ShadowmapMatrix0, worldspacePos + float4((worldspaceNormal * _ShadowBias.x), 0));
+            }
+
+            float4 CalculateVertexShadowData1(float4 worldspacePos, float3 worldspaceNormal)
+            {
+                return mul(_ShadowmapMatrix1, worldspacePos + float4((worldspaceNormal * _ShadowBias.y), 0));
+            }
+
             inline half3 CalculateAtmosphericFog(half3 currentFragColor, float viewDistance)
             {
                 // Calculate fog factor
@@ -246,8 +257,8 @@ Shader "Airship/AirshipFaceShaderPBR"
                 float3 shadowNormal = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
 
                 // Apply the adjusted offset
-                output.shadowCasterPos0 = mul(_ShadowmapMatrix0, worldPos +float4((shadowNormal * 0.03),0));
-                output.shadowCasterPos1 = mul(_ShadowmapMatrix1, worldPos +float4((shadowNormal * 0.06),0));
+                output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
+                output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
                         
                 output.uv_MainTex = input.uv_MainTex;
                 output.uv_MainTex = float4((input.uv_MainTex * _MainTex_ST.xy + _MainTex_ST.zw).xy, 1, 1);
