@@ -20,7 +20,9 @@ export class SteamworksSingleton implements OnStart {
 			if (!connectInfo || !connectInfo.gameId || !connectInfo.serverId) {
 				print("[SteamworksSingleton] Invalid connect info on steam join request: " + inspect(connectInfo));
 				print("[SteamworksSingleton] Connection string: " + connectionStr);
+				return;
 			}
+			print("[SteamworksSingleton] Transfer to game: " + inspect(connectionStr));
 			Dependency<TransferController>().TransferToGameAsync(connectInfo.gameId, connectInfo.serverId);
 		});
 		SteamLuauAPI.ProcessPendingJoinRequests();
