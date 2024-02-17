@@ -37,6 +37,7 @@
 
     float  _Alpha;
     float4 _Color;
+    float4 _ShadowColor;
     float4 _SpecularColor;
     float4 _OverrideColor;
     float _OverrideStrength;
@@ -117,6 +118,7 @@
 
         output.worldPos = worldPos;
         output.color = input.color;
+        
         output.baseColor = lerp(_Color, _OverrideColor, _OverrideStrength);
 
         //Do ambient occlusion at the vertex level, encode it into vertex color g
@@ -477,7 +479,7 @@
         /////////////////////////////////////////////////////
 
         half3 textureColor = texSample.xyz;
-
+        
 #if VERTEX_LIGHT_ON
         //If we're using baked shadows (voxel world geometry)
         //The input diffuse gets multiplied by the vertex color.r
@@ -486,7 +488,7 @@
         pointLight1Mask = 1;// input.color.a;
 #else
         //Otherwise it gets multiplied by the whole thing
-        textureColor.rgb *= input.color.rgb;
+        //textureColor.rgb *= input.color.rgb;
 #endif  
 
         //Specular
@@ -527,15 +529,13 @@
         
         //SH ambient 
         half3 ambientLight = (complexAmbientSample * globalAmbientTint);
-#if VERTEX_LIGHT_ON
-        //Todo, replace me with a texture based lookup
-        //half3 bakedLighting = input.bakedLight.xyz;
-        //ambientLight = max(ambientLight, bakedLighting);
-#endif        
+ 
         half3 finalAmbient = (ambientLight * diffuseColor);
 
         //Composite sun and ambient together
-        finalColor = (finalSun + finalAmbient);
+        half3 compositeSunAmbient = (finalSun + finalAmbient);
+        //Pick which tint color to use based on the sun shadow mask
+        finalColor = lerp(compositeSunAmbient * _ShadowColor, compositeSunAmbient * input.color.rgb, sunShadowMask);
         
 
         //Start messing with the final color in fun ways
