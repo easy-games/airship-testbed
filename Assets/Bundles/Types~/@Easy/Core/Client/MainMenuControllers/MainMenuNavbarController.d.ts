@@ -7,10 +7,12 @@ export declare class MainMenuNavbarController implements OnStart {
     private readonly userController;
     private readonly authController;
     private refreshButton;
+    private searchFocused;
     constructor(mainMenuController: MainMenuController, userController: UserController, authController: AuthController);
     OnStart(): void;
     DoRefresh(): void;
     Setup(): void;
+    FocusSearchbar(): void;
     UpdateProfileSection(): void;
     private UpdateNavButton;
     private Disconnect;

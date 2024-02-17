@@ -63,6 +63,8 @@ export class MainMenuController implements OnStart {
 		if (Game.context === CoreContext.GAME) {
 			print("HIDING AVATAR");
 			this.avatarView.HideAvatar();
+		} else {
+			this.open = true;
 		}
 
 		const gameBG = this.refs.GetValue("UI", "GameBG");
