@@ -1,3 +1,5 @@
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import MainMenuPageComponent from "Client/MainMenuControllers/MainMenuPageComponent";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
@@ -84,6 +86,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
 			sortComponent.SetGames(games);
 		}
+
+		task.spawn(() => {
+			Dependency<SearchSingleton>().AddGames([...data.recentlyUpdated, ...data.popular]);
+		});
 	}
 
 	override OnDisable(): void {
