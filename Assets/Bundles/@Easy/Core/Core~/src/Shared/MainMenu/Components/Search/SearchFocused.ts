@@ -5,20 +5,23 @@ import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
 import SearchSingleton from "./SearchSingleton";
 
 export default class SearchFocused extends AirshipBehaviour {
+	@Header("References")
 	public inputField!: TMP_InputField;
 	public resultsWrapper!: Transform;
 	public background!: GameObject;
 
 	@Header("Prefabs")
 	public gameResultPrefab!: GameObject;
+	public noResultsPrefab!: GameObject;
 
+	@Header("Variables")
 	public queryInputDelay = 0.1;
 	public queryCooldown = 0.1;
 
@@ -27,11 +30,13 @@ export default class SearchFocused extends AirshipBehaviour {
 	private inputDirty = false;
 
 	private index = 0;
+	private resultsCount = 0;
 	private activeResult: SearchResult | undefined;
 
 	private bin = new Bin();
 
 	public OnEnable(): void {
+		this.resultsWrapper.gameObject.ClearChildren();
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnValueChangeEvent(this.inputField.gameObject, () => {
 				this.lastInputTime = Time.time;
@@ -42,7 +47,6 @@ export default class SearchFocused extends AirshipBehaviour {
 		task.delay(0, () => {
 			this.inputField.Select();
 		});
-		this.resultsWrapper.gameObject.ClearChildren();
 
 		this.bin.Add(
 			OnFixedUpdate.Connect(() => {
@@ -82,12 +86,11 @@ export default class SearchFocused extends AirshipBehaviour {
 	}
 
 	private SetIndex(index: number): void {
-		const resultCount = this.resultsWrapper.childCount;
-		if (resultCount === 0) return;
+		if (this.resultsCount === 0) return;
 
 		if (index < 0) {
-			index = math.max(resultCount - 1, 0);
-		} else if (index >= resultCount) {
+			index = math.max(this.resultsCount - 1, 0);
+		} else if (index >= this.resultsCount) {
 			index = 0;
 		}
 		this.index = index;
@@ -96,18 +99,19 @@ export default class SearchFocused extends AirshipBehaviour {
 			this.activeResult.SetActive(false);
 		}
 
-		if (this.index >= resultCount) return;
+		if (this.index >= this.resultsCount) return;
 
-		const searchResult = this.resultsWrapper
-			.GetChild(this.index)
-			.gameObject.GetAirshipComponent<GameSearchResult>();
-		searchResult?.SetActive(true);
+		const searchResultGo = this.resultsWrapper.GetChild(this.index).gameObject;
+		const searchResult = searchResultGo.GetAirshipComponent<GameSearchResult>();
+		if (searchResult) {
+			searchResult.SetActive(true);
+		}
 		this.activeResult = searchResult;
-		searchResult!.gameObject.name = "selectedResult";
 	}
 
 	public Query(): void {
 		let text = this.inputField.text;
+		this.activeResult = undefined;
 
 		const search = Dependency<SearchSingleton>();
 		let allGames = [...search.games];
@@ -131,21 +135,33 @@ export default class SearchFocused extends AirshipBehaviour {
 				game: g,
 			};
 		});
-		this.RenderResults(results);
+		this.resultsCount = results.size();
+		this.RenderResults(text, results);
 	}
 
-	private RenderResults(searchResults: SearchResultDto[]): void {
+	private RenderResults(searchTerm: string, searchResults: SearchResultDto[]): void {
 		this.resultsWrapper.gameObject.ClearChildren();
+
+		if (searchResults.size() === 0) {
+			// no results
+			const go = Object.Instantiate(this.noResultsPrefab, this.resultsWrapper);
+			const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+			text.text = `${searchTerm}   <color=#A2A2A2>-   No results</color>`;
+			return;
+		}
+
 		for (let i = 0; i < searchResults.size(); i++) {
 			let searchResult = searchResults[i];
 			const go = Object.Instantiate(this.gameResultPrefab, this.resultsWrapper);
+			if (searchResult.game) {
+				go.name = searchResult.game.name;
+			}
 
 			const searchResultComp = go.GetAirshipComponent<GameSearchResult>()!;
 			searchResultComp.Init(searchResult);
 		}
-		// todo: idk why this only works with arbitrary delay...
-		task.delay(0.04, () => {
-			this.SetIndex(this.index);
+		OnLateUpdate.Once(() => {
+			this.SetIndex(0);
 		});
 	}
 

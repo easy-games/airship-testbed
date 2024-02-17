@@ -2,8 +2,8 @@ import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import ObjectUtils from "@easy-games/unity-object-utils";
 
-@Service({})
-@Controller({})
+@Service({ loadOrder: -1000 })
+@Controller({ loadOrder: -1000 })
 // @Singleton()
 export default class SearchSingleton implements OnStart {
 	public games: GameDto[] = [];

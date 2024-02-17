@@ -7,7 +7,7 @@ export default class SearchResult extends AirshipBehaviour {
 	public bgImage!: Image;
 
 	protected bin = new Bin();
-	private active = false;
+	public active = false;
 
 	@NonSerialized()
 	public searchResult!: SearchResultDto;
