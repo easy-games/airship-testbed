@@ -159,12 +159,18 @@ export class MainMenuNavbarController implements OnStart {
 	}
 
 	public FocusSearchbar(): void {
-		AppManager.OpenCustom(() => {
-			this.searchFocused.SetActive(false);
-		});
 		if (!this.mainMenuController.IsOpen()) {
 			this.mainMenuController.OpenFromGame();
 		}
+		AppManager.OpenCustom(
+			() => {
+				this.searchFocused.SetActive(false);
+			},
+			{
+				addToStack: true,
+				darkBackground: false,
+			},
+		);
 		this.searchFocused.SetActive(true);
 	}
 

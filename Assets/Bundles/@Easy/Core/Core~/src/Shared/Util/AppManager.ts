@@ -55,9 +55,12 @@ export class AppManager {
 		config?: {
 			darkBackground?: boolean;
 			darkBackgroundSortingOrder?: number;
+			addToStack?: boolean;
 		},
 	): void {
-		this.Close({ noCloseSound: true });
+		if (!config?.addToStack) {
+			this.Close({ noCloseSound: true });
+		}
 
 		this.opened = true;
 
