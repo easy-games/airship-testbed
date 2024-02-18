@@ -5,7 +5,7 @@ export default class SearchResult extends AirshipBehaviour {
     submitButton: GameObject;
     bgImage: Image;
     protected bin: Bin;
-    private active;
+    active: boolean;
     searchResult: SearchResultDto;
     Start(): void;
     OnEnable(): void;

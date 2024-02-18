@@ -4,12 +4,14 @@ export default class SearchFocused extends AirshipBehaviour {
     resultsWrapper: Transform;
     background: GameObject;
     gameResultPrefab: GameObject;
+    noResultsPrefab: GameObject;
     queryInputDelay: number;
     queryCooldown: number;
     private lastQueryTime;
     private lastInputTime;
     private inputDirty;
     private index;
+    private resultsCount;
     private activeResult;
     private bin;
     OnEnable(): void;
