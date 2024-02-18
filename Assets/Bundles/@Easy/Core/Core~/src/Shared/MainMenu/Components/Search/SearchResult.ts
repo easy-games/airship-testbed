@@ -12,7 +12,9 @@ export default class SearchResult extends AirshipBehaviour {
 	@NonSerialized()
 	public searchResult!: SearchResultDto;
 
-	override Start(): void {}
+	override Start(): void {
+		this.active = false;
+	}
 
 	public OnEnable(): void {
 		this.bin.AddEngineEventConnection(
