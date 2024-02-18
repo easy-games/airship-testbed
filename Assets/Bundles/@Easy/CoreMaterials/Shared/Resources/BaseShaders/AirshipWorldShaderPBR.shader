@@ -4,6 +4,7 @@ Shader "Airship/WorldShaderPBR"
     Properties
     {
         [HDR] _Color("Color", Color) = (1,1,1,1)
+        [HDR] _ShadowColor("Shadow Color", Color) = (1,1,1,1)
         _Alpha("Alpha", Float) = 1.0
         [HDR] _SpecularColor("Specular Color", Color) = (1,1,1,1)
         [HDR] _OverrideColor("Override Color", Color) = (1,1,1,1)

@@ -1,6 +1,5 @@
 import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { Levenshtein } from "@Easy/Core/Shared/Types/Levenshtein";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -10,6 +9,8 @@ import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
 import SearchSingleton from "./SearchSingleton";
+import { JaroDistance, JaroSimilarity, JaroWinkler } from "@Easy/Core/Shared/Util/Strings/JaroWinkler";
+import { Levenshtein } from "@Easy/Core/Shared/Util/Strings/Levenshtein";
 
 export default class SearchFocused extends AirshipBehaviour {
 	@Header("References")
@@ -127,7 +128,7 @@ export default class SearchFocused extends AirshipBehaviour {
 		if (text === "") {
 			games.sort((g1, g2) => (g1.liveStats?.playerCount ?? 0) > (g2.liveStats?.playerCount ?? 0));
 		} else {
-			games.sort((g1, g2) => Levenshtein(`${g1.name.lower()}`, text) < Levenshtein(`${g2.name.lower()}`, text));
+			games.sort((g1, g2) => JaroDistance(`${g1.name.lower()}`, text) < JaroDistance(`${g2.name.lower()}`, text));
 		}
 
 		let results: SearchResultDto[] = games.map((g) => {

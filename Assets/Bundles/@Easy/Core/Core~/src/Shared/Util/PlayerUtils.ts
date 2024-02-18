@@ -1,6 +1,6 @@
 import inspect from "@easy-games/unity-inspect";
 import { Player } from "Shared/Player/Player";
-import { Levenshtein } from "Shared/Types/Levenshtein";
+import { Levenshtein } from "@Easy/Core/Shared/Util/Strings/Levenshtein";
 import StringUtils from "Shared/Types/StringUtil";
 
 export class PlayerUtils {
