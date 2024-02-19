@@ -1356,13 +1356,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c162dc854d2f24fa639ba0623de5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 15.4
+  size: 10
   spread: 0
   useGlobalAngle: 0
   offsetAngle: 168.33298
-  offsetDistance: 4.96
-  offset: {x: -4.8575234, y: -1.0030295}
-  color: {r: 0, g: 0, b: 0, a: 0.49019608}
+  offsetDistance: 2.26
+  offset: {x: -2.213307, y: -0.4570255}
+  color: {r: 0, g: 0, b: 0, a: 0.35686275}
   inset: 0
   blendMode: 0
   useCasterAlpha: 1
