@@ -366,11 +366,6 @@ export class DirectMessageController implements OnStart {
 		this.openWindowBin.Clean();
 		this.openedWindowTarget = uid;
 
-		let messages = this.GetMessages(uid);
-
-		for (const dm of messages) {
-			this.RenderChatMessage(dm, false);
-		}
 		this.openWindowBin.Add(
 			this.onDirectMessageReceived.Connect((dm) => {
 				if (dm.sender === uid) {
@@ -405,6 +400,11 @@ export class DirectMessageController implements OnStart {
 		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
 		directMessagesWindow.InitAsFriendChat(friendStatus);
 
+		let messages = this.GetMessages(uid);
+		for (const dm of messages) {
+			this.RenderChatMessage(dm, false);
+		}
+
 		// clear notifs
 		this.unreadMessageCounterMap.set(uid, 0);
 		this.ClearUnreadBadge(uid);
@@ -416,11 +416,6 @@ export class DirectMessageController implements OnStart {
 		this.openWindowBin.Clean();
 		this.openedWindowTarget = "party";
 
-		let messages = this.GetMessages("party");
-		for (let msg of messages) {
-			this.RenderChatMessage(msg, false, true);
-		}
-
 		this.openWindowBin.Add(
 			this.onPartyMessageReceived.Connect((dm) => {
 				if (dm.sender === Game.localPlayer.userId) return;
@@ -431,6 +426,11 @@ export class DirectMessageController implements OnStart {
 		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
 		const members = this.partyController.party?.members;
 		directMessagesWindow.InitAsPartyChat(members ?? []);
+
+		let messages = this.GetMessages("party");
+		for (let msg of messages) {
+			this.RenderChatMessage(msg, false, true);
+		}
 
 		this.openWindowBin.Add(
 			this.partyController.onPartyUpdated.Connect((party, oldParty) => {
