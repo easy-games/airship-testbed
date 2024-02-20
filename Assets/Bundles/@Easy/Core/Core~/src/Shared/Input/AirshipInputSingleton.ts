@@ -1,6 +1,7 @@
-import { OnStart, Singleton } from "Shared/Flamework";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 
-@Singleton({})
+@Service({})
+@Controller({})
 export class AirshipInputSingleton implements OnStart {
 	OnStart(): void {}
 

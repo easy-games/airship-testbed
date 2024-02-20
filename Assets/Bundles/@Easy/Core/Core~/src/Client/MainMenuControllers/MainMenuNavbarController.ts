@@ -58,7 +58,9 @@ export class MainMenuNavbarController implements OnStart {
 			this.DoRefresh();
 		});
 
-		if (Game.context !== CoreContext.GAME) {
+		if (Game.context === CoreContext.GAME) {
+			settingsButton.SetActive(false);
+		} else {
 			runningGameButton.SetActive(false);
 		}
 
@@ -94,7 +96,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
-			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
 		});
 		CoreUI.SetupButton(runningGameCloseButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameCloseButton, () => {
