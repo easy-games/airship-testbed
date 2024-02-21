@@ -32,6 +32,8 @@ export default class CubeMover extends AirshipBehaviour {
 				}),
 			);
 		}
+
+		InstanceFinder.TimeManager.SetTickRate(20);
 	}
 
 	public override OnDisable(): void {
