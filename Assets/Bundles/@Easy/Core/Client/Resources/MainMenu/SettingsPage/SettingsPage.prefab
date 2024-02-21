@@ -862,7 +862,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1523,7 +1523,33 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: SettingsSidebar
-    properties: []
+    properties:
+    - name: disconnectBtn
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2646806907420875927}
+      modified: 1
+    - name: gameHomeTab
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8990717056677471297}
+      modified: 1
 --- !u!1 &6334429618029611169
 GameObject:
   m_ObjectHideFlags: 0

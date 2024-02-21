@@ -1,6 +1,11 @@
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { Game } from "@Easy/Core/Shared/Game";
 import SettingsTabButton from "./SettingsTabButton";
 
 export default class SettingsSidebar extends AirshipBehaviour {
+	public disconnectBtn!: GameObject;
+	public gameHomeTab!: GameObject;
+
 	private tabBtns: SettingsTabButton[] = [];
 
 	public OnEnable(): void {
@@ -9,7 +14,14 @@ export default class SettingsSidebar extends AirshipBehaviour {
 			const tab = this.gameObject.transform.GetChild(i).gameObject.GetAirshipComponent<SettingsTabButton>()!;
 			this.tabBtns.push(tab);
 		}
-		this.SetSelectedTab(this.tabBtns[0]);
+
+		if (Game.context === CoreContext.GAME) {
+			this.SetSelectedTab(this.tabBtns[0]);
+		} else {
+			this.disconnectBtn.SetActive(false);
+			this.gameHomeTab.SetActive(false);
+			this.SetSelectedTab(this.tabBtns[1]);
+		}
 	}
 
 	public OnDisable(): void {
