@@ -128,4 +128,10 @@ export declare const Airship: {
     teams: Omit<TeamsSingleton, "OnStart">;
     inventory: Omit<InventorySingleton, "OnStart">;
     loadingScreen: Omit<LoadingScreenSingleton, "OnStart">;
+    /**
+     * Internal method used to wait until Airship singletons are ready.
+     * This is only needed when developing inside the Core package.
+     * @internal
+     */
+    WaitUntilReady: () => void;
 };
