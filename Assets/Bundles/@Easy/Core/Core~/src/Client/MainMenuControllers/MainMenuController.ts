@@ -73,10 +73,13 @@ export class MainMenuController implements OnStart {
 		gameBG.SetActive(!isMainMenu);
 		mainMenuBG.SetActive(isMainMenu);
 
+		if (Game.context === CoreContext.MAIN_MENU) {
+			const mouse = new Mouse();
+			mouse.AddUnlocker();
+		}
+
 		// const closeButton = this.refs.GetValue("UI", "CloseButton");
 		// if (Game.context === CoreContext.MAIN_MENU) {
-		// 	const mouse = new Mouse();
-		// 	mouse.AddUnlocker();
 
 		// 	closeButton.SetActive(false);
 		// } else {

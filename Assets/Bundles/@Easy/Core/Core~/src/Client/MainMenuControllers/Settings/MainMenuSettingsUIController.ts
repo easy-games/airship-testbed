@@ -1,6 +1,6 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { AudioManager } from "Shared/Audio/AudioManager";
+import { Controller, OnStart } from "Shared/Flamework";
 import { CanvasAPI, PointerDirection } from "Shared/Util/CanvasAPI";
 import { MainMenuController } from "../MainMenuController";
 
@@ -30,20 +30,6 @@ export class MainMenuSettingsUIController implements OnStart {
 			this.clientSettingsController.GetGlobalVolume(),
 			(val) => {
 				this.clientSettingsController.SetGlobalVolume(val);
-			},
-		);
-		this.SetupSlider(
-			this.mainMenuController.refs.GetValue("Settings", "AmbientVolume"),
-			this.clientSettingsController.GetAmbientVolume(),
-			(val) => {
-				this.clientSettingsController.SetAmbientVolume(val);
-			},
-		);
-		this.SetupSlider(
-			this.mainMenuController.refs.GetValue("Settings", "MusicVolume"),
-			this.clientSettingsController.GetMusicVolume(),
-			(val) => {
-				this.clientSettingsController.SetMusicVolume(val);
 			},
 		);
 

@@ -28,7 +28,7 @@ export default class CubeMover extends AirshipBehaviour {
 			this.bin.Add(
 				Airship.players.ObservePlayers((player) => {
 					this.gameObject.GetComponent<NetworkObject>().GiveOwnership(player.networkObject.Owner);
-					Game.BroadcastMessage(player.username + " now ownes the cube.");
+					Game.BroadcastMessage(player.username + " now owns the cube.");
 				}),
 			);
 		}
