@@ -52,7 +52,8 @@ export class KeyboardDriver {
 			this.keyDownSignals.set(key, signal);
 		}
 
-		const disconnect = priority ? signal.ConnectWithPriority(priority, callback) : signal.Connect(callback);
+		const disconnect =
+			priority !== undefined ? signal.ConnectWithPriority(priority, callback) : signal.Connect(callback);
 		return () => {
 			disconnect();
 
@@ -87,7 +88,8 @@ export class KeyboardDriver {
 			this.keyUpSignals.set(key, signal);
 		}
 
-		const disconnect = priority ? signal.ConnectWithPriority(priority, callback) : signal.Connect(callback);
+		const disconnect =
+			priority !== undefined ? signal.ConnectWithPriority(priority, callback) : signal.Connect(callback);
 		return () => {
 			disconnect();
 

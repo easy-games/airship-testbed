@@ -168,11 +168,11 @@ Shader "Airship/AirshipCrystal"
 				//Point lights
 #ifdef NUM_LIGHTS_LIGHTS1
 			    
-			    brightness += CalculatePointLight(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
+			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
 #endif			    
 #ifdef NUM_LIGHTS_LIGHTS2
-			    brightness += CalculatePointLight(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
-			    brightness += CalculatePointLight(i.worldPos, worldNormal, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
+			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
+			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
 #endif
 				brightness = max(_MinLight, brightness * _Glossiness);
 

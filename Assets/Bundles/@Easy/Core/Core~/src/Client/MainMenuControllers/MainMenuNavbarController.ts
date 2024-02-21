@@ -1,5 +1,6 @@
 import NavbarControlButton from "@Easy/Core/Shared/MainMenu/Components/NavbarControlButton";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
@@ -14,6 +15,7 @@ import { UserController } from "./User/UserController";
 @Controller({})
 export class MainMenuNavbarController implements OnStart {
 	private refreshButton!: NavbarControlButton;
+	private searchFocused!: GameObject;
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
@@ -56,7 +58,9 @@ export class MainMenuNavbarController implements OnStart {
 			this.DoRefresh();
 		});
 
-		if (Game.context !== CoreContext.GAME) {
+		if (Game.context === CoreContext.GAME) {
+			settingsButton.SetActive(false);
+		} else {
 			runningGameButton.SetActive(false);
 		}
 
@@ -92,7 +96,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
-			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
 		});
 		CoreUI.SetupButton(runningGameCloseButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameCloseButton, () => {
@@ -141,6 +145,35 @@ export class MainMenuNavbarController implements OnStart {
 			const text = runningGameButton.transform.GetChild(2).GetComponent<TMP_Text>();
 			text.text = gameData.name;
 		});
+
+		const searchbarButton = refs.GetValue("UI", "Searchbar");
+		this.searchFocused = refs.GetValue("UI", "SearchFocused");
+		CanvasAPI.OnClickEvent(searchbarButton, () => {
+			this.FocusSearchbar();
+		});
+
+		const keyboard = new Keyboard();
+		keyboard.OnKeyDown(KeyCode.K, () => {
+			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+				this.FocusSearchbar();
+			}
+		});
+	}
+
+	public FocusSearchbar(): void {
+		if (!this.mainMenuController.IsOpen()) {
+			this.mainMenuController.OpenFromGame();
+		}
+		AppManager.OpenCustom(
+			() => {
+				this.searchFocused.SetActive(false);
+			},
+			{
+				addToStack: true,
+				darkBackground: false,
+			},
+		);
+		this.searchFocused.SetActive(true);
 	}
 
 	public UpdateProfileSection(): void {

@@ -63,6 +63,8 @@ export class MainMenuController implements OnStart {
 		if (Game.context === CoreContext.GAME) {
 			print("HIDING AVATAR");
 			this.avatarView.HideAvatar();
+		} else {
+			this.open = true;
 		}
 
 		const gameBG = this.refs.GetValue("UI", "GameBG");
@@ -71,17 +73,17 @@ export class MainMenuController implements OnStart {
 		gameBG.SetActive(!isMainMenu);
 		mainMenuBG.SetActive(isMainMenu);
 
-		const closeButton = this.refs.GetValue("UI", "CloseButton");
-		if (Game.context === CoreContext.MAIN_MENU) {
-			const mouse = new Mouse();
-			mouse.AddUnlocker();
+		// const closeButton = this.refs.GetValue("UI", "CloseButton");
+		// if (Game.context === CoreContext.MAIN_MENU) {
+		// 	const mouse = new Mouse();
+		// 	mouse.AddUnlocker();
 
-			closeButton.SetActive(false);
-		} else {
-			CanvasAPI.OnClickEvent(closeButton, () => {
-				AppManager.Close();
-			});
-		}
+		// 	closeButton.SetActive(false);
+		// } else {
+		// 	CanvasAPI.OnClickEvent(closeButton, () => {
+		// 		AppManager.Close();
+		// 	});
+		// }
 
 		this.toggleSocialButton = this.refs.GetValue("UI", "ToggleSocialButton");
 		CanvasAPI.OnClickEvent(this.toggleSocialButton.gameObject, () => {
@@ -139,7 +141,11 @@ export class MainMenuController implements OnStart {
 				}
 			}
 
-			this.RouteToPage(MainMenuPageType.Home, true, true);
+			if (Game.context === CoreContext.MAIN_MENU) {
+				this.RouteToPage(MainMenuPageType.Home, true, true);
+			} else {
+				this.RouteToPage(MainMenuPageType.Settings, true, true);
+			}
 		}
 
 		if (Game.context === CoreContext.GAME) {

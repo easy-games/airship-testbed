@@ -1,5 +1,6 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { TransferController } from "@Easy/Core/Client/MainMenuControllers/Transfer/TransferController";
+import inspect from "@easy-games/unity-inspect";
 import { CoreNetwork } from "../../CoreNetwork";
 import { Controller, Dependency, OnStart, Service } from "../../Flamework";
 import { Game } from "../../Game";
@@ -15,8 +16,13 @@ interface SteamConnectPacket {
 export class SteamworksSingleton implements OnStart {
 	OnStart(): void {
 		SteamLuauAPI.OnRichPresenceGameJoinRequest((connectionStr, steamId) => {
-			print("Received steam join request. ConnectionStr: " + connectionStr);
 			const connectInfo = DecodeJSON<SteamConnectPacket>(connectionStr);
+			if (!connectInfo || !connectInfo.gameId || !connectInfo.serverId) {
+				print("[SteamworksSingleton] Invalid connect info on steam join request: " + inspect(connectInfo));
+				print("[SteamworksSingleton] Connection string: " + connectionStr);
+				return;
+			}
+			print("[SteamworksSingleton] Transfer to game: " + inspect(connectionStr));
 			Dependency<TransferController>().TransferToGameAsync(connectInfo.gameId, connectInfo.serverId);
 		});
 		SteamLuauAPI.ProcessPendingJoinRequests();

@@ -55,9 +55,12 @@ export class AppManager {
 		config?: {
 			darkBackground?: boolean;
 			darkBackgroundSortingOrder?: number;
+			addToStack?: boolean;
 		},
 	): void {
-		this.Close({ noCloseSound: true });
+		if (!config?.addToStack) {
+			this.Close({ noCloseSound: true });
+		}
 
 		this.opened = true;
 
@@ -201,8 +204,11 @@ export class AppManager {
 AppManager.keyboard.OnKeyDown(
 	CLOSE_KEY,
 	(event) => {
+		print("AppManager.Close.1");
+		if (event.IsCancelled()) return;
 		if (AppManager.IsOpen()) {
 			event.SetCancelled(true);
+			print("AppManager.Close.2");
 			AppManager.Close();
 		}
 	},

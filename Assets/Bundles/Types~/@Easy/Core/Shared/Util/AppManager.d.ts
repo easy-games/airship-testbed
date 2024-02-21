@@ -14,6 +14,7 @@ export declare class AppManager {
     static OpenCustom(onClose: () => void, config?: {
         darkBackground?: boolean;
         darkBackgroundSortingOrder?: number;
+        addToStack?: boolean;
     }): void;
     /**
      * Open a Canvas. Any other `AppManager` owned UIDocument will be immediately closed.
