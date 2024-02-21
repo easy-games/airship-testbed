@@ -4388,7 +4388,7 @@ interface MaterialPropertyBlockConstructor {
 }
 declare const MaterialPropertyBlock: MaterialPropertyBlockConstructor;
 
-interface RemoteImage {
+interface CloudImage {
 	/**
 	 * Fired when the remote image has finished downloading (or has failed).
 	 * @param callback
