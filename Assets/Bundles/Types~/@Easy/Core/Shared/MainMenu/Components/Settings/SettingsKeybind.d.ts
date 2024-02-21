@@ -6,9 +6,13 @@ export default class SettingsKeybind extends AirshipBehaviour {
     valueImageBG: Image;
     overlay: GameObject;
     keyCode: KeyCode | undefined;
+    defaultKeyCode: KeyCode | undefined;
     private isListening;
     private bin;
     OnEnable(): void;
+    private OpenRightClick;
+    ResetToDefault(): void;
+    Init(actionName: string, keyCode: KeyCode | undefined, defaultKeyCode: KeyCode | undefined): void;
     Update(dt: number): void;
     private SetKeyCode;
     private SetListening;
