@@ -1,11 +1,11 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Mouse } from "../../UserInput";
-import { AppManager } from "../../Util/AppManager";
-import { Bin } from "../../Util/Bin";
-import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
-import { InputUtils } from "../../Util/InputUtils";
-import { SignalPriority } from "../../Util/Signal";
-import { Theme } from "../../Util/Theme";
+import { Mouse } from "../../../UserInput";
+import { AppManager } from "../../../Util/AppManager";
+import { Bin } from "../../../Util/Bin";
+import { CanvasAPI, HoverState } from "../../../Util/CanvasAPI";
+import { InputUtils } from "../../../Util/InputUtils";
+import { SignalPriority } from "../../../Util/Signal";
+import { Theme } from "../../../Util/Theme";
 
 export default class SettingsKeybind extends AirshipBehaviour {
 	public title!: TMP_Text;

@@ -1,5 +1,6 @@
+/// <reference types="@easy-games/compiler-types" />
 export declare class InputUtils {
-    private static keyCodeMap;
+    static keyCodeMap: Record<KeyCode, string | undefined>;
     /**
      * Gets the corresponding string for the given keycode (if possible)
      *

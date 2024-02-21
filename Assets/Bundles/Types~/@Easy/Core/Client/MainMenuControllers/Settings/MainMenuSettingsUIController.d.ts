@@ -1,5 +1,5 @@
-import { OnStart } from "../../../Shared/Flamework";
 import { ClientSettingsController } from "./ClientSettingsController";
+import { OnStart } from "../../../Shared/Flamework";
 import { MainMenuController } from "../MainMenuController";
 export declare class MainMenuSettingsUIController implements OnStart {
     private readonly clientSettingsController;
