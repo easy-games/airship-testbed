@@ -1,21 +1,29 @@
-Shader "Airship/AirshipSpriteOpaque"
+Shader "Airship/AirshipFaceTransparentShader"
 {
     Properties
     {
         _Color("Tint", Color) = (1,1,1,1)
+        _Emissive("Emissive", Range(0,1)) = 1
+        _AlphaCutoff("Alpha Cutoff", Range(0,1)) = .1
         _MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
     {
+        // The value of the LightMode Pass tag must match the ShaderTagId in ScriptableRenderContext.DrawRenderers
         Name "Forward"
-        Tags { 
-            "RenderType"="Opaque"  
-            "Queue"="Geometry"
-            "LightMode" = "AirshipForwardPass"
-        }
+        Tags { "LightMode" = "AirshipForwardPass" 
+            "Queue" = "Transparent"
+            "IgnoreProjector"="True"
+            "RenderType"="Transparent"
+            "PreviewType"="Plane"
+            "CanUseSpriteAtlas"="True"}
+            
+        //Tags { "RenderType"="Transparent"  "LightMode" = "AirshipForwardPass"  "Queue"="Transparent"}
 
-		ZWrite off
-		Cull off
+		Cull Off
+        Lighting Off
+        ZWrite Off
+        Blend One OneMinusSrcAlpha
         
         Pass
         {
@@ -38,6 +46,7 @@ Shader "Airship/AirshipSpriteOpaque"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
                 fixed4 color : COLOR;
             };
@@ -45,6 +54,8 @@ Shader "Airship/AirshipSpriteOpaque"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Color;
+            float _Emissive;
+            float _AlphaCutoff;
 
             v2f vert (appdata v)
             {
@@ -57,10 +68,12 @@ Shader "Airship/AirshipSpriteOpaque"
 
             void frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
             {
-                const half4 chosenColor = SRGBtoLinear(_Color);
-                float4 finalColor = tex2D(_MainTex, i.uv) * chosenColor * i.color;
+                float4 texColor = tex2D(_MainTex, i.uv);
+                float4 finalColor = texColor * SRGBtoLinear(_Color) * i.color;
+                clip(texColor.a-_AlphaCutoff);
+                //finalColor.a =texColor.a;
 				MRT0 = finalColor;
-				MRT1 = float4(0,0,0,1);
+				MRT1 = _Emissive * finalColor;
             }
             ENDCG
         }

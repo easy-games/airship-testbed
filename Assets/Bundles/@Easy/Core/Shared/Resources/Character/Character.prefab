@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5733439473539740281}
   - component: {fileID: 1815581813687179063}
-  - component: {fileID: 2750803619892193745}
+  - component: {fileID: 3048813768235025173}
   m_Layer: 3
   m_Name: Face
   m_TagString: Untagged
@@ -111,7 +111,7 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000029802322, y: -0.16689062, z: 1.5618718}
     m_Extent: {x: 0.17434396, y: 0.055885077, z: 0.18991852}
   m_DirtyAABB: 0
---- !u!114 &2750803619892193745
+--- !u!114 &3048813768235025173
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.6509434, g: 0.63596606, b: 0.617168, a: 1}
+  - materialColor: {r: 0.34117648, g: 0.2, b: 0.12941177, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 1
@@ -5638,7 +5638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.41509432, g: 0.28707898, b: 0.23691703, a: 1}
+  - materialColor: {r: 0.33962262, g: 0.19971521, b: 0.12976147, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 1
@@ -5697,7 +5697,7 @@ GameObject:
   - component: {fileID: -98370938496583557}
   - component: {fileID: -1773167598321551048}
   - component: {fileID: -6219229748269268009}
-  - component: {fileID: 4965018457883988656}
+  - component: {fileID: 7956153141648168287}
   m_Layer: 3
   m_Name: Character
   m_TagString: Character
@@ -6229,7 +6229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f040aaa0ede2946a769bea3d71a08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4965018457883988656
+--- !u!114 &7956153141648168287
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6242,11 +6242,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   remappingMode: 1
-  sourceSkinnedMeshRenderer: {fileID: 0}
+  sourceSkinnedMeshRenderer: {fileID: 2911094191388312299}
   targetRootBone: {fileID: 6574113612957443555}
-  targetSkinnedMeshRenderers:
-  - {fileID: 0}
-  - {fileID: 0}
+  targetSkinnedMeshRenderers: []
 --- !u!1001 &3212846051738532583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6357,6 +6355,34 @@ PrefabInstance:
       propertyPath: anim
       value: 
       objectReference: {fileID: 903796914586745664}
+    - target: {fileID: 6714375145011558345, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.37592012
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714375145011558345, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.03565946
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714375145011558345, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.07381799
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714375145011558345, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.92301863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714375145011558345, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 9.386
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714375145011558345, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714375145011558345, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -135.73
+      objectReference: {fileID: 0}
     - target: {fileID: 8242817677000904988, guid: 4aa6768ebfa5a5b4ebf2fb45c873c97c, type: 3}
       propertyPath: m_Name
       value: Airship_Rig

@@ -4,7 +4,6 @@ import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Dependency } from "Shared/Flamework";
 import { Game } from "Shared/Game";
-import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Bin } from "Shared/Util/Bin";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
@@ -32,10 +31,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public categoryLabelTxt?: TextMeshProUGUI;
 	public canvas?: Canvas;
 
+	private activeAccessories = new Map<AccessorySlot, string>();
 	private currentSlot: AccessorySlot = AccessorySlot.Root;
 	private outfits?: Outfit[];
 	private currentUserOutfit?: Outfit;
 	private currentUserOutfitIndex = -1;
+	private currentContentBtns: Button[] = [];
 	private clientId = -1;
 
 	//public buttons?: Transform[];
@@ -298,6 +299,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				switch (subIndex) {
 					case 0:
 						targetSlot = AccessorySlot.Head;
+						this.DisplayItemsOfType(AccessorySlot.Hair);
 						break;
 					case 1:
 						targetSlot = AccessorySlot.Ears;
@@ -386,6 +388,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
+
 	private DisplayItems(items: AccessoryComponent[]) {
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
@@ -403,6 +406,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private ClearItembuttons() {
 		this.Log("ClearItemButtons");
 		this.itemButtonBin.Clean();
+		this.currentContentBtns.clear();
 		if (this.itemButtonHolder) {
 			this.itemButtonHolder.gameObject.ClearChildren();
 		}
@@ -447,6 +451,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			let image2 = newButton.transform.GetChild(0).GetComponent<Image>();
 			image1.color = color;
 			image2.enabled = false;
+			this.currentContentBtns.push(button);
 		} else {
 			error("Missing item template or holder for items on AvatarEditor");
 		}
@@ -454,7 +459,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private AddItemButton(itemName: string, onClickCallback: () => void) {
 		if (this.itemButtonTemplate && this.itemButtonHolder) {
-			let newButton = GameObjectUtil.InstantiateIn(this.itemButtonTemplate, this.itemButtonHolder);
+			let newButton = Object.Instantiate(this.itemButtonTemplate, this.itemButtonHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
 			this.itemButtonBin.Add(() => {
 				Bridge.DisconnectEvent(eventIndex);
@@ -463,11 +468,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			if (text && text.Length > 0) {
 				text.GetValue(0).text = itemName;
 			}
+			//TODO: Remove the image until we can load it from the server
 			let image = newButton.transform.GetChild(0).GetComponent<Image>();
 			if (image) {
 				//AvatarPlatformAPI.LoadImage(itemData.imageId);
 				image.enabled = false;
 			}
+			this.currentContentBtns.push(newButton.GetComponent<Button>());
 		} else {
 			error("Missing item template or holder for items on AvatarEditor");
 		}
@@ -477,8 +484,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (!acc) {
 			return;
 		}
+		if(this.activeAccessories.get(acc.GetSlotNumber()) === acc.serverClassId){
+			//Already selected this item so deselect it
+			this.OnSelectClear();
+			return;
+		}
 		this.Log("Selecting item: " + acc.ToString());
 		this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(acc, true);
+		this.activeAccessories.set(acc.GetSlotNumber(), acc.serverClassId);
 	}
 
 	private SelectSkinItem(acc: AccessorySkin) {
@@ -499,6 +512,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Unequip this slot
 		if (this.currentSlot !== AccessorySlot.Root) {
 			this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAccessorySlot(this.currentSlot, true);
+			this.activeAccessories.set(this.currentSlot, "");
 		}
 	}
 
@@ -606,6 +620,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//builder.TryCombineMeshes();
 	}
 
+	private UpdateButtonGraphics(){
+		//Highlight selected items
+		for(let i=0; i<this.currentContentBtns.size(); i++){
+			
+		}
+	}
+
 	private Save() {
 		if (!this.currentUserOutfit) {
 			warn("Trying to save with no outfit selected!");
@@ -638,5 +659,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let colors = button.colors;
 		colors.normalColor = active ? this.highlightColor : this.normalColor;
 		button.colors = colors;
+		button.image.color = colors.normalColor;
 	}
 }

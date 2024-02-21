@@ -77,9 +77,10 @@ export class AvatarUtil {
 		let acc = AvatarPlatformAPI.GetAccessories();
 		if (acc) {
 			acc.forEach((itemData) => {
+				print("Owned item " + itemData.class.name + ": " + itemData.class.classId);
 				let item = this.allAvatarAccessories.get(itemData.class.classId);
 				if (item) {
-					//print("Found item: " + item.gameObject.name);
+					//print("Found item: " + item.gameObject.name + ": " + itemData.class.classId);
 					item.serverInstanceId = itemData.instanceId;
 					this.AddAvailableAvatarItem(item);
 				}

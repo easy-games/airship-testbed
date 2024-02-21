@@ -5,7 +5,6 @@ Shader "Airship/AirshipToonHair"
         [HDR]_ColorTop ("Top Color", Color) = (1,1,1,1)
         [HDR]_ColorMid ("Middle Color", Color) = (1,0,1,1)
         [HDR]_ColorBot ("Bottom Color", Color) = (1,1,0,1)
-        [HDR]_ColorBottom ("Bottom Color", Color) = (1,1,1,1)
         [HDR]_SpecColor ("Specular Color", Color) = (.5,.5,.5,1)
         [HDR]_ShadowColor ("Shadow Color", Color) = (0,0,0,1)
         [HDR]_RimColor ("Rim Color", Color) = (0,1,1,1)
@@ -269,7 +268,8 @@ Shader "Airship/AirshipToonHair"
                 float anisoDelta = localY - i.viewDir.y + (_AnisoNoiseStrength * noiseStrength);
                 float ramp = saturate((1-abs((anisoDelta-_AnisoOffset) *_AnisoRampMod)) * _AnisoRampIntensity);
 
-                finalColor = finalColor +  (ramp * specStrength * lightDelta);
+                float totalLight = saturate(ramp * specStrength * lightDelta);
+                finalColor = lerp(finalColor, _SpecColor, totalLight) +  totalLight;
                 //finalColor = i.localVertex.y;
                 //finalColor = localY - i.viewDir.y;
                 //finalColor = hairColor;
