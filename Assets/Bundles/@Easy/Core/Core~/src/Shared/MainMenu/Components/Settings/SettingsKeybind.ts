@@ -1,8 +1,11 @@
+import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
+import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Mouse } from "../../../UserInput";
 import { AppManager } from "../../../Util/AppManager";
 import { Bin } from "../../../Util/Bin";
-import { CanvasAPI, HoverState } from "../../../Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../../Util/CanvasAPI";
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
 import { Theme } from "../../../Util/Theme";
@@ -17,6 +20,9 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	@NonSerialized()
 	public keyCode: KeyCode | undefined;
 
+	@NonSerialized()
+	public defaultKeyCode: KeyCode | undefined;
+
 	private isListening = false;
 
 	private bin = new Bin();
@@ -28,6 +34,21 @@ export default class SettingsKeybind extends AirshipBehaviour {
 			CanvasAPI.OnClickEvent(this.valueWrapper, () => {
 				if (this.isListening) return;
 				this.SetListening(true);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.valueWrapper, (dir, btn) => {
+				if (btn === PointerButton.RIGHT && dir === PointerDirection.DOWN) {
+					this.OpenRightClick();
+				}
+			}),
+		);
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.title.gameObject, (dir, btn) => {
+				if (btn === PointerButton.RIGHT && dir === PointerDirection.DOWN) {
+					this.OpenRightClick();
+				}
 			}),
 		);
 
@@ -57,6 +78,33 @@ export default class SettingsKeybind extends AirshipBehaviour {
 
 		const mouse = new Mouse();
 		this.bin.Add(mouse);
+	}
+
+	private OpenRightClick(): void {
+		const mouse = new Mouse();
+		Dependency<RightClickMenuController>().OpenRightClickMenu(
+			Dependency<MainMenuController>().mainContentCanvas,
+			mouse.GetLocation(),
+			[
+				{
+					text: "Reset",
+					onClick: () => {
+						this.ResetToDefault();
+					},
+				},
+			],
+		);
+	}
+
+	public ResetToDefault(): void {
+		this.SetKeyCode(this.defaultKeyCode);
+	}
+
+	public Init(actionName: string, keyCode: KeyCode | undefined, defaultKeyCode: KeyCode | undefined) {
+		this.title.text = actionName;
+		this.keyCode = keyCode;
+		this.defaultKeyCode = defaultKeyCode;
+		this.SetListening(false);
 	}
 
 	public Update(dt: number): void {
