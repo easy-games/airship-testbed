@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0.956039, b: 0.9009434, a: 1}
+  - materialColor: {r: 0.34117648, g: 0.2, b: 0.12941177, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 1
@@ -6061,7 +6061,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rig: {fileID: 1646087756103719487}
   meshCombiner: {fileID: 2932437047851003139}
-  boneSetter: {fileID: 7956153141648168287}
   firstPerson: 0
   firstPersonLayer: 0
   thirdPersonLayer: 0

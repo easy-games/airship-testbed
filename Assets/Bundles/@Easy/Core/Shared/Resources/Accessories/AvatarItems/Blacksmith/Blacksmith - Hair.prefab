@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1428744581405830620}
   - component: {fileID: 4754442294424625754}
+  - component: {fileID: -2856411428740641836}
   - component: {fileID: 7081786640612886898}
   m_Layer: 0
   m_Name: Blacksmith - Hair
@@ -55,7 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e46c66bbdadef3d4da70417ee610a129, type: 2}
+  - {fileID: 2100000, guid: 24cafc300e125c04495d8c1ca717c139, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,6 +110,23 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00017541647, y: 0.021337718, z: 1.5695816}
     m_Extent: {x: 0.3314362, y: 0.29037303, z: 0.29487908}
   m_DirtyAABB: 0
+--- !u!114 &-2856411428740641836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8673757606070238059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
 --- !u!114 &7081786640612886898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 
+  serverClassId: 8f55624d-653c-4614-a8c1-bc49a50d5b5f
   serverInstanceId: 
   accessorySlot: 2
   visibilityMode: 0
