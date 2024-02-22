@@ -110,11 +110,30 @@ export class TagsSingleton implements OnStart {
 		return tagSignal;
 	}
 
-	public ObserveTag(tag: string, callback: (gameObject: GameObject) => void | (() => void)) {
+	/**
+	 * Observes game objects added/removed from a tag. The returned function can be used to stop observing
+	 *
+	 *
+	 * The `observer` function is fired for every game object that is currently registered with this tag, as well as
+	 * when new objects are added to this tag. The `observer` function can return a function which is called when the game object
+	 * is removed from the tag.
+	 *
+	 * This may be preferred when you want to watch all the lifecycles of a tag and include existing tags as well.
+	 *
+	 * If you want the individual lifecycles of a tag see
+	 * - {@link OnTagAdded} - for only when game objects are added to a tag
+	 * - {@link OnTagRemoved} - for only when game objects are removed from a tag
+	 *
+	 * You can also use {@link GetTagged} for game objects currently tagged with the tag
+	 *
+	 * @param tag The tag to observe
+	 * @param observer The observer function
+	 */
+	public ObserveTag(tag: string, observer: (gameObject: GameObject) => void | (() => void)) {
 		const cleanupPerGo = new Map<GameObject, () => void>();
 
 		const observe = (gameObject: GameObject) => {
-			const cleanup = callback(gameObject);
+			const cleanup = observer(gameObject);
 			if (cleanup !== undefined) {
 				cleanupPerGo.set(gameObject, cleanup);
 			}

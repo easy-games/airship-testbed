@@ -133,6 +133,7 @@ export const Airship = {
 	loadingScreen: undefined as unknown as Omit<LoadingScreenSingleton, "OnStart">,
 	/**
 	 * Namespace for managing and query Airship tags on game objects
+	 * @see https://docs.airship.gg/tags
 	 */
 	tags: undefined! as Omit<TagsSingleton, keyof OnStart>,
 };
