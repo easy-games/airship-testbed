@@ -3,6 +3,7 @@ import { Dependency } from "Shared/Flamework";
 import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
+import { Airship } from "../../Airship";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
@@ -85,15 +86,15 @@ export class CharacterInput {
 			if (EventSystem.current.currentSelectedGameObject !== undefined) return;
 
 			const [success, err] = pcall(() => {
-				const jump = keyboard.IsKeyDown(KeyCode.Space);
-				const w = keyboard.IsEitherKeyDown(KeyCode.W, KeyCode.UpArrow);
-				const s = keyboard.IsEitherKeyDown(KeyCode.S, KeyCode.DownArrow);
-				const a = keyboard.IsKeyDown(KeyCode.A);
-				const d = keyboard.IsKeyDown(KeyCode.D);
+				const jump = Airship.input.IsDown("Jump");
+				const w = Airship.input.IsDown("MoveUp");
+				const s = Airship.input.IsDown("MoveDown");
+				const a = Airship.input.IsDown("MoveLeft");
+				const d = Airship.input.IsDown("MoveRight");
 
-				const leftShift = keyboard.IsKeyDown(KeyCode.LeftShift);
-				const leftCtrl = keyboard.IsKeyDown(KeyCode.LeftControl);
-				const c = keyboard.IsKeyDown(KeyCode.C);
+				const leftShift = Airship.input.IsDown("Sprint");
+				const leftCtrl = Airship.input.IsDown("Crouch");
+				const c = Airship.input.IsDown("Crouch");
 
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;

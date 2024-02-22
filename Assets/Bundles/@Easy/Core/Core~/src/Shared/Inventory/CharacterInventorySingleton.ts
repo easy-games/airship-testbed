@@ -1,10 +1,11 @@
-import { Controller, OnStart, Service } from "Shared/Flamework";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
+import { Airship } from "../Airship";
 import Inventory from "./Inventory";
 import { ItemStack } from "./ItemStack";
 
@@ -58,7 +59,7 @@ export class CharacterInventorySingleton implements OnStart {
 			});
 		}
 
-		keyboard.OnKeyDown(KeyCode.Q, (event) => {
+		Airship.input.OnDown("DropItem").Connect((event) => {
 			if (!this.enabled || event.uiProcessed) return;
 			this.DropItemInHand();
 		});

@@ -1,6 +1,7 @@
-import { Controller, OnStart } from "Shared/Flamework";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { CharacterInventorySingleton } from "Shared/Inventory/CharacterInventorySingleton";
 import Inventory from "Shared/Inventory/Inventory";
@@ -68,8 +69,7 @@ export class InventoryUIController implements OnStart {
 		this.SetupHotbar();
 		this.SetupBackpack();
 
-		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.E, (event) => {
+		Airship.input.OnDown("Inventory").Connect((event) => {
 			if (event.uiProcessed || !this.enabled) return;
 			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();
