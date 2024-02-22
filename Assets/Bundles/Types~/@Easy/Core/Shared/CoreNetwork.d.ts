@@ -28,6 +28,7 @@ export declare const CoreNetwork: {
         };
         SendChatMessage: RemoteEvent<[text: string]>;
         SetHeldItemState: RemoteEvent<[entityId: number, heldItemState: HeldItemState]>;
+        ChangedOutfit: RemoteEvent<[]>;
         AbilityActivateRequest: RemoteEvent<[abilityId: string]>;
     };
     ServerToClient: {
@@ -110,6 +111,7 @@ export declare const CoreNetwork: {
             SetHealth: RemoteEvent<[characterId: number, health: number]>;
             SetMaxHealth: RemoteEvent<[characterId: number, health: number]>;
             Death: RemoteEvent<[objectId: number]>;
+            ChangeOutfit: RemoteEvent<[characterId: number, outfitDto: OutfitDto]>;
         };
     };
 };

@@ -1728,19 +1728,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 131862466}
       modified: 1
-    - name: useTaggedSpawns
-      type: boolean
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      decorators: []
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 1
 --- !u!114 &913210014
 MonoBehaviour:
   m_ObjectHideFlags: 0

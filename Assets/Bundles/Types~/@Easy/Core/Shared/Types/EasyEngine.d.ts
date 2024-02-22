@@ -595,6 +595,13 @@ interface StateManagerStatic {
 }
 declare const StateManager: StateManagerStatic;
 
+interface EditorSessionStateStatic {
+	GetString(key: string): string | undefined;
+	SetString(key: string, value: string): void;
+	RemoveString(key: string): void;
+}
+declare const EditorSessionState: EditorSessionStateStatic;
+
 interface AuthSave {
 	refreshToken: string;
 	time: number;

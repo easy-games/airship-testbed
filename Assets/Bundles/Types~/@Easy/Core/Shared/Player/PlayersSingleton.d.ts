@@ -11,10 +11,12 @@ export declare class PlayersSingleton implements OnStart {
     private server?;
     private playersPendingReady;
     private cachedProfilePictureSprite;
+    private outfitFetchTime;
     constructor();
     OnStart(): void;
     private InitClient;
     private InitServer;
+    private FetchEquippedOutfit;
     private HandlePlayerReadyServer;
     private AddPlayerClient;
     AddBotPlayer(): void;

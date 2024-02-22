@@ -6,6 +6,7 @@ import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { AvatarUtil } from "../Avatar/AvatarUtil";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
@@ -34,6 +35,8 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public autoDespawnCharactersOnPlayerDisconnect = true;
 
+	public allowMidGameOutfitChanges = true;
+
 	private idCounter = 0;
 
 	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
@@ -57,6 +60,21 @@ export class CharactersSingleton implements OnStart {
 					Airship.characters.onCharacterSpawned.Fire(character);
 				},
 			);
+		}
+
+		if (RunUtil.IsClient()) {
+			CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId, outfitDto) => {
+				const character = this.FindById(characterId);
+				if (!character) return;
+
+				if (outfitDto) {
+					AvatarUtil.LoadUserOutfit(outfitDto, character.accessoryBuilder, {
+						removeAllOldAccessories: true,
+					});
+				} else {
+					character.accessoryBuilder.RemoveAccessories();
+				}
+			});
 		}
 	}
 

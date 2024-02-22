@@ -149,6 +149,7 @@ export const CoreNetwork = {
 			SetHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			SetMaxHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			Death: new RemoteEvent<[objectId: number]>(),
+			ChangeOutfit: new RemoteEvent<[characterId: number, outfitDto: OutfitDto | undefined]>(),
 		},
 	},
 };

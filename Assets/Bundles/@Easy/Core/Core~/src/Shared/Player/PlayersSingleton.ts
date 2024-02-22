@@ -226,6 +226,11 @@ export class PlayersSingleton implements OnStart {
 
 		CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
 			this.FetchEquippedOutfit(player, true);
+
+			if (Airship.characters.allowMidGameOutfitChanges && player.character) {
+				const outfitDto = player.selectedOutfit;
+				CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
+			}
 		});
 	}
 
@@ -249,11 +254,11 @@ export class PlayersSingleton implements OnStart {
 			}
 		}
 
-		let diff = os.time() - (this.outfitFetchTime.get(player.userId) ?? 0);
-		if (diff <= 1) {
-			return;
-		}
-		this.outfitFetchTime.set(player.userId, os.time());
+		// let diff = os.time() - (this.outfitFetchTime.get(player.userId) ?? 0);
+		// if (diff <= 0.5) {
+		// 	return;
+		// }
+		// this.outfitFetchTime.set(player.userId, os.time());
 
 		let userId = player.userId;
 		if (RunUtil.IsEditor() && player.IsLocalPlayer()) {
