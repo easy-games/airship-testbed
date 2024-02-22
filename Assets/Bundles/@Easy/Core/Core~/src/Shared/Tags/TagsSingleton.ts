@@ -6,15 +6,15 @@ import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
 
 type TagSignal = Pick<Signal<[GameObject]>, "Connect" | "ConnectWithPriority" | "Once" | "Wait">;
-type TagSignalSet = WeakSet<Signal<[GameObject]>>;
+type TagSignalSet = Set<Signal<[GameObject]>>;
 
 @Controller()
 @Service()
 export class TagsSingleton implements OnStart {
 	private tagManager!: TagManager;
 
-	private tagAddedSignals = new Map<string, TagSignalSet>();
-	private tagRemovedSignals = new Map<string, TagSignalSet>();
+	private tagAddedSignals = new Map<string, Signal<[GameObject]>>();
+	private tagRemovedSignals = new Map<string, Signal<[GameObject]>>();
 
 	OnStart(): void {
 		const tagManager = TagManager.Instance;
@@ -23,12 +23,14 @@ export class TagsSingleton implements OnStart {
 
 		tagManager.OnTagAdded((tag, gameObject) => {
 			const signal = this.tagAddedSignals.get(tag);
-			signal?.forEach((signal) => signal.Fire(gameObject));
+			print("Tag added signal recieved", tag, gameObject.name);
+			signal?.Fire(gameObject);
 		});
 
 		tagManager.OnTagRemoved((tag, gameObject) => {
 			const signal = this.tagRemovedSignals.get(tag);
-			signal?.forEach((signal) => signal.Fire(gameObject));
+			print("Tag removed signal recieved", tag, gameObject.name);
+			signal?.Fire(gameObject);
 		});
 	}
 
@@ -62,17 +64,13 @@ export class TagsSingleton implements OnStart {
 		return tags;
 	}
 
-	public GetTagAddedSignal(tag: string): TagSignal {
-		const tagSignalSet = MapUtil.GetOrCreate(this.tagAddedSignals, tag, () => new WeakSet() as TagSignalSet);
-		const signal = new Signal<[GameObject]>();
-		tagSignalSet.add(signal);
-		return signal;
+	public OnTagAdded(tag: string): TagSignal {
+		const tagSignal = MapUtil.GetOrCreate(this.tagAddedSignals, tag, () => new Signal<[GameObject]>());
+		return tagSignal;
 	}
 
-	public GetTagRemovedSignal(tag: string): TagSignal {
-		const tagSignalSet = MapUtil.GetOrCreate(this.tagRemovedSignals, tag, () => new WeakSet() as TagSignalSet);
-		const signal = new Signal<[GameObject]>();
-		tagSignalSet.add(signal);
-		return signal;
+	public OnTagRemoved(tag: string): TagSignal {
+		const tagSignal = MapUtil.GetOrCreate(this.tagRemovedSignals, tag, () => new Signal<[GameObject]>());
+		return tagSignal;
 	}
 }
