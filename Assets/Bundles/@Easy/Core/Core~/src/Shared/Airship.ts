@@ -136,4 +136,15 @@ export const Airship = {
 	 * @see https://docs.airship.gg/tags
 	 */
 	tags: undefined! as Omit<TagsSingleton, keyof OnStart>,
+
+	/**
+	 * Internal method used to wait until Airship singletons are ready.
+	 * This is only needed when developing inside the Core package.
+	 * @internal
+	 */
+	WaitUntilReady: () => {
+		while (Airship.players === undefined) {
+			task.wait();
+		}
+	},
 };

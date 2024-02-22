@@ -130,6 +130,12 @@ export declare const Airship: {
     inventory: Omit<InventorySingleton, "OnStart">;
     loadingScreen: Omit<LoadingScreenSingleton, "OnStart">;
     /**
+     * Internal method used to wait until Airship singletons are ready.
+     * This is only needed when developing inside the Core package.
+     * @internal
+     */
+    WaitUntilReady: () => void;
+    /**
      * Namespace for managing and query Airship tags on game objects
      */
     tags: Omit<TagsSingleton, "OnStart">;

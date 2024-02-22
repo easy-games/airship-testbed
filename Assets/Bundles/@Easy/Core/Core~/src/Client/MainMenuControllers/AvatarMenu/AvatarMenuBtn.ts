@@ -20,7 +20,7 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 	}
 
 	public SetButtonColor(newColor: Color) {
-		print("setting " + this.gameObject.name + " to: " + newColor);
+		//print("setting " + this.gameObject.name + " to: " + newColor);
 		this.button.image.color = newColor;
 
 		// let colors = this.button.colors;
