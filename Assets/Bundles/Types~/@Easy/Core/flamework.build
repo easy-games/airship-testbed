@@ -112,6 +112,7 @@
 		"@Easy/Core:Shared/Avatar/AvatarViewComponent@AvatarViewComponent": "$:Avatar/AvatarViewComponent@AvatarViewComponent",
 		"@Easy/Core:Shared/Avatar/AvatarPlatformAPI@AvatarPlatformAPI": "$:Avatar/AvatarPlatformAPI@AvatarPlatformAPI",
 		"@Easy/Core:Shared/Avatar/AvatarUtil@AvatarUtil": "$:Avatar/AvatarUtil@AvatarUtil",
+		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn": "$:MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController": "$:MainMenuControllers/MainMenuController@MainMenuController",
 		"@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController": "$:MainMenuControllers/Social/FriendsController@FriendsController",
@@ -138,8 +139,10 @@
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
 		"@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton": "$:Damage/DamageSingleton@DamageSingleton",
+		"@Easy/Core:Shared/Input/InputUtil@InputUtil": "$:Input/InputUtil@InputUtil",
+		"@Easy/Core:Shared/Input/Keybind@Keybind": "$:Input/Keybind@Keybind",
+		"@Easy/Core:Shared/Input/InputAction@InputAction": "$:Input/InputAction@InputAction",
 		"@Easy/Core:Shared/Input/AirshipInputSingleton@AirshipInputSingleton": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
-		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunctionClient": "$:Network/RemoteFunction@RemoteFunctionClient",
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunctionServer": "$:Network/RemoteFunction@RemoteFunctionServer",
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunction": "$:Network/RemoteFunction@RemoteFunction",
@@ -214,6 +217,16 @@
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchResult@SearchResult": "$:MainMenu/Components/Search/SearchResult@SearchResult",
 		"@Easy/Core:Shared/MainMenu/Components/Search/GameSearchResult@GameSearchResult": "$:MainMenu/Components/Search/GameSearchResult@GameSearchResult",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchFocused@SearchFocused": "$:MainMenu/Components/Search/SearchFocused@SearchFocused",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton": "$:MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton",
+		"@Easy/Core:Shared/Util/InputUtils@InputUtils": "$:Util/InputUtils@InputUtils",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsKeybind@SettingsKeybind": "$:MainMenu/Components/Settings/SettingsKeybind@SettingsKeybind",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsKeybindPage@SettingsKeybindPage": "$:MainMenu/Components/Settings/SettingsKeybindPage@SettingsKeybindPage",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton": "$:MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsSidebar@SettingsSidebar": "$:MainMenu/Components/Settings/SettingsSidebar@SettingsSidebar",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameFavoriteButton@GameFavoriteButton": "$:MainMenu/Components/Settings/General/GameFavoriteButton@GameFavoriteButton",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": "$:MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry": "$:MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerList@PlayerList": "$:MainMenu/Components/Settings/General/PlayerList@PlayerList",
 		"@Easy/Core:Shared/Privileged/Steam/SteamworksSingleton@SteamworksSingleton": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
 		"@Easy/Core:Shared/SocketIOMessages/UpdateUserDto@UpdateUserDto": "$:SocketIOMessages/UpdateUserDto@UpdateUserDto",
 		"@Easy/Core:Shared/Team/TeamJoinSignal@ChangeTeamSignal": "$:Team/TeamJoinSignal@ChangeTeamSignal",
@@ -221,10 +234,10 @@
 		"@Easy/Core:Shared/UserInput/Generic/Pointer@Pointer": "$:UserInput/Generic/Pointer@Pointer",
 		"@Easy/Core:Shared/Util/AnimationLayer@AnimationLayer": "$:Util/AnimationLayer@AnimationLayer",
 		"@Easy/Core:Shared/Util/ArrayUtil@ArrayUtil": "$:Util/ArrayUtil@ArrayUtil",
-		"@Easy/Core:Shared/Util/InputUtils@InputUtils": "$:Util/InputUtils@InputUtils",
 		"@Easy/Core:Shared/Util/LayerUtil@LayerUtil": "$:Util/LayerUtil@LayerUtil",
 		"@Easy/Core:Shared/Util/SetUtil@SetUtil": "$:Util/SetUtil@SetUtil",
 		"@Easy/Core:Shared/Util/Vector3Util@Vector3Util": "$:Util/Vector3Util@Vector3Util",
+		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
 		"@Easy/Core:Shared/Flamework/flamework@OnInit": "$:Flamework/flamework@OnInit",
 		"@Easy/Core:Shared/Flamework/flamework@OnStart": "$:Flamework/flamework@OnStart"
 	},
@@ -616,6 +629,22 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "..\\Shared\\Input\\AirshipInputSingleton.lua",
+			"internalId": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
 				}
 			]
 		},
