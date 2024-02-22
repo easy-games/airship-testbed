@@ -1437,9 +1437,9 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: '{"x":0.6000000238418579,"y":0.6000000238418579,"z":0.0}'
+      serializedValue: '{"x":1.0,"y":1.0,"z":0.0}'
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: particleVelRandomized
       type: Vector3
       objectType: 
