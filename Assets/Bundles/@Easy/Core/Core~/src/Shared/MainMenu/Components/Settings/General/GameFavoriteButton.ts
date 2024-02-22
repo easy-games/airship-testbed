@@ -51,9 +51,11 @@ export default class GameFavoriteButton extends AirshipBehaviour {
 					this.favoriteCount++;
 					this.text.text = this.favoriteCount + "";
 
-					for (let i = 0; i < this.particleCount; i++) {
-						this.SpawnParticle();
-					}
+					task.spawn(() => {
+						for (let i = 0; i < this.particleCount; i++) {
+							this.SpawnParticle();
+						}
+					});
 				} else {
 					this.image.color = hoverColor;
 					this.text.color = hoverColor;
@@ -80,22 +82,20 @@ export default class GameFavoriteButton extends AirshipBehaviour {
 			vel = vel.add(new Vector2(this.particleVelBase.x, 0));
 		}
 		const bin = new Bin();
-		task.spawn(() => {
-			const updateConn = OnUpdate.Connect((dt) => {
-				vel = vel.mul(1 - dt * this.particleDrag);
-				rect.anchoredPosition = rect.anchoredPosition.add(vel);
+		const updateConn = OnUpdate.Connect((dt) => {
+			vel = vel.mul(1 - dt * this.particleDrag);
+			rect.anchoredPosition = rect.anchoredPosition.add(vel);
 
-				if (vel.magnitude <= 0.12) {
-					bin.Clean();
-				}
-			});
-			bin.Add(() => {
-				const img = go.GetComponent<Image>();
-				img.TweenGraphicAlpha(0, math.random() * 0.3 + 0.2).SetEase(EaseType.QuadOut);
-				task.delay(0.5, () => {
-					updateConn();
-					Object.Destroy(go);
-				});
+			if (vel.magnitude <= 0.12) {
+				bin.Clean();
+			}
+		});
+		bin.Add(() => {
+			const img = go.GetComponent<Image>();
+			img.TweenGraphicAlpha(0, math.random() * 0.3 + 0.2).SetEase(EaseType.QuadOut);
+			task.delay(0.5, () => {
+				updateConn();
+				Object.Destroy(go);
 			});
 		});
 	}
