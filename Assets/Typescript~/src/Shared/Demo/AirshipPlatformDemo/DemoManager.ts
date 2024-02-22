@@ -4,10 +4,13 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Tags } from "Shared/Tags";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
+	public useTaggedSpawns = false;
 	private deathCount = 0;
 
 	override Start(): void {
@@ -49,6 +52,15 @@ export default class DemoManager extends AirshipBehaviour {
 	}
 
 	public SpawnPlayer(player: Player): void {
+		// fun little experiment
+		if (this.useTaggedSpawns) {
+			const taggedSpawns = Airship.tags.GetTagged(Tags.AirshipTest_Spawn);
+			if (taggedSpawns.size() > 0) {
+				player.SpawnCharacter(RandomUtil.FromArray(taggedSpawns.map((v) => v.transform.position)));
+				return;
+			}
+		}
+
 		const character = player.SpawnCharacter(this.spawnPosition.transform.position);
 		// character.inventory.AddItem(new ItemStack(ItemType.WOOD_SWORD));
 	}
