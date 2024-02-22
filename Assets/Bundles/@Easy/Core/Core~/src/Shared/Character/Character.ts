@@ -8,6 +8,8 @@ import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { AvatarUtil } from "../Avatar/AvatarUtil";
 
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
@@ -36,6 +38,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory!: Inventory;
 	@NonSerialized() public heldItems!: HeldItemManager;
+	@NonSerialized() public outfitDto: OutfitDto | undefined;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
@@ -92,11 +95,18 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	public Init(player: Player | undefined, id: number): void {
+	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void {
 		this.player = player;
 		this.id = id;
+		this.outfitDto = outfitDto;
 		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
 		this.despawned = false;
+
+		if (outfitDto) {
+			AvatarUtil.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
+				removeAllOldAccessories: true,
+			});
+		}
 	}
 
 	/**

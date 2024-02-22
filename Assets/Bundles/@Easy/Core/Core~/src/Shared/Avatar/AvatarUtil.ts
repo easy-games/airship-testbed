@@ -1,7 +1,7 @@
+import { OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 import { RandomUtil } from "Shared/Util/RandomUtil";
-import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -142,13 +142,13 @@ export class AvatarUtil {
 		builder: AccessoryBuilder,
 		options: { removeAllOldAccessories?: boolean; combineMeshes?: boolean } = {},
 	) {
-		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
-		if (!outfit) {
+		const outfitDto = AvatarPlatformAPI.GetEquippedOutfit();
+		if (!outfitDto) {
 			// warn("Unable to load users default outfit. Equipping baked default outfit");
 			this.LoadDefaultOutfit(builder);
 			return;
 		}
-		this.LoadUserOutfit(outfit, builder, options);
+		this.LoadUserOutfit(outfitDto, builder, options);
 	}
 
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
@@ -158,7 +158,7 @@ export class AvatarUtil {
 	}
 
 	public static LoadUserOutfit(
-		outfit: Outfit,
+		outfit: OutfitDto,
 		builder: AccessoryBuilder,
 		options: { removeAllOldAccessories?: boolean } = {},
 	) {

@@ -10,6 +10,7 @@ import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureD
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
 import { ProfilePictureMeta } from "Shared/ProfilePicture/ProfilePictureMeta";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
+import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
@@ -48,6 +49,9 @@ export class Player {
 
 	private bin = new Bin();
 	private connected = true;
+
+	public selectedOutfit: OutfitDto | undefined;
+	public outfitLoaded = false;
 
 	constructor(
 		/**
@@ -91,10 +95,23 @@ export class Player {
 		public usernameTag: string,
 	) {}
 
+	/**
+	 * Can yield if the player's outfit hasn't finished downloading.
+	 * @param position
+	 * @param config
+	 * @returns
+	 */
 	public SpawnCharacter(
 		position: Vector3,
 		config?: {
 			lookDirection?: Vector3;
+
+			/**
+			 * If true, method does not yield if the player's outfit hasn't been downloaded.
+			 *
+			 * This can cause characters to spawn with no outfit.
+			 */
+			noOutfitYield?: boolean;
 		},
 	): Character {
 		if (!RunUtil.IsServer()) {
@@ -104,13 +121,33 @@ export class Player {
 		const go = Object.Instantiate(characterPrefab);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
-		characterComponent.Init(this, Airship.characters.MakeNewId());
+
+		if (!config?.noOutfitYield) {
+			let startTime = Time.time;
+			this.WaitForOutfitLoaded(1);
+			let diff = Time.time - startTime;
+			if (diff > 0) {
+				print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
+			}
+		}
+
+		characterComponent.Init(this, Airship.characters.MakeNewId(), this.selectedOutfit);
 		this.SetCharacter(characterComponent);
 		go.transform.position = position;
 		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
 		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
+	}
+
+	public WaitForOutfitLoaded(timeout?: number): void {
+		let startTime = Time.time;
+		while (!this.outfitLoaded) {
+			if (this.outfitLoaded || (timeout !== undefined && Time.time - startTime >= timeout)) {
+				break;
+			}
+			task.wait();
+		}
 	}
 
 	public GetProfilePicture(): ProfilePictureMeta {

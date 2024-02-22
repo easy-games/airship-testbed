@@ -1,3 +1,4 @@
+import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
 import { DamageType } from "./Damage/DamageType";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
@@ -32,6 +33,8 @@ export const CoreNetwork = {
 		},
 		SendChatMessage: new RemoteEvent<[text: string]>(),
 		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
+
+		ChangedOutfit: new RemoteEvent<[]>(),
 
 		// ----- REFACTORING -----
 		AbilityActivateRequest: new RemoteEvent<[abilityId: string]>(),
@@ -140,7 +143,9 @@ export const CoreNetwork = {
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
 		Character: {
-			Spawn: new RemoteEvent<[characterId: number, objectId: number, ownerClientId?: number]>(),
+			Spawn: new RemoteEvent<
+				[characterId: number, objectId: number, ownerClientId?: number, outfitDto?: OutfitDto]
+			>(),
 			SetHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			SetMaxHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			Death: new RemoteEvent<[objectId: number]>(),
