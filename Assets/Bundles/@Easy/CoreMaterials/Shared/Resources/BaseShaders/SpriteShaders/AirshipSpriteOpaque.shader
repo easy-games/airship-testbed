@@ -7,11 +7,12 @@ Shader "Airship/AirshipSpriteOpaque"
     }
     SubShader
     {
-        // The value of the LightMode Pass tag must match the ShaderTagId in ScriptableRenderContext.DrawRenderers
         Name "Forward"
-        Tags { "RenderType"="Opaque"  
+        Tags { 
+            "RenderType"="Opaque"  
+            "Queue"="Geometry"
             "LightMode" = "AirshipForwardPass"
-			"Queue"="Geometry"}
+        }
 
 		ZWrite off
 		Cull off
@@ -54,15 +55,12 @@ Shader "Airship/AirshipSpriteOpaque"
                 return o;
             }
 
-            fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
+            void frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
             {
                 const half4 chosenColor = SRGBtoLinear(_Color);
                 float4 finalColor = tex2D(_MainTex, i.uv) * chosenColor * i.color;
 				MRT0 = finalColor;
 				MRT1 = float4(0,0,0,1);
-
-                
-                return finalColor;
             }
             ENDCG
         }

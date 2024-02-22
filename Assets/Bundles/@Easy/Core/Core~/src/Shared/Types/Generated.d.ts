@@ -11072,6 +11072,8 @@ interface CharacterRig extends MonoBehaviour {
     headTop: Transform;
     neck: Transform;
     spineChest: Transform;
+    heldItemL: Transform;
+    heldItemR: Transform;
     baseMeshes: CSArray<SkinnedMeshRenderer>;
 
 
@@ -11115,7 +11117,6 @@ interface AccessoryComponent extends MonoBehaviour {
     localPosition: Vector3;
     localRotation: Quaternion;
     localScale: Vector3;
-    HasSkinnedMeshes: boolean;
 
 
     Copy(other: AccessoryComponent): void;
@@ -13972,6 +13973,7 @@ interface DevConsoleConstructor {
 
     AddCommand(command: Command, onlyInDevBuild: boolean): boolean;
     AddParameterType<T>(parseFunc: unknown): boolean;
+    ClearActiveConsoleContext(): void;
     ClearConsole(): void;
     CloseConsole(): void;
     DisableConsole(): void;
@@ -14049,7 +14051,7 @@ interface BoxCollider extends Collider {
 
 }
     
-interface RemoteImage extends MonoBehaviour {
+interface CloudImage extends MonoBehaviour {
     url: string;
     image: Image;
     downloadOnStart: boolean;
@@ -14057,6 +14059,15 @@ interface RemoteImage extends MonoBehaviour {
 
     StartDownload(): void;
 }
+    
+interface CloudImageConstructor {
+    cachedTextures: CSDictionary<string, Texture2D>;
+
+    new(): CloudImage;
+
+    OnLoad(): void;
+}
+declare const CloudImage: CloudImageConstructor;
     
 interface LineRenderer extends Renderer {
     numPositions: number;
@@ -14208,5 +14219,4 @@ interface AirshipPlatformUtilConstructor {
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
-    
 

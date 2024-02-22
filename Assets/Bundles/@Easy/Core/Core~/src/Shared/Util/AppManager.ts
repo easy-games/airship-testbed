@@ -204,6 +204,7 @@ export class AppManager {
 AppManager.keyboard.OnKeyDown(
 	CLOSE_KEY,
 	(event) => {
+		if (event.IsCancelled()) return;
 		if (AppManager.IsOpen()) {
 			event.SetCancelled(true);
 			AppManager.Close();

@@ -217,7 +217,6 @@ export class FriendsController implements OnStart {
 		if (!savedStatus || savedStatus === "") {
 			this.clientSettingsController.WaitForSettingsLoaded();
 			savedStatus = this.clientSettingsController.data.statusText;
-			print("saved: " + savedStatus);
 		}
 		if (savedStatus) {
 			this.SetStatusText(savedStatus);

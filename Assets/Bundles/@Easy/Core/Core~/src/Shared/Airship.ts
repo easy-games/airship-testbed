@@ -129,4 +129,15 @@ export const Airship = {
 	teams: undefined as unknown as Omit<TeamsSingleton, "OnStart">,
 	inventory: undefined as unknown as Omit<InventorySingleton, "OnStart">,
 	loadingScreen: undefined as unknown as Omit<LoadingScreenSingleton, "OnStart">,
+
+	/**
+	 * Internal method used to wait until Airship singletons are ready.
+	 * This is only needed when developing inside the Core package.
+	 * @internal
+	 */
+	WaitUntilReady: () => {
+		while (Airship.players === undefined) {
+			task.wait();
+		}
+	},
 };

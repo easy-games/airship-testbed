@@ -9,6 +9,7 @@ import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export default class LibonatiManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
+	public outfitPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/Blacksmith/BlacksmithSet.asset";
 
 	private bin = new Bin();
 
@@ -29,8 +30,8 @@ export default class LibonatiManager extends AirshipBehaviour {
 			);
 		}
 		if (RunUtil.IsClient()) {
-			Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
-			Airship.characters.localCharacterManager.SetFirstPerson(true);
+			//Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			//Airship.characters.localCharacterManager.SetFirstPerson(true);
 			Airship.loadingScreen.FinishLoading();
 		}
 	}
@@ -38,6 +39,10 @@ export default class LibonatiManager extends AirshipBehaviour {
 	public SpawnCharacter(player: Player): void {
 		const char = player.SpawnCharacter(this.spawnPosition.transform.position);
 		char.inventory?.AddItem(new ItemStack(ItemType.WOOD_SWORD, -1));
+		char.accessoryBuilder.EquipAccessoryOutfit(
+			AssetBridge.Instance.LoadAsset<AccessoryOutfit>(this.outfitPath),
+			true,
+		);
 	}
 
 	override OnDestroy(): void {

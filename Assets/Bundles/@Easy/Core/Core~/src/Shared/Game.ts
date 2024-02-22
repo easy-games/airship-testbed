@@ -1,6 +1,6 @@
+import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
-import { GameData } from "./GameData";
 import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
@@ -50,9 +50,9 @@ export class Game {
 
 	public static startingScene = SceneManager.GetActiveScene().name;
 
-	public static gameData: GameData | undefined;
-	public static onGameDataLoaded = new Signal<GameData>();
-	public static WaitForGameData(): GameData {
+	public static gameData: GameDto | undefined;
+	public static onGameDataLoaded = new Signal<GameDto>();
+	public static WaitForGameData(): GameDto {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
 	}

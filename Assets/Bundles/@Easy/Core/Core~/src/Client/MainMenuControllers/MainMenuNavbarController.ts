@@ -51,14 +51,15 @@ export class MainMenuNavbarController implements OnStart {
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
-		const runningGameCloseButton = refs.GetValue("UI", "NavbarRunningGameCloseButton");
 
 		this.refreshButton = refs.GetValue("UI", "RefreshPageButton").GetAirshipComponent<NavbarControlButton>()!;
 		CanvasAPI.OnClickEvent(this.refreshButton.gameObject, () => {
 			this.DoRefresh();
 		});
 
-		if (Game.context !== CoreContext.GAME) {
+		if (Game.context === CoreContext.GAME) {
+			settingsButton.SetActive(false);
+		} else {
 			runningGameButton.SetActive(false);
 		}
 
@@ -94,14 +95,13 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
-			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
-		});
-		CoreUI.SetupButton(runningGameCloseButton, { noHoverSound: true });
-		CanvasAPI.OnClickEvent(runningGameCloseButton, () => {
-			this.Disconnect();
+			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
+		if (Game.context === CoreContext.GAME) {
+			currentSelectedNavbarButton = runningGameButton;
+		}
 		this.UpdateNavButton(currentSelectedNavbarButton, true);
 		this.mainMenuController.onCurrentPageChanged.Connect((page, oldPage) => {
 			if (currentSelectedNavbarButton) {
@@ -110,7 +110,11 @@ export class MainMenuNavbarController implements OnStart {
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Settings) {
-				currentSelectedNavbarButton = settingsButton;
+				if (Game.context === CoreContext.GAME) {
+					currentSelectedNavbarButton = runningGameButton;
+				} else {
+					currentSelectedNavbarButton = settingsButton;
+				}
 			} else if (page === MainMenuPageType.Avatar) {
 				currentSelectedNavbarButton = avatarButton;
 			} else if (page === MainMenuPageType.Shop) {
@@ -139,9 +143,10 @@ export class MainMenuNavbarController implements OnStart {
 
 		task.spawn(() => {
 			const gameData = Game.WaitForGameData();
-			// print("child: " + runningGameButton.transform.GetChild(2).gameObject.name);
-			const text = runningGameButton.transform.GetChild(2).GetComponent<TMP_Text>();
+			const text = runningGameButton.transform.GetChild(1).GetComponent<TMP_Text>();
+			text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
 			text.text = gameData.name;
+			Bridge.UpdateLayout(runningGameButton.transform, false);
 		});
 
 		const searchbarButton = refs.GetValue("UI", "Searchbar");

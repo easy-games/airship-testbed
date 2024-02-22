@@ -36,14 +36,14 @@ export default class GameSearchResult extends SearchResult {
 			// Game image
 			this.gameImage.color = new Color(0, 0, 0, 0.3);
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			let remoteImage = this.gameObject.transform.GetChild(0).GetComponent<RemoteImage>();
-			remoteImage.url = url;
-			remoteImage.StartDownload();
-			const downloadConn = remoteImage.OnFinishedLoading((success) => {
+			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
+			cloudImage.url = url;
+			cloudImage.StartDownload();
+			const downloadConn = cloudImage.OnFinishedLoading((success) => {
 				if (success) {
-					remoteImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.1);
+					cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.1);
 				} else {
-					remoteImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.1);
+					cloudImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.1);
 				}
 			});
 			this.bin.Add(() => {

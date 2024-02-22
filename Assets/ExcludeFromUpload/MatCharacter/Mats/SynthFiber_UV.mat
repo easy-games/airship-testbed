@@ -13,7 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS2
+  - NUM_LIGHTS_LIGHTS0
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - _ZWRITE_ON
