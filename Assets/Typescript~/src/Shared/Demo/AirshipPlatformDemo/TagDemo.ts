@@ -1,40 +1,29 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Game } from "@Easy/Core/Shared/Game";
 import { SharedTime } from "@Easy/Core/Shared/Util/TimeUtil";
 import CubeMover from "./CubeMover";
+import { Tags } from "Shared/Tags";
 
 export default class TagDemo extends AirshipBehaviour {
 	public override Start(): void {
-		if (RunCore.IsServer()) {
-			Airship.tags.OnTagAdded("GameTagTest").Connect((gameObject) => {
-				print("Game object added to tag 'GameTagTest'", gameObject.name);
+		Airship.tags.ObserveTag(Tags.AirshipTest_AddCubeMover, (cube) => {
+			cube.AddAirshipComponent<CubeMover>();
+		});
 
-				task.delay(5, () => {
-					Airship.tags.AddTag(gameObject, "GameGeneratedTagTest");
-				});
-			});
-
-			Airship.tags.OnTagAdded("GameGeneratedTagTest").Connect((gameObject) => {
-				if (RunCore.IsServer()) Game.BroadcastMessage(`GameObject added to tag: ${gameObject.name}`);
-				gameObject.AddAirshipComponent<CubeMover>();
-
-				task.delay(5, () => {
-					Airship.tags.RemoveTag(gameObject, "GameGeneratedTagTest");
-				});
-			});
-
-			Airship.tags.OnTagRemoved("GameGeneratedTagTest").Connect((gameObject) => {
-				print("tag was removed from", gameObject.name);
-			});
-		}
+		Airship.tags.ObserveTag(Tags.AirshipTest_Flashy, (gameObject) => {
+			print("flashy added to", gameObject.name);
+			return () => {
+				print("flashy removed from", gameObject.name);
+			};
+		});
 	}
 
 	/**
 	 * Yes this is inefficient as hell and better as a component, but it gets across the idea
 	 */
 	public override FixedUpdate(dt: number): void {
-		for (const tagged of Airship.tags.GetTagged("GameGeneratedTagTest")) {
+		for (const tagged of Airship.tags.GetTagged(Tags.AirshipTest_Flashy)) {
 			const material = tagged.GetComponentsInChildren<MaterialColor>().GetValue(0);
+			if (!material) continue;
 			const color = material.GetColor(0);
 			color.materialColor = Color.HSVToRGB(math.abs(math.sin(SharedTime())), 1, 1);
 			material.SetColor(color, 0);

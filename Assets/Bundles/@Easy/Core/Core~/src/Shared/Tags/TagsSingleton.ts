@@ -109,4 +109,38 @@ export class TagsSingleton implements OnStart {
 		const tagSignal = MapUtil.GetOrCreate(this.tagRemovedSignals, tag, () => new Signal<[GameObject]>());
 		return tagSignal;
 	}
+
+	public ObserveTag(tag: string, callback: (gameObject: GameObject) => void | (() => void)) {
+		const cleanupPerGo = new Map<GameObject, () => void>();
+
+		const observe = (gameObject: GameObject) => {
+			const cleanup = callback(gameObject);
+			if (cleanup !== undefined) {
+				cleanupPerGo.set(gameObject, cleanup);
+			}
+		};
+
+		for (const tagged of this.GetTagged(tag)) {
+			observe(tagged);
+		}
+
+		const stopTagAdded = this.OnTagAdded(tag).Connect((gameObject) => {
+			observe(gameObject);
+		});
+		const stopTagRemoved = this.OnTagRemoved(tag).Connect((gameObject) => {
+			const cleanup = cleanupPerGo.get(gameObject);
+			if (cleanup !== undefined) {
+				cleanup();
+				cleanupPerGo.delete(gameObject);
+			}
+		});
+
+		return () => {
+			stopTagAdded();
+			stopTagRemoved();
+			for (const [go, cleanup] of cleanupPerGo) {
+				cleanup();
+			}
+		};
+	}
 }

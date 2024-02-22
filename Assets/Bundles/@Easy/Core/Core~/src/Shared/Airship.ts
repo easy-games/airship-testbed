@@ -20,6 +20,7 @@ import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
+import { OnInit, OnRender, OnStart, OnTick } from "./Flamework";
 
 /**
  * The collection of platform services available to Airship games.
@@ -130,5 +131,8 @@ export const Airship = {
 	teams: undefined as unknown as Omit<TeamsSingleton, "OnStart">,
 	inventory: undefined as unknown as Omit<InventorySingleton, "OnStart">,
 	loadingScreen: undefined as unknown as Omit<LoadingScreenSingleton, "OnStart">,
-	tags: undefined! as Omit<TagsSingleton, "OnStart">,
+	/**
+	 * Namespace for managing and query Airship tags on game objects
+	 */
+	tags: undefined! as Omit<TagsSingleton, keyof OnStart>,
 };
