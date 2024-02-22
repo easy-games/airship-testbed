@@ -903,3 +903,25 @@ interface SteamLuauAPIConstructor {
 	ProcessPendingJoinRequests(): void;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
+
+interface TagManager {
+	AddTag(gameObject: GameObject, tag: string): void;
+	RemoveTag(gameObject: GameObject, tag: string): void;
+	HasTag(gameObject: GameObject, tag: string): boolean;
+	GetTagged(tag: string): CSArray<GameObject>;
+	GetAllTags(): CSArray<string>;
+	GetAllTagsForGameObject(gameObject: GameObject): CSArray<string>;
+
+	OnTagAdded(callback: (tag: string, gameObject: GameObject) => void): EngineEventConnection;
+	OnTagRemoved(callback: (tag: string, gameObject: GameObject) => void): EngineEventConnection;
+}
+interface TagManagerConstructor {
+	readonly Instance: TagManager;
+}
+declare const TagManager: TagManagerConstructor;
+
+interface AirshipTags extends MonoBehaviour {
+	AddTag(tag: string): void;
+	HasTag(tag: string): boolean;
+	RemoveTag(tag: string): void;
+}
