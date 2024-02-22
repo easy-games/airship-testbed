@@ -5,18 +5,28 @@ import CubeMover from "./CubeMover";
 
 export default class TagDemo extends AirshipBehaviour {
 	public override Start(): void {
-		Airship.tags.OnTagAdded("GameTagTest").Connect((gameObject) => {
-			print("Game object added to tag 'GameTagTest'", gameObject.name);
+		if (RunCore.IsServer()) {
+			Airship.tags.OnTagAdded("GameTagTest").Connect((gameObject) => {
+				print("Game object added to tag 'GameTagTest'", gameObject.name);
 
-			task.delay(5, () => {
-				Airship.tags.AddTag(gameObject, "GameGeneratedTagTest");
+				task.delay(5, () => {
+					Airship.tags.AddTag(gameObject, "GameGeneratedTagTest");
+				});
 			});
-		});
 
-		Airship.tags.OnTagAdded("GameGeneratedTagTest").Connect((gameObject) => {
-			if (RunCore.IsServer()) Game.BroadcastMessage(`GameObject added to tag: ${gameObject.name}`);
-			gameObject.AddAirshipComponent<CubeMover>();
-		});
+			Airship.tags.OnTagAdded("GameGeneratedTagTest").Connect((gameObject) => {
+				if (RunCore.IsServer()) Game.BroadcastMessage(`GameObject added to tag: ${gameObject.name}`);
+				gameObject.AddAirshipComponent<CubeMover>();
+
+				task.delay(5, () => {
+					Airship.tags.RemoveTag(gameObject, "GameGeneratedTagTest");
+				});
+			});
+
+			Airship.tags.OnTagRemoved("GameGeneratedTagTest").Connect((gameObject) => {
+				print("tag was removed from", gameObject.name);
+			});
+		}
 	}
 
 	/**
