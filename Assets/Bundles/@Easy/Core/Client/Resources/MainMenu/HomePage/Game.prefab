@@ -1169,7 +1169,7 @@ MonoBehaviour:
       modified: 1
     - name: orgImage
       type: object
-      objectType: RemoteImage
+      objectType: CloudImage
       items:
         type: 
         objectType: 
