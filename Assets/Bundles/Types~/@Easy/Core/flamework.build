@@ -112,6 +112,7 @@
 		"@Easy/Core:Shared/Avatar/AvatarViewComponent@AvatarViewComponent": "$:Avatar/AvatarViewComponent@AvatarViewComponent",
 		"@Easy/Core:Shared/Avatar/AvatarPlatformAPI@AvatarPlatformAPI": "$:Avatar/AvatarPlatformAPI@AvatarPlatformAPI",
 		"@Easy/Core:Shared/Avatar/AvatarUtil@AvatarUtil": "$:Avatar/AvatarUtil@AvatarUtil",
+		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn": "$:MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController": "$:MainMenuControllers/MainMenuController@MainMenuController",
 		"@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController": "$:MainMenuControllers/Social/FriendsController@FriendsController",
