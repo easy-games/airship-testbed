@@ -2961,6 +2961,7 @@ interface Plane {
 }
     
     
+    
 interface PlaneConstructor {
 
     new(inNormal: Vector3, inPoint: Vector3): Plane;
@@ -3003,6 +3004,8 @@ interface TagHandleConstructor {
     GetExistingTag(tagName: string): TagHandle;
 }
 declare const TagHandle: TagHandleConstructor;
+    
+    
     
     
     
@@ -3094,12 +3097,26 @@ interface Rigidbody extends Component {
     
     
     
+interface RigidbodyConstructor {
+
+    new(): Rigidbody;
+
+}
+declare const Rigidbody: RigidbodyConstructor;
+    
 interface Behaviour extends Component {
     enabled: boolean;
     isActiveAndEnabled: boolean;
 
 
 }
+    
+interface BehaviourConstructor {
+
+    new(): Behaviour;
+
+}
+declare const Behaviour: BehaviourConstructor;
     
 interface ArticulationBody extends Behaviour {
     jointType: ArticulationJointType;
@@ -3224,6 +3241,22 @@ interface ArticulationReducedSpace {
 
 }
     
+interface ArticulationReducedSpaceConstructor {
+
+    new(a: number): ArticulationReducedSpace;
+    new(a: number, b: number): ArticulationReducedSpace;
+    new(a: number, b: number, c: number): ArticulationReducedSpace;
+
+}
+declare const ArticulationReducedSpace: ArticulationReducedSpaceConstructor;
+    
+interface ArticulationBodyConstructor {
+
+    new(): ArticulationBody;
+
+}
+declare const ArticulationBody: ArticulationBodyConstructor;
+    
 interface Bounds {
     center: Vector3;
     size: Vector3;
@@ -3250,6 +3283,13 @@ interface Bounds {
     ToString(format: string): string;
     ToString(format: string, formatProvider: unknown): string;
 }
+    
+interface BoundsConstructor {
+
+    new(center: Vector3, size: Vector3): Bounds;
+
+}
+declare const Bounds: BoundsConstructor;
     
 interface GeometryHolder {
     Type: GeometryType;
@@ -3280,6 +3320,15 @@ interface PhysicMaterial extends Object {
 
 
 }
+    
+interface PhysicMaterialConstructor {
+
+    new(): PhysicMaterial;
+    new(name: string): PhysicMaterial;
+
+}
+declare const PhysicMaterial: PhysicMaterialConstructor;
+    
     
 interface Vector2 {
     x: number;
@@ -3740,6 +3789,13 @@ interface CompositeCollider2D extends Collider2D {
     GetPathPointCount(index: number): number;
 }
     
+interface CompositeCollider2DConstructor {
+
+    new(): CompositeCollider2D;
+
+}
+declare const CompositeCollider2D: CompositeCollider2DConstructor;
+    
 interface Rigidbody2D extends Component {
     position: Vector2;
     rotation: number;
@@ -3850,6 +3906,14 @@ interface PhysicsMaterial2D extends Object {
 
 }
     
+interface PhysicsMaterial2DConstructor {
+
+    new(): PhysicsMaterial2D;
+    new(name: string): PhysicsMaterial2D;
+
+}
+declare const PhysicsMaterial2D: PhysicsMaterial2DConstructor;
+    
 interface ContactFilter2D {
     useTriggers: boolean;
     useLayerMask: boolean;
@@ -3951,6 +4015,13 @@ interface PhysicsShape2D {
 
 }
     
+interface PhysicsShapeGroup2DConstructor {
+
+    new(shapeCapacity: number, vertexCapacity: number): PhysicsShapeGroup2D;
+
+}
+declare const PhysicsShapeGroup2D: PhysicsShapeGroup2DConstructor;
+    
 interface SlideResults {
     remainingVelocity: Vector2;
     position: Vector2;
@@ -3981,6 +4052,20 @@ interface SlideMovement {
     SetLayerMask(mask: LayerMask): void;
     SetStartPosition(position: Vector2): void;
 }
+    
+interface SlideMovementConstructor {
+
+    new(): SlideMovement;
+
+}
+declare const SlideMovement: SlideMovementConstructor;
+    
+interface Rigidbody2DConstructor {
+
+    new(): Rigidbody2D;
+
+}
+declare const Rigidbody2D: Rigidbody2DConstructor;
     
 interface Mesh extends Object {
     uv1: CSArray<Vector2>;
@@ -4356,6 +4441,13 @@ interface SubMeshDescriptor {
     ToString(): string;
 }
     
+interface SubMeshDescriptorConstructor {
+
+    new(indexStart: number, indexCount: number, topology: MeshTopology): SubMeshDescriptor;
+
+}
+declare const SubMeshDescriptor: SubMeshDescriptorConstructor;
+    
 interface VertexAttributeDescriptor {
     attribute: VertexAttribute;
     format: VertexAttributeFormat;
@@ -4368,6 +4460,13 @@ interface VertexAttributeDescriptor {
     GetHashCode(): number;
     ToString(): string;
 }
+    
+interface VertexAttributeDescriptorConstructor {
+
+    new(attribute: VertexAttribute, format: VertexAttributeFormat, dimension: number, stream: number): VertexAttributeDescriptor;
+
+}
+declare const VertexAttributeDescriptor: VertexAttributeDescriptorConstructor;
     
 interface MeshDataArray {
     Length: number;
@@ -4425,6 +4524,13 @@ interface MeshConstructor {
     ApplyAndDisposeWritableMeshData(data: MeshDataArray, meshes: CSArray<Mesh>, flags: MeshUpdateFlags): void;
 }
 declare const Mesh: MeshConstructor;
+    
+interface Collider2DConstructor {
+
+    new(): Collider2D;
+
+}
+declare const Collider2D: Collider2DConstructor;
     
 interface PhysicsScene2DConstructor {
 
@@ -4750,6 +4856,13 @@ interface YieldInstruction {
 
 
 }
+    
+interface YieldInstructionConstructor {
+
+    new(): YieldInstruction;
+
+}
+declare const YieldInstruction: YieldInstructionConstructor;
     
 interface Coroutine extends YieldInstruction {
 
@@ -5178,6 +5291,14 @@ interface TextAsset extends Object {
     ToString(): string;
 }
     
+interface TextAssetConstructor {
+
+    new(): TextAsset;
+    new(text: string): TextAsset;
+
+}
+declare const TextAsset: TextAssetConstructor;
+    
 interface Resources {
 
 
@@ -5192,11 +5313,25 @@ interface AsyncOperation extends YieldInstruction {
 
 }
     
+interface AsyncOperationConstructor {
+
+    new(): AsyncOperation;
+
+}
+declare const AsyncOperation: AsyncOperationConstructor;
+    
 interface ResourceRequest extends AsyncOperation {
     asset: Object;
 
 
 }
+    
+interface ResourceRequestConstructor {
+
+    new(): ResourceRequest;
+
+}
+declare const ResourceRequest: ResourceRequestConstructor;
     
 interface ResourcesConstructor {
 
@@ -5239,6 +5374,13 @@ interface AgonesProxy extends MonoBehaviour {
     Ready(): void;
     Shutdown(): void;
 }
+    
+interface AgonesProxyConstructor {
+
+    new(): AgonesProxy;
+
+}
+declare const AgonesProxy: AgonesProxyConstructor;
     
 interface AgonesCoreConstructor {
     Agones: AgonesProxy;
@@ -5289,6 +5431,21 @@ interface BinaryBlob {
 
     GetDictionary(): CSDictionary<unknown, unknown>;
 }
+    
+interface BinaryBlobConstructor {
+
+    new(): BinaryBlob;
+    new(bytes: CSArray<number>): BinaryBlob;
+
+}
+declare const BinaryBlob: BinaryBlobConstructor;
+    
+interface NetConstructor {
+
+    new(): Net;
+
+}
+declare const Net: NetConstructor;
     
 interface NetworkManager extends MonoBehaviour {
     Initialized: boolean;
@@ -5441,6 +5598,13 @@ interface ObserverCondition extends ScriptableObject {
     SetIsEnabled(value: boolean): void;
     Timed(): boolean;
 }
+    
+interface NetworkObserverConstructor {
+
+    new(): NetworkObserver;
+
+}
+declare const NetworkObserver: NetworkObserverConstructor;
     
 interface NetworkBehaviour extends MonoBehaviour {
     OnStartServerCalled: boolean;
@@ -5655,6 +5819,13 @@ interface Ray2D {
     ToString(format: string, formatProvider: unknown): string;
 }
     
+interface Ray2DConstructor {
+
+    new(origin: Vector2, direction: Vector2): Ray2D;
+
+}
+declare const Ray2D: Ray2DConstructor;
+    
 interface Vector2Int {
     x: number;
     y: number;
@@ -5701,6 +5872,13 @@ interface WriterConstructor {
 
 }
 declare const Writer: WriterConstructor;
+    
+interface ClientManagerConstructor {
+
+    new(): ClientManager;
+
+}
+declare const ClientManager: ClientManagerConstructor;
     
 interface ObserverManager extends MonoBehaviour {
     UpdateHostVisibility: boolean;
@@ -5775,6 +5953,13 @@ interface ClientConnectionStateArgs {
 
 }
     
+interface ClientConnectionStateArgsConstructor {
+
+    new(connectionState: LocalConnectionState, transportIndex: number): ClientConnectionStateArgs;
+
+}
+declare const ClientConnectionStateArgs: ClientConnectionStateArgsConstructor;
+    
 interface ClientReceivedDataArgs {
     Data: CSArray<number>;
     Channel: Channel;
@@ -5782,6 +5967,13 @@ interface ClientReceivedDataArgs {
 
 
 }
+    
+interface ClientReceivedDataArgsConstructor {
+
+    new(data: CSArray<number>, channel: Channel, transportIndex: number): ClientReceivedDataArgs;
+
+}
+declare const ClientReceivedDataArgs: ClientReceivedDataArgsConstructor;
     
 interface RemoteConnectionStateArgs {
     TransportIndex: number;
@@ -5791,12 +5983,26 @@ interface RemoteConnectionStateArgs {
 
 }
     
+interface RemoteConnectionStateArgsConstructor {
+
+    new(connectionState: RemoteConnectionState, connectionId: number, transportIndex: number): RemoteConnectionStateArgs;
+
+}
+declare const RemoteConnectionStateArgs: RemoteConnectionStateArgsConstructor;
+    
 interface ServerConnectionStateArgs {
     TransportIndex: number;
     ConnectionState: LocalConnectionState;
 
 
 }
+    
+interface ServerConnectionStateArgsConstructor {
+
+    new(connectionState: LocalConnectionState, transportIndex: number): ServerConnectionStateArgs;
+
+}
+declare const ServerConnectionStateArgs: ServerConnectionStateArgsConstructor;
     
 interface ServerReceivedDataArgs {
     Data: CSArray<number>;
@@ -5807,6 +6013,14 @@ interface ServerReceivedDataArgs {
 
 
 }
+    
+interface ServerReceivedDataArgsConstructor {
+
+    new(data: CSArray<number>, channel: Channel, connectionId: number, transportIndex: number): ServerReceivedDataArgs;
+    new(data: CSArray<number>, channel: Channel, connectionId: number, transportIndex: number, finalizeMethod: unknown): ServerReceivedDataArgs;
+
+}
+declare const ServerReceivedDataArgs: ServerReceivedDataArgsConstructor;
     
 interface LatencySimulator {
 
@@ -5825,6 +6039,13 @@ interface LatencySimulator {
     SetOutOfOrder(value: number): void;
     SetPacketLoss(value: number): void;
 }
+    
+interface LatencySimulatorConstructor {
+
+    new(): LatencySimulator;
+
+}
+declare const LatencySimulator: LatencySimulatorConstructor;
     
 interface TransportManagerConstructor {
     PACKET_ID_BYTES: number;
@@ -5874,6 +6095,13 @@ interface PreciseTick {
 
 
 }
+    
+interface PreciseTickConstructor {
+
+    new(tick: number, percent: number): PreciseTick;
+
+}
+declare const PreciseTick: PreciseTickConstructor;
     
 interface TimeManagerConstructor {
     UNSET_TICK: number;
@@ -5935,6 +6163,14 @@ interface LoadSceneParameters {
 
 
 }
+    
+interface LoadSceneParametersConstructor {
+
+    new(mode: LoadSceneMode): LoadSceneParameters;
+    new(mode: LoadSceneMode, physicsMode: LocalPhysicsMode): LoadSceneParameters;
+
+}
+declare const LoadSceneParameters: LoadSceneParametersConstructor;
     
 interface LoadQueueData {
     ScopeType: SceneScopeType;
@@ -6001,6 +6237,13 @@ interface LoadParams {
 
 }
     
+interface LoadParamsConstructor {
+
+    new(): LoadParams;
+
+}
+declare const LoadParams: LoadParamsConstructor;
+    
 interface LoadOptions {
     AutomaticallyUnload: boolean;
     AllowStacking: boolean;
@@ -6010,6 +6253,44 @@ interface LoadOptions {
 
 
 }
+    
+interface LoadOptionsConstructor {
+
+    new(): LoadOptions;
+
+}
+declare const LoadOptions: LoadOptionsConstructor;
+    
+interface SceneLoadDataConstructor {
+
+    new(): SceneLoadData;
+    new(scene: Scene): SceneLoadData;
+    new(sceneName: string): SceneLoadData;
+    new(sceneHandle: number): SceneLoadData;
+    new(sceneHandle: number, sceneName: string): SceneLoadData;
+    new(sceneLookupData: SceneLookupData): SceneLoadData;
+    new(scenes: CSArray<Scene>): SceneLoadData;
+    new(sceneNames: CSArray<string>): SceneLoadData;
+    new(sceneHandles: CSArray<number>): SceneLoadData;
+    new(scenes: CSArray<Scene>): SceneLoadData;
+    new(sceneNames: CSArray<string>): SceneLoadData;
+    new(sceneHandles: CSArray<number>): SceneLoadData;
+    new(sceneLookupDatas: CSArray<SceneLookupData>): SceneLoadData;
+    new(scene: Scene, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
+    new(scenes: CSArray<Scene>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
+    new(sceneNames: CSArray<string>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
+    new(sceneHandles: CSArray<number>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
+    new(sceneLookupDatas: CSArray<SceneLookupData>, movedNetworkObjects: CSArray<NetworkObject>): SceneLoadData;
+
+}
+declare const SceneLoadData: SceneLoadDataConstructor;
+    
+interface LoadQueueDataConstructor {
+
+    new(): LoadQueueData;
+
+}
+declare const LoadQueueData: LoadQueueDataConstructor;
     
 interface UnloadQueueData {
     ScopeType: SceneScopeType;
@@ -6037,12 +6318,51 @@ interface UnloadParams {
 
 }
     
+interface UnloadParamsConstructor {
+
+    new(): UnloadParams;
+
+}
+declare const UnloadParams: UnloadParamsConstructor;
+    
 interface UnloadOptions {
     Mode: ServerUnloadMode;
     Addressables: boolean;
 
 
 }
+    
+interface UnloadOptionsConstructor {
+
+    new(): UnloadOptions;
+
+}
+declare const UnloadOptions: UnloadOptionsConstructor;
+    
+interface SceneUnloadDataConstructor {
+
+    new(): SceneUnloadData;
+    new(scene: Scene): SceneUnloadData;
+    new(sceneName: string): SceneUnloadData;
+    new(sceneHandle: number): SceneUnloadData;
+    new(sceneLookupData: SceneLookupData): SceneUnloadData;
+    new(scenes: CSArray<Scene>): SceneUnloadData;
+    new(sceneNames: CSArray<string>): SceneUnloadData;
+    new(sceneHandles: CSArray<number>): SceneUnloadData;
+    new(scenes: CSArray<Scene>): SceneUnloadData;
+    new(sceneNames: CSArray<string>): SceneUnloadData;
+    new(sceneHandles: CSArray<number>): SceneUnloadData;
+    new(sceneLookupDatas: CSArray<SceneLookupData>): SceneUnloadData;
+
+}
+declare const SceneUnloadData: SceneUnloadDataConstructor;
+    
+interface UnloadQueueDataConstructor {
+
+    new(): UnloadQueueData;
+
+}
+declare const UnloadQueueData: UnloadQueueDataConstructor;
     
 interface SceneManagerConstructor {
 
@@ -6068,6 +6388,13 @@ interface PredictionManager extends MonoBehaviour {
     SetMaximumServerReplicates(value: number): void;
 }
     
+interface PredictionManagerConstructor {
+
+    new(): PredictionManager;
+
+}
+declare const PredictionManager: PredictionManagerConstructor;
+    
 interface RollbackManager extends MonoBehaviour {
 
 
@@ -6081,6 +6408,13 @@ interface RollbackManager extends MonoBehaviour {
     Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
     Rollback(origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwner: boolean): void;
 }
+    
+interface RollbackManagerConstructor {
+
+    new(): RollbackManager;
+
+}
+declare const RollbackManager: RollbackManagerConstructor;
     
 interface Reader {
     Source: DataSource;
@@ -6194,6 +6528,13 @@ interface ClientRpcDelegate {
     Invoke(reader: PooledReader, channel: Channel): void;
 }
     
+interface ClientRpcDelegateConstructor {
+
+    new(object: unknown, method: unknown): ClientRpcDelegate;
+
+}
+declare const ClientRpcDelegate: ClientRpcDelegateConstructor;
+    
 interface ReconcileRpcDelegate {
 
 
@@ -6201,6 +6542,13 @@ interface ReconcileRpcDelegate {
     EndInvoke(result: unknown): void;
     Invoke(reader: PooledReader, channel: Channel): void;
 }
+    
+interface ReconcileRpcDelegateConstructor {
+
+    new(object: unknown, method: unknown): ReconcileRpcDelegate;
+
+}
+declare const ReconcileRpcDelegate: ReconcileRpcDelegateConstructor;
     
 interface ReplicateRpcDelegate {
 
@@ -6210,6 +6558,13 @@ interface ReplicateRpcDelegate {
     Invoke(reader: PooledReader, sender: NetworkConnection, channel: Channel): void;
 }
     
+interface ReplicateRpcDelegateConstructor {
+
+    new(object: unknown, method: unknown): ReplicateRpcDelegate;
+
+}
+declare const ReplicateRpcDelegate: ReplicateRpcDelegateConstructor;
+    
 interface ServerRpcDelegate {
 
 
@@ -6217,6 +6572,13 @@ interface ServerRpcDelegate {
     EndInvoke(result: unknown): void;
     Invoke(reader: PooledReader, channel: Channel, sender: NetworkConnection): void;
 }
+    
+interface ServerRpcDelegateConstructor {
+
+    new(object: unknown, method: unknown): ServerRpcDelegate;
+
+}
+declare const ServerRpcDelegate: ServerRpcDelegateConstructor;
     
 interface SyncVarReadDelegate {
 
@@ -6226,6 +6588,13 @@ interface SyncVarReadDelegate {
     Invoke(reader: PooledReader, index: number, asServer: boolean): boolean;
 }
     
+interface SyncVarReadDelegateConstructor {
+
+    new(object: unknown, method: unknown): SyncVarReadDelegate;
+
+}
+declare const SyncVarReadDelegate: SyncVarReadDelegateConstructor;
+    
 interface PooledWriter extends Writer {
 
 
@@ -6234,6 +6603,13 @@ interface PooledWriter extends Writer {
     Store(): void;
     StoreLength(): void;
 }
+    
+interface PooledWriterConstructor {
+
+    new(): PooledWriter;
+
+}
+declare const PooledWriter: PooledWriterConstructor;
     
 interface PredictedSpawn extends NetworkBehaviour {
 
@@ -6254,6 +6630,13 @@ interface PredictedSpawn extends NetworkBehaviour {
     SetAllowSpawning(value: boolean): void;
     SetAllowSyncTypes(value: boolean): void;
 }
+    
+interface PredictedSpawnConstructor {
+
+    new(): PredictedSpawn;
+
+}
+declare const PredictedSpawn: PredictedSpawnConstructor;
     
     
 interface EstimatedTick {
@@ -6286,6 +6669,13 @@ interface LevelOfDetailData extends IResettable {
     InitializeState(): void;
     ResetState(): void;
 }
+    
+interface LevelOfDetailDataConstructor {
+
+    new(): LevelOfDetailData;
+
+}
+declare const LevelOfDetailData: LevelOfDetailDataConstructor;
     
 interface NetworkConnectionConstructor {
     UNSET_CLIENTID_VALUE: number;
@@ -6345,6 +6735,13 @@ interface DebugManager extends MonoBehaviour {
 
 }
     
+interface DebugManagerConstructor {
+
+    new(): DebugManager;
+
+}
+declare const DebugManager: DebugManagerConstructor;
+    
 interface StatisticsManager extends MonoBehaviour {
     NetworkTraffic: NetworkTraficStatistics;
 
@@ -6369,6 +6766,13 @@ interface NetworkTraficStatisticsConstructor {
     FormatBytesToLargest(bytes: number): string;
 }
 declare const NetworkTraficStatistics: NetworkTraficStatisticsConstructor;
+    
+interface StatisticsManagerConstructor {
+
+    new(): StatisticsManager;
+
+}
+declare const StatisticsManager: StatisticsManagerConstructor;
     
 interface ObjectPool extends MonoBehaviour {
 
@@ -6650,6 +7054,21 @@ interface RenderTextureDescriptor {
 
 
 }
+    
+interface RenderTextureDescriptorConstructor {
+
+    new(width: number, height: number): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: RenderTextureFormat): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: RenderTextureFormat, depthBufferBits: number, mipCount: number, readWrite: RenderTextureReadWrite): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: GraphicsFormat, depthBufferBits: number, mipCount: number): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat): RenderTextureDescriptor;
+    new(width: number, height: number, colorFormat: GraphicsFormat, depthStencilFormat: GraphicsFormat, mipCount: number): RenderTextureDescriptor;
+
+}
+declare const RenderTextureDescriptor: RenderTextureDescriptorConstructor;
     
 interface RenderTextureConstructor {
     active: RenderTexture;
@@ -7087,6 +7506,15 @@ interface RenderTargetIdentifierConstructor {
 }
 declare const RenderTargetIdentifier: RenderTargetIdentifierConstructor;
     
+interface AttachmentDescriptorConstructor {
+
+    new(format: GraphicsFormat): AttachmentDescriptor;
+    new(format: RenderTextureFormat): AttachmentDescriptor;
+    new(format: RenderTextureFormat, target: RenderTargetIdentifier, loadExistingContents: boolean, storeResults: boolean, resolve: boolean): AttachmentDescriptor;
+
+}
+declare const AttachmentDescriptor: AttachmentDescriptorConstructor;
+    
 interface SubPassDescriptor {
     inputs: AttachmentIndexArray;
     colorOutputs: AttachmentIndexArray;
@@ -7179,6 +7607,18 @@ interface AutoScope {
 
     Dispose(): void;
 }
+    
+interface ProfilerMarkerConstructor {
+
+    new(name: string): ProfilerMarker;
+    new(name: unknown, nameLen: number): ProfilerMarker;
+    new(category: ProfilerCategory, name: string): ProfilerMarker;
+    new(category: ProfilerCategory, name: unknown, nameLen: number): ProfilerMarker;
+    new(category: ProfilerCategory, name: string, flags: MarkerFlags): ProfilerMarker;
+    new(category: ProfilerCategory, name: unknown, nameLen: number, flags: MarkerFlags): ProfilerMarker;
+
+}
+declare const ProfilerMarker: ProfilerMarkerConstructor;
     
 interface Material extends Object {
     shader: Shader;
@@ -7393,6 +7833,14 @@ interface LocalKeyword {
     GetHashCode(): number;
     ToString(): string;
 }
+    
+interface LocalKeywordConstructor {
+
+    new(shader: Shader, name: string): LocalKeyword;
+    new(shader: ComputeShader, name: string): LocalKeyword;
+
+}
+declare const LocalKeyword: LocalKeywordConstructor;
     
 interface ShaderTagId {
     name: string;
@@ -7693,6 +8141,20 @@ interface SphericalHarmonicsL2 {
     GetHashCode(): number;
 }
     
+interface MaterialPropertyBlockConstructor {
+
+    new(): MaterialPropertyBlock;
+
+}
+declare const MaterialPropertyBlock: MaterialPropertyBlockConstructor;
+    
+interface RendererConstructor {
+
+    new(): Renderer;
+
+}
+declare const Renderer: RendererConstructor;
+    
 interface RayTracingAABBsInstanceConfig {
     aabbBuffer: GraphicsBuffer;
     aabbCount: number;
@@ -7709,12 +8171,28 @@ interface RayTracingAABBsInstanceConfig {
 
 }
     
+interface RayTracingAABBsInstanceConfigConstructor {
+
+    new(): RayTracingAABBsInstanceConfig;
+    new(aabbBuffer: GraphicsBuffer, aabbCount: number, dynamicGeometry: boolean, material: Material): RayTracingAABBsInstanceConfig;
+
+}
+declare const RayTracingAABBsInstanceConfig: RayTracingAABBsInstanceConfigConstructor;
+    
 interface BuildSettings {
     buildFlags: RayTracingAccelerationStructureBuildFlags;
     relativeOrigin: Vector3;
 
 
 }
+    
+interface BuildSettingsConstructor {
+
+    new(): BuildSettings;
+    new(buildFlags: RayTracingAccelerationStructureBuildFlags, relativeOrigin: Vector3): BuildSettings;
+
+}
+declare const BuildSettings: BuildSettingsConstructor;
     
 interface RayTracingInstanceCullingResults {
     materialsCRC: CSArray<RayTracingInstanceMaterialCRC>;
@@ -7729,6 +8207,14 @@ interface RayTracingInstanceMaterialCRC {
 
 
 }
+    
+interface RayTracingAccelerationStructureConstructor {
+
+    new(settings: Settings): RayTracingAccelerationStructure;
+    new(): RayTracingAccelerationStructure;
+
+}
+declare const RayTracingAccelerationStructure: RayTracingAccelerationStructureConstructor;
     
 interface ShaderConstructor {
     globalShaderHardwareTier: ShaderHardwareTier;
@@ -7980,6 +8466,13 @@ interface PositionEnumerator {
     Reset(): void;
 }
     
+interface PositionEnumeratorConstructor {
+
+    new(min: Vector2Int, max: Vector2Int): PositionEnumerator;
+
+}
+declare const PositionEnumerator: PositionEnumeratorConstructor;
+    
 interface RectIntConstructor {
     zero: RectInt;
 
@@ -8013,6 +8506,15 @@ interface RenderTargetBinding {
 
 
 }
+    
+interface RenderTargetBindingConstructor {
+
+    new(colorRenderTargets: CSArray<RenderTargetIdentifier>, colorLoadActions: CSArray<number>, colorStoreActions: CSArray<number>, depthRenderTarget: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): RenderTargetBinding;
+    new(colorRenderTarget: RenderTargetIdentifier, colorLoadAction: RenderBufferLoadAction, colorStoreAction: RenderBufferStoreAction, depthRenderTarget: RenderTargetIdentifier, depthLoadAction: RenderBufferLoadAction, depthStoreAction: RenderBufferStoreAction): RenderTargetBinding;
+    new(setup: RenderTargetSetup): RenderTargetBinding;
+
+}
+declare const RenderTargetBinding: RenderTargetBindingConstructor;
     
 interface CommandBufferConstructor {
     ThrowOnSetRenderTarget: boolean;
@@ -8078,6 +8580,14 @@ interface RenderRequest {
 
 }
     
+interface RenderRequestConstructor {
+
+    new(mode: RenderRequestMode, rt: RenderTexture): RenderRequest;
+    new(mode: RenderRequestMode, space: RenderRequestOutputSpace, rt: RenderTexture): RenderRequest;
+
+}
+declare const RenderRequest: RenderRequestConstructor;
+    
 interface CameraCallback {
 
 
@@ -8086,12 +8596,26 @@ interface CameraCallback {
     Invoke(cam: Camera): void;
 }
     
+interface CameraCallbackConstructor {
+
+    new(object: unknown, method: unknown): CameraCallback;
+
+}
+declare const CameraCallback: CameraCallbackConstructor;
+    
 interface GateFitParameters {
     mode: GateFitMode;
     aspect: number;
 
 
 }
+    
+interface GateFitParametersConstructor {
+
+    new(mode: GateFitMode, aspect: number): GateFitParameters;
+
+}
+declare const GateFitParameters: GateFitParametersConstructor;
     
 interface CameraConstructor {
     kMinAperture: number;
@@ -8147,6 +8671,13 @@ interface LocationInfo {
 
 }
     
+interface LocationServiceConstructor {
+
+    new(): LocationService;
+
+}
+declare const LocationService: LocationServiceConstructor;
+    
 interface Compass {
     magneticHeading: number;
     trueHeading: number;
@@ -8157,6 +8688,13 @@ interface Compass {
 
 
 }
+    
+interface CompassConstructor {
+
+    new(): Compass;
+
+}
+declare const Compass: CompassConstructor;
     
 interface Gyroscope {
     rotationRate: Vector3;
@@ -8405,6 +8943,13 @@ interface BaseInput extends UIBehaviour {
     GetTouch(index: number): Touch;
 }
     
+interface BaseInputConstructor {
+
+    new(): BaseInput;
+
+}
+declare const BaseInput: BaseInputConstructor;
+    
 interface PointerEventData extends BaseEventData {
     hovered: CSArray<GameObject>;
     pointerEnter: GameObject;
@@ -8482,6 +9027,20 @@ interface BaseRaycaster extends UIBehaviour {
     ToString(): string;
 }
     
+interface PointerEventDataConstructor {
+
+    new(eventSystem: EventSystem): PointerEventData;
+
+}
+declare const PointerEventData: PointerEventDataConstructor;
+    
+interface BaseEventDataConstructor {
+
+    new(eventSystem: EventSystem): BaseEventData;
+
+}
+declare const BaseEventData: BaseEventDataConstructor;
+    
 interface IPointerClickHandler extends IEventSystemHandler {
 
 
@@ -8536,6 +9095,13 @@ interface AxisEventData extends BaseEventData {
 
 
 }
+    
+interface AxisEventDataConstructor {
+
+    new(eventSystem: EventSystem): AxisEventData;
+
+}
+declare const AxisEventData: AxisEventDataConstructor;
     
 interface Selectable extends UIBehaviour, IPointerEnterHandler, ISelectHandler, IPointerExitHandler, IDeselectHandler, IPointerDownHandler, IPointerUpHandler, IMoveHandler {
     navigation: Navigation;
@@ -8626,6 +9192,13 @@ interface AnimationTriggers {
 
 }
     
+interface AnimationTriggersConstructor {
+
+    new(): AnimationTriggers;
+
+}
+declare const AnimationTriggers: AnimationTriggersConstructor;
+    
 interface ICanvasElement {
     transform: Transform;
 
@@ -8694,6 +9267,13 @@ interface RectTransform extends Transform {
     SetInsetAndSizeFromParentEdge(edge: Edge, inset: number, size: number): void;
     SetSizeWithCurrentAnchors(axis: Axis, size: number): void;
 }
+    
+interface RectTransformConstructor {
+
+    new(): RectTransform;
+
+}
+declare const RectTransform: RectTransformConstructor;
     
 interface Canvas extends Behaviour {
     renderMode: RenderMode;
@@ -8811,6 +9391,13 @@ interface UnityAction {
     Invoke(): void;
 }
     
+interface UnityActionConstructor {
+
+    new(object: unknown, method: unknown): UnityAction;
+
+}
+declare const UnityAction: UnityActionConstructor;
+    
 interface GraphicConstructor {
     defaultGraphicMaterial: Material;
 
@@ -8887,6 +9474,13 @@ interface CullStateChangedEvent {
 
 
 }
+    
+interface CullStateChangedEventConstructor {
+
+    new(): CullStateChangedEvent;
+
+}
+declare const CullStateChangedEvent: CullStateChangedEventConstructor;
     
 interface Image extends MaskableGraphic, ISerializationCallbackReceiver, ICanvasRaycastFilter, ILayoutElement {
     sprite: Sprite;
@@ -9111,6 +9705,13 @@ interface AnimatorControllerParameter {
     GetHashCode(): number;
 }
     
+interface AnimatorControllerParameterConstructor {
+
+    new(): AnimatorControllerParameter;
+
+}
+declare const AnimatorControllerParameter: AnimatorControllerParameterConstructor;
+    
 interface RuntimeAnimatorController extends Object {
     animationClips: CSArray<AnimationClip>;
 
@@ -9198,6 +9799,13 @@ interface AnimationState extends TrackedReference {
     RemoveMixingTransform(mix: Transform): void;
 }
     
+interface AnimationStateConstructor {
+
+    new(): AnimationState;
+
+}
+declare const AnimationState: AnimationStateConstructor;
+    
 interface AnimatorStateInfo {
     fullPathHash: number;
     nameHash: number;
@@ -9220,6 +9828,13 @@ interface AnimatorClipInfo {
 
 
 }
+    
+interface AnimationEventConstructor {
+
+    new(): AnimationEvent;
+
+}
+declare const AnimationEvent: AnimationEventConstructor;
     
 interface AnimationCurve {
     keys: CSArray<Keyframe>;
@@ -9255,6 +9870,15 @@ interface Keyframe {
 
 }
     
+interface KeyframeConstructor {
+
+    new(time: number, value: number): Keyframe;
+    new(time: number, value: number, inTangent: number, outTangent: number): Keyframe;
+    new(time: number, value: number, inTangent: number, outTangent: number, inWeight: number, outWeight: number): Keyframe;
+
+}
+declare const Keyframe: KeyframeConstructor;
+    
 interface AnimationCurveConstructor {
 
     new(keys: CSArray<Keyframe>): AnimationCurve;
@@ -9265,6 +9889,13 @@ interface AnimationCurveConstructor {
     Linear(timeStart: number, valueStart: number, timeEnd: number, valueEnd: number): AnimationCurve;
 }
 declare const AnimationCurve: AnimationCurveConstructor;
+    
+interface AnimationClipConstructor {
+
+    new(): AnimationClip;
+
+}
+declare const AnimationClip: AnimationClipConstructor;
     
 interface Avatar extends Object {
     isValid: boolean;
@@ -9580,6 +10211,13 @@ interface MatchTargetWeightMask {
 
 }
     
+interface MatchTargetWeightMaskConstructor {
+
+    new(positionXYZWeight: Vector3, rotationWeight: number): MatchTargetWeightMask;
+
+}
+declare const MatchTargetWeightMask: MatchTargetWeightMaskConstructor;
+    
 interface AnimatorConstructor {
 
     new(): Animator;
@@ -9634,10 +10272,24 @@ interface UnityEvent extends UnityEventBase {
     RemoveListener(call: UnityAction): void;
 }
     
+interface UnityEventConstructor {
+
+    new(): UnityEvent;
+
+}
+declare const UnityEvent: UnityEventConstructor;
+    
 interface ButtonClickedEvent extends UnityEvent {
 
 
 }
+    
+interface ButtonClickedEventConstructor {
+
+    new(): ButtonClickedEvent;
+
+}
+declare const ButtonClickedEvent: ButtonClickedEventConstructor;
     
 interface MeshRenderer extends Renderer {
     additionalVertexStreams: Mesh;
@@ -9650,12 +10302,26 @@ interface MeshRenderer extends Renderer {
 
 }
     
+interface MeshRendererConstructor {
+
+    new(): MeshRenderer;
+
+}
+declare const MeshRenderer: MeshRendererConstructor;
+    
 interface MeshFilter extends Component {
     sharedMesh: Mesh;
     mesh: Mesh;
 
 
 }
+    
+interface MeshFilterConstructor {
+
+    new(): MeshFilter;
+
+}
+declare const MeshFilter: MeshFilterConstructor;
     
 interface TMP_Text extends MaskableGraphic {
     text: string;
@@ -9947,6 +10613,13 @@ interface FontTextureRebuildCallback {
     Invoke(): void;
 }
     
+interface FontTextureRebuildCallbackConstructor {
+
+    new(object: unknown, method: unknown): FontTextureRebuildCallback;
+
+}
+declare const FontTextureRebuildCallback: FontTextureRebuildCallbackConstructor;
+    
 interface FontConstructor {
 
     new(): Font;
@@ -9985,6 +10658,13 @@ interface GlyphMetrics {
     GetHashCode(): number;
 }
     
+interface GlyphMetricsConstructor {
+
+    new(width: number, height: number, bearingX: number, bearingY: number, advance: number): GlyphMetrics;
+
+}
+declare const GlyphMetrics: GlyphMetricsConstructor;
+    
 interface GlyphRect {
     x: number;
     y: number;
@@ -10006,6 +10686,16 @@ interface GlyphRectConstructor {
 }
 declare const GlyphRect: GlyphRectConstructor;
     
+interface GlyphConstructor {
+
+    new(): Glyph;
+    new(glyph: Glyph): Glyph;
+    new(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect): Glyph;
+    new(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect, scale: number, atlasIndex: number): Glyph;
+
+}
+declare const Glyph: GlyphConstructor;
+    
 interface TMP_TextElement {
     elementType: TextElementType;
     unicode: number;
@@ -10017,10 +10707,26 @@ interface TMP_TextElement {
 
 }
     
+interface TMP_TextElementConstructor {
+
+    new(): TMP_TextElement;
+
+}
+declare const TMP_TextElement: TMP_TextElementConstructor;
+    
 interface TMP_Character extends TMP_TextElement {
 
 
 }
+    
+interface TMP_CharacterConstructor {
+
+    new(): TMP_Character;
+    new(unicode: number, glyph: Glyph): TMP_Character;
+    new(unicode: number, fontAsset: TMP_FontAsset, glyph: Glyph): TMP_Character;
+
+}
+declare const TMP_Character: TMP_CharacterConstructor;
     
 interface TMP_FontFeatureTable {
     multipleSubstitutionRecords: CSArray<MultipleSubstitutionRecord>;
@@ -10082,6 +10788,27 @@ interface GlyphValueRecord {
     GetHashCode(): number;
 }
     
+interface GlyphValueRecordConstructor {
+
+    new(xPlacement: number, yPlacement: number, xAdvance: number, yAdvance: number): GlyphValueRecord;
+
+}
+declare const GlyphValueRecord: GlyphValueRecordConstructor;
+    
+interface GlyphAdjustmentRecordConstructor {
+
+    new(glyphIndex: number, glyphValueRecord: GlyphValueRecord): GlyphAdjustmentRecord;
+
+}
+declare const GlyphAdjustmentRecord: GlyphAdjustmentRecordConstructor;
+    
+interface GlyphPairAdjustmentRecordConstructor {
+
+    new(firstAdjustmentRecord: GlyphAdjustmentRecord, secondAdjustmentRecord: GlyphAdjustmentRecord): GlyphPairAdjustmentRecord;
+
+}
+declare const GlyphPairAdjustmentRecord: GlyphPairAdjustmentRecordConstructor;
+    
 interface MarkToBaseAdjustmentRecord {
     baseGlyphID: number;
     baseGlyphAnchorPoint: GlyphAnchorPoint;
@@ -10105,6 +10832,13 @@ interface MarkPositionAdjustment {
 
 }
     
+interface MarkPositionAdjustmentConstructor {
+
+    new(x: number, y: number): MarkPositionAdjustment;
+
+}
+declare const MarkPositionAdjustment: MarkPositionAdjustmentConstructor;
+    
 interface MarkToMarkAdjustmentRecord {
     baseMarkGlyphID: number;
     baseMarkGlyphAnchorPoint: GlyphAnchorPoint;
@@ -10113,6 +10847,13 @@ interface MarkToMarkAdjustmentRecord {
 
 
 }
+    
+interface TMP_FontFeatureTableConstructor {
+
+    new(): TMP_FontFeatureTable;
+
+}
+declare const TMP_FontFeatureTable: TMP_FontFeatureTableConstructor;
     
 interface TMP_FontWeightPair {
     regularTypeface: TMP_FontAsset;
@@ -10147,6 +10888,13 @@ interface FaceInfo_Legacy {
 
 }
     
+interface FaceInfo_LegacyConstructor {
+
+    new(): FaceInfo_Legacy;
+
+}
+declare const FaceInfo_Legacy: FaceInfo_LegacyConstructor;
+    
 interface TMP_FontAssetConstructor {
 
     new(): TMP_FontAsset;
@@ -10169,6 +10917,14 @@ interface VertexGradient {
 
 }
     
+interface VertexGradientConstructor {
+
+    new(color: Color): VertexGradient;
+    new(color0: Color, color1: Color, color2: Color, color3: Color): VertexGradient;
+
+}
+declare const VertexGradient: VertexGradientConstructor;
+    
 interface TMP_ColorGradient extends ScriptableObject {
     colorMode: ColorMode;
     topLeft: Color;
@@ -10178,6 +10934,15 @@ interface TMP_ColorGradient extends ScriptableObject {
 
 
 }
+    
+interface TMP_ColorGradientConstructor {
+
+    new(): TMP_ColorGradient;
+    new(color: Color): TMP_ColorGradient;
+    new(color0: Color, color1: Color, color2: Color, color3: Color): TMP_ColorGradient;
+
+}
+declare const TMP_ColorGradient: TMP_ColorGradientConstructor;
     
 interface TMP_SpriteAsset extends TMP_Asset {
     spriteSheet: Texture;
@@ -10209,6 +10974,13 @@ interface TMP_TextElement_Legacy {
 
 }
     
+interface TMP_TextElement_LegacyConstructor {
+
+    new(): TMP_TextElement_Legacy;
+
+}
+declare const TMP_TextElement_Legacy: TMP_TextElement_LegacyConstructor;
+    
 interface TMP_Sprite extends TMP_TextElement_Legacy {
     name: string;
     hashCode: number;
@@ -10219,17 +10991,42 @@ interface TMP_Sprite extends TMP_TextElement_Legacy {
 
 }
     
+interface TMP_SpriteConstructor {
+
+    new(): TMP_Sprite;
+
+}
+declare const TMP_Sprite: TMP_SpriteConstructor;
+    
 interface TMP_SpriteCharacter extends TMP_TextElement {
     name: string;
 
 
 }
     
+interface TMP_SpriteCharacterConstructor {
+
+    new(): TMP_SpriteCharacter;
+    new(unicode: number, glyph: TMP_SpriteGlyph): TMP_SpriteCharacter;
+    new(unicode: number, spriteAsset: TMP_SpriteAsset, glyph: TMP_SpriteGlyph): TMP_SpriteCharacter;
+
+}
+declare const TMP_SpriteCharacter: TMP_SpriteCharacterConstructor;
+    
 interface TMP_SpriteGlyph extends Glyph {
     sprite: Sprite;
 
 
 }
+    
+interface TMP_SpriteGlyphConstructor {
+
+    new(): TMP_SpriteGlyph;
+    new(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect, scale: number, atlasIndex: number): TMP_SpriteGlyph;
+    new(index: number, metrics: GlyphMetrics, glyphRect: GlyphRect, scale: number, atlasIndex: number, sprite: Sprite): TMP_SpriteGlyph;
+
+}
+declare const TMP_SpriteGlyph: TMP_SpriteGlyphConstructor;
     
 interface TMP_SpriteAssetConstructor {
 
@@ -10266,6 +11063,13 @@ interface TMP_StyleConstructor {
 
 }
 declare const TMP_Style: TMP_StyleConstructor;
+    
+interface TMP_StyleSheetConstructor {
+
+    new(): TMP_StyleSheet;
+
+}
+declare const TMP_StyleSheet: TMP_StyleSheetConstructor;
     
 interface TMP_TextInfo {
     textComponent: TMP_Text;
@@ -10384,6 +11188,13 @@ interface TMP_OffsetConstructor {
 }
 declare const TMP_Offset: TMP_OffsetConstructor;
     
+interface HighlightStateConstructor {
+
+    new(color: Color32, padding: TMP_Offset): HighlightState;
+
+}
+declare const HighlightState: HighlightStateConstructor;
+    
 interface TMP_WordInfo {
     textComponent: TMP_Text;
     firstCharacterIndex: number;
@@ -10441,6 +11252,13 @@ interface Extents {
     ToString(): string;
 }
     
+interface ExtentsConstructor {
+
+    new(min: Vector2, max: Vector2): Extents;
+
+}
+declare const Extents: ExtentsConstructor;
+    
 interface TMP_PageInfo {
     firstCharacterIndex: number;
     lastCharacterIndex: number;
@@ -10475,6 +11293,14 @@ interface TMP_MeshInfo {
     SortGeometry(sortingOrder: CSArray<number>): void;
     SwapVertexData(src: number, dst: number): void;
 }
+    
+interface TMP_MeshInfoConstructor {
+
+    new(mesh: Mesh, size: number): TMP_MeshInfo;
+    new(mesh: Mesh, size: number, isVolumetric: boolean): TMP_MeshInfo;
+
+}
+declare const TMP_MeshInfo: TMP_MeshInfoConstructor;
     
 interface MaterialReference {
     index: number;
@@ -10539,6 +11365,13 @@ interface TextMeshProUGUI extends TMP_Text, ILayoutElement {
     UpdateVertexData(): void;
 }
     
+interface TextMeshProUGUIConstructor {
+
+    new(): TextMeshProUGUI;
+
+}
+declare const TextMeshProUGUI: TextMeshProUGUIConstructor;
+    
 interface Animation extends Behaviour {
     clip: AnimationClip;
     playAutomatically: boolean;
@@ -10588,12 +11421,26 @@ interface Animation extends Behaviour {
     SyncLayer(layer: number): void;
 }
     
+interface AnimationConstructor {
+
+    new(): Animation;
+
+}
+declare const Animation: AnimationConstructor;
+    
 interface ClientSceneListener extends MonoBehaviour {
     IsGameSceneLoaded: boolean;
     SceneLoadPercent: number;
 
 
 }
+    
+interface ClientSceneListenerConstructor {
+
+    new(): ClientSceneListener;
+
+}
+declare const ClientSceneListener: ClientSceneListenerConstructor;
     
 interface BundleLoadingScreen extends MonoBehaviour {
 
@@ -10609,6 +11456,13 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     Close(): void;
     SetProgress(text: string, percent: number): void;
 }
+    
+interface CoreLoadingScreenConstructor {
+
+    new(): CoreLoadingScreen;
+
+}
+declare const CoreLoadingScreen: CoreLoadingScreenConstructor;
     
 interface TextField {
     multiline: boolean;
@@ -10740,6 +11594,13 @@ interface Flare extends Object {
 
 
 }
+    
+interface FlareConstructor {
+
+    new(): Flare;
+
+}
+declare const Flare: FlareConstructor;
     
 interface LightBakingOutput {
     probeOcclusionLightIndex: number;
@@ -10874,6 +11735,13 @@ interface GameServerObjectMeta {
     ToString(): string;
 }
     
+interface GameServerObjectMetaConstructor {
+
+    new(data: CSDictionary<string, unknown>): GameServerObjectMeta;
+
+}
+declare const GameServerObjectMeta: GameServerObjectMetaConstructor;
+    
 interface GameServerSpec {
     Health: SpecHealth;
 
@@ -10896,6 +11764,20 @@ interface SpecHealth {
     GetHashCode(): number;
     ToString(): string;
 }
+    
+interface SpecHealthConstructor {
+
+    new(data: CSDictionary<string, unknown>): SpecHealth;
+
+}
+declare const SpecHealth: SpecHealthConstructor;
+    
+interface GameServerSpecConstructor {
+
+    new(data: CSDictionary<string, unknown>): GameServerSpec;
+
+}
+declare const GameServerSpec: GameServerSpecConstructor;
     
 interface GameServerStatus {
     State: string;
@@ -10920,6 +11802,27 @@ interface StatusPort {
     ToString(): string;
 }
     
+interface StatusPortConstructor {
+
+    new(data: CSDictionary<string, unknown>): StatusPort;
+
+}
+declare const StatusPort: StatusPortConstructor;
+    
+interface GameServerStatusConstructor {
+
+    new(data: CSDictionary<string, unknown>): GameServerStatus;
+
+}
+declare const GameServerStatus: GameServerStatusConstructor;
+    
+interface GameServerConstructor {
+
+    new(data: CSDictionary<string, unknown>): GameServer;
+
+}
+declare const GameServer: GameServerConstructor;
+    
 interface WatchGameServerCallback {
 
 
@@ -10927,6 +11830,20 @@ interface WatchGameServerCallback {
     EndInvoke(result: unknown): void;
     Invoke(gameServer: GameServer): void;
 }
+    
+interface WatchGameServerCallbackConstructor {
+
+    new(object: unknown, method: unknown): WatchGameServerCallback;
+
+}
+declare const WatchGameServerCallback: WatchGameServerCallbackConstructor;
+    
+interface AgonesSdkConstructor {
+
+    new(): AgonesSdk;
+
+}
+declare const AgonesSdk: AgonesSdkConstructor;
     
 interface ServerContext extends NetworkBehaviour {
     serverId: string;
@@ -10948,6 +11865,13 @@ interface ServerContext extends NetworkBehaviour {
     ReadSyncVar___ServerContext(PooledReader0: PooledReader, UInt321: number, Boolean2: boolean): boolean;
 }
     
+interface ServerContextConstructor {
+
+    new(): ServerContext;
+
+}
+declare const ServerContext: ServerContextConstructor;
+    
 interface AirshipEditorConfig extends ScriptableObject {
     useBundlesInEditor: boolean;
     buildBundlesOnPlay: boolean;
@@ -10964,6 +11888,13 @@ interface AirshipEditorConfigConstructor {
 }
 declare const AirshipEditorConfig: AirshipEditorConfigConstructor;
     
+interface ServerBootstrapConstructor {
+
+    new(): ServerBootstrap;
+
+}
+declare const ServerBootstrap: ServerBootstrapConstructor;
+    
 interface SceneManager {
 
 
@@ -10974,6 +11905,13 @@ interface CreateSceneParameters {
 
 
 }
+    
+interface CreateSceneParametersConstructor {
+
+    new(physicsMode: LocalPhysicsMode): CreateSceneParameters;
+
+}
+declare const CreateSceneParameters: CreateSceneParametersConstructor;
     
 interface SceneManagerConstructor {
     sceneCount: number;
@@ -11100,6 +12038,20 @@ interface SkinnedMeshRenderer extends Renderer {
     SetBlendShapeWeight(index: number, value: number): void;
 }
     
+interface SkinnedMeshRendererConstructor {
+
+    new(): SkinnedMeshRenderer;
+
+}
+declare const SkinnedMeshRenderer: SkinnedMeshRendererConstructor;
+    
+interface CharacterRigConstructor {
+
+    new(): CharacterRig;
+
+}
+declare const CharacterRig: CharacterRigConstructor;
+    
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
     rootTransform: Transform;
@@ -11125,6 +12077,13 @@ interface AccessoryComponent extends MonoBehaviour {
     ToString(): string;
 }
     
+interface AccessoryComponentConstructor {
+
+    new(): AccessoryComponent;
+
+}
+declare const AccessoryComponent: AccessoryComponentConstructor;
+    
 interface AccessorySkin extends ScriptableObject {
     skinTextureDiffuse: Texture2D;
     skinTextureNormal: Texture2D;
@@ -11135,6 +12094,13 @@ interface AccessorySkin extends ScriptableObject {
     ToString(): string;
 }
     
+interface AccessorySkinConstructor {
+
+    new(): AccessorySkin;
+
+}
+declare const AccessorySkin: AccessorySkinConstructor;
+    
 interface AccessoryOutfit extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
     customSkin: AccessorySkin;
@@ -11143,6 +12109,13 @@ interface AccessoryOutfit extends ScriptableObject {
 
 
 }
+    
+interface AccessoryOutfitConstructor {
+
+    new(): AccessoryOutfit;
+
+}
+declare const AccessoryOutfit: AccessoryOutfitConstructor;
     
 interface ParticleSystem extends Component {
     safeCollisionEventSize: number;
@@ -11314,6 +12287,16 @@ interface MinMaxCurve {
     Evaluate(time: number, lerpFactor: number): number;
 }
     
+interface MinMaxCurveConstructor {
+
+    new(constant: number): MinMaxCurve;
+    new(multiplier: number, curve: AnimationCurve): MinMaxCurve;
+    new(multiplier: number, min: AnimationCurve, max: AnimationCurve): MinMaxCurve;
+    new(min: number, max: number): MinMaxCurve;
+
+}
+declare const MinMaxCurve: MinMaxCurveConstructor;
+    
 interface MinMaxGradient {
     mode: ParticleSystemGradientMode;
     gradientMax: Gradient;
@@ -11349,12 +12332,43 @@ interface GradientColorKey {
 
 }
     
+interface GradientColorKeyConstructor {
+
+    new(col: Color, time: number): GradientColorKey;
+
+}
+declare const GradientColorKey: GradientColorKeyConstructor;
+    
 interface GradientAlphaKey {
     alpha: number;
     time: number;
 
 
 }
+    
+interface GradientAlphaKeyConstructor {
+
+    new(alpha: number, time: number): GradientAlphaKey;
+
+}
+declare const GradientAlphaKey: GradientAlphaKeyConstructor;
+    
+interface GradientConstructor {
+
+    new(): Gradient;
+
+}
+declare const Gradient: GradientConstructor;
+    
+interface MinMaxGradientConstructor {
+
+    new(color: Color): MinMaxGradient;
+    new(gradient: Gradient): MinMaxGradient;
+    new(min: Color, max: Color): MinMaxGradient;
+    new(min: Gradient, max: Gradient): MinMaxGradient;
+
+}
+declare const MinMaxGradient: MinMaxGradientConstructor;
     
 interface EmissionModule {
     type: ParticleSystemEmissionType;
@@ -11386,6 +12400,17 @@ interface Burst {
 
 
 }
+    
+interface BurstConstructor {
+
+    new(_time: number, _count: number): Burst;
+    new(_time: number, _minCount: number, _maxCount: number): Burst;
+    new(_time: number, _minCount: number, _maxCount: number, _cycleCount: number, _repeatInterval: number): Burst;
+    new(_time: number, _count: MinMaxCurve): Burst;
+    new(_time: number, _count: MinMaxCurve, _cycleCount: number, _repeatInterval: number): Burst;
+
+}
+declare const Burst: BurstConstructor;
     
 interface ShapeModule {
     box: Vector3;
@@ -11456,6 +12481,13 @@ interface SpriteRenderer extends Renderer {
     RegisterSpriteChangeCallback(callback: unknown): void;
     UnregisterSpriteChangeCallback(callback: unknown): void;
 }
+    
+interface SpriteRendererConstructor {
+
+    new(): SpriteRenderer;
+
+}
+declare const SpriteRenderer: SpriteRendererConstructor;
     
 interface VelocityOverLifetimeModule {
     enabled: boolean;
@@ -11987,6 +13019,13 @@ interface ParticleSystemConstructor {
 }
 declare const ParticleSystem: ParticleSystemConstructor;
     
+interface AccessoryBuilderConstructor {
+
+    new(): AccessoryBuilder;
+
+}
+declare const AccessoryBuilder: AccessoryBuilderConstructor;
+    
 interface AvatarMask extends Object {
     humanoidBodyPartCount: number;
     transformCount: number;
@@ -12003,6 +13042,13 @@ interface AvatarMask extends Object {
     SetTransformActive(index: number, value: boolean): void;
     SetTransformPath(index: number, path: string): void;
 }
+    
+interface AvatarMaskConstructor {
+
+    new(): AvatarMask;
+
+}
+declare const AvatarMask: AvatarMaskConstructor;
     
 interface DebugUtil extends Debug {
 
@@ -12029,10 +13075,24 @@ interface CollisionWatcher extends MonoBehaviour {
 
 }
     
+interface CollisionWatcherConstructor {
+
+    new(): CollisionWatcher;
+
+}
+declare const CollisionWatcher: CollisionWatcherConstructor;
+    
 interface TriggerWatcher extends MonoBehaviour {
 
 
 }
+    
+interface TriggerWatcherConstructor {
+
+    new(): TriggerWatcher;
+
+}
+declare const TriggerWatcher: TriggerWatcherConstructor;
     
 interface PhysicsExt {
 
@@ -12045,6 +13105,13 @@ interface SphereCastReturnData {
 
 
 }
+    
+interface SphereCastReturnDataConstructor {
+
+    new(hitCount: number, raycastHits: CSArray<RaycastHit>): SphereCastReturnData;
+
+}
+declare const SphereCastReturnData: SphereCastReturnDataConstructor;
     
 interface PhysicsExtConstructor {
 
@@ -12059,6 +13126,13 @@ interface ServerConsole extends MonoBehaviour {
 
 
 }
+    
+interface ServerConsoleConstructor {
+
+    new(): ServerConsole;
+
+}
+declare const ServerConsole: ServerConsoleConstructor;
     
 interface RawImage extends MaskableGraphic {
     mainTexture: Texture;
@@ -12082,6 +13156,13 @@ interface LogCallback {
     Invoke(condition: string, stackTrace: string, type: LogType): void;
 }
     
+interface LogCallbackConstructor {
+
+    new(object: unknown, method: unknown): LogCallback;
+
+}
+declare const LogCallback: LogCallbackConstructor;
+    
 interface AdvertisingIdentifierCallback {
 
 
@@ -12089,6 +13170,13 @@ interface AdvertisingIdentifierCallback {
     EndInvoke(result: unknown): void;
     Invoke(advertisingId: string, trackingEnabled: boolean, errorMsg: string): void;
 }
+    
+interface AdvertisingIdentifierCallbackConstructor {
+
+    new(object: unknown, method: unknown): AdvertisingIdentifierCallback;
+
+}
+declare const AdvertisingIdentifierCallback: AdvertisingIdentifierCallbackConstructor;
     
 interface ApplicationConstructor {
     isLoadingLevel: boolean;
@@ -12179,6 +13267,13 @@ interface ClientNetworkConnector extends MonoBehaviour {
 
 }
     
+interface ClientNetworkConnectorConstructor {
+
+    new(): ClientNetworkConnector;
+
+}
+declare const ClientNetworkConnector: ClientNetworkConnectorConstructor;
+    
 interface ParticleSystemRenderer extends Renderer {
     alignment: ParticleSystemRenderSpace;
     renderMode: ParticleSystemRenderMode;
@@ -12236,6 +13331,13 @@ interface ParticleSystemRenderer extends Renderer {
     SetMeshWeightings(weightings: CSArray<number>, size: number): void;
     SetMeshWeightings(weightings: CSArray<number>): void;
 }
+    
+interface ParticleSystemRendererConstructor {
+
+    new(): ParticleSystemRenderer;
+
+}
+declare const ParticleSystemRenderer: ParticleSystemRendererConstructor;
     
 interface Profiler {
 
@@ -12495,30 +13597,72 @@ interface ScrollEvent {
 
 }
     
+interface ScrollEventConstructor {
+
+    new(): ScrollEvent;
+
+}
+declare const ScrollEvent: ScrollEventConstructor;
+    
 interface SubmitEvent {
 
 
 }
+    
+interface SubmitEventConstructor {
+
+    new(): SubmitEvent;
+
+}
+declare const SubmitEvent: SubmitEventConstructor;
     
 interface SelectionEvent {
 
 
 }
     
+interface SelectionEventConstructor {
+
+    new(): SelectionEvent;
+
+}
+declare const SelectionEvent: SelectionEventConstructor;
+    
 interface TextSelectionEvent {
 
 
 }
+    
+interface TextSelectionEventConstructor {
+
+    new(): TextSelectionEvent;
+
+}
+declare const TextSelectionEvent: TextSelectionEventConstructor;
     
 interface OnChangeEvent {
 
 
 }
     
+interface OnChangeEventConstructor {
+
+    new(): OnChangeEvent;
+
+}
+declare const OnChangeEvent: OnChangeEventConstructor;
+    
 interface TouchScreenKeyboardEvent {
 
 
 }
+    
+interface TouchScreenKeyboardEventConstructor {
+
+    new(): TouchScreenKeyboardEvent;
+
+}
+declare const TouchScreenKeyboardEvent: TouchScreenKeyboardEventConstructor;
     
 interface OnValidateInput {
 
@@ -12527,6 +13671,13 @@ interface OnValidateInput {
     EndInvoke(result: unknown): string;
     Invoke(text: string, charIndex: number, addedChar: string): string;
 }
+    
+interface OnValidateInputConstructor {
+
+    new(object: unknown, method: unknown): OnValidateInput;
+
+}
+declare const OnValidateInput: OnValidateInputConstructor;
     
 interface TouchScreenKeyboard {
     text: string;
@@ -12551,6 +13702,13 @@ interface RangeInt {
 
 
 }
+    
+interface RangeIntConstructor {
+
+    new(start: number, length: number): RangeInt;
+
+}
+declare const RangeInt: RangeIntConstructor;
     
 interface TouchScreenKeyboardConstructor {
     isSupported: boolean;
@@ -12660,6 +13818,13 @@ interface SliderEvent {
 
 }
     
+interface SliderEventConstructor {
+
+    new(): SliderEvent;
+
+}
+declare const SliderEvent: SliderEventConstructor;
+    
 interface CanvasHitDetector extends MonoBehaviour {
 
 
@@ -12667,10 +13832,24 @@ interface CanvasHitDetector extends MonoBehaviour {
     IsPointerOverUI(): boolean;
 }
     
+interface CanvasHitDetectorConstructor {
+
+    new(): CanvasHitDetector;
+
+}
+declare const CanvasHitDetector: CanvasHitDetectorConstructor;
+    
 interface AudioBehaviour extends Behaviour {
 
 
 }
+    
+interface AudioBehaviourConstructor {
+
+    new(): AudioBehaviour;
+
+}
+declare const AudioBehaviour: AudioBehaviourConstructor;
     
 interface AudioSource extends AudioBehaviour {
     panLevel: number;
@@ -12772,6 +13951,13 @@ interface PCMReaderCallback {
     Invoke(data: CSArray<number>): void;
 }
     
+interface PCMReaderCallbackConstructor {
+
+    new(object: unknown, method: unknown): PCMReaderCallback;
+
+}
+declare const PCMReaderCallback: PCMReaderCallbackConstructor;
+    
 interface PCMSetPositionCallback {
 
 
@@ -12779,6 +13965,13 @@ interface PCMSetPositionCallback {
     EndInvoke(result: unknown): void;
     Invoke(position: number): void;
 }
+    
+interface PCMSetPositionCallbackConstructor {
+
+    new(object: unknown, method: unknown): PCMSetPositionCallback;
+
+}
+declare const PCMSetPositionCallback: PCMSetPositionCallbackConstructor;
     
 interface AudioClipConstructor {
 
@@ -12937,11 +14130,25 @@ interface CanvasGroup extends Behaviour, ICanvasRaycastFilter {
     IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
 }
     
+interface CanvasGroupConstructor {
+
+    new(): CanvasGroup;
+
+}
+declare const CanvasGroup: CanvasGroupConstructor;
+    
 interface AutoShutdownBridge extends MonoBehaviour {
 
 
     SetBundlesLoaded(assetBundlesLoaded: boolean): void;
 }
+    
+interface AutoShutdownBridgeConstructor {
+
+    new(): AutoShutdownBridge;
+
+}
+declare const AutoShutdownBridge: AutoShutdownBridgeConstructor;
     
 interface ScreenCapture {
 
@@ -13007,6 +14214,13 @@ interface TextureSet {
 
 
 }
+    
+interface TextureSetConstructor {
+
+    new(diffuse: Texture2D, normals: Texture2D, roughTex: Texture2D, metalTex: Texture2D, emissiveTex: Texture2D, roughness: number, metallic: number, normalScale: number, emissive: number, brightness: number): TextureSet;
+
+}
+declare const TextureSet: TextureSetConstructor;
     
 interface TexturePackerConstructor {
 
@@ -13085,6 +14299,14 @@ interface PrecalculatedRotation {
 
 }
     
+interface PrecalculatedRotationConstructor {
+
+    new(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+    new(srcVertices: CSArray<Vector3>, srcNormals: CSArray<Vector3>, rot: Rotations, quat: Quaternion): PrecalculatedRotation;
+
+}
+declare const PrecalculatedRotation: PrecalculatedRotationConstructor;
+    
 interface Surface {
     triangles: CSArray<number>;
     meshMaterial: Material;
@@ -13093,6 +14315,23 @@ interface Surface {
 
 }
     
+interface SurfaceConstructor {
+
+    new(triangles: CSArray<number>, material: Material, materialName: string): Surface;
+    new(): Surface;
+
+}
+declare const Surface: SurfaceConstructor;
+    
+interface VoxelMeshCopyConstructor {
+
+    new(mesh: Mesh): VoxelMeshCopy;
+    new(src: VoxelMeshCopy): VoxelMeshCopy;
+    new(assetPath: string, showError: boolean): VoxelMeshCopy;
+
+}
+declare const VoxelMeshCopy: VoxelMeshCopyConstructor;
+    
 interface LodSet {
     lod0: VoxelMeshCopy;
     lod1: VoxelMeshCopy;
@@ -13100,6 +14339,20 @@ interface LodSet {
 
 
 }
+    
+interface LodSetConstructor {
+
+    new(): LodSet;
+
+}
+declare const LodSet: LodSetConstructor;
+    
+interface BlockDefinitionConstructor {
+
+    new(): BlockDefinition;
+
+}
+declare const BlockDefinition: BlockDefinitionConstructor;
     
 interface VoxelBlocksConstructor {
     meshTileOffsets: CSDictionary<number, Vector3>;
@@ -13133,6 +14386,13 @@ interface CharacterController extends Collider {
     SimpleMove(speed: Vector3): boolean;
 }
     
+interface CharacterControllerConstructor {
+
+    new(): CharacterController;
+
+}
+declare const CharacterController: CharacterControllerConstructor;
+    
 interface ProjectileTrajectoryRenderer extends MonoBehaviour {
     maxIterations: number;
     maxSegmentCount: number;
@@ -13142,6 +14402,13 @@ interface ProjectileTrajectoryRenderer extends MonoBehaviour {
     SetDrawingEnabled(enabled: boolean): void;
     UpdateInfo(startingPoint: Vector3, velocity: Vector3, drag: number, gravity: number): void;
 }
+    
+interface ProjectileTrajectoryRendererConstructor {
+
+    new(): ProjectileTrajectoryRenderer;
+
+}
+declare const ProjectileTrajectoryRenderer: ProjectileTrajectoryRendererConstructor;
     
 interface ProjectileLauncher extends NetworkBehaviour {
 
@@ -13163,6 +14430,20 @@ interface AirshipProjectile extends MonoBehaviour {
 
     Initialize(startingVelocity: Vector3, gravity: number, drag: number, passedTime: number, itemTypeId: number, launcherItemTypeId: number): void;
 }
+    
+interface AirshipProjectileConstructor {
+
+    new(): AirshipProjectile;
+
+}
+declare const AirshipProjectile: AirshipProjectileConstructor;
+    
+interface ProjectileLauncherConstructor {
+
+    new(): ProjectileLauncher;
+
+}
+declare const ProjectileLauncher: ProjectileLauncherConstructor;
     
 interface ProjectileValidateEvent {
     shooter: GameObject;
@@ -13221,6 +14502,13 @@ interface TrailRenderer extends Renderer {
     SetPositions(positions: CSArray<Vector3>): void;
 }
     
+interface TrailRendererConstructor {
+
+    new(): TrailRenderer;
+
+}
+declare const TrailRenderer: TrailRendererConstructor;
+    
 interface WindowCore {
 
 
@@ -13231,6 +14519,13 @@ interface WindowProxy extends MonoBehaviour {
 
     HasFocus(): boolean;
 }
+    
+interface WindowProxyConstructor {
+
+    new(): WindowProxy;
+
+}
+declare const WindowProxy: WindowProxyConstructor;
     
 interface WindowCoreConstructor {
     Window: WindowProxy;
@@ -13247,6 +14542,13 @@ interface CharacterMoveModifier {
 
 
 }
+    
+interface CharacterMoveModifierConstructor {
+
+    new(): CharacterMoveModifier;
+
+}
+declare const CharacterMoveModifier: CharacterMoveModifierConstructor;
     
 interface DynamicVariables extends ScriptableObject {
     collectionId: string;
@@ -13268,6 +14570,13 @@ interface DynamicVariables extends ScriptableObject {
     SetString(key: string, val: string): void;
     SetVector3(key: string, val: Vector3): void;
 }
+    
+interface DynamicVariablesConstructor {
+
+    new(): DynamicVariables;
+
+}
+declare const DynamicVariables: DynamicVariablesConstructor;
     
 interface ProjectileHitEvent {
     raycastHit: RaycastHit;
@@ -13301,6 +14610,20 @@ interface ColorSetting {
     CopyFrom(otherSettings: ColorSetting): void;
 }
     
+interface ColorSettingConstructor {
+
+    new(materialColor: Color, emissiveColor: Color, emissiveMix: number): ColorSetting;
+
+}
+declare const ColorSetting: ColorSettingConstructor;
+    
+interface MaterialColorConstructor {
+
+    new(): MaterialColor;
+
+}
+declare const MaterialColor: MaterialColorConstructor;
+    
 interface DefaultObjectPool extends ObjectPool {
     Cache: CSArray<CSDictionary<number, CSArray<NetworkObject>>>;
 
@@ -13314,6 +14637,13 @@ interface DefaultObjectPool extends ObjectPool {
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 }
     
+interface DefaultObjectPoolConstructor {
+
+    new(): DefaultObjectPool;
+
+}
+declare const DefaultObjectPool: DefaultObjectPoolConstructor;
+    
 interface AirshipObjectPool extends DefaultObjectPool {
     maxSpawnPerFrame: number;
 
@@ -13321,6 +14651,13 @@ interface AirshipObjectPool extends DefaultObjectPool {
     RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
 }
+    
+interface AirshipObjectPoolConstructor {
+
+    new(): AirshipObjectPool;
+
+}
+declare const AirshipObjectPool: AirshipObjectPoolConstructor;
     
 interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
@@ -13330,6 +14667,13 @@ interface MainMenuLoadingScreen extends BundleLoadingScreen {
     Close(): void;
     SetProgress(text: string, percent: number): void;
 }
+    
+interface MainMenuLoadingScreenConstructor {
+
+    new(): MainMenuLoadingScreen;
+
+}
+declare const MainMenuLoadingScreen: MainMenuLoadingScreenConstructor;
     
 interface HttpManager {
 
@@ -13605,6 +14949,13 @@ interface ServerTransferData {
 
 }
     
+interface ServerTransferDataConstructor {
+
+    new(): ServerTransferData;
+
+}
+declare const ServerTransferData: ServerTransferDataConstructor;
+    
 interface CrossSceneStateConstructor {
     ServerTransferData: ServerTransferData;
     UseLocalBundles: boolean;
@@ -13634,6 +14985,13 @@ interface ToggleEvent {
 
 
 }
+    
+interface ToggleEventConstructor {
+
+    new(): ToggleEvent;
+
+}
+declare const ToggleEvent: ToggleEventConstructor;
     
 interface ToggleGroup extends UIBehaviour {
     allowSwitchOff: boolean;
@@ -13694,6 +15052,14 @@ interface RectOffset {
     ToString(format: string): string;
     ToString(format: string, formatProvider: unknown): string;
 }
+    
+interface RectOffsetConstructor {
+
+    new(): RectOffset;
+    new(left: number, right: number, top: number, bottom: number): RectOffset;
+
+}
+declare const RectOffset: RectOffsetConstructor;
     
 interface HorizontalOrVerticalLayoutGroup extends LayoutGroup {
     spacing: number;
@@ -13837,6 +15203,13 @@ interface ScrollRectEvent {
 
 }
     
+interface ScrollRectEventConstructor {
+
+    new(): ScrollRectEvent;
+
+}
+declare const ScrollRectEvent: ScrollRectEventConstructor;
+    
 interface NetworkTransform extends NetworkBehaviour {
     TakenOwnership: boolean;
 
@@ -13904,6 +15277,13 @@ interface OnPictureTaken {
     EndInvoke(result: unknown): void;
     Invoke(screenshot: Texture2D): void;
 }
+    
+interface OnPictureTakenConstructor {
+
+    new(object: unknown, method: unknown): OnPictureTaken;
+
+}
+declare const OnPictureTaken: OnPictureTakenConstructor;
     
 interface CameraScreenshotRecorderConstructor {
     onPictureTaken: OnPictureTaken;
@@ -14020,6 +15400,13 @@ interface EasyShake extends MonoBehaviour {
 
 }
     
+interface EasyShakeConstructor {
+
+    new(): EasyShake;
+
+}
+declare const EasyShake: EasyShakeConstructor;
+    
 interface EasyMotion extends MonoBehaviour {
     runInEditor: boolean;
     transformSpace: Space;
@@ -14032,6 +15419,13 @@ interface EasyMotion extends MonoBehaviour {
 
 
 }
+    
+interface EasyMotionConstructor {
+
+    new(): EasyMotion;
+
+}
+declare const EasyMotion: EasyMotionConstructor;
     
 interface GroundItemDrop extends MonoBehaviour {
     boxCollider: BoxCollider;
@@ -14052,6 +15446,20 @@ interface BoxCollider extends Collider {
 
 
 }
+    
+interface BoxColliderConstructor {
+
+    new(): BoxCollider;
+
+}
+declare const BoxCollider: BoxColliderConstructor;
+    
+interface GroundItemDropConstructor {
+
+    new(): GroundItemDrop;
+
+}
+declare const GroundItemDrop: GroundItemDropConstructor;
     
 interface CloudImage extends MonoBehaviour {
     url: string;
@@ -14109,6 +15517,13 @@ interface LineRenderer extends Renderer {
     Simplify(tolerance: number): void;
 }
     
+interface LineRendererConstructor {
+
+    new(): LineRenderer;
+
+}
+declare const LineRenderer: LineRendererConstructor;
+    
 interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
     isDragging: boolean;
     redirectTarget: ScrollRect;
@@ -14120,6 +15535,13 @@ interface AirshipRedirectDrag extends MonoBehaviour, IBeginDragHandler, IDragHan
     OnPointerEnter(eventData: PointerEventData): void;
     OnPointerExit(eventData: PointerEventData): void;
 }
+    
+interface AirshipRedirectDragConstructor {
+
+    new(): AirshipRedirectDrag;
+
+}
+declare const AirshipRedirectDrag: AirshipRedirectDragConstructor;
     
 interface IMeshModifier {
 
@@ -14148,6 +15570,14 @@ interface VertexHelper {
     PopulateUIVertex(vertex: unknown, i: number): void;
     SetUIVertex(vertex: UIVertex, i: number): void;
 }
+    
+interface VertexHelperConstructor {
+
+    new(): VertexHelper;
+    new(m: Mesh): VertexHelper;
+
+}
+declare const VertexHelper: VertexHelperConstructor;
     
 interface TrueShadow extends UIBehaviour, IMeshModifier, ICanvasElement {
     Size: number;
@@ -14191,6 +15621,13 @@ interface TrueShadow extends UIBehaviour, IMeshModifier, ICanvasElement {
     SetTextureDirty(): void;
 }
     
+interface TrueShadowConstructor {
+
+    new(): TrueShadow;
+
+}
+declare const TrueShadow: TrueShadowConstructor;
+    
 interface ScalableBufferManager {
 
 
@@ -14233,4 +15670,11 @@ interface ColliderRollback extends NetworkBehaviour {
     OnStartServer(): void;
     OnStopServer(): void;
 }
+    
+interface ColliderRollbackConstructor {
+
+    new(): ColliderRollback;
+
+}
+declare const ColliderRollback: ColliderRollbackConstructor;
 
