@@ -227,16 +227,12 @@ export class AirshipInputSingleton implements OnStart {
 		};
 
 		fireUpSignalIfDown();
-		// print(`Creating listeners for: ${action.name} | ${action.id} | ${action.keybind.primaryKey}`);
 
 		signalCleanup.Add(
 			this.onActionUnbound.Connect((unbound) => {
 				if (action === unbound) {
 					fireUpSignalIfDown();
 					signalCleanup.Clean();
-					// print(
-					// 	`(UNBOUND) Cleaning up listeners for: ${unbound.name} | ${unbound.id} | ${unbound.keybind.primaryKey}`,
-					// );
 				}
 			}),
 		);
@@ -245,9 +241,6 @@ export class AirshipInputSingleton implements OnStart {
 			this.onActionBound.Connect((bound) => {
 				if (action === bound) {
 					signalCleanup.Clean();
-					// print(
-					// 	`(BOUND) Cleaning up listeners for: ${bound.name} | ${bound.id} | ${bound.keybind.primaryKey}`,
-					// );
 				}
 			}),
 		);
