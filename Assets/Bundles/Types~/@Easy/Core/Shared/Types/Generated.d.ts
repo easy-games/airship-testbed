@@ -10636,6 +10636,7 @@ interface GameConfig extends ScriptableObject {
     startingSceneName: string;
     gameScenes: CSArray<Object>;
     packages: CSArray<AirshipPackageDocument>;
+    tags: CSArray<string>;
 
 
     ToJson(): string;
@@ -14221,24 +14222,15 @@ interface AirshipPlatformUtilConstructor {
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
     
-interface ObjectNames {
+interface ColliderRollback extends NetworkBehaviour {
 
 
+    Awake(): void;
+    Awake___UserLogic(): void;
+    NetworkInitialize___Early(): void;
+    NetworkInitialize__Late(): void;
+    NetworkInitializeIfDisabled(): void;
+    OnStartServer(): void;
+    OnStopServer(): void;
 }
-    
-interface ObjectNamesConstructor {
-
-    new(): ObjectNames;
-
-    GetClassName(obj: Object): string;
-    GetDragAndDropTitle(obj: Object): string;
-    GetInspectorTitle(obj: Object, multiObjectEditing: boolean): string;
-    GetInspectorTitle(obj: Object): string;
-    GetPropertyEditorTitle(obj: Object): string;
-    GetUniqueName(existingNames: CSArray<string>, name: string): string;
-    MangleVariableName(name: string): string;
-    NicifyVariableName(name: string): string;
-    SetNameSmart(obj: Object, name: string): void;
-}
-declare const ObjectNames: ObjectNamesConstructor;
 
