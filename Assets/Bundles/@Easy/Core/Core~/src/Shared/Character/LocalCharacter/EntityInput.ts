@@ -87,14 +87,14 @@ export class CharacterInput {
 
 			const [success, err] = pcall(() => {
 				const jump = Airship.input.IsDown("Jump");
-				const w = Airship.input.IsDown("MoveUp");
-				const s = Airship.input.IsDown("MoveDown");
-				const a = Airship.input.IsDown("MoveLeft");
-				const d = Airship.input.IsDown("MoveRight");
+				const w = Airship.input.IsDown("Forward");
+				const s = Airship.input.IsDown("Back");
+				const a = Airship.input.IsDown("Left");
+				const d = Airship.input.IsDown("Right");
 
 				const leftShift = Airship.input.IsDown("Sprint");
 				const leftCtrl = Airship.input.IsDown("Crouch");
-				const c = Airship.input.IsDown("Crouch");
+				// const c = Airship.input.IsDown("Crouch");
 
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
@@ -107,7 +107,7 @@ export class CharacterInput {
 					this.jumping = jump;
 				}
 
-				const moveSignal = new LocalCharacterInputSignal(moveDirection, jump, sprinting, leftCtrl || c);
+				const moveSignal = new LocalCharacterInputSignal(moveDirection, jump, sprinting, leftCtrl);
 				Dependency<LocalCharacterSingleton>().onBeforeLocalEntityInput.Fire(moveSignal);
 
 				this.movement.SetMoveInput(

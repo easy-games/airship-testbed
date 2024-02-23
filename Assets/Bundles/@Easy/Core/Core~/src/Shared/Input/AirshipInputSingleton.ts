@@ -62,10 +62,10 @@ export class AirshipInputSingleton implements OnStart {
 		});
 
 		Airship.input.CreateActions([
-			{ name: "MoveUp", keybind: new Keybind(KeyCode.W) },
-			{ name: "MoveLeft", keybind: new Keybind(KeyCode.A) },
-			{ name: "MoveDown", keybind: new Keybind(KeyCode.S) },
-			{ name: "MoveRight", keybind: new Keybind(KeyCode.D) },
+			{ name: "Forward", keybind: new Keybind(KeyCode.W) },
+			{ name: "Left", keybind: new Keybind(KeyCode.A) },
+			{ name: "Back", keybind: new Keybind(KeyCode.S) },
+			{ name: "Right", keybind: new Keybind(KeyCode.D) },
 			{ name: "Jump", keybind: new Keybind(KeyCode.Space) },
 			{ name: "Sprint", keybind: new Keybind(KeyCode.LeftShift) },
 			{ name: "Crouch", keybind: new Keybind(KeyCode.LeftControl) },
@@ -227,16 +227,16 @@ export class AirshipInputSingleton implements OnStart {
 		};
 
 		fireUpSignalIfDown();
-		print(`Creating listeners for: ${action.name} | ${action.id} | ${action.keybind.primaryKey}`);
+		// print(`Creating listeners for: ${action.name} | ${action.id} | ${action.keybind.primaryKey}`);
 
 		signalCleanup.Add(
 			this.onActionUnbound.Connect((unbound) => {
 				if (action === unbound) {
 					fireUpSignalIfDown();
 					signalCleanup.Clean();
-					print(
-						`(UNBOUND) Cleaning up listeners for: ${unbound.name} | ${unbound.id} | ${unbound.keybind.primaryKey}`,
-					);
+					// print(
+					// 	`(UNBOUND) Cleaning up listeners for: ${unbound.name} | ${unbound.id} | ${unbound.keybind.primaryKey}`,
+					// );
 				}
 			}),
 		);
@@ -245,9 +245,9 @@ export class AirshipInputSingleton implements OnStart {
 			this.onActionBound.Connect((bound) => {
 				if (action === bound) {
 					signalCleanup.Clean();
-					print(
-						`(BOUND) Cleaning up listeners for: ${bound.name} | ${bound.id} | ${bound.keybind.primaryKey}`,
-					);
+					// print(
+					// 	`(BOUND) Cleaning up listeners for: ${bound.name} | ${bound.id} | ${bound.keybind.primaryKey}`,
+					// );
 				}
 			}),
 		);
