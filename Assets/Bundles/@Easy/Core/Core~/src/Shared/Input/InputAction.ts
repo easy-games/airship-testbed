@@ -1,3 +1,5 @@
+import ObjectUtils from "@easy-games/unity-object-utils";
+import { Airship } from "../Airship";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 import { Keybind } from "./Keybind";
 
@@ -39,7 +41,19 @@ export class InputAction {
 	/**
 	 *
 	 */
+	public static inputActionId = 0;
+	/**
+	 *
+	 */
+	public id: number;
+	/**
+	 *
+	 */
 	public name: string;
+	/**
+	 *
+	 */
+	public defaultKeybind: Keybind;
 	/**
 	 *
 	 */
@@ -50,30 +64,37 @@ export class InputAction {
 	public category: string;
 
 	constructor(name: string, keybind: Keybind, category = "General") {
+		this.id = InputAction.inputActionId++;
 		this.name = name;
+		this.defaultKeybind = ObjectUtils.deepCopy(keybind);
 		this.keybind = keybind;
 		this.category = category;
 	}
 
 	/**
 	 *
-	 * @returns
+	 * @param newKeybind
 	 */
-	public GetInputType(keyType: KeyType): ActionInputType {
-		const keyCode =
-			keyType === KeyType.Primary
-				? this.keybind.primaryKey
-				: InputUtil.GetKeyCodeFromModifier(this.keybind.modifierKey);
-		if (keyCode >= 8 && keyCode <= 319) {
-			return ActionInputType.Keyboard;
-		}
-		if (keyCode >= 321 && keyCode <= 329) {
-			return ActionInputType.Mouse;
-		}
-		if (keyCode >= 330 && keyCode <= 509) {
-			return ActionInputType.Gamepad;
-		}
-		return ActionInputType.Unknown;
+	public UpdateKeybind(newKeybind: Keybind): void {
+		// TODO: Some validation here, maybe?
+		this.keybind.Update(newKeybind);
+		Airship.input.onActionBound.Fire(this);
+	}
+
+	/**
+	 *
+	 */
+	public UnsetKeybind(): void {
+		this.keybind.Unset();
+		Airship.input.onActionUnbound.Fire(this);
+	}
+
+	/**
+	 *
+	 */
+	public ResetKeybind(): void {
+		this.keybind.Update(this.defaultKeybind);
+		Airship.input.onActionBound.Fire(this);
 	}
 
 	/**
@@ -81,13 +102,13 @@ export class InputAction {
 	 * @returns
 	 */
 	public IsDesktopPeripheral(): boolean {
-		const primaryInputType = this.GetInputType(KeyType.Primary);
+		const primaryInputType = InputUtil.GetInputTypeFromKeybind(this.defaultKeybind, KeyType.Primary);
 		const primaryIsDesktopPeripheral =
 			primaryInputType === ActionInputType.Keyboard || primaryInputType === ActionInputType.Mouse;
 		if (!this.IsComplexKeybind()) {
 			return primaryIsDesktopPeripheral;
 		}
-		const modifierInputType = this.GetInputType(KeyType.Modifier);
+		const modifierInputType = InputUtil.GetInputTypeFromKeybind(this.defaultKeybind, KeyType.Modifier);
 		return (
 			primaryIsDesktopPeripheral &&
 			(modifierInputType === ActionInputType.Keyboard || modifierInputType === ActionInputType.Mouse)
@@ -99,7 +120,7 @@ export class InputAction {
 	 * @returns
 	 */
 	public IsComplexKeybind(): boolean {
-		return this.keybind.modifierKey !== ModifierKey.None;
+		return this.keybind.IsComplexKeybind();
 	}
 
 	/**
