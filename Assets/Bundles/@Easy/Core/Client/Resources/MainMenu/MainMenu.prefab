@@ -2317,7 +2317,7 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 0.02
+      serializedValue: 0.1
       serializedObject: {fileID: 0}
       modified: 1
     - name: queryCooldown
@@ -2330,7 +2330,7 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 0.02
+      serializedValue: 0.1
       serializedObject: {fileID: 0}
       modified: 1
     - name: background
@@ -4083,7 +4083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6136699804409668924, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6136699804409668924, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Value
