@@ -1384,37 +1384,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
---- !u!1 &1050200268
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1050200269}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1050200269
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1050200268}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.985428, y: -9.293753, z: -17.43595}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1105829018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1992,6 +1961,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1617099214}
+  - component: {fileID: 1617099215}
   m_Layer: 0
   m_Name: Lighting
   m_TagString: Untagged
@@ -2014,6 +1984,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1617099215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617099213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 328324b9b586ee749acb4d8a5762986f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _negativeSunDirectionNormalized: {x: -0.5996252, y: 0.6834144, z: 0.41640636}
+  _sunDirectionNormalized: {x: 0.5996252, y: -0.6834144, z: -0.41640636}
+  _sunDirection: {x: 0.72, y: -0.8206099, z: -0.5}
+  sunBrightness: 0.75
+  sunShadow: 0.85
+  sunColor: {r: 0.9823206, g: 1, b: 0.8066038, a: 1}
+  skySaturation: 0.3
+  cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
+  globalAmbientLight: {r: 1, g: 0.8915094, b: 0.9199557, a: 1}
+  globalAmbientBrightness: 0.1
+  globalAmbientOcclusion: 0.25
+  fogEnabled: 1
+  fogStart: 10
+  fogEnd: 200
+  fogColor: {r: 0.5613208, g: 0.8768687, b: 1, a: 1}
+  shadowRange: 100
 --- !u!1 &1648556073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2558,7 +2556,6 @@ SceneRoots:
   - {fileID: 2083588540}
   - {fileID: 1105829018}
   - {fileID: 788576787}
-  - {fileID: 1050200269}
   - {fileID: 1617099214}
   - {fileID: 944312509}
   - {fileID: 793058939}
