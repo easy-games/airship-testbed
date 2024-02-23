@@ -805,6 +805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5557742821885064354}
+  - component: {fileID: 1186027107750938040}
   m_Layer: 10
   m_Name: Lighting
   m_TagString: Untagged
@@ -829,6 +830,34 @@ Transform:
   - {fileID: 3382744596816048087}
   m_Father: {fileID: 5945154007959514739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1186027107750938040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3851732383462049854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 328324b9b586ee749acb4d8a5762986f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _negativeSunDirectionNormalized: {x: -0.27796438, y: 0.87778234, z: -0.39017162}
+  _sunDirectionNormalized: {x: 0.27796438, y: -0.87778234, z: 0.39017162}
+  _sunDirection: {x: 0.38, y: -1.2, z: 0.5333964}
+  sunBrightness: 0.8
+  sunShadow: 0.85
+  sunColor: {r: 1, g: 0.97706413, b: 0.75, a: 1}
+  skySaturation: 1
+  cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
+  globalAmbientLight: {r: 1, g: 0.6745283, b: 0.91083574, a: 1}
+  globalAmbientBrightness: 0.25
+  globalAmbientOcclusion: 0.25
+  fogEnabled: 1
+  fogStart: 10
+  fogEnd: 200
+  fogColor: {r: 0.78426546, g: 0.6944642, b: 0.9622642, a: 1}
+  shadowRange: 50
 --- !u!1 &4433631764270028334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1188,6 +1217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8604313087782663235}
   - component: {fileID: 2804686477683258349}
+  - component: {fileID: 3959398531520239345}
   m_Layer: 10
   m_Name: AvatarCamera
   m_TagString: Untagged
@@ -1261,6 +1291,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &3959398531520239345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6959581674955990177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ed727e50420484594a1d527959e9ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  airshipRenderSettings: {fileID: 0}
 --- !u!1 &7298236666359215159
 GameObject:
   m_ObjectHideFlags: 0

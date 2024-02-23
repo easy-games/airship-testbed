@@ -6,6 +6,7 @@ import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { AvatarUtil } from "../Avatar/AvatarUtil";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
@@ -34,26 +35,49 @@ export class CharactersSingleton implements OnStart {
 	 */
 	public autoDespawnCharactersOnPlayerDisconnect = true;
 
+	public allowMidGameOutfitChanges = true;
+
 	private idCounter = 0;
 
 	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
 		Airship.characters = this;
 
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((characterId, objectId, ownerClientId) => {
-				const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
-				const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
-				assert(character, "Spawned character was missing a Character component.");
-				let player: Player | undefined;
-				if (ownerClientId !== undefined) {
-					player = Airship.players.FindByClientId(ownerClientId);
-					assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
-					characterNetworkObj.gameObject.name = "Character_" + player.username;
+			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent(
+				(characterId, objectId, ownerClientId, outfitDto) => {
+					const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
+					const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
+					assert(
+						character,
+						"Spawned character was missing a Character component. GameObject=" +
+							characterNetworkObj.gameObject.name,
+					);
+					let player: Player | undefined;
+					if (ownerClientId !== undefined) {
+						player = Airship.players.FindByClientId(ownerClientId);
+						assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
+						characterNetworkObj.gameObject.name = "Character_" + player.username;
+					}
+					character.Init(player, characterId, outfitDto);
+					Airship.characters.RegisterCharacter(character);
+					player?.SetCharacter(character);
+					Airship.characters.onCharacterSpawned.Fire(character);
+				},
+			);
+		}
+
+		if (RunUtil.IsClient()) {
+			CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId, outfitDto) => {
+				const character = this.FindById(characterId);
+				if (!character) return;
+
+				if (outfitDto) {
+					AvatarUtil.LoadUserOutfit(outfitDto, character.accessoryBuilder, {
+						removeAllOldAccessories: true,
+					});
+				} else {
+					character.accessoryBuilder.RemoveAccessories();
 				}
-				character.Init(player, characterId);
-				Airship.characters.RegisterCharacter(character);
-				player?.SetCharacter(character);
-				Airship.characters.onCharacterSpawned.Fire(character);
 			});
 		}
 	}
@@ -67,6 +91,7 @@ export class CharactersSingleton implements OnStart {
 						character.id,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
+						character.outfitDto,
 					);
 				}
 			});
@@ -172,7 +197,7 @@ export class CharactersSingleton implements OnStart {
 		const go = Object.Instantiate(characterPrefab);
 		go.name = `Character`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
-		characterComponent.Init(undefined, Airship.characters.MakeNewId());
+		characterComponent.Init(undefined, Airship.characters.MakeNewId(), undefined);
 		go.transform.position = position;
 		NetworkUtil.Spawn(go);
 		this.RegisterCharacter(characterComponent);
@@ -257,6 +282,7 @@ export class CharactersSingleton implements OnStart {
 				character.id,
 				character.networkObject.ObjectId,
 				character.player?.clientId,
+				character.outfitDto,
 			);
 		}
 	}

@@ -22,6 +22,7 @@ export declare class CharactersSingleton implements OnStart {
      * If true, when a player disconnects their character will automatically be despawned.
      */
     autoDespawnCharactersOnPlayerDisconnect: boolean;
+    allowMidGameOutfitChanges: boolean;
     private idCounter;
     constructor(localCharacterManager: LocalCharacterSingleton);
     OnStart(): void;

@@ -14,6 +14,7 @@ export class UserController implements OnStart {
 	public localUser: User | undefined;
 
 	public onLocalUserUpdated = new Signal<User>();
+	private localUserLoaded = false;
 
 	constructor(private readonly authController: AuthController) {}
 
@@ -34,6 +35,7 @@ export class UserController implements OnStart {
 		if (res.success) {
 			const data = DecodeJSON(res.data) as User;
 			this.localUser = data;
+			this.localUserLoaded = true;
 
 			if (Game.context === CoreContext.MAIN_MENU) {
 				const writeUser = Game.localPlayer as Writable<Player>;
@@ -51,5 +53,11 @@ export class UserController implements OnStart {
 		Task.Delay(1, () => {
 			this.FetchLocalUser();
 		});
+	}
+
+	public WaitForLocalUserReady(): void {
+		while (!this.localUserLoaded) {
+			task.wait();
+		}
 	}
 }

@@ -1,7 +1,5 @@
 import { Airship } from "Shared/Airship";
-import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
-import { ViewmodelController } from "../Viewmodel/ViewmodelController";
+import { Controller, OnStart } from "Shared/Flamework";
 
 @Controller({})
 export class CharacterAccessoryController implements OnStart {
@@ -9,15 +7,15 @@ export class CharacterAccessoryController implements OnStart {
 
 	private AutoEquipArmor() {
 		Airship.characters.onCharacterSpawned.Connect((character) => {
-			if (character.player) {
-				//Load Users Equipped Outfit
-				AvatarUtil.LoadEquippedUserOutfit(character.accessoryBuilder);
-				if (character.IsLocalCharacter()) {
-					AvatarUtil.LoadEquippedUserOutfit(Dependency<ViewmodelController>().accessoryBuilder);
-				}
-			} else {
-				AvatarUtil.LoadDefaultOutfit(character.accessoryBuilder);
-			}
+			// if (character.player) {
+			// 	//Load Users Equipped Outfit
+			// 	AvatarUtil.LoadEquippedUserOutfit(character.accessoryBuilder);
+			// 	if (character.IsLocalCharacter()) {
+			// 		AvatarUtil.LoadEquippedUserOutfit(Dependency<ViewmodelController>().accessoryBuilder);
+			// 	}
+			// } else {
+			// 	AvatarUtil.LoadDefaultOutfit(character.accessoryBuilder);
+			// }
 		});
 	}
 

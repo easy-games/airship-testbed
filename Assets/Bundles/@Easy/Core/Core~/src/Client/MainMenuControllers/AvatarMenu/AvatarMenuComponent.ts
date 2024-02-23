@@ -1,5 +1,7 @@
+import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { AvatarPlatformAPI } from "Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
 import { Dependency } from "Shared/Flamework";
@@ -43,8 +45,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private activeSubIndex = -1;
 	private activeAccessories = new Map<AccessorySlot, string>();
 	//private currentSlot: AccessorySlot = AccessorySlot.Root;
-	private outfits?: Outfit[];
-	private currentUserOutfit?: Outfit;
+	private outfits?: OutfitDto[];
+	private currentUserOutfit?: OutfitDto;
 	private currentUserOutfitIndex = -1;
 	private currentContentBtns: { id: string; button: AvatarMenuBtn }[] = [];
 	private clientId = -1;
@@ -600,6 +602,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.currentUserOutfit = this.outfits[index];
 		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId);
+		if (Game.context === CoreContext.GAME) {
+			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
+		}
 
 		this.LoadCurrentOutfit();
 	}
@@ -660,6 +665,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.currentUserOutfit = AvatarPlatformAPI.SaveOutfitAccessories(this.currentUserOutfit.outfitId, accessoryIds);
 		if (this.outfits) {
 			this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
+		}
+		if (Game.context === CoreContext.GAME) {
+			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
 		}
 	}
 

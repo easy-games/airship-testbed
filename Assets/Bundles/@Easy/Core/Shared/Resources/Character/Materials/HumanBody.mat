@@ -133,7 +133,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0
     - _RimPower: 3
-    - _RoughOverride: 0.561
+    - _RoughOverride: 0.856
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0

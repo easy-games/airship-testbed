@@ -6,7 +6,9 @@ export declare class UserController implements OnStart {
     private readonly authController;
     localUser: User | undefined;
     onLocalUserUpdated: Signal<User>;
+    private localUserLoaded;
     constructor(authController: AuthController);
     OnStart(): void;
     FetchLocalUser(): void;
+    WaitForLocalUserReady(): void;
 }

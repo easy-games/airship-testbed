@@ -1,4 +1,4 @@
-import { AccessoryInstance, Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { AccessoryInstanceDto, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
@@ -15,31 +15,31 @@ export class AvatarPlatformAPI {
 		return url;
 	}
 
-	public static GetAllOutfits(): Outfit[] | undefined {
+	public static GetAllOutfits(): OutfitDto[] | undefined {
 		this.Log("GetAllOutfits");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
 		if (res.success) {
-			return DecodeJSON(res.data) as Outfit[];
+			return DecodeJSON(res.data) as OutfitDto[];
 		}
 	}
 
-	public static GetEquippedOutfit(): Outfit | undefined {
+	public static GetEquippedOutfit(): OutfitDto | undefined {
 		this.Log("GetEquippedOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`));
 		if (res.success && res.data && res.data !== "") {
-			return DecodeJSON(res.data) as Outfit;
+			return DecodeJSON(res.data) as OutfitDto;
 		}
 	}
 
-	public static GetAvatarOutfit(outfitId: string): Outfit | undefined {
+	public static GetAvatarOutfit(outfitId: string): OutfitDto | undefined {
 		this.Log("GetAvatarOutfit");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`));
 		if (res.success && res.data && res.data !== "") {
-			return DecodeJSON(res.data) as Outfit;
+			return DecodeJSON(res.data) as OutfitDto;
 		}
 	}
 
-	public static CreateAvatarOutfit(outfit: Outfit) {
+	public static CreateAvatarOutfit(outfit: OutfitDto) {
 		this.Log("CreateAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), EncodeJSON(outfit));
 		if (res.success) {
@@ -51,7 +51,9 @@ export class AvatarPlatformAPI {
 		this.Log("EquipAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
 		if (res.success) {
-			print("EQUIPPED OUTFIT: " + DecodeJSON<Outfit>(res.data).name);
+			print("EQUIPPED OUTFIT: " + DecodeJSON<OutfitDto>(res.data).name);
+		} else {
+			Debug.LogError("Failed to equip outfit: " + res.error);
 		}
 	}
 
@@ -59,7 +61,7 @@ export class AvatarPlatformAPI {
 		this.Log("GetAccessories");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`accessories/self`));
 		if (res.success) {
-			return DecodeJSON<AccessoryInstance[]>(res.data);
+			return DecodeJSON<AccessoryInstanceDto[]>(res.data);
 		}
 	}
 
@@ -68,7 +70,7 @@ export class AvatarPlatformAPI {
 		outfitId: string,
 		name: string,
 		skinColor: Color,
-	): Outfit {
+	): OutfitDto {
 		this.Log("CreateDefaultAvatarOutfit");
 		let outfit = {
 			name: name,
@@ -92,13 +94,13 @@ export class AvatarPlatformAPI {
 		);
 		if (res.success) {
 			print("Outfit Saved: " + res.data);
-			return DecodeJSON<Outfit>(res.data);
+			return DecodeJSON<OutfitDto>(res.data);
 		} else {
 			error("Error Saving: " + res.error);
 		}
 	}
 
-	public static SaveAvatarOutfit(outfit: Outfit) {
+	public static SaveAvatarOutfit(outfit: OutfitDto) {
 		this.Log("SaveAvatarOutfit");
 		//TODO: Save Outfit to server
 		//InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfit.outfitId}`), EncodeJSON(outfit));
@@ -107,7 +109,7 @@ export class AvatarPlatformAPI {
 	public static LoadImage(fileId: string) {
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`images/${fileId}`));
 		if (res.success) {
-			return DecodeJSON<AccessoryInstance[]>(res.data);
+			return DecodeJSON<AccessoryInstanceDto[]>(res.data);
 		} else {
 			error("Error loading image: " + res.error);
 		}
