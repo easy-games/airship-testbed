@@ -1,4 +1,4 @@
-import { ActionInputType, KeyType, ModifierKey } from "./InputUtil";
+import { ModifierKey } from "./InputUtil";
 import { Keybind } from "./Keybind";
 export interface SerializableAction {
     /**
@@ -48,6 +48,10 @@ export declare class InputAction {
     /**
      *
      */
+    defaultKeybind: Keybind;
+    /**
+     *
+     */
     keybind: Keybind;
     /**
      *
@@ -56,9 +60,17 @@ export declare class InputAction {
     constructor(name: string, keybind: Keybind, category?: string);
     /**
      *
-     * @returns
+     * @param newKeybind
      */
-    GetInputType(keyType: KeyType): ActionInputType;
+    UpdateKeybind(newKeybind: Keybind): void;
+    /**
+     *
+     */
+    UnsetKeybind(): void;
+    /**
+     *
+     */
+    ResetKeybind(): void;
     /**
      *
      * @returns

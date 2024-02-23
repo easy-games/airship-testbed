@@ -11,6 +11,25 @@ export declare class Keybind {
     constructor(primaryKey: KeyCode, modifierKey?: ModifierKey);
     /**
      *
+     * @returns
+     */
+    IsComplexKeybind(): boolean;
+    /**
+     *
      */
     GetModifierKeyCode(): KeyCode;
+    /**
+     *
+     * @param newKeybind
+     */
+    Update(newKeybind: Keybind): void;
+    /**
+     *
+     */
+    Unset(): void;
+    /**
+     *
+     * @returns
+     */
+    IsUnset(): boolean;
 }
