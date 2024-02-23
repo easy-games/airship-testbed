@@ -6,7 +6,6 @@ import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
 import { Signal } from "../Util/Signal";
-import { SetInterval } from "../Util/Timer";
 import { InputAction, InputActionSchema } from "./InputAction";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { Keybind } from "./Keybind";
@@ -60,10 +59,6 @@ export class AirshipInputSingleton implements OnStart {
 				this.UnsetDuplicateKeybinds(action);
 				this.CreateActionListeners(action);
 			}
-		});
-
-		SetInterval(1, () => {
-			//print(`Crouch action down: ${Airship.input.IsDown("Crouch")}`);
 		});
 
 		Airship.input.CreateActions([
