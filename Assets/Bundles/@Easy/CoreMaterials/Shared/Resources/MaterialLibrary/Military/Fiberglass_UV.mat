@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leather_UV
+  m_Name: Fiberglass_UV
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS2
-  - SLIDER_OVERRIDE_ON
+  - NUM_LIGHTS_LIGHTS0
+  - RIM_LIGHT_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - _ZWRITE_ON
@@ -57,8 +57,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1d4049e4302e1b749b05dde544533e76, type: 3}
-        m_Scale: {x: 8, y: 8}
+        m_Texture: {fileID: 2800000, guid: ce35200838ed4024780f93e4776daf65, type: 3}
+        m_Scale: {x: 4, y: 4}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 0}
@@ -69,7 +69,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 767e5fba8f14f7944b060c6c224d8dc2, type: 3}
+        m_Texture: {fileID: 2800000, guid: a9d7d8ad1d403044d854947a3aed869f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -81,7 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughTex:
-        m_Texture: {fileID: 2800000, guid: 8b81a71b3970b3b499a212751ec3b5d4, type: 3}
+        m_Texture: {fileID: 2800000, guid: a4bb930ba0bcd974aaaef379d95fb02b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -91,8 +91,8 @@ Material:
     - INSTANCE_DATA: 0
     - NUM_LIGHTS: 0
     - POINT_FILTER: 0
-    - RIM_LIGHT: 0
-    - SLIDER_OVERRIDE: 1
+    - RIM_LIGHT: 1
+    - SLIDER_OVERRIDE: 0
     - TRIPLANAR_STYLE: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
@@ -104,15 +104,15 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MetalOverride: 0.103
+    - _MetalOverride: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _Parallax: 0.02
-    - _RimIntensity: 0
-    - _RimPower: 0
-    - _RoughOverride: 0.267
+    - _RimIntensity: 0.2
+    - _RimPower: 2.5
+    - _RoughOverride: 0.04
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

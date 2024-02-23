@@ -7,13 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rubber_UV
+  m_Name: SynthFiber_UV
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS2
+  - NUM_LIGHTS_LIGHTS0
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - _ZWRITE_ON
@@ -23,7 +23,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _MainTex
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
