@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.34117648, g: 0.2, b: 0.12941177, a: 1}
+  - materialColor: {r: 0.8509804, g: 0.61960787, b: 0.44705883, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 1
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 5797592413269172210}
   - component: {fileID: 3951258229114949583}
   - component: {fileID: 5606203372879073412}
-  m_Layer: 1
+  m_Layer: 3
   m_Name: ProjectileReceiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5638,7 +5638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.33962262, g: 0.19971521, b: 0.12976147, a: 1}
+  - materialColor: {r: 0.8509804, g: 0.61960787, b: 0.44705883, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 1

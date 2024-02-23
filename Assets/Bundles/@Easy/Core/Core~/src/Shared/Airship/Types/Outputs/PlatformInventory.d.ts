@@ -42,18 +42,18 @@ export interface ProfilePictureClass extends ItemClass {
 	};
 }
 
-export interface ItemInstance {
+export interface ItemInstanceDto {
 	ownerId: string;
 	class: ItemClass;
 	instanceId: string;
 	createdAt: string;
 }
 
-export interface AccessoryInstance extends ItemInstance {
+export interface AccessoryInstanceDto extends ItemInstanceDto {
 	class: AccessoryClass;
 }
 
-export interface ProfilePictureInstance extends ItemInstance {
+export interface ProfilePictureInstanceDto extends ItemInstanceDto {
 	class: ProfilePictureClass;
 }
 
@@ -63,14 +63,14 @@ export interface EquippedProfilePicture {
 	imageId: string;
 }
 
-export interface Outfit {
+export interface OutfitDto {
 	outfitId: string;
 	owner: string;
 
 	name: string;
 	/** Hex string */
 	skinColor: string;
-	accessories: Array<AccessoryInstance>;
+	accessories: Array<AccessoryInstanceDto>;
 
 	equipped: boolean;
 }

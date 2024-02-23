@@ -11137,6 +11137,7 @@ interface AccessorySkin extends ScriptableObject {
 interface AccessoryOutfit extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
     customSkin: AccessorySkin;
+    forceSkinColor: boolean;
     skinColor: Color;
 
 
@@ -14219,4 +14220,25 @@ interface AirshipPlatformUtilConstructor {
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
+    
+interface ObjectNames {
+
+
+}
+    
+interface ObjectNamesConstructor {
+
+    new(): ObjectNames;
+
+    GetClassName(obj: Object): string;
+    GetDragAndDropTitle(obj: Object): string;
+    GetInspectorTitle(obj: Object, multiObjectEditing: boolean): string;
+    GetInspectorTitle(obj: Object): string;
+    GetPropertyEditorTitle(obj: Object): string;
+    GetUniqueName(existingNames: CSArray<string>, name: string): string;
+    MangleVariableName(name: string): string;
+    NicifyVariableName(name: string): string;
+    SetNameSmart(obj: Object, name: string): void;
+}
+declare const ObjectNames: ObjectNamesConstructor;
 

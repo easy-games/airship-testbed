@@ -2094,7 +2094,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 010165cebab53410ab18a5b3c3ab1f03, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0eb7ddf50f64ad409d19fa8bffe7577, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3358,7 +3358,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7475298535265054138}
   m_HandleRect: {fileID: 5043392408188930903}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3484,7 +3484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   url: 
   image: {fileID: 4332376422869914785}
-  downloadOnStart: 1
+  downloadOnStart: 0
 --- !u!1 &8431533474699248672
 GameObject:
   m_ObjectHideFlags: 0

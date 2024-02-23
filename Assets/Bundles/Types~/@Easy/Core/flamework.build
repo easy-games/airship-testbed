@@ -84,6 +84,8 @@
 		"@Easy/Core:Shared/Item/HeldItems/Damagers/MeleeHeldItem@MeleeHeldItem": "$:Item/HeldItems/Damagers/MeleeHeldItem@MeleeHeldItem",
 		"@Easy/Core:Shared/Item/HeldItems/HeldItemManager@HeldItemManager": "$:Item/HeldItems/HeldItemManager@HeldItemManager",
 		"@Easy/Core:Shared/Util/NetworkUtil@NetworkUtil": "$:Util/NetworkUtil@NetworkUtil",
+		"@Easy/Core:Shared/Avatar/AvatarPlatformAPI@AvatarPlatformAPI": "$:Avatar/AvatarPlatformAPI@AvatarPlatformAPI",
+		"@Easy/Core:Shared/Avatar/AvatarUtil@AvatarUtil": "$:Avatar/AvatarUtil@AvatarUtil",
 		"@Easy/Core:Shared/Character/Character@Character": "$:Character/Character@Character",
 		"@Easy/Core:Shared/VoxelWorld/BlockData/BlockDataAPI@BlockDataAPI": "$:VoxelWorld/BlockData/BlockDataAPI@BlockDataAPI",
 		"@Easy/Core:Shared/VoxelWorld/World@World": "$:VoxelWorld/World@World",
@@ -110,8 +112,6 @@
 		"@Easy/Core:Client/Components/HomePage/Sort/SortComponent@SortComponent": "$:Components/HomePage/Sort/SortComponent@SortComponent",
 		"@Easy/Core:Client/Components/HomePage/HomePageComponent@HomePageComponent": "$:Components/HomePage/HomePageComponent@HomePageComponent",
 		"@Easy/Core:Shared/Avatar/AvatarViewComponent@AvatarViewComponent": "$:Avatar/AvatarViewComponent@AvatarViewComponent",
-		"@Easy/Core:Shared/Avatar/AvatarPlatformAPI@AvatarPlatformAPI": "$:Avatar/AvatarPlatformAPI@AvatarPlatformAPI",
-		"@Easy/Core:Shared/Avatar/AvatarUtil@AvatarUtil": "$:Avatar/AvatarUtil@AvatarUtil",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn": "$:MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController": "$:MainMenuControllers/MainMenuController@MainMenuController",
@@ -139,6 +139,9 @@
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
 		"@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton": "$:Damage/DamageSingleton@DamageSingleton",
+		"@Easy/Core:Shared/Input/InputUtil@InputUtil": "$:Input/InputUtil@InputUtil",
+		"@Easy/Core:Shared/Input/Keybind@Keybind": "$:Input/Keybind@Keybind",
+		"@Easy/Core:Shared/Input/InputAction@InputAction": "$:Input/InputAction@InputAction",
 		"@Easy/Core:Shared/Input/AirshipInputSingleton@AirshipInputSingleton": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunctionClient": "$:Network/RemoteFunction@RemoteFunctionClient",
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunctionServer": "$:Network/RemoteFunction@RemoteFunctionServer",
@@ -146,10 +149,12 @@
 		"@Easy/Core:Shared/Inventory/CharacterInventorySingleton@CharacterInventorySingleton": "$:Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
 		"@Easy/Core:Shared/Inventory/InventorySingleton@InventorySingleton": "$:Inventory/InventorySingleton@InventorySingleton",
 		"@Easy/Core:Shared/LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton": "$:LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
+		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
 		"@Easy/Core:Shared/Util/PlayerUtils@PlayerUtils": "$:Util/PlayerUtils@PlayerUtils",
 		"@Easy/Core:Shared/Airship/Game/GameInfoSingleton@GameInfoSingleton": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
 		"@Easy/Core:Shared/Player/PlayersSingleton@PlayersSingleton": "$:Player/PlayersSingleton@PlayersSingleton",
 		"@Easy/Core:Shared/Team/TeamSingleton@TeamsSingleton": "$:Team/TeamSingleton@TeamsSingleton",
+		"@Easy/Core:Shared/Tags/TagsSingleton@TagsSingleton": "$:Tags/TagsSingleton@TagsSingleton",
 		"@Easy/Core:Client/Airship/Friends/FriendsController@FriendsController": "$:Airship/Friends/FriendsController@FriendsController",
 		"@Easy/Core:Client/Airship/Steam/SteamRichPresence@SteamRichPresence": "$:Airship/Steam/SteamRichPresence@SteamRichPresence",
 		"@Easy/Core:Client/Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent": "$:Components/HomePage/MyGames/MyGamesSortComponent@MyGamesSortComponent",
@@ -171,7 +176,6 @@
 		"@Easy/Core:Client/MainMenuControllers/MainMenuHomeController@MainMenuHomeController": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
 		"@Easy/Core:Shared/MainMenu/Components/NavbarControlButton@NavbarControlButton": "$:MainMenu/Components/NavbarControlButton@NavbarControlButton",
 		"@Easy/Core:Shared/MainMenu/Components/MainMenuNavButton@MainMenuNavButton": "$:MainMenu/Components/MainMenuNavButton@MainMenuNavButton",
-		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController": "$:MainMenuControllers/MainMenuNavbarController@MainMenuNavbarController",
 		"@Easy/Core:Client/MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController": "$:MainMenuControllers/RichPresence/MainMenuRichPresenceController@MainMenuRichPresenceController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController": "$:MainMenuControllers/Settings/MainMenuSettingsUIController@MainMenuSettingsUIController",
@@ -634,14 +638,14 @@
 			"internalId": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 			"decorators": [
 				{
-					"internalId": "$:Flamework/flamework@Service",
-					"isFlameworkDecorator": true,
-					"name": "Service"
-				},
-				{
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
 				}
 			]
 		},
@@ -689,6 +693,17 @@
 			]
 		},
 		{
+			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
+			"internalId": "$:MainMenuControllers/User/UserController@UserController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
 			"filePath": "../Shared/Airship/Game/GameInfoSingleton.lua",
 			"internalId": "$:Airship/Game/GameInfoSingleton@GameInfoSingleton",
 			"decorators": [
@@ -723,6 +738,22 @@
 		{
 			"filePath": "../Shared/Team/TeamSingleton.lua",
 			"internalId": "$:Team/TeamSingleton@TeamsSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				},
+				{
+					"internalId": "$:Flamework/flamework@Service",
+					"isFlameworkDecorator": true,
+					"name": "Service"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Tags/TagsSingleton.lua",
+			"internalId": "$:Tags/TagsSingleton@TagsSingleton",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
@@ -860,17 +891,6 @@
 		{
 			"filePath": "../Client/MainMenuControllers/MainMenuHomeController.lua",
 			"internalId": "$:MainMenuControllers/MainMenuHomeController@MainMenuHomeController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/MainMenuControllers/User/UserController.lua",
-			"internalId": "$:MainMenuControllers/User/UserController@UserController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",

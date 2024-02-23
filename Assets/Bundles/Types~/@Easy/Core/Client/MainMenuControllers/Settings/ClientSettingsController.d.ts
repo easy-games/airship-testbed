@@ -9,7 +9,7 @@ export declare class ClientSettingsController implements OnStart {
     constructor();
     OnStart(): void;
     MarkAsDirty(): void;
-    WaitForSettingsLoaded(): Promise<void>;
+    WaitForSettingsLoaded(): Promise<ClientSettingsFile>;
     SaveSettings(): void;
     GetMouseSensitivity(): number;
     SetMouseSensitivity(value: number): void;

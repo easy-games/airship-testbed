@@ -1,14 +1,14 @@
-import { Service, OnStart } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
 import { ItemQueryParameters } from "Shared/Airship/Types/Inputs/PlatformInventory";
 import {
-	AccessoryInstance,
+	AccessoryInstanceDto,
 	EquippedProfilePicture,
-	ItemInstance,
-	Outfit,
-	ProfilePictureInstance,
+	ItemInstanceDto,
+	OutfitDto,
+	ProfilePictureInstanceDto,
 	Transaction,
 } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { OnStart, Service } from "Shared/Flamework";
 import { Result } from "Shared/Types/Result";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
@@ -24,7 +24,7 @@ export class PlatformInventoryService implements OnStart {
 	/**
 	 * Grants a user the provided item.
 	 */
-	public async GrantItem(userId: string, classId: string): Promise<Result<ItemInstance, undefined>> {
+	public async GrantItem(userId: string, classId: string): Promise<Result<ItemInstanceDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.GrantItem(userId, classId);
 
 		if (!res.success || res.statusCode > 299) {
@@ -44,7 +44,7 @@ export class PlatformInventoryService implements OnStart {
 	/**
 	 * Grants a user the provided accessory.
 	 */
-	public async GrantAccessory(userId: string, classId: string): Promise<Result<AccessoryInstance, undefined>> {
+	public async GrantAccessory(userId: string, classId: string): Promise<Result<AccessoryInstanceDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.GrantAccessory(userId, classId);
 
 		if (!res.success || res.statusCode > 299) {
@@ -67,7 +67,7 @@ export class PlatformInventoryService implements OnStart {
 	public async GrantProfilePicture(
 		userId: string,
 		classId: string,
-	): Promise<Result<ProfilePictureInstance, undefined>> {
+	): Promise<Result<ProfilePictureInstanceDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.GrantProfilePicture(userId, classId);
 
 		if (!res.success || res.statusCode > 299) {
@@ -87,7 +87,7 @@ export class PlatformInventoryService implements OnStart {
 	/**
 	 * Deletes the given item instance from the users inventory.
 	 */
-	public async DeleteItem(instanceId: string): Promise<Result<ItemInstance, undefined>> {
+	public async DeleteItem(instanceId: string): Promise<Result<ItemInstanceDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.DeleteItem(instanceId);
 
 		if (!res.success || res.statusCode > 299) {
@@ -107,7 +107,7 @@ export class PlatformInventoryService implements OnStart {
 	/**
 	 * Deletes the given accessory instance from the users inventory.
 	 */
-	public async DeleteAccessory(instanceId: string): Promise<Result<AccessoryInstance, undefined>> {
+	public async DeleteAccessory(instanceId: string): Promise<Result<AccessoryInstanceDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.DeleteAccessory(instanceId);
 
 		if (!res.success || res.statusCode > 299) {
@@ -127,7 +127,7 @@ export class PlatformInventoryService implements OnStart {
 	/**
 	 * Deletes a the given profile picture instance from the users inventory.
 	 */
-	public async DeleteProfilePicture(instanceId: string): Promise<Result<ProfilePictureInstance, undefined>> {
+	public async DeleteProfilePicture(instanceId: string): Promise<Result<ProfilePictureInstanceDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.DeleteProfilePicture(instanceId);
 
 		if (!res.success || res.statusCode > 299) {
@@ -147,7 +147,7 @@ export class PlatformInventoryService implements OnStart {
 	/**
 	 * Gets all items in a users inventory.
 	 */
-	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<Result<ItemInstance[], undefined>> {
+	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<Result<ItemInstanceDto[], undefined>> {
 		const res = await AirshipInventoryServiceBackend.GetItems(userId, this.BuildItemQueryString(query));
 
 		if (!res.success || res.statusCode > 299) {
@@ -170,7 +170,7 @@ export class PlatformInventoryService implements OnStart {
 	public async GetAccessories(
 		userId: string,
 		query?: ItemQueryParameters,
-	): Promise<Result<AccessoryInstance[], undefined>> {
+	): Promise<Result<AccessoryInstanceDto[], undefined>> {
 		const res = await AirshipInventoryServiceBackend.GetAccessories(userId, this.BuildItemQueryString(query));
 
 		if (!res.success || res.statusCode > 299) {
@@ -193,7 +193,7 @@ export class PlatformInventoryService implements OnStart {
 	public async GetProfilePictures(
 		userId: string,
 		query?: ItemQueryParameters,
-	): Promise<Result<ProfilePictureInstance, undefined>> {
+	): Promise<Result<ProfilePictureInstanceDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.GetProfilePictures(userId, this.BuildItemQueryString(query));
 
 		if (!res.success || res.statusCode > 299) {
@@ -213,7 +213,7 @@ export class PlatformInventoryService implements OnStart {
 	/**
 	 * Gets the users currently equipped outfit.
 	 */
-	public async GetEquippedOutfitByUserId(userId: string): Promise<Result<Outfit, undefined>> {
+	public async GetEquippedOutfitByUserId(userId: string): Promise<Result<OutfitDto, undefined>> {
 		const res = await AirshipInventoryServiceBackend.GetEquippedOutfitByUserId(userId);
 
 		if (!res.success || res.statusCode > 299) {

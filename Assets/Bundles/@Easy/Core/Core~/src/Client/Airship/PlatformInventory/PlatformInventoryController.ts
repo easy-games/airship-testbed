@@ -1,6 +1,6 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { Platform } from "Shared/Airship";
-import { EquippedProfilePicture, Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { EquippedProfilePicture, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Result } from "Shared/Types/Result";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { DecodeJSON } from "Shared/json";
@@ -37,7 +37,7 @@ export class PlatformInventoryController implements OnStart {
 	/**
 	 * Gets the users currently equipped outfit.
 	 */
-	public async GetEquippedOutfitByUserId(userId: string): Promise<Result<Outfit | undefined, undefined>> {
+	public async GetEquippedOutfitByUserId(userId: string): Promise<Result<OutfitDto | undefined, undefined>> {
 		const res = await AirshipInventoryControllerBackend.GetEquippedOutfitByUserId(userId);
 
 		if (!res.success || res.statusCode > 299) {
@@ -50,7 +50,7 @@ export class PlatformInventoryController implements OnStart {
 
 		return {
 			success: true,
-			data: DecodeJSON(res.data) as Outfit,
+			data: DecodeJSON(res.data) as OutfitDto,
 		};
 	}
 }

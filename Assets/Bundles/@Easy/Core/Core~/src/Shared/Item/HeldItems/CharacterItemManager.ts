@@ -41,9 +41,7 @@ export class EntityItemManager {
 		import("Shared/UserInput").then((userInputRef) => {
 			this.Log("UserInput");
 			//Process Inputs locally
-			const mouse = new userInputRef.Mouse();
-			const keyboard = new userInputRef.Keyboard();
-			mouse.leftDown.Connect(() => {
+			Airship.input.OnDown("UseItem").Connect(() => {
 				this.Log("LeftDown");
 				if (CanvasAPI.IsPointerOverUI() || EventSystem.current.currentSelectedGameObject) {
 					return;
@@ -55,7 +53,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.leftUp.Connect(() => {
+			Airship.input.OnUp("UseItem").Connect(() => {
 				this.Log("LeftUp");
 				if (!this.mouseIsDownLeft) {
 					return;
@@ -67,7 +65,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.rightDown.Connect(() => {
+			Airship.input.OnDown("SecondaryUseItem").Connect(() => {
 				this.Log("RightDown");
 				if (CanvasAPI.IsPointerOverUI()) {
 					return;
@@ -79,7 +77,7 @@ export class EntityItemManager {
 				}
 			});
 
-			mouse.rightUp.Connect(() => {
+			Airship.input.OnUp("SecondaryUseItem").Connect(() => {
 				this.Log("RightUp");
 				if (!this.mouseIsDownRight) {
 					return;
@@ -91,7 +89,7 @@ export class EntityItemManager {
 				}
 			});
 
-			keyboard.OnKeyDown(KeyCode.Y, (event) => {
+			Airship.input.OnUp("Inspect").Connect((event) => {
 				if (event.uiProcessed) return;
 				if (this.localCharacter) {
 					let items = this.GetOrCreateItemManager(this.localCharacter);

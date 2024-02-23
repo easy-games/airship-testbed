@@ -20,6 +20,7 @@ import { InventorySingleton } from "./Inventory/InventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
+import { TagsSingleton } from "./Tags/TagsSingleton";
 /**
  * The collection of platform services available to Airship games.
  *
@@ -128,6 +129,11 @@ export declare const Airship: {
     teams: Omit<TeamsSingleton, "OnStart">;
     inventory: Omit<InventorySingleton, "OnStart">;
     loadingScreen: Omit<LoadingScreenSingleton, "OnStart">;
+    /**
+     * Namespace for managing and query Airship tags on game objects
+     * @see https://docs.airship.gg/tags
+     */
+    tags: Omit<TagsSingleton, "OnStart">;
     /**
      * Internal method used to wait until Airship singletons are ready.
      * This is only needed when developing inside the Core package.
