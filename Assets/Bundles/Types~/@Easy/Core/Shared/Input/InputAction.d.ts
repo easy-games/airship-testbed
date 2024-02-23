@@ -36,6 +36,14 @@ export declare class InputAction {
     /**
      *
      */
+    static inputActionId: number;
+    /**
+     *
+     */
+    id: number;
+    /**
+     *
+     */
     name: string;
     /**
      *

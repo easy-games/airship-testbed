@@ -1,7 +1,7 @@
 import { OnStart } from "../Flamework";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Signal } from "../Util/Signal";
-import { InputActionSchema } from "./InputAction";
+import { InputAction, InputActionSchema } from "./InputAction";
 import { Keybind } from "./Keybind";
 export declare class AirshipInputSingleton implements OnStart {
     /**
@@ -69,6 +69,11 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param name
      */
     IsUp(name: string): boolean;
+    /**
+     *
+     * @returns
+     */
+    GetKeybinds(): InputAction[];
     /**
      *
      * @param action

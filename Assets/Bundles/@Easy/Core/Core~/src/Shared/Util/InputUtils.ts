@@ -1,5 +1,7 @@
 export class InputUtils {
 	public static keyCodeMap: Record<KeyCode, string | undefined> = {
+		/// Unbound
+		[KeyCode.None]: "None",
 		/// Alpha names
 		[KeyCode.A]: "A",
 		[KeyCode.B]: "B",
@@ -58,6 +60,10 @@ export class InputUtils {
 		[KeyCode.Mouse0]: "Left Mouse",
 		[KeyCode.Mouse1]: "Right Mouse",
 		[KeyCode.Mouse3]: "Middle Mouse",
+
+		// Modifier
+		[KeyCode.LeftControl]: "Left Control",
+		[KeyCode.LeftShift]: "Left Shift",
 	};
 
 	/**

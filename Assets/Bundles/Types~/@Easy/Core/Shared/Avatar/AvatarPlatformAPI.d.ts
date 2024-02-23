@@ -1,15 +1,15 @@
-import { AccessoryInstanceDto, OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { AccessoryInstance, Outfit } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarPlatformAPI {
     private static Log;
     static GetHttpUrl(path: string): string;
-    static GetAllOutfits(): OutfitDto[] | undefined;
-    static GetEquippedOutfit(): OutfitDto | undefined;
-    static GetAvatarOutfit(outfitId: string): OutfitDto | undefined;
-    static CreateAvatarOutfit(outfit: OutfitDto): void;
+    static GetAllOutfits(): Outfit[] | undefined;
+    static GetEquippedOutfit(): Outfit | undefined;
+    static GetAvatarOutfit(outfitId: string): Outfit | undefined;
+    static CreateAvatarOutfit(outfit: Outfit): void;
     static EquipAvatarOutfit(outfitId: string): void;
-    static GetAccessories(): AccessoryInstanceDto[] | undefined;
-    static CreateDefaultAvatarOutfit(entityId: string, outfitId: string, name: string, skinColor: Color): OutfitDto;
-    static SaveOutfitAccessories(outfitId: string, instanceIds: string[]): OutfitDto;
-    static SaveAvatarOutfit(outfit: OutfitDto): void;
-    static LoadImage(fileId: string): AccessoryInstanceDto[];
+    static GetAccessories(): AccessoryInstance[] | undefined;
+    static CreateDefaultAvatarOutfit(entityId: string, outfitId: string, name: string, skinColor: Color): Outfit;
+    static SaveOutfitAccessories(outfitId: string, instanceIds: string[]): Outfit;
+    static SaveAvatarOutfit(outfit: Outfit): void;
+    static LoadImage(fileId: string): AccessoryInstance[];
 }

@@ -1,6 +1,5 @@
 import Character from "../Character/Character";
 import { ProfilePictureMeta } from "../ProfilePicture/ProfilePictureMeta";
-import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -65,8 +64,6 @@ export declare class Player {
     private profilePicture;
     private bin;
     private connected;
-    selectedOutfit: OutfitDto | undefined;
-    outfitLoaded: boolean;
     constructor(
     /**
      * The GameObject representing the player.
@@ -103,22 +100,9 @@ export declare class Player {
      * ```
      */
     usernameTag: string);
-    /**
-     * Can yield if the player's outfit hasn't finished downloading.
-     * @param position
-     * @param config
-     * @returns
-     */
     SpawnCharacter(position: Vector3, config?: {
         lookDirection?: Vector3;
-        /**
-         * If true, method does not yield if the player's outfit hasn't been downloaded.
-         *
-         * This can cause characters to spawn with no outfit.
-         */
-        noOutfitYield?: boolean;
     }): Character;
-    WaitForOutfitLoaded(timeout?: number): void;
     GetProfilePicture(): ProfilePictureMeta;
     SetTeam(team: Team): void;
     GetTeam(): Team | undefined;

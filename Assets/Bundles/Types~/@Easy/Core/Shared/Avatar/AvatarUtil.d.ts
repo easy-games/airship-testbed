@@ -1,4 +1,4 @@
-import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { Outfit } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarUtil {
     static readonly defaultAccessoryOutfitPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
     private static readonly allAvatarAccessories;
@@ -18,7 +18,7 @@ export declare class AvatarUtil {
         combineMeshes?: boolean;
     }): void;
     static LoadDefaultOutfit(builder: AccessoryBuilder): void;
-    static LoadUserOutfit(outfit: OutfitDto, builder: AccessoryBuilder, options?: {
+    static LoadUserOutfit(outfit: Outfit, builder: AccessoryBuilder, options?: {
         removeAllOldAccessories?: boolean;
     }): void;
 }

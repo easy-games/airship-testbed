@@ -1,6 +1,9 @@
 import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
 import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
+import { Keybind } from "@Easy/Core/Shared/Input/Keybind";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Mouse } from "../../../UserInput";
 import { AppManager } from "../../../Util/AppManager";
@@ -17,11 +20,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	public valueImageBG!: Image;
 	public overlay!: GameObject;
 
-	@NonSerialized()
-	public keyCode: KeyCode | undefined;
-
-	@NonSerialized()
-	public defaultKeyCode: KeyCode | undefined;
+	private inputAction: InputAction | undefined;
 
 	private isListening = false;
 
@@ -69,7 +68,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 				(event) => {
 					if (this.isListening) {
 						event.SetCancelled(true);
-						this.SetKeyCode(undefined);
+						//this.SetKeyCode(KeyCode.None);
 					}
 				},
 				SignalPriority.HIGHEST,
@@ -92,49 +91,94 @@ export default class SettingsKeybind extends AirshipBehaviour {
 						this.ResetToDefault();
 					},
 				},
+				{
+					text: "Clear",
+					onClick: () => {
+						//this.SetToNone(true);
+						this.UnsetKeybind();
+					},
+				},
 			],
 		);
 	}
 
 	public ResetToDefault(): void {
-		this.SetKeyCode(this.defaultKeyCode);
+		this.inputAction?.ResetKeybind();
 	}
 
-	public Init(actionName: string, keyCode: KeyCode | undefined, defaultKeyCode: KeyCode | undefined) {
-		this.title.text = actionName;
-		this.keyCode = keyCode;
-		this.defaultKeyCode = defaultKeyCode;
+	/**
+	 *
+	 * @param newKeybind
+	 */
+	private UpdateKeybind(newKeybind: Keybind): void {
+		this.inputAction?.UpdateKeybind(newKeybind);
+	}
+
+	/**
+	 *
+	 */
+	private UnsetKeybind(): void {
+		this.inputAction?.UnsetKeybind();
+	}
+
+	/**
+	 *
+	 * @param action
+	 */
+	public Init(action: InputAction) {
+		this.inputAction = action;
+		this.title.text = action.name;
+		this.UpdateKeybindTextFromKeyCode(action.keybind.primaryKey);
+
+		Airship.input.onActionUnbound.Connect((unbound) => {
+			if (unbound !== action) return;
+			this.UpdateKeybindTextFromKeyCode(unbound.keybind.primaryKey);
+		});
+
+		Airship.input.onActionBound.Connect((bound) => {
+			if (bound !== action) return;
+			this.UpdateKeybindTextFromKeyCode(bound.keybind.primaryKey);
+		});
+
 		this.SetListening(false);
 	}
 
-	public Update(dt: number): void {
+	public Update(_dt: number): void {
 		if (this.isListening) {
 			for (let keycode of ObjectUtils.keys(InputUtils.keyCodeMap) as KeyCode[]) {
 				if (Input.GetKey(keycode)) {
-					this.SetKeyCode(keycode);
+					this.UpdateKeybind(new Keybind(keycode));
+					this.SetListening(false);
 				}
 			}
 		}
 	}
 
-	private SetKeyCode(keyCode: KeyCode | undefined): void {
-		this.keyCode = keyCode;
-		this.SetListening(false);
+	/**
+	 *
+	 * @param text
+	 */
+	private UpdateKeybindText(text: string): void {
+		this.valueText.text = text;
+	}
+
+	/**
+	 *
+	 * @param keyCode
+	 */
+	private UpdateKeybindTextFromKeyCode(keyCode: KeyCode): void {
+		const keyCodeText = InputUtils.GetStringForKeyCode(keyCode);
+		this.UpdateKeybindText(keyCodeText ?? `Unknown(${keyCode})`);
 	}
 
 	private SetListening(listening: boolean): void {
+		if (!this.inputAction) return;
 		this.isListening = listening;
 		if (listening) {
-			this.valueText.text = "PRESS A KEY";
+			this.UpdateKeybindText("PRESS A KEY");
 			this.valueImageBG.color = Theme.primary;
 			this.overlay.SetActive(true);
 		} else {
-			let str = "";
-			if (this.keyCode) {
-				str = InputUtils.GetStringForKeyCode(this.keyCode) ?? "unknown (" + this.keyCode + ")";
-			}
-			this.valueText.text = str;
-			this.valueImageBG.color = new Color(1, 1, 1, 0.02);
 			this.overlay.SetActive(false);
 		}
 	}

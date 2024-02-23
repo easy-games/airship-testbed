@@ -1,3 +1,5 @@
+import { Keybind } from "./Keybind";
+
 export enum KeyType {
 	Primary,
 	Modifier,
@@ -14,6 +16,7 @@ export enum ActionInputType {
 	Keyboard,
 	Mouse,
 	Gamepad,
+	Unbound,
 	Unknown,
 }
 
@@ -63,5 +66,25 @@ export class InputUtil {
 	 */
 	public static GetModifierFromKeyCode(keyCode: KeyCode): ModifierKey | undefined {
 		return KeyCodeModifierTable[keyCode];
+	}
+
+	/**
+	 *
+	 * @param keybind
+	 */
+	public static GetInputTypeFromKeybind(keybind: Keybind, keyType: KeyType): ActionInputType {
+		if (keybind.IsUnset()) return ActionInputType.Unbound;
+		const keyCode =
+			keyType === KeyType.Primary ? keybind.primaryKey : InputUtil.GetKeyCodeFromModifier(keybind.modifierKey);
+		if (keyCode >= 8 && keyCode <= 319) {
+			return ActionInputType.Keyboard;
+		}
+		if (keyCode >= 321 && keyCode <= 329) {
+			return ActionInputType.Mouse;
+		}
+		if (keyCode >= 330 && keyCode <= 509) {
+			return ActionInputType.Gamepad;
+		}
+		return ActionInputType.Unknown;
 	}
 }

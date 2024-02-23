@@ -5,7 +5,6 @@ import { HeldItemManager } from "../Item/HeldItems/HeldItemManager";
 import { Player } from "../Player/Player";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
-import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 export default class Character extends AirshipBehaviour {
     player?: Player;
     animator: CharacterAnimator;
@@ -25,7 +24,6 @@ export default class Character extends AirshipBehaviour {
     readonly bin: Bin;
     inventory: Inventory;
     heldItems: HeldItemManager;
-    outfitDto: OutfitDto | undefined;
     onDeath: Signal<void>;
     onDespawn: Signal<void>;
     onStateChanged: Signal<[newState: CharacterState, oldState: CharacterState]>;
@@ -33,7 +31,7 @@ export default class Character extends AirshipBehaviour {
     private despawned;
     Awake(): void;
     Start(): void;
-    Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void;
+    Init(player: Player | undefined, id: number): void;
     /**
      * This should be called from the server.
      *
