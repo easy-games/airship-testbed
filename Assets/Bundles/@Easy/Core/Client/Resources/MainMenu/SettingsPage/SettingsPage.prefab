@@ -1457,7 +1457,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8855588371904504604}
   m_HandleRect: {fileID: 789617736572884859}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4763,7 +4763,7 @@ PrefabInstance:
     - target: {fileID: 4677441201201578881, guid: 5a39cbf6a7f8f4fd9a3c856aa898251b, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].serializedObject
       value: 
-      objectReference: {fileID: 6763221618120504152}
+      objectReference: {fileID: 24493160184959471}
     - target: {fileID: 5406093283439377177, guid: 5a39cbf6a7f8f4fd9a3c856aa898251b, type: 3}
       propertyPath: m_Name
       value: Keybinds
