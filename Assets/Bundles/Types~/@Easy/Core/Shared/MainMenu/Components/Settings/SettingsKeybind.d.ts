@@ -29,6 +29,10 @@ export default class SettingsKeybind extends AirshipBehaviour {
      * @param action
      */
     Init(action: InputAction): void;
+    /**
+     *
+     */
+    private HighlightValueImage;
     private StartKeyListener;
     Update(dt: number): void;
     /**

@@ -146,6 +146,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 		Airship.input.onActionUnbound.Connect((unbound) => {
 			if (unbound !== action) return;
 			this.UpdateKeybindTextFromKeybind(unbound.keybind);
+			this.HighlightValueImage();
 		});
 
 		Airship.input.onActionBound.Connect((bound) => {
@@ -155,6 +156,13 @@ export default class SettingsKeybind extends AirshipBehaviour {
 
 		this.SetListening(false);
 		this.StartKeyListener();
+	}
+
+	/**
+	 *
+	 */
+	private HighlightValueImage(): void {
+		this.valueImageBG.TweenGraphicColor(new Color(1, 1, 1, 0.5), 0.25).SetPingPong();
 	}
 
 	private StartKeyListener(): void {
