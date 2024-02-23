@@ -101,7 +101,7 @@ export class PlayersSingleton implements OnStart {
 	OnStart(): void {
 		if (RunUtil.IsServer() && !RunUtil.IsEditor()) {
 			InternalHttpManager.SetAuthToken("");
-			HttpManager.SetLoggingEnabled(true);
+			// HttpManager.SetLoggingEnabled(true);
 		}
 
 		task.spawn(() => {
