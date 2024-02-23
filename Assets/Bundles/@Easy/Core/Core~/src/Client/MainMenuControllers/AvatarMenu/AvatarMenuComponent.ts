@@ -666,6 +666,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (this.outfits) {
 			this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
 		}
+		if (Game.context === CoreContext.GAME) {
+			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
+		}
 	}
 
 	private Revert() {

@@ -15,22 +15,16 @@ export class AvatarUtil {
 
 	public static readonly skinColors = [
 		//Natural
-		ColorUtil.HexToColor("#edcdad"),
-		ColorUtil.HexToColor("#f2c291"),
-		ColorUtil.HexToColor("#cc9d6a"),
-		ColorUtil.HexToColor("#ebbc78"),
-		ColorUtil.HexToColor("#f2c27e"),
-		ColorUtil.HexToColor("#d69e5e"),
-		ColorUtil.HexToColor("#e8bd92"),
-		ColorUtil.HexToColor("#4d2a22"),
-		ColorUtil.HexToColor("#5e372e"),
-
-		//Fun
-		ColorUtil.HexToColor("#9bc063"),
-		ColorUtil.HexToColor("#5a4862"),
-		ColorUtil.HexToColor("#DB2E2A"),
-		ColorUtil.HexToColor("#7D8C93"),
-		ColorUtil.HexToColor("#251000"),
+		// ColorUtil.HexToColor("#FFF3EA"),
+		ColorUtil.HexToColor("#F6D7BB"),
+		ColorUtil.HexToColor("#ECB98C"),
+		ColorUtil.HexToColor("#D99E72"),
+		ColorUtil.HexToColor("#C68953"),
+		ColorUtil.HexToColor("#A56E45"),
+		ColorUtil.HexToColor("#925E39"),
+		ColorUtil.HexToColor("#7D4F2B"),
+		ColorUtil.HexToColor("#4E2F13"),
+		ColorUtil.HexToColor("#352214"),
 	];
 
 	public static Initialize() {
