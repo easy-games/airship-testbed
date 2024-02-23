@@ -6,8 +6,11 @@ export default class SettingsKeybind extends AirshipBehaviour {
     valueText: TMP_Text;
     valueImageBG: Image;
     overlay: GameObject;
+    private inputDevice;
     private inputAction;
     private isListening;
+    private downPrimaryKeyCode;
+    private downModifierKey;
     private bin;
     OnEnable(): void;
     private OpenRightClick;
@@ -26,7 +29,8 @@ export default class SettingsKeybind extends AirshipBehaviour {
      * @param action
      */
     Init(action: InputAction): void;
-    Update(_dt: number): void;
+    private StartKeyListener;
+    Update(dt: number): void;
     /**
      *
      * @param text
@@ -36,7 +40,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
      *
      * @param keyCode
      */
-    private UpdateKeybindTextFromKeyCode;
+    private UpdateKeybindTextFromKeybind;
     private SetListening;
     OnDisable(): void;
 }
