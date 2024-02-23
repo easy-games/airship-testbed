@@ -14704,6 +14704,7 @@ interface HttpManagerConstructor {
     PostAsync(url: string, data: string, headers: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
     PutAsync(url: string, data: string, headers: string): HttpResponse;
+    SetLoggingEnabled(enabled: boolean): void;
 }
 declare const HttpManager: HttpManagerConstructor;
     

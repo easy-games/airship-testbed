@@ -99,6 +99,11 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	OnStart(): void {
+		if (RunUtil.IsServer() && !RunUtil.IsEditor()) {
+			InternalHttpManager.SetAuthToken("");
+			// HttpManager.SetLoggingEnabled(true);
+		}
+
 		task.spawn(() => {
 			if (RunUtil.IsClient()) {
 				this.InitClient();
@@ -261,6 +266,9 @@ export class PlayersSingleton implements OnStart {
 		// this.outfitFetchTime.set(player.userId, os.time());
 
 		let userId = player.userId;
+		if (!RunUtil.IsEditor()) {
+			print("fetching outfit for " + userId);
+		}
 		if (RunUtil.IsEditor() && player.IsLocalPlayer()) {
 			Dependency<UserController>().WaitForLocalUserReady();
 			let uid = Dependency<UserController>().localUser?.uid;
@@ -271,15 +279,21 @@ export class PlayersSingleton implements OnStart {
 
 		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/outfits/uid/" + userId + "/equipped");
 		if (!res.success) {
-			Debug.LogError("failed to load user outfit.");
+			Debug.LogError("failed to load user outfit: " + res.error);
 			SetOutfit(undefined);
 			return;
 		}
 		if (res.data.size() === 0) {
+			if (!RunUtil.IsEditor()) {
+				print("Empty outfit.");
+			}
 			SetOutfit(undefined);
 			return;
 		}
 		const outfitDto = DecodeJSON<OutfitDto>(res.data);
+		if (!RunUtil.IsEditor()) {
+			print("outfit: " + res.data);
+		}
 		SetOutfit(outfitDto);
 	}
 

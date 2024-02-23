@@ -1,3 +1,4 @@
+import { Keybind } from "./Keybind";
 export declare enum KeyType {
     Primary = 0,
     Modifier = 1
@@ -12,7 +13,8 @@ export declare enum ActionInputType {
     Keyboard = 0,
     Mouse = 1,
     Gamepad = 2,
-    Unknown = 3
+    Unbound = 3,
+    Unknown = 4
 }
 /**
  *
@@ -45,4 +47,9 @@ export declare class InputUtil {
      * @returns
      */
     static GetModifierFromKeyCode(keyCode: KeyCode): ModifierKey | undefined;
+    /**
+     *
+     * @param keybind
+     */
+    static GetInputTypeFromKeybind(keybind: Keybind, keyType: KeyType): ActionInputType;
 }

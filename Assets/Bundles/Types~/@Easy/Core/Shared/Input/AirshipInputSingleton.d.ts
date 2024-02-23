@@ -1,9 +1,18 @@
 import { OnStart } from "../Flamework";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Signal } from "../Util/Signal";
-import { InputActionSchema } from "./InputAction";
+import { InputAction, InputActionSchema } from "./InputAction";
+import { ActionInputType } from "./InputUtil";
 import { Keybind } from "./Keybind";
 export declare class AirshipInputSingleton implements OnStart {
+    /**
+     *
+     */
+    onActionBound: Signal<InputAction>;
+    /**
+     *
+     */
+    onActionUnbound: Signal<InputAction>;
     /**
      *
      */
@@ -12,10 +21,6 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private actionTable;
-    /**
-     *
-     */
-    private actionUnbound;
     /**
      *
      */
@@ -28,10 +33,6 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private actionDownState;
-    /**
-     *
-     */
-    private complexActionLastDown;
     constructor();
     OnStart(): void;
     /**
@@ -46,6 +47,19 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param category
      */
     CreateAction(name: string, keybind: Keybind, category?: string): void;
+    /**
+     *
+     * @param name
+     * @returns
+     */
+    GetActionsByName(name: string): InputAction[];
+    /**
+     *
+     * @param name
+     * @param inputType
+     * @returns
+     */
+    GetActionByInputType(name: string, inputType: ActionInputType): InputAction | undefined;
     /**
      *
      * @param name
@@ -71,6 +85,11 @@ export declare class AirshipInputSingleton implements OnStart {
     IsUp(name: string): boolean;
     /**
      *
+     * @returns
+     */
+    GetKeybinds(): InputAction[];
+    /**
+     *
      * @param action
      */
     private AddActionToTable;
@@ -81,13 +100,13 @@ export declare class AirshipInputSingleton implements OnStart {
     private CreateActionListeners;
     /**
      *
+     * @param action
+     */
+    private UnsetDuplicateKeybinds;
+    /**
+     *
      * @param signalIndices
      * @param signals
      */
     private ClearInactiveSignals;
-    /**
-     *
-     * @param newAction
-     */
-    private UnbindActions;
 }

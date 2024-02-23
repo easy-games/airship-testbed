@@ -1,14 +1,24 @@
 import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
 import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { InputAction } from "@Easy/Core/Shared/Input/InputAction";
+import { InputUtil } from "@Easy/Core/Shared/Input/InputUtil";
+import { Keybind } from "@Easy/Core/Shared/Input/Keybind";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { Mouse } from "../../../UserInput";
+import { Keyboard, Mouse } from "../../../UserInput";
 import { AppManager } from "../../../Util/AppManager";
 import { Bin } from "../../../Util/Bin";
 import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../../Util/CanvasAPI";
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
 import { Theme } from "../../../Util/Theme";
+
+/**
+ *
+ */
+const InputPollRate = 0.025;
 
 export default class SettingsKeybind extends AirshipBehaviour {
 	public title!: TMP_Text;
@@ -17,13 +27,14 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	public valueImageBG!: Image;
 	public overlay!: GameObject;
 
-	@NonSerialized()
-	public keyCode: KeyCode | undefined;
+	private inputDevice = new Keyboard();
 
-	@NonSerialized()
-	public defaultKeyCode: KeyCode | undefined;
+	private inputAction: InputAction | undefined;
 
 	private isListening = false;
+
+	private downPrimaryKeyCode = KeyCode.None;
+	private downModifierKey = KeyCode.None;
 
 	private bin = new Bin();
 
@@ -69,7 +80,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 				(event) => {
 					if (this.isListening) {
 						event.SetCancelled(true);
-						this.SetKeyCode(undefined);
+						//this.SetKeyCode(KeyCode.None);
 					}
 				},
 				SignalPriority.HIGHEST,
@@ -92,49 +103,131 @@ export default class SettingsKeybind extends AirshipBehaviour {
 						this.ResetToDefault();
 					},
 				},
+				{
+					text: "Clear",
+					onClick: () => {
+						//this.SetToNone(true);
+						this.UnsetKeybind();
+					},
+				},
 			],
 		);
 	}
 
 	public ResetToDefault(): void {
-		this.SetKeyCode(this.defaultKeyCode);
+		this.inputAction?.ResetKeybind();
 	}
 
-	public Init(actionName: string, keyCode: KeyCode | undefined, defaultKeyCode: KeyCode | undefined) {
-		this.title.text = actionName;
-		this.keyCode = keyCode;
-		this.defaultKeyCode = defaultKeyCode;
+	/**
+	 *
+	 * @param newKeybind
+	 */
+	private UpdateKeybind(newKeybind: Keybind): void {
+		this.inputAction?.UpdateKeybind(newKeybind);
+	}
+
+	/**
+	 *
+	 */
+	private UnsetKeybind(): void {
+		this.inputAction?.UnsetKeybind();
+	}
+
+	/**
+	 *
+	 * @param action
+	 */
+	public Init(action: InputAction) {
+		this.inputAction = action;
+		this.title.text = action.name;
+		this.UpdateKeybindTextFromKeybind(action.keybind);
+
+		Airship.input.onActionUnbound.Connect((unbound) => {
+			if (unbound !== action) return;
+			this.UpdateKeybindTextFromKeybind(unbound.keybind);
+		});
+
+		Airship.input.onActionBound.Connect((bound) => {
+			if (bound !== action) return;
+			this.UpdateKeybindTextFromKeybind(bound.keybind);
+		});
+
 		this.SetListening(false);
+		this.StartKeyListener();
 	}
 
-	public Update(dt: number): void {
-		if (this.isListening) {
-			for (let keycode of ObjectUtils.keys(InputUtils.keyCodeMap) as KeyCode[]) {
-				if (Input.GetKey(keycode)) {
-					this.SetKeyCode(keycode);
+	private StartKeyListener(): void {
+		SetInterval(InputPollRate, () => {
+			if (this.isListening) {
+				if (this.downModifierKey !== KeyCode.None && !Input.GetKey(this.downModifierKey)) {
+					this.UpdateKeybind(new Keybind(this.downModifierKey));
+					this.SetListening(false);
+				}
+				for (let keyCode of ObjectUtils.keys(InputUtils.keyCodeMap) as KeyCode[]) {
+					if (Input.GetKey(keyCode)) {
+						const modifierKey = InputUtil.GetModifierFromKeyCode(keyCode);
+						if (modifierKey) {
+							this.downModifierKey = keyCode;
+							const keyCodeText =
+								InputUtils.GetStringForKeyCode(this.downModifierKey) ??
+								`Unknown(${this.downModifierKey})`;
+							const complexKeyCodeText = `${keyCodeText} + `;
+							this.UpdateKeybindText(complexKeyCodeText);
+						} else {
+							if (keyCode !== this.downModifierKey && this.downModifierKey !== KeyCode.None) {
+								const modifierKey = InputUtil.GetModifierFromKeyCode(this.downModifierKey);
+								this.UpdateKeybind(new Keybind(keyCode, modifierKey!));
+								this.SetListening(false);
+							} else {
+								this.UpdateKeybind(new Keybind(keyCode));
+								this.SetListening(false);
+							}
+						}
+					}
 				}
 			}
+		});
+	}
+
+	public Update(dt: number): void {}
+
+	/**
+	 *
+	 * @param text
+	 */
+	private UpdateKeybindText(text: string): void {
+		this.valueText.text = text;
+	}
+
+	/**
+	 *
+	 * @param keyCode
+	 */
+	private UpdateKeybindTextFromKeybind(keybind: Keybind): void {
+		if (!keybind.IsComplexKeybind()) {
+			const bindingText = InputUtils.GetStringForKeyCode(keybind.primaryKey) ?? `Unknown(${keybind.primaryKey})`;
+			this.UpdateKeybindText(bindingText);
+		} else {
+			const primaryKeyCodeText =
+				InputUtils.GetStringForKeyCode(keybind.primaryKey) ?? `Unknown(${keybind.primaryKey})`;
+			const modifierAsKeyCode = InputUtil.GetKeyCodeFromModifier(keybind.modifierKey);
+			const modifierKeyCodeText =
+				InputUtils.GetStringForKeyCode(modifierAsKeyCode) ?? `Unknown(${modifierAsKeyCode})`;
+			const bindingText = `${modifierKeyCodeText} + ${primaryKeyCodeText}`;
+			this.UpdateKeybindText(bindingText);
 		}
 	}
 
-	private SetKeyCode(keyCode: KeyCode | undefined): void {
-		this.keyCode = keyCode;
-		this.SetListening(false);
-	}
-
 	private SetListening(listening: boolean): void {
+		if (!this.inputAction) return;
 		this.isListening = listening;
 		if (listening) {
-			this.valueText.text = "PRESS A KEY";
+			this.UpdateKeybindText("PRESS A KEY");
 			this.valueImageBG.color = Theme.primary;
 			this.overlay.SetActive(true);
 		} else {
-			let str = "";
-			if (this.keyCode) {
-				str = InputUtils.GetStringForKeyCode(this.keyCode) ?? "unknown (" + this.keyCode + ")";
-			}
-			this.valueText.text = str;
-			this.valueImageBG.color = new Color(1, 1, 1, 0.02);
+			this.downModifierKey = KeyCode.None;
+			this.downPrimaryKeyCode = KeyCode.None;
 			this.overlay.SetActive(false);
 		}
 	}
