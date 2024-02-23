@@ -127,7 +127,7 @@ export class Player {
 			this.WaitForOutfitLoaded(1);
 			let diff = Time.time - startTime;
 			if (diff > 0) {
-				print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
+				print("Waited " + math.floor(diff * 1000) + " ms for outfit. ~");
 			}
 		}
 

@@ -47,7 +47,11 @@ export class CharactersSingleton implements OnStart {
 				(characterId, objectId, ownerClientId, outfitDto) => {
 					const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
 					const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
-					assert(character, "Spawned character was missing a Character component.");
+					assert(
+						character,
+						"Spawned character was missing a Character component. GameObject=" +
+							characterNetworkObj.gameObject.name,
+					);
 					let player: Player | undefined;
 					if (ownerClientId !== undefined) {
 						player = Airship.players.FindByClientId(ownerClientId);
@@ -87,6 +91,7 @@ export class CharactersSingleton implements OnStart {
 						character.id,
 						character.networkObject.ObjectId,
 						character.player?.clientId,
+						character.outfitDto,
 					);
 				}
 			});
@@ -277,6 +282,7 @@ export class CharactersSingleton implements OnStart {
 				character.id,
 				character.networkObject.ObjectId,
 				character.player?.clientId,
+				character.outfitDto,
 			);
 		}
 	}
