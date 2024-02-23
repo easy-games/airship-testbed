@@ -4,4 +4,5 @@ export default class SearchSingleton implements OnStart {
     games: GameDto[];
     OnStart(): void;
     AddGames(dtos: GameDto[]): void;
+    FetchPopularGames(): void;
 }
