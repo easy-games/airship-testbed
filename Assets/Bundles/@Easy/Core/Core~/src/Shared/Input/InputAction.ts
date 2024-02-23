@@ -34,6 +34,10 @@ export interface InputActionSchema {
 	/**
 	 *
 	 */
+	secondaryKeybind?: Keybind;
+	/**
+	 *
+	 */
 	category?: string;
 }
 
@@ -62,11 +66,16 @@ export class InputAction {
 	 *
 	 */
 	public category: string;
+	/**
+	 *
+	 */
+	public isSecondary: boolean;
 
-	constructor(name: string, keybind: Keybind, category = "General") {
+	constructor(name: string, keybind: Keybind, isSecondary: boolean, category = "General") {
 		this.id = InputAction.inputActionId++;
 		this.name = name;
 		this.defaultKeybind = ObjectUtils.deepCopy(keybind);
+		this.isSecondary = isSecondary;
 		this.keybind = keybind;
 		this.category = category;
 	}

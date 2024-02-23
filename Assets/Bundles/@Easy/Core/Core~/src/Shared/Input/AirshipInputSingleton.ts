@@ -6,6 +6,7 @@ import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
 import { Signal } from "../Util/Signal";
+import { SetInterval } from "../Util/Timer";
 import { InputAction, InputActionSchema } from "./InputAction";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { Keybind } from "./Keybind";
@@ -61,6 +62,10 @@ export class AirshipInputSingleton implements OnStart {
 			}
 		});
 
+		SetInterval(1, () => {
+			//print(`Crouch action down: ${Airship.input.IsDown("Crouch")}`);
+		});
+
 		Airship.input.CreateActions([
 			{ name: "Forward", keybind: new Keybind(KeyCode.W) },
 			{ name: "Left", keybind: new Keybind(KeyCode.A) },
@@ -68,7 +73,11 @@ export class AirshipInputSingleton implements OnStart {
 			{ name: "Right", keybind: new Keybind(KeyCode.D) },
 			{ name: "Jump", keybind: new Keybind(KeyCode.Space) },
 			{ name: "Sprint", keybind: new Keybind(KeyCode.LeftShift) },
-			{ name: "Crouch", keybind: new Keybind(KeyCode.LeftControl) },
+			{
+				name: "Crouch",
+				keybind: new Keybind(KeyCode.LeftControl),
+				secondaryKeybind: new Keybind(KeyCode.C),
+			},
 			{ name: "UseItem", keybind: new Keybind(KeyCode.Mouse0) },
 			{ name: "SecondaryUseItem", keybind: new Keybind(KeyCode.Mouse1) },
 			{ name: "Inventory", keybind: new Keybind(KeyCode.E) },
@@ -83,7 +92,7 @@ export class AirshipInputSingleton implements OnStart {
 	 */
 	public CreateActions(actions: InputActionSchema[]): void {
 		for (const action of actions) {
-			this.CreateAction(action.name, action.keybind, action.category);
+			this.CreateAction(action);
 		}
 	}
 
@@ -93,16 +102,42 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param keybind
 	 * @param category
 	 */
-	public CreateAction(name: string, keybind: Keybind, category = "General"): void {
+	public CreateAction(actionSchema: InputActionSchema): void {
 		const actionExists = this.GetActionByInputType(
-			name,
-			InputUtil.GetInputTypeFromKeybind(keybind, KeyType.Primary),
+			actionSchema.name,
+			InputUtil.GetInputTypeFromKeybind(actionSchema.keybind, KeyType.Primary),
 		);
 		if (actionExists) {
 			warn("Action already exists. TODO: More detail here.");
 			return;
 		}
-		const action = new InputAction(name, keybind, category);
+		const action = new InputAction(actionSchema.name, actionSchema.keybind, false, actionSchema.category);
+		this.AddActionToTable(action);
+		this.onActionBound.Fire(action);
+
+		if (actionSchema.secondaryKeybind) {
+			this.CreateSecondaryKeybindForAction(actionSchema);
+		}
+	}
+
+	/**
+	 *
+	 * @param actionSchema
+	 */
+	private CreateSecondaryKeybindForAction(actionSchema: InputActionSchema): void {
+		const primaryKeybindType = InputUtil.GetInputTypeFromKeybind(actionSchema.keybind, KeyType.Primary);
+		const secondaryKeybindType = InputUtil.GetInputTypeFromKeybind(actionSchema.secondaryKeybind!, KeyType.Primary);
+		if (primaryKeybindType !== ActionInputType.Keyboard && primaryKeybindType !== ActionInputType.Mouse) {
+			warn("Cannot create secondary keybind for non-desktop input type. TODO: More details.");
+			return;
+		}
+		if (secondaryKeybindType !== ActionInputType.Keyboard && secondaryKeybindType !== ActionInputType.Mouse) {
+			warn(
+				"Secondary keybind input type MUST be a desktop input type. (Keyboard or mouse keybind) TODO: More details.",
+			);
+			return;
+		}
+		const action = new InputAction(actionSchema.name, actionSchema.secondaryKeybind!, true, actionSchema.category);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 	}
@@ -248,11 +283,11 @@ export class AirshipInputSingleton implements OnStart {
 		if (action.IsComplexKeybind()) {
 			signalCleanup.Add(
 				this.inputDevice.OnKeyDown(action.keybind.primaryKey, (event) => {
+					const isModifierKeyDown = this.inputDevice.IsKeyDown(action.keybind.GetModifierKeyCode());
+					if (!isModifierKeyDown) return;
 					this.actionDownState.add(action.name);
 					const actionDownSignals = this.actionDownSignals.get(action.name);
 					if (!actionDownSignals) return;
-					const isModifierKeyDown = this.inputDevice.IsKeyDown(action.keybind.GetModifierKeyCode());
-					if (!isModifierKeyDown) return;
 					const inactiveSignalIndices = [];
 					let signalIndex = 0;
 					for (const signal of actionDownSignals) {
@@ -268,8 +303,8 @@ export class AirshipInputSingleton implements OnStart {
 			);
 			signalCleanup.Add(
 				this.inputDevice.OnKeyUp(action.keybind.primaryKey, (event) => {
-					const wasDown = this.actionDownState.has(action.name);
-					if (!wasDown) return;
+					const isDown = this.actionDownState.has(action.name);
+					if (!isDown) return;
 					this.actionDownState.delete(action.name);
 					const actionUpSignals = this.actionUpSignals.get(action.name);
 					if (!actionUpSignals) return;
@@ -288,8 +323,8 @@ export class AirshipInputSingleton implements OnStart {
 			);
 			signalCleanup.Add(
 				this.inputDevice.OnKeyUp(action.keybind.GetModifierKeyCode(), (event) => {
-					const wasDown = this.actionDownState.has(action.name);
-					if (!wasDown) return;
+					const isDown = this.actionDownState.has(action.name);
+					if (!isDown) return;
 					this.actionDownState.delete(action.name);
 					const actionUpSignals = this.actionUpSignals.get(action.name);
 					if (!actionUpSignals) return;
