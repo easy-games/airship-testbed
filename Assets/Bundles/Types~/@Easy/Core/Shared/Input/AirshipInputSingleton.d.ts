@@ -33,6 +33,10 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private actionDownState;
+    /**
+     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     */
+    unsetOnDuplicateKeybind: boolean;
     constructor();
     OnStart(): void;
     /**
@@ -57,7 +61,7 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param name
      * @returns
      */
-    GetActionsByName(name: string): InputAction[];
+    GetActions(name: string): InputAction[];
     /**
      *
      * @param name

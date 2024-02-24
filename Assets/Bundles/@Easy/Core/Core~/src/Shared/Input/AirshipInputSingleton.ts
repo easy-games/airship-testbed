@@ -61,7 +61,7 @@ export class AirshipInputSingleton implements OnStart {
 
 		Airship.input.onActionBound.Connect((action) => {
 			if (!action.keybind.IsUnset()) {
-				if (this.UnsetDuplicateKeybinds) this.UnsetDuplicateKeybinds(action);
+				if (this.unsetOnDuplicateKeybind) this.UnsetDuplicateKeybinds(action);
 				this.CreateActionListeners(action);
 			}
 		});
