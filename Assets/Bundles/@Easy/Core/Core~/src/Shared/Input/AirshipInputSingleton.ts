@@ -6,7 +6,7 @@ import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
 import { RunUtil } from "../Util/RunUtil";
 import { Signal } from "../Util/Signal";
-import { InputAction, InputActionSchema } from "./InputAction";
+import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { Keybind } from "./Keybind";
 
@@ -87,7 +87,10 @@ export class AirshipInputSingleton implements OnStart {
 	 */
 	public CreateActions(actions: InputActionSchema[]): void {
 		for (const action of actions) {
-			this.CreateAction(action);
+			this.CreateAction(action.name, action.keybind, {
+				category: action.category ?? "General",
+				secondaryKeybind: action.secondaryKeybind,
+			});
 		}
 	}
 
@@ -97,21 +100,21 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param keybind
 	 * @param category
 	 */
-	public CreateAction(actionSchema: InputActionSchema): void {
+	public CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void {
 		const actionExists = this.GetActionByInputType(
-			actionSchema.name,
-			InputUtil.GetInputTypeFromKeybind(actionSchema.keybind, KeyType.Primary),
+			name,
+			InputUtil.GetInputTypeFromKeybind(keybind, KeyType.Primary),
 		);
 		if (actionExists) {
 			warn("Action already exists. TODO: More detail here.");
 			return;
 		}
-		const action = new InputAction(actionSchema.name, actionSchema.keybind, false, actionSchema.category);
+		const action = new InputAction(name, keybind, false, config?.category ?? "General");
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 
-		if (actionSchema.secondaryKeybind) {
-			this.CreateSecondaryKeybindForAction(actionSchema);
+		if (config?.secondaryKeybind) {
+			this.CreateSecondaryKeybindForAction(name, config.secondaryKeybind, config);
 		}
 	}
 
@@ -119,9 +122,9 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 * @param actionSchema
 	 */
-	private CreateSecondaryKeybindForAction(actionSchema: InputActionSchema): void {
-		const primaryKeybindType = InputUtil.GetInputTypeFromKeybind(actionSchema.keybind, KeyType.Primary);
-		const secondaryKeybindType = InputUtil.GetInputTypeFromKeybind(actionSchema.secondaryKeybind!, KeyType.Primary);
+	private CreateSecondaryKeybindForAction(name: string, keybind: Keybind, config: InputActionConfig): void {
+		const primaryKeybindType = InputUtil.GetInputTypeFromKeybind(keybind, KeyType.Primary);
+		const secondaryKeybindType = InputUtil.GetInputTypeFromKeybind(config.secondaryKeybind!, KeyType.Primary);
 		if (primaryKeybindType !== ActionInputType.Keyboard && primaryKeybindType !== ActionInputType.Mouse) {
 			warn("Cannot create secondary keybind for non-desktop input type. TODO: More details.");
 			return;
@@ -132,7 +135,7 @@ export class AirshipInputSingleton implements OnStart {
 			);
 			return;
 		}
-		const action = new InputAction(actionSchema.name, actionSchema.secondaryKeybind!, true, actionSchema.category);
+		const action = new InputAction(name, config.secondaryKeybind!, true, config.category);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 	}

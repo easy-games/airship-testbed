@@ -1,8 +1,9 @@
 import { OnStart } from "../Flamework";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Signal } from "../Util/Signal";
-import { InputAction, InputActionSchema } from "./InputAction";
+import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
 import { ActionInputType } from "./InputUtil";
+import { Keybind } from "./Keybind";
 export declare class AirshipInputSingleton implements OnStart {
     /**
      *
@@ -45,7 +46,7 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param keybind
      * @param category
      */
-    CreateAction(actionSchema: InputActionSchema): void;
+    CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void;
     /**
      *
      * @param actionSchema

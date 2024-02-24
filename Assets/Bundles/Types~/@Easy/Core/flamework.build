@@ -141,6 +141,7 @@
 		"@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton": "$:Damage/DamageSingleton@DamageSingleton",
 		"@Easy/Core:Shared/Input/Keybind@Keybind": "$:Input/Keybind@Keybind",
 		"@Easy/Core:Shared/Input/InputUtil@InputUtil": "$:Input/InputUtil@InputUtil",
+		"@Easy/Core:Shared/Input/InputAction@InputActionConfig": "$:Input/InputAction@InputActionConfig",
 		"@Easy/Core:Shared/Input/InputAction@InputAction": "$:Input/InputAction@InputAction",
 		"@Easy/Core:Shared/Input/AirshipInputSingleton@AirshipInputSingleton": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunctionClient": "$:Network/RemoteFunction@RemoteFunctionClient",

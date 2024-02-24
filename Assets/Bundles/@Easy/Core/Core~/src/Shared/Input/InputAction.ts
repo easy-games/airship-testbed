@@ -41,6 +41,17 @@ export interface InputActionSchema {
 	category?: string;
 }
 
+export class InputActionConfig {
+	/**
+	 *
+	 */
+	secondaryKeybind?: Keybind;
+	/**
+	 *
+	 */
+	category?: string;
+}
+
 export class InputAction {
 	/**
 	 *
