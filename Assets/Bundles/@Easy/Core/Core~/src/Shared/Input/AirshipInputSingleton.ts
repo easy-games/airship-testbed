@@ -42,6 +42,11 @@ export class AirshipInputSingleton implements OnStart {
 	 */
 	private actionDownState = new Set<string>();
 
+	/**
+	 * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+	 */
+	public unsetOnDuplicateKeybind = false;
+
 	constructor() {
 		Airship.input = this;
 	}
@@ -56,7 +61,7 @@ export class AirshipInputSingleton implements OnStart {
 
 		Airship.input.onActionBound.Connect((action) => {
 			if (!action.keybind.IsUnset()) {
-				this.UnsetDuplicateKeybinds(action);
+				if (this.UnsetDuplicateKeybinds) this.UnsetDuplicateKeybinds(action);
 				this.CreateActionListeners(action);
 			}
 		});
@@ -145,7 +150,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param name
 	 * @returns
 	 */
-	public GetActionsByName(name: string): InputAction[] {
+	public GetActions(name: string): InputAction[] {
 		return this.actionTable.get(name) ?? [];
 	}
 
