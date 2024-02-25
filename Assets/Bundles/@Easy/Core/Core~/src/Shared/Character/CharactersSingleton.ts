@@ -85,7 +85,9 @@ export class CharactersSingleton implements OnStart {
 	OnStart(): void {
 		if (RunUtil.IsServer()) {
 			Airship.players.ObservePlayers((player) => {
+				print("Sending characters: ");
 				for (let character of this.characters) {
+					print("  - " + character.id + " player=" + character.player?.username);
 					CoreNetwork.ServerToClient.Character.Spawn.server.FireClient(
 						player,
 						character.id,
