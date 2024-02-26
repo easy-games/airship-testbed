@@ -1,7 +1,7 @@
+import { OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 import { RandomUtil } from "Shared/Util/RandomUtil";
-import { Outfit } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -15,22 +15,16 @@ export class AvatarUtil {
 
 	public static readonly skinColors = [
 		//Natural
-		ColorUtil.HexToColor("#edcdad"),
-		ColorUtil.HexToColor("#f2c291"),
-		ColorUtil.HexToColor("#cc9d6a"),
-		ColorUtil.HexToColor("#ebbc78"),
-		ColorUtil.HexToColor("#f2c27e"),
-		ColorUtil.HexToColor("#d69e5e"),
-		ColorUtil.HexToColor("#e8bd92"),
-		ColorUtil.HexToColor("#4d2a22"),
-		ColorUtil.HexToColor("#5e372e"),
-
-		//Fun
-		ColorUtil.HexToColor("#9bc063"),
-		ColorUtil.HexToColor("#5a4862"),
-		ColorUtil.HexToColor("#DB2E2A"),
-		ColorUtil.HexToColor("#7D8C93"),
-		ColorUtil.HexToColor("#251000"),
+		// ColorUtil.HexToColor("#FFF3EA"),
+		ColorUtil.HexToColor("#F6D7BB"),
+		ColorUtil.HexToColor("#ECB98C"),
+		ColorUtil.HexToColor("#D99E72"),
+		ColorUtil.HexToColor("#C68953"),
+		ColorUtil.HexToColor("#A56E45"),
+		ColorUtil.HexToColor("#925E39"),
+		ColorUtil.HexToColor("#7D4F2B"),
+		ColorUtil.HexToColor("#4E2F13"),
+		ColorUtil.HexToColor("#352214"),
 	];
 
 	public static Initialize() {
@@ -77,9 +71,10 @@ export class AvatarUtil {
 		let acc = AvatarPlatformAPI.GetAccessories();
 		if (acc) {
 			acc.forEach((itemData) => {
+				//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
 				let item = this.allAvatarAccessories.get(itemData.class.classId);
 				if (item) {
-					//print("Found item: " + item.gameObject.name);
+					//print("Found item: " + item.gameObject.name + ": " + itemData.class.classId);
 					item.serverInstanceId = itemData.instanceId;
 					this.AddAvailableAvatarItem(item);
 				}
@@ -141,13 +136,13 @@ export class AvatarUtil {
 		builder: AccessoryBuilder,
 		options: { removeAllOldAccessories?: boolean; combineMeshes?: boolean } = {},
 	) {
-		const outfit = AvatarPlatformAPI.GetEquippedOutfit();
-		if (!outfit) {
+		const outfitDto = AvatarPlatformAPI.GetEquippedOutfit();
+		if (!outfitDto) {
 			// warn("Unable to load users default outfit. Equipping baked default outfit");
 			this.LoadDefaultOutfit(builder);
 			return;
 		}
-		this.LoadUserOutfit(outfit, builder, options);
+		this.LoadUserOutfit(outfitDto, builder, options);
 	}
 
 	public static LoadDefaultOutfit(builder: AccessoryBuilder) {
@@ -157,7 +152,7 @@ export class AvatarUtil {
 	}
 
 	public static LoadUserOutfit(
-		outfit: Outfit,
+		outfit: OutfitDto,
 		builder: AccessoryBuilder,
 		options: { removeAllOldAccessories?: boolean } = {},
 	) {

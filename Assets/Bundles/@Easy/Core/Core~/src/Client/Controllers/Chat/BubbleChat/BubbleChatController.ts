@@ -1,9 +1,9 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
 import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
@@ -39,7 +39,10 @@ export class BubbleChatController implements OnStart {
 			while (true) {
 				task.wait(0.5);
 
-				const cameraPosition = Camera.main.transform.position;
+				const mainCamera = Camera.main;
+				if (!mainCamera) continue;
+
+				const cameraPosition = mainCamera.transform.position;
 
 				for (const [containerTransform, minimized] of this.chatContainerMinimized) {
 					// Clear out destroyed containers

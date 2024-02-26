@@ -16,14 +16,15 @@ const defaultData: ClientSettingsFile = {
 	thirdPersonFov: 80,
 	screenshotRenderHD: false,
 	screenshotShowUI: false,
+	statusText: "",
 };
 
 @Controller({ loadOrder: -1 })
 export class ClientSettingsController implements OnStart {
-	private data: ClientSettingsFile;
+	public data: ClientSettingsFile;
 	private unsavedChanges = false;
 	private settingsLoaded = false;
-	private onSettingsLoaded = new Signal<void>();
+	private onSettingsLoaded = new Signal<ClientSettingsFile>();
 
 	constructor() {
 		this.data = defaultData;
@@ -42,7 +43,7 @@ export class ClientSettingsController implements OnStart {
 
 		Task.Spawn(() => {
 			this.settingsLoaded = true;
-			this.onSettingsLoaded.Fire();
+			this.onSettingsLoaded.Fire(this.data);
 		});
 
 		SetInterval(0.5, () => {
@@ -53,13 +54,17 @@ export class ClientSettingsController implements OnStart {
 		});
 	}
 
-	public async WaitForSettingsLoaded(): Promise<void> {
+	public MarkAsDirty(): void {
+		this.unsavedChanges = true;
+	}
+
+	public async WaitForSettingsLoaded(): Promise<ClientSettingsFile> {
 		if (this.settingsLoaded) {
-			return;
+			return this.data;
 		}
-		return new Promise<void>((resolve) => {
+		return new Promise<ClientSettingsFile>((resolve) => {
 			this.onSettingsLoaded.Once(() => {
-				resolve();
+				resolve(this.data);
 			});
 		});
 	}

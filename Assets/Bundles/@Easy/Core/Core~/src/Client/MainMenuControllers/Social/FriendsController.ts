@@ -14,14 +14,16 @@ import { CoreUI } from "Shared/UI/CoreUI";
 import { Mouse } from "Shared/UserInput";
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI, PointerButton } from "Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerButton, PointerDirection } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Signal } from "Shared/Util/Signal";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
+import { ClientSettingsController } from "../Settings/ClientSettingsController";
 import { SocketController } from "../Socket/SocketController";
 import { TransferController } from "../Transfer/TransferController";
+import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
 import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 import { FriendStatus } from "./SocketAPI";
@@ -50,6 +52,7 @@ export class FriendsController implements OnStart {
 		private readonly socketController: SocketController,
 		private readonly mainMenuController: MainMenuController,
 		private readonly rightClickMenuController: RightClickMenuController,
+		private readonly clientSettingsController: ClientSettingsController,
 	) {}
 
 	public AddSocialNotification(
@@ -128,7 +131,6 @@ export class FriendsController implements OnStart {
 					"Friend Request",
 					foundUser.username,
 					(result) => {
-						print("notif result: " + result);
 						if (result) {
 							task.spawn(() => {
 								this.socialNotification.gameObject.SetActive(false);
@@ -211,15 +213,17 @@ export class FriendsController implements OnStart {
 
 	public Setup(): void {
 		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
-		const savedStatus = StateManager.GetString("social:status-text");
+		let savedStatus = StateManager.GetString("social:status-text");
+		if (!savedStatus || savedStatus === "") {
+			this.clientSettingsController.WaitForSettingsLoaded();
+			savedStatus = this.clientSettingsController.data.statusText;
+		}
 		if (savedStatus) {
-			this.statusText = savedStatus;
+			this.SetStatusText(savedStatus);
 			statusTextInput.text = savedStatus;
 		}
 		CanvasAPI.OnInputFieldSubmit(statusTextInput.gameObject, (data) => {
-			this.statusText = data;
-			StateManager.SetString("social:status-text", data);
-			this.SendStatusUpdate();
+			this.SetStatusText(data);
 			EventSystem.current.ClearSelected();
 		});
 	}
@@ -234,6 +238,10 @@ export class FriendsController implements OnStart {
 
 	public SetStatusText(text: string): void {
 		this.statusText = text;
+		StateManager.SetString("social:status-text", text);
+		this.clientSettingsController.data.statusText = text;
+		this.clientSettingsController.MarkAsDirty();
+		this.SendStatusUpdate();
 	}
 
 	public GetStatusText(): string {
@@ -248,7 +256,7 @@ export class FriendsController implements OnStart {
 			gameId: Game.gameId,
 			metadata: {
 				statusText: this.statusText,
-				customGameTitle: this.customGameTitle,
+				customGameTitle: Game.gameData?.name,
 			},
 		};
 		InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", EncodeJSON(status));
@@ -390,47 +398,74 @@ export class FriendsController implements OnStart {
 					noHoverSound: true,
 				});
 				CanvasAPI.OnClickEvent(go, () => {
-					print("opening friend " + friend.username);
 					Dependency<DirectMessageController>().OpenFriend(friend.userId);
 				});
 				CanvasAPI.OnPointerEvent(go, (direction, button) => {
-					if (button === PointerButton.RIGHT) {
-						print("right clicked " + friend.username);
-						this.rightClickMenuController.OpenRightClickMenu(
-							this.mainMenuController.mainContentCanvas,
-							mouse.GetLocation(),
-							[
+					if (button === PointerButton.RIGHT && direction === PointerDirection.UP) {
+						const options: RightClickMenuButton[] = [];
+						if (friend.status !== "offline") {
+							options.push(
 								{
-									text: "Invite to Party",
-									onClick: () => {
-										InternalHttpManager.PostAsync(
-											AirshipUrl.GameCoordinator + "/parties/party/invite",
-											EncodeJSON({
-												userToAdd: friend.userId,
-											}),
-										);
-									},
-								},
-								{
-									text: "Send Message",
-									onClick: () => {
-										Dependency<DirectMessageController>().OpenFriend(friend.userId);
-									},
-								},
-								{
-									text: "Unfriend",
+									text: "Join Party",
 									onClick: () => {
 										task.spawn(() => {
-											const success = this.RejectFriendRequestAsync(friend.userId);
+											const res = InternalHttpManager.PostAsync(
+												AirshipUrl.GameCoordinator + "/parties/party/join",
+												EncodeJSON({
+													uid: friend.userId,
+													// partyId: friend,
+												}),
+											);
+											if (!res.success) {
+												Debug.LogError(res.error);
+											}
 										});
 									},
 								},
-							],
+								{
+									text: "Invite to Party",
+									onClick: () => {
+										task.spawn(() => {
+											InternalHttpManager.PostAsync(
+												AirshipUrl.GameCoordinator + "/parties/party/invite",
+												EncodeJSON({
+													userToAdd: friend.userId,
+												}),
+											);
+										});
+									},
+								},
+							);
+						}
+						options.push(
+							{
+								text: "Send Message",
+								onClick: () => {
+									Dependency<DirectMessageController>().OpenFriend(friend.userId);
+								},
+							},
+							{
+								text: "Unfriend",
+								onClick: () => {
+									task.spawn(() => {
+										task.spawn(() => {
+											const success = this.RejectFriendRequestAsync(friend.userId);
+										});
+									});
+								},
+							},
+						);
+						this.rightClickMenuController.OpenRightClickMenu(
+							this.mainMenuController.mainContentCanvas,
+							mouse.GetLocation(),
+							options,
 						);
 					}
 				});
 
 				CanvasAPI.OnClickEvent(joinButton, () => {
+					if (friend.gameId === undefined || friend.serverId === undefined) return;
+
 					print(
 						"Transfering to friend " +
 							friend.username +

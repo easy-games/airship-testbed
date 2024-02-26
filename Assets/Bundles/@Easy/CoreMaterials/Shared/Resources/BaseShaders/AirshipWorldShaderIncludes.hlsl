@@ -1,5 +1,8 @@
 #ifndef WORLDSHADER_INCLUDE
 #define WORLDSHADER_INCLUDE
+
+    #include "AirshipShaderIncludes.hlsl"
+    
     //Main programs
     #pragma vertex vertFunction
     #pragma fragment fragFunction
@@ -11,8 +14,7 @@
     float EXPLICIT_MAPS;
     float EMISSIVE;
     float RIM_LIGHT;
-    float INSTANCE_DATA;
-    
+        
     //Unity stuff
     float4x4 unity_MatrixVP;
     float4x4 unity_ObjectToWorld;
@@ -31,72 +33,25 @@
     Texture2D _RoughTex;
     Texture2D _EmissiveMaskTex;
     
-    
-    Texture2D _GlobalShadowTexture0;
-    Texture2D _GlobalShadowTexture1;
-    SamplerComparisonState sampler_GlobalShadowTexture0;
-    SamplerComparisonState sampler_GlobalShadowTexture1;
- 
-
     samplerCUBE _CubeTex;
 
     float  _Alpha;
     float4 _Color;
+    float4 _ShadowColor;
     float4 _SpecularColor;
     float4 _OverrideColor;
     float _OverrideStrength;
     float4 _EmissiveColor;
     half _EmissiveMix;
     float4 _Time;
-
-    float4 _ProjectionParams;
     float4 _MainTex_ST;
-
-    half3 globalFogColor;
-    float globalFogStart;
-    float globalFogEnd;
 
     half _MetalOverride;
     half _RoughOverride;
     
     half _TriplanarScale;
-     
-
-    half _RimPower;
-    half _RimIntensity;
-    half4 _RimColor;
-
     
-    //Lights
-    float4 globalDynamicLightColor[2];
-    float4 globalDynamicLightPos[2];
-    float globalDynamicLightRadius[2];
-
-    //Instance data (for this material)
-    float4 _ColorInstanceData[16];
-
-    //properties from the system
-    half3 globalAmbientLight[9];
-    half3 globalAmbientTint;
-
-    half3 globalSunLight[9];
-    half3 globalSunDirection = normalize(half3(-1, -3, 1.5));
-
-    half globalAmbientBrightness;
-    half globalSunBrightness;
-    half globalSunShadow;
-
-    half3 globalSunColor;
-
-    half globalAmbientOcclusion = 0;
-
-    static const float emissiveConstant = 4.0;
-    static const half3 specularColor = half3(1, 1, 1);
     static const float maxMips = 8;//This is how many miplevels the cubemaps have
-
-    //shadows
-    float4x4 _ShadowmapMatrix0;
-    float4x4 _ShadowmapMatrix1;
 
     struct Attributes
     {
@@ -105,8 +60,6 @@
         float3 normal : NORMAL;
         float4 tangent: TANGENT;
         float4 uv_MainTex : TEXCOORD0;
-        float2 bakedLightA : TEXCOORD1;
-        float2 bakedLightB : TEXCOORD2;
 
         float2 instanceIndex : TEXCOORD7;
     };
@@ -124,8 +77,6 @@
         half3  tspace1 : TEXCOORD4;
         half3  tspace2 : TEXCOORD5;
         
-        float4 bakedLight : TEXCOORD6;
-
         half3 triplanarBlend : TEXCOORD7;
         float3 triplanarPos : TEXCOORD8;
 
@@ -133,41 +84,8 @@
         float4 shadowCasterPos1 :TEXCOORD10;
 
         half3 worldNormal : TEXCOORD11;
-        
-
     };
-
-    inline float3 UnityObjectToWorldNormal(in float3 dir)
-    {
-        return normalize(mul(dir, (float3x3)unity_WorldToObject));
-    }
-
-    inline float3 UnityObjectToWorldDir(in float3 dir)
-    {
-        return normalize(mul((float3x3)unity_ObjectToWorld, dir));
-    }
-
-    inline float4 ComputeScreenPos(float4 pos) {
-        float4 o = pos * 0.5f;
-        o.xy = float2(o.x, o.y * _ProjectionParams.x) + o.w;
-        o.zw = pos.zw;
-        return o;
-    }
-
-    inline half3 CalculateAtmosphericFog(half3 currentFragColor, float viewDistance)
-    {
-        // Calculate fog factor
-        float fogFactor = saturate((globalFogEnd - viewDistance) / (globalFogEnd - globalFogStart));
-
-        fogFactor = pow(fogFactor, 2);
-        
-        // Mix current fragment color with fog color
-        half3 finalColor = lerp(globalFogColor, currentFragColor, fogFactor);
-
-        return finalColor;
-    }
-
-
+ 
     vertToFrag vertFunction(Attributes input)
     {
         vertToFrag output;
@@ -176,10 +94,10 @@
 
         // Transform the normal to world space and normalize it
         float3 shadowNormal = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
-
-        // Apply the adjusted offset
-        output.shadowCasterPos0 = mul(_ShadowmapMatrix0, worldPos +float4((shadowNormal * 0.03),0));
-        output.shadowCasterPos1 = mul(_ShadowmapMatrix1, worldPos +float4((shadowNormal * 0.06),0));
+        
+        //Calc shadow data
+        output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
+        output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
                 
         output.uv_MainTex = input.uv_MainTex;
         output.uv_MainTex = float4((input.uv_MainTex * _MainTex_ST.xy + _MainTex_ST.zw).xy, 1, 1);
@@ -198,12 +116,9 @@
         output.triplanarPos = float4((worldPos * _TriplanarScale + _MainTex_ST.zzz).xyz, 1);
 #endif    
 
-        //tex.uv* _MainTex_ST.xy + _MainTex_ST.zw;
-
-        output.bakedLight = float4(input.bakedLightA.x, input.bakedLightA.y, input.bakedLightB.x, 0);
-
         output.worldPos = worldPos;
         output.color = input.color;
+        
         output.baseColor = lerp(_Color, _OverrideColor, _OverrideStrength);
 
         //Do ambient occlusion at the vertex level, encode it into vertex color g
@@ -212,15 +127,11 @@
         output.color.g = clamp(output.color.g + (1 - globalAmbientOcclusion), 0, 1);
 #endif        
 
-
 #if INSTANCE_DATA_ON
 		float4 instanceColor = _ColorInstanceData[input.instanceIndex.x];
         output.color *= instanceColor;
 #endif
 
-
-        //output.screenPosition = ComputeScreenPos(output.positionCS);
- 
         float3 normalWorld = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
         float3 tangentWorld = normalize(mul(unity_ObjectToWorld, input.tangent.xyz));
          
@@ -250,59 +161,7 @@
 #endif    
         return output;
     }
-
-
-
-    inline half3 SampleAmbientSphericalHarmonics(half3 nor)
-    {
-        const float c1 = 0.429043;
-        const float c2 = 0.511664;
-        const float c3 = 0.743125;
-        const float c4 = 0.886227;
-        const float c5 = 0.247708;
-        return (
-            c1 * globalAmbientLight[8].xyz * (nor.x * nor.x - nor.y * nor.y) +
-            c3 * globalAmbientLight[6].xyz * nor.z * nor.z +
-            c4 * globalAmbientLight[0].xyz -
-            c5 * globalAmbientLight[6].xyz +
-            2.0 * c1 * globalAmbientLight[4].xyz * nor.x * nor.y +
-            2.0 * c1 * globalAmbientLight[7].xyz * nor.x * nor.z +
-            2.0 * c1 * globalAmbientLight[5].xyz * nor.y * nor.z +
-            2.0 * c2 * globalAmbientLight[3].xyz * nor.x +
-            2.0 * c2 * globalAmbientLight[1].xyz * nor.y +
-            2.0 * c2 * globalAmbientLight[2].xyz * nor.z
-            );
-    }
-
-    half3 SampleSunSphericalHarmonics(half3 nor)
-    {
-        const float c1 = 0.429043;
-        const float c2 = 0.511664;
-        const float c3 = 0.743125;
-        const float c4 = 0.886227;
-        const float c5 = 0.247708;
-        return (
-            c1 * globalSunLight[8].xyz * (nor.x * nor.x - nor.y * nor.y) +
-            c3 * globalSunLight[6].xyz * nor.z * nor.z +
-            c4 * globalSunLight[0].xyz -
-            c5 * globalSunLight[6].xyz +
-            2.0 * c1 * globalSunLight[4].xyz * nor.x * nor.y +
-            2.0 * c1 * globalSunLight[7].xyz * nor.x * nor.z +
-            2.0 * c1 * globalSunLight[5].xyz * nor.y * nor.z +
-            2.0 * c2 * globalSunLight[3].xyz * nor.x +
-            2.0 * c2 * globalSunLight[1].xyz * nor.y +
-            2.0 * c2 * globalSunLight[2].xyz * nor.z
-            );
-    }
-
-    half Smooth(half inputValue, half transitionWidth)
-    {
-        half thresholdMin = 0.0;
-        half thresholdMax = 1.0 - transitionWidth;
-        half t = saturate((inputValue - thresholdMin) / transitionWidth);
-        return smoothstep(0, 1, t);
-    }
-    
+     
     half3 DecodeNormal(half3 norm)
     {
         return norm * 2.0 - 1.0;
@@ -359,17 +218,7 @@
             color = color11;
         return color;
     }
-
-    half3 EnvBRDFApprox(half3 SpecularColor, half Roughness, half NoV)
-    {
-        const half4 c0 = { -1, -0.0275, -0.572, 0.022 };
-        const half4 c1 = { 1, 0.0425, 1.04, -0.04 };
-        half4 r = Roughness * c0 + c1;
-        half a004 = min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
-        half2 AB = half2(-1.04, 1.04) * a004 + r.zw;
-        return SpecularColor * AB.x + AB.y;
-    }
-
+ 
     half EnvBRDFApproxNonmetal(half Roughness, half NoV)
     {
         // Same as EnvBRDFApprox( 0.04, Roughness, NoV )
@@ -378,70 +227,9 @@
         half2 r = Roughness * c0 + c1;
         return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
     }
-
-    half PhongApprox(half Roughness, half RoL)
-    {
-        half a = Roughness * Roughness;
-        half a2 = a * a;
-        float rcp_a2 = rcp(a2);
-        // 0.5 / ln(2), 0.275 / ln(2)
-        half c = 0.72134752 * rcp_a2 + 0.39674113;
-        return rcp_a2 * exp2(c * RoL - c);
-    }
-
-    half3 ProcessReflectionSample(half3 img)
-    {
-        return (img * img) * 2;
-    }
-    half4 SRGBtoLinear(half4 srgb)
-    {
-        return pow(srgb, 0.4545454545);
-    }
-    half4 LinearToSRGB(half4 srgb)
-    {
-        return pow(srgb, 2.2333333);
-    }
-
-    half3 RimLight(half3 normal, half3 viewDir, half3 lightDir)
-    {
-        float rim = 1 - dot(normal, lightDir);
-        rim = pow(rim, _RimPower);
-        rim *= _RimIntensity;
-        rim = saturate(rim);
-
-        return _RimColor.rgb * rim;
-    }
-
-    half3 RimLightSimple(half3 normal, half3 viewDir)
-    {
-        float rim = 1 - dot(normal, viewDir);
-        rim = pow(rim, _RimPower);
-        rim *= _RimIntensity;
-        rim = saturate(rim);
-
-        return _RimColor.rgb * rim;
-    }
-    
-    half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 lightColor, half lightRange)
-    {
-        float3 lightVec = lightPos - worldPos;
-        half distance = length(lightVec);
-        half3 lightDir = normalize(lightVec);
-
-        float RoL = max(0, dot(reflectionVector, lightDir));
-        float NoL = max(0, dot(normal, lightDir));
-
-        float distanceNorm = saturate(distance / lightRange);
-        float falloff = pow(distanceNorm, 2.0);
-        falloff = 1.0 - falloff;
+  
+ 
         
-        falloff *= NoL;
-
-        half3 result = falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
-
-        return result;
-    }
-    
     struct Coordinates
     {
         half2 ddx;
@@ -556,86 +344,7 @@
         float result = metal > 0.5;
         return result;
     }
-        
-    #define SAMPLE_TEXTURE2D_SHADOW(textureName, samplerName, coord3) textureName.SampleCmpLevelZero(samplerName, (coord3).xy, (coord3).z)
     
-    half GetShadowSample(Texture2D tex, SamplerComparisonState textureSampler, half2 uv, half bias, half comparison)
-    {
-        const float scale = (1.0 / 2048.0) * 0.5;
-        half3 offset0 = half3(-1.5 * scale, 0 * scale, 0);
-        half3 offset1 = half3(1.5 * scale, 0 * scale, 0);
-        half3 offset2 = half3(0 * scale, 1.5 * scale, 0);
-        half3 offset3 = half3(0 * scale, -1.5 * scale, 0);
-        
-        half3 input = half3(uv.x, 1 - uv.y, comparison + bias);
- 
-        half shadowDepth0 = SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, input + offset0).r;
-        half shadowDepth1 = SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, input + offset1).r;
-        half shadowDepth2 = SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, input + offset2).r;
-        half shadowDepth3 = SAMPLE_TEXTURE2D_SHADOW(tex, textureSampler, input + offset3).r;
-        
-		return (shadowDepth0 + shadowDepth1 + shadowDepth2 + shadowDepth3) * 0.25;
-    }
-
-    half CalculateShadowLightTerm(half3 worldNormal, half3 lightDir)
-    {
-        //Do a small angle where shadows aggressively blend in based on incidence from the light - this stops shadows popping but they 
-        //appear a little 'earlier' than strictly realistic
-        const half lightFadeAngle = 0.1; //0.1 is about 6 degrees
-        half lightTerm = dot(worldNormal, -lightDir);
-        lightTerm = max(lightTerm, 0);
-        half underFadeAngleFactor = lightTerm < lightFadeAngle ? 1.0 : 0.0;
-        lightTerm = lerp(1.0, lightTerm / lightFadeAngle, underFadeAngleFactor);
-        
-        return lightTerm;
-    }
-
-    half GetShadow(vertToFrag input, half3 worldNormal, half3 lightDir)
-    {
-        //Shadows
-		half lightTerm = CalculateShadowLightTerm(worldNormal, lightDir);
-        if (lightTerm < 0.001)//benchmark me
-        {
-            return 0;
-        }
-
-        half3 shadowPos0 = input.shadowCasterPos0.xyz / input.shadowCasterPos0.w;
-        half2 shadowUV0 = shadowPos0.xy * 0.5 + 0.5;
-                    
-        if (shadowUV0.x < 0 || shadowUV0.x > 1 || shadowUV0.y < 0 || shadowUV0.y > 1)
-        {
-            //Check the distant cascade
-            half3 shadowPos1 = input.shadowCasterPos1.xyz / input.shadowCasterPos1.w;
-            half2 shadowUV1 = shadowPos1.xy * 0.5 + 0.5;
-
-            if (shadowUV1.x < 0 || shadowUV1.x > 1 || shadowUV1.y < 0 || shadowUV1.y > 1)
-            {
-                return lightTerm;
-            }            
-
-            // Compare depths (shadow caster and current pixel)
-            half sampleDepth1 = -shadowPos1.z * 0.5f + 0.5f;
-            //half bias = 0.0001;
-            //sampleDepth1 += bias;
-
-            half3 input = half3(shadowUV1.x, 1 - shadowUV1.y, sampleDepth1);
-            half shadowFactor = SAMPLE_TEXTURE2D_SHADOW(_GlobalShadowTexture1, sampler_GlobalShadowTexture1, input);
-     
-            return shadowFactor * lightTerm;
-        }
-        else
-        {
-            // Compare depths (shadow caster and current pixel)
-            half sampleDepth0 = -shadowPos0.z * 0.5f + 0.5f;
-            //half bias = 0.0001;
-            half shadowFactor0 =  GetShadowSample(_GlobalShadowTexture0, sampler_GlobalShadowTexture0, shadowUV0, 0, sampleDepth0);
- 
-            return shadowFactor0 * lightTerm;
-        }
-    }
-
-
-
     void fragFunction(vertToFrag input, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
     {
         Coordinates coords;  
@@ -753,7 +462,7 @@
         half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
                 
         //Shadows and light masks
-        half sunShadowMask = GetShadow(input, worldNormal, globalSunDirection);
+        half sunShadowMask = GetShadow(input.shadowCasterPos0, input.shadowCasterPos1, worldNormal, globalSunDirection);
         //sunShadowMask = sunShadowMask *.8 + .2;//Never have shadows go full black
         half pointLight0Mask = 1;
         half pointLight1Mask = 1;
@@ -770,16 +479,16 @@
         /////////////////////////////////////////////////////
 
         half3 textureColor = texSample.xyz;
-
+        
 #if VERTEX_LIGHT_ON
         //If we're using baked shadows (voxel world geometry)
         //The input diffuse gets multiplied by the vertex color.r
-        ambientOcclusionMask = input.color.g; //Creases
-        pointLight0Mask = input.color.b;
-        pointLight1Mask = input.color.a;
+        ambientOcclusionMask = 1;// input.color.g; //Creases
+        pointLight0Mask = 1;// input.color.b;
+        pointLight1Mask = 1;// input.color.a;
 #else
         //Otherwise it gets multiplied by the whole thing
-        textureColor.rgb *= input.color.rgb;
+        //textureColor.rgb *= input.color.rgb;
 #endif  
 
         //Specular
@@ -820,14 +529,13 @@
         
         //SH ambient 
         half3 ambientLight = (complexAmbientSample * globalAmbientTint);
-#if VERTEX_LIGHT_ON
-        half3 bakedLighting = input.bakedLight.xyz;
-        ambientLight = max(ambientLight, bakedLighting);
-#endif        
+ 
         half3 finalAmbient = (ambientLight * diffuseColor);
 
         //Composite sun and ambient together
-        finalColor = (finalSun + finalAmbient);
+        half3 compositeSunAmbient = (finalSun + finalAmbient);
+        //Pick which tint color to use based on the sun shadow mask
+        finalColor = lerp(compositeSunAmbient * _ShadowColor, compositeSunAmbient * input.color.rgb, sunShadowMask);
         
 
         //Start messing with the final color in fun ways

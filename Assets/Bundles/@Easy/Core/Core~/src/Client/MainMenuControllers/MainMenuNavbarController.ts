@@ -1,5 +1,8 @@
-import { Controller, OnStart } from "Shared/Flamework";
+import NavbarControlButton from "@Easy/Core/Shared/MainMenu/Components/NavbarControlButton";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import MainMenuNavButton from "Shared/MainMenu/Components/MainMenuNavButton";
 import { CoreUI } from "Shared/UI/CoreUI";
@@ -11,6 +14,9 @@ import { UserController } from "./User/UserController";
 
 @Controller({})
 export class MainMenuNavbarController implements OnStart {
+	private refreshButton!: NavbarControlButton;
+	private searchFocused!: GameObject;
+
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly userController: UserController,
@@ -19,6 +25,21 @@ export class MainMenuNavbarController implements OnStart {
 
 	OnStart(): void {
 		this.Setup();
+
+		const keyboard = new Keyboard();
+		keyboard.OnKeyDown(KeyCode.R, (event) => {
+			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+				this.refreshButton.PlayClickEffect();
+				this.DoRefresh();
+			}
+		});
+	}
+
+	public DoRefresh(): void {
+		if (!this.mainMenuController.currentPage) return;
+		print("Refreshing!");
+
+		this.mainMenuController.RouteToPage(this.mainMenuController.currentPage.pageType, true);
 	}
 
 	public Setup(): void {
@@ -30,9 +51,15 @@ export class MainMenuNavbarController implements OnStart {
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
-		const runningGameCloseButton = refs.GetValue("UI", "NavbarRunningGameCloseButton");
 
-		if (Game.context !== CoreContext.GAME) {
+		this.refreshButton = refs.GetValue("UI", "RefreshPageButton").GetAirshipComponent<NavbarControlButton>()!;
+		CanvasAPI.OnClickEvent(this.refreshButton.gameObject, () => {
+			this.DoRefresh();
+		});
+
+		if (Game.context === CoreContext.GAME) {
+			settingsButton.SetActive(false);
+		} else {
 			runningGameButton.SetActive(false);
 		}
 
@@ -68,14 +95,13 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
-			// this.mainMenuController.RouteToPage(MainMenuPage.SETTINGS);
-		});
-		CoreUI.SetupButton(runningGameCloseButton, { noHoverSound: true });
-		CanvasAPI.OnClickEvent(runningGameCloseButton, () => {
-			this.Disconnect();
+			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
+		if (Game.context === CoreContext.GAME) {
+			currentSelectedNavbarButton = runningGameButton;
+		}
 		this.UpdateNavButton(currentSelectedNavbarButton, true);
 		this.mainMenuController.onCurrentPageChanged.Connect((page, oldPage) => {
 			if (currentSelectedNavbarButton) {
@@ -84,7 +110,11 @@ export class MainMenuNavbarController implements OnStart {
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Settings) {
-				currentSelectedNavbarButton = settingsButton;
+				if (Game.context === CoreContext.GAME) {
+					currentSelectedNavbarButton = runningGameButton;
+				} else {
+					currentSelectedNavbarButton = settingsButton;
+				}
 			} else if (page === MainMenuPageType.Avatar) {
 				currentSelectedNavbarButton = avatarButton;
 			} else if (page === MainMenuPageType.Shop) {
@@ -110,6 +140,43 @@ export class MainMenuNavbarController implements OnStart {
 		this.userController.onLocalUserUpdated.Connect((user) => {
 			this.UpdateProfileSection();
 		});
+
+		task.spawn(() => {
+			const gameData = Game.WaitForGameData();
+			const text = runningGameButton.transform.GetChild(1).GetComponent<TMP_Text>();
+			text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
+			text.text = gameData.name;
+			Bridge.UpdateLayout(runningGameButton.transform, false);
+		});
+
+		const searchbarButton = refs.GetValue("UI", "Searchbar");
+		this.searchFocused = refs.GetValue("UI", "SearchFocused");
+		CanvasAPI.OnClickEvent(searchbarButton, () => {
+			this.FocusSearchbar();
+		});
+
+		const keyboard = new Keyboard();
+		keyboard.OnKeyDown(KeyCode.K, () => {
+			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+				this.FocusSearchbar();
+			}
+		});
+	}
+
+	public FocusSearchbar(): void {
+		if (!this.mainMenuController.IsOpen()) {
+			this.mainMenuController.OpenFromGame();
+		}
+		AppManager.OpenCustom(
+			() => {
+				this.searchFocused.SetActive(false);
+			},
+			{
+				addToStack: true,
+				darkBackground: false,
+			},
+		);
+		this.searchFocused.SetActive(true);
 	}
 
 	public UpdateProfileSection(): void {

@@ -28,8 +28,6 @@ float4 _ShadowColor;
 float4 _FresnelColor;
 float4 _MainTex_ST;
 half _Alpha = 1;
-half globalAmbientOcclusion = 0;
-
 
 struct Attributes
 {
@@ -150,9 +148,8 @@ vertToFrag vertFunction(Attributes input)
     // Transform the normal to world space and normalize it
     float3 shadowNormal = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
     // Apply the adjusted offset
-    output.shadowCasterPos0 = mul(_ShadowmapMatrix0, worldPos + float4((shadowNormal * 0.03), 0));
-    output.shadowCasterPos1 = mul(_ShadowmapMatrix1, worldPos + float4((shadowNormal * 0.06), 0));
-    
+    output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
+    output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
 
     //output.color.g = clamp(output.color.g + (1-globalAmbientOcclusion), 0, 1);
    

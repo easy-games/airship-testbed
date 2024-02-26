@@ -1,3 +1,4 @@
+import { UserController } from "@Easy/Core/Client/MainMenuControllers/User/UserController";
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
@@ -12,7 +13,11 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { PlayerUtils } from "Shared/Util/PlayerUtils";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
+import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
+import { AirshipUrl } from "../Util/AirshipUrl";
+import { DecodeJSON, EncodeJSON } from "../json";
 import { Player, PlayerDto } from "./Player";
 
 @Controller({ loadOrder: -1000 })
@@ -33,6 +38,8 @@ export class PlayersSingleton implements OnStart {
 	private playersPendingReady = new Map<number, Player>();
 
 	private cachedProfilePictureSprite = new Map<string, Sprite>();
+
+	private outfitFetchTime = new Map<string, number>();
 
 	constructor() {
 		Airship.players = this;
@@ -92,6 +99,11 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	OnStart(): void {
+		if (RunUtil.IsServer() && !RunUtil.IsEditor()) {
+			InternalHttpManager.SetAuthToken("");
+			// HttpManager.SetLoggingEnabled(true);
+		}
+
 		task.spawn(() => {
 			if (RunUtil.IsClient()) {
 				this.InitClient();
@@ -119,6 +131,15 @@ export class PlayersSingleton implements OnStart {
 			Game.gameId = gameId;
 			Game.serverId = serverId;
 			Game.organizationId = organizationId;
+
+			task.spawn(() => {
+				const gameData = Dependency<GameInfoSingleton>().GetGameData(gameId);
+				if (gameData) {
+					Game.gameData = gameData;
+					Game.onGameDataLoaded.Fire(gameData);
+				}
+			});
+
 			if (authController.IsAuthenticated()) {
 				friendsController.SendStatusUpdate();
 			} else {
@@ -194,28 +215,86 @@ export class PlayersSingleton implements OnStart {
 
 		// Player completes join
 		CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
+			// fetch outfit
+			task.spawn(() => {
+				this.FetchEquippedOutfit(player, false);
+			});
+
 			if (RunUtil.IsHosting()) {
 				this.HandlePlayerReadyServer(Game.localPlayer);
 				return;
 			}
 
-			/*
-			let retry = 0;
-			while (!playersPendingReady.has(clientId)) {
-				//print("player not found in pending: " + clientId);
-				// warn("Player not found in pending: " + clientId);
-				retry++;
-				task.wait();
-				// return;
-			}
-
-			const player = playersPendingReady.get(clientId)!;
-
-			playersPendingReady.delete(clientId);
-			*/
 			this.playersPendingReady.delete(player.clientId);
 			this.HandlePlayerReadyServer(player);
 		});
+
+		CoreNetwork.ClientToServer.ChangedOutfit.server.OnClientEvent((player) => {
+			this.FetchEquippedOutfit(player, true);
+
+			if (Airship.characters.allowMidGameOutfitChanges && player.character) {
+				const outfitDto = player.selectedOutfit;
+				CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
+			}
+		});
+	}
+
+	private FetchEquippedOutfit(player: Player, ignoreCache: boolean): void {
+		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
+			player.selectedOutfit = outfitDto;
+			player.outfitLoaded = true;
+			if (RunUtil.IsEditor()) {
+				EditorSessionState.SetString("player_" + player.userId + "_outfit", EncodeJSON(outfitDto));
+			}
+		};
+
+		if (RunUtil.IsEditor() && !ignoreCache) {
+			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit");
+			if (data) {
+				const outfitDto = DecodeJSON<OutfitDto>(data);
+				if (outfitDto) {
+					SetOutfit(outfitDto);
+					return;
+				}
+			}
+		}
+
+		// let diff = os.time() - (this.outfitFetchTime.get(player.userId) ?? 0);
+		// if (diff <= 0.5) {
+		// 	return;
+		// }
+		// this.outfitFetchTime.set(player.userId, os.time());
+
+		let userId = player.userId;
+		if (!RunUtil.IsEditor()) {
+			print("fetching outfit for " + userId);
+		}
+		if (RunUtil.IsEditor() && player.IsLocalPlayer()) {
+			Dependency<UserController>().WaitForLocalUserReady();
+			let uid = Dependency<UserController>().localUser?.uid;
+			if (uid) {
+				userId = uid;
+			}
+		}
+
+		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/outfits/uid/" + userId + "/equipped");
+		if (!res.success) {
+			Debug.LogError("failed to load user outfit: " + res.error);
+			SetOutfit(undefined);
+			return;
+		}
+		if (res.data.size() === 0) {
+			if (!RunUtil.IsEditor()) {
+				print("Empty outfit.");
+			}
+			SetOutfit(undefined);
+			return;
+		}
+		const outfitDto = DecodeJSON<OutfitDto>(res.data);
+		if (!RunUtil.IsEditor()) {
+			print("outfit: " + res.data);
+		}
+		SetOutfit(outfitDto);
 	}
 
 	private HandlePlayerReadyServer(player: Player): void {

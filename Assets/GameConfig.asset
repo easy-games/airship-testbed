@@ -43,3 +43,6 @@ MonoBehaviour:
     disabled: 0
     defaultPackage: 0
     forceLatestVersion: 0
+  tags:
+  - GameTagTest
+  - This/Subfolder

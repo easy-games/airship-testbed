@@ -1,4 +1,3 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
@@ -7,6 +6,7 @@ import { AudioManager } from "Shared/Audio/AudioManager";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ClearCommand } from "Shared/Commands/ClearCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Player } from "Shared/Player/Player";
@@ -68,6 +68,7 @@ export class ChatController implements OnStart {
 	private content: GameObject;
 	private chatMessagePrefab: Object;
 	private inputField: TMP_InputField;
+	private inputWrapperImage: Image;
 
 	private selected = false;
 	private selectedBin = new Bin();
@@ -91,6 +92,7 @@ export class ChatController implements OnStart {
 		this.content = refs.GetValue("UI", "Content");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
+		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>();
 		this.content.gameObject.ClearChildren();
 
 		this.RegisterCommand(new ClearCommand());
@@ -204,6 +206,7 @@ export class ChatController implements OnStart {
 		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
 			this.selected = true;
 			this.historyIndex = -1;
+			this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
 			const entityInputDisabler = this.localEntityController.GetEntityInput()?.AddDisabler();
 			if (entityInputDisabler !== undefined) {
 				this.selectedBin.Add(entityInputDisabler);
@@ -218,6 +221,7 @@ export class ChatController implements OnStart {
 		CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
 			this.selectedBin.Clean();
 			this.selected = false;
+			this.inputWrapperImage.color = new Color(0, 0, 0, 0);
 			this.CheckIfShouldHide();
 		});
 

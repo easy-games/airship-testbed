@@ -9,10 +9,13 @@ export declare class DamageSingleton implements OnStart {
     /**
      * If true, knockback will be applied using the "knockback" Vector3 property in data.
      * Knockback is only applied to Characters.
+     *
+     * @deprecated
      */
     applyKnockback: boolean;
     autoNetwork: boolean;
     private damageRemote;
+    private deathRemote;
     constructor();
     OnStart(): void;
     /**
@@ -23,6 +26,10 @@ export declare class DamageSingleton implements OnStart {
      * @param data
      */
     InflictDamage(gameObject: GameObject, damage: number, attacker?: GameObject, data?: DamageInfoCustomData): void;
+    /**
+     * Call this when a gameobject has died.
+     * @param damageInfo
+     */
     BroadcastDeath(damageInfo: DamageInfo): void;
     /**
      * Call on the client to check if an attacker can damage a gameobject.

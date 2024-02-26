@@ -1,10 +1,9 @@
-import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
-import Character from "Shared/Character/Character";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { RemoteEvent } from "Shared/Network/RemoteEvent";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { Signal } from "Shared/Util/Signal";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 
@@ -18,12 +17,18 @@ export class DamageSingleton implements OnStart {
 	/**
 	 * If true, knockback will be applied using the "knockback" Vector3 property in data.
 	 * Knockback is only applied to Characters.
+	 *
+	 * @deprecated
 	 */
 	public applyKnockback = true;
 
 	public autoNetwork = true;
 
 	private damageRemote = new RemoteEvent<
+		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
+	>();
+
+	private deathRemote = new RemoteEvent<
 		[nobId: number, damage: number, attackerNobId: number | undefined, data: DamageInfoCustomData]
 	>();
 
@@ -46,14 +51,19 @@ export class DamageSingleton implements OnStart {
 			this.InflictDamage(nob.gameObject, damage, attackerNob?.gameObject, data);
 		});
 
-		this.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-			if (RunUtil.IsServer() && this.applyKnockback && damageInfo.data["knockback"]) {
-				const knockback = damageInfo.data["knockback"] as Vector3;
-				const character = damageInfo.gameObject.GetAirshipComponent<Character>();
-				if (character) {
-					character.movement.ApplyImpulse(knockback);
-				}
+		this.deathRemote.client.OnServerEvent((nobId, damage, attackerNobId, data) => {
+			if (RunUtil.IsHosting()) return;
+
+			const nob = NetworkUtil.GetNetworkObject(nobId);
+			if (nob === undefined) return;
+
+			let attackerNob: NetworkObject | undefined;
+			if (attackerNobId !== undefined) {
+				attackerNob = NetworkUtil.GetNetworkObject(attackerNobId);
 			}
+
+			const damageInfo = new DamageInfo(nob.gameObject, damage, attackerNob?.gameObject, data);
+			this.BroadcastDeath(damageInfo);
 		});
 	}
 
@@ -82,8 +92,24 @@ export class DamageSingleton implements OnStart {
 		}
 	}
 
+	/**
+	 * Call this when a gameobject has died.
+	 * @param damageInfo
+	 */
 	public BroadcastDeath(damageInfo: DamageInfo): void {
 		this.onDeath.Fire(damageInfo);
+		if (RunUtil.IsServer() && this.autoNetwork) {
+			const nob = damageInfo.gameObject.GetComponent<NetworkObject>() as NetworkObject | undefined;
+			const attackerNob = damageInfo.attacker?.GetComponent<NetworkObject>() as NetworkObject | undefined;
+			if (nob) {
+				this.deathRemote.server.FireAllClients(
+					nob.ObjectId,
+					damageInfo.damage,
+					attackerNob?.ObjectId,
+					damageInfo.data,
+				);
+			}
+		}
 	}
 
 	/**

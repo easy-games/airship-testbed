@@ -9,9 +9,15 @@ import { GameDto } from "../API/GamesAPI";
 
 export default class HomePageGameComponent extends AirshipBehaviour {
 	public titleText!: TMP_Text;
+
+	public playsWrapper!: GameObject;
+	public playsText!: TMP_Text;
+
+	public playerCountWrapper!: GameObject;
 	public playerCountText!: TMP_Text;
+
 	public buttonGo!: GameObject;
-	public orgImage!: RemoteImage;
+	public orgImage!: CloudImage;
 	public authorText!: TMP_Text;
 
 	@SerializeField()
@@ -33,23 +39,27 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	public Init(gameDto: GameDto) {
 		this.titleText.text = gameDto.name;
-		if (gameDto.liveStats?.playerCount !== undefined) {
+		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
 			this.playerCountText.text = gameDto.liveStats.playerCount + "";
+			this.playerCountWrapper.SetActive(true);
+			this.playsWrapper.SetActive(false);
 		} else {
-			this.playerCountText.text = "???";
+			this.playsText.text = gameDto.plays + "";
+			this.playsWrapper.SetActive(true);
+			this.playerCountWrapper.SetActive(false);
 		}
 
 		{
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			let remoteImage = this.gameObject.transform.GetChild(0).GetComponent<RemoteImage>();
-			remoteImage.url = url;
-			remoteImage.StartDownload();
-			const downloadConn = remoteImage.OnFinishedLoading((success) => {
+			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
+			cloudImage.url = url;
+			cloudImage.StartDownload();
+			const downloadConn = cloudImage.OnFinishedLoading((success) => {
 				if (success) {
-					remoteImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
+					cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
-					remoteImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
+					cloudImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
 			this.bin.Add(() => {

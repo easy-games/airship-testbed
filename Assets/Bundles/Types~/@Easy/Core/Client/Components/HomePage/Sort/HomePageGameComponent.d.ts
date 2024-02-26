@@ -2,9 +2,12 @@
 import { GameDto } from "../API/GamesAPI";
 export default class HomePageGameComponent extends AirshipBehaviour {
     titleText: TMP_Text;
+    playsWrapper: GameObject;
+    playsText: TMP_Text;
+    playerCountWrapper: GameObject;
     playerCountText: TMP_Text;
     buttonGo: GameObject;
-    orgImage: RemoteImage;
+    orgImage: CloudImage;
     authorText: TMP_Text;
     private redirectDrag;
     private bin;

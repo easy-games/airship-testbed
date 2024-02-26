@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 7736549642688669424}
   - component: {fileID: 7736549642688669425}
   - component: {fileID: 2123547695}
+  - component: {fileID: 1593605304899748994}
   m_Layer: 1
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -157,7 +158,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3039
+    m_Bits: 4294836957
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -177,6 +178,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7736549642688669431}
   m_Enabled: 1
+--- !u!114 &1593605304899748994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7736549642688669431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ed727e50420484594a1d527959e9ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  airshipRenderSettings: {fileID: 0}
 --- !u!1 &8381198879092526251
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +262,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 128
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

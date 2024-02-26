@@ -1,7 +1,7 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
@@ -12,9 +12,6 @@ import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
 import AvatarMenuComponent from "./AvatarMenu/AvatarMenuComponent";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 import { MainMenuPageType } from "./MainMenuPageName";
-import { ChangeUsernameController } from "./Social/ChangeUsernameController";
-import { RightClickMenuButton } from "./UI/RightClickMenu/RightClickMenuButton";
-import { RightClickMenuController } from "./UI/RightClickMenu/RightClickMenuController";
 
 @Controller()
 export class MainMenuController implements OnStart {
@@ -66,6 +63,8 @@ export class MainMenuController implements OnStart {
 		if (Game.context === CoreContext.GAME) {
 			print("HIDING AVATAR");
 			this.avatarView.HideAvatar();
+		} else {
+			this.open = true;
 		}
 
 		const gameBG = this.refs.GetValue("UI", "GameBG");
@@ -74,48 +73,24 @@ export class MainMenuController implements OnStart {
 		gameBG.SetActive(!isMainMenu);
 		mainMenuBG.SetActive(isMainMenu);
 
-		const closeButton = this.refs.GetValue("UI", "CloseButton");
 		if (Game.context === CoreContext.MAIN_MENU) {
 			const mouse = new Mouse();
 			mouse.AddUnlocker();
-
-			closeButton.SetActive(false);
-		} else {
-			CanvasAPI.OnClickEvent(closeButton, () => {
-				AppManager.Close();
-			});
 		}
+
+		// const closeButton = this.refs.GetValue("UI", "CloseButton");
+		// if (Game.context === CoreContext.MAIN_MENU) {
+
+		// 	closeButton.SetActive(false);
+		// } else {
+		// 	CanvasAPI.OnClickEvent(closeButton, () => {
+		// 		AppManager.Close();
+		// 	});
+		// }
 
 		this.toggleSocialButton = this.refs.GetValue("UI", "ToggleSocialButton");
 		CanvasAPI.OnClickEvent(this.toggleSocialButton.gameObject, () => {
 			this.ToggleSocialView();
-		});
-
-		const profileGO = this.refs.GetValue("Social", "Profile");
-		CanvasAPI.OnClickEvent(profileGO, () => {
-			const options: RightClickMenuButton[] = [];
-			options.push({
-				text: "Change Profile Picture",
-				onClick: () => {},
-			});
-			options.push({
-				text: "Change Username",
-				onClick: () => {
-					Dependency<ChangeUsernameController>().Open();
-				},
-			});
-			options.push({
-				text: "Logout",
-				onClick: () => {
-					AuthManager.ClearSavedAccount();
-					Bridge.LoadScene("Login", true);
-				},
-			});
-			Dependency<RightClickMenuController>().OpenRightClickMenu(
-				this.mainContentCanvas,
-				mouse.GetLocation(),
-				options,
-			);
 		});
 
 		if (Game.context === CoreContext.GAME) {
@@ -169,7 +144,11 @@ export class MainMenuController implements OnStart {
 				}
 			}
 
-			this.RouteToPage(MainMenuPageType.Home, true, true);
+			if (Game.context === CoreContext.MAIN_MENU) {
+				this.RouteToPage(MainMenuPageType.Home, true, true);
+			} else {
+				this.RouteToPage(MainMenuPageType.Settings, true, true);
+			}
 		}
 
 		if (Game.context === CoreContext.GAME) {

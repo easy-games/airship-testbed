@@ -1,5 +1,5 @@
-import { Flamework } from "Shared/Flamework";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
+import { Flamework } from "Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreContext } from "./CoreClientContext";
 import { CoreRefs } from "./CoreRefs";

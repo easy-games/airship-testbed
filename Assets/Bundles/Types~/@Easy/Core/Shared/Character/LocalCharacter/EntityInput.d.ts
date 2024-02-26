@@ -1,5 +1,5 @@
 import Character from "../Character";
-export declare class EntityInput {
+export declare class CharacterInput {
     private readonly character;
     private readonly bin;
     private readonly movement;

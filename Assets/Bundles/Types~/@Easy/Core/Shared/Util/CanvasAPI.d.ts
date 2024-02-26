@@ -24,6 +24,7 @@ export declare class CanvasAPI {
     static RegisterEvents(gameObject: GameObject): void;
     static IsPointerOverUI(): boolean;
     static IsPointerOverTarget(target: GameObject): boolean;
+    static OnScreenSizeEvent(callback: (width: number, height: number) => void): number;
     /**
      * Subscribe to pointer events for a given target. `targetGameObject` MUST have an `EventTrigger` component
      * to be eligible to receive input events. See the `ShopItem` prefab for an example.
@@ -49,6 +50,14 @@ export declare class CanvasAPI {
     static OnDropEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    /**
+     * This works on Toggles, Sliders, and TMP_InputField
+     *
+     * For TMP_InputField, the value will always be `0`.
+     * @param targetGameObject
+     * @param callback
+     * @returns
+     */
     static OnValueChangeEvent(targetGameObject: GameObject, callback: (value: number) => void): EngineEventConnection;
     static OnToggleValueChangeEvent(targetGameObject: GameObject, callback: (value: boolean) => void): EngineEventConnection;
     static GetSelectedInstanceId(): number | undefined;

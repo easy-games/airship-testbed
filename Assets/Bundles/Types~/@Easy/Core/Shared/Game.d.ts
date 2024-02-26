@@ -1,3 +1,4 @@
+import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { CoreContext } from "./CoreClientContext";
 import { Player } from "./Player/Player";
 import { Signal } from "./Util/Signal";
@@ -29,4 +30,7 @@ export declare class Game {
      */
     static organizationId: string;
     static startingScene: string;
+    static gameData: GameDto | undefined;
+    static onGameDataLoaded: Signal<GameDto>;
+    static WaitForGameData(): GameDto;
 }

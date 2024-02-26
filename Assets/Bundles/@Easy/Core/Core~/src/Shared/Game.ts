@@ -1,3 +1,4 @@
+import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
 import { Player } from "./Player/Player";
@@ -48,4 +49,11 @@ export class Game {
 	public static organizationId: string;
 
 	public static startingScene = SceneManager.GetActiveScene().name;
+
+	public static gameData: GameDto | undefined;
+	public static onGameDataLoaded = new Signal<GameDto>();
+	public static WaitForGameData(): GameDto {
+		if (this.gameData) return this.gameData;
+		return this.onGameDataLoaded.Wait();
+	}
 }

@@ -1,5 +1,7 @@
 export class InputUtils {
-	private static keyCodeMap: Record<KeyCode, string | undefined> = {
+	public static keyCodeMap: Record<KeyCode, string | undefined> = {
+		/// Unbound
+		[KeyCode.None]: "",
 		/// Alpha names
 		[KeyCode.A]: "A",
 		[KeyCode.B]: "B",
@@ -49,6 +51,19 @@ export class InputUtils {
 		[KeyCode.Comma]: ",",
 		[KeyCode.Period]: ".",
 		[KeyCode.Backslash]: "\\",
+
+		[KeyCode.Return]: "Return",
+		[KeyCode.Escape]: "Escape",
+		[KeyCode.Space]: "Space",
+
+		// Mouse
+		[KeyCode.Mouse0]: "Left Mouse",
+		[KeyCode.Mouse1]: "Right Mouse",
+		[KeyCode.Mouse3]: "Middle Mouse",
+
+		// Modifier
+		[KeyCode.LeftControl]: "Left Control",
+		[KeyCode.LeftShift]: "Left Shift",
 	};
 
 	/**

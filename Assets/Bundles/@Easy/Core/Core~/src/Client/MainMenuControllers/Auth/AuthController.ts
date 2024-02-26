@@ -1,5 +1,5 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { CoreContext } from "Shared/CoreClientContext";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";

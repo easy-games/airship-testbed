@@ -1,6 +1,5 @@
 import { Airship } from "Shared/Airship";
 import { CharacterAnimator } from "Shared/Character/Animation/CharacterAnimator";
-import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import Inventory from "Shared/Inventory/Inventory";
 import { HeldItemManager } from "Shared/Item/HeldItems/HeldItemManager";
@@ -9,6 +8,8 @@ import { Bin } from "Shared/Util/Bin";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
+import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
+import { AvatarUtil } from "../Avatar/AvatarUtil";
 
 export default class Character extends AirshipBehaviour {
 	@NonSerialized()
@@ -23,11 +24,9 @@ export default class Character extends AirshipBehaviour {
 	public accessoryBuilder!: AccessoryBuilder;
 	public model!: GameObject;
 	public networkObject!: NetworkObject;
-	public rig!: GameObject;
-
-	@Header("Bones")
-	public headBone!: GameObject;
-	public chestBone!: GameObject;
+	public rigRoot!: GameObject;
+	public collider!: CharacterController;
+	@NonSerialized() public rig!: CharacterRig;
 
 	// State
 	@NonSerialized() public id!: number;
@@ -39,6 +38,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public readonly bin = new Bin();
 	@NonSerialized() public inventory!: Inventory;
 	@NonSerialized() public heldItems!: HeldItemManager;
+	@NonSerialized() public outfitDto: OutfitDto | undefined;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
@@ -51,6 +51,7 @@ export default class Character extends AirshipBehaviour {
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
 		this.animator = new CharacterAnimator(this);
+		this.rig = this.rigRoot.GetComponent<CharacterRig>();
 	}
 
 	public Start(): void {
@@ -61,12 +62,25 @@ export default class Character extends AirshipBehaviour {
 			});
 		}
 
-		Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-			if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
-				let newHealth = math.max(0, this.health - damageInfo.damage);
-				this.SetHealth(newHealth);
-			}
-		});
+		this.bin.Add(
+			Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					let newHealth = math.max(0, this.health - damageInfo.damage);
+					this.SetHealth(newHealth);
+
+					if (newHealth <= 0) {
+						Airship.damage.BroadcastDeath(damageInfo);
+					}
+				}
+			}),
+		);
+		this.bin.Add(
+			Airship.damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+				if (damageInfo.gameObject === this.gameObject) {
+					this.onDeath.Fire();
+				}
+			}),
+		);
 
 		{
 			// state change
@@ -81,11 +95,22 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	public Init(player: Player | undefined, id: number): void {
+	public OnDisable(): void {
+		Airship.characters.UnregisterCharacter(this);
+	}
+
+	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void {
 		this.player = player;
 		this.id = id;
+		this.outfitDto = outfitDto;
 		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
 		this.despawned = false;
+
+		if (outfitDto) {
+			AvatarUtil.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
+				removeAllOldAccessories: true,
+			});
+		}
 	}
 
 	/**
@@ -133,11 +158,6 @@ export default class Character extends AirshipBehaviour {
 		const oldHealth = this.health;
 		this.health = health;
 		this.onHealthChanged.Fire(health, oldHealth);
-
-		if (this.health <= 0 && RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Character.Death.server.FireAllClients(this.networkObject.ObjectId);
-			this.onDeath.Fire();
-		}
 	}
 
 	public GetMaxHealth(): number {

@@ -1,13 +1,15 @@
 /// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../Shared/Flamework";
+import { ClientSettingsFile } from "./ClientSettingsFile";
 export declare class ClientSettingsController implements OnStart {
-    private data;
+    data: ClientSettingsFile;
     private unsavedChanges;
     private settingsLoaded;
     private onSettingsLoaded;
     constructor();
     OnStart(): void;
-    WaitForSettingsLoaded(): Promise<void>;
+    MarkAsDirty(): void;
+    WaitForSettingsLoaded(): Promise<ClientSettingsFile>;
     SaveSettings(): void;
     GetMouseSensitivity(): number;
     SetMouseSensitivity(value: number): void;

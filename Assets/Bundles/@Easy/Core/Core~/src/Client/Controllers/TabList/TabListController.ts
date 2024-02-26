@@ -1,14 +1,11 @@
-import { Controller, Dependency, OnStart } from "Shared/Flamework";
-import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Player } from "Shared/Player/Player";
 import { ProfilePictureDefinitions } from "Shared/ProfilePicture/ProfilePictureDefinitions";
 import { ProfilePictureId } from "Shared/ProfilePicture/ProfilePictureId";
-import { CoreUI } from "Shared/UI/CoreUI";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { Task } from "Shared/Util/Task";
 import { OnLateUpdate } from "Shared/Util/Timer";
@@ -178,23 +175,23 @@ export class TabListController implements OnStart {
 		const profilePicture = player.GetProfilePicture();
 		image.sprite = this.profilePicSprite;
 
-		const addFriendGo = refs.GetValue<GameObject>("UI", "AddFriendButton");
-		const isFriends = player.IsFriend();
-		addFriendGo.SetActive(!isFriends && !player.IsLocalPlayer());
-		if (init) {
-			CoreUI.SetupButton(addFriendGo);
-			CanvasAPI.OnClickEvent(addFriendGo, () => {
-				Dependency<FriendsController>().SendFriendRequest(player.username);
-				addFriendGo.TweenGraphicAlpha(0.5, 0.12);
-			});
-		}
-		if (isFriends) {
-			if (Dependency<FriendsController>().HasOutgoingFriendRequest(player.userId)) {
-				addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 0.5);
-			} else {
-				addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-			}
-		}
+		// const addFriendGo = refs.GetValue<GameObject>("UI", "AddFriendButton");
+		// const isFriends = player.IsFriend();
+		// addFriendGo.SetActive(!isFriends && !player.IsLocalPlayer());
+		// if (init) {
+		// 	CoreUI.SetupButton(addFriendGo);
+		// 	CanvasAPI.OnClickEvent(addFriendGo, () => {
+		// 		Dependency<FriendsController>().SendFriendRequest(player.username);
+		// 		addFriendGo.TweenGraphicAlpha(0.5, 0.12);
+		// 	});
+		// }
+		// if (isFriends) {
+		// 	if (Dependency<FriendsController>().HasOutgoingFriendRequest(player.userId)) {
+		// 		addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 0.5);
+		// 	} else {
+		// 		addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+		// 	}
+		// }
 
 		usernameText.text = username;
 	}
@@ -209,19 +206,6 @@ export class TabListController implements OnStart {
 
 		this.shown = true;
 		this.tablistCanvas.enabled = true;
-
-		let mouseUnlocked = false;
-		this.showBin.Add(() => {
-			this.mouse.rightDown.Connect(() => {
-				if (!mouseUnlocked) {
-					mouseUnlocked = true;
-					const mouseLockId = this.mouse.AddUnlocker();
-					this.showBin.Add(() => {
-						this.mouse.RemoveUnlocker(mouseLockId);
-					});
-				}
-			});
-		});
 	}
 
 	public Hide(force = false): void {

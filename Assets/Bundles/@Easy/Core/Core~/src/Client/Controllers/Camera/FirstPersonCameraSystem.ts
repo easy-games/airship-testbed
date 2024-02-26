@@ -47,7 +47,7 @@ export class FirstPersonCameraSystem {
 	//public spineLerpModMax = 75;
 	//public spineLerpMaxAngle = 75;
 
-	private manualSpineOffset = 0.28;
+	private headSpineOffset = -0.5415251;
 
 	private inFirstPerson;
 	private bin: Bin;
@@ -119,9 +119,10 @@ export class FirstPersonCameraSystem {
 		const transform = this.cameras.fpsCamera.transform;
 		// let headLookPosition = transform.position;
 		// let headLookRotation = transform.rotation.mul(headBobRotationOffset);
+		let targetTansform = this.viewmodelController.rig.spine;
 
-		this.viewmodelController.viewmodelTransform.position = transform.position;
-		this.viewmodelController.viewmodelTransform.rotation = transform.rotation;
+		targetTansform.position = transform.TransformPoint(new Vector3(0, this.headSpineOffset, 0));
+		targetTansform.rotation = transform.rotation;
 
 		//Animated to the look direction
 		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);
