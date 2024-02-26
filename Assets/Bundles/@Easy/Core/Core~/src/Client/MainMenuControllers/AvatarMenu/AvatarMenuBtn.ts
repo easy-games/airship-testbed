@@ -3,7 +3,7 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 export default class AvatarMenuBtn extends AirshipBehaviour {
 	private readonly highlightColor = Theme.primary;
-	private readonly normalColor = ColorUtil.HexToColor("#505667");
+	private readonly normalColor = Theme.uiDark;
 
 	public iconImage!: Image;
 	public button!: Button;

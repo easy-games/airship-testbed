@@ -712,7 +712,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			let active =
 				this.selectedColor === button.id ||
 				this.selectedAccessories.has(this.currentContentBtns[i].id) ||
-				this.selectedFaceId.ToString() === button.id;
+				tostring(this.selectedFaceId) === button.id;
 			button.button.SetHighlight(active);
 		}
 	}
