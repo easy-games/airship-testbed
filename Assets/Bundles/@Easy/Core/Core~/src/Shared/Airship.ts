@@ -14,13 +14,13 @@ import { TransferService } from "Server/Airship/Transfer/TransferService";
 import { UserService } from "Server/Airship/User/UserService";
 import { CharactersSingleton } from "./Character/CharactersSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
+import { OnStart } from "./Flamework";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
 import { InventorySingleton } from "./Inventory/InventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
-import { TeamsSingleton } from "./Team/TeamSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
-import { OnInit, OnRender, OnStart, OnTick } from "./Flamework";
+import { TeamsSingleton } from "./Team/TeamSingleton";
 
 /**
  * The collection of platform services available to Airship games.
