@@ -1,4 +1,4 @@
-import { OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
+import { AccessoryClass, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
@@ -8,6 +8,7 @@ export class AvatarUtil {
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
 	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
+	private static readonly allAvatarClasses = new Map<string, AccessoryClass>();
 	private static readonly ownedAvatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
@@ -71,6 +72,7 @@ export class AvatarUtil {
 		let acc = AvatarPlatformAPI.GetAccessories();
 		if (acc) {
 			acc.forEach((itemData) => {
+				this.allAvatarClasses.set(itemData.class.classId, itemData.class);
 				//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
 				let item = this.allAvatarAccessories.get(itemData.class.classId);
 				if (item) {
@@ -80,6 +82,18 @@ export class AvatarUtil {
 				}
 			});
 		}
+	}
+
+	public static GetClass(classId: string) {
+		return this.allAvatarClasses.get(classId);
+	}
+
+	public static GetClassThumbnailUrl(classId: string) {
+		const classData = AvatarUtil.GetClass(classId);
+		if (classData) {
+			return AvatarPlatformAPI.GetImageUrl(classData.imageId);
+		}
+		return "";
 	}
 
 	public static InitUserOutfits(userId: string) {

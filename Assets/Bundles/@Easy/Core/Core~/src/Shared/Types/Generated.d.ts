@@ -11039,6 +11039,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetFaceTexture(texture: Texture2D): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
     UpdateAccessoryLayers(): void;
@@ -11137,9 +11138,17 @@ interface AccessorySkin extends ScriptableObject {
     
 interface AccessoryOutfit extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
+    faceDecal: AccesoryFaceDecal;
     customSkin: AccessorySkin;
     forceSkinColor: boolean;
     skinColor: Color;
+
+
+}
+    
+interface AccesoryFaceDecal extends ScriptableObject {
+    serverClassId: string;
+    decalTexture: Texture2D;
 
 
 }
@@ -13360,7 +13369,6 @@ interface HttpManagerConstructor {
     PostAsync(url: string, data: string, headers: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
     PutAsync(url: string, data: string, headers: string): HttpResponse;
-    SetLoggingEnabled(enabled: boolean): void;
 }
 declare const HttpManager: HttpManagerConstructor;
     
@@ -14222,16 +14230,4 @@ interface AirshipPlatformUtilConstructor {
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
-    
-interface ColliderRollback extends NetworkBehaviour {
-
-
-    Awake(): void;
-    Awake___UserLogic(): void;
-    NetworkInitialize___Early(): void;
-    NetworkInitialize__Late(): void;
-    NetworkInitializeIfDisabled(): void;
-    OnStartServer(): void;
-    OnStopServer(): void;
-}
 

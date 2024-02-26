@@ -16,6 +16,7 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 	}
 
 	public SetText(label: string) {
+		this.labelText.enabled = true;
 		this.labelText.text = label;
 	}
 

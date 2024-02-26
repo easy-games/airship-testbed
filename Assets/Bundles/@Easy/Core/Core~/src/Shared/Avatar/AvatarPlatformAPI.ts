@@ -15,6 +15,10 @@ export class AvatarPlatformAPI {
 		return url;
 	}
 
+	public static GetImageUrl(imageId: string) {
+		return `${AirshipUrl.CDN}/images/${imageId}.png`;
+	}
+
 	public static GetAllOutfits(): OutfitDto[] | undefined {
 		this.Log("GetAllOutfits");
 		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`));
@@ -107,7 +111,7 @@ export class AvatarPlatformAPI {
 	}
 
 	public static LoadImage(fileId: string) {
-		let res = InternalHttpManager.GetAsync(this.GetHttpUrl(`images/${fileId}`));
+		let res = InternalHttpManager.GetAsync(this.GetImageUrl(fileId));
 		if (res.success) {
 			return DecodeJSON<AccessoryInstanceDto[]>(res.data);
 		} else {

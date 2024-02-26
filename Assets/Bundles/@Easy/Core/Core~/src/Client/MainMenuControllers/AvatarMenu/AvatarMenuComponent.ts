@@ -52,6 +52,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private clientId = -1;
 	private selectedAccessories = new Map<string, boolean>();
 	private selectedColor = "";
+	private bin: Bin = new Bin();
 
 	private Log(message: string) {
 		// print("Avatar Editor: " + message + " (" + Time.time + ")");
@@ -207,6 +208,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override ClosePage(instant?: boolean): void {
 		super.ClosePage(instant);
 		this.Log("Close AVATAR");
+		this.bin.Clean();
 		this.avatarRenderHolder?.SetActive(false);
 		if (this.mainMenu?.avatarView) {
 			this.mainMenu.avatarView.dragging = false;
@@ -463,6 +465,26 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				//TODO: Removed the image until we can load it from the server
 				menuBtn.iconImage.enabled = false;
 				this.currentContentBtns.push({ id: classId, button: menuBtn });
+
+				//download the items thumbnail
+				let cloudImage = newButton.gameObject.AddComponent<CloudImage>();
+				cloudImage.image = menuBtn.iconImage;
+				cloudImage.url = AvatarUtil.GetClassThumbnailUrl(classId);
+
+				const downloadConn = cloudImage.OnFinishedLoading((success) => {
+					if (success) {
+						cloudImage.image.enabled = true;
+						if (menuBtn) {
+							menuBtn.labelText.enabled = false;
+						}
+					}
+				});
+				this.bin.Add(() => {
+					Bridge.DisconnectEvent(downloadConn);
+				});
+
+				print("Downloading: " + cloudImage.url);
+				cloudImage.StartDownload();
 			} else {
 				error("Unable to find AvatarMenuBtn on item button");
 			}
