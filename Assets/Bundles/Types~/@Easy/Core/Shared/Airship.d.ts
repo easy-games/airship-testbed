@@ -19,8 +19,8 @@ import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
 import { InventorySingleton } from "./Inventory/InventorySingleton";
 import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
-import { TeamsSingleton } from "./Team/TeamSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
+import { TeamsSingleton } from "./Team/TeamSingleton";
 /**
  * The collection of platform services available to Airship games.
  *

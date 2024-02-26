@@ -1,5 +1,5 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, OnStart } from "Shared/Flamework";
 
 @Controller({})
 export class ViewmodelController implements OnStart {
@@ -23,11 +23,13 @@ export class ViewmodelController implements OnStart {
 		this.viewmodelTransform = this.viewmodelGo.transform;
 		this.viewmodelTransform.position = new Vector3(10_000, 0, 10_000);
 
+		const refs = this.viewmodelGo.GetComponent<GameObjectReferences>();
+		const rig = refs.GetValue("Refs", "Rig");
+		this.animancer = rig.GetComponent<AnimancerComponent>();
+		this.rig = rig.GetComponent<CharacterRig>();
+
 		const content = this.viewmodelTransform.GetChild(0).gameObject;
-		const rigHolder = content.transform.GetChild(0).gameObject;
-		this.animancer = content.GetComponent<AnimancerComponent>();
 		this.accessoryBuilder = content.GetComponent<AccessoryBuilder>();
-		this.rig = rigHolder.GetComponent<CharacterRig>();
 
 		// this.rootLayer = this.animancer.Layers.GetLayer(0);
 		// this.rootLayer.SetDebugName("Root");

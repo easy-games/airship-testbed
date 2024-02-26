@@ -1,10 +1,10 @@
-﻿﻿import { Dependency } from "Shared/Flamework";
-import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+﻿﻿import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
 import Character from "Shared/Character/Character";
 import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
+import { Dependency } from "Shared/Flamework";
 import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
@@ -228,7 +228,7 @@ export class CharacterAnimator {
 
 	public PlayItemAnimationInWorldmodel(
 		clip: AnimationClip,
-		layer: number,
+		layer: CharacterAnimationLayer = CharacterAnimationLayer.LAYER_1,
 		onEnd?: Callback,
 		config?: {
 			fadeMode?: FadeMode;
@@ -276,7 +276,7 @@ export class CharacterAnimator {
 
 	public PlayItemAnimationInViewmodel(
 		clip: AnimationClip,
-		layer: number,
+		layer: CharacterAnimationLayer = CharacterAnimationLayer.LAYER_1,
 		onEnd?: Callback,
 		config?: {
 			fadeMode?: FadeMode;
