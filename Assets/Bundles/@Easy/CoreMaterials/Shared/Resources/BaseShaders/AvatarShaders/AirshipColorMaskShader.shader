@@ -1,17 +1,25 @@
-Shader "Unlit/AirshipFaceShader"
+Shader "Unlit/AirshipColorMaskShader"
 {
     Properties
     {
-        _SkinColor ("Skin Color", Color) = (1,1,1,1)
-        _EyeColor ("Eye Color", Color) = (1,1,1,1)
-        _HairColor ("Hair Color", Color) = (1,1,1,1)
-        _MainTex ("Texture", 2D) = "white" {}
-        _MaskTex ("Face Mask", 2D) = "black" {}
+        _ColorR ("Red Channel", Color) = (1,0,0,1)
+        _ColorG ("Green Channel", Color) = (0,1,0,1)
+        _ColorB ("Blue Channel", Color) = (0,0,1,1)
+        _MainTex ("Difuse", 2D) = "white" {}
+        _MaskTex ("Color Mask", 2D) = "black" {}
+        _Alpha ("Alpha Value", float) = 1
+        _AlphaCutoff("Alpha Clip", float) = 0
+
     }
     SubShader
     {
         Name "Forward"
         Tags { "LightMode" = "AirshipForwardPass" }
+
+		Cull Off
+        Lighting Off
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -40,9 +48,12 @@ Shader "Unlit/AirshipFaceShader"
             sampler2D _MaskTex;
             float4 _MaskTex_ST;
 
-            float4 _SkinColor;
-            float4 _EyeColor;
-            float4 _HairColor;
+            float4 _ColorR;
+            float4 _ColorG;
+            float4 _ColorB;
+
+            float _Alpha;
+            float _AlphaCutoff;
 
             VertToFrag vert (VertData v)
             {
@@ -60,12 +71,13 @@ Shader "Unlit/AirshipFaceShader"
 
                 float colorStrength = mask.r+mask.g+mask.b;
 
-                half4 multipliedColor = (mask.r * _SkinColor) + (mask.g * _EyeColor) + (mask.b * _HairColor);
-                multipliedColor = SRGBtoLinear(SRGBtoLinear(multipliedColor));
+                half4 multipliedColor = (mask.r * _ColorR) + (mask.g * _ColorG) + (mask.b * _ColorB);
                 half4 finalColor = lerp(diffuse, diffuse * multipliedColor, colorStrength);
+                finalColor.a *= _Alpha;
 
+                clip(finalColor.a - _AlphaCutoff);
                 MRT0 = finalColor;
-                MRT1 = half4(0,0,0,1);
+                MRT1 = half4(0,0,0,_Alpha);
             }
             ENDCG
         }
