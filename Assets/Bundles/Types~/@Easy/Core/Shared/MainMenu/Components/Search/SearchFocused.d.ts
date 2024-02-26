@@ -13,6 +13,7 @@ export default class SearchFocused extends AirshipBehaviour {
     private index;
     private resultsCount;
     private activeResult;
+    private queryId;
     private bin;
     OnEnable(): void;
     private SetIndex;

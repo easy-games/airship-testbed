@@ -95,6 +95,10 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
+	public OnDisable(): void {
+		Airship.characters.UnregisterCharacter(this);
+	}
+
 	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void {
 		this.player = player;
 		this.id = id;

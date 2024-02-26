@@ -1,8 +1,8 @@
-import { OnStart } from "../../../Shared/Flamework";
 import { DirectMessageController } from "../../MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "../../MainMenuControllers/Social/FriendsController";
 import { SocketController } from "../../MainMenuControllers/Socket/SocketController";
 import { ChatCommand } from "../../../Shared/Commands/ChatCommand";
+import { OnStart } from "../../../Shared/Flamework";
 import { Player } from "../../../Shared/Player/Player";
 import { LocalCharacterSingleton } from "../../../Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreUIController } from "../UI/CoreUIController";
@@ -15,6 +15,7 @@ export declare class ChatController implements OnStart {
     private content;
     private chatMessagePrefab;
     private inputField;
+    private inputWrapperImage;
     private selected;
     private selectedBin;
     private chatMessageElements;

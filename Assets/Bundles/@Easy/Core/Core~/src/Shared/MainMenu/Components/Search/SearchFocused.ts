@@ -1,16 +1,16 @@
 import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { DecodeJSON } from "@Easy/Core/Shared/json";
 import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
 import SearchSingleton from "./SearchSingleton";
-import { JaroDistance, JaroSimilarity, JaroWinkler } from "@Easy/Core/Shared/Util/Strings/JaroWinkler";
-import { Levenshtein } from "@Easy/Core/Shared/Util/Strings/Levenshtein";
 
 export default class SearchFocused extends AirshipBehaviour {
 	@Header("References")
@@ -33,6 +33,8 @@ export default class SearchFocused extends AirshipBehaviour {
 	private index = 0;
 	private resultsCount = 0;
 	private activeResult: SearchResult | undefined;
+
+	private queryId = 0;
 
 	private bin = new Bin();
 
@@ -59,7 +61,9 @@ export default class SearchFocused extends AirshipBehaviour {
 				) {
 					this.inputDirty = false;
 					this.lastQueryTime = now;
-					this.Query();
+					task.spawn(() => {
+						this.Query();
+					});
 				}
 			}),
 		);
@@ -83,7 +87,9 @@ export default class SearchFocused extends AirshipBehaviour {
 			this.activeResult?.OnSubmit();
 		});
 
-		this.Query();
+		task.spawn(() => {
+			this.Query();
+		});
 	}
 
 	private SetIndex(index: number): void {
@@ -112,24 +118,40 @@ export default class SearchFocused extends AirshipBehaviour {
 
 	public Query(): void {
 		let text = this.inputField.text;
+
+		this.queryId++;
+		let thisQuery = this.queryId;
+		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/autocomplete?name=" + text);
+		if (thisQuery !== this.queryId) return;
+		let games: GameDto[];
+		if (res.success) {
+			games = DecodeJSON<GameDto[]>(res.data);
+			if (games.size() === 0) {
+				games = [...Dependency<SearchSingleton>().games];
+			}
+		} else {
+			Debug.LogError("Search error: " + res.error);
+			games = [...Dependency<SearchSingleton>().games];
+		}
+
 		this.activeResult = undefined;
 
-		const search = Dependency<SearchSingleton>();
-		let allGames = [...search.games];
+		// const search = Dependency<SearchSingleton>();
+		// let allGames = [...search.games];
 
-		let games = new Array<GameDto>();
-		for (const gameDto of allGames) {
-			const fullUsername = `${gameDto.name.lower()}`;
-			if (fullUsername.find(text.lower(), 1, true)[0] !== undefined) {
-				games.push(gameDto);
-			}
-		}
+		// let games = new Array<GameDto>();
+		// for (const gameDto of allGames) {
+		// 	const fullUsername = `${gameDto.name.lower()}`;
+		// 	if (fullUsername.find(text.lower(), 1, true)[0] !== undefined) {
+		// 		games.push(gameDto);
+		// 	}
+		// }
 
-		if (text === "") {
-			games.sort((g1, g2) => (g1.liveStats?.playerCount ?? 0) > (g2.liveStats?.playerCount ?? 0));
-		} else {
-			games.sort((g1, g2) => JaroDistance(`${g1.name.lower()}`, text) < JaroDistance(`${g2.name.lower()}`, text));
-		}
+		// if (text === "") {
+		// 	games.sort((g1, g2) => (g1.liveStats?.playerCount ?? 0) > (g2.liveStats?.playerCount ?? 0));
+		// } else {
+		// 	games.sort((g1, g2) => JaroDistance(`${g1.name.lower()}`, text) < JaroDistance(`${g2.name.lower()}`, text));
+		// }
 
 		let results: SearchResultDto[] = games.map((g) => {
 			return {

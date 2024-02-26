@@ -30,6 +30,20 @@ export interface InputActionSchema {
     /**
      *
      */
+    secondaryKeybind?: Keybind;
+    /**
+     *
+     */
+    category?: string;
+}
+export declare class InputActionConfig {
+    /**
+     *
+     */
+    secondaryKeybind?: Keybind;
+    /**
+     *
+     */
     category?: string;
 }
 export declare class InputAction {
@@ -57,7 +71,11 @@ export declare class InputAction {
      *
      */
     category: string;
-    constructor(name: string, keybind: Keybind, category?: string);
+    /**
+     *
+     */
+    isSecondary: boolean;
+    constructor(name: string, keybind: Keybind, isSecondary: boolean, category?: string);
     /**
      *
      * @param newKeybind

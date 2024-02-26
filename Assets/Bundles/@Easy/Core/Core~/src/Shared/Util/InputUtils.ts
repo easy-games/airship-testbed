@@ -1,7 +1,7 @@
 export class InputUtils {
 	public static keyCodeMap: Record<KeyCode, string | undefined> = {
 		/// Unbound
-		[KeyCode.None]: "None",
+		[KeyCode.None]: "",
 		/// Alpha names
 		[KeyCode.A]: "A",
 		[KeyCode.B]: "B",

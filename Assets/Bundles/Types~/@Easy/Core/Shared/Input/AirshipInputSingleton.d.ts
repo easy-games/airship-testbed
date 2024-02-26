@@ -1,7 +1,7 @@
 import { OnStart } from "../Flamework";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Signal } from "../Util/Signal";
-import { InputAction, InputActionSchema } from "./InputAction";
+import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
 import { ActionInputType } from "./InputUtil";
 import { Keybind } from "./Keybind";
 export declare class AirshipInputSingleton implements OnStart {
@@ -33,6 +33,10 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private actionDownState;
+    /**
+     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     */
+    unsetOnDuplicateKeybind: boolean;
     constructor();
     OnStart(): void;
     /**
@@ -46,13 +50,18 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param keybind
      * @param category
      */
-    CreateAction(name: string, keybind: Keybind, category?: string): void;
+    CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void;
+    /**
+     *
+     * @param actionSchema
+     */
+    private CreateSecondaryKeybindForAction;
     /**
      *
      * @param name
      * @returns
      */
-    GetActionsByName(name: string): InputAction[];
+    GetActions(name: string): InputAction[];
     /**
      *
      * @param name
