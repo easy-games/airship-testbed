@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HumanFace3
+  m_Name: HumanFaceTransparent
   m_Shader: {fileID: 4800000, guid: 6330d0f14dc3c884ea990fa91a7bd441, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -67,8 +67,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 9ab32f72de7079043ae501b34d0427e5, type: 3}
-        m_Scale: {x: 0.42, y: 0.5}
-        m_Offset: {x: 0.035, y: 0.55}
+        m_Scale: {x: 0.5, y: 0.5}
+        m_Offset: {x: 0, y: 0.55}
     - _MetalTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
