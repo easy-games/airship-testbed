@@ -11498,7 +11498,8 @@ interface GameConfig extends ScriptableObject {
     
 interface AirshipPackageDocument {
     id: string;
-    version: string;
+    assetVersion: string;
+    codeVersion: string;
     game: boolean;
     localSource: boolean;
     disabled: boolean;
@@ -11680,7 +11681,8 @@ interface ServerBootstrap extends MonoBehaviour {
     
 interface StartupConfig {
     GameBundleId: string;
-    GameBundleVersion: string;
+    GameAssetVersion: string;
+    GameCodeVersion: string;
     StartingSceneName: string;
     CdnUrl: string;
     packages: CSArray<AirshipPackageDocument>;
@@ -11977,6 +11979,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetFaceTexture(texture: Texture2D): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
     UpdateAccessoryLayers(): void;
@@ -12103,12 +12106,27 @@ declare const AccessorySkin: AccessorySkinConstructor;
     
 interface AccessoryOutfit extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
+    faceDecal: AccessoryFace;
     customSkin: AccessorySkin;
     forceSkinColor: boolean;
     skinColor: Color;
 
 
 }
+    
+interface AccessoryFace extends ScriptableObject {
+    serverClassId: string;
+    decalTexture: Texture2D;
+
+
+}
+    
+interface AccessoryFaceConstructor {
+
+    new(): AccessoryFace;
+
+}
+declare const AccessoryFace: AccessoryFaceConstructor;
     
 interface AccessoryOutfitConstructor {
 
@@ -14704,7 +14722,7 @@ interface HttpManagerConstructor {
     PostAsync(url: string, data: string, headers: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
     PutAsync(url: string, data: string, headers: string): HttpResponse;
-    SetLoggingEnabled(enabled: boolean): void;
+    SetLoggingEnabled(val: boolean): void;
 }
 declare const HttpManager: HttpManagerConstructor;
     
@@ -15472,11 +15490,9 @@ interface CloudImage extends MonoBehaviour {
 }
     
 interface CloudImageConstructor {
-    cachedTextures: CSDictionary<string, Texture2D>;
 
     new(): CloudImage;
 
-    OnLoad(): void;
 }
 declare const CloudImage: CloudImageConstructor;
     

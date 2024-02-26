@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: FaceDecal03
   m_EditorClassIdentifier: 
   serverClassId: 
-  decalTexture: {fileID: 0}
+  decalTexture: {fileID: 2800000, guid: 9ab32f72de7079043ae501b34d0427e5, type: 3}

@@ -10,6 +10,7 @@ export class AvatarUtil {
 	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
 	private static readonly allAvatarClasses = new Map<string, AccessoryClass>();
 	private static readonly ownedAvatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
+	private static readonly ownedAvatarFaces: AccessoryFace[] = [];
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
 	public static defaultOutfit: AccessoryOutfit | undefined;
@@ -133,9 +134,17 @@ export class AvatarUtil {
 		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
 
+	public static AddAvailableFaceItem(item: AccessoryFace) {
+		this.ownedAvatarFaces.push(item);
+	}
+
 	public static GetAllAvatarItems(slotType: AccessorySlot) {
 		//print("Getting slot " + tostring(slotType) + " size: " + this.avatarAccessories.get(slotType)?.size());
 		return this.ownedAvatarAccessories.get(slotType);
+	}
+
+	public static GetAllAvatarFaceItems() {
+		return this.ownedAvatarFaces;
 	}
 
 	public static GetAllAvatarSkins() {

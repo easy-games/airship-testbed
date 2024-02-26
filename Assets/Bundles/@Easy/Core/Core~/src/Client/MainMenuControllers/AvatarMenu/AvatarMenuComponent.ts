@@ -15,6 +15,7 @@ import { MainMenuController } from "../MainMenuController";
 import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
 import AvatarMenuBtn from "./AvatarMenuBtn";
+import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -52,7 +53,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private clientId = -1;
 	private selectedAccessories = new Map<string, boolean>();
 	private selectedColor = "";
+	private selectedFaceId = -1;
 	private bin: Bin = new Bin();
+	private mouse!: Mouse;
+	private saveBtn?: AvatarMenuBtn;
 
 	private Log(message: string) {
 		// print("Avatar Editor: " + message + " (" + Time.time + ")");
@@ -161,6 +165,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.Save();
 			});
 		}
+		this.saveBtn = button?.GetAirshipComponent<AvatarMenuBtn>();
 
 		button = this.refs?.GetValue<RectTransform>(this.generalHookupKey, "RevertBtn").gameObject;
 		if (button) {
@@ -199,6 +204,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
+
+		this.mouse = this.bin.Add(new Mouse());
+		this.bin.Connect(this.mouse.scrolled, (event) => {
+			if (math.abs(event.delta) > 1) {
+				this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
+			}
+		});
 
 		task.spawn(() => {
 			this.LoadAllOutfits();
@@ -288,7 +300,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						break;
 				}
 				break;
+
 			case 1:
+				//FACE
+				this.DisplayFaceItems();
+				this.UpdateButtonGraphics();
+				return;
+			case 2:
+				//HAIR
+				targetSlot = AccessorySlot.Root;
+				break;
+			case 3:
 				//HEAD
 				switch (subIndex) {
 					case 0:
@@ -303,7 +325,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						break;
 				}
 				break;
-			case 2:
+			case 4:
 				//TORSO
 				switch (subIndex) {
 					case 0:
@@ -320,7 +342,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						break;
 				}
 				break;
-			case 3:
+			case 5:
 				//HANDS
 				switch (subIndex) {
 					case 0:
@@ -335,7 +357,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						break;
 				}
 				break;
-			case 4:
+			case 6:
 				//LEGS
 				switch (subIndex) {
 					case 0:
@@ -349,7 +371,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						break;
 				}
 				break;
-			case 5:
+			case 7:
 				//FEET
 				switch (subIndex) {
 					case 0:
@@ -394,6 +416,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		} else {
 			this.Log("Displaying no items");
+		}
+	}
+
+	private DisplayFaceItems() {
+		let faceItems = AvatarUtil.GetAllAvatarFaceItems();
+		if (faceItems) {
+			faceItems.forEach((value) => {
+				this.AddItemButton(value.serverClassId, value.name, () => {
+					//Accessory
+					this.SelectFaceItem(value);
+				});
+			});
 		}
 	}
 
@@ -509,6 +543,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.activeAccessories.set(acc.GetSlotNumber(), acc.serverClassId);
 		this.selectedAccessories.set(acc.serverClassId, true);
 		this.UpdateButtonGraphics();
+		this.saveBtn?.SetEnabled(true);
+	}
+
+	private SelectFaceItem(face: AccessoryFace, instantRefresh = true) {
+		if (!face) {
+			return;
+		}
+		this.Log("Selecting face item: " + face.ToString());
+		this.mainMenu?.avatarView?.accessoryBuilder?.SetFaceTexture(face.decalTexture);
+		this.selectedFaceId = face.GetInstanceID();
+		this.UpdateButtonGraphics();
+		this.saveBtn?.SetEnabled(true);
 	}
 
 	private SelectSkinItem(acc: AccessorySkin, instantRefresh = true) {
@@ -517,6 +563,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.Log("Selecting skin item: " + acc.ToString());
 		this.mainMenu?.avatarView?.accessoryBuilder?.AddSkinAccessory(acc, instantRefresh);
+		this.saveBtn?.SetEnabled(true);
 	}
 
 	private SelectSkinColor(color: Color, instantRefresh = true) {
@@ -524,6 +571,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.accessoryBuilder?.SetSkinColor(color, instantRefresh);
 		this.selectedColor = ColorUtil.ColorToHex(color);
 		this.UpdateButtonGraphics();
+		this.saveBtn?.SetEnabled(true);
 	}
 
 	// private OnSelectClear(instantRefresh = true) {
@@ -642,6 +690,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 		this.ClearAllAccessories();
+		this.saveBtn?.SetEnabled(false);
 		this.Log("Loading outfit: " + this.currentUserOutfit.name);
 		this.currentUserOutfit.accessories.forEach((acc, index) => {
 			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
@@ -660,9 +709,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			let button = this.currentContentBtns[i];
 			this.Log("Checking button: " + button.id);
 			//Found matching class ID or this button is the active color
-			button.button.SetHighlight(
-				this.selectedColor === button.id || this.selectedAccessories.has(this.currentContentBtns[i].id),
-			);
+			let active =
+				this.selectedColor === button.id ||
+				this.selectedAccessories.has(this.currentContentBtns[i].id) ||
+				this.selectedFaceId.ToString() === button.id;
+			button.button.SetHighlight(active);
 		}
 	}
 

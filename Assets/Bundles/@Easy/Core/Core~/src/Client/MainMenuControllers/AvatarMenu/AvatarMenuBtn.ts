@@ -1,7 +1,8 @@
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 export default class AvatarMenuBtn extends AirshipBehaviour {
-	private readonly highlightColor = ColorUtil.HexToColor("#3173C1");
+	private readonly highlightColor = Theme.primary;
 	private readonly normalColor = ColorUtil.HexToColor("#505667");
 
 	public iconImage!: Image;
@@ -36,5 +37,9 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 
 	public SetHighlight(highlightOn: boolean) {
 		this.SetButtonColor(highlightOn ? this.highlightColor : this.normalColor);
+	}
+
+	public SetEnabled(enabled: boolean) {
+		this.button.interactable = enabled;
 	}
 }
