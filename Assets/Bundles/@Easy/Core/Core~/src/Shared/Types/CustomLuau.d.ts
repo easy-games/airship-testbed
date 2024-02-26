@@ -19,3 +19,22 @@ declare namespace task {
 	/** Cancels the given thread. */
 	function cancel(thread: thread): void;
 }
+
+declare const enum LuauContext {
+	Game,
+	Protected,
+}
+
+declare namespace contextbridge {
+	/** Subscribe to broadcasts for a specific `topic`. The returned function can be called to unsubscribe the function. */
+	function subscribe(topic: string, handler: (fromContext: LuauContext, ...args: unknown[]) => void): () => void;
+
+	/** Broadcast on a specific channel `topic` to all Luau contexts. */
+	function broadcast(topic: string, ...args: unknown[]): void;
+
+	/** Assign a callback for a specific `topic` for the current Luau context. Only one can be assigned per context and topic pair. */
+	function callback(topic: string, callback: Callback): void;
+
+	/** Invoke a callback within `toContext` for `topic`. */
+	function invoke(topic: string, toContext: LuauContext, ...args: unknown[]): LuaTuple<unknown[]>;
+}
