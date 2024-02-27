@@ -4,8 +4,8 @@ import { CoreSound } from "Shared/Sound/CoreSound";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
+import { CoreItemType } from "./CoreItemType";
 import { BlockArchetype, HoldConfig, ItemDef, MeleeItemDef, UsableHeldItemDef } from "./ItemDefinitionTypes";
-import { ItemType } from "./ItemType";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
@@ -69,7 +69,7 @@ const bigSwordUsable: UsableHeldItemDef = {
 };
 const swordViewModel: HoldConfig = {
 	viewmodel: {
-		idleAnim: CoreAnim("FP_Sword_Idle"),
+		// idleAnim: CoreAnim("FP_Sword_Idle"),
 	},
 	worldmodel: {
 		idleAnim: CoreAnim("Airship_Empty"),
@@ -134,7 +134,7 @@ const pickaxeViewModel: Partial<HoldConfig> = {
  *
  * @internal - Will not show up in types
  */
-export function ItemTypeComponentsInternal(itemType: ItemType): [scope: string, id: string] {
+export function ItemTypeComponentsInternal(itemType: string): [scope: string, id: string] {
 	const [scope, id] = itemType.split(":");
 	if (scope.find("^@([A-z][A-z0-9]+)")[0]) {
 		// if scope
@@ -144,14 +144,14 @@ export function ItemTypeComponentsInternal(itemType: ItemType): [scope: string, 
 	}
 }
 
-function AccPath(itemType: ItemType, localPath = "", itemName: string | undefined = undefined): string {
+function AccPath(itemType: CoreItemType, localPath = "", itemName: string | undefined = undefined): string {
 	const [scope, itemId] = ItemTypeComponentsInternal(itemType);
 
 	return scope + "/Shared/Resources/Accessories/" + localPath + "/" + (itemName ?? itemId.lower()) + ".prefab";
 }
 
 export const CoreItemDefinitions: {
-	[key in ItemType]: Omit<ItemDef, "id" | "itemType">;
+	[key: string]: Omit<ItemDef, "id" | "itemType">;
 } = {
 	// ////BLOCKS
 	// [ItemType.BED]: {
@@ -278,13 +278,13 @@ export const CoreItemDefinitions: {
 	// 		placeSound: CoreSound.blockPlaceDirt,
 	// 	},
 	// },
-	[ItemType.STONE]: {
+	[CoreItemType.STONE]: {
 		displayName: "Stone",
 		usable: {
 			...blockUsable,
 		},
 		block: {
-			blockId: ItemType.STONE,
+			blockId: CoreItemType.STONE,
 			blockArchetype: BlockArchetype.STONE,
 			stepSound: CoreSound.footstepStone,
 		},
@@ -522,9 +522,9 @@ export const CoreItemDefinitions: {
 	// },
 
 	// ////ARMOR
-	[ItemType.LEATHER_HELMET]: {
+	[CoreItemType.LEATHER_HELMET]: {
 		displayName: "Leather Helmet",
-		accessoryPaths: [AccPath(ItemType.LEATHER_HELMET, "Armor/Leather")],
+		accessoryPaths: [AccPath(CoreItemType.LEATHER_HELMET, "Armor/Leather")],
 		armor: {
 			armorType: ArmorType.HELMET,
 			protectionAmount: 40,
@@ -618,7 +618,7 @@ export const CoreItemDefinitions: {
 	// },
 
 	////SWORDS
-	[ItemType.WOOD_SWORD]: {
+	[CoreItemType.WOOD_SWORD]: {
 		displayName: "Wood Sword",
 		usable: {
 			...swordUsable,
@@ -626,7 +626,7 @@ export const CoreItemDefinitions: {
 		holdConfig: {
 			...swordViewModel,
 		},
-		accessoryPaths: [AccPath(ItemType.WOOD_SWORD, "Weapons/Swords/WoodSword")],
+		accessoryPaths: [AccPath(CoreItemType.WOOD_SWORD, "Weapons/Swords/WoodSword")],
 		melee: {
 			...swordMelee,
 			damage: 18,
@@ -935,7 +935,7 @@ export const CoreItemDefinitions: {
 for (const itemType of ObjectUtils.keys(CoreItemDefinitions)) {
 	const itemDef = CoreItemDefinitions[itemType];
 	if (!itemDef.image) {
-		const [_, id] = ItemTypeComponentsInternal(itemType);
+		const [_, id] = ItemTypeComponentsInternal(itemType as string);
 		itemDef.image = `@Easy/Core/Shared/Resources/ItemRenders/${id.lower()}.png`;
 	}
 }

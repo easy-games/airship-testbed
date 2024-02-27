@@ -750,6 +750,9 @@ GameObject:
   - component: {fileID: 7598432165122203391}
   - component: {fileID: 6126990775742736748}
   - component: {fileID: 851741861549059094}
+  - component: {fileID: 9079681969374610342}
+  - component: {fileID: 8107423936129243407}
+  - component: {fileID: 3154388685887932421}
   m_Layer: 3
   m_Name: Airship_Rig
   m_TagString: Untagged
@@ -864,6 +867,82 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Animator: {fileID: 7598432165122203391}
   _ActionOnDisable: 0
+--- !u!114 &9079681969374610342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8242817677000904988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 8107423936129243407}
+    m_Active: 1
+  m_Effectors: []
+--- !u!114 &8107423936129243407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8242817677000904988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b342d8ce5c2fd48b8fa3147d48d1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Effectors: []
+--- !u!114 &3154388685887932421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8242817677000904988}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 9188535380854101941}
+  - {fileID: 1017751563910782343}
+  - {fileID: 430564414282369625}
+  - {fileID: 5314831131274337707}
+  - {fileID: 2147613095975818725}
+  - {fileID: 2025519249156404372}
+  - {fileID: 821288235388104105}
+  - {fileID: 1330934567227972581}
+  - {fileID: 1165559691489238663}
+  - {fileID: 1265522799364001629}
+  - {fileID: 2756001923196997841}
+  - {fileID: 4753111961790658651}
+  - {fileID: 6751908600191737638}
+  - {fileID: 6714375145011558345}
+  - {fileID: 4873711897072525742}
+  - {fileID: 3219152591968163417}
+  - {fileID: 3941251288829946994}
+  - {fileID: 9039746388198956059}
+  - {fileID: 1326529812166608593}
+  - {fileID: 593761745054799288}
+  - {fileID: 7215337067206700848}
+  - {fileID: 7174885061651427749}
+  - {fileID: 5472281434602945843}
+  - {fileID: 2556007464983436687}
+  - {fileID: 8462842552435799035}
+  - {fileID: 5271156446115382369}
+  - {fileID: 5348629024047270753}
 --- !u!1 &8501705354204851853
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
-﻿import { Dependency } from "Shared/Flamework";
-import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+﻿import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import Character from "Shared/Character/Character";
+import { Dependency } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { Task } from "Shared/Util/Task";

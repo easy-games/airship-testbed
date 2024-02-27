@@ -1,8 +1,8 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
+import { CoreItemType } from "../Item/CoreItemType";
 import { ArmorType } from "../Item/ArmorType";
-import { ItemType } from "../Item/ItemType";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import { ItemStack, ItemStackDto } from "./ItemStack";
@@ -39,7 +39,7 @@ export default class Inventory extends AirshipBehaviour {
     SetItem(slot: number, itemStack: ItemStack | undefined, config?: {
         clientPredicted?: boolean;
     }): void;
-    Decrement(itemType: ItemType, amount: number): void;
+    Decrement(itemType: string, amount: number): void;
     StartNetworkingDiffs(): void;
     AddItem(itemStack: ItemStack): boolean;
     /**
@@ -51,12 +51,12 @@ export default class Inventory extends AirshipBehaviour {
     SetHeldSlot(slot: number): void;
     Encode(): InventoryDto;
     ProcessDto(dto: InventoryDto): void;
-    HasEnough(itemType: ItemType, amount: number): boolean;
-    HasItemType(itemType: ItemType): boolean;
+    HasEnough(itemType: CoreItemType, amount: number): boolean;
+    HasItemType(itemType: CoreItemType): boolean;
     GetPairs(): Array<[slot: number, itemStack: ItemStack]>;
     GetMaxSlots(): number;
     GetBackpackTileCount(): number;
     GetHotbarSlotCount(): number;
-    FindSlotWithItemType(itemType: ItemType): number | undefined;
+    FindSlotWithItemType(itemType: CoreItemType): number | undefined;
     GetAllItems(): ItemStack[];
 }

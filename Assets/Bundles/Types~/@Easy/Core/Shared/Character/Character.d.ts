@@ -33,6 +33,7 @@ export default class Character extends AirshipBehaviour {
     private despawned;
     Awake(): void;
     Start(): void;
+    OnDisable(): void;
     Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void;
     /**
      * This should be called from the server.

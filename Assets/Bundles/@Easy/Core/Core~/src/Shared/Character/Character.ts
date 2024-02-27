@@ -108,7 +108,7 @@ export default class Character extends AirshipBehaviour {
 
 		if (outfitDto) {
 			AvatarUtil.LoadUserOutfit(outfitDto, this.accessoryBuilder, {
-				removeAllOldAccessories: true,
+				removeOldClothingAccessories: true,
 			});
 		}
 	}

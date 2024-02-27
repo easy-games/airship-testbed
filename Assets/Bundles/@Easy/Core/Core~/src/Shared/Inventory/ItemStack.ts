@@ -1,11 +1,11 @@
-import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
-import { ItemType } from "Shared/Item/ItemType";
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Signal } from "Shared/Util/Signal";
+import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { ItemUtil } from "../Item/ItemUtil";
 
 export interface ItemStackDto {
 	/** ItemType */
-	i: ItemType;
+	i: string;
 
 	/** Amount */
 	a: number;
@@ -14,7 +14,7 @@ export interface ItemStackDto {
 export type ItemStackTypeChangeSignal = {
 	readonly ItemStack: ItemStack;
 	readonly NoNetwork: boolean;
-	readonly ItemType: ItemType;
+	readonly ItemType: CoreItemType;
 };
 
 export type ItemStackAmountChangeSignal = {
@@ -24,7 +24,7 @@ export type ItemStackAmountChangeSignal = {
 };
 
 export class ItemStack {
-	private itemType: ItemType;
+	private itemType: string;
 	private amount: number;
 	public changed = new Signal<void>();
 	public itemTypeChanged = new Signal<ItemStackTypeChangeSignal>();
@@ -32,12 +32,12 @@ export class ItemStack {
 	public destroyed = new Signal<ItemStack>();
 	private hasBeenDestroyed = false;
 
-	constructor(itemType: ItemType, amount = 1) {
+	constructor(itemType: string, amount = 1) {
 		this.itemType = itemType;
 		this.amount = amount;
 	}
 
-	public GetItemType(): ItemType {
+	public GetItemType(): string {
 		return this.itemType;
 	}
 
@@ -45,7 +45,7 @@ export class ItemStack {
 		return ItemUtil.GetItemDef(this.itemType);
 	}
 
-	public SetItemType(itemType: ItemType): void {
+	public SetItemType(itemType: CoreItemType): void {
 		this.itemType = itemType;
 		this.itemTypeChanged.Fire({ ItemStack: this, ItemType: itemType, NoNetwork: false });
 		this.changed.Fire();

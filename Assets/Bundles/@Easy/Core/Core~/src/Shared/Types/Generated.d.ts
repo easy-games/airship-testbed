@@ -5404,6 +5404,7 @@ interface RunCoreConstructor {
     IsClient(): boolean;
     IsClone(): boolean;
     IsEditor(): boolean;
+    IsInternal(): boolean;
     IsServer(): boolean;
     OnLoad(): void;
 }
@@ -11978,6 +11979,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetCombinedStaticMesh(): MeshRenderer;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    RemoveClothingAccessories(): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
     SetFaceTexture(texture: Texture2D): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;

@@ -119,6 +119,95 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &21408695
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2303332467136585767, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: bb5cf627f959f404088d52af27096248, type: 2}
+    - target: {fileID: 3146426218412116241, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.31128442
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146426218412116241, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.03047688
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146426218412116241, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.07610419
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146426218412116241, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.94677424
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146426218412116241, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 9.386
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146426218412116241, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146426218412116241, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -143.649
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.4341731
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.36645985
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.482958
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381052, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544194686419381055, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+      propertyPath: m_Name
+      value: CharacterViewmodel
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
 --- !u!1 &43629484
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,6 +772,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 342.2979, y: 207.3497}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &692369225 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3544194686419381055, guid: 67566606c6b2843b9b4a6d12ab991d3f, type: 3}
+  m_PrefabInstance: {fileID: 21408695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &764937852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,7 +1290,7 @@ GameObject:
   - component: {fileID: 913210015}
   - component: {fileID: 913210014}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: DemoManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1254,6 +1348,34 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 131862466}
       modified: 1
+    - name: useTaggedSpawns
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: cleanupOnStart
+      type: Array
+      objectType: 
+      items:
+        type: object
+        objectType: GameObject
+        serializedItems:
+        - 
+        objectRefs:
+        - {fileID: 692369225}
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
 --- !u!114 &913210014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1999,13 +2121,13 @@ MonoBehaviour:
   _negativeSunDirectionNormalized: {x: -0.5996252, y: 0.6834144, z: 0.41640636}
   _sunDirectionNormalized: {x: 0.5996252, y: -0.6834144, z: -0.41640636}
   _sunDirection: {x: 0.72, y: -0.8206099, z: -0.5}
-  sunBrightness: 0.9
+  sunBrightness: 0.729
   sunShadow: 0.85
   sunColor: {r: 0.9823206, g: 1, b: 0.8066038, a: 1}
   skySaturation: 0.3
   cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
   globalAmbientLight: {r: 1, g: 0.8915094, b: 0.9199557, a: 1}
-  globalAmbientBrightness: 0.24
+  globalAmbientBrightness: 0.477
   globalAmbientOcclusion: 0.25
   fogEnabled: 1
   fogStart: 10
@@ -2389,6 +2511,7 @@ MonoBehaviour:
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 1827094135}
   _networkObjectCache: {fileID: 1827094135}
+  _componentConfiguration: 2
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -2543,3 +2666,4 @@ SceneRoots:
   - {fileID: 944312509}
   - {fileID: 793058939}
   - {fileID: 1827094131}
+  - {fileID: 21408695}

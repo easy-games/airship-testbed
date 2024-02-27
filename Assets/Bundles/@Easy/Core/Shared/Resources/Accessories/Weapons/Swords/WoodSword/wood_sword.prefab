@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5306317776177628987}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00000056624407, y: -0.00000050663937, z: 0.056236297, w: -0.9984175}
-  m_LocalPosition: {x: -0.019, y: -0.008, z: -0.01}
+  m_LocalRotation: {x: -0.50865084, y: -0.44252032, z: -0.4992344, w: -0.5442565}
+  m_LocalPosition: {x: -0.02, y: -0.008, z: -0.001}
   m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverClassId: 
+  serverInstanceId: 
   accessorySlot: 6
   visibilityMode: 2
   skinnedToCharacter: 0
@@ -173,27 +175,21 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 0
-    reference: Wood_Cherry_Natural
   - materialColor: {r: 0.8301887, g: 0.588703, b: 0.41901034, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 0
-    reference: Wood_Cherry_Painted
   - materialColor: {r: 0.8313726, g: 0.5882353, b: 0.41960788, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Wood_Cherry_Painted
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Wood_Cherry_Natural
   - materialColor: {r: 0.8113208, g: 0.7309541, b: 0.78057045, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   - materialColor: {r: 0.34117648, g: 0.50980395, b: 0.27450982, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!4 &4453354746437871069 stripped
 Transform:

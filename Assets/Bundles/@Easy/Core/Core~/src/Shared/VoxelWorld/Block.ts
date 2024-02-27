@@ -1,15 +1,17 @@
 import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
-import { ItemType } from "../Item/ItemType";
 import { ItemUtil } from "../Item/ItemUtil";
 import { World } from "./World";
 
 export class Block {
 	public readonly blockId: string;
 	public readonly runtimeBlockId: number;
-	public readonly itemType: ItemType | undefined;
+	public readonly itemType: string | undefined;
 	public readonly itemDef: ItemDef | undefined;
 
-	constructor(public readonly voxel: number, public readonly world: World) {
+	constructor(
+		public readonly voxel: number,
+		public readonly world: World,
+	) {
 		this.runtimeBlockId = VoxelWorld.VoxelDataToBlockId(voxel);
 		this.blockId = world.voxelWorld.blocks.GetStringIdFromBlockId(this.runtimeBlockId);
 		this.itemType = ItemUtil.GetItemTypeFromStringId(world.GetIdFromVoxelId(this.runtimeBlockId));

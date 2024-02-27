@@ -105,13 +105,6 @@ export class Player {
 		position: Vector3,
 		config?: {
 			lookDirection?: Vector3;
-
-			/**
-			 * If true, method does not yield if the player's outfit hasn't been downloaded.
-			 *
-			 * This can cause characters to spawn with no outfit.
-			 */
-			noOutfitYield?: boolean;
 		},
 	): Character {
 		if (!RunUtil.IsServer()) {
@@ -122,13 +115,22 @@ export class Player {
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
 
-		if (!config?.noOutfitYield) {
-			let startTime = Time.time;
-			this.WaitForOutfitLoaded(1);
-			let diff = Time.time - startTime;
-			if (diff > 0) {
-				print("Waited " + math.floor(diff * 1000) + " ms for outfit. ~");
-			}
+		if (!this.outfitLoaded) {
+			// Load in outfit after spawn if it's not already downloaded
+			task.spawn(() => {
+				// let startTime = Time.time;
+				this.WaitForOutfitLoaded();
+				if (characterComponent.IsAlive()) {
+					// let diff = Time.time - startTime;
+					// if (diff > 0) {
+					// 	print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
+					// }
+					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
+						characterComponent.id,
+						this.selectedOutfit,
+					);
+				}
+			});
 		}
 
 		characterComponent.Init(this, Airship.characters.MakeNewId(), this.selectedOutfit);

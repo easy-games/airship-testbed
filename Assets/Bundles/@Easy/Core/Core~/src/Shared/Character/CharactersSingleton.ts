@@ -73,10 +73,8 @@ export class CharactersSingleton implements OnStart {
 
 				if (outfitDto) {
 					AvatarUtil.LoadUserOutfit(outfitDto, character.accessoryBuilder, {
-						removeAllOldAccessories: true,
+						removeOldClothingAccessories: true,
 					});
-				} else {
-					character.accessoryBuilder.RemoveAccessories();
 				}
 			});
 		}

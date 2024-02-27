@@ -2,6 +2,7 @@ import { AccessoryInstanceDto, OutfitDto } from "Shared/Airship/Types/Outputs/Pl
 import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { DecodeJSON, EncodeJSON } from "Shared/json";
+import { CoreLogger } from "../Logger/CoreLogger";
 
 // TODO this needs to be moved to the main menu lua sandbox
 export class AvatarPlatformAPI {
@@ -57,7 +58,7 @@ export class AvatarPlatformAPI {
 		if (res.success) {
 			print("EQUIPPED OUTFIT: " + DecodeJSON<OutfitDto>(res.data).name);
 		} else {
-			Debug.LogError("Failed to equip outfit: " + res.error);
+			CoreLogger.LogInternal("Failed to equip outfit: " + res.error);
 		}
 	}
 

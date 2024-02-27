@@ -1,7 +1,8 @@
 /// <reference types="@easy-games/compiler-types" />
 import Character from "../Character";
-import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { Bin } from "../../Util/Bin";
+import { ItemDef } from "../../Item/ItemDefinitionTypes";
+import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 export declare enum ItemAnimationId {
     IDLE = "Idle",
     EQUIP = "Equip",
@@ -20,7 +21,8 @@ export declare class CharacterAnimator {
     private currentItemMeta;
     private currentItemState;
     private currentEndEventConnection;
-    private defaultIdleAnimFP;
+    private defaultIdleItemAnimFP;
+    private defaultIdleEmptyAnimFP;
     private defaultIdleAnimFPUnarmed;
     private defaultIdleAnimTP;
     private readonly flashTransitionDuration;
@@ -50,14 +52,14 @@ export declare class CharacterAnimator {
     private Log;
     SetFirstPerson(isFirstPerson: boolean): void;
     PlayTakeDamage(position: Vector3, characterModel: GameObject | undefined): void;
-    PlayItemAnimationInWorldmodel(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
+    PlayItemAnimationInWorldmodel(clip: AnimationClip, layer?: CharacterAnimationLayer, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
         fadeInDuration?: number;
         fadeOutDuration?: number;
         autoFadeOut?: boolean;
     }): AnimancerState | undefined;
-    PlayItemAnimationInViewmodel(clip: AnimationClip, layer: number, onEnd?: Callback, config?: {
+    PlayItemAnimationInViewmodel(clip: AnimationClip, layer?: CharacterAnimationLayer, onEnd?: Callback, config?: {
         fadeMode?: FadeMode;
         wrapMode?: WrapMode;
         fadeInDuration?: number;
@@ -67,7 +69,7 @@ export declare class CharacterAnimator {
     ClearItemAnimations(): void;
     private LoadNewItemResources;
     private TriggerEvent;
-    EquipItem(itemMeta: ItemDef | undefined): void;
+    EquipItem(itemDef: ItemDef | undefined): void;
     StartItemIdleAnim(instantTransition: boolean): void;
     PlayItemUseAnim(useIndex?: number, config?: {
         fadeMode?: FadeMode;
