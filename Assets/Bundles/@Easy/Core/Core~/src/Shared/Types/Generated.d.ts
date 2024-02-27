@@ -11979,6 +11979,7 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetCombinedStaticMesh(): MeshRenderer;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    RemoveClothingAccessories(): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;

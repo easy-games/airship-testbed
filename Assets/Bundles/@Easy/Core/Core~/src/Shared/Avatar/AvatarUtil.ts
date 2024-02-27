@@ -134,7 +134,7 @@ export class AvatarUtil {
 
 	public static LoadEquippedUserOutfit(
 		builder: AccessoryBuilder,
-		options: { removeAllOldAccessories?: boolean; combineMeshes?: boolean } = {},
+		options: { removeOldClothingAccessories?: boolean; combineMeshes?: boolean } = {},
 	) {
 		const outfitDto = AvatarPlatformAPI.GetEquippedOutfit();
 		if (!outfitDto) {
@@ -154,10 +154,10 @@ export class AvatarUtil {
 	public static LoadUserOutfit(
 		outfit: OutfitDto,
 		builder: AccessoryBuilder,
-		options: { removeAllOldAccessories?: boolean } = {},
+		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
-		if (options.removeAllOldAccessories) {
-			builder.RemoveAccessories();
+		if (options.removeOldClothingAccessories) {
+			builder.RemoveClothingAccessories();
 		}
 		outfit.accessories.forEach((acc) => {
 			const accComponent = this.GetAccessoryFromClassId(acc.class.classId);
