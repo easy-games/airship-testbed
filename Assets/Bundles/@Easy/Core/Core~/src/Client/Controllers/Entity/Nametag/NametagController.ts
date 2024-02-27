@@ -1,6 +1,6 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Team } from "Shared/Team/Team";
@@ -18,10 +18,7 @@ export class NametagController implements OnStart {
 			if (character.IsLocalCharacter() && !this.showSelfNametag) {
 				return;
 			}
-			// this.UpdateNametag(event.character);
-			// event.entity.onDisplayNameChanged.Connect(() => {
-			// 	this.UpdateNametag(event.character);
-			// });
+			this.UpdateNametag(character);
 			const SetNametagAlpha = (character: Character, alpha: number) => {
 				const nameTag = character.model.transform.FindChild(this.nameTageId);
 				if (nameTag) {
@@ -80,7 +77,7 @@ export class NametagController implements OnStart {
 	}
 
 	public UpdateNametag(character: Character): void {
-		if (character.IsLocalCharacter()) return;
+		if (character.IsLocalCharacter() && !this.showSelfNametag) return;
 
 		const team: Team | undefined = character.player?.GetTeam();
 		const localTeam = Game.localPlayer.GetTeam();
