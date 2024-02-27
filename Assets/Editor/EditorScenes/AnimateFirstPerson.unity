@@ -827,11 +827,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -98370938496583557, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: _scenePathHash
-      value: 128176279
+      value: 4066533023
       objectReference: {fileID: 0}
     - target: {fileID: -98370938496583557, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: <SceneId>k__BackingField
-      value: 550512930248953946
+      value: 17465626344910429990
       objectReference: {fileID: 0}
     - target: {fileID: 520259114363796298, guid: f9e63d29a868542e585dd0c6a90df6f7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
