@@ -2689,7 +2689,6 @@ MonoBehaviour:
   intensity: 0.47
   range: 2
   castShadows: 1
-  highQualityLight: 1
 --- !u!4 &272015258
 Transform:
   m_ObjectHideFlags: 0
@@ -7553,9 +7552,11 @@ MonoBehaviour:
   globalAmbientLight: {r: 0.91886795, g: 0.9878907, b: 1, a: 1}
   globalAmbientBrightness: 0.6
   globalAmbientOcclusion: 0
+  fogEnabled: 1
   fogStart: 12
   fogEnd: 300
   fogColor: {r: 0.6924528, g: 0.8769811, b: 1, a: 1}
+  shadowRange: 100
 --- !u!4 &744425853
 Transform:
   m_ObjectHideFlags: 0
@@ -15918,7 +15919,6 @@ MonoBehaviour:
   intensity: 1.07
   range: 2.5
   castShadows: 1
-  highQualityLight: 1
 --- !u!4 &1160017764
 Transform:
   m_ObjectHideFlags: 0
@@ -19001,7 +19001,7 @@ MonoBehaviour:
   globalRadiosityScale: 0.25
   globalRadiosityDirectLightAmp: 1
   showRadioistyProbes: 0
-  focusPosition: {x: -11.643574, y: 13.010717, z: -7.129137}
+  focusPosition: {x: -13.621206, y: 3.7242534, z: -5.513956}
   autoLoad: 0
   voxelWorldFile: {fileID: 11400000, guid: f68927d54bb674240a73869d99717a84, type: 2}
   blockDefines:
@@ -22729,7 +22729,6 @@ MonoBehaviour:
   intensity: 0.85
   range: 2.5
   castShadows: 0
-  highQualityLight: 1
 --- !u!4 &1869100111
 Transform:
   m_ObjectHideFlags: 0

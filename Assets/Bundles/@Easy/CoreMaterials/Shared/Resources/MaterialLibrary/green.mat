@@ -153,6 +153,7 @@ Material:
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _OverrideColor: {r: 0.98225087, g: 0.72305536, b: 0.12743773, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTint: {r: 0.302079, g: 0.5018867, b: 0.34793648, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 0.98225087, g: 0.72305536, b: 0.12743773, a: 1}

@@ -143,6 +143,7 @@ Material:
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 0.44298324, g: 0.8415094, b: 0.61551934, a: 1}
     - _RimColor: {r: 0.11070844, g: 0.82641506, b: 0.7266232, a: 1}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
