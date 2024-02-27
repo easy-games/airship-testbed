@@ -42,6 +42,19 @@
     <Minecraft>3</Minecraft>
     <Brightness>2</Brightness>
   </Block>
+  
+  <Block>
+    <Id>DRY_DIRT</Id>
+    <Name>Dry Dirt</Name>
+<!--    <TopTexture>dirt.s</TopTexture>-->
+<!--    <SideTexture>dirt.s</SideTexture>-->
+    <Material>StylizedDirt</Material>
+    <Solid>true</Solid>
+    <Metallic>0</Metallic>
+    <Roughness>0.75</Roughness>
+    <Minecraft>3</Minecraft>
+    <Brightness>2</Brightness>
+  </Block>
 
   <Block>
     <Id>STONE</Id>
@@ -93,16 +106,16 @@
     <Name>Oak Log</Name>
 <!--    <TopTexture>log_oak.td</TopTexture>-->
 <!--    <SideTexture>log_oak.s</SideTexture>-->
- <Material>StylizedWood</Material>
+	<Material>StylizedWood</Material>
     <Solid>false</Solid>
     <Collision>Solid</Collision>
     <Metallic>0</Metallic>
     <Roughness>1</Roughness>
     <Minecraft>17</Minecraft>
-    <Brightness>2</Brightness>
+    <Brightness>1.5</Brightness>
        
     
-    <TileSet>TileSets/BevelQuarterRound/</TileSet>
+    <!-- <TileSet>TileSets/BevelQuarter/</TileSet> -->
   </Block>
 
   <Block>
@@ -449,6 +462,7 @@
   <Block>
     <Id>OAK_LEAF</Id>
     <Name>Oak Leaf</Name>
+	<Material>leafs_A</Material>
     <Solid>false</Solid>
     <Collision>Solid</Collision>
     <Metallic>0</Metallic>
