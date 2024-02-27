@@ -1,6 +1,5 @@
 import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
-import { DamageType } from "./Damage/DamageType";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
@@ -53,29 +52,8 @@ export const CoreNetwork = {
 		BlockHit: new RemoteEvent<
 			[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean]
 		>(),
-		// BlockDestroyed: new RemoteEvent<[blockPos: Vector3, blockId: number]>(),
 		BlockGroupDestroyed: new RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>(),
-		// ProjectileSpawn: new RemoteEvent<[projectileDto: ProjectileDto]>(),
-		EntityDamage: new RemoteEvent<
-			[
-				entityId: number,
-				amount: number,
-				damageType: DamageType,
-				fromEntityId: number | undefined,
-				criticalHit: boolean | undefined,
-			]
-		>(),
 		ProjectileHit: new RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>(),
-		Entity: {
-			SetHealth: new RemoteEvent<[entityId: number, health: number, maxHealth?: number]>(),
-			SetDisplayName: new RemoteEvent<[entityId: number, displayName: string]>(),
-			AddHealthbar: new RemoteEvent<[entityId: number]>(),
-			SetLookVector: new RemoteEvent<[entityId: number, lookVector: Vector3]>(),
-			FallDamageTaken: new RemoteEvent<[entityId: number, velocity: Vector3]>(),
-		},
-		EntityDeath: new RemoteEvent<
-			[entityId: number, damageType: DamageType, killerEntityId: number | undefined, respawnTime: number]
-		>(),
 		GroundItem: {
 			Add: new RemoteEvent<
 				[
