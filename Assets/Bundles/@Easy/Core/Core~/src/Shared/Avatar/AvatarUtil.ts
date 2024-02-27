@@ -1,6 +1,7 @@
 import { AccessoryClass, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import { ColorUtil } from "../Util/ColorUtil";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -200,12 +201,18 @@ export class AvatarUtil {
 		}
 		outfit.accessories.forEach((acc) => {
 			const accComponent = this.GetAccessoryFromClassId(acc.class.classId);
-			if (!accComponent) {
-				warn("Unable to find accessory with class ID: " + acc.class.classId);
-				return; //Continue
+			if (accComponent) {
+				builder.AddSingleAccessory(accComponent, false);
+			} else {
+				const face = this.GetAccessoryFaceFromClassId(acc.class.classId);
+				if (face) {
+					builder.SetFaceTexture(face.decalTexture);
+				} else {
+					warn("Unable to find accessory with class ID: " + acc.class.classId);
+				}
 			}
-			builder.AddSingleAccessory(accComponent, false);
 		});
+		builder.SetSkinColor(ColorUtil.HexToColor(outfit.skinColor), true);
 		builder.TryCombineMeshes();
 	}
 }
