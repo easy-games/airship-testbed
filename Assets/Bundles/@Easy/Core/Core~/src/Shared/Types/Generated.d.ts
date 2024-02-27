@@ -12116,6 +12116,7 @@ interface AccessoryOutfit extends ScriptableObject {
     
 interface AccessoryFace extends ScriptableObject {
     serverClassId: string;
+    serverInstanceId: string;
     decalTexture: Texture2D;
 
 
@@ -15694,4 +15695,19 @@ interface ColliderRollbackConstructor {
 
 }
 declare const ColliderRollback: ColliderRollbackConstructor;
+    
+interface AvatarAccessoryCollection extends ScriptableObject {
+    accessories: CSArray<AccessoryComponent>;
+    faces: CSArray<AccessoryFace>;
+    skinColors: CSArray<Color>;
+
+
+}
+    
+interface AvatarAccessoryCollectionConstructor {
+
+    new(): AvatarAccessoryCollection;
+
+}
+declare const AvatarAccessoryCollection: AvatarAccessoryCollectionConstructor;
 

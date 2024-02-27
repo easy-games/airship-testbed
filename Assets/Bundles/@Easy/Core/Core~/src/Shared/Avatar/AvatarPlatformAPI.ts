@@ -88,12 +88,13 @@ export class AvatarPlatformAPI {
 		return outfit;
 	}
 
-	public static SaveOutfitAccessories(outfitId: string, instanceIds: string[]) {
+	public static SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
 		this.Log("SaveOutfitAccessories");
 		let res = InternalHttpManager.PatchAsync(
 			this.GetHttpUrl(`outfits/outfit-id/${outfitId}`),
 			EncodeJSON({
 				accessories: instanceIds,
+				skinColor: skinColor,
 			}),
 		);
 		if (res.success) {

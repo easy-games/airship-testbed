@@ -210,7 +210,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public CameraFocusSlot(slotType: AccessorySlot) {
-		print("Fosuing slot: " + slotType);
 		this.targetTransform = this.cameraWaypointDefault;
 		if (
 			slotType === AccessorySlot.Head ||

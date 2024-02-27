@@ -1,5 +1,4 @@
 import { AccessoryClass, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
-import { ColorUtil } from "Shared/Util/ColorUtil";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
@@ -8,6 +7,7 @@ export class AvatarUtil {
 		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
 	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
+	private static readonly allAvatarFaces = new Map<string, AccessoryFace>();
 	private static readonly allAvatarClasses = new Map<string, AccessoryClass>();
 	private static readonly ownedAvatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
 	private static readonly ownedAvatarFaces: AccessoryFace[] = [];
@@ -15,19 +15,7 @@ export class AvatarUtil {
 
 	public static defaultOutfit: AccessoryOutfit | undefined;
 
-	public static readonly skinColors = [
-		//Natural
-		// ColorUtil.HexToColor("#FFF3EA"),
-		ColorUtil.HexToColor("#F6D7BB"),
-		ColorUtil.HexToColor("#ECB98C"),
-		ColorUtil.HexToColor("#D99E72"),
-		ColorUtil.HexToColor("#C68953"),
-		ColorUtil.HexToColor("#A56E45"),
-		ColorUtil.HexToColor("#925E39"),
-		ColorUtil.HexToColor("#7D4F2B"),
-		ColorUtil.HexToColor("#4E2F13"),
-		ColorUtil.HexToColor("#352214"),
-	];
+	public static readonly skinColors: Color[] = [];
 
 	public static Initialize() {
 		AvatarUtil.defaultOutfit = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
@@ -37,8 +25,8 @@ export class AvatarUtil {
 
 		let i = 0;
 		//Load avatar accessories
-		let avatarCollection = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
-			"@Easy/Core/Shared/Resources/Accessories/AvatarItems/AllAvatarItems.asset",
+		let avatarCollection = AssetBridge.Instance.LoadAsset<AvatarAccessoryCollection>(
+			"@Easy/Core/Shared/Resources/Accessories/AvatarItems/EntireAvatarCollection.asset",
 		);
 		/*for (let i = 0; i < avatarCollection.skinAccessories.Length; i++) {
 			const element = avatarCollection.skinAccessories.GetValue(i);
@@ -59,6 +47,20 @@ export class AvatarUtil {
 			//print("Found avatar item: " + element.ToString());
 			this.allAvatarAccessories.set(element.serverClassId, element);
 		}
+		for (let i = 0; i < avatarCollection.faces.Length; i++) {
+			const element = avatarCollection.faces.GetValue(i);
+			if (!element) {
+				warn("Empty element in avatar generalAccessories collection: " + i);
+				continue;
+			}
+			//print("Found avatar item: " + element.ToString());
+			this.allAvatarFaces.set(element.serverClassId, element);
+		}
+
+		for (let i = 0; i < avatarCollection.skinColors.Length; i++) {
+			const element = avatarCollection.skinColors.GetValue(i);
+			this.skinColors.push(element);
+		}
 
 		//Print all of the mapped accessories
 		// for (const [key, value] of this.avatarAccessories) {
@@ -69,7 +71,7 @@ export class AvatarUtil {
 		// }
 	}
 
-	public static GetOwnedAccessories() {
+	public static DownloadOwnedAccessories() {
 		let acc = AvatarPlatformAPI.GetAccessories();
 		if (acc) {
 			acc.forEach((itemData) => {
@@ -80,6 +82,12 @@ export class AvatarUtil {
 					//print("Found item: " + item.gameObject.name + ": " + itemData.class.classId);
 					item.serverInstanceId = itemData.instanceId;
 					this.AddAvailableAvatarItem(item);
+				} else {
+					let faceItem = this.allAvatarFaces.get(itemData.class.classId);
+					if (faceItem) {
+						faceItem.serverInstanceId = itemData.instanceId;
+						this.AddAvailableFaceItem(faceItem);
+					}
 				}
 			});
 		}
@@ -151,8 +159,16 @@ export class AvatarUtil {
 		return this.avatarSkinAccessories;
 	}
 
+	public static GetAllPossibleAvatarItems() {
+		return this.allAvatarAccessories;
+	}
+
 	public static GetAccessoryFromClassId(classId: string) {
 		return this.allAvatarAccessories.get(classId);
+	}
+
+	public static GetAccessoryFaceFromClassId(classId: string) {
+		return this.allAvatarFaces.get(classId);
 	}
 
 	public static LoadEquippedUserOutfit(
