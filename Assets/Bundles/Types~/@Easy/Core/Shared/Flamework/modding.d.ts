@@ -133,8 +133,6 @@ export declare namespace Modding {
      * Retrieves a singleton or instantiates one if it does not exist.
      */
     export function resolveSingleton<T extends object>(ctor: Constructor<T>): {} | null;
-    /** @internal Used for bootstrapping */
-    export function getSingletons(): Map<Constructor, unknown>;
     /**
      * Modifies dependency resolution for a specific ID.
      *
@@ -150,11 +148,6 @@ export declare namespace Modding {
      * Creates an object for this class and returns a deferred constructor.
      */
     export function createDeferredDependency<T extends object>(ctor: Constructor<T>, options?: DependencyResolutionOptions): readonly [T, () => void];
-    /**
-     * Dependency resolution logic.
-     * @internal
-     */
-    export function resolveDependency(ctor: Constructor, dependencyId: string, index: number, options: DependencyResolutionOptions): {} | null;
     /**
      * @hidden
      * @deprecated

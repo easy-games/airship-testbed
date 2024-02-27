@@ -3,6 +3,7 @@ import { OnStart } from "@Easy/Core/Shared/Flamework";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
+import { CoreLogger } from "../../Logger/CoreLogger";
 
 @Service()
 @Controller()
@@ -15,7 +16,7 @@ export class GameInfoSingleton implements OnStart {
 		if (res.success) {
 			return DecodeJSON(res.data) as GameDto;
 		} else {
-			warn("Failed to parse game data: " + res.error);
+			CoreLogger.WarnInternal("Failed to parse game data: " + res.error);
 		}
 	}
 }

@@ -5404,6 +5404,7 @@ interface RunCoreConstructor {
     IsClient(): boolean;
     IsClone(): boolean;
     IsEditor(): boolean;
+    IsInternal(): boolean;
     IsServer(): boolean;
     OnLoad(): void;
 }
@@ -11498,7 +11499,8 @@ interface GameConfig extends ScriptableObject {
     
 interface AirshipPackageDocument {
     id: string;
-    version: string;
+    assetVersion: string;
+    codeVersion: string;
     game: boolean;
     localSource: boolean;
     disabled: boolean;
@@ -11680,7 +11682,8 @@ interface ServerBootstrap extends MonoBehaviour {
     
 interface StartupConfig {
     GameBundleId: string;
-    GameBundleVersion: string;
+    GameAssetVersion: string;
+    GameCodeVersion: string;
     StartingSceneName: string;
     CdnUrl: string;
     packages: CSArray<AirshipPackageDocument>;
@@ -14704,7 +14707,7 @@ interface HttpManagerConstructor {
     PostAsync(url: string, data: string, headers: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
     PutAsync(url: string, data: string, headers: string): HttpResponse;
-    SetLoggingEnabled(enabled: boolean): void;
+    SetLoggingEnabled(val: boolean): void;
 }
 declare const HttpManager: HttpManagerConstructor;
     
@@ -15472,11 +15475,9 @@ interface CloudImage extends MonoBehaviour {
 }
     
 interface CloudImageConstructor {
-    cachedTextures: CSDictionary<string, Texture2D>;
 
     new(): CloudImage;
 
-    OnLoad(): void;
 }
 declare const CloudImage: CloudImageConstructor;
     

@@ -39,6 +39,7 @@
         "declaration": true,
         "declarationDir": "../../../Types~/@Easy/Core",
         "outDir": "temp",
+        "stripInternal": true
 	},
     "include": [
         // "../../Types~/**/*.d.ts",

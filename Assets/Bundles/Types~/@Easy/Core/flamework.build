@@ -84,6 +84,7 @@
 		"@Easy/Core:Shared/Item/HeldItems/Damagers/MeleeHeldItem@MeleeHeldItem": "$:Item/HeldItems/Damagers/MeleeHeldItem@MeleeHeldItem",
 		"@Easy/Core:Shared/Item/HeldItems/HeldItemManager@HeldItemManager": "$:Item/HeldItems/HeldItemManager@HeldItemManager",
 		"@Easy/Core:Shared/Util/NetworkUtil@NetworkUtil": "$:Util/NetworkUtil@NetworkUtil",
+		"@Easy/Core:Shared/Logger/CoreLogger@CoreLogger": "$:Logger/CoreLogger@CoreLogger",
 		"@Easy/Core:Shared/Avatar/AvatarPlatformAPI@AvatarPlatformAPI": "$:Avatar/AvatarPlatformAPI@AvatarPlatformAPI",
 		"@Easy/Core:Shared/Avatar/AvatarUtil@AvatarUtil": "$:Avatar/AvatarUtil@AvatarUtil",
 		"@Easy/Core:Shared/Character/Character@Character": "$:Character/Character@Character",

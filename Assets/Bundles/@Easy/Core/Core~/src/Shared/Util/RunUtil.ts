@@ -2,6 +2,7 @@ const isClient = RunCore.IsClient();
 const isServer = RunCore.IsServer();
 const isEditor = RunCore.IsEditor();
 const isClone = RunCore.IsClone();
+const isInternal = RunCore.IsInternal();
 
 const platform = Application.platform;
 
@@ -17,6 +18,13 @@ export class RunUtil {
 	public static IsEditor(): boolean {
 		return isEditor;
 	}
+
+	/**
+	 * @internal
+	 */
+	public static IsInternal(): boolean {
+        return isInternal;
+    }
 
 	/**
 	 * Shortcut for checking if both IsClient() and IsServer() is true.

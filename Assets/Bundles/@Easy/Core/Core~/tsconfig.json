@@ -43,7 +43,7 @@
 				"$corepackmode$": true,
 				"hashPrefix": "$"
 			},
-		],
+		]
 	},
     "include": [
         // "../../Types~/**/*.d.ts",
