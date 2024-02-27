@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe3d2d8679e4833b63469f7e587a48c, type: 3}
+  m_Name: Airship__Character__Beach_GirlOutfit
+  m_EditorClassIdentifier: 
+  accessories:
+  - {fileID: 4432312148045742320, guid: 354439eadbdc1eb43ba4b10c7fcb7426, type: 3}
+  - {fileID: 6196968335492779025, guid: fc20a055cd573f54ebc489993726c951, type: 3}
+  - {fileID: 3386117253498073562, guid: 9017d3efdfbd62c41989ad1be4c54f84, type: 3}
+  - {fileID: 210703450389781417, guid: 4a4a375480a29b245aaea1d6543296ee, type: 3}
+  - {fileID: 734064867788908001, guid: 0e9a903ce497e3541a65345e6b7f6932, type: 3}
+  faceDecal: {fileID: 0}
+  customSkin: {fileID: 0}
+  forceSkinColor: 0
+  skinColor: {r: 1, g: 0.9293207, b: 0.6462264, a: 1}

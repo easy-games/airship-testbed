@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: EntireAvatarCollection
   m_EditorClassIdentifier: 
   accessories:
+  - {fileID: 4432312148045742320, guid: 354439eadbdc1eb43ba4b10c7fcb7426, type: 3}
+  - {fileID: 6196968335492779025, guid: fc20a055cd573f54ebc489993726c951, type: 3}
+  - {fileID: 3386117253498073562, guid: 9017d3efdfbd62c41989ad1be4c54f84, type: 3}
+  - {fileID: 210703450389781417, guid: 4a4a375480a29b245aaea1d6543296ee, type: 3}
+  - {fileID: 734064867788908001, guid: 0e9a903ce497e3541a65345e6b7f6932, type: 3}
   - {fileID: 4514147727319661745, guid: a13c3a9547805004abbe35e9df8a8420, type: 3}
   - {fileID: 7081786640612886898, guid: d863d3c883256f9489f5253a41d96921, type: 3}
   - {fileID: 1558137181335917498, guid: 3387c45d86bf25e46a277b77a1051e62, type: 3}
