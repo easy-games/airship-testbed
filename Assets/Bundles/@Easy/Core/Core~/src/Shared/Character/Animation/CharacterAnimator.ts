@@ -9,9 +9,7 @@ import { Dependency } from "Shared/Flamework";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import StringUtils from "Shared/Types/StringUtil";
 import { Bin } from "Shared/Util/Bin";
-import { BundleReferenceManager } from "Shared/Util/BundleReferenceManager";
 import { RandomUtil } from "Shared/Util/RandomUtil";
-import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";
@@ -30,18 +28,18 @@ export enum ItemPlayMode {
 	HOLD,
 }
 
-const EMPTY_ANIM = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
-);
-const DEFAULT_USE_FP = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Character/Animations/FP_Sword_Use.anim",
-);
-const BLOCK_IDLE_FP = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Idle.anim",
-);
-const BLOCK_USE_FP = AssetCache.LoadAsset<AnimationClip>(
-	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Place.anim",
-);
+// const EMPTY_ANIM = AssetCache.LoadAsset<AnimationClip>(
+// 	"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
+// );
+// const DEFAULT_USE_FP = AssetCache.LoadAsset<AnimationClip>(
+// 	"@Easy/Core/Shared/Resources/Character/Animations/FP_Sword_Use.anim",
+// );
+// const BLOCK_IDLE_FP = AssetCache.LoadAsset<AnimationClip>(
+// 	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Idle.anim",
+// );
+// const BLOCK_USE_FP = AssetCache.LoadAsset<AnimationClip>(
+// 	"@Easy/Core/Shared/Resources/Character/Animations/FP_Block_Place.anim",
+// );
 
 export class CharacterAnimator {
 	private worldmodelClips: Map<ItemAnimationId, AnimationClip[]> = new Map();
@@ -116,38 +114,38 @@ export class CharacterAnimator {
 			// 	: AudioBundleSpacialMode.SPACIAL;
 
 			//ANIMATIONS
-			this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.FlinchAnimFPS,
-			);
-			this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.DeathAnimFPS,
-			);
-			this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.FlinchAnimTP,
-			);
-			this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.DeathAnimTP,
-			);
+			// this.flinchClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.FlinchAnimFPS,
+			// );
+			// this.deathClipFPS = BundleReferenceManager.LoadResource<AnimationClip>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.DeathAnimFPS,
+			// );
+			// this.flinchClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.FlinchAnimTP,
+			// );
+			// this.deathClipTP = BundleReferenceManager.LoadResource<AnimationClip>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.DeathAnimTP,
+			// );
 
 			//VFX
-			this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.GenericVFX,
-			);
-			this.deathEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
-				BundleGroupNames.Entity,
-				Bundle_Entity.OnHit,
-				Bundle_Entity_OnHit.DeathVFX,
-			);
+			// this.damageEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.GenericVFX,
+			// );
+			// this.deathEffectTemplate = BundleReferenceManager.LoadResource<GameObject>(
+			// 	BundleGroupNames.Entity,
+			// 	Bundle_Entity.OnHit,
+			// 	Bundle_Entity_OnHit.DeathVFX,
+			// );
 			// this.deathEffectVoidTemplate = BundleReferenceManager.LoadResource<GameObject>(
 			// 	BundleGroupNames.Entity,
 			// 	Bundle_Entity.OnHit,
@@ -367,9 +365,10 @@ export class CharacterAnimator {
 						if (clip) return clip;
 					}),
 				);
-			} else if (itemDef.block) {
-				this.viewmodelClips.set(ItemAnimationId.IDLE, [BLOCK_IDLE_FP]);
 			}
+			// else if (itemDef.block) {
+			// 	this.viewmodelClips.set(ItemAnimationId.IDLE, [BLOCK_IDLE_FP]);
+			// }
 
 			if (itemDef.usable?.onUseAnimViewmodel) {
 				this.viewmodelClips.set(
@@ -379,9 +378,10 @@ export class CharacterAnimator {
 						if (clip) return clip;
 					}),
 				);
-			} else if (itemDef.block) {
-				this.viewmodelClips.set(ItemAnimationId.USE, [BLOCK_USE_FP]);
 			}
+			// else if (itemDef.block) {
+			// 	this.viewmodelClips.set(ItemAnimationId.USE, [BLOCK_USE_FP]);
+			// }
 
 			/***** Worldmodel ******/
 			if (itemDef.holdConfig?.worldmodel?.equipAnim) {
