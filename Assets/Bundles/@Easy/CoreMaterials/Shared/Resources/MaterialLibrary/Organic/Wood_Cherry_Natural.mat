@@ -11,16 +11,16 @@ Material:
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - EXPLICIT_MAPS
+  m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - METAL_ON_ON
   - NUM_LIGHTS_LIGHTS2
   - RIM_LIGHT_ON
-  - SLIDER_OVERRIDE
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
+  m_InvalidKeywords:
+  - EXPLICIT_MAPS
+  - METAL_ON_ON
+  - SLIDER_OVERRIDE
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
   - _TRIPLANAR_TRIPLANAR_LOCAL
