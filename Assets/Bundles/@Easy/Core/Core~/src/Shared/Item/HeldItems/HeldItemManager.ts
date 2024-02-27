@@ -1,10 +1,10 @@
-﻿import { Dependency } from "Shared/Flamework";
-import Character from "Shared/Character/Character";
+﻿import Character from "Shared/Character/Character";
 import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
+import { Dependency } from "Shared/Flamework";
 import Inventory from "Shared/Inventory/Inventory";
 import { Bin } from "Shared/Util/Bin";
+import { CoreItemType } from "../CoreItemType";
 import { ItemDef } from "../ItemDefinitionTypes";
-import { ItemType } from "../ItemType";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
 import { HeldItem } from "./HeldItem";
 import { HeldItemState } from "./HeldItemState";
@@ -23,7 +23,7 @@ export type HeldItemEntry = {
  */
 export class HeldItemManager {
 	public character: Character;
-	private heldItemMap = new Map<ItemType, HeldItem>();
+	private heldItemMap = new Map<string, HeldItem>();
 	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
 	private currentItemState: HeldItemState = HeldItemState.NONE;
@@ -44,7 +44,7 @@ export class HeldItemManager {
 		return this.currentHeldItem;
 	}
 
-	public TryGetItem(itemType: ItemType) {
+	public TryGetItem(itemType: CoreItemType) {
 		return this.heldItemMap.get(itemType);
 	}
 

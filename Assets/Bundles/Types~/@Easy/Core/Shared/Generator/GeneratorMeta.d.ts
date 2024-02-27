@@ -1,10 +1,10 @@
-import { ItemType } from "../Item/ItemType";
+import { CoreItemType } from "../Item/CoreItemType";
 /** Generator pickup range. */
 export declare const GeneratorPickupRange = 1.5;
 /** Describes a generator. */
 export interface GeneratorCreationConfig {
     /** The type of item a generator produces. */
-    item: ItemType;
+    item: CoreItemType;
     /** How many `GeneratorConfig.item`s can accumulate on generator before production ceases. */
     stackLimit: number;
     /** Spawn rate in seconds. How often a generator produces `GeneratorConfig.item`. */
@@ -32,7 +32,7 @@ export interface GeneratorDto {
     /** Generator id. */
     readonly id: string;
     /** The type of item a generator produces. */
-    readonly item: ItemType;
+    readonly item: CoreItemType;
     /** If this field is set, generator will have a world-space label above it. */
     readonly nameLabel?: boolean;
     readonly spawnTimeLabel?: boolean;

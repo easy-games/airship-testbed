@@ -2,7 +2,6 @@ import ObjectUtils from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "../../CoreNetwork";
 import { GameObjectUtil } from "../../GameObject/GameObjectUtil";
-import { ItemType } from "../../Item/ItemType";
 import { ItemUtil } from "../../Item/ItemUtil";
 import { RunUtil } from "../../Util/RunUtil";
 import { BlockDataAPI, CoreBlockMetaKeys } from "../BlockData/BlockDataAPI";
@@ -59,7 +58,7 @@ export class PrefabBlockManager {
 		return this.objectMap.get(pos);
 	}
 
-	private OnBlockPlace(pos: Vector3, itemType: ItemType): void {
+	private OnBlockPlace(pos: Vector3, itemType: string): void {
 		const itemMeta = ItemUtil.GetItemDef(itemType);
 		if (itemMeta.block?.prefab) {
 			const prefab = AssetBridge.Instance.LoadAsset<Object>(itemMeta.block.prefab.path);

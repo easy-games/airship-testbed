@@ -1,8 +1,8 @@
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import Object from "@easy-games/unity-object-utils";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { ArmorType } from "Shared/Item/ArmorType";
-import { ItemType } from "Shared/Item/ItemType";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
@@ -188,7 +188,7 @@ export default class Inventory extends AirshipBehaviour {
 		}
 	}
 
-	public Decrement(itemType: ItemType, amount: number): void {
+	public Decrement(itemType: string, amount: number): void {
 		let counter = 0;
 		for (let [slot, itemStack] of this.items) {
 			if (itemStack.GetItemType() === itemType) {
@@ -272,7 +272,7 @@ export default class Inventory extends AirshipBehaviour {
 		this.SetHeldSlot(dto.heldSlot);
 	}
 
-	public HasEnough(itemType: ItemType, amount: number): boolean {
+	public HasEnough(itemType: CoreItemType, amount: number): boolean {
 		let total = 0;
 		for (let itemStack of Object.values(this.items)) {
 			if (itemStack.GetItemType() === itemType) {
@@ -282,7 +282,7 @@ export default class Inventory extends AirshipBehaviour {
 		return total >= amount;
 	}
 
-	public HasItemType(itemType: ItemType): boolean {
+	public HasItemType(itemType: CoreItemType): boolean {
 		return this.HasEnough(itemType, 1);
 	}
 
@@ -302,7 +302,7 @@ export default class Inventory extends AirshipBehaviour {
 		return this.hotbarSlots;
 	}
 
-	public FindSlotWithItemType(itemType: ItemType): number | undefined {
+	public FindSlotWithItemType(itemType: CoreItemType): number | undefined {
 		for (let i = 0; i < this.maxSlots; i++) {
 			const itemStack = this.GetItem(i);
 			if (itemStack?.GetItemType() === itemType) {

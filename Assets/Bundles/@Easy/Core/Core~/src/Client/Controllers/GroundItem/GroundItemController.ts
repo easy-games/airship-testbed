@@ -1,13 +1,12 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { GroundItem } from "Shared/GroundItem/GroundItem";
 import { GroundItemUtil } from "Shared/GroundItem/GroundItemUtil";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { Bin } from "Shared/Util/Bin";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -24,7 +23,7 @@ export class GroundItemController implements OnStart {
 	private groundItemPrefab: Object;
 	private fallbackDisplayObj: Object;
 	private groundItems = new Map<number, GroundItem>();
-	private itemTypeToDisplayObjMap = new Map<ItemType, Object>();
+	private itemTypeToDisplayObjMap = new Map<string, Object>();
 
 	private readonly groundItemsFolder: GameObject;
 	// private readonly offlineGroundItems: OfflineGroundItems;

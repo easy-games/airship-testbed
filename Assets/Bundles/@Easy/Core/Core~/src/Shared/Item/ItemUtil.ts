@@ -2,7 +2,6 @@ import Object from "@easy-games/unity-object-utils";
 import { Signal } from "Shared/Util/Signal";
 import { ItemDef } from "./ItemDefinitionTypes";
 import { CoreItemDefinitions, ItemTypeComponentsInternal } from "./ItemDefinitions";
-import { ItemType } from "./ItemType";
 
 export interface ItemRegistrationConfig {
 	accessoryFolder?: string;
@@ -14,15 +13,15 @@ export interface ItemRegistrationConfig {
 export class ItemUtil {
 	public static readonly defaultItemPath = "@Easy/Core/Shared/Resources/Accessories/missing_item.prefab";
 
-	private static readonly itemAccessories = new Map<ItemType, AccessoryComponent[]>();
-	private static readonly blockIdToItemType = new Map<string, ItemType>();
-	private static readonly itemIdToItemType = new Map<number, ItemType>();
+	private static readonly itemAccessories = new Map<string, AccessoryComponent[]>();
+	private static readonly blockIdToItemType = new Map<string, string>();
+	private static readonly itemIdToItemType = new Map<number, string>();
 	private static runtimeIdCounter = 0;
 
 	public static missingItemAccessory: AccessoryComponent;
 
-	private static itemTypes: ItemType[] = [];
-	private static implictItemTypeMap = new Map<string, ItemType>();
+	private static itemTypes: string[] = [];
+	private static implictItemTypeMap = new Map<string, string>();
 
 	private static initialized = false;
 	private static onInitialized = new Signal<void>();
@@ -36,7 +35,7 @@ export class ItemUtil {
 
 		//Load the defined items and map them to accessories
 		for (const itemType of Object.keys(CoreItemDefinitions)) {
-			this.RegisterItem(itemType, CoreItemDefinitions[itemType]);
+			this.RegisterItem(itemType as string, CoreItemDefinitions[itemType]);
 		}
 		this.initialized = true;
 		this.onInitialized.Fire();
@@ -52,7 +51,7 @@ export class ItemUtil {
 	}
 
 	public static RegisterItem(
-		itemType: ItemType,
+		itemType: string,
 		itemDefinition: Omit<ItemDef, "id" | "itemType">,
 		config?: ItemRegistrationConfig,
 	) {
@@ -116,7 +115,7 @@ export class ItemUtil {
 	/**
 	 * @deprecated
 	 */
-	public static GetItemTypeFromBlockId(blockId: number): ItemType | undefined {
+	public static GetItemTypeFromBlockId(blockId: number): string | undefined {
 		const WorldAPI = import("Shared/VoxelWorld/WorldAPI").expect().WorldAPI;
 		const world = WorldAPI.GetMainWorld();
 		if (!world) return undefined;
@@ -125,15 +124,15 @@ export class ItemUtil {
 		return this.GetItemTypeFromStringId(stringId);
 	}
 
-	public static GetItemTypeFromStringId(stringId: string): ItemType | undefined {
+	public static GetItemTypeFromStringId(stringId: string): string | undefined {
 		return ItemUtil.blockIdToItemType.get(stringId);
 	}
 
-	public static GetItemTypeFromItemId(itemId: number): ItemType | undefined {
+	public static GetItemTypeFromItemId(itemId: number): string | undefined {
 		return ItemUtil.itemIdToItemType.get(itemId);
 	}
 
-	public static GetItemDef(itemType: ItemType): ItemDef {
+	public static GetItemDef(itemType: string): ItemDef {
 		const val = CoreItemDefinitions[itemType] as ItemDef;
 		if (val === undefined) {
 			error("FATAL: ItemType had no ItemMeta: " + itemType);
@@ -141,14 +140,14 @@ export class ItemUtil {
 		return val;
 	}
 
-	public static GetFirstAccessoryForItemType(itemType: ItemType): AccessoryComponent {
+	public static GetFirstAccessoryForItemType(itemType: string): AccessoryComponent {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories[0];
 
 		return ItemUtil.missingItemAccessory;
 	}
 
-	public static GetAccessoriesForItemType(itemType: ItemType): Readonly<AccessoryComponent[]> {
+	public static GetAccessoriesForItemType(itemType: string): Readonly<AccessoryComponent[]> {
 		let accessories = this.itemAccessories.get(itemType);
 		if (accessories) return accessories;
 
@@ -156,7 +155,7 @@ export class ItemUtil {
 	}
 
 	public static IsItemType(s: string): boolean {
-		return CoreItemDefinitions[s as ItemType] !== undefined;
+		return CoreItemDefinitions[s as string] !== undefined;
 	}
 
 	/**
@@ -164,10 +163,10 @@ export class ItemUtil {
 	 * @param expression The string expression to search for
 	 * @returns The `ItemType` (if found) - otherwise `undefined`.
 	 */
-	public static FindItemTypeFromExpression(expression: string): ItemType | undefined {
-		if (CoreItemDefinitions[expression as ItemType] !== undefined) return expression as ItemType;
+	public static FindItemTypeFromExpression(expression: string): string | undefined {
+		if (CoreItemDefinitions[expression] !== undefined) return expression as string;
 
-		let [scope, id] = this.GetItemTypeComponents(expression as ItemType);
+		let [scope, id] = this.GetItemTypeComponents(expression as string);
 		if (scope === "") {
 			const inferredItemType = this.implictItemTypeMap.get(id);
 			if (inferredItemType) {
@@ -186,8 +185,8 @@ export class ItemUtil {
 
 		// 	// Explicit find
 		for (const [key] of pairs(CoreItemDefinitions)) {
-			if (key.lower() === expression.lower()) {
-				return key;
+			if ((key as string).lower() === expression.lower()) {
+				return key as string;
 			}
 		}
 
@@ -210,11 +209,11 @@ export class ItemUtil {
 	 * @param itemType The item type to get the components of
 	 * @returns The component prats of the item type string
 	 */
-	public static GetItemTypeComponents(itemType: ItemType): [scope: string, id: string] {
+	public static GetItemTypeComponents(itemType: string): [scope: string, id: string] {
 		return ItemTypeComponentsInternal(itemType);
 	}
 
-	public static GetItemTypes(): ItemType[] {
+	public static GetItemTypes(): string[] {
 		return this.itemTypes;
 	}
 }

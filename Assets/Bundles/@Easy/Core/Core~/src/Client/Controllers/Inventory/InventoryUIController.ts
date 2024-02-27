@@ -7,7 +7,6 @@ import { CharacterInventorySingleton } from "Shared/Inventory/CharacterInventory
 import Inventory from "Shared/Inventory/Inventory";
 import { InventorySingleton } from "Shared/Inventory/InventorySingleton";
 import { ItemStack } from "Shared/Inventory/ItemStack";
-import { ItemType } from "Shared/Item/ItemType";
 import { CoreUI } from "Shared/UI/CoreUI";
 import { Healthbar } from "Shared/UI/Healthbar";
 import { Keyboard, Mouse } from "Shared/UserInput";
@@ -41,7 +40,7 @@ export class InventoryUIController implements OnStart {
 	private enabled = true;
 	private draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
-	private spriteCache = new Map<ItemType, Sprite>();
+	private spriteCacheForItemType = new Map<string, Sprite>();
 
 	constructor(
 		private readonly invController: InventorySingleton,
@@ -222,10 +221,10 @@ export class InventoryUIController implements OnStart {
 			texture2d = AssetCache.LoadAssetIfExists<Texture2D>(imageSrc);
 		}
 		if (texture2d) {
-			let cachedSprite = this.spriteCache.get(itemMeta.itemType);
+			let cachedSprite = this.spriteCacheForItemType.get(itemMeta.itemType);
 			if (!cachedSprite) {
 				cachedSprite = Bridge.MakeSprite(texture2d);
-				this.spriteCache.set(itemType, cachedSprite);
+				this.spriteCacheForItemType.set(itemType, cachedSprite);
 			}
 			image.sprite = cachedSprite;
 			image.enabled = true;

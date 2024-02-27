@@ -3,7 +3,7 @@ import { Duration } from "Shared/Util/Duration";
 import { DamageType } from "../Damage/DamageType";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
-import { ItemType } from "./ItemType";
+import { CoreItemType } from "./CoreItemType";
 
 export interface TillableBlockDef {
 	tillsToBlockId: string;
@@ -26,7 +26,7 @@ export interface BlockDef {
 	/**
 	 * A filter for what this block can be placed on
 	 */
-	placeOnWhitelist?: ItemType[];
+	placeOnWhitelist?: CoreItemType[];
 	/**
 	 * If this block requires a block underneath it
 	 */
@@ -55,7 +55,7 @@ export interface AmmoDef {
 }
 
 export interface ProjectileLauncherDef {
-	ammoItemType: ItemType;
+	ammoItemType: CoreItemType;
 	minVelocityScaler: number;
 	maxVelocityScaler: number;
 	/**
@@ -93,8 +93,12 @@ export interface CropBlockDef {
 export interface ItemDef {
 	//Identification
 	displayName: string;
+	/**
+	 * Runtime ID. This may change between sessions.
+	 * For a consistent ID, you should use {@link itemType}.
+	 */
 	id: number;
-	itemType: ItemType;
+	itemType: string;
 
 	/** Path to image. */
 	image?: string;

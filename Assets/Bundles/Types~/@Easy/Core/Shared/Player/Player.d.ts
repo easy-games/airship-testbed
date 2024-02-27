@@ -111,12 +111,6 @@ export declare class Player {
      */
     SpawnCharacter(position: Vector3, config?: {
         lookDirection?: Vector3;
-        /**
-         * If true, method does not yield if the player's outfit hasn't been downloaded.
-         *
-         * This can cause characters to spawn with no outfit.
-         */
-        noOutfitYield?: boolean;
     }): Character;
     WaitForOutfitLoaded(timeout?: number): void;
     GetProfilePicture(): ProfilePictureMeta;

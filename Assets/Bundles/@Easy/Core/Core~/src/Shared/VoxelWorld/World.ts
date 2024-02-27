@@ -1,8 +1,8 @@
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import Object from "@easy-games/unity-object-utils";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { BlockDef } from "Shared/Item/ItemDefinitionTypes";
-import { ItemType } from "Shared/Item/ItemType";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { ItemUtil } from "../Item/ItemUtil";
@@ -155,7 +155,7 @@ export class World {
 	 * @param itemType The item type
 	 * @param config  The configuration for this placed block
 	 */
-	public PlaceBlockByItemType(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void {
+	public PlaceBlockByItemType(pos: Vector3, itemType: CoreItemType, config?: PlaceBlockConfig): void {
 		const itemDef = ItemUtil.GetItemDef(itemType);
 		if (!itemDef.block) return;
 

@@ -1,12 +1,11 @@
-﻿﻿import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+﻿﻿import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
+import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
 import Character from "Shared/Character/Character";
 import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Dependency } from "Shared/Flamework";
-import { ItemDef } from "Shared/Item/ItemDefinitionTypes";
-import { ItemType } from "Shared/Item/ItemType";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import StringUtils from "Shared/Types/StringUtil";
 import { Bin } from "Shared/Util/Bin";
@@ -15,6 +14,7 @@ import { RandomUtil } from "Shared/Util/RandomUtil";
 import { BundleGroupNames, Bundle_Entity, Bundle_Entity_OnHit } from "Shared/Util/ReferenceManagerResources";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
+import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 
 export enum ItemAnimationId {
@@ -337,9 +337,9 @@ export class CharacterAnimator {
 		this.itemAnimStates.clear();
 	}
 
-	private LoadNewItemResources(itemMeta: ItemDef | undefined) {
-		this.Log("Loading Item: " + itemMeta?.itemType);
-		this.currentItemMeta = itemMeta;
+	private LoadNewItemResources(itemDef: ItemDef | undefined) {
+		this.Log("Loading Item: " + itemDef?.itemType);
+		this.currentItemMeta = itemDef;
 		// this.itemLayer.DestroyStates();
 		//Load the animation clips for the new item
 
@@ -348,44 +348,44 @@ export class CharacterAnimator {
 		this.worldmodelClips.clear();
 		this.viewmodelClips.clear();
 
-		if (itemMeta) {
+		if (itemDef) {
 			/***** Viewmodel ******/
-			if (itemMeta.holdConfig?.viewmodel?.equipAnim) {
+			if (itemDef.holdConfig?.viewmodel?.equipAnim) {
 				this.viewmodelClips.set(
 					ItemAnimationId.EQUIP,
-					itemMeta.holdConfig.viewmodel?.equipAnim.mapFiltered((s) => {
+					itemDef.holdConfig.viewmodel?.equipAnim.mapFiltered((s) => {
 						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					}),
 				);
 			}
-			if (itemMeta.holdConfig?.viewmodel?.idleAnim) {
+			if (itemDef.holdConfig?.viewmodel?.idleAnim) {
 				this.viewmodelClips.set(
 					ItemAnimationId.IDLE,
-					itemMeta.holdConfig.viewmodel?.idleAnim.mapFiltered((s) => {
+					itemDef.holdConfig.viewmodel?.idleAnim.mapFiltered((s) => {
 						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					}),
 				);
-			} else if (itemMeta.block) {
+			} else if (itemDef.block) {
 				this.viewmodelClips.set(ItemAnimationId.IDLE, [BLOCK_IDLE_FP]);
 			}
 
-			if (itemMeta.usable?.onUseAnimViewmodel) {
+			if (itemDef.usable?.onUseAnimViewmodel) {
 				this.viewmodelClips.set(
 					ItemAnimationId.USE,
-					itemMeta.usable.onUseAnimViewmodel.mapFiltered((s) => {
+					itemDef.usable.onUseAnimViewmodel.mapFiltered((s) => {
 						const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 						if (clip) return clip;
 					}),
 				);
-			} else if (itemMeta.block) {
+			} else if (itemDef.block) {
 				this.viewmodelClips.set(ItemAnimationId.USE, [BLOCK_USE_FP]);
 			}
 
 			/***** Worldmodel ******/
-			if (itemMeta.holdConfig?.worldmodel?.equipAnim) {
-				let clips = itemMeta.holdConfig.worldmodel?.equipAnim.mapFiltered((s) => {
+			if (itemDef.holdConfig?.worldmodel?.equipAnim) {
+				let clips = itemDef.holdConfig.worldmodel?.equipAnim.mapFiltered((s) => {
 					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 					if (clip) return clip;
 				});
@@ -393,8 +393,8 @@ export class CharacterAnimator {
 					this.worldmodelClips.set(ItemAnimationId.EQUIP, clips);
 				}
 			}
-			if (itemMeta.holdConfig?.worldmodel?.idleAnim) {
-				let clips = itemMeta.holdConfig.worldmodel?.idleAnim.mapFiltered((s) => {
+			if (itemDef.holdConfig?.worldmodel?.idleAnim) {
+				let clips = itemDef.holdConfig.worldmodel?.idleAnim.mapFiltered((s) => {
 					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 					if (clip) return clip;
 				});
@@ -402,8 +402,8 @@ export class CharacterAnimator {
 					this.worldmodelClips.set(ItemAnimationId.IDLE, clips);
 				}
 			}
-			if (itemMeta.usable?.onUseAnimWorldmodel) {
-				let clips = itemMeta.usable.onUseAnimWorldmodel.mapFiltered((s) => {
+			if (itemDef.usable?.onUseAnimWorldmodel) {
+				let clips = itemDef.usable.onUseAnimWorldmodel.mapFiltered((s) => {
 					const clip = AssetCache.LoadAssetIfExists<AnimationClip>(s);
 					if (clip) return clip;
 				});
@@ -428,9 +428,9 @@ export class CharacterAnimator {
 		currentItem.OnAnimEvent(eventData);*/
 	}
 
-	public EquipItem(itemMeta: ItemDef | undefined) {
-		this.Log("Equip: " + itemMeta?.displayName);
-		this.LoadNewItemResources(itemMeta);
+	public EquipItem(itemDef: ItemDef | undefined) {
+		this.Log("Equip: " + itemDef?.displayName);
+		this.LoadNewItemResources(itemDef);
 		this.StartItemIdleAnim(false);
 	}
 
@@ -627,13 +627,13 @@ export class CharacterAnimator {
 
 		let itemType = ItemUtil.GetItemTypeFromBlockId(blockId);
 		if (!itemType) {
-			itemType = ItemType.STONE;
+			itemType = CoreItemType.STONE;
 		}
 
 		const itemMeta = ItemUtil.GetItemDef(itemType);
 
 		// fallback to stone sounds.
-		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemDef(ItemType.STONE).block?.stepSound;
+		let stepSounds = itemMeta.block?.stepSound ?? ItemUtil.GetItemDef(CoreItemType.STONE).block?.stepSound;
 		if (stepSounds === undefined) {
 			stepSounds = [];
 		}

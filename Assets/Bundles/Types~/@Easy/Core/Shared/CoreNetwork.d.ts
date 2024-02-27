@@ -1,12 +1,11 @@
 import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
-import { DamageType } from "./Damage/DamageType";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
+import { CoreItemType } from "./Item/CoreItemType";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
-import { ItemType } from "./Item/ItemType";
 import { RemoteEvent } from "./Network/RemoteEvent";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
@@ -14,7 +13,7 @@ export declare const CoreNetwork: {
     ClientToServer: {
         Ready: RemoteEvent<[]>;
         SetHeldSlot: RemoteEvent<[slot: number]>;
-        PlaceBlock: RemoteEvent<[pos: Vector3, itemType: ItemType, rotation?: number | undefined]>;
+        PlaceBlock: RemoteEvent<[pos: Vector3, itemType: CoreItemType, rotation?: number | undefined]>;
         HitBlock: RemoteEvent<[pos: Vector3]>;
         LaunchProjectile: RemoteEvent<[nobId: number, isInFirstPerson: boolean, direction: Vector3, chargeSec: number]>;
         SwordAttack: RemoteEvent<[targetEntityId?: number | undefined, hitDirection?: Vector3 | undefined]>;
@@ -38,20 +37,11 @@ export declare const CoreNetwork: {
         SetInventorySlot: RemoteEvent<[invId: number, slot: number, itemStack: ItemStackDto | undefined, clientPredicted: boolean]>;
         RevertBlockPlace: RemoteEvent<[pos: Vector3]>;
         /** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
-        UpdateInventorySlot: RemoteEvent<[invId: number, slot: number, itemType?: ItemType | undefined, amount?: number | undefined]>;
+        UpdateInventorySlot: RemoteEvent<[invId: number, slot: number, itemType?: CoreItemType | undefined, amount?: number | undefined]>;
         SetHeldInventorySlot: RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>;
         BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean | undefined]>;
         BlockGroupDestroyed: RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>;
-        EntityDamage: RemoteEvent<[entityId: number, amount: number, damageType: DamageType, fromEntityId: number | undefined, criticalHit: boolean | undefined]>;
         ProjectileHit: RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>;
-        Entity: {
-            SetHealth: RemoteEvent<[entityId: number, health: number, maxHealth?: number | undefined]>;
-            SetDisplayName: RemoteEvent<[entityId: number, displayName: string]>;
-            AddHealthbar: RemoteEvent<[entityId: number]>;
-            SetLookVector: RemoteEvent<[entityId: number, lookVector: Vector3]>;
-            FallDamageTaken: RemoteEvent<[entityId: number, velocity: Vector3]>;
-        };
-        EntityDeath: RemoteEvent<[entityId: number, damageType: DamageType, killerEntityId: number | undefined, respawnTime: number]>;
         GroundItem: {
             Add: RemoteEvent<[dtos: {
                 id: number;

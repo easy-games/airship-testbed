@@ -2511,6 +2511,7 @@ MonoBehaviour:
   _componentIndexCache: 1
   _addedNetworkObject: {fileID: 1827094135}
   _networkObjectCache: {fileID: 1827094135}
+  _componentConfiguration: 2
   _synchronizeParent: 0
   _packing:
     Position: 1

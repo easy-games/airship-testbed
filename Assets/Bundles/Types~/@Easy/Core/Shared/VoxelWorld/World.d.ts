@@ -1,6 +1,6 @@
 /// <reference types="@easy-games/compiler-types" />
+import { CoreItemType } from "../Item/CoreItemType";
 import { BlockDef } from "../Item/ItemDefinitionTypes";
-import { ItemType } from "../Item/ItemType";
 import { Signal } from "../Util/Signal";
 import { Block } from "./Block";
 export type BlockData = {
@@ -67,7 +67,7 @@ export declare class World {
      * @param itemType The item type
      * @param config  The configuration for this placed block
      */
-    PlaceBlockByItemType(pos: Vector3, itemType: ItemType, config?: PlaceBlockConfig): void;
+    PlaceBlockByItemType(pos: Vector3, itemType: CoreItemType, config?: PlaceBlockConfig): void;
     /**
      * Places a block at the given position, with the given `blockStringId`
      *

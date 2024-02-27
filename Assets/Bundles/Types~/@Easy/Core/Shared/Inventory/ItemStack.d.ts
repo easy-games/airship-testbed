@@ -1,16 +1,16 @@
-import { ItemDef } from "../Item/ItemDefinitionTypes";
-import { ItemType } from "../Item/ItemType";
+import { CoreItemType } from "../Item/CoreItemType";
 import { Signal } from "../Util/Signal";
+import { ItemDef } from "../Item/ItemDefinitionTypes";
 export interface ItemStackDto {
     /** ItemType */
-    i: ItemType;
+    i: string;
     /** Amount */
     a: number;
 }
 export type ItemStackTypeChangeSignal = {
     readonly ItemStack: ItemStack;
     readonly NoNetwork: boolean;
-    readonly ItemType: ItemType;
+    readonly ItemType: CoreItemType;
 };
 export type ItemStackAmountChangeSignal = {
     readonly ItemStack: ItemStack;
@@ -25,10 +25,10 @@ export declare class ItemStack {
     amountChanged: Signal<ItemStackAmountChangeSignal>;
     destroyed: Signal<ItemStack>;
     private hasBeenDestroyed;
-    constructor(itemType: ItemType, amount?: number);
-    GetItemType(): ItemType;
+    constructor(itemType: string, amount?: number);
+    GetItemType(): string;
     GetItemDef(): ItemDef;
-    SetItemType(itemType: ItemType): void;
+    SetItemType(itemType: CoreItemType): void;
     GetAmount(): number;
     SetAmount(val: number, config?: {
         noNetwork?: boolean;

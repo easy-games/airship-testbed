@@ -1,4 +1,4 @@
-export declare const enum ItemType {
+export declare const enum CoreItemType {
     STONE = "@Easy/Core:STONE",
     WOOD_SWORD = "@Easy/Core:WOOD_SWORD",
     LEATHER_HELMET = "@Easy/Core:LEATHER_HELMET"

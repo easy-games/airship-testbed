@@ -1,4 +1,4 @@
-export const enum ItemType {
+export const enum CoreItemType {
 	// GRASS = "@Easy/Core:GRASS",
 	// DIRT = "@Easy/Core:DIRT",
 	// FARMLAND = "@Easy/Core:FARMLAND",

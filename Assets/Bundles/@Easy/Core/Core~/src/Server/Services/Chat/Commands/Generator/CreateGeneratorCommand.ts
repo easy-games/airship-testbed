@@ -1,12 +1,12 @@
-import { Dependency } from "Shared/Flamework";
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { GeneratorService } from "Server/Services/Generator/GeneratorService";
 import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
-import { ItemType } from "Shared/Item/ItemType";
+import { Dependency } from "Shared/Flamework";
 import { Player } from "Shared/Player/Player";
 
 /** Default generator item type. */
-const DEFAULT_ITEM_TYPE = ItemType.WOOD_SWORD;
+const DEFAULT_ITEM_TYPE = CoreItemType.WOOD_SWORD;
 /** Default generator spawn rate. */
 const DEFAULT_SPAWN_RATE = 2;
 /** Default generator stack limit. */
@@ -18,7 +18,7 @@ export class CreateGeneratorCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		let itemType: ItemType | undefined;
+		let itemType: CoreItemType | undefined;
 		let spawnRate: number | undefined;
 
 		// If no arguments are provided fallback to defaults.
@@ -29,13 +29,13 @@ export class CreateGeneratorCommand extends ChatCommand {
 
 		// ItemType argument provided, fallback to default spawn rate.
 		if (args.size() === 1) {
-			itemType = args[0] as ItemType;
+			itemType = args[0] as CoreItemType;
 			spawnRate = DEFAULT_SPAWN_RATE;
 		}
 
 		// ItemType and spawn rate arguments provided.
 		if (args.size() === 2) {
-			itemType = args[0] as ItemType;
+			itemType = args[0] as CoreItemType;
 			spawnRate = tonumber(args[1]);
 		}
 

@@ -4,8 +4,8 @@ import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
+import { CoreItemType } from "./Item/CoreItemType";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
-import { ItemType } from "./Item/ItemType";
 import { RemoteEvent } from "./Network/RemoteEvent";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
@@ -14,7 +14,7 @@ export const CoreNetwork = {
 	ClientToServer: {
 		Ready: new RemoteEvent<[]>(),
 		SetHeldSlot: new RemoteEvent<[slot: number]>(),
-		PlaceBlock: new RemoteEvent<[pos: Vector3, itemType: ItemType, rotation?: number]>(),
+		PlaceBlock: new RemoteEvent<[pos: Vector3, itemType: CoreItemType, rotation?: number]>(),
 		HitBlock: new RemoteEvent<[pos: Vector3]>(),
 		LaunchProjectile: new RemoteEvent<
 			[nobId: number, isInFirstPerson: boolean, direction: Vector3, chargeSec: number]
@@ -47,7 +47,7 @@ export const CoreNetwork = {
 		>(),
 		RevertBlockPlace: new RemoteEvent<[pos: Vector3]>(),
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
-		UpdateInventorySlot: new RemoteEvent<[invId: number, slot: number, itemType?: ItemType, amount?: number]>(),
+		UpdateInventorySlot: new RemoteEvent<[invId: number, slot: number, itemType?: CoreItemType, amount?: number]>(),
 		SetHeldInventorySlot: new RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>(),
 		BlockHit: new RemoteEvent<
 			[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean]

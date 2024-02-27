@@ -1,8 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { ItemType } from "@Easy/Core/Shared/Item/ItemType";
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
@@ -38,7 +37,7 @@ export default class LibonatiManager extends AirshipBehaviour {
 
 	public SpawnCharacter(player: Player): void {
 		const char = player.SpawnCharacter(this.spawnPosition.transform.position);
-		char.inventory?.AddItem(new ItemStack(ItemType.WOOD_SWORD, -1));
+		char.inventory?.AddItem(new ItemStack(CoreItemType.WOOD_SWORD, -1));
 		char.accessoryBuilder.EquipAccessoryOutfit(
 			AssetBridge.Instance.LoadAsset<AccessoryOutfit>(this.outfitPath),
 			true,
