@@ -1,5 +1,5 @@
-﻿import { Dependency } from "Shared/Flamework";
-import Character from "Shared/Character/Character";
+﻿import Character from "Shared/Character/Character";
+import { Dependency } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
@@ -213,6 +213,9 @@ export class FirstPersonCameraSystem {
 		// }
 
 		this.viewmodelController.viewmodelGo.SetActive(isFirstPerson);
+		this.viewmodelController.viewmodelGo.transform.position = isFirstPerson
+			? new Vector3(0, 0, 0)
+			: new Vector3(10_000, 0, 10_000);
 		this.character.model.SetActive(!isFirstPerson);
 
 		if (!isFirstPerson) {

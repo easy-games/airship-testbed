@@ -16,6 +16,8 @@ export default class DemoManager extends AirshipBehaviour {
 	public useTaggedSpawns = false;
 	private deathCount = 0;
 
+	public cleanupOnStart!: GameObject[];
+
 	override Start(): void {
 		if (RunUtil.IsServer()) {
 			Airship.players.ObservePlayers((player) => {
@@ -29,7 +31,6 @@ export default class DemoManager extends AirshipBehaviour {
 			});
 		}
 		if (RunUtil.IsClient()) {
-			print("RUNNING AS CLIENT");
 			// Optional: use locked camera mode for first person support
 			Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
 			Airship.characters.localCharacterManager.SetFirstPerson(true);
@@ -52,6 +53,11 @@ export default class DemoManager extends AirshipBehaviour {
 					bin.Clean();
 				};
 			});
+		}
+
+		// cleanup
+		for (let go of this.cleanupOnStart) {
+			Object.Destroy(go);
 		}
 	}
 

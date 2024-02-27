@@ -50,8 +50,11 @@ export class CharacterAnimator {
 	private currentItemState: string = ItemAnimationId.IDLE;
 	private currentEndEventConnection = -1;
 
-	private defaultIdleAnimFP = AssetCache.LoadAsset<AnimationClip>(
-		"@Easy/Core/Shared/Resources/Character/Animations/FP_Generic_Idle.anim",
+	private defaultIdleItemAnimFP = AssetCache.LoadAsset<AnimationClip>(
+		"@Easy/Core/Shared/Resources/Character/Animations/FP_Item_Idle.anim",
+	);
+	private defaultIdleEmptyAnimFP = AssetCache.LoadAsset<AnimationClip>(
+		"@Easy/Core/Shared/Resources/Character/Animations/FP_Hands_Lowered.anim",
 	);
 	private defaultIdleAnimFPUnarmed = AssetCache.LoadAsset<AnimationClip>(
 		"@Easy/Core/Shared/Resources/Character/Animations/Airship_Empty.anim",
@@ -440,19 +443,24 @@ export class CharacterAnimator {
 		// }
 
 		if (this.IsViewModelEnabled()) {
-			let clips = this.viewmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimFP];
+			let clips = this.viewmodelClips.get(ItemAnimationId.IDLE) ?? [
+				this.currentItemMeta !== undefined ? this.defaultIdleItemAnimFP : this.defaultIdleEmptyAnimFP,
+			];
 			const clip = RandomUtil.FromArray(clips);
 			this.PlayItemAnimationInViewmodel(clip, CharacterAnimationLayer.LAYER_1, undefined, {
 				fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 			});
-			// AnimancerBridge.GetLayer(this.viewmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
+			// AnimancerBridge.GetLayer(
+			// 	Dependency<ViewmodelController>().animancer,
+			// 	CharacterAnimationLayer.LAYER_2,
+			// ).StartFade(0, 0.05);
 		}
 		let clips = this.worldmodelClips.get(ItemAnimationId.IDLE) ?? [this.defaultIdleAnimTP];
 		const clip = RandomUtil.FromArray(clips);
 		this.PlayItemAnimationInWorldmodel(clip, CharacterAnimationLayer.LAYER_1, undefined, {
 			fadeInDuration: instantTransition ? 0 : this.defaultTransitionTime,
 		});
-		// AnimancerBridge.GetLayer(this.worldmodelAnimancer, EntityAnimationLayer.LAYER_2).StartFade(0, 0.05);
+		// AnimancerBridge.GetLayer(this.worldmodelAnimancerComponent, CharacterAnimationLayer.LAYER_2).StartFade(0, 0.05);
 	}
 
 	public PlayItemUseAnim(

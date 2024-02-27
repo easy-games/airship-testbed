@@ -69,7 +69,7 @@ const bigSwordUsable: UsableHeldItemDef = {
 };
 const swordViewModel: HoldConfig = {
 	viewmodel: {
-		idleAnim: CoreAnim("FP_Sword_Idle"),
+		// idleAnim: CoreAnim("FP_Sword_Idle"),
 	},
 	worldmodel: {
 		idleAnim: CoreAnim("Airship_Empty"),
