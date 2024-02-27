@@ -2121,13 +2121,13 @@ MonoBehaviour:
   _negativeSunDirectionNormalized: {x: -0.5996252, y: 0.6834144, z: 0.41640636}
   _sunDirectionNormalized: {x: 0.5996252, y: -0.6834144, z: -0.41640636}
   _sunDirection: {x: 0.72, y: -0.8206099, z: -0.5}
-  sunBrightness: 0.9
+  sunBrightness: 0.729
   sunShadow: 0.85
   sunColor: {r: 0.9823206, g: 1, b: 0.8066038, a: 1}
   skySaturation: 0.3
   cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
   globalAmbientLight: {r: 1, g: 0.8915094, b: 0.9199557, a: 1}
-  globalAmbientBrightness: 0.24
+  globalAmbientBrightness: 0.477
   globalAmbientOcclusion: 0.25
   fogEnabled: 1
   fogStart: 10
