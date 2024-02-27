@@ -23,8 +23,8 @@ export class RunUtil {
 	 * @internal
 	 */
 	public static IsInternal(): boolean {
-        return isInternal;
-    }
+		return isInternal;
+	}
 
 	/**
 	 * Shortcut for checking if both IsClient() and IsServer() is true.
