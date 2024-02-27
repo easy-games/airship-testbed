@@ -13,7 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
@@ -153,6 +153,7 @@ Material:
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _OverrideColor: {r: 0.98225087, g: 0.72305536, b: 0.12743773, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 0.98225087, g: 0.72305536, b: 0.12743773, a: 1}
   m_BuildTextureStacks: []

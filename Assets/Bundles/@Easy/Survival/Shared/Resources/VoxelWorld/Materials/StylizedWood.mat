@@ -13,7 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_WORLD
   m_InvalidKeywords:
@@ -126,7 +126,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 1.97
     - _RimPower: 1.13
-    - _RoughOverride: 0.49
+    - _RoughOverride: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -142,6 +142,7 @@ Material:
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowTint: {r: 0.85660374, g: 0.7628674, b: 0.6965966, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

@@ -48,6 +48,7 @@
     float4 _EmissiveColor;
     half _EmissiveMix;
     float4 _Time;
+    float4 _ShadowTint;
 
     float4 _ProjectionParams;
     float4 _MainTex_ST;
@@ -824,7 +825,7 @@
         half3 bakedLighting = input.bakedLight.xyz;
         ambientLight = max(ambientLight, bakedLighting);
 #endif        
-        half3 finalAmbient = (ambientLight * diffuseColor);
+        half3 finalAmbient = lerp((ambientLight * textureColor * _ShadowTint.xyz), (ambientLight * diffuseColor), sunShadowMask);
 
         //Composite sun and ambient together
         finalColor = (finalSun + finalAmbient);

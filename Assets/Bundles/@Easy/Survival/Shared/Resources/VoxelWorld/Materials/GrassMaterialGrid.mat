@@ -16,6 +16,7 @@ Material:
   - EXPLICIT_MAPS_ON
   - EXPLICIT_MAPS_ON_ON
   - METAL_ON_ON
+  - NUM_LIGHTS_LIGHTS2
   - OVERRIDE_ON
   - _LIGHTS_LIGHTS0
   m_LightmapFlags: 4

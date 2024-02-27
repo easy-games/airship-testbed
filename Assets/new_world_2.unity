@@ -154,7 +154,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &17994775
 MeshRenderer:
@@ -216,13 +215,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17994773}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.17004612, y: 0.13699418, z: 0.0066099246, w: 0.97584486}
-  m_LocalPosition: {x: 202.7, y: -24.9, z: 208.2}
-  m_LocalScale: {x: 27.036417, y: 21.445776, z: 23.843725}
+  m_LocalRotation: {x: -0.084376276, y: -0.12255883, z: -0.0027670914, w: 0.9888642}
+  m_LocalPosition: {x: -12.205683, y: 1.0774152, z: -13.477921}
+  m_LocalScale: {x: 0.23202038, y: 0.20469995, z: 0.1334885}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -19.493, y: 16.334, z: -2.048}
+  m_Children:
+  - {fileID: 1537506624}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: -2.248, y: 15.726, z: -1.932}
 --- !u!1001 &21038471
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -320,7 +320,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &21038474 stripped
 Transform:
@@ -502,7 +501,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &34575991 stripped
 Transform:
@@ -606,7 +604,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &35768948 stripped
 Transform:
@@ -710,7 +707,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &39460551 stripped
 Transform:
@@ -822,15 +818,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &49965121 stripped
 Transform:
@@ -934,7 +927,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &49980657 stripped
 Transform:
@@ -1038,13 +1030,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &64185856 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 062f0351303c4be4aaddc2d3fa011f76, type: 3}
   m_PrefabInstance: {fileID: 64185853}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &84508997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 84508998}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &84508998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84508997}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1565290299}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &116450807
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1102,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &116450809
 MeshRenderer:
@@ -1142,12 +1163,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 116450807}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.3956602, y: 0.22563066, z: -0.06363312, w: 0.88797224}
-  m_LocalPosition: {x: 2792.1, y: -116.5, z: 1181.5}
-  m_LocalScale: {x: 71.71062, y: 71.0308, z: 65.77391}
+  m_LocalRotation: {x: -0.42803022, y: -0.023064435, z: -0.1543439, w: 0.8901889}
+  m_LocalPosition: {x: 3.5433803, y: 3.3149092, z: -2.0313616}
+  m_LocalScale: {x: 0.63026434, y: 0.47203973, z: 0.4848508}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
+  m_Children:
+  - {fileID: 1943772924}
+  m_Father: {fileID: 186692483}
   m_LocalEulerAnglesHint: {x: -42.373, y: 37.63, z: -23.244}
 --- !u!1001 &118311480
 PrefabInstance:
@@ -1246,7 +1268,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &118311483 stripped
 Transform:
@@ -1506,7 +1527,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &149683318 stripped
 Transform:
@@ -1610,7 +1630,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &161192101 stripped
 Transform:
@@ -1837,7 +1856,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &171640379 stripped
 Transform:
@@ -1941,7 +1959,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &181913903 stripped
 Transform:
@@ -2045,7 +2062,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &186534536 stripped
 Transform:
@@ -2149,13 +2165,57 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &186593647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: af027843f2620ac4ca225b439217209f, type: 3}
   m_PrefabInstance: {fileID: 186593644}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &186692482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 186692483}
+  m_Layer: 0
+  m_Name: Clouds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &186692483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186692482}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.064159065, y: 0.2551653, z: -0.025294801, w: 0.96443486}
+  m_LocalPosition: {x: 2603, y: -498, z: 1665}
+  m_LocalScale: {x: 112.223366, y: 102.474884, z: 185.21474}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 17994777}
+  - {fileID: 310474775}
+  - {fileID: 733044485}
+  - {fileID: 1138782093}
+  - {fileID: 1582808829}
+  - {fileID: 762380089}
+  - {fileID: 1509308905}
+  - {fileID: 1811409958}
+  - {fileID: 271393416}
+  - {fileID: 2066393556}
+  - {fileID: 1479057486}
+  - {fileID: 365701061}
+  - {fileID: 116450811}
+  - {fileID: 1867747558}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &196542565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2261,15 +2321,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &196542568 stripped
 Transform:
@@ -2373,13 +2430,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &215729226 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28345e453b2466c4783bd4cd9de952a8, type: 3}
   m_PrefabInstance: {fileID: 215729223}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &215925962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 215925963}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &215925963
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215925962}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1509308905}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &220254360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2485,15 +2572,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &220254363 stripped
 Transform:
@@ -2597,13 +2681,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &223880501 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28345e453b2466c4783bd4cd9de952a8, type: 3}
   m_PrefabInstance: {fileID: 223880498}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &228312434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 228312435}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &228312435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228312434}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1138782093}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &230429460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2701,7 +2815,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &230429463 stripped
 Transform:
@@ -2805,7 +2918,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &231156243 stripped
 Transform:
@@ -2909,7 +3021,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &256941773 stripped
 Transform:
@@ -3091,7 +3202,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &266060945 stripped
 Transform:
@@ -3195,13 +3305,116 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &271243827 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28345e453b2466c4783bd4cd9de952a8, type: 3}
   m_PrefabInstance: {fileID: 271243824}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &271393412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 271393416}
+  - component: {fileID: 271393415}
+  - component: {fileID: 271393414}
+  - component: {fileID: 271393413}
+  m_Layer: 0
+  m_Name: AirshipCubeBeveled (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &271393413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271393412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 0.70980394, g: 0.909804, b: 0.98823535, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!23 &271393414
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271393412}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &271393415
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271393412}
+  m_Mesh: {fileID: 953869835743886347, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!4 &271393416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271393412}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.14688675, y: -0.085535176, z: -0.022521222, w: 0.98519075}
+  m_LocalPosition: {x: -8.122142, y: 11.109765, z: 0.120491184}
+  m_LocalScale: {x: 3.8449304, y: 2.782959, z: 2.3142276}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1282549290}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: -9.458, y: 20.408, z: -3.417}
 --- !u!1001 &285809593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3299,7 +3512,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &285809596 stripped
 Transform:
@@ -3403,13 +3615,116 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &304188546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df94df318f5381040b28640e1e68cafd, type: 3}
   m_PrefabInstance: {fileID: 304188543}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &310474771
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 310474775}
+  - component: {fileID: 310474774}
+  - component: {fileID: 310474773}
+  - component: {fileID: 310474772}
+  m_Layer: 0
+  m_Name: AirshipCubeBeveled (10)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &310474772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310474771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!23 &310474773
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310474771}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &310474774
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310474771}
+  m_Mesh: {fileID: 953869835743886347, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!4 &310474775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310474771}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.23175958, y: -0.120756984, z: -0.021120645, w: 0.9650178}
+  m_LocalPosition: {x: -13.228722, y: 1.2246321, z: -13.462973}
+  m_LocalScale: {x: 0.23202041, y: 0.18060307, z: 0.14482203}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 455709117}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: -19.493, y: 16.334, z: -2.048}
 --- !u!1001 &318543255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3507,7 +3822,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &318543258 stripped
 Transform:
@@ -3689,7 +4003,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &327419229 stripped
 Transform:
@@ -3793,7 +4106,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &349351097 stripped
 Transform:
@@ -3897,7 +4209,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &364364721 stripped
 Transform:
@@ -3939,7 +4250,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &365701059
 MeshRenderer:
@@ -4001,13 +4311,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365701057}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.24088539, y: -0.29898876, z: -0.020161329, w: 0.9231324}
-  m_LocalPosition: {x: -163.9, y: 36.3, z: 615.4}
-  m_LocalScale: {x: 71.71062, y: 71.0308, z: 65.77391}
+  m_LocalRotation: {x: -0.09753325, y: -0.46203378, z: 0.0366413, w: 0.880721}
+  m_LocalPosition: {x: -16.750877, y: 1.7801896, z: -12.618912}
+  m_LocalScale: {x: 0.4496241, y: 0.6702235, z: 0.48923624}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -27.18, y: -37.562, z: 6.897}
+  m_Children:
+  - {fileID: 1332677242}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: -4.249, y: -25.6, z: 1.942}
 --- !u!1001 &369104579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4105,7 +4416,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &369104582 stripped
 Transform:
@@ -4217,15 +4527,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &376129379 stripped
 Transform:
@@ -4329,7 +4636,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &384659727 stripped
 Transform:
@@ -4519,15 +4825,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &393901919 stripped
 Transform:
@@ -4709,7 +5012,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: wood logs
   addedByEditorScript: 1
 --- !u!4 &405102763 stripped
 Transform:
@@ -4813,7 +5115,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &424882908 stripped
 Transform:
@@ -4917,7 +5218,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &431634944 stripped
 Transform:
@@ -5021,7 +5321,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &433281257 stripped
 Transform:
@@ -5125,7 +5424,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &444897634 stripped
 Transform:
@@ -5237,21 +5535,49 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &451709593 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a2cee87344de5cb4fb1082fc2ee5ed25, type: 3}
   m_PrefabInstance: {fileID: 451709590}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &455709116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 455709117}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &455709117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455709116}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 310474775}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &482422050
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5505,7 +5831,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &503865940 stripped
 Transform:
@@ -5714,7 +6039,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &532373549 stripped
 Transform:
@@ -5826,15 +6150,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &535984696 stripped
 Transform:
@@ -5946,15 +6267,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &539398154 stripped
 Transform:
@@ -6058,7 +6376,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &543291503 stripped
 Transform:
@@ -6150,7 +6467,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &559445242 stripped
 Transform:
@@ -6254,7 +6570,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &560612321 stripped
 Transform:
@@ -6358,7 +6673,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &564694437 stripped
 Transform:
@@ -6656,7 +6970,6 @@ Transform:
   - {fileID: 1113433025}
   - {fileID: 196542568}
   - {fileID: 451709593}
-  - {fileID: 1822154002}
   - {fileID: 1839612225}
   - {fileID: 2124292074}
   - {fileID: 364364721}
@@ -6782,7 +7095,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &590666927 stripped
 Transform:
@@ -6886,7 +7198,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &600529292 stripped
 Transform:
@@ -6990,7 +7301,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &603465853 stripped
 Transform:
@@ -7094,7 +7404,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &621775563 stripped
 Transform:
@@ -7198,7 +7507,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &629709303 stripped
 Transform:
@@ -7310,15 +7618,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &636276627 stripped
 Transform:
@@ -7414,7 +7719,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &638691463 stripped
 Transform:
@@ -7518,7 +7822,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: wood logs
   addedByEditorScript: 1
 --- !u!4 &654466068 stripped
 Transform:
@@ -7622,7 +7925,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &670467067 stripped
 Transform:
@@ -7726,7 +8028,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &675132785 stripped
 Transform:
@@ -7830,7 +8131,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &675226224 stripped
 Transform:
@@ -8012,7 +8312,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &694568473 stripped
 Transform:
@@ -8116,7 +8415,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &717867453 stripped
 Transform:
@@ -8220,7 +8518,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &721141854 stripped
 Transform:
@@ -8262,7 +8559,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &733044483
 MeshRenderer:
@@ -8324,13 +8620,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 733044481}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.24088539, y: -0.29898876, z: -0.020161329, w: 0.9231324}
-  m_LocalPosition: {x: -102, y: -23.2, z: 614.9}
-  m_LocalScale: {x: 110.00079, y: 73.57579, z: 65.77391}
+  m_LocalRotation: {x: -0.0904738, y: -0.4775895, z: 0.021274729, w: 0.8736534}
+  m_LocalPosition: {x: -16.059408, y: 1.3015836, z: -12.2300205}
+  m_LocalScale: {x: 0.67719275, y: 0.6998417, z: 0.4969903}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -27.18, y: -37.562, z: 6.897}
+  m_Children:
+  - {fileID: 1998174368}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: -4.464, y: -27.412, z: 0.011}
 --- !u!1001 &734344997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8428,7 +8725,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &734345000 stripped
 Transform:
@@ -8532,7 +8828,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &738109560 stripped
 Transform:
@@ -8636,7 +8931,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &739162317 stripped
 Transform:
@@ -8672,15 +8966,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328324b9b586ee749acb4d8a5762986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _negativeSunDirectionNormalized: {x: -0.83719367, y: 0.3655353, z: 0.4068054}
-  _sunDirectionNormalized: {x: 0.83719367, y: -0.3655353, z: -0.4068054}
-  _sunDirection: {x: 1.42, y: -0.62, z: -0.69}
+  _negativeSunDirectionNormalized: {x: -0.3778322, y: 0.7006403, z: 0.6052652}
+  _sunDirectionNormalized: {x: 0.3778322, y: -0.7006403, z: -0.6052652}
+  _sunDirection: {x: 1.03, y: -1.91, z: -1.65}
   sunBrightness: 0.68
+  sunShadow: 0.62
   sunColor: {r: 1, g: 0.9411765, b: 0.76862746, a: 1}
   skySaturation: 0
   cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
-  globalAmbientLight: {r: 1, g: 1, b: 1, a: 1}
-  globalAmbientBrightness: 0.5
+  globalAmbientLight: {r: 0.9037736, g: 0.9572327, b: 1, a: 1}
+  globalAmbientBrightness: 0.55
   globalAmbientOcclusion: 0
   fogStart: 10
   fogEnd: 300
@@ -8693,12 +8988,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 744425851}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -142.98642, y: 16.85643, z: 107.77576}
+  m_LocalRotation: {x: 0, y: -0, z: -0.0000000018626449, w: 1}
+  m_LocalPosition: {x: -141.90536, y: 12.806443, z: 102.839966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 827027048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &748003423
 PrefabInstance:
@@ -8797,7 +9092,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &748003426 stripped
 Transform:
@@ -8839,7 +9133,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 0.70980394, g: 0.909804, b: 0.98823535, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &762380087
 MeshRenderer:
@@ -8901,13 +9194,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762380085}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15940115, y: -0.16243832, z: -0.113363825, w: 0.96713686}
-  m_LocalPosition: {x: -346, y: -1424, z: 2093}
-  m_LocalScale: {x: 241.7491, y: 243.81763, z: 654.5928}
+  m_LocalRotation: {x: 0.0929793, y: -0.38429955, z: 0.088774346, w: 0.9142143}
+  m_LocalPosition: {x: -24.100388, y: -8.437858, z: -4.268299}
+  m_LocalScale: {x: 1.6127928, y: 2.347454, z: 4.478801}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15.753, y: -21.347, z: -16.358}
+  m_Children:
+  - {fileID: 1707160492}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: 18.596, y: -17.138, z: -1.17}
 --- !u!1001 &787972999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9005,7 +9299,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &787973002 stripped
 Transform:
@@ -9090,6 +9383,41 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df3166e57c28dce46b60fdc479247dd6, type: 3}
   m_PrefabInstance: {fileID: 804610335}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &827027047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 827027048}
+  m_Layer: 0
+  m_Name: Lights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &827027048
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827027047}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: 0.0000000018626449, w: 1}
+  m_LocalPosition: {x: -1.0810547, y: 4.049988, z: 4.935791}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 744425853}
+  - {fileID: 1045545367}
+  - {fileID: 1565290299}
+  - {fileID: 1870345467}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &853550440
 GameObject:
   m_ObjectHideFlags: 0
@@ -9218,7 +9546,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &866615244 stripped
 Transform:
@@ -9322,7 +9649,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &871110134 stripped
 Transform:
@@ -9434,15 +9760,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &879166902 stripped
 Transform:
@@ -9546,7 +9869,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &900208523 stripped
 Transform:
@@ -9650,7 +9972,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &903726587 stripped
 Transform:
@@ -9754,7 +10075,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &904751424 stripped
 Transform:
@@ -9862,11 +10182,9 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &915985367 stripped
 Transform:
@@ -9970,7 +10288,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 0
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &934057288 stripped
 Transform:
@@ -10152,13 +10469,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &948419449 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aa802014de3f75e41b0802b1211fbf9d, type: 3}
   m_PrefabInstance: {fileID: 948419446}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &954143316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 954143317}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &954143317
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954143316}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1582808829}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &956297139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10256,7 +10603,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &956297142 stripped
 Transform:
@@ -10438,7 +10784,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &966401807 stripped
 Transform:
@@ -10550,15 +10895,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &974623536 stripped
 Transform:
@@ -10662,7 +11004,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &983343661 stripped
 Transform:
@@ -10766,7 +11107,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &988068576 stripped
 Transform:
@@ -10870,7 +11210,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &990742720 stripped
 Transform:
@@ -10974,7 +11313,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1004295888 stripped
 Transform:
@@ -11078,7 +11416,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1004967258 stripped
 Transform:
@@ -11260,7 +11597,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1024823106 stripped
 Transform:
@@ -11372,15 +11708,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &1027863632 stripped
 Transform:
@@ -11484,7 +11817,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1027938070 stripped
 Transform:
@@ -11592,17 +11924,65 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &1035542728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 812d712f22a0f014bb94b3a5f09848f3, type: 3}
   m_PrefabInstance: {fileID: 1035542725}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1045545365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045545367}
+  - component: {fileID: 1045545366}
+  m_Layer: 0
+  m_Name: AirshipPointlight (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1045545366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045545365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.81960785, g: 0.6392157, b: 0.1882353, a: 1}
+  intensity: 0.68
+  range: 4.6
+  castShadows: 0
+  highQualityLight: 1
+--- !u!4 &1045545367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045545365}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.922, y: -2.08, z: -6.99}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1460483809}
+  m_Father: {fileID: 827027048}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1056304297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11700,7 +12080,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1056304300 stripped
 Transform:
@@ -11804,7 +12183,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1070933918 stripped
 Transform:
@@ -11908,7 +12286,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1072072797 stripped
 Transform:
@@ -12012,7 +12389,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1079400773 stripped
 Transform:
@@ -12194,7 +12570,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1091614149 stripped
 Transform:
@@ -12298,7 +12673,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &1094963206 stripped
 Transform:
@@ -12402,7 +12776,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1101140376 stripped
 Transform:
@@ -12514,15 +12887,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &1113433025 stripped
 Transform:
@@ -12564,7 +12934,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &1138782091
 MeshRenderer:
@@ -12626,12 +12995,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138782089}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.63858944, y: 0.041811746, z: 0.0030469366, w: 0.7684049}
-  m_LocalPosition: {x: 888, y: -1239, z: 1288}
-  m_LocalScale: {x: 217.02328, y: 152.95946, z: 173.76749}
+  m_LocalRotation: {x: -0.6670131, y: -0.17170306, z: -0.14325322, w: 0.710697}
+  m_LocalPosition: {x: -11.502175, y: -8.934568, z: -5.7342076}
+  m_LocalScale: {x: 1.7218727, y: 0.89369184, z: 1.6916729}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
+  m_Children:
+  - {fileID: 228312435}
+  m_Father: {fileID: 186692483}
   m_LocalEulerAnglesHint: {x: -79.005, y: 18.453, z: -14.8}
 --- !u!1001 &1174369639
 PrefabInstance:
@@ -12730,7 +13100,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1174369642 stripped
 Transform:
@@ -12834,7 +13203,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &1175406262 stripped
 Transform:
@@ -12938,7 +13306,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1178826811 stripped
 Transform:
@@ -13042,7 +13409,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1190282111 stripped
 Transform:
@@ -13146,7 +13512,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1194392717 stripped
 Transform:
@@ -13250,7 +13615,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1197839606 stripped
 Transform:
@@ -13354,7 +13718,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1206674531 stripped
 Transform:
@@ -13458,7 +13821,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1207397366 stripped
 Transform:
@@ -13640,7 +14002,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &1239817931 stripped
 Transform:
@@ -13900,13 +14261,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &1280168717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: af027843f2620ac4ca225b439217209f, type: 3}
   m_PrefabInstance: {fileID: 1280168714}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1282549289
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1282549290}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1282549290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282549289}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 271393416}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1288814872
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14082,7 +14473,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1296077108 stripped
 Transform:
@@ -14264,7 +14654,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1298938864 stripped
 Transform:
@@ -14368,13 +14757,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1314855671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28345e453b2466c4783bd4cd9de952a8, type: 3}
   m_PrefabInstance: {fileID: 1314855668}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1332677241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1332677242}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1332677242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332677241}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 365701061}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1342580072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14628,7 +15047,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1346690499 stripped
 Transform:
@@ -14732,7 +15150,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1349465757 stripped
 Transform:
@@ -14836,7 +15253,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1369338781 stripped
 Transform:
@@ -14940,7 +15356,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1378674839 stripped
 Transform:
@@ -15122,7 +15537,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1434058609 stripped
 Transform:
@@ -15226,7 +15640,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1441304882 stripped
 Transform:
@@ -15408,13 +15821,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1452820209 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28345e453b2466c4783bd4cd9de952a8, type: 3}
   m_PrefabInstance: {fileID: 1452820206}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1460483808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1460483809}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1460483809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460483808}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1045545367}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1461059986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15512,7 +15955,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &1461059989 stripped
 Transform:
@@ -15597,6 +16039,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df3166e57c28dce46b60fdc479247dd6, type: 3}
   m_PrefabInstance: {fileID: 1471421848}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1471668832
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.777041
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0268865
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.5444713
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.33350003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9427501
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 218.963
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616066970123009132, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8265472577892246911, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
+      propertyPath: m_Name
+      value: Character_-_ALPHA_UVdB
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3461ab64cc97e5749bf2e0c76c83d9bd, type: 3}
 --- !u!1001 &1475437956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15710,7 +16209,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &1479057484
 MeshRenderer:
@@ -15772,13 +16270,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479057482}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0020731217, y: -0.25281712, z: -0.1369645, w: 0.95776826}
-  m_LocalPosition: {x: -246, y: -330, z: 1191}
-  m_LocalScale: {x: 112.223366, y: 102.474884, z: 185.21472}
+  m_LocalRotation: {x: -0.010254721, y: -0.47853822, z: 0.032570265, w: 0.8774025}
+  m_LocalPosition: {x: -20.04839, y: 0.06405985, z: -9.708886}
+  m_LocalScale: {x: 0.6860929, y: 0.9978396, z: 1.3858457}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -4.199, y: -29.013, z: -15.19}
+  m_Children:
+  - {fileID: 1841513076}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: 4.221, y: -27.862, z: -3.277}
 --- !u!1001 &1480232586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15884,15 +16383,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &1480232589 stripped
 Transform:
@@ -15996,7 +16492,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1497479689 stripped
 Transform:
@@ -16038,7 +16533,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 0.70980394, g: 0.909804, b: 0.98823535, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &1509308903
 MeshRenderer:
@@ -16100,13 +16594,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1509308901}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13672058, y: 0.2704413, z: -0.03523943, w: 0.95232725}
-  m_LocalPosition: {x: 2647, y: -717.8, z: 1742.1}
-  m_LocalScale: {x: 286.44485, y: 261.56232, z: 350.70615}
+  m_LocalRotation: {x: -0.01133892, y: 0.0015854087, z: 0.0122264, w: 0.9998597}
+  m_LocalPosition: {x: 0.19659543, y: -2.1081812, z: 0.38793445}
+  m_LocalScale: {x: 2.5525656, y: 2.551252, z: 1.893954}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -13.966, y: 32.732, z: -8.358}
+  m_Children:
+  - {fileID: 215925963}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: 6.556, y: 29.763, z: 0.497}
 --- !u!1 &1513692522
 GameObject:
   m_ObjectHideFlags: 0
@@ -16185,7 +16680,7 @@ MonoBehaviour:
   globalRadiosityScale: 0.25
   globalRadiosityDirectLightAmp: 1
   showRadioistyProbes: 0
-  focusPosition: {x: -11.856269, y: 2.348863, z: -1.6190904}
+  focusPosition: {x: -10.000156, y: 9.036078, z: -0.27808672}
   autoLoad: 0
   voxelWorldFile: {fileID: 11400000, guid: f68927d54bb674240a73869d99717a84, type: 2}
   blockDefines:
@@ -16293,7 +16788,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1516507024 stripped
 Transform:
@@ -16489,13 +16983,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &1525510301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: af027843f2620ac4ca225b439217209f, type: 3}
   m_PrefabInstance: {fileID: 1525510298}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1537506623
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1537506624}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1537506624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537506623}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 17994777}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1543694037
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16593,7 +17117,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1543694040 stripped
 Transform:
@@ -16678,6 +17201,56 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df3166e57c28dce46b60fdc479247dd6, type: 3}
   m_PrefabInstance: {fileID: 1546249677}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1565290297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1565290299}
+  - component: {fileID: 1565290298}
+  m_Layer: 0
+  m_Name: AirshipPointlight (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1565290298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565290297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.81960785, g: 0.6392157, b: 0.1882353, a: 1}
+  intensity: 0.81
+  range: 1
+  castShadows: 0
+  highQualityLight: 1
+--- !u!4 &1565290299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565290297}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.476074, y: -1.8569336, z: -3.4562988}
+  m_LocalScale: {x: 1.6559409, y: 0.87979007, z: 0.87978995}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 84508998}
+  m_Father: {fileID: 827027048}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1566205780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16775,7 +17348,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1566205783 stripped
 Transform:
@@ -16879,7 +17451,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1574915001 stripped
 Transform:
@@ -16983,7 +17554,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1577818246 stripped
 Transform:
@@ -17025,7 +17595,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 0.70980394, g: 0.909804, b: 0.98823535, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &1582808827
 MeshRenderer:
@@ -17087,13 +17656,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1582808825}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0020731217, y: -0.25281712, z: -0.1369645, w: 0.95776826}
-  m_LocalPosition: {x: -309, y: -565, z: 1176}
-  m_LocalScale: {x: 286.44485, y: 261.56232, z: 350.70615}
+  m_LocalRotation: {x: -0.017860953, y: -0.4783147, z: 0.04651459, w: 0.87677395}
+  m_LocalPosition: {x: -19.824287, y: -2.264903, z: -9.528473}
+  m_LocalScale: {x: 1.754376, y: 2.5396612, z: 2.6241138}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -4.199, y: -29.013, z: -15.19}
+  m_Children:
+  - {fileID: 954143317}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: 4.221, y: -27.862, z: -1.455}
 --- !u!1001 &1586220882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17191,7 +17761,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1586220885 stripped
 Transform:
@@ -17295,7 +17864,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1614557315 stripped
 Transform:
@@ -17399,7 +17967,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1621298448 stripped
 Transform:
@@ -17503,7 +18070,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1622778399 stripped
 Transform:
@@ -17607,7 +18173,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1628892674 stripped
 Transform:
@@ -17719,15 +18284,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &1629615950 stripped
 Transform:
@@ -17831,7 +18393,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: wood logs
   addedByEditorScript: 1
 --- !u!4 &1630740871 stripped
 Transform:
@@ -17935,7 +18496,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1644503240 stripped
 Transform:
@@ -18039,7 +18599,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1664321330 stripped
 Transform:
@@ -18124,6 +18683,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df3166e57c28dce46b60fdc479247dd6, type: 3}
   m_PrefabInstance: {fileID: 1669137351}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1676755178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1676755179}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1676755179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676755178}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066393556}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1679643431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18221,7 +18811,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &1679643434 stripped
 Transform:
@@ -18325,13 +18914,43 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1686908373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df94df318f5381040b28640e1e68cafd, type: 3}
   m_PrefabInstance: {fileID: 1686908370}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1707160491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1707160492}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1707160492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707160491}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 762380089}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1716976541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18429,7 +19048,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1716976544 stripped
 Transform:
@@ -18521,7 +19139,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1721950343 stripped
 Transform:
@@ -18625,7 +19242,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1722924723 stripped
 Transform:
@@ -18729,7 +19345,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1727906949 stripped
 Transform:
@@ -18911,7 +19526,6 @@ MonoBehaviour:
   - materialColor: {r: 0.48113203, g: 1, b: 0.971174, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1747474987 stripped
 Transform:
@@ -19032,7 +19646,6 @@ MonoBehaviour:
   - materialColor: {r: 0, g: 0, b: 0, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Default-Material
   addedByEditorScript: 0
 --- !u!23 &1761915352
 MeshRenderer:
@@ -19219,7 +19832,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1769101012 stripped
 Transform:
@@ -19323,7 +19935,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1770890759 stripped
 Transform:
@@ -19427,7 +20038,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1779442801 stripped
 Transform:
@@ -19609,14 +20219,13 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1804827416 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df94df318f5381040b28640e1e68cafd, type: 3}
   m_PrefabInstance: {fileID: 1804827413}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1822154000
+--- !u!1 &1811409954
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19624,91 +20233,102 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1822154002}
-  - component: {fileID: 1822154001}
+  - component: {fileID: 1811409958}
+  - component: {fileID: 1811409957}
+  - component: {fileID: 1811409956}
+  - component: {fileID: 1811409955}
   m_Layer: 0
-  m_Name: Point Light
+  m_Name: AirshipCubeBeveled (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!108 &1822154001
-Light:
+--- !u!114 &1811409955
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822154000}
+  m_GameObject: {fileID: 1811409954}
   m_Enabled: 1
-  serializedVersion: 11
-  m_Type: 2
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 0.70980394, g: 0.909804, b: 0.98823535, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!23 &1811409956
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811409954}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &1822154002
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1811409957
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811409954}
+  m_Mesh: {fileID: 953869835743886347, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!4 &1811409958
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822154000}
+  m_GameObject: {fileID: 1811409954}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5166135, y: -1.6504967, z: 4.2945547}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.057183545, y: -0.09979913, z: -0.06874526, w: 0.99098146}
+  m_LocalPosition: {x: -9.845453, y: -0.72796285, z: 0.6259085}
+  m_LocalScale: {x: 2.4873922, y: 2.5269654, z: 1.9349751}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 588696744}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 2079965469}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: 0.238, y: 18.748, z: -9.633}
 --- !u!1001 &1835389626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19806,7 +20426,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1835389629 stripped
 Transform:
@@ -19984,13 +20603,43 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &1839612225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: df94df318f5381040b28640e1e68cafd, type: 3}
   m_PrefabInstance: {fileID: 1839612222}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1841513075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1841513076}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1841513076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841513075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1479057486}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1865488395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20088,7 +20737,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1865488398 stripped
 Transform:
@@ -20130,7 +20778,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!23 &1867747556
 MeshRenderer:
@@ -20192,13 +20839,62 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1867747554}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13672058, y: 0.2704413, z: -0.03523943, w: 0.95232725}
-  m_LocalPosition: {x: 2648, y: -528, z: 1657}
-  m_LocalScale: {x: 112.223366, y: 102.474884, z: 185.21472}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -13.966, y: 32.732, z: -8.358}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: 7.855, y: 29.575, z: -0.928}
+--- !u!1 &1870345465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1870345467}
+  - component: {fileID: 1870345466}
+  m_Layer: 0
+  m_Name: AirshipPointlight (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1870345466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870345465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.81886786, g: 0.63982636, b: 0.19003908, a: 1}
+  intensity: 1.64
+  range: 3
+  castShadows: 0
+  highQualityLight: 1
+--- !u!4 &1870345467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870345465}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 827027048}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1878053614
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20374,7 +21070,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &1878418950 stripped
 Transform:
@@ -20478,7 +21173,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: small rocks
   addedByEditorScript: 1
 --- !u!4 &1886974684 stripped
 Transform:
@@ -20582,7 +21276,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1901353810 stripped
 Transform:
@@ -20686,7 +21379,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1927609406 stripped
 Transform:
@@ -20790,13 +21482,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1941487565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 062f0351303c4be4aaddc2d3fa011f76, type: 3}
   m_PrefabInstance: {fileID: 1941487562}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1943772923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943772924}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1943772924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943772923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 116450811}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1953214006
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20894,7 +21616,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1953214009 stripped
 Transform:
@@ -20998,7 +21719,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &1960075214 stripped
 Transform:
@@ -21110,15 +21830,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &1975966383 stripped
 Transform:
@@ -21222,13 +21939,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &1984527655 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 062f0351303c4be4aaddc2d3fa011f76, type: 3}
   m_PrefabInstance: {fileID: 1984527652}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1998174367
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1998174368}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1998174368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998174367}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 733044485}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2006015605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21326,7 +22073,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &2006015608 stripped
 Transform:
@@ -21438,15 +22184,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &2010734120 stripped
 Transform:
@@ -21550,7 +22293,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &2020423312 stripped
 Transform:
@@ -21654,7 +22396,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &2033567982 stripped
 Transform:
@@ -21836,7 +22577,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &2047964034 stripped
 Transform:
@@ -21940,7 +22680,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &2058128556 stripped
 Transform:
@@ -22044,13 +22783,116 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &2059233553 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: af027843f2620ac4ca225b439217209f, type: 3}
   m_PrefabInstance: {fileID: 2059233550}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2066393552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2066393556}
+  - component: {fileID: 2066393555}
+  - component: {fileID: 2066393554}
+  - component: {fileID: 2066393553}
+  m_Layer: 0
+  m_Name: AirshipCubeBeveled (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2066393553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066393552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSettings:
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 0.70980394, g: 0.909804, b: 0.98823535, a: 1}
+    emissiveMix: 1
+  addedByEditorScript: 0
+--- !u!23 &2066393554
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066393552}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2066393555
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066393552}
+  m_Mesh: {fileID: 953869835743886347, guid: bdf2babf7a223774cae5f80a52733f88, type: 3}
+--- !u!4 &2066393556
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066393552}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.14688675, y: -0.085535176, z: -0.022521222, w: 0.98519075}
+  m_LocalPosition: {x: -7.1694303, y: 13.776419, z: 0.2062142}
+  m_LocalScale: {x: 1.3853871, y: 1.4330647, z: 0.85794777}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1676755179}
+  m_Father: {fileID: 186692483}
+  m_LocalEulerAnglesHint: {x: -9.458, y: 20.408, z: -3.417}
 --- !u!1001 &2073102616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22148,13 +22990,43 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   addedByEditorScript: 1
 --- !u!4 &2073102619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 062f0351303c4be4aaddc2d3fa011f76, type: 3}
   m_PrefabInstance: {fileID: 2073102616}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2079965468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2079965469}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2079965469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079965468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1811409958}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2082798895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22256,11 +23128,9 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: StylizedWood
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &2082798898 stripped
 Transform:
@@ -22364,7 +23234,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &2083749635 stripped
 Transform:
@@ -22546,7 +23415,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &2114384643 stripped
 Transform:
@@ -22650,7 +23518,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Stylized_Foliage
   addedByEditorScript: 1
 --- !u!4 &2120154676 stripped
 Transform:
@@ -22832,7 +23699,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &2124292074 stripped
 Transform:
@@ -22936,7 +23802,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: foliage_cards
   addedByEditorScript: 1
 --- !u!4 &2133363904 stripped
 Transform:
@@ -23040,7 +23905,6 @@ MonoBehaviour:
   - materialColor: {r: 0.8584906, g: 1, b: 0.9936784, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: leafs_A
   addedByEditorScript: 1
 --- !u!4 &2147254863 stripped
 Transform:
@@ -23152,15 +24016,12 @@ MonoBehaviour:
   - materialColor: {r: 0.19607845, g: 0.62352943, b: 0.4784314, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: green
   - materialColor: {r: 0.9921569, g: 0.60784316, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: orange
   - materialColor: {r: 0.9843138, g: 0.86274517, b: 0.38823533, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Yellow
   addedByEditorScript: 1
 --- !u!4 &2147419503 stripped
 Transform:
@@ -23176,16 +24037,8 @@ SceneRoots:
   - {fileID: 162644758}
   - {fileID: 853550441}
   - {fileID: 528063947}
-  - {fileID: 744425853}
+  - {fileID: 827027048}
   - {fileID: 1761915355}
   - {fileID: 588696744}
-  - {fileID: 17994777}
-  - {fileID: 733044485}
-  - {fileID: 1138782093}
-  - {fileID: 1582808829}
-  - {fileID: 762380089}
-  - {fileID: 1509308905}
-  - {fileID: 1479057486}
-  - {fileID: 1867747558}
-  - {fileID: 365701061}
-  - {fileID: 116450811}
+  - {fileID: 186692483}
+  - {fileID: 1471668832}

@@ -13,7 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
+  - NUM_LIGHTS_LIGHTS2
   - POINT_FILTER_ON
   - RIM_LIGHT_ON
   - TRIPLANAR_STYLE_WORLD
@@ -143,6 +143,7 @@ Material:
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverrideColor: {r: 0.44298324, g: 0.8415094, b: 0.61551934, a: 1}
     - _RimColor: {r: 0.11070844, g: 0.82641506, b: 0.7266232, a: 1}
+    - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}
     - _SkyShine: {r: 0.4, g: 0.75, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
