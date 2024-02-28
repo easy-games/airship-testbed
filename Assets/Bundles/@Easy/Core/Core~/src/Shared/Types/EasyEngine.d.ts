@@ -130,7 +130,7 @@ declare const enum MobileJoystickPhase {
 	Ended = 2,
 }
 
-interface InputProxy {
+interface InputBridge {
 	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): EngineEventConnection;
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
@@ -161,11 +161,10 @@ interface InputProxy {
 	RegisterKeyCode(keyCode: KeyCode): void;
 	UnregisterKeyCode(keyCode: KeyCode): void;
 }
-
-interface UserInputService {
-	InputProxy: InputProxy;
+interface InputBridgeStatic {
+	Instance: InputBridge;
 }
-declare const UserInputService: UserInputService;
+declare const InputBridge: InputBridgeStatic;
 
 declare const enum Key {
 	None = 0,

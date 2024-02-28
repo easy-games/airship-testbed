@@ -80,7 +80,7 @@ export class HumanoidCameraMode implements CameraMode {
 		touchscreen.pan.Connect((position, phase) => {
 			switch (phase) {
 				case TouchPhase.Began:
-					if (UserInputService.InputProxy.IsPointerOverUI()) {
+					if (InputBridge.Instance.IsPointerOverUI()) {
 						touchOverUI = true;
 					} else {
 						touchOverUI = false;

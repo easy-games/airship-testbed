@@ -136,16 +136,17 @@ export class PlayersSingleton implements OnStart {
 				}
 			});
 
+			print("accessing AuthController:IsAuthenticated", contextbridge.current());
 			const authenticated = contextbridge.invoke<boolean>(
 				"AuthController:IsAuthenticated",
 				LuauContext.Protected,
 			);
 			if (authenticated) {
-				contextbridge.broadcast("FriendsController:SendStatusUpdate", LuauContext.Protected);
+				contextbridge.invoke("FriendsController:SendStatusUpdate", LuauContext.Protected);
 			} else {
 				const disc = contextbridge.subscribe("AuthController:OnAuthenticated", (fromContext, args) => {
 					if (fromContext === LuauContext.Protected) {
-						contextbridge.broadcast("FriendsController:SendStatusUpdate", LuauContext.Protected);
+						contextbridge.invoke("FriendsController:SendStatusUpdate", LuauContext.Protected);
 						disc();
 					}
 				});

@@ -3,5 +3,7 @@ import { CoreRefs } from "./CoreRefs";
 
 CoreRefs.Init();
 
-// Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+require("@Easy/Core/Shared/Resources/TS/CoreBootstrap");
+
+Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 Flamework.Ignite();

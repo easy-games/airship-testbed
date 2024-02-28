@@ -15,7 +15,9 @@ export class AuthController implements OnStart {
 	public readonly onAuthenticated = new Signal<void>();
 	public readonly onSignOut = new Signal<void>();
 
-	constructor() {}
+	constructor() {
+		print("AuthController constructor context=" + contextbridge.current());
+	}
 
 	OnStart(): void {
 		const loginResult = this.TryAutoLogin();
@@ -29,7 +31,8 @@ export class AuthController implements OnStart {
 			}
 		}
 
-		contextbridge.subscribe("AuthController:IsAuthenticated", (from) => {
+		print("creating AuthController:IsAuthenticated", contextbridge.current());
+		contextbridge.callback("AuthController:IsAuthenticated", (from) => {
 			return this.IsAuthenticated();
 		});
 	}
@@ -82,7 +85,7 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_localId", data.user_id);
 			this.authenticated = true;
 			this.onAuthenticated.Fire();
-			contextbridge.broadcast("AuthController:IsAuthenticated");
+			contextbridge.broadcast("AuthController:OnAuthenticated");
 			return true;
 		}
 		print("failed login with refresh token: " + res.error + " statusCode=" + res.statusCode);
@@ -107,7 +110,7 @@ export class AuthController implements OnStart {
 			StateManager.SetString("firebase_localId", data.localId);
 			this.authenticated = true;
 			this.onAuthenticated.Fire();
-			contextbridge.broadcast("AuthController:IsAuthenticated");
+			contextbridge.broadcast("AuthController:OnAuthenticated");
 
 			if (!RunUtil.IsClone()) {
 				AuthManager.SaveAuthAccount(data.refreshToken);
