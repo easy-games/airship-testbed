@@ -102,7 +102,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 0.9809346, b: 0.6273585, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!1 &1906405691871423290
 GameObject:
@@ -132,7 +131,7 @@ Transform:
   m_GameObject: {fileID: 1906405691871423290}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -168,7 +167,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fdd67dd4f109e7845b98ffa8e5b637f4, type: 2}
+  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,10 +202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
+  - materialColor: {r: 0.16353685, g: 0.16423467, b: 0.1981132, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Rubber
   addedByEditorScript: 0
 --- !u!1 &2255719316708110042
 GameObject:
@@ -310,7 +308,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 0.7882353, b: 0.15566039, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!1 &7476174288045454088
 GameObject:
@@ -415,11 +412,9 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 0.78630906, b: 0.15686274, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   - materialColor: {r: 1, g: 0.78823537, b: 0.15686275, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!1 &7758170433421606984
 GameObject:
@@ -523,7 +518,6 @@ MonoBehaviour:
   - materialColor: {r: 0.9245283, g: 0.608307, b: 0.31835172, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!1 &7786710824079278753
 GameObject:
@@ -627,7 +621,6 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 0.7882353, b: 0.15566039, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!1 &8596552198816704982
 GameObject:
@@ -679,7 +672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessoryId: fbfc0590-62c0-4493-a009-37722f3cf09f
+  serverClassId: fbfc0590-62c0-4493-a009-37722f3cf09f
+  serverInstanceId: 
   accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 0
