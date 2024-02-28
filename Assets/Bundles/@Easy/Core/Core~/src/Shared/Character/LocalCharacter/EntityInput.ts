@@ -40,7 +40,7 @@ export class CharacterInput {
 	}
 
 	public IsSprinting(): boolean {
-		return this.autoSprinting;
+		return this.autoSprinting || Airship.input.IsDown("Sprint");
 	}
 
 	public AddDisabler(): () => void {
