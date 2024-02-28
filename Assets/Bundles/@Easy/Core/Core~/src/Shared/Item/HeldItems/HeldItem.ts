@@ -138,6 +138,19 @@ export class HeldItem {
 	 */
 	public OnLoadAssets(): void {}
 
+	/**
+	 * Returns an array of ActiveAccessories.
+	 * If the character is in first person, these will be the viewmodel accessories. Otherwise, they are the worldmodel accessories.
+	 *
+	 * @returns ActiveAccessories that are enabled in the scene.
+	 */
+	public GetActiveAccessories(): ActiveAccessory[] {
+		if (RunUtil.IsClient() && this.character.IsLocalCharacter() && this.character.animator.IsFirstPerson()) {
+			return this.activeAccessoriesViewmodel;
+		}
+		return this.activeAccessoriesWorldmodel;
+	}
+
 	public OnUnEquip() {
 		this.Log("OnUnEquip");
 		this.holdingDownBin.Clean();

@@ -1,5 +1,5 @@
-import { OnStart } from "../../../../Shared/Flamework";
 import Character from "../../../../Shared/Character/Character";
+import { OnStart } from "../../../../Shared/Flamework";
 export declare class NametagController implements OnStart {
     private readonly nameTageId;
     private readonly graphicsBundleName;

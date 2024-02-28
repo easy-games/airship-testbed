@@ -11,4 +11,5 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
     SetButtonColor(newColor: Color): void;
     SetIconColor(newColor: Color): void;
     SetHighlight(highlightOn: boolean): void;
+    SetEnabled(enabled: boolean): void;
 }

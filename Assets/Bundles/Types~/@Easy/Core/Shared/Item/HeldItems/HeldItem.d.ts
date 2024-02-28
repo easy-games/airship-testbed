@@ -37,6 +37,13 @@ export declare class HeldItem {
      * Called when the HeldItem's art assets (such as animations) should be loaded.
      */
     OnLoadAssets(): void;
+    /**
+     * Returns an array of ActiveAccessories.
+     * If the character is in first person, these will be the viewmodel accessories. Otherwise, they are the worldmodel accessories.
+     *
+     * @returns ActiveAccessories that are enabled in the scene.
+     */
+    GetActiveAccessories(): ActiveAccessory[];
     OnUnEquip(): void;
     OnCallToActionStart(): void;
     private HoldDownAction;

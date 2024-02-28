@@ -11979,7 +11979,9 @@ interface AccessoryBuilder extends MonoBehaviour {
     GetCombinedStaticMesh(): MeshRenderer;
     RemoveAccessories(): void;
     RemoveAccessorySlot(slot: AccessorySlot, rebuildMeshImmediately: boolean): void;
+    RemoveClothingAccessories(): void;
     SetAccessoryColor(slot: AccessorySlot, color: Color, rebuildMeshImmediately: boolean): void;
+    SetFaceTexture(texture: Texture2D): void;
     SetSkinColor(color: Color, rebuildMeshImmediately: boolean): void;
     TryCombineMeshes(): void;
     UpdateAccessoryLayers(): void;
@@ -12106,12 +12108,28 @@ declare const AccessorySkin: AccessorySkinConstructor;
     
 interface AccessoryOutfit extends ScriptableObject {
     accessories: CSArray<AccessoryComponent>;
+    faceDecal: AccessoryFace;
     customSkin: AccessorySkin;
     forceSkinColor: boolean;
     skinColor: Color;
 
 
 }
+    
+interface AccessoryFace extends ScriptableObject {
+    serverClassId: string;
+    serverInstanceId: string;
+    decalTexture: Texture2D;
+
+
+}
+    
+interface AccessoryFaceConstructor {
+
+    new(): AccessoryFace;
+
+}
+declare const AccessoryFace: AccessoryFaceConstructor;
     
 interface AccessoryOutfitConstructor {
 
@@ -15679,4 +15697,19 @@ interface ColliderRollbackConstructor {
 
 }
 declare const ColliderRollback: ColliderRollbackConstructor;
+    
+interface AvatarAccessoryCollection extends ScriptableObject {
+    accessories: CSArray<AccessoryComponent>;
+    faces: CSArray<AccessoryFace>;
+    skinColors: CSArray<Color>;
+
+
+}
+    
+interface AvatarAccessoryCollectionConstructor {
+
+    new(): AvatarAccessoryCollection;
+
+}
+declare const AvatarAccessoryCollection: AvatarAccessoryCollectionConstructor;
 

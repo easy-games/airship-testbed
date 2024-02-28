@@ -6,10 +6,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private readonly tweenDuration;
     itemButtonTemplate?: GameObject;
     canvas?: Canvas;
+    mainCanvasGroup: CanvasGroup;
     avatarRenderHolder?: GameObject;
     avatarCenterRect?: RectTransform;
     categoryLabelTxt?: TextMeshProUGUI;
     mainContentHolder?: Transform;
+    profilePicGO?: GameObject;
     outfitButtonHolder: Transform;
     mainNavButtonHolder: Transform;
     private outfitBtns;
@@ -24,6 +26,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private clientId;
     private selectedAccessories;
     private selectedColor;
+    private selectedFaceId;
+    private bin;
+    private mouse;
+    private saveBtn?;
+    private currentFocusedSlot;
+    private avatarRenderRig?;
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
     private RefreshAvatar;
@@ -33,6 +41,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private SelectSubNav;
     private DisplayItemsOfType;
     private DisplayItems;
+    private DisplayFaceItems;
     private itemButtonBin;
     private ClearItembuttons;
     private DisplayColorScheme;
@@ -40,6 +49,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private AddColorButton;
     private AddItemButton;
     private SelectItem;
+    private SelectFaceItem;
     private SelectSkinItem;
     private SelectSkinColor;
     private RemoveItem;

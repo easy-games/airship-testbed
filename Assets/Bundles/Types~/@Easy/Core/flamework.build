@@ -114,6 +114,7 @@
 		"@Easy/Core:Client/Components/HomePage/HomePageComponent@HomePageComponent": "$:Components/HomePage/HomePageComponent@HomePageComponent",
 		"@Easy/Core:Shared/Avatar/AvatarViewComponent@AvatarViewComponent": "$:Avatar/AvatarViewComponent@AvatarViewComponent",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn": "$:MainMenuControllers/AvatarMenu/AvatarMenuBtn@AvatarMenuBtn",
+		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent@AvatarRenderComponent": "$:MainMenuControllers/AvatarMenu/AvatarRenderComponent@AvatarRenderComponent",
 		"@Easy/Core:Client/MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent": "$:MainMenuControllers/AvatarMenu/AvatarMenuComponent@AvatarMenuComponent",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuController@MainMenuController": "$:MainMenuControllers/MainMenuController@MainMenuController",
 		"@Easy/Core:Client/MainMenuControllers/Social/FriendsController@FriendsController": "$:MainMenuControllers/Social/FriendsController@FriendsController",
