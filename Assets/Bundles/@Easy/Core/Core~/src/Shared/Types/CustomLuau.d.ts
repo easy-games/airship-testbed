@@ -36,5 +36,6 @@ declare namespace contextbridge {
 	function callback(topic: string, callback: Callback): void;
 
 	/** Invoke a callback within `toContext` for `topic`. */
-	function invoke(topic: string, toContext: LuauContext, ...args: unknown[]): LuaTuple<unknown[]>;
+	type InvokeResponse = T extends unknown[] ? LuaTuple<T> : T;
+	function invoke<InvokeResponse>(topic: string, toContext: LuauContext, ...args: unknown[]): InvokeResponse;
 }

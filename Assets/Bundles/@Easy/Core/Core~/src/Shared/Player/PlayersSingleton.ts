@@ -1,7 +1,5 @@
 import { UserController } from "@Easy/Core/Client/MainMenuControllers/User/UserController";
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { AuthController } from "Client/MainMenuControllers/Auth/AuthController";
-import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreNetwork } from "Shared/CoreNetwork";
@@ -123,8 +121,6 @@ export class PlayersSingleton implements OnStart {
 	}
 
 	private InitClient(): void {
-		const authController = Dependency<AuthController>();
-		const friendsController = Dependency<FriendsController>();
 		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId, organizationId) => {
 			// this.localConnection = InstanceFinder.ClientManager.Connection;
 			// this.clientId = this.localConnection.ClientId;
@@ -140,11 +136,18 @@ export class PlayersSingleton implements OnStart {
 				}
 			});
 
-			if (authController.IsAuthenticated()) {
-				friendsController.SendStatusUpdate();
+			const authenticated = contextbridge.invoke<boolean>(
+				"AuthController:IsAuthenticated",
+				LuauContext.Protected,
+			);
+			if (authenticated) {
+				contextbridge.broadcast("FriendsController:SendStatusUpdate", LuauContext.Protected);
 			} else {
-				authController.onAuthenticated.Once(() => {
-					friendsController.SendStatusUpdate();
+				const disc = contextbridge.subscribe("AuthController:OnAuthenticated", (fromContext, args) => {
+					if (fromContext === LuauContext.Protected) {
+						contextbridge.broadcast("FriendsController:SendStatusUpdate", LuauContext.Protected);
+						disc();
+					}
 				});
 			}
 		});
