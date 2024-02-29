@@ -118,13 +118,15 @@ export class Player {
 		if (!this.outfitLoaded) {
 			// Load in outfit after spawn if it's not already downloaded
 			task.spawn(() => {
-				// let startTime = Time.time;
+				let startTime = Time.time;
 				this.WaitForOutfitLoaded();
 				if (characterComponent.IsAlive()) {
-					// let diff = Time.time - startTime;
-					// if (diff > 0) {
-					// 	print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
-					// }
+					if (RunUtil.IsInternal()) {
+						let diff = Time.time - startTime;
+						if (diff > 0) {
+							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
+						}
+					}
 					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
 						characterComponent.id,
 						this.selectedOutfit,
