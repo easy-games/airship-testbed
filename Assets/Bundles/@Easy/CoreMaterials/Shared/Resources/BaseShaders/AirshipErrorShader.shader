@@ -25,6 +25,8 @@ Shader "Hidden/AirshipErrorShader"
 
             float4x4 unity_MatrixVP;
             float4x4 unity_ObjectToWorld;
+
+            float4 _RealTime;
  
         
             struct Attributes
@@ -37,6 +39,7 @@ Shader "Hidden/AirshipErrorShader"
             {
                 float4 positionCS : SV_POSITION;
                 float4 localPos : TEXCOORD1;
+                float4 worldPos : TEXCOORD2;
 				float3 color: COLOR;
             };
 
@@ -52,19 +55,25 @@ Shader "Hidden/AirshipErrorShader"
                 float4 worldPos = mul(unity_ObjectToWorld, input.positionOS);
 
                 output.positionCS = mul(unity_MatrixVP, worldPos);
-			 
+			    
+                
                 //do a couple fake lights
-                float3 lighting = float3(0, 0, 0);
+                float3 lighting = float3(0.2, 0.2, 0.2);
 
                 //Ambient
-                lighting += DoLight(float3(-1.5, -1, -1), float3(0.5, 0.5, 0.49), input.normal);
-                lighting += DoLight(float3(1.5, 1, 1), float3(0.49, 0.49, 0.5), input.normal);
+                lighting += DoLight(float3(-1.5, -1, -1), float3(0.25, 0.25, 0.25), input.normal);
+                lighting += DoLight(float3(1.5, -1, 1), float3(0.25, 0.25, 0.25), input.normal);
+                lighting += DoLight(float3(1, 1.5, 1), float3(0.25, 0.25, 0.25), input.normal);
 
                 //top
-				lighting += DoLight(float3(0, -1, 0), float3(0.9,0.9,1)*0.2, input.normal);
+				lighting += DoLight(float3(0, 0, -1), float3(1,1,1), input.normal);
                 
+                
+
                 output.color = lighting;
                 output.localPos = float4(input.positionOS.xyz,0);
+
+				output.worldPos = worldPos;
                 return output;
             }
 
@@ -73,10 +82,30 @@ Shader "Hidden/AirshipErrorShader"
              
             float4 fragFunction(vertToFrag input) : SV_TARGET
             {
-			   float3 color = input.color;
-                                
-                return float4(color.x, color.y, color.z ,1);
+                float3 color = input.color;
+
+                // Adjusting the scale factor to control the size of the checkers
+                float scale = 2.0;
+                // Apply a smooth continuous animation by using a sine function or similar
+                // This avoids abrupt changes in the checker pattern's parity
+                float3 animatedOffset = float3(_RealTime.x, _RealTime.x, _RealTime.x) * 0.5; // Example animation
+                float3 coord = (input.worldPos.xyz + animatedOffset) * scale;
+
+                // Checker calculation
+                int checkerX = int(floor(coord.x)) % 2;
+                int checkerY = int(floor(coord.y)) % 2;
+                int checkerZ = int(floor(coord.z)) % 2;
+
+                // Compute the checker pattern based on XOR operations to ensure consistent volumes
+                bool isChecker = (checkerX ^ checkerY ^ checkerZ) == 0;
+
+                // Use the checker pattern to blend between the original color and a magenta color
+                float checkerMask = isChecker ? 1.0 : 0.0;
+                color = lerp(color * 0.2, color * float3(1, 0, 1), checkerMask);
+
+                return float4(color, 1);
             }
+
             ENDHLSL
         }
     }
