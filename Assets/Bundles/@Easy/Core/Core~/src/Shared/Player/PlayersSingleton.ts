@@ -266,9 +266,6 @@ export class PlayersSingleton implements OnStart {
 		// this.outfitFetchTime.set(player.userId, os.time());
 
 		let userId = player.userId;
-		if (!RunUtil.IsEditor()) {
-			print("fetching outfit for " + userId);
-		}
 		if (RunUtil.IsEditor() && player.IsLocalPlayer()) {
 			Dependency<UserController>().WaitForLocalUserReady();
 			let uid = Dependency<UserController>().localUser?.uid;
@@ -284,15 +281,12 @@ export class PlayersSingleton implements OnStart {
 			return;
 		}
 		if (res.data.size() === 0) {
-			if (!RunUtil.IsEditor()) {
-				print("Empty outfit.");
-			}
 			SetOutfit(undefined);
 			return;
 		}
 		const outfitDto = DecodeJSON<OutfitDto>(res.data);
 		if (!RunUtil.IsEditor()) {
-			print("outfit: " + res.data);
+			// print("outfit: " + res.data);
 		}
 		SetOutfit(outfitDto);
 	}

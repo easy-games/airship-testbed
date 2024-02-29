@@ -127,6 +127,7 @@ export class Player {
 							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
 						}
 					}
+					characterComponent.outfitDto = this.selectedOutfit;
 					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
 						characterComponent.id,
 						this.selectedOutfit,
