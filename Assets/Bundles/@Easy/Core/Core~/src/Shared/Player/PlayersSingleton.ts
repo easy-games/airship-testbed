@@ -234,6 +234,7 @@ export class PlayersSingleton implements OnStart {
 
 			if (Airship.characters.allowMidGameOutfitChanges && player.character) {
 				const outfitDto = player.selectedOutfit;
+				player.character.outfitDto = outfitDto;
 				CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
 			}
 		});
