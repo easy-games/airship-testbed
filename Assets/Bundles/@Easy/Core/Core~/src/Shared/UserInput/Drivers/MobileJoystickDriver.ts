@@ -12,11 +12,11 @@ export class MobileJoystickDriver {
 	}
 
 	public SetVisible(visible: boolean) {
-		InputBridge.Instance.SetMobileJoystickVisible(visible);
+		// InputBridge.Instance.SetMobileJoystickVisible(visible);
 	}
 
 	public IsVisible() {
-		return InputBridge.Instance.IsMobileJoystickVisible();
+		// return InputBridge.Instance.IsMobileJoystickVisible();
 	}
 
 	/** **NOTE:** Internal only. Use `Touchscreen` class instead. */
