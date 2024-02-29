@@ -1,7 +1,7 @@
+import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal } from "Shared/Util/Signal";
 import { PointerButtonSignal } from "./Signals/PointerButtonSignal";
 import { ScrollSignal } from "./Signals/ScrollSignal";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
 
 export class MouseDriver {
 	private static inst: MouseDriver;
@@ -13,7 +13,7 @@ export class MouseDriver {
 	public readonly moved = new Signal<[location: Vector3]>();
 	// public readonly Delta = new Signal<[delta: Vector3]>();
 
-	private readonly inputProxy = UserInputService.InputProxy;
+	private readonly inputProxy = InputBridge.Instance;
 
 	private constructor() {
 		this.inputProxy.OnLeftMouseButtonPressEvent((isDown) => {

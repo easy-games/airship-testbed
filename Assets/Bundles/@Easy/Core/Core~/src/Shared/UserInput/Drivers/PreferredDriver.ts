@@ -3,7 +3,7 @@ import { Signal } from "Shared/Util/Signal";
 export class PreferredDriver {
 	private static inst: PreferredDriver;
 
-	private scheme = UserInputService.InputProxy.GetScheme();
+	private scheme = InputBridge.Instance.GetScheme();
 
 	public readonly schemeChanged = new Signal<[scheme: string]>();
 

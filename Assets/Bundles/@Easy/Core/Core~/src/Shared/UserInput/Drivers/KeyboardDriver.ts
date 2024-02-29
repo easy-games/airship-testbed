@@ -18,7 +18,7 @@ export class KeyboardDriver {
 	private static inst: KeyboardDriver;
 
 	private constructor() {
-		UserInputService.InputProxy.OnKeyPressEvent((key, isDown) => {
+		InputBridge.Instance.OnKeyPressEvent((key, isDown) => {
 			// const uiSelected = CanvasAPI.GetSelectedInstanceId() !== undefined;
 			const uiSelected = EventSystem.current.currentSelectedGameObject !== undefined;
 			if (isDown) {
@@ -41,7 +41,7 @@ export class KeyboardDriver {
 		let count = this.keyDownCounter.get(key);
 		if (count === undefined) {
 			count = 0;
-			UserInputService.InputProxy.RegisterKeyCode(key);
+			InputBridge.Instance.RegisterKeyCode(key);
 		}
 		count++;
 		this.keyDownCounter.set(key, count);
@@ -66,7 +66,7 @@ export class KeyboardDriver {
 			const newCount = (this.keyDownCounter.get(key) ?? 0) - 1;
 			if (newCount <= 0) {
 				this.keyDownCounter.delete(key);
-				UserInputService.InputProxy.UnregisterKeyCode(key);
+				InputBridge.Instance.UnregisterKeyCode(key);
 			} else {
 				this.keyDownCounter.set(key, newCount);
 			}
@@ -77,7 +77,7 @@ export class KeyboardDriver {
 		let count = this.keyUpCounter.get(key);
 		if (count === undefined) {
 			count = 0;
-			UserInputService.InputProxy.RegisterKeyCode(key);
+			InputBridge.Instance.RegisterKeyCode(key);
 		}
 		count++;
 		this.keyUpCounter.set(key, count);
@@ -102,7 +102,7 @@ export class KeyboardDriver {
 			const newCount = (this.keyUpCounter.get(key) ?? 0) - 1;
 			if (newCount <= 0) {
 				this.keyUpCounter.delete(key);
-				UserInputService.InputProxy.UnregisterKeyCode(key);
+				InputBridge.Instance.UnregisterKeyCode(key);
 			} else {
 				this.keyUpCounter.set(key, newCount);
 			}

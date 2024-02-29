@@ -1,6 +1,6 @@
-import { Dependency } from "Shared/Flamework";
 import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
+import { Dependency } from "Shared/Flamework";
 import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -66,7 +66,7 @@ export class OrbitCameraMode implements CameraMode {
 		touchscreen.pan.Connect((position, phase) => {
 			switch (phase) {
 				case TouchPhase.Began:
-					if (UserInputService.InputProxy.IsPointerOverUI()) {
+					if (InputBridge.Instance.IsPointerOverUI()) {
 						touchOverUI = true;
 					} else {
 						touchOverUI = false;
