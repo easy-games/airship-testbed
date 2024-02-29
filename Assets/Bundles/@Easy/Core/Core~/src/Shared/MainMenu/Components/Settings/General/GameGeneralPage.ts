@@ -21,10 +21,7 @@ export default class GameGeneralPage extends AirshipBehaviour {
 			Bridge.UpdateLayout(this.gameDescription.transform.parent!, false);
 
 			let gameImageUrl = AirshipUrl.CDN + "/images/" + gameData.iconImageId + ".png";
-			print("gameImage: " + this.gameImage?.name);
 			const cloudImage = this.gameImage.GetComponent<CloudImage>();
-			print("cloud image: " + cloudImage?.name);
-			print("bin: " + this.bin);
 			cloudImage.url = gameImageUrl;
 			this.bin.AddEngineEventConnection(
 				cloudImage.OnFinishedLoading((success) => {
