@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e7e988a1fa245d40abc74de0b80620b, type: 3}
-  m_Name: FaceDecal03
+  m_Name: FaceDecal06
   m_EditorClassIdentifier: 
-  serverClassId: 60547b39-9a8a-4eb5-921d-b746c3e5986d
+  serverClassId: 43f8605b-733d-4de4-9376-bafed3901972
   serverInstanceId: 
-  decalTexture: {fileID: 2800000, guid: f508002b7555cfc45991d25ad3de6211, type: 3}
+  decalTexture: {fileID: 2800000, guid: a9f4b0441acffa84cb0c2bcd716d1679, type: 3}

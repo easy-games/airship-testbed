@@ -79,16 +79,23 @@ export class AvatarUtil {
 				this.allAvatarClasses.set(itemData.class.classId, itemData.class);
 				//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
 				let item = this.allAvatarAccessories.get(itemData.class.classId);
+				let foundMatchingItem = false;
 				if (item) {
 					//print("Found item: " + item.gameObject.name + ": " + itemData.class.classId);
 					item.SetInstanceId(itemData.instanceId);
 					this.AddAvailableAvatarItem(item);
+					foundMatchingItem = true;
 				} else {
 					let faceItem = this.allAvatarFaces.get(itemData.class.classId);
 					if (faceItem) {
 						faceItem.serverInstanceId = itemData.instanceId;
 						this.AddAvailableFaceItem(faceItem);
+						foundMatchingItem = true;
 					}
+				}
+
+				if (!foundMatchingItem) {
+					print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
 				}
 			});
 		}
