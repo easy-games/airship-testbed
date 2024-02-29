@@ -9,7 +9,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public avatarHolder?: Transform;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
-	public testTransform?: Transform;
 
 	public cameraWaypointDefault?: Transform;
 	public cameraWaypointHead?: Transform;
@@ -189,7 +188,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			return;
 		}
 
-		print("Aligning to: " + screenPos);
+		//print("Aligning to: " + screenPos);
 		this.cameraRigTransform.localPosition = Vector3.zero;
 		if (this.cameraWaypointDefault) {
 			this.avatarCamera.transform.position = this.cameraWaypointDefault.position;
@@ -198,10 +197,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		let worldspace = this.avatarCamera.ScreenToWorldPoint(
 			new Vector3(screenPos.x, screenPos.y, this.screenspaceDistance),
 		);
-		print("worldspace align: " + worldspace);
-		if (this.testTransform) {
-			this.testTransform.position = worldspace;
-		}
+		//print("worldspace align: " + worldspace);
 		let diff = this.cameraRigTransform.position.sub(worldspace);
 		this.cameraRigTransform.position = this.cameraRigTransform.position
 			.add(new Vector3(diff.x, diff.y, 0))

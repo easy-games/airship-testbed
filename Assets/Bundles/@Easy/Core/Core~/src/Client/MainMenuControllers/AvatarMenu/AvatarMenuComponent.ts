@@ -318,14 +318,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				return;
 			case 2:
 				//HAIR
-				targetSlot = AccessorySlot.Root;
+				targetSlot = AccessorySlot.Hair;
 				break;
 			case 3:
 				//HEAD
 				switch (subIndex) {
 					case 0:
 						targetSlot = AccessorySlot.Head;
-						this.DisplayItemsOfType(AccessorySlot.Hair);
+						this.DisplayItemsOfType(AccessorySlot.Face);
+						this.DisplayItemsOfType(AccessorySlot.Ears);
+						this.DisplayItemsOfType(AccessorySlot.Nose);
 						break;
 					case 1:
 						targetSlot = AccessorySlot.Ears;
@@ -340,6 +342,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				switch (subIndex) {
 					case 0:
 						targetSlot = AccessorySlot.Torso;
+						this.DisplayItemsOfType(AccessorySlot.Backpack);
+						this.DisplayItemsOfType(AccessorySlot.TorsoOuter);
+						this.DisplayItemsOfType(AccessorySlot.TorsoInner);
+						this.DisplayItemsOfType(AccessorySlot.Neck);
 						break;
 					case 1:
 						targetSlot = AccessorySlot.TorsoOuter;
@@ -420,7 +426,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private DisplayItems(items: AccessoryComponent[]) {
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
-				this.AddItemButton(value.serverClassId, value.serverInstanceId, value.name, () => {
+				this.AddItemButton(value.serverClassId, value.GetServerInstanceId(), value.name, () => {
 					//Accessory
 					this.SelectItem(value);
 				});
@@ -543,7 +549,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (!acc) {
 			return;
 		}
-		const alreadySelected = this.activeAccessories.get(acc.GetSlotNumber()) === acc.serverInstanceId;
+		const alreadySelected = this.activeAccessories.get(acc.GetSlotNumber()) === acc.GetServerInstanceId();
 		this.RemoveItem(acc.GetSlotNumber(), instantRefresh);
 		if (alreadySelected) {
 			//Already selected this item so just deselect it
@@ -552,8 +558,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.Log("Selecting item: " + acc.ToString());
 		this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(acc, instantRefresh);
-		this.activeAccessories.set(acc.GetSlotNumber(), acc.serverInstanceId);
-		this.selectedAccessories.set(acc.serverInstanceId, true);
+		this.activeAccessories.set(acc.GetSlotNumber(), acc.GetServerInstanceId());
+		this.selectedAccessories.set(acc.GetServerInstanceId(), true);
 		this.UpdateButtonGraphics();
 		this.saveBtn?.SetEnabled(true);
 	}
@@ -743,13 +749,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
 		let accessoryIds: string[] = [];
 		if (accBuilder) {
-			let accs = accBuilder.GetActiveAccessories();
-			for (let i = 0; i < accs.Length; i++) {
-				const instanceId = accs.GetValue(i).AccessoryComponent.serverInstanceId;
+			for (const [key, value] of this.selectedAccessories) {
+				const instanceId = key;
 				if (instanceId === "") {
 					warn("Trying to save avatar accessory without a proper instance ID");
+					continue;
 				}
-				accessoryIds[i] = instanceId;
+				accessoryIds.push(instanceId);
 			}
 			accessoryIds.push(this.selectedFaceId);
 		}

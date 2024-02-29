@@ -81,7 +81,7 @@ export class AvatarUtil {
 				let item = this.allAvatarAccessories.get(itemData.class.classId);
 				if (item) {
 					//print("Found item: " + item.gameObject.name + ": " + itemData.class.classId);
-					item.serverInstanceId = itemData.instanceId;
+					item.SetInstanceId(itemData.instanceId);
 					this.AddAvailableAvatarItem(item);
 				} else {
 					let faceItem = this.allAvatarFaces.get(itemData.class.classId);
