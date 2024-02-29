@@ -61,7 +61,6 @@ export class MainMenuController implements OnStart {
 		).GetComponent<AvatarViewComponent>();
 
 		if (Game.context === CoreContext.GAME) {
-			print("HIDING AVATAR");
 			this.avatarView.HideAvatar();
 		} else {
 			this.open = true;
@@ -117,7 +116,6 @@ export class MainMenuController implements OnStart {
 		if (!this.open) return;
 		this.open = false;
 
-		print("HIDING AVATAR");
 		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();
 
