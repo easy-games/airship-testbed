@@ -209,13 +209,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.targetTransform = this.cameraWaypointDefault;
 		if (
 			slotType === AccessorySlot.Head ||
-			slotType === AccessorySlot.Face ||
 			slotType === AccessorySlot.Hair ||
 			slotType === AccessorySlot.Neck ||
 			slotType === AccessorySlot.Ears ||
 			slotType === AccessorySlot.Nose
 		) {
-			this.targetTransform = this.cameraWaypointHead;
+			// this.targetTransform = this.cameraWaypointHead;
 		} else if (
 			slotType === AccessorySlot.Feet ||
 			slotType === AccessorySlot.Waist ||
@@ -234,7 +233,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			slotType === AccessorySlot.Torso ||
 			slotType === AccessorySlot.HandsOuter
 		) {
-			this.targetTransform = this.cameraWaypointHands;
+			// this.targetTransform = this.cameraWaypointHands;
 		} else if (slotType === AccessorySlot.Backpack) {
 			this.targetTransform = this.cameraWaypointBack;
 		}

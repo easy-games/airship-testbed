@@ -102,7 +102,6 @@ MonoBehaviour:
   - materialColor: {r: 0.9245283, g: 0.608307, b: 0.31835172, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!1 &2435968904347071106
 GameObject:
@@ -130,7 +129,7 @@ Transform:
   m_GameObject: {fileID: 2435968904347071106}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -1.277, z: 0.15}
+  m_LocalPosition: {x: -0, y: -1.408, z: 0.199}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -153,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessoryId: 8a381cba-ee31-4131-92a0-4d3739783ba3
+  serverClassId: 8a381cba-ee31-4131-92a0-4d3739783ba3
   accessorySlot: 15
   visibilityMode: 0
   skinnedToCharacter: 0
@@ -261,15 +260,12 @@ MonoBehaviour:
   - materialColor: {r: 0.8396226, g: 0.7363387, b: 0.32079923, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   - materialColor: {r: 0.6933962, g: 0.96743804, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
   - materialColor: {r: 0.69411767, g: 0.9686275, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Metal_Clean
   addedByEditorScript: 0
 --- !u!1 &6936057916772717457
 GameObject:
@@ -373,7 +369,6 @@ MonoBehaviour:
   - materialColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Rubber
   addedByEditorScript: 0
 --- !u!1 &7074112882997923367
 GameObject:
@@ -477,7 +472,6 @@ MonoBehaviour:
   - materialColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   addedByEditorScript: 0
 --- !u!1 &7760243453147594046
 GameObject:
@@ -581,5 +575,4 @@ MonoBehaviour:
   - materialColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Rubber
   addedByEditorScript: 0
