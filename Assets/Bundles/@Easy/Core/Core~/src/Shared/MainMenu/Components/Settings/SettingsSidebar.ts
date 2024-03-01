@@ -3,7 +3,6 @@ import { Game } from "@Easy/Core/Shared/Game";
 import SettingsTabButton from "./SettingsTabButton";
 
 export default class SettingsSidebar extends AirshipBehaviour {
-	public disconnectBtn!: GameObject;
 	public gameHomeTab!: GameObject;
 
 	private tabBtns: SettingsTabButton[] = [];
@@ -18,7 +17,6 @@ export default class SettingsSidebar extends AirshipBehaviour {
 		if (Game.context === CoreContext.GAME) {
 			this.SetSelectedTab(this.tabBtns[0]);
 		} else {
-			this.disconnectBtn.SetActive(false);
 			this.gameHomeTab.SetActive(false);
 			this.SetSelectedTab(this.tabBtns[1]);
 		}

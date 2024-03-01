@@ -51,6 +51,7 @@ export class MainMenuNavbarController implements OnStart {
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
+		const disconnectButton = refs.GetValue("UI", "DisconnectButton");
 
 		this.refreshButton = refs.GetValue("UI", "RefreshPageButton").GetAirshipComponent<NavbarControlButton>()!;
 		CanvasAPI.OnClickEvent(this.refreshButton.gameObject, () => {
@@ -61,6 +62,7 @@ export class MainMenuNavbarController implements OnStart {
 			settingsButton.SetActive(false);
 		} else {
 			runningGameButton.SetActive(false);
+			disconnectButton.SetActive(false);
 		}
 
 		CoreUI.SetupButton(homeButton, { noHoverSound: true });
