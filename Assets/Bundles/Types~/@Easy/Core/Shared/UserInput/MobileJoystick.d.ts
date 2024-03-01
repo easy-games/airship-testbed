@@ -5,7 +5,7 @@ export declare class MobileJoystick {
     /** Fires when the position of the joystick changes, including when it's released. */
     readonly changed: Signal<[position: Vector3, phase: MobileJoystickPhase]>;
     /** Returns `true` if the mobile joystick is visible. */
-    IsVisible(): boolean;
+    IsVisible(): void;
     /** Set the visibility of the mobile joystick. */
     SetVisible(visible: boolean): void;
     constructor();

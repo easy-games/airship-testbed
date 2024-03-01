@@ -25,6 +25,8 @@ type RemoteFunctionCallback<TX, RX> = (player: Player, ...args: RemoteParamsToSe
 const RF_ID_OFFSET = 1000000;
 let ID_COUNTER = 0;
 
+const packageMap = new Map<number, number>();
+
 class RemoteFunctionClient<TX extends unknown[] | unknown, RX extends unknown[] | unknown> {
 	private listening = false;
 	private sendId = 0;
@@ -79,9 +81,19 @@ export class RemoteFunction<TX extends unknown[] | unknown, RX extends unknown[]
 	public readonly server: RemoteFunctionServer<TX, RX>;
 	public readonly client: RemoteFunctionClient<TX, RX>;
 
-	constructor() {
-		let id = ID_COUNTER;
-		ID_COUNTER++;
+	constructor(packageOffset?: number) {
+		let id: number;
+		if (packageOffset !== undefined) {
+			if (packageMap.has(packageOffset)) {
+				id = packageMap.get(packageOffset)! + 1;
+			} else {
+				id = packageOffset;
+			}
+			packageMap.set(packageOffset, id);
+		} else {
+			id = ID_COUNTER++;
+		}
+
 		id += RF_ID_OFFSET;
 		this.server = new RemoteFunctionServer(id);
 		this.client = new RemoteFunctionClient(id);

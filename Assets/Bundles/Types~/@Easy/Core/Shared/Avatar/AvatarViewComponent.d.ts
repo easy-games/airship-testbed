@@ -4,7 +4,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     avatarHolder?: Transform;
     cameraRigTransform?: Transform;
     avatarCamera?: Camera;
-    testTransform?: Transform;
     cameraWaypointDefault?: Transform;
     cameraWaypointHead?: Transform;
     cameraWaypointFeet?: Transform;
