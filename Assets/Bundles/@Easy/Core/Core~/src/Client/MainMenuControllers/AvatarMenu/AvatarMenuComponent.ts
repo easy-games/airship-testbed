@@ -343,12 +343,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private DisplayItems(items: AccessoryComponent[]) {
+	private DisplayItems(items: { instanceId: string; item: AccessoryComponent }[]) {
 		if (items && items.size() > 0) {
 			items.forEach((value) => {
-				this.AddItemButton(value.serverClassId, value.GetServerInstanceId(), value.name, () => {
+				this.AddItemButton(value.item.serverClassId, value.instanceId, value.name, () => {
 					//Accessory
-					this.SelectItem(value);
+					this.SelectItem(value.instanceId, value.item);
 				});
 			});
 		} else {
@@ -467,21 +467,22 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private SelectItem(acc?: AccessoryComponent, instantRefresh = true) {
-		if (!acc) {
+	private SelectItem(instanceId: string, accTemplate?: AccessoryComponent, instantRefresh = true) {
+		if (!accTemplate) {
 			return;
 		}
-		const alreadySelected = this.activeAccessories.get(acc.GetSlotNumber()) === acc.GetServerInstanceId();
-		this.RemoveItem(acc.GetSlotNumber(), instantRefresh);
+		const alreadySelected = this.activeAccessories.get(accTemplate.GetSlotNumber()) === instanceId;
+		this.RemoveItem(accTemplate.GetSlotNumber(), instantRefresh);
 		if (alreadySelected) {
 			//Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
 			return;
 		}
-		this.Log("Selecting item: " + acc.ToString());
-		this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(acc, instantRefresh);
-		this.activeAccessories.set(acc.GetSlotNumber(), acc.GetServerInstanceId());
-		this.selectedAccessories.set(acc.GetServerInstanceId(), true);
+		this.Log("Selecting item: " + accTemplate.ToString());
+		let acc = this.mainMenu?.avatarView?.accessoryBuilder?.AddSingleAccessory(accTemplate, instantRefresh);
+		acc?.AccessoryComponent.SetInstanceId(instanceId);
+		this.activeAccessories.set(accTemplate.GetSlotNumber(), instanceId);
+		this.selectedAccessories.set(instanceId, true);
 		this.UpdateButtonGraphics();
 		this.saveBtn?.SetEnabled(true);
 	}
@@ -524,9 +525,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private RemoveItem(slot: AccessorySlot, instantRefresh = true) {
 		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveAccessorySlot(slot, instantRefresh);
-		let classId = this.activeAccessories.get(slot);
-		if (classId && classId !== "") {
-			this.selectedAccessories.delete(classId);
+		let instanceId = this.activeAccessories.get(slot);
+		if (instanceId && instanceId !== "") {
+			this.selectedAccessories.delete(instanceId);
 		}
 		this.activeAccessories.set(slot, "");
 	}
@@ -634,7 +635,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.Log("Outfit acc: " + acc.class.name + ": " + acc.class.classId);
 			let accComponent = AvatarUtil.GetAccessoryFromClassId(acc.class.classId);
 			if (accComponent) {
-				this.SelectItem(accComponent, false);
+				this.SelectItem(acc.instanceId, accComponent, false);
 			} else {
 				let face = AvatarUtil.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face) {
