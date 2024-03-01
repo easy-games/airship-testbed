@@ -5843,7 +5843,7 @@ GameObject:
   - component: {fileID: -6219229748269268009}
   - component: {fileID: 7956153141648168287}
   m_Layer: 3
-  m_Name: Character
+  m_Name: AirshipCharacter
   m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

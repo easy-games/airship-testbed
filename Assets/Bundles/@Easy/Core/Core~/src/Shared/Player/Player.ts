@@ -25,7 +25,7 @@ export interface PlayerDto {
 	teamId: string | undefined;
 }
 
-const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/Character.prefab");
+const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
 
 export class Player {
 	/**
