@@ -11989,8 +11989,8 @@ interface AccessoryBuilder extends MonoBehaviour {
     
 interface CharacterRig extends MonoBehaviour {
     bodyMesh: SkinnedMeshRenderer;
-    headMesh: SkinnedMeshRenderer;
-    faceMesh: SkinnedMeshRenderer;
+    headMesh: Renderer;
+    faceMesh: Renderer;
     rigHolder: Transform;
     rootMotion: Transform;
     master: Transform;
@@ -12018,7 +12018,7 @@ interface CharacterRig extends MonoBehaviour {
     spineChest: Transform;
     heldItemL: Transform;
     heldItemR: Transform;
-    baseMeshes: CSArray<SkinnedMeshRenderer>;
+    baseMeshes: CSArray<Renderer>;
 
 
     GetSlotTransform(slot: AccessorySlot): Transform;
@@ -15713,4 +15713,15 @@ interface AvatarAccessoryCollectionConstructor {
 
 }
 declare const AvatarAccessoryCollection: AvatarAccessoryCollectionConstructor;
+    
+interface ContactPoint {
+    point: Vector3;
+    normal: Vector3;
+    impulse: Vector3;
+    thisCollider: Collider;
+    otherCollider: Collider;
+    separation: number;
+
+
+}
 
