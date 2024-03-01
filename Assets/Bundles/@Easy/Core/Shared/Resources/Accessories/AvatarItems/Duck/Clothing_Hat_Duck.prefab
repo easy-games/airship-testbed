@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 0.9809346, b: 0.6273585, a: 1}
+  - materialColor: {r: 0.91057366, g: 0.8477537, b: 0.63268775, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.12637894, g: 0.108742245, b: 0.14943926, a: 1}
+  - materialColor: {r: 0.35533726, g: 0.62229496, b: 0.33356938, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 0.39607844}
     emissiveMix: 0.128
   addedByEditorScript: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.9990735, g: 0.9237882, b: 0.22020076, a: 1}
+  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -512,10 +512,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.9990735, g: 0.9237882, b: 0.22020076, a: 1}
+  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 1, g: 0.78823537, b: 0.15686275, a: 1}
+  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -618,7 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.77328885, g: 0.39506078, b: 0.1489887, a: 1}
+  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.9056604, g: 0.65234303, b: 0.21787111, a: 1}
+  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -739,9 +739,10 @@ GameObject:
   - component: {fileID: 4287779167474435032}
   - component: {fileID: 828823000269131825}
   - component: {fileID: 1367193649715447655}
+  - component: {fileID: 8959974340578755146}
   - component: {fileID: 5088632238428144451}
   - component: {fileID: 8692706342641470636}
-  - component: {fileID: 6749590713378445420}
+  - component: {fileID: 3491250176292673979}
   m_Layer: 0
   m_Name: Clothing_Hat_Duck
   m_TagString: Untagged
@@ -834,8 +835,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   randomComponents:
   - {fileID: 4287779167474435032}
-  - {fileID: 8692706342641470636}
-  - {fileID: 6749590713378445420}
+  - {fileID: 8959974340578755146}
 --- !u!114 &4287779167474435032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -849,9 +849,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groupedComponents:
-  - {fileID: 828823000269131825}
-  - {fileID: 1367193649715447655}
-  - {fileID: 5088632238428144451}
+  - {fileID: 8692706342641470636}
+  - {fileID: 3491250176292673979}
 --- !u!114 &828823000269131825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,6 +914,21 @@ MonoBehaviour:
   possibleMaterials:
   - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
   - {fileID: 2100000, guid: 60048c69f6849224da117a616375faf3, type: 2}
+--- !u!114 &8959974340578755146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8596552198816704982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67795c24eaf2f6d49a4af50d40c5b447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupedComponents:
+  - {fileID: 828823000269131825}
+  - {fileID: 1367193649715447655}
 --- !u!114 &5088632238428144451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,7 +961,8 @@ MonoBehaviour:
   - {fileID: 2101512241500465179}
   - {fileID: 5047388347849186552}
   - {fileID: 4167373204055441832}
-  materialIndexes: 00000000
+  - {fileID: 6358626333389031693}
+  materialIndexes: 0000000001000000
   possibleColors:
     serializedVersion: 2
     key0: {r: 0.9339623, g: 0.73088396, b: 0.23349057, a: 1}
@@ -955,15 +970,15 @@ MonoBehaviour:
     key2: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 0}
     key3: {r: 0.021537915, g: 0.25179806, b: 0.41509432, a: 0}
     key4: {r: 0, g: 0.3584906, b: 0.1958786, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0.3584906, b: 0.1958786, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 49151
+    ctime1: 48766
     ctime2: 49217
     ctime3: 57247
     ctime4: 63222
-    ctime5: 0
+    ctime5: 63222
     ctime6: 0
     ctime7: 0
     atime0: 0
@@ -979,7 +994,7 @@ MonoBehaviour:
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
   SetEmmisive: 0
---- !u!114 &6749590713378445420
+--- !u!114 &3491250176292673979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -992,24 +1007,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 6358626333389031693}
-  materialIndexes: 00000000
+  - {fileID: 532882619442634688}
+  materialIndexes: 0000000001000000
   possibleColors:
     serializedVersion: 2
-    key0: {r: 1, g: 0.5882353, b: 0.19215688, a: 1}
-    key1: {r: 0.5849056, g: 0.2345444, b: 0.11311853, a: 1}
-    key2: {r: 0.56470275, g: 0.8867924, b: 0.84474474, a: 0}
-    key3: {r: 0.86296517, g: 0.4765931, b: 0.9622642, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.9433962, g: 0.8770965, b: 0.7164471, a: 1}
+    key1: {r: 0.8962264, g: 0.8349275, b: 0.5960751, a: 1}
+    key2: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0}
+    key3: {r: 1, g: 0.6650944, b: 0.9429517, a: 0}
+    key4: {r: 0.2943663, g: 0.5943396, b: 0.45918682, a: 0}
+    key5: {r: 0, g: 0.35686275, b: 0.19607845, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 49151
+    ctime1: 48766
     ctime2: 49217
-    ctime3: 63222
-    ctime4: 0
-    ctime5: 0
+    ctime3: 57247
+    ctime4: 63222
+    ctime5: 63222
     ctime6: 0
     ctime7: 0
     atime0: 0
@@ -1022,6 +1037,6 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: 0
-    m_NumColorKeys: 4
+    m_NumColorKeys: 5
     m_NumAlphaKeys: 2
   SetEmmisive: 0

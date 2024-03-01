@@ -202,7 +202,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		super.OpenPage();
 		this.Log("Open AVATAR");
 		if (this.avatarRenderHolder) {
-			this.Log("Showing avatar render");
 			this.avatarRenderHolder?.SetActive(true);
 		} else {
 			error("No avatar render veiew in avatar editor menu page");
@@ -220,10 +219,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			} else if (event.delta > 1) {
 				this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
 			}
-		});
-
-		task.spawn(() => {
-			this.LoadAllOutfits();
 		});
 	}
 
@@ -280,37 +275,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.ClearItembuttons();
 		this.Log("Buttons.2");
 
-		let targetSlot = AccessorySlot.Root;
 		switch (this.activeMainIndex) {
 			case 0:
-				//BODY
-				switch (subIndex) {
-					case 0:
-						//SKIN COLOR
-						targetSlot = AccessorySlot.Root;
-						this.Log("DisplayColorScheme");
-						this.DisplayColorScheme();
-						break;
-					case 1:
-						//SKIN TEXTURE
-						targetSlot = AccessorySlot.Root;
-						this.DisplaySkinTextures();
-						break;
-					case 2:
-						//FACE
-						targetSlot = AccessorySlot.Root;
-						break;
-					case 3:
-						//FACE SHAPE
-						targetSlot = AccessorySlot.Root;
-						break;
-					case 4:
-						//HAIR
-						targetSlot = AccessorySlot.Hair;
-						break;
-				}
+				//SKIN COLOR
+				this.Log("DisplayColorScheme");
+				this.DisplayColorScheme();
 				break;
-
 			case 1:
 				//FACE
 				this.DisplayFaceItems();
@@ -318,94 +288,44 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				return;
 			case 2:
 				//HAIR
-				targetSlot = AccessorySlot.Hair;
+				this.DisplayItemsOfType(AccessorySlot.Hair);
 				break;
 			case 3:
 				//HEAD
-				switch (subIndex) {
-					case 0:
-						targetSlot = AccessorySlot.Head;
-						this.DisplayItemsOfType(AccessorySlot.Face);
-						this.DisplayItemsOfType(AccessorySlot.Ears);
-						this.DisplayItemsOfType(AccessorySlot.Nose);
-						break;
-					case 1:
-						targetSlot = AccessorySlot.Ears;
-						break;
-					case 2:
-						targetSlot = AccessorySlot.Nose;
-						break;
-				}
+				this.DisplayItemsOfType(AccessorySlot.Head);
+				this.DisplayItemsOfType(AccessorySlot.Face);
+				this.DisplayItemsOfType(AccessorySlot.Ears);
+				this.DisplayItemsOfType(AccessorySlot.Nose);
+				this.DisplayItemsOfType(AccessorySlot.Neck);
 				break;
 			case 4:
 				//TORSO
-				switch (subIndex) {
-					case 0:
-						targetSlot = AccessorySlot.Torso;
-						this.DisplayItemsOfType(AccessorySlot.Backpack);
-						this.DisplayItemsOfType(AccessorySlot.TorsoOuter);
-						this.DisplayItemsOfType(AccessorySlot.TorsoInner);
-						this.DisplayItemsOfType(AccessorySlot.Neck);
-						break;
-					case 1:
-						targetSlot = AccessorySlot.TorsoOuter;
-						break;
-					case 2:
-						targetSlot = AccessorySlot.TorsoInner;
-						break;
-					case 3:
-						targetSlot = AccessorySlot.Backpack;
-						break;
-				}
+				this.DisplayItemsOfType(AccessorySlot.Torso);
+				this.DisplayItemsOfType(AccessorySlot.Backpack);
+				this.DisplayItemsOfType(AccessorySlot.TorsoOuter);
+				this.DisplayItemsOfType(AccessorySlot.TorsoInner);
 				break;
 			case 5:
 				//HANDS
-				switch (subIndex) {
-					case 0:
-						targetSlot = AccessorySlot.Hands;
-						break;
-					case 1:
-						targetSlot = AccessorySlot.RightWrist;
-						this.DisplayItemsOfType(AccessorySlot.LeftWrist);
-						break;
-					case 2:
-						targetSlot = AccessorySlot.HandsOuter;
-						break;
-				}
+				this.DisplayItemsOfType(AccessorySlot.Hands);
+				this.DisplayItemsOfType(AccessorySlot.RightWrist);
+				this.DisplayItemsOfType(AccessorySlot.LeftWrist);
+				this.DisplayItemsOfType(AccessorySlot.HandsOuter);
 				break;
 			case 6:
 				//LEGS
-				switch (subIndex) {
-					case 0:
-						targetSlot = AccessorySlot.Legs;
-						break;
-					case 1:
-						targetSlot = AccessorySlot.LegsOuter;
-						break;
-					case 2:
-						targetSlot = AccessorySlot.LegsInner;
-						break;
-				}
+				this.DisplayItemsOfType(AccessorySlot.Legs);
+				this.DisplayItemsOfType(AccessorySlot.LegsOuter);
+				this.DisplayItemsOfType(AccessorySlot.LegsInner);
 				break;
 			case 7:
 				//FEET
-				switch (subIndex) {
-					case 0:
-						targetSlot = AccessorySlot.Feet;
-						break;
-					case 1:
-						targetSlot = AccessorySlot.FeetInner;
-						break;
-					case 2:
-						targetSlot = AccessorySlot.RightFoot;
-						this.DisplayItemsOfType(AccessorySlot.LeftFoot);
-						break;
-				}
+				this.DisplayItemsOfType(AccessorySlot.Feet);
+				this.DisplayItemsOfType(AccessorySlot.FeetInner);
+				this.DisplayItemsOfType(AccessorySlot.RightFoot);
+				this.DisplayItemsOfType(AccessorySlot.LeftFoot);
 				break;
 		}
-		this.Log("Buttons.3");
-
-		this.DisplayItemsOfType(targetSlot);
 		this.UpdateButtonGraphics();
 	}
 
@@ -446,6 +366,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				});
 			});
 		}
+		this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Face);
 	}
 
 	private itemButtonBin: Bin = new Bin();
@@ -463,6 +384,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.AddColorButton(AvatarUtil.skinColors[i]);
 		}
 		this.UpdateButtonGraphics();
+		this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
 	}
 
 	private DisplaySkinTextures() {
@@ -633,6 +555,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				//Get all owned accessories and map them to usable values
 				AvatarUtil.DownloadOwnedAccessories();
 				AvatarUtil.InitUserOutfits(Game.localPlayer.userId);
+				this.LoadAllOutfits();
 			});
 	}
 

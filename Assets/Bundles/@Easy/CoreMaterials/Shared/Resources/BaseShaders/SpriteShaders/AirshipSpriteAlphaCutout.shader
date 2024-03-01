@@ -23,7 +23,7 @@ Shader "Airship/AirshipSpriteAlphaCutout"
 		Cull Off
         Lighting Off
         ZWrite Off
-        Blend One OneMinusSrcAlpha
+        Blend SrcAlpha OneMinusSrcAlpha
         
         Pass
         {
