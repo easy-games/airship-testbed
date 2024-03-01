@@ -6189,12 +6189,20 @@ MonoBehaviour:
       _Names: []
     _Speed: 0
     _Animations:
-    - {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
-    - {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
-    - {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
-    - {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
-    - {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
+    - {fileID: 6387478702313803056, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: -8925816202851766316, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: 3705179342059899503, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: 6077623067170589967, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: -7746182490098060621, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: -2081900575307146429, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: -6524995568975489271, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: -592234963524399755, guid: be98df3599f055541b9b627eb0b67512, type: 3}
+    - {fileID: 1262514350420056929, guid: be98df3599f055541b9b627eb0b67512, type: 3}
     _Speeds:
+    - 1
+    - 1
+    - 1
+    - 1
     - 1
     - 1
     - 1
@@ -6202,6 +6210,10 @@ MonoBehaviour:
     - 1.2
     _SynchronizeChildren: 
     _Thresholds:
+    - {x: 1, y: 1}
+    - {x: -1, y: 1}
+    - {x: -1, y: -1}
+    - {x: 1, y: -1}
     - {x: 0, y: 0}
     - {x: 0, y: 1}
     - {x: 0, y: -1}
