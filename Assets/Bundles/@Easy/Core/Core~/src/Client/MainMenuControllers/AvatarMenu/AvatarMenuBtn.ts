@@ -1,15 +1,35 @@
-import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 export default class AvatarMenuBtn extends AirshipBehaviour {
 	private readonly highlightColor = Theme.primary;
 	private readonly normalColor = Theme.uiDark;
 
-	public iconImage!: Image;
+	public iconImage?: Image;
 	public button!: Button;
 	public labelText!: TextMeshProUGUI;
+	public bgImage!: Image;
+
+	private bin = new Bin();
+	private selected = false;
 
 	override Start(): void {}
+
+	public OnEnable(): void {
+		this.bin.AddEngineEventConnection(CanvasAPI.OnClickEvent(this.gameObject, () => {}));
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
+				if (this.selected) return;
+				if (hoverState === HoverState.ENTER) {
+					this.bgImage.color = new Color(1, 1, 1, 0.02);
+				} else {
+					this.bgImage.color = new Color(1, 1, 1, 0);
+				}
+			}),
+		);
+	}
 
 	public Init(label: string, color: Color) {
 		this.SetText(label);
@@ -32,11 +52,25 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 	}
 
 	public SetIconColor(newColor: Color) {
+		if (!this.iconImage) return;
 		this.iconImage.color = newColor;
 	}
 
-	public SetHighlight(highlightOn: boolean) {
-		this.SetButtonColor(highlightOn ? this.highlightColor : this.normalColor);
+	public SetSelected(val: boolean) {
+		this.selected = val;
+		if (val) {
+			this.bgImage.color = Theme.primary;
+			this.labelText.color = new Color(1, 1, 1, 1);
+			if (this.iconImage) {
+				this.iconImage.color = new Color(1, 1, 1, 1);
+			}
+		} else {
+			this.bgImage.color = new Color(0, 0, 0, 0);
+			this.labelText.color = new Color(1, 1, 1, 0.8);
+			if (this.iconImage) {
+				this.iconImage.color = new Color(1, 1, 1, 0.8);
+			}
+		}
 	}
 
 	public SetEnabled(enabled: boolean) {

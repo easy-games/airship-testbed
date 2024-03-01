@@ -218,13 +218,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public GetFocusTransform(slotType: AccessorySlot) {
 		if (
 			slotType === AccessorySlot.Head ||
-			slotType === AccessorySlot.Face ||
 			slotType === AccessorySlot.Hair ||
 			slotType === AccessorySlot.Neck ||
 			slotType === AccessorySlot.Ears ||
 			slotType === AccessorySlot.Nose
 		) {
-			return this.cameraWaypointHead;
+			//return this.cameraWaypointHead;
 		} else if (
 			slotType === AccessorySlot.Feet ||
 			slotType === AccessorySlot.Waist ||
@@ -243,7 +242,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			slotType === AccessorySlot.Torso ||
 			slotType === AccessorySlot.HandsOuter
 		) {
-			return this.cameraWaypointHands;
+			//return this.cameraWaypointHands;
 		} else if (slotType === AccessorySlot.Backpack) {
 			return this.cameraWaypointBack;
 		}
