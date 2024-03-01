@@ -99,6 +99,10 @@ export default class Character extends AirshipBehaviour {
 
 	public OnDisable(): void {
 		Airship.characters.UnregisterCharacter(this);
+		if (RunUtil.IsClient()) {
+			this.onDespawn.Fire();
+			Airship.characters.onCharacterDespawned.Fire(this);
+		}
 	}
 
 	public Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void {
