@@ -20,21 +20,43 @@ declare namespace task {
 	function cancel(thread: thread): void;
 }
 
+/** The context in which Luau is running. */
 declare const enum LuauContext {
 	Game,
 	Protected,
 }
 
 declare namespace contextbridge {
-	/** Subscribe to broadcasts for a specific `topic`. The returned function can be called to unsubscribe the function. */
-	function subscribe(topic: string, handler: (fromContext: LuauContext, ...args: unknown[]) => void): () => void;
+	type SubscribeCallback = (fromContext: LuauContext, ...args: any[]) => void;
 
-	/** Broadcast on a specific channel `topic` to all Luau contexts. */
-	function broadcast(topic: string, ...args: unknown[]): void;
+	/**
+	 * Subscribe to broadcasts for a specific `topic`. The returned function can be called to unsubscribe the function.
+	 *
+	 * **NOTE**: Use with `contextbridge.broadcast()`.
+	 */
+	function subscribe<T extends SubscribeCallback>(topic: string, handler: T): () => void;
 
-	/** Assign a callback for a specific `topic` for the current Luau context. Only one can be assigned per context and topic pair. */
-	function callback(topic: string, callback: Callback): void;
+	/**
+	 * Broadcast on a specific channel `topic` to all Luau contexts.
+	 *
+	 * **NOTE**: Use with `contextbridge.subscribe()`.
+	 */
+	function broadcast<T extends Callback>(topic: string, ...args: Parameters<T>): void;
 
-	/** Invoke a callback within `toContext` for `topic`. */
-	function invoke(topic: string, toContext: LuauContext, ...args: unknown[]): LuaTuple<unknown[]>;
+	/**
+	 * Assign a callback for a specific `topic` for the current Luau context. Only one can be assigned per context and topic pair.
+	 *
+	 * **NOTE**: Use with `contextbridge.invoke()`.
+	 */
+	function callback<T extends Callback>(topic: string, callback: (...args: Parameters<T>) => ReturnType<T>): void;
+
+	/**
+	 * Invoke a callback within `toContext` for `topic`.
+	 *
+	 * **NOTE**: Use with `contextbridge.callback()`.
+	 */
+	function invoke<T extends Callback>(topic: string, toContext: LuauContext, ...args: Parameters<T>): ReturnType<T>;
+
+	/** Gets the context of the current running thread. */
+	function current(): LuauContext;
 }
