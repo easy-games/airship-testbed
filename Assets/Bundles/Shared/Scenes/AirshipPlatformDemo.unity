@@ -2485,7 +2485,7 @@ MonoBehaviour:
   SerializedTransformProperties:
     Position: {x: 4.97, y: 2.84, z: 5.09}
     Rotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-    LocalScale: {x: 1, y: 1, z: 1}
+    LocalScale: {x: 0.54038, y: 0.54038, z: 0.54038}
   _isNetworked: 1
   _isGlobal: 0
   _initializeOrder: 0
