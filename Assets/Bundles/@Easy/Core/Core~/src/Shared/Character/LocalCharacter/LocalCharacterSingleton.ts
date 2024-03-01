@@ -132,7 +132,7 @@ export class LocalCharacterSingleton implements OnStart {
 		const superSampleSize = supersample ? 4 : 1;
 		print(`Capturing screenshot. UI: ${showUI} Supersample: ${superSampleSize} Name: ${screenshotFilename}`);
 		if (showUI) {
-			this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize);
+			this.screenshot.TakeScreenshot(screenshotFilename, superSampleSize, true);
 		} else {
 			this.screenshot.TakeCameraScreenshot(Camera.main, screenshotFilename, superSampleSize);
 		}

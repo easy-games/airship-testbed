@@ -3,9 +3,11 @@ import { Mouse } from "Shared/UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import { OnUpdate } from "../Util/Timer";
+import AvatarRenderComponent from "@Easy/Core/Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	public humanEntityGo?: GameObject;
+	public avatarRenderGo?: GameObject;
 	public avatarHolder?: Transform;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
@@ -27,6 +29,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public accessoryBuilder?: AccessoryBuilder;
 	public anim?: CharacterAnimationHelper;
+	public avatarRenderComponent?: AvatarRenderComponent;
 
 	@Header("Spin Big")
 	public idleAnim!: AnimationClip;
@@ -63,6 +66,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			}
 			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>();
 		}
+		this.avatarRenderComponent = this.avatarRenderGo?.GetAirshipComponent<AvatarRenderComponent>();
+
 		this.dragging = false;
 		this.mouse = new Mouse();
 		this.mouse.moved.Connect((pos: Vector3) => {
@@ -206,7 +211,11 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public CameraFocusSlot(slotType: AccessorySlot) {
-		this.targetTransform = this.cameraWaypointDefault;
+		this.targetTransform = this.GetFocusTransform(slotType);
+		this.CameraFocusTransform(this.targetTransform);
+	}
+
+	public GetFocusTransform(slotType: AccessorySlot) {
 		if (
 			slotType === AccessorySlot.Head ||
 			slotType === AccessorySlot.Face ||
@@ -215,7 +224,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			slotType === AccessorySlot.Ears ||
 			slotType === AccessorySlot.Nose
 		) {
-			this.targetTransform = this.cameraWaypointHead;
+			return this.cameraWaypointHead;
 		} else if (
 			slotType === AccessorySlot.Feet ||
 			slotType === AccessorySlot.Waist ||
@@ -226,7 +235,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			slotType === AccessorySlot.RightFoot ||
 			slotType === AccessorySlot.FeetInner
 		) {
-			this.targetTransform = this.cameraWaypointFeet;
+			return this.cameraWaypointFeet;
 		} else if (
 			slotType === AccessorySlot.Hands ||
 			slotType === AccessorySlot.LeftHand ||
@@ -234,11 +243,11 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			slotType === AccessorySlot.Torso ||
 			slotType === AccessorySlot.HandsOuter
 		) {
-			this.targetTransform = this.cameraWaypointHands;
+			return this.cameraWaypointHands;
 		} else if (slotType === AccessorySlot.Backpack) {
-			this.targetTransform = this.cameraWaypointBack;
+			return this.cameraWaypointBack;
 		}
-		this.CameraFocusTransform(this.targetTransform);
+		return this.cameraWaypointDefault;
 	}
 
 	public CameraFocusTransform(transform?: Transform, instant = false) {

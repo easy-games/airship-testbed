@@ -11989,8 +11989,8 @@ interface AccessoryBuilder extends MonoBehaviour {
     
 interface CharacterRig extends MonoBehaviour {
     bodyMesh: SkinnedMeshRenderer;
-    headMesh: SkinnedMeshRenderer;
-    faceMesh: SkinnedMeshRenderer;
+    headMesh: Renderer;
+    faceMesh: Renderer;
     rigHolder: Transform;
     rootMotion: Transform;
     master: Transform;
@@ -12018,7 +12018,7 @@ interface CharacterRig extends MonoBehaviour {
     spineChest: Transform;
     heldItemL: Transform;
     heldItemR: Transform;
-    baseMeshes: CSArray<SkinnedMeshRenderer>;
+    baseMeshes: CSArray<Renderer>;
 
 
     GetSlotTransform(slot: AccessorySlot): Transform;
@@ -15286,11 +15286,13 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     FolderName: string;
 
 
-    ScreenShotName(width: number, height: number): string;
-    ScreenShotName(filename: string): string;
+    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): void;
+    SaveTexture(texture: Texture2D, fileName: string, png: boolean): void;
+    ScreenShotName(width: number, height: number, png: boolean): string;
+    ScreenShotName(filename: string, png: boolean): string;
     TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
     TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): unknown;
-    TakeScreenshot(fileName: string, superSampleSize: number): void;
+    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
 }
     
 interface OnPictureTaken {
@@ -15713,4 +15715,15 @@ interface AvatarAccessoryCollectionConstructor {
 
 }
 declare const AvatarAccessoryCollection: AvatarAccessoryCollectionConstructor;
+    
+interface ContactPoint {
+    point: Vector3;
+    normal: Vector3;
+    impulse: Vector3;
+    thisCollider: Collider;
+    otherCollider: Collider;
+    separation: number;
+
+
+}
 

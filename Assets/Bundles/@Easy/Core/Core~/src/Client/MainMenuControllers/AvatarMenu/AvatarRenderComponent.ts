@@ -1,46 +1,89 @@
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
-import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
+import { Keyboard } from "@Easy/Core/Shared/UserInput";
 
 export default class AvatarRenderComponent extends AirshipBehaviour {
-	private readonly tweenDuration = 0.2;
-	public group!: CanvasGroup;
-	public renderItemsBtn!: Button;
-	public closeBtn!: Button;
+	private readonly renderSize = new Vector2(410, 512);
 
-	private previousGroup!: CanvasGroup;
+	private renderTexture?: RenderTexture;
+	private avatarView!: AvatarViewComponent;
 
-	override Awake() {
-		CanvasAPI.OnClickEvent(this.renderItemsBtn.gameObject, () => {
-			this.RenderAllItems();
+	public builder!: AccessoryBuilder;
+	public captureCamera!: Camera;
+
+	override Start() {
+		this.Init();
+	}
+
+	public Init() {
+		let keyboard = new Keyboard();
+		keyboard.OnKeyDown(KeyCode.Print, (event) => {
+			if (Input.GetKey(KeyCode.LeftShift)) {
+				this.RenderAllItems();
+			}
 		});
-		CanvasAPI.OnClickEvent(this.closeBtn.gameObject, () => {
-			this.ClosePage();
-		});
 	}
 
-	public OpenPage(previousGroup: CanvasGroup) {
-		this.previousGroup = previousGroup;
-		this.previousGroup.interactable = false;
-		this.group.interactable = true;
-		this.previousGroup.TweenCanvasGroupAlpha(0, this.tweenDuration);
-		this.group.TweenCanvasGroupAlpha(1, this.tweenDuration);
-	}
-
-	public ClosePage() {
-		this.previousGroup.TweenCanvasGroupAlpha(1, this.tweenDuration);
-		this.group.TweenCanvasGroupAlpha(0, this.tweenDuration);
-		this.group.interactable = false;
-		this.previousGroup.interactable = true;
-	}
-
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
 	public RenderAllItems() {
+		if (!this.renderTexture) {
+			this.renderTexture = new RenderTexture(
+				this.renderSize.x,
+				this.renderSize.y,
+				24,
+				RenderTextureFormat.ARGB32,
+			);
+		}
+		this.captureCamera.targetTexture = this.renderTexture;
+		this.captureCamera.enabled = true;
 		let allItems = AvatarUtil.GetAllPossibleAvatarItems();
+
+		let i = 0;
+		const maxI = 5;
 		for (const [key, value] of allItems) {
-			this.RenderItem(value);
+			//Clear the outfit
+			this.builder.RemoveClothingAccessories();
+			if (i < maxI) {
+				this.RenderItem(value);
+			} else {
+				return;
+			}
+			i++;
 		}
 	}
 
-	public RenderItem(accesoryTemplate: AccessoryComponent) {
-		print("Rending item: " + accesoryTemplate.name);
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
+	public RenderItem(accessoryTemplate: AccessoryComponent) {
+		print("Rending item: " + accessoryTemplate.name);
+		//Load the accessory onto the avatar
+		this.builder.AddSingleAccessory(accessoryTemplate, true);
+
+		//Move the camera into position
+		let targetTransform = this.avatarView.GetFocusTransform(accessoryTemplate.accessorySlot);
+		if (targetTransform) {
+			this.captureCamera.transform.position = targetTransform.position;
+			this.captureCamera.transform.rotation = targetTransform.rotation;
+		}
+
+		//Wait a frame so the camera renders
+		task.wait();
+
+		//Save the picture locally
+		const recorder = this.captureCamera.gameObject.GetComponent<CameraScreenshotRecorder>();
+		if (recorder && this.renderTexture) {
+			recorder.SaveRenderTexture(this.renderTexture, "AccThumbnail_" + accessoryTemplate.name, true);
+		} else {
+			error("Trying to save render with no recorder");
+		}
+
+		//Upload the picture to this accessory
 	}
 }

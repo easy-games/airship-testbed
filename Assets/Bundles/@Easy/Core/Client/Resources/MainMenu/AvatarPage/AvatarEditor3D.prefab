@@ -779,6 +779,19 @@ MonoBehaviour:
       serializedValue: 15
       serializedObject: {fileID: 0}
       modified: 1
+    - name: avatarRenderGo
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 9066298804073153630}
+      modified: 1
 --- !u!1 &3851732383462049854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,6 +1361,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8604313087782663235}
+  - {fileID: 1851572632529481261}
   - {fileID: 7924492006652418525}
   m_Father: {fileID: 1122165967066664956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1644,4 +1658,79 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8965194988374298084, guid: 52fb0088414a8f943ae786eb695b40fa, type: 3}
   m_PrefabInstance: {fileID: 1727726523347655367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9160507934129936735
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8853940550203012706}
+    m_Modifications:
+    - target: {fileID: 212056023272398081, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_Name
+      value: AvatarPictureCaptureCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_metadata.properties.Array.data[0].serializedObject
+      value: 
+      objectReference: {fileID: 5959368417349267470}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.153
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.94827795
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.26017955
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.18185589
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.001982022
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601738711337370781, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: airshipRenderSettings
+      value: 
+      objectReference: {fileID: 1186027107750938040}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+--- !u!4 &1851572632529481261 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+  m_PrefabInstance: {fileID: 9160507934129936735}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9066298804073153630 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 212056023272398081, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+  m_PrefabInstance: {fileID: 9160507934129936735}
   m_PrefabAsset: {fileID: 0}
