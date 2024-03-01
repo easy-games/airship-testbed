@@ -12068,7 +12068,6 @@ interface ActiveAccessory {
     
 interface AccessoryComponent extends MonoBehaviour {
     serverClassId: string;
-    serverInstanceId: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
@@ -12078,7 +12077,9 @@ interface AccessoryComponent extends MonoBehaviour {
 
 
     Copy(other: AccessoryComponent): void;
+    GetServerInstanceId(): string;
     GetSlotNumber(): number;
+    SetInstanceId(id: string): void;
     ToString(): string;
 }
     

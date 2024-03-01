@@ -26,6 +26,11 @@ declare class RemoteEventClient<T extends unknown[] | unknown> {
 export declare class RemoteEvent<T extends unknown[] | unknown> {
     readonly server: RemoteEventServer<T>;
     readonly client: RemoteEventClient<T>;
-    constructor(channel?: NetworkChannel);
+    /**
+     *
+     * @param channel
+     * @param packageId @deprecated
+     */
+    constructor(channel?: NetworkChannel, packageOffset?: number);
 }
 export {};

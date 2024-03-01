@@ -14,7 +14,7 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 
 	override Start(): void {
 		CanvasAPI.OnHoverEvent(this.gameObject, (state) => {
-			// if (this.selected) return;
+			if (this.selected) return;
 			if (state === HoverState.ENTER) {
 				this.image.TweenGraphicAlpha(0.6, 0.12);
 			} else {

@@ -65,7 +65,9 @@ export default class Character extends AirshipBehaviour {
 		this.bin.Add(
 			Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					if (this.IsDead()) return;
 					let newHealth = math.max(0, this.health - damageInfo.damage);
+
 					this.SetHealth(newHealth);
 
 					if (newHealth <= 0) {
@@ -104,6 +106,8 @@ export default class Character extends AirshipBehaviour {
 		this.id = id;
 		this.outfitDto = outfitDto;
 		this.animator.SetViewModelEnabled(player?.IsLocalPlayer() ?? false);
+		this.health = 100;
+		this.maxHealth = 100;
 		this.despawned = false;
 
 		if (outfitDto) {
