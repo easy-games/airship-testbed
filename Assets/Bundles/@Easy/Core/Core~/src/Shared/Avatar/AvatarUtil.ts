@@ -208,9 +208,10 @@ export class AvatarUtil {
 			builder.RemoveClothingAccessories();
 		}
 		outfit.accessories.forEach((acc) => {
-			const accComponent = this.GetAccessoryFromClassId(acc.class.classId);
-			if (accComponent) {
-				builder.AddSingleAccessory(accComponent, false);
+			const accComponentTemplate = this.GetAccessoryFromClassId(acc.class.classId);
+			if (accComponentTemplate) {
+				let accComponent = builder.AddSingleAccessory(accComponentTemplate, false);
+				accComponent.AccessoryComponent.SetInstanceId(acc.instanceId);
 			} else {
 				const face = this.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face) {
