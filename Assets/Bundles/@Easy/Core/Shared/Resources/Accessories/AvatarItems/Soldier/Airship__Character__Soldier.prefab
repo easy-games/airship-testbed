@@ -1667,6 +1667,34 @@ PrefabInstance:
       propertyPath: possibleColors.m_NumColorKeys
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4287172209755828865, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: rarityCurve.m_Curve.Array.data[1].time
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287172209755828865, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: rarityCurve.m_Curve.Array.data[1].value
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287172209755828865, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: rarityCurve.m_Curve.Array.data[1].inSlope
+      value: 1.7116969
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287172209755828865, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: rarityCurve.m_Curve.Array.data[1].inWeight
+      value: 0.08879589
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287172209755828865, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: rarityCurve.m_Curve.Array.data[1].outSlope
+      value: 0.015275896
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287172209755828865, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: rarityCurve.m_Curve.Array.data[1].outWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287172209755828865, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
+      propertyPath: rarityCurve.m_Curve.Array.data[1].tangentMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4884903984264122234, guid: 08417015f355d5b40bcb6ad6bb67606a, type: 3}
       propertyPath: m_RootBone
       value: 

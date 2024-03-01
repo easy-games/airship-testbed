@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.91057366, g: 0.8477537, b: 0.63268775, a: 1}
+  - materialColor: {r: 0.5871448, g: 0.5093683, b: 0.5738962, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.35533726, g: 0.62229496, b: 0.33356938, a: 1}
+  - materialColor: {r: 0.68086463, g: 0.528573, b: 0.63054156, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 0.39607844}
     emissiveMix: 0.128
   addedByEditorScript: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
+  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -512,10 +512,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
+  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
+  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -618,7 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
+  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.92083323, g: 0.57986856, b: 0.24222259, a: 1}
+  - materialColor: {r: 0.18607873, g: 0.23955297, b: 0.27747595, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -813,14 +813,14 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.75
-      value: 0.5
-      inSlope: -0.0029826711
-      outSlope: -0.0029826711
-      tangentMode: 0
+      time: 0.9
+      value: 0.75
+      inSlope: 1.7116969
+      outSlope: 0.015275896
+      tangentMode: 1
       weightedMode: 0
-      inWeight: 0.21690302
-      outWeight: 0.33333334
+      inWeight: 0.08879589
+      outWeight: 1
     - serializedVersion: 3
       time: 1
       value: 1
@@ -1014,7 +1014,7 @@ MonoBehaviour:
     key0: {r: 0.9433962, g: 0.8770965, b: 0.7164471, a: 1}
     key1: {r: 0.8962264, g: 0.8349275, b: 0.5960751, a: 1}
     key2: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0}
-    key3: {r: 1, g: 0.6650944, b: 0.9429517, a: 0}
+    key3: {r: 0.52131647, g: 0.33107865, b: 0.754717, a: 0}
     key4: {r: 0.2943663, g: 0.5943396, b: 0.45918682, a: 0}
     key5: {r: 0, g: 0.35686275, b: 0.19607845, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
