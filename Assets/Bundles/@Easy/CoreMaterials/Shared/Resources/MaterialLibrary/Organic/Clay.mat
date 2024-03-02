@@ -142,7 +142,7 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 1
-    - _TriplanarScale: 0.43
+    - _TriplanarScale: 2.02
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
     - _ZWrite: 1
