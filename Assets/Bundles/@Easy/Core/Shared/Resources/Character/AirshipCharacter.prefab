@@ -6131,23 +6131,23 @@ MonoBehaviour:
       _Names: []
     _Speed: NaN
     _Animations:
-    - {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     - {fileID: -2552413821269997965, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     - {fileID: 8024861233750413939, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     - {fileID: 5409520175910670231, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     - {fileID: 5898028300148246224, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     - {fileID: 7849451509610733936, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     - {fileID: 7921468776044874979, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
+    - {fileID: 6782307409016536115, guid: 05c13186888fe244ca75b6ef274fe6da, type: 3}
     _Speeds: []
-    _SynchronizeChildren: 00
+    _SynchronizeChildren: 
     _Thresholds:
-    - {x: 0, y: 0}
     - {x: 0, y: 1}
     - {x: 0, y: -1}
     - {x: -1, y: 0}
     - {x: 1, y: 0}
     - {x: -1, y: -1}
     - {x: 1, y: -1}
+    - {x: 0, y: 0}
     _DefaultParameter: {x: 0, y: 0}
     _Type: 1
   sprintTransition:
@@ -6233,6 +6233,7 @@ MonoBehaviour:
   spineClampAngle: 15
   neckClampAngle: 35
   particleMaxDistance: 25
+  blendSpeed: 8
 --- !u!114 &5043041770756594627
 MonoBehaviour:
   m_ObjectHideFlags: 0
