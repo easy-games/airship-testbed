@@ -763,7 +763,7 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 0.6
+      serializedValue: 0.9
       serializedObject: {fileID: 0}
       modified: 1
     - name: spinBigRequiredSpeed
@@ -776,7 +776,7 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 15
+      serializedValue: 21
       serializedObject: {fileID: 0}
       modified: 1
 --- !u!1 &3851732383462049854
@@ -839,7 +839,7 @@ MonoBehaviour:
   fogEnabled: 1
   fogStart: 10
   fogEnd: 20
-  fogColor: {r: 0.1219295, g: 0.14620212, b: 0.18867922, a: 1}
+  fogColor: {r: 0.0627451, g: 0.078431375, b: 0.12156863, a: 1}
   shadowRange: 50
 --- !u!1 &4433631764270028334
 GameObject:
@@ -1016,9 +1016,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0.6226415, g: 0.6655571, b: 0.8301887, a: 1}
-  intensity: 0.42
-  range: 5.3440447
+  color: {r: 0.5121039, g: 0.57028955, b: 0.7924528, a: 1}
+  intensity: 0.63
+  range: 8.7
   castShadows: 1
 --- !u!1 &6142434986300703227
 GameObject:
@@ -1084,7 +1084,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: cc67fd491fd3eea48854c27e28e0367b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
