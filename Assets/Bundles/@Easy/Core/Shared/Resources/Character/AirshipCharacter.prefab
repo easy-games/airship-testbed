@@ -6167,6 +6167,7 @@ MonoBehaviour:
     - {fileID: 7511889702724058803, guid: ebc28dd0aa19b214c92657a2e30d5996, type: 3}
     - {fileID: 5458286642231147803, guid: ebc28dd0aa19b214c92657a2e30d5996, type: 3}
     - {fileID: 354368399922336565, guid: ebc28dd0aa19b214c92657a2e30d5996, type: 3}
+    - {fileID: 8193994672558293724, guid: ebc28dd0aa19b214c92657a2e30d5996, type: 3}
     _Speeds: []
     _SynchronizeChildren: 0000
     _Thresholds:
@@ -6178,6 +6179,7 @@ MonoBehaviour:
     - {x: 1, y: 0}
     - {x: -1, y: -1}
     - {x: 1, y: -1}
+    - {x: 0, y: 0}
     _DefaultParameter: {x: 0, y: 0}
     _Type: 1
   crouchTransition:
