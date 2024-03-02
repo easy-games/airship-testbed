@@ -26,7 +26,9 @@ export default class DemoManager extends AirshipBehaviour {
 			Airship.damage.onDeath.Connect((damageInfo) => {
 				const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 				if (character?.player) {
-					this.SpawnPlayer(character.player);
+					task.delay(2, () => {
+						this.SpawnPlayer(character.player!);
+					});
 				}
 			});
 		}
@@ -44,7 +46,6 @@ export default class DemoManager extends AirshipBehaviour {
 				const bin = new Bin();
 				bin.Add(
 					character?.onDeath.Connect(() => {
-						print("DIED");
 						this.deathCount++;
 						SteamRichPresence.SetStatus(`Deaths: ${this.deathCount}`);
 					}),

@@ -76,8 +76,9 @@ export class DamageSingleton implements OnStart {
 	 */
 	public InflictDamage(gameObject: GameObject, damage: number, attacker?: GameObject, data?: DamageInfoCustomData) {
 		const damageInfo = new DamageInfo(gameObject, damage, attacker, data ?? {});
-		this.onDamage.Fire(damageInfo);
-
+		if (RunUtil.IsClient()) {
+			this.onDamage.Fire(damageInfo);
+		}
 		if (RunUtil.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponent<NetworkObject>() as NetworkObject | undefined;
 			const attackerNob = damageInfo.attacker?.GetComponent<NetworkObject>() as NetworkObject | undefined;
@@ -89,6 +90,7 @@ export class DamageSingleton implements OnStart {
 					damageInfo.data,
 				);
 			}
+			this.onDamage.Fire(damageInfo);
 		}
 	}
 
@@ -97,7 +99,9 @@ export class DamageSingleton implements OnStart {
 	 * @param damageInfo
 	 */
 	public BroadcastDeath(damageInfo: DamageInfo): void {
-		this.onDeath.Fire(damageInfo);
+		if (RunUtil.IsClient()) {
+			this.onDeath.Fire(damageInfo);
+		}
 		if (RunUtil.IsServer() && this.autoNetwork) {
 			const nob = damageInfo.gameObject.GetComponent<NetworkObject>() as NetworkObject | undefined;
 			const attackerNob = damageInfo.attacker?.GetComponent<NetworkObject>() as NetworkObject | undefined;
@@ -109,6 +113,7 @@ export class DamageSingleton implements OnStart {
 					damageInfo.data,
 				);
 			}
+			this.onDeath.Fire(damageInfo);
 		}
 	}
 

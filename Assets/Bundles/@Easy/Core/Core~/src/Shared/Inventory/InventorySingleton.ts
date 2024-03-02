@@ -1,7 +1,7 @@
-import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { Controller, OnStart, Service } from "Shared/Flamework";
 import { RemoteFunction } from "Shared/Network/RemoteFunction";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";
@@ -69,6 +69,7 @@ export class InventorySingleton implements OnStart {
 			}
 		});
 		CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot, clientPredicted) => {
+			if (!invId) return;
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
@@ -90,7 +91,7 @@ export class InventorySingleton implements OnStart {
 			const inv = character.gameObject.GetAirshipComponent<Inventory>();
 			inv?.SetHeldSlot(slot);
 
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireAllClients(character.id, slot, true);
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, inv?.id, slot, true);
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(

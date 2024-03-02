@@ -41,7 +41,7 @@ export default class Inventory extends AirshipBehaviour {
 	@NonSerialized() private finishedInitialReplication = false;
 	@NonSerialized() private slotConnections = new Map<number, Bin>();
 
-	public Awake(): void {
+	public OnEnable(): void {
 		if (this.networkObject.IsSpawned) {
 			this.id = this.networkObject.ObjectId;
 			Airship.inventory.RegisterInventory(this);
@@ -88,6 +88,22 @@ export default class Inventory extends AirshipBehaviour {
 		const bin = new Bin();
 		let currentItemStack = this.items.get(this.heldSlot);
 		let cleanup = callback(currentItemStack);
+
+		bin.Add(
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
+				if (invId === this.id) {
+					const selected = this.items.get(slot);
+					if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
+
+					if (cleanup !== undefined) {
+						cleanup();
+					}
+					currentItemStack = selected;
+					cleanup = callback(selected);
+				}
+			}),
+		);
+
 		bin.Add(
 			this.heldSlotChanged.Connect((newSlot) => {
 				const selected = this.items.get(newSlot);
@@ -266,6 +282,7 @@ export default class Inventory extends AirshipBehaviour {
 	}
 
 	public ProcessDto(dto: InventoryDto): void {
+		this.id = dto.id;
 		for (let pair of dto.items) {
 			this.SetItem(pair[0], ItemStack.Decode(pair[1]));
 		}
