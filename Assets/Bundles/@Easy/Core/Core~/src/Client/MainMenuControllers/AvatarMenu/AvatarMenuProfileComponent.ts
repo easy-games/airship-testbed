@@ -10,26 +10,26 @@ export default class AvatarMenuProfileComponent extends AirshipBehaviour {
 	private previousGroup!: CanvasGroup;
 
 	public Init(mainMenu: MainMenuController) {
-		CanvasAPI.OnClickEvent(this.renderItemsBtn.gameObject, () => {
-			mainMenu.avatarView?.avatarRenderComponent?.RenderAllItems();
-		});
-		CanvasAPI.OnClickEvent(this.closeBtn.gameObject, () => {
-			this.ClosePage();
-		});
+		// CanvasAPI.OnClickEvent(this.renderItemsBtn.gameObject, () => {
+		// 	mainMenu.avatarView?.avatarRenderComponent?.RenderAllItems();
+		// });
+		// CanvasAPI.OnClickEvent(this.closeBtn.gameObject, () => {
+		// 	this.ClosePage();
+		// });
 	}
 
 	public OpenPage(previousGroup: CanvasGroup) {
-		this.previousGroup = previousGroup;
-		this.previousGroup.interactable = false;
-		this.group.interactable = true;
-		this.previousGroup.TweenCanvasGroupAlpha(0, this.tweenDuration);
-		this.group.TweenCanvasGroupAlpha(1, this.tweenDuration);
+		// this.previousGroup = previousGroup;
+		// this.previousGroup.interactable = false;
+		// this.group.interactable = true;
+		// this.previousGroup.TweenCanvasGroupAlpha(0, this.tweenDuration);
+		// this.group.TweenCanvasGroupAlpha(1, this.tweenDuration);
 	}
 
 	public ClosePage() {
-		this.previousGroup.TweenCanvasGroupAlpha(1, this.tweenDuration);
-		this.group.TweenCanvasGroupAlpha(0, this.tweenDuration);
-		this.group.interactable = false;
-		this.previousGroup.interactable = true;
+		// this.previousGroup.TweenCanvasGroupAlpha(1, this.tweenDuration);
+		// this.group.TweenCanvasGroupAlpha(0, this.tweenDuration);
+		// this.group.interactable = false;
+		// this.previousGroup.interactable = true;
 	}
 }

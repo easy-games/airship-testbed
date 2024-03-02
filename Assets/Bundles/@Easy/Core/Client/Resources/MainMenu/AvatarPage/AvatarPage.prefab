@@ -527,7 +527,7 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 6342705625492222094}
       modified: 1
-    - name: profilePicGO
+    - name: avatarProfileMenuGo
       type: object
       objectType: GameObject
       items:
@@ -2769,7 +2769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3063846277347320746}
   - component: {fileID: 5352368959358003079}
-  - component: {fileID: 8683878295041182423}
+  - component: {fileID: 1367000086350633694}
   m_Layer: 0
   m_Name: ProfilePicCanvas
   m_TagString: Untagged
@@ -2811,7 +2811,7 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &8683878295041182423
+--- !u!114 &1367000086350633694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2823,7 +2823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarRenderComponent.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Client/Resources/TS/MainMenuControllers/AvatarMenu/AvatarMenuProfileComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -2833,7 +2833,7 @@ MonoBehaviour:
   m_onLateUpdateHandle: -1
   m_shortFileName: 
   m_metadata:
-    name: AvatarRenderComponent
+    name: AvatarMenuProfileComponent
     properties:
     - name: group
       type: object
@@ -2872,7 +2872,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 1625241114619043401}
+      serializedObject: {fileID: 8633402009502342705}
       modified: 1
 --- !u!1 &5206208421496188203
 GameObject:
@@ -4662,6 +4662,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.000030517578
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6463296007048195116, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -4860,6 +4876,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4994,6 +5026,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Legs
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 8787092159297638935}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -5100,6 +5156,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
   m_PrefabInstance: {fileID: 992192823094291933}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8787092159297638935 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 992192823094291933}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1065533949159914487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5115,6 +5182,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Shirt
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -5315,9 +5398,17 @@ PrefabInstance:
       value: object
       objectReference: {fileID: 0}
     - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].objectType
       value: Image
       objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 300966915287506605}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
       value: Outfit 5
@@ -5331,6 +5422,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+--- !u!114 &300966915287506605 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+  m_PrefabInstance: {fileID: 1176492568634451990}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1454644575098257767 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
@@ -5351,6 +5453,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarIconBtn_Current
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -5466,6 +5584,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Gloves
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -5580,6 +5714,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Hair
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -5693,6 +5843,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_FaceDecal
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -5893,9 +6059,17 @@ PrefabInstance:
       value: object
       objectReference: {fileID: 0}
     - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].objectType
       value: Image
       objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 951057039681615018}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
       value: Outfit 4
@@ -5909,6 +6083,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+--- !u!114 &951057039681615018 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+  m_PrefabInstance: {fileID: 1822927899483161105}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2103186586298379104 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
@@ -5979,6 +6164,22 @@ PrefabInstance:
     - target: {fileID: 4192143435085804765, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -6106,6 +6307,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Backpack
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -6219,6 +6436,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_UnderGloves
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -6354,6 +6587,30 @@ PrefabInstance:
       propertyPath: m_Colors.m_PressedColor.r
       value: 0.19215687
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 7510353980195737587}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -6443,6 +6700,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+--- !u!114 &7510353980195737587 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 2021233297701892153}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8662941611794567225 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
@@ -6549,9 +6817,17 @@ PrefabInstance:
       value: object
       objectReference: {fileID: 0}
     - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].objectType
       value: Image
       objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 786484508648410916}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
       value: Outfit 3
@@ -6565,6 +6841,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+--- !u!114 &786484508648410916 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+  m_PrefabInstance: {fileID: 2203568004319066527}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1939071384053551342 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
@@ -6594,6 +6881,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Torso
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 7678724445822686284}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -6695,6 +7006,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+--- !u!114 &7678724445822686284 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 2208647202512497542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8832297101249186694 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
@@ -6783,6 +7105,22 @@ PrefabInstance:
     - target: {fileID: 4192143435085804765, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6463296007048195116, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_IsActive
@@ -6953,6 +7291,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Hands
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 6054798077384591307}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -7059,6 +7421,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
   m_PrefabInstance: {fileID: 2319363821401962497}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6054798077384591307 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 2319363821401962497}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2321749016524208415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7074,6 +7447,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Hat
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -7189,6 +7578,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Taunt
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -7302,6 +7707,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Socks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -7453,6 +7874,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_ResetCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -7546,17 +7983,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
---- !u!114 &1625241114619043401 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3724783059938918651, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
-  m_PrefabInstance: {fileID: 2683884087641841330}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4686907858140692146 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
@@ -7574,6 +8000,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Skin
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 5917904390397588418}
     - target: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -7664,6 +8098,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
   m_PrefabInstance: {fileID: 2744488150803614728}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5917904390397588418 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 2744488150803614728}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2771899104022354963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7727,6 +8172,22 @@ PrefabInstance:
     - target: {fileID: 4192143435085804765, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -7870,6 +8331,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_SkinTexture
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -7984,6 +8461,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Watches
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -8097,6 +8590,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Shoes
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -8297,9 +8806,17 @@ PrefabInstance:
       value: object
       objectReference: {fileID: 0}
     - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_metadata.properties.Array.data[3].objectType
       value: Image
       objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 2901106012505215480}
     - target: {fileID: 5887675340776634180, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_text
       value: Outfit 2
@@ -8313,6 +8830,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+--- !u!114 &2901106012505215480 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+  m_PrefabInstance: {fileID: 4340430584268662595}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4053271361977224754 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
@@ -8340,7 +8868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -8348,15 +8876,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8388,7 +8916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 256
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8467,6 +8995,22 @@ PrefabInstance:
     - target: {fileID: 3724783059938918651, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Colors.m_NormalColor.r
       value: 0.07450981
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6463296007048195116, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_IsActive
@@ -8594,6 +9138,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
   m_PrefabInstance: {fileID: 4927244857464495818}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8633402009502342705 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3724783059938918651, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 4927244857464495818}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4935777941859964995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8609,6 +9164,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Pants
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -8724,6 +9295,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_FaceShape
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -8837,6 +9424,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarIconBtn_None
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -8968,6 +9571,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -9082,6 +9701,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Underpants
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -9195,6 +9830,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Coat
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -9316,7 +9967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -9324,15 +9975,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9415,6 +10066,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Earing
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -9538,6 +10205,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Hair
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 2371599912905835759}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -9639,6 +10330,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+--- !u!114 &2371599912905835759 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 6115714918431718181}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &3524996715300821797 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
@@ -9659,6 +10361,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Undershirt
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -9782,6 +10500,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Feet
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 3294051402829921871}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -9871,6 +10613,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+--- !u!114 &3294051402829921871 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 6449204774489915781}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4446181019031757189 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
@@ -9891,6 +10644,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Overpants
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -10005,6 +10774,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Win
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -10192,6 +10977,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416049645295338797, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 5360382975707604610}
     - target: {fileID: 6002481594607549612, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
       propertyPath: m_Name
       value: OutfitBtn_Slot0
@@ -10201,6 +10994,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+--- !u!114 &5360382975707604610 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1476760744204482235, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
+  m_PrefabInstance: {fileID: 6781688733735768121}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6512547775290243400 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 323223754123094385, guid: d4744a228ae5444b28a2df6936be08d4, type: 3}
@@ -10228,7 +11032,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -10236,15 +11040,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10280,7 +11084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -158
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10335,6 +11139,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Die
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -10449,6 +11269,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_Glasses
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -10644,6 +11480,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 5c15d295efc324fe1ad1141a12cfe5b4, type: 3}
+    - target: {fileID: 8263399936722873776, guid: aacf0b7c13c64894dbf375a08489499e, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263399936722873776, guid: aacf0b7c13c64894dbf375a08489499e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263399936722873776, guid: aacf0b7c13c64894dbf375a08489499e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263399936722873776, guid: aacf0b7c13c64894dbf375a08489499e, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10676,7 +11528,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -10684,15 +11536,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10724,11 +11576,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 256
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -158
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10783,6 +11635,22 @@ PrefabInstance:
     - target: {fileID: 3676455692557874653, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Name
       value: AvatarBtn_SkinTone
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
@@ -10906,6 +11774,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarBtn_Head
       objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].name
+      value: bgImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].type
+      value: object
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].objectType
+      value: Image
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701630528585026652, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_metadata.properties.Array.data[3].serializedObject
+      value: 
+      objectReference: {fileID: 868803457784563336}
     - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -11007,6 +11899,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+--- !u!114 &868803457784563336 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8374161890027536330, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+  m_PrefabInstance: {fileID: 8662783811363617090}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2021074429971552578 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
@@ -11034,7 +11937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -11042,15 +11945,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11082,11 +11985,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 128
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -158
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11148,7 +12051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.x
@@ -11156,15 +12059,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11196,7 +12099,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 128
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1351764662473005075, guid: fd38ae4810ee944d2a2126bac7cd6a61, type: 3}
       propertyPath: m_AnchoredPosition.y

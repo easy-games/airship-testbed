@@ -15286,8 +15286,8 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     FolderName: string;
 
 
-    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): void;
-    SaveTexture(texture: Texture2D, fileName: string, png: boolean): void;
+    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): string;
+    SaveTexture(texture: Texture2D, fileName: string, png: boolean): string;
     ScreenShotName(width: number, height: number, png: boolean): string;
     ScreenShotName(filename: string, png: boolean): string;
     TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;

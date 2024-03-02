@@ -18,7 +18,6 @@ import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
 import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
-import AvatarRenderComponent from "./AvatarRenderComponent";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
