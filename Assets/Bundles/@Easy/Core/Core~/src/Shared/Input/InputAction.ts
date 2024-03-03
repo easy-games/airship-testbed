@@ -1,6 +1,6 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Airship } from "../Airship";
-import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
+import { ModifierKey } from "./InputUtil";
 import { Keybind } from "./Keybind";
 
 export interface SerializableAction {
@@ -96,7 +96,6 @@ export class InputAction {
 	 * @param newKeybind
 	 */
 	public UpdateKeybind(newKeybind: Keybind): void {
-		// TODO: Some validation here, maybe?
 		this.keybind.Update(newKeybind);
 		Airship.input.onActionBound.Fire(this);
 	}
@@ -122,17 +121,7 @@ export class InputAction {
 	 * @returns
 	 */
 	public IsDesktopPeripheral(): boolean {
-		const primaryInputType = InputUtil.GetInputTypeFromKeybind(this.defaultKeybind, KeyType.Primary);
-		const primaryIsDesktopPeripheral =
-			primaryInputType === ActionInputType.Keyboard || primaryInputType === ActionInputType.Mouse;
-		if (!this.IsComplexKeybind()) {
-			return primaryIsDesktopPeripheral;
-		}
-		const modifierInputType = InputUtil.GetInputTypeFromKeybind(this.defaultKeybind, KeyType.Modifier);
-		return (
-			primaryIsDesktopPeripheral &&
-			(modifierInputType === ActionInputType.Keyboard || modifierInputType === ActionInputType.Mouse)
-		);
+		return this.keybind.IsDesktopPeripheral();
 	}
 
 	/**
