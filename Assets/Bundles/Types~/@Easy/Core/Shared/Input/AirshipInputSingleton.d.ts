@@ -53,11 +53,6 @@ export declare class AirshipInputSingleton implements OnStart {
     CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void;
     /**
      *
-     * @param actionSchema
-     */
-    private CreateSecondaryKeybindForAction;
-    /**
-     *
      * @param name
      * @returns
      */

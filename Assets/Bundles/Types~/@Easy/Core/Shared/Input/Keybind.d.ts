@@ -16,6 +16,11 @@ export declare class Keybind {
     IsComplexKeybind(): boolean;
     /**
      *
+     * @returns
+     */
+    IsDesktopPeripheral(): boolean;
+    /**
+     *
      */
     GetModifierKeyCode(): KeyCode;
     /**
