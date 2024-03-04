@@ -45,6 +45,7 @@ export class InventorySingleton implements OnStart {
 		});
 		CoreNetwork.ServerToClient.SetInventorySlot.client.OnServerEvent(
 			(invId, slot, itemStackDto, clientPredicted) => {
+				if (RunUtil.IsHosting()) return;
 				const inv = this.GetInventory(invId);
 				if (!inv) return;
 
