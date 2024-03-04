@@ -47,16 +47,16 @@ export function InitNet() {
 			const data = msg.d;
 			const callbacks = callbacksByIdServer.get(tostring(id));
 			if (callbacks === undefined) return;
-
-			const player = Airship.players.FindByClientIdIncludePending(clientId);
-			if (!player) {
-				warn(debug.traceback(`Dropping request from client ${clientId}: Failed to find Player object`));
-				return;
-			}
-
-			for (const callback of callbacks) {
-				callback.callback(player, ...data);
-			}
+			const waitForClient = Airship.players.WaitForClientIdIncludePending(clientId);
+			waitForClient.then((player) => {
+				if (!player) {
+					warn(debug.traceback(`Dropping request from client ${clientId}: Failed to find Player object`));
+					return;
+				}
+				for (const callback of callbacks) {
+					callback.callback(player, ...data);
+				}
+			});
 		});
 	}
 	if (RunUtil.IsClient()) {
