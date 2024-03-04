@@ -3,5 +3,6 @@ export declare const AirshipUrl: {
     GameCoordinator: string;
     ContentService: string;
     DataStoreService: string;
+    DeploymentService: string;
     CDN: string;
 };

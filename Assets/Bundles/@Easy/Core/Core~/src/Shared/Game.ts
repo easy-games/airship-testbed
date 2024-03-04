@@ -56,4 +56,6 @@ export class Game {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
 	}
+
+	public static localPlatform = AirshipPlatformUtil.GetLocalPlatform();
 }

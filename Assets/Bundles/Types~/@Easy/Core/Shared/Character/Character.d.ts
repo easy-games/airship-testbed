@@ -26,12 +26,15 @@ export default class Character extends AirshipBehaviour {
     inventory: Inventory;
     heldItems: HeldItemManager;
     outfitDto: OutfitDto | undefined;
+    private spineBone;
+    private headBone;
     onDeath: Signal<void>;
     onDespawn: Signal<void>;
     onStateChanged: Signal<[newState: CharacterState, oldState: CharacterState]>;
     onHealthChanged: Signal<[newHealth: number, oldHealth: number]>;
     private despawned;
     Awake(): void;
+    LateUpdate(dt: number): void;
     Start(): void;
     OnDisable(): void;
     Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void;
