@@ -64,6 +64,10 @@ export default class Inventory extends AirshipBehaviour {
 		}
 	}
 
+	public OnDisable(): void {
+		Airship.inventory.UnregisterInventory(this);
+	}
+
 	private RequestFullUpdate(): void {
 		const dto = Airship.inventory.remotes.clientToServer.getFullUpdate.client.FireServer(this.id);
 		if (dto) {
