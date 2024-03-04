@@ -1,3 +1,4 @@
+import Character from "@Easy/Core/Shared/Character/Character";
 import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Dependency } from "Shared/Flamework";
@@ -30,7 +31,7 @@ export class HumanoidCameraMode implements CameraMode {
 	private readonly bin = new Bin();
 
 	private lookVector = Vector3.zero;
-	private readonly entityDriver: CharacterMovement;
+	private readonly movement: CharacterMovement;
 	private occlusionCam!: OcclusionCam;
 	private lookBackwards = false;
 
@@ -56,16 +57,19 @@ export class HumanoidCameraMode implements CameraMode {
 	private readonly mouse = this.bin.Add(new Mouse());
 	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
+	private spineBone: Transform;
+
 	constructor(
-		private characterGO: GameObject,
+		private character: Character,
 		private graphicalCharacterGO: GameObject,
 		initialFirstPerson: boolean,
 		initialYOffset: number,
 	) {
-		this.entityDriver = characterGO.GetComponent<CharacterMovement>();
+		this.movement = character.movement;
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
 		this.yOffset = initialYOffset;
+		this.spineBone = character.rig.spine;
 		this.SetupMobileControls();
 
 		this.bin.Add(() => {});
@@ -218,7 +222,7 @@ export class HumanoidCameraMode implements CameraMode {
 		const newLookVector = this.lookBackwards && !this.firstPerson ? transform.forward.mul(-1) : transform.forward;
 		const diff = this.lookVector.sub(newLookVector).magnitude;
 		if (diff > 0.01) {
-			this.entityDriver.SetLookVector(newLookVector);
+			this.movement.SetLookVector(newLookVector);
 			this.lookVector = newLookVector;
 		}
 	}
@@ -252,6 +256,6 @@ export class HumanoidCameraMode implements CameraMode {
 		// Determine Y-axis rotation based on direction:
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
-		this.entityDriver.SetLookVector(direction);
+		this.movement.SetLookVector(direction);
 	}
 }
