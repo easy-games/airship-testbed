@@ -48,8 +48,6 @@ export class InventorySingleton implements OnStart {
 				const inv = this.GetInventory(invId);
 				if (!inv) return;
 
-				// if (this.localInventory === inv && clientPredicted) return;
-
 				const itemStack = itemStackDto !== undefined ? ItemStack.Decode(itemStackDto) : undefined;
 				inv.SetItem(slot, itemStack);
 			},
@@ -69,7 +67,7 @@ export class InventorySingleton implements OnStart {
 			}
 		});
 		CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot, clientPredicted) => {
-			if (!invId) return;
+			if (invId === undefined) return;
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
@@ -81,7 +79,9 @@ export class InventorySingleton implements OnStart {
 
 	private StartServer(): void {
 		this.remotes.clientToServer.getFullUpdate.server.SetCallback((player, invId) => {
-			return this.GetInventory(invId)?.Encode();
+			const inv = this.GetInventory(invId);
+			inv?.StartNetworkingDiffs();
+			return inv?.Encode();
 		});
 
 		CoreNetwork.ClientToServer.SetHeldSlot.server.OnClientEvent((player, slot) => {
@@ -95,7 +95,7 @@ export class InventorySingleton implements OnStart {
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
-			(player, frommInvId, fromSlot, toInvId, toSlot) => {},
+			(player, fromInvId, fromSlot, toInvId, toSlot) => {},
 		);
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
