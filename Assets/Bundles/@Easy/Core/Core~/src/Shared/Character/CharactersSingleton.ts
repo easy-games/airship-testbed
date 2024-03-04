@@ -122,13 +122,12 @@ export class CharactersSingleton implements OnStart {
 
 		if (RunUtil.IsClient()) {
 			CoreNetwork.ServerToClient.Character.SetHealth.client.OnServerEvent((id, health) => {
+				if (RunUtil.IsHosting()) return;
 				this.FindById(id)?.SetHealth(health);
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
+				if (RunUtil.IsHosting()) return;
 				this.FindById(id)?.SetHealth(maxHealth);
-			});
-			CoreNetwork.ServerToClient.Character.Death.client.OnServerEvent((id) => {
-				this.FindById(id)?.onDeath.Fire();
 			});
 		}
 	}
