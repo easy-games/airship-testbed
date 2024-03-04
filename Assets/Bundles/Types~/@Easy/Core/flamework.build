@@ -70,7 +70,7 @@
 		"@Easy/Core:Client/Controllers/Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode": "$:Controllers/Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode",
 		"@Easy/Core:Client/Controllers/Camera/FirstPersonCameraSystem@FirstPersonCameraSystem": "$:Controllers/Camera/FirstPersonCameraSystem@FirstPersonCameraSystem",
 		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal": "$:Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal",
-		"@Easy/Core:Shared/Character/LocalCharacter/EntityInput@CharacterInput": "$:Character/LocalCharacter/EntityInput@CharacterInput",
+		"@Easy/Core:Shared/Character/LocalCharacter/CharacterInput@CharacterInput": "$:Character/LocalCharacter/CharacterInput@CharacterInput",
 		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
 		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
 		"@Easy/Core:Shared/Util/BundleReferenceManager@BundleReferenceManager": "$:Util/BundleReferenceManager@BundleReferenceManager",

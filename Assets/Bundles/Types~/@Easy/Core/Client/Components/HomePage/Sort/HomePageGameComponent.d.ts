@@ -9,6 +9,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     buttonGo: GameObject;
     orgImage: CloudImage;
     authorText: TMP_Text;
+    gameDto: GameDto;
     private redirectDrag;
     private bin;
     Start(): void;
@@ -16,4 +17,5 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     OnDisabled(): void;
     SetDragRedirectTarget(target: ScrollRect): void;
     Init(gameDto: GameDto): void;
+    HasAdminPermissions(): boolean;
 }

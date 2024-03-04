@@ -32,6 +32,7 @@ export default class Inventory extends AirshipBehaviour {
     private finishedInitialReplication;
     private slotConnections;
     OnEnable(): void;
+    OnDisable(): void;
     private RequestFullUpdate;
     GetItem(slot: number): ItemStack | undefined;
     GetSlot(itemStack: ItemStack): number | undefined;

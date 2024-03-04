@@ -3,7 +3,7 @@ import { DataStreamItems } from "../../Util/DataStreamTypes";
 import { Signal } from "../../Util/Signal";
 import { HumanoidCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/HumanoidCameraMode";
 import { CharacterCameraMode } from "./CharacterCameraMode";
-import { CharacterInput } from "./EntityInput";
+import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 export declare class LocalCharacterSingleton implements OnStart {
     private firstPerson;
