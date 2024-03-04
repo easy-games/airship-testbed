@@ -17,6 +17,7 @@ import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { AirshipUrl } from "../Util/AirshipUrl";
+import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { Player, PlayerDto } from "./Player";
 
@@ -436,6 +437,34 @@ export class PlayersSingleton implements OnStart {
 	/** Special method used for startup handshake. */
 	public FindByClientIdIncludePending(clientId: number): Player | undefined {
 		return this.FindByClientId(clientId) ?? this.playersPendingReady.get(clientId);
+	}
+
+	/**
+	 * @internal
+	 */
+	public WaitForClientIdIncludePending(clientId: number, timeout = 5): Promise<Player | undefined> {
+		return new Promise((resolve) => {
+			let readyOrPending = this.FindByClientIdIncludePending(clientId);
+			if (readyOrPending) {
+				resolve(readyOrPending);
+				return;
+			}
+			let acc = 0;
+			const disconnect = OnUpdate.Connect((dt) => {
+				acc += dt;
+				readyOrPending = this.FindByClientIdIncludePending(clientId);
+				if (acc >= timeout) {
+					disconnect();
+					resolve(undefined);
+					return;
+				}
+				if (readyOrPending) {
+					disconnect();
+					resolve(readyOrPending);
+					return;
+				}
+			});
+		});
 	}
 
 	public FindByUserId(userId: string): Player | undefined {
