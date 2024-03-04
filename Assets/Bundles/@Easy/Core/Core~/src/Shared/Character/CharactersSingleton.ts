@@ -11,7 +11,7 @@ import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 
-const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/Character.prefab");
+const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
 
 @Service()
 @Controller()

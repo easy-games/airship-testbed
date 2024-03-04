@@ -197,7 +197,10 @@ export class HumanoidCameraMode implements CameraMode {
 		const attachToPos = this.attachTo.position.add(new Vector3(0, this.yOffset, 0)).add(this.camRight.mul(xOffset));
 		this.lastAttachToPos = attachToPos;
 
-		const newPosition = this.firstPerson ? attachToPos : attachToPos.add(posOffset);
+		let newPosition = this.firstPerson ? attachToPos : attachToPos.add(posOffset);
+		if (this.firstPerson) {
+			newPosition = newPosition.add(new Vector3(0, -0.13, 0));
+		}
 		const lv = posOffset.mul(-1).normalized;
 		const rotation = Quaternion.LookRotation(lv, Vector3.up);
 

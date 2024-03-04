@@ -999,7 +999,7 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 0.6
+      serializedValue: 0.9
       serializedObject: {fileID: 0}
       modified: 1
     - name: spinBigRequiredSpeed
@@ -1012,7 +1012,7 @@ MonoBehaviour:
         objectRefs: []
       decorators: []
       nullable: 0
-      serializedValue: 15
+      serializedValue: 21
       serializedObject: {fileID: 0}
       modified: 1
     - name: avatarRenderGo
@@ -1101,7 +1101,7 @@ MonoBehaviour:
   fogEnabled: 1
   fogStart: 10
   fogEnd: 20
-  fogColor: {r: 0.11934852, g: 0.13391915, b: 0.16981131, a: 1}
+  fogColor: {r: 0.0627451, g: 0.078431375, b: 0.12156863, a: 1}
   shadowRange: 50
 --- !u!1 &4433631764270028334
 GameObject:
@@ -1260,7 +1260,7 @@ Transform:
   m_GameObject: {fileID: 5667949225978481709}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.56, y: 1.96, z: -0.527}
+  m_LocalPosition: {x: 1.581, y: 1.96, z: -1.661}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1278,9 +1278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b144661d7f1e8cd40b19de6f2d9660af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0.8773585, g: 0.755874, b: 0.5007565, a: 1}
-  intensity: 0.34
-  range: 30
+  color: {r: 0.5121039, g: 0.57028955, b: 0.7924528, a: 1}
+  intensity: 0.63
+  range: 8.7
   castShadows: 1
 --- !u!1 &5689691061404926051
 GameObject:
@@ -1429,7 +1429,7 @@ GameObject:
   - component: {fileID: 7821135771876542089}
   - component: {fileID: 8778689450119729171}
   - component: {fileID: 2730180804783009729}
-  - component: {fileID: 7422433631425720839}
+  - component: {fileID: 2855406815576847075}
   m_Layer: 10
   m_Name: Floor
   m_TagString: Untagged
@@ -1482,7 +1482,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 16c9aa28b6820e4458962092cb733832, type: 2}
+  - {fileID: 2100000, guid: cc67fd491fd3eea48854c27e28e0367b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1504,7 +1504,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7422433631425720839
+--- !u!114 &2855406815576847075
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1517,7 +1517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
+  - materialColor: {r: 0.063056245, g: 0.07734512, b: 0.122641504, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 1
@@ -2001,7 +2001,7 @@ Transform:
   m_GameObject: {fileID: 7989267505325146026}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.785, y: 4.053, z: -4.798}
+  m_LocalPosition: {x: -3.056, y: 2.707, z: -0.524}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2021,7 +2021,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 1, g: 0.8841849, b: 0.6367924, a: 1}
   intensity: 0.73
-  range: 16.3
+  range: 4.5
   castShadows: 1
 --- !u!1001 &1727726523347655367
 PrefabInstance:
