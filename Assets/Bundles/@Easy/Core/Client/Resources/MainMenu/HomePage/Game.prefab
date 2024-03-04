@@ -1604,7 +1604,20 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: GameImageButton
-    properties: []
+    properties:
+    - name: gameComponentGO
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6788171637080642593}
+      modified: 1
 --- !u!1 &7381602344410072828
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,9 +1,6 @@
-import inspect from "@easy-games/unity-inspect";
-import { AirshipUrl } from "Shared/Util/AirshipUrl";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { Bin } from "Shared/Util/Bin";
-import { SetTimeout } from "Shared/Util/Timer";
-import { DecodeJSON } from "Shared/json";
-import { MyGamesDto } from "../API/GamesAPI";
 import SortComponent from "../Sort/SortComponent";
 
 export default class MyGamesSortComponent extends AirshipBehaviour {
@@ -16,26 +13,15 @@ export default class MyGamesSortComponent extends AirshipBehaviour {
 
 	public override OnEnable(): void {
 		this.sort.Clear();
-		this.FetchGames();
+		task.spawn(() => {
+			this.FetchGames();
+		});
 	}
 
 	public FetchGames(): void {
-		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true");
-		if (!res.success) {
-			// warn("Failed to fetch my games. Retrying in 1s..");
-			this.bin.Add(
-				SetTimeout(1, () => {
-					this.FetchGames();
-				}),
-			);
-			return;
-		}
-
-		let data = DecodeJSON<MyGamesDto>(res.data);
-		print("My games: " + inspect(data));
-		data = data.filter((g) => g.lastVersionUpdate !== undefined);
-
-		this.sort.SetGames(data);
+		const search = Dependency<SearchSingleton>();
+		search.FetchMyGames();
+		this.sort.SetGames(search.myGames);
 	}
 
 	override Start(): void {

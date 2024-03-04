@@ -16,7 +16,7 @@ import { OrbitCameraMode } from "../../../Client/Controllers/Camera/DefaultCamer
 import { FirstPersonCameraSystem } from "../../../Client/Controllers/Camera/FirstPersonCameraSystem";
 import { ClientSettingsController } from "../../../Client/MainMenuControllers/Settings/ClientSettingsController";
 import { CharacterCameraMode } from "./CharacterCameraMode";
-import { CharacterInput } from "./EntityInput";
+import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 
 const CAM_Y_OFFSET = 1.7;
@@ -157,12 +157,7 @@ export class LocalCharacterSingleton implements OnStart {
 	private CreateHumanoidCameraMode(character: Character): HumanoidCameraMode {
 		const state = this.entityDriver?.GetState() ?? CharacterState.Idle;
 		const yOffset = this.GetCamYOffset(state, this.firstPerson);
-		this.humanoidCameraMode = new HumanoidCameraMode(
-			character.gameObject,
-			character.model,
-			this.firstPerson,
-			yOffset,
-		);
+		this.humanoidCameraMode = new HumanoidCameraMode(character, character.model, this.firstPerson, yOffset);
 		this.humanoidCameraMode.SetLookBackwards(this.lookBackwards);
 		this.humanoidCameraMode.SetFirstPerson(this.firstPerson);
 		return this.humanoidCameraMode;

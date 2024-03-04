@@ -1,3 +1,4 @@
+import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { TransferController } from "Client/MainMenuControllers/Transfer/TransferController";
 import DateParser from "Shared/DateParser";
 import { Dependency } from "Shared/Flamework";
@@ -20,6 +21,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public orgImage!: CloudImage;
 	public authorText!: TMP_Text;
 
+	public gameDto!: GameDto;
+
 	@SerializeField()
 	private redirectDrag!: AirshipRedirectDrag;
 
@@ -38,6 +41,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	}
 
 	public Init(gameDto: GameDto) {
+		this.gameDto = gameDto;
 		this.titleText.text = gameDto.name;
 		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
 			this.playerCountText.text = gameDto.liveStats.playerCount + "";
@@ -98,5 +102,9 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(clickConn);
 		});
+	}
+
+	public HasAdminPermissions(): boolean {
+		return Dependency<SearchSingleton>().myGamesIds.has(this.gameDto.id);
 	}
 }
