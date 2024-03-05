@@ -195,3 +195,20 @@ MonoBehaviour:
       serializedValue: 0.5
       serializedObject: {fileID: 0}
       modified: 1
+    - name: cameraDistanceBase
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0.5
+      serializedObject: {fileID: 0}
+      modified: 1

@@ -17,6 +17,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public avatarViewHolder!: GameObject;
 
 	@Header("Variables")
+	public cameraDistanceBase = 2;
 	public cameraDistanceMod = 1;
 
 	override Start() {
@@ -145,7 +146,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		}
 
 		this.captureCamera.transform.position = focusPoint.add(
-			new Vector3(0.15, 0.25, 1 + -distance * this.cameraDistanceMod),
+			new Vector3(0.15, 0.25, -(this.cameraDistanceBase + distance * this.cameraDistanceMod)),
 		);
 		this.captureCamera.transform.LookAt(focusPoint);
 	}
