@@ -1,6 +1,6 @@
 <SphericalHarmonicCoefficients>
-  <Coefficient index="0" value="(0.16, 0.40, 0.58, 0.61)" />
-  <Coefficient index="1" value="(0.01, 0.02, 0.00, 0.01)" />
+  <Coefficient index="0" value="(0.22, 0.33, 0.39, 0.79)" />
+  <Coefficient index="1" value="(0.01, 0.01, 0.00, 0.01)" />
   <Coefficient index="2" value="(0.00, 0.00, 0.00, 0.00)" />
   <Coefficient index="3" value="(0.00, 0.00, 0.00, 0.00)" />
   <Coefficient index="4" value="(0.00, 0.00, 0.00, 0.00)" />

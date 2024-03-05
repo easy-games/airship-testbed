@@ -452,14 +452,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TabListEntry
       objectReference: {fileID: 0}
-    - target: {fileID: 5710813818691312931, guid: bc376184b878a40f09080f49124d2f30, type: 3}
-      propertyPath: bundledReferences.Array.data[0].keyValuePairs.Array.data[2].value
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6280014298828617697, guid: bc376184b878a40f09080f49124d2f30, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8318393369740892886, guid: bc376184b878a40f09080f49124d2f30, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -467,10 +459,6 @@ PrefabInstance:
     - target: {fileID: 8318393369740892886, guid: bc376184b878a40f09080f49124d2f30, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8318393369740892886, guid: bc376184b878a40f09080f49124d2f30, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8318393369740892886, guid: bc376184b878a40f09080f49124d2f30, type: 3}
       propertyPath: m_AnchorMax.x
@@ -545,8 +533,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6280014298828617697, guid: bc376184b878a40f09080f49124d2f30, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc376184b878a40f09080f49124d2f30, type: 3}
