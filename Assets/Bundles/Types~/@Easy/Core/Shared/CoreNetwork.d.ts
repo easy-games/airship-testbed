@@ -1,5 +1,6 @@
 import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
+import { CharacterDto } from "./Character/CharacterDto";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
@@ -7,6 +8,7 @@ import { ItemStackDto } from "./Inventory/ItemStack";
 import { CoreItemType } from "./Item/CoreItemType";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
 import { RemoteEvent } from "./Network/RemoteEvent";
+import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
 export declare const CoreNetwork: {
@@ -24,6 +26,9 @@ export declare const CoreNetwork: {
             QuickMoveSlot: RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number]>;
             MoveToSlot: RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]>;
             CheckOutOfSync: RemoteEvent<[invDto: InventoryDto]>;
+        };
+        Character: {
+            RequestCharacters: RemoteFunction<[], CharacterDto[]>;
         };
         SendChatMessage: RemoteEvent<[text: string]>;
         SetHeldItemState: RemoteEvent<[entityId: number, heldItemState: HeldItemState]>;
@@ -97,7 +102,7 @@ export declare const CoreNetwork: {
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
         Character: {
-            Spawn: RemoteEvent<[characterId: number, objectId: number, ownerClientId?: number | undefined, outfitDto?: OutfitDto | undefined]>;
+            Spawn: RemoteEvent<[characterDto: CharacterDto]>;
             SetHealth: RemoteEvent<[characterId: number, health: number]>;
             SetMaxHealth: RemoteEvent<[characterId: number, health: number]>;
             ChangeOutfit: RemoteEvent<[characterId: number, outfitDto: OutfitDto | undefined]>;

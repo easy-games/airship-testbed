@@ -98,12 +98,19 @@ export class EntityItemManager {
 			});
 		});
 
-		Airship.characters.onCharacterSpawned.Connect((character) => {
+		Airship.characters.ObserveCharacters((character) => {
 			this.GetOrCreateItemManager(character);
 			if (character.IsLocalCharacter()) {
 				this.localCharacter = character;
 			}
 		});
+
+		// Airship.characters.onCharacterSpawned.Connect((character) => {
+		// 	this.GetOrCreateItemManager(character);
+		// 	if (character.IsLocalCharacter()) {
+		// 		this.localCharacter = character;
+		// 	}
+		// });
 
 		//Clean up destroyed entities
 		Airship.characters.onCharacterDespawned.Connect((character) => {

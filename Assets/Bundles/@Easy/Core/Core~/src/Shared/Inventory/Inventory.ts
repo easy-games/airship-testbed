@@ -270,7 +270,6 @@ export default class Inventory extends AirshipBehaviour {
 	public SetHeldSlot(slot: number): void {
 		this.heldSlot = slot;
 		this.heldSlotChanged.Fire(slot);
-		const itemStack = this.GetHeldItem();
 	}
 
 	public Encode(): InventoryDto {
@@ -305,10 +304,6 @@ export default class Inventory extends AirshipBehaviour {
 
 	public HasItemType(itemType: CoreItemType): boolean {
 		return this.HasEnough(itemType, 1);
-	}
-
-	GetPairs(): Array<[slot: number, itemStack: ItemStack]> {
-		return Object.entries(this.items);
 	}
 
 	public GetMaxSlots(): number {

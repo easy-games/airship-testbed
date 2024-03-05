@@ -43,6 +43,7 @@ export declare class CharactersSingleton implements OnStart {
      */
     ObserveCharacters(observer: (character: Character) => (() => void) | void, signalPriority?: SignalPriority): () => void;
     SpawnNonPlayerCharacter(position: Vector3): Character;
+    private InitCharacter;
     FindById(characterId: number): Character | undefined;
     FindByPlayer(player: Player): Character | undefined;
     FindByClientId(clientId: number): Character | undefined;

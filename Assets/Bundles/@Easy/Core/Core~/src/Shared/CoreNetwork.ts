@@ -1,5 +1,6 @@
 import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
+import { CharacterDto } from "./Character/CharacterDto";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
@@ -7,6 +8,7 @@ import { ItemStackDto } from "./Inventory/ItemStack";
 import { CoreItemType } from "./Item/CoreItemType";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
 import { RemoteEvent } from "./Network/RemoteEvent";
+import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
 
@@ -29,6 +31,9 @@ export const CoreNetwork = {
 				[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]
 			>(),
 			CheckOutOfSync: new RemoteEvent<[invDto: InventoryDto]>(),
+		},
+		Character: {
+			RequestCharacters: new RemoteFunction<[], CharacterDto[]>(),
 		},
 		SendChatMessage: new RemoteEvent<[text: string]>(),
 		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
@@ -121,9 +126,7 @@ export const CoreNetwork = {
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
 		Character: {
-			Spawn: new RemoteEvent<
-				[characterId: number, objectId: number, ownerClientId?: number, outfitDto?: OutfitDto]
-			>(),
+			Spawn: new RemoteEvent<[characterDto: CharacterDto]>(),
 			SetHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			SetMaxHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			ChangeOutfit: new RemoteEvent<[characterId: number, outfitDto: OutfitDto | undefined]>(),

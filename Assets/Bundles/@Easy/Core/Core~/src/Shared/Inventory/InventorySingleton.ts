@@ -259,36 +259,6 @@ export class InventorySingleton implements OnStart {
 				}
 			},
 		);
-
-		// CoreNetwork.ClientToServer.Inventory.CheckOutOfSync.server.OnClientEvent((clientId, invDto) => {
-		// 	const character = Airship.characters.FindByClientId(clientId);
-		// 	if (!character) {
-		// 		error("Character not found.");
-		// 	}
-
-		// 	const serverInvDto = character.GetInventory().Encode();
-
-		// 	//print("----- INV SYNC CHECK -----");
-		// 	if (serverInvDto.items.size() !== invDto.items.size()) {
-		// 		// print(
-		// 		// 	"Inventory sizes don't match. Client: " +
-		// 		// 		invDto.items.size() +
-		// 		// 		", Server: " +
-		// 		// 		serverInvDto.items.size(),
-		// 		// );
-		// 	}
-
-		// 	for (let slot = 0; slot < 45; slot++) {
-		// 		const serverItem = serverInvDto.items.get(slot);
-		// 		const clientItem = invDto.items.get(slot);
-		// 		if (inspect(serverItem) !== inspect(clientItem)) {
-		// 			// print(
-		// 			// 	`Slot ${slot} mismatch. Server: ${serverItem?.i},${serverItem?.a}  Client: ${clientItem?.i},${clientItem?.a}`,
-		// 			// );
-		// 		}
-		// 	}
-		// 	//print("----- END -----");
-		// });
 	}
 
 	private SwapSlots(
