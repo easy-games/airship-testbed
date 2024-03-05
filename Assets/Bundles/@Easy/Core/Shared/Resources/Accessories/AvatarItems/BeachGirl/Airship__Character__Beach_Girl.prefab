@@ -1019,6 +1019,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -8325565291410837864}
     - target: {fileID: 7645954550138776834, guid: 0e9a903ce497e3541a65345e6b7f6932, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0.03753326
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645954550138776834, guid: 0e9a903ce497e3541a65345e6b7f6932, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.2261413
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645954550138776834, guid: 0e9a903ce497e3541a65345e6b7f6932, type: 3}
       propertyPath: 'm_Bones.Array.data[0]'
       value: 
       objectReference: {fileID: -8325565291410837864}

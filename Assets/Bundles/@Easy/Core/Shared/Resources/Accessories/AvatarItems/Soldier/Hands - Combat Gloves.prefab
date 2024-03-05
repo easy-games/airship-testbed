@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2114429579933394246
+--- !u!1 &8151099504743578051
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5729593965126532945}
-  - component: {fileID: 7230444496329118508}
-  - component: {fileID: 2912173375104565290}
-  - component: {fileID: 210703450389781417}
+  - component: {fileID: 149566444613061633}
+  - component: {fileID: 1463647868973042896}
+  - component: {fileID: 8215120126335006911}
+  - component: {fileID: 6820435399738181908}
   m_Layer: 0
-  m_Name: Beach - Hair(Clone)
+  m_Name: Hands - Combat Gloves
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5729593965126532945
+--- !u!4 &149566444613061633
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114429579933394246}
+  m_GameObject: {fileID: 8151099504743578051}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.6786833e-11, y: 0, z: -1.3393417e-11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
---- !u!137 &7230444496329118508
+--- !u!137 &1463647868973042896
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114429579933394246}
+  m_GameObject: {fileID: 8151099504743578051}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,7 +56,8 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 56631354d3a834d46b16e0a289e6c158, type: 2}
+  - {fileID: 2100000, guid: ca35b60b91b46294fb8ffc68710df6d9, type: 2}
+  - {fileID: 2100000, guid: b008afacb21fd2d4d8ac1b6189bd10e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,7 +82,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 2303856031265722823, guid: 26a67a455b694e347b372069f176652c, type: 3}
+  m_Mesh: {fileID: 4222027415277533260, guid: 8acb0819c5641b145b532a6a0732357e, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -109,40 +110,42 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.0013397634, y: -0.15232034, z: 1.1738601}
-    m_Extent: {x: 0.43690023, y: 0.51080006, z: 0.48697913}
+    m_Center: {x: -0.00000014901161, y: -0.060555346, z: 0.8327302}
+    m_Extent: {x: 0.70171475, y: 0.17140394, z: 0.19566682}
   m_DirtyAABB: 0
---- !u!114 &2912173375104565290
+--- !u!114 &8215120126335006911
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114429579933394246}
+  m_GameObject: {fileID: 8151099504743578051}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+  - materialColor: {r: 0.33861232, g: 0.3773585, b: 0.29725882, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
+  - materialColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
---- !u!114 &210703450389781417
+--- !u!114 &6820435399738181908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114429579933394246}
+  m_GameObject: {fileID: 8151099504743578051}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 206eebdf-8dc8-4677-8821-c0ccb83faa18
-  serverInstanceId: 
-  accessorySlot: 2
+  serverClassId: 95e1556e-7eb8-47db-af73-ae4718d26ea0
+  accessorySlot: 16
   visibilityMode: 0
   skinnedToCharacter: 1

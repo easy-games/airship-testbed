@@ -2168,42 +2168,6 @@ PrefabInstance:
       value: AvatarPictureCaptureCamera
       objectReference: {fileID: 0}
     - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].name
-      value: rig
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].type
-      value: object
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].name
-      value: avatarViewHolder
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].type
-      value: object
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].modified
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].modified
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[1].objectType
-      value: CharacterRig
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
-      propertyPath: m_metadata.properties.Array.data[2].objectType
-      value: GameObject
-      objectReference: {fileID: 0}
-    - target: {fileID: 1200603287626173335, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].serializedObject
       value: 
       objectReference: {fileID: 5959368417349267470}
@@ -2220,16 +2184,24 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4681452674743925062, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: field of view
+      value: 26.991467
+      objectReference: {fileID: 0}
+    - target: {fileID: 4681452674743925062, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0.31132078
+      value: 0.22352941
       objectReference: {fileID: 0}
     - target: {fileID: 4681452674743925062, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0.29737008
+      value: 0.19607843
       objectReference: {fileID: 0}
     - target: {fileID: 4681452674743925062, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.2834194
+      value: 0.18431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 4681452674743925062, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7391165727542572914, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
       propertyPath: m_LocalPosition.x

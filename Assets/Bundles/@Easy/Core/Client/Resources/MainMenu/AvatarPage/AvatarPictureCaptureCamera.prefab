@@ -152,9 +152,9 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 1
-    - name: captureCamera
+    - name: rig
       type: object
-      objectType: Camera
+      objectType: CharacterRig
       items:
         type: 
         objectType: 
@@ -163,5 +163,35 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 4681452674743925062}
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: avatarViewHolder
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: cameraDistanceMod
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 0.5
+      serializedObject: {fileID: 0}
       modified: 1

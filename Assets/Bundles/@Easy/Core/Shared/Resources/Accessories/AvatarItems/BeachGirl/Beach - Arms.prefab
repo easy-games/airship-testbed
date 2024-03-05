@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3942347132550620076
+--- !u!1 &1652222235580615170
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2966892404887356708}
-  - component: {fileID: 5662048739917201897}
-  - component: {fileID: 5652156723295741656}
-  - component: {fileID: 4159762357120403140}
+  - component: {fileID: 4770272597543931645}
+  - component: {fileID: 3606820080538794841}
+  - component: {fileID: 4352034182330625104}
+  - component: {fileID: 4432312148045742320}
   m_Layer: 0
-  m_Name: Torso - Combat Fatigue(Clone)
+  m_Name: Beach - Arms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2966892404887356708
+--- !u!4 &4770272597543931645
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942347132550620076}
+  m_GameObject: {fileID: 1652222235580615170}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
-  m_LocalPosition: {x: -2.6786833e-11, y: 0, z: -1.3393417e-11}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
---- !u!137 &5662048739917201897
+--- !u!137 &3606820080538794841
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942347132550620076}
+  m_GameObject: {fileID: 1652222235580615170}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,12 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d0bc3ff10d385fd48b369a42e122fbcc, type: 2}
-  - {fileID: 2100000, guid: ca35b60b91b46294fb8ffc68710df6d9, type: 2}
-  - {fileID: 2100000, guid: b008afacb21fd2d4d8ac1b6189bd10e6, type: 2}
-  - {fileID: 2100000, guid: b008afacb21fd2d4d8ac1b6189bd10e6, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 2601eaeb27952db4eb36caec40012388, type: 2}
+  - {fileID: 2100000, guid: 56631354d3a834d46b16e0a289e6c158, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,7 +81,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -5366091677210885294, guid: 8acb0819c5641b145b532a6a0732357e, type: 3}
+  m_Mesh: {fileID: -4019160629963660810, guid: 26a67a455b694e347b372069f176652c, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -114,16 +109,16 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.00000011920929, y: 0.0036201775, z: 1.0998771}
-    m_Extent: {x: 0.6027287, y: 0.23655283, z: 0.30092323}
+    m_Center: {x: 0.01725629, y: 0.03080964, z: 0.8347384}
+    m_Extent: {x: 0.27045566, y: 0.3833695, z: 0.2992245}
   m_DirtyAABB: 0
---- !u!114 &5652156723295741656
+--- !u!114 &4352034182330625104
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942347132550620076}
+  m_GameObject: {fileID: 1652222235580615170}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
@@ -131,37 +126,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorSettings:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 0.07058824}
-    emissiveMix: 0
-  - materialColor: {r: 1, g: 0.9088848, b: 0.8160377, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.45122823, g: 0.5660378, b: 0.5434859, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.16981131, g: 0.16941081, b: 0.16901031, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 1, g: 0.98011935, b: 0.6179246, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
---- !u!114 &4159762357120403140
+--- !u!114 &4432312148045742320
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942347132550620076}
+  m_GameObject: {fileID: 1652222235580615170}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: 77b15923-d0dc-4a0a-9dcb-238d98349989
-  accessorySlot: 5
+  serverClassId: 7df87fc5-ecf8-468d-9179-2e392e8bb3db
+  serverInstanceId: 
+  accessorySlot: 16
   visibilityMode: 0
   skinnedToCharacter: 1

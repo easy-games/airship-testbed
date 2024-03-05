@@ -14742,10 +14742,12 @@ interface InternalHttpManagerConstructor {
 
     DeleteAsync(url: string): HttpResponse;
     GetAsync(url: string): HttpResponse;
+    GetAsyncWithHeaders(url: string, headers: string): HttpResponse;
     PatchAsync(url: string, data: string): HttpResponse;
     PostAsync(url: string, data: string): HttpResponse;
     PostAsync(url: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
+    PutImageAsync(url: string, filePath: string): HttpResponse;
     SetAuthToken(authToken: string): void;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
@@ -15286,14 +15288,29 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     FolderName: string;
 
 
-    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): string;
-    SaveTexture(texture: Texture2D, fileName: string, png: boolean): string;
+    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): CameraScreenshotResponse;
+    SaveTexture(texture: Texture2D, fileName: string, png: boolean): CameraScreenshotResponse;
     ScreenShotName(width: number, height: number, png: boolean): string;
     ScreenShotName(filename: string, png: boolean): string;
     TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
     TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): unknown;
     TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
 }
+    
+interface CameraScreenshotResponse {
+    path: string;
+    filesize: number;
+    extension: string;
+
+
+}
+    
+interface CameraScreenshotResponseConstructor {
+
+    new(): CameraScreenshotResponse;
+
+}
+declare const CameraScreenshotResponse: CameraScreenshotResponseConstructor;
     
 interface OnPictureTaken {
 

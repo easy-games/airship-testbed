@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7194820202470860766
+--- !u!1 &6784807641170959428
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,28 +8,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5889394455952198215}
-  - component: {fileID: 4884903984264122234}
-  - component: {fileID: 6695792391498297308}
-  - component: {fileID: 6848431648157126408}
-  - component: {fileID: 4287172209755828865}
-  - component: {fileID: 5670143828471280080}
-  - component: {fileID: 2597665439833942327}
-  - component: {fileID: 6172629330150801510}
+  - component: {fileID: 7232349971031519510}
+  - component: {fileID: 9170097889985094434}
+  - component: {fileID: 1110320361578094022}
+  - component: {fileID: 1787192140756256256}
+  - component: {fileID: 7995778048984575291}
+  - component: {fileID: 777416871304308037}
   m_Layer: 0
-  m_Name: Head - Combat Helmet(Clone)
+  m_Name: Face - Balaclava
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5889394455952198215
+--- !u!4 &7232349971031519510
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
+  m_GameObject: {fileID: 6784807641170959428}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: -2.6786833e-11, y: 0, z: -1.3393417e-11}
@@ -38,13 +36,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
---- !u!137 &4884903984264122234
+--- !u!137 &9170097889985094434
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
+  m_GameObject: {fileID: 6784807641170959428}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -60,10 +58,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca35b60b91b46294fb8ffc68710df6d9, type: 2}
-  - {fileID: 2100000, guid: b008afacb21fd2d4d8ac1b6189bd10e6, type: 2}
-  - {fileID: 2100000, guid: b008afacb21fd2d4d8ac1b6189bd10e6, type: 2}
-  - {fileID: 2100000, guid: bca2cd628ff58684ebe1ac0fd1355b90, type: 2}
+  - {fileID: 2100000, guid: 6791bb67f7d149b4a985bc76768f9eb2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -88,7 +83,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -2709560386469550565, guid: 8acb0819c5641b145b532a6a0732357e, type: 3}
+  m_Mesh: {fileID: 1488782480835471717, guid: 8acb0819c5641b145b532a6a0732357e, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -116,58 +111,49 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: 0.02129805, z: 1.6018077}
-    m_Extent: {x: 0.25726464, y: 0.282773, z: 0.27946854}
+    m_Center: {x: -0.000000029802322, y: 0.002150774, z: 1.5397066}
+    m_Extent: {x: 0.27645493, y: 0.23874648, z: 0.2774912}
   m_DirtyAABB: 0
---- !u!114 &6695792391498297308
+--- !u!114 &1110320361578094022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
+  m_GameObject: {fileID: 6784807641170959428}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 383a1b8b3d39ddb41a74d61323e46209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.36387402, g: 0.36387402, b: 0.36387402, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.45989913, g: 0.49877775, b: 0.751262, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
-    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
-    emissiveMix: 1
-  - materialColor: {r: 0.45989913, g: 0.49877775, b: 0.751262, a: 1}
+  - materialColor: {r: 0.6469767, g: 0.5049855, b: 0.59492916, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
---- !u!114 &6848431648157126408
+--- !u!114 &1787192140756256256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
+  m_GameObject: {fileID: 6784807641170959428}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverClassId: bcb77db3-22c1-4030-98f8-0dbf7c9a216f
-  accessorySlot: 1
+  serverClassId: 17c72ab6-3647-42b6-a75b-2b618a5188d6
+  accessorySlot: 3
   visibilityMode: 0
   skinnedToCharacter: 1
---- !u!114 &4287172209755828865
+--- !u!114 &7995778048984575291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
+  m_GameObject: {fileID: 6784807641170959428}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d1e8056582f584489f34c9a66c8d11f, type: 3}
@@ -187,7 +173,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 0.75
-      value: 0.25
+      value: 0.5
       inSlope: -0.0029826711
       outSlope: -0.0029826711
       tangentMode: 0
@@ -207,60 +193,40 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   randomComponents:
-  - {fileID: 5670143828471280080}
-  - {fileID: 2597665439833942327}
-  - {fileID: 6172629330150801510}
---- !u!114 &5670143828471280080
+  - {fileID: 777416871304308037}
+--- !u!114 &777416871304308037
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8189cb36a3e4d843bdac421a7ec274f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderer: {fileID: 4884903984264122234}
-  materialIndexes: 03000000
-  possibleMaterials:
-  - {fileID: 2100000, guid: bca2cd628ff58684ebe1ac0fd1355b90, type: 2}
-  - {fileID: 2100000, guid: 6440e4afff0fdd54297aada002d46e88, type: 2}
-  - {fileID: 2100000, guid: d3471c4645653bb4daa77ece3c2481fa, type: 2}
---- !u!114 &2597665439833942327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
+  m_GameObject: {fileID: 6784807641170959428}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 707e41430c9aebb479e7e34bf27531c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   materialColors:
-  - {fileID: 6695792391498297308}
-  materialIndexes: 0100000003000000
+  - {fileID: 1110320361578094022}
+  materialIndexes: 
   possibleColors:
     serializedVersion: 2
-    key0: {r: 0.43075827, g: 0.49523544, b: 0.754717, a: 1}
-    key1: {r: 0.66946787, g: 0.5242524, b: 0.7264151, a: 1}
-    key2: {r: 0.254717, g: 0.254717, b: 0.254717, a: 0}
-    key3: {r: 1, g: 1, b: 1, a: 0}
-    key4: {r: 1, g: 0.79096824, b: 0.3066038, a: 0}
-    key5: {r: 0.12771448, g: 0.6603774, b: 0.22473186, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 12722
-    ctime2: 24287
+    key0: {r: 0.36231756, g: 0.4339623, b: 0.37425837, a: 1}
+    key1: {r: 0.46666667, g: 0.47042695, b: 0.57254905, a: 1}
+    key2: {r: 0.91764706, g: 0.5568628, b: 0.6285248, a: 0}
+    key3: {r: 1, g: 0.86110467, b: 0.5801887, a: 0}
+    key4: {r: 0.17515779, g: 1, b: 0, a: 0}
+    key5: {r: 0, g: 0.6460881, b: 1, a: 0}
+    key6: {r: 0.6508908, g: 0, b: 1, a: 0}
+    key7: {r: 1, g: 0, b: 0, a: 0}
+    ctime0: 11372
+    ctime1: 25058
+    ctime2: 36430
     ctime3: 49151
-    ctime4: 49537
-    ctime5: 65535
-    ctime6: 0
-    ctime7: 0
+    ctime4: 55319
+    ctime5: 60909
+    ctime6: 63029
+    ctime7: 65342
     atime0: 0
     atime1: 65535
     atime2: 0
@@ -271,52 +237,5 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: 0
-    m_NumColorKeys: 6
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2
-  SetEmmisive: 0
---- !u!114 &6172629330150801510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194820202470860766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 707e41430c9aebb479e7e34bf27531c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  materialColors:
-  - {fileID: 6695792391498297308}
-  materialIndexes: 00000000
-  possibleColors:
-    serializedVersion: 2
-    key0: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
-    key1: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
-    key2: {r: 0.77401793, g: 0.8773585, b: 0.71595764, a: 0}
-    key3: {r: 0.6132076, g: 0.5481343, b: 0.4309808, a: 0}
-    key4: {r: 0.745283, g: 0.41813183, b: 0.41131186, a: 0}
-    key5: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 0}
-    key6: {r: 1, g: 1, b: 1, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 11758
-    ctime2: 21010
-    ctime3: 28142
-    ctime4: 49151
-    ctime5: 50501
-    ctime6: 65535
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: 0
-    m_NumColorKeys: 7
-    m_NumAlphaKeys: 2
-  SetEmmisive: 0
