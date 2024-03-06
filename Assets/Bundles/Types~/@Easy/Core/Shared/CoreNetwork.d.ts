@@ -1,5 +1,6 @@
 import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
+import { CharacterDto } from "./Character/CharacterDto";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
@@ -7,6 +8,7 @@ import { ItemStackDto } from "./Inventory/ItemStack";
 import { CoreItemType } from "./Item/CoreItemType";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
 import { RemoteEvent } from "./Network/RemoteEvent";
+import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
 export declare const CoreNetwork: {
@@ -25,6 +27,9 @@ export declare const CoreNetwork: {
             MoveToSlot: RemoteEvent<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]>;
             CheckOutOfSync: RemoteEvent<[invDto: InventoryDto]>;
         };
+        Character: {
+            RequestCharacters: RemoteFunction<[], CharacterDto[]>;
+        };
         SendChatMessage: RemoteEvent<[text: string]>;
         SetHeldItemState: RemoteEvent<[entityId: number, heldItemState: HeldItemState]>;
         ChangedOutfit: RemoteEvent<[]>;
@@ -38,7 +43,7 @@ export declare const CoreNetwork: {
         RevertBlockPlace: RemoteEvent<[pos: Vector3]>;
         /** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
         UpdateInventorySlot: RemoteEvent<[invId: number, slot: number, itemType?: CoreItemType | undefined, amount?: number | undefined]>;
-        SetHeldInventorySlot: RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>;
+        SetHeldInventorySlot: RemoteEvent<[invId: number | undefined, clientId: number | undefined, slot: number, clientPredicted: boolean]>;
         BlockHit: RemoteEvent<[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean | undefined]>;
         BlockGroupDestroyed: RemoteEvent<[blockPositions: Vector3[], blockIds: number[]]>;
         ProjectileHit: RemoteEvent<[hitPoint: Vector3, hitEntityId: number | undefined]>;
@@ -97,10 +102,9 @@ export declare const CoreNetwork: {
         /** Fired when a generator item spawns. */
         GeneratorItemSpawn: RemoteEvent<[generatorStateDto: GeneratorDto]>;
         Character: {
-            Spawn: RemoteEvent<[characterId: number, objectId: number, ownerClientId?: number | undefined, outfitDto?: OutfitDto | undefined]>;
+            Spawn: RemoteEvent<[characterDto: CharacterDto]>;
             SetHealth: RemoteEvent<[characterId: number, health: number]>;
             SetMaxHealth: RemoteEvent<[characterId: number, health: number]>;
-            Death: RemoteEvent<[objectId: number]>;
             ChangeOutfit: RemoteEvent<[characterId: number, outfitDto: OutfitDto | undefined]>;
         };
     };

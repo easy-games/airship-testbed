@@ -11,7 +11,7 @@ import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
 
 CoreRefs.Init();
 
-Game.context = CoreContext.MAIN_MENU;
+Game.coreContext = CoreContext.MAIN_MENU;
 
 TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();

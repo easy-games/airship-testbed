@@ -1,10 +1,11 @@
+import Character from "../../../../Shared/Character/Character";
 import { CameraMode, CameraTransform } from "..";
 export declare class HumanoidCameraMode implements CameraMode {
-    private characterGO;
+    private character;
     private graphicalCharacterGO;
     private readonly bin;
     private lookVector;
-    private readonly entityDriver;
+    private readonly movement;
     private occlusionCam;
     private lookBackwards;
     private readonly attachTo;
@@ -23,7 +24,8 @@ export declare class HumanoidCameraMode implements CameraMode {
     private readonly touchscreen;
     private readonly mouse;
     private readonly clientSettingsController;
-    constructor(characterGO: GameObject, graphicalCharacterGO: GameObject, initialFirstPerson: boolean, initialYOffset: number);
+    private spineBone;
+    constructor(character: Character, graphicalCharacterGO: GameObject, initialFirstPerson: boolean, initialYOffset: number);
     private SetupMobileControls;
     OnStart(camera: Camera, rootTransform: Transform): void;
     OnStop(): void;

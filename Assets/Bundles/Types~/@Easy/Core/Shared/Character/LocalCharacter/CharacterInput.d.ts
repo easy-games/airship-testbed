@@ -8,6 +8,7 @@ export declare class CharacterInput {
     private jumping;
     private enabled;
     private autoSprinting;
+    private mobileControlsCanvasGO;
     constructor(character: Character);
     /**
      * Sets whether or not the Humanoid Driver is enabled. If disabled, then the

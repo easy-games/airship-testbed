@@ -8,6 +8,7 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 import Character from "./Character";
+import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 
@@ -41,29 +42,20 @@ export class CharactersSingleton implements OnStart {
 
 	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
 		Airship.characters = this;
+	}
 
+	OnStart(): void {
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent(
-				(characterId, objectId, ownerClientId, outfitDto) => {
-					const characterNetworkObj = NetworkUtil.WaitForNetworkObject(objectId);
-					const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
-					assert(
-						character,
-						"Spawned character was missing a Character component. GameObject=" +
-							characterNetworkObj.gameObject.name,
-					);
-					let player: Player | undefined;
-					if (ownerClientId !== undefined) {
-						player = Airship.players.FindByClientId(ownerClientId);
-						assert(player, "Failed to find player when spawning character. clientId=" + ownerClientId);
-						characterNetworkObj.gameObject.name = "Character_" + player.username;
-					}
-					character.Init(player, characterId, outfitDto);
-					Airship.characters.RegisterCharacter(character);
-					player?.SetCharacter(character);
-					Airship.characters.onCharacterSpawned.Fire(character);
-				},
-			);
+			task.spawn(() => {
+				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();
+				for (const dto of dtos) {
+					this.InitCharacter(dto);
+				}
+			});
+
+			CoreNetwork.ServerToClient.Character.Spawn.client.OnServerEvent((dto) => {
+				this.InitCharacter(dto);
+			});
 		}
 
 		if (RunUtil.IsClient()) {
@@ -78,26 +70,24 @@ export class CharactersSingleton implements OnStart {
 				}
 			});
 		}
-	}
 
-	OnStart(): void {
 		if (RunUtil.IsServer()) {
-			Airship.players.ObservePlayers((player) => {
-				for (let character of this.characters) {
-					CoreNetwork.ServerToClient.Character.Spawn.server.FireClient(
-						player,
-						character.id,
-						character.networkObject.ObjectId,
-						character.player?.clientId,
-						character.outfitDto,
-					);
+			CoreNetwork.ClientToServer.Character.RequestCharacters.server.SetCallback(() => {
+				const characters: CharacterDto[] = [];
+				for (const character of this.characters) {
+					characters.push({
+						id: character.id,
+						objectId: character.networkObject.ObjectId,
+						ownerClientId: character.player?.clientId,
+						outfitDto: character.outfitDto,
+					});
 				}
+				return characters;
 			});
 
 			// Auto disconnect
 			Airship.players.onPlayerDisconnected.Connect((player) => {
 				if (!this.autoDespawnCharactersOnPlayerDisconnect) return;
-
 				player.character?.Despawn();
 			});
 		}
@@ -115,20 +105,19 @@ export class CharactersSingleton implements OnStart {
 		Airship.characters.ObserveCharacters((character) => {
 			character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
 				if (RunUtil.IsServer()) {
-					NetworkUtil.Despawn(character.gameObject);
+					character.Despawn();
 				}
 			});
 		});
 
 		if (RunUtil.IsClient()) {
 			CoreNetwork.ServerToClient.Character.SetHealth.client.OnServerEvent((id, health) => {
+				if (RunUtil.IsHosting()) return;
 				this.FindById(id)?.SetHealth(health);
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
+				if (RunUtil.IsHosting()) return;
 				this.FindById(id)?.SetHealth(maxHealth);
-			});
-			CoreNetwork.ServerToClient.Character.Death.client.OnServerEvent((id) => {
-				this.FindById(id)?.onDeath.Fire();
 			});
 		}
 	}
@@ -189,7 +178,7 @@ export class CharactersSingleton implements OnStart {
 
 	public SpawnNonPlayerCharacter(position: Vector3): Character {
 		if (!RunUtil.IsServer()) {
-			error("Player.SpawnCharacter must be called on the server.");
+			error("Player.SpawnChara`cter must be called on the server.");
 		}
 
 		const go = Object.Instantiate(characterPrefab);
@@ -201,6 +190,28 @@ export class CharactersSingleton implements OnStart {
 		this.RegisterCharacter(characterComponent);
 		this.onCharacterSpawned.Fire(characterComponent);
 		return characterComponent;
+	}
+
+	private InitCharacter(dto: CharacterDto): void {
+		task.spawn(() => {
+			const characterNetworkObj = NetworkUtil.WaitForNetworkObject(dto.objectId);
+			const character = characterNetworkObj.gameObject.GetAirshipComponent<Character>();
+			assert(
+				character,
+				"Spawned character was missing a Character component. GameObject=" +
+					characterNetworkObj.gameObject.name,
+			);
+			let player: Player | undefined;
+			if (dto.ownerClientId !== undefined) {
+				player = Airship.players.FindByClientId(dto.ownerClientId);
+				assert(player, "Failed to find player when spawning character. clientId=" + dto.ownerClientId);
+				characterNetworkObj.gameObject.name = "Character_" + player.username;
+			}
+			character.Init(player, dto.id, dto.outfitDto);
+			Airship.characters.RegisterCharacter(character);
+			player?.SetCharacter(character);
+			Airship.characters.onCharacterSpawned.Fire(character);
+		});
 	}
 
 	public FindById(characterId: number): Character | undefined {
@@ -231,16 +242,7 @@ export class CharactersSingleton implements OnStart {
 	}
 
 	public FindByCollider(collider: Collider): Character | undefined {
-		// todo: optimize
 		for (let character of this.characters) {
-			// print(
-			// 	"comparing " +
-			// 		character.gameObject.GetInstanceID() +
-			// 		" to " +
-			// 		collider.gameObject.GetInstanceID() +
-			// 		" or " +
-			// 		character.gameObject.transform.parent?.gameObject.GetInstanceID(),
-			// );
 			if (
 				character.gameObject.GetInstanceID() === collider.gameObject.GetInstanceID() ||
 				character.gameObject.transform.parent?.gameObject.GetInstanceID() ===
@@ -262,7 +264,7 @@ export class CharactersSingleton implements OnStart {
 		if (RunUtil.IsServer() && character.player) {
 			// Custom move command data handling:
 			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
-				const allData = customData.Decode() as { key: unknown; value: unknown }[];
+				const allData = customData.Decode() as { key: string; value: unknown }[];
 				for (const data of allData) {
 					const player = character.player;
 					if (!player) continue;
@@ -276,12 +278,12 @@ export class CharactersSingleton implements OnStart {
 		}
 
 		if (RunUtil.IsServer()) {
-			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients(
-				character.id,
-				character.networkObject.ObjectId,
-				character.player?.clientId,
-				character.outfitDto,
-			);
+			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients({
+				id: character.id,
+				objectId: character.networkObject.ObjectId,
+				ownerClientId: character.player?.clientId,
+				outfitDto: character.outfitDto,
+			});
 		}
 	}
 

@@ -1,6 +1,5 @@
 import { CoreContext } from "Shared/CoreClientContext";
 import { Game } from "Shared/Game";
-import { Bin } from "./Bin";
 import { RunUtil } from "./RunUtil";
 import { Signal } from "./Signal";
 import { TimeUtil } from "./TimeUtil";
@@ -8,7 +7,7 @@ import { TimeUtil } from "./TimeUtil";
 const waitingByName = new Map<string, NetworkObject>();
 
 export const NetworkObjectAdded = new Signal<NetworkObject>();
-if (Game.context === CoreContext.GAME) {
+if (Game.coreContext === CoreContext.GAME) {
 	let managed: ManagedObjects = InstanceFinder.ClientManager.Objects;
 	if (RunUtil.IsServer()) {
 		managed = InstanceFinder.ServerManager.Objects;
@@ -17,8 +16,6 @@ if (Game.context === CoreContext.GAME) {
 		NetworkObjectAdded.debugGameObject = true;
 		NetworkObjectAdded.Fire(nob);
 		waitingByName.set(nob.gameObject.name, nob);
-		// print("end of onAdded", nob.gameObject);
-		// cleanup here
 	});
 }
 
@@ -78,26 +75,17 @@ export class NetworkUtil {
 	 * @returns `NetworkObject` that corresponds to `objectId`.
 	 */
 	public static WaitForNetworkObjectTimeout(objectId: number, timeout: number): NetworkObject | undefined {
-		/* Return NetworkObject if it already exists. */
+		// Return NetworkObject if it already exists.
 		let nob = NetworkUtil.GetNetworkObject(objectId);
 		if (nob) return nob;
-		/* Return when exists or timeout after `timeout`. */
+		// Return when exists or timeout after `timeout`.
 		let elapsed = 0;
-		const bin = new Bin();
-		bin.Add(
-			NetworkObjectAdded.Connect((addedNob) => {
-				if (addedNob.ObjectId === objectId) {
-					nob = addedNob;
-					bin.Clean();
-				}
-			}),
-		);
 		while (true) {
 			task.wait();
+			nob = NetworkUtil.GetNetworkObject(objectId);
 			elapsed += TimeUtil.GetDeltaTime();
 			if (nob) return nob;
 			if (elapsed >= timeout) {
-				bin.Clean();
 				return undefined;
 			}
 		}
@@ -151,27 +139,12 @@ export class NetworkUtil {
 	public static WaitForNetworkObject(objectId: number): NetworkObject {
 		let nob = NetworkUtil.GetNetworkObject(objectId);
 		if (nob) {
-			// print("found existing", nob.gameObject + ", nobId=" + objectId);
 			return nob;
 		}
-
-		const bin = new Bin();
-		// print("listening to event for nobId=" + objectId);
-		bin.Add(
-			NetworkObjectAdded.Connect((addedNob) => {
-				if (addedNob.ObjectId === objectId) {
-					nob = addedNob;
-					bin.Clean();
-				}
-			}),
-		);
 		while (true) {
-			// if (nob !== undefined) {
-			// 	print("wait.before", (nob as NetworkObject).gameObject + ", nobId=" + objectId);
-			// }
+			nob = NetworkUtil.GetNetworkObject(objectId);
 			task.wait();
 			if (nob) {
-				// print("wait.after", (nob as NetworkObject).gameObject + ", nobId=" + objectId);
 				return nob;
 			}
 		}

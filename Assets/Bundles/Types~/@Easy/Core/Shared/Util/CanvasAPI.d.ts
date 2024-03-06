@@ -45,10 +45,10 @@ export declare class CanvasAPI {
     static OnInputFieldSubmit(targetGameObject: GameObject, callback: (data: string) => void): EngineEventConnection;
     static OnSelectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     static OnDeselectEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
-    static OnBeginDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
-    static OnEndDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnBeginDragEvent(targetGameObject: GameObject, callback: (data: PointerEventData) => void): EngineEventConnection;
+    static OnEndDragEvent(targetGameObject: GameObject, callback: (data: PointerEventData) => void): EngineEventConnection;
     static OnDropEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
-    static OnDragEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
+    static OnDragEvent(targetGameObject: GameObject, callback: (data: PointerEventData) => void): EngineEventConnection;
     static OnClickEvent(targetGameObject: GameObject, callback: () => void): EngineEventConnection;
     /**
      * This works on Toggles, Sliders, and TMP_InputField

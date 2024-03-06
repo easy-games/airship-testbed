@@ -1,4 +1,4 @@
-import { InputUtil, ModifierKey } from "./InputUtil";
+import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 
 export class Keybind {
 	/**
@@ -21,6 +21,24 @@ export class Keybind {
 	 */
 	public IsComplexKeybind(): boolean {
 		return this.modifierKey !== ModifierKey.None;
+	}
+
+	/**
+	 *
+	 * @returns
+	 */
+	public IsDesktopPeripheral(): boolean {
+		const primaryInputType = InputUtil.GetInputTypeFromKeybind(this, KeyType.Primary);
+		const primaryIsDesktopPeripheral =
+			primaryInputType === ActionInputType.Keyboard || primaryInputType === ActionInputType.Mouse;
+		if (!this.IsComplexKeybind()) {
+			return primaryIsDesktopPeripheral;
+		}
+		const modifierInputType = InputUtil.GetInputTypeFromKeybind(this, KeyType.Modifier);
+		return (
+			primaryIsDesktopPeripheral &&
+			(modifierInputType === ActionInputType.Keyboard || modifierInputType === ActionInputType.Mouse)
+		);
 	}
 
 	/**

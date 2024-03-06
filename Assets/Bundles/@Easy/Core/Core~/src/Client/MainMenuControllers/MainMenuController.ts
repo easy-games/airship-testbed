@@ -60,7 +60,7 @@ export class MainMenuController implements OnStart {
 			CoreRefs.rootTransform,
 		).GetComponent<AvatarViewComponent>();
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			this.avatarView.HideAvatar();
 		} else {
 			this.open = true;
@@ -68,11 +68,11 @@ export class MainMenuController implements OnStart {
 
 		const gameBG = this.refs.GetValue("UI", "GameBG");
 		const mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
-		const isMainMenu = Game.context === CoreContext.MAIN_MENU;
+		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		gameBG.SetActive(!isMainMenu);
 		mainMenuBG.SetActive(isMainMenu);
 
-		if (Game.context === CoreContext.MAIN_MENU) {
+		if (Game.coreContext === CoreContext.MAIN_MENU) {
 			const mouse = new Mouse();
 			mouse.AddUnlocker();
 		}
@@ -92,7 +92,7 @@ export class MainMenuController implements OnStart {
 			this.ToggleSocialView();
 		});
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			this.mainContentCanvas.enabled = false;
 		}
 	}
@@ -142,14 +142,14 @@ export class MainMenuController implements OnStart {
 				}
 			}
 
-			if (Game.context === CoreContext.MAIN_MENU) {
+			if (Game.coreContext === CoreContext.MAIN_MENU) {
 				this.RouteToPage(MainMenuPageType.Home, true, true);
 			} else {
 				this.RouteToPage(MainMenuPageType.Settings, true, true);
 			}
 		}
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			const keyboard = new Keyboard();
 			keyboard.OnKeyDown(
 				KeyCode.Escape,

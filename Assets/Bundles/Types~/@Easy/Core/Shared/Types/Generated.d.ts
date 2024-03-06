@@ -2846,7 +2846,7 @@ declare const enum ColorBleedMode {
     Plugin = 4,
 }
 declare const enum AirshipPlatform {
-    IPhone = 0,
+    iOS = 0,
     Android = 1,
     Mac = 2,
     Windows = 3,
@@ -2897,6 +2897,119 @@ declare const enum BuildTarget {
     MetroPlayer = -1,
     iPhone = -1,
     BB10 = -1,
+}
+declare const enum BatteryStatus {
+    Unknown = 0,
+    Charging = 1,
+    Discharging = 2,
+    NotCharging = 3,
+    Full = 4,
+}
+declare const enum OperatingSystemFamily {
+    Other = 0,
+    MacOSX = 1,
+    Windows = 2,
+    Linux = 3,
+}
+declare const enum DeviceType {
+    Unknown = 0,
+    Handheld = 1,
+    Console = 2,
+    Desktop = 3,
+}
+declare const enum GraphicsDeviceType {
+    OpenGL2 = 0,
+    Direct3D9 = 1,
+    Direct3D11 = 2,
+    PlayStation3 = 3,
+    Null = 4,
+    Xbox360 = 6,
+    OpenGLES2 = 8,
+    OpenGLES3 = 11,
+    PlayStationVita = 12,
+    PlayStation4 = 13,
+    XboxOne = 14,
+    PlayStationMobile = 15,
+    Metal = 16,
+    OpenGLCore = 17,
+    Direct3D12 = 18,
+    N3DS = 19,
+    Vulkan = 21,
+    Switch = 22,
+    XboxOneD3D12 = 23,
+    GameCoreXboxOne = 24,
+    GameCoreXboxSeries = 25,
+    PlayStation5 = 26,
+    PlayStation5NGGC = 27,
+    WebGPU = 28,
+    GameCoreScarlett = -1,
+}
+declare const enum RenderingThreadingMode {
+    Direct = 0,
+    SingleThreaded = 1,
+    MultiThreaded = 2,
+    LegacyJobified = 3,
+    NativeGraphicsJobs = 4,
+    NativeGraphicsJobsWithoutRenderThread = 5,
+    NativeGraphicsJobsSplitThreading = 6,
+}
+declare const enum FoveatedRenderingCaps {
+    None = 0,
+    FoveationImage = 1,
+    NonUniformRaster = 2,
+    ModeChangeOnlyBeforeRenderTargetSet = 4,
+}
+declare const enum CopyTextureSupport {
+    None = 0,
+    Basic = 1,
+    Copy3D = 2,
+    DifferentTypes = 4,
+    TextureToRT = 8,
+    RTToTexture = 16,
+}
+declare const enum NPOTSupport {
+    None = 0,
+    Restricted = 1,
+    Full = 2,
+}
+declare const enum HDRDisplaySupportFlags {
+    None = 0,
+    Supported = 1,
+    RuntimeSwitchable = 2,
+    AutomaticTonemapping = 4,
+}
+declare const enum FormatUsage {
+    Sample = 0,
+    Linear = 1,
+    Sparse = 2,
+    Render = 4,
+    Blend = 5,
+    GetPixels = 6,
+    SetPixels = 7,
+    SetPixels32 = 8,
+    ReadPixels = 9,
+    LoadStore = 10,
+    MSAA2x = 11,
+    MSAA4x = 12,
+    MSAA8x = 13,
+    StencilSampling = 16,
+}
+declare const enum GraphicsFormatUsage {
+    None = 0,
+    Sample = 1,
+    Linear = 2,
+    Sparse = 4,
+    Render = 16,
+    Blend = 32,
+    GetPixels = 64,
+    SetPixels = 128,
+    SetPixels32 = 256,
+    ReadPixels = 512,
+    LoadStore = 1024,
+    MSAA2x = 2048,
+    MSAA4x = 4096,
+    MSAA8x = 8192,
+    StencilSampling = 65536,
 }
 
     
@@ -15676,6 +15789,7 @@ interface AirshipPlatformUtilConstructor {
     FromBuildTarget(buildTarget: BuildTarget): AirshipPlatform;
     FromRuntimePlatform(runtimePlatform: RuntimePlatform): AirshipPlatform;
     GetLocalPlatform(): AirshipPlatform;
+    IsDeviceSimulator(): boolean;
     ToBuildTarget(platform: AirshipPlatform): BuildTarget;
 }
 declare const AirshipPlatformUtil: AirshipPlatformUtilConstructor;
@@ -15724,4 +15838,131 @@ interface ContactPoint {
 
 
 }
+    
+interface SystemInfo {
+
+
+}
+    
+interface SystemInfoConstructor {
+    unsupportedIdentifier: string;
+    batteryLevel: number;
+    batteryStatus: BatteryStatus;
+    operatingSystem: string;
+    operatingSystemFamily: OperatingSystemFamily;
+    processorType: string;
+    processorFrequency: number;
+    processorCount: number;
+    systemMemorySize: number;
+    deviceUniqueIdentifier: string;
+    deviceName: string;
+    deviceModel: string;
+    supportsAccelerometer: boolean;
+    supportsGyroscope: boolean;
+    supportsLocationService: boolean;
+    supportsVibration: boolean;
+    supportsAudio: boolean;
+    deviceType: DeviceType;
+    graphicsMemorySize: number;
+    graphicsDeviceName: string;
+    graphicsDeviceVendor: string;
+    graphicsDeviceID: number;
+    graphicsDeviceVendorID: number;
+    graphicsDeviceType: GraphicsDeviceType;
+    graphicsUVStartsAtTop: boolean;
+    graphicsDeviceVersion: string;
+    graphicsShaderLevel: number;
+    graphicsMultiThreaded: boolean;
+    renderingThreadingMode: RenderingThreadingMode;
+    foveatedRenderingCaps: FoveatedRenderingCaps;
+    hasHiddenSurfaceRemovalOnGPU: boolean;
+    hasDynamicUniformArrayIndexingInFragmentShaders: boolean;
+    supportsShadows: boolean;
+    supportsRawShadowDepthSampling: boolean;
+    supportsRenderTextures: boolean;
+    supportsMotionVectors: boolean;
+    supportsRenderToCubemap: boolean;
+    supportsImageEffects: boolean;
+    supports3DTextures: boolean;
+    supportsCompressed3DTextures: boolean;
+    supports2DArrayTextures: boolean;
+    supports3DRenderTextures: boolean;
+    supportsCubemapArrayTextures: boolean;
+    supportsAnisotropicFilter: boolean;
+    copyTextureSupport: CopyTextureSupport;
+    supportsComputeShaders: boolean;
+    supportsGeometryShaders: boolean;
+    supportsTessellationShaders: boolean;
+    supportsRenderTargetArrayIndexFromVertexShader: boolean;
+    supportsInstancing: boolean;
+    supportsHardwareQuadTopology: boolean;
+    supports32bitsIndexBuffer: boolean;
+    supportsSparseTextures: boolean;
+    supportedRenderTargetCount: number;
+    supportsSeparatedRenderTargetsBlend: boolean;
+    supportedRandomWriteTargetCount: number;
+    supportsMultisampledTextures: number;
+    supportsMultisampled2DArrayTextures: boolean;
+    supportsMultisampleAutoResolve: boolean;
+    supportsTextureWrapMirrorOnce: number;
+    usesReversedZBuffer: boolean;
+    supportsStencil: number;
+    npotSupport: NPOTSupport;
+    maxTextureSize: number;
+    maxTexture3DSize: number;
+    maxTextureArraySlices: number;
+    maxCubemapSize: number;
+    maxAnisotropyLevel: number;
+    maxComputeBufferInputsVertex: number;
+    maxComputeBufferInputsFragment: number;
+    maxComputeBufferInputsGeometry: number;
+    maxComputeBufferInputsDomain: number;
+    maxComputeBufferInputsHull: number;
+    maxComputeBufferInputsCompute: number;
+    maxComputeWorkGroupSize: number;
+    maxComputeWorkGroupSizeX: number;
+    maxComputeWorkGroupSizeY: number;
+    maxComputeWorkGroupSizeZ: number;
+    computeSubGroupSize: number;
+    supportsAsyncCompute: boolean;
+    supportsGpuRecorder: boolean;
+    supportsGraphicsFence: boolean;
+    supportsAsyncGPUReadback: boolean;
+    supportsRayTracingShaders: boolean;
+    supportsRayTracing: boolean;
+    supportsInlineRayTracing: boolean;
+    supportsSetConstantBuffer: boolean;
+    constantBufferOffsetAlignment: number;
+    maxConstantBufferSize: number;
+    maxGraphicsBufferSize: number;
+    minConstantBufferOffsetAlignment: boolean;
+    hasMipMaxLevel: boolean;
+    supportsMipStreaming: boolean;
+    graphicsPixelFillrate: number;
+    usesLoadStoreActions: boolean;
+    hdrDisplaySupportFlags: HDRDisplaySupportFlags;
+    supportsConservativeRaster: boolean;
+    supportsMultiview: boolean;
+    supportsStoreAndResolveAction: boolean;
+    supportsMultisampleResolveDepth: boolean;
+    supportsMultisampleResolveStencil: boolean;
+    supportsIndirectArgumentsBuffer: boolean;
+    supportsVertexPrograms: boolean;
+    supportsGPUFence: boolean;
+
+    new(): SystemInfo;
+
+    GetCompatibleFormat(format: GraphicsFormat, usage: FormatUsage): GraphicsFormat;
+    GetCompatibleFormat(format: GraphicsFormat, usage: GraphicsFormatUsage): GraphicsFormat;
+    GetGraphicsFormat(format: DefaultFormat): GraphicsFormat;
+    GetRenderTextureSupportedMSAASampleCount(desc: RenderTextureDescriptor): number;
+    IsFormatSupported(format: GraphicsFormat, usage: FormatUsage): boolean;
+    IsFormatSupported(format: GraphicsFormat, usage: GraphicsFormatUsage): boolean;
+    SupportsBlendingOnRenderTextureFormat(format: RenderTextureFormat): boolean;
+    SupportsRandomWriteOnRenderTextureFormat(format: RenderTextureFormat): boolean;
+    SupportsRenderTextureFormat(format: RenderTextureFormat): boolean;
+    SupportsTextureFormat(format: TextureFormat): boolean;
+    SupportsVertexAttributeFormat(format: VertexAttributeFormat, dimension: number): boolean;
+}
+declare const SystemInfo: SystemInfoConstructor;
 

@@ -71,7 +71,7 @@ export class RemoteEvent<T extends unknown[] | unknown> {
 	/**
 	 *
 	 * @param channel
-	 * @param packageId @deprecated
+	 * @param packageOffset Temporary workaround param.
 	 */
 	constructor(channel: NetworkChannel = NetworkChannel.Reliable, packageOffset?: number) {
 		let id: number;

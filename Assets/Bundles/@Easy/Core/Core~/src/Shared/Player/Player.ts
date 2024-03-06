@@ -53,6 +53,11 @@ export class Player {
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
 
+	/**
+	 * WARNING: not implemented yet. only returns local platform for now.
+	 */
+	public platform = AirshipPlatformUtil.GetLocalPlatform();
+
 	constructor(
 		/**
 		 * The GameObject representing the player.

@@ -17,7 +17,7 @@ export declare class CharactersSingleton implements OnStart {
      *
      * Custom data that the client sends in their move packet.
      */
-    onServerCustomMoveCommand: Signal<CustomMoveData<unknown, unknown>>;
+    onServerCustomMoveCommand: Signal<CustomMoveData>;
     /**
      * If true, when a player disconnects their character will automatically be despawned.
      */
@@ -43,6 +43,7 @@ export declare class CharactersSingleton implements OnStart {
      */
     ObserveCharacters(observer: (character: Character) => (() => void) | void, signalPriority?: SignalPriority): () => void;
     SpawnNonPlayerCharacter(position: Vector3): Character;
+    private InitCharacter;
     FindById(characterId: number): Character | undefined;
     FindByPlayer(player: Player): Character | undefined;
     FindByClientId(clientId: number): Character | undefined;

@@ -53,11 +53,6 @@ export class AirshipInputSingleton implements OnStart {
 
 	OnStart(): void {
 		if (!RunUtil.IsClient()) return;
-		// const clientSettingsController = Dependency<ClientSettingsController>();
-		// clientSettingsController.WaitForSettingsLoaded().then((settings) => {
-		// 	print(`Settings here?: ${settings}`);
-		// });
-		// ObjectNames
 
 		Airship.input.onActionBound.Connect((action) => {
 			if (!action.keybind.IsUnset()) {
@@ -106,41 +101,7 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param category
 	 */
 	public CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void {
-		const actionExists = this.GetActionByInputType(
-			name,
-			InputUtil.GetInputTypeFromKeybind(keybind, KeyType.Primary),
-		);
-		if (actionExists) {
-			warn("Action already exists. TODO: More detail here.");
-			return;
-		}
 		const action = new InputAction(name, keybind, false, config?.category ?? "General");
-		this.AddActionToTable(action);
-		this.onActionBound.Fire(action);
-
-		if (config?.secondaryKeybind) {
-			this.CreateSecondaryKeybindForAction(name, config.secondaryKeybind, config);
-		}
-	}
-
-	/**
-	 *
-	 * @param actionSchema
-	 */
-	private CreateSecondaryKeybindForAction(name: string, keybind: Keybind, config: InputActionConfig): void {
-		const primaryKeybindType = InputUtil.GetInputTypeFromKeybind(keybind, KeyType.Primary);
-		const secondaryKeybindType = InputUtil.GetInputTypeFromKeybind(config.secondaryKeybind!, KeyType.Primary);
-		if (primaryKeybindType !== ActionInputType.Keyboard && primaryKeybindType !== ActionInputType.Mouse) {
-			warn("Cannot create secondary keybind for non-desktop input type. TODO: More details.");
-			return;
-		}
-		if (secondaryKeybindType !== ActionInputType.Keyboard && secondaryKeybindType !== ActionInputType.Mouse) {
-			warn(
-				"Secondary keybind input type MUST be a desktop input type. (Keyboard or mouse keybind) TODO: More details.",
-			);
-			return;
-		}
-		const action = new InputAction(name, config.secondaryKeybind!, true, config.category);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 	}

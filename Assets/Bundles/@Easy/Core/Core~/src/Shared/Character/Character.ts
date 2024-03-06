@@ -39,6 +39,8 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public inventory!: Inventory;
 	@NonSerialized() public heldItems!: HeldItemManager;
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
+	private spineBone!: Transform;
+	private headBone!: Transform;
 
 	// Signals
 	@NonSerialized() public onDeath = new Signal<void>();
@@ -54,14 +56,30 @@ export default class Character extends AirshipBehaviour {
 		this.rig = this.rigRoot.GetComponent<CharacterRig>();
 	}
 
-	public Start(): void {
+	public LateUpdate(dt: number): void {
+		const vec = this.movement.GetLookVector();
+
+		// -10 is an offset to account for players naturally looking down at horizon
+		let degX = -math.deg(vec.y) - 10;
+
+		const spinEul = this.spineBone.rotation.eulerAngles;
+		this.spineBone.rotation = Quaternion.Euler(degX * 0.3, spinEul.y, spinEul.z);
+
+		const neckEul = this.headBone.rotation.eulerAngles;
+		this.headBone.rotation = Quaternion.Euler(degX * 0.8, neckEul.y, neckEul.z);
+	}
+
+	public OnEnable(): void {
+		this.despawned = false;
+
+		this.spineBone = this.rig.spine;
+		this.headBone = this.rig.head;
 		if (this.IsLocalCharacter()) {
 			task.spawn(() => {
 				Game.WaitForLocalPlayerLoaded();
 				this.gameObject.name = "Character_" + Game.localPlayer.username;
 			});
 		}
-
 		this.bin.Add(
 			Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
@@ -70,7 +88,7 @@ export default class Character extends AirshipBehaviour {
 
 					this.SetHealth(newHealth);
 
-					if (newHealth <= 0) {
+					if (RunUtil.IsServer() && newHealth <= 0) {
 						Airship.damage.BroadcastDeath(damageInfo);
 					}
 				}
@@ -100,8 +118,11 @@ export default class Character extends AirshipBehaviour {
 	public OnDisable(): void {
 		Airship.characters.UnregisterCharacter(this);
 		if (RunUtil.IsClient()) {
+			this.bin.Clean();
+			this.despawned = true;
 			this.onDespawn.Fire();
 			Airship.characters.onCharacterDespawned.Fire(this);
+			this.player?.SetCharacter(undefined);
 		}
 	}
 
@@ -139,6 +160,7 @@ export default class Character extends AirshipBehaviour {
 		assert(RunUtil.IsServer(), "You can only call Character.Despawn() on the server.");
 		assert(!this.despawned, "Character has already been despawned");
 
+		this.bin.Clean();
 		this.despawned = true;
 		this.onDespawn.Fire();
 		Airship.characters.onCharacterDespawned.Fire(this);

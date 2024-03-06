@@ -14,7 +14,7 @@ export default class SettingsSidebar extends AirshipBehaviour {
 			this.tabBtns.push(tab);
 		}
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			this.SetSelectedTab(this.tabBtns[0]);
 		} else {
 			this.gameHomeTab.SetActive(false);

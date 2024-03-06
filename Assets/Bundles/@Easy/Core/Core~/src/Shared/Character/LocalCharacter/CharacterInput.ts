@@ -1,9 +1,11 @@
 import Character from "Shared/Character/Character";
 import { Dependency } from "Shared/Flamework";
-import { Keyboard, MobileJoystick, Preferred } from "Shared/UserInput";
+import { Keyboard, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
 import { Airship } from "../../Airship";
+import { AssetCache } from "../../AssetCache/AssetCache";
+import { CoreRefs } from "../../CoreRefs";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
@@ -16,6 +18,8 @@ export class CharacterInput {
 	private jumping = false;
 	private enabled = true;
 	private autoSprinting = false;
+
+	private mobileControlsCanvasGO: GameObject | undefined;
 
 	constructor(private readonly character: Character) {
 		this.movement = character.movement;
@@ -60,7 +64,6 @@ export class CharacterInput {
 
 	private InitControls() {
 		const keyboard = this.bin.Add(new Keyboard());
-		const mobileJoystick = this.bin.Add(new MobileJoystick());
 		const preferred = this.bin.Add(new Preferred());
 
 		this.autoSprinting = false;
@@ -131,24 +134,29 @@ export class CharacterInput {
 		// Switch controls based on preferred user input:
 		preferred.ObserveControlScheme((controlScheme) => {
 			const controlSchemeBin = new Bin();
+			print("control scheme: " + controlScheme);
 
-			switch (controlScheme) {
-				case "MouseKeyboard":
-					mobileJoystick.SetVisible(false);
-					controlSchemeBin.Connect(OnUpdate, updateMouseKeyboardControls);
-					break;
-				case "Touch":
-					mobileJoystick.SetVisible(true);
-					controlSchemeBin.Connect(mobileJoystick.changed, onMobileJoystickChanged);
-					break;
-				default:
-					print(`unknown control scheme: ${controlScheme}`);
-					break;
+			if (controlScheme === "MouseKeyboard") {
+				controlSchemeBin.Connect(OnUpdate, updateMouseKeyboardControls);
+			} else if (controlScheme === "Touch") {
+				const mobileControlsCanvas = Object.Instantiate(
+					AssetCache.LoadAsset(
+						"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab",
+					),
+				);
+				mobileControlsCanvas.transform.SetParent(CoreRefs.rootTransform);
+				this.mobileControlsCanvasGO = mobileControlsCanvas;
+				controlSchemeBin.Add(() => {
+					Object.Destroy(mobileControlsCanvas);
+					this.mobileControlsCanvasGO = undefined;
+				});
+			} else {
+				print(`unknown control scheme: ${controlScheme}`);
 			}
 
 			// Clean up current controls when preferred input scheme changes:
 			return () => {
-				controlSchemeBin.Destroy();
+				controlSchemeBin.Clean();
 			};
 		});
 	}

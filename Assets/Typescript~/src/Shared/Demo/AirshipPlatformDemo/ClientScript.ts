@@ -1,7 +1,7 @@
 import { UserController } from "@Easy/Core/Client/Airship/User/UserController";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
-import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Network } from "Shared/Network";
 import Scoreboard from "./Scoreboard";
 
@@ -14,7 +14,8 @@ export default class ClientScript extends AirshipBehaviour {
 		if (!RunUtil.IsClient()) return;
 
 		const go = GameObject.Find("Scoreboard");
-		this.scoreboard = go.GetComponent<Scoreboard>();
+		if (!go) return;
+		this.scoreboard = go.GetAirshipComponent<Scoreboard>()!;
 
 		// Only runs on client
 

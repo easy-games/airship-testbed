@@ -105,7 +105,7 @@ export class FriendsController implements OnStart {
 
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
-			if (Game.context === CoreContext.MAIN_MENU) {
+			if (Game.coreContext === CoreContext.MAIN_MENU) {
 				this.SendStatusUpdate();
 			}
 			this.FetchFriends();
@@ -161,7 +161,7 @@ export class FriendsController implements OnStart {
 				// );
 
 				AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
-				if (Game.context === CoreContext.GAME) {
+				if (Game.coreContext === CoreContext.GAME) {
 					Game.localPlayer.SendMessage(
 						ChatColor.Yellow(foundUser.username) + ChatColor.Gray(" sent you a friend request."),
 					);
@@ -251,7 +251,7 @@ export class FriendsController implements OnStart {
 	public SendStatusUpdate(): void {
 		const status: Partial<FriendStatus> = {
 			userId: Game.localPlayer.userId,
-			status: Game.context === CoreContext.GAME ? "in_game" : "online",
+			status: Game.coreContext === CoreContext.GAME ? "in_game" : "online",
 			serverId: Game.serverId,
 			gameId: Game.gameId,
 			metadata: {

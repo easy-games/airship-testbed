@@ -5,6 +5,8 @@ import { Player } from "./Player/Player";
 import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
 
+const platform = Application.platform;
+
 export class Game {
 	/**
 	 * The local client's player.
@@ -31,7 +33,7 @@ export class Game {
 		}
 	}
 
-	public static context: CoreContext;
+	public static coreContext: CoreContext;
 
 	/**
 	 * Empty string when in editor.
@@ -55,5 +57,54 @@ export class Game {
 	public static WaitForGameData(): GameDto {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
+	}
+
+	/**
+	 * The platform of this device.
+	 *
+	 * To get a certain player's platform, use {@link Player.platform}
+	 */
+	public static platform = AirshipPlatformUtil.GetLocalPlatform();
+
+	public static IsMobile(): boolean {
+		return this.platform === AirshipPlatform.iOS || this.platform === AirshipPlatform.Android;
+	}
+
+	public static IsClient(): boolean {
+		return RunUtil.IsClient();
+	}
+
+	public static IsServer(): boolean {
+		return RunUtil.IsServer();
+	}
+
+	public static IsEditor(): boolean {
+		return RunUtil.IsEditor();
+	}
+
+	/**
+	 * @internal
+	 */
+	public static IsInternal(): boolean {
+		return RunUtil.IsInternal();
+	}
+
+	/**
+	 * Shortcut for checking if both IsClient() and IsServer() is true.
+	 */
+	public static IsHosting(): boolean {
+		return RunUtil.IsClient() && RunUtil.IsServer();
+	}
+
+	public static IsClone(): boolean {
+		return RunUtil.IsClone();
+	}
+
+	public static IsWindows(): boolean {
+		return platform === RuntimePlatform.WindowsPlayer || platform === RuntimePlatform.WindowsEditor;
+	}
+
+	public static IsMac(): boolean {
+		return platform === RuntimePlatform.OSXPlayer || platform === RuntimePlatform.OSXEditor;
 	}
 }
