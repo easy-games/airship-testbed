@@ -1,6 +1,6 @@
-import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
+import AvatarBackdropComponent, { AvatarBackdrop } from "@Easy/Core/Shared/Avatar/AvatarBackdrop";
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
-import AvatarViewComponent, { AvatarBackdrop } from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 
 export default class AvatarRenderComponent extends AirshipBehaviour {
@@ -8,13 +8,16 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	private readonly profileRenderSize = new Vector2(1024, 1024);
 
 	private renderTexture?: RenderTexture;
-	private avatarView!: AvatarViewComponent;
 	private captureCamera!: Camera;
+	private backdrops!: AvatarBackdropComponent;
+
+	@Header("Templates")
+	public idleAnim!: AnimationClip;
 
 	@Header("References")
 	public builder!: AccessoryBuilder;
-	public rig!: CharacterRig;
-	public avatarViewHolder!: GameObject;
+	public character!: Character;
+	public backdropHolder!: GameObject;
 
 	@Header("Variables")
 	public cameraDistanceBase = 2;
@@ -25,11 +28,12 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	}
 
 	public Init() {
-		this.avatarView = this.avatarViewHolder.GetAirshipComponent<AvatarViewComponent>()!;
+		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
 		this.captureCamera = this.gameObject.GetComponent<Camera>();
 		let keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.Print, (event) => {
 			if (Input.GetKey(KeyCode.LeftShift)) {
+				this.character.animationHelper?.PlayOneShot(this.idleAnim, 5);
 				this.RenderCharacter();
 				this.RenderAllItems();
 			}
@@ -45,13 +49,13 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 				RenderTextureFormat.ARGB32,
 			);
 		}
-		this.avatarView.SetBackgdrop(AvatarBackdrop.LIGHT_3D);
+		this.backdrops.SetBackgdrop(AvatarBackdrop.LIGHT_3D);
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;
 
 		this.ResetCamera();
 		this.Render("ProfilePics/ProfilePicture");
-		this.avatarView.SetBackgdrop(AvatarBackdrop.DARK_3D);
+		this.backdrops.SetBackgdrop(AvatarBackdrop.DARK_3D);
 	}
 
 	/**
@@ -67,11 +71,11 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			24,
 			RenderTextureFormat.ARGB32,
 		);
-		this.rig.bodyMesh?.gameObject.SetActive(false);
-		this.rig.faceMesh?.gameObject.SetActive(false);
-		this.rig.head?.gameObject.SetActive(false);
+		this.character.rig.bodyMesh?.gameObject.SetActive(false);
+		this.character.rig.faceMesh?.gameObject.SetActive(false);
+		this.character.rig.head?.gameObject.SetActive(false);
 
-		this.avatarView.SetBackgdrop(AvatarBackdrop.NONE);
+		this.backdrops.SetBackgdrop(AvatarBackdrop.NONE);
 
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;
@@ -89,7 +93,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			}
 			i++;
 		}
-		this.avatarView.SetBackgdrop(AvatarBackdrop.DARK_3D);
+		this.backdrops.SetBackgdrop(AvatarBackdrop.DARK_3D);
 	}
 
 	/**
@@ -109,7 +113,12 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		let classData = AvatarUtil.GetClass(accessoryTemplate.serverClassId);
 		if (classData) {
 			print("uploading accessory render");
-			AvatarPlatformAPI.UploadItemImage(classData.resourceId, renderData.path, renderData.filesize);
+			// AvatarPlatformAPI.UploadItemImage(
+			// 	classData.classId,
+			// 	classData.resourceId,
+			// 	renderData.path,
+			// 	renderData.filesize,
+			// );
 		}
 	}
 
@@ -152,12 +161,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	}
 
 	private ResetCamera() {
-		if (this.avatarView.cameraWaypointDefault) {
-			this.captureCamera.transform.position = this.avatarView.cameraWaypointDefault.position;
-			this.captureCamera.transform.rotation = this.avatarView.cameraWaypointDefault.rotation;
-		} else {
-			this.captureCamera.transform.position = Vector3.zero;
-			this.captureCamera.transform.rotation = Quaternion.identity;
-		}
+		this.captureCamera.transform.position = Vector3.zero;
+		this.captureCamera.transform.rotation = Quaternion.identity;
 	}
 }

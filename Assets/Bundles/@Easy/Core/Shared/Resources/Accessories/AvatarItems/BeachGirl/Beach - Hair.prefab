@@ -109,8 +109,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.0013397634, y: -0.15232034, z: 1.1738601}
-    m_Extent: {x: 0.43690023, y: 0.51080006, z: 0.48697913}
+    m_Center: {x: 0.00000008940697, y: 0.16815186, z: 1.423699}
+    m_Extent: {x: 0.24656177, y: 0.46303445, z: 0.42845353}
   m_DirtyAABB: 0
 --- !u!114 &2912173375104565290
 MonoBehaviour:
@@ -142,7 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverClassId: 206eebdf-8dc8-4677-8821-c0ccb83faa18
-  serverInstanceId: 
   accessorySlot: 2
   visibilityMode: 0
   skinnedToCharacter: 1

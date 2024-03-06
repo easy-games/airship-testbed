@@ -121,7 +121,27 @@ export class AvatarPlatformAPI {
 		}
 	}
 
-	public static async UploadItemImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
+	public static async UploadItemImage(classId: string, resourceId: string, filePath: string, fileSize: number) {
+		const imageId = await this.UploadImage(resourceId, filePath, fileSize);
+		if (imageId === "" || imageId === undefined) {
+			return;
+		}
+		print("Updating item with new image");
+		let res = InternalHttpManager.PatchAsync(
+			this.GetHttpUrl(`accessories/class-id/${classId}`),
+			EncodeJSON({
+				image: undefined,
+				imageId,
+			}),
+		);
+		if (res.success) {
+			print("Finished updating item");
+		} else {
+			error("Unable to update item " + classId + " with new image: " + imageId);
+		}
+	}
+
+	public static async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
 		print("Requesting image url: " + resourceId);
 
 		let getPath = `${AirshipUrl.ContentService}/item-classes/images/resource-id/${resourceId}/signed-url?contentType=image%2Fpng&contentLength=${fileSize}`;
@@ -155,6 +175,4 @@ export class AvatarPlatformAPI {
 			error("Error Gettin item image resource: " + res.error);
 		}
 	}
-
-	public static UploadImage(fileId: string) {}
 }

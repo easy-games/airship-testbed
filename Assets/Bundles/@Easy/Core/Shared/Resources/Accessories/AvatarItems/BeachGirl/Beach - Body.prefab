@@ -57,6 +57,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 56631354d3a834d46b16e0a289e6c158, type: 2}
+  - {fileID: 2100000, guid: 6e0b6cd4dca9efe47a7f9dcea7f3b794, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,8 +110,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.0053047836, y: -0.06369759, z: 0.83515954}
-    m_Extent: {x: 0.31628463, y: 0.43827063, z: 0.4213018}
+    m_Center: {x: -0.000000022351742, y: -0.03457304, z: 1.0237404}
+    m_Extent: {x: 0.23270714, y: 0.22558361, z: 0.34057018}
   m_DirtyAABB: 0
 --- !u!114 &2895108243356472092
 MonoBehaviour:
@@ -128,6 +129,9 @@ MonoBehaviour:
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
+  - materialColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    emissiveMix: 1
   addedByEditorScript: 0
 --- !u!114 &6196968335492779025
 MonoBehaviour:
@@ -142,7 +146,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverClassId: 79647612-a1c8-40ce-9daa-54646ef24310
-  serverInstanceId: 
   accessorySlot: 5
   visibilityMode: 0
   skinnedToCharacter: 1

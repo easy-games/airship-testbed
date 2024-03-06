@@ -5,16 +5,8 @@ import { CanvasAPI } from "../Util/CanvasAPI";
 import { OnUpdate } from "../Util/Timer";
 import AvatarRenderComponent from "@Easy/Core/Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 
-export enum AvatarBackdrop {
-	NONE = 0,
-	WHITE_FLAT,
-	LIGHT_3D,
-	DARK_3D,
-}
-
 export default class AvatarViewComponent extends AirshipBehaviour {
 	public humanEntityGo?: GameObject;
-	public avatarRenderGo?: GameObject;
 	public avatarHolder?: Transform;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
@@ -37,7 +29,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public accessoryBuilder?: AccessoryBuilder;
 	public anim?: CharacterAnimationHelper;
 	public avatarRenderComponent?: AvatarRenderComponent;
-	public backdropHolder!: Transform;
 
 	@Header("Spin Big")
 	public idleAnim!: AnimationClip;
@@ -74,7 +65,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			}
 			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>();
 		}
-		this.avatarRenderComponent = this.avatarRenderGo?.GetAirshipComponent<AvatarRenderComponent>();
 
 		this.dragging = false;
 		this.mouse = new Mouse();
@@ -271,12 +261,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 					.TweenRotation(this.targetTransform.rotation.eulerAngles, this.cameraTransitionDuration)
 					.SetEaseQuadInOut();
 			}
-		}
-	}
-
-	public SetBackgdrop(backdrop: AvatarBackdrop) {
-		for (let i = 0; i < this.backdropHolder.childCount; i++) {
-			this.backdropHolder.GetChild(i).gameObject.SetActive(i === (backdrop as number));
 		}
 	}
 }
