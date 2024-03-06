@@ -33,4 +33,5 @@ export declare class Game {
     static gameData: GameDto | undefined;
     static onGameDataLoaded: Signal<GameDto>;
     static WaitForGameData(): GameDto;
+    static localPlatform: AirshipPlatform;
 }
