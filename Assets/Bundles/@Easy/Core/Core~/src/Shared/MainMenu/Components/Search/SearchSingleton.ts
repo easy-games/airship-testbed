@@ -3,7 +3,6 @@ import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework/flamew
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
-import inspect from "@easy-games/unity-inspect";
 import ObjectUtils from "@easy-games/unity-object-utils";
 
 @Service({ loadOrder: -1000 })
@@ -51,7 +50,6 @@ export default class SearchSingleton implements OnStart {
 		data = data.filter((g) => g.lastVersionUpdate !== undefined);
 		this.myGames = data;
 		this.myGamesIds.clear();
-		print("my games: " + inspect(this.myGames));
 		for (let g of this.myGames) {
 			this.myGamesIds.add(g.id);
 		}
