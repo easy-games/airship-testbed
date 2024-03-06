@@ -35,7 +35,7 @@ export default class Character extends AirshipBehaviour {
     private despawned;
     Awake(): void;
     LateUpdate(dt: number): void;
-    Start(): void;
+    OnEnable(): void;
     OnDisable(): void;
     Init(player: Player | undefined, id: number, outfitDto: OutfitDto | undefined): void;
     /**
