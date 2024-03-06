@@ -5,7 +5,6 @@ import { Game } from "Shared/Game";
 import { Keyboard } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
-import { DataStreamItems } from "Shared/Util/DataStreamTypes";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
 import { Theme } from "Shared/Util/Theme";
@@ -37,7 +36,7 @@ export class LocalCharacterSingleton implements OnStart {
 	/** Fires whenever the user requests to look (or stop looking) backwards. */
 	public readonly lookBackwardsChanged = new Signal<[lookBackwards: boolean]>();
 
-	private customDataQueue: { key: keyof DataStreamItems; value: unknown }[] = [];
+	private customDataQueue: { key: unknown; value: unknown }[] = [];
 
 	private entityDriver: CharacterMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
@@ -103,9 +102,9 @@ export class LocalCharacterSingleton implements OnStart {
 	}
 
 	/** Add custom data to the move data command stream. */
-	public AddToMoveData<K extends keyof DataStreamItems, T extends DataStreamItems[K]>(
-		key: K,
-		value: T,
+	public AddToMoveData(
+		key: string,
+		value: unknown,
 		/**
 		 * Fired when the move data has been processed during the tick loop.
 		 * This will be fired **before** movement is calculated.

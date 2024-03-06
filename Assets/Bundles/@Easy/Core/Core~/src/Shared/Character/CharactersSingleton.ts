@@ -264,7 +264,7 @@ export class CharactersSingleton implements OnStart {
 		if (RunUtil.IsServer() && character.player) {
 			// Custom move command data handling:
 			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
-				const allData = customData.Decode() as { key: unknown; value: unknown }[];
+				const allData = customData.Decode() as { key: string; value: unknown }[];
 				for (const data of allData) {
 					const player = character.player;
 					if (!player) continue;
