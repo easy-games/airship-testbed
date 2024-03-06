@@ -1,5 +1,4 @@
 import { OnStart } from "../../Flamework";
-import { DataStreamItems } from "../../Util/DataStreamTypes";
 import { Signal } from "../../Util/Signal";
 import { HumanoidCameraMode } from "../../../Client/Controllers/Camera/DefaultCameraModes/HumanoidCameraMode";
 import { CharacterCameraMode } from "./CharacterCameraMode";
@@ -37,7 +36,7 @@ export declare class LocalCharacterSingleton implements OnStart {
     /** Observes whether or not the player wants to look backwards. */
     ObserveLookBackwards(observer: (lookBackwards: boolean) => CleanupFunc): () => void;
     /** Add custom data to the move data command stream. */
-    AddToMoveData<K extends keyof DataStreamItems, T extends DataStreamItems[K]>(key: K, value: T, 
+    AddToMoveData(key: string, value: unknown, 
     /**
      * Fired when the move data has been processed during the tick loop.
      * This will be fired **before** movement is calculated.

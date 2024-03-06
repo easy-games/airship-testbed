@@ -16,7 +16,7 @@ export declare class Game {
     static onLocalPlayerLoaded: Signal<void>;
     static WaitForLocalPlayerLoaded(): void;
     static BroadcastMessage(message: string): void;
-    static context: CoreContext;
+    static coreContext: CoreContext;
     /**
      * Empty string when in editor.
      */
@@ -33,5 +33,21 @@ export declare class Game {
     static gameData: GameDto | undefined;
     static onGameDataLoaded: Signal<GameDto>;
     static WaitForGameData(): GameDto;
-    static localPlatform: AirshipPlatform;
+    /**
+     * The platform of this device.
+     *
+     * To get a certain player's platform, use {@link Player.platform}
+     */
+    static platform: AirshipPlatform;
+    static IsMobile(): boolean;
+    static IsClient(): boolean;
+    static IsServer(): boolean;
+    static IsEditor(): boolean;
+    /**
+     * Shortcut for checking if both IsClient() and IsServer() is true.
+     */
+    static IsHosting(): boolean;
+    static IsClone(): boolean;
+    static IsWindows(): boolean;
+    static IsMac(): boolean;
 }

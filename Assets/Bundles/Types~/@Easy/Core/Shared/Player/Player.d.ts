@@ -67,6 +67,10 @@ export declare class Player {
     private connected;
     selectedOutfit: OutfitDto | undefined;
     outfitLoaded: boolean;
+    /**
+     * WARNING: not implemented yet. only returns local platform for now.
+     */
+    platform: AirshipPlatform;
     constructor(
     /**
      * The GameObject representing the player.

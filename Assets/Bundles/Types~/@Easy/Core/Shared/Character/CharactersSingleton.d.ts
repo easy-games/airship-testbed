@@ -17,7 +17,7 @@ export declare class CharactersSingleton implements OnStart {
      *
      * Custom data that the client sends in their move packet.
      */
-    onServerCustomMoveCommand: Signal<CustomMoveData<unknown, unknown>>;
+    onServerCustomMoveCommand: Signal<CustomMoveData>;
     /**
      * If true, when a player disconnects their character will automatically be despawned.
      */
