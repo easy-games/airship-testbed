@@ -6,6 +6,9 @@ const isInternal = RunCore.IsInternal();
 
 const platform = Application.platform;
 
+/**
+ * @deprecated use "Game" instead.
+ */
 export class RunUtil {
 	public static IsClient(): boolean {
 		return isClient;

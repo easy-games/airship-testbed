@@ -597,6 +597,7 @@ declare const StateManager: StateManagerStatic;
 
 interface EditorSessionStateStatic {
 	GetString(key: string): string | undefined;
+	GetBoolean(key: string): boolean;
 	SetString(key: string, value: string): void;
 	RemoveString(key: string): void;
 }
