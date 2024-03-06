@@ -27,7 +27,7 @@ if (!RunUtil.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;
 }
 
-export class HumanoidCameraMode implements CameraMode {
+export class HumanoidCameraMode extends CameraMode {
 	private readonly bin = new Bin();
 
 	private lookVector = Vector3.zero;
@@ -36,9 +36,6 @@ export class HumanoidCameraMode implements CameraMode {
 	private lookBackwards = false;
 
 	private readonly attachTo: Transform;
-
-	private rotationX = math.rad(90);
-	private rotationY = math.rad(0);
 
 	private lockView = true;
 	private firstPerson = true;
@@ -65,6 +62,7 @@ export class HumanoidCameraMode implements CameraMode {
 		initialFirstPerson: boolean,
 		initialYOffset: number,
 	) {
+		super();
 		this.movement = character.movement;
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;

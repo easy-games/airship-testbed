@@ -2827,6 +2827,8 @@ MonoBehaviour:
       value: {fileID: 0}
     - key: UIToggle
       value: {fileID: 0}
+    - key: TouchSensitivity
+      value: {fileID: 1954154097997813965}
   - key: Navbar
     keyValuePairs:
     - key: RightLayoutGroup
@@ -4586,11 +4588,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6136699804409668924, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6136699804409668924, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6574512735041070750, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_RaycastPadding.w
@@ -5447,6 +5449,11 @@ PrefabInstance:
 --- !u!224 &1124896623122223428 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3318241402247040923, guid: 1b5c9a38c9032cb4a8ed92aae9e08618, type: 3}
+  m_PrefabInstance: {fileID: 2418623755330871007}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1954154097997813965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4219346948648977938, guid: 1b5c9a38c9032cb4a8ed92aae9e08618, type: 3}
   m_PrefabInstance: {fileID: 2418623755330871007}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3522254325558657730 stripped

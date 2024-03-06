@@ -40,7 +40,7 @@ export class LocalCharacterSingleton implements OnStart {
 
 	private entityDriver: CharacterMovement | undefined;
 	private screenshot: CameraScreenshotRecorder | undefined;
-	public entityInput: CharacterInput | undefined;
+	public input: CharacterInput | undefined;
 	private prevState: CharacterState = CharacterState.Idle;
 	private currentState: CharacterState = CharacterState.Idle;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;
@@ -177,7 +177,7 @@ export class LocalCharacterSingleton implements OnStart {
 			const keyboard = bin.Add(new Keyboard());
 
 			this.entityDriver = character.gameObject.GetComponent<CharacterMovement>();
-			this.entityInput = new CharacterInput(character);
+			this.input = new CharacterInput(character);
 
 			this.screenshot = character.gameObject.AddComponent<CameraScreenshotRecorder>();
 
@@ -273,7 +273,7 @@ export class LocalCharacterSingleton implements OnStart {
 								this.SetFirstPerson(true);
 							}
 						});
-						flyingBin.Add(this.entityInput!.AddDisabler());
+						flyingBin.Add(this.input!.AddDisabler());
 						flyingBin.Add(Airship.inventory.localCharacterInventory.AddDisabler());
 					}
 				}
@@ -326,7 +326,7 @@ export class LocalCharacterSingleton implements OnStart {
 					cameraController.ClearMode();
 				}
 				this.fps?.Destroy();
-				this.entityInput?.Destroy();
+				this.input?.Destroy();
 			});
 
 			character.onDeath.Connect(() => {
@@ -378,7 +378,7 @@ export class LocalCharacterSingleton implements OnStart {
 		if (
 			this.currentState === CharacterState.Sprinting ||
 			this.currentState === CharacterState.Sliding ||
-			this.entityInput?.IsSprinting()
+			this.input?.IsSprinting()
 			// (this.currentState === EntityState.Jumping && this.prevState === EntityState.Sprinting)
 		) {
 			cameraController.SetFOV(baseFov * 1.08, false);
@@ -427,7 +427,7 @@ export class LocalCharacterSingleton implements OnStart {
 	}
 
 	public GetEntityInput(): CharacterInput | undefined {
-		return this.entityInput;
+		return this.input;
 	}
 
 	/**
