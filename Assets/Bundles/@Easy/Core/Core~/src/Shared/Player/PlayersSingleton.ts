@@ -116,7 +116,7 @@ export class PlayersSingleton implements OnStart {
 				this.InitServer();
 			}
 
-			if (RunUtil.IsClient() && Game.context === CoreContext.GAME) {
+			if (RunUtil.IsClient() && Game.coreContext === CoreContext.GAME) {
 				Game.WaitForLocalPlayerLoaded();
 				CoreNetwork.ClientToServer.Ready.client.FireServer();
 			}

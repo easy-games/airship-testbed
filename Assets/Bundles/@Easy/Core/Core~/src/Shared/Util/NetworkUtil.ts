@@ -7,7 +7,7 @@ import { TimeUtil } from "./TimeUtil";
 const waitingByName = new Map<string, NetworkObject>();
 
 export const NetworkObjectAdded = new Signal<NetworkObject>();
-if (Game.context === CoreContext.GAME) {
+if (Game.coreContext === CoreContext.GAME) {
 	let managed: ManagedObjects = InstanceFinder.ClientManager.Objects;
 	if (RunUtil.IsServer()) {
 		managed = InstanceFinder.ServerManager.Objects;

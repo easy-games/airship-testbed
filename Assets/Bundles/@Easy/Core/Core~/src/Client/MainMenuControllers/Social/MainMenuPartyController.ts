@@ -64,7 +64,7 @@ export class MainMenuPartyController implements OnStart {
 				},
 			);
 			AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/FriendRequest.wav");
-			if (Game.context === CoreContext.GAME) {
+			if (Game.coreContext === CoreContext.GAME) {
 				Game.localPlayer.SendMessage(
 					ChatColor.Yellow(data.members[0].username) + ChatColor.Gray(" invited you to their party."),
 				);

@@ -58,7 +58,7 @@ export class MainMenuNavbarController implements OnStart {
 			this.DoRefresh();
 		});
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			settingsButton.SetActive(false);
 		} else {
 			runningGameButton.SetActive(false);
@@ -101,7 +101,7 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			currentSelectedNavbarButton = runningGameButton;
 		}
 		this.UpdateNavButton(currentSelectedNavbarButton, true);
@@ -112,7 +112,7 @@ export class MainMenuNavbarController implements OnStart {
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Settings) {
-				if (Game.context === CoreContext.GAME) {
+				if (Game.coreContext === CoreContext.GAME) {
 					currentSelectedNavbarButton = runningGameButton;
 				} else {
 					currentSelectedNavbarButton = settingsButton;

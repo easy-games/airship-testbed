@@ -619,7 +619,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.currentUserOutfit = this.outfits[index];
 		AvatarPlatformAPI.EquipAvatarOutfit(this.currentUserOutfit.outfitId);
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
 		}
 
@@ -700,7 +700,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (this.outfits) {
 			this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
 		}
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
 		}
 		this.saveBtn?.SetDisabled(true);

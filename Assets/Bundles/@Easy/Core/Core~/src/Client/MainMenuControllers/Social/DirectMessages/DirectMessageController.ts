@@ -97,7 +97,7 @@ export class DirectMessageController implements OnStart {
 			}
 
 			// in-game chat
-			if (Game.context === CoreContext.GAME) {
+			if (Game.coreContext === CoreContext.GAME) {
 				const friend = this.friendsController.GetFriendStatus(data.sender);
 				if (!friend) return;
 
@@ -132,7 +132,7 @@ export class DirectMessageController implements OnStart {
 			});
 
 			// in-game chat
-			if (Game.context === CoreContext.GAME) {
+			if (Game.coreContext === CoreContext.GAME) {
 				const member = this.partyController.party?.members.find((u) => u.uid === data.sender);
 				if (member) {
 					let text =
@@ -274,7 +274,7 @@ export class DirectMessageController implements OnStart {
 			pitch: 1.5,
 		});
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			let text =
 				ColorUtil.ColoredText(Theme.pink, "To ") +
 				ColorUtil.ColoredText(Theme.white, status.username) +
@@ -304,7 +304,7 @@ export class DirectMessageController implements OnStart {
 			pitch: 1.5,
 		});
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			let text =
 				ColorUtil.ColoredText(Theme.pink, "[Party] ") +
 				ColorUtil.ColoredText(Theme.white, Game.localPlayer.username) +

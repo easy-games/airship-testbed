@@ -31,7 +31,7 @@ export class Game {
 		}
 	}
 
-	public static context: CoreContext;
+	public static coreContext: CoreContext;
 
 	/**
 	 * Empty string when in editor.
