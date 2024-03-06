@@ -88,7 +88,6 @@ export class CharactersSingleton implements OnStart {
 			// Auto disconnect
 			Airship.players.onPlayerDisconnected.Connect((player) => {
 				if (!this.autoDespawnCharactersOnPlayerDisconnect) return;
-
 				player.character?.Despawn();
 			});
 		}
@@ -106,7 +105,7 @@ export class CharactersSingleton implements OnStart {
 		Airship.characters.ObserveCharacters((character) => {
 			character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
 				if (RunUtil.IsServer()) {
-					NetworkUtil.Despawn(character.gameObject);
+					character.Despawn();
 				}
 			});
 		});

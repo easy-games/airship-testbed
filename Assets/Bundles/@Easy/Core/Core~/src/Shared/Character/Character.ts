@@ -69,7 +69,9 @@ export default class Character extends AirshipBehaviour {
 		this.headBone.rotation = Quaternion.Euler(degX * 0.8, neckEul.y, neckEul.z);
 	}
 
-	public Start(): void {
+	public OnEnable(): void {
+		this.despawned = false;
+
 		this.spineBone = this.rig.spine;
 		this.headBone = this.rig.head;
 		if (this.IsLocalCharacter()) {
@@ -116,8 +118,11 @@ export default class Character extends AirshipBehaviour {
 	public OnDisable(): void {
 		Airship.characters.UnregisterCharacter(this);
 		if (RunUtil.IsClient()) {
+			this.bin.Clean();
+			this.despawned = true;
 			this.onDespawn.Fire();
 			Airship.characters.onCharacterDespawned.Fire(this);
+			this.player?.SetCharacter(undefined);
 		}
 	}
 

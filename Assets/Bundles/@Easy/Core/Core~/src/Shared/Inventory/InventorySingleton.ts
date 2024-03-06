@@ -67,15 +67,6 @@ export class InventorySingleton implements OnStart {
 				itemStack.SetAmount(amount);
 			}
 		});
-		CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot, clientPredicted) => {
-			if (invId === undefined) return;
-			const inv = this.GetInventory(invId);
-			if (!inv) return;
-
-			// if (this.localInventory === inv && clientPredicted) return;
-
-			inv.SetHeldSlot(slot);
-		});
 	}
 
 	private StartServer(): void {
@@ -92,7 +83,13 @@ export class InventorySingleton implements OnStart {
 			const inv = character.gameObject.GetAirshipComponent<Inventory>();
 			inv?.SetHeldSlot(slot);
 
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(player, inv?.id, slot, true);
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.server.FireExcept(
+				player,
+				inv?.id,
+				player.clientId,
+				slot,
+				true,
+			);
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(

@@ -6,6 +6,7 @@ import { ArmorType } from "Shared/Item/ArmorType";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal } from "Shared/Util/Signal";
+import Character from "../Character/Character";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 
 export interface InventoryDto {
@@ -94,8 +95,9 @@ export default class Inventory extends AirshipBehaviour {
 		let cleanup = callback(currentItemStack);
 
 		bin.Add(
-			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, slot) => {
-				if (invId === this.id) {
+			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, clientId, slot) => {
+				const inventoryClientId = this.gameObject.GetComponent<Character>().player?.clientId;
+				if (invId === this.id && clientId === inventoryClientId) {
 					const selected = this.items.get(slot);
 					if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
 

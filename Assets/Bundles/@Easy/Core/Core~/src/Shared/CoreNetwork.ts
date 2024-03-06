@@ -53,7 +53,9 @@ export const CoreNetwork = {
 		RevertBlockPlace: new RemoteEvent<[pos: Vector3]>(),
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
 		UpdateInventorySlot: new RemoteEvent<[invId: number, slot: number, itemType?: CoreItemType, amount?: number]>(),
-		SetHeldInventorySlot: new RemoteEvent<[invId: number | undefined, slot: number, clientPredicted: boolean]>(),
+		SetHeldInventorySlot: new RemoteEvent<
+			[invId: number | undefined, clientId: number | undefined, slot: number, clientPredicted: boolean]
+		>(),
 		BlockHit: new RemoteEvent<
 			[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean]
 		>(),
