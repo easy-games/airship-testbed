@@ -7,6 +7,8 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
+import { CoreContext } from "../CoreClientContext";
+import { Game } from "../Game";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
@@ -45,6 +47,7 @@ export class CharactersSingleton implements OnStart {
 	}
 
 	OnStart(): void {
+		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
 			task.spawn(() => {
 				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();
