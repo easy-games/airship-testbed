@@ -3,9 +3,12 @@ const DefaultCameraMask = LayerMask.InvertMask(
 		"TransparentFX",
 		"Ignore Raycast",
 		"Character",
-		"BridgeAssist",
-		"GroundItem",
-		"ProjectileReceiver",
+		"Water",
+		"UI",
+		"ViewModel",
+		"VisuallyHidden",
+		"IgnoreCollision",
+		"AvatarEditor",
 	),
 );
 

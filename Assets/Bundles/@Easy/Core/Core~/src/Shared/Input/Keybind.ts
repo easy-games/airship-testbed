@@ -19,6 +19,14 @@ export class Keybind {
 	 *
 	 * @returns
 	 */
+	public GetInputType(): ActionInputType {
+		return InputUtil.GetInputTypeFromKeybind(this, KeyType.Primary);
+	}
+
+	/**
+	 *
+	 * @returns
+	 */
 	public IsComplexKeybind(): boolean {
 		return this.modifierKey !== ModifierKey.None;
 	}

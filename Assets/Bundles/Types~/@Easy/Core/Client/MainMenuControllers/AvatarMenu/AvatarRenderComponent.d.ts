@@ -1,13 +1,32 @@
 /// <reference types="@easy-games/compiler-types" />
+export declare enum AvatarRenderSlot {
+    BODY = 0,
+    FACE = 1,
+    HAIR = 2,
+    HEAD = 3,
+    TORSO = 4,
+    BACK = 5,
+    HANDS = 6,
+    LEGS = 7,
+    FEET = 8
+}
 export default class AvatarRenderComponent extends AirshipBehaviour {
-    private readonly tweenDuration;
-    group: CanvasGroup;
-    renderItemsBtn: Button;
-    closeBtn: Button;
-    private previousGroup;
-    Awake(): void;
-    OpenPage(previousGroup: CanvasGroup): void;
-    ClosePage(): void;
-    RenderAllItems(): void;
-    RenderItem(accesoryTemplate: AccessoryComponent): void;
+    private readonly itemRenderSize;
+    private readonly profileRenderSize;
+    private renderTexture?;
+    private backdrops;
+    builder: AccessoryBuilder;
+    backdropHolder: GameObject;
+    captureCamera: Camera;
+    cameraTransforms: Transform[];
+    cameraDistanceBase: number;
+    cameraDistanceMod: number;
+    uploadThumbnails: boolean;
+    Start(): void;
+    Init(): void;
+    RenderCharacter(): void;
+    private Render;
+    private AlignCamera;
+    private SetCameraAccessory;
+    private SetCameraTransform;
 }

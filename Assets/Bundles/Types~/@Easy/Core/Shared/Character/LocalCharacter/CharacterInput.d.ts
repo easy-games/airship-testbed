@@ -5,10 +5,9 @@ export declare class CharacterInput {
     private readonly movement;
     private disablers;
     private disablerCounter;
-    private jumping;
     private enabled;
     private autoSprinting;
-    private mobileControlsCanvasGO;
+    private queuedMoveDirection;
     constructor(character: Character);
     /**
      * Sets whether or not the Humanoid Driver is enabled. If disabled, then the
@@ -16,6 +15,7 @@ export declare class CharacterInput {
      * @param enabled Enabled state.
      */
     SetEnabled(enabled: boolean): void;
+    SetQueuedMoveDirection(dir: Vector3): void;
     /** Returns `true` if the Humanoid Driver is enabled. */
     IsEnabled(): boolean;
     IsSprinting(): boolean;

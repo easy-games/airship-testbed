@@ -1,6 +1,6 @@
 import Character from "Shared/Character/Character";
 import { Dependency } from "Shared/Flamework";
-import { Keyboard, Preferred } from "Shared/UserInput";
+import { ControlScheme, Keyboard, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
 import { Airship } from "../../Airship";
@@ -134,16 +134,9 @@ export class CharacterInput {
 		// Switch controls based on preferred user input:
 		preferred.ObserveControlScheme((controlScheme) => {
 			const controlSchemeBin = new Bin();
-			print("control scheme: " + controlScheme);
 
-			if (controlScheme === "MouseKeyboard") {
+			if (controlScheme === ControlScheme.MouseKeyboard) {
 				controlSchemeBin.Connect(OnUpdate, updateMouseKeyboardControls);
-			} else if (controlScheme === "Touch") {
-				Airship.input.CreateMobileButton("Jump", new Vector2(-200, 290), {
-					icon: "person-falling-solid",
-				});
-			} else {
-				print(`unknown control scheme: ${controlScheme}`);
 			}
 
 			// Clean up current controls when preferred input scheme changes:

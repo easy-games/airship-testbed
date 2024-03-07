@@ -1,6 +1,6 @@
 import Character from "../../../../Shared/Character/Character";
 import { CameraMode, CameraTransform } from "..";
-export declare class HumanoidCameraMode implements CameraMode {
+export declare class HumanoidCameraMode extends CameraMode {
     private character;
     private graphicalCharacterGO;
     private readonly bin;
@@ -9,8 +9,6 @@ export declare class HumanoidCameraMode implements CameraMode {
     private occlusionCam;
     private lookBackwards;
     private readonly attachTo;
-    private rotationX;
-    private rotationY;
     private lockView;
     private firstPerson;
     private rightClicking;
