@@ -127,7 +127,7 @@ export declare class Player {
     IsBot(): boolean;
     Encode(): PlayerDto;
     SetCharacter(character: Character | undefined): void;
-    ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin;
+    ObserveCharacter(observer: (character: Character | undefined) => CleanupFunc): Bin;
     IsLocalPlayer(): boolean;
     /**
      * Is the player connected to the server?

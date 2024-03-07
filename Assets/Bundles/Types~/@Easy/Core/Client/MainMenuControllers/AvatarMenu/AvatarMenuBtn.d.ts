@@ -5,7 +5,7 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
     iconImage?: Image;
     button: Button;
     labelText: TextMeshProUGUI;
-    bgImage: Image;
+    bgImage?: Image;
     private bin;
     private selected;
     Start(): void;

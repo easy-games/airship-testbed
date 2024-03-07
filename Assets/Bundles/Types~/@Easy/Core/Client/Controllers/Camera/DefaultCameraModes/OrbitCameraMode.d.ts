@@ -1,12 +1,10 @@
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
-export declare class OrbitCameraMode implements CameraMode {
+export declare class OrbitCameraMode extends CameraMode {
     private readonly distance;
     private transform;
     private readonly bin;
     private occlusionCam;
-    private rotationX;
-    private rotationY;
     private lockView;
     private rightClicking;
     private rightClickPos;
