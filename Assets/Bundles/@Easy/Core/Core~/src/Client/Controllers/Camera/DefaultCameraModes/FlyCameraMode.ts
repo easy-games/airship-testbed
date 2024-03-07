@@ -1,5 +1,5 @@
-import { Dependency } from "Shared/Flamework";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
+import { Dependency } from "Shared/Flamework";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
@@ -28,11 +28,8 @@ if (!RunUtil.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;
 }
 
-export class FlyCameraMode implements CameraMode {
+export class FlyCameraMode extends CameraMode {
 	private bin = new Bin();
-
-	private xRot = math.rad(90);
-	private yRot = 0;
 
 	private positionSpring!: Spring;
 	private xRotSpring!: Spring;
@@ -160,8 +157,8 @@ export class FlyCameraMode implements CameraMode {
 		} else {
 			this.yRotVelSpring.goal = new Vector3(0, 0, 0);
 		}
-		this.xRot = this.xRotSpring.Update(dt).x;
-		this.yRot = (this.yRot + this.yRotVelSpring.Update(dt).y) % (math.pi * 2);
+		this.rotationX = this.xRotSpring.Update(dt).x;
+		this.rotationY = (this.rotationY + this.yRotVelSpring.Update(dt).y) % (math.pi * 2);
 	}
 
 	OnPostUpdate() {}
@@ -172,16 +169,16 @@ export class FlyCameraMode implements CameraMode {
 		this.camera.fieldOfView = fov;
 
 		const position = this.positionSpring.Update(dt);
-		const rotation = Quaternion.Euler(math.deg(-this.xRot + math.pi / 2), math.deg(-this.yRot), 0);
+		const rotation = Quaternion.Euler(math.deg(-this.rotationX + math.pi / 2), math.deg(-this.rotationY), 0);
 
 		return new CameraTransform(position, rotation);
 	}
 
 	private CalculateDirection(): Vector3 {
-		const yRot = this.yRot - math.pi / 2;
-		const xPos = math.cos(yRot) * math.sin(this.xRot);
-		const zPos = math.sin(yRot) * math.sin(this.xRot);
-		const yPos = math.cos(this.xRot);
+		const yRot = this.rotationY - math.pi / 2;
+		const xPos = math.cos(yRot) * math.sin(this.rotationX);
+		const zPos = math.sin(yRot) * math.sin(this.rotationX);
+		const yPos = math.cos(this.rotationX);
 		return new Vector3(xPos, yPos, zPos);
 	}
 }

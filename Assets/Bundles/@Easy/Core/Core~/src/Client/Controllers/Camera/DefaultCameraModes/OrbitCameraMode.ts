@@ -22,13 +22,10 @@ if (!RunUtil.IsEditor()) {
 const Y_LOCKED_ROTATION = math.rad(15);
 const Y_OFFSET = 1.85;
 
-export class OrbitCameraMode implements CameraMode {
+export class OrbitCameraMode extends CameraMode {
 	private readonly bin = new Bin();
 
 	private occlusionCam!: OcclusionCam;
-
-	private rotationX = math.rad(90);
-	private rotationY = math.rad(0);
 
 	private lockView = true;
 	private rightClicking = false;
@@ -50,6 +47,7 @@ export class OrbitCameraMode implements CameraMode {
 		private transform: Transform,
 		graphicalCharacter?: Transform,
 	) {
+		super();
 		if (graphicalCharacter !== undefined) {
 			this.entityDriver = transform.GetComponent<CharacterMovement>();
 			this.transform = graphicalCharacter;

@@ -215,7 +215,7 @@ export class Player {
 		this.onCharacterChanged.Fire(character);
 	}
 
-	public ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin {
+	public ObserveCharacter(observer: (character: Character | undefined) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup = observer(this.character);
 

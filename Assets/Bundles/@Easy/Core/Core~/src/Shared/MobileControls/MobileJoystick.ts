@@ -1,4 +1,4 @@
-import { Game } from "../Game";
+import { Airship } from "../Airship";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
 
@@ -41,21 +41,17 @@ export default class MobileJoystick extends AirshipBehaviour {
 			CanvasAPI.OnEndDragEvent(this.gameObject, (data) => {
 				this.input = Vector2.zero;
 				this.dragging = false;
-				Game.localPlayer.character?.movement.SetMoveInput(
-					new Vector3(this.input.x, this.input.y, 0),
-					false,
-					false,
-					false,
-					false,
+				Airship.characters.localCharacterManager.input?.SetQueuedMoveDirection(
+					new Vector3(this.input.x, 0, this.input.y),
 				);
 
 				// todo: adjust speed by distance
-				const tween = this.handle.TweenAnchoredPosition(Vector2.zero, 0.12);
-				this.tweenBin.Add(() => {
-					if (tween) {
-						tween.Cancel();
-					}
-				});
+				this.handle.TweenAnchoredPosition(Vector2.zero, 0.09);
+				// this.tweenBin.Add(() => {
+				// 	if (tween) {
+				// 		tween.Cancel();
+				// 	}
+				// });
 			}),
 		);
 	}
@@ -68,12 +64,8 @@ export default class MobileJoystick extends AirshipBehaviour {
 		let newPos = this.input.mul(radius);
 		newPos = newPos.mul(this.handleRange);
 		this.handle.anchoredPosition = newPos;
-		Game.localPlayer.character?.movement.SetMoveInput(
+		Airship.characters.localCharacterManager.input?.SetQueuedMoveDirection(
 			new Vector3(this.input.x, 0, this.input.y),
-			false,
-			false,
-			false,
-			false,
 		);
 	}
 

@@ -26,6 +26,13 @@ export class MainMenuSettingsUIController implements OnStart {
 			},
 		);
 		this.SetupSlider(
+			this.mainMenuController.refs.GetValue("Settings", "TouchSensitivity"),
+			this.clientSettingsController.GetTouchSensitivity(),
+			(val) => {
+				this.clientSettingsController.SetTouchSensitivity(val);
+			},
+		);
+		this.SetupSlider(
 			this.mainMenuController.refs.GetValue("Settings", "Volume"),
 			this.clientSettingsController.GetGlobalVolume(),
 			(val) => {

@@ -3,20 +3,23 @@ import { CameraTransform } from "./CameraTransform";
 /**
  * Represents a camera mode that can attached to the camera system.
  */
-export interface CameraMode {
+export abstract class CameraMode {
+	public rotationX = math.rad(90);
+	public rotationY = math.rad(0);
+
 	/** Called when the camera mode starts. */
-	OnStart(camera: Camera, rootTransform: Transform): void;
+	abstract OnStart(camera: Camera, rootTransform: Transform): void;
 
 	/** Called when the camera mode stops. */
-	OnStop(): void;
+	abstract OnStop(): void;
 
 	/** Called every frame. Useful for control logic. */
-	OnUpdate(deltaTime: number): void;
+	abstract OnUpdate(deltaTime: number): void;
 
 	/** Called every frame. Use this method for constructing the `CameraTransform`. */
-	OnLateUpdate(deltaTime: number): CameraTransform;
+	abstract OnLateUpdate(deltaTime: number): CameraTransform;
 
-	OnPostUpdate(camera: Camera): void;
+	abstract OnPostUpdate(camera: Camera): void;
 }
 
 // Necessary for our Lua plugin to not complain about return type:

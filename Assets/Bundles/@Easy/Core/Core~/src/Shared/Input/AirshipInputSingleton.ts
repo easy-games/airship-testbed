@@ -1,12 +1,16 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "../Airship";
-import { Keyboard } from "../UserInput";
+import { AssetCache } from "../AssetCache/AssetCache";
+import { CoreRefs } from "../CoreRefs";
+import { Keyboard, Preferred } from "../UserInput";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
+import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
 import { RunUtil } from "../Util/RunUtil";
 import { Signal } from "../Util/Signal";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
+import { CoreIcon } from "./InputIcons";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { Keybind } from "./Keybind";
 
@@ -47,6 +51,8 @@ export class AirshipInputSingleton implements OnStart {
 	 */
 	public unsetOnDuplicateKeybind = false;
 
+	private mobileControlsGO!: GameObject;
+
 	constructor() {
 		Airship.input = this;
 	}
@@ -79,6 +85,33 @@ export class AirshipInputSingleton implements OnStart {
 			{ name: "DropItem", keybind: new Keybind(KeyCode.Q) },
 			{ name: "Inspect", keybind: new Keybind(KeyCode.Y) },
 		]);
+
+		/*
+		 * Mobile Controls.
+		 *
+		 * We always create the MobileControlsCanvas gameobject to allow swapping
+		 * between touch and keyboard schemes mid-game.
+		 *
+		 * When in keyboard scheme, the MobileControlsCanvas is disabled.
+		 */
+		const mobileControlsCanvas = Object.Instantiate(
+			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab"),
+		);
+		mobileControlsCanvas.transform.SetParent(CoreRefs.rootTransform);
+		this.mobileControlsGO = mobileControlsCanvas;
+		const preferred = new Preferred();
+		const controlSchemeBin = new Bin();
+		preferred.ObserveControlScheme((controlScheme) => {
+			if (controlScheme === "Touch") {
+				this.mobileControlsGO.SetActive(true);
+			} else {
+				this.mobileControlsGO.SetActive(false);
+			}
+
+			return () => {
+				controlSchemeBin.Clean();
+			};
+		});
 	}
 
 	/**
@@ -105,6 +138,72 @@ export class AirshipInputSingleton implements OnStart {
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 	}
+
+	public CreateMobileButton(
+		actionName: string,
+		/**
+		 * Example input: new Vector2(-200, 300)
+		 *
+		 * The default anchor is bottom right.
+		 * You can change the anchor with config.anchorMin and config.anchorMax
+		 */
+		anchoredPosition: Vector2,
+		config?: {
+			icon?: CoreIcon;
+			anchorMin?: Vector2;
+			anchorMax?: Vector2;
+			pivot?: Vector2;
+		},
+	): void {
+		const go = Object.Instantiate(
+			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileButton.prefab"),
+		);
+		go.transform.SetParent(this.mobileControlsGO.transform);
+		const rect = go.GetComponent<RectTransform>();
+		if (config?.anchorMin) {
+			rect.anchorMin = config.anchorMin;
+		}
+		if (config?.anchorMax) {
+			rect.anchorMax = config.anchorMax;
+		}
+		if (config?.pivot) {
+			rect.pivot = config.pivot;
+		}
+		rect.anchoredPosition = anchoredPosition;
+
+		if (config?.icon) {
+			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(
+				`Shared/Resources/Images/DamageType/${config.icon}.png`,
+			);
+			if (iconTexture) {
+				const img = go.transform.GetChild(0).GetComponent<Image>();
+				img.sprite = Bridge.MakeSprite(iconTexture);
+			}
+		}
+
+		CanvasAPI.OnPointerEvent(go, (dir, btn) => {
+			if (dir === PointerDirection.DOWN) {
+				const actionDownSignals = this.actionDownSignals.get(actionName);
+				if (!actionDownSignals) return;
+				const inactiveSignalIndices = [];
+				let signalIndex = 0;
+				for (const signal of actionDownSignals) {
+					if (signal.HasConnections()) {
+						// todo: not sure what to do here. @robbie pls help
+						signal.Fire(new KeySignal(KeyCode.A, false));
+					} else {
+						inactiveSignalIndices.push(signalIndex);
+					}
+					signalIndex++;
+				}
+				this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+			}
+		});
+	}
+
+	public HideMobileButton(actionName: string): void {}
+
+	public ShowMobileButton(actionName: string): void {}
 
 	/**
 	 *

@@ -4,8 +4,6 @@ import { Keyboard, Preferred } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { OnUpdate } from "Shared/Util/Timer";
 import { Airship } from "../../Airship";
-import { AssetCache } from "../../AssetCache/AssetCache";
-import { CoreRefs } from "../../CoreRefs";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
@@ -15,11 +13,10 @@ export class CharacterInput {
 	private disablers = new Set<number>();
 	private disablerCounter = 1;
 
-	private jumping = false;
 	private enabled = true;
 	private autoSprinting = false;
 
-	private mobileControlsCanvasGO: GameObject | undefined;
+	private queuedMoveDirection = Vector3.zero;
 
 	constructor(private readonly character: Character) {
 		this.movement = character.movement;
@@ -36,6 +33,10 @@ export class CharacterInput {
 		if (!enabled) {
 			this.movement.SetMoveInput(Vector3.zero, false, false, false, false);
 		}
+	}
+
+	public SetQueuedMoveDirection(dir: Vector3): void {
+		this.queuedMoveDirection = dir;
 	}
 
 	/** Returns `true` if the Humanoid Driver is enabled. */
@@ -89,37 +90,15 @@ export class CharacterInput {
 			if (EventSystem.current.currentSelectedGameObject !== undefined) return;
 
 			const [success, err] = pcall(() => {
-				const jump = Airship.input.IsDown("Jump");
 				const w = Airship.input.IsDown("Forward");
 				const s = Airship.input.IsDown("Back");
 				const a = Airship.input.IsDown("Left");
 				const d = Airship.input.IsDown("Right");
 
-				const leftShift = Airship.input.IsDown("Sprint");
-				const leftCtrl = Airship.input.IsDown("Crouch");
-				// const c = Airship.input.IsDown("Crouch");
-
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
 
-				let sprinting = leftShift || this.autoSprinting;
-
-				const moveDirection = new Vector3(sideways, 0, forward);
-
-				if (this.jumping !== jump) {
-					this.jumping = jump;
-				}
-
-				const moveSignal = new LocalCharacterInputSignal(moveDirection, jump, sprinting, leftCtrl);
-				Dependency<LocalCharacterSingleton>().onBeforeLocalEntityInput.Fire(moveSignal);
-
-				this.movement.SetMoveInput(
-					moveSignal.moveDirection,
-					moveSignal.jump,
-					moveSignal.sprinting,
-					moveSignal.crouchOrSlide,
-					Dependency<LocalCharacterSingleton>().IsMoveDirWorldSpace(),
-				);
+				this.queuedMoveDirection = new Vector3(sideways, 0, forward);
 			});
 			if (!success) {
 				print(err);
@@ -131,6 +110,27 @@ export class CharacterInput {
 			this.movement.SetMoveInput(position, false, false, false, false);
 		};
 
+		this.bin.Add(
+			OnUpdate.Connect((dt) => {
+				let sprinting = Airship.input.IsDown("Sprint") || this.autoSprinting;
+				const moveSignal = new LocalCharacterInputSignal(
+					this.queuedMoveDirection,
+					Airship.input.IsDown("Jump"),
+					sprinting,
+					Airship.input.IsDown("Crouch"),
+				);
+				Dependency<LocalCharacterSingleton>().onBeforeLocalEntityInput.Fire(moveSignal);
+
+				this.movement.SetMoveInput(
+					moveSignal.moveDirection,
+					moveSignal.jump,
+					moveSignal.sprinting,
+					moveSignal.crouchOrSlide,
+					Dependency<LocalCharacterSingleton>().IsMoveDirWorldSpace(),
+				);
+			}),
+		);
+
 		// Switch controls based on preferred user input:
 		preferred.ObserveControlScheme((controlScheme) => {
 			const controlSchemeBin = new Bin();
@@ -139,16 +139,8 @@ export class CharacterInput {
 			if (controlScheme === "MouseKeyboard") {
 				controlSchemeBin.Connect(OnUpdate, updateMouseKeyboardControls);
 			} else if (controlScheme === "Touch") {
-				const mobileControlsCanvas = Object.Instantiate(
-					AssetCache.LoadAsset(
-						"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab",
-					),
-				);
-				mobileControlsCanvas.transform.SetParent(CoreRefs.rootTransform);
-				this.mobileControlsCanvasGO = mobileControlsCanvas;
-				controlSchemeBin.Add(() => {
-					Object.Destroy(mobileControlsCanvas);
-					this.mobileControlsCanvasGO = undefined;
+				Airship.input.CreateMobileButton("Jump", new Vector2(-200, 290), {
+					icon: "person-falling-solid",
 				});
 			} else {
 				print(`unknown control scheme: ${controlScheme}`);

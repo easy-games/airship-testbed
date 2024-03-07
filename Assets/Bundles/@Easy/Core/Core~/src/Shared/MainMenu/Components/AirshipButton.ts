@@ -12,7 +12,10 @@ export default class AirshipButton extends AirshipBehaviour {
 	private loading = false;
 
 	@Header("Variables")
+	@Tooltip("0: Scale down when pressed.\n1: translate position down when pressed.")
 	public clickType = 0;
+
+	@Header("Optional Variables")
 	// public disabledColor = ColorUtil.HexToColor("#2E3035");
 	public disabledColorHex = "#2E3136";
 	public loadingIndicator?: GameObject;
@@ -26,7 +29,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	override Start(): void {
 		const rect = this.gameObject.GetComponent<RectTransform>();
 		const startPos = rect.anchoredPosition;
-
+		let startingScale = rect.localScale;
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (dir, button) => {
 				if (button !== PointerButton.LEFT) return;
@@ -35,10 +38,7 @@ export default class AirshipButton extends AirshipBehaviour {
 				if (this.clickType === 0) {
 					this.gameObject
 						.GetComponent<RectTransform>()
-						.TweenLocalScale(
-							dir === PointerDirection.DOWN ? new Vector3(0.8, 0.8, 0.8) : new Vector3(1, 1, 1),
-							0.1,
-						);
+						.TweenLocalScale(dir === PointerDirection.DOWN ? startingScale.mul(0.9) : startingScale, 0.1);
 				} else if (this.clickType === 1) {
 					this.gameObject
 						.GetComponent<RectTransform>()
@@ -72,7 +72,7 @@ export default class AirshipButton extends AirshipBehaviour {
 		if (this.clickType === 0) {
 			this.gameObject
 				.GetComponent<RectTransform>()
-				.TweenLocalScale(new Vector3(0.8, 0.8, 0.8), 0.1)
+				.TweenLocalScale(this.gameObject.GetComponent<RectTransform>().localScale.mul(0.9), 0.1)
 				.SetPingPong();
 		}
 	}
