@@ -465,7 +465,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					Bridge.DisconnectEvent(downloadConn);
 				});
 
-				print("Downloading: " + cloudImage.url);
+				//print("Downloading: " + cloudImage.url);
 				cloudImage.StartDownload();
 			} else {
 				error("Unable to find AvatarMenuBtn on item button");
