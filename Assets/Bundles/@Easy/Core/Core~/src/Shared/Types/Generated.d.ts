@@ -3011,6 +3011,38 @@ declare const enum GraphicsFormatUsage {
     MSAA8x = 8192,
     StencilSampling = 65536,
 }
+declare const enum ScaleMode {
+    ConstantPixelSize = 0,
+    ScaleWithScreenSize = 1,
+    ConstantPhysicalSize = 2,
+}
+declare const enum ScreenMatchMode {
+    MatchWidthOrHeight = 0,
+    Expand = 1,
+    Shrink = 2,
+}
+declare const enum Unit {
+    Centimeters = 0,
+    Millimeters = 1,
+    Inches = 2,
+    Points = 3,
+    Picas = 4,
+}
+declare const enum Corner {
+    UpperLeft = 0,
+    UpperRight = 1,
+    LowerLeft = 2,
+    LowerRight = 3,
+}
+declare const enum Axis {
+    Horizontal = 0,
+    Vertical = 1,
+}
+declare const enum Constraint {
+    Flexible = 0,
+    FixedColumnCount = 1,
+    FixedRowCount = 2,
+}
 
     
 interface RaycastHit {
@@ -15965,4 +15997,55 @@ interface SystemInfoConstructor {
     SupportsVertexAttributeFormat(format: VertexAttributeFormat, dimension: number): boolean;
 }
 declare const SystemInfo: SystemInfoConstructor;
+    
+interface CanvasScaler extends UIBehaviour {
+    uiScaleMode: ScaleMode;
+    referencePixelsPerUnit: number;
+    scaleFactor: number;
+    referenceResolution: Vector2;
+    screenMatchMode: ScreenMatchMode;
+    matchWidthOrHeight: number;
+    physicalUnit: Unit;
+    fallbackScreenDPI: number;
+    defaultSpriteDPI: number;
+    dynamicPixelsPerUnit: number;
+
+
+}
+    
+interface GridLayoutGroup extends LayoutGroup {
+    startCorner: Corner;
+    startAxis: Axis;
+    cellSize: Vector2;
+    spacing: Vector2;
+    constraint: Constraint;
+    constraintCount: number;
+
+
+    CalculateLayoutInputHorizontal(): void;
+    CalculateLayoutInputVertical(): void;
+    SetLayoutHorizontal(): void;
+    SetLayoutVertical(): void;
+}
+    
+interface ILayoutIgnorer {
+    ignoreLayout: boolean;
+
+
+}
+    
+interface LayoutElement extends UIBehaviour, ILayoutIgnorer, ILayoutElement {
+    ignoreLayout: boolean;
+    minWidth: number;
+    minHeight: number;
+    preferredWidth: number;
+    preferredHeight: number;
+    flexibleWidth: number;
+    flexibleHeight: number;
+    layoutPriority: number;
+
+
+    CalculateLayoutInputHorizontal(): void;
+    CalculateLayoutInputVertical(): void;
+}
 
