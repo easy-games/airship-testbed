@@ -2786,6 +2786,28 @@ declare const enum EntityAnimationEventKey {
     SLIDE_END = 4,
     DEFAULT = -1,
 }
+declare const enum Result {
+    InProgress = 0,
+    Success = 1,
+    ConnectionError = 2,
+    ProtocolError = 3,
+    DataProcessingError = 4,
+}
+declare const enum AudioType {
+    UNKNOWN = 0,
+    ACC = 1,
+    AIFF = 2,
+    IT = 10,
+    MOD = 12,
+    MPEG = 13,
+    OGGVORBIS = 14,
+    S3M = 17,
+    WAV = 20,
+    XM = 21,
+    XMA = 22,
+    VAG = 23,
+    AUDIOQUEUE = 24,
+}
 declare const enum ToggleTransition {
     None = 0,
     Fade = 1,
@@ -14824,6 +14846,232 @@ interface HttpResponse {
 
 }
     
+interface RequestHelper {
+    Uri: string;
+    Method: string;
+    Body: unknown;
+    BodyString: string;
+    BodyRaw: CSArray<number>;
+    Timeout?: number;
+    ContentType: string;
+    Retries: number;
+    RetrySecondsDelay: number;
+    RetryCallbackOnlyOnNetworkErrors: boolean;
+    RetryCallback: unknown;
+    ProgressCallback: unknown;
+    EnableDebug: boolean;
+    UseHttpContinue?: boolean;
+    RedirectLimit?: number;
+    IgnoreHttpException: boolean;
+    FormData: WWWForm;
+    SimpleForm: CSDictionary<string, string>;
+    FormSections: CSArray<IMultipartFormSection>;
+    CertificateHandler: CertificateHandler;
+    UploadHandler: UploadHandler;
+    DownloadHandler: DownloadHandler;
+    Headers: CSDictionary<string, string>;
+    Params: CSDictionary<string, string>;
+    ParseResponseBody: boolean;
+    Request: UnityWebRequest;
+    UploadProgress: number;
+    UploadedBytes: number;
+    DownloadProgress: number;
+    DownloadedBytes: number;
+    IsAborted: boolean;
+    DefaultContentType: boolean;
+
+
+    Abort(): void;
+    GetHeader(name: string): string;
+}
+    
+interface WWWForm {
+    headers: CSDictionary<string, string>;
+    data: CSArray<number>;
+
+
+    AddBinaryData(fieldName: string, contents: CSArray<number>): void;
+    AddBinaryData(fieldName: string, contents: CSArray<number>, fileName: string): void;
+    AddBinaryData(fieldName: string, contents: CSArray<number>, fileName: string, mimeType: string): void;
+    AddField(fieldName: string, value: string): void;
+    AddField(fieldName: string, value: string, e: unknown): void;
+    AddField(fieldName: string, i: number): void;
+}
+    
+interface WWWFormConstructor {
+
+    new(): WWWForm;
+
+}
+declare const WWWForm: WWWFormConstructor;
+    
+interface IMultipartFormSection {
+    sectionName: string;
+    sectionData: CSArray<number>;
+    fileName: string;
+    contentType: string;
+
+
+}
+    
+interface CertificateHandler {
+
+
+    Dispose(): void;
+}
+    
+interface UploadHandler {
+    data: CSArray<number>;
+    contentType: string;
+    progress: number;
+
+
+    Dispose(): void;
+}
+    
+interface DownloadHandler {
+    isDone: boolean;
+    error: string;
+    nativeData: CSArray<number>;
+    data: CSArray<number>;
+    text: string;
+
+
+    Dispose(): void;
+}
+    
+interface UnityWebRequest {
+    disposeCertificateHandlerOnDispose: boolean;
+    disposeDownloadHandlerOnDispose: boolean;
+    disposeUploadHandlerOnDispose: boolean;
+    method: string;
+    error: string;
+    useHttpContinue: boolean;
+    url: string;
+    uri: unknown;
+    responseCode: number;
+    uploadProgress: number;
+    isModifiable: boolean;
+    isDone: boolean;
+    isNetworkError: boolean;
+    isHttpError: boolean;
+    result: Result;
+    downloadProgress: number;
+    uploadedBytes: number;
+    downloadedBytes: number;
+    redirectLimit: number;
+    chunkedTransfer: boolean;
+    uploadHandler: UploadHandler;
+    downloadHandler: DownloadHandler;
+    certificateHandler: CertificateHandler;
+    timeout: number;
+    isError: boolean;
+
+
+    Abort(): void;
+    Dispose(): void;
+    GetRequestHeader(name: string): string;
+    GetResponseHeader(name: string): string;
+    GetResponseHeaders(): CSDictionary<string, string>;
+    Send(): AsyncOperation;
+    SendWebRequest(): UnityWebRequestAsyncOperation;
+    SetRequestHeader(name: string, value: string): void;
+}
+    
+interface UnityWebRequestAsyncOperation extends AsyncOperation {
+    webRequest: UnityWebRequest;
+
+
+}
+    
+interface UnityWebRequestAsyncOperationConstructor {
+
+    new(): UnityWebRequestAsyncOperation;
+
+}
+declare const UnityWebRequestAsyncOperation: UnityWebRequestAsyncOperationConstructor;
+    
+interface CachedAssetBundle {
+    name: string;
+    hash: Hash128;
+
+
+}
+    
+interface CachedAssetBundleConstructor {
+
+    new(name: string, hash: Hash128): CachedAssetBundle;
+
+}
+declare const CachedAssetBundle: CachedAssetBundleConstructor;
+    
+interface UnityWebRequestConstructor {
+    kHttpVerbGET: string;
+    kHttpVerbHEAD: string;
+    kHttpVerbPOST: string;
+    kHttpVerbPUT: string;
+    kHttpVerbCREATE: string;
+    kHttpVerbDELETE: string;
+
+    new(): UnityWebRequest;
+    new(url: string): UnityWebRequest;
+    new(uri: unknown): UnityWebRequest;
+    new(url: string, method: string): UnityWebRequest;
+    new(uri: unknown, method: string): UnityWebRequest;
+    new(url: string, method: string, downloadHandler: DownloadHandler, uploadHandler: UploadHandler): UnityWebRequest;
+    new(uri: unknown, method: string, downloadHandler: DownloadHandler, uploadHandler: UploadHandler): UnityWebRequest;
+
+    ClearCookieCache(): void;
+    ClearCookieCache(uri: unknown): void;
+    Delete(uri: string): UnityWebRequest;
+    Delete(uri: unknown): UnityWebRequest;
+    EscapeURL(s: string): string;
+    EscapeURL(s: string, e: unknown): string;
+    GenerateBoundary(): CSArray<number>;
+    Get(uri: string): UnityWebRequest;
+    Get(uri: unknown): UnityWebRequest;
+    GetAssetBundle(uri: string): UnityWebRequest;
+    GetAssetBundle(uri: string, crc: number): UnityWebRequest;
+    GetAssetBundle(uri: string, version: number, crc: number): UnityWebRequest;
+    GetAssetBundle(uri: string, hash: Hash128, crc: number): UnityWebRequest;
+    GetAssetBundle(uri: string, cachedAssetBundle: CachedAssetBundle, crc: number): UnityWebRequest;
+    GetAudioClip(uri: string, audioType: AudioType): UnityWebRequest;
+    GetTexture(uri: string): UnityWebRequest;
+    GetTexture(uri: string, nonReadable: boolean): UnityWebRequest;
+    Head(uri: string): UnityWebRequest;
+    Head(uri: unknown): UnityWebRequest;
+    Post(uri: string, postData: string): UnityWebRequest;
+    Post(uri: unknown, postData: string): UnityWebRequest;
+    Post(uri: string, postData: string, contentType: string): UnityWebRequest;
+    Post(uri: unknown, postData: string, contentType: string): UnityWebRequest;
+    Post(uri: string, formData: WWWForm): UnityWebRequest;
+    Post(uri: unknown, formData: WWWForm): UnityWebRequest;
+    Post(uri: string, multipartFormSections: CSArray<IMultipartFormSection>): UnityWebRequest;
+    Post(uri: unknown, multipartFormSections: CSArray<IMultipartFormSection>): UnityWebRequest;
+    Post(uri: string, multipartFormSections: CSArray<IMultipartFormSection>, boundary: CSArray<number>): UnityWebRequest;
+    Post(uri: unknown, multipartFormSections: CSArray<IMultipartFormSection>, boundary: CSArray<number>): UnityWebRequest;
+    Post(uri: string, formFields: CSDictionary<string, string>): UnityWebRequest;
+    Post(uri: unknown, formFields: CSDictionary<string, string>): UnityWebRequest;
+    PostWwwForm(uri: string, form: string): UnityWebRequest;
+    PostWwwForm(uri: unknown, form: string): UnityWebRequest;
+    Put(uri: string, bodyData: CSArray<number>): UnityWebRequest;
+    Put(uri: unknown, bodyData: CSArray<number>): UnityWebRequest;
+    Put(uri: string, bodyData: string): UnityWebRequest;
+    Put(uri: unknown, bodyData: string): UnityWebRequest;
+    SerializeFormSections(multipartFormSections: CSArray<IMultipartFormSection>, boundary: CSArray<number>): CSArray<number>;
+    SerializeSimpleForm(formFields: CSDictionary<string, string>): CSArray<number>;
+    UnEscapeURL(s: string): string;
+    UnEscapeURL(s: string, e: unknown): string;
+}
+declare const UnityWebRequest: UnityWebRequestConstructor;
+    
+interface RequestHelperConstructor {
+
+    new(): RequestHelper;
+
+}
+declare const RequestHelper: RequestHelperConstructor;
+    
 interface HttpManagerConstructor {
     loggingEnabled: boolean;
 
@@ -14839,6 +15087,7 @@ interface HttpManagerConstructor {
     PostAsync(url: string, data: string, headers: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
     PutAsync(url: string, data: string, headers: string): HttpResponse;
+    PutAsync(options: RequestHelper, headers: string): HttpResponse;
     SetLoggingEnabled(val: boolean): void;
 }
 declare const HttpManager: HttpManagerConstructor;
@@ -14855,10 +15104,12 @@ interface InternalHttpManagerConstructor {
 
     DeleteAsync(url: string): HttpResponse;
     GetAsync(url: string): HttpResponse;
+    GetAsyncWithHeaders(url: string, headers: string): HttpResponse;
     PatchAsync(url: string, data: string): HttpResponse;
     PostAsync(url: string, data: string): HttpResponse;
     PostAsync(url: string): HttpResponse;
     PutAsync(url: string, data: string): HttpResponse;
+    PutImageAsync(url: string, filePath: string): HttpResponse;
     SetAuthToken(authToken: string): void;
 }
 declare const InternalHttpManager: InternalHttpManagerConstructor;
@@ -15399,12 +15650,29 @@ interface CameraScreenshotRecorder extends MonoBehaviour {
     FolderName: string;
 
 
-    ScreenShotName(width: number, height: number): string;
-    ScreenShotName(filename: string): string;
+    SaveRenderTexture(rt: RenderTexture, fileName: string, png: boolean): CameraScreenshotResponse;
+    SaveTexture(texture: Texture2D, fileName: string, png: boolean): CameraScreenshotResponse;
+    ScreenShotName(width: number, height: number, png: boolean): string;
+    ScreenShotName(filename: string, png: boolean): string;
     TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
     TakeCameraScreenshotCo(camera: Camera, fileName: string, superSampleSize: number): unknown;
-    TakeScreenshot(fileName: string, superSampleSize: number): void;
+    TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
 }
+    
+interface CameraScreenshotResponse {
+    path: string;
+    filesize: number;
+    extension: string;
+
+
+}
+    
+interface CameraScreenshotResponseConstructor {
+
+    new(): CameraScreenshotResponse;
+
+}
+declare const CameraScreenshotResponse: CameraScreenshotResponseConstructor;
     
 interface OnPictureTaken {
 

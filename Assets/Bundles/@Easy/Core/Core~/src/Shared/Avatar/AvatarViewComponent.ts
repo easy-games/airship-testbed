@@ -6,8 +6,15 @@ import { OnUpdate } from "../Util/Timer";
 import AvatarRenderComponent from "@Easy/Core/Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
+	@Header("Templates")
+	public avatarRenderGo?: GameObject;
+
+	@Header("References")
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
+	public anim?: CharacterAnimationHelper;
+	public avatarRenderComponent?: AvatarRenderComponent;
+	public accessoryBuilder?: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
 
@@ -19,16 +26,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraWaypointCenterHero?: Transform;
 	public cameraWaypointBirdsEye?: Transform;
 
+	@Header("Variables")
 	public dragSpeedMod = 10;
 	public freeSpinDrag = 3;
 	public cameraTransitionDuration = 1;
 	public screenspaceDistance = 3;
-	public dragging = false;
-	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
-	public accessoryBuilder?: AccessoryBuilder;
-	public anim?: CharacterAnimationHelper;
-	public avatarRenderComponent?: AvatarRenderComponent;
+	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
 	@Header("Spin Big")
 	public idleAnim!: AnimationClip;
@@ -36,6 +40,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public spinAnimStop!: AnimationClip;
 	public spinBigRequiredTime = 3;
 	public spinBigRequiredSpeed = 10;
+
+	@NonSerialized()
+	public dragging = false;
 
 	private targetTransform?: Transform;
 	private mouse?: Mouse;

@@ -616,7 +616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &346072533367773022
 Transform:
   m_ObjectHideFlags: 0
@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Avatar/AvatarBackdrop.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/Avatar/AvatarBackdropComponent.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -725,7 +725,7 @@ MonoBehaviour:
   m_onLateUpdateHandle: -1
   m_shortFileName: 
   m_metadata:
-    name: 
+    name: AvatarBackdropComponent
     properties: []
 --- !u!1 &8864547050094139047
 GameObject:

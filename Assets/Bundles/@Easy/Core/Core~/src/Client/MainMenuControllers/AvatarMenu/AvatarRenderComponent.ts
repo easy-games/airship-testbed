@@ -1,27 +1,38 @@
-import AvatarBackdropComponent, { AvatarBackdrop } from "@Easy/Core/Shared/Avatar/AvatarBackdrop";
+import AvatarBackdropComponent, { AvatarBackdrop } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
+import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
+
+export enum AvatarRenderSlot {
+	BODY,
+	FACE,
+	HAIR,
+	HEAD,
+	TORSO,
+	BACK,
+	HANDS,
+	LEGS,
+	FEET,
+}
 
 export default class AvatarRenderComponent extends AirshipBehaviour {
 	private readonly itemRenderSize = new Vector2(410, 512);
 	private readonly profileRenderSize = new Vector2(1024, 1024);
 
 	private renderTexture?: RenderTexture;
-	private captureCamera!: Camera;
 	private backdrops!: AvatarBackdropComponent;
-
-	@Header("Templates")
-	public idleAnim!: AnimationClip;
 
 	@Header("References")
 	public builder!: AccessoryBuilder;
-	public character!: Character;
 	public backdropHolder!: GameObject;
+	public captureCamera!: Camera;
+	public cameraTransforms!: Transform[];
 
 	@Header("Variables")
 	public cameraDistanceBase = 2;
 	public cameraDistanceMod = 1;
+	public uploadThumbnails = false;
 
 	override Start() {
 		this.Init();
@@ -29,11 +40,13 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 
 	public Init() {
 		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
-		this.captureCamera = this.gameObject.GetComponent<Camera>();
+		if (this.builder) {
+			this.builder.thirdPersonLayer = this.gameObject.layer;
+			this.builder.firstPersonLayer = this.gameObject.layer;
+		}
 		let keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.Print, (event) => {
 			if (Input.GetKey(KeyCode.LeftShift)) {
-				this.character.animationHelper?.PlayOneShot(this.idleAnim, 5);
 				this.RenderCharacter();
 				this.RenderAllItems();
 			}
@@ -41,21 +54,19 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	}
 
 	public RenderCharacter() {
-		if (!this.renderTexture) {
-			this.renderTexture = new RenderTexture(
-				this.profileRenderSize.x,
-				this.profileRenderSize.y,
-				24,
-				RenderTextureFormat.ARGB32,
-			);
-		}
+		this.renderTexture = new RenderTexture(
+			this.profileRenderSize.x,
+			this.profileRenderSize.y,
+			24,
+			RenderTextureFormat.ARGB32,
+		);
 		this.backdrops.SetBackgdrop(AvatarBackdrop.LIGHT_3D);
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;
 
-		this.ResetCamera();
+		this.SetCameraTransform(0);
 		this.Render("ProfilePics/ProfilePicture");
-		this.backdrops.SetBackgdrop(AvatarBackdrop.DARK_3D);
+		this.backdrops.SetBackgdrop(AvatarBackdrop.NONE);
 	}
 
 	/**
@@ -71,9 +82,9 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			24,
 			RenderTextureFormat.ARGB32,
 		);
-		this.character.rig.bodyMesh?.gameObject.SetActive(false);
-		this.character.rig.faceMesh?.gameObject.SetActive(false);
-		this.character.rig.head?.gameObject.SetActive(false);
+		//this.builder.rig.bodyMesh?.gameObject.SetActive(false);
+		//this.builder.rig.faceMesh?.gameObject.SetActive(false);
+		//this.builder.rig.head?.gameObject.SetActive(false);
 
 		this.backdrops.SetBackgdrop(AvatarBackdrop.NONE);
 
@@ -93,7 +104,6 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			}
 			i++;
 		}
-		this.backdrops.SetBackgdrop(AvatarBackdrop.DARK_3D);
 	}
 
 	/**
@@ -106,19 +116,22 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		//Load the accessory onto the avatar
 		let acc = this.builder.AddSingleAccessory(accessoryTemplate, true);
 		//Align camera
-		this.AlignCamera(acc.renderers);
+		//this.AlignCamera(acc.renderers);
+		this.SetCameraAccessory(accessoryTemplate.accessorySlot);
 		//Render
 		let renderData = this.Render("AccessoryThumbnails/AccThumbnail_" + accessoryTemplate.name);
 		//Upload
-		let classData = AvatarUtil.GetClass(accessoryTemplate.serverClassId);
-		if (classData) {
-			print("uploading accessory render");
-			// AvatarPlatformAPI.UploadItemImage(
-			// 	classData.classId,
-			// 	classData.resourceId,
-			// 	renderData.path,
-			// 	renderData.filesize,
-			// );
+		if (this.uploadThumbnails) {
+			let classData = AvatarUtil.GetClass(accessoryTemplate.serverClassId);
+			if (classData) {
+				print("uploading accessory render");
+				AvatarPlatformAPI.UploadItemImage(
+					classData.classId,
+					classData.resourceId,
+					renderData.path,
+					renderData.filesize,
+				);
+			}
 		}
 	}
 
@@ -160,8 +173,53 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		this.captureCamera.transform.LookAt(focusPoint);
 	}
 
-	private ResetCamera() {
-		this.captureCamera.transform.position = Vector3.zero;
-		this.captureCamera.transform.rotation = Quaternion.identity;
+	private SetCameraAccessory(slot: AccessorySlot) {
+		let renderSlot = AvatarRenderSlot.BODY;
+		switch (slot) {
+			case AccessorySlot.Face:
+				renderSlot = AvatarRenderSlot.FACE;
+				break;
+			case AccessorySlot.Hair:
+				renderSlot = AvatarRenderSlot.HAIR;
+				break;
+			case AccessorySlot.Head:
+			case AccessorySlot.Neck:
+			case AccessorySlot.Ears:
+			case AccessorySlot.Nose:
+				renderSlot = AvatarRenderSlot.HEAD;
+				break;
+			case AccessorySlot.Waist:
+			case AccessorySlot.TorsoInner:
+			case AccessorySlot.TorsoOuter:
+			case AccessorySlot.Torso:
+				renderSlot = AvatarRenderSlot.TORSO;
+				break;
+			case AccessorySlot.Backpack:
+				renderSlot = AvatarRenderSlot.BACK;
+				break;
+			case AccessorySlot.Hands:
+			case AccessorySlot.LeftHand:
+			case AccessorySlot.RightHand:
+			case AccessorySlot.HandsOuter:
+				renderSlot = AvatarRenderSlot.HANDS;
+				break;
+			case AccessorySlot.Legs:
+			case AccessorySlot.LegsInner:
+			case AccessorySlot.LegsOuter:
+				renderSlot = AvatarRenderSlot.LEGS;
+				break;
+			case AccessorySlot.Feet:
+			case AccessorySlot.LeftFoot:
+			case AccessorySlot.RightFoot:
+			case AccessorySlot.FeetInner:
+				renderSlot = AvatarRenderSlot.FEET;
+				break;
+		}
+		this.SetCameraTransform(renderSlot);
+	}
+	private SetCameraTransform(renderSlot: AvatarRenderSlot) {
+		const transform = this.cameraTransforms[renderSlot];
+		this.captureCamera.transform.position = transform.position;
+		this.captureCamera.transform.rotation = transform.rotation;
 	}
 }
