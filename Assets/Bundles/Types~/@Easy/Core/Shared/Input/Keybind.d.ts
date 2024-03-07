@@ -1,4 +1,4 @@
-import { ModifierKey } from "./InputUtil";
+import { ActionInputType, ModifierKey } from "./InputUtil";
 export declare class Keybind {
     /**
      *
@@ -9,6 +9,11 @@ export declare class Keybind {
      */
     modifierKey: ModifierKey;
     constructor(primaryKey: KeyCode, modifierKey?: ModifierKey);
+    /**
+     *
+     * @returns
+     */
+    GetInputType(): ActionInputType;
     /**
      *
      * @returns

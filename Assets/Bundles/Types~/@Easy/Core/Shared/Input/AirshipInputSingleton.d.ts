@@ -2,10 +2,14 @@ import { OnStart } from "../Flamework";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Signal } from "../Util/Signal";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
-import { CoreIcon } from "./InputIcons";
 import { ActionInputType } from "./InputUtil";
 import { Keybind } from "./Keybind";
+import { MobileButtonConfig } from "./Mobile/MobileButton";
 export declare class AirshipInputSingleton implements OnStart {
+    /**
+     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     */
+    unsetOnDuplicateKeybind: boolean;
     /**
      *
      */
@@ -18,6 +22,10 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private inputDevice;
+    /**
+     *
+     */
+    private controlManager;
     /**
      *
      */
@@ -35,10 +43,17 @@ export declare class AirshipInputSingleton implements OnStart {
      */
     private actionDownState;
     /**
-     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     *
      */
-    unsetOnDuplicateKeybind: boolean;
-    private mobileControlsGO;
+    private mobileControlsContainer;
+    /**
+     *
+     */
+    private mobileButtonPrefab;
+    /**
+     *
+     */
+    private actionToMobileButtonTable;
     constructor();
     OnStart(): void;
     /**
@@ -53,21 +68,27 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param category
      */
     CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void;
-    CreateMobileButton(actionName: string, 
     /**
-     * Example input: new Vector2(-200, 300)
      *
-     * The default anchor is bottom right.
-     * You can change the anchor with config.anchorMin and config.anchorMax
      */
-    anchoredPosition: Vector2, config?: {
-        icon?: CoreIcon;
-        anchorMin?: Vector2;
-        anchorMax?: Vector2;
-        pivot?: Vector2;
-    }): void;
-    HideMobileButton(actionName: string): void;
-    ShowMobileButton(actionName: string): void;
+    private CreateMobileControlCanvas;
+    /**
+     *
+     * @param name
+     * @param anchoredPosition
+     * @param config
+     */
+    CreateMobileButton(name: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void;
+    /**
+     *
+     * @param name
+     */
+    HideMobileButtons(name: string): void;
+    /**
+     *
+     * @param name
+     */
+    ShowMobileButtons(name: string): void;
     /**
      *
      * @param name

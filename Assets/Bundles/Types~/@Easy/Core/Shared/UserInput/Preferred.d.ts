@@ -1,5 +1,8 @@
 import { Signal } from "../Util/Signal";
-export type ControlScheme = "MouseKeyboard" | "Touch";
+export declare enum ControlScheme {
+    MouseKeyboard = "MouseKeyboard",
+    Touch = "Touch"
+}
 /** Utility class for observing the player's currently-used control scheme. */
 export declare class Preferred {
     private readonly bin;
