@@ -10,7 +10,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public socialMenu!: RectTransform;
 	public navbar!: RectTransform;
 	public navbarBottom!: RectTransform;
+	public navbarControls!: RectTransform;
 	public pages!: RectTransform;
+	public searchFocused!: RectTransform;
 
 	private mainMenu!: MainMenuSingleton;
 
@@ -51,6 +53,12 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarBottom.gameObject.SetActive(false);
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 62);
 			this.pages.offsetMax = new Vector2(0, -69);
+			this.navbarControls.gameObject.SetActive(false);
+			this.navbar.offsetMin = new Vector2(8, this.navbar.offsetMin.y);
+			this.navbar.offsetMax = new Vector2(-8, this.navbar.offsetMax.y);
+
+			this.searchFocused.offsetMin = new Vector2(2, 0);
+			this.searchFocused.offsetMax = new Vector2(-2, -25);
 		} else {
 			this.socialMenu.gameObject.SetActive(true);
 
@@ -76,6 +84,12 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarBottom.gameObject.SetActive(true);
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 127);
 			this.pages.offsetMax = new Vector2(0, -134);
+			this.navbarControls.gameObject.SetActive(true);
+			this.navbar.offsetMin = new Vector2(0, this.navbar.offsetMin.y);
+			this.navbar.offsetMax = new Vector2(0, this.navbar.offsetMax.y);
+
+			this.searchFocused.offsetMin = new Vector2(-10, 0);
+			this.searchFocused.offsetMax = new Vector2(10, 0);
 		}
 
 		if (this.mainMenu.sizeType !== sizeType) {
