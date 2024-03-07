@@ -15,7 +15,7 @@ export declare class LocalCharacterSingleton implements OnStart {
     private customDataQueue;
     private entityDriver;
     private screenshot;
-    entityInput: CharacterInput | undefined;
+    input: CharacterInput | undefined;
     private prevState;
     private currentState;
     humanoidCameraMode: HumanoidCameraMode | undefined;

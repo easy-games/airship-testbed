@@ -1,5 +1,4 @@
-export * from "./Mouse";
 export * from "./Keyboard";
-export * from "./Touchscreen";
-export * from "./MobileJoystick";
+export * from "./Mouse";
 export * from "./Preferred";
+export * from "./Touchscreen";

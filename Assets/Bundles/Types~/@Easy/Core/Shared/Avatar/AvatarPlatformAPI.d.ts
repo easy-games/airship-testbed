@@ -1,3 +1,4 @@
+/// <reference types="@easy-games/compiler-types" />
 import { AccessoryInstanceDto, OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarPlatformAPI {
     private static Log;
@@ -13,4 +14,6 @@ export declare class AvatarPlatformAPI {
     static SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]): OutfitDto;
     static SaveAvatarOutfit(outfit: OutfitDto): void;
     static LoadImage(fileId: string): AccessoryInstanceDto[];
+    static UploadItemImage(classId: string, resourceId: string, filePath: string, fileSize: number): Promise<void>;
+    static UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string>;
 }

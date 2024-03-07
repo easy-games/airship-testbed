@@ -9,7 +9,7 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 	public iconImage?: Image;
 	public button!: Button;
 	public labelText!: TextMeshProUGUI;
-	public bgImage!: Image;
+	public bgImage?: Image;
 
 	private bin = new Bin();
 	private selected = false;
@@ -19,16 +19,18 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 	public OnEnable(): void {
 		this.bin.AddEngineEventConnection(CanvasAPI.OnClickEvent(this.gameObject, () => {}));
 
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
-				if (this.selected) return;
-				if (hoverState === HoverState.ENTER) {
-					this.bgImage.color = new Color(1, 1, 1, 0.02);
-				} else {
-					this.bgImage.color = new Color(1, 1, 1, 0);
-				}
-			}),
-		);
+		if (this.bgImage) {
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
+					if (this.selected || !this.bgImage) return;
+					if (hoverState === HoverState.ENTER) {
+						this.bgImage.color = new Color(1, 1, 1, 0.02);
+					} else {
+						this.bgImage.color = new Color(1, 1, 1, 0);
+					}
+				}),
+			);
+		}
 	}
 
 	public Init(label: string, color: Color) {
@@ -59,13 +61,17 @@ export default class AvatarMenuBtn extends AirshipBehaviour {
 	public SetSelected(val: boolean) {
 		this.selected = val;
 		if (val) {
-			this.bgImage.color = Theme.primary;
+			if (this.bgImage) {
+				this.bgImage.color = Theme.primary;
+			}
 			this.labelText.color = new Color(1, 1, 1, 1);
 			if (this.iconImage) {
 				this.iconImage.color = new Color(1, 1, 1, 1);
 			}
 		} else {
-			this.bgImage.color = new Color(0, 0, 0, 0);
+			if (this.bgImage) {
+				this.bgImage.color = new Color(0, 0, 0, 0);
+			}
 			this.labelText.color = new Color(1, 1, 1, 0.8);
 			if (this.iconImage) {
 				this.iconImage.color = new Color(1, 1, 1, 0.8);

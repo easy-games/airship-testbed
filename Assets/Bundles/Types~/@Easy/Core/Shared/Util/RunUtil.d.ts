@@ -1,3 +1,6 @@
+/**
+ * @deprecated use "Game" instead.
+ */
 export declare class RunUtil {
     static IsClient(): boolean;
     static IsServer(): boolean;

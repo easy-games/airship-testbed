@@ -18,7 +18,7 @@ import MainMenuPageComponent from "../MainMenuPageComponent";
 import { MainMenuPageType } from "../MainMenuPageName";
 import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
-import AvatarRenderComponent from "./AvatarRenderComponent";
+import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -34,7 +34,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarCenterRect?: RectTransform;
 	public categoryLabelTxt?: TextMeshProUGUI;
 	public mainContentHolder?: Transform;
-	public profilePicGO?: GameObject;
+	public avatarProfileMenuGo?: GameObject;
 
 	@Header("Button Holders")
 	public outfitButtonHolder!: Transform;
@@ -63,7 +63,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private mouse!: Mouse;
 	private saveBtn?: AirshipButton;
 	private currentFocusedSlot: AccessorySlot = AccessorySlot.Root;
-	private avatarRenderRig?: AvatarRenderComponent;
+	private avatarProfileMenu?: AvatarMenuProfileComponent;
 
 	private Log(message: string) {
 		// print("Avatar Editor: " + message + " (" + Time.time + ")");
@@ -76,7 +76,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
 		//this.subNavBtns = this.subNavBarButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
 		this.outfitBtns = this.outfitButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
-		this.avatarRenderRig = this.profilePicGO?.GetAirshipComponent<AvatarRenderComponent>();
+		this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
+		this.avatarProfileMenu?.Init(mainMenu);
 
 		let i = 0;
 
@@ -163,8 +164,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			CoreUI.SetupButton(button, { noHoverSound: true });
 			CanvasAPI.OnClickEvent(button, () => {
 				//this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
-				print("Showing avatar profil pic: " + this.avatarRenderRig);
-				this.avatarRenderRig?.OpenPage(this.mainCanvasGroup);
+				print("Showing avatar profil pic: " + this.avatarProfileMenu);
+				this.avatarProfileMenu?.OpenPage(this.mainCanvasGroup);
 			});
 		}
 
@@ -464,7 +465,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					Bridge.DisconnectEvent(downloadConn);
 				});
 
-				print("Downloading: " + cloudImage.url);
+				//print("Downloading: " + cloudImage.url);
 				cloudImage.StartDownload();
 			} else {
 				error("Unable to find AvatarMenuBtn on item button");

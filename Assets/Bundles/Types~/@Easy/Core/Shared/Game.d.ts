@@ -50,4 +50,5 @@ export declare class Game {
     static IsClone(): boolean;
     static IsWindows(): boolean;
     static IsMac(): boolean;
+    static IsSimulateMobile(): boolean;
 }
