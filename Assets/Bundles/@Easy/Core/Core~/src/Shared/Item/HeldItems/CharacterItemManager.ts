@@ -43,9 +43,6 @@ export class EntityItemManager {
 			//Process Inputs locally
 			Airship.input.OnDown("UseItem").Connect(() => {
 				this.Log("LeftDown");
-				if (CanvasAPI.IsPointerOverUI() || EventSystem.current.currentSelectedGameObject) {
-					return;
-				}
 				if (this.localCharacter) {
 					this.mouseIsDownLeft = true;
 					let items = this.GetOrCreateItemManager(this.localCharacter);

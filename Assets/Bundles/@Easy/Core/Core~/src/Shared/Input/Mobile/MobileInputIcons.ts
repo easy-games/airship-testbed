@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export type CoreIcon =
 	| "arrow-left-solid"
 	| "arrow-right-from-bracket-solid"

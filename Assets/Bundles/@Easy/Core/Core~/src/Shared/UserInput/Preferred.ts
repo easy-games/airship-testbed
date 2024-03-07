@@ -2,7 +2,10 @@ import { Bin } from "Shared/Util/Bin";
 import { Signal } from "Shared/Util/Signal";
 import { Game } from "../Game";
 
-export type ControlScheme = "MouseKeyboard" | "Touch";
+export enum ControlScheme {
+	MouseKeyboard = "MouseKeyboard",
+	Touch = "Touch",
+}
 
 /** Utility class for observing the player's currently-used control scheme. */
 export class Preferred {
@@ -21,15 +24,25 @@ export class Preferred {
 	private InitControlScheme(): void {
 		let platform = Game.platform;
 		if (platform === AirshipPlatform.Android || platform === AirshipPlatform.iOS || Game.IsSimulateMobile()) {
-			this.controlScheme = "Touch";
+			this.controlScheme = ControlScheme.Touch;
 		} else {
-			this.controlScheme = "MouseKeyboard";
+			this.controlScheme = ControlScheme.MouseKeyboard;
 		}
 	}
 
 	/** Get the currently-used control scheme. */
 	public GetControlScheme() {
 		return this.controlScheme;
+	}
+
+	/**
+	 *
+	 * @param scheme
+	 * @internal
+	 */
+	public SetControlScheme(scheme: ControlScheme): void {
+		this.controlScheme = scheme;
+		this.controlSchemeChanged.Fire(scheme);
 	}
 
 	/**

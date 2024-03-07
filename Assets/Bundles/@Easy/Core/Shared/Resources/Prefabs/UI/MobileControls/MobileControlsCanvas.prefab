@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9186178352915137677}
   - component: {fileID: 2840551530644634583}
   - component: {fileID: 1692770826790934487}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 377572646602242574}
   - component: {fileID: 5530416397951097446}
   - component: {fileID: 1064091822037440774}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: CameraPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 5231142010838910841}
   - component: {fileID: 8772436157455848830}
   - component: {fileID: 549959259428293037}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: MobileControlsCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 3621341821076120221}
   - component: {fileID: 8518539271470560489}
   - component: {fileID: 766244117407154814}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: MobileJoystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,6 +465,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 279624506939109690}
     m_Modifications:
+    - target: {fileID: 2900930583487048270, guid: 91b1c8c6fe83c46ed826c0ac1627cbec, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2953913948357007543, guid: 91b1c8c6fe83c46ed826c0ac1627cbec, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -548,6 +552,10 @@ PrefabInstance:
     - target: {fileID: 3150598142962177679, guid: 91b1c8c6fe83c46ed826c0ac1627cbec, type: 3}
       propertyPath: m_Name
       value: JumpButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3150598142962177679, guid: 91b1c8c6fe83c46ed826c0ac1627cbec, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3150598142962177679, guid: 91b1c8c6fe83c46ed826c0ac1627cbec, type: 3}
       propertyPath: m_IsActive
