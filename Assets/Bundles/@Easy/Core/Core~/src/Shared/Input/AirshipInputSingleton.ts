@@ -2,6 +2,7 @@ import ObjectUtils from "@easy-games/unity-object-utils";
 import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "../Airship";
 import { AssetCache } from "../AssetCache/AssetCache";
+import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
 import { ControlScheme, Keyboard, Preferred } from "../UserInput";
@@ -75,7 +76,9 @@ export class AirshipInputSingleton implements OnStart {
 	OnStart(): void {
 		if (!Game.IsClient()) return;
 
-		this.CreateMobileControlCanvas();
+		if (Game.coreContext === CoreContext.GAME) {
+			this.CreateMobileControlCanvas();
+		}
 
 		Airship.input.onActionBound.Connect((action) => {
 			if (!action.keybind.IsUnset()) {
@@ -105,9 +108,11 @@ export class AirshipInputSingleton implements OnStart {
 			{ name: "Inspect", keybind: new Keybind(KeyCode.Y) },
 		]);
 
-		Airship.input.CreateMobileButton("Jump", new Vector2(-200, 290));
-		Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
-		Airship.input.CreateMobileButton("Crouch", new Vector2(-200, 690));
+		if (Game.coreContext === CoreContext.GAME) {
+			Airship.input.CreateMobileButton("Jump", new Vector2(-200, 290));
+			Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
+			Airship.input.CreateMobileButton("Crouch", new Vector2(-200, 690));
+		}
 	}
 
 	/**

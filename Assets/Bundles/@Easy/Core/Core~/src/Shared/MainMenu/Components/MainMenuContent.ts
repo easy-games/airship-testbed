@@ -8,6 +8,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public canvasScalar!: CanvasScaler;
 	public contentWrapper!: RectTransform;
 	public socialMenu!: RectTransform;
+	public navbar!: RectTransform;
+	public navbarBottom!: RectTransform;
+	public pages!: RectTransform;
 
 	private mainMenu!: MainMenuSingleton;
 
@@ -37,13 +40,17 @@ export default class MainMenuContent extends AirshipBehaviour {
 		}
 
 		if (Game.IsPortrait()) {
-			this.canvasScalar.referenceResolution = new Vector2(1080, 1920);
+			// this.canvasScalar.referenceResolution = new Vector2(1080, 1920);
 			this.socialMenu.gameObject.SetActive(false);
 			this.contentWrapper.sizeDelta = new Vector2(screenSize.x * 0.98, screenSize.y);
 			this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 			this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 			this.contentWrapper.pivot = new Vector2(0.5, 1);
 			this.contentWrapper.anchoredPosition = new Vector2(0, -Game.GetNotchHeight());
+
+			this.navbarBottom.gameObject.SetActive(false);
+			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 62);
+			this.pages.offsetMax = new Vector2(0, -69);
 		} else {
 			this.socialMenu.gameObject.SetActive(true);
 
@@ -66,6 +73,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 				this.socialMenu.anchoredPosition = new Vector2(-30, -20);
 			}
+			this.navbarBottom.gameObject.SetActive(true);
+			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 127);
+			this.pages.offsetMax = new Vector2(0, -134);
 		}
 
 		if (this.mainMenu.sizeType !== sizeType) {

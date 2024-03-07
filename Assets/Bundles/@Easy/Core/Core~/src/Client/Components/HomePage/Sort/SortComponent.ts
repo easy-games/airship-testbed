@@ -25,8 +25,8 @@ export default class SortComponent extends AirshipBehaviour {
 			mainMenu.ObserveScreenSizeType((size) => {
 				if (size === "sm") {
 					this.gridLayoutGroup.cellSize = new Vector2(
-						mainMenu.screenSize.x * 0.9,
-						mainMenu.screenSize.x * 0.9 * 0.73,
+						mainMenu.screenSize.x * 0.97,
+						mainMenu.screenSize.x * 0.97 * 0.56 + 54,
 					);
 					this.gridLayoutGroup.constraintCount = 1;
 				} else {
@@ -57,8 +57,12 @@ export default class SortComponent extends AirshipBehaviour {
 	public UpdatePreferredHeight(): void {
 		this.layoutElement.preferredHeight =
 			(this.content.childCount * (this.gridLayoutGroup.cellSize.y + this.gridLayoutGroup.spacing.y)) /
-			this.gridLayoutGroup.constraintCount;
-		Bridge.UpdateLayout(this.content, false);
+				this.gridLayoutGroup.constraintCount +
+			40 + // title
+			50; // bottom padding
+		if (this.pageScrollRect) {
+			Bridge.UpdateLayout(this.pageScrollRect.transform, true);
+		}
 	}
 
 	public SetGames(games: GameDto[]): void {

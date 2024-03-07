@@ -128,7 +128,7 @@ export class Game {
 
 	public static GetNotchHeight(): number {
 		if (Game.IsMobile()) {
-			return 60;
+			return 30;
 		}
 		return 0;
 	}
