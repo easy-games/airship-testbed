@@ -6,9 +6,6 @@ import { OnUpdate } from "../Util/Timer";
 import AvatarRenderComponent from "@Easy/Core/Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
-	@Header("Templates")
-	public avatarRenderGo?: GameObject;
-
 	@Header("References")
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
@@ -67,8 +64,10 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>();
 			if (this.accessoryBuilder) {
-				this.accessoryBuilder.thirdPersonLayer = this.humanEntityGo.layer;
-				this.accessoryBuilder.firstPersonLayer = this.humanEntityGo.layer;
+				print("Setting avatar layer to: " + this.gameObject.layer);
+				this.accessoryBuilder.thirdPersonLayer = this.gameObject.layer;
+				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
+				this.accessoryBuilder.UpdateAccessoryLayers();
 			}
 			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>();
 		}

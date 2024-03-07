@@ -3033,6 +3033,23 @@ declare const enum GraphicsFormatUsage {
     MSAA8x = 8192,
     StencilSampling = 65536,
 }
+declare const enum ScaleMode {
+    ConstantPixelSize = 0,
+    ScaleWithScreenSize = 1,
+    ConstantPhysicalSize = 2,
+}
+declare const enum ScreenMatchMode {
+    MatchWidthOrHeight = 0,
+    Expand = 1,
+    Shrink = 2,
+}
+declare const enum Unit {
+    Centimeters = 0,
+    Millimeters = 1,
+    Inches = 2,
+    Points = 3,
+    Picas = 4,
+}
 
     
 interface RaycastHit {
@@ -16233,4 +16250,19 @@ interface SystemInfoConstructor {
     SupportsVertexAttributeFormat(format: VertexAttributeFormat, dimension: number): boolean;
 }
 declare const SystemInfo: SystemInfoConstructor;
+    
+interface CanvasScaler extends UIBehaviour {
+    uiScaleMode: ScaleMode;
+    referencePixelsPerUnit: number;
+    scaleFactor: number;
+    referenceResolution: Vector2;
+    screenMatchMode: ScreenMatchMode;
+    matchWidthOrHeight: number;
+    physicalUnit: Unit;
+    fallbackScreenDPI: number;
+    defaultSpriteDPI: number;
+    dynamicPixelsPerUnit: number;
+
+
+}
 

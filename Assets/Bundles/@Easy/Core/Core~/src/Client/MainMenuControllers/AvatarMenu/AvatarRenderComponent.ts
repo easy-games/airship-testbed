@@ -41,8 +41,10 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public Init() {
 		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
 		if (this.builder) {
+			print("Setting render layer to: " + this.gameObject.layer);
 			this.builder.thirdPersonLayer = this.gameObject.layer;
 			this.builder.firstPersonLayer = this.gameObject.layer;
+			this.builder.UpdateAccessoryLayers();
 		}
 		let keyboard = new Keyboard();
 		keyboard.OnKeyDown(KeyCode.Print, (event) => {
