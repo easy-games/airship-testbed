@@ -5,6 +5,10 @@ export default class GameSearchResult extends SearchResult {
     gameName: TMP_Text;
     gameText: TMP_Text;
     list: RectTransform;
+    titlePadding: RectTransform;
+    OnEnable(): void;
+    OnDisable(): void;
     Init(searchResult: SearchResultDto): void;
+    UpdateDescriptionText(searchResult: SearchResultDto): void;
     OnSubmit(): void;
 }

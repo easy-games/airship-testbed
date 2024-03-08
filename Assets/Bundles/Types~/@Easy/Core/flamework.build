@@ -108,6 +108,8 @@
 		"@Easy/Core:Client/MainMenuControllers/Auth/AuthController@AuthController": "$:MainMenuControllers/Auth/AuthController@AuthController",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchSingleton@SearchSingleton": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuPageComponent@MainMenuPageComponent": "$:MainMenuControllers/MainMenuPageComponent@MainMenuPageComponent",
+		"@Easy/Core:Shared/MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
+		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
 		"@Easy/Core:Client/MainMenuControllers/Transfer/TransferController@TransferController": "$:MainMenuControllers/Transfer/TransferController@TransferController",
 		"@Easy/Core:Client/Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent": "$:Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent",
@@ -216,7 +218,10 @@
 		"@Easy/Core:Shared/Bootstrap/Bootstrap@Bootstrap": "$:Bootstrap/Bootstrap@Bootstrap",
 		"@Easy/Core:Shared/Generator/GeneratorUtil@GeneratorUtil": "$:Generator/GeneratorUtil@GeneratorUtil",
 		"@Easy/Core:Shared/Item/ItemAnimationData@ItemAnimationData": "$:Item/ItemAnimationData@ItemAnimationData",
+		"@Easy/Core:Shared/MainMenu/Components/MainMenuContent@MainMenuContent": "$:MainMenu/Components/MainMenuContent@MainMenuContent",
+		"@Easy/Core:Shared/MainMenu/Components/MobileNavButton@MobileNavButton": "$:MainMenu/Components/MobileNavButton@MobileNavButton",
 		"@Easy/Core:Shared/MainMenu/Components/ProfileOptionsButton@ProfileOptionsButton": "$:MainMenu/Components/ProfileOptionsButton@ProfileOptionsButton",
+		"@Easy/Core:Shared/MainMenu/Components/SocialMenu@SocialMenu": "$:MainMenu/Components/SocialMenu@SocialMenu",
 		"@Easy/Core:Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard": "$:MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard",
 		"@Easy/Core:Shared/MainMenu/Components/FriendRequest/FriendRequestModal@FriendRequestModal": "$:MainMenu/Components/FriendRequest/FriendRequestModal@FriendRequestModal",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchResult@SearchResult": "$:MainMenu/Components/Search/SearchResult@SearchResult",
@@ -247,7 +252,6 @@
 		"@Easy/Core:Shared/Util/LayerUtil@LayerUtil": "$:Util/LayerUtil@LayerUtil",
 		"@Easy/Core:Shared/Util/SetUtil@SetUtil": "$:Util/SetUtil@SetUtil",
 		"@Easy/Core:Shared/Util/Vector3Util@Vector3Util": "$:Util/Vector3Util@Vector3Util",
-		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
 		"@Easy/Core:Shared/Flamework/flamework@OnInit": "$:Flamework/flamework@OnInit",
 		"@Easy/Core:Shared/Flamework/flamework@OnStart": "$:Flamework/flamework@OnStart"
 	},
@@ -486,6 +490,17 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/MainMenu/Singletons/MainMenuSingleton.lua",
+			"internalId": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
 				}
 			]
 		},

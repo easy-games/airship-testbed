@@ -3,5 +3,6 @@ export declare enum MainMenuPageType {
     MyGames = "MyGames",
     Settings = "Settings",
     Avatar = "Avatar",
-    Shop = "Shop"
+    Shop = "Shop",
+    Friends = "Friends"
 }
