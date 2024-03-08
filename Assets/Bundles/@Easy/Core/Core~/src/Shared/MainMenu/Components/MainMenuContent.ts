@@ -13,6 +13,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public navbarControls!: RectTransform;
 	public pages!: RectTransform;
 	public searchFocused!: RectTransform;
+	public mobileNav!: RectTransform;
 
 	private mainMenu!: MainMenuSingleton;
 
@@ -59,6 +60,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 			this.searchFocused.offsetMin = new Vector2(2, 0);
 			this.searchFocused.offsetMax = new Vector2(-2, -25);
+			this.mobileNav.gameObject.SetActive(true);
 		} else {
 			this.socialMenu.gameObject.SetActive(true);
 
@@ -71,7 +73,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchoredPosition = new Vector2(-50, 0);
 				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1200), screenSize.y);
 
-				this.socialMenu.anchoredPosition = new Vector2(-73, -20);
+				// this.socialMenu.anchoredPosition = new Vector2(-73, -20);
 			} else {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
@@ -79,8 +81,20 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchoredPosition = new Vector2(50, 0);
 				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1400), screenSize.y);
 
-				this.socialMenu.anchoredPosition = new Vector2(-30, -20);
+				// this.socialMenu.anchoredPosition = new Vector2(-30, -20);
 			}
+
+			print("contentWrapper sizeDelta: " + this.contentWrapper.sizeDelta.x);
+			let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -21));
+			if (sizeType === "lg") {
+				socialMenuPos = socialMenuPos
+					.add(new Vector2(this.canvasRect.sizeDelta.x / 2, 0))
+					.add(new Vector2(this.contentWrapper.sizeDelta.x / 2, 0));
+			} else {
+				socialMenuPos = socialMenuPos.add(new Vector2(this.contentWrapper.sizeDelta.x, 0));
+			}
+			this.socialMenu.anchoredPosition = socialMenuPos;
+
 			this.navbarBottom.gameObject.SetActive(true);
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 127);
 			this.pages.offsetMax = new Vector2(0, -134);
@@ -90,6 +104,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 			this.searchFocused.offsetMin = new Vector2(-10, 0);
 			this.searchFocused.offsetMax = new Vector2(10, 0);
+			this.mobileNav.gameObject.SetActive(false);
 		}
 
 		if (this.mainMenu.sizeType !== sizeType) {

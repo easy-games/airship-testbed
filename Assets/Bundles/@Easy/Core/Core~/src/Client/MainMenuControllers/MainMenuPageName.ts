@@ -4,4 +4,5 @@ export enum MainMenuPageType {
 	Settings = "Settings",
 	Avatar = "Avatar",
 	Shop = "Shop",
+	Friends = "Friends",
 }
