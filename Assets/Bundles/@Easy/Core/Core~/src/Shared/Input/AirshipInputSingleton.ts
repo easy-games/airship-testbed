@@ -149,7 +149,6 @@ export class AirshipInputSingleton implements OnStart {
 		);
 		mobileControlsCanvas.transform.SetParent(CoreRefs.rootTransform);
 		this.mobileControlsContainer = mobileControlsCanvas;
-		const controlSchemeBin = new Bin();
 		this.controlManager.ObserveControlScheme((controlScheme) => {
 			if (controlScheme === ControlScheme.Touch) {
 				this.mobileControlsContainer.SetActive(true);
@@ -163,7 +162,6 @@ export class AirshipInputSingleton implements OnStart {
 					this.HideMobileButtons(name);
 				}
 			}
-			return () => controlSchemeBin.Clean();
 		});
 	}
 
