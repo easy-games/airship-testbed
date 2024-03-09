@@ -30,7 +30,9 @@ Shader "Airship/AirshipCrystal"
 		
 		// Controls the size of the specular reflection.
 		_Glossiness("Glossiness", Range(0,3)) = 1
-
+		
+	
+        [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
 	}
 	SubShader
 	{
@@ -45,6 +47,7 @@ Shader "Airship/AirshipCrystal"
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
 			
 			#include "UnityCG.cginc"
             #include "../AirshipShaderIncludes.hlsl"
@@ -161,15 +164,7 @@ Shader "Airship/AirshipCrystal"
 				//Do the fog
 				half3 viewVector = _WorldSpaceCameraPos.xyz - i.worldPos;
 				float viewDistance = length(viewVector);
-
 				half3 worldReflect = reflect(-viewVector, worldNormal);
-
-				
-				//Point lights
-				brightness += CalculatePointLightsForPoint(i.worldPos, worldNormal, color, 1, shineColor, worldReflect);
-
-				brightness = max(_MinLight, brightness * _Glossiness);
-
 
 				// Calculate specular reflection.
 				float3 halfVector = normalize(-globalSunDirection + viewDir);
@@ -206,6 +201,18 @@ Shader "Airship/AirshipCrystal"
 				half4 finalDepthColor = saturate(lerp(screenColor * depthColor, depthTex * depthColor, depthColor.a));
 
 				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
+				
+				//Point lights
+#ifdef NUM_LIGHTS_LIGHTS1
+			    
+			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, finalSurfaceColor, 1-specular, shineColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
+#endif			    
+#ifdef NUM_LIGHTS_LIGHTS2
+			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, finalSurfaceColor, 1-specular, shineColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
+			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, finalSurfaceColor, 1-specular, shineColor, worldReflect, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
+#endif
+				brightness = max(_MinLight, brightness * _Glossiness);
+
 				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask) * brightness;
 				
 				//fog

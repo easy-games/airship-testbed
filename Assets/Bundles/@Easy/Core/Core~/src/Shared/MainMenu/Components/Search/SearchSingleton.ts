@@ -1,4 +1,4 @@
-import { GameDto, GamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
+import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Controller, OnStart, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
@@ -10,10 +10,15 @@ import ObjectUtils from "@easy-games/unity-object-utils";
 // @Singleton()
 export default class SearchSingleton implements OnStart {
 	public games: GameDto[] = [];
+	public myGames: GameDto[] = [];
+	public myGamesIds = new Set<string>();
 
 	OnStart(): void {
 		task.spawn(() => {
 			this.FetchPopularGames();
+		});
+		task.spawn(() => {
+			this.FetchMyGames();
 		});
 	}
 
@@ -28,6 +33,25 @@ export default class SearchSingleton implements OnStart {
 
 			// add new
 			this.games.push(dto);
+		}
+	}
+
+	public FetchMyGames(): void {
+		const res = InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/memberships/games/self?liveStats=true");
+		if (!res.success) {
+			// warn("Failed to fetch my games. Retrying in 1s..");
+			SetTimeout(1, () => {
+				this.FetchMyGames();
+			});
+			return;
+		}
+
+		let data = DecodeJSON<MyGamesDto>(res.data);
+		data = data.filter((g) => g.lastVersionUpdate !== undefined);
+		this.myGames = data;
+		this.myGamesIds.clear();
+		for (let g of this.myGames) {
+			this.myGamesIds.add(g.id);
 		}
 	}
 

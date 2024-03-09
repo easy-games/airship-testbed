@@ -398,14 +398,14 @@ interface CanvasUIEventInterceptor extends Component {
 	OnClickEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnValueChangeEvent(callback: (instanceId: number, value: number) => void): EngineEventConnection;
 	OnToggleValueChangeEvent(callback: (instanceId: number, value: boolean) => void): EngineEventConnection;
-	OnBeginDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
-	OnDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnBeginDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
+	OnDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 	OnScreenSizeChangeEvent(callback: (width: number, height: number) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dragged object.
 	 */
-	OnEndDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnEndDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dropped upon target.
@@ -597,6 +597,7 @@ declare const StateManager: StateManagerStatic;
 
 interface EditorSessionStateStatic {
 	GetString(key: string): string | undefined;
+	GetBoolean(key: string): boolean;
 	SetString(key: string, value: string): void;
 	RemoveString(key: string): void;
 }

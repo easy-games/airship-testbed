@@ -1,5 +1,6 @@
 import { OutfitDto } from "./Airship/Types/Outputs/PlatformInventory";
 import { AccessorySlot } from "./Character/Accessory/AccessorySlot";
+import { CharacterDto } from "./Character/CharacterDto";
 import { GeneratorDto } from "./Generator/GeneratorMeta";
 import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
@@ -7,6 +8,7 @@ import { ItemStackDto } from "./Inventory/ItemStack";
 import { CoreItemType } from "./Item/CoreItemType";
 import { HeldItemState } from "./Item/HeldItems/HeldItemState";
 import { RemoteEvent } from "./Network/RemoteEvent";
+import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
 
@@ -30,6 +32,9 @@ export const CoreNetwork = {
 			>(),
 			CheckOutOfSync: new RemoteEvent<[invDto: InventoryDto]>(),
 		},
+		Character: {
+			RequestCharacters: new RemoteFunction<[], CharacterDto[]>(),
+		},
 		SendChatMessage: new RemoteEvent<[text: string]>(),
 		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
 
@@ -48,7 +53,9 @@ export const CoreNetwork = {
 		RevertBlockPlace: new RemoteEvent<[pos: Vector3]>(),
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
 		UpdateInventorySlot: new RemoteEvent<[invId: number, slot: number, itemType?: CoreItemType, amount?: number]>(),
-		SetHeldInventorySlot: new RemoteEvent<[invId: number, slot: number, clientPredicted: boolean]>(),
+		SetHeldInventorySlot: new RemoteEvent<
+			[invId: number | undefined, clientId: number | undefined, slot: number, clientPredicted: boolean]
+		>(),
 		BlockHit: new RemoteEvent<
 			[blockPos: Vector3, blockId: number, entityId: number | undefined, damage: number, broken?: boolean]
 		>(),
@@ -121,12 +128,9 @@ export const CoreNetwork = {
 		GeneratorItemSpawn: new RemoteEvent<[generatorStateDto: GeneratorDto]>(),
 
 		Character: {
-			Spawn: new RemoteEvent<
-				[characterId: number, objectId: number, ownerClientId?: number, outfitDto?: OutfitDto]
-			>(),
+			Spawn: new RemoteEvent<[characterDto: CharacterDto]>(),
 			SetHealth: new RemoteEvent<[characterId: number, health: number]>(),
 			SetMaxHealth: new RemoteEvent<[characterId: number, health: number]>(),
-			Death: new RemoteEvent<[objectId: number]>(),
 			ChangeOutfit: new RemoteEvent<[characterId: number, outfitDto: OutfitDto | undefined]>(),
 		},
 	},

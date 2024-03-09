@@ -66,6 +66,7 @@ class ChatMessageElement {
 @Controller({})
 export class ChatController implements OnStart {
 	private content: GameObject;
+	private wrapper: GameObject;
 	private chatMessagePrefab: Object;
 	private inputField: TMP_InputField;
 	private inputWrapperImage: Image;
@@ -90,10 +91,21 @@ export class ChatController implements OnStart {
 	) {
 		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
 		this.content = refs.GetValue("UI", "Content");
+		this.wrapper = refs.GetValue("UI", "Wrapper");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
 		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>();
 		this.content.gameObject.ClearChildren();
+
+		print("checking chat...");
+		if (Game.IsMobile()) {
+			print("mobile!");
+			const wrapperRect = this.wrapper.GetComponent<RectTransform>();
+			wrapperRect.anchorMin = new Vector2(0, 1);
+			wrapperRect.anchorMax = new Vector2(0, 1);
+			wrapperRect.pivot = new Vector2(0, 1);
+			wrapperRect.anchoredPosition = new Vector2(105, 50);
+		}
 
 		this.RegisterCommand(new ClearCommand());
 		this.RegisterCommand(new MessageCommand());

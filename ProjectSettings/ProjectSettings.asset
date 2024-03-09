@@ -160,6 +160,7 @@ PlayerSettings:
   androidMinAspectRatio: 1
   applicationIdentifier:
     Standalone: com.DefaultCompany.bedwars-standalone
+    iPhone: com.DefaultCompany.bedwars-standalone
   buildNumber:
     Bratwurst: 0
     Standalone: 0
@@ -838,8 +839,9 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   scriptingDefineSymbols:
     Android: FISHNET;FISHNET_V3;FISHNET_PRO
-    Server: AIRSHIP_INTERNAL
+    Server: AIRSHIP_INTERNAL;STEAMWORKS_NET
     Standalone: FISHNET;FISHNET_V3;FISHNET_PRO;AIRSHIP_INTERNAL;LETAI_TRUESHADOW;STEAMWORKS_NET
+    iPhone: LETAI_TRUESHADOW;FISHNET;FISHNET_V3;FISHNET_PRO
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

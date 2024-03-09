@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvatarItemBtn
       objectReference: {fileID: 0}
+    - target: {fileID: 6664582124375305814, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
+      propertyPath: m_Maskable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7220448358463266816, guid: ef56d708b399f8f4dbb767e3b457bdf8, type: 3}
       propertyPath: m_Pivot.x
       value: 0

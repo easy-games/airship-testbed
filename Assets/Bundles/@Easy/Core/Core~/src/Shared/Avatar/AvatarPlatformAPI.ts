@@ -120,4 +120,59 @@ export class AvatarPlatformAPI {
 			error("Error loading image: " + res.error);
 		}
 	}
+
+	public static async UploadItemImage(classId: string, resourceId: string, filePath: string, fileSize: number) {
+		const imageId = await this.UploadImage(resourceId, filePath, fileSize);
+		if (imageId === "" || imageId === undefined) {
+			return;
+		}
+		print("Updating item with new image");
+		let res = InternalHttpManager.PatchAsync(
+			this.GetHttpUrl(`accessories/class-id/${classId}`),
+			EncodeJSON({
+				image: undefined,
+				imageId,
+			}),
+		);
+		if (res.success) {
+			print("Finished updating item");
+		} else {
+			error("Unable to update item " + classId + " with new image: " + imageId);
+		}
+	}
+
+	public static async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
+		print("Requesting image url: " + resourceId);
+
+		let getPath = `${AirshipUrl.ContentService}/item-classes/images/resource-id/${resourceId}/signed-url?contentType=image%2Fpng&contentLength=${fileSize}`;
+		print("get path: " + getPath);
+		const res = InternalHttpManager.GetAsync(getPath);
+
+		//GET /item-classes/images/resource-id/6536df9f3843ac629cf3b8b1/signed-url?contentType=image%2Fpng&contentLength=1128045 HTTP/3
+
+		if (res.success) {
+			const data = DecodeJSON<{ url: string; imageId: string }>(res.data);
+			const url = data.url;
+			const imageId = data.imageId;
+			print("Got image url: " + url);
+			const uploadRes = InternalHttpManager.PutImageAsync(url, filePath);
+			if (uploadRes.success) {
+				print("UPLOAD COMPLETE: " + url);
+			} else {
+				error("Error Uploading item image: " + uploadRes.error);
+			}
+
+			return imageId;
+
+			// const url = res.data.url;
+			// const imageId = res.data.imageId;
+			// await axios.put(url, file, {
+			// 	headers: {
+			// 		"Content-Type": file.type,
+			// 	},
+			// });
+		} else {
+			error("Error Gettin item image resource: " + res.error);
+		}
+	}
 }

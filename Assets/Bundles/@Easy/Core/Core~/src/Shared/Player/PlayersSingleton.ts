@@ -17,6 +17,7 @@ import { GameInfoSingleton } from "../Airship/Game/GameInfoSingleton";
 import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { AssetCache } from "../AssetCache/AssetCache";
 import { AirshipUrl } from "../Util/AirshipUrl";
+import { OnUpdate } from "../Util/Timer";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { Player, PlayerDto } from "./Player";
 
@@ -115,7 +116,7 @@ export class PlayersSingleton implements OnStart {
 				this.InitServer();
 			}
 
-			if (RunUtil.IsClient() && Game.context === CoreContext.GAME) {
+			if (RunUtil.IsClient() && Game.coreContext === CoreContext.GAME) {
 				Game.WaitForLocalPlayerLoaded();
 				CoreNetwork.ClientToServer.Ready.client.FireServer();
 			}
@@ -234,6 +235,7 @@ export class PlayersSingleton implements OnStart {
 
 			if (Airship.characters.allowMidGameOutfitChanges && player.character) {
 				const outfitDto = player.selectedOutfit;
+				player.character.outfitDto = outfitDto;
 				CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(player.character.id, outfitDto);
 			}
 		});
@@ -266,9 +268,6 @@ export class PlayersSingleton implements OnStart {
 		// this.outfitFetchTime.set(player.userId, os.time());
 
 		let userId = player.userId;
-		if (!RunUtil.IsEditor()) {
-			print("fetching outfit for " + userId);
-		}
 		if (RunUtil.IsEditor() && player.IsLocalPlayer()) {
 			Dependency<UserController>().WaitForLocalUserReady();
 			let uid = Dependency<UserController>().localUser?.uid;
@@ -284,15 +283,12 @@ export class PlayersSingleton implements OnStart {
 			return;
 		}
 		if (res.data.size() === 0) {
-			if (!RunUtil.IsEditor()) {
-				print("Empty outfit.");
-			}
 			SetOutfit(undefined);
 			return;
 		}
 		const outfitDto = DecodeJSON<OutfitDto>(res.data);
 		if (!RunUtil.IsEditor()) {
-			print("outfit: " + res.data);
+			// print("outfit: " + res.data);
 		}
 		SetOutfit(outfitDto);
 	}
@@ -441,6 +437,34 @@ export class PlayersSingleton implements OnStart {
 	/** Special method used for startup handshake. */
 	public FindByClientIdIncludePending(clientId: number): Player | undefined {
 		return this.FindByClientId(clientId) ?? this.playersPendingReady.get(clientId);
+	}
+
+	/**
+	 * @internal
+	 */
+	public WaitForClientIdIncludePending(clientId: number, timeout = 5): Promise<Player | undefined> {
+		return new Promise((resolve) => {
+			let readyOrPending = this.FindByClientIdIncludePending(clientId);
+			if (readyOrPending) {
+				resolve(readyOrPending);
+				return;
+			}
+			let acc = 0;
+			const disconnect = OnUpdate.Connect((dt) => {
+				acc += dt;
+				readyOrPending = this.FindByClientIdIncludePending(clientId);
+				if (acc >= timeout) {
+					disconnect();
+					resolve(undefined);
+					return;
+				}
+				if (readyOrPending) {
+					disconnect();
+					resolve(readyOrPending);
+					return;
+				}
+			});
+		});
 	}
 
 	public FindByUserId(userId: string): Player | undefined {

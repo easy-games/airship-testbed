@@ -21,7 +21,7 @@ export class AuthController implements OnStart {
 		const loginResult = this.TryAutoLogin();
 		if (!loginResult) {
 			let ignore = false;
-			if (Game.context === CoreContext.GAME && RunUtil.IsEditor()) {
+			if (Game.coreContext === CoreContext.GAME && RunUtil.IsEditor()) {
 				ignore = true;
 			}
 			if (!ignore) {

@@ -13,6 +13,7 @@ export declare class ChatController implements OnStart {
     private readonly directMessageController;
     private readonly friendsController;
     private content;
+    private wrapper;
     private chatMessagePrefab;
     private inputField;
     private inputWrapperImage;

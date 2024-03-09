@@ -3,10 +3,15 @@ import { Mouse } from "Shared/UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import { OnUpdate } from "../Util/Timer";
+import AvatarRenderComponent from "@Easy/Core/Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
+	@Header("References")
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
+	public anim?: CharacterAnimationHelper;
+	public avatarRenderComponent?: AvatarRenderComponent;
+	public accessoryBuilder?: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
 
@@ -18,15 +23,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public cameraWaypointCenterHero?: Transform;
 	public cameraWaypointBirdsEye?: Transform;
 
+	@Header("Variables")
 	public dragSpeedMod = 10;
 	public freeSpinDrag = 3;
 	public cameraTransitionDuration = 1;
 	public screenspaceDistance = 3;
-	public dragging = false;
-	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
-	public accessoryBuilder?: AccessoryBuilder;
-	public anim?: CharacterAnimationHelper;
+	public alignmentOffsetWorldpsace = new Vector3(0, 0, 0);
 
 	@Header("Spin Big")
 	public idleAnim!: AnimationClip;
@@ -34,6 +37,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public spinAnimStop!: AnimationClip;
 	public spinBigRequiredTime = 3;
 	public spinBigRequiredSpeed = 10;
+
+	@NonSerialized()
+	public dragging = false;
 
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
@@ -58,11 +64,14 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>();
 			if (this.accessoryBuilder) {
-				this.accessoryBuilder.thirdPersonLayer = this.humanEntityGo.layer;
-				this.accessoryBuilder.firstPersonLayer = this.humanEntityGo.layer;
+				print("Setting avatar layer to: " + this.gameObject.layer);
+				this.accessoryBuilder.thirdPersonLayer = this.gameObject.layer;
+				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
+				this.accessoryBuilder.UpdateAccessoryLayers();
 			}
 			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>();
 		}
+
 		this.dragging = false;
 		this.mouse = new Mouse();
 		this.mouse.moved.Connect((pos: Vector3) => {
@@ -206,32 +215,42 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	public CameraFocusSlot(slotType: AccessorySlot) {
-		this.targetTransform = this.cameraWaypointDefault;
+		this.targetTransform = this.GetFocusTransform(slotType);
+		this.CameraFocusTransform(this.targetTransform);
+	}
+
+	public GetFocusTransform(slotType: AccessorySlot) {
 		if (
 			slotType === AccessorySlot.Head ||
-			slotType === AccessorySlot.Face ||
 			slotType === AccessorySlot.Hair ||
 			slotType === AccessorySlot.Neck ||
-			slotType === AccessorySlot.Ears
+			slotType === AccessorySlot.Ears ||
+			slotType === AccessorySlot.Nose
 		) {
-			this.targetTransform = this.cameraWaypointHead;
+			//return this.cameraWaypointHead;
 		} else if (
 			slotType === AccessorySlot.Feet ||
 			slotType === AccessorySlot.Waist ||
-			slotType === AccessorySlot.Legs
+			slotType === AccessorySlot.Legs ||
+			slotType === AccessorySlot.LegsInner ||
+			slotType === AccessorySlot.LegsOuter ||
+			slotType === AccessorySlot.LeftFoot ||
+			slotType === AccessorySlot.RightFoot ||
+			slotType === AccessorySlot.FeetInner
 		) {
-			this.targetTransform = this.cameraWaypointFeet;
+			return this.cameraWaypointFeet;
 		} else if (
 			slotType === AccessorySlot.Hands ||
 			slotType === AccessorySlot.LeftHand ||
 			slotType === AccessorySlot.RightHand ||
-			slotType === AccessorySlot.Torso
+			slotType === AccessorySlot.Torso ||
+			slotType === AccessorySlot.HandsOuter
 		) {
-			this.targetTransform = this.cameraWaypointHands;
+			//return this.cameraWaypointHands;
 		} else if (slotType === AccessorySlot.Backpack) {
-			this.targetTransform = this.cameraWaypointBack;
+			return this.cameraWaypointBack;
 		}
-		this.CameraFocusTransform(this.targetTransform);
+		return this.cameraWaypointDefault;
 	}
 
 	public CameraFocusTransform(transform?: Transform, instant = false) {

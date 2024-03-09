@@ -43,9 +43,6 @@ export class EntityItemManager {
 			//Process Inputs locally
 			Airship.input.OnDown("UseItem").Connect(() => {
 				this.Log("LeftDown");
-				if (CanvasAPI.IsPointerOverUI() || EventSystem.current.currentSelectedGameObject) {
-					return;
-				}
 				if (this.localCharacter) {
 					this.mouseIsDownLeft = true;
 					let items = this.GetOrCreateItemManager(this.localCharacter);
@@ -98,12 +95,19 @@ export class EntityItemManager {
 			});
 		});
 
-		Airship.characters.onCharacterSpawned.Connect((character) => {
+		Airship.characters.ObserveCharacters((character) => {
 			this.GetOrCreateItemManager(character);
 			if (character.IsLocalCharacter()) {
 				this.localCharacter = character;
 			}
 		});
+
+		// Airship.characters.onCharacterSpawned.Connect((character) => {
+		// 	this.GetOrCreateItemManager(character);
+		// 	if (character.IsLocalCharacter()) {
+		// 		this.localCharacter = character;
+		// 	}
+		// });
 
 		//Clean up destroyed entities
 		Airship.characters.onCharacterDespawned.Connect((character) => {
@@ -135,28 +139,28 @@ export class EntityItemManager {
 		});
 
 		//Listen to state changes triggered by client
-		Airship.characters.onServerCustomMoveCommand.Connect((event) => {
-			if (event.Is("HeldItemState")) {
-				// const player = Airship.players.FindByClientId(event.clientId);
-				// if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
-				// 	return;
-				// }
-				this.Log("NewState: " + event.value.s);
-				const heldItemManager = this.characterItemManagers.get(event.value.e);
-				if (heldItemManager) {
-					const lookVec = event.value.l;
-					heldItemManager.OnNewState(event.value.s, lookVec);
-					CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
-						event.player,
-						event.value.e,
-						event.value.s,
-						lookVec,
-					);
-				} else {
-					error("Reading custom move command from entity without held items???");
-				}
-			}
-		});
+		// Airship.characters.onServerCustomMoveCommand.Connect((event) => {
+		// if (event.Is("HeldItemState")) {
+		// 	// const player = Airship.players.FindByClientId(event.clientId);
+		// 	// if (RunUtil.IsClient() && player?.userId === Game.localPlayer.userId) {
+		// 	// 	return;
+		// 	// }
+		// 	this.Log("NewState: " + event.value.s);
+		// 	const heldItemManager = this.characterItemManagers.get(event.value.e);
+		// 	if (heldItemManager) {
+		// 		const lookVec = event.value.l;
+		// 		heldItemManager.OnNewState(event.value.s, lookVec);
+		// 		CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
+		// 			event.player,
+		// 			event.value.e,
+		// 			event.value.s,
+		// 			lookVec,
+		// 		);
+		// 	} else {
+		// 		error("Reading custom move command from entity without held items???");
+		// 	}
+		// }
+		// });
 	}
 
 	public GetOrCreateItemManager(character: Character): HeldItemManager {

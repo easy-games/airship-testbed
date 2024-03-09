@@ -51,16 +51,18 @@ export class MainMenuNavbarController implements OnStart {
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
 		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
+		const disconnectButton = refs.GetValue("UI", "DisconnectButton");
 
 		this.refreshButton = refs.GetValue("UI", "RefreshPageButton").GetAirshipComponent<NavbarControlButton>()!;
 		CanvasAPI.OnClickEvent(this.refreshButton.gameObject, () => {
 			this.DoRefresh();
 		});
 
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			settingsButton.SetActive(false);
 		} else {
 			runningGameButton.SetActive(false);
+			disconnectButton.SetActive(false);
 		}
 
 		CoreUI.SetupButton(homeButton, { noHoverSound: true });
@@ -99,7 +101,7 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
-		if (Game.context === CoreContext.GAME) {
+		if (Game.coreContext === CoreContext.GAME) {
 			currentSelectedNavbarButton = runningGameButton;
 		}
 		this.UpdateNavButton(currentSelectedNavbarButton, true);
@@ -110,7 +112,7 @@ export class MainMenuNavbarController implements OnStart {
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Settings) {
-				if (Game.context === CoreContext.GAME) {
+				if (Game.coreContext === CoreContext.GAME) {
 					currentSelectedNavbarButton = runningGameButton;
 				} else {
 					currentSelectedNavbarButton = settingsButton;

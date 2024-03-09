@@ -130,7 +130,7 @@ declare const enum MobileJoystickPhase {
 	Ended = 2,
 }
 
-interface InputProxy {
+interface InputBridge {
 	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): EngineEventConnection;
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
@@ -162,10 +162,10 @@ interface InputProxy {
 	UnregisterKeyCode(keyCode: KeyCode): void;
 }
 
-interface UserInputService {
-	InputProxy: InputProxy;
+interface InputBridgeStatic {
+	Instance: InputBridge;
 }
-declare const UserInputService: UserInputService;
+declare const InputBridge: InputBridgeStatic;
 
 declare const enum Key {
 	None = 0,
@@ -398,14 +398,14 @@ interface CanvasUIEventInterceptor extends Component {
 	OnClickEvent(callback: (instanceId: number) => void): EngineEventConnection;
 	OnValueChangeEvent(callback: (instanceId: number, value: number) => void): EngineEventConnection;
 	OnToggleValueChangeEvent(callback: (instanceId: number, value: boolean) => void): EngineEventConnection;
-	OnBeginDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
-	OnDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnBeginDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
+	OnDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 	OnScreenSizeChangeEvent(callback: (width: number, height: number) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dragged object.
 	 */
-	OnEndDragEvent(callback: (instanceId: number) => void): EngineEventConnection;
+	OnEndDragEvent(callback: (instanceId: number, data: PointerEventData) => void): EngineEventConnection;
 
 	/**
 	 * Sent to the dropped upon target.
@@ -597,6 +597,7 @@ declare const StateManager: StateManagerStatic;
 
 interface EditorSessionStateStatic {
 	GetString(key: string): string | undefined;
+	GetBoolean(key: string): boolean;
 	SetString(key: string, value: string): void;
 	RemoveString(key: string): void;
 }

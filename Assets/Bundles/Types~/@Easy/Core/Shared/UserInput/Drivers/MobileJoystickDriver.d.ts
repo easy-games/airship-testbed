@@ -4,7 +4,7 @@ export declare class MobileJoystickDriver {
     readonly changed: Signal<[position: Vector3, phase: MobileJoystickPhase]>;
     private constructor();
     SetVisible(visible: boolean): void;
-    IsVisible(): boolean;
+    IsVisible(): void;
     /** **NOTE:** Internal only. Use `Touchscreen` class instead. */
     static Instance(): MobileJoystickDriver;
 }

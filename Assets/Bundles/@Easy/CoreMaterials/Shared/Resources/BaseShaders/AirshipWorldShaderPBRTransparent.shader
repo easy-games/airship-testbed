@@ -55,6 +55,8 @@ Shader "Airship/WorldShaderPBRTransparent"
 
             Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
+
+            Cull Off
  
             HLSLPROGRAM
             #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD

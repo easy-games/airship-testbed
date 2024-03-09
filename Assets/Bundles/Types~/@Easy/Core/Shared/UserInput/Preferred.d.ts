@@ -1,13 +1,16 @@
 import { Signal } from "../Util/Signal";
-export type ControlScheme = "MouseKeyboard" | "Touch";
+export declare enum ControlScheme {
+    MouseKeyboard = "MouseKeyboard",
+    Touch = "Touch"
+}
 /** Utility class for observing the player's currently-used control scheme. */
 export declare class Preferred {
     private readonly bin;
-    private readonly preferredDriver;
     /** A signal that fires every time the currently-used control scheme changes. */
     readonly controlSchemeChanged: Signal<[controlScheme: ControlScheme]>;
     private controlScheme;
     constructor();
+    private InitControlScheme;
     /** Get the currently-used control scheme. */
     GetControlScheme(): ControlScheme;
     /**

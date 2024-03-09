@@ -10,7 +10,10 @@ export class AvatarUtil {
 	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
 	private static readonly allAvatarFaces = new Map<string, AccessoryFace>();
 	private static readonly allAvatarClasses = new Map<string, AccessoryClass>();
-	private static readonly ownedAvatarAccessories = new Map<AccessorySlot, AccessoryComponent[]>();
+	private static readonly ownedAvatarAccessories = new Map<
+		AccessorySlot,
+		{ instanceId: string; item: AccessoryComponent }[]
+	>();
 	private static readonly ownedAvatarFaces: AccessoryFace[] = [];
 	private static readonly avatarSkinAccessories: AccessorySkin[] = [];
 
@@ -79,16 +82,21 @@ export class AvatarUtil {
 				this.allAvatarClasses.set(itemData.class.classId, itemData.class);
 				//print("Possible item " + itemData.class.name + ": " + itemData.class.classId);
 				let item = this.allAvatarAccessories.get(itemData.class.classId);
+				let foundMatchingItem = false;
 				if (item) {
-					//print("Found item: " + item.gameObject.name + ": " + itemData.class.classId);
-					item.SetInstanceId(itemData.instanceId);
-					this.AddAvailableAvatarItem(item);
+					this.AddAvailableAvatarItem(itemData.instanceId, item);
+					foundMatchingItem = true;
 				} else {
 					let faceItem = this.allAvatarFaces.get(itemData.class.classId);
 					if (faceItem) {
 						faceItem.serverInstanceId = itemData.instanceId;
 						this.AddAvailableFaceItem(faceItem);
+						foundMatchingItem = true;
 					}
+				}
+
+				if (!foundMatchingItem) {
+					print("Unpaired Server Item " + itemData.class.name + ": " + itemData.class.classId);
 				}
 			});
 		}
@@ -131,14 +139,14 @@ export class AvatarUtil {
 		}
 	}
 
-	public static AddAvailableAvatarItem(item: AccessoryComponent) {
+	public static AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent) {
 		const slotNumber: number = item.GetSlotNumber();
 		let items = this.ownedAvatarAccessories.get(slotNumber);
 		if (!items) {
 			//print("making new items for slot: " + slotNumber);
 			items = [];
 		}
-		items.push(item);
+		items.push({ instanceId: instanceId, item: item });
 		//print("setting item slot " + slotNumber + " to: " + item.ToString());
 		this.ownedAvatarAccessories.set(slotNumber, items);
 	}
@@ -200,9 +208,10 @@ export class AvatarUtil {
 			builder.RemoveClothingAccessories();
 		}
 		outfit.accessories.forEach((acc) => {
-			const accComponent = this.GetAccessoryFromClassId(acc.class.classId);
-			if (accComponent) {
-				builder.AddSingleAccessory(accComponent, false);
+			const accComponentTemplate = this.GetAccessoryFromClassId(acc.class.classId);
+			if (accComponentTemplate) {
+				let accComponent = builder.AddSingleAccessory(accComponentTemplate, false);
+				accComponent.AccessoryComponent.SetInstanceId(acc.instanceId);
 			} else {
 				const face = this.GetAccessoryFaceFromClassId(acc.class.classId);
 				if (face) {

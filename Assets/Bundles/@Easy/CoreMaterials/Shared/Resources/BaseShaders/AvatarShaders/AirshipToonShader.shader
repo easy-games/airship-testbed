@@ -243,8 +243,9 @@ Shader "Airship/AirshipToon"
                 //finalColor = diffuseColor;
                 //finalColor = middleStrength;
                 //finalColor = pointLightColor;
-                
-                MRT0 = lerp(half4(finalColor, 1), half4(1,0,0,1), _OverrideStrength);
+                finalColor = lerp(finalColor, half3(1,0,0), _OverrideStrength);
+                //finalColor = half3(1,1,1) * lightStrength;
+                MRT0 = half4(finalColor, 1);
                 MRT1 = half4(0,0,0,1);
             }
             ENDCG

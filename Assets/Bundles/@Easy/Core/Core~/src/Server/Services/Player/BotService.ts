@@ -1,6 +1,6 @@
-import { OnStart, Service } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
+import { OnStart, Service } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import { SetInterval } from "Shared/Util/Timer";
 
@@ -37,6 +37,12 @@ export class BotService implements OnStart {
 				math.random() < 0.2,
 				false,
 			);
+			let lookVec = new Vector3(
+				randDirectionComponent() * math.random(),
+				randDirectionComponent() * math.random(),
+				randDirectionComponent() * math.random(),
+			);
+			character.movement.SetLookVector(lookVec);
 		};
 		doMove();
 

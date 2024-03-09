@@ -15,9 +15,12 @@ export declare class AvatarUtil {
     static GetClass(classId: string): AccessoryClass | undefined;
     static GetClassThumbnailUrl(classId: string): string;
     static InitUserOutfits(userId: string): void;
-    static AddAvailableAvatarItem(item: AccessoryComponent): void;
+    static AddAvailableAvatarItem(instanceId: string, item: AccessoryComponent): void;
     static AddAvailableFaceItem(item: AccessoryFace): void;
-    static GetAllAvatarItems(slotType: AccessorySlot): AccessoryComponent[] | undefined;
+    static GetAllAvatarItems(slotType: AccessorySlot): {
+        instanceId: string;
+        item: AccessoryComponent;
+    }[] | undefined;
     static GetAllAvatarFaceItems(): AccessoryFace[];
     static GetAllAvatarSkins(): AccessorySkin[];
     static GetAllPossibleAvatarItems(): Map<string, AccessoryComponent>;

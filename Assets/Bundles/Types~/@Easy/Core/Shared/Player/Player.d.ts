@@ -67,6 +67,10 @@ export declare class Player {
     private connected;
     selectedOutfit: OutfitDto | undefined;
     outfitLoaded: boolean;
+    /**
+     * WARNING: not implemented yet. only returns local platform for now.
+     */
+    platform: AirshipPlatform;
     constructor(
     /**
      * The GameObject representing the player.
@@ -123,7 +127,7 @@ export declare class Player {
     IsBot(): boolean;
     Encode(): PlayerDto;
     SetCharacter(character: Character | undefined): void;
-    ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin;
+    ObserveCharacter(observer: (character: Character | undefined) => CleanupFunc): Bin;
     IsLocalPlayer(): boolean;
     /**
      * Is the player connected to the server?

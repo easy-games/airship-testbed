@@ -2,8 +2,8 @@
  * This is the entrypoint of Core.
  */
 
-import { Flamework } from "Shared/Flamework";
 import { AvatarUtil } from "Shared/Avatar/AvatarUtil";
+import { Flamework } from "Shared/Flamework";
 import { AudioManager } from "./Audio/AudioManager";
 import { Bootstrap } from "./Bootstrap/Bootstrap";
 import { CoreContext } from "./CoreClientContext";
@@ -18,7 +18,7 @@ import { OnFixedUpdate, OnLateUpdate, OnTick, OnUpdate } from "./Util/Timer";
 
 CoreRefs.Init();
 
-Game.context = CoreContext.GAME;
+Game.coreContext = CoreContext.GAME;
 
 const vars: DynamicVariables[] = [
 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),

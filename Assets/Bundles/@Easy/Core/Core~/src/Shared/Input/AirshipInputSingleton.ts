@@ -1,18 +1,26 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
 import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Airship } from "../Airship";
-import { Keyboard } from "../UserInput";
+import { AssetCache } from "../AssetCache/AssetCache";
+import { CoreRefs } from "../CoreRefs";
+import { Game } from "../Game";
+import { ControlScheme, Keyboard, Preferred } from "../UserInput";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
-import { RunUtil } from "../Util/RunUtil";
+import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
 import { Signal } from "../Util/Signal";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
 import { ActionInputType, InputUtil, KeyType } from "./InputUtil";
 import { Keybind } from "./Keybind";
+import { MobileButtonConfig } from "./Mobile/MobileButton";
 
 @Controller({})
 @Service({})
 export class AirshipInputSingleton implements OnStart {
+	/**
+	 * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+	 */
+	public unsetOnDuplicateKeybind = false;
 	/**
 	 *
 	 */
@@ -25,6 +33,10 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private inputDevice = new Keyboard();
+	/**
+	 *
+	 */
+	private controlManager = new Preferred();
 	/**
 	 *
 	 */
@@ -41,27 +53,35 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private actionDownState = new Set<string>();
-
 	/**
-	 * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+	 *
 	 */
-	public unsetOnDuplicateKeybind = false;
+	private mobileControlsContainer!: GameObject;
+	/**
+	 *
+	 */
+	private mobileButtonPrefab = AssetCache.LoadAsset(
+		"@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileButton.prefab",
+	);
+	/**
+	 *
+	 */
+	private actionToMobileButtonTable = new Map<string, GameObject[]>();
 
 	constructor() {
 		Airship.input = this;
 	}
 
 	OnStart(): void {
-		if (!RunUtil.IsClient()) return;
-		// const clientSettingsController = Dependency<ClientSettingsController>();
-		// clientSettingsController.WaitForSettingsLoaded().then((settings) => {
-		// 	print(`Settings here?: ${settings}`);
-		// });
-		// ObjectNames
+		if (!Game.IsClient()) return;
+
+		this.CreateMobileControlCanvas();
 
 		Airship.input.onActionBound.Connect((action) => {
 			if (!action.keybind.IsUnset()) {
-				if (this.unsetOnDuplicateKeybind) this.UnsetDuplicateKeybinds(action);
+				if (this.unsetOnDuplicateKeybind) {
+					this.UnsetDuplicateKeybinds(action);
+				}
 				this.CreateActionListeners(action);
 			}
 		});
@@ -84,6 +104,10 @@ export class AirshipInputSingleton implements OnStart {
 			{ name: "DropItem", keybind: new Keybind(KeyCode.Q) },
 			{ name: "Inspect", keybind: new Keybind(KeyCode.Y) },
 		]);
+
+		Airship.input.CreateMobileButton("Jump", new Vector2(-200, 290));
+		Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
+		Airship.input.CreateMobileButton("Crouch", new Vector2(-200, 690));
 	}
 
 	/**
@@ -106,43 +130,132 @@ export class AirshipInputSingleton implements OnStart {
 	 * @param category
 	 */
 	public CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void {
-		const actionExists = this.GetActionByInputType(
-			name,
-			InputUtil.GetInputTypeFromKeybind(keybind, KeyType.Primary),
-		);
-		if (actionExists) {
-			warn("Action already exists. TODO: More detail here.");
-			return;
-		}
 		const action = new InputAction(name, keybind, false, config?.category ?? "General");
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
-
-		if (config?.secondaryKeybind) {
-			this.CreateSecondaryKeybindForAction(name, config.secondaryKeybind, config);
-		}
 	}
 
 	/**
 	 *
-	 * @param actionSchema
 	 */
-	private CreateSecondaryKeybindForAction(name: string, keybind: Keybind, config: InputActionConfig): void {
-		const primaryKeybindType = InputUtil.GetInputTypeFromKeybind(keybind, KeyType.Primary);
-		const secondaryKeybindType = InputUtil.GetInputTypeFromKeybind(config.secondaryKeybind!, KeyType.Primary);
-		if (primaryKeybindType !== ActionInputType.Keyboard && primaryKeybindType !== ActionInputType.Mouse) {
-			warn("Cannot create secondary keybind for non-desktop input type. TODO: More details.");
-			return;
-		}
-		if (secondaryKeybindType !== ActionInputType.Keyboard && secondaryKeybindType !== ActionInputType.Mouse) {
-			warn(
-				"Secondary keybind input type MUST be a desktop input type. (Keyboard or mouse keybind) TODO: More details.",
+	private CreateMobileControlCanvas(): void {
+		const mobileControlsCanvas = Object.Instantiate(
+			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab"),
+		);
+		mobileControlsCanvas.transform.SetParent(CoreRefs.rootTransform);
+		this.mobileControlsContainer = mobileControlsCanvas;
+		this.controlManager.ObserveControlScheme((controlScheme) => {
+			if (controlScheme === ControlScheme.Touch) {
+				this.mobileControlsContainer.SetActive(true);
+				for (const [name, _] of this.actionToMobileButtonTable) {
+					this.ShowMobileButtons(name);
+				}
+			}
+			if (controlScheme === ControlScheme.MouseKeyboard) {
+				this.mobileControlsContainer.SetActive(false);
+				for (const [name, _] of this.actionToMobileButtonTable) {
+					this.HideMobileButtons(name);
+				}
+			}
+		});
+	}
+
+	/**
+	 *
+	 * @param name
+	 * @param anchoredPosition
+	 * @param config
+	 */
+	public CreateMobileButton(name: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void {
+		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
+		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
+
+		const rect = mobileButton.GetComponent<RectTransform>();
+		rect.localScale = new Vector3(config?.scale?.x ?? 1, config?.scale?.y ?? 1, 1);
+		if (config?.anchorMin) rect.anchorMin = config.anchorMin;
+		if (config?.anchorMax) rect.anchorMax = config.anchorMax;
+		if (config?.pivot) rect.pivot = config.pivot;
+		rect.anchoredPosition = anchoredPosition;
+
+		if (config?.icon) {
+			const iconTexture = AssetCache.LoadAssetIfExists<Texture2D>(
+				`@Easy/Core/Shared/Resources/Images/CoreIcons/${config.icon}.png`,
 			);
-			return;
+			if (iconTexture) {
+				const img = mobileButton.transform.GetChild(0).GetComponent<Image>();
+				img.sprite = Bridge.MakeSprite(iconTexture);
+			}
 		}
-		const action = new InputAction(name, config.secondaryKeybind!, true, config.category);
-		this.AddActionToTable(action);
-		this.onActionBound.Fire(action);
+
+		CanvasAPI.OnPointerEvent(mobileButton, (dir) => {
+			if (dir === PointerDirection.DOWN) {
+				this.actionDownState.add(name);
+				const actionDownSignals = this.actionDownSignals.get(name);
+				if (!actionDownSignals) return;
+				const inactiveSignalIndices = [];
+				let signalIndex = 0;
+				for (const signal of actionDownSignals) {
+					if (signal.HasConnections()) {
+						const mobileSignal = new KeySignal(KeyCode.None, false);
+						signal.Fire(mobileSignal);
+					} else {
+						inactiveSignalIndices.push(signalIndex);
+					}
+					signalIndex++;
+				}
+				this.ClearInactiveSignals(inactiveSignalIndices, actionDownSignals);
+			} else if (dir === PointerDirection.UP) {
+				this.actionDownState.delete(name);
+				const actionUpSignals = this.actionUpSignals.get(name);
+				if (!actionUpSignals) return;
+				const inactiveSignalIndices = [];
+				let signalIndex = 0;
+				for (const signal of actionUpSignals) {
+					if (signal.HasConnections()) {
+						const mobileSignal = new KeySignal(KeyCode.None, false);
+						signal.Fire(mobileSignal);
+					} else {
+						inactiveSignalIndices.push(signalIndex);
+					}
+					signalIndex++;
+				}
+				this.ClearInactiveSignals(inactiveSignalIndices, actionUpSignals);
+			}
+		});
+
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
+		mobileButtonsForAction.push(mobileButton);
+		this.actionToMobileButtonTable.set(name, mobileButtonsForAction);
+	}
+
+	/**
+	 *
+	 * @param name
+	 */
+	public HideMobileButtons(name: string): void {
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
+		for (const mobileButton of mobileButtonsForAction) {
+			mobileButton.SetActive(false);
+		}
+		const isDown = this.actionDownState.has(name);
+		if (isDown) {
+			const upSignals = this.actionUpSignals.get(name) ?? [];
+			for (const signal of upSignals) {
+				const mockKeySignal = new KeySignal(KeyCode.None, false);
+				signal.Fire(mockKeySignal);
+			}
+			this.actionDownState.delete(name);
+		}
+	}
+	/**
+	 *
+	 * @param name
+	 */
+	public ShowMobileButtons(name: string): void {
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name) ?? [];
+		for (const mobileButton of mobileButtonsForAction) {
+			mobileButton.SetActive(true);
+		}
 	}
 
 	/**
@@ -347,6 +460,14 @@ export class AirshipInputSingleton implements OnStart {
 		} else {
 			signalCleanup.Add(
 				this.inputDevice.OnKeyDown(action.keybind.primaryKey, (event) => {
+					if (
+						action.keybind.GetInputType() === ActionInputType.Mouse &&
+						(CanvasAPI.IsPointerOverUI() || this.controlManager.GetControlScheme() === ControlScheme.Touch)
+					) {
+						// If this is keybind a mouse keybind, and we're over UI that is a raycast target,
+						// do not propagate action event. Do not ever propagate if control scheme is touch.
+						return;
+					}
 					const isDown = this.actionDownState.has(action.name);
 					if (isDown) return;
 					this.actionDownState.add(action.name);

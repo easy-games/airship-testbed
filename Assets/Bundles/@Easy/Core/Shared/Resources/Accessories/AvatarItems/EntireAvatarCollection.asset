@@ -41,6 +41,7 @@ MonoBehaviour:
   - {fileID: 4687774498355188848, guid: 507a8f57c51cd6d4a87fa8014d5f0b4e, type: 3}
   - {fileID: 7446855311011774685, guid: b3468db6df7948649a67a9d195e92c1f, type: 3}
   - {fileID: 7638501342747260519, guid: 506c6c919491a004798220b7dde634b8, type: 3}
+  - {fileID: 8167397074847783744, guid: 467d8d6fb2af3e2459033fbfc2e3befe, type: 3}
   - {fileID: 8235044750829885567, guid: c54baabebd5ee544193d4ef693b44e3f, type: 3}
   - {fileID: 1787192140756256256, guid: 490db4a6bbf50b647b9662cdd94f08db, type: 3}
   - {fileID: 9086618649055474635, guid: 9f0218a7789bb634a95d9b69966c564b, type: 3}
@@ -54,6 +55,21 @@ MonoBehaviour:
   - {fileID: 1690730982374684028, guid: dcff42cfc17923a44acb81a0ccd59edb, type: 3}
   - {fileID: 8539257135083228966, guid: a80db8faf3c207d4a9bbff13e0d02936, type: 3}
   faces:
+  - {fileID: 11400000, guid: dab7a1649b611d743ba700096ba42865, type: 2}
+  - {fileID: 11400000, guid: 5333213962be2674daf082850e69f5af, type: 2}
+  - {fileID: 11400000, guid: c1c3f104f74dcfc42bd428f10f825491, type: 2}
+  - {fileID: 11400000, guid: 88dc515f165939940b766c2031066a02, type: 2}
+  - {fileID: 11400000, guid: 6e714441f11ab6f489a6a43f19c4b98d, type: 2}
+  - {fileID: 11400000, guid: 76d5c5b78687c734fa02c3f3fa35908d, type: 2}
+  - {fileID: 11400000, guid: 96150506309486f4ba940966500fa000, type: 2}
+  - {fileID: 11400000, guid: 052a7216573cb70428fc34fd22b9f1c4, type: 2}
+  - {fileID: 11400000, guid: 47b1a75507907714bab618e63992c7da, type: 2}
+  - {fileID: 11400000, guid: 3d0916dd72ac71b448b486aeb00edc2f, type: 2}
+  - {fileID: 11400000, guid: 36ddf2c87b5ae1e4b936ad3d98d65f8d, type: 2}
+  - {fileID: 11400000, guid: 097a4838573d20e40b35c73f97c46b1f, type: 2}
+  - {fileID: 11400000, guid: 0a25b3f89fb8b9f47ad61b8df0623f1d, type: 2}
+  - {fileID: 11400000, guid: 2365445bba6929b41a4d963e9fb9f55f, type: 2}
+  - {fileID: 11400000, guid: ebc2a6d898437974382c36d6141e2149, type: 2}
   - {fileID: 11400000, guid: 0dfdcf3a1119a4d4eb80f879dfddfd5d, type: 2}
   - {fileID: 11400000, guid: 50e3777c791efac49ae4e79423d82811, type: 2}
   skinColors:

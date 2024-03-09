@@ -67,7 +67,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3f7cf7e1f8640744d8ea204107234d7c, type: 2}
+      objectReference: {fileID: 2100000, guid: c1b2344e14d40874c956ddf58f952ef1, type: 2}
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -75,7 +75,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+      objectReference: {fileID: 2100000, guid: 60048c69f6849224da117a616375faf3, type: 2}
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
@@ -83,7 +83,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[4]'
       value: 
-      objectReference: {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+      objectReference: {fileID: 2100000, guid: 60048c69f6849224da117a616375faf3, type: 2}
     - target: {fileID: -7511558181221131132, guid: 50bf628099f0f644f9ebed1da07f9da6, type: 3}
       propertyPath: 'm_Materials.Array.data[5]'
       value: 
@@ -139,14 +139,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.21348849, g: 0.23076618, b: 0.19839558, a: 1}
+  - materialColor: {r: 0.18349087, g: 0.16832668, b: 0.20373368, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   - materialColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.36544028, g: 0.42513734, b: 0.41966692, a: 1}
-    emissiveColor: {r: 0.36544028, g: 0.42513734, b: 0.41966692, a: 1}
+  - materialColor: {r: 0.6218606, g: 0.6218606, b: 0.6218606, a: 1}
+    emissiveColor: {r: 0.6218606, g: 0.6218606, b: 0.6218606, a: 1}
     emissiveMix: 0.209
   - materialColor: {r: 1, g: 0.495283, b: 0.5869469, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
@@ -199,14 +199,14 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.75
-      value: 0.5
-      inSlope: -0.0029826711
-      outSlope: -0.0029826711
-      tangentMode: 0
+      time: 0.9
+      value: 0.75
+      inSlope: 1.7116969
+      outSlope: 0.015275896
+      tangentMode: 1
       weightedMode: 0
-      inWeight: 0.21690302
-      outWeight: 0.33333334
+      inWeight: 0.08879589
+      outWeight: 1
     - serializedVersion: 3
       time: 1
       value: 1
@@ -222,6 +222,7 @@ MonoBehaviour:
   randomComponents:
   - {fileID: 3037162197794562736}
   - {fileID: 1116923348239259154}
+  - {fileID: 4180185237464068803}
   - {fileID: 4180185237464068803}
   - {fileID: 4082708758966414093}
 --- !u!114 &3037162197794562736
@@ -391,17 +392,17 @@ MonoBehaviour:
   materialIndexes: 00000000
   possibleColors:
     serializedVersion: 2
-    key0: {r: 0.6698113, g: 0.6166745, b: 0.31910822, a: 1}
-    key1: {r: 0.32836416, g: 0.4433962, b: 0.43353632, a: 1}
-    key2: {r: 0.27807218, g: 0.3679245, b: 0.1995817, a: 0}
-    key3: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 0}
+    key0: {r: 0.3301887, g: 0.32851064, b: 0.27256143, a: 1}
+    key1: {r: 0.3679245, g: 0.3280407, b: 0.28288534, a: 1}
+    key2: {r: 0.14841202, g: 0.13794944, b: 0.18867922, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
     key4: {r: 0.8773585, g: 0.26072446, b: 0.29669482, a: 0}
     key5: {r: 0.7235859, g: 0.36320752, b: 1, a: 0}
-    key6: {r: 1, g: 1, b: 1, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 1, g: 1, b: 1, a: 0}
     ctime0: 0
     ctime1: 9638
-    ctime2: 18890
+    ctime2: 24287
     ctime3: 49151
     ctime4: 57825
     ctime5: 61873
@@ -435,11 +436,12 @@ MonoBehaviour:
   renderer: {fileID: 6628858335237029563}
   materialIndexes: 00000000
   possibleMaterials:
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
+  - {fileID: 2100000, guid: c1b2344e14d40874c956ddf58f952ef1, type: 2}
+  - {fileID: 2100000, guid: 3f7cf7e1f8640744d8ea204107234d7c, type: 2}
+  - {fileID: 2100000, guid: 3f7cf7e1f8640744d8ea204107234d7c, type: 2}
   - {fileID: 2100000, guid: 3f7cf7e1f8640744d8ea204107234d7c, type: 2}
   - {fileID: 2100000, guid: 50a278a186c523b488972010f0b4dc3c, type: 2}
+  - {fileID: 2100000, guid: 104cfb3f3b0c67f42ae248e2379373e1, type: 2}
 --- !u!114 &4082708758966414093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,8 +457,6 @@ MonoBehaviour:
   renderer: {fileID: 6628858335237029563}
   materialIndexes: 0200000004000000
   possibleMaterials:
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
-  - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
   - {fileID: 2100000, guid: 38e12c35104f11345b3dc76baf52e0ab, type: 2}
   - {fileID: 2100000, guid: 60048c69f6849224da117a616375faf3, type: 2}
 --- !u!23 &6628858335237029563 stripped

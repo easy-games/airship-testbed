@@ -1,8 +1,7 @@
-import { OnStart, Service } from "Shared/Flamework";
 import Object from "@easy-games/unity-object-utils";
-import { Airship } from "Shared/Airship";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
+import { OnStart, Service } from "Shared/Flamework";
 import { Player } from "Shared/Player/Player";
 import StringUtils from "Shared/Types/StringUtil";
 import { ChatUtil } from "Shared/Util/ChatUtil";
@@ -10,7 +9,6 @@ import { ColorUtil } from "Shared/Util/ColorUtil";
 import { AddInventoryCommand } from "./Commands/AddInventoryCommand";
 import { BotCommand } from "./Commands/BotCommand";
 import { DamageCommand } from "./Commands/DamageCommand";
-import { DieCommand } from "./Commands/DieCommand";
 import { GetVarCommand } from "./Commands/DynamicVariables/GetVarCommand";
 import { SetVarCommand } from "./Commands/DynamicVariables/SetVarCommand";
 import { EntityCommand } from "./Commands/EntityCommand";
@@ -20,6 +18,7 @@ import { SetGeneratorSpawnRateCommand } from "./Commands/Generator/SetGeneratorS
 import { HealCommand } from "./Commands/HealCommand";
 import { HelpCommand } from "./Commands/HelpCommand";
 import { JoinCodeCommand } from "./Commands/JoinCodeCommand";
+import { KillCommand } from "./Commands/KillCommand";
 import { LagCommand } from "./Commands/LagCommand";
 import { SaveWorldCommand } from "./Commands/SaveWorldCommand";
 import { SetTeamCommand } from "./Commands/SetTeamCommand";
@@ -43,7 +42,7 @@ export class ChatService implements OnStart {
 		this.RegisterCommand(new SetGeneratorSpawnRateCommand());
 		this.RegisterCommand(new TeamCommand());
 		this.RegisterCommand(new AddInventoryCommand());
-		this.RegisterCommand(new DieCommand());
+		this.RegisterCommand(new KillCommand());
 		this.RegisterCommand(new SetTeamCommand());
 		this.RegisterCommand(new TpAllCommand());
 		this.RegisterCommand(new TpCommand());

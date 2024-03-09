@@ -4,7 +4,12 @@ import { Signal } from "../Util/Signal";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
 import { ActionInputType } from "./InputUtil";
 import { Keybind } from "./Keybind";
+import { MobileButtonConfig } from "./Mobile/MobileButton";
 export declare class AirshipInputSingleton implements OnStart {
+    /**
+     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     */
+    unsetOnDuplicateKeybind: boolean;
     /**
      *
      */
@@ -17,6 +22,10 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private inputDevice;
+    /**
+     *
+     */
+    private controlManager;
     /**
      *
      */
@@ -34,9 +43,17 @@ export declare class AirshipInputSingleton implements OnStart {
      */
     private actionDownState;
     /**
-     * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
+     *
      */
-    unsetOnDuplicateKeybind: boolean;
+    private mobileControlsContainer;
+    /**
+     *
+     */
+    private mobileButtonPrefab;
+    /**
+     *
+     */
+    private actionToMobileButtonTable;
     constructor();
     OnStart(): void;
     /**
@@ -53,9 +70,25 @@ export declare class AirshipInputSingleton implements OnStart {
     CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void;
     /**
      *
-     * @param actionSchema
      */
-    private CreateSecondaryKeybindForAction;
+    private CreateMobileControlCanvas;
+    /**
+     *
+     * @param name
+     * @param anchoredPosition
+     * @param config
+     */
+    CreateMobileButton(name: string, anchoredPosition: Vector2, config?: MobileButtonConfig): void;
+    /**
+     *
+     * @param name
+     */
+    HideMobileButtons(name: string): void;
+    /**
+     *
+     * @param name
+     */
+    ShowMobileButtons(name: string): void;
     /**
      *
      * @param name

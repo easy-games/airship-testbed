@@ -1,9 +1,7 @@
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
-export declare class FlyCameraMode implements CameraMode {
+export declare class FlyCameraMode extends CameraMode {
     private bin;
-    private xRot;
-    private yRot;
     private positionSpring;
     private xRotSpring;
     private yRotVelSpring;

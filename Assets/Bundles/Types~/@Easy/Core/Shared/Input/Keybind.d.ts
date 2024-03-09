@@ -1,4 +1,4 @@
-import { ModifierKey } from "./InputUtil";
+import { ActionInputType, ModifierKey } from "./InputUtil";
 export declare class Keybind {
     /**
      *
@@ -13,7 +13,17 @@ export declare class Keybind {
      *
      * @returns
      */
+    GetInputType(): ActionInputType;
+    /**
+     *
+     * @returns
+     */
     IsComplexKeybind(): boolean;
+    /**
+     *
+     * @returns
+     */
+    IsDesktopPeripheral(): boolean;
     /**
      *
      */

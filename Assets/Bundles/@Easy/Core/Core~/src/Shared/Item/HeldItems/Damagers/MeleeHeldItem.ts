@@ -67,7 +67,7 @@ export class MeleeHeldItem extends HeldItem {
 			if (this.currentUseVFX) {
 				const particleSystems = this.currentUseVFX.gameObject.GetComponentsInChildren<ParticleSystem>();
 				for (const particleSystem of CSArrayUtil.Convert(particleSystems)) {
-					particleSystem.gameObject.layer = isFirstPerson ? Layer.FIRST_PERSON : Layer.CHARACTER;
+					particleSystem.gameObject.layer = isFirstPerson ? Layer.VIEW_MODEL : Layer.CHARACTER;
 					particleSystem.Play();
 				}
 			}

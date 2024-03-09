@@ -11,7 +11,7 @@ export class Theme {
 	public static aqua = new Color(86 / 255, 255 / 255, 255 / 255);
 	public static pink = ColorUtil.HexToColor("#FF55FF");
 
-	public static primary = new Color(49 / 255, 115 / 255, 193 / 255, 1);
+	public static primary = new Color(49 / 255, 115 / 255, 193 / 255, 1); // #3173C1
 	public static uiDark = ColorUtil.HexToColor("#13161A");
 
 	public static teamColor = {

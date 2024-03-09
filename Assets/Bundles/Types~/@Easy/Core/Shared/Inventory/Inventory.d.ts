@@ -1,6 +1,5 @@
 /// <reference types="@easy-games/compiler-types" />
 /// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
 import { CoreItemType } from "../Item/CoreItemType";
 import { ArmorType } from "../Item/ArmorType";
 import { Bin } from "../Util/Bin";
@@ -31,7 +30,8 @@ export default class Inventory extends AirshipBehaviour {
     readonly changed: Signal<void>;
     private finishedInitialReplication;
     private slotConnections;
-    Awake(): void;
+    OnEnable(): void;
+    OnDisable(): void;
     private RequestFullUpdate;
     GetItem(slot: number): ItemStack | undefined;
     GetSlot(itemStack: ItemStack): number | undefined;
@@ -53,7 +53,6 @@ export default class Inventory extends AirshipBehaviour {
     ProcessDto(dto: InventoryDto): void;
     HasEnough(itemType: CoreItemType, amount: number): boolean;
     HasItemType(itemType: CoreItemType): boolean;
-    GetPairs(): Array<[slot: number, itemStack: ItemStack]>;
     GetMaxSlots(): number;
     GetBackpackTileCount(): number;
     GetHotbarSlotCount(): number;

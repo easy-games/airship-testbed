@@ -25,7 +25,7 @@ export interface PlayerDto {
 	teamId: string | undefined;
 }
 
-const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/Character.prefab");
+const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
 
 export class Player {
 	/**
@@ -52,6 +52,11 @@ export class Player {
 
 	public selectedOutfit: OutfitDto | undefined;
 	public outfitLoaded = false;
+
+	/**
+	 * WARNING: not implemented yet. only returns local platform for now.
+	 */
+	public platform = AirshipPlatformUtil.GetLocalPlatform();
 
 	constructor(
 		/**
@@ -127,6 +132,7 @@ export class Player {
 							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
 						}
 					}
+					characterComponent.outfitDto = this.selectedOutfit;
 					CoreNetwork.ServerToClient.Character.ChangeOutfit.server.FireAllClients(
 						characterComponent.id,
 						this.selectedOutfit,
@@ -209,7 +215,7 @@ export class Player {
 		this.onCharacterChanged.Fire(character);
 	}
 
-	public ObserveCharacter(observer: (entity: Character | undefined) => CleanupFunc): Bin {
+	public ObserveCharacter(observer: (character: Character | undefined) => CleanupFunc): Bin {
 		const bin = new Bin();
 		let cleanup = observer(this.character);
 

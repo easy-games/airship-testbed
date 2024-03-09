@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverClassId: 
   accessorySlot: 6
   visibilityMode: 2
   skinnedToCharacter: 1
@@ -150,13 +151,10 @@ MonoBehaviour:
   - materialColor: {r: 0.46226418, g: 0.38864115, b: 0.29436633, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Clay
   - materialColor: {r: 0.4039216, g: 0.07058824, b: 0.07058824, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: Rubber
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-    reference: EmeraldBlade
   addedByEditorScript: 1
