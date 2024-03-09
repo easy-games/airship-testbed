@@ -8,6 +8,8 @@ Shader "Airship/WorldShaderPBRTransparent"
 		[KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _DstBlend("DestBlend", Float) = 10.0
         
         [HDR] _Color("Color", Color) = (1,1,1,1)
+        [HDR] _ShadowColor("Shadow Color", Color) = (1,1,1,1)
+        [Toggle] USE_SHADOW_COLOR("Use Shadow Color", Float) = 0.0
         _Alpha("Alpha", Float) = 1.0
 
         [Toggle] EXPLICIT_MAPS("Not using atlas", Float) = 1.0
@@ -23,8 +25,7 @@ Shader "Airship/WorldShaderPBRTransparent"
         [Toggle] POINT_FILTER("Use Stylized Point Filtering", Float) = 0.0
         [KeywordEnum(OFF, LOCAL, WORLD)] TRIPLANAR_STYLE("Triplanar", Float) = 0.0
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
-
-        [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
+            
         [Toggle] SLIDER_OVERRIDE("Use Metal/Rough Sliders", Float) = 1.0
 
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
@@ -56,12 +57,15 @@ Shader "Airship/WorldShaderPBRTransparent"
             ZWrite[_ZWrite]
  
             HLSLPROGRAM
-            #pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
             #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
             #pragma multi_compile _ SLIDER_OVERRIDE_ON
-            #pragma multi_compile _ VERTEX_LIGHT_ON  
+            #pragma multi_compile _ VERTEX_LIGHT_ON
             #pragma multi_compile _ EXPLICIT_MAPS_ON
             #pragma multi_compile _ POINT_FILTER_ON
+            #pragma multi_compile _ EMISSIVE_ON
+            #pragma multi_compile _ RIM_LIGHT_ON
+            #pragma multi_compile _ INSTANCE_DATA_ON
+            #pragma multi_compile _ USE_SHADOW_COLOR_ON
 
             #include "AirshipWorldShaderIncludes.hlsl"
 
