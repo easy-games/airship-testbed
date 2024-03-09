@@ -1,5 +1,6 @@
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import { ScreenSizeType } from "../Singletons/ScreenSizeType";
 
@@ -8,6 +9,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public canvasScalar!: CanvasScaler;
 	public contentWrapper!: RectTransform;
 	public socialMenu!: RectTransform;
+	public friendsPage!: RectTransform;
 	public navbar!: RectTransform;
 	public navbarBottom!: RectTransform;
 	public navbarControls!: RectTransform;
@@ -17,11 +19,18 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	private mainMenu!: MainMenuSingleton;
 
-	public Awake(): void {}
+	private bin = new Bin();
 
 	override Start(): void {
 		this.mainMenu = Dependency<MainMenuSingleton>();
 		this.CalcLayout();
+
+		this.bin.Add(
+			this.mainMenu.navbarModifier.Observe((tickets) => {
+				let shouldBeHidden = tickets.some((v) => v.hidden);
+				this.navbar.gameObject.SetActive(!shouldBeHidden);
+			}),
+		);
 	}
 
 	public Update(dt: number): void {
@@ -44,7 +53,15 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 		if (Game.IsPortrait()) {
 			// this.canvasScalar.referenceResolution = new Vector2(1080, 1920);
-			this.socialMenu.gameObject.SetActive(false);
+
+			this.socialMenu.SetParent(this.friendsPage);
+			this.socialMenu.anchorMin = new Vector2(0, 0);
+			this.socialMenu.anchorMax = new Vector2(1, 1);
+			this.socialMenu.pivot = new Vector2(0.5, 1);
+			this.socialMenu.offsetMin = new Vector2(0, 0);
+			this.socialMenu.offsetMax = new Vector2(0, 0);
+			this.socialMenu.gameObject.SetActive(true);
+
 			this.contentWrapper.sizeDelta = new Vector2(screenSize.x * 0.98, screenSize.y);
 			this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 			this.contentWrapper.anchorMax = new Vector2(0.5, 1);
@@ -114,5 +131,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		}
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void {
+		this.bin.Clean();
+	}
 }
