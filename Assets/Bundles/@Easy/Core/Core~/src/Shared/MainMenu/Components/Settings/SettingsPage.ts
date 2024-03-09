@@ -16,7 +16,6 @@ export default class SettingsPage extends AirshipBehaviour {
 		this.bin.Add(
 			mainMenu.ObserveScreenSizeType((size) => {
 				if (size === "sm") {
-					print("sm tabs");
 					this.sidebar.gameObject.SetActive(false);
 					this.tabs.offsetMax = new Vector2(-10, this.tabs.offsetMax.y);
 					this.tabs.offsetMin = new Vector2(10, 0);

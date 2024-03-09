@@ -80,6 +80,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
 			this.socialMenu.gameObject.SetActive(true);
+			this.socialMenu.anchorMin = new Vector2(0, 1);
+			this.socialMenu.anchorMax = new Vector2(0, 1);
+			this.socialMenu.pivot = new Vector2(0, 1);
+			this.socialMenu.sizeDelta = new Vector2(301, screenSize.y - 50);
+			this.socialMenu.SetParent(this.gameObject.transform);
 
 			// Landscape
 			this.canvasScalar.referenceResolution = new Vector2(1920, 1080);
