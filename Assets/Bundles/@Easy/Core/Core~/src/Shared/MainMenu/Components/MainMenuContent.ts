@@ -130,7 +130,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 		}
 
 		if (this.mainMenu.sizeType !== sizeType) {
-			print("firing size type change: " + sizeType);
 			this.mainMenu.sizeType = sizeType;
 			this.mainMenu.onSizeTypeChanged.Fire(sizeType);
 		}

@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: a5d4bb7640b179c4389d9bfc5afea864
+guid: 6b77fca95eda6b64eb972d5555e35d28
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
   userData: 
-  assetBundleName: shared/resources
+  assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 

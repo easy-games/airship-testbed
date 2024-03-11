@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: 3ff5a4be5de2b354e9dcea3a3b52ca9a
+guid: 5e4f3504ea329924ca0e3824e6fc9389
 PrefabImporter:
   externalObjects: {}
   userData: 
-  assetBundleName: shared/resources
+  assetBundleName: '@easy/core_shared/resources'
   assetBundleVariant: 
