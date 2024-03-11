@@ -1,7 +1,8 @@
 import { AccessoryClass, OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
 import { RandomUtil } from "Shared/Util/RandomUtil";
-import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
+import { CoreLogger } from "../Logger/CoreLogger";
 import { ColorUtil } from "../Util/ColorUtil";
+import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
 	public static readonly defaultAccessoryOutfitPath =
@@ -45,7 +46,7 @@ export class AvatarUtil {
 		for (let i = 0; i < avatarCollection.accessories.Length; i++) {
 			const element = avatarCollection.accessories.GetValue(i);
 			if (!element) {
-				warn("Empty element in avatar generalAccessories collection: " + i);
+				CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
 				continue;
 			}
 			//print("Found avatar item: " + element.ToString());
@@ -54,7 +55,7 @@ export class AvatarUtil {
 		for (let i = 0; i < avatarCollection.faces.Length; i++) {
 			const element = avatarCollection.faces.GetValue(i);
 			if (!element) {
-				warn("Empty element in avatar generalAccessories collection: " + i);
+				CoreLogger.Warn("Empty element in avatar generalAccessories collection: " + i);
 				continue;
 			}
 			//print("Found avatar item: " + element.ToString());

@@ -698,7 +698,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			this.selectedColor,
 			accessoryIds,
 		);
-		if (this.outfits) {
+		if (this.outfits && this.currentUserOutfit) {
 			this.outfits[this.currentUserOutfitIndex] = this.currentUserOutfit;
 		}
 		if (Game.coreContext === CoreContext.GAME) {
