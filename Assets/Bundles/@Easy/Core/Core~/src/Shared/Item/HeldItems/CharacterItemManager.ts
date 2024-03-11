@@ -2,6 +2,7 @@
 import Character from "Shared/Character/Character";
 import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { CoreNetwork } from "../../CoreNetwork";
+import { Game } from "../../Game";
 import { RunUtil } from "../../Util/RunUtil";
 import { HeldItemManager } from "./HeldItemManager";
 import { HeldItemState } from "./HeldItemState";
@@ -115,9 +116,8 @@ export class EntityItemManager {
 			this.DestroyItemManager(character);
 		});
 
-		//Server Events
-		CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((entityId, newState, lookVector) => {
-			const heldItem = this.characterItemManagers.get(entityId);
+		CoreNetwork.ServerToClient.HeldItemStateChanged.client.OnServerEvent((characterId, newState, lookVector) => {
+			const heldItem = this.characterItemManagers.get(characterId);
 			if (heldItem) {
 				heldItem.OnNewState(newState, lookVector);
 			}
@@ -136,6 +136,21 @@ export class EntityItemManager {
 		Airship.characters.onCharacterDespawned.Connect((character) => {
 			this.Log("EntityDespawn: " + character.id);
 			this.DestroyItemManager(character);
+		});
+
+		CoreNetwork.ClientToServer.SetHeldItemState.server.OnClientEvent((player, newState, lookVector) => {
+			if (Game.IsHosting()) return;
+			if (!player.character) return;
+			const heldItem = this.characterItemManagers.get(player.character.id);
+			if (heldItem) {
+				heldItem.OnNewState(newState, lookVector);
+				CoreNetwork.ServerToClient.HeldItemStateChanged.server.FireExcept(
+					player,
+					player.character.id,
+					newState,
+					lookVector,
+				);
+			}
 		});
 
 		//Listen to state changes triggered by client
