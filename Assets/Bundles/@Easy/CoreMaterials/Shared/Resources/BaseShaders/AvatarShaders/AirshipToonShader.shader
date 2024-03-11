@@ -17,7 +17,6 @@ Shader "Airship/AirshipToon"
         _SaturationMod("Saturation Increase", float) = .5
         _AmbientMod("Ambient Mod", float) = .1
         _OverrideStrength("Override Color Strength", Range(0,1)) = 0
-        [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
 
         [Toggle] INSTANCE_DATA("Has Baked Instance Data", Float) = 0.0
     }
@@ -40,7 +39,6 @@ Shader "Airship/AirshipToon"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile _ INSTANCE_DATA_ON
-            #pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
             #pragma multi_compile _ VERTEX_LIGHT_ON
 
             //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
@@ -212,13 +210,10 @@ Shader "Airship/AirshipToon"
 
                 //POINT LIGHTS
                 float4 pointLightColor = float4(0,0,0,0);
-                #ifdef NUM_LIGHTS_LIGHTS1
-                pointLightColor.rgb = CalculatePointLightForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
-                #endif
-                #ifdef NUM_LIGHTS_LIGHTS2
-                pointLightColor.rgb = CalculatePointLightForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
-                pointLightColor.rgb += CalculatePointLightForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
-                #endif
+
+                //Do point lighting
+                pointLightColor.rgb = CalculatePointLightsForPoint(i.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
+
                 float pointLightDelta = saturate(pointLightColor.r+pointLightColor.g+pointLightColor.b);
 
                 //Combine all lighting

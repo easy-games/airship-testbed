@@ -14,6 +14,7 @@
     float EXPLICIT_MAPS;
     float EMISSIVE;
     float RIM_LIGHT;
+    float SHADOW_COLOR;
         
     //Unity stuff
     float4x4 unity_MatrixVP;
@@ -510,7 +511,7 @@
         half3 sunIntensity = half3(0, 0, 0);
 
         //Diffuse colors
-        diffuseColor *= input.baseColor;
+        //diffuseColor *= input.baseColor;
         half3 ibl = globalSunColor;
 
         //Direct sun + specular
@@ -523,33 +524,29 @@
         //Sun Rim
         half3 sunRim = (NoL * imageSpecular * specularColor);
         //Final sun term
-        half3 sunComposite = sunShine * diffuseColor + ((sunSpecular + sunRim) * globalSunBrightness);
+        half3 sunComposite = sunShine * (diffuseColor * input.baseColor) + ((sunSpecular + sunRim) * globalSunBrightness);
         //Mask the sun based on the shadows
         half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
 
         //SH ambient
-        half3 ambientLight = (complexAmbientSample * globalAmbientTint);
+        half3 ambientLight = (complexAmbientSample * globalAmbientTint * diffuseColor);
+        
+        //If we're using separate shadow tints NPR
+#ifdef USE_SHADOW_COLOR_ON
+        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * input.baseColor), sunShadowMask);
+#else
+        half3 finalAmbient = ambientLight * input.baseColor;
+#endif
 
-        half3 finalAmbient = (ambientLight * diffuseColor);
-
-        //Composite sun and ambient together
-        half3 compositeSunAmbient = (finalSun + finalAmbient);
-        //Pick which tint color to use based on the sun shadow mask
-        finalColor = lerp(compositeSunAmbient * _ShadowColor, compositeSunAmbient * input.color.rgb, sunShadowMask);
+        finalColor = finalSun + finalAmbient;
 
 
         //Start messing with the final color in fun ways
         //Ambient occlusion term
         finalColor *= ambientOcclusionMask;
 
-        //Point lights
-#ifdef NUM_LIGHTS_LIGHTS1
-        finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]) * pointLight0Mask;
-#endif
-#ifdef NUM_LIGHTS_LIGHTS2
-        finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]) * pointLight0Mask;
-        finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]) * pointLight1Mask;
-#endif
+        //Do point lighting
+       // finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
 
         //Rim light
 #ifdef RIM_LIGHT_ON

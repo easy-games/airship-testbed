@@ -8,7 +8,7 @@ Shader "Airship/Skybox"
     }
 
         SubShader{
-            Tags { "Queue" = "Background" "RenderType" = "Background" "PreviewType" = "Skybox" }
+            Tags { "Queue" = "Background"   }
             Cull Off ZWrite Off Fog { Mode Off }
 
                 Pass {

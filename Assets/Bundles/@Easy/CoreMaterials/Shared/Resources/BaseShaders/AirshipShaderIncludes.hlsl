@@ -13,11 +13,11 @@ half3 globalAmbientLight[9];//Global ambient values
 half3 globalAmbientTint;    //last second RGB tint of the ambient SH
 half globalAmbientOcclusion; //For anything that calc's AO
 
-//Point Lights
-float NUM_LIGHTS; //Required for dynamic lights
-half4 globalDynamicLightColor[2];
-float4 globalDynamicLightPos[2];
-half globalDynamicLightRadius[2];
+//Point Lights - these are propertyBlocked onto each material affected
+int globalDynamicLightCount;
+half4 globalDynamicLightColor[4];
+float4 globalDynamicLightPos[4];
+half globalDynamicLightRadius[4];
 
 //Fog///////////////
 float globalFogStart;
@@ -152,23 +152,31 @@ half GetShadow(float4 shadowCasterPos0, float4 shadowCasterPos1, half3 worldNorm
     }
 }
 
-half3 CalculatePointLightForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector, float3 lightPos, half4 lightColor, half lightRange)
+half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector)
 {
-    float3 lightVec = lightPos - worldPos;
-    half distance = length(lightVec);
-    half3 lightDir = normalize(lightVec);
-
-    float RoL = max(0, dot(reflectionVector, lightDir));
-    float NoL = max(0, dot(normal, lightDir));
-
-    float distanceNorm = saturate(distance / lightRange);
-    float falloff = pow(distanceNorm, 2.0);
-    falloff = 1.0 - falloff;
+	half3 result = half3(0, 0, 0);
     
-    falloff *= NoL;
+    for (int i = 0; i < globalDynamicLightCount; i++)
+    {
+        float3 lightPos = globalDynamicLightPos[i];
+        half4 lightColor = globalDynamicLightColor[i];
+        half lightRange = globalDynamicLightRadius[i];
 
-    half3 result = falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
+        float3 lightVec = lightPos - worldPos;
+        half distance = length(lightVec);
+        half3 lightDir = normalize(lightVec);
 
+        float RoL = max(0, dot(reflectionVector, lightDir));
+        float NoL = max(0, dot(normal, lightDir));
+
+        float distanceNorm = saturate(distance / lightRange);
+        float falloff = pow(distanceNorm, 2.0);
+        falloff = 1.0 - falloff;
+
+        falloff *= NoL;
+
+        result += falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
+    }
     return result;
 }
 

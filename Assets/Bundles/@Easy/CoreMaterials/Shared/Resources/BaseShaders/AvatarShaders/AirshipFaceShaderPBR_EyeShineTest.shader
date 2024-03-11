@@ -23,7 +23,6 @@ Shader "Airship/AirshipFaceShaderPBR"
         [KeywordEnum(OFF, LOCAL, WORLD)] TRIPLANAR_STYLE("Triplanar", Float) = 0.0
         _TriplanarScale("TriplanarScale", Range(0.0, 16)) = 0.0
 
-        [KeywordEnum(LIGHTS0, LIGHTS1, LIGHTS2)] NUM_LIGHTS("NumLights", Float) = 0.0
         [Toggle] SLIDER_OVERRIDE("Use Metal/Rough Sliders", Float) = 1.0
 
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
@@ -60,7 +59,6 @@ Shader "Airship/AirshipFaceShaderPBR"
 
             #include "../AirshipShaderIncludes.hlsl"
                 
-            #pragma multi_compile NUM_LIGHTS_LIGHTS0 NUM_LIGHTS_LIGHTS1 NUM_LIGHTS_LIGHTS2
             #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
             #pragma multi_compile _ SLIDER_OVERRIDE_ON
             #pragma multi_compile _ VERTEX_LIGHT_ON
@@ -75,7 +73,6 @@ Shader "Airship/AirshipFaceShaderPBR"
             #pragma fragment fragFunction
 
             //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
-            float VERTEX_LIGHT;  
             float SLIDER_OVERRIDE;
             float POINT_FILTER;
             float EXPLICIT_MAPS;
@@ -631,19 +628,13 @@ Shader "Airship/AirshipFaceShaderPBR"
                 //Composite sun and ambient together
                 finalColor = (finalSun + finalAmbient);
                 
-
                 //Start messing with the final color in fun ways
                 //Ambient occlusion term
                 finalColor *= ambientOcclusionMask;
-         
-                //Point lights
-        #ifdef NUM_LIGHTS_LIGHTS1
-                finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]) * pointLight0Mask;
-        #endif
-        #ifdef NUM_LIGHTS_LIGHTS2
-                finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]) * pointLight0Mask;
-                finalColor.xyz += CalculatePointLightForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]) * pointLight1Mask;
-        #endif
+        
+                //Do point lighting
+                finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
+
 
                 //Rim light
         #ifdef RIM_LIGHT_ON
