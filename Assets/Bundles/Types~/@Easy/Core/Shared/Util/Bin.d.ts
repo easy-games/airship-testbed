@@ -41,7 +41,12 @@ export declare class Bin {
     Extend(): Bin;
     /** Clean up all tracked objects. */
     Clean(): void;
-    /** Alias for `Bin.Clean()`. */
+    /**
+     * @deprecated use {@link Clean} instead.
+     *
+     * Alias for `Bin.Clean()`.
+     *
+     **/
     Destroy(): void;
     private cleanupObj;
 }

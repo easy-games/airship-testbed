@@ -1,5 +1,5 @@
 export declare class CoreLogger {
-    static LogInternal(msg: unknown): void;
-    static WarnInternal(msg: unknown): void;
-    static ErrorInternal(msg: unknown): void;
+    static Log(msg: unknown): void;
+    static Warn(msg: unknown): void;
+    static Error(msg: unknown): void;
 }
