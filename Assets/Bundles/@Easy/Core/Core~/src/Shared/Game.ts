@@ -20,6 +20,7 @@ export class Game {
 	public static localPlayer: Player = undefined as unknown as Player;
 	public static localPlayerLoaded = false;
 	public static onLocalPlayerLoaded = new Signal<void>();
+	public static onDeviceOrientationChanged = new Signal<"landscape" | "portrait">();
 
 	public static WaitForLocalPlayerLoaded(): void {
 		if (this.localPlayerLoaded) return;
@@ -115,5 +116,20 @@ export class Game {
 
 	public static IsSimulateMobile(): boolean {
 		return simulateMobile;
+	}
+
+	public static IsLandscape(): boolean {
+		return Screen.width >= Screen.height;
+	}
+
+	public static IsPortrait(): boolean {
+		return !this.IsLandscape();
+	}
+
+	public static GetNotchHeight(): number {
+		if (Game.IsMobile()) {
+			return 35;
+		}
+		return 0;
 	}
 }

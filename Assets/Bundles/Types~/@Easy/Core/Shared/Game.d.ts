@@ -14,6 +14,7 @@ export declare class Game {
     static localPlayer: Player;
     static localPlayerLoaded: boolean;
     static onLocalPlayerLoaded: Signal<void>;
+    static onDeviceOrientationChanged: Signal<"landscape" | "portrait">;
     static WaitForLocalPlayerLoaded(): void;
     static BroadcastMessage(message: string): void;
     static coreContext: CoreContext;
@@ -51,4 +52,7 @@ export declare class Game {
     static IsWindows(): boolean;
     static IsMac(): boolean;
     static IsSimulateMobile(): boolean;
+    static IsLandscape(): boolean;
+    static IsPortrait(): boolean;
+    static GetNotchHeight(): number;
 }

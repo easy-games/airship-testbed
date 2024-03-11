@@ -4,6 +4,7 @@ import SettingsTabButton from "./SettingsTabButton";
 
 export default class SettingsSidebar extends AirshipBehaviour {
 	public gameHomeTab!: GameObject;
+	public tabs!: RectTransform;
 
 	private tabBtns: SettingsTabButton[] = [];
 
@@ -32,13 +33,14 @@ export default class SettingsSidebar extends AirshipBehaviour {
 				other.SetSelected(true);
 				other.tab.SetActive(true);
 
-				const rect = other.tab.GetComponent<RectTransform>();
-				rect.anchoredPosition = new Vector2(0, -10);
-				rect.TweenAnchoredPosition(new Vector2(0, 0), 0.1);
+				// const rect = other.tab.GetComponent<RectTransform>();
+				// rect.anchoredPosition = new Vector2(0, -10);
+				// rect.TweenAnchoredPosition(new Vector2(0, 0), 0.1);
 			} else {
 				other.SetSelected(false);
 				other.tab.SetActive(false);
 			}
 		}
+		Bridge.UpdateLayout(this.tabs, true);
 	}
 }

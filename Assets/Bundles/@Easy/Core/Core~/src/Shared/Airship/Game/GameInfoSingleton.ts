@@ -16,7 +16,7 @@ export class GameInfoSingleton implements OnStart {
 		if (res.success) {
 			return DecodeJSON(res.data) as GameDto;
 		} else {
-			CoreLogger.WarnInternal("Failed to parse game data: " + res.error);
+			CoreLogger.Warn("Failed to parse game data: " + res.error);
 		}
 	}
 }

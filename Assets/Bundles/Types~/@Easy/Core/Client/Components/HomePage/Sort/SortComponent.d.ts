@@ -5,11 +5,17 @@ export default class SortComponent extends AirshipBehaviour {
     content: Transform;
     gamePrefab: GameObject;
     pageScrollRect?: ScrollRect;
+    gridLayoutGroup: GridLayoutGroup;
+    layoutElement: LayoutElement;
+    private bin;
     Awake(): void;
+    OnEnable(): void;
+    OnDisable(): void;
     Start(): void;
     OnDestroy(): void;
     Init(title: string): void;
     Clear(): void;
+    UpdatePreferredHeight(): void;
     SetGames(games: GameDto[]): void;
     SetTitle(title: string): void;
 }

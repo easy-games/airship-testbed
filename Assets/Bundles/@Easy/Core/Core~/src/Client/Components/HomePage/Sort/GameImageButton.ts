@@ -10,14 +10,14 @@ import { EncodeJSON } from "@Easy/Core/Shared/json";
 import HomePageGameComponent from "./HomePageGameComponent";
 
 export default class GameImageButton extends AirshipBehaviour {
-	public gameComponentGO!: GameObject;
+	public gameComponentGO?: GameObject;
 	private bin = new Bin();
 
 	override Start(): void {
 		const rect = this.gameObject.GetComponent<RectTransform>();
 		let startPos: Vector3 | undefined;
 
-		const gameComponent = this.gameComponentGO.GetAirshipComponent<HomePageGameComponent>()!;
+		const gameComponent = this.gameComponentGO?.GetAirshipComponent<HomePageGameComponent>();
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (dir, btn) => {
@@ -40,7 +40,7 @@ export default class GameImageButton extends AirshipBehaviour {
 							onClick: () => {},
 						},
 					];
-					if (gameComponent.HasAdminPermissions()) {
+					if (gameComponent?.HasAdminPermissions()) {
 						actions.push({
 							text: "Restart Servers",
 							onClick: () => {
