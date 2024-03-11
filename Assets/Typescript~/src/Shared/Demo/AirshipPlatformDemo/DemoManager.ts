@@ -1,9 +1,10 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
+import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
@@ -18,6 +19,42 @@ export default class DemoManager extends AirshipBehaviour {
 	public cleanupOnStart!: GameObject[];
 
 	override Start(): void {
+		ItemUtil.RegisterItem("WoodSword", {
+			displayName: "Wood Sword",
+			usable: {
+				startUpInSeconds: 0,
+				minChargeSeconds: 0,
+				maxChargeSeconds: 0,
+				cooldownSeconds: 0.25,
+				canHoldToUse: false,
+				onUseSound: [
+					"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
+					"Shared/Resources/Sound/s_Sword_Swing_Wood_02.wav",
+					"Shared/Resources/Sound/s_Sword_Swing_Wood_03.wav",
+					"Shared/Resources/Sound/s_Sword_Swing_Wood_04.wav",
+				],
+				onUseSoundVolume: 0.3,
+			},
+			accessoryPaths: ["Shared/Resources/Accessories/Weapons/Swords/WoodSword/wood_sword.prefab"],
+			image: "Shared/Resources/ItemRenders/wood_sword.png",
+			melee: {
+				instantDamage: true,
+				// hitDelay: 0.1345,
+				onHitPrefabPath: "Shared/Resources/Yos/Prefab/SwordHitVFX.prefab",
+				onUseVFX: [
+					"Shared/Resources/Yos/Prefab/SwordSwingVFX01.prefab",
+					"Shared/Resources/Yos/Prefab/SwordSwingVFX02.prefab",
+				],
+				onUseVFX_FP: [
+					"Shared/Resources/Yos/Prefab/SwordSwingVFX_FP01.prefab",
+					"Shared/Resources/Yos/Prefab/SwordSwingVFX_FP02.prefab",
+				],
+				canHitMultipleTargets: false,
+				damageType: DamageType.SWORD,
+				damage: 18,
+			},
+		});
+
 		if (RunUtil.IsServer()) {
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
@@ -72,6 +109,6 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 
 		const character = player.SpawnCharacter(this.spawnPosition.transform.position);
-		character.inventory.AddItem(new ItemStack(CoreItemType.WOOD_SWORD));
+		character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 }

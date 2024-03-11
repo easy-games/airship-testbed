@@ -1,9 +1,9 @@
-﻿import { Dependency } from "Shared/Flamework";
-import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+﻿import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
+import { Dependency } from "Shared/Flamework";
 import { MeleeItemDef } from "Shared/Item/ItemDefinitionTypes";
 import { Bin } from "Shared/Util/Bin";
 import { CSArrayUtil } from "Shared/Util/CSArrayUtil";
@@ -45,7 +45,11 @@ export class MeleeHeldItem extends HeldItem {
 			this.character.IsLocalCharacter() && Dependency<LocalCharacterSingleton>().IsFirstPerson();
 		if (meleeData.onUseVFX) {
 			if (isFirstPerson) {
-				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(meleeData.onUseVFX_FP[this.animationIndex]);
+				this.currentUseVFX = EffectsManager.SpawnPrefabEffect(
+					meleeData.onUseVFX_FP[this.animationIndex],
+					Vector3.zero,
+					Vector3.zero,
+				);
 				if (this.currentUseVFX) {
 					//Spawn first person effect on the spine
 					this.currentUseVFX.transform.SetParent(Dependency<ViewmodelController>().rig.spineChest);
@@ -54,7 +58,7 @@ export class MeleeHeldItem extends HeldItem {
 				}
 			} else {
 				//Spawn third person effect on the root
-				this.currentUseVFX = EffectsManager.SpawnBundleEffectById(
+				this.currentUseVFX = EffectsManager.SpawnPrefabEffect(
 					meleeData.onUseVFX[this.animationIndex],
 					this.character.model.transform.position,
 					this.character.model.transform.eulerAngles,

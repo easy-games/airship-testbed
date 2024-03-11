@@ -6,7 +6,7 @@ import { Dependency } from "Shared/Flamework";
 import { Player } from "Shared/Player/Player";
 
 /** Default generator item type. */
-const DEFAULT_ITEM_TYPE = CoreItemType.WOOD_SWORD;
+const DEFAULT_ITEM_TYPE = CoreItemType.STONE;
 /** Default generator spawn rate. */
 const DEFAULT_SPAWN_RATE = 2;
 /** Default generator stack limit. */

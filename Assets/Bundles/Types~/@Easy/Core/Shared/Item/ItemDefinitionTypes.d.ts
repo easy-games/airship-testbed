@@ -1,7 +1,6 @@
 import { PlaySoundConfig } from "../Audio/AudioManager";
 import { Duration } from "../Util/Duration";
 import { DamageType } from "../Damage/DamageType";
-import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { CoreItemType } from "./CoreItemType";
 export interface TillableBlockDef {
@@ -48,7 +47,7 @@ export interface AmmoDef {
     onHitEntitySound?: SoundDef[];
     onHitGroundSound?: SoundDef[];
     prefabPath: string;
-    onHitVFXTemplate: AllBundleItems;
+    onHitVFXTemplate: string;
 }
 export interface ProjectileLauncherDef {
     ammoItemType: CoreItemType;
@@ -173,8 +172,8 @@ export interface MeleeItemDef {
     damage: number;
     instantDamage?: boolean;
     hitDelay?: number;
-    onUseVFX: AllBundleItems[];
-    onUseVFX_FP: AllBundleItems[];
+    onUseVFX: string[];
+    onUseVFX_FP: string[];
     /**
      * If undefined, default effects will be used.
      */

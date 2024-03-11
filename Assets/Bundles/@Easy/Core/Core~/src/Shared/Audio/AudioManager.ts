@@ -151,7 +151,7 @@ export class AudioManager {
 		if (StringUtils.includes(sound, "@")) {
 			return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
 		}
-		return this.LoadFullPathAudioClip(this.soundFolderPath + this.FriendlyPath(sound));
+		return this.LoadFullPathAudioClip(this.FriendlyPath(sound));
 	}
 
 	public static LoadFullPathAudioClip(fullPath: string): AudioClip | undefined {

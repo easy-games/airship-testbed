@@ -1,11 +1,10 @@
 import ObjectUtils from "@easy-games/unity-object-utils";
-import { DamageType } from "Shared/Damage/DamageType";
 import { CoreSound } from "Shared/Sound/CoreSound";
 import { PhysicsUtil } from "Shared/Util/PhysicsUtil";
 import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { CoreItemType } from "./CoreItemType";
-import { BlockArchetype, HoldConfig, ItemDef, MeleeItemDef, UsableHeldItemDef } from "./ItemDefinitionTypes";
+import { BlockArchetype, HoldConfig, ItemDef, UsableHeldItemDef } from "./ItemDefinitionTypes";
 
 const coreSoundPath = "@Easy/Core/Shared/Resources/Sound/";
 const CoreAnim = (...p: string[]) => {
@@ -39,20 +38,12 @@ const swordUsable: UsableHeldItemDef = {
 	cooldownSeconds: 0.25,
 	canHoldToUse: false,
 	onUseSound: [
-		coreSoundPath + "s_Sword_Swing_Wood_01.wav",
-		coreSoundPath + "s_Sword_Swing_Wood_02.wav",
-		coreSoundPath + "s_Sword_Swing_Wood_03.wav",
-		coreSoundPath + "s_Sword_Swing_Wood_04.wav",
+		"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
+		"Shared/Resources/Sound/s_Sword_Swing_Wood_02.wav",
+		"Shared/Resources/Sound/s_Sword_Swing_Wood_03.wav",
+		"Shared/Resources/Sound/s_Sword_Swing_Wood_04.wav",
 	],
 	onUseSoundVolume: 0.3,
-	onUseAnimViewmodel: [
-		AllBundleItems.ItemSword_FirstPerson_Swing01 as string,
-		AllBundleItems.ItemSword_FirstPerson_Swing02 as string,
-	],
-	onUseAnimWorldmodel: [
-		AllBundleItems.ItemSword_ThirdPerson_Swing01 as string,
-		AllBundleItems.ItemSword_ThirdPerson_Swing02 as string,
-	],
 };
 const bigSwordUsable: UsableHeldItemDef = {
 	...swordUsable,
@@ -86,16 +77,16 @@ const bigSwordViewModel: HoldConfig = {
 	},
 };
 
-const swordMelee: MeleeItemDef = {
-	damage: 10,
-	instantDamage: true,
-	// hitDelay: 0.1345,
-	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit as string,
-	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
-	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],
-	canHitMultipleTargets: false,
-	damageType: DamageType.SWORD,
-};
+// const swordMelee: MeleeItemDef = {
+// 	damage: 10,
+// 	instantDamage: true,
+// 	// hitDelay: 0.1345,
+// 	onHitPrefabPath: AllBundleItems.ItemSword_Prefabs_OnHit as string,
+// 	onUseVFX: [AllBundleItems.ItemSword_Prefabs_OnSwing01, AllBundleItems.ItemSword_Prefabs_OnSwing02],
+// 	onUseVFX_FP: [AllBundleItems.ItemSword_Prefabs_OnSwingFP01, AllBundleItems.ItemSword_Prefabs_OnSwingFP02],
+// 	canHitMultipleTargets: false,
+// 	damageType: DamageType.SWORD,
+// };
 const pickaxeUsable: Partial<UsableHeldItemDef> = {
 	onUseAnimViewmodel: CoreAnim("FP_Sword_Use"),
 	onUseAnimWorldmodel: CoreAnim("TP_Sword_Use"),
@@ -618,20 +609,20 @@ export const CoreItemDefinitions: {
 	// },
 
 	////SWORDS
-	[CoreItemType.WOOD_SWORD]: {
-		displayName: "Wood Sword",
-		usable: {
-			...swordUsable,
-		},
-		holdConfig: {
-			...swordViewModel,
-		},
-		accessoryPaths: [AccPath(CoreItemType.WOOD_SWORD, "Weapons/Swords/WoodSword")],
-		melee: {
-			...swordMelee,
-			damage: 18,
-		},
-	},
+	// [CoreItemType.WOOD_SWORD]: {
+	// 	displayName: "Wood Sword",
+	// 	usable: {
+	// 		...swordUsable,
+	// 	},
+	// 	holdConfig: {
+	// 		...swordViewModel,
+	// 	},
+	// 	accessoryPaths: [AccPath(CoreItemType.WOOD_SWORD, "Weapons/Swords/WoodSword")],
+	// 	melee: {
+	// 		...swordMelee,
+	// 		damage: 18,
+	// 	},
+	// },
 	// [ItemType.STONE_SWORD]: {
 	// 	displayName: "Stone Sword",
 	// 	usable: {
