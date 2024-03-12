@@ -546,7 +546,7 @@
         finalColor *= ambientOcclusionMask;
 
         //Do point lighting
-       // finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
+        finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
 
         //Rim light
 #ifdef RIM_LIGHT_ON
