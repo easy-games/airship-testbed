@@ -9,6 +9,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     buttonGo: GameObject;
     orgImage: CloudImage;
     authorText: TMP_Text;
+    shadow: TrueShadow;
     gameDto: GameDto;
     private redirectDrag;
     private bin;

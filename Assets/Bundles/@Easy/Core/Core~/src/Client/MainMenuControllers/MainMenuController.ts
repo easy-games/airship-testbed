@@ -53,6 +53,7 @@ export class MainMenuController implements OnStart {
 			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
 			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
 			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
+			[MainMenuPageType.Friends, this.refs.GetValue("Pages", "Friends").GetComponent<MainMenuPageComponent>()],
 		]);
 
 		this.avatarView = Object.Instantiate(

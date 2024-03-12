@@ -1,4 +1,5 @@
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { TransferController } from "Client/MainMenuControllers/Transfer/TransferController";
 import DateParser from "Shared/DateParser";
 import { Dependency } from "Shared/Flamework";
@@ -21,6 +22,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public orgImage!: CloudImage;
 	public authorText!: TMP_Text;
 
+	public shadow!: TrueShadow;
+
 	public gameDto!: GameDto;
 
 	@SerializeField()
@@ -28,7 +31,18 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	override Start(): void {}
+	override Start(): void {
+		const mainMenu = Dependency<MainMenuSingleton>();
+		this.bin.Add(
+			mainMenu.ObserveScreenSizeType((size) => {
+				if (size === "sm") {
+					this.shadow.enabled = false;
+				} else {
+					this.shadow.enabled = true;
+				}
+			}),
+		);
+	}
 
 	override OnDestroy(): void {}
 
@@ -56,7 +70,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		{
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
+			let cloudImage = this.gameObject.transform.GetChild(1).GetComponent<CloudImage>();
 			cloudImage.url = url;
 			cloudImage.StartDownload();
 			const downloadConn = cloudImage.OnFinishedLoading((success) => {

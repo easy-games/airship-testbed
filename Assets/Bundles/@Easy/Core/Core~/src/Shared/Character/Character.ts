@@ -57,16 +57,13 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public LateUpdate(dt: number): void {
-		const vec = this.movement.GetLookVector();
-
-		// -10 is an offset to account for players naturally looking down at horizon
-		let degX = -math.deg(vec.y) - 10;
-
-		const spinEul = this.spineBone.rotation.eulerAngles;
-		this.spineBone.rotation = Quaternion.Euler(degX * 0.3, spinEul.y, spinEul.z);
-
-		const neckEul = this.headBone.rotation.eulerAngles;
-		this.headBone.rotation = Quaternion.Euler(degX * 0.8, neckEul.y, neckEul.z);
+		// const vec = this.movement.GetLookVector();
+		// // -10 is an offset to account for players naturally looking down at horizon
+		// let degX = -math.deg(vec.y) - 10;
+		// const spinEul = this.spineBone.rotation.eulerAngles;
+		// this.spineBone.rotation = Quaternion.Euler(degX * 0.3, spinEul.y, spinEul.z);
+		// const neckEul = this.headBone.rotation.eulerAngles;
+		// this.headBone.rotation = Quaternion.Euler(degX * 0.8, neckEul.y, neckEul.z);
 	}
 
 	public OnEnable(): void {

@@ -97,9 +97,7 @@ export class ChatController implements OnStart {
 		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>();
 		this.content.gameObject.ClearChildren();
 
-		print("checking chat...");
 		if (Game.IsMobile()) {
-			print("mobile!");
 			const wrapperRect = this.wrapper.GetComponent<RectTransform>();
 			wrapperRect.anchorMin = new Vector2(0, 1);
 			wrapperRect.anchorMax = new Vector2(0, 1);

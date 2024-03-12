@@ -36,7 +36,7 @@ export const CoreNetwork = {
 			RequestCharacters: new RemoteFunction<[], CharacterDto[]>(),
 		},
 		SendChatMessage: new RemoteEvent<[text: string]>(),
-		SetHeldItemState: new RemoteEvent<[entityId: number, heldItemState: HeldItemState]>(),
+		SetHeldItemState: new RemoteEvent<[heldItemState: HeldItemState, lookVector: Vector3]>(),
 
 		ChangedOutfit: new RemoteEvent<[]>(),
 
@@ -117,7 +117,7 @@ export const CoreNetwork = {
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
 		/** Fired when the current selected items state changes on an entity*/
-		HeldItemStateChanged: new RemoteEvent<[entityId: number, state: HeldItemState, lookVector: Vector3]>(),
+		HeldItemStateChanged: new RemoteEvent<[characterId: number, state: HeldItemState, lookVector: Vector3]>(),
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>(),
 		BlockGroupPlace: new RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number]>(),
 

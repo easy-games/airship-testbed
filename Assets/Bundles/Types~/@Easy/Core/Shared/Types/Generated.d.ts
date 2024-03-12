@@ -3050,6 +3050,21 @@ declare const enum Unit {
     Points = 3,
     Picas = 4,
 }
+declare const enum Corner {
+    UpperLeft = 0,
+    UpperRight = 1,
+    LowerLeft = 2,
+    LowerRight = 3,
+}
+declare const enum Axis {
+    Horizontal = 0,
+    Vertical = 1,
+}
+declare const enum Constraint {
+    Flexible = 0,
+    FixedColumnCount = 1,
+    FixedRowCount = 2,
+}
 
     
 interface RaycastHit {
@@ -16837,6 +16852,45 @@ interface CanvasScaler extends UIBehaviour {
     dynamicPixelsPerUnit: number;
 
 
+
+}
+    
+interface GridLayoutGroup extends LayoutGroup {
+    startCorner: Corner;
+    startAxis: Axis;
+    cellSize: Vector2;
+    spacing: Vector2;
+    constraint: Constraint;
+    constraintCount: number;
+
+
+    CalculateLayoutInputHorizontal(): void;
+    CalculateLayoutInputVertical(): void;
+    SetLayoutHorizontal(): void;
+    SetLayoutVertical(): void;
+
+}
+    
+interface ILayoutIgnorer {
+    ignoreLayout: boolean;
+
+
+
+}
+    
+interface LayoutElement extends UIBehaviour, ILayoutIgnorer, ILayoutElement {
+    ignoreLayout: boolean;
+    minWidth: number;
+    minHeight: number;
+    preferredWidth: number;
+    preferredHeight: number;
+    flexibleWidth: number;
+    flexibleHeight: number;
+    layoutPriority: number;
+
+
+    CalculateLayoutInputHorizontal(): void;
+    CalculateLayoutInputVertical(): void;
 
 }
 

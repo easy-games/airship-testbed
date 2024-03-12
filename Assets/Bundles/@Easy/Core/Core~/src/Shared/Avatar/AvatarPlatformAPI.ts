@@ -56,9 +56,9 @@ export class AvatarPlatformAPI {
 		this.Log("EquipAvatarOutfit");
 		let res = InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`));
 		if (res.success) {
-			print("EQUIPPED OUTFIT: " + DecodeJSON<OutfitDto>(res.data).name);
+			// print("EQUIPPED OUTFIT: " + DecodeJSON<OutfitDto>(res.data).name);
 		} else {
-			CoreLogger.LogInternal("Failed to equip outfit: " + res.error);
+			CoreLogger.Warn("Failed to equip outfit: " + res.error);
 		}
 	}
 
@@ -99,10 +99,10 @@ export class AvatarPlatformAPI {
 			}),
 		);
 		if (res.success) {
-			print("Outfit Saved: " + res.data);
+			// print("Outfit Saved: " + res.data);
 			return DecodeJSON<OutfitDto>(res.data);
 		} else {
-			error("Error Saving: " + res.error);
+			CoreLogger.Error("Error Saving: " + res.error);
 		}
 	}
 

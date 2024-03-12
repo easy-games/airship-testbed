@@ -3,6 +3,7 @@ import DateParser from "@Easy/Core/Shared/DateParser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
+import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
 
@@ -11,6 +12,20 @@ export default class GameSearchResult extends SearchResult {
 	public gameName!: TMP_Text;
 	public gameText!: TMP_Text;
 	public list!: RectTransform;
+	public titlePadding!: RectTransform;
+
+	public OnEnable(): void {
+		const mainMenu = Dependency<MainMenuSingleton>();
+		this.bin.Add(
+			mainMenu.onSizeTypeChanged.Connect((size) => {
+				this.UpdateDescriptionText(this.searchResult);
+			}),
+		);
+	}
+
+	public OnDisable(): void {
+		this.bin.Clean();
+	}
 
 	public Init(searchResult: SearchResultDto): void {
 		super.Init(searchResult);
@@ -18,17 +33,7 @@ export default class GameSearchResult extends SearchResult {
 		const gameDto = searchResult.game!;
 
 		this.gameName.text = gameDto.name;
-
-		let playerCountText = "";
-		if (gameDto.liveStats?.playerCount ?? 0 > 0) {
-			playerCountText = "<color=#23F677>  •  " + gameDto.liveStats!.playerCount! + " online</color>";
-		}
-		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
-		const timeDiff = os.time() - timeUpdatedSeconds;
-		this.gameText.text =
-			`${gameDto.organization.name}  •  ${playerCountText}  •  updated ` +
-			TimeUtil.FormatTimeAgo(timeDiff, { includeAgo: true }) +
-			`  •  ${gameDto.plays} plays`;
+		this.UpdateDescriptionText(searchResult);
 
 		Bridge.UpdateLayout(this.list, false);
 
@@ -50,6 +55,33 @@ export default class GameSearchResult extends SearchResult {
 				Bridge.DisconnectEvent(downloadConn);
 			});
 		}
+	}
+
+	public UpdateDescriptionText(searchResult: SearchResultDto): void {
+		const size = Dependency<MainMenuSingleton>().sizeType;
+		const gameDto = searchResult.game!;
+
+		let playerCountText = "";
+		if (gameDto.liveStats?.playerCount ?? 0 > 0) {
+			playerCountText = "<color=#23F677>  •  " + gameDto.liveStats!.playerCount! + " online</color>";
+		} else {
+			playerCountText = "  •  " + gameDto.plays + " plays";
+		}
+
+		if (size === "sm") {
+			playerCountText = playerCountText.sub(6);
+			this.gameText.text = `${playerCountText}`;
+			this.titlePadding.sizeDelta = new Vector2(10, 40);
+			return;
+		}
+		this.titlePadding.sizeDelta = new Vector2(24, 40);
+
+		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
+		const timeDiff = os.time() - timeUpdatedSeconds;
+		this.gameText.text =
+			`${gameDto.organization.name}${playerCountText}  •  updated ` +
+			TimeUtil.FormatTimeAgo(timeDiff, { includeAgo: true }) +
+			`  •  ${gameDto.plays} plays`;
 	}
 
 	override OnSubmit(): void {

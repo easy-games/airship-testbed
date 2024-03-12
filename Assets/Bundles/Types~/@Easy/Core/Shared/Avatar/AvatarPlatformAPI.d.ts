@@ -11,7 +11,7 @@ export declare class AvatarPlatformAPI {
     static EquipAvatarOutfit(outfitId: string): void;
     static GetAccessories(): AccessoryInstanceDto[] | undefined;
     static CreateDefaultAvatarOutfit(entityId: string, outfitId: string, name: string, skinColor: Color): OutfitDto;
-    static SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]): OutfitDto;
+    static SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]): OutfitDto | undefined;
     static SaveAvatarOutfit(outfit: OutfitDto): void;
     static LoadImage(fileId: string): AccessoryInstanceDto[];
     static UploadItemImage(classId: string, resourceId: string, filePath: string, fileSize: number): Promise<void>;

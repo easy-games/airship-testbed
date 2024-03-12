@@ -1,7 +1,6 @@
 import AvatarBackdropComponent, { AvatarBackdrop } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
-import Character from "@Easy/Core/Shared/Character/Character";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 
 export enum AvatarRenderSlot {
@@ -41,7 +40,6 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public Init() {
 		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
 		if (this.builder) {
-			print("Setting render layer to: " + this.gameObject.layer);
 			this.builder.thirdPersonLayer = this.gameObject.layer;
 			this.builder.firstPersonLayer = this.gameObject.layer;
 			this.builder.UpdateAccessoryLayers();
@@ -77,7 +75,6 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	 * @internal
 	 */
 	public RenderAllItems() {
-		print("RENDERING ALL ITEMS!");
 		this.renderTexture = new RenderTexture(
 			this.itemRenderSize.x,
 			this.itemRenderSize.y,

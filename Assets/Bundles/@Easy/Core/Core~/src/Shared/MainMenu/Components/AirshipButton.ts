@@ -16,8 +16,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	public clickType = 0;
 
 	@Header("Optional Variables")
-	// public disabledColor = ColorUtil.HexToColor("#2E3035");
-	public disabledColorHex = "#2E3136";
+	public disabledColorHex = "#2E3035";
 	public loadingIndicator?: GameObject;
 
 	public Awake(): void {

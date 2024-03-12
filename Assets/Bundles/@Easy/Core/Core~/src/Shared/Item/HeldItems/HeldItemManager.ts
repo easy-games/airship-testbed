@@ -3,6 +3,8 @@ import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCh
 import { Dependency } from "Shared/Flamework";
 import Inventory from "Shared/Inventory/Inventory";
 import { Bin } from "Shared/Util/Bin";
+import { CoreNetwork } from "../../CoreNetwork";
+import { Game } from "../../Game";
 import { CoreItemType } from "../CoreItemType";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { MeleeHeldItem } from "./Damagers/MeleeHeldItem";
@@ -141,6 +143,11 @@ export class HeldItemManager {
 		if (this.currentHeldItem === undefined) {
 			error("Trying to interact without any held item!");
 		}
+
+		if (Game.IsClient() && this.character.id === Game.localPlayer.character?.id) {
+			CoreNetwork.ClientToServer.SetHeldItemState.client.FireServer(itemState, lookVector);
+		}
+
 		this.currentItemState = itemState;
 		this.currentHeldItem.SetLookVector(lookVector);
 		switch (itemState) {

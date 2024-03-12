@@ -37,7 +37,7 @@ export const enum CoreItemType {
 	// ANDESITE = "@Easy/Core:ANDESITE",
 	// OAK_LEAF = "@Easy/Core:OAK_LEAF",
 
-	WOOD_SWORD = "@Easy/Core:WOOD_SWORD",
+	// WOOD_SWORD = "@Easy/Core:WOOD_SWORD",
 	// STONE_SWORD = "@Easy/Core:STONE_SWORD",
 	// IRON_SWORD = "@Easy/Core:IRON_SWORD",
 	// DIAMOND_SWORD = "@Easy/Core:DIAMOND_SWORD",

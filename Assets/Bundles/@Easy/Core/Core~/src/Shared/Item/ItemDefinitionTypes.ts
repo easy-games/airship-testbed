@@ -1,7 +1,6 @@
 import { PlaySoundConfig } from "Shared/Audio/AudioManager";
 import { Duration } from "Shared/Util/Duration";
 import { DamageType } from "../Damage/DamageType";
-import { AllBundleItems } from "../Util/ReferenceManagerResources";
 import { ArmorType } from "./ArmorType";
 import { CoreItemType } from "./CoreItemType";
 
@@ -51,7 +50,7 @@ export interface AmmoDef {
 	onHitEntitySound?: SoundDef[];
 	onHitGroundSound?: SoundDef[];
 	prefabPath: string;
-	onHitVFXTemplate: AllBundleItems;
+	onHitVFXTemplate: string;
 }
 
 export interface ProjectileLauncherDef {
@@ -196,8 +195,8 @@ export interface MeleeItemDef {
 	damage: number;
 	instantDamage?: boolean;
 	hitDelay?: number;
-	onUseVFX: AllBundleItems[];
-	onUseVFX_FP: AllBundleItems[];
+	onUseVFX: string[];
+	onUseVFX_FP: string[];
 	/**
 	 * If undefined, default effects will be used.
 	 */

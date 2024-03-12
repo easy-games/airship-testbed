@@ -13,12 +13,12 @@ import {
 export class EffectsManager {
 	public static SpawnPrefabEffect(
 		path: string,
-		worldPosition: Vector3,
-		worldRotation: Vector3,
+		worldPosition?: Vector3,
+		worldRotation?: Vector3,
 		destroyInSeconds = 5,
 	) {
 		const prefab = AssetBridge.Instance.LoadAsset<GameObject>(path);
-		return this.SpawnGameObjectAtPosition(prefab, worldPosition, worldRotation, destroyInSeconds);
+		return this.SpawnGameObjectAtPosition(prefab, worldPosition ?? Vector3.zero, worldRotation, destroyInSeconds);
 	}
 
 	public static SpawnRandomBundleEffectById(
