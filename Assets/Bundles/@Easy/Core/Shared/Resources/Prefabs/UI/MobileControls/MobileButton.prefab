@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -67.4171, y: -67.4171}
+  m_SizeDelta: {x: -62, y: -62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4790850273494487705
 CanvasRenderer:
@@ -113,8 +113,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -227, y: 290.64}
-  m_SizeDelta: {x: 160, y: 160}
+  m_AnchoredPosition: {x: -379, y: 183}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8242536099111667638
 CanvasRenderer:
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 80
+  radius: 60
   image: {fileID: 7255822544337377370}
 --- !u!114 &2706456920863389802
 MonoBehaviour:
@@ -244,6 +244,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators:
       - name: Header
         parameters:
@@ -261,9 +262,10 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
-      serializedValue: '#2E3136'
+      serializedValue: '#2E3035'
       serializedObject: {fileID: 0}
       modified: 0
     - name: loadingIndicator
@@ -274,6 +276,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 

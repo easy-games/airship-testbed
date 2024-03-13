@@ -118,12 +118,6 @@ interface VoxelWorldConstructor {
 	VoxelDataToBlockId(voxel: number);
 }
 
-interface Screen {
-	height: number;
-	width: number;
-}
-declare const Screen: Screen;
-
 declare const enum MobileJoystickPhase {
 	Began = 0,
 	Moved = 1,

@@ -109,9 +109,11 @@ export class AirshipInputSingleton implements OnStart {
 		]);
 
 		if (Game.coreContext === CoreContext.GAME) {
-			Airship.input.CreateMobileButton("Jump", new Vector2(-200, 290));
-			Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
-			Airship.input.CreateMobileButton("Crouch", new Vector2(-200, 690));
+			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
+			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
+			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
+				icon: "chevron-down-solid",
+			});
 		}
 	}
 

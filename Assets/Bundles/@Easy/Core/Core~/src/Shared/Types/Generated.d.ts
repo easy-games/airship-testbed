@@ -3065,6 +3065,21 @@ declare const enum Constraint {
     FixedColumnCount = 1,
     FixedRowCount = 2,
 }
+declare const enum FullScreenMode {
+    ExclusiveFullScreen = 0,
+    FullScreenWindow = 1,
+    MaximizedWindow = 2,
+    Windowed = 3,
+}
+declare const enum ScreenOrientation {
+    Unknown = 0,
+    Portrait = 1,
+    PortraitUpsideDown = 2,
+    LandscapeLeft = 3,
+    Landscape = 3,
+    LandscapeRight = 4,
+    AutoRotation = 5,
+}
 
     
 interface RaycastHit {
@@ -11897,6 +11912,7 @@ interface AirshipPackageDocument {
     forceLatestVersion: boolean;
 
 
+    IsDownloaded(): boolean;
 
 }
     
@@ -12512,7 +12528,6 @@ interface AccessoryComponent extends MonoBehaviour {
     GetServerInstanceId(): string;
     GetSlotNumber(): number;
     SetInstanceId(id: string): void;
-    ToString(): string;
 
 }
     
@@ -16893,4 +16908,83 @@ interface LayoutElement extends UIBehaviour, ILayoutIgnorer, ILayoutElement {
     CalculateLayoutInputVertical(): void;
 
 }
+    
+interface Screen {
+
+
+
+}
+    
+interface Resolution {
+    width: number;
+    height: number;
+    refreshRateRatio: RefreshRate;
+    refreshRate: number;
+
+
+    ToString(): string;
+
+}
+    
+interface RefreshRate {
+    numerator: number;
+    denominator: number;
+    value: number;
+
+
+    CompareTo(other: RefreshRate): number;
+    Equals(other: RefreshRate): boolean;
+    ToString(): string;
+
+}
+    
+interface DisplayInfo {
+    width: number;
+    height: number;
+    refreshRate: RefreshRate;
+    workArea: RectInt;
+    name: string;
+
+
+    Equals(other: DisplayInfo): boolean;
+
+}
+    
+interface ScreenConstructor {
+    width: number;
+    height: number;
+    dpi: number;
+    currentResolution: Resolution;
+    resolutions: CSArray<Resolution>;
+    msaaSamples: number;
+    fullScreen: boolean;
+    fullScreenMode: FullScreenMode;
+    safeArea: Rect;
+    cutouts: CSArray<Rect>;
+    autorotateToPortrait: boolean;
+    autorotateToPortraitUpsideDown: boolean;
+    autorotateToLandscapeLeft: boolean;
+    autorotateToLandscapeRight: boolean;
+    orientation: ScreenOrientation;
+    sleepTimeout: number;
+    brightness: number;
+    mainWindowPosition: Vector2Int;
+    mainWindowDisplayInfo: DisplayInfo;
+    GetResolution: CSArray<Resolution>;
+    showCursor: boolean;
+    lockCursor: boolean;
+
+    new(): Screen;
+
+
+    GetDisplayLayout(displayLayout: CSArray<DisplayInfo>): void;
+    MoveMainWindowTo(display: unknown, position: Vector2Int): AsyncOperation;
+    SetMSAASamples(numSamples: number): void;
+    SetResolution(width: number, height: number, fullscreenMode: FullScreenMode, preferredRefreshRate: RefreshRate): void;
+    SetResolution(width: number, height: number, fullscreenMode: FullScreenMode, preferredRefreshRate: number): void;
+    SetResolution(width: number, height: number, fullscreenMode: FullScreenMode): void;
+    SetResolution(width: number, height: number, fullscreen: boolean, preferredRefreshRate: number): void;
+    SetResolution(width: number, height: number, fullscreen: boolean): void;
+}
+declare const Screen: ScreenConstructor;
 

@@ -4,6 +4,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
     private touchStartPos;
     private touchStartRotX;
     private touchStartRotY;
+    private touchPointerId;
     OnEnable(): void;
     OnDisable(): void;
 }

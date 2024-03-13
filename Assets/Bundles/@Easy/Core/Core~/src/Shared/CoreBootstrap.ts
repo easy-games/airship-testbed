@@ -20,6 +20,10 @@ CoreRefs.Init();
 
 Game.coreContext = CoreContext.GAME;
 
+if (Game.IsClient()) {
+	Screen.orientation = ScreenOrientation.LandscapeLeft;
+}
+
 const vars: DynamicVariables[] = [
 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),
 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Camera.asset"),

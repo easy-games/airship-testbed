@@ -14,6 +14,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	private touchStartPos = Vector2.zero;
 	private touchStartRotX = 0;
 	private touchStartRotY = 0;
+	private touchPointerId = 0;
 
 	override OnEnable(): void {
 		this.bin.AddEngineEventConnection(
@@ -22,6 +23,8 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 				if (!camSystem) return;
 				const camMode = camSystem.GetMode();
 
+				print("Begin drag. pointerId=" + data.pointerId + ", position=" + data.position);
+				this.touchPointerId = data.pointerId;
 				this.touchStartPos = data.position;
 				this.touchStartRotX = camMode.rotationX;
 				this.touchStartRotY = camMode.rotationY;
@@ -33,6 +36,8 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 				const camSystem = Dependency<CameraController>().cameraSystem;
 				if (!camSystem) return;
 				const camMode = camSystem.GetMode();
+
+				if (this.touchPointerId !== data.pointerId) return;
 
 				const deltaPosSinceStart = data.position.sub(this.touchStartPos);
 				const clientSettingsController = Dependency<ClientSettingsController>();
@@ -46,6 +51,13 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 					MIN_ROT_X,
 					MAX_ROT_X,
 				);
+			}),
+		);
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnEndDragEvent(this.gameObject, (data) => {
+				if (this.touchPointerId === data.pointerId) {
+					this.touchPointerId = -1;
+				}
 			}),
 		);
 	}

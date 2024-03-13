@@ -14,4 +14,6 @@ export type CoreIcon =
 	| "ellipsis"
 	| "person-falling-solid"
 	| "play"
+	| "chevron-down-solid"
+	| "cloud-arrow-down"
 	| "star-solid";
