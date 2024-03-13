@@ -51,8 +51,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		}
 
 		if (Game.IsPortrait()) {
-			// this.canvasScalar.referenceResolution = new Vector2(1080, 1920);
-
+			this.canvasScalar.matchWidthOrHeight = 1;
 			this.socialMenu.SetParent(this.friendsPage);
 			this.socialMenu.anchorMin = new Vector2(0, 0);
 			this.socialMenu.anchorMax = new Vector2(1, 1);
@@ -78,6 +77,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.searchFocused.offsetMax = new Vector2(-2, -25);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
+			if (Game.IsMobile()) {
+				this.canvasScalar.matchWidthOrHeight = 0;
+			} else {
+				this.canvasScalar.matchWidthOrHeight = 1;
+			}
 			this.socialMenu.gameObject.SetActive(true);
 			this.socialMenu.anchorMin = new Vector2(0, 1);
 			this.socialMenu.anchorMax = new Vector2(0, 1);
