@@ -40,6 +40,12 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 	}
 
+	public Update(dt: number) {
+		if (Input.GetKeyDown(KeyCode.P)) {
+			CloudImage.PrintCache();
+		}
+	}
+
 	private ClearSorts(): void {
 		// for (let i = 1; i < this.mainContent.GetChildCount(); i++) {
 		// 	Object.Destroy(this.mainContent.GetChild(i));

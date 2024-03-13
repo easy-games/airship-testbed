@@ -99,7 +99,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			this.orgImage.url = url;
 			print("listening to org image finish");
 			const downloadConn = this.orgImage.OnFinishedLoading((success) => {
-				print("finisedh org image");
+				print("finished org image");
 				if (success) {
 					this.orgImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
