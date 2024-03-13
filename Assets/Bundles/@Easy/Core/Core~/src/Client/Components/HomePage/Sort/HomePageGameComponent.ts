@@ -72,14 +72,15 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
 			let cloudImage = this.gameObject.transform.GetChild(1).GetComponent<CloudImage>();
 			cloudImage.url = url;
-			cloudImage.StartDownload();
 			const downloadConn = cloudImage.OnFinishedLoading((success) => {
+				print("Download complete of home page item: " + cloudImage.gameObject.name);
 				if (success) {
 					cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
 					cloudImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
+			cloudImage.StartDownload();
 			this.bin.Add(() => {
 				Bridge.DisconnectEvent(downloadConn);
 			});
@@ -96,14 +97,17 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			// Org image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.organization.iconImageId + ".png";
 			this.orgImage.url = url;
-			this.orgImage.StartDownload();
+			print("listening to org image finish");
 			const downloadConn = this.orgImage.OnFinishedLoading((success) => {
+				print("finisedh org image");
 				if (success) {
 					this.orgImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
 					this.orgImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
+			print("Downloading org image");
+			this.orgImage.StartDownload();
 			this.bin.Add(() => {
 				Bridge.DisconnectEvent(downloadConn);
 			});

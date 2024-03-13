@@ -11897,6 +11897,7 @@ interface AirshipPackageDocument {
     forceLatestVersion: boolean;
 
 
+    IsDownloaded(): boolean;
 
 }
     
@@ -12512,7 +12513,6 @@ interface AccessoryComponent extends MonoBehaviour {
     GetServerInstanceId(): string;
     GetSlotNumber(): number;
     SetInstanceId(id: string): void;
-    ToString(): string;
 
 }
     
@@ -16452,6 +16452,7 @@ interface CloudImage extends MonoBehaviour {
     url: string;
     image: Image;
     downloadOnStart: boolean;
+    loadedUrl: string;
 
 
     StartDownload(): void;
@@ -16465,6 +16466,24 @@ interface CloudImageConstructor {
 
 }
 declare const CloudImage: CloudImageConstructor;
+    
+interface CloudImageCache {
+
+
+
+}
+    
+interface CloudImageCacheConstructor {
+
+
+
+    CleanseCache(): void;
+    ClearCache(): void;
+    PrintCache(): void;
+    QueueDownload(cloudImage: CloudImage, OnDownloadComplete: unknown): unknown;
+    RemoveCachedItem(image: CloudImage): boolean;
+}
+declare const CloudImageCache: CloudImageCacheConstructor;
     
 interface LineRenderer extends Renderer {
     numPositions: number;
