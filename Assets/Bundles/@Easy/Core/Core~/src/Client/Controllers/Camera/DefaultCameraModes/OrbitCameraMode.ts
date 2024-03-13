@@ -1,7 +1,8 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Dependency } from "Shared/Flamework";
-import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
+import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { TimeUtil } from "Shared/Util/TimeUtil";
@@ -52,7 +53,7 @@ export class OrbitCameraMode extends CameraMode {
 			this.entityDriver = transform.GetComponent<CharacterMovement>();
 			this.transform = graphicalCharacter;
 		}
-		this.SetupMobileControls();
+		// this.SetupMobileControls();
 	}
 
 	private SetupMobileControls() {
@@ -119,28 +120,43 @@ export class OrbitCameraMode extends CameraMode {
 			});
 		}
 
-		let rightClickUnlocker = this.mouse.AddUnlocker();
-
 		this.bin.Add(
-			this.mouse.rightDown.Connect(() => {
-				if (rightClickUnlocker === -1) return;
-				this.mouse.RemoveUnlocker(rightClickUnlocker);
-				rightClickUnlocker = -1;
+			Airship.input.preferredControls.ObserveControlScheme((scheme) => {
+				const controlSchemeBin = new Bin();
+				if (scheme === ControlScheme.MouseKeyboard) {
+					let rightClickUnlocker = this.mouse.AddUnlocker();
+
+					controlSchemeBin.Add(
+						this.mouse.rightDown.Connect(() => {
+							if (rightClickUnlocker === -1) return;
+							this.mouse.RemoveUnlocker(rightClickUnlocker);
+							rightClickUnlocker = -1;
+						}),
+					);
+
+					controlSchemeBin.Add(
+						this.mouse.rightUp.Connect(() => {
+							if (rightClickUnlocker !== -1) return;
+							rightClickUnlocker = this.mouse.AddUnlocker();
+						}),
+					);
+
+					controlSchemeBin.Add(() => {
+						if (rightClickUnlocker === -1) return;
+						this.mouse.RemoveUnlocker(rightClickUnlocker);
+						rightClickUnlocker = -1;
+					});
+				} else if (scheme === ControlScheme.Touch) {
+					let lockId = this.mouse.AddUnlocker();
+					controlSchemeBin.Add(() => {
+						this.mouse.RemoveUnlocker(lockId);
+					});
+				}
+				return () => {
+					controlSchemeBin.Clean();
+				};
 			}),
 		);
-
-		this.bin.Add(
-			this.mouse.rightUp.Connect(() => {
-				if (rightClickUnlocker !== -1) return;
-				rightClickUnlocker = this.mouse.AddUnlocker();
-			}),
-		);
-
-		this.bin.Add(() => {
-			if (rightClickUnlocker === -1) return;
-			this.mouse.RemoveUnlocker(rightClickUnlocker);
-			rightClickUnlocker = -1;
-		});
 
 		this.bin.Add(Dependency<CrosshairController>().AddDisabler());
 	}

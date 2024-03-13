@@ -44,7 +44,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 		const screenSize = this.mainMenu.screenSize;
 
 		let sizeType: ScreenSizeType = "md";
-		print("screenSize.x", screenSize.x);
 		if (screenSize.x <= 910) {
 			sizeType = "sm";
 		} else if (screenSize.x >= 1900) {
@@ -106,7 +105,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 				// this.socialMenu.anchoredPosition = new Vector2(-30, -20);
 			}
 
-			print("contentWrapper sizeDelta: " + this.contentWrapper.sizeDelta.x);
 			let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -21));
 			if (sizeType === "lg") {
 				socialMenuPos = socialMenuPos

@@ -1,4 +1,5 @@
 import { OnStart } from "../Flamework";
+import { Preferred as PreferredControls } from "../UserInput";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Signal } from "../Util/Signal";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
@@ -54,6 +55,7 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      */
     private actionToMobileButtonTable;
+    preferredControls: PreferredControls;
     constructor();
     OnStart(): void;
     /**

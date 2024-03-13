@@ -5,7 +5,7 @@ import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
-import { ControlScheme, Keyboard, Preferred } from "../UserInput";
+import { ControlScheme, Keyboard, Preferred as PreferredControls } from "../UserInput";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
@@ -37,7 +37,7 @@ export class AirshipInputSingleton implements OnStart {
 	/**
 	 *
 	 */
-	private controlManager = new Preferred();
+	private controlManager = new PreferredControls();
 	/**
 	 *
 	 */
@@ -68,6 +68,8 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
+
+	public preferredControls = new PreferredControls();
 
 	constructor() {
 		Airship.input = this;

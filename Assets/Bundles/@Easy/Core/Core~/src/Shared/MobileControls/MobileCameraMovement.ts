@@ -23,7 +23,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 				if (!camSystem) return;
 				const camMode = camSystem.GetMode();
 
-				print("Begin drag. pointerId=" + data.pointerId + ", position=" + data.position);
+				// print("Begin drag. pointerId=" + data.pointerId + ", position=" + data.position);
 				this.touchPointerId = data.pointerId;
 				this.touchStartPos = data.position;
 				this.touchStartRotX = camMode.rotationX;
@@ -37,6 +37,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 				if (!camSystem) return;
 				const camMode = camSystem.GetMode();
 
+				// print("Dragging. pointerId=" + data.pointerId + ", position=" + data.position);
 				if (this.touchPointerId !== data.pointerId) return;
 
 				const deltaPosSinceStart = data.position.sub(this.touchStartPos);
@@ -61,6 +62,10 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 			}),
 		);
 	}
+
+	// public Update(dt: number): void {
+	// 	print("mouse locked: " + new Mouse().IsLocked());
+	// }
 
 	override OnDisable(): void {
 		this.bin.Clean();
