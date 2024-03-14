@@ -1,4 +1,4 @@
-import { CoreIcon } from "./MobileInputIcons";
+import { CoreIcon } from "../UI/CoreIcon";
 export interface MobileButtonConfig {
     /**
      *

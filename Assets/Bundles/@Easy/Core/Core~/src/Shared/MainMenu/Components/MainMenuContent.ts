@@ -42,6 +42,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
+		// CoreLogger.Log("screenSize.x: " + screenSize.x);
 
 		let sizeType: ScreenSizeType = "md";
 		if (screenSize.x <= 910) {
@@ -90,7 +91,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.socialMenu.SetParent(this.gameObject.transform);
 
 			// Landscape
-			this.canvasScalar.referenceResolution = new Vector2(1920, 1080);
+			// this.canvasScalar.referenceResolution = new Vector2(1920, 1080);
 			if (sizeType === "lg") {
 				this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.contentWrapper.anchorMax = new Vector2(0.5, 1);

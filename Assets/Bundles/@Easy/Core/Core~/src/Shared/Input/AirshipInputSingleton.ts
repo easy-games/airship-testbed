@@ -150,17 +150,25 @@ export class AirshipInputSingleton implements OnStart {
 	private CreateMobileControlCanvas(): void {
 		const mobileControlsCanvas = Object.Instantiate(
 			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileControlsCanvas.prefab"),
+			CoreRefs.rootTransform,
 		);
-		mobileControlsCanvas.transform.SetParent(CoreRefs.rootTransform);
 		this.mobileControlsContainer = mobileControlsCanvas;
+
+		const mobileOverlayCanvas = Object.Instantiate(
+			AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MobileControls/MobileOverlayCanvas.prefab"),
+			CoreRefs.rootTransform,
+		);
+
 		this.controlManager.ObserveControlScheme((controlScheme) => {
 			if (controlScheme === ControlScheme.Touch) {
+				mobileOverlayCanvas.SetActive(true);
 				this.mobileControlsContainer.SetActive(true);
 				for (const [name, _] of this.actionToMobileButtonTable) {
 					this.ShowMobileButtons(name);
 				}
 			}
 			if (controlScheme === ControlScheme.MouseKeyboard) {
+				mobileOverlayCanvas.SetActive(false);
 				this.mobileControlsContainer.SetActive(false);
 				for (const [name, _] of this.actionToMobileButtonTable) {
 					this.HideMobileButtons(name);
