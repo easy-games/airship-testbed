@@ -65,18 +65,20 @@ export default class SortComponent extends AirshipBehaviour {
 		}
 	}
 
-	public SetGames(games: GameDto[]): void {
+	public SetGames(games: GameDto[]): HomePageGameComponent[] {
 		this.content.gameObject.ClearChildren();
-
+		let gameComponents: HomePageGameComponent[] = [];
 		for (const gameDto of games) {
-			const gameGo = Object.Instantiate(this.gamePrefab, this.content) as GameObject;
+			const gameGo = PoolManager.SpawnObject(this.gamePrefab, Vector3.zero, Quaternion.identity, this.content);
 			const gameComponent = gameGo.GetComponent<HomePageGameComponent>();
 			gameComponent.Init(gameDto);
 			if (this.pageScrollRect) {
 				gameComponent.SetDragRedirectTarget(this.pageScrollRect);
 			}
+			gameComponents.push(gameComponent);
 		}
 		this.UpdatePreferredHeight();
+		return gameComponents;
 	}
 
 	public SetTitle(title: string) {
