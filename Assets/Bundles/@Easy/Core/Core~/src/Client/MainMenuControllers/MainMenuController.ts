@@ -50,17 +50,29 @@ export class MainMenuController implements OnStart {
 		const mouse = new Mouse();
 
 		this.pageMap = new Map<MainMenuPageType, MainMenuPageComponent>([
-			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetComponent<HomePageComponent>()],
-			[MainMenuPageType.MyGames, this.refs.GetValue("Pages", "MyGames").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetComponent<MainMenuPageComponent>()],
-			[MainMenuPageType.Avatar, this.refs.GetValue("Pages", "Avatar").GetComponent<AvatarMenuComponent>()],
-			[MainMenuPageType.Friends, this.refs.GetValue("Pages", "Friends").GetComponent<MainMenuPageComponent>()],
+			[MainMenuPageType.Home, this.refs.GetValue("Pages", "Home").GetAirshipComponent<HomePageComponent>()!],
+			[
+				MainMenuPageType.MyGames,
+				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
+			],
+			[
+				MainMenuPageType.Settings,
+				this.refs.GetValue("Pages", "Settings").GetAirshipComponent<MainMenuPageComponent>()!,
+			],
+			[
+				MainMenuPageType.Avatar,
+				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,
+			],
+			[
+				MainMenuPageType.Friends,
+				this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
+			],
 		]);
 
 		this.avatarView = Object.Instantiate(
 			this.refs.GetValue<GameObject>("Avatar", "Avatar3DSceneTemplate"),
 			CoreRefs.rootTransform,
-		).GetComponent<AvatarViewComponent>();
+		).GetAirshipComponent<AvatarViewComponent>()!;
 
 		if (Game.coreContext === CoreContext.GAME) {
 			this.avatarView.HideAvatar();

@@ -77,7 +77,7 @@ export default class SortComponent extends AirshipBehaviour {
 			);
 			gameGo.transform.localScale = Vector3.one;
 			//const gameGo = Object.Instantiate(this.gamePrefab, this.content) as GameObject;
-			const gameComponent = gameGo.GetComponent<HomePageGameComponent>();
+			const gameComponent = gameGo.GetAirshipComponent<HomePageGameComponent>();
 			gameComponent.Init(gameDto);
 			if (this.pageScrollRect) {
 				gameComponent.SetDragRedirectTarget(this.pageScrollRect);
