@@ -1989,6 +1989,7 @@ interface GameObject extends Object {
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
 	GetComponentsInChildren<T extends Component>(): CSArray<T>;
 	GetComponentsInChildren<T extends Component>(typeName: string): CSArray<T>;
+	GetComponentInChildren<T extends Component>(): T;
 
 	GetAirshipComponentInChildren<T extends AirshipBehaviour>(): T | undefined;
 	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(): T[];
