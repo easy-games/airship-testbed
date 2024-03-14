@@ -45,6 +45,7 @@ export class MainMenuController implements OnStart {
 		this.mainContentCanvas = this.refs.GetValue<Canvas>("UI", "MainContentCanvas");
 		this.mainContentGroup = this.refs.GetValue<CanvasGroup>("UI", "MainContentGroup");
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");
+		CloudImage.ClearCache();
 
 		const mouse = new Mouse();
 
@@ -111,6 +112,8 @@ export class MainMenuController implements OnStart {
 		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
 		this.mainContentCanvas.enabled = true;
 		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
+		CloudImage.PrintCache();
+		CloudImage.CleanseCache();
 	}
 
 	public CloseFromGame(): void {

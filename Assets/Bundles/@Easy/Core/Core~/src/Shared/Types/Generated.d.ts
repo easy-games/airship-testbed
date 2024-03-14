@@ -16467,6 +16467,7 @@ interface CloudImage extends MonoBehaviour {
     url: string;
     image: Image;
     downloadOnStart: boolean;
+    loadedUrl: string;
 
 
     StartDownload(): void;
@@ -16478,6 +16479,9 @@ interface CloudImageConstructor {
     new(): CloudImage;
 
 
+    CleanseCache(): void;
+    ClearCache(): void;
+    PrintCache(): void;
 }
 declare const CloudImage: CloudImageConstructor;
     
