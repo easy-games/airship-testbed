@@ -59,7 +59,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 	private CreateSort(sortId: SortId, title: string): void {
 		const sortGo = Object.Instantiate(this.sortPrefab, this.mainContent) as GameObject;
-		const sortComponent = sortGo.GetComponent<SortComponent>();
+		const sortComponent = sortGo.GetAirshipComponent<SortComponent>()!;
 		sortComponent.SetTitle(title);
 		sortComponent.pageScrollRect = this.scrollRect;
 		this.sorts.set(sortId, sortComponent);

@@ -1987,17 +1987,21 @@ interface GameObject extends Object {
 	StopAnimation(): void;
 	BroadcastMessage(methodName: string): void;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
-	GetComponentsInChildren<T>(): T extends AirshipBehaviour ? T[] : CSArray<T>;
-	GetComponentsInChildren<T>(typeName: string): T extends AirshipBehaviour ? T[] : CSArray<T>;
+	GetComponentsInChildren<T extends Component>(): CSArray<T>;
+	GetComponentsInChildren<T extends Component>(typeName: string): CSArray<T>;
+
+	GetAirshipComponentInChildren<T extends AirshipBehaviour>(): T | undefined;
+	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(): T[];
+	GetAirshipComponents<T extends AirshipBehaviour>(): T[];
 
 	/**
 	 * Throws error if no component found.
 	 */
-	GetComponent<T extends AirshipBehaviour | Component>(): T;
+	GetComponent<T extends Component>(): T;
 	/**
 	 * Throws error if no component found.
 	 */
-	GetComponent<T extends Component | AirshipBehaviour = Component>(type: string): T;
+	GetComponent<T extends Component = Component>(type: string): T;
 
 	GetAirshipComponent<T extends AirshipBehaviour>(): T | undefined;
 	/**

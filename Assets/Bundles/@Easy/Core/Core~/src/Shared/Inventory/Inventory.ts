@@ -96,7 +96,7 @@ export default class Inventory extends AirshipBehaviour {
 
 		bin.Add(
 			CoreNetwork.ServerToClient.SetHeldInventorySlot.client.OnServerEvent((invId, clientId, slot) => {
-				const inventoryClientId = this.gameObject.GetComponent<Character>().player?.clientId;
+				const inventoryClientId = this.gameObject.GetAirshipComponent<Character>()?.player?.clientId;
 				if (invId === this.id && clientId === inventoryClientId) {
 					const selected = this.items.get(slot);
 					if (selected?.GetItemType() === currentItemStack?.GetItemType()) return;
