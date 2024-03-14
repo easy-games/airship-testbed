@@ -16,4 +16,5 @@ export type CoreIcon =
 	| "play"
 	| "chevron-down-solid"
 	| "cloud-arrow-down"
+	| "leaf-solid"
 	| "star-solid";
