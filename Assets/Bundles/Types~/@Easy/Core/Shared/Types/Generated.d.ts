@@ -16479,26 +16479,11 @@ interface CloudImageConstructor {
     new(): CloudImage;
 
 
-}
-declare const CloudImage: CloudImageConstructor;
-    
-interface CloudImageCache {
-
-
-
-}
-    
-interface CloudImageCacheConstructor {
-
-
-
     CleanseCache(): void;
     ClearCache(): void;
     PrintCache(): void;
-    QueueDownload(cloudImage: CloudImage, OnDownloadComplete: unknown): unknown;
-    RemoveCachedItem(image: CloudImage): boolean;
 }
-declare const CloudImageCache: CloudImageCacheConstructor;
+declare const CloudImage: CloudImageConstructor;
     
 interface LineRenderer extends Renderer {
     numPositions: number;

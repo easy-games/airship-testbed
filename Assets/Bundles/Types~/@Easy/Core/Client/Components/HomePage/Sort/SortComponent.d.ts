@@ -1,5 +1,6 @@
 /// <reference types="@easy-games/compiler-types" />
 import { GameDto } from "../API/GamesAPI";
+import HomePageGameComponent from "./HomePageGameComponent";
 export default class SortComponent extends AirshipBehaviour {
     titleText: GameObject;
     content: Transform;
@@ -16,6 +17,6 @@ export default class SortComponent extends AirshipBehaviour {
     Init(title: string): void;
     Clear(): void;
     UpdatePreferredHeight(): void;
-    SetGames(games: GameDto[]): void;
+    SetGames(games: GameDto[]): HomePageGameComponent[];
     SetTitle(title: string): void;
 }

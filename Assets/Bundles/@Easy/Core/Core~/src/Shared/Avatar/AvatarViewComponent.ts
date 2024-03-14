@@ -158,7 +158,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (!this.avatarCamera) {
 			return;
 		}
-		print("Creating new Avatar Render Texture: " + width + ", " + height);
 		this.renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
 		this.avatarCamera.targetTexture = this.renderTexture;
 		this.avatarCamera.enabled = true;
