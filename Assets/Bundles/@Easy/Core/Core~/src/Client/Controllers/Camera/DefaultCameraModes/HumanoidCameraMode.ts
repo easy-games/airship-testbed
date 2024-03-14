@@ -1,8 +1,9 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Dependency } from "Shared/Flamework";
-import { Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
+import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
@@ -125,6 +126,17 @@ export class HumanoidCameraMode extends CameraMode {
 		this.bin.Add(this.touchscreen);
 		this.bin.Add(this.mouse);
 
+		this.bin.Add(
+			Airship.input.preferredControls.ObserveControlScheme((scheme) => {
+				if (scheme === ControlScheme.Touch) {
+					const lockId = this.mouse.AddUnlocker();
+					return () => {
+						this.mouse.RemoveUnlocker(lockId);
+					};
+				}
+			}),
+		);
+
 		if (!this.lockView) {
 			const unlockerId = this.mouse.AddUnlocker();
 			this.bin.Add(() => {
@@ -144,26 +156,29 @@ export class HumanoidCameraMode extends CameraMode {
 	OnUpdate(dt: number) {
 		const lf = this.keyboard.IsKeyDown(KeyCode.LeftArrow);
 		const rt = this.keyboard.IsKeyDown(KeyCode.RightArrow);
-		const rightClick = this.mouse.IsRightButtonDown();
-		if (rightClick && !this.rightClicking) {
-			this.rightClickPos = this.mouse.GetLocation();
-		}
-		this.rightClicking = rightClick;
-		if (lf !== rt) {
-			this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
-		}
-		if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
-			const mouseDelta = this.mouse.GetDelta();
-			const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
-			if (!this.firstPerson && !this.lockView) {
-				this.mouse.SetLocation(this.rightClickPos);
+
+		if (Airship.input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
+			const rightClick = this.mouse.IsRightButtonDown();
+			if (rightClick && !this.rightClicking) {
+				this.rightClickPos = this.mouse.GetLocation();
 			}
-			this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
-			this.rotationX = math.clamp(
-				this.rotationX + mouseDelta.y * mouseSensitivity * MOUSE_SENS_SCALAR,
-				MIN_ROT_X,
-				MAX_ROT_X,
-			);
+			this.rightClicking = rightClick;
+			if (lf !== rt) {
+				this.rotationY += (lf ? 1 : -1) * TimeUtil.GetDeltaTime() * 4;
+			}
+			if (this.mouse.IsLocked() && (rightClick || this.firstPerson || this.lockView)) {
+				const mouseDelta = this.mouse.GetDelta();
+				const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
+				if (!this.firstPerson && !this.lockView) {
+					this.mouse.SetLocation(this.rightClickPos);
+				}
+				this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
+				this.rotationX = math.clamp(
+					this.rotationX + mouseDelta.y * mouseSensitivity * MOUSE_SENS_SCALAR,
+					MIN_ROT_X,
+					MAX_ROT_X,
+				);
+			}
 		}
 	}
 

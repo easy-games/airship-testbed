@@ -1,5 +1,5 @@
-import { Controller } from "Shared/Flamework";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller } from "Shared/Flamework";
 import { Modifier } from "Shared/Util/Modifier";
 
 @Controller({})

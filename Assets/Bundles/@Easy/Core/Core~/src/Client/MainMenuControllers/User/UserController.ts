@@ -33,6 +33,16 @@ export class UserController implements OnStart {
 	public FetchLocalUser(): void {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
 		if (res.success) {
+			if (res.data.size() === 0) {
+				let ignore = false;
+				if (Game.coreContext === CoreContext.GAME && Game.IsEditor()) {
+					ignore = true;
+				}
+				if (!ignore) {
+					Bridge.LoadScene("Login", true);
+					return;
+				}
+			}
 			const data = DecodeJSON(res.data) as User;
 			this.localUser = data;
 			this.localUserLoaded = true;

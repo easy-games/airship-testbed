@@ -44,7 +44,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 		const screenSize = this.mainMenu.screenSize;
 
 		let sizeType: ScreenSizeType = "md";
-		print("screenSize.x", screenSize.x);
 		if (screenSize.x <= 910) {
 			sizeType = "sm";
 		} else if (screenSize.x >= 1900) {
@@ -52,8 +51,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		}
 
 		if (Game.IsPortrait()) {
-			// this.canvasScalar.referenceResolution = new Vector2(1080, 1920);
-
+			this.canvasScalar.matchWidthOrHeight = 1;
 			this.socialMenu.SetParent(this.friendsPage);
 			this.socialMenu.anchorMin = new Vector2(0, 0);
 			this.socialMenu.anchorMax = new Vector2(1, 1);
@@ -79,6 +77,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.searchFocused.offsetMax = new Vector2(-2, -25);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
+			if (Game.IsMobile()) {
+				this.canvasScalar.matchWidthOrHeight = 0;
+			} else {
+				this.canvasScalar.matchWidthOrHeight = 1;
+			}
 			this.socialMenu.gameObject.SetActive(true);
 			this.socialMenu.anchorMin = new Vector2(0, 1);
 			this.socialMenu.anchorMax = new Vector2(0, 1);
@@ -106,7 +109,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 				// this.socialMenu.anchoredPosition = new Vector2(-30, -20);
 			}
 
-			print("contentWrapper sizeDelta: " + this.contentWrapper.sizeDelta.x);
 			let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -21));
 			if (sizeType === "lg") {
 				socialMenuPos = socialMenuPos

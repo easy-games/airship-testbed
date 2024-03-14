@@ -5,7 +5,7 @@ import { AssetCache } from "../AssetCache/AssetCache";
 import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
-import { ControlScheme, Keyboard, Preferred } from "../UserInput";
+import { ControlScheme, Keyboard, Preferred as PreferredControls } from "../UserInput";
 import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
@@ -37,7 +37,7 @@ export class AirshipInputSingleton implements OnStart {
 	/**
 	 *
 	 */
-	private controlManager = new Preferred();
+	private controlManager = new PreferredControls();
 	/**
 	 *
 	 */
@@ -68,6 +68,8 @@ export class AirshipInputSingleton implements OnStart {
 	 *
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
+
+	public preferredControls = new PreferredControls();
 
 	constructor() {
 		Airship.input = this;
@@ -109,9 +111,11 @@ export class AirshipInputSingleton implements OnStart {
 		]);
 
 		if (Game.coreContext === CoreContext.GAME) {
-			Airship.input.CreateMobileButton("Jump", new Vector2(-200, 290));
-			Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
-			Airship.input.CreateMobileButton("Crouch", new Vector2(-200, 690));
+			Airship.input.CreateMobileButton("Jump", new Vector2(-220, 180));
+			// Airship.input.CreateMobileButton("UseItem", new Vector2(-250, 490));
+			Airship.input.CreateMobileButton("Crouch", new Vector2(-140, 340), {
+				icon: "chevron-down-solid",
+			});
 		}
 	}
 
