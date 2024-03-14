@@ -39,6 +39,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		}
 		this.activePage = true;
 		this.gameObject.SetActive(true);
+		this.mainMenu?.avatarView?.HideAvatar();
 
 		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
 		if (canvasGroup && this.animateInDuration <= 0) {

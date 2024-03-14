@@ -22,12 +22,6 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 	override OpenPage(): void {
 		super.OpenPage();
-
-		let avatarView = this.mainMenu?.avatarView;
-		if (avatarView) {
-			avatarView.ResetAvatar();
-			avatarView.CameraFocusTransform(avatarView.cameraWaypointCenterHero, true);
-		}
 		this.ClearSorts();
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");

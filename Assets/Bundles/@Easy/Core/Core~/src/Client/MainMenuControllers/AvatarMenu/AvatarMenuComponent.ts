@@ -209,6 +209,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		} else {
 			error("No avatar render veiew in avatar editor menu page");
 		}
+		this.mainMenu?.avatarView?.ShowAvatar();
 		this.RefreshAvatar();
 		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
