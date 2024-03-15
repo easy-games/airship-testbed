@@ -1132,6 +1132,7 @@ MonoBehaviour:
   url: 
   image: {fileID: 8549954423838811156}
   downloadOnStart: 0
+  releaseImageOnDisable: 0
 --- !u!114 &9083261327448652604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1360,6 +1361,20 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 3005976175944180110}
+      modified: 1
+    - name: gameImage
+      type: object
+      objectType: CloudImage
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1224758353300491981}
       modified: 1
 --- !u!1 &6913458327426604862
 GameObject:
@@ -1652,6 +1667,7 @@ MonoBehaviour:
   url: 
   image: {fileID: 4272896538262094076}
   downloadOnStart: 0
+  releaseImageOnDisable: 0
 --- !u!114 &5513109097700678103
 MonoBehaviour:
   m_ObjectHideFlags: 0

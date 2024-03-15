@@ -83,7 +83,6 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			const sortComponent = this.sorts.get(sortId)!;
 
 			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
-			//sortComponent.SetGames(games);
 			this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}
 
