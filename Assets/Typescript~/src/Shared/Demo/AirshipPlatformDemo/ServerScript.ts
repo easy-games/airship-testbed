@@ -29,7 +29,7 @@ export default class TestScript extends AirshipBehaviour {
 		// const bounds = this.spawnArea.GetComponent<BoxCollider>("Box Collider").bounds;
 
 		Airship.damage.onDeath.Connect((damageInfo) => {
-			const killer = damageInfo.attacker?.GetComponent<Character>()?.player;
+			const killer = damageInfo.attacker?.GetAirshipComponent<Character>()?.player;
 			if (!killer) return;
 
 			let kills = this.sessionKillMap.get(killer) ?? 0;
