@@ -47,7 +47,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		let sizeType: ScreenSizeType = "md";
 		if (screenSize.x <= 910) {
 			sizeType = "sm";
-		} else if (screenSize.x >= 1900) {
+		} else if (screenSize.x >= 1760) {
 			sizeType = "lg";
 		}
 
