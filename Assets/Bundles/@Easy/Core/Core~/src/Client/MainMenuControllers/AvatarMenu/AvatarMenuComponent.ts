@@ -73,9 +73,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		super.Init(mainMenu, pageType);
 		this.clientId = 9999; //Dependency<PlayerController>().clientId;
 
-		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
+		this.mainNavBtns = this.mainNavButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
 		//this.subNavBtns = this.subNavBarButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
-		this.outfitBtns = this.outfitButtonHolder.gameObject.GetComponentsInChildren<AvatarMenuBtn>();
+		this.outfitBtns = this.outfitButtonHolder.gameObject.GetAirshipComponentsInChildren<AvatarMenuBtn>();
 		this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
 		this.avatarProfileMenu?.Init(mainMenu);
 
