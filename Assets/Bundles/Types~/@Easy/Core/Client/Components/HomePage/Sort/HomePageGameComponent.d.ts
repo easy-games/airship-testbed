@@ -7,6 +7,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     playerCountWrapper: GameObject;
     playerCountText: TMP_Text;
     buttonGo: GameObject;
+    gameImage: CloudImage;
     orgImage: CloudImage;
     authorText: TMP_Text;
     shadow: TrueShadow;

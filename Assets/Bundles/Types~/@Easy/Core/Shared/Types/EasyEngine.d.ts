@@ -563,10 +563,12 @@ declare const AnimationClipOptions: AnimationClipOptionsConstructor;
 interface PoolManager {
 	PreLoadPool(prefab: Object, size: number): void;
 	SpawnObject(prefab: Object): GameObject;
-	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion): GameObject;
-	SpawnObject(prefab: Object, position: Vector3, rotation: Quaternion, parent: Transform): GameObject;
+	SpawnObject(prefab: Object, parent: Transform): GameObject;
+	SpawnObject(prefab: Object, worldPosition: Vector3, worldRotation: Quaternion): GameObject;
+	SpawnObject(prefab: Object, localPosition: Vector3, localRotation: Quaternion, parent: Transform): GameObject;
 	ReleaseObject(clone: GameObject);
 }
+
 declare const PoolManager: PoolManager;
 
 interface TransferManager {

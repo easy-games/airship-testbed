@@ -1,4 +1,5 @@
 import { CameraMode } from "./CameraMode";
+import { CharacterCameraType } from "./CharacterCameraType";
 /**
  * Drives the camera modes.
  */
@@ -9,9 +10,7 @@ export declare class CameraSystem {
     private readonly allCameras;
     private onClearCallback?;
     private modeCleared;
-    private readonly fovSpring;
-    private fovSpringMoving;
-    private fovSpringMovingStart;
+    private fovStateMap;
     private enabled;
     private readonly enabledBin;
     GetActiveCamera(): Camera;
@@ -58,7 +57,7 @@ export declare class CameraSystem {
      * @param fieldOfView Field of view.
      * @param immediate If `true`, goes directly to the FOV without springing towards it.
      */
-    SetFOV(fieldOfView: number, immediate?: boolean): void;
+    SetFOV(cameraType: CharacterCameraType, fieldOfView: number, immediate?: boolean): void;
     private UpdateFOVSpring;
     private UpdateFOV;
 }

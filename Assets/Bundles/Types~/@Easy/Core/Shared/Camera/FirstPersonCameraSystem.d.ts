@@ -1,4 +1,4 @@
-import Character from "../../../Shared/Character/Character";
+import Character from "../Character/Character";
 import { CameraReferences } from "./CameraReferences";
 export declare class FirstPersonCameraSystem {
     readonly character: Character;

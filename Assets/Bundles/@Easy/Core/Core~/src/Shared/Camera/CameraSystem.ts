@@ -1,10 +1,18 @@
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { Bin } from "Shared/Util/Bin";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "Shared/Util/Timer";
 import { CameraMode } from "./CameraMode";
 import { CameraReferences } from "./CameraReferences";
+import { CharacterCameraType } from "./CharacterCameraType";
 import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
+
+interface FovState {
+	readonly fovSpring: Spring;
+	fovSpringMoving: boolean;
+	fovSpringMovingStart: number;
+}
 
 /**
  * Drives the camera modes.
@@ -12,29 +20,36 @@ import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
 export class CameraSystem {
 	private currentMode: CameraMode;
 	private readonly transform: Transform;
-	private readonly camera: Camera;
+	private readonly mainCamera: Camera;
+	private readonly viewmodelCamera: Camera;
 	private readonly allCameras: Camera[];
 	private onClearCallback?: () => CameraMode;
 	private modeCleared = true;
 
-	private readonly fovSpring: Spring;
-	private fovSpringMoving = false;
-	private fovSpringMovingStart = 0;
-
+	private fovStateMap = new Map<CharacterCameraType, FovState>(); 
+	
 	private enabled = true;
 	private readonly enabledBin = new Bin();
 
 	public GetActiveCamera(): Camera {
-		return this.camera;
+		return this.mainCamera;
 	}
 
 	constructor() {
 		const ref = CameraReferences.Instance();
-		this.camera = ref.mainCamera!;
+		this.mainCamera = ref.mainCamera!;
+		this.viewmodelCamera = ref.fpsCamera!;
 		this.allCameras = [ref.mainCamera!, ref.uiCamera!, ref.fpsCamera!];
-		this.transform = ref.cameraHolder ?? this.camera.transform;
-		this.fovSpring = new Spring(new Vector3(this.camera.fieldOfView, 0, 0), 5);
-		this.currentMode = new StaticCameraMode(this.camera.transform.position, this.camera.transform.rotation);
+		this.transform = ref.cameraHolder ?? this.mainCamera.transform;
+		// Register FOV state
+		for (const cameraType of ObjectUtils.values(CharacterCameraType)) {
+			this.fovStateMap.set(cameraType, {
+				fovSpring: new Spring(new Vector3(this.mainCamera.fieldOfView, 0, 0), 5),
+				fovSpringMoving: false,
+				fovSpringMovingStart: 0,
+			});
+		}
+		this.currentMode = new StaticCameraMode(this.mainCamera.transform.position, this.mainCamera.transform.rotation);
 
 		if (this.enabled) {
 			this.OnEnabled();
@@ -55,19 +70,24 @@ export class CameraSystem {
 		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
 			const camTransform = this.currentMode.OnLateUpdate(dt);
 			this.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
-			this.currentMode.OnPostUpdate(this.camera);
-			if (this.fovSpringMoving) {
-				this.UpdateFOVSpring(dt);
+			this.currentMode.OnPostUpdate(this.mainCamera);
+			for (const [cameraType, fovState] of this.fovStateMap) {
+				this.UpdateFOVSpring(cameraType, fovState, dt);
 			}
 		});
 
 		// Reset FOV spring on enabled and on disabled:
-		this.SetFOV(this.fovSpring.goal.x, true);
+		for (const [cameraType, fovState] of this.fovStateMap) {
+			this.SetFOV(cameraType, fovState.fovSpring.goal.x, true);
+		}
 		this.enabledBin.Add(() => {
-			this.SetFOV(this.fovSpring.goal.x, true);
+			for (const [cameraType, fovState] of this.fovStateMap) {
+				this.SetFOV(cameraType, fovState.fovSpring.goal.x, true);
+			}
 		});
+		
 
-		this.currentMode.OnStart(this.camera, this.transform);
+		this.currentMode.OnStart(this.mainCamera, this.transform);
 		this.enabledBin.Add(() => {
 			this.currentMode.OnStop();
 		});
@@ -120,7 +140,7 @@ export class CameraSystem {
 
 		if (this.enabled) this.currentMode.OnStop();
 		this.currentMode = mode;
-		if (this.enabled) this.currentMode.OnStart(this.camera, this.transform);
+		if (this.enabled) this.currentMode.OnStart(this.mainCamera, this.transform);
 	}
 
 	/**
@@ -156,28 +176,42 @@ export class CameraSystem {
 	 * @param fieldOfView Field of view.
 	 * @param immediate If `true`, goes directly to the FOV without springing towards it.
 	 */
-	public SetFOV(fieldOfView: number, immediate = false) {
+	public SetFOV(cameraType: CharacterCameraType, fieldOfView: number, immediate = false) {
+		const fovState = this.fovStateMap.get(cameraType);
+		if (!fovState) error("Could not set FOV, unknown camera type.");
+
 		if (immediate) {
-			this.fovSpring.ResetTo(new Vector3(fieldOfView, 0, 0));
-			this.UpdateFOV(fieldOfView);
-			this.fovSpringMoving = false;
+			fovState.fovSpring.ResetTo(new Vector3(fieldOfView, 0, 0));
+			this.UpdateFOV(cameraType, fieldOfView);
+			fovState.fovSpringMoving = false;
 		} else {
-			this.fovSpring.goal = new Vector3(fieldOfView, 0, 0);
-			this.fovSpringMoving = true;
-			this.fovSpringMovingStart = Time.time;
+			fovState.fovSpring.goal = new Vector3(fieldOfView, 0, 0);
+			fovState.fovSpringMoving = true;
+			fovState.fovSpringMovingStart = Time.time;
 		}
 	}
 
-	private UpdateFOVSpring(dt: number) {
-		this.UpdateFOV(this.fovSpring.Update(dt).x);
-		if (Time.time - this.fovSpringMovingStart > 2 && math.abs(this.fovSpring.velocity.x) < 0.01) {
-			this.fovSpringMoving = false;
+	private UpdateFOVSpring(cameraType: CharacterCameraType, fovState: FovState, dt: number) {
+		this.UpdateFOV(cameraType, fovState.fovSpring.Update(dt).x);
+		if (Time.time - fovState.fovSpringMovingStart > 2 && math.abs(fovState.fovSpring.velocity.x) < 0.01) {
+			fovState.fovSpringMoving = false;
 		}
 	}
 
-	private UpdateFOV(newFOV: number) {
-		for (let i = 0; i < this.allCameras.size(); i++) {
-			this.allCameras[i].fieldOfView = newFOV;
+	private UpdateFOV(cameraType: CharacterCameraType, newFOV: number) {
+		let camerasToUpdate: Camera[] = [];
+		switch (cameraType) {
+			case CharacterCameraType.VIEW_MODEL:
+				camerasToUpdate = [this.viewmodelCamera];
+				break;
+			case CharacterCameraType.FIRST_PERSON:
+			case CharacterCameraType.THIRD_PERSON:	
+				camerasToUpdate = [this.mainCamera];
+				break;
+		}
+
+		for (const camera of camerasToUpdate) {
+			camera.fieldOfView = newFOV;
 		}
 	}
 }

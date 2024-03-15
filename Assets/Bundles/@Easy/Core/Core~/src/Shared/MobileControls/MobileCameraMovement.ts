@@ -1,5 +1,5 @@
-import { CameraController } from "@Easy/Core/Client/Controllers/Camera/CameraController";
 import { ClientSettingsController } from "@Easy/Core/Client/MainMenuControllers/Settings/ClientSettingsController";
+import { AirshipCharacterCameraSingleton } from "../Camera/AirshipCharacterCameraSingleton";
 import { Dependency } from "../Flamework";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
@@ -19,7 +19,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	override OnEnable(): void {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.gameObject, (data) => {
-				const camSystem = Dependency<CameraController>().cameraSystem;
+				const camSystem = Dependency<AirshipCharacterCameraSingleton>().cameraSystem;
 				if (!camSystem) return;
 				const camMode = camSystem.GetMode();
 
@@ -33,7 +33,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnDragEvent(this.gameObject, (data) => {
-				const camSystem = Dependency<CameraController>().cameraSystem;
+				const camSystem = Dependency<AirshipCharacterCameraSingleton>().cameraSystem;
 				if (!camSystem) return;
 				const camMode = camSystem.GetMode();
 

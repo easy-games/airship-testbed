@@ -43,30 +43,30 @@
 		"@Easy/Core:Shared/Util/ReferenceManagerResources@ReferenceManagerAssets": "$:Util/ReferenceManagerResources@ReferenceManagerAssets",
 		"@Easy/Core:Client/Controllers/Viewmodel/ViewmodelController@ViewmodelController": "$:Controllers/Viewmodel/ViewmodelController@ViewmodelController",
 		"@Easy/Core:Shared/Audio/AudioClipBundle@AudioClipBundle": "$:Audio/AudioClipBundle@AudioClipBundle",
-		"@Easy/Core:Client/Controllers/Camera/CameraTransform@CameraTransform": "$:Controllers/Camera/CameraTransform@CameraTransform",
-		"@Easy/Core:Client/Controllers/Camera/CameraMode@CameraMode": "$:Controllers/Camera/CameraMode@CameraMode",
-		"@Easy/Core:Client/Controllers/Camera/CameraReferences@CameraReferences": "$:Controllers/Camera/CameraReferences@CameraReferences",
-		"@Easy/Core:Shared/Util/Spring@Spring": "$:Util/Spring@Spring",
-		"@Easy/Core:Client/Controllers/Camera/DefaultCameraModes/StaticCameraMode@StaticCameraMode": "$:Controllers/Camera/DefaultCameraModes/StaticCameraMode@StaticCameraMode",
-		"@Easy/Core:Client/Controllers/Camera/CameraSystem@CameraSystem": "$:Controllers/Camera/CameraSystem@CameraSystem",
-		"@Easy/Core:Client/Controllers/Camera/CameraController@CameraController": "$:Controllers/Camera/CameraController@CameraController",
-		"@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
-		"@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
-		"@Easy/Core:Shared/Util/MathUtil@MathUtil": "$:Util/MathUtil@MathUtil",
-		"@Easy/Core:Client/Controllers/Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode": "$:Controllers/Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode",
-		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
-		"@Easy/Core:Client/Controllers/Crosshair/CrosshairController@CrosshairController": "$:Controllers/Crosshair/CrosshairController@CrosshairController",
-		"@Easy/Core:Shared/Util/SpringTween@SpringTween": "$:Util/SpringTween@SpringTween",
-		"@Easy/Core:Client/Controllers/Camera/DefaultCameraModes/HumanoidCameraMode@HumanoidCameraMode": "$:Controllers/Camera/DefaultCameraModes/HumanoidCameraMode@HumanoidCameraMode",
-		"@Easy/Core:Client/Controllers/Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode": "$:Controllers/Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode",
-		"@Easy/Core:Client/Controllers/Camera/FirstPersonCameraSystem@FirstPersonCameraSystem": "$:Controllers/Camera/FirstPersonCameraSystem@FirstPersonCameraSystem",
-		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal": "$:Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal",
-		"@Easy/Core:Shared/Character/LocalCharacter/CharacterInput@CharacterInput": "$:Character/LocalCharacter/CharacterInput@CharacterInput",
-		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
 		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
 		"@Easy/Core:Shared/Util/BundleReferenceManager@BundleReferenceManager": "$:Util/BundleReferenceManager@BundleReferenceManager",
 		"@Easy/Core:Shared/Effects/EffectsManager@EffectsManager": "$:Effects/EffectsManager@EffectsManager",
 		"@Easy/Core:Shared/Util/RandomUtil@RandomUtil": "$:Util/RandomUtil@RandomUtil",
+		"@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
+		"@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
+		"@Easy/Core:Shared/Camera/CameraTransform@CameraTransform": "$:Camera/CameraTransform@CameraTransform",
+		"@Easy/Core:Shared/Camera/CameraMode@CameraMode": "$:Camera/CameraMode@CameraMode",
+		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal": "$:Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal",
+		"@Easy/Core:Shared/Character/LocalCharacter/CharacterInput@CharacterInput": "$:Character/LocalCharacter/CharacterInput@CharacterInput",
+		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
+		"@Easy/Core:Shared/Camera/CameraReferences@CameraReferences": "$:Camera/CameraReferences@CameraReferences",
+		"@Easy/Core:Shared/Util/Spring@Spring": "$:Util/Spring@Spring",
+		"@Easy/Core:Shared/Camera/DefaultCameraModes/StaticCameraMode@StaticCameraMode": "$:Camera/DefaultCameraModes/StaticCameraMode@StaticCameraMode",
+		"@Easy/Core:Shared/Camera/CameraSystem@CameraSystem": "$:Camera/CameraSystem@CameraSystem",
+		"@Easy/Core:Shared/Util/MathUtil@MathUtil": "$:Util/MathUtil@MathUtil",
+		"@Easy/Core:Shared/Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode": "$:Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode",
+		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
+		"@Easy/Core:Client/Controllers/Crosshair/CrosshairController@CrosshairController": "$:Controllers/Crosshair/CrosshairController@CrosshairController",
+		"@Easy/Core:Shared/Util/SpringTween@SpringTween": "$:Util/SpringTween@SpringTween",
+		"@Easy/Core:Shared/Camera/DefaultCameraModes/HumanoidCameraMode@HumanoidCameraMode": "$:Camera/DefaultCameraModes/HumanoidCameraMode@HumanoidCameraMode",
+		"@Easy/Core:Shared/Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode": "$:Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode",
+		"@Easy/Core:Shared/Camera/FirstPersonCameraSystem@FirstPersonCameraSystem": "$:Camera/FirstPersonCameraSystem@FirstPersonCameraSystem",
+		"@Easy/Core:Shared/Camera/AirshipCharacterCameraSingleton@AirshipCharacterCameraSingleton": "$:Camera/AirshipCharacterCameraSingleton@AirshipCharacterCameraSingleton",
 		"@Easy/Core:Shared/Character/Animation/CharacterAnimator@CharacterAnimator": "$:Character/Animation/CharacterAnimator@CharacterAnimator",
 		"@Easy/Core:Shared/Inventory/Inventory@Inventory": "$:Inventory/Inventory@Inventory",
 		"@Easy/Core:Shared/Damage/DamageUtils@DamageUtils": "$:Damage/DamageUtils@DamageUtils",
@@ -405,17 +405,6 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/Camera/CameraController.lua",
-			"internalId": "$:Controllers/Camera/CameraController@CameraController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
 			"filePath": "../Client/MainMenuControllers/AmbientSound/AmbientSoundController.lua",
 			"internalId": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
 			"decorators": [
@@ -438,6 +427,17 @@
 			]
 		},
 		{
+			"filePath": "../Shared/Character/LocalCharacter/LocalCharacterSingleton.lua",
+			"internalId": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
 			"filePath": "../Client/Controllers/Crosshair/CrosshairController.lua",
 			"internalId": "$:Controllers/Crosshair/CrosshairController@CrosshairController",
 			"decorators": [
@@ -449,8 +449,8 @@
 			]
 		},
 		{
-			"filePath": "../Shared/Character/LocalCharacter/LocalCharacterSingleton.lua",
-			"internalId": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
+			"filePath": "../Shared/Camera/AirshipCharacterCameraSingleton.lua",
+			"internalId": "$:Camera/AirshipCharacterCameraSingleton@AirshipCharacterCameraSingleton",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",

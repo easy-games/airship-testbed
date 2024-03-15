@@ -1,6 +1,6 @@
-import { Controller, OnStart } from "Shared/Flamework";
-import { CameraReferences } from "Client/Controllers/Camera/CameraReferences";
+import { CameraReferences } from "@Easy/Core/Shared/Camera/CameraReferences";
 import { Airship } from "Shared/Airship";
+import { Controller, OnStart } from "Shared/Flamework";
 import { SetInterval } from "Shared/Util/Timer";
 
 @Controller({})

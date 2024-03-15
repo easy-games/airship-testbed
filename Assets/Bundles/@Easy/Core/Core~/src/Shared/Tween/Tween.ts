@@ -111,6 +111,10 @@ export class Tween {
 		return this;
 	}
 
+	public IsPlaying() {
+		return this.running;
+	}
+
 	private elapsedTime = 0;
 
 	// Can't get this working right. lol

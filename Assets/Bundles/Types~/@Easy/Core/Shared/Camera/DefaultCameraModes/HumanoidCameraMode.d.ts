@@ -1,4 +1,4 @@
-import Character from "../../../../Shared/Character/Character";
+import Character from "../../Character/Character";
 import { CameraMode, CameraTransform } from "..";
 export declare class HumanoidCameraMode extends CameraMode {
     private character;
@@ -23,7 +23,7 @@ export declare class HumanoidCameraMode extends CameraMode {
     private readonly mouse;
     private readonly clientSettingsController;
     private spineBone;
-    constructor(character: Character, graphicalCharacterGO: GameObject, initialFirstPerson: boolean, initialYOffset: number);
+    constructor(character: Character, graphicalCharacterGO: GameObject, initialFirstPerson: boolean);
     private SetupMobileControls;
     OnStart(camera: Camera, rootTransform: Transform): void;
     OnStop(): void;
@@ -31,10 +31,11 @@ export declare class HumanoidCameraMode extends CameraMode {
     OnLateUpdate(dt: number): CameraTransform;
     OnPostUpdate(camera: Camera): void;
     SetFirstPerson(firstPerson: boolean): void;
-    SetYOffset(yOffset: number, immediate?: boolean): void;
+    private SetYOffset;
     SetLookBackwards(lookBackwards: boolean): void;
     /**
      * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
      */
     SetDirection(direction: Vector3): void;
+    private GetCamYOffset;
 }
