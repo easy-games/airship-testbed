@@ -135,6 +135,9 @@ export class MainMenuController implements OnStart {
 		this.avatarView?.HideAvatar();
 		EventSystem.current.ClearSelected();
 
+		//Clear menu's cache on menu close
+		CloudImage.ClearCache();
+
 		const duration = 0.06;
 		this.wrapperRect.TweenLocalScale(new Vector3(1.1, 1.1, 1.1), duration);
 		this.rootCanvasGroup.TweenCanvasGroupAlpha(0, duration);

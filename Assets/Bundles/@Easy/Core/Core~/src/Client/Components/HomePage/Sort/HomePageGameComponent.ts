@@ -56,7 +56,6 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	}
 
 	public Init(gameDto: GameDto) {
-		print("Init game: " + gameDto.name);
 		this.gameDto = gameDto;
 		this.titleText.text = gameDto.name;
 		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
