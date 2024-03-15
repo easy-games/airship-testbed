@@ -41,6 +41,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		for (let i = 0; i < this.loadedGameComponents.size(); i++) {
 			PoolManager.ReleaseObject(this.loadedGameComponents[i].gameObject);
 		}
+		this.loadedGameComponents.clear();
 
 		//Destroy the sort containers
 		let toRemove: Transform[] = [];
@@ -82,7 +83,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			const sortComponent = this.sorts.get(sortId)!;
 
 			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
-			sortComponent.SetGames(games);
+			//sortComponent.SetGames(games);
 			this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}
 

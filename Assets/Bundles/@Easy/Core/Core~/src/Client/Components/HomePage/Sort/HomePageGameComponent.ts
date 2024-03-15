@@ -19,6 +19,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public playerCountText!: TMP_Text;
 
 	public buttonGo!: GameObject;
+	public gameImage!: CloudImage;
 	public orgImage!: CloudImage;
 	public authorText!: TMP_Text;
 
@@ -55,6 +56,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	}
 
 	public Init(gameDto: GameDto) {
+		print("Init game: " + gameDto.name);
 		this.gameDto = gameDto;
 		this.titleText.text = gameDto.name;
 		if (gameDto.liveStats?.playerCount !== undefined && gameDto.liveStats.playerCount > 0) {
@@ -70,17 +72,16 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		{
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			let cloudImage = this.gameObject.transform.GetChild(1).GetComponent<CloudImage>();
-			cloudImage.url = url;
-			cloudImage.image.color = new Color(0, 0, 0, 0.3);
-			const downloadConn = cloudImage.OnFinishedLoading((success) => {
+			this.gameImage.url = url;
+			this.gameImage.image.color = new Color(0, 0, 0, 0.3);
+			const downloadConn = this.gameImage.OnFinishedLoading((success) => {
 				if (success) {
-					cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
+					this.gameImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
-					cloudImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
+					this.gameImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
 				}
 			});
-			cloudImage.StartDownload();
+			this.gameImage.StartDownload();
 			this.bin.Add(() => {
 				Bridge.DisconnectEvent(downloadConn);
 			});
