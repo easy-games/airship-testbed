@@ -6,7 +6,8 @@ import { CharacterCameraType } from "./CharacterCameraType";
 export declare class CameraSystem {
     private currentMode;
     private readonly transform;
-    private readonly camera;
+    private readonly mainCamera;
+    private readonly viewmodelCamera;
     private readonly allCameras;
     private onClearCallback?;
     private modeCleared;
