@@ -16467,6 +16467,7 @@ interface CloudImage extends MonoBehaviour {
     url: string;
     image: Image;
     downloadOnStart: boolean;
+    releaseImageOnDisable: boolean;
     loadedUrl: string;
 
 
@@ -16991,4 +16992,36 @@ interface ScreenConstructor {
     SetResolution(width: number, height: number, fullscreen: boolean): void;
 }
 declare const Screen: ScreenConstructor;
+    
+interface AirshipPointLight extends MonoBehaviour {
+    color: Color;
+    intensity: number;
+    range: number;
+    castShadows: boolean;
+
+
+    BuildDto(): PointLightDto;
+
+}
+    
+interface PointLightDto {
+    color: Color;
+    position: Vector3;
+    rotation: Quaternion;
+    intensity: number;
+    range: number;
+    castShadows: boolean;
+
+
+
+}
+    
+interface AirshipPointLightConstructor {
+
+    new(): AirshipPointLight;
+
+
+    GetAllPointLights(): CSArray<AirshipPointLight>;
+}
+declare const AirshipPointLight: AirshipPointLightConstructor;
 

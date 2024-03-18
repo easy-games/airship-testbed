@@ -79,8 +79,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.avatarProfileMenu = this.avatarProfileMenuGo?.GetAirshipComponent<AvatarMenuProfileComponent>();
 		this.avatarProfileMenu?.Init(mainMenu);
 
-		let i = 0;
+		//Remove any dummy content
+		if (this.mainContentHolder) {
+			this.mainContentHolder.gameObject.ClearChildren();
+		}
 
+		let i = 0;
 		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
 			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
 			if (image) {
@@ -377,11 +381,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private itemButtonBin: Bin = new Bin();
 	private ClearItembuttons() {
 		this.Log("ClearItemButtons");
+		//Highlight selected items
+		for (let i = 0; i < this.currentContentBtns.size(); i++) {
+			PoolManager.ReleaseObject(this.currentContentBtns[i].button.gameObject);
+		}
 		this.itemButtonBin.Clean();
 		this.currentContentBtns.clear();
-		if (this.mainContentHolder) {
-			this.mainContentHolder.gameObject.ClearChildren();
-		}
 	}
 
 	private DisplayColorScheme() {
@@ -434,7 +439,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private AddItemButton(classId: string, instanceId: string, itemName: string, onClickCallback: () => void) {
 		if (this.itemButtonTemplate && this.mainContentHolder) {
-			let newButton = Object.Instantiate(this.itemButtonTemplate, this.mainContentHolder);
+			let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 			let eventIndex = CanvasAPI.OnClickEvent(newButton, onClickCallback);
 			this.itemButtonBin.Add(() => {
 				Bridge.DisconnectEvent(eventIndex);
@@ -449,7 +454,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.currentContentBtns.push({ id: instanceId, button: accessoryBtn });
 
 				//download the items thumbnail
-				let cloudImage = newButton.gameObject.AddComponent<CloudImage>();
+				let cloudImage = newButton.gameObject.GetComponent<CloudImage>();
+				if (cloudImage === undefined) {
+					cloudImage = newButton.gameObject.AddComponent<CloudImage>();
+				}
+				cloudImage.downloadOnStart = false;
 				cloudImage.image = accessoryBtn.iconImage;
 				cloudImage.url = AvatarUtil.GetClassThumbnailUrl(classId);
 

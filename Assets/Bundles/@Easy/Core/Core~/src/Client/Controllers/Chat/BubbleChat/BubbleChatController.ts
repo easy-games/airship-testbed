@@ -1,7 +1,7 @@
+import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
-import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
@@ -166,9 +166,9 @@ export class BubbleChatController implements OnStart {
 
 			const canvasComponent = canvas.GetComponent<Canvas>();
 			if (character.IsLocalCharacter()) {
-				const isFirstPerson = Dependency<LocalCharacterSingleton>().IsFirstPerson();
+				const isFirstPerson = Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 				canvasComponent.enabled = !isFirstPerson;
-				Dependency<LocalCharacterSingleton>().firstPersonChanged.Connect((isFirst) => {
+				Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirst) => {
 					canvasComponent.enabled = !isFirst;
 				});
 			}

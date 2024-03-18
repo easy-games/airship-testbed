@@ -3,7 +3,6 @@ import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelContr
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioBundleSpacialMode, AudioClipBundle } from "Shared/Audio/AudioClipBundle";
 import Character from "Shared/Character/Character";
-import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { EffectsManager } from "Shared/Effects/EffectsManager";
 import { Dependency } from "Shared/Flamework";
 import { ItemUtil } from "Shared/Item/ItemUtil";
@@ -12,6 +11,7 @@ import { Bin } from "Shared/Util/Bin";
 import { RandomUtil } from "Shared/Util/RandomUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { Task } from "Shared/Util/Task";
+import { AirshipCharacterCameraSingleton } from "../../Camera/AirshipCharacterCameraSingleton";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";
 import { CharacterAnimationLayer } from "./CharacterAnimationLayer";
 
@@ -195,7 +195,7 @@ export class CharacterAnimator {
 		const isFirstPerson =
 			RunUtil.IsClient() &&
 			this.character.IsLocalCharacter() &&
-			Dependency<LocalCharacterSingleton>().IsFirstPerson();
+			Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 
 		this.PlayDamageFlash();
 
@@ -524,8 +524,8 @@ export class CharacterAnimator {
 		//Play death animation
 		let isFirstPerson = false;
 		if (this.character.IsLocalCharacter()) {
-			const localController = Dependency<LocalCharacterSingleton>();
-			isFirstPerson = localController.IsFirstPerson();
+			const cameraSingleton = Dependency<AirshipCharacterCameraSingleton>();
+			isFirstPerson = cameraSingleton.IsFirstPerson();
 			//Always play death animation in third person
 			// localController.ForceFirstPersonMode(false);
 			//Lock Inputs

@@ -1,7 +1,7 @@
-﻿import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
+﻿import { AirshipCharacterCameraSingleton } from "@Easy/Core/Shared/Camera/AirshipCharacterCameraSingleton";
+import { ViewmodelController } from "Client/Controllers/Viewmodel/ViewmodelController";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
-import { LocalCharacterSingleton } from "Shared/Character/LocalCharacter/LocalCharacterSingleton";
 import { DamageUtils } from "Shared/Damage/DamageUtils";
 import { Dependency } from "Shared/Flamework";
 import { MeleeItemDef } from "Shared/Item/ItemDefinitionTypes";
@@ -42,7 +42,7 @@ export class MeleeHeldItem extends HeldItem {
 
 		//Play the items use effect
 		const isFirstPerson =
-			this.character.IsLocalCharacter() && Dependency<LocalCharacterSingleton>().IsFirstPerson();
+			this.character.IsLocalCharacter() && Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 		if (meleeData.onUseVFX) {
 			if (isFirstPerson) {
 				this.currentUseVFX = EffectsManager.SpawnPrefabEffect(

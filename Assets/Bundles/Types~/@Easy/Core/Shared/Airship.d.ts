@@ -13,6 +13,7 @@ import { PartyService } from "../Server/Airship/Party/PartyService";
 import { PlatformInventoryService } from "../Server/Airship/PlatformInventory/PlatformInventoryService";
 import { TransferService } from "../Server/Airship/Transfer/TransferService";
 import { UserService } from "../Server/Airship/User/UserService";
+import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { CharactersSingleton } from "./Character/CharactersSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
@@ -129,6 +130,7 @@ export declare const Airship: {
     teams: Omit<TeamsSingleton, "OnStart">;
     inventory: Omit<InventorySingleton, "OnStart">;
     loadingScreen: Omit<LoadingScreenSingleton, "OnStart">;
+    characterCamera: AirshipCharacterCameraSingleton;
     /**
      * Namespace for managing and query Airship tags on game objects
      * @see https://docs.airship.gg/tags

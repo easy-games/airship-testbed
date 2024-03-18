@@ -10,7 +10,13 @@ import { RunUtil } from "Shared/Util/RunUtil";
 import { SpringTween } from "Shared/Util/SpringTween";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "..";
+import { LocalCharacterSingleton } from "../../Character/LocalCharacter/LocalCharacterSingleton";
+import { AirshipCharacterCameraSingleton } from "../AirshipCharacterCameraSingleton";
 import DefaultCameraMask from "../DefaultCameraMask";
+
+const CAM_Y_OFFSET = 1.7;
+const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
+const CAM_Y_OFFSET_CROUCH_3RD_PERSON = CAM_Y_OFFSET;
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
@@ -61,13 +67,24 @@ export class HumanoidCameraMode extends CameraMode {
 		private character: Character,
 		private graphicalCharacterGO: GameObject,
 		initialFirstPerson: boolean,
-		initialYOffset: number,
 	) {
 		super();
+
+		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
+			this.SetYOffset(this.GetCamYOffset(this.firstPerson));
+		});
+		this.yOffset = this.GetCamYOffset(this.firstPerson);
+
+		Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirstPerson) => {
+			this.SetYOffset(
+				this.GetCamYOffset(isFirstPerson),
+				true,
+			);
+		});
+
 		this.movement = character.movement;
 		this.attachTo = graphicalCharacterGO.transform;
 		this.firstPerson = initialFirstPerson;
-		this.yOffset = initialYOffset;
 		this.spineBone = character.rig.spine;
 		this.SetupMobileControls();
 
@@ -244,7 +261,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.firstPerson = firstPerson;
 	}
 
-	public SetYOffset(yOffset: number, immediate = false) {
+	private SetYOffset(yOffset: number, immediate = false) {
 		if (immediate) {
 			this.yOffset = yOffset;
 			if (this.yOffsetSpring) {
@@ -270,5 +287,16 @@ export class HumanoidCameraMode extends CameraMode {
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
 		this.movement.SetLookVector(direction);
+	}
+
+	private GetCamYOffset(isFirstPerson: boolean) {
+		const state = Dependency<LocalCharacterSingleton>().GetEntityDriver()?.GetState() ?? CharacterState.Idle
+		const yOffset =
+			state === CharacterState.Crouching || state === CharacterState.Sliding
+				? isFirstPerson
+					? CAM_Y_OFFSET_CROUCH_1ST_PERSON
+					: CAM_Y_OFFSET_CROUCH_3RD_PERSON
+				: CAM_Y_OFFSET;
+		return yOffset;
 	}
 }

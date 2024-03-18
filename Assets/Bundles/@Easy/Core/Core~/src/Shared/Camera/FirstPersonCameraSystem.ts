@@ -5,7 +5,8 @@ import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
-import { ViewmodelController } from "../Viewmodel/ViewmodelController";
+import { ViewmodelController } from "../../Client/Controllers/Viewmodel/ViewmodelController";
+import { LocalCharacterSingleton } from "../Character/LocalCharacter/LocalCharacterSingleton";
 import { CameraReferences } from "./CameraReferences";
 
 interface BobData {
@@ -72,6 +73,10 @@ export class FirstPersonCameraSystem {
 		});
 
 		this.bin.Add(OnLateUpdate.ConnectWithPriority(SignalPriority.HIGH, () => this.LateUpdate()));
+
+		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
+			this.OnMovementStateChange(state);
+		})
 	}
 
 	public Destroy() {

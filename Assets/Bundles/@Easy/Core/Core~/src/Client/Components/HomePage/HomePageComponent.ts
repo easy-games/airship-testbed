@@ -9,6 +9,7 @@ import { DecodeJSON } from "Shared/json";
 import { GamesDto } from "./API/GamesAPI";
 import SortComponent from "./Sort/SortComponent";
 import { SortId } from "./Sort/SortId";
+import HomePageGameComponent from "./Sort/HomePageGameComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
@@ -17,7 +18,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	public scrollRect!: ScrollRect;
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
-	// private loadedGameComponents: HomePageGameComponent[] = [];
+	private loadedGameComponents: HomePageGameComponent[] = [];
 
 	override OpenPage(): void {
 		super.OpenPage();
@@ -35,17 +36,12 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 	}
 
-	public Update(dt: number) {
-		if (Input.GetKeyDown(KeyCode.P)) {
-			CloudImage.PrintCache();
-		}
-	}
-
 	private ClearSorts(): void {
 		//Release pooled game cards
-		// for (let i = 0; i < this.loadedGameComponents.size(); i++) {
-		// 	PoolManager.ReleaseObject(this.loadedGameComponents[i].gameObject);
-		// }
+		for (let i = 0; i < this.loadedGameComponents.size(); i++) {
+			PoolManager.ReleaseObject(this.loadedGameComponents[i].gameObject);
+		}
+		this.loadedGameComponents.clear();
 
 		//Destroy the sort containers
 		let toRemove: Transform[] = [];
@@ -87,8 +83,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			const sortComponent = this.sorts.get(sortId)!;
 
 			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
-			sortComponent.SetGames(games);
-			// this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
+			this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}
 
 		task.spawn(() => {
