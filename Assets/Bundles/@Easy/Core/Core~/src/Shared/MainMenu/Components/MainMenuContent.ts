@@ -1,6 +1,5 @@
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
-import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import { ScreenSizeType } from "../Singletons/ScreenSizeType";
@@ -44,7 +43,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
-		CoreLogger.Log("screenSize.x: " + screenSize.x);
+		// CoreLogger.Log("screenSize.x: " + screenSize.x);
 
 		let sizeType: ScreenSizeType = "md";
 		if (screenSize.x <= 1200) {
