@@ -98,7 +98,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.contentWrapper.pivot = new Vector2(0.5, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(-50, -67);
+				this.contentWrapper.anchoredPosition = new Vector2(-150, -67);
 				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1050), screenSize.y - 67);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
@@ -108,7 +108,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.navbarContentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.navbarContentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0.5, 1);
-				this.navbarContentWrapper.anchoredPosition = new Vector2(120, 0);
+				this.navbarContentWrapper.anchoredPosition = new Vector2(20, 0);
 			} else {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
