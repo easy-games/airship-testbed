@@ -55,9 +55,10 @@ export default class SortComponent extends AirshipBehaviour {
 	}
 
 	public UpdatePreferredHeight(): void {
+		let rows = math.ceil(this.content.childCount / this.gridLayoutGroup.constraintCount);
+
 		this.layoutElement.preferredHeight =
-			(this.content.childCount * (this.gridLayoutGroup.cellSize.y + this.gridLayoutGroup.spacing.y)) /
-				this.gridLayoutGroup.constraintCount +
+			rows * (this.gridLayoutGroup.cellSize.y + this.gridLayoutGroup.spacing.y) +
 			40 + // title
 			50; // bottom padding
 		if (this.pageScrollRect) {

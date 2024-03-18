@@ -7,9 +7,9 @@ import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
 import { DecodeJSON } from "Shared/json";
 import { GamesDto } from "./API/GamesAPI";
+import HomePageGameComponent from "./Sort/HomePageGameComponent";
 import SortComponent from "./Sort/SortComponent";
 import { SortId } from "./Sort/SortId";
-import HomePageGameComponent from "./Sort/HomePageGameComponent";
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
@@ -59,6 +59,10 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		sortComponent.SetTitle(title);
 		sortComponent.pageScrollRect = this.scrollRect;
 		this.sorts.set(sortId, sortComponent);
+	}
+
+	private CreateSpacer(): void {
+		const go = Object.Instantiate(this.spacerPrefab, this.mainContent);
 	}
 
 	public FetchGames(): void {

@@ -32,6 +32,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	private bin = new Bin();
 
+	public Awake(): void {}
+
 	override Start(): void {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(

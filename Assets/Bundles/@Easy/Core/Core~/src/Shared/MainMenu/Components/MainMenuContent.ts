@@ -1,5 +1,6 @@
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import { ScreenSizeType } from "../Singletons/ScreenSizeType";
@@ -11,6 +12,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public socialMenu!: RectTransform;
 	public friendsPage!: RectTransform;
 	public navbar!: RectTransform;
+	public navbarContentWrapper!: RectTransform;
 	public navbarBottom!: RectTransform;
 	public navbarControls!: RectTransform;
 	public pages!: RectTransform;
@@ -42,10 +44,10 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
-		// CoreLogger.Log("screenSize.x: " + screenSize.x);
+		CoreLogger.Log("screenSize.x: " + screenSize.x);
 
 		let sizeType: ScreenSizeType = "md";
-		if (screenSize.x <= 910) {
+		if (screenSize.x <= 1200) {
 			sizeType = "sm";
 		} else if (screenSize.x >= 1760) {
 			sizeType = "lg";
@@ -97,28 +99,48 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.contentWrapper.pivot = new Vector2(0.5, 1);
 				this.contentWrapper.anchoredPosition = new Vector2(-50, -67);
-				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1200), screenSize.y);
+				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1050), screenSize.y - 6);
 
-				// this.socialMenu.anchoredPosition = new Vector2(-73, -20);
+				this.navbarContentWrapper.sizeDelta = new Vector2(
+					this.contentWrapper.sizeDelta.x + 40 + 301,
+					this.navbarContentWrapper.sizeDelta.y,
+				);
+				this.navbarContentWrapper.anchorMin = new Vector2(0.5, 1);
+				this.navbarContentWrapper.anchorMax = new Vector2(0.5, 1);
+				this.navbarContentWrapper.pivot = new Vector2(0.5, 1);
+				this.navbarContentWrapper.anchoredPosition = new Vector2(120, 0);
 			} else {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
 				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(50, 0);
-				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1400), screenSize.y);
+				this.contentWrapper.anchoredPosition = new Vector2(50, -67);
+				this.contentWrapper.sizeDelta = new Vector2(screenSize.x - 400, screenSize.y - 67);
 
-				// this.socialMenu.anchoredPosition = new Vector2(-30, -20);
+				this.navbarContentWrapper.sizeDelta = new Vector2(
+					this.contentWrapper.sizeDelta.x + 40 + 301,
+					this.navbarContentWrapper.sizeDelta.y,
+				);
+				this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
+				this.navbarContentWrapper.anchorMax = new Vector2(0, 1);
+				this.navbarContentWrapper.pivot = new Vector2(0, 1);
+				this.navbarContentWrapper.anchoredPosition = new Vector2(50, 0);
 			}
 
-			let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -100));
 			if (sizeType === "lg") {
+				this.socialMenu.anchorMin = new Vector2(0, 1);
+				this.socialMenu.anchorMax = new Vector2(0, 1);
+				this.socialMenu.pivot = new Vector2(0, 1);
+				let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -97));
 				socialMenuPos = socialMenuPos
 					.add(new Vector2(this.canvasRect.sizeDelta.x / 2, 0))
 					.add(new Vector2(this.contentWrapper.sizeDelta.x / 2, 0));
+				this.socialMenu.anchoredPosition = socialMenuPos;
 			} else {
-				socialMenuPos = socialMenuPos.add(new Vector2(this.contentWrapper.sizeDelta.x, 0));
+				this.socialMenu.anchorMin = new Vector2(1, 1);
+				this.socialMenu.anchorMax = new Vector2(1, 1);
+				this.socialMenu.pivot = new Vector2(1, 1);
+				this.socialMenu.anchoredPosition = new Vector2(-10, this.contentWrapper.anchoredPosition.y - 97);
 			}
-			this.socialMenu.anchoredPosition = socialMenuPos;
 
 			this.navbarBottom.gameObject.SetActive(true);
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 127);
