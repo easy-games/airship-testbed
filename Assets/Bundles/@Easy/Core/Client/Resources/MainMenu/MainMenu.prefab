@@ -2796,27 +2796,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 296
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 153
       objectReference: {fileID: 0}
     - target: {fileID: 8043031699226679729, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -18.5
       objectReference: {fileID: 0}
     - target: {fileID: 8323813496938185721, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].name
@@ -4459,10 +4459,6 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 1573291203343260734, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1635751598117879946, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_Material
       value: 
@@ -4598,10 +4594,6 @@ PrefabInstance:
     - target: {fileID: 6320577966021138971, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651991673494726047, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
-      propertyPath: m_Interactable
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7180531644218649322, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4750,45 +4742,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8446698585075158508, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3809181124158925954}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
 --- !u!224 &2522577888134740871 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8930599954369618302, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
   m_PrefabInstance: {fileID: 6408097179056249593}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3302987847906596629 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8446698585075158508, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
-  m_PrefabInstance: {fileID: 6408097179056249593}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3809181124158925954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3302987847906596629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MainMenu/Components/MyCreditsButton.lua
-  m_error: 0
-  m_yielded: 0
-  m_assetPath: 
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: MyCreditsButton
-    properties: []
 --- !u!1 &3410898453704809750 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8627718744867964911, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
