@@ -60,6 +60,8 @@ export class MainMenuNavbarController implements OnStart {
 
 		if (Game.coreContext === CoreContext.GAME) {
 			settingsButton.SetActive(false);
+			disconnectButton.SetActive(true);
+			runningGameButton.SetActive(true);
 		} else {
 			runningGameButton.SetActive(false);
 			disconnectButton.SetActive(false);

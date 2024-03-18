@@ -36,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -24.1, y: 0}
-  m_SizeDelta: {x: 17.2592, y: 13.808}
+  m_AnchoredPosition: {x: -24.099998, y: 0}
+  m_SizeDelta: {x: 22.2965, y: 17.838}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8055908578705179462
 CanvasRenderer:
@@ -153,9 +153,46 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: loadingIndicator
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Optional Variables"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: disabledColorHex
+      type: string
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Optional Variables"'
+      nullable: 0
+      serializedValue: '#2E3035'
       serializedObject: {fileID: 0}
       modified: 0
 --- !u!1 &2058818752049032860
@@ -194,7 +231,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 7.300003, y: 0}
-  m_SizeDelta: {x: 26, y: 26}
+  m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7943340062251183593
 CanvasRenderer:
@@ -246,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 13
+  radius: 15
   image: {fileID: 2288897764175091121}
 --- !u!1 &2260318610221767465
 GameObject:
@@ -360,6 +397,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -373,6 +411,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -386,6 +425,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -399,6 +439,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -418,7 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 40
+  m_MinHeight: 50
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
@@ -458,8 +499,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 41.6, y: -0.00001312}
-  m_SizeDelta: {x: 157.7915, y: 18}
+  m_AnchoredPosition: {x: 44, y: -0.00001312}
+  m_SizeDelta: {x: 177.4232, y: 18}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7733813553451795793
 CanvasRenderer:
@@ -516,8 +557,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 17
+  m_fontSizeBase: 17
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
