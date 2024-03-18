@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
@@ -164,6 +165,14 @@ export class MainMenuPartyController implements OnStart {
 			} else {
 				usernameText.text = member.username;
 			}
+
+			const profilePicture = refs.GetValue("UI", "ProfilePicture") as GameObject;
+			task.spawn(() => {
+				const sprite = Airship.players.CreateProfilePictureSpriteAsync(member.uid);
+				if (sprite) {
+					profilePicture.GetComponent<Image>().sprite = sprite;
+				}
+			});
 
 			// const leftLayout = refs.GetValue("UI", "LeftLayout") as HorizontalLayoutGroup;
 			// LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());

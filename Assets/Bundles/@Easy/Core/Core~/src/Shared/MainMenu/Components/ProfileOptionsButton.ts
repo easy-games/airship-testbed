@@ -2,12 +2,22 @@ import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMe
 import { ChangeUsernameController } from "@Easy/Core/Client/MainMenuControllers/Social/ChangeUsernameController";
 import { RightClickMenuButton } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
+import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
+import { Game } from "../../Game";
 import { Mouse } from "../../UserInput";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
 	override Start(): void {
+		task.spawn(() => {
+			Game.WaitForLocalPlayerLoaded();
+			const sprite = Airship.players.CreateProfilePictureSpriteAsync(Game.localPlayer.userId);
+			if (sprite) {
+				this.gameObject.GetComponent<Image>().sprite = sprite;
+			}
+		});
+
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
 			options.push({

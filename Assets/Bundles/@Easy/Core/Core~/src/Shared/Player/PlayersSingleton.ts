@@ -495,9 +495,19 @@ export class PlayersSingleton implements OnStart {
 		if (this.cachedProfilePictureSprite.has(userId)) {
 			return this.cachedProfilePictureSprite.get(userId);
 		}
-		const texture = AssetCache.LoadAssetIfExists<Texture2D>(
-			"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
-		);
+
+		let randomId = string.byte(userId)[0];
+		let pictures = [
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/batter.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/heart.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/pilot.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/pirate.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/rad.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/scuba.jpeg",
+		];
+		let index = randomId % pictures.size();
+		let path = pictures[index];
+		const texture = AssetCache.LoadAssetIfExists<Texture2D>(path);
 		if (texture !== undefined) {
 			const sprite = Bridge.MakeSprite(texture);
 			this.cachedProfilePictureSprite.set(userId, sprite);

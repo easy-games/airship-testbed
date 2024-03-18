@@ -528,7 +528,12 @@ export class FriendsController implements OnStart {
 				"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.png",
 			);
 			if (texture !== undefined) {
-				profileImage.sprite = Bridge.MakeSprite(texture);
+				task.spawn(() => {
+					const sprite = Airship.players.CreateProfilePictureSpriteAsync(friend.userId);
+					if (sprite) {
+						profileImage.sprite = sprite;
+					}
+				});
 			}
 		}
 
