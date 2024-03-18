@@ -44,16 +44,16 @@ export default class GameSearchResult extends SearchResult {
 			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
 			cloudImage.url = url;
 			cloudImage.StartDownload();
-			const downloadConn = cloudImage.OnFinishedLoading((success) => {
-				if (success) {
-					cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.1);
-				} else {
-					cloudImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.1);
-				}
-			});
-			this.bin.Add(() => {
-				Bridge.DisconnectEvent(downloadConn);
-			});
+			this.bin.AddEngineEventConnection(
+				cloudImage.OnFinishedLoading((success) => {
+					print(gameDto.name + " image result: " + success);
+					if (success) {
+						cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.1);
+					} else {
+						cloudImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.1);
+					}
+				}),
+			);
 		}
 	}
 

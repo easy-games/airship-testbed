@@ -5,7 +5,6 @@ import { Controller, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { AppManager } from "Shared/Util/AppManager";
-import { CanvasAPI } from "Shared/Util/CanvasAPI";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { SetTimeout } from "Shared/Util/Timer";
 import AvatarViewComponent from "../../Shared/Avatar/AvatarViewComponent";
@@ -29,8 +28,6 @@ export class MainMenuController implements OnStart {
 	public mainContentGroup: CanvasGroup;
 	public socialMenuGroup: CanvasGroup;
 	private rootCanvasGroup: CanvasGroup;
-
-	private toggleSocialButton: Button;
 
 	private open = false;
 	private socialIsVisible = true;
@@ -100,11 +97,6 @@ export class MainMenuController implements OnStart {
 		// 		AppManager.Close();
 		// 	});
 		// }
-
-		this.toggleSocialButton = this.refs.GetValue("UI", "ToggleSocialButton");
-		CanvasAPI.OnClickEvent(this.toggleSocialButton.gameObject, () => {
-			this.ToggleSocialView();
-		});
 
 		if (Game.coreContext === CoreContext.GAME) {
 			this.mainContentCanvas.enabled = false;
@@ -206,19 +198,5 @@ export class MainMenuController implements OnStart {
 		}
 
 		this.onCurrentPageChanged.Fire(pageType, oldPage?.pageType);
-	}
-
-	private ToggleSocialView() {
-		this.socialIsVisible = !this.socialIsVisible;
-		this.toggleSocialButton.image.transform.localEulerAngles = new Vector3(0, 0, this.socialIsVisible ? 0 : 180);
-		this.socialMenuGroup.transform.TweenAnchoredPositionX(this.socialIsVisible ? 0 : 400, this.socialTweenDuration);
-
-		let mainRect = this.mainContentGroup.GetComponent<RectTransform>();
-		// mainRect.TweenAnchorMax(
-		// 	new Vector2(this.socialIsVisible ? Screen.width : Screen.width - 400, mainRect.anchorMax.y),
-		// 	this.socialTweenDuration,
-		// );
-		mainRect.sizeDelta = new Vector2(this.socialIsVisible ? -400 : 0, mainRect.sizeDelta.y);
-		mainRect.TweenAnchoredPositionX(this.socialIsVisible ? -200 : 0, this.socialTweenDuration);
 	}
 }

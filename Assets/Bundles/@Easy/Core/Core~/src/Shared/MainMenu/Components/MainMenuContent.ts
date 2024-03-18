@@ -99,7 +99,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.contentWrapper.pivot = new Vector2(0.5, 1);
 				this.contentWrapper.anchoredPosition = new Vector2(-50, -67);
-				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1050), screenSize.y - 6);
+				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1050), screenSize.y - 67);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
 					this.contentWrapper.sizeDelta.x + 40 + 301,
@@ -149,8 +149,13 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbar.offsetMin = new Vector2(0, this.navbar.offsetMin.y);
 			this.navbar.offsetMax = new Vector2(0, this.navbar.offsetMax.y);
 
-			this.searchFocused.offsetMin = new Vector2(-10, 0);
-			this.searchFocused.offsetMax = new Vector2(10, 0);
+			this.searchFocused.offsetMin = this.navbarContentWrapper.offsetMin;
+			this.searchFocused.offsetMax = this.navbarContentWrapper.offsetMax;
+			this.searchFocused.anchorMax = this.navbarContentWrapper.anchorMax;
+			this.searchFocused.anchorMin = this.navbarContentWrapper.anchorMin;
+			this.searchFocused.pivot = this.navbarContentWrapper.pivot;
+			this.searchFocused.anchoredPosition = this.navbarContentWrapper.anchoredPosition.add(new Vector2(0, -15));
+
 			this.mobileNav.gameObject.SetActive(false);
 		}
 
