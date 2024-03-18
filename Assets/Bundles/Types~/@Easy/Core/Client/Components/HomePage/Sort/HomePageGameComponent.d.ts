@@ -14,6 +14,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     gameDto: GameDto;
     private redirectDrag;
     private bin;
+    Awake(): void;
     Start(): void;
     OnDestroy(): void;
     OnDisabled(): void;

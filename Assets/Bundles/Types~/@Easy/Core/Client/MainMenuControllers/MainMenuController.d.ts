@@ -16,7 +16,6 @@ export declare class MainMenuController implements OnStart {
     mainContentGroup: CanvasGroup;
     socialMenuGroup: CanvasGroup;
     private rootCanvasGroup;
-    private toggleSocialButton;
     private open;
     private socialIsVisible;
     constructor();
@@ -25,5 +24,4 @@ export declare class MainMenuController implements OnStart {
     IsOpen(): boolean;
     OnStart(): void;
     RouteToPage(pageType: MainMenuPageType, force?: boolean, noTween?: boolean): void;
-    private ToggleSocialView;
 }

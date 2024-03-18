@@ -10,6 +10,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
     OpenPage(): void;
     private ClearSorts;
     private CreateSort;
+    private CreateSpacer;
     FetchGames(): void;
     OnDisable(): void;
     OnDestroy(): void;
