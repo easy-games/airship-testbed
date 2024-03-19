@@ -44,6 +44,14 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
 		// CoreLogger.Log("screenSize.x: " + screenSize.x);
+		print("dpi: " + Screen.dpi);
+		print("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
+
+		if (Screen.dpi >= 255) {
+			this.canvasScalar.scaleFactor = 1.6;
+		} else {
+			this.canvasScalar.scaleFactor = 1;
+		}
 
 		let sizeType: ScreenSizeType = "md";
 		if (screenSize.x <= 1200) {
