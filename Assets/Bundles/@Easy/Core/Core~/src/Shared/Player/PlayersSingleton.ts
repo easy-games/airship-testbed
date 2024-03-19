@@ -491,21 +491,28 @@ export class PlayersSingleton implements OnStart {
 	 * @param userId
 	 * @returns
 	 */
+	private pictureIndex = 0;
 	public CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined {
 		if (this.cachedProfilePictureSprite.has(userId)) {
 			return this.cachedProfilePictureSprite.get(userId);
 		}
 
-		let randomId = string.byte(userId)[0];
 		let pictures = [
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy3.png",
 			"@Easy/Core/Shared/Resources/Images/ProfilePictures/batter.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/Dom.jpeg",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy1.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy2.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy5.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy6.png",
+			"@Easy/Core/Shared/Resources/Images/ProfilePictures/easy7.png",
 			"@Easy/Core/Shared/Resources/Images/ProfilePictures/heart.jpeg",
 			"@Easy/Core/Shared/Resources/Images/ProfilePictures/pilot.jpeg",
 			"@Easy/Core/Shared/Resources/Images/ProfilePictures/pirate.jpeg",
 			"@Easy/Core/Shared/Resources/Images/ProfilePictures/rad.jpeg",
 			"@Easy/Core/Shared/Resources/Images/ProfilePictures/scuba.jpeg",
 		];
-		let index = randomId % pictures.size();
+		let index = this.pictureIndex++ % pictures.size();
 		let path = pictures[index];
 		const texture = AssetCache.LoadAssetIfExists<Texture2D>(path);
 		if (texture !== undefined) {
