@@ -17,7 +17,7 @@ export default class GameSearchResult extends SearchResult {
 	public OnEnable(): void {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
-			mainMenu.onSizeTypeChanged.Connect((size) => {
+			mainMenu.onSizeChanged.Connect((size) => {
 				this.UpdateDescriptionText(this.searchResult);
 			}),
 		);

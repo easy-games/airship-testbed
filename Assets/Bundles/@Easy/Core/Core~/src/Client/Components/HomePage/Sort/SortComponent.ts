@@ -22,17 +22,15 @@ export default class SortComponent extends AirshipBehaviour {
 		const rect = this.gameObject.GetComponent<RectTransform>();
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
-			mainMenu.ObserveScreenSizeType((size) => {
-				if (size === "sm") {
-					this.gridLayoutGroup.cellSize = new Vector2(
-						mainMenu.screenSize.x * 0.97,
-						mainMenu.screenSize.x * 0.97 * 0.56 + 54,
-					);
+			mainMenu.ObserveScreenSize((sizeType, size) => {
+				if (sizeType === "sm") {
+					this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
 					this.gridLayoutGroup.constraintCount = 1;
 				} else {
 					this.gridLayoutGroup.cellSize = new Vector2(320, 234);
 					this.gridLayoutGroup.constraintCount = 3;
 				}
+				Bridge.UpdateLayout(this.content, true);
 				this.UpdatePreferredHeight();
 			}),
 		);

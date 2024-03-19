@@ -22,7 +22,7 @@ export default class Modal extends AirshipBehaviour {
 	override OnEnable(): void {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
-			mainMenu.ObserveScreenSizeType((size) => {
+			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm") {
 					this.rect.anchorMin = new Vector2(0, 0);
 					this.rect.anchorMax = new Vector2(1, 1);

@@ -7,7 +7,7 @@ import { ScreenSizeType } from "./ScreenSizeType";
 @Singleton({})
 export class MainMenuSingleton implements OnStart {
 	public sizeType: ScreenSizeType = "md";
-	public onSizeTypeChanged = new Signal<ScreenSizeType>();
+	public onSizeChanged = new Signal<[sizeType: ScreenSizeType, size: Vector2]>();
 
 	public screenSize!: Vector2;
 
@@ -19,14 +19,14 @@ export class MainMenuSingleton implements OnStart {
 
 	OnStart(): void {}
 
-	public ObserveScreenSizeType(observer: (size: ScreenSizeType) => (() => void) | void): Bin {
+	public ObserveScreenSize(observer: (sizeType: ScreenSizeType, size: Vector2) => (() => void) | void): Bin {
 		const bin = new Bin();
-		let cleanup = observer(this.sizeType);
+		let cleanup = observer(this.sizeType, this.screenSize);
 
 		bin.Add(
-			this.onSizeTypeChanged.Connect((newSize) => {
+			this.onSizeChanged.Connect((newSize) => {
 				cleanup?.();
-				cleanup = observer(newSize);
+				cleanup = observer(newSize, this.screenSize);
 			}),
 		);
 

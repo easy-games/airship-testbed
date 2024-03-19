@@ -37,7 +37,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	override Start(): void {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
-			mainMenu.ObserveScreenSizeType((size) => {
+			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm") {
 					this.shadow.enabled = false;
 				} else {
