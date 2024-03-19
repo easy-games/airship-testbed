@@ -1,5 +1,6 @@
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import { ScreenSizeType } from "../Singletons/ScreenSizeType";
@@ -44,8 +45,8 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
 		// CoreLogger.Log("screenSize.x: " + screenSize.x);
-		print("dpi: " + Screen.dpi);
-		print("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
+		CoreLogger.Log("dpi: " + Screen.dpi);
+		CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Screen.dpi >= 255) {
 			this.canvasScalar.scaleFactor = 1.6;
