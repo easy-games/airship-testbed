@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { OnStart } from "../../../Shared/Flamework";
 import { ClientSettingsFile } from "./ClientSettingsFile";
 export declare class ClientSettingsController implements OnStart {

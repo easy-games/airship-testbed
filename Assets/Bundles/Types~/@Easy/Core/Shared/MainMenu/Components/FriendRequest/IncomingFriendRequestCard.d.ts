@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { User } from "../../../../Client/MainMenuControllers/User/User";
 export default class IncomingFriendRequestCard extends AirshipBehaviour {
     usernameText: TMP_Text;

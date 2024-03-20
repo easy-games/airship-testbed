@@ -1,5 +1,5 @@
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
 import { AllBundleItems, BundleData, BundleGroupNames } from "./ReferenceManagerResources";
 export declare class BundleReferenceManager {
     static LoadResources<T>(groupId: BundleGroupNames, bundleIndex?: number): Array<T>;

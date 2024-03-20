@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { MainMenuController } from "./MainMenuController";
 import { MainMenuPageType } from "./MainMenuPageName";
 export default class MainMenuPageComponent extends AirshipBehaviour {

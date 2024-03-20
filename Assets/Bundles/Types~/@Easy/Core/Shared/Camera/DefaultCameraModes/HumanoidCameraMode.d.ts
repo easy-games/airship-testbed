@@ -36,6 +36,7 @@ export declare class HumanoidCameraMode extends CameraMode {
     /**
      * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
      */
+    SetYAxisDirection(direction: Vector3): void;
     SetDirection(direction: Vector3): void;
     private GetCamYOffset;
 }

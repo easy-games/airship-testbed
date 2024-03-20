@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { GameDto } from "../API/GamesAPI";
 export default class HomePageGameComponent extends AirshipBehaviour {
     titleText: TMP_Text;

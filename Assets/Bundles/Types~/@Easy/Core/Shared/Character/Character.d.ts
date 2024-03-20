@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { CharacterAnimator } from "./Animation/CharacterAnimator";
 import Inventory from "../Inventory/Inventory";
 import { HeldItemManager } from "../Item/HeldItems/HeldItemManager";

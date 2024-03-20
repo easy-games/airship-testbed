@@ -17,7 +17,6 @@
   "license": "ISC",
   "devDependencies": {
     "@easy-games/compiler-types": "^3.0.41",
-    "@easy-games/types": "^1.0.173",
     "@easy-games/unity-flamework-transformer": "^1.1.51",
     "@easy-games/unity-ts": "^3.0.184",
     "@typescript-eslint/eslint-plugin": "^5.40.0",

@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 export default class GameFavoriteButton extends AirshipBehaviour {
     image: Image;
     text: TMP_Text;
