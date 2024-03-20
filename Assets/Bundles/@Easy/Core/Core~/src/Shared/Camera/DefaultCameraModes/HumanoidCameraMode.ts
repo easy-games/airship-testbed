@@ -76,10 +76,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.yOffset = this.GetCamYOffset(this.firstPerson);
 
 		Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirstPerson) => {
-			this.SetYOffset(
-				this.GetCamYOffset(isFirstPerson),
-				true,
-			);
+			this.SetYOffset(this.GetCamYOffset(isFirstPerson), true);
 		});
 
 		this.movement = character.movement;
@@ -290,7 +287,7 @@ export class HumanoidCameraMode extends CameraMode {
 	}
 
 	private GetCamYOffset(isFirstPerson: boolean) {
-		const state = Dependency<LocalCharacterSingleton>().GetEntityDriver()?.GetState() ?? CharacterState.Idle
+		const state = Dependency<LocalCharacterSingleton>().GetEntityDriver()?.GetState() ?? CharacterState.Idle;
 		const yOffset =
 			state === CharacterState.Crouching || state === CharacterState.Sliding
 				? isFirstPerson

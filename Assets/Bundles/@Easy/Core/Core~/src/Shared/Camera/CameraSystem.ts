@@ -5,6 +5,7 @@ import { Spring } from "Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "Shared/Util/Timer";
 import { CameraMode } from "./CameraMode";
 import { CameraReferences } from "./CameraReferences";
+import { CameraTransform } from "./CameraTransform";
 import { CharacterCameraType } from "./CharacterCameraType";
 import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
 
@@ -24,10 +25,11 @@ export class CameraSystem {
 	private readonly viewmodelCamera: Camera;
 	private readonly allCameras: Camera[];
 	private onClearCallback?: () => CameraMode;
+	private updateTransformCallbacks = new Set<(transform: CameraTransform) => CameraTransform | void>();
 	private modeCleared = true;
 
-	private fovStateMap = new Map<CharacterCameraType, FovState>(); 
-	
+	private fovStateMap = new Map<CharacterCameraType, FovState>();
+
 	private enabled = true;
 	private readonly enabledBin = new Bin();
 
@@ -68,7 +70,14 @@ export class CameraSystem {
 		});
 
 		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
-			const camTransform = this.currentMode.OnLateUpdate(dt);
+			let camTransform = this.currentMode.OnLateUpdate(dt);
+
+			// Run game specified functions to update CameraTransform
+			for (const updateFunc of this.updateTransformCallbacks) {
+				const newTransform = updateFunc(camTransform);
+				if (newTransform) camTransform = newTransform;
+			}
+
 			this.transform.SetPositionAndRotation(camTransform.position, camTransform.rotation);
 			this.currentMode.OnPostUpdate(this.mainCamera);
 			for (const [cameraType, fovState] of this.fovStateMap) {
@@ -85,7 +94,6 @@ export class CameraSystem {
 				this.SetFOV(cameraType, fovState.fovSpring.goal.x, true);
 			}
 		});
-		
 
 		this.currentMode.OnStart(this.mainCamera, this.transform);
 		this.enabledBin.Add(() => {
@@ -205,7 +213,7 @@ export class CameraSystem {
 				camerasToUpdate = [this.viewmodelCamera];
 				break;
 			case CharacterCameraType.FIRST_PERSON:
-			case CharacterCameraType.THIRD_PERSON:	
+			case CharacterCameraType.THIRD_PERSON:
 				camerasToUpdate = [this.mainCamera];
 				break;
 		}
@@ -213,5 +221,18 @@ export class CameraSystem {
 		for (const camera of camerasToUpdate) {
 			camera.fieldOfView = newFOV;
 		}
+	}
+
+	/**
+	 * Register a callback to be run after the camera mode has generated a camera transform. Callback can return a modified
+	 * CameraTransform to update the camera for this frame.
+	 *
+	 * @returns Clean up function to unregister callback
+	 */
+	public OnUpdateTransform(callback: (cameraTransform: CameraTransform) => CameraTransform | void): () => void {
+		this.updateTransformCallbacks.add(callback);
+		return () => {
+			this.updateTransformCallbacks.delete(callback);
+		};
 	}
 }
