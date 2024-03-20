@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 export default class SettingsPage extends AirshipBehaviour {
     sidebar: RectTransform;
     tabs: RectTransform;

@@ -159,7 +159,7 @@ export class HumanoidCameraMode extends CameraMode {
 		}
 
 		this.SetFirstPerson(this.firstPerson);
-		this.SetDirection(this.graphicalCharacterGO.transform.forward);
+		this.SetYAxisDirection(this.graphicalCharacterGO.transform.forward);
 		Dependency<CrosshairController>().SetEnabled(true);
 	}
 
@@ -279,10 +279,19 @@ export class HumanoidCameraMode extends CameraMode {
 	/**
 	 * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
 	 */
+	public SetYAxisDirection(direction: Vector3) {
+		// Determine Y-axis rotation based on direction:
+		direction = direction.normalized;
+		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
+		this.movement.SetLookVector(direction);
+	}
+
 	public SetDirection(direction: Vector3) {
 		// Determine Y-axis rotation based on direction:
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
+		const adj = new Vector2(direction.x, direction.z).magnitude;
+		this.rotationX = math.clamp(math.atan2(direction.y, adj), MIN_ROT_X, MAX_ROT_X);
 		this.movement.SetLookVector(direction);
 	}
 

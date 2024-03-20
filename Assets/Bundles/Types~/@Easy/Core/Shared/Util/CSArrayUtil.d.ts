@@ -1,6 +1,6 @@
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
 /**
  * Set of utilities for working with `CSArray` types.
  */

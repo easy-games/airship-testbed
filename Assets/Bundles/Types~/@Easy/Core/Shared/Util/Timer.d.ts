@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { Signal } from "./Signal";
 export declare const OnUpdate: Signal<[deltaTime: number]>;
 export declare const OnLateUpdate: Signal<[deltaTime: number]>;

@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { Player } from "../Player/Player";
 import { NetworkChannel } from "./NetworkAPI";
 type RemoteParamsToClient<T> = Parameters<T extends unknown[] ? (player: Player, ...args: T) => void : T extends unknown ? (player: Player, arg: T) => void : (player: Player) => void>;

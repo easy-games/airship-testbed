@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { OnStart } from "../Flamework";
 import { RemoteFunction } from "../Network/RemoteFunction";
 import { CharacterInventorySingleton } from "./CharacterInventorySingleton";

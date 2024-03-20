@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { Bin } from "../../Util/Bin";
 import { Signal } from "../../Util/Signal";
 export default class SocialNotificationComponent extends AirshipBehaviour {

@@ -1,5 +1,5 @@
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
 import { Constructor } from "./Types/types";
 /**
  * Reflection/metadata API
