@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { MainMenuController } from "../MainMenuController";
 export default class AvatarMenuProfileComponent extends AirshipBehaviour {
     private readonly tweenDuration;

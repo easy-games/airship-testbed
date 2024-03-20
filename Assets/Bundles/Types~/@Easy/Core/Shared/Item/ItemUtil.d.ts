@@ -1,5 +1,5 @@
-/// <reference types="compiler-types" />
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { ItemDef } from "./ItemDefinitionTypes";
 export interface ItemRegistrationConfig {
     accessoryFolder?: string;

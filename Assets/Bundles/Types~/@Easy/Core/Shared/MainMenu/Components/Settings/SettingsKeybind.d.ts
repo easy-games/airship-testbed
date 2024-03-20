@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { InputAction } from "../../../Input/InputAction";
 export default class SettingsKeybind extends AirshipBehaviour {
     title: TMP_Text;

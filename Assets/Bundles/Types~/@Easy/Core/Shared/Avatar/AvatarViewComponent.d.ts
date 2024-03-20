@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import AvatarRenderComponent from "../../Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 export default class AvatarViewComponent extends AirshipBehaviour {
     humanEntityGo?: GameObject;

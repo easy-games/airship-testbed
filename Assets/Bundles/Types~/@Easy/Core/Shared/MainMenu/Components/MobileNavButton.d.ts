@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export default class MobileNavButton extends AirshipBehaviour {
     iconImage: Image;
     selectedSprite: Sprite;

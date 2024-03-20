@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { Bin } from "../../../Util/Bin";
 import { SearchResultDto } from "./SearchAPI";
 export default class SearchResult extends AirshipBehaviour {

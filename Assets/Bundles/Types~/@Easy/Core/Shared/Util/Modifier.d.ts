@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export declare class Modifier<T extends defined> {
     /** Set of active tickets */
     private tickets;

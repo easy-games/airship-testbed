@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export default class GameGeneralPage extends AirshipBehaviour {
     gameTitle: TMP_Text;
     gameDeveloper: TMP_Text;

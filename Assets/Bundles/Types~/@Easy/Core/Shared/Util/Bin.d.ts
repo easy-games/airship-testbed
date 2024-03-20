@@ -1,6 +1,6 @@
-/// <reference types="compiler-types" />
-/// <reference types="compiler-types" />
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 interface ConnectionLike {
     Disconnect(this: ConnectionLike): void;
 }

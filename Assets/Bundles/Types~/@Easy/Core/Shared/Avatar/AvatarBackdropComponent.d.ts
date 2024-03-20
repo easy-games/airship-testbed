@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export declare enum AvatarBackdrop {
     NONE = 0,
     WHITE_FLAT = 1,

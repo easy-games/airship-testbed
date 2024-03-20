@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { GameDto } from "../API/GamesAPI";
 import HomePageGameComponent from "./HomePageGameComponent";
 export default class SortComponent extends AirshipBehaviour {

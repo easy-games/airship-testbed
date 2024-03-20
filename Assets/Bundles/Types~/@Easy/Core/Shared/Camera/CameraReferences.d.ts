@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export declare class CameraReferences {
     private static instances;
     static Instance(): CameraReferences;
