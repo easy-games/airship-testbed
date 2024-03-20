@@ -1,7 +1,6 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
@@ -71,9 +70,8 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (RunUtil.IsClient()) {
 			// Optional: use locked camera mode for first person support
-			Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
-			Airship.characterCamera.SetFirstPerson(true);
-			// Airship.characters.localCharacterManager.SetFirstPerson(true);
+			// Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			// Airship.characterCamera.SetFirstPerson(true);
 
 			Airship.loadingScreen.FinishLoading();
 
