@@ -57,5 +57,6 @@ export declare class PlayersSingleton implements OnStart {
      * @param userId
      * @returns
      */
+    private pictureIndex;
     CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined;
 }

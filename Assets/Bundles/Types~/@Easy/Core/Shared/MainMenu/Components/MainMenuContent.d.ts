@@ -7,8 +7,6 @@ export default class MainMenuContent extends AirshipBehaviour {
     friendsPage: RectTransform;
     navbar: RectTransform;
     navbarContentWrapper: RectTransform;
-    navbarBottom: RectTransform;
-    navbarControls: RectTransform;
     pages: RectTransform;
     searchFocused: RectTransform;
     mobileNav: RectTransform;

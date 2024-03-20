@@ -13,12 +13,12 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
+  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
@@ -111,6 +111,7 @@ Material:
     - RIM_LIGHT: 0
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 0
+    - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _BumpScale: 1

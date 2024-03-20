@@ -5,12 +5,12 @@ import { Signal } from "../../Util/Signal";
 import { ScreenSizeType } from "./ScreenSizeType";
 export declare class MainMenuSingleton implements OnStart {
     sizeType: ScreenSizeType;
-    onSizeTypeChanged: Signal<ScreenSizeType>;
+    onSizeChanged: Signal<[sizeType: ScreenSizeType, size: Vector2]>;
     screenSize: Vector2;
     navbarModifier: Modifier<{
         hidden: boolean;
     }>;
     constructor();
     OnStart(): void;
-    ObserveScreenSizeType(observer: (size: ScreenSizeType) => (() => void) | void): Bin;
+    ObserveScreenSize(observer: (sizeType: ScreenSizeType, size: Vector2) => (() => void) | void): Bin;
 }

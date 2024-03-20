@@ -328,7 +328,7 @@ Transform:
   m_GameObject: {fileID: 3683949970812632299}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -100, z: 0}
+  m_LocalPosition: {x: 0, y: -200, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -732,15 +732,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328324b9b586ee749acb4d8a5762986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _negativeSunDirectionNormalized: {x: -0.27796438, y: 0.87778234, z: -0.39017162}
-  _sunDirectionNormalized: {x: 0.27796438, y: -0.87778234, z: 0.39017162}
-  _sunDirection: {x: 0.38, y: -1.2, z: 0.5333964}
-  sunBrightness: 0.77
-  sunShadow: 0.85
-  sunColor: {r: 0.9622642, g: 0.8887346, b: 0.6127626, a: 1}
-  skySaturation: 1
+  _negativeSunDirectionNormalized: {x: -0.60255766, y: 0.41380468, z: -0.6824147}
+  _sunDirectionNormalized: {x: 0.60255766, y: -0.41380468, z: 0.6824147}
+  _sunDirection: {x: 0.83, y: -0.57, z: 0.94}
+  sunBrightness: 0.75
+  sunShadow: 0.5
+  sunColor: {r: 1, g: 1, b: 1, a: 1}
+  skySaturation: 0
   cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
-  globalAmbientLight: {r: 0.8160377, g: 0.8899238, b: 1, a: 1}
+  globalAmbientLight: {r: 1, g: 1, b: 1, a: 1}
   globalAmbientBrightness: 0.25
   globalAmbientOcclusion: 0.25
   fogEnabled: 1
@@ -748,6 +748,8 @@ MonoBehaviour:
   fogEnd: 20
   fogColor: {r: 0.0627451, g: 0.078431375, b: 0.12156863, a: 1}
   shadowRange: 50
+  postProcess: 1
+  doShadows: 1
 --- !u!1 &4433631764270028334
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,7 +907,7 @@ Transform:
   m_GameObject: {fileID: 5667949225978481709}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.581, y: 1.96, z: -1.661}
+  m_LocalPosition: {x: 3.886, y: 1.96, z: 1.519}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -924,8 +926,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0.5121039, g: 0.57028955, b: 0.7924528, a: 1}
-  intensity: 0.63
-  range: 8.7
+  intensity: 0.5
+  range: 10
   castShadows: 1
 --- !u!1 &6302162783288655769
 GameObject:
@@ -1179,7 +1181,7 @@ Transform:
   m_GameObject: {fileID: 7989267505325146026}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.056, y: 2.707, z: -0.524}
+  m_LocalPosition: {x: -1.82, y: 0.43, z: -1.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1198,8 +1200,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 0.8841849, b: 0.6367924, a: 1}
-  intensity: 0.73
-  range: 4.5
+  intensity: 0.3
+  range: 5
   castShadows: 1
 --- !u!1001 &1727726523347655367
 PrefabInstance:
@@ -1381,6 +1383,10 @@ PrefabInstance:
     - target: {fileID: 8565453153612583129, guid: 8a9da2a421213054b989017e6edfbff1, type: 3}
       propertyPath: m_Name
       value: Backdrops
+      objectReference: {fileID: 0}
+    - target: {fileID: 8565453153612583129, guid: 8a9da2a421213054b989017e6edfbff1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
