@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import {} from "Shared/Flamework";
 import { SetTimeout } from "Shared/Util/Timer";
 import { MainMenuController } from "./MainMenuController";
@@ -42,8 +43,8 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.mainMenu?.avatarView?.HideAvatar();
 
 		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
-		if (canvasGroup && this.animateInDuration <= 0) {
-			this.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+		if (this.animateInDuration <= 0 || Game.IsPortrait()) {
+			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, 0);
 			canvasGroup.alpha = 1;
 		} else {
 			this.gameObject.transform.localPosition = new Vector3(0, -20, 0);

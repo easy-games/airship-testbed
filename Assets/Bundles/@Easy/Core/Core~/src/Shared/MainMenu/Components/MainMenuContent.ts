@@ -1,6 +1,5 @@
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
-import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import { ScreenSizeType } from "../Singletons/ScreenSizeType";
@@ -11,11 +10,16 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public contentWrapper!: RectTransform;
 	public socialMenu!: RectTransform;
 	public friendsPage!: RectTransform;
-	public navbar!: RectTransform;
-	public navbarContentWrapper!: RectTransform;
 	public pages!: RectTransform;
 	public searchFocused!: RectTransform;
 	public mobileNav!: RectTransform;
+
+	@Header("Navbar")
+	public navbar!: RectTransform;
+	public navbarContentWrapper!: RectTransform;
+	public navbarTabs!: RectTransform[];
+	public navbarLeft!: RectTransform;
+	public navbarRight!: RectTransform;
 
 	private mainMenu!: MainMenuSingleton;
 
@@ -44,11 +48,11 @@ export default class MainMenuContent extends AirshipBehaviour {
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
 		// CoreLogger.Log("screenSize.x: " + screenSize.x);
-		CoreLogger.Log("dpi: " + Screen.dpi);
-		CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
+		// CoreLogger.Log("dpi: " + Screen.dpi);
+		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Game.IsMobile()) {
-			this.canvasScalar.scaleFactor = 2;
+			this.canvasScalar.scaleFactor = 2.2;
 		} else if (Screen.dpi >= 255) {
 			this.canvasScalar.scaleFactor = 1.6;
 		} else {
@@ -79,10 +83,22 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.contentWrapper.pivot = new Vector2(0.5, 1);
 			this.contentWrapper.anchoredPosition = new Vector2(0, -Game.GetNotchHeight());
 
-			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 62);
+			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, -69);
-			this.navbar.offsetMin = new Vector2(8, this.navbar.offsetMin.y);
-			this.navbar.offsetMax = new Vector2(-8, this.navbar.offsetMax.y);
+			this.navbar.offsetMin = new Vector2(15, this.navbar.offsetMin.y);
+			this.navbar.offsetMax = new Vector2(-15, this.navbar.offsetMax.y);
+			this.navbar.anchoredPosition = new Vector2(0, -60);
+			for (let tab of this.navbarTabs) {
+				tab.gameObject.SetActive(false);
+			}
+
+			this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
+			this.navbarContentWrapper.anchorMax = new Vector2(1, 1);
+			this.navbarContentWrapper.pivot = new Vector2(0.5, 1);
+			this.navbarContentWrapper.offsetMax = new Vector2(0, 65);
+			this.navbarContentWrapper.offsetMin = new Vector2(0, 0);
+			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
+			this.navbarRight.offsetMin = new Vector2(0, this.navbarRight.offsetMin.y);
 
 			this.searchFocused.offsetMin = new Vector2(2, 0);
 			this.searchFocused.offsetMax = new Vector2(-2, -25);
@@ -132,6 +148,10 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.navbarContentWrapper.anchorMax = new Vector2(0, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0, 1);
 				this.navbarContentWrapper.anchoredPosition = new Vector2(50, 0);
+			}
+			this.navbar.anchoredPosition = new Vector2(0, 0);
+			for (let tab of this.navbarTabs) {
+				tab.gameObject.SetActive(true);
 			}
 
 			if (sizeType === "lg") {
