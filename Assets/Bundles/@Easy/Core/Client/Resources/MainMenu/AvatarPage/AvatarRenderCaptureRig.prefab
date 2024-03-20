@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 212056023272398081}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.052335896, w: 0.9986295}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -69,6 +69,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -82,6 +83,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators:
       - name: Header
         parameters:
@@ -99,6 +101,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators:
       - name: Header
         parameters:
@@ -116,6 +119,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -129,6 +133,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -160,6 +165,7 @@ MonoBehaviour:
         - {fileID: 452978600034721895}
         - {fileID: 4178141494138768781}
         - {fileID: 1721373046927976126}
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
@@ -173,6 +179,7 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -579,6 +586,8 @@ MonoBehaviour:
   fogEnd: 280
   fogColor: {r: 0.5, g: 0.8, b: 1, a: 1}
   shadowRange: 100
+  postProcess: 1
+  doShadows: 1
 --- !u!1 &6336977857862869467
 GameObject:
   m_ObjectHideFlags: 0

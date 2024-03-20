@@ -6,11 +6,13 @@ import { CanvasAPI } from "../Util/CanvasAPI";
 import { OnUpdate } from "../Util/Timer";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
+	@Header("Templates")
+	public avatarRenderTemplate?: GameObject;
+
 	@Header("References")
 	public humanEntityGo?: GameObject;
 	public avatarHolder?: Transform;
 	public anim?: CharacterAnimationHelper;
-	public avatarRenderComponent?: AvatarRenderComponent;
 	public accessoryBuilder?: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
@@ -265,5 +267,12 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 					.SetEaseQuadInOut();
 			}
 		}
+	}
+
+	public CreateRenderScene() {
+		return Object.Instantiate(
+			this.avatarRenderTemplate,
+			this.transform,
+		)?.GetAirshipComponent<AvatarRenderComponent>();
 	}
 }

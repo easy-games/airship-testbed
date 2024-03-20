@@ -7,6 +7,8 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 	public labelText!: TextMeshProUGUI;
 	public bgImage!: Image;
 	public equippedBadge!: GameObject;
+	public classId = "";
+	public instanceId = "";
 
 	public noColorChanges = false;
 
@@ -56,6 +58,10 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 		// 	this.iconImage.color = new Color(1, 1, 1, 0.8);
 		// }
 		this.equippedBadge.SetActive(val);
+	}
+
+	public GetSelected() {
+		return this.selected;
 	}
 
 	public SetEnabled(enabled: boolean) {

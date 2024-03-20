@@ -33,27 +33,8 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	public cameraDistanceMod = 1;
 	public uploadThumbnails = false;
 
-	override Start() {
-		this.Init();
-	}
-
-	public Init() {
-		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
-		if (this.builder) {
-			this.builder.thirdPersonLayer = this.gameObject.layer;
-			this.builder.firstPersonLayer = this.gameObject.layer;
-			this.builder.UpdateAccessoryLayers();
-		}
-		let keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.Print, (event) => {
-			if (Input.GetKey(KeyCode.LeftShift)) {
-				this.RenderCharacter();
-				this.RenderAllItems();
-			}
-		});
-	}
-
 	public RenderCharacter() {
+		this.Init();
 		this.renderTexture = new RenderTexture(
 			this.profileRenderSize.x,
 			this.profileRenderSize.y,
@@ -74,7 +55,8 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	 *
 	 * @internal
 	 */
-	public RenderAllItems() {
+	public CreateItemCamera() {
+		this.Init();
 		this.renderTexture = new RenderTexture(
 			this.itemRenderSize.x,
 			this.itemRenderSize.y,
@@ -89,13 +71,33 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;
+	}
+
+	private Init() {
+		if (this.backdrops) {
+			return;
+		}
+		this.backdrops = this.backdropHolder.GetAirshipComponent<AvatarBackdropComponent>()!;
+		if (this.builder) {
+			this.builder.thirdPersonLayer = this.gameObject.layer;
+			this.builder.firstPersonLayer = this.gameObject.layer;
+			this.builder.UpdateAccessoryLayers();
+		}
+	}
+
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
+	public RenderAllItems() {
+		this.CreateItemCamera();
+
 		let allItems = AvatarUtil.GetAllPossibleAvatarItems();
 
 		let i = 0;
 		const maxI = 9999;
 		for (const [key, value] of allItems) {
-			//Clear the outfit
-			this.builder.RemoveClothingAccessories();
 			if (i < maxI) {
 				this.RenderItem(value);
 			} else {
@@ -112,8 +114,11 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 	 */
 	public RenderItem(accessoryTemplate: AccessoryComponent) {
 		print("Rending item: " + accessoryTemplate.name);
+		//Clear the outfit
+		this.builder.RemoveAccessories();
 		//Load the accessory onto the avatar
 		let acc = this.builder.AddSingleAccessory(accessoryTemplate, true);
+		task.wait();
 		//Align camera
 		//this.AlignCamera(acc.renderers);
 		this.SetCameraAccessory(accessoryTemplate.accessorySlot);

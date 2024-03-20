@@ -19,6 +19,7 @@ import { MainMenuPageType } from "../MainMenuPageName";
 import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
+import { Keyboard } from "@Easy/Core/Shared/UserInput/Keyboard";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -192,6 +193,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.ClearItembuttons();
 		this.InitializeAutherizedAccessories();
+
+		if (Game.IsEditor()) {
+			let keyboard = new Keyboard();
+			keyboard.OnKeyDown(KeyCode.Print, (event) => {
+				if (Input.GetKey(KeyCode.LeftShift)) {
+					if (this.inThumbnailMode) {
+						this.LeaveThumbnailMode();
+					} else {
+						this.EnterThumbnailMode();
+					}
+				}
+			});
+		}
 	}
 
 	private RefreshAvatar() {
@@ -244,7 +258,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectMainNav(index: number) {
-		if (this.activeMainIndex === index || !this.mainNavBtns) {
+		if (this.activeMainIndex === index || !this.mainNavBtns || this.inThumbnailMode) {
 			return;
 		}
 
@@ -271,6 +285,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectSubNav(subIndex: number) {
+		if (this.inThumbnailMode) {
+			return;
+		}
 		this.Log("Selecting SUB nav: " + subIndex);
 		this.activeSubIndex = subIndex;
 		// let subBar = this.subBarBtns[this.activeMainIndex];
@@ -447,6 +464,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 			let accessoryBtn = newButton.GetAirshipComponent<AvatarAccessoryBtn>();
 			if (accessoryBtn) {
+				accessoryBtn.classId = classId;
+				accessoryBtn.instanceId = instanceId;
 				accessoryBtn.SetText(itemName);
 				accessoryBtn.noColorChanges = false;
 				//TODO: Removed the image until we can load it from the server
@@ -477,6 +496,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 				//print("Downloading: " + cloudImage.url);
 				cloudImage.StartDownload();
+				return accessoryBtn;
 			} else {
 				error("Unable to find AvatarMenuBtn on item button");
 			}
@@ -621,7 +641,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private SelectOutfit(index: number) {
 		this.Log("SelectOutfit: " + index);
-		if (!this.outfits || index < 0 || index >= this.outfits.size()) {
+		if (!this.outfits || index < 0 || index >= this.outfits.size() || this.inThumbnailMode) {
 			error("Index out of range of outfits");
 		}
 		this.currentUserOutfitIndex = index;
@@ -684,6 +704,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private Save() {
+		if (this.inThumbnailMode) {
+			this.RenderThumbnails();
+			return;
+		}
+
 		if (!this.currentUserOutfit) {
 			warn("Trying to save with no outfit selected!");
 			return;
@@ -720,5 +745,64 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private Revert() {
 		this.LoadCurrentOutfit();
+	}
+
+	private thumbnailRenderList: Map<string, { accesory: AccessoryComponent; button: AvatarAccessoryBtn }> = new Map();
+	private inThumbnailMode = false;
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
+	public EnterThumbnailMode() {
+		this.inThumbnailMode = true;
+		this.saveBtn?.SetDisabled(false);
+		this.ClearItembuttons();
+		this.ClearAllAccessories();
+		this.Log("Displaying Thumbnail Mode");
+		//Accessories
+		let foundItems = AvatarUtil.GetAllPossibleAvatarItems();
+		if (foundItems) {
+			let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
+			for (let [key, value] of foundItems) {
+				if (value && value.serverClassId !== undefined && value.serverClassId !== "") {
+					let button = this.AddItemButton(value.serverClassId, value.serverClassId, value.name, () => {
+						const alreadySelected = this.thumbnailRenderList.get(value.serverClassId)?.button.GetSelected();
+						this.Log("Selecting item: " + value.ToString() + ": " + alreadySelected);
+						this.thumbnailRenderList.get(value.serverClassId)?.button.SetSelected(!alreadySelected);
+					});
+					button.SetSelected(false);
+					this.thumbnailRenderList.set(value.serverClassId, { accesory: value, button: button });
+				}
+			}
+			this.DisplayItems(allItems);
+		}
+		this.currentFocusedSlot = AccessorySlot.Root;
+		this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
+	}
+
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
+	public LeaveThumbnailMode() {
+		this.ClearItembuttons();
+		this.thumbnailRenderList.clear();
+	}
+
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
+	private RenderThumbnails() {
+		let render = this.mainMenu?.avatarView?.CreateRenderScene();
+		render?.CreateItemCamera();
+		for (let [key, value] of this.thumbnailRenderList) {
+			if (value && value.button.GetSelected()) {
+				render?.RenderItem(value.accesory);
+			}
+		}
 	}
 }

@@ -12515,7 +12515,7 @@ interface ActiveAccessory {
 }
     
 interface AccessoryComponent extends MonoBehaviour {
-    serverClassId: string;
+serverClassId: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;

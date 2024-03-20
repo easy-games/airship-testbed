@@ -686,6 +686,24 @@ MonoBehaviour:
       serializedValue: 21
       serializedObject: {fileID: 0}
       modified: 1
+    - name: avatarRenderTemplate
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Templates"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 212056023272398081, guid: 3048c5a62b1f7a34faf00d81bd6294e2, type: 3}
+      modified: 1
 --- !u!1 &3851732383462049854
 GameObject:
   m_ObjectHideFlags: 0
