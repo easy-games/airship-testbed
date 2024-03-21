@@ -291,7 +291,7 @@ export class HumanoidCameraMode extends CameraMode {
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
 		const adj = new Vector2(direction.x, direction.z).magnitude;
-		this.rotationX = math.clamp(math.atan2(direction.y, adj), MIN_ROT_X, MAX_ROT_X);
+		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), MIN_ROT_X, MAX_ROT_X);
 		this.movement.SetLookVector(direction);
 	}
 
