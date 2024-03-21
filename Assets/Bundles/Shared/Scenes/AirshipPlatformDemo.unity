@@ -380,6 +380,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: CubeMover
+    decorators: []
     properties:
     - name: movement
       type: Vector3
@@ -395,6 +396,7 @@ MonoBehaviour:
       serializedValue: '{"x":0.0,"y":1.0,"z":0.0}'
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
 --- !u!65 &88970621
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1193,6 +1195,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Scoreboard
+    decorators: []
     properties:
     - name: sessionKillsScore
       type: object
@@ -1278,6 +1281,7 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
 --- !u!114 &788576784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1524,6 +1528,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: DemoManager
+    decorators: []
     properties:
     - name: spawnPosition
       type: object
@@ -1569,6 +1574,7 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 1
+    displayName: 
 --- !u!114 &913210014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,7 +1598,9 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: ClientScript
+    decorators: []
     properties: []
+    displayName: 
 --- !u!114 &913210015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1616,6 +1624,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: TestScript
+    decorators: []
     properties:
     - name: spawnArea
       type: object
@@ -1631,6 +1640,7 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 1
+    displayName: 
 --- !u!81 &1065048245
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2154,7 +2164,6 @@ MonoBehaviour:
   sunShadow: 0.215
   sunColor: {r: 0.9823206, g: 1, b: 0.8066038, a: 1}
   skySaturation: 0.3
-  cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
   globalAmbientLight: {r: 1, g: 0.8915094, b: 0.9199557, a: 1}
   globalAmbientBrightness: 0.578
   globalAmbientOcclusion: 0.25
@@ -2165,6 +2174,8 @@ MonoBehaviour:
   shadowRange: 100
   postProcess: 1
   doShadows: 1
+  cubeMap: {fileID: 8900000, guid: 98fc12523466e9841bcac080b0b16b28, type: 3}
+  cubemapCoefs: {fileID: 4900000, guid: ce7543ecfc8e54dfc940a47f6cd35438, type: 3}
 --- !u!1 &1648556073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,6 +2329,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: CubeMover
+    decorators: []
     properties:
     - name: movement
       type: Vector3
@@ -2333,6 +2345,7 @@ MonoBehaviour:
       serializedValue: '{"x":0.0,"y":1.0,"z":0.0}'
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
 --- !u!114 &1827094135
 MonoBehaviour:
   m_ObjectHideFlags: 0
