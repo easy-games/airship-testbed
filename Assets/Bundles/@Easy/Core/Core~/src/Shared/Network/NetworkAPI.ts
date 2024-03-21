@@ -54,7 +54,7 @@ export function InitNet() {
 					return;
 				}
 				for (const callback of callbacks) {
-					callback.callback(player, ...data);
+					task.spawn(callback.callback, player, ...data);
 				}
 			});
 		});
@@ -71,7 +71,7 @@ export function InitNet() {
 				return;
 			}
 			for (const callback of callbacks) {
-				callback.callback(...data);
+				task.spawn(callback.callback, ...data);
 			}
 		});
 	}
