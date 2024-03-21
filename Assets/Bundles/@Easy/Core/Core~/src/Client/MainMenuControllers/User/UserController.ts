@@ -43,20 +43,23 @@ export class UserController implements OnStart {
 					return;
 				}
 			}
-			const data = DecodeJSON(res.data) as User;
-			this.localUser = data;
-			this.localUserLoaded = true;
+			try {
+				const data = DecodeJSON(res.data) as User;
+				this.localUser = data;
+				this.localUserLoaded = true;
 
-			if (Game.coreContext === CoreContext.MAIN_MENU) {
-				const writeUser = Game.localPlayer as Writable<Player>;
-				writeUser.userId = data.uid;
-				writeUser.username = data.username;
-				Game.localPlayerLoaded = true;
-				Game.onLocalPlayerLoaded.Fire();
+				if (Game.coreContext === CoreContext.MAIN_MENU) {
+					const writeUser = Game.localPlayer as Writable<Player>;
+					writeUser.userId = data.uid;
+					writeUser.username = data.username;
+					Game.localPlayerLoaded = true;
+					Game.onLocalPlayerLoaded.Fire();
+				}
+
+				this.onLocalUserUpdated.Fire(this.localUser);
+			} catch (err) {
+				Debug.LogError("Failed to decode /users/self: " + err);
 			}
-
-			this.onLocalUserUpdated.Fire(this.localUser);
-			return;
 		}
 
 		// retry
