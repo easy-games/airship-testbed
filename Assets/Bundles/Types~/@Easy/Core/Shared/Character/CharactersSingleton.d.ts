@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { OnStart } from "../Flamework";
 import { Player } from "../Player/Player";
 import { Signal, SignalPriority } from "../Util/Signal";

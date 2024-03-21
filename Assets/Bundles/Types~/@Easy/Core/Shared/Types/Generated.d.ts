@@ -17024,4 +17024,56 @@ interface AirshipPointLightConstructor {
     GetAllPointLights(): CSArray<AirshipPointLight>;
 }
 declare const AirshipPointLight: AirshipPointLightConstructor;
+    
+interface Gizmos {
+
+
+
+}
+    
+interface GizmosConstructor {
+    color: Color;
+    matrix: Matrix4x4;
+    exposure: Texture;
+    probeSize: number;
+
+    new(): Gizmos;
+
+
+    CalculateLOD(position: Vector3, radius: number): number;
+    DrawCube(center: Vector3, size: Vector3): void;
+    DrawFrustum(center: Vector3, fov: number, maxRange: number, minRange: number, aspect: number): void;
+    DrawGUITexture(screenRect: Rect, texture: Texture, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number, mat: Material): void;
+    DrawGUITexture(screenRect: Rect, texture: Texture): void;
+    DrawGUITexture(screenRect: Rect, texture: Texture, mat: Material): void;
+    DrawGUITexture(screenRect: Rect, texture: Texture, leftBorder: number, rightBorder: number, topBorder: number, bottomBorder: number): void;
+    DrawIcon(center: Vector3, name: string, allowScaling: boolean): void;
+    DrawIcon(center: Vector3, name: string, allowScaling: boolean, tint: Color): void;
+    DrawIcon(center: Vector3, name: string): void;
+    DrawLine(from: Vector3, to: Vector3): void;
+    DrawLineList(points: unknown): void;
+    DrawLineStrip(points: unknown, looped: boolean): void;
+    DrawMesh(mesh: Mesh, submeshIndex: number, position: Vector3, rotation: Quaternion, scale: Vector3): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion): void;
+    DrawMesh(mesh: Mesh, position: Vector3): void;
+    DrawMesh(mesh: Mesh): void;
+    DrawMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, scale: Vector3): void;
+    DrawMesh(mesh: Mesh, submeshIndex: number, position: Vector3, rotation: Quaternion): void;
+    DrawMesh(mesh: Mesh, submeshIndex: number, position: Vector3): void;
+    DrawMesh(mesh: Mesh, submeshIndex: number): void;
+    DrawRay(r: Ray): void;
+    DrawRay(from: Vector3, direction: Vector3): void;
+    DrawSphere(center: Vector3, radius: number): void;
+    DrawWireCube(center: Vector3, size: Vector3): void;
+    DrawWireMesh(mesh: Mesh, submeshIndex: number, position: Vector3, rotation: Quaternion, scale: Vector3): void;
+    DrawWireMesh(mesh: Mesh, position: Vector3, rotation: Quaternion): void;
+    DrawWireMesh(mesh: Mesh, position: Vector3): void;
+    DrawWireMesh(mesh: Mesh): void;
+    DrawWireMesh(mesh: Mesh, position: Vector3, rotation: Quaternion, scale: Vector3): void;
+    DrawWireMesh(mesh: Mesh, submeshIndex: number, position: Vector3, rotation: Quaternion): void;
+    DrawWireMesh(mesh: Mesh, submeshIndex: number, position: Vector3): void;
+    DrawWireMesh(mesh: Mesh, submeshIndex: number): void;
+    DrawWireSphere(center: Vector3, radius: number): void;
+}
+declare const Gizmos: GizmosConstructor;
 

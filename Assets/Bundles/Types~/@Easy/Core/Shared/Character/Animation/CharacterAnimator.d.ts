@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import Character from "../Character";
 import { Bin } from "../../Util/Bin";
 import { ItemDef } from "../../Item/ItemDefinitionTypes";

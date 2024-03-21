@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { GameDto } from "../../../../Client/Components/HomePage/API/GamesAPI";
 import { OnStart } from "../../../Flamework/flamework";
 export default class SearchSingleton implements OnStart {
