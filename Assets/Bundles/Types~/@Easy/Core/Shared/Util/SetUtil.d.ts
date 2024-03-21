@@ -1,5 +1,5 @@
-/// <reference types="compiler-types" />
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 /** Set of utilities for modifying and traversing sets. */
 export declare class SetUtil {
     /**

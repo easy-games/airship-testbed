@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export default class MobileJoystick extends AirshipBehaviour {
     handle: RectTransform;
     handleRange: number;

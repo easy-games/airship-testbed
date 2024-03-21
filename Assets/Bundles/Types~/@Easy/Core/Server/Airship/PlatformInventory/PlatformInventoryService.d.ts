@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { ItemQueryParameters } from "../../../Shared/Airship/Types/Inputs/PlatformInventory";
 import { AccessoryInstanceDto, EquippedProfilePicture, ItemInstanceDto, OutfitDto, ProfilePictureInstanceDto, Transaction } from "../../../Shared/Airship/Types/Outputs/PlatformInventory";
 import { OnStart } from "../../../Shared/Flamework";

@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export declare class InputUtils {
     static keyCodeMap: Record<KeyCode, string | undefined>;
     /**

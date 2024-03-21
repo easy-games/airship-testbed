@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export default class SettingsDisconnectButton extends AirshipBehaviour {
     bgImage: Image;
     text: TMP_Text;

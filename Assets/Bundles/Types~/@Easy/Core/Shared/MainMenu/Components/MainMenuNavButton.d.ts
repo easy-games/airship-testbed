@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export default class MainMenuNavButton extends AirshipBehaviour {
     selected: boolean;
     image: Image;

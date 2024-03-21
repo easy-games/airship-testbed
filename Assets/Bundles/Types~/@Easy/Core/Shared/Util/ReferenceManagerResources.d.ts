@@ -1,5 +1,5 @@
-/// <reference types="compiler-types" />
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export interface BundleGroup {
     id: BundleGroupNames;
     bundles: Map<number, BundleData>;

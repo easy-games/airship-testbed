@@ -1,5 +1,5 @@
-/// <reference types="compiler-types" />
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 type SignalParams<T> = Parameters<T extends unknown[] ? (...args: T) => never : T extends unknown ? (arg: T) => never : () => never>;
 export type SignalCallback<T> = (...args: SignalParams<T>) => unknown;
 type SignalWait<T> = T extends unknown[] ? LuaTuple<T> : T;

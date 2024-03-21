@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export declare enum AvatarRenderSlot {
     BODY = 0,
     FACE = 1,

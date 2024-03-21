@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { CoreItemType } from "../Item/CoreItemType";
 import { BlockDef } from "../Item/ItemDefinitionTypes";
 import { Signal } from "../Util/Signal";

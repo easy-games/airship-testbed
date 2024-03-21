@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { OnStart } from "../../../Shared/Flamework";
 import { Signal } from "../../../Shared/Util/Signal";
 export declare class AuthController implements OnStart {

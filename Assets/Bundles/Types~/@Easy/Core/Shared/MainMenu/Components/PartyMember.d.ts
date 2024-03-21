@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { PublicUser } from "../../SocketIOMessages/PublicUser";
 export default class PartyMember extends AirshipBehaviour {
     profileImage: Image;

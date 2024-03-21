@@ -19,17 +19,19 @@ export default class SettingsPage extends AirshipBehaviour {
 					this.sidebar.gameObject.SetActive(false);
 					this.tabs.offsetMax = new Vector2(-10, this.tabs.offsetMax.y);
 					this.tabs.offsetMin = new Vector2(10, 0);
-					rect.offsetMax = new Vector2(rect.offsetMax.x, 50);
+					// rect.offsetMax = new Vector2(rect.offsetMax.x, 40);
+					// rect.offsetMin = new Vector2(rect.offsetMin.x, 0);
+					print("updated friends rect!");
 
 					for (let page of this.mobilePages) {
 						page.gameObject.SetActive(true);
 					}
 
-					const navbarDisc = mainMenu.navbarModifier.Add({ hidden: true });
-					this.bin.Add(navbarDisc);
-					return () => {
-						navbarDisc();
-					};
+					// const navbarDisc = mainMenu.navbarModifier.Add({ hidden: true });
+					// this.bin.Add(navbarDisc);
+					// return () => {
+					// 	navbarDisc();
+					// };
 				} else {
 					rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
 					this.sidebar.gameObject.SetActive(true);

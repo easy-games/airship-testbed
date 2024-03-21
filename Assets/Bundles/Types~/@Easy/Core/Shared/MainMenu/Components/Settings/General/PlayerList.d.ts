@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 export default class PlayerList extends AirshipBehaviour {
     content: RectTransform;
     playerEntryPrefab: GameObject;

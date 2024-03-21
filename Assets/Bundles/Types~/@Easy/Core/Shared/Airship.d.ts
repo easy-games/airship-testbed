@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { FriendsController } from "../Client/Airship/Friends/FriendsController";
 import { MatchmakingController } from "../Client/Airship/Matchmaking/MatchmakingController";
 import { PartyController } from "../Client/Airship/Party/PartyController";

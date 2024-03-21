@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { Player } from "../Player/Player";
 import { Signal } from "../Util/Signal";
 export interface TeamDto {

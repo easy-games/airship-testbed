@@ -1,5 +1,5 @@
-/// <reference types="compiler-types" />
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { CoreItemType } from "../Item/CoreItemType";
 import { ArmorType } from "../Item/ArmorType";
 import { Bin } from "../Util/Bin";

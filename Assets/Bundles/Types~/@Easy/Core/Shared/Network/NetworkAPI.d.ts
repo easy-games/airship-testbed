@@ -1,4 +1,4 @@
-/// <reference types="compiler-types" />
+/// <reference types="@easy-games/compiler-types" />
 import { Player } from "../Player/Player";
 export declare enum NetworkChannel {
     Reliable = 0,
