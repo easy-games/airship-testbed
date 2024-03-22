@@ -976,7 +976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.20710216, g: 0.22171113, b: 0.24528301, a: 1}
+  - materialColor: {r: 0.6981132, g: 0.6970999, b: 0.6948202, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
@@ -1002,7 +1002,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 16c9aa28b6820e4458962092cb733832, type: 2}
+  - {fileID: 2100000, guid: e6d5f12f6aaf48c4a8745c732b73ee5e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
