@@ -15,6 +15,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 
 	public onFootstep = new Signal<CharacterFootstepSignal>();
 	public baseFootstepVolumeScale = 0.1;
+	public foostepSoundsEnabled = true;
 
 	private materialMap = new Map<string, string[]>();
 
@@ -56,6 +57,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 		task.delay(0.1, () => {
 			const camTransform = CameraReferences.Instance().mainCamera?.transform;
 			SetInterval(0.05, () => {
+				if (!this.foostepSoundsEnabled) return;
 				if (camTransform === undefined) return;
 				const currentTime = Time.time;
 				const camPos = camTransform.position;
