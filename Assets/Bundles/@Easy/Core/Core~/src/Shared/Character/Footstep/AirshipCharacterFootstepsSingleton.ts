@@ -139,7 +139,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 
 			const audioClip = RandomUtil.FromArray(signal.audioClips);
 
-			print("playing footstep sound: " + audioClip.name);
+			// print("playing footstep sound: " + audioClip.name);
 			character.footstepAudioSource.PlayOneShot(audioClip, signal.volume);
 		}
 	}
