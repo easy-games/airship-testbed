@@ -4,9 +4,11 @@ import { Player } from "../Player/Player";
 import { Signal, SignalPriority } from "../Util/Signal";
 import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
+import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 export declare class CharactersSingleton implements OnStart {
     readonly localCharacterManager: LocalCharacterSingleton;
+    readonly footsteps: AirshipCharacterFootstepsSingleton;
     private characters;
     onCharacterSpawned: Signal<Character>;
     onCharacterDespawned: Signal<Character>;
@@ -24,7 +26,7 @@ export declare class CharactersSingleton implements OnStart {
     autoDespawnCharactersOnPlayerDisconnect: boolean;
     allowMidGameOutfitChanges: boolean;
     private idCounter;
-    constructor(localCharacterManager: LocalCharacterSingleton);
+    constructor(localCharacterManager: LocalCharacterSingleton, footsteps: AirshipCharacterFootstepsSingleton);
     OnStart(): void;
     /**
      * Observe every character in the game. The returned function can be

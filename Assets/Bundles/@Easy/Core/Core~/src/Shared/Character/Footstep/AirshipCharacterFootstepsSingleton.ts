@@ -20,38 +20,39 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 	private materialMap = new Map<string, string[]>();
 
 	constructor() {
-		const stonePaths = [
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_01.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_02.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_03.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_04.ogg",
-		];
-		this.materialMap.set("Stone_Clean", stonePaths);
+		task.spawn(() => {
+			const stonePaths = [
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_01.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_02.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_03.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Stone_04.ogg",
+			];
+			this.materialMap.set("Stone_Clean", stonePaths);
 
-		const woodPaths = [
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_01.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_02.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_03.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_04.ogg",
-		];
-		this.materialMap.set("Wood_Cherry_Natural", woodPaths);
-		this.materialMap.set("Wood_Cherry_Toon", woodPaths);
-		this.materialMap.set("Wood_Cherry_Natural_UV", woodPaths);
-		this.materialMap.set("Wood_Cherry_Painted", woodPaths);
-		this.materialMap.set("Wood_Cherry_Painted_Toon", woodPaths);
-		this.materialMap.set("Wood_Cherry_Painted_UV", woodPaths);
+			const woodPaths = [
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_01.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_02.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_03.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wood_04.ogg",
+			];
+			this.materialMap.set("Wood_Cherry_Natural", woodPaths);
+			this.materialMap.set("Wood_Cherry_Toon", woodPaths);
+			this.materialMap.set("Wood_Cherry_Natural_UV", woodPaths);
+			this.materialMap.set("Wood_Cherry_Painted", woodPaths);
+			this.materialMap.set("Wood_Cherry_Painted_Toon", woodPaths);
+			this.materialMap.set("Wood_Cherry_Painted_UV", woodPaths);
 
-		const woolPaths = [
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_01.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_02.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_03.ogg",
-			"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_04.ogg",
-		];
-		this.materialMap.set("Denim_UV", woolPaths);
+			const woolPaths = [
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_01.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_02.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_03.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_04.ogg",
+			];
+			this.materialMap.set("Denim_UV", woolPaths);
+		});
 	}
 
 	OnStart(): void {
-		print("AirshipCharacterFootstepsSingleton");
 		if (!Game.IsClient()) return;
 
 		task.delay(0.1, () => {
