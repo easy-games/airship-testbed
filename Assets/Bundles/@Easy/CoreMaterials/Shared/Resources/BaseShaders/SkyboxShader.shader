@@ -29,6 +29,7 @@ Shader "Airship/Skybox"
                         float4 vertex : SV_POSITION;
                         float4 worldDirection : TEXCOORD0;
                         float4 worldPos : TEXCOORD1;
+                        float3 viewDirectionNeg : TEXCOORD2;
                     };
 
                     samplerCUBE _CubemapTex;
@@ -39,20 +40,20 @@ Shader "Airship/Skybox"
                         o.worldDirection = float4(normalize(mul(unity_ObjectToWorld, v.vertex).xyz),0);
                         o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 
+                        float3 viewVector = _WorldSpaceCameraPos.xyz - o.worldPos.xyz;
+                        float3 viewDirection = normalize(viewVector);
+                        o.viewDirectionNeg = -viewVector;
 
                         return o;
                     }
 
                     float4 frag(v2f i) : SV_Target
                     {
-                        float3 viewVector = _WorldSpaceCameraPos.xyz - i.worldPos.xyz;
 
-                        float viewDistance = length(viewVector);
-                        float3 viewDirection = normalize(viewVector);
-
-                        half3 texSample = texCUBE(_CubemapTex, -viewDirection).rgb;
+                        half3 texSample = texCUBE(_CubemapTex, i.viewDirectionNeg).rgb;
 
                         //if the view vector is basically level with the horizon, blend in fog color
+                        float3 viewDirection = normalize(i.viewDirectionNeg);
                         float fogPower = pow(abs(viewDirection.y), _FogPower);
                         float fogBlend = saturate(fogPower * _FogSize);
 
@@ -60,8 +61,6 @@ Shader "Airship/Skybox"
 
                         return float4(fogColor, 0);
 
-
-                        //return float4(texCUBElod(_CubemapTex, i.worldDirection).xyz,0);
                     }
                     ENDCG
                 }
