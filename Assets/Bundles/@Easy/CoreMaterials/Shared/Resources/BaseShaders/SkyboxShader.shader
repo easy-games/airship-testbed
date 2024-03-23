@@ -1,4 +1,4 @@
-Shader "Airship/Skybox" 
+Shader "Airship/Skybox"
 {
     Properties{
         _CubemapTex("Cubemap", Cube) = "black" {}
@@ -9,7 +9,7 @@ Shader "Airship/Skybox"
 
         SubShader{
             Tags { "Queue" = "Background"  "Pipeline" = "Airship"}
-            Cull Off ZWrite Off Fog { Mode Off }
+            Cull Off ZWrite Off
 
                 Pass {
                     CGPROGRAM
@@ -17,8 +17,8 @@ Shader "Airship/Skybox"
                     #pragma fragment frag
                     #include "UnityCG.cginc"
 
-					float _FogSize;
-		            float4 _FogColor;   
+                    float _FogSize;
+                    float4 _FogColor;
                     float _FogPower;
 
                     struct appdata {
@@ -32,37 +32,40 @@ Shader "Airship/Skybox"
                     };
 
                     samplerCUBE _CubemapTex;
-                    v2f vert(appdata v) 
+                    v2f vert(appdata v)
                     {
                         v2f o;
                         o.vertex = UnityObjectToClipPos(v.vertex);
                         o.worldDirection = float4(normalize(mul(unity_ObjectToWorld, v.vertex).xyz),0);
-						o.worldPos = mul(unity_ObjectToWorld, v.vertex);
-                  
+                        o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+
 
                         return o;
                     }
 
                     float4 frag(v2f i) : SV_Target
                     {
-                        half3 viewVector = _WorldSpaceCameraPos.xyz - i.worldPos;
+                        float3 viewVector = _WorldSpaceCameraPos.xyz - i.worldPos.xyz;
+
                         float viewDistance = length(viewVector);
-                        half3 viewDirection = normalize(viewVector);
-                        
+                        float3 viewDirection = normalize(viewVector);
+
+                        half3 texSample = texCUBE(_CubemapTex, -viewDirection).rgb;
+
                         //if the view vector is basically level with the horizon, blend in fog color
                         float fogPower = pow(abs(viewDirection.y), _FogPower);
-						float fogBlend = saturate(fogPower * _FogSize);
-						half3 fogColor = lerp(_FogColor.rgb, texCUBE(_CubemapTex, -viewDirection).rgb, fogBlend);
-                        
-						return float4(fogColor, 0);
-                        
+                        float fogBlend = saturate(fogPower * _FogSize);
+
+                        half3 fogColor = lerp(_FogColor.rgb, texSample, fogBlend);
+
+                        return float4(fogColor, 0);
+
 
                         //return float4(texCUBElod(_CubemapTex, i.worldDirection).xyz,0);
                     }
                     ENDCG
                 }
-              
+
         }
-       
-    }
- 
+
+}
