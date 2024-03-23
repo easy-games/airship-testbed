@@ -5857,6 +5857,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Character
+    decorators: []
     properties:
     - name: animationHelper
       type: object
@@ -5960,6 +5961,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    - name: footstepAudioSource
+      type: object
+      objectType: AudioSource
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2719586711620922124}
+      modified: 1
+    displayName: 
 --- !u!114 &7088081142443290682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5983,6 +5999,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: Inventory
+    decorators: []
     properties:
     - name: networkObject
       type: object
@@ -6040,6 +6057,7 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
 --- !u!143 &8616685848737228382
 CharacterController:
   m_ObjectHideFlags: 0

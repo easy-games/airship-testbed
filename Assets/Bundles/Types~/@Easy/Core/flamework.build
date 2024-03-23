@@ -144,6 +144,8 @@
 		"@Easy/Core:Server/Airship/Transfer/TransferService@TransferService": "$:Airship/Transfer/TransferService@TransferService",
 		"@Easy/Core:Server/Airship/User/UserService@UserService": "$:Airship/User/UserService@UserService",
 		"@Easy/Core:Shared/Character/CustomMoveData@CustomMoveData": "$:Character/CustomMoveData@CustomMoveData",
+		"@Easy/Core:Shared/Character/Footstep/CharacterFootstepSignal@CharacterFootstepSignal": "$:Character/Footstep/CharacterFootstepSignal@CharacterFootstepSignal",
+		"@Easy/Core:Shared/Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton": "$:Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton",
 		"@Easy/Core:Shared/Character/CharactersSingleton@CharactersSingleton": "$:Character/CharactersSingleton@CharactersSingleton",
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
@@ -169,7 +171,6 @@
 		"@Easy/Core:Client/Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController": "$:Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
 		"@Easy/Core:Client/Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController": "$:Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController",
 		"@Easy/Core:Client/Controllers/Damage/DamageIndicatorController@DamageIndicatorController": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
-		"@Easy/Core:Client/Controllers/Entity/Footstep/EntityFootstepController@EntityFootstepController": "$:Controllers/Entity/Footstep/EntityFootstepController@EntityFootstepController",
 		"@Easy/Core:Client/Controllers/Entity/Nametag/NametagController@NametagController": "$:Controllers/Entity/Nametag/NametagController@NametagController",
 		"@Easy/Core:Shared/GroundItem/GroundItemUtil@GroundItemUtil": "$:GroundItem/GroundItemUtil@GroundItemUtil",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemController@GroundItemController": "$:Controllers/GroundItem/GroundItemController@GroundItemController",
@@ -631,6 +632,17 @@
 			]
 		},
 		{
+			"filePath": "../Shared/Character/Footstep/AirshipCharacterFootstepsSingleton.lua",
+			"internalId": "$:Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
+				}
+			]
+		},
+		{
 			"filePath": "../Shared/Character/CharactersSingleton.lua",
 			"internalId": "$:Character/CharactersSingleton@CharactersSingleton",
 			"decorators": [
@@ -832,17 +844,6 @@
 		{
 			"filePath": "../Client/Controllers/Damage/DamageIndicatorController.lua",
 			"internalId": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/Controllers/Entity/Footstep/EntityFootstepController.lua",
-			"internalId": "$:Controllers/Entity/Footstep/EntityFootstepController@EntityFootstepController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",

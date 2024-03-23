@@ -101,10 +101,16 @@ interface CharacterMovement extends Component {
 
 	groundedBlockId: number;
 	groundedBlockPos: Vector3;
+	groundedRaycastHit: RaycastHit;
 	replicatedLookVector: Vector3;
 	disableInput: boolean;
 
 	animationHelper: CharacterAnimationHelper;
+}
+
+interface Nullable<T> {
+	HasValue: boolean;
+	Value: T;
 }
 
 interface VoxelWorld {

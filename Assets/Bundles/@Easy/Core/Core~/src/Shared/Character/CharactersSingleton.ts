@@ -12,6 +12,7 @@ import { Game } from "../Game";
 import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
+import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
 
 const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
@@ -42,7 +43,10 @@ export class CharactersSingleton implements OnStart {
 
 	private idCounter = 0;
 
-	constructor(public readonly localCharacterManager: LocalCharacterSingleton) {
+	constructor(
+		public readonly localCharacterManager: LocalCharacterSingleton,
+		public readonly footsteps: AirshipCharacterFootstepsSingleton,
+	) {
 		Airship.characters = this;
 	}
 
