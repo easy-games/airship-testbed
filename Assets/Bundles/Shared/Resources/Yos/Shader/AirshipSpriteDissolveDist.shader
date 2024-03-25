@@ -2,8 +2,8 @@ Shader "Airship/AirshipSpriteDissolveDist"
 {
     Properties
     {
-        _Color("Tint", Color) = (1,1,1,1)
-        _Emissive("Emissive", Range(0,1)) = 1
+        [HDR] _Color("Tint", Color) = (1,1,1,1)
+        [HDR] _Emissive("Emissive", Range(0,1)) = 1
         _MainTex ("Texture", 2D) = "white" {}
         _dist ("Dist", 2D) = "white" {}
         _Step ("Step", Float) = 0
@@ -103,17 +103,7 @@ Shader "Airship/AirshipSpriteDissolveDist"
             fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
             {
                 
-                float4 finalColor = tex2D(_MainTex, i.uv) * SRGBtoLinear(_Color) * i.color;
-
-
-
-
-
-                
-
-               
-                
-                
+                float4 finalColor = tex2D(_MainTex, i.uv) * _Color * i.color;
                 float2 texCoordvor = i.uv * _Scalestep;
                 float2 uv_dist = i.uv.xy * _dist_ST.xy + _dist_ST.zw;
                 float2 temp_cast_1 = (tex2D(_dist, uv_dist).r).xx;
@@ -121,18 +111,8 @@ Shader "Airship/AirshipSpriteDissolveDist"
                 float2 coords61 = lerpResult * 4.65;
                 
                 float voroi = voronoi(coords61, 0, 0, 0, 0, 0);
-
-              
-
-
-
-
-
-
-
-
-
-               // finalColor.rgb = finalColor.rgb * tex2D(_MainTex, i.uv).rrr;
+                
+                // finalColor.rgb = finalColor.rgb * tex2D(_MainTex, i.uv).rrr;
                 finalColor.a = finalColor.a * step(     (i.uv.z + _Step)    , voroi);
                 MRT0 = finalColor;
 				MRT1 = _Emissive * finalColor;

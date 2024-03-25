@@ -2,8 +2,8 @@ Shader "Airship/AirshipSpriteAlphaCutout"
 {
     Properties
     {
-        _Color("Tint", Color) = (1,1,1,1)
-        _Emissive("Emissive", Range(0,1)) = 1
+        [HDR] _Color("Tint", Color) = (1,1,1,1)
+        [HDR] _Emissive("Emissive", Range(0,1)) = 1
         _AlphaCutoff("Alpha Cutoff", Range(0,1)) = .1
         _MainTex ("Texture", 2D) = "white" {}
     }
@@ -69,7 +69,7 @@ Shader "Airship/AirshipSpriteAlphaCutout"
             void frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
             {
                 float4 texColor = tex2D(_MainTex, i.uv);
-                float4 finalColor = texColor * SRGBtoLinear(_Color) * i.color;
+                float4 finalColor = texColor * _Color * i.color;
                 clip(texColor.a-_AlphaCutoff);
                 //finalColor.a =texColor.a;
 				MRT0 = finalColor;

@@ -2,8 +2,8 @@ Shader "Airship/AirshipSpriteAlphaBlend"
 {
     Properties
     {
-        _Color("Tint", Color) = (1,1,1,1)
-        _Emissive("Emissive", Range(0,1)) = 1
+        [HDR] _Color("Tint", Color) = (1,1,1,1)
+        [HDR] _Emissive("Emissive", Range(0,1)) = 1
         _MainTex ("Texture", 2D) = "white" {}
         [KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _SrcBlend("SourceBlend", Float) = 1.0
 		[KeywordEnum(Zero, One, DstColor, SrcColor, OneMinusDstColor, SrcAlpha, OneMinusSrcColor, DstAlpha, OneMinusDstAlpha, SrcAlphaSaturate, OneMinusSrcAlpha)] _DstBlend("DestBlend", Float) = 10.0
@@ -63,7 +63,7 @@ Shader "Airship/AirshipSpriteAlphaBlend"
 
             fixed4 frag (v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1) : SV_Target2
             {
-                float4 finalColor = tex2D(_MainTex, i.uv) * SRGBtoLinear(_Color) * i.color;
+                float4 finalColor = tex2D(_MainTex, i.uv) * _Color * i.color;
 				MRT0 = finalColor;
 				MRT1 = _Emissive * finalColor;
                 return finalColor;

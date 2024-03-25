@@ -2,8 +2,8 @@ Shader "Airship/AirshipSpriteDissolve"
 {
     Properties
     {
-        _Color("Tint", Color) = (1,1,1,1)
-        _Emissive("Emissive", Range(0,1)) = 1
+        [HDR] _Color("Tint", Color) = (1,1,1,1)
+        [HDR] _Emissive("Emissive", Range(0,1)) = 1
         _MainTex ("Texture", 2D) = "white" {}
         _Noise ("Noise", 2D) = "white" {}
         _Step ("Step", Float) = 0
@@ -72,7 +72,7 @@ Shader "Airship/AirshipSpriteDissolve"
                 float2 uv_Noise = i.uv.xy * _Noise_ST.xy + _Noise_ST.zw;
 
 
-                float4 finalColor = tex2D(_MainTex, i.uv) * SRGBtoLinear(_Color) * i.color;
+                float4 finalColor = tex2D(_MainTex, i.uv) * _Color * i.color;
                 finalColor.a = finalColor.a * step(     (i.uv.z + _Step)    , tex2D(_Noise, (uv_Noise + i.uv.w)).r );
                 MRT0 = finalColor;
 				MRT1 = _Emissive * finalColor;
