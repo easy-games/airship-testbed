@@ -1,4 +1,4 @@
-import AvatarBackdropComponent, { AvatarBackdrop } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
+import AvatarBackdropComponent, { AvatarBackdropType } from "@Easy/Core/Shared/Avatar/AvatarBackdropComponent";
 import { AvatarPlatformAPI } from "@Easy/Core/Shared/Avatar/AvatarPlatformAPI";
 import { AvatarUtil } from "@Easy/Core/Shared/Avatar/AvatarUtil";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
@@ -41,13 +41,13 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 			24,
 			RenderTextureFormat.ARGB32,
 		);
-		this.backdrops.SetBackgdrop(AvatarBackdrop.LIGHT_3D);
+		this.backdrops.SetBackgdrop(AvatarBackdropType.LIGHT_3D);
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;
 
 		this.SetCameraTransform(0);
 		this.Render("ProfilePics/ProfilePicture");
-		this.backdrops.SetBackgdrop(AvatarBackdrop.NONE);
+		this.backdrops.SetBackgdrop(AvatarBackdropType.NONE);
 	}
 
 	/**
@@ -67,7 +67,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		//this.builder.rig.faceMesh?.gameObject.SetActive(false);
 		//this.builder.rig.head?.gameObject.SetActive(false);
 
-		this.backdrops.SetBackgdrop(AvatarBackdrop.NONE);
+		this.backdrops.SetBackgdrop(AvatarBackdropType.NONE);
 
 		this.captureCamera.targetTexture = this.renderTexture;
 		this.captureCamera.enabled = false;
@@ -116,17 +116,36 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		print("Rending item: " + accessoryTemplate.name);
 		//Clear the outfit
 		this.builder.RemoveAccessories();
+		this.builder.rig.faceMesh.gameObject.SetActive(false);
 		//Load the accessory onto the avatar
 		let acc = this.builder.AddSingleAccessory(accessoryTemplate, true);
+		this.RenderClass(accessoryTemplate.name, accessoryTemplate.serverClassId, accessoryTemplate.accessorySlot);
+	}
+	/**
+	 * Internal use only`.
+	 *
+	 * @internal
+	 */
+	public RenderFace(face: AccessoryFace) {
+		print("Rending Face: " + face.name);
+		//Clear the outfit
+		this.builder.RemoveAccessories();
+		//Load the accessory onto the avatar
+		this.builder.rig.faceMesh.gameObject.SetActive(true);
+		this.builder.SetFaceTexture(face.decalTexture);
+		this.RenderClass(face.name, face.serverClassId, AccessorySlot.Face);
+	}
+
+	private RenderClass(name: string, serverClassId: string, slot: AccessorySlot) {
 		task.wait();
 		//Align camera
 		//this.AlignCamera(acc.renderers);
-		this.SetCameraAccessory(accessoryTemplate.accessorySlot);
+		this.SetCameraAccessory(slot);
 		//Render
-		let renderData = this.Render("AccessoryThumbnails/AccThumbnail_" + accessoryTemplate.name);
+		let renderData = this.Render("AccessoryThumbnails/AccThumbnail_" + name);
 		//Upload
 		if (this.uploadThumbnails) {
-			let classData = AvatarUtil.GetClass(accessoryTemplate.serverClassId);
+			let classData = AvatarUtil.GetClass(serverClassId);
 			if (classData) {
 				print("uploading accessory render");
 				AvatarPlatformAPI.UploadItemImage(

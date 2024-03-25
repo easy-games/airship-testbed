@@ -60,6 +60,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AvatarRenderComponent
+    decorators: []
     properties:
     - name: builder
       type: object
@@ -185,6 +186,7 @@ MonoBehaviour:
       serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 1
+    displayName: 
 --- !u!1 &686835754178078473
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,8 +245,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 859119456733253466}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.09037696, y: 0.10150292, z: 0.009259839, w: 0.99067825}
-  m_LocalPosition: {x: -0.6, y: 1.1100001, z: -2.72}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 1.117, z: -3.144}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +459,7 @@ Transform:
   m_GameObject: {fileID: 2981285890910510716}
   serializedVersion: 2
   m_LocalRotation: {x: 0.111607224, y: -0.15714444, z: 0.017876571, w: 0.9810861}
-  m_LocalPosition: {x: 0.591, y: 2.008, z: -1.754}
+  m_LocalPosition: {x: 0.508, y: 1.911, z: -1.502}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -577,7 +579,6 @@ MonoBehaviour:
   sunShadow: 1
   sunColor: {r: 1, g: 1, b: 1, a: 1}
   skySaturation: 0.3
-  cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
   globalAmbientLight: {r: 1, g: 1, b: 1, a: 1}
   globalAmbientBrightness: 0.75
   globalAmbientOcclusion: 0.25
@@ -588,6 +589,8 @@ MonoBehaviour:
   shadowRange: 100
   postProcess: 1
   doShadows: 1
+  cubeMap: {fileID: 0}
+  cubemapCoefs: {fileID: 0}
 --- !u!1 &6336977857862869467
 GameObject:
   m_ObjectHideFlags: 0

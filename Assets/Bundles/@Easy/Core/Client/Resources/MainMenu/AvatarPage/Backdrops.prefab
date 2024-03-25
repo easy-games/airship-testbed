@@ -726,7 +726,23 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AvatarBackdropComponent
-    properties: []
+    decorators: []
+    properties:
+    - name: solidColor
+      type: object
+      objectType: MaterialColor
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3271256478194827109}
+      modified: 1
+    displayName: 
 --- !u!1 &8864547050094139047
 GameObject:
   m_ObjectHideFlags: 0

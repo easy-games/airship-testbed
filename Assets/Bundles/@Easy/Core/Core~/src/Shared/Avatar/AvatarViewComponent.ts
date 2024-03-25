@@ -4,6 +4,8 @@ import { Mouse } from "Shared/UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
 import { OnUpdate } from "../Util/Timer";
+import AvatarBackdropComponent, { AvatarBackdropType } from "./AvatarBackdropComponent";
+import { ColorUtil } from "../Util/ColorUtil";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")
@@ -16,6 +18,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public accessoryBuilder?: AccessoryBuilder;
 	public cameraRigTransform?: Transform;
 	public avatarCamera?: Camera;
+	public backdropHolder?: GameObject;
 
 	public cameraWaypointDefault?: Transform;
 	public cameraWaypointHead?: Transform;
@@ -62,6 +65,9 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	private bin = new Bin();
 
 	public override Start(): void {
+		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
+		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#18191A"));
+
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>();
 			if (this.accessoryBuilder) {
@@ -160,7 +166,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (!this.avatarCamera) {
 			return;
 		}
-		this.renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
+		this.renderTexture = RenderUtils.CreateDefaultRenderTexture(width, height);
 		this.avatarCamera.targetTexture = this.renderTexture;
 		this.avatarCamera.enabled = true;
 		for (let i = 0; i < this.onNewRenderTexture.size(); i++) {

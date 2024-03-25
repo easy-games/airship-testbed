@@ -105,7 +105,6 @@ export class MainMenuController implements OnStart {
 
 	public OpenFromGame(): void {
 		if (this.open) return;
-		this.avatarView?.ShowAvatar();
 
 		AppManager.OpenCustom(() => {
 			this.CloseFromGame();
@@ -116,8 +115,12 @@ export class MainMenuController implements OnStart {
 		this.wrapperRect.TweenLocalScale(new Vector3(1, 1, 1), duration);
 		this.mainContentCanvas.enabled = true;
 		this.rootCanvasGroup.TweenCanvasGroupAlpha(1, duration);
-		CloudImage.PrintCache();
-		CloudImage.CleanseCache();
+
+		if (this.currentPage) {
+			this.RouteToPage(this.currentPage.pageType, true, true);
+		}
+
+		//CloudImage.PrintCache();
 	}
 
 	public CloseFromGame(): void {
@@ -158,6 +161,8 @@ export class MainMenuController implements OnStart {
 			} else {
 				this.RouteToPage(MainMenuPageType.Settings, true, true);
 			}
+		} else {
+			this.RouteToPage(this.currentPage.pageType, true, true);
 		}
 
 		if (Game.coreContext === CoreContext.GAME) {

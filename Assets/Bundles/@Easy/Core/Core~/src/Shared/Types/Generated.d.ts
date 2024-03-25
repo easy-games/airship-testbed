@@ -12515,7 +12515,7 @@ interface ActiveAccessory {
 }
     
 interface AccessoryComponent extends MonoBehaviour {
-serverClassId: string;
+    serverClassId: string;
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
@@ -16471,6 +16471,7 @@ interface CloudImage extends MonoBehaviour {
     loadedUrl: string;
 
 
+    ReleaseImage(notifyCache: boolean): void;
     StartDownload(): void;
 
 }
@@ -17024,4 +17025,18 @@ interface AirshipPointLightConstructor {
     GetAllPointLights(): CSArray<AirshipPointLight>;
 }
 declare const AirshipPointLight: AirshipPointLightConstructor;
+    
+interface RenderUtils {
+
+
+
+}
+    
+interface RenderUtilsConstructor {
+
+
+
+    CreateDefaultRenderTexture(width: number, height: number): RenderTexture;
+}
+declare const RenderUtils: RenderUtilsConstructor;
 

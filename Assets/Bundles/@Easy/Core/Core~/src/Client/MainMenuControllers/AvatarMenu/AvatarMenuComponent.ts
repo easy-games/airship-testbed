@@ -20,6 +20,7 @@ import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import { Keyboard } from "@Easy/Core/Shared/UserInput/Keyboard";
+import AvatarRenderComponent from "./AvatarRenderComponent";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -748,13 +749,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private thumbnailRenderList: Map<string, { accesory: AccessoryComponent; button: AvatarAccessoryBtn }> = new Map();
+	private thumbnailFaceRenderList: Map<string, { accesory: AccessoryFace; button: AvatarAccessoryBtn }> = new Map();
 	private inThumbnailMode = false;
+	private renderSetup?: AvatarRenderComponent;
 	/**
 	 * Internal use only`.
 	 *
 	 * @internal
 	 */
 	public EnterThumbnailMode() {
+		if (!this.renderSetup) {
+			this.renderSetup = this.mainMenu?.avatarView?.CreateRenderScene();
+		}
 		this.inThumbnailMode = true;
 		this.saveBtn?.SetDisabled(false);
 		this.ClearItembuttons();
@@ -762,6 +768,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.Log("Displaying Thumbnail Mode");
 		//Accessories
 		let foundItems = AvatarUtil.GetAllPossibleAvatarItems();
+		let foundFaces = AvatarUtil.GetAllAvatarFaceItems();
 		if (foundItems) {
 			let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
 			for (let [key, value] of foundItems) {
@@ -773,6 +780,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					});
 					button.SetSelected(false);
 					this.thumbnailRenderList.set(value.serverClassId, { accesory: value, button: button });
+				}
+			}
+			for (let value of foundFaces) {
+				if (value && value.serverClassId !== undefined && value.serverClassId !== "") {
+					let button = this.AddItemButton(value.serverClassId, value.serverClassId, value.name, () => {
+						const alreadySelected = this.thumbnailFaceRenderList
+							.get(value.serverClassId)
+							?.button.GetSelected();
+						this.Log("Selecting face: " + value.ToString() + ": " + alreadySelected);
+						this.thumbnailFaceRenderList.get(value.serverClassId)?.button.SetSelected(!alreadySelected);
+					});
+					button.SetSelected(false);
+					this.thumbnailFaceRenderList.set(value.serverClassId, { accesory: value, button: button });
 				}
 			}
 			this.DisplayItems(allItems);
@@ -787,6 +807,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	 * @internal
 	 */
 	public LeaveThumbnailMode() {
+		if (this.renderSetup) {
+			Object.Destroy(this.renderSetup);
+		}
 		this.ClearItembuttons();
 		this.thumbnailRenderList.clear();
 	}
@@ -797,11 +820,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	 * @internal
 	 */
 	private RenderThumbnails() {
-		let render = this.mainMenu?.avatarView?.CreateRenderScene();
-		render?.CreateItemCamera();
+		if (!this.renderSetup) {
+			return;
+		}
+		this.renderSetup.CreateItemCamera();
+		this.renderSetup.uploadThumbnails = true;
 		for (let [key, value] of this.thumbnailRenderList) {
 			if (value && value.button.GetSelected()) {
-				render?.RenderItem(value.accesory);
+				this.renderSetup?.RenderItem(value.accesory);
+			}
+		}
+		for (let [key, value] of this.thumbnailFaceRenderList) {
+			if (value && value.button.GetSelected()) {
+				this.renderSetup?.RenderFace(value.accesory);
 			}
 		}
 	}
