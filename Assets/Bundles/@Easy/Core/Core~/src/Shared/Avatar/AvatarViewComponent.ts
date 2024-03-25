@@ -66,7 +66,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public override Start(): void {
 		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
-		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#18191A"));
+		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
 
 		if (this.humanEntityGo) {
 			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>();

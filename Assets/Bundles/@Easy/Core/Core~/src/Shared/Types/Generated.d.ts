@@ -16471,6 +16471,7 @@ interface CloudImage extends MonoBehaviour {
     loadedUrl: string;
 
 
+    ReleaseImage(notifyCache: boolean): void;
     StartDownload(): void;
 
 }
@@ -17076,4 +17077,18 @@ interface GizmosConstructor {
     DrawWireSphere(center: Vector3, radius: number): void;
 }
 declare const Gizmos: GizmosConstructor;
+    
+interface RenderUtils {
+
+
+
+}
+    
+interface RenderUtilsConstructor {
+
+
+
+    CreateDefaultRenderTexture(width: number, height: number): RenderTexture;
+}
+declare const RenderUtils: RenderUtilsConstructor;
 
