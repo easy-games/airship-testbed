@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { AccessoryInstanceDto, OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarPlatformAPI {
     private static Log;

@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { CharacterAnimator } from "./Animation/CharacterAnimator";
 import Inventory from "../Inventory/Inventory";
 import { HeldItemManager } from "../Item/HeldItems/HeldItemManager";
@@ -16,6 +16,7 @@ export default class Character extends AirshipBehaviour {
     networkObject: NetworkObject;
     rigRoot: GameObject;
     collider: CharacterController;
+    footstepAudioSource: AudioSource;
     rig: CharacterRig;
     id: number;
     state: CharacterState;

@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 export default class GameImageButton extends AirshipBehaviour {
     gameComponentGO?: GameObject;
     private bin;

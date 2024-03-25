@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { OnStart } from "../../../Shared/Flamework";
 import { Player } from "../../../Shared/Player/Player";
 import { Result } from "../../../Shared/Types/Result";

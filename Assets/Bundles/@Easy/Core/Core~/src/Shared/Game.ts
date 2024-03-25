@@ -69,11 +69,10 @@ export class Game {
 	public static platform = AirshipPlatformUtil.GetLocalPlatform();
 
 	public static IsMobile(): boolean {
-		return (
-			this.platform === AirshipPlatform.iOS ||
-			this.platform === AirshipPlatform.Android ||
-			this.IsSimulateMobile()
-		);
+		if (Game.IsEditor()) {
+			return this.IsSimulateMobile();
+		}
+		return this.platform === AirshipPlatform.iOS || this.platform === AirshipPlatform.Android;
 	}
 
 	public static IsClient(): boolean {

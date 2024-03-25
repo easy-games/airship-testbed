@@ -1,5 +1,5 @@
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
 import { OnStart } from "../Flamework";
 import { Signal } from "../Util/Signal";
 type TagSignal = Pick<Signal<[GameObject]>, "Connect" | "ConnectWithPriority" | "Once" | "Wait">;

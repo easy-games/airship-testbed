@@ -1,5 +1,5 @@
-/// <reference types="@easy-games/compiler-types" />
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
+/// <reference types="compiler-types" />
 type CreateMapEntryFactory<K, V> = (key: K, map: Map<K, V>) => V;
 export declare class MapUtil {
     /**

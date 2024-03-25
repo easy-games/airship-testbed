@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { EquippedProfilePicture, OutfitDto } from "../../../Shared/Airship/Types/Outputs/PlatformInventory";
 import { OnStart } from "../../../Shared/Flamework";
 import { Result } from "../../../Shared/Types/Result";

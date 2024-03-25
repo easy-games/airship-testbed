@@ -1,4 +1,4 @@
-/// <reference types="@easy-games/compiler-types" />
+/// <reference types="compiler-types" />
 import { InputAction } from "../../../Input/InputAction";
 export default class SettingsKeybindPage extends AirshipBehaviour {
     keybindPrefab: GameObject;

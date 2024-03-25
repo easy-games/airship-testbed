@@ -26,6 +26,7 @@ export default class Character extends AirshipBehaviour {
 	public networkObject!: NetworkObject;
 	public rigRoot!: GameObject;
 	public collider!: CharacterController;
+	public footstepAudioSource!: AudioSource;
 	@NonSerialized() public rig!: CharacterRig;
 
 	// State

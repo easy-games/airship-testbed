@@ -76,10 +76,7 @@ export class HumanoidCameraMode extends CameraMode {
 		this.yOffset = this.GetCamYOffset(this.firstPerson);
 
 		Dependency<AirshipCharacterCameraSingleton>().firstPersonChanged.Connect((isFirstPerson) => {
-			this.SetYOffset(
-				this.GetCamYOffset(isFirstPerson),
-				true,
-			);
+			this.SetYOffset(this.GetCamYOffset(isFirstPerson), true);
 		});
 
 		this.movement = character.movement;
@@ -162,7 +159,7 @@ export class HumanoidCameraMode extends CameraMode {
 		}
 
 		this.SetFirstPerson(this.firstPerson);
-		this.SetDirection(this.graphicalCharacterGO.transform.forward);
+		this.SetYAxisDirection(this.graphicalCharacterGO.transform.forward);
 		Dependency<CrosshairController>().SetEnabled(true);
 	}
 
@@ -282,15 +279,24 @@ export class HumanoidCameraMode extends CameraMode {
 	/**
 	 * Explicitly set the direction of the camera on the Y-axis based on the given directional vector.
 	 */
-	public SetDirection(direction: Vector3) {
+	public SetYAxisDirection(direction: Vector3) {
 		// Determine Y-axis rotation based on direction:
 		direction = direction.normalized;
 		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
 		this.movement.SetLookVector(direction);
 	}
 
+	public SetDirection(direction: Vector3) {
+		// Determine Y-axis rotation based on direction:
+		direction = direction.normalized;
+		this.rotationY = math.atan2(-direction.x, direction.z) % TAU;
+		const adj = new Vector2(direction.x, direction.z).magnitude;
+		this.rotationX = math.clamp(math.pi / 2 + math.atan2(direction.y, adj), MIN_ROT_X, MAX_ROT_X);
+		this.movement.SetLookVector(direction);
+	}
+
 	private GetCamYOffset(isFirstPerson: boolean) {
-		const state = Dependency<LocalCharacterSingleton>().GetEntityDriver()?.GetState() ?? CharacterState.Idle
+		const state = Dependency<LocalCharacterSingleton>().GetEntityDriver()?.GetState() ?? CharacterState.Idle;
 		const yOffset =
 			state === CharacterState.Crouching || state === CharacterState.Sliding
 				? isFirstPerson

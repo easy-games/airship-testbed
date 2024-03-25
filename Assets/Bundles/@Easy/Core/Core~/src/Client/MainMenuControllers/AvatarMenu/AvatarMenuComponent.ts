@@ -1,6 +1,7 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
@@ -222,6 +223,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override OpenPage(): void {
 		super.OpenPage();
+
+		if (Game.IsPortrait()) {
+			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
+		}
+
 		this.Log("Open AVATAR");
 		if (this.avatarRenderHolder) {
 			this.avatarRenderHolder?.SetActive(true);

@@ -1,4 +1,5 @@
 import { CameraMode } from "./CameraMode";
+import { CameraTransform } from "./CameraTransform";
 import { CharacterCameraType } from "./CharacterCameraType";
 /**
  * Drives the camera modes.
@@ -10,6 +11,7 @@ export declare class CameraSystem {
     private readonly viewmodelCamera;
     private readonly allCameras;
     private onClearCallback?;
+    private updateTransformCallbacks;
     private modeCleared;
     private fovStateMap;
     private enabled;
@@ -61,4 +63,11 @@ export declare class CameraSystem {
     SetFOV(cameraType: CharacterCameraType, fieldOfView: number, immediate?: boolean): void;
     private UpdateFOVSpring;
     private UpdateFOV;
+    /**
+     * Register a callback to be run after the camera mode has generated a camera transform. Callback can return a modified
+     * CameraTransform to update the camera for this frame.
+     *
+     * @returns Clean up function to unregister callback
+     */
+    OnUpdateTransform(callback: (cameraTransform: CameraTransform) => CameraTransform | void): () => void;
 }

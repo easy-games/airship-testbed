@@ -1,4 +1,5 @@
 import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
+import { MainMenuPageType } from "@Easy/Core/Client/MainMenuControllers/MainMenuPageName";
 import { ChangeUsernameController } from "@Easy/Core/Client/MainMenuControllers/Social/ChangeUsernameController";
 import { RightClickMenuButton } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
@@ -20,6 +21,12 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
+			options.push({
+				text: "Settings",
+				onClick: () => {
+					Dependency<MainMenuController>().RouteToPage(MainMenuPageType.Settings);
+				},
+			});
 			options.push({
 				text: "Change Profile Picture",
 				onClick: () => {},
