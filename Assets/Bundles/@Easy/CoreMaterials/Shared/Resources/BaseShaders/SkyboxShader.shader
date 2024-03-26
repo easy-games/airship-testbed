@@ -5,6 +5,7 @@ Shader "Airship/Skybox"
         [HDR] _FogColor("Fog Color", Color) = (1,1,1,1)
         _FogSize("Fog Size", Float) = 3.5
         _FogPower("Fog Pow", Float) = 1
+		_Brightness("Brightness", range(0, 5)) = 1
     }
 
         SubShader{
@@ -17,9 +18,12 @@ Shader "Airship/Skybox"
                     #pragma fragment frag
                     #include "UnityCG.cginc"
 
+                    #pragma multi_compile _ FOG_ON
+
                     float _FogSize;
                     float4 _FogColor;
                     float _FogPower;
+                    float _Brightness;
 
                     struct appdata {
                         float4 vertex : POSITION;
@@ -50,8 +54,9 @@ Shader "Airship/Skybox"
                     float4 frag(v2f i) : SV_Target
                     {
 
-                        half3 texSample = texCUBE(_CubemapTex, i.viewDirectionNeg).rgb;
+                        half3 texSample = texCUBE(_CubemapTex, i.viewDirectionNeg).rgb * _Brightness;
 
+#if FOG_ON
                         //if the view vector is basically level with the horizon, blend in fog color
                         float3 viewDirection = normalize(i.viewDirectionNeg);
                         float fogPower = pow(abs(viewDirection.y), _FogPower);
@@ -60,6 +65,9 @@ Shader "Airship/Skybox"
                         half3 fogColor = lerp(_FogColor.rgb, texSample, fogBlend);
 
                         return float4(fogColor, 0);
+#else
+                        return float4(texSample, 0);
+#endif
 
                     }
                     ENDCG
