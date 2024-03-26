@@ -15,6 +15,7 @@
     float EMISSIVE;
     float RIM_LIGHT;
     float SHADOW_COLOR;
+    
         
     //Unity stuff
     float4x4 unity_MatrixVP;
@@ -96,10 +97,12 @@
         // Transform the normal to world space and normalize it
         float3 shadowNormal = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
 
+#if SHADOWS_ON        
         //Calc shadow data
         output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
         output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
-
+#endif
+        
         output.uv_MainTex = input.uv_MainTex;
         output.uv_MainTex = float4((input.uv_MainTex * _MainTex_ST.xy + _MainTex_ST.zw).xy, 1, 1);
 
@@ -463,7 +466,11 @@
         half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
 
         //Shadows and light masks
+#if SHADOWS_ON        
         half sunShadowMask = GetShadow(input.shadowCasterPos0, input.shadowCasterPos1, worldNormal, globalSunDirection);
+#else
+        half sunShadowMask = 0;
+#endif
         //sunShadowMask = sunShadowMask *.8 + .2;//Never have shadows go full black
         half pointLight0Mask = 1;
         half pointLight1Mask = 1;

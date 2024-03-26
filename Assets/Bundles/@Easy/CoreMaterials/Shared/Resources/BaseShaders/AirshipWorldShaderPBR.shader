@@ -42,6 +42,8 @@ Shader "Airship/WorldShaderPBR"
         _RimIntensity("Rim Intensity", Range(0, 5)) = 0.75
         
         [Toggle] INSTANCE_DATA("Has Baked Instance Data", Float) = 0.0
+
+        [Toggle] SHADOWS("Render Shadows", Float) = 1.0
     }
 
     SubShader
@@ -65,6 +67,7 @@ Shader "Airship/WorldShaderPBR"
 			#pragma multi_compile _ RIM_LIGHT_ON
             #pragma multi_compile _ INSTANCE_DATA_ON
             #pragma multi_compile _ USE_SHADOW_COLOR_ON
+			#pragma multi_compile _ SHADOWS_ON
 	   
             #include "AirshipWorldShaderIncludes.hlsl"
                           
