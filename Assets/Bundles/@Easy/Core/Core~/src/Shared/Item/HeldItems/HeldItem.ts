@@ -4,32 +4,18 @@ import Character from "Shared/Character/Character";
 import { Dependency } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import { RandomUtil } from "Shared/Util/RandomUtil";
-import { Task } from "Shared/Util/Task";
 import { SetInterval } from "Shared/Util/Timer";
-import { RunUtil } from "../../Util/RunUtil";
 import { TimeUtil } from "../../Util/TimeUtil";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { ItemUtil } from "../ItemUtil";
+import { Game } from "../../Game";
 
 export class HeldItem {
-	private serverOffsetMargin = 0.025;
-	/** Undefined when holding nothing */
+	private readonly serverOffsetMargin = 0.025;
 	protected readonly itemMeta: ItemDef | undefined;
-	protected clickBufferMargin = 0.2;
+
+	/** Undefined when holding nothing */
 	public readonly character: Character;
-	private lastUsedTime = 0;
-	private chargeStartTime = 0;
-	protected isCharging = false;
-	protected activeAccessoriesWorldmodel: ActiveAccessory[] = [];
-	protected activeAccessoriesViewmodel: ActiveAccessory[] = [];
-	protected currentItemGOs: GameObject[] = [];
-	protected currentItemAnimations: Animator[] = [];
-	private holdingDownBin = new Bin();
-	private holdingDown = false;
-	private bufferingUse = false;
-	protected audioPitchShift = 1;
-	protected playEffectsOnUse = true;
-	protected viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
 
 	/**
 	 * The look vector for the latest action.
@@ -38,6 +24,25 @@ export class HeldItem {
 	 * This vector will match the exact direction the entity was facing during the frame they clicked (as opposed to the tick they clicked).
 	 */
 	protected lookVector: Vector3 = new Vector3();
+	protected clickBufferMargin = 0.2;
+	protected isCharging = false;
+	protected activeAccessoriesWorldmodel: ActiveAccessory[] = [];
+	protected activeAccessoriesViewmodel: ActiveAccessory[] = [];
+	protected currentItemGOs: GameObject[] = [];
+	protected currentItemAnimations: Animator[] = [];
+	protected viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
+	protected audioPitchShift = 1;
+	protected playEffectsOnUse = true;
+
+	private holdingDownBin = new Bin();
+	private holdingDown = false;
+	private bufferingUse = false;
+	private lastUsedTime = 0;
+	private chargeStartTime = 0;
+
+	protected Log(message: string) {
+		//print("[HeldItem]: " + message);
+	}
 
 	constructor(character: Character, newMeta: ItemDef | undefined) {
 		this.character = character;
@@ -51,8 +56,22 @@ export class HeldItem {
 		this.lookVector = vec;
 	}
 
-	protected Log(message: string) {
-		// print("[HeldItem]: " + message);
+	/**
+	 * Called when the HeldItem's art assets (such as animations) should be loaded.
+	 */
+	public OnLoadAssets(): void {}
+
+	/**
+	 * Returns an array of ActiveAccessories.
+	 * If the character is in first person, these will be the viewmodel accessories. Otherwise, they are the worldmodel accessories.
+	 *
+	 * @returns ActiveAccessories that are enabled in the scene.
+	 */
+	public GetActiveAccessories(): ActiveAccessory[] {
+		if (this.character.IsLocalCharacter() && this.character.animator.IsFirstPerson()) {
+			return this.activeAccessoriesViewmodel;
+		}
+		return this.activeAccessoriesWorldmodel;
 	}
 
 	public OnEquip() {
@@ -128,27 +147,9 @@ export class HeldItem {
 
 		// this.entity.accessoryBuilder.TryCombineMeshes();
 		this.character.accessoryBuilder.UpdateAccessoryLayers();
-		if (RunUtil.IsClient() && this.character.IsLocalCharacter()) {
+		if (this.character.IsLocalCharacter()) {
 			Dependency<ViewmodelController>().accessoryBuilder.UpdateAccessoryLayers();
 		}
-	}
-
-	/**
-	 * Called when the HeldItem's art assets (such as animations) should be loaded.
-	 */
-	public OnLoadAssets(): void {}
-
-	/**
-	 * Returns an array of ActiveAccessories.
-	 * If the character is in first person, these will be the viewmodel accessories. Otherwise, they are the worldmodel accessories.
-	 *
-	 * @returns ActiveAccessories that are enabled in the scene.
-	 */
-	public GetActiveAccessories(): ActiveAccessory[] {
-		if (RunUtil.IsClient() && this.character.IsLocalCharacter() && this.character.animator.IsFirstPerson()) {
-			return this.activeAccessoriesViewmodel;
-		}
-		return this.activeAccessoriesWorldmodel;
 	}
 
 	public OnUnEquip() {
@@ -160,13 +161,33 @@ export class HeldItem {
 		this.OnChargeEnd();
 	}
 
-	public OnCallToActionStart() {
-		this.Log("OnCallToActionStart");
-		if (this.HasChargeTime()) {
-			this.OnChargeStart();
-		} else {
-			this.TryUse();
-			this.HoldDownAction();
+	public OnNewActionState(stateIndex: number, isActive: boolean) {
+		this.Log("Use " + stateIndex + " isActive: " + isActive);
+		//Default Action behaviour
+		switch (stateIndex) {
+			case 0:
+				//Primary Action
+				if (isActive) {
+					if (this.HasChargeTime()) {
+						this.OnChargeStart();
+					} else {
+						this.TryUse();
+						this.HoldDownAction();
+					}
+				} else {
+					this.bufferingUse = false;
+					this.holdingDownBin.Clean();
+					if (this.isCharging) {
+						this.TryChargeUse();
+					}
+				}
+				break;
+			case 1:
+				//Secondary Action
+				if (isActive) {
+					this.OnChargeEnd();
+				}
+				break;
 		}
 	}
 
@@ -188,33 +209,6 @@ export class HeldItem {
 		}
 	}
 
-	public OnCallToActionEnd() {
-		this.Log("OnCallToActionEnd");
-		this.bufferingUse = false;
-		this.holdingDownBin.Clean();
-		if (this.isCharging) {
-			this.TryChargeUse();
-		}
-	}
-
-	public OnSecondaryActionStart() {
-		this.OnChargeEnd();
-	}
-
-	public OnSecondaryActionEnd() {}
-
-	public OnInspect() {
-		// this.Log("OnInspect");
-		// let inspectPath = AllBundleItems.ItemSword_FirstPerson_Inspect as string; //Default inspect
-		// if (this.itemMeta?.inspectAnimPath) {
-		// 	inspectPath = this.itemMeta.inspectAnimPath;
-		// }
-		// const clip = AssetCache.LoadAsset<AnimationClip>(inspectPath);
-		// this.character.animator?.PlayItemAnimationInWorldmodel(clip, EntityAnimationLayer.LAYER_2, () => {
-		// 	// this.entity.anim.StartIdleAnim();
-		// });
-	}
-
 	protected OnChargeStart() {
 		this.Log("OnChargeStart");
 		this.isCharging = true;
@@ -227,9 +221,14 @@ export class HeldItem {
 		this.chargeStartTime = 0;
 	}
 
-	protected TryUse(index = 0) {
+	private TryUse(index = 0) {
 		this.Log("TryUse");
 		this.bufferingUse = false;
+
+		if (!this.CanUse(index)) {
+			return false;
+		}
+
 		const remainingTime = this.GetRemainingCooldownTime();
 		if (remainingTime === 0) {
 			this.TriggerUse(index);
@@ -240,9 +239,13 @@ export class HeldItem {
 		return false;
 	}
 
-	protected TryChargeUse() {
+	private TryChargeUse() {
 		this.Log("TryChargeUse IsChargedUp: " + this.IsChargedUp());
 		this.bufferingUse = false;
+
+		if (!this.CanCharge()) {
+			return false;
+		}
 
 		const remainingTime = this.GetRemainingCooldownTime();
 		if (remainingTime > 0) {
@@ -264,16 +267,16 @@ export class HeldItem {
 		this.bufferingUse = false;
 
 		//Play the use locally
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			this.OnUseClient(useIndex);
 		}
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			this.OnUseServer(useIndex);
 		}
 
 		//Invoke function when cooldown should be up
 		if (this.itemMeta?.usable) {
-			Task.Delay(this.itemMeta.usable.cooldownSeconds + 0.01, () => {
+			task.delay(this.itemMeta.usable.cooldownSeconds + 0.01, () => {
 				this.OnCooldownReset();
 			});
 		}
@@ -298,6 +301,14 @@ export class HeldItem {
 			this.character.animator.PlayItemUseAnim(useIndex);
 			this.PlayItemSound();
 		}
+	}
+
+	/** Runs when an item is used, server authorized
+	 * return true if you can use the item */
+	protected OnUseServer(useIndex: number) {
+		this.Log("OnUse Server");
+		//Update visual state to match client
+		// this.OnUseClient(useIndex);
 	}
 
 	protected PlayItemSound() {
@@ -343,14 +354,6 @@ export class HeldItem {
 		}
 	}
 
-	/** Runs when an item is used, server authorized
-	 * return true if you can use the item */
-	protected OnUseServer(useIndex: number) {
-		this.Log("OnUse Server");
-		//Update visual state to match client
-		// this.OnUseClient(useIndex);
-	}
-
 	public GetRemainingCooldownTime(): number {
 		if (!this.itemMeta?.usable) return 0;
 
@@ -384,5 +387,13 @@ export class HeldItem {
 		if (!this.itemMeta?.usable) return false;
 
 		return (this.itemMeta.usable.maxChargeSeconds ?? 0) > 0;
+	}
+
+	protected CanUse(index = 0) {
+		return true;
+	}
+
+	protected CanCharge() {
+		return true;
 	}
 }

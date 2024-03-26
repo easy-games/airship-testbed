@@ -22,6 +22,7 @@ import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
+import { CharacterItemManager } from "./Item/HeldItems/CharacterItemManager";
 
 /**
  * The collection of platform services available to Airship games.

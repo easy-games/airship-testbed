@@ -28,6 +28,8 @@ export class MainMenuController implements OnStart {
 	public mainContentGroup: CanvasGroup;
 	public socialMenuGroup: CanvasGroup;
 	private rootCanvasGroup: CanvasGroup;
+	private gameBG?: GameObject;
+	private mainMenuBG?: GameObject;
 
 	private open = false;
 	private socialIsVisible = true;
@@ -77,11 +79,9 @@ export class MainMenuController implements OnStart {
 			this.open = true;
 		}
 
-		const gameBG = this.refs.GetValue("UI", "GameBG");
-		const mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
-		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
-		gameBG.SetActive(!isMainMenu);
-		mainMenuBG.SetActive(isMainMenu);
+		this.gameBG = this.refs.GetValue("UI", "GameBG");
+		this.mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
+		this.ToggleGameBG(true);
 
 		if (Game.coreContext === CoreContext.MAIN_MENU) {
 			const mouse = new Mouse();
@@ -101,6 +101,12 @@ export class MainMenuController implements OnStart {
 		if (Game.coreContext === CoreContext.GAME) {
 			this.mainContentCanvas.enabled = false;
 		}
+	}
+
+	public ToggleGameBG(show: boolean) {
+		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
+		this.gameBG?.SetActive(show && !isMainMenu);
+		this.mainMenuBG?.SetActive(!show || isMainMenu);
 	}
 
 	public OpenFromGame(): void {

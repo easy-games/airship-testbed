@@ -197,6 +197,6 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public IsLocalCharacter(): boolean {
-		return RunUtil.IsClient() && this.player?.userId === Game.localPlayer?.userId;
+		return Game.IsClient() && this.player?.userId === Game.localPlayer?.userId;
 	}
 }
