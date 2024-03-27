@@ -211,16 +211,7 @@ half3 TextureDecodeNormal(half3 norm)
     n.z = sqrt(1 - dot(n.xy, n.xy));
     return n;
 }
-
-half EnvBRDFApproxNonmetal(half Roughness, half NoV)
-{
-    // Same as EnvBRDFApprox( 0.04, Roughness, NoV )
-    const half2 c0 = { -1, -0.0275 };
-    const half2 c1 = { 1, 0.0425 };
-    half2 r = Roughness * c0 + c1;
-    return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
-}
-
+ 
 
 
 struct Coordinates

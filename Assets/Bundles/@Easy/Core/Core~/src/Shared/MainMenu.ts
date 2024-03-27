@@ -13,6 +13,10 @@ CoreRefs.Init();
 
 Game.coreContext = CoreContext.MAIN_MENU;
 
+if (Game.IsClient()) {
+	Screen.orientation = ScreenOrientation.Portrait;
+}
+
 TimeUtil.GetLifetimeSeconds();
 CanvasAPI.Init();
 AppManager.Init();

@@ -92,9 +92,9 @@ Shader "Hidden/AirshipErrorShader"
                 float3 coord = (input.worldPos.xyz + animatedOffset) * scale;
 
                 // Checker calculation
-                int checkerX = int(floor(coord.x)) % 2;
-                int checkerY = int(floor(coord.y)) % 2;
-                int checkerZ = int(floor(coord.z)) % 2;
+                uint checkerX = uint(floor(coord.x)) % 2;
+                uint checkerY = uint(floor(coord.y)) % 2;
+                uint checkerZ = uint(floor(coord.z)) % 2;
 
                 // Compute the checker pattern based on XOR operations to ensure consistent volumes
                 bool isChecker = (checkerX ^ checkerY ^ checkerZ) == 0;

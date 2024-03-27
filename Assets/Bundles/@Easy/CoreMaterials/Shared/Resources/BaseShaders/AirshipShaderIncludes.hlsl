@@ -55,16 +55,6 @@ half3 LinearToSRGB(half3 srgb)
     return pow(srgb, 2.2333333);
 }
 
-half PhongApprox(half Roughness, half RoL)
-{
-    half a = Roughness * Roughness;
-    half a2 = a * a;
-    float rcp_a2 = rcp(a2);
-    // 0.5 / ln(2), 0.275 / ln(2)
-    half c = 0.72134752 * rcp_a2 + 0.39674113;
-    return rcp_a2 * exp2(c * RoL - c);
-}
-
 //Shadows require your vertex prog to have something akin to:
 //output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
 //output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
@@ -152,13 +142,22 @@ half GetShadow(float4 shadowCasterPos0, float4 shadowCasterPos1, half3 worldNorm
     }
 }
 
+half PhongApprox(half Roughness, half RoL)
+{
+    half a = Roughness * Roughness;
+    half a2 = a * a;
+    float rcp_a2 = rcp(a2);
+    half c = 0.72134752 * rcp_a2 + 0.39674113;
+    return rcp_a2 * exp2(c * RoL - c);
+}
+
 half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, half roughness, half3 specularColor, half3 reflectionVector)
 {
 	half3 result = half3(0, 0, 0);
     
     for (int i = 0; i < globalDynamicLightCount; i++)
     {
-        float3 lightPos = globalDynamicLightPos[i];
+        float3 lightPos = globalDynamicLightPos[i].xyz;
         half4 lightColor = globalDynamicLightColor[i];
         half lightRange = globalDynamicLightRadius[i];
 
@@ -175,7 +174,7 @@ half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, 
 
         falloff *= NoL;
 
-        result += falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
+        result += falloff * (albedo * lightColor.rgb + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
     }
     return result;
 }
@@ -258,11 +257,22 @@ float ConvertToNormalizedRange(float negativeRangeNumber)
 
 half3 EnvBRDFApprox(half3 SpecularColor, half Roughness, half NoV)
 {
-    const half4 c0 = { -1, -0.0275, -0.572, 0.022 };
-    const half4 c1 = { 1, 0.0425, 1.04, -0.04 };
-    half4 r = Roughness * c0 + c1;
-    half a004 = min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
-    half2 AB = half2(-1.04, 1.04) * a004 + r.zw;
+    const half4 const0 = { -1, -0.0275, -0.572, 0.022 };
+    const half4 const1 = { 1, 0.0425, 1.04, -0.04 };
+    half4 r = Roughness * const0 + const1;
+    half minFac = min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
+    half2 AB = half2(-1.04, 1.04) * minFac + r.zw;
     return SpecularColor * AB.x + AB.y;
 }
+
+half EnvBRDFApproxNonmetal(half Roughness, half NoV)
+{
+    // Same as EnvBRDFApprox( 0.04, Roughness, NoV )
+    const half2 const0 = { -1, -0.0275 };
+    const half2 const1 = { 1, 0.0425 };
+    half2 r = Roughness * const0 + const1;
+    return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
+}
+
+
 #endif

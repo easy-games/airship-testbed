@@ -8,13 +8,12 @@
     #pragma fragment fragFunction
 
     //Multi shader vars (you need these even if you're not using them, so that material properties can survive editor script reloads)
-    float VERTEX_LIGHT;  
     float SLIDER_OVERRIDE;
-    float POINT_FILTER;
     float EXPLICIT_MAPS;
     float EMISSIVE;
     float RIM_LIGHT;
     float SHADOW_COLOR;
+    
         
     //Unity stuff
     float4x4 unity_MatrixVP;
@@ -49,6 +48,7 @@
 
     half _MetalOverride;
     half _RoughOverride;
+    half _SliderOverrideMix;
 
     half _TriplanarScale;
 
@@ -96,10 +96,12 @@
         // Transform the normal to world space and normalize it
         float3 shadowNormal = normalize(mul(float4(input.normal, 0.0), unity_WorldToObject).xyz);
 
+#if SHADOWS_ON        
         //Calc shadow data
         output.shadowCasterPos0 = CalculateVertexShadowData0(worldPos, shadowNormal);
         output.shadowCasterPos1 = CalculateVertexShadowData1(worldPos, shadowNormal);
-
+#endif
+        
         output.uv_MainTex = input.uv_MainTex;
         output.uv_MainTex = float4((input.uv_MainTex * _MainTex_ST.xy + _MainTex_ST.zw).xy, 1, 1);
 
@@ -121,13 +123,7 @@
         output.color = input.color;
 
         output.baseColor = lerp(_Color, _OverrideColor, _OverrideStrength);
-
-        //Do ambient occlusion at the vertex level, encode it into vertex color g
-        //But only if we're part of the world geometry...
-#if VERTEX_LIGHT_ON
-        output.color.g = clamp(output.color.g + (1 - globalAmbientOcclusion), 0, 1);
-#endif
-
+        
 #if INSTANCE_DATA_ON
 		float4 instanceColor = _ColorInstanceData[input.instanceIndex.x];
         output.color *= instanceColor;
@@ -219,18 +215,7 @@
             color = color11;
         return color;
     }
-
-    half EnvBRDFApproxNonmetal(half Roughness, half NoV)
-    {
-        // Same as EnvBRDFApprox( 0.04, Roughness, NoV )
-        const half2 c0 = { -1, -0.0275 };
-        const half2 c1 = { 1, 0.0425 };
-        half2 r = Roughness * c0 + c1;
-        return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
-    }
-
-
-
+    
     struct Coordinates
     {
         half2 ddx;
@@ -273,6 +258,7 @@
 
         //return half4(blend.x, blend.y, blendValue ,1);
         return blend;
+        
 #elif !defined(EXPLICIT_MAPS_ON) && defined(SHADER_API_METAL) //Metal specific fix
         float mipMap = coords.lod;
         mipMap = min(mipMap, 5); //clamp it because metal doesnt support partial mipmap chains (also possibly others)
@@ -391,9 +377,9 @@
 
 #if EXPLICIT_MAPS_ON //Path used by anything passing in explicit maps like triplanar materials
         half4 metalSample = Tex2DSampleTexture(_MetalTex, coords);
-        metalSample = pow(metalSample, 0.45454545); //Match Substance painter. However we should do this at the importer!
+        //metalSample = pow(metalSample, 0.45454545); //Match Substance painter? However we should do this at the importer!
         half4 roughSample = Tex2DSampleTexture(_RoughTex, coords);
-        roughSample = pow(roughSample, 0.45454545); //Match Substance painter. However we should do this at the importer!
+        //roughSample = pow(roughSample, 0.45454545); //Match Substance painter? However we should do this at the importer!
 
 
     #if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
@@ -453,17 +439,21 @@
 
         // Finish doing ALU calcs while the cubemap fetches in
 #ifdef SLIDER_OVERRIDE_ON
-        metallicLevel = (metallicLevel + _MetalOverride) / 2;
-        roughnessLevel = (roughnessLevel + _RoughOverride) / 2;
+        metallicLevel = lerp(_MetalOverride, metallicLevel, _SliderOverrideMix);
+        roughnessLevel = lerp(_RoughOverride, roughnessLevel, _SliderOverrideMix);
         roughnessLevel = max(roughnessLevel, 0.04);
 #endif
-        reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));;
+        reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));
         skyboxSample = texCUBE(_CubeTex, -viewDirection);
 
         half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
 
         //Shadows and light masks
+#if SHADOWS_ON        
         half sunShadowMask = GetShadow(input.shadowCasterPos0, input.shadowCasterPos1, worldNormal, globalSunDirection);
+#else
+        half sunShadowMask = 0;
+#endif
         //sunShadowMask = sunShadowMask *.8 + .2;//Never have shadows go full black
         half pointLight0Mask = 1;
         half pointLight1Mask = 1;
@@ -480,23 +470,12 @@
         /////////////////////////////////////////////////////
 
         half3 textureColor = texSample.xyz;
-
-#if VERTEX_LIGHT_ON
-        //If we're using baked shadows (voxel world geometry)
-        //The input diffuse gets multiplied by the vertex color.r
-        ambientOcclusionMask = 1;// input.color.g; //Creases
-        pointLight0Mask = 1;// input.color.b;
-        pointLight1Mask = 1;// input.color.a;
-#else
-        //Otherwise it gets multiplied by the whole thing
-        //textureColor.rgb *= input.color.rgb;
-#endif
-
+ 
         //Specular
         half3 specularColor;
         half3 diffuseColor;
         half dielectricSpecular = 0.08 * 0.3; //0.3 is the industry standard
-        diffuseColor = textureColor - textureColor * metallicLevel;	// 1 mad
+        diffuseColor = textureColor -textureColor * metallicLevel;	// 1 mad
         specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + textureColor * metallicLevel;	// 2 mad
         specularColor = EnvBRDFApprox(specularColor * _SpecularColor, roughnessLevel, NoV);
         /*//Alternate material for when metal is totally ignored
@@ -509,12 +488,11 @@
         //Start compositing it all now
         half3 finalColor = half3(0, 0, 0);
         half3 sunIntensity = half3(0, 0, 0);
-
-        //Diffuse colors
-        //diffuseColor *= input.baseColor;
-        half3 ibl = globalSunColor;
-
+         
         //Direct sun + specular
+    
+        //Image based lighting term
+        half3 ibl = (complexAmbientSample * globalSunBrightness);// *(globalSunColor* globalSunBrightness);
 
         //Sun Term
         half3 sunShine = (ibl * NoL);
@@ -533,9 +511,9 @@
         
         //If we're using separate shadow tints NPR
 #ifdef USE_SHADOW_COLOR_ON
-        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * input.baseColor), sunShadowMask);
+        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * input.baseColor.rgb), sunShadowMask);
 #else
-        half3 finalAmbient = ambientLight * input.baseColor;
+        half3 finalAmbient = ambientLight * input.baseColor.rgb;
 #endif
 
         finalColor = finalSun + finalAmbient;
@@ -544,7 +522,7 @@
         //Start messing with the final color in fun ways
         //Ambient occlusion term
         finalColor *= ambientOcclusionMask;
-
+        
         //Do point lighting
         finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
 
@@ -558,7 +536,7 @@
 #ifdef EMISSIVE_ON
         if (emissiveLevel > 0)
         {
-            float3 colorMix = lerp(finalColor, textureColor * input.baseColor, _EmissiveMix);
+            float3 colorMix = lerp(finalColor, textureColor.rgb * input.baseColor.rgb, _EmissiveMix);
             MRT0 = half4(colorMix.r, colorMix.g, colorMix.b, alpha);
 
             float3 emissiveMix = lerp(diffuseColor.rgb, _EmissiveColor.rgb, _EmissiveMix);

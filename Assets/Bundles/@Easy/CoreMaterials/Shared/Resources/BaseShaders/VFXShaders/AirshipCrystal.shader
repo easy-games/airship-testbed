@@ -203,14 +203,8 @@ Shader "Airship/AirshipCrystal"
 				half4 depthBlend = surfaceOpacity * color + finalDepthColor;
 				
 				//Point lights
-#ifdef NUM_LIGHTS_LIGHTS1
-			    
-			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, finalSurfaceColor, 1-specular, shineColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
-#endif			    
-#ifdef NUM_LIGHTS_LIGHTS2
-			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, finalSurfaceColor, 1-specular, shineColor, worldReflect, globalDynamicLightPos[0], globalDynamicLightColor[0], globalDynamicLightRadius[0]);
-			    brightness += CalculatePointLightForPoint(i.worldPos, worldNormal, finalSurfaceColor, 1-specular, shineColor, worldReflect, globalDynamicLightPos[1], globalDynamicLightColor[1], globalDynamicLightRadius[1]);
-#endif
+				brightness += CalculatePointLightsForPoint(i.worldPos, worldNormal, finalDiffuseColor.rgb, 0, finalShineColor.rgb, worldReflect);
+				
 				brightness = max(_MinLight, brightness * _Glossiness);
 
 				half4 finalColor = lerp(finalDepthColor, finalSurfaceColor, surfaceMask) * brightness;
