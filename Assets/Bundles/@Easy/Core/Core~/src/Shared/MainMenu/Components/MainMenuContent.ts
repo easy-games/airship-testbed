@@ -52,9 +52,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Game.IsMobile()) {
-			this.canvasScalar.scaleFactor = 2.2;
+			this.canvasScalar.scaleFactor = 2.4;
 		} else if (Screen.dpi >= 255) {
-			this.canvasScalar.scaleFactor = 1.6;
+			this.canvasScalar.scaleFactor = 1.8;
 		} else {
 			this.canvasScalar.scaleFactor = 1;
 		}
