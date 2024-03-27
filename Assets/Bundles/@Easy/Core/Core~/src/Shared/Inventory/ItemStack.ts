@@ -72,7 +72,7 @@ export class ItemStack {
 
 	public CanMerge(other: ItemStack): boolean {
 		if (other.GetItemType() !== this.GetItemType()) return false;
-		// if (other.GetAmount() + this.GetAmount() > this.GetMaxStackSize()) return false;
+		if (other.GetAmount() + this.GetAmount() > this.GetMaxStackSize()) return false;
 
 		return true;
 	}
