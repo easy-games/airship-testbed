@@ -100,8 +100,8 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
 			this.navbarRight.offsetMin = new Vector2(0, this.navbarRight.offsetMin.y);
 
-			this.searchFocused.offsetMin = new Vector2(2, 0);
-			this.searchFocused.offsetMax = new Vector2(-2, -25);
+			this.searchFocused.offsetMin = new Vector2(25, 0);
+			this.searchFocused.offsetMax = new Vector2(-25, -70);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
 			if (Game.IsMobile()) {

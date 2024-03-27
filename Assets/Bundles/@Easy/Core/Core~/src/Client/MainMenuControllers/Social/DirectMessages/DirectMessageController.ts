@@ -363,6 +363,7 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public OpenFriend(uid: string): void {
+		if (Game.IsMobile()) return;
 		this.openWindowBin.Clean();
 		this.openedWindowTarget = uid;
 
@@ -413,6 +414,8 @@ export class DirectMessageController implements OnStart {
 	}
 
 	public OpenParty() {
+		if (Game.IsMobile()) return;
+
 		this.openWindowBin.Clean();
 		this.openedWindowTarget = "party";
 
