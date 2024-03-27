@@ -124,7 +124,7 @@ export class NametagController implements OnStart {
 	public DestroyNametag(character: Character) {
 		const nametag = character.model.transform.FindChild(this.nameTagId);
 		if (nametag) {
-			Object.Destroy(nametag);
+			Object.Destroy(nametag.gameObject);
 		}
 	}
 
