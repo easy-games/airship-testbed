@@ -8,6 +8,7 @@ export declare class CameraSystem {
     private currentMode;
     private readonly transform;
     private readonly mainCamera;
+    private readonly uiCamera;
     private readonly viewmodelCamera;
     private readonly allCameras;
     private onClearCallback?;
