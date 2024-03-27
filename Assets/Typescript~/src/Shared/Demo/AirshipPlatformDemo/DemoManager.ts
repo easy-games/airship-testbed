@@ -20,6 +20,7 @@ export default class DemoManager extends AirshipBehaviour {
 	override Start(): void {
 		ItemUtil.RegisterItem("WoodSword", {
 			displayName: "Wood Sword",
+			maxStackSize: 1,
 			usable: {
 				startUpInSeconds: 0,
 				minChargeSeconds: 0,
@@ -27,7 +28,7 @@ export default class DemoManager extends AirshipBehaviour {
 				cooldownSeconds: 0.25,
 				canHoldToUse: false,
 				onUseSound: [
-					"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
+					//"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
 					"Shared/Resources/Sound/s_Sword_Swing_Wood_02.wav",
 					"Shared/Resources/Sound/s_Sword_Swing_Wood_03.wav",
 					"Shared/Resources/Sound/s_Sword_Swing_Wood_04.wav",

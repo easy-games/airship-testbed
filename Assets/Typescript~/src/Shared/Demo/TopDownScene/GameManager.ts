@@ -1,8 +1,8 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { Game } from "@Easy/Core/Shared/Game";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
 export default class GameManager extends AirshipBehaviour {
 	@Header("References")
@@ -14,7 +14,7 @@ export default class GameManager extends AirshipBehaviour {
 	public autoRespawnDelay = 0;
 
 	override Start(): void {
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
@@ -30,7 +30,7 @@ export default class GameManager extends AirshipBehaviour {
 				}
 			});
 		}
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			Airship.loadingScreen.FinishLoading();
 		}
 	}
