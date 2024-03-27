@@ -2,6 +2,7 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
+import { Keyboard } from "@Easy/Core/Shared/UserInput/Keyboard";
 import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { OutfitDto } from "Shared/Airship/Types/Outputs/PlatformInventory";
@@ -20,7 +21,6 @@ import { MainMenuPageType } from "../MainMenuPageName";
 import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
-import { Keyboard } from "@Easy/Core/Shared/UserInput/Keyboard";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
@@ -38,6 +38,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public categoryLabelTxt?: TextMeshProUGUI;
 	public mainContentHolder?: Transform;
 	public avatarProfileMenuGo?: GameObject;
+	public avatarToolbar!: RectTransform;
+	public avatarOptionsHolder!: RectTransform;
+	public avatar3DHolder!: RectTransform;
 
 	@Header("Button Holders")
 	public outfitButtonHolder!: Transform;
@@ -226,6 +229,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		if (Game.IsPortrait()) {
 			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
+			this.avatarOptionsHolder.gameObject.SetActive(false);
+			this.avatarToolbar.gameObject.SetActive(false);
+
+			this.avatar3DHolder.anchorMin = new Vector2(0, 0.3);
+			this.avatar3DHolder.anchorMax = new Vector2(1, 1);
+			this.avatar3DHolder.anchoredPosition = new Vector2(0, 0);
+		} else {
+			this.avatarOptionsHolder.gameObject.SetActive(true);
+			this.avatarToolbar.gameObject.SetActive(true);
 		}
 
 		this.Log("Open AVATAR");

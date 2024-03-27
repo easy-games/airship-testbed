@@ -12,6 +12,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     categoryLabelTxt?: TextMeshProUGUI;
     mainContentHolder?: Transform;
     avatarProfileMenuGo?: GameObject;
+    avatarToolbar: RectTransform;
+    avatarOptionsHolder: RectTransform;
+    avatar3DHolder: RectTransform;
     outfitButtonHolder: Transform;
     mainNavButtonHolder: Transform;
     private outfitBtns;
