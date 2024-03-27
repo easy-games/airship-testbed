@@ -1,13 +1,14 @@
 /// <reference types="compiler-types" />
 import AvatarRenderComponent from "../../Client/MainMenuControllers/AvatarMenu/AvatarRenderComponent";
 export default class AvatarViewComponent extends AirshipBehaviour {
+    avatarRenderTemplate?: GameObject;
     humanEntityGo?: GameObject;
     avatarHolder?: Transform;
     anim?: CharacterAnimationHelper;
-    avatarRenderComponent?: AvatarRenderComponent;
     accessoryBuilder?: AccessoryBuilder;
     cameraRigTransform?: Transform;
     avatarCamera?: Camera;
+    backdropHolder?: GameObject;
     cameraWaypointDefault?: Transform;
     cameraWaypointHead?: Transform;
     cameraWaypointFeet?: Transform;
@@ -55,4 +56,5 @@ export default class AvatarViewComponent extends AirshipBehaviour {
     CameraFocusSlot(slotType: AccessorySlot): void;
     GetFocusTransform(slotType: AccessorySlot): Transform | undefined;
     CameraFocusTransform(transform?: Transform, instant?: boolean): void;
+    CreateRenderScene(): AvatarRenderComponent | undefined;
 }
