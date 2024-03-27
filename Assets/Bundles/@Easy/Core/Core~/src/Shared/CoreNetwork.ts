@@ -6,7 +6,7 @@ import { GroundItemData } from "./GroundItem/GroundItem";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
 import { CoreItemType } from "./Item/CoreItemType";
-import { HeldItemState } from "./Item/HeldItems/HeldItemState";
+import { HeldItemActionState } from "./Item/HeldItems/HeldItemManager";
 import { RemoteEvent } from "./Network/RemoteEvent";
 import { RemoteFunction } from "./Network/RemoteFunction";
 import { PlayerDto } from "./Player/Player";
@@ -36,8 +36,6 @@ export const CoreNetwork = {
 			RequestCharacters: new RemoteFunction<[], CharacterDto[]>(),
 		},
 		SendChatMessage: new RemoteEvent<[text: string]>(),
-		SetHeldItemState: new RemoteEvent<[heldItemState: HeldItemState, lookVector: Vector3]>(),
-
 		ChangedOutfit: new RemoteEvent<[]>(),
 
 		// ----- REFACTORING -----
@@ -117,7 +115,9 @@ export const CoreNetwork = {
 		/** Fired when a player is eliminated. */
 		PlayerEliminated: new RemoteEvent<[clientId: number]>(),
 		/** Fired when the current selected items state changes on an entity*/
-		HeldItemStateChanged: new RemoteEvent<[characterId: number, state: HeldItemState, lookVector: Vector3]>(),
+		HeldItemStateChanged: new RemoteEvent<
+			[characterId: number, stateIndex: number, isActive: boolean, lookVector: Vector3]
+		>(),
 		BlockPlace: new RemoteEvent<[pos: Vector3, voxel: number, entityId?: number]>(),
 		BlockGroupPlace: new RemoteEvent<[positions: Vector3[], voxels: number[], entityId?: number]>(),
 

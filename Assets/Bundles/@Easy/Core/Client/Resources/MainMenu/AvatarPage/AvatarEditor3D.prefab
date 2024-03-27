@@ -596,7 +596,7 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: '{"x":0.22499999403953553,"y":0.6000000238418579,"z":0.10000000149011612}'
+      serializedValue: '{"x":0.22499999403953553,"y":0.7250000238418579,"z":0.10000000149011612}'
       serializedObject: {fileID: 0}
       modified: 1
     - name: anim
@@ -1072,7 +1072,7 @@ Camera:
   m_GameObject: {fileID: 6959581674955990177}
   m_Enabled: 0
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 3
   m_BackGroundColor: {r: 0.21622464, g: 0.3109425, b: 0.4056604, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -1430,7 +1430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4416185602589540384, guid: 8a9da2a421213054b989017e6edfbff1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4816059845944197566, guid: 8a9da2a421213054b989017e6edfbff1, type: 3}
       propertyPath: m_LocalPosition.x

@@ -14,6 +14,7 @@ import { CharacterDto } from "./CharacterDto";
 import { CustomMoveData } from "./CustomMoveData";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
+import { CharacterItemManager } from "../Item/HeldItems/CharacterItemManager";
 
 const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
 
@@ -24,6 +25,7 @@ export class CharactersSingleton implements OnStart {
 
 	public onCharacterSpawned = new Signal<Character>();
 	public onCharacterDespawned = new Signal<Character>();
+	public itemManager = new CharacterItemManager();
 
 	/**
 	 * **SERVER ONLY**
@@ -52,6 +54,7 @@ export class CharactersSingleton implements OnStart {
 
 	OnStart(): void {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
+		this.itemManager.OnStart();
 		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
 			task.spawn(() => {
 				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();

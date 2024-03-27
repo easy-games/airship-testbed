@@ -1,24 +1,10 @@
 import Character from "../../Character/Character";
 import { ItemDef } from "../ItemDefinitionTypes";
 export declare class HeldItem {
-    private serverOffsetMargin;
-    /** Undefined when holding nothing */
+    private readonly serverOffsetMargin;
     protected readonly itemMeta: ItemDef | undefined;
-    protected clickBufferMargin: number;
+    /** Undefined when holding nothing */
     readonly character: Character;
-    private lastUsedTime;
-    private chargeStartTime;
-    protected isCharging: boolean;
-    protected activeAccessoriesWorldmodel: ActiveAccessory[];
-    protected activeAccessoriesViewmodel: ActiveAccessory[];
-    protected currentItemGOs: GameObject[];
-    protected currentItemAnimations: Animator[];
-    private holdingDownBin;
-    private holdingDown;
-    private bufferingUse;
-    protected audioPitchShift: number;
-    protected playEffectsOnUse: boolean;
-    protected viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
     /**
      * The look vector for the latest action.
      *
@@ -26,13 +12,26 @@ export declare class HeldItem {
      * This vector will match the exact direction the entity was facing during the frame they clicked (as opposed to the tick they clicked).
      */
     protected lookVector: Vector3;
+    protected clickBufferMargin: number;
+    protected isCharging: boolean;
+    protected activeAccessoriesWorldmodel: ActiveAccessory[];
+    protected activeAccessoriesViewmodel: ActiveAccessory[];
+    protected currentItemGOs: GameObject[];
+    protected currentItemAnimations: Animator[];
+    protected viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
+    protected audioPitchShift: number;
+    protected playEffectsOnUse: boolean;
+    private holdingDownBin;
+    private holdingDown;
+    private bufferingUse;
+    private lastUsedTime;
+    private chargeStartTime;
+    protected Log(message: string): void;
     constructor(character: Character, newMeta: ItemDef | undefined);
     /**
      * Internally used to update the current look vector.
      */
     SetLookVector(vec: Vector3): void;
-    protected Log(message: string): void;
-    OnEquip(): void;
     /**
      * Called when the HeldItem's art assets (such as animations) should be loaded.
      */
@@ -44,29 +43,28 @@ export declare class HeldItem {
      * @returns ActiveAccessories that are enabled in the scene.
      */
     GetActiveAccessories(): ActiveAccessory[];
+    OnEquip(): void;
     OnUnEquip(): void;
-    OnCallToActionStart(): void;
+    OnNewActionState(stateIndex: number, isActive: boolean): void;
     private HoldDownAction;
-    OnCallToActionEnd(): void;
-    OnSecondaryActionStart(): void;
-    OnSecondaryActionEnd(): void;
-    OnInspect(): void;
     protected OnChargeStart(): void;
     protected OnChargeEnd(): void;
-    protected TryUse(index?: number): boolean;
-    protected TryChargeUse(): boolean;
+    private TryUse;
+    private TryChargeUse;
     protected TriggerUse(useIndex: number): void;
     protected OnCooldownReset(): void;
     /** Runs when an item is used. Runs on every client.*/
     protected OnUseClient(useIndex: number): void;
+    /** Runs when an item is used, server authorized
+     * return true if you can use the item */
+    protected OnUseServer(useIndex: number): void;
     protected PlayItemSound(): void;
     protected PlayAnimationOnItem(index: number, pauseOnEndFrame?: boolean): void;
     protected StopAnimationOnItem(): void;
     protected SetItemAnimationPauseOnEndFrame(pauseOnEndFrame: boolean): void;
-    /** Runs when an item is used, server authorized
-     * return true if you can use the item */
-    protected OnUseServer(useIndex: number): void;
     GetRemainingCooldownTime(): number;
     IsChargedUp(): boolean;
     HasChargeTime(): boolean;
+    protected CanUse(index?: number): boolean;
+    protected CanCharge(): boolean;
 }

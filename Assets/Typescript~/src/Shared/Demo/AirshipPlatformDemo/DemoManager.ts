@@ -55,7 +55,7 @@ export default class DemoManager extends AirshipBehaviour {
 			},
 		});
 
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnPlayer(player);
 			});
@@ -68,7 +68,7 @@ export default class DemoManager extends AirshipBehaviour {
 				}
 			});
 		}
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
 			// Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
 			// Airship.characterCamera.SetFirstPerson(true);

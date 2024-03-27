@@ -62,4 +62,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private UpdateButtonGraphics;
     private Save;
     private Revert;
+    private thumbnailRenderList;
+    private thumbnailFaceRenderList;
+    private inThumbnailMode;
+    private renderSetup?;
 }

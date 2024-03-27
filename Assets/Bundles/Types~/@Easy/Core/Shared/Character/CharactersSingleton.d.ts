@@ -6,12 +6,14 @@ import Character from "./Character";
 import { CustomMoveData } from "./CustomMoveData";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
+import { CharacterItemManager } from "../Item/HeldItems/CharacterItemManager";
 export declare class CharactersSingleton implements OnStart {
     readonly localCharacterManager: LocalCharacterSingleton;
     readonly footsteps: AirshipCharacterFootstepsSingleton;
     private characters;
     onCharacterSpawned: Signal<Character>;
     onCharacterDespawned: Signal<Character>;
+    itemManager: CharacterItemManager;
     /**
      * **SERVER ONLY**
      *

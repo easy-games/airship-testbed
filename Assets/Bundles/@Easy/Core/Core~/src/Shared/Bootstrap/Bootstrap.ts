@@ -1,4 +1,4 @@
-import { EntityItemManager } from "Shared/Item/HeldItems/CharacterItemManager";
+import { CharacterItemManager } from "Shared/Item/HeldItems/CharacterItemManager";
 import { ItemUtil } from "Shared/Item/ItemUtil";
 import { RunUtil } from "Shared/Util/RunUtil";
 import { BlockDataAPI } from "Shared/VoxelWorld/BlockData/BlockDataAPI";
@@ -22,7 +22,6 @@ export class Bootstrap {
 	 * - Called {@link Bootstrap.PrepareVoxelWorld}
 	 */
 	public static Prepare(): void {
-		EntityItemManager.Get();
 		ItemUtil.Initialize();
 	}
 

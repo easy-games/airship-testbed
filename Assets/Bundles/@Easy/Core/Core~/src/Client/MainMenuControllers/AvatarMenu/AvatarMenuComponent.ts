@@ -235,6 +235,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			error("No avatar render veiew in avatar editor menu page");
 		}
 		this.mainMenu?.avatarView?.ShowAvatar();
+		this.mainMenu?.ToggleGameBG(false);
 		this.RefreshAvatar();
 		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
@@ -257,6 +258,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.Log("Close AVATAR");
 		this.bin.Clean();
 		this.avatarRenderHolder?.SetActive(false);
+		this.mainMenu?.ToggleGameBG(true);
 		if (this.mainMenu?.avatarView) {
 			this.mainMenu.avatarView.dragging = false;
 		} else {
