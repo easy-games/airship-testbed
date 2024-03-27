@@ -148,24 +148,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328324b9b586ee749acb4d8a5762986f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _negativeSunDirectionNormalized: {x: -0.7276069, y: 0.48507127, z: -0.48507127}
-  _sunDirectionNormalized: {x: 0.7276069, y: -0.48507127, z: 0.48507127}
-  _sunDirection: {x: 0.75, y: -0.5, z: 0.5}
+  _negativeSunDirectionNormalized: {x: -0.10675434, y: 0.5502326, z: -0.8281592}
+  _sunDirectionNormalized: {x: 0.10675434, y: -0.5502326, z: 0.8281592}
+  _sunDirection: {x: 0.10675434, y: -0.5502326, z: 0.8281592}
   sunBrightness: 0.75
-  sunShadow: 0.85
+  sunShadow: 0.75
   sunColor: {r: 1, g: 1, b: 1, a: 1}
   skySaturation: 0.3
-  cubeMapPath: '@Easy/CoreMaterials/Shared/Resources/Skybox/BrightSky/bright_sky_2.png'
   globalAmbientLight: {r: 1, g: 1, b: 1, a: 1}
   globalAmbientBrightness: 0.25
   globalAmbientOcclusion: 0.25
-  fogEnabled: 1
+  fogEnabled: 0
   fogStart: 50
   fogEnd: 500
   fogColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
   shadowRange: 100
   postProcess: 1
+  convertColorTosRGB: 1
   doShadows: 1
+  cubeMap: {fileID: 8900000, guid: 98fc12523466e9841bcac080b0b16b28, type: 3}
+  cubemapCoefs: {fileID: 4900000, guid: ce7543ecfc8e54dfc940a47f6cd35438, type: 3}
 --- !u!4 &311507608
 Transform:
   m_ObjectHideFlags: 0
@@ -199,7 +201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1540100336
 MonoBehaviour:
   m_ObjectHideFlags: 0
