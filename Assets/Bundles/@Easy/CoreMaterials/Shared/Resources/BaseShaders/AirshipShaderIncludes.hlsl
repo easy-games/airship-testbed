@@ -157,7 +157,7 @@ half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, 
     
     for (int i = 0; i < globalDynamicLightCount; i++)
     {
-        float3 lightPos = globalDynamicLightPos[i];
+        float3 lightPos = globalDynamicLightPos[i].xyz;
         half4 lightColor = globalDynamicLightColor[i];
         half lightRange = globalDynamicLightRadius[i];
 
@@ -174,7 +174,7 @@ half3 CalculatePointLightsForPoint(float3 worldPos, half3 normal, half3 albedo, 
 
         falloff *= NoL;
 
-        result += falloff * (albedo * lightColor + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
+        result += falloff * (albedo * lightColor.rgb + (specularColor * PhongApprox(roughness, RoL) * lightColor.a));
     }
     return result;
 }

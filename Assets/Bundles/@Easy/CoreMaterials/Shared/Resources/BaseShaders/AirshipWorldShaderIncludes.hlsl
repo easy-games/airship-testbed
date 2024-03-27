@@ -511,9 +511,9 @@
         
         //If we're using separate shadow tints NPR
 #ifdef USE_SHADOW_COLOR_ON
-        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * input.baseColor), sunShadowMask);
+        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * input.baseColor.rgb), sunShadowMask);
 #else
-        half3 finalAmbient = ambientLight * input.baseColor;
+        half3 finalAmbient = ambientLight * input.baseColor.rgb;
 #endif
 
         finalColor = finalSun + finalAmbient;
@@ -522,9 +522,7 @@
         //Start messing with the final color in fun ways
         //Ambient occlusion term
         finalColor *= ambientOcclusionMask;
-
-      
-
+        
         //Do point lighting
         finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
 
@@ -538,7 +536,7 @@
 #ifdef EMISSIVE_ON
         if (emissiveLevel > 0)
         {
-            float3 colorMix = lerp(finalColor, textureColor * input.baseColor, _EmissiveMix);
+            float3 colorMix = lerp(finalColor, textureColor.rgb * input.baseColor.rgb, _EmissiveMix);
             MRT0 = half4(colorMix.r, colorMix.g, colorMix.b, alpha);
 
             float3 emissiveMix = lerp(diffuseColor.rgb, _EmissiveColor.rgb, _EmissiveMix);
