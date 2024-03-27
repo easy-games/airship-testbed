@@ -13,13 +13,14 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS0
   - RIM_LIGHT_ON
+  - SHADOWS_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
+  - NUM_LIGHTS_LIGHTS0
   - SLIDER_OVERRIDE
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
@@ -130,8 +131,10 @@ Material:
     - OVERRIDE: 0
     - POINT_FILTER: 0
     - RIM_LIGHT: 1
+    - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
+    - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _AmbientMod: 0.2
@@ -167,6 +170,7 @@ Material:
     - _SLIDER_OVERRIDE: 1
     - _SaturationMod: 2
     - _SkyShineStrength: 0
+    - _SliderOverrideMix: 0
     - _SmoothnessTextureChannel: 0
     - _SpecMod: 1
     - _SpecularHighlights: 1
