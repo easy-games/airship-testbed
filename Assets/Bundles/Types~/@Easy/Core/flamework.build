@@ -60,8 +60,6 @@
 		"@Easy/Core:Shared/Camera/CameraSystem@CameraSystem": "$:Camera/CameraSystem@CameraSystem",
 		"@Easy/Core:Shared/Util/MathUtil@MathUtil": "$:Util/MathUtil@MathUtil",
 		"@Easy/Core:Shared/Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode": "$:Camera/DefaultCameraModes/FlyCameraMode@FlyCameraMode",
-		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
-		"@Easy/Core:Client/Controllers/Crosshair/CrosshairController@CrosshairController": "$:Controllers/Crosshair/CrosshairController@CrosshairController",
 		"@Easy/Core:Shared/Util/SpringTween@SpringTween": "$:Util/SpringTween@SpringTween",
 		"@Easy/Core:Shared/Camera/DefaultCameraModes/HumanoidCameraMode@HumanoidCameraMode": "$:Camera/DefaultCameraModes/HumanoidCameraMode@HumanoidCameraMode",
 		"@Easy/Core:Shared/Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode": "$:Camera/DefaultCameraModes/OrbitCameraMode@OrbitCameraMode",
@@ -108,6 +106,7 @@
 		"@Easy/Core:Client/MainMenuControllers/Auth/AuthController@AuthController": "$:MainMenuControllers/Auth/AuthController@AuthController",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchSingleton@SearchSingleton": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuPageComponent@MainMenuPageComponent": "$:MainMenuControllers/MainMenuPageComponent@MainMenuPageComponent",
+		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
 		"@Easy/Core:Shared/MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
 		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
@@ -157,6 +156,8 @@
 		"@Easy/Core:Shared/Input/InputAction@InputAction": "$:Input/InputAction@InputAction",
 		"@Easy/Core:Shared/Input/AirshipInputSingleton@AirshipInputSingleton": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 		"@Easy/Core:Shared/Inventory/CharacterInventorySingleton@CharacterInventorySingleton": "$:Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
+		"@Easy/Core:Shared/UI/Healthbar@Healthbar": "$:UI/Healthbar@Healthbar",
+		"@Easy/Core:Client/Controllers/Inventory/InventoryUIController@InventoryUIController": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 		"@Easy/Core:Shared/Inventory/InventorySingleton@InventorySingleton": "$:Inventory/InventorySingleton@InventorySingleton",
 		"@Easy/Core:Shared/LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton": "$:LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
 		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
@@ -176,8 +177,6 @@
 		"@Easy/Core:Shared/GroundItem/GroundItemUtil@GroundItemUtil": "$:GroundItem/GroundItemUtil@GroundItemUtil",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemController@GroundItemController": "$:Controllers/GroundItem/GroundItemController@GroundItemController",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
-		"@Easy/Core:Shared/UI/Healthbar@Healthbar": "$:UI/Healthbar@Healthbar",
-		"@Easy/Core:Client/Controllers/Inventory/InventoryUIController@InventoryUIController": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 		"@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
 		"@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPrompt@ProximityPrompt": "$:Controllers/ProximityPrompt/ProximityPrompt@ProximityPrompt",
 		"@Easy/Core:Shared/Util/Window@Window": "$:Util/Window@Window",
@@ -431,17 +430,6 @@
 		{
 			"filePath": "..\\Shared\\Character\\LocalCharacter\\LocalCharacterSingleton.lua",
 			"internalId": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Client\\Controllers\\Crosshair\\CrosshairController.lua",
-			"internalId": "$:Controllers/Crosshair/CrosshairController@CrosshairController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
@@ -707,6 +695,17 @@
 			]
 		},
 		{
+			"filePath": "..\\Client\\Controllers\\Inventory\\InventoryUIController.lua",
+			"internalId": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
 			"filePath": "..\\Shared\\Inventory\\InventorySingleton.lua",
 			"internalId": "$:Inventory/InventorySingleton@InventorySingleton",
 			"decorators": [
@@ -877,17 +876,6 @@
 		{
 			"filePath": "..\\Client\\Controllers\\GroundItem\\GroundItemPickupSoundsController.lua",
 			"internalId": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "..\\Client\\Controllers\\Inventory\\InventoryUIController.lua",
-			"internalId": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",
