@@ -54,7 +54,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		if (Game.IsMobile()) {
 			this.canvasScalar.scaleFactor = 2.4;
 		} else if (Screen.dpi >= 255) {
-			this.canvasScalar.scaleFactor = 1.8;
+			this.canvasScalar.scaleFactor = 1.75;
 		} else {
 			this.canvasScalar.scaleFactor = 1;
 		}
