@@ -1,16 +1,18 @@
 import { CoreRefs } from "Shared/CoreRefs";
-import { Controller } from "Shared/Flamework";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Modifier } from "Shared/Util/Modifier";
 
 @Controller({})
-export class CrosshairController {
-	private crosshairPrefab: GameObject;
-	private crosshairImage: Image;
+export class CrosshairController implements OnStart {
+	private crosshairPrefab?: GameObject;
+	private crosshairImage?: Image;
 	private crosshairModifier = new Modifier<{ disabled: boolean }>();
 	private crosshairVisible = false;
 	private enabled = false;
 
-	constructor() {
+	constructor() {}
+
+	OnStart(): void {
 		this.crosshairPrefab = Object.Instantiate<GameObject>(
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Crosshair/CrosshairUI.prefab"),
 			CoreRefs.rootTransform,
@@ -32,7 +34,7 @@ export class CrosshairController {
 	private SetVisible(visible: boolean) {
 		if (this.crosshairVisible === visible) return;
 		this.crosshairVisible = visible;
-		this.crosshairImage.enabled = visible;
+		if (this.crosshairImage) this.crosshairImage.enabled = visible;
 	}
 
 	/**
