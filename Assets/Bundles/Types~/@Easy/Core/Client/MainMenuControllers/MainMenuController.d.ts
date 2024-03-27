@@ -16,9 +16,12 @@ export declare class MainMenuController implements OnStart {
     mainContentGroup: CanvasGroup;
     socialMenuGroup: CanvasGroup;
     private rootCanvasGroup;
+    private gameBG?;
+    private mainMenuBG?;
     private open;
     private socialIsVisible;
     constructor();
+    ToggleGameBG(show: boolean): void;
     OpenFromGame(): void;
     CloseFromGame(): void;
     IsOpen(): boolean;

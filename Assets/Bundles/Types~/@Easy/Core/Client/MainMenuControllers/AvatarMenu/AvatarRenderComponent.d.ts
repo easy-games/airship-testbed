@@ -22,9 +22,9 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
     cameraDistanceBase: number;
     cameraDistanceMod: number;
     uploadThumbnails: boolean;
-    Start(): void;
-    Init(): void;
     RenderCharacter(): void;
+    private Init;
+    private RenderClass;
     private Render;
     private AlignCamera;
     private SetCameraAccessory;

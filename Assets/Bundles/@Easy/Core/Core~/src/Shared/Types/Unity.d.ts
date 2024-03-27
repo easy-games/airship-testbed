@@ -879,6 +879,10 @@ interface ServerManager extends MonoBehaviour {
 	UnregisterBroadcast<T>(handler: unknown): void;
 }
 
+interface Renderer {
+	SetMaterial(index: number, material: Material): void;
+}
+
 interface PhysicsScene {
 	BoxCast(
 		center: Vector3,
