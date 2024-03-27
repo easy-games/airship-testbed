@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Dependency } from "Shared/Flamework";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
@@ -158,7 +157,7 @@ export class OrbitCameraMode extends CameraMode {
 			}),
 		);
 
-		this.bin.Add(Dependency<CrosshairController>().AddDisabler());
+		// this.bin.Add(Dependency<CrosshairController>().AddDisabler());
 	}
 
 	OnStop() {

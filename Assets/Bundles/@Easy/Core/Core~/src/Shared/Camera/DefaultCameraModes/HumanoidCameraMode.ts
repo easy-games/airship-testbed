@@ -1,6 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CrosshairController } from "Client/Controllers/Crosshair/CrosshairController";
 import { ClientSettingsController } from "Client/MainMenuControllers/Settings/ClientSettingsController";
 import { Dependency } from "Shared/Flamework";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
@@ -160,7 +159,7 @@ export class HumanoidCameraMode extends CameraMode {
 
 		this.SetFirstPerson(this.firstPerson);
 		this.SetYAxisDirection(this.graphicalCharacterGO.transform.forward);
-		Dependency<CrosshairController>().SetEnabled(true);
+		// Dependency<CrosshairController>().SetEnabled(true);
 	}
 
 	OnStop() {

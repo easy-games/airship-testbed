@@ -21,16 +21,18 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
-			options.push({
-				text: "Settings",
-				onClick: () => {
-					Dependency<MainMenuController>().RouteToPage(MainMenuPageType.Settings);
-				},
-			});
-			options.push({
-				text: "Change Profile Picture",
-				onClick: () => {},
-			});
+			if (!Game.IsPortrait()) {
+				options.push({
+					text: "Settings",
+					onClick: () => {
+						Dependency<MainMenuController>().RouteToPage(MainMenuPageType.Settings);
+					},
+				});
+			}
+			// options.push({
+			// 	text: "Change Profile Picture",
+			// 	onClick: () => {},
+			// });
 			options.push({
 				text: "Change Username",
 				onClick: () => {
