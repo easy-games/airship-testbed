@@ -1,10 +1,12 @@
-export declare class CrosshairController {
-    private crosshairPrefab;
-    private crosshairImage;
+import { OnStart } from "../../../Shared/Flamework";
+export declare class CrosshairController implements OnStart {
+    private crosshairPrefab?;
+    private crosshairImage?;
     private crosshairModifier;
     private crosshairVisible;
     private enabled;
     constructor();
+    OnStart(): void;
     SetEnabled(enabled: boolean): void;
     private SetVisible;
     /**

@@ -19,6 +19,7 @@ export declare class InventoryUIController implements OnStart {
     private draggingState;
     private draggingBin;
     private spriteCacheForItemType;
+    private firstSpawn;
     constructor(invController: InventorySingleton, characterInvController: CharacterInventorySingleton, coreUIController: CoreUIController);
     OnStart(): void;
     SetEnabled(enabled: boolean): void;
