@@ -87,10 +87,12 @@ export class InventoryUIController implements OnStart {
 		if (this.enabled === enabled) return;
 		this.enabled = enabled;
 
-		if (!enabled && this.visible) {
+		const localCharacterExists = Game.localPlayer.character;
+
+		if (!enabled && this.visible && localCharacterExists) {
 			this.SetVisible(false);
 		}
-		if (enabled && !this.visible) {
+		if (enabled && !this.visible && localCharacterExists) {
 			this.SetVisible(true);
 		}
 	}
