@@ -3080,6 +3080,11 @@ declare const enum ScreenOrientation {
     LandscapeRight = 4,
     AutoRotation = 5,
 }
+declare const enum AirshipDeviceType {
+    Tablet = 0,
+    Phone = 1,
+    Desktop = 2,
+}
 
     
 interface RaycastHit {
@@ -15320,12 +15325,38 @@ declare const AirshipObjectPool: AirshipObjectPoolConstructor;
 interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
     progressText: TMP_Text;
+    spinner: GameObject;
+    errorWrapper: GameObject;
+    errorText: TMP_Text;
+    sceneManager: MainMenuSceneManager;
 
 
     Close(): void;
+    Retry(): void;
+    SetError(msg: string): void;
     SetProgress(text: string, percent: number): void;
 
 }
+    
+interface MainMenuSceneManager extends MonoBehaviour {
+    editorConfig: AirshipEditorConfig;
+    loadingScreen: MainMenuLoadingScreen;
+
+
+    Retry(): void;
+
+}
+    
+interface MainMenuSceneManagerConstructor {
+    cdnUrl: string;
+    deploymentUrl: string;
+
+    new(): MainMenuSceneManager;
+
+
+    GetLatestPackageVersion(packageId: string): unknown;
+}
+declare const MainMenuSceneManager: MainMenuSceneManagerConstructor;
     
 interface MainMenuLoadingScreenConstructor {
 
@@ -17091,4 +17122,21 @@ interface RenderUtilsConstructor {
     CreateDefaultRenderTexture(width: number, height: number): RenderTexture;
 }
 declare const RenderUtils: RenderUtilsConstructor;
+    
+interface DeviceBridge {
+
+
+
+}
+    
+interface DeviceBridgeConstructor {
+    isTablet: boolean;
+
+    new(): DeviceBridge;
+
+
+    GetDeviceType(): AirshipDeviceType;
+    OnLoad(): void;
+}
+declare const DeviceBridge: DeviceBridgeConstructor;
 
