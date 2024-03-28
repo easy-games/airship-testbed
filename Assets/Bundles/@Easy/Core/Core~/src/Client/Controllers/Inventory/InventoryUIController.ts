@@ -37,7 +37,10 @@ export class InventoryUIController implements OnStart {
 	private backpackCanvas: Canvas;
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
+
 	private enabled = true;
+	private visible = false;
+
 	private draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
 	private spriteCacheForItemType = new Map<string, Sprite>();
@@ -84,7 +87,17 @@ export class InventoryUIController implements OnStart {
 		if (this.enabled === enabled) return;
 		this.enabled = enabled;
 
-		this.hotbarCanvas.enabled = enabled;
+		if (!enabled && this.visible) {
+			this.SetVisible(false);
+		}
+		if (enabled && !this.visible) {
+			this.SetVisible(true);
+		}
+	}
+
+	private SetVisible(visible: boolean): void {
+		this.visible = visible;
+		this.hotbarCanvas.enabled = visible;
 	}
 
 	public OpenBackpack(): void {
@@ -177,11 +190,13 @@ export class InventoryUIController implements OnStart {
 				if (!this.firstSpawn) this.healthBar.SetValue(0);
 				if (this.firstSpawn) this.firstSpawn = false;
 
+				if (this.enabled) this.SetVisible(false);
+
 				// this.healthBar.transform.gameObject.SetActive(false);
 				// this.SetEnabled(false);
 				return;
 			}
-			// this.SetEnabled(true);
+			if (this.enabled) this.SetVisible(true);
 			// this.healthBar.transform.gameObject.SetActive(true);
 
 			const SetFill = (newHealth: number, instant: boolean) => {
