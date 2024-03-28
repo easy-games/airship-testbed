@@ -159,7 +159,6 @@ export class HumanoidCameraMode extends CameraMode {
 
 		this.SetFirstPerson(this.firstPerson);
 		this.SetYAxisDirection(this.graphicalCharacterGO.transform.forward);
-		// Dependency<CrosshairController>().SetEnabled(true);
 	}
 
 	OnStop() {

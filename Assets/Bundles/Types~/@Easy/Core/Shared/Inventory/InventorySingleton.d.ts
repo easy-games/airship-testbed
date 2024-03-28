@@ -29,5 +29,6 @@ export declare class InventorySingleton implements OnStart {
     UnregisterInventory(inventory: Inventory): void;
     QuickMoveSlot(inv: Inventory, slot: number): void;
     MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void;
+    SetUIEnabled(enabled: boolean): void;
 }
 export {};

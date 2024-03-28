@@ -156,8 +156,6 @@ export class OrbitCameraMode extends CameraMode {
 				};
 			}),
 		);
-
-		// this.bin.Add(Dependency<CrosshairController>().AddDisabler());
 	}
 
 	OnStop() {
