@@ -38,7 +38,7 @@ const swordUsable: UsableHeldItemDef = {
 	cooldownSeconds: 0.25,
 	canHoldToUse: false,
 	onUseSound: [
-		"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
+		//"Shared/Resources/Sound/s_Sword_Swing_Wood_01.wav",
 		"Shared/Resources/Sound/s_Sword_Swing_Wood_02.wav",
 		"Shared/Resources/Sound/s_Sword_Swing_Wood_03.wav",
 		"Shared/Resources/Sound/s_Sword_Swing_Wood_04.wav",

@@ -42,6 +42,8 @@ export class InventoryUIController implements OnStart {
 	private draggingBin = new Bin();
 	private spriteCacheForItemType = new Map<string, Sprite>();
 
+	private firstSpawn = true;
+
 	constructor(
 		private readonly invController: InventorySingleton,
 		private readonly characterInvController: CharacterInventorySingleton,
@@ -172,14 +174,16 @@ export class InventoryUIController implements OnStart {
 			const bin = new Bin();
 
 			if (character === undefined) {
-				this.healthBar.SetValue(0);
-				this.healthBar.transform.gameObject.SetActive(false);
-				this.SetEnabled(false);
+				if (!this.firstSpawn) this.healthBar.SetValue(0);
+				if (this.firstSpawn) this.firstSpawn = false;
+
+				// this.healthBar.transform.gameObject.SetActive(false);
+				// this.SetEnabled(false);
 				return;
 			}
-			this.SetEnabled(true);
+			// this.SetEnabled(true);
+			// this.healthBar.transform.gameObject.SetActive(true);
 
-			this.healthBar.transform.gameObject.SetActive(true);
 			const SetFill = (newHealth: number, instant: boolean) => {
 				let fill = newHealth / character.GetMaxHealth();
 				if (instant) {

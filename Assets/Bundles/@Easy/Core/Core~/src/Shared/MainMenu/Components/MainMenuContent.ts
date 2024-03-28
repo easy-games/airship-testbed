@@ -52,9 +52,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Game.IsMobile()) {
-			this.canvasScalar.scaleFactor = 2.2;
+			this.canvasScalar.scaleFactor = 2.4;
 		} else if (Screen.dpi >= 255) {
-			this.canvasScalar.scaleFactor = 1.6;
+			this.canvasScalar.scaleFactor = 1.75;
 		} else {
 			this.canvasScalar.scaleFactor = 1;
 		}
@@ -100,8 +100,8 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
 			this.navbarRight.offsetMin = new Vector2(0, this.navbarRight.offsetMin.y);
 
-			this.searchFocused.offsetMin = new Vector2(2, 0);
-			this.searchFocused.offsetMax = new Vector2(-2, -25);
+			this.searchFocused.offsetMin = new Vector2(25, 0);
+			this.searchFocused.offsetMax = new Vector2(-25, -70);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
 			if (Game.IsMobile()) {

@@ -26,6 +26,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public shadow!: TrueShadow;
 
 	public gameDto!: GameDto;
+	public loadingOverlay!: GameObject;
 
 	@SerializeField()
 	private redirectDrag!: AirshipRedirectDrag;
@@ -74,12 +75,12 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
 			this.gameImage.url = url;
-			this.gameImage.image.color = new Color(0, 0, 0, 0.3);
+			this.gameImage.image.color = new Color(0, 0, 0, 1);
 			const downloadConn = this.gameImage.OnFinishedLoading((success) => {
 				if (success) {
 					this.gameImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.2);
 				} else {
-					this.gameImage.image.TweenGraphicColor(new Color(0, 0, 0, 0.3), 0.2);
+					this.gameImage.image.TweenGraphicColor(new Color(0, 0, 0, 1), 0.2);
 				}
 			});
 			this.gameImage.StartDownload();
@@ -113,9 +114,11 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			});
 		}
 
-		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, () => {
+		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, async () => {
 			if (this.redirectDrag.isDragging) return;
-			Dependency<TransferController>().TransferToGameAsync(gameDto.id);
+			this.loadingOverlay.SetActive(true);
+			const res = await Dependency<TransferController>().TransferToGameAsync(gameDto.id);
+			this.loadingOverlay.SetActive(false);
 		});
 		this.bin.Add(() => {
 			Bridge.DisconnectEvent(clickConn);

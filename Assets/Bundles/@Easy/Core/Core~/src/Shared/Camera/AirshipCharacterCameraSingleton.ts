@@ -58,10 +58,13 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 			this.cameraSystem = new CameraSystem();
 		}
 	}
-	
+
 	OnStart(): void {
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
-			this.UpdateLocalCharacterState({ sprinting: state === CharacterState.Sprinting || state === CharacterState.Sliding });
+			const isSprinting = Dependency<LocalCharacterSingleton>().input?.IsSprinting();
+			this.UpdateLocalCharacterState({
+				sprinting: isSprinting || state === CharacterState.Sliding,
+			});
 		});
 	}
 
@@ -111,7 +114,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	public UpdateLocalCharacterState(stateUpdate: Partial<CharacterStateSnapshot>) {
 		let didUpdate = false;
 		if (!this.characterState) {
-			this.characterState = { sprinting: false, firstPerson: false};
+			this.characterState = { sprinting: false, firstPerson: false };
 			didUpdate = true;
 		}
 
@@ -126,7 +129,10 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 			}
 		}
 
-		this.characterState = ObjectUtils.assign<CharacterStateSnapshot, Partial<CharacterStateSnapshot>>(this.characterState, stateUpdate);
+		this.characterState = ObjectUtils.assign<CharacterStateSnapshot, Partial<CharacterStateSnapshot>>(
+			this.characterState,
+			stateUpdate,
+		);
 
 		if (didUpdate) this.MakeFOVReflectCharacterState();
 	}
@@ -136,7 +142,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		if (!this.IsEnabled()) return;
 
 		const clientSettings = Dependency<ClientSettingsController>();
-		let baseFov = this.characterState?.firstPerson ? clientSettings.GetFirstPersonFov() : clientSettings.GetThirdPersonFov();
+		let baseFov = this.characterState?.firstPerson
+			? clientSettings.GetFirstPersonFov()
+			: clientSettings.GetThirdPersonFov();
 		if (this.characterState?.sprinting) baseFov *= this.sprintFovMultiplier;
 
 		for (const cameraType of [CharacterCameraType.FIRST_PERSON, CharacterCameraType.THIRD_PERSON]) {
@@ -147,7 +155,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	/**
 	 * Sets multiplier on base FOV when sprinting. For example if FOV is 80 and multipler is 1.1 the player FOV
 	 * while sprinting will be 88.
-	 * 
+	 *
 	 * @param multipler Sprint FOV multiplier, set to 1 to disable sprint FOV. Defaults to 1.08
 	 */
 	public SetSprintFOVMultiplier(multipler: number) {
@@ -210,7 +218,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 
 	/**
 	 * Cleanup camera when character is removed
-	 * 
+	 *
 	 * @internal
 	 */
 	public CleanupCamera() {

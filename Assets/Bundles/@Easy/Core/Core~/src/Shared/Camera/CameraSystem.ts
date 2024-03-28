@@ -22,6 +22,7 @@ export class CameraSystem {
 	private currentMode: CameraMode;
 	private readonly transform: Transform;
 	private readonly mainCamera: Camera;
+	private readonly uiCamera: Camera;
 	private readonly viewmodelCamera: Camera;
 	private readonly allCameras: Camera[];
 	private onClearCallback?: () => CameraMode;
@@ -41,6 +42,7 @@ export class CameraSystem {
 		const ref = CameraReferences.Instance();
 		this.mainCamera = ref.mainCamera!;
 		this.viewmodelCamera = ref.fpsCamera!;
+		this.uiCamera = ref.uiCamera!;
 		this.allCameras = [ref.mainCamera!, ref.uiCamera!, ref.fpsCamera!];
 		this.transform = ref.cameraHolder ?? this.mainCamera.transform;
 		// Register FOV state
@@ -214,7 +216,7 @@ export class CameraSystem {
 				break;
 			case CharacterCameraType.FIRST_PERSON:
 			case CharacterCameraType.THIRD_PERSON:
-				camerasToUpdate = [this.mainCamera];
+				camerasToUpdate = [this.mainCamera, this.uiCamera];
 				break;
 		}
 

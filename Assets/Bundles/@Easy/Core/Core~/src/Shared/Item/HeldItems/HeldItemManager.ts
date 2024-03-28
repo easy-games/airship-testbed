@@ -27,7 +27,7 @@ export interface HeldItemActionState {
  */
 export class HeldItemManager {
 	public character: Character;
-	private heldItemMap = new Map<string, HeldItem>();
+	private heldItemMap = new Map<number, HeldItem>();
 	private emptyHeldItem: HeldItem | undefined;
 	private currentHeldItem: HeldItem;
 	private currentItemState = -1;
@@ -48,10 +48,6 @@ export class HeldItemManager {
 		return this.currentHeldItem;
 	}
 
-	public TryGetItem(itemType: CoreItemType) {
-		return this.heldItemMap.get(itemType);
-	}
-
 	private Log(message: string) {
 		//print("HeldItem: " + this.character.id + " " + message);
 	}
@@ -66,7 +62,7 @@ export class HeldItemManager {
 			return this.emptyHeldItem;
 		}
 
-		let item = this.heldItemMap.get(itemDef.itemType);
+		let item = this.heldItemMap.get(itemDef.id);
 		if (item === undefined) {
 			//Create the held item instance
 			for (let i = HeldItemManager.heldItemClasses.size() - 1; i >= 0; i--) {
@@ -79,7 +75,7 @@ export class HeldItemManager {
 				item = new HeldItem(this.character, itemDef);
 			}
 			item.OnLoadAssets();
-			this.heldItemMap.set(itemDef.itemType, item);
+			this.heldItemMap.set(itemDef.id, item);
 		}
 		return item;
 	}

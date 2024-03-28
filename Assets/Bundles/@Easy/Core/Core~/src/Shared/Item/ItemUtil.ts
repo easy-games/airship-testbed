@@ -106,17 +106,6 @@ export class ItemUtil {
 				}
 
 				const accessoryComponent = accessory.GetComponent<AccessoryComponent>();
-				// DEBUG
-				if (["Pistol", "AK47"].includes(accessory.name)) {
-					print(accessory.name);
-					if (accessoryComponent) {
-						print("exists.");
-					} else {
-						print("DOES NOT EXIST");
-					}
-				}
-
-				// this.itemAccessories.set(itemType, accessory);
 				accessories.push(accessoryComponent);
 			}
 		}

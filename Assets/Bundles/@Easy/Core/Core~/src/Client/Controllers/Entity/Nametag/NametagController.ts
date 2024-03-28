@@ -1,3 +1,4 @@
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "Shared/Airship";
 import Character from "Shared/Character/Character";
 import { Controller, OnStart } from "Shared/Flamework";
@@ -9,57 +10,53 @@ import { Theme } from "Shared/Util/Theme";
 
 @Controller({})
 export class NametagController implements OnStart {
-	private readonly nameTageId = "Nametag";
+	private readonly nameTagId = "Nametag";
 	private readonly graphicsBundleName = "Graphics";
 	private showSelfNametag = false;
+	private nametagsEnabled = true;
+	// Clean to destroy nametag & related connections
+	private nametagBins = new Map<Character, Bin>();
 
 	OnStart(): void {
 		Airship.characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
-			if (character.IsLocalCharacter() && !this.showSelfNametag) {
-				return;
+			if (!this.nametagsEnabled) return;
+
+			this.HookCharacterNametag(character);
+		});
+
+		Airship.characters.onCharacterDespawned.Connect((character) => {
+			this.nametagBins.get(character)?.Clean();
+			this.nametagBins.delete(character);
+		});
+	}
+
+	private HookCharacterNametag(character: Character): Bin | undefined {
+		if (character.IsLocalCharacter() && !this.showSelfNametag) {
+			return;
+		}
+		const bin = new Bin();
+		this.UpdateNametag(character);
+		const SetNametagAlpha = (character: Character, alpha: number) => {
+			const nameTag = character.model.transform.FindChild(this.nameTagId);
+			if (nameTag) {
+				const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>();
+				canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
 			}
-			this.UpdateNametag(character);
-			const SetNametagAlpha = (character: Character, alpha: number) => {
-				const nameTag = character.model.transform.FindChild(this.nameTageId);
-				if (nameTag) {
-					const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>();
-					canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
-				}
-				// const healthbar = character.GetHealthbar();
-				// if (healthbar) {
-				// 	const canvasGroup = healthbar.transform.parent!.GetComponent<CanvasGroup>();
-				// 	if (alpha < 1) {
-				// 		canvasGroup.TweenCanvasGroupAlpha(alpha * 0.6, 0.1);
-				// 	} else {
-				// 		canvasGroup.TweenCanvasGroupAlpha(1, 0.1);
-				// 	}
-				// }
-			};
+		};
+		bin.Add(
 			character.onStateChanged.Connect((newState, oldState) => {
 				if (newState === CharacterState.Crouching) {
 					SetNametagAlpha(character, 0.1);
 				} else if (oldState === CharacterState.Crouching) {
 					SetNametagAlpha(character, 1);
 				}
-			});
+			}),
+		);
+		bin.Add(() => {
+			this.DestroyNametag(character);
 		});
-		// CoreClientSignals.PlayerChangeTeam.Connect((event) => {
-		// 	if (event.player === Game.localPlayer) {
-		// 		for (const entity of this.entityController.GetEntities()) {
-		// 			this.UpdateNametag(entity);
-		// 		}
-		// 		return;
-		// 	}
-		// 	if (event.player.character) {
-		// 		this.UpdateNametag(event.player.character);
-		// 	}
-		// });
-		Airship.characters.onCharacterDespawned.Connect((character) => {
-			const nameTag = character.model.transform.FindChild(this.nameTageId);
-			if (nameTag) {
-				Object.Destroy(nameTag.gameObject);
-			}
-		});
+		this.nametagBins.set(character, bin);
+		return bin;
 	}
 
 	private CreateNametag(character: Character): GameObject {
@@ -67,7 +64,7 @@ export class NametagController implements OnStart {
 			"@Easy/Core/Client/Resources/Prefabs/Nametag.prefab",
 		) as GameObject;
 		const nametag = GameObjectUtil.Instantiate(nametagPrefab);
-		nametag.name = this.nameTageId;
+		nametag.name = this.nameTagId;
 		nametag.transform.SetParent(character.model.transform);
 		nametag.transform.localPosition = new Vector3(0, 1.8, 0);
 
@@ -82,7 +79,7 @@ export class NametagController implements OnStart {
 		const team: Team | undefined = character.player?.GetTeam();
 		const localTeam = Game.localPlayer.GetTeam();
 
-		const nameTag = character.model.transform.FindChild(this.nameTageId);
+		const nameTag = character.model.transform.FindChild(this.nameTagId);
 		if (nameTag === undefined) {
 			this.CreateNametag(character);
 			return;
@@ -121,6 +118,29 @@ export class NametagController implements OnStart {
 			teamImage.enabled = true;
 		} else {
 			teamImage.enabled = false;
+		}
+	}
+
+	public DestroyNametag(character: Character) {
+		const nametag = character.model.transform.FindChild(this.nameTagId);
+		if (nametag) {
+			Object.Destroy(nametag.gameObject);
+		}
+	}
+
+	public SetNametagsEnabled(enabled: boolean) {
+		if (enabled === this.nametagsEnabled) return;
+
+		this.nametagsEnabled = enabled;
+
+		// Destroy all existing nametags
+		for (const character of Airship.characters.GetCharacters()) {
+			if (enabled) {
+				this.HookCharacterNametag(character);
+			} else {
+				this.nametagBins.get(character)?.Clean();
+				this.nametagBins.delete(character);
+			}
 		}
 	}
 }
