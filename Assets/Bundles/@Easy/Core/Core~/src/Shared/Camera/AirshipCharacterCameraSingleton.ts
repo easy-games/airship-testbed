@@ -29,6 +29,8 @@ interface CharacterStateSnapshot {
 export class AirshipCharacterCameraSingleton implements OnStart {
 	public static readonly cameraReferenceKey = "CameraRig";
 
+	public canToggleFirstPerson = true;
+
 	private lookBackwards = false;
 
 	/** Fires whenever the user requests to look (or stop looking) backwards. */
@@ -235,6 +237,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		keyboard.OnKeyDown(KeyCode.T, (event) => {
 			if (!this.IsEnabled()) return;
 			if (event.uiProcessed) return;
+			if (!this.canToggleFirstPerson) return;
 			if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
 				this.ToggleFirstPerson();
 			}
