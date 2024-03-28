@@ -492,10 +492,10 @@
         //Direct sun + specular
     
         //Image based lighting term
-        half3 ibl = (complexAmbientSample * globalSunBrightness);// *(globalSunColor* globalSunBrightness);
+        half3 sunColor = (globalSunColor * globalSunBrightness);
 
         //Sun Term
-        half3 sunShine = (ibl * NoL);
+        half3 sunShine = (sunColor * NoL);
 
         //Sun Specular
         half3 sunSpecular = specularColor * PhongApprox(roughnessLevel, RoL);
