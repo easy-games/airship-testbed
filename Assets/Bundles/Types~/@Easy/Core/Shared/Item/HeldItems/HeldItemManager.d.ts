@@ -1,5 +1,4 @@
 import Character from "../../Character/Character";
-import { CoreItemType } from "../CoreItemType";
 import { ItemDef } from "../ItemDefinitionTypes";
 import { HeldItem } from "./HeldItem";
 export type HeldItemCondition = (itemDef: ItemDef) => boolean;
@@ -31,7 +30,6 @@ export declare class HeldItemManager {
     static RegisterHeldItem(condition: HeldItemCondition, factory: HeldItemFactory): void;
     GetLabel(): number;
     GetCurrentHeldItem(): HeldItem;
-    TryGetItem(itemType: CoreItemType): HeldItem | undefined;
     private Log;
     private GetOrCreateHeldItem;
     constructor(character: Character);

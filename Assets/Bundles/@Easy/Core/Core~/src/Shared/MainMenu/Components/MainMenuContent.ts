@@ -1,5 +1,7 @@
+import { CoreContext } from "../../CoreClientContext";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import { ScreenSizeType } from "../Singletons/ScreenSizeType";
@@ -47,25 +49,44 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
-		// CoreLogger.Log("screenSize.x: " + screenSize.x);
-		// CoreLogger.Log("dpi: " + Screen.dpi);
-		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Game.IsMobile()) {
-			this.canvasScalar.scaleFactor = 2.2;
+			this.canvasScalar.scaleFactor = Screen.dpi / 160;
 		} else if (Screen.dpi >= 255) {
-			this.canvasScalar.scaleFactor = 1.6;
+			this.canvasScalar.scaleFactor = 1.75;
 		} else {
 			this.canvasScalar.scaleFactor = 1;
 		}
 
 		let sizeType: ScreenSizeType = "md";
-		if (screenSize.x <= 1200) {
-			sizeType = "sm";
-		} else if (screenSize.x >= 1760) {
-			sizeType = "lg";
+		if (Game.IsPortrait()) {
+			if (screenSize.x < 500) {
+				sizeType = "sm";
+			}
+		} else {
+			if (screenSize.x <= 1200) {
+				sizeType = "sm";
+			} else if (screenSize.x >= 1760) {
+				sizeType = "lg";
+			}
 		}
 		this.mainMenu.sizeType = sizeType;
+
+		if (Game.coreContext === CoreContext.MAIN_MENU) {
+			if (Game.deviceType === AirshipDeviceType.Phone) {
+				// phones are in portrait
+				Screen.orientation = ScreenOrientation.Portrait;
+			} else {
+				// ipads are in landscape
+				Screen.orientation = ScreenOrientation.LandscapeLeft;
+			}
+		}
+
+		CoreLogger.Log(
+			`screenSize.x: ${screenSize.x}, sizetype: ${sizeType}, scaleFactor: ${this.canvasScalar.scaleFactor}`,
+		);
+		// CoreLogger.Log("dpi: " + Screen.dpi);
+		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
@@ -100,8 +121,8 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
 			this.navbarRight.offsetMin = new Vector2(0, this.navbarRight.offsetMin.y);
 
-			this.searchFocused.offsetMin = new Vector2(2, 0);
-			this.searchFocused.offsetMax = new Vector2(-2, -25);
+			this.searchFocused.offsetMin = new Vector2(25, 0);
+			this.searchFocused.offsetMax = new Vector2(-25, -70);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
 			if (Game.IsMobile()) {

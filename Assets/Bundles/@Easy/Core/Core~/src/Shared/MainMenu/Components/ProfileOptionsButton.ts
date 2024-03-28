@@ -21,16 +21,18 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 
 		CanvasAPI.OnClickEvent(this.gameObject, () => {
 			const options: RightClickMenuButton[] = [];
-			options.push({
-				text: "Settings",
-				onClick: () => {
-					Dependency<MainMenuController>().RouteToPage(MainMenuPageType.Settings);
-				},
-			});
-			options.push({
-				text: "Change Profile Picture",
-				onClick: () => {},
-			});
+			if (!Game.IsPortrait()) {
+				options.push({
+					text: "Settings",
+					onClick: () => {
+						Dependency<MainMenuController>().RouteToPage(MainMenuPageType.Settings);
+					},
+				});
+			}
+			// options.push({
+			// 	text: "Change Profile Picture",
+			// 	onClick: () => {},
+			// });
 			options.push({
 				text: "Change Username",
 				onClick: () => {
@@ -44,12 +46,14 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 					Bridge.LoadScene("Login", true);
 				},
 			});
-			options.push({
-				text: "Quit",
-				onClick: () => {
-					Application.Quit();
-				},
-			});
+			if (!Game.IsMobile()) {
+				options.push({
+					text: "Quit",
+					onClick: () => {
+						Application.Quit();
+					},
+				});
+			}
 			Dependency<RightClickMenuController>().OpenRightClickMenu(
 				Dependency<MainMenuController>().mainContentCanvas,
 				new Mouse().GetLocation(),

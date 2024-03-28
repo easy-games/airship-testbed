@@ -2298,6 +2298,7 @@ MonoBehaviour:
   fogColor: {r: 0.5613208, g: 0.8768687, b: 1, a: 1}
   shadowRange: 100
   postProcess: 1
+  convertColorTosRGB: 1
   doShadows: 1
   cubeMap: {fileID: 8900000, guid: 98fc12523466e9841bcac080b0b16b28, type: 3}
   cubemapCoefs: {fileID: 4900000, guid: ce7543ecfc8e54dfc940a47f6cd35438, type: 3}

@@ -12,6 +12,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     authorText: TMP_Text;
     shadow: TrueShadow;
     gameDto: GameDto;
+    loadingOverlay: GameObject;
     private redirectDrag;
     private bin;
     Awake(): void;

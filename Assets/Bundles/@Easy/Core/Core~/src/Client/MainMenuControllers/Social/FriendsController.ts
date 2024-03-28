@@ -394,76 +394,7 @@ export class FriendsController implements OnStart {
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
 
-				CoreUI.SetupButton(go, {
-					noHoverSound: true,
-				});
-				CanvasAPI.OnClickEvent(go, () => {
-					Dependency<DirectMessageController>().OpenFriend(friend.userId);
-				});
-				CanvasAPI.OnPointerEvent(go, (direction, button) => {
-					if (button === PointerButton.RIGHT && direction === PointerDirection.UP) {
-						const options: RightClickMenuButton[] = [];
-						if (friend.status !== "offline") {
-							options.push(
-								{
-									text: "Join Party",
-									onClick: () => {
-										task.spawn(() => {
-											const res = InternalHttpManager.PostAsync(
-												AirshipUrl.GameCoordinator + "/parties/party/join",
-												EncodeJSON({
-													uid: friend.userId,
-													// partyId: friend,
-												}),
-											);
-											if (!res.success) {
-												Debug.LogError(res.error);
-											}
-										});
-									},
-								},
-								{
-									text: "Invite to Party",
-									onClick: () => {
-										task.spawn(() => {
-											InternalHttpManager.PostAsync(
-												AirshipUrl.GameCoordinator + "/parties/party/invite",
-												EncodeJSON({
-													userToAdd: friend.userId,
-												}),
-											);
-										});
-									},
-								},
-							);
-						}
-						options.push(
-							{
-								text: "Send Message",
-								onClick: () => {
-									Dependency<DirectMessageController>().OpenFriend(friend.userId);
-								},
-							},
-							{
-								text: "Unfriend",
-								onClick: () => {
-									task.spawn(() => {
-										task.spawn(() => {
-											const success = this.RejectFriendRequestAsync(friend.userId);
-										});
-									});
-								},
-							},
-						);
-						this.rightClickMenuController.OpenRightClickMenu(
-							this.mainMenuController.mainContentCanvas,
-							mouse.GetLocation(),
-							options,
-						);
-					}
-				});
-
-				CanvasAPI.OnClickEvent(joinButton, () => {
+				const Teleport = () => {
 					if (friend.gameId === undefined || friend.serverId === undefined) return;
 
 					print(
@@ -475,6 +406,97 @@ export class FriendsController implements OnStart {
 							friend.serverId,
 					);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
+				};
+
+				const OpenMenu = () => {
+					const options: RightClickMenuButton[] = [];
+					if (friend.status !== "offline") {
+						if (Game.IsMobile() && friend.gameId && friend.serverId) {
+							options.push({
+								text: "Teleport",
+								onClick: () => {
+									Teleport();
+								},
+							});
+						}
+
+						options.push(
+							{
+								text: "Join Party",
+								onClick: () => {
+									task.spawn(() => {
+										const res = InternalHttpManager.PostAsync(
+											AirshipUrl.GameCoordinator + "/parties/party/join",
+											EncodeJSON({
+												uid: friend.userId,
+												// partyId: friend,
+											}),
+										);
+										if (!res.success) {
+											Debug.LogError(res.error);
+										}
+									});
+								},
+							},
+							{
+								text: "Invite to Party",
+								onClick: () => {
+									task.spawn(() => {
+										InternalHttpManager.PostAsync(
+											AirshipUrl.GameCoordinator + "/parties/party/invite",
+											EncodeJSON({
+												userToAdd: friend.userId,
+											}),
+										);
+									});
+								},
+							},
+						);
+					}
+					if (!Game.IsMobile()) {
+						options.push({
+							text: "Send Message",
+							onClick: () => {
+								Dependency<DirectMessageController>().OpenFriend(friend.userId);
+							},
+						});
+					}
+					options.push({
+						text: "Unfriend",
+						onClick: () => {
+							task.spawn(() => {
+								task.spawn(() => {
+									const success = this.RejectFriendRequestAsync(friend.userId);
+								});
+							});
+						},
+					});
+					this.rightClickMenuController.OpenRightClickMenu(
+						this.mainMenuController.mainContentCanvas,
+						mouse.GetLocation(),
+						options,
+					);
+				};
+
+				CoreUI.SetupButton(go, {
+					noHoverSound: true,
+				});
+				CanvasAPI.OnClickEvent(go, () => {
+					if (Game.IsMobile()) {
+						OpenMenu();
+					} else {
+						Dependency<DirectMessageController>().OpenFriend(friend.userId);
+					}
+				});
+
+				CanvasAPI.OnPointerEvent(go, (direction, button) => {
+					if (button === PointerButton.RIGHT && direction === PointerDirection.UP) {
+						OpenMenu();
+					}
+				});
+
+				CanvasAPI.OnClickEvent(joinButton, () => {
+					Teleport();
 				});
 			}
 			go.transform.SetSiblingIndex(i);
