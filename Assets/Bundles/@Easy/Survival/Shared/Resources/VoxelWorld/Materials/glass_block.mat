@@ -12,7 +12,6 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - POINT_FILTER_ON
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_OFF
   m_InvalidKeywords:
@@ -21,6 +20,7 @@ Material:
   - NUM_TRIPLANAR_OFF
   - OVERRIDE_ON
   - POINT_FILTER
+  - POINT_FILTER_ON
   - POINT_FILTER_ON_ON
   - SLIDER_OVERRIDE
   - _DSTBLEND_ONEMINUSSRCALPHA
@@ -144,6 +144,7 @@ Material:
     - _RimIntensity: 0.75
     - _RimPower: 2.5
     - _RoughOverride: 0.04
+    - _SliderOverrideMix: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
