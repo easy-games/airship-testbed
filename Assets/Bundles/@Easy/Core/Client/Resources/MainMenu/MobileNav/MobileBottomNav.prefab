@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7823761516707335870}
   - component: {fileID: 7688857695854178531}
   m_Layer: 5
-  m_Name: MobileNav
+  m_Name: MobileBottomNav
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
