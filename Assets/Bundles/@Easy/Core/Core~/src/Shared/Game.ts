@@ -70,6 +70,11 @@ export class Game {
 	 */
 	public static platform = AirshipPlatformUtil.GetLocalPlatform();
 
+	/**
+	 * Returns true if device is a phone or tablet.
+	 *
+	 * Returns false if on desktop or console.
+	 */
 	public static IsMobile(): boolean {
 		if (Game.IsEditor()) {
 			if (this.deviceType === AirshipDeviceType.Phone || this.deviceType === AirshipDeviceType.Tablet) {
