@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe3d2d8679e4833b63469f7e587a48c, type: 3}
+  m_Name: TopDownCharacterOutfit
+  m_EditorClassIdentifier: 
+  accessories:
+  - {fileID: 6923114997450210570, guid: e4bd92f638567ef458917993240ecd77, type: 3}
+  - {fileID: 4757389091510514586, guid: 9fa00ec7183f0574885da44ea3ad41b2, type: 3}
+  faceDecal: {fileID: 0}
+  customSkin: {fileID: 0}
+  forceSkinColor: 0
+  skinColor: {r: 0.85, g: 0.65, b: 0.5, a: 1}

@@ -126,7 +126,7 @@ export class Player {
 				let startTime = Time.time;
 				this.WaitForOutfitLoaded();
 				if (characterComponent.IsAlive()) {
-					if (RunUtil.IsInternal()) {
+					if (Game.IsInternal()) {
 						let diff = Time.time - startTime;
 						if (diff > 0) {
 							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
