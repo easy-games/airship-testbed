@@ -18,6 +18,7 @@ export declare class MouseDriver {
     SetLocation(position: Vector3): void;
     IsLocked(): boolean;
     SetLocked(locked: boolean): void;
+    ToggleMouseVisibility(isVisible: boolean): void;
     /** **NOTE:** Internal only. Use `Mouse` class instead. */
     static Instance(): MouseDriver;
 }

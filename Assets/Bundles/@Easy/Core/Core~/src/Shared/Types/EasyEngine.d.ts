@@ -160,6 +160,7 @@ interface InputBridge {
 	IsPointerOverUI(): boolean;
 	RegisterKeyCode(keyCode: KeyCode): void;
 	UnregisterKeyCode(keyCode: KeyCode): void;
+	ToggleMouseVisibility(isVisible: boolean);
 }
 
 interface InputBridgeStatic {
