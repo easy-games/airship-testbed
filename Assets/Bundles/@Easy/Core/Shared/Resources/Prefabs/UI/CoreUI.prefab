@@ -398,6 +398,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4502174759117723092}
     m_Modifications:
+    - target: {fileID: 210200514571881529, guid: baacce56c715c4b74892f4d59b51e31a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 847260538746024284, guid: baacce56c715c4b74892f4d59b51e31a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -869,6 +873,10 @@ PrefabInstance:
     - target: {fileID: 6845385922715779308, guid: baacce56c715c4b74892f4d59b51e31a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7787850302851918017, guid: baacce56c715c4b74892f4d59b51e31a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8000556295079135785, guid: baacce56c715c4b74892f4d59b51e31a, type: 3}
       propertyPath: m_fontAsset
