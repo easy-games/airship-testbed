@@ -180,7 +180,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.socialMenu.anchorMin = new Vector2(0, 1);
 				this.socialMenu.anchorMax = new Vector2(0, 1);
 				this.socialMenu.pivot = new Vector2(0, 1);
-				let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -97));
+				let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -43));
 				socialMenuPos = socialMenuPos
 					.add(new Vector2(this.canvasRect.sizeDelta.x / 2, 0))
 					.add(new Vector2(this.contentWrapper.sizeDelta.x / 2, 0));
@@ -189,7 +189,10 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.socialMenu.anchorMin = new Vector2(1, 1);
 				this.socialMenu.anchorMax = new Vector2(1, 1);
 				this.socialMenu.pivot = new Vector2(1, 1);
-				this.socialMenu.anchoredPosition = new Vector2(-10, this.contentWrapper.anchoredPosition.y - 97);
+				this.socialMenu.anchoredPosition = new Vector2(
+					-10,
+					this.contentWrapper.anchoredPosition.y + (Game.IsMobile() ? 35 : -43) - 43,
+				);
 			}
 
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);

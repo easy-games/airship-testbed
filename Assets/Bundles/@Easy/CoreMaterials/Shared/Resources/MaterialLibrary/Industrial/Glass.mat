@@ -13,11 +13,11 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - EXPLICIT_MAPS_ON
-  - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - METAL_ON_ON
+  - NUM_LIGHTS_LIGHTS2
   - OVERRIDE_ON
   - _DSTBLEND_ONEMINUSSRCALPHA
   - _LIGHTS_LIGHTS0
@@ -113,6 +113,7 @@ Material:
     - RIM_LIGHT: 0
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
+    - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 0.8
     - _BumpScale: 1
@@ -125,14 +126,15 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
-    - _MetalOverride: 0.254
+    - _MetalOverride: 0.351
     - _Metallic: 0
     - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimIntensity: 0.75
     - _RimPower: 2.5
-    - _RoughOverride: 0.144
+    - _RoughOverride: 0.213
+    - _SliderOverrideMix: 0.42
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
@@ -148,5 +150,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

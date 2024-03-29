@@ -135,12 +135,12 @@ Material:
     - VERTEX_LIGHT: 0
     - _Alpha: 1
     - _AmbientMod: 0.1
-    - _AnisoNoiseFreq: 3
-    - _AnisoNoiseStrength: 1.09
-    - _AnisoOffset: -0.19
-    - _AnisoRampIntensity: 2.99
-    - _AnisoRampMod: 10.84
-    - _AnisoStrength: 0.25
+    - _AnisoNoiseFreq: 1.98
+    - _AnisoNoiseStrength: 1.65
+    - _AnisoOffset: -0.25
+    - _AnisoRampIntensity: 0.39
+    - _AnisoRampMod: 8.46
+    - _AnisoStrength: 0.26
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -168,7 +168,7 @@ Material:
     - _SaturationMod: 1
     - _SkyShineStrength: 0
     - _SmoothnessTextureChannel: 0
-    - _SpecMod: 1
+    - _SpecMod: 0.941
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunScale: 1
@@ -181,10 +181,10 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 0.6024933, b: 0, a: 1}
-    - _ColorBot: {r: 0.33962262, g: 0.013297774, b: 0, a: 1}
+    - _ColorBot: {r: 0.4339623, g: 0.25410932, b: 0.24768601, a: 1}
     - _ColorBottom: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorMid: {r: 1, g: 0.48793036, b: 0.3160377, a: 1}
-    - _ColorTop: {r: 1, g: 0.8050537, b: 0.23113209, a: 1}
+    - _ColorMid: {r: 0.8207547, g: 0.7340645, b: 0.66202384, a: 1}
+    - _ColorTop: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
     - _IncidentColor: {r: 0.4, g: 0.75, b: 1, a: 1}
