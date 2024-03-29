@@ -76,6 +76,10 @@ export class MouseDriver {
 		this.inputProxy.SetMouseLocked(locked);
 	}
 
+	public ToggleMouseVisibility(isVisible: boolean) {
+		this.inputProxy.ToggleMouseVisibility(isVisible);
+	}
+
 	/** **NOTE:** Internal only. Use `Mouse` class instead. */
 	public static Instance() {
 		return (this.inst ??= new MouseDriver());
