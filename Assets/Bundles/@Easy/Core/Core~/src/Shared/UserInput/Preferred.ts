@@ -23,7 +23,7 @@ export class Preferred {
 
 	private InitControlScheme(): void {
 		let platform = Game.platform;
-		if (platform === AirshipPlatform.Android || platform === AirshipPlatform.iOS || Game.IsSimulateMobile()) {
+		if (Game.IsMobile()) {
 			this.controlScheme = ControlScheme.Touch;
 		} else {
 			this.controlScheme = ControlScheme.MouseKeyboard;

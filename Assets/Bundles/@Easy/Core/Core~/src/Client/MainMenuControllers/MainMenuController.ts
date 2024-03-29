@@ -1,3 +1,4 @@
+import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
 import { CoreRefs } from "Shared/CoreRefs";
@@ -54,10 +55,7 @@ export class MainMenuController implements OnStart {
 				MainMenuPageType.MyGames,
 				this.refs.GetValue("Pages", "MyGames").GetAirshipComponent<MainMenuPageComponent>()!,
 			],
-			[
-				MainMenuPageType.Settings,
-				this.refs.GetValue("Pages", "Settings").GetAirshipComponent<MainMenuPageComponent>()!,
-			],
+			[MainMenuPageType.Settings, this.refs.GetValue("Pages", "Settings").GetAirshipComponent<SettingsPage>()!],
 			[
 				MainMenuPageType.Avatar,
 				this.refs.GetValue("Pages", "Avatar").GetAirshipComponent<AvatarMenuComponent>()!,

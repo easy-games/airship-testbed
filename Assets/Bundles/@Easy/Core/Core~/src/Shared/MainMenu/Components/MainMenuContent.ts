@@ -1,5 +1,7 @@
+import { CoreContext } from "../../CoreClientContext";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import { ScreenSizeType } from "../Singletons/ScreenSizeType";
@@ -47,25 +49,45 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
-		// CoreLogger.Log("screenSize.x: " + screenSize.x);
-		// CoreLogger.Log("dpi: " + Screen.dpi);
-		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Game.IsMobile()) {
-			this.canvasScalar.scaleFactor = 2.4;
+			this.canvasScalar.scaleFactor = Screen.dpi / 180;
 		} else if (Screen.dpi >= 255) {
 			this.canvasScalar.scaleFactor = 1.75;
 		} else {
 			this.canvasScalar.scaleFactor = 1;
 		}
+		const scaleFactor = this.canvasScalar.scaleFactor;
 
 		let sizeType: ScreenSizeType = "md";
-		if (screenSize.x <= 1200) {
-			sizeType = "sm";
-		} else if (screenSize.x >= 1760) {
-			sizeType = "lg";
+		if (Game.IsPortrait()) {
+			if (screenSize.x < 500) {
+				sizeType = "sm";
+			}
+		} else {
+			if (screenSize.x <= 1200) {
+				sizeType = "sm";
+			} else if (screenSize.x >= 1760) {
+				sizeType = "lg";
+			}
 		}
 		this.mainMenu.sizeType = sizeType;
+
+		if (Game.coreContext === CoreContext.MAIN_MENU) {
+			if (Game.deviceType === AirshipDeviceType.Phone) {
+				// phones are in portrait
+				Screen.orientation = ScreenOrientation.Portrait;
+			} else {
+				// ipads are in landscape
+				Screen.orientation = ScreenOrientation.LandscapeLeft;
+			}
+		}
+
+		CoreLogger.Log(
+			`screenSize.x: ${screenSize.x}, sizetype: ${sizeType}, scaleFactor: ${this.canvasScalar.scaleFactor}, portrait: ${Game.IsPortrait()}`,
+		);
+		// CoreLogger.Log("dpi: " + Screen.dpi);
+		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
 
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
@@ -87,7 +109,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.pages.offsetMax = new Vector2(0, -69);
 			this.navbar.offsetMin = new Vector2(15, this.navbar.offsetMin.y);
 			this.navbar.offsetMax = new Vector2(-15, this.navbar.offsetMax.y);
-			this.navbar.anchoredPosition = new Vector2(0, -60);
+			this.navbar.anchoredPosition = new Vector2(0, -Game.GetNotchHeight());
 			for (let tab of this.navbarTabs) {
 				tab.gameObject.SetActive(false);
 			}
@@ -100,8 +122,8 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
 			this.navbarRight.offsetMin = new Vector2(0, this.navbarRight.offsetMin.y);
 
-			this.searchFocused.offsetMin = new Vector2(25, 0);
-			this.searchFocused.offsetMax = new Vector2(-25, -70);
+			this.searchFocused.offsetMin = new Vector2(15, 0);
+			this.searchFocused.offsetMax = new Vector2(-15, -Game.GetNotchHeight() - 15);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
 			if (Game.IsMobile()) {
@@ -150,15 +172,15 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.navbarContentWrapper.anchoredPosition = new Vector2(50, 0);
 			}
 			this.navbar.anchoredPosition = new Vector2(0, 0);
-			for (let tab of this.navbarTabs) {
-				tab.gameObject.SetActive(true);
-			}
+			// for (let tab of this.navbarTabs) {
+			// 	tab.gameObject.SetActive(true);
+			// }
 
 			if (sizeType === "lg") {
 				this.socialMenu.anchorMin = new Vector2(0, 1);
 				this.socialMenu.anchorMax = new Vector2(0, 1);
 				this.socialMenu.pivot = new Vector2(0, 1);
-				let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -97));
+				let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -43));
 				socialMenuPos = socialMenuPos
 					.add(new Vector2(this.canvasRect.sizeDelta.x / 2, 0))
 					.add(new Vector2(this.contentWrapper.sizeDelta.x / 2, 0));
@@ -167,7 +189,10 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.socialMenu.anchorMin = new Vector2(1, 1);
 				this.socialMenu.anchorMax = new Vector2(1, 1);
 				this.socialMenu.pivot = new Vector2(1, 1);
-				this.socialMenu.anchoredPosition = new Vector2(-10, this.contentWrapper.anchoredPosition.y - 97);
+				this.socialMenu.anchoredPosition = new Vector2(
+					-10,
+					this.contentWrapper.anchoredPosition.y + (Game.IsMobile() ? 35 : -43) - 43,
+				);
 			}
 
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);

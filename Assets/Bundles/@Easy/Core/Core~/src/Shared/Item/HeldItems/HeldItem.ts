@@ -36,7 +36,7 @@ export class HeldItem {
 
 	private holdingDownBin = new Bin();
 	private holdingDown = false;
-	private bufferingUse = false;
+	private bufferingUse = -1;
 	private lastUsedTime = 0;
 	private chargeStartTime = 0;
 
@@ -155,7 +155,7 @@ export class HeldItem {
 	public OnUnEquip() {
 		this.Log("OnUnEquip");
 		this.holdingDownBin.Clean();
-		this.bufferingUse = false;
+		this.bufferingUse = -1;
 		this.currentItemAnimations = [];
 		this.currentItemGOs = [];
 		this.OnChargeEnd();
@@ -175,7 +175,7 @@ export class HeldItem {
 						this.HoldDownAction();
 					}
 				} else {
-					this.bufferingUse = false;
+					this.bufferingUse = -1;
 					this.holdingDownBin.Clean();
 					if (this.isCharging) {
 						this.TryChargeUse();
@@ -185,13 +185,21 @@ export class HeldItem {
 			case 1:
 				//Secondary Action
 				if (isActive) {
-					this.OnChargeEnd();
+					if (this.HasChargeTime()) {
+						this.OnChargeEnd();
+					} else {
+						this.TryUse(1);
+						this.HoldDownAction(1);
+					}
+				} else {
+					this.bufferingUse = -1;
+					this.holdingDownBin.Clean();
 				}
 				break;
 		}
 	}
 
-	private HoldDownAction() {
+	private HoldDownAction(useIndex = 0) {
 		if (this.itemMeta?.usable && !this.holdingDown) {
 			this.holdingDown = true;
 			if (this.itemMeta.usable?.canHoldToUse) {
@@ -199,7 +207,7 @@ export class HeldItem {
 				const cooldown = this.itemMeta.usable.cooldownSeconds;
 				this.holdingDownBin.Add(
 					SetInterval(holdCooldown && holdCooldown > cooldown ? holdCooldown : cooldown, () => {
-						this.TryUse();
+						this.TryUse(useIndex);
 					}),
 				);
 			}
@@ -223,7 +231,7 @@ export class HeldItem {
 
 	private TryUse(index = 0) {
 		this.Log("TryUse");
-		this.bufferingUse = false;
+		this.bufferingUse = -1;
 
 		if (!this.CanUse(index)) {
 			return false;
@@ -234,14 +242,14 @@ export class HeldItem {
 			this.TriggerUse(index);
 			return true;
 		} else if (remainingTime < this.clickBufferMargin) {
-			this.bufferingUse = true;
+			this.bufferingUse = index;
 		}
 		return false;
 	}
 
 	private TryChargeUse() {
 		this.Log("TryChargeUse IsChargedUp: " + this.IsChargedUp());
-		this.bufferingUse = false;
+		this.bufferingUse = -1;
 
 		if (!this.CanCharge()) {
 			return false;
@@ -264,7 +272,7 @@ export class HeldItem {
 
 	protected TriggerUse(useIndex: number) {
 		this.Log("TriggerUse");
-		this.bufferingUse = false;
+		this.bufferingUse = -1;
 
 		//Play the use locally
 		if (Game.IsClient()) {
@@ -284,8 +292,8 @@ export class HeldItem {
 
 	protected OnCooldownReset() {
 		this.Log("OnCooldownReset: " + this.bufferingUse);
-		if (this.bufferingUse) {
-			this.TriggerUse(0);
+		if (this.bufferingUse >= 0) {
+			this.TriggerUse(this.bufferingUse);
 		}
 	}
 

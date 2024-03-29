@@ -1,4 +1,5 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { GameDto } from "../API/GamesAPI";
@@ -24,8 +25,13 @@ export default class SortComponent extends AirshipBehaviour {
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((sizeType, size) => {
 				if (sizeType === "sm") {
-					this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
-					this.gridLayoutGroup.constraintCount = 1;
+					if (Game.IsPortrait()) {
+						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
+						this.gridLayoutGroup.constraintCount = 1;
+					} else {
+						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.28, size.x * 0.28 * 0.56 + 54);
+						this.gridLayoutGroup.constraintCount = 2;
+					}
 				} else {
 					this.gridLayoutGroup.cellSize = new Vector2(320, 234);
 					this.gridLayoutGroup.constraintCount = 3;

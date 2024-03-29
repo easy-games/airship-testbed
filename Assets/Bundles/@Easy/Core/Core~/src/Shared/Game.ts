@@ -6,7 +6,7 @@ import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
 
 const platform = Application.platform;
-const simulateMobile = EditorSessionState.GetBoolean("AirshipSimulateMobile");
+// const simulateMobile = EditorSessionState.GetBoolean("AirshipSimulateMobile");
 
 export class Game {
 	/**
@@ -21,6 +21,8 @@ export class Game {
 	public static localPlayerLoaded = false;
 	public static onLocalPlayerLoaded = new Signal<void>();
 	public static onDeviceOrientationChanged = new Signal<"landscape" | "portrait">();
+
+	public static readonly deviceType = DeviceBridge.GetDeviceType();
 
 	public static WaitForLocalPlayerLoaded(): void {
 		if (this.localPlayerLoaded) return;
@@ -68,9 +70,16 @@ export class Game {
 	 */
 	public static platform = AirshipPlatformUtil.GetLocalPlatform();
 
+	/**
+	 * Returns true if device is a phone or tablet.
+	 *
+	 * Returns false if on desktop or console.
+	 */
 	public static IsMobile(): boolean {
 		if (Game.IsEditor()) {
-			return this.IsSimulateMobile();
+			if (this.deviceType === AirshipDeviceType.Phone || this.deviceType === AirshipDeviceType.Tablet) {
+				return true;
+			}
 		}
 		return this.platform === AirshipPlatform.iOS || this.platform === AirshipPlatform.Android;
 	}
@@ -111,10 +120,6 @@ export class Game {
 
 	public static IsMac(): boolean {
 		return platform === RuntimePlatform.OSXPlayer || platform === RuntimePlatform.OSXEditor;
-	}
-
-	public static IsSimulateMobile(): boolean {
-		return simulateMobile;
 	}
 
 	public static IsLandscape(): boolean {

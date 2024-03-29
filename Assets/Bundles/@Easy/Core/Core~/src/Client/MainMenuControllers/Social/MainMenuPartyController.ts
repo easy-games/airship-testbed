@@ -1,4 +1,3 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
@@ -156,29 +155,6 @@ export class MainMenuPartyController implements OnStart {
 
 			const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
 			partyMemberComponent.SetUser(member, isLocalPartyLeader);
-
-			const refs = go.GetComponent<GameObjectReferences>();
-
-			const usernameText = refs.GetValue("UI", "Username") as TMP_Text;
-			if (member.uid === Game.localPlayer.userId) {
-				usernameText.text = Game.localPlayer.username;
-			} else {
-				usernameText.text = member.username;
-			}
-
-			const profilePicture = refs.GetValue("UI", "ProfilePicture") as GameObject;
-			task.spawn(() => {
-				const sprite = Airship.players.CreateProfilePictureSpriteAsync(member.uid);
-				if (sprite) {
-					profilePicture.GetComponent<Image>().sprite = sprite;
-				}
-			});
-
-			// const leftLayout = refs.GetValue("UI", "LeftLayout") as HorizontalLayoutGroup;
-			// LayoutRebuilder.ForceRebuildLayoutImmediate(leftLayout.GetComponent<RectTransform>());
-
-			const partyTitle = this.mainMenuController.refs.GetValue("Social", "PartyTitle") as TMP_Text;
-			partyTitle.text = `(${this.party.members.size()}/8)`;
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {

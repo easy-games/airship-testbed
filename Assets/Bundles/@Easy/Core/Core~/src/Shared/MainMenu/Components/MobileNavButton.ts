@@ -1,6 +1,7 @@
 import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
 import { MainMenuPageType } from "@Easy/Core/Client/MainMenuControllers/MainMenuPageName";
 import { Dependency } from "../../Flamework";
+import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ColorUtil } from "../../Util/ColorUtil";
@@ -25,6 +26,7 @@ export default class MobileNavButton extends AirshipBehaviour {
 	}
 
 	public OnEnable(): void {
+		if (!Game.IsMobile()) return;
 		task.delay(0, () => {
 			const mainMenuController = Dependency<MainMenuController>();
 			if (mainMenuController.currentPage?.pageType === this.pageName) {
