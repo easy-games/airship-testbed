@@ -126,7 +126,9 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MobileControlsManager
+    decorators: []
     properties: []
+    displayName: 
 --- !u!1 &7561214046879734545
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,9 +166,9 @@ RectTransform:
   - {fileID: 66174103716248956}
   m_Father: {fileID: 279624506939109690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -853.9481, y: 352.9622}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 120.5, y: -66.2}
   m_SizeDelta: {x: 84.075806, y: 84.075806}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2163738670716307801
@@ -244,6 +246,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    decorators: []
     properties:
     - name: clickType
       type: number
@@ -300,6 +303,7 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
 --- !u!114 &1545623707609186350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +371,9 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MobileEscapeButton
+    decorators: []
     properties: []
+    displayName: 
 --- !u!1 &8352413204003117645
 GameObject:
   m_ObjectHideFlags: 0

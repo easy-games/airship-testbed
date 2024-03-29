@@ -102,6 +102,14 @@ export class InventoryUIController implements OnStart {
 		this.hotbarCanvas.enabled = visible;
 	}
 
+	public SetHealtbarVisible(visible: boolean) {
+		this.healthBar.transform.gameObject.SetActive(visible);
+	}
+
+	public SetHotbarVisible(visible: boolean) {
+		this.hotbarContent.gameObject.SetActive(visible);
+	}
+
 	public OpenBackpack(): void {
 		if (!this.enabled) return;
 

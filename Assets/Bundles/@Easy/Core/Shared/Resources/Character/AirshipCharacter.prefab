@@ -5800,6 +5800,7 @@ GameObject:
   - component: {fileID: 7088081142443290682}
   - component: {fileID: 8616685848737228382}
   - component: {fileID: 7931457288082626079}
+  - component: {fileID: 1645000729044007242}
   - component: {fileID: 903796914586745664}
   - component: {fileID: 5043041770756594627}
   - component: {fileID: 5838268274975822121}
@@ -5808,7 +5809,6 @@ GameObject:
   - component: {fileID: -98370938496583557}
   - component: {fileID: -1773167598321551048}
   - component: {fileID: -6219229748269268009}
-  - component: {fileID: 7956153141648168287}
   m_Layer: 3
   m_Name: AirshipCharacter
   m_TagString: Character
@@ -6099,10 +6099,40 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: -98370938496583557}
   _networkObjectCache: {fileID: -98370938496583557}
-  configuration: {fileID: 11400000, guid: 1c8010473ddaf443a9bd26abea56e1b6, type: 2}
+  moveData: {fileID: 1645000729044007242}
   animationHelper: {fileID: 903796914586745664}
   predictedObject: {fileID: 889479376615667292}
   disableInput: 0
+--- !u!114 &1645000729044007242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e9d0a47793548c8aaf9c8f8b493e7bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 4.666667
+  sprintSpeed: 6.666667
+  crouchSpeedMultiplier: 0.455
+  crouchHeightMultiplier: 0.75
+  slideSpeedMultiplier: 3.28
+  slideHeightMultiplier: 0.5
+  slideCooldown: 0.8
+  jumpSpeed: 15
+  jumpCoyoteTime: 0.14
+  jumpBufferTime: 0.1
+  jumpUpBlockCooldown: 0.4
+  airDensity: 0.05
+  drag: 15
+  friction: 0.3
+  elasticity: 0.2
+  impulseMoveDisableTime: 0
+  impulseMoveDisabledScalar: 0.05
+  mass: 1
 --- !u!114 &903796914586745664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6416,22 +6446,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f040aaa0ede2946a769bea3d71a08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7956153141648168287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ab5a7cea0154354db5611700f98e4d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  remappingMode: 1
-  sourceSkinnedMeshRenderer: {fileID: 2911094191388312299}
-  targetRootBone: {fileID: 6574113612957443555}
-  targetSkinnedMeshRenderers: []
 --- !u!1001 &3212846051738532583
 PrefabInstance:
   m_ObjectHideFlags: 0

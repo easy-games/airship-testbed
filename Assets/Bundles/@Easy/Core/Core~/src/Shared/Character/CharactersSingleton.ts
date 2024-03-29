@@ -4,7 +4,6 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { Controller, OnStart, Service } from "Shared/Flamework";
 import { Player } from "Shared/Player/Player";
 import { NetworkUtil } from "Shared/Util/NetworkUtil";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { Signal, SignalPriority } from "Shared/Util/Signal";
 import { AvatarUtil } from "../Avatar/AvatarUtil";
 import { CoreContext } from "../CoreClientContext";
@@ -44,6 +43,7 @@ export class CharactersSingleton implements OnStart {
 	public allowMidGameOutfitChanges = true;
 
 	private idCounter = 0;
+	private customCharacterTemplate?: GameObject;
 
 	constructor(
 		public readonly localCharacterManager: LocalCharacterSingleton,
@@ -55,7 +55,7 @@ export class CharactersSingleton implements OnStart {
 	OnStart(): void {
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
 		this.itemManager.OnStart();
-		if (RunUtil.IsClient() && !RunUtil.IsServer()) {
+		if (Game.IsClient() && !Game.IsServer()) {
 			task.spawn(() => {
 				const dtos = CoreNetwork.ClientToServer.Character.RequestCharacters.client.FireServer();
 				for (const dto of dtos) {
@@ -68,7 +68,7 @@ export class CharactersSingleton implements OnStart {
 			});
 		}
 
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId, outfitDto) => {
 				const character = this.FindById(characterId);
 				if (!character) return;
@@ -81,7 +81,7 @@ export class CharactersSingleton implements OnStart {
 			});
 		}
 
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			CoreNetwork.ClientToServer.Character.RequestCharacters.server.SetCallback(() => {
 				const characters: CharacterDto[] = [];
 				for (const character of this.characters) {
@@ -103,7 +103,7 @@ export class CharactersSingleton implements OnStart {
 		}
 
 		Airship.damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-			if (RunUtil.IsServer() && Airship.damage.applyKnockback && damageInfo.data["knockback"]) {
+			if (Game.IsServer() && Airship.damage.applyKnockback && damageInfo.data["knockback"]) {
 				const knockback = damageInfo.data["knockback"] as Vector3;
 				const character = damageInfo.gameObject.GetAirshipComponent<Character>();
 				if (character) {
@@ -114,19 +114,19 @@ export class CharactersSingleton implements OnStart {
 
 		Airship.characters.ObserveCharacters((character) => {
 			character.onDeath.ConnectWithPriority(SignalPriority.MONITOR, () => {
-				if (RunUtil.IsServer()) {
+				if (Game.IsServer()) {
 					character.Despawn();
 				}
 			});
 		});
 
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			CoreNetwork.ServerToClient.Character.SetHealth.client.OnServerEvent((id, health) => {
-				if (RunUtil.IsHosting()) return;
+				if (Game.IsHosting()) return;
 				this.FindById(id)?.SetHealth(health);
 			});
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.client.OnServerEvent((id, maxHealth) => {
-				if (RunUtil.IsHosting()) return;
+				if (Game.IsHosting()) return;
 				this.FindById(id)?.SetHealth(maxHealth);
 			});
 		}
@@ -187,13 +187,16 @@ export class CharactersSingleton implements OnStart {
 	}
 
 	public SpawnNonPlayerCharacter(position: Vector3): Character {
-		if (!RunUtil.IsServer()) {
-			error("Player.SpawnChara`cter must be called on the server.");
+		if (!Game.IsServer()) {
+			error("Player.SpawnCharacter must be called on the server.");
 		}
 
-		const go = Object.Instantiate(characterPrefab);
+		const go = Object.Instantiate(this.GetDefaultCharacterTemplate());
 		go.name = `Character`;
-		const characterComponent = go.GetAirshipComponent<Character>()!;
+		const characterComponent = go.GetAirshipComponent<Character>();
+		if (!characterComponent) {
+			error("Trying to spawn a character prefab without a character component on it!");
+		}
 		characterComponent.Init(undefined, Airship.characters.MakeNewId(), undefined);
 		go.transform.position = position;
 		NetworkUtil.Spawn(go);
@@ -271,7 +274,7 @@ export class CharactersSingleton implements OnStart {
 	public RegisterCharacter(character: Character): void {
 		this.characters.add(character);
 
-		if (RunUtil.IsServer() && character.player) {
+		if (Game.IsServer() && character.player) {
 			// Custom move command data handling:
 			const customDataConn = character.movement.OnDispatchCustomData((tick, customData) => {
 				const allData = customData.Decode() as { key: string; value: unknown }[];
@@ -287,7 +290,7 @@ export class CharactersSingleton implements OnStart {
 			});
 		}
 
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.Character.Spawn.server.FireAllClients({
 				id: character.id,
 				objectId: character.networkObject.ObjectId,
@@ -308,5 +311,13 @@ export class CharactersSingleton implements OnStart {
 	public MakeNewId(): number {
 		this.idCounter++;
 		return this.idCounter;
+	}
+
+	public SetDefaultCharacterPrefab(prefabTemplate: GameObject | undefined) {
+		this.customCharacterTemplate = prefabTemplate;
+	}
+
+	public GetDefaultCharacterTemplate() {
+		return this.customCharacterTemplate === undefined ? characterPrefab : this.customCharacterTemplate;
 	}
 }

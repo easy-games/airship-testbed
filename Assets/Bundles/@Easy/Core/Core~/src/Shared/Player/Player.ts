@@ -13,7 +13,6 @@ import { NetworkUtil } from "Shared/Util/NetworkUtil";
 import { OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
-import { RunUtil } from "../Util/RunUtil";
 import { Signal } from "../Util/Signal";
 
 export interface PlayerDto {
@@ -24,8 +23,6 @@ export interface PlayerDto {
 	usernameTag: string;
 	teamId: string | undefined;
 }
-
-const characterPrefab = AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Character/AirshipCharacter.prefab");
 
 export class Player {
 	/**
@@ -110,13 +107,19 @@ export class Player {
 		position: Vector3,
 		config?: {
 			lookDirection?: Vector3;
+			customCharacterTemplate?: GameObject;
 		},
 	): Character {
-		if (!RunUtil.IsServer()) {
+		if (!Game.IsServer()) {
 			error("Player.SpawnCharacter must be called on the server.");
 		}
 
-		const go = Object.Instantiate(characterPrefab);
+		//Spawn with the custom character template or get the global character template
+		const go = Object.Instantiate(
+			config?.customCharacterTemplate
+				? config.customCharacterTemplate
+				: Airship.characters.GetDefaultCharacterTemplate(),
+		);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
 
@@ -126,7 +129,7 @@ export class Player {
 				let startTime = Time.time;
 				this.WaitForOutfitLoaded();
 				if (characterComponent.IsAlive()) {
-					if (RunUtil.IsInternal()) {
+					if (Game.IsInternal()) {
 						let diff = Time.time - startTime;
 						if (diff > 0) {
 							print("Waited " + math.floor(diff * 1000) + " ms for outfit.");
@@ -180,7 +183,7 @@ export class Player {
 	}
 
 	public SendMessage(message: string, sender?: Player): void {
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message);
 		} else {
 			Dependency<ChatController>().RenderChatMessage(message);
@@ -189,7 +192,7 @@ export class Player {
 
 	/** Is player friends with the local player? */
 	public IsFriend(): boolean {
-		if (RunUtil.IsClient()) {
+		if (Game.IsClient()) {
 			return Dependency<FriendsController>().friends.find((u) => u.uid === this.userId) !== undefined;
 		}
 		return false;
@@ -231,7 +234,7 @@ export class Player {
 	}
 
 	public IsLocalPlayer(): boolean {
-		return RunUtil.IsClient() && Game.localPlayer === this;
+		return Game.IsClient() && Game.localPlayer === this;
 	}
 
 	/**

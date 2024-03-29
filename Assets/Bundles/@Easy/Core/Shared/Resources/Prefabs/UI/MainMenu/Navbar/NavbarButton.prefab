@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3037290176941640421}
   - component: {fileID: 2937145715476943702}
   - component: {fileID: 4077376268072096042}
+  - component: {fileID: 146702530692072884}
   m_Layer: 0
   m_Name: NavbarButton
   m_TagString: Untagged
@@ -120,6 +121,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MainMenuNavButton
+    decorators: []
     properties:
     - name: selected
       type: boolean
@@ -191,6 +193,7 @@ MonoBehaviour:
       serializedValue: '{"r":0.3490196168422699,"g":0.3529411852359772,"b":0.3529411852359772,"a":0.0}'
       serializedObject: {fileID: 0}
       modified: 1
+    displayName: 
 --- !u!114 &8443160194368119045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +311,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: AirshipButton
+    decorators: []
     properties:
     - name: clickType
       type: number
@@ -364,6 +368,21 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 
+--- !u!114 &146702530692072884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451472323512772192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDragging: 0
+  redirectTarget: {fileID: 0}
 --- !u!1 &2344376568846472764
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +444,7 @@ MonoBehaviour:
   m_Color: {r: 0.84705883, g: 0.84705883, b: 0.84705883, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

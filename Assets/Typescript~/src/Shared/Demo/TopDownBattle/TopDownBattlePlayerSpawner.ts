@@ -1,20 +1,23 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 
-export default class LibonatiManager extends AirshipBehaviour {
+export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
+	@Header("Templates")
+	public characterOutfit!: AccessoryOutfit;
+
+	@Header("References")
 	public spawnPosition!: GameObject;
-	public outfitPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/Blacksmith/BlacksmithSet.asset";
 
 	private bin = new Bin();
 
 	public override Awake(): void {}
 
 	override Start(): void {
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnCharacter(player);
 			});
@@ -27,20 +30,27 @@ export default class LibonatiManager extends AirshipBehaviour {
 				}),
 			);
 		}
-		if (RunUtil.IsClient()) {
-			//Airship.characters.localCharacterManager.SetCharacterCameraMode(CharacterCameraMode.Locked);
-			//Airship.characters.localCharacterManager.SetFirstPerson(true);
+		if (Game.IsClient()) {
+			Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
+				event.jump = false;
+				event.sprinting = false;
+			});
+
+			Airship.characters.ObserveCharacters((character) => {
+				CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId) => {
+					if (character.id === characterId) {
+						character.accessoryBuilder.EquipAccessoryOutfit(this.characterOutfit, true);
+					}
+				});
+			});
+
 			Airship.loadingScreen.FinishLoading();
 		}
 	}
 
 	public SpawnCharacter(player: Player): void {
 		const char = player.SpawnCharacter(this.spawnPosition.transform.position);
-		char.inventory?.AddItem(new ItemStack("WoodSword", -1));
-		char.accessoryBuilder.EquipAccessoryOutfit(
-			AssetBridge.Instance.LoadAsset<AccessoryOutfit>(this.outfitPath),
-			true,
-		);
+		//char.inventory?.AddItem(new ItemStack("WoodSword", -1));
 	}
 
 	override OnDestroy(): void {
