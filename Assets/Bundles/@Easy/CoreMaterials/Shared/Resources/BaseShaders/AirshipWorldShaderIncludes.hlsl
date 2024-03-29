@@ -52,7 +52,7 @@
 
     half _TriplanarScale;
 
-    static const float maxMips = 8;//This is how many miplevels the cubemaps have
+    static const float maxMips = 12;//This is how many miplevels the cubemaps have
 
     struct Attributes
     {
@@ -362,15 +362,14 @@
 
         half3 textureNormal;
         half3 worldNormal;
-        half4 skyboxSample;
-
+        
         half metallicLevel;
         half roughnessLevel;
         half emissiveLevel = 0;
         half4 reflectedCubeSample;
         half3 worldReflect;
         half alpha = _Alpha;
-
+     
         half3 viewVector = _WorldSpaceCameraPos.xyz - input.worldPos;
         float viewDistance = length(viewVector);
         half3 viewDirection = normalize(viewVector);
@@ -395,9 +394,9 @@
     #endif
         alpha = texSample.a * _Alpha;
 
-        //worldNormal = (worldNormal); //Normalize?
+        worldNormal = normalize(worldNormal); //Normalize?
         worldReflect = reflect(-viewDirection, worldNormal);
-
+        
         //Note to self: should try and sample reflectedCubeSample as early as possible
         roughnessLevel = max(roughSample.r, 0.04);
         metallicLevel = metalSample.r;
@@ -442,23 +441,20 @@
         metallicLevel = lerp(_MetalOverride, metallicLevel, _SliderOverrideMix);
         roughnessLevel = lerp(_RoughOverride, roughnessLevel, _SliderOverrideMix);
         roughnessLevel = max(roughnessLevel, 0.04);
+        
 #endif
         reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));
-        skyboxSample = texCUBE(_CubeTex, -viewDirection);
-
+        
         half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
-
+        
         //Shadows and light masks
 #if SHADOWS_ON        
         half sunShadowMask = GetShadow(input.shadowCasterPos0, input.shadowCasterPos1, worldNormal, globalSunDirection);
 #else
         half sunShadowMask = 0;
 #endif
-        //sunShadowMask = sunShadowMask *.8 + .2;//Never have shadows go full black
-        half pointLight0Mask = 1;
-        half pointLight1Mask = 1;
-        half ambientOcclusionMask = 1;
-
+       
+        
         //Sun
         half RoL = max(0, dot(worldReflect, -globalSunDirection));
         half NoV = max(dot(viewDirection, worldNormal), 0);
@@ -468,60 +464,70 @@
         //If you want to use half lambert
         //NoL = saturate((NoL + 1)*.5);
         /////////////////////////////////////////////////////
-
-        half3 textureColor = texSample.xyz;
- 
+                
+        half3 albedo = texSample.xyz * input.baseColor.rgb;
+  
         //Specular
+        half3 imageSpecular = reflectedCubeSample.xyz;
         half3 specularColor;
         half3 diffuseColor;
         half dielectricSpecular = 0.08 * 0.3; //0.3 is the industry standard
-        diffuseColor = textureColor -textureColor * metallicLevel;	// 1 mad
-        specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + textureColor * metallicLevel;	// 2 mad
-        specularColor = EnvBRDFApprox(specularColor * _SpecularColor, roughnessLevel, NoV);
+        diffuseColor = albedo - albedo * metallicLevel;	 
+        specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;
+        specularColor = EnvBRDFApprox(specularColor, roughnessLevel, NoV) * _SpecularColor;
+
+        //modify the albedo now
+        //albedo = lerp(imageSpecular, albedo, roughnessLevel);
         /*//Alternate material for when metal is totally ignored
-            diffuseColor = textureColor;
+            diffuseColor = albedo;
             half specLevel = EnvBRDFApproxNonmetal(roughnessLevel, NoV);
             specularColor = half3(specLevel, specLevel, specLevel);
         */
-        half3 imageSpecular = reflectedCubeSample.xyz;
+      
 
         //Start compositing it all now
         half3 finalColor = half3(0, 0, 0);
         half3 sunIntensity = half3(0, 0, 0);
          
         //Direct sun + specular
-    
-        //Image based lighting term
         half3 sunColor = (globalSunColor * globalSunBrightness);
 
         //Sun Term
         half3 sunShine = (sunColor * NoL);
-
+ 
         //Sun Specular
-        half3 sunSpecular = specularColor * PhongApprox(roughnessLevel, RoL);
-        //Sun Rim
-        half3 sunRim = (NoL * imageSpecular * specularColor);
+        half res = PhongApprox(roughnessLevel, RoL) * globalSunBrightness;
+    
+        half3 sunSpecular = specularColor * res;
+        
         //Final sun term
-        half3 sunComposite = sunShine * (diffuseColor * input.baseColor) + ((sunSpecular + sunRim) * globalSunBrightness);
+        half3 sunComposite = (sunShine * diffuseColor) + (sunSpecular);
         //Mask the sun based on the shadows
         half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
-
+        
         //SH ambient
-        half3 ambientLight = (complexAmbientSample * globalAmbientTint * diffuseColor);
+        half3 ambientLight = (complexAmbientSample * globalAmbientTint * albedo);
         
         //If we're using separate shadow tints NPR
 #ifdef USE_SHADOW_COLOR_ON
-        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * input.baseColor.rgb), sunShadowMask);
+        half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * albedo), sunShadowMask);
 #else
-        half3 finalAmbient = ambientLight * input.baseColor.rgb;
+        half3 finalAmbient = ambientLight * albedo;
 #endif
 
-        finalColor = finalSun + finalAmbient;
+        //Sun Rim
+        half3 sunRim = ((1 - NoV) * imageSpecular * specularColor);
 
+        
+        finalColor = finalSun + finalAmbient + sunRim;
+
+        //finalColor = diffuseColor;
+        //@@
+        //finalColor = reflectedCubeSample;// sunComposite + sunRim;
+        
+  
 
         //Start messing with the final color in fun ways
-        //Ambient occlusion term
-        finalColor *= ambientOcclusionMask;
         
         //Do point lighting
         finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
@@ -533,10 +539,13 @@
         //Mix in fog
 		finalColor = CalculateAtmosphericFog(finalColor, viewDistance);
 
+        //Final color 
+        half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * alpha;
+
 #ifdef EMISSIVE_ON
         if (emissiveLevel > 0)
         {
-            float3 colorMix = lerp(finalColor, textureColor.rgb * input.baseColor.rgb, _EmissiveMix);
+            float3 colorMix = lerp(finalColor, albedo, _EmissiveMix);
             MRT0 = half4(colorMix.r, colorMix.g, colorMix.b, alpha);
 
             float3 emissiveMix = lerp(diffuseColor.rgb, _EmissiveColor.rgb, _EmissiveMix);
@@ -545,12 +554,9 @@
         else
         {
             MRT0 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
-
-            //Choose emissive based on brightness values
-            half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * (1 - roughnessLevel) * alpha;
-
+ 
             ///if (brightness > globalSunBrightness + globalAmbientBrightness)
-            if (brightness > 0.95)
+            if (brightness > 2)
             {
                 MRT1 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
             }
@@ -564,10 +570,10 @@
         MRT0 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
 
         //Choose emissive based on brightness values
-        half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * (1 - roughnessLevel) * alpha;
-
+        //half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * (1 - roughnessLevel) * alpha;
+      
         ///if (brightness > globalSunBrightness + globalAmbientBrightness)
-        if (brightness > 0.85)
+        if (brightness > 2)
         {
             MRT1 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
         }
