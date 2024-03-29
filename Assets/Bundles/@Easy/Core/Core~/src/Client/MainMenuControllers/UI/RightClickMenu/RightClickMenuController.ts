@@ -1,4 +1,5 @@
 import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
+import { Game } from "@Easy/Core/Shared/Game";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import { Controller, OnStart } from "Shared/Flamework";
@@ -81,12 +82,14 @@ export class RightClickMenuController implements OnStart {
 					this.currentBin.Clean();
 				}),
 			);
-			this.currentBin.AddEngineEventConnection(
-				CanvasAPI.OnHoverEvent(buttonGo, (hoverState) => {
-					btnImage.color = hoverState === HoverState.ENTER ? Theme.primary : new Color(0, 0, 0, 0);
-					text.color = hoverState === HoverState.ENTER ? Theme.white : ColorUtil.HexToColor("#B2B2B2");
-				}),
-			);
+			if (!Game.IsMobile()) {
+				this.currentBin.AddEngineEventConnection(
+					CanvasAPI.OnHoverEvent(buttonGo, (hoverState) => {
+						btnImage.color = hoverState === HoverState.ENTER ? Theme.primary : new Color(0, 0, 0, 0);
+						text.color = hoverState === HoverState.ENTER ? Theme.white : ColorUtil.HexToColor("#B2B2B2");
+					}),
+				);
+			}
 		}
 
 		const mouse = new Mouse();
