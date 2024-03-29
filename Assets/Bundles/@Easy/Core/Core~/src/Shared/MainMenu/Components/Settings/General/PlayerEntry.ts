@@ -17,7 +17,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public Init(player: Player): void {
 		task.spawn(() => {
-			const profileSprite = Airship.players.CreateProfilePictureSpriteAsync(player.userId);
+			const profileSprite = Airship.players.GetProfilePictureSpriteAsync(player.userId);
 			if (profileSprite) {
 				this.profileImage.sprite = profileSprite;
 			}

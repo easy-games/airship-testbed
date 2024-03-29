@@ -328,7 +328,7 @@ export class DirectMessageController implements OnStart {
 		if (isParty && !outgoing) {
 			const content = messageGo.transform.GetChild(0);
 			const profilePictureGo = content.GetChild(0).gameObject;
-			const profilePicSprite = Airship.players.CreateProfilePictureSpriteAsync(dm.sender);
+			const profilePicSprite = Airship.players.GetProfilePictureSpriteAsync(dm.sender);
 			if (profilePicSprite) {
 				profilePictureGo.GetComponent<Image>().sprite = profilePicSprite;
 			}

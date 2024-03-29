@@ -38,6 +38,7 @@ export class PlayersSingleton implements OnStart {
 
 	private playersPendingReady = new Map<number, Player>();
 
+	private cachedProfilePictureTextures = new Map<string, Texture2D>();
 	private cachedProfilePictureSprite = new Map<string, Sprite>();
 
 	private outfitFetchTime = new Map<string, number>();
@@ -492,9 +493,9 @@ export class PlayersSingleton implements OnStart {
 	 * @returns
 	 */
 	private pictureIndex = 0;
-	public CreateProfilePictureSpriteAsync(userId: string): Sprite | undefined {
-		if (this.cachedProfilePictureSprite.has(userId)) {
-			return this.cachedProfilePictureSprite.get(userId);
+	public GetProfilePictureTextureAsync(userId: string): Texture2D | undefined {
+		if (this.cachedProfilePictureTextures.has(userId)) {
+			return this.cachedProfilePictureTextures.get(userId);
 		}
 
 		let pictures = [
@@ -515,6 +516,19 @@ export class PlayersSingleton implements OnStart {
 		let index = this.pictureIndex++ % pictures.size();
 		let path = pictures[index];
 		const texture = AssetCache.LoadAssetIfExists<Texture2D>(path);
+		return texture;
+	}
+
+	/**
+	 * **MAY YIELD**
+	 * @param userId
+	 * @returns
+	 */
+	public GetProfilePictureSpriteAsync(userId: string): Sprite | undefined {
+		if (this.cachedProfilePictureSprite.has(userId)) {
+			return this.cachedProfilePictureSprite.get(userId);
+		}
+		const texture = this.GetProfilePictureTextureAsync(userId);
 		if (texture !== undefined) {
 			const sprite = Bridge.MakeSprite(texture);
 			this.cachedProfilePictureSprite.set(userId, sprite);

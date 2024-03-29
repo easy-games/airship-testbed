@@ -1,8 +1,9 @@
+import MainMenuPageComponent from "@Easy/Core/Client/MainMenuControllers/MainMenuPageComponent";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 
-export default class SettingsPage extends AirshipBehaviour {
+export default class SettingsPage extends MainMenuPageComponent {
 	public sidebar!: RectTransform;
 	public tabs!: RectTransform;
 
@@ -17,15 +18,15 @@ export default class SettingsPage extends AirshipBehaviour {
 			mainMenu.ObserveScreenSize((size) => {
 				if (size === "sm") {
 					this.sidebar.gameObject.SetActive(false);
-					this.tabs.offsetMax = new Vector2(-10, this.tabs.offsetMax.y);
+					this.tabs.offsetMax = new Vector2(-10, -7);
 					this.tabs.offsetMin = new Vector2(10, 0);
 					// rect.offsetMax = new Vector2(rect.offsetMax.x, 40);
 					// rect.offsetMin = new Vector2(rect.offsetMin.x, 0);
 					print("updated friends rect!");
 
-					for (let page of this.mobilePages) {
-						page.gameObject.SetActive(true);
-					}
+					// for (let page of this.mobilePages) {
+					// 	page.gameObject.SetActive(true);
+					// }
 
 					// const navbarDisc = mainMenu.navbarModifier.Add({ hidden: true });
 					// this.bin.Add(navbarDisc);

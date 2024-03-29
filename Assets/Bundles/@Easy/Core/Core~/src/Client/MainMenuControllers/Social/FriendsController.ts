@@ -121,7 +121,7 @@ export class FriendsController implements OnStart {
 
 				this.socialNotification.usernameText.text = foundUser.username;
 
-				const sprite = Airship.players.CreateProfilePictureSpriteAsync(foundUser.uid);
+				const sprite = Airship.players.GetProfilePictureSpriteAsync(foundUser.uid);
 				if (sprite) {
 					this.socialNotification.userImage.sprite = sprite;
 				}
@@ -551,7 +551,7 @@ export class FriendsController implements OnStart {
 			);
 			if (texture !== undefined) {
 				task.spawn(() => {
-					const sprite = Airship.players.CreateProfilePictureSpriteAsync(friend.userId);
+					const sprite = Airship.players.GetProfilePictureSpriteAsync(friend.userId);
 					if (sprite) {
 						profileImage.sprite = sprite;
 					}
