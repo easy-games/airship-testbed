@@ -104,19 +104,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - materialColor: {r: 0.8396226, g: 0.6327198, b: 0, a: 1}
+  - materialColor: {r: 0.9245283, g: 0.8046421, b: 0.44045925, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.7169812, g: 0.6657103, b: 0.5512638, a: 1}
+  - materialColor: {r: 0.9245283, g: 0.8853833, b: 0.7980598, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.4716981, g: 0.34394148, b: 0.2247241, a: 1}
+  - materialColor: {r: 0.7169812, g: 0.5984506, b: 0.4836241, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   - materialColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
-  - materialColor: {r: 0.3018868, g: 0.22278813, b: 0.16375935, a: 1}
+  - materialColor: {r: 0.6320754, g: 0.5349641, b: 0.46213064, a: 1}
     emissiveColor: {r: 1, g: 1, b: 1, a: 1}
     emissiveMix: 1
   addedByEditorScript: 0
