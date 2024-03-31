@@ -12,6 +12,7 @@ export class MainMenuSingleton implements OnStart {
 	public screenSize!: Vector2;
 
 	public navbarModifier = new Modifier<{ hidden: boolean }>();
+	public socialMenuModifier = new Modifier<{ hidden: boolean }>();
 
 	constructor() {
 		this.screenSize = new Vector2(Screen.width, Screen.height);

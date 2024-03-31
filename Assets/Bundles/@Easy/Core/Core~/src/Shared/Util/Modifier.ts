@@ -35,6 +35,12 @@ export class Modifier<T extends defined> {
 		};
 	}
 
+	public GetTickets() {
+		const valueList: T[] = [];
+		this.tickets.forEach((t) => valueList.push(t.value));
+		return valueList;
+	}
+
 	/** Trigger all observers when we make a change to the tickets */
 	private TriggerObservers() {
 		const valueList: T[] = [];

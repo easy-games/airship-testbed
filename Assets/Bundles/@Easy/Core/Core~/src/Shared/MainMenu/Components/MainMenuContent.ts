@@ -37,6 +37,17 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.navbar.gameObject.SetActive(!shouldBeHidden);
 			}),
 		);
+
+		let firstSocialChange = true;
+		this.bin.Add(
+			this.mainMenu.socialMenuModifier.Observe((tickets) => {
+				if (firstSocialChange) {
+					firstSocialChange = false;
+					return;
+				}
+				this.CalcLayout();
+			}),
+		);
 	}
 
 	public Update(dt: number): void {
@@ -134,15 +145,22 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.socialMenu.sizeDelta = new Vector2(301, screenSize.y - 50);
 			this.socialMenu.SetParent(this.gameObject.transform);
 
+			let socialMenuHidden = Dependency<MainMenuSingleton>()
+				.socialMenuModifier.GetTickets()
+				.some((v) => v.hidden);
+
 			if (sizeType === "lg") {
 				this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.contentWrapper.pivot = new Vector2(0.5, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(-150, -67);
-				this.contentWrapper.sizeDelta = new Vector2(math.min(screenSize.x - 400, 1050), screenSize.y - 67);
+				this.contentWrapper.anchoredPosition = new Vector2(socialMenuHidden ? 0 : -150, -67);
+				this.contentWrapper.sizeDelta = new Vector2(
+					math.min(screenSize.x - 400, 1050) + (socialMenuHidden ? 300 : 0),
+					screenSize.y - 67,
+				);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
-					this.contentWrapper.sizeDelta.x + 40 + 301,
+					math.min(screenSize.x - 400, 1050) + 40 + 301,
 					this.navbarContentWrapper.sizeDelta.y,
 				);
 				this.navbarContentWrapper.anchorMin = new Vector2(0.5, 1);
@@ -154,10 +172,13 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
 				this.contentWrapper.pivot = new Vector2(0, 1);
 				this.contentWrapper.anchoredPosition = new Vector2(25, -67);
-				this.contentWrapper.sizeDelta = new Vector2(screenSize.x - 400, screenSize.y - 67);
+				this.contentWrapper.sizeDelta = new Vector2(
+					screenSize.x + (socialMenuHidden ? -100 : -400),
+					screenSize.y - 67,
+				);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
-					this.contentWrapper.sizeDelta.x + 40 + 301,
+					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 41 : 341),
 					this.navbarContentWrapper.sizeDelta.y,
 				);
 				this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
@@ -187,6 +208,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 						43,
 				);
 			}
+			this.socialMenu.gameObject.SetActive(!socialMenuHidden);
 
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, 0);

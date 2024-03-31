@@ -227,6 +227,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OpenPage(): void {
 		super.OpenPage();
 
+		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
+
 		if (Game.IsPortrait()) {
 			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
 			this.avatarOptionsHolder.gameObject.SetActive(false);
