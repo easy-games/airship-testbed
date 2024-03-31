@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 16
+  radius: 20
   image: {fileID: 7456303551240248902}
 --- !u!114 &7456303551240248902
 MonoBehaviour:

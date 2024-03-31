@@ -9,6 +9,7 @@ import { ScreenSizeType } from "../Singletons/ScreenSizeType";
 export default class MainMenuContent extends AirshipBehaviour {
 	public canvasRect!: RectTransform;
 	public canvasScalar!: CanvasScaler;
+	public mobileOverlayCanvasScalar?: CanvasScaler;
 	public contentWrapper!: RectTransform;
 	public socialMenu!: RectTransform;
 	public friendsPage!: RectTransform;
