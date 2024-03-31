@@ -27,7 +27,7 @@ export default class Navbar extends AirshipBehaviour {
 				// 	this.runningGameBtn.SetSiblingIndex(0);
 				// }
 
-				if (Game.IsLandscape() && st === "sm") {
+				if (Game.IsLandscape() && st === "sm" && Game.coreContext === CoreContext.GAME) {
 					rect.offsetMin = new Vector2(46, rect.offsetMin.y);
 					this.rightLayoutGroup.padding.right = 55;
 					Bridge.UpdateLayout(this.rightLayoutGroup.transform, false);

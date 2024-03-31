@@ -126,11 +126,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.searchFocused.offsetMax = new Vector2(-15, -Game.GetNotchHeight() - 15);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
-			if (Game.IsMobile()) {
-				this.canvasScalar.matchWidthOrHeight = 0;
-			} else {
-				this.canvasScalar.matchWidthOrHeight = 1;
-			}
+			// Landscape
 			this.socialMenu.gameObject.SetActive(true);
 			this.socialMenu.anchorMin = new Vector2(0, 1);
 			this.socialMenu.anchorMax = new Vector2(0, 1);
@@ -138,8 +134,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.socialMenu.sizeDelta = new Vector2(301, screenSize.y - 50);
 			this.socialMenu.SetParent(this.gameObject.transform);
 
-			// Landscape
-			// this.canvasScalar.referenceResolution = new Vector2(1920, 1080);
 			if (sizeType === "lg") {
 				this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
@@ -159,7 +153,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.anchorMin = new Vector2(0, 1);
 				this.contentWrapper.anchorMax = new Vector2(0, 1);
 				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(50, -67);
+				this.contentWrapper.anchoredPosition = new Vector2(25, -67);
 				this.contentWrapper.sizeDelta = new Vector2(screenSize.x - 400, screenSize.y - 67);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
@@ -169,12 +163,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
 				this.navbarContentWrapper.anchorMax = new Vector2(0, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0, 1);
-				this.navbarContentWrapper.anchoredPosition = new Vector2(50, 0);
+				this.navbarContentWrapper.anchoredPosition = new Vector2(25, 0);
 			}
 			this.navbar.anchoredPosition = new Vector2(0, 0);
-			// for (let tab of this.navbarTabs) {
-			// 	tab.gameObject.SetActive(true);
-			// }
 
 			if (sizeType === "lg") {
 				this.socialMenu.anchorMin = new Vector2(0, 1);
@@ -190,8 +181,10 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.socialMenu.anchorMax = new Vector2(1, 1);
 				this.socialMenu.pivot = new Vector2(1, 1);
 				this.socialMenu.anchoredPosition = new Vector2(
-					-10,
-					this.contentWrapper.anchoredPosition.y + (Game.IsMobile() ? 35 : -43) - 43,
+					-30,
+					this.contentWrapper.anchoredPosition.y +
+						(Game.deviceType === AirshipDeviceType.Phone ? -53 : 0) -
+						43,
 				);
 			}
 
