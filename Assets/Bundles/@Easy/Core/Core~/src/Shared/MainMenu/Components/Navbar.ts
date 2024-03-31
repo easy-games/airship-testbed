@@ -32,7 +32,8 @@ export default class Navbar extends AirshipBehaviour {
 					this.rightLayoutGroup.padding.right = 55;
 					Bridge.UpdateLayout(this.rightLayoutGroup.transform, false);
 				} else {
-					rect.offsetMin = new Vector2(0, rect.offsetMin.y);
+					rect.offsetMin = new Vector2(15, rect.offsetMin.y);
+					rect.offsetMax = new Vector2(-15, rect.offsetMax.y);
 					this.rightLayoutGroup.padding.right = 0;
 				}
 

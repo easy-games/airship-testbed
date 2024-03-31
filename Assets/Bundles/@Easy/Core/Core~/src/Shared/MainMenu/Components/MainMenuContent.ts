@@ -119,8 +119,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, -69);
-			this.navbar.offsetMin = new Vector2(15, this.navbar.offsetMin.y);
-			this.navbar.offsetMax = new Vector2(-15, this.navbar.offsetMax.y);
 			this.navbar.anchoredPosition = new Vector2(0, -Game.GetNotchHeight());
 			for (let tab of this.navbarTabs) {
 				tab.gameObject.SetActive(false);
@@ -132,7 +130,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.offsetMax = new Vector2(0, 65);
 			this.navbarContentWrapper.offsetMin = new Vector2(0, 0);
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
-			this.navbarRight.offsetMin = new Vector2(0, this.navbarRight.offsetMin.y);
+			this.navbarRight.offsetMin = new Vector2(-250, this.navbarRight.offsetMin.y);
 
 			this.searchFocused.offsetMin = new Vector2(15, 0);
 			this.searchFocused.offsetMax = new Vector2(-15, -Game.GetNotchHeight() - 15);
