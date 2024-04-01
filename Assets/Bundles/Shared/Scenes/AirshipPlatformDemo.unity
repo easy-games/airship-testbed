@@ -2285,12 +2285,12 @@ MonoBehaviour:
   _negativeSunDirectionNormalized: {x: -0.5996252, y: 0.6834144, z: 0.41640636}
   _sunDirectionNormalized: {x: 0.5996252, y: -0.6834144, z: -0.41640636}
   _sunDirection: {x: 0.72, y: -0.8206099, z: -0.5}
-  sunBrightness: 0.59
-  sunShadow: 0.215
+  sunBrightness: 0.673
+  sunShadow: 0.219
   sunColor: {r: 0.9823206, g: 1, b: 0.8066038, a: 1}
   skySaturation: 0.3
-  globalAmbientLight: {r: 1, g: 0.8915094, b: 0.9199557, a: 1}
-  globalAmbientBrightness: 0.578
+  globalAmbientLight: {r: 0.9716981, g: 0.91211283, b: 0.9291372, a: 1}
+  globalAmbientBrightness: 0.754
   globalAmbientOcclusion: 0.25
   fogEnabled: 1
   fogStart: 10

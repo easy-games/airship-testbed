@@ -4,7 +4,6 @@ import { Game } from "../../Game";
 import { CoreLogger } from "../../Logger/CoreLogger";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
-import { ScreenSizeType } from "../Singletons/ScreenSizeType";
 
 export default class MainMenuContent extends AirshipBehaviour {
 	public canvasRect!: RectTransform;
@@ -30,7 +29,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 	override Start(): void {
 		this.mainMenu = Dependency<MainMenuSingleton>();
-		this.CalcLayout();
 
 		this.bin.Add(
 			this.mainMenu.navbarModifier.Observe((tickets) => {
@@ -49,41 +47,19 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.CalcLayout();
 			}),
 		);
-	}
 
-	public Update(dt: number): void {
-		if (this.canvasRect.sizeDelta !== this.mainMenu.screenSize) {
-			this.mainMenu.screenSize = this.canvasRect.sizeDelta;
-			this.CalcLayout();
-			this.mainMenu.onSizeChanged.Fire(this.mainMenu.sizeType, this.mainMenu.screenSize);
-		}
+		this.bin.Add(
+			this.mainMenu.ObserveScreenSize((st, size) => {
+				this.CalcLayout();
+			}),
+		);
 	}
 
 	public CalcLayout(): void {
 		const screenSize = this.mainMenu.screenSize;
 
-		if (Game.IsMobile()) {
-			this.canvasScalar.scaleFactor = Screen.dpi / 180;
-		} else if (Screen.dpi >= 255) {
-			this.canvasScalar.scaleFactor = 1.75;
-		} else {
-			this.canvasScalar.scaleFactor = 1;
-		}
-		const scaleFactor = this.canvasScalar.scaleFactor;
-
-		let sizeType: ScreenSizeType = "md";
-		if (Game.IsPortrait()) {
-			if (screenSize.x < 500) {
-				sizeType = "sm";
-			}
-		} else {
-			if (screenSize.x <= 1200) {
-				sizeType = "sm";
-			} else if (screenSize.x >= 1760) {
-				sizeType = "lg";
-			}
-		}
-		this.mainMenu.sizeType = sizeType;
+		const scaleFactor = Game.GetScaleFactor();
+		this.canvasScalar.scaleFactor = scaleFactor;
 
 		if (Game.coreContext === CoreContext.MAIN_MENU) {
 			if (Game.deviceType === AirshipDeviceType.Phone) {
@@ -96,7 +72,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		}
 
 		CoreLogger.Log(
-			`screenSize.x: ${screenSize.x}, sizetype: ${sizeType}, scaleFactor: ${this.canvasScalar.scaleFactor}, portrait: ${Game.IsPortrait()}`,
+			`screenSize.x: ${screenSize.x}, sizetype: ${this.mainMenu.sizeType}, scaleFactor: ${this.canvasScalar.scaleFactor}, portrait: ${Game.IsPortrait()}`,
 		);
 		// CoreLogger.Log("dpi: " + Screen.dpi);
 		// CoreLogger.Log("resolution: " + Screen.currentResolution.width + ", " + Screen.currentResolution.height);
@@ -146,7 +122,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				.socialMenuModifier.GetTickets()
 				.some((v) => v.hidden);
 
-			if (sizeType === "lg") {
+			if (this.mainMenu.sizeType === "lg") {
 				this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.contentWrapper.pivot = new Vector2(0.5, 1);
@@ -185,7 +161,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			}
 			// this.navbar.anchoredPosition = new Vector2(0, 0);
 
-			if (sizeType === "lg") {
+			if (this.mainMenu.sizeType === "lg") {
 				this.socialMenu.anchorMin = new Vector2(0, 1);
 				this.socialMenu.anchorMax = new Vector2(0, 1);
 				this.socialMenu.pivot = new Vector2(0, 1);
