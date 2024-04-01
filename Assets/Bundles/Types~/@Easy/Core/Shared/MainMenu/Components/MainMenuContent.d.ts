@@ -17,7 +17,6 @@ export default class MainMenuContent extends AirshipBehaviour {
     private mainMenu;
     private bin;
     Start(): void;
-    Update(dt: number): void;
     CalcLayout(): void;
     OnDestroy(): void;
 }

@@ -17139,4 +17139,51 @@ interface DeviceBridgeConstructor {
     OnLoad(): void;
 }
 declare const DeviceBridge: DeviceBridgeConstructor;
+    
+interface Mask extends UIBehaviour, IMaterialModifier, ICanvasRaycastFilter {
+    rectTransform: RectTransform;
+    showMaskGraphic: boolean;
+    graphic: Graphic;
+
+
+    GetModifiedMaterial(baseMaterial: Material): Material;
+    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
+    MaskEnabled(): boolean;
+    OnSiblingGraphicEnabledDisabled(): void;
+
+}
+    
+interface ImageWithRoundedCorners extends MonoBehaviour {
+    radius: number;
+
+
+    Refresh(): void;
+    Validate(): void;
+
+}
+    
+interface ImageWithRoundedCornersConstructor {
+
+    new(): ImageWithRoundedCorners;
+
+
+}
+declare const ImageWithRoundedCorners: ImageWithRoundedCornersConstructor;
+    
+interface ImageWithIndependentRoundedCorners extends MonoBehaviour {
+    r: Vector4;
+
+
+    Refresh(): void;
+    Validate(): void;
+
+}
+    
+interface ImageWithIndependentRoundedCornersConstructor {
+
+    new(): ImageWithIndependentRoundedCorners;
+
+
+}
+declare const ImageWithIndependentRoundedCorners: ImageWithIndependentRoundedCornersConstructor;
 

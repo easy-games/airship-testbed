@@ -1,5 +1,5 @@
 /// <reference types="compiler-types" />
-export default class MobileControlsManager extends AirshipBehaviour {
+export default class MobileOverlayManager extends AirshipBehaviour {
     canvasScalar: CanvasScaler;
     private bin;
     Start(): void;
