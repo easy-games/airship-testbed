@@ -15,6 +15,7 @@ export declare class Game {
     static localPlayerLoaded: boolean;
     static onLocalPlayerLoaded: Signal<void>;
     static onDeviceOrientationChanged: Signal<"landscape" | "portrait">;
+    static readonly deviceType: AirshipDeviceType;
     static WaitForLocalPlayerLoaded(): void;
     static BroadcastMessage(message: string): void;
     static coreContext: CoreContext;
@@ -40,6 +41,11 @@ export declare class Game {
      * To get a certain player's platform, use {@link Player.platform}
      */
     static platform: AirshipPlatform;
+    /**
+     * Returns true if device is a phone or tablet.
+     *
+     * Returns false if on desktop or console.
+     */
     static IsMobile(): boolean;
     static IsClient(): boolean;
     static IsServer(): boolean;
@@ -51,7 +57,6 @@ export declare class Game {
     static IsClone(): boolean;
     static IsWindows(): boolean;
     static IsMac(): boolean;
-    static IsSimulateMobile(): boolean;
     static IsLandscape(): boolean;
     static IsPortrait(): boolean;
     static GetNotchHeight(): number;

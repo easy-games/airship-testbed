@@ -74,6 +74,7 @@ interface CharacterMovement extends Component {
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
+	IsSprinting(): boolean;
 	IsGrounded(): boolean;
 	enabled: boolean;
 

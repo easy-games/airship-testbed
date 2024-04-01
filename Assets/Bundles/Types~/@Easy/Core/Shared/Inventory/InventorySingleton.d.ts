@@ -30,5 +30,7 @@ export declare class InventorySingleton implements OnStart {
     QuickMoveSlot(inv: Inventory, slot: number): void;
     MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount: number): void;
     SetUIEnabled(enabled: boolean): void;
+    SetHealtbarVisible(visible: boolean): void;
+    SetHotbarVisible(visible: boolean): void;
 }
 export {};

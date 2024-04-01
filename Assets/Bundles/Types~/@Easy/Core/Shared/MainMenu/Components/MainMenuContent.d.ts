@@ -2,6 +2,7 @@
 export default class MainMenuContent extends AirshipBehaviour {
     canvasRect: RectTransform;
     canvasScalar: CanvasScaler;
+    mobileOverlayCanvasScalar?: CanvasScaler;
     contentWrapper: RectTransform;
     socialMenu: RectTransform;
     friendsPage: RectTransform;

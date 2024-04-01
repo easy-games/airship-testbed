@@ -28,6 +28,7 @@ export declare class CharactersSingleton implements OnStart {
     autoDespawnCharactersOnPlayerDisconnect: boolean;
     allowMidGameOutfitChanges: boolean;
     private idCounter;
+    private customCharacterTemplate?;
     constructor(localCharacterManager: LocalCharacterSingleton, footsteps: AirshipCharacterFootstepsSingleton);
     OnStart(): void;
     /**
@@ -60,4 +61,6 @@ export declare class CharactersSingleton implements OnStart {
     UnregisterCharacter(character: Character): void;
     GetCharacters(): Set<Character>;
     MakeNewId(): number;
+    SetDefaultCharacterPrefab(prefabTemplate: GameObject | undefined): void;
+    GetDefaultCharacterTemplate(): GameObject;
 }

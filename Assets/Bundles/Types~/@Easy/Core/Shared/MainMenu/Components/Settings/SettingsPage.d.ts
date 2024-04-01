@@ -1,5 +1,5 @@
-/// <reference types="compiler-types" />
-export default class SettingsPage extends AirshipBehaviour {
+import MainMenuPageComponent from "../../../../Client/MainMenuControllers/MainMenuPageComponent";
+export default class SettingsPage extends MainMenuPageComponent {
     sidebar: RectTransform;
     tabs: RectTransform;
     mobilePages: RectTransform[];

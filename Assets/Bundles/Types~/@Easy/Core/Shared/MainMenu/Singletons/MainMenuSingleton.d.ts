@@ -10,6 +10,9 @@ export declare class MainMenuSingleton implements OnStart {
     navbarModifier: Modifier<{
         hidden: boolean;
     }>;
+    socialMenuModifier: Modifier<{
+        hidden: boolean;
+    }>;
     constructor();
     OnStart(): void;
     ObserveScreenSize(observer: (sizeType: ScreenSizeType, size: Vector2) => (() => void) | void): Bin;
