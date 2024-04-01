@@ -3,7 +3,7 @@ import { Game } from "../Game";
 import { MainMenuSingleton } from "../MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "../Util/Bin";
 
-export default class MobileControlsManager extends AirshipBehaviour {
+export default class MobileOverlayManager extends AirshipBehaviour {
 	@Header("References")
 	public canvasScalar!: CanvasScaler;
 

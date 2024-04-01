@@ -44,7 +44,9 @@ export default class SearchFocused extends AirshipBehaviour {
 
 	public OnEnable(): void {
 		const rect = this.transform as RectTransform;
-		rect.offsetMax = new Vector2(0, -Game.GetNotchHeight());
+		if (Game.IsPortrait()) {
+			rect.offsetMax = new Vector2(0, -Game.GetNotchHeight());
+		}
 
 		this.bin.Add(
 			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
@@ -52,7 +54,7 @@ export default class SearchFocused extends AirshipBehaviour {
 					this.content.offsetMin = new Vector2(250, this.content.offsetMin.y);
 					this.content.offsetMax = new Vector2(-180, this.content.offsetMax.y);
 				} else {
-					this.content.offsetMin = new Vector2(0, this.content.offsetMin.y);
+					this.content.offsetMin = new Vector2(Game.IsInGame() ? 50 : 0, this.content.offsetMin.y);
 					this.content.offsetMax = new Vector2(0, this.content.offsetMax.y);
 				}
 			}),

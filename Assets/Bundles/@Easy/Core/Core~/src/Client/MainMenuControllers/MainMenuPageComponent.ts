@@ -34,7 +34,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	 * **DO NOT YIELD INSIDE THIS METHOD**
 	 * @returns
 	 */
-	public OpenPage() {
+	public OpenPage(params?: unknown) {
 		if (this.activePage) {
 			return;
 		}
@@ -43,17 +43,21 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.mainMenu?.avatarView?.HideAvatar();
 
 		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+		const targetY = this.GetTargetAnchoredPositionY();
 		if (this.animateInDuration <= 0 || Game.IsPortrait()) {
-			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, 0);
+			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
 			canvasGroup.alpha = 1;
 		} else {
-			this.gameObject.transform.localPosition = new Vector3(0, -20, 0);
-			this.gameObject
-				.GetComponent<RectTransform>()
-				.TweenLocalPosition(new Vector3(0, 0, 0), this.animateInDuration);
+			const rect = this.transform as RectTransform;
+			rect.anchoredPosition = new Vector2(0, targetY - 20);
+			rect.TweenAnchoredPositionY(targetY, this.animateInDuration);
 			canvasGroup.alpha = 0;
 			canvasGroup.TweenCanvasGroupAlpha(1, this.animateInDuration);
 		}
+	}
+
+	public GetTargetAnchoredPositionY(): number {
+		return 0;
 	}
 
 	public ClosePage(instant = false) {

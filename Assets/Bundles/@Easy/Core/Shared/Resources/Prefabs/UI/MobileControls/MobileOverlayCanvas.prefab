@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MobileControls/MobileControlsManager.lua
+  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MobileControls/MobileOverlayManager.lua
   m_error: 0
   m_yielded: 0
   m_assetPath: 
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_onLateUpdateHandle: -1
   m_shortFileName: 
   m_metadata:
-    name: MobileControlsManager
+    name: MobileOverlayManager
     decorators: []
     properties:
     - name: canvasScalar

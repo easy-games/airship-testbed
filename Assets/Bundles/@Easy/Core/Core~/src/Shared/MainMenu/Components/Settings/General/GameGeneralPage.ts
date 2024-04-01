@@ -1,13 +1,24 @@
+import MainMenuPageComponent from "@Easy/Core/Client/MainMenuControllers/MainMenuPageComponent";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
-export default class GameGeneralPage extends AirshipBehaviour {
+export default class GameGeneralPage extends MainMenuPageComponent {
 	public gameTitle!: TMP_Text;
 	public gameDeveloper!: TMP_Text;
 	public gameDescription!: TMP_Text;
 	public gameImage!: Image;
 	private bin = new Bin();
+
+	public OnEnable(): void {}
+
+	override GetTargetAnchoredPositionY(): number {
+		if (Game.deviceType === AirshipDeviceType.Phone) {
+			return -10;
+		} else {
+			return -95;
+		}
+	}
 
 	override Start(): void {
 		task.spawn(() => {
