@@ -7,6 +7,7 @@ import { CharacterCameraType } from "./CharacterCameraType";
 import { HumanoidCameraMode } from "./DefaultCameraModes/HumanoidCameraMode";
 export declare class AirshipCharacterCameraSingleton implements OnStart {
     static readonly cameraReferenceKey = "CameraRig";
+    canToggleFirstPerson: boolean;
     private lookBackwards;
     /** Fires whenever the user requests to look (or stop looking) backwards. */
     readonly lookBackwardsChanged: Signal<[lookBackwards: boolean]>;
