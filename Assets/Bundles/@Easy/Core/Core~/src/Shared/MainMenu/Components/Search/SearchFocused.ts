@@ -1,5 +1,6 @@
 import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
@@ -7,6 +8,7 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
+import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
@@ -17,6 +19,8 @@ export default class SearchFocused extends AirshipBehaviour {
 	public inputField!: TMP_InputField;
 	public resultsWrapper!: Transform;
 	public background!: GameObject;
+	public cancelButton!: Button;
+	public content!: RectTransform;
 
 	@Header("Prefabs")
 	public gameResultPrefab!: GameObject;
@@ -39,6 +43,21 @@ export default class SearchFocused extends AirshipBehaviour {
 	private bin = new Bin();
 
 	public OnEnable(): void {
+		const rect = this.transform as RectTransform;
+		rect.offsetMax = new Vector2(0, -Game.GetNotchHeight());
+
+		this.bin.Add(
+			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
+				if (st === "lg") {
+					this.content.offsetMin = new Vector2(250, this.content.offsetMin.y);
+					this.content.offsetMax = new Vector2(-180, this.content.offsetMax.y);
+				} else {
+					this.content.offsetMin = new Vector2(0, this.content.offsetMin.y);
+					this.content.offsetMax = new Vector2(0, this.content.offsetMax.y);
+				}
+			}),
+		);
+
 		this.resultsWrapper.gameObject.ClearChildren();
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnValueChangeEvent(this.inputField.gameObject, () => {
@@ -70,6 +89,12 @@ export default class SearchFocused extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.background, () => {
+				AppManager.Close();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.cancelButton.gameObject, () => {
 				AppManager.Close();
 			}),
 		);

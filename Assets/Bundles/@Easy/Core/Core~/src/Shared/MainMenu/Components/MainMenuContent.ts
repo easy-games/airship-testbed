@@ -132,8 +132,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
 			this.navbarRight.offsetMin = new Vector2(-250, this.navbarRight.offsetMin.y);
 
-			this.searchFocused.offsetMin = new Vector2(15, 0);
-			this.searchFocused.offsetMax = new Vector2(-15, -Game.GetNotchHeight() - 15);
 			this.mobileNav.gameObject.SetActive(true);
 		} else {
 			// Landscape
@@ -213,13 +211,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.pages.offsetMax = new Vector2(0, 0);
 			this.navbar.offsetMin = new Vector2(0, this.navbar.offsetMin.y);
 			this.navbar.offsetMax = new Vector2(0, this.navbar.offsetMax.y);
-
-			this.searchFocused.offsetMin = this.navbarContentWrapper.offsetMin;
-			this.searchFocused.offsetMax = this.navbarContentWrapper.offsetMax;
-			this.searchFocused.anchorMax = this.navbarContentWrapper.anchorMax;
-			this.searchFocused.anchorMin = this.navbarContentWrapper.anchorMin;
-			this.searchFocused.pivot = this.navbarContentWrapper.pivot;
-			this.searchFocused.anchoredPosition = this.navbarContentWrapper.anchoredPosition.add(new Vector2(0, -15));
 
 			this.mobileNav.gameObject.SetActive(false);
 		}
