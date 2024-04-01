@@ -12,6 +12,7 @@ export default class Navbar extends AirshipBehaviour {
 	public runningGameBtn!: RectTransform;
 	public myGamesBtn!: RectTransform;
 	public homeBtn!: RectTransform;
+	public settingsBtn!: RectTransform;
 
 	private bin = new Bin();
 
@@ -40,6 +41,9 @@ export default class Navbar extends AirshipBehaviour {
 				if (Game.coreContext === CoreContext.GAME && st === "sm") {
 					this.homeBtn.gameObject.SetActive(false);
 					this.myGamesBtn.gameObject.SetActive(false);
+					this.settingsBtn.gameObject.SetActive(true);
+				} else {
+					this.settingsBtn.gameObject.SetActive(false);
 				}
 			}),
 		);

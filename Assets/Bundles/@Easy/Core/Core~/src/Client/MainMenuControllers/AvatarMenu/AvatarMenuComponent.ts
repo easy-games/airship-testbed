@@ -224,8 +224,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	override OpenPage(): void {
-		super.OpenPage();
+	override OpenPage(params?: unknown): void {
+		super.OpenPage(params);
 
 		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
 

@@ -136,4 +136,12 @@ export class Game {
 		}
 		return 0;
 	}
+
+	/**
+	 * @internal
+	 * @returns
+	 */
+	public static IsInGame(): boolean {
+		return this.coreContext === CoreContext.GAME;
+	}
 }

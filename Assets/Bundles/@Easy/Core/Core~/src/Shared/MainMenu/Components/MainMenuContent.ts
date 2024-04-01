@@ -170,12 +170,12 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.contentWrapper.pivot = new Vector2(0, 1);
 				this.contentWrapper.anchoredPosition = new Vector2(25, -67);
 				this.contentWrapper.sizeDelta = new Vector2(
-					screenSize.x + (socialMenuHidden ? -100 : -400),
+					screenSize.x + (socialMenuHidden ? -100 : -360),
 					screenSize.y - 67,
 				);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
-					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 41 : 341),
+					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 40,
 					this.navbarContentWrapper.sizeDelta.y,
 				);
 				this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
@@ -183,7 +183,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.navbarContentWrapper.pivot = new Vector2(0, 1);
 				this.navbarContentWrapper.anchoredPosition = new Vector2(25, 0);
 			}
-			this.navbar.anchoredPosition = new Vector2(0, 0);
+			// this.navbar.anchoredPosition = new Vector2(0, 0);
 
 			if (sizeType === "lg") {
 				this.socialMenu.anchorMin = new Vector2(0, 1);
@@ -200,17 +200,20 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.socialMenu.pivot = new Vector2(1, 1);
 				this.socialMenu.anchoredPosition = new Vector2(
 					-30,
-					this.contentWrapper.anchoredPosition.y +
-						(Game.deviceType === AirshipDeviceType.Phone ? -53 : 0) -
-						43,
+					this.contentWrapper.anchoredPosition.y + (Game.deviceType === AirshipDeviceType.Phone ? -8 : -43),
 				);
 			}
 			this.socialMenu.gameObject.SetActive(!socialMenuHidden);
 
-			this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
+			// this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);
 			this.pages.offsetMax = new Vector2(0, 0);
-			this.navbar.offsetMin = new Vector2(0, this.navbar.offsetMin.y);
-			this.navbar.offsetMax = new Vector2(0, this.navbar.offsetMax.y);
+			if (Game.IsLandscape()) {
+				this.pages.offsetMin = new Vector2(Game.GetNotchHeight(), this.pages.offsetMin.y);
+			} else {
+				this.pages.offsetMin = new Vector2(0, this.pages.offsetMin.y);
+			}
+			// this.navbar.offsetMin = new Vector2(0, this.navbar.offsetMin.y);
+			// this.navbar.offsetMax = new Vector2(0, this.navbar.offsetMax.y);
 
 			this.mobileNav.gameObject.SetActive(false);
 		}
