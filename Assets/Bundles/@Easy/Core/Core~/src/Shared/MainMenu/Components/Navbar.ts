@@ -12,6 +12,9 @@ export default class Navbar extends AirshipBehaviour {
 	public runningGameBtn!: RectTransform;
 	public myGamesBtn!: RectTransform;
 	public homeBtn!: RectTransform;
+	public settingsBtn!: RectTransform;
+	public scrollRect!: ScrollRect;
+	public creditsWrapper!: GameObject;
 
 	private bin = new Bin();
 
@@ -27,21 +30,33 @@ export default class Navbar extends AirshipBehaviour {
 				// 	this.runningGameBtn.SetSiblingIndex(0);
 				// }
 
-				if (Game.IsLandscape() && st === "sm") {
-					rect.offsetMin = new Vector2(46, rect.offsetMin.y);
+				if (Game.IsLandscape() && st === "sm" && Game.coreContext === CoreContext.GAME) {
+					rect.offsetMin = new Vector2(50, rect.offsetMin.y);
 					this.rightLayoutGroup.padding.right = 55;
 					Bridge.UpdateLayout(this.rightLayoutGroup.transform, false);
 				} else {
-					rect.offsetMin = new Vector2(0, rect.offsetMin.y);
+					rect.offsetMin = new Vector2(15, rect.offsetMin.y);
+					rect.offsetMax = new Vector2(-15, rect.offsetMax.y);
 					this.rightLayoutGroup.padding.right = 0;
 				}
 
 				if (Game.coreContext === CoreContext.GAME && st === "sm") {
 					this.homeBtn.gameObject.SetActive(false);
 					this.myGamesBtn.gameObject.SetActive(false);
+					this.settingsBtn.gameObject.SetActive(true);
+				} else {
+					this.settingsBtn.gameObject.SetActive(false);
 				}
 			}),
 		);
+
+		if (Game.deviceType !== AirshipDeviceType.Phone || Game.IsPortrait()) {
+			this.scrollRect.enabled = false;
+		}
+
+		if (Game.IsMobile()) {
+			this.creditsWrapper.SetActive(false);
+		}
 	}
 
 	override OnDisable(): void {

@@ -12,6 +12,7 @@ export declare class ChatController implements OnStart {
     private readonly socketController;
     private readonly directMessageController;
     private readonly friendsController;
+    private canvas;
     private content;
     private wrapper;
     private chatMessagePrefab;
@@ -25,6 +26,9 @@ export declare class ChatController implements OnStart {
     private commands;
     private lastChatMessageRenderedTime;
     constructor(localEntityController: LocalCharacterSingleton, coreUIController: CoreUIController, socketController: SocketController, directMessageController: DirectMessageController, friendsController: FriendsController);
+    OpenMobile(): void;
+    HideMobile(): void;
+    IsOpenMobile(): boolean;
     RegisterCommand(command: ChatCommand): void;
     IsOpen(): boolean;
     OnStart(): void;

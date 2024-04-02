@@ -18,7 +18,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
     Awake(): void;
     Start(): void;
     OnDestroy(): void;
-    OnDisabled(): void;
+    OnDisable(): void;
     SetDragRedirectTarget(target: ScrollRect): void;
     Init(gameDto: GameDto): void;
     HasAdminPermissions(): boolean;

@@ -38,7 +38,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
     private Log;
     Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void;
     private RefreshAvatar;
-    OpenPage(): void;
+    OpenPage(params?: unknown): void;
     ClosePage(instant?: boolean): void;
     private SelectMainNav;
     private SelectSubNav;

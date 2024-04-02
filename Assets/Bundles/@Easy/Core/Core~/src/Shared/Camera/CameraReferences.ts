@@ -56,7 +56,7 @@ export class CameraReferences {
 	}
 
 	public GetRayFromCamera(distance: number) {
-		const ray = Camera.main.ScreenPointToRay(this.mouse.GetLocation());
+		const ray = Camera.main.ScreenPointToRay(this.mouse.GetPositionV3());
 		ray.direction = ray.direction.mul(distance);
 		return ray;
 	}

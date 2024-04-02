@@ -4,7 +4,7 @@ export default class SocialMenu extends AirshipBehaviour {
 	public liveStats!: GameObject;
 
 	override Start(): void {
-		if (Game.IsMobile()) {
+		if (Game.deviceType === AirshipDeviceType.Phone) {
 			this.liveStats.gameObject.SetActive(false);
 		}
 

@@ -9,6 +9,7 @@ half3 globalSunDirection = normalize(half3(-1, -3, 1.5));
 half globalSunShadow;   //Shadow transparency
 half3 globalSunColor;   //Suns color
 float globalSunBrightness;  //Suns brightness
+half globalAmbientBrightness;
 half3 globalAmbientLight[9];//Global ambient values
 half3 globalAmbientTint;    //last second RGB tint of the ambient SH
 half globalAmbientOcclusion; //For anything that calc's AO
@@ -242,7 +243,7 @@ inline half3 SampleAmbientSphericalHarmonics(half3 nor)
         2.0 * c2 * globalAmbientLight[3].xyz * nor.x +
         2.0 * c2 * globalAmbientLight[1].xyz * nor.y +
         2.0 * c2 * globalAmbientLight[2].xyz * nor.z
-        );
+        ) * globalAmbientBrightness;
 }
 
 float ConvertFromNormalizedRange(float normalizedNumber)

@@ -174,7 +174,9 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MobileCameraMovement
+    decorators: []
     properties: []
+    displayName: 
 --- !u!1 &7090916502956745191
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +189,6 @@ GameObject:
   - component: {fileID: 3698838489364257686}
   - component: {fileID: 5231142010838910841}
   - component: {fileID: 8772436157455848830}
-  - component: {fileID: 549959259428293037}
   m_Layer: 8
   m_Name: MobileControlsCanvas
   m_TagString: Untagged
@@ -279,30 +280,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &549959259428293037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7090916502956745191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/@Easy/Core/Shared/Resources/TS/MobileControls/MobileControlsManager.lua
-  m_error: 0
-  m_yielded: 0
-  m_assetPath: 
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: MobileControlsManager
-    properties: []
 --- !u!1 &9086183524998565299
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +380,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MobileJoystick
+    decorators: []
     properties:
     - name: handle
       type: object
@@ -460,3 +438,4 @@ MonoBehaviour:
       serializedValue: 50
       serializedObject: {fileID: 0}
       modified: 0
+    displayName: 

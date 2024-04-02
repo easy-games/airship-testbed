@@ -6,7 +6,7 @@ export declare class Pointer {
     private readonly mouse;
     readonly down: Signal<[event: PointerButtonSignal]>;
     readonly up: Signal<[event: PointerButtonSignal]>;
-    readonly moved: Signal<[location: Vector3]>;
+    readonly moved: Signal<[location: Vector2]>;
     constructor();
     /**
      * Cleans up the pointer listeners.

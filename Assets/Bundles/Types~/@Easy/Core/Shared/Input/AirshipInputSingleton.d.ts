@@ -1,11 +1,11 @@
 import { OnStart } from "../Flamework";
 import { Preferred as PreferredControls } from "../UserInput";
-import { KeySignal } from "../UserInput/Drivers/Signals/KeySignal";
 import { Signal } from "../Util/Signal";
 import { InputAction, InputActionConfig, InputActionSchema } from "./InputAction";
 import { ActionInputType } from "./InputUtil";
-import { Keybind } from "./Keybind";
 import { MobileButtonConfig } from "./Mobile/MobileButton";
+import { Binding } from "./Binding";
+import { InputActionEvent } from "./InputActionEvent";
 export declare class AirshipInputSingleton implements OnStart {
     /**
      * Whether or not creating a duplicate keybind should immediately unbind matching keybinds.
@@ -22,7 +22,11 @@ export declare class AirshipInputSingleton implements OnStart {
     /**
      *
      */
-    private inputDevice;
+    private keyboard;
+    /**
+     *
+     */
+    private mouse;
     /**
      *
      */
@@ -69,7 +73,7 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param keybind
      * @param category
      */
-    CreateAction(name: string, keybind: Keybind, config?: InputActionConfig): void;
+    CreateAction(name: string, binding: Binding, config?: InputActionConfig): void;
     /**
      *
      */
@@ -109,13 +113,13 @@ export declare class AirshipInputSingleton implements OnStart {
      * @param name
      * @returns
      */
-    OnDown(name: string): Signal<KeySignal>;
+    OnDown(name: string): Signal<[event: InputActionEvent]>;
     /**
      *
      * @param name
      * @returns
      */
-    OnUp(name: string): Signal<KeySignal>;
+    OnUp(name: string): Signal<[event: InputActionEvent]>;
     /**
      *
      * @param name
@@ -131,7 +135,7 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      * @returns
      */
-    GetKeybinds(): InputAction[];
+    GetBindings(): InputAction[];
     /**
      *
      * @param action
@@ -146,7 +150,7 @@ export declare class AirshipInputSingleton implements OnStart {
      *
      * @param action
      */
-    private UnsetDuplicateKeybinds;
+    private UnsetDuplicateBindings;
     /**
      *
      * @param signalIndices

@@ -103,6 +103,7 @@ export default class Character extends AirshipBehaviour {
 		{
 			// state change
 			const conn = this.movement.OnStateChanged((state) => {
+				if (this.state === state) return;
 				const oldState = this.state;
 				this.state = state;
 				this.onStateChanged.Fire(state, oldState);

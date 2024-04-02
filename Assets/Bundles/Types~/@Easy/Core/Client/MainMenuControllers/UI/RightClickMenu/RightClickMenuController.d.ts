@@ -6,5 +6,5 @@ export declare class RightClickMenuController implements OnStart {
     private openedTime;
     constructor();
     OnStart(): void;
-    OpenRightClickMenu(canvas: Canvas, position: Vector3, buttons: RightClickMenuButton[]): () => void;
+    OpenRightClickMenu(canvas: Canvas, position: Vector2, buttons: RightClickMenuButton[]): () => void;
 }

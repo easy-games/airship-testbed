@@ -62,7 +62,7 @@ Shader "Airship/Skybox"
                         float fogPower = pow(abs(viewDirection.y), _FogPower);
                         float fogBlend = saturate(fogPower * _FogSize);
 
-                        half3 fogColor = lerp(_FogColor.rgb, texSample, fogBlend);
+                        half3 fogColor = lerp(lerp(texSample, _FogColor.rgb, _FogColor.a), texSample, fogBlend );
 
                         return float4(fogColor, 0);
 #else

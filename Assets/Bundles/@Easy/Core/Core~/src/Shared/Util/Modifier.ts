@@ -30,15 +30,21 @@ export class Modifier<T extends defined> {
 	/** Observe all values within this modifier. Callback fires on ticket add/remove */
 	public Observe(observer: (values: T[]) => void): () => void {
 		this.ticketObservers.add(observer);
+		observer(this.GetTickets());
 		return () => {
 			this.ticketObservers.delete(observer);
 		};
 	}
 
-	/** Trigger all observers when we make a change to the tickets */
-	private TriggerObservers() {
+	public GetTickets() {
 		const valueList: T[] = [];
 		this.tickets.forEach((t) => valueList.push(t.value));
+		return valueList;
+	}
+
+	/** Trigger all observers when we make a change to the tickets */
+	private TriggerObservers() {
+		const valueList = this.GetTickets();
 		for (const observer of this.ticketObservers) {
 			task.spawn(() => {
 				observer(valueList);

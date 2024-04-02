@@ -20,7 +20,7 @@ export default class TopDownCameraComponent extends AirshipBehaviour {
 
 	public override Update(dt: number): void {
 		if (this.character?.IsAlive()) {
-			const mousePos = this.mouse.GetLocation();
+			const mousePos = this.mouse.GetPositionV3();
 
 			let entityScreenSpacePos = this.camera.WorldToScreenPoint(this.character.model.transform.position);
 			let relPos = mousePos.sub(entityScreenSpacePos).normalized;

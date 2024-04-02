@@ -20,8 +20,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	private sorts = new Map<SortId, SortComponent>();
 	private loadedGameComponents: HomePageGameComponent[] = [];
 
-	override OpenPage(): void {
-		super.OpenPage();
+	override OpenPage(params?: unknown): void {
+		super.OpenPage(params);
 		this.ClearSorts();
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 		this.CreateSort(SortId.Popular, "Popular");

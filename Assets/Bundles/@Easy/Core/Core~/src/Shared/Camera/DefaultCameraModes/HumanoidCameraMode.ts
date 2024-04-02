@@ -5,13 +5,13 @@ import { Dependency } from "Shared/Flamework";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { SpringTween } from "Shared/Util/SpringTween";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode, CameraTransform } from "..";
 import { LocalCharacterSingleton } from "../../Character/LocalCharacter/LocalCharacterSingleton";
 import { AirshipCharacterCameraSingleton } from "../AirshipCharacterCameraSingleton";
 import DefaultCameraMask from "../DefaultCameraMask";
+import { Game } from "Shared/Game";
 
 const CAM_Y_OFFSET = 1.7;
 const CAM_Y_OFFSET_CROUCH_1ST_PERSON = CAM_Y_OFFSET / 1.5;
@@ -25,11 +25,11 @@ const Y_LOCKED_ROTATION = 0;
 
 const TAU = math.pi * 2;
 
-let MOUSE_SENS_SCALAR = 0.1;
-if (RunUtil.IsMac()) {
+let MOUSE_SENS_SCALAR = 0.02;
+if (Game.IsMac()) {
 	MOUSE_SENS_SCALAR *= 6;
 }
-if (!RunUtil.IsEditor()) {
+if (!Game.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;
 }
 
@@ -46,7 +46,7 @@ export class HumanoidCameraMode extends CameraMode {
 	private lockView = true;
 	private firstPerson = true;
 	private rightClicking = false;
-	private rightClickPos = Vector3.zero;
+	private rightClickPos = Vector2.zero;
 	private camRight = new Vector3(0, 0, 1);
 
 	private lastAttachToPos = new Vector3(0, 0, 0);
@@ -166,13 +166,13 @@ export class HumanoidCameraMode extends CameraMode {
 	}
 
 	OnUpdate(dt: number) {
-		const lf = this.keyboard.IsKeyDown(KeyCode.LeftArrow);
-		const rt = this.keyboard.IsKeyDown(KeyCode.RightArrow);
+		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
+		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
 
 		if (Airship.input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
 			const rightClick = this.mouse.IsRightButtonDown();
 			if (rightClick && !this.rightClicking) {
-				this.rightClickPos = this.mouse.GetLocation();
+				this.rightClickPos = this.mouse.GetPosition();
 			}
 			this.rightClicking = rightClick;
 			if (lf !== rt) {
@@ -182,7 +182,7 @@ export class HumanoidCameraMode extends CameraMode {
 				const mouseDelta = this.mouse.GetDelta();
 				const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
-					this.mouse.SetLocation(this.rightClickPos);
+					// this.mouse.SetPosition(this.rightClickPos);
 				}
 				this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(

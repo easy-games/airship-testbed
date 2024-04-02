@@ -7,7 +7,7 @@ import { SignalPriority } from "./Signal";
 import { SetTimeout } from "./Timer";
 
 /** Global close key for hiding interfaces. */
-const CLOSE_KEY = KeyCode.Escape;
+const CLOSE_KEY = Key.Escape;
 
 interface OpenedApp {
 	canvas?: Canvas;
@@ -213,7 +213,7 @@ AppManager.keyboard.OnKeyDown(
 	SignalPriority.HIGH,
 );
 AppManager.keyboard.OnKeyDown(
-	KeyCode.F,
+	Key.F,
 	(event) => {
 		if (event.uiProcessed) return;
 		if (AppManager.IsOpen()) {

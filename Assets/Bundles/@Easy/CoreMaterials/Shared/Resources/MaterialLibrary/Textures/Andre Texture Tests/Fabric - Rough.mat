@@ -69,7 +69,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 174ef1bdcfcd64a4cba594ff037f3da8, type: 3}
-        m_Scale: {x: 8, y: 8}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
         m_Texture: {fileID: 0}
@@ -81,7 +81,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
         m_Texture: {fileID: 2800000, guid: e2ec764d3fdb5f2419f1156b5a2b63cc, type: 3}
-        m_Scale: {x: 5, y: 5}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -137,7 +137,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 1.45
     - _RimPower: 4.46
-    - _RoughOverride: 0.758
+    - _RoughOverride: 0.856
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0

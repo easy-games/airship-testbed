@@ -12,7 +12,7 @@ export class Pointer {
 
 	public readonly down = new Signal<[event: PointerButtonSignal]>();
 	public readonly up = new Signal<[event: PointerButtonSignal]>();
-	public readonly moved = new Signal<[location: Vector3]>();
+	public readonly moved = new Signal<[location: Vector2]>();
 
 	constructor() {
 		this.bin.Add(this.touchscreen);
@@ -20,7 +20,7 @@ export class Pointer {
 		this.bin.Add(this.mouse.leftDown.Proxy(this.down));
 		this.bin.Add(this.mouse.leftUp.Proxy(this.up));
 		this.bin.Add(this.mouse.moved.Proxy(this.moved));
-		this.bin.Connect(this.touchscreen.primaryTouch, (location, phase) => {
+		this.bin.Connect(this.touchscreen.primaryTouch, (position, phase) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			switch (phase) {
 				case TouchPhase.Began:
@@ -30,7 +30,7 @@ export class Pointer {
 					this.up.Fire(new PointerButtonSignal(false, uiProcessed));
 					break;
 				case TouchPhase.Moved:
-					this.moved.Fire(location);
+					this.moved.Fire(new Vector2(position.x, position.y));
 					break;
 			}
 		});

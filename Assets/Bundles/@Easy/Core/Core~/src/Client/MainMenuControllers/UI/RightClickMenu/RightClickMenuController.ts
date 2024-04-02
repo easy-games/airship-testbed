@@ -19,7 +19,7 @@ export class RightClickMenuController implements OnStart {
 
 	OnStart(): void {}
 
-	public OpenRightClickMenu(canvas: Canvas, position: Vector3, buttons: RightClickMenuButton[]): () => void {
+	public OpenRightClickMenu(canvas: Canvas, position: Vector2, buttons: RightClickMenuButton[]): () => void {
 		if (this.opened) {
 			this.currentBin.Clean();
 			return () => {};
@@ -62,7 +62,7 @@ export class RightClickMenuController implements OnStart {
 			menuRect.anchorMax = new Vector2(menuRect.anchorMax.x, 0);
 			menuRect.pivot = new Vector2(menuRect.pivot.x, 0);
 		}
-		menuRect.transform.position = position;
+		menuRect.transform.position = new Vector3(position.x, position.y, 0);
 
 		const buttonPrefab = AssetBridge.Instance.LoadAsset(
 			"@Easy/Core/Shared/Resources/Prefabs/UI/RightClickMenu/RightClickButton.prefab",

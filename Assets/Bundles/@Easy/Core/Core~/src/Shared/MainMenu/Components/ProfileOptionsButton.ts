@@ -56,7 +56,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 			}
 			Dependency<RightClickMenuController>().OpenRightClickMenu(
 				Dependency<MainMenuController>().mainContentCanvas,
-				new Mouse().GetLocation(),
+				Mouse.global.GetPosition(),
 				options,
 			);
 		});

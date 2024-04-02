@@ -64,7 +64,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	}
 
 	// public Update(dt: number): void {
-	// 	print("mouse locked: " + new Mouse().IsLocked());
+	// 	print("mouse locked: " + Mouse.global.IsLocked());
 	// }
 
 	override OnDisable(): void {

@@ -7,7 +7,11 @@ export declare class MainMenuSingleton implements OnStart {
     sizeType: ScreenSizeType;
     onSizeChanged: Signal<[sizeType: ScreenSizeType, size: Vector2]>;
     screenSize: Vector2;
+    private firstRun;
     navbarModifier: Modifier<{
+        hidden: boolean;
+    }>;
+    socialMenuModifier: Modifier<{
         hidden: boolean;
     }>;
     constructor();

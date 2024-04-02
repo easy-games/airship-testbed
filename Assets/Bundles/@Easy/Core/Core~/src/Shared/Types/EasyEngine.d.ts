@@ -74,6 +74,7 @@ interface CharacterMovement extends Component {
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 
 	GetLookVector(): Vector3;
+	IsSprinting(): boolean;
 	IsGrounded(): boolean;
 	enabled: boolean;
 
@@ -131,13 +132,13 @@ declare const enum MobileJoystickPhase {
 }
 
 interface InputBridge {
-	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): EngineEventConnection;
+	OnKeyPressEvent(callback: (key: Key, isDown: boolean) => void): EngineEventConnection;
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMouseScrollEvent(callback: (scrollAmount: number) => void): EngineEventConnection;
-	OnMouseMoveEvent(callback: (location: Vector3) => void): EngineEventConnection;
-	OnMouseDeltaEvent(callback: (delta: Vector3) => void): EngineEventConnection;
+	OnMouseMoveEvent(callback: (location: Vector2) => void): EngineEventConnection;
+	OnMouseDeltaEvent(callback: (delta: Vector2) => void): EngineEventConnection;
 	OnTouchEvent(callback: (touchIndex: number, position: Vector3, phase: TouchPhase) => void): EngineEventConnection;
 	OnTouchTapEvent(
 		callback: (touchIndex: number, position: Vector3, phase: InputActionPhase) => void,
@@ -147,20 +148,16 @@ interface InputBridge {
 
 	IsMobileJoystickVisible(): boolean;
 	SetMobileJoystickVisible(visible: boolean): void;
-	IsKeyDown(key: KeyCode): boolean;
+	IsKeyDown(key: Key): boolean;
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
-	GetMouseLocation(): Vector3;
-	GetMouseDelta(): Vector3;
-	SetMouseLocation(position: Vector3): void;
+	GetMousePosition(): Vector2;
+	GetMouseDelta(): Vector2;
 	SetMouseLocked(locked: boolean): void;
 	IsMouseLocked(): boolean;
 	GetScheme(): string;
 	IsPointerOverUI(): boolean;
-	RegisterKeyCode(keyCode: KeyCode): void;
-	UnregisterKeyCode(keyCode: KeyCode): void;
-	ToggleMouseVisibility(isVisible: boolean);
 }
 
 interface InputBridgeStatic {

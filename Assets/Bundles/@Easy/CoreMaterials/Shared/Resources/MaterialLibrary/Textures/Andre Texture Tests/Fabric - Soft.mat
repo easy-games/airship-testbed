@@ -128,7 +128,7 @@ Material:
     - _GlossyReflections: 1
     - _IncidentStrength: 1
     - _Lights: 0
-    - _MetalOverride: 0.141
+    - _MetalOverride: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -137,7 +137,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 1.45
     - _RimPower: 4.46
-    - _RoughOverride: 0.79
+    - _RoughOverride: 0.593
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0

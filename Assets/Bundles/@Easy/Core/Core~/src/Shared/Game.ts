@@ -136,4 +136,27 @@ export class Game {
 		}
 		return 0;
 	}
+
+	/**
+	 * @internal
+	 */
+	public static GetScaleFactor(): number {
+		let dpi = Screen.dpi;
+
+		if (Game.IsMobile()) {
+			return dpi / 180;
+		} else if (dpi >= 255) {
+			return 1.75;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
+	 * @internal
+	 * @returns
+	 */
+	public static IsInGame(): boolean {
+		return this.coreContext === CoreContext.GAME;
+	}
 }

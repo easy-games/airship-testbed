@@ -15,10 +15,10 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 	public OnEnable(): void {
 		this.list.gameObject.ClearChildren();
 
-		const keybinds = Airship.input.GetKeybinds();
+		const bindings = Airship.input.GetBindings();
 
-		for (const binding of keybinds) {
-			const inputType = InputUtil.GetInputTypeFromKeybind(binding.keybind, KeyType.Primary);
+		for (const binding of bindings) {
+			const inputType = InputUtil.GetInputTypeFromBinding(binding.binding, KeyType.Primary);
 			if (
 				inputType !== ActionInputType.Keyboard &&
 				inputType !== ActionInputType.Mouse &&
