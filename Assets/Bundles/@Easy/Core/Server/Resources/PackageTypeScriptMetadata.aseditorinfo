@@ -1,1 +1,18 @@
-{"id":"@Easy/Core","enum":{"@Easy/Core/Client/Resources/TS/MainMenuControllers/MainMenuPageName@MainMenuPageType":{"Home":"Home","MyGames":"MyGames","Settings":"Settings","Game":"Game","Avatar":"Avatar","Shop":"Shop","Friends":"Friends"},"@Easy/Core/Shared/Resources/TS/Types/Generated.d@Space":{"World":0,"Self":1}}}
+{
+	"id": "@Easy/Core",
+	"enum": {
+		"@Easy/Core/Client/Resources/TS/MainMenuControllers/MainMenuPageName@MainMenuPageType": {
+			"Home": "Home",
+			"MyGames": "MyGames",
+			"Settings": "Settings",
+			"Game": "Game",
+			"Avatar": "Avatar",
+			"Shop": "Shop",
+			"Friends": "Friends"
+		},
+		"@Easy/Core/Shared/Resources/TS/Types/Generated.d@Space": {
+			"World": 0,
+			"Self": 1
+		}
+	}
+}
