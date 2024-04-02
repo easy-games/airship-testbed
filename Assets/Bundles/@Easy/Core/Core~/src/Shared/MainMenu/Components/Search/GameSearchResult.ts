@@ -15,6 +15,7 @@ export default class GameSearchResult extends SearchResult {
 	public titlePadding!: RectTransform;
 
 	public OnEnable(): void {
+		super.OnEnable();
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.onSizeChanged.Connect((size) => {
@@ -24,6 +25,7 @@ export default class GameSearchResult extends SearchResult {
 	}
 
 	public OnDisable(): void {
+		super.OnDisable();
 		this.bin.Clean();
 	}
 
@@ -70,7 +72,8 @@ export default class GameSearchResult extends SearchResult {
 
 		if (size === "sm") {
 			playerCountText = playerCountText.sub(6);
-			this.gameText.text = `${playerCountText}`;
+			// this.gameText.text = `${playerCountText}`;
+			this.gameText.text = "";
 			this.titlePadding.sizeDelta = new Vector2(10, 40);
 			return;
 		}

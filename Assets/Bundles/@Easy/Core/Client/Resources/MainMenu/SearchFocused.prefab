@@ -1832,9 +1832,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameSearchResult
       objectReference: {fileID: 0}
-    - target: {fileID: 2890186975057595902, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -20
+    - target: {fileID: 1533275111181086838, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
+      propertyPath: m_Transition
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3466371967333734160, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
       propertyPath: m_Material
@@ -1880,13 +1880,13 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5934512052087992248, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6319871124285510220, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6497715819916474622, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6497715819916474622, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
       propertyPath: m_Material
@@ -1971,14 +1971,6 @@ PrefabInstance:
     - target: {fileID: 6567106873534238652, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8469122974834985145, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -206.20749
-      objectReference: {fileID: 0}
-    - target: {fileID: 8469122974834985145, guid: f4f3a81185d134d9a85f516d770fafea, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -3.1037598
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

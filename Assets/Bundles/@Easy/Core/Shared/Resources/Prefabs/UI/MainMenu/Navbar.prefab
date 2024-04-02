@@ -1577,6 +1577,20 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 7989854690407011383}
       modified: 1
+    - name: creditsWrapper
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8446698585075158508}
+      modified: 1
     displayName: 
 --- !u!1 &3557070146285580100
 GameObject:

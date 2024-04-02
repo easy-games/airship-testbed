@@ -109,6 +109,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarRight.offsetMin = new Vector2(-250, this.navbarRight.offsetMin.y);
 
 			this.mobileNav.gameObject.SetActive(true);
+			this.pages.offsetMin = new Vector2(0, this.pages.offsetMin.y);
 		} else {
 			// Landscape
 			this.socialMenu.gameObject.SetActive(true);
