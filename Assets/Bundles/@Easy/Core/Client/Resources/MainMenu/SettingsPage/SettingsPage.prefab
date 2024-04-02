@@ -157,6 +157,20 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 4332376422869914785}
       modified: 1
+    - name: pageType
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: Home
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
 --- !u!1 &1065851068657016029
 GameObject:
@@ -698,9 +712,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5378953520680912360}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 223.56955, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 223.56955, y: -15}
   m_SizeDelta: {x: 417.1391, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4897004800754971678
