@@ -15,6 +15,7 @@ import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../..
 import { InputUtils } from "../../../Util/InputUtils";
 import { SignalPriority } from "../../../Util/Signal";
 import { Theme } from "../../../Util/Theme";
+import { Binding } from "@Easy/Core/Shared/Input/Binding";
 
 /**
  *
@@ -34,8 +35,8 @@ export default class SettingsKeybind extends AirshipBehaviour {
 
 	private isListening = false;
 
-	private downPrimaryKeyCode = KeyCode.None;
-	private downModifierKey = KeyCode.None;
+	private downPrimaryKeyCode = Key.None;
+	private downModifierKey = Key.None;
 
 	private bin = new Bin();
 
@@ -77,7 +78,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 
 		this.bin.Add(
 			AppManager.keyboard.OnKeyDown(
-				KeyCode.Escape,
+				Key.Escape,
 				(event) => {
 					if (this.isListening) {
 						event.SetCancelled(true);
@@ -108,7 +109,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 					text: "Clear",
 					onClick: () => {
 						//this.SetToNone(true);
-						this.UnsetKeybind();
+						this.UnsetBinding();
 					},
 				},
 			],
@@ -116,22 +117,22 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	}
 
 	public ResetToDefault(): void {
-		this.inputAction?.ResetKeybind();
+		this.inputAction?.ResetBinding();
 	}
 
 	/**
 	 *
-	 * @param newKeybind
+	 * @param newBinding
 	 */
-	private UpdateKeybind(newKeybind: Keybind): void {
-		this.inputAction?.UpdateKeybind(newKeybind);
+	private UpdateBinding(newBinding: Binding): void {
+		this.inputAction?.UpdateBinding(newBinding);
 	}
 
 	/**
 	 *
 	 */
-	private UnsetKeybind(): void {
-		this.inputAction?.UnsetKeybind();
+	private UnsetBinding(): void {
+		this.inputAction?.UnsetBinding();
 	}
 
 	/**
@@ -141,17 +142,17 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	public Init(action: InputAction) {
 		this.inputAction = action;
 		this.title.text = FormatUtil.ToDisplayFormat(action.name);
-		this.UpdateKeybindTextFromKeybind(action.keybind);
+		this.UpdateBindingTextFromBinding(action.binding);
 
 		Airship.input.onActionUnbound.Connect((unbound) => {
 			if (unbound !== action) return;
-			this.UpdateKeybindTextFromKeybind(unbound.keybind);
+			this.UpdateBindingTextFromBinding(unbound.binding);
 			this.HighlightValueImage();
 		});
 
 		Airship.input.onActionBound.Connect((bound) => {
 			if (bound !== action) return;
-			this.UpdateKeybindTextFromKeybind(bound.keybind);
+			this.UpdateBindingTextFromBinding(bound.binding);
 		});
 
 		this.SetListening(false);
@@ -168,27 +169,27 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	private StartKeyListener(): void {
 		SetInterval(InputPollRate, () => {
 			if (this.isListening) {
-				if (this.downModifierKey !== KeyCode.None && !Input.GetKey(this.downModifierKey)) {
-					this.UpdateKeybind(new Keybind(this.downModifierKey));
+				if (this.downModifierKey !== Key.None && !Keyboard.global.IsKeyDown(this.downModifierKey)) {
+					this.UpdateBinding(Binding.Key(this.downModifierKey));
 					this.SetListening(false);
 				}
-				for (let keyCode of ObjectUtils.keys(InputUtils.keyCodeMap) as KeyCode[]) {
-					if (Input.GetKey(keyCode)) {
-						const modifierKey = InputUtil.GetModifierFromKeyCode(keyCode);
+				for (let key of ObjectUtils.keys(InputUtils.keyCodeMap) as Key[]) {
+					if (Keyboard.global.IsKeyDown(key)) {
+						const modifierKey = InputUtil.GetModifierFromKey(key);
 						if (modifierKey) {
-							this.downModifierKey = keyCode;
+							this.downModifierKey = key;
 							const keyCodeText =
 								InputUtils.GetStringForKeyCode(this.downModifierKey) ??
 								`Unknown(${this.downModifierKey})`;
 							const complexKeyCodeText = `${keyCodeText} + `;
 							this.UpdateKeybindText(complexKeyCodeText);
 						} else {
-							if (keyCode !== this.downModifierKey && this.downModifierKey !== KeyCode.None) {
-								const modifierKey = InputUtil.GetModifierFromKeyCode(this.downModifierKey);
-								this.UpdateKeybind(new Keybind(keyCode, modifierKey!));
+							if (key !== this.downModifierKey && this.downModifierKey !== Key.None) {
+								const modifierKey = InputUtil.GetModifierFromKey(this.downModifierKey);
+								this.UpdateBinding(Binding.Key(key, modifierKey!));
 								this.SetListening(false);
 							} else {
-								this.UpdateKeybind(new Keybind(keyCode));
+								this.UpdateBinding(Binding.Key(key));
 								this.SetListening(false);
 							}
 						}
@@ -212,18 +213,37 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	 *
 	 * @param keyCode
 	 */
-	private UpdateKeybindTextFromKeybind(keybind: Keybind): void {
-		if (!keybind.IsComplexKeybind()) {
-			const bindingText = InputUtils.GetStringForKeyCode(keybind.primaryKey) ?? `Unknown(${keybind.primaryKey})`;
-			this.UpdateKeybindText(bindingText);
+	private UpdateBindingTextFromBinding(binding: Binding): void {
+		if (binding.config.isKeyBinding) {
+			if (!binding.IsComplexBinding()) {
+				const bindingText =
+					InputUtils.GetStringForKeyCode(binding.config.key) ?? `Unknown(${binding.config.key})`;
+				this.UpdateKeybindText(bindingText);
+			} else {
+				const primaryKeyCodeText =
+					InputUtils.GetStringForKeyCode(binding.config.key) ?? `Unknown(${binding.config.key})`;
+				const modifierAsKeyCode = InputUtil.GetKeyFromModifier(binding.config.modifierKey);
+				const modifierKeyCodeText =
+					InputUtils.GetStringForKeyCode(modifierAsKeyCode) ?? `Unknown(${modifierAsKeyCode})`;
+				const bindingText = `${modifierKeyCodeText} + ${primaryKeyCodeText}`;
+				this.UpdateKeybindText(bindingText);
+			}
 		} else {
-			const primaryKeyCodeText =
-				InputUtils.GetStringForKeyCode(keybind.primaryKey) ?? `Unknown(${keybind.primaryKey})`;
-			const modifierAsKeyCode = InputUtil.GetKeyCodeFromModifier(keybind.modifierKey);
-			const modifierKeyCodeText =
-				InputUtils.GetStringForKeyCode(modifierAsKeyCode) ?? `Unknown(${modifierAsKeyCode})`;
-			const bindingText = `${modifierKeyCodeText} + ${primaryKeyCodeText}`;
-			this.UpdateKeybindText(bindingText);
+			if (!binding.IsComplexBinding()) {
+				const bindingText =
+					InputUtils.GetStringForMouseButton(binding.config.mouseButton) ??
+					`Unknown(${binding.config.mouseButton})`;
+				this.UpdateKeybindText(bindingText);
+			} else {
+				const primaryKeyCodeText =
+					InputUtils.GetStringForMouseButton(binding.config.mouseButton) ??
+					`Unknown(${binding.config.mouseButton})`;
+				const modifierAsKeyCode = InputUtil.GetKeyFromModifier(binding.config.modifierKey);
+				const modifierKeyCodeText =
+					InputUtils.GetStringForKeyCode(modifierAsKeyCode) ?? `Unknown(${modifierAsKeyCode})`;
+				const bindingText = `${modifierKeyCodeText} + ${primaryKeyCodeText}`;
+				this.UpdateKeybindText(bindingText);
+			}
 		}
 	}
 
@@ -235,8 +255,8 @@ export default class SettingsKeybind extends AirshipBehaviour {
 			this.valueImageBG.color = Theme.primary;
 			this.overlay.SetActive(true);
 		} else {
-			this.downModifierKey = KeyCode.None;
-			this.downPrimaryKeyCode = KeyCode.None;
+			this.downModifierKey = Key.None;
+			this.downPrimaryKeyCode = Key.None;
 			this.overlay.SetActive(false);
 		}
 	}

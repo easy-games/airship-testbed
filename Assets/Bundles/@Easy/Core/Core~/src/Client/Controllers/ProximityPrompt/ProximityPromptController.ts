@@ -29,7 +29,7 @@ export class ProximityPromptController implements OnStart {
 		this.FindActivatablePrompts();
 
 		// Hacked in to only support [F] keycode for now :)
-		this.keyboard.OnKeyDown(KeyCode.F, (event) => {
+		this.keyboard.OnKeyDown(Key.F, (event) => {
 			if (event.uiProcessed) return;
 			if (this.activatableProximityPrompts.size() === 0) return;
 
@@ -37,7 +37,7 @@ export class ProximityPromptController implements OnStart {
 			eligiblePrompt.ActivatePrompt();
 		});
 
-		this.keyboard.OnKeyDown(KeyCode.E, (event) => {});
+		this.keyboard.OnKeyDown(Key.E, (event) => {});
 	}
 
 	public RegisterProximityPrompt(prompt: ProximityPrompt): void {

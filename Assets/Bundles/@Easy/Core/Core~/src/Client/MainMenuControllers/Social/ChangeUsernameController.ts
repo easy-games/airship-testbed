@@ -64,9 +64,9 @@ export class ChangeUsernameController implements OnStart {
 				this.inputFieldSelected = false;
 			});
 			const keyboard = new Keyboard();
-			keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+			keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 				if (this.inputFieldSelected) {
-					if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
+					if (e.key !== Key.Enter && e.key !== Key.Escape) {
 						e.SetCancelled(true);
 					}
 				}

@@ -93,6 +93,28 @@ export class Mouse {
 		});
 	}
 
+	public OnButtonDown(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+		switch (button) {
+			case MouseButton.LeftButton:
+				return this.leftDown.Connect(callback);
+			case MouseButton.MiddleButton:
+				return this.middleDown.Connect(callback);
+			case MouseButton.RightButton:
+				return this.rightDown.Connect(callback);
+		}
+	}
+
+	public OnButtonUp(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+		switch (button) {
+			case MouseButton.LeftButton:
+				return this.leftUp.Connect(callback);
+			case MouseButton.MiddleButton:
+				return this.middleUp.Connect(callback);
+			case MouseButton.RightButton:
+				return this.rightUp.Connect(callback);
+		}
+	}
+
 	/** Returns `true` if the left mouse button is down. */
 	public IsLeftButtonDown() {
 		return this.isLeftDown;

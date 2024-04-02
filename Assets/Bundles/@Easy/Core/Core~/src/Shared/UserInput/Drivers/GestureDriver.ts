@@ -30,7 +30,10 @@ class TwoFingerGestureCapture {
 	private lastPinchDistance = 0;
 	private lastPinchScale = 1;
 
-	constructor(private readonly primaryStart: Vector3, private readonly secondaryStart: Vector3) {
+	constructor(
+		private readonly primaryStart: Vector3,
+		private readonly secondaryStart: Vector3,
+	) {
 		this.centerStart = primaryStart.Lerp(secondaryStart, 0.5);
 		this.startDistance = primaryStart.Distance(secondaryStart);
 	}

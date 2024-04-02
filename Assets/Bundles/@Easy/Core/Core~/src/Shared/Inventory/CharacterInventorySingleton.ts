@@ -41,15 +41,15 @@ export class CharacterInventorySingleton implements OnStart {
 		const mouse = new Mouse();
 
 		const hotbarKeys = [
-			KeyCode.Alpha1,
-			KeyCode.Alpha2,
-			KeyCode.Alpha3,
-			KeyCode.Alpha4,
-			KeyCode.Alpha5,
-			KeyCode.Alpha6,
-			KeyCode.Alpha7,
-			KeyCode.Alpha8,
-			KeyCode.Alpha9,
+			Key.Digit1,
+			Key.Digit2,
+			Key.Digit3,
+			Key.Digit4,
+			Key.Digit5,
+			Key.Digit6,
+			Key.Digit7,
+			Key.Digit8,
+			Key.Digit9,
 		];
 
 		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {

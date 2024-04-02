@@ -47,9 +47,9 @@ export class MainMenuAddFriendsController implements OnStart {
 				this.inputFieldSelected = false;
 			});
 			const keyboard = new Keyboard();
-			keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
+			keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGH, (e) => {
 				if (this.inputFieldSelected) {
-					if (e.keyCode !== KeyCode.Return && e.keyCode !== KeyCode.Escape) {
+					if (e.key !== Key.Enter && e.key !== Key.Escape) {
 						e.SetCancelled(true);
 					}
 				}
@@ -112,7 +112,7 @@ export class MainMenuAddFriendsController implements OnStart {
 				SendFriendRequest(searchInput.text);
 			});
 
-			keyboard.OnKeyDown(KeyCode.KeypadEnter, () => {
+			keyboard.OnKeyDown(Key.NumpadEnter, () => {
 				if (this.inputFieldSelected) {
 					SendFriendRequest(searchInput.text);
 				}

@@ -3,20 +3,20 @@ import { ClientSettingsController } from "Client/MainMenuControllers/Settings/Cl
 import { Dependency } from "Shared/Flamework";
 import { ControlScheme, Keyboard, Mouse, Preferred, Touchscreen } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { TimeUtil } from "Shared/Util/TimeUtil";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
 import DefaultCameraMask from "../DefaultCameraMask";
+import { Game } from "Shared/Game";
 
 const MIN_ROT_X = math.rad(1);
 const MAX_ROT_X = math.rad(179);
 
-let MOUSE_SENS_SCALAR = 0.1;
-if (RunUtil.IsMac()) {
+let MOUSE_SENS_SCALAR = 0.02;
+if (Game.IsMac()) {
 	MOUSE_SENS_SCALAR *= 6;
 }
-if (!RunUtil.IsEditor()) {
+if (!Game.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;
 }
 const Y_LOCKED_ROTATION = math.rad(15);
@@ -163,8 +163,8 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	OnUpdate(dt: number) {
-		const lf = this.keyboard.IsKeyDown(KeyCode.LeftArrow);
-		const rt = this.keyboard.IsKeyDown(KeyCode.RightArrow);
+		const lf = this.keyboard.IsKeyDown(Key.LeftArrow);
+		const rt = this.keyboard.IsKeyDown(Key.RightArrow);
 		const rightClick = this.mouse.IsRightButtonDown();
 		if (rightClick && !this.rightClicking) {
 			this.rightClickPos = this.mouse.GetPosition();
