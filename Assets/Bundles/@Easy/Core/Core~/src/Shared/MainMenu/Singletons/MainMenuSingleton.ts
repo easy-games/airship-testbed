@@ -47,7 +47,7 @@ export class MainMenuSingleton implements OnStart {
 				} else {
 					if (this.screenSize.x <= 1200) {
 						sizeType = "sm";
-					} else if (this.screenSize.x >= 1760) {
+					} else if (this.screenSize.x >= 1560) {
 						sizeType = "lg";
 					}
 				}
