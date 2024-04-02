@@ -45,10 +45,8 @@ export default class GameSearchResult extends SearchResult {
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
 			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
 			cloudImage.url = url;
-			cloudImage.StartDownload();
 			this.bin.AddEngineEventConnection(
 				cloudImage.OnFinishedLoading((success) => {
-					print(gameDto.name + " image result: " + success);
 					if (success) {
 						cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.1);
 					} else {
@@ -56,6 +54,7 @@ export default class GameSearchResult extends SearchResult {
 					}
 				}),
 			);
+			cloudImage.StartDownload();
 		}
 	}
 

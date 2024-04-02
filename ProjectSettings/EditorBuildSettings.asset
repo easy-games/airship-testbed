@@ -11,5 +11,26 @@ EditorBuildSettings:
   - enabled: 1
     path: Packages/gg.easy.airship/Runtime/Scenes/CoreScene.unity
     guid: ad1cbabedc1035a4dbf717c49620d3a8
+  - enabled: 1
+    path: Packages/gg.easy.airship/Runtime/Scenes/Login.unity
+    guid: 7cbc249662f9a43ff80aee8c8cb84984
+  - enabled: 1
+    path: Assets/Bundles/Shared/Scenes/BWMatchScene.unity
+    guid: 151df1f7c6b0343e79e7af3b65595f86
+  - enabled: 1
+    path: Assets/Bundles/Shared/Scenes/BWLobbyScene.unity
+    guid: ddc161ab142d24f90b8a5708208f5982
+  - enabled: 1
+    path: Assets/Bundles/Shared/Scenes/MapEdit.unity
+    guid: 6cfe908d91715491fbc562fc58c6e084
+  - enabled: 1
+    path: Assets/Bundles/Shared/Scenes/TopDownScene.unity
+    guid: 826cfa2ec0c4e5145a1d9fe1a22c4fcc
+  - enabled: 1
+    path: Assets/Bundles/Shared/Scenes/AirshipPlatformDemo.unity
+    guid: 7adf34f37f4884c5ab92c16c58f38874
+  - enabled: 1
+    path: Assets/Bundles/Shared/Scenes/TopDownBattleScene.unity
+    guid: 2e133b1c311427345a363fb38ae7ff22
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
