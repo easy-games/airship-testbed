@@ -1563,6 +1563,20 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 5106778112453862452}
       modified: 1
+    - name: scrollRect
+      type: object
+      objectType: ScrollRect
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7989854690407011383}
+      modified: 1
     displayName: 
 --- !u!1 &3557070146285580100
 GameObject:

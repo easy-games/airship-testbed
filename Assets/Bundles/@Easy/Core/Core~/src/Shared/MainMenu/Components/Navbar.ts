@@ -49,7 +49,7 @@ export default class Navbar extends AirshipBehaviour {
 			}),
 		);
 
-		if (Game.deviceType !== AirshipDeviceType.Phone) {
+		if (Game.deviceType !== AirshipDeviceType.Phone || Game.IsPortrait()) {
 			this.scrollRect.enabled = false;
 		}
 	}
