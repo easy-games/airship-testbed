@@ -54,7 +54,7 @@ export default class SearchFocused extends AirshipBehaviour {
 					this.content.offsetMin = new Vector2(250, this.content.offsetMin.y);
 					this.content.offsetMax = new Vector2(-180, this.content.offsetMax.y);
 				} else {
-					this.content.offsetMin = new Vector2(Game.IsInGame() ? 50 : 0, this.content.offsetMin.y);
+					this.content.offsetMin = new Vector2(Game.IsInGame() ? 50 : 50, this.content.offsetMin.y);
 					this.content.offsetMax = new Vector2(0, this.content.offsetMax.y);
 				}
 			}),
