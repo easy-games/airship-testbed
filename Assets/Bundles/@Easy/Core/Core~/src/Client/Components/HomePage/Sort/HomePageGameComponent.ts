@@ -50,7 +50,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	override OnDestroy(): void {}
 
-	public OnDisabled(): void {
+	override OnDisable(): void {
 		this.bin.Clean();
 	}
 
