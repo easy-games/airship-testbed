@@ -96,7 +96,7 @@ export default class SettingsKeybind extends AirshipBehaviour {
 		const mouse = new Mouse();
 		Dependency<RightClickMenuController>().OpenRightClickMenu(
 			Dependency<MainMenuController>().mainContentCanvas,
-			mouse.GetLocation(),
+			mouse.GetPosition(),
 			[
 				{
 					text: "Reset",

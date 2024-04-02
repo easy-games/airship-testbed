@@ -473,7 +473,7 @@ export class FriendsController implements OnStart {
 					});
 					this.rightClickMenuController.OpenRightClickMenu(
 						this.mainMenuController.mainContentCanvas,
-						mouse.GetLocation(),
+						mouse.GetPosition(),
 						options,
 					);
 				};

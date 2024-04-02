@@ -137,8 +137,8 @@ interface InputBridge {
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMouseScrollEvent(callback: (scrollAmount: number) => void): EngineEventConnection;
-	OnMouseMoveEvent(callback: (location: Vector3) => void): EngineEventConnection;
-	OnMouseDeltaEvent(callback: (delta: Vector3) => void): EngineEventConnection;
+	OnMouseMoveEvent(callback: (location: Vector2) => void): EngineEventConnection;
+	OnMouseDeltaEvent(callback: (delta: Vector2) => void): EngineEventConnection;
 	OnTouchEvent(callback: (touchIndex: number, position: Vector3, phase: TouchPhase) => void): EngineEventConnection;
 	OnTouchTapEvent(
 		callback: (touchIndex: number, position: Vector3, phase: InputActionPhase) => void,
@@ -152,9 +152,9 @@ interface InputBridge {
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
-	GetMouseLocation(): Vector3;
-	GetMouseDelta(): Vector3;
-	SetMouseLocation(position: Vector3): void;
+	GetMousePosition(): Vector2;
+	GetMouseDelta(): Vector2;
+	SetMousePosition(position: Vector2): void;
 	SetMouseLocked(locked: boolean): void;
 	IsMouseLocked(): boolean;
 	GetScheme(): string;

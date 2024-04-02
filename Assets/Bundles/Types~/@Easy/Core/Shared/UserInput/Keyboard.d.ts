@@ -1,6 +1,7 @@
 import { Signal, SignalPriority } from "../Util/Signal";
 import { KeySignal } from "./Drivers/Signals/KeySignal";
 export declare class Keyboard {
+    static readonly global: Keyboard;
     private readonly bin;
     private readonly keyboardDriver;
     private readonly keyUpDownDisconnects;

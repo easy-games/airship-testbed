@@ -10,34 +10,34 @@ export class MouseDriver {
 	public readonly rightButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
 	public readonly middleButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
 	public readonly scrolled = new Signal<[event: ScrollSignal]>();
-	public readonly moved = new Signal<[location: Vector3]>();
-	// public readonly Delta = new Signal<[delta: Vector3]>();
+	public readonly moved = new Signal<[position: Vector2]>();
+	// public readonly Delta = new Signal<[delta: Vector2]>();
 
-	private readonly inputProxy = InputBridge.Instance;
+	private readonly inputBridge = InputBridge.Instance;
 
 	private constructor() {
-		this.inputProxy.OnLeftMouseButtonPressEvent((isDown) => {
+		this.inputBridge.OnLeftMouseButtonPressEvent((isDown) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new PointerButtonSignal(isDown, uiProcessed);
 			this.leftButtonChanged.Fire(event);
 		});
-		this.inputProxy.OnRightMouseButtonPressEvent((isDown) => {
+		this.inputBridge.OnRightMouseButtonPressEvent((isDown) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new PointerButtonSignal(isDown, uiProcessed);
 			this.rightButtonChanged.Fire(event);
 		});
-		this.inputProxy.OnMiddleMouseButtonPressEvent((isDown) => {
+		this.inputBridge.OnMiddleMouseButtonPressEvent((isDown) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new PointerButtonSignal(isDown, uiProcessed);
 			this.middleButtonChanged.Fire(event);
 		});
-		this.inputProxy.OnMouseScrollEvent((scrollAmount) => {
+		this.inputBridge.OnMouseScrollEvent((scrollAmount) => {
 			const uiProcessed = CanvasAPI.IsPointerOverUI();
 			const event = new ScrollSignal(scrollAmount, uiProcessed);
 			this.scrolled.Fire(event);
 		});
-		this.inputProxy.OnMouseMoveEvent((location) => {
-			this.moved.Fire(location);
+		this.inputBridge.OnMouseMoveEvent((position) => {
+			this.moved.Fire(position);
 		});
 		// this.inputProxy.OnMouseDeltaEvent((delta) => {
 		// 	this.Delta.Fire(delta);
@@ -45,35 +45,35 @@ export class MouseDriver {
 	}
 
 	public IsLeftDown() {
-		return this.inputProxy.IsLeftMouseButtonDown();
+		return this.inputBridge.IsLeftMouseButtonDown();
 	}
 
 	public IsRightDown() {
-		return this.inputProxy.IsRightMouseButtonDown();
+		return this.inputBridge.IsRightMouseButtonDown();
 	}
 
 	public IsMiddleDown() {
-		return this.inputProxy.IsMiddleMouseButtonDown();
+		return this.inputBridge.IsMiddleMouseButtonDown();
 	}
 
-	public GetLocation() {
-		return this.inputProxy.GetMouseLocation();
+	public GetPosition() {
+		return this.inputBridge.GetMousePosition();
 	}
 
 	public GetDelta() {
-		return this.inputProxy.GetMouseDelta();
+		return this.inputBridge.GetMouseDelta();
 	}
 
-	public SetLocation(position: Vector3) {
-		this.inputProxy.SetMouseLocation(position);
+	public SetPosition(position: Vector2) {
+		this.inputBridge.SetMousePosition(position);
 	}
 
 	public IsLocked() {
-		return this.inputProxy.IsMouseLocked();
+		return this.inputBridge.IsMouseLocked();
 	}
 
 	public SetLocked(locked: boolean) {
-		this.inputProxy.SetMouseLocked(locked);
+		this.inputBridge.SetMouseLocked(locked);
 	}
 
 	/** **NOTE:** Internal only. Use `Mouse` class instead. */

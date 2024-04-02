@@ -5,6 +5,8 @@ import { KeyboardDriver } from "./Drivers/KeyboardDriver";
 import { KeySignal } from "./Drivers/Signals/KeySignal";
 
 export class Keyboard {
+	public static readonly global = new Keyboard();
+
 	private readonly bin = new Bin();
 	private readonly keyboardDriver = KeyboardDriver.Instance();
 	// private readonly keysDown = new Map<KeyCode, boolean>();

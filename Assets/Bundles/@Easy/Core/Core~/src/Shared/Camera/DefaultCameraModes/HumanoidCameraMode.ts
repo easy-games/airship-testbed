@@ -46,7 +46,7 @@ export class HumanoidCameraMode extends CameraMode {
 	private lockView = true;
 	private firstPerson = true;
 	private rightClicking = false;
-	private rightClickPos = Vector3.zero;
+	private rightClickPos = Vector2.zero;
 	private camRight = new Vector3(0, 0, 1);
 
 	private lastAttachToPos = new Vector3(0, 0, 0);
@@ -172,7 +172,7 @@ export class HumanoidCameraMode extends CameraMode {
 		if (Airship.input.preferredControls.GetControlScheme() === ControlScheme.MouseKeyboard) {
 			const rightClick = this.mouse.IsRightButtonDown();
 			if (rightClick && !this.rightClicking) {
-				this.rightClickPos = this.mouse.GetLocation();
+				this.rightClickPos = this.mouse.GetPosition();
 			}
 			this.rightClicking = rightClick;
 			if (lf !== rt) {
@@ -182,7 +182,7 @@ export class HumanoidCameraMode extends CameraMode {
 				const mouseDelta = this.mouse.GetDelta();
 				const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
-					this.mouse.SetLocation(this.rightClickPos);
+					this.mouse.SetPosition(this.rightClickPos);
 				}
 				this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(

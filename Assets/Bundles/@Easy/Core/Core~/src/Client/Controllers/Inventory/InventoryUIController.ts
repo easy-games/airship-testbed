@@ -401,11 +401,11 @@ export class InventoryUIController implements OnStart {
 						visual.SetActive(false);
 
 						const cloneTransform = clone.GetComponent<RectTransform>();
-						cloneTransform.position = mouse.GetLocation();
+						cloneTransform.position = mouse.GetPositionV3();
 
 						this.draggingBin.Add(
 							OnUpdate.Connect((dt) => {
-								cloneTransform.position = mouse.GetLocation();
+								cloneTransform.position = mouse.GetPositionV3();
 							}),
 						);
 						this.draggingBin.Add(() => {

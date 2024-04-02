@@ -29,7 +29,7 @@ export class OrbitCameraMode extends CameraMode {
 
 	private lockView = true;
 	private rightClicking = false;
-	private rightClickPos = Vector3.zero;
+	private rightClickPos = Vector2.zero;
 
 	private lookVector = Vector3.zero;
 	private lastAttachToPos = Vector3.zero;
@@ -167,7 +167,7 @@ export class OrbitCameraMode extends CameraMode {
 		const rt = this.keyboard.IsKeyDown(KeyCode.RightArrow);
 		const rightClick = this.mouse.IsRightButtonDown();
 		if (rightClick && !this.rightClicking) {
-			this.rightClickPos = this.mouse.GetLocation();
+			this.rightClickPos = this.mouse.GetPosition();
 		}
 		this.rightClicking = rightClick;
 		if (lf !== rt) {
@@ -177,7 +177,7 @@ export class OrbitCameraMode extends CameraMode {
 			const mouseDelta = this.mouse.GetDelta();
 			const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
 			if (!this.lockView) {
-				this.mouse.SetLocation(this.rightClickPos);
+				this.mouse.SetPosition(this.rightClickPos);
 			}
 			this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % (math.pi * 2);
 			this.rotationX = math.clamp(
