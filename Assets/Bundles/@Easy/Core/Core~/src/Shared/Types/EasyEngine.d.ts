@@ -154,7 +154,6 @@ interface InputBridge {
 	IsMiddleMouseButtonDown(): boolean;
 	GetMousePosition(): Vector2;
 	GetMouseDelta(): Vector2;
-	SetMousePosition(position: Vector2): void;
 	SetMouseLocked(locked: boolean): void;
 	IsMouseLocked(): boolean;
 	GetScheme(): string;

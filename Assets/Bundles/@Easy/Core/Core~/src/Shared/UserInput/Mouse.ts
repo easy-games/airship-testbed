@@ -141,11 +141,6 @@ export class Mouse {
 		return new Vector3(pos.x, pos.y, 0);
 	}
 
-	/** Sets the position of the mouse on-screen. */
-	public SetPosition(position: Vector2) {
-		this.mouseDriver.SetPosition(position);
-	}
-
 	/** Gets the mouse's change in position on-screen over the last frame. */
 	public GetDelta() {
 		return this.mouseDriver.GetDelta();

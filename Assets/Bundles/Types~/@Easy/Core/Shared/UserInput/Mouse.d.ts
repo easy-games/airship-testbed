@@ -18,6 +18,8 @@ export declare class Mouse {
     private isMiddleDown;
     private position;
     constructor();
+    OnButtonDown(button: MouseButton, callback: (event: PointerButtonSignal) => void): () => void;
+    OnButtonUp(button: MouseButton, callback: (event: PointerButtonSignal) => void): () => void;
     /** Returns `true` if the left mouse button is down. */
     IsLeftButtonDown(): boolean;
     /** Returns `true` if the right mouse button is down. */
@@ -28,8 +30,6 @@ export declare class Mouse {
     GetPosition(): Vector2;
     /** Gets the position of the mouse on-screen as a Vector3, with the Z axis set to 0. */
     GetPositionV3(): Vector3;
-    /** Sets the position of the mouse on-screen. */
-    SetPosition(position: Vector2): void;
     /** Gets the mouse's change in position on-screen over the last frame. */
     GetDelta(): Vector2;
     /**

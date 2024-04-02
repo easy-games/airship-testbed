@@ -64,10 +64,6 @@ export class MouseDriver {
 		return this.inputBridge.GetMouseDelta();
 	}
 
-	public SetPosition(position: Vector2) {
-		this.inputBridge.SetMousePosition(position);
-	}
-
 	public IsLocked() {
 		return this.inputBridge.IsMouseLocked();
 	}

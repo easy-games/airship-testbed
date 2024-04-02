@@ -182,7 +182,7 @@ export class HumanoidCameraMode extends CameraMode {
 				const mouseDelta = this.mouse.GetDelta();
 				const mouseSensitivity = this.clientSettingsController.GetMouseSensitivity();
 				if (!this.firstPerson && !this.lockView) {
-					this.mouse.SetPosition(this.rightClickPos);
+					// this.mouse.SetPosition(this.rightClickPos);
 				}
 				this.rotationY = (this.rotationY - mouseDelta.x * mouseSensitivity * MOUSE_SENS_SCALAR) % TAU;
 				this.rotationX = math.clamp(

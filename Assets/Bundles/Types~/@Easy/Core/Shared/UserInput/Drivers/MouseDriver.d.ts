@@ -15,7 +15,6 @@ export declare class MouseDriver {
     IsMiddleDown(): boolean;
     GetPosition(): Vector2;
     GetDelta(): Vector2;
-    SetPosition(position: Vector2): void;
     IsLocked(): boolean;
     SetLocked(locked: boolean): void;
     /** **NOTE:** Internal only. Use `Mouse` class instead. */
