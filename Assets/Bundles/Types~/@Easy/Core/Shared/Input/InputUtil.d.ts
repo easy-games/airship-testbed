@@ -1,4 +1,4 @@
-import { Keybind } from "./Keybind";
+import { Binding } from "./Binding";
 export declare enum KeyType {
     Primary = 0,
     Modifier = 1
@@ -20,13 +20,13 @@ export declare enum ActionInputType {
  *
  */
 export declare const ModifierKeyCodeTable: {
-    [key in ModifierKey]: KeyCode;
+    [key in ModifierKey]: Key;
 };
 /**
  *
  */
 export declare const KeyCodeModifierTable: {
-    [key in KeyCode]?: ModifierKey;
+    [key in Key]?: ModifierKey;
 };
 export declare class InputUtil {
     /**
@@ -34,22 +34,22 @@ export declare class InputUtil {
      * @param primary
      * @returns
      */
-    static IsPrimaryValidModifier(primary: KeyCode): boolean;
+    static IsPrimaryValidModifier(primary: Key): boolean;
     /**
      *
      * @param modifier
      * @returns
      */
-    static GetKeyCodeFromModifier(modifier: ModifierKey): KeyCode;
+    static GetKeyFromModifier(modifier: ModifierKey): Key;
     /**
      *
      * @param keyCode
      * @returns
      */
-    static GetModifierFromKeyCode(keyCode: KeyCode): ModifierKey | undefined;
+    static GetModifierFromKey(key: Key): ModifierKey | undefined;
     /**
      *
      * @param keybind
      */
-    static GetInputTypeFromKeybind(keybind: Keybind, keyType: KeyType): ActionInputType;
+    static GetInputTypeFromBinding(binding: Binding, keyType: KeyType): ActionInputType;
 }

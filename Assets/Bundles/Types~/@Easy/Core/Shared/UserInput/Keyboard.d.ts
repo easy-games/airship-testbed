@@ -8,22 +8,32 @@ export declare class Keyboard {
     /**
      * The `AnyKeyDown` signal will fire when any already-registered key is pressed. This means that
      * it will only fire for keys that are already being listened for via `OnKeyDown`.
+     * @deprecated Use `keyDown` instead.
      */
     readonly anyKeyDown: Signal<[event: KeySignal]>;
     /**
-     * The `AnyKeyDown` signal will fire when any already-registered key is released. This means that
+     * The `AnyKeyUp` signal will fire when any already-registered key is released. This means that
      * it will only fire for keys that are already being listened for via `OnKeyUp`.
+     * @deprecated Use `keyUp` instead.
      */
     readonly anyKeyUp: Signal<[event: KeySignal]>;
+    /**
+     * Fired when a key is pressed down.
+     */
+    readonly keyDown: Signal<[event: KeySignal]>;
+    /**
+     * Fired when a key is released.
+     */
+    readonly keyUp: Signal<[event: KeySignal]>;
     constructor();
     private TrackDisconnect;
-    OnKeyDown(key: KeyCode, callback: (event: KeySignal) => void, priority?: SignalPriority): () => void;
-    OnKeyUp(key: KeyCode, callback: (event: KeySignal) => void, priority?: SignalPriority): () => void;
+    OnKeyDown(key: Key, callback: (event: KeySignal) => void, priority?: SignalPriority): () => void;
+    OnKeyUp(key: Key, callback: (event: KeySignal) => void, priority?: SignalPriority): () => void;
     /** Returns `true` if the given key is down. */
-    IsKeyDown(key: KeyCode): boolean;
+    IsKeyDown(key: Key): boolean;
     /** Returns `true` if either of the given keys are down. */
-    IsEitherKeyDown(key1: KeyCode, key2: KeyCode): boolean;
+    IsEitherKeyDown(key1: Key, key2: Key): boolean;
     /** Returns `true` if both keys are down. */
-    AreBothKeysDown(key1: KeyCode, key2: KeyCode): boolean;
+    AreBothKeysDown(key1: Key, key2: Key): boolean;
     Destroy(): void;
 }

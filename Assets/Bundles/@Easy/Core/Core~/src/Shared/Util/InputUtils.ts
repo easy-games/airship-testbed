@@ -1,79 +1,91 @@
 export class InputUtils {
-	public static keyCodeMap: Record<KeyCode, string | undefined> = {
+	public static keyCodeMap: Record<Key, string> = {
 		/// Unbound
-		[KeyCode.None]: "",
+		[Key.None]: "",
 		/// Alpha names
-		[KeyCode.A]: "A",
-		[KeyCode.B]: "B",
-		[KeyCode.C]: "C",
-		[KeyCode.D]: "D",
-		[KeyCode.E]: "E",
-		[KeyCode.F]: "F",
-		[KeyCode.G]: "G",
-		[KeyCode.H]: "H",
-		[KeyCode.I]: "I",
-		[KeyCode.J]: "J",
-		[KeyCode.K]: "K",
-		[KeyCode.L]: "L",
-		[KeyCode.M]: "M",
-		[KeyCode.N]: "N",
-		[KeyCode.O]: "O",
-		[KeyCode.P]: "P",
-		[KeyCode.Q]: "Q",
-		[KeyCode.R]: "R",
-		[KeyCode.S]: "S",
-		[KeyCode.T]: "T",
-		[KeyCode.U]: "U",
-		[KeyCode.V]: "V",
-		[KeyCode.W]: "W",
-		[KeyCode.X]: "X",
-		[KeyCode.Y]: "Y",
-		[KeyCode.Z]: "Z",
+		[Key.A]: "A",
+		[Key.B]: "B",
+		[Key.C]: "C",
+		[Key.D]: "D",
+		[Key.E]: "E",
+		[Key.F]: "F",
+		[Key.G]: "G",
+		[Key.H]: "H",
+		[Key.I]: "I",
+		[Key.J]: "J",
+		[Key.K]: "K",
+		[Key.L]: "L",
+		[Key.M]: "M",
+		[Key.N]: "N",
+		[Key.O]: "O",
+		[Key.P]: "P",
+		[Key.Q]: "Q",
+		[Key.R]: "R",
+		[Key.S]: "S",
+		[Key.T]: "T",
+		[Key.U]: "U",
+		[Key.V]: "V",
+		[Key.W]: "W",
+		[Key.X]: "X",
+		[Key.Y]: "Y",
+		[Key.Z]: "Z",
 
 		/// Numeric names
-		[KeyCode.Alpha1]: "1",
-		[KeyCode.Alpha2]: "2",
-		[KeyCode.Alpha3]: "3",
-		[KeyCode.Alpha4]: "4",
-		[KeyCode.Alpha5]: "5",
-		[KeyCode.Alpha6]: "6",
-		[KeyCode.Alpha7]: "7",
-		[KeyCode.Alpha8]: "8",
-		[KeyCode.Alpha9]: "9",
-		[KeyCode.Alpha0]: "0",
+		[Key.Digit1]: "1",
+		[Key.Digit2]: "2",
+		[Key.Digit3]: "3",
+		[Key.Digit4]: "4",
+		[Key.Digit5]: "5",
+		[Key.Digit6]: "6",
+		[Key.Digit7]: "7",
+		[Key.Digit8]: "8",
+		[Key.Digit9]: "9",
+		[Key.Digit0]: "0",
 
 		// Symbolic names
 
-		[KeyCode.BackQuote]: "`",
-		[KeyCode.Minus]: "-",
-		[KeyCode.Equals]: "=",
-		[KeyCode.Slash]: "/",
-		[KeyCode.Comma]: ",",
-		[KeyCode.Period]: ".",
-		[KeyCode.Backslash]: "\\",
+		[Key.Backquote]: "`",
+		[Key.Minus]: "-",
+		[Key.Equals]: "=",
+		[Key.Slash]: "/",
+		[Key.Comma]: ",",
+		[Key.Period]: ".",
+		[Key.Backslash]: "\\",
 
-		[KeyCode.Return]: "Return",
-		[KeyCode.Escape]: "Escape",
-		[KeyCode.Space]: "Space",
-
-		// Mouse
-		[KeyCode.Mouse0]: "Left Mouse",
-		[KeyCode.Mouse1]: "Right Mouse",
-		[KeyCode.Mouse3]: "Middle Mouse",
+		[Key.Enter]: "Enter",
+		[Key.Escape]: "Escape",
+		[Key.Space]: "Space",
 
 		// Modifier
-		[KeyCode.LeftControl]: "Left Control",
-		[KeyCode.LeftShift]: "Left Shift",
+		[Key.LeftCtrl]: "Left Control",
+		[Key.LeftShift]: "Left Shift",
+	};
+
+	public static mouseButtonMap: Record<MouseButton, string> = {
+		[MouseButton.LeftButton]: "Left Button",
+		[MouseButton.MiddleButton]: "Middle Button",
+		[MouseButton.RightButton]: "Right Button",
 	};
 
 	/**
-	 * Gets the corresponding string for the given keycode (if possible)
+	 * Gets the corresponding string for the given key (if possible).
 	 *
-	 * E.g. `KeyCode.Alpha1` → `"1"`, `KeyCode.A` → `"A"`, `KeyCode.Equals` → `"="`
-	 * @param keyCode The keycode
-	 * @returns A string for the keycode (if applicable) - otherwise `undefined`.
+	 * E.g. `Key.Digit1` → `"1"`, `Key.A` → `"A"`, `Key.Equals` → `"="`.
+	 * @param key The key
+	 * @returns A string for the key (if applicable) - otherwise `undefined`.
 	 */
-	public static GetStringForKeyCode(keyCode: KeyCode) {
-		return this.keyCodeMap[keyCode];
+	public static GetStringForKeyCode(key: Key) {
+		return this.keyCodeMap[key];
+	}
+
+	/**
+	 * Gets the corresponding string for the given mouse button (if possible).
+	 *
+	 * E.g. `MouseButton.LeftButton` → `"Left Button"`.
+	 * @param mouseButton The mouse button
+	 * @returns A string for the mouse button (if applicable) - otherwise `undefined`.
+	 */
+	public static GetStringForMouseButton(mouseButton: MouseButton) {
+		return this.mouseButtonMap[mouseButton];
 	}
 }

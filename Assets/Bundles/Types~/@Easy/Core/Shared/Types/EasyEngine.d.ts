@@ -132,7 +132,7 @@ declare const enum MobileJoystickPhase {
 }
 
 interface InputBridge {
-	OnKeyPressEvent(callback: (key: KeyCode, isDown: boolean) => void): EngineEventConnection;
+	OnKeyPressEvent(callback: (key: Key, isDown: boolean) => void): EngineEventConnection;
 	OnLeftMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnRightMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
 	OnMiddleMouseButtonPressEvent(callback: (isDown: boolean) => void): EngineEventConnection;
@@ -148,19 +148,16 @@ interface InputBridge {
 
 	IsMobileJoystickVisible(): boolean;
 	SetMobileJoystickVisible(visible: boolean): void;
-	IsKeyDown(key: KeyCode): boolean;
+	IsKeyDown(key: Key): boolean;
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
 	GetMousePosition(): Vector2;
 	GetMouseDelta(): Vector2;
-	SetMousePosition(position: Vector2): void;
 	SetMouseLocked(locked: boolean): void;
 	IsMouseLocked(): boolean;
 	GetScheme(): string;
 	IsPointerOverUI(): boolean;
-	RegisterKeyCode(keyCode: KeyCode): void;
-	UnregisterKeyCode(keyCode: KeyCode): void;
 }
 
 interface InputBridgeStatic {

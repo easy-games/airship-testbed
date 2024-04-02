@@ -93,6 +93,28 @@ export class Mouse {
 		});
 	}
 
+	public OnButtonDown(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+		switch (button) {
+			case MouseButton.LeftButton:
+				return this.leftDown.Connect(callback);
+			case MouseButton.MiddleButton:
+				return this.middleDown.Connect(callback);
+			case MouseButton.RightButton:
+				return this.rightDown.Connect(callback);
+		}
+	}
+
+	public OnButtonUp(button: MouseButton, callback: (event: PointerButtonSignal) => void) {
+		switch (button) {
+			case MouseButton.LeftButton:
+				return this.leftUp.Connect(callback);
+			case MouseButton.MiddleButton:
+				return this.middleUp.Connect(callback);
+			case MouseButton.RightButton:
+				return this.rightUp.Connect(callback);
+		}
+	}
+
 	/** Returns `true` if the left mouse button is down. */
 	public IsLeftButtonDown() {
 		return this.isLeftDown;
@@ -117,11 +139,6 @@ export class Mouse {
 	public GetPositionV3() {
 		const pos = this.position;
 		return new Vector3(pos.x, pos.y, 0);
-	}
-
-	/** Sets the position of the mouse on-screen. */
-	public SetPosition(position: Vector2) {
-		this.mouseDriver.SetPosition(position);
 	}
 
 	/** Gets the mouse's change in position on-screen over the last frame. */

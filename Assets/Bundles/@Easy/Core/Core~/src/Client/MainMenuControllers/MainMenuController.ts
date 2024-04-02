@@ -174,7 +174,7 @@ export class MainMenuController implements OnStart {
 		if (Game.coreContext === CoreContext.GAME) {
 			const keyboard = new Keyboard();
 			keyboard.OnKeyDown(
-				KeyCode.Escape,
+				Key.Escape,
 				(event) => {
 					this.OpenFromGame();
 				},

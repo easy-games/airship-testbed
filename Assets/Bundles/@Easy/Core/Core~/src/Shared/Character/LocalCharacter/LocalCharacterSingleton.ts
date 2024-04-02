@@ -24,7 +24,7 @@ export class LocalCharacterSingleton implements OnStart {
 	public input: CharacterInput | undefined;
 	private prevState: CharacterState = CharacterState.Idle;
 	private currentState: CharacterState = CharacterState.Idle;
-	
+
 	private firstSpawn = true;
 	private sprintOverlayEmission?: EmissionModule;
 
@@ -123,22 +123,22 @@ export class LocalCharacterSingleton implements OnStart {
 			});
 
 			// Pause Editor
-			keyboard.OnKeyDown(KeyCode.F1, (event) => {
+			keyboard.OnKeyDown(Key.F1, (event) => {
 				if (event.uiProcessed) return;
-				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+				if (keyboard.IsKeyDown(Key.LeftShift)) {
 					DebugUtil.TogglePauseEngine();
 				}
 			});
-			keyboard.OnKeyDown(KeyCode.BackQuote, (event) => {
+			keyboard.OnKeyDown(Key.Backquote, (event) => {
 				if (event.uiProcessed) return;
-				if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+				if (keyboard.IsKeyDown(Key.LeftShift)) {
 					DebugUtil.TogglePauseEngine();
 				}
 			});
 
 			// Toggle fly mode (like mc creative):
 			let lastSpace = 0;
-			keyboard.OnKeyDown(KeyCode.Space, (event) => {
+			keyboard.OnKeyDown(Key.Space, (event) => {
 				if (event.uiProcessed) return;
 				const now = Time.time;
 				const dt = now - lastSpace;
@@ -153,7 +153,7 @@ export class LocalCharacterSingleton implements OnStart {
 			});
 
 			// Screenshot:
-			keyboard.OnKeyDown(KeyCode.F2, (event) => {
+			keyboard.OnKeyDown(Key.F2, (event) => {
 				if (event.uiProcessed) return;
 				this.TakeScreenshot();
 			});

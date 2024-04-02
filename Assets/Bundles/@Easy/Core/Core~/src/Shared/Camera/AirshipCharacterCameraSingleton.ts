@@ -234,7 +234,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 	 */
 	public SetupCameraControls(keyboard: Keyboard) {
 		// Toggle first person:
-		keyboard.OnKeyDown(KeyCode.T, (event) => {
+		keyboard.OnKeyDown(Key.T, (event) => {
 			if (!this.IsEnabled()) return;
 			if (event.uiProcessed) return;
 			if (!this.canToggleFirstPerson) return;
@@ -244,7 +244,7 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		});
 
 		// Toggle look backwards:
-		keyboard.OnKeyDown(KeyCode.H, (event) => {
+		keyboard.OnKeyDown(Key.H, (event) => {
 			if (!this.IsEnabled()) return;
 			if (event.uiProcessed) return;
 			if (this.cameraSystem?.GetMode() === this.humanoidCameraMode) {
@@ -256,9 +256,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 		const flyingBin = new Bin();
 
 		// Toggle fly cam:
-		keyboard.OnKeyDown(KeyCode.P, (event) => {
+		keyboard.OnKeyDown(Key.P, (event) => {
 			if (event.uiProcessed) return;
-			if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+			if (keyboard.IsKeyDown(Key.LeftShift)) {
 				if (flyCam) {
 					flyCam = false;
 					flyingBin.Clean();

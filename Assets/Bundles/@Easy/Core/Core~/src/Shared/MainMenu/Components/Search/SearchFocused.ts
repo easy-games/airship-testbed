@@ -107,13 +107,13 @@ export default class SearchFocused extends AirshipBehaviour {
 		const keyboard = new Keyboard();
 		this.bin.Add(keyboard);
 
-		keyboard.OnKeyDown(KeyCode.UpArrow, () => {
+		keyboard.OnKeyDown(Key.UpArrow, () => {
 			this.SetIndex(this.index - 1);
 		});
-		keyboard.OnKeyDown(KeyCode.DownArrow, (event) => {
+		keyboard.OnKeyDown(Key.DownArrow, (event) => {
 			this.SetIndex(this.index + 1);
 		});
-		keyboard.OnKeyDown(KeyCode.Return, () => {
+		keyboard.OnKeyDown(Key.Enter, () => {
 			this.activeResult?.OnSubmit();
 		});
 

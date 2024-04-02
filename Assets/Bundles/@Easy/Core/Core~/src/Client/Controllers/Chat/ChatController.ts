@@ -169,7 +169,7 @@ export class ChatController implements OnStart {
 
 		const keyboard = new Keyboard();
 		keyboard.OnKeyDown(
-			KeyCode.Return,
+			Key.Enter,
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (this.selected) {
@@ -187,7 +187,7 @@ export class ChatController implements OnStart {
 			SignalPriority.HIGH,
 		);
 		keyboard.OnKeyDown(
-			KeyCode.Escape,
+			Key.Escape,
 			(event) => {
 				if (this.selected) {
 					EventSystem.current.ClearSelected();
@@ -198,7 +198,7 @@ export class ChatController implements OnStart {
 			SignalPriority.HIGHEST,
 		);
 		keyboard.OnKeyDown(
-			KeyCode.Slash,
+			Key.Slash,
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (!this.selected) {
@@ -209,7 +209,7 @@ export class ChatController implements OnStart {
 			},
 			SignalPriority.HIGH,
 		);
-		keyboard.OnKeyDown(KeyCode.UpArrow, (event) => {
+		keyboard.OnKeyDown(Key.UpArrow, (event) => {
 			if (this.IsChatFocused()) {
 				if (this.historyIndex + 1 < this.prevSentMessages.size()) {
 					this.historyIndex++;
@@ -219,7 +219,7 @@ export class ChatController implements OnStart {
 				}
 			}
 		});
-		keyboard.OnKeyDown(KeyCode.DownArrow, (event) => {
+		keyboard.OnKeyDown(Key.DownArrow, (event) => {
 			if (this.IsChatFocused()) {
 				if (this.historyIndex - 1 >= -1) {
 					this.historyIndex--;
@@ -236,13 +236,13 @@ export class ChatController implements OnStart {
 		});
 
 		// Sink key events when selected:
-		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (this.selected) {
 				if (
-					event.keyCode !== KeyCode.Return &&
-					event.keyCode !== KeyCode.Escape &&
-					event.keyCode !== KeyCode.UpArrow &&
-					event.keyCode !== KeyCode.DownArrow
+					event.key !== Key.Enter &&
+					event.key !== Key.Escape &&
+					event.key !== Key.UpArrow &&
+					event.key !== Key.DownArrow
 				) {
 					event.SetCancelled(true);
 				}

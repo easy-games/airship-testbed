@@ -25,8 +25,8 @@ export class MainMenuNavbarController implements OnStart {
 		this.Setup();
 
 		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.R, (event) => {
-			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+		keyboard.OnKeyDown(Key.R, (event) => {
+			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.DoRefresh();
 			}
 		});
@@ -147,8 +147,8 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.K, () => {
-			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+		keyboard.OnKeyDown(Key.K, () => {
+			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.FocusSearchbar();
 			}
 		});
