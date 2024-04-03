@@ -111,9 +111,9 @@ export class ChatController implements OnStart {
 					wrapperRect.pivot = new Vector2(0, 1);
 					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
 				} else {
-					wrapperRect.anchorMin = new Vector2(0, 1);
+					wrapperRect.anchorMin = new Vector2(0, 0);
 					wrapperRect.anchorMax = new Vector2(0, 0.5);
-					wrapperRect.pivot = new Vector2(0, 1);
+					wrapperRect.pivot = new Vector2(0, 0);
 					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 0);
 				}
 				wrapperRect.anchoredPosition = new Vector2(121, -14);

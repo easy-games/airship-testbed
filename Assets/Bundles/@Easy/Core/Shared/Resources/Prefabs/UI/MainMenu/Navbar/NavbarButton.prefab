@@ -193,6 +193,34 @@ MonoBehaviour:
       serializedValue: '{"r":0.3490196168422699,"g":0.3529411852359772,"b":0.3529411852359772,"a":0.0}'
       serializedObject: {fileID: 0}
       modified: 1
+    - name: text
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2925511580266522687}
+      modified: 1
+    - name: iconImage
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6267500331561503360}
+      modified: 1
     displayName: 
 --- !u!114 &8443160194368119045
 MonoBehaviour:
