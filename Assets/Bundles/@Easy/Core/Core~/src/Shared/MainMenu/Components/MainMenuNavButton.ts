@@ -6,7 +6,7 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 
 	@NonSerialized()
 	public image!: Image;
-	public trueShadow!: TrueShadow;
+	// public trueShadow!: TrueShadow;
 	public selectedColor!: Color;
 	public unselectedColor!: Color;
 	public text!: TMP_Text;
@@ -55,6 +55,6 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 		this.iconImage.color = val ? this.textColorActive : this.textColorNormal;
 		// this.image.color = val ? this.selectedColor : this.unselectedColor;
 		// this.image.TweenGraphicColor(val ? new Color(1, 1, 1, 0.05) : ColorUtil.HexToColor("18191A"), 0.12);
-		this.trueShadow.enabled = !val;
+		// this.trueShadow.enabled = !val;
 	}
 }
