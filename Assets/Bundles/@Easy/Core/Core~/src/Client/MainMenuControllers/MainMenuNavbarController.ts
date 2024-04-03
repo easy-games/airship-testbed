@@ -25,8 +25,8 @@ export class MainMenuNavbarController implements OnStart {
 		this.Setup();
 
 		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.R, (event) => {
-			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+		keyboard.OnKeyDown(Key.R, (event) => {
+			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.DoRefresh();
 			}
 		});
@@ -45,7 +45,7 @@ export class MainMenuNavbarController implements OnStart {
 		const homeButton = refs.GetValue("UI", "NavbarHomeButton");
 		const avatarButton = refs.GetValue("UI", "NavbarAvatarButton");
 		const myGamesButton = refs.GetValue("UI", "NavbarMyGamesButton");
-		// const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
+		const settingsButton = refs.GetValue("UI", "NavbarSettingsButton");
 		const runningGameButton = refs.GetValue("UI", "NavbarRunningGameButton");
 		const disconnectButton = refs.GetValue("UI", "DisconnectButton");
 
@@ -78,10 +78,10 @@ export class MainMenuNavbarController implements OnStart {
 			this.mainMenuController.RouteToPage(MainMenuPageType.MyGames);
 		});
 
-		// CoreUI.SetupButton(settingsButton, { noHoverSound: true });
-		// CanvasAPI.OnClickEvent(settingsButton, () => {
-		// 	this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
-		// });
+		CoreUI.SetupButton(settingsButton, { noHoverSound: true });
+		CanvasAPI.OnClickEvent(settingsButton, () => {
+			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
+		});
 
 		// CoreUI.SetupButton(myServersButton, { noHoverSound: true });
 		// CanvasAPI.OnClickEvent(myServersButton, () => {
@@ -90,7 +90,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		CoreUI.SetupButton(runningGameButton, { noHoverSound: true });
 		CanvasAPI.OnClickEvent(runningGameButton, () => {
-			this.mainMenuController.RouteToPage(MainMenuPageType.Settings);
+			this.mainMenuController.RouteToPage(MainMenuPageType.Game);
 		});
 
 		let currentSelectedNavbarButton: GameObject | undefined = homeButton;
@@ -105,12 +105,9 @@ export class MainMenuNavbarController implements OnStart {
 			if (page === MainMenuPageType.Home) {
 				currentSelectedNavbarButton = homeButton;
 			} else if (page === MainMenuPageType.Settings) {
-				if (Game.coreContext === CoreContext.GAME) {
-					currentSelectedNavbarButton = runningGameButton;
-				} else {
-					// currentSelectedNavbarButton = settingsButton;
-					currentSelectedNavbarButton = undefined;
-				}
+				currentSelectedNavbarButton = settingsButton;
+			} else if (page === MainMenuPageType.Game) {
+				currentSelectedNavbarButton = runningGameButton;
 			} else if (page === MainMenuPageType.Avatar) {
 				currentSelectedNavbarButton = avatarButton;
 			} else if (page === MainMenuPageType.MyGames) {
@@ -137,7 +134,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		task.spawn(() => {
 			const gameData = Game.WaitForGameData();
-			const text = runningGameButton.transform.GetChild(1).GetComponent<TMP_Text>();
+			const text = runningGameButton.transform.Find("GameName")!.GetComponent<TMP_Text>();
 			text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
 			text.text = gameData.name;
 			Bridge.UpdateLayout(runningGameButton.transform, false);
@@ -150,8 +147,8 @@ export class MainMenuNavbarController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
-		keyboard.OnKeyDown(KeyCode.K, () => {
-			if (keyboard.IsEitherKeyDown(KeyCode.LeftCommand, KeyCode.LeftControl)) {
+		keyboard.OnKeyDown(Key.K, () => {
+			if (keyboard.IsEitherKeyDown(Key.LeftCommand, Key.LeftCtrl)) {
 				this.FocusSearchbar();
 			}
 		});

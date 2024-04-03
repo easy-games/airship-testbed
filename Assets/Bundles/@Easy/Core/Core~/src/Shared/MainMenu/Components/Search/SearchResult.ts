@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { SearchResultDto } from "./SearchAPI";
@@ -20,7 +21,7 @@ export default class SearchResult extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
 				if (hoverState === HoverState.ENTER) {
-					this.bgImage.color = new Color(1, 1, 1, 0.03);
+					this.bgImage.color = new Color(1, 1, 1, 0.1);
 					this.submitButton.SetActive(true);
 				} else {
 					if (this.active) return;
@@ -59,13 +60,14 @@ export default class SearchResult extends AirshipBehaviour {
 
 	public SetActive(active: boolean): void {
 		this.active = active;
-
-		if (active) {
-			this.bgImage.color = new Color(1, 1, 1, 0.03);
-			this.submitButton.SetActive(true);
-		} else {
-			this.bgImage.color = new Color(1, 1, 1, 0);
-			this.submitButton.SetActive(false);
+		if (!Game.IsMobile()) {
+			if (active) {
+				this.bgImage.color = new Color(1, 1, 1, 0.1);
+				this.submitButton.SetActive(true);
+			} else {
+				this.bgImage.color = new Color(1, 1, 1, 0);
+				this.submitButton.SetActive(false);
+			}
 		}
 	}
 

@@ -1,8 +1,9 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AssetCache } from "@Easy/Core/Shared/AssetCache/AssetCache";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import inspect from "@easy-games/unity-inspect";
-import Object from "@easy-games/unity-object-utils";
+import ObjectUtils from "@easy-games/unity-object-utils";
 import { RightClickMenuController } from "Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { CoreContext } from "Shared/CoreClientContext";
 import { Controller, Dependency, OnStart } from "Shared/Flamework";
@@ -47,6 +48,8 @@ export class FriendsController implements OnStart {
 
 	public onIncomingFriendRequestsChanged = new Signal<void>();
 
+	private friendsScrollRect!: ScrollRect;
+
 	constructor(
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
@@ -86,6 +89,10 @@ export class FriendsController implements OnStart {
 	OnStart(): void {
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		friendsContent.ClearChildren();
+
+		this.friendsScrollRect = this.mainMenuController.refs
+			.GetValue("Social", "FriendsScrollViewGO")
+			.GetComponent<ScrollRect>();
 
 		this.socialNotification = this.mainMenuController.refs
 			.GetValue("Social", "SocialNotification")
@@ -178,7 +185,7 @@ export class FriendsController implements OnStart {
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
-					Object.assign(existing, newFriend);
+					ObjectUtils.assign(existing, newFriend);
 					this.friendStatusChanged.Fire(existing);
 				} else {
 					this.friendStatuses.push(newFriend);
@@ -382,11 +389,14 @@ export class FriendsController implements OnStart {
 			let go: GameObject | undefined = friendsContent.transform.FindChild(friend.userId)?.gameObject;
 			let init = false;
 			if (go === undefined) {
-				go = GameObjectUtil.InstantiateIn(
-					AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
+				go = Object.Instantiate(
+					AssetCache.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
-				);
+				) as GameObject;
 				go.name = friend.userId;
+
+				const redirect = go.GetComponent<AirshipRedirectDrag>();
+				redirect.redirectTarget = this.friendsScrollRect;
 
 				const refs = go.GetComponent<GameObjectReferences>();
 				const joinButton = refs.GetValue("UI", "JoinButton");
@@ -473,7 +483,7 @@ export class FriendsController implements OnStart {
 					});
 					this.rightClickMenuController.OpenRightClickMenu(
 						this.mainMenuController.mainContentCanvas,
-						mouse.GetLocation(),
+						mouse.GetPosition(),
 						options,
 					);
 				};

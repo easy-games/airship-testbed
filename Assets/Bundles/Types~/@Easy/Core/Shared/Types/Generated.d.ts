@@ -2850,6 +2850,127 @@ declare const enum SaveFolder {
     PicturesFolder = 1,
     Documents = 2,
 }
+declare const enum Key {
+    None = 0,
+    Space = 1,
+    Enter = 2,
+    Tab = 3,
+    Backquote = 4,
+    Quote = 5,
+    Semicolon = 6,
+    Comma = 7,
+    Period = 8,
+    Slash = 9,
+    Backslash = 10,
+    LeftBracket = 11,
+    RightBracket = 12,
+    Minus = 13,
+    Equals = 14,
+    A = 15,
+    B = 16,
+    C = 17,
+    D = 18,
+    E = 19,
+    F = 20,
+    G = 21,
+    H = 22,
+    I = 23,
+    J = 24,
+    K = 25,
+    L = 26,
+    M = 27,
+    N = 28,
+    O = 29,
+    P = 30,
+    Q = 31,
+    R = 32,
+    S = 33,
+    T = 34,
+    U = 35,
+    V = 36,
+    W = 37,
+    X = 38,
+    Y = 39,
+    Z = 40,
+    Digit1 = 41,
+    Digit2 = 42,
+    Digit3 = 43,
+    Digit4 = 44,
+    Digit5 = 45,
+    Digit6 = 46,
+    Digit7 = 47,
+    Digit8 = 48,
+    Digit9 = 49,
+    Digit0 = 50,
+    LeftShift = 51,
+    RightShift = 52,
+    LeftAlt = 53,
+    RightAlt = 54,
+    AltGr = 54,
+    LeftCtrl = 55,
+    RightCtrl = 56,
+    LeftMeta = 57,
+    LeftWindows = 57,
+    LeftCommand = 57,
+    LeftApple = 57,
+    RightCommand = 58,
+    RightMeta = 58,
+    RightWindows = 58,
+    RightApple = 58,
+    ContextMenu = 59,
+    Escape = 60,
+    LeftArrow = 61,
+    RightArrow = 62,
+    UpArrow = 63,
+    DownArrow = 64,
+    Backspace = 65,
+    PageDown = 66,
+    PageUp = 67,
+    Home = 68,
+    End = 69,
+    Insert = 70,
+    Delete = 71,
+    CapsLock = 72,
+    NumLock = 73,
+    PrintScreen = 74,
+    ScrollLock = 75,
+    Pause = 76,
+    NumpadEnter = 77,
+    NumpadDivide = 78,
+    NumpadMultiply = 79,
+    NumpadPlus = 80,
+    NumpadMinus = 81,
+    NumpadPeriod = 82,
+    NumpadEquals = 83,
+    Numpad0 = 84,
+    Numpad1 = 85,
+    Numpad2 = 86,
+    Numpad3 = 87,
+    Numpad4 = 88,
+    Numpad5 = 89,
+    Numpad6 = 90,
+    Numpad7 = 91,
+    Numpad8 = 92,
+    Numpad9 = 93,
+    F1 = 94,
+    F2 = 95,
+    F3 = 96,
+    F4 = 97,
+    F5 = 98,
+    F6 = 99,
+    F7 = 100,
+    F8 = 101,
+    F9 = 102,
+    F10 = 103,
+    F11 = 104,
+    F12 = 105,
+    OEM1 = 106,
+    OEM2 = 107,
+    OEM3 = 108,
+    OEM4 = 109,
+    OEM5 = 110,
+    IMESelected = 111,
+}
 declare const enum LogContext {
     Client = 0,
     Server = 1,
@@ -3079,6 +3200,43 @@ declare const enum ScreenOrientation {
     Landscape = 3,
     LandscapeRight = 4,
     AutoRotation = 5,
+}
+declare const enum AirshipDeviceType {
+    Tablet = 0,
+    Phone = 1,
+    Desktop = 2,
+}
+declare const enum OffMeshLinkType {
+    LinkTypeManual = 0,
+    LinkTypeDropDown = 1,
+    LinkTypeJumpAcross = 2,
+}
+declare const enum NavMeshPathStatus {
+    PathComplete = 0,
+    PathPartial = 1,
+    PathInvalid = 2,
+}
+declare const enum ObstacleAvoidanceType {
+    NoObstacleAvoidance = 0,
+    LowQualityObstacleAvoidance = 1,
+    MedQualityObstacleAvoidance = 2,
+    GoodQualityObstacleAvoidance = 3,
+    HighQualityObstacleAvoidance = 4,
+}
+declare const enum NavMeshBuildDebugFlags {
+    None = 0,
+    InputGeometry = 1,
+    Voxels = 2,
+    Regions = 4,
+    RawContours = 8,
+    SimplifiedContours = 16,
+    PolygonMeshes = 32,
+    PolygonMeshesDetail = 64,
+    All = 127,
+}
+declare const enum NavMeshObstacleShape {
+    Capsule = 0,
+    Box = 1,
 }
 
     
@@ -15320,12 +15478,38 @@ declare const AirshipObjectPool: AirshipObjectPoolConstructor;
 interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
     progressText: TMP_Text;
+    spinner: GameObject;
+    errorWrapper: GameObject;
+    errorText: TMP_Text;
+    sceneManager: MainMenuSceneManager;
 
 
     Close(): void;
+    Retry(): void;
+    SetError(msg: string): void;
     SetProgress(text: string, percent: number): void;
 
 }
+    
+interface MainMenuSceneManager extends MonoBehaviour {
+    editorConfig: AirshipEditorConfig;
+    loadingScreen: MainMenuLoadingScreen;
+
+
+    Retry(): void;
+
+}
+    
+interface MainMenuSceneManagerConstructor {
+    cdnUrl: string;
+    deploymentUrl: string;
+
+    new(): MainMenuSceneManager;
+
+
+    GetLatestPackageVersion(packageId: string): unknown;
+}
+declare const MainMenuSceneManager: MainMenuSceneManagerConstructor;
     
 interface MainMenuLoadingScreenConstructor {
 
@@ -16341,7 +16525,7 @@ interface DevConsoleConstructor {
     IsOpen: boolean;
     IsOpenAndFocused: boolean;
     IsKeyBindingsEnabled: boolean;
-    ToggleKey?: KeyCode;
+    ToggleKey?: Key;
     AverageFps: number;
     AverageMs: number;
 
@@ -17091,4 +17275,385 @@ interface RenderUtilsConstructor {
     CreateDefaultRenderTexture(width: number, height: number): RenderTexture;
 }
 declare const RenderUtils: RenderUtilsConstructor;
+    
+interface DeviceBridge {
+
+
+
+}
+    
+interface DeviceBridgeConstructor {
+    isTablet: boolean;
+
+    new(): DeviceBridge;
+
+
+    GetDeviceType(): AirshipDeviceType;
+    OnLoad(): void;
+}
+declare const DeviceBridge: DeviceBridgeConstructor;
+    
+interface Mask extends UIBehaviour, IMaterialModifier, ICanvasRaycastFilter {
+    rectTransform: RectTransform;
+    showMaskGraphic: boolean;
+    graphic: Graphic;
+
+
+    GetModifiedMaterial(baseMaterial: Material): Material;
+    IsRaycastLocationValid(sp: Vector2, eventCamera: Camera): boolean;
+    MaskEnabled(): boolean;
+    OnSiblingGraphicEnabledDisabled(): void;
+
+}
+    
+interface ImageWithRoundedCorners extends MonoBehaviour {
+    radius: number;
+
+
+    Refresh(): void;
+    Validate(): void;
+
+}
+    
+interface ImageWithRoundedCornersConstructor {
+
+    new(): ImageWithRoundedCorners;
+
+
+}
+declare const ImageWithRoundedCorners: ImageWithRoundedCornersConstructor;
+    
+interface ImageWithIndependentRoundedCorners extends MonoBehaviour {
+    r: Vector4;
+
+
+    Refresh(): void;
+    Validate(): void;
+
+}
+    
+interface ImageWithIndependentRoundedCornersConstructor {
+
+    new(): ImageWithIndependentRoundedCorners;
+
+
+}
+declare const ImageWithIndependentRoundedCorners: ImageWithIndependentRoundedCornersConstructor;
+    
+interface NavMeshAgent extends Behaviour {
+    destination: Vector3;
+    stoppingDistance: number;
+    velocity: Vector3;
+    nextPosition: Vector3;
+    steeringTarget: Vector3;
+    desiredVelocity: Vector3;
+    remainingDistance: number;
+    baseOffset: number;
+    isOnOffMeshLink: boolean;
+    currentOffMeshLinkData: OffMeshLinkData;
+    nextOffMeshLinkData: OffMeshLinkData;
+    autoTraverseOffMeshLink: boolean;
+    autoBraking: boolean;
+    autoRepath: boolean;
+    hasPath: boolean;
+    pathPending: boolean;
+    isPathStale: boolean;
+    pathStatus: NavMeshPathStatus;
+    pathEndPosition: Vector3;
+    isStopped: boolean;
+    path: NavMeshPath;
+    navMeshOwner: Object;
+    agentTypeID: number;
+    walkableMask: number;
+    areaMask: number;
+    speed: number;
+    angularSpeed: number;
+    acceleration: number;
+    updatePosition: boolean;
+    updateRotation: boolean;
+    updateUpAxis: boolean;
+    radius: number;
+    height: number;
+    obstacleAvoidanceType: ObstacleAvoidanceType;
+    avoidancePriority: number;
+    isOnNavMesh: boolean;
+
+
+    ActivateCurrentOffMeshLink(activated: boolean): void;
+    CalculatePath(targetPosition: Vector3, path: NavMeshPath): boolean;
+    CompleteOffMeshLink(): void;
+    FindClosestEdge(hit: unknown): boolean;
+    GetAreaCost(areaIndex: number): number;
+    GetLayerCost(layer: number): number;
+    Move(offset: Vector3): void;
+    Raycast(targetPosition: Vector3, hit: unknown): boolean;
+    ResetPath(): void;
+    Resume(): void;
+    SamplePathPosition(areaMask: number, maxDistance: number, hit: unknown): boolean;
+    SetAreaCost(areaIndex: number, areaCost: number): void;
+    SetDestination(target: Vector3): boolean;
+    SetLayerCost(layer: number, cost: number): void;
+    SetPath(path: NavMeshPath): boolean;
+    Stop(): void;
+    Stop(stopUpdates: boolean): void;
+    Warp(newPosition: Vector3): boolean;
+
+}
+    
+interface OffMeshLinkData {
+    valid: boolean;
+    activated: boolean;
+    linkType: OffMeshLinkType;
+    startPos: Vector3;
+    endPos: Vector3;
+    owner: Object;
+    offMeshLink: OffMeshLink;
+
+
+
+}
+    
+interface OffMeshLink extends Behaviour {
+    activated: boolean;
+    occupied: boolean;
+    costOverride: number;
+    biDirectional: boolean;
+    navMeshLayer: number;
+    area: number;
+    autoUpdatePositions: boolean;
+    startTransform: Transform;
+    endTransform: Transform;
+
+
+    UpdatePositions(): void;
+
+}
+    
+interface OffMeshLinkConstructor {
+
+    new(): OffMeshLink;
+
+
+}
+declare const OffMeshLink: OffMeshLinkConstructor;
+    
+interface NavMeshPath {
+    corners: CSArray<Vector3>;
+    status: NavMeshPathStatus;
+
+
+    ClearCorners(): void;
+    GetCornersNonAlloc(results: CSArray<Vector3>): number;
+
+}
+    
+interface NavMeshPathConstructor {
+
+    new(): NavMeshPath;
+
+
+}
+declare const NavMeshPath: NavMeshPathConstructor;
+    
+interface NavMeshAgentConstructor {
+
+    new(): NavMeshAgent;
+
+
+}
+declare const NavMeshAgent: NavMeshAgentConstructor;
+    
+interface NavMesh {
+
+
+
+}
+    
+interface OnNavMeshPreUpdate {
+
+
+    BeginInvoke(callback: unknown, object: unknown): unknown;
+    EndInvoke(result: unknown): void;
+    Invoke(): void;
+
+}
+    
+interface OnNavMeshPreUpdateConstructor {
+
+    new(object: unknown, method: unknown): OnNavMeshPreUpdate;
+
+
+}
+declare const OnNavMeshPreUpdate: OnNavMeshPreUpdateConstructor;
+    
+interface NavMeshLinkInstance {
+    valid: boolean;
+    owner: Object;
+
+
+    Remove(): void;
+
+}
+    
+interface NavMeshLinkData {
+    startPosition: Vector3;
+    endPosition: Vector3;
+    costModifier: number;
+    bidirectional: boolean;
+    width: number;
+    area: number;
+    agentTypeID: number;
+
+
+
+}
+    
+interface NavMeshDataInstance {
+    valid: boolean;
+    owner: Object;
+
+
+    Remove(): void;
+
+}
+    
+interface NavMeshData extends Object {
+    sourceBounds: Bounds;
+    position: Vector3;
+    rotation: Quaternion;
+
+
+
+}
+    
+interface NavMeshDataConstructor {
+
+    new(): NavMeshData;
+    new(agentTypeID: number): NavMeshData;
+
+
+}
+declare const NavMeshData: NavMeshDataConstructor;
+    
+interface NavMeshQueryFilter {
+    areaMask: number;
+    agentTypeID: number;
+
+
+    GetAreaCost(areaIndex: number): number;
+    SetAreaCost(areaIndex: number, cost: number): void;
+
+}
+    
+interface NavMeshTriangulation {
+    vertices: CSArray<Vector3>;
+    indices: CSArray<number>;
+    areas: CSArray<number>;
+    layers: CSArray<number>;
+
+
+
+}
+    
+interface NavMeshBuildSettings {
+    agentTypeID: number;
+    agentRadius: number;
+    agentHeight: number;
+    agentSlope: number;
+    agentClimb: number;
+    ledgeDropHeight: number;
+    maxJumpAcrossDistance: number;
+    minRegionArea: number;
+    overrideVoxelSize: boolean;
+    voxelSize: number;
+    overrideTileSize: boolean;
+    tileSize: number;
+    maxJobWorkers: number;
+    preserveTilesOutsideBounds: boolean;
+    buildHeightMesh: boolean;
+    debug: NavMeshBuildDebugSettings;
+
+
+    ValidationReport(buildBounds: Bounds): CSArray<string>;
+
+}
+    
+interface NavMeshBuildDebugSettings {
+    flags: NavMeshBuildDebugFlags;
+
+
+
+}
+    
+interface NavMeshConstructor {
+    AllAreas: number;
+    onPreUpdate: OnNavMeshPreUpdate;
+    avoidancePredictionTime: number;
+    pathfindingIterationsPerFrame: number;
+
+
+
+    AddLink(link: NavMeshLinkData): NavMeshLinkInstance;
+    AddLink(link: NavMeshLinkData, position: Vector3, rotation: Quaternion): NavMeshLinkInstance;
+    AddNavMeshData(navMeshData: NavMeshData): NavMeshDataInstance;
+    AddNavMeshData(navMeshData: NavMeshData, position: Vector3, rotation: Quaternion): NavMeshDataInstance;
+    AddOffMeshLinks(): void;
+    CalculatePath(sourcePosition: Vector3, targetPosition: Vector3, areaMask: number, path: NavMeshPath): boolean;
+    CalculatePath(sourcePosition: Vector3, targetPosition: Vector3, filter: NavMeshQueryFilter, path: NavMeshPath): boolean;
+    CalculateTriangulation(): NavMeshTriangulation;
+    CreateSettings(): NavMeshBuildSettings;
+    FindClosestEdge(sourcePosition: Vector3, hit: unknown, areaMask: number): boolean;
+    FindClosestEdge(sourcePosition: Vector3, hit: unknown, filter: NavMeshQueryFilter): boolean;
+    GetAreaCost(areaIndex: number): number;
+    GetAreaFromName(areaName: string): number;
+    GetLayerCost(layer: number): number;
+    GetLinkOwner(handle: NavMeshLinkInstance): Object;
+    GetNavMeshLayerFromName(layerName: string): number;
+    GetSettingsByID(agentTypeID: number): NavMeshBuildSettings;
+    GetSettingsByIndex(index: number): NavMeshBuildSettings;
+    GetSettingsCount(): number;
+    GetSettingsNameFromID(agentTypeID: number): string;
+    IsLinkActive(handle: NavMeshLinkInstance): boolean;
+    IsLinkOccupied(handle: NavMeshLinkInstance): boolean;
+    IsLinkValid(handle: NavMeshLinkInstance): boolean;
+    Raycast(sourcePosition: Vector3, targetPosition: Vector3, hit: unknown, areaMask: number): boolean;
+    Raycast(sourcePosition: Vector3, targetPosition: Vector3, hit: unknown, filter: NavMeshQueryFilter): boolean;
+    RemoveAllNavMeshData(): void;
+    RemoveLink(handle: NavMeshLinkInstance): void;
+    RemoveNavMeshData(handle: NavMeshDataInstance): void;
+    RemoveSettings(agentTypeID: number): void;
+    RestoreNavMesh(): void;
+    SamplePosition(sourcePosition: Vector3, hit: unknown, maxDistance: number, areaMask: number): boolean;
+    SamplePosition(sourcePosition: Vector3, hit: unknown, maxDistance: number, filter: NavMeshQueryFilter): boolean;
+    SetAreaCost(areaIndex: number, cost: number): void;
+    SetLayerCost(layer: number, cost: number): void;
+    SetLinkActive(handle: NavMeshLinkInstance, value: boolean): void;
+    SetLinkOwner(handle: NavMeshLinkInstance, owner: Object): void;
+    Triangulate(vertices: CSArray<Vector3>, indices: CSArray<number>): void;
+}
+declare const NavMesh: NavMeshConstructor;
+    
+interface NavMeshObstacle extends Behaviour {
+    height: number;
+    radius: number;
+    velocity: Vector3;
+    carving: boolean;
+    carveOnlyStationary: boolean;
+    carvingMoveThreshold: number;
+    carvingTimeToStationary: number;
+    shape: NavMeshObstacleShape;
+    center: Vector3;
+    size: Vector3;
+
+
+
+}
+    
+interface NavMeshObstacleConstructor {
+
+    new(): NavMeshObstacle;
+
+
+}
+declare const NavMeshObstacle: NavMeshObstacleConstructor;
 

@@ -50,7 +50,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	override OnDestroy(): void {}
 
-	public OnDisabled(): void {
+	override OnDisable(): void {
 		this.bin.Clean();
 	}
 
@@ -117,6 +117,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		const clickConn = CanvasAPI.OnClickEvent(this.buttonGo, async () => {
 			if (this.redirectDrag.isDragging) return;
 			this.loadingOverlay.SetActive(true);
+			print("Joining game " + gameDto.name + "...");
 			const res = await Dependency<TransferController>().TransferToGameAsync(gameDto.id);
 			this.loadingOverlay.SetActive(false);
 		});

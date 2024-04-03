@@ -26,5 +26,5 @@ export declare class MainMenuController implements OnStart {
     CloseFromGame(): void;
     IsOpen(): boolean;
     OnStart(): void;
-    RouteToPage(pageType: MainMenuPageType, force?: boolean, noTween?: boolean): void;
+    RouteToPage(pageType: MainMenuPageType, force?: boolean, noTween?: boolean, params?: unknown): void;
 }

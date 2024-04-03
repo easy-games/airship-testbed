@@ -1,4 +1,5 @@
 import { Dependency } from "../../Flamework";
+import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 
@@ -19,7 +20,7 @@ export default class Searchbar extends AirshipBehaviour {
 					this.urlText.gameObject.SetActive(false);
 					this.copyButton.SetActive(false);
 					this.divider.SetActive(false);
-					this.layoutElement.preferredWidth = 200;
+					this.layoutElement.preferredWidth = Game.IsMobile() ? 350 : 200;
 				} else {
 					this.urlText.gameObject.SetActive(true);
 					this.copyButton.SetActive(true);

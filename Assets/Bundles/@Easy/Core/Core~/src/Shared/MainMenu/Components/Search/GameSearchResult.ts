@@ -15,6 +15,7 @@ export default class GameSearchResult extends SearchResult {
 	public titlePadding!: RectTransform;
 
 	public OnEnable(): void {
+		super.OnEnable();
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.onSizeChanged.Connect((size) => {
@@ -24,6 +25,7 @@ export default class GameSearchResult extends SearchResult {
 	}
 
 	public OnDisable(): void {
+		super.OnDisable();
 		this.bin.Clean();
 	}
 
@@ -43,10 +45,8 @@ export default class GameSearchResult extends SearchResult {
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
 			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
 			cloudImage.url = url;
-			cloudImage.StartDownload();
 			this.bin.AddEngineEventConnection(
 				cloudImage.OnFinishedLoading((success) => {
-					print(gameDto.name + " image result: " + success);
 					if (success) {
 						cloudImage.image.TweenGraphicColor(new Color(1, 1, 1, 1), 0.1);
 					} else {
@@ -54,6 +54,7 @@ export default class GameSearchResult extends SearchResult {
 					}
 				}),
 			);
+			cloudImage.StartDownload();
 		}
 	}
 
@@ -70,7 +71,8 @@ export default class GameSearchResult extends SearchResult {
 
 		if (size === "sm") {
 			playerCountText = playerCountText.sub(6);
-			this.gameText.text = `${playerCountText}`;
+			// this.gameText.text = `${playerCountText}`;
+			this.gameText.text = "";
 			this.titlePadding.sizeDelta = new Vector2(10, 40);
 			return;
 		}

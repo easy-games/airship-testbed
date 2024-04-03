@@ -367,7 +367,7 @@ export class InventoryUIController implements OnStart {
 						if (i < this.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
-								if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+								if (keyboard.IsKeyDown(Key.LeftShift)) {
 									this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
 								}
 							} else {
@@ -375,7 +375,7 @@ export class InventoryUIController implements OnStart {
 							}
 						} else {
 							// backpack
-							if (keyboard.IsKeyDown(KeyCode.LeftShift)) {
+							if (keyboard.IsKeyDown(Key.LeftShift)) {
 								this.invController.QuickMoveSlot(this.characterInvController.localInventory, i);
 							}
 						}
@@ -383,7 +383,7 @@ export class InventoryUIController implements OnStart {
 					CanvasAPI.OnBeginDragEvent(button, () => {
 						this.draggingBin.Clean();
 						if (!this.IsBackpackShown()) return;
-						if (keyboard.IsKeyDown(KeyCode.LeftShift)) return;
+						if (keyboard.IsKeyDown(Key.LeftShift)) return;
 
 						if (!this.characterInvController.localInventory) return;
 						const itemStack = this.characterInvController.localInventory.GetItem(i);
@@ -401,11 +401,11 @@ export class InventoryUIController implements OnStart {
 						visual.SetActive(false);
 
 						const cloneTransform = clone.GetComponent<RectTransform>();
-						cloneTransform.position = mouse.GetLocation();
+						cloneTransform.position = mouse.GetPositionV3();
 
 						this.draggingBin.Add(
 							OnUpdate.Connect((dt) => {
-								cloneTransform.position = mouse.GetLocation();
+								cloneTransform.position = mouse.GetPositionV3();
 							}),
 						);
 						this.draggingBin.Add(() => {

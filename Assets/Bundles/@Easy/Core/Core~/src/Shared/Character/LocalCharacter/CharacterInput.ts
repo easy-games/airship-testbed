@@ -78,7 +78,7 @@ export class CharacterInput {
 			}),
 		);
 		this.bin.Add(
-			keyboard.OnKeyDown(KeyCode.LeftShift, () => {
+			keyboard.OnKeyDown(Key.LeftShift, () => {
 				if (this.autoSprinting) {
 					this.autoSprinting = false;
 				}

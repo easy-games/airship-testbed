@@ -3,7 +3,7 @@ export interface ProximityPromptData {
     /** Proximity prompt position. */
     promptPosition: Vector3;
     /** Key that activates proximity prompt. */
-    activationKey: KeyCode;
+    activationKey: Key;
     /** Activation key string that displays on prompt. */
     activationKeyString: string;
     /** How close local player must be to activate proximity prompt. */

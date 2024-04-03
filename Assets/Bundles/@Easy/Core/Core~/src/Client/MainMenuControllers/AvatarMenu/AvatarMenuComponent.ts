@@ -201,8 +201,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		if (Game.IsEditor()) {
 			let keyboard = new Keyboard();
-			keyboard.OnKeyDown(KeyCode.Print, (event) => {
-				if (Input.GetKey(KeyCode.LeftShift)) {
+			keyboard.OnKeyDown(Key.PrintScreen, (event) => {
+				if (keyboard.IsKeyDown(Key.LeftShift)) {
 					if (this.inThumbnailMode) {
 						this.LeaveThumbnailMode();
 					} else {
@@ -224,8 +224,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	override OpenPage(): void {
-		super.OpenPage();
+	override OpenPage(params?: unknown): void {
+		super.OpenPage(params);
 
 		this.bin.Add(Dependency<MainMenuSingleton>().socialMenuModifier.Add({ hidden: true }));
 

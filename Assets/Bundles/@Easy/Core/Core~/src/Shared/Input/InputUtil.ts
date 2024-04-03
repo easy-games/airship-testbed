@@ -1,4 +1,4 @@
-import { Keybind } from "./Keybind";
+import { Binding } from "./Binding";
 
 export enum KeyType {
 	Primary,
@@ -23,21 +23,21 @@ export enum ActionInputType {
 /**
  *
  */
-export const ModifierKeyCodeTable: { [key in ModifierKey]: KeyCode } = {
-	[ModifierKey.None]: KeyCode.None,
-	[ModifierKey.LeftShift]: KeyCode.LeftShift,
-	[ModifierKey.LeftControl]: KeyCode.LeftControl,
-	[ModifierKey.LeftAlt]: KeyCode.LeftAlt,
+export const ModifierKeyCodeTable: { [key in ModifierKey]: Key } = {
+	[ModifierKey.None]: Key.None,
+	[ModifierKey.LeftShift]: Key.LeftShift,
+	[ModifierKey.LeftControl]: Key.LeftCtrl,
+	[ModifierKey.LeftAlt]: Key.LeftAlt,
 };
 
 /**
  *
  */
-export const KeyCodeModifierTable: { [key in KeyCode]?: ModifierKey } = {
-	[KeyCode.None]: ModifierKey.None,
-	[KeyCode.LeftShift]: ModifierKey.LeftShift,
-	[KeyCode.LeftControl]: ModifierKey.LeftControl,
-	[KeyCode.LeftAlt]: ModifierKey.LeftAlt,
+export const KeyCodeModifierTable: { [key in Key]?: ModifierKey } = {
+	[Key.None]: ModifierKey.None,
+	[Key.LeftShift]: ModifierKey.LeftShift,
+	[Key.LeftCtrl]: ModifierKey.LeftControl,
+	[Key.LeftAlt]: ModifierKey.LeftAlt,
 };
 
 export class InputUtil {
@@ -46,7 +46,7 @@ export class InputUtil {
 	 * @param primary
 	 * @returns
 	 */
-	public static IsPrimaryValidModifier(primary: KeyCode): boolean {
+	public static IsPrimaryValidModifier(primary: Key): boolean {
 		return KeyCodeModifierTable[primary] !== undefined;
 	}
 
@@ -55,7 +55,7 @@ export class InputUtil {
 	 * @param modifier
 	 * @returns
 	 */
-	public static GetKeyCodeFromModifier(modifier: ModifierKey): KeyCode {
+	public static GetKeyFromModifier(modifier: ModifierKey): Key {
 		return ModifierKeyCodeTable[modifier];
 	}
 
@@ -64,27 +64,21 @@ export class InputUtil {
 	 * @param keyCode
 	 * @returns
 	 */
-	public static GetModifierFromKeyCode(keyCode: KeyCode): ModifierKey | undefined {
-		return KeyCodeModifierTable[keyCode];
+	public static GetModifierFromKey(key: Key): ModifierKey | undefined {
+		return KeyCodeModifierTable[key];
 	}
 
 	/**
 	 *
 	 * @param keybind
 	 */
-	public static GetInputTypeFromKeybind(keybind: Keybind, keyType: KeyType): ActionInputType {
-		if (keybind.IsUnset()) return ActionInputType.Unbound;
-		const keyCode =
-			keyType === KeyType.Primary ? keybind.primaryKey : InputUtil.GetKeyCodeFromModifier(keybind.modifierKey);
-		if (keyCode >= 8 && keyCode <= 319) {
+	public static GetInputTypeFromBinding(binding: Binding, keyType: KeyType): ActionInputType {
+		if (binding.IsUnset()) return ActionInputType.Unbound;
+
+		if (binding.config.isKeyBinding) {
 			return ActionInputType.Keyboard;
-		}
-		if (keyCode >= 321 && keyCode <= 329) {
+		} else {
 			return ActionInputType.Mouse;
 		}
-		if (keyCode >= 330 && keyCode <= 509) {
-			return ActionInputType.Gamepad;
-		}
-		return ActionInputType.Unknown;
 	}
 }

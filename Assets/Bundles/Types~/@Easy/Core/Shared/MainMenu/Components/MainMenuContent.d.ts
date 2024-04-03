@@ -2,6 +2,7 @@
 export default class MainMenuContent extends AirshipBehaviour {
     canvasRect: RectTransform;
     canvasScalar: CanvasScaler;
+    mobileOverlayCanvasScalar?: CanvasScaler;
     contentWrapper: RectTransform;
     socialMenu: RectTransform;
     friendsPage: RectTransform;
@@ -16,7 +17,6 @@ export default class MainMenuContent extends AirshipBehaviour {
     private mainMenu;
     private bin;
     Start(): void;
-    Update(dt: number): void;
     CalcLayout(): void;
     OnDestroy(): void;
 }

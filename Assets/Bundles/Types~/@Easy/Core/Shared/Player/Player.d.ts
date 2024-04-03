@@ -115,6 +115,7 @@ export declare class Player {
      */
     SpawnCharacter(position: Vector3, config?: {
         lookDirection?: Vector3;
+        customCharacterTemplate?: GameObject;
     }): Character;
     WaitForOutfitLoaded(timeout?: number): void;
     GetProfilePicture(): ProfilePictureMeta;

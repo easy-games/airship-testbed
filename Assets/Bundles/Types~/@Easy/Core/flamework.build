@@ -25,19 +25,6 @@
 		"@Easy/Core:Shared/Util/TimeUtil@TimeUtil": "$:Util/TimeUtil@TimeUtil",
 		"@Easy/Core:Shared/Util/Task@Task": "$:Util/Task@Task",
 		"@Easy/Core:Shared/Audio/AudioManager@AudioManager": "$:Audio/AudioManager@AudioManager",
-		"@Easy/Core:Shared/Util/ColorUtil@ColorUtil": "$:Util/ColorUtil@ColorUtil",
-		"@Easy/Core:Shared/Util/Theme@Theme": "$:Util/Theme@Theme",
-		"@Easy/Core:Shared/Util/CanvasAPI@CanvasAPI": "$:Util/CanvasAPI@CanvasAPI",
-		"@Easy/Core:Shared/UI/CoreUI@CoreUI": "$:UI/CoreUI@CoreUI",
-		"@Easy/Core:Shared/Util/Bin@Bin": "$:Util/Bin@Bin",
-		"@Easy/Core:Shared/Util/SignalProxy@SignalProxy": "$:Util/SignalProxy@SignalProxy",
-		"@Easy/Core:Shared/UserInput/Drivers/Signals/KeySignal@KeySignal": "$:UserInput/Drivers/Signals/KeySignal@KeySignal",
-		"@Easy/Core:Shared/UserInput/Drivers/KeyboardDriver@KeyboardDriver": "$:UserInput/Drivers/KeyboardDriver@KeyboardDriver",
-		"@Easy/Core:Shared/UserInput/Keyboard@Keyboard": "$:UserInput/Keyboard@Keyboard",
-		"@Easy/Core:Shared/UserInput/Drivers/Signals/PointerButtonSignal@PointerButtonSignal": "$:UserInput/Drivers/Signals/PointerButtonSignal@PointerButtonSignal",
-		"@Easy/Core:Shared/UserInput/Drivers/Signals/ScrollSignal@ScrollSignal": "$:UserInput/Drivers/Signals/ScrollSignal@ScrollSignal",
-		"@Easy/Core:Shared/UserInput/Drivers/MouseDriver@MouseDriver": "$:UserInput/Drivers/MouseDriver@MouseDriver",
-		"@Easy/Core:Shared/UserInput/Mouse@Mouse": "$:UserInput/Mouse@Mouse",
 		"@Easy/Core:Shared/Util/Duration@Duration": "$:Util/Duration@Duration",
 		"@Easy/Core:Shared/Util/PhysicsUtil@PhysicsUtil": "$:Util/PhysicsUtil@PhysicsUtil",
 		"@Easy/Core:Shared/Util/ReferenceManagerResources@ReferenceManagerAssets": "$:Util/ReferenceManagerResources@ReferenceManagerAssets",
@@ -46,11 +33,29 @@
 		"@Easy/Core:Shared/GameObject/GameObjectUtil@GameObjectUtil": "$:GameObject/GameObjectUtil@GameObjectUtil",
 		"@Easy/Core:Shared/Util/BundleReferenceManager@BundleReferenceManager": "$:Util/BundleReferenceManager@BundleReferenceManager",
 		"@Easy/Core:Shared/Effects/EffectsManager@EffectsManager": "$:Effects/EffectsManager@EffectsManager",
+		"@Easy/Core:Shared/Util/Bin@Bin": "$:Util/Bin@Bin",
 		"@Easy/Core:Shared/Util/RandomUtil@RandomUtil": "$:Util/RandomUtil@RandomUtil",
 		"@Easy/Core:Client/MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController": "$:MainMenuControllers/AmbientSound/AmbientSoundController@AmbientSoundController",
 		"@Easy/Core:Client/MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController": "$:MainMenuControllers/Settings/ClientSettingsController@ClientSettingsController",
 		"@Easy/Core:Shared/Camera/CameraTransform@CameraTransform": "$:Camera/CameraTransform@CameraTransform",
 		"@Easy/Core:Shared/Camera/CameraMode@CameraMode": "$:Camera/CameraMode@CameraMode",
+		"@Easy/Core:Shared/Util/SignalProxy@SignalProxy": "$:Util/SignalProxy@SignalProxy",
+		"@Easy/Core:Shared/Util/CanvasAPI@CanvasAPI": "$:Util/CanvasAPI@CanvasAPI",
+		"@Easy/Core:Shared/UserInput/Drivers/Signals/KeySignal@KeySignal": "$:UserInput/Drivers/Signals/KeySignal@KeySignal",
+		"@Easy/Core:Shared/UserInput/Drivers/KeyboardDriver@KeyboardDriver": "$:UserInput/Drivers/KeyboardDriver@KeyboardDriver",
+		"@Easy/Core:Shared/UserInput/Keyboard@Keyboard": "$:UserInput/Keyboard@Keyboard",
+		"@Easy/Core:Shared/UserInput/Drivers/Signals/PointerButtonSignal@PointerButtonSignal": "$:UserInput/Drivers/Signals/PointerButtonSignal@PointerButtonSignal",
+		"@Easy/Core:Shared/UserInput/Drivers/Signals/ScrollSignal@ScrollSignal": "$:UserInput/Drivers/Signals/ScrollSignal@ScrollSignal",
+		"@Easy/Core:Shared/UserInput/Drivers/MouseDriver@MouseDriver": "$:UserInput/Drivers/MouseDriver@MouseDriver",
+		"@Easy/Core:Shared/UserInput/Mouse@Mouse": "$:UserInput/Mouse@Mouse",
+		"@Easy/Core:Shared/UserInput/Preferred@Preferred": "$:UserInput/Preferred@Preferred",
+		"@Easy/Core:Shared/UserInput/Drivers/TouchscreenDriver@TouchscreenDriver": "$:UserInput/Drivers/TouchscreenDriver@TouchscreenDriver",
+		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@OneFingerGestureCapture": "$:UserInput/Drivers/GestureDriver@OneFingerGestureCapture",
+		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@TwoFingerGestureCapture": "$:UserInput/Drivers/GestureDriver@TwoFingerGestureCapture",
+		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@GestureDriver": "$:UserInput/Drivers/GestureDriver@GestureDriver",
+		"@Easy/Core:Shared/UserInput/Touchscreen@Touchscreen": "$:UserInput/Touchscreen@Touchscreen",
+		"@Easy/Core:Shared/Util/ColorUtil@ColorUtil": "$:Util/ColorUtil@ColorUtil",
+		"@Easy/Core:Shared/Util/Theme@Theme": "$:Util/Theme@Theme",
 		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal": "$:Character/LocalCharacter/LocalCharacterInputSignal@LocalCharacterInputSignal",
 		"@Easy/Core:Shared/Character/LocalCharacter/CharacterInput@CharacterInput": "$:Character/LocalCharacter/CharacterInput@CharacterInput",
 		"@Easy/Core:Shared/Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton": "$:Character/LocalCharacter/LocalCharacterSingleton@LocalCharacterSingleton",
@@ -93,22 +98,19 @@
 		"@Easy/Core:Shared/Network/RemoteFunction@RemoteFunction": "$:Network/RemoteFunction@RemoteFunction",
 		"@Easy/Core:Shared/Team/Team@Team": "$:Team/Team@Team",
 		"@Easy/Core:Shared/Game@Game": "$:Game@Game",
-		"@Easy/Core:Shared/UserInput/Preferred@Preferred": "$:UserInput/Preferred@Preferred",
-		"@Easy/Core:Shared/UserInput/Drivers/TouchscreenDriver@TouchscreenDriver": "$:UserInput/Drivers/TouchscreenDriver@TouchscreenDriver",
-		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@OneFingerGestureCapture": "$:UserInput/Drivers/GestureDriver@OneFingerGestureCapture",
-		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@TwoFingerGestureCapture": "$:UserInput/Drivers/GestureDriver@TwoFingerGestureCapture",
-		"@Easy/Core:Shared/UserInput/Drivers/GestureDriver@GestureDriver": "$:UserInput/Drivers/GestureDriver@GestureDriver",
-		"@Easy/Core:Shared/UserInput/Touchscreen@Touchscreen": "$:UserInput/Touchscreen@Touchscreen",
+		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
+		"@Easy/Core:Shared/MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
+		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
+		"@Easy/Core:Shared/UI/CoreUI@CoreUI": "$:UI/CoreUI@CoreUI",
 		"@Easy/Core:Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController": "$:MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController",
 		"@Easy/Core:Shared/Util/AppManager@AppManager": "$:Util/AppManager@AppManager",
 		"@Easy/Core:Shared/MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent": "$:MainMenu/Components/SocialFriendRequestsButtonComponent@SocialFriendRequestsButtonComponent",
 		"@Easy/Core:Shared/MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent": "$:MainMenu/Components/SocialNotificationComponent@SocialNotificationComponent",
 		"@Easy/Core:Client/MainMenuControllers/Auth/AuthController@AuthController": "$:MainMenuControllers/Auth/AuthController@AuthController",
-		"@Easy/Core:Shared/MainMenu/Components/Search/SearchSingleton@SearchSingleton": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
 		"@Easy/Core:Client/MainMenuControllers/MainMenuPageComponent@MainMenuPageComponent": "$:MainMenuControllers/MainMenuPageComponent@MainMenuPageComponent",
-		"@Easy/Core:Shared/Util/Modifier@Modifier": "$:Util/Modifier@Modifier",
-		"@Easy/Core:Shared/MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
-		"@Easy/Core:Shared/Flamework/flamework@Singleton": "$:Flamework/flamework@Singleton",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": "$:MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": "$:MainMenu/Components/Settings/SettingsPage@SettingsPage",
+		"@Easy/Core:Shared/MainMenu/Components/Search/SearchSingleton@SearchSingleton": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
 		"@Easy/Core:Client/MainMenuControllers/Transfer/TransferController@TransferController": "$:MainMenuControllers/Transfer/TransferController@TransferController",
 		"@Easy/Core:Client/Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent": "$:Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent",
@@ -150,12 +152,15 @@
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
 		"@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton": "$:Damage/DamageSingleton@DamageSingleton",
-		"@Easy/Core:Shared/Input/Keybind@Keybind": "$:Input/Keybind@Keybind",
+		"@Easy/Core:Shared/Input/Binding@Binding": "$:Input/Binding@Binding",
 		"@Easy/Core:Shared/Input/InputUtil@InputUtil": "$:Input/InputUtil@InputUtil",
 		"@Easy/Core:Shared/Input/InputAction@InputActionConfig": "$:Input/InputAction@InputActionConfig",
 		"@Easy/Core:Shared/Input/InputAction@InputAction": "$:Input/InputAction@InputAction",
+		"@Easy/Core:Shared/Input/InputActionEvent@InputActionEvent": "$:Input/InputActionEvent@InputActionEvent",
 		"@Easy/Core:Shared/Input/AirshipInputSingleton@AirshipInputSingleton": "$:Input/AirshipInputSingleton@AirshipInputSingleton",
 		"@Easy/Core:Shared/Inventory/CharacterInventorySingleton@CharacterInventorySingleton": "$:Inventory/CharacterInventorySingleton@CharacterInventorySingleton",
+		"@Easy/Core:Shared/UI/Healthbar@Healthbar": "$:UI/Healthbar@Healthbar",
+		"@Easy/Core:Client/Controllers/Inventory/InventoryUIController@InventoryUIController": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 		"@Easy/Core:Shared/Inventory/InventorySingleton@InventorySingleton": "$:Inventory/InventorySingleton@InventorySingleton",
 		"@Easy/Core:Shared/LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton": "$:LoadingScreen/LoadingScreenSingleton@LoadingScreenSingleton",
 		"@Easy/Core:Client/MainMenuControllers/User/UserController@UserController": "$:MainMenuControllers/User/UserController@UserController",
@@ -170,14 +175,11 @@
 		"@Easy/Core:Client/Components/HomePage/Sort/GameImageButton@GameImageButton": "$:Components/HomePage/Sort/GameImageButton@GameImageButton",
 		"@Easy/Core:Client/Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController": "$:Controllers/Accessory/CharacterAccessoryController@CharacterAccessoryController",
 		"@Easy/Core:Client/Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController": "$:Controllers/Chat/BubbleChat/BubbleChatController@BubbleChatController",
-		"@Easy/Core:Client/Controllers/Crosshair/CrosshairController@CrosshairController": "$:Controllers/Crosshair/CrosshairController@CrosshairController",
 		"@Easy/Core:Client/Controllers/Damage/DamageIndicatorController@DamageIndicatorController": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
 		"@Easy/Core:Client/Controllers/Entity/Nametag/NametagController@NametagController": "$:Controllers/Entity/Nametag/NametagController@NametagController",
 		"@Easy/Core:Shared/GroundItem/GroundItemUtil@GroundItemUtil": "$:GroundItem/GroundItemUtil@GroundItemUtil",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemController@GroundItemController": "$:Controllers/GroundItem/GroundItemController@GroundItemController",
 		"@Easy/Core:Client/Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
-		"@Easy/Core:Shared/UI/Healthbar@Healthbar": "$:UI/Healthbar@Healthbar",
-		"@Easy/Core:Client/Controllers/Inventory/InventoryUIController@InventoryUIController": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 		"@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController": "$:Controllers/ProximityPrompt/ProximityPromptController@ProximityPromptController",
 		"@Easy/Core:Client/Controllers/ProximityPrompt/ProximityPrompt@ProximityPrompt": "$:Controllers/ProximityPrompt/ProximityPrompt@ProximityPrompt",
 		"@Easy/Core:Shared/Util/Window@Window": "$:Util/Window@Window",
@@ -216,15 +218,21 @@
 		"@Easy/Core:Server/Services/Shutdown/ShutdownService@ShutdownService": "$:Services/Shutdown/ShutdownService@ShutdownService",
 		"@Easy/Core:Shared/VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager": "$:VoxelWorld/PrefabBlockManager/PrefabBlockManager@PrefabBlockManager",
 		"@Easy/Core:Shared/Bootstrap/Bootstrap@Bootstrap": "$:Bootstrap/Bootstrap@Bootstrap",
+		"@Easy/Core:Shared/Character/CharacterConfigSetup@CharacterConfigSetup": "$:Character/CharacterConfigSetup@CharacterConfigSetup",
+		"@Easy/Core:Shared/Chat/ChatManager@ChatManager": "$:Chat/ChatManager@ChatManager",
 		"@Easy/Core:Shared/Generator/GeneratorUtil@GeneratorUtil": "$:Generator/GeneratorUtil@GeneratorUtil",
 		"@Easy/Core:Shared/Item/ItemAnimationData@ItemAnimationData": "$:Item/ItemAnimationData@ItemAnimationData",
+		"@Easy/Core:Shared/Item/ItemDefinition/ItemDefinitionComponent@ItemDefinitionComponent": "$:Item/ItemDefinition/ItemDefinitionComponent@ItemDefinitionComponent",
 		"@Easy/Core:Shared/MainMenu/Components/MainMenuContent@MainMenuContent": "$:MainMenu/Components/MainMenuContent@MainMenuContent",
+		"@Easy/Core:Shared/MainMenu/Components/MobileChatToggleButton@MobileChatToggleButton": "$:MainMenu/Components/MobileChatToggleButton@MobileChatToggleButton",
 		"@Easy/Core:Shared/MainMenu/Components/MobileEscapeButton@MobileEscapeButton": "$:MainMenu/Components/MobileEscapeButton@MobileEscapeButton",
 		"@Easy/Core:Shared/MainMenu/Components/MobileNavButton@MobileNavButton": "$:MainMenu/Components/MobileNavButton@MobileNavButton",
 		"@Easy/Core:Shared/MainMenu/Components/Modal@Modal": "$:MainMenu/Components/Modal@Modal",
 		"@Easy/Core:Shared/MainMenu/Components/MyCreditsButton@MyCreditsButton": "$:MainMenu/Components/MyCreditsButton@MyCreditsButton",
+		"@Easy/Core:Shared/MainMenu/Components/Navbar@Navbar": "$:MainMenu/Components/Navbar@Navbar",
 		"@Easy/Core:Shared/MainMenu/Components/NavbarControlButton@NavbarControlButton": "$:MainMenu/Components/NavbarControlButton@NavbarControlButton",
 		"@Easy/Core:Shared/MainMenu/Components/ProfileOptionsButton@ProfileOptionsButton": "$:MainMenu/Components/ProfileOptionsButton@ProfileOptionsButton",
+		"@Easy/Core:Shared/MainMenu/Components/Searchbar@Searchbar": "$:MainMenu/Components/Searchbar@Searchbar",
 		"@Easy/Core:Shared/MainMenu/Components/SocialMenu@SocialMenu": "$:MainMenu/Components/SocialMenu@SocialMenu",
 		"@Easy/Core:Shared/MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard": "$:MainMenu/Components/FriendRequest/IncomingFriendRequestCard@IncomingFriendRequestCard",
 		"@Easy/Core:Shared/MainMenu/Components/FriendRequest/FriendRequestModal@FriendRequestModal": "$:MainMenu/Components/FriendRequest/FriendRequestModal@FriendRequestModal",
@@ -237,16 +245,14 @@
 		"@Easy/Core:Shared/Util/InputUtils@InputUtils": "$:Util/InputUtils@InputUtils",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsKeybind@SettingsKeybind": "$:MainMenu/Components/Settings/SettingsKeybind@SettingsKeybind",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsKeybindPage@SettingsKeybindPage": "$:MainMenu/Components/Settings/SettingsKeybindPage@SettingsKeybindPage",
-		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": "$:MainMenu/Components/Settings/SettingsPage@SettingsPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton": "$:MainMenu/Components/Settings/SettingsTabButton@SettingsTabButton",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsSidebar@SettingsSidebar": "$:MainMenu/Components/Settings/SettingsSidebar@SettingsSidebar",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameFavoriteButton@GameFavoriteButton": "$:MainMenu/Components/Settings/General/GameFavoriteButton@GameFavoriteButton",
-		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": "$:MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry": "$:MainMenu/Components/Settings/General/PlayerEntry@PlayerEntry",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/PlayerList@PlayerList": "$:MainMenu/Components/Settings/General/PlayerList@PlayerList",
 		"@Easy/Core:Shared/MobileControls/MobileCameraMovement@MobileCameraMovement": "$:MobileControls/MobileCameraMovement@MobileCameraMovement",
-		"@Easy/Core:Shared/MobileControls/MobileControlsManager@MobileControlsManager": "$:MobileControls/MobileControlsManager@MobileControlsManager",
 		"@Easy/Core:Shared/MobileControls/MobileJoystick@MobileJoystick": "$:MobileControls/MobileJoystick@MobileJoystick",
+		"@Easy/Core:Shared/MobileControls/MobileOverlayManager@MobileOverlayManager": "$:MobileControls/MobileOverlayManager@MobileOverlayManager",
 		"@Easy/Core:Shared/Privileged/Steam/SteamworksSingleton@SteamworksSingleton": "$:Privileged/Steam/SteamworksSingleton@SteamworksSingleton",
 		"@Easy/Core:Shared/SocketIOMessages/UpdateUserDto@UpdateUserDto": "$:SocketIOMessages/UpdateUserDto@UpdateUserDto",
 		"@Easy/Core:Shared/Team/TeamJoinSignal@ChangeTeamSignal": "$:Team/TeamJoinSignal@ChangeTeamSignal",
@@ -451,6 +457,17 @@
 			]
 		},
 		{
+			"filePath": "../Shared/MainMenu/Singletons/MainMenuSingleton.lua",
+			"internalId": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
+				}
+			]
+		},
+		{
 			"filePath": "../Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController.lua",
 			"internalId": "$:MainMenuControllers/UI/RightClickMenu/RightClickMenuController@RightClickMenuController",
 			"decorators": [
@@ -485,17 +502,6 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Shared/MainMenu/Singletons/MainMenuSingleton.lua",
-			"internalId": "$:MainMenu/Singletons/MainMenuSingleton@MainMenuSingleton",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Singleton",
-					"isFlameworkDecorator": true,
-					"name": "Singleton"
 				}
 			]
 		},
@@ -696,6 +702,17 @@
 			]
 		},
 		{
+			"filePath": "../Client/Controllers/Inventory/InventoryUIController.lua",
+			"internalId": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Controller",
+					"isFlameworkDecorator": true,
+					"name": "Controller"
+				}
+			]
+		},
+		{
 			"filePath": "../Shared/Inventory/InventorySingleton.lua",
 			"internalId": "$:Inventory/InventorySingleton@InventorySingleton",
 			"decorators": [
@@ -831,17 +848,6 @@
 			]
 		},
 		{
-			"filePath": "../Client/Controllers/Crosshair/CrosshairController.lua",
-			"internalId": "$:Controllers/Crosshair/CrosshairController@CrosshairController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
 			"filePath": "../Client/Controllers/Damage/DamageIndicatorController.lua",
 			"internalId": "$:Controllers/Damage/DamageIndicatorController@DamageIndicatorController",
 			"decorators": [
@@ -877,17 +883,6 @@
 		{
 			"filePath": "../Client/Controllers/GroundItem/GroundItemPickupSoundsController.lua",
 			"internalId": "$:Controllers/GroundItem/GroundItemPickupSoundsController@GroundItemPickupSoundsController",
-			"decorators": [
-				{
-					"internalId": "$:Flamework/flamework@Controller",
-					"isFlameworkDecorator": true,
-					"name": "Controller"
-				}
-			]
-		},
-		{
-			"filePath": "../Client/Controllers/Inventory/InventoryUIController.lua",
-			"internalId": "$:Controllers/Inventory/InventoryUIController@InventoryUIController",
 			"decorators": [
 				{
 					"internalId": "$:Flamework/flamework@Controller",

@@ -42,7 +42,7 @@ export class FlyCameraMode extends CameraMode {
 
 	private keyboard!: Keyboard;
 	private mouse!: Mouse;
-	private readonly keysDown = new Set<KeyCode>();
+	private readonly keysDown = new Set<Key>();
 
 	private readonly clientSettingsController = Dependency<ClientSettingsController>();
 
@@ -62,24 +62,24 @@ export class FlyCameraMode extends CameraMode {
 		this.mouse = this.bin.Add(new Mouse());
 
 		// Sink keys:
-		const sinkKeys = new Set<KeyCode>();
-		sinkKeys.add(KeyCode.W);
-		sinkKeys.add(KeyCode.A);
-		sinkKeys.add(KeyCode.S);
-		sinkKeys.add(KeyCode.D);
-		sinkKeys.add(KeyCode.UpArrow);
-		sinkKeys.add(KeyCode.DownArrow);
-		sinkKeys.add(KeyCode.LeftArrow);
-		sinkKeys.add(KeyCode.RightArrow);
-		sinkKeys.add(KeyCode.Q);
-		sinkKeys.add(KeyCode.E);
+		const sinkKeys = new Set<Key>();
+		sinkKeys.add(Key.W);
+		sinkKeys.add(Key.A);
+		sinkKeys.add(Key.S);
+		sinkKeys.add(Key.D);
+		sinkKeys.add(Key.UpArrow);
+		sinkKeys.add(Key.DownArrow);
+		sinkKeys.add(Key.LeftArrow);
+		sinkKeys.add(Key.RightArrow);
+		sinkKeys.add(Key.Q);
+		sinkKeys.add(Key.E);
 
 		for (const key of sinkKeys) {
 			this.bin.Add(
 				this.keyboard.OnKeyDown(
 					key,
 					(event) => {
-						this.keysDown.add(event.keyCode);
+						this.keysDown.add(event.key);
 						event.SetCancelled(true);
 					},
 					SignalPriority.HIGHEST - 100,
@@ -89,7 +89,7 @@ export class FlyCameraMode extends CameraMode {
 				this.keyboard.OnKeyUp(
 					key,
 					(event) => {
-						this.keysDown.delete(event.keyCode);
+						this.keysDown.delete(event.key);
 						event.SetCancelled(true);
 					},
 					SignalPriority.HIGHEST - 100,
@@ -113,12 +113,12 @@ export class FlyCameraMode extends CameraMode {
 
 	OnUpdate(dt: number) {
 		// Input:
-		const up = this.keysDown.has(KeyCode.W) || this.keysDown.has(KeyCode.UpArrow);
-		const dn = this.keysDown.has(KeyCode.S) || this.keysDown.has(KeyCode.DownArrow);
-		const lf = this.keysDown.has(KeyCode.A) || this.keysDown.has(KeyCode.LeftArrow);
-		const rt = this.keysDown.has(KeyCode.D) || this.keysDown.has(KeyCode.RightArrow);
-		const q = this.keysDown.has(KeyCode.Q);
-		const e = this.keysDown.has(KeyCode.E);
+		const up = this.keysDown.has(Key.W) || this.keysDown.has(Key.UpArrow);
+		const dn = this.keysDown.has(Key.S) || this.keysDown.has(Key.DownArrow);
+		const lf = this.keysDown.has(Key.A) || this.keysDown.has(Key.LeftArrow);
+		const rt = this.keysDown.has(Key.D) || this.keysDown.has(Key.RightArrow);
+		const q = this.keysDown.has(Key.Q);
+		const e = this.keysDown.has(Key.E);
 
 		const direction = this.CalculateDirection();
 

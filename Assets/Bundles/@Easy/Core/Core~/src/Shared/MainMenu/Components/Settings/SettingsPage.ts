@@ -1,5 +1,6 @@
 import MainMenuPageComponent from "@Easy/Core/Client/MainMenuControllers/MainMenuPageComponent";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 
@@ -22,7 +23,6 @@ export default class SettingsPage extends MainMenuPageComponent {
 					this.tabs.offsetMin = new Vector2(10, 0);
 					// rect.offsetMax = new Vector2(rect.offsetMax.x, 40);
 					// rect.offsetMin = new Vector2(rect.offsetMin.x, 0);
-					print("updated friends rect!");
 
 					// for (let page of this.mobilePages) {
 					// 	page.gameObject.SetActive(true);
@@ -33,6 +33,11 @@ export default class SettingsPage extends MainMenuPageComponent {
 					// return () => {
 					// 	navbarDisc();
 					// };
+
+					if (Game.deviceType === AirshipDeviceType.Phone) {
+						this.tabs.GetChild(0).gameObject.SetActive(true); // Input
+						this.tabs.GetChild(1).gameObject.SetActive(true); // Sound
+					}
 				} else {
 					rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
 					this.sidebar.gameObject.SetActive(true);

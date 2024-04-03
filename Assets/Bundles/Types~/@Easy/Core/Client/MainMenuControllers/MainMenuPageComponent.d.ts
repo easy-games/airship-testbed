@@ -18,6 +18,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
      * **DO NOT YIELD INSIDE THIS METHOD**
      * @returns
      */
-    OpenPage(): void;
+    OpenPage(params?: unknown): void;
+    GetTargetAnchoredPositionY(): number;
     ClosePage(instant?: boolean): void;
 }

@@ -5,6 +5,10 @@ export default class MainMenuNavButton extends AirshipBehaviour {
     trueShadow: TrueShadow;
     selectedColor: Color;
     unselectedColor: Color;
+    text: TMP_Text;
+    iconImage: Image;
+    private textColorActive;
+    private textColorNormal;
     Awake(): void;
     Start(): void;
     OnDestroy(): void;

@@ -216,13 +216,13 @@ export class DirectMessageController implements OnStart {
 			this.inputFieldSelected = false;
 		});
 		const keyboard = new Keyboard();
-		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
+		keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGHEST, (event) => {
 			if (this.inputFieldSelected) {
 				if (
-					event.keyCode !== KeyCode.Return &&
-					event.keyCode !== KeyCode.Escape &&
-					event.keyCode !== KeyCode.UpArrow &&
-					event.keyCode !== KeyCode.DownArrow
+					event.key !== Key.Enter &&
+					event.key !== Key.Escape &&
+					event.key !== Key.UpArrow &&
+					event.key !== Key.DownArrow
 				) {
 					event.SetCancelled(true);
 				}

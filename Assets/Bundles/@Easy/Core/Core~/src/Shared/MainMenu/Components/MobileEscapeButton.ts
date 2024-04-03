@@ -4,6 +4,8 @@ import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 
 export default class MobileEscapeButton extends AirshipBehaviour {
+	public chatButton!: GameObject;
+
 	private bin = new Bin();
 
 	override OnEnable(): void {
@@ -12,8 +14,10 @@ export default class MobileEscapeButton extends AirshipBehaviour {
 				const mainMenuController = Dependency<MainMenuController>();
 				if (mainMenuController.IsOpen()) {
 					mainMenuController.CloseFromGame();
+					this.chatButton.SetActive(true);
 				} else {
 					mainMenuController.OpenFromGame();
+					this.chatButton.SetActive(false);
 				}
 			}),
 		);

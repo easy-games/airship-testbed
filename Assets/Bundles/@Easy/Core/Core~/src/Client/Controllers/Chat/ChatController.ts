@@ -1,3 +1,4 @@
+import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { DirectMessageController } from "Client/MainMenuControllers/Social/DirectMessages/DirectMessageController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { SocketController } from "Client/MainMenuControllers/Socket/SocketController";
@@ -6,7 +7,7 @@ import { AudioManager } from "Shared/Audio/AudioManager";
 import { ChatCommand } from "Shared/Commands/ChatCommand";
 import { ClearCommand } from "Shared/Commands/ClearCommand";
 import { CoreNetwork } from "Shared/CoreNetwork";
-import { Controller, OnStart } from "Shared/Flamework";
+import { Controller, Dependency, OnStart } from "Shared/Flamework";
 import { Game } from "Shared/Game";
 import { GameObjectUtil } from "Shared/GameObject/GameObjectUtil";
 import { Player } from "Shared/Player/Player";
@@ -65,6 +66,7 @@ class ChatMessageElement {
 
 @Controller({})
 export class ChatController implements OnStart {
+	private canvas!: Canvas;
 	private content: GameObject;
 	private wrapper: GameObject;
 	private chatMessagePrefab: Object;
@@ -90,6 +92,7 @@ export class ChatController implements OnStart {
 		private readonly friendsController: FriendsController,
 	) {
 		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
+		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>();
 		this.content = refs.GetValue("UI", "Content");
 		this.wrapper = refs.GetValue("UI", "Wrapper");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
@@ -97,17 +100,53 @@ export class ChatController implements OnStart {
 		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>();
 		this.content.gameObject.ClearChildren();
 
-		if (Game.IsMobile()) {
-			const wrapperRect = this.wrapper.GetComponent<RectTransform>();
-			wrapperRect.anchorMin = new Vector2(0, 1);
-			wrapperRect.anchorMax = new Vector2(0, 1);
-			wrapperRect.pivot = new Vector2(0, 1);
-			wrapperRect.anchoredPosition = new Vector2(105, 50);
-		}
+		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
+			if (Game.IsMobile()) {
+				this.canvas.GetComponent<CanvasScaler>().scaleFactor = Game.GetScaleFactor();
+				const wrapperRect = this.wrapper.GetComponent<RectTransform>();
+
+				if (Game.deviceType === AirshipDeviceType.Phone) {
+					wrapperRect.anchorMin = new Vector2(0, 0);
+					wrapperRect.anchorMax = new Vector2(0, 1);
+					wrapperRect.pivot = new Vector2(0, 1);
+					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
+				} else {
+					wrapperRect.anchorMax = new Vector2(0, 1);
+					wrapperRect.anchorMin = new Vector2(0, 0.55);
+					wrapperRect.pivot = new Vector2(0, 1);
+					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 0);
+					// wrapperRect.offsetMax = new Vector2(0, 0);
+					// wrapperRect.offsetMin = new Vector2(0, 0);
+				}
+				wrapperRect.anchoredPosition = new Vector2(121, -14);
+			} else {
+				const wrapperRect = this.wrapper.GetComponent<RectTransform>();
+				const wrapperImg = wrapperRect.GetComponent<Image>();
+				wrapperImg.color = new Color(0, 0, 0, 0);
+			}
+		});
 
 		this.RegisterCommand(new ClearCommand());
 		this.RegisterCommand(new MessageCommand());
 		this.RegisterCommand(new ReplyCommand());
+
+		if (Game.IsMobile()) {
+			this.canvas.enabled = false;
+		} else {
+			this.wrapper.GetComponent<Mask>().enabled = false;
+		}
+	}
+
+	public OpenMobile(): void {
+		this.canvas.enabled = true;
+	}
+
+	public HideMobile(): void {
+		this.canvas.enabled = false;
+	}
+
+	public IsOpenMobile(): boolean {
+		return this.canvas.enabled;
 	}
 
 	public RegisterCommand(command: ChatCommand) {
@@ -131,8 +170,16 @@ export class ChatController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
+
+		// Submitting on mobile.
+		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
+			this.SubmitInputField();
+		});
+
+		// Submitting on desktop.
+		// We cancel the form submit so the input field doesn't auto deselect.
 		keyboard.OnKeyDown(
-			KeyCode.Return,
+			Key.Enter,
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (this.selected) {
@@ -150,7 +197,7 @@ export class ChatController implements OnStart {
 			SignalPriority.HIGH,
 		);
 		keyboard.OnKeyDown(
-			KeyCode.Escape,
+			Key.Escape,
 			(event) => {
 				if (this.selected) {
 					EventSystem.current.ClearSelected();
@@ -161,7 +208,7 @@ export class ChatController implements OnStart {
 			SignalPriority.HIGHEST,
 		);
 		keyboard.OnKeyDown(
-			KeyCode.Slash,
+			Key.Slash,
 			(event) => {
 				if (EventSystem.current.currentSelectedGameObject && !this.selected) return;
 				if (!this.selected) {
@@ -172,7 +219,7 @@ export class ChatController implements OnStart {
 			},
 			SignalPriority.HIGH,
 		);
-		keyboard.OnKeyDown(KeyCode.UpArrow, (event) => {
+		keyboard.OnKeyDown(Key.UpArrow, (event) => {
 			if (this.IsChatFocused()) {
 				if (this.historyIndex + 1 < this.prevSentMessages.size()) {
 					this.historyIndex++;
@@ -182,7 +229,7 @@ export class ChatController implements OnStart {
 				}
 			}
 		});
-		keyboard.OnKeyDown(KeyCode.DownArrow, (event) => {
+		keyboard.OnKeyDown(Key.DownArrow, (event) => {
 			if (this.IsChatFocused()) {
 				if (this.historyIndex - 1 >= -1) {
 					this.historyIndex--;
@@ -199,13 +246,13 @@ export class ChatController implements OnStart {
 		});
 
 		// Sink key events when selected:
-		keyboard.anyKeyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
+		keyboard.keyDown.ConnectWithPriority(SignalPriority.HIGH, (event) => {
 			if (this.selected) {
 				if (
-					event.keyCode !== KeyCode.Return &&
-					event.keyCode !== KeyCode.Escape &&
-					event.keyCode !== KeyCode.UpArrow &&
-					event.keyCode !== KeyCode.DownArrow
+					event.key !== Key.Enter &&
+					event.key !== Key.Escape &&
+					event.key !== Key.UpArrow &&
+					event.key !== Key.DownArrow
 				) {
 					event.SetCancelled(true);
 				}
@@ -216,7 +263,9 @@ export class ChatController implements OnStart {
 		CanvasAPI.OnSelectEvent(this.inputField.gameObject, () => {
 			this.selected = true;
 			this.historyIndex = -1;
-			this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
+			if (!Game.IsMobile()) {
+				this.inputWrapperImage.color = new Color(0, 0, 0, 0.4);
+			}
 			const entityInputDisabler = this.localEntityController.GetEntityInput()?.AddDisabler();
 			if (entityInputDisabler !== undefined) {
 				this.selectedBin.Add(entityInputDisabler);
@@ -231,7 +280,9 @@ export class ChatController implements OnStart {
 		CanvasAPI.OnDeselectEvent(this.inputField.gameObject, () => {
 			this.selectedBin.Clean();
 			this.selected = false;
-			this.inputWrapperImage.color = new Color(0, 0, 0, 0);
+			if (!Game.IsMobile()) {
+				this.inputWrapperImage.color = new Color(0, 0, 0, 0);
+			}
 			this.CheckIfShouldHide();
 		});
 
@@ -241,6 +292,7 @@ export class ChatController implements OnStart {
 	}
 
 	private CheckIfShouldHide(): void {
+		if (Game.IsMobile()) return;
 		if (this.IsChatFocused()) {
 			for (const element of this.chatMessageElements) {
 				element.Show();

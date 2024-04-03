@@ -48,7 +48,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	private targetTransform?: Transform;
 	private mouse?: Mouse;
-	private lastMousePos: Vector3 = Vector3.zero;
+	private lastMousePos: Vector2 = Vector2.zero;
 	private initialized = false;
 	private spinVel = 0;
 
@@ -80,7 +80,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 		this.dragging = false;
 		this.mouse = new Mouse();
-		this.mouse.moved.Connect((pos: Vector3) => {
+		this.mouse.moved.Connect((pos: Vector2) => {
 			if (this.dragging) {
 				let diff = pos.sub(this.lastMousePos);
 				let vel = diff.x * -this.dragSpeedMod;

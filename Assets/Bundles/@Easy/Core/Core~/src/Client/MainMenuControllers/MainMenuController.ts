@@ -1,3 +1,4 @@
+import GameGeneralPage from "@Easy/Core/Shared/MainMenu/Components/Settings/General/GameGeneralPage";
 import SettingsPage from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPage";
 import HomePageComponent from "Client/Components/HomePage/HomePageComponent";
 import { CoreContext } from "Shared/CoreClientContext";
@@ -64,6 +65,7 @@ export class MainMenuController implements OnStart {
 				MainMenuPageType.Friends,
 				this.refs.GetValue("Pages", "Friends").GetAirshipComponent<MainMenuPageComponent>()!,
 			],
+			[MainMenuPageType.Game, this.refs.GetValue("Pages", "Game").GetAirshipComponent<GameGeneralPage>()!],
 		]);
 
 		this.avatarView = Object.Instantiate(
@@ -163,7 +165,7 @@ export class MainMenuController implements OnStart {
 			if (Game.coreContext === CoreContext.MAIN_MENU) {
 				this.RouteToPage(MainMenuPageType.Home, true, true);
 			} else {
-				this.RouteToPage(MainMenuPageType.Settings, true, true);
+				this.RouteToPage(MainMenuPageType.Game, true, true);
 			}
 		} else {
 			this.RouteToPage(this.currentPage.pageType, true, true);
@@ -172,7 +174,7 @@ export class MainMenuController implements OnStart {
 		if (Game.coreContext === CoreContext.GAME) {
 			const keyboard = new Keyboard();
 			keyboard.OnKeyDown(
-				KeyCode.Escape,
+				Key.Escape,
 				(event) => {
 					this.OpenFromGame();
 				},
@@ -187,7 +189,7 @@ export class MainMenuController implements OnStart {
 		}
 	}
 
-	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false) {
+	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false, params?: unknown) {
 		if (this.currentPage?.pageType === pageType && !force) {
 			return;
 		}
@@ -201,7 +203,7 @@ export class MainMenuController implements OnStart {
 		}
 
 		if (this.currentPage) {
-			this.currentPage.OpenPage();
+			this.currentPage.OpenPage(params);
 		} else {
 			error("Trying to route to undefined page: " + pageType);
 		}
