@@ -170,6 +170,14 @@ export class ChatController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
+
+		// Submitting on mobile.
+		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
+			this.SubmitInputField();
+		});
+
+		// Submitting on desktop.
+		// We cancel the form submit so the input field doesn't auto deselect.
 		keyboard.OnKeyDown(
 			Key.Enter,
 			(event) => {
