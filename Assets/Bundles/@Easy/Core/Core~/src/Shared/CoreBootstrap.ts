@@ -26,13 +26,13 @@ task.spawn(() => {
 	}
 });
 
-const vars: DynamicVariables[] = [
-	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),
-	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Camera.asset"),
-];
-for (const dynamicVar of vars) {
-	dynamicVar.Register();
-}
+// const vars: DynamicVariables[] = [
+// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Combat.asset"),
+// 	AssetBridge.Instance.LoadAsset<DynamicVariables>("@Easy/Core/Shared/Resources/DynamicVariables/Camera.asset"),
+// ];
+// for (const dynamicVar of vars) {
+// 	dynamicVar.Register();
+// }
 
 // Force import of TimeUtil
 TimeUtil.GetLifetimeSeconds();
@@ -66,6 +66,7 @@ if (RunUtil.IsClient()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/airship", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/controllers", "^.*controller.lua$");
 	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
+	Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*singleton.lua$");
 }
 if (RunUtil.IsServer()) {
 	Flamework.AddPath("assets/bundles/@Easy/Core/server/resources/ts/airship", "^.*service.lua$");

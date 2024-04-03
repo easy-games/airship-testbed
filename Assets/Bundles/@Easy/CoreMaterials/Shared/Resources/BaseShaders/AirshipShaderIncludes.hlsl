@@ -275,5 +275,10 @@ half EnvBRDFApproxNonmetal(half Roughness, half NoV)
     return min(r.x * r.x, exp2(-9.28 * NoV)) * r.x + r.y;
 }
 
+//Insert exposure controls here
+half4 DoFinalColorWrite(half4 input)
+{
+    return half4(input.rgb, input.a);
+}
 
 #endif

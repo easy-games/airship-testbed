@@ -111,10 +111,12 @@ export class ChatController implements OnStart {
 					wrapperRect.pivot = new Vector2(0, 1);
 					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
 				} else {
-					wrapperRect.anchorMin = new Vector2(0, 0);
-					wrapperRect.anchorMax = new Vector2(0, 0.5);
-					wrapperRect.pivot = new Vector2(0, 0);
+					wrapperRect.anchorMax = new Vector2(0, 1);
+					wrapperRect.anchorMin = new Vector2(0, 0.55);
+					wrapperRect.pivot = new Vector2(0, 1);
 					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 0);
+					// wrapperRect.offsetMax = new Vector2(0, 0);
+					// wrapperRect.offsetMin = new Vector2(0, 0);
 				}
 				wrapperRect.anchoredPosition = new Vector2(121, -14);
 			} else {
@@ -168,6 +170,14 @@ export class ChatController implements OnStart {
 		});
 
 		const keyboard = new Keyboard();
+
+		// Submitting on mobile.
+		CanvasAPI.OnInputFieldSubmit(this.inputField.gameObject, (data) => {
+			this.SubmitInputField();
+		});
+
+		// Submitting on desktop.
+		// We cancel the form submit so the input field doesn't auto deselect.
 		keyboard.OnKeyDown(
 			Key.Enter,
 			(event) => {

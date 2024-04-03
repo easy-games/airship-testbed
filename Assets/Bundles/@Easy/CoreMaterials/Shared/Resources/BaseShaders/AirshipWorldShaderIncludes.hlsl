@@ -445,7 +445,7 @@
 #endif
         reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));
         
-        half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
+        half3 complexAmbientSample = reflectedCubeSample;// texCUBElod(_CubeTex, half4(worldNormal, roughnessLevel* maxMips)); //SampleAmbientSphericalHarmonics(worldNormal);
         
         //Shadows and light masks
 #if SHADOWS_ON        
@@ -471,19 +471,24 @@
         half3 imageSpecular = reflectedCubeSample.xyz;
         half3 specularColor;
         half3 diffuseColor;
-        half dielectricSpecular = 0.08 * 0.3; //0.3 is the industry standard
-        diffuseColor = albedo - albedo * metallicLevel;	 
-        specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;
-        specularColor = EnvBRDFApprox(specularColor, roughnessLevel, NoV) * _SpecularColor;
+		
+        if (metallicLevel > 0)
+        {
+            half dielectricSpecular = 0.08 * 0.3;  
+            diffuseColor = albedo - albedo * metallicLevel;
+            specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;
 
-        //modify the albedo now
-        //albedo = lerp(imageSpecular, albedo, roughnessLevel);
-        /*//Alternate material for when metal is totally ignored
+            specularColor = EnvBRDFApprox(specularColor, roughnessLevel, NoV) * _SpecularColor;
+        }
+        else
+        {
+            //Alternate material for when metal is totally ignored
             diffuseColor = albedo;
             half specLevel = EnvBRDFApproxNonmetal(roughnessLevel, NoV);
             specularColor = half3(specLevel, specLevel, specLevel);
-        */
+        }
       
+        half3 phongSpec = PhongApprox(roughnessLevel, RoL) * specularColor;
 
         //Start compositing it all now
         half3 finalColor = half3(0, 0, 0);
@@ -493,41 +498,34 @@
         half3 sunColor = (globalSunColor * globalSunBrightness);
 
         //Sun Term
-        half3 sunShine = (sunColor * NoL);
- 
-        //Sun Specular
-        half res = PhongApprox(roughnessLevel, RoL) * globalSunBrightness;
-    
-        half3 sunSpecular = specularColor * res;
-        
+        half3 sunShineTerm = (sunColor * NoL);
+         
         //Final sun term
-        half3 sunComposite = (sunShine * diffuseColor) + (sunSpecular);
-        //Mask the sun based on the shadows
+        half3 sunComposite = sunShineTerm * (diffuseColor + phongSpec);
+ 
+        //Sun Image reflection
+        half3 sunImageLight = imageSpecular * specularColor;
+        sunComposite += sunImageLight;
+        sunComposite *= globalSunBrightness;
+        
+        //Mask in the sun, based on the shadows
         half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
         
-        //SH ambient
-        half3 ambientLight = (complexAmbientSample * globalAmbientTint * albedo);
+
+        //Ambient lighting
+        half3 ambientLight = (diffuseColor + phongSpec) + (complexAmbientSample * specularColor);
         
         //If we're using separate shadow tints NPR
 #ifdef USE_SHADOW_COLOR_ON
         half3 finalAmbient = lerp((ambientLight * _ShadowColor), (ambientLight * albedo), sunShadowMask);
 #else
-        half3 finalAmbient = ambientLight * albedo;
+        half3 finalAmbient = ambientLight;
 #endif
-
-        //Sun Rim
-        half3 sunRim = ((1 - NoV) * imageSpecular * specularColor);
-
+		//Slider
+        finalAmbient *= globalAmbientBrightness;
+   
+        finalColor = finalSun + finalAmbient;
         
-        finalColor = finalSun + finalAmbient + sunRim;
-
-        //finalColor = diffuseColor;
-        //@@
-        //finalColor = reflectedCubeSample;// sunComposite + sunRim;
-        
-  
-
-        //Start messing with the final color in fun ways
         
         //Do point lighting
         finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
@@ -538,7 +536,7 @@
 #endif
         //Mix in fog
 		finalColor = CalculateAtmosphericFog(finalColor, viewDistance);
-
+        
         //Final color 
         half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * alpha;
 
@@ -567,7 +565,7 @@
 
         }
 #else
-        MRT0 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
+        MRT0 = DoFinalColorWrite(half4(finalColor.r, finalColor.g, finalColor.b, alpha));
 
         //Choose emissive based on brightness values
         //half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * (1 - roughnessLevel) * alpha;
@@ -582,6 +580,7 @@
             MRT1 = half4(0, 0, 0, alpha);
         }
 #endif
+        
     }
 
 #endif

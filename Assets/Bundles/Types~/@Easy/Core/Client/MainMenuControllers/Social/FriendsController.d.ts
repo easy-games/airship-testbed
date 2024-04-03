@@ -27,6 +27,7 @@ export declare class FriendsController implements OnStart {
     private friendRequestsButton;
     private socialNotificationKey;
     onIncomingFriendRequestsChanged: Signal<void>;
+    private friendsScrollRect;
     constructor(authController: AuthController, socketController: SocketController, mainMenuController: MainMenuController, rightClickMenuController: RightClickMenuController, clientSettingsController: ClientSettingsController);
     AddSocialNotification(key: string, title: string, username: string, onResult: (result: boolean) => void): void;
     ClearSocialNotification(): void;

@@ -134,7 +134,7 @@ export class MainMenuNavbarController implements OnStart {
 
 		task.spawn(() => {
 			const gameData = Game.WaitForGameData();
-			const text = runningGameButton.transform.GetChild(1).GetComponent<TMP_Text>();
+			const text = runningGameButton.transform.Find("GameName")!.GetComponent<TMP_Text>();
 			text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
 			text.text = gameData.name;
 			Bridge.UpdateLayout(runningGameButton.transform, false);
