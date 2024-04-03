@@ -8,7 +8,7 @@
 
 <Blocks>
   <RootAssetPath>@Easy/Survival/Shared/Resources/VoxelWorld</RootAssetPath>
-  <Scope>@Easy/Core</Scope>
+  <Scope>@Easy/Survival</Scope>
 
   <Block>
     <Id>GRASS</Id>

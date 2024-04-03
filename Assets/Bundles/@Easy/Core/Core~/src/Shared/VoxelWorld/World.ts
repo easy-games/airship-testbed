@@ -141,7 +141,7 @@ export class World {
 
 	/**
 	 * Translates the string block id to the corresponding voxel block id
-	 * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+	 * @param blockStringId The id of the block, e.g. `@Easy/Survival:STONE`
 	 * @returns The voxel block id
 	 */
 	public GetVoxelIdFromId(blockStringId: string): number {
@@ -179,7 +179,7 @@ export class World {
 	 * @param config The configuration for this placed block
 	 */
 	public PlaceBlockById(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void {
-		return this.PlaceBlockByVoxelId(pos, this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId), config);
+		return this.PlaceBlockByVoxelId(pos, this.GetVoxelIdFromId(blockStringId), config);
 	}
 
 	/**
@@ -249,7 +249,7 @@ export class World {
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 
 		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
-		let isLocalPrediction = config?.placedByEntityId === Game.localPlayer.character?.id;
+		let isLocalPrediction = Game.IsClient() && config?.placedByEntityId === Game.localPlayer.character?.id;
 
 		positions.forEach((position, i) => {
 			if (config?.blockData) {

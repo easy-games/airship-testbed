@@ -1,15 +1,16 @@
 import { Game } from "@Easy/Core/Shared/Game";
-import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
-import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
 import { World } from "@Easy/Core/Shared/VoxelWorld/World";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
+import { SurvivalBlockType } from "@Easy/Survival/Shared/SurvivalBlocks";
 
 export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 	@Header("Variables")
+	public baseBlockType: SurvivalBlockType = SurvivalBlockType.EMERALD_BLOCK;
+	public wallBlockType: SurvivalBlockType = SurvivalBlockType.STONE_BRICK;
 	public levelSize = 75;
 	public wallHeight = 3;
-	public wallBlockType = 1;
 
+	//Stored reference to the current world
 	private world!: World;
 
 	public override OnEnable(): void {
@@ -18,7 +19,7 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 			return;
 		}
 
-		//Load this world
+		//Load the world
 		let foundWorld = WorldAPI.GetMainWorld();
 		if (!foundWorld) {
 			error("No voxel world found in game");
@@ -28,7 +29,9 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 		//Don't place blocks until the world is loaded
 		this.world.OnFinishedWorldLoading(() => {
 			//Make a cube at the center of the map (Our defense point)
-			this.world.PlaceBlockByItemType(Vector3.zero, CoreItemType.STONE);
+			print("Placing block: " + this.baseBlockType);
+			print("Wall type: " + this.wallBlockType);
+			this.world.PlaceBlockById(Vector3.zero, this.baseBlockType);
 			this.CreateWalls();
 			this.GenerateRandomizedBlocks();
 		});
@@ -39,7 +42,7 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 		//Fill an array of positions that will be each wall point
 		let blockPositions: Vector3[] = [];
 		//Each id is an index to the type of block. Parallel to blockPositions
-		let blockIds: number[] = [];
+		let blockIds: string[] = [];
 
 		let blockI = 0; //Index to block positions
 		let levelHalfSize = math.floor(this.levelSize / 2);
@@ -79,7 +82,7 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 
 		//Write the blocks to the VoxelWorld
 		print("WriteVoxelGroupAtTS");
-		//this.world.WriteVoxelGroupAtTS({ pos: blockPositions, blockId: blockIds }, false);
+		this.world.PlaceBlockGroupById(blockPositions, blockIds);
 	}
 
 	public GenerateRandomizedBlocks() {}

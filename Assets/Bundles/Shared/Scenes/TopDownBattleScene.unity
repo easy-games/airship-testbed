@@ -119,6 +119,131 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &74274514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 74274515}
+  - component: {fileID: 74274519}
+  - component: {fileID: 74274518}
+  - component: {fileID: 74274517}
+  - component: {fileID: 74274516}
+  m_Layer: 6
+  m_Name: VoxelWorld
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &74274515
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74274514}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1744718879}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &74274516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74274514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71ba6162c63a4917825031eee1f0c762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 74274517}
+  _networkObjectCache: {fileID: 74274517}
+  world: {fileID: 74274518}
+--- !u!114 &74274517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74274514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <ObjectId>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours:
+  - {fileID: 74274516}
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  SerializedTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
+  _scenePathHash: 4259774391
+  <SceneId>k__BackingField: 18295591700926369465
+  <AssetPathHash>k__BackingField: 0
+--- !u!114 &74274518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74274514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffdbf2e5de07a2a48be696e24d5b6e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugReloadOnScriptReloadMode: 0
+  radiosityEnabled: 0
+  globalRadiosityScale: 0.25
+  globalRadiosityDirectLightAmp: 1
+  showRadioistyProbes: 0
+  autoLoad: 1
+  voxelWorldFile: {fileID: 0}
+  blockDefines:
+  - {fileID: 4900000, guid: c8b3c8f2a614f4c1386bf2b3cf55dafc, type: 3}
+  worldNetworker: {fileID: 74274516}
+  chunksFolder: {fileID: 0}
+  lightsFolder: {fileID: 0}
+  finishedReplicatingChunksFromServer: 0
+  selectedBlockIndex: 1
+  renderingDisabled: 0
+--- !u!114 &74274519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74274514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9eaf1e487c24d9996d515cda0275b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voxelWorld: {fileID: 74274518}
 --- !u!1 &131862465
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,131 +339,6 @@ MonoBehaviour:
   doShadows: 1
   cubeMap: {fileID: 8900000, guid: 98fc12523466e9841bcac080b0b16b28, type: 3}
   cubemapCoefs: {fileID: 4900000, guid: ce7543ecfc8e54dfc940a47f6cd35438, type: 3}
---- !u!1 &185007626
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 185007627}
-  - component: {fileID: 185007631}
-  - component: {fileID: 185007630}
-  - component: {fileID: 185007629}
-  - component: {fileID: 185007628}
-  m_Layer: 6
-  m_Name: VoxelWorld
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &185007627
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185007626}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1744718879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &185007628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185007626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71ba6162c63a4917825031eee1f0c762, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 185007629}
-  _networkObjectCache: {fileID: 185007629}
-  world: {fileID: 185007630}
---- !u!114 &185007629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185007626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsNested>k__BackingField: 0
-  <ComponentIndex>k__BackingField: 0
-  <ObjectId>k__BackingField: 0
-  <PredictedSpawn>k__BackingField: {fileID: 0}
-  _networkBehaviours:
-  - {fileID: 185007628}
-  <ParentNetworkObject>k__BackingField: {fileID: 0}
-  <ChildNetworkObjects>k__BackingField: []
-  SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    LocalScale: {x: 1, y: 1, z: 1}
-  _isNetworked: 1
-  _isGlobal: 0
-  _initializeOrder: 0
-  _defaultDespawnType: 0
-  NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 0
-  <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 4259774391
-  <SceneId>k__BackingField: 18295591701764231180
-  <AssetPathHash>k__BackingField: 0
---- !u!114 &185007630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185007626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffdbf2e5de07a2a48be696e24d5b6e44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugReloadOnScriptReloadMode: 0
-  radiosityEnabled: 0
-  globalRadiosityScale: 0.25
-  globalRadiosityDirectLightAmp: 1
-  showRadioistyProbes: 0
-  autoLoad: 1
-  voxelWorldFile: {fileID: 11400000, guid: 05437f027425b48a39033b44ff1f6e90, type: 2}
-  blockDefines:
-  - {fileID: 4900000, guid: c8b3c8f2a614f4c1386bf2b3cf55dafc, type: 3}
-  worldNetworker: {fileID: 185007628}
-  chunksFolder: {fileID: 0}
-  lightsFolder: {fileID: 0}
-  finishedReplicatingChunksFromServer: 0
-  selectedBlockIndex: 4
-  renderingDisabled: 0
---- !u!114 &185007631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185007626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9eaf1e487c24d9996d515cda0275b9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  voxelWorld: {fileID: 185007630}
 --- !u!1 &265294568
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +568,6 @@ GameObject:
   - component: {fileID: 913210013}
   - component: {fileID: 913210014}
   - component: {fileID: 913210015}
-  - component: {fileID: 913210016}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -842,96 +841,20 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 1
-    displayName: 
---- !u!114 &913210016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 913210011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleLevelGenerator.lua
-  m_error: 0
-  m_yielded: 0
-  m_assetPath: 
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: TopDownBattleLevelGenerator
-    decorators: []
-    properties:
-    - name: world
-      type: object
-      objectType: VoxelWorld
+    - name: showBackpack
+      type: boolean
+      objectType: 
       items:
         type: 
         objectType: 
         serializedItems: []
         objectRefs: []
       refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
+      decorators: []
       nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 185007630}
+      serializedValue: 0
+      serializedObject: {fileID: 0}
       modified: 1
-    - name: levelSize
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Variables"'
-      nullable: 0
-      serializedValue: 75
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: wallHeight
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 3
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: wallBlockType
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators: []
-      nullable: 0
-      serializedValue: 1
-      serializedObject: {fileID: 0}
-      modified: 0
     displayName: 
 --- !u!81 &1065048245
 AudioListener:
@@ -1119,6 +1042,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1744718879}
+  - component: {fileID: 1744718880}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -1142,9 +1066,95 @@ Transform:
   - {fileID: 153727044}
   - {fileID: 1479974997}
   - {fileID: 131862466}
-  - {fileID: 185007627}
+  - {fileID: 74274515}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1744718880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744718878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fileFullPath: Assets/Bundles/Shared/Resources/TS/Demo/TopDownBattle/TopDownBattleLevelGenerator.lua
+  m_error: 0
+  m_yielded: 0
+  m_assetPath: 
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
+    name: TopDownBattleLevelGenerator
+    decorators: []
+    properties:
+    - name: levelSize
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Variables"'
+      nullable: 0
+      serializedValue: 75
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: wallHeight
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 3
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: baseBlockType
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: EMERALD_BLOCK
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: wallBlockType
+      type: StringEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: STONE_BRICK
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayName: 
 --- !u!1 &1931515291
 GameObject:
   m_ObjectHideFlags: 0
