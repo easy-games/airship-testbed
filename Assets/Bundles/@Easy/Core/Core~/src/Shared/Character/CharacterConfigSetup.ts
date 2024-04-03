@@ -18,6 +18,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	@Header("UI Displays")
 	public showInventory = true;
 	public showHealthbar = true;
+	public showBackpack = true;
 
 	public OnEnable() {
 		if (Game.IsClient()) {
@@ -38,6 +39,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			}
 
 			//UI
+			Airship.inventory.SetBackpackVisible(this.showBackpack);
 			if (this.showInventory || this.showHealthbar) {
 				Airship.inventory.SetUIEnabled(true);
 				Airship.inventory.SetHealtbarVisible(this.showHealthbar);
