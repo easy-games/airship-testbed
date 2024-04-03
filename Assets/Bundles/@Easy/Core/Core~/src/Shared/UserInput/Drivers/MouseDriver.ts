@@ -11,7 +11,6 @@ export class MouseDriver {
 	public readonly middleButtonChanged = new Signal<[mouseEvent: PointerButtonSignal]>();
 	public readonly scrolled = new Signal<[event: ScrollSignal]>();
 	public readonly moved = new Signal<[position: Vector2]>();
-	// public readonly Delta = new Signal<[delta: Vector2]>();
 
 	private readonly inputBridge = InputBridge.Instance;
 
@@ -39,9 +38,6 @@ export class MouseDriver {
 		this.inputBridge.OnMouseMoveEvent((position) => {
 			this.moved.Fire(position);
 		});
-		// this.inputProxy.OnMouseDeltaEvent((delta) => {
-		// 	this.Delta.Fire(delta);
-		// });
 	}
 
 	public IsLeftDown() {
