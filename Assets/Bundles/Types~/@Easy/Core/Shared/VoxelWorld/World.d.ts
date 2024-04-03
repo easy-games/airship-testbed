@@ -1,7 +1,7 @@
 /// <reference types="compiler-types" />
 import { CoreItemType } from "../Item/CoreItemType";
 import { BlockDef } from "../Item/ItemDefinitionTypes";
-import { Signal } from "../Util/Signal";
+import { Signal, SignalCallback } from "../Util/Signal";
 import { Block } from "./Block";
 export type BlockData = {
     [key: string]: unknown;
@@ -18,7 +18,7 @@ export declare class World {
     readonly voxelWorld: VoxelWorld;
     static skybox: string;
     onVoxelPlaced: Signal<[pos: Vector3, voxel: number]>;
-    onFinishedLoading: Signal<void>;
+    private onFinishedLoading;
     onFinishedReplicatingChunksFromServer: Signal<void>;
     private finishedLoading;
     private finishedReplicatingChunksFromServer;
@@ -27,6 +27,7 @@ export declare class World {
     WaitForFinishedLoading(): Promise<void>;
     IsFinishedReplicatingChunksFromServer(): boolean;
     WaitForFinishedReplicatingChunksFromServer(): Promise<void>;
+    OnFinishedWorldLoading(callback: SignalCallback<void>): void;
     /**
      *
      * @param pos

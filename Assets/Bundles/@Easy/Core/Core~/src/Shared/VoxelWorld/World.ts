@@ -4,7 +4,7 @@ import { CoreNetwork } from "Shared/CoreNetwork";
 import { Game } from "Shared/Game";
 import { BlockDef } from "Shared/Item/ItemDefinitionTypes";
 import { RunUtil } from "Shared/Util/RunUtil";
-import { Signal } from "Shared/Util/Signal";
+import { Signal, SignalCallback } from "Shared/Util/Signal";
 import { ItemUtil } from "../Item/ItemUtil";
 import { Block } from "./Block";
 import { BlockDataAPI } from "./BlockData/BlockDataAPI";
@@ -26,7 +26,7 @@ export class World {
 	public static skybox = "@Easy/Core/Shared/Resources/Skybox/BrightSky/bright_sky_2.png";
 
 	public onVoxelPlaced = new Signal<[pos: Vector3, voxel: number]>();
-	public onFinishedLoading = new Signal<void>();
+	private onFinishedLoading = new Signal<void>();
 	public onFinishedReplicatingChunksFromServer = new Signal<void>();
 	private finishedLoading = false;
 	private finishedReplicatingChunksFromServer = false;
@@ -87,6 +87,14 @@ export class World {
 		});
 	}
 
+	public OnFinishedWorldLoading(callback: SignalCallback<void>) {
+		if (this.voxelWorld.finishedLoading) {
+			callback();
+		} else {
+			this.onFinishedLoading.Connect(callback);
+		}
+	}
+
 	/**
 	 *
 	 * @param pos
@@ -133,7 +141,7 @@ export class World {
 
 	/**
 	 * Translates the string block id to the corresponding voxel block id
-	 * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+	 * @param blockStringId The id of the block, e.g. `@Easy/Survival:STONE`
 	 * @returns The voxel block id
 	 */
 	public GetVoxelIdFromId(blockStringId: string): number {
@@ -171,7 +179,7 @@ export class World {
 	 * @param config The configuration for this placed block
 	 */
 	public PlaceBlockById(pos: Vector3, blockStringId: string, config?: PlaceBlockConfig): void {
-		return this.PlaceBlockByVoxelId(pos, this.voxelWorld.blocks.GetBlockIdFromStringId(blockStringId), config);
+		return this.PlaceBlockByVoxelId(pos, this.GetVoxelIdFromId(blockStringId), config);
 	}
 
 	/**
@@ -241,7 +249,7 @@ export class World {
 		let binaryData: { pos: Vector3; blockId: number }[] = [];
 
 		let keyMap: Map<string, { position: Vector3[]; data: any[] }> = new Map();
-		let isLocalPrediction = config?.placedByEntityId === Game.localPlayer.character?.id;
+		let isLocalPrediction = Game.IsClient() && config?.placedByEntityId === Game.localPlayer.character?.id;
 
 		positions.forEach((position, i) => {
 			if (config?.blockData) {

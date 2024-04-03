@@ -7,7 +7,8 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	@Header("Templates")
-	public characterOutfit!: AccessoryOutfit;
+	public customCharacterTemplate?: GameObject;
+	public characterOutfit?: AccessoryOutfit;
 
 	@Header("References")
 	public spawnPosition!: GameObject;
@@ -21,6 +22,7 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 			Airship.players.ObservePlayers((player) => {
 				this.SpawnCharacter(player);
 			});
+
 			this.bin.Add(
 				Airship.damage.onDeath.Connect((info) => {
 					const character = info.gameObject.GetAirshipComponent<Character>();
@@ -39,7 +41,9 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 			Airship.characters.ObserveCharacters((character) => {
 				CoreNetwork.ServerToClient.Character.ChangeOutfit.client.OnServerEvent((characterId) => {
 					if (character.id === characterId) {
-						character.accessoryBuilder.EquipAccessoryOutfit(this.characterOutfit, true);
+						if (this.characterOutfit) {
+							character.accessoryBuilder.EquipAccessoryOutfit(this.characterOutfit, true);
+						}
 					}
 				});
 			});
@@ -48,9 +52,11 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 		}
 	}
 
-	public SpawnCharacter(player: Player): void {
-		const char = player.SpawnCharacter(this.spawnPosition.transform.position);
-		//char.inventory?.AddItem(new ItemStack("WoodSword", -1));
+	private SpawnCharacter(player: Player) {
+		print("Spawning character");
+		player.SpawnCharacter(this.spawnPosition.transform.position, {
+			customCharacterTemplate: this.customCharacterTemplate,
+		});
 	}
 
 	override OnDestroy(): void {
