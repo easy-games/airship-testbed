@@ -1,5 +1,4 @@
 import MainMenuPageComponent from "@Easy/Core/Client/MainMenuControllers/MainMenuPageComponent";
-import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -35,7 +34,7 @@ export default class SettingsPage extends MainMenuPageComponent {
 					// 	navbarDisc();
 					// };
 
-					if (Game.coreContext === CoreContext.GAME && Game.deviceType === AirshipDeviceType.Phone) {
+					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(0).gameObject.SetActive(true); // Input
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Sound
 					}
