@@ -1,14 +1,16 @@
 import { Game } from "@Easy/Core/Shared/Game";
+import { CoreItemType } from "@Easy/Core/Shared/Item/CoreItemType";
 import { BlockDataAPI, CoreBlockMetaKeys } from "@Easy/Core/Shared/VoxelWorld/BlockData/BlockDataAPI";
+import { World } from "@Easy/Core/Shared/VoxelWorld/World";
+import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
 
 export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
-	@Header("References")
-	public world!: VoxelWorld;
-
 	@Header("Variables")
 	public levelSize = 75;
 	public wallHeight = 3;
-	public wallBlockType = 0;
+	public wallBlockType = 1;
+
+	private world!: World;
 
 	public override OnEnable(): void {
 		//Only the server needs to generate the level
@@ -16,14 +18,20 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 			return;
 		}
 
-		this.world.LoadWorld();
+		//Load this world
+		let foundWorld = WorldAPI.GetMainWorld();
+		if (!foundWorld) {
+			error("No voxel world found in game");
+		}
+		this.world = foundWorld;
 
-		//Make a cube at the center of the map (Our defense point)
-		this.world.WriteVoxelAt(Vector3.zero, this.wallBlockType, false);
-
-		this.CreateWalls();
-
-        this.GenerateRandomizedBlocks();
+		//Don't place blocks until the world is loaded
+		this.world.OnFinishedWorldLoading(() => {
+			//Make a cube at the center of the map (Our defense point)
+			this.world.PlaceBlockByItemType(Vector3.zero, CoreItemType.STONE);
+			this.CreateWalls();
+			this.GenerateRandomizedBlocks();
+		});
 	}
 
 	public CreateWalls() {
@@ -71,6 +79,8 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 
 		//Write the blocks to the VoxelWorld
 		print("WriteVoxelGroupAtTS");
-		this.world.WriteVoxelGroupAtTS({ pos: blockPositions, blockId: blockIds }, false);
+		//this.world.WriteVoxelGroupAtTS({ pos: blockPositions, blockId: blockIds }, false);
 	}
+
+	public GenerateRandomizedBlocks() {}
 }

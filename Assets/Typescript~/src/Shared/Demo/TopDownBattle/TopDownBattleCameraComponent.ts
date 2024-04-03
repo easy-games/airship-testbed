@@ -43,7 +43,7 @@ export default class TopDownBattleCameraComponent extends AirshipBehaviour {
 	public override Update(dt: number): void {
 		if (this.character?.IsAlive()) {
 			//Point the character towards the mouse
-			const mousePos = this.mouse.GetLocation();
+			const mousePos = this.mouse.GetPositionV3();
 			let characterScreenSpacePos = this.camera.WorldToScreenPoint(this.character.model.transform.position);
 			let relDir = mousePos.sub(characterScreenSpacePos).normalized;
 			this.character.movement.SetLookVector(new Vector3(relDir.x, 0, relDir.y));

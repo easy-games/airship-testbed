@@ -73,7 +73,7 @@ export class MouseDriver {
 	}
 
 	public ToggleMouseVisibility(isVisible: boolean) {
-		this.inputProxy.ToggleMouseVisibility(isVisible);
+		this.inputBridge.ToggleMouseVisibility(isVisible);
 	}
 
 	/** **NOTE:** Internal only. Use `Mouse` class instead. */
