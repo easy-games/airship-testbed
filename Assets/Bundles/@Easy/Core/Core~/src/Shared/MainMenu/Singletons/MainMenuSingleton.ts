@@ -31,9 +31,11 @@ export class MainMenuSingleton implements OnStart {
 		const canvasRect = readOnlyCanvasGO.transform as RectTransform;
 		const canvasScaler = readOnlyCanvasGO.gameObject.GetComponent<CanvasScaler>();
 
+		let lastTime = 0;
 		OnUpdate.Connect((dt) => {
 			if (canvasRect.sizeDelta !== this.screenSize || this.firstRun) {
 				this.firstRun = false;
+				lastTime = Time.time;
 				this.screenSize = canvasRect.sizeDelta;
 
 				const scaleFactor = Game.GetScaleFactor();
