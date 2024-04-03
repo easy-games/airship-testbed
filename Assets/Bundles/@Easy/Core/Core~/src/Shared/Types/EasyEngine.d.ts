@@ -926,3 +926,7 @@ interface AirshipTags extends MonoBehaviour {
 	HasTag(tag: string): boolean;
 	RemoveTag(tag: string): void;
 }
+
+interface AirshipLongPress {
+	OnLongPress(callback: (pressPosition: Vector2) => void): EngineEventConnection;
+}

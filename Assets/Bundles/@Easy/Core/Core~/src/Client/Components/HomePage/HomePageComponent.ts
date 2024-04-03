@@ -6,6 +6,7 @@ import { AirshipUrl } from "Shared/Util/AirshipUrl";
 import { Bin } from "Shared/Util/Bin";
 import { SetTimeout } from "Shared/Util/Timer";
 import { DecodeJSON } from "Shared/json";
+import { MainMenuBlockSingleton } from "../../MainMenuControllers/Settings/MainMenuBlockSingleton";
 import { GamesDto } from "./API/GamesAPI";
 import HomePageGameComponent from "./Sort/HomePageGameComponent";
 import SortComponent from "./Sort/SortComponent";
@@ -83,10 +84,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		let sorts: SortId[];
 		sorts = ObjectUtils.keys(this.sorts);
 
+		const blockSingleton = Dependency<MainMenuBlockSingleton>();
 		for (let sortId of sorts) {
 			const sortComponent = this.sorts.get(sortId)!;
 
-			let games = data[sortId].filter((g) => g.lastVersionUpdate !== undefined);
+			let games = data[sortId].filter(
+				(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
+			);
 			this.loadedGameComponents = [...this.loadedGameComponents, ...sortComponent.SetGames(games)];
 		}
 

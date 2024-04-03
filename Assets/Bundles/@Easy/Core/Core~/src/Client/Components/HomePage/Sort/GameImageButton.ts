@@ -1,7 +1,9 @@
 import { MainMenuController } from "@Easy/Core/Client/MainMenuControllers/MainMenuController";
+import { MainMenuBlockSingleton } from "@Easy/Core/Client/MainMenuControllers/Settings/MainMenuBlockSingleton";
 import { RightClickMenuButton } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/UI/RightClickMenu/RightClickMenuController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -19,6 +21,35 @@ export default class GameImageButton extends AirshipBehaviour {
 
 		const gameComponent = this.gameComponentGO?.GetAirshipComponent<HomePageGameComponent>();
 
+		const mouse = new Mouse();
+		if (Game.IsMobile()) {
+			const longPress = this.gameObject.GetComponent<AirshipLongPress>();
+			if (longPress) {
+				this.bin.AddEngineEventConnection(
+					longPress.OnLongPress((pressPos) => {
+						Dependency<RightClickMenuController>().OpenRightClickMenu(
+							Dependency<MainMenuController>().mainContentCanvas,
+							pressPos,
+							[
+								{
+									text: "Report",
+									onClick: () => {
+										task.spawn(() => {
+											Dependency<MainMenuBlockSingleton>().BlockGameAsync(
+												gameComponent!.gameDto.id,
+												gameComponent!.gameDto.name,
+											);
+											this.transform.parent!.gameObject.SetActive(false);
+										});
+									},
+								},
+							],
+						);
+					}),
+				);
+			}
+		}
+
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (dir, btn) => {
 				if (btn === PointerButton.LEFT) {
@@ -32,12 +63,16 @@ export default class GameImageButton extends AirshipBehaviour {
 				} else if (btn === PointerButton.RIGHT && dir === PointerDirection.UP) {
 					let actions: RightClickMenuButton[] = [
 						{
-							text: "Favorite",
-							onClick: () => {},
-						},
-						{
 							text: "Report",
-							onClick: () => {},
+							onClick: () => {
+								task.spawn(() => {
+									Dependency<MainMenuBlockSingleton>().BlockGameAsync(
+										gameComponent!.gameDto.id,
+										gameComponent!.gameDto.name,
+									);
+									this.transform.parent!.gameObject.SetActive(false);
+								});
+							},
 						},
 					];
 					if (gameComponent?.HasAdminPermissions()) {
