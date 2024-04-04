@@ -22,7 +22,7 @@ const FOV_SCROLL_SENSITIVITY = 10;
 
 let MOUSE_SENS_SCALAR = 0.02;
 if (Game.IsMac()) {
-	MOUSE_SENS_SCALAR *= 4;
+	MOUSE_SENS_SCALAR *= 5;
 }
 if (!Game.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;

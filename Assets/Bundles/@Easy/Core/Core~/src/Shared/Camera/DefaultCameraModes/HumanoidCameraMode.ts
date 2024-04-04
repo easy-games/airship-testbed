@@ -27,7 +27,7 @@ const TAU = math.pi * 2;
 
 let MOUSE_SENS_SCALAR = 0.02;
 if (Game.IsMac()) {
-	MOUSE_SENS_SCALAR *= 6;
+	MOUSE_SENS_SCALAR *= 5;
 }
 if (!Game.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;
