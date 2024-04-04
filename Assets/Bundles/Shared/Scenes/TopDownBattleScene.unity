@@ -782,24 +782,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 131862465}
       modified: 1
-    - name: customCharacterTemplate
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"Templates"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 1
     displayName: 
 --- !u!114 &913210015
 MonoBehaviour:
@@ -943,7 +925,7 @@ MonoBehaviour:
             is also assigned in the NetworkPrefabCollection in Shared/Resources"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
+      serializedObject: {fileID: 7829558420882853935, guid: a1cfa31a1c5beb248aca2e6dee9c6dcf, type: 3}
       modified: 1
     - name: showBackpack
       type: boolean
