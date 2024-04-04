@@ -19594,10 +19594,12 @@ interface ScrollViewConstructor {
 }
 declare const ScrollView: ScrollViewConstructor;
     
-interface AirshipLongPress extends MonoBehaviour, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
+interface AirshipLongPress extends MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
     holdTime: number;
 
 
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDrag(eventData: PointerEventData): void;
     OnPointerDown(eventData: PointerEventData): void;
     OnPointerExit(eventData: PointerEventData): void;
     OnPointerUp(eventData: PointerEventData): void;

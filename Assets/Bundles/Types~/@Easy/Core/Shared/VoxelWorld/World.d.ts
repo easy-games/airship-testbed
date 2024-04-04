@@ -43,6 +43,8 @@ export declare class World {
     GetBlockAt(pos: Vector3): Block;
     GetBlockBelow(pos: Vector3): Block;
     GetBlockAbove(pos: Vector3): Block;
+    IsBlockOccupiedAt(pos: Vector3): boolean;
+    IsBlockOccupied(block: Block | undefined): boolean;
     /**
      * A way to find block data below a target. Used to know what a character is standing on
      * @param pos
@@ -52,7 +54,7 @@ export declare class World {
     RaycastBlockBelow(startPos: Vector3, maxDistance?: number): BlockDef | undefined;
     /**
      * Translates the string block id to the corresponding voxel block id
-     * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+     * @param blockStringId The id of the block, e.g. `@Easy/Survival:STONE`
      * @returns The voxel block id
      */
     GetVoxelIdFromId(blockStringId: string): number;

@@ -32,5 +32,6 @@ export declare class InventorySingleton implements OnStart {
     SetUIEnabled(enabled: boolean): void;
     SetHealtbarVisible(visible: boolean): void;
     SetHotbarVisible(visible: boolean): void;
+    SetBackpackVisible(visible: boolean): void;
 }
 export {};

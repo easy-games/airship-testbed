@@ -7,5 +7,6 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
     allowFirstPersonToggle: boolean;
     showInventory: boolean;
     showHealthbar: boolean;
+    showBackpack: boolean;
     OnEnable(): void;
 }
