@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 775376fc689ebd84c968cc9cd325ab05
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Materials/fire_fx_mat.mat
+  uploadId: 511685

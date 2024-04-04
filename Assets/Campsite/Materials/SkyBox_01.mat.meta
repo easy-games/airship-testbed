@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fd892423d4e031e4d9d46ac889789083
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Materials/SkyBox_01.mat
+  uploadId: 511685

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 58b038d9b3a44e44db9c26d0ff8a6dde
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Materials/coal_mat.mat
+  uploadId: 511685

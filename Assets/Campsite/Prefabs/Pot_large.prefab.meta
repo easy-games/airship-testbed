@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1759d75a78f1bea4784731b81b4845e8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Prefabs/Pot_large.prefab
+  uploadId: 511685

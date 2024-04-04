@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 34afcf4b5b81ef542a32f1b03eb5fd7e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Materials/ceramic_mat.mat
+  uploadId: 511685

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c6ad1cf35bc3ecb4f9b5216671df510f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Materials/ash_mat.mat
+  uploadId: 511685
