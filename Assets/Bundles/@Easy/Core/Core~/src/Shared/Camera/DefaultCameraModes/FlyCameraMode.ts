@@ -3,11 +3,11 @@ import { Dependency } from "Shared/Flamework";
 import { Keyboard, Mouse } from "Shared/UserInput";
 import { Bin } from "Shared/Util/Bin";
 import { MathUtil } from "Shared/Util/MathUtil";
-import { RunUtil } from "Shared/Util/RunUtil";
 import { SignalPriority } from "Shared/Util/Signal";
 import { Spring } from "Shared/Util/Spring";
 import { CameraMode } from "../CameraMode";
 import { CameraTransform } from "../CameraTransform";
+import { Game } from "Shared/Game";
 
 const SPEED = 12;
 
@@ -20,11 +20,11 @@ const START_FOV = 70;
 
 const FOV_SCROLL_SENSITIVITY = 10;
 
-let MOUSE_SENS_SCALAR = 0.2;
-if (RunUtil.IsMac()) {
-	MOUSE_SENS_SCALAR *= 4;
+let MOUSE_SENS_SCALAR = 0.02;
+if (Game.IsMac()) {
+	MOUSE_SENS_SCALAR *= 5;
 }
-if (!RunUtil.IsEditor()) {
+if (!Game.IsEditor()) {
 	MOUSE_SENS_SCALAR *= 0.15;
 }
 

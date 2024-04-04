@@ -1,7 +1,7 @@
 {
 	"id": "typescript",
 	"enum": {
-		"../../Bundles/Types~/@Easy/Survival/Shared/Resources/TS/SurvivalBlocks.d@SurvivalBlockType": {
+		"@Easy/Survival/Shared/Resources/TS/SurvivalBlocks.d@SurvivalBlockType": {
 			"GRASS": "GRASS",
 			"DIRT": "DIRT",
 			"DRY_DIRT": "DRY_DIRT",

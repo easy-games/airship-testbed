@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a2871e0b90575454fbb6042eb8f31227
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Scenes/SampleScene/Main Camera Profile.asset
+  uploadId: 511685

@@ -3,6 +3,7 @@ import { Airship } from "../../Airship";
 import { AssetCache } from "../../AssetCache/AssetCache";
 import { CameraReferences } from "../../Camera/CameraReferences";
 import { Game } from "../../Game";
+import StringUtils from "../../Types/StringUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
 import { SetInterval } from "../../Util/Timer";
@@ -49,6 +50,15 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Wool_04.ogg",
 			];
 			this.materialMap.set("Denim_UV", woolPaths);
+
+			const grassPaths = [
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Grass_01.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Grass_02.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Grass_03.ogg",
+				"@Easy/Core/Shared/Resources/Sound/Footsteps/Footstep_Grass_04.ogg",
+			];
+			this.materialMap.set("Grass", grassPaths);
+			this.materialMap.set("Dirt", grassPaths);
 		});
 	}
 
@@ -111,6 +121,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 		if (renderer) {
 			const material = renderer.material;
 			let [materialName] = material.name.gsub("%s*%([^)]+%)", "");
+			let materialNameLower = materialName.lower();
 			// print("footstep material: " + material.name + ', shortened: "' + materialName + '"');
 			let volumeScale = character.state === CharacterState.Crouching ? 0.3 : 1;
 			if (!character.IsLocalCharacter()) {
@@ -120,6 +131,14 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 
 			let clips: AudioClip[] = [];
 			let foundPaths = this.materialMap.get(materialName);
+			if (!foundPaths) {
+				if (
+					StringUtils.includes(materialNameLower, "dirt") ||
+					StringUtils.includes(materialNameLower, "grass")
+				) {
+					foundPaths = this.materialMap.get("Dirt");
+				}
+			}
 			if (!foundPaths) {
 				foundPaths = this.materialMap.get("Stone_Clean");
 			}
