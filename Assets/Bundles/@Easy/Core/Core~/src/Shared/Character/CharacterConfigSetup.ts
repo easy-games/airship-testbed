@@ -21,10 +21,11 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public showBackpack = true;
 
 	public OnEnable() {
-		if (Game.IsClient()) {
-			//Character
-			Airship.characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
+		//Character
+		Airship.characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
 
+		//Local Character Configs
+		if (Game.IsClient()) {
 			//Movement
 			Airship.characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
 

@@ -7,7 +7,6 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	@Header("Templates")
-	public customCharacterTemplate?: GameObject;
 	public characterOutfit?: AccessoryOutfit;
 
 	@Header("References")
@@ -53,10 +52,7 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	}
 
 	private SpawnCharacter(player: Player) {
-		print("Spawning character");
-		player.SpawnCharacter(this.spawnPosition.transform.position, {
-			customCharacterTemplate: this.customCharacterTemplate,
-		});
+		player.SpawnCharacter(this.spawnPosition.transform.position);
 	}
 
 	override OnDestroy(): void {

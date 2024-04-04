@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"flameworkVersion": "1.1.51",
+	"flameworkVersion": "1.1.52",
 	"identifiers": {
 		"@Easy/Core:Shared/Flamework/flamework@ArtificialDependency": "$:Flamework/flamework@ArtificialDependency",
 		"@Easy/Core:Client/Airship/Events/AirshipEventController@AirshipEventController": "$:Airship/Events/AirshipEventController@AirshipEventController",
