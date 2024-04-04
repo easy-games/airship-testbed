@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1017e03f8f00d7e44b00f281f1284faf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Settings/Presets/Light_Overcast.preset
+  uploadId: 647276

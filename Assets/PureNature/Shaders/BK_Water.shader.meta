@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6468bfbdaa889dd40a87fa06b6428b8f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Shaders/BK_Water.shader
+  uploadId: 647276

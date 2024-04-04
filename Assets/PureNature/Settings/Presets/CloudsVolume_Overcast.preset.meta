@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a58663a983a4087478d9f86828d46b10
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Settings/Presets/CloudsVolume_Overcast.preset
+  uploadId: 647276

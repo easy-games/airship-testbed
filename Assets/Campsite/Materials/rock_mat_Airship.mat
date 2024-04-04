@@ -15,7 +15,7 @@ Material:
   - EXPLICIT_MAPS_ON
   - SHADOWS_ON
   - SLIDER_OVERRIDE_ON
-  - TRIPLANAR_STYLE_WORLD
+  - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - _ZWRITE_ON
   m_LightmapFlags: 4
@@ -60,7 +60,7 @@ Material:
     - RIM_LIGHT: 0
     - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
-    - TRIPLANAR_STYLE: 2
+    - TRIPLANAR_STYLE: 1
     - USE_SHADOW_COLOR: 0
     - _Alpha: 1
     - _EmissiveMix: 1
@@ -70,7 +70,7 @@ Material:
     - _RimPower: 2.5
     - _RoughOverride: 1
     - _SliderOverrideMix: 0
-    - _TriplanarScale: 2.1
+    - _TriplanarScale: 0.3
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 0.8443396, b: 0.8474854, a: 1}

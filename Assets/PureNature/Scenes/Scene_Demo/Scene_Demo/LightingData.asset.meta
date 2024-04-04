@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 43af692f44cda86418bec706d4180fe8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Scenes/Scene_Demo/Scene_Demo/LightingData.asset
+  uploadId: 647276

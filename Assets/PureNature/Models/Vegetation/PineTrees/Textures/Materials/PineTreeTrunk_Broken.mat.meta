@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: abcbfd5a5010bb54db3aa04d26db3eec
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Models/Vegetation/PineTrees/Textures/Materials/PineTreeTrunk_Broken.mat
+  uploadId: 647276

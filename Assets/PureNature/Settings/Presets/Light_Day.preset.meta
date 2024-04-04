@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8a9a0fa4a20a0c6409238f8532c8f90c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Settings/Presets/Light_Day.preset
+  uploadId: 647276

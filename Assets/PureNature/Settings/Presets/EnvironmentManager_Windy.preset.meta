@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 365eecf63846ece49ba5d1b0e9ee0b78
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Settings/Presets/EnvironmentManager_Windy.preset
+  uploadId: 647276

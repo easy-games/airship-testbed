@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0d0045ff7c6fb1c4ab9b34bc786717b3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Settings/Presets/CloudsVolume_Cloudy.preset
+  uploadId: 647276

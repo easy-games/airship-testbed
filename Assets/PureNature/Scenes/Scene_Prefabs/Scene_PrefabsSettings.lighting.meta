@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6003c3f67f12110468ef3dcb8591c094
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188246
+  packageName: Pure Nature
+  packageVersion: 1.2
+  assetPath: Assets/PureNature/Scenes/Scene_Prefabs/Scene_PrefabsSettings.lighting
+  uploadId: 647276
