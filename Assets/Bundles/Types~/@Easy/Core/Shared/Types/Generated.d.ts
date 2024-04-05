@@ -15641,6 +15641,7 @@ declare const WindowCore: WindowCoreConstructor;
     
 interface CharacterMoveModifier {
     speedMultiplier: number;
+    jumpMultiplier: number;
     blockSprint: boolean;
     blockJump: boolean;
 

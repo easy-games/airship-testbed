@@ -353,24 +353,6 @@ interface PredictedObject extends GameObject {
 	SetGraphicalObject(transform: Transform): void;
 }
 
-interface Animator extends MonoBehaviour {
-	Play(stateName: string, layer?: number, normalizedTime?: number): void;
-	Play(stateNameHash: number, layer?: number, normalizedTime?: number): void;
-	SetBool(name: string, value: boolean): void;
-	SetBool(id: number, value: boolean): void;
-	SetFloat(name: string, value: number): void;
-	SetFloat(name: string, value: number, dampTime: number, deltaTime: number): void;
-	SetFloat(id: number, value: number): void;
-	SetFloat(id: number, value: number, dampTime: number, deltaTime: number): void;
-	SetTrigger(id: string): void;
-	Rebind(): void;
-}
-
-interface AnimatorStatic {
-	StringToHash(name: string): number;
-}
-declare const Animator: AnimatorStatic;
-
 declare const enum CharacterState {
 	Idle = 0,
 	Running = 1,
