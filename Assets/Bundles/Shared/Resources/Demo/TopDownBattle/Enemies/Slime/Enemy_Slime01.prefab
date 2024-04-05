@@ -222,7 +222,6 @@ GameObject:
   - component: {fileID: 2366322638051716042}
   - component: {fileID: 7465617981528983034}
   - component: {fileID: 4488545619872097874}
-  - component: {fileID: 7157257496963991178}
   m_Layer: 0
   m_Name: Enemy_Slime01
   m_TagString: Untagged
@@ -304,8 +303,8 @@ MonoBehaviour:
     Scale: 0
   _interpolation: 3
   _extrapolation: 3
-  _enableTeleport: 0
-  _teleportThreshold: 1
+  _enableTeleport: 1
+  _teleportThreshold: 5
   _scaleThreshold: 1
   _clientAuthoritative: 0
   _sendToOwner: 1
@@ -527,19 +526,35 @@ MonoBehaviour:
       serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 0
+    - name: knockbackForce
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 3
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: nob
+      type: object
+      objectType: NetworkObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2106157267949230125}
+      modified: 1
     displayName: 
---- !u!114 &7157257496963991178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3209343139396513454}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea3b67fb98890574594693e386115da1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3499941963146062281
 GameObject:
   m_ObjectHideFlags: 0

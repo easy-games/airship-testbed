@@ -372,7 +372,7 @@ Transform:
   m_GameObject: {fileID: 131862465}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -2}
+  m_LocalPosition: {x: 0, y: 3, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1028,7 +1028,7 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 3
+      serializedValue: 5
       serializedObject: {fileID: 0}
       modified: 1
     - name: spawnQuantity
@@ -1042,9 +1042,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 5
+      serializedValue: 3
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayName: 
 --- !u!81 &1065048245
 AudioListener:

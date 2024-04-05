@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadowRamp:
-        m_Texture: {fileID: 2800000, guid: 8ef74af294bd42048ac9673ce46ea4a3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7d05788d937be3f428a1ec5b266f1306, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -89,7 +89,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 1.12
     - _RimPower: 1.74
-    - _SaturationMod: 0.5
+    - _SaturationMod: 1
     - _SmoothnessTextureChannel: 0
     - _SpecMod: 1
     - _SpecularHighlights: 1
