@@ -71,6 +71,8 @@ export default class SortComponent extends AirshipBehaviour {
 	}
 
 	public SetGames(games: GameDto[]): HomePageGameComponent[] {
+		this.titleText.gameObject.SetActive(games.size() > 0);
+
 		this.content.gameObject.ClearChildren();
 		let gameComponents: HomePageGameComponent[] = [];
 		for (const gameDto of games) {
