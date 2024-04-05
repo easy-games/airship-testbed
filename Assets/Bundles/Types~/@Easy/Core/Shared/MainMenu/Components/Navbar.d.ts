@@ -9,6 +9,7 @@ export default class Navbar extends AirshipBehaviour {
     settingsBtn: RectTransform;
     scrollRect: ScrollRect;
     creditsWrapper: GameObject;
+    left: RectTransform;
     private bin;
     OnEnable(): void;
     OnDisable(): void;

@@ -111,6 +111,7 @@
 		"@Easy/Core:Shared/MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage": "$:MainMenu/Components/Settings/General/GameGeneralPage@GameGeneralPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsPage@SettingsPage": "$:MainMenu/Components/Settings/SettingsPage@SettingsPage",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchSingleton@SearchSingleton": "$:MainMenu/Components/Search/SearchSingleton@SearchSingleton",
+		"@Easy/Core:Client/MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
 		"@Easy/Core:Client/MainMenuControllers/Socket/SocketController@SocketController": "$:MainMenuControllers/Socket/SocketController@SocketController",
 		"@Easy/Core:Client/MainMenuControllers/Transfer/TransferController@TransferController": "$:MainMenuControllers/Transfer/TransferController@TransferController",
 		"@Easy/Core:Client/Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent": "$:Components/HomePage/Sort/HomePageGameComponent@HomePageGameComponent",
@@ -240,6 +241,8 @@
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchResult@SearchResult": "$:MainMenu/Components/Search/SearchResult@SearchResult",
 		"@Easy/Core:Shared/MainMenu/Components/Search/GameSearchResult@GameSearchResult": "$:MainMenu/Components/Search/GameSearchResult@GameSearchResult",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchFocused@SearchFocused": "$:MainMenu/Components/Search/SearchFocused@SearchFocused",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/BlockedGame@BlockedGame": "$:MainMenu/Components/Settings/BlockedGame@BlockedGame",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage": "$:MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton": "$:MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton",
 		"@Easy/Core:Shared/Util/FormatUtil@FormatUtil": "$:Util/FormatUtil@FormatUtil",
 		"@Easy/Core:Shared/Util/InputUtils@InputUtils": "$:Util/InputUtils@InputUtils",
@@ -502,6 +505,17 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Client/MainMenuControllers/Settings/MainMenuBlockSingleton.lua",
+			"internalId": "$:MainMenuControllers/Settings/MainMenuBlockSingleton@MainMenuBlockSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
 				}
 			]
 		},

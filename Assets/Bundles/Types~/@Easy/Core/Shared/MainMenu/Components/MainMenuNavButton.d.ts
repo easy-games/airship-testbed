@@ -2,7 +2,6 @@
 export default class MainMenuNavButton extends AirshipBehaviour {
     selected: boolean;
     image: Image;
-    trueShadow: TrueShadow;
     selectedColor: Color;
     unselectedColor: Color;
     text: TMP_Text;

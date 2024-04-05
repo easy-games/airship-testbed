@@ -17,6 +17,7 @@ export declare class InventoryUIController implements OnStart {
     private slotToBackpackTileMap;
     private enabled;
     private visible;
+    private backpackEnabled;
     private draggingState;
     private draggingBin;
     private spriteCacheForItemType;
@@ -27,6 +28,7 @@ export declare class InventoryUIController implements OnStart {
     private SetVisible;
     SetHealtbarVisible(visible: boolean): void;
     SetHotbarVisible(visible: boolean): void;
+    SetBackpackVisible(visible: boolean): void;
     OpenBackpack(): void;
     private SetupHotbar;
     private UpdateTile;

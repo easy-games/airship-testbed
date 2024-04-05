@@ -25,6 +25,13 @@ interface CharacterStateSnapshot {
 	firstPerson: boolean;
 }
 
+interface ViewModelUpdate {
+	/** Target position of the view model. Update to change. */
+	position: Vector3;
+	/** Target rotation of the view model. Update to change. */
+	rotation: Quaternion;
+}
+
 @Controller({})
 export class AirshipCharacterCameraSingleton implements OnStart {
 	public static readonly cameraReferenceKey = "CameraRig";
@@ -47,6 +54,9 @@ export class AirshipCharacterCameraSingleton implements OnStart {
 
 	/** Fires whenever the user changes their first-person state. */
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
+
+	/** Fires before view model updates with position and rotation. Change these values to adjust view model position. */
+	public onViewModelUpdate = new Signal<[data: ViewModelUpdate]>();
 
 	private fps?: FirstPersonCameraSystem;
 	public humanoidCameraMode: HumanoidCameraMode | undefined;

@@ -7,6 +7,7 @@ import { SignalPriority } from "Shared/Util/Signal";
 import { OnLateUpdate } from "Shared/Util/Timer";
 import { ViewmodelController } from "../../Client/Controllers/Viewmodel/ViewmodelController";
 import { LocalCharacterSingleton } from "../Character/LocalCharacter/LocalCharacterSingleton";
+import { AirshipCharacterCameraSingleton } from "./AirshipCharacterCameraSingleton";
 import { CameraReferences } from "./CameraReferences";
 
 interface BobData {
@@ -76,7 +77,7 @@ export class FirstPersonCameraSystem {
 
 		Dependency<LocalCharacterSingleton>().stateChanged.Connect((state) => {
 			this.OnMovementStateChange(state);
-		})
+		});
 	}
 
 	public Destroy() {
@@ -126,8 +127,14 @@ export class FirstPersonCameraSystem {
 		// let headLookRotation = transform.rotation.mul(headBobRotationOffset);
 		let targetTansform = this.viewmodelController.rig.spine;
 
-		targetTansform.position = transform.TransformPoint(new Vector3(0, this.headSpineOffset, 0));
-		targetTansform.rotation = transform.rotation;
+		const position = transform.TransformPoint(new Vector3(0, this.headSpineOffset, 0));
+		const rotation = transform.rotation;
+
+		const data = { position, rotation };
+		Dependency<AirshipCharacterCameraSingleton>().onViewModelUpdate.Fire(data);
+
+		targetTansform.position = data.position;
+		targetTansform.rotation = data.rotation;
 
 		//Animated to the look direction
 		// let diffAngle = Quaternion.Angle(this.trackedHeadRotation, headLookRotation);

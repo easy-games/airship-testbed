@@ -52,7 +52,7 @@ export declare class World {
     RaycastBlockBelow(startPos: Vector3, maxDistance?: number): BlockDef | undefined;
     /**
      * Translates the string block id to the corresponding voxel block id
-     * @param blockStringId The id of the block, e.g. `@Easy/Core:STONE`
+     * @param blockStringId The id of the block, e.g. `@Easy/Survival:STONE`
      * @returns The voxel block id
      */
     GetVoxelIdFromId(blockStringId: string): number;
