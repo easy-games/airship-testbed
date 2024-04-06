@@ -6,7 +6,9 @@ Shader "Airship/WorldShaderPBR"
         [HDR] _Color("Color", Color) = (1,1,1,1)
         [HDR] _ShadowColor("Shadow Color", Color) = (1,1,1,1)
         [Toggle] USE_SHADOW_COLOR("Use Shadow Color", Float) = 0.0
-        [KeywordEnum(OFF,FRONT)] DOUBLE_SIDED_NORMALS("Culling", Float) = 0.0
+        
+        [Enum(No,2,Yes,0)] DOUBLE_SIDED_NORMALS("Two Sided", Int) = 2
+
         _Alpha("Alpha", Float) = 1.0
         [HDR] _SpecularColor("Specular Color", Color) = (1,1,1,1)
         [HDR] _OverrideColor("Override Color", Color) = (1,1,1,1)
