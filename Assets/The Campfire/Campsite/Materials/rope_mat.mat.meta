@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 51b69225f0e40c743a917a4c71124c86
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Materials/rope_mat.mat
+  uploadId: 511685

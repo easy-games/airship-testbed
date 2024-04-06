@@ -135,8 +135,8 @@ export class MainMenuNavbarController implements OnStart {
 		task.spawn(() => {
 			const gameData = Game.WaitForGameData();
 			const text = runningGameButton.transform.Find("GameName")!.GetComponent<TMP_Text>();
-			text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
-			text.text = gameData.name;
+			//text.text = ""; // have to do this or else setting to the default value "bedwars" will break.
+			//text.text = gameData.name;
 			Bridge.UpdateLayout(runningGameButton.transform, false);
 		});
 
@@ -186,7 +186,7 @@ export class MainMenuNavbarController implements OnStart {
 		if (displayName.size() > 16) {
 			displayName = displayName.sub(0, 15);
 		}
-		usernameText.text = displayName;
+		//usernameText.text = displayName;
 		// disc.text = "#" + user.discriminator;
 		profileWrapper.SetActive(true);
 

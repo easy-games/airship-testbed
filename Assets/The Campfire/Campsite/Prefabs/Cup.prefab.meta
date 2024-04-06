@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1cde6a02b0482fc409390b8df17295ab
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Prefabs/Cup.prefab
+  uploadId: 511685

@@ -1,9 +1,9 @@
 import SteamRichPresence from "@Easy/Core/Client/Airship/Steam/SteamRichPresence";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
+import { CharacterCameraMode } from "@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode";
 import { DamageType } from "@Easy/Core/Shared/Damage/DamageType";
 import { Game } from "@Easy/Core/Shared/Game";
-import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -70,8 +70,9 @@ export default class DemoManager extends AirshipBehaviour {
 		}
 		if (Game.IsClient()) {
 			// Optional: use locked camera mode for first person support
-			// Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
-			// Airship.characterCamera.SetFirstPerson(true);
+			Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+			Airship.characterCamera.SetFirstPerson(true);
+			Airship.inventory.SetUIEnabled(false);
 
 			Airship.loadingScreen.FinishLoading();
 
@@ -108,7 +109,9 @@ export default class DemoManager extends AirshipBehaviour {
 			}
 		}
 
-		const character = player.SpawnCharacter(this.spawnPosition.transform.position);
-		character.inventory.AddItem(new ItemStack("WoodSword"));
+		const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
+			// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
+		});
+		// character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 }

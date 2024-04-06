@@ -6,7 +6,6 @@ import { RightClickMenuController } from "@Easy/Core/Client/MainMenuControllers/
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
-import { Mouse } from "../../UserInput";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
@@ -56,7 +55,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 			}
 			Dependency<RightClickMenuController>().OpenRightClickMenu(
 				Dependency<MainMenuController>().mainContentCanvas,
-				Mouse.global.GetPosition(),
+				new Vector2(this.transform.position.x, this.transform.position.y),
 				options,
 			);
 		});

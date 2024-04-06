@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1280279425529899753}
   - component: {fileID: 9131366105481099712}
   m_Layer: 0
-  m_Name: Text
+  m_Name: GameName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2502674997862047475}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 38.2, y: 0}
-  m_SizeDelta: {x: 0, y: 40}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 34.4911, y: -17}
+  m_SizeDelta: {x: 76.03, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2415382506103882222
 CanvasRenderer:
@@ -184,10 +184,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2502674997862047475}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 18.2, y: 18.4152}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 12, y: -17}
+  m_SizeDelta: {x: 14.4911, y: 19.2007}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7512906575200673449
 CanvasRenderer:
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ae4a508ebc36b4a5e96171705a57cea5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 58cd2afb91c214ea497bfb887489f2c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -264,13 +264,14 @@ GameObject:
   - component: {fileID: 5960323610310565441}
   - component: {fileID: 9212432925443380967}
   - component: {fileID: 858999750607382413}
+  - component: {fileID: 4410497421000403933}
   m_Layer: 0
   m_Name: RunningGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2502674997862047475
 RectTransform:
   m_ObjectHideFlags: 0
@@ -311,7 +312,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -367,6 +368,7 @@ MonoBehaviour:
   m_shortFileName: 
   m_metadata:
     name: MainMenuNavButton
+    decorators: []
     properties:
     - name: selected
       type: boolean
@@ -376,12 +378,55 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
-    - name: image
+    - name: selectedColor
+      type: Color
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: '{"r":0.3490196168422699,"g":0.3529411852359772,"b":0.3529411852359772,"a":1.0}'
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: unselectedColor
+      type: Color
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: '{"r":0.3490196168422699,"g":0.3529411852359772,"b":0.3529411852359772,"a":0.0}'
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: text
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1280279425529899753}
+      modified: 1
+    - name: iconImage
       type: object
       objectType: Image
       items:
@@ -389,24 +434,13 @@ MonoBehaviour:
         objectType: 
         serializedItems: []
         objectRefs: []
+      refPath: 
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: trueShadow
-      type: object
-      objectType: TrueShadow
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 9212432925443380967}
+      serializedObject: {fileID: 5609172727103326410}
       modified: 1
+    displayName: 
 --- !u!114 &796442997445727840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,7 +454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09803922, g: 0.08627451, b: 0.08627451, a: 0.9411765}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -527,3 +561,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4410497421000403933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6613187467811068450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDragging: 0
+  redirectTarget: {fileID: 0}

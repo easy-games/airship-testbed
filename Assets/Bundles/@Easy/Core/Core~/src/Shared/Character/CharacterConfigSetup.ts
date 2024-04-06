@@ -1,5 +1,5 @@
 import { Airship } from "../Airship";
-import Character from "./Character";
+import { Game } from "../Game";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
 export default class CharacterConfigSetup extends AirshipBehaviour {
@@ -18,31 +18,36 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	@Header("UI Displays")
 	public showInventory = true;
 	public showHealthbar = true;
+	public showBackpack = true;
 
 	public OnEnable() {
 		//Character
 		Airship.characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
 
-		//Movement
-		Airship.characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
+		//Local Character Configs
+		if (Game.IsClient()) {
+			//Movement
+			Airship.characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
 
-		//Camera
-		Airship.characterCamera.SetEnabled(this.useAirshipCameraSystem);
-		if (this.useAirshipCameraSystem) {
-			Airship.characterCamera.canToggleFirstPerson = this.allowFirstPersonToggle;
-			if (this.startInFirstPerson) {
-				Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
-				Airship.characterCamera.SetFirstPerson(this.startInFirstPerson);
+			//Camera
+			Airship.characterCamera.SetEnabled(this.useAirshipCameraSystem);
+			if (this.useAirshipCameraSystem) {
+				Airship.characterCamera.canToggleFirstPerson = this.allowFirstPersonToggle;
+				if (this.startInFirstPerson) {
+					Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+					Airship.characterCamera.SetFirstPerson(this.startInFirstPerson);
+				}
 			}
-		}
 
-		//UI
-		if (this.showInventory || this.showHealthbar) {
-			Airship.inventory.SetUIEnabled(true);
-			Airship.inventory.SetHealtbarVisible(this.showHealthbar);
-			Airship.inventory.SetHotbarVisible(this.showInventory);
-		} else {
-			Airship.inventory.SetUIEnabled(false);
+			//UI
+			Airship.inventory.SetBackpackVisible(this.showBackpack);
+			if (this.showInventory || this.showHealthbar) {
+				Airship.inventory.SetUIEnabled(true);
+				Airship.inventory.SetHealtbarVisible(this.showHealthbar);
+				Airship.inventory.SetHotbarVisible(this.showInventory);
+			} else {
+				Airship.inventory.SetUIEnabled(false);
+			}
 		}
 	}
 }

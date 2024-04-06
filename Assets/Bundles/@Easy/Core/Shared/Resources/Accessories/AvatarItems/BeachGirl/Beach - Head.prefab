@@ -142,6 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverClassId: aa7aa48a-c95a-42c8-b2d5-0f416f4be488
-  accessorySlot: 1
+  accessorySlot: 3
   visibilityMode: 0
   skinnedToCharacter: 1

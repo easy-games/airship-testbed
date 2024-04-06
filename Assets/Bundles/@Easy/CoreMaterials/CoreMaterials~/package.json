@@ -20,7 +20,6 @@
     "@easy-games/types": "^1.0.81-161",
     "@easy-games/unity-component-transformer": "^1.0.0-11",
     "@easy-games/unity-flamework-transformer": "^1.1.0-33",
-    "@easy-games/unity-rojo-resolver": "^1.0.3-7",
     "@easy-games/unity-ts": "^3.0.0-106",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",

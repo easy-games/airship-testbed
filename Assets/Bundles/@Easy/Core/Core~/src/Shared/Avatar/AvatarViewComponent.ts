@@ -6,6 +6,7 @@ import { CanvasAPI } from "../Util/CanvasAPI";
 import { OnUpdate } from "../Util/Timer";
 import AvatarBackdropComponent, { AvatarBackdropType } from "./AvatarBackdropComponent";
 import { ColorUtil } from "../Util/ColorUtil";
+import { Game } from "../Game";
 
 export default class AvatarViewComponent extends AirshipBehaviour {
 	@Header("Templates")
@@ -64,6 +65,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	private bin = new Bin();
 
+	public override Awake(): void {
+		this.dragging = false;
+		if (Game.IsPortrait()) {
+			this.alignmentOffsetWorldpsace = new Vector3(0, 1.1, 0);
+		}
+	}
+
 	public override Start(): void {
 		let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
 		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
@@ -78,7 +86,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>();
 		}
 
-		this.dragging = false;
 		this.mouse = new Mouse();
 		this.mouse.moved.Connect((pos: Vector2) => {
 			if (this.dragging) {
@@ -91,7 +98,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			this.lastMousePos = pos;
 		});
 		this.initialized = true;
-
 		this.CreateRenderTexture(Screen.width, Screen.height);
 		CanvasAPI.OnScreenSizeEvent((width, height) => {
 			this.lastScreenRefreshTime = Time.time;
@@ -202,7 +208,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			return;
 		}
 
-		//print("Aligning to: " + screenPos);
+		//print("Aligning to: " + screenPos + " offset: " + this.alignmentOffsetWorldpsace);
 		this.cameraRigTransform.localPosition = Vector3.zero;
 		if (this.cameraWaypointDefault) {
 			this.avatarCamera.transform.position = this.cameraWaypointDefault.position;

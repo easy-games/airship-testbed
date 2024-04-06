@@ -498,4 +498,8 @@ export class InventorySingleton implements OnStart {
 	public SetHotbarVisible(visible: boolean) {
 		Dependency<InventoryUIController>().SetHotbarVisible(visible);
 	}
+
+	public SetBackpackVisible(visible: boolean) {
+		Dependency<InventoryUIController>().SetBackpackVisible(visible);
+	}
 }

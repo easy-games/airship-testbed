@@ -43,4 +43,6 @@ export declare class Mouse {
     IsLocked(): boolean;
     /** Cleans up the mouse. */
     Destroy(): void;
+    ToggleMouseVisibility(isVisible: boolean): void;
+    HideCursor(): void;
 }

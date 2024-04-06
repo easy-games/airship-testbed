@@ -152,6 +152,7 @@ interface InputBridge {
 	IsLeftMouseButtonDown(): boolean;
 	IsRightMouseButtonDown(): boolean;
 	IsMiddleMouseButtonDown(): boolean;
+	ToggleMouseVisibility(isVisible: boolean): void;
 	GetMousePosition(): Vector2;
 	GetMouseDelta(): Vector2;
 	SetMouseLocked(locked: boolean): void;
@@ -351,23 +352,6 @@ interface OcclusionCam extends Component {
 interface PredictedObject extends GameObject {
 	SetGraphicalObject(transform: Transform): void;
 }
-
-interface Animator extends MonoBehaviour {
-	Play(stateName: string, layer?: number, normalizedTime?: number): void;
-	Play(stateNameHash: number, layer?: number, normalizedTime?: number): void;
-	SetBool(name: string, value: boolean): void;
-	SetBool(id: number, value: boolean): void;
-	SetFloat(name: string, value: number): void;
-	SetFloat(name: string, value: number, dampTime: number, deltaTime: number): void;
-	SetFloat(id: number, value: number): void;
-	SetFloat(id: number, value: number, dampTime: number, deltaTime: number): void;
-	Rebind(): void;
-}
-
-interface AnimatorStatic {
-	StringToHash(name: string): number;
-}
-declare const Animator: AnimatorStatic;
 
 declare const enum CharacterState {
 	Idle = 0,
@@ -925,4 +909,8 @@ interface AirshipTags extends MonoBehaviour {
 	AddTag(tag: string): void;
 	HasTag(tag: string): boolean;
 	RemoveTag(tag: string): void;
+}
+
+interface AirshipLongPress {
+	OnLongPress(callback: (pressPosition: Vector2) => void): EngineEventConnection;
 }

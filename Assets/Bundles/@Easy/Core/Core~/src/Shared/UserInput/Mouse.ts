@@ -181,4 +181,10 @@ export class Mouse {
 	public Destroy() {
 		this.bin.Clean();
 	}
+
+	public ToggleMouseVisibility(isVisible: boolean) {
+		this.mouseDriver.ToggleMouseVisibility(isVisible);
+	}
+
+	public HideCursor() {}
 }

@@ -37,6 +37,7 @@ export default class SettingsPage extends MainMenuPageComponent {
 					if (Game.deviceType === AirshipDeviceType.Phone) {
 						this.tabs.GetChild(0).gameObject.SetActive(true); // Input
 						this.tabs.GetChild(1).gameObject.SetActive(true); // Sound
+						this.tabs.GetChild(3).gameObject.SetActive(true); // Blocked
 					}
 				} else {
 					rect.offsetMax = new Vector2(rect.offsetMax.x, 0);

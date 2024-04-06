@@ -1,4 +1,3 @@
-import { CoreContext } from "../../CoreClientContext";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
@@ -15,6 +14,7 @@ export default class Navbar extends AirshipBehaviour {
 	public settingsBtn!: RectTransform;
 	public scrollRect!: ScrollRect;
 	public creditsWrapper!: GameObject;
+	public left!: RectTransform;
 
 	private bin = new Bin();
 
@@ -30,17 +30,18 @@ export default class Navbar extends AirshipBehaviour {
 				// 	this.runningGameBtn.SetSiblingIndex(0);
 				// }
 
-				if (Game.IsLandscape() && Game.IsMobile() && Game.coreContext === CoreContext.GAME) {
+				if (Game.IsLandscape() && Game.IsMobile() && Game.IsInGame()) {
 					rect.offsetMin = new Vector2(50, rect.offsetMin.y);
 					this.rightLayoutGroup.padding.right = 55;
 					Bridge.UpdateLayout(this.rightLayoutGroup.transform, false);
+					this.left.offsetMax = new Vector2(-276, this.left.offsetMax.y);
 				} else {
 					rect.offsetMin = new Vector2(15, rect.offsetMin.y);
 					rect.offsetMax = new Vector2(-15, rect.offsetMax.y);
 					this.rightLayoutGroup.padding.right = 0;
 				}
 
-				if (Game.coreContext === CoreContext.GAME && st === "sm") {
+				if (Game.IsInGame() && st === "sm") {
 					this.homeBtn.gameObject.SetActive(false);
 					this.myGamesBtn.gameObject.SetActive(false);
 					this.settingsBtn.gameObject.SetActive(true);

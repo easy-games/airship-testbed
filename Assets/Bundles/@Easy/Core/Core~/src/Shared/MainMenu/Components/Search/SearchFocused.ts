@@ -164,6 +164,10 @@ export default class SearchFocused extends AirshipBehaviour {
 			games = [...Dependency<SearchSingleton>().games];
 		}
 
+		if (!Game.IsEditor() && Game.IsMobile()) {
+			games = games.filter((g) => g.id === "6536ee084c9987573c3a3c03");
+		}
+
 		this.activeResult = undefined;
 
 		// const search = Dependency<SearchSingleton>();

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 330dcfcd8c1adf646b862352ce169fa8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Materials/rock_mat.mat
+  uploadId: 511685

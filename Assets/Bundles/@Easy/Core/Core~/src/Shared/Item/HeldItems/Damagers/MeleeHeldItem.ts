@@ -23,7 +23,7 @@ export class MeleeHeldItem extends HeldItem {
 	// private combatVars = DynamicVariablesManager.Instance.GetVars("Combat")!;
 
 	override OnUseClient(useIndex: number) {
-		if (this.character.IsDead()) return;
+		if (useIndex !== 0 || this.character.IsDead()) return;
 
 		//Don't do the default use animations
 		this.playEffectsOnUse = false;
@@ -161,7 +161,7 @@ export class MeleeHeldItem extends HeldItem {
 	override OnUseServer(useIndex: number) {
 		super.OnUseServer(useIndex);
 
-		if (this.character.IsDead()) return;
+		if (useIndex !== 0 || this.character.IsDead()) return;
 
 		let meleeData = this.itemMeta?.melee;
 		if (!meleeData) {

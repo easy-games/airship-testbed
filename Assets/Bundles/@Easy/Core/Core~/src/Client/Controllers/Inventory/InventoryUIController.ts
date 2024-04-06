@@ -40,6 +40,7 @@ export class InventoryUIController implements OnStart {
 
 	private enabled = true;
 	private visible = false;
+	private backpackEnabled = true;
 
 	private draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
@@ -110,8 +111,17 @@ export class InventoryUIController implements OnStart {
 		this.hotbarContent.gameObject.SetActive(visible);
 	}
 
+	public SetBackpackVisible(visible: boolean) {
+		this.backpackEnabled = this.visible;
+		if (!visible) {
+			if (this.IsBackpackShown() || AppManager.IsOpen()) {
+				AppManager.Close();
+			}
+		}
+	}
+
 	public OpenBackpack(): void {
-		if (!this.enabled) return;
+		if (!this.enabled || !this.backpackEnabled) return;
 
 		this.backpackShown = true;
 

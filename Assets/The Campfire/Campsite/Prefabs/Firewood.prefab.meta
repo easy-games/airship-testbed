@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 25071c780547cdd48863c216fe57063a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225666
+  packageName: Campsite
+  packageVersion: 1.0
+  assetPath: Assets/Campsite/Prefabs/Firewood.prefab
+  uploadId: 511685
