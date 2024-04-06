@@ -6,6 +6,7 @@ Shader "Airship/WorldShaderPBR"
         [HDR] _Color("Color", Color) = (1,1,1,1)
         [HDR] _ShadowColor("Shadow Color", Color) = (1,1,1,1)
         [Toggle] USE_SHADOW_COLOR("Use Shadow Color", Float) = 0.0
+        [KeywordEnum(OFF,FRONT)] DOUBLE_SIDED_NORMALS("Culling", Float) = 0.0
         _Alpha("Alpha", Float) = 1.0
         [HDR] _SpecularColor("Specular Color", Color) = (1,1,1,1)
         [HDR] _OverrideColor("Override Color", Color) = (1,1,1,1)
@@ -54,7 +55,8 @@ Shader "Airship/WorldShaderPBR"
 
             //Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
-              
+            Cull[DOUBLE_SIDED_NORMALS]
+
             HLSLPROGRAM
             #pragma multi_compile TRIPLANAR_STYLE_OFF TRIPLANAR_STYLE_LOCAL TRIPLANAR_STYLE_WORLD
             #pragma multi_compile _ SLIDER_OVERRIDE_ON
@@ -65,7 +67,9 @@ Shader "Airship/WorldShaderPBR"
             #pragma multi_compile _ INSTANCE_DATA_ON
             #pragma multi_compile _ USE_SHADOW_COLOR_ON
 			#pragma multi_compile _ SHADOWS_ON
+            #pragma multi_compile _ DOUBLE_SIDED_NORMALS
 	   
+            
             #include "AirshipWorldShaderIncludes.hlsl"
                           
             ENDHLSL

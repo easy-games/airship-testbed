@@ -17,6 +17,7 @@ Shader "Airship/Skybox"
                     #pragma vertex vert
                     #pragma fragment frag
                     #include "UnityCG.cginc"
+                      #include "Assets/Bundles/@Easy/CoreMaterials/Shared/Resources/BaseShaders/AirshipShaderIncludes.hlsl"
 
                     #pragma multi_compile _ FOG_ON
 
@@ -51,22 +52,22 @@ Shader "Airship/Skybox"
                         return o;
                     }
 
-                    float4 frag(v2f i) : SV_Target
+                    void frag(v2f i, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
                     {
-
-                        half3 texSample = texCUBE(_CubemapTex, i.viewDirectionNeg).rgb * _Brightness;
-
+                        half3 texSample = texCUBElod(_CubemapTex, half4(i.viewDirectionNeg, 0)).rgb * _Brightness;
 #if FOG_ON
                         //if the view vector is basically level with the horizon, blend in fog color
                         float3 viewDirection = normalize(i.viewDirectionNeg);
                         float fogPower = pow(abs(viewDirection.y), _FogPower);
                         float fogBlend = saturate(fogPower * _FogSize);
 
-                        half3 fogColor = lerp(lerp(texSample, _FogColor.rgb, _FogColor.a), texSample, fogBlend );
+                        float3 fogColor = lerp(lerp(texSample, _FogColor.rgb, _FogColor.a), texSample, fogBlend );
 
-                        return float4(fogColor, 0);
+                        DoFinalColorWrite(float4(fogColor,1), half4(0,0,0,0), MRT0, MRT1);
+     
 #else
-                        return float4(texSample, 0);
+     
+                        DoFinalColorWrite(float4(texSample,1), half4(0, 0, 0, 0), MRT0, MRT1);
 #endif
 
                     }

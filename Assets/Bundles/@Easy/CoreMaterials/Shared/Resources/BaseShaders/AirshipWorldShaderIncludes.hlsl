@@ -332,7 +332,11 @@
         return result;
     }
 
-    void fragFunction(vertToFrag input, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1)
+    void fragFunction(vertToFrag input, out half4 MRT0 : SV_Target0, out half4 MRT1 : SV_Target1
+#ifdef DOUBLE_SIDED_NORMALS
+        , FRONT_FACE_TYPE frontFace : FRONT_FACE_SEMANTIC
+#endif    
+    )
     {
         Coordinates coords;
         coords.uvs = input.uv_MainTex.xy;
@@ -376,11 +380,8 @@
 
 #if EXPLICIT_MAPS_ON //Path used by anything passing in explicit maps like triplanar materials
         half4 metalSample = Tex2DSampleTexture(_MetalTex, coords);
-        //metalSample = pow(metalSample, 0.45454545); //Match Substance painter? However we should do this at the importer!
         half4 roughSample = Tex2DSampleTexture(_RoughTex, coords);
-        //roughSample = pow(roughSample, 0.45454545); //Match Substance painter? However we should do this at the importer!
-
-
+   
     #if defined(TRIPLANAR_STYLE_LOCAL) || defined(TRIPLANAR_STYLE_WORLD)
         worldNormal = TriplanarMapNormal(_NormalTex, coords, input.worldNormal);
     #else
@@ -395,6 +396,10 @@
         alpha = texSample.a * _Alpha;
 
         worldNormal = normalize(worldNormal); //Normalize?
+#ifdef DOUBLE_SIDED_NORMALS
+        worldNormal *= IS_FRONT_VFACE(worldNormal, 1, -1);
+#endif
+
         worldReflect = reflect(-viewDirection, worldNormal);
         
         //Note to self: should try and sample reflectedCubeSample as early as possible
@@ -445,7 +450,8 @@
 #endif
         reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));
         
-        half3 complexAmbientSample = reflectedCubeSample;// texCUBElod(_CubeTex, half4(worldNormal, roughnessLevel* maxMips)); //SampleAmbientSphericalHarmonics(worldNormal);
+        //half3 complexAmbientSample = texCUBElod(_CubeTex, half4(worldNormal, maxMips));
+        half3 complexAmbientSample = SampleAmbientSphericalHarmonics(worldNormal);
         
         //Shadows and light masks
 #if SHADOWS_ON        
@@ -453,7 +459,9 @@
 #else
         half sunShadowMask = 0;
 #endif
-       
+        //Matches better to substance
+        roughnessLevel = roughnessLevel * roughnessLevel;
+        metallicLevel = metallicLevel * metallicLevel;
         
         //Sun
         half RoL = max(0, dot(worldReflect, -globalSunDirection));
@@ -501,19 +509,22 @@
         half3 sunShineTerm = (sunColor * NoL);
          
         //Final sun term
-        half3 sunComposite = sunShineTerm * (diffuseColor + phongSpec);
+        half3 sunComposite = (diffuseColor + phongSpec);
  
         //Sun Image reflection
         half3 sunImageLight = imageSpecular * specularColor;
         sunComposite += sunImageLight;
         sunComposite *= globalSunBrightness;
+
+        sunComposite *= sunShineTerm;
         
         //Mask in the sun, based on the shadows
         half3 finalSun = lerp(sunComposite, sunComposite * sunShadowMask, globalSunShadow);
         
 
-        //Ambient lighting
-        half3 ambientLight = (diffuseColor + phongSpec) + (complexAmbientSample * specularColor);
+        //Image Based Lighting (ambient)
+        //half3 ambientLight = (diffuseColor + phongSpec) + (reflectedCubeSample * specularColor);
+        half3 ambientLight = (diffuseColor * complexAmbientSample) + (reflectedCubeSample * specularColor);
         
         //If we're using separate shadow tints NPR
 #ifdef USE_SHADOW_COLOR_ON
@@ -525,8 +536,7 @@
         finalAmbient *= globalAmbientBrightness;
    
         finalColor = finalSun + finalAmbient;
-        
-        
+            
         //Do point lighting
         finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
 
@@ -540,32 +550,35 @@
         //Final color 
         half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * alpha;
 
+        half4 MRT0Val;
+        half4 MRT1Val;
+
 #ifdef EMISSIVE_ON
         if (emissiveLevel > 0)
         {
             float3 colorMix = lerp(finalColor, albedo, _EmissiveMix);
-            MRT0 = half4(colorMix.r, colorMix.g, colorMix.b, alpha);
+            MRT0Val = half4(colorMix.r, colorMix.g, colorMix.b, alpha);
 
             float3 emissiveMix = lerp(diffuseColor.rgb, _EmissiveColor.rgb, _EmissiveMix);
-            MRT1 = half4(emissiveMix * _EmissiveColor.a, alpha);
+            MRT1Val = half4(emissiveMix * _EmissiveColor.a, alpha);
         }
         else
         {
-            MRT0 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
+            MRT0Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
  
             ///if (brightness > globalSunBrightness + globalAmbientBrightness)
             if (brightness > 2)
             {
-                MRT1 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
+                MRT1Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
             }
             else
             {
-                MRT1 = half4(0, 0, 0, alpha);
+                MRT1Val = half4(0, 0, 0, alpha);
             }
 
         }
 #else
-        MRT0 = DoFinalColorWrite(half4(finalColor.r, finalColor.g, finalColor.b, alpha));
+        MRT0Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
 
         //Choose emissive based on brightness values
         //half brightness = max(max(finalColor.r, finalColor.g), finalColor.b) * (1 - roughnessLevel) * alpha;
@@ -573,13 +586,15 @@
         ///if (brightness > globalSunBrightness + globalAmbientBrightness)
         if (brightness > 2)
         {
-            MRT1 = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
+            MRT1Val = half4(finalColor.r, finalColor.g, finalColor.b, alpha);
         }
         else
         {
-            MRT1 = half4(0, 0, 0, alpha);
+            MRT1Val = half4(0, 0, 0, alpha);
         }
 #endif
+
+        DoFinalColorWrite(MRT0Val, MRT1Val, MRT0, MRT1);
         
     }
 
