@@ -85,6 +85,8 @@
         float4 shadowCasterPos1 :TEXCOORD10;
 
         half3 worldNormal : TEXCOORD11;
+
+        half3 viewVector : TEXCOORD12;
     };
 
     vertToFrag vertFunction(Attributes input)
@@ -156,6 +158,9 @@
         output.triplanarBlend /= dot(output.triplanarBlend, (half3)1);
 
 #endif
+
+        output.viewVector = worldPos - _WorldSpaceCameraPos.xyz;
+
         return output;
     }
 
@@ -178,43 +183,6 @@
         return n;
     }
 
-    static float4 color1 = float4(1, 0, 0, 1); // red
-    static float4 color2 = float4(1, 0.5, 0, 1); // orange
-    static float4 color3 = float4(1, 1, 0, 1); // yellow
-    static float4 color4 = float4(0, 1, 0, 1); // green
-    static float4 color5 = float4(0, 0, 1, 1); // blue
-    static float4 color6 = float4(0.5, 0, 1, 1); // purple
-    static float4 color7 = float4(1, 0, 1, 1); // pink
-    static float4 color8 = float4(0, 1, 1, 1);  // teal
-    static float4 color9 = float4(1, 0, 1, 1); //more purple
-    static float4 color10 = float4(0, 1, 0.5, 1); // ,0. 5,1); //more green
-    static float4 color11 = float4(1, 1, 1, 1); // white
-
-    float4 debugColor(float blendValue)
-    {
-        float4 color;
-        if (blendValue < 1)
-            color = color1;
-        else if (blendValue < 2)
-            color = lerp(color2, color3, blendValue - 1);
-        else if (blendValue < 3)
-            color = lerp(color3, color4, blendValue - 2);
-        else if (blendValue < 4)
-            color = lerp(color4, color5, blendValue - 3);
-        else if (blendValue < 5)
-            color = lerp(color5, color6, blendValue - 4);
-        else if (blendValue < 6)
-            color = lerp(color6, color7, blendValue - 5);
-        else if (blendValue < 7)
-            color = lerp(color7, color8, blendValue - 6);
-        else if (blendValue < 8)
-            color = lerp(color8, color9, blendValue - 7);
-        else if (blendValue < 9)
-            color = lerp(color9, color10, blendValue - 8);
-        else
-            color = color11;
-        return color;
-    }
     
     struct Coordinates
     {
@@ -315,11 +283,7 @@
         half4 cx = tex.Sample(my_sampler_trilinear_repeat, uvs);
         return cx;
     }
-
-    half4 Tex2DSampleTextureDebug(Texture2D tex, Coordinates coords)
-    {
-        return debugColor(coords.lod);
-    }
+ 
 
     half UnpackMetal(float metal)
     {
@@ -373,8 +337,8 @@
         half4 reflectedCubeSample;
         half3 worldReflect;
         half alpha = _Alpha;
-     
-        half3 viewVector = _WorldSpaceCameraPos.xyz - input.worldPos;
+             
+        half3 viewVector = input.viewVector;
         float viewDistance = length(viewVector);
         half3 viewDirection = normalize(viewVector);
 
@@ -400,7 +364,7 @@
         worldNormal *= IS_FRONT_VFACE(worldNormal, 1, -1);
 #endif
 
-        worldReflect = reflect(-viewDirection, worldNormal);
+        worldReflect = reflect(viewDirection, worldNormal);
         
         //Note to self: should try and sample reflectedCubeSample as early as possible
         roughnessLevel = max(roughSample.r, 0.04);
@@ -427,7 +391,7 @@
         worldNormal.z = dot(input.tspace2, textureNormal);
         //#else
     #endif
-        worldReflect = reflect(-viewDirection, worldNormal);
+        worldReflect = reflect(viewDirection, worldNormal);
 
         //Note to self: should try and sample reflectedCubeSample as early as possible
         roughnessLevel = max(specialSample.a, 0.04);
@@ -485,7 +449,6 @@
             half dielectricSpecular = 0.08 * 0.3;  
             diffuseColor = albedo - albedo * metallicLevel;
             specularColor = (dielectricSpecular - dielectricSpecular * metallicLevel) + albedo * metallicLevel;
-
             specularColor = EnvBRDFApprox(specularColor, roughnessLevel, NoV) * _SpecularColor;
         }
         else
@@ -497,6 +460,8 @@
         }
       
         half3 phongSpec = PhongApprox(roughnessLevel, RoL) * specularColor;
+        //Simpler specphong with more artistic control over the highlight
+        //half3 phongSpec = CalculateSimpleSpecularLight(globalSunDirection, -viewDirection, worldNormal, 23) * specularColor;
 
         //Start compositing it all now
         half3 finalColor = half3(0, 0, 0);
@@ -523,7 +488,7 @@
         
 
         //Image Based Lighting (ambient)
-        //half3 ambientLight = (diffuseColor + phongSpec) + (reflectedCubeSample * specularColor);
+        //half3 ambientLight = (diffuseColor + phongSpec) + (reflectedCubeSample * specularColor); //incorrect
         half3 ambientLight = (diffuseColor * complexAmbientSample) + (reflectedCubeSample * specularColor);
         
         //If we're using separate shadow tints NPR
@@ -536,10 +501,11 @@
         finalAmbient *= globalAmbientBrightness;
    
         finalColor = finalSun + finalAmbient;
-            
-        //Do point lighting
-        finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, specularColor, worldReflect);
+ 
 
+        //Do point lighting
+        finalColor.xyz += CalculatePointLightsForPoint(input.worldPos, worldNormal, diffuseColor, roughnessLevel, metallicLevel, specularColor, worldReflect);
+         
         //Rim light
 #ifdef RIM_LIGHT_ON
         finalColor.xyz += RimLightSimple(worldNormal, viewDirection);
