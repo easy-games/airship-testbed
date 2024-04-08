@@ -11,8 +11,8 @@ export default class CubeMover extends AirshipBehaviour {
 	public override OnEnable(): void {
 		let offset = math.random() * math.pi * 2;
 		let startingPos = this.gameObject.transform.position;
-		let rb = this.gameObject.GetComponent<Rigidbody>();
-		const nob = this.gameObject.GetComponent<NetworkObject>();
+		let rb = this.gameObject.GetComponent<Rigidbody>()!;
+		const nob = this.gameObject.GetComponent<NetworkObject>()!;
 		this.bin.Add(
 			OnTick.Connect(() => {
 				// if (!nob.IsOwner) return;
@@ -27,7 +27,7 @@ export default class CubeMover extends AirshipBehaviour {
 		if (RunUtil.IsServer()) {
 			this.bin.Add(
 				Airship.players.ObservePlayers((player) => {
-					this.gameObject.GetComponent<NetworkObject>().GiveOwnership(player.networkObject.Owner);
+					this.gameObject.GetComponent<NetworkObject>()!.GiveOwnership(player.networkObject.Owner);
 					Game.BroadcastMessage(player.username + " now owns the cube!");
 				}),
 			);

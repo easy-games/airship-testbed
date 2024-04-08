@@ -56,7 +56,7 @@ export class PlayersSingleton implements OnStart {
 
 			const mutable = Game.localPlayer as Mutable<Player>;
 			mutable.clientId = localPlayerInfo.clientId;
-			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>();
+			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
 			mutable.username = localPlayerInfo.username;
 			mutable.usernameTag = localPlayerInfo.usernameTag;
 			mutable.userId = localPlayerInfo.userId;
@@ -177,7 +177,7 @@ export class PlayersSingleton implements OnStart {
 				player = Game.localPlayer;
 			} else {
 				player = new Player(
-					playerInfo.gameObject.GetComponent<NetworkObject>(),
+					playerInfo.gameObject.GetComponent<NetworkObject>()!,
 					playerInfo.clientId,
 					playerInfo.userId,
 					playerInfo.username,

@@ -77,13 +77,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
 
 		if (this.humanEntityGo) {
-			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>();
+			this.accessoryBuilder = this.humanEntityGo.GetComponent<AccessoryBuilder>()!;
 			if (this.accessoryBuilder) {
 				this.accessoryBuilder.thirdPersonLayer = this.gameObject.layer;
 				this.accessoryBuilder.firstPersonLayer = this.gameObject.layer;
 				this.accessoryBuilder.UpdateAccessoryLayers();
 			}
-			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>();
+			this.anim = this.humanEntityGo.GetComponent<CharacterAnimationHelper>()!;
 		}
 
 		this.mouse = new Mouse();

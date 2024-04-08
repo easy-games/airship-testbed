@@ -34,5 +34,5 @@ Flamework.AddPath("assets/bundles/@Easy/Core/shared/resources/ts", "^.*singleton
 // Flamework.AddPath("assets/bundles/@Easy/Core/client/resources/ts/mainmenucontrollers", "^.*controller.lua$");
 Flamework.Ignite();
 
-const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>();
+const mainMenuLoadingScreen = GameObject.Find("MainMenuLoadingScreen").GetComponent<MainMenuLoadingScreen>()!;
 mainMenuLoadingScreen.Close();

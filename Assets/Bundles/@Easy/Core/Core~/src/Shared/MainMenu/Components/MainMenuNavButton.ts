@@ -16,7 +16,7 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 	private textColorNormal = ColorUtil.HexToColor("D8D8D8");
 
 	public Awake(): void {
-		this.image = this.gameObject.GetComponent<Image>();
+		this.image = this.gameObject.GetComponent<Image>()!;
 		this.selected = false;
 	}
 
@@ -31,7 +31,7 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 				this.iconImage.color = this.textColorNormal;
 			}
 		});
-		// const rect = this.gameObject.GetComponent<RectTransform>();
+		// const rect = this.gameObject.GetComponent<RectTransform>()!;
 		// let startPos: Vector3 | undefined;
 		// CanvasAPI.OnPointerEvent(this.gameObject, (dir, button) => {
 		// 	if (dir === PointerDirection.DOWN) {

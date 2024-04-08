@@ -14,7 +14,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 			Game.WaitForLocalPlayerLoaded();
 			const sprite = Airship.players.GetProfilePictureSpriteAsync(Game.localPlayer.userId);
 			if (sprite) {
-				this.gameObject.GetComponent<Image>().sprite = sprite;
+				this.gameObject.GetComponent<Image>()!.sprite = sprite;
 			}
 		});
 

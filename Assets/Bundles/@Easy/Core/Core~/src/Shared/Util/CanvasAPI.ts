@@ -26,8 +26,8 @@ export class CanvasAPI {
 	private static selectedInstanceId?: number;
 
 	public static Init(): void {
-		this.canvasUIEvents = GameObject.Find("CanvasUIEvents").GetComponent<CanvasUIEvents>();
-		this.canvasHitDetector = this.canvasUIEvents.gameObject.GetComponent<CanvasHitDetector>();
+		this.canvasUIEvents = GameObject.Find("CanvasUIEvents").GetComponent<CanvasUIEvents>()!;
+		this.canvasHitDetector = this.canvasUIEvents.gameObject.GetComponent<CanvasHitDetector>()!;
 	}
 
 	public static RegisterEvents(gameObject: GameObject): void {
@@ -241,7 +241,7 @@ export class CanvasAPI {
 	private static Setup(gameObject: GameObject): void {
 		if (CanvasAPI.eventInterceptor === undefined) {
 			this.eventInterceptor =
-				GameObject.Find("CanvasUIEventsInterceptor").GetComponent<CanvasUIEventInterceptor>();
+				GameObject.Find("CanvasUIEventsInterceptor").GetComponent<CanvasUIEventInterceptor>()!;
 
 			this.eventInterceptor.OnSelectEvent((instanceId) => {
 				this.selectedInstanceId = instanceId;

@@ -6,7 +6,7 @@ export default class NavbarControlButton extends AirshipBehaviour {
 			if (button !== PointerButton.LEFT) return;
 
 			this.gameObject
-				.GetComponent<RectTransform>()
+				.GetComponent<RectTransform>()!
 				.TweenLocalScale(
 					dir === PointerDirection.DOWN ? new Vector3(0.8, 0.8, 0.8) : new Vector3(1, 1, 1),
 					0.1,
@@ -16,7 +16,7 @@ export default class NavbarControlButton extends AirshipBehaviour {
 
 	public PlayClickEffect(): void {
 		this.gameObject
-			.GetComponent<RectTransform>()
+			.GetComponent<RectTransform>()!
 			.TweenLocalScale(new Vector3(0.8, 0.8, 0.8), 0.1)
 			.SetPingPong();
 	}

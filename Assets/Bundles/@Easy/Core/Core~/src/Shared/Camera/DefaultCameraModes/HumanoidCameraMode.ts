@@ -128,7 +128,7 @@ export class HumanoidCameraMode extends CameraMode {
 	}
 
 	OnStart(camera: Camera, rootTransform: Transform) {
-		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>();
+		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
 		if (this.occlusionCam === undefined) {
 			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
 		}

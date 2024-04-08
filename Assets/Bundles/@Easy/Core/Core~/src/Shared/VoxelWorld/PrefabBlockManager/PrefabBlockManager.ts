@@ -83,7 +83,7 @@ export class PrefabBlockManager {
 		const obj = this.objectMap.get(pos);
 		if (obj) {
 			let animatingOut = false;
-			const ref = obj.GetComponent<GameObjectReferences>();
+			const ref = obj.GetComponent<GameObjectReferences>()!;
 			if (ref) {
 				const anim = ref.GetValue<Animation>("Animation", "OnDeath");
 				if (anim) {

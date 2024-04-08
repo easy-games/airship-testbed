@@ -48,7 +48,7 @@ export class ShutdownService implements OnStart {
 	}
 
 	public Shutdown(): void {
-		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>();
+		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 		serverBootstrap.Shutdown();
 	}
 }

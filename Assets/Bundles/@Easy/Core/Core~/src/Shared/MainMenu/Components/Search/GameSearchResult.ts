@@ -43,7 +43,7 @@ export default class GameSearchResult extends SearchResult {
 			// Game image
 			this.gameImage.color = new Color(0, 0, 0, 0.3);
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>();
+			let cloudImage = this.gameObject.transform.GetChild(0).GetComponent<CloudImage>()!;
 			cloudImage.url = url;
 			this.bin.AddEngineEventConnection(
 				cloudImage.OnFinishedLoading((success) => {

@@ -34,7 +34,7 @@ class ChatMessageElement {
 		public readonly gameObject: GameObject,
 		public time: number,
 	) {
-		this.canvasGroup = gameObject.GetComponent<CanvasGroup>();
+		this.canvasGroup = gameObject.GetComponent<CanvasGroup>()!;
 	}
 
 	public Hide(): void {
@@ -91,19 +91,19 @@ export class ChatController implements OnStart {
 		private readonly directMessageController: DirectMessageController,
 		private readonly friendsController: FriendsController,
 	) {
-		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>();
-		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>();
+		const refs = this.coreUIController.refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
+		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
 		this.content = refs.GetValue("UI", "Content");
 		this.wrapper = refs.GetValue("UI", "Wrapper");
 		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
 		this.inputField = refs.GetValue("UI", "InputField");
-		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>();
+		this.inputWrapperImage = refs.GetValue("UI", "Input").GetComponent<Image>()!;
 		this.content.gameObject.ClearChildren();
 
 		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
 			if (Game.IsMobile()) {
-				this.canvas.GetComponent<CanvasScaler>().scaleFactor = Game.GetScaleFactor();
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>();
+				this.canvas.GetComponent<CanvasScaler>()!.scaleFactor = Game.GetScaleFactor();
+				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 
 				if (Game.deviceType === AirshipDeviceType.Phone) {
 					wrapperRect.anchorMin = new Vector2(0, 0);
@@ -120,8 +120,8 @@ export class ChatController implements OnStart {
 				}
 				wrapperRect.anchoredPosition = new Vector2(121, -14);
 			} else {
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>();
-				const wrapperImg = wrapperRect.GetComponent<Image>();
+				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
+				const wrapperImg = wrapperRect.GetComponent<Image>()!;
 				wrapperImg.color = new Color(0, 0, 0, 0);
 			}
 		});
@@ -133,7 +133,7 @@ export class ChatController implements OnStart {
 		if (Game.IsMobile()) {
 			this.canvas.enabled = false;
 		} else {
-			this.wrapper.GetComponent<Mask>().enabled = false;
+			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
 	}
 
@@ -346,7 +346,7 @@ export class ChatController implements OnStart {
 		print(message);
 		try {
 			const chatMessage = GameObjectUtil.InstantiateIn(this.chatMessagePrefab, this.content.transform);
-			const refs = chatMessage.GetComponent<GameObjectReferences>();
+			const refs = chatMessage.GetComponent<GameObjectReferences>()!;
 
 			const textGui = refs.GetValue<TextMeshProUGUI>("UI", "Text");
 			textGui.text = message;

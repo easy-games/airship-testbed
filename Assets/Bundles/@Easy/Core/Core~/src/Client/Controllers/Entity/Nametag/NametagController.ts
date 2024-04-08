@@ -39,7 +39,7 @@ export class NametagController implements OnStart {
 		const SetNametagAlpha = (character: Character, alpha: number) => {
 			const nameTag = character.model.transform.FindChild(this.nameTagId);
 			if (nameTag) {
-				const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>();
+				const canvasGroup = nameTag.GetChild(0).GetComponent<CanvasGroup>()!;
 				canvasGroup.TweenCanvasGroupAlpha(alpha, 0.1);
 			}
 		};
@@ -85,7 +85,7 @@ export class NametagController implements OnStart {
 			return;
 		}
 
-		const references = nameTag.gameObject.GetComponent<GameObjectReferences>();
+		const references = nameTag.gameObject.GetComponent<GameObjectReferences>()!;
 		const textLabel = references.GetValue<TextMeshProUGUI>(this.graphicsBundleName, "Text");
 		const teamImage = references.GetValue<UGUIImage>(this.graphicsBundleName, "Team");
 		const canvas = references.GetValue<Canvas>(this.graphicsBundleName, "Canvas");
@@ -95,7 +95,7 @@ export class NametagController implements OnStart {
 		textLabel.text = displayName;
 
 		const rawDisplayName = Bridge.RemoveRichText(displayName);
-		const rect = canvas.gameObject.GetComponent<RectTransform>();
+		const rect = canvas.gameObject.GetComponent<RectTransform>()!;
 		rect.sizeDelta = new Vector2(230 * rawDisplayName.size(), 480);
 
 		// Username color

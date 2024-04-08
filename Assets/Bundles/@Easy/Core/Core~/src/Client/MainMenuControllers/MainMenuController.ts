@@ -39,10 +39,10 @@ export class MainMenuController implements OnStart {
 	constructor() {
 		const mainMenuPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Client/Resources/MainMenu/MainMenu.prefab");
 		this.mainMenuGo = Object.Instantiate(mainMenuPrefab, CoreRefs.rootTransform) as GameObject;
-		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>();
+		this.refs = this.mainMenuGo.GetComponent<GameObjectReferences>()!;
 		const wrapperGo = this.refs.GetValue("UI", "Wrapper");
-		this.wrapperRect = wrapperGo.GetComponent<RectTransform>();
-		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>();
+		this.wrapperRect = wrapperGo.GetComponent<RectTransform>()!;
+		this.rootCanvasGroup = this.mainMenuGo.GetComponent<CanvasGroup>()!;
 		this.mainContentCanvas = this.refs.GetValue<Canvas>("UI", "MainContentCanvas");
 		this.mainContentGroup = this.refs.GetValue<CanvasGroup>("UI", "MainContentGroup");
 		this.socialMenuGroup = this.refs.GetValue<CanvasGroup>("UI", "SocialGroup");

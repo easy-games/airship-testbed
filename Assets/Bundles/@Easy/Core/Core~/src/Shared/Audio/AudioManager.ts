@@ -134,8 +134,7 @@ export class AudioManager {
 
 	private static GetAudioSource(position: Vector3): AudioSource {
 		const go = PoolManager.SpawnObject(this.audioSourceTemplate, position, Quaternion.identity);
-		const audioSource = go.GetComponent<AudioSource>();
-		return audioSource;
+		return go.GetComponent<AudioSource>()!;
 	}
 
 	private static FriendlyPath(s: string): string {

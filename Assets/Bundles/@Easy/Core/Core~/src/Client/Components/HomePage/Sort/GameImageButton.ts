@@ -16,14 +16,14 @@ export default class GameImageButton extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
-		const rect = this.gameObject.GetComponent<RectTransform>();
+		const rect = this.gameObject.GetComponent<RectTransform>()!;
 		let startPos: Vector3 | undefined;
 
 		const gameComponent = this.gameComponentGO?.GetAirshipComponent<HomePageGameComponent>();
 
 		const mouse = new Mouse();
 		if (Game.IsMobile()) {
-			const longPress = this.gameObject.GetComponent<AirshipLongPress>();
+			const longPress = this.gameObject.GetComponent<AirshipLongPress>()!;
 			if (longPress) {
 				this.bin.AddEngineEventConnection(
 					longPress.OnLongPress((pressPos) => {

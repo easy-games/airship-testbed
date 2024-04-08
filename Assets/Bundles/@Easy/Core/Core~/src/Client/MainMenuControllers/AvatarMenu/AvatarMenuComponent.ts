@@ -92,7 +92,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		let i = 0;
 		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
-			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
+			let image = this.avatarRenderHolder?.GetComponent<RawImage>()!;
 			if (image) {
 				image.texture = texture;
 			}
@@ -496,7 +496,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.currentContentBtns.push({ id: instanceId, button: accessoryBtn });
 
 				//download the items thumbnail
-				let cloudImage = newButton.gameObject.GetComponent<CloudImage>();
+				let cloudImage = newButton.gameObject.GetComponent<CloudImage>()!;
 				if (cloudImage === undefined) {
 					cloudImage = newButton.gameObject.AddComponent<CloudImage>();
 				}

@@ -44,8 +44,8 @@ export class RightClickMenuController implements OnStart {
 			}),
 		);
 
-		const canvasRect = canvas.GetComponent<RectTransform>();
-		const menuRect = menuGo.GetComponent<RectTransform>();
+		const canvasRect = canvas.GetComponent<RectTransform>()!;
+		const menuRect = menuGo.GetComponent<RectTransform>()!;
 
 		let mousePosInCanvas = Bridge.ScreenPointToLocalPointInRectangle(
 			canvasRect,
@@ -72,8 +72,8 @@ export class RightClickMenuController implements OnStart {
 
 		for (const button of buttons) {
 			const buttonGo = Object.Instantiate(buttonPrefab, menuGo.transform);
-			const btnImage = buttonGo.GetComponent<Image>();
-			const refs = buttonGo.GetComponent<GameObjectReferences>();
+			const btnImage = buttonGo.GetComponent<Image>()!;
+			const refs = buttonGo.GetComponent<GameObjectReferences>()!;
 			const text = refs.GetValue("UI", "Text") as TMP_Text;
 			text.text = button.text;
 

@@ -36,10 +36,10 @@ export class ChangeUsernameController implements OnStart {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/MainMenu/ChangeUsername.prefab"),
 			CoreRefs.rootTransform,
 		);
-		this.canvas = go.GetComponent<Canvas>();
+		this.canvas = go.GetComponent<Canvas>()!;
 		this.canvas.enabled = false;
 
-		const refs = go.GetComponent<GameObjectReferences>();
+		const refs = go.GetComponent<GameObjectReferences>()!;
 		this.responseText = refs.GetValue("UI", "ResponseText") as TMP_Text;
 		this.submitButton = refs.GetValue("UI", "SubmitButton");
 		this.submitButtonDisabled = refs.GetValue("UI", "SubmitButtonDisabled");

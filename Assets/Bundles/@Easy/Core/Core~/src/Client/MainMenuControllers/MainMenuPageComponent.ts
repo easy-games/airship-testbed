@@ -22,7 +22,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 	public Init(mainMenu: MainMenuController, pageType: MainMenuPageType) {
 		this.mainMenu = mainMenu;
 		this.pageType = pageType;
-		this.refs = this.gameObject.GetComponent<GameObjectReferences>();
+		this.refs = this.gameObject.GetComponent<GameObjectReferences>()!;
 		if (pageType === MainMenuPageType.Home) {
 			// this.OpenPage();
 		} else {
@@ -42,7 +42,7 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.gameObject.SetActive(true);
 		this.mainMenu?.avatarView?.HideAvatar();
 
-		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
 		const targetY = this.GetTargetAnchoredPositionY();
 		if (this.animateInDuration <= 0 || Game.IsPortrait()) {
 			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
@@ -67,8 +67,8 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.activePage = false;
 		// print("closing page: " + this.pageType);
 
-		// gameObject.GetComponent<RectTransform>().TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
-		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+		// gameObject.GetComponent<RectTransform>()!.TweenLocalPosition(new Vector3(-20, 0, 0), 0.1);
+		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
 		canvasGroup?.TweenCanvasGroupAlpha(0, this.animateOutDuration);
 		SetTimeout(instant ? 0 : this.animateOutDuration, () => {
 			if (!this.activePage) {

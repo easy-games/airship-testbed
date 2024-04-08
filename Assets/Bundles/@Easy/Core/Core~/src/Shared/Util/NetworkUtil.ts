@@ -45,7 +45,6 @@ export class NetworkUtil {
 
 	/* Despawn a replicated `GameObject` on the client **and** server. */
 	public static Despawn(gameObject: GameObject): void {
-		const networkObjectId = gameObject.GetComponent<NetworkObject>().ObjectId;
 		NetworkCore.Despawn(gameObject);
 	}
 
@@ -121,7 +120,11 @@ export class NetworkUtil {
 	public static WaitForNetworkObjectByName(name: string): NetworkObject {
 		const gameObject = GameObject.Find(name);
 		if (gameObject) {
-			return gameObject.GetComponent<NetworkObject>();
+			let nob = gameObject.GetComponent<NetworkObject>();
+			if (!nob) {
+				error("Missing network object on game object: " + name);
+			}
+			return nob;
 		}
 		while (true) {
 			task.wait();

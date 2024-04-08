@@ -24,7 +24,7 @@ export class CameraReferences {
 		CameraReferences.instances = this;
 
 		//Get Camera references
-		let refs = GameObject.Find("CameraRig")?.GetComponent<GameObjectReferences>();
+		let refs = GameObject.Find("CameraRig")?.GetComponent<GameObjectReferences>()!;
 		if (!refs) {
 			// error("Camera rig not found. Please make sure to add a CameraRig to scene.");
 			return;

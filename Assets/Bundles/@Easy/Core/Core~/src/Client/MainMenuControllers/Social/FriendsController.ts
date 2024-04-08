@@ -92,7 +92,7 @@ export class FriendsController implements OnStart {
 
 		this.friendsScrollRect = this.mainMenuController.refs
 			.GetValue("Social", "FriendsScrollViewGO")
-			.GetComponent<ScrollRect>();
+			.GetComponent<ScrollRect>()!;
 
 		this.socialNotification = this.mainMenuController.refs
 			.GetValue("Social", "SocialNotification")
@@ -395,10 +395,10 @@ export class FriendsController implements OnStart {
 				) as GameObject;
 				go.name = friend.userId;
 
-				const redirect = go.GetComponent<AirshipRedirectDrag>();
+				const redirect = go.GetComponent<AirshipRedirectDrag>()!;
 				redirect.redirectTarget = this.friendsScrollRect;
 
-				const refs = go.GetComponent<GameObjectReferences>();
+				const refs = go.GetComponent<GameObjectReferences>()!;
 				const joinButton = refs.GetValue("UI", "JoinButton");
 
 				this.renderedFriendUids.add(friend.userId);
@@ -513,7 +513,7 @@ export class FriendsController implements OnStart {
 			}
 			go.transform.SetSiblingIndex(i);
 
-			const refs = go.GetComponent<GameObjectReferences>();
+			const refs = go.GetComponent<GameObjectReferences>()!;
 			this.UpdateFriendStatusUI(friend, refs, {
 				loadImage: init,
 			});
@@ -554,7 +554,7 @@ export class FriendsController implements OnStart {
 		const status = refs.GetValue("UI", "Status") as TMP_Text;
 		const statusIndicator = refs.GetValue("UI", "StatusIndicator") as Image;
 		const profileImage = refs.GetValue("UI", "ProfilePicture") as Image;
-		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>();
+		const canvasGroup = refs.gameObject.GetComponent<CanvasGroup>()!;
 		const joinButton = refs.GetValue("UI", "JoinButton");
 
 		if (config.loadImage) {

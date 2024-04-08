@@ -192,7 +192,7 @@ export class AirshipInputSingleton implements OnStart {
 		const mobileButton = Object.Instantiate(this.mobileButtonPrefab);
 		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
 
-		const rect = mobileButton.GetComponent<RectTransform>();
+		const rect = mobileButton.GetComponent<RectTransform>()!;
 		rect.localScale = new Vector3(config?.scale?.x ?? 1, config?.scale?.y ?? 1, 1);
 		if (config?.anchorMin) rect.anchorMin = config.anchorMin;
 		if (config?.anchorMax) rect.anchorMax = config.anchorMax;
@@ -204,7 +204,7 @@ export class AirshipInputSingleton implements OnStart {
 				`@Easy/Core/Shared/Resources/Images/CoreIcons/${config.icon}.png`,
 			);
 			if (iconTexture) {
-				const img = mobileButton.transform.GetChild(0).GetComponent<Image>();
+				const img = mobileButton.transform.GetChild(0).GetComponent<Image>()!;
 				img.sprite = Bridge.MakeSprite(iconTexture);
 			}
 		}
