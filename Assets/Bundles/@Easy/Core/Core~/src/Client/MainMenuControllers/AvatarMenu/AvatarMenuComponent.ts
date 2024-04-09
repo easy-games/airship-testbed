@@ -92,9 +92,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		let i = 0;
 		this.mainMenu?.avatarView?.OnNewRenderTexture((texture) => {
-			let image = this.avatarRenderHolder?.GetComponent<RawImage>()!;
+			let image = this.avatarRenderHolder?.GetComponent<RawImage>();
 			if (image) {
 				image.texture = texture;
+			} else {
+				error("Missing raw image on avatarrenderholder");
 			}
 			this.RefreshAvatar();
 		});
