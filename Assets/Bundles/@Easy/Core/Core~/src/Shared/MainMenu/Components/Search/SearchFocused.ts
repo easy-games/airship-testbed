@@ -6,6 +6,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { MobileGameList } from "@Easy/Core/Shared/Util/MobileGameList";
 import { OnFixedUpdate, OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { DecodeJSON } from "@Easy/Core/Shared/json";
 import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
@@ -165,7 +166,7 @@ export default class SearchFocused extends AirshipBehaviour {
 		}
 
 		if (!Game.IsEditor() && Game.IsMobile()) {
-			games = games.filter((g) => g.id === "6536ee084c9987573c3a3c03");
+			games = games.filter((g) => MobileGameList.includes(g.id));
 		}
 
 		this.activeResult = undefined;

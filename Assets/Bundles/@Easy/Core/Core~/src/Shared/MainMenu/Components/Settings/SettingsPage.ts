@@ -8,7 +8,7 @@ export default class SettingsPage extends MainMenuPageComponent {
 	public sidebar!: RectTransform;
 	public tabs!: RectTransform;
 
-	public mobilePages!: RectTransform[];
+	// public mobilePages!: RectTransform[];
 
 	private bin = new Bin();
 
@@ -40,10 +40,10 @@ export default class SettingsPage extends MainMenuPageComponent {
 						this.tabs.GetChild(3).gameObject.SetActive(true); // Blocked
 					}
 				} else {
-					rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
-					this.sidebar.gameObject.SetActive(true);
-					this.tabs.offsetMax = new Vector2(-41, -49);
-					this.tabs.offsetMin = new Vector2(270, -mainMenu.screenSize.y);
+					// rect.offsetMax = new Vector2(rect.offsetMax.x, 0);
+					// this.sidebar.gameObject.SetActive(true);
+					// this.tabs.offsetMax = new Vector2(-41, -49);
+					// this.tabs.offsetMin = new Vector2(270, -mainMenu.screenSize.y);
 				}
 			}),
 		);
