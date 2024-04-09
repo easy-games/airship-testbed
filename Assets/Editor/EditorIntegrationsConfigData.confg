@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoAddMaterialColor: 1
   autoConvertMaterials: 1
+  autoUpdatePackages: 1
+  manageTypescriptProject: 0
