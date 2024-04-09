@@ -2000,13 +2000,13 @@ interface GameObject extends Object {
 	GetAirshipComponents<T extends AirshipBehaviour>(): T[];
 
 	/**
-	 * Throws error if no component found.
+	 * Returns undefined if no component is found
 	 */
-	GetComponent<T extends Component>(): T;
+	GetComponent<T extends Component>(): T | undefined;
 	/**
-	 * Throws error if no component found.
+	 * Returns undefined if no component is found
 	 */
-	GetComponent<T extends Component = Component>(type: string): T;
+	GetComponent<T extends Component = Component>(type: string): T | undefined;
 
 	GetAirshipComponent<T extends AirshipBehaviour>(): T | undefined;
 	/**
@@ -2017,7 +2017,6 @@ interface GameObject extends Object {
 	GetComponents<T extends AirshipBehaviour | Component>(): CSArray<T>;
 	GetComponents<T extends Component | AirshipBehaviour = Component>(type: string): CSArray<T>;
 
-	GetComponentIfExists<T extends Component = Component>(type: string): T | undefined;
 	AddComponent<T>(): T;
 	AddComponent<T extends Component = Component>(componentName: string): T;
 	AddAirshipComponent<T extends AirshipBehaviour>(): T;

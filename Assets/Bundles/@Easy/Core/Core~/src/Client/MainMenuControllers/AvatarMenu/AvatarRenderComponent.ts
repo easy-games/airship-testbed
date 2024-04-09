@@ -165,7 +165,7 @@ export default class AvatarRenderComponent extends AirshipBehaviour {
 		this.captureCamera.Render();
 
 		//Save the picture locally
-		const recorder = this.captureCamera.gameObject.GetComponent<CameraScreenshotRecorder>();
+		const recorder = this.captureCamera.gameObject.GetComponent<CameraScreenshotRecorder>()!;
 		if (recorder && this.renderTexture) {
 			return recorder.SaveRenderTexture(this.renderTexture, fileName, true);
 		} else {

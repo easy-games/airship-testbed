@@ -34,7 +34,7 @@ export class GroundItemController implements OnStart {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItems.prefab"),
 			CoreRefs.rootTransform,
 		);
-		// this.offlineGroundItems = this.groundItemsFolder.GetComponent<OfflineGroundItems>();
+		// this.offlineGroundItems = this.groundItemsFolder.GetComponent<OfflineGroundItems>()!;
 		this.groundItemPrefab = AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/GroundItem.prefab");
 		// PoolManager.PreLoadPool(this.groundItemPrefab, 4);
 		this.fallbackDisplayObj = AssetBridge.Instance.LoadAsset(
@@ -94,7 +94,7 @@ export class GroundItemController implements OnStart {
 					// this.offlineGroundItems.AddObject(go);
 
 					const bin = new Bin();
-					const destroyedConn = go.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+					const destroyedConn = go.GetComponent<DestroyWatcher>()!.OnDestroyedEvent(() => {
 						this.groundItems.delete(groundItem.id);
 						bin.Clean();
 					});
@@ -106,7 +106,7 @@ export class GroundItemController implements OnStart {
 
 				const data = dto.data;
 
-				const drop = go.GetComponent<GroundItemDrop>();
+				const drop = go.GetComponent<GroundItemDrop>()!;
 
 				drop.SetVelocity(dto.velocity);
 				const groundItem = new GroundItem(dto.id, itemStack, drop, TimeUtil.GetServerTime() + 1.2, dto.data);
@@ -174,7 +174,7 @@ export class GroundItemController implements OnStart {
 
 			const go = groundItem.drop.gameObject;
 			// this.groundItemPool.push(go);
-			// go.GetComponent<ParentSetter>().ClearParent();
+			// go.GetComponent<ParentSetter>()!.ClearParent();
 			// go.SetActive(false);
 			go.transform.GetChild(0).gameObject.ClearChildren();
 			PoolManager.ReleaseObject(go);
@@ -190,7 +190,7 @@ export class GroundItemController implements OnStart {
 
 			const go = groundItem.drop.gameObject;
 			// this.groundItemPool.push(go);
-			// go.GetComponent<ParentSetter>().ClearParent();
+			// go.GetComponent<ParentSetter>()!.ClearParent();
 			// go.SetActive(false);
 			go.transform.GetChild(0).gameObject.ClearChildren();
 			PoolManager.ReleaseObject(go);

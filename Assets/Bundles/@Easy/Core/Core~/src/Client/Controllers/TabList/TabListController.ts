@@ -33,8 +33,8 @@ export class TabListController implements OnStart {
 
 	constructor(private readonly coreUIController: CoreUIController) {
 		this.tablistGO = this.coreUIController.refs.GetValue("Apps", "TabList");
-		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>();
-		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>();
+		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>()!;
+		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>()!;
 		this.tablistContentGO = this.tablistRefs.GetValue("UI", "Content");
 		this.tablistEntryPrefab = this.tablistRefs.GetValue<Object>("UI", "TabListEntry");
 
@@ -158,7 +158,7 @@ export class TabListController implements OnStart {
 	}
 
 	private UpdateEntry(entry: GameObject, player: Player, init: boolean): void {
-		const refs = entry.GetComponent<GameObjectReferences>();
+		const refs = entry.GetComponent<GameObjectReferences>()!;
 		const usernameText = refs.GetValue<TMP_Text>("UI", "Username");
 
 		let username = player.username;
@@ -187,9 +187,9 @@ export class TabListController implements OnStart {
 		// }
 		// if (isFriends) {
 		// 	if (Dependency<FriendsController>().HasOutgoingFriendRequest(player.userId)) {
-		// 		addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 0.5);
+		// 		addFriendGo.GetComponent<Image>()!.color = new Color(1, 1, 1, 0.5);
 		// 	} else {
-		// 		addFriendGo.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+		// 		addFriendGo.GetComponent<Image>()!.color = new Color(1, 1, 1, 1);
 		// 	}
 		// }
 

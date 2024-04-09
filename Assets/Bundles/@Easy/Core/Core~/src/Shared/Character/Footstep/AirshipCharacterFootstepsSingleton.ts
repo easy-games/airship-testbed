@@ -117,7 +117,7 @@ export class AirshipCharacterFootstepsSingleton implements OnStart {
 
 	private PlayFootstepSound(character: Character, camPos: Vector3): void {
 		const raycastHit = character.movement.groundedRaycastHit;
-		const renderer = raycastHit.collider.GetComponent<Renderer>();
+		const renderer = raycastHit.collider.GetComponent<Renderer>()!;
 		if (renderer) {
 			const material = renderer.material;
 			let [materialName] = material.name.gsub("%s*%([^)]+%)", "");

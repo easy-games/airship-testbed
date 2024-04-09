@@ -14,7 +14,7 @@ export class LoadingScreenSingleton implements OnStart {
 		Airship.loadingScreen = this;
 
 		if (Game.coreContext === CoreContext.MAIN_MENU) return;
-		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen")?.GetComponent<CoreLoadingScreen>();
+		this.coreLoadingScreen = GameObject.Find("CoreLoadingScreen")?.GetComponent<CoreLoadingScreen>()!;
 		this.coreLoadingScreen.SetProgress("Building the World", 10);
 
 		const mouse = new Mouse();

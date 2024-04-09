@@ -108,9 +108,9 @@ export class BubbleChatController implements OnStart {
 		const chatMessageObject = GameObjectUtil.Instantiate(chatMessageAsset);
 
 		// Set message contents
-		const refs = chatMessageObject.GetComponent<GameObjectReferences>();
+		const refs = chatMessageObject.GetComponent<GameObjectReferences>()!;
 		const messageObject = refs.GetValue("Content", "Message");
-		const textComponent = messageObject.GetComponent<TextMeshProUGUI>();
+		const textComponent = messageObject.GetComponent<TextMeshProUGUI>()!;
 		textComponent.text = text;
 
 		const isMinimized = this.chatContainerMinimized.get(chatContainer.transform) ?? false;
@@ -127,8 +127,8 @@ export class BubbleChatController implements OnStart {
 			GameObjectUtil.Destroy(firstChild.gameObject);
 		}
 
-		const messageCanvasGroup = chatMessageObject.GetComponent<CanvasGroup>();
-		const messageBackgroundImage = chatMessageObject.GetComponent<Image>();
+		const messageCanvasGroup = chatMessageObject.GetComponent<CanvasGroup>()!;
+		const messageBackgroundImage = chatMessageObject.GetComponent<Image>()!;
 
 		// Tween to semi-transparent state
 		task.delay(8, () => {
@@ -164,7 +164,7 @@ export class BubbleChatController implements OnStart {
 		if (canvas) {
 			canvas.gameObject.ClearChildren();
 
-			const canvasComponent = canvas.GetComponent<Canvas>();
+			const canvasComponent = canvas.GetComponent<Canvas>()!;
 			if (character.IsLocalCharacter()) {
 				const isFirstPerson = Dependency<AirshipCharacterCameraSingleton>().IsFirstPerson();
 				canvasComponent.enabled = !isFirstPerson;
@@ -193,7 +193,7 @@ export class BubbleChatController implements OnStart {
 			// Store current contents
 			if (!this.bubbleChatContents.has(textComponent)) {
 				this.bubbleChatContents.set(textComponent, textComponent.text);
-				const connectionId = textComponent.gameObject.GetComponent<DestroyWatcher>().OnDestroyedEvent(() => {
+				const connectionId = textComponent.gameObject.GetComponent<DestroyWatcher>()!.OnDestroyedEvent(() => {
 					this.bubbleChatContents.delete(textComponent);
 					Bridge.DisconnectEvent(connectionId);
 				});

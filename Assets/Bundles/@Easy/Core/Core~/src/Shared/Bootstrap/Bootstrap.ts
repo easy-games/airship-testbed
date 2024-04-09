@@ -30,10 +30,10 @@ export class Bootstrap {
 	 */
 	public static FinishedSetup(): void {
 		if (RunUtil.IsServer()) {
-			const autoShutdownBridgeGO = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>();
+			const autoShutdownBridgeGO = GameObject.Find("AutoShutdownBridge").GetComponent<AutoShutdownBridge>()!;
 			autoShutdownBridgeGO.SetBundlesLoaded(true);
 
-			const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>();
+			const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 			serverBootstrap.FinishedSetup();
 		}
 		if (RunUtil.IsClient()) {

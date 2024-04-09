@@ -7,7 +7,7 @@ export class LagCommand extends ChatCommand {
 	}
 
 	public Execute(player: Player, args: string[]): void {
-		const transportManager = GameObject.Find("Network").GetComponent<TransportManager>();
+		const transportManager = GameObject.Find("Network").GetComponent<TransportManager>()!;
 
 		if (transportManager.LatencySimulator.GetEnabled() && (args.size() === 0 || args[0].lower() === "off")) {
 			transportManager.LatencySimulator.SetEnabled(false);

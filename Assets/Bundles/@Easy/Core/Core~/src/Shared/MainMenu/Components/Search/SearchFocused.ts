@@ -202,7 +202,7 @@ export default class SearchFocused extends AirshipBehaviour {
 		if (searchResults.size() === 0) {
 			// no results
 			const go = Object.Instantiate(this.noResultsPrefab, this.resultsWrapper);
-			const text = go.transform.GetChild(0).GetComponent<TMP_Text>();
+			const text = go.transform.GetChild(0).GetComponent<TMP_Text>()!;
 			text.text = `${searchTerm}   <color=#A2A2A2>-   No results</color>`;
 			return;
 		}

@@ -26,14 +26,14 @@ export class DamageIndicatorController implements OnStart {
 			AssetBridge.Instance.LoadAsset("@Easy/Core/Shared/Resources/Prefabs/UI/Combat/CombatEffectsUI.prefab"),
 			CoreRefs.rootTransform,
 		);
-		this.combatEffectsCanvas = combatEffectsUI.GetComponent<Canvas>();
+		this.combatEffectsCanvas = combatEffectsUI.GetComponent<Canvas>()!;
 		Object.Destroy(combatEffectsUI.transform.FindChild("DamageIndicator")!.gameObject);
-		this.hitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>();
+		this.hitMarkerImage = combatEffectsUI.transform.GetChild(0).GetComponent<Image>()!;
 		this.hitMarkerImage.enabled = false;
 		this.indicatorPrefab = AssetCache.LoadAsset(
 			"@Easy/Core/Shared/Resources/Prefabs/UI/Combat/DamageIndicator.prefab",
 		);
-		this.indicatorPos = this.indicatorPrefab.GetComponent<RectTransform>().anchoredPosition;
+		this.indicatorPos = this.indicatorPrefab.GetComponent<RectTransform>()!.anchoredPosition;
 		PoolManager.PreLoadPool(this.indicatorPrefab, 5);
 	}
 
@@ -117,12 +117,12 @@ export class DamageIndicatorController implements OnStart {
 
 		const go = PoolManager.SpawnObject(this.indicatorPrefab);
 		go.transform.SetParent(this.combatEffectsCanvas.transform);
-		const rect = go.GetComponent<RectTransform>();
+		const rect = go.GetComponent<RectTransform>()!;
 		rect.anchoredPosition = this.indicatorPos;
 		const baseScale = new Vector3(1, 1, 1).mul(criticalHit ? 1.6 : 1);
 		rect.localScale = baseScale;
 
-		const text = go.GetComponent<TMP_Text>();
+		const text = go.GetComponent<TMP_Text>()!;
 		text.text = math.floor(amount) + "";
 		text.alpha = 1;
 

@@ -106,6 +106,9 @@ export class ItemUtil {
 				}
 
 				const accessoryComponent = accessory.GetComponent<AccessoryComponent>();
+				if (!accessoryComponent) {
+					error("Missing AccessoryComponent on game object prefab");
+				}
 				accessories.push(accessoryComponent);
 			}
 		}

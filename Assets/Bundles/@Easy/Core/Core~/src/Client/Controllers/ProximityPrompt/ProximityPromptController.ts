@@ -100,7 +100,7 @@ export class ProximityPromptController implements OnStart {
 			t.localPosition = pos.add(new Vector3(0, -0.12, 0));
 			t.TweenLocalPosition(pos, duration);
 
-			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>();
+			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>()!;
 			canvasGroup.alpha = 0;
 			canvasGroup.TweenCanvasGroupAlpha(1, duration);
 		}
@@ -114,7 +114,7 @@ export class ProximityPromptController implements OnStart {
 			const t = prompt.promptGameObject.transform;
 			t.TweenLocalPosition(t.localPosition.add(new Vector3(0, -0.12, 0)), duration);
 
-			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>();
+			const canvasGroup = prompt.promptGameObject.transform.GetChild(0).GetComponent<CanvasGroup>()!;
 			canvasGroup.TweenCanvasGroupAlpha(0, duration);
 
 			SetTimeout(duration, () => {

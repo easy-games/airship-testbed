@@ -49,7 +49,7 @@ export class OrbitCameraMode extends CameraMode {
 	) {
 		super();
 		if (graphicalCharacter !== undefined) {
-			this.entityDriver = transform.GetComponent<CharacterMovement>();
+			this.entityDriver = transform.GetComponent<CharacterMovement>()!;
 			this.transform = graphicalCharacter;
 		}
 		// this.SetupMobileControls();
@@ -98,7 +98,7 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	OnStart(camera: Camera, rootTransform: Transform) {
-		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>();
+		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
 		if (this.occlusionCam === undefined) {
 			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
 		}

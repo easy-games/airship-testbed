@@ -12,7 +12,7 @@ export default class Modal extends AirshipBehaviour {
 	private startingAnchorMax!: Vector2;
 
 	public Awake(): void {
-		this.rect = this.gameObject.GetComponent<RectTransform>();
+		this.rect = this.gameObject.GetComponent<RectTransform>()!;
 		this.startingOffsetMin = this.rect.offsetMin;
 		this.startingOffsetMax = this.rect.offsetMax;
 		this.startingAnchorMin = this.rect.anchorMin;

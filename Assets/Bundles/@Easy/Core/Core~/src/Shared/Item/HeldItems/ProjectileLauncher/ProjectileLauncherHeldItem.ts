@@ -36,7 +36,7 @@
 // 	private processChargeAfterCooldown = false;
 // 	private chargeAudioSource: AudioSource | undefined;
 // 	private projectileTrajectoryRenderer =
-// 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>();
+// 		GameObject.Find("ProjectileTrajectoryRenderer").GetComponent<ProjectileTrajectoryRenderer>()!;
 
 // 	protected override OnCooldownReset() {
 // 		if (this.processChargeAfterCooldown) {

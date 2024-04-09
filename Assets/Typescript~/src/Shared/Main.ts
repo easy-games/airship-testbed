@@ -1,8 +1,8 @@
-import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
+import { Game } from "@Easy/Core/Shared/Game";
 
-if (RunUtil.IsServer()) {
+if (Game.IsServer()) {
 	require("Server/Resources/TS/MainServer");
 }
-if (RunUtil.IsClient()) {
+if (Game.IsClient()) {
 	require("Client/Resources/TS/MainClient");
 }
