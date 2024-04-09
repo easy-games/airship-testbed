@@ -1,11 +1,14 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import TopDownBattleCharacter from "./TopDownBattleCharacter";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
+	public static gameOverEvent: Signal<boolean> = new Signal<boolean>();
+
 	@Header("Templates")
 	public characterOutfit?: AccessoryOutfit;
 
@@ -13,6 +16,8 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
 
 	private bin = new Bin();
+
+	private charactersAlive = 0;
 
 	public override Awake(): void {}
 
@@ -27,15 +32,43 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 			this.bin.Add(
 				//When a character dies, respawn it
 				Airship.damage.onDeath.Connect((info) => {
-					print("Character died!");
-					const character = info.gameObject.GetAirshipComponent<Character>();
-					//Respawn after 4 seconds
-					task.delay(4, () => {
-						if (character?.player) {
-							print("Respawning character on death: " + character.player.userId);
-							this.SpawnCharacter(character.player);
+					print("Dead GO: " + info.gameObject.name);
+					const battleCharacter = info.gameObject.GetAirshipComponent<TopDownBattleCharacter>();
+
+					if (battleCharacter && battleCharacter.character.player) {
+						let clientId = battleCharacter.character.player.clientId;
+						let livesLeft = TopDownBattleCharacter.extraLives.get(clientId) ?? -1;
+						//Check extra lives
+						if (livesLeft > 1) {
+							print("Character using extra life");
+
+							//Use up an extra life
+							TopDownBattleCharacter.extraLives.set(clientId, livesLeft - 1);
+
+							//Respawn after 4 seconds
+							task.delay(4, () => {
+								print("Character respawn delay");
+								if (battleCharacter.character.player) {
+									print("Respawning character on death: " + battleCharacter.character.player.userId);
+									this.SpawnCharacter(battleCharacter.character.player);
+								}
+							});
+						} else {
+							print("Character died!");
+							//The character is dead
+							this.charactersAlive--;
+							//Are all characters dead?
+							if (this.charactersAlive <= 0) {
+								print("All characters are dead");
+								//Trigger the game over state
+								task.delay(2, () => {
+									TopDownBattlePlayerSpawner.gameOverEvent.Fire(true);
+								});
+							}
 						}
-					});
+					} else {
+						error("Missing TopDownBattleCharacter on character who died");
+					}
 				}),
 			);
 		}
@@ -65,6 +98,7 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	}
 
 	private SpawnCharacter(player: Player) {
+		this.charactersAlive++;
 		player.SpawnCharacter(this.spawnPosition.transform.position);
 	}
 

@@ -4,9 +4,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Layer } from "@Easy/Core/Shared/Util/Layer";
-import { LayerUtil } from "@Easy/Core/Shared/Util/LayerUtil";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export default class TopDownBattleEnemy extends AirshipBehaviour {
 	@Header("References")
@@ -28,8 +26,10 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 	//Events
 	private bin: Bin = new Bin();
 	private onMoveEvent: RemoteEvent<number> = new RemoteEvent<number>();
+	private enabled = false;
 
 	override OnEnable(): void {
+		this.enabled = true;
 		this.PickNextMove();
 
 		//Add to bin so we can remove the listener when the enemy is disabled
@@ -44,11 +44,20 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 	}
 
 	override OnDisable(): void {
+		this.enabled = false;
 		//Event Cleanup
 		this.bin.Clean();
 	}
 
+	public SetEnabled(enabled: boolean) {
+		this.enabled = enabled;
+	}
+
 	override Update(dt: number): void {
+		if (!this.enabled) {
+			return;
+		}
+
 		//Only update the enemy movement on the server
 		if (Game.IsServer()) {
 			//Look towards our target if we have one
@@ -104,6 +113,10 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 	}
 
 	override OnCollisionEnter(collision: Collision): void {
+		if (!this.enabled) {
+			return;
+		}
+
 		//Only handle collisions on the server
 		if (!Game.IsServer()) {
 			return;

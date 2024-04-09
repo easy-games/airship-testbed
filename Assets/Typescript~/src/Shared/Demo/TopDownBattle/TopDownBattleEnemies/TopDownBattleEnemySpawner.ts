@@ -1,7 +1,9 @@
 import { Game } from "@Easy/Core/Shared/Game";
+import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { WorldAPI } from "@Easy/Core/Shared/VoxelWorld/WorldAPI";
+import TopDownBattleEnemy from "./TopDownBattleEnemy";
 
 export default class TopDownBattleEnemySpawner extends AirshipBehaviour {
 	@Header("Templates")
@@ -14,21 +16,45 @@ export default class TopDownBattleEnemySpawner extends AirshipBehaviour {
 	public spawnQuantity = 5;
 
 	private lastSpawnTime = 0;
+	private isSpawning = false;
+	private activeEnemies: TopDownBattleEnemy[] = [];
 
 	//Ovveride update to run code every frame
 	override Update() {
-		//Only the server needs to spawn the enemies
-		if (!Game.IsServer()) {
-			return;
-		}
-
-		//Spawn enemies over time
-		if (Time.time - this.lastSpawnTime > this.spawnDelayInSeconds) {
-			//Save the time we are spawning
-			this.lastSpawnTime = Time.time;
-			for (let i = 0; i < this.spawnQuantity; i++) {
-				this.SpawnEnemy();
+		//The server controls the actual spawning
+		if (Game.IsServer() && this.isSpawning) {
+			//Spawn enemies over time
+			if (Time.time - this.lastSpawnTime > this.spawnDelayInSeconds) {
+				//Save the time we are spawning
+				this.lastSpawnTime = Time.time;
+				for (let i = 0; i < this.spawnQuantity; i++) {
+					this.SpawnEnemy();
+				}
 			}
+		}
+	}
+
+	public Reset() {
+		//Destroy every remaining enemy
+		this.activeEnemies.forEach((enemy) => {
+			//Make sure the enemy hasn't despawned
+			if (enemy && enemy.gameObject) {
+				NetworkUtil.Despawn(enemy.gameObject);
+			}
+		});
+	}
+
+	public ToggleSpawning(spawnOn: boolean) {
+		//The server controls the actual spawning
+		if (Game.IsServer()) {
+			//Spawn enemies over time
+			this.isSpawning = spawnOn;
+			this.activeEnemies.forEach((enemy) => {
+				//Make sure the enemy hasn't despawned
+				if (enemy && enemy.gameObject) {
+					enemy.SetEnabled(false);
+				}
+			});
 		}
 	}
 
@@ -38,10 +64,19 @@ export default class TopDownBattleEnemySpawner extends AirshipBehaviour {
 		let newRot = Quaternion.LookRotation(newPos.mul(-1));
 
 		//Spawn an enemy on the server
-		let enemy = Object.Instantiate<GameObject>(this.enemyTemplate, newPos, newRot);
+		let enemy = Object.Instantiate<GameObject>(
+			this.enemyTemplate,
+			newPos,
+			newRot,
+		).GetAirshipComponent<TopDownBattleEnemy>();
+		if (!enemy) {
+			error("Enemy prefab template is missing TopDownBattleEnemy Airship Component");
+		}
 
 		//Replicate the object for all players
-		NetworkUtil.Spawn(enemy);
+		NetworkUtil.Spawn(enemy.gameObject);
+
+		this.activeEnemies.push(enemy);
 	}
 
 	private GetEnemySpawnPosition() {

@@ -491,9 +491,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 10
+      serializedValue: 5
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: graphicsHolder
       type: object
       objectType: Transform
@@ -523,9 +523,9 @@ MonoBehaviour:
       refPath: 
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 10
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: knockbackForce
       type: number
       objectType: 
