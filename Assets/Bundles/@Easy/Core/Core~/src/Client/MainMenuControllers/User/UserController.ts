@@ -58,7 +58,7 @@ export class UserController implements OnStart {
 
 				this.onLocalUserUpdated.Fire(this.localUser);
 			} catch (err) {
-				Debug.LogError("Failed to decode /users/self: " + err);
+				Debug.LogError("Failed to decode /users/self: " + res.data + " error: " + err);
 			}
 		}
 
