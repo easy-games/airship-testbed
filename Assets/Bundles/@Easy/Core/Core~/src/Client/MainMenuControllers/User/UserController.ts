@@ -33,7 +33,7 @@ export class UserController implements OnStart {
 	public FetchLocalUser(): void {
 		const res = InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`);
 		if (res.success) {
-			if (res.data.size() === 0) {
+			if (res.data.size() === 0 || res.data === "") {
 				let ignore = false;
 				if (Game.coreContext === CoreContext.GAME && Game.IsEditor()) {
 					ignore = true;
