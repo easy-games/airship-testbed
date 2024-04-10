@@ -38,9 +38,9 @@ export default class TopDownBattleLevelGenerator extends AirshipBehaviour {
 
 		//Don't place blocks until the world is loaded
 		this.world.OnFinishedWorldLoading(() => {
-			this.GenerateBase();
-			this.GenerateWalls();
-			this.GenerateObstacles();
+			//this.GenerateBase();
+			//this.GenerateWalls();
+			//this.GenerateObstacles();
 		});
 	}
 

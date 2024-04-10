@@ -22,7 +22,9 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	override Start(): void {
 		if (Game.IsServer()) {
 			//Listen to game start event
+			print("connecting to signal");
 			TopDownBattleGame.gameModeSignal.Connect((mode) => {
+				print("Listening to new game mode: " + mode);
 				if (mode === GameMode.GAME) {
 					let players = Airship.players.GetPlayers();
 					//Track how many players are playing
@@ -31,6 +33,12 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 					for (let i = 0; i < this.playersAlive; i++) {
 						this.SpawnCharacter(players[i]);
 					}
+				}
+			});
+
+			Airship.players.onPlayerJoined.Connect((player) => {
+				if (player) {
+					this.SpawnCharacter(player);
 				}
 			});
 

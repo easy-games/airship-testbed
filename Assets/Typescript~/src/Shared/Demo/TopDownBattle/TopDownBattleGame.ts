@@ -2,7 +2,6 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import TopDownBattleEnemySpawner from "./TopDownBattleEnemies/TopDownBattleEnemySpawner";
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { Game } from "@Easy/Core/Shared/Game";
-import TopDownBattlePlayerSpawner from "./TopDownBattlePlayerSpawner";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export enum GameMode {
@@ -16,9 +15,9 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 	public static instance: TopDownBattleGame;
 
 	//Trigger new game modes over the network
-	public static gameModeEvent = new RemoteEvent<GameMode>();
+	public static gameModeEvent = new RemoteEvent<[gameMode: GameMode]>();
 	//Notify local scripts of game mode changes
-	public static gameModeSignal = new Signal<GameMode>();
+	public static gameModeSignal = new Signal<[gameMode: GameMode]>();
 
 	@Header("References")
 	public startBtn!: Button;
@@ -122,6 +121,8 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 		}
 
 		//Notify other classes about new game mode
+		print("notifying game mode: " + gameMode + " count: " + TopDownBattleGame.gameModeSignal.GetConnectionCount());
+
 		TopDownBattleGame.gameModeSignal.Fire(gameMode);
 	}
 }
