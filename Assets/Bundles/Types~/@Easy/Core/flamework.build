@@ -150,6 +150,7 @@
 		"@Easy/Core:Shared/Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton": "$:Character/Footstep/AirshipCharacterFootstepsSingleton@AirshipCharacterFootstepsSingleton",
 		"@Easy/Core:Shared/Item/HeldItems/CharacterItemManager@CharacterItemManager": "$:Item/HeldItems/CharacterItemManager@CharacterItemManager",
 		"@Easy/Core:Shared/Character/CharactersSingleton@CharactersSingleton": "$:Character/CharactersSingleton@CharactersSingleton",
+		"@Easy/Core:Shared/Chat/AirshipChatSingleton@AirshipChatSingleton": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
 		"@Easy/Core:Shared/Damage/DamageInfo@DamageInfo": "$:Damage/DamageInfo@DamageInfo",
 		"@Easy/Core:Shared/Damage/CanClientDamageInfo@CanClientDamageInfo": "$:Damage/CanClientDamageInfo@CanClientDamageInfo",
 		"@Easy/Core:Shared/Damage/DamageSingleton@DamageSingleton": "$:Damage/DamageSingleton@DamageSingleton",
@@ -242,6 +243,7 @@
 		"@Easy/Core:Shared/MainMenu/Components/Search/GameSearchResult@GameSearchResult": "$:MainMenu/Components/Search/GameSearchResult@GameSearchResult",
 		"@Easy/Core:Shared/MainMenu/Components/Search/SearchFocused@SearchFocused": "$:MainMenu/Components/Search/SearchFocused@SearchFocused",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/BlockedGame@BlockedGame": "$:MainMenu/Components/Settings/BlockedGame@BlockedGame",
+		"@Easy/Core:Shared/MainMenu/Components/Settings/DeleteAccountButton@DeleteAccountButton": "$:MainMenu/Components/Settings/DeleteAccountButton@DeleteAccountButton",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage": "$:MainMenu/Components/Settings/SettingsBlockPage@SettingsBlockPage",
 		"@Easy/Core:Shared/MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton": "$:MainMenu/Components/Settings/SettingsDisconnectButton@SettingsDisconnectButton",
 		"@Easy/Core:Shared/Util/FormatUtil@FormatUtil": "$:Util/FormatUtil@FormatUtil",
@@ -664,6 +666,17 @@
 					"internalId": "$:Flamework/flamework@Controller",
 					"isFlameworkDecorator": true,
 					"name": "Controller"
+				}
+			]
+		},
+		{
+			"filePath": "../Shared/Chat/AirshipChatSingleton.lua",
+			"internalId": "$:Chat/AirshipChatSingleton@AirshipChatSingleton",
+			"decorators": [
+				{
+					"internalId": "$:Flamework/flamework@Singleton",
+					"isFlameworkDecorator": true,
+					"name": "Singleton"
 				}
 			]
 		},

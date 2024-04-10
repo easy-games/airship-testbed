@@ -74,6 +74,7 @@ export default class DemoManager extends AirshipBehaviour {
 			Airship.inventory.SetUIEnabled(false);
 
 			Airship.loadingScreen.FinishLoading();
+			Airship.chat.SetUIEnabled(false);
 
 			// Display local player deaths
 			Game.localPlayer.ObserveCharacter((character) => {
