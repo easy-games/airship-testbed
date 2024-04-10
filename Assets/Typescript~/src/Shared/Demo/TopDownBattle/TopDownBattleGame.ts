@@ -3,6 +3,7 @@ import TopDownBattleEnemySpawner from "./TopDownBattleEnemies/TopDownBattleEnemy
 import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { Game } from "@Easy/Core/Shared/Game";
 import TopDownBattlePlayerSpawner from "./TopDownBattlePlayerSpawner";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export enum GameMode {
 	IDLE,
@@ -11,7 +12,13 @@ export enum GameMode {
 }
 
 export default class TopDownBattleGame extends AirshipBehaviour {
-	public static gameModeEvent: RemoteEvent<GameMode> = new RemoteEvent<GameMode>();
+	//There is only one game class so expose it for anyone to access
+	public static instance: TopDownBattleGame;
+
+	//Trigger new game modes over the network
+	public static gameModeEvent = new RemoteEvent<GameMode>();
+	//Notify local scripts of game mode changes
+	public static gameModeSignal = new Signal<GameMode>();
 
 	@Header("References")
 	public startBtn!: Button;
@@ -22,9 +29,11 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 
 	private enemySpawner!: TopDownBattleEnemySpawner;
 	private endGameThread?: thread;
+	private currentGameMode: GameMode = GameMode.IDLE;
 
 	public override Awake(): void {
 		this.enemySpawner = this.gameObject.GetAirshipComponent<TopDownBattleEnemySpawner>()!;
+		TopDownBattleGame.instance = this;
 	}
 
 	override Start(): void {
@@ -32,11 +41,6 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 			//The server listens to see when a client interacts with the start button
 			TopDownBattleGame.gameModeEvent.server.OnClientEvent((player, mode) => {
 				this.SetGameMode(mode);
-			});
-
-			//Listen for when the game is lost
-			TopDownBattlePlayerSpawner.gameOverEvent.Connect((on) => {
-				this.SetGameMode(GameMode.GAME_OVER);
 			});
 		}
 
@@ -54,8 +58,16 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 		}
 	}
 
+	//Let other classes determine if a lose condition happens
+	public LoseGame() {
+		if (this.currentGameMode === GameMode.GAME) {
+			this.SetGameMode(GameMode.GAME_OVER);
+		}
+	}
+
 	private SetGameMode(gameMode: GameMode) {
 		print("Entering Game Mode: " + gameMode);
+		this.currentGameMode = gameMode;
 		if (Game.IsServer()) {
 			//The server controls the actual game state
 			switch (gameMode) {
@@ -108,5 +120,8 @@ export default class TopDownBattleGame extends AirshipBehaviour {
 					break;
 			}
 		}
+
+		//Notify other classes about new game mode
+		TopDownBattleGame.gameModeSignal.Fire(gameMode);
 	}
 }

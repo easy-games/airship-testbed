@@ -4,11 +4,9 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import TopDownBattleCharacter from "./TopDownBattleCharacter";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import TopDownBattleGame, { GameMode } from "./TopDownBattleGame";
 
 export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
-	public static gameOverEvent: Signal<boolean> = new Signal<boolean>();
-
 	@Header("Templates")
 	public characterOutfit?: AccessoryOutfit;
 
@@ -17,16 +15,23 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	private charactersAlive = 0;
+	private playersAlive = 0;
 
 	public override Awake(): void {}
 
 	override Start(): void {
 		if (Game.IsServer()) {
-			//When a player joins, create a character
-			Airship.players.ObservePlayers((player) => {
-				print("Spawning new joined player: " + player.userId);
-				this.SpawnCharacter(player);
+			//Listen to game start event
+			TopDownBattleGame.gameModeSignal.Connect((mode) => {
+				if (mode === GameMode.GAME) {
+					let players = Airship.players.GetPlayers();
+					//Track how many players are playing
+					this.playersAlive = players.size();
+					//Spawn a character for each player
+					for (let i = 0; i < this.playersAlive; i++) {
+						this.SpawnCharacter(players[i]);
+					}
+				}
 			});
 
 			this.bin.Add(
@@ -35,34 +40,32 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 					print("Dead GO: " + info.gameObject.name);
 					const battleCharacter = info.gameObject.GetAirshipComponent<TopDownBattleCharacter>();
 
-					if (battleCharacter && battleCharacter.character.player) {
-						let clientId = battleCharacter.character.player.clientId;
-						let livesLeft = TopDownBattleCharacter.extraLives.get(clientId) ?? -1;
-						//Check extra lives
-						if (livesLeft > 1) {
-							print("Character using extra life");
+					if (battleCharacter) {
+						//Use up an extra life
+						battleCharacter.LoseLife();
 
-							//Use up an extra life
-							TopDownBattleCharacter.extraLives.set(clientId, livesLeft - 1);
+						//If has lives left
+						if (battleCharacter.GetRemainingLives() >= 0) {
+							//Character used up an extra life
 
 							//Respawn after 4 seconds
 							task.delay(4, () => {
-								print("Character respawn delay");
 								if (battleCharacter.character.player) {
-									print("Respawning character on death: " + battleCharacter.character.player.userId);
 									this.SpawnCharacter(battleCharacter.character.player);
 								}
 							});
 						} else {
-							print("Character died!");
-							//The character is dead
-							this.charactersAlive--;
+							//The player is dead
+							this.playersAlive--;
+							print("player died. Players remaining: " + this.playersAlive);
 							//Are all characters dead?
-							if (this.charactersAlive <= 0) {
-								print("All characters are dead");
+							if (this.playersAlive <= 0) {
+								print("ALL PLAYERS ARE DEAD");
+								//All characters are dead
 								//Trigger the game over state
 								task.delay(2, () => {
-									TopDownBattlePlayerSpawner.gameOverEvent.Fire(true);
+									print("Triggering GAME OVER");
+									TopDownBattleGame.instance.LoseGame();
 								});
 							}
 						}
@@ -73,12 +76,6 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 			);
 		}
 		if (Game.IsClient()) {
-			Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
-				event.jump = false;
-				event.sprinting = false;
-				event.crouchOrSlide = false;
-			});
-
 			//When a character is spawned
 			Airship.characters.ObserveCharacters((character) => {
 				//when the characters outfit is loaded
@@ -98,7 +95,7 @@ export default class TopDownBattlePlayerSpawner extends AirshipBehaviour {
 	}
 
 	private SpawnCharacter(player: Player) {
-		this.charactersAlive++;
+		print("spawning character: " + this.playersAlive);
 		player.SpawnCharacter(this.spawnPosition.transform.position);
 	}
 

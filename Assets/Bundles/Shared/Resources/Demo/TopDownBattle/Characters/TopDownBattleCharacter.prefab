@@ -444,7 +444,7 @@ MonoBehaviour:
     name: TopDownBattleCharacter
     decorators: []
     properties:
-    - name: numberOfLives
+    - name: startingExtraLives
       type: number
       objectType: 
       items:
@@ -459,9 +459,9 @@ MonoBehaviour:
         - type: string
           serializedValue: '"Variables"'
       nullable: 0
-      serializedValue: 2
+      serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayName: 
 --- !u!4 &8570439402876947945 stripped
 Transform:

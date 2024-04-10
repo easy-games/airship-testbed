@@ -9,6 +9,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	)
 	public customCharacterPrefab?: GameObject;
 	public movementSpace = Space.Self;
+	public enableJumping = true;
+	public enableSprinting = true;
+	public enableCrouching = true;
 
 	@Header("Camera System")
 	public useAirshipCameraSystem = true;
@@ -16,6 +19,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public allowFirstPersonToggle = true;
 
 	@Header("UI Displays")
+	public showChat = true;
 	public showInventory = true;
 	public showHealthbar = true;
 	public showBackpack = true;
@@ -40,6 +44,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			}
 
 			//UI
+			Airship.chat.SetUIEnabled(this.showChat);
 			Airship.inventory.SetBackpackVisible(this.showBackpack);
 			if (this.showInventory || this.showHealthbar) {
 				Airship.inventory.SetUIEnabled(true);
@@ -48,6 +53,21 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			} else {
 				Airship.inventory.SetUIEnabled(false);
 			}
+		}
+
+		//Stop any input for some movement options we don't use
+		if (!this.enableJumping || !this.enableCrouching || !this.enableSprinting) {
+			Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
+				if (!this.enableJumping) {
+					event.jump = false;
+				}
+				if (!this.enableCrouching) {
+					event.crouchOrSlide = false;
+				}
+				if (!this.enableSprinting) {
+					event.sprinting = false;
+				}
+			});
 		}
 	}
 }

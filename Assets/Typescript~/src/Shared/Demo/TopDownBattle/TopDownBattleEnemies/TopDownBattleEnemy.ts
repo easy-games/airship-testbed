@@ -5,6 +5,7 @@ import { RemoteEvent } from "@Easy/Core/Shared/Network/RemoteEvent";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Layer } from "@Easy/Core/Shared/Util/Layer";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
+import { SharedTime } from "@Easy/Core/Shared/Util/TimeUtil";
 
 export default class TopDownBattleEnemy extends AirshipBehaviour {
 	@Header("References")
@@ -20,24 +21,26 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 	public damageAmount = 1;
 	public knockbackForce = 10;
 
-	private targetMoveTime = 0;
+	private targetMoveTime = -1;
 	private targetCharacter?: Character;
 
 	//Events
 	private bin: Bin = new Bin();
-	private onMoveEvent: RemoteEvent<number> = new RemoteEvent<number>();
+	private onMoveEvent = new RemoteEvent<[nobId: number, targetTime: number]>();
 	private enabled = false;
 
 	override OnEnable(): void {
 		this.enabled = true;
-		this.PickNextMove();
+		if (Game.IsServer()) {
+			this.PickNextMove();
+		}
 
 		//Add to bin so we can remove the listener when the enemy is disabled
 		this.bin.Add(
 			//Listen to the server to know when the enemy is moving
-			this.onMoveEvent.client.OnServerEvent((id) => {
+			this.onMoveEvent.client.OnServerEvent((id, targetTime) => {
 				if (this.nob.ObjectId === id) {
-					this.MoveClient();
+					this.targetMoveTime = targetTime;
 				}
 			}),
 		);
@@ -58,15 +61,31 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 			return;
 		}
 
-		//Only update the enemy movement on the server
 		if (Game.IsServer()) {
 			//Look towards our target if we have one
 			if (this.targetCharacter) {
-				this.transform.LookAt(this.targetCharacter.transform.position);
+				//Look at the character along a flat plane
+				this.transform.LookAt(
+					new Vector3(
+						this.targetCharacter.transform.position.x,
+						this.transform.position.y,
+						this.targetCharacter.transform.position.z,
+					),
+				);
+			}
+		}
+
+		//Move after set intervals
+		if (this.targetMoveTime > 0 && SharedTime() > this.targetMoveTime) {
+			this.targetMoveTime = -1;
+
+			//Update visuals on client
+			if (Game.IsClient()) {
+				this.MoveClient();
 			}
 
-			//Move after set intervals
-			if (Time.time > this.targetMoveTime) {
+			//Only update the enemy movement on the server
+			if (Game.IsServer()) {
 				this.MoveServer();
 			}
 		}
@@ -83,20 +102,20 @@ export default class TopDownBattleEnemy extends AirshipBehaviour {
 				.sub(this.transform.position)
 				.normalized.mul(this.moveForce);
 			this.rigid.AddForce(force, ForceMode.Impulse);
-
-			//Notify the clients that this character is moving
-			this.onMoveEvent.server.FireAllClients(this.nob.ObjectId);
 		}
 	}
 
 	private MoveClient() {
-		//Only update the enemey visuals on the client
+		//Only update the enemy visuals on the client
 		this.anim.SetTrigger("Move");
 	}
 
 	private PickNextMove() {
 		//Pick next move target
-		this.targetMoveTime = Time.time + MathUtil.Lerp(this.minMoveTime, this.maxMoveTime, math.random());
+		this.targetMoveTime = SharedTime() + MathUtil.Lerp(this.minMoveTime, this.maxMoveTime, math.random());
+
+		//Notify the clients when this character will move
+		this.onMoveEvent.server.FireAllClients(this.nob.ObjectId, this.targetMoveTime);
 	}
 
 	private GetClosestCharacter(): Character | undefined {
