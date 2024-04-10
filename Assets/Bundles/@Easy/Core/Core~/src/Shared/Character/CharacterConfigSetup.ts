@@ -20,9 +20,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 	@Header("UI Displays")
 	public showChat = true;
-	public showInventory = true;
 	public showHealthbar = true;
-	public showBackpack = true;
+	public showInventoryHotbar = true;
+	public showInventoryBackpack = true;
 
 	public OnEnable() {
 		//Character
@@ -45,11 +45,11 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 			//UI
 			Airship.chat.SetUIEnabled(this.showChat);
-			Airship.inventory.SetBackpackVisible(this.showBackpack);
-			if (this.showInventory || this.showHealthbar) {
+			Airship.inventory.SetBackpackVisible(this.showInventoryBackpack);
+			if (this.showInventoryHotbar || this.showHealthbar) {
 				Airship.inventory.SetUIEnabled(true);
 				Airship.inventory.SetHealtbarVisible(this.showHealthbar);
-				Airship.inventory.SetHotbarVisible(this.showInventory);
+				Airship.inventory.SetHotbarVisible(this.showInventoryHotbar);
 			} else {
 				Airship.inventory.SetUIEnabled(false);
 			}

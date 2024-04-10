@@ -221,7 +221,7 @@ MonoBehaviour:
   globalRadiosityScale: 0.25
   globalRadiosityDirectLightAmp: 1
   showRadioistyProbes: 0
-  autoLoad: 0
+  autoLoad: 1
   voxelWorldFile: {fileID: 0}
   blockDefines:
   - {fileID: 4900000, guid: c8b3c8f2a614f4c1386bf2b3cf55dafc, type: 3}
@@ -1359,6 +1359,66 @@ MonoBehaviour:
       serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 1
+    - name: enableJumping
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: enableSprinting
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: enableCrouching
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: showChat
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"UI Displays"'
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayName: 
 --- !u!114 &913210016
 MonoBehaviour:

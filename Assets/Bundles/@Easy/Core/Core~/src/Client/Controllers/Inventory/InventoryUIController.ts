@@ -101,14 +101,21 @@ export class InventoryUIController implements OnStart {
 	private SetVisible(visible: boolean): void {
 		this.visible = visible;
 		this.hotbarCanvas.enabled = visible;
+		this.RefreshHealthBarPosition();
 	}
 
 	public SetHealtbarVisible(visible: boolean) {
 		this.healthBar.transform.gameObject.SetActive(visible);
+		this.RefreshHealthBarPosition();
 	}
 
 	public SetHotbarVisible(visible: boolean) {
 		this.hotbarContent.gameObject.SetActive(visible);
+		this.RefreshHealthBarPosition();
+	}
+
+	private RefreshHealthBarPosition() {
+		this.healthBar.transform.anchoredPosition = new Vector2(0, this.hotbarContent.gameObject.activeSelf ? 120 : 0);
 	}
 
 	public SetBackpackVisible(visible: boolean) {
