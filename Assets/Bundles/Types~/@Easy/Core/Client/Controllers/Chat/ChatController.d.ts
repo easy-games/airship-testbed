@@ -12,7 +12,7 @@ export declare class ChatController implements OnStart {
     private readonly socketController;
     private readonly directMessageController;
     private readonly friendsController;
-    private canvas;
+    canvas: Canvas;
     private content;
     private wrapper;
     private chatMessagePrefab;

@@ -11,6 +11,7 @@ export default class Navbar extends AirshipBehaviour {
 	public runningGameBtn!: RectTransform;
 	public myGamesBtn!: RectTransform;
 	public homeBtn!: RectTransform;
+	public avatarBtn!: RectTransform;
 	public settingsBtn!: RectTransform;
 	public scrollRect!: ScrollRect;
 	public creditsWrapper!: GameObject;
@@ -31,6 +32,7 @@ export default class Navbar extends AirshipBehaviour {
 				// }
 
 				if (Game.IsLandscape() && Game.IsMobile() && Game.IsInGame()) {
+					this.avatarBtn.gameObject.SetActive(false);
 					rect.offsetMin = new Vector2(50, rect.offsetMin.y);
 					this.rightLayoutGroup.padding.right = 55;
 					Bridge.UpdateLayout(this.rightLayoutGroup.transform, false);

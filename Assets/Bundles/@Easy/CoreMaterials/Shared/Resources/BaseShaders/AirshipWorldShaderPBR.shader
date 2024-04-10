@@ -31,7 +31,7 @@ Shader "Airship/WorldShaderPBR"
         _SliderOverrideMix("Metal Rough Mix", Range(0.0, 1)) = 0.0
 
         _MetalOverride("Metal", Range(0.0, 1)) = 0.0
-        _RoughOverride("Rough", range(0.0, 1)) = 0.0
+        _RoughOverride("Rough", range(0.0, 1)) = 1.0
 
         [Toggle] EMISSIVE("Emissive", Float) = 0.0
         [HDR] _EmissiveColor("Emissive Color", Color) = (1,1,1,1)

@@ -123,6 +123,7 @@ Material:
     m_Ints: []
     m_Floats:
     - AO_ON: 0
+    - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - INSTANCE_DATA: 0
@@ -166,7 +167,7 @@ Material:
     - _RimDistanceOffset: 10
     - _RimIntensity: 1
     - _RimPower: 2
-    - _RoughOverride: 0
+    - _RoughOverride: 0.659
     - _SLIDER_OVERRIDE: 1
     - _SaturationMod: 2
     - _SkyShineStrength: 0

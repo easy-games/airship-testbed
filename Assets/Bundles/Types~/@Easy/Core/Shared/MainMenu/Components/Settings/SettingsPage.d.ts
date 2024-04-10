@@ -2,7 +2,7 @@ import MainMenuPageComponent from "../../../../Client/MainMenuControllers/MainMe
 export default class SettingsPage extends MainMenuPageComponent {
     sidebar: RectTransform;
     tabs: RectTransform;
-    mobilePages: RectTransform[];
+    scrollView: RectTransform;
     private bin;
     OnEnable(): void;
     OnDisable(): void;

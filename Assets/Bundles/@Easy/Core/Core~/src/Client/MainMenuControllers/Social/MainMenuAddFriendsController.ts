@@ -138,7 +138,7 @@ export class MainMenuAddFriendsController implements OnStart {
 			sortingOrderOffset: 100,
 		});
 		const wrapper = this.canvas.transform.GetChild(0);
-		wrapper.localPosition = new Vector3(0, 15, 0);
-		wrapper.TweenLocalPosition(new Vector3(0, 0, 0), 0.1);
+		// wrapper.localPosition = new Vector3(0, 15, 0);
+		// wrapper.TweenLocalPosition(new Vector3(0, 0, 0), 0.1);
 	}
 }

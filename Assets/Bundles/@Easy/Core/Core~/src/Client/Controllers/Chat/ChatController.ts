@@ -66,7 +66,7 @@ class ChatMessageElement {
 
 @Controller({})
 export class ChatController implements OnStart {
-	private canvas!: Canvas;
+	public canvas!: Canvas;
 	private content: GameObject;
 	private wrapper: GameObject;
 	private chatMessagePrefab: Object;
@@ -362,7 +362,7 @@ export class ChatController implements OnStart {
 			const element = new ChatMessageElement(chatMessage, os.clock());
 			this.chatMessageElements.push(element);
 
-			if (Time.time > this.lastChatMessageRenderedTime) {
+			if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.active) {
 				AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
 					volumeScale: 0.24,
 				});

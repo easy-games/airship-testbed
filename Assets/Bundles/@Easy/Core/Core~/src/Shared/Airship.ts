@@ -14,6 +14,7 @@ import { TransferService } from "Server/Airship/Transfer/TransferService";
 import { UserService } from "Server/Airship/User/UserService";
 import { AirshipCharacterCameraSingleton } from "./Camera/AirshipCharacterCameraSingleton";
 import { CharactersSingleton } from "./Character/CharactersSingleton";
+import { AirshipChatSingleton } from "./Chat/AirshipChatSingleton";
 import { DamageSingleton } from "./Damage/DamageSingleton";
 import { OnStart } from "./Flamework";
 import { AirshipInputSingleton } from "./Input/AirshipInputSingleton";
@@ -22,7 +23,6 @@ import { LoadingScreenSingleton } from "./LoadingScreen/LoadingScreenSingleton";
 import { PlayersSingleton } from "./Player/PlayersSingleton";
 import { TagsSingleton } from "./Tags/TagsSingleton";
 import { TeamsSingleton } from "./Team/TeamSingleton";
-import { CharacterItemManager } from "./Item/HeldItems/CharacterItemManager";
 
 /**
  * The collection of platform services available to Airship games.
@@ -133,12 +133,14 @@ export const Airship = {
 	teams: undefined as unknown as Omit<TeamsSingleton, "OnStart">,
 	inventory: undefined as unknown as Omit<InventorySingleton, "OnStart">,
 	loadingScreen: undefined as unknown as Omit<LoadingScreenSingleton, "OnStart">,
-	characterCamera: undefined as unknown as AirshipCharacterCameraSingleton,
+	characterCamera: undefined as unknown as Omit<AirshipCharacterCameraSingleton, "OnStart">,
 	/**
 	 * Namespace for managing and query Airship tags on game objects
 	 * @see https://docs.airship.gg/tags
 	 */
 	tags: undefined! as Omit<TagsSingleton, keyof OnStart>,
+
+	chat: undefined as unknown as Omit<AirshipChatSingleton, "OnStart">,
 
 	/**
 	 * Internal method used to wait until Airship singletons are ready.
