@@ -6,8 +6,6 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { ItemUtil } from "@Easy/Core/Shared/Item/ItemUtil";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
-import { Tags } from "Shared/Tags";
 
 export default class DemoManager extends AirshipBehaviour {
 	public spawnPosition!: GameObject;
@@ -74,7 +72,6 @@ export default class DemoManager extends AirshipBehaviour {
 			Airship.inventory.SetUIEnabled(false);
 
 			Airship.loadingScreen.FinishLoading();
-			Airship.chat.SetUIEnabled(false);
 
 			// Display local player deaths
 			Game.localPlayer.ObserveCharacter((character) => {
@@ -101,17 +98,20 @@ export default class DemoManager extends AirshipBehaviour {
 
 	public SpawnPlayer(player: Player): void {
 		// fun little experiment
-		if (this.useTaggedSpawns) {
-			const taggedSpawns = Airship.tags.GetTagged(Tags.AirshipTest_Spawn);
-			if (taggedSpawns.size() > 0) {
-				player.SpawnCharacter(RandomUtil.FromArray(taggedSpawns.map((v) => v.transform.position)));
-				return;
-			}
-		}
-
+		// if (this.useTaggedSpawns) {
+		// 	const taggedSpawns = Airship.tags.GetTagged(Tags.AirshipTest_Spawn);
+		// 	if (taggedSpawns.size() > 0) {
+		// 		player.SpawnCharacter(RandomUtil.FromArray(taggedSpawns.map((v) => v.transform.position)));
+		// 		return;
+		// 	}
+		// }
 		const character = player.SpawnCharacter(this.spawnPosition.transform.position, {
 			// customCharacterTemplate: AssetCache.LoadAsset("Shared/Resources/CharacterWithLight Variant.prefab"),
 		});
+		const collider = character.transform.Find("ProximityReceiver")?.GetComponent<Collider>();
+		if (collider) {
+			collider.isTrigger = false;
+		}
 		// character.inventory.AddItem(new ItemStack("WoodSword"));
 	}
 }

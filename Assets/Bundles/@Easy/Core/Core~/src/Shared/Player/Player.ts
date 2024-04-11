@@ -1,7 +1,6 @@
 import { ChatController } from "Client/Controllers/Chat/ChatController";
 import { FriendsController } from "Client/MainMenuControllers/Social/FriendsController";
 import { Airship } from "Shared/Airship";
-import { AssetCache } from "Shared/AssetCache/AssetCache";
 import Character from "Shared/Character/Character";
 import { CoreNetwork } from "Shared/CoreNetwork";
 import { Dependency } from "Shared/Flamework";
@@ -20,7 +19,6 @@ export interface PlayerDto {
 	clientId: number;
 	userId: string;
 	username: string;
-	usernameTag: string;
 	teamId: string | undefined;
 }
 
@@ -84,17 +82,6 @@ export class Player {
 		 * The player's username. Non-unique, unless combined with `usernameTag`.
 		 */
 		public username: string,
-
-		/**
-		 * @deprecated Username tags will be removed.
-		 *
-		 * The player's username tag. Append this value onto `username` for a
-		 * unique username.
-		 * ```ts
-		 * const uniqueName = `${player.username}#${player.usernameTag}`;
-		 * ```
-		 */
-		public usernameTag: string,
 	) {}
 
 	/**
@@ -119,6 +106,8 @@ export class Player {
 			config?.customCharacterTemplate
 				? config.customCharacterTemplate
 				: Airship.characters.GetDefaultCharacterTemplate(),
+			position,
+			Quaternion.identity,
 		);
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
@@ -146,7 +135,6 @@ export class Player {
 
 		characterComponent.Init(this, Airship.characters.MakeNewId(), this.selectedOutfit);
 		this.SetCharacter(characterComponent);
-		go.transform.position = position;
 		NetworkUtil.SpawnWithClientOwnership(go, this.clientId);
 		Airship.characters.RegisterCharacter(characterComponent);
 		Airship.characters.onCharacterSpawned.Fire(characterComponent);
@@ -208,7 +196,6 @@ export class Player {
 			clientId: this.clientId,
 			userId: this.userId,
 			username: this.username,
-			usernameTag: this.usernameTag,
 			teamId: this.team?.id,
 		};
 	}

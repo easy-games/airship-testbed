@@ -16,3 +16,9 @@ MonoBehaviour:
   autoConvertMaterials: 1
   autoUpdatePackages: 1
   manageTypescriptProject: 0
+  promptIfLuauPluginChanged: 1
+  typescriptVerbose: 0
+  typescriptWriteOnlyChanged: 0
+  typescriptUseDevBuild: 0
+  typescriptPreventPlayOnError: 1
+  typescriptAutostartCompiler: 1
