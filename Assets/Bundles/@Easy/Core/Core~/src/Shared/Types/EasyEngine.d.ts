@@ -51,17 +51,20 @@ interface PlayerManagerConstructor {
 declare const PlayerManagerBridge: PlayerManagerConstructor;
 
 interface PlayerInfo extends Component {
-	clientId: number;
-	userId: string;
-	username: string;
-	usernameTag: string;
+	clientId: SyncVar<number>;
+	userId: SyncVar<string>;
+	username: SyncVar<string>;
+	usernameTag: SyncVar<string>;
 }
 
-interface PlayerInfoDto extends Component {
+interface SyncVar<T> {
+	Value: T;
+}
+
+interface PlayerInfoDto {
 	clientId: number;
 	userId: string;
 	username: string;
-	usernameTag: string;
 	gameObject: GameObject;
 }
 

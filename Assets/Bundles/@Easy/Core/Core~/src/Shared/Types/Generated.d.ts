@@ -631,6 +631,11 @@ declare const enum IPAddressType {
     IPv4 = 0,
     IPv6 = 1,
 }
+declare const enum OldTickOption {
+    Discard = 0,
+    SetLastRemoteTick = 1,
+    SetRemoteTick = 2,
+}
 declare const enum PhysicsMode {
     Unity = 0,
     TimeManager = 1,
@@ -668,11 +673,6 @@ declare const enum ServerUnloadMode {
     UnloadUnused = 0,
     KeepUnused = 1,
 }
-declare const enum PhysicsType {
-    TwoDimensional = 1,
-    ThreeDimensional = 2,
-    Both = 4,
-}
 declare const enum RollbackPhysicsType {
     Physics = 1,
     Physics2D = 2,
@@ -692,14 +692,13 @@ declare const enum DataOrderType {
     Default = 0,
     Last = 1,
 }
+declare const enum RigidbodyType {
+    Rigidbody = 0,
+    Rigidbody2D = 1,
+}
 declare const enum DespawnType {
     Destroy = 0,
     Pool = 1,
-}
-declare const enum OldTickOption {
-    Discard = 0,
-    SetLastRemoteTick = 1,
-    SetRemoteTick = 2,
 }
 declare const enum KickReason {
     Unset = 0,
@@ -5957,52 +5956,47 @@ declare const Net: NetConstructor;
     
 interface NetworkManager extends MonoBehaviour {
     Initialized: boolean;
-    IsServer: boolean;
-    IsServerOnly: boolean;
-    IsClient: boolean;
-    IsClientOnly: boolean;
-    IsHost: boolean;
-    IsOffline: boolean;
     ServerManager: ServerManager;
     ClientManager: ClientManager;
     TransportManager: TransportManager;
     TimeManager: TimeManager;
     SceneManager: SceneManager;
     ObserverManager: ObserverManager;
-    Authenticator: Authenticator;
     DebugManager: DebugManager;
     StatisticsManager: StatisticsManager;
     ObjectPool: ObjectPool;
     RollbackManager: RollbackManager;
+    IsClientOnly: boolean;
+    IsServerOnly: boolean;
+    IsHost: boolean;
+    IsClient: boolean;
+    IsServer: boolean;
+    IsServerStarted: boolean;
+    IsServerOnlyStarted: boolean;
+    IsClientStarted: boolean;
+    IsClientOnlyStarted: boolean;
+    IsHostStarted: boolean;
+    IsOffline: boolean;
     SpawnablePrefabs: PrefabObjects;
     RuntimeSpawnablePrefabs: CSDictionary<number, PrefabObjects>;
 
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
-    CanLog(loggingType: LoggingType): boolean;
     GetInstance<T>(): T;
-    GetInstance<T>(warn: boolean): T;
     GetPooledInstantiated(prefab: NetworkObject, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: NetworkObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: NetworkObject, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefab: GameObject, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefab: GameObject, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    GetPooledInstantiated(prefabId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
     GetPooledInstantiated(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
+    GetPooledInstantiated(prefabId: number, collectionId: number, parent: Transform, position: unknown, rotation: unknown, scale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     GetPrefab(prefabId: number, asServer: boolean): NetworkObject;
     GetPrefabIndex(prefab: GameObject, asServer: boolean): number;
     GetPrefabObjects<T>(spawnableCollectionId: number, createIfMissing: boolean): PrefabObjects;
     HasInstance<T>(): boolean;
-    Log(value: string): void;
-    Log(loggingType: LoggingType, value: string): void;
-    LogError(value: string): void;
-    LogWarning(value: string): void;
     RegisterInstance<T>(component: T, replace: boolean): void;
     RegisterInvokeOnInstance<T>(handler: unknown): void;
     RemoveSpawnableCollection(spawnableCollectionId: number): boolean;
-    StorePooledInstantiated(instantiated: NetworkObject, prefabId: number, asServer: boolean): void;
     StorePooledInstantiated(instantiated: NetworkObject, asServer: boolean): void;
     TryGetInstance<T>(result: unknown): boolean;
     TryRegisterInstance<T>(component: T): boolean;
@@ -6016,7 +6010,7 @@ interface ServerManager extends MonoBehaviour {
     Started: boolean;
     Objects: ServerObjects;
     NetworkManager: NetworkManager;
-    Authenticator: Authenticator;
+    ShareIds: boolean;
 
 
     AnyServerStarted(excludedIndex: unknown): boolean;
@@ -6038,6 +6032,7 @@ interface ServerManager extends MonoBehaviour {
     OneServerStarted(): boolean;
     RegisterBroadcast<T>(handler: unknown, requireAuthentication: boolean): void;
     SetAuthenticator(value: Authenticator): void;
+    SetFrameRate(value: number): void;
     SetRemoteClientTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
     SetStartOnHeadless(value: boolean): void;
     Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
@@ -6053,19 +6048,19 @@ interface NetworkConnection {
     ClientId: number;
     Objects: CSArray<NetworkObject>;
     CustomData: unknown;
-    PacketTick: EstimatedTick;
-    LocalTick: EstimatedTick;
     LevelOfDetails: CSDictionary<NetworkObject, LevelOfDetailData>;
     NetworkManager: NetworkManager;
     TransportIndex: number;
+    IsAuthenticated: boolean;
     Authenticated: boolean;
     IsActive: boolean;
     IsValid: boolean;
     FirstObject: NetworkObject;
     Scenes: CSArray<Scene>;
     Disconnecting: boolean;
-    Tick: number;
-    LocalReplicateTick: number;
+    PacketTick: EstimatedTick;
+    LocalTick: EstimatedTick;
+    ReplicateTick: EstimatedTick;
     IsHost: boolean;
     IsLocalClient: boolean;
 
@@ -6101,14 +6096,12 @@ interface ObserverCondition extends ScriptableObject {
     NetworkObject: NetworkObject;
 
 
-    Clone(): ObserverCondition;
     ConditionMet(connection: NetworkConnection, currentlyAdded: boolean, notProcessed: unknown): boolean;
     Deinitialize(destroyed: boolean): void;
     GetConditionType(): ObserverConditionType;
     GetIsEnabled(): boolean;
     Initialize(networkObject: NetworkObject): void;
     SetIsEnabled(value: boolean): void;
-    Timed(): boolean;
 
 }
     
@@ -6126,7 +6119,12 @@ interface NetworkBehaviour extends MonoBehaviour {
     IsSpawned: boolean;
     ComponentIndex: number;
     NetworkObject: NetworkObject;
-    IsReconciling: boolean;
+    IsBehaviourReconciling: boolean;
+    IsClientOnly: boolean;
+    IsServerOnly: boolean;
+    IsHost: boolean;
+    IsClient: boolean;
+    IsServer: boolean;
     IsDeinitializing: boolean;
     NetworkManager: NetworkManager;
     ServerManager: ServerManager;
@@ -6139,16 +6137,22 @@ interface NetworkBehaviour extends MonoBehaviour {
     RollbackManager: RollbackManager;
     NetworkObserver: NetworkObserver;
     IsClientInitialized: boolean;
-    IsClient: boolean;
-    IsClientOnly: boolean;
+    IsClientStarted: boolean;
+    IsClientOnlyInitialized: boolean;
+    IsClientOnlyStarted: boolean;
     IsServerInitialized: boolean;
-    IsServer: boolean;
-    IsServerOnly: boolean;
-    IsHost: boolean;
+    IsServerStarted: boolean;
+    IsServerOnlyInitialized: boolean;
+    IsServerOnlyStarted: boolean;
+    IsHostInitialized: boolean;
+    IsHostStarted: boolean;
     IsOffline: boolean;
     IsNetworked: boolean;
+    IsManagerReconciling: boolean;
     Observers: CSArray<NetworkConnection>;
     IsOwner: boolean;
+    HasAuthority: boolean;
+    IsOwnerOrServer: boolean;
     Owner: NetworkConnection;
     OwnerId: number;
     ObjectId: number;
@@ -6157,15 +6161,13 @@ interface NetworkBehaviour extends MonoBehaviour {
 
     CanLog(loggingType: LoggingType): boolean;
     ClearBuffedRpcs(): void;
-    ClearReplicateCache(asServer: boolean): void;
     ClearReplicateCache(): void;
-    ClearReplicateCache_Virtual(asServer: boolean): void;
+    ClearReplicateCache_Internal<T>(replicatesQueue: unknown, replicatesHistory: CSArray<T>): void;
+    CreateReconcile(): void;
     Despawn(go: GameObject, despawnType: unknown): void;
     Despawn(nob: NetworkObject, despawnType: unknown): void;
     Despawn(despawnType: unknown): void;
     GetInstance<T>(): T;
-    GetLastReconcileTick(): number;
-    GetLastReplicateTick(): number;
     GiveOwnership(newOwner: NetworkConnection): void;
     NetworkInitializeIfDisabled(): void;
     OnDespawnServer(connection: NetworkConnection): void;
@@ -6179,8 +6181,8 @@ interface NetworkBehaviour extends MonoBehaviour {
     OnStopNetwork(): void;
     OnStopServer(): void;
     OwnerMatches(connection: NetworkConnection): boolean;
-    Reconcile_Client<T, T2>(reconcileDel: unknown, replicateULDel: unknown, replicates: CSArray<T2>, data: T, channel: Channel): void;
-    Reconcile_ExitEarly_A(asServer: boolean, channel: unknown): boolean;
+    ReadPayload(connection: NetworkConnection, reader: Reader): void;
+    Reconcile_Client<T, T2>(reconcileDel: unknown, replicatesHistory: CSArray<T2>, data: T): void;
     Reconcile_Reader<T>(reader: PooledReader, data: unknown, channel: Channel): void;
     Reconcile_Server<T>(methodHash: number, data: T, channel: Channel): void;
     RegisterInstance<T>(component: T, replace: boolean): void;
@@ -6189,23 +6191,25 @@ interface NetworkBehaviour extends MonoBehaviour {
     RegisterReconcileRpc(hash: number, del: ReconcileRpcDelegate): void;
     RegisterReplicateRpc(hash: number, del: ReplicateRpcDelegate): void;
     RegisterServerRpc(hash: number, del: ServerRpcDelegate): void;
-    RegisterSyncVarRead(del: SyncVarReadDelegate): void;
     RegisterTargetRpc(hash: number, del: ClientRpcDelegate): void;
     RemoveOwnership(): void;
-    Replicate_ExitEarly_A(asServer: boolean, replaying: boolean, allowServerControl: boolean): boolean;
-    Replicate_NonOwner<T>(del: unknown, q: unknown, serverControlData: T, allowServerControl: boolean, channel: Channel): void;
-    Replicate_Owner<T>(del: unknown, methodHash: number, replicates: CSArray<T>, data: T, channel: Channel): void;
-    Replicate_Reader<T>(reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicates: unknown, channel: Channel): void;
+    Replicate_Authoritative<T>(del: unknown, methodHash: number, replicatesQueue: unknown, replicatesHistory: CSArray<T>, data: T, channel: Channel): void;
+    Replicate_NonAuthoritative<T>(del: unknown, replicatesQueue: unknown, replicatesHistory: CSArray<T>, channel: Channel): void;
+    Replicate_Reader<T>(hash: number, reader: PooledReader, sender: NetworkConnection, arrBuffer: CSArray<T>, replicatesQueue: unknown, replicatesHistory: CSArray<T>, channel: Channel): void;
+    Replicate_SendNonAuthoritative<T>(hash: number, replicatesQueue: unknown, channel: Channel): void;
+    ResetState(asServer: boolean): void;
     ResetSyncVarFields(): void;
     SendObserversRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, bufferLast: boolean, excludeServer: boolean, excludeOwner: boolean): void;
     SendServerRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType): void;
     SendTargetRpc(hash: number, methodWriter: PooledWriter, channel: Channel, orderType: DataOrderType, target: NetworkConnection, excludeServer: boolean, validateTarget: boolean): void;
+    Server_SendReconcileRpc<T>(hash: number, reconcileData: T, channel: Channel): void;
     Spawn(go: GameObject, ownerConnection: NetworkConnection, scene: Scene): void;
     Spawn(nob: NetworkObject, ownerConnection: NetworkConnection, scene: Scene): void;
     ToString(): string;
     TryRegisterInstance<T>(component: T): boolean;
     UnregisterInstance<T>(): void;
     UnregisterInvokeOnInstance<T>(handler: unknown): void;
+    WritePayload(connection: NetworkConnection, writer: Writer): void;
 
 }
     
@@ -6221,6 +6225,7 @@ interface ClientManager extends MonoBehaviour {
     Broadcast<T>(message: T, channel: Channel): void;
     GetTransportIndex(): number;
     RegisterBroadcast<T>(handler: unknown): void;
+    SetFrameRate(value: number): void;
     SetRemoteServerTimeout(timeoutType: RemoteTimeoutType, duration: number): void;
     StartConnection(): boolean;
     StartConnection(address: string): boolean;
@@ -6250,7 +6255,6 @@ interface ClientObjects extends ManagedObjects {
 
 
     WriteDepawn(nob: NetworkObject, writer: Writer): void;
-    WriteSpawn(nob: NetworkObject, writer: Writer): void;
 
 }
     
@@ -6293,10 +6297,10 @@ interface Writer {
     WriteInt16(value: number): void;
     WriteInt32(value: number, packType: AutoPackType): void;
     WriteInt64(value: number, packType: AutoPackType): void;
+    WriteLayerMask(value: LayerMask): void;
     WriteList<T>(value: CSArray<T>): void;
     WriteList<T>(value: CSArray<T>, offset: number, count: number): void;
     WriteList<T>(value: CSArray<T>, offset: number): void;
-    WriteListCache<T>(lc: unknown): void;
     WriteMatrix4x4(value: Matrix4x4): void;
     WriteNetworkBehaviour(nb: NetworkBehaviour): void;
     WriteNetworkBehaviourId(nb: NetworkBehaviour): void;
@@ -6319,6 +6323,7 @@ interface Writer {
     WriteUInt16(value: number): void;
     WriteUInt32(value: number, packType: AutoPackType): void;
     WriteUInt64(value: number, packType: AutoPackType): void;
+    WriteUnpacked<T>(value: T): void;
     WriteVector2(value: Vector2): void;
     WriteVector2Int(value: Vector2Int, packType: AutoPackType): void;
     WriteVector3(value: Vector3): void;
@@ -6369,8 +6374,10 @@ declare const ClientManager: ClientManagerConstructor;
     
 interface ObserverManager extends MonoBehaviour {
     UpdateHostVisibility: boolean;
+    MaximumTimedObserversDuration: number;
 
 
+    SetMaximumTimedObserversDuration(value: number): void;
     SetUpdateHostVisibility(value: boolean, updateType: HostVisibilityUpdateTypes): void;
 
 }
@@ -6390,13 +6397,16 @@ interface TransportManager extends MonoBehaviour {
     LatencySimulator: LatencySimulator;
 
 
+    GetLowestMTU(): number;
     GetLowestMTU(channel: number): number;
     GetMTU(channel: number): number;
     GetMTU(transportIndex: number, channel: number): number;
     GetMTU<T>(channel: number): number;
+    GetMTUReserve(): number;
     GetTransport(index: number): Transport;
     GetTransport<T>(): T;
     IsLocalTransport(connectionId: number): boolean;
+    SetMTUReserve(value: number): void;
 
 }
     
@@ -6557,6 +6567,8 @@ interface TransportManagerConstructor {
     TICK_BYTES: number;
     SPLIT_INDICATOR_SIZE: number;
     CHANNEL_COUNT: number;
+    MINIMUM_MTU_RESERVE: number;
+    INVALID_MTU: number;
 
     new(): TransportManager;
 
@@ -6565,21 +6577,24 @@ interface TransportManagerConstructor {
 declare const TransportManager: TransportManagerConstructor;
     
 interface TimeManager extends MonoBehaviour {
+    NetworkManager: NetworkManager;
     RoundTripTime: number;
-    LastPacketTick: number;
+    LastPacketTick: EstimatedTick;
     Tick: number;
     TickDelta: number;
     FrameTicked: boolean;
     ServerUptime: number;
     ClientUptime: number;
     TickRate: number;
+    PingInterval: number;
     PhysicsMode: PhysicsMode;
     LocalTick: number;
 
 
     GetPreciseTick(tick: number): PreciseTick;
     GetPreciseTick(tickType: TickType): PreciseTick;
-    GetTickPercent(): number;
+    GetTickPercentAsByte(): number;
+    GetTickPercentAsDouble(): number;
     LocalTickToTick(localTick: number): number;
     SetPhysicsMode(mode: PhysicsMode): void;
     SetTickRate(value: number): void;
@@ -6594,16 +6609,47 @@ interface TimeManager extends MonoBehaviour {
 
 }
     
+interface EstimatedTick {
+    LocalTick: number;
+    RemoteTick: number;
+    LastRemoteTick: number;
+    IsLastRemoteTickOrdered: boolean;
+    IsUnset: boolean;
+
+
+    Initialize(tm: TimeManager, remoteTick: number, lastRemoteTick: number, localTick: number): void;
+    IsCurrent(tm: TimeManager): boolean;
+    LocalTickDifference(tm: TimeManager): number;
+    Reset(): void;
+    Update(tm: TimeManager, remoteTick: number, oldTickOption: OldTickOption, resetValue: boolean): boolean;
+    Update(remoteTick: number, oldTickOption: OldTickOption, resetValue: boolean): boolean;
+    UpdateValue(): void;
+    Value(tm: TimeManager): number;
+    Value(isCurrent: unknown, tm: TimeManager): number;
+
+}
+    
+interface EstimatedTickConstructor {
+
+    new(): EstimatedTick;
+
+
+}
+declare const EstimatedTick: EstimatedTickConstructor;
+    
 interface PreciseTick {
     Tick: number;
-    Percent: number;
+    PercentAsDouble: number;
+    PercentAsByte: number;
 
 
+    ToString(): string;
 
 }
     
 interface PreciseTickConstructor {
 
+    new(tick: number, percentAsByte: number): PreciseTick;
     new(tick: number, percent: number): PreciseTick;
 
 
@@ -6616,6 +6662,7 @@ interface TimeManagerConstructor {
     new(): TimeManager;
 
 
+    GetTickPercentAsDouble(value: number): number;
 }
 declare const TimeManager: TimeManagerConstructor;
     
@@ -6696,7 +6743,7 @@ interface LoadQueueData {
 }
     
 interface SceneLoadData {
-    PreferredActiveScene: SceneLookupData;
+    PreferredActiveScene: PreferredScene;
     SceneLookupDatas: CSArray<SceneLookupData>;
     MovedNetworkObjects: CSArray<NetworkObject>;
     ReplaceScenes: ReplaceOption;
@@ -6705,6 +6752,14 @@ interface SceneLoadData {
 
 
     GetFirstLookupScene(): Scene;
+
+}
+    
+interface PreferredScene {
+    Client: SceneLookupData;
+    Server: SceneLookupData;
+
+
 
 }
     
@@ -6745,6 +6800,15 @@ interface SceneLookupDataConstructor {
     ValidateData(datas: CSArray<SceneLookupData>): CSArray<SceneLookupData>;
 }
 declare const SceneLookupData: SceneLookupDataConstructor;
+    
+interface PreferredSceneConstructor {
+
+    new(client: SceneLookupData, server: SceneLookupData): PreferredScene;
+    new(sld: SceneLookupData): PreferredScene;
+
+
+}
+declare const PreferredScene: PreferredSceneConstructor;
     
 interface LoadParams {
     ServerParams: CSArray<unknown>;
@@ -6826,7 +6890,7 @@ interface UnloadQueueData {
 }
     
 interface SceneUnloadData {
-    PreferredActiveScene: SceneLookupData;
+    PreferredActiveScene: PreferredScene;
     SceneLookupDatas: CSArray<SceneLookupData>;
     Params: UnloadParams;
     Options: UnloadOptions;
@@ -6905,17 +6969,15 @@ interface SceneManagerConstructor {
 declare const SceneManager: SceneManagerConstructor;
     
 interface PredictionManager extends MonoBehaviour {
-    LastReconcileTick: number;
-    LastReplicateTick: number;
+    IsReconciling: boolean;
+    ClientReplayTick: number;
+    ServerReplayTick: number;
+    ClientStateTick: number;
+    ServerStateTick: number;
     QueuedInputs: number;
 
 
-    AddRigidbodyCount(c: Component): void;
     GetMaximumServerReplicates(): number;
-    InvokeOnReconcile(nb: NetworkBehaviour, before: boolean): void;
-    IsReplaying(): boolean;
-    IsReplaying(scene: Scene): boolean;
-    RemoveRigidbodyCount(c: Component): void;
     SetMaximumServerReplicates(value: number): void;
 
 }
@@ -6932,14 +6994,13 @@ interface RollbackManager extends MonoBehaviour {
 
 
     Return(): void;
-    Rollback(pt: PreciseTick, physicsType: PhysicsType, asOwner: boolean): void;
-    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
-    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
-    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwner: boolean): void;
-    Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
-    Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
-    Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwner: boolean): void;
-    Rollback(origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwner: boolean): void;
+    Rollback(pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(scene: Scene, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(sceneHandle: number, pt: PreciseTick, physicsType: RollbackPhysicsType, asOwnerAndClientHost: boolean): void;
+    Rollback(origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(scene: Scene, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(sceneHandle: number, origin: Vector3, normalizedDirection: Vector3, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
+    Rollback(origin: Vector2, normalizedDirection: Vector2, distance: number, pt: PreciseTick, asOwnerAndClientHost: boolean): void;
 
 }
     
@@ -6985,7 +7046,6 @@ interface Reader {
     ReadColor32(): Color32;
     ReadDateTime(): string;
     ReadDecimal(): number;
-    ReadDictionary<TKey, TValue>(): CSDictionary<TKey, TValue>;
     ReadDictionaryAllocated<TKey, TValue>(): CSDictionary<TKey, TValue>;
     ReadDouble(): number;
     ReadGameObject(): GameObject;
@@ -6993,10 +7053,9 @@ interface Reader {
     ReadInt16(): number;
     ReadInt32(packType: AutoPackType): number;
     ReadInt64(packType: AutoPackType): number;
+    ReadLayerMask(): LayerMask;
     ReadList<T>(collection: CSArray<T>, allowNullification: boolean): number;
     ReadListAllocated<T>(): CSArray<T>;
-    ReadListCache<T>(listCache: unknown): number;
-    ReadListCacheAllocated<T>(): unknown;
     ReadMatrix4x4(): Matrix4x4;
     ReadNetworkBehaviour(objectId: unknown, componentIndex: unknown, readSpawningObjects: CSArray<number>): NetworkBehaviour;
     ReadNetworkBehaviour(): NetworkBehaviour;
@@ -7019,6 +7078,7 @@ interface Reader {
     ReadUInt16(): number;
     ReadUInt32(packType: AutoPackType): number;
     ReadUInt64(packType: AutoPackType): number;
+    ReadUnpacked<T>(): T;
     ReadVector2(): Vector2;
     ReadVector2Int(packType: AutoPackType): Vector2Int;
     ReadVector3(): Vector3;
@@ -7045,7 +7105,6 @@ declare const Reader: ReaderConstructor;
 interface PooledReader extends Reader {
 
 
-    Dispose(): void;
     Store(): void;
 
 }
@@ -7127,28 +7186,9 @@ interface ServerRpcDelegateConstructor {
 }
 declare const ServerRpcDelegate: ServerRpcDelegateConstructor;
     
-interface SyncVarReadDelegate {
-
-
-    BeginInvoke(reader: PooledReader, index: number, asServer: boolean, callback: unknown, object: unknown): unknown;
-    EndInvoke(result: unknown): boolean;
-    Invoke(reader: PooledReader, index: number, asServer: boolean): boolean;
-
-}
-    
-interface SyncVarReadDelegateConstructor {
-
-    new(object: unknown, method: unknown): SyncVarReadDelegate;
-
-
-}
-declare const SyncVarReadDelegate: SyncVarReadDelegateConstructor;
-    
 interface PooledWriter extends Writer {
 
 
-    Dispose(): void;
-    DisposeLength(): void;
     Store(): void;
     StoreLength(): void;
 
@@ -7166,10 +7206,8 @@ interface PredictedSpawn extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     GetAllowDespawning(): boolean;
     GetAllowSpawning(): boolean;
-    GetAllowSyncTypes(): boolean;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
@@ -7179,7 +7217,6 @@ interface PredictedSpawn extends NetworkBehaviour {
     OnTrySpawnServer(spawner: NetworkConnection, owner: NetworkConnection): boolean;
     SetAllowDespawning(value: boolean): void;
     SetAllowSpawning(value: boolean): void;
-    SetAllowSyncTypes(value: boolean): void;
 
 }
     
@@ -7191,23 +7228,6 @@ interface PredictedSpawnConstructor {
 }
 declare const PredictedSpawn: PredictedSpawnConstructor;
     
-    
-interface EstimatedTick {
-    LocalTick: number;
-    RemoteTick: number;
-    LastRemoteTick: number;
-    IsUnset: boolean;
-
-
-    IsCurrent(tm: TimeManager): boolean;
-    LocalTickDifference(tm: TimeManager): number;
-    Reset(): void;
-    Update(tm: TimeManager, remoteTick: number, oldTickOption: OldTickOption): boolean;
-    Value(tm: TimeManager): number;
-    Value(tm: TimeManager, isCurrent: unknown): number;
-
-}
-    
 interface IResettable {
 
 
@@ -7215,6 +7235,28 @@ interface IResettable {
     ResetState(): void;
 
 }
+    
+interface RigidbodyPauser extends IResettable {
+    Paused: boolean;
+
+
+    InitializeState(): void;
+    Pause(): void;
+    ResetState(): void;
+    Unpause(): void;
+    UpdateRigidbodies(): void;
+    UpdateRigidbodies(t: Transform, rbType: RigidbodyType, getInChildren: boolean): void;
+
+}
+    
+interface RigidbodyPauserConstructor {
+
+    new(): RigidbodyPauser;
+
+
+}
+declare const RigidbodyPauser: RigidbodyPauserConstructor;
+    
     
 interface LevelOfDetailData extends IResettable {
     CurrentLevelOfDetail: number;
@@ -7236,6 +7278,9 @@ declare const LevelOfDetailData: LevelOfDetailDataConstructor;
     
 interface NetworkConnectionConstructor {
     UNSET_CLIENTID_VALUE: number;
+    MAXIMUM_CLIENTID_VALUE: number;
+    SIMULATED_CLIENTID_VALUE: number;
+    CLIENTID_UNCOMPRESSED_RESERVE_BYTES: number;
 
     new(): NetworkConnection;
     new(manager: NetworkManager, clientId: number, transportIndex: number, asServer: boolean): NetworkConnection;
@@ -7251,11 +7296,6 @@ interface ServerObjects extends ManagedObjects {
     RebuildObservers(timedOnly: boolean): void;
     RebuildObservers(nob: NetworkObject, timedOnly: boolean): void;
     RebuildObservers(connection: NetworkConnection, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, timedOnly: boolean): void;
-    RebuildObservers(connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, conn: NetworkConnection, timedOnly: boolean): void;
-    RebuildObservers(networkObject: NetworkObject, connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
-    RebuildObservers(nobs: CSArray<NetworkObject>, conns: CSArray<NetworkConnection>, timedOnly: boolean): void;
     RebuildObservers(nobs: CSArray<NetworkObject>, timedOnly: boolean): void;
     RebuildObservers(connections: CSArray<NetworkConnection>, timedOnly: boolean): void;
     RebuildObservers(nobs: CSArray<NetworkObject>, conn: NetworkConnection, timedOnly: boolean): void;
@@ -7345,10 +7385,10 @@ interface ObjectPool extends MonoBehaviour {
 
 
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
+    GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
     InitializeOnce(nm: NetworkManager): void;
-    RetrieveObject(prefabId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
+    LateUpdate(): void;
+    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, position: unknown, rotation: unknown, scale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 
 }
@@ -7386,10 +7426,6 @@ interface NetworkManagerConstructor {
     new(): NetworkManager;
 
 
-    StaticCanLog(loggingType: LoggingType): boolean;
-    StaticLog(value: string): void;
-    StaticLogError(value: string): void;
-    StaticLogWarning(value: string): void;
 }
 declare const NetworkManager: NetworkManagerConstructor;
     
@@ -9477,11 +9513,16 @@ interface InstanceFinderConstructor {
     RollbackManager: RollbackManager;
     PredictionManager: PredictionManager;
     StatisticsManager: StatisticsManager;
-    IsServer: boolean;
-    IsServerOnly: boolean;
-    IsClient: boolean;
     IsClientOnly: boolean;
+    IsServerOnly: boolean;
     IsHost: boolean;
+    IsClient: boolean;
+    IsServer: boolean;
+    IsServerStarted: boolean;
+    IsServerOnlyStarted: boolean;
+    IsClientStarted: boolean;
+    IsClientOnlyStarted: boolean;
+    IsHostStarted: boolean;
     IsOffline: boolean;
 
 
@@ -12301,19 +12342,25 @@ interface ClientSceneListenerConstructor {
 declare const ClientSceneListener: ClientSceneListenerConstructor;
     
 interface BundleLoadingScreen extends MonoBehaviour {
+    showContinueButton: boolean;
 
 
     SetProgress(text: string, percent: number): void;
+    SetTotalDownloadSize(sizeBytes: number): void;
 
 }
     
 interface CoreLoadingScreen extends BundleLoadingScreen {
     progressText: TMP_Text;
     disconnectButton: Button;
+    continueButton: Button;
+    spinner: GameObject;
 
 
+    ClickContinueButton(): void;
     Close(): void;
     SetProgress(text: string, percent: number): void;
+    SetTotalDownloadSize(sizeBytes: number): void;
 
 }
     
@@ -12741,23 +12788,15 @@ interface AgonesSdkConstructor {
 declare const AgonesSdk: AgonesSdkConstructor;
     
 interface ServerContext extends NetworkBehaviour {
-    serverId: string;
-    gameId: string;
-    organizationId: string;
-    syncVar___serverId: unknown;
-    syncVar___gameId: unknown;
-    syncVar___organizationId: unknown;
-    SyncAccessor_serverId: string;
-    SyncAccessor_gameId: string;
-    SyncAccessor_organizationId: string;
+    serverId: unknown;
+    gameId: unknown;
+    organizationId: unknown;
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
-    ReadSyncVar___ServerContext(PooledReader0: PooledReader, UInt321: number, Boolean2: boolean): boolean;
 
 }
     
@@ -15507,7 +15546,6 @@ interface ProjectileLauncher extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     ClientFire(projectilePath: string, launcherItemTypeId: number, itemTypeId: number, position: Vector3, velocity: Vector3, gravity: number, drag: number): AirshipProjectile;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
@@ -15745,9 +15783,8 @@ interface DefaultObjectPool extends ObjectPool {
     CacheObjects(prefab: NetworkObject, count: number, asServer: boolean): void;
     ClearPool(): void;
     ClearPool(collectionId: number): void;
-    RetrieveObject(prefabId: number, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
-    RetrieveObject(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
+    GetPrefab(prefabId: number, collectionId: number, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullableLocalPosition: unknown, nullableLocalRotation: unknown, nullableLocalScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     StoreObject(instantiated: NetworkObject, asServer: boolean): void;
 
 }
@@ -15764,7 +15801,7 @@ interface AirshipObjectPool extends DefaultObjectPool {
     maxSpawnPerFrame: number;
 
 
-    RetrieveObject(prefabId: number, collectionId: number, position: Vector3, rotation: Quaternion, asServer: boolean): NetworkObject;
+    RetrieveObject(prefabId: number, collectionId: number, parent: Transform, nullableLocalPosition: unknown, nullableLocalRotation: unknown, nullableLocalScale: unknown, makeActive: boolean, asServer: boolean): NetworkObject;
     SlowlyCacheObjects(prefab: NetworkObject, count: number): void;
 
 }
@@ -15780,16 +15817,19 @@ declare const AirshipObjectPool: AirshipObjectPoolConstructor;
 interface MainMenuLoadingScreen extends BundleLoadingScreen {
     canvas: Canvas;
     progressText: TMP_Text;
+    continueButton: Button;
     spinner: GameObject;
     errorWrapper: GameObject;
     errorText: TMP_Text;
     sceneManager: MainMenuSceneManager;
 
 
+    ClickContinueButton(): void;
     Close(): void;
     Retry(): void;
     SetError(msg: string): void;
     SetProgress(text: string, percent: number): void;
+    SetTotalDownloadSize(sizeBytes: number): void;
 
 }
     
@@ -16663,7 +16703,7 @@ interface NetworkTransform extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
+    ForceSend(ticks: number): void;
     ForceSend(): void;
     GetSendToOwner(): boolean;
     NetworkInitialize___Early(): void;
@@ -17171,7 +17211,6 @@ interface ColliderRollback extends NetworkBehaviour {
 
 
     Awake(): void;
-    Awake___UserLogic(): void;
     NetworkInitialize___Early(): void;
     NetworkInitialize__Late(): void;
     NetworkInitializeIfDisabled(): void;
@@ -19594,4 +19633,25 @@ interface ScrollViewConstructor {
 
 }
 declare const ScrollView: ScrollViewConstructor;
+    
+interface AirshipLongPress extends MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
+    holdTime: number;
+
+
+    OnBeginDrag(eventData: PointerEventData): void;
+    OnDrag(eventData: PointerEventData): void;
+    OnPointerDown(eventData: PointerEventData): void;
+    OnPointerExit(eventData: PointerEventData): void;
+    OnPointerUp(eventData: PointerEventData): void;
+    Update(): void;
+
+}
+    
+interface AirshipLongPressConstructor {
+
+    new(): AirshipLongPress;
+
+
+}
+declare const AirshipLongPress: AirshipLongPressConstructor;
 

@@ -9,7 +9,6 @@ export interface PlayerDto {
     clientId: number;
     userId: string;
     username: string;
-    usernameTag: string;
     teamId: string | undefined;
 }
 export declare class Player {
@@ -38,16 +37,6 @@ export declare class Player {
      * The player's username. Non-unique, unless combined with `usernameTag`.
      */
     username: string;
-    /**
-     * @deprecated Username tags will be removed.
-     *
-     * The player's username tag. Append this value onto `username` for a
-     * unique username.
-     * ```ts
-     * const uniqueName = `${player.username}#${player.usernameTag}`;
-     * ```
-     */
-    usernameTag: string;
     /**
      * The player controls this entity.
      */
@@ -96,17 +85,7 @@ export declare class Player {
     /**
      * The player's username. Non-unique, unless combined with `usernameTag`.
      */
-    username: string, 
-    /**
-     * @deprecated Username tags will be removed.
-     *
-     * The player's username tag. Append this value onto `username` for a
-     * unique username.
-     * ```ts
-     * const uniqueName = `${player.username}#${player.usernameTag}`;
-     * ```
-     */
-    usernameTag: string);
+    username: string);
     /**
      * Can yield if the player's outfit hasn't finished downloading.
      * @param position
