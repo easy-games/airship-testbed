@@ -5,8 +5,8 @@ import { ColorUtil } from "../Util/ColorUtil";
 import { AvatarPlatformAPI } from "./AvatarPlatformAPI";
 
 export class AvatarUtil {
-	public static readonly defaultAccessoryOutfitPath =
-		"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
+	// public static readonly defaultAccessoryOutfitPath =
+	// 	"@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
 	//@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset
 	private static readonly allAvatarAccessories = new Map<string, AccessoryComponent>();
 	private static readonly allAvatarFaces = new Map<string, AccessoryFace>();
@@ -23,9 +23,9 @@ export class AvatarUtil {
 	public static readonly skinColors: Color[] = [];
 
 	public static Initialize() {
-		AvatarUtil.defaultOutfit = AssetBridge.Instance.LoadAsset<AccessoryOutfit>(
-			AvatarUtil.defaultAccessoryOutfitPath,
-		);
+		// AvatarUtil.defaultOutfit = AssetCache.LoadAsset<AccessoryOutfit>(
+		// 	AvatarUtil.defaultAccessoryOutfitPath,
+		// );
 		//print("Init kit: " + AvatarUtil.defaultKitAccessory?.name);
 
 		let i = 0;
