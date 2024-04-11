@@ -2,11 +2,15 @@
 export default class CharacterConfigSetup extends AirshipBehaviour {
     customCharacterPrefab?: GameObject;
     movementSpace: Space;
+    enableJumping: boolean;
+    enableSprinting: boolean;
+    enableCrouching: boolean;
     useAirshipCameraSystem: boolean;
     startInFirstPerson: boolean;
     allowFirstPersonToggle: boolean;
-    showInventory: boolean;
+    showChat: boolean;
     showHealthbar: boolean;
-    showBackpack: boolean;
+    showInventoryHotbar: boolean;
+    showInventoryBackpack: boolean;
     OnEnable(): void;
 }

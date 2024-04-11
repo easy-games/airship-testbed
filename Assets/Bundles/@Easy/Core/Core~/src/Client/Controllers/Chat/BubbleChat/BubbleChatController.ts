@@ -35,40 +35,40 @@ export class BubbleChatController implements OnStart {
 		});
 
 		// Replace distant bubbles with "..."
-		task.spawn(() => {
-			while (true) {
-				task.wait(0.5);
+		// task.spawn(() => {
+		// 	while (true) {
+		// 		task.wait(0.5);
 
-				const mainCamera = Camera.main;
-				if (!mainCamera) continue;
+		// 		const mainCamera = Camera.main;
+		// 		if (!mainCamera) continue;
 
-				const cameraPosition = mainCamera.transform.position;
+		// 		const cameraPosition = mainCamera.transform.position;
 
-				for (const [containerTransform, minimized] of this.chatContainerMinimized) {
-					// Clear out destroyed containers
-					if (!containerTransform.gameObject) {
-						this.chatContainerMinimized.delete(containerTransform);
-						continue;
-					}
+		// 		for (const [containerTransform, minimized] of this.chatContainerMinimized) {
+		// 			// Clear out destroyed containers
+		// 			if (!containerTransform.gameObject) {
+		// 				this.chatContainerMinimized.delete(containerTransform);
+		// 				continue;
+		// 			}
 
-					const shouldBeMinimized = this.ShouldChatBeMinimized(containerTransform, cameraPosition);
-					if (shouldBeMinimized === minimized) continue;
+		// 			const shouldBeMinimized = this.ShouldChatBeMinimized(containerTransform, cameraPosition);
+		// 			if (shouldBeMinimized === minimized) continue;
 
-					this.chatContainerMinimized.set(containerTransform, shouldBeMinimized);
+		// 			this.chatContainerMinimized.set(containerTransform, shouldBeMinimized);
 
-					const canvas = containerTransform.FindChild("Canvas");
-					if (!canvas) continue;
+		// 			const canvas = containerTransform.FindChild("Canvas");
+		// 			if (!canvas) continue;
 
-					// Loop over all bubbles within the container and replace their contents
-					const childTextComponents = canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
-					const size = childTextComponents.Length;
-					for (let i = 0; i < size; i++) {
-						const textComponent = childTextComponents.GetValue(i);
-						this.UpdateTextComponentContents(textComponent, shouldBeMinimized);
-					}
-				}
-			}
-		});
+		// 			// Loop over all bubbles within the container and replace their contents
+		// 			const childTextComponents = canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+		// 			const size = childTextComponents.Length;
+		// 			for (let i = 0; i < size; i++) {
+		// 				const textComponent = childTextComponents.GetValue(i);
+		// 				this.UpdateTextComponentContents(textComponent, shouldBeMinimized);
+		// 			}
+		// 		}
+		// 	}
+		// });
 	}
 
 	private startSendingRandomMessages(character: Character, i = 0) {
@@ -148,15 +148,13 @@ export class BubbleChatController implements OnStart {
 
 	/** Creates a chat container for an entity (or returns one if it already exists) */
 	private GetOrCreateChatContainer(character: Character): GameObject {
-		const existingChatContainer = character.model.gameObject.transform.Find("BubbleChatContainer");
+		const existingChatContainer = character.model.transform.Find("BubbleChatContainer");
 		if (existingChatContainer) {
 			return existingChatContainer.gameObject;
 		}
 
-		const chatContainer = AssetCache.LoadAsset<Object>(
-			"@Easy/Core/Client/Resources/Prefabs/BubbleChatContainer.prefab",
-		);
-		const chatContainerObject = GameObjectUtil.Instantiate(chatContainer);
+		const chatContainer = AssetCache.LoadAsset("@Easy/Core/Client/Resources/Prefabs/BubbleChatContainer.prefab");
+		const chatContainerObject = Object.Instantiate(chatContainer);
 		chatContainerObject.name = "BubbleChatContainer";
 		const chatTransform = chatContainerObject.transform;
 
@@ -177,8 +175,10 @@ export class BubbleChatController implements OnStart {
 		chatTransform.SetParent(character.model.gameObject.transform);
 		chatTransform.localPosition = new Vector3(0, 3.2, 0);
 
-		const shouldBeMinimized = this.ShouldChatBeMinimized(chatTransform, Camera.main.transform.position);
-		this.chatContainerMinimized.set(chatContainerObject.transform, shouldBeMinimized);
+		if (Camera.main) {
+			const shouldBeMinimized = this.ShouldChatBeMinimized(chatTransform, Camera.main.transform.position);
+			this.chatContainerMinimized.set(chatContainerObject.transform, shouldBeMinimized);
+		}
 		return chatContainerObject;
 	}
 

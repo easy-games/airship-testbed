@@ -28,6 +28,7 @@ export declare class InventoryUIController implements OnStart {
     private SetVisible;
     SetHealtbarVisible(visible: boolean): void;
     SetHotbarVisible(visible: boolean): void;
+    private RefreshHealthBarPosition;
     SetBackpackVisible(visible: boolean): void;
     OpenBackpack(): void;
     private SetupHotbar;

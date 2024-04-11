@@ -55,11 +55,10 @@ export class PlayersSingleton implements OnStart {
 			}
 
 			const mutable = Game.localPlayer as Mutable<Player>;
-			mutable.clientId = localPlayerInfo.clientId;
+			mutable.clientId = localPlayerInfo.clientId.Value;
 			mutable.networkObject = localPlayerInfo.gameObject.GetComponent<NetworkObject>()!;
-			mutable.username = localPlayerInfo.username;
-			mutable.usernameTag = localPlayerInfo.usernameTag;
-			mutable.userId = localPlayerInfo.userId;
+			mutable.username = localPlayerInfo.username.Value;
+			mutable.userId = localPlayerInfo.userId.Value;
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
 
@@ -67,9 +66,9 @@ export class PlayersSingleton implements OnStart {
 			// print("took " + timeDiff + " ms to load local player.");
 		};
 
-		if (RunUtil.IsClient()) {
-			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading", "null");
-			if (!RunUtil.IsHosting()) {
+		if (Game.IsClient()) {
+			Game.localPlayer = new Player(undefined as unknown as NetworkObject, 0, "loading", "loading");
+			if (!Game.IsHosting()) {
 				/**
 				 * Host mode: start with no players
 				 * Dedicated client: start with LocalPlayer
@@ -82,42 +81,42 @@ export class PlayersSingleton implements OnStart {
 				FetchLocalPlayerWithWait();
 			});
 		}
-		if (RunUtil.IsServer()) {
+		if (Game.IsServer()) {
 			this.server = {
 				botCounter: 0,
 			};
 		}
 
 		this.onPlayerJoined.Connect((player) => {
-			if (RunUtil.IsServer() && this.joinMessagesEnabled) {
+			if (Game.IsServer() && this.joinMessagesEnabled) {
 				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
 			}
 		});
 		this.onPlayerDisconnected.Connect((player) => {
-			if (RunUtil.IsServer() && this.disconnectMessagesEnabled) {
+			if (Game.IsServer() && this.disconnectMessagesEnabled) {
 				Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
 			}
 		});
 	}
 
 	OnStart(): void {
-		if (RunUtil.IsServer() && !RunUtil.IsEditor()) {
+		if (Game.IsServer() && !Game.IsEditor()) {
 			InternalHttpManager.SetAuthToken("");
 			// HttpManager.SetLoggingEnabled(true);
 		}
 
 		task.spawn(() => {
-			if (RunUtil.IsClient()) {
+			if (Game.IsClient()) {
 				this.InitClient();
 			}
-			if (RunUtil.IsServer()) {
-				if (RunUtil.IsClient()) {
+			if (Game.IsServer()) {
+				if (Game.IsClient()) {
 					Game.WaitForLocalPlayerLoaded();
 				}
 				this.InitServer();
 			}
 
-			if (RunUtil.IsClient() && Game.coreContext === CoreContext.GAME) {
+			if (Game.IsClient() && Game.coreContext === CoreContext.GAME) {
 				Game.WaitForLocalPlayerLoaded();
 				CoreNetwork.ClientToServer.Ready.client.FireServer();
 			}
@@ -176,12 +175,14 @@ export class PlayersSingleton implements OnStart {
 			if (RunUtil.IsHosting() && playerInfo.clientId === 0) {
 				player = Game.localPlayer;
 			} else {
+				print(
+					`making new player. clientId=${playerInfo.clientId} userId=${playerInfo.userId} username=${playerInfo.username}`,
+				);
 				player = new Player(
 					playerInfo.gameObject.GetComponent<NetworkObject>()!,
 					playerInfo.clientId,
 					playerInfo.userId,
 					playerInfo.username,
-					playerInfo.usernameTag,
 				);
 			}
 			playerInfo.gameObject.name = `Player_${playerInfo.username}`;
@@ -329,7 +330,7 @@ export class PlayersSingleton implements OnStart {
 		if (!player) {
 			const nob = NetworkUtil.WaitForNetworkObject(dto.nobId);
 			nob.gameObject.name = `Player_${dto.username}`;
-			player = new Player(nob, dto.clientId, dto.userId, dto.username, dto.usernameTag);
+			player = new Player(nob, dto.clientId, dto.userId, dto.username);
 		}
 
 		team?.AddPlayer(player);

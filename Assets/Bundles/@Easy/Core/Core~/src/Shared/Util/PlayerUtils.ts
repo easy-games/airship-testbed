@@ -1,7 +1,5 @@
-import inspect from "@easy-games/unity-inspect";
-import { Player } from "Shared/Player/Player";
 import { Levenshtein } from "@Easy/Core/Shared/Util/Strings/Levenshtein";
-import StringUtils from "Shared/Types/StringUtil";
+import { Player } from "Shared/Player/Player";
 
 export class PlayerUtils {
 	/**
@@ -16,7 +14,7 @@ export class PlayerUtils {
 		// Shortcut if the discriminator is specified _exactly_.
 		if (searchName.match("#(%d%d%d%d)$")[0] !== undefined) {
 			// lua patterns are great...
-			return players.find((f) => searchName === `${f.username.lower()}#${f.usernameTag}`);
+			return players.find((f) => searchName === `${f.username.lower()}`);
 		}
 
 		const matches = this.FuzzyFindPlayersWithName(players, searchName);
@@ -31,7 +29,7 @@ export class PlayerUtils {
 	public static FuzzyFindPlayersWithName(players: readonly Player[], searchName: string): Player[] {
 		const matchingPlayers = new Array<Player>();
 		for (const player of players) {
-			const fullUsername = `${player.username.lower()}#${player.usernameTag}`;
+			const fullUsername = `${player.username.lower()}`;
 			if (fullUsername.find(searchName.lower(), 1, true)[0] !== undefined) {
 				matchingPlayers.push(player);
 			}
@@ -41,8 +39,8 @@ export class PlayerUtils {
 		// e.g. if we search `lu` and there's a user called `lu` - we'd prioritize that over `luke` even if luke was in the server first.
 		matchingPlayers.sort(
 			(firstPlayer, secondPlayer) =>
-				Levenshtein(`${firstPlayer.username.lower()}#${firstPlayer.usernameTag}`, searchName) <
-				Levenshtein(`${secondPlayer.username.lower()}#${secondPlayer.usernameTag}`, searchName),
+				Levenshtein(`${firstPlayer.username.lower()}`, searchName) <
+				Levenshtein(`${secondPlayer.username.lower()}`, searchName),
 		);
 
 		return matchingPlayers;
