@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Metal - Scratched
+  m_Name: Metal - Rusty
   m_Shader: {fileID: 4800000, guid: b8fcfddb128a0284e9f5e927061e61d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -15,7 +15,7 @@ Material:
   - EXPLICIT_MAPS_ON
   - SHADOWS_ON
   - SLIDER_OVERRIDE_ON
-  - TRIPLANAR_STYLE_OFF
+  - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
@@ -68,11 +68,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e0333b4c311d5f043925252bb43fdd52, type: 3}
-        m_Scale: {x: 4, y: 4}
+        m_Texture: {fileID: 2800000, guid: 79ff75d6816a9b94db3b3db9076d68fe, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 62d26075ba7d31146bd9fdd7ed88e64c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -80,7 +80,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 02514f87087c6fc408a44d23ad640f93, type: 3}
+        m_Texture: {fileID: 2800000, guid: 83b278469687ab043ae295b434d650e5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -92,7 +92,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: fd536e4b5ef8ce445a9af8382f0a4884, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessTex:
@@ -113,7 +113,7 @@ Material:
     - RIM_LIGHT: 0
     - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
-    - TRIPLANAR_STYLE: 0
+    - TRIPLANAR_STYLE: 1
     - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
@@ -123,13 +123,13 @@ Material:
     - _DstBlend: 0
     - _EXPLICIT_MAPS: 1
     - _Emissive: 0
-    - _EmissiveMix: 1
+    - _EmissiveMix: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _IncidentStrength: 1
     - _Lights: 0
-    - _MetalOverride: 0.803
+    - _MetalOverride: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -138,7 +138,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0
     - _RimPower: 0
-    - _RoughOverride: 0.672
+    - _RoughOverride: 0.77
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
     - _SliderOverrideMix: 0
@@ -147,7 +147,7 @@ Material:
     - _SrcBlend: 1
     - _SunScale: 1
     - _Triplanar: 1
-    - _TriplanarScale: 1
+    - _TriplanarScale: 1.7
     - _UVSec: 0
     - _VERTEX_LIGHT: 0
     - _ZWrite: 1
