@@ -2019,9 +2019,9 @@ MonoBehaviour:
   _sunDirectionNormalized: {x: 0.20515251, y: -0.82061005, z: 0.5333965}
   _sunDirection: {x: 0.20515248, y: -0.8206099, z: 0.5333964}
   sunBrightness: 0.7
-  sunShadow: 0.85
+  sunShadow: 0.45
   sunColor: {r: 1, g: 0.9845247, b: 0.8443396, a: 1}
-  skySaturation: 0.3
+  skySaturation: 0.17
   globalAmbientLight: {r: 1, g: 1, b: 1, a: 1}
   globalAmbientBrightness: 0.49
   globalAmbientOcclusion: 0.25
