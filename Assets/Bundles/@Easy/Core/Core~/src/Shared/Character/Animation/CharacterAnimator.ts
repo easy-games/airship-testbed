@@ -553,6 +553,7 @@ export class CharacterAnimator {
 		}
 
 		Task.Delay(0.5, () => {
+			if (this.character.IsDestroyed() || this.character.gameObject.IsDestroyed()) return;
 			this.character.gameObject.SetActive(false);
 		});
 	}
