@@ -1,5 +1,6 @@
 import { Airship } from "../Airship";
 import { Game } from "../Game";
+import { Layer } from "../Util/Layer";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
 export default class CharacterConfigSetup extends AirshipBehaviour {
@@ -26,24 +27,33 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 	public OnEnable() {
 		//Character
+		//Set the default prefab to use whenever a character is spawned
 		Airship.characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
+
+		Physics.IgnoreLayerCollision(17, 18, false);
+		Layer.CHARACTER
 
 		//Local Character Configs
 		if (Game.IsClient()) {
 			//Movement
+			//Control how client inputs are recieved by the movement system
 			Airship.characters.localCharacterManager.SetMoveDirWorldSpace(this.movementSpace === Space.World);
 
 			//Camera
+			//Toggle the core camera system
 			Airship.characterCamera.SetEnabled(this.useAirshipCameraSystem);
 			if (this.useAirshipCameraSystem) {
+				//Allow clients to toggle their view model
 				Airship.characterCamera.canToggleFirstPerson = this.allowFirstPersonToggle;
 				if (this.startInFirstPerson) {
+					//Change to a new camera mode
 					Airship.characterCamera.SetCharacterCameraMode(CharacterCameraMode.Locked);
+					//Force first person view model
 					Airship.characterCamera.SetFirstPerson(this.startInFirstPerson);
 				}
 			}
 
-			//UI
+			//UI visual toggles
 			Airship.chat.SetUIEnabled(this.showChat);
 			Airship.inventory.SetBackpackVisible(this.showInventoryBackpack);
 			if (this.showInventoryHotbar || this.showHealthbar) {
@@ -57,7 +67,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 		//Stop any input for some movement options we don't use
 		if (!this.enableJumping || !this.enableCrouching || !this.enableSprinting) {
+			//Listen to input event
 			Airship.characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
+				//Force the event off if we don't want that feature
 				if (!this.enableJumping) {
 					event.jump = false;
 				}
