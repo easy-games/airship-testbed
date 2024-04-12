@@ -87,6 +87,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - INSTANCE_DATA: 0
@@ -107,7 +108,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MetalOverride: 0.077
+    - _MetalOverride: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -115,7 +116,7 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0.75
     - _RimPower: 2.5
-    - _RoughOverride: 0.585
+    - _RoughOverride: 1
     - _SliderOverrideMix: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

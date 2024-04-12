@@ -102,6 +102,7 @@ Material:
     m_Ints: []
     m_Floats:
     - AO_ON: 0
+    - DOUBLE_SIDED_NORMALS: 2
     - EMISSIVE: 0
     - EXPLICIT_MAPS: 1
     - INSTANCE_DATA: 0
@@ -127,7 +128,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
-    - _MetalOverride: 0.4
+    - _MetalOverride: 0.7
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -136,10 +137,10 @@ Material:
     - _Parallax: 0.02
     - _RimIntensity: 0
     - _RimPower: 3
-    - _RoughOverride: 0.77
+    - _RoughOverride: 0.5
     - _SLIDER_OVERRIDE: 1
     - _SkyShineStrength: 0
-    - _SliderOverrideMix: 0
+    - _SliderOverrideMix: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

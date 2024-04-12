@@ -219,12 +219,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  randomComponents:
-  - {fileID: 3037162197794562736}
-  - {fileID: 1116923348239259154}
-  - {fileID: 4180185237464068803}
-  - {fileID: 4180185237464068803}
-  - {fileID: 4082708758966414093}
+  randomComponents: []
 --- !u!114 &3037162197794562736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,7 +262,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   SetEmmisive: 1
@@ -312,7 +307,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   possibleColorsB:
@@ -342,7 +337,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   possibleColorsC:
@@ -372,7 +367,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
 --- !u!114 &1116923348239259154
@@ -399,7 +394,7 @@ MonoBehaviour:
     key4: {r: 0.8773585, g: 0.26072446, b: 0.29669482, a: 0}
     key5: {r: 0.7235859, g: 0.36320752, b: 1, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 1, g: 1, b: 1, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 9638
     ctime2: 24287
@@ -407,7 +402,7 @@ MonoBehaviour:
     ctime4: 57825
     ctime5: 61873
     ctime6: 65535
-    ctime7: 65535
+    ctime7: 0
     atime0: 0
     atime1: 65535
     atime2: 0
@@ -417,7 +412,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
   SetEmmisive: 0
