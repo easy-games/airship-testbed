@@ -1,7 +1,6 @@
 /// <reference types="compiler-types" />
 import { AccessoryClass, OutfitDto } from "../Airship/Types/Outputs/PlatformInventory";
 export declare class AvatarUtil {
-    static readonly defaultAccessoryOutfitPath = "@Easy/Core/Shared/Resources/Accessories/AvatarItems/GothGirl/Kit_GothGirl_Collection.asset";
     private static readonly allAvatarAccessories;
     private static readonly allAvatarFaces;
     private static readonly allAvatarClasses;
