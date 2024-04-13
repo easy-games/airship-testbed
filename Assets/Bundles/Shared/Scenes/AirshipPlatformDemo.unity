@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 15f2fca07e91d46528200e365e513485, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: f5c2186f7ebace244a6a20db5e97f5fd, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2025,7 +2025,7 @@ MonoBehaviour:
   globalAmbientLight: {r: 1, g: 1, b: 1, a: 1}
   globalAmbientBrightness: 0.49
   globalAmbientOcclusion: 0.25
-  fogEnabled: 1
+  fogEnabled: 0
   fogStart: 100
   fogEnd: 500
   fogColor: {r: 0.5, g: 0.8, b: 1, a: 1}

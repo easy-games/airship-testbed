@@ -1,9 +1,9 @@
-import { Controller, OnStart } from "Shared/Flamework";
 import { Airship } from "Shared/Airship";
 import { AssetCache } from "Shared/AssetCache/AssetCache";
 import { AudioManager } from "Shared/Audio/AudioManager";
 import Character from "Shared/Character/Character";
 import { CoreRefs } from "Shared/CoreRefs";
+import { Controller, OnStart } from "Shared/Flamework";
 import { Bin } from "Shared/Util/Bin";
 import { ColorUtil } from "Shared/Util/ColorUtil";
 import { SetTimeout } from "Shared/Util/Timer";
@@ -91,25 +91,25 @@ export class DamageIndicatorController implements OnStart {
 			}
 		});
 
-		Airship.players.ObservePlayers((player) => {
-			player.ObserveCharacter((character) => {
-				character?.onDeath.Connect(() => {
-					character.animator.PlayDeath();
+		// Airship.players.ObservePlayers((player) => {
+		// 	player.ObserveCharacter((character) => {
+		// 		character?.onDeath.Connect(() => {
+		// 			character.animator.PlayDeath();
 
-					// PvP Kill
-					// if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
-					// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
-					// }
+		// 			// PvP Kill
+		// 			// if (event.killer?.IsLocalCharacter() && event.killer !== event.entity) {
+		// 			// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Player_Kill", { volumeScale: 0.12 });
+		// 			// }
 
-					// // Local death
-					// if (event.entity.IsLocalCharacter()) {
-					// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
-					// 		volumeScale: 0.3,
-					// 	});
-					// }
-				});
-			});
-		});
+		// 			// // Local death
+		// 			// if (event.entity.IsLocalCharacter()) {
+		// 			// 	AudioManager.PlayGlobal("@Easy/Core/Shared/Resources/Sound/Death", {
+		// 			// 		volumeScale: 0.3,
+		// 			// 	});
+		// 			// }
+		// 		});
+		// 	});
+		// });
 	}
 
 	public CreateDamageIndicator(amount: number, criticalHit: boolean): void {
