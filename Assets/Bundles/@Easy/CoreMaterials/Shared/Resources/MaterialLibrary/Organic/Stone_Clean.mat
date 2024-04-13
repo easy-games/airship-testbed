@@ -15,13 +15,13 @@ Material:
   - EXPLICIT_MAPS_ON
   - RIM_LIGHT_ON
   - SHADOWS_ON
-  - SLIDER_OVERRIDE_ON
   - TRIPLANAR_STYLE_LOCAL
   m_InvalidKeywords:
   - EXPLICIT_MAPS
   - METAL_ON_ON
   - NUM_LIGHTS_LIGHTS2
   - SLIDER_OVERRIDE
+  - SLIDER_OVERRIDE_ON
   - _LIGHTS_LIGHTS0
   - _TRIPLANAR_LOCAL
   - _TRIPLANAR_TRIPLANAR_LOCAL
@@ -41,6 +41,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ColorMaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -115,6 +119,8 @@ Material:
     - SHADOWS: 1
     - SLIDER_OVERRIDE: 1
     - TRIPLANAR_STYLE: 1
+    - USE_COLOR_MASK: 0
+    - USE_COLOR_MASK_ON: 0
     - USE_SHADOW_COLOR: 0
     - VERTEX_LIGHT: 0
     - _Alpha: 1
@@ -129,6 +135,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
+    - _MRSliderOverrideMix: 0.5
     - _MetalOverride: 0.15
     - _Metallic: 0
     - _Mode: 0

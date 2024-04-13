@@ -34,6 +34,7 @@
     Texture2D _EmissiveMaskTex;
     
     samplerCUBE _CubeTex;
+    Texture2D _ColorMaskTex;
 
     float  _Alpha;
     float4 _Color;
@@ -48,7 +49,7 @@
 
     half _MetalOverride;
     half _RoughOverride;
-    half _SliderOverrideMix;
+    half _MRSliderOverrideMix;
 
     half _TriplanarScale;
 
@@ -123,8 +124,8 @@
 
         output.worldPos = worldPos;
         output.color = input.color;
-
         output.baseColor = lerp(_Color, _OverrideColor, _OverrideStrength);
+
         
 #if INSTANCE_DATA_ON
 		float4 instanceColor = _ColorInstanceData[input.instanceIndex.x];
@@ -406,12 +407,10 @@
 #endif
 
         // Finish doing ALU calcs while the cubemap fetches in
-#ifdef SLIDER_OVERRIDE_ON
-        metallicLevel = lerp(_MetalOverride, metallicLevel, _SliderOverrideMix);
-        roughnessLevel = lerp(_RoughOverride, roughnessLevel, _SliderOverrideMix);
+        metallicLevel = lerp(metallicLevel, _MetalOverride, _MRSliderOverrideMix);
+        roughnessLevel = lerp(roughnessLevel, _RoughOverride, _MRSliderOverrideMix);
         roughnessLevel = max(roughnessLevel, 0.04);
-        
-#endif
+
         reflectedCubeSample = texCUBElod(_CubeTex, half4(worldReflect, roughnessLevel * maxMips));
         
         //half3 complexAmbientSample = texCUBElod(_CubeTex, half4(worldNormal, maxMips));
@@ -437,7 +436,15 @@
         //NoL = saturate((NoL + 1)*.5);
         /////////////////////////////////////////////////////
                 
+        //If using a color mask
+#if USE_COLOR_MASK_ON
+        //Use a color texture to determine if the baseColor effects the scene
+        //White on the color mask = use base color. Black on the color mask = only use texture color
+        half3 albedo = lerp(texSample.xyz, texSample.xyz * input.baseColor.rgb, Tex2DSampleTexture(_ColorMaskTex, coords).r);
+#else
+        //Otherwise always use the color
         half3 albedo = texSample.xyz * input.baseColor.rgb;
+#endif
   
         //Specular
         half3 imageSpecular = reflectedCubeSample.xyz;
