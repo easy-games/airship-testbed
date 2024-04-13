@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorMaskTex:
-        m_Texture: {fileID: 2800000, guid: b2b7417f0b07a4442ac4c9eba4ab330d, type: 3}
+        m_Texture: {fileID: 2800000, guid: cdfce0ca5afe5464e9c97c97bf56ebb5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CubeTex:
@@ -74,7 +74,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5a8a3ff68d879294ca1daba51b55eaf9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 79ff75d6816a9b94db3b3db9076d68fe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
